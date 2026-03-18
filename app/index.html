@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TCP — The Cadence Playground</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="badge">TCP • public membrane • engine under the hood</div>
+      <h1>TCP — The Cadence Playground</h1>
+      <div class="lead" id="heroLead"></div>
+      <div class="topbar">
+        <span id="badgeState" class="statepill active">badge.holds</span>
+        <span id="mirrorState" class="statepill active">mirror.off</span>
+        <span id="containmentState" class="statepill active">containment.on</span>
+        <span id="routeState" class="statepill">buffered</span>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="hd">
+          <h2>Playground</h2>
+          <div class="small">Recognition first. Explanation later.</div>
+        </div>
+        <div class="bd">
+          <div class="room">
+            <div>
+              <label for="voiceA">Voice A</label>
+              <textarea id="voiceA"></textarea>
+            </div>
+            <div>
+              <label for="voiceB">Voice B</label>
+              <textarea id="voiceB"></textarea>
+            </div>
+          </div>
+          <div class="actions">
+            <button id="compareBtn">Compare voices</button>
+            <button id="toggleMirrorBtn" class="secondary">Toggle mirror.off</button>
+            <button id="badgeBtn" class="secondary">Cycle badge</button>
+            <button id="resetBtn" class="ghost">Reset room</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="hd">
+          <h2>Recognition</h2>
+          <div class="small">Route or criticality.</div>
+        </div>
+        <div class="bd">
+          <div class="results">
+            <div class="metric"><div class="key">Cadence similarity</div><div id="similarity" class="val">—</div><div id="simHint" class="hint"></div></div>
+            <div class="metric"><div class="key">Traceability</div><div id="traceability" class="val">—</div><div id="traceHint" class="hint"></div></div>
+            <div class="metric"><div class="key">Route pressure</div><div id="routePressure" class="val">—</div><div id="routeHint" class="hint"></div></div>
+            <div class="metric"><div class="key">Custody threshold</div><div id="custodyState" class="val">—</div><div id="custodyHint" class="hint"></div></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="hd"><h2>Persona deck</h2><div class="small">Attractors, not mascots.</div></div>
+        <div class="bd"><div id="personaDeck" class="personagrid"></div></div>
+      </section>
+      <section class="panel">
+        <div class="hd"><h2>Harbor preview</h2><div class="small">Reusable passage, not one-off improvisation.</div></div>
+        <div class="bd">
+          <div id="harborBox" class="box"></div>
+          <div class="stage" style="margin-top:12px">
+            <h3>Ledger preview</h3>
+            <pre id="ledgerPreview" class="formula"></pre>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="panel" style="margin-top:18px">
+      <div class="hd"><h2>Under the hood</h2><div class="small">Branch • wave • harbor</div></div>
+      <div class="bd">
+        <div class="underhood">
+          <div class="engine">
+            <h3>Branch engine</h3>
+            <div id="branchFormula" class="formula"></div>
+            <div class="kicker">Preserve awkward surplus until routing decides what it is.</div>
+          </div>
+          <div class="engine">
+            <h3>Wave engine</h3>
+            <div id="waveFormula" class="formula"></div>
+            <div class="kicker">Recognition can gather density without becoming passage.</div>
+          </div>
+          <div class="engine">
+            <h3>Harbor engine</h3>
+            <div id="harborFormula" class="formula"></div>
+            <div class="kicker">When custody drifts, the witness layer turns active; harbor lowers the cost.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">TCP — route, provenance, burden, harbor</div>
+  </div>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

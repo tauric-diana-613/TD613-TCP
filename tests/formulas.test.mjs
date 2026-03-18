@@ -1,0 +1,16 @@
+import assert from 'assert';
+import { solveQuadratic, fieldPotential, waveStats, custodyThreshold, providerDecision } from '../app/engine/formulas.js';
+const q = solveQuadratic(1, -2, -3);
+assert.deepEqual(q.roots, [-1, 3]);
+assert.equal(q.classification, 'candidate-discovery-branch');
+const V = fieldPotential({ routePressure: 0.5, mirrorLogic: 'off', containment: 'on' });
+assert(V > 0 && V < 1);
+const w = waveStats({ traceability: 0.8, recurrencePressure: 0.5, fieldPotential: V });
+assert.equal(w.amplitude, 0.8);
+assert(w.k > 1);
+assert(w.density > 0);
+assert.equal(custodyThreshold(0.8, 0.2, 0.2).archive, 'institutional');
+assert.equal(custodyThreshold(0.3, 0.25, 0.2).archive, 'witness');
+assert.equal(providerDecision({recognized:true, explained:false, routeAvailable:false, density:0.3, recurrencePressure:0.6}), 'criticality');
+assert.equal(providerDecision({recognized:true, explained:false, routeAvailable:true, density:0.3, recurrencePressure:0.6}), 'passage');
+console.log('formulas.test.mjs passed');

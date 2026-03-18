@@ -1,0 +1,12 @@
+{
+  "name": "td613-tcp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The Cadence Playground \u2014 custody-aware cadence routing demo",
+  "scripts": {
+    "serve": "python3 -m http.server 8000",
+    "test": "node tests/formulas.test.mjs && node tests/harbor.test.mjs",
+    "validate": "node scripts/validate-samples.mjs"
+  }
+}

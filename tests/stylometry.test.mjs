@@ -1,0 +1,13 @@
+import assert from 'assert';
+import { compareTexts, recurrencePressure, transformText } from '../app/engine/stylometry.js';
+const a = 'I keep a hush in my pocket, and the room remembers.';
+const b = 'I keep a hush in my pocket, and the room remembers.';
+const c = 'Brisk systems route plain text without pause.';
+const same = compareTexts(a, b);
+const diff = compareTexts(a, c);
+assert(same.similarity > diff.similarity);
+assert(same.traceability >= diff.traceability);
+assert(recurrencePressure(`line one\nline two\nline two`) > 0);
+const transformed = transformText('I do not know and I cannot stay.', { sent: 0, cont: 1, punc: 0 });
+assert(transformed.includes("don't") || transformed.includes("can't"));
+console.log('stylometry.test.mjs passed');

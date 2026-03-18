@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RouteEvent",
+  "type": "object",
+  "required": [
+    "event",
+    "recognized",
+    "explained",
+    "route_available"
+  ],
+  "properties": {
+    "event": {
+      "type": "string"
+    },
+    "recognized": {
+      "type": "boolean"
+    },
+    "explained": {
+      "type": "boolean"
+    },
+    "route_available": {
+      "type": "boolean"
+    },
+    "branch_policy": {
+      "type": "string"
+    },
+    "recommended_harbor": {
+      "type": "string"
+    }
+  }
+}
