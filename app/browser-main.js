@@ -40,7 +40,7 @@
   let mirrorLogic = defaults.mirror_logic;
   let containment = defaults.containment;
   let activeVoice = 'A';
-  let activeArtifactTab = 'personas';
+  let activeArtifactTab = 'play';
   let bayShells = {
     A: createNativeShell(),
     B: createNativeShell()
@@ -286,11 +286,11 @@
   }
 
   function setArtifactTab(tab) {
-    const panes = ['personas', 'mechanics', 'lexicon'];
-    activeArtifactTab = panes.includes(tab) ? tab : 'personas';
+    const panes = ['play', 'readout', 'personas'];
+    activeArtifactTab = panes.includes(tab) ? tab : 'play';
 
     panes.forEach((pane) => {
-      const paneNode = $(`artifactPane${pane.charAt(0).toUpperCase()}${pane.slice(1)}`);
+      const paneNode = $(`viewPane${pane.charAt(0).toUpperCase()}${pane.slice(1)}`);
       const tabNode = $(`tab${pane.charAt(0).toUpperCase()}${pane.slice(1)}`);
       const isActive = pane === activeArtifactTab;
 
@@ -908,11 +908,12 @@ DeltaE = ${ledger.reuse_gain}`;
         routeKey: $('routeKey').textContent.trim()
       };
 
-      $('tabMechanics').click();
-      report.artifactTabs = {
+      $('tabReadout').click();
+      report.viewTabs = {
         activeTab: document.body.dataset.artifactTab,
-        personasHidden: $('artifactPanePersonas').hidden,
-        mechanicsHidden: $('artifactPaneMechanics').hidden
+        playHidden: $('viewPanePlay').hidden,
+        readoutHidden: $('viewPaneReadout').hidden,
+        personasHidden: $('viewPanePersonas').hidden
       };
 
       if (mode === 'full') {
@@ -995,7 +996,7 @@ DeltaE = ${ledger.reuse_gain}`;
             report.swapCadences.voiceBUnchanged &&
             report.savePersona.savedPersonaAdded &&
             report.soloScan.similarityKey === 'Scan mode' &&
-            report.artifactTabs.activeTab === 'mechanics',
+            report.viewTabs.activeTab === 'readout',
           matrixPassCount: matrix.filter((entry) => entry.pass).length,
           matrixCount: matrix.length
         };
@@ -1031,9 +1032,9 @@ DeltaE = ${ledger.reuse_gain}`;
   $('voiceB').addEventListener('focus', () => setActiveVoice('B'));
   $('voiceA').addEventListener('input', () => handleTextInput('A'));
   $('voiceB').addEventListener('input', () => handleTextInput('B'));
+  $('tabPlay').addEventListener('click', () => setArtifactTab('play'));
+  $('tabReadout').addEventListener('click', () => setArtifactTab('readout'));
   $('tabPersonas').addEventListener('click', () => setArtifactTab('personas'));
-  $('tabMechanics').addEventListener('click', () => setArtifactTab('mechanics'));
-  $('tabLexicon').addEventListener('click', () => setArtifactTab('lexicon'));
 
   document.addEventListener('click', (event) => {
     const persona = event.target.closest('.persona');
