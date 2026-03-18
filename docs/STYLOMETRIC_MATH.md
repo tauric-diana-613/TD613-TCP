@@ -124,7 +124,7 @@ All three outputs are clipped into `[0,1]`.
 Stylometric resemblance is not the last step. TCP turns similarity, traceability, recurrence, and branch status into a route score:
 
 ```math
-\Pi = 0.35S + 0.30T + 0.25R + 0.10B
+\Pi = 0.33S + 0.27T + 0.22R + 0.05B
 ```
 
 where `B = 1` when the branch engine detects an unwanted root worth preserving.

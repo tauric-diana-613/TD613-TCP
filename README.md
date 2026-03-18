@@ -60,7 +60,7 @@ T=0.34(1-d_s)+0.24(1-d_p)+0.18(1-d_c)+0.24(1-d_r)
 Route pressure is:
 
 ```math
-\Pi = 0.35S + 0.30T + 0.25R + 0.10B
+\Pi = 0.33S + 0.27T + 0.22R + 0.05B
 ```
 
 Field potential is:
@@ -93,7 +93,7 @@ In the browser demo, `C = 0.68`, `D = 0.58Pi`, and `theta = 0.2`.
 
 ## Decision grammar
 
-The public UI uses a compact rule set. Recognition is treated as present once `S >= 0.50`. Explanation is treated as still lagging once `Pi >= 0.45`. Dense signal is treated as present once `rho >= 0.28` or `R >= 0.58`. Route availability requires the mirror shield to be open and `Pi >= 0.45`.
+The public UI uses a compact rule set. Recognition is treated as present once `S >= 0.56`. Explanation is treated as still lagging once `Pi >= 0.45`. Dense signal is treated as present once `rho >= 0.28` or `R >= 0.58`. Route availability requires the mirror shield to be open and `Pi >= 0.45`.
 
 That yields four states:
 
@@ -108,7 +108,7 @@ The point of the interface is not to blur those states together. It is to keep t
 
 - `app/` - runnable static web app
 - `copy/` - interface microcopy and route language
-- `docs/` - model notes for branch, stylometry, safety, and harbor logic
+- `docs/` - model notes for branch, stylometry, safety, harbor logic, and interface terminology
 - `example/` - sample payloads and ledger rows
 - `schemas/` - JSON schemas for the main payloads
 - `tests/` - no-dependency Node tests for the engine modules
@@ -162,6 +162,7 @@ TCP is trying to make four conditions visible without overclaiming any of them:
 
 - No build step is required.
 - All runtime logic is ESM JavaScript with zero dependencies.
-- The seeded opening pair is intentionally high-contrast so the model difference is visible on first load.
+- The seeded opening pair is intentionally high-contrast and conversational so the model difference is visible on first load without sounding synthetic.
+- `docs/INTERFACE_LEXICON.md` is the concise map for deck labels like mirror shield, custody badge, shell, harbor, and archive.
 - The physics layer is analogical, the stylometry layer is heuristic, and the harbor layer is policy-shaped.
 - Thresholds, labels, and harbor policies are still being tuned as part of the pilot.

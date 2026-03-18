@@ -36,7 +36,7 @@ Let:
 Then TCP uses:
 
 ```math
-\Pi = 0.35S + 0.30T + 0.25R + 0.10B
+\Pi = 0.33S + 0.27T + 0.22R + 0.05B
 ```
 
 ```math
@@ -61,7 +61,7 @@ The first equation measures route pressure. The next two produce a density proxy
 
 ## Implementation consequence
 
-The browser build is explicit about its thresholds. Recognition is treated as present once `S >= 0.50`. Explanation is treated as still lagging once `Pi >= 0.45`. Dense signal is treated as present once `rho >= 0.28` or `R >= 0.58`. Route availability requires an opened mirror layer plus `Pi >= 0.45`. Harbor selection is rule-based and provenance-constrained in the current implementation.
+The browser build is explicit about its thresholds. Recognition is treated as present once `S >= 0.56`. Explanation is treated as still lagging once `Pi >= 0.45`. Dense signal is treated as present once `rho >= 0.28` or `R >= 0.58`. Route availability requires an opened mirror layer plus `Pi >= 0.45`. Harbor selection is rule-based and provenance-constrained in the current implementation.
 
 That is more than presentation polish. It gives the public membrane a disciplined way to say:
 

@@ -38,6 +38,7 @@ app/index.html?test-flight=2
 
 - `README.md`
 - `ABSTRACT.md`
+- `docs/INTERFACE_LEXICON.md`
 - `docs/ENGINE.md`
 - `docs/PHYSICS_ENGINE.md`
 - `docs/STYLOMETRIC_MATH.md`
@@ -46,7 +47,7 @@ app/index.html?test-flight=2
 ## If you only care about the model
 
 ```math
-\Pi = 0.35S + 0.30T + 0.25R + 0.10B
+\Pi = 0.33S + 0.27T + 0.22R + 0.05B
 ```
 
 ```math

@@ -81,7 +81,7 @@ The distance scales in the current implementation are:
 Route pressure is:
 
 ```math
-\Pi = 0.35S + 0.30T + 0.25R + 0.10B
+\Pi = 0.33S + 0.27T + 0.22R + 0.05B
 ```
 
 Field potential is:
@@ -129,7 +129,7 @@ with `theta = 0.2`.
 
 The UI does not improvise its own logic. It uses explicit thresholds:
 
-- `recognized` iff `S >= 0.50`
+- `recognized` iff `S >= 0.56`
 - `explained` iff `Pi < 0.45`
 - `denseSignal` iff `rho >= 0.28` or `R >= 0.58`
 - `routeAvailable` iff the mirror shield is open and `Pi >= 0.45`

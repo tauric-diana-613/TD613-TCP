@@ -70,10 +70,10 @@ export function custodyThreshold(custodialIntegrity, custodialDrift, theta = 0.2
 
 export function routePressure(similarity, traceability, branchFlag = 0, recurrencePressure = 0) {
   const pressure =
-    (clamp01(similarity) * 0.35) +
-    (clamp01(traceability) * 0.30) +
-    (clamp01(recurrencePressure) * 0.25) +
-    ((branchFlag ? 1 : 0) * 0.10);
+    (clamp01(similarity) * 0.33) +
+    (clamp01(traceability) * 0.27) +
+    (clamp01(recurrencePressure) * 0.22) +
+    ((branchFlag ? 1 : 0) * 0.05);
 
   return round3(clamp01(pressure));
 }

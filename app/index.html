@@ -8,72 +8,76 @@
 </head>
 <body>
   <div class="shell">
-    <header class="panel hero">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <div class="eyebrow">TD613 field lab // cadence ingress deck</div>
-          <h1>The Cadence Playground</h1>
-          <p class="lead" id="heroLead"></p>
-          <p class="hero-note">A field instrument for browser-side cadence play, controlled drift, and route-aware stylometric literacy.</p>
-          <p class="pilot-note"><strong>Experimental research prototype.</strong> Conceptual pilot in active development. The current build is intended to demonstrate interaction design, route-state modeling, and provenance-aware cadence heuristics rather than production readiness.</p>
-          <div class="hero-tags">
-            <span class="tag status-tag">conceptual pilot</span>
-            <span class="tag status-tag">active development</span>
-            <span class="tag">persona attractors</span>
-            <span class="tag">provenance-aware</span>
+    <header class="panel masthead">
+      <div class="masthead-copy">
+        <div class="eyebrow-row">
+          <span class="eyebrow">TD613 / public membrane / cadence deck</span>
+          <span class="pilot-chip">conceptual pilot / active development</span>
+        </div>
+        <div class="title-lockup">
+          <h1>TCP</h1>
+          <p class="deck-name">The Cadence Playground</p>
+        </div>
+        <p id="heroLead" class="lead"></p>
+        <p class="hero-note">A futurecore toy for comparing cadence, drift, and route pressure without confusing resemblance for repair.</p>
+        <p class="pilot-note">Experimental research prototype. This build demonstrates the current interaction model, route-state logic, and provenance-aware cadence heuristics. It is not yet a production-ready analytical system.</p>
+        <div class="hero-tags">
+          <span class="tag">cybernetic toy</span>
+          <span class="tag">stylometric pilot</span>
+          <span class="tag">route-aware</span>
+          <span class="tag">provenance-conscious</span>
+        </div>
+      </div>
+
+      <aside class="masthead-readout">
+        <div class="readout-head">
+          <div>
+            <div class="section-kicker">Live deck</div>
+            <div class="readout-title">Recognition before explanation</div>
           </div>
+          <div id="decisionTone" class="console-status">Scanning</div>
         </div>
 
-        <aside class="hero-console">
-          <div class="console-header">
-            <div>
-              <div class="console-kicker">Live route deck</div>
-              <div class="console-title">Recognition precedes explanation</div>
-            </div>
-            <div id="decisionTone" class="console-status">Scanning</div>
-          </div>
+        <div class="hero-grid">
+          <article class="console-card">
+            <div class="console-label">Signal</div>
+            <div id="heroSignalValue" class="console-value">--</div>
+            <p id="heroSignalNote" class="console-copy">Paste a voice to wake the deck.</p>
+          </article>
+          <article class="console-card">
+            <div class="console-label">Route</div>
+            <div id="heroRouteValue" class="console-value">--</div>
+            <p id="heroRouteNote" class="console-copy">A second voice exposes whether recognition can travel.</p>
+          </article>
+          <article class="console-card">
+            <div class="console-label">Harbor</div>
+            <div id="heroHarborValue" class="console-value console-code">--</div>
+            <p id="heroHarborNote" class="console-copy">Harbor only appears when the field can justify it.</p>
+          </article>
+        </div>
 
-          <div class="console-grid">
-            <article class="console-card">
-              <div class="console-label">Signal</div>
-              <div id="heroSignalValue" class="console-value">--</div>
-              <p id="heroSignalNote" class="console-copy">Paste two voices to light the deck.</p>
-            </article>
-            <article class="console-card">
-              <div class="console-label">Route pressure</div>
-              <div id="heroRouteValue" class="console-value">--</div>
-              <p id="heroRouteNote" class="console-copy">TCP is idle until a comparison runs.</p>
-            </article>
-            <article class="console-card">
-              <div class="console-label">Harbor</div>
-              <div id="heroHarborValue" class="console-value console-code">--</div>
-              <p id="heroHarborNote" class="console-copy">A harbor will appear once the field resolves.</p>
-            </article>
-          </div>
+        <div class="storybox">
+          <div class="storylabel">Field notice</div>
+          <p id="fieldNotice">Bring one or two voices into the room. TCP will separate surface similarity, traceability, and route pressure.</p>
+        </div>
 
-          <div class="storybox">
-            <div class="storylabel">Field readout</div>
-            <p id="fieldNotice">Bring two voices into the field and TCP will surface how resemblance, trace, and route begin to separate.</p>
-          </div>
-
-          <div class="statusrail">
-            <span id="badgeState" class="statepill active">Badge // holds</span>
-            <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
-            <span id="containmentState" class="statepill active">Containment // stable</span>
-            <span id="routeState" class="statepill">Route // buffered</span>
-          </div>
-        </aside>
-      </div>
+        <div class="statusrail">
+          <span id="badgeState" class="statepill active">Badge // holds</span>
+          <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
+          <span id="containmentState" class="statepill active">Containment // stable</span>
+          <span id="routeState" class="statepill">Route // buffered</span>
+        </div>
+      </aside>
     </header>
 
-    <main class="layout layout-primary">
-      <section class="panel signal-panel">
+    <main class="deck">
+      <section class="panel intake-panel">
         <div class="panel-heading">
           <div>
-            <div class="section-kicker">Signal Lab</div>
-            <h2>Analyze one or two cadences</h2>
+            <div class="section-kicker">Cadence intake</div>
+            <h2>Bring two voices into the room</h2>
           </div>
-          <p class="section-note">Paste a reference voice and a probe voice. TCP can capture a single cadence, compare two at once, and keep the shell layer separate from the text itself.</p>
+          <p class="section-note">Reference holds the anchor. Probe tests the pressure. TCP can scan one voice solo, compare two at once, and move cadence shells without moving the text.</p>
         </div>
 
         <div class="input-grid">
@@ -83,37 +87,41 @@
             <textarea id="voiceA"></textarea>
             <div id="voiceAProfile" class="bay-profile"></div>
           </label>
+
           <label id="voiceBField" class="field" for="voiceB">
             <span class="field-label">Probe voice</span>
-            <span class="field-copy">The sample you want to stress-test against the field.</span>
+            <span class="field-copy">The sample you want to stress against the field.</span>
             <textarea id="voiceB"></textarea>
             <div id="voiceBProfile" class="bay-profile"></div>
           </label>
         </div>
 
-        <div class="analysis-rail">
-          <div id="activeBayStatus" class="statepill active">Active bay // reference voice</div>
-          <div id="analysisStatus" class="analysis-status">Press Analyze Cadences to scan a single voice or compare both bays at once.</div>
-        </div>
-
-        <div class="actions">
+        <div class="actions-primary">
           <button id="compareBtn" type="button">Analyze Cadences</button>
           <button id="swapCadencesBtn" type="button" class="secondary">Swap Cadences</button>
           <button id="savePersonaBtn" type="button" class="secondary">Save Cadence as Persona</button>
-          <button id="toggleMirrorBtn" type="button" class="secondary">Open mirror shield</button>
-          <button id="badgeBtn" type="button" class="secondary">Cycle custody badge</button>
+        </div>
+
+        <div class="analysis-rail">
+          <div id="activeBayStatus" class="statepill active">Active bay // reference voice</div>
+          <div id="analysisStatus" class="analysis-status">Press Analyze Cadences to run a solo capture or compare both bays at once.</div>
+        </div>
+
+        <div class="actions-utility">
+          <button id="toggleMirrorBtn" type="button" class="utility">Open mirror shield</button>
+          <button id="badgeBtn" type="button" class="utility">Cycle custody badge</button>
           <button id="resetBtn" type="button" class="ghost">Reset bay</button>
         </div>
       </section>
 
-      <div class="stack">
+      <div class="deck-stack">
         <section class="panel telemetry-panel">
           <div class="panel-heading">
             <div>
               <div class="section-kicker">Telemetry</div>
-              <h2>Recognition, route, and custody</h2>
+              <h2>What the field is actually doing</h2>
             </div>
-            <p class="section-note">The deck separates resemblance, traceability, and route so public play stays legible without pretending similarity is proof.</p>
+            <p class="section-note">The metrics stay separate on purpose. TCP does not let similarity cosplay as custody, and it does not let route pressure pretend to be proof.</p>
           </div>
 
           <div class="results">
@@ -144,9 +152,9 @@
           <div class="panel-heading">
             <div>
               <div class="section-kicker">Harbor deck</div>
-              <h2>Recommended passage</h2>
+              <h2>Structured passage</h2>
             </div>
-            <p class="section-note">Structured escalation stays visible here without overwhelming the playful ingress that gets participants to the threshold.</p>
+            <p class="section-note">The harbor recommendation stays legible without taking over the toy. Play happens up front; routing logic sits here where it can be inspected instead of romanticized.</p>
           </div>
 
           <div id="harborBox" class="harbor-box"></div>
@@ -168,21 +176,22 @@
     <section class="panel artifact-panel">
       <div class="panel-heading artifact-heading">
         <div>
-          <div class="section-kicker">Artifact Cabinet</div>
-          <h2>Docked Secondary Systems</h2>
+          <div class="section-kicker">Side deck</div>
+          <h2>Shells, mechanics, and terminology</h2>
         </div>
-        <p class="section-note">The shells, formulas, and side instruments are still here, but docked behind tabs so the landing page stays fast, legible, and intact.</p>
+        <p class="section-note">Everything that used to spill down the page lives here now. The front of TCP stays playable; the extra apparatus stays docked until you want it.</p>
       </div>
 
       <div class="artifact-toolbar">
         <button id="tabPersonas" type="button" class="artifact-tab active" data-artifact-tab="personas">Persona shells</button>
         <button id="tabMechanics" type="button" class="artifact-tab" data-artifact-tab="mechanics">Field mechanics</button>
+        <button id="tabLexicon" type="button" class="artifact-tab" data-artifact-tab="lexicon">Lexicon</button>
       </div>
 
       <section id="artifactPanePersonas" class="artifact-pane active" data-pane="personas">
         <div class="artifact-pane-head">
           <div class="artifact-pane-kicker">Persona deck</div>
-          <p class="artifact-copy">Click a persona to load its cadence shell into the active bay. The text stays put; only the shell moves.</p>
+          <p class="artifact-copy">Load a shell into the active bay. The text stays put. Only the cadence shell moves.</p>
         </div>
         <div class="persona-toolbar">
           <div id="personaStatus" class="analysis-status">Active bay // Reference voice // native cadence</div>
@@ -193,32 +202,65 @@
       <section id="artifactPaneMechanics" class="artifact-pane" data-pane="mechanics" hidden>
         <div class="artifact-pane-head">
           <div class="artifact-pane-kicker">Mechanics</div>
-          <p class="artifact-copy">The equations stay available as part of the artifact, but they no longer spill down the front of the experience.</p>
+          <p class="artifact-copy">The branch engine, wave engine, and harbor engine stay visible as implementation notes instead of leaking across the whole landing page.</p>
         </div>
         <div class="underhood">
           <article class="engine">
             <div class="engine-kicker">Branch engine</div>
             <h3>Keep the awkward remainder</h3>
             <div id="branchFormula" class="formula"></div>
-            <p class="kicker">Preserve awkward surplus until routing decides what it is.</p>
+            <p class="kicker">Unwanted does not mean meaningless. TCP preserves the branch until routing clarifies what it is.</p>
           </article>
           <article class="engine">
             <div class="engine-kicker">Wave engine</div>
             <h3>Measure density without overclaiming</h3>
             <div id="waveFormula" class="formula"></div>
-            <p class="kicker">Detection is not repair. Density is not passage.</p>
+            <p class="kicker">Signal density is a field proxy, not proof. Recognition still has to earn route.</p>
           </article>
           <article class="engine">
             <div class="engine-kicker">Harbor engine</div>
             <h3>Lower witness burden</h3>
             <div id="harborFormula" class="formula"></div>
-            <p class="kicker">When custody drifts, harbor steps in before provenance gets lost.</p>
+            <p class="kicker">When custodial drift rises, the harbor layer is there to stop the next entrant from paying alone.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="artifactPaneLexicon" class="artifact-pane" data-pane="lexicon" hidden>
+        <div class="artifact-pane-head">
+          <div class="artifact-pane-kicker">Quick lexicon</div>
+          <p class="artifact-copy">Short definitions for the dual-meaning labels on the deck. The fuller terminology map lives in <code>docs/INTERFACE_LEXICON.md</code>.</p>
+        </div>
+        <div class="lexicon-grid">
+          <article class="lexicon-item">
+            <h3>Mirror shield</h3>
+            <p>Keeps public play exploratory. When armed, TCP will not treat high recognition as an open route.</p>
+          </article>
+          <article class="lexicon-item">
+            <h3>Custody badge</h3>
+            <p>A demo-state toggle that changes how strongly the deck leans toward branch-holding, buffering, or escalation language.</p>
+          </article>
+          <article class="lexicon-item">
+            <h3>Harbor</h3>
+            <p>The recommended passage function once recognition becomes strong enough to require structured handling.</p>
+          </article>
+          <article class="lexicon-item">
+            <h3>Cadence shell</h3>
+            <p>A reusable stylometric bias applied to a bay. The shell moves; the underlying text does not.</p>
+          </article>
+          <article class="lexicon-item">
+            <h3>Effective archive</h3>
+            <p>The side currently carrying custody in the model. Institutional means the archive is holding. Witness means continuity pressure has migrated outward.</p>
+          </article>
+          <article class="lexicon-item">
+            <h3>Route pressure</h3>
+            <p>The model's estimate of whether resemblance is staying decorative or starting to demand a path, receipt, and containment-aware response.</p>
           </article>
         </div>
       </section>
     </section>
 
-    <footer class="footer">TCP // experimental research prototype // signal, route, harbor, provenance</footer>
+    <footer class="footer">TCP / conceptual pilot / cadence shells, route pressure, harbor logic, provenance-aware play</footer>
   </div>
 
   <script src="./browser-data.js"></script>

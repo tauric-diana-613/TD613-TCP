@@ -41,7 +41,10 @@
   let containment = defaults.containment;
   let activeVoice = 'A';
   let activeArtifactTab = 'personas';
-  let cadenceAssignments = { A: null, B: null };
+  let bayShells = {
+    A: createNativeShell(),
+    B: createNativeShell()
+  };
   let savedPersonas = loadSavedPersonas();
 
   $('heroLead').textContent = microcopy.hero_lead;
@@ -99,6 +102,44 @@
     }
   }
 
+  function createNativeShell() {
+    return {
+      mode: 'native',
+      label: 'native cadence',
+      mod: null,
+      personaId: null,
+      source: 'native'
+    };
+  }
+
+  function cloneShell(shell) {
+    return {
+      ...shell,
+      mod: shell && shell.mod ? { ...shell.mod } : null
+    };
+  }
+
+  function createPersonaShell(persona) {
+    return {
+      mode: 'persona',
+      label: persona.name,
+      mod: { ...persona.mod },
+      personaId: persona.id,
+      source: persona.source || 'built-in'
+    };
+  }
+
+  function createBorrowedShell(voiceState) {
+    return {
+      mode: 'borrowed',
+      label: `borrowed ${SLOT_SHORT[voiceState.slot]} cadence`,
+      mod: cadenceModFromProfile(voiceState.effectiveProfile),
+      personaId: null,
+      source: 'swapped',
+      fromSlot: voiceState.slot
+    };
+  }
+
   function getPersonaLibrary() {
     return [...basePersonas, ...savedPersonas];
   }
@@ -107,15 +148,16 @@
     return getPersonaLibrary().find((persona) => persona.id === id) || null;
   }
 
-  function getAssignedPersona(slot) {
-    return findPersona(cadenceAssignments[slot]);
+  function getBayShell(slot) {
+    return bayShells[slot] || createNativeShell();
   }
 
   function getVoiceState(slot) {
     const text = $(slot === 'A' ? 'voiceA' : 'voiceB').value;
     const rawProfile = extractCadenceProfile(text);
-    const persona = getAssignedPersona(slot);
-    const effectiveProfile = applyCadenceMod(rawProfile, persona ? persona.mod : undefined);
+    const shell = getBayShell(slot);
+    const persona = shell.personaId ? findPersona(shell.personaId) : null;
+    const effectiveProfile = applyCadenceMod(rawProfile, shell.mod || undefined);
 
     return {
       slot,
@@ -123,7 +165,8 @@
       hasText: !rawProfile.empty,
       rawProfile,
       effectiveProfile,
-      persona
+      persona,
+      shell
     };
   }
 
@@ -143,8 +186,20 @@
     return 'idle';
   }
 
-  function describeCadenceShell(persona) {
-    return persona ? `Cadence shell // ${persona.name}` : 'Cadence shell // native';
+  function describeCadenceShell(shell) {
+    return `Cadence shell // ${shell.label}`;
+  }
+
+  function describeShellNote(voiceState) {
+    if (voiceState.shell.mode === 'native') {
+      return 'Native cadence only. No shell is bending the readout.';
+    }
+
+    if (voiceState.shell.mode === 'borrowed') {
+      return `Borrowed from the ${SLOT_SHORT[voiceState.shell.fromSlot]} bay. The text stayed put; the cadence shell moved.`;
+    }
+
+    return `Applied shell bias: sent ${voiceState.shell.mod.sent >= 0 ? '+' : ''}${voiceState.shell.mod.sent}, cont ${voiceState.shell.mod.cont >= 0 ? '+' : ''}${voiceState.shell.mod.cont}, punc ${voiceState.shell.mod.punc >= 0 ? '+' : ''}${voiceState.shell.mod.punc}.`;
   }
 
   function renderVoiceProfile(voiceState) {
@@ -161,7 +216,7 @@
       panel.innerHTML = `
         <div class="bay-shell-row">
           <span class="bay-shell">${activeVoice === voiceState.slot ? 'Active bay' : 'Cadence bay'}</span>
-          <span class="bay-shell">${describeCadenceShell(voiceState.persona)}</span>
+          <span class="bay-shell">${describeCadenceShell(voiceState.shell)}</span>
         </div>
         <p class="bay-copy">Paste a voice here to extract sentence rhythm, punctuation shape, contraction density, and recurrence pressure.</p>
       `;
@@ -169,14 +224,12 @@
     }
 
     const profile = voiceState.effectiveProfile;
-    const shellNote = voiceState.persona
-      ? `Applied shell bias: sent ${voiceState.persona.mod.sent >= 0 ? '+' : ''}${voiceState.persona.mod.sent}, cont ${voiceState.persona.mod.cont >= 0 ? '+' : ''}${voiceState.persona.mod.cont}, punc ${voiceState.persona.mod.punc >= 0 ? '+' : ''}${voiceState.persona.mod.punc}.`
-      : 'Native cadence only. No shell is bending the readout.';
+    const shellNote = describeShellNote(voiceState);
 
     panel.innerHTML = `
       <div class="bay-shell-row">
         <span class="bay-shell">${activeVoice === voiceState.slot ? 'Active bay' : 'Cadence bay'}</span>
-        <span class="bay-shell">${describeCadenceShell(voiceState.persona)}</span>
+        <span class="bay-shell">${describeCadenceShell(voiceState.shell)}</span>
       </div>
       <div class="bay-metrics">
         <span class="bay-metric">Rhythm ${profile.avgSentenceLength.toFixed(1)}w</span>
@@ -195,10 +248,10 @@
 
   function personaAssignmentLabel(personaId) {
     const slots = [];
-    if (cadenceAssignments.A === personaId) {
+    if (bayShells.A.personaId === personaId) {
       slots.push('Reference');
     }
-    if (cadenceAssignments.B === personaId) {
+    if (bayShells.B.personaId === personaId) {
       slots.push('Probe');
     }
 
@@ -208,8 +261,8 @@
   function renderPersonas() {
     $('personaDeck').innerHTML = getPersonaLibrary()
       .map((persona) => {
-        const selected = cadenceAssignments[activeVoice] === persona.id;
-        const assigned = cadenceAssignments.A === persona.id || cadenceAssignments.B === persona.id;
+        const selected = bayShells[activeVoice].personaId === persona.id;
+        const assigned = bayShells.A.personaId === persona.id || bayShells.B.personaId === persona.id;
         const source = persona.source === 'saved' ? 'captured in-app' : 'built-in attractor';
 
         return `
@@ -228,20 +281,29 @@
       })
       .join('');
 
-    const activePersona = getAssignedPersona(activeVoice);
-    $('personaStatus').textContent = `Active bay // ${SLOT_LABELS[activeVoice]} // ${activePersona ? activePersona.name : 'native cadence'}`;
+    $('personaStatus').textContent = `Active bay // ${SLOT_LABELS[activeVoice]} // ${bayShells[activeVoice].label}`;
     renderActiveBayStatus();
   }
 
   function setArtifactTab(tab) {
-    activeArtifactTab = tab === 'mechanics' ? 'mechanics' : 'personas';
-    const personasActive = activeArtifactTab === 'personas';
-    $('artifactPanePersonas').hidden = !personasActive;
-    $('artifactPaneMechanics').hidden = personasActive;
-    $('artifactPanePersonas').classList.toggle('active', personasActive);
-    $('artifactPaneMechanics').classList.toggle('active', !personasActive);
-    $('tabPersonas').classList.toggle('active', personasActive);
-    $('tabMechanics').classList.toggle('active', !personasActive);
+    const panes = ['personas', 'mechanics', 'lexicon'];
+    activeArtifactTab = panes.includes(tab) ? tab : 'personas';
+
+    panes.forEach((pane) => {
+      const paneNode = $(`artifactPane${pane.charAt(0).toUpperCase()}${pane.slice(1)}`);
+      const tabNode = $(`tab${pane.charAt(0).toUpperCase()}${pane.slice(1)}`);
+      const isActive = pane === activeArtifactTab;
+
+      if (paneNode) {
+        paneNode.hidden = !isActive;
+        paneNode.classList.toggle('active', isActive);
+      }
+
+      if (tabNode) {
+        tabNode.classList.toggle('active', isActive);
+      }
+    });
+
     document.body.dataset.artifactTab = activeArtifactTab;
   }
 
@@ -253,7 +315,9 @@
     $('badgeBtn').textContent = `Cycle custody badge // ${BADGE_LABELS[badge] || badge}`;
     $('resetBtn').textContent = 'Reset bay';
 
-    $('swapCadencesBtn').disabled = !cadenceAssignments.A && !cadenceAssignments.B;
+    const voiceStateA = getVoiceState('A');
+    const voiceStateB = getVoiceState('B');
+    $('swapCadencesBtn').disabled = !(voiceStateA.hasText && voiceStateB.hasText);
     $('savePersonaBtn').disabled = !getVoiceState(activeVoice).hasText;
   }
 
@@ -312,10 +376,11 @@
     $('heroSignalNote').textContent = `Cadence captured from the ${SLOT_SHORT[voiceState.slot]} bay. Add a second voice to test contrast.`;
     $('heroRouteValue').textContent = formatPct(voiceState.effectiveProfile.recurrencePressure);
     $('heroRouteNote').textContent = 'Solo scans expose rhythm and recurrence, but route pressure needs a second voice.';
-    $('heroHarborValue').textContent = voiceState.persona ? voiceState.persona.name : 'save.persona';
-    $('heroHarborNote').textContent = voiceState.persona
-      ? 'A cadence shell is already shaping this bay.'
-      : 'You can save this cadence in-app or pair it with another voice.';
+    $('heroHarborValue').textContent = voiceState.shell.mode === 'native' ? 'save.persona' : voiceState.shell.label;
+    $('heroHarborNote').textContent =
+      voiceState.shell.mode === 'native'
+        ? 'You can save this cadence in-app or pair it with another voice.'
+        : 'A cadence shell is already shaping this bay.';
     $('decisionTone').textContent = 'Solo capture';
     $('decisionTone').dataset.state = 'hold-branch';
     document.body.dataset.decision = 'hold-branch';
@@ -391,7 +456,7 @@
       <div class="harbor-head">
         <div>
           <div class="section-kicker">Solo capture</div>
-          <div class="harbor-name">${voiceState.persona ? voiceState.persona.name : 'cadence capture'}</div>
+          <div class="harbor-name">${voiceState.shell.mode === 'native' ? 'cadence capture' : voiceState.shell.label}</div>
         </div>
         <div class="harbor-stat">${formatPct(voiceState.effectiveProfile.recurrencePressure)} recurrence</div>
       </div>
@@ -402,7 +467,7 @@
         </div>
         <div class="harbor-item">
           <span class="harbor-label">Shell</span>
-          <strong>${voiceState.persona ? voiceState.persona.name : 'native cadence'}</strong>
+          <strong>${voiceState.shell.label}</strong>
         </div>
         <div class="harbor-item">
           <span class="harbor-label">Next move</span>
@@ -464,7 +529,7 @@
       {
         mode: 'solo-capture',
         active_bay: SLOT_SHORT[voiceState.slot],
-        cadence_shell: voiceState.persona ? voiceState.persona.name : 'native',
+        cadence_shell: voiceState.shell.label,
         rhythm_words: voiceState.effectiveProfile.avgSentenceLength,
         recurrence_pressure: voiceState.effectiveProfile.recurrencePressure
       },
@@ -501,7 +566,7 @@
       fieldPotential: field
     });
     const custody = custodyThreshold(0.68, routePressure * 0.58, 0.2);
-    const recognized = cmp.similarity >= 0.5;
+    const recognized = cmp.similarity >= 0.56;
     const explained = routePressure < 0.45;
     const routeAvailable = mirrorLogic === 'on' && routePressure >= 0.45;
     const decision = providerDecision({
@@ -633,15 +698,27 @@ DeltaE = ${ledger.reuse_gain}`;
       return;
     }
 
-    cadenceAssignments[activeVoice] = persona.id;
+    bayShells[activeVoice] = createPersonaShell(persona);
     analyzeCadences();
     setStatusMessage(`${persona.name} is now shaping the ${SLOT_SHORT[activeVoice]} cadence shell. The text stayed put; only the cadence shell changed.`);
   }
 
   function swapCadences() {
-    cadenceAssignments = {
-      A: cadenceAssignments.B,
-      B: cadenceAssignments.A
+    const voiceStateA = getVoiceState('A');
+    const voiceStateB = getVoiceState('B');
+
+    if (!voiceStateA.hasText || !voiceStateB.hasText) {
+      setStatusMessage('Swap Cadences needs both bays populated. The shell can move, but it needs two live voices to trade between.');
+      updateControls();
+      return;
+    }
+
+    const shellA = bayShells.A.mode === 'native' ? createBorrowedShell(voiceStateA) : cloneShell(bayShells.A);
+    const shellB = bayShells.B.mode === 'native' ? createBorrowedShell(voiceStateB) : cloneShell(bayShells.B);
+
+    bayShells = {
+      A: shellB,
+      B: shellA
     };
     analyzeCadences();
     setStatusMessage('Cadence shells swapped. The text stayed put; only the shells moved.');
@@ -672,7 +749,7 @@ DeltaE = ${ledger.reuse_gain}`;
 
     savedPersonas = [persona, ...savedPersonas];
     persistSavedPersonas();
-    cadenceAssignments[activeVoice] = persona.id;
+    bayShells[activeVoice] = createPersonaShell(persona);
     renderPersonas();
     updateControls();
     analyzeCadences();
@@ -685,7 +762,10 @@ DeltaE = ${ledger.reuse_gain}`;
     badge = defaults.badge;
     mirrorLogic = defaults.mirror_logic;
     containment = defaults.containment;
-    cadenceAssignments = { A: null, B: null };
+    bayShells = {
+      A: createNativeShell(),
+      B: createNativeShell()
+    };
     activeVoice = 'A';
     renderVoiceProfiles();
     renderPersonas();
@@ -709,7 +789,10 @@ DeltaE = ${ledger.reuse_gain}`;
       containment,
       activeVoice,
       activeArtifactTab,
-      cadenceAssignments: { ...cadenceAssignments },
+      bayShells: {
+        A: cloneShell(bayShells.A),
+        B: cloneShell(bayShells.B)
+      },
       savedPersonas: JSON.parse(JSON.stringify(savedPersonas))
     };
   }
@@ -722,7 +805,10 @@ DeltaE = ${ledger.reuse_gain}`;
     containment = state.containment;
     activeVoice = state.activeVoice;
     activeArtifactTab = state.activeArtifactTab;
-    cadenceAssignments = { ...state.cadenceAssignments };
+    bayShells = {
+      A: cloneShell(state.bayShells.A),
+      B: cloneShell(state.bayShells.B)
+    };
     savedPersonas = JSON.parse(JSON.stringify(state.savedPersonas));
     persistSavedPersonas();
     setArtifactTab(activeArtifactTab);
@@ -751,7 +837,10 @@ DeltaE = ${ledger.reuse_gain}`;
     nextBadgeState = 'badge.holds',
     nextMirrorLogic = 'off',
     nextContainment = 'on',
-    nextAssignments = { A: null, B: null },
+    nextShells = {
+      A: createNativeShell(),
+      B: createNativeShell()
+    },
     nextActiveVoice = 'A'
   }) {
     $('voiceA').value = voiceA;
@@ -759,7 +848,10 @@ DeltaE = ${ledger.reuse_gain}`;
     badge = nextBadgeState;
     mirrorLogic = nextMirrorLogic;
     containment = nextContainment;
-    cadenceAssignments = { ...nextAssignments };
+    bayShells = {
+      A: cloneShell(nextShells.A),
+      B: cloneShell(nextShells.B)
+    };
     activeVoice = nextActiveVoice;
     renderVoiceProfiles();
     renderPersonas();
@@ -941,6 +1033,7 @@ DeltaE = ${ledger.reuse_gain}`;
   $('voiceB').addEventListener('input', () => handleTextInput('B'));
   $('tabPersonas').addEventListener('click', () => setArtifactTab('personas'));
   $('tabMechanics').addEventListener('click', () => setArtifactTab('mechanics'));
+  $('tabLexicon').addEventListener('click', () => setArtifactTab('lexicon'));
 
   document.addEventListener('click', (event) => {
     const persona = event.target.closest('.persona');
