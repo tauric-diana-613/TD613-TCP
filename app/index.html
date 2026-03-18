@@ -163,14 +163,24 @@
       </div>
     </main>
 
-    <section class="layout layout-secondary">
-      <section class="panel persona-panel">
-        <div class="panel-heading">
-          <div>
-            <div class="section-kicker">Persona deck</div>
-            <h2>Style attractors</h2>
-          </div>
-          <p class="section-note">Click a persona to load its cadence shell into the active bay. The text stays put; only the shell moves.</p>
+    <section class="panel artifact-panel">
+      <div class="panel-heading artifact-heading">
+        <div>
+          <div class="section-kicker">Artifact Cabinet</div>
+          <h2>Docked Secondary Systems</h2>
+        </div>
+        <p class="section-note">The shells, formulas, and side instruments are still here, but docked behind tabs so the landing page stays fast, legible, and intact.</p>
+      </div>
+
+      <div class="artifact-toolbar">
+        <button id="tabPersonas" type="button" class="artifact-tab active" data-artifact-tab="personas">Persona shells</button>
+        <button id="tabMechanics" type="button" class="artifact-tab" data-artifact-tab="mechanics">Field mechanics</button>
+      </div>
+
+      <section id="artifactPanePersonas" class="artifact-pane active" data-pane="personas">
+        <div class="artifact-pane-head">
+          <div class="artifact-pane-kicker">Persona deck</div>
+          <p class="artifact-copy">Click a persona to load its cadence shell into the active bay. The text stays put; only the shell moves.</p>
         </div>
         <div class="persona-toolbar">
           <div id="personaStatus" class="analysis-status">Active bay // Reference voice // native cadence</div>
@@ -178,15 +188,11 @@
         <div id="personaDeck" class="personagrid"></div>
       </section>
 
-      <section class="panel mechanics-panel">
-        <div class="panel-heading">
-          <div>
-            <div class="section-kicker">Mechanics</div>
-            <h2>Branch, wave, harbor</h2>
-          </div>
-          <p class="section-note">The formulas stay visible as structural analogies for branch, wave, and harbor, not as a claim that people are literally physics.</p>
+      <section id="artifactPaneMechanics" class="artifact-pane" data-pane="mechanics" hidden>
+        <div class="artifact-pane-head">
+          <div class="artifact-pane-kicker">Mechanics</div>
+          <p class="artifact-copy">The equations stay available as part of the artifact, but they no longer spill down the front of the experience.</p>
         </div>
-
         <div class="underhood">
           <article class="engine">
             <div class="engine-kicker">Branch engine</div>

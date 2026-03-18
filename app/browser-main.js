@@ -40,6 +40,7 @@
   let mirrorLogic = defaults.mirror_logic;
   let containment = defaults.containment;
   let activeVoice = 'A';
+  let activeArtifactTab = 'personas';
   let cadenceAssignments = { A: null, B: null };
   let savedPersonas = loadSavedPersonas();
 
@@ -230,6 +231,18 @@
     const activePersona = getAssignedPersona(activeVoice);
     $('personaStatus').textContent = `Active bay // ${SLOT_LABELS[activeVoice]} // ${activePersona ? activePersona.name : 'native cadence'}`;
     renderActiveBayStatus();
+  }
+
+  function setArtifactTab(tab) {
+    activeArtifactTab = tab === 'mechanics' ? 'mechanics' : 'personas';
+    const personasActive = activeArtifactTab === 'personas';
+    $('artifactPanePersonas').hidden = !personasActive;
+    $('artifactPaneMechanics').hidden = personasActive;
+    $('artifactPanePersonas').classList.toggle('active', personasActive);
+    $('artifactPaneMechanics').classList.toggle('active', !personasActive);
+    $('tabPersonas').classList.toggle('active', personasActive);
+    $('tabMechanics').classList.toggle('active', !personasActive);
+    document.body.dataset.artifactTab = activeArtifactTab;
   }
 
   function updateControls() {
@@ -704,6 +717,13 @@ DeltaE = ${ledger.reuse_gain}`;
       status: $('analysisStatus').textContent.trim()
     };
 
+    $('tabMechanics').click();
+    report.artifactTabs = {
+      activeTab: document.body.dataset.artifactTab,
+      personasHidden: $('artifactPanePersonas').hidden,
+      mechanicsHidden: $('artifactPaneMechanics').hidden
+    };
+
     let node = document.getElementById('testFlightReport');
     if (!node) {
       node = document.createElement('pre');
@@ -731,6 +751,8 @@ DeltaE = ${ledger.reuse_gain}`;
   $('voiceB').addEventListener('focus', () => setActiveVoice('B'));
   $('voiceA').addEventListener('input', () => handleTextInput('A'));
   $('voiceB').addEventListener('input', () => handleTextInput('B'));
+  $('tabPersonas').addEventListener('click', () => setArtifactTab('personas'));
+  $('tabMechanics').addEventListener('click', () => setArtifactTab('mechanics'));
 
   document.addEventListener('click', (event) => {
     const persona = event.target.closest('.persona');
@@ -753,6 +775,7 @@ DeltaE = ${ledger.reuse_gain}`;
 
   function boot() {
     document.body.dataset.bootStage = 'boot-start';
+    setArtifactTab(activeArtifactTab);
     renderVoiceProfiles();
     document.body.dataset.bootStage = 'boot-rendered-profiles';
     renderPersonas();

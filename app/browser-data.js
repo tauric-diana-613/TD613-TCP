@@ -1,9 +1,9 @@
 window.TCP_DATA = {
   defaults: {
     voiceA:
-      'The room kept returning something close to recognition without ever handing me the route. It was not quite repair. It was pressure. The same punctuation habits kept finding me before the explanation could.',
+      'Custody, as I understand it, is not a bright performance of certainty but a slower discipline of keeping sequence intact; one notes the handoff, marks the provenance, preserves the pressure, and refuses the theatrical shortcut even when the room is impatient for a verdict. By the time the sentence closes, it has usually carried several linked ideas, because continuity matters more than impact.',
     voiceB:
-      "I thought it was just tone. Then the clause rhythm repeated, the contractions landed in the same places, and the whole thing started feeling traceable in a way that was a little too intimate.",
+      "I clock it fast.\nShort line. Hard stop. Then another.\nI'm not building a chamber for the thought; I'm testing whether it bites, whether it lands, whether it moves. If it drags, I cut it. If it sings, I keep it.",
     badge: 'badge.holds',
     mirror_logic: 'off',
     containment: 'on'

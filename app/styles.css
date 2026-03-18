@@ -49,7 +49,7 @@ body {
 body::before,
 body::after {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
@@ -65,9 +65,10 @@ body::before {
 }
 
 body::after {
-  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%);
-  opacity: 0.45;
-  animation: sweep 9s linear infinite;
+  background:
+    linear-gradient(125deg, transparent 0%, rgba(255, 255, 255, 0.022) 28%, transparent 58%),
+    radial-gradient(circle at 70% 18%, rgba(255, 214, 153, 0.08), transparent 20%);
+  opacity: 0.26;
 }
 
 body[data-decision="criticality"] {
@@ -91,10 +92,10 @@ body[data-decision="criticality"] {
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
   background:
-    linear-gradient(180deg, rgba(15, 29, 49, 0.7) 0%, rgba(8, 16, 28, 0.88) 100%);
+    linear-gradient(180deg, rgba(12, 21, 36, 0.94) 0%, rgba(7, 13, 24, 0.98) 100%);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
   overflow: hidden;
+  contain: layout paint;
 }
 
 .panel::before {
@@ -104,6 +105,15 @@ body[data-decision="criticality"] {
   background:
     linear-gradient(120deg, rgba(132, 246, 255, 0.08), transparent 26%, transparent 72%, rgba(221, 255, 101, 0.08)),
     radial-gradient(circle at top right, rgba(132, 246, 255, 0.08), transparent 34%);
+  pointer-events: none;
+}
+
+.panel::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(var(--radius-xl) - 2px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
   pointer-events: none;
 }
 
@@ -315,7 +325,8 @@ h1 {
 .persona,
 .harbor-box,
 .ledger-stage,
-.storybox {
+.storybox,
+.bay-profile {
   position: relative;
   border: 1px solid rgba(132, 246, 255, 0.14);
   border-radius: var(--radius-lg);
@@ -524,9 +535,8 @@ textarea:focus {
 .bay-profile {
   min-height: 116px;
   padding: 14px;
-  border-radius: 18px;
-  border: 1px solid rgba(132, 246, 255, 0.12);
-  background: rgba(3, 7, 14, 0.78);
+  background:
+    linear-gradient(180deg, rgba(4, 9, 18, 0.84) 0%, rgba(7, 13, 24, 0.92) 100%);
 }
 
 .bay-profile.active {
@@ -592,6 +602,86 @@ textarea:focus {
   position: relative;
   z-index: 1;
   padding: 0 22px 24px;
+}
+
+.telemetry-panel,
+.harbor-panel,
+.artifact-panel {
+  content-visibility: auto;
+  contain-intrinsic-size: 720px;
+}
+
+.artifact-panel {
+  margin-top: 18px;
+  overflow: clip;
+}
+
+.artifact-heading {
+  padding-bottom: 16px;
+}
+
+.artifact-toolbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0 22px 12px;
+}
+
+.artifact-tab {
+  min-height: 40px;
+  padding: 0 16px;
+  color: #d6e6ff;
+  border: 1px solid rgba(132, 246, 255, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
+  box-shadow: none;
+}
+
+.artifact-tab:hover {
+  box-shadow: none;
+}
+
+.artifact-tab.active {
+  color: #041017;
+  border-color: rgba(255, 230, 184, 0.38);
+  background:
+    linear-gradient(135deg, rgba(132, 246, 255, 0.96), rgba(255, 214, 153, 0.92));
+}
+
+.artifact-pane {
+  position: relative;
+  z-index: 1;
+  padding: 0 0 22px;
+}
+
+.artifact-pane[hidden] {
+  display: none;
+}
+
+.artifact-pane-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 0 22px 6px;
+}
+
+.artifact-pane-kicker {
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--acid);
+}
+
+.artifact-copy {
+  margin: 0;
+  max-width: 42ch;
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 14px;
 }
 
 button {
@@ -844,20 +934,9 @@ button.ghost {
   }
 }
 
-@keyframes sweep {
-  0% {
-    transform: translateY(-100%);
-  }
-
-  100% {
-    transform: translateY(100%);
-  }
-}
-
 @media (max-width: 1180px) {
   .hero-grid,
   .layout-primary,
-  .layout-secondary,
   .underhood {
     grid-template-columns: 1fr;
   }
@@ -878,6 +957,7 @@ button.ghost {
   }
 
   .panel-heading,
+  .artifact-pane-head,
   .input-grid,
   .results,
   .personagrid,
@@ -887,6 +967,10 @@ button.ghost {
   }
 
   .panel-heading {
+    flex-direction: column;
+  }
+
+  .artifact-pane-head {
     flex-direction: column;
   }
 
@@ -908,7 +992,8 @@ button.ghost {
   }
 
   .analysis-rail,
-  .persona-toolbar {
+  .persona-toolbar,
+  .artifact-toolbar {
     padding-left: 18px;
     padding-right: 18px;
   }
@@ -959,6 +1044,7 @@ button.ghost {
   .statusrail,
   .analysis-rail,
   .persona-toolbar,
+  .artifact-toolbar,
   .bay-metrics,
   .bay-shell-row {
     gap: 8px;
