@@ -69,26 +69,35 @@
         <div class="panel-heading">
           <div>
             <div class="section-kicker">Signal Lab</div>
-            <h2>Run a live cadence scan</h2>
+            <h2>Analyze one or two cadences</h2>
           </div>
-          <p class="section-note">Paste a reference voice and a probe voice. TCP stages cadence as social surface and measurable signal before anything escalates into protected handling.</p>
+          <p class="section-note">Paste a reference voice and a probe voice. TCP can capture a single cadence, compare two at once, and keep the shell layer separate from the text itself.</p>
         </div>
 
         <div class="input-grid">
-          <label class="field" for="voiceA">
+          <label id="voiceAField" class="field" for="voiceA">
             <span class="field-label">Reference voice</span>
             <span class="field-copy">The anchor sample you trust.</span>
             <textarea id="voiceA"></textarea>
+            <div id="voiceAProfile" class="bay-profile"></div>
           </label>
-          <label class="field" for="voiceB">
+          <label id="voiceBField" class="field" for="voiceB">
             <span class="field-label">Probe voice</span>
             <span class="field-copy">The sample you want to stress-test against the field.</span>
             <textarea id="voiceB"></textarea>
+            <div id="voiceBProfile" class="bay-profile"></div>
           </label>
         </div>
 
+        <div class="analysis-rail">
+          <div id="activeBayStatus" class="statepill active">Active bay // reference voice</div>
+          <div id="analysisStatus" class="analysis-status">Press Analyze Cadences to scan a single voice or compare both bays at once.</div>
+        </div>
+
         <div class="actions">
-          <button id="compareBtn" type="button">Run signal scan</button>
+          <button id="compareBtn" type="button">Analyze Cadences</button>
+          <button id="swapCadencesBtn" type="button" class="secondary">Swap Cadences</button>
+          <button id="savePersonaBtn" type="button" class="secondary">Save Cadence as Persona</button>
           <button id="toggleMirrorBtn" type="button" class="secondary">Open mirror shield</button>
           <button id="badgeBtn" type="button" class="secondary">Cycle custody badge</button>
           <button id="resetBtn" type="button" class="ghost">Reset bay</button>
@@ -107,22 +116,22 @@
 
           <div class="results">
             <article id="similarityCard" class="metric">
-              <div class="key">Cadence similarity</div>
+              <div id="similarityKey" class="key">Cadence similarity</div>
               <div id="similarity" class="val">--</div>
               <div id="simHint" class="hint"></div>
             </article>
             <article id="traceabilityCard" class="metric">
-              <div class="key">Traceability</div>
+              <div id="traceKey" class="key">Traceability</div>
               <div id="traceability" class="val">--</div>
               <div id="traceHint" class="hint"></div>
             </article>
             <article id="routePressureCard" class="metric">
-              <div class="key">Route pressure</div>
+              <div id="routeKey" class="key">Route pressure</div>
               <div id="routePressure" class="val">--</div>
               <div id="routeHint" class="hint"></div>
             </article>
             <article id="custodyCard" class="metric">
-              <div class="key">Effective archive</div>
+              <div id="custodyKey" class="key">Effective archive</div>
               <div id="custodyState" class="val">--</div>
               <div id="custodyHint" class="hint"></div>
             </article>
@@ -161,7 +170,10 @@
             <div class="section-kicker">Persona deck</div>
             <h2>Style attractors</h2>
           </div>
-          <p class="section-note">Persona attractors and controlled drift let participants feel authorship pressure through interaction instead of lecture.</p>
+          <p class="section-note">Click a persona to load its cadence shell into the active bay. The text stays put; only the shell moves.</p>
+        </div>
+        <div class="persona-toolbar">
+          <div id="personaStatus" class="analysis-status">Active bay // Reference voice // native cadence</div>
         </div>
         <div id="personaDeck" class="personagrid"></div>
       </section>
@@ -201,6 +213,8 @@
     <footer class="footer">TCP // signal, route, harbor, provenance</footer>
   </div>
 
-  <script type="module" src="./main.js"></script>
+  <script src="./browser-data.js"></script>
+  <script src="./browser-engine.js"></script>
+  <script src="./browser-main.js"></script>
 </body>
 </html>

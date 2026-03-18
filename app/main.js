@@ -1,6 +1,6 @@
-import defaults from './data/defaults.json' with { type: 'json' };
-import personas from './data/personas.json' with { type: 'json' };
-import microcopy from '../copy/microcopy.json' with { type: 'json' };
+import defaults from './data/defaults.js';
+import basePersonas from './data/personas.js';
+import microcopy from '../copy/microcopy.js';
 import {
   solveQuadratic,
   fieldPotential,
@@ -9,18 +9,31 @@ import {
   routePressure as computeRoutePressure,
   providerDecision
 } from './engine/formulas.js';
-import { compareTexts, transformText } from './engine/stylometry.js';
+import {
+  compareTexts,
+  extractCadenceProfile,
+  applyCadenceMod,
+  cadenceModFromProfile
+} from './engine/stylometry.js';
 import { chooseHarbor, buildLedgerRow, HARBOR_LIBRARY } from './engine/harbor.js';
 import { nextBadge, badgeMeaning } from './engine/badges.js';
 
 const $ = (id) => document.getElementById(id);
 
+const STORAGE_KEY = 'tcp.savedPersonas.v1';
+const SLOT_LABELS = {
+  A: 'Reference voice',
+  B: 'Probe voice'
+};
+const SLOT_SHORT = {
+  A: 'reference',
+  B: 'probe'
+};
 const BADGE_LABELS = {
   'badge.holds': 'holds',
   'badge.branch': 'branch',
   'badge.buffer': 'buffer'
 };
-
 const MIRROR_COPY = {
   off: {
     pill: 'Mirror shield // armed',
@@ -33,7 +46,6 @@ const MIRROR_COPY = {
     note: 'Reflection is back in the loop. Useful, but louder.'
   }
 };
-
 const CONTAINMENT_COPY = {
   on: {
     pill: 'Containment // stable',
@@ -48,8 +60,12 @@ const CONTAINMENT_COPY = {
 let badge = defaults.badge;
 let mirrorLogic = defaults.mirror_logic;
 let containment = defaults.containment;
-let selectedPersona = null;
-let compareTimer = null;
+let activeVoice = 'A';
+let cadenceAssignments = {
+  A: null,
+  B: null
+};
+let savedPersonas = loadSavedPersonas();
 
 $('heroLead').textContent = microcopy.hero_lead;
 $('voiceA').value = defaults.voiceA;
@@ -66,18 +82,167 @@ function setMetricTone(id, tone) {
   }
 }
 
+function setMetricKeys(mode = 'pair') {
+  if (mode === 'solo') {
+    $('similarityKey').textContent = 'Scan mode';
+    $('traceKey').textContent = 'Sentence rhythm';
+    $('routeKey').textContent = 'Recurrence pressure';
+    $('custodyKey').textContent = 'Active bay';
+    return;
+  }
+
+  $('similarityKey').textContent = 'Cadence similarity';
+  $('traceKey').textContent = 'Traceability';
+  $('routeKey').textContent = 'Route pressure';
+  $('custodyKey').textContent = 'Effective archive';
+}
+
+function setStatusMessage(message) {
+  $('analysisStatus').textContent = message;
+}
+
+function renderActiveBayStatus() {
+  $('activeBayStatus').textContent = `Active bay // ${SLOT_LABELS[activeVoice].toLowerCase()}`;
+}
+
+function loadSavedPersonas() {
+  try {
+    const payload = window.localStorage.getItem(STORAGE_KEY);
+    return payload ? JSON.parse(payload) : [];
+  } catch {
+    return [];
+  }
+}
+
+function persistSavedPersonas() {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(savedPersonas));
+  } catch {
+    // localStorage can be unavailable on some file:// contexts; keep the session alive anyway
+  }
+}
+
+function getPersonaLibrary() {
+  return [...basePersonas, ...savedPersonas];
+}
+
+function findPersona(id) {
+  return getPersonaLibrary().find((persona) => persona.id === id) || null;
+}
+
+function getAssignedPersona(slot) {
+  return findPersona(cadenceAssignments[slot]);
+}
+
+function getVoiceState(slot) {
+  const text = $(slot === 'A' ? 'voiceA' : 'voiceB').value;
+  const rawProfile = extractCadenceProfile(text);
+  const persona = getAssignedPersona(slot);
+  const effectiveProfile = applyCadenceMod(rawProfile, persona?.mod);
+
+  return {
+    slot,
+    text,
+    hasText: !rawProfile.empty,
+    rawProfile,
+    effectiveProfile,
+    persona
+  };
+}
+
+function profileTone(profile) {
+  if (!profile || profile.empty) {
+    return 'idle';
+  }
+
+  if (profile.recurrencePressure >= 0.58 || profile.punctuationDensity >= 0.18) {
+    return 'live';
+  }
+
+  if (profile.recurrencePressure >= 0.32) {
+    return 'warm';
+  }
+
+  return 'idle';
+}
+
+function describeCadenceShell(persona) {
+  return persona ? `Cadence shell // ${persona.name}` : 'Cadence shell // native';
+}
+
+function renderVoiceProfile(voiceState) {
+  const slotId = voiceState.slot === 'A' ? 'voiceAProfile' : 'voiceBProfile';
+  const fieldId = voiceState.slot === 'A' ? 'voiceAField' : 'voiceBField';
+  const panel = $(slotId);
+  const field = $(fieldId);
+
+  field.classList.toggle('active', activeVoice === voiceState.slot);
+  panel.dataset.tone = profileTone(voiceState.effectiveProfile);
+  panel.classList.toggle('active', activeVoice === voiceState.slot);
+
+  if (!voiceState.hasText) {
+    panel.innerHTML = `
+      <div class="bay-shell-row">
+        <span class="bay-shell">${activeVoice === voiceState.slot ? 'Active bay' : 'Cadence bay'}</span>
+        <span class="bay-shell">${describeCadenceShell(voiceState.persona)}</span>
+      </div>
+      <p class="bay-copy">Paste a voice here to extract sentence rhythm, punctuation shape, contraction density, and recurrence pressure.</p>
+    `;
+    return;
+  }
+
+  const profile = voiceState.effectiveProfile;
+  const shellNote = voiceState.persona
+    ? `Applied shell bias: sent ${voiceState.persona.mod.sent >= 0 ? '+' : ''}${voiceState.persona.mod.sent}, cont ${voiceState.persona.mod.cont >= 0 ? '+' : ''}${voiceState.persona.mod.cont}, punc ${voiceState.persona.mod.punc >= 0 ? '+' : ''}${voiceState.persona.mod.punc}.`
+    : 'Native cadence only. No shell is bending the readout.';
+
+  panel.innerHTML = `
+    <div class="bay-shell-row">
+      <span class="bay-shell">${activeVoice === voiceState.slot ? 'Active bay' : 'Cadence bay'}</span>
+      <span class="bay-shell">${describeCadenceShell(voiceState.persona)}</span>
+    </div>
+    <div class="bay-metrics">
+      <span class="bay-metric">Rhythm ${profile.avgSentenceLength.toFixed(1)}w</span>
+      <span class="bay-metric">Punct ${formatPct(profile.punctuationDensity)}</span>
+      <span class="bay-metric">Contractions ${formatPct(profile.contractionDensity)}</span>
+      <span class="bay-metric">Recurrence ${formatPct(profile.recurrencePressure)}</span>
+    </div>
+    <p class="bay-copy">${shellNote}</p>
+  `;
+}
+
+function renderVoiceProfiles() {
+  renderVoiceProfile(getVoiceState('A'));
+  renderVoiceProfile(getVoiceState('B'));
+}
+
+function personaAssignmentLabel(personaId) {
+  const slots = [];
+  if (cadenceAssignments.A === personaId) {
+    slots.push('Reference');
+  }
+  if (cadenceAssignments.B === personaId) {
+    slots.push('Probe');
+  }
+
+  return slots.length ? slots.join(' + ') : 'Assign shell';
+}
+
 function renderPersonas() {
-  $('personaDeck').innerHTML = personas
+  $('personaDeck').innerHTML = getPersonaLibrary()
     .map((persona) => {
-      const selected = selectedPersona === persona.id;
+      const selected = cadenceAssignments[activeVoice] === persona.id;
+      const assigned = cadenceAssignments.A === persona.id || cadenceAssignments.B === persona.id;
+      const source = persona.source === 'saved' ? 'captured in-app' : 'built-in attractor';
+
       return `
-        <div class="persona ${selected ? 'selected' : ''}" data-id="${persona.id}" role="button" tabindex="0" aria-pressed="${selected}">
+        <div class="persona ${selected ? 'selected' : ''} ${assigned ? 'assigned' : ''}" data-id="${persona.id}" role="button" tabindex="0" aria-pressed="${selected}">
           <div class="persona-top">
             <div>
-              <div class="persona-kicker">Style attractor</div>
+              <div class="persona-kicker">${source}</div>
               <div class="name">${persona.name}</div>
             </div>
-            <div class="persona-action">${selected ? 'Loaded' : 'Bias probe'}</div>
+            <div class="persona-action">${personaAssignmentLabel(persona.id)}</div>
           </div>
           <div class="blurb">${persona.blurb}</div>
           <div class="chips">${persona.chips.map((chip) => `<span class="chip">${chip}</span>`).join('')}</div>
@@ -85,13 +250,22 @@ function renderPersonas() {
       `;
     })
     .join('');
+
+  const activePersona = getAssignedPersona(activeVoice);
+  $('personaStatus').textContent = `Active bay // ${SLOT_LABELS[activeVoice]} // ${activePersona ? activePersona.name : 'native cadence'}`;
+  renderActiveBayStatus();
 }
 
 function updateControls() {
-  $('compareBtn').textContent = 'Run signal scan';
+  $('compareBtn').textContent = 'Analyze Cadences';
+  $('swapCadencesBtn').textContent = 'Swap Cadences';
+  $('savePersonaBtn').textContent = `Save Cadence as Persona // ${SLOT_SHORT[activeVoice]}`;
   $('toggleMirrorBtn').textContent = MIRROR_COPY[mirrorLogic].button;
   $('badgeBtn').textContent = `Cycle custody badge // ${BADGE_LABELS[badge] ?? badge}`;
   $('resetBtn').textContent = 'Reset bay';
+
+  $('swapCadencesBtn').disabled = !cadenceAssignments.A && !cadenceAssignments.B;
+  $('savePersonaBtn').disabled = !getVoiceState(activeVoice).hasText;
 }
 
 function updateStatePills(routeStatus, decision) {
@@ -114,7 +288,7 @@ function updateStatePills(routeStatus, decision) {
   routeState.classList.toggle('active', decision === 'passage');
 }
 
-function updateHeroConsole({ cmp, routePressure, harbor, decision }) {
+function updateHeroConsolePair({ cmp, routePressure, harbor, decision }) {
   $('heroSignalValue').textContent = formatPct(cmp.similarity);
   $('heroSignalNote').textContent =
     cmp.similarity >= 0.78
@@ -150,25 +324,27 @@ function updateHeroConsole({ cmp, routePressure, harbor, decision }) {
   document.body.dataset.decision = decision;
 }
 
-function describeFieldNotice({ decision, cmp, routePressure, harbor, custody }) {
-  const witnessNote =
-    custody.archive === 'witness'
-      ? ' Witness mode is carrying the archive right now.'
-      : '';
+function updateHeroConsoleSolo(voiceState) {
+  $('heroSignalValue').textContent = 'SOLO';
+  $('heroSignalNote').textContent = `Cadence captured from the ${SLOT_SHORT[voiceState.slot]} bay. Add a second voice to test contrast.`;
+  $('heroRouteValue').textContent = formatPct(voiceState.effectiveProfile.recurrencePressure);
+  $('heroRouteNote').textContent = 'Solo scans expose rhythm and recurrence, but route pressure needs a second voice.';
+  $('heroHarborValue').textContent = voiceState.persona ? voiceState.persona.name : 'save.persona';
+  $('heroHarborNote').textContent = voiceState.persona
+    ? 'A cadence shell is already shaping this bay.'
+    : 'You can save this cadence in-app or pair it with another voice.';
 
-  if (decision === 'criticality') {
-    return `${microcopy.criticality_warning} ${harbor} is the cleanest structured response while route pressure sits at ${routePressure.toFixed(2)}.${witnessNote}`;
-  }
+  const decisionTone = $('decisionTone');
+  decisionTone.textContent = 'Solo capture';
+  decisionTone.dataset.state = 'hold-branch';
+  document.body.dataset.decision = 'hold-branch';
+}
 
-  if (decision === 'passage') {
-    return `${microcopy.harbor_success} Exploratory play has resolved into a viable harbor with ${formatPct(HARBOR_LIBRARY[harbor].provenance_retention)} provenance retention.${witnessNote}`;
-  }
-
-  if (decision === 'hold-branch') {
-    return `TCP is holding browser-side play in the exploratory lane. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so the deck stays curious without forcing a conclusion.${witnessNote}`;
-  }
-
-  return `The pattern is still mostly social surface. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so TCP keeps the field playful instead of forcing route.${witnessNote}`;
+function resetMetricTones() {
+  setMetricTone('similarityCard', 'idle');
+  setMetricTone('traceabilityCard', 'idle');
+  setMetricTone('routePressureCard', 'idle');
+  setMetricTone('custodyCard', 'idle');
 }
 
 function updateHarborBox({ harbor, ledger, decision }) {
@@ -201,10 +377,111 @@ function updateHarborBox({ harbor, ledger, decision }) {
   `;
 }
 
-function compare() {
-  const a = $('voiceA').value;
-  const b = $('voiceB').value;
-  const cmp = compareTexts(a, b);
+function updateHarborBoxSolo(voiceState) {
+  $('harborBox').innerHTML = `
+    <div class="harbor-head">
+      <div>
+        <div class="section-kicker">Solo capture</div>
+        <div class="harbor-name">${voiceState.persona ? voiceState.persona.name : 'cadence capture'}</div>
+      </div>
+      <div class="harbor-stat">${formatPct(voiceState.effectiveProfile.recurrencePressure)} recurrence</div>
+    </div>
+    <div class="harbor-grid">
+      <div class="harbor-item">
+        <span class="harbor-label">Bay</span>
+        <strong>${SLOT_LABELS[voiceState.slot]}</strong>
+      </div>
+      <div class="harbor-item">
+        <span class="harbor-label">Shell</span>
+        <strong>${voiceState.persona ? voiceState.persona.name : 'native cadence'}</strong>
+      </div>
+      <div class="harbor-item">
+        <span class="harbor-label">Next move</span>
+        <strong>Save or pair</strong>
+      </div>
+    </div>
+    <p class="kicker">A solo scan keeps the branch open. Save this cadence as a persona or bring in a second voice to test route, harbor, and custody.</p>
+  `;
+}
+
+function renderIdleState() {
+  setMetricKeys('pair');
+  $('similarity').textContent = '--';
+  $('traceability').textContent = '--';
+  $('routePressure').textContent = '--';
+  $('custodyState').textContent = '--';
+  $('simHint').textContent = 'Paste at least one voice to start the field.';
+  $('traceHint').textContent = '';
+  $('routeHint').textContent = '';
+  $('custodyHint').textContent = '';
+  $('branchFormula').textContent = 't^2 - 2t - 3 = 0\nroots = -1, 3\nbranch = candidate-discovery-branch';
+  $('waveFormula').textContent = 'Paste a voice to expose cadence metrics.\nPair two voices to compute signal density.';
+  $('harborFormula').textContent = 'Analyze one or two voices to surface route, archive, and reuse.';
+  $('ledgerPreview').textContent = '{\n  "status": "idle"\n}';
+  $('fieldNotice').textContent = 'Bring one or two voices into the field. Solo scans capture cadence. Paired scans test similarity, route pressure, and harbor.';
+  $('heroSignalValue').textContent = '--';
+  $('heroSignalNote').textContent = 'Paste voices to light the deck.';
+  $('heroRouteValue').textContent = '--';
+  $('heroRouteNote').textContent = 'TCP is idle until a scan runs.';
+  $('heroHarborValue').textContent = '--';
+  $('heroHarborNote').textContent = 'A harbor will appear once the field resolves.';
+  $('decisionTone').textContent = 'Scanning';
+  $('decisionTone').dataset.state = 'weak-signal';
+  $('harborBox').innerHTML = '';
+  updateStatePills('buffered', 'weak-signal');
+  resetMetricTones();
+  document.body.dataset.decision = 'weak-signal';
+}
+
+function renderSoloState(voiceState) {
+  setMetricKeys('solo');
+  $('similarity').textContent = 'SOLO';
+  $('traceability').textContent = `${voiceState.effectiveProfile.avgSentenceLength.toFixed(1)}w`;
+  $('routePressure').textContent = voiceState.effectiveProfile.recurrencePressure.toFixed(2);
+  $('custodyState').textContent = SLOT_SHORT[voiceState.slot];
+
+  $('simHint').textContent = 'A second voice unlocks cadence contrast. Solo mode captures a signature you can save in-app.';
+  $('traceHint').textContent = 'Sentence rhythm shows how quickly clauses turn and settle.';
+  $('routeHint').textContent = 'Recurrence pressure tracks punctuation, line-break drag, and repeated return-patterns.';
+  $('custodyHint').textContent = 'The active bay is where persona assignment and save operations land.';
+
+  $('branchFormula').textContent = `t^2 - 2t - 3 = 0
+roots = -1, 3
+branch = candidate-discovery-branch`;
+  $('waveFormula').textContent = `signature = {
+  rhythm: ${voiceState.effectiveProfile.avgSentenceLength.toFixed(1)} words,
+  punct: ${voiceState.effectiveProfile.punctuationDensity},
+  cont: ${voiceState.effectiveProfile.contractionDensity},
+  recurrence: ${voiceState.effectiveProfile.recurrencePressure}
+}`;
+  $('harborFormula').textContent = 'Pair a second voice to compute route pressure, archive thresholds, and reuse gain.';
+  $('ledgerPreview').textContent = JSON.stringify(
+    {
+      mode: 'solo-capture',
+      active_bay: SLOT_SHORT[voiceState.slot],
+      cadence_shell: voiceState.persona ? voiceState.persona.name : 'native',
+      rhythm_words: voiceState.effectiveProfile.avgSentenceLength,
+      recurrence_pressure: voiceState.effectiveProfile.recurrencePressure
+    },
+    null,
+    2
+  );
+  $('fieldNotice').textContent = `Solo capture is live in the ${SLOT_SHORT[voiceState.slot]} bay. Save the cadence as a persona or add a second voice to see whether resemblance can route into anything sturdier than afterimage.`;
+
+  updateHeroConsoleSolo(voiceState);
+  updateHarborBoxSolo(voiceState);
+  updateStatePills('awaiting pair', 'hold-branch');
+  setMetricTone('similarityCard', 'warm');
+  setMetricTone('traceabilityCard', profileTone(voiceState.effectiveProfile));
+  setMetricTone('routePressureCard', profileTone(voiceState.effectiveProfile));
+  setMetricTone('custodyCard', 'live');
+}
+
+function renderPairState(voiceStateA, voiceStateB) {
+  const cmp = compareTexts(voiceStateA.text, voiceStateB.text, {
+    profileA: voiceStateA.effectiveProfile,
+    profileB: voiceStateB.effectiveProfile
+  });
   const branch = solveQuadratic(1, -2, -3);
   const branchFlag = branch.unwanted.length ? 1 : 0;
   const routePressure = computeRoutePressure(
@@ -249,6 +526,7 @@ function compare() {
     decision
   });
 
+  setMetricKeys('pair');
   $('similarity').textContent = cmp.similarity.toFixed(2);
   $('traceability').textContent = cmp.traceability.toFixed(2);
   $('routePressure').textContent = routePressure.toFixed(2);
@@ -295,18 +573,18 @@ E_harbor = ${ledger.shared_cost}
 DeltaE = ${ledger.reuse_gain}`;
 
   $('ledgerPreview').textContent = JSON.stringify(ledger, null, 2);
-  $('fieldNotice').textContent = describeFieldNotice({
-    decision,
-    cmp,
-    routePressure,
-    harbor,
-    custody
-  });
+  $('fieldNotice').textContent =
+    decision === 'criticality'
+      ? `${microcopy.criticality_warning} ${harbor} is the cleanest structured response while route pressure sits at ${routePressure.toFixed(2)}.`
+      : decision === 'passage'
+        ? `${microcopy.harbor_success} Exploratory play has resolved into a viable harbor with ${formatPct(HARBOR_LIBRARY[harbor].provenance_retention)} provenance retention.`
+        : decision === 'hold-branch'
+          ? `TCP is holding browser-side play in the exploratory lane. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so the deck stays curious without forcing a conclusion.`
+          : `The pattern is still mostly social surface. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so TCP keeps the field playful instead of forcing route.`;
 
   updateHarborBox({ harbor, ledger, decision });
-  updateHeroConsole({ cmp, routePressure, harbor, decision });
+  updateHeroConsolePair({ cmp, routePressure, harbor, decision });
   updateStatePills(ledger.route_status, decision);
-  updateControls();
 
   setMetricTone('similarityCard', cmp.similarity >= 0.78 ? 'live' : cmp.similarity >= 0.55 ? 'warm' : 'idle');
   setMetricTone('traceabilityCard', cmp.traceability >= 0.7 ? 'live' : cmp.traceability >= 0.45 ? 'warm' : 'idle');
@@ -314,44 +592,140 @@ DeltaE = ${ledger.reuse_gain}`;
   setMetricTone('custodyCard', custody.archive === 'witness' ? 'hot' : 'live');
 }
 
-function scheduleCompare() {
-  window.clearTimeout(compareTimer);
-  compareTimer = window.setTimeout(compare, 120);
+function analyzeCadences() {
+  const voiceStateA = getVoiceState('A');
+  const voiceStateB = getVoiceState('B');
+
+  renderVoiceProfiles();
+
+  if (!voiceStateA.hasText && !voiceStateB.hasText) {
+    renderIdleState();
+    setStatusMessage('Paste one or two voices, then press Analyze Cadences.');
+    updateControls();
+    renderPersonas();
+    return;
+  }
+
+  if (!voiceStateA.hasText || !voiceStateB.hasText) {
+    const soloState = voiceStateA.hasText ? voiceStateA : voiceStateB;
+    renderSoloState(soloState);
+    setStatusMessage(`Solo scan complete in the ${SLOT_SHORT[soloState.slot]} bay. Save it as a persona or add a second voice for contrast.`);
+    updateControls();
+    renderPersonas();
+    return;
+  }
+
+  renderPairState(voiceStateA, voiceStateB);
+  setStatusMessage('Paired cadence scan complete. Swap shells, save a persona, or tune the mirror and badge controls.');
+  updateControls();
+  renderPersonas();
 }
 
-function activatePersona(id) {
-  const persona = personas.find((entry) => entry.id === id);
+function setActiveVoice(slot) {
+  activeVoice = slot;
+  renderVoiceProfiles();
+  renderPersonas();
+  updateControls();
+}
+
+function assignPersonaToActiveBay(id) {
+  const persona = findPersona(id);
   if (!persona) {
     return;
   }
 
-  selectedPersona = id;
-  $('voiceB').value = transformText($('voiceB').value, persona.mod);
-  renderPersonas();
-  compare();
+  cadenceAssignments[activeVoice] = persona.id;
+  analyzeCadences();
+  setStatusMessage(`${persona.name} is now shaping the ${SLOT_SHORT[activeVoice]} cadence shell. The text stayed put; only the cadence shell changed.`);
 }
 
-$('compareBtn').addEventListener('click', compare);
-$('toggleMirrorBtn').addEventListener('click', () => {
-  mirrorLogic = mirrorLogic === 'off' ? 'on' : 'off';
-  compare();
-});
-$('badgeBtn').addEventListener('click', () => {
-  badge = nextBadge(badge);
-  compare();
-});
-$('resetBtn').addEventListener('click', () => {
+function swapCadences() {
+  const nextAssignments = {
+    A: cadenceAssignments.B,
+    B: cadenceAssignments.A
+  };
+  cadenceAssignments = nextAssignments;
+  analyzeCadences();
+  setStatusMessage('Cadence shells swapped. The text stayed put; only the shells moved.');
+}
+
+function buildSavedPersonaName(slot) {
+  const existing = savedPersonas.length + 1;
+  return `Captured ${slot === 'A' ? 'Reference' : 'Probe'} ${existing}`;
+}
+
+function saveActiveCadence() {
+  const voiceState = getVoiceState(activeVoice);
+  if (!voiceState.hasText) {
+    setStatusMessage(`The ${SLOT_SHORT[activeVoice]} bay is empty. Paste a voice there before saving a cadence.`);
+    updateControls();
+    return;
+  }
+
+  const profile = voiceState.effectiveProfile;
+  const persona = {
+    id: `saved-${Date.now()}`,
+    name: buildSavedPersonaName(activeVoice),
+    blurb: `Captured from the ${SLOT_SHORT[activeVoice]} bay. Rhythm ${profile.avgSentenceLength.toFixed(1)}w, recurrence ${formatPct(profile.recurrencePressure)}.`,
+    chips: [
+      'captured',
+      SLOT_SHORT[activeVoice],
+      `rhythm ${profile.avgSentenceLength.toFixed(1)}w`
+    ],
+    mod: cadenceModFromProfile(profile),
+    source: 'saved'
+  };
+
+  savedPersonas = [persona, ...savedPersonas];
+  persistSavedPersonas();
+  cadenceAssignments[activeVoice] = persona.id;
+  renderPersonas();
+  updateControls();
+  analyzeCadences();
+  setStatusMessage(`${persona.name} was saved in-app and assigned to the ${SLOT_SHORT[activeVoice]} bay.`);
+}
+
+function resetDeck() {
   $('voiceA').value = defaults.voiceA;
   $('voiceB').value = defaults.voiceB;
   badge = defaults.badge;
   mirrorLogic = defaults.mirror_logic;
   containment = defaults.containment;
-  selectedPersona = null;
+  cadenceAssignments = {
+    A: null,
+    B: null
+  };
+  activeVoice = 'A';
+  renderVoiceProfiles();
   renderPersonas();
-  compare();
+  analyzeCadences();
+  setStatusMessage('Deck reset. Native cadences restored and the default pair is back in the field.');
+}
+
+function handleTextInput(slot) {
+  setActiveVoice(slot);
+  renderVoiceProfiles();
+  updateControls();
+  setStatusMessage(`Text changed in the ${SLOT_SHORT[slot]} bay. Press Analyze Cadences to refresh the pair readout.`);
+}
+
+$('compareBtn').addEventListener('click', analyzeCadences);
+$('swapCadencesBtn').addEventListener('click', swapCadences);
+$('savePersonaBtn').addEventListener('click', saveActiveCadence);
+$('toggleMirrorBtn').addEventListener('click', () => {
+  mirrorLogic = mirrorLogic === 'off' ? 'on' : 'off';
+  analyzeCadences();
 });
-$('voiceA').addEventListener('input', scheduleCompare);
-$('voiceB').addEventListener('input', scheduleCompare);
+$('badgeBtn').addEventListener('click', () => {
+  badge = nextBadge(badge);
+  analyzeCadences();
+});
+$('resetBtn').addEventListener('click', resetDeck);
+
+$('voiceA').addEventListener('focus', () => setActiveVoice('A'));
+$('voiceB').addEventListener('focus', () => setActiveVoice('B'));
+$('voiceA').addEventListener('input', () => handleTextInput('A'));
+$('voiceB').addEventListener('input', () => handleTextInput('B'));
 
 document.addEventListener('click', (event) => {
   const persona = event.target.closest('.persona');
@@ -359,7 +733,7 @@ document.addEventListener('click', (event) => {
     return;
   }
 
-  activatePersona(persona.dataset.id);
+  assignPersonaToActiveBay(persona.dataset.id);
 });
 
 document.addEventListener('keydown', (event) => {
@@ -369,8 +743,12 @@ document.addEventListener('keydown', (event) => {
   }
 
   event.preventDefault();
-  activatePersona(persona.dataset.id);
+  assignPersonaToActiveBay(persona.dataset.id);
 });
 
+renderVoiceProfiles();
 renderPersonas();
-compare();
+renderIdleState();
+setStatusMessage('Press Analyze Cadences to run a solo capture or compare both bays at once.');
+updateControls();
+analyzeCadences();
