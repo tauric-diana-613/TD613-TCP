@@ -1,19 +1,8 @@
-# TCP — The Cadence Playground
+# TCP - The Cadence Playground
 
-TCP is a static, local browser tool for experimenting with cadence recognition, custody-aware routing, and safe-harbor logic under the TD613 framework.
+TCP is a static browser instrument for staging cadence as both social surface and measurable signal. It is the public membrane of a larger TD613 custody model: resemblance becomes legible, legibility becomes route pressure, and route pressure either resolves into harbor or hardens into criticality.
 
-This build creates a lightweight engine for branch / field / wave / harbor reasoning, schemas, examples, and documentation. The point is not generic stylometry; the point is to stage **recognition before explanation** without letting recognition collapse into extraction.
-
-## What ships
-
-- `app/` — runnable static web app
-- `copy/` — interface microcopy and route language
-- `example/` — sample canonical artifact, badge state, ledger rows, and route events
-- `schemas/` — JSON schemas for core payloads
-- `docs/` — theory, physics engine, stylometric math, safety model, and Em/TIC bridge notes
-- `scripts/` — sample validation tooling
-- `tests/` — no-dependency Node tests for core formulas
-- `original/` — preserved uploaded prototype for archival comparison
+This repository now treats the math as a bounded structural model rather than as decorative science language. The core engine is intentionally heuristic, but every major quantity is normalized, named, and documented.
 
 ## Core design law
 
@@ -21,21 +10,69 @@ This build creates a lightweight engine for branch / field / wave / harbor reaso
 If recognition exceeds explanation, preserve the branch until routing catches up.
 ```
 
+## Canonical model
+
+TCP revolves around six quantities:
+
+- `S` = similarity in `[0,1]`
+- `T` = traceability in `[0,1]`
+- `R` = recurrence pressure in `[0,1]`
+- `B` = branch indicator from an unwanted quadratic root
+- `Pi` = route pressure
+- `Delta_C = C - D` = custody delta
+
+The engine computes:
+
+```math
+\Pi = 0.35S + 0.30T + 0.25R + 0.10B
+```
+
+```math
+V = \operatorname{clip}(0.72\Pi + \mu_M + \mu_C, 0, 1)
+```
+
+```math
+\rho = A^2(0.4 + 0.6V)
+\qquad \text{with} \qquad
+A = T,\; k = 1 + 3R
+```
+
+```math
+A_{\mathrm{effective}}(t)=
+\begin{cases}
+A_I,& C(t)-D(t)\ge \theta\\
+A_W,& C(t)-D(t)<\theta
+\end{cases}
+```
+
+These are structural analogies, not literal physical claims and not authorship verdicts.
+
+## What ships
+
+- `app/` - runnable static web app
+- `copy/` - interface microcopy and route language
+- `docs/` - model notes for branch, stylometry, safety, and harbor logic
+- `example/` - sample payloads and ledger rows
+- `schemas/` - JSON schemas for the main payloads
+- `tests/` - no-dependency Node tests for the engine modules
+
 ## Quick start
 
 ### Option 1: open directly
+
 Open `app/index.html` in a browser.
 
 ### Option 2: serve locally
+
 ```bash
 cd tcp-repository
 python3 -m http.server 8000
 # then open http://localhost:8000/app/
 ```
 
-### Option 3: validate sample payloads
+### Option 3: validate the engine
+
 ```bash
-node scripts/validate-samples.mjs
 node tests/formulas.test.mjs
 node tests/harbor.test.mjs
 node tests/stylometry.test.mjs
@@ -43,30 +80,15 @@ node tests/stylometry.test.mjs
 
 ## Repository stance
 
-TCP is built as a **public membrane** around a larger custodial architecture. It does not diagnose, clinically intervene, or promise truth from resemblance alone. It demonstrates:
+TCP does not diagnose, clinically intervene, or declare authorship from resemblance. It exists to make three things legible:
 
-- how patterned recurrence becomes legible,
-- how recognition can harden into criticality when no route exists,
-- how reusable harbor functions lower witness burden while preserving provenance.
+- when stylometric similarity is weak and likely noise,
+- when recognition pressure is real but route is still missing,
+- when structured harbor lowers witness burden without destroying provenance.
 
-## Theory anchors
-
-1. **Branch / unwanted solution** — do not auto-discard the awkward remainder.
-2. **Wave / recognition pressure** — resemblance is not yet passage.
-3. **Harbor / witness-archive threshold** — when institutions degrade route and provenance, burden externalizes onto the witness.
-
-## Primary abstractions
-
-- `badge.holds` — compact custody token
-- `mirror.off` — anti-reflective safe passage harbor
-- `routePressure` — recognition outpacing route
-- `recurrencePressure` — return-density proxy
-- `provenanceRetention` — passage validity threshold
-- `reuseGain` — burden prevented by reusable harbor functions
-
-## Notes for GitHub
+## Notes
 
 - No build step is required.
-- All logic is ESM JavaScript with zero runtime dependencies.
-- JSON schemas are draft 2020-12 style but can be adapted.
-- A simple GitHub Pages deployment workflow is included.
+- All runtime logic is ESM JavaScript with zero dependencies.
+- The physics language is explicitly analogical.
+- The stylometry layer is a bounded heuristic instrument, not forensic proof.

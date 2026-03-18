@@ -3,107 +3,204 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TCP — The Cadence Playground</title>
+  <title>TCP - The Cadence Playground</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <div class="wrap">
-    <section class="hero">
-      <div class="badge">TCP • public membrane • engine under the hood</div>
-      <h1>TCP — The Cadence Playground</h1>
-      <div class="lead" id="heroLead"></div>
-      <div class="topbar">
-        <span id="badgeState" class="statepill active">badge.holds</span>
-        <span id="mirrorState" class="statepill active">mirror.off</span>
-        <span id="containmentState" class="statepill active">containment.on</span>
-        <span id="routeState" class="statepill">buffered</span>
+  <div class="shell">
+    <header class="panel hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">TD613 field lab // cadence ingress deck</div>
+          <h1>The Cadence Playground</h1>
+          <p class="lead" id="heroLead"></p>
+          <p class="hero-note">A field instrument for browser-side cadence play, controlled drift, and route-aware stylometric literacy.</p>
+          <div class="hero-tags">
+            <span class="tag">persona attractors</span>
+            <span class="tag">controlled drift</span>
+            <span class="tag">provenance-aware</span>
+          </div>
+        </div>
+
+        <aside class="hero-console">
+          <div class="console-header">
+            <div>
+              <div class="console-kicker">Live route deck</div>
+              <div class="console-title">Recognition precedes explanation</div>
+            </div>
+            <div id="decisionTone" class="console-status">Scanning</div>
+          </div>
+
+          <div class="console-grid">
+            <article class="console-card">
+              <div class="console-label">Signal</div>
+              <div id="heroSignalValue" class="console-value">--</div>
+              <p id="heroSignalNote" class="console-copy">Paste two voices to light the deck.</p>
+            </article>
+            <article class="console-card">
+              <div class="console-label">Route pressure</div>
+              <div id="heroRouteValue" class="console-value">--</div>
+              <p id="heroRouteNote" class="console-copy">TCP is idle until a comparison runs.</p>
+            </article>
+            <article class="console-card">
+              <div class="console-label">Harbor</div>
+              <div id="heroHarborValue" class="console-value console-code">--</div>
+              <p id="heroHarborNote" class="console-copy">A harbor will appear once the field resolves.</p>
+            </article>
+          </div>
+
+          <div class="storybox">
+            <div class="storylabel">Field readout</div>
+            <p id="fieldNotice">Bring two voices into the field and TCP will surface how resemblance, trace, and route begin to separate.</p>
+          </div>
+
+          <div class="statusrail">
+            <span id="badgeState" class="statepill active">Badge // holds</span>
+            <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
+            <span id="containmentState" class="statepill active">Containment // stable</span>
+            <span id="routeState" class="statepill">Route // buffered</span>
+          </div>
+        </aside>
       </div>
-    </section>
+    </header>
 
-    <div class="grid">
-      <section class="panel">
-        <div class="hd">
-          <h2>Playground</h2>
-          <div class="small">Recognition first. Explanation later.</div>
+    <main class="layout layout-primary">
+      <section class="panel signal-panel">
+        <div class="panel-heading">
+          <div>
+            <div class="section-kicker">Signal Lab</div>
+            <h2>Run a live cadence scan</h2>
+          </div>
+          <p class="section-note">Paste a reference voice and a probe voice. TCP stages cadence as social surface and measurable signal before anything escalates into protected handling.</p>
         </div>
-        <div class="bd">
-          <div class="room">
-            <div>
-              <label for="voiceA">Voice A</label>
-              <textarea id="voiceA"></textarea>
-            </div>
-            <div>
-              <label for="voiceB">Voice B</label>
-              <textarea id="voiceB"></textarea>
-            </div>
-          </div>
-          <div class="actions">
-            <button id="compareBtn">Compare voices</button>
-            <button id="toggleMirrorBtn" class="secondary">Toggle mirror.off</button>
-            <button id="badgeBtn" class="secondary">Cycle badge</button>
-            <button id="resetBtn" class="ghost">Reset room</button>
-          </div>
+
+        <div class="input-grid">
+          <label class="field" for="voiceA">
+            <span class="field-label">Reference voice</span>
+            <span class="field-copy">The anchor sample you trust.</span>
+            <textarea id="voiceA"></textarea>
+          </label>
+          <label class="field" for="voiceB">
+            <span class="field-label">Probe voice</span>
+            <span class="field-copy">The sample you want to stress-test against the field.</span>
+            <textarea id="voiceB"></textarea>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button id="compareBtn" type="button">Run signal scan</button>
+          <button id="toggleMirrorBtn" type="button" class="secondary">Open mirror shield</button>
+          <button id="badgeBtn" type="button" class="secondary">Cycle custody badge</button>
+          <button id="resetBtn" type="button" class="ghost">Reset bay</button>
         </div>
       </section>
 
-      <section class="panel">
-        <div class="hd">
-          <h2>Recognition</h2>
-          <div class="small">Route or criticality.</div>
-        </div>
-        <div class="bd">
+      <div class="stack">
+        <section class="panel telemetry-panel">
+          <div class="panel-heading">
+            <div>
+              <div class="section-kicker">Telemetry</div>
+              <h2>Recognition, route, and custody</h2>
+            </div>
+            <p class="section-note">The deck separates resemblance, traceability, and route so public play stays legible without pretending similarity is proof.</p>
+          </div>
+
           <div class="results">
-            <div class="metric"><div class="key">Cadence similarity</div><div id="similarity" class="val">—</div><div id="simHint" class="hint"></div></div>
-            <div class="metric"><div class="key">Traceability</div><div id="traceability" class="val">—</div><div id="traceHint" class="hint"></div></div>
-            <div class="metric"><div class="key">Route pressure</div><div id="routePressure" class="val">—</div><div id="routeHint" class="hint"></div></div>
-            <div class="metric"><div class="key">Custody threshold</div><div id="custodyState" class="val">—</div><div id="custodyHint" class="hint"></div></div>
+            <article id="similarityCard" class="metric">
+              <div class="key">Cadence similarity</div>
+              <div id="similarity" class="val">--</div>
+              <div id="simHint" class="hint"></div>
+            </article>
+            <article id="traceabilityCard" class="metric">
+              <div class="key">Traceability</div>
+              <div id="traceability" class="val">--</div>
+              <div id="traceHint" class="hint"></div>
+            </article>
+            <article id="routePressureCard" class="metric">
+              <div class="key">Route pressure</div>
+              <div id="routePressure" class="val">--</div>
+              <div id="routeHint" class="hint"></div>
+            </article>
+            <article id="custodyCard" class="metric">
+              <div class="key">Effective archive</div>
+              <div id="custodyState" class="val">--</div>
+              <div id="custodyHint" class="hint"></div>
+            </article>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
 
-    <div class="grid">
-      <section class="panel">
-        <div class="hd"><h2>Persona deck</h2><div class="small">Attractors, not mascots.</div></div>
-        <div class="bd"><div id="personaDeck" class="personagrid"></div></div>
-      </section>
-      <section class="panel">
-        <div class="hd"><h2>Harbor preview</h2><div class="small">Reusable passage, not one-off improvisation.</div></div>
-        <div class="bd">
-          <div id="harborBox" class="box"></div>
-          <div class="stage" style="margin-top:12px">
-            <h3>Ledger preview</h3>
+        <section class="panel harbor-panel">
+          <div class="panel-heading">
+            <div>
+              <div class="section-kicker">Harbor deck</div>
+              <h2>Recommended passage</h2>
+            </div>
+            <p class="section-note">Structured escalation stays visible here without overwhelming the playful ingress that gets participants to the threshold.</p>
+          </div>
+
+          <div id="harborBox" class="harbor-box"></div>
+
+          <div class="ledger-stage">
+            <div class="ledger-head">
+              <div>
+                <div class="section-kicker">Receipt stream</div>
+                <h3>Ledger preview</h3>
+              </div>
+              <div class="ledger-chip">local demo</div>
+            </div>
             <pre id="ledgerPreview" class="formula"></pre>
           </div>
+        </section>
+      </div>
+    </main>
+
+    <section class="layout layout-secondary">
+      <section class="panel persona-panel">
+        <div class="panel-heading">
+          <div>
+            <div class="section-kicker">Persona deck</div>
+            <h2>Style attractors</h2>
+          </div>
+          <p class="section-note">Persona attractors and controlled drift let participants feel authorship pressure through interaction instead of lecture.</p>
+        </div>
+        <div id="personaDeck" class="personagrid"></div>
+      </section>
+
+      <section class="panel mechanics-panel">
+        <div class="panel-heading">
+          <div>
+            <div class="section-kicker">Mechanics</div>
+            <h2>Branch, wave, harbor</h2>
+          </div>
+          <p class="section-note">The formulas stay visible as structural analogies for branch, wave, and harbor, not as a claim that people are literally physics.</p>
+        </div>
+
+        <div class="underhood">
+          <article class="engine">
+            <div class="engine-kicker">Branch engine</div>
+            <h3>Keep the awkward remainder</h3>
+            <div id="branchFormula" class="formula"></div>
+            <p class="kicker">Preserve awkward surplus until routing decides what it is.</p>
+          </article>
+          <article class="engine">
+            <div class="engine-kicker">Wave engine</div>
+            <h3>Measure density without overclaiming</h3>
+            <div id="waveFormula" class="formula"></div>
+            <p class="kicker">Detection is not repair. Density is not passage.</p>
+          </article>
+          <article class="engine">
+            <div class="engine-kicker">Harbor engine</div>
+            <h3>Lower witness burden</h3>
+            <div id="harborFormula" class="formula"></div>
+            <p class="kicker">When custody drifts, harbor steps in before provenance gets lost.</p>
+          </article>
         </div>
       </section>
-    </div>
-
-    <section class="panel" style="margin-top:18px">
-      <div class="hd"><h2>Under the hood</h2><div class="small">Branch • wave • harbor</div></div>
-      <div class="bd">
-        <div class="underhood">
-          <div class="engine">
-            <h3>Branch engine</h3>
-            <div id="branchFormula" class="formula"></div>
-            <div class="kicker">Preserve awkward surplus until routing decides what it is.</div>
-          </div>
-          <div class="engine">
-            <h3>Wave engine</h3>
-            <div id="waveFormula" class="formula"></div>
-            <div class="kicker">Recognition can gather density without becoming passage.</div>
-          </div>
-          <div class="engine">
-            <h3>Harbor engine</h3>
-            <div id="harborFormula" class="formula"></div>
-            <div class="kicker">When custody drifts, the witness layer turns active; harbor lowers the cost.</div>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <div class="footer">TCP — route, provenance, burden, harbor</div>
+    <footer class="footer">TCP // signal, route, harbor, provenance</footer>
   </div>
+
   <script type="module" src="./main.js"></script>
 </body>
 </html>

@@ -1,52 +1,63 @@
 # STYLOMETRIC MATH
 
-TCP treats stylometry as a **contact-pressure instrument**, not as an authorship verdict engine.
+TCP treats stylometry as a contact-pressure instrument, not as an authorship verdict machine. Every feature is normalized into `[0,1]`, and every composite score is a weighted heuristic rather than a claim of forensic certainty.
 
 ## Feature families
 
-1. **Lexical overlap** — surface vocabulary shared across samples.
-2. **Sentence-shape distance** — divergence in average sentence length.
-3. **Punctuation distance** — divergence in pause and clause rhythm.
-4. **Contraction distance** — divergence in compression / informality habits.
-5. **Lexical-dispersion distance** — divergence in repetition versus novelty.
-6. **Recurrence pressure** — repeated bigrams, line-break density, and return-pattern intensity.
+The engine measures six feature families across paired samples:
 
-## Comparison model
+1. `L` - lexical overlap by Jaccard similarity
+2. `d_s` - sentence-shape distance
+3. `d_p` - punctuation distance
+4. `d_c` - contraction distance
+5. `d_l` - lexical-dispersion distance
+6. `d_r` - recurrence distance
 
-Let `S(a,b)` be pairwise similarity and `T(a,b)` be traceability.
+Recurrence itself is a bounded composite:
 
 ```math
-S(a,b)=w_1L+w_2(1-d_s)+w_3(1-d_p)+w_4(1-d_c)+w_5(1-d_l)+w_6(1-d_r)
+R=\frac{1}{3}(B_r + L_b + P_q)
 ```
 
 where:
-- `L` = lexical Jaccard overlap
-- `d_s` = sentence distance
-- `d_p` = punctuation distance
-- `d_c` = contraction distance
-- `d_l` = lexical-dispersion distance
-- `d_r` = recurrence distance
+
+- `B_r` = repeated-bigram pressure
+- `L_b` = line-break pressure
+- `P_q` = punctuation pressure
+
+## Similarity and traceability
+
+Similarity rewards shared surface and shared habits:
+
+```math
+S(a,b)=0.22L+0.20(1-d_s)+0.16(1-d_p)+0.12(1-d_c)+0.14(1-d_l)+0.16(1-d_r)
+```
 
 Traceability privileges the habits most likely to survive paraphrase:
 
 ```math
-T(a,b)=u_1(1-d_s)+u_2(1-d_p)+u_3(1-d_c)+u_4(1-d_r)
+T(a,b)=0.34(1-d_s)+0.24(1-d_p)+0.18(1-d_c)+0.24(1-d_r)
 ```
 
-Recurrence pressure is a bounded proxy for how strongly patterned return is gathering:
+Both scores are clipped into `[0,1]`.
+
+## Route pressure
+
+Stylometric resemblance alone is not the final state. TCP turns similarity, traceability, recurrence, and branch status into a route score:
 
 ```math
-R=rac{1}{3}(B+L+P)
+\Pi = 0.35S + 0.30T + 0.25R + 0.10B
 ```
 
-where:
-- `B` = repeated-bigram pressure
-- `L` = line-break pressure
-- `P` = punctuation-return pressure
+where `B` is `1` when the branch engine detects an unwanted root worth preserving.
 
 ## Operational reading
 
-- High `S` + high `T` = strong stylometric resemblance worth routing.
-- High `R` without route = recognition pressure rising toward criticality.
-- Low `S` + low `T` = weak signal, likely noise.
-- High `R` + low explanation = preserve the branch until routing catches up.
+- high `S` and high `T` = stylometric resemblance worth routing
+- high `R` with low route availability = recognition pressure rising toward criticality
+- low `S` and low `T` = weak signal, probably noise
+- medium `S` with medium `T` = preserve the branch, stay exploratory, do not overclaim
+
+## Scope limit
+
+TCP does not identify authors. It measures how strongly patterned return becomes legible and whether that legibility is beginning to require route, buffering, or harbor.

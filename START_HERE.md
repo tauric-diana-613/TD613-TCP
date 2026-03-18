@@ -1,45 +1,46 @@
 # START_HERE
 
-
 ## First clicks
 
 1. Open `app/index.html`.
-2. Paste two text samples into the playground.
-3. Toggle **mirror.off** and **badge.holds**.
-4. Watch five things:
+2. Paste two text samples into the Signal Lab.
+3. Type directly or click `Run signal scan`.
+4. Toggle the mirror shield and cycle the custody badge to watch the route model move.
+5. Watch four quantities:
    - cadence similarity,
    - traceability,
-   - recurrence pressure,
    - route pressure,
-   - harbor recommendation.
-5. Open the **engine panel** to see the branch / wave / harbor derivation.
+   - effective archive.
+6. Scroll to Mechanics for the branch / wave / harbor strip.
 
 ## First files to read
 
+- `README.md`
 - `ABSTRACT.md`
+- `docs/ENGINE.md`
 - `docs/PHYSICS_ENGINE.md`
 - `docs/STYLOMETRIC_MATH.md`
 - `docs/SAFETY_MODEL.md`
-- `schemas/harbor-ledger-row.schema.json`
-- `copy/microcopy.json`
 
-## If you only care about the equation
-
-The core shift is:
+## If you only care about the model
 
 ```math
-A_{	ext{effective}}(t)=
-egin{cases}
-A_I, & 	ext{if } C(t)-D(t)\ge 	heta \
-A_W, & 	ext{if } C(t)-D(t)< 	heta
+\Pi = 0.35S + 0.30T + 0.25R + 0.10B
+```
+
+```math
+A_{\mathrm{effective}}(t)=
+\begin{cases}
+A_I,& C(t)-D(t)\ge \theta\\
+A_W,& C(t)-D(t)<\theta
 \end{cases}
 ```
 
-That threshold is what lets TCP move from “cool stylometry toy” to “custody-preserving route instrument.”
+That is the full move in miniature: resemblance gathers, route pressure rises, and custody may eventually externalize onto the witness.
 
 ## If you want to extend it
 
-- Add more harbor functions to `app/engine/harbor.js`
-- Add more badges to `app/engine/badges.js`
-- Update schemas in `schemas/`
-- Add sample rows to `example/harbor-ledger.sample.json`
+- add new harbor functions in `app/engine/harbor.js`
+- tune feature weights in `app/engine/stylometry.js`
+- revise route or custody thresholds in `app/engine/formulas.js`
+- update sample payloads in `example/`
