@@ -190,6 +190,68 @@
     };
   }
 
+  function applyCadenceShell(profile, shell = {}) {
+    if (!profile) {
+      return extractCadenceProfile('');
+    }
+
+    if (!shell || shell.mode === 'native') {
+      return applyCadenceMod(profile, {});
+    }
+
+    if (!shell.profile) {
+      return applyCadenceMod(profile, shell.mod || {});
+    }
+
+    const source = shell.profile;
+    const strength = clamp(Number(shell.strength ?? 0.76), 0, 1);
+    const softBlend = clamp(strength * 0.58, 0, 1);
+    const cadenceBlend = clamp(strength * 0.78, 0, 1);
+    const recurrenceBlend = clamp(strength * 0.7, 0, 1);
+
+    const avgSentence = round2(Math.max(
+      1,
+      (profile.avgSentenceLength * (1 - cadenceBlend)) + (source.avgSentenceLength * cadenceBlend)
+    ));
+    const punctuation = round3(clamp01(
+      (profile.punctuationDensity * (1 - cadenceBlend)) + (source.punctuationDensity * cadenceBlend)
+    ));
+    const contraction = round3(clamp01(
+      (profile.contractionDensity * (1 - cadenceBlend)) + (source.contractionDensity * cadenceBlend)
+    ));
+    const lineBreak = round3(clamp01(
+      (profile.lineBreakDensity * (1 - recurrenceBlend)) + (source.lineBreakDensity * recurrenceBlend)
+    ));
+    const bigram = round3(clamp01(
+      (profile.repeatedBigramPressure * (1 - recurrenceBlend)) + (source.repeatedBigramPressure * recurrenceBlend)
+    ));
+    const lexical = round3(clamp01(
+      (profile.lexicalDispersion * (1 - softBlend)) + (source.lexicalDispersion * softBlend)
+    ));
+    const recurrence = round3(
+      (
+        clamp01(punctuation / 0.35) +
+        clamp01(lineBreak / 0.75) +
+        clamp01(bigram / 0.18)
+      ) / 3
+    );
+
+    return {
+      ...profile,
+      avgSentenceLength: avgSentence,
+      punctuationDensity: punctuation,
+      contractionDensity: contraction,
+      lineBreakDensity: lineBreak,
+      repeatedBigramPressure: bigram,
+      recurrencePressure: recurrence,
+      lexicalDispersion: lexical,
+      shellBias: {
+        mode: shell.mode,
+        strength: round3(strength)
+      }
+    };
+  }
+
   function cadenceModFromProfile(profile) {
     if (!profile || profile.empty) {
       return { sent: 0, cont: 0, punc: 0 };
@@ -525,6 +587,7 @@
     compareTexts,
     extractCadenceProfile,
     applyCadenceMod,
+    applyCadenceShell,
     cadenceModFromProfile,
     solveQuadratic,
     fieldPotential,

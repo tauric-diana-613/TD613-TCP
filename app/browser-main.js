@@ -5,6 +5,7 @@
     compareTexts,
     extractCadenceProfile,
     applyCadenceMod,
+    applyCadenceShell,
     cadenceModFromProfile,
     solveQuadratic,
     fieldPotential,
@@ -115,7 +116,8 @@
   function cloneShell(shell) {
     return {
       ...shell,
-      mod: shell && shell.mod ? { ...shell.mod } : null
+      mod: shell && shell.mod ? { ...shell.mod } : null,
+      profile: shell && shell.profile ? { ...shell.profile } : null
     };
   }
 
@@ -123,9 +125,11 @@
     return {
       mode: 'persona',
       label: persona.name,
-      mod: { ...persona.mod },
+      mod: persona.mod ? { ...persona.mod } : null,
+      profile: persona.profile ? { ...persona.profile } : null,
       personaId: persona.id,
-      source: persona.source || 'built-in'
+      source: persona.source || 'built-in',
+      strength: persona.strength || 0.76
     };
   }
 
@@ -134,9 +138,11 @@
       mode: 'borrowed',
       label: `borrowed ${SLOT_SHORT[voiceState.slot]} cadence`,
       mod: cadenceModFromProfile(voiceState.effectiveProfile),
+      profile: { ...voiceState.effectiveProfile },
       personaId: null,
       source: 'swapped',
-      fromSlot: voiceState.slot
+      fromSlot: voiceState.slot,
+      strength: 0.82
     };
   }
 
@@ -157,7 +163,7 @@
     const rawProfile = extractCadenceProfile(text);
     const shell = getBayShell(slot);
     const persona = shell.personaId ? findPersona(shell.personaId) : null;
-    const effectiveProfile = applyCadenceMod(rawProfile, shell.mod || undefined);
+    const effectiveProfile = applyCadenceShell(rawProfile, shell);
 
     return {
       slot,
@@ -197,6 +203,10 @@
 
     if (voiceState.shell.mode === 'borrowed') {
       return `Borrowed from the ${SLOT_SHORT[voiceState.shell.fromSlot]} bay. The text stayed put; the cadence shell moved.`;
+    }
+
+    if (voiceState.shell.profile) {
+      return `Profile shell transfer live at ${Math.round((voiceState.shell.strength || 0.76) * 100)}%. Sentence rhythm, punctuation, contractions, and recurrence are bending toward ${voiceState.shell.label}.`;
     }
 
     return `Applied shell bias: sent ${voiceState.shell.mod.sent >= 0 ? '+' : ''}${voiceState.shell.mod.sent}, cont ${voiceState.shell.mod.cont >= 0 ? '+' : ''}${voiceState.shell.mod.cont}, punc ${voiceState.shell.mod.punc >= 0 ? '+' : ''}${voiceState.shell.mod.punc}.`;
@@ -720,8 +730,10 @@ DeltaE = ${ledger.reuse_gain}`;
       A: shellB,
       B: shellA
     };
+    const beforeSnapshot = readDeckSnapshot();
     analyzeCadences();
-    setStatusMessage('Cadence shells swapped. The text stayed put; only the shells moved.');
+    const afterSnapshot = readDeckSnapshot();
+    setStatusMessage(`Cadence shells swapped. Similarity ${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}; route ${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}.`);
   }
 
   function buildSavedPersonaName(slot) {
@@ -744,6 +756,8 @@ DeltaE = ${ledger.reuse_gain}`;
       blurb: `Captured from the ${SLOT_SHORT[activeVoice]} bay. Rhythm ${profile.avgSentenceLength.toFixed(1)}w, recurrence ${formatPct(profile.recurrencePressure)}.`,
       chips: ['captured', SLOT_SHORT[activeVoice], `rhythm ${profile.avgSentenceLength.toFixed(1)}w`],
       mod: cadenceModFromProfile(profile),
+      profile: { ...profile },
+      strength: 0.76,
       source: 'saved'
     };
 
@@ -871,6 +885,19 @@ DeltaE = ${ledger.reuse_gain}`;
     };
 
     try {
+      const beforeNativeSwap = readDeckSnapshot();
+      $('swapCadencesBtn').click();
+      report.nativeSwap = {
+        snapshot: readDeckSnapshot(),
+        changed:
+          readDeckSnapshot().similarity !== beforeNativeSwap.similarity ||
+          readDeckSnapshot().routePressure !== beforeNativeSwap.routePressure,
+        referenceBorrowed: $('voiceAProfile').textContent.toLowerCase().includes('borrowed'),
+        probeBorrowed: $('voiceBProfile').textContent.toLowerCase().includes('borrowed')
+      };
+
+      $('resetBtn').click();
+
       const firstPersona = document.querySelector('.persona');
       if (firstPersona) {
         firstPersona.click();
@@ -995,6 +1022,9 @@ DeltaE = ${ledger.reuse_gain}`;
             report.swapCadences.voiceAUnchanged &&
             report.swapCadences.voiceBUnchanged &&
             report.savePersona.savedPersonaAdded &&
+            report.nativeSwap.changed &&
+            report.nativeSwap.referenceBorrowed &&
+            report.nativeSwap.probeBorrowed &&
             report.soloScan.similarityKey === 'Scan mode' &&
             report.viewTabs.activeTab === 'readout',
           matrixPassCount: matrix.filter((entry) => entry.pass).length,
