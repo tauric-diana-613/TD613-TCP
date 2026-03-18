@@ -132,7 +132,7 @@ export function buildLedgerRow({
   );
   const routeStatus =
     decision === 'passage'
-      ? harbor.route_status_on_success
+      ? 'safe-passage achieved'
       : decision === 'criticality'
         ? 'buffered'
         : decision === 'hold-branch'

@@ -328,7 +328,7 @@
     density = 0,
     recurrencePressure = 0
   }) {
-    const denseSignal = clamp01(density) >= 0.22 || clamp01(recurrencePressure) >= 0.58;
+    const denseSignal = clamp01(density) >= 0.28 || clamp01(recurrencePressure) >= 0.58;
 
     if (!recognized) {
       return 'weak-signal';
@@ -484,12 +484,12 @@
         2
       )
     );
-    const routeStatus =
-      decision === 'passage'
-        ? harbor.route_status_on_success
-        : decision === 'criticality'
-          ? 'buffered'
-          : decision === 'hold-branch'
+  const routeStatus =
+    decision === 'passage'
+      ? 'safe-passage achieved'
+      : decision === 'criticality'
+        ? 'buffered'
+        : decision === 'hold-branch'
             ? 'buffered'
             : 'observing';
     const evidentiaryClass =

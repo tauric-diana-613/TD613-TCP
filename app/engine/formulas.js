@@ -85,7 +85,7 @@ export function providerDecision({
   density = 0,
   recurrencePressure = 0
 }) {
-  const denseSignal = clamp01(density) >= 0.22 || clamp01(recurrencePressure) >= 0.58;
+  const denseSignal = clamp01(density) >= 0.28 || clamp01(recurrencePressure) >= 0.58;
 
   if (!recognized) {
     return 'weak-signal';

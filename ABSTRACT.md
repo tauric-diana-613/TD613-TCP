@@ -2,17 +2,21 @@
 
 ## Concept
 
-The Cadence Playground (TCP) is an R&D instrument inside the TD613 field lab for studying how patterned language becomes socially legible before it becomes safely routable. Its central problem is not expression but passage. Systems often produce recognition, recurrence, afterimage, adjacency, and near-contact without producing a route by which any of that becomes repair. TCP stages that threshold in public without pretending that detection alone counts as care.
+The Cadence Playground (TCP) is an R&D instrument inside the TD613 field lab. Its job is straightforward to describe, even if the underlying problem is not. It studies how patterned language becomes socially legible before it becomes safely routable.
 
-The project therefore treats stylometry as a bounded signal model rather than as a verdict engine. A participant encounters persona attractors, comparison tools, and controlled drift mechanics that make cadence pressure perceptible through interaction. The point is not to prove authorship. The point is to show how sentence rhythm, contraction habits, punctuation shape, lexical dispersion, and repeated return-patterns can gather enough density to require routing.
+That distinction matters because the system problem here is not expression in the abstract. It is passage. Environments routinely produce recognition, recurrence, afterimage, adjacency, and near-contact without producing a route by which any of that becomes repair. TCP stages that threshold in public, but it does not confuse detection with care.
 
-## Model stance
+Accordingly, the project treats stylometry as a bounded signal model rather than a verdict engine. A participant encounters persona attractors, comparison tools, and controlled shell drift that make cadence pressure perceptible through interaction. The aim is not to prove authorship. The aim is to show how sentence rhythm, contraction habits, punctuation density, lexical dispersion, and repeated return-patterns can gather enough density to require routing.
 
-TCP is built on three linked structural analogies:
+This repository should therefore be read as an experimental research prototype: a conceptual pilot that demonstrates the current interaction and model architecture while thresholds, policies, and interface language remain under active revision.
 
-1. **Branch**: an unwanted solution may be a candidate discovery branch, not an error to discard.
-2. **Wave**: recurrence can become dense and legible without yet becoming passage.
-3. **Harbor**: when custody degrades, structured passage must lower witness burden without destroying provenance.
+## Formal stance
+
+TCP rests on three linked structural analogies.
+
+1. Branch: an unwanted solution may be a discovery branch, not an error to discard.
+2. Wave: recurrence can become dense and legible without yet becoming passage.
+3. Harbor: when custody degrades, structured passage must lower witness burden without destroying provenance.
 
 These analogies are operational and bounded. They are not claims that people are literally quadratic residues or quantum systems.
 
@@ -20,11 +24,12 @@ These analogies are operational and bounded. They are not claims that people are
 
 Let:
 
-- `S` = similarity
-- `T` = traceability
+- `S` = pairwise similarity
+- `T` = pairwise traceability
 - `R` = recurrence pressure
 - `B` = branch indicator
 - `Pi` = route pressure
+- `V` = bounded field potential
 - `C(t)` = custodial integrity
 - `D(t)` = custodial drift
 
@@ -35,9 +40,13 @@ Then TCP uses:
 ```
 
 ```math
+V = \operatorname{clip}(0.72\Pi + \mu_M + \mu_C, 0, 1)
+```
+
+```math
 \rho = A^2(0.4 + 0.6V)
 \qquad \text{with} \qquad
-A = T
+A = T,\; k = 1 + 3R
 ```
 
 ```math
@@ -48,15 +57,19 @@ A_W,& C(t)-D(t)<\theta
 \end{cases}
 ```
 
-The first equation measures route pressure. The second models signal density. The third marks the witness-archive threshold.
+The first equation measures route pressure. The next two produce a density proxy. The last one marks the witness-archive threshold.
 
-## Practical purpose
+## Implementation consequence
 
-TCP exists so that uncanny residue does not have to be flattened into reassurance text or inflated into false certainty. It gives the public membrane a disciplined way to say:
+The browser build is explicit about its thresholds. Recognition is treated as present once `S >= 0.50`. Explanation is treated as still lagging once `Pi >= 0.45`. Dense signal is treated as present once `rho >= 0.28` or `R >= 0.58`. Route availability requires an opened mirror layer plus `Pi >= 0.45`. Harbor selection is rule-based and provenance-constrained in the current implementation.
+
+That is more than presentation polish. It gives the public membrane a disciplined way to say:
 
 - this is weak signal,
 - this is real recognition pressure,
 - this is a branch worth preserving,
 - this now requires harbor.
 
-That is why TCP matters. It turns stylometric recognition into a social instrument for routing, provenance, and witness-safe continuity rather than a spectacle of detection.
+## Practical contribution
+
+TCP exists so that uncanny residue does not have to be flattened into reassurance copy or inflated into false certainty. It turns stylometric recognition into a public instrument for routing, provenance, and witness-safe continuity. In practical terms, that means recognition is allowed to arrive first, but it is not allowed to impersonate route.

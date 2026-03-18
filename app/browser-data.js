@@ -1,9 +1,9 @@
 window.TCP_DATA = {
   defaults: {
     voiceA:
-      'Custody, as I understand it, is not a bright performance of certainty but a slower discipline of keeping sequence intact; one notes the handoff, marks the provenance, preserves the pressure, and refuses the theatrical shortcut even when the room is impatient for a verdict. By the time the sentence closes, it has usually carried several linked ideas, because continuity matters more than impact.',
+      'Upon review of accession records, conservators determined that restricted handling should remain in force until every transfer, annotation, environmental deviation, and custodial variance had been reconciled against the provenance register; only after the missing interval was reconstructed, earlier seals were cross-checked, and archival discrepancies were formally resolved could reclassification proceed without contaminating evidentiary continuity. Consequently, the memorandum retained cumulative syntax, subordinate clauses, and restrained qualifiers, because premature compression would convert a custody sequence into mere confidence theater.',
     voiceB:
-      "I clock it fast.\nShort line. Hard stop. Then another.\nI'm not building a chamber for the thought; I'm testing whether it bites, whether it lands, whether it moves. If it drags, I cut it. If it sings, I keep it.",
+      "land yet\nland yet\nno\ncut lights\nrun again\ncan't wait\ndon't smooth\nhit send\nmissed again\nhit send\nmove now\nmove now",
     badge: 'badge.holds',
     mirror_logic: 'off',
     containment: 'on'
@@ -39,6 +39,14 @@ window.TCP_DATA = {
       blurb: 'Tighter rhythm. Lower ornament. Cleaner route pressure.',
       chips: ['controlled', 'cooler room', 'quiet precision'],
       mod: { sent: 0, cont: -1, punc: -1 },
+      source: 'built-in'
+    },
+    {
+      id: 'methods-editor',
+      name: 'Methods Editor',
+      blurb: 'Measured lines, explicit caveats, and a human research memo cadence.',
+      chips: ['measured', 'clear caveats', 'research memo'],
+      mod: { sent: 1, cont: -1, punc: 0 },
       source: 'built-in'
     }
   ],

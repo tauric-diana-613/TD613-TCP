@@ -287,9 +287,14 @@
           ? 'A structured harbor is available before exposure takes over.'
           : decision === 'hold-branch'
             ? 'Public play is staying exploratory while the route signal develops.'
-            : 'The samples are still more atmospheric than traceable.';
-    $('heroHarborValue').textContent = harbor;
-    $('heroHarborNote').textContent = HARBOR_LIBRARY[harbor].mode_class;
+          : 'The samples are still more atmospheric than traceable.';
+    if (decision === 'weak-signal') {
+      $('heroHarborValue').textContent = 'observe';
+      $('heroHarborNote').textContent = 'No harbor is active. The deck is staying exploratory until recognition becomes legible enough to route.';
+    } else {
+      $('heroHarborValue').textContent = harbor;
+      $('heroHarborNote').textContent = HARBOR_LIBRARY[harbor].mode_class;
+    }
     $('decisionTone').textContent =
       decision === 'criticality'
         ? 'Route pressure rising'
@@ -324,6 +329,34 @@
   }
 
   function updateHarborBox(harbor, ledger, decision) {
+    if (decision === 'weak-signal') {
+      $('harborBox').innerHTML = `
+        <div class="harbor-head">
+          <div>
+            <div class="section-kicker">Exploratory posture</div>
+            <div class="harbor-name">observe.field</div>
+          </div>
+          <div class="harbor-stat">no harbor engaged</div>
+        </div>
+        <div class="harbor-grid">
+          <div class="harbor-item">
+            <span class="harbor-label">State</span>
+            <strong>weak-signal</strong>
+          </div>
+          <div class="harbor-item">
+            <span class="harbor-label">Archive</span>
+            <strong>${ledger.effective_archive}</strong>
+          </div>
+          <div class="harbor-item">
+            <span class="harbor-label">Next move</span>
+            <strong>add contrast or save solo</strong>
+          </div>
+        </div>
+        <p class="kicker">Recognition has not crossed threshold. TCP keeps the field public, playful, and non-escalatory.</p>
+      `;
+      return;
+    }
+
     const harborData = HARBOR_LIBRARY[harbor];
     const kicker = decision === 'criticality' ? microcopy.route_warning : microcopy.receipt_created;
 
@@ -468,16 +501,13 @@
       fieldPotential: field
     });
     const custody = custodyThreshold(0.68, routePressure * 0.58, 0.2);
-    const provisionalHarbor = chooseHarbor({
-      routePressure,
-      badge,
-      mirrorLogic,
-      custodyArchive: custody.archive
-    });
+    const recognized = cmp.similarity >= 0.5;
+    const explained = routePressure < 0.45;
+    const routeAvailable = mirrorLogic === 'on' && routePressure >= 0.45;
     const decision = providerDecision({
-      recognized: cmp.similarity >= 0.5,
-      explained: routePressure < 0.45,
-      routeAvailable: provisionalHarbor === 'mirror.off' || provisionalHarbor === 'receipt.capture',
+      recognized,
+      explained,
+      routeAvailable,
       density: wave.density,
       recurrencePressure: cmp.recurrencePressure
     });
@@ -670,59 +700,217 @@ DeltaE = ${ledger.reuse_gain}`;
     setStatusMessage(`Text changed in the ${SLOT_SHORT[slot]} bay. Press Analyze Cadences to refresh the pair readout.`);
   }
 
-  function runTestFlight() {
-    const beforeA = $('voiceA').value;
-    const beforeB = $('voiceB').value;
+  function captureFlightState() {
+    return {
+      voiceA: $('voiceA').value,
+      voiceB: $('voiceB').value,
+      badge,
+      mirrorLogic,
+      containment,
+      activeVoice,
+      activeArtifactTab,
+      cadenceAssignments: { ...cadenceAssignments },
+      savedPersonas: JSON.parse(JSON.stringify(savedPersonas))
+    };
+  }
+
+  function restoreFlightState(state) {
+    $('voiceA').value = state.voiceA;
+    $('voiceB').value = state.voiceB;
+    badge = state.badge;
+    mirrorLogic = state.mirrorLogic;
+    containment = state.containment;
+    activeVoice = state.activeVoice;
+    activeArtifactTab = state.activeArtifactTab;
+    cadenceAssignments = { ...state.cadenceAssignments };
+    savedPersonas = JSON.parse(JSON.stringify(state.savedPersonas));
+    persistSavedPersonas();
+    setArtifactTab(activeArtifactTab);
+    renderVoiceProfiles();
+    renderPersonas();
+    analyzeCadences();
+  }
+
+  function readDeckSnapshot() {
+    return {
+      decision: document.body.dataset.decision,
+      decisionTone: $('decisionTone').textContent.trim(),
+      similarity: $('similarity').textContent.trim(),
+      traceability: $('traceability').textContent.trim(),
+      routePressure: $('routePressure').textContent.trim(),
+      custody: $('custodyState').textContent.trim(),
+      heroHarbor: $('heroHarborValue').textContent.trim(),
+      routeState: $('routeState').textContent.trim(),
+      status: $('analysisStatus').textContent.trim()
+    };
+  }
+
+  function applyScenario({
+    voiceA,
+    voiceB,
+    nextBadgeState = 'badge.holds',
+    nextMirrorLogic = 'off',
+    nextContainment = 'on',
+    nextAssignments = { A: null, B: null },
+    nextActiveVoice = 'A'
+  }) {
+    $('voiceA').value = voiceA;
+    $('voiceB').value = voiceB;
+    badge = nextBadgeState;
+    mirrorLogic = nextMirrorLogic;
+    containment = nextContainment;
+    cadenceAssignments = { ...nextAssignments };
+    activeVoice = nextActiveVoice;
+    renderVoiceProfiles();
+    renderPersonas();
+    analyzeCadences();
+    return readDeckSnapshot();
+  }
+
+  function runTestFlight(mode = 'smoke') {
+    const initialState = captureFlightState();
     const beforePersonaCount = document.querySelectorAll('.persona').length;
     const report = {
-      initial: {
-        similarity: $('similarity').textContent.trim(),
-        status: $('analysisStatus').textContent.trim(),
+      mode,
+      baseline: {
+        snapshot: readDeckSnapshot(),
         personas: beforePersonaCount
       }
     };
 
-    const firstPersona = document.querySelector('.persona');
-    if (firstPersona) {
-      firstPersona.click();
+    try {
+      const firstPersona = document.querySelector('.persona');
+      if (firstPersona) {
+        firstPersona.click();
+      }
+
+      report.assignPersona = {
+        snapshot: readDeckSnapshot(),
+        personaStatus: $('personaStatus').textContent.trim()
+      };
+
+      const assignedLabelBeforeSwap = $('personaStatus').textContent.trim();
+      const beforeA = $('voiceA').value;
+      const beforeB = $('voiceB').value;
+      $('swapCadencesBtn').click();
+      report.swapCadences = {
+        snapshot: readDeckSnapshot(),
+        personaStatus: $('personaStatus').textContent.trim(),
+        voiceAUnchanged: $('voiceA').value === beforeA,
+        voiceBUnchanged: $('voiceB').value === beforeB,
+        personaStatusChanged: $('personaStatus').textContent.trim() !== assignedLabelBeforeSwap
+      };
+
+      $('savePersonaBtn').click();
+      report.savePersona = {
+        snapshot: readDeckSnapshot(),
+        personasAfterSave: document.querySelectorAll('.persona').length,
+        savedPersonaAdded: document.querySelectorAll('.persona').length === beforePersonaCount + 1
+      };
+
+      $('voiceB').value = '';
+      analyzeCadences();
+      report.soloScan = {
+        snapshot: readDeckSnapshot(),
+        similarityKey: $('similarityKey').textContent.trim(),
+        routeKey: $('routeKey').textContent.trim()
+      };
+
+      $('tabMechanics').click();
+      report.artifactTabs = {
+        activeTab: document.body.dataset.artifactTab,
+        personasHidden: $('artifactPanePersonas').hidden,
+        mechanicsHidden: $('artifactPaneMechanics').hidden
+      };
+
+      if (mode === 'full') {
+        const matrix = [];
+        const scenarios = [
+          {
+            id: 'weak_signal_contrast',
+            expectedDecision: 'weak-signal',
+            expectedRouteState: 'Route // observing',
+            expectedHeroHarbor: 'observe',
+            rationale: 'Two visibly different cadences should remain exploratory.',
+            config: {
+              voiceA: defaults.voiceA,
+              voiceB: defaults.voiceB,
+              nextMirrorLogic: 'off',
+              nextBadgeState: 'badge.holds'
+            }
+          },
+          {
+            id: 'hold_branch_same_lexicon_split_form',
+            expectedDecision: 'hold-branch',
+            expectedRouteState: 'Route // buffered',
+            rationale: 'Shared lexicon with mismatched sentence-shape should preserve the branch without opening passage.',
+            config: {
+              voiceA: 'I keep the record intact, because the room moves faster than memory, and if the handoff slips I mark the pressure, keep the receipt, and carry the line until the route is real.',
+              voiceB: 'I keep the record intact. The room moves faster than memory. If the handoff slips, I mark the pressure. I keep the receipt. I carry the line until the route is real.',
+              nextMirrorLogic: 'off',
+              nextBadgeState: 'badge.holds'
+            }
+          },
+          {
+            id: 'criticality_dense_locked',
+            expectedDecision: 'criticality',
+            expectedRouteState: 'Route // buffered',
+            expectedHeroHarbor: 'mirror.off',
+            rationale: 'Dense recognition with the mirror shield armed should surface criticality rather than fake passage.',
+            config: {
+              voiceA: "I cut the line fast.\nI keep the pressure live.\nI cut the line fast.\nIf it drags, I cut it. If it lands, I keep it.",
+              voiceB: "I cut the line hard.\nI keep the pressure live.\nI cut the line hard.\nIf it drags, I cut it. If it lands, I keep it.",
+              nextMirrorLogic: 'off',
+              nextBadgeState: 'badge.holds'
+            }
+          },
+          {
+            id: 'passage_dense_open',
+            expectedDecision: 'passage',
+            expectedRouteState: 'Route // safe-passage achieved',
+            expectedHeroHarbor: 'receipt.capture',
+            rationale: 'The same dense recognition event should resolve into passage once the route is opened.',
+            config: {
+              voiceA: "I cut the line fast.\nI keep the pressure live.\nI cut the line fast.\nIf it drags, I cut it. If it lands, I keep it.",
+              voiceB: "I cut the line hard.\nI keep the pressure live.\nI cut the line hard.\nIf it drags, I cut it. If it lands, I keep it.",
+              nextMirrorLogic: 'on',
+              nextBadgeState: 'badge.holds'
+            }
+          }
+        ];
+
+        scenarios.forEach((scenario) => {
+          const snapshot = applyScenario(scenario.config);
+          matrix.push({
+            id: scenario.id,
+            expectedDecision: scenario.expectedDecision,
+            expectedRouteState: scenario.expectedRouteState,
+            expectedHeroHarbor: scenario.expectedHeroHarbor,
+            actualDecision: snapshot.decision,
+            pass:
+              snapshot.decision === scenario.expectedDecision &&
+              (!scenario.expectedRouteState || snapshot.routeState === scenario.expectedRouteState) &&
+              (!scenario.expectedHeroHarbor || snapshot.heroHarbor === scenario.expectedHeroHarbor),
+            rationale: scenario.rationale,
+            snapshot
+          });
+        });
+
+        report.matrix = matrix;
+        report.summary = {
+          allPassed: matrix.every((entry) => entry.pass) &&
+            report.swapCadences.voiceAUnchanged &&
+            report.swapCadences.voiceBUnchanged &&
+            report.savePersona.savedPersonaAdded &&
+            report.soloScan.similarityKey === 'Scan mode' &&
+            report.artifactTabs.activeTab === 'mechanics',
+          matrixPassCount: matrix.filter((entry) => entry.pass).length,
+          matrixCount: matrix.length
+        };
+      }
+    } finally {
+      restoreFlightState(initialState);
     }
-
-    report.assignPersona = {
-      status: $('analysisStatus').textContent.trim(),
-      personaStatus: $('personaStatus').textContent.trim(),
-      similarity: $('similarity').textContent.trim()
-    };
-
-    $('swapCadencesBtn').click();
-    report.swapCadences = {
-      personaStatus: $('personaStatus').textContent.trim(),
-      voiceAUnchanged: $('voiceA').value === beforeA,
-      voiceBUnchanged: $('voiceB').value === beforeB
-    };
-
-    $('savePersonaBtn').click();
-    report.savePersona = {
-      personasAfterSave: document.querySelectorAll('.persona').length,
-      status: $('analysisStatus').textContent.trim(),
-      savedPersonaAdded: document.querySelectorAll('.persona').length === beforePersonaCount + 1
-    };
-
-    $('voiceB').value = '';
-    analyzeCadences();
-    report.soloScan = {
-      key: $('similarityKey').textContent.trim(),
-      value: $('similarity').textContent.trim(),
-      routeKey: $('routeKey').textContent.trim(),
-      routeValue: $('routePressure').textContent.trim(),
-      status: $('analysisStatus').textContent.trim()
-    };
-
-    $('tabMechanics').click();
-    report.artifactTabs = {
-      activeTab: document.body.dataset.artifactTab,
-      personasHidden: $('artifactPanePersonas').hidden,
-      mechanicsHidden: $('artifactPaneMechanics').hidden
-    };
 
     let node = document.getElementById('testFlightReport');
     if (!node) {
@@ -814,7 +1002,12 @@ DeltaE = ${ledger.reuse_gain}`;
       .slice(0, 120);
   }
 
-  if (new URLSearchParams(window.location.search).get('test-flight') === '1') {
-    window.setTimeout(runTestFlight, 120);
+  const testFlightMode = new URLSearchParams(window.location.search).get('test-flight');
+  if (testFlightMode === '1') {
+    window.setTimeout(() => runTestFlight('smoke'), 120);
+  }
+
+  if (testFlightMode === '2') {
+    window.setTimeout(() => runTestFlight('full'), 120);
   }
 })();
