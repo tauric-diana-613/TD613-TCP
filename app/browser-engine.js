@@ -34,14 +34,31 @@
       .filter(Boolean);
   }
 
+  function sentenceLengths(text) {
+    return sentenceSplit(text)
+      .map((sentence) => tokenize(sentence).length)
+      .filter((count) => count > 0);
+  }
+
   function avgSentenceLength(text) {
-    const sentences = sentenceSplit(text);
-    if (!sentences.length) {
+    const lengths = sentenceLengths(text);
+    if (!lengths.length) {
       return 0;
     }
 
-    const words = sentences.reduce((count, sentence) => count + tokenize(sentence).length, 0);
-    return words / sentences.length;
+    const words = lengths.reduce((sum, count) => sum + count, 0);
+    return words / lengths.length;
+  }
+
+  function sentenceLengthSpread(text) {
+    const lengths = sentenceLengths(text);
+    if (lengths.length <= 1) {
+      return 0;
+    }
+
+    const mean = lengths.reduce((sum, count) => sum + count, 0) / lengths.length;
+    const variance = lengths.reduce((sum, count) => sum + ((count - mean) ** 2), 0) / lengths.length;
+    return round2(Math.sqrt(variance));
   }
 
   function punctuationDensity(text) {
@@ -60,6 +77,31 @@
     const sentences = sentenceSplit(text).length;
     const breaks = (normalizeText(text).match(/\n/g) || []).length;
     return round3(breaks / Math.max(sentences, 1));
+  }
+
+  function punctuationMix(text) {
+    const normalized = normalizeText(text);
+    const comma = (normalized.match(/,/g) || []).length;
+    const strong = (normalized.match(/[;:]/g) || []).length;
+    const terminal = (normalized.match(/[.!?]/g) || []).length;
+    const dash = (normalized.match(/(?:\s-\s|--)/g) || []).length;
+    const total = comma + strong + terminal + dash;
+
+    if (!total) {
+      return {
+        comma: 0,
+        strong: 0,
+        terminal: 0,
+        dash: 0
+      };
+    }
+
+    return {
+      comma: round3(comma / total),
+      strong: round3(strong / total),
+      terminal: round3(terminal / total),
+      dash: round3(dash / total)
+    };
   }
 
   function repeatedBigramPressure(text) {
@@ -130,6 +172,46 @@
     return clamp01(Math.abs(a - b) / scale);
   }
 
+  function punctuationMixDistance(a = {}, b = {}) {
+    const distance =
+      Math.abs((a.comma || 0) - (b.comma || 0)) +
+      Math.abs((a.strong || 0) - (b.strong || 0)) +
+      Math.abs((a.terminal || 0) - (b.terminal || 0)) +
+      Math.abs((a.dash || 0) - (b.dash || 0));
+
+    return round3(clamp01(distance / 2));
+  }
+
+  function normalizeAxis(value, min, max) {
+    return round3(clamp01((value - min) / Math.max(max - min, 1e-9)));
+  }
+
+  function heatmapLengthBucket(length) {
+    if (length <= 6) {
+      return 0;
+    }
+    if (length <= 12) {
+      return 1;
+    }
+    if (length <= 20) {
+      return 2;
+    }
+    return 3;
+  }
+
+  function heatmapPunctuationBucket(count) {
+    if (count <= 0) {
+      return 0;
+    }
+    if (count === 1) {
+      return 1;
+    }
+    if (count === 2) {
+      return 2;
+    }
+    return 3;
+  }
+
   function extractCadenceProfile(text = '') {
     const words = tokenize(text);
     const sentences = sentenceSplit(text);
@@ -139,7 +221,9 @@
       wordCount: words.length,
       sentenceCount: sentences.length,
       avgSentenceLength: round2(avgSentenceLength(text)),
+      sentenceLengthSpread: sentenceLengthSpread(text),
       punctuationDensity: punctuationDensity(text),
+      punctuationMix: punctuationMix(text),
       contractionDensity: contractionDensity(text),
       lineBreakDensity: lineBreakDensity(text),
       repeatedBigramPressure: repeatedBigramPressure(text),
@@ -162,6 +246,7 @@
     const lexicalBias = Number((((mod.sent || 0) * 0.008) - ((mod.punc || 0) * 0.004)).toFixed(3));
 
     const avgSentence = round2(Math.max(1, profile.avgSentenceLength + sentBias));
+    const spread = round2(Math.max(0, (profile.sentenceLengthSpread || 0) + Math.abs(sentBias * 0.62)));
     const punctuation = round3(clamp01(profile.punctuationDensity + punctuationBias));
     const contraction = round3(clamp01(profile.contractionDensity + contractionBias));
     const lineBreak = round3(clamp01(profile.lineBreakDensity + lineBreakBias));
@@ -177,6 +262,7 @@
     return {
       ...profile,
       avgSentenceLength: avgSentence,
+      sentenceLengthSpread: spread,
       punctuationDensity: punctuation,
       contractionDensity: contraction,
       lineBreakDensity: lineBreak,
@@ -213,6 +299,10 @@
       1,
       (profile.avgSentenceLength * (1 - cadenceBlend)) + (source.avgSentenceLength * cadenceBlend)
     ));
+    const spread = round2(Math.max(
+      0,
+      ((profile.sentenceLengthSpread || 0) * (1 - cadenceBlend)) + ((source.sentenceLengthSpread || 0) * cadenceBlend)
+    ));
     const punctuation = round3(clamp01(
       (profile.punctuationDensity * (1 - cadenceBlend)) + (source.punctuationDensity * cadenceBlend)
     ));
@@ -239,7 +329,16 @@
     return {
       ...profile,
       avgSentenceLength: avgSentence,
+      sentenceLengthSpread: spread,
       punctuationDensity: punctuation,
+      punctuationMix: source.punctuationMix
+        ? {
+            comma: round3(((profile.punctuationMix?.comma || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.comma || 0) * cadenceBlend)),
+            strong: round3(((profile.punctuationMix?.strong || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.strong || 0) * cadenceBlend)),
+            terminal: round3(((profile.punctuationMix?.terminal || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.terminal || 0) * cadenceBlend)),
+            dash: round3(((profile.punctuationMix?.dash || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.dash || 0) * cadenceBlend))
+          }
+        : profile.punctuationMix,
       contractionDensity: contraction,
       lineBreakDensity: lineBreak,
       repeatedBigramPressure: bigram,
@@ -273,12 +372,14 @@
     const lexicalOverlap = jaccard(wordsA, wordsB);
     const sentenceDistance = boundedDistance(profileA.avgSentenceLength, profileB.avgSentenceLength, 12);
     const punctDistance = boundedDistance(profileA.punctuationDensity, profileB.punctuationDensity, 0.35);
+    const spreadDistance = boundedDistance(profileA.sentenceLengthSpread || 0, profileB.sentenceLengthSpread || 0, 14);
     const contractionDistance = boundedDistance(
       profileA.contractionDensity,
       profileB.contractionDensity,
       0.25
     );
     const lexicalDistance = boundedDistance(profileA.lexicalDispersion, profileB.lexicalDispersion, 0.4);
+    const punctShapeDistance = punctuationMixDistance(profileA.punctuationMix, profileB.punctuationMix);
     const recurrenceDistance = clamp01(
       Math.abs(profileA.recurrencePressure - profileB.recurrencePressure)
     );
@@ -305,9 +406,119 @@
       recurrencePressure: round3((profileA.recurrencePressure + profileB.recurrencePressure) / 2),
       avgSentenceA: profileA.avgSentenceLength,
       avgSentenceB: profileB.avgSentenceLength,
+      spreadDistance: round3(spreadDistance),
       lexicalOverlap: round3(lexicalOverlap),
+      punctShapeDistance: round3(punctShapeDistance),
       profileA,
       profileB
+    };
+  }
+
+  function cadenceAxisVector(input) {
+    const profile = typeof input === 'string' ? extractCadenceProfile(input) : input;
+
+    return [
+      {
+        id: 'rhythm_mean',
+        label: 'Rhythm mean',
+        raw: round2(profile.avgSentenceLength || 0),
+        normalized: normalizeAxis(profile.avgSentenceLength || 0, 4, 32)
+      },
+      {
+        id: 'rhythm_spread',
+        label: 'Rhythm spread',
+        raw: round2(profile.sentenceLengthSpread || 0),
+        normalized: normalizeAxis(profile.sentenceLengthSpread || 0, 0, 14)
+      },
+      {
+        id: 'punctuation',
+        label: 'Punctuation density',
+        raw: round3(profile.punctuationDensity || 0),
+        normalized: normalizeAxis(profile.punctuationDensity || 0, 0, 0.22)
+      },
+      {
+        id: 'contractions',
+        label: 'Contraction density',
+        raw: round3(profile.contractionDensity || 0),
+        normalized: normalizeAxis(profile.contractionDensity || 0, 0, 0.18)
+      },
+      {
+        id: 'line_breaks',
+        label: 'Line-break drag',
+        raw: round3(profile.lineBreakDensity || 0),
+        normalized: normalizeAxis(profile.lineBreakDensity || 0, 0, 0.75)
+      },
+      {
+        id: 'recurrence',
+        label: 'Recurrence pressure',
+        raw: round3(profile.recurrencePressure || 0),
+        normalized: normalizeAxis(profile.recurrencePressure || 0, 0, 1)
+      },
+      {
+        id: 'lexical',
+        label: 'Lexical dispersion',
+        raw: round3(profile.lexicalDispersion || 0),
+        normalized: normalizeAxis(profile.lexicalDispersion || 0, 0.35, 1)
+      }
+    ];
+  }
+
+  function cadenceHeatmap(text = '') {
+    const sentences = sentenceSplit(text);
+    const rows = ['quiet-short', 'measured-mid', 'extended-long', 'drifting-wide'];
+    const cols = ['mute', 'marked', 'charged', 'saturated'];
+    const matrix = Array.from({ length: 4 }, () => Array(4).fill(0));
+
+    if (!sentences.length) {
+      return {
+        rows,
+        cols,
+        matrix,
+        trace: []
+      };
+    }
+
+    const trace = sentences.map((sentence, index) => {
+      const length = tokenize(sentence).length;
+      const marks = (normalizeText(sentence).match(/[,:;.!?-]/g) || []).length;
+      const row = heatmapLengthBucket(length);
+      const col = heatmapPunctuationBucket(marks);
+      matrix[row][col] += 1;
+
+      return {
+        index,
+        length,
+        punctuation: marks,
+        row,
+        col
+      };
+    });
+
+    const normalizedMatrix = matrix.map((row) =>
+      row.map((count) => round3(count / Math.max(sentences.length, 1)))
+    );
+
+    return {
+      rows,
+      cols,
+      matrix: normalizedMatrix,
+      trace
+    };
+  }
+
+  function buildCadenceSignature(text = '', profile = extractCadenceProfile(text)) {
+    const axes = cadenceAxisVector(profile);
+    const dominantAxes = [...axes]
+      .sort((a, b) => b.normalized - a.normalized)
+      .slice(0, 3)
+      .map((axis) => axis.id);
+
+    return {
+      profile,
+      axes,
+      punctuationMix: profile.punctuationMix || punctuationMix(text),
+      heatmap: cadenceHeatmap(text),
+      dominantAxes
     };
   }
 
@@ -589,6 +800,9 @@
     applyCadenceMod,
     applyCadenceShell,
     cadenceModFromProfile,
+    cadenceAxisVector,
+    cadenceHeatmap,
+    buildCadenceSignature,
     solveQuadratic,
     fieldPotential,
     waveStats,
