@@ -22,6 +22,216 @@ function normalizeText(text = '') {
     .replace(/\u2013/g, '-');
 }
 
+function stripTerminalPunctuation(text = '') {
+  return text.replace(/[.!?]+$/g, '').trim();
+}
+
+function sentenceChunks(text = '') {
+  return normalizeText(text)
+    .replace(/\r\n/g, '\n')
+    .split(/\n+/)
+    .flatMap((line) => line.match(/[^.!?]+[.!?]?/g) || [])
+    .map((chunk) => chunk.trim())
+    .filter(Boolean);
+}
+
+function pickJoiner(targetProfile = {}, mod = {}) {
+  const mix = targetProfile.punctuationMix || {};
+  const functionWords = targetProfile.functionWordProfile || {};
+
+  if ((mix.strong || 0) >= 0.18 && (mix.strong || 0) >= (mix.comma || 0)) {
+    return '; ';
+  }
+
+  if ((mix.dash || 0) >= 0.14 && (mix.dash || 0) >= (mix.comma || 0)) {
+    return ' - ';
+  }
+
+  if ((functionWords.but || 0) > (functionWords.and || 0) + 0.01) {
+    return ', but ';
+  }
+
+  if ((mod.punc || 0) > 1) {
+    return '; ';
+  }
+
+  return ', and ';
+}
+
+function mergeSentencePairs(text = '', targetProfile = {}, strength = 0.76, mod = {}) {
+  let chunks = sentenceChunks(text);
+  if (chunks.length < 2) {
+    return text;
+  }
+
+  const currentAvg = avgSentenceLength(text);
+  const targetAvg = targetProfile.avgSentenceLength || currentAvg;
+  const delta = targetAvg - currentAvg;
+  const desiredMerges = Math.min(
+    chunks.length - 1,
+    Math.max(0, Math.round((delta / 4) * Math.max(0.6, strength)))
+  );
+
+  if (desiredMerges <= 0) {
+    return text;
+  }
+
+  const joiner = pickJoiner(targetProfile, mod);
+  const merged = [];
+  let index = 0;
+  let merges = 0;
+
+  while (index < chunks.length) {
+    if (merges < desiredMerges && index < chunks.length - 1) {
+      merged.push(`${stripTerminalPunctuation(chunks[index])}${joiner}${stripTerminalPunctuation(chunks[index + 1])}.`);
+      index += 2;
+      merges += 1;
+      continue;
+    }
+
+    merged.push(chunks[index]);
+    index += 1;
+  }
+
+  return merged.join(' ');
+}
+
+function splitLongSentences(text = '', targetProfile = {}, strength = 0.76) {
+  const currentAvg = avgSentenceLength(text);
+  const targetAvg = targetProfile.avgSentenceLength || currentAvg;
+  const delta = currentAvg - targetAvg;
+  const desiredSplits = Math.max(0, Math.round((delta / 4) * Math.max(0.6, strength)));
+
+  if (desiredSplits <= 0) {
+    return text;
+  }
+
+  let result = normalizeText(text);
+  const patterns = [
+    /;\s+/g,
+    /\s-\s+/g,
+    /,\s+(and|but|so|because|though|while|if|when|which|that)\s+/gi,
+    /:\s+/g,
+    /,\s+/g
+  ];
+  let splitsApplied = 0;
+
+  for (const pattern of patterns) {
+    result = result.replace(pattern, (match, connector) => {
+      if (splitsApplied >= desiredSplits) {
+        return match;
+      }
+
+      splitsApplied += 1;
+      return connector ? `. ${connector} ` : '. ';
+    });
+
+    if (splitsApplied >= desiredSplits) {
+      break;
+    }
+  }
+
+  return result;
+}
+
+function applyLineBreakTexture(text = '', targetProfile = {}, strength = 0.76) {
+  const current = lineBreakDensity(text);
+  const target = targetProfile.lineBreakDensity || 0;
+
+  if (target <= current + 0.04) {
+    return target < current - 0.04 ? text.replace(/\n+/g, ' ') : text;
+  }
+
+  let remaining = Math.max(1, Math.round((target - current) * 4 * Math.max(0.6, strength)));
+  return text.replace(/([.!?])\s+/g, (match, terminal) => {
+    if (remaining <= 0) {
+      return match;
+    }
+
+    remaining -= 1;
+    return `${terminal}\n`;
+  });
+}
+
+function applyContractionTexture(text = '', targetProfile = {}, mod = {}) {
+  const target = targetProfile.contractionDensity ?? 0;
+  const current = contractionDensity(text);
+  const direction = target > current + 0.01
+    ? 1
+    : target < current - 0.01
+      ? -1
+      : Math.sign(mod.cont || 0);
+
+  if (!direction) {
+    return text;
+  }
+
+  if (direction > 0) {
+    return text
+      .replace(/\bdo not\b/gi, "don't")
+      .replace(/\bdoes not\b/gi, "doesn't")
+      .replace(/\bdid not\b/gi, "didn't")
+      .replace(/\bcannot\b/gi, "can't")
+      .replace(/\bI am\b/g, "I'm")
+      .replace(/\bI have\b/gi, "I've")
+      .replace(/\bI will\b/gi, "I'll")
+      .replace(/\bI would\b/gi, "I'd")
+      .replace(/\bwe are\b/gi, "we're")
+      .replace(/\bthey are\b/gi, "they're")
+      .replace(/\byou are\b/gi, "you're")
+      .replace(/\bit is\b/gi, "it's")
+      .replace(/\bthat is\b/gi, "that's");
+  }
+
+  return text
+    .replace(/\bdon't\b/gi, 'do not')
+    .replace(/\bdoesn't\b/gi, 'does not')
+    .replace(/\bdidn't\b/gi, 'did not')
+    .replace(/\bcan't\b/gi, 'cannot')
+    .replace(/\bI'm\b/g, 'I am')
+    .replace(/\bI've\b/gi, 'I have')
+    .replace(/\bI'll\b/gi, 'I will')
+    .replace(/\bI'd\b/gi, 'I would')
+    .replace(/\bwe're\b/gi, 'we are')
+    .replace(/\bthey're\b/gi, 'they are')
+    .replace(/\byou're\b/gi, 'you are')
+    .replace(/\bit's\b/gi, 'it is')
+    .replace(/\bthat's\b/gi, 'that is');
+}
+
+function applyPunctuationTexture(text = '', targetProfile = {}, mod = {}) {
+  let result = text;
+  const mix = targetProfile.punctuationMix || {};
+
+  if ((mix.strong || 0) >= 0.18 || (mod.punc || 0) > 1) {
+    let swaps = Math.max(1, Math.round(((mix.strong || 0) + Math.max(0, mod.punc || 0) * 0.05) * 4));
+    result = result.replace(/,\s+/g, (match) => {
+      if (swaps <= 0) {
+        return match;
+      }
+
+      swaps -= 1;
+      return '; ';
+    });
+  } else if ((mix.strong || 0) <= 0.08 && (mod.punc || 0) < 0) {
+    result = result.replace(/;\s+/g, '. ');
+  }
+
+  if ((mix.dash || 0) >= 0.14) {
+    let dashSwap = 1;
+    result = result.replace(/,\s+/g, (match) => {
+      if (dashSwap <= 0) {
+        return match;
+      }
+
+      dashSwap -= 1;
+      return ' - ';
+    });
+  }
+
+  return result;
+}
+
 export function tokenize(text) {
   return normalizeText(text).toLowerCase().match(/[a-z0-9']+/g) || [];
 }
@@ -517,12 +727,16 @@ function normalizeShellMod(shell = {}) {
 
 export function applyCadenceToText(text = '', shell = {}) {
   const mod = normalizeShellMod(shell);
+  const strength = clamp(Number(shell?.strength ?? (shell?.profile ? 0.82 : 0.68)), 0, 1);
 
-  if (!text || (!mod.sent && !mod.cont && !mod.punc)) {
+  if (!text || ((!mod.sent && !mod.cont && !mod.punc) && !shell?.profile)) {
     return text;
   }
 
-  return transformText(text, mod);
+  return transformText(text, mod, {
+    profile: shell?.profile || null,
+    strength
+  });
 }
 
 export function compareTexts(a, b, options = {}) {
@@ -723,39 +937,35 @@ export function buildCadenceSignature(text = '', profile = extractCadenceProfile
   };
 }
 
-export function transformText(text, mod) {
+export function transformText(text, mod = {}, options = {}) {
   let result = normalizeText(text);
+  const strength = clamp(Number(options?.strength ?? 0.76), 0, 1);
+  const baseProfile = extractCadenceProfile(result);
+  const targetProfile = options?.profile
+    ? applyCadenceShell(baseProfile, {
+        mode: 'borrowed',
+        profile: options.profile,
+        strength
+      })
+    : applyCadenceMod(baseProfile, mod);
 
-  if (mod.sent > 0) {
-    result = result.replace(/([.!?])\s+/g, ', and ');
-  } else if (mod.sent < 0) {
-    result = result.replace(/, and /g, '. ').replace(/, but /g, '. ');
+  if ((targetProfile.avgSentenceLength || baseProfile.avgSentenceLength) > baseProfile.avgSentenceLength + 1.4 || (mod.sent || 0) > 0) {
+    result = mergeSentencePairs(result, targetProfile, strength, mod);
+  } else if ((targetProfile.avgSentenceLength || baseProfile.avgSentenceLength) < baseProfile.avgSentenceLength - 1.4 || (mod.sent || 0) < 0) {
+    result = splitLongSentences(result, targetProfile, strength);
   }
 
-  if (mod.cont > 0) {
-    result = result
-      .replace(/\bdo not\b/gi, "don't")
-      .replace(/\bcannot\b/gi, "can't")
-      .replace(/\bI am\b/g, "I'm")
-      .replace(/\bwe are\b/gi, "we're")
-      .replace(/\bthey are\b/gi, "they're");
-  } else if (mod.cont < 0) {
-    result = result
-      .replace(/\bdon't\b/gi, 'do not')
-      .replace(/\bcan't\b/gi, 'cannot')
-      .replace(/\bI'm\b/g, 'I am')
-      .replace(/\bwe're\b/gi, 'we are')
-      .replace(/\bthey're\b/gi, 'they are');
+  result = applyContractionTexture(result, targetProfile, mod);
+  result = applyPunctuationTexture(result, targetProfile, mod);
+  result = applyLineBreakTexture(result, targetProfile, strength);
+
+  if ((mod.punc || 0) < 0) {
+    result = result.replace(/[;:]+/g, '.').replace(/,+/g, ',');
   }
 
-  if (mod.punc > 0) {
-    result = result.replace(/\. /g, '; ');
-    if (!/[!?-]$/.test(result)) {
-      result += ' -';
-    }
-  } else if (mod.punc < 0) {
-    result = result.replace(/[;:-]/g, '.').replace(/,+/g, '.');
-  }
-
-  return result;
+  return result
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/[ ]{2,}/g, ' ')
+    .trim();
 }

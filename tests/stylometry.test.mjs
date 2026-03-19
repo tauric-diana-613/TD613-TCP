@@ -56,6 +56,17 @@ const transformedCadenceText = applyCadenceToText(
   'I do not know and I cannot stay.',
   { mode: 'borrowed', mod: { sent: -1, cont: 1, punc: 1 } }
 );
+const shellShiftSource = "I kept circling the point because I wasn't ready to say the hard part, and then I stalled again because the room went quiet.";
+const shellShiftedText = applyCadenceToText(
+  shellShiftSource,
+  {
+    mode: 'borrowed',
+    profile: borrowedProfile,
+    strength: 0.82
+  }
+);
+const shellShiftedProfile = extractCadenceProfile(shellShiftedText);
+const shellSourceProfile = extractCadenceProfile(shellShiftSource);
 
 assert.notEqual(swapped.avgSentenceLength, baseProfile.avgSentenceLength);
 assert.notEqual(swapped.contractionDensity, baseProfile.contractionDensity);
@@ -65,6 +76,13 @@ assert(typeof swapped.wordLengthProfile === 'object');
 assert(typeof swapped.charTrigramProfile === 'object');
 assert(transformedCadenceText.includes("don't") || transformedCadenceText.includes("can't"));
 assert.notEqual(transformedCadenceText, 'I do not know and I cannot stay.');
+assert.notEqual(shellShiftedText, shellShiftSource);
+assert(shellShiftedProfile.avgSentenceLength < shellSourceProfile.avgSentenceLength);
+assert(shellShiftedProfile.sentenceCount >= shellSourceProfile.sentenceCount);
+assert(
+  Math.abs(shellShiftedProfile.avgSentenceLength - borrowedProfile.avgSentenceLength) <
+  Math.abs(shellSourceProfile.avgSentenceLength - borrowedProfile.avgSentenceLength)
+);
 
 const signature = buildCadenceSignature(
   "I kept talking because the first version sounded too neat. Then I stopped, crossed it out, and started over."
