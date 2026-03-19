@@ -222,6 +222,7 @@ TCP is trying to make four conditions visible without overclaiming any of them:
 - All runtime logic is ESM JavaScript with zero dependencies.
 - The seeded opening pair is intentionally high-contrast and conversational so the model difference is visible on first load without sounding synthetic.
 - `Shell Duel` uses each bay's own raw text, so swap moves shell behavior without making the reference and probe samples collapse into a hidden shared source.
+- Shell transfer now includes a small connector-word synonym pack, so borrowed cadence can bend clause linkers like `because/since`, `but/though`, and `so/then` instead of only nudging punctuation.
 - `docs/INTERFACE_LEXICON.md` is the concise map for deck labels like mirror shield, custody badge, shell, harbor, and archive.
 - The physics layer is analogical, the stylometry layer is heuristic, and the harbor layer is policy-shaped.
 - Thresholds, labels, and harbor policies are still being tuned as part of the pilot.

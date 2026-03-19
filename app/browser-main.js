@@ -49,6 +49,7 @@
     containment: 1200,
     seal: 800
   };
+  const INGRESS_HOLD_GRACE_RATIO = 0.9;
   const INGRESS_MIRROR_OPTIONS = {
     off: {
       value: 'off',
@@ -112,6 +113,8 @@
       enabled: ingressEnabled,
       phase: ingressEnabled ? 'booting' : 'complete',
       holding: null,
+      holdStartedAt: 0,
+      holdPointerId: null,
       bypassVisible: false,
       currentMirror: null,
       currentBadge: null,
@@ -185,7 +188,20 @@
       ingress.holdTimer = null;
     }
 
+    const core = $('ingressCore');
+    if (core && ingress.holdPointerId != null) {
+      try {
+        if (core.hasPointerCapture && core.hasPointerCapture(ingress.holdPointerId)) {
+          core.releasePointerCapture(ingress.holdPointerId);
+        }
+      } catch {
+        // pointer capture can be unavailable during teardown
+      }
+    }
+
     ingress.holding = null;
+    ingress.holdStartedAt = 0;
+    ingress.holdPointerId = null;
     const bar = $('ingressProgressBar');
     if (bar) {
       bar.style.animation = 'none';
@@ -417,7 +433,7 @@
       renderIngress();
     }
 
-    window.setTimeout(() => {
+    ingress.revealTimer = window.setTimeout(() => {
       ingress.enabled = false;
       ingress.phase = 'complete';
       renderIngress();
@@ -441,13 +457,28 @@
     }
   }
 
-  function beginIngressHold() {
+  function beginIngressHold(event) {
     const duration = INGRESS_HOLD_MS[ingress.phase];
     if (!duration || ingress.holding || ingress.phase === 'complete') {
       return;
     }
 
+    if (event) {
+      event.preventDefault();
+    }
+
     ingress.holding = ingress.phase;
+    ingress.holdStartedAt = window.performance && typeof window.performance.now === 'function'
+      ? window.performance.now()
+      : Date.now();
+    ingress.holdPointerId = event && typeof event.pointerId === 'number' ? event.pointerId : null;
+    if (event && event.currentTarget && typeof event.currentTarget.setPointerCapture === 'function' && ingress.holdPointerId != null) {
+      try {
+        event.currentTarget.setPointerCapture(ingress.holdPointerId);
+      } catch {
+        // capture can fail on unsupported platforms; hold still works
+      }
+    }
     const bar = $('ingressProgressBar');
     if (bar) {
       bar.style.animation = 'none';
@@ -458,8 +489,23 @@
     ingress.holdTimer = window.setTimeout(() => completeIngressHold(ingress.phase), duration);
   }
 
-  function cancelIngressHold() {
+  function cancelIngressHold(event) {
     if (!ingress.holding) {
+      return;
+    }
+
+    if (event) {
+      event.preventDefault();
+    }
+
+    const phase = ingress.holding;
+    const duration = INGRESS_HOLD_MS[phase];
+    const now = window.performance && typeof window.performance.now === 'function'
+      ? window.performance.now()
+      : Date.now();
+    const elapsed = ingress.holdStartedAt ? now - ingress.holdStartedAt : 0;
+    if (duration && elapsed >= duration * INGRESS_HOLD_GRACE_RATIO) {
+      completeIngressHold(phase);
       return;
     }
 
@@ -1862,8 +1908,8 @@ DeltaE = ${ledger.reuse_gain}`;
   $('ingressBadgeCycle').addEventListener('click', cycleIngressBadge);
   $('ingressCore').addEventListener('pointerdown', beginIngressHold);
   $('ingressCore').addEventListener('pointerup', cancelIngressHold);
-  $('ingressCore').addEventListener('pointerleave', cancelIngressHold);
   $('ingressCore').addEventListener('pointercancel', cancelIngressHold);
+  $('ingressCore').addEventListener('lostpointercapture', cancelIngressHold);
   $('ingressCore').addEventListener('blur', cancelIngressHold);
   $('ingressCore').addEventListener('keydown', (event) => {
     if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {

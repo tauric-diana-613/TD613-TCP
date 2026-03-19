@@ -58,6 +58,10 @@ function matchCase(source = '', replacement = '') {
   return replacement;
 }
 
+function escapeRegex(value = '') {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function normalizeSentenceStarts(text = '') {
   return text
     .replace(/(^|[.!?]\s+|\n+)([a-z])/g, (match, prefix, letter) => `${prefix}${letter.toUpperCase()}`)
@@ -158,12 +162,16 @@ function splitLongSentences(text = '', targetProfile = {}, strength = 0.76) {
   let splitsApplied = 0;
 
   for (const pattern of patterns) {
-    result = result.replace(pattern, (match, connector) => {
+    result = result.replace(pattern, (match, connector, subject) => {
       if (splitsApplied >= desiredSplits) {
         return match;
       }
 
       splitsApplied += 1;
+      if (subject) {
+        return `. ${connector} ${subject} `;
+      }
+
       return connector ? `. ${connector} ` : '. ';
     });
 
@@ -248,8 +256,8 @@ function applyContractionTexture(text = '', targetProfile = {}, mod = {}) {
     .replace(/\bthat's\b/gi, 'that is');
 }
 
-function applyFunctionWordTexture(text = '', targetProfile = {}, strength = 0.76) {
-  const target = targetProfile.functionWordProfile || {};
+function applyFunctionWordTexture(text = '', targetProfile = {}, strength = 0.76, connectorProfile = null) {
+  const target = connectorProfile?.functionWordProfile || targetProfile.functionWordProfile || {};
   const current = functionWordProfile(text);
   let result = text;
   const limit = Math.max(1, Math.round(Math.max(0.9, strength) * 3));
@@ -265,6 +273,8 @@ function applyFunctionWordTexture(text = '', targetProfile = {}, strength = 0.76
   } else if ((target.that || 0) > (current.that || 0) + 0.004) {
     result = replaceLimited(result, /\bthis\b/gi, (match) => matchCase(match, 'that'), 1);
   }
+
+  result = applyConnectorSynonymPack(result, { functionWordProfile: target }, strength);
 
   return result;
 }
@@ -459,8 +469,57 @@ const FUNCTION_WORDS = [
   'a', 'an', 'the', 'and', 'or', 'but', 'if', 'that', 'this', 'it',
   'to', 'of', 'in', 'on', 'for', 'with', 'as', 'is', 'are', 'was',
   'were', 'be', 'been', 'i', 'you', 'we', 'they', 'he', 'she',
-  'my', 'your', 'our', 'their', 'not'
+  'my', 'your', 'our', 'their', 'not',
+  'because', 'since', 'though', 'yet', 'so', 'then',
+  'when', 'while', 'also', 'only', 'still', 'just', 'really', 'maybe'
 ];
+
+const CONNECTOR_SYNONYM_PACKS = [
+  { words: ['because', 'since'], threshold: 0.003 },
+  { words: ['but', 'though', 'yet'], threshold: 0.003 },
+  { words: ['so', 'then'], threshold: 0.003 },
+  { words: ['when', 'while'], threshold: 0.003 },
+  { words: ['this', 'that'], threshold: 0.004 }
+];
+
+function dominantProfileWord(profile = {}, words = []) {
+  return [...words]
+    .sort((a, b) => (profile[b] || 0) - (profile[a] || 0))[0] || words[0];
+}
+
+function applyConnectorSynonymPack(text = '', targetProfile = {}, strength = 0.76) {
+  const target = targetProfile.functionWordProfile || {};
+  let result = text;
+  let current = functionWordProfile(result);
+
+  for (const pack of CONNECTOR_SYNONYM_PACKS) {
+    const threshold = pack.threshold || 0.003;
+    const targetWord = dominantProfileWord(target, pack.words);
+    const targetValue = target[targetWord] || 0;
+
+    if (targetValue <= threshold) {
+      continue;
+    }
+
+    const donorWord = [...pack.words]
+      .filter((word) => word !== targetWord)
+      .sort((a, b) => (current[b] || 0) - (current[a] || 0))[0];
+    const donorValue = donorWord ? (current[donorWord] || 0) : 0;
+    const currentTargetValue = current[targetWord] || 0;
+
+    if (!donorWord || donorValue <= 0 || currentTargetValue >= targetValue - (threshold / 2)) {
+      continue;
+    }
+
+    const delta = targetValue - currentTargetValue;
+    const limit = Math.max(1, Math.round(Math.max(1, strength * 2) * (delta > 0.02 ? 2 : 1)));
+    const pattern = new RegExp(`\\b${escapeRegex(donorWord)}\\b`, 'gi');
+    result = replaceLimited(result, pattern, (match) => matchCase(match, targetWord), limit);
+    current = functionWordProfile(result);
+  }
+
+  return result;
+}
 
 export function functionWordProfile(text = '') {
   const words = tokenize(text);
@@ -884,13 +943,14 @@ function applySentenceTexture(text = '', currentProfile = {}, targetProfile = {}
 
 function finalizeTransformedText(text = '') {
   return normalizeSentenceStarts(text)
+    .replace(/([;:.!?]\s+)(and|but|though|yet|since|because|so|then|when|while)\s+\2\b/gi, '$1$2')
     .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .replace(/[ ]{2,}/g, ' ')
     .trim();
 }
 
-function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}) {
+function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null) {
   let result = text;
   const currentProfile = extractCadenceProfile(result);
   const targetCount = desiredSentenceCount(currentProfile, targetProfile);
@@ -910,7 +970,7 @@ function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, s
     ...mod,
     cont: Number(mod.cont || 0) || Math.sign((targetProfile.contractionDensity || 0) - (currentProfile.contractionDensity || 0))
   });
-  result = applyFunctionWordTexture(result, targetProfile, Math.min(1, strength + 0.18));
+  result = applyFunctionWordTexture(result, targetProfile, Math.min(1, strength + 0.18), connectorProfile);
   result = applyLineBreakTexture(result, targetProfile, Math.min(1, strength + 0.14));
 
   if (Math.abs((targetProfile.punctuationDensity || 0) - (baseProfile.punctuationDensity || 0)) > 0.02) {
@@ -1136,6 +1196,7 @@ export function transformText(text, mod = {}, options = {}) {
   let result = normalizeText(text);
   const strength = clamp(Number(options?.strength ?? 0.76), 0, 1);
   const baseProfile = extractCadenceProfile(result);
+  const connectorProfile = options?.profile || null;
   const targetProfile = options?.profile
     ? applyCadenceShell(baseProfile, {
         mode: 'borrowed',
@@ -1184,7 +1245,7 @@ export function transformText(text, mod = {}, options = {}) {
     const afterLineBreak = extractCadenceProfile(nextResult);
     const afterLineBreakGap = profileDeltaToTarget(afterLineBreak, targetProfile);
     if (afterLineBreakGap.functionWord >= 0.035) {
-      nextResult = applyFunctionWordTexture(nextResult, targetProfile, Math.min(1, strength + 0.1));
+      nextResult = applyFunctionWordTexture(nextResult, targetProfile, Math.min(1, strength + 0.1), connectorProfile);
     }
 
     const afterFunction = extractCadenceProfile(nextResult);
@@ -1217,7 +1278,7 @@ export function transformText(text, mod = {}, options = {}) {
   result = bestResult;
   const finalProfile = extractCadenceProfile(result);
   if (targetNeedsStructuralShift && structuralShiftDimensions(baseProfile, finalProfile) < 2) {
-    result = forceStructuralShift(result, baseProfile, targetProfile, strength, mod);
+    result = forceStructuralShift(result, baseProfile, targetProfile, strength, mod, connectorProfile);
   }
 
   return finalizeTransformedText(result);

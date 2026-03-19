@@ -109,7 +109,9 @@ body[data-ingress-phase="revealing"] .shell {
   z-index: 50;
   display: grid;
   place-items: center;
-  padding: 24px;
+  align-content: center;
+  overflow: auto;
+  padding: clamp(14px, 2vw, 24px);
   background:
     radial-gradient(circle at 50% 20%, rgba(116, 234, 255, 0.12), transparent 26%),
     radial-gradient(circle at 20% 80%, rgba(116, 234, 255, 0.08), transparent 18%),
@@ -151,16 +153,18 @@ body[data-ingress-phase="bypassed"] .ingress-membrane::after {
 
 .ingress-layer {
   position: relative;
-  width: min(1120px, 100%);
-  padding: 28px;
+  width: min(1040px, 100%);
+  max-height: calc(100dvh - clamp(22px, 4vh, 40px));
+  padding: clamp(18px, 2.4vw, 28px);
   border: 1px solid rgba(116, 234, 255, 0.18);
-  border-radius: 28px;
+  border-radius: clamp(22px, 3vw, 28px);
   background:
     linear-gradient(180deg, rgba(6, 17, 27, 0.97) 0%, rgba(2, 8, 13, 0.985) 100%);
   box-shadow:
     0 34px 80px rgba(0, 0, 0, 0.52),
     inset 0 0 0 1px rgba(116, 234, 255, 0.04);
-  overflow: hidden;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .ingress-layer::before,
@@ -275,15 +279,17 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
 
 .ingress-grid {
   display: grid;
-  grid-template-columns: minmax(300px, 0.92fr) minmax(0, 1.08fr);
+  grid-template-columns: minmax(280px, 0.92fr) minmax(320px, 1.08fr);
   gap: 20px;
   margin-top: 22px;
+  align-items: stretch;
 }
 
 .ingress-console,
 .ingress-ritual,
 .ingress-cue-card {
   position: relative;
+  min-width: 0;
   border: 1px solid rgba(116, 234, 255, 0.12);
   border-radius: 22px;
   background:
@@ -346,7 +352,7 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 360px;
+  min-height: clamp(248px, 34vh, 360px);
 }
 
 .ingress-rings {
@@ -424,6 +430,10 @@ body[data-ingress-holding="seal"] .ingress-ring-c {
   place-items: center;
   gap: 6px;
   text-align: center;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .ingress-core:disabled {
@@ -1496,6 +1506,33 @@ button:disabled {
 
   .masthead-copy::after {
     display: none;
+  }
+}
+
+@media (max-height: 920px) {
+  .ingress-membrane {
+    place-items: start center;
+    align-content: start;
+  }
+
+  .ingress-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ingress-layer {
+    max-height: calc(100dvh - 24px);
+  }
+
+  .ingress-heading {
+    margin-top: 14px;
+  }
+
+  .ingress-stage-rail {
+    margin-top: 14px;
+  }
+
+  .ingress-core-stage {
+    min-height: 260px;
   }
 }
 

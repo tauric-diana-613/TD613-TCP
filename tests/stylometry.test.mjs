@@ -93,6 +93,29 @@ const connectiveShifted = applyCadenceToText(
     strength: 0.82
   }
 );
+const connectorTarget = extractCadenceProfile(
+  'Since the room stayed loud, I kept the note. Though the line dragged, I stayed. Then I left that mark behind.'
+);
+const connectorSource = 'Because the room stayed loud, I kept the note, but the line dragged, so I left this mark behind.';
+const connectorShifted = applyCadenceToText(
+  connectorSource,
+  {
+    mode: 'borrowed',
+    profile: connectorTarget,
+    strength: 0.88
+  }
+);
+const connectorSourceProfile = extractCadenceProfile(connectorSource);
+const connectorShiftedProfile = extractCadenceProfile(connectorShifted);
+const connectorSourceToTarget = compareTexts(connectorSource, 'Since the room stayed loud, I kept the note. Though the line dragged, I stayed. Then I left that mark behind.', {
+  profileA: connectorSourceProfile,
+  profileB: connectorTarget
+}).functionWordDistance;
+const connectorShiftedToTarget = compareTexts(connectorShifted, 'Since the room stayed loud, I kept the note. Though the line dragged, I stayed. Then I left that mark behind.', {
+  profileA: connectorShiftedProfile,
+  profileB: connectorTarget
+}).functionWordDistance;
+const connectorShiftedLower = connectorShifted.toLowerCase();
 
 assert.notEqual(swapped.avgSentenceLength, baseProfile.avgSentenceLength);
 assert.notEqual(swapped.contractionDensity, baseProfile.contractionDensity);
@@ -105,6 +128,14 @@ assert.notEqual(transformedCadenceText, 'I do not know and I cannot stay.');
 assert.notEqual(shellShiftedText, shellShiftSource);
 assert.notEqual(stripSurface(connectiveShifted), stripSurface(connectiveSource));
 assert(shellShiftDeltaCount >= 2);
+assert.notEqual(stripSurface(connectorShifted), stripSurface(connectorSource));
+assert(
+  connectorShiftedLower.includes('since') ||
+  connectorShiftedLower.includes('though') ||
+  connectorShiftedLower.includes('then') ||
+  connectorShiftedLower.includes('that')
+);
+assert(connectorShiftedToTarget < connectorSourceToTarget);
 assert(shellShiftedProfile.avgSentenceLength < shellSourceProfile.avgSentenceLength);
 assert(shellShiftedProfile.sentenceCount >= shellSourceProfile.sentenceCount);
 assert(

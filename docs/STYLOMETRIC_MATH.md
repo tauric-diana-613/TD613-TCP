@@ -70,11 +70,13 @@ R_{\text{text}}=
 
 Those divisors are demo-scale normalizers. They are there to keep the browser model bounded and legible. They are not universal constants.
 
-The function-word profile is a normalized frequency vector over a fixed small list of high-frequency structural terms:
+The function-word profile is a normalized frequency vector over a fixed small list of high-frequency structural terms and short discourse connectors:
 
 ```math
 F_i = \frac{\#\{\text{function word } i\}}{\max(\text{word count},1)}
 ```
+
+In the current build, that inventory includes core articles, pronouns, and short connector words such as `because`, `since`, `though`, `yet`, `so`, `then`, `when`, `while`, `also`, `only`, `still`, `just`, `really`, and `maybe`. This is still a heuristic inventory, but it gives the engine a better read on short connective habits that often survive paraphrase.
 
 The word-length profile is a normalized histogram over the buckets `1-2`, `3-4`, `5-6`, `7-8`, and `9+`:
 
@@ -180,6 +182,18 @@ R=\frac{R_a+R_b}{2}
 All three outputs are clipped into `[0,1]`.
 
 There is also an explicit identity guard: if the normalized texts match exactly and every stylometric distance collapses to zero, then the current implementation forces `S=1` and `T=1` rather than letting floating-point heuristics under-score an exact match.
+
+## Shell-text transfer
+
+When a borrowed or persona shell is applied to text, TCP does not only bend scalar metrics. The transform layer now also carries a small connector-synonym pack over common clause-linking words. In practice that means shell transfer may shift connectors such as:
+
+- `because` ↔ `since`
+- `but` ↔ `though` / `yet`
+- `so` ↔ `then`
+- `when` ↔ `while`
+- `this` ↔ `that`
+
+Those substitutions are used as cadence texture, not content rewriting. They are constrained, limited, and run alongside sentence splitting/merging, contraction texture, line-break texture, and punctuation texture.
 
 ## Route pressure
 
