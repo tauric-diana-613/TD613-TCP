@@ -6,7 +6,7 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 
 | Term | In the app | In the model |
 | --- | --- | --- |
-| `Analyze Cadences` | Runs a solo or paired scan on the current text bays. | Recomputes stylometric features, route pressure, archive state, and harbor recommendation. |
+| `Analyze Cadences` | Runs a solo or paired scan on the current text bays and wakes the latent metric surfaces. | Recomputes stylometric features, route pressure, archive state, and harbor recommendation. |
 | `Swap Cadences` | Moves the cadence shells between the two bays without moving the text. | Tests whether shell-level stylometric bias changes the readout and `Shell Duel` when content stays fixed. |
 | `Save Cadence as Persona` | Captures the active bay as a reusable in-app shell. | Converts the current cadence profile into a reusable stylometric modifier. |
 | `Reset bay` | Restores the seeded opening pair and default switches. | Clears local shell state and returns the demo to native cadence mode. |
@@ -31,7 +31,7 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Harbor` | The recommended structured response once the field needs handling. | A provenance-constrained passage function selected from the harbor library. |
 | `Receipt stream` | The demo ledger preview in the UI. | A sample row showing how event, archive, burden, and harbor are recorded. |
 | `Shell Duel` | The side-by-side instrument on the `Deck` tab that stages the reference bay under its shell and the probe bay under its shell. | A direct view of shell transfer using each bay's transformed sample, heatmaps, signatures, and a pairwise delta strip. |
-| `Ingress Membrane` | The full-screen ritual that appears before the deck unlocks on normal visits. | A custody-handshake layer that sets containment, mirror posture, and badge state before the live shell opens. |
+| `Ingress Membrane` | The full-screen ritual that appears before the deck unlocks on normal visits. | A custody-handshake layer that sets containment, may withhold later gates behind a `frame` clue on constrained desktop viewports, and then resolves mirror posture and badge state before the live shell opens. |
 
 ## Shell language
 

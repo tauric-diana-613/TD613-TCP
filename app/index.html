@@ -23,12 +23,12 @@
         </div>
         <div class="ingress-heading-copy">
           <p id="ingressSubtitle" class="ingress-subtitle">Bring the deck across the threshold. The cue will tell you the rest.</p>
-          <p id="ingressFrameCue" class="ingress-frame-cue">Frame cue // if the lower gates vanish, expand the membrane to full screen.</p>
         </div>
       </div>
 
       <div class="ingress-stage-rail" aria-label="Ingress stages">
         <span id="ingressStageContainment" class="ingress-stage-chip">Containment</span>
+        <span id="ingressStageFrame" class="ingress-stage-chip">Frame</span>
         <span id="ingressStageMirror" class="ingress-stage-chip">Mirror</span>
         <span id="ingressStageBadge" class="ingress-stage-chip">Token</span>
         <span id="ingressStageSeal" class="ingress-stage-chip">Seal</span>
@@ -66,6 +66,10 @@
             <button id="ingressMirrorOpen" type="button" class="ingress-choice">clear</button>
           </div>
 
+          <div id="ingressFrameControls" class="ingress-choice-row ingress-choice-row-frame" hidden>
+            <button id="ingressWiden" type="button" class="ingress-widen">widen membrane</button>
+          </div>
+
           <div id="ingressBadgeControls" class="ingress-choice-row" hidden>
             <div id="ingressBadgeReadout" class="ingress-badge-readout">token // unset</div>
             <button id="ingressBadgeCycle" type="button" class="ingress-choice ingress-choice-rotator">advance token</button>
@@ -89,7 +93,7 @@
           <p id="heroLead" class="lead"></p>
         </div>
 
-      <aside class="readout-strip">
+      <aside class="readout-strip analysis-gated" data-latent-label="Latent readout // press Analyze Cadences">
         <article class="readout-card">
           <div class="console-label"><span class="glyph glyph-cyan" aria-hidden="true">⎔</span> Signal</div>
           <div id="heroSignalValue" class="console-value">--</div>
@@ -130,27 +134,30 @@
               <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true">⟢</span> Cadence deck</div>
               <h2>Bring two voices into the room</h2>
             </div>
-            <p class="section-note">This is the toy. Drop in a reference voice and a probe voice, then compare, swap shells, or save a live cadence as a persona.</p>
+            <p class="section-note">Wake the deck with a reference voice and a probe voice. Then compare, trade shells, or capture a live cadence as a persona.</p>
           </div>
 
-          <div class="input-grid">
-            <label id="voiceAField" class="field" for="voiceA">
-              <span class="field-label">Reference voice</span>
-              <span class="field-copy">The anchor sample you trust.</span>
-              <textarea id="voiceA"></textarea>
-              <div id="voiceAProfile" class="bay-profile"></div>
-            </label>
+          <div class="input-grid-wrap">
+            <button id="swapMedallion" type="button" class="swap-medallion" aria-label="Swap cadence shells" title="Swap cadence shells">⇆</button>
+            <div class="input-grid">
+              <label id="voiceAField" class="field" for="voiceA">
+                <span class="field-label">Reference voice</span>
+                <span class="field-copy">The anchor sample you trust.</span>
+                <textarea id="voiceA"></textarea>
+                <div id="voiceAProfile" class="bay-profile analysis-gated" data-latent-label="Cadence shell latent"></div>
+              </label>
 
-            <label id="voiceBField" class="field" for="voiceB">
-              <span class="field-label">Probe voice</span>
-              <span class="field-copy">The sample you want to test against the field.</span>
-              <textarea id="voiceB"></textarea>
-              <div id="voiceBProfile" class="bay-profile"></div>
-            </label>
+              <label id="voiceBField" class="field" for="voiceB">
+                <span class="field-label">Probe voice</span>
+                <span class="field-copy">The sample you want to test against the field.</span>
+                <textarea id="voiceB"></textarea>
+                <div id="voiceBProfile" class="bay-profile analysis-gated" data-latent-label="Cadence shell latent"></div>
+              </label>
+            </div>
           </div>
 
           <div class="action-row">
-            <button id="compareBtn" type="button">Analyze Cadences</button>
+            <button id="compareBtn" type="button" class="primary-cta">Analyze Cadences</button>
             <button id="swapCadencesBtn" type="button" class="secondary">Swap Cadences</button>
             <button id="savePersonaBtn" type="button" class="secondary">Save Cadence as Persona</button>
           </div>
@@ -160,7 +167,7 @@
             <div id="analysisStatus" class="analysis-status">Press Analyze Cadences to run a solo capture or compare both bays at once.</div>
           </div>
 
-          <section id="shellDuel" class="shell-duel" data-state="empty" aria-live="polite">
+          <section id="shellDuel" class="shell-duel analysis-gated" data-latent-label="Shell Duel latent // wake the deck" data-state="empty" aria-live="polite">
             <div class="duel-heading">
               <div>
                 <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">⟁</span> Shell Duel</div>
@@ -191,9 +198,9 @@
               <p class="section-note">These are the live metrics. Similarity, traceability, route pressure, and archive state stay distinct.</p>
             </div>
 
-            <p id="fieldNotice" class="field-notice">Bring one or two voices into the room. TCP will separate surface similarity, traceability, and route pressure.</p>
+            <p id="fieldNotice" class="field-notice analysis-gated" data-latent-label="Telemetry latent // wake the field">Bring one or two voices into the room. TCP will separate surface similarity, traceability, and route pressure.</p>
 
-            <div class="results">
+            <div class="results analysis-gated" data-latent-label="Metrics latent // press Analyze Cadences">
               <article id="similarityCard" class="metric">
                 <div id="similarityKey" class="key">Cadence similarity</div>
                 <div id="similarity" class="val">--</div>
@@ -226,9 +233,9 @@
               <p class="section-note">When the field needs handling, the recommendation surfaces here.</p>
             </div>
 
-            <div id="harborBox" class="harbor-box"></div>
+            <div id="harborBox" class="harbor-box analysis-gated" data-latent-label="Harbor latent // no route yet"></div>
 
-            <div class="ledger-stage">
+            <div class="ledger-stage analysis-gated" data-latent-label="Receipt stream latent">
               <div class="ledger-head">
                 <div>
                   <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">⋲</span> Receipt stream</div>

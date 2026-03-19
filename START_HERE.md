@@ -7,9 +7,9 @@ TCP is currently presented as an experimental research prototype and conceptual 
 ## First clicks
 
 1. Open `app/index.html`.
-2. Resolve the `Ingress Membrane` custody handshake. It stabilizes containment, asks for a mirror posture, asks for a custody badge, then dissolves into the live deck.
+2. Resolve the `Ingress Membrane` custody handshake. It stabilizes containment, may insert a `frame` gate on shorter desktop viewports, then asks for a mirror posture and a custody badge before dissolving into the live deck.
 3. Keep the seeded contrast pair for the first pass, or replace one or both samples with your own.
-4. Press `Analyze Cadences`.
+4. Press `Analyze Cadences`. The stylometric surfaces stay latent until this first explicit wake action.
 5. Try `Swap Cadences` to move cadence shells without moving text.
 6. Try `Save Cadence as Persona` to capture the active bay as an in-app shell.
 7. Read `Shell Duel`: the textareas stay raw, while the duel stages the reference bay under the reference shell and the probe bay under the probe shell, plus their heatmaps, 7-axis signatures, and the shell-to-shell delta strip.

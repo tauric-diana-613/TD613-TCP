@@ -20,9 +20,11 @@ The current `Deck` tab includes one flagship instrument: `Shell Duel`. It takes 
 
 This is where `Swap Cadences` becomes easiest to read. The raw text does not move, but the shell behavior becomes visible.
 
+Most of the metric-bearing surfaces now stay latent until the user explicitly presses `Analyze Cadences`. That includes the shell cards, `Shell Duel`, the readout metrics, and the harbor/ledger surfaces. The goal is to make the deck feel like an instrument that has to be intentionally woken, not a dashboard that arrives already solved.
+
 ## Ingress membrane
 
-Normal visits now open inside an `Ingress Membrane`: a short custody-handshake ritual that resolves containment, mirror posture, and custody badge before the live deck unlocks. The underlying app is already mounted, but it stays visually occluded and non-interactive until the membrane opens.
+Normal visits now open inside an `Ingress Membrane`: a short custody-handshake ritual that resolves containment, may withhold the lower gates behind a `frame` clue on shorter desktop viewports, then resolves mirror posture and custody badge before the live deck unlocks. The underlying app is already mounted, but it stays visually occluded and non-interactive until the membrane opens.
 
 The handshake carries its solved posture into the live shell:
 
