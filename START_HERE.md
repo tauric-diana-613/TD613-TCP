@@ -44,7 +44,15 @@ app/index.html?test-flight=2
 
 That run now also checks own-source `Shell Duel` rendering and duel-metric change under shell swap.
 
-Both test-flight routes auto-skip the ingress membrane.
+For the transfer benchmark, open:
+
+```text
+app/index.html?test-flight=transfer
+```
+
+That route checks one hard-contrast shell transfer directly and expects a `structural` result instead of punctuation-only drift.
+
+All test-flight routes auto-skip the ingress membrane.
 
 ## First files to read
 

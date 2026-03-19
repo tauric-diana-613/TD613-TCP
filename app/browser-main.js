@@ -759,6 +759,22 @@
     return labels[id] || id;
   }
 
+  function transferSummaryCopy(transfer, shifted = '') {
+    if (!transfer || transfer.transferClass === 'native') {
+      return 'Transfer stayed on source cadence.';
+    }
+
+    if (transfer.transferClass === 'rejected') {
+      return 'Transfer stayed on source cadence.';
+    }
+
+    if (transfer.transferClass === 'structural') {
+      return shifted ? `Transfer moved ${shifted}.` : 'Transfer landed a structural cadence shift.';
+    }
+
+    return 'Transfer stayed close to the source cadence.';
+  }
+
   function describeShellNote(voiceState) {
     if (voiceState.shell.mode === 'native') {
       return 'Native cadence only. Shell Duel will show the source text unchanged until another shell lands.';
@@ -769,17 +785,17 @@
       .map((dimension) => transferDimensionLabel(dimension))
       .slice(0, 3)
       .join(', ');
-    const gateNote = transfer?.notes?.[0] || '';
     const literalNote = transfer?.protectedLiteralCount
       ? `${transfer.protectedLiteralCount} literal${transfer.protectedLiteralCount === 1 ? '' : 's'} held fixed.`
       : '';
+    const transferSummary = transferSummaryCopy(transfer, shifted);
 
     if (voiceState.shell.mode === 'borrowed') {
-      return `Borrowed from the ${SLOT_SHORT[voiceState.shell.fromSlot]} bay. ${shifted ? `Transfer moved ${shifted}. ` : ''}${literalNote} ${gateNote}`.trim();
+      return `Borrowed from the ${SLOT_SHORT[voiceState.shell.fromSlot]} bay. ${transferSummary} ${literalNote}`.trim();
     }
 
     if (voiceState.shell.profile) {
-      return `Profile shell transfer live at ${Math.round((voiceState.shell.strength || 0.76) * 100)}%. ${shifted ? `Transfer moved ${shifted}. ` : ''}${literalNote} ${gateNote}`.trim();
+      return `Profile shell transfer live at ${Math.round((voiceState.shell.strength || 0.76) * 100)}%. ${transferSummary} ${literalNote}`.trim();
     }
 
     return `Applied shell bias: sent ${voiceState.shell.mod.sent >= 0 ? '+' : ''}${voiceState.shell.mod.sent}, cont ${voiceState.shell.mod.cont >= 0 ? '+' : ''}${voiceState.shell.mod.cont}, punc ${voiceState.shell.mod.punc >= 0 ? '+' : ''}${voiceState.shell.mod.punc}.`;
@@ -896,7 +912,7 @@
       .map((dimension) => transferDimensionLabel(dimension))
       .slice(0, 3)
       .join(', ');
-    const transferNote = side.transfer?.notes?.[0] || '';
+    const transferNote = transferSummaryCopy(side.transfer, transferShift);
 
     return `
       <article class="duel-side" data-slot="${side.slot}">
@@ -914,7 +930,7 @@
           <span class="duel-mini-metric">Contractions ${formatPct(profile.contractionDensity)}</span>
           <span class="duel-mini-metric">Recurrence ${formatPct(profile.recurrencePressure)}</span>
         </div>
-        <div class="duel-side-copy">${transferShift ? `Shifted ${escapeHtml(transferShift)}.` : 'Transfer stayed close to the source cadence.'} ${escapeHtml(transferNote)}</div>
+        <div class="duel-side-copy">${escapeHtml(transferNote)}</div>
         <div class="duel-visual-grid">
           <div class="duel-visual-card">
             <div class="duel-visual-label">Heatmap</div>
@@ -1943,6 +1959,65 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function runTestFlight(mode = 'smoke') {
+    if (mode === 'transfer') {
+      const source = "Honestly, I was not trying to make a speech because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, which is apparently what I do, I was still buying time.";
+      const donorText = "Need you to grab the charger on your way in. Front door sticks, so pull hard. If the downstairs light is off, knock twice. I'm in back.";
+      const donorProfile = extractCadenceProfile(donorText);
+      const transfer = buildCadenceTransfer(source, {
+        mode: 'borrowed',
+        profile: donorProfile,
+        strength: 0.9
+      });
+      const nonPunctuation = (transfer.changedDimensions || []).filter((dimension) => dimension !== 'punctuation-shape');
+      const structural = nonPunctuation.filter((dimension) => [
+        'sentence-mean',
+        'sentence-count',
+        'sentence-spread',
+        'contraction-posture',
+        'line-break-texture',
+        'connector-stance'
+      ].includes(dimension));
+      const report = {
+        mode,
+        source,
+        donorText,
+        transferClass: transfer.transferClass,
+        changedDimensions: transfer.changedDimensions || [],
+        passesApplied: transfer.passesApplied || [],
+        transformedText: transfer.text,
+        summary: {
+          allPassed:
+            transfer.transferClass === 'structural' &&
+            transfer.text !== source &&
+            nonPunctuation.length >= 2 &&
+            structural.length >= 1,
+          passCount:
+            [
+              transfer.transferClass === 'structural',
+              transfer.text !== source,
+              nonPunctuation.length >= 2,
+              structural.length >= 1
+            ].filter(Boolean).length,
+          caseCount: 4
+        }
+      };
+
+      let node = document.getElementById('testFlightReport');
+      if (!node) {
+        node = document.createElement('pre');
+        node.id = 'testFlightReport';
+        node.className = 'formula';
+        document.body.appendChild(node);
+      }
+
+      node.textContent = JSON.stringify(report, null, 2);
+      const summaryText = `Transfer flight // ${report.summary.allPassed ? 'passed' : 'check failed'} ${report.summary.passCount}/${report.summary.caseCount}`;
+      document.body.dataset.testFlightStatus = report.summary.allPassed ? 'passed' : 'complete';
+      document.body.dataset.testFlightSummary = summaryText.toLowerCase().replace(/[^a-z0-9/ ]/gi, '');
+      $('analysisStatus').textContent = summaryText;
+      return;
+    }
+
     const initialState = captureFlightState();
     const beforePersonaCount = document.querySelectorAll('.persona').length;
     const report = {
@@ -2272,6 +2347,10 @@ DeltaE = ${ledger.reuse_gain}`;
 
   if (testFlightMode === '2') {
     window.setTimeout(() => runTestFlight('full'), 120);
+  }
+
+  if (testFlightMode === 'transfer') {
+    window.setTimeout(() => runTestFlight('transfer'), 120);
   }
 
   if (ingressFlightMode) {

@@ -185,7 +185,7 @@ There is also an explicit identity guard: if the normalized texts match exactly 
 
 ## Shell-text transfer
 
-The current transfer contract is `buildCadenceTransfer(text, shell, options?)`. It returns the transformed text together with source, target, and output profiles, changed dimensions, protected-literal count, pass log, quality-gate result, and transfer notes.
+The current transfer contract is `buildCadenceTransfer(text, shell, options?)`. It returns the transformed text together with source, target, and output profiles, changed dimensions, protected-literal count, pass log, `transferClass`, quality-gate result, and transfer notes.
 
 `applyCadenceToText(text, shell)` remains as the compatibility wrapper that returns only the transformed text.
 
@@ -221,6 +221,13 @@ The lexicon pack remains intentionally narrow. It operates over structural or st
 - `that is / that's`
 
 The quality gate rejects a transfer if protected literals fail to restore, duplicate chunks appear, connector sequences repeat, or a materially different target collapses into punctuation-only drift. In those cases TCP falls back to the safer result rather than presenting a weak rewrite as a meaningful cadence shift.
+
+The transfer classifier is intentionally small:
+
+- `native` - no shell rewrite was applied
+- `weak` - the source and donor were close enough that the transfer stayed subtle
+- `structural` - at least one structural cadence dimension plus one additional non-punctuation dimension moved
+- `rejected` - the donor/source gap was material, but the engine could not land a safe structural rewrite
 
 ## Route pressure
 

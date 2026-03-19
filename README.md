@@ -197,6 +197,14 @@ app/index.html?test-flight=2
 
 The current flight also verifies `Shell Duel`: native-vs-native identity, own-source duel rendering, and shell-swap delta changes.
 
+For the dedicated hard-contrast transfer benchmark, open:
+
+```text
+app/index.html?test-flight=transfer
+```
+
+That route asserts that a materially different borrowed shell lands as a structural transfer rather than a punctuation-only drift.
+
 Both built-in test flights auto-skip the ingress membrane so the browser harness can run unattended.
 
 ### Option 4: validate the engine
@@ -223,6 +231,7 @@ TCP is trying to make four conditions visible without overclaiming any of them:
 - The seeded opening pair is intentionally high-contrast and conversational so the model difference is visible on first load without sounding synthetic.
 - `Shell Duel` uses each bay's own raw text, so swap moves shell behavior without making the reference and probe samples collapse into a hidden shared source.
 - Shell transfer is now a deterministic protected rewrite pass: it preserves literals like numbers, quoted fragments, emails, URLs, and IDs while bending cadence through sentence structure, connector/stance words, contraction posture, line breaks, and punctuation finish.
+- `buildCadenceTransfer(...)` now classifies results as `native`, `weak`, `structural`, or `rejected` so the app does not overclaim decorative rewrites as meaningful transfer.
 - `docs/INTERFACE_LEXICON.md` is the concise map for deck labels like mirror shield, custody badge, shell, harbor, and archive.
 - The physics layer is analogical, the stylometry layer is heuristic, and the harbor layer is policy-shaped.
 - Thresholds, labels, and harbor policies are still being tuned as part of the pilot.
