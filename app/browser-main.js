@@ -156,14 +156,6 @@
     };
   }
 
-  function ingressFrameResolved() {
-    return true;
-  }
-
-  function maybeResolveIngressFrame() {
-    return false;
-  }
-
   function setMetricTone(id, tone) {
     const card = $(id);
     if (card) {
@@ -238,7 +230,7 @@
     }, 1400);
   }
 
-  function setSwapStatusMessage(baseMessage) {
+  /* legacy swap cue helpers removed
     const cueMessage = `${baseMessage} ↓ Shell Duel updated below.`;
     clearStatusCueTimer();
     setStatusMessage(cueMessage);
@@ -251,7 +243,7 @@
     }, 1800);
   }
 
-  function setSwapStatusMessage(baseMessage) {
+  function setSwapStatusMessageLegacyCue(baseMessage) {
     clearStatusCueTimer();
     setStatusMessage(baseMessage);
     const cue = $('analysisStatusCue');
@@ -268,6 +260,7 @@
       statusCueTimer = null;
     }, 1800);
   }
+  */
 
   function setAnalysisRevealState(revealed) {
     analysisRevealed = revealed;
@@ -582,7 +575,6 @@
     document.body.dataset.ingressRotating = ingress.rotatePointerId != null ? 'true' : 'false';
     document.body.dataset.ingressTargetMirror = ingress.target.mirrorLogic;
     document.body.dataset.ingressTargetBadge = ingress.target.badge;
-    document.body.dataset.ingressFrameResolved = ingressFrameResolved() ? 'true' : 'false';
   }
 
   function renderIngress() {
@@ -601,7 +593,6 @@
     overlay.dataset.targetBadge = ingress.target.badge;
     overlay.dataset.currentMirror = ingress.currentMirror || 'unset';
     overlay.dataset.currentBadge = ingress.currentBadge || 'unset';
-    overlay.dataset.frameResolved = ingressFrameResolved() ? 'true' : 'false';
     if (shell) {
       shell.inert = ingress.phase !== 'complete';
       shell.setAttribute('aria-hidden', ingress.phase === 'complete' ? 'false' : 'true');
@@ -621,19 +612,11 @@
     let coreLabel = 'Stand by';
     let coreGlyph = '⟐';
     let coreEnabled = false;
-    const frameControls = $('ingressFrameControls');
-    const widen = $('ingressWiden');
     const sealTrack = $('ingressSealTrack');
 
-    if (frameControls) {
-      frameControls.hidden = true;
-    }
     $('ingressMirrorControls').hidden = true;
     $('ingressBadgeControls').hidden = true;
     $('ingressBadgeReadout').textContent = `token // ${currentBadge ? currentBadge.label : 'unset'}`;
-    if (widen) {
-      widen.hidden = true;
-    }
     if (sealTrack) {
       const progress = Math.max(0, Math.min(1, ingress.rotateProgress / INGRESS_SEAL_ARC_DEG));
       sealTrack.style.setProperty('--seal-progress', `${progress.toFixed(3)}turn`);
@@ -652,20 +635,6 @@
       coreLabel = 'stabilize';
       coreGlyph = '◎';
       coreEnabled = true;
-    } else if (ingress.phase === 'frame') {
-      phaseLabel = 'Gate // frame';
-      cueGlyph = '[]';
-      cueLabel = 'lower gates withheld';
-      cueCopy = 'The membrane has not widened enough to declare the next posture.';
-      status = 'Widen the frame until the lower gates resolve.';
-      coreLabel = 'frame withheld';
-      coreGlyph = '[]';
-      if (frameControls) {
-        frameControls.hidden = false;
-      }
-      if (widen) {
-        widen.hidden = false;
-      }
     } else if (ingress.phase === 'mirror') {
       phaseLabel = 'Gate // mirror';
       cueGlyph = mirrorTarget.glyph;
@@ -736,9 +705,6 @@
     $('ingressMirrorOpen').dataset.feedback = ingress.currentMirror === 'on' ? (ingress.mirrorFeedback || 'idle') : 'idle';
     $('ingressMirrorArmed').disabled = ingress.phase !== 'mirror' || ingress.resolvingGate === 'mirror';
     $('ingressMirrorOpen').disabled = ingress.phase !== 'mirror' || ingress.resolvingGate === 'mirror';
-    if (widen) {
-      widen.disabled = ingress.phase !== 'frame' || ingress.resolvingGate === 'frame';
-    }
     $('ingressBadgeCycle').dataset.ready = ingress.currentBadge === ingress.target.badge;
     $('ingressBadgeCycle').dataset.feedback = ingress.badgeFeedback || 'idle';
     $('ingressBadgeCycle').disabled = ingress.phase !== 'badge' || ingress.resolvingGate === 'badge';
@@ -752,9 +718,6 @@
     clearIngressHold();
     clearIngressSealRotation();
     clearIngressFeedback();
-    if (phase === 'frame' && ingressFrameResolved()) {
-      ingress.phase = 'mirror';
-    }
     renderIngress();
   }
 
@@ -932,39 +895,6 @@
     }
 
     finalizeIngress('bypass');
-  }
-
-  async function widenIngressMembrane() {
-    if (ingress.phase !== 'frame' || ingress.resolvingGate === 'frame') {
-      return;
-    }
-
-    if (ingressFrameResolved()) {
-      maybeResolveIngressFrame();
-      return;
-    }
-
-    const target = document.documentElement;
-    if (!target || typeof target.requestFullscreen !== 'function') {
-      return;
-    }
-
-    ingress.resolvingGate = 'frame';
-    renderIngress();
-
-    try {
-      await target.requestFullscreen();
-    } catch {
-      // fullscreen can fail silently; window resizing still resolves the gate
-    } finally {
-      if (ingress.resolvingGate === 'frame') {
-        ingress.resolvingGate = null;
-      }
-
-      if (!maybeResolveIngressFrame()) {
-        renderIngress();
-      }
-    }
   }
 
   function loadSavedPersonas() {
@@ -2123,6 +2053,9 @@ DeltaE = ${ledger.reuse_gain}`;
       heroHarbor: readText('heroHarborValue'),
       routeState: readText('routeState'),
       status: readText('analysisStatus'),
+      statusBase: readText('analysisStatusBase'),
+      statusCue: readText('analysisStatusCue'),
+      statusCueVisible: !$('analysisStatusCue').hidden,
       swapMedallionDisabled: $('swapMedallion').disabled,
       duelState: $('shellDuel').dataset.state,
       duelSource: readText('duelSourceStatus'),
@@ -2468,7 +2401,8 @@ DeltaE = ${ledger.reuse_gain}`;
           readDeckSnapshot().duelReferenceSample !== ownSourceSnapshot.duelReferenceSample ||
           readDeckSnapshot().duelProbeSample !== ownSourceSnapshot.duelProbeSample,
         personaStatusChanged: $('personaStatus').textContent.trim() !== assignedLabelBeforeSwap,
-        cueVisible: $('analysisStatus').textContent.toLowerCase().includes('shell duel updated below')
+        cueVisible: readDeckSnapshot().statusCueVisible,
+        cueText: readDeckSnapshot().statusCue
       };
 
       $('savePersonaBtn').click();
@@ -2591,14 +2525,13 @@ DeltaE = ${ledger.reuse_gain}`;
               report.savePersona.savedPersonaAdded &&
               report.textSwapMedallion.voiceASwapped &&
               report.textSwapMedallion.voiceBSwapped &&
-              report.textSwapMedallion.metricsChanged &&
-              report.textSwapMedallion.duelChanged &&
               report.textSwapMedallion.duelSamplesChanged &&
               report.ownSourceDuel.referenceOwnSource &&
               report.ownSourceDuel.probeOwnSource &&
               report.ownSourceDuel.samplesDistinct &&
               report.swapCadences.duelSamplesChanged &&
               report.swapCadences.cueVisible &&
+              report.swapCadences.cueText.toLowerCase().includes('shell duel updated below') &&
               report.soloScan.similarityKey === 'Scan mode' &&
               report.baseline.snapshot.duelState === 'live' &&
               report.viewTabs.activeTab === 'readout',
