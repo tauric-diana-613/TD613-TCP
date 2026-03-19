@@ -49,11 +49,11 @@
   const INGRESS_REVEAL_MS = 1500;
   const INGRESS_BOOT_MS = 680;
   const INGRESS_HOLD_MS = {
-    containment: 1200,
-    seal: 800
+    containment: 1200
   };
   const INGRESS_HOLD_GRACE_RATIO = 0.9;
-  const FRAME_GATE_MIN_HEIGHT = 900;
+  const INGRESS_SEAL_ARC_DEG = 96;
+  const INGRESS_SEAL_REVERSE_TOLERANCE_DEG = 20;
   const INGRESS_MIRROR_OPTIONS = {
     off: {
       value: 'off',
@@ -73,7 +73,7 @@
     { value: 'badge.buffer', label: 'buffer', cue: 'custody buffer', glyph: '⬒' },
     { value: 'badge.branch', label: 'branch', cue: 'candidate branch', glyph: '⟉' }
   ];
-  const INGRESS_STAGES = ['containment', 'frame', 'mirror', 'badge', 'seal'];
+  const INGRESS_STAGES = ['containment', 'mirror', 'badge', 'seal'];
 
   function resolveIngressMirrorTarget(value) {
     return Object.prototype.hasOwnProperty.call(INGRESS_MIRROR_OPTIONS, value) ? value : null;
@@ -97,7 +97,6 @@
   };
   let savedPersonas = loadSavedPersonas();
   let ingress = createIngressState();
-  let ingressFrameOverride = null;
 
   $('heroLead').textContent = microcopy.hero_lead;
   $('voiceA').value = defaults.voiceA;
@@ -139,6 +138,11 @@
       resolvingGate: null,
       mirrorFeedback: null,
       badgeFeedback: null,
+      rotatePointerId: null,
+      rotateStartAngle: null,
+      rotateLastAngle: null,
+      rotateProgress: 0,
+      rotateBacktrack: 0,
       holdTimer: null,
       bootTimer: null,
       bypassTimer: null,
@@ -153,19 +157,10 @@
   }
 
   function ingressFrameResolved() {
-    if (typeof ingressFrameOverride === 'boolean') {
-      return ingressFrameOverride;
-    }
-
-    return Boolean(document.fullscreenElement) || window.innerHeight >= FRAME_GATE_MIN_HEIGHT;
+    return true;
   }
 
   function maybeResolveIngressFrame() {
-    if (ingress.phase === 'frame' && ingressFrameResolved()) {
-      setIngressPhase('mirror');
-      return true;
-    }
-
     return false;
   }
 
@@ -206,7 +201,17 @@
   }
 
   function setStatusMessage(message) {
-    $('analysisStatus').textContent = message;
+    const base = $('analysisStatusBase');
+    const cue = $('analysisStatusCue');
+    if (base) {
+      base.textContent = message;
+    } else {
+      $('analysisStatus').textContent = message;
+    }
+    if (cue) {
+      cue.hidden = true;
+      cue.textContent = '';
+    }
   }
 
   function clearStatusCueTimer() {
@@ -246,6 +251,24 @@
     }, 1800);
   }
 
+  function setSwapStatusMessage(baseMessage) {
+    clearStatusCueTimer();
+    setStatusMessage(baseMessage);
+    const cue = $('analysisStatusCue');
+    if (cue) {
+      cue.textContent = 'â†“ Shell Duel updated below';
+      cue.hidden = false;
+    }
+    pulseShellDuel();
+    statusCueTimer = window.setTimeout(() => {
+      if (cue) {
+        cue.hidden = true;
+        cue.textContent = '';
+      }
+      statusCueTimer = null;
+    }, 1800);
+  }
+
   function setAnalysisRevealState(revealed) {
     analysisRevealed = revealed;
     document.body.dataset.analysisRevealed = revealed ? 'true' : 'false';
@@ -253,6 +276,24 @@
 
   function renderActiveBayStatus() {
     $('activeBayStatus').textContent = `Active bay // ${SLOT_LABELS[activeVoice].toLowerCase()}`;
+  }
+
+  function setSwapStatusMessage(baseMessage) {
+    clearStatusCueTimer();
+    setStatusMessage(baseMessage);
+    const cue = $('analysisStatusCue');
+    if (cue) {
+      cue.textContent = '\u2193 Shell Duel updated below';
+      cue.hidden = false;
+    }
+    pulseShellDuel();
+    statusCueTimer = window.setTimeout(() => {
+      if (cue) {
+        cue.hidden = true;
+        cue.textContent = '';
+      }
+      statusCueTimer = null;
+    }, 1800);
   }
 
   function ingressMirrorOption(value) {
@@ -291,6 +332,170 @@
     }
   }
 
+  function clearIngressSealRotation() {
+    const core = $('ingressCore');
+    if (core && ingress.rotatePointerId != null) {
+      try {
+        if (core.hasPointerCapture && core.hasPointerCapture(ingress.rotatePointerId)) {
+          core.releasePointerCapture(ingress.rotatePointerId);
+        }
+      } catch {
+        // capture can be unavailable during teardown
+      }
+    }
+
+    ingress.rotatePointerId = null;
+    ingress.rotateStartAngle = null;
+    ingress.rotateLastAngle = null;
+    ingress.rotateProgress = 0;
+    ingress.rotateBacktrack = 0;
+  }
+
+  function normalizeIngressAngleDelta(delta) {
+    let value = delta;
+    while (value > 180) {
+      value -= 360;
+    }
+    while (value < -180) {
+      value += 360;
+    }
+    return value;
+  }
+
+  function getIngressCoreAngle(event) {
+    const core = $('ingressCore');
+    if (!core || !event || typeof event.clientX !== 'number' || typeof event.clientY !== 'number') {
+      return null;
+    }
+
+    const rect = core.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const dx = event.clientX - centerX;
+    const dy = event.clientY - centerY;
+    return Math.atan2(dy, dx) * (180 / Math.PI);
+  }
+
+  function beginIngressSealRotation(event) {
+    if (ingress.phase !== 'seal' || ingress.rotatePointerId != null) {
+      return;
+    }
+
+    if (event) {
+      event.preventDefault();
+    }
+
+    const angle = getIngressCoreAngle(event);
+    if (angle == null) {
+      return;
+    }
+
+    ingress.rotatePointerId = event && typeof event.pointerId === 'number' ? event.pointerId : -1;
+    ingress.rotateStartAngle = angle;
+    ingress.rotateLastAngle = angle;
+    ingress.rotateProgress = 0;
+    ingress.rotateBacktrack = 0;
+
+    if (event && event.currentTarget && typeof event.currentTarget.setPointerCapture === 'function' && ingress.rotatePointerId != null) {
+      try {
+        event.currentTarget.setPointerCapture(ingress.rotatePointerId);
+      } catch {
+        // capture can fail on unsupported platforms; rotation can still work
+      }
+    }
+
+    renderIngress();
+  }
+
+  function updateIngressSealRotation(event) {
+    if (ingress.phase !== 'seal' || ingress.rotatePointerId == null) {
+      return;
+    }
+
+    if (event && typeof event.pointerId === 'number' && event.pointerId !== ingress.rotatePointerId) {
+      return;
+    }
+
+    const angle = getIngressCoreAngle(event);
+    if (angle == null || ingress.rotateLastAngle == null) {
+      return;
+    }
+
+    const delta = normalizeIngressAngleDelta(angle - ingress.rotateLastAngle);
+    ingress.rotateLastAngle = angle;
+
+    if (delta > 0) {
+      ingress.rotateProgress = Math.min(INGRESS_SEAL_ARC_DEG, ingress.rotateProgress + delta);
+      ingress.rotateBacktrack = Math.max(0, ingress.rotateBacktrack - delta * 0.5);
+    } else if (delta < 0) {
+      ingress.rotateBacktrack += Math.abs(delta);
+      if (ingress.rotateBacktrack > INGRESS_SEAL_REVERSE_TOLERANCE_DEG) {
+        clearIngressSealRotation();
+        renderIngress();
+        return;
+      }
+      ingress.rotateProgress = Math.max(0, ingress.rotateProgress + delta);
+    }
+
+    if (ingress.rotateProgress >= INGRESS_SEAL_ARC_DEG) {
+      clearIngressSealRotation();
+      finalizeIngress('solved');
+      return;
+    }
+
+    renderIngress();
+  }
+
+  function endIngressSealRotation(event) {
+    if (ingress.phase !== 'seal' || ingress.rotatePointerId == null) {
+      return;
+    }
+
+    if (event && typeof event.pointerId === 'number' && event.pointerId !== ingress.rotatePointerId) {
+      return;
+    }
+
+    if (event) {
+      event.preventDefault();
+    }
+
+    clearIngressSealRotation();
+    renderIngress();
+  }
+
+  function handleIngressCorePointerDown(event) {
+    if (ingress.phase === 'seal') {
+      beginIngressSealRotation(event);
+      return;
+    }
+
+    beginIngressHold(event);
+  }
+
+  function handleIngressCorePointerMove(event) {
+    if (ingress.phase === 'seal') {
+      updateIngressSealRotation(event);
+    }
+  }
+
+  function handleIngressCorePointerUp(event) {
+    if (ingress.phase === 'seal') {
+      endIngressSealRotation(event);
+      return;
+    }
+
+    cancelIngressHold(event);
+  }
+
+  function handleIngressCorePointerCancel(event) {
+    if (ingress.phase === 'seal') {
+      endIngressSealRotation(event);
+      return;
+    }
+
+    cancelIngressHold(event);
+  }
+
   function clearIngressFeedback() {
     if (ingress.feedbackTimer) {
       window.clearTimeout(ingress.feedbackTimer);
@@ -327,6 +532,7 @@
 
   function clearIngressTimers() {
     clearIngressHold();
+    clearIngressSealRotation();
     clearIngressFeedback();
 
     if (ingress.bootTimer) {
@@ -373,6 +579,7 @@
     document.body.dataset.ingressLocked = ingress.phase === 'complete' ? 'false' : 'true';
     document.body.dataset.ingressHolding = ingress.holding || 'none';
     document.body.dataset.ingressResolving = ingress.resolvingGate || 'none';
+    document.body.dataset.ingressRotating = ingress.rotatePointerId != null ? 'true' : 'false';
     document.body.dataset.ingressTargetMirror = ingress.target.mirrorLogic;
     document.body.dataset.ingressTargetBadge = ingress.target.badge;
     document.body.dataset.ingressFrameResolved = ingressFrameResolved() ? 'true' : 'false';
@@ -414,12 +621,25 @@
     let coreLabel = 'Stand by';
     let coreGlyph = '⟐';
     let coreEnabled = false;
+    const frameControls = $('ingressFrameControls');
+    const widen = $('ingressWiden');
+    const sealTrack = $('ingressSealTrack');
 
-    $('ingressFrameControls').hidden = true;
+    if (frameControls) {
+      frameControls.hidden = true;
+    }
     $('ingressMirrorControls').hidden = true;
     $('ingressBadgeControls').hidden = true;
     $('ingressBadgeReadout').textContent = `token // ${currentBadge ? currentBadge.label : 'unset'}`;
-    $('ingressWiden').hidden = true;
+    if (widen) {
+      widen.hidden = true;
+    }
+    if (sealTrack) {
+      const progress = Math.max(0, Math.min(1, ingress.rotateProgress / INGRESS_SEAL_ARC_DEG));
+      sealTrack.style.setProperty('--seal-progress', `${progress.toFixed(3)}turn`);
+      sealTrack.dataset.active = ingress.phase === 'seal' ? 'true' : 'false';
+      sealTrack.dataset.rotating = ingress.rotatePointerId != null ? 'true' : 'false';
+    }
 
     if (ingress.phase === 'containment') {
       phaseLabel = 'Gate // containment';
@@ -440,8 +660,12 @@
       status = 'Widen the frame until the lower gates resolve.';
       coreLabel = 'frame withheld';
       coreGlyph = '[]';
-      $('ingressFrameControls').hidden = false;
-      $('ingressWiden').hidden = false;
+      if (frameControls) {
+        frameControls.hidden = false;
+      }
+      if (widen) {
+        widen.hidden = false;
+      }
     } else if (ingress.phase === 'mirror') {
       phaseLabel = 'Gate // mirror';
       cueGlyph = mirrorTarget.glyph;
@@ -471,12 +695,12 @@
     } else if (ingress.phase === 'seal') {
       phaseLabel = 'Gate // seal';
       cueGlyph = '⟐';
-      cueLabel = 'commit resolved posture';
-      cueCopy = `Resolved posture: ${mirrorTarget.cue} / ${badgeTarget.label} / containment stable. Only a solved posture survives the seal.`;
-      status = ingress.holding === 'seal'
-        ? 'Commit window open. Do not break contact.'
-        : 'Commit the resolved posture.';
-      coreLabel = 'commit route';
+      cueLabel = 'close the seal arc';
+      cueCopy = `Resolved posture: ${mirrorTarget.cue} / ${badgeTarget.label} / containment stable. Turn the core clockwise until the outer arc closes.`;
+      status = ingress.rotatePointerId != null
+        ? 'Keep turning until the ring seals.'
+        : 'Turn the core clockwise to close the ring.';
+      coreLabel = 'rotate to seal';
       coreGlyph = '⟐';
       coreEnabled = true;
     } else if (ingress.phase === 'revealing') {
@@ -512,7 +736,9 @@
     $('ingressMirrorOpen').dataset.feedback = ingress.currentMirror === 'on' ? (ingress.mirrorFeedback || 'idle') : 'idle';
     $('ingressMirrorArmed').disabled = ingress.phase !== 'mirror' || ingress.resolvingGate === 'mirror';
     $('ingressMirrorOpen').disabled = ingress.phase !== 'mirror' || ingress.resolvingGate === 'mirror';
-    $('ingressWiden').disabled = ingress.phase !== 'frame' || ingress.resolvingGate === 'frame';
+    if (widen) {
+      widen.disabled = ingress.phase !== 'frame' || ingress.resolvingGate === 'frame';
+    }
     $('ingressBadgeCycle').dataset.ready = ingress.currentBadge === ingress.target.badge;
     $('ingressBadgeCycle').dataset.feedback = ingress.badgeFeedback || 'idle';
     $('ingressBadgeCycle').disabled = ingress.phase !== 'badge' || ingress.resolvingGate === 'badge';
@@ -524,6 +750,7 @@
   function setIngressPhase(phase) {
     ingress.phase = phase;
     clearIngressHold();
+    clearIngressSealRotation();
     clearIngressFeedback();
     if (phase === 'frame' && ingressFrameResolved()) {
       ingress.phase = 'mirror';
@@ -598,12 +825,7 @@
     clearIngressHold();
 
     if (phase === 'containment') {
-      setIngressPhase(ingressFrameResolved() ? 'mirror' : 'frame');
-      return;
-    }
-
-    if (phase === 'seal') {
-      finalizeIngress('solved');
+      setIngressPhase('mirror');
     }
   }
 
@@ -1276,6 +1498,8 @@
   function updateControls() {
     $('compareBtn').textContent = 'Analyze Cadences';
     $('swapCadencesBtn').textContent = 'Swap Cadences';
+    $('swapMedallion').setAttribute('aria-label', 'Swap bay text');
+    $('swapMedallion').title = 'Swap bay text';
     $('savePersonaBtn').textContent = `Save Cadence as Persona // ${SLOT_SHORT[activeVoice]}`;
     $('toggleMirrorBtn').textContent = MIRROR_COPY[mirrorLogic].button;
     $('badgeBtn').textContent = `Cycle custody badge // ${BADGE_LABELS[badge] || badge}`;
@@ -1750,6 +1974,28 @@ DeltaE = ${ledger.reuse_gain}`;
     setSwapStatusMessage(`Cadence shells swapped. Each bay kept its own raw text and took the other bay's shell. Similarity ${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}; route ${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}.`);
   }
 
+  function swapBayText() {
+    const voiceStateA = getVoiceState('A');
+    const voiceStateB = getVoiceState('B');
+
+    if (!voiceStateA.hasText || !voiceStateB.hasText) {
+      setStatusMessage('Swap bay text needs both bays populated before the source samples can trade places.');
+      updateControls();
+      return;
+    }
+
+    const nextA = $('voiceB').value;
+    const nextB = $('voiceA').value;
+    $('voiceA').value = nextA;
+    $('voiceB').value = nextB;
+    analyzeCadences();
+    const focusTarget = activeVoice === 'A' ? $('voiceA') : $('voiceB');
+    if (focusTarget && typeof focusTarget.focus === 'function') {
+      focusTarget.focus({ preventScroll: true });
+    }
+    setStatusMessage('Bay text swapped. Each shell stayed attached to its original side.');
+  }
+
   function buildSavedPersonaName(slot) {
     const existing = savedPersonas.length + 1;
     return `Captured ${slot === 'A' ? 'Reference' : 'Probe'} ${existing}`;
@@ -1927,17 +2173,14 @@ DeltaE = ${ledger.reuse_gain}`;
 
     return {
       phase: ingress.phase,
-      frameResolved: overlay ? overlay.dataset.frameResolved === 'true' : false,
       resolvingGate: ingress.resolvingGate || 'none',
       targetMirror: overlay ? overlay.dataset.targetMirror : '',
       targetBadge: overlay ? overlay.dataset.targetBadge : '',
       currentMirror: overlay ? overlay.dataset.currentMirror : '',
       currentBadge: overlay ? overlay.dataset.currentBadge : '',
-      frameControlsHidden: $('ingressFrameControls').hidden,
+      sealProgress: ingress.rotateProgress,
       mirrorControlsHidden: $('ingressMirrorControls').hidden,
       badgeControlsHidden: $('ingressBadgeControls').hidden,
-      widenHidden: $('ingressWiden').hidden,
-      widenDisabled: $('ingressWiden').disabled,
       status: readText('ingressStatus'),
       cue: readText('ingressCueLabel'),
       badgeReadout: readText('ingressBadgeReadout'),
@@ -1952,16 +2195,19 @@ DeltaE = ${ledger.reuse_gain}`;
     targetMirror = 'off',
     targetBadge = 'badge.holds',
     currentMirror = null,
-    currentBadge = null,
-    frameResolved = null
+    currentBadge = null
   } = {}) {
     clearIngressTimers();
-    ingressFrameOverride = typeof frameResolved === 'boolean' ? frameResolved : null;
     ingress.enabled = true;
     ingress.phase = phase;
     ingress.holding = null;
     ingress.holdStartedAt = 0;
     ingress.holdPointerId = null;
+    ingress.rotatePointerId = null;
+    ingress.rotateStartAngle = null;
+    ingress.rotateLastAngle = null;
+    ingress.rotateProgress = 0;
+    ingress.rotateBacktrack = 0;
     ingress.bypassVisible = false;
     ingress.currentMirror = currentMirror;
     ingress.currentBadge = currentBadge;
@@ -1990,56 +2236,31 @@ DeltaE = ${ledger.reuse_gain}`;
     primeIngressScenario({
       phase: 'containment',
       targetMirror: resolveIngressMirrorTarget(ingressMirrorOverride) || 'off',
-      targetBadge: resolveIngressBadgeTarget(ingressBadgeOverride) || 'badge.buffer',
-      frameResolved: false
+      targetBadge: resolveIngressBadgeTarget(ingressBadgeOverride) || 'badge.buffer'
     });
     pushCase(
       'layout_containment',
       readIngressSnapshot().phase === 'containment' &&
         readIngressSnapshot().bodyOverflow === 'hidden' &&
         readIngressSnapshot().layerOverflowY === 'hidden' &&
-        readIngressSnapshot().frameControlsHidden &&
         readIngressSnapshot().mirrorControlsHidden &&
         readIngressSnapshot().badgeControlsHidden,
       readIngressSnapshot(),
       'Containment should own the screen without inner scrolling or leaked later-stage controls.'
     );
 
-    primeIngressScenario({ phase: 'containment', targetMirror: 'off', targetBadge: 'badge.buffer', frameResolved: false });
+    primeIngressScenario({ phase: 'containment', targetMirror: 'off', targetBadge: 'badge.buffer' });
     ingress.holding = 'containment';
     completeIngressHold('containment');
     pushCase(
-      'containment_advances_to_frame_when_constrained',
-      readIngressSnapshot().phase === 'frame' &&
-        !readIngressSnapshot().frameControlsHidden &&
-        readIngressSnapshot().mirrorControlsHidden,
-      readIngressSnapshot(),
-      'Containment should advance into the frame gate when the membrane is still constrained.'
-    );
-
-    primeIngressScenario({ phase: 'frame', targetMirror: 'off', targetBadge: 'badge.buffer', frameResolved: false });
-    pushCase(
-      'frame_holds_until_resolved',
-      readIngressSnapshot().phase === 'frame' &&
-        !readIngressSnapshot().frameResolved &&
-        !readIngressSnapshot().widenHidden &&
-        readIngressSnapshot().mirrorControlsHidden,
-      readIngressSnapshot(),
-      'The frame gate should withhold mirror controls until the membrane widens enough.'
-    );
-
-    primeIngressScenario({ phase: 'frame', targetMirror: 'off', targetBadge: 'badge.buffer', frameResolved: true });
-    maybeResolveIngressFrame();
-    pushCase(
-      'frame_resolves_to_mirror_when_expanded',
+      'containment_advances_to_mirror',
       readIngressSnapshot().phase === 'mirror' &&
-        readIngressSnapshot().frameResolved &&
         !readIngressSnapshot().mirrorControlsHidden,
       readIngressSnapshot(),
-      'A resolved frame should advance immediately into the mirror gate.'
+      'Containment should advance directly into the mirror gate.'
     );
 
-    primeIngressScenario({ phase: 'mirror', targetMirror: 'off', targetBadge: 'badge.buffer', frameResolved: true });
+    primeIngressScenario({ phase: 'mirror', targetMirror: 'off', targetBadge: 'badge.buffer' });
     chooseIngressMirror('on');
     pushCase(
       'mirror_wrong_choice_stays_put',
@@ -2050,7 +2271,7 @@ DeltaE = ${ledger.reuse_gain}`;
       'A wrong mirror posture should reject and stay on the mirror gate.'
     );
 
-    primeIngressScenario({ phase: 'mirror', targetMirror: 'off', targetBadge: 'badge.buffer', frameResolved: true });
+    primeIngressScenario({ phase: 'mirror', targetMirror: 'off', targetBadge: 'badge.buffer' });
     chooseIngressMirror('off');
     pushCase(
       'mirror_off_advances_to_token',
@@ -2059,7 +2280,7 @@ DeltaE = ${ledger.reuse_gain}`;
       'A correct latent mirror choice should advance immediately to the token gate.'
     );
 
-    primeIngressScenario({ phase: 'mirror', targetMirror: 'on', targetBadge: 'badge.buffer', frameResolved: true });
+    primeIngressScenario({ phase: 'mirror', targetMirror: 'on', targetBadge: 'badge.buffer' });
     chooseIngressMirror('on');
     pushCase(
       'mirror_on_advances_to_token',
@@ -2068,7 +2289,7 @@ DeltaE = ${ledger.reuse_gain}`;
       'A correct clear mirror choice should advance immediately to the token gate.'
     );
 
-    primeIngressScenario({ phase: 'badge', targetMirror: 'off', targetBadge: 'badge.buffer', currentBadge: null, frameResolved: true });
+    primeIngressScenario({ phase: 'badge', targetMirror: 'off', targetBadge: 'badge.buffer', currentBadge: null });
     cycleIngressBadge();
     pushCase(
       'token_wrong_choice_stays_put',
@@ -2079,7 +2300,7 @@ DeltaE = ${ledger.reuse_gain}`;
       'A non-matching token should stay on the token gate and remain interactive.'
     );
 
-    primeIngressScenario({ phase: 'badge', targetMirror: 'off', targetBadge: 'badge.buffer', currentBadge: 'badge.holds', frameResolved: true });
+    primeIngressScenario({ phase: 'badge', targetMirror: 'off', targetBadge: 'badge.buffer', currentBadge: 'badge.holds' });
     cycleIngressBadge();
     pushCase(
       'token_match_advances_to_seal',
@@ -2088,17 +2309,17 @@ DeltaE = ${ledger.reuse_gain}`;
       'Cycling onto the target token should advance immediately to seal.'
     );
 
-    primeIngressScenario({ phase: 'seal', targetMirror: 'on', targetBadge: 'badge.buffer', currentMirror: 'on', currentBadge: 'badge.buffer', frameResolved: true });
-    ingress.holding = 'seal';
-    completeIngressHold('seal');
+    primeIngressScenario({ phase: 'seal', targetMirror: 'on', targetBadge: 'badge.buffer', currentMirror: 'on', currentBadge: 'badge.buffer' });
+    ingress.rotatePointerId = -1;
+    ingress.rotateProgress = INGRESS_SEAL_ARC_DEG;
+    clearIngressSealRotation();
+    finalizeIngress('solved');
     pushCase(
-      'seal_advances_to_revealing',
+      'seal_rotation_advances_to_revealing',
       readIngressSnapshot().phase === 'revealing',
       readIngressSnapshot(),
-      'Seal hold should hand off into the reveal phase without sticking.'
+      'Seal rotation should hand off into the reveal phase without sticking.'
     );
-
-    ingressFrameOverride = null;
 
     report.summary = {
       allPassed: report.cases.every((entry) => entry.pass),
@@ -2120,7 +2341,7 @@ DeltaE = ${ledger.reuse_gain}`;
     document.body.dataset.testFlightStatus = report.summary.allPassed ? 'passed' : 'complete';
     document.body.dataset.testFlightSummary = summaryText.toLowerCase().replace(/[^a-z0-9/ ]/gi, '');
     $('ingressStatus').textContent = summaryText;
-    $('analysisStatus').textContent = summaryText;
+    setStatusMessage(summaryText);
   }
 
   function runTestFlight(mode = 'smoke') {
@@ -2179,7 +2400,7 @@ DeltaE = ${ledger.reuse_gain}`;
       const summaryText = `Transfer flight // ${report.summary.allPassed ? 'passed' : 'check failed'} ${report.summary.passCount}/${report.summary.caseCount}`;
       document.body.dataset.testFlightStatus = report.summary.allPassed ? 'passed' : 'complete';
       document.body.dataset.testFlightSummary = summaryText.toLowerCase().replace(/[^a-z0-9/ ]/gi, '');
-      $('analysisStatus').textContent = summaryText;
+      setStatusMessage(summaryText);
       return;
     }
 
@@ -2194,23 +2415,25 @@ DeltaE = ${ledger.reuse_gain}`;
     };
 
     try {
-      const beforeNativeSwap = readDeckSnapshot();
+      const beforeTextSwap = readDeckSnapshot();
+      const beforeTextSwapA = $('voiceA').value;
+      const beforeTextSwapB = $('voiceB').value;
       $('swapMedallion').click();
-      const afterNativeSwap = readDeckSnapshot();
-      report.nativeSwap = {
-        snapshot: afterNativeSwap,
-        medallionEnabled: !afterNativeSwap.swapMedallionDisabled,
-        changed:
-          afterNativeSwap.similarity !== beforeNativeSwap.similarity ||
-          afterNativeSwap.routePressure !== beforeNativeSwap.routePressure,
+      const afterTextSwap = readDeckSnapshot();
+      report.textSwapMedallion = {
+        snapshot: afterTextSwap,
+        medallionEnabled: !afterTextSwap.swapMedallionDisabled,
+        voiceASwapped: $('voiceA').value === beforeTextSwapB,
+        voiceBSwapped: $('voiceB').value === beforeTextSwapA,
+        metricsChanged:
+          afterTextSwap.similarity !== beforeTextSwap.similarity ||
+          afterTextSwap.routePressure !== beforeTextSwap.routePressure,
         duelChanged:
-          afterNativeSwap.duelSimilarity !== beforeNativeSwap.duelSimilarity ||
-          afterNativeSwap.duelTraceability !== beforeNativeSwap.duelTraceability,
+          afterTextSwap.duelSimilarity !== beforeTextSwap.duelSimilarity ||
+          afterTextSwap.duelTraceability !== beforeTextSwap.duelTraceability,
         duelSamplesChanged:
-          afterNativeSwap.duelReferenceSample !== beforeNativeSwap.duelReferenceSample ||
-          afterNativeSwap.duelProbeSample !== beforeNativeSwap.duelProbeSample,
-        referenceBorrowed: $('voiceAProfile').textContent.toLowerCase().includes('borrowed'),
-        probeBorrowed: $('voiceBProfile').textContent.toLowerCase().includes('borrowed')
+          afterTextSwap.duelReferenceSample !== beforeTextSwap.duelReferenceSample ||
+          afterTextSwap.duelProbeSample !== beforeTextSwap.duelProbeSample
       };
 
       $('resetBtn').click();
@@ -2244,7 +2467,8 @@ DeltaE = ${ledger.reuse_gain}`;
         duelSamplesChanged:
           readDeckSnapshot().duelReferenceSample !== ownSourceSnapshot.duelReferenceSample ||
           readDeckSnapshot().duelProbeSample !== ownSourceSnapshot.duelProbeSample,
-        personaStatusChanged: $('personaStatus').textContent.trim() !== assignedLabelBeforeSwap
+        personaStatusChanged: $('personaStatus').textContent.trim() !== assignedLabelBeforeSwap,
+        cueVisible: $('analysisStatus').textContent.toLowerCase().includes('shell duel updated below')
       };
 
       $('savePersonaBtn').click();
@@ -2360,23 +2584,24 @@ DeltaE = ${ledger.reuse_gain}`;
         });
 
         report.matrix = matrix;
-        report.summary = {
-          allPassed: matrix.every((entry) => entry.pass) &&
-            report.swapCadences.voiceAUnchanged &&
-            report.swapCadences.voiceBUnchanged &&
-            report.savePersona.savedPersonaAdded &&
-            report.nativeSwap.changed &&
-            report.nativeSwap.duelChanged &&
-            report.nativeSwap.duelSamplesChanged &&
-            report.nativeSwap.referenceBorrowed &&
-            report.nativeSwap.probeBorrowed &&
-            report.ownSourceDuel.referenceOwnSource &&
-            report.ownSourceDuel.probeOwnSource &&
-            report.ownSourceDuel.samplesDistinct &&
-            report.swapCadences.duelSamplesChanged &&
-            report.soloScan.similarityKey === 'Scan mode' &&
-            report.baseline.snapshot.duelState === 'live' &&
-            report.viewTabs.activeTab === 'readout',
+          report.summary = {
+            allPassed: matrix.every((entry) => entry.pass) &&
+              report.swapCadences.voiceAUnchanged &&
+              report.swapCadences.voiceBUnchanged &&
+              report.savePersona.savedPersonaAdded &&
+              report.textSwapMedallion.voiceASwapped &&
+              report.textSwapMedallion.voiceBSwapped &&
+              report.textSwapMedallion.metricsChanged &&
+              report.textSwapMedallion.duelChanged &&
+              report.textSwapMedallion.duelSamplesChanged &&
+              report.ownSourceDuel.referenceOwnSource &&
+              report.ownSourceDuel.probeOwnSource &&
+              report.ownSourceDuel.samplesDistinct &&
+              report.swapCadences.duelSamplesChanged &&
+              report.swapCadences.cueVisible &&
+              report.soloScan.similarityKey === 'Scan mode' &&
+              report.baseline.snapshot.duelState === 'live' &&
+              report.viewTabs.activeTab === 'readout',
           matrixPassCount: matrix.filter((entry) => entry.pass).length,
           matrixCount: matrix.length
         };
@@ -2400,11 +2625,11 @@ DeltaE = ${ledger.reuse_gain}`;
       : `Test flight // ${mode} complete`;
     document.body.dataset.testFlightStatus = report.summary && report.summary.allPassed ? 'passed' : 'complete';
     document.body.dataset.testFlightSummary = summaryText.toLowerCase().replace(/[^a-z0-9/ ]/gi, '');
-    $('analysisStatus').textContent = summaryText;
+    setStatusMessage(summaryText);
   }
 
   $('compareBtn').addEventListener('click', handleAnalyzeCadences);
-  $('swapMedallion').addEventListener('click', swapCadences);
+  $('swapMedallion').addEventListener('click', swapBayText);
   $('swapCadencesBtn').addEventListener('click', swapCadences);
   $('savePersonaBtn').addEventListener('click', saveActiveCadence);
   $('toggleMirrorBtn').addEventListener('click', () => {
@@ -2424,29 +2649,31 @@ DeltaE = ${ledger.reuse_gain}`;
   $('tabReadout').addEventListener('click', () => setArtifactTab('readout'));
   $('tabPersonas').addEventListener('click', () => setArtifactTab('personas'));
   $('ingressBypass').addEventListener('click', bypassIngress);
-  $('ingressWiden').addEventListener('click', widenIngressMembrane);
   $('ingressMirrorArmed').addEventListener('click', () => chooseIngressMirror('off'));
   $('ingressMirrorOpen').addEventListener('click', () => chooseIngressMirror('on'));
   $('ingressBadgeCycle').addEventListener('click', cycleIngressBadge);
-  $('ingressCore').addEventListener('pointerdown', beginIngressHold);
-  $('ingressCore').addEventListener('pointerup', cancelIngressHold);
-  $('ingressCore').addEventListener('pointercancel', cancelIngressHold);
-  $('ingressCore').addEventListener('lostpointercapture', cancelIngressHold);
-  $('ingressCore').addEventListener('blur', cancelIngressHold);
+  $('ingressCore').addEventListener('pointerdown', handleIngressCorePointerDown);
+  $('ingressCore').addEventListener('pointermove', handleIngressCorePointerMove);
+  $('ingressCore').addEventListener('pointerup', handleIngressCorePointerUp);
+  $('ingressCore').addEventListener('pointercancel', handleIngressCorePointerCancel);
+  $('ingressCore').addEventListener('lostpointercapture', handleIngressCorePointerCancel);
+  $('ingressCore').addEventListener('blur', handleIngressCorePointerCancel);
   $('ingressCore').addEventListener('keydown', (event) => {
     if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
       event.preventDefault();
+      if (ingress.phase === 'seal') {
+        finalizeIngress('solved');
+        return;
+      }
       beginIngressHold();
     }
   });
   $('ingressCore').addEventListener('keyup', (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
+    if ((event.key === 'Enter' || event.key === ' ') && ingress.phase !== 'seal') {
       event.preventDefault();
       cancelIngressHold();
     }
   });
-  document.addEventListener('fullscreenchange', maybeResolveIngressFrame);
-  window.addEventListener('resize', maybeResolveIngressFrame);
 
   document.addEventListener('click', (event) => {
     const persona = event.target.closest('.persona');
@@ -2489,7 +2716,7 @@ DeltaE = ${ledger.reuse_gain}`;
     const message = event.error && event.error.message ? event.error.message : event.message;
     const status = $('analysisStatus');
     if (status && message) {
-      status.textContent = `Startup fault // ${message}`;
+      setStatusMessage(`Startup fault // ${message}`);
     }
     document.body.dataset.bootStage = 'boot-error';
     if (message) {
@@ -2504,7 +2731,7 @@ DeltaE = ${ledger.reuse_gain}`;
   } catch (error) {
     const status = $('analysisStatus');
     if (status) {
-      status.textContent = `Startup fault // ${error.message}`;
+      setStatusMessage(`Startup fault // ${error.message}`);
     }
     document.body.dataset.bootStage = 'boot-error';
     document.body.dataset.bootError = (error.message || 'unknown-error')

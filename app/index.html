@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP - The Cadence Playground</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=20260319b" />
 </head>
 <body>
   <div id="ingressMembrane" class="ingress-membrane" aria-live="polite">
@@ -28,7 +28,6 @@
 
       <div class="ingress-stage-rail" aria-label="Ingress stages">
         <span id="ingressStageContainment" class="ingress-stage-chip">Containment</span>
-        <span id="ingressStageFrame" class="ingress-stage-chip">Frame</span>
         <span id="ingressStageMirror" class="ingress-stage-chip">Mirror</span>
         <span id="ingressStageBadge" class="ingress-stage-chip">Token</span>
         <span id="ingressStageSeal" class="ingress-stage-chip">Seal</span>
@@ -52,6 +51,7 @@
               <span class="ingress-ring ingress-ring-b"></span>
               <span class="ingress-ring ingress-ring-c"></span>
             </div>
+            <div id="ingressSealTrack" class="ingress-seal-track" aria-hidden="true"></div>
             <button id="ingressCore" type="button" class="ingress-core" aria-describedby="ingressStatus">
               <span id="ingressCoreGlyph" class="ingress-core-glyph">⟐</span>
               <span id="ingressCoreLabel" class="ingress-core-label">Stand by</span>
@@ -64,10 +64,6 @@
           <div id="ingressMirrorControls" class="ingress-choice-row" hidden>
             <button id="ingressMirrorArmed" type="button" class="ingress-choice">latent</button>
             <button id="ingressMirrorOpen" type="button" class="ingress-choice">clear</button>
-          </div>
-
-          <div id="ingressFrameControls" class="ingress-choice-row ingress-choice-row-frame" hidden>
-            <button id="ingressWiden" type="button" class="ingress-widen">widen membrane</button>
           </div>
 
           <div id="ingressBadgeControls" class="ingress-choice-row" hidden>
@@ -164,7 +160,10 @@
 
           <div class="analysis-rail">
             <div id="activeBayStatus" class="statepill active">Active bay // reference voice</div>
-            <div id="analysisStatus" class="analysis-status">Press Analyze Cadences to run a solo capture or compare both bays at once.</div>
+            <div id="analysisStatus" class="analysis-status">
+              <span id="analysisStatusBase" class="analysis-status-base">Press Analyze Cadences to run a solo capture or compare both bays at once.</span>
+              <span id="analysisStatusCue" class="analysis-status-cue" hidden></span>
+            </div>
           </div>
 
           <section id="shellDuel" class="shell-duel analysis-gated" data-latent-label="Shell Duel latent // wake the deck" data-state="empty" aria-live="polite">
@@ -277,8 +276,8 @@
     <footer class="footer">TCP / experimental research prototype / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true">⋳</span></footer>
   </div>
 
-  <script src="./browser-data.js"></script>
-  <script src="./browser-engine.js"></script>
-  <script src="./browser-main.js"></script>
+  <script src="./browser-data.js?v=20260319b"></script>
+  <script src="./browser-engine.js?v=20260319b"></script>
+  <script src="./browser-main.js?v=20260319b"></script>
 </body>
 </html>
