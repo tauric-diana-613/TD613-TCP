@@ -25,11 +25,15 @@ If recognition exceeds explanation, preserve the branch until routing catches up
 
 - `S` = pairwise cadence similarity
 - `T` = pairwise traceability
+- `L` = lexical overlap
 - `R` = recurrence pressure
-- `B` = branch indicator from an unwanted quadratic root
+- `C_style` = stylometric coherence
+- `R*` = cadence resonance
+- `Delta_branch` = branch pressure
 - `Pi` = route pressure
 - `V` = bounded field potential
 - `rho` = signal-density proxy
+- `Xi` = criticality index
 - `Delta_C = C - D` = custody delta
 
 ## Implemented equations
@@ -47,36 +51,56 @@ R_{\text{text}}=
 
 where `p` is punctuation density, `ell` is line-break density, and `b` is repeated-bigram pressure.
 
-Pairwise similarity and traceability are:
+Pairwise similarity and traceability are computed in the stylometry module. The route layer then uses:
 
 ```math
-S=0.22L+0.20(1-d_s)+0.16(1-d_p)+0.12(1-d_c)+0.14(1-d_l)+0.16(1-d_r)
+C_{\mathrm{style}} =
+0.14(1-d_s)+
+0.08(1-d_{\sigma})+
+0.10(1-d_p)+
+0.14(1-d_m)+
+0.10(1-d_c)+
+0.18(1-d_f)+
+0.08(1-d_w)+
+0.14(1-d_g)+
+0.02(1-d_l)+
+0.02(1-d_r)
 ```
 
 ```math
-T=0.34(1-d_s)+0.24(1-d_p)+0.18(1-d_c)+0.24(1-d_r)
+R^* = 0.58 H(S,T) + 0.42 H(S,T,C_{\mathrm{style}})
+```
+
+```math
+\Delta_{\mathrm{branch}} =
+0.68\max(0,T-L) +
+0.32\max(0,C_{\mathrm{style}}-L)
 ```
 
 Route pressure is:
 
 ```math
-\Pi = 0.33S + 0.27T + 0.22R + 0.05B
+\Pi =
+0.40R^* +
+0.26C_{\mathrm{style}} +
+0.18R +
+0.16\Delta_{\mathrm{branch}}
 ```
 
 Field potential is:
 
 ```math
-V = \operatorname{clip}(0.72\Pi + \mu_M + \mu_C, 0, 1)
+V = \operatorname{clip}(0.46\Pi + 0.22R^* + 0.12C_{\mathrm{style}} + 0.08\Delta_{\mathrm{branch}} + \mu_M + \mu_C, 0, 1)
 ```
 
-with `mu_M = 0.12` when the mirror shield is open and `0` otherwise, and `mu_C = 0.06` when containment is stable and `-0.02` otherwise.
+with `mu_M = 0.08` when the mirror shield is open and `0` otherwise, and `mu_C = 0.06` when containment is stable and `-0.04` otherwise.
 
 Signal density is:
 
 ```math
-\rho = A^2(0.4 + 0.6V)
+\rho = A^2(0.26 + 0.44V + 0.30C_{\mathrm{style}})
 \qquad \text{with} \qquad
-A = T,\; k = 1 + 3R
+A = R^*,\; k = 1 + 2.2R + 0.8\Delta_{\mathrm{branch}}
 ```
 
 The custody threshold is:
@@ -89,13 +113,13 @@ A_W,& C(t)-D(t)<\theta
 \end{cases}
 ```
 
-In the browser demo, `C = 0.68`, `D = 0.58Pi`, and `theta = 0.2`.
+In the current browser build, `C` and `D` are derived from live field state rather than fixed constants. The default threshold remains `theta = 0.2`.
 
 `A_I` means institutional custody remains above the collapse threshold and continues to function as the effective archive. `A_W` means the custody delta has fallen below the collapse threshold and witness custody is functioning as the effective archive.
 
 ## Decision grammar
 
-The public UI uses a compact rule set. Recognition is treated as present once `S >= 0.56`. Explanation is treated as still lagging once `Pi >= 0.45`. Dense signal is treated as present once `rho >= 0.28` or `R >= 0.58`. Route availability requires the mirror shield to be open and `Pi >= 0.45`.
+The public UI uses a compact rule set. Recognition is treated as present once `R* >= 0.54` or `S >= 0.56`. Explanation is treated as still lagging once `Pi >= 0.52` or `Delta_branch >= 0.42`. Dense signal is treated as present once `rho >= 0.28` or `R >= 0.58`. Route availability requires the mirror shield to be open and `Pi >= 0.48`.
 
 That yields four states:
 

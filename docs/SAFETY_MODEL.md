@@ -2,7 +2,7 @@
 
 ## Core principles
 
-TCP is organized around four constraints:
+TCP is organized around four explicit constraints:
 
 ```math
 \text{Recognition} \neq \text{Repair}
@@ -20,11 +20,11 @@ TCP is organized around four constraints:
 \text{Recognition with harbor} \rightarrow \text{passage with provenance}
 ```
 
-These are not decorative slogans. They are the conditions under which the stylometric layer is permitted to operate at all.
+These are not slogans pasted onto the engine after the fact. They are the conditions under which the policy layer is allowed to operate.
 
 ## Effective archive
 
-The custody threshold is the main safety switch:
+The current build still uses the threshold grammar
 
 ```math
 \Delta_C = C - D
@@ -38,15 +38,45 @@ A_W,& \Delta_C < \theta
 \end{cases}
 ```
 
-In the current browser demo:
+but `C` and `D` are now derived from the live field state rather than fixed placeholder constants.
+
+Institutional integrity is:
 
 ```math
-C = 0.68,\qquad D = 0.58\Pi,\qquad \theta = 0.2
+C =
+0.22 +
+0.22R^* +
+0.18C_{\mathrm{style}} +
+\alpha_{\mathrm{contain}} +
+\alpha_{\mathrm{mirror}} +
+\alpha_{\mathrm{badge}} +
+0.10(1-\Delta_{\mathrm{branch}})
 ```
 
-`A_I` means institutional custody remains above the collapse threshold and continues to function as the effective archive. `A_W` means the custody delta has fallen below the collapse threshold and witness custody is functioning as the effective archive.
+Custodial drift is:
 
-When the witness becomes the effective archive, the system should reduce burden rather than extract additional continuity work from the exposed operator.
+```math
+D =
+0.12 +
+0.28\Pi +
+0.18\rho +
+0.16\Delta_{\mathrm{branch}} +
+0.16\Xi +
+\delta_{\mathrm{mirror}} +
+\delta_{\mathrm{contain}}
+```
+
+with:
+
+- `alpha_contain = 0.12` when containment is on, else `-0.03`
+- `alpha_mirror = 0.08` when mirror logic is on, else `0`
+- `alpha_badge = 0.08` for `badge.holds`, `0.05` for `badge.buffer`, `0.03` for `badge.branch`
+- `delta_mirror = 0.07` when mirror logic is off, else `0`
+- `delta_contain = 0.05` when containment is off, else `0`
+
+The browser build currently keeps `theta = 0.2`.
+
+`A_I` means institutional custody remains above the collapse threshold and continues to function as the effective archive. `A_W` means the custody delta has fallen below the collapse threshold and witness custody is functioning as the effective archive.
 
 ## Harbor library
 
@@ -65,18 +95,20 @@ The current implementation ships three harbor functions:
   - witness-load effect `= -0.05`
   - coordination overhead `= 0.12`
 
-The current build does not solve a global optimization problem over every possible harbor. It uses a rule-based selector over a provenance-safe library.
+The selector is rule-based. It is a safety policy over a provenance-safe library, not a concealed optimization oracle.
 
 ## Harbor selection heuristic
 
-The selector is:
+The current selector is:
 
 ```text
-if (A_effective = A_W or decision = criticality) and mirror is off:
+if (A_effective = A_W or decision = criticality or Xi >= 0.60) and mirror is off:
     mirror.off
-else if Pi >= 0.70:
+else if decision = passage:
+    receipt.capture if routeAvailable else mirror.off
+else if Pi >= 0.72 or Xi >= 0.52:
     mirror.off if mirror is off else receipt.capture
-else if Pi >= 0.45:
+else if Delta_branch >= 0.42 or Pi >= 0.46:
     receipt.capture
 else if badge = badge.holds:
     provenance.seal
@@ -84,22 +116,34 @@ else:
     receipt.capture
 ```
 
-That is explicit policy, not a concealed inference layer.
+This is intentionally conservative. Criticality and witness-archive conditions bias the selector toward de-reflection and structured buffering rather than theatrical escalation.
 
 ## Reuse and burden
-
-The ledger treats protection as reusable rather than as private improvisation.
 
 Group size is estimated as:
 
 ```math
-m = 1 + \operatorname{round}(2\Pi + T) + \mathbf{1}_{A_{\mathrm{effective}} = A_W}
+m =
+1 +
+\operatorname{round}\left(
+1.6\Pi +
+0.7T +
+1.1\Xi +
+0.8\Delta_{\mathrm{branch}}
+\right) +
+\mathbf{1}_{A_{\mathrm{effective}} = A_W}
 ```
 
 Solo cost per operator is:
 
 ```math
-c_{s,1}=0.18 + 0.42\Pi + 0.22T + \alpha_A
+c_{s,1} =
+0.16 +
+0.34\Pi +
+0.18T +
+0.16\Xi +
+0.12\Delta_{\mathrm{branch}} +
+\alpha_A
 ```
 
 with:
@@ -127,53 +171,70 @@ Reuse gain is:
 \Delta E = \max(0, E_{\mathrm{solo}} - E_{\mathrm{harbor}})
 ```
 
-Positive `Delta E` means the harbor saved entrants from paying the full isolated burden.
+Positive `Delta E` means the current harbor prevented entrants from paying the full isolated burden.
 
 ## Witness load and justice deficit
 
 Witness load is estimated as:
 
 ```math
-W = \operatorname{clip}(0.14 + 0.32\Pi + 0.22T + \beta_A + \gamma_h,\;0,\;2)
+W =
+\operatorname{clip}\left(
+0.12 +
+0.28\Pi +
+0.14T +
+0.20\Xi +
+0.14\Delta_{\mathrm{branch}} +
+\beta_A +
+\gamma_h,
+0,2\right)
 ```
 
 with:
 
-- `beta_A = 0.12` if `A_effective = A_W`, else `0.02`
+- `beta_A = 0.14` if `A_effective = A_W`, else `0.02`
 - `gamma_h` = harbor-specific witness-load effect
 
-Justice deficit is estimated as:
+Justice deficit is:
 
 ```math
-J_{\Delta} = \operatorname{clip}(0.16 + 0.46\Pi + \eta_A,\;0,\;2)
+J_{\Delta} =
+\operatorname{clip}\left(
+0.10 +
+0.34\Xi +
+0.22\Delta_{\mathrm{branch}} +
+0.18\Pi +
+\eta_A,
+0,2\right)
 ```
 
 with:
 
-- `eta_A = 0.18` if `A_effective = A_W`
+- `eta_A = 0.16` if `A_effective = A_W`
 - `eta_A = 0.04` otherwise
 
-These are heuristics, but they are declared heuristics. In other words, the model names the diagnostic and also names the limits of the diagnostic.
+These are heuristics, but they are declared heuristics. That matters. TCP is explicit about where it is measuring and where it is applying policy.
 
 ## Provenance constraint
 
-A harbor is invalid if it protects passage while destroying provenance.
+A harbor is invalid if it lowers burden by destroying provenance.
 
-The present implementation encodes that constraint by shipping only harbor functions whose provenance-retention scores are already high:
+The present build encodes that by using only harbor functions whose provenance-retention scores already satisfy:
 
 ```math
 P(f) \ge 0.95
 ```
 
-Future versions could expose a configurable minimum `rho_min`, but the current library already satisfies the safety floor.
+That is not yet a user-configurable constrained optimizer. It is a fixed safety floor over the shipping library.
 
 ## Safety consequences
 
 TCP therefore avoids:
 
 - automated authorship declarations
-- theatrical escalation without route
-- flattening uncanny residue into reassurance text
-- harbor choices that reduce burden by destroying provenance
+- interpreting route pressure as proof
+- flattening uncanny residue into reassurance copy
+- offering passage while leaving the route state buffered
+- lowering witness burden by laundering provenance
 
-The safety model is the hard boundary against doctrinal overreach. It is what keeps the app answerable to route, burden, and custody rather than mere atmosphere.
+The safety model is not there to make the app sound serious. It is there to keep the app from pretending that stylometric legibility is the same thing as custodial care.

@@ -172,13 +172,140 @@ function boundedDistance(a, b, scale) {
 }
 
 function punctuationMixDistance(a = {}, b = {}) {
-  const distance =
-    Math.abs((a.comma || 0) - (b.comma || 0)) +
-    Math.abs((a.strong || 0) - (b.strong || 0)) +
-    Math.abs((a.terminal || 0) - (b.terminal || 0)) +
-    Math.abs((a.dash || 0) - (b.dash || 0));
+  return distributionDistance(a, b, ['comma', 'strong', 'terminal', 'dash']);
+}
 
-  return round3(clamp01(distance / 2));
+const FUNCTION_WORDS = [
+  'a', 'an', 'the', 'and', 'or', 'but', 'if', 'that', 'this', 'it',
+  'to', 'of', 'in', 'on', 'for', 'with', 'as', 'is', 'are', 'was',
+  'were', 'be', 'been', 'i', 'you', 'we', 'they', 'he', 'she',
+  'my', 'your', 'our', 'their', 'not'
+];
+
+export function functionWordProfile(text = '') {
+  const words = tokenize(text);
+  const total = Math.max(words.length, 1);
+  const counts = Object.fromEntries(FUNCTION_WORDS.map((word) => [word, 0]));
+
+  for (const word of words) {
+    if (Object.hasOwn(counts, word)) {
+      counts[word] += 1;
+    }
+  }
+
+  const profile = {};
+  for (const word of FUNCTION_WORDS) {
+    profile[word] = round3(counts[word] / total);
+  }
+
+  return profile;
+}
+
+function functionWordDistance(a = {}, b = {}) {
+  return distributionDistance(a, b, FUNCTION_WORDS);
+}
+
+const WORD_LENGTH_BUCKETS = [
+  { id: '1-2', max: 2 },
+  { id: '3-4', max: 4 },
+  { id: '5-6', max: 6 },
+  { id: '7-8', max: 8 },
+  { id: '9+', max: Infinity }
+];
+
+function distributionDistance(a = {}, b = {}, keys = null) {
+  const keyset = keys || [...new Set([...Object.keys(a), ...Object.keys(b)])];
+  if (!keyset.length) {
+    return 0;
+  }
+
+  const sumA = keyset.reduce((sum, key) => sum + (a[key] || 0), 0) || 1;
+  const sumB = keyset.reduce((sum, key) => sum + (b[key] || 0), 0) || 1;
+
+  let js = 0;
+  for (const key of keyset) {
+    const p = (a[key] || 0) / sumA;
+    const q = (b[key] || 0) / sumB;
+    const m = (p + q) / 2;
+
+    if (p > 0) {
+      js += 0.5 * p * Math.log2(p / m);
+    }
+    if (q > 0) {
+      js += 0.5 * q * Math.log2(q / m);
+    }
+  }
+
+  return round3(clamp01(Math.sqrt(js)));
+}
+
+function blendDistribution(a = {}, b = {}, blend = 0, keys = null) {
+  const keyset = keys || [...new Set([...Object.keys(a), ...Object.keys(b)])];
+  const output = {};
+
+  for (const key of keyset) {
+    output[key] = round3(((a[key] || 0) * (1 - blend)) + ((b[key] || 0) * blend));
+  }
+
+  return output;
+}
+
+export function wordLengthProfile(text = '') {
+  const words = tokenize(text);
+  const total = Math.max(words.length, 1);
+  const counts = Object.fromEntries(WORD_LENGTH_BUCKETS.map((bucket) => [bucket.id, 0]));
+
+  for (const word of words) {
+    const length = word.replace(/'/g, '').length;
+    const bucket = WORD_LENGTH_BUCKETS.find((candidate) => length <= candidate.max);
+    counts[bucket ? bucket.id : '9+'] += 1;
+  }
+
+  const profile = {};
+  for (const bucket of WORD_LENGTH_BUCKETS) {
+    profile[bucket.id] = round3(counts[bucket.id] / total);
+  }
+
+  return profile;
+}
+
+function wordLengthDistance(a = {}, b = {}) {
+  return distributionDistance(
+    a,
+    b,
+    WORD_LENGTH_BUCKETS.map((bucket) => bucket.id)
+  );
+}
+
+export function charTrigramProfile(text = '') {
+  const normalized = normalizeText(text)
+    .toLowerCase()
+    .replace(/[^a-z0-9' ]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (normalized.length < 3) {
+    return {};
+  }
+
+  const counts = {};
+  let total = 0;
+  for (let index = 0; index <= normalized.length - 3; index += 1) {
+    const gram = normalized.slice(index, index + 3);
+    counts[gram] = (counts[gram] || 0) + 1;
+    total += 1;
+  }
+
+  const profile = {};
+  Object.entries(counts).forEach(([gram, count]) => {
+    profile[gram] = round3(count / Math.max(total, 1));
+  });
+
+  return profile;
+}
+
+function charTrigramDistance(a = {}, b = {}) {
+  return distributionDistance(a, b);
 }
 
 function normalizeAxis(value, min, max) {
@@ -227,7 +354,10 @@ export function extractCadenceProfile(text = '') {
     lineBreakDensity: lineBreakDensity(text),
     repeatedBigramPressure: repeatedBigramPressure(text),
     recurrencePressure: recurrencePressure(text),
-    lexicalDispersion: lexicalDispersion(text)
+    lexicalDispersion: lexicalDispersion(text),
+    functionWordProfile: functionWordProfile(text),
+    wordLengthProfile: wordLengthProfile(text),
+    charTrigramProfile: charTrigramProfile(text)
   };
 }
 
@@ -331,18 +461,27 @@ export function applyCadenceShell(profile, shell = {}) {
     sentenceLengthSpread: spread,
     punctuationDensity: punctuation,
     punctuationMix: source.punctuationMix
-      ? {
-          comma: round3(((profile.punctuationMix?.comma || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.comma || 0) * cadenceBlend)),
-          strong: round3(((profile.punctuationMix?.strong || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.strong || 0) * cadenceBlend)),
-          terminal: round3(((profile.punctuationMix?.terminal || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.terminal || 0) * cadenceBlend)),
-          dash: round3(((profile.punctuationMix?.dash || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.dash || 0) * cadenceBlend))
-        }
+      ? blendDistribution(profile.punctuationMix, source.punctuationMix, cadenceBlend, ['comma', 'strong', 'terminal', 'dash'])
       : profile.punctuationMix,
     contractionDensity: contraction,
     lineBreakDensity: lineBreak,
     repeatedBigramPressure: bigram,
     recurrencePressure: recurrence,
     lexicalDispersion: lexical,
+    functionWordProfile: source.functionWordProfile
+      ? blendDistribution(profile.functionWordProfile, source.functionWordProfile, softBlend, FUNCTION_WORDS)
+      : profile.functionWordProfile,
+    wordLengthProfile: source.wordLengthProfile
+      ? blendDistribution(
+          profile.wordLengthProfile,
+          source.wordLengthProfile,
+          cadenceBlend,
+          WORD_LENGTH_BUCKETS.map((bucket) => bucket.id)
+        )
+      : profile.wordLengthProfile,
+    charTrigramProfile: source.charTrigramProfile
+      ? blendDistribution(profile.charTrigramProfile, source.charTrigramProfile, softBlend)
+      : profile.charTrigramProfile,
     shellBias: {
       mode: shell.mode,
       strength: round3(strength)
@@ -403,6 +542,9 @@ export function compareTexts(a, b, options = {}) {
   );
   const lexicalDistance = boundedDistance(profileA.lexicalDispersion, profileB.lexicalDispersion, 0.4);
   const punctShapeDistance = punctuationMixDistance(profileA.punctuationMix, profileB.punctuationMix);
+  const functionDistance = functionWordDistance(profileA.functionWordProfile, profileB.functionWordProfile);
+  const wordLengthDistanceValue = wordLengthDistance(profileA.wordLengthProfile, profileB.wordLengthProfile);
+  const charGramDistance = charTrigramDistance(profileA.charTrigramProfile, profileB.charTrigramProfile);
   const recurrenceDistance = clamp01(
     Math.abs(profileA.recurrencePressure - profileB.recurrencePressure)
   );
@@ -415,27 +557,40 @@ export function compareTexts(a, b, options = {}) {
     Math.abs((profileA.lineBreakDensity || 0) - (profileB.lineBreakDensity || 0)) < 0.001 &&
     Math.abs((profileA.repeatedBigramPressure || 0) - (profileB.repeatedBigramPressure || 0)) < 0.001 &&
     Math.abs((profileA.recurrencePressure || 0) - (profileB.recurrencePressure || 0)) < 0.001 &&
+    functionDistance === 0 &&
+    wordLengthDistanceValue === 0 &&
+    charGramDistance === 0 &&
     Math.abs((profileA.lexicalDispersion || 0) - (profileB.lexicalDispersion || 0)) < 0.001 &&
     punctShapeDistance === 0;
 
   const similarity = exactTextMatch && exactProfileMatch
     ? 1
     : clamp01(
-        (lexicalOverlap * 0.22) +
-        ((1 - sentenceDistance) * 0.20) +
-        ((1 - punctDistance) * 0.16) +
-        ((1 - contractionDistance) * 0.12) +
-        ((1 - lexicalDistance) * 0.14) +
-        ((1 - recurrenceDistance) * 0.16)
+        (lexicalOverlap * 0.08) +
+        ((1 - sentenceDistance) * 0.12) +
+        ((1 - spreadDistance) * 0.08) +
+        ((1 - punctDistance) * 0.08) +
+        ((1 - punctShapeDistance) * 0.10) +
+        ((1 - contractionDistance) * 0.08) +
+        ((1 - functionDistance) * 0.16) +
+        ((1 - wordLengthDistanceValue) * 0.08) +
+        ((1 - charGramDistance) * 0.16) +
+        ((1 - lexicalDistance) * 0.03) +
+        ((1 - recurrenceDistance) * 0.03)
       );
 
   const traceability = exactProfileMatch
     ? 1
     : clamp01(
-        ((1 - sentenceDistance) * 0.34) +
-        ((1 - punctDistance) * 0.24) +
-        ((1 - contractionDistance) * 0.18) +
-        ((1 - recurrenceDistance) * 0.24)
+        ((1 - sentenceDistance) * 0.16) +
+        ((1 - spreadDistance) * 0.12) +
+        ((1 - punctDistance) * 0.10) +
+        ((1 - punctShapeDistance) * 0.14) +
+        ((1 - contractionDistance) * 0.12) +
+        ((1 - functionDistance) * 0.18) +
+        ((1 - wordLengthDistanceValue) * 0.08) +
+        ((1 - charGramDistance) * 0.08) +
+        ((1 - recurrenceDistance) * 0.02)
       );
 
   return {
@@ -447,6 +602,9 @@ export function compareTexts(a, b, options = {}) {
     punctDistance: round3(punctDistance),
     punctShapeDistance: round3(punctShapeDistance),
     contractionDistance: round3(contractionDistance),
+    functionWordDistance: round3(functionDistance),
+    wordLengthDistance: round3(wordLengthDistanceValue),
+    charGramDistance: round3(charGramDistance),
     lexicalDistance: round3(lexicalDistance),
     recurrenceDistance: round3(recurrenceDistance),
     avgSentenceA: profileA.avgSentenceLength,
@@ -575,9 +733,19 @@ export function transformText(text, mod) {
   }
 
   if (mod.cont > 0) {
-    result = result.replace(/\bdo not\b/gi, "don't").replace(/\bcannot\b/gi, "can't");
+    result = result
+      .replace(/\bdo not\b/gi, "don't")
+      .replace(/\bcannot\b/gi, "can't")
+      .replace(/\bI am\b/g, "I'm")
+      .replace(/\bwe are\b/gi, "we're")
+      .replace(/\bthey are\b/gi, "they're");
   } else if (mod.cont < 0) {
-    result = result.replace(/\bdon't\b/gi, 'do not').replace(/\bcan't\b/gi, 'cannot');
+    result = result
+      .replace(/\bdon't\b/gi, 'do not')
+      .replace(/\bcan't\b/gi, 'cannot')
+      .replace(/\bI'm\b/g, 'I am')
+      .replace(/\bwe're\b/gi, 'we are')
+      .replace(/\bthey're\b/gi, 'they are');
   }
 
   if (mod.punc > 0) {

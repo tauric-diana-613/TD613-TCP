@@ -2,17 +2,20 @@ import defaults from './data/defaults.js';
 import basePersonas from './data/personas.js';
 import microcopy from '../copy/microcopy.js';
 import {
-  solveQuadratic,
+  cadenceCoherence,
+  cadenceResonance,
+  branchDynamics,
   fieldPotential,
   waveStats,
   custodyThreshold,
+  criticalityIndex,
   routePressure as computeRoutePressure,
   providerDecision
 } from './engine/formulas.js';
 import {
   compareTexts,
   extractCadenceProfile,
-  applyCadenceMod,
+  applyCadenceToText,
   cadenceModFromProfile
 } from './engine/stylometry.js';
 import { chooseHarbor, buildLedgerRow, HARBOR_LIBRARY } from './engine/harbor.js';
@@ -138,11 +141,13 @@ function getVoiceState(slot) {
   const text = $(slot === 'A' ? 'voiceA' : 'voiceB').value;
   const rawProfile = extractCadenceProfile(text);
   const persona = getAssignedPersona(slot);
-  const effectiveProfile = applyCadenceMod(rawProfile, persona?.mod);
+  const effectiveText = applyCadenceToText(text, persona ? { mode: 'persona', mod: persona.mod } : { mode: 'native' });
+  const effectiveProfile = extractCadenceProfile(effectiveText);
 
   return {
     slot,
     text,
+    effectiveText,
     hasText: !rawProfile.empty,
     rawProfile,
     effectiveProfile,
@@ -414,9 +419,9 @@ function renderIdleState() {
   $('traceHint').textContent = '';
   $('routeHint').textContent = '';
   $('custodyHint').textContent = '';
-  $('branchFormula').textContent = 't^2 - 2t - 3 = 0\nroots = -1, 3\nbranch = candidate-discovery-branch';
-  $('waveFormula').textContent = 'Paste a voice to expose cadence metrics.\nPair two voices to compute signal density.';
-  $('harborFormula').textContent = 'Analyze one or two voices to surface route, archive, and reuse.';
+  $('branchFormula').textContent = 'Delta_branch = stylometric surplus above lexical overlap.\nPair two voices to test whether the branch stays resolved or opens into candidate discovery.';
+  $('waveFormula').textContent = 'Paste a voice to expose cadence metrics.\nPair two voices to compute resonance, density, and criticality.';
+  $('harborFormula').textContent = 'Analyze one or two voices to surface custody drift, archive state, and reuse gain.';
   $('ledgerPreview').textContent = '{\n  "status": "idle"\n}';
   $('fieldNotice').textContent = 'Bring one or two voices into the field. Solo scans capture cadence. Paired scans test similarity, route pressure, and harbor.';
   $('heroSignalValue').textContent = '--';
@@ -445,9 +450,8 @@ function renderSoloState(voiceState) {
   $('routeHint').textContent = 'Recurrence pressure tracks punctuation, line-break drag, and repeated return-patterns.';
   $('custodyHint').textContent = 'The active bay is where persona assignment and save operations land.';
 
-  $('branchFormula').textContent = `t^2 - 2t - 3 = 0
-roots = -1, 3
-branch = candidate-discovery-branch`;
+  $('branchFormula').textContent = `Delta_branch needs two voices.
+Solo capture stays native to the active bay until a second sample exposes stylometric surplus.`;
   $('waveFormula').textContent = `signature = {
   rhythm: ${voiceState.effectiveProfile.avgSentenceLength.toFixed(1)} words,
   punct: ${voiceState.effectiveProfile.punctuationDensity},
@@ -478,50 +482,90 @@ branch = candidate-discovery-branch`;
 }
 
 function renderPairState(voiceStateA, voiceStateB) {
-  const cmp = compareTexts(voiceStateA.text, voiceStateB.text, {
+  const cmp = compareTexts(voiceStateA.effectiveText, voiceStateB.effectiveText, {
     profileA: voiceStateA.effectiveProfile,
     profileB: voiceStateB.effectiveProfile
   });
-  const branch = solveQuadratic(1, -2, -3);
-  const branchFlag = branch.unwanted.length ? 1 : 0;
-  const routePressure = computeRoutePressure(
-    cmp.similarity,
-    cmp.traceability,
-    branchFlag,
-    cmp.recurrencePressure
-  );
-  const field = fieldPotential({ routePressure, mirrorLogic, containment });
-  const wave = waveStats({
+  const coherence = cadenceCoherence(cmp);
+  const resonance = cadenceResonance({
+    similarity: cmp.similarity,
     traceability: cmp.traceability,
+    coherence
+  });
+  const branch = branchDynamics({
+    ...cmp,
+    coherence
+  });
+  const routePressure = computeRoutePressure({
+    similarity: cmp.similarity,
+    traceability: cmp.traceability,
+    recurrencePressure: cmp.recurrencePressure,
+    branchPressure: branch.branchPressure,
+    coherence,
+    resonance
+  });
+  const field = fieldPotential({
+    routePressure,
+    resonance,
+    coherence,
+    branchPressure: branch.branchPressure,
+    mirrorLogic,
+    containment
+  });
+  const wave = waveStats({
+    similarity: cmp.similarity,
+    traceability: cmp.traceability,
+    resonance,
+    coherence,
+    branchPressure: branch.branchPressure,
     recurrencePressure: cmp.recurrencePressure,
     fieldPotential: field
   });
-  const custody = custodyThreshold(0.68, routePressure * 0.58, 0.2);
-  const provisionalHarbor = chooseHarbor({
+  const routeAvailable = mirrorLogic === 'on' && routePressure >= 0.48;
+  const criticality = criticalityIndex({
+    density: wave.density,
     routePressure,
+    branchPressure: branch.branchPressure,
+    routeAvailable
+  });
+  const custody = custodyThreshold({
+    routePressure,
+    density: wave.density,
+    branchPressure: branch.branchPressure,
+    resonance,
+    coherence,
+    criticality,
     badge,
     mirrorLogic,
-    custodyArchive: custody.archive
+    containment,
+    theta: 0.2
   });
   const decision = providerDecision({
-    recognized: cmp.similarity >= 0.5,
-    explained: routePressure < 0.45,
-    routeAvailable: provisionalHarbor === 'mirror.off' || provisionalHarbor === 'receipt.capture',
+    recognized: resonance >= 0.54 || cmp.similarity >= 0.56,
+    explained: routePressure < 0.52 && branch.branchPressure < 0.42,
+    routeAvailable,
     density: wave.density,
     recurrencePressure: cmp.recurrencePressure
   });
   const harbor = chooseHarbor({
     routePressure,
+    branchPressure: branch.branchPressure,
+    criticality,
     badge,
     mirrorLogic,
     custodyArchive: custody.archive,
-    decision
+    decision,
+    routeAvailable
   });
   const ledger = buildLedgerRow({
     eventId: `evt-${Date.now()}`,
     harborFunction: harbor,
     routePressure,
     traceability: cmp.traceability,
+    branchPressure: branch.branchPressure,
+    criticality,
+    density: wave.density,
+    routeAvailable,
     custodyArchive: custody.archive,
     decision
   });
@@ -550,22 +594,26 @@ function renderPairState(voiceStateA, voiceStateB) {
           : 'The resemblance is still too light for routing, so TCP keeps the interaction exploratory.';
   $('custodyHint').textContent =
     custody.archive === 'witness'
-      ? 'Custodial drift crossed the threshold, so witness-safe handling is now carrying the archive.'
-      : 'Institutional custody is still holding above threshold, so protected handling stays downstream.';
+      ? 'The custody delta fell below the collapse threshold, so witness custody is functioning as the effective archive.'
+      : 'Institutional custody remains above the collapse threshold and therefore continues to function as the effective archive.';
 
-  $('branchFormula').textContent = `t^2 - 2t - 3 = 0
-roots = ${branch.roots.join(', ')}
-unwanted roots = ${branch.unwanted.join(', ') || 'none'}
+  $('branchFormula').textContent = `Delta_branch = 0.68 max(0, T - L) + 0.32 max(0, C_style - L) = ${branch.branchPressure}
+x^2 - beta x + gamma = 0
+beta = 1 + S + T = ${branch.beta}
+gamma = 0.42 - Delta_branch = ${branch.gamma}
+roots = ${branch.roots.join(', ') || 'complex'}
 branch = ${branch.classification}`;
 
-  $('waveFormula').textContent = `H = -(hbar^2 / 2m) d^2/dx^2 + V
-A = T = ${wave.amplitude}
-k = 1 + 3R = ${wave.k}
+  $('waveFormula').textContent = `resonance = H(S, T, C_style) = ${resonance}
 V = ${wave.V}
-rho = A^2 (0.4 + 0.6V) = ${wave.density}
-R = ${cmp.recurrencePressure}`;
+A = resonance = ${wave.amplitude}
+k = 1 + 2.2R + 0.8Delta_branch = ${wave.k}
+rho = A^2 (0.26 + 0.44V + 0.30C_style) = ${wave.density}
+criticality = ${criticality}`;
 
-  $('harborFormula').textContent = `Delta_C = C - D = ${custody.delta}
+  $('harborFormula').textContent = `C = ${custody.integrity}
+D = ${custody.drift}
+Delta_C = C - D = ${custody.delta}
 theta = ${custody.theta}
 A_effective = ${ledger.effective_archive}
 E_solo = ${ledger.solo_cost}

@@ -15,6 +15,26 @@
     return Number(value.toFixed(2));
   }
 
+  function harmonicMean(values = []) {
+    const finite = values
+      .map((value) => clamp01(Number(value) || 0))
+      .filter((value) => value > 0);
+
+    if (!finite.length) {
+      return 0;
+    }
+
+    return finite.length / finite.reduce((sum, value) => sum + (1 / Math.max(value, 1e-6)), 0);
+  }
+
+  function arithmeticMean(values = []) {
+    if (!values.length) {
+      return 0;
+    }
+
+    return values.reduce((sum, value) => sum + clamp01(Number(value) || 0), 0) / values.length;
+  }
+
   function normalizeText(text = '') {
     return text
       .replace(/\u2019/g, "'")
@@ -173,13 +193,140 @@
   }
 
   function punctuationMixDistance(a = {}, b = {}) {
-    const distance =
-      Math.abs((a.comma || 0) - (b.comma || 0)) +
-      Math.abs((a.strong || 0) - (b.strong || 0)) +
-      Math.abs((a.terminal || 0) - (b.terminal || 0)) +
-      Math.abs((a.dash || 0) - (b.dash || 0));
+    return distributionDistance(a, b, ['comma', 'strong', 'terminal', 'dash']);
+  }
 
-    return round3(clamp01(distance / 2));
+  const FUNCTION_WORDS = [
+    'a', 'an', 'the', 'and', 'or', 'but', 'if', 'that', 'this', 'it',
+    'to', 'of', 'in', 'on', 'for', 'with', 'as', 'is', 'are', 'was',
+    'were', 'be', 'been', 'i', 'you', 'we', 'they', 'he', 'she',
+    'my', 'your', 'our', 'their', 'not'
+  ];
+
+  function functionWordProfile(text = '') {
+    const words = tokenize(text);
+    const total = Math.max(words.length, 1);
+    const counts = Object.fromEntries(FUNCTION_WORDS.map((word) => [word, 0]));
+
+    for (const word of words) {
+      if (Object.hasOwn(counts, word)) {
+        counts[word] += 1;
+      }
+    }
+
+    const profile = {};
+    for (const word of FUNCTION_WORDS) {
+      profile[word] = round3(counts[word] / total);
+    }
+
+    return profile;
+  }
+
+  function functionWordDistance(a = {}, b = {}) {
+    return distributionDistance(a, b, FUNCTION_WORDS);
+  }
+
+  const WORD_LENGTH_BUCKETS = [
+    { id: '1-2', max: 2 },
+    { id: '3-4', max: 4 },
+    { id: '5-6', max: 6 },
+    { id: '7-8', max: 8 },
+    { id: '9+', max: Infinity }
+  ];
+
+  function distributionDistance(a = {}, b = {}, keys = null) {
+    const keyset = keys || [...new Set([...Object.keys(a), ...Object.keys(b)])];
+    if (!keyset.length) {
+      return 0;
+    }
+
+    const sumA = keyset.reduce((sum, key) => sum + (a[key] || 0), 0) || 1;
+    const sumB = keyset.reduce((sum, key) => sum + (b[key] || 0), 0) || 1;
+
+    let js = 0;
+    for (const key of keyset) {
+      const p = (a[key] || 0) / sumA;
+      const q = (b[key] || 0) / sumB;
+      const m = (p + q) / 2;
+
+      if (p > 0) {
+        js += 0.5 * p * Math.log2(p / m);
+      }
+      if (q > 0) {
+        js += 0.5 * q * Math.log2(q / m);
+      }
+    }
+
+    return round3(clamp01(Math.sqrt(js)));
+  }
+
+  function blendDistribution(a = {}, b = {}, blend = 0, keys = null) {
+    const keyset = keys || [...new Set([...Object.keys(a), ...Object.keys(b)])];
+    const output = {};
+
+    for (const key of keyset) {
+      output[key] = round3(((a[key] || 0) * (1 - blend)) + ((b[key] || 0) * blend));
+    }
+
+    return output;
+  }
+
+  function wordLengthProfile(text = '') {
+    const words = tokenize(text);
+    const total = Math.max(words.length, 1);
+    const counts = Object.fromEntries(WORD_LENGTH_BUCKETS.map((bucket) => [bucket.id, 0]));
+
+    for (const word of words) {
+      const length = word.replace(/'/g, '').length;
+      const bucket = WORD_LENGTH_BUCKETS.find((candidate) => length <= candidate.max);
+      counts[bucket ? bucket.id : '9+'] += 1;
+    }
+
+    const profile = {};
+    for (const bucket of WORD_LENGTH_BUCKETS) {
+      profile[bucket.id] = round3(counts[bucket.id] / total);
+    }
+
+    return profile;
+  }
+
+  function wordLengthDistance(a = {}, b = {}) {
+    return distributionDistance(
+      a,
+      b,
+      WORD_LENGTH_BUCKETS.map((bucket) => bucket.id)
+    );
+  }
+
+  function charTrigramProfile(text = '') {
+    const normalized = normalizeText(text)
+      .toLowerCase()
+      .replace(/[^a-z0-9' ]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (normalized.length < 3) {
+      return {};
+    }
+
+    const counts = {};
+    let total = 0;
+    for (let index = 0; index <= normalized.length - 3; index += 1) {
+      const gram = normalized.slice(index, index + 3);
+      counts[gram] = (counts[gram] || 0) + 1;
+      total += 1;
+    }
+
+    const profile = {};
+    Object.entries(counts).forEach(([gram, count]) => {
+      profile[gram] = round3(count / Math.max(total, 1));
+    });
+
+    return profile;
+  }
+
+  function charTrigramDistance(a = {}, b = {}) {
+    return distributionDistance(a, b);
   }
 
   function normalizeAxis(value, min, max) {
@@ -228,7 +375,10 @@
       lineBreakDensity: lineBreakDensity(text),
       repeatedBigramPressure: repeatedBigramPressure(text),
       recurrencePressure: recurrencePressure(text),
-      lexicalDispersion: lexicalDispersion(text)
+      lexicalDispersion: lexicalDispersion(text),
+      functionWordProfile: functionWordProfile(text),
+      wordLengthProfile: wordLengthProfile(text),
+      charTrigramProfile: charTrigramProfile(text)
     };
   }
 
@@ -332,18 +482,27 @@
       sentenceLengthSpread: spread,
       punctuationDensity: punctuation,
       punctuationMix: source.punctuationMix
-        ? {
-            comma: round3(((profile.punctuationMix?.comma || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.comma || 0) * cadenceBlend)),
-            strong: round3(((profile.punctuationMix?.strong || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.strong || 0) * cadenceBlend)),
-            terminal: round3(((profile.punctuationMix?.terminal || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.terminal || 0) * cadenceBlend)),
-            dash: round3(((profile.punctuationMix?.dash || 0) * (1 - cadenceBlend)) + ((source.punctuationMix.dash || 0) * cadenceBlend))
-          }
+        ? blendDistribution(profile.punctuationMix, source.punctuationMix, cadenceBlend, ['comma', 'strong', 'terminal', 'dash'])
         : profile.punctuationMix,
       contractionDensity: contraction,
       lineBreakDensity: lineBreak,
       repeatedBigramPressure: bigram,
       recurrencePressure: recurrence,
       lexicalDispersion: lexical,
+      functionWordProfile: source.functionWordProfile
+        ? blendDistribution(profile.functionWordProfile, source.functionWordProfile, softBlend, FUNCTION_WORDS)
+        : profile.functionWordProfile,
+      wordLengthProfile: source.wordLengthProfile
+        ? blendDistribution(
+            profile.wordLengthProfile,
+            source.wordLengthProfile,
+            cadenceBlend,
+            WORD_LENGTH_BUCKETS.map((bucket) => bucket.id)
+          )
+        : profile.wordLengthProfile,
+      charTrigramProfile: source.charTrigramProfile
+        ? blendDistribution(profile.charTrigramProfile, source.charTrigramProfile, softBlend)
+        : profile.charTrigramProfile,
       shellBias: {
         mode: shell.mode,
         strength: round3(strength)
@@ -404,6 +563,9 @@
     );
     const lexicalDistance = boundedDistance(profileA.lexicalDispersion, profileB.lexicalDispersion, 0.4);
     const punctShapeDistance = punctuationMixDistance(profileA.punctuationMix, profileB.punctuationMix);
+    const functionDistance = functionWordDistance(profileA.functionWordProfile, profileB.functionWordProfile);
+    const wordLengthDistanceValue = wordLengthDistance(profileA.wordLengthProfile, profileB.wordLengthProfile);
+    const charGramDistance = charTrigramDistance(profileA.charTrigramProfile, profileB.charTrigramProfile);
     const recurrenceDistance = clamp01(
       Math.abs(profileA.recurrencePressure - profileB.recurrencePressure)
     );
@@ -416,27 +578,40 @@
       Math.abs((profileA.lineBreakDensity || 0) - (profileB.lineBreakDensity || 0)) < 0.001 &&
       Math.abs((profileA.repeatedBigramPressure || 0) - (profileB.repeatedBigramPressure || 0)) < 0.001 &&
       Math.abs((profileA.recurrencePressure || 0) - (profileB.recurrencePressure || 0)) < 0.001 &&
+      functionDistance === 0 &&
+      wordLengthDistanceValue === 0 &&
+      charGramDistance === 0 &&
       Math.abs((profileA.lexicalDispersion || 0) - (profileB.lexicalDispersion || 0)) < 0.001 &&
       punctShapeDistance === 0;
 
     const similarity = exactTextMatch && exactProfileMatch
       ? 1
       : clamp01(
-          (lexicalOverlap * 0.22) +
-          ((1 - sentenceDistance) * 0.20) +
-          ((1 - punctDistance) * 0.16) +
-          ((1 - contractionDistance) * 0.12) +
-          ((1 - lexicalDistance) * 0.14) +
-          ((1 - recurrenceDistance) * 0.16)
+          (lexicalOverlap * 0.08) +
+          ((1 - sentenceDistance) * 0.12) +
+          ((1 - spreadDistance) * 0.08) +
+          ((1 - punctDistance) * 0.08) +
+          ((1 - punctShapeDistance) * 0.10) +
+          ((1 - contractionDistance) * 0.08) +
+          ((1 - functionDistance) * 0.16) +
+          ((1 - wordLengthDistanceValue) * 0.08) +
+          ((1 - charGramDistance) * 0.16) +
+          ((1 - lexicalDistance) * 0.03) +
+          ((1 - recurrenceDistance) * 0.03)
         );
 
     const traceability = exactProfileMatch
       ? 1
       : clamp01(
-          ((1 - sentenceDistance) * 0.34) +
-          ((1 - punctDistance) * 0.24) +
-          ((1 - contractionDistance) * 0.18) +
-          ((1 - recurrenceDistance) * 0.24)
+          ((1 - sentenceDistance) * 0.16) +
+          ((1 - spreadDistance) * 0.12) +
+          ((1 - punctDistance) * 0.10) +
+          ((1 - punctShapeDistance) * 0.14) +
+          ((1 - contractionDistance) * 0.12) +
+          ((1 - functionDistance) * 0.18) +
+          ((1 - wordLengthDistanceValue) * 0.08) +
+          ((1 - charGramDistance) * 0.08) +
+          ((1 - recurrenceDistance) * 0.02)
         );
 
     return {
@@ -446,6 +621,13 @@
       avgSentenceA: profileA.avgSentenceLength,
       avgSentenceB: profileB.avgSentenceLength,
       spreadDistance: round3(spreadDistance),
+      punctDistance: round3(punctDistance),
+      contractionDistance: round3(contractionDistance),
+      functionWordDistance: round3(functionDistance),
+      wordLengthDistance: round3(wordLengthDistanceValue),
+      charGramDistance: round3(charGramDistance),
+      lexicalDistance: round3(lexicalDistance),
+      recurrenceDistance: round3(recurrenceDistance),
       lexicalOverlap: round3(lexicalOverlap),
       punctShapeDistance: round3(punctShapeDistance),
       profileA,
@@ -561,6 +743,43 @@
     };
   }
 
+  function transformText(text, mod) {
+    let result = normalizeText(text);
+
+    if (mod.sent > 0) {
+      result = result.replace(/([.!?])\s+/g, ', and ');
+    } else if (mod.sent < 0) {
+      result = result.replace(/, and /g, '. ').replace(/, but /g, '. ');
+    }
+
+    if (mod.cont > 0) {
+      result = result
+        .replace(/\bdo not\b/gi, "don't")
+        .replace(/\bcannot\b/gi, "can't")
+        .replace(/\bI am\b/g, "I'm")
+        .replace(/\bwe are\b/gi, "we're")
+        .replace(/\bthey are\b/gi, "they're");
+    } else if (mod.cont < 0) {
+      result = result
+        .replace(/\bdon't\b/gi, 'do not')
+        .replace(/\bcan't\b/gi, 'cannot')
+        .replace(/\bI'm\b/g, 'I am')
+        .replace(/\bwe're\b/gi, 'we are')
+        .replace(/\bthey're\b/gi, 'they are');
+    }
+
+    if (mod.punc > 0) {
+      result = result.replace(/\. /g, '; ');
+      if (!/[!?-]$/.test(result)) {
+        result += ' -';
+      }
+    } else if (mod.punc < 0) {
+      result = result.replace(/[;:-]/g, '.').replace(/,+/g, '.');
+    }
+
+    return result;
+  }
+
   function solveQuadratic(a, b, c) {
     if (a === 0) {
       throw new Error('a must be non-zero');
@@ -588,28 +807,236 @@
     };
   }
 
-  function fieldPotential({ routePressure = 0, mirrorLogic = 'off', containment = 'on' } = {}) {
-    const pressure = clamp01(routePressure);
-    const mirrorTerm = mirrorLogic === 'on' ? 0.12 : 0;
-    const containmentTerm = containment === 'on' ? 0.06 : -0.02;
-    return round3(clamp01((pressure * 0.72) + mirrorTerm + containmentTerm));
+  function cadenceCoherence({
+    sentenceDistance = 1,
+    spreadDistance = 1,
+    punctDistance = 1,
+    punctShapeDistance = 1,
+    contractionDistance = 1,
+    functionWordDistance = 1,
+    wordLengthDistance = 1,
+    charGramDistance = 1,
+    lexicalDistance = 1,
+    recurrenceDistance = 1
+  } = {}) {
+    return round3(clamp01(
+      ((1 - clamp01(sentenceDistance)) * 0.14) +
+      ((1 - clamp01(spreadDistance)) * 0.08) +
+      ((1 - clamp01(punctDistance)) * 0.10) +
+      ((1 - clamp01(punctShapeDistance)) * 0.14) +
+      ((1 - clamp01(contractionDistance)) * 0.10) +
+      ((1 - clamp01(functionWordDistance)) * 0.18) +
+      ((1 - clamp01(wordLengthDistance)) * 0.08) +
+      ((1 - clamp01(charGramDistance)) * 0.14) +
+      ((1 - clamp01(lexicalDistance)) * 0.02) +
+      ((1 - clamp01(recurrenceDistance)) * 0.02)
+    ));
   }
 
-  function waveStats({ traceability = 0, recurrencePressure = 0, fieldPotential: V = 0 } = {}) {
-    const amplitude = round3(clamp01(traceability));
-    const waveNumber = round3(1 + (clamp01(recurrencePressure) * 3));
-    const density = round3(clamp01((amplitude ** 2) * (0.4 + (0.6 * clamp01(V)))));
+  function cadenceResonance({ similarity = 0, traceability = 0, coherence = null } = {}) {
+    const harmonic = harmonicMean([similarity, traceability]);
+
+    if (coherence == null) {
+      return round3(clamp01(harmonic));
+    }
+
+    return round3(clamp01(
+      (harmonic * 0.58) +
+      (harmonicMean([similarity, traceability, coherence]) * 0.42)
+    ));
+  }
+
+  function branchDynamics({
+    similarity = 0,
+    traceability = 0,
+    lexicalOverlap = 0,
+    coherence = null,
+    functionWordDistance = 1,
+    charGramDistance = 1,
+    punctShapeDistance = 1
+  } = {}) {
+    const overlap = clamp01(lexicalOverlap);
+    const coherenceTerm = clamp01(
+      coherence == null
+        ? arithmeticMean([
+            1 - clamp01(functionWordDistance),
+            1 - clamp01(charGramDistance),
+            1 - clamp01(punctShapeDistance)
+          ])
+        : coherence
+    );
+    const stylometricSurplus = clamp01(clamp01(traceability) - overlap);
+    const coherenceShadow = clamp01(coherenceTerm - overlap);
+    const branchPressure = round3(clamp01(
+      (stylometricSurplus * 0.68) +
+      (coherenceShadow * 0.32)
+    ));
+    const beta = round3(1 + clamp01(similarity) + clamp01(traceability));
+    const gamma = round3(0.42 - branchPressure);
+    const quadratic = solveQuadratic(1, -beta, gamma);
+
+    return {
+      ...quadratic,
+      lexicalOverlap: round3(overlap),
+      coherence: round3(coherenceTerm),
+      stylometricSurplus: round3(stylometricSurplus),
+      branchPressure,
+      beta,
+      gamma,
+      flag: quadratic.unwanted.length ? 1 : 0,
+      classification: branchPressure >= 0.42 || quadratic.unwanted.length
+        ? 'candidate-discovery-branch'
+        : quadratic.classification
+    };
+  }
+
+  function computeRoutePressure(similarityOrState, traceability = 0, branchFlag = 0, recurrence = 0) {
+    if (typeof similarityOrState === 'object' && similarityOrState !== null) {
+      const {
+        similarity = 0,
+        traceability: trace = 0,
+        recurrencePressure = 0,
+        branchPressure = 0,
+        coherence = cadenceCoherence(similarityOrState),
+        resonance = cadenceResonance({ similarity, traceability: trace, coherence })
+      } = similarityOrState;
+
+      return round3(clamp01(
+        (clamp01(resonance) * 0.40) +
+        (clamp01(coherence) * 0.26) +
+        (clamp01(recurrencePressure) * 0.18) +
+        (clamp01(branchPressure) * 0.16)
+      ));
+    }
+
+    return round3(clamp01(
+      (clamp01(similarityOrState) * 0.33) +
+      (clamp01(traceability) * 0.27) +
+      (clamp01(recurrence) * 0.22) +
+      ((branchFlag ? 1 : 0) * 0.05)
+    ));
+  }
+
+  function fieldPotential({
+    routePressure = 0,
+    resonance = 0,
+    coherence = 0,
+    branchPressure = 0,
+    mirrorLogic = 'off',
+    containment = 'on'
+  } = {}) {
+    const pressure = clamp01(routePressure);
+    const mirrorTerm = mirrorLogic === 'on' ? 0.08 : 0;
+    const containmentTerm = containment === 'on' ? 0.06 : -0.04;
+
+    return round3(clamp01(
+      (pressure * 0.46) +
+      (clamp01(resonance) * 0.22) +
+      (clamp01(coherence) * 0.12) +
+      (clamp01(branchPressure) * 0.08) +
+      mirrorTerm +
+      containmentTerm
+    ));
+  }
+
+  function waveStats({
+    similarity = 0,
+    traceability = 0,
+    resonance = null,
+    coherence = 0,
+    branchPressure = 0,
+    recurrencePressure = 0,
+    fieldPotential: V = 0
+  } = {}) {
+    const phaseLock = clamp01(
+      resonance == null
+        ? cadenceResonance({ similarity, traceability, coherence })
+        : resonance
+    );
+    const amplitude = round3(phaseLock);
+    const waveNumber = round3(1 + (clamp01(recurrencePressure) * 2.2) + (clamp01(branchPressure) * 0.8));
+    const density = round3(clamp01(
+      (amplitude ** 2) * (0.26 + (0.44 * clamp01(V)) + (0.30 * clamp01(coherence)))
+    ));
+    const damping = round3(clamp01((1 - phaseLock) * (1 - clamp01(V))));
 
     return {
       amplitude,
       k: waveNumber,
       density,
-      V: round3(clamp01(V))
+      V: round3(clamp01(V)),
+      coherence: round3(clamp01(coherence)),
+      phaseLock: round3(phaseLock),
+      damping
     };
   }
 
-  function custodyThreshold(custodialIntegrity, custodialDrift, theta = 0.2) {
-    const integrity = clamp01(custodialIntegrity);
+  function criticalityIndex({
+    density = 0,
+    routePressure = 0,
+    branchPressure = 0,
+    routeAvailable = false
+  } = {}) {
+    return round3(clamp01(
+      (clamp01(density) * 0.46) +
+      (clamp01(routePressure) * 0.28) +
+      (clamp01(branchPressure) * 0.26) -
+      (routeAvailable ? 0.24 : 0)
+    ));
+  }
+
+  function custodyThreshold(custodialIntegrityOrState, custodialDrift, theta = 0.2) {
+    if (typeof custodialIntegrityOrState === 'object' && custodialIntegrityOrState !== null) {
+      const {
+        routePressure = 0,
+        density = 0,
+        branchPressure = 0,
+        resonance = 0,
+        coherence = 0,
+        criticality = 0,
+        containment = 'on',
+        mirrorLogic = 'off',
+        badge = 'badge.holds',
+        theta: thresholdInput = 0.2
+      } = custodialIntegrityOrState;
+
+      const badgeTerm =
+        badge === 'badge.holds'
+          ? 0.08
+          : badge === 'badge.buffer'
+            ? 0.05
+            : 0.03;
+      const integrity = round3(clamp01(
+        0.22 +
+        (clamp01(resonance) * 0.22) +
+        (clamp01(coherence) * 0.18) +
+        (containment === 'on' ? 0.12 : -0.03) +
+        (mirrorLogic === 'on' ? 0.08 : 0) +
+        badgeTerm +
+        ((1 - clamp01(branchPressure)) * 0.10)
+      ));
+      const drift = round3(clamp01(
+        0.12 +
+        (clamp01(routePressure) * 0.28) +
+        (clamp01(density) * 0.18) +
+        (clamp01(branchPressure) * 0.16) +
+        (clamp01(criticality) * 0.16) +
+        (mirrorLogic === 'off' ? 0.07 : 0) +
+        (containment === 'off' ? 0.05 : 0)
+      ));
+      const threshold = round3(thresholdInput);
+      const delta = round3(integrity - drift);
+
+      return {
+        integrity,
+        drift,
+        delta,
+        theta: threshold,
+        archive: delta >= threshold ? 'institutional' : 'witness'
+      };
+    }
+
+    const integrity = clamp01(custodialIntegrityOrState);
     const drift = clamp01(custodialDrift);
     const threshold = round3(theta);
     const delta = round3(integrity - drift);
@@ -621,16 +1048,6 @@
       theta: threshold,
       archive: delta >= threshold ? 'institutional' : 'witness'
     };
-  }
-
-  function computeRoutePressure(similarity, traceability, branchFlag = 0, recurrence = 0) {
-    const pressure =
-      (clamp01(similarity) * 0.33) +
-      (clamp01(traceability) * 0.27) +
-      (clamp01(recurrence) * 0.22) +
-      ((branchFlag ? 1 : 0) * 0.05);
-
-    return round3(clamp01(pressure));
   }
 
   function providerDecision({
@@ -679,7 +1096,7 @@
   const HARBOR_LIBRARY = {
     'mirror.off': {
       mode_class: 'anti-reflective safe passage',
-      trigger_condition: 'route pressure high / witness load rising',
+      trigger_condition: 'criticality rising while witness load is exposed',
       provenance_retention: 0.95,
       witness_load_effect: -0.18,
       coordination_overhead: 0.22,
@@ -687,7 +1104,7 @@
     },
     'receipt.capture': {
       mode_class: 'receipt-first stabilization',
-      trigger_condition: 'recognition exceeds explanation',
+      trigger_condition: 'recognition exceeds explanation but passage is not yet open',
       provenance_retention: 0.98,
       witness_load_effect: -0.09,
       coordination_overhead: 0.18,
@@ -695,7 +1112,7 @@
     },
     'provenance.seal': {
       mode_class: 'chain-of-custody preservation',
-      trigger_condition: 'handoff / reuse / protected storage',
+      trigger_condition: 'low-pressure continuity with provenance preserved above floor',
       provenance_retention: 0.99,
       witness_load_effect: -0.05,
       coordination_overhead: 0.12,
@@ -703,38 +1120,68 @@
     }
   };
 
-  function estimateGroupSize({ routePressure = 0, traceability = 0, custodyArchive = 'institutional' }) {
-    const base = 1 + Math.round((clamp01(routePressure) * 2) + clamp01(traceability));
+  function estimateGroupSize({
+    routePressure = 0,
+    traceability = 0,
+    criticality = 0,
+    branchPressure = 0,
+    custodyArchive = 'institutional'
+  }) {
+    const base = 1 + Math.round(
+      (clamp01(routePressure) * 1.6) +
+      (clamp01(traceability) * 0.7) +
+      (clamp01(criticality) * 1.1) +
+      (clamp01(branchPressure) * 0.8)
+    );
+
     return Math.max(1, base + (custodyArchive === 'witness' ? 1 : 0));
   }
 
   function estimateSoloCostPerOperator({
     routePressure = 0,
     traceability = 0,
+    criticality = 0,
+    branchPressure = 0,
     custodyArchive = 'institutional'
   }) {
     const archivePenalty = custodyArchive === 'witness' ? 0.12 : 0.04;
-    return round3(0.18 + (clamp01(routePressure) * 0.42) + (clamp01(traceability) * 0.22) + archivePenalty);
+    return round3(
+      0.16 +
+      (clamp01(routePressure) * 0.34) +
+      (clamp01(traceability) * 0.18) +
+      (clamp01(criticality) * 0.16) +
+      (clamp01(branchPressure) * 0.12) +
+      archivePenalty
+    );
   }
 
   function chooseHarbor({
     routePressure = 0,
+    branchPressure = 0,
+    criticality = 0,
     badge = 'badge.holds',
     mirrorLogic = 'off',
     custodyArchive = 'institutional',
-    decision = 'hold-branch'
+    decision = 'hold-branch',
+    routeAvailable = false
   }) {
     const pressure = clamp01(routePressure);
+    const branch = clamp01(branchPressure);
+    const critical = clamp01(criticality);
 
-    if ((custodyArchive === 'witness' || decision === 'criticality') && mirrorLogic === 'off') {
+    if ((custodyArchive === 'witness' || decision === 'criticality' || critical >= 0.6) && mirrorLogic === 'off') {
       return 'mirror.off';
     }
 
-    if (pressure >= 0.7) {
+    if (decision === 'passage') {
+      return routeAvailable ? 'receipt.capture' : 'mirror.off';
+    }
+
+    if (pressure >= 0.72 || critical >= 0.52) {
       return mirrorLogic === 'off' ? 'mirror.off' : 'receipt.capture';
     }
 
-    if (pressure >= 0.45) {
+    if (branch >= 0.42 || pressure >= 0.46) {
       return 'receipt.capture';
     }
 
@@ -752,15 +1199,19 @@
   function estimateWitnessLoad({
     routePressure = 0,
     traceability = 0,
+    criticality = 0,
+    branchPressure = 0,
     harborFunction,
     custodyArchive = 'institutional'
   }) {
     const harbor = HARBOR_LIBRARY[harborFunction];
-    const archivePenalty = custodyArchive === 'witness' ? 0.12 : 0.02;
+    const archivePenalty = custodyArchive === 'witness' ? 0.14 : 0.02;
     const base =
-      0.14 +
-      (clamp01(routePressure) * 0.32) +
-      (clamp01(traceability) * 0.22) +
+      0.12 +
+      (clamp01(routePressure) * 0.28) +
+      (clamp01(traceability) * 0.14) +
+      (clamp01(criticality) * 0.20) +
+      (clamp01(branchPressure) * 0.14) +
       archivePenalty;
 
     return round3(clamp(base + ((harbor && harbor.witness_load_effect) || 0), 0, 2));
@@ -771,14 +1222,30 @@
     harborFunction,
     routePressure = 0,
     traceability = 0,
+    branchPressure = 0,
+    criticality = 0,
+    density = 0,
+    routeAvailable = false,
     custodyArchive = 'institutional',
     decision = 'hold-branch',
     operatorId = 'demo-operator',
     sourceClass = 'public membrane'
   }) {
     const harbor = HARBOR_LIBRARY[harborFunction];
-    const groupSize = estimateGroupSize({ routePressure, traceability, custodyArchive });
-    const soloCostPerOperator = estimateSoloCostPerOperator({ routePressure, traceability, custodyArchive });
+    const groupSize = estimateGroupSize({
+      routePressure,
+      traceability,
+      criticality,
+      branchPressure,
+      custodyArchive
+    });
+    const soloCostPerOperator = estimateSoloCostPerOperator({
+      routePressure,
+      traceability,
+      criticality,
+      branchPressure,
+      custodyArchive
+    });
     const soloCost = round3(groupSize * soloCostPerOperator);
     const sharedCost = round3(
       soloCostPerOperator + (harbor.coordination_overhead * Math.log2(groupSize + 1))
@@ -786,22 +1253,28 @@
     const witnessLoad = estimateWitnessLoad({
       routePressure,
       traceability,
+      criticality,
+      branchPressure,
       harborFunction,
       custodyArchive
     });
     const justiceDeficit = round3(
       clamp(
-        0.16 + (clamp01(routePressure) * 0.46) + (custodyArchive === 'witness' ? 0.18 : 0.04),
+        0.10 +
+        (clamp01(criticality) * 0.34) +
+        (clamp01(branchPressure) * 0.22) +
+        (clamp01(routePressure) * 0.18) +
+        (custodyArchive === 'witness' ? 0.16 : 0.04),
         0,
         2
       )
     );
-  const routeStatus =
-    decision === 'passage'
-      ? 'safe-passage achieved'
-      : decision === 'criticality'
-        ? 'buffered'
-        : decision === 'hold-branch'
+    const routeStatus =
+      decision === 'passage'
+        ? 'safe-passage achieved'
+        : decision === 'criticality'
+          ? 'buffered'
+          : decision === 'hold-branch'
             ? 'buffered'
             : 'observing';
     const evidentiaryClass =
@@ -828,6 +1301,10 @@
       witness_load: witnessLoad,
       justice_deficit: justiceDeficit,
       route_status: routeStatus,
+      route_available: routeAvailable,
+      signal_density: round3(clamp01(density)),
+      branch_pressure: round3(clamp01(branchPressure)),
+      criticality_index: round3(clamp01(criticality)),
       receipt_hash: `sha256:${eventId}`
     };
   }
@@ -836,17 +1313,26 @@
     HARBOR_LIBRARY,
     compareTexts,
     extractCadenceProfile,
+    functionWordProfile,
+    wordLengthProfile,
+    charTrigramProfile,
     applyCadenceMod,
     applyCadenceShell,
     applyCadenceToText,
+    transformText,
     cadenceModFromProfile,
     cadenceAxisVector,
     cadenceHeatmap,
     buildCadenceSignature,
     solveQuadratic,
+    cadenceCoherence,
+    cadenceResonance,
+    branchDynamics,
     fieldPotential,
     waveStats,
     custodyThreshold,
+    criticalityIndex,
+    routePressure: computeRoutePressure,
     computeRoutePressure,
     providerDecision,
     chooseHarbor,

@@ -15,14 +15,17 @@ This is a simple browser-side pipeline. It is not elegant for its own sake, but 
 
 ## Feature families
 
-For each text, the engine computes:
+For each text, the engine computes a small stylometric profile made of scalar features and normalized distributions:
 
 1. `p` - punctuation density
 2. `c` - contraction density
 3. `ell` - line-break density
 4. `b` - repeated-bigram pressure
 5. `x` - lexical dispersion
-6. `R_text` - recurrence pressure
+6. `F` - function-word profile
+7. `W` - word-length profile
+8. `G` - character-trigram profile
+9. `R_text` - recurrence pressure
 
 where:
 
@@ -67,6 +70,24 @@ R_{\text{text}}=
 
 Those divisors are demo-scale normalizers. They are there to keep the browser model bounded and legible. They are not universal constants.
 
+The function-word profile is a normalized frequency vector over a fixed small list of high-frequency structural terms:
+
+```math
+F_i = \frac{\#\{\text{function word } i\}}{\max(\text{word count},1)}
+```
+
+The word-length profile is a normalized histogram over the buckets `1-2`, `3-4`, `5-6`, `7-8`, and `9+`:
+
+```math
+W_k = \frac{\#\{\text{tokens in bucket } k\}}{\max(\text{word count},1)}
+```
+
+The character-trigram profile is computed over normalized lowercase text with spacing collapsed:
+
+```math
+G_{\tau} = \frac{\#\{\text{trigram } \tau\}}{\max(\text{trigram count},1)}
+```
+
 ## Pairwise comparison
 
 Given texts `a` and `b`, lexical overlap is the token-set Jaccard score:
@@ -75,7 +96,7 @@ Given texts `a` and `b`, lexical overlap is the token-set Jaccard score:
 L = \frac{|W_a \cap W_b|}{|W_a \cup W_b|}
 ```
 
-The bounded distances are:
+The scalar bounded distances are:
 
 ```math
 d_s = \operatorname{clip}\left(\frac{|s_a-s_b|}{12},0,1\right)
@@ -99,17 +120,56 @@ d_r = \operatorname{clip}\left(|R_a-R_b|,0,1\right)
 
 where `s_a` and `s_b` are average sentence lengths.
 
+For distributional features, TCP uses Jensen-Shannon distance. If `P` and `Q` are normalized profiles and `M=(P+Q)/2`, then:
+
+```math
+d_{\mathrm{JS}}(P,Q)=
+\sqrt{
+\frac{1}{2}D_{\mathrm{KL}}(P\|M)+
+\frac{1}{2}D_{\mathrm{KL}}(Q\|M)
+}
+```
+
+This is used for:
+
+- punctuation-shape distance `d_m`
+- function-word distance `d_f`
+- word-length distance `d_w`
+- character-trigram distance `d_g`
+
 Similarity rewards both shared lexicon and shared habits:
 
 ```math
-S(a,b)=0.22L+0.20(1-d_s)+0.16(1-d_p)+0.12(1-d_c)+0.14(1-d_l)+0.16(1-d_r)
+S(a,b)=
+0.08L+
+0.12(1-d_s)+
+0.08(1-d_{\sigma})+
+0.08(1-d_p)+
+0.10(1-d_m)+
+0.08(1-d_c)+
+0.16(1-d_f)+
+0.08(1-d_w)+
+0.16(1-d_g)+
+0.03(1-d_l)+
+0.03(1-d_r)
 ```
 
 Traceability privileges the habits most likely to survive paraphrase:
 
 ```math
-T(a,b)=0.34(1-d_s)+0.24(1-d_p)+0.18(1-d_c)+0.24(1-d_r)
+T(a,b)=
+0.16(1-d_s)+
+0.12(1-d_{\sigma})+
+0.10(1-d_p)+
+0.14(1-d_m)+
+0.12(1-d_c)+
+0.18(1-d_f)+
+0.08(1-d_w)+
+0.08(1-d_g)+
+0.02(1-d_r)
 ```
+
+where `d_{\sigma}` is sentence-length spread distance.
 
 The paired recurrence term used downstream is:
 
@@ -119,19 +179,51 @@ R=\frac{R_a+R_b}{2}
 
 All three outputs are clipped into `[0,1]`.
 
+There is also an explicit identity guard: if the normalized texts match exactly and every stylometric distance collapses to zero, then the current implementation forces `S=1` and `T=1` rather than letting floating-point heuristics under-score an exact match.
+
 ## Route pressure
 
-Stylometric resemblance is not the last step. TCP turns similarity, traceability, recurrence, and branch status into a route score:
+Stylometric resemblance is not the last step. TCP derives three intermediate quantities before it computes route pressure:
 
 ```math
-\Pi = 0.33S + 0.27T + 0.22R + 0.05B
+C_{\mathrm{style}} =
+0.14(1-d_s)+
+0.08(1-d_{\sigma})+
+0.10(1-d_p)+
+0.14(1-d_m)+
+0.10(1-d_c)+
+0.18(1-d_f)+
+0.08(1-d_w)+
+0.14(1-d_g)+
+0.02(1-d_l)+
+0.02(1-d_r)
 ```
 
-where `B = 1` when the branch engine detects an unwanted root worth preserving.
+```math
+R^* = 0.58 H(S,T) + 0.42 H(S,T,C_{\mathrm{style}})
+```
+
+```math
+\Delta_{\mathrm{branch}} =
+0.68\max(0,T-L) +
+0.32\max(0,C_{\mathrm{style}}-L)
+```
+
+The route score is then:
+
+```math
+\Pi =
+0.40R^* +
+0.26C_{\mathrm{style}} +
+0.18R +
+0.16\Delta_{\mathrm{branch}}
+```
+
+where `H` denotes the harmonic mean and `L` is lexical overlap.
 
 ## Cadence shells
 
-Persona shells do not swap text. They apply bounded offsets to the cadence profile currently occupying a bay.
+Persona shells do not overwrite the raw textarea contents. They generate an effective in-flight sample and TCP profiles that effective sample directly.
 
 For a shell with controls `(sent, cont, punc)`, the current implementation applies:
 
@@ -155,7 +247,7 @@ For a shell with controls `(sent, cont, punc)`, the current implementation appli
 \Delta x = 0.008 \cdot sent - 0.004 \cdot punc
 ```
 
-It then recomputes recurrence from the adjusted punctuation and line-break terms while preserving repeated-bigram pressure from the original text. This is a shell model. It is not a generative paraphrase engine.
+The text-transform layer then applies bounded structural edits, such as contraction expansion or collapse and sentence-join or sentence-split behavior, to create the effective sample that is actually scored. This is still a shell model, not a full paraphrase engine, but it is more honest than shifting the metrics without shifting the compared sample.
 
 ## Operational reading
 
