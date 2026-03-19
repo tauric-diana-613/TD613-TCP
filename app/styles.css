@@ -506,6 +506,30 @@ body[data-ingress-holding="seal"] .ingress-ring-c {
   color: #f0ffd8;
 }
 
+.ingress-choice[data-feedback="accepted"],
+.ingress-choice-rotator[data-feedback="accepted"],
+.ingress-badge-readout[data-feedback="accepted"] {
+  border-color: rgba(188, 255, 138, 0.32);
+  background: linear-gradient(180deg, rgba(188, 255, 138, 0.16) 0%, rgba(4, 14, 22, 0.96) 100%);
+  color: #f0ffd8;
+  box-shadow: 0 0 0 1px rgba(188, 255, 138, 0.08), 0 0 22px rgba(188, 255, 138, 0.08);
+}
+
+.ingress-choice[data-feedback="rejected"],
+.ingress-choice-rotator[data-feedback="rejected"],
+.ingress-badge-readout[data-feedback="rejected"] {
+  border-color: rgba(255, 179, 92, 0.34);
+  background: linear-gradient(180deg, rgba(255, 179, 92, 0.14) 0%, rgba(14, 8, 4, 0.96) 100%);
+  color: #fff1d7;
+  box-shadow: 0 0 0 1px rgba(255, 179, 92, 0.08), 0 0 22px rgba(255, 179, 92, 0.08);
+}
+
+.ingress-choice:disabled,
+.ingress-choice-rotator:disabled {
+  cursor: wait;
+  opacity: 0.92;
+}
+
 .ingress-badge-readout {
   display: inline-flex;
   align-items: center;

@@ -41,7 +41,10 @@
   };
   const queryParams = new URLSearchParams(window.location.search);
   const testFlightMode = queryParams.get('test-flight');
-  const ingressEnabled = !testFlightMode && queryParams.get('ingress') !== 'off';
+  const ingressFlightMode = testFlightMode === 'ingress';
+  const ingressMirrorOverride = queryParams.get('ingress-mirror');
+  const ingressBadgeOverride = queryParams.get('ingress-badge');
+  const ingressEnabled = (ingressFlightMode || !testFlightMode) && queryParams.get('ingress') !== 'off';
   const INGRESS_BYPASS_DELAY_MS = 8000;
   const INGRESS_REVEAL_MS = 1500;
   const INGRESS_BOOT_MS = 680;
@@ -70,6 +73,14 @@
     { value: 'badge.branch', label: 'branch', cue: 'candidate branch', glyph: '⟉' }
   ];
   const INGRESS_STAGES = ['containment', 'mirror', 'badge', 'seal'];
+
+  function resolveIngressMirrorTarget(value) {
+    return Object.prototype.hasOwnProperty.call(INGRESS_MIRROR_OPTIONS, value) ? value : null;
+  }
+
+  function resolveIngressBadgeTarget(value) {
+    return INGRESS_BADGE_OPTIONS.some((option) => option.value === value) ? value : null;
+  }
 
   let badge = defaults.badge;
   let mirrorLogic = defaults.mirror_logic;
@@ -109,6 +120,8 @@
   }
 
   function createIngressState() {
+    const targetMirror = resolveIngressMirrorTarget(ingressMirrorOverride) || randomChoice(['off', 'on']);
+    const targetBadge = resolveIngressBadgeTarget(ingressBadgeOverride) || randomChoice(INGRESS_BADGE_OPTIONS.map((option) => option.value));
     return {
       enabled: ingressEnabled,
       phase: ingressEnabled ? 'booting' : 'complete',
@@ -118,14 +131,18 @@
       bypassVisible: false,
       currentMirror: null,
       currentBadge: null,
+      resolvingGate: null,
+      mirrorFeedback: null,
+      badgeFeedback: null,
       holdTimer: null,
       bootTimer: null,
       bypassTimer: null,
       revealTimer: null,
+      feedbackTimer: null,
       target: {
         containment: 'on',
-        mirrorLogic: randomChoice(['off', 'on']),
-        badge: randomChoice(INGRESS_BADGE_OPTIONS.map((option) => option.value))
+        mirrorLogic: targetMirror,
+        badge: targetBadge
       }
     };
   }
@@ -210,8 +227,43 @@
     }
   }
 
+  function clearIngressFeedback() {
+    if (ingress.feedbackTimer) {
+      window.clearTimeout(ingress.feedbackTimer);
+      ingress.feedbackTimer = null;
+    }
+
+    ingress.resolvingGate = null;
+    ingress.mirrorFeedback = null;
+    ingress.badgeFeedback = null;
+  }
+
+  function scheduleIngressFeedbackClear(gate, delay = 320) {
+    if (ingress.feedbackTimer) {
+      window.clearTimeout(ingress.feedbackTimer);
+    }
+
+    ingress.feedbackTimer = window.setTimeout(() => {
+      if (gate === 'mirror' && ingress.phase === 'mirror') {
+        ingress.mirrorFeedback = null;
+      }
+
+      if (gate === 'badge' && ingress.phase === 'badge') {
+        ingress.badgeFeedback = null;
+      }
+
+      if (ingress.resolvingGate === gate) {
+        ingress.resolvingGate = null;
+      }
+
+      ingress.feedbackTimer = null;
+      renderIngress();
+    }, delay);
+  }
+
   function clearIngressTimers() {
     clearIngressHold();
+    clearIngressFeedback();
 
     if (ingress.bootTimer) {
       window.clearTimeout(ingress.bootTimer);
@@ -256,6 +308,9 @@
     document.body.dataset.ingressPhase = ingress.phase;
     document.body.dataset.ingressLocked = ingress.phase === 'complete' ? 'false' : 'true';
     document.body.dataset.ingressHolding = ingress.holding || 'none';
+    document.body.dataset.ingressResolving = ingress.resolvingGate || 'none';
+    document.body.dataset.ingressTargetMirror = ingress.target.mirrorLogic;
+    document.body.dataset.ingressTargetBadge = ingress.target.badge;
   }
 
   function renderIngress() {
@@ -269,6 +324,11 @@
     overlay.hidden = ingress.phase === 'complete';
     overlay.dataset.phase = ingress.phase;
     overlay.dataset.holding = ingress.holding || 'none';
+    overlay.dataset.resolving = ingress.resolvingGate || 'none';
+    overlay.dataset.targetMirror = ingress.target.mirrorLogic;
+    overlay.dataset.targetBadge = ingress.target.badge;
+    overlay.dataset.currentMirror = ingress.currentMirror || 'unset';
+    overlay.dataset.currentBadge = ingress.currentBadge || 'unset';
     if (shell) {
       shell.inert = ingress.phase !== 'complete';
       shell.setAttribute('aria-hidden', ingress.phase === 'complete' ? 'false' : 'true');
@@ -370,7 +430,14 @@
 
     $('ingressMirrorArmed').dataset.selected = ingress.currentMirror === 'off';
     $('ingressMirrorOpen').dataset.selected = ingress.currentMirror === 'on';
+    $('ingressMirrorArmed').dataset.feedback = ingress.currentMirror === 'off' ? (ingress.mirrorFeedback || 'idle') : 'idle';
+    $('ingressMirrorOpen').dataset.feedback = ingress.currentMirror === 'on' ? (ingress.mirrorFeedback || 'idle') : 'idle';
+    $('ingressMirrorArmed').disabled = ingress.phase !== 'mirror' || ingress.resolvingGate === 'mirror';
+    $('ingressMirrorOpen').disabled = ingress.phase !== 'mirror' || ingress.resolvingGate === 'mirror';
     $('ingressBadgeCycle').dataset.ready = ingress.currentBadge === ingress.target.badge;
+    $('ingressBadgeCycle').dataset.feedback = ingress.badgeFeedback || 'idle';
+    $('ingressBadgeCycle').disabled = ingress.phase !== 'badge' || ingress.resolvingGate === 'badge';
+    $('ingressBadgeReadout').dataset.feedback = ingress.badgeFeedback || 'idle';
 
     $('ingressBypassWrap').hidden = !ingress.bypassVisible || ingress.phase === 'complete';
   }
@@ -378,6 +445,7 @@
   function setIngressPhase(phase) {
     ingress.phase = phase;
     clearIngressHold();
+    clearIngressFeedback();
     renderIngress();
   }
 
@@ -514,39 +582,44 @@
   }
 
   function chooseIngressMirror(value) {
-    if (ingress.phase !== 'mirror') {
+    if (ingress.phase !== 'mirror' || ingress.resolvingGate) {
       return;
     }
 
+    clearIngressFeedback();
     ingress.currentMirror = value;
-    renderIngress();
-
     if (value === ingress.target.mirrorLogic) {
-      window.setTimeout(() => {
-        if (ingress.phase === 'mirror' && ingress.currentMirror === ingress.target.mirrorLogic) {
-          setIngressPhase('badge');
-        }
-      }, 220);
+      ingress.resolvingGate = 'mirror';
+      ingress.mirrorFeedback = 'accepted';
+      renderIngress();
+      setIngressPhase('badge');
+      return;
     }
+
+    ingress.resolvingGate = 'mirror';
+    ingress.mirrorFeedback = 'rejected';
+    renderIngress();
+    scheduleIngressFeedbackClear('mirror');
   }
 
   function cycleIngressBadge() {
-    if (ingress.phase !== 'badge') {
+    if (ingress.phase !== 'badge' || ingress.resolvingGate) {
       return;
     }
 
+    clearIngressFeedback();
     const currentIndex = INGRESS_BADGE_OPTIONS.findIndex((option) => option.value === ingress.currentBadge);
     const nextOption = INGRESS_BADGE_OPTIONS[(currentIndex + 1 + INGRESS_BADGE_OPTIONS.length) % INGRESS_BADGE_OPTIONS.length];
     ingress.currentBadge = nextOption.value;
-    renderIngress();
-
     if (ingress.currentBadge === ingress.target.badge) {
-      window.setTimeout(() => {
-        if (ingress.phase === 'badge' && ingress.currentBadge === ingress.target.badge) {
-          setIngressPhase('seal');
-        }
-      }, 220);
+      ingress.resolvingGate = 'badge';
+      ingress.badgeFeedback = 'accepted';
+      renderIngress();
+      setIngressPhase('seal');
+      return;
     }
+
+    renderIngress();
   }
 
   function bypassIngress() {
@@ -1697,6 +1770,178 @@ DeltaE = ${ledger.reuse_gain}`;
     return readDeckSnapshot();
   }
 
+  function readIngressSnapshot() {
+    const overlay = $('ingressMembrane');
+    const layer = overlay ? overlay.querySelector('.ingress-layer') : null;
+    const readText = (id) => {
+      const node = $(id);
+      return node ? node.textContent.trim() : '';
+    };
+
+    return {
+      phase: ingress.phase,
+      resolvingGate: ingress.resolvingGate || 'none',
+      targetMirror: overlay ? overlay.dataset.targetMirror : '',
+      targetBadge: overlay ? overlay.dataset.targetBadge : '',
+      currentMirror: overlay ? overlay.dataset.currentMirror : '',
+      currentBadge: overlay ? overlay.dataset.currentBadge : '',
+      mirrorControlsHidden: $('ingressMirrorControls').hidden,
+      badgeControlsHidden: $('ingressBadgeControls').hidden,
+      status: readText('ingressStatus'),
+      cue: readText('ingressCueLabel'),
+      badgeReadout: readText('ingressBadgeReadout'),
+      bodyOverflow: window.getComputedStyle(document.body).overflow,
+      layerOverflowY: layer ? window.getComputedStyle(layer).overflowY : '',
+      layerHasVerticalOverflow: layer ? layer.scrollHeight > layer.clientHeight + 1 : false
+    };
+  }
+
+  function primeIngressScenario({
+    phase = 'containment',
+    targetMirror = 'off',
+    targetBadge = 'badge.holds',
+    currentMirror = null,
+    currentBadge = null
+  } = {}) {
+    clearIngressTimers();
+    ingress.enabled = true;
+    ingress.phase = phase;
+    ingress.holding = null;
+    ingress.holdStartedAt = 0;
+    ingress.holdPointerId = null;
+    ingress.bypassVisible = false;
+    ingress.currentMirror = currentMirror;
+    ingress.currentBadge = currentBadge;
+    ingress.target = {
+      containment: 'on',
+      mirrorLogic: targetMirror,
+      badge: targetBadge
+    };
+    ingress.resolvingGate = null;
+    ingress.mirrorFeedback = null;
+    ingress.badgeFeedback = null;
+    renderIngress();
+    return readIngressSnapshot();
+  }
+
+  function runIngressTestFlight() {
+    const report = {
+      mode: 'ingress',
+      cases: []
+    };
+
+    const pushCase = (id, pass, snapshot, rationale) => {
+      report.cases.push({ id, pass, rationale, snapshot });
+    };
+
+    primeIngressScenario({
+      phase: 'containment',
+      targetMirror: resolveIngressMirrorTarget(ingressMirrorOverride) || 'off',
+      targetBadge: resolveIngressBadgeTarget(ingressBadgeOverride) || 'badge.buffer'
+    });
+    pushCase(
+      'layout_containment',
+      readIngressSnapshot().phase === 'containment' &&
+        readIngressSnapshot().bodyOverflow === 'hidden' &&
+        readIngressSnapshot().layerOverflowY === 'hidden' &&
+        readIngressSnapshot().mirrorControlsHidden &&
+        readIngressSnapshot().badgeControlsHidden,
+      readIngressSnapshot(),
+      'Containment should own the screen without inner scrolling or leaked later-stage controls.'
+    );
+
+    primeIngressScenario({ phase: 'containment', targetMirror: 'off', targetBadge: 'badge.buffer' });
+    ingress.holding = 'containment';
+    completeIngressHold('containment');
+    pushCase(
+      'containment_advances_to_mirror',
+      readIngressSnapshot().phase === 'mirror' && !readIngressSnapshot().mirrorControlsHidden,
+      readIngressSnapshot(),
+      'Containment hold should advance directly into the mirror gate.'
+    );
+
+    primeIngressScenario({ phase: 'mirror', targetMirror: 'off', targetBadge: 'badge.buffer' });
+    chooseIngressMirror('on');
+    pushCase(
+      'mirror_wrong_choice_stays_put',
+      readIngressSnapshot().phase === 'mirror' &&
+        readIngressSnapshot().currentMirror === 'on' &&
+        readIngressSnapshot().status.toLowerCase().includes('reject'),
+      readIngressSnapshot(),
+      'A wrong mirror posture should reject and stay on the mirror gate.'
+    );
+
+    primeIngressScenario({ phase: 'mirror', targetMirror: 'off', targetBadge: 'badge.buffer' });
+    chooseIngressMirror('off');
+    pushCase(
+      'mirror_off_advances_to_token',
+      readIngressSnapshot().phase === 'badge' && !readIngressSnapshot().badgeControlsHidden,
+      readIngressSnapshot(),
+      'A correct latent mirror choice should advance immediately to the token gate.'
+    );
+
+    primeIngressScenario({ phase: 'mirror', targetMirror: 'on', targetBadge: 'badge.buffer' });
+    chooseIngressMirror('on');
+    pushCase(
+      'mirror_on_advances_to_token',
+      readIngressSnapshot().phase === 'badge' && !readIngressSnapshot().badgeControlsHidden,
+      readIngressSnapshot(),
+      'A correct clear mirror choice should advance immediately to the token gate.'
+    );
+
+    primeIngressScenario({ phase: 'badge', targetMirror: 'off', targetBadge: 'badge.buffer', currentBadge: null });
+    cycleIngressBadge();
+    pushCase(
+      'token_wrong_choice_stays_put',
+      readIngressSnapshot().phase === 'badge' &&
+        readIngressSnapshot().currentBadge === 'badge.holds' &&
+        readIngressSnapshot().badgeReadout.toLowerCase().includes('holds'),
+      readIngressSnapshot(),
+      'A non-matching token should stay on the token gate and remain interactive.'
+    );
+
+    primeIngressScenario({ phase: 'badge', targetMirror: 'off', targetBadge: 'badge.buffer', currentBadge: 'badge.holds' });
+    cycleIngressBadge();
+    pushCase(
+      'token_match_advances_to_seal',
+      readIngressSnapshot().phase === 'seal',
+      readIngressSnapshot(),
+      'Cycling onto the target token should advance immediately to seal.'
+    );
+
+    primeIngressScenario({ phase: 'seal', targetMirror: 'on', targetBadge: 'badge.buffer', currentMirror: 'on', currentBadge: 'badge.buffer' });
+    ingress.holding = 'seal';
+    completeIngressHold('seal');
+    pushCase(
+      'seal_advances_to_revealing',
+      readIngressSnapshot().phase === 'revealing',
+      readIngressSnapshot(),
+      'Seal hold should hand off into the reveal phase without sticking.'
+    );
+
+    report.summary = {
+      allPassed: report.cases.every((entry) => entry.pass),
+      passCount: report.cases.filter((entry) => entry.pass).length,
+      caseCount: report.cases.length
+    };
+
+    let node = document.getElementById('testFlightReport');
+    if (!node) {
+      node = document.createElement('pre');
+      node.id = 'testFlightReport';
+      node.className = 'formula';
+      document.body.appendChild(node);
+    }
+
+    node.textContent = JSON.stringify(report, null, 2);
+
+    const summaryText = `Ingress flight // ${report.summary.allPassed ? 'passed' : 'check failed'} ${report.summary.passCount}/${report.summary.caseCount}`;
+    document.body.dataset.testFlightStatus = report.summary.allPassed ? 'passed' : 'complete';
+    document.body.dataset.testFlightSummary = summaryText.toLowerCase().replace(/[^a-z0-9/ ]/gi, '');
+    $('ingressStatus').textContent = summaryText;
+    $('analysisStatus').textContent = summaryText;
+  }
+
   function runTestFlight(mode = 'smoke') {
     const initialState = captureFlightState();
     const beforePersonaCount = document.querySelectorAll('.persona').length;
@@ -2027,5 +2272,9 @@ DeltaE = ${ledger.reuse_gain}`;
 
   if (testFlightMode === '2') {
     window.setTimeout(() => runTestFlight('full'), 120);
+  }
+
+  if (ingressFlightMode) {
+    window.setTimeout(() => runIngressTestFlight(), 120);
   }
 })();
