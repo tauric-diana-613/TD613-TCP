@@ -37,8 +37,8 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 
 | Term | In the app | In the model |
 | --- | --- | --- |
-| `Cadence shell` | The stylometric wrapper currently applied to a bay. | A modifier that bends sentence length, contraction rate, and punctuation pressure without replacing the text. |
-| `Persona shell` | A named, reusable cadence shell. | A saved modifier profile that can be reassigned to any bay. |
+| `Cadence shell` | The stylometric wrapper currently applied to a bay. | A deterministic cadence-transfer layer that rewrites sentence shape, connector/stance texture, contraction posture, and punctuation finish while preserving protected literals and raw source text. |
+| `Persona shell` | A named, reusable cadence shell. | A saved transfer profile that can be reassigned to any bay. |
 | `Native cadence` | The unmodified text as written. | The raw extracted stylometric profile before any shell bias is applied. |
 | `Borrowed cadence` | A shell captured from the other bay during swap. | A derived modifier built from the effective profile of the opposite bay. |
 | `Source sample` | The unchanged raw textarea text in each bay, as staged by `Shell Duel`. | The reference-side input and the probe-side input, each bent by its currently attached shell for visual comparison. |

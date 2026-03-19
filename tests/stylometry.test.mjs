@@ -2,6 +2,7 @@ import assert from 'assert';
 import {
   applyCadenceToText,
   applyCadenceShell,
+  buildCadenceTransfer,
   buildCadenceSignature,
   charTrigramProfile,
   compareTexts,
@@ -73,6 +74,14 @@ const shellShiftedText = applyCadenceToText(
 );
 const shellShiftedProfile = extractCadenceProfile(shellShiftedText);
 const shellSourceProfile = extractCadenceProfile(shellShiftSource);
+const shellTransfer = buildCadenceTransfer(
+  shellShiftSource,
+  {
+    mode: 'borrowed',
+    profile: borrowedProfile,
+    strength: 0.82
+  }
+);
 const shellShiftCompare = compareTexts(shellShiftSource, shellShiftedText, {
   profileA: shellSourceProfile,
   profileB: shellShiftedProfile
@@ -130,6 +139,15 @@ const noNumberLeakShifted = applyCadenceToText(
 );
 const noNumberLeakProfile = extractCadenceProfile(noNumberLeakShifted);
 const noNumberLeakSourceProfile = extractCadenceProfile(noNumberLeakSource);
+const literalSource = 'Meet me at 9:30, bring ID ZX-17, and keep "not for archive" exactly as written. Email hold@field.lab if the side-door note changes.';
+const literalTransfer = buildCadenceTransfer(
+  literalSource,
+  {
+    mode: 'borrowed',
+    profile: borrowedProfile,
+    strength: 0.9
+  }
+);
 
 assert.notEqual(swapped.avgSentenceLength, baseProfile.avgSentenceLength);
 assert.notEqual(swapped.contractionDensity, baseProfile.contractionDensity);
@@ -140,6 +158,11 @@ assert(typeof swapped.charTrigramProfile === 'object');
 assert(transformedCadenceText.includes("don't") || transformedCadenceText.includes("can't"));
 assert.notEqual(transformedCadenceText, 'I do not know and I cannot stay.');
 assert.notEqual(shellShiftedText, shellShiftSource);
+assert.equal(shellTransfer.text, shellShiftedText);
+assert(shellTransfer.qualityGatePassed);
+assert(shellTransfer.protectedLiteralCount === 0);
+assert(shellTransfer.changedDimensions.filter((dimension) => dimension !== 'punctuation-shape').length >= 2);
+assert(shellTransfer.passesApplied.length >= 2);
 assert.notEqual(stripSurface(connectiveShifted), stripSurface(connectiveSource));
 assert(shellShiftDeltaCount >= 2);
 assert.notEqual(stripSurface(connectorShifted), stripSurface(connectorSource));
@@ -162,6 +185,11 @@ assert(
   Math.abs(shellShiftedProfile.avgSentenceLength - borrowedProfile.avgSentenceLength) <
   Math.abs(shellSourceProfile.avgSentenceLength - borrowedProfile.avgSentenceLength)
 );
+assert(literalTransfer.text.includes('9:30'));
+assert(literalTransfer.text.includes('ZX-17'));
+assert(literalTransfer.text.includes('"not for archive"'));
+assert(literalTransfer.text.includes('hold@field.lab'));
+assert(literalTransfer.protectedLiteralCount >= 4);
 
 const signature = buildCadenceSignature(
   "I kept talking because the first version sounded too neat. Then I stopped, crossed it out, and started over."

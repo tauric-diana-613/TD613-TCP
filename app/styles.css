@@ -112,8 +112,8 @@ body[data-ingress-phase="revealing"] .shell {
   inset: 0;
   z-index: 50;
   display: grid;
-  place-items: center;
-  padding: 18px;
+  place-items: stretch center;
+  padding: 24px;
   background:
     radial-gradient(circle at 50% 20%, rgba(116, 234, 255, 0.12), transparent 26%),
     radial-gradient(circle at 20% 80%, rgba(116, 234, 255, 0.08), transparent 18%),
@@ -155,8 +155,12 @@ body[data-ingress-phase="bypassed"] .ingress-membrane::after {
 
 .ingress-layer {
   position: relative;
-  width: min(1100px, 100%);
-  padding: 20px;
+  width: min(1240px, 100%);
+  height: 100%;
+  max-height: calc(100dvh - 48px);
+  display: flex;
+  flex-direction: column;
+  padding: 26px;
   border: 1px solid rgba(116, 234, 255, 0.18);
   border-radius: 28px;
   background:
@@ -201,6 +205,10 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
   gap: 12px;
 }
 
+.ingress-choice-row[hidden] {
+  display: none !important;
+}
+
 .ingress-topline,
 .ingress-heading {
   justify-content: space-between;
@@ -208,13 +216,13 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
 }
 
 .ingress-heading {
-  margin-top: 12px;
+  margin-top: 18px;
 }
 
 .ingress-heading h2 {
   margin: 8px 0 0;
   font-family: var(--display);
-  font-size: clamp(30px, 5.8vw, 54px);
+  font-size: clamp(36px, 7.2vw, 64px);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: transparent;
@@ -247,7 +255,7 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
 }
 
 .ingress-stage-rail {
-  margin-top: 14px;
+  margin-top: 18px;
 }
 
 .ingress-stage-chip {
@@ -279,9 +287,10 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
 
 .ingress-grid {
   display: grid;
-  grid-template-columns: minmax(280px, 0.92fr) minmax(320px, 1.08fr);
-  gap: 16px;
-  margin-top: 16px;
+  grid-template-columns: minmax(300px, 0.92fr) minmax(0, 1.08fr);
+  gap: 20px;
+  margin-top: 22px;
+  flex: 1;
   align-items: stretch;
 }
 
@@ -300,7 +309,7 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
 .ingress-console,
 .ingress-ritual,
 .ingress-cue-card {
-  padding: 16px;
+  padding: 18px;
 }
 
 .ingress-console::after,
@@ -316,8 +325,8 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
 }
 
 .ingress-status {
-  margin-top: 10px;
-  padding: 12px 14px;
+  margin-top: 14px;
+  padding: 14px 16px;
   border-radius: 16px;
   border: 1px solid rgba(116, 234, 255, 0.1);
   background: rgba(116, 234, 255, 0.04);
@@ -326,10 +335,10 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
 }
 
 .ingress-cue-glyph {
-  margin-top: 10px;
+  margin-top: 14px;
   color: var(--lime);
   font-family: var(--display);
-  font-size: clamp(28px, 6vw, 48px);
+  font-size: clamp(32px, 7vw, 52px);
   line-height: 1;
 }
 
@@ -338,7 +347,7 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
   margin-top: 10px;
   color: var(--silver);
   font-family: var(--display);
-  font-size: 20px;
+  font-size: 21px;
   letter-spacing: 0.04em;
 }
 
@@ -352,7 +361,7 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: clamp(212px, 28vh, 296px);
+  min-height: clamp(280px, 36vh, 340px);
 }
 
 .ingress-rings {
@@ -371,19 +380,19 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
 }
 
 .ingress-ring-a {
-  width: 142px;
-  height: 142px;
+  width: 152px;
+  height: 152px;
 }
 
 .ingress-ring-b {
-  width: 204px;
-  height: 204px;
+  width: 220px;
+  height: 220px;
   border-color: rgba(116, 234, 255, 0.12);
 }
 
 .ingress-ring-c {
-  width: 272px;
-  height: 272px;
+  width: 294px;
+  height: 294px;
   border-color: rgba(116, 234, 255, 0.08);
 }
 
@@ -416,8 +425,8 @@ body[data-ingress-holding="seal"] .ingress-ring-c {
 .ingress-core {
   position: relative;
   z-index: 1;
-  width: 146px;
-  height: 146px;
+  width: 158px;
+  height: 158px;
   border-radius: 50%;
   border: 1px solid rgba(116, 234, 255, 0.24);
   background:
@@ -1180,6 +1189,13 @@ textarea:focus {
   font-size: 12px;
 }
 
+.duel-side-copy {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.58;
+}
+
 .duel-visual-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1529,22 +1545,22 @@ button:disabled {
   }
 
   .ingress-core-stage {
-    min-height: 300px;
+    min-height: 320px;
   }
 
   .ingress-ring-a {
-    width: 138px;
-    height: 138px;
+    width: 144px;
+    height: 144px;
   }
 
   .ingress-ring-b {
-    width: 198px;
-    height: 198px;
+    width: 208px;
+    height: 208px;
   }
 
   .ingress-ring-c {
-    width: 262px;
-    height: 262px;
+    width: 276px;
+    height: 276px;
   }
 }
 
@@ -1557,19 +1573,23 @@ button:disabled {
     padding: 14px;
   }
 
+  .ingress-layer {
+    max-height: calc(100dvh - 28px);
+  }
+
   .ingress-layer,
   .masthead,
   .panel {
-    padding: 18px;
+    padding: 20px;
   }
 
   .ingress-heading h2 {
-    font-size: 48px;
+    font-size: 54px;
   }
 
   .ingress-core {
-    width: 146px;
-    height: 146px;
+    width: 150px;
+    height: 150px;
   }
 
   h1 {

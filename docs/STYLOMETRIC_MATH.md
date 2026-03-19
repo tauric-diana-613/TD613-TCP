@@ -185,15 +185,42 @@ There is also an explicit identity guard: if the normalized texts match exactly 
 
 ## Shell-text transfer
 
-When a borrowed or persona shell is applied to text, TCP does not only bend scalar metrics. The transform layer now also carries a small connector-synonym pack over common clause-linking words. In practice that means shell transfer may shift connectors such as:
+The current transfer contract is `buildCadenceTransfer(text, shell, options?)`. It returns the transformed text together with source, target, and output profiles, changed dimensions, protected-literal count, pass log, quality-gate result, and transfer notes.
 
-- `because` ↔ `since`
-- `but` ↔ `though` / `yet`
-- `so` ↔ `then`
-- `when` ↔ `while`
-- `this` ↔ `that`
+`applyCadenceToText(text, shell)` remains as the compatibility wrapper that returns only the transformed text.
 
-Those substitutions are used as cadence texture, not content rewriting. They are constrained, limited, and run alongside sentence splitting/merging, contraction texture, line-break texture, and punctuation texture.
+TCP treats shell transfer as a strict-preserve cadence rewrite. That means:
+
+- literal content is protected before rewrite
+- cadence may shift sentence shape, clause joins/splits, connector choice, contraction posture, line-break texture, and punctuation finish
+- content-word paraphrase is out of scope
+
+Protected spans include digit-bearing tokens, dates/times, URLs, emails, handles, quoted substrings, all-caps acronyms, and mixed-case IDs. Those spans are replaced with placeholders before the rewrite passes and restored exactly afterward.
+
+The deterministic pass order is:
+
+1. sentence structure
+2. clause join/split
+3. connector and stance lexicon
+4. contraction/auxiliary posture
+5. line-break texture
+6. punctuation finish
+7. cleanup and literal restore
+
+The lexicon pack remains intentionally narrow. It operates over structural or stance-bearing terms such as:
+
+- `because / since / as`
+- `but / though / yet`
+- `when / while / once`
+- `this / that`
+- `just / simply`
+- `really / actually`
+- `maybe / perhaps`
+- `I am / I'm`
+- `will not / won't`
+- `that is / that's`
+
+The quality gate rejects a transfer if protected literals fail to restore, duplicate chunks appear, connector sequences repeat, or a materially different target collapses into punctuation-only drift. In those cases TCP falls back to the safer result rather than presenting a weak rewrite as a meaningful cadence shift.
 
 ## Route pressure
 

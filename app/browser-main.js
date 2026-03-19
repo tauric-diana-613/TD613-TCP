@@ -4,7 +4,7 @@
     HARBOR_LIBRARY,
     compareTexts,
     extractCadenceProfile,
-    applyCadenceToText,
+    buildCadenceTransfer,
     buildCadenceSignature,
     cadenceModFromProfile,
     cadenceCoherence,
@@ -280,81 +280,81 @@
     const currentBadge = ingress.currentBadge ? ingressBadgeOption(ingress.currentBadge) : null;
     const currentMirror = ingress.currentMirror ? ingressMirrorOption(ingress.currentMirror) : null;
 
-    let phaseLabel = 'Booting';
+    let phaseLabel = 'Protocol // membrane waking';
     let cueGlyph = '◌';
-    let cueLabel = 'Initializing membrane';
-    let cueCopy = 'The membrane is scanning for a valid custody posture.';
-    let status = 'Stand by while the ingress membrane comes online.';
+    let cueLabel = 'custody handshake unresolved';
+    let cueCopy = 'Four gates. One valid posture.';
+    let status = 'Wait for the first demand.';
     let coreLabel = 'Stand by';
     let coreGlyph = '⟐';
     let coreEnabled = false;
 
     $('ingressMirrorControls').hidden = true;
     $('ingressBadgeControls').hidden = true;
+    $('ingressBadgeReadout').textContent = `token // ${currentBadge ? currentBadge.label : 'unset'}`;
 
     if (ingress.phase === 'containment') {
-      phaseLabel = 'Step // contain';
+      phaseLabel = 'Gate // containment';
       cueGlyph = '◎';
-      cueLabel = 'stabilize containment';
-      cueCopy = 'Hold the core until all three instability rings collapse.';
+      cueLabel = 'collapse the ring stack';
+      cueCopy = 'The field admits only stable contact.';
       status = ingress.holding === 'containment'
-        ? 'Containment stabilizing. Keep holding until the core settles.'
-        : 'Press and hold the core for 1.2 seconds.';
-      coreLabel = 'Hold to stabilize';
+        ? 'Do not break contact.'
+        : 'Unbroken contact resolves the gate.';
+      coreLabel = 'stabilize';
       coreGlyph = '◎';
       coreEnabled = true;
     } else if (ingress.phase === 'mirror') {
-      phaseLabel = 'Step // mirror';
+      phaseLabel = 'Gate // mirror';
       cueGlyph = mirrorTarget.glyph;
       cueLabel = mirrorTarget.cue;
-      cueCopy = `Set mirror posture to ${mirrorTarget.label}.`;
+      cueCopy = 'One posture keeps the route latent. One clears it.';
       status = !ingress.currentMirror
-        ? 'Select the mirror posture indicated by the route cue.'
+        ? 'Choose the posture that satisfies the cue.'
         : ingress.currentMirror === ingress.target.mirrorLogic
           ? 'Mirror posture accepted.'
-          : `Mirror rejected. Route cue still requires ${mirrorTarget.label}.`;
-      coreLabel = currentMirror ? currentMirror.label : 'mirror pending';
+          : 'The membrane rejects that posture.';
+      coreLabel = currentMirror ? currentMirror.cue : 'unresolved';
       coreGlyph = currentMirror ? currentMirror.glyph : mirrorTarget.glyph;
       $('ingressMirrorControls').hidden = false;
     } else if (ingress.phase === 'badge') {
-      phaseLabel = 'Step // badge';
+      phaseLabel = 'Gate // token';
       cueGlyph = badgeTarget.glyph;
       cueLabel = badgeTarget.cue;
-      cueCopy = `Cycle the custody badge until it reads ${badgeTarget.label}.`;
+      cueCopy = 'Advance the token until the mark holds.';
       status = !ingress.currentBadge
-        ? 'Cycle the badge rotor until the cue is satisfied.'
+        ? 'Rotate the token until the cue resolves.'
         : ingress.currentBadge === ingress.target.badge
-          ? 'Badge accepted. Seal is now available.'
-          : `Badge mismatch. Keep cycling toward ${badgeTarget.label}.`;
-      coreLabel = currentBadge ? currentBadge.label : 'badge pending';
+          ? 'Token accepted. Seal is now listening.'
+          : 'The field does not accept that mark.';
+      coreLabel = currentBadge ? currentBadge.label : 'token unset';
       coreGlyph = currentBadge ? currentBadge.glyph : badgeTarget.glyph;
       $('ingressBadgeControls').hidden = false;
-      $('ingressBadgeReadout').textContent = `badge // ${currentBadge ? currentBadge.label : 'unset'}`;
     } else if (ingress.phase === 'seal') {
-      phaseLabel = 'Step // seal';
+      phaseLabel = 'Gate // seal';
       cueGlyph = '⟐';
-      cueLabel = 'seal membrane';
-      cueCopy = `Resolved posture: ${mirrorTarget.label} / ${badgeTarget.label} / containment stable. Hold the core to commit the route.`;
+      cueLabel = 'commit resolved posture';
+      cueCopy = `Resolved posture: ${mirrorTarget.cue} / ${badgeTarget.label} / containment stable. Only a solved posture survives the seal.`;
       status = ingress.holding === 'seal'
-        ? 'Sealing membrane. Hold until the deck unlocks.'
-        : 'Press and hold the core for 0.8 seconds to open the deck.';
-      coreLabel = 'Hold to seal';
+        ? 'Commit window open. Do not break contact.'
+        : 'Commit the resolved posture.';
+      coreLabel = 'commit route';
       coreGlyph = '⟐';
       coreEnabled = true;
     } else if (ingress.phase === 'revealing') {
-      phaseLabel = 'Reveal // route granted';
+      phaseLabel = 'Reveal // handoff';
       cueGlyph = '⬡';
       cueLabel = 'membrane dissolving';
-      cueCopy = 'The solved custody posture is being carried into the live deck.';
-      status = 'Deck handoff in progress.';
+      cueCopy = 'The solved posture is crossing into the live deck.';
+      status = 'Route handoff in progress.';
       coreLabel = 'opening';
       coreGlyph = '⬡';
     } else if (ingress.phase === 'bypassed') {
-      phaseLabel = 'Bypass // safe defaults';
+      phaseLabel = 'Bypass // safe posture';
       cueGlyph = '⬒';
       cueLabel = 'safe ingress';
-      cueCopy = 'Safe defaults are opening the deck without the full ritual.';
-      status = 'Bypass accepted. Opening the membrane on the safe preset.';
+      cueCopy = 'The deck is opening on a low-risk preset.';
+      status = 'Safe ingress accepted.';
       coreLabel = 'bypassed';
       coreGlyph = '⬒';
     }
@@ -633,9 +633,10 @@
     const text = $(slot === 'A' ? 'voiceA' : 'voiceB').value;
     const rawProfile = extractCadenceProfile(text);
     const shell = getBayShell(slot);
-    const effectiveText = applyCadenceToText(text, shell);
+    const transfer = buildCadenceTransfer(text, shell);
+    const effectiveText = transfer.text;
     const persona = shell.personaId ? findPersona(shell.personaId) : null;
-    const effectiveProfile = extractCadenceProfile(effectiveText);
+    const effectiveProfile = transfer.outputProfile || extractCadenceProfile(effectiveText);
 
     return {
       slot,
@@ -646,7 +647,8 @@
       rawProfile,
       effectiveProfile,
       persona,
-      shell
+      shell,
+      transfer
     };
   }
 
@@ -670,17 +672,41 @@
     return `Cadence shell // ${shell.label}`;
   }
 
+  function transferDimensionLabel(id) {
+    const labels = {
+      'sentence-mean': 'sentence mean',
+      'sentence-count': 'sentence count',
+      'sentence-spread': 'sentence spread',
+      'contraction-posture': 'contraction posture',
+      'line-break-texture': 'line-break texture',
+      'connector-stance': 'connector stance',
+      'punctuation-shape': 'punctuation shape'
+    };
+
+    return labels[id] || id;
+  }
+
   function describeShellNote(voiceState) {
     if (voiceState.shell.mode === 'native') {
       return 'Native cadence only. Shell Duel will show the source text unchanged until another shell lands.';
     }
 
+    const transfer = voiceState.transfer;
+    const shifted = (transfer?.changedDimensions || [])
+      .map((dimension) => transferDimensionLabel(dimension))
+      .slice(0, 3)
+      .join(', ');
+    const gateNote = transfer?.notes?.[0] || '';
+    const literalNote = transfer?.protectedLiteralCount
+      ? `${transfer.protectedLiteralCount} literal${transfer.protectedLiteralCount === 1 ? '' : 's'} held fixed.`
+      : '';
+
     if (voiceState.shell.mode === 'borrowed') {
-      return `Borrowed from the ${SLOT_SHORT[voiceState.shell.fromSlot]} bay. The raw text stayed put; inspect the transformed sample in Shell Duel.`;
+      return `Borrowed from the ${SLOT_SHORT[voiceState.shell.fromSlot]} bay. ${shifted ? `Transfer moved ${shifted}. ` : ''}${literalNote} ${gateNote}`.trim();
     }
 
     if (voiceState.shell.profile) {
-      return `Profile shell transfer live at ${Math.round((voiceState.shell.strength || 0.76) * 100)}%. Shell Duel stages the transformed sample without overwriting the bay.`;
+      return `Profile shell transfer live at ${Math.round((voiceState.shell.strength || 0.76) * 100)}%. ${shifted ? `Transfer moved ${shifted}. ` : ''}${literalNote} ${gateNote}`.trim();
     }
 
     return `Applied shell bias: sent ${voiceState.shell.mod.sent >= 0 ? '+' : ''}${voiceState.shell.mod.sent}, cont ${voiceState.shell.mod.cont >= 0 ? '+' : ''}${voiceState.shell.mod.cont}, punc ${voiceState.shell.mod.punc >= 0 ? '+' : ''}${voiceState.shell.mod.punc}.`;
@@ -793,6 +819,11 @@
 
   function renderDuelSide(side) {
     const profile = side.profile;
+    const transferShift = (side.transfer?.changedDimensions || [])
+      .map((dimension) => transferDimensionLabel(dimension))
+      .slice(0, 3)
+      .join(', ');
+    const transferNote = side.transfer?.notes?.[0] || '';
 
     return `
       <article class="duel-side" data-slot="${side.slot}">
@@ -810,6 +841,7 @@
           <span class="duel-mini-metric">Contractions ${formatPct(profile.contractionDensity)}</span>
           <span class="duel-mini-metric">Recurrence ${formatPct(profile.recurrencePressure)}</span>
         </div>
+        <div class="duel-side-copy">${transferShift ? `Shifted ${escapeHtml(transferShift)}.` : 'Transfer stayed close to the source cadence.'} ${escapeHtml(transferNote)}</div>
         <div class="duel-visual-grid">
           <div class="duel-visual-card">
             <div class="duel-visual-label">Heatmap</div>
@@ -865,7 +897,8 @@
         shell: voiceStateA.shell,
         text: referenceText,
         profile: referenceProfile,
-        signature: referenceSignature
+        signature: referenceSignature,
+        transfer: voiceStateA.transfer
       },
       probe: {
         slot: 'B',
@@ -873,7 +906,8 @@
         shell: voiceStateB.shell,
         text: probeText,
         profile: probeProfile,
-        signature: probeSignature
+        signature: probeSignature,
+        transfer: voiceStateB.transfer
       },
       compare: duelCompare,
       sentenceDrift: Math.abs((duelCompare.avgSentenceA || 0) - (duelCompare.avgSentenceB || 0))
