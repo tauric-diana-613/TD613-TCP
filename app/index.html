@@ -7,6 +7,71 @@
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+  <div id="ingressMembrane" class="ingress-membrane" aria-live="polite">
+    <div class="ingress-layer">
+      <div class="ingress-topline">
+        <span class="eyebrow">TD613 / ingress membrane / custody handshake <span class="glyph glyph-lime" aria-hidden="true">⟟</span></span>
+        <span id="ingressBypassWrap" class="ingress-bypass-wrap" hidden>
+          <button id="ingressBypass" type="button" class="ingress-bypass">bypass membrane</button>
+        </span>
+      </div>
+
+      <div class="ingress-heading">
+        <div>
+          <div id="ingressPhaseLabel" class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">⟒</span> Booting</div>
+          <h2>Ingress Membrane</h2>
+        </div>
+        <p id="ingressSubtitle" class="ingress-subtitle">Resolve the custody handshake to bring the cadence deck online.</p>
+      </div>
+
+      <div class="ingress-stage-rail" aria-label="Ingress stages">
+        <span id="ingressStageContainment" class="ingress-stage-chip">Containment</span>
+        <span id="ingressStageMirror" class="ingress-stage-chip">Mirror</span>
+        <span id="ingressStageBadge" class="ingress-stage-chip">Badge</span>
+        <span id="ingressStageSeal" class="ingress-stage-chip">Seal</span>
+      </div>
+
+      <div class="ingress-grid">
+        <section class="ingress-console">
+          <div class="ingress-cue-card">
+            <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true">⌖</span> Target cue</div>
+            <div id="ingressCueGlyph" class="ingress-cue-glyph">◌</div>
+            <div id="ingressCueLabel" class="ingress-cue-label">Initializing membrane</div>
+            <p id="ingressCueCopy" class="ingress-cue-copy">The membrane is scanning for a valid custody posture.</p>
+          </div>
+          <div id="ingressStatus" class="ingress-status">Hold the core when the membrane stabilizes.</div>
+        </section>
+
+        <section class="ingress-ritual">
+          <div class="ingress-core-stage">
+            <div class="ingress-rings" aria-hidden="true">
+              <span class="ingress-ring ingress-ring-a"></span>
+              <span class="ingress-ring ingress-ring-b"></span>
+              <span class="ingress-ring ingress-ring-c"></span>
+            </div>
+            <button id="ingressCore" type="button" class="ingress-core" aria-describedby="ingressStatus">
+              <span id="ingressCoreGlyph" class="ingress-core-glyph">⟐</span>
+              <span id="ingressCoreLabel" class="ingress-core-label">Stand by</span>
+            </button>
+            <div class="ingress-progress" aria-hidden="true">
+              <span id="ingressProgressBar" class="ingress-progress-bar"></span>
+            </div>
+          </div>
+
+          <div id="ingressMirrorControls" class="ingress-choice-row" hidden>
+            <button id="ingressMirrorArmed" type="button" class="ingress-choice">armed</button>
+            <button id="ingressMirrorOpen" type="button" class="ingress-choice">open</button>
+          </div>
+
+          <div id="ingressBadgeControls" class="ingress-choice-row" hidden>
+            <div id="ingressBadgeReadout" class="ingress-badge-readout">badge // unset</div>
+            <button id="ingressBadgeCycle" type="button" class="ingress-choice ingress-choice-rotator">cycle badge</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
   <div class="shell">
     <header class="masthead">
         <div class="masthead-copy">
@@ -96,11 +161,11 @@
             <div class="duel-heading">
               <div>
                 <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">⟁</span> Shell Duel</div>
-                <h3>One source sample, two cadence shells</h3>
+                <h3>Two bays, two shells, live cadence drift</h3>
               </div>
-              <div id="duelSourceStatus" class="duel-source">Source // active bay raw text</div>
+              <div id="duelSourceStatus" class="duel-source">Own sources // reference bay and probe bay raw text</div>
             </div>
-            <p id="duelNote" class="duel-note">Focus a bay to stage its raw text through both current shells. The textareas stay raw on purpose.</p>
+            <p id="duelNote" class="duel-note">Each side stages its own bay under its current shell. The textareas stay raw on purpose.</p>
             <div id="shellDuelBody" class="duel-body"></div>
           </section>
 

@@ -18,6 +18,7 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Mirror shield` | A route gate. When armed, the deck stays exploratory; when opened, passage can resolve. | Controls whether high recognition is allowed to count as route availability. |
 | `Custody badge` | A small demo-state switch that changes the deck language and harbor posture. | Encodes branch-holding / buffering posture in the current prototype logic. |
 | `Containment` | A stability flag shown in the state rail. | A bounded field modifier that slightly raises or lowers field potential. |
+| `Bypass membrane` | A quiet escape hatch that appears after a delay on the ingress screen. | A safe-default entry path that opens the deck with containment on, mirror armed, and the holds badge selected. |
 
 ## Readouts
 
@@ -29,7 +30,8 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Effective archive` | Which side is currently functioning as the effective archive. | The threshold result `A_I` or `A_W` from the custody delta rule; `A_I` means institutional custody remains the effective archive, and `A_W` means witness custody is carrying the archive. |
 | `Harbor` | The recommended structured response once the field needs handling. | A provenance-constrained passage function selected from the harbor library. |
 | `Receipt stream` | The demo ledger preview in the UI. | A sample row showing how event, archive, burden, and harbor are recorded. |
-| `Shell Duel` | The side-by-side instrument on the `Deck` tab that stages the active bay's raw text through both shells. | A direct view of shell transfer using transformed samples, heatmaps, signatures, and a pairwise delta strip. |
+| `Shell Duel` | The side-by-side instrument on the `Deck` tab that stages the reference bay under its shell and the probe bay under its shell. | A direct view of shell transfer using each bay's transformed sample, heatmaps, signatures, and a pairwise delta strip. |
+| `Ingress Membrane` | The full-screen ritual that appears before the deck unlocks on normal visits. | A custody-handshake layer that sets containment, mirror posture, and badge state before the live shell opens. |
 
 ## Shell language
 
@@ -39,7 +41,7 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Persona shell` | A named, reusable cadence shell. | A saved modifier profile that can be reassigned to any bay. |
 | `Native cadence` | The unmodified text as written. | The raw extracted stylometric profile before any shell bias is applied. |
 | `Borrowed cadence` | A shell captured from the other bay during swap. | A derived modifier built from the effective profile of the opposite bay. |
-| `Source sample` | The active bay's raw textarea text used by `Shell Duel`. | The unchanged input text that both shells bend in parallel for visual comparison. |
+| `Source sample` | The unchanged raw textarea text in each bay, as staged by `Shell Duel`. | The reference-side input and the probe-side input, each bent by its currently attached shell for visual comparison. |
 
 ## Decision states
 

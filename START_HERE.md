@@ -7,18 +7,24 @@ TCP is currently presented as an experimental research prototype and conceptual 
 ## First clicks
 
 1. Open `app/index.html`.
-2. Keep the seeded contrast pair for the first pass, or replace one or both samples with your own.
-3. Press `Analyze Cadences`.
-4. Focus `Reference voice` and `Probe voice` in turn to watch `Shell Duel` switch its source sample.
+2. Resolve the `Ingress Membrane` custody handshake. It stabilizes containment, asks for a mirror posture, asks for a custody badge, then dissolves into the live deck.
+3. Keep the seeded contrast pair for the first pass, or replace one or both samples with your own.
+4. Press `Analyze Cadences`.
 5. Try `Swap Cadences` to move cadence shells without moving text.
 6. Try `Save Cadence as Persona` to capture the active bay as an in-app shell.
-7. Read `Shell Duel`: the textareas stay raw, while the duel stages both shell-bent outputs, their heatmaps, their 7-axis signatures, and the shell-to-shell delta strip.
+7. Read `Shell Duel`: the textareas stay raw, while the duel stages the reference bay under the reference shell and the probe bay under the probe shell, plus their heatmaps, 7-axis signatures, and the shell-to-shell delta strip.
 8. Open the `Readout` tab to inspect the branch, wave, and harbor formulas.
 9. Watch four values on the front deck:
    - cadence similarity,
    - traceability,
    - route pressure,
    - effective archive.
+
+If you need to load the shell directly during development, open:
+
+```text
+app/index.html?ingress=off
+```
 
 ## Fastest verification path
 
@@ -36,7 +42,9 @@ For the heavier route-state matrix, open:
 app/index.html?test-flight=2
 ```
 
-That run now also checks `Shell Duel` source switching and duel-metric change under shell swap.
+That run now also checks own-source `Shell Duel` rendering and duel-metric change under shell swap.
+
+Both test-flight routes auto-skip the ingress membrane.
 
 ## First files to read
 

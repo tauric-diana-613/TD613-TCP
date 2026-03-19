@@ -10,7 +10,7 @@ This repository is published as an experimental research prototype and conceptua
 
 ## Deck instrument
 
-The current `Deck` tab includes one flagship instrument: `Shell Duel`. It takes the active bay's raw text, runs that same sample through the current reference and probe shells, and stages the transformed outputs side by side. That means the textareas remain raw while the duel shows:
+The current `Deck` tab includes one flagship instrument: `Shell Duel`. It takes the reference bay's raw text and the probe bay's raw text, stages each one under its current shell, and shows the transformed outputs side by side. That means the textareas remain raw while the duel shows:
 
 - the transformed sample under each shell
 - compact shell metrics
@@ -19,6 +19,22 @@ The current `Deck` tab includes one flagship instrument: `Shell Duel`. It takes 
 - a delta strip built from the same comparison engine used elsewhere in the app
 
 This is where `Swap Cadences` becomes easiest to read. The raw text does not move, but the shell behavior becomes visible.
+
+## Ingress membrane
+
+Normal visits now open inside an `Ingress Membrane`: a short custody-handshake ritual that resolves containment, mirror posture, and custody badge before the live deck unlocks. The underlying app is already mounted, but it stays visually occluded and non-interactive until the membrane opens.
+
+The handshake carries its solved posture into the live shell:
+
+- containment resolves to `on`
+- mirror posture resolves to `armed` or `open`
+- custody badge resolves to `holds`, `buffer`, or `branch`
+
+If you need to bypass it during development, open:
+
+```text
+app/index.html?ingress=off
+```
 
 ## Design law
 
@@ -155,7 +171,7 @@ The point of the interface is not to blur those states together. It is to keep t
 
 ### Option 1: open directly
 
-Open `app/index.html` in a browser.
+Open `app/index.html` in a browser. On normal visits, the ingress membrane appears first and dissolves into the deck after the custody handshake resolves.
 
 ### Option 2: serve locally
 
@@ -179,7 +195,9 @@ For the full decision matrix, open:
 app/index.html?test-flight=2
 ```
 
-The current flight also verifies `Shell Duel`: native-vs-native identity, focus-based source switching, and shell-swap delta changes.
+The current flight also verifies `Shell Duel`: native-vs-native identity, own-source duel rendering, and shell-swap delta changes.
+
+Both built-in test flights auto-skip the ingress membrane so the browser harness can run unattended.
 
 ### Option 4: validate the engine
 
@@ -203,7 +221,7 @@ TCP is trying to make four conditions visible without overclaiming any of them:
 - No build step is required.
 - All runtime logic is ESM JavaScript with zero dependencies.
 - The seeded opening pair is intentionally high-contrast and conversational so the model difference is visible on first load without sounding synthetic.
-- `Shell Duel` uses the active bay's raw text as a shared source so shell transfer is visible without overwriting either textarea.
+- `Shell Duel` uses each bay's own raw text, so swap moves shell behavior without making the reference and probe samples collapse into a hidden shared source.
 - `docs/INTERFACE_LEXICON.md` is the concise map for deck labels like mirror shield, custody badge, shell, harbor, and archive.
 - The physics layer is analogical, the stylometry layer is heuristic, and the harbor layer is policy-shaped.
 - Thresholds, labels, and harbor policies are still being tuned as part of the pilot.

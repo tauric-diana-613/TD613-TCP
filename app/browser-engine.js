@@ -172,6 +172,7 @@
       /,\s+(and|but|so|because|though|while|if|when|which|that)\s+/gi,
       /\s+(because|though|while|when|if)\s+/gi,
       /\s+(and|but|so)\s+(i|we|you|they|he|she)\b/gi,
+      /\s+(and|but|so)\s+/gi,
       /:\s+/g,
       /,\s+/g
     ];
@@ -272,7 +273,7 @@
     const target = targetProfile.functionWordProfile || {};
     const current = functionWordProfile(text);
     let result = text;
-    const limit = Math.max(1, Math.round(Math.max(0.8, strength) * 2));
+    const limit = Math.max(1, Math.round(Math.max(0.9, strength) * 3));
 
     if ((target.but || 0) > (current.but || 0) + 0.006) {
       result = replaceLimited(result, /\band\b/gi, (match) => matchCase(match, 'but'), limit);
@@ -815,6 +816,123 @@
     };
   }
 
+  function desiredSentenceCount(profile = {}, targetProfile = {}) {
+    const wordCount = Math.max(profile.wordCount || 0, 1);
+    const targetAvg = Math.max(1, targetProfile.avgSentenceLength || profile.avgSentenceLength || 1);
+    return Math.max(1, Math.round(wordCount / targetAvg));
+  }
+
+  function profileDeltaToTarget(profile = {}, targetProfile = {}) {
+    return {
+      avgSentence: Math.abs((profile.avgSentenceLength || 0) - (targetProfile.avgSentenceLength || 0)),
+      spread: Math.abs((profile.sentenceLengthSpread || 0) - (targetProfile.sentenceLengthSpread || 0)),
+      sentenceCount: Math.abs((profile.sentenceCount || 0) - desiredSentenceCount(profile, targetProfile)),
+      contraction: Math.abs((profile.contractionDensity || 0) - (targetProfile.contractionDensity || 0)),
+      lineBreak: Math.abs((profile.lineBreakDensity || 0) - (targetProfile.lineBreakDensity || 0)),
+      punctuation: Math.abs((profile.punctuationDensity || 0) - (targetProfile.punctuationDensity || 0)),
+      punctuationShape: punctuationMixDistance(profile.punctuationMix || {}, targetProfile.punctuationMix || {}),
+      functionWord: functionWordDistance(profile.functionWordProfile || {}, targetProfile.functionWordProfile || {})
+    };
+  }
+
+  function profileDeltaScore(gap = {}) {
+    return (
+      (clamp01((gap.avgSentence || 0) / 10) * 0.22) +
+      (clamp01((gap.sentenceCount || 0) / 4) * 0.16) +
+      (clamp01((gap.spread || 0) / 8) * 0.12) +
+      (clamp01((gap.contraction || 0) / 0.16) * 0.12) +
+      (clamp01((gap.lineBreak || 0) / 0.4) * 0.12) +
+      (clamp01(gap.functionWord || 0) * 0.14) +
+      (clamp01((gap.punctuation || 0) / 0.16) * 0.06) +
+      (clamp01(gap.punctuationShape || 0) * 0.06)
+    );
+  }
+
+  function structuralShiftDimensions(baseProfile = {}, currentProfile = {}) {
+    let shifts = 0;
+
+    if (Math.abs((currentProfile.avgSentenceLength || 0) - (baseProfile.avgSentenceLength || 0)) >= 1.15) {
+      shifts += 1;
+    }
+
+    if (Math.abs((currentProfile.sentenceCount || 0) - (baseProfile.sentenceCount || 0)) >= 1) {
+      shifts += 1;
+    }
+
+    if (Math.abs((currentProfile.contractionDensity || 0) - (baseProfile.contractionDensity || 0)) >= 0.012) {
+      shifts += 1;
+    }
+
+    if (Math.abs((currentProfile.lineBreakDensity || 0) - (baseProfile.lineBreakDensity || 0)) >= 0.045) {
+      shifts += 1;
+    }
+
+    if (functionWordDistance(baseProfile.functionWordProfile || {}, currentProfile.functionWordProfile || {}) >= 0.04) {
+      shifts += 1;
+    }
+
+    return shifts;
+  }
+
+  function shouldApplySentenceTexture(currentProfile = {}, targetProfile = {}, gap = {}, mod = {}) {
+    if ((mod.sent || 0) !== 0) {
+      return true;
+    }
+
+    return (gap.avgSentence || 0) >= 0.8 ||
+      (gap.sentenceCount || 0) >= 1 ||
+      (gap.spread || 0) >= 1;
+  }
+
+  function applySentenceTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76, mod = {}) {
+    const targetCount = desiredSentenceCount(currentProfile, targetProfile);
+    const currentCount = currentProfile.sentenceCount || 0;
+    const targetAvg = targetProfile.avgSentenceLength || currentProfile.avgSentenceLength || 0;
+    const currentAvg = currentProfile.avgSentenceLength || 0;
+    const wantsLonger = targetAvg > currentAvg + 0.6 || targetCount < currentCount;
+    const wantsShorter = targetAvg < currentAvg - 0.6 || targetCount > currentCount;
+
+    if (wantsLonger) {
+      return mergeSentencePairs(text, targetProfile, Math.min(1, strength + 0.08), mod);
+    }
+
+    if (wantsShorter) {
+      return splitLongSentences(text, targetProfile, Math.min(1, strength + 0.08));
+    }
+
+    return text;
+  }
+
+  function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}) {
+    let result = text;
+    const currentProfile = extractCadenceProfile(result);
+    const targetCount = desiredSentenceCount(currentProfile, targetProfile);
+    const wantsLonger = (targetProfile.avgSentenceLength || currentProfile.avgSentenceLength || 0) > (currentProfile.avgSentenceLength || 0) + 1;
+    const wantsShorter = (targetProfile.avgSentenceLength || currentProfile.avgSentenceLength || 0) < (currentProfile.avgSentenceLength || 0) - 1;
+
+    if ((wantsLonger || targetCount < (currentProfile.sentenceCount || 0)) && sentenceChunks(result).length > 1) {
+      result = mergeSentencePairs(result, targetProfile, Math.min(1, strength + 0.2), {
+        ...mod,
+        sent: Math.max(1, Number(mod.sent || 0))
+      });
+    } else if (wantsShorter || targetCount > (currentProfile.sentenceCount || 0)) {
+      result = splitLongSentences(result, targetProfile, Math.min(1, strength + 0.22));
+    }
+
+    result = applyContractionTexture(result, targetProfile, {
+      ...mod,
+      cont: Number(mod.cont || 0) || Math.sign((targetProfile.contractionDensity || 0) - (currentProfile.contractionDensity || 0))
+    });
+    result = applyFunctionWordTexture(result, targetProfile, Math.min(1, strength + 0.18));
+    result = applyLineBreakTexture(result, targetProfile, Math.min(1, strength + 0.14));
+
+    if (Math.abs((targetProfile.punctuationDensity || 0) - (baseProfile.punctuationDensity || 0)) > 0.02) {
+      result = applyPunctuationTexture(result, targetProfile, mod);
+    }
+
+    return finalizeTransformedText(result);
+  }
+
   function applyCadenceToText(text = '', shell = {}) {
     const mod = normalizeShellMod(shell);
     const strength = clamp(Number((shell && shell.strength) ?? ((shell && shell.profile) ? 0.82 : 0.68)), 0, 1);
@@ -1038,19 +1156,80 @@
         })
       : applyCadenceMod(baseProfile, mod);
 
-    if ((targetProfile.avgSentenceLength || baseProfile.avgSentenceLength) > baseProfile.avgSentenceLength + 0.8 || (mod.sent || 0) > 0) {
-      result = mergeSentencePairs(result, targetProfile, strength, mod);
-    } else if ((targetProfile.avgSentenceLength || baseProfile.avgSentenceLength) < baseProfile.avgSentenceLength - 0.8 || (mod.sent || 0) < 0) {
-      result = splitLongSentences(result, targetProfile, strength);
+    const targetGap = profileDeltaToTarget(baseProfile, targetProfile);
+    const targetNeedsStructuralShift =
+      targetGap.avgSentence >= 1 ||
+      targetGap.sentenceCount >= 1 ||
+      targetGap.contraction >= 0.014 ||
+      targetGap.lineBreak >= 0.05 ||
+      targetGap.functionWord >= 0.04;
+    const maxPasses = options && options.profile ? 4 : 3;
+    let bestResult = result;
+    let bestScore = profileDeltaScore(targetGap);
+
+    for (let pass = 0; pass < maxPasses; pass += 1) {
+      const currentProfile = extractCadenceProfile(result);
+      const gap = profileDeltaToTarget(currentProfile, targetProfile);
+
+      if (profileDeltaScore(gap) <= 0.08) {
+        break;
+      }
+
+      let nextResult = result;
+
+      if (shouldApplySentenceTexture(currentProfile, targetProfile, gap, mod)) {
+        nextResult = applySentenceTexture(nextResult, currentProfile, targetProfile, strength, mod);
+      }
+
+      const afterSentence = extractCadenceProfile(nextResult);
+      const afterSentenceGap = profileDeltaToTarget(afterSentence, targetProfile);
+      if (afterSentenceGap.contraction >= 0.012 || Math.abs(Number(mod.cont || 0)) > 0) {
+        nextResult = applyContractionTexture(nextResult, targetProfile, mod);
+      }
+
+      const afterContraction = extractCadenceProfile(nextResult);
+      const afterContractionGap = profileDeltaToTarget(afterContraction, targetProfile);
+      if (afterContractionGap.lineBreak >= 0.045) {
+        nextResult = applyLineBreakTexture(nextResult, targetProfile, Math.min(1, strength + 0.08));
+      }
+
+      const afterLineBreak = extractCadenceProfile(nextResult);
+      const afterLineBreakGap = profileDeltaToTarget(afterLineBreak, targetProfile);
+      if (afterLineBreakGap.functionWord >= 0.035) {
+        nextResult = applyFunctionWordTexture(nextResult, targetProfile, Math.min(1, strength + 0.1));
+      }
+
+      const afterFunction = extractCadenceProfile(nextResult);
+      const afterFunctionGap = profileDeltaToTarget(afterFunction, targetProfile);
+      if (
+        afterFunctionGap.punctuation >= 0.018 ||
+        afterFunctionGap.punctuationShape >= 0.05 ||
+        Math.abs(Number(mod.punc || 0)) > 0
+      ) {
+        nextResult = applyPunctuationTexture(nextResult, targetProfile, mod);
+      }
+
+      if ((mod.punc || 0) < 0) {
+        nextResult = nextResult.replace(/[;:]+/g, '.').replace(/,+/g, ',');
+      }
+
+      nextResult = finalizeTransformedText(nextResult);
+      if (nextResult === result) {
+        break;
+      }
+
+      result = nextResult;
+      const currentScore = profileDeltaScore(profileDeltaToTarget(extractCadenceProfile(result), targetProfile));
+      if (currentScore < bestScore) {
+        bestScore = currentScore;
+        bestResult = result;
+      }
     }
 
-    result = applyContractionTexture(result, targetProfile, mod);
-    result = applyFunctionWordTexture(result, targetProfile, strength);
-    result = applyPunctuationTexture(result, targetProfile, mod);
-    result = applyLineBreakTexture(result, targetProfile, strength);
-
-    if ((mod.punc || 0) < 0) {
-      result = result.replace(/[;:]+/g, '.').replace(/,+/g, ',');
+    result = bestResult;
+    const finalProfile = extractCadenceProfile(result);
+    if (targetNeedsStructuralShift && structuralShiftDimensions(baseProfile, finalProfile) < 2) {
+      result = forceStructuralShift(result, baseProfile, targetProfile, strength, mod);
     }
 
     return finalizeTransformedText(result);

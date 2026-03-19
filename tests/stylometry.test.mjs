@@ -73,6 +73,17 @@ const shellShiftedText = applyCadenceToText(
 );
 const shellShiftedProfile = extractCadenceProfile(shellShiftedText);
 const shellSourceProfile = extractCadenceProfile(shellShiftSource);
+const shellShiftCompare = compareTexts(shellShiftSource, shellShiftedText, {
+  profileA: shellSourceProfile,
+  profileB: shellShiftedProfile
+});
+const shellShiftDeltaCount = [
+  Math.abs(shellShiftedProfile.avgSentenceLength - shellSourceProfile.avgSentenceLength) >= 1,
+  Math.abs(shellShiftedProfile.sentenceCount - shellSourceProfile.sentenceCount) >= 1,
+  Math.abs(shellShiftedProfile.contractionDensity - shellSourceProfile.contractionDensity) >= 0.012,
+  Math.abs(shellShiftedProfile.lineBreakDensity - shellSourceProfile.lineBreakDensity) >= 0.04,
+  shellShiftCompare.functionWordDistance >= 0.04
+].filter(Boolean).length;
 const connectiveSource = 'I do not know and I will wait because that door is stuck, but I am still outside.';
 const connectiveShifted = applyCadenceToText(
   connectiveSource,
@@ -93,6 +104,7 @@ assert(transformedCadenceText.includes("don't") || transformedCadenceText.includ
 assert.notEqual(transformedCadenceText, 'I do not know and I cannot stay.');
 assert.notEqual(shellShiftedText, shellShiftSource);
 assert.notEqual(stripSurface(connectiveShifted), stripSurface(connectiveSource));
+assert(shellShiftDeltaCount >= 2);
 assert(shellShiftedProfile.avgSentenceLength < shellSourceProfile.avgSentenceLength);
 assert(shellShiftedProfile.sentenceCount >= shellSourceProfile.sentenceCount);
 assert(

@@ -39,6 +39,36 @@
     on: { pill: 'Containment // stable' },
     off: { pill: 'Containment // venting' }
   };
+  const queryParams = new URLSearchParams(window.location.search);
+  const testFlightMode = queryParams.get('test-flight');
+  const ingressEnabled = !testFlightMode && queryParams.get('ingress') !== 'off';
+  const INGRESS_BYPASS_DELAY_MS = 8000;
+  const INGRESS_REVEAL_MS = 1500;
+  const INGRESS_BOOT_MS = 680;
+  const INGRESS_HOLD_MS = {
+    containment: 1200,
+    seal: 800
+  };
+  const INGRESS_MIRROR_OPTIONS = {
+    off: {
+      value: 'off',
+      label: 'armed',
+      cue: 'route latent',
+      glyph: '◫'
+    },
+    on: {
+      value: 'on',
+      label: 'open',
+      cue: 'route clear',
+      glyph: '◧'
+    }
+  };
+  const INGRESS_BADGE_OPTIONS = [
+    { value: 'badge.holds', label: 'holds', cue: 'custody holds', glyph: '⟁' },
+    { value: 'badge.buffer', label: 'buffer', cue: 'custody buffer', glyph: '⬒' },
+    { value: 'badge.branch', label: 'branch', cue: 'candidate branch', glyph: '⟉' }
+  ];
+  const INGRESS_STAGES = ['containment', 'mirror', 'badge', 'seal'];
 
   let badge = defaults.badge;
   let mirrorLogic = defaults.mirror_logic;
@@ -50,6 +80,7 @@
     B: createNativeShell()
   };
   let savedPersonas = loadSavedPersonas();
+  let ingress = createIngressState();
 
   $('heroLead').textContent = microcopy.hero_lead;
   $('voiceA').value = defaults.voiceA;
@@ -70,6 +101,30 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+  function randomChoice(list = []) {
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  function createIngressState() {
+    return {
+      enabled: ingressEnabled,
+      phase: ingressEnabled ? 'booting' : 'complete',
+      holding: null,
+      bypassVisible: false,
+      currentMirror: null,
+      currentBadge: null,
+      holdTimer: null,
+      bootTimer: null,
+      bypassTimer: null,
+      revealTimer: null,
+      target: {
+        containment: 'on',
+        mirrorLogic: randomChoice(['off', 'on']),
+        badge: randomChoice(INGRESS_BADGE_OPTIONS.map((option) => option.value))
+      }
+    };
   }
 
   function setMetricTone(id, tone) {
@@ -114,6 +169,346 @@
 
   function renderActiveBayStatus() {
     $('activeBayStatus').textContent = `Active bay // ${SLOT_LABELS[activeVoice].toLowerCase()}`;
+  }
+
+  function ingressMirrorOption(value) {
+    return INGRESS_MIRROR_OPTIONS[value] || INGRESS_MIRROR_OPTIONS.off;
+  }
+
+  function ingressBadgeOption(value) {
+    return INGRESS_BADGE_OPTIONS.find((option) => option.value === value) || INGRESS_BADGE_OPTIONS[0];
+  }
+
+  function clearIngressHold() {
+    if (ingress.holdTimer) {
+      window.clearTimeout(ingress.holdTimer);
+      ingress.holdTimer = null;
+    }
+
+    ingress.holding = null;
+    const bar = $('ingressProgressBar');
+    if (bar) {
+      bar.style.animation = 'none';
+      bar.offsetWidth;
+      bar.style.animation = '';
+    }
+  }
+
+  function clearIngressTimers() {
+    clearIngressHold();
+
+    if (ingress.bootTimer) {
+      window.clearTimeout(ingress.bootTimer);
+      ingress.bootTimer = null;
+    }
+
+    if (ingress.bypassTimer) {
+      window.clearTimeout(ingress.bypassTimer);
+      ingress.bypassTimer = null;
+    }
+
+    if (ingress.revealTimer) {
+      window.clearTimeout(ingress.revealTimer);
+      ingress.revealTimer = null;
+    }
+  }
+
+  function setIngressStageChip(id, state) {
+    const node = $(id);
+    if (node) {
+      node.dataset.state = state;
+    }
+  }
+
+  function updateIngressStageRail() {
+    const phaseIndex = INGRESS_STAGES.indexOf(ingress.phase);
+    INGRESS_STAGES.forEach((stage, index) => {
+      let state = 'pending';
+      if (ingress.phase === 'revealing' || ingress.phase === 'bypassed' || ingress.phase === 'complete') {
+        state = 'complete';
+      } else if (phaseIndex === index) {
+        state = 'active';
+      } else if (phaseIndex > index) {
+        state = 'complete';
+      }
+
+      setIngressStageChip(`ingressStage${stage.charAt(0).toUpperCase()}${stage.slice(1)}`, state);
+    });
+  }
+
+  function setIngressBodyState() {
+    document.body.dataset.ingressPhase = ingress.phase;
+    document.body.dataset.ingressLocked = ingress.phase === 'complete' ? 'false' : 'true';
+    document.body.dataset.ingressHolding = ingress.holding || 'none';
+  }
+
+  function renderIngress() {
+    const overlay = $('ingressMembrane');
+    const shell = document.querySelector('.shell');
+    if (!overlay) {
+      return;
+    }
+
+    setIngressBodyState();
+    overlay.hidden = ingress.phase === 'complete';
+    overlay.dataset.phase = ingress.phase;
+    overlay.dataset.holding = ingress.holding || 'none';
+    if (shell) {
+      shell.inert = ingress.phase !== 'complete';
+      shell.setAttribute('aria-hidden', ingress.phase === 'complete' ? 'false' : 'true');
+    }
+    updateIngressStageRail();
+
+    const mirrorTarget = ingressMirrorOption(ingress.target.mirrorLogic);
+    const badgeTarget = ingressBadgeOption(ingress.target.badge);
+    const currentBadge = ingress.currentBadge ? ingressBadgeOption(ingress.currentBadge) : null;
+    const currentMirror = ingress.currentMirror ? ingressMirrorOption(ingress.currentMirror) : null;
+
+    let phaseLabel = 'Booting';
+    let cueGlyph = '◌';
+    let cueLabel = 'Initializing membrane';
+    let cueCopy = 'The membrane is scanning for a valid custody posture.';
+    let status = 'Stand by while the ingress membrane comes online.';
+    let coreLabel = 'Stand by';
+    let coreGlyph = '⟐';
+    let coreEnabled = false;
+
+    $('ingressMirrorControls').hidden = true;
+    $('ingressBadgeControls').hidden = true;
+
+    if (ingress.phase === 'containment') {
+      phaseLabel = 'Step // contain';
+      cueGlyph = '◎';
+      cueLabel = 'stabilize containment';
+      cueCopy = 'Hold the core until all three instability rings collapse.';
+      status = ingress.holding === 'containment'
+        ? 'Containment stabilizing. Keep holding until the core settles.'
+        : 'Press and hold the core for 1.2 seconds.';
+      coreLabel = 'Hold to stabilize';
+      coreGlyph = '◎';
+      coreEnabled = true;
+    } else if (ingress.phase === 'mirror') {
+      phaseLabel = 'Step // mirror';
+      cueGlyph = mirrorTarget.glyph;
+      cueLabel = mirrorTarget.cue;
+      cueCopy = `Set mirror posture to ${mirrorTarget.label}.`;
+      status = !ingress.currentMirror
+        ? 'Select the mirror posture indicated by the route cue.'
+        : ingress.currentMirror === ingress.target.mirrorLogic
+          ? 'Mirror posture accepted.'
+          : `Mirror rejected. Route cue still requires ${mirrorTarget.label}.`;
+      coreLabel = currentMirror ? currentMirror.label : 'mirror pending';
+      coreGlyph = currentMirror ? currentMirror.glyph : mirrorTarget.glyph;
+      $('ingressMirrorControls').hidden = false;
+    } else if (ingress.phase === 'badge') {
+      phaseLabel = 'Step // badge';
+      cueGlyph = badgeTarget.glyph;
+      cueLabel = badgeTarget.cue;
+      cueCopy = `Cycle the custody badge until it reads ${badgeTarget.label}.`;
+      status = !ingress.currentBadge
+        ? 'Cycle the badge rotor until the cue is satisfied.'
+        : ingress.currentBadge === ingress.target.badge
+          ? 'Badge accepted. Seal is now available.'
+          : `Badge mismatch. Keep cycling toward ${badgeTarget.label}.`;
+      coreLabel = currentBadge ? currentBadge.label : 'badge pending';
+      coreGlyph = currentBadge ? currentBadge.glyph : badgeTarget.glyph;
+      $('ingressBadgeControls').hidden = false;
+      $('ingressBadgeReadout').textContent = `badge // ${currentBadge ? currentBadge.label : 'unset'}`;
+    } else if (ingress.phase === 'seal') {
+      phaseLabel = 'Step // seal';
+      cueGlyph = '⟐';
+      cueLabel = 'seal membrane';
+      cueCopy = `Resolved posture: ${mirrorTarget.label} / ${badgeTarget.label} / containment stable. Hold the core to commit the route.`;
+      status = ingress.holding === 'seal'
+        ? 'Sealing membrane. Hold until the deck unlocks.'
+        : 'Press and hold the core for 0.8 seconds to open the deck.';
+      coreLabel = 'Hold to seal';
+      coreGlyph = '⟐';
+      coreEnabled = true;
+    } else if (ingress.phase === 'revealing') {
+      phaseLabel = 'Reveal // route granted';
+      cueGlyph = '⬡';
+      cueLabel = 'membrane dissolving';
+      cueCopy = 'The solved custody posture is being carried into the live deck.';
+      status = 'Deck handoff in progress.';
+      coreLabel = 'opening';
+      coreGlyph = '⬡';
+    } else if (ingress.phase === 'bypassed') {
+      phaseLabel = 'Bypass // safe defaults';
+      cueGlyph = '⬒';
+      cueLabel = 'safe ingress';
+      cueCopy = 'Safe defaults are opening the deck without the full ritual.';
+      status = 'Bypass accepted. Opening the membrane on the safe preset.';
+      coreLabel = 'bypassed';
+      coreGlyph = '⬒';
+    }
+
+    $('ingressPhaseLabel').innerHTML = `<span class="glyph glyph-cyan" aria-hidden="true">⟒</span> ${phaseLabel}`;
+    $('ingressCueGlyph').textContent = cueGlyph;
+    $('ingressCueLabel').textContent = cueLabel;
+    $('ingressCueCopy').textContent = cueCopy;
+    $('ingressStatus').textContent = status;
+    $('ingressCoreLabel').textContent = coreLabel;
+    $('ingressCoreGlyph').textContent = coreGlyph;
+    $('ingressCore').disabled = !coreEnabled;
+
+    $('ingressMirrorArmed').dataset.selected = ingress.currentMirror === 'off';
+    $('ingressMirrorOpen').dataset.selected = ingress.currentMirror === 'on';
+    $('ingressBadgeCycle').dataset.ready = ingress.currentBadge === ingress.target.badge;
+
+    $('ingressBypassWrap').hidden = !ingress.bypassVisible || ingress.phase === 'complete';
+  }
+
+  function setIngressPhase(phase) {
+    ingress.phase = phase;
+    clearIngressHold();
+    renderIngress();
+  }
+
+  function startIngressSequence() {
+    if (!ingress.enabled || ingress.phase !== 'booting') {
+      renderIngress();
+      return;
+    }
+
+    renderIngress();
+    ingress.bypassTimer = window.setTimeout(() => {
+      ingress.bypassVisible = true;
+      renderIngress();
+    }, INGRESS_BYPASS_DELAY_MS);
+    ingress.bootTimer = window.setTimeout(() => {
+      setIngressPhase('containment');
+    }, INGRESS_BOOT_MS);
+  }
+
+  function applyIngressPreset(preset) {
+    badge = preset.badge;
+    mirrorLogic = preset.mirrorLogic;
+    containment = preset.containment;
+  }
+
+  function finalizeIngress(mode = 'solved') {
+    clearIngressTimers();
+
+    const preset = mode === 'solved'
+      ? {
+          badge: ingress.target.badge,
+          mirrorLogic: ingress.target.mirrorLogic,
+          containment: 'on'
+        }
+      : {
+          badge: 'badge.holds',
+          mirrorLogic: 'off',
+          containment: 'on'
+        };
+
+    applyIngressPreset(preset);
+    analyzeCadences();
+
+    if (mode === 'bypass') {
+      ingress.phase = 'bypassed';
+      renderIngress();
+      ingress.revealTimer = window.setTimeout(() => {
+        ingress.phase = 'revealing';
+        renderIngress();
+      }, 140);
+    } else {
+      ingress.phase = 'revealing';
+      renderIngress();
+    }
+
+    window.setTimeout(() => {
+      ingress.enabled = false;
+      ingress.phase = 'complete';
+      renderIngress();
+    }, mode === 'bypass' ? INGRESS_REVEAL_MS + 140 : INGRESS_REVEAL_MS);
+  }
+
+  function completeIngressHold(phase) {
+    if (ingress.phase !== phase || ingress.holding !== phase) {
+      return;
+    }
+
+    clearIngressHold();
+
+    if (phase === 'containment') {
+      setIngressPhase('mirror');
+      return;
+    }
+
+    if (phase === 'seal') {
+      finalizeIngress('solved');
+    }
+  }
+
+  function beginIngressHold() {
+    const duration = INGRESS_HOLD_MS[ingress.phase];
+    if (!duration || ingress.holding || ingress.phase === 'complete') {
+      return;
+    }
+
+    ingress.holding = ingress.phase;
+    const bar = $('ingressProgressBar');
+    if (bar) {
+      bar.style.animation = 'none';
+      bar.offsetWidth;
+      bar.style.animation = `ingress-progress ${duration}ms linear forwards`;
+    }
+    renderIngress();
+    ingress.holdTimer = window.setTimeout(() => completeIngressHold(ingress.phase), duration);
+  }
+
+  function cancelIngressHold() {
+    if (!ingress.holding) {
+      return;
+    }
+
+    clearIngressHold();
+    renderIngress();
+  }
+
+  function chooseIngressMirror(value) {
+    if (ingress.phase !== 'mirror') {
+      return;
+    }
+
+    ingress.currentMirror = value;
+    renderIngress();
+
+    if (value === ingress.target.mirrorLogic) {
+      window.setTimeout(() => {
+        if (ingress.phase === 'mirror' && ingress.currentMirror === ingress.target.mirrorLogic) {
+          setIngressPhase('badge');
+        }
+      }, 220);
+    }
+  }
+
+  function cycleIngressBadge() {
+    if (ingress.phase !== 'badge') {
+      return;
+    }
+
+    const currentIndex = INGRESS_BADGE_OPTIONS.findIndex((option) => option.value === ingress.currentBadge);
+    const nextOption = INGRESS_BADGE_OPTIONS[(currentIndex + 1 + INGRESS_BADGE_OPTIONS.length) % INGRESS_BADGE_OPTIONS.length];
+    ingress.currentBadge = nextOption.value;
+    renderIngress();
+
+    if (ingress.currentBadge === ingress.target.badge) {
+      window.setTimeout(() => {
+        if (ingress.phase === 'badge' && ingress.currentBadge === ingress.target.badge) {
+          setIngressPhase('seal');
+        }
+      }, 220);
+    }
+  }
+
+  function bypassIngress() {
+    if (ingress.phase === 'complete') {
+      return;
+    }
+
+    finalizeIngress('bypass');
   }
 
   function loadSavedPersonas() {
@@ -362,7 +757,7 @@
           </div>
           <div class="duel-shell-strength">${shellStrengthCopy(side.shell)}</div>
         </div>
-        <div class="duel-sample">${escapeHtml(side.text)}</div>
+        <div id="duelSample${side.slot}" class="duel-sample">${escapeHtml(side.text)}</div>
         <div class="duel-mini-metrics">
           <span class="duel-mini-metric">Rhythm ${profile.avgSentenceLength.toFixed(1)}w</span>
           <span class="duel-mini-metric">Punct ${formatPct(profile.punctuationDensity)}</span>
@@ -384,30 +779,29 @@
   }
 
   function buildShellDuelPayload(voiceStateA, voiceStateB) {
-    const sourceState = activeVoice === 'A' ? voiceStateA : voiceStateB;
     const hasAnyText = voiceStateA.hasText || voiceStateB.hasText;
-    const sourceText = sourceState.text.trim();
+    const hasBothText = voiceStateA.hasText && voiceStateB.hasText;
 
     if (!hasAnyText) {
       return {
         state: 'empty',
-        sourceLabel: 'Shared source // waiting for a live bay',
-        note: 'Paste one or two voices to wake Shell Duel. The active source sample is duplicated intentionally across both shells so the cadence transfer is easier to read.'
+        sourceLabel: 'Own sources // waiting for live bays',
+        note: 'Paste both voices to wake Shell Duel. Each side will stage its own bay under the currently attached shell.'
       };
     }
 
-    if (!sourceText) {
+    if (!hasBothText) {
       return {
-        state: 'awaiting-source',
-        sourceLabel: `Shared source // ${SLOT_LABELS[activeVoice].toLowerCase()} raw text`,
-        note: `The active bay is empty. Focus the populated bay or paste a source sample here to see how the reference and probe shells diverge on the same shared text.`
+        state: 'awaiting-pair',
+        sourceLabel: 'Own sources // awaiting both bays',
+        note: 'Shell Duel compares the reference bay against the probe bay. Populate both bays to stage their transformed samples side by side.'
       };
     }
 
-    const referenceText = applyCadenceToText(sourceText, voiceStateA.shell);
-    const probeText = applyCadenceToText(sourceText, voiceStateB.shell);
-    const referenceProfile = extractCadenceProfile(referenceText);
-    const probeProfile = extractCadenceProfile(probeText);
+    const referenceText = voiceStateA.effectiveText;
+    const probeText = voiceStateB.effectiveText;
+    const referenceProfile = voiceStateA.effectiveProfile;
+    const probeProfile = voiceStateB.effectiveProfile;
     const referenceSignature = buildCadenceSignature(referenceText, referenceProfile);
     const probeSignature = buildCadenceSignature(probeText, probeProfile);
     const duelCompare = compareTexts(referenceText, probeText, {
@@ -417,13 +811,11 @@
 
     return {
       state: 'live',
-      sourceSlot: sourceState.slot,
-      sourceText,
-      sourceLabel: `Shared source // ${SLOT_LABELS[sourceState.slot].toLowerCase()} raw text`,
-      note: `The same ${SLOT_SHORT[sourceState.slot]} sample is duplicated intentionally across both current shells. Raw text stays in the bay; Shell Duel exposes only the cadence transfer.`,
+      sourceLabel: 'Own sources // reference bay and probe bay raw text',
+      note: 'Each side stages its own bay under the currently attached shell. Raw text stays in the textarea; Shell Duel exposes only the cadence transfer.',
       reference: {
         slot: 'A',
-        title: 'Reference shell',
+        title: 'Reference bay under current shell',
         shell: voiceStateA.shell,
         text: referenceText,
         profile: referenceProfile,
@@ -431,7 +823,7 @@
       },
       probe: {
         slot: 'B',
-        title: 'Probe shell',
+        title: 'Probe bay under current shell',
         shell: voiceStateB.shell,
         text: probeText,
         profile: probeProfile,
@@ -479,12 +871,12 @@
               <span class="duel-delta-label">Sentence drift</span>
               <strong id="duelSentenceDrift">${duel.sentenceDrift.toFixed(1)}w</strong>
             </div>
-            <div class="duel-delta-item">
+          <div class="duel-delta-item">
               <span class="duel-delta-label">Function-word distance</span>
               <strong id="duelFunctionWordDistance">${formatFixed(duel.compare.functionWordDistance)}</strong>
             </div>
           </div>
-          <p class="duel-delta-copy">Same source sample, different shell behavior. This is where Swap Cadences should become unmistakable.</p>
+          <p class="duel-delta-copy">Each bay keeps its own text. Swap Cadences should move shell behavior without moving content.</p>
         </aside>
         ${renderDuelSide(duel.probe)}
       </div>
@@ -1062,7 +1454,7 @@ DeltaE = ${ledger.reuse_gain}`;
     const beforeSnapshot = readDeckSnapshot();
     analyzeCadences();
     const afterSnapshot = readDeckSnapshot();
-    setStatusMessage(`Cadence shells swapped. The raw text stayed put, but the effective samples and cadence profiles moved. Similarity ${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}; route ${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}.`);
+    setStatusMessage(`Cadence shells swapped. Each bay kept its own raw text and took the other bay's shell. Similarity ${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}; route ${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}.`);
   }
 
   function buildSavedPersonaName(slot) {
@@ -1191,7 +1583,9 @@ DeltaE = ${ledger.reuse_gain}`;
       duelSimilarity: readText('duelSimilarity'),
       duelTraceability: readText('duelTraceability'),
       duelSentenceDrift: readText('duelSentenceDrift'),
-      duelFunctionWordDistance: readText('duelFunctionWordDistance')
+      duelFunctionWordDistance: readText('duelFunctionWordDistance'),
+      duelReferenceSample: readText('duelSampleA'),
+      duelProbeSample: readText('duelSampleB')
     };
   }
 
@@ -1246,21 +1640,21 @@ DeltaE = ${ledger.reuse_gain}`;
         duelChanged:
           afterNativeSwap.duelSimilarity !== beforeNativeSwap.duelSimilarity ||
           afterNativeSwap.duelTraceability !== beforeNativeSwap.duelTraceability,
+        duelSamplesChanged:
+          afterNativeSwap.duelReferenceSample !== beforeNativeSwap.duelReferenceSample ||
+          afterNativeSwap.duelProbeSample !== beforeNativeSwap.duelProbeSample,
         referenceBorrowed: $('voiceAProfile').textContent.toLowerCase().includes('borrowed'),
         probeBorrowed: $('voiceBProfile').textContent.toLowerCase().includes('borrowed')
       };
 
       $('resetBtn').click();
-      const beforeDuelFocus = readDeckSnapshot();
-      $('voiceB').dispatchEvent(new Event('focus'));
-      const afterDuelFocus = readDeckSnapshot();
-      report.duelFocus = {
-        before: beforeDuelFocus.duelSource,
-        after: afterDuelFocus.duelSource,
-        changed: beforeDuelFocus.duelSource !== afterDuelFocus.duelSource,
-        probeLive: afterDuelFocus.duelSource.toLowerCase().includes('probe')
+      const ownSourceSnapshot = readDeckSnapshot();
+      report.ownSourceDuel = {
+        sourceLabel: ownSourceSnapshot.duelSource,
+        referenceOwnSource: ownSourceSnapshot.duelReferenceSample.toLowerCase().includes('honestly'),
+        probeOwnSource: ownSourceSnapshot.duelProbeSample.toLowerCase().includes('charger'),
+        samplesDistinct: ownSourceSnapshot.duelReferenceSample !== ownSourceSnapshot.duelProbeSample
       };
-      $('voiceA').dispatchEvent(new Event('focus'));
 
       const firstPersona = document.querySelector('.persona');
       if (firstPersona) {
@@ -1281,6 +1675,9 @@ DeltaE = ${ledger.reuse_gain}`;
         personaStatus: $('personaStatus').textContent.trim(),
         voiceAUnchanged: $('voiceA').value === beforeA,
         voiceBUnchanged: $('voiceB').value === beforeB,
+        duelSamplesChanged:
+          readDeckSnapshot().duelReferenceSample !== ownSourceSnapshot.duelReferenceSample ||
+          readDeckSnapshot().duelProbeSample !== ownSourceSnapshot.duelProbeSample,
         personaStatusChanged: $('personaStatus').textContent.trim() !== assignedLabelBeforeSwap
       };
 
@@ -1404,10 +1801,13 @@ DeltaE = ${ledger.reuse_gain}`;
             report.savePersona.savedPersonaAdded &&
             report.nativeSwap.changed &&
             report.nativeSwap.duelChanged &&
+            report.nativeSwap.duelSamplesChanged &&
             report.nativeSwap.referenceBorrowed &&
             report.nativeSwap.probeBorrowed &&
-            report.duelFocus.changed &&
-            report.duelFocus.probeLive &&
+            report.ownSourceDuel.referenceOwnSource &&
+            report.ownSourceDuel.probeOwnSource &&
+            report.ownSourceDuel.samplesDistinct &&
+            report.swapCadences.duelSamplesChanged &&
             report.soloScan.similarityKey === 'Scan mode' &&
             report.baseline.snapshot.duelState === 'live' &&
             report.viewTabs.activeTab === 'readout',
@@ -1428,6 +1828,13 @@ DeltaE = ${ledger.reuse_gain}`;
     }
 
     node.textContent = JSON.stringify(report, null, 2);
+
+    const summaryText = report.summary
+      ? `Test flight // ${report.summary.allPassed ? 'passed' : 'check failed'} ${report.summary.matrixPassCount}/${report.summary.matrixCount}`
+      : `Test flight // ${mode} complete`;
+    document.body.dataset.testFlightStatus = report.summary && report.summary.allPassed ? 'passed' : 'complete';
+    document.body.dataset.testFlightSummary = summaryText.toLowerCase().replace(/[^a-z0-9/ ]/gi, '');
+    $('analysisStatus').textContent = summaryText;
   }
 
   $('compareBtn').addEventListener('click', analyzeCadences);
@@ -1449,6 +1856,27 @@ DeltaE = ${ledger.reuse_gain}`;
   $('tabPlay').addEventListener('click', () => setArtifactTab('play'));
   $('tabReadout').addEventListener('click', () => setArtifactTab('readout'));
   $('tabPersonas').addEventListener('click', () => setArtifactTab('personas'));
+  $('ingressBypass').addEventListener('click', bypassIngress);
+  $('ingressMirrorArmed').addEventListener('click', () => chooseIngressMirror('off'));
+  $('ingressMirrorOpen').addEventListener('click', () => chooseIngressMirror('on'));
+  $('ingressBadgeCycle').addEventListener('click', cycleIngressBadge);
+  $('ingressCore').addEventListener('pointerdown', beginIngressHold);
+  $('ingressCore').addEventListener('pointerup', cancelIngressHold);
+  $('ingressCore').addEventListener('pointerleave', cancelIngressHold);
+  $('ingressCore').addEventListener('pointercancel', cancelIngressHold);
+  $('ingressCore').addEventListener('blur', cancelIngressHold);
+  $('ingressCore').addEventListener('keydown', (event) => {
+    if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
+      event.preventDefault();
+      beginIngressHold();
+    }
+  });
+  $('ingressCore').addEventListener('keyup', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      cancelIngressHold();
+    }
+  });
 
   document.addEventListener('click', (event) => {
     const persona = event.target.closest('.persona');
@@ -1482,6 +1910,7 @@ DeltaE = ${ledger.reuse_gain}`;
     updateControls();
     document.body.dataset.bootStage = 'boot-ready';
     analyzeCadences();
+    startIngressSequence();
     document.body.dataset.bootStage = 'boot-complete';
   }
 
@@ -1497,6 +1926,8 @@ DeltaE = ${ledger.reuse_gain}`;
     }
   });
 
+  renderIngress();
+
   try {
     boot();
   } catch (error) {
@@ -1510,7 +1941,6 @@ DeltaE = ${ledger.reuse_gain}`;
       .slice(0, 120);
   }
 
-  const testFlightMode = new URLSearchParams(window.location.search).get('test-flight');
   if (testFlightMode === '1') {
     window.setTimeout(() => runTestFlight('smoke'), 120);
   }
