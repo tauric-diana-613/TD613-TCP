@@ -185,9 +185,11 @@ There is also an explicit identity guard: if the normalized texts match exactly 
 
 ## Shell-text transfer
 
-The current transfer contract is `buildCadenceTransfer(text, shell, options?)`. It returns the transformed text together with source, target, and output profiles, changed dimensions, protected-literal count, pass log, `transferClass`, quality-gate result, and transfer notes.
+The current transfer contract is `buildCadenceTransfer(text, shell, options?)`. It returns the transformed text together with source, target, and output profiles, an `opportunityProfile`, changed dimensions, protected-literal count, pass log, `transferClass`, quality-gate result, and transfer notes.
 
 `applyCadenceToText(text, shell)` remains as the compatibility wrapper that returns only the transformed text.
+
+`transformText(text, mod, options?)` is also still exported for compatibility, but it now delegates directly into `buildCadenceTransfer(...)` instead of running a separate rewrite loop. That keeps the source module, browser bundle, and tests on one transformation engine.
 
 TCP treats shell transfer as a strict-preserve cadence rewrite. That means:
 
@@ -196,6 +198,8 @@ TCP treats shell transfer as a strict-preserve cadence rewrite. That means:
 - content-word paraphrase is out of scope
 
 Protected spans include digit-bearing tokens, dates/times, URLs, emails, handles, quoted substrings, all-caps acronyms, and mixed-case IDs. Those spans are replaced with placeholders before the rewrite passes and restored exactly afterward.
+
+Before those passes run, TCP also builds an opportunity map from the source text. That map tracks whether the source actually offers safe hooks for sentence splitting, sentence merging, contraction changes, connector/stance rewrites, and line-break texture. A large donor/source gap does not automatically imply a large visible rewrite if the source text has little transformable structure.
 
 The deterministic pass order is:
 
@@ -221,6 +225,8 @@ The lexicon pack remains intentionally narrow. It operates over structural or st
 - `that is / that's`
 
 The quality gate rejects a transfer if protected literals fail to restore, duplicate chunks appear, connector sequences repeat, or a materially different target collapses into punctuation-only drift. In those cases TCP falls back to the safer result rather than presenting a weak rewrite as a meaningful cadence shift.
+
+The opportunity map affects that honesty layer. If the donor gap is strong but the source text offers very few safe structural hooks, TCP may classify the result as `weak` or `rejected` rather than forcing a theatrical rewrite.
 
 The transfer classifier is intentionally small:
 

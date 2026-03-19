@@ -52,8 +52,7 @@
     containment: 1200
   };
   const INGRESS_HOLD_GRACE_RATIO = 0.9;
-  const INGRESS_SEAL_ARC_DEG = 96;
-  const INGRESS_SEAL_REVERSE_TOLERANCE_DEG = 20;
+  const INGRESS_SEAL_SEQUENCE = ['ul', 'ur', 'bc'];
   const INGRESS_MIRROR_OPTIONS = {
     off: {
       value: 'off',
@@ -90,6 +89,7 @@
   let activeArtifactTab = 'play';
   let analysisRevealed = false;
   let shellDuelPulseTimer = null;
+  let swapButtonPulseTimer = null;
   let statusCueTimer = null;
   let bayShells = {
     A: createNativeShell(),
@@ -138,11 +138,8 @@
       resolvingGate: null,
       mirrorFeedback: null,
       badgeFeedback: null,
-      rotatePointerId: null,
-      rotateStartAngle: null,
-      rotateLastAngle: null,
-      rotateProgress: 0,
-      rotateBacktrack: 0,
+      sealSequenceIndex: 0,
+      sealRejectedNode: null,
       holdTimer: null,
       bootTimer: null,
       bypassTimer: null,
@@ -195,6 +192,8 @@
   function setStatusMessage(message) {
     const base = $('analysisStatusBase');
     const cue = $('analysisStatusCue');
+    const actionCue = $('swapActionCue');
+    const swapButton = $('swapCadencesBtn');
     if (base) {
       base.textContent = message;
     } else {
@@ -203,6 +202,13 @@
     if (cue) {
       cue.hidden = true;
       cue.textContent = '';
+    }
+    if (actionCue) {
+      actionCue.hidden = true;
+      actionCue.textContent = '';
+    }
+    if (swapButton) {
+      swapButton.dataset.pulse = 'off';
     }
   }
 
@@ -228,6 +234,23 @@
       duel.dataset.pulse = 'off';
       shellDuelPulseTimer = null;
     }, 1400);
+  }
+
+  function pulseSwapCadenceButton() {
+    const button = $('swapCadencesBtn');
+    if (!button) {
+      return;
+    }
+
+    if (swapButtonPulseTimer) {
+      window.clearTimeout(swapButtonPulseTimer);
+    }
+
+    button.dataset.pulse = 'on';
+    swapButtonPulseTimer = window.setTimeout(() => {
+      button.dataset.pulse = 'off';
+      swapButtonPulseTimer = null;
+    }, 1100);
   }
 
   /* legacy swap cue helpers removed
@@ -274,11 +297,12 @@
   function setSwapStatusMessage(baseMessage) {
     clearStatusCueTimer();
     setStatusMessage(baseMessage);
-    const cue = $('analysisStatusCue');
+    const cue = $('swapActionCue');
     if (cue) {
-      cue.textContent = '\u2193 Shell Duel updated below';
+      cue.textContent = '\u2193 Shell Duel below';
       cue.hidden = false;
     }
+    pulseSwapCadenceButton();
     pulseShellDuel();
     statusCueTimer = window.setTimeout(() => {
       if (cue) {
@@ -286,7 +310,7 @@
         cue.textContent = '';
       }
       statusCueTimer = null;
-    }, 1800);
+    }, 4500);
   }
 
   function ingressMirrorOption(value) {
@@ -325,113 +349,29 @@
     }
   }
 
-  function clearIngressSealRotation() {
-    const core = $('ingressCore');
-    if (core && ingress.rotatePointerId != null) {
-      try {
-        if (core.hasPointerCapture && core.hasPointerCapture(ingress.rotatePointerId)) {
-          core.releasePointerCapture(ingress.rotatePointerId);
-        }
-      } catch {
-        // capture can be unavailable during teardown
-      }
-    }
-
-    ingress.rotatePointerId = null;
-    ingress.rotateStartAngle = null;
-    ingress.rotateLastAngle = null;
-    ingress.rotateProgress = 0;
-    ingress.rotateBacktrack = 0;
+  function clearIngressSealSequence() {
+    ingress.sealSequenceIndex = 0;
+    ingress.sealRejectedNode = null;
   }
 
-  function normalizeIngressAngleDelta(delta) {
-    let value = delta;
-    while (value > 180) {
-      value -= 360;
-    }
-    while (value < -180) {
-      value += 360;
-    }
-    return value;
-  }
-
-  function getIngressCoreAngle(event) {
-    const core = $('ingressCore');
-    if (!core || !event || typeof event.clientX !== 'number' || typeof event.clientY !== 'number') {
-      return null;
-    }
-
-    const rect = core.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const dx = event.clientX - centerX;
-    const dy = event.clientY - centerY;
-    return Math.atan2(dy, dx) * (180 / Math.PI);
-  }
-
-  function beginIngressSealRotation(event) {
-    if (ingress.phase !== 'seal' || ingress.rotatePointerId != null) {
+  function chooseIngressSealNode(nodeId) {
+    if (ingress.phase !== 'seal' || ingress.resolvingGate === 'seal') {
       return;
     }
 
-    if (event) {
-      event.preventDefault();
-    }
-
-    const angle = getIngressCoreAngle(event);
-    if (angle == null) {
+    const expectedNode = INGRESS_SEAL_SEQUENCE[ingress.sealSequenceIndex];
+    if (nodeId !== expectedNode) {
+      ingress.resolvingGate = 'seal';
+      ingress.sealRejectedNode = nodeId;
+      renderIngress();
+      scheduleIngressFeedbackClear('seal', 440);
       return;
     }
 
-    ingress.rotatePointerId = event && typeof event.pointerId === 'number' ? event.pointerId : -1;
-    ingress.rotateStartAngle = angle;
-    ingress.rotateLastAngle = angle;
-    ingress.rotateProgress = 0;
-    ingress.rotateBacktrack = 0;
+    ingress.sealRejectedNode = null;
+    ingress.sealSequenceIndex += 1;
 
-    if (event && event.currentTarget && typeof event.currentTarget.setPointerCapture === 'function' && ingress.rotatePointerId != null) {
-      try {
-        event.currentTarget.setPointerCapture(ingress.rotatePointerId);
-      } catch {
-        // capture can fail on unsupported platforms; rotation can still work
-      }
-    }
-
-    renderIngress();
-  }
-
-  function updateIngressSealRotation(event) {
-    if (ingress.phase !== 'seal' || ingress.rotatePointerId == null) {
-      return;
-    }
-
-    if (event && typeof event.pointerId === 'number' && event.pointerId !== ingress.rotatePointerId) {
-      return;
-    }
-
-    const angle = getIngressCoreAngle(event);
-    if (angle == null || ingress.rotateLastAngle == null) {
-      return;
-    }
-
-    const delta = normalizeIngressAngleDelta(angle - ingress.rotateLastAngle);
-    ingress.rotateLastAngle = angle;
-
-    if (delta > 0) {
-      ingress.rotateProgress = Math.min(INGRESS_SEAL_ARC_DEG, ingress.rotateProgress + delta);
-      ingress.rotateBacktrack = Math.max(0, ingress.rotateBacktrack - delta * 0.5);
-    } else if (delta < 0) {
-      ingress.rotateBacktrack += Math.abs(delta);
-      if (ingress.rotateBacktrack > INGRESS_SEAL_REVERSE_TOLERANCE_DEG) {
-        clearIngressSealRotation();
-        renderIngress();
-        return;
-      }
-      ingress.rotateProgress = Math.max(0, ingress.rotateProgress + delta);
-    }
-
-    if (ingress.rotateProgress >= INGRESS_SEAL_ARC_DEG) {
-      clearIngressSealRotation();
+    if (ingress.sealSequenceIndex >= INGRESS_SEAL_SEQUENCE.length) {
       finalizeIngress('solved');
       return;
     }
@@ -439,41 +379,18 @@
     renderIngress();
   }
 
-  function endIngressSealRotation(event) {
-    if (ingress.phase !== 'seal' || ingress.rotatePointerId == null) {
-      return;
-    }
-
-    if (event && typeof event.pointerId === 'number' && event.pointerId !== ingress.rotatePointerId) {
-      return;
-    }
-
-    if (event) {
-      event.preventDefault();
-    }
-
-    clearIngressSealRotation();
-    renderIngress();
-  }
-
   function handleIngressCorePointerDown(event) {
     if (ingress.phase === 'seal') {
-      beginIngressSealRotation(event);
       return;
     }
 
     beginIngressHold(event);
   }
 
-  function handleIngressCorePointerMove(event) {
-    if (ingress.phase === 'seal') {
-      updateIngressSealRotation(event);
-    }
-  }
+  function handleIngressCorePointerMove() {}
 
   function handleIngressCorePointerUp(event) {
     if (ingress.phase === 'seal') {
-      endIngressSealRotation(event);
       return;
     }
 
@@ -482,7 +399,6 @@
 
   function handleIngressCorePointerCancel(event) {
     if (ingress.phase === 'seal') {
-      endIngressSealRotation(event);
       return;
     }
 
@@ -498,6 +414,7 @@
     ingress.resolvingGate = null;
     ingress.mirrorFeedback = null;
     ingress.badgeFeedback = null;
+    ingress.sealRejectedNode = null;
   }
 
   function scheduleIngressFeedbackClear(gate, delay = 320) {
@@ -514,6 +431,10 @@
         ingress.badgeFeedback = null;
       }
 
+      if (gate === 'seal' && ingress.phase === 'seal') {
+        ingress.sealRejectedNode = null;
+      }
+
       if (ingress.resolvingGate === gate) {
         ingress.resolvingGate = null;
       }
@@ -525,7 +446,7 @@
 
   function clearIngressTimers() {
     clearIngressHold();
-    clearIngressSealRotation();
+    clearIngressSealSequence();
     clearIngressFeedback();
 
     if (ingress.bootTimer) {
@@ -572,7 +493,6 @@
     document.body.dataset.ingressLocked = ingress.phase === 'complete' ? 'false' : 'true';
     document.body.dataset.ingressHolding = ingress.holding || 'none';
     document.body.dataset.ingressResolving = ingress.resolvingGate || 'none';
-    document.body.dataset.ingressRotating = ingress.rotatePointerId != null ? 'true' : 'false';
     document.body.dataset.ingressTargetMirror = ingress.target.mirrorLogic;
     document.body.dataset.ingressTargetBadge = ingress.target.badge;
   }
@@ -613,15 +533,23 @@
     let coreGlyph = '⟐';
     let coreEnabled = false;
     const sealTrack = $('ingressSealTrack');
+    const sealNodeWrap = $('ingressSealNodes');
+    const sealNodes = [
+      { id: 'ul', node: $('ingressSealNodeUl') },
+      { id: 'ur', node: $('ingressSealNodeUr') },
+      { id: 'bc', node: $('ingressSealNodeBc') }
+    ];
+    const sealLinks = [$('ingressSealLink1'), $('ingressSealLink2'), $('ingressSealLink3')];
 
     $('ingressMirrorControls').hidden = true;
     $('ingressBadgeControls').hidden = true;
     $('ingressBadgeReadout').textContent = `token // ${currentBadge ? currentBadge.label : 'unset'}`;
     if (sealTrack) {
-      const progress = Math.max(0, Math.min(1, ingress.rotateProgress / INGRESS_SEAL_ARC_DEG));
-      sealTrack.style.setProperty('--seal-progress', `${progress.toFixed(3)}turn`);
       sealTrack.dataset.active = ingress.phase === 'seal' ? 'true' : 'false';
-      sealTrack.dataset.rotating = ingress.rotatePointerId != null ? 'true' : 'false';
+      sealTrack.dataset.step = String(ingress.sealSequenceIndex || 0);
+    }
+    if (sealNodeWrap) {
+      sealNodeWrap.hidden = ingress.phase !== 'seal';
     }
 
     if (ingress.phase === 'containment') {
@@ -664,14 +592,14 @@
     } else if (ingress.phase === 'seal') {
       phaseLabel = 'Gate // seal';
       cueGlyph = '⟐';
-      cueLabel = 'close the seal arc';
-      cueCopy = `Resolved posture: ${mirrorTarget.cue} / ${badgeTarget.label} / containment stable. Turn the core clockwise until the outer arc closes.`;
-      status = ingress.rotatePointerId != null
-        ? 'Keep turning until the ring seals.'
-        : 'Turn the core clockwise to close the ring.';
-      coreLabel = 'rotate to seal';
+      cueLabel = 'close the triad';
+      cueCopy = `Resolved posture: ${mirrorTarget.cue} / ${badgeTarget.label} / containment stable. Seal the three points in clockwise order.`;
+      status = ingress.sealRejectedNode
+        ? 'That point does not close the triad. Touch the live point.'
+        : 'Touch the next live point.';
+      coreLabel = 'triad live';
       coreGlyph = '⟐';
-      coreEnabled = true;
+      coreEnabled = false;
     } else if (ingress.phase === 'revealing') {
       phaseLabel = 'Reveal // handoff';
       cueGlyph = '⬡';
@@ -709,6 +637,41 @@
     $('ingressBadgeCycle').dataset.feedback = ingress.badgeFeedback || 'idle';
     $('ingressBadgeCycle').disabled = ingress.phase !== 'badge' || ingress.resolvingGate === 'badge';
     $('ingressBadgeReadout').dataset.feedback = ingress.badgeFeedback || 'idle';
+    sealNodes.forEach(({ id, node }, index) => {
+      if (!node) {
+        return;
+      }
+
+      let state = 'pending';
+      if (ingress.phase === 'seal') {
+        if (ingress.sealRejectedNode === id) {
+          state = 'rejected';
+        } else if (index < ingress.sealSequenceIndex) {
+          state = 'complete';
+        } else if (index === ingress.sealSequenceIndex) {
+          state = 'active';
+        }
+      }
+
+      node.dataset.state = state;
+      node.disabled = ingress.phase !== 'seal' || ingress.resolvingGate === 'seal';
+    });
+    sealLinks.forEach((link, index) => {
+      if (!link) {
+        return;
+      }
+
+      let state = 'pending';
+      if (ingress.phase === 'seal') {
+        if (index === 0 && ingress.sealSequenceIndex >= 2) {
+          state = 'complete';
+        } else if (index > 0 && ingress.sealSequenceIndex >= 3) {
+          state = 'complete';
+        }
+      }
+
+      link.dataset.state = state;
+    });
 
     $('ingressBypassWrap').hidden = !ingress.bypassVisible || ingress.phase === 'complete';
   }
@@ -716,7 +679,7 @@
   function setIngressPhase(phase) {
     ingress.phase = phase;
     clearIngressHold();
-    clearIngressSealRotation();
+    clearIngressSealSequence();
     clearIngressFeedback();
     renderIngress();
   }
@@ -2054,8 +2017,8 @@ DeltaE = ${ledger.reuse_gain}`;
       routeState: readText('routeState'),
       status: readText('analysisStatus'),
       statusBase: readText('analysisStatusBase'),
-      statusCue: readText('analysisStatusCue'),
-      statusCueVisible: !$('analysisStatusCue').hidden,
+      statusCue: readText('swapActionCue'),
+      statusCueVisible: !$('swapActionCue').hidden,
       swapMedallionDisabled: $('swapMedallion').disabled,
       duelState: $('shellDuel').dataset.state,
       duelSource: readText('duelSourceStatus'),
@@ -2111,9 +2074,11 @@ DeltaE = ${ledger.reuse_gain}`;
       targetBadge: overlay ? overlay.dataset.targetBadge : '',
       currentMirror: overlay ? overlay.dataset.currentMirror : '',
       currentBadge: overlay ? overlay.dataset.currentBadge : '',
-      sealProgress: ingress.rotateProgress,
+      sealSequenceIndex: ingress.sealSequenceIndex,
+      sealRejectedNode: ingress.sealRejectedNode || '',
       mirrorControlsHidden: $('ingressMirrorControls').hidden,
       badgeControlsHidden: $('ingressBadgeControls').hidden,
+      sealNodesHidden: $('ingressSealNodes') ? $('ingressSealNodes').hidden : true,
       status: readText('ingressStatus'),
       cue: readText('ingressCueLabel'),
       badgeReadout: readText('ingressBadgeReadout'),
@@ -2136,11 +2101,8 @@ DeltaE = ${ledger.reuse_gain}`;
     ingress.holding = null;
     ingress.holdStartedAt = 0;
     ingress.holdPointerId = null;
-    ingress.rotatePointerId = null;
-    ingress.rotateStartAngle = null;
-    ingress.rotateLastAngle = null;
-    ingress.rotateProgress = 0;
-    ingress.rotateBacktrack = 0;
+    ingress.sealSequenceIndex = 0;
+    ingress.sealRejectedNode = null;
     ingress.bypassVisible = false;
     ingress.currentMirror = currentMirror;
     ingress.currentBadge = currentBadge;
@@ -2243,15 +2205,25 @@ DeltaE = ${ledger.reuse_gain}`;
     );
 
     primeIngressScenario({ phase: 'seal', targetMirror: 'on', targetBadge: 'badge.buffer', currentMirror: 'on', currentBadge: 'badge.buffer' });
-    ingress.rotatePointerId = -1;
-    ingress.rotateProgress = INGRESS_SEAL_ARC_DEG;
-    clearIngressSealRotation();
-    finalizeIngress('solved');
+    chooseIngressSealNode('bc');
     pushCase(
-      'seal_rotation_advances_to_revealing',
+      'seal_wrong_node_stays_put',
+      readIngressSnapshot().phase === 'seal' &&
+        readIngressSnapshot().sealSequenceIndex === 0 &&
+        readIngressSnapshot().sealRejectedNode === 'bc',
+      readIngressSnapshot(),
+      'A wrong triad point should reject without finalizing ingress.'
+    );
+
+    primeIngressScenario({ phase: 'seal', targetMirror: 'on', targetBadge: 'badge.buffer', currentMirror: 'on', currentBadge: 'badge.buffer' });
+    chooseIngressSealNode('ul');
+    chooseIngressSealNode('ur');
+    chooseIngressSealNode('bc');
+    pushCase(
+      'seal_triad_advances_to_revealing',
       readIngressSnapshot().phase === 'revealing',
       readIngressSnapshot(),
-      'Seal rotation should hand off into the reveal phase without sticking.'
+      'The three-node seal should hand off into the reveal phase once the clockwise triad is complete.'
     );
 
     report.summary = {
@@ -2279,45 +2251,122 @@ DeltaE = ${ledger.reuse_gain}`;
 
   function runTestFlight(mode = 'smoke') {
     if (mode === 'transfer') {
-      const source = "Honestly, I was not trying to make a speech because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, which is apparently what I do, I was still buying time.";
-      const donorText = "Need you to grab the charger on your way in. Front door sticks, so pull hard. If the downstairs light is off, knock twice. I'm in back.";
-      const donorProfile = extractCadenceProfile(donorText);
-      const transfer = buildCadenceTransfer(source, {
+      const structuralDimensions = (transfer = {}) =>
+        (transfer.changedDimensions || [])
+          .filter((dimension) => [
+            'sentence-mean',
+            'sentence-count',
+            'sentence-spread',
+            'contraction-posture',
+            'line-break-texture',
+            'connector-stance'
+          ].includes(dimension));
+      const cases = [];
+
+      const contrastSource = "Honestly, I was not trying to make a speech because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, which is apparently what I do, I was still buying time.";
+      const contrastDonor = "Need you to grab the charger on your way in. Front door sticks, so pull hard. If the downstairs light is off, knock twice. I'm in back.";
+      const contrastTransfer = buildCadenceTransfer(contrastSource, {
         mode: 'borrowed',
-        profile: donorProfile,
+        profile: extractCadenceProfile(contrastDonor),
         strength: 0.9
       });
-      const nonPunctuation = (transfer.changedDimensions || []).filter((dimension) => dimension !== 'punctuation-shape');
-      const structural = nonPunctuation.filter((dimension) => [
-        'sentence-mean',
-        'sentence-count',
-        'sentence-spread',
-        'contraction-posture',
-        'line-break-texture',
-        'connector-stance'
-      ].includes(dimension));
+      cases.push({
+        id: 'contrast_structural',
+        source: contrastSource,
+        donorText: contrastDonor,
+        transfer: contrastTransfer,
+        pass:
+          contrastTransfer.transferClass === 'structural' &&
+          contrastTransfer.text !== contrastSource &&
+          (contrastTransfer.changedDimensions || []).filter((dimension) => dimension !== 'punctuation-shape').length >= 2 &&
+          structuralDimensions(contrastTransfer).length >= 1
+      });
+
+      const connectorSource = 'Because the room stayed loud, I kept the note, but the line dragged, so I left this mark behind.';
+      const connectorDonor = 'Since the room stayed loud, I kept the note. Though the line dragged, I stayed. Then I left that mark behind.';
+      const connectorTransfer = buildCadenceTransfer(connectorSource, {
+        mode: 'borrowed',
+        profile: extractCadenceProfile(connectorDonor),
+        strength: 0.88
+      });
+      const connectorLower = connectorTransfer.text.toLowerCase();
+      cases.push({
+        id: 'connector_visibility',
+        source: connectorSource,
+        donorText: connectorDonor,
+        transfer: connectorTransfer,
+        pass:
+          connectorTransfer.text !== connectorSource &&
+          (
+            connectorLower.includes('since') ||
+            connectorLower.includes('though') ||
+            connectorLower.includes('then') ||
+            connectorLower.includes('that')
+          ) &&
+          (connectorTransfer.changedDimensions || []).includes('connector-stance')
+      });
+
+      const mergeSource = 'Door sticks. Knock twice. I am in back.';
+      const mergeDonor = 'Honestly, I kept circling the point because every time I tried to leave, I found one more reason to stay, and then I stalled again because the room went quiet.';
+      const mergeTransfer = buildCadenceTransfer(mergeSource, {
+        mode: 'borrowed',
+        profile: extractCadenceProfile(mergeDonor),
+        strength: 0.88
+      });
+      const mergeSourceProfile = extractCadenceProfile(mergeSource);
+      const mergeOutputProfile = extractCadenceProfile(mergeTransfer.text);
+      cases.push({
+        id: 'merge_structural',
+        source: mergeSource,
+        donorText: mergeDonor,
+        transfer: mergeTransfer,
+        pass:
+          mergeTransfer.text !== mergeSource &&
+          (
+            mergeTransfer.transferClass === 'structural' ||
+            (mergeTransfer.changedDimensions || []).includes('sentence-count') ||
+            (mergeTransfer.changedDimensions || []).includes('sentence-mean')
+          ) &&
+          (mergeOutputProfile.sentenceCount || 0) <= (mergeSourceProfile.sentenceCount || 0)
+      });
+
+      const lowOpportunitySource = 'Stone settles under glass.';
+      const lowOpportunityDonor = contrastDonor;
+      const lowOpportunityTransfer = buildCadenceTransfer(lowOpportunitySource, {
+        mode: 'borrowed',
+        profile: extractCadenceProfile(lowOpportunityDonor),
+        strength: 0.9
+      });
+      cases.push({
+        id: 'low_opportunity_honesty',
+        source: lowOpportunitySource,
+        donorText: lowOpportunityDonor,
+        transfer: lowOpportunityTransfer,
+        pass:
+          ['weak', 'rejected'].includes(lowOpportunityTransfer.transferClass) &&
+          lowOpportunityTransfer.transferClass !== 'structural' &&
+          lowOpportunityTransfer.opportunityProfile &&
+          lowOpportunityTransfer.opportunityProfile.sentenceSplit === 0 &&
+          lowOpportunityTransfer.opportunityProfile.sentenceMerge === 0
+      });
+
       const report = {
         mode,
-        source,
-        donorText,
-        transferClass: transfer.transferClass,
-        changedDimensions: transfer.changedDimensions || [],
-        passesApplied: transfer.passesApplied || [],
-        transformedText: transfer.text,
+        cases: cases.map((entry) => ({
+          id: entry.id,
+          source: entry.source,
+          donorText: entry.donorText,
+          transferClass: entry.transfer.transferClass,
+          changedDimensions: entry.transfer.changedDimensions || [],
+          passesApplied: entry.transfer.passesApplied || [],
+          transformedText: entry.transfer.text,
+          opportunityProfile: entry.transfer.opportunityProfile || {},
+          pass: entry.pass
+        })),
         summary: {
-          allPassed:
-            transfer.transferClass === 'structural' &&
-            transfer.text !== source &&
-            nonPunctuation.length >= 2 &&
-            structural.length >= 1,
-          passCount:
-            [
-              transfer.transferClass === 'structural',
-              transfer.text !== source,
-              nonPunctuation.length >= 2,
-              structural.length >= 1
-            ].filter(Boolean).length,
-          caseCount: 4
+          allPassed: cases.every((entry) => entry.pass),
+          passCount: cases.filter((entry) => entry.pass).length,
+          caseCount: cases.length
         }
       };
 
@@ -2594,10 +2643,6 @@ DeltaE = ${ledger.reuse_gain}`;
   $('ingressCore').addEventListener('keydown', (event) => {
     if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
       event.preventDefault();
-      if (ingress.phase === 'seal') {
-        finalizeIngress('solved');
-        return;
-      }
       beginIngressHold();
     }
   });
@@ -2607,6 +2652,9 @@ DeltaE = ${ledger.reuse_gain}`;
       cancelIngressHold();
     }
   });
+  $('ingressSealNodeUl').addEventListener('click', () => chooseIngressSealNode('ul'));
+  $('ingressSealNodeUr').addEventListener('click', () => chooseIngressSealNode('ur'));
+  $('ingressSealNodeBc').addEventListener('click', () => chooseIngressSealNode('bc'));
 
   document.addEventListener('click', (event) => {
     const persona = event.target.closest('.persona');

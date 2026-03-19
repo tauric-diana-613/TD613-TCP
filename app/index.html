@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP - The Cadence Playground</title>
-  <link rel="stylesheet" href="./styles.css?v=20260319c" />
+  <link rel="stylesheet" href="./styles.css?v=20260319d" />
 </head>
 <body>
   <div id="ingressMembrane" class="ingress-membrane" aria-live="polite">
@@ -52,6 +52,14 @@
               <span class="ingress-ring ingress-ring-c"></span>
             </div>
             <div id="ingressSealTrack" class="ingress-seal-track" aria-hidden="true"></div>
+            <div id="ingressSealNodes" class="ingress-seal-nodes" hidden aria-label="Seal triad">
+              <span id="ingressSealLink1" class="ingress-seal-link ingress-seal-link-1" aria-hidden="true"></span>
+              <span id="ingressSealLink2" class="ingress-seal-link ingress-seal-link-2" aria-hidden="true"></span>
+              <span id="ingressSealLink3" class="ingress-seal-link ingress-seal-link-3" aria-hidden="true"></span>
+              <button id="ingressSealNodeUl" type="button" class="ingress-seal-node ingress-seal-node-ul" aria-label="Seal point one"><span aria-hidden="true">â—</span></button>
+              <button id="ingressSealNodeUr" type="button" class="ingress-seal-node ingress-seal-node-ur" aria-label="Seal point two"><span aria-hidden="true">â—</span></button>
+              <button id="ingressSealNodeBc" type="button" class="ingress-seal-node ingress-seal-node-bc" aria-label="Seal point three"><span aria-hidden="true">â—</span></button>
+            </div>
             <button id="ingressCore" type="button" class="ingress-core" aria-describedby="ingressStatus">
               <span id="ingressCoreGlyph" class="ingress-core-glyph">⟐</span>
               <span id="ingressCoreLabel" class="ingress-core-label">Stand by</span>
@@ -155,6 +163,7 @@
           <div class="action-row">
             <button id="compareBtn" type="button" class="primary-cta">Analyze Cadences</button>
             <button id="swapCadencesBtn" type="button" class="secondary">Swap Cadences</button>
+            <span id="swapActionCue" class="swap-action-cue" hidden></span>
             <button id="savePersonaBtn" type="button" class="secondary">Save Cadence as Persona</button>
           </div>
 
@@ -276,8 +285,8 @@
     <footer class="footer">TCP / experimental research prototype / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true">⋳</span></footer>
   </div>
 
-  <script src="./browser-data.js?v=20260319c"></script>
-  <script src="./browser-engine.js?v=20260319c"></script>
-  <script src="./browser-main.js?v=20260319c"></script>
+  <script src="./browser-data.js?v=20260319d"></script>
+  <script src="./browser-engine.js?v=20260319d"></script>
+  <script src="./browser-main.js?v=20260319d"></script>
 </body>
 </html>

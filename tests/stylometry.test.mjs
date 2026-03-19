@@ -48,6 +48,10 @@ assert(near.charGramDistance < far.charGramDistance);
 assert.equal(nativeTransfer.transferClass, 'native');
 
 const transformed = transformText('I do not know and I cannot stay.', { sent: 0, cont: 1, punc: 0 });
+const wrappedTransfer = buildCadenceTransfer(
+  'I do not know and I cannot stay.',
+  { mode: 'synthetic', mod: { sent: 0, cont: 1, punc: 0 }, strength: 0.76 }
+);
 assert(transformed.includes("don't") || transformed.includes("can't"));
 
 const baseProfile = extractCadenceProfile(
@@ -62,6 +66,10 @@ const swapped = applyCadenceShell(baseProfile, {
   strength: 0.82
 });
 const transformedCadenceText = applyCadenceToText(
+  'I do not know and I cannot stay.',
+  { mode: 'borrowed', mod: { sent: -1, cont: 1, punc: 1 } }
+);
+const wrappedCadenceTransfer = buildCadenceTransfer(
   'I do not know and I cannot stay.',
   { mode: 'borrowed', mod: { sent: -1, cont: 1, punc: 1 } }
 );
@@ -150,6 +158,29 @@ const literalTransfer = buildCadenceTransfer(
     strength: 0.9
   }
 );
+const mergeSource = 'Door sticks. Knock twice. I am in back.';
+const mergeDonor = extractCadenceProfile(
+  'Honestly, I kept circling the point because every time I tried to leave, I found one more reason to stay, and then I stalled again because the room went quiet.'
+);
+const mergeTransfer = buildCadenceTransfer(
+  mergeSource,
+  {
+    mode: 'borrowed',
+    profile: mergeDonor,
+    strength: 0.88
+  }
+);
+const mergeSourceProfile = extractCadenceProfile(mergeSource);
+const mergeProfile = extractCadenceProfile(mergeTransfer.text);
+const lowOpportunitySource = 'Stone settles under glass.';
+const lowOpportunityTransfer = buildCadenceTransfer(
+  lowOpportunitySource,
+  {
+    mode: 'borrowed',
+    profile: borrowedProfile,
+    strength: 0.9
+  }
+);
 
 assert.notEqual(swapped.avgSentenceLength, baseProfile.avgSentenceLength);
 assert.notEqual(swapped.contractionDensity, baseProfile.contractionDensity);
@@ -158,11 +189,14 @@ assert(typeof swapped.functionWordProfile === 'object');
 assert(typeof swapped.wordLengthProfile === 'object');
 assert(typeof swapped.charTrigramProfile === 'object');
 assert(transformedCadenceText.includes("don't") || transformedCadenceText.includes("can't"));
+assert.equal(transformed, wrappedTransfer.text);
+assert.equal(transformedCadenceText, wrappedCadenceTransfer.text);
 assert.notEqual(transformedCadenceText, 'I do not know and I cannot stay.');
 assert.notEqual(shellShiftedText, shellShiftSource);
 assert.equal(shellTransfer.text, shellShiftedText);
 assert(shellTransfer.qualityGatePassed);
 assert.equal(shellTransfer.transferClass, 'structural');
+assert(typeof shellTransfer.opportunityProfile === 'object');
 assert(shellTransfer.protectedLiteralCount === 0);
 assert(shellTransfer.changedDimensions.filter((dimension) => dimension !== 'punctuation-shape').length >= 2);
 assert(shellTransfer.passesApplied.length >= 2);
@@ -193,6 +227,16 @@ assert(literalTransfer.text.includes('ZX-17'));
 assert(literalTransfer.text.includes('"not for archive"'));
 assert(literalTransfer.text.includes('hold@field.lab'));
 assert(literalTransfer.protectedLiteralCount >= 4);
+assert(
+  mergeTransfer.transferClass === 'structural' ||
+  mergeTransfer.changedDimensions.includes('sentence-count') ||
+  mergeTransfer.changedDimensions.includes('sentence-mean')
+);
+assert(mergeProfile.sentenceCount <= mergeSourceProfile.sentenceCount);
+assert(lowOpportunityTransfer.opportunityProfile.sentenceSplit === 0);
+assert(lowOpportunityTransfer.opportunityProfile.sentenceMerge === 0);
+assert(['weak', 'rejected'].includes(lowOpportunityTransfer.transferClass));
+assert.notEqual(lowOpportunityTransfer.transferClass, 'structural');
 
 const signature = buildCadenceSignature(
   "I kept talking because the first version sounded too neat. Then I stopped, crossed it out, and started over."

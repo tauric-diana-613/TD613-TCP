@@ -162,6 +162,62 @@
       .filter(Boolean);
   }
 
+  function countPatternMatches(text = '', patterns = []) {
+    const normalized = normalizeText(text);
+    return patterns.reduce((sum, pattern) => sum + ((normalized.match(pattern) || []).length), 0);
+  }
+
+  const SPLIT_OPPORTUNITY_PATTERNS = [
+    /;\s+/g,
+    /\s-\s+/g,
+    /,\s+(and|but|so|because|though|while|if|when|which|that)\s+/gi,
+    /,\s+(because|though|while|when|if|once|since|as)\s+/gi,
+    /,\s+(apparently|basically|honestly|frankly|maybe|still|though)\b/gi,
+    /,\s+(i think|i guess|i mean|to be honest|at least|if anything)\b/gi,
+    /,\s+(even though|even if|as if|as though|unless)\b/gi,
+    /,\s+(who|which|that)\s+(is|was|were|are|do|did|can|could|would|will)\b/gi,
+    /:\s+/g
+  ];
+
+  const CONNECTOR_OPPORTUNITY_PATTERNS = [
+    /\b(because|since|as|but|though|yet|so|then|when|while|once|this|that)\b/gi,
+    /\b(just|simply|still|yet|maybe|perhaps|really|actually)\b/gi
+  ];
+
+  const CONTRACTION_OPPORTUNITY_PATTERNS = [
+    /\b(I was not|do not|does not|did not|will not|cannot|was not|are not|I am|I have|I will|I would|we are|we will|they are|they will|you are|you will|it is|that is)\b/gi,
+    /\b(I wasn't|don't|doesn't|didn't|won't|can't|wasn't|aren't|I'm|I've|I'll|I'd|we're|we'll|they're|they'll|you're|you'll|it's|that's)\b/gi
+  ];
+
+  function buildOpportunityProfile(text = '') {
+    const chunks = sentenceChunks(text);
+    const sentenceBoundaries = Math.max(0, chunks.length - 1);
+
+    return {
+      sentenceSplit: countPatternMatches(text, SPLIT_OPPORTUNITY_PATTERNS),
+      sentenceMerge: sentenceBoundaries,
+      contraction: countPatternMatches(text, CONTRACTION_OPPORTUNITY_PATTERNS),
+      connector: countPatternMatches(text, CONNECTOR_OPPORTUNITY_PATTERNS),
+      lineBreak: ((normalizeText(text).match(/[.!?]\s+/g) || []).length) + ((text.match(/\n+/g) || []).length)
+    };
+  }
+
+  function hasLimitedRewriteOpportunity(opportunityProfile = {}) {
+    const total =
+      (opportunityProfile.sentenceSplit || 0) +
+      (opportunityProfile.sentenceMerge || 0) +
+      (opportunityProfile.contraction || 0) +
+      (opportunityProfile.connector || 0) +
+      (opportunityProfile.lineBreak || 0);
+    const directStructural =
+      (opportunityProfile.sentenceSplit || 0) +
+      (opportunityProfile.sentenceMerge || 0) +
+      (opportunityProfile.contraction || 0) +
+      (opportunityProfile.connector || 0);
+
+    return total < 2 || directStructural < 1;
+  }
+
   function pickJoiner(targetProfile = {}, mod = {}) {
     const mix = targetProfile.punctuationMix || {};
     const functionWords = targetProfile.functionWordProfile || {};
@@ -223,6 +279,39 @@
     return merged.join(' ');
   }
 
+  function applySplitRules(text = '', desiredSplits = 1) {
+    if (desiredSplits <= 0) {
+      return text;
+    }
+
+    let remaining = desiredSplits;
+    let result = normalizeText(text);
+    const applyRule = (pattern, replacer) => {
+      result = result.replace(pattern, (...args) => {
+        if (remaining <= 0) {
+          return args[0];
+        }
+
+        remaining -= 1;
+        return replacer(...args);
+      });
+    };
+
+    applyRule(/;\s+/g, () => '. ');
+    applyRule(/\s-\s+/g, () => '. ');
+    applyRule(/,\s+(and|but|so|because|though|while|if|when|which|that)\s+/gi, (match, connector) => `. ${connector} `);
+    applyRule(/\s+(and|but|so)\s+(i|we|you|they|he|she)\b/gi, (match, connector, subject) => `. ${connector} ${subject} `);
+    applyRule(/,\s+(because|though|while|when|if|once|since|as)\s+/gi, (match, connector) => `. ${connector} `);
+    applyRule(/,\s+(apparently|basically|honestly|frankly|maybe|still|though)\b,?\s*/gi, (match, phrase) => `. ${phrase} `);
+    applyRule(/,\s+(i think|i guess|i mean|to be honest|at least|if anything)\b,?\s*/gi, (match, phrase) => `. ${phrase} `);
+    applyRule(/,\s+(even though|even if|as if|as though|unless)\s+/gi, (match, phrase) => `. ${phrase} `);
+    applyRule(/,\s+(who|which|that)\s+(is|was|were|are|do|did|can|could|would|will)\s+/gi, (match, pronoun, verb) => `. ${pronoun} ${verb} `);
+    applyRule(/:\s+/g, () => '. ');
+    applyRule(/,\s+/g, () => '. ');
+
+    return result;
+  }
+
   function splitLongSentences(text = '', targetProfile = {}, strength = 0.76) {
     const currentAvg = avgSentenceLength(text);
     const targetAvg = targetProfile.avgSentenceLength || currentAvg;
@@ -233,43 +322,7 @@
       return text;
     }
 
-    let result = normalizeText(text);
-    const patterns = [
-      /;\s+/g,
-      /\s-\s+/g,
-      /,\s+(and|but|so|because|though|while|if|when|which|that)\s+/gi,
-      /\s+(because|though|while|when|if)\s+/gi,
-      /\s+(and|but|so)\s+(i|we|you|they|he|she)\b/gi,
-      /\s+(and|but|so)\s+/gi,
-      /:\s+/g,
-      /,\s+/g
-    ];
-    let splitsApplied = 0;
-
-    for (const pattern of patterns) {
-      result = result.replace(pattern, (...args) => {
-        const match = args[0];
-        const captures = args.slice(1, -2);
-        const connector = typeof captures[0] === 'string' ? captures[0] : '';
-        const subject = typeof captures[1] === 'string' ? captures[1] : '';
-        if (splitsApplied >= desiredSplits) {
-          return match;
-        }
-
-        splitsApplied += 1;
-        if (subject) {
-          return `. ${connector} ${subject} `;
-        }
-
-        return connector ? `. ${connector} ` : '. ';
-      });
-
-      if (splitsApplied >= desiredSplits) {
-        break;
-      }
-    }
-
-    return result;
+    return applySplitRules(text, desiredSplits);
   }
 
   function applyClauseTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76, mod = {}) {
@@ -284,26 +337,7 @@
     let result = text;
 
     if (wantsShorter) {
-      let remaining = Math.max(1, Math.round(Math.max(1.2, strength) * 3));
-      result = result.replace(/,\s+(and|but|so|because|since|though|yet|as|when|while|once)\s+/gi, (match, connector) => {
-        if (remaining <= 0) {
-          return match;
-        }
-
-        remaining -= 1;
-        return `. ${connector} `;
-      });
-
-      result = result.replace(/\b,?\s+(which|that)\s+is\b/gi, (match, pronoun) => {
-        if (remaining <= 0) {
-          return match;
-        }
-
-        remaining -= 1;
-        return `. ${pronoun} is`;
-      });
-
-      return result;
+      return applySplitRules(result, Math.max(1, Math.round(Math.max(1.2, strength) * 3)));
     }
 
     if (wantsLonger) {
@@ -357,9 +391,13 @@
       { from: 'just', to: 'simply', key: 'simply', threshold: 0.0015, limit: 2 },
       { from: 'really', to: 'actually', key: 'actually', threshold: 0.0015, limit: 2 },
       { from: 'still', to: 'yet', key: 'yet', threshold: 0.0015, limit: 1 },
+      { from: 'when', to: 'while', key: 'while', threshold: 0.0015, limit: 1 },
       { from: 'when', to: 'once', key: 'once', threshold: 0.0015, limit: 1 },
+      { from: 'but', to: 'though', key: 'though', threshold: 0.0015, limit: 2 },
+      { from: 'but', to: 'yet', key: 'yet', threshold: 0.0015, limit: 1 },
       { from: 'because', to: 'since', key: 'since', threshold: 0.0015, limit: 2 },
-      { from: 'because', to: 'as', key: 'as', threshold: 0.0015, limit: 1 }
+      { from: 'because', to: 'as', key: 'as', threshold: 0.0015, limit: 1 },
+      { from: 'this', to: 'that', key: 'that', threshold: 0.002, limit: 2 }
     ];
 
     for (const replacement of replacements) {
@@ -464,15 +502,15 @@
     let result = text;
     const limit = Math.max(1, Math.round(Math.max(1.2, strength) * 4));
 
-    if ((target.but || 0) > (current.but || 0) + 0.003) {
+    if ((target.but || 0) > (current.but || 0) + 0.0015) {
       result = replaceLimited(result, /\band\b/gi, (match) => matchCase(match, 'but'), limit);
-    } else if ((target.and || 0) > (current.and || 0) + 0.004) {
+    } else if ((target.and || 0) > (current.and || 0) + 0.002) {
       result = replaceLimited(result, /\bbut\b/gi, (match) => matchCase(match, 'and'), limit);
     }
 
-    if ((target.this || 0) > (current.this || 0) + 0.002) {
+    if ((target.this || 0) > (current.this || 0) + 0.0015) {
       result = replaceLimited(result, /\bthat\b/gi, (match) => matchCase(match, 'this'), 2);
-    } else if ((target.that || 0) > (current.that || 0) + 0.002) {
+    } else if ((target.that || 0) > (current.that || 0) + 0.0015) {
       result = replaceLimited(result, /\bthis\b/gi, (match) => matchCase(match, 'that'), 2);
     }
 
@@ -1277,10 +1315,12 @@
     targetGap = {},
     outputProfile = {},
     changedDimensions = [],
-    protectedState = { literals: [] }
+    protectedState = { literals: [] },
+    opportunityProfile = {}
   }) {
     const notes = [];
     const materialGap = isMaterialCadenceGap(targetGap);
+    const limitedOpportunity = hasLimitedRewriteOpportunity(opportunityProfile);
     const nonPunctuationDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
     const structuralDimensionsChanged = structuralDimensions(changedDimensions);
 
@@ -1308,15 +1348,15 @@
       notes.push('Transfer collapsed into an unreadable empty result.');
     }
 
-    if (materialGap && structuralDimensionsChanged.length < 1) {
+    if (materialGap && !limitedOpportunity && structuralDimensionsChanged.length < 1) {
       notes.push('Transfer did not land a structural cadence shift.');
     }
 
-    if (materialGap && nonPunctuationDimensions.length < 2) {
+    if (materialGap && !limitedOpportunity && nonPunctuationDimensions.length < 2) {
       notes.push('Transfer stayed too close to punctuation-only drift.');
     }
 
-    if (outputText === sourceText && materialGap) {
+    if (outputText === sourceText && materialGap && !limitedOpportunity) {
       notes.push('Material target gap remained unresolved.');
     }
 
@@ -1324,6 +1364,7 @@
       qualityGatePassed: notes.length === 0,
       notes,
       materialGap,
+      limitedOpportunity,
       nonPunctuationDimensions,
       structuralDimensions: structuralDimensionsChanged,
       changedDimensions
@@ -1463,6 +1504,7 @@
   function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     const sourceText = normalizeText(text);
     const sourceProfile = extractCadenceProfile(sourceText);
+    const opportunityProfile = buildOpportunityProfile(sourceText);
     const mod = normalizeShellMod(shell);
     const strength = clamp(Number((options && options.strength) ?? shell?.strength ?? ((shell && shell.profile) ? 0.82 : 0.68)), 0, 1);
     const debug = Boolean(options && options.debug);
@@ -1473,6 +1515,7 @@
         sourceProfile,
         targetProfile: sourceProfile,
         outputProfile: sourceProfile,
+        opportunityProfile,
         changedDimensions: [],
         protectedLiteralCount: 0,
         passesApplied: [],
@@ -1581,7 +1624,8 @@
       targetGap,
       outputProfile,
       changedDimensions,
-      protectedState
+      protectedState,
+      opportunityProfile
     });
     const debugState = debug
       ? {
@@ -1596,7 +1640,7 @@
         }
       : null;
 
-    if ((!quality.qualityGatePassed || (quality.materialGap && !hasMaterialStructuralTransfer(changedDimensions)))) {
+    if ((!quality.qualityGatePassed || (quality.materialGap && !quality.limitedOpportunity && !hasMaterialStructuralTransfer(changedDimensions)))) {
       const forcedWorking = forceStructuralShift(
         workingText,
         sourceProfile,
@@ -1620,7 +1664,8 @@
           targetGap,
           outputProfile,
           changedDimensions,
-          protectedState
+          protectedState,
+          opportunityProfile
         });
 
         if (debugState) {
@@ -1639,6 +1684,10 @@
     const qualityGatePassed = quality.qualityGatePassed;
     let transferClass = 'weak';
     const notes = [...quality.notes];
+
+    if (quality.materialGap && quality.limitedOpportunity) {
+      notes.push('Source offered limited structural rewrite opportunities, so the transfer stayed subtle.');
+    }
 
     if (!quality.qualityGatePassed) {
       if (isMaterialCadenceGap(targetGap)) {
@@ -1668,6 +1717,7 @@
       sourceProfile,
       targetProfile,
       outputProfile: finalProfile,
+      opportunityProfile,
       changedDimensions,
       protectedLiteralCount: protectedState.literals.length,
       passesApplied: [...new Set(passesApplied)],
@@ -1886,107 +1936,20 @@
   }
 
   function transformText(text, mod = {}, options = {}) {
-    if (options && options.profile) {
-      return buildCadenceTransfer(text, {
-        mode: 'borrowed',
-        profile: options.profile,
-        strength: options.strength ?? 0.76,
-        mod
-      }).text;
-    }
+    const shell = options && options.profile
+      ? {
+          mode: 'borrowed',
+          profile: options.profile,
+          strength: options.strength ?? 0.76,
+          mod
+        }
+      : {
+          mode: 'synthetic',
+          strength: (options && options.strength) ?? 0.76,
+          mod
+        };
 
-    let result = normalizeText(text);
-    const maxLength = Math.ceil(result.length * 1.28);
-    const strength = clamp(Number((options && options.strength) ?? 0.76), 0, 1);
-    const baseProfile = extractCadenceProfile(result);
-    const connectorProfile = null;
-    const transformStrength = strength;
-    const targetProfile = applyCadenceMod(baseProfile, mod);
-    const effectiveMod = mod;
-
-    const targetGap = profileDeltaToTarget(baseProfile, targetProfile);
-    const targetNeedsStructuralShift =
-      targetGap.avgSentence >= 1 ||
-      targetGap.sentenceCount >= 1 ||
-      targetGap.contraction >= 0.014 ||
-      targetGap.lineBreak >= 0.05 ||
-      targetGap.functionWord >= 0.04;
-
-    const maxPasses = 3;
-    let bestResult = result;
-    let bestScore = profileDeltaScore(targetGap);
-
-    for (let pass = 0; pass < maxPasses; pass += 1) {
-      const currentProfile = extractCadenceProfile(result);
-      const gap = profileDeltaToTarget(currentProfile, targetProfile);
-
-      if (profileDeltaScore(gap) <= 0.08) {
-        break;
-      }
-
-      let nextResult = result;
-
-      if (shouldApplySentenceTexture(currentProfile, targetProfile, gap, effectiveMod)) {
-        nextResult = applySentenceTexture(nextResult, currentProfile, targetProfile, transformStrength, effectiveMod);
-      }
-
-      nextResult = applyPhraseTexture(nextResult, baseProfile, targetProfile, Math.min(1, transformStrength + 0.08));
-
-      const afterSentence = extractCadenceProfile(nextResult);
-      const afterSentenceGap = profileDeltaToTarget(afterSentence, targetProfile);
-      if (afterSentenceGap.contraction >= 0.012 || Math.abs(Number(effectiveMod.cont || 0)) > 0) {
-        nextResult = applyContractionTexture(nextResult, targetProfile, effectiveMod);
-      }
-
-      const afterContraction = extractCadenceProfile(nextResult);
-      const afterContractionGap = profileDeltaToTarget(afterContraction, targetProfile);
-      if (afterContractionGap.lineBreak >= 0.045) {
-        nextResult = applyLineBreakTexture(nextResult, targetProfile, Math.min(1, transformStrength + 0.08));
-      }
-
-      const afterLineBreak = extractCadenceProfile(nextResult);
-      const afterLineBreakGap = profileDeltaToTarget(afterLineBreak, targetProfile);
-      if (afterLineBreakGap.functionWord >= 0.035) {
-        nextResult = applyFunctionWordTexture(nextResult, targetProfile, Math.min(1, transformStrength + 0.1), connectorProfile);
-      }
-
-      const afterFunction = extractCadenceProfile(nextResult);
-      const afterFunctionGap = profileDeltaToTarget(afterFunction, targetProfile);
-      if (
-        afterFunctionGap.punctuation >= 0.018 ||
-        afterFunctionGap.punctuationShape >= 0.05 ||
-        Math.abs(Number(effectiveMod.punc || 0)) > 0
-      ) {
-        nextResult = applyPunctuationTexture(nextResult, targetProfile, effectiveMod);
-      }
-
-      if ((effectiveMod.punc || 0) < 0) {
-        nextResult = nextResult.replace(/[;:]+/g, '.').replace(/,+/g, ',');
-      }
-
-      nextResult = finalizeTransformedText(nextResult);
-      if (nextResult.length > maxLength) {
-        break;
-      }
-      if (nextResult === result) {
-        break;
-      }
-
-      result = nextResult;
-      const currentScore = profileDeltaScore(profileDeltaToTarget(extractCadenceProfile(result), targetProfile));
-      if (currentScore < bestScore) {
-        bestScore = currentScore;
-        bestResult = result;
-      }
-    }
-
-    result = bestResult;
-    const finalProfile = extractCadenceProfile(result);
-    if (targetNeedsStructuralShift && structuralShiftDimensions(baseProfile, finalProfile) < 2) {
-      result = forceStructuralShift(result, baseProfile, targetProfile, transformStrength, effectiveMod, connectorProfile);
-    }
-
-    return finalizeTransformedText(result);
+    return buildCadenceTransfer(text, shell, options).text;
   }
 
   function finalizeTransformedText(text = '') {
