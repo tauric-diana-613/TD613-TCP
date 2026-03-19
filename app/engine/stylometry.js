@@ -162,7 +162,10 @@ function splitLongSentences(text = '', targetProfile = {}, strength = 0.76) {
   let splitsApplied = 0;
 
   for (const pattern of patterns) {
-    result = result.replace(pattern, (match, connector, subject) => {
+    result = result.replace(pattern, (...args) => {
+      const match = args[0];
+      const connector = typeof args[1] === 'string' ? args[1] : '';
+      const subject = typeof args[2] === 'string' ? args[2] : '';
       if (splitsApplied >= desiredSplits) {
         return match;
       }
@@ -178,6 +181,33 @@ function splitLongSentences(text = '', targetProfile = {}, strength = 0.76) {
     if (splitsApplied >= desiredSplits) {
       break;
     }
+  }
+
+  return result;
+}
+
+function applyPhraseTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
+  let result = text;
+  const wantsShorter =
+    (targetProfile.avgSentenceLength || 0) < ((currentProfile.avgSentenceLength || 0) - 2.4);
+  const wantsMoreContractions =
+    (targetProfile.contractionDensity || 0) > ((currentProfile.contractionDensity || 0) + 0.012);
+  const targetWords = targetProfile.functionWordProfile || {};
+  const currentWords = functionWordProfile(result);
+
+  if (wantsShorter) {
+    result = replaceLimited(result, /\bbecause every time\b/gi, (match) => matchCase(match, 'when'), 1);
+
+    if ((targetWords.when || 0) > ((currentWords.when || 0) + 0.002)) {
+      result = replaceLimited(result, /\bevery time\b/gi, (match) => matchCase(match, 'when'), 1);
+    }
+
+    result = replaceLimited(result, /\bby the time\b/gi, (match) => matchCase(match, 'when'), 1);
+    result = replaceLimited(result, /\band then\b/gi, (match) => matchCase(match, 'then'), 1);
+  }
+
+  if (wantsMoreContractions || wantsShorter) {
+    result = replaceLimited(result, /\bwhich is\b/gi, (match) => matchCase(match, "that's"), 1);
   }
 
   return result;
@@ -854,6 +884,28 @@ function normalizeShellMod(shell = {}) {
   };
 }
 
+function deriveRelativeCadenceMod(baseProfile = {}, targetProfile = {}, fallbackMod = {}) {
+  const sentDelta = (targetProfile.avgSentenceLength || 0) - (baseProfile.avgSentenceLength || 0);
+  const contractionDelta = (targetProfile.contractionDensity || 0) - (baseProfile.contractionDensity || 0);
+  const punctuationDelta = (targetProfile.punctuationDensity || 0) - (baseProfile.punctuationDensity || 0);
+  const lineBreakDelta = (targetProfile.lineBreakDensity || 0) - (baseProfile.lineBreakDensity || 0);
+
+  const sent = Math.abs(sentDelta) >= 0.75
+    ? clamp(Math.round(sentDelta / 2.4), -3, 3)
+    : clamp(Math.round(Number(fallbackMod.sent || 0)), -3, 3);
+  const cont = Math.abs(contractionDelta) >= 0.008
+    ? clamp(Math.sign(contractionDelta) * Math.max(1, Math.round(Math.abs(contractionDelta) / 0.03)), -3, 3)
+    : clamp(Math.round(Number(fallbackMod.cont || 0)), -3, 3);
+  const puncSignal = Math.abs(punctuationDelta) >= 0.012
+    ? punctuationDelta
+    : lineBreakDelta;
+  const punc = Math.abs(puncSignal) >= 0.01
+    ? clamp(Math.sign(puncSignal) * Math.max(1, Math.round(Math.abs(puncSignal) / 0.03)), -3, 3)
+    : clamp(Math.round(Number(fallbackMod.punc || 0)), -3, 3);
+
+  return { sent, cont, punc };
+}
+
 function desiredSentenceCount(profile = {}, targetProfile = {}) {
   const wordCount = Math.max(profile.wordCount || 0, 1);
   const targetAvg = Math.max(1, targetProfile.avgSentenceLength || profile.avgSentenceLength || 1);
@@ -952,6 +1004,7 @@ function finalizeTransformedText(text = '') {
 
 function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null) {
   let result = text;
+  const maxLength = Math.ceil(normalizeText(text).length * 1.28);
   const currentProfile = extractCadenceProfile(result);
   const targetCount = desiredSentenceCount(currentProfile, targetProfile);
   const wantsLonger = (targetProfile.avgSentenceLength || currentProfile.avgSentenceLength || 0) > (currentProfile.avgSentenceLength || 0) + 1;
@@ -966,6 +1019,7 @@ function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, s
     result = splitLongSentences(result, targetProfile, Math.min(1, strength + 0.22));
   }
 
+  result = applyPhraseTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.16));
   result = applyContractionTexture(result, targetProfile, {
     ...mod,
     cont: Number(mod.cont || 0) || Math.sign((targetProfile.contractionDensity || 0) - (currentProfile.contractionDensity || 0))
@@ -975,6 +1029,10 @@ function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, s
 
   if (Math.abs((targetProfile.punctuationDensity || 0) - (baseProfile.punctuationDensity || 0)) > 0.02) {
     result = applyPunctuationTexture(result, targetProfile, mod);
+  }
+
+  if (result.length > maxLength) {
+    return finalizeTransformedText(text);
   }
 
   return finalizeTransformedText(result);
@@ -1194,16 +1252,35 @@ export function buildCadenceSignature(text = '', profile = extractCadenceProfile
 
 export function transformText(text, mod = {}, options = {}) {
   let result = normalizeText(text);
+  const maxLength = Math.ceil(result.length * 1.28);
   const strength = clamp(Number(options?.strength ?? 0.76), 0, 1);
   const baseProfile = extractCadenceProfile(result);
   const connectorProfile = options?.profile || null;
-  const targetProfile = options?.profile
+  const transformStrength = options?.profile ? Math.min(1, strength + 0.12) : strength;
+  const blendedTargetProfile = options?.profile
     ? applyCadenceShell(baseProfile, {
         mode: 'borrowed',
         profile: options.profile,
-        strength
+        strength: transformStrength
       })
     : applyCadenceMod(baseProfile, mod);
+  const targetProfile = options?.profile
+    ? {
+        ...blendedTargetProfile,
+        avgSentenceLength: options.profile.avgSentenceLength ?? blendedTargetProfile.avgSentenceLength,
+        sentenceLengthSpread: options.profile.sentenceLengthSpread ?? blendedTargetProfile.sentenceLengthSpread,
+        punctuationDensity: options.profile.punctuationDensity ?? blendedTargetProfile.punctuationDensity,
+        punctuationMix: options.profile.punctuationMix || blendedTargetProfile.punctuationMix,
+        contractionDensity: options.profile.contractionDensity ?? blendedTargetProfile.contractionDensity,
+        lineBreakDensity: options.profile.lineBreakDensity ?? blendedTargetProfile.lineBreakDensity,
+        repeatedBigramPressure: options.profile.repeatedBigramPressure ?? blendedTargetProfile.repeatedBigramPressure,
+        recurrencePressure: options.profile.recurrencePressure ?? blendedTargetProfile.recurrencePressure,
+        functionWordProfile: options.profile.functionWordProfile || blendedTargetProfile.functionWordProfile
+      }
+    : blendedTargetProfile;
+  const effectiveMod = options?.profile
+    ? deriveRelativeCadenceMod(baseProfile, targetProfile, mod)
+    : mod;
 
   const targetGap = profileDeltaToTarget(baseProfile, targetProfile);
   const targetNeedsStructuralShift =
@@ -1212,7 +1289,52 @@ export function transformText(text, mod = {}, options = {}) {
     targetGap.contraction >= 0.014 ||
     targetGap.lineBreak >= 0.05 ||
     targetGap.functionWord >= 0.04;
-  const maxPasses = options?.profile ? 4 : 3;
+
+  if (options?.profile) {
+    let nextResult = transformText(result, effectiveMod, {
+      strength: Math.min(1, transformStrength + 0.08)
+    });
+
+    nextResult = applyPhraseTexture(nextResult, baseProfile, targetProfile, Math.min(1, transformStrength + 0.12));
+    nextResult = applyFunctionWordTexture(nextResult, targetProfile, Math.min(1, transformStrength + 0.16), connectorProfile);
+
+    const afterConnector = extractCadenceProfile(nextResult);
+    const afterConnectorGap = profileDeltaToTarget(afterConnector, targetProfile);
+    if (afterConnectorGap.contraction >= 0.012 || Math.abs(Number(effectiveMod.cont || 0)) > 0) {
+      nextResult = applyContractionTexture(nextResult, targetProfile, effectiveMod);
+    }
+    if (afterConnectorGap.lineBreak >= 0.045) {
+      nextResult = applyLineBreakTexture(nextResult, targetProfile, Math.min(1, transformStrength + 0.1));
+    }
+    if (
+      afterConnectorGap.punctuation >= 0.018 ||
+      afterConnectorGap.punctuationShape >= 0.05 ||
+      Math.abs(Number(effectiveMod.punc || 0)) > 0
+    ) {
+      nextResult = applyPunctuationTexture(nextResult, targetProfile, effectiveMod);
+    }
+
+    if ((effectiveMod.punc || 0) < 0) {
+      nextResult = nextResult.replace(/[;:]+/g, '.').replace(/,+/g, ',');
+    }
+
+    nextResult = finalizeTransformedText(nextResult);
+    if (nextResult.length > maxLength) {
+      nextResult = result;
+    }
+
+    const finalProfile = extractCadenceProfile(nextResult);
+    if (targetNeedsStructuralShift && structuralShiftDimensions(baseProfile, finalProfile) < 2) {
+      const forced = forceStructuralShift(nextResult, baseProfile, targetProfile, Math.min(1, transformStrength + 0.16), effectiveMod, connectorProfile);
+      if (forced.length <= maxLength) {
+        nextResult = forced;
+      }
+    }
+
+    return finalizeTransformedText(nextResult);
+  }
+
+  const maxPasses = options?.profile ? 3 : 3;
   let bestResult = result;
   let bestScore = profileDeltaScore(targetGap);
 
@@ -1226,26 +1348,28 @@ export function transformText(text, mod = {}, options = {}) {
 
     let nextResult = result;
 
-    if (shouldApplySentenceTexture(currentProfile, targetProfile, gap, mod)) {
-      nextResult = applySentenceTexture(nextResult, currentProfile, targetProfile, strength, mod);
+    if (shouldApplySentenceTexture(currentProfile, targetProfile, gap, effectiveMod)) {
+      nextResult = applySentenceTexture(nextResult, currentProfile, targetProfile, transformStrength, effectiveMod);
     }
+
+    nextResult = applyPhraseTexture(nextResult, baseProfile, targetProfile, Math.min(1, transformStrength + 0.08));
 
     const afterSentence = extractCadenceProfile(nextResult);
     const afterSentenceGap = profileDeltaToTarget(afterSentence, targetProfile);
-    if (afterSentenceGap.contraction >= 0.012 || Math.abs(Number(mod.cont || 0)) > 0) {
-      nextResult = applyContractionTexture(nextResult, targetProfile, mod);
+    if (afterSentenceGap.contraction >= 0.012 || Math.abs(Number(effectiveMod.cont || 0)) > 0) {
+      nextResult = applyContractionTexture(nextResult, targetProfile, effectiveMod);
     }
 
     const afterContraction = extractCadenceProfile(nextResult);
     const afterContractionGap = profileDeltaToTarget(afterContraction, targetProfile);
     if (afterContractionGap.lineBreak >= 0.045) {
-      nextResult = applyLineBreakTexture(nextResult, targetProfile, Math.min(1, strength + 0.08));
+      nextResult = applyLineBreakTexture(nextResult, targetProfile, Math.min(1, transformStrength + 0.08));
     }
 
     const afterLineBreak = extractCadenceProfile(nextResult);
     const afterLineBreakGap = profileDeltaToTarget(afterLineBreak, targetProfile);
     if (afterLineBreakGap.functionWord >= 0.035) {
-      nextResult = applyFunctionWordTexture(nextResult, targetProfile, Math.min(1, strength + 0.1), connectorProfile);
+      nextResult = applyFunctionWordTexture(nextResult, targetProfile, Math.min(1, transformStrength + 0.1), connectorProfile);
     }
 
     const afterFunction = extractCadenceProfile(nextResult);
@@ -1253,16 +1377,19 @@ export function transformText(text, mod = {}, options = {}) {
     if (
       afterFunctionGap.punctuation >= 0.018 ||
       afterFunctionGap.punctuationShape >= 0.05 ||
-      Math.abs(Number(mod.punc || 0)) > 0
+      Math.abs(Number(effectiveMod.punc || 0)) > 0
     ) {
-      nextResult = applyPunctuationTexture(nextResult, targetProfile, mod);
+      nextResult = applyPunctuationTexture(nextResult, targetProfile, effectiveMod);
     }
 
-    if ((mod.punc || 0) < 0) {
+    if ((effectiveMod.punc || 0) < 0) {
       nextResult = nextResult.replace(/[;:]+/g, '.').replace(/,+/g, ',');
     }
 
     nextResult = finalizeTransformedText(nextResult);
+    if (nextResult.length > maxLength) {
+      break;
+    }
     if (nextResult === result) {
       break;
     }
@@ -1278,7 +1405,7 @@ export function transformText(text, mod = {}, options = {}) {
   result = bestResult;
   const finalProfile = extractCadenceProfile(result);
   if (targetNeedsStructuralShift && structuralShiftDimensions(baseProfile, finalProfile) < 2) {
-    result = forceStructuralShift(result, baseProfile, targetProfile, strength, mod, connectorProfile);
+    result = forceStructuralShift(result, baseProfile, targetProfile, transformStrength, effectiveMod, connectorProfile);
   }
 
   return finalizeTransformedText(result);

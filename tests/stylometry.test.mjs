@@ -116,6 +116,20 @@ const connectorShiftedToTarget = compareTexts(connectorShifted, 'Since the room 
   profileB: connectorTarget
 }).functionWordDistance;
 const connectorShiftedLower = connectorShifted.toLowerCase();
+const noNumberLeakTarget = extractCadenceProfile(
+  "Need you to grab the charger on your way in. Front door sticks, so pull hard. If the downstairs light is off, knock twice. I'm in back."
+);
+const noNumberLeakSource = "Honestly, I was not trying to make a speech because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, which is apparently what I do, I was still buying time.";
+const noNumberLeakShifted = applyCadenceToText(
+  noNumberLeakSource,
+  {
+    mode: 'borrowed',
+    profile: noNumberLeakTarget,
+    strength: 0.9
+  }
+);
+const noNumberLeakProfile = extractCadenceProfile(noNumberLeakShifted);
+const noNumberLeakSourceProfile = extractCadenceProfile(noNumberLeakSource);
 
 assert.notEqual(swapped.avgSentenceLength, baseProfile.avgSentenceLength);
 assert.notEqual(swapped.contractionDensity, baseProfile.contractionDensity);
@@ -136,6 +150,12 @@ assert(
   connectorShiftedLower.includes('that')
 );
 assert(connectorShiftedToTarget < connectorSourceToTarget);
+assert(!/\b\d+\b/.test(noNumberLeakShifted));
+assert(
+  noNumberLeakShifted.toLowerCase().includes('when') ||
+  noNumberLeakShifted.includes("that's")
+);
+assert(noNumberLeakProfile.sentenceCount > noNumberLeakSourceProfile.sentenceCount);
 assert(shellShiftedProfile.avgSentenceLength < shellSourceProfile.avgSentenceLength);
 assert(shellShiftedProfile.sentenceCount >= shellSourceProfile.sentenceCount);
 assert(
