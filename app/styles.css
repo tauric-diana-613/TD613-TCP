@@ -148,8 +148,7 @@ body[data-ingress-phase="revealing"] .shell {
   transform: translateY(-120%);
 }
 
-body[data-ingress-phase="revealing"] .ingress-membrane::after,
-body[data-ingress-phase="bypassed"] .ingress-membrane::after {
+body[data-ingress-phase="revealing"] .ingress-membrane::after {
   animation: ingress-scan 1200ms ease forwards;
 }
 
@@ -191,8 +190,7 @@ body[data-ingress-phase="bypassed"] .ingress-membrane::after {
   background: linear-gradient(90deg, transparent 0%, rgba(116, 234, 255, 0.2) 18%, rgba(116, 234, 255, 0.04) 82%, transparent 100%);
 }
 
-body[data-ingress-phase="revealing"] .ingress-layer,
-body[data-ingress-phase="bypassed"] .ingress-layer {
+body[data-ingress-phase="revealing"] .ingress-layer {
   animation: ingress-peel 1400ms ease forwards;
 }
 
@@ -243,22 +241,6 @@ body[data-ingress-phase="bypassed"] .ingress-layer {
   color: var(--muted);
   line-height: 1.7;
   text-align: right;
-}
-
-.ingress-bypass-wrap[hidden] {
-  display: none !important;
-}
-
-.ingress-bypass {
-  min-height: 32px;
-  padding: 0 10px;
-  border-radius: 999px;
-  border-color: rgba(116, 234, 255, 0.08);
-  background: rgba(116, 234, 255, 0.02);
-  color: rgba(236, 251, 255, 0.52);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  opacity: 0.72;
 }
 
 .ingress-stage-rail {

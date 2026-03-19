@@ -24,7 +24,7 @@ Most of the metric-bearing surfaces now stay latent until the user explicitly pr
 
 ## Ingress membrane
 
-Normal visits now open inside an `Ingress Membrane`: a short custody-handshake ritual that resolves containment, may withhold the lower gates behind a `frame` clue on shorter desktop viewports, then resolves mirror posture and custody badge before the live deck unlocks. The underlying app is already mounted, but it stays visually occluded and non-interactive until the membrane opens.
+Normal visits now open inside an `Ingress Membrane`: a short custody-handshake ritual that resolves containment, then resolves mirror posture and custody badge before the live deck unlocks. The underlying app is already mounted, but it stays visually occluded and non-interactive until the membrane opens.
 
 The handshake carries its solved posture into the live shell:
 
@@ -32,7 +32,7 @@ The handshake carries its solved posture into the live shell:
 - mirror posture resolves to `armed` or `open`
 - custody badge resolves to `holds`, `buffer`, or `branch`
 
-If you need to bypass it during development, open:
+If you need to bypass it during development, use the dev-only URL flag:
 
 ```text
 app/index.html?ingress=off

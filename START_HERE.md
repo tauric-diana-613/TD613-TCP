@@ -7,7 +7,7 @@ TCP is currently presented as an experimental research prototype and conceptual 
 ## First clicks
 
 1. Open `app/index.html`.
-2. Resolve the `Ingress Membrane` custody handshake. It stabilizes containment, may insert a `frame` gate on shorter desktop viewports, then asks for a mirror posture and a custody badge before dissolving into the live deck.
+2. Resolve the `Ingress Membrane` custody handshake. It stabilizes containment, then asks for a mirror posture and a custody badge before dissolving into the live deck.
 3. Keep the seeded contrast pair for the first pass, or replace one or both samples with your own.
 4. Press `Analyze Cadences`. The stylometric surfaces stay latent until this first explicit wake action.
 5. Try `Swap Cadences` to move cadence shells without moving text.
@@ -20,7 +20,7 @@ TCP is currently presented as an experimental research prototype and conceptual 
    - route pressure,
    - effective archive.
 
-If you need to load the shell directly during development, open:
+If you need to load the shell directly during development, use the dev-only URL flag:
 
 ```text
 app/index.html?ingress=off

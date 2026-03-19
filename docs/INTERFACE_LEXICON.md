@@ -18,7 +18,7 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Mirror shield` | A route gate. When armed, the deck stays exploratory; when opened, passage can resolve. | Controls whether high recognition is allowed to count as route availability. |
 | `Custody badge` | A small demo-state switch that changes the deck language and harbor posture. | Encodes branch-holding / buffering posture in the current prototype logic. |
 | `Containment` | A stability flag shown in the state rail. | A bounded field modifier that slightly raises or lowers field potential. |
-| `Bypass membrane` | A quiet escape hatch that appears after a delay on the ingress screen. | A safe-default entry path that opens the deck with containment on, mirror armed, and the holds badge selected. |
+| `Ingress dev bypass` | A URL-only development shortcut, not a visible control in the live interface. | The `?ingress=off` flag that skips the custody handshake and opens the deck directly for testing. |
 
 ## Readouts
 
@@ -31,7 +31,7 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Harbor` | The recommended structured response once the field needs handling. | A provenance-constrained passage function selected from the harbor library. |
 | `Receipt stream` | The demo ledger preview in the UI. | A sample row showing how event, archive, burden, and harbor are recorded. |
 | `Shell Duel` | The side-by-side instrument on the `Deck` tab that stages the reference bay under its shell and the probe bay under its shell. | A direct view of shell transfer using each bay's transformed sample, heatmaps, signatures, and a pairwise delta strip. |
-| `Ingress Membrane` | The full-screen ritual that appears before the deck unlocks on normal visits. | A custody-handshake layer that sets containment, may withhold later gates behind a `frame` clue on constrained desktop viewports, and then resolves mirror posture and badge state before the live shell opens. |
+| `Ingress Membrane` | The full-screen ritual that appears before the deck unlocks on normal visits. | A custody-handshake layer that resolves containment, mirror posture, and badge state before the live shell opens. |
 
 ## Shell language
 

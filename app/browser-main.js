@@ -45,7 +45,6 @@
   const ingressMirrorOverride = queryParams.get('ingress-mirror');
   const ingressBadgeOverride = queryParams.get('ingress-badge');
   const ingressEnabled = (ingressFlightMode || !testFlightMode) && queryParams.get('ingress') !== 'off';
-  const INGRESS_BYPASS_DELAY_MS = 8000;
   const INGRESS_REVEAL_MS = 1500;
   const INGRESS_BOOT_MS = 680;
   const INGRESS_HOLD_MS = {
@@ -132,7 +131,6 @@
       holding: null,
       holdStartedAt: 0,
       holdPointerId: null,
-      bypassVisible: false,
       currentMirror: null,
       currentBadge: null,
       resolvingGate: null,
@@ -142,7 +140,6 @@
       sealRejectedNode: null,
       holdTimer: null,
       bootTimer: null,
-      bypassTimer: null,
       revealTimer: null,
       feedbackTimer: null,
       target: {
@@ -372,7 +369,7 @@
     ingress.sealSequenceIndex += 1;
 
     if (ingress.sealSequenceIndex >= INGRESS_SEAL_SEQUENCE.length) {
-      finalizeIngress('solved');
+      finalizeIngress();
       return;
     }
 
@@ -454,11 +451,6 @@
       ingress.bootTimer = null;
     }
 
-    if (ingress.bypassTimer) {
-      window.clearTimeout(ingress.bypassTimer);
-      ingress.bypassTimer = null;
-    }
-
     if (ingress.revealTimer) {
       window.clearTimeout(ingress.revealTimer);
       ingress.revealTimer = null;
@@ -476,7 +468,7 @@
     const phaseIndex = INGRESS_STAGES.indexOf(ingress.phase);
     INGRESS_STAGES.forEach((stage, index) => {
       let state = 'pending';
-      if (ingress.phase === 'revealing' || ingress.phase === 'bypassed' || ingress.phase === 'complete') {
+      if (ingress.phase === 'revealing' || ingress.phase === 'complete') {
         state = 'complete';
       } else if (phaseIndex === index) {
         state = 'active';
@@ -608,14 +600,6 @@
       status = 'Route handoff in progress.';
       coreLabel = 'opening';
       coreGlyph = '⬡';
-    } else if (ingress.phase === 'bypassed') {
-      phaseLabel = 'Bypass // safe posture';
-      cueGlyph = '⬒';
-      cueLabel = 'safe ingress';
-      cueCopy = 'The deck is opening on a low-risk preset.';
-      status = 'Safe ingress accepted.';
-      coreLabel = 'bypassed';
-      coreGlyph = '⬒';
     }
 
     $('ingressPhaseLabel').innerHTML = `<span class="glyph glyph-cyan" aria-hidden="true">⟒</span> ${phaseLabel}`;
@@ -673,7 +657,6 @@
       link.dataset.state = state;
     });
 
-    $('ingressBypassWrap').hidden = !ingress.bypassVisible || ingress.phase === 'complete';
   }
 
   function setIngressPhase(phase) {
@@ -691,10 +674,6 @@
     }
 
     renderIngress();
-    ingress.bypassTimer = window.setTimeout(() => {
-      ingress.bypassVisible = true;
-      renderIngress();
-    }, INGRESS_BYPASS_DELAY_MS);
     ingress.bootTimer = window.setTimeout(() => {
       setIngressPhase('containment');
     }, INGRESS_BOOT_MS);
@@ -706,41 +685,26 @@
     containment = preset.containment;
   }
 
-  function finalizeIngress(mode = 'solved') {
+  function finalizeIngress() {
     clearIngressTimers();
 
-    const preset = mode === 'solved'
-      ? {
-          badge: ingress.target.badge,
-          mirrorLogic: ingress.target.mirrorLogic,
-          containment: 'on'
-        }
-      : {
-          badge: 'badge.holds',
-          mirrorLogic: 'off',
-          containment: 'on'
-        };
+    const preset = {
+      badge: ingress.target.badge,
+      mirrorLogic: ingress.target.mirrorLogic,
+      containment: 'on'
+    };
 
     applyIngressPreset(preset);
     analyzeCadences();
 
-    if (mode === 'bypass') {
-      ingress.phase = 'bypassed';
-      renderIngress();
-      ingress.revealTimer = window.setTimeout(() => {
-        ingress.phase = 'revealing';
-        renderIngress();
-      }, 140);
-    } else {
-      ingress.phase = 'revealing';
-      renderIngress();
-    }
+    ingress.phase = 'revealing';
+    renderIngress();
 
     ingress.revealTimer = window.setTimeout(() => {
       ingress.enabled = false;
       ingress.phase = 'complete';
       renderIngress();
-    }, mode === 'bypass' ? INGRESS_REVEAL_MS + 140 : INGRESS_REVEAL_MS);
+    }, INGRESS_REVEAL_MS);
   }
 
   function completeIngressHold(phase) {
@@ -850,14 +814,6 @@
     }
 
     renderIngress();
-  }
-
-  function bypassIngress() {
-    if (ingress.phase === 'complete') {
-      return;
-    }
-
-    finalizeIngress('bypass');
   }
 
   function loadSavedPersonas() {
@@ -2103,7 +2059,6 @@ DeltaE = ${ledger.reuse_gain}`;
     ingress.holdPointerId = null;
     ingress.sealSequenceIndex = 0;
     ingress.sealRejectedNode = null;
-    ingress.bypassVisible = false;
     ingress.currentMirror = currentMirror;
     ingress.currentBadge = currentBadge;
     ingress.target = {
@@ -2684,7 +2639,6 @@ DeltaE = ${ledger.reuse_gain}`;
   $('tabPlay').addEventListener('click', () => setArtifactTab('play'));
   $('tabReadout').addEventListener('click', () => setArtifactTab('readout'));
   $('tabPersonas').addEventListener('click', () => setArtifactTab('personas'));
-  $('ingressBypass').addEventListener('click', bypassIngress);
   $('ingressMirrorArmed').addEventListener('click', () => chooseIngressMirror('off'));
   $('ingressMirrorOpen').addEventListener('click', () => chooseIngressMirror('on'));
   $('ingressBadgeCycle').addEventListener('click', cycleIngressBadge);
