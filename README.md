@@ -8,6 +8,18 @@ It helps to be plain about scope. TCP is not a physics simulator, not a forensic
 
 This repository is published as an experimental research prototype and conceptual pilot. The current build is here to show the interaction model, the route-state logic, and the provenance-aware framing under live use. It is not yet a production analytical system, and it does not claim to be one.
 
+## Deck instrument
+
+The current `Deck` tab includes one flagship instrument: `Shell Duel`. It takes the active bay's raw text, runs that same sample through the current reference and probe shells, and stages the transformed outputs side by side. That means the textareas remain raw while the duel shows:
+
+- the transformed sample under each shell
+- compact shell metrics
+- a 4x4 sentence/punctuation heatmap
+- a 7-axis cadence signature
+- a delta strip built from the same comparison engine used elsewhere in the app
+
+This is where `Swap Cadences` becomes easiest to read. The raw text does not move, but the shell behavior becomes visible.
+
 ## Design law
 
 ```text
@@ -167,6 +179,8 @@ For the full decision matrix, open:
 app/index.html?test-flight=2
 ```
 
+The current flight also verifies `Shell Duel`: native-vs-native identity, focus-based source switching, and shell-swap delta changes.
+
 ### Option 4: validate the engine
 
 ```bash
@@ -189,6 +203,7 @@ TCP is trying to make four conditions visible without overclaiming any of them:
 - No build step is required.
 - All runtime logic is ESM JavaScript with zero dependencies.
 - The seeded opening pair is intentionally high-contrast and conversational so the model difference is visible on first load without sounding synthetic.
+- `Shell Duel` uses the active bay's raw text as a shared source so shell transfer is visible without overwriting either textarea.
 - `docs/INTERFACE_LEXICON.md` is the concise map for deck labels like mirror shield, custody badge, shell, harbor, and archive.
 - The physics layer is analogical, the stylometry layer is heuristic, and the harbor layer is policy-shaped.
 - Thresholds, labels, and harbor policies are still being tuned as part of the pilot.

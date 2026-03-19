@@ -228,12 +228,43 @@ else if recognized and not explained and denseSignal -> criticality
 else -> hold-branch
 ```
 
+## Deck-facing Shell Duel
+
+The current `Deck` tab exposes one direct stylometry instrument: `Shell Duel`.
+
+Its runtime contract is simple:
+
+1. take the active bay's raw textarea text as source
+2. render that same source text through the current reference shell
+3. render that same source text through the current probe shell
+4. extract both transformed profiles
+5. compare those transformed outputs with the same `compareTexts(...)` routine used elsewhere in the app
+
+The point is not to create a second engine. The point is to expose shell behavior clearly enough that `Swap Cadences` and saved personas become legible.
+
+The duel therefore renders four things from existing engine outputs:
+
+- full transformed samples
+- compact shell metrics
+- `cadenceHeatmap(...)` as a 4x4 sentence/punctuation field
+- `buildCadenceSignature(...)` as a 7-axis signature payload
+
+The delta strip then surfaces:
+
+- duel similarity
+- duel traceability
+- sentence drift
+- function-word distance
+
+When both shells are native, the duel should collapse toward identity on the same source text. When one shell is borrowed or persona-shaped, the duel should separate without rewriting the raw textarea content.
+
 ## Module map
 
 - `formulas.js` - coherence, resonance, branch dynamics, route pressure, field state, criticality, and custody threshold
 - `stylometry.js` - profile extraction, distance functions, similarity, traceability, shell transforms, and cadence signatures
 - `harbor.js` - harbor selection, witness load, reuse gain, and ledger rows
 - `badges.js` - compact custody mode cycling for the demo UI
+- `browser-main.js` - deck runtime, tab state, shell-duel rendering, and test-flight orchestration
 
 ## Interpretive boundary
 

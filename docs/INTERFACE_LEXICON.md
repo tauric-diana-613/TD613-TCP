@@ -7,7 +7,7 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | Term | In the app | In the model |
 | --- | --- | --- |
 | `Analyze Cadences` | Runs a solo or paired scan on the current text bays. | Recomputes stylometric features, route pressure, archive state, and harbor recommendation. |
-| `Swap Cadences` | Moves the cadence shells between the two bays without moving the text. | Tests whether shell-level stylometric bias changes the readout when content stays fixed. |
+| `Swap Cadences` | Moves the cadence shells between the two bays without moving the text. | Tests whether shell-level stylometric bias changes the readout and `Shell Duel` when content stays fixed. |
 | `Save Cadence as Persona` | Captures the active bay as a reusable in-app shell. | Converts the current cadence profile into a reusable stylometric modifier. |
 | `Reset bay` | Restores the seeded opening pair and default switches. | Clears local shell state and returns the demo to native cadence mode. |
 
@@ -29,6 +29,7 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Effective archive` | Which side is currently functioning as the effective archive. | The threshold result `A_I` or `A_W` from the custody delta rule; `A_I` means institutional custody remains the effective archive, and `A_W` means witness custody is carrying the archive. |
 | `Harbor` | The recommended structured response once the field needs handling. | A provenance-constrained passage function selected from the harbor library. |
 | `Receipt stream` | The demo ledger preview in the UI. | A sample row showing how event, archive, burden, and harbor are recorded. |
+| `Shell Duel` | The side-by-side instrument on the `Deck` tab that stages the active bay's raw text through both shells. | A direct view of shell transfer using transformed samples, heatmaps, signatures, and a pairwise delta strip. |
 
 ## Shell language
 
@@ -38,6 +39,7 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Persona shell` | A named, reusable cadence shell. | A saved modifier profile that can be reassigned to any bay. |
 | `Native cadence` | The unmodified text as written. | The raw extracted stylometric profile before any shell bias is applied. |
 | `Borrowed cadence` | A shell captured from the other bay during swap. | A derived modifier built from the effective profile of the opposite bay. |
+| `Source sample` | The active bay's raw textarea text used by `Shell Duel`. | The unchanged input text that both shells bend in parallel for visual comparison. |
 
 ## Decision states
 
@@ -52,10 +54,12 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 
 | Term | In the app | In the model |
 | --- | --- | --- |
-| `Branch` | The “keep the awkward remainder” panel in mechanics. | The rule that unwanted surplus is preserved until it can be interpreted or dismissed responsibly. |
+| `Deck` | The main interaction surface with bays, controls, and `Shell Duel`. | The public membrane where cadence play and route-state education happen first. |
+| `Readout` | The tab that exposes scores, formulas, and ledger preview. | The explicit metric layer where similarity, route, and archive state are made legible. |
+| `Personas` | The tab that exposes saved and built-in shells. | The shell library used to reapply cadence bias without changing source text. |
+| `Branch` | The branch formula shown in the readout/debug layer. | The rule that unwanted surplus is preserved until it can be interpreted or dismissed responsibly. |
 | `Field` | The whole comparison environment shown on the deck. | The bounded environment in which similarity, recurrence, and route pressure interact. |
 | `Harbor deck` | The panel that recommends structured passage. | The safe-harbor layer that lowers witness burden without destroying provenance. |
-| `Side deck` | The docked lower panel for shells, mechanics, and terminology. | The secondary layer where auxiliary instruments live so the landing page stays playable. |
 
 ## One-line translation
 

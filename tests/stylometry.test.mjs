@@ -11,6 +11,12 @@ import {
   transformText
 } from '../app/engine/stylometry.js';
 
+const stripSurface = (text) => text
+  .toLowerCase()
+  .replace(/[^a-z0-9'\s]/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
 const a = 'I keep a hush in my pocket, and the room remembers.';
 const b = 'I keep a hush in my pocket, and the room remembers.';
 const c = 'Brisk systems route plain text without pause.';
@@ -67,6 +73,15 @@ const shellShiftedText = applyCadenceToText(
 );
 const shellShiftedProfile = extractCadenceProfile(shellShiftedText);
 const shellSourceProfile = extractCadenceProfile(shellShiftSource);
+const connectiveSource = 'I do not know and I will wait because that door is stuck, but I am still outside.';
+const connectiveShifted = applyCadenceToText(
+  connectiveSource,
+  {
+    mode: 'borrowed',
+    profile: borrowedProfile,
+    strength: 0.82
+  }
+);
 
 assert.notEqual(swapped.avgSentenceLength, baseProfile.avgSentenceLength);
 assert.notEqual(swapped.contractionDensity, baseProfile.contractionDensity);
@@ -77,6 +92,7 @@ assert(typeof swapped.charTrigramProfile === 'object');
 assert(transformedCadenceText.includes("don't") || transformedCadenceText.includes("can't"));
 assert.notEqual(transformedCadenceText, 'I do not know and I cannot stay.');
 assert.notEqual(shellShiftedText, shellShiftSource);
+assert.notEqual(stripSurface(connectiveShifted), stripSurface(connectiveSource));
 assert(shellShiftedProfile.avgSentenceLength < shellSourceProfile.avgSentenceLength);
 assert(shellShiftedProfile.sentenceCount >= shellSourceProfile.sentenceCount);
 assert(

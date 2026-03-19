@@ -9,10 +9,12 @@ TCP is currently presented as an experimental research prototype and conceptual 
 1. Open `app/index.html`.
 2. Keep the seeded contrast pair for the first pass, or replace one or both samples with your own.
 3. Press `Analyze Cadences`.
-4. Try `Swap Cadences` to move cadence shells without moving text.
-5. Try `Save Cadence as Persona` to capture the active bay as an in-app shell.
-6. Open the `Readout` tab to inspect the branch, wave, and harbor formulas.
-7. Watch four values on the front deck:
+4. Focus `Reference voice` and `Probe voice` in turn to watch `Shell Duel` switch its source sample.
+5. Try `Swap Cadences` to move cadence shells without moving text.
+6. Try `Save Cadence as Persona` to capture the active bay as an in-app shell.
+7. Read `Shell Duel`: the textareas stay raw, while the duel stages both shell-bent outputs, their heatmaps, their 7-axis signatures, and the shell-to-shell delta strip.
+8. Open the `Readout` tab to inspect the branch, wave, and harbor formulas.
+9. Watch four values on the front deck:
    - cadence similarity,
    - traceability,
    - route pressure,
@@ -33,6 +35,8 @@ For the heavier route-state matrix, open:
 ```text
 app/index.html?test-flight=2
 ```
+
+That run now also checks `Shell Duel` source switching and duel-metric change under shell swap.
 
 ## First files to read
 

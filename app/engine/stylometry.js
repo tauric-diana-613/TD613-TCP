@@ -26,6 +26,44 @@ function stripTerminalPunctuation(text = '') {
   return text.replace(/[.!?]+$/g, '').trim();
 }
 
+function replaceLimited(text = '', pattern, replacer, limit = 1) {
+  if (limit <= 0) {
+    return text;
+  }
+
+  let count = 0;
+  return text.replace(pattern, (...args) => {
+    if (count >= limit) {
+      return args[0];
+    }
+
+    count += 1;
+    return typeof replacer === 'function' ? replacer(...args) : replacer;
+  });
+}
+
+function matchCase(source = '', replacement = '') {
+  if (!source) {
+    return replacement;
+  }
+
+  if (source === source.toUpperCase()) {
+    return replacement.toUpperCase();
+  }
+
+  if (source.charAt(0) === source.charAt(0).toUpperCase()) {
+    return replacement.charAt(0).toUpperCase() + replacement.slice(1);
+  }
+
+  return replacement;
+}
+
+function normalizeSentenceStarts(text = '') {
+  return text
+    .replace(/(^|[.!?]\s+|\n+)([a-z])/g, (match, prefix, letter) => `${prefix}${letter.toUpperCase()}`)
+    .replace(/\bi\b/g, 'I');
+}
+
 function sentenceChunks(text = '') {
   return normalizeText(text)
     .replace(/\r\n/g, '\n')
@@ -69,7 +107,7 @@ function mergeSentencePairs(text = '', targetProfile = {}, strength = 0.76, mod 
   const delta = targetAvg - currentAvg;
   const desiredMerges = Math.min(
     chunks.length - 1,
-    Math.max(0, Math.round((delta / 4) * Math.max(0.6, strength)))
+    Math.max(0, Math.round((delta / 3) * (0.8 + (strength * 0.45))))
   );
 
   if (desiredMerges <= 0) {
@@ -100,7 +138,7 @@ function splitLongSentences(text = '', targetProfile = {}, strength = 0.76) {
   const currentAvg = avgSentenceLength(text);
   const targetAvg = targetProfile.avgSentenceLength || currentAvg;
   const delta = currentAvg - targetAvg;
-  const desiredSplits = Math.max(0, Math.round((delta / 4) * Math.max(0.6, strength)));
+  const desiredSplits = Math.max(0, Math.round((delta / 3) * (0.8 + (strength * 0.45))));
 
   if (desiredSplits <= 0) {
     return text;
@@ -111,6 +149,8 @@ function splitLongSentences(text = '', targetProfile = {}, strength = 0.76) {
     /;\s+/g,
     /\s-\s+/g,
     /,\s+(and|but|so|because|though|while|if|when|which|that)\s+/gi,
+    /\s+(because|though|while|when|if)\s+/gi,
+    /\s+(and|but|so)\s+(i|we|you|they|he|she)\b/gi,
     /:\s+/g,
     /,\s+/g
   ];
@@ -171,14 +211,18 @@ function applyContractionTexture(text = '', targetProfile = {}, mod = {}) {
       .replace(/\bdo not\b/gi, "don't")
       .replace(/\bdoes not\b/gi, "doesn't")
       .replace(/\bdid not\b/gi, "didn't")
+      .replace(/\bwill not\b/gi, "won't")
       .replace(/\bcannot\b/gi, "can't")
       .replace(/\bI am\b/g, "I'm")
       .replace(/\bI have\b/gi, "I've")
       .replace(/\bI will\b/gi, "I'll")
       .replace(/\bI would\b/gi, "I'd")
       .replace(/\bwe are\b/gi, "we're")
+      .replace(/\bwe will\b/gi, "we'll")
       .replace(/\bthey are\b/gi, "they're")
+      .replace(/\bthey will\b/gi, "they'll")
       .replace(/\byou are\b/gi, "you're")
+      .replace(/\byou will\b/gi, "you'll")
       .replace(/\bit is\b/gi, "it's")
       .replace(/\bthat is\b/gi, "that's");
   }
@@ -187,16 +231,41 @@ function applyContractionTexture(text = '', targetProfile = {}, mod = {}) {
     .replace(/\bdon't\b/gi, 'do not')
     .replace(/\bdoesn't\b/gi, 'does not')
     .replace(/\bdidn't\b/gi, 'did not')
+    .replace(/\bwon't\b/gi, 'will not')
     .replace(/\bcan't\b/gi, 'cannot')
     .replace(/\bI'm\b/g, 'I am')
     .replace(/\bI've\b/gi, 'I have')
     .replace(/\bI'll\b/gi, 'I will')
     .replace(/\bI'd\b/gi, 'I would')
     .replace(/\bwe're\b/gi, 'we are')
+    .replace(/\bwe'll\b/gi, 'we will')
     .replace(/\bthey're\b/gi, 'they are')
+    .replace(/\bthey'll\b/gi, 'they will')
     .replace(/\byou're\b/gi, 'you are')
+    .replace(/\byou'll\b/gi, 'you will')
     .replace(/\bit's\b/gi, 'it is')
     .replace(/\bthat's\b/gi, 'that is');
+}
+
+function applyFunctionWordTexture(text = '', targetProfile = {}, strength = 0.76) {
+  const target = targetProfile.functionWordProfile || {};
+  const current = functionWordProfile(text);
+  let result = text;
+  const limit = Math.max(1, Math.round(Math.max(0.8, strength) * 2));
+
+  if ((target.but || 0) > (current.but || 0) + 0.006) {
+    result = replaceLimited(result, /\band\b/gi, (match) => matchCase(match, 'but'), limit);
+  } else if ((target.and || 0) > (current.and || 0) + 0.008) {
+    result = replaceLimited(result, /\bbut\b/gi, (match) => matchCase(match, 'and'), limit);
+  }
+
+  if ((target.this || 0) > (current.this || 0) + 0.004) {
+    result = replaceLimited(result, /\bthat\b/gi, (match) => matchCase(match, 'this'), 1);
+  } else if ((target.that || 0) > (current.that || 0) + 0.004) {
+    result = replaceLimited(result, /\bthis\b/gi, (match) => matchCase(match, 'that'), 1);
+  }
+
+  return result;
 }
 
 function applyPunctuationTexture(text = '', targetProfile = {}, mod = {}) {
@@ -949,13 +1018,14 @@ export function transformText(text, mod = {}, options = {}) {
       })
     : applyCadenceMod(baseProfile, mod);
 
-  if ((targetProfile.avgSentenceLength || baseProfile.avgSentenceLength) > baseProfile.avgSentenceLength + 1.4 || (mod.sent || 0) > 0) {
+  if ((targetProfile.avgSentenceLength || baseProfile.avgSentenceLength) > baseProfile.avgSentenceLength + 0.8 || (mod.sent || 0) > 0) {
     result = mergeSentencePairs(result, targetProfile, strength, mod);
-  } else if ((targetProfile.avgSentenceLength || baseProfile.avgSentenceLength) < baseProfile.avgSentenceLength - 1.4 || (mod.sent || 0) < 0) {
+  } else if ((targetProfile.avgSentenceLength || baseProfile.avgSentenceLength) < baseProfile.avgSentenceLength - 0.8 || (mod.sent || 0) < 0) {
     result = splitLongSentences(result, targetProfile, strength);
   }
 
   result = applyContractionTexture(result, targetProfile, mod);
+  result = applyFunctionWordTexture(result, targetProfile, strength);
   result = applyPunctuationTexture(result, targetProfile, mod);
   result = applyLineBreakTexture(result, targetProfile, strength);
 
@@ -963,7 +1033,7 @@ export function transformText(text, mod = {}, options = {}) {
     result = result.replace(/[;:]+/g, '.').replace(/,+/g, ',');
   }
 
-  return result
+  return normalizeSentenceStarts(result)
     .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .replace(/[ ]{2,}/g, ' ')

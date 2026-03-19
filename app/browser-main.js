@@ -391,16 +391,16 @@
     if (!hasAnyText) {
       return {
         state: 'empty',
-        sourceLabel: 'Source // waiting for a live bay',
-        note: 'Paste one or two voices to wake Shell Duel. The source text will stay raw while both shells bend the same sample in parallel.'
+        sourceLabel: 'Shared source // waiting for a live bay',
+        note: 'Paste one or two voices to wake Shell Duel. The active source sample is duplicated intentionally across both shells so the cadence transfer is easier to read.'
       };
     }
 
     if (!sourceText) {
       return {
         state: 'awaiting-source',
-        sourceLabel: `Source // ${SLOT_LABELS[activeVoice].toLowerCase()} raw text`,
-        note: `The active bay is empty. Focus the populated bay or paste a source sample here to see how the reference and probe shells diverge on the same text.`
+        sourceLabel: `Shared source // ${SLOT_LABELS[activeVoice].toLowerCase()} raw text`,
+        note: `The active bay is empty. Focus the populated bay or paste a source sample here to see how the reference and probe shells diverge on the same shared text.`
       };
     }
 
@@ -419,8 +419,8 @@
       state: 'live',
       sourceSlot: sourceState.slot,
       sourceText,
-      sourceLabel: `Source // ${SLOT_LABELS[sourceState.slot].toLowerCase()} raw text`,
-      note: `The same ${SLOT_SHORT[sourceState.slot]} sample is running through both current shells. Raw text stays in the bay; Shell Duel exposes the cadence transfer.`,
+      sourceLabel: `Shared source // ${SLOT_LABELS[sourceState.slot].toLowerCase()} raw text`,
+      note: `The same ${SLOT_SHORT[sourceState.slot]} sample is duplicated intentionally across both current shells. Raw text stays in the bay; Shell Duel exposes only the cadence transfer.`,
       reference: {
         slot: 'A',
         title: 'Reference shell',
