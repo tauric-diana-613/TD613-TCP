@@ -9,31 +9,31 @@
 <body>
   <div class="shell">
     <header class="masthead">
-      <div class="masthead-copy">
-        <div class="topline">
-          <span class="eyebrow">TD613 / public membrane / cadence console</span>
-          <span class="pilot-chip">conceptual pilot / active development</span>
+        <div class="masthead-copy">
+          <div class="topline">
+          <span class="eyebrow">TD613 / public membrane / cadence console <span class="glyph glyph-lime" aria-hidden="true">⌬</span></span>
+          <span class="pilot-chip">conceptual pilot / active development <span class="glyph glyph-lime" aria-hidden="true">⟐</span></span>
+          </div>
+          <div class="title-lockup">
+            <h1>TCP</h1>
+          <p class="deck-name">The Cadence Playground <span class="glyph glyph-cyan" aria-hidden="true">⌁</span></p>
+          </div>
+          <p id="heroLead" class="lead"></p>
         </div>
-        <div class="title-lockup">
-          <h1>TCP</h1>
-          <p class="deck-name">The Cadence Playground</p>
-        </div>
-        <p id="heroLead" class="lead"></p>
-      </div>
 
       <aside class="readout-strip">
         <article class="readout-card">
-          <div class="console-label">Signal</div>
+          <div class="console-label"><span class="glyph glyph-cyan" aria-hidden="true">⎔</span> Signal</div>
           <div id="heroSignalValue" class="console-value">--</div>
           <p id="heroSignalNote" class="console-copy">Paste one or two voices to wake the deck.</p>
         </article>
         <article class="readout-card">
-          <div class="console-label">Route</div>
+          <div class="console-label"><span class="glyph glyph-lime" aria-hidden="true">⋰</span> Route</div>
           <div id="heroRouteValue" class="console-value">--</div>
           <p id="heroRouteNote" class="console-copy">Route stays separate from resemblance on purpose.</p>
         </article>
         <article class="readout-card">
-          <div class="console-label">Harbor</div>
+          <div class="console-label"><span class="glyph glyph-cyan" aria-hidden="true">⧉</span> Harbor</div>
           <div id="heroHarborValue" class="console-value console-code">--</div>
           <p id="heroHarborNote" class="console-copy">Harbor appears only when the field earns it.</p>
         </article>
@@ -49,9 +49,9 @@
     </div>
 
     <nav class="top-tabs" aria-label="TCP views">
-      <button id="tabPlay" type="button" class="top-tab active">Deck</button>
-      <button id="tabReadout" type="button" class="top-tab">Readout</button>
-      <button id="tabPersonas" type="button" class="top-tab">Personas</button>
+      <button id="tabPlay" type="button" class="top-tab active"><span class="glyph glyph-lime" aria-hidden="true">⌲</span> Deck</button>
+      <button id="tabReadout" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true">⟡</span> Readout</button>
+      <button id="tabPersonas" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true">⟣</span> Personas</button>
     </nav>
 
     <main class="view-stack">
@@ -59,7 +59,7 @@
         <div class="panel intake-panel">
           <div class="panel-heading">
             <div>
-              <div class="section-kicker">Cadence deck</div>
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true">⟢</span> Cadence deck</div>
               <h2>Bring two voices into the room</h2>
             </div>
             <p class="section-note">This is the toy. Drop in a reference voice and a probe voice, then compare, swap shells, or save a live cadence as a persona.</p>
@@ -105,7 +105,7 @@
           <section class="panel telemetry-panel">
             <div class="panel-heading">
               <div>
-                <div class="section-kicker">Telemetry</div>
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">⋱</span> Telemetry</div>
                 <h2>What the field is actually doing</h2>
               </div>
               <p class="section-note">These are the live metrics. Similarity, traceability, route pressure, and archive state stay distinct.</p>
@@ -130,7 +130,7 @@
                 <div id="routeHint" class="hint"></div>
               </article>
               <article id="custodyCard" class="metric">
-                <div id="custodyKey" class="key">Effective archive</div>
+                <div id="custodyKey" class="key">Effective archive <span class="key-meta">A_I / A_W</span></div>
                 <div id="custodyState" class="val">--</div>
                 <div id="custodyHint" class="hint"></div>
               </article>
@@ -140,7 +140,7 @@
           <section class="panel harbor-panel">
             <div class="panel-heading">
               <div>
-                <div class="section-kicker">Harbor</div>
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true">⌭</span> Harbor</div>
                 <h2>Structured passage</h2>
               </div>
               <p class="section-note">When the field needs handling, the recommendation surfaces here.</p>
@@ -151,7 +151,7 @@
             <div class="ledger-stage">
               <div class="ledger-head">
                 <div>
-                  <div class="section-kicker">Receipt stream</div>
+                  <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">⋲</span> Receipt stream</div>
                   <h3>Ledger preview</h3>
                 </div>
                 <div class="ledger-chip">local demo</div>
@@ -166,7 +166,7 @@
         <section class="panel personas-panel">
           <div class="panel-heading">
             <div>
-              <div class="section-kicker">Persona deck</div>
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true">⫸</span> Persona deck</div>
               <h2>Load, save, and swap cadence shells</h2>
             </div>
             <p class="section-note">Persona shells change the stylometric wrapper on the active bay. The text stays put.</p>
@@ -187,7 +187,7 @@
       <div id="harborFormula" class="formula"></div>
     </section>
 
-    <footer class="footer">TCP / experimental research prototype / deck, shells, route, harbor</footer>
+    <footer class="footer">TCP / experimental research prototype / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true">⋳</span></footer>
   </div>
 
   <script src="./browser-data.js"></script>

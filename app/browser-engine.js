@@ -363,6 +363,30 @@
     return { sent, cont, punc };
   }
 
+  function normalizeShellMod(shell = {}) {
+    if (!shell || shell.mode === 'native') {
+      return { sent: 0, cont: 0, punc: 0 };
+    }
+
+    const mod = shell.mod || cadenceModFromProfile(shell.profile || extractCadenceProfile(''));
+
+    return {
+      sent: clamp(Math.round(Number(mod.sent || 0)), -3, 3),
+      cont: clamp(Math.round(Number(mod.cont || 0)), -3, 3),
+      punc: clamp(Math.round(Number(mod.punc || 0)), -3, 3)
+    };
+  }
+
+  function applyCadenceToText(text = '', shell = {}) {
+    const mod = normalizeShellMod(shell);
+
+    if (!text || (!mod.sent && !mod.cont && !mod.punc)) {
+      return text;
+    }
+
+    return transformText(text, mod);
+  }
+
   function compareTexts(a, b, options = {}) {
     const wordsA = tokenize(a);
     const wordsB = tokenize(b);
@@ -383,22 +407,37 @@
     const recurrenceDistance = clamp01(
       Math.abs(profileA.recurrencePressure - profileB.recurrencePressure)
     );
+    const exactTextMatch = normalizeText(a).trim().length > 0 && normalizeText(a).trim() === normalizeText(b).trim();
+    const exactProfileMatch =
+      Math.abs((profileA.avgSentenceLength || 0) - (profileB.avgSentenceLength || 0)) < 0.001 &&
+      Math.abs((profileA.sentenceLengthSpread || 0) - (profileB.sentenceLengthSpread || 0)) < 0.001 &&
+      Math.abs((profileA.punctuationDensity || 0) - (profileB.punctuationDensity || 0)) < 0.001 &&
+      Math.abs((profileA.contractionDensity || 0) - (profileB.contractionDensity || 0)) < 0.001 &&
+      Math.abs((profileA.lineBreakDensity || 0) - (profileB.lineBreakDensity || 0)) < 0.001 &&
+      Math.abs((profileA.repeatedBigramPressure || 0) - (profileB.repeatedBigramPressure || 0)) < 0.001 &&
+      Math.abs((profileA.recurrencePressure || 0) - (profileB.recurrencePressure || 0)) < 0.001 &&
+      Math.abs((profileA.lexicalDispersion || 0) - (profileB.lexicalDispersion || 0)) < 0.001 &&
+      punctShapeDistance === 0;
 
-    const similarity = clamp01(
-      (lexicalOverlap * 0.22) +
-      ((1 - sentenceDistance) * 0.20) +
-      ((1 - punctDistance) * 0.16) +
-      ((1 - contractionDistance) * 0.12) +
-      ((1 - lexicalDistance) * 0.14) +
-      ((1 - recurrenceDistance) * 0.16)
-    );
+    const similarity = exactTextMatch && exactProfileMatch
+      ? 1
+      : clamp01(
+          (lexicalOverlap * 0.22) +
+          ((1 - sentenceDistance) * 0.20) +
+          ((1 - punctDistance) * 0.16) +
+          ((1 - contractionDistance) * 0.12) +
+          ((1 - lexicalDistance) * 0.14) +
+          ((1 - recurrenceDistance) * 0.16)
+        );
 
-    const traceability = clamp01(
-      ((1 - sentenceDistance) * 0.34) +
-      ((1 - punctDistance) * 0.24) +
-      ((1 - contractionDistance) * 0.18) +
-      ((1 - recurrenceDistance) * 0.24)
-    );
+    const traceability = exactProfileMatch
+      ? 1
+      : clamp01(
+          ((1 - sentenceDistance) * 0.34) +
+          ((1 - punctDistance) * 0.24) +
+          ((1 - contractionDistance) * 0.18) +
+          ((1 - recurrenceDistance) * 0.24)
+        );
 
     return {
       similarity: round3(similarity),
@@ -799,6 +838,7 @@
     extractCadenceProfile,
     applyCadenceMod,
     applyCadenceShell,
+    applyCadenceToText,
     cadenceModFromProfile,
     cadenceAxisVector,
     cadenceHeatmap,

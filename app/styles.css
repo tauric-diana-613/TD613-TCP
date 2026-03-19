@@ -172,6 +172,39 @@ body[data-decision="passage"] {
   text-transform: uppercase;
 }
 
+.glyph {
+  display: inline-block;
+  margin-right: 0.5ch;
+  font-family: var(--mono);
+  font-size: 0.96em;
+  line-height: 1;
+  vertical-align: baseline;
+}
+
+.glyph-lime {
+  color: var(--lime);
+}
+
+.glyph-cyan {
+  color: var(--cyan);
+}
+
+.key {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.key-meta {
+  color: var(--lime);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.82;
+}
+
 .eyebrow {
   color: var(--chrome);
 }
@@ -395,6 +428,9 @@ h1 {
 }
 
 .top-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   min-height: 44px;
   padding: 0 18px;
   border: 1px solid rgba(116, 234, 255, 0.18);
@@ -511,6 +547,21 @@ textarea:focus {
   background: rgba(116, 234, 255, 0.05);
   color: var(--ink);
   font-size: 12px;
+}
+
+.bay-copy,
+.bay-preview {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.bay-preview {
+  color: var(--chrome);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
 }
 
 .action-row,
@@ -743,5 +794,9 @@ button:disabled {
   button,
   .analysis-status {
     width: 100%;
+  }
+
+  .key {
+    gap: 6px;
   }
 }

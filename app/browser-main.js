@@ -6,6 +6,7 @@
     extractCadenceProfile,
     applyCadenceMod,
     applyCadenceShell,
+    applyCadenceToText,
     cadenceModFromProfile,
     solveQuadratic,
     fieldPotential,
@@ -63,19 +64,33 @@
     }
   }
 
-  function setMetricKeys(mode = 'pair') {
-    if (mode === 'solo') {
-      $('similarityKey').textContent = 'Scan mode';
-      $('traceKey').textContent = 'Sentence rhythm';
-      $('routeKey').textContent = 'Recurrence pressure';
-      $('custodyKey').textContent = 'Active bay';
+  function setMetricKey(id, label, meta = '') {
+    const node = $(id);
+    if (!node) {
       return;
     }
 
-    $('similarityKey').textContent = 'Cadence similarity';
-    $('traceKey').textContent = 'Traceability';
-    $('routeKey').textContent = 'Route pressure';
-    $('custodyKey').textContent = 'Effective archive';
+    if (meta) {
+      node.innerHTML = `${label} <span class="key-meta">${meta}</span>`;
+      return;
+    }
+
+    node.textContent = label;
+  }
+
+  function setMetricKeys(mode = 'pair') {
+    if (mode === 'solo') {
+      setMetricKey('similarityKey', 'Scan mode');
+      setMetricKey('traceKey', 'Sentence rhythm');
+      setMetricKey('routeKey', 'Recurrence pressure');
+      setMetricKey('custodyKey', 'Active bay');
+      return;
+    }
+
+    setMetricKey('similarityKey', 'Cadence similarity');
+    setMetricKey('traceKey', 'Traceability');
+    setMetricKey('routeKey', 'Route pressure');
+    setMetricKey('custodyKey', 'Effective archive', 'A_I / A_W');
   }
 
   function setStatusMessage(message) {
@@ -162,12 +177,15 @@
     const text = $(slot === 'A' ? 'voiceA' : 'voiceB').value;
     const rawProfile = extractCadenceProfile(text);
     const shell = getBayShell(slot);
+    const effectiveText = applyCadenceToText(text, shell);
     const persona = shell.personaId ? findPersona(shell.personaId) : null;
     const effectiveProfile = applyCadenceShell(rawProfile, shell);
 
     return {
       slot,
       text,
+      effectiveText,
+      hasEffectiveTextShift: effectiveText !== text,
       hasText: !rawProfile.empty,
       rawProfile,
       effectiveProfile,
@@ -198,18 +216,32 @@
 
   function describeShellNote(voiceState) {
     if (voiceState.shell.mode === 'native') {
-      return 'Native cadence only. No shell is bending the readout.';
+      return 'Native cadence only. No shell is bending the readout or the in-flight sample.';
     }
 
     if (voiceState.shell.mode === 'borrowed') {
-      return `Borrowed from the ${SLOT_SHORT[voiceState.shell.fromSlot]} bay. The text stayed put; the cadence shell moved.`;
+      return `Borrowed from the ${SLOT_SHORT[voiceState.shell.fromSlot]} bay. The raw text stayed put, but the effective sample and cadence profile moved.`;
     }
 
     if (voiceState.shell.profile) {
-      return `Profile shell transfer live at ${Math.round((voiceState.shell.strength || 0.76) * 100)}%. Sentence rhythm, punctuation, contractions, and recurrence are bending toward ${voiceState.shell.label}.`;
+      return `Profile shell transfer live at ${Math.round((voiceState.shell.strength || 0.76) * 100)}%. The raw text stays in the bay while the effective sample and cadence profile bend toward ${voiceState.shell.label}.`;
     }
 
     return `Applied shell bias: sent ${voiceState.shell.mod.sent >= 0 ? '+' : ''}${voiceState.shell.mod.sent}, cont ${voiceState.shell.mod.cont >= 0 ? '+' : ''}${voiceState.shell.mod.cont}, punc ${voiceState.shell.mod.punc >= 0 ? '+' : ''}${voiceState.shell.mod.punc}.`;
+  }
+
+  function previewEffectiveText(voiceState) {
+    if (!voiceState.hasEffectiveTextShift) {
+      return '';
+    }
+
+    const compact = voiceState.effectiveText.replace(/\s+/g, ' ').trim();
+    if (!compact) {
+      return '';
+    }
+
+    const preview = compact.length > 132 ? `${compact.slice(0, 132).trimEnd()}...` : compact;
+    return `Effective sample // ${preview}`;
   }
 
   function renderVoiceProfile(voiceState) {
@@ -235,6 +267,7 @@
 
     const profile = voiceState.effectiveProfile;
     const shellNote = describeShellNote(voiceState);
+    const effectivePreview = previewEffectiveText(voiceState);
 
     panel.innerHTML = `
       <div class="bay-shell-row">
@@ -247,6 +280,7 @@
         <span class="bay-metric">Contractions ${formatPct(profile.contractionDensity)}</span>
         <span class="bay-metric">Recurrence ${formatPct(profile.recurrencePressure)}</span>
       </div>
+      ${effectivePreview ? `<p class="bay-preview">${effectivePreview}</p>` : ''}
       <p class="bay-copy">${shellNote}</p>
     `;
   }
@@ -557,7 +591,7 @@
   }
 
   function renderPairState(voiceStateA, voiceStateB) {
-    const cmp = compareTexts(voiceStateA.text, voiceStateB.text, {
+    const cmp = compareTexts(voiceStateA.effectiveText, voiceStateB.effectiveText, {
       profileA: voiceStateA.effectiveProfile,
       profileB: voiceStateB.effectiveProfile
     });
@@ -625,8 +659,8 @@
             : 'The resemblance is still too light for routing, so TCP keeps the interaction exploratory.';
     $('custodyHint').textContent =
       custody.archive === 'witness'
-        ? 'Custodial drift crossed the threshold, so witness-safe handling is now carrying the archive.'
-        : 'Institutional custody is still holding above threshold, so protected handling stays downstream.';
+        ? 'The custody delta fell below the collapse threshold, so witness custody is functioning as the effective archive.'
+        : 'Institutional custody remains above the collapse threshold and therefore continues to function as the effective archive.';
     $('branchFormula').textContent = `t^2 - 2t - 3 = 0
 roots = ${branch.roots.join(', ')}
 unwanted roots = ${branch.unwanted.join(', ') || 'none'}
@@ -733,7 +767,7 @@ DeltaE = ${ledger.reuse_gain}`;
     const beforeSnapshot = readDeckSnapshot();
     analyzeCadences();
     const afterSnapshot = readDeckSnapshot();
-    setStatusMessage(`Cadence shells swapped. Similarity ${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}; route ${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}.`);
+    setStatusMessage(`Cadence shells swapped. The raw text stayed put, but the effective samples and cadence profiles moved. Similarity ${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}; route ${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}.`);
   }
 
   function buildSavedPersonaName(slot) {
@@ -788,10 +822,20 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function handleTextInput(slot) {
+    const shell = bayShells[slot];
+    const releasedBorrowedShell = shell && shell.mode === 'borrowed';
+    if (releasedBorrowedShell) {
+      bayShells[slot] = createNativeShell();
+    }
+
     setActiveVoice(slot);
     renderVoiceProfiles();
     updateControls();
-    setStatusMessage(`Text changed in the ${SLOT_SHORT[slot]} bay. Press Analyze Cadences to refresh the pair readout.`);
+    setStatusMessage(
+      releasedBorrowedShell
+        ? `Text changed in the ${SLOT_SHORT[slot]} bay. The borrowed shell was released, so the new sample is back on native cadence until you swap or assign again.`
+        : `Text changed in the ${SLOT_SHORT[slot]} bay. Press Analyze Cadences to refresh the pair readout.`
+    );
   }
 
   function captureFlightState() {

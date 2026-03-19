@@ -59,6 +59,8 @@ A_W,& C(t)-D(t)<\theta
 
 The first equation measures route pressure. The next two produce a density proxy. The last one marks the witness-archive threshold.
 
+`A_I` means institutional custody remains above the collapse threshold and continues to function as the effective archive. `A_W` means the custody delta has fallen below the collapse threshold and witness custody is functioning as the effective archive.
+
 ## Implementation consequence
 
 The browser build is explicit about its thresholds. Recognition is treated as present once `S >= 0.56`. Explanation is treated as still lagging once `Pi >= 0.45`. Dense signal is treated as present once `rho >= 0.28` or `R >= 0.58`. Route availability requires an opened mirror layer plus `Pi >= 0.45`. Harbor selection is rule-based and provenance-constrained in the current implementation.

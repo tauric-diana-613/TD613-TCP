@@ -1,5 +1,6 @@
 import assert from 'assert';
 import {
+  applyCadenceToText,
   applyCadenceShell,
   buildCadenceSignature,
   compareTexts,
@@ -14,6 +15,8 @@ const c = 'Brisk systems route plain text without pause.';
 const same = compareTexts(a, b);
 const diff = compareTexts(a, c);
 
+assert.equal(same.similarity, 1);
+assert.equal(same.traceability, 1);
 assert(same.similarity > diff.similarity);
 assert(same.traceability >= diff.traceability);
 assert(recurrencePressure(`line one\nline two\nline two`) > 0);
@@ -34,10 +37,16 @@ const swapped = applyCadenceShell(baseProfile, {
   profile: borrowedProfile,
   strength: 0.82
 });
+const transformedCadenceText = applyCadenceToText(
+  'I do not know and I cannot stay.',
+  { mode: 'borrowed', mod: { sent: -1, cont: 1, punc: 1 } }
+);
 
 assert.notEqual(swapped.avgSentenceLength, baseProfile.avgSentenceLength);
 assert.notEqual(swapped.contractionDensity, baseProfile.contractionDensity);
 assert.notEqual(swapped.recurrencePressure, baseProfile.recurrencePressure);
+assert(transformedCadenceText.includes("don't") || transformedCadenceText.includes("can't"));
+assert.notEqual(transformedCadenceText, 'I do not know and I cannot stay.');
 
 const signature = buildCadenceSignature(
   "I kept talking because the first version sounded too neat. Then I stopped, crossed it out, and started over."

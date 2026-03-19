@@ -125,6 +125,8 @@ In the browser demo this becomes:
 
 with `theta = 0.2`.
 
+`A_I` means institutional custody remains above the collapse threshold and continues to function as the effective archive. `A_W` means the custody delta has fallen below the collapse threshold and witness custody is functioning as the effective archive.
+
 ## Decision grammar
 
 The UI does not improvise its own logic. It uses explicit thresholds:

@@ -62,6 +62,8 @@ A_W,& C(t)-D(t)<\theta
 \end{cases}
 ```
 
+`A_I` means institutional custody remains above the collapse threshold and continues to function as the effective archive. `A_W` means the custody delta has fallen below the collapse threshold and witness custody is functioning as the effective archive.
+
 In short: resemblance gathers, density forms, route pressure rises, and custody may eventually externalize onto the witness.
 
 ## If you want to extend it

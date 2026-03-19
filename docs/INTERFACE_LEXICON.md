@@ -26,7 +26,7 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Cadence similarity` | How close the two voice samples feel in aggregate. | The bounded pairwise similarity score `S`. |
 | `Traceability` | How strongly sentence-shape habits survive surface variation. | The bounded pairwise traceability score `T`. |
 | `Route pressure` | Whether recognition is starting to demand a path instead of staying decorative. | The bounded route score `Pi`. |
-| `Effective archive` | Which side is currently carrying continuity pressure. | The threshold result `A_I` or `A_W` from the custody delta rule. |
+| `Effective archive` | Which side is currently functioning as the effective archive. | The threshold result `A_I` or `A_W` from the custody delta rule; `A_I` means institutional custody remains the effective archive, and `A_W` means witness custody is carrying the archive. |
 | `Harbor` | The recommended structured response once the field needs handling. | A provenance-constrained passage function selected from the harbor library. |
 | `Receipt stream` | The demo ledger preview in the UI. | A sample row showing how event, archive, burden, and harbor are recorded. |
 
