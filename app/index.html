@@ -92,6 +92,18 @@
             <div id="analysisStatus" class="analysis-status">Press Analyze Cadences to run a solo capture or compare both bays at once.</div>
           </div>
 
+          <section id="shellDuel" class="shell-duel" data-state="empty" aria-live="polite">
+            <div class="duel-heading">
+              <div>
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">⟁</span> Shell Duel</div>
+                <h3>One source sample, two cadence shells</h3>
+              </div>
+              <div id="duelSourceStatus" class="duel-source">Source // active bay raw text</div>
+            </div>
+            <p id="duelNote" class="duel-note">Focus a bay to stage its raw text through both current shells. The textareas stay raw on purpose.</p>
+            <div id="shellDuelBody" class="duel-body"></div>
+          </section>
+
           <div class="utility-row">
             <button id="toggleMirrorBtn" type="button" class="utility">Open mirror shield</button>
             <button id="badgeBtn" type="button" class="utility">Cycle custody badge</button>

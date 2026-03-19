@@ -150,10 +150,13 @@ body[data-decision="passage"] {
 .action-row,
 .utility-row,
 .analysis-rail,
+.duel-heading,
 .persona-toolbar,
 .chips,
 .bay-shell-row,
-.bay-metrics {
+.bay-metrics,
+.duel-side-head,
+.duel-mini-metrics {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -313,7 +316,11 @@ h1 {
 .ledger-stage,
 .field,
 .bay-profile,
-.persona {
+.persona,
+.shell-duel,
+.duel-side,
+.duel-delta,
+.duel-visual-card {
   position: relative;
   border: 1px solid rgba(116, 234, 255, 0.12);
   border-radius: var(--radius-lg);
@@ -327,7 +334,11 @@ h1 {
 .harbor-box,
 .ledger-stage,
 .bay-profile,
-.persona {
+.persona,
+.shell-duel,
+.duel-side,
+.duel-delta,
+.duel-visual-card {
   padding: 16px;
 }
 
@@ -337,7 +348,11 @@ h1 {
 .ledger-stage::after,
 .field::after,
 .bay-profile::after,
-.persona::after {
+.persona::after,
+.shell-duel::after,
+.duel-side::after,
+.duel-delta::after,
+.duel-visual-card::after {
   content: "";
   position: absolute;
   top: 12px;
@@ -550,18 +565,262 @@ textarea:focus {
 }
 
 .bay-copy,
-.bay-preview {
+.duel-note,
+.duel-empty-copy {
   margin: 12px 0 0;
   color: var(--muted);
   font-size: 13px;
   line-height: 1.55;
 }
 
-.bay-preview {
-  color: var(--chrome);
+.shell-duel {
+  margin-top: 16px;
+  padding: 18px;
+  border-color: rgba(116, 234, 255, 0.2);
+  background:
+    linear-gradient(180deg, rgba(6, 17, 27, 0.98) 0%, rgba(2, 8, 13, 0.98) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(116, 234, 255, 0.04),
+    0 0 0 1px rgba(116, 234, 255, 0.04);
+}
+
+.shell-duel[data-state="live"] {
+  border-color: rgba(116, 234, 255, 0.28);
+}
+
+.shell-duel[data-state="awaiting-source"] {
+  border-color: rgba(255, 179, 92, 0.22);
+}
+
+.shell-duel[data-state="empty"] {
+  border-color: rgba(116, 234, 255, 0.1);
+}
+
+.duel-heading {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.duel-heading h3 {
+  margin: 6px 0 0;
+}
+
+.duel-source,
+.duel-shell-strength,
+.duel-empty-mark {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(116, 234, 255, 0.14);
+  background: rgba(116, 234, 255, 0.05);
+  color: var(--lime);
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.duel-body {
+  margin-top: 14px;
+}
+
+.duel-empty {
+  min-height: 180px;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  border: 1px dashed rgba(116, 234, 255, 0.16);
+  border-radius: 18px;
+  background: rgba(116, 234, 255, 0.02);
+  text-align: center;
+}
+
+.duel-empty-copy {
+  max-width: 56ch;
+}
+
+.duel-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.duel-side,
+.duel-delta {
+  min-height: 100%;
+}
+
+.duel-side-head {
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.duel-shell-name {
+  margin-top: 6px;
+  color: var(--silver);
+  font-family: var(--display);
+  font-size: 22px;
+  letter-spacing: 0.04em;
+}
+
+.duel-sample {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid rgba(116, 234, 255, 0.14);
+  border-radius: 16px;
+  background: rgba(2, 8, 13, 0.94);
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font-size: 14px;
+  line-height: 1.72;
+}
+
+.duel-mini-metric {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(116, 234, 255, 0.05);
+  color: var(--chrome);
+  font-size: 12px;
+}
+
+.duel-visual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.duel-visual-label,
+.duel-delta-label,
+.duel-heatmap-copy {
+  color: var(--chrome);
+  font-family: var(--display);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.duel-heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.duel-heat-cell {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(116, 234, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(116, 234, 255, calc(var(--heat) * 0.38)) 0%, rgba(2, 8, 13, 0.96) 100%);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.duel-heatmap-copy {
+  margin-top: 10px;
+}
+
+.duel-radar {
+  display: block;
+  width: 100%;
+  max-width: 172px;
+  margin: 8px auto 0;
+}
+
+.duel-radar-grid,
+.duel-radar-spoke {
+  fill: none;
+  stroke: rgba(116, 234, 255, 0.18);
+  stroke-width: 1;
+}
+
+.duel-radar-core {
+  fill: rgba(116, 234, 255, 0.88);
+}
+
+.duel-radar-fill {
+  fill: rgba(116, 234, 255, 0.14);
+  stroke: none;
+}
+
+.duel-radar-line {
+  fill: none;
+  stroke: rgba(116, 234, 255, 0.92);
+  stroke-width: 2;
+}
+
+.duel-radar-node {
+  fill: var(--lime);
+}
+
+.duel-radar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.duel-radar-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(116, 234, 255, 0.05);
+  color: var(--chrome);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.duel-delta {
+  align-self: stretch;
+  background:
+    linear-gradient(180deg, rgba(9, 22, 32, 0.96) 0%, rgba(4, 11, 18, 0.98) 100%);
+}
+
+.duel-delta-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.duel-delta-item {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(116, 234, 255, 0.1);
+  background: rgba(116, 234, 255, 0.04);
+}
+
+.duel-delta-item strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--silver);
+  font-family: var(--display);
+  font-size: 24px;
+  letter-spacing: 0.04em;
+}
+
+.duel-delta-copy,
+.duel-visual-empty {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.58;
 }
 
 .action-row,
@@ -751,6 +1010,10 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
+  .duel-grid {
+    grid-template-columns: 1fr;
+  }
+
   .masthead-copy::after {
     display: none;
   }
@@ -761,7 +1024,8 @@ button:disabled {
   .input-grid,
   .results,
   .harbor-grid,
-  .personagrid {
+  .personagrid,
+  .duel-visual-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -786,13 +1050,15 @@ button:disabled {
 
   .action-row,
   .utility-row,
-  .analysis-rail {
+  .analysis-rail,
+  .duel-heading {
     flex-direction: column;
     align-items: stretch;
   }
 
   button,
-  .analysis-status {
+  .analysis-status,
+  .duel-source {
     width: 100%;
   }
 

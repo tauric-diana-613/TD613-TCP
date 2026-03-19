@@ -5,6 +5,7 @@
     compareTexts,
     extractCadenceProfile,
     applyCadenceToText,
+    buildCadenceSignature,
     cadenceModFromProfile,
     cadenceCoherence,
     cadenceResonance,
@@ -56,6 +57,19 @@
 
   function formatPct(value) {
     return `${Math.round(value * 100)}%`;
+  }
+
+  function formatFixed(value, digits = 2) {
+    return Number.isFinite(value) ? value.toFixed(digits) : '--';
+  }
+
+  function escapeHtml(value = '') {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   function setMetricTone(id, tone) {
@@ -217,32 +231,264 @@
 
   function describeShellNote(voiceState) {
     if (voiceState.shell.mode === 'native') {
-      return 'Native cadence only. No shell is bending the readout or the in-flight sample.';
+      return 'Native cadence only. Shell Duel will show the source text unchanged until another shell lands.';
     }
 
     if (voiceState.shell.mode === 'borrowed') {
-      return `Borrowed from the ${SLOT_SHORT[voiceState.shell.fromSlot]} bay. The raw text stayed put, but the effective sample and cadence profile moved.`;
+      return `Borrowed from the ${SLOT_SHORT[voiceState.shell.fromSlot]} bay. The raw text stayed put; inspect the transformed sample in Shell Duel.`;
     }
 
     if (voiceState.shell.profile) {
-      return `Profile shell transfer live at ${Math.round((voiceState.shell.strength || 0.76) * 100)}%. The raw text stays in the bay while the effective sample and cadence profile bend toward ${voiceState.shell.label}.`;
+      return `Profile shell transfer live at ${Math.round((voiceState.shell.strength || 0.76) * 100)}%. Shell Duel stages the transformed sample without overwriting the bay.`;
     }
 
     return `Applied shell bias: sent ${voiceState.shell.mod.sent >= 0 ? '+' : ''}${voiceState.shell.mod.sent}, cont ${voiceState.shell.mod.cont >= 0 ? '+' : ''}${voiceState.shell.mod.cont}, punc ${voiceState.shell.mod.punc >= 0 ? '+' : ''}${voiceState.shell.mod.punc}.`;
   }
 
-  function previewEffectiveText(voiceState) {
-    if (!voiceState.hasEffectiveTextShift) {
-      return '';
+  function shellStrengthCopy(shell) {
+    if (!shell || shell.mode === 'native') {
+      return 'native shell';
     }
 
-    const compact = voiceState.effectiveText.replace(/\s+/g, ' ').trim();
-    if (!compact) {
-      return '';
+    return `${Math.round(((shell.strength || 0.76)) * 100)}% transfer`;
+  }
+
+  function compactAxisLabel(id) {
+    const labels = {
+      rhythm_mean: 'mean',
+      rhythm_spread: 'spread',
+      punctuation: 'punct',
+      contractions: 'cont',
+      line_breaks: 'breaks',
+      recurrence: 'recur',
+      lexical: 'lex'
+    };
+
+    return labels[id] || id;
+  }
+
+  function radarPoint(index, total, radius, center) {
+    const angle = (-Math.PI / 2) + ((Math.PI * 2 * index) / total);
+    const x = center + Math.cos(angle) * radius;
+    const y = center + Math.sin(angle) * radius;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }
+
+  function renderDuelSignature(signature) {
+    const axes = signature.axes || [];
+    if (!axes.length) {
+      return '<div class="duel-visual-empty">Signature waiting for a live sample.</div>';
     }
 
-    const preview = compact.length > 132 ? `${compact.slice(0, 132).trimEnd()}...` : compact;
-    return `Effective sample // ${preview}`;
+    const center = 76;
+    const maxRadius = 54;
+    const levels = [0.25, 0.5, 0.75, 1];
+    const grid = levels
+      .map((level) => {
+        const points = axes
+          .map((axis, index) => radarPoint(index, axes.length, maxRadius * level, center))
+          .join(' ');
+        return `<polygon class="duel-radar-grid" points="${points}"></polygon>`;
+      })
+      .join('');
+    const spokes = axes
+      .map((axis, index) => {
+        const point = radarPoint(index, axes.length, maxRadius, center);
+        return `<line class="duel-radar-spoke" x1="${center}" y1="${center}" x2="${point.split(',')[0]}" y2="${point.split(',')[1]}"></line>`;
+      })
+      .join('');
+    const dataPoints = axes
+      .map((axis, index) => radarPoint(index, axes.length, maxRadius * axis.normalized, center))
+      .join(' ');
+    const nodes = axes
+      .map((axis, index) => {
+        const point = radarPoint(index, axes.length, maxRadius * axis.normalized, center).split(',');
+        return `<circle class="duel-radar-node" cx="${point[0]}" cy="${point[1]}" r="2.6"></circle>`;
+      })
+      .join('');
+    const legend = axes
+      .map((axis) => `<span class="duel-radar-chip">${compactAxisLabel(axis.id)}</span>`)
+      .join('');
+
+    return `
+      <svg class="duel-radar" viewBox="0 0 152 152" role="img" aria-label="Cadence signature radar">
+        <circle class="duel-radar-core" cx="${center}" cy="${center}" r="2.8"></circle>
+        ${grid}
+        ${spokes}
+        <polygon class="duel-radar-fill" points="${dataPoints}"></polygon>
+        <polyline class="duel-radar-line" points="${dataPoints}"></polyline>
+        ${nodes}
+      </svg>
+      <div class="duel-radar-legend">${legend}</div>
+    `;
+  }
+
+  function renderDuelHeatmap(heatmap) {
+    const matrix = heatmap && Array.isArray(heatmap.matrix) ? heatmap.matrix : Array.from({ length: 4 }, () => Array(4).fill(0));
+    const rows = heatmap && Array.isArray(heatmap.rows) ? heatmap.rows : ['quiet-short', 'measured-mid', 'extended-long', 'drifting-wide'];
+    const cols = heatmap && Array.isArray(heatmap.cols) ? heatmap.cols : ['mute', 'marked', 'charged', 'saturated'];
+    const flat = matrix.flat();
+    const peak = Math.max(1, ...flat);
+    const cells = matrix
+      .map((row, rowIndex) => row
+        .map((value, colIndex) => {
+          const intensity = value === 0 ? 0 : Math.max(0.16, value / peak);
+          return `
+            <span
+              class="duel-heat-cell"
+              style="--heat:${intensity.toFixed(2)}"
+              title="${rows[rowIndex]} x ${cols[colIndex]} // ${value}"
+            >${value ? value : ''}</span>
+          `;
+        })
+        .join(''))
+      .join('');
+
+    return `
+      <div class="duel-heatmap-grid">${cells}</div>
+      <div class="duel-heatmap-copy">Sentence length × punctuation load</div>
+    `;
+  }
+
+  function renderDuelSide(side) {
+    const profile = side.profile;
+
+    return `
+      <article class="duel-side" data-slot="${side.slot}">
+        <div class="duel-side-head">
+          <div>
+            <div class="section-kicker">${side.title}</div>
+            <div class="duel-shell-name">${escapeHtml(side.shell.label)}</div>
+          </div>
+          <div class="duel-shell-strength">${shellStrengthCopy(side.shell)}</div>
+        </div>
+        <div class="duel-sample">${escapeHtml(side.text)}</div>
+        <div class="duel-mini-metrics">
+          <span class="duel-mini-metric">Rhythm ${profile.avgSentenceLength.toFixed(1)}w</span>
+          <span class="duel-mini-metric">Punct ${formatPct(profile.punctuationDensity)}</span>
+          <span class="duel-mini-metric">Contractions ${formatPct(profile.contractionDensity)}</span>
+          <span class="duel-mini-metric">Recurrence ${formatPct(profile.recurrencePressure)}</span>
+        </div>
+        <div class="duel-visual-grid">
+          <div class="duel-visual-card">
+            <div class="duel-visual-label">Heatmap</div>
+            ${renderDuelHeatmap(side.signature.heatmap)}
+          </div>
+          <div class="duel-visual-card">
+            <div class="duel-visual-label">7-axis signature</div>
+            ${renderDuelSignature(side.signature)}
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  function buildShellDuelPayload(voiceStateA, voiceStateB) {
+    const sourceState = activeVoice === 'A' ? voiceStateA : voiceStateB;
+    const hasAnyText = voiceStateA.hasText || voiceStateB.hasText;
+    const sourceText = sourceState.text.trim();
+
+    if (!hasAnyText) {
+      return {
+        state: 'empty',
+        sourceLabel: 'Source // waiting for a live bay',
+        note: 'Paste one or two voices to wake Shell Duel. The source text will stay raw while both shells bend the same sample in parallel.'
+      };
+    }
+
+    if (!sourceText) {
+      return {
+        state: 'awaiting-source',
+        sourceLabel: `Source // ${SLOT_LABELS[activeVoice].toLowerCase()} raw text`,
+        note: `The active bay is empty. Focus the populated bay or paste a source sample here to see how the reference and probe shells diverge on the same text.`
+      };
+    }
+
+    const referenceText = applyCadenceToText(sourceText, voiceStateA.shell);
+    const probeText = applyCadenceToText(sourceText, voiceStateB.shell);
+    const referenceProfile = extractCadenceProfile(referenceText);
+    const probeProfile = extractCadenceProfile(probeText);
+    const referenceSignature = buildCadenceSignature(referenceText, referenceProfile);
+    const probeSignature = buildCadenceSignature(probeText, probeProfile);
+    const duelCompare = compareTexts(referenceText, probeText, {
+      profileA: referenceProfile,
+      profileB: probeProfile
+    });
+
+    return {
+      state: 'live',
+      sourceSlot: sourceState.slot,
+      sourceText,
+      sourceLabel: `Source // ${SLOT_LABELS[sourceState.slot].toLowerCase()} raw text`,
+      note: `The same ${SLOT_SHORT[sourceState.slot]} sample is running through both current shells. Raw text stays in the bay; Shell Duel exposes the cadence transfer.`,
+      reference: {
+        slot: 'A',
+        title: 'Reference shell',
+        shell: voiceStateA.shell,
+        text: referenceText,
+        profile: referenceProfile,
+        signature: referenceSignature
+      },
+      probe: {
+        slot: 'B',
+        title: 'Probe shell',
+        shell: voiceStateB.shell,
+        text: probeText,
+        profile: probeProfile,
+        signature: probeSignature
+      },
+      compare: duelCompare,
+      sentenceDrift: Math.abs((duelCompare.avgSentenceA || 0) - (duelCompare.avgSentenceB || 0))
+    };
+  }
+
+  function renderShellDuel(voiceStateA, voiceStateB) {
+    const duel = buildShellDuelPayload(voiceStateA, voiceStateB);
+    const shellDuel = $('shellDuel');
+    const body = $('shellDuelBody');
+
+    shellDuel.dataset.state = duel.state;
+    $('duelSourceStatus').textContent = duel.sourceLabel;
+    $('duelNote').textContent = duel.note;
+
+    if (duel.state !== 'live') {
+      body.innerHTML = `
+        <div class="duel-empty">
+          <div class="duel-empty-mark">SHELL DUEL</div>
+          <p class="duel-empty-copy">${duel.note}</p>
+        </div>
+      `;
+      return;
+    }
+
+    body.innerHTML = `
+      <div class="duel-grid">
+        ${renderDuelSide(duel.reference)}
+        <aside class="duel-delta">
+          <div class="section-kicker">Delta strip</div>
+          <div class="duel-delta-list">
+            <div class="duel-delta-item">
+              <span class="duel-delta-label">Duel similarity</span>
+              <strong id="duelSimilarity">${formatFixed(duel.compare.similarity)}</strong>
+            </div>
+            <div class="duel-delta-item">
+              <span class="duel-delta-label">Duel traceability</span>
+              <strong id="duelTraceability">${formatFixed(duel.compare.traceability)}</strong>
+            </div>
+            <div class="duel-delta-item">
+              <span class="duel-delta-label">Sentence drift</span>
+              <strong id="duelSentenceDrift">${duel.sentenceDrift.toFixed(1)}w</strong>
+            </div>
+            <div class="duel-delta-item">
+              <span class="duel-delta-label">Function-word distance</span>
+              <strong id="duelFunctionWordDistance">${formatFixed(duel.compare.functionWordDistance)}</strong>
+            </div>
+          </div>
+          <p class="duel-delta-copy">Same source sample, different shell behavior. This is where Swap Cadences should become unmistakable.</p>
+        </aside>
+        ${renderDuelSide(duel.probe)}
+      </div>
+    `;
   }
 
   function renderVoiceProfile(voiceState) {
@@ -268,7 +514,6 @@
 
     const profile = voiceState.effectiveProfile;
     const shellNote = describeShellNote(voiceState);
-    const effectivePreview = previewEffectiveText(voiceState);
 
     panel.innerHTML = `
       <div class="bay-shell-row">
@@ -281,14 +526,14 @@
         <span class="bay-metric">Contractions ${formatPct(profile.contractionDensity)}</span>
         <span class="bay-metric">Recurrence ${formatPct(profile.recurrencePressure)}</span>
       </div>
-      ${effectivePreview ? `<p class="bay-preview">${effectivePreview}</p>` : ''}
       <p class="bay-copy">${shellNote}</p>
     `;
   }
 
-  function renderVoiceProfiles() {
-    renderVoiceProfile(getVoiceState('A'));
-    renderVoiceProfile(getVoiceState('B'));
+  function renderVoiceProfiles(voiceStateA = getVoiceState('A'), voiceStateB = getVoiceState('B')) {
+    renderVoiceProfile(voiceStateA);
+    renderVoiceProfile(voiceStateB);
+    renderShellDuel(voiceStateA, voiceStateB);
   }
 
   function personaAssignmentLabel(personaId) {
@@ -750,7 +995,7 @@ DeltaE = ${ledger.reuse_gain}`;
     const voiceStateA = getVoiceState('A');
     const voiceStateB = getVoiceState('B');
 
-    renderVoiceProfiles();
+    renderVoiceProfiles(voiceStateA, voiceStateB);
 
     if (!voiceStateA.hasText && !voiceStateB.hasText) {
       document.body.dataset.bootStage = 'analyze-idle';
@@ -926,16 +1171,27 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function readDeckSnapshot() {
+    const readText = (id) => {
+      const node = $(id);
+      return node ? node.textContent.trim() : '';
+    };
+
     return {
       decision: document.body.dataset.decision,
-      decisionTone: $('decisionTone').textContent.trim(),
-      similarity: $('similarity').textContent.trim(),
-      traceability: $('traceability').textContent.trim(),
-      routePressure: $('routePressure').textContent.trim(),
-      custody: $('custodyState').textContent.trim(),
-      heroHarbor: $('heroHarborValue').textContent.trim(),
-      routeState: $('routeState').textContent.trim(),
-      status: $('analysisStatus').textContent.trim()
+      decisionTone: readText('decisionTone'),
+      similarity: readText('similarity'),
+      traceability: readText('traceability'),
+      routePressure: readText('routePressure'),
+      custody: readText('custodyState'),
+      heroHarbor: readText('heroHarborValue'),
+      routeState: readText('routeState'),
+      status: readText('analysisStatus'),
+      duelState: $('shellDuel').dataset.state,
+      duelSource: readText('duelSourceStatus'),
+      duelSimilarity: readText('duelSimilarity'),
+      duelTraceability: readText('duelTraceability'),
+      duelSentenceDrift: readText('duelSentenceDrift'),
+      duelFunctionWordDistance: readText('duelFunctionWordDistance')
     };
   }
 
@@ -981,16 +1237,30 @@ DeltaE = ${ledger.reuse_gain}`;
     try {
       const beforeNativeSwap = readDeckSnapshot();
       $('swapCadencesBtn').click();
+      const afterNativeSwap = readDeckSnapshot();
       report.nativeSwap = {
-        snapshot: readDeckSnapshot(),
+        snapshot: afterNativeSwap,
         changed:
-          readDeckSnapshot().similarity !== beforeNativeSwap.similarity ||
-          readDeckSnapshot().routePressure !== beforeNativeSwap.routePressure,
+          afterNativeSwap.similarity !== beforeNativeSwap.similarity ||
+          afterNativeSwap.routePressure !== beforeNativeSwap.routePressure,
+        duelChanged:
+          afterNativeSwap.duelSimilarity !== beforeNativeSwap.duelSimilarity ||
+          afterNativeSwap.duelTraceability !== beforeNativeSwap.duelTraceability,
         referenceBorrowed: $('voiceAProfile').textContent.toLowerCase().includes('borrowed'),
         probeBorrowed: $('voiceBProfile').textContent.toLowerCase().includes('borrowed')
       };
 
       $('resetBtn').click();
+      const beforeDuelFocus = readDeckSnapshot();
+      $('voiceB').dispatchEvent(new Event('focus'));
+      const afterDuelFocus = readDeckSnapshot();
+      report.duelFocus = {
+        before: beforeDuelFocus.duelSource,
+        after: afterDuelFocus.duelSource,
+        changed: beforeDuelFocus.duelSource !== afterDuelFocus.duelSource,
+        probeLive: afterDuelFocus.duelSource.toLowerCase().includes('probe')
+      };
+      $('voiceA').dispatchEvent(new Event('focus'));
 
       const firstPersona = document.querySelector('.persona');
       if (firstPersona) {
@@ -1133,9 +1403,13 @@ DeltaE = ${ledger.reuse_gain}`;
             report.swapCadences.voiceBUnchanged &&
             report.savePersona.savedPersonaAdded &&
             report.nativeSwap.changed &&
+            report.nativeSwap.duelChanged &&
             report.nativeSwap.referenceBorrowed &&
             report.nativeSwap.probeBorrowed &&
+            report.duelFocus.changed &&
+            report.duelFocus.probeLive &&
             report.soloScan.similarityKey === 'Scan mode' &&
+            report.baseline.snapshot.duelState === 'live' &&
             report.viewTabs.activeTab === 'readout',
           matrixPassCount: matrix.filter((entry) => entry.pass).length,
           matrixCount: matrix.length
