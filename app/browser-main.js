@@ -2330,6 +2330,60 @@ DeltaE = ${ledger.reuse_gain}`;
           (mergeOutputProfile.sentenceCount || 0) <= (mergeSourceProfile.sentenceCount || 0)
       });
 
+      const reverseContrastSource = 'Need the charger. Front door sticks. Knock twice if the light is out. I am in back.';
+      const reverseContrastDonor = mergeDonor;
+      const reverseContrastTransfer = buildCadenceTransfer(reverseContrastSource, {
+        mode: 'borrowed',
+        profile: extractCadenceProfile(reverseContrastDonor),
+        strength: 0.9
+      });
+      const reverseContrastSourceProfile = extractCadenceProfile(reverseContrastSource);
+      const reverseContrastOutputProfile = extractCadenceProfile(reverseContrastTransfer.text);
+      cases.push({
+        id: 'reverse_contrast_structural',
+        source: reverseContrastSource,
+        donorText: reverseContrastDonor,
+        transfer: reverseContrastTransfer,
+        pass:
+          reverseContrastTransfer.text !== reverseContrastSource &&
+          (
+            reverseContrastTransfer.transferClass === 'structural' ||
+            (reverseContrastTransfer.changedDimensions || []).includes('sentence-count') ||
+            (reverseContrastTransfer.changedDimensions || []).includes('sentence-mean')
+          ) &&
+          (
+            (reverseContrastOutputProfile.avgSentenceLength || 0) > (reverseContrastSourceProfile.avgSentenceLength || 0) ||
+            (reverseContrastOutputProfile.sentenceCount || 0) < (reverseContrastSourceProfile.sentenceCount || 0)
+          )
+      });
+
+      const additiveGuardSource = 'Because the room stayed loud, I kept the note. But the line dragged. So I left this mark behind.';
+      const additiveGuardTransfer = buildCadenceTransfer(additiveGuardSource, {
+        mode: 'borrowed',
+        profile: extractCadenceProfile(reverseContrastDonor),
+        strength: 0.9
+      });
+      const additiveGlueCount = (additiveGuardTransfer.text.match(/(?:,\s+and\b|;\s+and\b|-\s+and\b)/gi) || []).length;
+      const additiveGuardLower = additiveGuardTransfer.text.toLowerCase();
+      cases.push({
+        id: 'anti_additive_glue',
+        source: additiveGuardSource,
+        donorText: reverseContrastDonor,
+        transfer: additiveGuardTransfer,
+        pass:
+          additiveGlueCount <= 1 &&
+          (
+            additiveGuardTransfer.transferClass === 'rejected' ||
+            additiveGuardLower.includes('because') ||
+            additiveGuardLower.includes('since') ||
+            additiveGuardLower.includes('though') ||
+            additiveGuardLower.includes('yet') ||
+            additiveGuardLower.includes('but') ||
+            additiveGuardLower.includes('so') ||
+            additiveGuardLower.includes('then')
+          )
+      });
+
       const lowOpportunitySource = 'Stone settles under glass.';
       const lowOpportunityDonor = contrastDonor;
       const lowOpportunityTransfer = buildCadenceTransfer(lowOpportunitySource, {

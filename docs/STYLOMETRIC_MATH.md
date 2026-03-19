@@ -199,7 +199,7 @@ TCP treats shell transfer as a strict-preserve cadence rewrite. That means:
 
 Protected spans include digit-bearing tokens, dates/times, URLs, emails, handles, quoted substrings, all-caps acronyms, and mixed-case IDs. Those spans are replaced with placeholders before the rewrite passes and restored exactly afterward.
 
-Before those passes run, TCP also builds an opportunity map from the source text. That map tracks whether the source actually offers safe hooks for sentence splitting, sentence merging, contraction changes, connector/stance rewrites, and line-break texture. A large donor/source gap does not automatically imply a large visible rewrite if the source text has little transformable structure.
+Before those passes run, TCP also builds an opportunity map from the source text. That map tracks whether the source actually offers safe hooks for sentence splitting, sentence merging, contraction changes, connector/stance rewrites, line-break texture, and relation-bearing clauses such as contrast, cause, time, and clarification. A large donor/source gap does not automatically imply a large visible rewrite if the source text has little transformable structure.
 
 The deterministic pass order is:
 
@@ -210,6 +210,8 @@ The deterministic pass order is:
 5. line-break texture
 6. punctuation finish
 7. cleanup and literal restore
+
+For materially different donor/source pairs, TCP now evaluates several deterministic candidates rather than trusting one fixed rewrite sequence. In practice this means split-heavy, merge-heavy, connector-heavy, and mixed structural candidates can all be tried and scored against donor fit plus safety constraints before the final output is selected.
 
 The lexicon pack remains intentionally narrow. It operates over structural or stance-bearing terms such as:
 
@@ -224,7 +226,7 @@ The lexicon pack remains intentionally narrow. It operates over structural or st
 - `will not / won't`
 - `that is / that's`
 
-The quality gate rejects a transfer if protected literals fail to restore, duplicate chunks appear, connector sequences repeat, or a materially different target collapses into punctuation-only drift. In those cases TCP falls back to the safer result rather than presenting a weak rewrite as a meaningful cadence shift.
+The quality gate rejects a transfer if protected literals fail to restore, duplicate chunks appear, connector sequences repeat, or a materially different target collapses into punctuation-only drift. It also rejects additive-collapse failures, where structurally rich boundaries get flattened into repetitive `and` glue even though the donor does not strongly prefer that posture. In those cases TCP falls back to the safer result rather than presenting a weak rewrite as a meaningful cadence shift.
 
 The opportunity map affects that honesty layer. If the donor gap is strong but the source text offers very few safe structural hooks, TCP may classify the result as `weak` or `rejected` rather than forcing a theatrical rewrite.
 

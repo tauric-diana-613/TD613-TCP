@@ -168,16 +168,90 @@ const CONTRACTION_OPPORTUNITY_PATTERNS = [
   /\b(I wasn't|don't|doesn't|didn't|won't|can't|wasn't|aren't|I'm|I've|I'll|I'd|we're|we'll|they're|they'll|you're|you'll|it's|that's)\b/gi
 ];
 
+const RELATION_OPPORTUNITY_PATTERNS = {
+  additive: [
+    /\b(and|also)\b/gi
+  ],
+  contrastive: [
+    /\b(but|though|yet|still|however|instead)\b/gi
+  ],
+  causal: [
+    /\b(because|since|as|so)\b/gi
+  ],
+  temporal: [
+    /\b(when|while|once|then|after|before)\b/gi
+  ],
+  clarifying: [
+    /\b(which is|that is|i mean|in other words|apparently|honestly|to be honest|at least|if anything)\b/gi
+  ],
+  resumptive: [
+    /\b(honestly|apparently|frankly|basically|anyway|still)\b/gi,
+    /\b(i think|i guess|i mean|to be honest|at least|if anything)\b/gi
+  ]
+};
+
+const RELATION_LEAD_PATTERNS = {
+  contrastive: /^(but|though|yet|still|however|instead)\b\s*/i,
+  causal: /^(because|since|as|so)\b\s*/i,
+  temporal: /^(when|while|once|then|after|before)\b\s*/i,
+  clarifying: /^(which is|that is|i mean|in other words|apparently|honestly|to be honest|at least|if anything)\b\s*/i,
+  resumptive: /^(honestly|apparently|frankly|basically|anyway|still|i think|i guess|i mean|to be honest|at least|if anything)\b\s*/i
+};
+
+const RELATION_CONNECTOR_WORDS = {
+  additive: ['and'],
+  contrastive: ['though', 'but', 'yet'],
+  causal: ['since', 'because', 'as', 'so'],
+  temporal: ['then', 'once', 'while', 'when'],
+  clarifying: ['that'],
+  resumptive: ['still', 'though', 'then']
+};
+
+function buildRelationOpportunityProfile(text = '') {
+  return Object.fromEntries(
+    Object.entries(RELATION_OPPORTUNITY_PATTERNS).map(([relation, patterns]) => [
+      relation,
+      countPatternMatches(text, patterns)
+    ])
+  );
+}
+
+function relationInventory(opportunityProfile = {}) {
+  return {
+    additive: opportunityProfile.additive || 0,
+    contrastive: opportunityProfile.contrastive || 0,
+    causal: opportunityProfile.causal || 0,
+    temporal: opportunityProfile.temporal || 0,
+    clarifying: opportunityProfile.clarifying || 0,
+    resumptive: opportunityProfile.resumptive || 0
+  };
+}
+
+function dominantRelationFromInventory(inventory = {}) {
+  return Object.entries(inventory)
+    .sort((left, right) => right[1] - left[1])[0]?.[0] || 'additive';
+}
+
+function countWordOccurrences(text = '', word = '') {
+  if (!word) {
+    return 0;
+  }
+
+  return (normalizeText(text).match(new RegExp(`\\b${escapeRegex(word)}\\b`, 'gi')) || []).length;
+}
+
 function buildOpportunityProfile(text = '') {
   const chunks = sentenceChunks(text);
   const sentenceBoundaries = Math.max(0, chunks.length - 1);
+  const relationProfile = buildRelationOpportunityProfile(text);
 
   return {
     sentenceSplit: countPatternMatches(text, SPLIT_OPPORTUNITY_PATTERNS),
     sentenceMerge: sentenceBoundaries,
     contraction: countPatternMatches(text, CONTRACTION_OPPORTUNITY_PATTERNS),
     connector: countPatternMatches(text, CONNECTOR_OPPORTUNITY_PATTERNS),
-    lineBreak: ((normalizeText(text).match(/[.!?]\s+/g) || []).length) + ((text.match(/\n+/g) || []).length)
+    lineBreak: ((normalizeText(text).match(/[.!?]\s+/g) || []).length) + ((text.match(/\n+/g) || []).length),
+    ...relationProfile
   };
 }
 
@@ -197,30 +271,182 @@ function hasLimitedRewriteOpportunity(opportunityProfile = {}) {
   return total < 2 || directStructural < 1;
 }
 
-function pickJoiner(targetProfile = {}, mod = {}) {
-  const mix = targetProfile.punctuationMix || {};
-  const functionWords = targetProfile.functionWordProfile || {};
+function additiveDominance(targetWords = {}) {
+  const additivePressure = (targetWords.and || 0) + (targetWords.also || 0);
+  const alternativePressure = Math.max(
+    targetWords.but || 0,
+    targetWords.though || 0,
+    targetWords.yet || 0,
+    targetWords.because || 0,
+    targetWords.since || 0,
+    targetWords.as || 0,
+    targetWords.so || 0,
+    targetWords.then || 0,
+    targetWords.when || 0,
+    targetWords.while || 0,
+    targetWords.once || 0,
+    targetWords.still || 0
+  );
 
-  if ((mix.strong || 0) >= 0.18 && (mix.strong || 0) >= (mix.comma || 0)) {
-    return '; ';
-  }
-
-  if ((mix.dash || 0) >= 0.14 && (mix.dash || 0) >= (mix.comma || 0)) {
-    return ' - ';
-  }
-
-  if ((functionWords.but || 0) > (functionWords.and || 0) + 0.01) {
-    return ', but ';
-  }
-
-  if ((mod.punc || 0) > 1) {
-    return '; ';
-  }
-
-  return ', and ';
+  return additivePressure > alternativePressure + 0.004 && additivePressure > 0.012;
 }
 
-function mergeSentencePairs(text = '', targetProfile = {}, strength = 0.76, mod = {}) {
+function inferClauseRelation(first = '', second = '') {
+  const firstLower = stripTerminalPunctuation(first).toLowerCase();
+  const secondLower = stripTerminalPunctuation(second).toLowerCase();
+  const combined = `${firstLower} ${secondLower}`;
+
+  if (RELATION_LEAD_PATTERNS.contrastive.test(secondLower) || /\b(but|though|yet|still|however|instead)\b/.test(combined)) {
+    return 'contrastive';
+  }
+
+  if (RELATION_LEAD_PATTERNS.causal.test(secondLower) || /\b(because|since|as)\b/.test(combined)) {
+    return 'causal';
+  }
+
+  if (
+    RELATION_LEAD_PATTERNS.temporal.test(secondLower) ||
+    /\b(and then|by the time|every time|after that|before that)\b/.test(combined)
+  ) {
+    return 'temporal';
+  }
+
+  if (
+    RELATION_LEAD_PATTERNS.clarifying.test(secondLower) ||
+    /\b(which is|that is|i mean|in other words)\b/.test(combined)
+  ) {
+    return 'clarifying';
+  }
+
+  if (RELATION_LEAD_PATTERNS.resumptive.test(secondLower)) {
+    return 'resumptive';
+  }
+
+  return 'additive';
+}
+
+function stripLeadingRelationCue(text = '', relation = 'additive') {
+  const pattern = RELATION_LEAD_PATTERNS[relation];
+  if (!pattern) {
+    return text;
+  }
+
+  return text.replace(pattern, '').trim();
+}
+
+function decapitalizeSentenceLead(text = '') {
+  if (!text || /^I\b/.test(text)) {
+    return text;
+  }
+
+  return text.replace(/^([A-Z][a-z']+)/, (match) => {
+    if (/^[A-Z]{2,}$/.test(match)) {
+      return match;
+    }
+
+    return match.toLowerCase();
+  });
+}
+
+function preferredRelationWord(targetWords = {}, relation = 'additive') {
+  const words = RELATION_CONNECTOR_WORDS[relation] || RELATION_CONNECTOR_WORDS.additive;
+  return [...words]
+    .sort((left, right) => (targetWords[right] || 0) - (targetWords[left] || 0))[0] || words[0];
+}
+
+function joinDescriptorCandidates(relation = 'additive', targetProfile = {}, mod = {}) {
+  const mix = targetProfile.punctuationMix || {};
+  const targetWords = targetProfile.functionWordProfile || {};
+  const strongPreferred = (mix.strong || 0) >= 0.14 && (mix.strong || 0) >= (mix.comma || 0);
+  const dashPreferred = (mix.dash || 0) >= 0.14 && (mix.dash || 0) >= (mix.comma || 0);
+  const candidates = [];
+  const pushDescriptor = (descriptor) => {
+    if (!candidates.some((candidate) => candidate.kind === descriptor.kind && candidate.value === descriptor.value)) {
+      candidates.push(descriptor);
+    }
+  };
+
+  if (relation === 'contrastive') {
+    pushDescriptor({ kind: 'connector', value: preferredRelationWord(targetWords, 'contrastive') });
+    pushDescriptor({ kind: 'connector-word', value: 'yet' });
+    pushDescriptor({ kind: 'punctuation', value: strongPreferred ? '; ' : ' - ' });
+  } else if (relation === 'causal') {
+    pushDescriptor({ kind: 'connector', value: preferredRelationWord(targetWords, 'causal') });
+    pushDescriptor({ kind: 'punctuation', value: strongPreferred || (mod.punc || 0) > 1 ? '; ' : ', ' });
+  } else if (relation === 'temporal') {
+    pushDescriptor({ kind: 'connector', value: preferredRelationWord(targetWords, 'temporal') });
+    pushDescriptor({ kind: 'punctuation', value: dashPreferred ? ' - ' : '; ' });
+  } else if (relation === 'clarifying') {
+    pushDescriptor({ kind: 'punctuation', value: dashPreferred ? ' - ' : '; ' });
+    pushDescriptor({ kind: 'connector-word', value: 'that is' });
+  } else if (relation === 'resumptive') {
+    pushDescriptor({ kind: 'connector', value: preferredRelationWord(targetWords, 'resumptive') });
+    pushDescriptor({ kind: 'punctuation', value: dashPreferred ? ' - ' : '; ' });
+  } else {
+    if (additiveDominance(targetWords)) {
+      pushDescriptor({ kind: 'connector', value: 'and' });
+    }
+    pushDescriptor({ kind: 'punctuation', value: strongPreferred || (mod.punc || 0) > 1 ? '; ' : dashPreferred ? ' - ' : '; ' });
+    pushDescriptor({ kind: 'connector-word', value: targetWords.then > 0.008 ? 'then' : 'and' });
+  }
+
+  if (!candidates.length) {
+    pushDescriptor({ kind: 'punctuation', value: '; ' });
+  }
+
+  return candidates;
+}
+
+function buildMergedSentence(first = '', second = '', descriptor = { kind: 'punctuation', value: '; ' }, relation = 'additive') {
+  const left = stripTerminalPunctuation(first);
+  let right = stripTerminalPunctuation(second).trim();
+  right = stripLeadingRelationCue(right, relation);
+
+  if (!right) {
+    return `${left}.`;
+  }
+
+  if (descriptor.kind === 'connector') {
+    right = decapitalizeSentenceLead(right);
+    return `${left}, ${descriptor.value} ${right}.`;
+  }
+
+  if (descriptor.kind === 'connector-word') {
+    right = decapitalizeSentenceLead(right);
+    if (descriptor.value === 'that is') {
+      return `${left}, that is ${right}.`;
+    }
+    return `${left}; ${descriptor.value} ${right}.`;
+  }
+
+  right = decapitalizeSentenceLead(right);
+  return `${left}${descriptor.value}${right}.`;
+}
+
+function mergeCandidateScore(candidate = '', targetProfile = {}, relation = 'additive', sourceText = '') {
+  const candidateProfile = extractCadenceProfile(candidate);
+  const fit = compareTexts('', '', {
+    profileA: candidateProfile,
+    profileB: targetProfile
+  });
+  const targetWords = targetProfile.functionWordProfile || {};
+  const sourceAnd = countWordOccurrences(sourceText, 'and');
+  const outputAnd = countWordOccurrences(candidate, 'and');
+  const addedAnd = Math.max(0, outputAnd - sourceAnd);
+  let score =
+    (1 - (fit.sentenceDistance || 0)) * 18 +
+    (1 - (fit.functionWordDistance || 0)) * 22 +
+    (1 - (fit.punctShapeDistance || 0)) * 8 +
+    (1 - (fit.contractionDistance || 0)) * 6;
+
+  if (relation !== 'additive' && addedAnd > 0 && !additiveDominance(targetWords)) {
+    score -= addedAnd * 12;
+  }
+
+  return score;
+}
+
+function mergeSentencePairs(text = '', targetProfile = {}, strength = 0.76, mod = {}, transferPlan = null) {
   let chunks = sentenceChunks(text);
   if (chunks.length < 2) {
     return text;
@@ -238,14 +464,19 @@ function mergeSentencePairs(text = '', targetProfile = {}, strength = 0.76, mod 
     return text;
   }
 
-  const joiner = pickJoiner(targetProfile, mod);
   const merged = [];
   let index = 0;
   let merges = 0;
 
   while (index < chunks.length) {
     if (merges < desiredMerges && index < chunks.length - 1) {
-      merged.push(`${stripTerminalPunctuation(chunks[index])}${joiner}${stripTerminalPunctuation(chunks[index + 1])}.`);
+      const first = chunks[index];
+      const second = chunks[index + 1];
+      const relation = inferClauseRelation(first, second) || transferPlan?.dominantRelation || 'additive';
+      const pairCandidates = joinDescriptorCandidates(relation, targetProfile, mod)
+        .map((descriptor) => buildMergedSentence(first, second, descriptor, relation))
+        .sort((left, right) => mergeCandidateScore(right, targetProfile, relation, `${first} ${second}`) - mergeCandidateScore(left, targetProfile, relation, `${first} ${second}`));
+      merged.push(pairCandidates[0] || `${stripTerminalPunctuation(first)}; ${decapitalizeSentenceLead(stripTerminalPunctuation(second))}.`);
       index += 2;
       merges += 1;
       continue;
@@ -304,7 +535,7 @@ function splitLongSentences(text = '', targetProfile = {}, strength = 0.76) {
   return applySplitRules(text, desiredSplits);
 }
 
-function applyClauseTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76, mod = {}) {
+function applyClauseTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, transferPlan = null) {
   const targetCount = desiredSentenceCount(currentProfile, targetProfile);
   const currentCount = currentProfile.sentenceCount || 0;
   const wantsShorter =
@@ -316,11 +547,14 @@ function applyClauseTexture(text = '', currentProfile = {}, targetProfile = {}, 
   let result = text;
 
   if (wantsShorter) {
-    return applySplitRules(result, Math.max(1, Math.round(Math.max(1.2, strength) * 3)));
+    const plannedSplits = transferPlan?.splitCount
+      ? Math.max(1, Math.round((transferPlan.splitCount || 1) * Math.max(1, strength)))
+      : Math.max(1, Math.round(Math.max(1.2, strength) * 3));
+    return applySplitRules(result, plannedSplits);
   }
 
   if (wantsLonger) {
-    return mergeSentencePairs(result, targetProfile, Math.min(1, strength + 0.04), mod);
+    return mergeSentencePairs(result, targetProfile, Math.min(1, strength + 0.04), mod, transferPlan);
   }
 
   return result;
@@ -355,6 +589,43 @@ function applyPhraseTexture(text = '', currentProfile = {}, targetProfile = {}, 
 
   if (wantsMoreContractions || wantsShorter || wantsThatShift) {
     result = replaceLimited(result, /\bwhich is\b/gi, (match) => matchCase(match, "that's"), 2);
+  }
+
+  if (wantsMoreContractions || wantsShorter) {
+    result = replaceLimited(result, /\bI was not trying to\b/gi, (match) => matchCase(match, "I wasn't trying to"), 1);
+    result = replaceLimited(result, /\bI was not going to\b/gi, (match) => matchCase(match, "I wasn't going to"), 1);
+  }
+
+  return result;
+}
+
+function applyDiscourseFrameTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76, transferPlan = {}) {
+  let result = text;
+  const targetWords = targetProfile.functionWordProfile || {};
+  const currentWords = functionWordProfile(result);
+  const relation = transferPlan?.dominantRelation || dominantRelationFromInventory(relationInventory(transferPlan?.relationInventory || {}));
+  const wantsShorter = Boolean(transferPlan?.wantsShorter);
+  const wantsLonger = Boolean(transferPlan?.wantsLonger);
+
+  if ((relation === 'clarifying' || relation === 'resumptive' || transferPlan?.shiftStanceFrames) && (targetWords.actually || 0) > ((currentWords.actually || 0) + 0.0015)) {
+    result = replaceLimited(result, /\bi mean\b/gi, (match) => matchCase(match, 'actually'), 1);
+  }
+
+  if ((relation === 'contrastive' || relation === 'resumptive') && (targetWords.still || 0) > ((currentWords.still || 0) + 0.0015)) {
+    result = replaceLimited(result, /\bat least\b/gi, (match) => matchCase(match, 'still'), 1);
+  }
+
+  if ((relation === 'clarifying' || wantsLonger) && (targetWords.that || 0) > ((currentWords.that || 0) + 0.0015)) {
+    result = replaceLimited(result, /\bin other words\b/gi, (match) => matchCase(match, 'that is'), 1);
+  }
+
+  if (wantsShorter) {
+    result = replaceLimited(result, /\bto be honest\b/gi, (match) => matchCase(match, 'honestly'), 1);
+    result = replaceLimited(result, /\bi think\b/gi, (match) => matchCase(match, 'apparently'), 1);
+  }
+
+  if (wantsLonger && relation === 'resumptive') {
+    result = replaceLimited(result, /\bapparently\b/gi, (match) => matchCase(match, 'honestly'), Math.max(1, Math.round(strength * 2)));
   }
 
   return result;
@@ -475,7 +746,7 @@ function applyContractionTexture(text = '', targetProfile = {}, mod = {}) {
     .replace(/\bthat's\b/gi, 'that is');
 }
 
-function applyFunctionWordTexture(text = '', targetProfile = {}, strength = 0.76, connectorProfile = null) {
+function applyFunctionWordTexture(text = '', targetProfile = {}, strength = 0.76, connectorProfile = null, transferPlan = null) {
   const target = connectorProfile?.functionWordProfile || targetProfile.functionWordProfile || {};
   const current = functionWordProfile(text);
   let result = text;
@@ -483,7 +754,11 @@ function applyFunctionWordTexture(text = '', targetProfile = {}, strength = 0.76
 
   if ((target.but || 0) > (current.but || 0) + 0.0015) {
     result = replaceLimited(result, /\band\b/gi, (match) => matchCase(match, 'but'), limit);
-  } else if ((target.and || 0) > (current.and || 0) + 0.002) {
+  } else if (
+    additiveDominance(target) &&
+    (target.and || 0) > (current.and || 0) + 0.006 &&
+    (transferPlan?.dominantRelation || 'additive') === 'additive'
+  ) {
     result = replaceLimited(result, /\bbut\b/gi, (match) => matchCase(match, 'and'), limit);
   }
 
@@ -1290,11 +1565,177 @@ function hasRepeatedConnectorSequence(text = '') {
   return /(^|[;:.!?]\s+|\s)(and|but|though|yet|since|because|so|then|when|while|as)\s+\2\b/i.test(text);
 }
 
+function buildTransferPlan({
+  sourceProfile = {},
+  targetProfile = {},
+  targetGap = {},
+  opportunityProfile = {},
+  effectiveMod = {},
+  strength = 0.76
+}) {
+  const relationProfile = relationInventory(opportunityProfile);
+  const wantsShorter =
+    (targetProfile.avgSentenceLength || 0) < ((sourceProfile.avgSentenceLength || 0) - 0.4) ||
+    (targetGap.sentenceCount || 0) >= 1 && (targetProfile.avgSentenceLength || 0) <= (sourceProfile.avgSentenceLength || 0);
+  const wantsLonger =
+    (targetProfile.avgSentenceLength || 0) > ((sourceProfile.avgSentenceLength || 0) + 0.4) ||
+    ((sourceProfile.sentenceCount || 0) - desiredSentenceCount(sourceProfile, targetProfile)) >= 1;
+  const splitCount = wantsShorter
+    ? Math.max(1, Math.round(((targetGap.avgSentence || 0) + (targetGap.sentenceCount || 0)) * (0.7 + (strength * 0.4))))
+    : 0;
+  const mergeCount = wantsLonger
+    ? Math.max(1, Math.round(((targetGap.avgSentence || 0) + (targetGap.sentenceCount || 0)) * (0.45 + (strength * 0.32))))
+    : 0;
+
+  return {
+    wantsShorter,
+    wantsLonger,
+    splitCount,
+    mergeCount,
+    raiseContraction: (effectiveMod.cont || 0) > 0 || (targetGap.contraction || 0) >= 0.006,
+    lowerContraction: (effectiveMod.cont || 0) < 0 || (targetProfile.contractionDensity || 0) < ((sourceProfile.contractionDensity || 0) - 0.006),
+    shiftConnectors: (targetGap.functionWord || 0) >= 0.015 || (opportunityProfile.connector || 0) > 0,
+    shiftStanceFrames: (relationProfile.clarifying || 0) > 0 || (relationProfile.resumptive || 0) > 0 || (relationProfile.contrastive || 0) > 0,
+    raiseLineBreaks: (targetGap.lineBreak || 0) >= 0.02 && (targetProfile.lineBreakDensity || 0) > (sourceProfile.lineBreakDensity || 0),
+    lowerLineBreaks: (targetGap.lineBreak || 0) >= 0.02 && (targetProfile.lineBreakDensity || 0) < (sourceProfile.lineBreakDensity || 0),
+    dominantRelation: dominantRelationFromInventory(relationProfile),
+    relationInventory: relationProfile,
+    limitedOpportunity: hasLimitedRewriteOpportunity(opportunityProfile)
+  };
+}
+
+function buildCandidateSpecs(transferPlan = {}) {
+  const specs = [
+    {
+      name: 'mixed-structural',
+      splitBias: 1,
+      mergeBias: 1,
+      connectorBias: 1,
+      frameBias: 1,
+      lineBreakBias: 1,
+      punctuationBias: 1,
+      allowFallback: true
+    }
+  ];
+
+  if (transferPlan.splitCount > 0) {
+    specs.push({
+      name: 'split-heavy',
+      splitBias: 1.6,
+      mergeBias: 0.45,
+      connectorBias: 1.15,
+      frameBias: 1.15,
+      lineBreakBias: 1.1,
+      punctuationBias: 0.72,
+      allowFallback: true
+    });
+  }
+
+  if (transferPlan.mergeCount > 0) {
+    specs.push({
+      name: 'merge-heavy',
+      splitBias: 0.4,
+      mergeBias: 1.6,
+      connectorBias: 1.1,
+      frameBias: 1.05,
+      lineBreakBias: 0.85,
+      punctuationBias: 0.82,
+      allowFallback: true
+    });
+  }
+
+  if (transferPlan.shiftConnectors || transferPlan.shiftStanceFrames) {
+    specs.push({
+      name: 'connector-stance-heavy',
+      splitBias: 0.8,
+      mergeBias: 0.8,
+      connectorBias: 1.45,
+      frameBias: 1.35,
+      lineBreakBias: 0.8,
+      punctuationBias: 0.55,
+      allowFallback: false
+    });
+  }
+
+  return specs;
+}
+
+function additiveDriftState({
+  sourceText = '',
+  outputText = '',
+  targetProfile = {},
+  opportunityProfile = {}
+}) {
+  const targetWords = targetProfile.functionWordProfile || {};
+  const sourceAnd = countWordOccurrences(sourceText, 'and');
+  const outputAnd = countWordOccurrences(outputText, 'and');
+  const sourceBut = countWordOccurrences(sourceText, 'but');
+  const outputBut = countWordOccurrences(outputText, 'but');
+  const glueJoins = (normalizeText(outputText).match(/(?:,\s+and\b|;\s+and\b|-\s+and\b)/gi) || []).length;
+  const addedAnd = Math.max(0, outputAnd - sourceAnd);
+  const sourceStructuredRelations =
+    (opportunityProfile.contrastive || 0) +
+    (opportunityProfile.causal || 0) +
+    (opportunityProfile.temporal || 0) +
+    (opportunityProfile.clarifying || 0);
+  const additivePreferred = additiveDominance(targetWords);
+  const flattenedContrast = sourceBut > outputBut && addedAnd > 0;
+
+  if (sourceStructuredRelations > 0 && !additivePreferred && (glueJoins >= 2 || addedAnd >= 2 || flattenedContrast)) {
+    return {
+      failed: true,
+      note: 'Structural opportunity existed but the current candidate collapsed into additive drift.'
+    };
+  }
+
+  return {
+    failed: false,
+    note: ''
+  };
+}
+
+function candidateScore({
+  quality = {},
+  outputText = '',
+  sourceText = '',
+  outputProfile = {},
+  targetProfile = {},
+  changedDimensions = [],
+  passesApplied = []
+}) {
+  const fit = compareTexts('', '', {
+    profileA: outputProfile,
+    profileB: targetProfile
+  });
+
+  let score = quality.qualityGatePassed ? 80 : -30;
+  score += structuralDimensions(changedDimensions).length * 16;
+  score += quality.nonPunctuationDimensions.length * 10;
+  score += hasMaterialStructuralTransfer(changedDimensions) ? 24 : 0;
+  score += passesApplied.length * 1.5;
+  score -= (fit.sentenceDistance || 0) * 12;
+  score -= (fit.functionWordDistance || 0) * 22;
+  score -= (fit.contractionDistance || 0) * 8;
+  score -= (fit.punctShapeDistance || 0) * 6;
+  score -= (fit.punctDistance || 0) * 4;
+
+  if (outputText === sourceText) {
+    score -= 24;
+  }
+
+  if ((quality.notes || []).some((note) => /additive drift/i.test(note))) {
+    score -= 40;
+  }
+
+  return score;
+}
+
 function evaluateTransferQuality({
   sourceText = '',
   outputText = '',
   workingText = '',
   sourceProfile = {},
+  targetProfile = {},
   targetGap = {},
   outputProfile = {},
   changedDimensions = [],
@@ -1341,6 +1782,17 @@ function evaluateTransferQuality({
 
   if (outputText === sourceText && materialGap && !limitedOpportunity) {
     notes.push('Material target gap remained unresolved.');
+  }
+
+  const additiveDrift = additiveDriftState({
+    sourceText,
+    outputText,
+    targetProfile,
+    opportunityProfile
+  });
+
+  if (additiveDrift.failed) {
+    notes.push(additiveDrift.note);
   }
 
   return {
@@ -1409,7 +1861,7 @@ function applySentenceTexture(text = '', currentProfile = {}, targetProfile = {}
   return text;
 }
 
-function applyBaselineTransferFloor(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null) {
+function applyBaselineTransferFloor(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null, transferPlan = null) {
   let result = text;
   const maxLength = Math.ceil(normalizeText(text).length * 1.28);
   const targetCount = desiredSentenceCount(baseProfile, targetProfile);
@@ -1424,7 +1876,7 @@ function applyBaselineTransferFloor(text = '', baseProfile = {}, targetProfile =
     result = mergeSentencePairs(result, targetProfile, Math.min(1, strength + 0.08), {
       ...mod,
       sent: Math.max(1, Number(mod.sent || 0) || 1)
-    });
+    }, transferPlan);
   } else if (wantsShorter) {
     result = splitLongSentences(result, targetProfile, Math.min(1, strength + 0.08));
   }
@@ -1434,8 +1886,9 @@ function applyBaselineTransferFloor(text = '', baseProfile = {}, targetProfile =
     cont: contractionDirection
   });
   result = applyPhraseTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.14));
+  result = applyDiscourseFrameTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.12), transferPlan);
   result = applyStanceTexture(result, targetProfile, Math.min(1, strength + 0.14), connectorProfile);
-  result = applyFunctionWordTexture(result, targetProfile, Math.min(1, strength + 0.18), connectorProfile);
+  result = applyFunctionWordTexture(result, targetProfile, Math.min(1, strength + 0.18), connectorProfile, transferPlan);
 
   if (Math.abs((targetProfile.lineBreakDensity || 0) - (baseProfile.lineBreakDensity || 0)) >= 0.02) {
     result = applyLineBreakTexture(result, targetProfile, Math.min(1, strength + 0.1));
@@ -1457,7 +1910,7 @@ function finalizeTransformedText(text = '') {
     .trim();
 }
 
-function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null) {
+function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null, transferPlan = null) {
   let result = text;
   const maxLength = Math.ceil(normalizeText(text).length * 1.28);
   const currentProfile = extractCadenceProfile(result);
@@ -1469,17 +1922,18 @@ function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, s
     result = mergeSentencePairs(result, targetProfile, Math.min(1, strength + 0.2), {
       ...mod,
       sent: Math.max(1, Number(mod.sent || 0))
-    });
+    }, transferPlan);
   } else if (wantsShorter || targetCount > (currentProfile.sentenceCount || 0)) {
     result = splitLongSentences(result, targetProfile, Math.min(1, strength + 0.22));
   }
 
   result = applyPhraseTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.16));
+  result = applyDiscourseFrameTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.14), transferPlan);
   result = applyContractionTexture(result, targetProfile, {
     ...mod,
     cont: Number(mod.cont || 0) || Math.sign((targetProfile.contractionDensity || 0) - (currentProfile.contractionDensity || 0))
   });
-  result = applyFunctionWordTexture(result, targetProfile, Math.min(1, strength + 0.18), connectorProfile);
+  result = applyFunctionWordTexture(result, targetProfile, Math.min(1, strength + 0.18), connectorProfile, transferPlan);
   result = applyLineBreakTexture(result, targetProfile, Math.min(1, strength + 0.14));
 
   if (Math.abs((targetProfile.punctuationDensity || 0) - (baseProfile.punctuationDensity || 0)) > 0.01) {
@@ -1521,167 +1975,323 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   const targetProfile = buildTransferTargetProfile(sourceProfile, shell, mod, strength);
   const effectiveMod = deriveRelativeCadenceMod(sourceProfile, targetProfile, mod);
   const targetGap = profileDeltaToTarget(sourceProfile, targetProfile);
+  const transferPlan = buildTransferPlan({
+    sourceProfile,
+    targetProfile,
+    targetGap,
+    opportunityProfile,
+    effectiveMod,
+    strength
+  });
   const protectedState = protectTransferLiterals(sourceText);
   const connectorProfile = shell?.profile || targetProfile;
   const maxLength = Math.ceil(sourceText.length * 1.28);
-  const debugPasses = debug ? [] : null;
-  let workingText = protectedState.text;
-  let passesApplied = [];
-
   const previewText = (candidate) => finalizeTransformedText(
     restoreProtectedLiterals(candidate, protectedState.literals)
   );
   const previewProfile = (candidate) => extractCadenceProfile(previewText(candidate));
-  const runPass = (name, fn) => {
-    const nextValue = fn(workingText);
-    if (nextValue !== workingText) {
-      workingText = nextValue;
-      passesApplied.push(name);
-      if (debugPasses) {
-        debugPasses.push({
-          name,
-          text: previewText(workingText)
-        });
+  const candidateSpecs = buildCandidateSpecs(transferPlan);
+  const runCandidate = (spec = {}) => {
+    let workingText = protectedState.text;
+    let passesApplied = [];
+    let currentProfile = sourceProfile;
+    let gap = targetGap;
+    const candidateDebugPasses = debug ? [] : null;
+    const candidateStrength = Math.min(
+      1,
+      strength +
+      ((((spec.splitBias || 1) + (spec.mergeBias || 1) + (spec.connectorBias || 1)) - 3) * 0.035)
+    );
+    const candidateMod = {
+      ...effectiveMod,
+      sent: transferPlan.wantsShorter
+        ? -Math.max(1, Math.round(Math.max(Math.abs(Number(effectiveMod.sent || 0)), spec.splitBias || 1)))
+        : transferPlan.wantsLonger
+          ? Math.max(1, Math.round(Math.max(Math.abs(Number(effectiveMod.sent || 0)), spec.mergeBias || 1)))
+          : Number(effectiveMod.sent || 0),
+      cont: Number(effectiveMod.cont || 0),
+      punc: (spec.punctuationBias || 1) < 0.7
+        ? clamp(Number(effectiveMod.punc || 0), -1, 1)
+        : Number(effectiveMod.punc || 0)
+    };
+    const runPass = (name, fn) => {
+      const nextValue = fn(workingText);
+      if (nextValue !== workingText) {
+        workingText = nextValue;
+        passesApplied.push(name);
+        if (candidateDebugPasses) {
+          candidateDebugPasses.push({
+            name,
+            text: previewText(workingText)
+          });
+        }
       }
-    }
-  };
+    };
 
-  let currentProfile = sourceProfile;
-  runPass('baseline-transfer-floor', () =>
-    applyBaselineTransferFloor(workingText, currentProfile, targetProfile, Math.min(1, strength + 0.08), effectiveMod, connectorProfile)
-  );
-  currentProfile = previewProfile(workingText);
-
-  if (shouldApplySentenceTexture(currentProfile, targetProfile, targetGap, effectiveMod)) {
-    runPass('sentence-structure', () =>
-      applySentenceTexture(workingText, currentProfile, targetProfile, Math.min(1, strength + 0.08), effectiveMod)
+    runPass('baseline-transfer-floor', () =>
+      applyBaselineTransferFloor(
+        workingText,
+        currentProfile,
+        targetProfile,
+        Math.min(1, candidateStrength + 0.08),
+        candidateMod,
+        connectorProfile,
+        transferPlan
+      )
     );
     currentProfile = previewProfile(workingText);
-  }
 
-  runPass('clause-join-split', () =>
-    applyClauseTexture(workingText, currentProfile, targetProfile, Math.min(1, strength + 0.08), effectiveMod)
-  );
-  currentProfile = previewProfile(workingText);
+    if (transferPlan.wantsShorter && (spec.splitBias || 0) > 0.1) {
+      runPass('planned-sentence-split', () =>
+        applySplitRules(
+          workingText,
+          Math.max(1, Math.round((transferPlan.splitCount || 1) * (spec.splitBias || 1)))
+        )
+      );
+      currentProfile = previewProfile(workingText);
+    } else if (transferPlan.wantsLonger && (spec.mergeBias || 0) > 0.1) {
+      runPass('planned-sentence-merge', () => {
+        let nextValue = workingText;
+        const mergeLoops = Math.max(1, Math.round((transferPlan.mergeCount || 1) * (spec.mergeBias || 1)));
+        for (let index = 0; index < mergeLoops; index += 1) {
+          const merged = mergeSentencePairs(
+            nextValue,
+            targetProfile,
+            Math.min(1, candidateStrength + 0.06),
+            candidateMod,
+            transferPlan
+          );
+          if (merged === nextValue) {
+            break;
+          }
+          nextValue = merged;
+        }
+        return nextValue;
+      });
+      currentProfile = previewProfile(workingText);
+    }
 
-  runPass('connector-stance-lexicon', () => {
-    let nextValue = applyPhraseTexture(workingText, currentProfile, targetProfile, Math.min(1, strength + 0.12));
-    nextValue = applyStanceTexture(nextValue, targetProfile, Math.min(1, strength + 0.12), connectorProfile);
-    nextValue = applyFunctionWordTexture(nextValue, targetProfile, Math.min(1, strength + 0.16), connectorProfile);
-    return nextValue;
-  });
-  currentProfile = previewProfile(workingText);
+    if (shouldApplySentenceTexture(currentProfile, targetProfile, targetGap, candidateMod)) {
+      runPass('sentence-structure', () =>
+        applySentenceTexture(
+          workingText,
+          currentProfile,
+          targetProfile,
+          Math.min(1, candidateStrength + 0.08),
+          candidateMod
+        )
+      );
+      currentProfile = previewProfile(workingText);
+    }
 
-  let gap = profileDeltaToTarget(currentProfile, targetProfile);
-  if (gap.contraction >= 0.006 || Math.abs(Number(effectiveMod.cont || 0)) > 0) {
-    runPass('contraction-auxiliary', () => applyContractionTexture(workingText, targetProfile, effectiveMod));
+    runPass('clause-join-split', () =>
+      applyClauseTexture(
+        workingText,
+        currentProfile,
+        targetProfile,
+        Math.min(1, candidateStrength + 0.06),
+        candidateMod,
+        transferPlan
+      )
+    );
     currentProfile = previewProfile(workingText);
-    gap = profileDeltaToTarget(currentProfile, targetProfile);
-  }
 
-  if (gap.lineBreak >= 0.02) {
-    runPass('line-break', () => applyLineBreakTexture(workingText, targetProfile, Math.min(1, strength + 0.08)));
-    currentProfile = previewProfile(workingText);
-    gap = profileDeltaToTarget(currentProfile, targetProfile);
-  }
+    if (transferPlan.shiftStanceFrames || transferPlan.shiftConnectors) {
+      runPass('discourse-frame', () =>
+        applyDiscourseFrameTexture(
+          workingText,
+          currentProfile,
+          targetProfile,
+          Math.min(1, candidateStrength + (0.12 * Math.max(1, spec.frameBias || 1))),
+          transferPlan
+        )
+      );
+      currentProfile = previewProfile(workingText);
+    }
 
-  if (
-    gap.punctuation >= 0.008 ||
-    gap.punctuationShape >= 0.05 ||
-    Math.abs(Number(effectiveMod.punc || 0)) > 0
-  ) {
-    runPass('punctuation-finish', () => {
-      let nextValue = applyPunctuationTexture(workingText, targetProfile, effectiveMod);
-      if ((effectiveMod.punc || 0) < 0) {
-        nextValue = nextValue.replace(/[;:]+/g, '.').replace(/,+/g, ',');
-      }
+    runPass('connector-stance-lexicon', () => {
+      let nextValue = applyPhraseTexture(
+        workingText,
+        currentProfile,
+        targetProfile,
+        Math.min(1, candidateStrength + (0.12 * Math.max(1, spec.connectorBias || 1)))
+      );
+      nextValue = applyStanceTexture(
+        nextValue,
+        targetProfile,
+        Math.min(1, candidateStrength + (0.12 * Math.max(1, spec.connectorBias || 1))),
+        connectorProfile
+      );
+      nextValue = applyFunctionWordTexture(
+        nextValue,
+        targetProfile,
+        Math.min(1, candidateStrength + (0.16 * Math.max(1, spec.connectorBias || 1))),
+        connectorProfile,
+        transferPlan
+      );
       return nextValue;
     });
-  }
+    currentProfile = previewProfile(workingText);
 
-  const finalizedWorking = finalizeTransformedText(workingText);
-  if (finalizedWorking !== workingText) {
-    passesApplied.push('cleanup-restore');
-    workingText = finalizedWorking;
-  }
+    gap = profileDeltaToTarget(currentProfile, targetProfile);
+    if (transferPlan.raiseContraction || transferPlan.lowerContraction || gap.contraction >= 0.006 || Math.abs(Number(candidateMod.cont || 0)) > 0) {
+      runPass('contraction-auxiliary', () => applyContractionTexture(workingText, targetProfile, candidateMod));
+      currentProfile = previewProfile(workingText);
+      gap = profileDeltaToTarget(currentProfile, targetProfile);
+    }
 
-  let outputText = previewText(workingText);
-  let outputProfile = extractCadenceProfile(outputText);
-  let changedDimensions = collectChangedDimensions(sourceProfile, outputProfile);
-  let quality = evaluateTransferQuality({
-    sourceText,
-    outputText,
-    workingText,
-    sourceProfile,
-    targetGap,
-    outputProfile,
-    changedDimensions,
-    protectedState,
-    opportunityProfile
-  });
-  const debugState = debug
-    ? {
-        primary: {
-          text: outputText,
-          changedDimensions: [...changedDimensions],
-          qualityGatePassed: quality.qualityGatePassed,
-          notes: [...quality.notes],
-          passes: debugPasses ? [...debugPasses] : []
-        },
-        fallback: null
-      }
-    : null;
+    if (transferPlan.raiseLineBreaks || transferPlan.lowerLineBreaks || gap.lineBreak >= 0.02) {
+      runPass('line-break', () =>
+        applyLineBreakTexture(
+          workingText,
+          targetProfile,
+          Math.min(1, candidateStrength + (0.08 * Math.max(1, spec.lineBreakBias || 1)))
+        )
+      );
+      currentProfile = previewProfile(workingText);
+      gap = profileDeltaToTarget(currentProfile, targetProfile);
+    }
 
-  if ((!quality.qualityGatePassed || (quality.materialGap && !quality.limitedOpportunity && !hasMaterialStructuralTransfer(changedDimensions)))) {
-    const forcedWorking = forceStructuralShift(
+    const currentChangedDimensions = collectChangedDimensions(sourceProfile, currentProfile);
+    const hasStructuralMovement = structuralDimensions(currentChangedDimensions).length > 0;
+    const reducedStructuralGap =
+      (gap.avgSentence || 0) < 0.45 &&
+      (gap.functionWord || 0) < 0.015 &&
+      (gap.contraction || 0) < 0.006;
+
+    if (
+      (spec.punctuationBias || 1) > 0.45 &&
+      (
+        hasStructuralMovement ||
+        reducedStructuralGap ||
+        (!transferPlan.wantsShorter && !transferPlan.wantsLonger)
+      ) &&
+      (
+        gap.punctuation >= 0.008 ||
+        gap.punctuationShape >= 0.05 ||
+        Math.abs(Number(candidateMod.punc || 0)) > 0
+      )
+    ) {
+      runPass('punctuation-finish', () => {
+        let nextValue = applyPunctuationTexture(workingText, targetProfile, candidateMod);
+        if ((candidateMod.punc || 0) < 0) {
+          nextValue = nextValue.replace(/[;:]+/g, '.').replace(/,+/g, ',');
+        }
+        return nextValue;
+      });
+    }
+
+    const finalizedWorking = finalizeTransformedText(workingText);
+    if (finalizedWorking !== workingText) {
+      passesApplied.push('cleanup-restore');
+      workingText = finalizedWorking;
+    }
+
+    let outputText = previewText(workingText);
+    let outputProfile = extractCadenceProfile(outputText);
+    let changedDimensions = collectChangedDimensions(sourceProfile, outputProfile);
+    let quality = evaluateTransferQuality({
+      sourceText,
+      outputText,
       workingText,
       sourceProfile,
       targetProfile,
-      Math.min(1, strength + 0.18),
-      effectiveMod,
-      connectorProfile
-    );
+      targetGap,
+      outputProfile,
+      changedDimensions,
+      protectedState,
+      opportunityProfile
+    });
+    let fallbackDebug = null;
 
-    if (forcedWorking !== workingText && forcedWorking.length <= maxLength) {
-      workingText = forcedWorking;
-      passesApplied.push('structural-fallback');
-      outputText = previewText(workingText);
-      outputProfile = extractCadenceProfile(outputText);
-      changedDimensions = collectChangedDimensions(sourceProfile, outputProfile);
-      quality = evaluateTransferQuality({
-        sourceText,
-        outputText,
+    if (
+      spec.allowFallback &&
+      (
+        !quality.qualityGatePassed ||
+        (quality.materialGap && !quality.limitedOpportunity && !hasMaterialStructuralTransfer(changedDimensions))
+      )
+    ) {
+      const forcedWorking = forceStructuralShift(
         workingText,
         sourceProfile,
-        targetGap,
-        outputProfile,
-        changedDimensions,
-        protectedState,
-        opportunityProfile
-      });
+        targetProfile,
+        Math.min(1, candidateStrength + 0.18),
+        candidateMod,
+        connectorProfile,
+        transferPlan
+      );
 
-      if (debugState) {
-        debugState.fallback = {
-          text: outputText,
-          changedDimensions: [...changedDimensions],
-          qualityGatePassed: quality.qualityGatePassed,
-          notes: [...quality.notes]
-        };
+      if (forcedWorking !== workingText && forcedWorking.length <= maxLength) {
+        workingText = forcedWorking;
+        passesApplied.push('structural-fallback');
+        outputText = previewText(workingText);
+        outputProfile = extractCadenceProfile(outputText);
+        changedDimensions = collectChangedDimensions(sourceProfile, outputProfile);
+        quality = evaluateTransferQuality({
+          sourceText,
+          outputText,
+          workingText,
+          sourceProfile,
+          targetProfile,
+          targetGap,
+          outputProfile,
+          changedDimensions,
+          protectedState,
+          opportunityProfile
+        });
+
+        if (candidateDebugPasses) {
+          fallbackDebug = {
+            text: outputText,
+            changedDimensions: [...changedDimensions],
+            qualityGatePassed: quality.qualityGatePassed,
+            notes: [...quality.notes]
+          };
+        }
       }
     }
-  }
 
-  let finalText = outputText;
-  let finalProfile = outputProfile;
-  let qualityGatePassed = quality.qualityGatePassed;
+    return {
+      spec: spec.name,
+      workingText,
+      outputText,
+      outputProfile,
+      changedDimensions,
+      quality,
+      passesApplied: [...new Set(passesApplied)],
+      score: candidateScore({
+        quality,
+        outputText,
+        sourceText,
+        outputProfile,
+        targetProfile,
+        changedDimensions,
+        passesApplied
+      }),
+      debug: candidateDebugPasses
+        ? {
+            passes: [...candidateDebugPasses],
+            fallback: fallbackDebug
+          }
+        : null
+    };
+  };
+
+  const candidates = candidateSpecs.map((spec) => runCandidate(spec));
+  const bestCandidate = [...candidates].sort((left, right) => right.score - left.score)[0];
+
+  let finalText = bestCandidate.outputText;
+  let finalProfile = bestCandidate.outputProfile;
+  let qualityGatePassed = bestCandidate.quality.qualityGatePassed;
   let transferClass = 'weak';
-  const notes = [...quality.notes];
+  let changedDimensions = [...bestCandidate.changedDimensions];
+  const notes = [...bestCandidate.quality.notes];
 
-  if (quality.materialGap && quality.limitedOpportunity) {
+  if (bestCandidate.quality.materialGap && bestCandidate.quality.limitedOpportunity) {
     notes.push('Source offered limited structural rewrite opportunities, so the transfer stayed subtle.');
   }
 
-  if (!quality.qualityGatePassed) {
+  if (!bestCandidate.quality.qualityGatePassed) {
     if (isMaterialCadenceGap(targetGap)) {
       finalText = sourceText;
       finalProfile = sourceProfile;
@@ -1712,15 +2322,27 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     opportunityProfile,
     changedDimensions,
     protectedLiteralCount: protectedState.literals.length,
-    passesApplied: [...new Set(passesApplied)],
+    passesApplied: bestCandidate.passesApplied,
     transferClass,
     qualityGatePassed,
     notes: [...new Set(notes)],
     effectiveMod
   };
 
-  if (debugState) {
-    result.debug = debugState;
+  if (debug) {
+    result.debug = {
+      plan: transferPlan,
+      candidates: candidates.map((candidate) => ({
+        spec: candidate.spec,
+        score: round3(candidate.score),
+        changedDimensions: [...candidate.changedDimensions],
+        qualityGatePassed: candidate.quality.qualityGatePassed,
+        notes: [...candidate.quality.notes],
+        passesApplied: [...candidate.passesApplied]
+      })),
+      selected: bestCandidate.spec,
+      trace: bestCandidate.debug
+    };
   }
 
   return result;

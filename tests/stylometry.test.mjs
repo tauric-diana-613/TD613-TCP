@@ -172,6 +172,31 @@ const mergeTransfer = buildCadenceTransfer(
 );
 const mergeSourceProfile = extractCadenceProfile(mergeSource);
 const mergeProfile = extractCadenceProfile(mergeTransfer.text);
+const reverseContrastSource = 'Need the charger. Front door sticks. Knock twice if the light is out. I am in back.';
+const reverseContrastDonor = extractCadenceProfile(
+  'Honestly, I kept circling the point because every time I tried to leave, I found one more reason to stay, and then I stalled again because the room went quiet.'
+);
+const reverseContrastTransfer = buildCadenceTransfer(
+  reverseContrastSource,
+  {
+    mode: 'borrowed',
+    profile: reverseContrastDonor,
+    strength: 0.9
+  }
+);
+const reverseContrastSourceProfile = extractCadenceProfile(reverseContrastSource);
+const reverseContrastProfile = extractCadenceProfile(reverseContrastTransfer.text);
+const additiveGuardSource = 'Because the room stayed loud, I kept the note. But the line dragged. So I left this mark behind.';
+const additiveGuardTransfer = buildCadenceTransfer(
+  additiveGuardSource,
+  {
+    mode: 'borrowed',
+    profile: reverseContrastDonor,
+    strength: 0.9
+  }
+);
+const additiveGlueCount = (additiveGuardTransfer.text.match(/(?:,\s+and\b|;\s+and\b|-\s+and\b)/gi) || []).length;
+const additiveGuardLower = additiveGuardTransfer.text.toLowerCase();
 const lowOpportunitySource = 'Stone settles under glass.';
 const lowOpportunityTransfer = buildCadenceTransfer(
   lowOpportunitySource,
@@ -233,6 +258,26 @@ assert(
   mergeTransfer.changedDimensions.includes('sentence-mean')
 );
 assert(mergeProfile.sentenceCount <= mergeSourceProfile.sentenceCount);
+assert(
+  reverseContrastTransfer.transferClass === 'structural' ||
+  reverseContrastTransfer.changedDimensions.includes('sentence-count') ||
+  reverseContrastTransfer.changedDimensions.includes('sentence-mean')
+);
+assert(
+  reverseContrastProfile.avgSentenceLength > reverseContrastSourceProfile.avgSentenceLength ||
+  reverseContrastProfile.sentenceCount < reverseContrastSourceProfile.sentenceCount
+);
+assert(additiveGlueCount <= 1);
+assert(
+  additiveGuardTransfer.transferClass === 'rejected' ||
+  additiveGuardLower.includes('because') ||
+  additiveGuardLower.includes('since') ||
+  additiveGuardLower.includes('though') ||
+  additiveGuardLower.includes('yet') ||
+  additiveGuardLower.includes('but') ||
+  additiveGuardLower.includes('so') ||
+  additiveGuardLower.includes('then')
+);
 assert(lowOpportunityTransfer.opportunityProfile.sentenceSplit === 0);
 assert(lowOpportunityTransfer.opportunityProfile.sentenceMerge === 0);
 assert(['weak', 'rejected'].includes(lowOpportunityTransfer.transferClass));
