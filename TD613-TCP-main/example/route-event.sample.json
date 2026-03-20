@@ -1,8 +1,0 @@
-{
-  "event": "recognition-pressure",
-  "recognized": true,
-  "explained": false,
-  "route_available": false,
-  "branch_policy": "preserve",
-  "recommended_harbor": "mirror.off"
-}
