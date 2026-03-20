@@ -2216,7 +2216,123 @@ DeltaE = ${ledger.reuse_gain}`;
             'line-break-texture',
             'connector-stance'
           ].includes(dimension));
+      const hasBannedConnectors = (text) =>
+        /(though\s+if|honestly[,;]\s+and|but\s+because|and\s+though\s+if)/gi.test(text);
       const cases = [];
+
+      // --- Screenshot pair: Reference voice under probe cadence ---
+      const referenceVoice = "Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, I had used three qualifiers, two apologies, and the same phrase twice, which is apparently what I do when I'm buying time to say the hard part out loud.";
+      const probeVoice = "Hey, if you're still out, grab the charger and use the side door. It sticks, so lean on it. If nobody hears you right away, wait a second and knock again. I'm in back unloading boxes, and I probably won't catch the first try.";
+      const probeProfile = extractCadenceProfile(probeVoice);
+      const referenceProfile = extractCadenceProfile(referenceVoice);
+
+      const ssRefUnderProbe = buildCadenceTransfer(referenceVoice, {
+        mode: 'borrowed',
+        profile: probeProfile,
+        strength: 0.82
+      });
+      cases.push({
+        id: 'screenshot_reference_under_probe',
+        source: referenceVoice,
+        donorText: probeVoice,
+        transfer: ssRefUnderProbe,
+        pass:
+          ssRefUnderProbe.text !== referenceVoice &&
+          !hasBannedConnectors(ssRefUnderProbe.text) &&
+          (ssRefUnderProbe.transferClass === 'structural' || ssRefUnderProbe.transferClass === 'weak')
+      });
+
+      // --- Screenshot pair: Probe voice under reference cadence ---
+      const ssProbeUnderRef = buildCadenceTransfer(probeVoice, {
+        mode: 'borrowed',
+        profile: referenceProfile,
+        strength: 0.82
+      });
+      cases.push({
+        id: 'screenshot_probe_under_reference',
+        source: probeVoice,
+        donorText: referenceVoice,
+        transfer: ssProbeUnderRef,
+        pass:
+          ssProbeUnderRef.text !== probeVoice &&
+          !hasBannedConnectors(ssProbeUnderRef.text) &&
+          (ssProbeUnderRef.transferClass === 'structural' || ssProbeUnderRef.transferClass === 'weak' || ssProbeUnderRef.transferClass === 'rejected')
+      });
+
+      // --- Compression structural: recursive conversational → clipped operational ---
+      const recursiveConversational = "Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed.";
+      const clippedOperational = "Hey, grab the charger. Use the side door. It sticks, so lean on it. I'm in back.";
+      const compressionTransfer = buildCadenceTransfer(recursiveConversational, {
+        mode: 'borrowed',
+        profile: extractCadenceProfile(clippedOperational),
+        strength: 0.82
+      });
+      cases.push({
+        id: 'compression_structural',
+        source: recursiveConversational,
+        donorText: clippedOperational,
+        transfer: compressionTransfer,
+        pass:
+          compressionTransfer.text !== recursiveConversational &&
+          !hasBannedConnectors(compressionTransfer.text) &&
+          (compressionTransfer.changedDimensions || []).length >= 1
+      });
+
+      // --- Expansion structural: contrastive reserved → explanatory causal ---
+      const contrastiveReserved = 'The door was heavy. The hinge had shifted. I avoided going out.';
+      const explanatoryCausal = "The door stuck because the hinge had shifted, which meant that I had to put my full weight on the handle whenever I left, so I eventually just stopped going out.";
+      const expansionTransfer = buildCadenceTransfer(contrastiveReserved, {
+        mode: 'borrowed',
+        profile: extractCadenceProfile(explanatoryCausal),
+        strength: 0.82
+      });
+      cases.push({
+        id: 'expansion_structural',
+        source: contrastiveReserved,
+        donorText: explanatoryCausal,
+        transfer: expansionTransfer,
+        pass:
+          !hasBannedConnectors(expansionTransfer.text) &&
+          (expansionTransfer.transferClass === 'structural' ||
+           expansionTransfer.transferClass === 'weak' ||
+           expansionTransfer.transferClass === 'rejected')
+      });
+
+      // --- Pathology: additive collapse blocked ---
+      const pathAdditiveSource = 'Because the room stayed loud, I kept the note. But the line dragged. So I left this mark behind.';
+      const pathAdditiveDonor = 'Honestly, I kept circling the point because every time I tried to leave, I found one more reason to stay, and then I stalled again because the room went quiet.';
+      const pathAdditiveTransfer = buildCadenceTransfer(pathAdditiveSource, {
+        mode: 'borrowed',
+        profile: extractCadenceProfile(pathAdditiveDonor),
+        strength: 0.9
+      });
+      const pathAdditiveGlue = (pathAdditiveTransfer.text.match(/(?:,\s+and\b|;\s+and\b|-\s+and\b)/gi) || []).length;
+      cases.push({
+        id: 'pathology_additive_collapse_blocked',
+        source: pathAdditiveSource,
+        donorText: pathAdditiveDonor,
+        transfer: pathAdditiveTransfer,
+        pass: pathAdditiveGlue <= 1 && !hasBannedConnectors(pathAdditiveTransfer.text)
+      });
+
+      // --- Pathology: connector stacking blocked ---
+      const pathStackSource = "Even though if she called, I wouldn't answer because honestly, and this is what I told you, I just can't anymore.";
+      const pathStackTransfer = buildCadenceTransfer(pathStackSource, {
+        mode: 'borrowed',
+        profile: probeProfile,
+        strength: 0.88
+      });
+      cases.push({
+        id: 'pathology_connector_stack_blocked',
+        source: pathStackSource,
+        donorText: probeVoice,
+        transfer: pathStackTransfer,
+        pass:
+          !hasBannedConnectors(pathStackTransfer.text) ||
+          pathStackTransfer.transferClass === 'rejected'
+      });
+
+      // --- Existing cases follow ---
 
       const contrastSource = "Honestly, I was not trying to make a speech because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, which is apparently what I do, I was still buying time.";
       const contrastDonor = "Need you to grab the charger on your way in. Front door sticks, so pull hard. If the downstairs light is off, knock twice. I'm in back.";
