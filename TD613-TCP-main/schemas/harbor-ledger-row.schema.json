@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HarborLedgerRow",
+  "type": "object",
+  "required": [
+    "event_id",
+    "timestamp",
+    "operator_id",
+    "harbor_function",
+    "provenance_retention",
+    "route_status",
+    "receipt_hash"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string"
+    },
+    "operator_id": {
+      "type": "string"
+    },
+    "witness_channel": {
+      "type": "string"
+    },
+    "source_class": {
+      "type": "string"
+    },
+    "evidentiary_class": {
+      "type": "string"
+    },
+    "harbor_function": {
+      "type": "string"
+    },
+    "group_size": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "effective_archive": {
+      "type": "string"
+    },
+    "solo_cost": {
+      "type": "number"
+    },
+    "shared_cost": {
+      "type": "number"
+    },
+    "reuse_gain": {
+      "type": "number"
+    },
+    "provenance_retention": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "witness_load": {
+      "type": "number"
+    },
+    "justice_deficit": {
+      "type": "number"
+    },
+    "route_status": {
+      "type": "string"
+    },
+    "receipt_hash": {
+      "type": "string"
+    }
+  }
+}

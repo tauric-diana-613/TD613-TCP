@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CanonicalArtifact",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "analysis_mode",
+    "feature_vector_name",
+    "feature_vector",
+    "phase_vector",
+    "environment"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "analysis_mode": {
+      "const": "canonical"
+    },
+    "feature_vector_name": {
+      "type": "string"
+    },
+    "feature_vector": {
+      "type": "object"
+    },
+    "phase_vector": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "environment": {
+      "type": "object",
+      "required": [
+        "custodial_integrity",
+        "custodial_drift",
+        "collapse_threshold"
+      ],
+      "properties": {
+        "custodial_integrity": {
+          "type": "number"
+        },
+        "custodial_drift": {
+          "type": "number"
+        },
+        "collapse_threshold": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
