@@ -57,19 +57,19 @@
       value: 'off',
       label: 'armed',
       cue: 'route latent',
-      glyph: '\u25EB'
+      glyph: '◫'
     },
     on: {
       value: 'on',
       label: 'open',
       cue: 'route clear',
-      glyph: '\u25E7'
+      glyph: '◧'
     }
   };
   const INGRESS_BADGE_OPTIONS = [
-    { value: 'badge.holds', label: 'holds', cue: 'custody holds', glyph: '\u27C1' },
-    { value: 'badge.buffer', label: 'buffer', cue: 'custody buffer', glyph: '\u2B12' },
-    { value: 'badge.branch', label: 'branch', cue: 'candidate branch', glyph: '\u27C9' }
+    { value: 'badge.holds', label: 'holds', cue: 'custody holds', glyph: '⟁' },
+    { value: 'badge.buffer', label: 'buffer', cue: 'custody buffer', glyph: '⬒' },
+    { value: 'badge.branch', label: 'branch', cue: 'candidate branch', glyph: '⟉' }
   ];
   const INGRESS_STAGES = ['containment', 'mirror', 'badge', 'seal'];
 
@@ -250,7 +250,37 @@
     }, 1100);
   }
 
-  /* legacy swap cue helpers removed */
+  /* legacy swap cue helpers removed
+    const cueMessage = `${baseMessage} ↓ Shell Duel updated below.`;
+    clearStatusCueTimer();
+    setStatusMessage(cueMessage);
+    pulseShellDuel();
+    statusCueTimer = window.setTimeout(() => {
+      if ($('analysisStatus').textContent === cueMessage) {
+        setStatusMessage(baseMessage);
+      }
+      statusCueTimer = null;
+    }, 1800);
+  }
+
+  function setSwapStatusMessageLegacyCue(baseMessage) {
+    clearStatusCueTimer();
+    setStatusMessage(baseMessage);
+    const cue = $('analysisStatusCue');
+    if (cue) {
+      cue.textContent = 'â†“ Shell Duel updated below';
+      cue.hidden = false;
+    }
+    pulseShellDuel();
+    statusCueTimer = window.setTimeout(() => {
+      if (cue) {
+        cue.hidden = true;
+        cue.textContent = '';
+      }
+      statusCueTimer = null;
+    }, 1800);
+  }
+  */
 
   function setAnalysisRevealState(revealed) {
     analysisRevealed = revealed;
@@ -485,19 +515,14 @@
     const badgeTarget = ingressBadgeOption(ingress.target.badge);
     const currentBadge = ingress.currentBadge ? ingressBadgeOption(ingress.currentBadge) : null;
     const currentMirror = ingress.currentMirror ? ingressMirrorOption(ingress.currentMirror) : null;
-    const sealGlyphs = {
-      ul: mirrorTarget.glyph,
-      ur: badgeTarget.glyph,
-      bc: '\u25CE'
-    };
 
     let phaseLabel = 'Protocol // membrane waking';
-    let cueGlyph = '\u25CC';
+    let cueGlyph = '◌';
     let cueLabel = 'custody handshake unresolved';
     let cueCopy = 'Four gates. One valid posture.';
     let status = 'Wait for the first demand.';
     let coreLabel = 'Stand by';
-    let coreGlyph = '\u27D0';
+    let coreGlyph = '⟐';
     let coreEnabled = false;
     const sealTrack = $('ingressSealTrack');
     const sealNodeWrap = $('ingressSealNodes');
@@ -521,14 +546,14 @@
 
     if (ingress.phase === 'containment') {
       phaseLabel = 'Gate // containment';
-      cueGlyph = '\u25CE';
+      cueGlyph = '◎';
       cueLabel = 'collapse the ring stack';
       cueCopy = 'The field admits only stable contact.';
       status = ingress.holding === 'containment'
         ? 'Do not break contact.'
         : 'Unbroken contact resolves the gate.';
       coreLabel = 'stabilize';
-      coreGlyph = '\u25CE';
+      coreGlyph = '◎';
       coreEnabled = true;
     } else if (ingress.phase === 'mirror') {
       phaseLabel = 'Gate // mirror';
@@ -558,26 +583,26 @@
       $('ingressBadgeControls').hidden = false;
     } else if (ingress.phase === 'seal') {
       phaseLabel = 'Gate // seal';
-      cueGlyph = '\u27D0';
+      cueGlyph = '⟐';
       cueLabel = 'close the triad';
       cueCopy = `Resolved posture: ${mirrorTarget.cue} / ${badgeTarget.label} / containment stable. Seal the three points in clockwise order.`;
       status = ingress.sealRejectedNode
         ? 'That point does not close the triad. Touch the live point.'
         : 'Touch the next live point.';
       coreLabel = 'triad live';
-      coreGlyph = '\u27D0';
+      coreGlyph = '⟐';
       coreEnabled = false;
     } else if (ingress.phase === 'revealing') {
       phaseLabel = 'Reveal // handoff';
-      cueGlyph = '\u2B21';
+      cueGlyph = '⬡';
       cueLabel = 'membrane dissolving';
       cueCopy = 'The solved posture is crossing into the live deck.';
       status = 'Route handoff in progress.';
       coreLabel = 'opening';
-      coreGlyph = '\u2B21';
+      coreGlyph = '⬡';
     }
 
-    $('ingressPhaseLabel').innerHTML = `<span class="glyph glyph-cyan" aria-hidden="true">\u27D2</span> ${phaseLabel}`;
+    $('ingressPhaseLabel').innerHTML = `<span class="glyph glyph-cyan" aria-hidden="true">⟒</span> ${phaseLabel}`;
     $('ingressCueGlyph').textContent = cueGlyph;
     $('ingressCueLabel').textContent = cueLabel;
     $('ingressCueCopy').textContent = cueCopy;
@@ -599,11 +624,6 @@
     sealNodes.forEach(({ id, node }, index) => {
       if (!node) {
         return;
-      }
-
-      const glyphNode = node.querySelector('span[aria-hidden="true"]');
-      if (glyphNode) {
-        glyphNode.textContent = sealGlyphs[id] || '\u27D0';
       }
 
       let state = 'pending';
@@ -1068,7 +1088,7 @@
 
     return `
       <div class="duel-heatmap-grid">${cells}</div>
-      <div class="duel-heatmap-copy">Sentence length \u00D7 punctuation load</div>
+      <div class="duel-heatmap-copy">Sentence length × punctuation load</div>
     `;
   }
 
