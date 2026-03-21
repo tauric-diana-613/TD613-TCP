@@ -1823,6 +1823,76 @@
     return [stripped];
   }
 
+  function classifyClauseType(text = '') {
+    const normalized = stripTerminalPunctuation(text).toLowerCase().trim();
+
+    if (/^\s*(?:which|that|who|whom|whose)\b/.test(text)) {
+      return 'relative';
+    }
+
+    if (/^(?:because|since|as|if|when|while|unless|until|once|though|although|even\s+though)(?:\s+|$)/i.test(normalized)) {
+      return 'subordinate';
+    }
+
+    if (/^(?:honestly|apparently|frankly|basically|anyway|i\s+think|i\s+guess|i\s+mean|to\s+be\s+honest)(?:\s|,|$)/i.test(normalized)) {
+      return 'parenthetical';
+    }
+
+    const hasAnyVerb = /\b(?:is|was|are|were|be|been|being|do|does|did|will|would|can|could|may|might|shall|should|have|has|had|must|go|comes?|makes?|says?|sees?|thinks?|knows?|gets?|takes?|gives?|finds?|tells?|asks?|works?|calls?|tries?|uses?|starts?|helps?|plays?|moves?|likes?|lives?|believes?|holds?|brings?|begins?|seems?|talks?|turns?|shows?|hears?|lets?|means?|sets?|meets?|runs?|pays?|sits?|speaks?|lies?|leads?|reads?|allows?|adds?|spends?|grows?|opens?|walks?|wins?|offers?|remembers?|loves?|considers?|appears?|buys?|waits?|serves?|dies?|sends?|expects?|builds?|stays?|falls?|cuts?|reaches?|kills?|remains?|suggests?|raises?|passes?|sells?|requires?|reports?|decides?|pulls?|produces?|eats?|covers?|catches?|draws?|breaks?|changes?|understands?|watches?|follows?|stops?|creates?)\b/i;
+    if (!hasAnyVerb.test(normalized)) {
+      return 'fragment';
+    }
+
+    return 'main';
+  }
+
+  function detectClauseCompleteness(text = '') {
+    const normalized = stripTerminalPunctuation(text).toLowerCase().trim();
+    const subjectPattern = /\b(?:I|we|you|they|he|she|it|there|this|that|which|who|one|each|every|some|any|all|both|neither|either|another|the|a|an)\b|^[A-Z]\w+\s+/i;
+    const subjectPresent = subjectPattern.test(text);
+    const finiteVerbPresent = /\b(?:is|was|are|were|be|been|do|does|did|will|would|can|could|may|might|have|has|had|must|am|go|comes?|makes?|says?|sees?|thinks?|knows?|gets?|takes?|gives?|finds?|tells?|asks?|works?|calls?|tries?|uses?|starts?|helps?|plays?|moves?|likes?|lives?|believes?|holds?|brings?|begins?|seems?|talks?|turns?|shows?|hears?|lets?|means?|sets?|meets?|runs?|pays?|sits?|speaks?|lies?|leads?|reads?|allows?|adds?|spends?|grows?|opens?|walks?|wins?|offers?|remembers?|loves?|considers?|appears?|buys?|waits?|serves?|dies?|sends?|expects?|builds?|stays?|falls?|cuts?|reaches?|kills?|remains?|suggests?|raises?|passes?|sells?|requires?|reports?|decides?|pulls?|produces?|eats?|covers?|catches?|draws?|breaks?|changes?|understands?|watches?|follows?|stops?|creates?)\b/i;
+    const finiteVerbCheck = finiteVerbPresent.test(normalized);
+
+    return { subjectPresent, finiteVerbPresent: finiteVerbCheck };
+  }
+
+  function detectModalityAndHedges(text = '') {
+    const normalized = normalizeText(text).toLowerCase();
+
+    let modality = 'indicative';
+    if (/\b(?:would|could|might|may|should|must|can)\b/.test(normalized)) {
+      modality = 'modal';
+    } else if (/\b(?:might|may|could)\b/.test(normalized)) {
+      modality = 'conditional';
+    }
+
+    const hedgeMarkers = [];
+    const hedgePatterns = [
+      { pattern: /\b(?:maybe|perhaps|possibly|arguably|apparently|sort\s+of|kind\s+of|somewhat|rather|quite|somewhat)\b/gi, hedge: 'uncertainty' },
+      { pattern: /\b(?:honestly|frankly|to\s+be\s+honest|i\s+think|i\s+guess|i\s+mean|in\s+my\s+opinion)\b/gi, hedge: 'stance' },
+      { pattern: /\b(?:just|simply|merely|only|barely|hardly|scarcely)\b/gi, hedge: 'minimization' },
+      { pattern: /\b(?:really|very|quite|rather|definitely|certainly|absolutely)\b/gi, hedge: 'intensification' }
+    ];
+
+    for (const { pattern, hedge } of hedgePatterns) {
+      if (pattern.test(normalized)) {
+        hedgeMarkers.push(hedge);
+      }
+    }
+
+    const polarity = /\b(?:not|no|never|neither|nor)\b/i.test(text) ? 'negative' : 'positive';
+
+    return { modality, hedgeMarkers: [...new Set(hedgeMarkers)], polarity };
+  }
+
+  function buildOpportunityProfileFromIR(ir) {
+    const profile = buildOpportunityProfile(ir.sourceText);
+    profile.irClauseBoundaries = ir.metadata.clauseCount;
+    profile.irSentenceCount = ir.metadata.sentenceCount;
+    profile.irClauses = ir.sentences.filter((s) => s.clauses.length > 1).length;
+    return profile;
+  }
+
   const PATHOLOGY_TYPES = {
     PATH_CONNECTOR_STACK: 'PATH_CONNECTOR_STACK',
     PATH_ADDITIVE_COLLAPSE: 'PATH_ADDITIVE_COLLAPSE',
