@@ -596,6 +596,11 @@
         return;
       }
 
+      const glyphNode = node.querySelector('span[aria-hidden="true"]');
+      if (glyphNode) {
+        glyphNode.textContent = '\u25CF';
+      }
+
       let state = 'pending';
       if (ingress.phase === 'seal') {
         if (ingress.sealRejectedNode === id) {
