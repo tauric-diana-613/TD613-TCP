@@ -72,6 +72,11 @@
     { value: 'badge.branch', label: 'branch', cue: 'candidate branch', glyph: '⟉' }
   ];
   const INGRESS_STAGES = ['containment', 'mirror', 'badge', 'seal'];
+  const INGRESS_SEAL_NODE_GLYPHS = {
+    ul: '\u25EB\u2301',
+    ur: '\u27C9\u232C',
+    bc: '\u25CE\u232D'
+  };
 
   function resolveIngressMirrorTarget(value) {
     return Object.prototype.hasOwnProperty.call(INGRESS_MIRROR_OPTIONS, value) ? value : null;
@@ -624,6 +629,11 @@
     sealNodes.forEach(({ id, node }, index) => {
       if (!node) {
         return;
+      }
+
+      const glyphNode = node.querySelector('span[aria-hidden="true"]');
+      if (glyphNode) {
+        glyphNode.textContent = INGRESS_SEAL_NODE_GLYPHS[id] || '\u27D0';
       }
 
       let state = 'pending';
