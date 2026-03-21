@@ -6,380 +6,211 @@ import {
   sentenceSplit
 } from '../app/engine/stylometry.js';
 
-// Utility: Check for banned connector patterns
-function hasBannedConnectors(text) {
+const STRUCTURAL_DIMENSIONS = new Set([
+  'sentence-mean',
+  'sentence-count',
+  'sentence-spread',
+  'contraction-posture',
+  'line-break-texture',
+  'connector-stance'
+]);
+
+const LEXICAL_DIMENSIONS = new Set([
+  'lexical-register',
+  'content-word-complexity',
+  'modifier-density',
+  'directness',
+  'abstraction-posture'
+]);
+
+function hasBannedConnectors(text = '') {
   return /(though\s+if|honestly[,;]\s+and|but\s+because|and\s+though\s+if)/gi.test(text);
 }
 
-// Utility: Check for critical orphan fragments (only those that break meaning)
-// Note: Split sentences starting with connectors can be grammatical if they have verbs
-function hasOrphanFragments(text) {
-  const sentences = sentenceSplit(text);
-  for (let i = 0; i < sentences.length; i += 1) {
-    const sentence = sentences[i].toLowerCase().trim();
-    // Only flag if it's a bare connector with NO subject or verb structure at all
-    if (/^(?:and|but|so|then|because|since|when|while|though|although)\s+\w{1,3}\s*$/.test(sentence) && i > 0) {
-      return true;
-    }
-  }
-  return false;
+function hasOrphanFragments(text = '') {
+  return sentenceSplit(text).some((sentence, index) => {
+    const normalized = sentence.trim().toLowerCase();
+    return index > 0 &&
+      /^(?:and|but|so|then|because|since|when|while|though|although)\s+\w{1,3}\s*$/.test(normalized);
+  });
 }
 
-// Utility: Get non-punctuation dimension count
-function getNonPunctuationDimensions(changed) {
-  return changed.filter(d => d !== 'punctuation').length;
+function structuralDimensions(changedDimensions = []) {
+  return changedDimensions.filter((dimension) => STRUCTURAL_DIMENSIONS.has(dimension));
 }
 
-// Utility: Check if array contains a structural dimension
-function hasStructuralDimension(changed) {
-  const structural = ['avgSentenceLength', 'sentenceCount', 'contractionDensity'];
-  return changed.some(d => structural.includes(d));
+function lexicalDimensions(changedDimensions = []) {
+  return changedDimensions.filter((dimension) => LEXICAL_DIMENSIONS.has(dimension));
 }
 
-// Utility: Count sentences
-function sentenceCount(text) {
-  return sentenceSplit(text).filter(s => s.trim().length > 0).length;
+function donorDistance(text, donorProfile) {
+  const profile = typeof text === 'string' ? extractCadenceProfile(text) : text;
+  const fit = compareTexts('', '', {
+    profileA: profile,
+    profileB: donorProfile
+  });
+  return Number((
+    (fit.sentenceDistance || 0) +
+    (fit.functionWordDistance || 0) +
+    (fit.contractionDistance || 0) +
+    (fit.punctShapeDistance || 0) +
+    (fit.registerDistance || 0)
+  ).toFixed(3));
 }
 
-// Utility: Get average sentence length
-function getAvgSentenceLength(text) {
-  const sentences = sentenceSplit(text).filter(s => s.trim().length > 0);
-  if (sentences.length === 0) return 0;
-  const totalWords = sentences.reduce((sum, s) => sum + s.split(/\s+/).length, 0);
-  return totalWords / sentences.length;
-}
-
-// Utility: Count contractions
-function contractionCount(text) {
-  const matches = text.match(/\b\w+['']\w+\b/gi) || [];
-  return matches.length;
-}
-
-// Utility: Check contraction directionality
 function contractionDirectionMatches(sourceText, outputText, donorProfile) {
-  const sourceCont = contractionCount(sourceText);
-  const outputCont = contractionCount(outputText);
-  const donorCont = donorProfile.contractionDensity || 0;
-  const sourceDensity = extractCadenceProfile(sourceText).contractionDensity || 0;
+  const sourceProfile = extractCadenceProfile(sourceText);
+  const outputProfile = extractCadenceProfile(outputText);
+  const sourceDensity = sourceProfile.contractionDensity || 0;
+  const outputDensity = outputProfile.contractionDensity || 0;
+  const donorDensity = donorProfile.contractionDensity || 0;
 
-  if (donorCont > sourceDensity) {
-    return outputCont >= sourceCont;
-  } else if (donorCont < sourceDensity) {
-    return outputCont <= sourceCont;
+  if (donorDensity > sourceDensity + 0.006) {
+    return outputDensity >= sourceDensity;
   }
+
+  if (donorDensity < sourceDensity - 0.006) {
+    return outputDensity <= sourceDensity;
+  }
+
   return true;
 }
 
-console.log('=== Stylometry Transfer Benchmark Test Suite ===\n');
+function assertFlagshipTransfer(id, sourceText, donorText, result) {
+  const donorProfile = extractCadenceProfile(donorText);
+  const sourceDistance = donorDistance(sourceText, donorProfile);
+  const outputDistance = donorDistance(result.text, donorProfile);
 
-// ============================================================================
-// SECTION A: Screenshot Pairs (Exact Texts)
-// ============================================================================
+  assert.equal(result.transferClass, 'structural', `${id}: transferClass should be structural`);
+  assert.equal(result.realizationTier, 'lexical-structural', `${id}: realizationTier should be lexical-structural`);
+  assert.notEqual(result.text, sourceText, `${id}: output should visibly change`);
+  assert(structuralDimensions(result.changedDimensions).length >= 1, `${id}: at least 1 structural dimension changed`);
+  assert(
+    lexicalDimensions(result.changedDimensions).length >= 1 || (result.lexemeSwaps || []).length >= 1,
+    `${id}: at least 1 lexical/register shift landed`
+  );
+  assert(contractionDirectionMatches(sourceText, result.text, donorProfile), `${id}: contraction posture aligns to donor`);
+  assert(!hasBannedConnectors(result.text), `${id}: no banned connector stacks`);
+  assert(!hasOrphanFragments(result.text), `${id}: no orphan fragments`);
+  assert(outputDistance < sourceDistance, `${id}: donor distance should improve`);
+}
 
-console.log('SECTION A: Screenshot Pair Tests\n');
+console.log('=== Patch 25 Benchmark Suite ===\n');
 
 const referenceVoice = `Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, I had used three qualifiers, two apologies, and the same phrase twice, which is apparently what I do when I'm buying time to say the hard part out loud.`;
-
 const probeVoice = `Hey, if you're still out, grab the charger and use the side door. It sticks, so lean on it. If nobody hears you right away, wait a second and knock again. I'm in back unloading boxes, and I probably won't catch the first try.`;
 
-const probeProfile = extractCadenceProfile(probeVoice);
-const referenceProfile = extractCadenceProfile(referenceVoice);
+console.log('SECTION A: Flagship Screenshot Transfers\n');
 
-// A1: Reference voice under probe cadence
-console.log('Test A1: Reference voice transferred to probe cadence');
-const a1Result = buildCadenceTransfer(referenceVoice, {
+const screenshotRefUnderProbe = buildCadenceTransfer(referenceVoice, {
   mode: 'borrowed',
-  profile: probeProfile,
-  strength: 0.82
+  profile: extractCadenceProfile(probeVoice),
+  strength: 0.9
 });
-assert(a1Result.text, 'A1: Transfer produced output text');
-assert(a1Result.outputProfile, 'A1: Transfer generated output profile');
-assert(!hasBannedConnectors(a1Result.text), 'A1: No banned connector stacks in output');
-assert(!hasOrphanFragments(a1Result.text), 'A1: No orphan fragments in output');
-const a1SentCount = sentenceCount(a1Result.text);
-const a1SourceSentCount = sentenceCount(referenceVoice);
-assert(a1SentCount <= a1SourceSentCount + 2, 'A1: Sentence count reflects compression tendency of probe');
-console.log(`  ✓ Reference→Probe: ${a1SentCount} sentences (from ${a1SourceSentCount})`);
-console.log(`  ✓ Transfer class: ${a1Result.transferClass}`);
-console.log(`  ✓ Quality gate: ${a1Result.qualityGatePassed}\n`);
+assertFlagshipTransfer('A1 reference->probe', referenceVoice, probeVoice, screenshotRefUnderProbe);
+console.log(`  ✓ A1 ${screenshotRefUnderProbe.realizationTier} / ${screenshotRefUnderProbe.transferClass}`);
 
-// A2: Probe voice under reference cadence
-console.log('Test A2: Probe voice transferred to reference cadence');
-const a2Result = buildCadenceTransfer(probeVoice, {
+const screenshotProbeUnderRef = buildCadenceTransfer(probeVoice, {
   mode: 'borrowed',
-  profile: referenceProfile,
-  strength: 0.82
+  profile: extractCadenceProfile(referenceVoice),
+  strength: 0.9
 });
-assert(a2Result.text, 'A2: Transfer produced output text');
-assert(a2Result.outputProfile, 'A2: Transfer generated output profile');
-assert(!hasBannedConnectors(a2Result.text), 'A2: No banned connector stacks in output');
-assert(!hasOrphanFragments(a2Result.text), 'A2: No orphan fragments in output');
-const a2SentCount = sentenceCount(a2Result.text);
-const a2SourceSentCount = sentenceCount(probeVoice);
-assert(a2SentCount >= a2SourceSentCount - 2, 'A2: Sentence count reflects expansion tendency of reference');
-console.log(`  ✓ Probe→Reference: ${a2SentCount} sentences (from ${a2SourceSentCount})`);
-console.log(`  ✓ Transfer class: ${a2Result.transferClass}`);
-console.log(`  ✓ Quality gate: ${a2Result.qualityGatePassed}\n`);
+assertFlagshipTransfer('A2 probe->reference', probeVoice, referenceVoice, screenshotProbeUnderRef);
+console.log(`  ✓ A2 ${screenshotProbeUnderRef.realizationTier} / ${screenshotProbeUnderRef.transferClass}\n`);
 
-// ============================================================================
-// SECTION B: Structural Contrast Corpora
-// ============================================================================
+console.log('SECTION B: Structural + Register Contrast\n');
 
-console.log('SECTION B: Structural Contrast Corpora\n');
-
-const recursiveConversational = `Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed.`;
-
-const clippedOperational = `Hey, grab the charger. Use the side door. It sticks, so lean on it. I'm in back.`;
-
-const explanatoryCausal = `The door stuck because the hinge had shifted, which meant that I had to put my full weight on the handle whenever I left, so I eventually just stopped going out.`;
-
-const contrastiveReserved = `The door was heavy. The hinge had shifted. I avoided going out.`;
-
-// B1: Recursive conversational → clipped operational
-console.log('Test B1: recursive conversational → clipped operational');
-const clippedProfile = extractCadenceProfile(clippedOperational);
-const b1Result = buildCadenceTransfer(recursiveConversational, {
+const operationalSource = 'Door sticks. Knock twice. I am in back.';
+const reflectiveDonor = `Honestly, I kept circling the point because every time I tried to leave, I found one more reason to stay, and then I stalled again because the room went quiet.`;
+const operationalToReflective = buildCadenceTransfer(operationalSource, {
   mode: 'borrowed',
-  profile: clippedProfile,
-  strength: 0.82
+  profile: extractCadenceProfile(reflectiveDonor),
+  strength: 0.88
 });
-assert(b1Result.changedDimensions.length >= 1, 'B1: At least 1 dimension changed');
-assert(getNonPunctuationDimensions(b1Result.changedDimensions) >= 1, 'B1: At least 1 non-punctuation dimension changed');
-assert(!hasBannedConnectors(b1Result.text), 'B1: No banned connectors');
-assert(!hasOrphanFragments(b1Result.text), 'B1: No orphan fragments');
-console.log(`  ✓ Transfer class: ${b1Result.transferClass}`);
-console.log(`  ✓ Changed dimensions: ${b1Result.changedDimensions.join(', ')}`);
-console.log(`  ✓ Quality gate: ${b1Result.qualityGatePassed}\n`);
+assertFlagshipTransfer('B1 operational->reflective', operationalSource, reflectiveDonor, operationalToReflective);
+console.log(`  ✓ B1 ${operationalToReflective.text}`);
 
-// B2: Clipped operational → recursive conversational
-console.log('Test B2: clipped operational → recursive conversational');
-const recursiveProfile = extractCadenceProfile(recursiveConversational);
-const b2Result = buildCadenceTransfer(clippedOperational, {
+const reflectiveSource = `Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed.`;
+const operationalDonor = 'Hey, grab the charger. Use the side door. It sticks, so lean on it. I am in back.';
+const reflectiveToOperational = buildCadenceTransfer(reflectiveSource, {
   mode: 'borrowed',
-  profile: recursiveProfile,
-  strength: 0.82
+  profile: extractCadenceProfile(operationalDonor),
+  strength: 0.88
 });
-// Note: Very short source texts may have limited opportunity for transfer, so we check quality gates
-assert(b2Result.text, 'B2: Transfer produced output');
-assert(!hasBannedConnectors(b2Result.text), 'B2: No banned connectors');
-assert(!hasOrphanFragments(b2Result.text), 'B2: No orphan fragments');
-console.log(`  ✓ Transfer class: ${b2Result.transferClass}`);
-console.log(`  ✓ Changed dimensions: ${b2Result.changedDimensions.length > 0 ? b2Result.changedDimensions.join(', ') : '(none - limited opportunity)'}`);
-console.log(`  ✓ Quality gate: ${b2Result.qualityGatePassed}\n`);
+assertFlagshipTransfer('B2 reflective->operational', reflectiveSource, operationalDonor, reflectiveToOperational);
+console.log(`  ✓ B2 ${reflectiveToOperational.text}\n`);
 
-// B3: Explanatory causal → contrastive reserved
-console.log('Test B3: explanatory causal → contrastive reserved');
-const contrastiveProfile = extractCadenceProfile(contrastiveReserved);
-const b3Result = buildCadenceTransfer(explanatoryCausal, {
+console.log('SECTION C: Contraction Posture\n');
+
+const moreContractedSource = 'I am not sure if it is ready. I will bring it when I can.';
+const moreContractedDonor = `I'm not sure it's ready. I'll bring it when I can.`;
+const moreContracted = buildCadenceTransfer(moreContractedSource, {
   mode: 'borrowed',
-  profile: contrastiveProfile,
-  strength: 0.82
+  profile: extractCadenceProfile(moreContractedDonor),
+  strength: 0.9
 });
-assert(b3Result.text, 'B3: Transfer produced output');
-assert(!hasBannedConnectors(b3Result.text), 'B3: No banned connectors');
-assert(!hasOrphanFragments(b3Result.text), 'B3: No orphan fragments');
-console.log(`  ✓ Transfer class: ${b3Result.transferClass}`);
-console.log(`  ✓ Changed dimensions: ${b3Result.changedDimensions.length > 0 ? b3Result.changedDimensions.join(', ') : '(none - limited opportunity)'}`);
-console.log(`  ✓ Quality gate: ${b3Result.qualityGatePassed}\n`);
+assertFlagshipTransfer('C1 contraction-heavy', moreContractedSource, moreContractedDonor, moreContracted);
+assert(moreContracted.text.includes("I'm") || moreContracted.text.includes("I'll"), 'C1: contractions should surface');
+console.log(`  ✓ C1 ${moreContracted.text}`);
 
-// B4: Contrastive reserved → explanatory causal
-console.log('Test B4: contrastive reserved → explanatory causal');
-const explanatoryProfile = extractCadenceProfile(explanatoryCausal);
-const b4Result = buildCadenceTransfer(contrastiveReserved, {
+const lessContractedSource = `I'm sure it's ready. I'll bring it when I can.`;
+const lessContractedDonor = 'I am certain it is ready. I will bring it when I can.';
+const lessContracted = buildCadenceTransfer(lessContractedSource, {
   mode: 'borrowed',
-  profile: explanatoryProfile,
-  strength: 0.82
+  profile: extractCadenceProfile(lessContractedDonor),
+  strength: 0.9
 });
-assert(b4Result.text, 'B4: Transfer produced output');
-assert(!hasBannedConnectors(b4Result.text), 'B4: No banned connectors');
-assert(!hasOrphanFragments(b4Result.text), 'B4: No orphan fragments');
-console.log(`  ✓ Transfer class: ${b4Result.transferClass}`);
-console.log(`  ✓ Changed dimensions: ${b4Result.changedDimensions.length > 0 ? b4Result.changedDimensions.join(', ') : '(none - limited opportunity)'}`);
-console.log(`  ✓ Quality gate: ${b4Result.qualityGatePassed}\n`);
+assertFlagshipTransfer('C2 contraction-light', lessContractedSource, lessContractedDonor, lessContracted);
+assert(lessContracted.text.includes('I am') || lessContracted.text.includes('I will'), 'C2: contractions should expand');
+console.log(`  ✓ C2 ${lessContracted.text}\n`);
 
-// ============================================================================
-// SECTION C: Low-Opportunity Corpora
-// ============================================================================
+console.log('SECTION D: Literal Safety and Low Opportunity\n');
 
-console.log('SECTION C: Low-Opportunity Corpora\n');
-
-const lowOppText1 = 'Stone settles under glass.';
-const lowOppText2 = 'Meet at 9:30, bring ID ZX-17.';
-
-// C1: Low-opportunity text 1
-console.log('Test C1: Low-opportunity text 1');
-const c1Result = buildCadenceTransfer(lowOppText1, {
+const lowOpportunity = buildCadenceTransfer('Stone settles under glass.', {
   mode: 'borrowed',
-  profile: recursiveProfile,
-  strength: 0.82
+  profile: extractCadenceProfile(probeVoice),
+  strength: 0.9
 });
-assert(!hasBannedConnectors(c1Result.text), 'C1: No banned connectors');
-assert(!hasOrphanFragments(c1Result.text), 'C1: No orphan fragments');
-assert(c1Result.transferClass === 'weak' || c1Result.transferClass === 'rejected', 'C1: Transfer class should be weak or rejected due to low opportunity');
-console.log(`  ✓ Transfer class: ${c1Result.transferClass} (expected: weak/rejected)`);
-console.log(`  ✓ Output text: "${c1Result.text.slice(0, 60)}..."`);
-console.log(`  ✓ Notes: ${c1Result.notes.join('; ')}\n`);
+assert(['weak', 'rejected'].includes(lowOpportunity.transferClass), 'D1: low-opportunity transfer should stay weak/rejected');
+assert.notEqual(lowOpportunity.text, 'Stone settles under glass.', 'D1: non-literal low-opportunity text should still attempt visible movement');
+assert((lowOpportunity.lexemeSwaps || []).length >= 1 || lexicalDimensions(lowOpportunity.changedDimensions).length >= 1, 'D1: lexical movement should land for non-literal low-opportunity text');
+assert(!hasBannedConnectors(lowOpportunity.text), 'D1: no banned connectors');
+console.log(`  ✓ D1 ${lowOpportunity.transferClass} -> ${lowOpportunity.text}`);
 
-// C2: Low-opportunity text 2
-console.log('Test C2: Low-opportunity text 2');
-const c2Result = buildCadenceTransfer(lowOppText2, {
+const protectedLiteralText = 'Meet at 9:30, bring ID ZX-17.';
+const protectedLiteral = buildCadenceTransfer(protectedLiteralText, {
   mode: 'borrowed',
-  profile: recursiveProfile,  // Changed to use recursive (longer) profile for contrast
-  strength: 0.82
+  profile: extractCadenceProfile(referenceVoice),
+  strength: 0.9
 });
-assert(!hasBannedConnectors(c2Result.text), 'C2: No banned connectors');
-assert(!hasOrphanFragments(c2Result.text), 'C2: No orphan fragments');
-assert(c2Result.transferClass === 'weak' || c2Result.transferClass === 'rejected', 'C2: Transfer class should be weak or rejected due to low opportunity');
-console.log(`  ✓ Transfer class: ${c2Result.transferClass} (expected: weak/rejected)`);
-console.log(`  ✓ Output text: "${c2Result.text.slice(0, 60)}..."`);
-console.log(`  ✓ Notes: ${c2Result.notes.join('; ')}\n`);
+assert(['weak', 'rejected'].includes(protectedLiteral.transferClass), 'D2: protected-literal case should stay weak/rejected');
+assert(protectedLiteral.text.includes('9:30'), 'D2: timestamp survives');
+assert(protectedLiteral.text.includes('ZX-17'), 'D2: ID survives');
+assert(protectedLiteral.semanticRisk <= 0.35, 'D2: semantic risk stays bounded');
+console.log(`  ✓ D2 literals held: ${protectedLiteral.text}\n`);
 
-// ============================================================================
-// SECTION D: Pathology Corpora
-// ============================================================================
+console.log('SECTION E: Pathology Blocking\n');
 
-console.log('SECTION D: Pathology Detection Corpora\n');
-
-// D1: Additive collapse risk (causal/contrastive relations)
-console.log('Test D1: Additive collapse pathology');
-const additiveCollapse = 'Because the signal dropped, I was late. But I called to let you know. So the situation improved.';
-const d1Result = buildCadenceTransfer(additiveCollapse, {
+const pathologySource = 'Because the signal dropped, I was late. But I called to let you know. So the situation improved.';
+const pathologyTransfer = buildCadenceTransfer(pathologySource, {
   mode: 'borrowed',
-  profile: clippedProfile,
-  strength: 0.85
+  profile: extractCadenceProfile(reflectiveDonor),
+  strength: 0.9
 });
-assert(!hasBannedConnectors(d1Result.text), 'D1: No banned connector stacks');
-assert(!hasOrphanFragments(d1Result.text), 'D1: No orphan fragments');
-console.log(`  ✓ Input text preserved relational semantics`);
-console.log(`  ✓ Output has no banned connectors or fragments\n`);
+assert(!hasBannedConnectors(pathologyTransfer.text), 'E1: no banned connectors');
+assert(!hasOrphanFragments(pathologyTransfer.text), 'E1: no orphan fragments');
+console.log(`  ✓ E1 pathology-safe output`);
 
-// D2: Connector stacking risk
-console.log('Test D2: Connector stacking pathology');
-const connectorStacking = 'I left early though if the train arrived on time. Honestly, and also the signal worked. But because the door was unlocked, I stayed.';
-const d2Result = buildCadenceTransfer(connectorStacking, {
+const connectorStackSource = 'I left early though if the train arrived on time. Honestly, and also the signal worked. But because the door was unlocked, I stayed.';
+const connectorStackTransfer = buildCadenceTransfer(connectorStackSource, {
   mode: 'borrowed',
-  profile: recursiveProfile,
-  strength: 0.80
-});
-// When source contains banned patterns, engine rejects and returns original to preserve meaning
-assert(d2Result.transferClass === 'rejected' || !hasBannedConnectors(d2Result.text), 'D2: Transfer either rejected or output has no banned patterns');
-assert(!d2Result.text.includes('though if') || d2Result.transferClass === 'rejected', 'D2: Banned patterns blocked');
-console.log(`  ✓ Banned connector patterns blocked or transfer rejected`);
-console.log(`  ✓ Output transfer class: ${d2Result.transferClass}`);
-console.log(`  ✓ Quality gate: ${d2Result.qualityGatePassed}\n`);
-
-// D3: Orphan fragment risk
-console.log('Test D3: Orphan fragment pathology');
-const orphanFragments = 'I called at noon. And nobody picked up. Though the signal was clear. Because the office was closed.';
-const d3Result = buildCadenceTransfer(orphanFragments, {
-  mode: 'borrowed',
-  profile: clippedProfile,
-  strength: 0.80
-});
-assert(!hasOrphanFragments(d3Result.text), 'D3: No orphan fragments in output');
-console.log(`  ✓ Output has no orphan fragments`);
-console.log(`  ✓ Output transfer class: ${d3Result.transferClass}\n`);
-
-// ============================================================================
-// ACCEPTANCE CRITERIA: Structural Expected
-// ============================================================================
-
-console.log('ACCEPTANCE CRITERIA: Structural Expected Tests\n');
-
-const structuralTestSource = recursiveConversational;
-const structuralTestDonor = clippedProfile;
-
-console.log('Test S1: Structural transfer meets acceptance thresholds');
-const s1Result = buildCadenceTransfer(structuralTestSource, {
-  mode: 'borrowed',
-  profile: structuralTestDonor,
-  strength: 0.82
-});
-
-// Check acceptance criteria for structural transfers
-if (s1Result.changedDimensions.length >= 2 && hasStructuralDimension(s1Result.changedDimensions)) {
-  assert(s1Result.transferClass === 'structural', 'S1: Transfer class should be "structural"');
-  assert(getNonPunctuationDimensions(s1Result.changedDimensions) >= 2, 'S1: At least 2 non-punctuation dimensions changed');
-  assert(hasStructuralDimension(s1Result.changedDimensions), 'S1: At least 1 structural dimension changed');
-  assert(!hasBannedConnectors(s1Result.text), 'S1: No banned connector stacks');
-  assert(!hasOrphanFragments(s1Result.text), 'S1: No orphan fragments');
-
-  // Check donor distance improvement
-  const sourceDist = compareTexts(structuralTestSource, s1Result.text).spreadDistance;
-  const targetDist = compareTexts(s1Result.text, s1Result.text).spreadDistance;
-  console.log(`  ✓ Transfer class: ${s1Result.transferClass}`);
-  console.log(`  ✓ Changed dimensions (${s1Result.changedDimensions.length}): ${s1Result.changedDimensions.join(', ')}`);
-  console.log(`  ✓ Pathology-free output confirmed`);
-  console.log(`  ✓ Quality gate: ${s1Result.qualityGatePassed}\n`);
-} else {
-  console.log(`  ℹ Transfer is "${s1Result.transferClass}" (may not meet structural threshold)`);
-  console.log(`  ✓ Still pathology-free: no banned connectors, no orphan fragments\n`);
-}
-
-// ============================================================================
-// ACCEPTANCE CRITERIA: Weak Expected
-// ============================================================================
-
-console.log('ACCEPTANCE CRITERIA: Weak Expected Tests\n');
-
-console.log('Test W1: Weak transfer does not produce false successes');
-const w1Result = buildCadenceTransfer(lowOppText1, {
-  mode: 'borrowed',
-  profile: recursiveProfile,
-  strength: 0.82
+  profile: extractCadenceProfile(referenceVoice),
+  strength: 0.88
 });
 assert(
-  w1Result.transferClass === 'weak' || w1Result.transferClass === 'rejected',
-  'W1: Low-opportunity transfer should be weak or rejected'
+  connectorStackTransfer.transferClass === 'rejected' || !hasBannedConnectors(connectorStackTransfer.text),
+  'E2: banned connector stacks are blocked or rejected'
 );
-assert(
-  w1Result.transferClass !== 'structural' || w1Result.changedDimensions.length >= 2,
-  'W1: No false structural success'
-);
-console.log(`  ✓ Transfer class: ${w1Result.transferClass}`);
-console.log(`  ✓ No punctuation-only false success\n`);
+console.log(`  ✓ E2 ${connectorStackTransfer.transferClass}\n`);
 
-// ============================================================================
-// ACCEPTANCE CRITERIA: Pathology Blocked
-// ============================================================================
-
-console.log('ACCEPTANCE CRITERIA: Pathology Blocked Tests\n');
-
-// These tests use CLEAN source texts and verify that transfers don't introduce banned patterns
-const pathologyTests = [
-  { name: 'Transfer to shorter style (low pathology risk)', text: 'I will go when you call me. You said it might happen today.' },
-  { name: 'Transfer with expansion (low pathology risk)', text: 'Door sticks. I warned you. Check it again.' },
-  { name: 'Complex relational text', text: 'Because the signal dropped, I was late. But I called to warn you, so you knew to expect me later.' }
-];
-
-for (const testCase of pathologyTests) {
-  console.log(`Test P: ${testCase.name}`);
-  const pResult = buildCadenceTransfer(testCase.text, {
-    mode: 'borrowed',
-    profile: clippedProfile,
-    strength: 0.80
-  });
-
-  assert(
-    !hasBannedConnectors(pResult.text) || pResult.transferClass === 'rejected',
-    `P: No banned connectors in output for "${testCase.name}", or transfer rejected`
-  );
-  assert(!hasOrphanFragments(pResult.text), `P: No orphan fragments in output for "${testCase.name}"`);
-  console.log(`  ✓ Output blocked pathologies or safely rejected`);
-  console.log(`  ✓ Transfer class: ${pResult.transferClass}\n`);
-}
-
-// ============================================================================
-// SUMMARY
-// ============================================================================
-
-console.log('=== All Benchmarks Complete ===\n');
-console.log('✓ Section A: Screenshot pairs validated');
-console.log('✓ Section B: Structural contrast corpora validated');
-console.log('✓ Section C: Low-opportunity corpora validated');
-console.log('✓ Section D: Pathology detection validated');
-console.log('✓ Acceptance criteria: Structural transfers');
-console.log('✓ Acceptance criteria: Weak transfers');
-console.log('✓ Acceptance criteria: Pathology blocking');
-
-console.log('\nbenchmark.test.mjs passed');
+console.log('benchmark.test.mjs passed');

@@ -1,4 +1,5 @@
-﻿(function () {
+(function () {
+// GENERATED FROM app/engine/stylometry.js BY scripts/generate-browser-engine.mjs
 function clamp01(value) {
   return Math.max(0, Math.min(1, value));
 }
@@ -33,6 +34,28 @@ function arithmeticMean(values = []) {
   }
 
   return values.reduce((sum, value) => sum + clamp01(Number(value) || 0), 0) / values.length;
+}
+
+function transferLengthCeiling(sourceText = '', sourceProfile = {}, targetProfile = {}, strength = 0.76) {
+  const normalized = normalizeText(sourceText);
+  const sourceAvg = sourceProfile.avgSentenceLength || avgSentenceLength(normalized) || 0;
+  const targetAvg = targetProfile.avgSentenceLength || sourceAvg;
+  const sentenceStretch = Math.max(0, targetAvg - sourceAvg);
+  const abstractionStretch = Math.max(0, (targetProfile.abstractionPosture || 0) - (sourceProfile.abstractionPosture || 0));
+  const modifierStretch = Math.max(0, (targetProfile.modifierDensity || 0) - (sourceProfile.modifierDensity || 0));
+  const sourceWords = sourceProfile.wordCount || wordCount(normalized);
+  let ratio = 1.28;
+
+  ratio += Math.min(0.5, sentenceStretch / 18);
+  ratio += Math.min(0.2, abstractionStretch * 0.25);
+  ratio += Math.min(0.12, modifierStretch * 1.6);
+  ratio += Math.min(0.12, strength * 0.12);
+
+  if (sourceWords <= 12 && sentenceStretch >= 4) {
+    ratio += 0.48;
+  }
+
+  return Math.ceil(normalized.length * clamp(ratio, 1.28, 2.4));
 }
 
 function normalizeText(text = '') {
@@ -717,7 +740,7 @@ function applyContractionTexture(text = '', targetProfile = {}, mod = {}) {
       ? -1
       : modDirection;
 
-  // Never fight an explicit mod direction â€” the mod is the user/shell intent
+  // Never fight an explicit mod direction — the mod is the user/shell intent
   if (modDirection !== 0 && direction !== 0 && Math.sign(direction) !== Math.sign(modDirection)) {
     direction = modDirection;
   }
@@ -1069,6 +1092,439 @@ function functionWordDistance(a = {}, b = {}) {
   return distributionDistance(a, b, FUNCTION_WORDS);
 }
 
+const AUXILIARY_WORDS = new Set([
+  'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+  'do', 'does', 'did', 'done',
+  'have', 'has', 'had',
+  'will', 'would', 'can', 'could', 'may', 'might', 'must',
+  'shall', 'should', 'ought'
+]);
+
+const ABSTRACT_LEXEMES = new Set([
+  'story', 'account', 'narrative', 'speech', 'remark', 'remarks', 'reason', 'reasons',
+  'memory', 'pressure', 'signal', 'route', 'custody', 'recognition', 'decision',
+  'meaning', 'silence', 'passage', 'criticality', 'archive', 'detail', 'details',
+  'particular', 'particulars', 'narration', 'posture', 'branch', 'receipt', 'threshold',
+  'decision', 'context', 'message', 'speech', 'conversation', 'reflection', 'recognition'
+]);
+
+const OPERATIONAL_LEXEMES = new Set([
+  'grab', 'take', 'get', 'use', 'check', 'knock', 'wait', 'call', 'leave', 'bring',
+  'door', 'charger', 'boxes', 'back', 'front', 'lean', 'pull', 'push', 'move',
+  'send', 'hold', 'keep', 'route', 'watch', 'load', 'open', 'close', 'stick', 'stuck'
+]);
+
+const HEDGE_MARKERS = new Set([
+  'maybe', 'perhaps', 'possibly', 'apparently', 'honestly', 'frankly', 'actually',
+  'sort', 'kind', 'rather', 'quite', 'just', 'simply', 'really'
+]);
+
+const DIRECTIVE_MARKERS = new Set([
+  'grab', 'take', 'use', 'wait', 'knock', 'lean', 'pull', 'push', 'bring', 'check',
+  'call', 'send', 'keep', 'watch', 'hold', 'meet', 'leave', 'go'
+]);
+
+const MODIFIER_MARKERS = new Set([
+  'hard', 'harder', 'soft', 'softly', 'quick', 'quickly', 'slow', 'slowly', 'quiet',
+  'quietly', 'silent', 'silently', 'awkward', 'awkwardly', 'strange', 'strangely',
+  'difficult', 'difficultly', 'careful', 'carefully', 'apparent', 'apparently',
+  'honest', 'honestly', 'steady', 'steadily', 'rapid', 'rapidly', 'direct', 'directly'
+]);
+
+const LATINATE_SUFFIXES = ['tion', 'sion', 'ment', 'ance', 'ence', 'ity', 'ous', 'ive', 'ate', 'ize'];
+
+const REGISTER_MODES = ['plain', 'operational', 'reflective', 'formal'];
+
+const PHRASE_REALIZATION_PACKS = [
+  {
+    id: 'make-speech',
+    pattern: /\bmake a speech\b/gi,
+    replacements: {
+      plain: 'give a speech',
+      operational: 'say it',
+      reflective: 'make a speech',
+      formal: 'deliver remarks'
+    }
+  },
+  {
+    id: 'circling-story',
+    pattern: /\bcircling the story\b/gi,
+    replacements: {
+      plain: 'going over the story',
+      operational: 'going over the details',
+      reflective: 'circling the story',
+      formal: 'revisiting the narrative'
+    }
+  },
+  {
+    id: 'buying-time',
+    pattern: /\bbuying time\b/gi,
+    replacements: {
+      plain: 'stalling',
+      operational: 'stalling',
+      reflective: 'buying time',
+      formal: 'delaying'
+    }
+  },
+  {
+    id: 'wait-second',
+    pattern: /\bwait a second\b/gi,
+    replacements: {
+      plain: 'wait a second',
+      operational: 'hold a second',
+      reflective: 'pause a moment',
+      formal: 'wait a moment'
+    }
+  },
+  {
+    id: 'use-side-door',
+    pattern: /\buse the side door\b/gi,
+    replacements: {
+      plain: 'use the side door',
+      operational: 'take the side door',
+      reflective: 'come through the side door',
+      formal: 'use the side entrance'
+    }
+  },
+  {
+    id: 'grab-charger',
+    pattern: /\bgrab the charger\b/gi,
+    replacements: {
+      plain: 'get the charger',
+      operational: 'grab the charger',
+      reflective: 'bring the charger',
+      formal: 'retrieve the charger'
+    }
+  },
+  {
+    id: 'hard-part',
+    pattern: /\bthe hard part\b/gi,
+    replacements: {
+      plain: 'the hard part',
+      operational: 'the hard part',
+      reflective: 'the difficult part',
+      formal: 'the difficult portion'
+    }
+  }
+];
+
+const LEXICAL_FAMILIES = [
+  {
+    id: 'say',
+    forms: {
+      plain: { base: 'say', past: 'said', ing: 'saying', third: 'says' },
+      operational: { base: 'tell', past: 'told', ing: 'telling', third: 'tells' },
+      reflective: { base: 'explain', past: 'explained', ing: 'explaining', third: 'explains' },
+      formal: { base: 'state', past: 'stated', ing: 'stating', third: 'states' }
+    }
+  },
+  {
+    id: 'get',
+    forms: {
+      plain: { base: 'get', past: 'got', ing: 'getting', third: 'gets' },
+      operational: { base: 'grab', past: 'grabbed', ing: 'grabbing', third: 'grabs' },
+      reflective: { base: 'receive', past: 'received', ing: 'receiving', third: 'receives' },
+      formal: { base: 'obtain', past: 'obtained', ing: 'obtaining', third: 'obtains' }
+    }
+  },
+  {
+    id: 'use',
+    forms: {
+      plain: { base: 'use', past: 'used', ing: 'using', third: 'uses' },
+      operational: { base: 'deploy', past: 'deployed', ing: 'deploying', third: 'deploys' },
+      reflective: { base: 'use', past: 'used', ing: 'using', third: 'uses' },
+      formal: { base: 'utilize', past: 'utilized', ing: 'utilizing', third: 'utilizes' }
+    }
+  },
+  {
+    id: 'keep',
+    forms: {
+      plain: { base: 'keep', past: 'kept', ing: 'keeping', third: 'keeps' },
+      operational: { base: 'hold', past: 'held', ing: 'holding', third: 'holds' },
+      reflective: { base: 'retain', past: 'retained', ing: 'retaining', third: 'retains' },
+      formal: { base: 'preserve', past: 'preserved', ing: 'preserving', third: 'preserves' }
+    }
+  },
+  {
+    id: 'leave',
+    forms: {
+      plain: { base: 'leave', past: 'left', ing: 'leaving', third: 'leaves' },
+      operational: { base: 'head out', past: 'headed out', ing: 'heading out', third: 'heads out' },
+      reflective: { base: 'depart', past: 'departed', ing: 'departing', third: 'departs' },
+      formal: { base: 'exit', past: 'exited', ing: 'exiting', third: 'exits' }
+    }
+  },
+  {
+    id: 'start',
+    forms: {
+      plain: { base: 'start', past: 'started', ing: 'starting', third: 'starts' },
+      operational: { base: 'kick off', past: 'kicked off', ing: 'kicking off', third: 'kicks off' },
+      reflective: { base: 'begin', past: 'began', ing: 'beginning', third: 'begins' },
+      formal: { base: 'commence', past: 'commenced', ing: 'commencing', third: 'commences' }
+    }
+  },
+  {
+    id: 'finish',
+    forms: {
+      plain: { base: 'finish', past: 'finished', ing: 'finishing', third: 'finishes' },
+      operational: { base: 'wrap up', past: 'wrapped up', ing: 'wrapping up', third: 'wraps up' },
+      reflective: { base: 'finish', past: 'finished', ing: 'finishing', third: 'finishes' },
+      formal: { base: 'conclude', past: 'concluded', ing: 'concluding', third: 'concludes' }
+    }
+  },
+  {
+    id: 'change',
+    forms: {
+      plain: { base: 'change', past: 'changed', ing: 'changing', third: 'changes' },
+      operational: { base: 'shift', past: 'shifted', ing: 'shifting', third: 'shifts' },
+      reflective: { base: 'alter', past: 'altered', ing: 'altering', third: 'alters' },
+      formal: { base: 'modify', past: 'modified', ing: 'modifying', third: 'modifies' }
+    }
+  },
+  {
+    id: 'show',
+    forms: {
+      plain: { base: 'show', past: 'showed', ing: 'showing', third: 'shows' },
+      operational: { base: 'show', past: 'showed', ing: 'showing', third: 'shows' },
+      reflective: { base: 'explain', past: 'explained', ing: 'explaining', third: 'explains' },
+      formal: { base: 'display', past: 'displayed', ing: 'displaying', third: 'displays' }
+    }
+  },
+  {
+    id: 'help',
+    forms: {
+      plain: { base: 'help', past: 'helped', ing: 'helping', third: 'helps' },
+      operational: { base: 'help', past: 'helped', ing: 'helping', third: 'helps' },
+      reflective: { base: 'support', past: 'supported', ing: 'supporting', third: 'supports' },
+      formal: { base: 'assist', past: 'assisted', ing: 'assisting', third: 'assists' }
+    }
+  },
+  {
+    id: 'story',
+    forms: {
+      plain: { singular: 'story', plural: 'stories' },
+      operational: { singular: 'detail', plural: 'details' },
+      reflective: { singular: 'account', plural: 'accounts' },
+      formal: { singular: 'narrative', plural: 'narratives' }
+    }
+  },
+  {
+    id: 'speech',
+    forms: {
+      plain: { singular: 'speech', plural: 'speeches' },
+      operational: { singular: 'message', plural: 'messages' },
+      reflective: { singular: 'remark', plural: 'remarks' },
+      formal: { singular: 'address', plural: 'addresses' }
+    }
+  },
+  {
+    id: 'detail',
+    forms: {
+      plain: { singular: 'detail', plural: 'details' },
+      operational: { singular: 'point', plural: 'points' },
+      reflective: { singular: 'detail', plural: 'details' },
+      formal: { singular: 'particular', plural: 'particulars' }
+    }
+  },
+  {
+    id: 'door',
+    forms: {
+      plain: { singular: 'door', plural: 'doors' },
+      operational: { singular: 'door', plural: 'doors' },
+      reflective: { singular: 'doorway', plural: 'doorways' },
+      formal: { singular: 'entrance', plural: 'entrances' }
+    }
+  },
+  {
+    id: 'signal',
+    forms: {
+      plain: { singular: 'signal', plural: 'signals' },
+      operational: { singular: 'signal', plural: 'signals' },
+      reflective: { singular: 'sign', plural: 'signs' },
+      formal: { singular: 'indication', plural: 'indications' }
+    }
+  },
+  {
+    id: 'route',
+    forms: {
+      plain: { singular: 'route', plural: 'routes' },
+      operational: { singular: 'route', plural: 'routes' },
+      reflective: { singular: 'path', plural: 'paths' },
+      formal: { singular: 'channel', plural: 'channels' }
+    }
+  },
+  {
+    id: 'hard',
+    forms: {
+      plain: { adjective: 'hard', adverb: 'hard' },
+      operational: { adjective: 'tough', adverb: 'hard' },
+      reflective: { adjective: 'difficult', adverb: 'carefully' },
+      formal: { adjective: 'arduous', adverb: 'carefully' }
+    }
+  },
+  {
+    id: 'quiet',
+    forms: {
+      plain: { adjective: 'quiet', adverb: 'quietly' },
+      operational: { adjective: 'still', adverb: 'still' },
+      reflective: { adjective: 'quiet', adverb: 'quietly' },
+      formal: { adjective: 'silent', adverb: 'silently' }
+    }
+  },
+  {
+    id: 'fast',
+    forms: {
+      plain: { adjective: 'fast', adverb: 'fast' },
+      operational: { adjective: 'quick', adverb: 'quickly' },
+      reflective: { adjective: 'steady', adverb: 'steadily' },
+      formal: { adjective: 'rapid', adverb: 'rapidly' }
+    }
+  },
+  {
+    id: 'settle',
+    forms: {
+      plain: { base: 'settle', past: 'settled', ing: 'settling', third: 'settles' },
+      operational: { base: 'set', past: 'set', ing: 'setting', third: 'sets' },
+      reflective: { base: 'rest', past: 'rested', ing: 'resting', third: 'rests' },
+      formal: { base: 'stabilize', past: 'stabilized', ing: 'stabilizing', third: 'stabilizes' }
+    }
+  }
+];
+
+const LEXICAL_FAMILY_SKIP_PATTERNS = {
+  get: [
+    /\b(?:get|gets|got|getting)\s+to\b/i
+  ],
+  keep: [
+    /\b(?:keep|keeps|kept|holding|hold|holds|held)\s+\w+ing\b/i
+  ],
+  quiet: [
+    /\bstill\s+(?:out|in|there|here)\b/i
+  ]
+};
+
+const CONTENT_STOP_WORDS = new Set([...FUNCTION_WORDS, ...AUXILIARY_WORDS, 'i', 'you', 'we', 'they', 'he', 'she', 'it']);
+
+const FAMILY_VARIANT_INDEX = (() => {
+  const entries = [];
+  for (const family of LEXICAL_FAMILIES) {
+    for (const [mode, forms] of Object.entries(family.forms)) {
+      for (const [formKey, surface] of Object.entries(forms)) {
+        entries.push({
+          familyId: family.id,
+          mode,
+          formKey,
+          surface,
+          normalized: surface.toLowerCase()
+        });
+      }
+    }
+  }
+  return entries.sort((left, right) => right.surface.length - left.surface.length);
+})();
+
+function countLexemeMatches(words = [], lexemes = new Set()) {
+  return words.reduce((sum, word) => sum + (lexemes.has(word) ? 1 : 0), 0);
+}
+
+function contentWords(text = '') {
+  return tokenize(text).filter((word) => !CONTENT_STOP_WORDS.has(word));
+}
+
+function normalizedContentWordComplexity(words = []) {
+  if (!words.length) {
+    return 0;
+  }
+
+  const averageLength = words.reduce((sum, word) => sum + word.replace(/'/g, '').length, 0) / words.length;
+  return round3(clamp01((averageLength - 3) / 7));
+}
+
+function normalizedModifierDensity(words = []) {
+  if (!words.length) {
+    return 0;
+  }
+
+  const count = words.filter((word) =>
+    MODIFIER_MARKERS.has(word) ||
+    /(?:ly|ive|ous|al|ful|less|able|ible|ish|ic)$/i.test(word)
+  ).length;
+  return round3(clamp01(count / words.length));
+}
+
+function normalizedHedgeDensity(words = []) {
+  if (!words.length) {
+    return 0;
+  }
+
+  return round3(clamp01(countLexemeMatches(words, HEDGE_MARKERS) / words.length));
+}
+
+function normalizedAbstractionPosture(words = []) {
+  if (!words.length) {
+    return 0.5;
+  }
+
+  const abstractCount = countLexemeMatches(words, ABSTRACT_LEXEMES);
+  const operationalCount = countLexemeMatches(words, OPERATIONAL_LEXEMES);
+  if (!abstractCount && !operationalCount) {
+    return 0.5;
+  }
+
+  return round3(clamp01(abstractCount / Math.max(abstractCount + operationalCount, 1)));
+}
+
+function normalizedDirectness(text = '', words = []) {
+  const sentences = sentenceSplit(text);
+  const imperativeHits = sentences.filter((sentence) => {
+    const tokens = tokenize(sentence);
+    return tokens.length > 1 && DIRECTIVE_MARKERS.has(tokens[0]);
+  }).length;
+  const secondPersonHits = words.filter((word) => word === 'you' || word === 'your').length;
+  const directiveHits = countLexemeMatches(words, DIRECTIVE_MARKERS);
+  const raw = (imperativeHits * 0.5) + (directiveHits * 0.18) + (secondPersonHits * 0.08);
+  return round3(clamp01(raw));
+}
+
+function normalizedLatinatePreference(words = []) {
+  if (!words.length) {
+    return 0;
+  }
+
+  const latinateHits = words.filter((word) =>
+    LATINATE_SUFFIXES.some((suffix) => word.endsWith(suffix)) ||
+    /(?:utilize|preserve|commence|conclude|obtain|assist|display|narrative|indication|particulars?)$/.test(word)
+  ).length;
+  return round3(clamp01(latinateHits / words.length));
+}
+
+function detectRegisterMode(profile = {}) {
+  if ((profile.directness || 0) >= 0.22 && (profile.abstractionPosture || 0) <= 0.55) {
+    return 'operational';
+  }
+
+  if ((profile.latinatePreference || 0) >= 0.18 && (profile.contentWordComplexity || 0) >= 0.42) {
+    return 'formal';
+  }
+
+  if ((profile.abstractionPosture || 0) >= 0.58 || (profile.hedgeDensity || 0) >= 0.04) {
+    return 'reflective';
+  }
+
+  return 'plain';
+}
+
+function registerDistance(profileA = {}, profileB = {}) {
+  return round3(arithmeticMean([
+    boundedDistance(profileA.contentWordComplexity || 0, profileB.contentWordComplexity || 0, 0.55),
+    boundedDistance(profileA.abstractionPosture || 0, profileB.abstractionPosture || 0, 0.65),
+    boundedDistance(profileA.modifierDensity || 0, profileB.modifierDensity || 0, 0.22),
+    boundedDistance(profileA.hedgeDensity || 0, profileB.hedgeDensity || 0, 0.12),
+    boundedDistance(profileA.directness || 0, profileB.directness || 0, 0.4),
+    boundedDistance(profileA.latinatePreference || 0, profileB.latinatePreference || 0, 0.3)
+  ]));
+}
+
 const WORD_LENGTH_BUCKETS = [
   { id: '1-2', max: 2 },
   { id: '3-4', max: 4 },
@@ -1204,9 +1660,16 @@ function heatmapPunctuationBucket(count) {
 
 function extractCadenceProfile(text = '') {
   const words = tokenize(text);
+  const content = contentWords(text);
   const sentences = sentenceSplit(text);
+  const contentWordComplexity = normalizedContentWordComplexity(content);
+  const modifierDensity = normalizedModifierDensity(content);
+  const hedgeDensity = normalizedHedgeDensity(words);
+  const abstractionPosture = normalizedAbstractionPosture(content);
+  const directness = normalizedDirectness(text, words);
+  const latinatePreference = normalizedLatinatePreference(content);
 
-  return {
+  const profile = {
     empty: words.length === 0,
     wordCount: words.length,
     sentenceCount: sentences.length,
@@ -1219,9 +1682,20 @@ function extractCadenceProfile(text = '') {
     repeatedBigramPressure: repeatedBigramPressure(text),
     recurrencePressure: recurrencePressure(text),
     lexicalDispersion: lexicalDispersion(text),
+    contentWordComplexity,
+    modifierDensity,
+    hedgeDensity,
+    abstractionPosture,
+    directness,
+    latinatePreference,
     functionWordProfile: functionWordProfile(text),
     wordLengthProfile: wordLengthProfile(text),
     charTrigramProfile: charTrigramProfile(text)
+  };
+
+  return {
+    ...profile,
+    registerMode: detectRegisterMode(profile)
   };
 }
 
@@ -1252,7 +1726,7 @@ function applyCadenceMod(profile, mod = {}) {
     ) / 3
   );
 
-  return {
+  const result = {
     ...profile,
     avgSentenceLength: avgSentence,
     sentenceLengthSpread: spread,
@@ -1266,6 +1740,11 @@ function applyCadenceMod(profile, mod = {}) {
       cont: mod.cont || 0,
       punc: mod.punc || 0
     }
+  };
+
+  return {
+    ...result,
+    registerMode: detectRegisterMode(result)
   };
 }
 
@@ -1311,6 +1790,24 @@ function applyCadenceShell(profile, shell = {}) {
   const lexical = round3(clamp01(
     (profile.lexicalDispersion * (1 - softBlend)) + (source.lexicalDispersion * softBlend)
   ));
+  const contentWordComplexity = round3(clamp01(
+    ((profile.contentWordComplexity || 0) * (1 - softBlend)) + ((source.contentWordComplexity || 0) * softBlend)
+  ));
+  const modifierDensity = round3(clamp01(
+    ((profile.modifierDensity || 0) * (1 - softBlend)) + ((source.modifierDensity || 0) * softBlend)
+  ));
+  const hedgeDensity = round3(clamp01(
+    ((profile.hedgeDensity || 0) * (1 - softBlend)) + ((source.hedgeDensity || 0) * softBlend)
+  ));
+  const abstractionPosture = round3(clamp01(
+    ((profile.abstractionPosture || 0.5) * (1 - softBlend)) + ((source.abstractionPosture || 0.5) * softBlend)
+  ));
+  const directness = round3(clamp01(
+    ((profile.directness || 0) * (1 - softBlend)) + ((source.directness || 0) * softBlend)
+  ));
+  const latinatePreference = round3(clamp01(
+    ((profile.latinatePreference || 0) * (1 - softBlend)) + ((source.latinatePreference || 0) * softBlend)
+  ));
   const recurrence = round3(
     (
       clamp01(punctuation / 0.35) +
@@ -1319,7 +1816,7 @@ function applyCadenceShell(profile, shell = {}) {
     ) / 3
   );
 
-  return {
+  const result = {
     ...profile,
     avgSentenceLength: avgSentence,
     sentenceLengthSpread: spread,
@@ -1332,6 +1829,12 @@ function applyCadenceShell(profile, shell = {}) {
     repeatedBigramPressure: bigram,
     recurrencePressure: recurrence,
     lexicalDispersion: lexical,
+    contentWordComplexity,
+    modifierDensity,
+    hedgeDensity,
+    abstractionPosture,
+    directness,
+    latinatePreference,
     functionWordProfile: source.functionWordProfile
       ? blendDistribution(profile.functionWordProfile, source.functionWordProfile, softBlend, FUNCTION_WORDS)
       : profile.functionWordProfile,
@@ -1350,6 +1853,11 @@ function applyCadenceShell(profile, shell = {}) {
       mode: shell.mode,
       strength: round3(strength)
     }
+  };
+
+  return {
+    ...result,
+    registerMode: detectRegisterMode(result)
   };
 }
 
@@ -1411,7 +1919,7 @@ function buildTransferTargetProfile(baseProfile = {}, shell = {}, fallbackMod = 
   const recurrenceBlend = clamp(0.76 + (strength * 0.18), 0, 1);
   const lexicalBlend = clamp(0.62 + (strength * 0.16), 0, 0.96);
 
-  return {
+  const result = {
     ...baseProfile,
     avgSentenceLength: round2(
       (baseProfile.avgSentenceLength || 0) +
@@ -1448,6 +1956,30 @@ function buildTransferTargetProfile(baseProfile = {}, shell = {}, fallbackMod = 
       (baseProfile.lexicalDispersion || 0) +
       (((donor.lexicalDispersion || baseProfile.lexicalDispersion || 0) - (baseProfile.lexicalDispersion || 0)) * lexicalBlend)
     )),
+    contentWordComplexity: round3(clamp01(
+      (baseProfile.contentWordComplexity || 0) +
+      (((donor.contentWordComplexity || baseProfile.contentWordComplexity || 0) - (baseProfile.contentWordComplexity || 0)) * lexicalBlend)
+    )),
+    modifierDensity: round3(clamp01(
+      (baseProfile.modifierDensity || 0) +
+      (((donor.modifierDensity || baseProfile.modifierDensity || 0) - (baseProfile.modifierDensity || 0)) * lexicalBlend)
+    )),
+    hedgeDensity: round3(clamp01(
+      (baseProfile.hedgeDensity || 0) +
+      (((donor.hedgeDensity || baseProfile.hedgeDensity || 0) - (baseProfile.hedgeDensity || 0)) * lexicalBlend)
+    )),
+    abstractionPosture: round3(clamp01(
+      (baseProfile.abstractionPosture || 0.5) +
+      (((donor.abstractionPosture || baseProfile.abstractionPosture || 0.5) - (baseProfile.abstractionPosture || 0.5)) * lexicalBlend)
+    )),
+    directness: round3(clamp01(
+      (baseProfile.directness || 0) +
+      (((donor.directness || 0) - (baseProfile.directness || 0)) * lexicalBlend)
+    )),
+    latinatePreference: round3(clamp01(
+      (baseProfile.latinatePreference || 0) +
+      (((donor.latinatePreference || 0) - (baseProfile.latinatePreference || 0)) * lexicalBlend)
+    )),
     functionWordProfile: donor.functionWordProfile
       ? blendDistribution(baseProfile.functionWordProfile || {}, donor.functionWordProfile, Math.min(1, visibleBlend + 0.04), FUNCTION_WORDS)
       : baseProfile.functionWordProfile,
@@ -1468,6 +2000,11 @@ function buildTransferTargetProfile(baseProfile = {}, shell = {}, fallbackMod = 
       targetMode: 'donor'
     }
   };
+
+  return {
+    ...result,
+    registerMode: detectRegisterMode(result)
+  };
 }
 
 function desiredSentenceCount(profile = {}, targetProfile = {}) {
@@ -1485,7 +2022,14 @@ function profileDeltaToTarget(profile = {}, targetProfile = {}) {
     lineBreak: Math.abs((profile.lineBreakDensity || 0) - (targetProfile.lineBreakDensity || 0)),
     punctuation: Math.abs((profile.punctuationDensity || 0) - (targetProfile.punctuationDensity || 0)),
     punctuationShape: punctuationMixDistance(profile.punctuationMix || {}, targetProfile.punctuationMix || {}),
-    functionWord: functionWordDistance(profile.functionWordProfile || {}, targetProfile.functionWordProfile || {})
+    functionWord: functionWordDistance(profile.functionWordProfile || {}, targetProfile.functionWordProfile || {}),
+    lexicalComplexity: Math.abs((profile.contentWordComplexity || 0) - (targetProfile.contentWordComplexity || 0)),
+    modifierDensity: Math.abs((profile.modifierDensity || 0) - (targetProfile.modifierDensity || 0)),
+    hedgeDensity: Math.abs((profile.hedgeDensity || 0) - (targetProfile.hedgeDensity || 0)),
+    directness: Math.abs((profile.directness || 0) - (targetProfile.directness || 0)),
+    abstraction: Math.abs((profile.abstractionPosture || 0.5) - (targetProfile.abstractionPosture || 0.5)),
+    latinate: Math.abs((profile.latinatePreference || 0) - (targetProfile.latinatePreference || 0)),
+    register: registerDistance(profile, targetProfile)
   };
 }
 
@@ -1497,6 +2041,10 @@ function profileDeltaScore(gap = {}) {
     (clamp01((gap.contraction || 0) / 0.16) * 0.12) +
     (clamp01((gap.lineBreak || 0) / 0.4) * 0.12) +
     (clamp01(gap.functionWord || 0) * 0.14) +
+    (clamp01((gap.register || 0) / 0.4) * 0.12) +
+    (clamp01((gap.directness || 0) / 0.4) * 0.04) +
+    (clamp01((gap.abstraction || 0) / 0.4) * 0.04) +
+    (clamp01((gap.modifierDensity || 0) / 0.2) * 0.04) +
     (clamp01((gap.punctuation || 0) / 0.16) * 0.06) +
     (clamp01(gap.punctuationShape || 0) * 0.06)
   );
@@ -1508,7 +2056,10 @@ function isMaterialCadenceGap(gap = {}) {
     (gap.contraction || 0) >= 0.01 ||
     (gap.lineBreak || 0) >= 0.035 ||
     (gap.functionWord || 0) >= 0.03 ||
-    (gap.punctuationShape || 0) >= 0.05;
+    (gap.punctuationShape || 0) >= 0.05 ||
+    (gap.register || 0) >= 0.11 ||
+    (gap.directness || 0) >= 0.06 ||
+    (gap.abstraction || 0) >= 0.08;
 }
 
 function collectChangedDimensions(sourceProfile = {}, outputProfile = {}) {
@@ -1536,6 +2087,21 @@ function collectChangedDimensions(sourceProfile = {}, outputProfile = {}) {
   if ((compare.functionWordDistance || 0) >= 0.015) {
     shifted.push('connector-stance');
   }
+  if ((compare.registerDistance || 0) >= 0.09) {
+    shifted.push('lexical-register');
+  }
+  if (Math.abs((outputProfile.contentWordComplexity || 0) - (sourceProfile.contentWordComplexity || 0)) >= 0.045) {
+    shifted.push('content-word-complexity');
+  }
+  if (Math.abs((outputProfile.modifierDensity || 0) - (sourceProfile.modifierDensity || 0)) >= 0.02) {
+    shifted.push('modifier-density');
+  }
+  if (Math.abs((outputProfile.directness || 0) - (sourceProfile.directness || 0)) >= 0.05) {
+    shifted.push('directness');
+  }
+  if (Math.abs((outputProfile.abstractionPosture || 0.5) - (sourceProfile.abstractionPosture || 0.5)) >= 0.08) {
+    shifted.push('abstraction-posture');
+  }
   if (
     Math.abs((outputProfile.punctuationDensity || 0) - (sourceProfile.punctuationDensity || 0)) >= 0.018 ||
     (compare.punctShapeDistance || 0) >= 0.05
@@ -1555,8 +2121,20 @@ const STRUCTURAL_TRANSFER_DIMENSIONS = new Set([
   'connector-stance'
 ]);
 
+const LEXICAL_TRANSFER_DIMENSIONS = new Set([
+  'lexical-register',
+  'content-word-complexity',
+  'modifier-density',
+  'directness',
+  'abstraction-posture'
+]);
+
 function structuralDimensions(changedDimensions = []) {
   return changedDimensions.filter((dimension) => STRUCTURAL_TRANSFER_DIMENSIONS.has(dimension));
+}
+
+function lexicalDimensions(changedDimensions = []) {
+  return changedDimensions.filter((dimension) => LEXICAL_TRANSFER_DIMENSIONS.has(dimension));
 }
 
 function hasMaterialStructuralTransfer(changedDimensions = []) {
@@ -1612,6 +2190,7 @@ function segmentTextToIR(text, protectedState) {
       const clauseType = classifyClauseType(clauseText);
       const completeness = detectClauseCompleteness(clauseText);
       const modality = detectModalityAndHedges(clauseText);
+      const semanticScaffold = extractClauseSemanticScaffold(clauseText);
 
       return {
         id: `s${sentenceId}c${clauseIdx}`,
@@ -1624,6 +2203,12 @@ function segmentTextToIR(text, protectedState) {
         polarity: modality.polarity,
         modality: modality.modality,
         hedgeMarkers: modality.hedgeMarkers,
+        tenseAspect: semanticScaffold.tenseAspect,
+        propositionHead: semanticScaffold.propositionHead,
+        actor: semanticScaffold.actor,
+        action: semanticScaffold.action,
+        object: semanticScaffold.object,
+        modifiers: semanticScaffold.modifiers,
         connectorLead: (RELATION_LEAD_PATTERNS[relationToPrev] || /(?!)/).test(clauseText),
         transformOps: {
           canCompact: completeness.subjectPresent && completeness.finiteVerbPresent,
@@ -1767,6 +2352,54 @@ function detectModalityAndHedges(text = '') {
   return { modality, hedgeMarkers: [...new Set(hedgeMarkers)], polarity };
 }
 
+function detectTenseAspect(text = '') {
+  const normalized = normalizeText(text).toLowerCase();
+
+  if (/\b(?:had|has|have)\s+\w+ed\b/.test(normalized)) {
+    return 'perfect';
+  }
+
+  if (/\b(?:was|were|am|is|are)\s+\w+ing\b/.test(normalized)) {
+    return 'progressive';
+  }
+
+  if (/\b(?:will|would|shall|should)\b/.test(normalized)) {
+    return 'future-modal';
+  }
+
+  if (/\b\w+ed\b/.test(normalized)) {
+    return 'past';
+  }
+
+  return 'present';
+}
+
+function extractClauseSemanticScaffold(text = '') {
+  const tokens = tokenize(text);
+  const actorMatch = normalizeText(text).match(/\b(?:I|we|you|they|he|she|it|there|this|that|the\s+\w+|a\s+\w+|an\s+\w+)\b/i);
+  const actor = actorMatch ? actorMatch[0] : '';
+  const actionMatch = normalizeText(text).match(/\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|could|may|might|must|go|goes|went|get|gets|got|keep|keeps|kept|leave|leaves|left|remember|remembers|remembered|wait|waits|waited|grab|grabs|grabbed|use|uses|used|pull|pulls|pulled|call|calls|called|knock|knocks|knocked|change|changes|changed|say|says|said|tell|tells|told|show|shows|showed|shift|shifts|shifted|begin|begins|began|finish|finishes|finished|wrap|wraps|wrapped|conclude|concludes|concluded)\b/i);
+  const action = actionMatch ? actionMatch[0] : '';
+  const actionIndex = actionMatch ? Math.max(0, tokens.indexOf(action.toLowerCase())) : -1;
+  const object = actionIndex >= 0
+    ? tokens.slice(actionIndex + 1).filter((word) => !HEDGE_MARKERS.has(word)).slice(0, 4).join(' ')
+    : '';
+  const modifiers = tokens.filter((word) =>
+    MODIFIER_MARKERS.has(word) ||
+    /(?:ly|ive|ous|al|ful|less|able|ible|ish|ic)$/i.test(word)
+  );
+  const propositionHead = action || tokens.find((word) => !CONTENT_STOP_WORDS.has(word)) || '';
+
+  return {
+    propositionHead,
+    actor,
+    action,
+    object,
+    modifiers,
+    tenseAspect: detectTenseAspect(text)
+  };
+}
+
 function buildOpportunityProfileFromIR(ir) {
   // Enhanced opportunity profile from IR structure
   const profile = buildOpportunityProfile(ir.sourceText);
@@ -1777,6 +2410,148 @@ function buildOpportunityProfileFromIR(ir) {
   profile.irClauses = ir.sentences.filter(s => s.clauses.length > 1).length;
 
   return profile;
+}
+
+function preferredRegisterMode(targetProfile = {}, currentProfile = {}) {
+  const targetMode = detectRegisterMode(targetProfile);
+  const currentMode = detectRegisterMode(currentProfile);
+
+  if (targetMode !== currentMode) {
+    return targetMode;
+  }
+
+  if ((targetProfile.directness || 0) > (currentProfile.directness || 0) + 0.04) {
+    return 'operational';
+  }
+
+  if ((targetProfile.abstractionPosture || 0) > (currentProfile.abstractionPosture || 0) + 0.06) {
+    return 'reflective';
+  }
+
+  if ((targetProfile.latinatePreference || 0) > (currentProfile.latinatePreference || 0) + 0.05) {
+    return 'formal';
+  }
+
+  return targetMode;
+}
+
+function applyPhraseRealizationPacks(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
+  let result = text;
+  const mode = preferredRegisterMode(targetProfile, currentProfile);
+  const maxPacks = Math.max(1, Math.min(PHRASE_REALIZATION_PACKS.length, Math.round(1 + (strength * 3))));
+  let applied = 0;
+
+  for (const pack of PHRASE_REALIZATION_PACKS) {
+    if (applied >= maxPacks) {
+      break;
+    }
+
+    const replacement = pack.replacements[mode] || pack.replacements.plain;
+    if (!replacement) {
+      continue;
+    }
+
+    const next = replaceLimited(result, pack.pattern, (match) => matchCase(match, replacement), 1);
+    if (next !== result) {
+      result = next;
+      applied += 1;
+    }
+  }
+
+  return result;
+}
+
+function preferredFamilySurface(family, formKey, mode = 'plain') {
+  return family.forms?.[mode]?.[formKey] || family.forms?.plain?.[formKey] || '';
+}
+
+function applyLexicalFamilyRealization(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
+  let result = text;
+  const mode = preferredRegisterMode(targetProfile, currentProfile);
+  const maxFamilies = Math.max(1, Math.min(6, Math.round(2 + (strength * 4))));
+  let applied = 0;
+
+  for (const family of LEXICAL_FAMILIES) {
+    if (applied >= maxFamilies) {
+      break;
+    }
+
+    const preferredForms = family.forms?.[mode] || family.forms?.plain || {};
+    const familyVariants = FAMILY_VARIANT_INDEX.filter((entry) => entry.familyId === family.id);
+    let swapped = false;
+
+    for (const entry of familyVariants) {
+      const preferredSurface = preferredForms[entry.formKey] || family.forms?.plain?.[entry.formKey];
+      if (!preferredSurface || preferredSurface.toLowerCase() === entry.normalized) {
+        continue;
+      }
+
+      const pattern = new RegExp(`\\b${escapeRegex(entry.surface)}\\b`, 'gi');
+      const skipPatterns = LEXICAL_FAMILY_SKIP_PATTERNS[family.id] || [];
+      let replaced = false;
+      const next = result.replace(pattern, (match, offset, fullText) => {
+        if (replaced) {
+          return match;
+        }
+
+        const context = fullText.slice(Math.max(0, offset - 18), Math.min(fullText.length, offset + match.length + 18));
+        if (skipPatterns.some((candidate) => candidate.test(context))) {
+          return match;
+        }
+
+        replaced = true;
+        return matchCase(match, preferredSurface);
+      });
+      if (next !== result) {
+        result = next;
+        applied += 1;
+        swapped = true;
+        break;
+      }
+    }
+
+    if (swapped && applied >= maxFamilies) {
+      break;
+    }
+  }
+
+  return result;
+}
+
+function applyRegisterFramingTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
+  const mode = preferredRegisterMode(targetProfile, currentProfile);
+  const wantsLonger = (targetProfile.avgSentenceLength || 0) > ((currentProfile.avgSentenceLength || 0) + 0.6);
+  const softensDirectness = (targetProfile.directness || 0) < ((currentProfile.directness || 0) - 0.08);
+  let result = text;
+
+  if (mode !== 'reflective' && mode !== 'formal') {
+    return result;
+  }
+
+  result = result.replace(/^\s*hey[,.]?\s+/i, '');
+
+  if (wantsLonger || softensDirectness) {
+    result = result.replace(/\.\s+So\s+/g, ', so ');
+    result = result.replace(/\.\s+And\s+I\b/g, ', and I');
+    result = result.replace(/\.\s+I\s+(am|was|will|would|should|could|can|have|had|probably)\b/g, ', and I $1');
+  }
+
+  if ((targetProfile.hedgeDensity || 0) > (currentProfile.hedgeDensity || 0) + 0.02) {
+    const hasLeadHedge = /^\s*(?:honestly|apparently|maybe|perhaps|frankly)\b/i.test(result);
+    if (!hasLeadHedge) {
+      result = result.replace(/^([A-Z])/m, (match) => `Apparently, ${match.toLowerCase()}`);
+    }
+  }
+
+  return result;
+}
+
+function applyVoiceRealizationTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
+  let result = text;
+  result = applyPhraseRealizationPacks(result, currentProfile, targetProfile, strength);
+  result = applyLexicalFamilyRealization(result, currentProfile, targetProfile, strength);
+  result = applyRegisterFramingTexture(result, currentProfile, targetProfile, strength);
+  return result;
 }
 
 // ============================================================================
@@ -1828,7 +2603,7 @@ function detectPathologies(candidateText, sourceText, targetProfile, opportunity
 
 // Compression operators
 function opSplitTrailingClarifier(text, ir, targetProfile) {
-  // Split "text, which is X" â†’ "text. Which is X" if beneficial
+  // Split "text, which is X" → "text. Which is X" if beneficial
   if (!/,\s+(?:which|that)\s+is\b/i.test(text)) {
     return text;
   }
@@ -1845,7 +2620,7 @@ function opSplitTrailingClarifier(text, ir, targetProfile) {
 }
 
 function opCompactCausalFrame(text, ir, targetProfile) {
-  // "because every time X" â†’ "when X"
+  // "because every time X" → "when X"
   if (!/because\s+every\s+time\b/i.test(text)) {
     return text;
   }
@@ -1854,7 +2629,7 @@ function opCompactCausalFrame(text, ir, targetProfile) {
 }
 
 function opCompactTemporalFrame(text, ir, targetProfile) {
-  // "by the time X, I had Y" â†’ "by the time X, I'd Y"
+  // "by the time X, I had Y" → "by the time X, I'd Y"
   if (!/by\s+the\s+time\b.*,\s+I\s+had\b/i.test(text)) {
     return text;
   }
@@ -1886,7 +2661,7 @@ function opMergeByRelation(text, ir, targetProfile, mod) {
 }
 
 function opDemoteToSubordinate(text, ir, targetProfile) {
-  // Convert "X. Because Y." â†’ "X because Y."
+  // Convert "X. Because Y." → "X because Y."
   const sentences = sentenceSplit(text);
   if (sentences.length < 2) {
     return text;
@@ -1926,7 +2701,7 @@ function opInsertResumptive(text, ir, targetProfile) {
 }
 
 function opExpandClarifier(text, ir, targetProfile) {
-  // "that's" â†’ "which is"
+  // "that's" → "which is"
   return replaceLimited(text, /\bthat's\b/gi, (match) => matchCase(match, "which is"), 1);
 }
 
@@ -1987,13 +2762,22 @@ function buildTransferPlanFromIR(ir, sourceProfile, targetProfile, strength, opp
     },
     discourseGoals: {
       contractionDelta: (targetProfile.contractionDensity || 0) - (sourceProfile.contractionDensity || 0),
-      hedgeDelta: 0
+      hedgeDelta: (targetProfile.hedgeDensity || 0) - (sourceProfile.hedgeDensity || 0)
+    },
+    registerGoals: {
+      contentWordComplexityDelta: (targetProfile.contentWordComplexity || 0) - (sourceProfile.contentWordComplexity || 0),
+      modifierDensityDelta: (targetProfile.modifierDensity || 0) - (sourceProfile.modifierDensity || 0),
+      directnessDelta: (targetProfile.directness || 0) - (sourceProfile.directness || 0),
+      abstractionDelta: (targetProfile.abstractionPosture || 0.5) - (sourceProfile.abstractionPosture || 0.5),
+      latinateDelta: (targetProfile.latinatePreference || 0) - (sourceProfile.latinatePreference || 0),
+      registerMode: detectRegisterMode(targetProfile)
     },
     operationBudget: {
       splitSentence: irPlan.splitCount || 0,
       mergeSentence: irPlan.mergeCount || 0,
       swapConnector: (opportunityProfile.connector || 0) > 0 ? 2 : 0,
-      applyHedge: (opportunityProfile.resumptive || 0) > 0 ? 2 : 0
+      applyHedge: (opportunityProfile.resumptive || 0) > 0 ? 2 : 0,
+      realizeLexicon: Math.max(1, Math.round(2 + (strength * 3)))
     },
     dominantRelation: irPlan.dominantRelation,
     relationInventory: irPlan.relationInventory,
@@ -2013,6 +2797,7 @@ function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, pr
     let workText = ir.sourceText;
     workText = applySplitRules(workText, Math.max(1, plan.operationBudget.splitSentence || 1));
     workText = applyPhraseTexture(workText, sourceProfile, targetProfile, strength);
+    workText = applyVoiceRealizationTexture(workText, sourceProfile, targetProfile, Math.min(1, strength + 0.16));
     if (needsContraction) workText = applyContractionTexture(workText, targetProfile, mod);
     allCandidates.push({
       text: workText,
@@ -2026,6 +2811,7 @@ function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, pr
     let workText = ir.sourceText;
     workText = mergeSentencePairs(workText, targetProfile, Math.min(1, strength + 0.06), mod, plan);
     workText = applyClauseTexture(workText, sourceProfile, targetProfile, strength, mod, plan);
+    workText = applyVoiceRealizationTexture(workText, sourceProfile, targetProfile, Math.min(1, strength + 0.16));
     if (needsContraction) workText = applyContractionTexture(workText, targetProfile, mod);
     allCandidates.push({
       text: workText,
@@ -2038,6 +2824,7 @@ function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, pr
   let discourseText = ir.sourceText;
   discourseText = applyFunctionWordTexture(discourseText, targetProfile, strength, connectorProfile, plan);
   discourseText = applyStanceTexture(discourseText, targetProfile, strength, connectorProfile);
+  discourseText = applyVoiceRealizationTexture(discourseText, sourceProfile, targetProfile, Math.min(1, strength + 0.12));
   if (needsContraction) discourseText = applyContractionTexture(discourseText, targetProfile, mod);
   allCandidates.push({
     text: discourseText,
@@ -2049,6 +2836,7 @@ function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, pr
   let mixedText = ir.sourceText;
   mixedText = applyBaselineTransferFloor(mixedText, sourceProfile, targetProfile, Math.min(1, strength + 0.08), mod, connectorProfile, plan);
   mixedText = applyClauseTexture(mixedText, sourceProfile, targetProfile, Math.min(1, strength + 0.06), mod, plan);
+  mixedText = applyVoiceRealizationTexture(mixedText, sourceProfile, targetProfile, Math.min(1, strength + 0.18));
   if (needsContraction) mixedText = applyContractionTexture(mixedText, targetProfile, mod);
   allCandidates.push({
     text: mixedText,
@@ -2062,6 +2850,7 @@ function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, pr
   if (needsContraction) {
     conservText = applyContractionTexture(conservText, targetProfile, mod);
   }
+  conservText = applyVoiceRealizationTexture(conservText, sourceProfile, targetProfile, Math.min(1, strength + 0.1));
   conservText = applyPunctuationTexture(conservText, targetProfile, mod);
   allCandidates.push({
     text: conservText,
@@ -2073,6 +2862,7 @@ function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, pr
   let clarifyText = ir.sourceText;
   clarifyText = opSplitTrailingClarifier(clarifyText, ir, targetProfile);
   clarifyText = applyDiscourseFrameTexture(clarifyText, sourceProfile, targetProfile, strength, plan);
+  clarifyText = applyVoiceRealizationTexture(clarifyText, sourceProfile, targetProfile, Math.min(1, strength + 0.16));
   if (needsContraction) clarifyText = applyContractionTexture(clarifyText, targetProfile, mod);
   allCandidates.push({
     text: clarifyText,
@@ -2084,6 +2874,7 @@ function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, pr
   let hedgeText = ir.sourceText;
   hedgeText = opInsertResumptive(hedgeText, ir, targetProfile);
   hedgeText = applyStanceTexture(hedgeText, targetProfile, strength, connectorProfile);
+  hedgeText = applyVoiceRealizationTexture(hedgeText, sourceProfile, targetProfile, Math.min(1, strength + 0.16));
   if (needsContraction) hedgeText = applyContractionTexture(hedgeText, targetProfile, mod);
   allCandidates.push({
     text: hedgeText,
@@ -2095,10 +2886,22 @@ function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, pr
   let contractionText = ir.sourceText;
   contractionText = applyContractionTexture(contractionText, targetProfile, { cont: 1 });
   contractionText = applyPhraseTexture(contractionText, sourceProfile, targetProfile, strength);
+  contractionText = applyVoiceRealizationTexture(contractionText, sourceProfile, targetProfile, Math.min(1, strength + 0.18));
   allCandidates.push({
     text: contractionText,
     operationHistory: ['contraction', 'phrase-texture'],
     pathologyFlags: detectPathologies(contractionText, sourceText, targetProfile, {})
+  });
+
+  // Strategy 9: lexical-register-first
+  let lexicalText = ir.sourceText;
+  lexicalText = applyVoiceRealizationTexture(lexicalText, sourceProfile, targetProfile, Math.min(1, strength + 0.24));
+  lexicalText = applyStanceTexture(lexicalText, targetProfile, strength, connectorProfile);
+  if (needsContraction) lexicalText = applyContractionTexture(lexicalText, targetProfile, mod);
+  allCandidates.push({
+    text: lexicalText,
+    operationHistory: ['voice-realization', 'stance-texture', ...(needsContraction ? ['contraction'] : [])],
+    pathologyFlags: detectPathologies(lexicalText, sourceText, targetProfile, {})
   });
 
   // Ensure all candidates apply contractions if needed (final pass)
@@ -2127,16 +2930,23 @@ function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, pr
 
     const changedDims = collectChangedDimensions(sourceProfile, candidateProfile);
     const structDims = structuralDimensions(changedDims).length;
-    const discDims = changedDims.filter(d => !structuralDimensions([d]).length).length;
+    const lexicalDims = lexicalDimensions(changedDims).length;
+    const discDims = changedDims.filter((d) => !structuralDimensions([d]).length && !lexicalDimensions([d]).length).length;
     const readability = 1 - (candidateProfile.sentenceLengthSpread || 0) / 14;
     const pathologyPenalty = candidate.pathologyFlags.length * 35;
+    const registerPenalty = (compareTexts('', '', {
+      profileA: candidateProfile,
+      profileB: targetProfile
+    }).registerDistance || 0) * 20;
 
     const score =
       (donorImprovement * 40) +
       (structDims * 18) +
+      (lexicalDims * 14) +
       (discDims * 10) +
       (readability * 8) -
-      pathologyPenalty;
+      pathologyPenalty -
+      registerPenalty;
 
     return {
       text: candidate.text,
@@ -2193,6 +3003,11 @@ function buildTransferPlan({
     lowerContraction: (effectiveMod.cont || 0) < 0 || (targetProfile.contractionDensity || 0) < ((sourceProfile.contractionDensity || 0) - 0.006),
     shiftConnectors: (targetGap.functionWord || 0) >= 0.015 || (opportunityProfile.connector || 0) > 0,
     shiftStanceFrames: (relationProfile.clarifying || 0) > 0 || (relationProfile.resumptive || 0) > 0 || (relationProfile.contrastive || 0) > 0,
+    shiftLexicon:
+      (targetGap.register || 0) >= 0.11 ||
+      (targetGap.directness || 0) >= 0.06 ||
+      (targetGap.abstraction || 0) >= 0.08 ||
+      (targetGap.modifierDensity || 0) >= 0.03,
     raiseLineBreaks: (targetGap.lineBreak || 0) >= 0.02 && (targetProfile.lineBreakDensity || 0) > (sourceProfile.lineBreakDensity || 0),
     lowerLineBreaks: (targetGap.lineBreak || 0) >= 0.02 && (targetProfile.lineBreakDensity || 0) < (sourceProfile.lineBreakDensity || 0),
     dominantRelation: dominantRelationFromInventory(relationProfile),
@@ -2254,6 +3069,19 @@ function buildCandidateSpecs(transferPlan = {}) {
     });
   }
 
+  if (transferPlan.shiftLexicon) {
+    specs.push({
+      name: 'lexical-register-heavy',
+      splitBias: 0.9,
+      mergeBias: 0.9,
+      connectorBias: 1.15,
+      frameBias: 1.1,
+      lineBreakBias: 0.75,
+      punctuationBias: 0.45,
+      allowFallback: true
+    });
+  }
+
   return specs;
 }
 
@@ -2307,12 +3135,16 @@ function candidateScore({
 
   let score = quality.qualityGatePassed ? 80 : -30;
   score += structuralDimensions(changedDimensions).length * 16;
+  score += lexicalDimensions(changedDimensions).length * 14;
   score += quality.nonPunctuationDimensions.length * 10;
   score += hasMaterialStructuralTransfer(changedDimensions) ? 24 : 0;
   score += passesApplied.length * 1.5;
   score -= (fit.sentenceDistance || 0) * 12;
   score -= (fit.functionWordDistance || 0) * 22;
   score -= (fit.contractionDistance || 0) * 8;
+  score -= (fit.registerDistance || 0) * 18;
+  score -= (fit.directnessDistance || 0) * 8;
+  score -= (fit.abstractionDistance || 0) * 8;
   score -= (fit.punctShapeDistance || 0) * 6;
   score -= (fit.punctDistance || 0) * 4;
 
@@ -2344,6 +3176,13 @@ function evaluateTransferQuality({
   const limitedOpportunity = hasLimitedRewriteOpportunity(opportunityProfile);
   const nonPunctuationDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
   const structuralDimensionsChanged = structuralDimensions(changedDimensions);
+  const lexicalDimensionsChanged = lexicalDimensions(changedDimensions);
+  const materialLexicalGap =
+    (targetGap.register || 0) >= 0.11 ||
+    (targetGap.directness || 0) >= 0.06 ||
+    (targetGap.abstraction || 0) >= 0.08 ||
+    (targetGap.modifierDensity || 0) >= 0.03 ||
+    (targetGap.lexicalComplexity || 0) >= 0.05;
 
   if (!protectedLiteralIntegrity(workingText, protectedState.literals || [])) {
     notes.push('Protected literals did not survive the rewrite intact.');
@@ -2384,7 +3223,7 @@ function evaluateTransferQuality({
     }
   }
 
-  if (outputText.length > Math.ceil(sourceText.length * 1.28)) {
+  if (outputText.length > transferLengthCeiling(sourceText, sourceProfile, targetProfile, 0.76)) {
     notes.push('Transfer expanded past the bounded output ratio.');
   }
 
@@ -2398,6 +3237,10 @@ function evaluateTransferQuality({
 
   if (materialGap && !limitedOpportunity && nonPunctuationDimensions.length < 2) {
     notes.push('Transfer stayed too close to punctuation-only drift.');
+  }
+
+  if (materialLexicalGap && lexicalDimensionsChanged.length < 1) {
+    notes.push('Transfer missed donor lexical/register realization.');
   }
 
   if (outputText === sourceText && materialGap && !limitedOpportunity) {
@@ -2422,6 +3265,7 @@ function evaluateTransferQuality({
     limitedOpportunity,
     nonPunctuationDimensions,
     structuralDimensions: structuralDimensionsChanged,
+    lexicalDimensions: lexicalDimensionsChanged,
     changedDimensions
   };
 }
@@ -2483,7 +3327,7 @@ function applySentenceTexture(text = '', currentProfile = {}, targetProfile = {}
 
 function applyBaselineTransferFloor(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null, transferPlan = null) {
   let result = text;
-  const maxLength = Math.ceil(normalizeText(text).length * 1.28);
+  const maxLength = transferLengthCeiling(text, baseProfile, targetProfile, strength);
   const targetCount = desiredSentenceCount(baseProfile, targetProfile);
   const currentCount = baseProfile.sentenceCount || 0;
   const targetAvg = targetProfile.avgSentenceLength || baseProfile.avgSentenceLength || 0;
@@ -2506,6 +3350,7 @@ function applyBaselineTransferFloor(text = '', baseProfile = {}, targetProfile =
     cont: contractionDirection
   });
   result = applyPhraseTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.14));
+  result = applyVoiceRealizationTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.2));
   result = applyDiscourseFrameTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.12), transferPlan);
   result = applyStanceTexture(result, targetProfile, Math.min(1, strength + 0.14), connectorProfile);
   result = applyFunctionWordTexture(result, targetProfile, Math.min(1, strength + 0.18), connectorProfile, transferPlan);
@@ -2524,6 +3369,11 @@ function applyBaselineTransferFloor(text = '', baseProfile = {}, targetProfile =
 function finalizeTransformedText(text = '') {
   return normalizeSentenceStarts(text)
     .replace(/([;:.!?]\s+)(and|but|though|yet|since|because|so|then|when|while)\s+\2\b/gi, '$1$2')
+    .replace(/\bthough\s+so\b/gi, 'so')
+    .replace(/\bbut\s+so\b/gi, 'so')
+    .replace(/\b(?:and|but)\s+then\b/gi, 'then')
+    .replace(/\bThough\s+([^,.!?]{1,40}),\s+so\b/g, '$1, so')
+    .replace(/\bthough\s+([^,.!?]{1,40}),\s+so\b/g, '$1, so')
     .replace(/\.{2,}/g, '.')
     .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
@@ -2533,7 +3383,7 @@ function finalizeTransformedText(text = '') {
 
 function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null, transferPlan = null) {
   let result = text;
-  const maxLength = Math.ceil(normalizeText(text).length * 1.28);
+  const maxLength = transferLengthCeiling(text, baseProfile, targetProfile, strength);
   const currentProfile = extractCadenceProfile(result);
   const targetCount = desiredSentenceCount(currentProfile, targetProfile);
   const wantsLonger = (targetProfile.avgSentenceLength || currentProfile.avgSentenceLength || 0) > (currentProfile.avgSentenceLength || 0) + 0.6;
@@ -2549,6 +3399,7 @@ function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, s
   }
 
   result = applyPhraseTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.16));
+  result = applyVoiceRealizationTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.22));
   result = applyDiscourseFrameTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.14), transferPlan);
   result = applyContractionTexture(result, targetProfile, {
     ...mod,
@@ -2589,7 +3440,21 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       transferClass: 'native',
       qualityGatePassed: true,
       notes: sourceText ? ['Native shell: no transfer applied.'] : ['No source text loaded.'],
-      effectiveMod: mod
+      effectiveMod: mod,
+      realizationTier: 'none',
+      lexicalShiftProfile: {
+        lexemeSwaps: [],
+        swapCount: 0,
+        registerDistance: 0,
+        contentWordComplexityDelta: 0,
+        modifierDensityDelta: 0,
+        directnessDelta: 0,
+        abstractionDelta: 0,
+        contractionAligned: true
+      },
+      semanticRisk: 0,
+      lexemeSwaps: [],
+      realizationNotes: []
     };
   }
 
@@ -2606,7 +3471,7 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   });
   const protectedState = protectTransferLiterals(sourceText);
   const connectorProfile = shell?.profile || targetProfile;
-  const maxLength = Math.ceil(sourceText.length * 1.28);
+  const maxLength = transferLengthCeiling(sourceText, sourceProfile, targetProfile, strength);
   const previewText = (candidate) => finalizeTransformedText(
     restoreProtectedLiterals(candidate, protectedState.literals)
   );
@@ -2660,7 +3525,7 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     // Decomposed baseline transfer: structure first, then discourse layers
     {
       const baseStrength = Math.min(1, candidateStrength + 0.08);
-      const maxLength = Math.ceil(normalizeText(workingText).length * 1.28);
+      const maxLength = transferLengthCeiling(workingText, currentProfile, targetProfile, baseStrength);
       const baseCurrentProfile = currentProfile;
       const targetCount = desiredSentenceCount(baseCurrentProfile, targetProfile);
       const currentCount = baseCurrentProfile.sentenceCount || 0;
@@ -2691,6 +3556,9 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       );
       runPass('baseline-phrase', () =>
         applyPhraseTexture(workingText, currentProfile, targetProfile, Math.min(1, baseStrength + 0.14))
+      );
+      runPass('baseline-voice-realization', () =>
+        applyVoiceRealizationTexture(workingText, currentProfile, targetProfile, Math.min(1, baseStrength + 0.22))
       );
       runPass('baseline-discourse', () =>
         applyDiscourseFrameTexture(workingText, currentProfile, targetProfile, Math.min(1, baseStrength + 0.12), transferPlan)
@@ -2804,6 +3672,12 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         connectorProfile,
         transferPlan
       );
+      nextValue = applyVoiceRealizationTexture(
+        nextValue,
+        currentProfile,
+        targetProfile,
+        Math.min(1, candidateStrength + (0.18 * Math.max(1, spec.connectorBias || 1)))
+      );
       return nextValue;
     });
     currentProfile = previewProfile(workingText);
@@ -2848,7 +3722,7 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       )
     ) {
       // Skip punctuation finishing when plan wants longer sentences and punc mod is negative
-      // â€” applyPunctuationTexture converts semicolons (merge joins) to periods, undoing merges
+      // — applyPunctuationTexture converts semicolons (merge joins) to periods, undoing merges
       if (!(transferPlan.wantsLonger && (candidateMod.punc || 0) < 0)) {
         runPass('punctuation-finish', () => {
           let nextValue = applyPunctuationTexture(workingText, targetProfile, candidateMod);
@@ -2927,6 +3801,38 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
             notes: [...quality.notes]
           };
         }
+      }
+    }
+
+    if (
+      !quality.qualityGatePassed &&
+      (quality.notes || []).some((note) => /lexical\/register realization/i.test(note))
+    ) {
+      const realizedWorking = applyVoiceRealizationTexture(
+        workingText,
+        sourceProfile,
+        targetProfile,
+        Math.min(1, candidateStrength + 0.26)
+      );
+
+      if (realizedWorking !== workingText && realizedWorking.length <= maxLength) {
+        workingText = realizedWorking;
+        passesApplied.push('lexical-register-fallback');
+        outputText = previewText(workingText);
+        outputProfile = extractCadenceProfile(outputText);
+        changedDimensions = collectChangedDimensions(sourceProfile, outputProfile);
+        quality = evaluateTransferQuality({
+          sourceText,
+          outputText,
+          workingText,
+          sourceProfile,
+          targetProfile,
+          targetGap,
+          outputProfile,
+          changedDimensions,
+          protectedState,
+          opportunityProfile
+        });
       }
     }
 
@@ -3027,12 +3933,48 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     transferClass = 'weak';
     notes.push('Source and target cadence were already close, so the transfer stayed subtle.');
   } else {
-    transferClass = hasMaterialStructuralTransfer(changedDimensions) ? 'structural' : 'weak';
+    const lexicalShiftPreview = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
+    const hasLexicalRealization =
+      lexicalDimensions(changedDimensions).length > 0 ||
+      lexicalShiftPreview.swapCount > 0;
+    transferClass = hasMaterialStructuralTransfer(changedDimensions) && hasLexicalRealization ? 'structural' : 'weak';
     notes.push(`Shifted ${changedDimensions.join(', ')}.`);
+  }
+
+  let lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
+  let realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
+  let semanticRisk = computeSemanticRisk(sourceText, finalText, protectedState, sourceProfile, finalProfile);
+  const protectedLiteralRatio = protectedState.literals.length / Math.max(1, sourceProfile.wordCount || 1);
+  const literalLocked =
+    protectedState.literals.length >= 2 &&
+    protectedLiteralRatio >= 0.25 &&
+    (sourceProfile.wordCount || 0) <= 12 &&
+    lexicalShiftProfile.swapCount === 0;
+
+  if (literalLocked && finalText !== sourceText) {
+    finalText = sourceText;
+    finalProfile = sourceProfile;
+    changedDimensions = [];
+    transferClass = 'rejected';
+    notes.push('Literal-heavy source stayed anchored to preserve protected anchors.');
+    lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
+    realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
+    semanticRisk = computeSemanticRisk(sourceText, finalText, protectedState, sourceProfile, finalProfile);
   }
 
   if (protectedState.literals.length) {
     notes.push(`${protectedState.literals.length} protected literal${protectedState.literals.length === 1 ? '' : 's'} held fixed.`);
+  }
+
+  const realizationNotes = [];
+  if (lexicalShiftProfile.swapCount > 0) {
+    realizationNotes.push(`${lexicalShiftProfile.swapCount} lexical family swap${lexicalShiftProfile.swapCount === 1 ? '' : 's'} landed.`);
+  }
+  if (lexicalDimensions(changedDimensions).length > 0) {
+    realizationNotes.push(`Register shift surfaced through ${lexicalDimensions(changedDimensions).join(', ')}.`);
+  }
+  if (semanticRisk >= 0.3) {
+    realizationNotes.push('Semantic risk is elevated; review the realized output before relying on it.');
   }
 
   const result = {
@@ -3047,7 +3989,12 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     transferClass,
     qualityGatePassed,
     notes: [...new Set(notes)],
-    effectiveMod
+    effectiveMod,
+    realizationTier,
+    lexicalShiftProfile,
+    semanticRisk,
+    lexemeSwaps: lexicalShiftProfile.lexemeSwaps,
+    realizationNotes
   };
 
   if (debug) {
@@ -3068,6 +4015,7 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         score: round3(candidate.score),
         changedDimensions: [...candidate.changedDimensions],
         qualityGatePassed: candidate.quality.qualityGatePassed,
+        lexicalDimensions: [...candidate.quality.lexicalDimensions],
         notes: [...candidate.quality.notes],
         passesApplied: [...candidate.passesApplied]
       })),
@@ -3106,6 +4054,37 @@ function compareTexts(a, b, options = {}) {
   const recurrenceDistance = clamp01(
     Math.abs(profileA.recurrencePressure - profileB.recurrencePressure)
   );
+  const contentWordComplexityDistance = boundedDistance(
+    profileA.contentWordComplexity || 0,
+    profileB.contentWordComplexity || 0,
+    0.55
+  );
+  const modifierDensityDistance = boundedDistance(
+    profileA.modifierDensity || 0,
+    profileB.modifierDensity || 0,
+    0.25
+  );
+  const hedgeDensityDistance = boundedDistance(
+    profileA.hedgeDensity || 0,
+    profileB.hedgeDensity || 0,
+    0.14
+  );
+  const directnessDistance = boundedDistance(
+    profileA.directness || 0,
+    profileB.directness || 0,
+    0.45
+  );
+  const abstractionDistance = boundedDistance(
+    profileA.abstractionPosture || 0.5,
+    profileB.abstractionPosture || 0.5,
+    0.6
+  );
+  const latinateDistance = boundedDistance(
+    profileA.latinatePreference || 0,
+    profileB.latinatePreference || 0,
+    0.35
+  );
+  const registerDistanceValue = registerDistance(profileA, profileB);
   const exactTextMatch = normalizeText(a).trim().length > 0 && normalizeText(a).trim() === normalizeText(b).trim();
   const exactProfileMatch =
     Math.abs((profileA.avgSentenceLength || 0) - (profileB.avgSentenceLength || 0)) < 0.001 &&
@@ -3119,6 +4098,12 @@ function compareTexts(a, b, options = {}) {
     wordLengthDistanceValue === 0 &&
     charGramDistance === 0 &&
     Math.abs((profileA.lexicalDispersion || 0) - (profileB.lexicalDispersion || 0)) < 0.001 &&
+    contentWordComplexityDistance === 0 &&
+    modifierDensityDistance === 0 &&
+    hedgeDensityDistance === 0 &&
+    directnessDistance === 0 &&
+    abstractionDistance === 0 &&
+    latinateDistance === 0 &&
     punctShapeDistance === 0;
 
   const similarity = exactTextMatch && exactProfileMatch
@@ -3134,7 +4119,8 @@ function compareTexts(a, b, options = {}) {
         ((1 - wordLengthDistanceValue) * 0.08) +
         ((1 - charGramDistance) * 0.16) +
         ((1 - lexicalDistance) * 0.03) +
-        ((1 - recurrenceDistance) * 0.03)
+        ((1 - recurrenceDistance) * 0.03) +
+        ((1 - registerDistanceValue) * 0.05)
       );
 
   const traceability = exactProfileMatch
@@ -3148,7 +4134,8 @@ function compareTexts(a, b, options = {}) {
         ((1 - functionDistance) * 0.18) +
         ((1 - wordLengthDistanceValue) * 0.08) +
         ((1 - charGramDistance) * 0.08) +
-        ((1 - recurrenceDistance) * 0.02)
+        ((1 - recurrenceDistance) * 0.02) +
+        ((1 - registerDistanceValue) * 0.06)
       );
 
   return {
@@ -3165,12 +4152,140 @@ function compareTexts(a, b, options = {}) {
     charGramDistance: round3(charGramDistance),
     lexicalDistance: round3(lexicalDistance),
     recurrenceDistance: round3(recurrenceDistance),
+    contentWordComplexityDistance: round3(contentWordComplexityDistance),
+    modifierDensityDistance: round3(modifierDensityDistance),
+    hedgeDensityDistance: round3(hedgeDensityDistance),
+    directnessDistance: round3(directnessDistance),
+    abstractionDistance: round3(abstractionDistance),
+    latinateDistance: round3(latinateDistance),
+    registerDistance: round3(registerDistanceValue),
     avgSentenceA: profileA.avgSentenceLength,
     avgSentenceB: profileB.avgSentenceLength,
     lexicalOverlap: round3(lexicalOverlap),
     profileA,
     profileB
   };
+}
+
+function surfaceAppears(text = '', surface = '') {
+  if (!surface) {
+    return false;
+  }
+
+  return new RegExp(`\\b${escapeRegex(surface)}\\b`, 'i').test(text);
+}
+
+function detectLexemeSwaps(sourceText = '', outputText = '') {
+  const swaps = [];
+  const seen = new Set();
+
+  for (const pack of PHRASE_REALIZATION_PACKS) {
+    const sourceVariant = Object.values(pack.replacements).find((variant) => surfaceAppears(sourceText, variant));
+    const outputVariant = Object.values(pack.replacements).find((variant) => surfaceAppears(outputText, variant));
+    if (sourceVariant && outputVariant && sourceVariant.toLowerCase() !== outputVariant.toLowerCase()) {
+      const key = `${pack.id}:${sourceVariant.toLowerCase()}:${outputVariant.toLowerCase()}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        swaps.push({
+          family: pack.id,
+          from: sourceVariant,
+          to: outputVariant,
+          kind: 'phrase'
+        });
+      }
+    }
+  }
+
+  for (const family of LEXICAL_FAMILIES) {
+    const familyVariants = FAMILY_VARIANT_INDEX.filter((entry) => entry.familyId === family.id);
+    const sourceVariant = familyVariants.find((entry) => surfaceAppears(sourceText, entry.surface));
+    const outputVariant = familyVariants.find((entry) => surfaceAppears(outputText, entry.surface));
+    if (!sourceVariant || !outputVariant || sourceVariant.normalized === outputVariant.normalized) {
+      continue;
+    }
+
+    const key = `${family.id}:${sourceVariant.normalized}:${outputVariant.normalized}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      swaps.push({
+        family: family.id,
+        from: sourceVariant.surface,
+        to: outputVariant.surface,
+        kind: 'lexeme'
+      });
+    }
+  }
+
+  return swaps;
+}
+
+function buildLexicalShiftProfile(sourceText = '', outputText = '', sourceProfile = {}, targetProfile = {}, outputProfile = {}) {
+  const fit = compareTexts(sourceText, outputText, {
+    profileA: sourceProfile,
+    profileB: outputProfile
+  });
+  const lexemeSwaps = detectLexemeSwaps(sourceText, outputText);
+
+  return {
+    lexemeSwaps,
+    swapCount: lexemeSwaps.length,
+    registerDistance: fit.registerDistance || 0,
+    contentWordComplexityDelta: round3((outputProfile.contentWordComplexity || 0) - (sourceProfile.contentWordComplexity || 0)),
+    modifierDensityDelta: round3((outputProfile.modifierDensity || 0) - (sourceProfile.modifierDensity || 0)),
+    directnessDelta: round3((outputProfile.directness || 0) - (sourceProfile.directness || 0)),
+    abstractionDelta: round3((outputProfile.abstractionPosture || 0.5) - (sourceProfile.abstractionPosture || 0.5)),
+    contractionAligned:
+      Math.sign((outputProfile.contractionDensity || 0) - (sourceProfile.contractionDensity || 0)) ===
+        Math.sign((targetProfile.contractionDensity || 0) - (sourceProfile.contractionDensity || 0)) ||
+      Math.abs((targetProfile.contractionDensity || 0) - (sourceProfile.contractionDensity || 0)) < 0.006
+  };
+}
+
+function computeSemanticRisk(sourceText = '', outputText = '', protectedState = { literals: [] }, sourceProfile = {}, outputProfile = {}) {
+  const fit = compareTexts(sourceText, outputText, {
+    profileA: sourceProfile,
+    profileB: outputProfile
+  });
+  let risk = 0;
+
+  if (!protectedLiteralIntegrity(outputText, protectedState.literals || [])) {
+    risk += 0.3;
+  }
+
+  const sourceNegative = /\b(?:not|never|no|cannot|can't|won't|didn't|wasn't|aren't)\b/i.test(sourceText);
+  const outputNegative = /\b(?:not|never|no|cannot|can't|won't|didn't|wasn't|aren't)\b/i.test(outputText);
+  if (sourceNegative !== outputNegative) {
+    risk += 0.18;
+  }
+
+  if ((fit.lexicalOverlap || 0) < 0.28) {
+    risk += 0.18;
+  }
+
+  if (Math.abs((outputProfile.sentenceCount || 0) - (sourceProfile.sentenceCount || 0)) > 4) {
+    risk += 0.12;
+  }
+
+  if (outputText.length > Math.ceil(sourceText.length * 1.35)) {
+    risk += 0.1;
+  }
+
+  return round3(clamp01(risk));
+}
+
+function determineRealizationTier(changedDimensions = [], lexemeSwaps = []) {
+  const hasStructural = structuralDimensions(changedDimensions).length > 0;
+  const hasLexical = lexicalDimensions(changedDimensions).length > 0 || lexemeSwaps.length > 0;
+
+  if (!changedDimensions.length && !lexemeSwaps.length) {
+    return 'none';
+  }
+
+  if (hasStructural && hasLexical) {
+    return 'lexical-structural';
+  }
+
+  return 'cadence-only';
 }
 
 function cadenceAxisVector(input) {
@@ -3298,8 +4413,7 @@ function transformText(text, mod = {}, options = {}) {
   return buildCadenceTransfer(text, shell, options).text;
 }
 
-
-  function solveQuadratic(a, b, c) {
+function solveQuadratic(a, b, c) {
     if (a === 0) {
       throw new Error('a must be non-zero');
     }
@@ -3861,3 +4975,8 @@ function transformText(text, mod = {}, options = {}) {
     badgeMeaning
   };
 })();
+
+
+
+
+

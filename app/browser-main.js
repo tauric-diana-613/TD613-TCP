@@ -2276,255 +2276,228 @@ DeltaE = ${ledger.reuse_gain}`;
             'line-break-texture',
             'connector-stance'
           ].includes(dimension));
+      const lexicalDimensions = (transfer = {}) =>
+        (transfer.changedDimensions || [])
+          .filter((dimension) => [
+            'lexical-register',
+            'content-word-complexity',
+            'modifier-density',
+            'directness',
+            'abstraction-posture'
+          ].includes(dimension));
       const hasBannedConnectors = (text) =>
         /(though\s+if|honestly[,;]\s+and|but\s+because|and\s+though\s+if)/gi.test(text);
-      const cases = [];
+      const hasOrphanFragments = (text) =>
+        sentenceSplit(text).some((sentence, index) =>
+          index > 0 && /^(?:and|but|so|then|because|since|when|while|though|although)\s+\w{1,3}\s*$/i.test(sentence.trim())
+        );
+      const matchesGolden = (transfer = {}, golden = null) =>
+        Boolean(golden) &&
+        transfer.text === golden.text &&
+        transfer.transferClass === golden.transferClass &&
+        transfer.realizationTier === golden.realizationTier &&
+        JSON.stringify(transfer.changedDimensions || []) === JSON.stringify(golden.changedDimensions || []);
 
       const referenceVoice = "Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, I had used three qualifiers, two apologies, and the same phrase twice, which is apparently what I do when I'm buying time to say the hard part out loud.";
       const probeVoice = "Hey, if you're still out, grab the charger and use the side door. It sticks, so lean on it. If nobody hears you right away, wait a second and knock again. I'm in back unloading boxes, and I probably won't catch the first try.";
+      const reflectiveDonor = 'Honestly, I kept circling the point because every time I tried to leave, I found one more reason to stay, and then I stalled again because the room went quiet.';
+      const transferGoldens = {
+        screenshot_reference_under_probe: {
+          text: "Honestly. I wasn't trying to tell it. I just kept going over the points when I got to the part where I should have headed out. I remembered one more point that shifted why I stayed. By the time I wrapped up. I had deployed three qualifiers. Two apologies. And the same phrase twice. That's apparently what I do when I'm stalling to tell the tough part out loud.",
+          transferClass: 'structural',
+          realizationTier: 'lexical-structural',
+          changedDimensions: ['sentence-mean', 'sentence-count', 'sentence-spread', 'contraction-posture', 'connector-stance', 'lexical-register', 'modifier-density', 'abstraction-posture', 'punctuation-shape']
+        },
+        screenshot_probe_under_reference: {
+          text: 'Apparently, if you are still out, bring the charger and come through the side doorway, it sticks, so lean on it. If nobody hears you right away, pause a moment and knock again; I am in back unloading boxes, and I probably will not catch the first try.',
+          transferClass: 'structural',
+          realizationTier: 'lexical-structural',
+          changedDimensions: ['sentence-mean', 'sentence-count', 'contraction-posture', 'connector-stance', 'lexical-register', 'content-word-complexity', 'modifier-density', 'directness', 'punctuation-shape']
+        },
+        operational_under_reflective: {
+          text: 'Apparently, door sticks; knock twice, and I am in back.',
+          transferClass: 'structural',
+          realizationTier: 'lexical-structural',
+          changedDimensions: ['sentence-mean', 'sentence-count', 'sentence-spread', 'connector-stance', 'lexical-register', 'content-word-complexity', 'modifier-density', 'directness', 'punctuation-shape']
+        },
+        contraction_heavy: {
+          text: "I'm not sure if it's ready. I'll bring it when I can.",
+          transferClass: 'structural',
+          realizationTier: 'lexical-structural',
+          changedDimensions: ['sentence-mean', 'sentence-spread', 'contraction-posture', 'connector-stance', 'content-word-complexity', 'punctuation-shape']
+        },
+        contraction_light: {
+          text: 'I am sure it is ready; I will bring it when I can.',
+          transferClass: 'structural',
+          realizationTier: 'lexical-structural',
+          changedDimensions: ['sentence-mean', 'sentence-count', 'sentence-spread', 'contraction-posture', 'connector-stance', 'content-word-complexity', 'punctuation-shape']
+        },
+        low_opportunity_visible_shift: {
+          text: 'Stone sets under glass.',
+          transferClass: 'weak',
+          realizationTier: 'cadence-only',
+          changedDimensions: ['content-word-complexity']
+        },
+        protected_literal_survival: {
+          text: 'Meet at 9:30, bring ID ZX-17.',
+          transferClass: 'rejected',
+          realizationTier: 'none',
+          changedDimensions: []
+        }
+      };
+
+      const cases = [];
       const probeProfile = extractCadenceProfile(probeVoice);
       const referenceProfile = extractCadenceProfile(referenceVoice);
 
-      const ssRefUnderProbe = buildCadenceTransfer(referenceVoice, {
+      const screenshotRefUnderProbe = buildCadenceTransfer(referenceVoice, {
         mode: 'borrowed',
         profile: probeProfile,
-        strength: 0.82
+        strength: 0.9
       });
       cases.push({
         id: 'screenshot_reference_under_probe',
         source: referenceVoice,
         donorText: probeVoice,
-        transfer: ssRefUnderProbe,
+        transfer: screenshotRefUnderProbe,
         pass:
-          ssRefUnderProbe.text !== referenceVoice &&
-          !hasBannedConnectors(ssRefUnderProbe.text) &&
-          (ssRefUnderProbe.transferClass === 'structural' || ssRefUnderProbe.transferClass === 'weak')
+          matchesGolden(screenshotRefUnderProbe, transferGoldens.screenshot_reference_under_probe) &&
+          !hasBannedConnectors(screenshotRefUnderProbe.text) &&
+          !hasOrphanFragments(screenshotRefUnderProbe.text) &&
+          structuralDimensions(screenshotRefUnderProbe).length >= 1 &&
+          lexicalDimensions(screenshotRefUnderProbe).length >= 1
       });
 
-      const ssProbeUnderRef = buildCadenceTransfer(probeVoice, {
+      const screenshotProbeUnderReference = buildCadenceTransfer(probeVoice, {
         mode: 'borrowed',
         profile: referenceProfile,
-        strength: 0.82
+        strength: 0.9
       });
       cases.push({
         id: 'screenshot_probe_under_reference',
         source: probeVoice,
         donorText: referenceVoice,
-        transfer: ssProbeUnderRef,
+        transfer: screenshotProbeUnderReference,
         pass:
-          ssProbeUnderRef.text !== probeVoice &&
-          !hasBannedConnectors(ssProbeUnderRef.text) &&
-          (ssProbeUnderRef.transferClass === 'structural' || ssProbeUnderRef.transferClass === 'weak' || ssProbeUnderRef.transferClass === 'rejected')
+          matchesGolden(screenshotProbeUnderReference, transferGoldens.screenshot_probe_under_reference) &&
+          !hasBannedConnectors(screenshotProbeUnderReference.text) &&
+          !hasOrphanFragments(screenshotProbeUnderReference.text) &&
+          structuralDimensions(screenshotProbeUnderReference).length >= 1 &&
+          (lexicalDimensions(screenshotProbeUnderReference).length >= 1 || (screenshotProbeUnderReference.lexemeSwaps || []).length >= 1)
       });
 
-      const recursiveConversational = "Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed.";
-      const clippedOperational = "Hey, grab the charger. Use the side door. It sticks, so lean on it. I'm in back.";
-      const compressionTransfer = buildCadenceTransfer(recursiveConversational, {
+      const operationalUnderReflective = buildCadenceTransfer('Door sticks. Knock twice. I am in back.', {
         mode: 'borrowed',
-        profile: extractCadenceProfile(clippedOperational),
-        strength: 0.82
+        profile: extractCadenceProfile(reflectiveDonor),
+        strength: 0.88
       });
       cases.push({
-        id: 'compression_structural',
-        source: recursiveConversational,
-        donorText: clippedOperational,
-        transfer: compressionTransfer,
+        id: 'operational_under_reflective',
+        source: 'Door sticks. Knock twice. I am in back.',
+        donorText: reflectiveDonor,
+        transfer: operationalUnderReflective,
         pass:
-          compressionTransfer.text !== recursiveConversational &&
-          !hasBannedConnectors(compressionTransfer.text) &&
-          (compressionTransfer.changedDimensions || []).length >= 1
+          matchesGolden(operationalUnderReflective, transferGoldens.operational_under_reflective) &&
+          operationalUnderReflective.transferClass === 'structural' &&
+          operationalUnderReflective.realizationTier === 'lexical-structural'
       });
 
-      const contrastiveReserved = 'The door was heavy. The hinge had shifted. I avoided going out.';
-      const explanatoryCausal = "The door stuck because the hinge had shifted, which meant that I had to put my full weight on the handle whenever I left, so I eventually just stopped going out.";
-      const expansionTransfer = buildCadenceTransfer(contrastiveReserved, {
+      const contractionHeavy = buildCadenceTransfer('I am not sure if it is ready. I will bring it when I can.', {
         mode: 'borrowed',
-        profile: extractCadenceProfile(explanatoryCausal),
-        strength: 0.82
+        profile: extractCadenceProfile(`I'm not sure it's ready. I'll bring it when I can.`),
+        strength: 0.9
       });
       cases.push({
-        id: 'expansion_structural',
-        source: contrastiveReserved,
-        donorText: explanatoryCausal,
-        transfer: expansionTransfer,
+        id: 'contraction_heavy',
+        source: 'I am not sure if it is ready. I will bring it when I can.',
+        donorText: `I'm not sure it's ready. I'll bring it when I can.`,
+        transfer: contractionHeavy,
         pass:
-          !hasBannedConnectors(expansionTransfer.text) &&
-          (expansionTransfer.transferClass === 'structural' ||
-           expansionTransfer.transferClass === 'weak' ||
-           expansionTransfer.transferClass === 'rejected')
+          matchesGolden(contractionHeavy, transferGoldens.contraction_heavy) &&
+          contractionHeavy.text.includes("I'm") &&
+          contractionHeavy.text.includes("I'll")
+      });
+
+      const contractionLight = buildCadenceTransfer(`I'm sure it's ready. I'll bring it when I can.`, {
+        mode: 'borrowed',
+        profile: extractCadenceProfile('I am certain it is ready. I will bring it when I can.'),
+        strength: 0.9
+      });
+      cases.push({
+        id: 'contraction_light',
+        source: `I'm sure it's ready. I'll bring it when I can.`,
+        donorText: 'I am certain it is ready. I will bring it when I can.',
+        transfer: contractionLight,
+        pass:
+          matchesGolden(contractionLight, transferGoldens.contraction_light) &&
+          contractionLight.text.includes('I am') &&
+          contractionLight.text.includes('I will')
       });
 
       const pathAdditiveSource = 'Because the room stayed loud, I kept the note. But the line dragged. So I left this mark behind.';
-      const pathAdditiveDonor = 'Honestly, I kept circling the point because every time I tried to leave, I found one more reason to stay, and then I stalled again because the room went quiet.';
       const pathAdditiveTransfer = buildCadenceTransfer(pathAdditiveSource, {
         mode: 'borrowed',
-        profile: extractCadenceProfile(pathAdditiveDonor),
+        profile: extractCadenceProfile(reflectiveDonor),
         strength: 0.9
       });
       const pathAdditiveGlue = (pathAdditiveTransfer.text.match(/(?:,\s+and\b|;\s+and\b|-\s+and\b)/gi) || []).length;
       cases.push({
         id: 'pathology_additive_collapse_blocked',
         source: pathAdditiveSource,
-        donorText: pathAdditiveDonor,
+        donorText: reflectiveDonor,
         transfer: pathAdditiveTransfer,
-        pass: pathAdditiveGlue <= 1 && !hasBannedConnectors(pathAdditiveTransfer.text)
+        pass:
+          pathAdditiveGlue <= 1 &&
+          !hasBannedConnectors(pathAdditiveTransfer.text) &&
+          !hasOrphanFragments(pathAdditiveTransfer.text)
       });
 
-      const pathStackSource = "Even though if she called, I wouldn't answer because honestly, and this is what I told you, I just can't anymore.";
+      const pathStackSource = 'I left early though if the train arrived on time. Honestly, and also the signal worked. But because the door was unlocked, I stayed.';
       const pathStackTransfer = buildCadenceTransfer(pathStackSource, {
         mode: 'borrowed',
-        profile: probeProfile,
+        profile: referenceProfile,
         strength: 0.88
       });
       cases.push({
         id: 'pathology_connector_stack_blocked',
         source: pathStackSource,
-        donorText: probeVoice,
+        donorText: referenceVoice,
         transfer: pathStackTransfer,
         pass:
-          !hasBannedConnectors(pathStackTransfer.text) ||
-          pathStackTransfer.transferClass === 'rejected'
+          pathStackTransfer.transferClass === 'rejected' ||
+          (!hasBannedConnectors(pathStackTransfer.text) && !hasOrphanFragments(pathStackTransfer.text))
       });
 
-      const contrastSource = "Honestly, I was not trying to make a speech because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, which is apparently what I do, I was still buying time.";
-      const contrastDonor = "Need you to grab the charger on your way in. Front door sticks, so pull hard. If the downstairs light is off, knock twice. I'm in back.";
-      const contrastTransfer = buildCadenceTransfer(contrastSource, {
+      const lowOpportunityVisibleShift = buildCadenceTransfer('Stone settles under glass.', {
         mode: 'borrowed',
-        profile: extractCadenceProfile(contrastDonor),
+        profile: probeProfile,
         strength: 0.9
       });
       cases.push({
-        id: 'contrast_structural',
-        source: contrastSource,
-        donorText: contrastDonor,
-        transfer: contrastTransfer,
+        id: 'low_opportunity_visible_shift',
+        source: 'Stone settles under glass.',
+        donorText: probeVoice,
+        transfer: lowOpportunityVisibleShift,
         pass:
-          contrastTransfer.transferClass === 'structural' &&
-          contrastTransfer.text !== contrastSource &&
-          (contrastTransfer.changedDimensions || []).filter((dimension) => dimension !== 'punctuation-shape').length >= 2 &&
-          structuralDimensions(contrastTransfer).length >= 1
+          matchesGolden(lowOpportunityVisibleShift, transferGoldens.low_opportunity_visible_shift) &&
+          ['weak', 'rejected'].includes(lowOpportunityVisibleShift.transferClass) &&
+          lowOpportunityVisibleShift.text !== 'Stone settles under glass.'
       });
 
-      const connectorSource = 'Because the room stayed loud, I kept the note, but the line dragged, so I left this mark behind.';
-      const connectorDonor = 'Since the room stayed loud, I kept the note. Though the line dragged, I stayed. Then I left that mark behind.';
-      const connectorTransfer = buildCadenceTransfer(connectorSource, {
+      const protectedLiteral = buildCadenceTransfer('Meet at 9:30, bring ID ZX-17.', {
         mode: 'borrowed',
-        profile: extractCadenceProfile(connectorDonor),
-        strength: 0.88
-      });
-      const connectorLower = connectorTransfer.text.toLowerCase();
-      cases.push({
-        id: 'connector_visibility',
-        source: connectorSource,
-        donorText: connectorDonor,
-        transfer: connectorTransfer,
-        pass:
-          connectorTransfer.text !== connectorSource &&
-          (
-            connectorLower.includes('since') ||
-            connectorLower.includes('though') ||
-            connectorLower.includes('then') ||
-            connectorLower.includes('that')
-          ) &&
-          (connectorTransfer.changedDimensions || []).includes('connector-stance')
-      });
-
-      const mergeSource = 'Door sticks. Knock twice. I am in back.';
-      const mergeDonor = 'Honestly, I kept circling the point because every time I tried to leave, I found one more reason to stay, and then I stalled again because the room went quiet.';
-      const mergeTransfer = buildCadenceTransfer(mergeSource, {
-        mode: 'borrowed',
-        profile: extractCadenceProfile(mergeDonor),
-        strength: 0.88
-      });
-      const mergeSourceProfile = extractCadenceProfile(mergeSource);
-      const mergeOutputProfile = extractCadenceProfile(mergeTransfer.text);
-      cases.push({
-        id: 'merge_structural',
-        source: mergeSource,
-        donorText: mergeDonor,
-        transfer: mergeTransfer,
-        pass:
-          mergeTransfer.text !== mergeSource &&
-          (
-            mergeTransfer.transferClass === 'structural' ||
-            (mergeTransfer.changedDimensions || []).includes('sentence-count') ||
-            (mergeTransfer.changedDimensions || []).includes('sentence-mean')
-          ) &&
-          (mergeOutputProfile.sentenceCount || 0) <= (mergeSourceProfile.sentenceCount || 0)
-      });
-
-      const reverseContrastSource = 'Need the charger. Front door sticks. Knock twice if the light is out. I am in back.';
-      const reverseContrastDonor = mergeDonor;
-      const reverseContrastTransfer = buildCadenceTransfer(reverseContrastSource, {
-        mode: 'borrowed',
-        profile: extractCadenceProfile(reverseContrastDonor),
-        strength: 0.9
-      });
-      const reverseContrastSourceProfile = extractCadenceProfile(reverseContrastSource);
-      const reverseContrastOutputProfile = extractCadenceProfile(reverseContrastTransfer.text);
-      cases.push({
-        id: 'reverse_contrast_structural',
-        source: reverseContrastSource,
-        donorText: reverseContrastDonor,
-        transfer: reverseContrastTransfer,
-        pass:
-          reverseContrastTransfer.text !== reverseContrastSource &&
-          (
-            reverseContrastTransfer.transferClass === 'structural' ||
-            (reverseContrastTransfer.changedDimensions || []).includes('sentence-count') ||
-            (reverseContrastTransfer.changedDimensions || []).includes('sentence-mean')
-          ) &&
-          (
-            (reverseContrastOutputProfile.avgSentenceLength || 0) > (reverseContrastSourceProfile.avgSentenceLength || 0) ||
-            (reverseContrastOutputProfile.sentenceCount || 0) < (reverseContrastSourceProfile.sentenceCount || 0)
-          )
-      });
-
-      const additiveGuardSource = 'Because the room stayed loud, I kept the note. But the line dragged. So I left this mark behind.';
-      const additiveGuardTransfer = buildCadenceTransfer(additiveGuardSource, {
-        mode: 'borrowed',
-        profile: extractCadenceProfile(reverseContrastDonor),
-        strength: 0.9
-      });
-      const additiveGlueCount = (additiveGuardTransfer.text.match(/(?:,\s+and\b|;\s+and\b|-\s+and\b)/gi) || []).length;
-      const additiveGuardLower = additiveGuardTransfer.text.toLowerCase();
-      cases.push({
-        id: 'anti_additive_glue',
-        source: additiveGuardSource,
-        donorText: reverseContrastDonor,
-        transfer: additiveGuardTransfer,
-        pass:
-          additiveGlueCount <= 1 &&
-          (
-            additiveGuardTransfer.transferClass === 'rejected' ||
-            additiveGuardLower.includes('because') ||
-            additiveGuardLower.includes('since') ||
-            additiveGuardLower.includes('though') ||
-            additiveGuardLower.includes('yet') ||
-            additiveGuardLower.includes('but') ||
-            additiveGuardLower.includes('so') ||
-            additiveGuardLower.includes('then')
-          )
-      });
-
-      const lowOpportunitySource = 'Stone settles under glass.';
-      const lowOpportunityDonor = contrastDonor;
-      const lowOpportunityTransfer = buildCadenceTransfer(lowOpportunitySource, {
-        mode: 'borrowed',
-        profile: extractCadenceProfile(lowOpportunityDonor),
+        profile: referenceProfile,
         strength: 0.9
       });
       cases.push({
-        id: 'low_opportunity_honesty',
-        source: lowOpportunitySource,
-        donorText: lowOpportunityDonor,
-        transfer: lowOpportunityTransfer,
+        id: 'protected_literal_survival',
+        source: 'Meet at 9:30, bring ID ZX-17.',
+        donorText: referenceVoice,
+        transfer: protectedLiteral,
         pass:
-          ['weak', 'rejected'].includes(lowOpportunityTransfer.transferClass) &&
-          lowOpportunityTransfer.transferClass !== 'structural' &&
-          lowOpportunityTransfer.opportunityProfile &&
-          lowOpportunityTransfer.opportunityProfile.sentenceSplit === 0 &&
-          lowOpportunityTransfer.opportunityProfile.sentenceMerge === 0
+          matchesGolden(protectedLiteral, transferGoldens.protected_literal_survival) &&
+          protectedLiteral.text.includes('9:30') &&
+          protectedLiteral.text.includes('ZX-17')
       });
 
       const report = {
@@ -2534,10 +2507,13 @@ DeltaE = ${ledger.reuse_gain}`;
           source: entry.source,
           donorText: entry.donorText,
           transferClass: entry.transfer.transferClass,
+          realizationTier: entry.transfer.realizationTier,
           changedDimensions: entry.transfer.changedDimensions || [],
           passesApplied: entry.transfer.passesApplied || [],
           transformedText: entry.transfer.text,
+          lexemeSwaps: entry.transfer.lexemeSwaps || [],
           opportunityProfile: entry.transfer.opportunityProfile || {},
+          goldenMatch: matchesGolden(entry.transfer, transferGoldens[entry.id] || null),
           pass: entry.pass
         })),
         summary: {

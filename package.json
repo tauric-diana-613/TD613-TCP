@@ -7,6 +7,8 @@
   "scripts": {
     "serve": "python3 -m http.server 8000",
     "test": "node tests/stylometry.test.mjs && node tests/formulas.test.mjs && node tests/harbor.test.mjs",
+    "test:stylometry": "node tests/stylometry.test.mjs && node tests/benchmark.test.mjs && node tests/browser-parity.test.mjs",
+    "sync:browser-engine": "node scripts/generate-browser-engine.mjs",
     "validate": "node scripts/validate-samples.mjs"
   }
 }
