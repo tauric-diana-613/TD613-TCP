@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP - The Cadence Playground</title>
-  <link rel="stylesheet" href="./styles.css?v=20260321a" />
+  <link rel="stylesheet" href="./styles.css?v=20260321b" />
 </head>
 <body>
   <div id="ingressMembrane" class="ingress-membrane" aria-live="polite">
@@ -142,15 +142,25 @@
             <button id="swapMedallion" type="button" class="swap-medallion" aria-label="Swap bay text" title="Swap bay text">&#x21C6;</button>
             <div class="input-grid">
               <label id="voiceAField" class="field" for="voiceA">
-                <span class="field-label">Reference voice</span>
-                <span class="field-copy">The anchor sample you trust.</span>
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Reference voice</span>
+                    <span class="field-copy">The anchor sample you trust.</span>
+                  </div>
+                  <button id="randomizeVoiceABtn" type="button" class="field-randomizer" aria-label="Randomize reference voice sample" title="Randomize reference voice sample">&#x21BA;</button>
+                </div>
                 <textarea id="voiceA"></textarea>
                 <div id="voiceAProfile" class="bay-profile analysis-gated" data-latent-label="Cadence shell latent"></div>
               </label>
 
               <label id="voiceBField" class="field" for="voiceB">
-                <span class="field-label">Probe voice</span>
-                <span class="field-copy">The sample you want to test against the field.</span>
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Probe voice</span>
+                    <span class="field-copy">The sample you want to test against the field.</span>
+                  </div>
+                  <button id="randomizeVoiceBBtn" type="button" class="field-randomizer" aria-label="Randomize probe voice sample" title="Randomize probe voice sample">&#x21BA;</button>
+                </div>
                 <textarea id="voiceB"></textarea>
                 <div id="voiceBProfile" class="bay-profile analysis-gated" data-latent-label="Cadence shell latent"></div>
               </label>
@@ -282,9 +292,9 @@
     <footer class="footer">TCP / experimental research prototype / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
   </div>
 
-  <script src="./browser-data.js?v=20260321a"></script>
-  <script src="./browser-engine.js?v=20260321a"></script>
-  <script src="./retrieval-fixtures.js?v=20260321a"></script>
-  <script src="./browser-main.js?v=20260321a"></script>
+  <script src="./browser-data.js?v=20260321b"></script>
+  <script src="./browser-engine.js?v=20260321b"></script>
+  <script src="./retrieval-fixtures.js?v=20260321b"></script>
+  <script src="./browser-main.js?v=20260321b"></script>
 </body>
 </html>

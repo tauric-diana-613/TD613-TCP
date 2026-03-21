@@ -1275,6 +1275,47 @@ body[data-analysis-revealed="false"] .ledger-stage.analysis-gated {
   gap: 14px;
 }
 
+.field-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.field-head-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.field-randomizer {
+  width: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 999px;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--text);
+  background: linear-gradient(180deg, rgba(26, 60, 72, 0.92) 0%, rgba(10, 27, 36, 0.98) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 0 1px rgba(116, 234, 255, 0.1);
+}
+
+.field-randomizer:hover:not(:disabled),
+.field-randomizer:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(183, 251, 255, 0.88);
+  background: linear-gradient(180deg, rgba(183, 251, 255, 0.76) 0%, rgba(11, 42, 53, 0.98) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 0 0 1px rgba(116, 234, 255, 0.18),
+    0 0 28px rgba(116, 234, 255, 0.24);
+}
+
 .swap-medallion {
   position: absolute;
   top: 74px;
@@ -2002,7 +2043,8 @@ button:disabled {
     width: 100%;
   }
 
-  .swap-medallion {
+  .swap-medallion,
+  .field-randomizer {
     width: 38px;
     min-width: 38px;
   }

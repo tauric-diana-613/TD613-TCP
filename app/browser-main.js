@@ -28,6 +28,11 @@
     badgeMeaning
   } = window.TCP_ENGINE;
   const RETRIEVAL_FIXTURE_BUNDLE = window.TCP_RETRIEVAL_FIXTURES || { cases: {} };
+  const SAMPLE_LIBRARY = Object.freeze((defaults.sample_library || []).map((sample) => Object.freeze({ ...sample })));
+  const SAMPLE_LIBRARY_BY_ID = Object.freeze(SAMPLE_LIBRARY.reduce((acc, sample) => {
+    acc[sample.id] = sample;
+    return acc;
+  }, {}));
 
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = 'tcp.savedPersonas.v1';
@@ -173,6 +178,10 @@
   let shellDuelPulseTimer = null;
   let swapButtonPulseTimer = null;
   let statusCueTimer = null;
+  let baySampleIds = {
+    A: defaults.voiceA_sample_id || null,
+    B: defaults.voiceB_sample_id || null
+  };
   let bayShells = {
     A: createNativeShell(),
     B: createNativeShell()
@@ -184,7 +193,12 @@
   $('heroLead').textContent = microcopy.hero_lead;
   $('voiceA').value = defaults.voiceA;
   $('voiceB').value = defaults.voiceB;
+  baySampleIds = {
+    A: baySampleIds.A || inferSampleIdFromText(defaults.voiceA),
+    B: baySampleIds.B || inferSampleIdFromText(defaults.voiceB)
+  };
   applyStaticGlyphs();
+  syncBaySampleMetadata();
 
   function formatPct(value) {
     return `${Math.round(value * 100)}%`;
@@ -201,6 +215,85 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+  function sampleEntry(sampleId = '') {
+    return SAMPLE_LIBRARY_BY_ID[sampleId] || null;
+  }
+
+  function inferSampleIdFromText(text = '') {
+    const normalized = String(text || '').trim();
+    return SAMPLE_LIBRARY.find((sample) => sample.text.trim() === normalized)?.id || null;
+  }
+
+  function slotTextId(slot) {
+    return slot === 'A' ? 'voiceA' : 'voiceB';
+  }
+
+  function syncBaySampleMetadata() {
+    ['A', 'B'].forEach((slot) => {
+      const node = $(slotTextId(slot));
+      const sample = sampleEntry(baySampleIds[slot]);
+      if (!node) {
+        return;
+      }
+      node.dataset.sampleId = sample ? sample.id : '';
+      node.dataset.sampleName = sample ? sample.name : '';
+    });
+  }
+
+  function randomSampleCandidates(slot) {
+    const otherSlot = slot === 'A' ? 'B' : 'A';
+    const otherId = baySampleIds[otherSlot];
+    const ownId = baySampleIds[slot];
+    let candidates = SAMPLE_LIBRARY.filter((sample) => sample.id !== otherId && sample.id !== ownId);
+    if (!candidates.length) {
+      candidates = SAMPLE_LIBRARY.filter((sample) => sample.id !== otherId);
+    }
+    if (!candidates.length) {
+      candidates = SAMPLE_LIBRARY.filter((sample) => sample.id !== ownId);
+    }
+    return candidates.length ? candidates : [...SAMPLE_LIBRARY];
+  }
+
+  function applyDeckSample(slot, sample) {
+    if (!sample) {
+      return;
+    }
+
+    const textNode = $(slotTextId(slot));
+    if (!textNode) {
+      return;
+    }
+
+    const priorShell = bayShells[slot];
+    const releasedBorrowedShell = Boolean(priorShell && priorShell.mode === 'borrowed');
+    textNode.value = sample.text;
+    baySampleIds[slot] = sample.id;
+    if (releasedBorrowedShell) {
+      bayShells[slot] = createNativeShell();
+    }
+    syncBaySampleMetadata();
+    setActiveVoice(slot);
+    analyzeCadences({ reveal: true });
+
+    const otherSlot = slot === 'A' ? 'B' : 'A';
+    const otherSample = sampleEntry(baySampleIds[otherSlot]);
+    const pairNote = otherSample ? ` Pair locked against ${otherSample.name}.` : '';
+    setStatusMessage(
+      `${SLOT_LABELS[slot]} randomized to ${sample.name}.${pairNote}${releasedBorrowedShell ? ' Borrowed shell released before the fresh sample entered the field.' : ' Deck reran immediately.'}`
+    );
+  }
+
+  function randomizeVoiceSample(slot) {
+    if (!SAMPLE_LIBRARY.length) {
+      setStatusMessage('No sample library is loaded for the Cadence Desk yet.');
+      return;
+    }
+
+    const candidates = randomSampleCandidates(slot);
+    const nextSample = candidates[Math.floor(Math.random() * candidates.length)] || null;
+    applyDeckSample(slot, nextSample);
   }
 
   function glyphEntry(key) {
@@ -1564,6 +1657,12 @@
     $('swapCadencesBtn').textContent = 'Swap Cadences';
     $('swapMedallion').setAttribute('aria-label', 'Swap bay text');
     $('swapMedallion').title = 'Swap bay text';
+    const referenceSample = sampleEntry(baySampleIds.A);
+    const probeSample = sampleEntry(baySampleIds.B);
+    $('randomizeVoiceABtn').setAttribute('aria-label', 'Randomize reference voice sample');
+    $('randomizeVoiceABtn').title = referenceSample ? `Randomize reference voice sample // current ${referenceSample.name}` : 'Randomize reference voice sample';
+    $('randomizeVoiceBBtn').setAttribute('aria-label', 'Randomize probe voice sample');
+    $('randomizeVoiceBBtn').title = probeSample ? `Randomize probe voice sample // current ${probeSample.name}` : 'Randomize probe voice sample';
     $('savePersonaBtn').textContent = `Save Cadence as Persona // ${SLOT_SHORT[activeVoice]}`;
     $('toggleMirrorBtn').textContent = MIRROR_COPY[mirrorLogic].button;
     $('badgeBtn').textContent = `Cycle custody badge // ${BADGE_LABELS[badge] || badge}`;
@@ -1573,6 +1672,8 @@
     const voiceStateB = getVoiceState('B');
     $('swapCadencesBtn').disabled = !(voiceStateA.hasText && voiceStateB.hasText);
     $('swapMedallion').disabled = !(voiceStateA.hasText && voiceStateB.hasText);
+    $('randomizeVoiceABtn').disabled = !SAMPLE_LIBRARY.length;
+    $('randomizeVoiceBBtn').disabled = !SAMPLE_LIBRARY.length;
     $('savePersonaBtn').disabled = !getVoiceState(activeVoice).hasText;
   }
 
@@ -2073,8 +2174,15 @@ DeltaE = ${ledger.reuse_gain}`;
 
     const nextA = $('voiceB').value;
     const nextB = $('voiceA').value;
+    const nextSampleIdA = baySampleIds.B;
+    const nextSampleIdB = baySampleIds.A;
     $('voiceA').value = nextA;
     $('voiceB').value = nextB;
+    baySampleIds = {
+      A: nextSampleIdA,
+      B: nextSampleIdB
+    };
+    syncBaySampleMetadata();
     analyzeCadences();
     const focusTarget = activeVoice === 'A' ? $('voiceA') : $('voiceB');
     if (focusTarget && typeof focusTarget.focus === 'function') {
@@ -2120,6 +2228,10 @@ DeltaE = ${ledger.reuse_gain}`;
   function resetDeck() {
     $('voiceA').value = defaults.voiceA;
     $('voiceB').value = defaults.voiceB;
+    baySampleIds = {
+      A: defaults.voiceA_sample_id || inferSampleIdFromText(defaults.voiceA),
+      B: defaults.voiceB_sample_id || inferSampleIdFromText(defaults.voiceB)
+    };
     badge = defaults.badge;
     mirrorLogic = defaults.mirror_logic;
     containment = defaults.containment;
@@ -2130,6 +2242,7 @@ DeltaE = ${ledger.reuse_gain}`;
       B: createNativeShell()
     };
     activeVoice = 'A';
+    syncBaySampleMetadata();
     renderVoiceProfiles();
     renderPersonas();
     analyzeCadences({ reveal: keepRevealed });
@@ -2147,6 +2260,8 @@ DeltaE = ${ledger.reuse_gain}`;
       bayShells[slot] = createNativeShell();
     }
 
+    baySampleIds[slot] = inferSampleIdFromText($(slotTextId(slot)).value);
+    syncBaySampleMetadata();
     setActiveVoice(slot);
     renderVoiceProfiles();
     updateControls();
@@ -2161,6 +2276,10 @@ DeltaE = ${ledger.reuse_gain}`;
     return {
       voiceA: $('voiceA').value,
       voiceB: $('voiceB').value,
+      baySampleIds: {
+        A: baySampleIds.A,
+        B: baySampleIds.B
+      },
       badge,
       mirrorLogic,
       containment,
@@ -2177,6 +2296,10 @@ DeltaE = ${ledger.reuse_gain}`;
   function restoreFlightState(state) {
     $('voiceA').value = state.voiceA;
     $('voiceB').value = state.voiceB;
+    baySampleIds = {
+      A: state.baySampleIds?.A || inferSampleIdFromText(state.voiceA),
+      B: state.baySampleIds?.B || inferSampleIdFromText(state.voiceB)
+    };
     badge = state.badge;
     mirrorLogic = state.mirrorLogic;
     containment = state.containment;
@@ -2189,6 +2312,7 @@ DeltaE = ${ledger.reuse_gain}`;
     savedPersonas = JSON.parse(JSON.stringify(state.savedPersonas));
     persistSavedPersonas();
     setArtifactTab(activeArtifactTab);
+    syncBaySampleMetadata();
     renderVoiceProfiles();
     renderPersonas();
     analyzeCadences();
@@ -2729,6 +2853,23 @@ DeltaE = ${ledger.reuse_gain}`;
       };
 
       $('resetBtn').click();
+      const beforeRandomA = $('voiceA').value;
+      const beforeRandomB = $('voiceB').value;
+      $('randomizeVoiceABtn').click();
+      const afterRandomA = $('voiceA').value;
+      const randomizedReferenceSampleId = $('voiceA').dataset.sampleId || '';
+      $('randomizeVoiceBBtn').click();
+      const afterRandomB = $('voiceB').value;
+      const randomizedProbeSampleId = $('voiceB').dataset.sampleId || '';
+      report.sampleRandomizer = {
+        referenceChanged: afterRandomA !== beforeRandomA,
+        probeChanged: afterRandomB !== beforeRandomB,
+        referenceSampleId: randomizedReferenceSampleId,
+        probeSampleId: randomizedProbeSampleId,
+        pairDistinct: Boolean(randomizedReferenceSampleId) && randomizedReferenceSampleId !== randomizedProbeSampleId
+      };
+
+      $('resetBtn').click();
       const ownSourceSnapshot = readDeckSnapshot();
       report.ownSourceDuel = {
         sourceLabel: ownSourceSnapshot.duelSource,
@@ -2893,6 +3034,7 @@ DeltaE = ${ledger.reuse_gain}`;
 
         report.matrix = matrix;
         const supportChecks = [
+          { id: 'sample_randomizer_distinct', pass: report.sampleRandomizer.referenceChanged && report.sampleRandomizer.probeChanged && report.sampleRandomizer.pairDistinct },
           { id: 'swap_shells_preserve_raw_text', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
           { id: 'save_persona_adds_entry', pass: report.savePersona.savedPersonaAdded },
           { id: 'swap_medallion_moves_bay_text', pass: report.textSwapMedallion.voiceASwapped && report.textSwapMedallion.voiceBSwapped },
@@ -2942,6 +3084,8 @@ DeltaE = ${ledger.reuse_gain}`;
   $('compareBtn').addEventListener('click', handleAnalyzeCadences);
   $('swapMedallion').addEventListener('click', swapBayText);
   $('swapCadencesBtn').addEventListener('click', swapCadences);
+  $('randomizeVoiceABtn').addEventListener('click', () => randomizeVoiceSample('A'));
+  $('randomizeVoiceBBtn').addEventListener('click', () => randomizeVoiceSample('B'));
   $('savePersonaBtn').addEventListener('click', saveActiveCadence);
   $('toggleMirrorBtn').addEventListener('click', () => {
     mirrorLogic = mirrorLogic === 'off' ? 'on' : 'off';
