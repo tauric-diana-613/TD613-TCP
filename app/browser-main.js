@@ -255,6 +255,20 @@
     }, 1100);
   }
 
+  function revealShellDuel() {
+    setArtifactTab('play');
+    const duel = $('shellDuel');
+    if (!duel || typeof duel.scrollIntoView !== 'function') {
+      return;
+    }
+
+    try {
+      duel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch {
+      duel.scrollIntoView();
+    }
+  }
+
   /* legacy swap cue helpers removed
     const cueMessage = `${baseMessage} ↓ Shell Duel updated below.`;
     clearStatusCueTimer();
@@ -1828,9 +1842,22 @@ DeltaE = ${ledger.reuse_gain}`;
       B: shellA
     };
     const beforeSnapshot = readDeckSnapshot();
-    analyzeCadences();
+    analyzeCadences({ reveal: true });
     const afterSnapshot = readDeckSnapshot();
-    setSwapStatusMessage(`Cadence shells swapped. Each bay kept its own raw text and took the other bay's shell. Similarity ${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}; route ${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}.`);
+    const afterVoiceA = getVoiceState('A');
+    const afterVoiceB = getVoiceState('B');
+    const visibleTextShift =
+      afterVoiceA.hasEffectiveTextShift ||
+      afterVoiceB.hasEffectiveTextShift ||
+      beforeSnapshot.duelReferenceSample !== afterSnapshot.duelReferenceSample ||
+      beforeSnapshot.duelProbeSample !== afterSnapshot.duelProbeSample;
+
+    revealShellDuel();
+    setSwapStatusMessage(
+      visibleTextShift
+        ? `Cadence shells swapped. Each bay kept its own raw text and took the other bay's shell. Similarity ${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}; route ${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}.`
+        : `Cadence shells swapped. Each bay kept its own raw text and took the other bay's shell, but this pair held its surface cadence so the visible text stayed close. Similarity ${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}; route ${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}.`
+    );
   }
 
   function swapBayText() {
