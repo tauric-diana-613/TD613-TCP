@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import {
   buildCadenceTransfer,
+  cadenceModFromProfile,
   extractCadenceProfile
 } from '../app/engine/stylometry.js';
 import {
@@ -62,6 +63,11 @@ function readFixture(id) {
   return JSON.parse(fs.readFileSync(path.join(fixturesDir, `${id}.json`), 'utf8'));
 }
 
+const defaults = JSON.parse(
+  fs.readFileSync(path.join(path.dirname(__filename), '..', 'app', 'data', 'defaults.json'), 'utf8')
+);
+const sampleLibraryById = Object.fromEntries((defaults.sample_library || []).map((sample) => [sample.id, sample]));
+
 for (const testCase of CANONICAL_TRANSFER_CASES) {
   const shell = buildBorrowedShell(extractCadenceProfile, testCase);
   const result = buildCadenceTransfer(testCase.sourceText, shell, { retrieval: true });
@@ -77,6 +83,31 @@ for (const testCase of CANONICAL_TRANSFER_CASES) {
     `${testCase.id}: protected-anchor audit matches fixture`
   );
   assert.equal(trace.sourceText, fixture.retrievalTrace.sourceText, `${testCase.id}: source text carried into retrieval trace`);
+}
+
+for (const { sourceId, donorId } of [
+  { sourceId: 'deliberative-hedged', donorId: 'operations-brief' },
+  { sourceId: 'critical-review', donorId: 'operations-brief' }
+]) {
+  const sourceSample = sampleLibraryById[sourceId];
+  const donorSample = sampleLibraryById[donorId];
+  const donorProfile = extractCadenceProfile(donorSample.text);
+  const result = buildCadenceTransfer(sourceSample.text, {
+    mode: 'borrowed',
+    label: `borrowed ${donorSample.name} cadence`,
+    profile: donorProfile,
+    mod: cadenceModFromProfile(donorProfile),
+    source: 'swapped',
+    fromSlot: 'B',
+    strength: 0.82
+  }, { retrieval: true });
+
+  assert.notEqual(result.transferClass, 'rejected', `${sourceId} under ${donorId}: swap fallback should not collapse to native text`);
+  assert.notEqual(result.text, sourceSample.text, `${sourceId} under ${donorId}: borrowed shell should produce visible output drift`);
+  assert.equal(result.protectedAnchorAudit.protectedAnchorIntegrity, 1, `${sourceId} under ${donorId}: protected anchors stay intact`);
+  assert.ok((result.semanticAudit.propositionCoverage ?? 1) >= 0.82, `${sourceId} under ${donorId}: proposition coverage stays retrieval-safe`);
+  assert.ok((result.semanticAudit.actionCoverage ?? 1) >= 0.75, `${sourceId} under ${donorId}: action coverage stays retrieval-safe`);
+  assert.equal(result.semanticAudit.polarityMismatches ?? 0, 0, `${sourceId} under ${donorId}: polarity stays aligned`);
 }
 
 console.log('retrieval-lane.test.mjs passed');

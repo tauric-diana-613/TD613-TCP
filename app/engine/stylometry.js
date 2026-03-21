@@ -3302,6 +3302,81 @@ function structuralShiftDimensions(baseProfile = {}, currentProfile = {}) {
   return shifts;
 }
 
+function borrowedShellPartialFallback({
+  shell,
+  bestCandidate,
+  sourceText,
+  sourceProfile,
+  targetProfile,
+  protectedState,
+  ir
+}) {
+  if (!shell || shell.mode !== 'borrowed') {
+    return { eligible: false };
+  }
+
+  if (!bestCandidate || !bestCandidate.outputText || bestCandidate.outputText === sourceText) {
+    return { eligible: false };
+  }
+
+  const changedDimensions = Array.isArray(bestCandidate.changedDimensions) ? bestCandidate.changedDimensions : [];
+  const qualityNotes = Array.isArray(bestCandidate.quality?.notes) ? bestCandidate.quality.notes : [];
+  const hardBlockers = [
+    /^Protected literals did not survive the rewrite intact\./,
+    /^Protected placeholders leaked into the output\./,
+    /^Transfer introduced a duplicated sentence chunk\./,
+    /^Transfer introduced a repeated connector sequence\./,
+    /^Banned connector stack detected:/,
+    /^Orphan fragment detected:/,
+    /^Transfer expanded past the bounded output ratio\./,
+    /^Transfer collapsed into an unreadable empty result\./
+  ];
+
+  if (qualityNotes.some((note) => hardBlockers.some((pattern) => pattern.test(note)))) {
+    return { eligible: false };
+  }
+
+  const lexicalShiftProfile = buildLexicalShiftProfile(
+    sourceText,
+    bestCandidate.outputText,
+    sourceProfile,
+    targetProfile,
+    bestCandidate.outputProfile
+  );
+  const visibleShift =
+    changedDimensions.some((dimension) => dimension !== 'punctuation-shape') ||
+    lexicalShiftProfile.swapCount > 0;
+
+  if (!visibleShift) {
+    return { eligible: false };
+  }
+
+  const {
+    semanticAudit,
+    protectedAnchorAudit,
+    outputIR
+  } = buildSemanticAuditBundle(ir, bestCandidate.outputText, protectedState);
+  const protectedAnchorIntegrity =
+    protectedAnchorAudit.protectedAnchorIntegrity ?? semanticAudit.protectedAnchorIntegrity ?? 1;
+
+  if (
+    protectedAnchorIntegrity < 1 ||
+    (semanticAudit.propositionCoverage ?? 1) < 0.82 ||
+    (semanticAudit.actionCoverage ?? 1) < 0.75 ||
+    (semanticAudit.polarityMismatches ?? 0) > 0
+  ) {
+    return { eligible: false };
+  }
+
+  return {
+    eligible: true,
+    lexicalShiftProfile,
+    semanticAudit,
+    protectedAnchorAudit,
+    outputIR
+  };
+}
+
 function shouldApplySentenceTexture(currentProfile = {}, targetProfile = {}, gap = {}, mod = {}) {
   if ((mod.sent || 0) !== 0) {
     return true;
@@ -3956,18 +4031,43 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   let transferClass = 'weak';
   let changedDimensions = [...bestCandidate.changedDimensions];
   const notes = [...bestCandidate.quality.notes];
+  let precomputedAuditBundle = null;
+  let precomputedLexicalShiftProfile = null;
 
   if (bestCandidate.quality.materialGap && bestCandidate.quality.limitedOpportunity) {
     notes.push('Source offered limited structural rewrite opportunities, so the transfer stayed subtle.');
   }
 
   if (!bestCandidate.quality.qualityGatePassed) {
+    const borrowedFallback = borrowedShellPartialFallback({
+      shell,
+      bestCandidate,
+      sourceText,
+      sourceProfile,
+      targetProfile,
+      protectedState,
+      ir
+    });
     if (isMaterialCadenceGap(targetGap)) {
-      finalText = sourceText;
-      finalProfile = sourceProfile;
-      changedDimensions = [];
-      transferClass = 'rejected';
-      notes.push('Transfer fell back to the source text to preserve meaning and readability.');
+      if (borrowedFallback.eligible) {
+        finalText = bestCandidate.outputText;
+        finalProfile = bestCandidate.outputProfile;
+        changedDimensions = [...bestCandidate.changedDimensions];
+        transferClass = 'weak';
+        precomputedAuditBundle = {
+          semanticAudit: borrowedFallback.semanticAudit,
+          protectedAnchorAudit: borrowedFallback.protectedAnchorAudit,
+          outputIR: borrowedFallback.outputIR
+        };
+        precomputedLexicalShiftProfile = borrowedFallback.lexicalShiftProfile;
+        notes.push('Borrowed shell preserved a retrieval-safe partial cadence shift.');
+      } else {
+        finalText = sourceText;
+        finalProfile = sourceProfile;
+        changedDimensions = [];
+        transferClass = 'rejected';
+        notes.push('Transfer fell back to the source text to preserve meaning and readability.');
+      }
     } else {
       transferClass = 'weak';
       notes.push('Source and target cadence were already close, so the transfer stayed subtle.');
@@ -3984,7 +4084,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     notes.push(`Shifted ${changedDimensions.join(', ')}.`);
   }
 
-  let lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
+  let lexicalShiftProfile = precomputedLexicalShiftProfile || buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
   let realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
   let semanticRisk = computeSemanticRisk(sourceText, finalText, protectedState, sourceProfile, finalProfile);
   const protectedLiteralRatio = protectedState.literals.length / Math.max(1, sourceProfile.wordCount || 1);
@@ -4024,7 +4124,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     semanticAudit,
     protectedAnchorAudit,
     outputIR
-  } = buildSemanticAuditBundle(ir, finalText, protectedState);
+  } = precomputedAuditBundle || buildSemanticAuditBundle(ir, finalText, protectedState);
 
   const result = {
     text: finalText,

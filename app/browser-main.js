@@ -182,6 +182,7 @@
   let shellDuelPulseTimer = null;
   let swapButtonPulseTimer = null;
   let statusCueTimer = null;
+  let lastSwapCadenceAudit = null;
   let baySampleIds = {
     A: defaults.voiceA_sample_id || null,
     B: defaults.voiceB_sample_id || null
@@ -274,6 +275,8 @@
       return;
     }
 
+    clearSwapCadenceAudit();
+
     const textNode = $(slotTextId(slot));
     if (!textNode) {
       return;
@@ -306,7 +309,7 @@
       return;
     }
 
-    const candidates = randomSampleCandidates(slot);
+    const candidates = randomizerSamplePool(slot, randomSampleCandidates(slot));
     const nextSample = candidates[Math.floor(Math.random() * candidates.length)] || null;
     applyDeckSample(slot, nextSample);
   }
@@ -1183,6 +1186,87 @@
     };
   }
 
+  function borrowedShellFromProfile(profile, fromSlot) {
+    return {
+      mode: 'borrowed',
+      label: `borrowed ${SLOT_SHORT[fromSlot]} cadence`,
+      mod: cadenceModFromProfile(profile),
+      profile: { ...profile },
+      personaId: null,
+      source: 'swapped',
+      fromSlot,
+      strength: 0.82
+    };
+  }
+
+  function predictedSwapCadenceScore(referenceText = '', probeText = '') {
+    if (!referenceText.trim() || !probeText.trim()) {
+      return 0;
+    }
+
+    const referenceProfile = extractCadenceProfile(referenceText);
+    const probeProfile = extractCadenceProfile(probeText);
+    const underProbe = buildCadenceTransfer(referenceText, borrowedShellFromProfile(probeProfile, 'B'), { retrieval: true });
+    const underReference = buildCadenceTransfer(probeText, borrowedShellFromProfile(referenceProfile, 'A'), { retrieval: true });
+    const scoreLane = (result, sourceText) => {
+      let score = 0;
+      const changed = result.text !== sourceText;
+
+      if (result.transferClass === 'structural') {
+        score += 5;
+      } else if (result.transferClass === 'weak' && changed) {
+        score += 3;
+      } else if (result.transferClass === 'rejected') {
+        score -= 4;
+      }
+
+      if (changed) {
+        score += 2;
+      }
+      if (result.realizationTier === 'lexical-structural') {
+        score += 2;
+      }
+      if ((result.semanticAudit?.propositionCoverage ?? 1) >= 0.85) {
+        score += 1;
+      }
+      if ((result.semanticAudit?.polarityMismatches ?? 0) > 0) {
+        score -= 2;
+      }
+
+      return score;
+    };
+
+    return scoreLane(underProbe, referenceText) + scoreLane(underReference, probeText);
+  }
+
+  function randomizerSamplePool(slot, candidates = []) {
+    const otherSlot = slot === 'A' ? 'B' : 'A';
+    const otherText = $(slotTextId(otherSlot))?.value || '';
+    if (!otherText.trim()) {
+      return candidates;
+    }
+
+    const scored = candidates.map((sample) => {
+      const referenceText = slot === 'A' ? sample.text : otherText;
+      const probeText = slot === 'A' ? otherText : sample.text;
+      return {
+        sample,
+        score: predictedSwapCadenceScore(referenceText, probeText)
+      };
+    });
+    const bestScore = Math.max(...scored.map((entry) => entry.score));
+
+    if (!Number.isFinite(bestScore)) {
+      return candidates;
+    }
+
+    const preferred = scored
+      .filter((entry) => entry.score === bestScore)
+      .map((entry) => entry.sample);
+
+    return preferred.length ? preferred : candidates;
+  }
+
   function getPersonaLibrary() {
     return [...basePersonas, ...savedPersonas];
   }
@@ -1266,7 +1350,93 @@
       return shifted ? `Transfer moved ${shifted}.` : 'Transfer landed a structural cadence shift.';
     }
 
+    if ((transfer.changedDimensions || []).length || (transfer.lexemeSwaps || []).length) {
+      return shifted ? `Transfer landed a partial shell shift across ${shifted}.` : 'Transfer landed a partial shell shift.';
+    }
+
     return 'Transfer stayed close to the source cadence.';
+  }
+
+  function summarizeTransferLane(voiceState) {
+    const transfer = voiceState?.transfer || {};
+    const trace = voiceState?.transferTrace || transfer.retrievalTrace || {};
+    const semanticAudit = trace.semanticAudit || transfer.semanticAudit || {};
+    const notes = [...new Set(transfer.notes || [])];
+
+    return {
+      slot: voiceState?.slot || '',
+      hasText: Boolean(voiceState?.hasText),
+      visibleShift: Boolean(voiceState?.hasEffectiveTextShift),
+      transferClass: transfer.transferClass || 'native',
+      realizationTier: transfer.realizationTier || 'none',
+      changedDimensions: [...new Set(transfer.changedDimensions || [])],
+      lexemeSwapFamilies: [...new Set((transfer.lexemeSwaps || []).map((swap) => swap.family))],
+      propositionCoverage: semanticAudit.propositionCoverage ?? 1,
+      actionCoverage: semanticAudit.actionCoverage ?? 1,
+      polarityMismatches: semanticAudit.polarityMismatches ?? 0,
+      partialFallback: notes.includes('Borrowed shell preserved a retrieval-safe partial cadence shift.'),
+      notes
+    };
+  }
+
+  function buildSwapCadenceAudit(beforeSnapshot, afterSnapshot, voiceStateA, voiceStateB) {
+    const laneA = summarizeTransferLane(voiceStateA);
+    const laneB = summarizeTransferLane(voiceStateB);
+    const rejectedSlots = [laneA, laneB]
+      .filter((lane) => lane.transferClass === 'rejected')
+      .map((lane) => lane.slot);
+    const partialFallbackSlots = [laneA, laneB]
+      .filter((lane) => lane.partialFallback)
+      .map((lane) => lane.slot);
+    const visibleTextShift =
+      laneA.visibleShift ||
+      laneB.visibleShift ||
+      beforeSnapshot.duelReferenceSample !== afterSnapshot.duelReferenceSample ||
+      beforeSnapshot.duelProbeSample !== afterSnapshot.duelProbeSample;
+
+    return {
+      visibleTextShift,
+      bothRejected: rejectedSlots.length === 2,
+      rejectedSlots,
+      partialFallbackSlots,
+      similarityChanged: beforeSnapshot.similarity !== afterSnapshot.similarity,
+      routeChanged: beforeSnapshot.routePressure !== afterSnapshot.routePressure,
+      lanes: {
+        A: laneA,
+        B: laneB
+      }
+    };
+  }
+
+  function clearSwapCadenceAudit() {
+    lastSwapCadenceAudit = null;
+  }
+
+  function describeSwapCadenceAudit(audit, beforeSnapshot, afterSnapshot) {
+    const similarityDelta = `${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}`;
+    const routeDelta = `${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}`;
+    const slotLabel = (slot) => SLOT_SHORT[slot] || slot;
+
+    if (audit.bothRejected) {
+      return `Cadence shells swapped, but both bays stayed on source text. The retrieval gate blocked this pair, so similarity ${similarityDelta} and route ${routeDelta} held near-source.`;
+    }
+
+    if (audit.rejectedSlots.length === 1) {
+      const stalled = slotLabel(audit.rejectedSlots[0]);
+      const live = slotLabel(audit.rejectedSlots[0] === 'A' ? 'B' : 'A');
+      return `Cadence shells swapped. The ${live} bay moved, but the ${stalled} bay stayed on source text after the retrieval gate blocked donor realization. Similarity ${similarityDelta}; route ${routeDelta}.`;
+    }
+
+    if (audit.partialFallbackSlots.length) {
+      const slots = audit.partialFallbackSlots.map(slotLabel).join(' + ');
+      return `Cadence shells swapped. ${slots} held a retrieval-safe partial shell shift instead of collapsing back to native text. Similarity ${similarityDelta}; route ${routeDelta}.`;
+    }
+
+    if (!audit.visibleTextShift) {
+      return `Cadence shells swapped, but this pair stayed surface-close even after the retrieval pass. Similarity ${similarityDelta}; route ${routeDelta}.`;
+    }
+
+    return `Cadence shells swapped. Each bay kept its own raw text and took the other bay's shell. Similarity ${similarityDelta}; route ${routeDelta}.`;
   }
 
   function describeShellNote(voiceState) {
@@ -2129,6 +2299,7 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function handleAnalyzeCadences() {
+    clearSwapCadenceAudit();
     analyzeCadences({ reveal: true });
   }
 
@@ -2145,6 +2316,7 @@ DeltaE = ${ledger.reuse_gain}`;
       return;
     }
 
+    clearSwapCadenceAudit();
     bayShells[activeVoice] = createPersonaShell(persona);
     analyzeCadences();
     setStatusMessage(`${persona.name} is now shaping the ${SLOT_SHORT[activeVoice]} cadence shell. The text stayed put; only the cadence shell changed.`);
@@ -2172,18 +2344,10 @@ DeltaE = ${ledger.reuse_gain}`;
     const afterSnapshot = readDeckSnapshot();
     const afterVoiceA = getVoiceState('A');
     const afterVoiceB = getVoiceState('B');
-    const visibleTextShift =
-      afterVoiceA.hasEffectiveTextShift ||
-      afterVoiceB.hasEffectiveTextShift ||
-      beforeSnapshot.duelReferenceSample !== afterSnapshot.duelReferenceSample ||
-      beforeSnapshot.duelProbeSample !== afterSnapshot.duelProbeSample;
+    lastSwapCadenceAudit = buildSwapCadenceAudit(beforeSnapshot, afterSnapshot, afterVoiceA, afterVoiceB);
 
     revealShellDuel();
-    setSwapStatusMessage(
-      visibleTextShift
-        ? `Cadence shells swapped. Each bay kept its own raw text and took the other bay's shell. Similarity ${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}; route ${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}.`
-        : `Cadence shells swapped. Each bay kept its own raw text and took the other bay's shell, but this pair held its surface cadence so the visible text stayed close. Similarity ${beforeSnapshot.similarity} -> ${afterSnapshot.similarity}; route ${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}.`
-    );
+    setSwapStatusMessage(describeSwapCadenceAudit(lastSwapCadenceAudit, beforeSnapshot, afterSnapshot));
   }
 
   function swapBayText() {
@@ -2206,6 +2370,7 @@ DeltaE = ${ledger.reuse_gain}`;
       A: nextSampleIdA,
       B: nextSampleIdB
     };
+    clearSwapCadenceAudit();
     syncBaySampleMetadata();
     analyzeCadences();
     const focusTarget = activeVoice === 'A' ? $('voiceA') : $('voiceB');
@@ -2250,6 +2415,7 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function resetDeck() {
+    clearSwapCadenceAudit();
     $('voiceA').value = defaults.voiceA;
     $('voiceB').value = defaults.voiceB;
     baySampleIds = {
@@ -2285,6 +2451,7 @@ DeltaE = ${ledger.reuse_gain}`;
     }
 
     baySampleIds[slot] = inferSampleIdFromText($(slotTextId(slot)).value);
+    clearSwapCadenceAudit();
     syncBaySampleMetadata();
     activeVoice = slot;
     collapseAnalysisDeck();
@@ -2534,6 +2701,11 @@ DeltaE = ${ledger.reuse_gain}`;
       }
 
       return retrievalFixtureCase(key)?.retrievalTrace?.semanticAudit || null;
+    },
+    getLastSwapCadenceAudit() {
+      return lastSwapCadenceAudit
+        ? JSON.parse(JSON.stringify(lastSwapCadenceAudit))
+        : null;
     }
   });
 
@@ -2946,7 +3118,8 @@ DeltaE = ${ledger.reuse_gain}`;
           readDeckSnapshot().duelProbeSample !== ownSourceSnapshot.duelProbeSample,
         personaStatusChanged: $('personaStatus').textContent.trim() !== assignedLabelBeforeSwap,
         cueVisible: readDeckSnapshot().statusCueVisible,
-        cueText: readDeckSnapshot().statusCue
+        cueText: readDeckSnapshot().statusCue,
+        audit: lastSwapCadenceAudit
       };
 
       $('savePersonaBtn').click();
@@ -3081,6 +3254,7 @@ DeltaE = ${ledger.reuse_gain}`;
           { id: 'sample_randomizer_distinct', pass: report.sampleRandomizer.referenceChanged && report.sampleRandomizer.probeChanged && report.sampleRandomizer.pairDistinct },
           { id: 'sample_randomizer_keeps_deck_latent', pass: report.sampleRandomizer.deckStillLatent },
           { id: 'swap_shells_preserve_raw_text', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
+          { id: 'swap_cadences_retrieval_audit_present', pass: Boolean(report.swapCadences.audit && report.swapCadences.audit.lanes && report.swapCadences.audit.lanes.A && report.swapCadences.audit.lanes.B) },
           { id: 'save_persona_adds_entry', pass: report.savePersona.savedPersonaAdded },
           { id: 'swap_medallion_moves_bay_text', pass: report.textSwapMedallion.voiceASwapped && report.textSwapMedallion.voiceBSwapped },
           { id: 'swap_medallion_updates_duel', pass: report.textSwapMedallion.duelSamplesChanged },
