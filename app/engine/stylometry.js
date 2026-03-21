@@ -689,17 +689,11 @@ function applyLineBreakTexture(text = '', targetProfile = {}, strength = 0.76) {
 function applyContractionTexture(text = '', targetProfile = {}, mod = {}) {
   const target = targetProfile.contractionDensity ?? 0;
   const current = contractionDensity(text);
-  const modDirection = Math.sign(mod.cont || 0);
-  let direction = target > current + 0.006
+  const direction = target > current + 0.006
     ? 1
     : target < current - 0.006
       ? -1
-      : modDirection;
-
-  // Never fight an explicit mod direction — the mod is the user/shell intent
-  if (modDirection !== 0 && direction !== 0 && Math.sign(direction) !== Math.sign(modDirection)) {
-    direction = modDirection;
-  }
+      : Math.sign(mod.cont || 0);
 
   if (!direction) {
     return text;
@@ -1571,576 +1565,6 @@ function hasRepeatedConnectorSequence(text = '') {
   return /(^|[;:.!?]\s+|\s)(and|but|though|yet|since|because|so|then|when|while|as)\s+\2\b/i.test(text);
 }
 
-// ============================================================================
-// IR System - Semantic Scaffold for Text Transformation
-// ============================================================================
-
-function segmentTextToIR(text, protectedState) {
-  const sentences = sentenceSplit(text);
-  let sentenceId = 0;
-
-  const irSentences = sentences.map((sentenceText) => {
-    const clauses = segmentSentenceToClauses(sentenceText);
-    const terminalPunct = /[.!?]$/.test(sentenceText) ? sentenceText[sentenceText.length - 1] : '.';
-    const relation = relationInventory(buildRelationOpportunityProfile(sentenceText));
-    const dominantRel = dominantRelationFromInventory(relation);
-
-    const irClauses = clauses.map((clauseText, clauseIdx) => {
-      const normalized = normalizeText(clauseText).toLowerCase();
-      const relationToPrev = clauseIdx === 0 ? 'start' : inferClauseRelation('', clauseText);
-      const clauseType = classifyClauseType(clauseText);
-      const completeness = detectClauseCompleteness(clauseText);
-      const modality = detectModalityAndHedges(clauseText);
-
-      return {
-        id: `s${sentenceId}c${clauseIdx}`,
-        text: clauseText,
-        normalized,
-        relationToPrev,
-        clauseType,
-        subjectPresent: completeness.subjectPresent,
-        finiteVerbPresent: completeness.finiteVerbPresent,
-        polarity: modality.polarity,
-        modality: modality.modality,
-        hedgeMarkers: modality.hedgeMarkers,
-        connectorLead: (RELATION_LEAD_PATTERNS[relationToPrev] || /(?!)/).test(clauseText),
-        transformOps: {
-          canCompact: completeness.subjectPresent && completeness.finiteVerbPresent,
-          canExpand: clauseType !== 'fragment',
-          canPromote: clauseType === 'subordinate' && completeness.finiteVerbPresent,
-          canDemote: clauseType === 'main',
-          canMergeNext: clauseIdx < clauses.length - 1
-        }
-      };
-    });
-
-    sentenceId += 1;
-    return {
-      id: `s${sentenceId - 1}`,
-      raw: sentenceText,
-      clauses: irClauses,
-      terminalPunct,
-      rhetoricalRole: dominantRel,
-      canSplit: clauses.length > 1,
-      canMerge: true
-    };
-  });
-
-  return {
-    sourceText: text,
-    protectedState,
-    sentences: irSentences,
-    metadata: {
-      literalSpans: protectedState.literals || [],
-      sentenceCount: irSentences.length,
-      clauseCount: irSentences.reduce((sum, s) => sum + s.clauses.length, 0)
-    }
-  };
-}
-
-function segmentSentenceToClauses(sentenceText = '') {
-  const stripped = stripTerminalPunctuation(sentenceText).trim();
-  if (!stripped) return [];
-
-  const clauses = [];
-  let remaining = stripped;
-
-  // Split on major clause boundaries: semicolons, dashes with subjects
-  const parts = remaining
-    .split(/;\s+|(?:,?\s*-\s+(?=[A-Z]|\b(?:and|but|though|so|because|if|when|while)))/)
-    .filter(Boolean);
-
-  if (parts.length > 1) {
-    return parts.map(p => p.trim()).filter(Boolean);
-  }
-
-  // Split on coordinating conjunctions with likely subject following
-  const coordParts = remaining
-    .split(/,?\s+(?:and|but|so|though|yet|or)\s+(?=[A-Z]|I\b|we\b|they\b|you\b|he\b|she\b|it\b|there\b|this\b|that\b)/)
-    .filter(Boolean);
-
-  if (coordParts.length > 1) {
-    return coordParts.map(p => p.trim()).filter(Boolean);
-  }
-
-  // Split on subordinating conjunctions
-  const subordParts = remaining
-    .split(/,?\s+(?:because|since|as|if|when|while|unless|until|once|though|although|even\s+though)(?:\s+|$)/)
-    .filter(Boolean);
-
-  if (subordParts.length > 1) {
-    return subordParts.map(p => p.trim()).filter(Boolean);
-  }
-
-  // No clear splits; return the whole sentence as one clause
-  return [stripped];
-}
-
-function classifyClauseType(text = '') {
-  const normalized = stripTerminalPunctuation(text).toLowerCase().trim();
-
-  // Check for relative clauses
-  if (/^\s*(?:which|that|who|whom|whose)\b/.test(text)) {
-    return 'relative';
-  }
-
-  // Check for subordinate clause leads
-  if (/^(?:because|since|as|if|when|while|unless|until|once|though|although|even\s+though)(?:\s+|$)/i.test(normalized)) {
-    return 'subordinate';
-  }
-
-  // Check for parenthetical/resumptive leads
-  if (/^(?:honestly|apparently|frankly|basically|anyway|i\s+think|i\s+guess|i\s+mean|to\s+be\s+honest)(?:\s|,|$)/i.test(normalized)) {
-    return 'parenthetical';
-  }
-
-  // Check for fragment (no verb/subject)
-  const hasAnyVerb = /\b(?:is|was|are|were|be|been|being|do|does|did|will|would|can|could|may|might|shall|should|have|has|had|must|go|comes?|makes?|says?|sees?|thinks?|knows?|gets?|takes?|gives?|finds?|tells?|asks?|works?|calls?|tries?|uses?|starts?|helps?|plays?|moves?|likes?|lives?|believes?|holds?|brings?|begins?|seems?|talks?|turns?|shows?|hears?|lets?|means?|sets?|meets?|runs?|pays?|sits?|speaks?|lies?|leads?|reads?|allows?|adds?|spends?|grows?|opens?|walks?|wins?|offers?|remembers?|loves?|considers?|appears?|buys?|waits?|serves?|dies?|sends?|expects?|builds?|stays?|falls?|cuts?|reaches?|kills?|remains?|suggests?|raises?|passes?|sells?|requires?|reports?|decides?|pulls?|produces?|eats?|covers?|catches?|draws?|breaks?|changes?|understands?|watches?|follows?|stops?|creates?)\b/i;
-  if (!hasAnyVerb.test(normalized)) {
-    return 'fragment';
-  }
-
-  return 'main';
-}
-
-function detectClauseCompleteness(text = '') {
-  const normalized = stripTerminalPunctuation(text).toLowerCase().trim();
-
-  // Common subject patterns
-  const subjectPattern = /\b(?:I|we|you|they|he|she|it|there|this|that|which|who|one|each|every|some|any|all|both|neither|either|another|the|a|an)\b|^[A-Z]\w+\s+/i;
-  const subjectPresent = subjectPattern.test(text);
-
-  // Check for any form of finite verb (simplified)
-  const finiteVerbPresent = /\b(?:is|was|are|were|be|been|do|does|did|will|would|can|could|may|might|have|has|had|must|am|go|comes?|makes?|says?|sees?|thinks?|knows?|gets?|takes?|gives?|finds?|tells?|asks?|works?|calls?|tries?|uses?|starts?|helps?|plays?|moves?|likes?|lives?|believes?|holds?|brings?|begins?|seems?|talks?|turns?|shows?|hears?|lets?|means?|sets?|meets?|runs?|pays?|sits?|speaks?|lies?|leads?|reads?|allows?|adds?|spends?|grows?|opens?|walks?|wins?|offers?|remembers?|loves?|considers?|appears?|buys?|waits?|serves?|dies?|sends?|expects?|builds?|stays?|falls?|cuts?|reaches?|kills?|remains?|suggests?|raises?|passes?|sells?|requires?|reports?|decides?|pulls?|produces?|eats?|covers?|catches?|draws?|breaks?|changes?|understands?|watches?|follows?|stops?|creates?)\b/i;
-  const finiteVerbCheck = finiteVerbPresent.test(normalized);
-
-  return { subjectPresent, finiteVerbPresent: finiteVerbCheck };
-}
-
-function detectModalityAndHedges(text = '') {
-  const normalized = normalizeText(text).toLowerCase();
-
-  let modality = 'indicative';
-  if (/\b(?:would|could|might|may|should|must|can)\b/.test(normalized)) {
-    modality = 'modal';
-  } else if (/\b(?:might|may|could)\b/.test(normalized)) {
-    modality = 'conditional';
-  }
-
-  const hedgeMarkers = [];
-  const hedgePatterns = [
-    { pattern: /\b(?:maybe|perhaps|possibly|arguably|apparently|sort\s+of|kind\s+of|somewhat|rather|quite|somewhat)\b/gi, hedge: 'uncertainty' },
-    { pattern: /\b(?:honestly|frankly|to\s+be\s+honest|i\s+think|i\s+guess|i\s+mean|in\s+my\s+opinion)\b/gi, hedge: 'stance' },
-    { pattern: /\b(?:just|simply|merely|only|barely|hardly|scarcely)\b/gi, hedge: 'minimization' },
-    { pattern: /\b(?:really|very|quite|rather|definitely|certainly|absolutely)\b/gi, hedge: 'intensification' }
-  ];
-
-  for (const { pattern, hedge } of hedgePatterns) {
-    if (pattern.test(normalized)) {
-      hedgeMarkers.push(hedge);
-    }
-  }
-
-  const polarity = /\b(?:not|no|never|neither|nor)\b/i.test(text) ? 'negative' : 'positive';
-
-  return { modality, hedgeMarkers: [...new Set(hedgeMarkers)], polarity };
-}
-
-function buildOpportunityProfileFromIR(ir) {
-  // Enhanced opportunity profile from IR structure
-  const profile = buildOpportunityProfile(ir.sourceText);
-
-  // Add IR-based opportunities
-  profile.irClauseBoundaries = ir.metadata.clauseCount;
-  profile.irSentenceCount = ir.metadata.sentenceCount;
-  profile.irClauses = ir.sentences.filter(s => s.clauses.length > 1).length;
-
-  return profile;
-}
-
-// ============================================================================
-// Operator Library - IR-aware Text Transformations
-// ============================================================================
-
-const PATHOLOGY_TYPES = {
-  PATH_CONNECTOR_STACK: 'PATH_CONNECTOR_STACK',
-  PATH_ADDITIVE_COLLAPSE: 'PATH_ADDITIVE_COLLAPSE',
-  PATH_FRAGMENT_ORPHAN: 'PATH_FRAGMENT_ORPHAN',
-  PATH_DUPLICATE_CHUNK: 'PATH_DUPLICATE_CHUNK',
-  PATH_LITERAL_LEAK: 'PATH_LITERAL_LEAK',
-  PATH_SEMANTIC_ROLE_DRIFT: 'PATH_SEMANTIC_ROLE_DRIFT'
-};
-
-function detectPathologies(candidateText, sourceText, targetProfile, opportunityProfile) {
-  const pathologies = [];
-
-  // Check for banned connector stacks
-  if (/(though\s+if|honestly[,;]\s+and|but\s+because|and\s+though\s+if)/gi.test(candidateText)) {
-    pathologies.push({ type: PATHOLOGY_TYPES.PATH_CONNECTOR_STACK, detail: 'Banned connector sequence' });
-  }
-
-  // Check for duplicate sentence chunks
-  if (hasDuplicateSentenceChunks(candidateText)) {
-    pathologies.push({ type: PATHOLOGY_TYPES.PATH_DUPLICATE_CHUNK, detail: 'Duplicate sentence detected' });
-  }
-
-  // Check for unresolved placeholders
-  const unresolvedCount = unresolvedProtectedLiteralCount(candidateText);
-  if (unresolvedCount > 0) {
-    pathologies.push({ type: PATHOLOGY_TYPES.PATH_LITERAL_LEAK, detail: `${unresolvedCount} unresolved literals` });
-  }
-
-  // Check for orphan fragments
-  const sentences = sentenceSplit(candidateText);
-  for (let i = 0; i < sentences.length; i += 1) {
-    const sentence = sentences[i].toLowerCase().trim();
-    if (/^(?:and|but|so|then|because|since|when|while|though|although)\b/.test(sentence) && i > 0) {
-      // Check if it's a real clause or orphaned
-      if (!/\b(?:is|was|are|were|be|been|do|does|did|will|would|can|could|have|has|had)\b/.test(sentence)) {
-        pathologies.push({ type: PATHOLOGY_TYPES.PATH_FRAGMENT_ORPHAN, detail: `Orphaned connector: "${sentence.slice(0, 30)}"` });
-      }
-    }
-  }
-
-  return pathologies;
-}
-
-// Compression operators
-function opSplitTrailingClarifier(text, ir, targetProfile) {
-  // Split "text, which is X" → "text. Which is X" if beneficial
-  if (!/,\s+(?:which|that)\s+is\b/i.test(text)) {
-    return text;
-  }
-
-  const targetWords = targetProfile.functionWordProfile || {};
-  const currentWords = functionWordProfile(text);
-  const shouldSplit = (targetWords.which || 0) > (currentWords.which || 0) + 0.001;
-
-  if (!shouldSplit) {
-    return text;
-  }
-
-  return replaceLimited(text, /,\s+(?:which|that)\s+is\b/gi, (match) => '. Which is ', 1);
-}
-
-function opCompactCausalFrame(text, ir, targetProfile) {
-  // "because every time X" → "when X"
-  if (!/because\s+every\s+time\b/i.test(text)) {
-    return text;
-  }
-
-  return replaceLimited(text, /\bbecause\s+every\s+time\b/gi, (match) => matchCase(match, 'when'), 1);
-}
-
-function opCompactTemporalFrame(text, ir, targetProfile) {
-  // "by the time X, I had Y" → "by the time X, I'd Y"
-  if (!/by\s+the\s+time\b.*,\s+I\s+had\b/i.test(text)) {
-    return text;
-  }
-
-  return replaceLimited(text, /,\s+I\s+had\b/gi, (match) => `, I'd`, 1);
-}
-
-function opCompactAuxiliary(text, targetProfile) {
-  return applyContractionTexture(text, targetProfile, { cont: 1 });
-}
-
-function opPromoteAndSplit(text, ir, targetProfile) {
-  // If there's a semicolon, try to split it
-  if (!text.includes(';')) {
-    return text;
-  }
-
-  return text.replace(/;\s+/g, '. ');
-}
-
-function opDropResumptiveLead(text, ir, targetProfile) {
-  // Remove surplus hedges at sentence start
-  return replaceLimited(text, /^\s*(?:honestly|apparently|frankly|basically)[,;]?\s+/gm, '', 1);
-}
-
-// Expansion operators
-function opMergeByRelation(text, ir, targetProfile, mod) {
-  return mergeSentencePairs(text, targetProfile, 0.8, mod, null);
-}
-
-function opDemoteToSubordinate(text, ir, targetProfile) {
-  // Convert "X. Because Y." → "X because Y."
-  const sentences = sentenceSplit(text);
-  if (sentences.length < 2) {
-    return text;
-  }
-
-  let result = text;
-  for (let i = 0; i < sentences.length - 1; i += 1) {
-    const nextSent = sentences[i + 1].toLowerCase();
-    if (/^(?:because|since|when|while|if)\b/.test(nextSent)) {
-      const first = stripTerminalPunctuation(sentences[i]);
-      const second = sentences[i + 1];
-      const merged = `${first}, ${decapitalizeSentenceLead(second)}`;
-      result = result.replace(
-        new RegExp(escapeRegex(sentences[i]) + `\\s+${escapeRegex(sentences[i + 1])}`),
-        merged
-      );
-      break;
-    }
-  }
-
-  return result;
-}
-
-function opInsertResumptive(text, ir, targetProfile) {
-  // Add hedge at clause boundary
-  const sentences = sentenceSplit(text);
-  if (sentences.length < 1) {
-    return text;
-  }
-
-  const targetWords = targetProfile.functionWordProfile || {};
-  if ((targetWords.apparently || 0) < 0.002) {
-    return text;
-  }
-
-  return replaceLimited(text, /^([A-Z])/gm, (match) => `Apparently, ${match.toLowerCase()}`, 1);
-}
-
-function opExpandClarifier(text, ir, targetProfile) {
-  // "that's" → "which is"
-  return replaceLimited(text, /\bthat's\b/gi, (match) => matchCase(match, "which is"), 1);
-}
-
-function opExpandTemporalLink(text, ir) {
-  // Add temporal connectors
-  return replaceLimited(text, /\bwhen\b/gi, (match) => matchCase(match, 'by the time'), 1);
-}
-
-function opExpandCausalLink(text, ir) {
-  // Add causal connectors
-  return replaceLimited(text, /\bso\b/gi, (match) => matchCase(match, 'because of that'), 1);
-}
-
-// Connector operators
-function opSwapConnectorFamily(text, ir, targetProfile, connectorProfile) {
-  return applyFunctionWordTexture(text, targetProfile, 0.76, connectorProfile, null);
-}
-
-// Hedge/stance operators
-function opRepositionHedge(text, ir, targetProfile) {
-  const targetWords = targetProfile.functionWordProfile || {};
-  const currentWords = functionWordProfile(text);
-
-  if ((targetWords.honestly || 0) > (currentWords.honestly || 0) + 0.001) {
-    return replaceLimited(text, /,?\s+honestly\b/gi, '', 1) || text;
-  }
-
-  return text;
-}
-
-function opCompactHedge(text) {
-  return replaceLimited(text, /\bto\s+be\s+honest\b/gi, (match) => matchCase(match, 'honestly'), 2);
-}
-
-function opExpandHedge(text) {
-  return replaceLimited(text, /\bhonestly\b/gi, (match) => matchCase(match, 'to be honest'), 1);
-}
-
-// ============================================================================
-// IR-based Transfer Planning and Beam Search
-// ============================================================================
-
-function buildTransferPlanFromIR(ir, sourceProfile, targetProfile, strength, opportunityProfile) {
-  const irPlan = buildTransferPlan({
-    sourceProfile,
-    targetProfile,
-    targetGap: profileDeltaToTarget(sourceProfile, targetProfile),
-    opportunityProfile,
-    effectiveMod: {},
-    strength
-  });
-
-  return {
-    transferMode: irPlan.limitedOpportunity ? 'weak' : (irPlan.wantsShorter ? 'compress' : irPlan.wantsLonger ? 'expand' : 'rebalance'),
-    structuralGoals: {
-      sentenceCountDelta: (targetProfile.sentenceCount || 0) - (sourceProfile.sentenceCount || 0),
-      avgSentenceDelta: (targetProfile.avgSentenceLength || 0) - (sourceProfile.avgSentenceLength || 0)
-    },
-    discourseGoals: {
-      contractionDelta: (targetProfile.contractionDensity || 0) - (sourceProfile.contractionDensity || 0),
-      hedgeDelta: 0
-    },
-    operationBudget: {
-      splitSentence: irPlan.splitCount || 0,
-      mergeSentence: irPlan.mergeCount || 0,
-      swapConnector: (opportunityProfile.connector || 0) > 0 ? 2 : 0,
-      applyHedge: (opportunityProfile.resumptive || 0) > 0 ? 2 : 0
-    },
-    dominantRelation: irPlan.dominantRelation,
-    relationInventory: irPlan.relationInventory,
-    wantsShorter: irPlan.wantsShorter,
-    wantsLonger: irPlan.wantsLonger,
-    limitedOpportunity: irPlan.limitedOpportunity,
-    weakCeiling: irPlan.limitedOpportunity
-  };
-}
-
-function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, protectedState, sourceText, mod, connectorProfile, debug) {
-  const allCandidates = [];
-  const needsContraction = Number(mod?.cont || 0) > 0;
-
-  // Strategy 1: compression-first
-  if (plan.wantsShorter) {
-    let workText = ir.sourceText;
-    workText = applySplitRules(workText, Math.max(1, plan.operationBudget.splitSentence || 1));
-    workText = applyPhraseTexture(workText, sourceProfile, targetProfile, strength);
-    if (needsContraction) workText = applyContractionTexture(workText, targetProfile, mod);
-    allCandidates.push({
-      text: workText,
-      operationHistory: ['split-rules', 'phrase-texture', ...(needsContraction ? ['contraction'] : [])],
-      pathologyFlags: detectPathologies(workText, sourceText, targetProfile, {})
-    });
-  }
-
-  // Strategy 2: expansion-first
-  if (plan.wantsLonger) {
-    let workText = ir.sourceText;
-    workText = mergeSentencePairs(workText, targetProfile, Math.min(1, strength + 0.06), mod, plan);
-    workText = applyClauseTexture(workText, sourceProfile, targetProfile, strength, mod, plan);
-    if (needsContraction) workText = applyContractionTexture(workText, targetProfile, mod);
-    allCandidates.push({
-      text: workText,
-      operationHistory: ['merge-pairs', 'clause-texture', ...(needsContraction ? ['contraction'] : [])],
-      pathologyFlags: detectPathologies(workText, sourceText, targetProfile, {})
-    });
-  }
-
-  // Strategy 3: discourse-first
-  let discourseText = ir.sourceText;
-  discourseText = applyFunctionWordTexture(discourseText, targetProfile, strength, connectorProfile, plan);
-  discourseText = applyStanceTexture(discourseText, targetProfile, strength, connectorProfile);
-  if (needsContraction) discourseText = applyContractionTexture(discourseText, targetProfile, mod);
-  allCandidates.push({
-    text: discourseText,
-    operationHistory: ['discourse-frame', 'stance-texture', ...(needsContraction ? ['contraction'] : [])],
-    pathologyFlags: detectPathologies(discourseText, sourceText, targetProfile, {})
-  });
-
-  // Strategy 4: mixed-structural (baseline)
-  let mixedText = ir.sourceText;
-  mixedText = applyBaselineTransferFloor(mixedText, sourceProfile, targetProfile, Math.min(1, strength + 0.08), mod, connectorProfile, plan);
-  mixedText = applyClauseTexture(mixedText, sourceProfile, targetProfile, Math.min(1, strength + 0.06), mod, plan);
-  if (needsContraction) mixedText = applyContractionTexture(mixedText, targetProfile, mod);
-  allCandidates.push({
-    text: mixedText,
-    operationHistory: ['baseline-floor', 'clause-texture', ...(needsContraction ? ['contraction'] : [])],
-    pathologyFlags: detectPathologies(mixedText, sourceText, targetProfile, {})
-  });
-
-  // Strategy 5: conservative-structural (always apply contraction if mod says so)
-  let conservText = ir.sourceText;
-  // Ensure contraction is applied if mod.cont > 0
-  if (needsContraction) {
-    conservText = applyContractionTexture(conservText, targetProfile, mod);
-  }
-  conservText = applyPunctuationTexture(conservText, targetProfile, mod);
-  allCandidates.push({
-    text: conservText,
-    operationHistory: ['contraction', 'punctuation'],
-    pathologyFlags: detectPathologies(conservText, sourceText, targetProfile, {})
-  });
-
-  // Strategy 6: clarifier-heavy
-  let clarifyText = ir.sourceText;
-  clarifyText = opSplitTrailingClarifier(clarifyText, ir, targetProfile);
-  clarifyText = applyDiscourseFrameTexture(clarifyText, sourceProfile, targetProfile, strength, plan);
-  if (needsContraction) clarifyText = applyContractionTexture(clarifyText, targetProfile, mod);
-  allCandidates.push({
-    text: clarifyText,
-    operationHistory: ['clarifier-split', 'discourse-frame', ...(needsContraction ? ['contraction'] : [])],
-    pathologyFlags: detectPathologies(clarifyText, sourceText, targetProfile, {})
-  });
-
-  // Strategy 7: hedge-heavy
-  let hedgeText = ir.sourceText;
-  hedgeText = opInsertResumptive(hedgeText, ir, targetProfile);
-  hedgeText = applyStanceTexture(hedgeText, targetProfile, strength, connectorProfile);
-  if (needsContraction) hedgeText = applyContractionTexture(hedgeText, targetProfile, mod);
-  allCandidates.push({
-    text: hedgeText,
-    operationHistory: ['resumptive-hedge', 'stance', ...(needsContraction ? ['contraction'] : [])],
-    pathologyFlags: detectPathologies(hedgeText, sourceText, targetProfile, {})
-  });
-
-  // Strategy 8: contraction-heavy
-  let contractionText = ir.sourceText;
-  contractionText = applyContractionTexture(contractionText, targetProfile, { cont: 1 });
-  contractionText = applyPhraseTexture(contractionText, sourceProfile, targetProfile, strength);
-  allCandidates.push({
-    text: contractionText,
-    operationHistory: ['contraction', 'phrase-texture'],
-    pathologyFlags: detectPathologies(contractionText, sourceText, targetProfile, {})
-  });
-
-  // Ensure all candidates apply contractions if needed (final pass)
-  const finalCandidates = allCandidates.map((candidate) => {
-    let finalText = candidate.text;
-    if (needsContraction) {
-      finalText = applyContractionTexture(finalText, targetProfile, mod);
-    }
-    return {
-      text: finalText,
-      operationHistory: candidate.operationHistory,
-      pathologyFlags: candidate.pathologyFlags
-    };
-  });
-
-  // Score and filter candidates
-  const scoredCandidates = finalCandidates.map((candidate) => {
-    const candidateProfile = extractCadenceProfile(candidate.text);
-    const donorVector = cadenceAxisVector(targetProfile);
-    const outputVector = cadenceAxisVector(candidateProfile);
-    const donorImprovement = donorVector.reduce((sum, axis, idx) => {
-      const outputAxis = outputVector[idx] || { normalized: 0 };
-      const gap = Math.abs(axis.normalized - outputAxis.normalized);
-      return sum + (1 - Math.min(1, gap));
-    }, 0) / Math.max(donorVector.length, 1);
-
-    const changedDims = collectChangedDimensions(sourceProfile, candidateProfile);
-    const structDims = structuralDimensions(changedDims).length;
-    const discDims = changedDims.filter(d => !structuralDimensions([d]).length).length;
-    const readability = 1 - (candidateProfile.sentenceLengthSpread || 0) / 14;
-    const pathologyPenalty = candidate.pathologyFlags.length * 35;
-
-    const score =
-      (donorImprovement * 40) +
-      (structDims * 18) +
-      (discDims * 10) +
-      (readability * 8) -
-      pathologyPenalty;
-
-    return {
-      text: candidate.text,
-      score,
-      changedDimensions: changedDims,
-      pathologyFlags: candidate.pathologyFlags,
-      operationHistory: candidate.operationHistory
-    };
-  });
-
-  // Return best candidate
-  const best = scoredCandidates.sort((a, b) => b.score - a.score)[0] || {
-    text: ir.sourceText,
-    score: 0,
-    changedDimensions: [],
-    pathologyFlags: [],
-    operationHistory: ['fallback-none']
-  };
-
-  return {
-    bestCandidate: best,
-    allCandidates: scoredCandidates.slice(0, 24)
-  };
-}
-
 function buildTransferPlan({
   sourceProfile = {},
   targetProfile = {},
@@ -2340,29 +1764,6 @@ function evaluateTransferQuality({
     notes.push('Transfer introduced a repeated connector sequence.');
   }
 
-  // Hard pathology: banned connector stacks (Section 5)
-  const BANNED_CONNECTOR_STACKS = [
-    /\bthough\s+if\b/i,
-    /\bhonestly[,;]?\s+and\b/i,
-    /\bbut\s+because\b/i,
-    /\band\s+though\s+if\b/i,
-    /\bhonestly[;]\s+and\b/i
-  ];
-  for (const banned of BANNED_CONNECTOR_STACKS) {
-    if (banned.test(outputText)) {
-      notes.push(`Banned connector stack detected: ${banned.source}`);
-    }
-  }
-
-  // Hard pathology: orphan fragments (sentences starting with lone connector, < 4 words)
-  const outputChunks = sentenceChunks(outputText);
-  for (const chunk of outputChunks) {
-    const words = tokenize(chunk);
-    if (words.length <= 3 && /^(though|but|and|so|yet|still)\b/i.test(chunk.trim())) {
-      notes.push(`Orphan fragment detected: "${chunk.trim().substring(0, 40)}"`);
-    }
-  }
-
   if (outputText.length > Math.ceil(sourceText.length * 1.28)) {
     notes.push('Transfer expanded past the bounded output ratio.');
   }
@@ -2503,7 +1904,6 @@ function applyBaselineTransferFloor(text = '', baseProfile = {}, targetProfile =
 function finalizeTransformedText(text = '') {
   return normalizeSentenceStarts(text)
     .replace(/([;:.!?]\s+)(and|but|though|yet|since|because|so|then|when|while)\s+\2\b/gi, '$1$2')
-    .replace(/\.{2,}/g, '.')
     .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .replace(/[ ]{2,}/g, ' ')
@@ -2590,15 +1990,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     restoreProtectedLiterals(candidate, protectedState.literals)
   );
   const previewProfile = (candidate) => extractCadenceProfile(previewText(candidate));
-
-  // Build IR and run beam search alongside legacy candidates
-  const ir = segmentTextToIR(protectedState.text, protectedState);
-  const irPlan = buildTransferPlanFromIR(ir, sourceProfile, targetProfile, strength, opportunityProfile);
-  const beamResult = beamSearchTransfer(ir, irPlan, sourceProfile, targetProfile, strength, protectedState, sourceText, effectiveMod, connectorProfile, debug);
-
-  // Legacy candidate specs
   const candidateSpecs = buildCandidateSpecs(transferPlan);
-
   const runCandidate = (spec = {}) => {
     let workingText = protectedState.text;
     let passesApplied = [];
@@ -2636,63 +2028,17 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       }
     };
 
-    // Decomposed baseline transfer: structure first, then discourse layers
-    {
-      const baseStrength = Math.min(1, candidateStrength + 0.08);
-      const maxLength = Math.ceil(normalizeText(workingText).length * 1.28);
-      const baseCurrentProfile = currentProfile;
-      const targetCount = desiredSentenceCount(baseCurrentProfile, targetProfile);
-      const currentCount = baseCurrentProfile.sentenceCount || 0;
-      const targetAvg = targetProfile.avgSentenceLength || baseCurrentProfile.avgSentenceLength || 0;
-      const currentAvg = baseCurrentProfile.avgSentenceLength || 0;
-      const wantsLonger = targetAvg > currentAvg + 0.4 || targetCount < currentCount;
-      const wantsShorter = targetAvg < currentAvg - 0.4 || targetCount > currentCount;
-      const contractionDirection = Number(candidateMod.cont || 0) || Math.sign((targetProfile.contractionDensity || 0) - (baseCurrentProfile.contractionDensity || 0));
-
-      if (wantsLonger && sentenceChunks(workingText).length > 1) {
-        runPass('baseline-merge', () =>
-          mergeSentencePairs(workingText, targetProfile, Math.min(1, baseStrength + 0.08), {
-            ...candidateMod,
-            sent: Math.max(1, Number(candidateMod.sent || 0) || 1)
-          }, transferPlan)
-        );
-      } else if (wantsShorter) {
-        runPass('baseline-split', () =>
-          splitLongSentences(workingText, targetProfile, Math.min(1, baseStrength + 0.08))
-        );
-      }
-
-      runPass('baseline-contraction', () =>
-        applyContractionTexture(workingText, targetProfile, {
-          ...candidateMod,
-          cont: contractionDirection
-        })
-      );
-      runPass('baseline-phrase', () =>
-        applyPhraseTexture(workingText, currentProfile, targetProfile, Math.min(1, baseStrength + 0.14))
-      );
-      runPass('baseline-discourse', () =>
-        applyDiscourseFrameTexture(workingText, currentProfile, targetProfile, Math.min(1, baseStrength + 0.12), transferPlan)
-      );
-      runPass('baseline-stance', () =>
-        applyStanceTexture(workingText, targetProfile, Math.min(1, baseStrength + 0.14), connectorProfile)
-      );
-      runPass('baseline-function-word', () =>
-        applyFunctionWordTexture(workingText, targetProfile, Math.min(1, baseStrength + 0.18), connectorProfile, transferPlan)
-      );
-
-      if (Math.abs((targetProfile.lineBreakDensity || 0) - (baseCurrentProfile.lineBreakDensity || 0)) >= 0.02) {
-        runPass('baseline-line-break', () =>
-          applyLineBreakTexture(workingText, targetProfile, Math.min(1, baseStrength + 0.1))
-        );
-      }
-
-      // Finalize baseline
-      const baselineFinalized = finalizeTransformedText(workingText);
-      if (baselineFinalized !== workingText && baselineFinalized.length <= maxLength) {
-        workingText = baselineFinalized;
-      }
-    }
+    runPass('baseline-transfer-floor', () =>
+      applyBaselineTransferFloor(
+        workingText,
+        currentProfile,
+        targetProfile,
+        Math.min(1, candidateStrength + 0.08),
+        candidateMod,
+        connectorProfile,
+        transferPlan
+      )
+    );
     currentProfile = previewProfile(workingText);
 
     if (transferPlan.wantsShorter && (spec.splitBias || 0) > 0.1) {
@@ -2826,17 +2172,13 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         Math.abs(Number(candidateMod.punc || 0)) > 0
       )
     ) {
-      // Skip punctuation finishing when plan wants longer sentences and punc mod is negative
-      // — applyPunctuationTexture converts semicolons (merge joins) to periods, undoing merges
-      if (!(transferPlan.wantsLonger && (candidateMod.punc || 0) < 0)) {
-        runPass('punctuation-finish', () => {
-          let nextValue = applyPunctuationTexture(workingText, targetProfile, candidateMod);
-          if ((candidateMod.punc || 0) < 0) {
-            nextValue = nextValue.replace(/[;:]+/g, '.').replace(/,+/g, ',');
-          }
-          return nextValue;
-        });
-      }
+      runPass('punctuation-finish', () => {
+        let nextValue = applyPunctuationTexture(workingText, targetProfile, candidateMod);
+        if ((candidateMod.punc || 0) < 0) {
+          nextValue = nextValue.replace(/[;:]+/g, '.').replace(/,+/g, ',');
+        }
+        return nextValue;
+      });
     }
 
     const finalizedWorking = finalizeTransformedText(workingText);
@@ -2936,49 +2278,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   };
 
   const candidates = candidateSpecs.map((spec) => runCandidate(spec));
-
-  // Convert beam search best candidate into legacy candidate format for comparison
-  const beamBest = beamResult.bestCandidate;
-  const beamOutputText = finalizeTransformedText(
-    restoreProtectedLiterals(beamBest.text, protectedState.literals)
-  );
-  const beamOutputProfile = extractCadenceProfile(beamOutputText);
-  const beamChangedDimensions = collectChangedDimensions(sourceProfile, beamOutputProfile);
-  const beamQuality = evaluateTransferQuality({
-    sourceText,
-    outputText: beamOutputText,
-    workingText: beamBest.text,
-    sourceProfile,
-    targetProfile,
-    targetGap,
-    outputProfile: beamOutputProfile,
-    changedDimensions: beamChangedDimensions,
-    protectedState,
-    opportunityProfile
-  });
-  const beamCandidate = {
-    spec: 'ir-beam-search',
-    workingText: beamBest.text,
-    outputText: beamOutputText,
-    outputProfile: beamOutputProfile,
-    changedDimensions: beamChangedDimensions,
-    quality: beamQuality,
-    passesApplied: beamBest.operationHistory || [],
-    score: candidateScore({
-      quality: beamQuality,
-      outputText: beamOutputText,
-      sourceText,
-      outputProfile: beamOutputProfile,
-      targetProfile,
-      changedDimensions: beamChangedDimensions,
-      passesApplied: beamBest.operationHistory || []
-    }),
-    debug: null
-  };
-
-  // Pool beam + legacy candidates; best score wins
-  const allCandidates = [beamCandidate, ...candidates];
-  const bestCandidate = [...allCandidates].sort((left, right) => right.score - left.score)[0];
+  const bestCandidate = [...candidates].sort((left, right) => right.score - left.score)[0];
 
   let finalText = bestCandidate.outputText;
   let finalProfile = bestCandidate.outputProfile;
@@ -3032,17 +2332,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   if (debug) {
     result.debug = {
       plan: transferPlan,
-      irPlan,
-      irSource: ir,
-      beamCandidates: beamResult.allCandidates.map((c) => ({
-        score: round3(c.score),
-        changedDimensions: c.changedDimensions,
-        pathologyFlags: c.pathologyFlags,
-        operationHistory: c.operationHistory
-      })),
-      distanceBefore: profileDeltaScore(profileDeltaToTarget(sourceProfile, targetProfile)),
-      distanceAfter: profileDeltaScore(profileDeltaToTarget(bestCandidate.outputProfile, targetProfile)),
-      candidates: allCandidates.map((candidate) => ({
+      candidates: candidates.map((candidate) => ({
         spec: candidate.spec,
         score: round3(candidate.score),
         changedDimensions: [...candidate.changedDimensions],
