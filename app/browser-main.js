@@ -73,6 +73,41 @@
   ];
   const INGRESS_STAGES = ['containment', 'mirror', 'badge', 'seal'];
 
+  function hasGlyphMojibake(value = '') {
+    return /[âÃ]/.test(String(value));
+  }
+
+  function preferCleanGlyph(value, fallback) {
+    return hasGlyphMojibake(value) ? fallback : value;
+  }
+
+  function repairIngressGlyphNodes() {
+    const glyphTargets = [
+      ['ingressCoreGlyph', '⟐'],
+      ['ingressSealNodeUl', '●'],
+      ['ingressSealNodeUr', '●'],
+      ['ingressSealNodeBc', '●']
+    ];
+
+    glyphTargets.forEach(([id, glyph]) => {
+      const node = $(id);
+      if (!node) {
+        return;
+      }
+
+      const target = node.tagName === 'BUTTON' ? node.querySelector('span[aria-hidden="true"]') || node : node;
+      if (target && hasGlyphMojibake(target.textContent)) {
+        target.textContent = glyph;
+      }
+    });
+  }
+
+  INGRESS_MIRROR_OPTIONS.off.glyph = preferCleanGlyph(INGRESS_MIRROR_OPTIONS.off.glyph, '◫');
+  INGRESS_MIRROR_OPTIONS.on.glyph = preferCleanGlyph(INGRESS_MIRROR_OPTIONS.on.glyph, '◧');
+  INGRESS_BADGE_OPTIONS[0].glyph = preferCleanGlyph(INGRESS_BADGE_OPTIONS[0].glyph, '⟁');
+  INGRESS_BADGE_OPTIONS[1].glyph = preferCleanGlyph(INGRESS_BADGE_OPTIONS[1].glyph, '⬒');
+  INGRESS_BADGE_OPTIONS[2].glyph = preferCleanGlyph(INGRESS_BADGE_OPTIONS[2].glyph, '⟉');
+
   function resolveIngressMirrorTarget(value) {
     return Object.prototype.hasOwnProperty.call(INGRESS_MIRROR_OPTIONS, value) ? value : null;
   }
@@ -100,6 +135,7 @@
   $('heroLead').textContent = microcopy.hero_lead;
   $('voiceA').value = defaults.voiceA;
   $('voiceB').value = defaults.voiceB;
+  repairIngressGlyphNodes();
 
   function formatPct(value) {
     return `${Math.round(value * 100)}%`;
@@ -656,6 +692,8 @@
 
       link.dataset.state = state;
     });
+
+    repairIngressGlyphNodes();
 
   }
 
