@@ -1,0 +1,585 @@
+{
+  "id": "pathology_connector_stack_blocked",
+  "category": "pathology",
+  "strength": 0.88,
+  "sourceText": "I left early though if the train arrived on time. Honestly, and also the signal worked. But because the door was unlocked, I stayed.",
+  "donorText": "Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, I had used three qualifiers, two apologies, and the same phrase twice, which is apparently what I do when I'm buying time to say the hard part out loud.",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 23.67,
+      "sentenceCount": 3,
+      "contractionDensity": 0.028,
+      "punctuationDensity": 0.127,
+      "contentWordComplexity": 0.299,
+      "modifierDensity": 0.07,
+      "directness": 0,
+      "abstractionPosture": 1
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "I left early though if the train arrived on time. Honestly, and also the signal worked. But because the door was unlocked, I stayed.",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 23.33,
+        "sentenceCount": 3,
+        "contractionDensity": 0.027,
+        "punctuationDensity": 0.129,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.321,
+        "modifierDensity": 0.119,
+        "hedgeDensity": 0.042,
+        "directness": 0,
+        "abstractionPosture": 0.88,
+        "latinatePreference": 0,
+        "recurrencePressure": 0.151
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 3,
+        "clauseCount": 5,
+        "literalSpans": []
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "I left early though if the train arrived on time",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "I left early",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "left",
+              "actor": "I",
+              "action": "left",
+              "object": "early",
+              "modifiers": [
+                "early"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s0c1",
+              "text": "if the train arrived on time",
+              "relationToPrev": "additive",
+              "clauseType": "subordinate",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "train",
+              "actor": "the train",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "Honestly, and also the signal worked",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "Honestly, and also the signal worked",
+              "relationToPrev": "start",
+              "clauseType": "parenthetical",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "honestly",
+              "actor": "the signal",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "honestly",
+                "signal"
+              ],
+              "hedgeMarkers": [
+                "stance"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "But because the door was unlocked, I stayed.",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "But",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c1",
+              "text": "the door was unlocked, I stayed",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "was",
+              "actor": "the door",
+              "action": "was",
+              "object": "unlocked stayed",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 1,
+      "sentenceMerge": 2,
+      "contraction": 0,
+      "connector": 3,
+      "lineBreak": 2,
+      "additive": 2,
+      "contrastive": 2,
+      "causal": 1,
+      "temporal": 0,
+      "clarifying": 1,
+      "resumptive": 1
+    },
+    "planSummary": {
+      "transferMode": "expand",
+      "structuralOperationsSelected": [
+        "merge-pairs",
+        "clause-texture"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "contraction"
+      ],
+      "connectorStrategy": "additive",
+      "contractionStrategy": "increase",
+      "relationInventory": {
+        "additive": 2,
+        "contrastive": 2,
+        "causal": 1,
+        "temporal": 0,
+        "clarifying": 1,
+        "resumptive": 1
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": 15.329999999999998
+      },
+      "discourseGoals": {
+        "contractionDelta": 0.027,
+        "hedgeDelta": 0
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": -0.069,
+        "modifierDensityDelta": -0.15400000000000003,
+        "directnessDelta": 0,
+        "abstractionDelta": 0.38,
+        "latinateDelta": 0,
+        "registerMode": "reflective"
+      },
+      "operationBudget": {
+        "splitSentence": 0,
+        "mergeSentence": 13,
+        "swapConnector": 2,
+        "applyHedge": 2,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "ir-beam-search",
+        "score": 123.012,
+        "passesApplied": [
+          "merge-pairs",
+          "clause-texture",
+          "contraction"
+        ],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "content-word-complexity",
+          "modifier-density",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": false,
+        "notes": [
+          "Banned connector stack detected: \\bthough\\s+if\\b",
+          "Banned connector stack detected: \\bhonestly[,;]?\\s+and\\b"
+        ]
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 123.012,
+          "passesApplied": [
+            "merge-pairs",
+            "clause-texture",
+            "contraction"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "content-word-complexity",
+            "modifier-density",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Banned connector stack detected: \\bthough\\s+if\\b",
+            "Banned connector stack detected: \\bhonestly[,;]?\\s+and\\b"
+          ]
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 64.874,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "planned-sentence-merge",
+            "clause-join-split",
+            "cleanup-restore",
+            "structural-fallback"
+          ],
+          "changedDimensions": [
+            "sentence-spread",
+            "connector-stance",
+            "content-word-complexity",
+            "modifier-density"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Banned connector stack detected: \\bthough\\s+if\\b"
+          ]
+        },
+        {
+          "spec": "merge-heavy",
+          "score": 64.874,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "planned-sentence-merge",
+            "clause-join-split",
+            "cleanup-restore",
+            "structural-fallback"
+          ],
+          "changedDimensions": [
+            "sentence-spread",
+            "connector-stance",
+            "content-word-complexity",
+            "modifier-density"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Banned connector stack detected: \\bthough\\s+if\\b"
+          ]
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 112.674,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "planned-sentence-merge",
+            "clause-join-split",
+            "cleanup-restore"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "content-word-complexity",
+            "modifier-density",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Banned connector stack detected: \\bthough\\s+if\\b",
+            "Orphan fragment detected: \"Though honestly.\""
+          ]
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 64.874,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "planned-sentence-merge",
+            "clause-join-split",
+            "cleanup-restore",
+            "structural-fallback"
+          ],
+          "changedDimensions": [
+            "sentence-spread",
+            "connector-stance",
+            "content-word-complexity",
+            "modifier-density"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Banned connector stack detected: \\bthough\\s+if\\b"
+          ]
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "I left early though if the train arrived on time. Honestly, and also the signal worked. But because the door was unlocked, I stayed.",
+      "transferClass": "rejected",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
+      "semanticRisk": 0
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 1,
+      "polarityMismatches": 0,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.286
+        },
+        {
+          "sourceClauseId": "s0c1",
+          "matchedClauseId": "s0c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.143
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.143
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s2c1",
+          "matchedClauseId": "s2c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.429
+        }
+      ],
+      "sourceClauseCount": 5,
+      "outputClauseCount": 5
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 0,
+      "resolvedAnchors": 0,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 3,
+        "clauseCount": 5,
+        "literalSpans": []
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "I left early though if the train arrived on time",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "I left early",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "left",
+              "actor": "I",
+              "action": "left",
+              "object": "early",
+              "modifiers": [
+                "early"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s0c1",
+              "text": "if the train arrived on time",
+              "relationToPrev": "additive",
+              "clauseType": "subordinate",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "train",
+              "actor": "the train",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "Honestly, and also the signal worked",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "Honestly, and also the signal worked",
+              "relationToPrev": "start",
+              "clauseType": "parenthetical",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "honestly",
+              "actor": "the signal",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "honestly",
+                "signal"
+              ],
+              "hedgeMarkers": [
+                "stance"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "But because the door was unlocked, I stayed.",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "But",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c1",
+              "text": "the door was unlocked, I stayed",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "was",
+              "actor": "the door",
+              "action": "was",
+              "object": "unlocked stayed",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "rejected",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
+      "semanticRisk": 0,
+      "realizationNotes": []
+    }
+  },
+  "semanticContract": {
+    "transferClass": "rejected",
+    "realizationTier": "none",
+    "changedDimensions": [],
+    "lexemeSwapFamilies": [],
+    "relationInventory": [
+      "additive:2",
+      "causal:1",
+      "clarifying:1",
+      "contrastive:2",
+      "resumptive:1",
+      "temporal:0"
+    ],
+    "structuralOperations": [
+      "clause-texture",
+      "merge-pairs"
+    ],
+    "lexicalOperations": [
+      "contraction"
+    ],
+    "connectorStrategy": "additive",
+    "contractionStrategy": "increase",
+    "propositionCoverage": 1,
+    "actorCoverage": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 1,
+    "polarityMismatches": 0,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}

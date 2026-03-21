@@ -5,7 +5,13 @@
     compareTexts,
     extractCadenceProfile,
     buildCadenceTransfer,
+    buildCadenceTransferTrace,
     buildCadenceSignature,
+    sentenceSplit,
+    segmentTextToIR,
+    buildOpportunityProfileFromIR,
+    buildTransferPlanFromIR,
+    beamSearchTransfer,
     cadenceModFromProfile,
     cadenceCoherence,
     cadenceResonance,
@@ -21,6 +27,7 @@
     nextBadge,
     badgeMeaning
   } = window.TCP_ENGINE;
+  const RETRIEVAL_FIXTURE_BUNDLE = window.TCP_RETRIEVAL_FIXTURES || { cases: {} };
 
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = 'tcp.savedPersonas.v1';
@@ -93,6 +100,16 @@
     ur: 'ingressSealEmergence',
     bc: 'ingressSealReturn'
   };
+  const ROUTE_STATUS_KEYS = Object.freeze({
+    observing: 'observing',
+    buffered: 'buffered',
+    'awaiting pair': 'awaiting-pair',
+    'safe-passage achieved': 'safe-passage-achieved'
+  });
+  const STATUS_CUE_KEYS = Object.freeze({
+    none: '',
+    shellDuelUpdated: 'shell-duel-updated'
+  });
 
   const TCP_GLYPH_SYSTEM = {
     substrateVocabulary: { ...GLYPH_SUBSTRATE },
@@ -120,6 +137,22 @@
       return Object.keys(GLYPH_LOOKUP);
     }
   };
+
+  function routeStatusKey(routeStatus = '') {
+    const normalized = String(routeStatus || '')
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .trim();
+    return ROUTE_STATUS_KEYS[normalized] || normalized.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  function retrievalFixtureIds() {
+    return Object.keys(RETRIEVAL_FIXTURE_BUNDLE.cases || {});
+  }
+
+  function retrievalFixtureCase(caseId = '') {
+    return (RETRIEVAL_FIXTURE_BUNDLE.cases || {})[caseId] || null;
+  }
 
   window.TCP_GLYPH_SYSTEM = Object.freeze(TCP_GLYPH_SYSTEM);
 
@@ -318,6 +351,7 @@
     if (actionCue) {
       actionCue.hidden = true;
       actionCue.textContent = '';
+      actionCue.dataset.cueKey = STATUS_CUE_KEYS.none;
     }
     if (swapButton) {
       swapButton.dataset.pulse = 'off';
@@ -427,6 +461,7 @@
     if (cue) {
       cue.textContent = '\u2193 Shell Duel below';
       cue.hidden = false;
+      cue.dataset.cueKey = STATUS_CUE_KEYS.shellDuelUpdated;
     }
     pulseSwapCadenceButton();
     pulseShellDuel();
@@ -434,6 +469,7 @@
       if (cue) {
         cue.hidden = true;
         cue.textContent = '';
+        cue.dataset.cueKey = STATUS_CUE_KEYS.none;
       }
       statusCueTimer = null;
     }, 4500);
@@ -1046,7 +1082,7 @@
     const text = $(slot === 'A' ? 'voiceA' : 'voiceB').value;
     const rawProfile = extractCadenceProfile(text);
     const shell = getBayShell(slot);
-    const transfer = buildCadenceTransfer(text, shell);
+    const transfer = buildCadenceTransfer(text, shell, { retrieval: true });
     const effectiveText = transfer.text;
     const persona = shell.personaId ? findPersona(shell.personaId) : null;
     const effectiveProfile = transfer.outputProfile || extractCadenceProfile(effectiveText);
@@ -1061,7 +1097,8 @@
       effectiveProfile,
       persona,
       shell,
-      transfer
+      transfer,
+      transferTrace: transfer.retrievalTrace || null
     };
   }
 
@@ -1273,7 +1310,7 @@
         <div class="duel-side-copy">${escapeHtml(transferNote)}</div>
         <div class="duel-visual-grid">
           <div class="duel-visual-card">
-            <div class="duel-visual-label">Heatmap</div>
+              <div class="duel-visual-label">Heatmap</div>
             ${renderDuelHeatmap(side.signature.heatmap)}
           </div>
           <div class="duel-visual-card">
@@ -1551,8 +1588,10 @@
     $('containmentState').classList.toggle('active', containment === 'on');
     $('routeState').textContent = `${glyphChar('stateRoute', '')} Route // ${routeStatus}`;
     applyGlyphMetadata($('routeState'), 'stateRoute');
+    $('routeState').dataset.routeStatusKey = routeStatusKey(routeStatus);
     $('routeState').classList.toggle('warn', decision === 'criticality');
     $('routeState').classList.toggle('active', decision === 'passage');
+    document.body.dataset.routeStatusKey = $('routeState').dataset.routeStatusKey;
   }
 
   function updateHeroConsolePair(payload) {
@@ -2160,6 +2199,8 @@ DeltaE = ${ledger.reuse_gain}`;
       const node = $(id);
       return node ? node.textContent.trim() : '';
     };
+    const routeNode = $('routeState');
+    const cueNode = $('swapActionCue');
 
     return {
       decision: document.body.dataset.decision,
@@ -2170,10 +2211,11 @@ DeltaE = ${ledger.reuse_gain}`;
       custody: readText('custodyState'),
       heroHarbor: readText('heroHarborValue'),
       routeState: readText('routeState'),
-      status: readText('analysisStatus'),
       statusBase: readText('analysisStatusBase'),
-      statusCue: readText('swapActionCue'),
-      statusCueVisible: !$('swapActionCue').hidden,
+      routeStatusKey: routeNode ? routeNode.dataset.routeStatusKey || '' : '',
+      statusCue: cueNode ? cueNode.textContent.trim() : '',
+      statusCueKey: cueNode ? cueNode.dataset.cueKey || '' : '',
+      statusCueVisible: cueNode ? !cueNode.hidden : false,
       swapMedallionDisabled: $('swapMedallion').disabled,
       duelState: $('shellDuel').dataset.state,
       duelSource: readText('duelSourceStatus'),
@@ -2281,6 +2323,65 @@ DeltaE = ${ledger.reuse_gain}`;
       footer: readGlyph('footerSeal')
     };
   }
+
+  function canonicalSemanticContractFromTrace(trace = {}) {
+    const realization = trace.realizationSummary || trace.finalRealization || {};
+    const plan = trace.planSummary || {};
+    const semanticAudit = trace.semanticAudit || {};
+    const protectedAudit = trace.protectedAnchorAudit || {};
+    const relationInventory = Array.isArray(plan.relationInventory)
+      ? [...new Set(plan.relationInventory)].sort()
+      : plan.relationInventory && typeof plan.relationInventory === 'object'
+        ? Object.keys(plan.relationInventory)
+          .sort((left, right) => left.localeCompare(right))
+          .map((key) => `${key}:${plan.relationInventory[key]}`)
+        : [];
+
+    return {
+      transferClass: realization.transferClass || 'native',
+      realizationTier: realization.realizationTier || 'none',
+      changedDimensions: [...new Set(realization.changedDimensions || [])].sort(),
+      lexemeSwapFamilies: [...new Set((realization.lexemeSwaps || []).map((swap) => swap.family))].sort(),
+      relationInventory,
+      structuralOperations: [...new Set(plan.structuralOperationsSelected || [])].sort(),
+      lexicalOperations: [...new Set(plan.lexicalRegisterOperationsSelected || [])].sort(),
+      connectorStrategy: plan.connectorStrategy || 'balanced',
+      contractionStrategy: plan.contractionStrategy || 'hold',
+      propositionCoverage: semanticAudit.propositionCoverage ?? 1,
+      actorCoverage: semanticAudit.actorCoverage ?? 1,
+      actionCoverage: semanticAudit.actionCoverage ?? 1,
+      objectCoverage: semanticAudit.objectCoverage ?? 1,
+      polarityMismatches: semanticAudit.polarityMismatches ?? 0,
+      tenseMismatches: semanticAudit.tenseMismatches ?? 0,
+      protectedAnchorIntegrity: protectedAudit.protectedAnchorIntegrity ?? semanticAudit.protectedAnchorIntegrity ?? 1
+    };
+  }
+
+  window.TCP_RETRIEVAL_LANE = Object.freeze({
+    getActiveTransferTrace(slot) {
+      if (slot !== 'A' && slot !== 'B') {
+        return null;
+      }
+
+      return getVoiceState(slot).transferTrace || null;
+    },
+    getCanonicalTrace(caseId) {
+      return retrievalFixtureCase(caseId)?.retrievalTrace || null;
+    },
+    getCanonicalCase(caseId) {
+      return retrievalFixtureCase(caseId);
+    },
+    listCanonicalCaseIds() {
+      return retrievalFixtureIds();
+    },
+    getSemanticAudit(key) {
+      if (key === 'A' || key === 'B') {
+        return getVoiceState(key).transferTrace?.semanticAudit || null;
+      }
+
+      return retrievalFixtureCase(key)?.retrievalTrace?.semanticAudit || null;
+    }
+  });
 
   function primeIngressScenario({
     phase = 'containment',
@@ -2462,278 +2563,136 @@ DeltaE = ${ledger.reuse_gain}`;
     setStatusMessage(summaryText);
   }
 
+  function transferStructuralDimensions(transfer = {}) {
+    return (transfer.changedDimensions || [])
+      .filter((dimension) => [
+        'sentence-mean',
+        'sentence-count',
+        'sentence-spread',
+        'contraction-posture',
+        'line-break-texture',
+        'connector-stance'
+      ].includes(dimension));
+  }
+
+  function transferLexicalDimensions(transfer = {}) {
+    return (transfer.changedDimensions || [])
+      .filter((dimension) => [
+        'lexical-register',
+        'content-word-complexity',
+        'modifier-density',
+        'directness',
+        'abstraction-posture'
+      ].includes(dimension));
+  }
+
+  function hasTransferBannedConnectors(text = '') {
+    return /(though\s+if|honestly[,;]\s+and|but\s+because|and\s+though\s+if)/gi.test(text);
+  }
+
+  function hasTransferOrphanFragments(text = '') {
+    return sentenceSplit(text).some((sentence, index) =>
+      index > 0 && /^(?:and|but|so|then|because|since|when|while|though|although)\s+\w{1,3}\s*$/i.test(sentence.trim())
+    );
+  }
+
+  function semanticContractMatches(actual = {}, expected = {}) {
+    return JSON.stringify(actual) === JSON.stringify(expected);
+  }
+
+  function runTransferTestFlight() {
+    const cases = retrievalFixtureIds()
+      .map((caseId) => retrievalFixtureCase(caseId))
+      .filter(Boolean)
+      .map((fixture) => {
+        const shell = {
+          mode: 'borrowed',
+          profile: extractCadenceProfile(fixture.donorText || ''),
+          strength: fixture.strength || fixture.donorSummary?.strength || 0.9
+        };
+        const transfer = buildCadenceTransfer(fixture.sourceText, shell, { retrieval: true });
+        const trace = transfer.retrievalTrace || {};
+        const actualContract = canonicalSemanticContractFromTrace(trace);
+        const expectedContract = fixture.semanticContract || {};
+        const semanticAudit = trace.semanticAudit || {};
+        const protectedAudit = trace.protectedAnchorAudit || {};
+        const contractMatch = semanticContractMatches(actualContract, expectedContract);
+        const lexicalShiftCount = transferLexicalDimensions(transfer).length + (((transfer.lexemeSwaps || []).length > 0) ? 1 : 0);
+        const structuralShiftCount = transferStructuralDimensions(transfer).length;
+        const pathologySafe = !hasTransferBannedConnectors(transfer.text) && !hasTransferOrphanFragments(transfer.text);
+        let pass = contractMatch;
+
+        if (fixture.category === 'flagship') {
+          pass = pass &&
+            transfer.transferClass === 'structural' &&
+            transfer.realizationTier === 'lexical-structural' &&
+            structuralShiftCount >= 1 &&
+            lexicalShiftCount >= 1 &&
+            (semanticAudit.propositionCoverage || 0) >= 0.85 &&
+            (semanticAudit.actorCoverage || 0) >= 0.75 &&
+            (semanticAudit.actionCoverage || 0) >= 0.85 &&
+            (semanticAudit.objectCoverage || 0) >= 0.65 &&
+            (semanticAudit.polarityMismatches || 0) === 0 &&
+            (protectedAudit.protectedAnchorIntegrity || semanticAudit.protectedAnchorIntegrity || 0) === 1 &&
+            pathologySafe;
+        } else if (fixture.category === 'pathology') {
+          pass = pass && (transfer.transferClass === 'rejected' || pathologySafe);
+        } else {
+          pass = pass &&
+            typeof semanticAudit.propositionCoverage === 'number' &&
+            typeof semanticAudit.actorCoverage === 'number' &&
+            typeof semanticAudit.actionCoverage === 'number' &&
+            typeof semanticAudit.objectCoverage === 'number';
+        }
+
+        return {
+          id: fixture.id,
+          category: fixture.category,
+          pass,
+          contractMatch,
+          transformedText: transfer.text,
+          transferClass: transfer.transferClass,
+          realizationTier: transfer.realizationTier,
+          changedDimensions: transfer.changedDimensions || [],
+          lexemeSwaps: transfer.lexemeSwaps || [],
+          actualContract,
+          expectedContract,
+          semanticAudit,
+          protectedAnchorAudit: protectedAudit,
+          planSummary: trace.planSummary || {},
+          candidateSummary: trace.candidateSummary || {}
+        };
+      });
+
+    const report = {
+      mode: 'transfer',
+      fixtureCount: retrievalFixtureIds().length,
+      cases,
+      summary: {
+        allPassed: cases.length > 0 && cases.every((entry) => entry.pass),
+        passCount: cases.filter((entry) => entry.pass).length,
+        caseCount: cases.length
+      }
+    };
+
+    let node = document.getElementById('testFlightReport');
+    if (!node) {
+      node = document.createElement('pre');
+      node.id = 'testFlightReport';
+      node.className = 'formula';
+      document.body.appendChild(node);
+    }
+
+    node.textContent = JSON.stringify(report, null, 2);
+    const summaryText = `Transfer flight // ${report.summary.allPassed ? 'passed' : 'check failed'} ${report.summary.passCount}/${report.summary.caseCount}`;
+    document.body.dataset.testFlightStatus = report.summary.allPassed ? 'passed' : 'complete';
+    document.body.dataset.testFlightSummary = summaryText.toLowerCase().replace(/[^a-z0-9/ ]/gi, '');
+    setStatusMessage(summaryText);
+  }
+
   function runTestFlight(mode = 'smoke') {
     if (mode === 'transfer') {
-      const structuralDimensions = (transfer = {}) =>
-        (transfer.changedDimensions || [])
-          .filter((dimension) => [
-            'sentence-mean',
-            'sentence-count',
-            'sentence-spread',
-            'contraction-posture',
-            'line-break-texture',
-            'connector-stance'
-          ].includes(dimension));
-      const lexicalDimensions = (transfer = {}) =>
-        (transfer.changedDimensions || [])
-          .filter((dimension) => [
-            'lexical-register',
-            'content-word-complexity',
-            'modifier-density',
-            'directness',
-            'abstraction-posture'
-          ].includes(dimension));
-      const hasBannedConnectors = (text) =>
-        /(though\s+if|honestly[,;]\s+and|but\s+because|and\s+though\s+if)/gi.test(text);
-      const hasOrphanFragments = (text) =>
-        sentenceSplit(text).some((sentence, index) =>
-          index > 0 && /^(?:and|but|so|then|because|since|when|while|though|although)\s+\w{1,3}\s*$/i.test(sentence.trim())
-        );
-      const matchesGolden = (transfer = {}, golden = null) =>
-        Boolean(golden) &&
-        transfer.text === golden.text &&
-        transfer.transferClass === golden.transferClass &&
-        transfer.realizationTier === golden.realizationTier &&
-        JSON.stringify(transfer.changedDimensions || []) === JSON.stringify(golden.changedDimensions || []);
-
-      const referenceVoice = "Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, I had used three qualifiers, two apologies, and the same phrase twice, which is apparently what I do when I'm buying time to say the hard part out loud.";
-      const probeVoice = "Hey, if you're still out, grab the charger and use the side door. It sticks, so lean on it. If nobody hears you right away, wait a second and knock again. I'm in back unloading boxes, and I probably won't catch the first try.";
-      const reflectiveDonor = 'Honestly, I kept circling the point because every time I tried to leave, I found one more reason to stay, and then I stalled again because the room went quiet.';
-      const transferGoldens = {
-        screenshot_reference_under_probe: {
-          text: "Honestly. I wasn't trying to tell it. I just kept going over the points when I got to the part where I should have headed out. I remembered one more point that shifted why I stayed. By the time I wrapped up. I had deployed three qualifiers. Two apologies. And the same phrase twice. That's apparently what I do when I'm stalling to tell the tough part out loud.",
-          transferClass: 'structural',
-          realizationTier: 'lexical-structural',
-          changedDimensions: ['sentence-mean', 'sentence-count', 'sentence-spread', 'contraction-posture', 'connector-stance', 'lexical-register', 'modifier-density', 'abstraction-posture', 'punctuation-shape']
-        },
-        screenshot_probe_under_reference: {
-          text: 'Apparently, if you are still out, bring the charger and come through the side doorway, it sticks, so lean on it. If nobody hears you right away, pause a moment and knock again; I am in back unloading boxes, and I probably will not catch the first try.',
-          transferClass: 'structural',
-          realizationTier: 'lexical-structural',
-          changedDimensions: ['sentence-mean', 'sentence-count', 'contraction-posture', 'connector-stance', 'lexical-register', 'content-word-complexity', 'modifier-density', 'directness', 'punctuation-shape']
-        },
-        operational_under_reflective: {
-          text: 'Apparently, door sticks; knock twice, and I am in back.',
-          transferClass: 'structural',
-          realizationTier: 'lexical-structural',
-          changedDimensions: ['sentence-mean', 'sentence-count', 'sentence-spread', 'connector-stance', 'lexical-register', 'content-word-complexity', 'modifier-density', 'directness', 'punctuation-shape']
-        },
-        contraction_heavy: {
-          text: "I'm not sure if it's ready. I'll bring it when I can.",
-          transferClass: 'structural',
-          realizationTier: 'lexical-structural',
-          changedDimensions: ['sentence-mean', 'sentence-spread', 'contraction-posture', 'connector-stance', 'content-word-complexity', 'punctuation-shape']
-        },
-        contraction_light: {
-          text: 'I am sure it is ready; I will bring it when I can.',
-          transferClass: 'structural',
-          realizationTier: 'lexical-structural',
-          changedDimensions: ['sentence-mean', 'sentence-count', 'sentence-spread', 'contraction-posture', 'connector-stance', 'content-word-complexity', 'punctuation-shape']
-        },
-        low_opportunity_visible_shift: {
-          text: 'Stone sets under glass.',
-          transferClass: 'weak',
-          realizationTier: 'cadence-only',
-          changedDimensions: ['content-word-complexity']
-        },
-        protected_literal_survival: {
-          text: 'Meet at 9:30, bring ID ZX-17.',
-          transferClass: 'rejected',
-          realizationTier: 'none',
-          changedDimensions: []
-        }
-      };
-
-      const cases = [];
-      const probeProfile = extractCadenceProfile(probeVoice);
-      const referenceProfile = extractCadenceProfile(referenceVoice);
-
-      const screenshotRefUnderProbe = buildCadenceTransfer(referenceVoice, {
-        mode: 'borrowed',
-        profile: probeProfile,
-        strength: 0.9
-      });
-      cases.push({
-        id: 'screenshot_reference_under_probe',
-        source: referenceVoice,
-        donorText: probeVoice,
-        transfer: screenshotRefUnderProbe,
-        pass:
-          matchesGolden(screenshotRefUnderProbe, transferGoldens.screenshot_reference_under_probe) &&
-          !hasBannedConnectors(screenshotRefUnderProbe.text) &&
-          !hasOrphanFragments(screenshotRefUnderProbe.text) &&
-          structuralDimensions(screenshotRefUnderProbe).length >= 1 &&
-          lexicalDimensions(screenshotRefUnderProbe).length >= 1
-      });
-
-      const screenshotProbeUnderReference = buildCadenceTransfer(probeVoice, {
-        mode: 'borrowed',
-        profile: referenceProfile,
-        strength: 0.9
-      });
-      cases.push({
-        id: 'screenshot_probe_under_reference',
-        source: probeVoice,
-        donorText: referenceVoice,
-        transfer: screenshotProbeUnderReference,
-        pass:
-          matchesGolden(screenshotProbeUnderReference, transferGoldens.screenshot_probe_under_reference) &&
-          !hasBannedConnectors(screenshotProbeUnderReference.text) &&
-          !hasOrphanFragments(screenshotProbeUnderReference.text) &&
-          structuralDimensions(screenshotProbeUnderReference).length >= 1 &&
-          (lexicalDimensions(screenshotProbeUnderReference).length >= 1 || (screenshotProbeUnderReference.lexemeSwaps || []).length >= 1)
-      });
-
-      const operationalUnderReflective = buildCadenceTransfer('Door sticks. Knock twice. I am in back.', {
-        mode: 'borrowed',
-        profile: extractCadenceProfile(reflectiveDonor),
-        strength: 0.88
-      });
-      cases.push({
-        id: 'operational_under_reflective',
-        source: 'Door sticks. Knock twice. I am in back.',
-        donorText: reflectiveDonor,
-        transfer: operationalUnderReflective,
-        pass:
-          matchesGolden(operationalUnderReflective, transferGoldens.operational_under_reflective) &&
-          operationalUnderReflective.transferClass === 'structural' &&
-          operationalUnderReflective.realizationTier === 'lexical-structural'
-      });
-
-      const contractionHeavy = buildCadenceTransfer('I am not sure if it is ready. I will bring it when I can.', {
-        mode: 'borrowed',
-        profile: extractCadenceProfile(`I'm not sure it's ready. I'll bring it when I can.`),
-        strength: 0.9
-      });
-      cases.push({
-        id: 'contraction_heavy',
-        source: 'I am not sure if it is ready. I will bring it when I can.',
-        donorText: `I'm not sure it's ready. I'll bring it when I can.`,
-        transfer: contractionHeavy,
-        pass:
-          matchesGolden(contractionHeavy, transferGoldens.contraction_heavy) &&
-          contractionHeavy.text.includes("I'm") &&
-          contractionHeavy.text.includes("I'll")
-      });
-
-      const contractionLight = buildCadenceTransfer(`I'm sure it's ready. I'll bring it when I can.`, {
-        mode: 'borrowed',
-        profile: extractCadenceProfile('I am certain it is ready. I will bring it when I can.'),
-        strength: 0.9
-      });
-      cases.push({
-        id: 'contraction_light',
-        source: `I'm sure it's ready. I'll bring it when I can.`,
-        donorText: 'I am certain it is ready. I will bring it when I can.',
-        transfer: contractionLight,
-        pass:
-          matchesGolden(contractionLight, transferGoldens.contraction_light) &&
-          contractionLight.text.includes('I am') &&
-          contractionLight.text.includes('I will')
-      });
-
-      const pathAdditiveSource = 'Because the room stayed loud, I kept the note. But the line dragged. So I left this mark behind.';
-      const pathAdditiveTransfer = buildCadenceTransfer(pathAdditiveSource, {
-        mode: 'borrowed',
-        profile: extractCadenceProfile(reflectiveDonor),
-        strength: 0.9
-      });
-      const pathAdditiveGlue = (pathAdditiveTransfer.text.match(/(?:,\s+and\b|;\s+and\b|-\s+and\b)/gi) || []).length;
-      cases.push({
-        id: 'pathology_additive_collapse_blocked',
-        source: pathAdditiveSource,
-        donorText: reflectiveDonor,
-        transfer: pathAdditiveTransfer,
-        pass:
-          pathAdditiveGlue <= 1 &&
-          !hasBannedConnectors(pathAdditiveTransfer.text) &&
-          !hasOrphanFragments(pathAdditiveTransfer.text)
-      });
-
-      const pathStackSource = 'I left early though if the train arrived on time. Honestly, and also the signal worked. But because the door was unlocked, I stayed.';
-      const pathStackTransfer = buildCadenceTransfer(pathStackSource, {
-        mode: 'borrowed',
-        profile: referenceProfile,
-        strength: 0.88
-      });
-      cases.push({
-        id: 'pathology_connector_stack_blocked',
-        source: pathStackSource,
-        donorText: referenceVoice,
-        transfer: pathStackTransfer,
-        pass:
-          pathStackTransfer.transferClass === 'rejected' ||
-          (!hasBannedConnectors(pathStackTransfer.text) && !hasOrphanFragments(pathStackTransfer.text))
-      });
-
-      const lowOpportunityVisibleShift = buildCadenceTransfer('Stone settles under glass.', {
-        mode: 'borrowed',
-        profile: probeProfile,
-        strength: 0.9
-      });
-      cases.push({
-        id: 'low_opportunity_visible_shift',
-        source: 'Stone settles under glass.',
-        donorText: probeVoice,
-        transfer: lowOpportunityVisibleShift,
-        pass:
-          matchesGolden(lowOpportunityVisibleShift, transferGoldens.low_opportunity_visible_shift) &&
-          ['weak', 'rejected'].includes(lowOpportunityVisibleShift.transferClass) &&
-          lowOpportunityVisibleShift.text !== 'Stone settles under glass.'
-      });
-
-      const protectedLiteral = buildCadenceTransfer('Meet at 9:30, bring ID ZX-17.', {
-        mode: 'borrowed',
-        profile: referenceProfile,
-        strength: 0.9
-      });
-      cases.push({
-        id: 'protected_literal_survival',
-        source: 'Meet at 9:30, bring ID ZX-17.',
-        donorText: referenceVoice,
-        transfer: protectedLiteral,
-        pass:
-          matchesGolden(protectedLiteral, transferGoldens.protected_literal_survival) &&
-          protectedLiteral.text.includes('9:30') &&
-          protectedLiteral.text.includes('ZX-17')
-      });
-
-      const report = {
-        mode,
-        cases: cases.map((entry) => ({
-          id: entry.id,
-          source: entry.source,
-          donorText: entry.donorText,
-          transferClass: entry.transfer.transferClass,
-          realizationTier: entry.transfer.realizationTier,
-          changedDimensions: entry.transfer.changedDimensions || [],
-          passesApplied: entry.transfer.passesApplied || [],
-          transformedText: entry.transfer.text,
-          lexemeSwaps: entry.transfer.lexemeSwaps || [],
-          opportunityProfile: entry.transfer.opportunityProfile || {},
-          goldenMatch: matchesGolden(entry.transfer, transferGoldens[entry.id] || null),
-          pass: entry.pass
-        })),
-        summary: {
-          allPassed: cases.every((entry) => entry.pass),
-          passCount: cases.filter((entry) => entry.pass).length,
-          caseCount: cases.length
-        }
-      };
-
-      let node = document.getElementById('testFlightReport');
-      if (!node) {
-        node = document.createElement('pre');
-        node.id = 'testFlightReport';
-        node.className = 'formula';
-        document.body.appendChild(node);
-      }
-
-      node.textContent = JSON.stringify(report, null, 2);
-      const summaryText = `Transfer flight // ${report.summary.allPassed ? 'passed' : 'check failed'} ${report.summary.passCount}/${report.summary.caseCount}`;
-      document.body.dataset.testFlightStatus = report.summary.allPassed ? 'passed' : 'complete';
-      document.body.dataset.testFlightSummary = summaryText.toLowerCase().replace(/[^a-z0-9/ ]/gi, '');
-      setStatusMessage(summaryText);
+      runTransferTestFlight();
       return;
     }
 
@@ -2849,7 +2808,7 @@ DeltaE = ${ledger.reuse_gain}`;
           {
             id: 'weak_signal_contrast',
             expectedDecision: 'weak-signal',
-            expectedRouteState: 'Route // observing',
+            expectedRouteKey: 'observing',
             expectedHeroHarbor: 'observe',
             rationale: 'Two visibly different cadences should remain exploratory.',
             config: {
@@ -2862,7 +2821,7 @@ DeltaE = ${ledger.reuse_gain}`;
           {
             id: 'hold_branch_same_lexicon_split_form',
             expectedDecision: 'hold-branch',
-            expectedRouteState: 'Route // buffered',
+            expectedRouteKey: 'buffered',
             rationale: 'Shared lexicon with mismatched sentence-shape should preserve the branch without opening passage.',
             config: {
               voiceA: 'I keep the record intact, because the room moves faster than memory, and if the handoff slips I mark the pressure, keep the receipt, and carry the line until the route is real.',
@@ -2886,7 +2845,7 @@ DeltaE = ${ledger.reuse_gain}`;
           {
             id: 'criticality_dense_locked',
             expectedDecision: 'criticality',
-            expectedRouteState: 'Route // buffered',
+            expectedRouteKey: 'buffered',
             expectedHeroHarbor: 'mirror.off',
             rationale: 'Dense recognition with the mirror shield armed should surface criticality rather than fake passage.',
             config: {
@@ -2899,7 +2858,7 @@ DeltaE = ${ledger.reuse_gain}`;
           {
             id: 'passage_dense_open',
             expectedDecision: 'passage',
-            expectedRouteState: 'Route // safe-passage achieved',
+            expectedRouteKey: 'safe-passage-achieved',
             expectedHeroHarbor: 'receipt.capture',
             rationale: 'The same dense recognition event should resolve into passage once the route is opened.',
             config: {
@@ -2916,14 +2875,14 @@ DeltaE = ${ledger.reuse_gain}`;
           matrix.push({
             id: scenario.id,
             expectedDecision: scenario.expectedDecision,
-            expectedRouteState: scenario.expectedRouteState,
+            expectedRouteKey: scenario.expectedRouteKey,
             expectedHeroHarbor: scenario.expectedHeroHarbor,
             expectedSimilarity: scenario.expectedSimilarity,
             expectedTraceability: scenario.expectedTraceability,
             actualDecision: snapshot.decision,
             pass:
               (!scenario.expectedDecision || snapshot.decision === scenario.expectedDecision) &&
-              (!scenario.expectedRouteState || snapshot.routeState === scenario.expectedRouteState) &&
+              (!scenario.expectedRouteKey || snapshot.routeStatusKey === scenario.expectedRouteKey) &&
               (!scenario.expectedHeroHarbor || snapshot.heroHarbor === scenario.expectedHeroHarbor) &&
               (!scenario.expectedSimilarity || snapshot.similarity === scenario.expectedSimilarity) &&
               (!scenario.expectedTraceability || snapshot.traceability === scenario.expectedTraceability),
@@ -2933,26 +2892,29 @@ DeltaE = ${ledger.reuse_gain}`;
         });
 
         report.matrix = matrix;
-          report.summary = {
-            allPassed: matrix.every((entry) => entry.pass) &&
-              report.swapCadences.voiceAUnchanged &&
-              report.swapCadences.voiceBUnchanged &&
-              report.savePersona.savedPersonaAdded &&
-              report.textSwapMedallion.voiceASwapped &&
-              report.textSwapMedallion.voiceBSwapped &&
-              report.textSwapMedallion.duelSamplesChanged &&
-              report.ownSourceDuel.referenceOwnSource &&
-              report.ownSourceDuel.probeOwnSource &&
-              report.ownSourceDuel.samplesDistinct &&
-              report.swapCadences.duelSamplesChanged &&
-              report.swapCadences.cueVisible &&
-              report.swapCadences.cueText.toLowerCase().includes('shell duel updated below') &&
-              report.soloScan.similarityKey === 'Scan mode' &&
-              report.baseline.snapshot.duelState === 'live' &&
-              report.viewTabs.activeTab === 'readout' &&
-              report.glyphSystem.pass,
+        const supportChecks = [
+          { id: 'swap_shells_preserve_raw_text', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
+          { id: 'save_persona_adds_entry', pass: report.savePersona.savedPersonaAdded },
+          { id: 'swap_medallion_moves_bay_text', pass: report.textSwapMedallion.voiceASwapped && report.textSwapMedallion.voiceBSwapped },
+          { id: 'swap_medallion_updates_duel', pass: report.textSwapMedallion.duelSamplesChanged },
+          { id: 'duel_uses_own_sources', pass: report.ownSourceDuel.referenceOwnSource && report.ownSourceDuel.probeOwnSource && report.ownSourceDuel.samplesDistinct },
+          { id: 'swap_cadences_updates_duel', pass: report.swapCadences.duelSamplesChanged },
+          { id: 'swap_cadence_cue_key', pass: report.swapCadences.cueVisible && report.swapCadences.snapshot.statusCueKey === STATUS_CUE_KEYS.shellDuelUpdated },
+          { id: 'solo_scan_uses_scan_mode', pass: report.soloScan.similarityKey === 'Scan mode' },
+          { id: 'baseline_duel_live', pass: report.baseline.snapshot.duelState === 'live' },
+          { id: 'readout_tab_visible', pass: report.viewTabs.activeTab === 'readout' },
+          { id: 'glyph_registry_smoke', pass: report.glyphSystem.pass }
+        ];
+
+        report.supportChecks = supportChecks;
+        report.summary = {
+          allPassed: matrix.every((entry) => entry.pass) && supportChecks.every((entry) => entry.pass),
+          passCount: matrix.filter((entry) => entry.pass).length + supportChecks.filter((entry) => entry.pass).length,
+          caseCount: matrix.length + supportChecks.length,
           matrixPassCount: matrix.filter((entry) => entry.pass).length,
-          matrixCount: matrix.length
+          matrixCount: matrix.length,
+          supportPassCount: supportChecks.filter((entry) => entry.pass).length,
+          supportCount: supportChecks.length
         };
       }
     } finally {
@@ -2970,7 +2932,7 @@ DeltaE = ${ledger.reuse_gain}`;
     node.textContent = JSON.stringify(report, null, 2);
 
     const summaryText = report.summary
-      ? `Test flight // ${report.summary.allPassed ? 'passed' : 'check failed'} ${report.summary.matrixPassCount}/${report.summary.matrixCount}`
+      ? `Test flight // ${report.summary.allPassed ? 'passed' : 'check failed'} ${report.summary.passCount}/${report.summary.caseCount}`
       : `Test flight // ${mode} complete`;
     document.body.dataset.testFlightStatus = report.summary && report.summary.allPassed ? 'passed' : 'complete';
     document.body.dataset.testFlightSummary = summaryText.toLowerCase().replace(/[^a-z0-9/ ]/gi, '');

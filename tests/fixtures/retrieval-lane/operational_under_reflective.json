@@ -1,0 +1,491 @@
+{
+  "id": "operational_under_reflective",
+  "category": "flagship",
+  "strength": 0.88,
+  "sourceText": "Door sticks. Knock twice. I am in back.",
+  "donorText": "Honestly, I kept circling the point because every time I tried to leave, I found one more reason to stay, and then I stalled again because the room went quiet.",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 30,
+      "sentenceCount": 1,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.133,
+      "contentWordComplexity": 0.294,
+      "modifierDensity": 0.111,
+      "directness": 0.18,
+      "abstractionPosture": 0.5
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "Door sticks. Knock twice. I am in back.",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 29.41,
+        "sentenceCount": 3,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.138,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.285,
+        "modifierDensity": 0.084,
+        "hedgeDensity": 0.025,
+        "directness": 0.3,
+        "abstractionPosture": 0.5,
+        "latinatePreference": 0,
+        "recurrencePressure": 0.144
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 3,
+        "clauseCount": 3,
+        "literalSpans": []
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Door sticks",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Door sticks",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "door",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "Knock twice",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "Knock twice",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "Knock",
+              "actor": "",
+              "action": "Knock",
+              "object": "twice",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "I am in back.",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "I am in back",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "am",
+              "actor": "I",
+              "action": "am",
+              "object": "back",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 0,
+      "sentenceMerge": 2,
+      "contraction": 1,
+      "connector": 0,
+      "lineBreak": 2,
+      "additive": 0,
+      "contrastive": 0,
+      "causal": 0,
+      "temporal": 0,
+      "clarifying": 0,
+      "resumptive": 0
+    },
+    "planSummary": {
+      "transferMode": "expand",
+      "structuralOperationsSelected": [
+        "baseline-merge"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "baseline-voice-realization",
+        "connector-stance-lexicon"
+      ],
+      "connectorStrategy": "additive",
+      "contractionStrategy": "hold",
+      "relationInventory": {
+        "additive": 0,
+        "contrastive": 0,
+        "causal": 0,
+        "temporal": 0,
+        "clarifying": 0,
+        "resumptive": 0
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": 26.740000000000002
+      },
+      "discourseGoals": {
+        "contractionDelta": 0,
+        "hedgeDelta": 0.025
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": 0.02799999999999997,
+        "modifierDensityDelta": 0.084,
+        "directnessDelta": -0.38000000000000006,
+        "abstractionDelta": 0,
+        "latinateDelta": 0,
+        "registerMode": "operational"
+      },
+      "operationBudget": {
+        "splitSentence": 0,
+        "mergeSentence": 21,
+        "swapConnector": 0,
+        "applyHedge": 0,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "mixed-structural",
+        "score": 266.562,
+        "passesApplied": [
+          "baseline-merge",
+          "baseline-voice-realization",
+          "connector-stance-lexicon"
+        ],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "lexical-register",
+          "content-word-complexity",
+          "modifier-density",
+          "directness",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": true,
+        "notes": []
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 263.424,
+          "passesApplied": [
+            "merge-pairs",
+            "clause-texture"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 266.562,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "connector-stance-lexicon"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "merge-heavy",
+          "score": 266.562,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "connector-stance-lexicon"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 266.562,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "connector-stance-lexicon"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 266.562,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "connector-stance-lexicon"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "Apparently, door sticks; knock twice, and I am in back.",
+      "transferClass": "structural",
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "content-word-complexity",
+        "modifier-density",
+        "directness",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [],
+      "semanticRisk": 0.1
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 1,
+      "polarityMismatches": 0,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s0c0+s0c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.667,
+          "globalBagScore": 0.667
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s0c0+s0c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.333,
+          "globalBagScore": 0.333
+        }
+      ],
+      "sourceClauseCount": 3,
+      "outputClauseCount": 2
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 0,
+      "resolvedAnchors": 0,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 1,
+        "clauseCount": 2,
+        "literalSpans": []
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Apparently, door sticks; knock twice, and I am in back.",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Apparently, door sticks",
+              "relationToPrev": "start",
+              "clauseType": "parenthetical",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "apparently",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "apparently"
+              ],
+              "hedgeMarkers": [
+                "uncertainty"
+              ]
+            },
+            {
+              "id": "s0c1",
+              "text": "knock twice, and I am in back",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "knock",
+              "actor": "I",
+              "action": "knock",
+              "object": "twice back",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "structural",
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "content-word-complexity",
+        "modifier-density",
+        "directness",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [],
+      "semanticRisk": 0.1,
+      "realizationNotes": [
+        "Register shift surfaced through lexical-register, content-word-complexity, modifier-density, directness."
+      ]
+    }
+  },
+  "semanticContract": {
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "connector-stance",
+      "content-word-complexity",
+      "directness",
+      "lexical-register",
+      "modifier-density",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [],
+    "relationInventory": [
+      "additive:0",
+      "causal:0",
+      "clarifying:0",
+      "contrastive:0",
+      "resumptive:0",
+      "temporal:0"
+    ],
+    "structuralOperations": [
+      "baseline-merge"
+    ],
+    "lexicalOperations": [
+      "baseline-voice-realization",
+      "connector-stance-lexicon"
+    ],
+    "connectorStrategy": "additive",
+    "contractionStrategy": "hold",
+    "propositionCoverage": 1,
+    "actorCoverage": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 1,
+    "polarityMismatches": 0,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}

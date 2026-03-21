@@ -3,8 +3,18 @@ import { fileURLToPath, pathToFileURL } from 'url';
 import path from 'path';
 import {
   buildCadenceTransfer,
-  extractCadenceProfile
+  buildCadenceTransferTrace,
+  buildOpportunityProfileFromIR,
+  buildTransferPlanFromIR,
+  beamSearchTransfer,
+  extractCadenceProfile,
+  segmentTextToIR,
+  sentenceSplit
 } from '../app/engine/stylometry.js';
+import {
+  CANONICAL_TRANSFER_CASES,
+  buildBorrowedShell
+} from './canonical-transfer-cases.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
@@ -13,64 +23,54 @@ const browserEngineUrl = `${pathToFileURL(path.join(repoRoot, 'app', 'browser-en
 globalThis.window = {};
 await import(browserEngineUrl);
 
-const browserBuildCadenceTransfer = globalThis.window.TCP_ENGINE?.buildCadenceTransfer;
-assert.equal(typeof browserBuildCadenceTransfer, 'function', 'Browser engine exposes buildCadenceTransfer');
+const browserEngine = globalThis.window.TCP_ENGINE || {};
 
-const referenceVoice = `Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, I had used three qualifiers, two apologies, and the same phrase twice, which is apparently what I do when I'm buying time to say the hard part out loud.`;
-const probeVoice = `Hey, if you're still out, grab the charger and use the side door. It sticks, so lean on it. If nobody hears you right away, wait a second and knock again. I'm in back unloading boxes, and I probably won't catch the first try.`;
+assert.equal(typeof browserEngine.buildCadenceTransfer, 'function', 'Browser engine exposes buildCadenceTransfer');
+assert.equal(typeof browserEngine.buildCadenceTransferTrace, 'function', 'Browser engine exposes buildCadenceTransferTrace');
+assert.equal(typeof browserEngine.sentenceSplit, 'function', 'Browser engine exposes sentenceSplit');
+assert.equal(typeof browserEngine.segmentTextToIR, 'function', 'Browser engine exposes segmentTextToIR');
+assert.equal(typeof browserEngine.buildOpportunityProfileFromIR, 'function', 'Browser engine exposes buildOpportunityProfileFromIR');
+assert.equal(typeof browserEngine.buildTransferPlanFromIR, 'function', 'Browser engine exposes buildTransferPlanFromIR');
+assert.equal(typeof browserEngine.beamSearchTransfer, 'function', 'Browser engine exposes beamSearchTransfer');
 
-const cases = [
-  {
-    id: 'reference_under_probe',
-    text: referenceVoice,
-    shell: {
-      mode: 'borrowed',
-      profile: extractCadenceProfile(probeVoice),
-      strength: 0.9
-    }
-  },
-  {
-    id: 'probe_under_reference',
-    text: probeVoice,
-    shell: {
-      mode: 'borrowed',
-      profile: extractCadenceProfile(referenceVoice),
-      strength: 0.9
-    }
-  },
-  {
-    id: 'operational_under_reflective',
-    text: 'Door sticks. Knock twice. I am in back.',
-    shell: {
-      mode: 'borrowed',
-      profile: extractCadenceProfile(`Honestly, I kept circling the point because every time I tried to leave, I found one more reason to stay, and then I stalled again because the room went quiet.`),
-      strength: 0.88
-    }
-  },
-  {
-    id: 'protected_literal',
-    text: 'Meet at 9:30, bring ID ZX-17.',
-    shell: {
-      mode: 'borrowed',
-      profile: extractCadenceProfile(referenceVoice),
-      strength: 0.9
-    }
-  }
-];
-
-for (const testCase of cases) {
-  const nodeResult = buildCadenceTransfer(testCase.text, testCase.shell);
-  const browserResult = browserBuildCadenceTransfer(testCase.text, testCase.shell);
+for (const testCase of CANONICAL_TRANSFER_CASES) {
+  const shell = buildBorrowedShell(extractCadenceProfile, testCase);
+  const nodeResult = buildCadenceTransfer(testCase.sourceText, shell, { retrieval: true });
+  const browserResult = browserEngine.buildCadenceTransfer(testCase.sourceText, shell, { retrieval: true });
+  const nodeTrace = buildCadenceTransferTrace(testCase.sourceText, shell);
+  const browserTrace = browserEngine.buildCadenceTransferTrace(testCase.sourceText, shell);
 
   assert.equal(browserResult.text, nodeResult.text, `${testCase.id}: browser text matches Node`);
   assert.equal(browserResult.transferClass, nodeResult.transferClass, `${testCase.id}: transferClass matches`);
   assert.equal(browserResult.realizationTier, nodeResult.realizationTier, `${testCase.id}: realizationTier matches`);
   assert.deepEqual(browserResult.changedDimensions, nodeResult.changedDimensions, `${testCase.id}: changedDimensions match`);
-  assert.deepEqual(
-    (browserResult.lexemeSwaps || []).map((swap) => `${swap.family}:${swap.from}->${swap.to}`),
-    (nodeResult.lexemeSwaps || []).map((swap) => `${swap.family}:${swap.from}->${swap.to}`),
-    `${testCase.id}: lexemeSwaps match`
-  );
+  assert.deepEqual(browserResult.semanticAudit, nodeResult.semanticAudit, `${testCase.id}: semanticAudit matches`);
+  assert.deepEqual(browserResult.protectedAnchorAudit, nodeResult.protectedAnchorAudit, `${testCase.id}: protectedAnchorAudit matches`);
+  assert.deepEqual(browserTrace.planSummary, nodeTrace.planSummary, `${testCase.id}: planSummary matches`);
+  assert.deepEqual(browserTrace.semanticAudit, nodeTrace.semanticAudit, `${testCase.id}: trace semanticAudit matches`);
+  assert.deepEqual(browserTrace.protectedAnchorAudit, nodeTrace.protectedAnchorAudit, `${testCase.id}: trace protectedAnchorAudit matches`);
 }
+
+const paritySample = CANONICAL_TRANSFER_CASES[0];
+const parityShell = buildBorrowedShell(extractCadenceProfile, paritySample);
+const nodeIR = segmentTextToIR(paritySample.sourceText, { literals: [], text: paritySample.sourceText });
+const browserIR = browserEngine.segmentTextToIR(paritySample.sourceText, { literals: [], text: paritySample.sourceText });
+const nodeOpportunity = buildOpportunityProfileFromIR(nodeIR);
+const browserOpportunity = browserEngine.buildOpportunityProfileFromIR(browserIR);
+const sourceProfile = extractCadenceProfile(paritySample.sourceText);
+const targetProfile = extractCadenceProfile(paritySample.donorText);
+const nodePlan = buildTransferPlanFromIR(nodeIR, sourceProfile, targetProfile, paritySample.strength, nodeOpportunity);
+const browserPlan = browserEngine.buildTransferPlanFromIR(browserIR, sourceProfile, targetProfile, paritySample.strength, browserOpportunity);
+
+assert.deepEqual(browserEngine.sentenceSplit(paritySample.sourceText), sentenceSplit(paritySample.sourceText), 'sentenceSplit parity holds');
+assert.deepEqual(browserIR.metadata, nodeIR.metadata, 'segmentTextToIR metadata parity holds');
+assert.deepEqual(browserOpportunity, nodeOpportunity, 'buildOpportunityProfileFromIR parity holds');
+assert.deepEqual(browserPlan, nodePlan, 'buildTransferPlanFromIR parity holds');
+
+const nodeBeam = beamSearchTransfer(nodeIR, nodePlan, sourceProfile, targetProfile, paritySample.strength, { literals: [], text: paritySample.sourceText }, paritySample.sourceText, {}, parityShell.profile, false);
+const browserBeam = browserEngine.beamSearchTransfer(browserIR, browserPlan, sourceProfile, targetProfile, paritySample.strength, { literals: [], text: paritySample.sourceText }, paritySample.sourceText, {}, parityShell.profile, false);
+
+assert.equal(browserBeam.bestCandidate.text, nodeBeam.bestCandidate.text, 'beamSearchTransfer best candidate text parity holds');
+assert.deepEqual(browserBeam.bestCandidate.changedDimensions, nodeBeam.bestCandidate.changedDimensions, 'beamSearchTransfer changedDimensions parity holds');
 
 console.log('browser-parity.test.mjs passed');

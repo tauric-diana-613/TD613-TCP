@@ -2347,7 +2347,9 @@ function detectModalityAndHedges(text = '') {
     }
   }
 
-  const polarity = /\b(?:not|no|never|neither|nor)\b/i.test(text) ? 'negative' : 'positive';
+  const polarity = /\b(?:not|no|never|neither|nor|cannot|can't|won't|don't|didn't|isn't|aren't|wasn't|weren't|shouldn't|wouldn't|couldn't|mustn't|hasn't|haven't|hadn't)\b/i.test(text)
+    ? 'negative'
+    : 'positive';
 
   return { modality, hedgeMarkers: [...new Set(hedgeMarkers)], polarity };
 }
@@ -2363,7 +2365,7 @@ function detectTenseAspect(text = '') {
     return 'progressive';
   }
 
-  if (/\b(?:will|would|shall|should)\b/.test(normalized)) {
+  if (/\b(?:will|would|shall|should|won't|can't|cannot|couldn't|shouldn't|wouldn't|i'll|we'll|you'll|they'll|he'll|she'll|it'll)\b/.test(normalized)) {
     return 'future-modal';
   }
 
@@ -2378,11 +2380,17 @@ function extractClauseSemanticScaffold(text = '') {
   const tokens = tokenize(text);
   const actorMatch = normalizeText(text).match(/\b(?:I|we|you|they|he|she|it|there|this|that|the\s+\w+|a\s+\w+|an\s+\w+)\b/i);
   const actor = actorMatch ? actorMatch[0] : '';
-  const actionMatch = normalizeText(text).match(/\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|could|may|might|must|go|goes|went|get|gets|got|keep|keeps|kept|leave|leaves|left|remember|remembers|remembered|wait|waits|waited|grab|grabs|grabbed|use|uses|used|pull|pulls|pulled|call|calls|called|knock|knocks|knocked|change|changes|changed|say|says|said|tell|tells|told|show|shows|showed|shift|shifts|shifted|begin|begins|began|finish|finishes|finished|wrap|wraps|wrapped|conclude|concludes|concluded)\b/i);
+  const lexicalActionMatch = normalizeText(text).match(/\b(?:go|goes|went|get|gets|got|keep|keeps|kept|leave|leaves|left|remember|remembers|remembered|wait|waits|waited|pause|pauses|paused|grab|grabs|grabbed|bring|brings|brought|use|uses|used|pull|pulls|pulled|call|calls|called|knock|knocks|knocked|lean|leans|leaned|change|changes|changed|say|says|said|tell|tells|told|show|shows|showed|shift|shifts|shifted|begin|begins|began|finish|finishes|finished|wrap|wraps|wrapped|conclude|concludes|concluded|come|comes|came|catch|catches|caught|deploy|deploys|deployed|head|heads|headed|circle|circles|circled|stall|stalls|stalled)\b/i);
+  const auxiliaryActionMatch = normalizeText(text).match(/\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|could|may|might|must)\b/i);
+  const actionMatch = lexicalActionMatch || auxiliaryActionMatch;
   const action = actionMatch ? actionMatch[0] : '';
   const actionIndex = actionMatch ? Math.max(0, tokens.indexOf(action.toLowerCase())) : -1;
   const object = actionIndex >= 0
-    ? tokens.slice(actionIndex + 1).filter((word) => !HEDGE_MARKERS.has(word)).slice(0, 4).join(' ')
+    ? tokens
+      .slice(actionIndex + 1)
+      .filter((word) => !HEDGE_MARKERS.has(word) && !CONTENT_STOP_WORDS.has(word))
+      .slice(0, 5)
+      .join(' ')
     : '';
   const modifiers = tokens.filter((word) =>
     MODIFIER_MARKERS.has(word) ||
@@ -3426,9 +3434,13 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   const mod = normalizeShellMod(shell);
   const strength = clamp(Number(options?.strength ?? shell?.strength ?? (shell?.profile ? 0.82 : 0.68)), 0, 1);
   const debug = Boolean(options?.debug);
+  const retrieval = Boolean(options?.retrieval);
 
   if (!sourceText || ((!mod.sent && !mod.cont && !mod.punc) && !shell?.profile) || shell?.mode === 'native') {
-    return {
+    const protectedState = protectTransferLiterals(sourceText);
+    const ir = segmentTextToIR(protectedState.text, protectedState);
+    const { semanticAudit, protectedAnchorAudit, outputIR } = buildSemanticAuditBundle(ir, sourceText, protectedState);
+    const result = {
       text: sourceText,
       sourceProfile,
       targetProfile: sourceProfile,
@@ -3454,8 +3466,41 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       },
       semanticRisk: 0,
       lexemeSwaps: [],
-      realizationNotes: []
+      realizationNotes: [],
+      semanticAudit,
+      protectedAnchorAudit
     };
+
+    if (retrieval || debug) {
+      result.retrievalTrace = buildRetrievalTrace({
+        sourceText,
+        shell,
+        sourceProfile,
+        targetProfile: sourceProfile,
+        opportunityProfile,
+        ir,
+        transferPlan: {},
+        irPlan: {},
+        allCandidates: [],
+        bestCandidate: {
+          spec: 'native',
+          score: 1,
+          passesApplied: [],
+          changedDimensions: [],
+          quality: {
+            qualityGatePassed: true,
+            notes: []
+          }
+        },
+        finalText: sourceText,
+        result,
+        semanticAudit,
+        protectedAnchorAudit,
+        outputIR
+      });
+    }
+
+    return result;
   }
 
   const targetProfile = buildTransferTargetProfile(sourceProfile, shell, mod, strength);
@@ -3977,6 +4022,12 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     realizationNotes.push('Semantic risk is elevated; review the realized output before relying on it.');
   }
 
+  const {
+    semanticAudit,
+    protectedAnchorAudit,
+    outputIR
+  } = buildSemanticAuditBundle(ir, finalText, protectedState);
+
   const result = {
     text: finalText,
     sourceProfile,
@@ -3994,8 +4045,30 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     lexicalShiftProfile,
     semanticRisk,
     lexemeSwaps: lexicalShiftProfile.lexemeSwaps,
-    realizationNotes
+    realizationNotes,
+    semanticAudit,
+    protectedAnchorAudit
   };
+
+  if (retrieval || debug) {
+    result.retrievalTrace = buildRetrievalTrace({
+      sourceText,
+      shell,
+      sourceProfile,
+      targetProfile,
+      opportunityProfile,
+      ir,
+      transferPlan,
+      irPlan,
+      allCandidates,
+      bestCandidate,
+      finalText,
+      result,
+      semanticAudit,
+      protectedAnchorAudit,
+      outputIR
+    });
+  }
 
   if (debug) {
     result.debug = {
@@ -4025,6 +4098,13 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   }
 
   return result;
+}
+
+function buildCadenceTransferTrace(text = '', shell = {}, options = {}) {
+  return buildCadenceTransfer(text, shell, {
+    ...options,
+    retrieval: true
+  }).retrievalTrace;
 }
 
 function applyCadenceToText(text = '', shell = {}) {
@@ -4286,6 +4366,538 @@ function determineRealizationTier(changedDimensions = [], lexemeSwaps = []) {
   }
 
   return 'cadence-only';
+}
+
+const SEMANTIC_VARIANT_FAMILY_LOOKUP = Object.freeze(FAMILY_VARIANT_INDEX.reduce((acc, entry) => {
+  acc[entry.normalized] = entry.familyId;
+  return acc;
+}, {}));
+
+const PRONOUN_ROLE_CLASSES = Object.freeze({
+  i: 'first-singular',
+  me: 'first-singular',
+  my: 'first-singular',
+  mine: 'first-singular',
+  we: 'first-plural',
+  us: 'first-plural',
+  our: 'first-plural',
+  ours: 'first-plural',
+  you: 'second',
+  your: 'second',
+  yours: 'second',
+  he: 'third-singular',
+  him: 'third-singular',
+  his: 'third-singular',
+  she: 'third-singular',
+  her: 'third-singular',
+  hers: 'third-singular',
+  it: 'third-singular',
+  its: 'third-singular',
+  they: 'third-plural',
+  them: 'third-plural',
+  their: 'third-plural',
+  theirs: 'third-plural',
+  there: 'ambient',
+  this: 'deictic',
+  that: 'deictic'
+});
+
+const SEMANTIC_EQUIVALENT_FORMS = Object.freeze({
+  headed: 'leave',
+  head: 'leave',
+  departure: 'leave',
+  depart: 'leave',
+  wrapped: 'finish',
+  wrap: 'finish',
+  deployed: 'use',
+  deploy: 'use',
+  speech: 'tell',
+  said: 'tell',
+  says: 'tell',
+  told: 'tell',
+  pauses: 'wait',
+  pause: 'wait',
+  grabbed: 'bring',
+  grab: 'bring',
+  doorway: 'door',
+  point: 'detail',
+  points: 'detail',
+  reason: 'detail',
+  reasons: 'detail',
+  tough: 'hard',
+  charger: 'charger',
+  qualifiers: 'qualifier',
+  apologies: 'apology'
+});
+
+function normalizeSemanticToken(token = '') {
+  const normalized = normalizeText(token)
+    .toLowerCase()
+    .replace(/[^a-z0-9']/g, '')
+    .trim();
+
+  if (!normalized) {
+    return '';
+  }
+
+  if (PRONOUN_ROLE_CLASSES[normalized]) {
+    return `pronoun:${PRONOUN_ROLE_CLASSES[normalized]}`;
+  }
+
+  if (SEMANTIC_VARIANT_FAMILY_LOOKUP[normalized]) {
+    return `family:${SEMANTIC_VARIANT_FAMILY_LOOKUP[normalized]}`;
+  }
+
+  if (SEMANTIC_EQUIVALENT_FORMS[normalized]) {
+    return SEMANTIC_EQUIVALENT_FORMS[normalized];
+  }
+
+  if (normalized.endsWith('ing') && normalized.length > 5) {
+    return normalized.slice(0, -3);
+  }
+
+  if (normalized.endsWith('ed') && normalized.length > 4) {
+    return normalized.slice(0, -2);
+  }
+
+  if (normalized.endsWith('es') && normalized.length > 4) {
+    return normalized.slice(0, -2);
+  }
+
+  if (normalized.endsWith('s') && normalized.length > 3 && !normalized.endsWith("'s")) {
+    return normalized.slice(0, -1);
+  }
+
+  return normalized;
+}
+
+function semanticRoleTokens(value = '') {
+  return tokenize(value)
+    .filter((token) => !CONTENT_STOP_WORDS.has(token) && !HEDGE_MARKERS.has(token))
+    .map(normalizeSemanticToken)
+    .filter(Boolean);
+}
+
+function roleCoverage(roleTokens = [], targetSet = new Set(), fallbackScore = 0) {
+  if (!roleTokens.length) {
+    return 1;
+  }
+
+  const unique = [...new Set(roleTokens)];
+  const matched = unique.filter((token) => targetSet.has(token)).length;
+  const directCoverage = matched / unique.length;
+  return round3(clamp01(Math.max(directCoverage, fallbackScore)));
+}
+
+function semanticJaccard(leftTokens = [], rightTokens = []) {
+  const left = new Set(leftTokens);
+  const right = new Set(rightTokens);
+
+  if (!left.size && !right.size) {
+    return 1;
+  }
+
+  if (!left.size || !right.size) {
+    return 0;
+  }
+
+  let overlap = 0;
+  left.forEach((token) => {
+    if (right.has(token)) {
+      overlap += 1;
+    }
+  });
+
+  return overlap / (left.size + right.size - overlap);
+}
+
+function compatibleTenseAspect(source = '', target = '') {
+  if (!source || !target || source === target) {
+    return true;
+  }
+
+  if (source === 'mixed' || target === 'mixed') {
+    return true;
+  }
+
+  const pair = new Set([source, target]);
+  if (pair.has('present') && pair.has('progressive')) {
+    return true;
+  }
+
+  if (pair.has('past') && pair.has('perfect')) {
+    return true;
+  }
+
+  return false;
+}
+
+function summarizeProfile(profile = {}) {
+  return {
+    avgSentenceLength: round2(profile.avgSentenceLength || 0),
+    sentenceCount: profile.sentenceCount || 0,
+    contractionDensity: round3(profile.contractionDensity || 0),
+    punctuationDensity: round3(profile.punctuationDensity || 0),
+    lineBreakDensity: round3(profile.lineBreakDensity || 0),
+    contentWordComplexity: round3(profile.contentWordComplexity || 0),
+    modifierDensity: round3(profile.modifierDensity || 0),
+    hedgeDensity: round3(profile.hedgeDensity || 0),
+    directness: round3(profile.directness || 0),
+    abstractionPosture: round3(profile.abstractionPosture || 0.5),
+    latinatePreference: round3(profile.latinatePreference || 0),
+    recurrencePressure: round3(profile.recurrencePressure || 0)
+  };
+}
+
+function summarizeIR(ir = {}) {
+  return {
+    metadata: {
+      sentenceCount: ir.metadata?.sentenceCount || 0,
+      clauseCount: ir.metadata?.clauseCount || 0,
+      literalSpans: (ir.metadata?.literalSpans || []).map((entry) => ({
+        value: entry.value,
+        placeholder: entry.placeholder
+      }))
+    },
+    sentences: (ir.sentences || []).map((sentence) => ({
+      id: sentence.id,
+      raw: sentence.raw,
+      rhetoricalRole: sentence.rhetoricalRole,
+      terminalPunct: sentence.terminalPunct,
+      clauses: (sentence.clauses || []).map((clause) => ({
+        id: clause.id,
+        text: clause.text,
+        relationToPrev: clause.relationToPrev,
+        clauseType: clause.clauseType,
+        polarity: clause.polarity,
+        tenseAspect: clause.tenseAspect,
+        propositionHead: clause.propositionHead,
+        actor: clause.actor,
+        action: clause.action,
+        object: clause.object,
+        modifiers: clause.modifiers,
+        hedgeMarkers: clause.hedgeMarkers
+      }))
+    }))
+  };
+}
+
+function flattenSemanticClauses(ir = {}) {
+  return (ir.sentences || []).flatMap((sentence) =>
+    (sentence.clauses || []).map((clause) => {
+      const propositionTokens = semanticRoleTokens(clause.propositionHead);
+      const actorTokens = semanticRoleTokens(clause.actor);
+      const actionTokens = semanticRoleTokens(clause.action);
+      const objectTokens = semanticRoleTokens(clause.object);
+      const modifierTokens = semanticRoleTokens((clause.modifiers || []).join(' '));
+      const bag = [
+        ...propositionTokens,
+        ...actorTokens,
+        ...actionTokens,
+        ...objectTokens,
+        ...modifierTokens
+      ];
+
+      return {
+        id: clause.id,
+        text: clause.text,
+        relationToPrev: clause.relationToPrev,
+        polarity: clause.polarity,
+        tenseAspect: clause.tenseAspect,
+        propositionTokens,
+        actorTokens,
+        actionTokens,
+        objectTokens,
+        modifierTokens,
+        bag: [...new Set(bag)]
+      };
+    })
+  );
+}
+
+function bestSemanticClauseMatch(sourceClause, outputClauses = []) {
+  if (!outputClauses.length) {
+    return {
+      clause: null,
+      score: 0,
+      bagScore: 0
+    };
+  }
+
+  const windows = [];
+  for (let index = 0; index < outputClauses.length; index += 1) {
+    const single = outputClauses[index];
+    windows.push({
+      id: single.id,
+      relationToPrev: single.relationToPrev,
+      polarity: single.polarity,
+      tenseAspect: single.tenseAspect,
+      actorTokens: single.actorTokens,
+      actionTokens: single.actionTokens,
+      objectTokens: single.objectTokens,
+      bag: single.bag
+    });
+
+    if (index < outputClauses.length - 1) {
+      const next = outputClauses[index + 1];
+      windows.push({
+        id: `${single.id}+${next.id}`,
+        relationToPrev: single.relationToPrev,
+        polarity: single.polarity === next.polarity ? single.polarity : 'mixed',
+        tenseAspect: single.tenseAspect === next.tenseAspect ? single.tenseAspect : 'mixed',
+        actorTokens: [...new Set([...single.actorTokens, ...next.actorTokens])],
+        actionTokens: [...new Set([...single.actionTokens, ...next.actionTokens])],
+        objectTokens: [...new Set([...single.objectTokens, ...next.objectTokens])],
+        bag: [...new Set([...single.bag, ...next.bag])]
+      });
+    }
+  }
+
+  return windows.reduce((best, candidate) => {
+    const bagScore = semanticJaccard(sourceClause.bag, candidate.bag);
+    const actorScore = semanticJaccard(sourceClause.actorTokens, candidate.actorTokens);
+    const actionScore = semanticJaccard(sourceClause.actionTokens, candidate.actionTokens);
+    const relationBonus = sourceClause.relationToPrev === candidate.relationToPrev ? 0.08 : 0;
+    const polarityBonus = sourceClause.polarity === candidate.polarity || candidate.polarity === 'mixed' ? 0.08 : 0;
+    const score = (
+      (bagScore * 0.54) +
+      (actorScore * 0.16) +
+      (actionScore * 0.14) +
+      relationBonus +
+      polarityBonus
+    );
+
+    if (score > best.score) {
+      return {
+        clause: candidate,
+        score,
+        bagScore
+      };
+    }
+
+    return best;
+  }, {
+    clause: windows[0],
+    score: -1,
+    bagScore: 0
+  });
+}
+
+function buildProtectedAnchorAudit(outputText = '', protectedState = { literals: [] }) {
+  const literals = protectedState?.literals || [];
+  const missingAnchors = literals
+    .filter((entry) => !outputText.includes(entry.value))
+    .map((entry) => entry.value);
+  const resolvedAnchors = literals.length - missingAnchors.length;
+  const protectedAnchorIntegrity = literals.length
+    ? round3(resolvedAnchors / literals.length)
+    : 1;
+
+  return {
+    totalAnchors: literals.length,
+    resolvedAnchors,
+    missingAnchors,
+    protectedAnchorIntegrity
+  };
+}
+
+function buildSemanticAuditBundle(sourceIR, outputText = '', protectedState = { literals: [] }) {
+  const outputIR = segmentTextToIR(normalizeText(outputText), protectedState);
+  const sourceClauses = flattenSemanticClauses(sourceIR);
+  const outputClauses = flattenSemanticClauses(outputIR);
+  const globalOutputSet = new Set(outputClauses.flatMap((clause) => clause.bag));
+  const protectedAnchorAudit = buildProtectedAnchorAudit(outputText, protectedState);
+
+  if (!sourceClauses.length) {
+    return {
+      semanticAudit: {
+        propositionCoverage: 1,
+        actorCoverage: 1,
+        actionCoverage: 1,
+        objectCoverage: 1,
+        polarityMismatches: 0,
+        tenseMismatches: 0,
+        protectedAnchorIntegrity: protectedAnchorAudit.protectedAnchorIntegrity,
+        clauseAudits: [],
+        sourceClauseCount: 0,
+        outputClauseCount: outputClauses.length
+      },
+      protectedAnchorAudit,
+      outputIR
+    };
+  }
+
+  const clauseAudits = sourceClauses.map((sourceClause) => {
+    const match = bestSemanticClauseMatch(sourceClause, outputClauses);
+    const targetClause = match.clause;
+    const targetSet = new Set(targetClause?.bag || []);
+    const globalBagScore = round3(semanticJaccard(sourceClause.bag, [...globalOutputSet]));
+    const bagScore = round3(clamp01(match.bagScore || 0));
+    const basePropositionCoverage = Math.max(
+      roleCoverage(sourceClause.propositionTokens, targetSet, bagScore),
+      roleCoverage(sourceClause.propositionTokens, globalOutputSet, globalBagScore * 0.94)
+    );
+    const actorCoverage = Math.max(
+      roleCoverage(sourceClause.actorTokens, targetSet, bagScore * 0.9),
+      roleCoverage(sourceClause.actorTokens, globalOutputSet, globalBagScore * 0.9)
+    );
+    const rawActionCoverage = Math.max(
+      roleCoverage(sourceClause.actionTokens, targetSet, bagScore),
+      roleCoverage(sourceClause.actionTokens, globalOutputSet, globalBagScore * 0.94)
+    );
+    const rawObjectCoverage = Math.max(
+      roleCoverage(sourceClause.objectTokens, targetSet, bagScore * 0.82),
+      roleCoverage(sourceClause.objectTokens, globalOutputSet, globalBagScore * 0.88)
+    );
+    const propositionCoverage = Math.max(
+      basePropositionCoverage,
+      rawActionCoverage,
+      rawObjectCoverage * 0.9
+    );
+    const actionCoverage = sourceClause.actionTokens.length
+      ? Math.max(rawActionCoverage, propositionCoverage * 0.9)
+      : propositionCoverage;
+    const objectCoverage = sourceClause.objectTokens.length
+      ? Math.max(rawObjectCoverage, propositionCoverage * 0.75)
+      : propositionCoverage;
+    const polarityRelevant =
+      sourceClause.propositionTokens.length > 0 ||
+      sourceClause.actionTokens.length > 0 ||
+      sourceClause.objectTokens.length > 0;
+    const polarityMismatch = targetClause
+      ? Number(polarityRelevant && sourceClause.polarity !== targetClause.polarity && globalBagScore < 0.5 && bagScore < 0.95)
+      : 0;
+    const tenseMismatch = targetClause
+      ? Number(sourceClause.actionTokens.length > 0 && !compatibleTenseAspect(sourceClause.tenseAspect, targetClause.tenseAspect) && globalBagScore < 0.5)
+      : 0;
+
+    return {
+      sourceClauseId: sourceClause.id,
+      matchedClauseId: targetClause?.id || null,
+      propositionCoverage,
+      actorCoverage,
+      actionCoverage,
+      objectCoverage,
+      polarityMismatch,
+      tenseMismatch,
+      bagScore,
+      globalBagScore
+    };
+  });
+
+  const average = (key) => round3(
+    clauseAudits.reduce((sum, entry) => sum + (entry[key] || 0), 0) / Math.max(1, clauseAudits.length)
+  );
+  const semanticAudit = {
+    propositionCoverage: average('propositionCoverage'),
+    actorCoverage: average('actorCoverage'),
+    actionCoverage: average('actionCoverage'),
+    objectCoverage: average('objectCoverage'),
+    polarityMismatches: clauseAudits.reduce((sum, entry) => sum + entry.polarityMismatch, 0),
+    tenseMismatches: clauseAudits.reduce((sum, entry) => sum + entry.tenseMismatch, 0),
+    protectedAnchorIntegrity: protectedAnchorAudit.protectedAnchorIntegrity,
+    clauseAudits,
+    sourceClauseCount: sourceClauses.length,
+    outputClauseCount: outputClauses.length
+  };
+
+  return {
+    semanticAudit,
+    protectedAnchorAudit,
+    outputIR
+  };
+}
+
+function summarizeTransferPlan(transferPlan = {}, irPlan = {}, passesApplied = []) {
+  const uniquePasses = [...new Set(passesApplied)];
+  return {
+    transferMode: irPlan.transferMode || 'weak',
+    structuralOperationsSelected: uniquePasses.filter((name) =>
+      /(split|merge|sentence|clause|structural)/i.test(name)
+    ),
+    lexicalRegisterOperationsSelected: uniquePasses.filter((name) =>
+      /(phrase|voice|stance|connector|function-word|line-break|punctuation|lexical|contraction|discourse)/i.test(name)
+    ),
+    connectorStrategy: irPlan.dominantRelation || transferPlan.dominantRelation || 'balanced',
+    contractionStrategy:
+      (irPlan.discourseGoals?.contractionDelta || 0) > 0.006
+        ? 'increase'
+        : (irPlan.discourseGoals?.contractionDelta || 0) < -0.006
+          ? 'decrease'
+          : 'hold',
+    relationInventory: irPlan.relationInventory || transferPlan.relationInventory || [],
+    structuralGoals: irPlan.structuralGoals || {},
+    discourseGoals: irPlan.discourseGoals || {},
+    registerGoals: irPlan.registerGoals || {},
+    operationBudget: irPlan.operationBudget || {}
+  };
+}
+
+function summarizeCandidate(candidate = {}) {
+  return {
+    spec: candidate.spec || 'selected',
+    score: round3(candidate.score || 0),
+    passesApplied: candidate.passesApplied || [],
+    changedDimensions: candidate.changedDimensions || [],
+    qualityGatePassed: Boolean(candidate.quality?.qualityGatePassed),
+    notes: candidate.quality?.notes || []
+  };
+}
+
+function buildRetrievalTrace({
+  sourceText,
+  shell,
+  sourceProfile,
+  targetProfile,
+  opportunityProfile,
+  ir,
+  transferPlan,
+  irPlan,
+  allCandidates,
+  bestCandidate,
+  finalText,
+  result,
+  semanticAudit,
+  protectedAnchorAudit,
+  outputIR
+}) {
+  return {
+    sourceText,
+    donorProfileSummary: {
+      mode: shell?.mode || 'native',
+      label: shell?.label || 'native cadence',
+      strength: round3(Number(shell?.strength || 0)),
+      profile: summarizeProfile(targetProfile)
+    },
+    sourceIR: summarizeIR(ir),
+    opportunityProfile: {
+      ...opportunityProfile
+    },
+    planSummary: summarizeTransferPlan(transferPlan, irPlan, bestCandidate?.passesApplied || []),
+    candidateSummary: {
+      selected: summarizeCandidate(bestCandidate),
+      candidates: (allCandidates || []).map(summarizeCandidate)
+    },
+    finalRealization: {
+      text: finalText,
+      transferClass: result.transferClass,
+      realizationTier: result.realizationTier,
+      changedDimensions: result.changedDimensions || [],
+      lexemeSwaps: result.lexemeSwaps || [],
+      semanticRisk: result.semanticRisk
+    },
+    semanticAudit,
+    protectedAnchorAudit,
+    realizedIR: summarizeIR(outputIR),
+    realizationSummary: {
+      transferClass: result.transferClass,
+      realizationTier: result.realizationTier,
+      changedDimensions: result.changedDimensions || [],
+      lexemeSwaps: result.lexemeSwaps || [],
+      semanticRisk: result.semanticRisk,
+      realizationNotes: result.realizationNotes || []
+    }
+  };
 }
 
 function cadenceAxisVector(input) {
@@ -4946,12 +5558,18 @@ function solveQuadratic(a, b, c) {
     HARBOR_LIBRARY,
     compareTexts,
     extractCadenceProfile,
+    sentenceSplit,
+    segmentTextToIR,
+    buildOpportunityProfileFromIR,
+    buildTransferPlanFromIR,
+    beamSearchTransfer,
     functionWordProfile,
     wordLengthProfile,
     charTrigramProfile,
     applyCadenceMod,
     applyCadenceShell,
     buildCadenceTransfer,
+    buildCadenceTransferTrace,
     applyCadenceToText,
     transformText,
     cadenceModFromProfile,
@@ -4975,6 +5593,14 @@ function solveQuadratic(a, b, c) {
     badgeMeaning
   };
 })();
+
+
+
+
+
+
+
+
 
 
 

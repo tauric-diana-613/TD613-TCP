@@ -1,0 +1,611 @@
+{
+  "id": "reflective_under_operational",
+  "category": "flagship",
+  "strength": 0.88,
+  "sourceText": "Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed.",
+  "donorText": "Hey, grab the charger. Use the side door. It sticks, so lean on it. I am in back.",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 4.5,
+      "sentenceCount": 4,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.333,
+      "contentWordComplexity": 0.19,
+      "modifierDensity": 0,
+      "directness": 1,
+      "abstractionPosture": 0
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed.",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 4.8,
+        "sentenceCount": 2,
+        "contractionDensity": 0.001,
+        "punctuationDensity": 0.328,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.221,
+        "modifierDensity": 0.048,
+        "hedgeDensity": 0.054,
+        "directness": 0.761,
+        "abstractionPosture": 1,
+        "latinatePreference": 0,
+        "recurrencePressure": 0.3
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 2,
+        "clauseCount": 3,
+        "literalSpans": []
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Honestly, I wasn't trying to make a speech",
+          "rhetoricalRole": "clarifying",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Honestly, I wasn't trying to make a speech",
+              "relationToPrev": "start",
+              "clauseType": "parenthetical",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "honestly",
+              "actor": "I",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "honestly"
+              ],
+              "hedgeMarkers": [
+                "stance"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed.",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "I just kept circling the story",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "kept",
+              "actor": "I",
+              "action": "kept",
+              "object": "circling story",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            },
+            {
+              "id": "s1c1",
+              "text": "every time I got to the part where I should have left, I remembered one more detail that changed why I stayed",
+              "relationToPrev": "temporal",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "future-modal",
+              "propositionHead": "got",
+              "actor": "I",
+              "action": "got",
+              "object": "part where left remembered one",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 0,
+      "sentenceMerge": 1,
+      "contraction": 1,
+      "connector": 3,
+      "lineBreak": 1,
+      "additive": 0,
+      "contrastive": 0,
+      "causal": 1,
+      "temporal": 0,
+      "clarifying": 1,
+      "resumptive": 1
+    },
+    "planSummary": {
+      "transferMode": "compress",
+      "structuralOperationsSelected": [
+        "baseline-split"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "baseline-contraction",
+        "baseline-phrase",
+        "baseline-voice-realization",
+        "connector-stance-lexicon",
+        "contraction-auxiliary"
+      ],
+      "connectorStrategy": "causal",
+      "contractionStrategy": "decrease",
+      "relationInventory": {
+        "additive": 0,
+        "contrastive": 0,
+        "causal": 1,
+        "temporal": 0,
+        "clarifying": 1,
+        "resumptive": 1
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": -13.7
+      },
+      "discourseGoals": {
+        "contractionDelta": -0.026,
+        "hedgeDelta": 0
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": -0.099,
+        "modifierDensityDelta": 0,
+        "directnessDelta": 0.761,
+        "abstractionDelta": 0,
+        "latinateDelta": 0,
+        "registerMode": "reflective"
+      },
+      "operationBudget": {
+        "splitSentence": 21,
+        "mergeSentence": 0,
+        "swapConnector": 2,
+        "applyHedge": 2,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "mixed-structural",
+        "score": 245.184,
+        "passesApplied": [
+          "baseline-split",
+          "baseline-contraction",
+          "baseline-phrase",
+          "baseline-voice-realization",
+          "connector-stance-lexicon",
+          "contraction-auxiliary"
+        ],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture",
+          "connector-stance",
+          "lexical-register",
+          "abstraction-posture",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": true,
+        "notes": []
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 213.172,
+          "passesApplied": [
+            "baseline-floor",
+            "clause-texture"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "abstraction-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 245.184,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-contraction",
+            "baseline-phrase",
+            "baseline-voice-realization",
+            "connector-stance-lexicon",
+            "contraction-auxiliary"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "contraction-posture",
+            "connector-stance",
+            "lexical-register",
+            "abstraction-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "split-heavy",
+          "score": 245.184,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-contraction",
+            "baseline-phrase",
+            "baseline-voice-realization",
+            "connector-stance-lexicon",
+            "contraction-auxiliary"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "contraction-posture",
+            "connector-stance",
+            "lexical-register",
+            "abstraction-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 245.184,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-contraction",
+            "baseline-phrase",
+            "baseline-voice-realization",
+            "connector-stance-lexicon",
+            "contraction-auxiliary"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "contraction-posture",
+            "connector-stance",
+            "lexical-register",
+            "abstraction-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 245.184,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-contraction",
+            "baseline-phrase",
+            "baseline-voice-realization",
+            "connector-stance-lexicon",
+            "contraction-auxiliary"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "contraction-posture",
+            "connector-stance",
+            "lexical-register",
+            "abstraction-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "Honestly. I was not trying to tell it. I just kept going over the points when I got to the part where I should have headed out. I remembered one more point that shifted why I stayed.",
+      "transferClass": "structural",
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "contraction-posture",
+        "connector-stance",
+        "lexical-register",
+        "abstraction-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "leave",
+          "from": "left",
+          "to": "headed out",
+          "kind": "lexeme"
+        },
+        {
+          "family": "change",
+          "from": "changed",
+          "to": "shifted",
+          "kind": "lexeme"
+        },
+        {
+          "family": "detail",
+          "from": "detail",
+          "to": "points",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 0.85,
+      "polarityMismatches": 0,
+      "tenseMismatches": 1,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.167,
+          "globalBagScore": 0.059
+        },
+        {
+          "sourceClauseId": "s1c1",
+          "matchedClauseId": "s2c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.8,
+          "polarityMismatch": 0,
+          "tenseMismatch": 1,
+          "bagScore": 0.375,
+          "globalBagScore": 0.313
+        }
+      ],
+      "sourceClauseCount": 3,
+      "outputClauseCount": 5
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 0,
+      "resolvedAnchors": 0,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 4,
+        "clauseCount": 5,
+        "literalSpans": []
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Honestly",
+          "rhetoricalRole": "clarifying",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Honestly",
+              "relationToPrev": "start",
+              "clauseType": "parenthetical",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "honestly",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "honestly"
+              ],
+              "hedgeMarkers": [
+                "stance"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "I was not trying to tell it",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "I was not trying to tell it",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "tell",
+              "actor": "I",
+              "action": "tell",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "I just kept going over the points when I got to the part where I should have headed out",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "I just kept going over the points",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "kept",
+              "actor": "I",
+              "action": "kept",
+              "object": "going over points",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            },
+            {
+              "id": "s2c1",
+              "text": "I got to the part where I should have headed out",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "perfect",
+              "propositionHead": "got",
+              "actor": "I",
+              "action": "got",
+              "object": "part where headed out",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "I remembered one more point that shifted why I stayed.",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "I remembered one more point that shifted why I stayed",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "remembered",
+              "actor": "I",
+              "action": "remembered",
+              "object": "one more point shifted why",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "structural",
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "contraction-posture",
+        "connector-stance",
+        "lexical-register",
+        "abstraction-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "leave",
+          "from": "left",
+          "to": "headed out",
+          "kind": "lexeme"
+        },
+        {
+          "family": "change",
+          "from": "changed",
+          "to": "shifted",
+          "kind": "lexeme"
+        },
+        {
+          "family": "detail",
+          "from": "detail",
+          "to": "points",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0,
+      "realizationNotes": [
+        "3 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, abstraction-posture."
+      ]
+    }
+  },
+  "semanticContract": {
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "abstraction-posture",
+      "connector-stance",
+      "contraction-posture",
+      "lexical-register",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [
+      "change",
+      "detail",
+      "leave"
+    ],
+    "relationInventory": [
+      "additive:0",
+      "causal:1",
+      "clarifying:1",
+      "contrastive:0",
+      "resumptive:1",
+      "temporal:0"
+    ],
+    "structuralOperations": [
+      "baseline-split"
+    ],
+    "lexicalOperations": [
+      "baseline-contraction",
+      "baseline-phrase",
+      "baseline-voice-realization",
+      "connector-stance-lexicon",
+      "contraction-auxiliary"
+    ],
+    "connectorStrategy": "causal",
+    "contractionStrategy": "decrease",
+    "propositionCoverage": 1,
+    "actorCoverage": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 0.85,
+    "polarityMismatches": 0,
+    "tenseMismatches": 1,
+    "protectedAnchorIntegrity": 1
+  }
+}
