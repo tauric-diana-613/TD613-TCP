@@ -1,5 +1,5 @@
 (function () {
-  const { defaults, basePersonas, microcopy } = window.TCP_DATA;
+  const { defaults, basePersonas, microcopy, glyphFieldTech = {} } = window.TCP_DATA;
   const {
     HARBOR_LIBRARY,
     compareTexts,
@@ -31,6 +31,15 @@
     'badge.branch': 'branch',
     'badge.buffer': 'buffer'
   };
+  const GLYPH_LOOKUP = Object.freeze(Object.entries(glyphFieldTech.entries || {}).reduce((acc, [key, entry]) => {
+    acc[key] = Object.freeze({
+      ...entry,
+      retrievalTags: Object.freeze([...(entry.retrievalTags || [])]),
+      uiTargets: Object.freeze([...(entry.uiTargets || [])])
+    });
+    return acc;
+  }, {}));
+  const GLYPH_SUBSTRATE = Object.freeze({ ...(glyphFieldTech.substrateVocabulary || {}) });
   const MIRROR_COPY = {
     off: { pill: 'Mirror shield // armed', button: 'Open mirror shield' },
     on: { pill: 'Mirror shield // open', button: 'Arm mirror shield' }
@@ -55,14 +64,16 @@
   const INGRESS_MIRROR_OPTIONS = {
     off: {
       value: 'off',
-      label: 'armed',
+      label: 'latent',
       cue: 'route latent',
+      glyphKey: 'ingressMirrorLatent',
       glyph: '◫'
     },
     on: {
       value: 'on',
-      label: 'open',
+      label: 'clear',
       cue: 'route clear',
+      glyphKey: 'ingressMirrorClear',
       glyph: '◧'
     }
   };
@@ -77,6 +88,40 @@
     ur: '\u27C9\u232C',
     bc: '\u25CE\u232D'
   };
+  const INGRESS_SEAL_NODE_KEYS = {
+    ul: 'ingressSealFlow',
+    ur: 'ingressSealEmergence',
+    bc: 'ingressSealReturn'
+  };
+
+  const TCP_GLYPH_SYSTEM = {
+    substrateVocabulary: { ...GLYPH_SUBSTRATE },
+    lookup(key) {
+      const entry = GLYPH_LOOKUP[key];
+      return entry
+        ? {
+            key,
+            glyph: entry.glyph,
+            semanticClass: entry.semanticClass,
+            semioticRole: entry.semioticRole,
+            activationState: entry.activationState,
+            retrievalTags: [...entry.retrievalTags],
+            uiTargets: [...entry.uiTargets],
+            rationale: entry.rationale
+          }
+        : null;
+    },
+    locate(uiTarget) {
+      return Object.keys(GLYPH_LOOKUP)
+        .filter((key) => GLYPH_LOOKUP[key].uiTargets.includes(uiTarget))
+        .map((key) => this.lookup(key));
+    },
+    keys() {
+      return Object.keys(GLYPH_LOOKUP);
+    }
+  };
+
+  window.TCP_GLYPH_SYSTEM = Object.freeze(TCP_GLYPH_SYSTEM);
 
   function resolveIngressMirrorTarget(value) {
     return Object.prototype.hasOwnProperty.call(INGRESS_MIRROR_OPTIONS, value) ? value : null;
@@ -102,9 +147,11 @@
   let savedPersonas = loadSavedPersonas();
   let ingress = createIngressState();
 
+  document.title = microcopy.hero_title;
   $('heroLead').textContent = microcopy.hero_lead;
   $('voiceA').value = defaults.voiceA;
   $('voiceB').value = defaults.voiceB;
+  applyStaticGlyphs();
 
   function formatPct(value) {
     return `${Math.round(value * 100)}%`;
@@ -121,6 +168,69 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+  function glyphEntry(key) {
+    return GLYPH_LOOKUP[key] || null;
+  }
+
+  function glyphChar(key, fallback = '') {
+    return glyphEntry(key)?.glyph || fallback;
+  }
+
+  function glyphKeyForBadge(value) {
+    if (value === 'badge.branch') {
+      return 'ingressBadgeBranch';
+    }
+    if (value === 'badge.buffer') {
+      return 'ingressBadgeBuffer';
+    }
+    return 'ingressBadgeHolds';
+  }
+
+  function applyGlyphMetadata(node, key) {
+    const entry = glyphEntry(key);
+    if (!node || !entry) {
+      return;
+    }
+
+    node.dataset.glyphKey = key;
+    node.dataset.semanticClass = entry.semanticClass;
+    node.dataset.semioticRole = entry.semioticRole;
+    node.dataset.activationState = entry.activationState;
+    node.dataset.retrievalTags = entry.retrievalTags.join('|');
+    node.dataset.uiTargets = entry.uiTargets.join('|');
+  }
+
+  function setGlyphNode(node, key, fallback = '') {
+    if (!node) {
+      return;
+    }
+
+    const entry = glyphEntry(key);
+    if (!entry) {
+      node.textContent = fallback;
+      return;
+    }
+
+    node.textContent = entry.glyph;
+    applyGlyphMetadata(node, key);
+  }
+
+  function glyphSpanHtml(key, tone = 'glyph-cyan') {
+    const entry = glyphEntry(key);
+    if (!entry) {
+      return '';
+    }
+
+    return `<span class="glyph ${tone}" aria-hidden="true" data-glyph-key="${key}" data-semantic-class="${escapeHtml(entry.semanticClass)}" data-semiotic-role="${escapeHtml(entry.semioticRole)}" data-activation-state="${escapeHtml(entry.activationState)}" data-retrieval-tags="${escapeHtml(entry.retrievalTags.join('|'))}" data-ui-targets="${escapeHtml(entry.uiTargets.join('|'))}">${escapeHtml(entry.glyph)}</span>`;
+  }
+
+  function applyStaticGlyphs(root = document) {
+    root.querySelectorAll('[data-glyph-key]').forEach((node) => {
+      const key = node.dataset.glyphKey;
+      setGlyphNode(node, key, node.textContent || '');
+    });
   }
 
   function randomChoice(list = []) {
@@ -536,11 +646,13 @@
     const currentMirror = ingress.currentMirror ? ingressMirrorOption(ingress.currentMirror) : null;
 
     let phaseLabel = 'Protocol // membrane waking';
+    let cueGlyphKey = 'ingressDefaultCue';
     let cueGlyph = '◌';
     let cueLabel = 'custody handshake unresolved';
     let cueCopy = 'Four gates. One valid posture.';
     let status = 'Wait for the first demand.';
     let coreLabel = 'Stand by';
+    let coreGlyphKey = 'ingressSealClosure';
     let coreGlyph = '⟐';
     let coreEnabled = false;
     const sealTrack = $('ingressSealTrack');
@@ -554,7 +666,11 @@
 
     $('ingressMirrorControls').hidden = true;
     $('ingressBadgeControls').hidden = true;
-    $('ingressBadgeReadout').textContent = `token // ${currentBadge ? currentBadge.label : 'unset'}`;
+    $('ingressMirrorArmed').innerHTML = `${glyphSpanHtml('ingressMirrorLatent', 'glyph-lime')} latent`;
+    $('ingressMirrorOpen').innerHTML = `${glyphSpanHtml('ingressMirrorClear', 'glyph-cyan')} clear`;
+    $('ingressBadgeReadout').innerHTML = currentBadge
+      ? `token // ${glyphSpanHtml(glyphKeyForBadge(ingress.currentBadge), 'glyph-lime')} ${escapeHtml(currentBadge.label)}`
+      : 'token // unset';
     if (sealTrack) {
       sealTrack.dataset.active = ingress.phase === 'seal' ? 'true' : 'false';
       sealTrack.dataset.step = String(ingress.sealSequenceIndex || 0);
@@ -565,6 +681,7 @@
 
     if (ingress.phase === 'containment') {
       phaseLabel = 'Gate // containment';
+      cueGlyphKey = 'ingressContainmentCue';
       cueGlyph = '◎';
       cueLabel = 'collapse the ring stack';
       cueCopy = 'The field admits only stable contact.';
@@ -572,10 +689,12 @@
         ? 'Do not break contact.'
         : 'Unbroken contact resolves the gate.';
       coreLabel = 'stabilize';
+      coreGlyphKey = 'ingressContainmentCore';
       coreGlyph = '◎';
       coreEnabled = true;
     } else if (ingress.phase === 'mirror') {
       phaseLabel = 'Gate // mirror';
+      cueGlyphKey = mirrorTarget.glyphKey || 'ingressMirrorLatent';
       cueGlyph = mirrorTarget.glyph;
       cueLabel = mirrorTarget.cue;
       cueCopy = 'One posture keeps the route latent. One clears it.';
@@ -585,10 +704,12 @@
           ? 'Mirror posture accepted.'
           : 'The membrane rejects that posture.';
       coreLabel = currentMirror ? currentMirror.cue : 'unresolved';
+      coreGlyphKey = currentMirror ? currentMirror.glyphKey || 'ingressMirrorLatent' : mirrorTarget.glyphKey || 'ingressMirrorLatent';
       coreGlyph = currentMirror ? currentMirror.glyph : mirrorTarget.glyph;
       $('ingressMirrorControls').hidden = false;
     } else if (ingress.phase === 'badge') {
       phaseLabel = 'Gate // token';
+      cueGlyphKey = badgeTarget.glyphKey || glyphKeyForBadge(ingress.target.badge);
       cueGlyph = badgeTarget.glyph;
       cueLabel = badgeTarget.cue;
       cueCopy = 'Advance the token until the mark holds.';
@@ -598,10 +719,12 @@
           ? 'Token accepted. Seal is now listening.'
           : 'The field does not accept that mark.';
       coreLabel = currentBadge ? currentBadge.label : 'token unset';
+      coreGlyphKey = currentBadge ? glyphKeyForBadge(ingress.currentBadge) : glyphKeyForBadge(ingress.target.badge);
       coreGlyph = currentBadge ? currentBadge.glyph : badgeTarget.glyph;
       $('ingressBadgeControls').hidden = false;
     } else if (ingress.phase === 'seal') {
       phaseLabel = 'Gate // seal';
+      cueGlyphKey = 'ingressSealClosure';
       cueGlyph = '⟐';
       cueLabel = 'close the triad';
       cueCopy = `Resolved posture: ${mirrorTarget.cue} / ${badgeTarget.label} / containment stable. Seal the three points in clockwise order.`;
@@ -609,25 +732,31 @@
         ? 'That point does not close the triad. Touch the live point.'
         : 'Touch the next live point.';
       coreLabel = 'triad live';
+      coreGlyphKey = 'ingressSealClosure';
       coreGlyph = '⟐';
       coreEnabled = false;
     } else if (ingress.phase === 'revealing') {
       phaseLabel = 'Reveal // handoff';
+      cueGlyphKey = 'ingressReveal';
       cueGlyph = '⬡';
       cueLabel = 'membrane dissolving';
       cueCopy = 'The solved posture is crossing into the live deck.';
       status = 'Route handoff in progress.';
       coreLabel = 'opening';
+      coreGlyphKey = 'ingressReveal';
       coreGlyph = '⬡';
     }
 
     $('ingressPhaseLabel').innerHTML = `<span class="glyph glyph-cyan" aria-hidden="true">⟒</span> ${phaseLabel}`;
     $('ingressCueGlyph').textContent = cueGlyph;
+    $('ingressPhaseLabel').innerHTML = `${glyphSpanHtml('ingressPhasePrefix', 'glyph-cyan')} <span id="ingressPhaseText">${escapeHtml(phaseLabel)}</span>`;
+    setGlyphNode($('ingressCueGlyph'), cueGlyphKey, cueGlyph);
     $('ingressCueLabel').textContent = cueLabel;
     $('ingressCueCopy').textContent = cueCopy;
     $('ingressStatus').textContent = status;
     $('ingressCoreLabel').textContent = coreLabel;
     $('ingressCoreGlyph').textContent = coreGlyph;
+    setGlyphNode($('ingressCoreGlyph'), coreGlyphKey, coreGlyph);
     $('ingressCore').disabled = !coreEnabled;
 
     $('ingressMirrorArmed').dataset.selected = ingress.currentMirror === 'off';
@@ -648,6 +777,7 @@
       const glyphNode = node.querySelector('span[aria-hidden="true"]');
       if (glyphNode) {
         glyphNode.textContent = INGRESS_SEAL_NODE_GLYPHS[id] || '\u27D0';
+        setGlyphNode(glyphNode, INGRESS_SEAL_NODE_KEYS[id], glyphNode.textContent);
       }
 
       let state = 'pending';
@@ -1128,7 +1258,7 @@
       <article class="duel-side" data-slot="${side.slot}">
         <div class="duel-side-head">
           <div>
-            <div class="section-kicker">${side.title}</div>
+            <div class="section-kicker">${glyphSpanHtml('sectionShellDuel', 'glyph-cyan')} ${side.title}</div>
             <div class="duel-shell-name">${escapeHtml(side.shell.label)}</div>
           </div>
           <div class="duel-shell-strength">${shellStrengthCopy(side.shell)}</div>
@@ -1236,7 +1366,7 @@
       <div class="duel-grid">
         ${renderDuelSide(duel.reference)}
         <aside class="duel-delta">
-          <div class="section-kicker">Delta strip</div>
+          <div class="section-kicker">${glyphSpanHtml('sectionDeltaStrip', 'glyph-cyan')} Delta strip</div>
           <div class="duel-delta-list">
             <div class="duel-delta-item">
               <span class="duel-delta-label">Duel similarity</span>
@@ -1324,7 +1454,7 @@
       .map((persona) => {
         const selected = bayShells[activeVoice].personaId === persona.id;
         const assigned = bayShells.A.personaId === persona.id || bayShells.B.personaId === persona.id;
-        const source = persona.source === 'saved' ? 'captured in-app' : 'built-in attractor';
+        const source = persona.source === 'saved' ? 'captured witness shell' : 'built-in field attractor';
 
         return `
           <div class="persona ${selected ? 'selected' : ''} ${assigned ? 'assigned' : ''}" data-id="${persona.id}" role="button" tabindex="0" aria-pressed="${selected}">
@@ -1342,7 +1472,8 @@
       })
       .join('');
 
-    $('personaStatus').textContent = `Active bay // ${SLOT_LABELS[activeVoice]} // ${bayShells[activeVoice].label}`;
+    $('personaStatus').textContent = `${glyphChar('tabPersonas', '')} Active bay // ${SLOT_LABELS[activeVoice]} // ${bayShells[activeVoice].label}`;
+    applyGlyphMetadata($('personaStatus'), 'tabPersonas');
     renderActiveBayStatus();
   }
 
@@ -1409,13 +1540,17 @@
   }
 
   function updateStatePills(routeStatus, decision) {
-    $('badgeState').textContent = `Badge // ${badgeMeaning(badge)}`;
+    $('badgeState').textContent = `${glyphChar(glyphKeyForBadge(badge), '')} Badge // ${badgeMeaning(badge)}`;
+    applyGlyphMetadata($('badgeState'), glyphKeyForBadge(badge));
     $('badgeState').classList.toggle('active', badge === 'badge.holds');
-    $('mirrorState').textContent = MIRROR_COPY[mirrorLogic].pill;
+    $('mirrorState').textContent = `${glyphChar('stateMirror', '')} ${MIRROR_COPY[mirrorLogic].pill}`;
+    applyGlyphMetadata($('mirrorState'), 'stateMirror');
     $('mirrorState').classList.toggle('active', mirrorLogic === 'off');
-    $('containmentState').textContent = CONTAINMENT_COPY[containment].pill;
+    $('containmentState').textContent = `${glyphChar('stateContainment', '')} ${CONTAINMENT_COPY[containment].pill}`;
+    applyGlyphMetadata($('containmentState'), 'stateContainment');
     $('containmentState').classList.toggle('active', containment === 'on');
-    $('routeState').textContent = `Route // ${routeStatus}`;
+    $('routeState').textContent = `${glyphChar('stateRoute', '')} Route // ${routeStatus}`;
+    applyGlyphMetadata($('routeState'), 'stateRoute');
     $('routeState').classList.toggle('warn', decision === 'criticality');
     $('routeState').classList.toggle('active', decision === 'passage');
   }
@@ -1426,49 +1561,52 @@
     $('heroSignalValue').textContent = formatPct(cmp.similarity);
     $('heroSignalNote').textContent =
       cmp.similarity >= 0.78
-        ? 'Cadence is becoming legible across both samples.'
+        ? 'Cadence is binding across both samples.'
         : cmp.similarity >= 0.55
-          ? 'Shared habits are surfacing without collapsing into certainty.'
-          : 'The samples still feel socially distinct.';
+          ? 'Shared field habits are surfacing without forcing passage.'
+          : 'The voices still hold separate social fields.';
     $('heroRouteValue').textContent = formatPct(routePressure);
     $('heroRouteNote').textContent =
       decision === 'criticality'
-        ? 'Recognition is gathering faster than the field can route it.'
+        ? 'Recognition is rising faster than the route law can stabilize.'
         : decision === 'passage'
-          ? 'A structured harbor is available before exposure takes over.'
+          ? 'A structured harbor is available before the field spills open.'
           : decision === 'hold-branch'
-            ? 'Public play is staying exploratory while the route signal develops.'
-          : 'The samples are still more atmospheric than traceable.';
+            ? 'The branch is live, but passage is still under adjudication.'
+            : 'The field is still more atmospheric than traceable.';
     if (decision === 'weak-signal') {
       $('heroHarborValue').textContent = 'observe';
-      $('heroHarborNote').textContent = 'No harbor is active. The deck is staying exploratory until recognition becomes legible enough to route.';
+      $('heroHarborNote').textContent = 'No harbor is active. The deck stays exploratory until recognition can support custody.';
     } else {
       $('heroHarborValue').textContent = harbor;
       $('heroHarborNote').textContent = HARBOR_LIBRARY[harbor].mode_class;
     }
-    $('decisionTone').textContent =
+    $('decisionTone').textContent = `${glyphChar('stateDecision', '')} ${
       decision === 'criticality'
         ? 'Route pressure rising'
         : decision === 'passage'
           ? 'Harbor available'
           : decision === 'hold-branch'
             ? 'Branch preserved'
-            : 'Weak signal';
+            : 'Weak signal'
+    }`;
+    applyGlyphMetadata($('decisionTone'), 'stateDecision');
     $('decisionTone').dataset.state = decision;
     document.body.dataset.decision = decision;
   }
 
   function updateHeroConsoleSolo(voiceState) {
     $('heroSignalValue').textContent = 'SOLO';
-    $('heroSignalNote').textContent = `Cadence captured from the ${SLOT_SHORT[voiceState.slot]} bay. Add a second voice to test contrast.`;
+    $('heroSignalNote').textContent = `Cadence captured from the ${SLOT_SHORT[voiceState.slot]} bay. Add a second voice to test relation and route.`;
     $('heroRouteValue').textContent = formatPct(voiceState.effectiveProfile.recurrencePressure);
-    $('heroRouteNote').textContent = 'Solo scans expose rhythm and recurrence, but route pressure needs a second voice.';
+    $('heroRouteNote').textContent = 'Solo scans expose rhythm and recurrence, but route law still needs a second voice.';
     $('heroHarborValue').textContent = voiceState.shell.mode === 'native' ? 'save.persona' : voiceState.shell.label;
     $('heroHarborNote').textContent =
       voiceState.shell.mode === 'native'
-        ? 'You can save this cadence in-app or pair it with another voice.'
+        ? 'You can save this cadence as a persona or pair it with a second voice.'
         : 'A cadence shell is already shaping this bay.';
-    $('decisionTone').textContent = 'Solo capture';
+    $('decisionTone').textContent = `${glyphChar('stateDecision', '')} Solo capture`;
+    applyGlyphMetadata($('decisionTone'), 'stateDecision');
     $('decisionTone').dataset.state = 'hold-branch';
     document.body.dataset.decision = 'hold-branch';
   }
@@ -1485,7 +1623,7 @@
       $('harborBox').innerHTML = `
         <div class="harbor-head">
           <div>
-            <div class="section-kicker">Exploratory posture</div>
+            <div class="section-kicker">${glyphSpanHtml('sectionExploratory', 'glyph-cyan')} Exploratory posture</div>
             <div class="harbor-name">observe.field</div>
           </div>
           <div class="harbor-stat">no harbor engaged</div>
@@ -1515,7 +1653,7 @@
     $('harborBox').innerHTML = `
       <div class="harbor-head">
         <div>
-          <div class="section-kicker">Recommended harbor</div>
+          <div class="section-kicker">${glyphSpanHtml('sectionRecommendedHarbor', 'glyph-lime')} Recommended harbor</div>
           <div class="harbor-name">${harbor}</div>
         </div>
         <div class="harbor-stat">${formatPct(harborData.provenance_retention)} provenance</div>
@@ -1542,7 +1680,7 @@
     $('harborBox').innerHTML = `
       <div class="harbor-head">
         <div>
-          <div class="section-kicker">Solo capture</div>
+          <div class="section-kicker">${glyphSpanHtml('sectionSoloCapture', 'glyph-cyan')} Solo capture</div>
           <div class="harbor-name">${voiceState.shell.mode === 'native' ? 'cadence capture' : voiceState.shell.label}</div>
         </div>
         <div class="harbor-stat">${formatPct(voiceState.effectiveProfile.recurrencePressure)} recurrence</div>
@@ -1581,12 +1719,13 @@
     $('ledgerPreview').textContent = '{\n  "status": "idle"\n}';
     $('fieldNotice').textContent = 'Bring one or two voices into the field. Solo scans capture cadence. Paired scans test similarity, route pressure, and harbor.';
     $('heroSignalValue').textContent = '--';
-    $('heroSignalNote').textContent = 'Paste voices to light the deck.';
+    $('heroSignalNote').textContent = 'Stage at least one voice to wake the field.';
     $('heroRouteValue').textContent = '--';
-    $('heroRouteNote').textContent = 'TCP is idle until a scan runs.';
+    $('heroRouteNote').textContent = 'Route law stays dormant until a scan runs.';
     $('heroHarborValue').textContent = '--';
-    $('heroHarborNote').textContent = 'A harbor will appear once the field resolves.';
-    $('decisionTone').textContent = 'Scanning';
+    $('heroHarborNote').textContent = 'A harbor appears once the field resolves a viable passage.';
+    $('decisionTone').textContent = `${glyphChar('stateDecision', '')} Scanning`;
+    applyGlyphMetadata($('decisionTone'), 'stateDecision');
     $('decisionTone').dataset.state = 'weak-signal';
     $('harborBox').innerHTML = '';
     updateStatePills('buffered', 'weak-signal');
@@ -2097,10 +2236,49 @@ DeltaE = ${ledger.reuse_gain}`;
       sealNodesHidden: $('ingressSealNodes') ? $('ingressSealNodes').hidden : true,
       status: readText('ingressStatus'),
       cue: readText('ingressCueLabel'),
+      cueGlyph: readText('ingressCueGlyph'),
+      cueGlyphKey: $('ingressCueGlyph') ? $('ingressCueGlyph').dataset.glyphKey || '' : '',
+      coreGlyph: readText('ingressCoreGlyph'),
+      coreGlyphKey: $('ingressCoreGlyph') ? $('ingressCoreGlyph').dataset.glyphKey || '' : '',
+      sealGlyphs: [
+        $('ingressSealNodeUl'),
+        $('ingressSealNodeUr'),
+        $('ingressSealNodeBc')
+      ].map((node) => {
+        const glyphNode = node ? node.querySelector('span[aria-hidden="true"]') : null;
+        return glyphNode ? glyphNode.textContent.trim() : '';
+      }),
       badgeReadout: readText('ingressBadgeReadout'),
       bodyOverflow: window.getComputedStyle(document.body).overflow,
       layerOverflowY: layer ? window.getComputedStyle(layer).overflowY : '',
       layerHasVerticalOverflow: layer ? layer.scrollHeight > layer.clientHeight + 1 : false
+    };
+  }
+
+  function readShellGlyphSnapshot() {
+    const readGlyph = (key) => {
+      const node = document.querySelector(`[data-glyph-key="${key}"]`);
+      return {
+        glyph: node ? node.textContent.trim() : '',
+        semanticClass: node ? node.dataset.semanticClass || '' : '',
+        semioticRole: node ? node.dataset.semioticRole || '' : '',
+        activationState: node ? node.dataset.activationState || '' : '',
+        retrievalTags: node ? (node.dataset.retrievalTags || '').split('|').filter(Boolean) : []
+      };
+    };
+
+    return {
+      tabs: {
+        deck: readGlyph('tabDeck'),
+        readout: readGlyph('tabReadout'),
+        personas: readGlyph('tabPersonas')
+      },
+      readoutStrip: {
+        signal: readGlyph('readoutSignal'),
+        route: readGlyph('readoutRoute'),
+        harbor: readGlyph('readoutHarbor')
+      },
+      footer: readGlyph('footerSeal')
     };
   }
 
@@ -2157,6 +2335,14 @@ DeltaE = ${ledger.reuse_gain}`;
         readIngressSnapshot().badgeControlsHidden,
       readIngressSnapshot(),
       'Containment should own the screen without inner scrolling or leaked later-stage controls.'
+    );
+
+    pushCase(
+      'containment_glyph_binding',
+      readIngressSnapshot().cueGlyph === glyphChar('ingressContainmentCue') &&
+        readIngressSnapshot().coreGlyph === glyphChar('ingressContainmentCore'),
+      readIngressSnapshot(),
+      'Containment should expose the reciprocal cue and stabilized core glyphs.'
     );
 
     primeIngressScenario({ phase: 'containment', targetMirror: 'off', targetBadge: 'badge.buffer' });
@@ -2217,6 +2403,18 @@ DeltaE = ${ledger.reuse_gain}`;
       readIngressSnapshot().phase === 'seal',
       readIngressSnapshot(),
       'Cycling onto the target token should advance immediately to seal.'
+    );
+
+    primeIngressScenario({ phase: 'seal', targetMirror: 'on', targetBadge: 'badge.buffer', currentMirror: 'on', currentBadge: 'badge.buffer' });
+    pushCase(
+      'seal_triad_glyphs',
+      JSON.stringify(readIngressSnapshot().sealGlyphs) === JSON.stringify([
+        glyphChar('ingressSealFlow'),
+        glyphChar('ingressSealEmergence'),
+        glyphChar('ingressSealReturn')
+      ]),
+      readIngressSnapshot(),
+      'The live triad should render flow, emergence, and return in clockwise order.'
     );
 
     primeIngressScenario({ phase: 'seal', targetMirror: 'on', targetBadge: 'badge.buffer', currentMirror: 'on', currentBadge: 'badge.buffer' });
@@ -2629,6 +2827,21 @@ DeltaE = ${ledger.reuse_gain}`;
         readoutHidden: $('viewPaneReadout').hidden,
         personasHidden: $('viewPanePersonas').hidden
       };
+      report.glyphSystem = {
+        snapshot: readShellGlyphSnapshot(),
+        pass: (() => {
+          const snapshot = readShellGlyphSnapshot();
+          return snapshot.tabs.deck.glyph === glyphChar('tabDeck') &&
+            snapshot.tabs.readout.glyph === glyphChar('tabReadout') &&
+            snapshot.tabs.personas.glyph === glyphChar('tabPersonas') &&
+            snapshot.readoutStrip.signal.glyph === glyphChar('readoutSignal') &&
+            snapshot.readoutStrip.route.glyph === glyphChar('readoutRoute') &&
+            snapshot.readoutStrip.harbor.glyph === glyphChar('readoutHarbor') &&
+            snapshot.footer.glyph === glyphChar('footerSeal') &&
+            snapshot.tabs.deck.semanticClass === 'gate' &&
+            snapshot.readoutStrip.harbor.semanticClass === 'adjudication';
+        })()
+      };
 
       if (mode === 'full') {
         const matrix = [];
@@ -2736,7 +2949,8 @@ DeltaE = ${ledger.reuse_gain}`;
               report.swapCadences.cueText.toLowerCase().includes('shell duel updated below') &&
               report.soloScan.similarityKey === 'Scan mode' &&
               report.baseline.snapshot.duelState === 'live' &&
-              report.viewTabs.activeTab === 'readout',
+              report.viewTabs.activeTab === 'readout' &&
+              report.glyphSystem.pass,
           matrixPassCount: matrix.filter((entry) => entry.pass).length,
           matrixCount: matrix.length
         };

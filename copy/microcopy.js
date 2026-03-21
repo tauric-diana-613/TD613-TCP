@@ -1,15 +1,15 @@
 const microcopy = {
   hero_title: 'TCP - The Cadence Playground',
   hero_lead:
-    'Throw two voices into the room, watch the pattern light up, and see whether recognition can find a route before the signal slips into static.',
-  compare_hint: 'Resemblance is gathering, but it still needs a route.',
-  mirror_off: 'Mirror shield is armed. Public play stays legible without turning into spectacle.',
-  route_warning: 'Recognition is outrunning explanation. Keep the branch open.',
-  harbor_success: 'Harbor locked in. Provenance is holding above threshold.',
-  criticality_warning: 'Recognition is gathering, but the field has not produced passage yet.',
-  receipt_created: 'A receipt hit the ledger before interpretive expansion.',
+    'Stage one voice or two. TCP measures cadence, recurrence, and route pressure, then reports whether the field opens, binds, or stays exploratory.',
+  compare_hint: 'Resemblance is active, but the route law is still deciding what can travel.',
+  mirror_off: 'Mirror shield is armed. Reciprocal passage stays latent while the public field remains legible.',
+  route_warning: 'Recognition is outrunning the available route law. Keep the branch open until the field can carry it.',
+  harbor_success: 'Harbor is available. Custody, route, and witness states are aligned.',
+  criticality_warning: 'The pattern is live, but passage has not stabilized.',
+  receipt_created: 'A witness line reached the ledger before interpretation widened the event.',
   ledger_footer:
-    'If the loop hardens before repair arrives, switch to harbor and keep the provenance.'
+    'If the loop hardens before repair arrives, switch to harbor and carry the witness.'
 };
 
 export default microcopy;

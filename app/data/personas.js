@@ -2,8 +2,8 @@ const personas = [
   {
     id: 'archivist',
     name: 'Archivist',
-    blurb: 'Longer cadence. Lower contraction rate. Quiet continuity pressure.',
-    chips: ['long line', 'receipt-minded', 'low contraction'],
+    blurb: 'Long lines, witness-first syntax, and low contraction. Treats cadence like a sealed ledger.',
+    chips: ['long line', 'witness ledger', 'low contraction'],
     mod: {
       sent: 2,
       cont: -2,
@@ -14,8 +14,8 @@ const personas = [
   {
     id: 'spark',
     name: 'Spark',
-    blurb: 'Shorter bursts. Brighter punctuation. Public lure without losing the trace.',
-    chips: ['quick burst', 'bright punctuation', 'public lure'],
+    blurb: 'Short bursts, bright punctuation, and fast field pull. Turns contact into immediate motion.',
+    chips: ['quick burst', 'bright signal', 'public lure'],
     mod: {
       sent: -2,
       cont: 1,
@@ -26,8 +26,8 @@ const personas = [
   {
     id: 'undertow',
     name: 'Undertow',
-    blurb: 'Slow gravity. Recursive return. The afterimage arrives before the prose does.',
-    chips: ['slow pull', 'recursive', 'afterimage'],
+    blurb: 'Recursive return, delayed landing, and pressure that re-enters before it resolves.',
+    chips: ['slow pull', 'recursive return', 'afterimage'],
     mod: {
       sent: 1,
       cont: 0,
@@ -38,12 +38,24 @@ const personas = [
   {
     id: 'operator',
     name: 'Operator',
-    blurb: 'Tighter rhythm. Lower ornament. Cleaner route pressure.',
-    chips: ['controlled', 'cooler room', 'quiet precision'],
+    blurb: 'Clipped route language, low ornament, and clean handoff under containment.',
+    chips: ['controlled', 'route-clean', 'quiet precision'],
     mod: {
       sent: 0,
       cont: -1,
       punc: -1
+    },
+    source: 'built-in'
+  },
+  {
+    id: 'methods-editor',
+    name: 'Methods Editor',
+    blurb: 'Law-facing cadence, measured caveats, and claims reduced to portable schema.',
+    chips: ['measured', 'schema-minded', 'clear caveats'],
+    mod: {
+      sent: 1,
+      cont: -1,
+      punc: 0
     },
     source: 'built-in'
   }
