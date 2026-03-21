@@ -33,6 +33,10 @@
     acc[sample.id] = sample;
     return acc;
   }, {}));
+  const TEST_FLIGHT_SAMPLE_IDS = Object.freeze({
+    A: 'recursive-debrief',
+    B: 'operations-brief'
+  });
 
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = 'tcp.savedPersonas.v1';
@@ -256,6 +260,15 @@
     return candidates.length ? candidates : [...SAMPLE_LIBRARY];
   }
 
+  function testFlightSeedPair() {
+    const sampleA = sampleEntry(TEST_FLIGHT_SAMPLE_IDS.A) || SAMPLE_LIBRARY[0] || null;
+    const sampleB = sampleEntry(TEST_FLIGHT_SAMPLE_IDS.B) || SAMPLE_LIBRARY.find((sample) => sample.id !== sampleA?.id) || SAMPLE_LIBRARY[1] || null;
+    return {
+      voiceA: sampleA?.text || '',
+      voiceB: sampleB?.text || ''
+    };
+  }
+
   function applyDeckSample(slot, sample) {
     if (!sample) {
       return;
@@ -274,14 +287,16 @@
       bayShells[slot] = createNativeShell();
     }
     syncBaySampleMetadata();
-    setActiveVoice(slot);
-    analyzeCadences({ reveal: true });
+    activeVoice = slot;
+    collapseAnalysisDeck();
+    renderPersonas();
+    updateControls();
 
     const otherSlot = slot === 'A' ? 'B' : 'A';
     const otherSample = sampleEntry(baySampleIds[otherSlot]);
     const pairNote = otherSample ? ` Pair locked against ${otherSample.name}.` : '';
     setStatusMessage(
-      `${SLOT_LABELS[slot]} randomized to ${sample.name}.${pairNote}${releasedBorrowedShell ? ' Borrowed shell released before the fresh sample entered the field.' : ' Deck reran immediately.'}`
+      `${SLOT_LABELS[slot]} staged ${sample.name}.${pairNote}${releasedBorrowedShell ? ' Borrowed shell released before the fresh sample entered the field.' : ' Press Analyze Cadences to wake the field.'}`
     );
   }
 
@@ -541,6 +556,15 @@
   function setAnalysisRevealState(revealed) {
     analysisRevealed = revealed;
     document.body.dataset.analysisRevealed = revealed ? 'true' : 'false';
+  }
+
+  function collapseAnalysisDeck() {
+    setAnalysisRevealState(false);
+    renderIdleState();
+    const shellDuel = $('shellDuel');
+    if (shellDuel) {
+      shellDuel.dataset.state = 'empty';
+    }
   }
 
   function renderActiveBayStatus() {
@@ -2248,8 +2272,8 @@ DeltaE = ${ledger.reuse_gain}`;
     analyzeCadences({ reveal: keepRevealed });
     setStatusMessage(
       keepRevealed
-        ? 'Deck reset. Native cadences restored and the default pair is back in the field.'
-        : 'Deck reset. Native cadences restored and the deck went latent again. Press Analyze Cadences to wake the field.'
+        ? 'Deck reset. Native cadences restored and both bays cleared for a new pair.'
+        : 'Deck reset. Native cadences restored, both bays cleared, and the deck went latent again. Press Analyze Cadences to wake the field.'
     );
   }
 
@@ -2262,9 +2286,10 @@ DeltaE = ${ledger.reuse_gain}`;
 
     baySampleIds[slot] = inferSampleIdFromText($(slotTextId(slot)).value);
     syncBaySampleMetadata();
-    setActiveVoice(slot);
-    renderVoiceProfiles();
+    activeVoice = slot;
+    collapseAnalysisDeck();
     updateControls();
+    renderPersonas();
     setStatusMessage(
       releasedBorrowedShell
         ? `Text changed in the ${SLOT_SHORT[slot]} bay. The borrowed shell was released, so the new sample is back on native cadence until you swap or assign again.`
@@ -2366,6 +2391,10 @@ DeltaE = ${ledger.reuse_gain}`;
   }) {
     $('voiceA').value = voiceA;
     $('voiceB').value = voiceB;
+    baySampleIds = {
+      A: inferSampleIdFromText(voiceA),
+      B: inferSampleIdFromText(voiceB)
+    };
     badge = nextBadgeState;
     mirrorLogic = nextMirrorLogic;
     containment = nextContainment;
@@ -2374,6 +2403,7 @@ DeltaE = ${ledger.reuse_gain}`;
       B: cloneShell(nextShells.B)
     };
     activeVoice = nextActiveVoice;
+    syncBaySampleMetadata();
     renderVoiceProfiles();
     renderPersonas();
     analyzeCadences();
@@ -2822,15 +2852,23 @@ DeltaE = ${ledger.reuse_gain}`;
 
     const initialState = captureFlightState();
     const beforePersonaCount = document.querySelectorAll('.persona').length;
+    const seededPair = testFlightSeedPair();
     const report = {
       mode,
       baseline: {
-        snapshot: readDeckSnapshot(),
+        snapshot: null,
         personas: beforePersonaCount
       }
     };
 
     try {
+      report.baseline.snapshot = applyScenario({
+        voiceA: seededPair.voiceA,
+        voiceB: seededPair.voiceB,
+        nextMirrorLogic: 'off',
+        nextBadgeState: 'badge.holds'
+      });
+
       const beforeTextSwap = readDeckSnapshot();
       const beforeTextSwapA = $('voiceA').value;
       const beforeTextSwapB = $('voiceB').value;
@@ -2866,15 +2904,21 @@ DeltaE = ${ledger.reuse_gain}`;
         probeChanged: afterRandomB !== beforeRandomB,
         referenceSampleId: randomizedReferenceSampleId,
         probeSampleId: randomizedProbeSampleId,
-        pairDistinct: Boolean(randomizedReferenceSampleId) && randomizedReferenceSampleId !== randomizedProbeSampleId
+        pairDistinct: Boolean(randomizedReferenceSampleId) && randomizedReferenceSampleId !== randomizedProbeSampleId,
+        snapshot: readDeckSnapshot(),
+        deckStillLatent: readDeckSnapshot().duelState === 'empty'
       };
 
-      $('resetBtn').click();
-      const ownSourceSnapshot = readDeckSnapshot();
+      const ownSourceSnapshot = applyScenario({
+        voiceA: seededPair.voiceA,
+        voiceB: seededPair.voiceB,
+        nextMirrorLogic: 'off',
+        nextBadgeState: 'badge.holds'
+      });
       report.ownSourceDuel = {
         sourceLabel: ownSourceSnapshot.duelSource,
-        referenceOwnSource: ownSourceSnapshot.duelReferenceSample.toLowerCase().includes('honestly'),
-        probeOwnSource: ownSourceSnapshot.duelProbeSample.toLowerCase().includes('charger'),
+        referenceOwnSource: ownSourceSnapshot.duelReferenceSample === seededPair.voiceA,
+        probeOwnSource: ownSourceSnapshot.duelProbeSample === seededPair.voiceB,
         samplesDistinct: ownSourceSnapshot.duelReferenceSample !== ownSourceSnapshot.duelProbeSample
       };
 
@@ -2953,8 +2997,8 @@ DeltaE = ${ledger.reuse_gain}`;
             expectedHeroHarbor: 'observe',
             rationale: 'Two visibly different cadences should remain exploratory.',
             config: {
-              voiceA: defaults.voiceA,
-              voiceB: defaults.voiceB,
+              voiceA: "Honestly, I wasn't trying to make a speech. I just kept circling the story because every time I got to the part where I should have left, I remembered one more detail that changed why I stayed. By the time I finished, I had used three qualifiers, two apologies, and the same phrase twice, which is apparently what I do when I'm buying time to say the hard part out loud.",
+              voiceB: "Hey, if you're still out, grab the charger and use the side door. It sticks, so lean on it. If nobody hears you right away, wait a second and knock again. I'm in back unloading boxes, and I probably won't catch the first try.",
               nextMirrorLogic: 'off',
               nextBadgeState: 'badge.holds'
             }
@@ -3035,12 +3079,13 @@ DeltaE = ${ledger.reuse_gain}`;
         report.matrix = matrix;
         const supportChecks = [
           { id: 'sample_randomizer_distinct', pass: report.sampleRandomizer.referenceChanged && report.sampleRandomizer.probeChanged && report.sampleRandomizer.pairDistinct },
+          { id: 'sample_randomizer_keeps_deck_latent', pass: report.sampleRandomizer.deckStillLatent },
           { id: 'swap_shells_preserve_raw_text', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
           { id: 'save_persona_adds_entry', pass: report.savePersona.savedPersonaAdded },
           { id: 'swap_medallion_moves_bay_text', pass: report.textSwapMedallion.voiceASwapped && report.textSwapMedallion.voiceBSwapped },
           { id: 'swap_medallion_updates_duel', pass: report.textSwapMedallion.duelSamplesChanged },
           { id: 'duel_uses_own_sources', pass: report.ownSourceDuel.referenceOwnSource && report.ownSourceDuel.probeOwnSource && report.ownSourceDuel.samplesDistinct },
-          { id: 'swap_cadences_updates_duel', pass: report.swapCadences.duelSamplesChanged },
+          { id: 'swap_cadences_updates_shell_label', pass: report.swapCadences.personaStatusChanged },
           { id: 'swap_cadence_cue_key', pass: report.swapCadences.cueVisible && report.swapCadences.snapshot.statusCueKey === STATUS_CUE_KEYS.shellDuelUpdated },
           { id: 'solo_scan_uses_scan_mode', pass: report.soloScan.similarityKey === 'Scan mode' },
           { id: 'baseline_duel_live', pass: report.baseline.snapshot.duelState === 'live' },
