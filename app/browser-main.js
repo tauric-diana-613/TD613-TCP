@@ -1346,9 +1346,11 @@
     renderActiveBayStatus();
   }
 
-  function setArtifactTab(tab) {
+  function setArtifactTab(tab, options = {}) {
+    const { announce = false, scroll = false } = options;
     const panes = ['play', 'readout', 'personas'];
     activeArtifactTab = panes.includes(tab) ? tab : 'play';
+    let activePaneNode = null;
 
     panes.forEach((pane) => {
       const paneNode = $(`viewPane${pane.charAt(0).toUpperCase()}${pane.slice(1)}`);
@@ -1358,14 +1360,35 @@
       if (paneNode) {
         paneNode.hidden = !isActive;
         paneNode.classList.toggle('active', isActive);
+        if (isActive) {
+          activePaneNode = paneNode;
+        }
       }
 
       if (tabNode) {
         tabNode.classList.toggle('active', isActive);
+        tabNode.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       }
     });
 
     document.body.dataset.artifactTab = activeArtifactTab;
+
+    if (scroll && activePaneNode && typeof activePaneNode.scrollIntoView === 'function') {
+      try {
+        activePaneNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch {
+        activePaneNode.scrollIntoView();
+      }
+    }
+
+    if (announce) {
+      const viewLabels = {
+        play: 'Deck view live.',
+        readout: 'Readout view live.',
+        personas: 'Personas view live.'
+      };
+      setStatusMessage(viewLabels[activeArtifactTab] || 'View updated.');
+    }
   }
 
   function updateControls() {
@@ -2781,9 +2804,9 @@ DeltaE = ${ledger.reuse_gain}`;
   $('voiceB').addEventListener('focus', () => setActiveVoice('B'));
   $('voiceA').addEventListener('input', () => handleTextInput('A'));
   $('voiceB').addEventListener('input', () => handleTextInput('B'));
-  $('tabPlay').addEventListener('click', () => setArtifactTab('play'));
-  $('tabReadout').addEventListener('click', () => setArtifactTab('readout'));
-  $('tabPersonas').addEventListener('click', () => setArtifactTab('personas'));
+  $('tabPlay').addEventListener('click', () => setArtifactTab('play', { announce: true, scroll: true }));
+  $('tabReadout').addEventListener('click', () => setArtifactTab('readout', { announce: true, scroll: true }));
+  $('tabPersonas').addEventListener('click', () => setArtifactTab('personas', { announce: true, scroll: true }));
   $('ingressMirrorArmed').addEventListener('click', () => chooseIngressMirror('off'));
   $('ingressMirrorOpen').addEventListener('click', () => chooseIngressMirror('on'));
   $('ingressBadgeCycle').addEventListener('click', cycleIngressBadge);
