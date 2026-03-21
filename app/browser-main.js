@@ -485,6 +485,11 @@
     const badgeTarget = ingressBadgeOption(ingress.target.badge);
     const currentBadge = ingress.currentBadge ? ingressBadgeOption(ingress.currentBadge) : null;
     const currentMirror = ingress.currentMirror ? ingressMirrorOption(ingress.currentMirror) : null;
+    const sealGlyphs = {
+      ul: mirrorTarget.glyph,
+      ur: badgeTarget.glyph,
+      bc: '\u25CE'
+    };
 
     let phaseLabel = 'Protocol // membrane waking';
     let cueGlyph = '\u25CC';
@@ -598,7 +603,7 @@
 
       const glyphNode = node.querySelector('span[aria-hidden="true"]');
       if (glyphNode) {
-        glyphNode.textContent = '\u25CF';
+        glyphNode.textContent = sealGlyphs[id] || '\u27D0';
       }
 
       let state = 'pending';
