@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP - The Cadence Playground</title>
-  <link rel="stylesheet" href="./styles.css?v=20260327c" />
+  <link rel="stylesheet" href="./styles.css?v=20260327d" />
 </head>
 <body>
   <div id="ingressMembrane" class="ingress-membrane" aria-live="polite">
@@ -19,7 +19,7 @@
           <h2>Ingress Membrane</h2>
         </div>
         <div class="ingress-heading-copy">
-          <p id="ingressSubtitle" class="ingress-subtitle">Bring the deck across the threshold. The cue will tell you the rest.</p>
+          <p id="ingressSubtitle" class="ingress-subtitle">Bring the deck across the threshold. Then go play.</p>
         </div>
       </div>
 
@@ -38,7 +38,7 @@
             <div id="ingressCueLabel" class="ingress-cue-label">custody handshake unresolved</div>
             <p id="ingressCueCopy" class="ingress-cue-copy">Four gates. One valid posture.</p>
           </div>
-          <div id="ingressStatus" class="ingress-status">Wait for the first demand.</div>
+          <div id="ingressStatus" class="ingress-status">Wait for the first cue.</div>
         </section>
 
         <section class="ingress-ritual">
@@ -98,7 +98,7 @@
         <article class="readout-card">
           <div class="console-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="readoutSignal">&#x7C73;</span> Signal</div>
           <div id="heroSignalValue" class="console-value">--</div>
-          <p id="heroSignalNote" class="console-copy">Paste one or two voices to wake the deck.</p>
+          <p id="heroSignalNote" class="console-copy">Stage one voice or two and wake the deck.</p>
         </article>
         <article class="readout-card">
           <div class="console-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="readoutRoute">&#x2192;</span> Route</div>
@@ -136,7 +136,7 @@
               <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionCadenceDeck">&#x25C7;</span> Cadence deck</div>
               <h2>Bring two voices into the room</h2>
             </div>
-            <p class="section-note">Wake the deck with a reference voice and a probe voice. Then compare, trade shells, or capture a live cadence as a persona.</p>
+            <p class="section-note">Drop in a reference voice and a probe voice. Scan them, trade shells, save a persona, and see what really moves.</p>
           </div>
 
           <div class="input-grid-wrap">
@@ -146,7 +146,7 @@
                 <div class="field-head">
                   <div class="field-head-copy">
                     <span class="field-label">Reference voice</span>
-                    <span class="field-copy">The anchor sample you trust.</span>
+                    <span class="field-copy">The anchor sample you trust most.</span>
                   </div>
                   <button id="randomizeVoiceABtn" type="button" class="field-randomizer" aria-label="Randomize reference voice sample" title="Randomize reference voice sample">&#x21BA;</button>
                 </div>
@@ -158,7 +158,7 @@
                 <div class="field-head">
                   <div class="field-head-copy">
                     <span class="field-label">Probe voice</span>
-                    <span class="field-copy">The sample you want to test against the field.</span>
+                    <span class="field-copy">The sample you want to throw into contrast.</span>
                   </div>
                   <button id="randomizeVoiceBBtn" type="button" class="field-randomizer" aria-label="Randomize probe voice sample" title="Randomize probe voice sample">&#x21BA;</button>
                 </div>
@@ -178,7 +178,7 @@
           <div class="analysis-rail">
             <div id="activeBayStatus" class="statepill active">Active bay // reference voice</div>
             <div id="analysisStatus" class="analysis-status">
-              <span id="analysisStatusBase" class="analysis-status-base">Press Analyze Cadences to run a solo capture or compare both bays at once.</span>
+              <span id="analysisStatusBase" class="analysis-status-base">Press Analyze Cadences for a solo scan or a head-to-head run.</span>
               <span id="analysisStatusCue" class="analysis-status-cue" hidden></span>
             </div>
           </div>
@@ -187,11 +187,11 @@
             <div class="duel-heading">
               <div>
                 <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionShellDuel">&#x2194;</span> Shell Duel</div>
-                <h3>Two bays, two shells, live cadence drift</h3>
+                <h3>Two bays, two shells, one live drift test</h3>
               </div>
               <div id="duelSourceStatus" class="duel-source">Own sources // reference bay and probe bay raw text</div>
             </div>
-            <p id="duelNote" class="duel-note">Each side stages its own bay under its current shell. The textareas stay raw on purpose.</p>
+            <p id="duelNote" class="duel-note">Each side remixes its own bay through the current shell. The textareas stay raw on purpose.</p>
             <div id="shellDuelBody" class="duel-body"></div>
           </section>
 
@@ -209,12 +209,12 @@
             <div class="panel-heading">
               <div>
                 <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTelemetry">&#x0398;</span> Telemetry</div>
-                <h2>What the field is actually doing</h2>
-              </div>
-              <p class="section-note">These are the live metrics. Similarity, traceability, route pressure, and archive state stay distinct.</p>
+              <h2>What the field is actually doing</h2>
+            </div>
+            <p class="section-note">Fun on the surface, strict underneath: these metrics stay separate so resemblance never masquerades as route.</p>
             </div>
 
-            <p id="fieldNotice" class="field-notice analysis-gated" data-latent-label="Telemetry latent // wake the field">Bring one or two voices into the room. TCP will separate surface similarity, traceability, and route pressure.</p>
+            <p id="fieldNotice" class="field-notice analysis-gated" data-latent-label="Telemetry latent // wake the field">Bring one or two voices into the room. TCP keeps similarity, traceability, and route pressure in separate lanes.</p>
 
             <div class="results analysis-gated" data-latent-label="Metrics latent // press Analyze Cadences">
               <article id="similarityCard" class="metric">
@@ -244,9 +244,9 @@
             <div class="panel-heading">
               <div>
                 <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionHarbor">&#x2696;</span> Harbor</div>
-                <h2>Structured passage</h2>
-              </div>
-              <p class="section-note">When the field needs handling, the recommendation surfaces here.</p>
+              <h2>Structured passage</h2>
+            </div>
+              <p class="section-note">When the field earns handling, the recommendation shows up here.</p>
             </div>
 
             <div id="harborBox" class="harbor-box analysis-gated" data-latent-label="Harbor latent // no route yet"></div>
@@ -270,9 +270,9 @@
           <div class="panel-heading">
             <div>
               <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Persona deck</div>
-              <h2>Load, save, and swap cadence shells</h2>
+              <h2>Load, save, and remix cadence shells</h2>
             </div>
-            <p class="section-note">Persona shells change the stylometric wrapper on the active bay. The text stays put.</p>
+            <p class="section-note">Persona shells bend cadence, not content. The words stay put.</p>
           </div>
 
           <div class="persona-toolbar">
@@ -288,9 +288,9 @@
           <div class="panel-heading">
             <div>
               <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Trainer lab</div>
-              <h2>Manual persona training against the retrieval lane</h2>
+              <h2>Manual persona lab, retrieval first</h2>
             </div>
-            <p class="section-note">Paste a reference corpus, extract the target shell, bring back a manually generated sample, then validate it before exporting or injecting it into Personas.</p>
+            <p class="section-note">Paste a corpus, pull out the shell, test a generated sample, then export or inject only if the retrieval lane agrees.</p>
           </div>
 
           <div class="trainer-grid">
@@ -299,7 +299,7 @@
                 <div class="field-head">
                   <div class="field-head-copy">
                     <span class="field-label">Persona name</span>
-                    <span class="field-copy">Optional label for the trained shell you are building.</span>
+                    <span class="field-copy">Optional name for the shell you are training.</span>
                   </div>
                 </div>
                 <input id="trainerPersonaName" type="text" placeholder="Trainer Persona" autocomplete="off">
@@ -309,7 +309,7 @@
                 <div class="field-head">
                   <div class="field-head-copy">
                     <span class="field-label">Reference corpus</span>
-                    <span class="field-copy">Paste one or more samples from the target voice. Separate distinct samples with blank lines.</span>
+                    <span class="field-copy">Paste one or more samples from the target voice. Blank lines split the set.</span>
                   </div>
                 </div>
                 <textarea id="trainerCorpusInput"></textarea>
@@ -335,7 +335,7 @@
                 <div class="field-head">
                   <div class="field-head-copy">
                     <span class="field-label">Generated output</span>
-                    <span class="field-copy">Paste the model output you want TCP to test. No API keys, no hidden provider wiring.</span>
+                    <span class="field-copy">Paste the model output you want TCP to grade. Manual loop only; no hidden provider wiring.</span>
                   </div>
                 </div>
                 <textarea id="trainerGeneratedOutput"></textarea>
@@ -348,7 +348,7 @@
               </div>
 
               <div id="trainerStatus" class="analysis-status trainer-status">
-                <span id="trainerStatusBase" class="analysis-status-base">Paste a reference corpus, extract the voice, then validate a manually generated sample.</span>
+                <span id="trainerStatusBase" class="analysis-status-base">Paste a corpus, extract the shell, then validate a generated sample.</span>
                 <span id="trainerStatusCue" class="analysis-status-cue" hidden></span>
               </div>
 
@@ -378,12 +378,12 @@
       <div id="harborFormula" class="formula"></div>
     </section>
 
-    <footer class="footer">TCP / experimental research prototype / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
+    <footer class="footer">TCP / retrieval-first research playground / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
   </div>
 
-  <script src="./browser-data.js?v=20260327c"></script>
-  <script src="./browser-engine.js?v=20260327c"></script>
-  <script src="./retrieval-fixtures.js?v=20260327c"></script>
-  <script src="./browser-main.js?v=20260327c"></script>
+  <script src="./browser-data.js?v=20260327d"></script>
+  <script src="./browser-engine.js?v=20260327d"></script>
+  <script src="./retrieval-fixtures.js?v=20260327d"></script>
+  <script src="./browser-main.js?v=20260327d"></script>
 </body>
 </html>

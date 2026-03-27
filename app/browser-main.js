@@ -318,7 +318,7 @@
     const otherSample = sampleEntry(baySampleIds[otherSlot]);
     const pairNote = otherSample ? ` Pair locked against ${otherSample.name}.` : '';
     setStatusMessage(
-      `${SLOT_LABELS[slot]} staged ${sample.name}.${pairNote}${releasedBorrowedShell ? ' Borrowed shell released before the fresh sample entered the field.' : ' Press Analyze Cadences to wake the field.'}`
+      `${SLOT_LABELS[slot]} now holds ${sample.name}.${pairNote}${releasedBorrowedShell ? ' Borrowed shell cleared so the fresh sample starts native.' : ' Press Analyze Cadences when you want the deck live.'}`
     );
   }
 
@@ -1913,10 +1913,10 @@
 
     if (announce) {
       const viewLabels = {
-        play: 'Deck view live.',
-        readout: 'Readout view live.',
-        personas: 'Personas view live.',
-        trainer: 'Trainer view live.'
+        play: 'Deck ready.',
+        readout: 'Readout ready.',
+        personas: 'Persona deck ready.',
+        trainer: 'Trainer ready.'
       };
       setStatusMessage(viewLabels[activeArtifactTab] || 'View updated.');
     }
@@ -1971,29 +1971,29 @@
     $('heroSignalValue').textContent = formatPct(cmp.similarity);
     $('heroSignalNote').textContent =
       cmp.similarity >= 0.78
-        ? 'Cadence is binding across both samples.'
+        ? 'The two samples are locking into each other.'
         : cmp.similarity >= 0.55
           ? 'Shared field habits are surfacing without forcing passage.'
-          : 'The voices still hold separate social fields.';
+          : 'These voices are still keeping their own weather.';
     $('heroRouteValue').textContent = formatPct(routePressure);
     $('heroRouteNote').textContent =
       decision === 'criticality'
-        ? 'Recognition is rising faster than the route law can stabilize.'
+        ? 'Recognition is rising faster than the route can stabilize.'
         : decision === 'passage'
           ? 'A structured harbor is available before the field spills open.'
           : decision === 'hold-branch'
-            ? 'The branch is live, but passage is still under adjudication.'
+            ? 'The branch is live, but passage is still being decided.'
             : 'The field is still more atmospheric than traceable.';
     if (decision === 'weak-signal') {
       $('heroHarborValue').textContent = 'observe';
-      $('heroHarborNote').textContent = 'No harbor is active. The deck stays exploratory until recognition can support custody.';
+      $('heroHarborNote').textContent = 'No harbor yet. Keep it exploratory until the field can support custody.';
     } else {
       $('heroHarborValue').textContent = harbor;
       $('heroHarborNote').textContent = HARBOR_LIBRARY[harbor].mode_class;
     }
     $('decisionTone').textContent = `${glyphChar('stateDecision', '')} ${
       decision === 'criticality'
-        ? 'Route pressure rising'
+        ? 'Route heating up'
         : decision === 'passage'
           ? 'Harbor available'
           : decision === 'hold-branch'
@@ -2007,9 +2007,9 @@
 
   function updateHeroConsoleSolo(voiceState) {
     $('heroSignalValue').textContent = 'SOLO';
-    $('heroSignalNote').textContent = `Cadence captured from the ${SLOT_SHORT[voiceState.slot]} bay. Add a second voice to test relation and route.`;
+    $('heroSignalNote').textContent = `Cadence captured from the ${SLOT_SHORT[voiceState.slot]} bay. Add a second voice if you want a real matchup.`;
     $('heroRouteValue').textContent = formatPct(voiceState.effectiveProfile.recurrencePressure);
-    $('heroRouteNote').textContent = 'Solo scans expose rhythm and recurrence, but route law still needs a second voice.';
+    $('heroRouteNote').textContent = 'Solo scans catch rhythm and recurrence, but route still needs a second voice.';
     $('heroHarborValue').textContent = voiceState.shell.mode === 'native' ? 'save.persona' : voiceState.shell.label;
     $('heroHarborNote').textContent =
       voiceState.shell.mode === 'native'
@@ -2047,12 +2047,12 @@
             <span class="harbor-label">Archive</span>
             <strong>${ledger.effective_archive}</strong>
           </div>
-          <div class="harbor-item">
-            <span class="harbor-label">Next move</span>
-            <strong>add contrast or save solo</strong>
-          </div>
+        <div class="harbor-item">
+          <span class="harbor-label">Next move</span>
+          <strong>add contrast or save solo</strong>
         </div>
-        <p class="kicker">Recognition has not crossed threshold. TCP keeps the field public, playful, and non-escalatory.</p>
+      </div>
+      <p class="kicker">Recognition has not crossed threshold. TCP keeps the deck curious, public, and non-escalatory.</p>
       `;
       return;
     }
@@ -2109,7 +2109,7 @@
           <strong>Save or pair</strong>
         </div>
       </div>
-      <p class="kicker">A solo scan keeps the branch open. Save this cadence as a persona or bring in a second voice to test route, harbor, and custody.</p>
+      <p class="kicker">A solo scan keeps the branch open. Save this cadence as a persona or invite a second voice into the ring.</p>
     `;
   }
 
@@ -2119,7 +2119,7 @@
     $('traceability').textContent = '--';
     $('routePressure').textContent = '--';
     $('custodyState').textContent = '--';
-    $('simHint').textContent = 'Paste at least one voice to start the field.';
+    $('simHint').textContent = 'Drop in at least one voice to get the deck humming.';
     $('traceHint').textContent = '';
     $('routeHint').textContent = '';
     $('custodyHint').textContent = '';
@@ -2127,14 +2127,14 @@
     $('waveFormula').textContent = 'Paste a voice to expose cadence metrics.\nPair two voices to compute resonance, density, and criticality.';
     $('harborFormula').textContent = 'Analyze one or two voices to surface custody drift, archive state, and reuse gain.';
     $('ledgerPreview').textContent = '{\n  "status": "idle"\n}';
-    $('fieldNotice').textContent = 'Bring one or two voices into the field. Solo scans capture cadence. Paired scans test similarity, route pressure, and harbor.';
+    $('fieldNotice').textContent = 'Bring one or two voices into the room. Solo scans catch rhythm. Paired scans test whether the pattern can travel.';
     $('heroSignalValue').textContent = '--';
-    $('heroSignalNote').textContent = 'Stage at least one voice to wake the field.';
+    $('heroSignalNote').textContent = 'Stage one voice or two and wake the deck.';
     $('heroRouteValue').textContent = '--';
-    $('heroRouteNote').textContent = 'Route law stays dormant until a scan runs.';
+    $('heroRouteNote').textContent = 'Route stays asleep until a scan runs.';
     $('heroHarborValue').textContent = '--';
-    $('heroHarborNote').textContent = 'A harbor appears once the field resolves a viable passage.';
-    $('decisionTone').textContent = `${glyphChar('stateDecision', '')} Scanning`;
+    $('heroHarborNote').textContent = 'Harbor shows up only when the field actually earns passage.';
+    $('decisionTone').textContent = `${glyphChar('stateDecision', '')} Waiting on a scan`;
     applyGlyphMetadata($('decisionTone'), 'stateDecision');
     $('decisionTone').dataset.state = 'weak-signal';
     $('harborBox').innerHTML = '';
@@ -2172,7 +2172,7 @@
       null,
       2
     );
-    $('fieldNotice').textContent = `Solo capture is live in the ${SLOT_SHORT[voiceState.slot]} bay. Save the cadence as a persona or add a second voice to see whether resemblance can route into anything sturdier than afterimage.`;
+    $('fieldNotice').textContent = `Solo capture is live in the ${SLOT_SHORT[voiceState.slot]} bay. Save the cadence as a persona or add a second voice to see whether the pattern can do more than echo.`;
     updateHeroConsoleSolo(voiceState);
     updateHarborBoxSolo(voiceState);
     updateStatePills('awaiting pair', 'hold-branch');
@@ -2285,7 +2285,7 @@
     $('traceHint').textContent =
       cmp.traceability > 0.7
         ? 'Cadence habits are surviving paraphrase, which makes authorship pressure more legible.'
-        : 'Traceability is still diffuse, so the pattern remains mostly social surface.';
+        : 'Traceability is still diffuse, so the pattern stays more atmospheric than evidentiary.';
     $('routeHint').textContent =
       decision === 'criticality'
         ? microcopy.route_warning
@@ -2321,12 +2321,12 @@ DeltaE = ${ledger.reuse_gain}`;
     $('ledgerPreview').textContent = JSON.stringify(ledger, null, 2);
     $('fieldNotice').textContent =
       decision === 'criticality'
-        ? `${microcopy.criticality_warning} ${harbor} is the cleanest structured response while route pressure sits at ${routePressure.toFixed(2)}.`
-        : decision === 'passage'
-          ? `${microcopy.harbor_success} Exploratory play has resolved into a viable harbor with ${formatPct(HARBOR_LIBRARY[harbor].provenance_retention)} provenance retention.`
-          : decision === 'hold-branch'
-            ? `TCP is holding browser-side play in the exploratory lane. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so the deck stays curious without forcing a conclusion.`
-            : `The pattern is still mostly social surface. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so TCP keeps the field playful instead of forcing route.`;
+            ? `${microcopy.criticality_warning} ${harbor} is the cleanest structured response while route pressure sits at ${routePressure.toFixed(2)}.`
+            : decision === 'passage'
+              ? `${microcopy.harbor_success} Exploratory play has resolved into a viable harbor with ${formatPct(HARBOR_LIBRARY[harbor].provenance_retention)} provenance retention.`
+              : decision === 'hold-branch'
+                ? `TCP is keeping the pair in branch mode. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so the deck can stay curious without pretending it has a verdict.`
+                : `The pattern is still light. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so TCP keeps the field playful instead of forcing route.`;
     updateHarborBox(harbor, ledger, decision);
     updateHeroConsolePair({ cmp, routePressure, harbor, decision });
     updateStatePills(ledger.route_status, decision);
@@ -2350,7 +2350,7 @@ DeltaE = ${ledger.reuse_gain}`;
     if (!voiceStateA.hasText && !voiceStateB.hasText) {
       document.body.dataset.bootStage = 'analyze-idle';
       renderIdleState();
-      setStatusMessage('Paste one or two voices, then press Analyze Cadences.');
+      setStatusMessage('Paste one voice or a pair, then press Analyze Cadences.');
       updateControls();
       renderPersonas();
       return;
@@ -2360,7 +2360,7 @@ DeltaE = ${ledger.reuse_gain}`;
       document.body.dataset.bootStage = 'analyze-solo';
       const soloState = voiceStateA.hasText ? voiceStateA : voiceStateB;
       renderSoloState(soloState);
-      setStatusMessage(`Solo scan complete in the ${SLOT_SHORT[soloState.slot]} bay. Save it as a persona or add a second voice for contrast.`);
+      setStatusMessage(`Solo scan complete in the ${SLOT_SHORT[soloState.slot]} bay. Save it as a persona or throw in a second voice.`);
       updateControls();
       renderPersonas();
       return;
@@ -2368,7 +2368,7 @@ DeltaE = ${ledger.reuse_gain}`;
 
     document.body.dataset.bootStage = 'analyze-pair';
     renderPairState(voiceStateA, voiceStateB);
-    setStatusMessage('Paired cadence scan complete. Swap shells, save a persona, or tune the mirror and badge controls.');
+    setStatusMessage('Paired cadence scan complete. Read the shell cards, try a swap, or save a persona.');
     updateControls();
     renderPersonas();
     document.body.dataset.bootStage = 'analyze-complete';
@@ -2403,7 +2403,7 @@ DeltaE = ${ledger.reuse_gain}`;
     const voiceStateB = getVoiceState('B');
 
     if (!voiceStateA.hasText || !voiceStateB.hasText) {
-      setStatusMessage('Swap Cadences needs both bays populated. The shell can move, but it needs two live voices to trade between.');
+      setStatusMessage('Swap Cadences needs both bays populated. Two live voices, then shell trading.');
       updateControls();
       return;
     }
@@ -2453,7 +2453,7 @@ DeltaE = ${ledger.reuse_gain}`;
     if (focusTarget && typeof focusTarget.focus === 'function') {
       focusTarget.focus({ preventScroll: true });
     }
-    setStatusMessage('Bay text swapped. Each shell stayed attached to its original side.');
+    setStatusMessage('Bay text swapped. Each shell stayed loyal to its original side.');
   }
 
   function buildSavedPersonaName(slot) {
@@ -2540,7 +2540,7 @@ DeltaE = ${ledger.reuse_gain}`;
     setStatusMessage(
       keepRevealed
         ? 'Deck reset. Native cadences restored and both bays cleared for a new pair.'
-        : 'Deck reset. Native cadences restored, both bays cleared, and the deck went latent again. Press Analyze Cadences to wake the field.'
+        : 'Deck reset. Native cadences restored, both bays cleared, and the deck went latent again. Press Analyze Cadences when you want it live.'
     );
   }
 
@@ -2561,7 +2561,7 @@ DeltaE = ${ledger.reuse_gain}`;
     setStatusMessage(
       releasedBorrowedShell
         ? `Text changed in the ${SLOT_SHORT[slot]} bay. The borrowed shell was released, so the new sample is back on native cadence until you swap or assign again.`
-        : `Text changed in the ${SLOT_SHORT[slot]} bay. Press Analyze Cadences to refresh the pair readout.`
+        : `Text changed in the ${SLOT_SHORT[slot]} bay. Press Analyze Cadences to refresh the readout.`
     );
   }
 
@@ -3686,7 +3686,7 @@ DeltaE = ${ledger.reuse_gain}`;
     document.body.dataset.bootStage = 'boot-rendered-trainer';
     renderIdleState();
     document.body.dataset.bootStage = 'boot-idle';
-    setStatusMessage('Press Analyze Cadences to run a solo capture or compare both bays at once.');
+    setStatusMessage('Press Analyze Cadences for a solo scan or a head-to-head run.');
     updateControls();
     document.body.dataset.bootStage = 'boot-ready';
     analyzeCadences({ reveal: Boolean(testFlightMode) });

@@ -16,7 +16,7 @@ function formatNumber(value, digits = 2) {
 
 export function renderFingerprintSummary(extraction, promptBuild) {
   if (!extraction) {
-    return '<p class="trainer-empty">Paste a reference corpus, then extract the target voice.</p>';
+    return '<p class="trainer-empty">Paste a reference corpus, then pull out the target shell.</p>';
   }
 
   const profile = extraction.targetProfile || {};
@@ -43,7 +43,7 @@ export function renderFingerprintSummary(extraction, promptBuild) {
       <article class="metric">
         <div class="key">Register lane</div>
         <div class="val">${escapeHtml(extraction.fingerprint.registerMode || 'unknown')}</div>
-        <div class="hint">${topConstraints.map((constraint) => escapeHtml(constraint.level)).join(' / ') || 'Prompt constraints appear here after extraction.'}</div>
+        <div class="hint">${topConstraints.map((constraint) => escapeHtml(constraint.level)).join(' / ') || 'Prompt constraints land here after extraction.'}</div>
       </article>
     </div>
   `;
@@ -51,7 +51,7 @@ export function renderFingerprintSummary(extraction, promptBuild) {
 
 export function renderValidationReport(validation) {
   if (!validation) {
-    return '<p class="trainer-empty">Paste a generated sample, then validate it against the retrieval lane.</p>';
+    return '<p class="trainer-empty">Paste a generated sample, then run it through the retrieval lane.</p>';
   }
 
   const scalar = validation.scalarSummary || {};
@@ -62,7 +62,7 @@ export function renderValidationReport(validation) {
   return `
     <div class="trainer-summary-grid">
       <article class="metric" data-tone="${validation.pass ? 'live' : validation.status === 'scalar-drift' ? 'warm' : 'hot'}">
-        <div class="key">Trainer status</div>
+        <div class="key">Validation status</div>
         <div class="val">${escapeHtml(validation.status)}</div>
         <div class="hint">${validation.pass ? 'Ready for export and persona injection.' : 'Retrieval safety leads; scalar fit comes second.'}</div>
       </article>
@@ -72,7 +72,7 @@ export function renderValidationReport(validation) {
         <div class="hint">Mean similarity ${formatPct(scalar.pairwise?.meanSimilarity || 0, 0)} // traceability ${formatPct(scalar.pairwise?.meanTraceability || 0, 0)}</div>
       </article>
       <article class="metric">
-        <div class="key">Retrieval pass</div>
+        <div class="key">Retrieval lane</div>
         <div class="val">${retrieval.passCount || 0}/${retrieval.calibrationCount || 0}</div>
         <div class="hint">Agreement ${formatPct(retrieval.meanAgreement || 0, 0)} across calibration traces.</div>
       </article>
@@ -87,7 +87,7 @@ export function renderValidationReport(validation) {
         <article class="trainer-contract ${entry.pass ? 'pass' : 'fail'}">
           <div class="trainer-contract-head">
             <strong>${escapeHtml(entry.name)}</strong>
-            <span>${entry.pass ? 'pass' : 'check'}</span>
+            <span>${entry.pass ? 'pass' : 'needs work'}</span>
           </div>
           <div class="trainer-contract-body">
             <div>agreement ${formatPct(entry.agreement?.score || 0, 0)}</div>
@@ -102,7 +102,7 @@ export function renderValidationReport(validation) {
 
 export function renderCorrectionHints(validation) {
   if (!validation) {
-    return '<p class="trainer-empty">Correction hints surface here after validation.</p>';
+    return '<p class="trainer-empty">Correction hints show up here after validation.</p>';
   }
 
   const hints = validation.correctionHints || [];
@@ -134,7 +134,7 @@ export function renderCorrectionHints(validation) {
       : '';
 
   if (!hints.length) {
-    return `<p class="trainer-empty">No urgent corrections surfaced. Retrieval and scalar checks are aligned enough for export.</p>${previewBlock}`;
+    return `<p class="trainer-empty">No urgent corrections surfaced. Retrieval and scalar checks line up well enough for export.</p>${previewBlock}`;
   }
 
   return `

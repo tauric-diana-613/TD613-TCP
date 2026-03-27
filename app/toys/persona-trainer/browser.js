@@ -163,7 +163,7 @@ export async function createTrainerController(options = {}) {
     state.validation = null;
     state.exportSpec = null;
     render();
-    setStatus(`Trainer corpus extracted for ${personaName()}.`, `samples ${state.extraction.stats.sampleCount}`);
+    setStatus(`${personaName()} extracted from corpus.`, `samples ${state.extraction.stats.sampleCount}`);
     return snapshot();
   }
 
@@ -190,8 +190,8 @@ export async function createTrainerController(options = {}) {
     render();
     setStatus(
       state.validation.pass
-        ? `${personaName()} is retrieval-safe enough to export or inject.`
-        : `${personaName()} still needs correction before persona injection.`,
+        ? `${personaName()} cleared retrieval checks and is ready for export or injection.`
+        : `${personaName()} still needs another pass before persona injection.`,
       state.validation.pass ? 'ready' : state.validation.status
     );
     return snapshot();
@@ -205,7 +205,7 @@ export async function createTrainerController(options = {}) {
       validate();
     }
     render();
-    setStatus(`Persona spec prepared for ${personaName()}.`, 'json');
+    setStatus(`Persona spec ready for ${personaName()}.`, 'json');
     return state.exportSpec;
   }
 
@@ -221,7 +221,7 @@ export async function createTrainerController(options = {}) {
       ? { id: inserted.id, name: inserted.name, source: inserted.source }
       : { id: state.exportSpec.browserPersona.id, name: state.exportSpec.browserPersona.name, source: state.exportSpec.browserPersona.source };
     render();
-    setStatus(`${state.lastInjectedPersonaSummary.name} is now in the Personas deck.`, 'injected');
+    setStatus(`${state.lastInjectedPersonaSummary.name} is now live in the Personas deck.`, 'injected');
     return state.lastInjectedPersonaSummary;
   }
 
@@ -334,7 +334,7 @@ export async function createTrainerController(options = {}) {
   });
 
   render();
-  setStatus('Paste a reference corpus, extract the voice, then validate a manually generated sample.');
+  setStatus('Paste a corpus, extract the shell, then validate a generated sample.');
 
   return {
     extract,

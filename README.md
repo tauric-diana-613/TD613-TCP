@@ -1,89 +1,70 @@
 # TCP - The Cadence Playground
 
-𝌋‌ TCP is a browser instrument for making cadence legible without pretending cadence is already proof.
+TCP is a browser-based research instrument for studying stylometric resemblance, cadence transfer, shell borrowing, and custody-aware routing without confusing any of them for authorship proof.
 
-It stages three things at once:
+The project is useful when you want to keep three things visible at once:
 
-- human-readable language play
-- bounded stylometric measurement
-- custody-aware routing logic
+- what the language is doing
+- what the retrieval and safety layers are willing to claim
+- what still needs human judgment, provenance, and context
 
-The project is experimental, deterministic, and explicit about its limits. It is not a forensic authorship engine, not a covert adjudication tool, and not a substitute for human judgment. It is a public membrane for exploring when language starts to gather enough patterned pressure that it needs routing, preservation, or scrutiny.
+TCP is deterministic, explicit about its thresholds, and tested through both Node suites and browser flights. It is designed to be fun to explore in the UI and strict in the places where the system has to tell the truth.
 
-## Who this should still make sense to
+## What the app does
 
-TCP should be readable by one mixed human audience, not three sealed castes:
+The live app currently has four views:
 
-- someone under pressure who is trying not to overclaim a pattern
-- someone who wants to explore cadence because language behavior itself matters
-- someone building or studying retrieval-first post-training systems
-- anyone else curious enough to read carefully and test the instrument instead of mythologizing it
-
-## What the app does now
-
-The live app has four working views:
-
-- `Deck`: raw text bays, shell cards, `Analyze Cadences`, `Swap Cadences`, and `Shell Duel`
-- `Readout`: route pressure, branch, harbor, and formula-facing telemetry
-- `Personas`: saved shell library and in-app persona reuse
-- `Trainer`: a manual persona lab for corpus extraction, prompt generation, pasted-output validation, and persona injection
+- `Deck` for raw text, shell cards, `Analyze Cadences`, `Swap Cadences`, and `Shell Duel`
+- `Readout` for similarity, traceability, route pressure, archive state, harbor selection, and formulas
+- `Personas` for saved shells and reusable in-app persona assignment
+- `Trainer` for manual persona extraction, prompt building, pasted-output validation, and persona injection
 
 Normal visits enter through the `Ingress Membrane`, which resolves containment, mirror posture, and custody badge before the deck unlocks.
 
-## Patch 28 status
+## Why retrieval matters here
 
-`Swap Cadences` is now governed by a retrieval-guided shell-borrowing path rather than vague “did the text kind of change?” logic.
+TCP does not treat a convincing rewrite as enough. The current build exposes a retrieval lane that tracks semantic audits, protected anchors, failure classes, and borrowed-shell outcomes. That matters because stylometric play is easy to fake at the surface and much harder to defend once the system has to say what actually changed and what stayed intact.
 
-Patch 28 added:
+Patch 28 made `Swap Cadences` retrieval-guided and casebook-driven. The maintained build now checks shell borrowing against:
 
 - a canonical 56-pair swap matrix built from the 8 long-form library samples
-- a 12-case flagship matrix that acts as the model gate
-- borrowed-shell outcomes:
-  - `structural`
-  - `partial`
-  - `subtle`
-  - `rejected`
-- borrowed-shell failure classes:
-  - `semantic-risk`
-  - `literal-lock`
-  - `lexical-underreach`
-  - `pathology-block`
-  - `already-close`
-  - `donor-underfit`
-- a dedicated browser swap flight at `?test-flight=swap`
+- a 12-pair flagship matrix used as the model gate
+- explicit borrowed-shell outcomes and failure classes
+- browser flights and Node regression tests
 
-In the current maintained build, the swap matrix clears the Patch 28 thresholds with:
+In the current maintained build, that matrix clears the Patch 28 thresholds with:
 
 - `42` bilateral-engaged pairs
 - `12` one-sided pairs
 - `2` both-rejected pairs
 
-That does not mean the transfer engine is “finished.” It means the swap button is finally honest enough to serve as a real model surface.
+That is not a claim of completion. It is a claim that the swap surface is finally auditable enough to tune seriously.
 
 ## What TCP is not
 
 - not an authorship verdict engine
 - not a truth machine for whistleblowing claims
 - not a production safety platform
+- not a covert classifier
 - not a magical persona synthesizer
 
-Stylometric resemblance is treated here as a bounded contact signal. It can matter without becoming a verdict.
+Stylometric resemblance can matter without becoming a verdict. TCP is built around that boundary.
 
-## Fast start
+## Quick start
 
-### Open the app
+Open the app:
 
 ```text
 app/index.html
 ```
 
-### Skip ingress during development
+Skip ingress during development:
 
 ```text
 app/index.html?ingress=off
 ```
 
-### Serve locally
+Serve locally:
 
 ```bash
 cd tcp-repository
@@ -91,7 +72,9 @@ python -m http.server 8000
 # then open http://localhost:8000/app/
 ```
 
-## Built-in browser flights
+## Browser proof surfaces
+
+TCP ships browser flights that exercise the maintained browser surface directly:
 
 - `app/index.html?test-flight=1`
   - smoke path
@@ -108,13 +91,13 @@ All browser flight routes auto-skip the ingress membrane.
 
 ## Maintained test path
 
-The current maintained regression surface is:
+The maintained regression entry point is:
 
 ```bash
 npm test
 ```
 
-That includes:
+That path covers:
 
 - stylometry
 - benchmark
@@ -124,34 +107,31 @@ That includes:
 - trainer lab
 - harbor
 
-Legacy formulas remain quarantined behind:
+Legacy formulas remain explicit and separate:
 
 ```bash
 npm run test:legacy:formulas
 ```
 
-## Reading map
+## Reading order
 
-Start here if you want a human-facing path through the repo:
+If you want the repo in a clean sequence, use this order:
 
-- [START_HERE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/START_HERE.md)
-- [docs/HUMAN_GUIDE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/HUMAN_GUIDE.md)
-
-Then follow the deeper technical lanes as needed:
-
-- [ABSTRACT.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/ABSTRACT.md)
-- [docs/ENGINE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/ENGINE.md)
-- [docs/STYLOMETRIC_MATH.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/STYLOMETRIC_MATH.md)
-- [docs/SAFETY_MODEL.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SAFETY_MODEL.md)
-- [docs/INTERFACE_LEXICON.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/INTERFACE_LEXICON.md)
+1. [START_HERE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/START_HERE.md)
+2. [docs/SYSTEM_OVERVIEW.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SYSTEM_OVERVIEW.md)
+3. [ABSTRACT.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/ABSTRACT.md)
+4. [docs/ENGINE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/ENGINE.md)
+5. [docs/SAFETY_MODEL.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SAFETY_MODEL.md)
+6. [docs/STYLOMETRIC_MATH.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/STYLOMETRIC_MATH.md)
+7. [docs/INTERFACE_LEXICON.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/INTERFACE_LEXICON.md)
 
 ## Repository stance
 
-TCP is trying to keep four conditions visible at the same time:
+The safest concise reading of TCP is this:
 
-- weak resemblance that is probably noise
-- recognition pressure that is real but not yet routable
-- residue that should be preserved instead of flattened
-- harbor choices that lower witness burden without destroying provenance
+- recognition is not route
+- resemblance is not authorship
+- unresolved residue is not noise just because it resists closure
+- safe passage only counts if provenance stays intact
 
-That is the level on which the project should be read.
+That stance is what holds the playful UI and the strict proof surfaces together.

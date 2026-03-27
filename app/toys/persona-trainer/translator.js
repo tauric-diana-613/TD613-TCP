@@ -271,10 +271,10 @@ export function buildPersonaPrompt(fingerprint, options = {}) {
   const lines = [
     `You are writing in the derived voice "${name}".`,
     '',
-    'Mission:',
-    '- Write original text in this voice without copying the subject matter or phrasing of the reference corpus.',
+    'Task:',
+    '- Write new text in this voice without copying the subject matter or phrasing of the reference corpus.',
     '- Match the voice through sentence rhythm, connector behavior, contraction posture, register, and lexical texture.',
-    '- Preserve any explicit literals, names, dates, IDs, URLs, and quoted anchors provided by the user.',
+    '- Preserve explicit literals, names, dates, IDs, URLs, and quoted anchors supplied by the user.',
     '',
     `Voice summary: ${description}`,
     '',

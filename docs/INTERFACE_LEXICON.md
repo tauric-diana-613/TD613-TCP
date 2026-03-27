@@ -1,5 +1,7 @@
 # INTERFACE LEXICON
 
+Use this after [START_HERE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/START_HERE.md) and [SYSTEM_OVERVIEW.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SYSTEM_OVERVIEW.md) if you want a compact translation table between the playful UI and the stricter model vocabulary.
+
 TCP uses a small vocabulary that does double duty: it has interface meaning and model meaning at the same time. This file keeps those terms brief, explicit, and non-mystical.
 
 ## Core controls

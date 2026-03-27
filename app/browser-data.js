@@ -101,15 +101,15 @@ window.TCP_DATA = {
   microcopy: {
     hero_title: 'TCP - The Cadence Playground',
     hero_lead:
-      'Stage one voice or two. TCP measures cadence, recurrence, and route pressure, then reports whether the field opens, binds, or stays exploratory.',
-    compare_hint: 'Resemblance is active, but the route law is still deciding what can travel.',
-    mirror_off: 'Mirror shield is armed. Reciprocal passage stays latent while the public field remains legible.',
-    route_warning: 'Recognition is outrunning the available route law. Keep the branch open until the field can carry it.',
-    harbor_success: 'Harbor is available. Custody, route, and witness states are aligned.',
-    criticality_warning: 'The pattern is live, but passage has not stabilized.',
-    receipt_created: 'A witness line reached the ledger before interpretation widened the event.',
+      'Bring one voice or bring a pair. TCP measures cadence, recurrence, and route pressure, then shows whether the field stays curious, opens a branch, or earns passage.',
+    compare_hint: 'Resemblance is real, but route still has to earn its way.',
+    mirror_off: 'Mirror shield is armed. You can play in public without auto-opening passage.',
+    route_warning: 'Recognition is outrunning the available route. Keep the branch open until the field can actually carry it.',
+    harbor_success: 'Harbor is live. Custody, route, and witness state are aligned enough to move.',
+    criticality_warning: 'The pattern is hot, but passage is not stable yet.',
+    receipt_created: 'A witness-safe receipt hit the ledger before the story got overinterpreted.',
     ledger_footer:
-      'If the loop hardens before repair arrives, switch to harbor and carry the witness.'
+      'If the loop hardens before repair arrives, switch to harbor and keep provenance intact.'
   },
   glyphFieldTech: {
     substrateVocabulary: {

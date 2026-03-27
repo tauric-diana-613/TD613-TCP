@@ -1,5 +1,7 @@
 # ENGINE OVERVIEW
 
+Read [START_HERE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/START_HERE.md) for the shortest operational path and [SYSTEM_OVERVIEW.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SYSTEM_OVERVIEW.md) for the retrieval-first system summary before using this file as the implementation reference.
+
 This file describes the current TCP engine as it is implemented. The stack is intentionally split into three layers:
 
 1. stylometric evidence from measured text features

@@ -1,5 +1,7 @@
 # SAFETY MODEL
 
+Read [SYSTEM_OVERVIEW.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SYSTEM_OVERVIEW.md) for the system-level frame and [ENGINE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/ENGINE.md) for the live implementation details. This file is the policy boundary.
+
 ## Core principles
 
 TCP is organized around four explicit constraints:

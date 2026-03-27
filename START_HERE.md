@@ -1,50 +1,40 @@
 # START HERE
 
-𝌋‌ This is the shortest honest path into TCP.
+This is the shortest practical path into TCP.
 
-If you only do one thing, open the app, wake the deck intentionally, and watch what `Swap Cadences` now tells you instead of just whether it changed some words.
-
-## First pass
+## First run
 
 1. Open `app/index.html`.
-2. Complete the `Ingress Membrane`, or use `?ingress=off` while developing.
-3. Leave the seeded texts in place for the first run.
+2. Complete the `Ingress Membrane`, or use `?ingress=off` during development.
+3. Paste one voice for a solo scan or two voices for a paired scan.
 4. Press `Analyze Cadences`.
-5. Read the shell cards before you press anything else.
+5. Read the shell cards before you read the duel.
 6. Press `Swap Cadences`.
-7. Compare the raw bays to `Shell Duel`.
-8. Open `Readout`.
-9. If you want to build a persona, open `Trainer`.
+7. Compare the raw bays, `Shell Duel`, and the `Readout` tab together.
+8. If you want a reusable shell, save a persona or open `Trainer`.
 
-## What to watch
+## What each view is for
 
-- `Deck` shows raw text, shell behavior, and duel output.
-- `Readout` shows route pressure, branch, harbor, and the formula-facing state.
-- `Personas` stores reusable shells.
-- `Trainer` lets you extract a corpus, build a prompt, validate pasted model output against the retrieval lane, and inject a persona.
+- `Deck` is the live play surface: bays, shells, scans, swaps, and duel output
+- `Readout` is the proof surface: similarity, traceability, route pressure, archive state, harbor, and formulas
+- `Personas` is the shell library
+- `Trainer` is the manual persona lab
 
-## Shared human guide
+## How to read a run
 
-TCP should make sense to a fused human audience:
+For a clean read, use this order:
 
-- a whistleblower or witness trying not to overclaim
-- someone exploring cadence because language behavior matters
-- an RLHF or post-training reader looking for explicit contracts
-- anyone else curious enough to read and test carefully
+1. raw text
+2. shell cards
+3. `Shell Duel`
+4. `Readout`
+5. swap audit or trainer validation if you are tuning
 
-Use one guide for that shared surface:
+That order matters because TCP is built to separate surface resemblance from route, custody, and semantic integrity.
 
-- [docs/HUMAN_GUIDE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/HUMAN_GUIDE.md)
+## Browser flights
 
-Then branch deeper only if you need more specificity:
-
-- [docs/SAFETY_MODEL.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SAFETY_MODEL.md)
-- [docs/ENGINE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/ENGINE.md)
-- [docs/STYLOMETRIC_MATH.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/STYLOMETRIC_MATH.md)
-
-## Fast verification
-
-Browser flights:
+Use these when you want the browser to prove itself:
 
 - `app/index.html?test-flight=1`
 - `app/index.html?test-flight=2`
@@ -52,33 +42,23 @@ Browser flights:
 - `app/index.html?test-flight=swap`
 - `app/index.html?test-flight=ingress`
 
-Maintained repo test path:
+## Repo test path
+
+The maintained suite is:
 
 ```bash
 npm test
 ```
 
-Legacy formulas:
+The legacy formulas suite is separate:
 
 ```bash
 npm run test:legacy:formulas
 ```
 
-## What changed recently
+## Read next
 
-Patch 28 made `Swap Cadences` retrieval-guided, casebook-driven, and explicitly auditable.
-
-That means the system now tells you whether a lane was:
-
-- `structural`
-- `partial`
-- `subtle`
-- `rejected`
-
-and, if it stalled, why.
-
-## Next documents
-
-- [docs/HUMAN_GUIDE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/HUMAN_GUIDE.md)
-- [docs/INTERFACE_LEXICON.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/INTERFACE_LEXICON.md)
+- [docs/SYSTEM_OVERVIEW.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SYSTEM_OVERVIEW.md)
 - [docs/ENGINE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/ENGINE.md)
+- [docs/SAFETY_MODEL.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SAFETY_MODEL.md)
+- [docs/INTERFACE_LEXICON.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/INTERFACE_LEXICON.md)
