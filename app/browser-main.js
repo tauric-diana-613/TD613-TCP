@@ -33,6 +33,8 @@
     acc[sample.id] = sample;
     return acc;
   }, {}));
+  const ASSET_VERSION = '20260327a';
+  const TRAINER_MODULE_URL = `./toys/persona-trainer/browser.js?v=${ASSET_VERSION}`;
   const TEST_FLIGHT_SAMPLE_IDS = Object.freeze({
     A: 'recursive-debrief',
     B: 'operations-brief'
@@ -192,6 +194,7 @@
     B: createNativeShell()
   };
   let savedPersonas = loadSavedPersonas();
+  let trainerController = null;
   let ingress = createIngressState();
 
   document.title = microcopy.hero_title;
@@ -1773,12 +1776,22 @@
     return slots.length ? slots.join(' + ') : 'Assign shell';
   }
 
+  function personaSourceLabel(persona = {}) {
+    if (persona.source === 'saved') {
+      return 'captured witness shell';
+    }
+    if (persona.source === 'trainer') {
+      return 'trained retrieval shell';
+    }
+    return 'built-in field attractor';
+  }
+
   function renderPersonas() {
     $('personaDeck').innerHTML = getPersonaLibrary()
       .map((persona) => {
         const selected = bayShells[activeVoice].personaId === persona.id;
         const assigned = bayShells.A.personaId === persona.id || bayShells.B.personaId === persona.id;
-        const source = persona.source === 'saved' ? 'captured witness shell' : 'built-in field attractor';
+        const source = personaSourceLabel(persona);
 
         return `
           <div class="persona ${selected ? 'selected' : ''} ${assigned ? 'assigned' : ''}" data-id="${persona.id}" role="button" tabindex="0" aria-pressed="${selected}">
@@ -1803,7 +1816,7 @@
 
   function setArtifactTab(tab, options = {}) {
     const { announce = false, scroll = false } = options;
-    const panes = ['play', 'readout', 'personas'];
+    const panes = ['play', 'readout', 'personas', 'trainer'];
     activeArtifactTab = panes.includes(tab) ? tab : 'play';
     let activePaneNode = null;
 
@@ -1840,7 +1853,8 @@
       const viewLabels = {
         play: 'Deck view live.',
         readout: 'Readout view live.',
-        personas: 'Personas view live.'
+        personas: 'Personas view live.',
+        trainer: 'Trainer view live.'
       };
       setStatusMessage(viewLabels[activeArtifactTab] || 'View updated.');
     }
@@ -2414,6 +2428,31 @@ DeltaE = ${ledger.reuse_gain}`;
     setStatusMessage(`${persona.name} was saved in-app and assigned to the ${SLOT_SHORT[activeVoice]} bay.`);
   }
 
+  function normalizeTrainerPersona(persona = {}) {
+    return {
+      id: persona.id || `trainer-${Date.now()}`,
+      name: persona.name || 'Trainer Persona',
+      blurb: persona.blurb || 'Derived retrieval shell.',
+      chips: Array.isArray(persona.chips) ? [...persona.chips] : ['trainer'],
+      mod: persona.mod ? { ...persona.mod } : null,
+      profile: persona.profile ? { ...persona.profile } : null,
+      strength: persona.strength || 0.82,
+      source: 'trainer'
+    };
+  }
+
+  function injectTrainerPersona(persona = {}) {
+    const normalized = normalizeTrainerPersona(persona);
+    savedPersonas = [
+      normalized,
+      ...savedPersonas.filter((entry) => entry.id !== normalized.id)
+    ];
+    persistSavedPersonas();
+    renderPersonas();
+    updateControls();
+    return normalized;
+  }
+
   function resetDeck() {
     clearSwapCadenceAudit();
     $('voiceA').value = defaults.voiceA;
@@ -2481,7 +2520,10 @@ DeltaE = ${ledger.reuse_gain}`;
         A: cloneShell(bayShells.A),
         B: cloneShell(bayShells.B)
       },
-      savedPersonas: JSON.parse(JSON.stringify(savedPersonas))
+      savedPersonas: JSON.parse(JSON.stringify(savedPersonas)),
+      trainerState: trainerController && typeof trainerController.serializeState === 'function'
+        ? trainerController.serializeState()
+        : null
     };
   }
 
@@ -2507,6 +2549,9 @@ DeltaE = ${ledger.reuse_gain}`;
     syncBaySampleMetadata();
     renderVoiceProfiles();
     renderPersonas();
+    if (trainerController && typeof trainerController.restoreState === 'function') {
+      trainerController.restoreState(state.trainerState || {});
+    }
     analyzeCadences();
   }
 
@@ -2634,7 +2679,8 @@ DeltaE = ${ledger.reuse_gain}`;
       tabs: {
         deck: readGlyph('tabDeck'),
         readout: readGlyph('tabReadout'),
-        personas: readGlyph('tabPersonas')
+        personas: readGlyph('tabPersonas'),
+        trainer: readGlyph('tabTrainer')
       },
       readoutStrip: {
         signal: readGlyph('readoutSignal'),
@@ -2643,6 +2689,38 @@ DeltaE = ${ledger.reuse_gain}`;
       },
       footer: readGlyph('footerSeal')
     };
+  }
+
+  function readTrainerSnapshot() {
+    const exportOutput = $('trainerExportOutput');
+    const promptOutput = $('trainerPromptOutput');
+    const validationStatus = $('trainerValidationReport');
+    const hints = $('trainerCorrectionHints');
+
+    return trainerController && typeof trainerController.snapshot === 'function'
+      ? {
+          ...trainerController.snapshot(),
+          promptLength: promptOutput ? promptOutput.value.trim().length : 0,
+          exportLength: exportOutput ? exportOutput.value.trim().length : 0,
+          validationTextLength: validationStatus ? validationStatus.textContent.trim().length : 0,
+          hintsTextLength: hints ? hints.textContent.trim().length : 0
+        }
+      : {
+          personaName: '',
+          corpusReady: false,
+          sampleCount: 0,
+          promptReady: false,
+          validationReady: false,
+          validationPass: false,
+          validationStatus: 'unavailable',
+          exportReady: false,
+          canInject: false,
+          lastInjectedPersonaSummary: null,
+          promptLength: 0,
+          exportLength: 0,
+          validationTextLength: 0,
+          hintsTextLength: 0
+        };
   }
 
   function canonicalSemanticContractFromTrace(trace = {}) {
@@ -2708,6 +2786,34 @@ DeltaE = ${ledger.reuse_gain}`;
         : null;
     }
   });
+
+  async function initializeTrainerLab() {
+    const root = $('trainerPane');
+    if (!root) {
+      return null;
+    }
+
+    const module = await import(TRAINER_MODULE_URL);
+    trainerController = module.createTrainerController({
+      root,
+      engine: window.TCP_ENGINE,
+      sampleLibrary: SAMPLE_LIBRARY,
+      onInjectPersona: injectTrainerPersona,
+      onStatus: (message) => setStatusMessage(message),
+      applyStaticGlyphs
+    });
+
+    window.TCP_TRAINER_LAB = Object.freeze({
+      snapshot: () => trainerController?.snapshot() || null,
+      serializeState: () => trainerController?.serializeState() || null,
+      extract: () => trainerController?.extract(),
+      validate: () => trainerController?.validate(),
+      exportSpec: () => trainerController?.exportSpec(),
+      inject: () => trainerController?.inject()
+    });
+
+    return trainerController;
+  }
 
   function primeIngressScenario({
     phase = 'containment',
@@ -3151,16 +3257,51 @@ DeltaE = ${ledger.reuse_gain}`;
           return snapshot.tabs.deck.glyph === glyphChar('tabDeck') &&
             snapshot.tabs.readout.glyph === glyphChar('tabReadout') &&
             snapshot.tabs.personas.glyph === glyphChar('tabPersonas') &&
+            snapshot.tabs.trainer.glyph === glyphChar('tabTrainer') &&
             snapshot.readoutStrip.signal.glyph === glyphChar('readoutSignal') &&
             snapshot.readoutStrip.route.glyph === glyphChar('readoutRoute') &&
             snapshot.readoutStrip.harbor.glyph === glyphChar('readoutHarbor') &&
             snapshot.footer.glyph === glyphChar('footerSeal') &&
             snapshot.tabs.deck.semanticClass === 'gate' &&
+            snapshot.tabs.trainer.semanticClass === 'law' &&
             snapshot.readoutStrip.harbor.semanticClass === 'adjudication';
         })()
       };
 
       if (mode === 'full') {
+        $('tabTrainer').click();
+        const trainerCorpus = SAMPLE_LIBRARY_BY_ID['institutional-memo']?.text || seededPair.voiceA;
+        $('trainerPersonaName').value = 'Trainer Smoke Persona';
+        $('trainerPersonaName').dispatchEvent(new Event('input', { bubbles: true }));
+        $('trainerCorpusInput').value = trainerCorpus;
+        $('trainerCorpusInput').dispatchEvent(new Event('input', { bubbles: true }));
+        $('trainerGeneratedOutput').value = trainerCorpus;
+        $('trainerGeneratedOutput').dispatchEvent(new Event('input', { bubbles: true }));
+        $('trainerExtractBtn').click();
+        $('trainerValidateBtn').click();
+        $('trainerExportBtn').click();
+        const trainerBeforeInject = readTrainerSnapshot();
+        const personaCountBeforeTrainerInject = document.querySelectorAll('.persona').length;
+        $('trainerInjectBtn').click();
+        const trainerAfterInject = readTrainerSnapshot();
+        const injectedTrainerId = trainerAfterInject.lastInjectedPersonaSummary?.id || '';
+        report.trainer = {
+          snapshotBeforeInject: trainerBeforeInject,
+          snapshotAfterInject: trainerAfterInject,
+          personasAfterInject: document.querySelectorAll('.persona').length,
+          personaAdded: document.querySelectorAll('.persona').length === personaCountBeforeTrainerInject + 1,
+          injectedPersonaId: injectedTrainerId,
+          trainerTabActive: document.body.dataset.artifactTab === 'trainer'
+        };
+
+        $('tabPersonas').click();
+        const injectedTrainerPersona = injectedTrainerId ? document.querySelector(`.persona[data-id="${injectedTrainerId}"]`) : null;
+        if (injectedTrainerPersona) {
+          injectedTrainerPersona.click();
+        }
+        report.trainer.personaAssigned =
+          Boolean(injectedTrainerPersona) && bayShells[activeVoice].personaId === injectedTrainerId;
+
         const matrix = [];
         const scenarios = [
           {
@@ -3264,6 +3405,8 @@ DeltaE = ${ledger.reuse_gain}`;
           { id: 'solo_scan_uses_scan_mode', pass: report.soloScan.similarityKey === 'Scan mode' },
           { id: 'baseline_duel_live', pass: report.baseline.snapshot.duelState === 'live' },
           { id: 'readout_tab_visible', pass: report.viewTabs.activeTab === 'readout' },
+          { id: 'trainer_validates_generated_output', pass: Boolean(report.trainer && report.trainer.snapshotBeforeInject.validationPass && report.trainer.snapshotBeforeInject.promptReady && report.trainer.snapshotBeforeInject.exportReady) },
+          { id: 'trainer_injects_persona', pass: Boolean(report.trainer && report.trainer.personaAdded && report.trainer.personaAssigned) },
           { id: 'glyph_registry_smoke', pass: report.glyphSystem.pass }
         ];
 
@@ -3322,6 +3465,7 @@ DeltaE = ${ledger.reuse_gain}`;
   $('tabPlay').addEventListener('click', () => setArtifactTab('play', { announce: true, scroll: true }));
   $('tabReadout').addEventListener('click', () => setArtifactTab('readout', { announce: true, scroll: true }));
   $('tabPersonas').addEventListener('click', () => setArtifactTab('personas', { announce: true, scroll: true }));
+  $('tabTrainer').addEventListener('click', () => setArtifactTab('trainer', { announce: true, scroll: true }));
   $('ingressMirrorArmed').addEventListener('click', () => chooseIngressMirror('off'));
   $('ingressMirrorOpen').addEventListener('click', () => chooseIngressMirror('on'));
   $('ingressBadgeCycle').addEventListener('click', cycleIngressBadge);
@@ -3366,7 +3510,7 @@ DeltaE = ${ledger.reuse_gain}`;
     assignPersonaToActiveBay(persona.dataset.id);
   });
 
-  function boot() {
+  async function boot() {
     document.body.dataset.bootStage = 'boot-start';
     setAnalysisRevealState(false);
     setArtifactTab(activeArtifactTab);
@@ -3374,6 +3518,8 @@ DeltaE = ${ledger.reuse_gain}`;
     document.body.dataset.bootStage = 'boot-rendered-profiles';
     renderPersonas();
     document.body.dataset.bootStage = 'boot-rendered-personas';
+    await initializeTrainerLab();
+    document.body.dataset.bootStage = 'boot-rendered-trainer';
     renderIdleState();
     document.body.dataset.bootStage = 'boot-idle';
     setStatusMessage('Press Analyze Cadences to run a solo capture or compare both bays at once.');
@@ -3398,32 +3544,35 @@ DeltaE = ${ledger.reuse_gain}`;
 
   renderIngress();
 
-  try {
-    boot();
-  } catch (error) {
-    const status = $('analysisStatus');
-    if (status) {
-      setStatusMessage(`Startup fault // ${error.message}`);
+  (async () => {
+    try {
+      await boot();
+    } catch (error) {
+      const status = $('analysisStatus');
+      if (status) {
+        setStatusMessage(`Startup fault // ${error.message}`);
+      }
+      document.body.dataset.bootStage = 'boot-error';
+      document.body.dataset.bootError = (error.message || 'unknown-error')
+        .replace(/[^a-z0-9.\-_/ ]/gi, '')
+        .slice(0, 120);
+      return;
     }
-    document.body.dataset.bootStage = 'boot-error';
-    document.body.dataset.bootError = (error.message || 'unknown-error')
-      .replace(/[^a-z0-9.\-_/ ]/gi, '')
-      .slice(0, 120);
-  }
 
-  if (testFlightMode === '1') {
-    window.setTimeout(() => runTestFlight('smoke'), 120);
-  }
+    if (testFlightMode === '1') {
+      window.setTimeout(() => runTestFlight('smoke'), 120);
+    }
 
-  if (testFlightMode === '2') {
-    window.setTimeout(() => runTestFlight('full'), 120);
-  }
+    if (testFlightMode === '2') {
+      window.setTimeout(() => runTestFlight('full'), 120);
+    }
 
-  if (testFlightMode === 'transfer') {
-    window.setTimeout(() => runTestFlight('transfer'), 120);
-  }
+    if (testFlightMode === 'transfer') {
+      window.setTimeout(() => runTestFlight('transfer'), 120);
+    }
 
-  if (ingressFlightMode) {
-    window.setTimeout(() => runIngressTestFlight(), 120);
-  }
+    if (ingressFlightMode) {
+      window.setTimeout(() => runIngressTestFlight(), 120);
+    }
+  })();
 })();

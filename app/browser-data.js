@@ -379,6 +379,15 @@ window.TCP_DATA = {
         uiTargets: ['shell.tab.personas', 'shell.persona.status'],
         rationale: 'Personas are recursive patterned identities.'
       },
+      tabTrainer: {
+        glyph: '\u22A2',
+        semanticClass: 'law',
+        semioticRole: 'tab-mark',
+        activationState: 'deriving',
+        retrievalTags: ['tab', 'trainer', 'derivation', 'proof'],
+        uiTargets: ['shell.tab.trainer'],
+        rationale: 'Trainer is a derivation lane: extraction, proof, and persona construction.'
+      },
       sectionCadenceDeck: {
         glyph: '\u25C7',
         semanticClass: 'gate',
@@ -432,6 +441,33 @@ window.TCP_DATA = {
         retrievalTags: ['section', 'persona', 'identity'],
         uiTargets: ['shell.section.personaDeck'],
         rationale: 'Persona management is recursive identity handling.'
+      },
+      sectionTrainerLab: {
+        glyph: '\u03BA\u2295',
+        semanticClass: 'core',
+        semioticRole: 'section-kicker',
+        activationState: 'keyed',
+        retrievalTags: ['section', 'trainer', 'lab', 'keyed-activation'],
+        uiTargets: ['shell.section.trainerLab'],
+        rationale: 'The trainer lab is where keyed activation becomes a reusable shell.'
+      },
+      sectionTrainerValidation: {
+        glyph: '\u03A6',
+        semanticClass: 'law',
+        semioticRole: 'section-kicker',
+        activationState: 'measuring',
+        retrievalTags: ['section', 'trainer', 'validation', 'correspondence'],
+        uiTargets: ['shell.section.trainerValidation'],
+        rationale: 'Validation is a correspondence surface between the target shell and the candidate shell.'
+      },
+      sectionTrainerExport: {
+        glyph: '\u27D0',
+        semanticClass: 'witness',
+        semioticRole: 'section-kicker',
+        activationState: 'sealed',
+        retrievalTags: ['section', 'trainer', 'export', 'seal'],
+        uiTargets: ['shell.section.trainerExport'],
+        rationale: 'Export closes the trainer result as a portable witnessed persona spec.'
       },
       sectionDeltaStrip: {
         glyph: '\u03C3\u2248',

@@ -125,6 +125,7 @@
       <button id="tabPlay" type="button" class="top-tab active"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
       <button id="tabReadout" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
       <button id="tabPersonas" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
+      <button id="tabTrainer" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer</button>
     </nav>
 
     <main class="view-stack">
@@ -281,6 +282,94 @@
           <div id="personaDeck" class="personagrid"></div>
         </section>
       </section>
+
+      <section id="viewPaneTrainer" class="view-pane" hidden>
+        <section id="trainerPane" class="panel trainer-panel">
+          <div class="panel-heading">
+            <div>
+              <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Trainer lab</div>
+              <h2>Manual persona training against the retrieval lane</h2>
+            </div>
+            <p class="section-note">Paste a reference corpus, extract the target shell, bring back a manually generated sample, then validate it before exporting or injecting it into Personas.</p>
+          </div>
+
+          <div class="trainer-grid">
+            <div class="trainer-stack">
+              <label class="field trainer-name-field" for="trainerPersonaName">
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Persona name</span>
+                    <span class="field-copy">Optional label for the trained shell you are building.</span>
+                  </div>
+                </div>
+                <input id="trainerPersonaName" type="text" placeholder="Trainer Persona" autocomplete="off">
+              </label>
+
+              <label class="field" for="trainerCorpusInput">
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Reference corpus</span>
+                    <span class="field-copy">Paste one or more samples from the target voice. Separate distinct samples with blank lines.</span>
+                  </div>
+                </div>
+                <textarea id="trainerCorpusInput"></textarea>
+              </label>
+
+              <div class="trainer-actions">
+                <button id="trainerExtractBtn" type="button" class="primary-cta">Extract Persona Field</button>
+              </div>
+
+              <div class="trainer-surface">
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Fingerprint readout</div>
+                <div id="trainerFingerprintSummary" class="trainer-readout-body"></div>
+              </div>
+
+              <div class="trainer-surface">
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Trainer prompt</div>
+                <textarea id="trainerPromptOutput" readonly></textarea>
+              </div>
+            </div>
+
+            <div class="trainer-stack">
+              <label class="field" for="trainerGeneratedOutput">
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Generated output</span>
+                    <span class="field-copy">Paste the model output you want TCP to test. No API keys, no hidden provider wiring.</span>
+                  </div>
+                </div>
+                <textarea id="trainerGeneratedOutput"></textarea>
+              </label>
+
+              <div class="trainer-actions">
+                <button id="trainerValidateBtn" type="button" class="secondary">Validate Output</button>
+                <button id="trainerExportBtn" type="button" class="secondary">Export JSON</button>
+                <button id="trainerInjectBtn" type="button" class="secondary">Inject into Personas</button>
+              </div>
+
+              <div id="trainerStatus" class="analysis-status trainer-status">
+                <span id="trainerStatusBase" class="analysis-status-base">Paste a reference corpus, extract the voice, then validate a manually generated sample.</span>
+                <span id="trainerStatusCue" class="analysis-status-cue" hidden></span>
+              </div>
+
+              <div class="trainer-surface">
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Retrieval validation</div>
+                <div id="trainerValidationReport" class="trainer-readout-body"></div>
+              </div>
+
+              <div class="trainer-surface">
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Correction hints</div>
+                <div id="trainerCorrectionHints" class="trainer-readout-body"></div>
+              </div>
+
+              <div class="trainer-surface">
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Persona export</div>
+                <textarea id="trainerExportOutput" readonly></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
     </main>
 
     <section class="debug-vault" hidden aria-hidden="true">
@@ -292,9 +381,9 @@
     <footer class="footer">TCP / experimental research prototype / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
   </div>
 
-  <script src="./browser-data.js?v=20260321b"></script>
-  <script src="./browser-engine.js?v=20260321b"></script>
-  <script src="./retrieval-fixtures.js?v=20260321b"></script>
-  <script src="./browser-main.js?v=20260321b"></script>
+  <script src="./browser-data.js?v=20260327a"></script>
+  <script src="./browser-engine.js?v=20260327a"></script>
+  <script src="./retrieval-fixtures.js?v=20260327a"></script>
+  <script src="./browser-main.js?v=20260327a"></script>
 </body>
 </html>

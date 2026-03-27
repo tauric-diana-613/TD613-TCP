@@ -1385,6 +1385,25 @@ textarea:focus {
   box-shadow: 0 0 0 1px rgba(116, 234, 255, 0.12);
 }
 
+.field input[type="text"] {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 18px;
+  border: 1px solid rgba(116, 234, 255, 0.12);
+  border-radius: 16px;
+  background: rgba(2, 8, 13, 0.96);
+  color: var(--ink);
+  font: 16px/1.4 var(--sans);
+  caret-color: var(--cyan);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.015);
+}
+
+.field input[type="text"]:focus {
+  outline: none;
+  border-color: rgba(116, 234, 255, 0.34);
+  box-shadow: 0 0 0 1px rgba(116, 234, 255, 0.12);
+}
+
 .bay-profile {
   min-height: 110px;
 }
@@ -1877,6 +1896,119 @@ button:disabled {
   gap: 12px;
 }
 
+.trainer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.trainer-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.trainer-name-field input[type="text"] {
+  min-height: 46px;
+}
+
+.trainer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.trainer-status {
+  min-height: 56px;
+}
+
+.trainer-surface {
+  padding: 16px;
+  border: 1px solid rgba(116, 234, 255, 0.12);
+  border-radius: 18px;
+  background: rgba(6, 16, 24, 0.74);
+}
+
+.trainer-readout-body {
+  margin-top: 12px;
+}
+
+.trainer-empty {
+  margin: 0;
+  color: var(--chrome);
+}
+
+.trainer-summary-grid,
+.trainer-contract-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.trainer-summary-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.trainer-contract-grid {
+  margin-top: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.trainer-contract {
+  padding: 12px;
+  border: 1px solid rgba(116, 234, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(116, 234, 255, 0.04);
+}
+
+.trainer-contract.pass {
+  border-color: rgba(188, 255, 138, 0.28);
+}
+
+.trainer-contract.fail {
+  border-color: rgba(255, 126, 89, 0.28);
+}
+
+.trainer-contract-head,
+.trainer-preview-head,
+.trainer-preview-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.trainer-contract-body {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--chrome);
+}
+
+.trainer-hints {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.trainer-preview {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(116, 234, 255, 0.04);
+  border: 1px solid rgba(116, 234, 255, 0.1);
+}
+
+.trainer-preview-copy {
+  margin-top: 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--chrome);
+}
+
 .persona {
   cursor: pointer;
 }
@@ -1944,6 +2076,9 @@ button:disabled {
   .results,
   .harbor-grid,
   .personagrid,
+  .trainer-grid,
+  .trainer-summary-grid,
+  .trainer-contract-grid,
   .duel-visual-grid {
     grid-template-columns: 1fr;
   }
