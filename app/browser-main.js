@@ -2726,6 +2726,9 @@ DeltaE = ${ledger.reuse_gain}`;
           exportReady: false,
           canInject: false,
           lastInjectedPersonaSummary: null,
+          statusMessage: '',
+          statusCue: '',
+          statusCueKey: '',
           promptLength: 0,
           exportLength: 0,
           validationTextLength: 0,
@@ -2816,6 +2819,7 @@ DeltaE = ${ledger.reuse_gain}`;
     window.TCP_TRAINER_LAB = Object.freeze({
       snapshot: () => trainerController?.snapshot() || null,
       serializeState: () => trainerController?.serializeState() || null,
+      restoreState: (state) => trainerController?.restoreState(state),
       extract: () => trainerController?.extract(),
       validate: () => trainerController?.validate(),
       exportSpec: () => trainerController?.exportSpec(),
@@ -3295,13 +3299,48 @@ DeltaE = ${ledger.reuse_gain}`;
         $('trainerInjectBtn').click();
         const trainerAfterInject = readTrainerSnapshot();
         const injectedTrainerId = trainerAfterInject.lastInjectedPersonaSummary?.id || '';
+        const trainerBridge = window.TCP_TRAINER_LAB || null;
+        const trainerBridgePresent = Boolean(
+          trainerBridge &&
+          typeof trainerBridge.snapshot === 'function' &&
+          typeof trainerBridge.serializeState === 'function' &&
+          typeof trainerBridge.restoreState === 'function' &&
+          typeof trainerBridge.extract === 'function' &&
+          typeof trainerBridge.validate === 'function' &&
+          typeof trainerBridge.exportSpec === 'function' &&
+          typeof trainerBridge.inject === 'function'
+        );
+        const trainerSerializedState = trainerBridgePresent ? trainerBridge.serializeState() : null;
+        let trainerAfterRestore = null;
+        if (trainerBridgePresent && trainerSerializedState) {
+          $('trainerPersonaName').value = 'Trainer Restore Probe';
+          $('trainerPersonaName').dispatchEvent(new Event('input', { bubbles: true }));
+          trainerBridge.restoreState(trainerSerializedState);
+          trainerAfterRestore = readTrainerSnapshot();
+        }
         report.trainer = {
           snapshotBeforeInject: trainerBeforeInject,
           snapshotAfterInject: trainerAfterInject,
+          snapshotAfterRestore: trainerAfterRestore,
           personasAfterInject: document.querySelectorAll('.persona').length,
           personaAdded: document.querySelectorAll('.persona').length === personaCountBeforeTrainerInject + 1,
           injectedPersonaId: injectedTrainerId,
-          trainerTabActive: document.body.dataset.artifactTab === 'trainer'
+          trainerTabActive: document.body.dataset.artifactTab === 'trainer',
+          bridgePresent: trainerBridgePresent,
+          roundtripRestored: Boolean(
+            trainerAfterRestore &&
+            trainerSerializedState &&
+            trainerAfterRestore.personaName === trainerSerializedState.personaName &&
+            trainerAfterRestore.validationPass === Boolean(trainerSerializedState.validation?.pass) &&
+            trainerAfterRestore.exportReady === Boolean(trainerSerializedState.exportSpec) &&
+            trainerAfterRestore.statusMessage === (trainerSerializedState.statusMessage || '') &&
+            trainerAfterRestore.statusCue === (trainerSerializedState.statusCue || '')
+          ),
+          injectedSummaryRestored: Boolean(
+            trainerAfterRestore &&
+            trainerSerializedState &&
+            (trainerAfterRestore.lastInjectedPersonaSummary?.id || '') === (trainerSerializedState.lastInjectedPersonaSummary?.id || '')
+          )
         };
 
         $('tabPersonas').click();
@@ -3417,6 +3456,9 @@ DeltaE = ${ledger.reuse_gain}`;
           { id: 'readout_tab_visible', pass: report.viewTabs.activeTab === 'readout' },
           { id: 'trainer_validates_generated_output', pass: Boolean(report.trainer && report.trainer.snapshotBeforeInject.validationPass && report.trainer.snapshotBeforeInject.promptReady && report.trainer.snapshotBeforeInject.exportReady) },
           { id: 'trainer_injects_persona', pass: Boolean(report.trainer && report.trainer.personaAdded && report.trainer.personaAssigned) },
+          { id: 'trainer_bridge_present', pass: Boolean(report.trainer && report.trainer.bridgePresent) },
+          { id: 'trainer_restore_roundtrip', pass: Boolean(report.trainer && report.trainer.roundtripRestored) },
+          { id: 'trainer_restore_keeps_injected_summary', pass: Boolean(report.trainer && report.trainer.injectedSummaryRestored) },
           { id: 'glyph_registry_smoke', pass: report.glyphSystem.pass }
         ];
 

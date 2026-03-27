@@ -89,15 +89,28 @@ export async function createTrainerController(options = {}) {
     promptBuild: null,
     validation: null,
     exportSpec: null,
-    lastInjectedPersonaSummary: null
+    lastInjectedPersonaSummary: null,
+    statusMessage: '',
+    statusCue: '',
+    statusCueKey: ''
   };
 
-  function setStatus(message, cue = '') {
-    nodes.statusBase.textContent = message;
+  function applyStatus() {
+    const message = state.statusMessage || '';
+    const cue = state.statusCue || '';
     const visible = Boolean(cue);
+
+    nodes.statusBase.textContent = message;
     nodes.statusCue.hidden = !visible;
     nodes.statusCue.textContent = cue;
-    nodes.statusCue.dataset.cueKey = visible ? 'trainer' : '';
+    nodes.statusCue.dataset.cueKey = visible ? (state.statusCueKey || cue || 'trainer') : '';
+  }
+
+  function setStatus(message, cue = '') {
+    state.statusMessage = message || '';
+    state.statusCue = cue || '';
+    state.statusCueKey = cue || '';
+    applyStatus();
     if (typeof onStatus === 'function') {
       onStatus(message);
     }
@@ -122,6 +135,7 @@ export async function createTrainerController(options = {}) {
     if (applyStaticGlyphs) {
       applyStaticGlyphs(root);
     }
+    applyStatus();
     nodes.fingerprintSummary.innerHTML = renderFingerprintSummary(state.extraction, state.promptBuild);
     nodes.validationReport.innerHTML = renderValidationReport(state.validation);
     nodes.correctionHints.innerHTML = renderCorrectionHints(state.validation);
@@ -220,7 +234,10 @@ export async function createTrainerController(options = {}) {
       promptBuild: clone(state.promptBuild),
       validation: clone(state.validation),
       exportSpec: clone(state.exportSpec),
-      lastInjectedPersonaSummary: clone(state.lastInjectedPersonaSummary)
+      lastInjectedPersonaSummary: clone(state.lastInjectedPersonaSummary),
+      statusMessage: state.statusMessage,
+      statusCue: state.statusCue,
+      statusCueKey: state.statusCueKey
     };
   }
 
@@ -233,6 +250,9 @@ export async function createTrainerController(options = {}) {
     state.validation = clone(nextState.validation) || null;
     state.exportSpec = clone(nextState.exportSpec) || null;
     state.lastInjectedPersonaSummary = clone(nextState.lastInjectedPersonaSummary) || null;
+    state.statusMessage = nextState.statusMessage || '';
+    state.statusCue = nextState.statusCue || '';
+    state.statusCueKey = nextState.statusCueKey || nextState.statusCue || '';
     render();
   }
 
@@ -247,7 +267,10 @@ export async function createTrainerController(options = {}) {
       validationStatus: state.validation?.status || 'idle',
       exportReady: Boolean(state.exportSpec),
       canInject: !nodes.injectBtn.disabled,
-      lastInjectedPersonaSummary: clone(state.lastInjectedPersonaSummary)
+      lastInjectedPersonaSummary: clone(state.lastInjectedPersonaSummary),
+      statusMessage: state.statusMessage,
+      statusCue: state.statusCue,
+      statusCueKey: state.statusCueKey
     };
   }
 
