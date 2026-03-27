@@ -33,8 +33,18 @@
     acc[sample.id] = sample;
     return acc;
   }, {}));
-  const ASSET_VERSION = '20260327a';
-  const TRAINER_MODULE_URL = `./toys/persona-trainer/browser.js?v=${ASSET_VERSION}`;
+  const CURRENT_SCRIPT_SRC = document.currentScript?.src || Array.from(document.querySelectorAll('script[src]'))
+    .map((node) => node.getAttribute('src') || '')
+    .find((src) => /browser-main\.js/i.test(src)) || '';
+  const CURRENT_SCRIPT_URL = new URL(CURRENT_SCRIPT_SRC || './browser-main.js', window.location.href);
+  const ASSET_VERSION = CURRENT_SCRIPT_URL.searchParams.get('v') || '';
+  const TRAINER_MODULE_URL = (() => {
+    const url = new URL('./toys/persona-trainer/browser.js', window.location.href);
+    if (ASSET_VERSION) {
+      url.searchParams.set('v', ASSET_VERSION);
+    }
+    return url.href;
+  })();
   const TEST_FLIGHT_SAMPLE_IDS = Object.freeze({
     A: 'recursive-debrief',
     B: 'operations-brief'
@@ -2794,7 +2804,7 @@ DeltaE = ${ledger.reuse_gain}`;
     }
 
     const module = await import(TRAINER_MODULE_URL);
-    trainerController = module.createTrainerController({
+    trainerController = await module.createTrainerController({
       root,
       engine: window.TCP_ENGINE,
       sampleLibrary: SAMPLE_LIBRARY,

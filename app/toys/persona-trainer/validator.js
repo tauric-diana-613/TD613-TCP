@@ -1,26 +1,11 @@
+import { SCALAR_DIMENSIONS } from './extractor.js';
+
 export const TRAINER_CALIBRATION_SAMPLE_IDS = Object.freeze([
   'operations-brief',
   'recursive-debrief',
   'institutional-memo',
   'witness-statement',
   'critical-review'
-]);
-
-const SCALAR_DIMENSIONS = Object.freeze([
-  'avgSentenceLength',
-  'sentenceLengthSpread',
-  'punctuationDensity',
-  'contractionDensity',
-  'lineBreakDensity',
-  'repeatedBigramPressure',
-  'recurrencePressure',
-  'lexicalDispersion',
-  'contentWordComplexity',
-  'modifierDensity',
-  'hedgeDensity',
-  'abstractionPosture',
-  'directness',
-  'latinatePreference'
 ]);
 
 const DIMENSION_SCALES = Object.freeze({

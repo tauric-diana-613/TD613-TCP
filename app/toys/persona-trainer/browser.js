@@ -1,9 +1,3 @@
-import { buildCorpusExtraction } from './extractor.js';
-import { buildPersonaPrompt } from './translator.js';
-import { validateCandidateAgainstFingerprint } from './validator.js';
-import { buildPersonaSpec, exportPersonaSpec } from './persona.js';
-import { renderCorrectionHints, renderFingerprintSummary, renderValidationReport } from './report.js';
-
 function clone(value) {
   return value == null ? value : JSON.parse(JSON.stringify(value));
 }
@@ -12,7 +6,44 @@ function byId(root, id) {
   return root.querySelector(`#${id}`);
 }
 
-export function createTrainerController(options = {}) {
+let trainerModuleBundlePromise = null;
+
+function versionedModuleHref(relativePath) {
+  const url = new URL(relativePath, import.meta.url);
+  const currentVersion = new URL(import.meta.url).searchParams.get('v');
+  if (currentVersion) {
+    url.searchParams.set('v', currentVersion);
+  }
+  return url.href;
+}
+
+function loadTrainerModuleBundle() {
+  if (!trainerModuleBundlePromise) {
+    trainerModuleBundlePromise = Promise.all([
+      import(versionedModuleHref('./extractor.js')),
+      import(versionedModuleHref('./translator.js')),
+      import(versionedModuleHref('./validator.js')),
+      import(versionedModuleHref('./persona.js')),
+      import(versionedModuleHref('./report.js'))
+    ]).then(([
+      extractor,
+      translator,
+      validator,
+      persona,
+      report
+    ]) => ({
+      extractor,
+      translator,
+      validator,
+      persona,
+      report
+    }));
+  }
+
+  return trainerModuleBundlePromise;
+}
+
+export async function createTrainerController(options = {}) {
   const {
     root,
     engine,
@@ -28,6 +59,13 @@ export function createTrainerController(options = {}) {
   if (!engine || typeof engine.extractCadenceProfile !== 'function') {
     throw new Error('Trainer requires the live TCP engine.');
   }
+
+  const modules = await loadTrainerModuleBundle();
+  const { buildCorpusExtraction } = modules.extractor;
+  const { buildPersonaPrompt } = modules.translator;
+  const { validateCandidateAgainstFingerprint } = modules.validator;
+  const { buildPersonaSpec, exportPersonaSpec } = modules.persona;
+  const { renderCorrectionHints, renderFingerprintSummary, renderValidationReport } = modules.report;
 
   const nodes = {
     personaName: byId(root, 'trainerPersonaName'),
