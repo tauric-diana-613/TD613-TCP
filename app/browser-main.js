@@ -6,6 +6,7 @@
     extractCadenceProfile,
     buildCadenceTransfer,
     buildCadenceTransferTrace,
+    buildSwapCadenceMatrix,
     buildCadenceSignature,
     sentenceSplit,
     segmentTextToIR,
@@ -25,7 +26,8 @@
     chooseHarbor,
     buildLedgerRow,
     nextBadge,
-    badgeMeaning
+    badgeMeaning,
+    SWAP_CADENCE_FLAGSHIP_PAIRS
   } = window.TCP_ENGINE;
   const RETRIEVAL_FIXTURE_BUNDLE = window.TCP_RETRIEVAL_FIXTURES || { cases: {} };
   const SAMPLE_LIBRARY = Object.freeze((defaults.sample_library || []).map((sample) => Object.freeze({ ...sample })));
@@ -49,6 +51,10 @@
     A: 'recursive-debrief',
     B: 'operations-brief'
   });
+  const SWAP_FLAGSHIP_PAIRS = Object.freeze((SWAP_CADENCE_FLAGSHIP_PAIRS || []).map((pair) => Object.freeze({
+    sourceId: pair.sourceId,
+    donorId: pair.donorId
+  })));
 
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = 'tcp.savedPersonas.v1';
@@ -1359,8 +1365,12 @@
       return 'Transfer stayed on source cadence.';
     }
 
-    if (transfer.transferClass === 'structural') {
+    if (transfer.borrowedShellOutcome === 'structural' || transfer.transferClass === 'structural') {
       return shifted ? `Transfer moved ${shifted}.` : 'Transfer landed a structural cadence shift.';
+    }
+
+    if (transfer.borrowedShellOutcome === 'partial') {
+      return shifted ? `Transfer held a retrieval-safe partial shell shift across ${shifted}.` : 'Transfer held a retrieval-safe partial shell shift.';
     }
 
     if ((transfer.changedDimensions || []).length || (transfer.lexemeSwaps || []).length) {
@@ -1368,6 +1378,25 @@
     }
 
     return 'Transfer stayed close to the source cadence.';
+  }
+
+  function classifySwapPairFromLanes(laneA, laneB) {
+    const engagedA = ['structural', 'partial'].includes(laneA.borrowedShellOutcome);
+    const engagedB = ['structural', 'partial'].includes(laneB.borrowedShellOutcome);
+
+    if (laneA.borrowedShellOutcome === 'rejected' && laneB.borrowedShellOutcome === 'rejected') {
+      return 'both-rejected';
+    }
+
+    if (engagedA && engagedB) {
+      return 'bilateral-engaged';
+    }
+
+    if (!laneA.nonTrivialShift && !laneB.nonTrivialShift) {
+      return 'surface-close';
+    }
+
+    return 'one-sided';
   }
 
   function summarizeTransferLane(voiceState) {
@@ -1380,14 +1409,23 @@
       slot: voiceState?.slot || '',
       hasText: Boolean(voiceState?.hasText),
       visibleShift: Boolean(voiceState?.hasEffectiveTextShift),
+      nonTrivialShift: Boolean(transfer.nonTrivialShift),
       transferClass: transfer.transferClass || 'native',
+      borrowedShellOutcome: transfer.borrowedShellOutcome || (transfer.transferClass === 'rejected' ? 'rejected' : voiceState?.shell?.mode === 'borrowed' ? 'subtle' : null),
+      borrowedShellFailureClass: transfer.borrowedShellFailureClass || null,
       realizationTier: transfer.realizationTier || 'none',
       changedDimensions: [...new Set(transfer.changedDimensions || [])],
       lexemeSwapFamilies: [...new Set((transfer.lexemeSwaps || []).map((swap) => swap.family))],
+      rescuePasses: [...new Set(transfer.rescuePasses || [])],
       propositionCoverage: semanticAudit.propositionCoverage ?? 1,
+      actorCoverage: semanticAudit.actorCoverage ?? 1,
       actionCoverage: semanticAudit.actionCoverage ?? 1,
+      objectCoverage: semanticAudit.objectCoverage ?? 1,
       polarityMismatches: semanticAudit.polarityMismatches ?? 0,
-      partialFallback: notes.includes('Borrowed shell preserved a retrieval-safe partial cadence shift.'),
+      tenseMismatches: semanticAudit.tenseMismatches ?? 0,
+      protectedAnchorIntegrity: transfer.protectedAnchorAudit?.protectedAnchorIntegrity ?? semanticAudit.protectedAnchorIntegrity ?? 1,
+      semanticRisk: transfer.semanticRisk ?? 0,
+      partialFallback: transfer.borrowedShellOutcome === 'partial',
       notes
     };
   }
@@ -1395,12 +1433,17 @@
   function buildSwapCadenceAudit(beforeSnapshot, afterSnapshot, voiceStateA, voiceStateB) {
     const laneA = summarizeTransferLane(voiceStateA);
     const laneB = summarizeTransferLane(voiceStateB);
+    const classification = classifySwapPairFromLanes(laneA, laneB);
     const rejectedSlots = [laneA, laneB]
-      .filter((lane) => lane.transferClass === 'rejected')
+      .filter((lane) => lane.borrowedShellOutcome === 'rejected')
       .map((lane) => lane.slot);
     const partialFallbackSlots = [laneA, laneB]
       .filter((lane) => lane.partialFallback)
       .map((lane) => lane.slot);
+    const failureFamilyTags = [...new Set([
+      ['structural', 'partial'].includes(laneA.borrowedShellOutcome) ? null : laneA.borrowedShellFailureClass,
+      ['structural', 'partial'].includes(laneB.borrowedShellOutcome) ? null : laneB.borrowedShellFailureClass
+    ].filter(Boolean))];
     const visibleTextShift =
       laneA.visibleShift ||
       laneB.visibleShift ||
@@ -1408,10 +1451,15 @@
       beforeSnapshot.duelProbeSample !== afterSnapshot.duelProbeSample;
 
     return {
+      classification,
       visibleTextShift,
-      bothRejected: rejectedSlots.length === 2,
+      bothRejected: classification === 'both-rejected',
+      oneSided: classification === 'one-sided',
+      surfaceClose: classification === 'surface-close',
+      bilateralEngaged: classification === 'bilateral-engaged',
       rejectedSlots,
       partialFallbackSlots,
+      failureFamilyTags,
       similarityChanged: beforeSnapshot.similarity !== afterSnapshot.similarity,
       routeChanged: beforeSnapshot.routePressure !== afterSnapshot.routePressure,
       lanes: {
@@ -1430,23 +1478,27 @@
     const routeDelta = `${beforeSnapshot.routePressure} -> ${afterSnapshot.routePressure}`;
     const slotLabel = (slot) => SLOT_SHORT[slot] || slot;
 
-    if (audit.bothRejected) {
-      return `Cadence shells swapped, but both bays stayed on source text. The retrieval gate blocked this pair, so similarity ${similarityDelta} and route ${routeDelta} held near-source.`;
+    if (audit.classification === 'both-rejected') {
+      const failureTags = audit.failureFamilyTags.length ? ` Failure family: ${audit.failureFamilyTags.join(', ')}.` : '';
+      return `Cadence shells swapped, but both bays stayed on source text. The retrieval gate blocked this pair, so similarity ${similarityDelta} and route ${routeDelta} held near-source.${failureTags}`;
     }
 
-    if (audit.rejectedSlots.length === 1) {
-      const stalled = slotLabel(audit.rejectedSlots[0]);
-      const live = slotLabel(audit.rejectedSlots[0] === 'A' ? 'B' : 'A');
-      return `Cadence shells swapped. The ${live} bay moved, but the ${stalled} bay stayed on source text after the retrieval gate blocked donor realization. Similarity ${similarityDelta}; route ${routeDelta}.`;
+    if (audit.classification === 'one-sided') {
+      const stalledSlot = audit.rejectedSlots[0] || (audit.lanes.A.borrowedShellOutcome === 'subtle' ? 'A' : 'B');
+      const stalled = slotLabel(stalledSlot);
+      const live = slotLabel(stalledSlot === 'A' ? 'B' : 'A');
+      const failureTags = audit.failureFamilyTags.length ? ` Failure family: ${audit.failureFamilyTags.join(', ')}.` : '';
+      return `Cadence shells swapped one-sided. The ${live} bay moved, but the ${stalled} bay stayed on source text after the retrieval gate blocked donor realization. Similarity ${similarityDelta}; route ${routeDelta}.${failureTags}`;
     }
 
-    if (audit.partialFallbackSlots.length) {
+    if (audit.classification === 'surface-close') {
+      const failureTags = audit.failureFamilyTags.length ? ` Failure family: ${audit.failureFamilyTags.join(', ')}.` : '';
+      return `Cadence shells swapped, but the pair stayed surface-close after the retrieval pass. Similarity ${similarityDelta}; route ${routeDelta}.${failureTags}`;
+    }
+
+    if (audit.partialFallbackSlots.length && audit.classification === 'bilateral-engaged') {
       const slots = audit.partialFallbackSlots.map(slotLabel).join(' + ');
       return `Cadence shells swapped. ${slots} held a retrieval-safe partial shell shift instead of collapsing back to native text. Similarity ${similarityDelta}; route ${routeDelta}.`;
-    }
-
-    if (!audit.visibleTextShift) {
-      return `Cadence shells swapped, but this pair stayed surface-close even after the retrieval pass. Similarity ${similarityDelta}; route ${routeDelta}.`;
     }
 
     return `Cadence shells swapped. Each bay kept its own raw text and took the other bay's shell. Similarity ${similarityDelta}; route ${routeDelta}.`;
@@ -2736,6 +2788,13 @@ DeltaE = ${ledger.reuse_gain}`;
         };
   }
 
+  function runSwapCadenceMatrixReport() {
+    return buildSwapCadenceMatrix(SAMPLE_LIBRARY, {
+      flagshipPairs: SWAP_FLAGSHIP_PAIRS,
+      strength: 0.82
+    });
+  }
+
   function canonicalSemanticContractFromTrace(trace = {}) {
     const realization = trace.realizationSummary || trace.finalRealization || {};
     const plan = trace.planSummary || {};
@@ -2797,6 +2856,12 @@ DeltaE = ${ledger.reuse_gain}`;
       return lastSwapCadenceAudit
         ? JSON.parse(JSON.stringify(lastSwapCadenceAudit))
         : null;
+    },
+    getSwapCadenceFlagshipCases() {
+      return JSON.parse(JSON.stringify(SWAP_FLAGSHIP_PAIRS));
+    },
+    runSwapCadenceMatrix() {
+      return JSON.parse(JSON.stringify(runSwapCadenceMatrixReport()));
     }
   });
 
@@ -3136,9 +3201,54 @@ DeltaE = ${ledger.reuse_gain}`;
     setStatusMessage(summaryText);
   }
 
+  function runSwapTestFlight() {
+    const matrixReport = runSwapCadenceMatrixReport();
+    const flagshipCases = matrixReport.flagshipReports || [];
+    const summary = matrixReport.summary || {};
+    const report = {
+      mode: 'swap',
+      flagshipPairs: matrixReport.flagshipPairs || [],
+      flagshipCases,
+      fullSummary: summary,
+      summary: {
+        allPassed:
+          Boolean(summary.flagshipAllPassed) &&
+          (summary.bilateralEngaged || 0) >= 24 &&
+          (summary.bothRejected || 0) <= 8 &&
+          (summary.oneSided || 0) <= 18,
+        passCount: [
+          Boolean(summary.flagshipAllPassed),
+          (summary.bilateralEngaged || 0) >= 24,
+          (summary.bothRejected || 0) <= 8,
+          (summary.oneSided || 0) <= 18
+        ].filter(Boolean).length,
+        caseCount: 4
+      }
+    };
+
+    let node = document.getElementById('testFlightReport');
+    if (!node) {
+      node = document.createElement('pre');
+      node.id = 'testFlightReport';
+      node.className = 'formula';
+      document.body.appendChild(node);
+    }
+
+    node.textContent = JSON.stringify(report, null, 2);
+    const summaryText = `Swap flight // ${report.summary.allPassed ? 'passed' : 'check failed'} ${report.summary.passCount}/${report.summary.caseCount}`;
+    document.body.dataset.testFlightStatus = report.summary.allPassed ? 'passed' : 'complete';
+    document.body.dataset.testFlightSummary = summaryText.toLowerCase().replace(/[^a-z0-9/ ]/gi, '');
+    setStatusMessage(summaryText);
+  }
+
   function runTestFlight(mode = 'smoke') {
     if (mode === 'transfer') {
       runTransferTestFlight();
+      return;
+    }
+
+    if (mode === 'swap') {
+      runSwapTestFlight();
       return;
     }
 
@@ -3350,6 +3460,7 @@ DeltaE = ${ledger.reuse_gain}`;
         }
         report.trainer.personaAssigned =
           Boolean(injectedTrainerPersona) && bayShells[activeVoice].personaId === injectedTrainerId;
+        report.swapMatrix = runSwapCadenceMatrixReport();
 
         const matrix = [];
         const scenarios = [
@@ -3459,6 +3570,7 @@ DeltaE = ${ledger.reuse_gain}`;
           { id: 'trainer_bridge_present', pass: Boolean(report.trainer && report.trainer.bridgePresent) },
           { id: 'trainer_restore_roundtrip', pass: Boolean(report.trainer && report.trainer.roundtripRestored) },
           { id: 'trainer_restore_keeps_injected_summary', pass: Boolean(report.trainer && report.trainer.injectedSummaryRestored) },
+          { id: 'swap_matrix_runner_present', pass: Boolean(report.swapMatrix && report.swapMatrix.summary && report.swapMatrix.flagshipReports) },
           { id: 'glyph_registry_smoke', pass: report.glyphSystem.pass }
         ];
 
@@ -3621,6 +3733,10 @@ DeltaE = ${ledger.reuse_gain}`;
 
     if (testFlightMode === 'transfer') {
       window.setTimeout(() => runTestFlight('transfer'), 120);
+    }
+
+    if (testFlightMode === 'swap') {
+      window.setTimeout(() => runTestFlight('swap'), 120);
     }
 
     if (ingressFlightMode) {

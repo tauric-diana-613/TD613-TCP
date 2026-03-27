@@ -179,6 +179,7 @@
           "baseline-voice-realization",
           "connector-stance-lexicon"
         ],
+        "rescuePasses": [],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
@@ -201,6 +202,7 @@
             "merge-pairs",
             "clause-texture"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -223,6 +225,7 @@
             "baseline-voice-realization",
             "connector-stance-lexicon"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -245,6 +248,7 @@
             "baseline-voice-realization",
             "connector-stance-lexicon"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -267,6 +271,7 @@
             "baseline-voice-realization",
             "connector-stance-lexicon"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -289,6 +294,7 @@
             "baseline-voice-realization",
             "connector-stance-lexicon"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -308,6 +314,8 @@
     "finalRealization": {
       "text": "Apparently, door sticks; knock twice, and I am in back.",
       "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
@@ -321,7 +329,10 @@
         "punctuation-shape"
       ],
       "lexemeSwaps": [],
-      "semanticRisk": 0.1
+      "semanticRisk": 0.1,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -429,6 +440,8 @@
     },
     "realizationSummary": {
       "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
@@ -445,7 +458,10 @@
       "semanticRisk": 0.1,
       "realizationNotes": [
         "Register shift surfaced through lexical-register, content-word-complexity, modifier-density, directness."
-      ]
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     }
   },
   "semanticContract": {

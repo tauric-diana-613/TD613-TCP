@@ -148,6 +148,7 @@
           "clause-texture",
           "contraction"
         ],
+        "rescuePasses": [],
         "changedDimensions": [
           "sentence-mean",
           "lexical-register",
@@ -168,6 +169,7 @@
             "clause-texture",
             "contraction"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "lexical-register",
@@ -185,6 +187,7 @@
           "passesApplied": [
             "baseline-voice-realization"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "lexical-register",
@@ -202,6 +205,7 @@
           "passesApplied": [
             "baseline-voice-realization"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "lexical-register",
@@ -219,6 +223,7 @@
           "passesApplied": [
             "baseline-voice-realization"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "lexical-register",
@@ -236,6 +241,7 @@
           "passesApplied": [
             "baseline-voice-realization"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "lexical-register",
@@ -252,10 +258,17 @@
     "finalRealization": {
       "text": "Meet at 9:30, bring ID ZX-17.",
       "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "literal-lock",
       "realizationTier": "none",
       "changedDimensions": [],
       "lexemeSwaps": [],
-      "semanticRisk": 0.3
+      "semanticRisk": 0.3,
+      "rescuePasses": [
+        "final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     },
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -334,13 +347,20 @@
     },
     "realizationSummary": {
       "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "literal-lock",
       "realizationTier": "none",
       "changedDimensions": [],
       "lexemeSwaps": [],
       "semanticRisk": 0.3,
       "realizationNotes": [
         "Semantic risk is elevated; review the realized output before relying on it."
-      ]
+      ],
+      "rescuePasses": [
+        "final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     }
   },
   "semanticContract": {

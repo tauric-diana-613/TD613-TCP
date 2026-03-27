@@ -135,6 +135,7 @@
           "clause-texture",
           "contraction"
         ],
+        "rescuePasses": [],
         "changedDimensions": [
           "content-word-complexity"
         ],
@@ -150,6 +151,7 @@
             "clause-texture",
             "contraction"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "content-word-complexity"
           ],
@@ -162,6 +164,7 @@
           "passesApplied": [
             "baseline-voice-realization"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "content-word-complexity"
           ],
@@ -174,6 +177,7 @@
           "passesApplied": [
             "baseline-voice-realization"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "content-word-complexity"
           ],
@@ -186,6 +190,7 @@
           "passesApplied": [
             "baseline-voice-realization"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "content-word-complexity"
           ],
@@ -198,6 +203,7 @@
           "passesApplied": [
             "baseline-voice-realization"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "content-word-complexity"
           ],
@@ -209,6 +215,8 @@
     "finalRealization": {
       "text": "Stone sets under glass.",
       "transferClass": "weak",
+      "borrowedShellOutcome": "subtle",
+      "borrowedShellFailureClass": "lexical-underreach",
       "realizationTier": "cadence-only",
       "changedDimensions": [
         "content-word-complexity"
@@ -221,7 +229,10 @@
           "kind": "lexeme"
         }
       ],
-      "semanticRisk": 0
+      "semanticRisk": 0,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -287,6 +298,8 @@
     },
     "realizationSummary": {
       "transferClass": "weak",
+      "borrowedShellOutcome": "subtle",
+      "borrowedShellFailureClass": "lexical-underreach",
       "realizationTier": "cadence-only",
       "changedDimensions": [
         "content-word-complexity"
@@ -303,7 +316,10 @@
       "realizationNotes": [
         "1 lexical family swap landed.",
         "Register shift surfaced through content-word-complexity."
-      ]
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     }
   },
   "semanticContract": {

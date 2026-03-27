@@ -2140,6 +2140,67 @@ function hasMaterialStructuralTransfer(changedDimensions = []) {
   return structuralDimensions(changedDimensions).length >= 1 && nonPunctuationDimensions.length >= 2;
 }
 
+function borrowedShellStructuralDimensions(changedDimensions = []) {
+  return structuralDimensions(changedDimensions).filter((dimension) => dimension !== 'contraction-posture');
+}
+
+function hasBorrowedShellVisibleShift(sourceText = '', outputText = '', changedDimensions = [], lexicalShiftProfile = {}) {
+  if (!sourceText || !outputText || outputText === sourceText) {
+    return false;
+  }
+
+  const nonPunctuationDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
+  return nonPunctuationDimensions.length > 0 || Number(lexicalShiftProfile.swapCount || 0) > 0;
+}
+
+function hasBorrowedShellNonTrivialShift(sourceText = '', outputText = '', changedDimensions = [], lexicalShiftProfile = {}) {
+  if (!hasBorrowedShellVisibleShift(sourceText, outputText, changedDimensions, lexicalShiftProfile)) {
+    return false;
+  }
+
+  return lexicalDimensions(changedDimensions).length > 0 ||
+    borrowedShellStructuralDimensions(changedDimensions).length > 0 ||
+    Number(lexicalShiftProfile.swapCount || 0) > 0;
+}
+
+function borrowedShellPathologyBlocked(qualityNotes = []) {
+  const hardBlockers = [
+    /^Protected literals did not survive the rewrite intact\./,
+    /^Protected placeholders leaked into the output\./,
+    /^Transfer introduced a duplicated sentence chunk\./,
+    /^Transfer introduced a repeated connector sequence\./,
+    /^Banned connector stack detected:/,
+    /^Orphan fragment detected:/,
+    /^Transfer expanded past the bounded output ratio\./,
+    /^Transfer collapsed into an unreadable empty result\./
+  ];
+
+  return qualityNotes.some((note) => hardBlockers.some((pattern) => pattern.test(note)));
+}
+
+function sanitizeBorrowedShellPathologies(text = '') {
+  let result = normalizeText(text);
+
+  if (!result) {
+    return result;
+  }
+
+  result = result
+    .replace(/\bbut\s+because\b/gi, (match) => matchCase(match, 'because'))
+    .replace(/\bthough\s+if\b/gi, (match) => matchCase(match, 'if'))
+    .replace(/\band\s+though\s+if\b/gi, (match) => matchCase(match, 'if'))
+    .replace(/\bhonestly[,;]?\s+and\b/gi, (match) => {
+      if (/;/.test(match)) {
+        return matchCase(match, 'honestly;');
+      }
+      return matchCase(match, 'honestly,');
+    })
+    .replace(/([.!?])\s+(?:and|but|so|yet|still)\s*\./gi, '$1 ')
+    .replace(/([.!?])\s+(?:and|but|so|yet|still)\s+([A-Z])/g, '$1 $2');
+
+  return finalizeTransformedText(result);
+}
+
 function hasDuplicateSentenceChunks(text = '') {
   const seen = new Set();
 
@@ -2547,6 +2608,22 @@ function applyRegisterFramingTexture(text = '', currentProfile = {}, targetProfi
     if (!hasLeadHedge) {
       result = result.replace(/^([A-Z])/m, (match) => `Apparently, ${match.toLowerCase()}`);
     }
+  }
+
+  if (mode === 'reflective') {
+    result = replaceLimited(result, /\bI keep telling the story\b/gi, (match) => matchCase(match, 'I keep recounting the account'), 1);
+    result = replaceLimited(result, /\bIt was not one mistake\b/gi, (match) => matchCase(match, 'It was not a single error'), 1);
+    result = replaceLimited(result, /\bone more\b/gi, (match) => matchCase(match, 'another'), 2);
+    result = replaceLimited(result, /\bthe rest of it\b/gi, (match) => matchCase(match, 'the remainder'), 1);
+    result = replaceLimited(result, /\bI know that pattern\b/gi, (match) => matchCase(match, 'I recognize that pattern'), 1);
+  }
+
+  if (mode === 'formal') {
+    result = replaceLimited(result, /\bI keep telling the story\b/gi, (match) => matchCase(match, 'I continue to recount the matter'), 1);
+    result = replaceLimited(result, /\bIt was not one mistake\b/gi, (match) => matchCase(match, 'This was not a single error'), 1);
+    result = replaceLimited(result, /\bone more\b/gi, (match) => matchCase(match, 'an additional'), Math.max(1, Math.round(strength * 2)));
+    result = replaceLimited(result, /\bthe rest of it\b/gi, (match) => matchCase(match, 'the remainder'), 1);
+    result = replaceLimited(result, /\bI know that pattern\b/gi, (match) => matchCase(match, 'I recognize that pattern'), 1);
   }
 
   return result;
@@ -3321,18 +3398,7 @@ function borrowedShellPartialFallback({
 
   const changedDimensions = Array.isArray(bestCandidate.changedDimensions) ? bestCandidate.changedDimensions : [];
   const qualityNotes = Array.isArray(bestCandidate.quality?.notes) ? bestCandidate.quality.notes : [];
-  const hardBlockers = [
-    /^Protected literals did not survive the rewrite intact\./,
-    /^Protected placeholders leaked into the output\./,
-    /^Transfer introduced a duplicated sentence chunk\./,
-    /^Transfer introduced a repeated connector sequence\./,
-    /^Banned connector stack detected:/,
-    /^Orphan fragment detected:/,
-    /^Transfer expanded past the bounded output ratio\./,
-    /^Transfer collapsed into an unreadable empty result\./
-  ];
-
-  if (qualityNotes.some((note) => hardBlockers.some((pattern) => pattern.test(note)))) {
+  if (borrowedShellPathologyBlocked(qualityNotes)) {
     return { eligible: false };
   }
 
@@ -3343,11 +3409,20 @@ function borrowedShellPartialFallback({
     targetProfile,
     bestCandidate.outputProfile
   );
-  const visibleShift =
-    changedDimensions.some((dimension) => dimension !== 'punctuation-shape') ||
-    lexicalShiftProfile.swapCount > 0;
+  const visibleShift = hasBorrowedShellVisibleShift(
+    sourceText,
+    bestCandidate.outputText,
+    changedDimensions,
+    lexicalShiftProfile
+  );
+  const nonTrivialShift = hasBorrowedShellNonTrivialShift(
+    sourceText,
+    bestCandidate.outputText,
+    changedDimensions,
+    lexicalShiftProfile
+  );
 
-  if (!visibleShift) {
+  if (!visibleShift || !nonTrivialShift) {
     return { eligible: false };
   }
 
@@ -3362,7 +3437,7 @@ function borrowedShellPartialFallback({
   if (
     protectedAnchorIntegrity < 1 ||
     (semanticAudit.propositionCoverage ?? 1) < 0.82 ||
-    (semanticAudit.actionCoverage ?? 1) < 0.75 ||
+    (semanticAudit.actionCoverage ?? 1) < 0.82 ||
     (semanticAudit.polarityMismatches ?? 0) > 0
   ) {
     return { eligible: false };
@@ -3373,8 +3448,271 @@ function borrowedShellPartialFallback({
     lexicalShiftProfile,
     semanticAudit,
     protectedAnchorAudit,
-    outputIR
+    outputIR,
+    visibleShift,
+    nonTrivialShift
   };
+}
+
+function borrowedShellRescueScore(candidate = {}, fallback = {}) {
+  const changedDimensions = Array.isArray(candidate.changedDimensions) ? candidate.changedDimensions : [];
+  const structuralCount = borrowedShellStructuralDimensions(changedDimensions).length;
+  const lexicalCount = lexicalDimensions(changedDimensions).length;
+  const swapCount = Number(fallback.lexicalShiftProfile?.swapCount || 0);
+  const rescueCount = Array.isArray(candidate.rescuePasses) ? candidate.rescuePasses.length : 0;
+  const notePenalty = Array.isArray(candidate.quality?.notes)
+    ? candidate.quality.notes.filter((note) => /additive drift|lexical\/register realization/i.test(note)).length
+    : 0;
+
+  return (structuralCount * 24) +
+    (lexicalCount * 18) +
+    (swapCount * 10) +
+    (rescueCount * 3) +
+    (fallback.nonTrivialShift ? 8 : 0) +
+    (fallback.visibleShift ? 4 : 0) -
+    (notePenalty * 6);
+}
+
+function buildBorrowedShellOverlayCandidate({
+  shell,
+  sourceText = '',
+  sourceProfile = {},
+  targetProfile = {},
+  targetGap = {},
+  protectedState = { literals: [] },
+  opportunityProfile = {},
+  ir = {},
+  variant = 'balanced'
+}) {
+  if (shell?.mode !== 'borrowed' || !sourceText) {
+    return null;
+  }
+
+  const candidateStrength = clamp(Number(shell.strength ?? 0.82), 0, 1);
+  const transferPlan = buildTransferPlanFromIR(ir, sourceProfile, targetProfile, targetGap, shell.mod || {});
+  const baseMod = shell.mod || {};
+  const candidateMod = {
+    ...baseMod,
+    sent: transferPlan.wantsShorter
+      ? -Math.max(1, Math.round(Math.max(Math.abs(Number(baseMod.sent || 0)), 1)))
+      : transferPlan.wantsLonger
+        ? Math.max(1, Math.round(Math.max(Math.abs(Number(baseMod.sent || 0)), 1)))
+        : Number(baseMod.sent || 0),
+    cont: Number(baseMod.cont || 0),
+    punc: Number(baseMod.punc || 0)
+  };
+  const connectorProfile = extractCadenceProfile(sourceText);
+  let workingText = sourceText;
+  const passesApplied = [];
+  const rescuePasses = [];
+  const maxLength = transferLengthCeiling(sourceText, sourceProfile, targetProfile, 0.76);
+  const shouldStructure = variant !== 'conservative' && (
+    transferPlan.shiftSentenceLength ||
+    transferPlan.shiftSentenceCount ||
+    transferPlan.wantsLonger ||
+    transferPlan.wantsShorter
+  );
+  const voiceStrength =
+    variant === 'conservative'
+      ? Math.min(1, candidateStrength + 0.14)
+      : variant === 'register'
+        ? Math.min(1, candidateStrength + 0.24)
+        : Math.min(1, candidateStrength + 0.28);
+  const discourseStrength =
+    variant === 'conservative'
+      ? Math.min(1, candidateStrength + 0.14)
+      : Math.min(1, candidateStrength + 0.2);
+  const functionStrength =
+    variant === 'register'
+      ? Math.min(1, candidateStrength + 0.2)
+      : Math.min(1, candidateStrength + 0.24);
+
+  if (shouldStructure) {
+    const overlayStructured = applyClauseTexture(
+      workingText,
+      sourceProfile,
+      targetProfile,
+      Math.min(1, candidateStrength + 0.16),
+      candidateMod,
+      connectorProfile,
+      transferPlan
+    );
+    if (overlayStructured !== workingText && overlayStructured.length <= maxLength) {
+      workingText = overlayStructured;
+      passesApplied.push('overlay-structural');
+      rescuePasses.push('overlay-structural');
+    }
+  }
+
+  let overlayWorking = workingText;
+  overlayWorking = applyContractionTexture(overlayWorking, targetProfile, candidateMod);
+  overlayWorking = applyPhraseTexture(overlayWorking, sourceProfile, targetProfile, Math.min(1, candidateStrength + 0.18));
+  overlayWorking = applyVoiceRealizationTexture(overlayWorking, sourceProfile, targetProfile, voiceStrength);
+  overlayWorking = applyDiscourseFrameTexture(overlayWorking, sourceProfile, targetProfile, discourseStrength, transferPlan);
+  overlayWorking = applyStanceTexture(overlayWorking, targetProfile, Math.min(1, candidateStrength + 0.18), connectorProfile);
+  overlayWorking = applyFunctionWordTexture(overlayWorking, targetProfile, functionStrength, connectorProfile, transferPlan);
+  overlayWorking = sanitizeBorrowedShellPathologies(overlayWorking);
+  overlayWorking = finalizeTransformedText(overlayWorking);
+
+  if (overlayWorking !== workingText && overlayWorking.length <= maxLength) {
+    workingText = overlayWorking;
+    passesApplied.push(`overlay-${variant}`);
+    rescuePasses.push(`overlay-${variant}`);
+  }
+
+  const outputText = normalizeText(workingText);
+  const outputProfile = extractCadenceProfile(outputText);
+  const changedDimensions = collectChangedDimensions(sourceProfile, outputProfile);
+  const quality = evaluateTransferQuality({
+    sourceText,
+    outputText,
+    workingText,
+    sourceProfile,
+    targetProfile,
+    targetGap,
+    outputProfile,
+    changedDimensions,
+    protectedState,
+    opportunityProfile
+  });
+
+  return {
+    spec: 'borrowed-shell-overlay',
+    workingText,
+    outputText,
+    outputProfile,
+    changedDimensions,
+    quality,
+    passesApplied,
+    rescuePasses,
+    score: candidateScore({
+      quality,
+      outputText,
+      sourceText,
+      outputProfile,
+      targetProfile,
+      changedDimensions,
+      passesApplied
+    })
+  };
+}
+
+function findBorrowedShellRescueCandidate({
+  shell,
+  candidates = [],
+  sourceText = '',
+  sourceProfile = {},
+  targetProfile = {},
+  targetGap = {},
+  protectedState = { literals: [] },
+  opportunityProfile = {},
+  ir = {}
+}) {
+  if (shell?.mode !== 'borrowed') {
+    return { candidate: null, fallback: null };
+  }
+
+  const rescueCandidates = Array.isArray(candidates) ? [...candidates] : [];
+  for (const variant of ['conservative', 'register', 'balanced']) {
+    const overlayCandidate = buildBorrowedShellOverlayCandidate({
+      shell,
+      sourceText,
+      sourceProfile,
+      targetProfile,
+      targetGap,
+      protectedState,
+      opportunityProfile,
+      ir,
+      variant
+    });
+    if (overlayCandidate) {
+      rescueCandidates.push(overlayCandidate);
+    }
+  }
+
+  let best = null;
+
+  for (const candidate of rescueCandidates) {
+    const fallback = borrowedShellPartialFallback({
+      shell,
+      bestCandidate: candidate,
+      sourceText,
+      sourceProfile,
+      targetProfile,
+      protectedState,
+      ir
+    });
+
+    if (!fallback.eligible) {
+      continue;
+    }
+
+    const score = borrowedShellRescueScore(candidate, fallback);
+    if (!best || score > best.score) {
+      best = {
+        candidate,
+        fallback,
+        score
+      };
+    }
+  }
+
+  return best || { candidate: null, fallback: null };
+}
+
+function inferBorrowedShellFailureClass({
+  shell,
+  targetGap = {},
+  qualityNotes = [],
+  protectedAnchorAudit = {},
+  semanticAudit = {},
+  visibleShift = false,
+  nonTrivialShift = false,
+  literalLocked = false,
+  transferClass = '',
+  borrowedShellOutcome = ''
+}) {
+  if (!shell || shell.mode !== 'borrowed') {
+    return null;
+  }
+
+  if (borrowedShellOutcome === 'structural' || borrowedShellOutcome === 'partial') {
+    return null;
+  }
+
+  const protectedAnchorIntegrity =
+    protectedAnchorAudit.protectedAnchorIntegrity ?? semanticAudit.protectedAnchorIntegrity ?? 1;
+
+  if (literalLocked) {
+    return 'literal-lock';
+  }
+
+  if (borrowedShellPathologyBlocked(qualityNotes)) {
+    return 'pathology-block';
+  }
+
+  if (
+    protectedAnchorIntegrity < 1 ||
+    (semanticAudit.propositionCoverage ?? 1) < 0.82 ||
+    (semanticAudit.actionCoverage ?? 1) < 0.82 ||
+    (semanticAudit.polarityMismatches ?? 0) > 0
+  ) {
+    return 'semantic-risk';
+  }
+
+  if (!isMaterialCadenceGap(targetGap)) {
+    return 'already-close';
+  }
+
+  if (transferClass === 'rejected' && !visibleShift) {
+    return 'donor-underfit';
+  }
+
+  if (!nonTrivialShift || borrowedShellOutcome === 'subtle') {
+    return 'lexical-underreach';
+  }
+
+  return 'donor-underfit';
 }
 
 function shouldApplySentenceTexture(currentProfile = {}, targetProfile = {}, gap = {}, mod = {}) {
@@ -3522,6 +3860,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       changedDimensions: [],
       protectedLiteralCount: 0,
       passesApplied: [],
+      rescuePasses: [],
       transferClass: 'native',
       qualityGatePassed: true,
       notes: sourceText ? ['Native shell: no transfer applied.'] : ['No source text loaded.'],
@@ -3540,6 +3879,10 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       semanticRisk: 0,
       lexemeSwaps: [],
       realizationNotes: [],
+      borrowedShellOutcome: null,
+      borrowedShellFailureClass: null,
+      visibleShift: false,
+      nonTrivialShift: false,
       semanticAudit,
       protectedAnchorAudit
     };
@@ -3606,6 +3949,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   const runCandidate = (spec = {}) => {
     let workingText = protectedState.text;
     let passesApplied = [];
+    let rescuePasses = [];
     let currentProfile = sourceProfile;
     let gap = targetGap;
     const candidateDebugPasses = debug ? [] : null;
@@ -3876,7 +4220,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     let fallbackDebug = null;
 
     if (
-      spec.allowFallback &&
+      (spec.allowFallback || shell?.mode === 'borrowed') &&
       (
         !quality.qualityGatePassed ||
         (quality.materialGap && !quality.limitedOpportunity && !hasMaterialStructuralTransfer(changedDimensions))
@@ -3894,7 +4238,8 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
 
       if (forcedWorking !== workingText && forcedWorking.length <= maxLength) {
         workingText = forcedWorking;
-        passesApplied.push('structural-fallback');
+        passesApplied.push('structural-rescue');
+        rescuePasses.push('structural-rescue');
         outputText = previewText(workingText);
         outputProfile = extractCadenceProfile(outputText);
         changedDimensions = collectChangedDimensions(sourceProfile, outputProfile);
@@ -3924,7 +4269,10 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
 
     if (
       !quality.qualityGatePassed &&
-      (quality.notes || []).some((note) => /lexical\/register realization/i.test(note))
+      (
+        shell?.mode === 'borrowed' ||
+        (quality.notes || []).some((note) => /lexical\/register realization/i.test(note))
+      )
     ) {
       const realizedWorking = applyVoiceRealizationTexture(
         workingText,
@@ -3935,7 +4283,54 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
 
       if (realizedWorking !== workingText && realizedWorking.length <= maxLength) {
         workingText = realizedWorking;
-        passesApplied.push('lexical-register-fallback');
+        passesApplied.push('lexical-register-rescue');
+        rescuePasses.push('lexical-register-rescue');
+        outputText = previewText(workingText);
+        outputProfile = extractCadenceProfile(outputText);
+        changedDimensions = collectChangedDimensions(sourceProfile, outputProfile);
+        quality = evaluateTransferQuality({
+          sourceText,
+          outputText,
+          workingText,
+          sourceProfile,
+          targetProfile,
+          targetGap,
+          outputProfile,
+          changedDimensions,
+          protectedState,
+          opportunityProfile
+        });
+      }
+    }
+
+      if (!quality.qualityGatePassed && shell?.mode === 'borrowed') {
+        let connectorWorking = applyDiscourseFrameTexture(
+          workingText,
+          outputProfile,
+          targetProfile,
+        Math.min(1, candidateStrength + 0.18),
+        transferPlan
+      );
+      connectorWorking = applyStanceTexture(
+        connectorWorking,
+        targetProfile,
+        Math.min(1, candidateStrength + 0.18),
+        connectorProfile
+      );
+        connectorWorking = applyFunctionWordTexture(
+          connectorWorking,
+          targetProfile,
+          Math.min(1, candidateStrength + 0.22),
+          connectorProfile,
+          transferPlan
+        );
+        connectorWorking = sanitizeBorrowedShellPathologies(connectorWorking);
+        connectorWorking = finalizeTransformedText(connectorWorking);
+
+      if (connectorWorking !== workingText && connectorWorking.length <= maxLength) {
+        workingText = connectorWorking;
+        passesApplied.push('connector-stance-rescue');
+        rescuePasses.push('connector-stance-rescue');
         outputText = previewText(workingText);
         outputProfile = extractCadenceProfile(outputText);
         changedDimensions = collectChangedDimensions(sourceProfile, outputProfile);
@@ -3962,6 +4357,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       changedDimensions,
       quality,
       passesApplied: [...new Set(passesApplied)],
+      rescuePasses: [...new Set(rescuePasses)],
       score: candidateScore({
         quality,
         outputText,
@@ -4009,6 +4405,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     changedDimensions: beamChangedDimensions,
     quality: beamQuality,
     passesApplied: beamBest.operationHistory || [],
+    rescuePasses: [],
     score: candidateScore({
       quality: beamQuality,
       outputText: beamOutputText,
@@ -4033,13 +4430,30 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   const notes = [...bestCandidate.quality.notes];
   let precomputedAuditBundle = null;
   let precomputedLexicalShiftProfile = null;
+  const rescuePasses = [...new Set(bestCandidate.rescuePasses || [])];
+  let borrowedShellOutcome = shell?.mode === 'borrowed' ? 'subtle' : null;
+  let borrowedShellFailureClass = null;
+  let precomputedVisibleShift = null;
+  let precomputedNonTrivialShift = null;
 
   if (bestCandidate.quality.materialGap && bestCandidate.quality.limitedOpportunity) {
     notes.push('Source offered limited structural rewrite opportunities, so the transfer stayed subtle.');
   }
 
   if (!bestCandidate.quality.qualityGatePassed) {
-    const borrowedFallback = borrowedShellPartialFallback({
+    const rescueSelection = findBorrowedShellRescueCandidate({
+      shell,
+      candidates,
+      sourceText,
+      sourceProfile,
+      targetProfile,
+      targetGap,
+      protectedState,
+      opportunityProfile,
+      ir
+    });
+    const rescueCandidate = rescueSelection.candidate;
+    const borrowedFallback = rescueSelection.fallback || borrowedShellPartialFallback({
       shell,
       bestCandidate,
       sourceText,
@@ -4050,30 +4464,40 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     });
     if (isMaterialCadenceGap(targetGap)) {
       if (borrowedFallback.eligible) {
-        finalText = bestCandidate.outputText;
-        finalProfile = bestCandidate.outputProfile;
-        changedDimensions = [...bestCandidate.changedDimensions];
+        const acceptedCandidate = rescueCandidate || bestCandidate;
+        finalText = acceptedCandidate.outputText;
+        finalProfile = acceptedCandidate.outputProfile;
+        changedDimensions = [...acceptedCandidate.changedDimensions];
         transferClass = 'weak';
+        borrowedShellOutcome = 'partial';
         precomputedAuditBundle = {
           semanticAudit: borrowedFallback.semanticAudit,
           protectedAnchorAudit: borrowedFallback.protectedAnchorAudit,
           outputIR: borrowedFallback.outputIR
         };
         precomputedLexicalShiftProfile = borrowedFallback.lexicalShiftProfile;
+        precomputedVisibleShift = borrowedFallback.visibleShift;
+        precomputedNonTrivialShift = borrowedFallback.nonTrivialShift;
+        rescuePasses.push(...(acceptedCandidate.rescuePasses || []));
+        rescuePasses.push('partial-rescue');
         notes.push('Borrowed shell preserved a retrieval-safe partial cadence shift.');
       } else {
         finalText = sourceText;
         finalProfile = sourceProfile;
         changedDimensions = [];
         transferClass = 'rejected';
+        borrowedShellOutcome = 'rejected';
+        rescuePasses.push('final-rejection');
         notes.push('Transfer fell back to the source text to preserve meaning and readability.');
       }
     } else {
       transferClass = 'weak';
+      borrowedShellOutcome = shell?.mode === 'borrowed' ? 'subtle' : borrowedShellOutcome;
       notes.push('Source and target cadence were already close, so the transfer stayed subtle.');
     }
   } else if (!changedDimensions.length) {
     transferClass = 'weak';
+    borrowedShellOutcome = shell?.mode === 'borrowed' ? 'subtle' : borrowedShellOutcome;
     notes.push('Source and target cadence were already close, so the transfer stayed subtle.');
   } else {
     const lexicalShiftPreview = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
@@ -4081,6 +4505,9 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       lexicalDimensions(changedDimensions).length > 0 ||
       lexicalShiftPreview.swapCount > 0;
     transferClass = hasMaterialStructuralTransfer(changedDimensions) && hasLexicalRealization ? 'structural' : 'weak';
+    if (shell?.mode === 'borrowed') {
+      borrowedShellOutcome = transferClass === 'structural' ? 'structural' : 'subtle';
+    }
     notes.push(`Shifted ${changedDimensions.join(', ')}.`);
   }
 
@@ -4099,6 +4526,8 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     finalProfile = sourceProfile;
     changedDimensions = [];
     transferClass = 'rejected';
+    borrowedShellOutcome = shell?.mode === 'borrowed' ? 'rejected' : borrowedShellOutcome;
+    rescuePasses.push('final-rejection');
     notes.push('Literal-heavy source stayed anchored to preserve protected anchors.');
     lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
     realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
@@ -4125,6 +4554,43 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     protectedAnchorAudit,
     outputIR
   } = precomputedAuditBundle || buildSemanticAuditBundle(ir, finalText, protectedState);
+  const visibleShift = precomputedVisibleShift ?? hasBorrowedShellVisibleShift(
+    sourceText,
+    finalText,
+    changedDimensions,
+    lexicalShiftProfile
+  );
+  const nonTrivialShift = precomputedNonTrivialShift ?? hasBorrowedShellNonTrivialShift(
+    sourceText,
+    finalText,
+    changedDimensions,
+    lexicalShiftProfile
+  );
+
+  if (shell?.mode === 'borrowed') {
+    if (transferClass === 'structural') {
+      borrowedShellOutcome = 'structural';
+    } else if (transferClass === 'rejected') {
+      borrowedShellOutcome = 'rejected';
+    } else if (rescuePasses.includes('partial-rescue') && nonTrivialShift) {
+      borrowedShellOutcome = 'partial';
+    } else {
+      borrowedShellOutcome = 'subtle';
+    }
+
+    borrowedShellFailureClass = inferBorrowedShellFailureClass({
+      shell,
+      targetGap,
+      qualityNotes: notes,
+      protectedAnchorAudit,
+      semanticAudit,
+      visibleShift,
+      nonTrivialShift,
+      literalLocked,
+      transferClass,
+      borrowedShellOutcome
+    });
+  }
 
   const result = {
     text: finalText,
@@ -4135,6 +4601,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     changedDimensions,
     protectedLiteralCount: protectedState.literals.length,
     passesApplied: bestCandidate.passesApplied,
+    rescuePasses: [...new Set(rescuePasses)],
     transferClass,
     qualityGatePassed,
     notes: [...new Set(notes)],
@@ -4144,6 +4611,10 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     semanticRisk,
     lexemeSwaps: lexicalShiftProfile.lexemeSwaps,
     realizationNotes,
+    borrowedShellOutcome,
+    borrowedShellFailureClass,
+    visibleShift,
+    nonTrivialShift,
     semanticAudit,
     protectedAnchorAudit
   };
@@ -4207,6 +4678,226 @@ export function buildCadenceTransferTrace(text = '', shell = {}, options = {}) {
 
 export function applyCadenceToText(text = '', shell = {}) {
   return buildCadenceTransfer(text, shell).text;
+}
+
+export const SWAP_CADENCE_FLAGSHIP_PAIRS = Object.freeze([
+  Object.freeze({ sourceId: 'institutional-memo', donorId: 'recursive-debrief' }),
+  Object.freeze({ sourceId: 'recursive-debrief', donorId: 'institutional-memo' }),
+  Object.freeze({ sourceId: 'ethnographic-fieldnote', donorId: 'operations-brief' }),
+  Object.freeze({ sourceId: 'operations-brief', donorId: 'ethnographic-fieldnote' }),
+  Object.freeze({ sourceId: 'grant-narrative', donorId: 'witness-statement' }),
+  Object.freeze({ sourceId: 'witness-statement', donorId: 'grant-narrative' }),
+  Object.freeze({ sourceId: 'deliberative-hedged', donorId: 'operations-brief' }),
+  Object.freeze({ sourceId: 'operations-brief', donorId: 'deliberative-hedged' }),
+  Object.freeze({ sourceId: 'critical-review', donorId: 'institutional-memo' }),
+  Object.freeze({ sourceId: 'institutional-memo', donorId: 'critical-review' }),
+  Object.freeze({ sourceId: 'grant-narrative', donorId: 'recursive-debrief' }),
+  Object.freeze({ sourceId: 'recursive-debrief', donorId: 'grant-narrative' })
+]);
+
+function normalizeSwapSample(sample = {}, index = 0) {
+  return {
+    id: sample.id || `sample-${index}`,
+    name: sample.name || sample.id || `Sample ${index + 1}`,
+    text: normalizeText(sample.text || ''),
+    intention: sample.intention || ''
+  };
+}
+
+function sortUniqueStrings(values = []) {
+  return [...new Set(values.filter(Boolean))].sort((left, right) => left.localeCompare(right));
+}
+
+function buildSwapBorrowedShell(sample = {}, fromSlot = 'B', strength = 0.82) {
+  const profile = extractCadenceProfile(sample.text || '');
+  return {
+    mode: 'borrowed',
+    label: `borrowed ${sample.name || sample.id || fromSlot} cadence`,
+    profile,
+    mod: cadenceModFromProfile(profile),
+    source: 'swapped',
+    fromSlot,
+    strength
+  };
+}
+
+function buildSwapLaneResult(sourceSample, donorSample, slot = 'A', donorSlot = 'B', strength = 0.82) {
+  const transfer = buildCadenceTransfer(sourceSample.text, buildSwapBorrowedShell(donorSample, donorSlot, strength), {
+    retrieval: true,
+    strength
+  });
+  const trace = transfer.retrievalTrace || {};
+  const semanticAudit = trace.semanticAudit || transfer.semanticAudit || {};
+  const protectedAnchorAudit = trace.protectedAnchorAudit || transfer.protectedAnchorAudit || {};
+
+  return {
+    slot,
+    sourceId: sourceSample.id,
+    donorId: donorSample.id,
+    sourceName: sourceSample.name,
+    donorName: donorSample.name,
+    transferClass: transfer.transferClass || 'native',
+    borrowedShellOutcome: transfer.borrowedShellOutcome || (transfer.transferClass === 'rejected' ? 'rejected' : 'subtle'),
+    borrowedShellFailureClass: transfer.borrowedShellFailureClass || null,
+    realizationTier: transfer.realizationTier || 'none',
+    changedDimensions: [...new Set(transfer.changedDimensions || [])],
+    lexemeSwapFamilies: sortUniqueStrings((transfer.lexemeSwaps || []).map((swap) => swap.family)),
+    rescuePasses: [...new Set(transfer.rescuePasses || [])],
+    visibleShift: Boolean(transfer.visibleShift),
+    nonTrivialShift: Boolean(transfer.nonTrivialShift),
+    propositionCoverage: semanticAudit.propositionCoverage ?? 1,
+    actorCoverage: semanticAudit.actorCoverage ?? 1,
+    actionCoverage: semanticAudit.actionCoverage ?? 1,
+    objectCoverage: semanticAudit.objectCoverage ?? 1,
+    polarityMismatches: semanticAudit.polarityMismatches ?? 0,
+    tenseMismatches: semanticAudit.tenseMismatches ?? 0,
+    protectedAnchorIntegrity: protectedAnchorAudit.protectedAnchorIntegrity ?? semanticAudit.protectedAnchorIntegrity ?? 1,
+    semanticRisk: transfer.semanticRisk ?? 0,
+    notes: [...new Set(transfer.notes || [])],
+    text: transfer.text
+  };
+}
+
+function classifySwapCadencePair(laneA = {}, laneB = {}) {
+  const engagedA = ['structural', 'partial'].includes(laneA.borrowedShellOutcome);
+  const engagedB = ['structural', 'partial'].includes(laneB.borrowedShellOutcome);
+
+  if (laneA.borrowedShellOutcome === 'rejected' && laneB.borrowedShellOutcome === 'rejected') {
+    return 'both-rejected';
+  }
+
+  if (engagedA && engagedB) {
+    return 'bilateral-engaged';
+  }
+
+  if (!laneA.nonTrivialShift && !laneB.nonTrivialShift) {
+    return 'surface-close';
+  }
+
+  return 'one-sided';
+}
+
+function buildSwapCadencePairReport(sourceSample, donorSample, strength = 0.82) {
+  const laneA = buildSwapLaneResult(sourceSample, donorSample, 'A', 'B', strength);
+  const laneB = buildSwapLaneResult(donorSample, sourceSample, 'B', 'A', strength);
+  const classification = classifySwapCadencePair(laneA, laneB);
+  const failureFamilyTags = sortUniqueStrings([
+    ['structural', 'partial'].includes(laneA.borrowedShellOutcome) ? null : laneA.borrowedShellFailureClass,
+    ['structural', 'partial'].includes(laneB.borrowedShellOutcome) ? null : laneB.borrowedShellFailureClass
+  ]);
+  const atLeastOneStructural =
+    laneA.borrowedShellOutcome === 'structural' ||
+    laneB.borrowedShellOutcome === 'structural';
+  const flagshipPass =
+    laneA.borrowedShellOutcome !== 'rejected' &&
+    laneB.borrowedShellOutcome !== 'rejected' &&
+    ['structural', 'partial'].includes(laneA.borrowedShellOutcome) &&
+    ['structural', 'partial'].includes(laneB.borrowedShellOutcome) &&
+    atLeastOneStructural &&
+    classification === 'bilateral-engaged';
+
+  return {
+    id: `${sourceSample.id}__${donorSample.id}`,
+    sourceId: sourceSample.id,
+    donorId: donorSample.id,
+    laneA,
+    laneB,
+    pairAudit: {
+      classification,
+      flagshipPass,
+      atLeastOneStructural,
+      bilateralEngaged: classification === 'bilateral-engaged',
+      oneSided: classification === 'one-sided',
+      bothRejected: classification === 'both-rejected',
+      surfaceClose: classification === 'surface-close'
+    },
+    failureFamilyTags,
+    visibleShiftSummary: {
+      laneAVisibleShift: laneA.visibleShift,
+      laneBVisibleShift: laneB.visibleShift,
+      laneANonTrivialShift: laneA.nonTrivialShift,
+      laneBNonTrivialShift: laneB.nonTrivialShift,
+      bilateralVisibleShift: laneA.visibleShift && laneB.visibleShift,
+      bilateralNonTrivialShift: laneA.nonTrivialShift && laneB.nonTrivialShift
+    },
+    semanticAuditSummary: {
+      propositionCoverageMin: round3(Math.min(laneA.propositionCoverage, laneB.propositionCoverage)),
+      actorCoverageMin: round3(Math.min(laneA.actorCoverage, laneB.actorCoverage)),
+      actionCoverageMin: round3(Math.min(laneA.actionCoverage, laneB.actionCoverage)),
+      objectCoverageMin: round3(Math.min(laneA.objectCoverage, laneB.objectCoverage)),
+      polarityMismatchesMax: Math.max(laneA.polarityMismatches, laneB.polarityMismatches),
+      tenseMismatchesMax: Math.max(laneA.tenseMismatches, laneB.tenseMismatches),
+      protectedAnchorIntegrityMin: round3(Math.min(laneA.protectedAnchorIntegrity, laneB.protectedAnchorIntegrity)),
+      semanticRiskMax: round3(Math.max(laneA.semanticRisk, laneB.semanticRisk))
+    }
+  };
+}
+
+export function buildSwapCadenceMatrix(sampleLibrary = [], options = {}) {
+  const samples = (sampleLibrary || [])
+    .map((sample, index) => normalizeSwapSample(sample, index))
+    .filter((sample) => sample.text);
+  const samplesById = Object.freeze(samples.reduce((acc, sample) => {
+    acc[sample.id] = sample;
+    return acc;
+  }, {}));
+  const strength = clamp(Number(options.strength ?? 0.82), 0, 1);
+  const flagshipPairs = (options.flagshipPairs || SWAP_CADENCE_FLAGSHIP_PAIRS)
+    .map((pair) => ({
+      sourceId: pair.sourceId,
+      donorId: pair.donorId
+    }))
+    .filter((pair) => samplesById[pair.sourceId] && samplesById[pair.donorId] && pair.sourceId !== pair.donorId);
+  const allPairs = [];
+
+  for (const sourceSample of samples) {
+    for (const donorSample of samples) {
+      if (sourceSample.id === donorSample.id) {
+        continue;
+      }
+
+      allPairs.push({
+        sourceId: sourceSample.id,
+        donorId: donorSample.id
+      });
+    }
+  }
+
+  const fullMatrix = allPairs.map((pair) =>
+    buildSwapCadencePairReport(samplesById[pair.sourceId], samplesById[pair.donorId], strength)
+  );
+  const fullMatrixById = fullMatrix.reduce((acc, report) => {
+    acc[report.id] = report;
+    return acc;
+  }, {});
+  const flagshipReports = flagshipPairs
+    .map((pair) => fullMatrixById[`${pair.sourceId}__${pair.donorId}`])
+    .filter(Boolean);
+  const failureFamilyCounts = fullMatrix.reduce((acc, report) => {
+    for (const tag of report.failureFamilyTags) {
+      acc[tag] = (acc[tag] || 0) + 1;
+    }
+    return acc;
+  }, {});
+  const summary = {
+    caseCount: fullMatrix.length,
+    flagshipCount: flagshipReports.length,
+    bilateralEngaged: fullMatrix.filter((report) => report.pairAudit.bilateralEngaged).length,
+    oneSided: fullMatrix.filter((report) => report.pairAudit.oneSided).length,
+    bothRejected: fullMatrix.filter((report) => report.pairAudit.bothRejected).length,
+    surfaceClose: fullMatrix.filter((report) => report.pairAudit.surfaceClose).length,
+    flagshipPassCount: flagshipReports.filter((report) => report.pairAudit.flagshipPass).length,
+    flagshipCaseCount: flagshipReports.length,
+    flagshipAllPassed: flagshipReports.length > 0 && flagshipReports.every((report) => report.pairAudit.flagshipPass),
+    failureFamilyCounts
+  };
+
+  return {
+    flagshipPairs,
+    flagshipReports,
+    fullMatrix,
+    summary
+  };
 }
 
 export function compareTexts(a, b, options = {}) {
@@ -4936,6 +5627,7 @@ function summarizeCandidate(candidate = {}) {
     spec: candidate.spec || 'selected',
     score: round3(candidate.score || 0),
     passesApplied: candidate.passesApplied || [],
+    rescuePasses: candidate.rescuePasses || [],
     changedDimensions: candidate.changedDimensions || [],
     qualityGatePassed: Boolean(candidate.quality?.qualityGatePassed),
     notes: candidate.quality?.notes || []
@@ -4979,21 +5671,31 @@ function buildRetrievalTrace({
     finalRealization: {
       text: finalText,
       transferClass: result.transferClass,
+      borrowedShellOutcome: result.borrowedShellOutcome,
+      borrowedShellFailureClass: result.borrowedShellFailureClass,
       realizationTier: result.realizationTier,
       changedDimensions: result.changedDimensions || [],
       lexemeSwaps: result.lexemeSwaps || [],
-      semanticRisk: result.semanticRisk
+      semanticRisk: result.semanticRisk,
+      rescuePasses: result.rescuePasses || [],
+      visibleShift: Boolean(result.visibleShift),
+      nonTrivialShift: Boolean(result.nonTrivialShift)
     },
     semanticAudit,
     protectedAnchorAudit,
     realizedIR: summarizeIR(outputIR),
     realizationSummary: {
       transferClass: result.transferClass,
+      borrowedShellOutcome: result.borrowedShellOutcome,
+      borrowedShellFailureClass: result.borrowedShellFailureClass,
       realizationTier: result.realizationTier,
       changedDimensions: result.changedDimensions || [],
       lexemeSwaps: result.lexemeSwaps || [],
       semanticRisk: result.semanticRisk,
-      realizationNotes: result.realizationNotes || []
+      realizationNotes: result.realizationNotes || [],
+      rescuePasses: result.rescuePasses || [],
+      visibleShift: Boolean(result.visibleShift),
+      nonTrivialShift: Boolean(result.nonTrivialShift)
     }
   };
 }

@@ -181,6 +181,7 @@
           "baseline-function-word",
           "planned-sentence-merge"
         ],
+        "rescuePasses": [],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
@@ -201,6 +202,7 @@
             "merge-pairs",
             "clause-texture"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -222,6 +224,7 @@
             "baseline-function-word",
             "planned-sentence-merge"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -243,6 +246,7 @@
             "baseline-function-word",
             "planned-sentence-merge"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -264,6 +268,7 @@
             "baseline-function-word",
             "planned-sentence-merge"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -285,6 +290,7 @@
             "baseline-function-word",
             "planned-sentence-merge"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -302,10 +308,17 @@
     "finalRealization": {
       "text": "Because the room stayed loud, I kept the note. But the line dragged. So I left this mark behind.",
       "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
       "realizationTier": "none",
       "changedDimensions": [],
       "lexemeSwaps": [],
-      "semanticRisk": 0
+      "semanticRisk": 0,
+      "rescuePasses": [
+        "final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     },
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -439,11 +452,18 @@
     },
     "realizationSummary": {
       "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
       "realizationTier": "none",
       "changedDimensions": [],
       "lexemeSwaps": [],
       "semanticRisk": 0,
-      "realizationNotes": []
+      "realizationNotes": [],
+      "rescuePasses": [
+        "final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     }
   },
   "semanticContract": {

@@ -165,11 +165,14 @@
     "planSummary": {
       "transferMode": "expand",
       "structuralOperationsSelected": [
-        "merge-pairs",
-        "clause-texture"
+        "baseline-merge",
+        "planned-sentence-merge",
+        "clause-join-split",
+        "structural-rescue"
       ],
       "lexicalRegisterOperationsSelected": [
-        "contraction"
+        "baseline-voice-realization",
+        "connector-stance-rescue"
       ],
       "connectorStrategy": "additive",
       "contractionStrategy": "increase",
@@ -207,27 +210,30 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "ir-beam-search",
-        "score": 123.012,
+        "spec": "mixed-structural",
+        "score": 200.696,
         "passesApplied": [
-          "merge-pairs",
-          "clause-texture",
-          "contraction"
+          "baseline-merge",
+          "baseline-voice-realization",
+          "planned-sentence-merge",
+          "clause-join-split",
+          "cleanup-restore",
+          "structural-rescue",
+          "connector-stance-rescue"
+        ],
+        "rescuePasses": [
+          "structural-rescue",
+          "connector-stance-rescue"
         ],
         "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
           "sentence-spread",
           "connector-stance",
+          "lexical-register",
           "content-word-complexity",
-          "modifier-density",
-          "punctuation-shape"
+          "modifier-density"
         ],
-        "qualityGatePassed": false,
-        "notes": [
-          "Banned connector stack detected: \\bthough\\s+if\\b",
-          "Banned connector stack detected: \\bhonestly[,;]?\\s+and\\b"
-        ]
+        "qualityGatePassed": true,
+        "notes": []
       },
       "candidates": [
         {
@@ -238,6 +244,7 @@
             "clause-texture",
             "contraction"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -255,104 +262,150 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 64.874,
+          "score": 200.696,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "planned-sentence-merge",
             "clause-join-split",
             "cleanup-restore",
-            "structural-fallback"
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-spread",
             "connector-stance",
+            "lexical-register",
             "content-word-complexity",
             "modifier-density"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Banned connector stack detected: \\bthough\\s+if\\b"
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "merge-heavy",
-          "score": 64.874,
+          "score": 200.696,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "planned-sentence-merge",
             "clause-join-split",
             "cleanup-restore",
-            "structural-fallback"
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-spread",
             "connector-stance",
+            "lexical-register",
             "content-word-complexity",
             "modifier-density"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Banned connector stack detected: \\bthough\\s+if\\b"
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 112.674,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "planned-sentence-merge",
-            "clause-join-split",
-            "cleanup-restore"
-          ],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "content-word-complexity",
-            "modifier-density",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Banned connector stack detected: \\bthough\\s+if\\b",
-            "Orphan fragment detected: \"Though honestly.\""
-          ]
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 64.874,
+          "score": 200.696,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "planned-sentence-merge",
             "clause-join-split",
             "cleanup-restore",
-            "structural-fallback"
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-spread",
             "connector-stance",
+            "lexical-register",
             "content-word-complexity",
             "modifier-density"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Banned connector stack detected: \\bthough\\s+if\\b"
-          ]
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 200.696,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "planned-sentence-merge",
+            "clause-join-split",
+            "cleanup-restore",
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
         }
       ]
     },
     "finalRealization": {
-      "text": "I left early though if the train arrived on time. Honestly, and also the signal worked. But because the door was unlocked, I stayed.",
-      "transferClass": "rejected",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
-      "semanticRisk": 0
+      "text": "I departed early if the train arrived on time, though honestly. And also the sign worked, because the doorway was unlocked. I stayed.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "content-word-complexity",
+        "modifier-density"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "leave",
+          "from": "left",
+          "to": "departed",
+          "kind": "lexeme"
+        },
+        {
+          "family": "door",
+          "from": "door",
+          "to": "doorway",
+          "kind": "lexeme"
+        },
+        {
+          "family": "signal",
+          "from": "signal",
+          "to": "sign",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0,
+      "rescuePasses": [
+        "structural-rescue",
+        "connector-stance-rescue"
+      ],
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -360,7 +413,7 @@
       "actionCoverage": 1,
       "objectCoverage": 1,
       "polarityMismatches": 0,
-      "tenseMismatches": 0,
+      "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -371,7 +424,7 @@
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
-          "tenseMismatch": 0,
+          "tenseMismatch": 1,
           "bagScore": 1,
           "globalBagScore": 0.286
         },
@@ -401,7 +454,7 @@
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s0c2",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -413,7 +466,7 @@
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s2c1",
+          "matchedClauseId": "s1c1+s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -425,7 +478,7 @@
         }
       ],
       "sourceClauseCount": 5,
-      "outputClauseCount": 5
+      "outputClauseCount": 6
     },
     "protectedAnchorAudit": {
       "totalAnchors": 0,
@@ -436,27 +489,27 @@
     "realizedIR": {
       "metadata": {
         "sentenceCount": 3,
-        "clauseCount": 5,
+        "clauseCount": 6,
         "literalSpans": []
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "I left early though if the train arrived on time",
+          "raw": "I departed early if the train arrived on time, though honestly",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "I left early",
+              "text": "I departed early",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "left",
+              "tenseAspect": "past",
+              "propositionHead": "departed",
               "actor": "I",
-              "action": "left",
-              "object": "early",
+              "action": "",
+              "object": "",
               "modifiers": [
                 "early"
               ],
@@ -464,9 +517,9 @@
             },
             {
               "id": "s0c1",
-              "text": "if the train arrived on time",
+              "text": "the train arrived on time",
               "relationToPrev": "additive",
-              "clauseType": "subordinate",
+              "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "train",
@@ -475,29 +528,20 @@
               "object": "",
               "modifiers": [],
               "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "Honestly, and also the signal worked",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
+            },
             {
-              "id": "s1c0",
-              "text": "Honestly, and also the signal worked",
-              "relationToPrev": "start",
+              "id": "s0c2",
+              "text": "honestly",
+              "relationToPrev": "clarifying",
               "clauseType": "parenthetical",
               "polarity": "positive",
-              "tenseAspect": "past",
+              "tenseAspect": "present",
               "propositionHead": "honestly",
-              "actor": "the signal",
+              "actor": "",
               "action": "",
               "object": "",
               "modifiers": [
-                "honestly",
-                "signal"
+                "honestly"
               ],
               "hedgeMarkers": [
                 "stance"
@@ -506,36 +550,58 @@
           ]
         },
         {
-          "id": "s2",
-          "raw": "But because the door was unlocked, I stayed.",
-          "rhetoricalRole": "contrastive",
+          "id": "s1",
+          "raw": "And also the sign worked, because the doorway was unlocked",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s2c0",
-              "text": "But",
+              "id": "s1c0",
+              "text": "And also the sign worked",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "",
-              "actor": "",
+              "tenseAspect": "past",
+              "propositionHead": "sign",
+              "actor": "the sign",
               "action": "",
               "object": "",
               "modifiers": [],
               "hedgeMarkers": []
             },
             {
-              "id": "s2c1",
-              "text": "the door was unlocked, I stayed",
+              "id": "s1c1",
+              "text": "the doorway was unlocked",
               "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "was",
-              "actor": "the door",
+              "actor": "the doorway",
               "action": "was",
-              "object": "unlocked stayed",
+              "object": "unlocked",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "I stayed.",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "I stayed",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "stayed",
+              "actor": "I",
+              "action": "",
+              "object": "",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -544,19 +610,65 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "rejected",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "content-word-complexity",
+        "modifier-density"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "leave",
+          "from": "left",
+          "to": "departed",
+          "kind": "lexeme"
+        },
+        {
+          "family": "door",
+          "from": "door",
+          "to": "doorway",
+          "kind": "lexeme"
+        },
+        {
+          "family": "signal",
+          "from": "signal",
+          "to": "sign",
+          "kind": "lexeme"
+        }
+      ],
       "semanticRisk": 0,
-      "realizationNotes": []
+      "realizationNotes": [
+        "3 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, content-word-complexity, modifier-density."
+      ],
+      "rescuePasses": [
+        "structural-rescue",
+        "connector-stance-rescue"
+      ],
+      "visibleShift": true,
+      "nonTrivialShift": true
     }
   },
   "semanticContract": {
-    "transferClass": "rejected",
-    "realizationTier": "none",
-    "changedDimensions": [],
-    "lexemeSwapFamilies": [],
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "connector-stance",
+      "content-word-complexity",
+      "lexical-register",
+      "modifier-density",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [
+      "door",
+      "leave",
+      "signal"
+    ],
     "relationInventory": [
       "additive:2",
       "causal:1",
@@ -566,11 +678,14 @@
       "temporal:0"
     ],
     "structuralOperations": [
-      "clause-texture",
-      "merge-pairs"
+      "baseline-merge",
+      "clause-join-split",
+      "planned-sentence-merge",
+      "structural-rescue"
     ],
     "lexicalOperations": [
-      "contraction"
+      "baseline-voice-realization",
+      "connector-stance-rescue"
     ],
     "connectorStrategy": "additive",
     "contractionStrategy": "increase",
@@ -579,7 +694,7 @@
     "actionCoverage": 1,
     "objectCoverage": 1,
     "polarityMismatches": 0,
-    "tenseMismatches": 0,
+    "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1
   }
 }

@@ -183,6 +183,7 @@
           "connector-stance-lexicon",
           "contraction-auxiliary"
         ],
+        "rescuePasses": [],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
@@ -204,6 +205,7 @@
             "baseline-floor",
             "clause-texture"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -227,6 +229,7 @@
             "connector-stance-lexicon",
             "contraction-auxiliary"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -251,6 +254,7 @@
             "connector-stance-lexicon",
             "contraction-auxiliary"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -275,6 +279,7 @@
             "connector-stance-lexicon",
             "contraction-auxiliary"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -299,6 +304,7 @@
             "connector-stance-lexicon",
             "contraction-auxiliary"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -317,6 +323,8 @@
     "finalRealization": {
       "text": "Honestly. I was not trying to tell it. I just kept going over the points when I got to the part where I should have headed out. I remembered one more point that shifted why I stayed.",
       "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
@@ -348,7 +356,10 @@
           "kind": "lexeme"
         }
       ],
-      "semanticRisk": 0
+      "semanticRisk": 0,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -524,6 +535,8 @@
     },
     "realizationSummary": {
       "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
@@ -559,7 +572,10 @@
       "realizationNotes": [
         "3 lexical family swaps landed.",
         "Register shift surfaced through lexical-register, abstraction-posture."
-      ]
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     }
   },
   "semanticContract": {

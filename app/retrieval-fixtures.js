@@ -1,6 +1,6 @@
 (function () {
   window.TCP_RETRIEVAL_FIXTURES = {
-  "generatedAt": "2026-03-21T05:29:01.802Z",
+  "generatedAt": "2026-03-27T20:15:36.380Z",
   "cases": {
     "screenshot_reference_under_probe": {
       "id": "screenshot_reference_under_probe",
@@ -174,10 +174,18 @@
         "planSummary": {
           "transferMode": "compress",
           "structuralOperationsSelected": [
-            "clause-texture"
+            "baseline-split",
+            "planned-sentence-split",
+            "sentence-structure",
+            "clause-join-split",
+            "structural-rescue"
           ],
           "lexicalRegisterOperationsSelected": [
-            "contraction"
+            "baseline-phrase",
+            "baseline-voice-realization",
+            "connector-stance-lexicon",
+            "punctuation-finish",
+            "connector-stance-rescue"
           ],
           "connectorStrategy": "clarifying",
           "contractionStrategy": "increase",
@@ -215,12 +223,24 @@
         },
         "candidateSummary": {
           "selected": {
-            "spec": "ir-beam-search",
-            "score": 265.386,
+            "spec": "mixed-structural",
+            "score": 279.896,
             "passesApplied": [
-              "baseline-floor",
-              "clause-texture",
-              "contraction"
+              "baseline-split",
+              "baseline-phrase",
+              "baseline-voice-realization",
+              "planned-sentence-split",
+              "sentence-structure",
+              "clause-join-split",
+              "connector-stance-lexicon",
+              "punctuation-finish",
+              "cleanup-restore",
+              "structural-rescue",
+              "connector-stance-rescue"
+            ],
+            "rescuePasses": [
+              "structural-rescue",
+              "connector-stance-rescue"
             ],
             "changedDimensions": [
               "sentence-mean",
@@ -245,6 +265,7 @@
                 "clause-texture",
                 "contraction"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -261,7 +282,7 @@
             },
             {
               "spec": "mixed-structural",
-              "score": 168.81,
+              "score": 279.896,
               "passesApplied": [
                 "baseline-split",
                 "baseline-phrase",
@@ -272,7 +293,12 @@
                 "connector-stance-lexicon",
                 "punctuation-finish",
                 "cleanup-restore",
-                "structural-fallback"
+                "structural-rescue",
+                "connector-stance-rescue"
+              ],
+              "rescuePasses": [
+                "structural-rescue",
+                "connector-stance-rescue"
               ],
               "changedDimensions": [
                 "sentence-mean",
@@ -285,15 +311,12 @@
                 "abstraction-posture",
                 "punctuation-shape"
               ],
-              "qualityGatePassed": false,
-              "notes": [
-                "Banned connector stack detected: \\bhonestly[,;]?\\s+and\\b",
-                "Banned connector stack detected: \\bhonestly[;]\\s+and\\b"
-              ]
+              "qualityGatePassed": true,
+              "notes": []
             },
             {
               "spec": "split-heavy",
-              "score": 168.81,
+              "score": 279.896,
               "passesApplied": [
                 "baseline-split",
                 "baseline-phrase",
@@ -304,7 +327,12 @@
                 "connector-stance-lexicon",
                 "punctuation-finish",
                 "cleanup-restore",
-                "structural-fallback"
+                "structural-rescue",
+                "connector-stance-rescue"
+              ],
+              "rescuePasses": [
+                "structural-rescue",
+                "connector-stance-rescue"
               ],
               "changedDimensions": [
                 "sentence-mean",
@@ -317,15 +345,12 @@
                 "abstraction-posture",
                 "punctuation-shape"
               ],
-              "qualityGatePassed": false,
-              "notes": [
-                "Banned connector stack detected: \\bhonestly[,;]?\\s+and\\b",
-                "Banned connector stack detected: \\bhonestly[;]\\s+and\\b"
-              ]
+              "qualityGatePassed": true,
+              "notes": []
             },
             {
               "spec": "connector-stance-heavy",
-              "score": 167.94,
+              "score": 279.026,
               "passesApplied": [
                 "baseline-split",
                 "baseline-phrase",
@@ -334,7 +359,11 @@
                 "sentence-structure",
                 "clause-join-split",
                 "connector-stance-lexicon",
-                "cleanup-restore"
+                "cleanup-restore",
+                "connector-stance-rescue"
+              ],
+              "rescuePasses": [
+                "connector-stance-rescue"
               ],
               "changedDimensions": [
                 "sentence-mean",
@@ -347,14 +376,12 @@
                 "abstraction-posture",
                 "punctuation-shape"
               ],
-              "qualityGatePassed": false,
-              "notes": [
-                "Banned connector stack detected: \\bhonestly[,;]?\\s+and\\b"
-              ]
+              "qualityGatePassed": true,
+              "notes": []
             },
             {
               "spec": "lexical-register-heavy",
-              "score": 167.94,
+              "score": 279.026,
               "passesApplied": [
                 "baseline-split",
                 "baseline-phrase",
@@ -363,7 +390,11 @@
                 "sentence-structure",
                 "clause-join-split",
                 "connector-stance-lexicon",
-                "cleanup-restore"
+                "cleanup-restore",
+                "connector-stance-rescue"
+              ],
+              "rescuePasses": [
+                "connector-stance-rescue"
               ],
               "changedDimensions": [
                 "sentence-mean",
@@ -376,16 +407,16 @@
                 "abstraction-posture",
                 "punctuation-shape"
               ],
-              "qualityGatePassed": false,
-              "notes": [
-                "Banned connector stack detected: \\bhonestly[,;]?\\s+and\\b"
-              ]
+              "qualityGatePassed": true,
+              "notes": []
             }
           ]
         },
         "finalRealization": {
-          "text": "Honestly. I wasn't trying to tell it. I just kept going over the points when I got to the part where I should have headed out. I remembered one more point that shifted why I stayed. By the time I wrapped up. I had deployed three qualifiers. Two apologies. And the same phrase twice. That's apparently what I do when I'm stalling to tell the tough part out loud.",
+          "text": "Honestly; I wasn't trying to tell it; and I just kept going over the points when I got to the part where I should have headed out. I remembered one more point that shifted why I stayed. By the time I wrapped up. I had deployed three qualifiers. Two apologies. And the same phrase twice. That's apparently what I do when I'm stalling to tell the tough part out loud.",
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -448,13 +479,19 @@
               "kind": "lexeme"
             }
           ],
-          "semanticRisk": 0.12
+          "semanticRisk": 0,
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
+          "visibleShift": true,
+          "nonTrivialShift": true
         },
         "semanticAudit": {
           "propositionCoverage": 0.944,
           "actorCoverage": 1,
           "actionCoverage": 0.93,
-          "objectCoverage": 0.87,
+          "objectCoverage": 0.86,
           "polarityMismatches": 0,
           "tenseMismatches": 1,
           "protectedAnchorIntegrity": 1,
@@ -473,31 +510,31 @@
             },
             {
               "sourceClauseId": "s1c0",
-              "matchedClauseId": "s2c0",
+              "matchedClauseId": "s0c2",
+              "propositionCoverage": 1,
+              "actorCoverage": 1,
+              "actionCoverage": 1,
+              "objectCoverage": 0.75,
+              "polarityMismatch": 0,
+              "tenseMismatch": 1,
+              "bagScore": 0.125,
+              "globalBagScore": 0.04
+            },
+            {
+              "sourceClauseId": "s1c1",
+              "matchedClauseId": "s0c2+s1c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
               "objectCoverage": 0.75,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 0.167,
-              "globalBagScore": 0.037
-            },
-            {
-              "sourceClauseId": "s1c1",
-              "matchedClauseId": "s2c1",
-              "propositionCoverage": 1,
-              "actorCoverage": 1,
-              "actionCoverage": 1,
-              "objectCoverage": 0.8,
-              "polarityMismatch": 0,
-              "tenseMismatch": 1,
-              "bagScore": 0.375,
-              "globalBagScore": 0.192
+              "bagScore": 0.308,
+              "globalBagScore": 0.16
             },
             {
               "sourceClauseId": "s2c0",
-              "matchedClauseId": "s4c0+s5c0",
+              "matchedClauseId": "s2c0+s3c0",
               "propositionCoverage": 0.7200000000000001,
               "actorCoverage": 1,
               "actionCoverage": 0.6480000000000001,
@@ -505,11 +542,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0.444,
-              "globalBagScore": 0.185
+              "globalBagScore": 0.2
             },
             {
               "sourceClauseId": "s2c1",
-              "matchedClauseId": "s8c1",
+              "matchedClauseId": "s6c1",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -517,11 +554,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.2
+              "globalBagScore": 0.217
             }
           ],
           "sourceClauseCount": 5,
-          "outputClauseCount": 11
+          "outputClauseCount": 10
         },
         "protectedAnchorAudit": {
           "totalAnchors": 0,
@@ -531,15 +568,15 @@
         },
         "realizedIR": {
           "metadata": {
-            "sentenceCount": 9,
-            "clauseCount": 11,
+            "sentenceCount": 7,
+            "clauseCount": 10,
             "literalSpans": []
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "Honestly",
-              "rhetoricalRole": "clarifying",
+              "raw": "Honestly; I wasn't trying to tell it; and I just kept going over the points when I got to the part where I should have headed out",
+              "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
@@ -559,19 +596,11 @@
                   "hedgeMarkers": [
                     "stance"
                   ]
-                }
-              ]
-            },
-            {
-              "id": "s1",
-              "raw": "I wasn't trying to tell it",
-              "rhetoricalRole": "additive",
-              "terminalPunct": ".",
-              "clauses": [
+                },
                 {
-                  "id": "s1c0",
+                  "id": "s0c1",
                   "text": "I wasn't trying to tell it",
-                  "relationToPrev": "start",
+                  "relationToPrev": "additive",
                   "clauseType": "main",
                   "polarity": "negative",
                   "tenseAspect": "present",
@@ -581,55 +610,33 @@
                   "object": "",
                   "modifiers": [],
                   "hedgeMarkers": []
-                }
-              ]
-            },
-            {
-              "id": "s2",
-              "raw": "I just kept going over the points when I got to the part where I should have headed out",
-              "rhetoricalRole": "temporal",
-              "terminalPunct": ".",
-              "clauses": [
-                {
-                  "id": "s2c0",
-                  "text": "I just kept going over the points",
-                  "relationToPrev": "start",
-                  "clauseType": "fragment",
-                  "polarity": "positive",
-                  "tenseAspect": "present",
-                  "propositionHead": "kept",
-                  "actor": "I",
-                  "action": "kept",
-                  "object": "going over points",
-                  "modifiers": [],
-                  "hedgeMarkers": [
-                    "minimization"
-                  ]
                 },
                 {
-                  "id": "s2c1",
-                  "text": "I got to the part where I should have headed out",
+                  "id": "s0c2",
+                  "text": "and I just kept going over the points when I got to the part where I should have headed out",
                   "relationToPrev": "additive",
                   "clauseType": "main",
                   "polarity": "positive",
                   "tenseAspect": "perfect",
-                  "propositionHead": "got",
+                  "propositionHead": "kept",
                   "actor": "I",
-                  "action": "got",
-                  "object": "part where headed out",
+                  "action": "kept",
+                  "object": "going over points got part",
                   "modifiers": [],
-                  "hedgeMarkers": []
+                  "hedgeMarkers": [
+                    "minimization"
+                  ]
                 }
               ]
             },
             {
-              "id": "s3",
+              "id": "s1",
               "raw": "I remembered one more point that shifted why I stayed",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s3c0",
+                  "id": "s1c0",
                   "text": "I remembered one more point that shifted why I stayed",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
@@ -645,13 +652,13 @@
               ]
             },
             {
-              "id": "s4",
+              "id": "s2",
               "raw": "By the time I wrapped up",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s4c0",
+                  "id": "s2c0",
                   "text": "By the time I wrapped up",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
@@ -667,13 +674,13 @@
               ]
             },
             {
-              "id": "s5",
+              "id": "s3",
               "raw": "I had deployed three qualifiers",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s5c0",
+                  "id": "s3c0",
                   "text": "I had deployed three qualifiers",
                   "relationToPrev": "start",
                   "clauseType": "main",
@@ -689,13 +696,13 @@
               ]
             },
             {
-              "id": "s6",
+              "id": "s4",
               "raw": "Two apologies",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s6c0",
+                  "id": "s4c0",
                   "text": "Two apologies",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
@@ -711,13 +718,13 @@
               ]
             },
             {
-              "id": "s7",
+              "id": "s5",
               "raw": "And the same phrase twice",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s7c0",
+                  "id": "s5c0",
                   "text": "And the same phrase twice",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
@@ -733,13 +740,13 @@
               ]
             },
             {
-              "id": "s8",
+              "id": "s6",
               "raw": "That's apparently what I do when I'm stalling to tell the tough part out loud.",
               "rhetoricalRole": "temporal",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s8c0",
+                  "id": "s6c0",
                   "text": "That's apparently what I do",
                   "relationToPrev": "start",
                   "clauseType": "main",
@@ -757,7 +764,7 @@
                   ]
                 },
                 {
-                  "id": "s8c1",
+                  "id": "s6c1",
                   "text": "I'm stalling to tell the tough part out loud",
                   "relationToPrev": "additive",
                   "clauseType": "main",
@@ -776,6 +783,8 @@
         },
         "realizationSummary": {
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -838,11 +847,17 @@
               "kind": "lexeme"
             }
           ],
-          "semanticRisk": 0.12,
+          "semanticRisk": 0,
           "realizationNotes": [
             "8 lexical family swaps landed.",
             "Register shift surfaced through lexical-register, modifier-density, abstraction-posture."
-          ]
+          ],
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
+          "visibleShift": true,
+          "nonTrivialShift": true
         }
       },
       "semanticContract": {
@@ -878,17 +893,25 @@
           "temporal:1"
         ],
         "structuralOperations": [
-          "clause-texture"
+          "baseline-split",
+          "clause-join-split",
+          "planned-sentence-split",
+          "sentence-structure",
+          "structural-rescue"
         ],
         "lexicalOperations": [
-          "contraction"
+          "baseline-phrase",
+          "baseline-voice-realization",
+          "connector-stance-lexicon",
+          "connector-stance-rescue",
+          "punctuation-finish"
         ],
         "connectorStrategy": "clarifying",
         "contractionStrategy": "increase",
         "propositionCoverage": 0.944,
         "actorCoverage": 1,
         "actionCoverage": 0.93,
-        "objectCoverage": 0.87,
+        "objectCoverage": 0.86,
         "polarityMismatches": 0,
         "tenseMismatches": 1,
         "protectedAnchorIntegrity": 1
@@ -1129,6 +1152,7 @@
               "baseline-voice-realization",
               "connector-stance-lexicon"
             ],
+            "rescuePasses": [],
             "changedDimensions": [
               "sentence-mean",
               "sentence-count",
@@ -1151,6 +1175,7 @@
                 "baseline-floor",
                 "clause-texture"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -1174,6 +1199,7 @@
                 "baseline-voice-realization",
                 "connector-stance-lexicon"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -1197,6 +1223,7 @@
                 "baseline-voice-realization",
                 "connector-stance-lexicon"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -1220,6 +1247,7 @@
                 "baseline-voice-realization",
                 "connector-stance-lexicon"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -1243,6 +1271,7 @@
                 "baseline-voice-realization",
                 "connector-stance-lexicon"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -1262,6 +1291,8 @@
         "finalRealization": {
           "text": "Apparently, if you are still out, bring the charger and come through the side doorway, it sticks, so lean on it. If nobody hears you right away, pause a moment and knock again; I am in back unloading boxes, and I probably will not catch the first try.",
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -1294,7 +1325,10 @@
               "kind": "lexeme"
             }
           ],
-          "semanticRisk": 0
+          "semanticRisk": 0,
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         },
         "semanticAudit": {
           "propositionCoverage": 0.929,
@@ -1476,6 +1510,8 @@
         },
         "realizationSummary": {
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -1512,7 +1548,10 @@
           "realizationNotes": [
             "3 lexical family swaps landed.",
             "Register shift surfaced through lexical-register, content-word-complexity, modifier-density, directness."
-          ]
+          ],
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         }
       },
       "semanticContract": {
@@ -1742,6 +1781,7 @@
               "baseline-voice-realization",
               "connector-stance-lexicon"
             ],
+            "rescuePasses": [],
             "changedDimensions": [
               "sentence-mean",
               "sentence-count",
@@ -1764,6 +1804,7 @@
                 "merge-pairs",
                 "clause-texture"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -1786,6 +1827,7 @@
                 "baseline-voice-realization",
                 "connector-stance-lexicon"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -1808,6 +1850,7 @@
                 "baseline-voice-realization",
                 "connector-stance-lexicon"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -1830,6 +1873,7 @@
                 "baseline-voice-realization",
                 "connector-stance-lexicon"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -1852,6 +1896,7 @@
                 "baseline-voice-realization",
                 "connector-stance-lexicon"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -1871,6 +1916,8 @@
         "finalRealization": {
           "text": "Apparently, door sticks; knock twice, and I am in back.",
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -1884,7 +1931,10 @@
             "punctuation-shape"
           ],
           "lexemeSwaps": [],
-          "semanticRisk": 0.1
+          "semanticRisk": 0.1,
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -1992,6 +2042,8 @@
         },
         "realizationSummary": {
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -2008,7 +2060,10 @@
           "semanticRisk": 0.1,
           "realizationNotes": [
             "Register shift surfaced through lexical-register, content-word-complexity, modifier-density, directness."
-          ]
+          ],
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         }
       },
       "semanticContract": {
@@ -2237,6 +2292,7 @@
               "connector-stance-lexicon",
               "contraction-auxiliary"
             ],
+            "rescuePasses": [],
             "changedDimensions": [
               "sentence-mean",
               "sentence-count",
@@ -2258,6 +2314,7 @@
                 "baseline-floor",
                 "clause-texture"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -2281,6 +2338,7 @@
                 "connector-stance-lexicon",
                 "contraction-auxiliary"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -2305,6 +2363,7 @@
                 "connector-stance-lexicon",
                 "contraction-auxiliary"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -2329,6 +2388,7 @@
                 "connector-stance-lexicon",
                 "contraction-auxiliary"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -2353,6 +2413,7 @@
                 "connector-stance-lexicon",
                 "contraction-auxiliary"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -2371,6 +2432,8 @@
         "finalRealization": {
           "text": "Honestly. I was not trying to tell it. I just kept going over the points when I got to the part where I should have headed out. I remembered one more point that shifted why I stayed.",
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -2402,7 +2465,10 @@
               "kind": "lexeme"
             }
           ],
-          "semanticRisk": 0
+          "semanticRisk": 0,
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -2578,6 +2644,8 @@
         },
         "realizationSummary": {
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -2613,7 +2681,10 @@
           "realizationNotes": [
             "3 lexical family swaps landed.",
             "Register shift surfaced through lexical-register, abstraction-posture."
-          ]
+          ],
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         }
       },
       "semanticContract": {
@@ -2850,6 +2921,7 @@
               "phrase-texture",
               "contraction"
             ],
+            "rescuePasses": [],
             "changedDimensions": [
               "sentence-mean",
               "sentence-spread",
@@ -2870,6 +2942,7 @@
                 "phrase-texture",
                 "contraction"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-spread",
@@ -2887,6 +2960,7 @@
               "passesApplied": [
                 "baseline-contraction"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-spread",
@@ -2904,6 +2978,7 @@
               "passesApplied": [
                 "baseline-contraction"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-spread",
@@ -2921,6 +2996,7 @@
               "passesApplied": [
                 "baseline-contraction"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-spread",
@@ -2938,6 +3014,7 @@
               "passesApplied": [
                 "baseline-contraction"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-spread",
@@ -2954,6 +3031,8 @@
         "finalRealization": {
           "text": "I'm not sure if it's ready. I'll bring it when I can.",
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -2964,7 +3043,10 @@
             "punctuation-shape"
           ],
           "lexemeSwaps": [],
-          "semanticRisk": 0
+          "semanticRisk": 0,
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -3116,6 +3198,8 @@
         },
         "realizationSummary": {
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -3129,7 +3213,10 @@
           "semanticRisk": 0,
           "realizationNotes": [
             "Register shift surfaced through content-word-complexity."
-          ]
+          ],
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         }
       },
       "semanticContract": {
@@ -3339,6 +3426,7 @@
               "baseline-floor",
               "clause-texture"
             ],
+            "rescuePasses": [],
             "changedDimensions": [
               "sentence-mean",
               "sentence-count",
@@ -3359,6 +3447,7 @@
                 "baseline-floor",
                 "clause-texture"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -3379,6 +3468,7 @@
                 "baseline-contraction",
                 "sentence-structure"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-spread",
@@ -3398,6 +3488,7 @@
                 "baseline-contraction",
                 "sentence-structure"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-spread",
@@ -3417,6 +3508,7 @@
                 "baseline-contraction",
                 "sentence-structure"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-spread",
@@ -3436,6 +3528,7 @@
                 "baseline-contraction",
                 "sentence-structure"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-spread",
@@ -3452,6 +3545,8 @@
         "finalRealization": {
           "text": "I am sure it is ready; I will bring it when I can.",
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -3463,7 +3558,10 @@
             "punctuation-shape"
           ],
           "lexemeSwaps": [],
-          "semanticRisk": 0
+          "semanticRisk": 0,
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -3567,6 +3665,8 @@
         },
         "realizationSummary": {
           "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
             "sentence-mean",
@@ -3581,7 +3681,10 @@
           "semanticRisk": 0,
           "realizationNotes": [
             "Register shift surfaced through content-word-complexity."
-          ]
+          ],
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         }
       },
       "semanticContract": {
@@ -3803,6 +3906,7 @@
               "baseline-function-word",
               "planned-sentence-merge"
             ],
+            "rescuePasses": [],
             "changedDimensions": [
               "sentence-mean",
               "sentence-count",
@@ -3823,6 +3927,7 @@
                 "merge-pairs",
                 "clause-texture"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -3844,6 +3949,7 @@
                 "baseline-function-word",
                 "planned-sentence-merge"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -3865,6 +3971,7 @@
                 "baseline-function-word",
                 "planned-sentence-merge"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -3886,6 +3993,7 @@
                 "baseline-function-word",
                 "planned-sentence-merge"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -3907,6 +4015,7 @@
                 "baseline-function-word",
                 "planned-sentence-merge"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -3924,10 +4033,17 @@
         "finalRealization": {
           "text": "Because the room stayed loud, I kept the note. But the line dragged. So I left this mark behind.",
           "transferClass": "rejected",
+          "borrowedShellOutcome": "rejected",
+          "borrowedShellFailureClass": "donor-underfit",
           "realizationTier": "none",
           "changedDimensions": [],
           "lexemeSwaps": [],
-          "semanticRisk": 0
+          "semanticRisk": 0,
+          "rescuePasses": [
+            "final-rejection"
+          ],
+          "visibleShift": false,
+          "nonTrivialShift": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -4061,11 +4177,18 @@
         },
         "realizationSummary": {
           "transferClass": "rejected",
+          "borrowedShellOutcome": "rejected",
+          "borrowedShellFailureClass": "donor-underfit",
           "realizationTier": "none",
           "changedDimensions": [],
           "lexemeSwaps": [],
           "semanticRisk": 0,
-          "realizationNotes": []
+          "realizationNotes": [],
+          "rescuePasses": [
+            "final-rejection"
+          ],
+          "visibleShift": false,
+          "nonTrivialShift": false
         }
       },
       "semanticContract": {
@@ -4267,11 +4390,14 @@
         "planSummary": {
           "transferMode": "expand",
           "structuralOperationsSelected": [
-            "merge-pairs",
-            "clause-texture"
+            "baseline-merge",
+            "planned-sentence-merge",
+            "clause-join-split",
+            "structural-rescue"
           ],
           "lexicalRegisterOperationsSelected": [
-            "contraction"
+            "baseline-voice-realization",
+            "connector-stance-rescue"
           ],
           "connectorStrategy": "additive",
           "contractionStrategy": "increase",
@@ -4309,27 +4435,30 @@
         },
         "candidateSummary": {
           "selected": {
-            "spec": "ir-beam-search",
-            "score": 123.012,
+            "spec": "mixed-structural",
+            "score": 200.696,
             "passesApplied": [
-              "merge-pairs",
-              "clause-texture",
-              "contraction"
+              "baseline-merge",
+              "baseline-voice-realization",
+              "planned-sentence-merge",
+              "clause-join-split",
+              "cleanup-restore",
+              "structural-rescue",
+              "connector-stance-rescue"
+            ],
+            "rescuePasses": [
+              "structural-rescue",
+              "connector-stance-rescue"
             ],
             "changedDimensions": [
-              "sentence-mean",
-              "sentence-count",
               "sentence-spread",
               "connector-stance",
+              "lexical-register",
               "content-word-complexity",
-              "modifier-density",
-              "punctuation-shape"
+              "modifier-density"
             ],
-            "qualityGatePassed": false,
-            "notes": [
-              "Banned connector stack detected: \\bthough\\s+if\\b",
-              "Banned connector stack detected: \\bhonestly[,;]?\\s+and\\b"
-            ]
+            "qualityGatePassed": true,
+            "notes": []
           },
           "candidates": [
             {
@@ -4340,6 +4469,7 @@
                 "clause-texture",
                 "contraction"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "sentence-count",
@@ -4357,104 +4487,150 @@
             },
             {
               "spec": "mixed-structural",
-              "score": 64.874,
+              "score": 200.696,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
                 "planned-sentence-merge",
                 "clause-join-split",
                 "cleanup-restore",
-                "structural-fallback"
+                "structural-rescue",
+                "connector-stance-rescue"
+              ],
+              "rescuePasses": [
+                "structural-rescue",
+                "connector-stance-rescue"
               ],
               "changedDimensions": [
                 "sentence-spread",
                 "connector-stance",
+                "lexical-register",
                 "content-word-complexity",
                 "modifier-density"
               ],
-              "qualityGatePassed": false,
-              "notes": [
-                "Banned connector stack detected: \\bthough\\s+if\\b"
-              ]
+              "qualityGatePassed": true,
+              "notes": []
             },
             {
               "spec": "merge-heavy",
-              "score": 64.874,
+              "score": 200.696,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
                 "planned-sentence-merge",
                 "clause-join-split",
                 "cleanup-restore",
-                "structural-fallback"
+                "structural-rescue",
+                "connector-stance-rescue"
+              ],
+              "rescuePasses": [
+                "structural-rescue",
+                "connector-stance-rescue"
               ],
               "changedDimensions": [
                 "sentence-spread",
                 "connector-stance",
+                "lexical-register",
                 "content-word-complexity",
                 "modifier-density"
               ],
-              "qualityGatePassed": false,
-              "notes": [
-                "Banned connector stack detected: \\bthough\\s+if\\b"
-              ]
+              "qualityGatePassed": true,
+              "notes": []
             },
             {
               "spec": "connector-stance-heavy",
-              "score": 112.674,
-              "passesApplied": [
-                "baseline-merge",
-                "baseline-voice-realization",
-                "planned-sentence-merge",
-                "clause-join-split",
-                "cleanup-restore"
-              ],
-              "changedDimensions": [
-                "sentence-mean",
-                "sentence-count",
-                "sentence-spread",
-                "connector-stance",
-                "content-word-complexity",
-                "modifier-density",
-                "punctuation-shape"
-              ],
-              "qualityGatePassed": false,
-              "notes": [
-                "Banned connector stack detected: \\bthough\\s+if\\b",
-                "Orphan fragment detected: \"Though honestly.\""
-              ]
-            },
-            {
-              "spec": "lexical-register-heavy",
-              "score": 64.874,
+              "score": 200.696,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
                 "planned-sentence-merge",
                 "clause-join-split",
                 "cleanup-restore",
-                "structural-fallback"
+                "structural-rescue",
+                "connector-stance-rescue"
+              ],
+              "rescuePasses": [
+                "structural-rescue",
+                "connector-stance-rescue"
               ],
               "changedDimensions": [
                 "sentence-spread",
                 "connector-stance",
+                "lexical-register",
                 "content-word-complexity",
                 "modifier-density"
               ],
-              "qualityGatePassed": false,
-              "notes": [
-                "Banned connector stack detected: \\bthough\\s+if\\b"
-              ]
+              "qualityGatePassed": true,
+              "notes": []
+            },
+            {
+              "spec": "lexical-register-heavy",
+              "score": 200.696,
+              "passesApplied": [
+                "baseline-merge",
+                "baseline-voice-realization",
+                "planned-sentence-merge",
+                "clause-join-split",
+                "cleanup-restore",
+                "structural-rescue",
+                "connector-stance-rescue"
+              ],
+              "rescuePasses": [
+                "structural-rescue",
+                "connector-stance-rescue"
+              ],
+              "changedDimensions": [
+                "sentence-spread",
+                "connector-stance",
+                "lexical-register",
+                "content-word-complexity",
+                "modifier-density"
+              ],
+              "qualityGatePassed": true,
+              "notes": []
             }
           ]
         },
         "finalRealization": {
-          "text": "I left early though if the train arrived on time. Honestly, and also the signal worked. But because the door was unlocked, I stayed.",
-          "transferClass": "rejected",
-          "realizationTier": "none",
-          "changedDimensions": [],
-          "lexemeSwaps": [],
-          "semanticRisk": 0
+          "text": "I departed early if the train arrived on time, though honestly. And also the sign worked, because the doorway was unlocked. I stayed.",
+          "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
+          "realizationTier": "lexical-structural",
+          "changedDimensions": [
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density"
+          ],
+          "lexemeSwaps": [
+            {
+              "family": "leave",
+              "from": "left",
+              "to": "departed",
+              "kind": "lexeme"
+            },
+            {
+              "family": "door",
+              "from": "door",
+              "to": "doorway",
+              "kind": "lexeme"
+            },
+            {
+              "family": "signal",
+              "from": "signal",
+              "to": "sign",
+              "kind": "lexeme"
+            }
+          ],
+          "semanticRisk": 0,
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
+          "visibleShift": true,
+          "nonTrivialShift": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -4462,7 +4638,7 @@
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatches": 0,
-          "tenseMismatches": 0,
+          "tenseMismatches": 1,
           "protectedAnchorIntegrity": 1,
           "clauseAudits": [
             {
@@ -4473,7 +4649,7 @@
               "actionCoverage": 1,
               "objectCoverage": 1,
               "polarityMismatch": 0,
-              "tenseMismatch": 0,
+              "tenseMismatch": 1,
               "bagScore": 1,
               "globalBagScore": 0.286
             },
@@ -4503,7 +4679,7 @@
             },
             {
               "sourceClauseId": "s2c0",
-              "matchedClauseId": "s2c0",
+              "matchedClauseId": "s0c2",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -4515,7 +4691,7 @@
             },
             {
               "sourceClauseId": "s2c1",
-              "matchedClauseId": "s2c1",
+              "matchedClauseId": "s1c1+s2c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -4527,7 +4703,7 @@
             }
           ],
           "sourceClauseCount": 5,
-          "outputClauseCount": 5
+          "outputClauseCount": 6
         },
         "protectedAnchorAudit": {
           "totalAnchors": 0,
@@ -4538,27 +4714,27 @@
         "realizedIR": {
           "metadata": {
             "sentenceCount": 3,
-            "clauseCount": 5,
+            "clauseCount": 6,
             "literalSpans": []
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "I left early though if the train arrived on time",
+              "raw": "I departed early if the train arrived on time, though honestly",
               "rhetoricalRole": "contrastive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "I left early",
+                  "text": "I departed early",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
-                  "tenseAspect": "present",
-                  "propositionHead": "left",
+                  "tenseAspect": "past",
+                  "propositionHead": "departed",
                   "actor": "I",
-                  "action": "left",
-                  "object": "early",
+                  "action": "",
+                  "object": "",
                   "modifiers": [
                     "early"
                   ],
@@ -4566,9 +4742,9 @@
                 },
                 {
                   "id": "s0c1",
-                  "text": "if the train arrived on time",
+                  "text": "the train arrived on time",
                   "relationToPrev": "additive",
-                  "clauseType": "subordinate",
+                  "clauseType": "fragment",
                   "polarity": "positive",
                   "tenseAspect": "past",
                   "propositionHead": "train",
@@ -4577,29 +4753,20 @@
                   "object": "",
                   "modifiers": [],
                   "hedgeMarkers": []
-                }
-              ]
-            },
-            {
-              "id": "s1",
-              "raw": "Honestly, and also the signal worked",
-              "rhetoricalRole": "additive",
-              "terminalPunct": ".",
-              "clauses": [
+                },
                 {
-                  "id": "s1c0",
-                  "text": "Honestly, and also the signal worked",
-                  "relationToPrev": "start",
+                  "id": "s0c2",
+                  "text": "honestly",
+                  "relationToPrev": "clarifying",
                   "clauseType": "parenthetical",
                   "polarity": "positive",
-                  "tenseAspect": "past",
+                  "tenseAspect": "present",
                   "propositionHead": "honestly",
-                  "actor": "the signal",
+                  "actor": "",
                   "action": "",
                   "object": "",
                   "modifiers": [
-                    "honestly",
-                    "signal"
+                    "honestly"
                   ],
                   "hedgeMarkers": [
                     "stance"
@@ -4608,36 +4775,58 @@
               ]
             },
             {
-              "id": "s2",
-              "raw": "But because the door was unlocked, I stayed.",
-              "rhetoricalRole": "contrastive",
+              "id": "s1",
+              "raw": "And also the sign worked, because the doorway was unlocked",
+              "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s2c0",
-                  "text": "But",
+                  "id": "s1c0",
+                  "text": "And also the sign worked",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
-                  "tenseAspect": "present",
-                  "propositionHead": "",
-                  "actor": "",
+                  "tenseAspect": "past",
+                  "propositionHead": "sign",
+                  "actor": "the sign",
                   "action": "",
                   "object": "",
                   "modifiers": [],
                   "hedgeMarkers": []
                 },
                 {
-                  "id": "s2c1",
-                  "text": "the door was unlocked, I stayed",
+                  "id": "s1c1",
+                  "text": "the doorway was unlocked",
                   "relationToPrev": "additive",
                   "clauseType": "main",
                   "polarity": "positive",
                   "tenseAspect": "past",
                   "propositionHead": "was",
-                  "actor": "the door",
+                  "actor": "the doorway",
                   "action": "was",
-                  "object": "unlocked stayed",
+                  "object": "unlocked",
+                  "modifiers": [],
+                  "hedgeMarkers": []
+                }
+              ]
+            },
+            {
+              "id": "s2",
+              "raw": "I stayed.",
+              "rhetoricalRole": "additive",
+              "terminalPunct": ".",
+              "clauses": [
+                {
+                  "id": "s2c0",
+                  "text": "I stayed",
+                  "relationToPrev": "start",
+                  "clauseType": "fragment",
+                  "polarity": "positive",
+                  "tenseAspect": "past",
+                  "propositionHead": "stayed",
+                  "actor": "I",
+                  "action": "",
+                  "object": "",
                   "modifiers": [],
                   "hedgeMarkers": []
                 }
@@ -4646,19 +4835,65 @@
           ]
         },
         "realizationSummary": {
-          "transferClass": "rejected",
-          "realizationTier": "none",
-          "changedDimensions": [],
-          "lexemeSwaps": [],
+          "transferClass": "structural",
+          "borrowedShellOutcome": "structural",
+          "borrowedShellFailureClass": null,
+          "realizationTier": "lexical-structural",
+          "changedDimensions": [
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density"
+          ],
+          "lexemeSwaps": [
+            {
+              "family": "leave",
+              "from": "left",
+              "to": "departed",
+              "kind": "lexeme"
+            },
+            {
+              "family": "door",
+              "from": "door",
+              "to": "doorway",
+              "kind": "lexeme"
+            },
+            {
+              "family": "signal",
+              "from": "signal",
+              "to": "sign",
+              "kind": "lexeme"
+            }
+          ],
           "semanticRisk": 0,
-          "realizationNotes": []
+          "realizationNotes": [
+            "3 lexical family swaps landed.",
+            "Register shift surfaced through lexical-register, content-word-complexity, modifier-density."
+          ],
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
+          "visibleShift": true,
+          "nonTrivialShift": true
         }
       },
       "semanticContract": {
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "lexemeSwapFamilies": [],
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "connector-stance",
+          "content-word-complexity",
+          "lexical-register",
+          "modifier-density",
+          "sentence-spread"
+        ],
+        "lexemeSwapFamilies": [
+          "door",
+          "leave",
+          "signal"
+        ],
         "relationInventory": [
           "additive:2",
           "causal:1",
@@ -4668,11 +4903,14 @@
           "temporal:0"
         ],
         "structuralOperations": [
-          "clause-texture",
-          "merge-pairs"
+          "baseline-merge",
+          "clause-join-split",
+          "planned-sentence-merge",
+          "structural-rescue"
         ],
         "lexicalOperations": [
-          "contraction"
+          "baseline-voice-realization",
+          "connector-stance-rescue"
         ],
         "connectorStrategy": "additive",
         "contractionStrategy": "increase",
@@ -4681,7 +4919,7 @@
         "actionCoverage": 1,
         "objectCoverage": 1,
         "polarityMismatches": 0,
-        "tenseMismatches": 0,
+        "tenseMismatches": 1,
         "protectedAnchorIntegrity": 1
       }
     },
@@ -4822,6 +5060,7 @@
               "clause-texture",
               "contraction"
             ],
+            "rescuePasses": [],
             "changedDimensions": [
               "content-word-complexity"
             ],
@@ -4837,6 +5076,7 @@
                 "clause-texture",
                 "contraction"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "content-word-complexity"
               ],
@@ -4849,6 +5089,7 @@
               "passesApplied": [
                 "baseline-voice-realization"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "content-word-complexity"
               ],
@@ -4861,6 +5102,7 @@
               "passesApplied": [
                 "baseline-voice-realization"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "content-word-complexity"
               ],
@@ -4873,6 +5115,7 @@
               "passesApplied": [
                 "baseline-voice-realization"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "content-word-complexity"
               ],
@@ -4885,6 +5128,7 @@
               "passesApplied": [
                 "baseline-voice-realization"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "content-word-complexity"
               ],
@@ -4896,6 +5140,8 @@
         "finalRealization": {
           "text": "Stone sets under glass.",
           "transferClass": "weak",
+          "borrowedShellOutcome": "subtle",
+          "borrowedShellFailureClass": "lexical-underreach",
           "realizationTier": "cadence-only",
           "changedDimensions": [
             "content-word-complexity"
@@ -4908,7 +5154,10 @@
               "kind": "lexeme"
             }
           ],
-          "semanticRisk": 0
+          "semanticRisk": 0,
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -4974,6 +5223,8 @@
         },
         "realizationSummary": {
           "transferClass": "weak",
+          "borrowedShellOutcome": "subtle",
+          "borrowedShellFailureClass": "lexical-underreach",
           "realizationTier": "cadence-only",
           "changedDimensions": [
             "content-word-complexity"
@@ -4990,7 +5241,10 @@
           "realizationNotes": [
             "1 lexical family swap landed.",
             "Register shift surfaced through content-word-complexity."
-          ]
+          ],
+          "rescuePasses": [],
+          "visibleShift": true,
+          "nonTrivialShift": true
         }
       },
       "semanticContract": {
@@ -5178,6 +5432,7 @@
               "clause-texture",
               "contraction"
             ],
+            "rescuePasses": [],
             "changedDimensions": [
               "sentence-mean",
               "lexical-register",
@@ -5198,6 +5453,7 @@
                 "clause-texture",
                 "contraction"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "lexical-register",
@@ -5215,6 +5471,7 @@
               "passesApplied": [
                 "baseline-voice-realization"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "lexical-register",
@@ -5232,6 +5489,7 @@
               "passesApplied": [
                 "baseline-voice-realization"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "lexical-register",
@@ -5249,6 +5507,7 @@
               "passesApplied": [
                 "baseline-voice-realization"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "lexical-register",
@@ -5266,6 +5525,7 @@
               "passesApplied": [
                 "baseline-voice-realization"
               ],
+              "rescuePasses": [],
               "changedDimensions": [
                 "sentence-mean",
                 "lexical-register",
@@ -5282,10 +5542,17 @@
         "finalRealization": {
           "text": "Meet at 9:30, bring ID ZX-17.",
           "transferClass": "rejected",
+          "borrowedShellOutcome": "rejected",
+          "borrowedShellFailureClass": "literal-lock",
           "realizationTier": "none",
           "changedDimensions": [],
           "lexemeSwaps": [],
-          "semanticRisk": 0.3
+          "semanticRisk": 0.3,
+          "rescuePasses": [
+            "final-rejection"
+          ],
+          "visibleShift": false,
+          "nonTrivialShift": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -5364,13 +5631,20 @@
         },
         "realizationSummary": {
           "transferClass": "rejected",
+          "borrowedShellOutcome": "rejected",
+          "borrowedShellFailureClass": "literal-lock",
           "realizationTier": "none",
           "changedDimensions": [],
           "lexemeSwaps": [],
           "semanticRisk": 0.3,
           "realizationNotes": [
             "Semantic risk is elevated; review the realized output before relying on it."
-          ]
+          ],
+          "rescuePasses": [
+            "final-rejection"
+          ],
+          "visibleShift": false,
+          "nonTrivialShift": false
         }
       },
       "semanticContract": {

@@ -233,6 +233,7 @@
           "baseline-voice-realization",
           "connector-stance-lexicon"
         ],
+        "rescuePasses": [],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
@@ -255,6 +256,7 @@
             "baseline-floor",
             "clause-texture"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -278,6 +280,7 @@
             "baseline-voice-realization",
             "connector-stance-lexicon"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -301,6 +304,7 @@
             "baseline-voice-realization",
             "connector-stance-lexicon"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -324,6 +328,7 @@
             "baseline-voice-realization",
             "connector-stance-lexicon"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -347,6 +352,7 @@
             "baseline-voice-realization",
             "connector-stance-lexicon"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -366,6 +372,8 @@
     "finalRealization": {
       "text": "Apparently, if you are still out, bring the charger and come through the side doorway, it sticks, so lean on it. If nobody hears you right away, pause a moment and knock again; I am in back unloading boxes, and I probably will not catch the first try.",
       "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
@@ -398,7 +406,10 @@
           "kind": "lexeme"
         }
       ],
-      "semanticRisk": 0
+      "semanticRisk": 0,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
     "semanticAudit": {
       "propositionCoverage": 0.929,
@@ -580,6 +591,8 @@
     },
     "realizationSummary": {
       "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
@@ -616,7 +629,10 @@
       "realizationNotes": [
         "3 lexical family swaps landed.",
         "Register shift surfaced through lexical-register, content-word-complexity, modifier-density, directness."
-      ]
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     }
   },
   "semanticContract": {

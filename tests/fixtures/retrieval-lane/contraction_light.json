@@ -167,6 +167,7 @@
           "baseline-floor",
           "clause-texture"
         ],
+        "rescuePasses": [],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
@@ -187,6 +188,7 @@
             "baseline-floor",
             "clause-texture"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -207,6 +209,7 @@
             "baseline-contraction",
             "sentence-structure"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-spread",
@@ -226,6 +229,7 @@
             "baseline-contraction",
             "sentence-structure"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-spread",
@@ -245,6 +249,7 @@
             "baseline-contraction",
             "sentence-structure"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-spread",
@@ -264,6 +269,7 @@
             "baseline-contraction",
             "sentence-structure"
           ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-spread",
@@ -280,6 +286,8 @@
     "finalRealization": {
       "text": "I am sure it is ready; I will bring it when I can.",
       "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
@@ -291,7 +299,10 @@
         "punctuation-shape"
       ],
       "lexemeSwaps": [],
-      "semanticRisk": 0
+      "semanticRisk": 0,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -395,6 +406,8 @@
     },
     "realizationSummary": {
       "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
@@ -409,7 +422,10 @@
       "semanticRisk": 0,
       "realizationNotes": [
         "Register shift surfaced through content-word-complexity."
-      ]
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     }
   },
   "semanticContract": {
