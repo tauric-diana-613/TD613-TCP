@@ -47,6 +47,13 @@
     }
     return url.href;
   })();
+  const PERSONA_GALLERY_MODULE_URL = (() => {
+    const url = new URL('./toys/persona-gallery/model.js', window.location.href);
+    if (ASSET_VERSION) {
+      url.searchParams.set('v', ASSET_VERSION);
+    }
+    return url.href;
+  })();
   const TEST_FLIGHT_SAMPLE_IDS = Object.freeze({
     A: 'recursive-debrief',
     B: 'operations-brief'
@@ -58,6 +65,8 @@
 
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = 'tcp.savedPersonas.v1';
+  const LOCK_STORAGE_KEY = 'tcp.cadenceLocks.v1';
+  const ACTIVE_LOCK_STORAGE_KEY = 'tcp.activeCadenceLock.v1';
   const SLOT_LABELS = { A: 'Reference voice', B: 'Probe voice' };
   const SLOT_SHORT = { A: 'reference', B: 'probe' };
   const BADGE_LABELS = {
@@ -209,7 +218,12 @@
     A: createNativeShell(),
     B: createNativeShell()
   };
-  let savedPersonas = loadSavedPersonas();
+  let personaGalleryModel = null;
+  let resolvedBasePersonas = [];
+  let savedPersonas = [];
+  let cadenceLocks = [];
+  let activeCadenceLockId = '';
+  let selectedMaskId = '';
   let trainerController = null;
   let ingress = createIngressState();
 
@@ -1145,10 +1159,73 @@
     renderIngress();
   }
 
+  function defaultMaskScaffold(persona = {}) {
+    if (persona.source === 'trainer') {
+      return {
+        maskVisualClass: 'trained-mask',
+        maskArtLabel: 'trained shell',
+        maskSigil: '##',
+        maskState: 'unforged'
+      };
+    }
+
+    if (persona.source === 'saved') {
+      return {
+        maskVisualClass: 'captured-mask',
+        maskArtLabel: 'captured shell',
+        maskSigil: '::',
+        maskState: 'unforged'
+      };
+    }
+
+    return {
+      maskVisualClass: 'field-mask',
+      maskArtLabel: 'field mask',
+      maskSigil: '[]',
+      maskState: 'mask ready'
+    };
+  }
+
+  function normalizeStoredPersona(persona = {}) {
+    const scaffold = defaultMaskScaffold(persona);
+    const profile = persona.profile ? { ...persona.profile } : null;
+    return {
+      ...persona,
+      chips: Array.isArray(persona.chips) ? [...persona.chips] : [],
+      mod: persona.mod ? { ...persona.mod } : (profile ? cadenceModFromProfile(profile) : null),
+      profile,
+      strength: Number(persona.strength || (persona.source === 'trainer' ? 0.82 : 0.78)),
+      source: persona.source || 'saved',
+      maskVisualClass: persona.maskVisualClass || scaffold.maskVisualClass,
+      maskArtLabel: persona.maskArtLabel || scaffold.maskArtLabel,
+      maskSigil: persona.maskSigil || scaffold.maskSigil,
+      maskState: persona.maskState || scaffold.maskState
+    };
+  }
+
+  function normalizeCadenceLock(lock = {}) {
+    return {
+      ...lock,
+      samples: Array.isArray(lock.samples)
+        ? lock.samples.map((sample, index) => ({
+            id: sample.id || `sample-${index + 1}`,
+            text: sample.text || '',
+            profile: sample.profile ? { ...sample.profile } : extractCadenceProfile(sample.text || '')
+          }))
+        : [],
+      profile: lock.profile ? { ...lock.profile } : null,
+      fingerprint: lock.fingerprint ? JSON.parse(JSON.stringify(lock.fingerprint)) : {},
+      stats: lock.stats ? { ...lock.stats } : {},
+      selfSimilarity: lock.selfSimilarity ? { ...lock.selfSimilarity } : {},
+      fingerprintSummary: lock.fingerprintSummary ? { ...lock.fingerprintSummary } : {},
+      source: lock.source || 'gallery-lock'
+    };
+  }
+
   function loadSavedPersonas() {
     try {
       const payload = window.localStorage.getItem(STORAGE_KEY);
-      return payload ? JSON.parse(payload) : [];
+      return payload ? JSON.parse(payload).map((persona) => normalizeStoredPersona(persona)) : [];
     } catch {
       return [];
     }
@@ -1159,6 +1236,43 @@
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(savedPersonas));
     } catch {
       // keep session-only saved personas if storage is unavailable
+    }
+  }
+
+  function loadCadenceLocks() {
+    try {
+      const payload = window.localStorage.getItem(LOCK_STORAGE_KEY);
+      return payload ? JSON.parse(payload).map((lock) => normalizeCadenceLock(lock)) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function persistCadenceLocks() {
+    try {
+      window.localStorage.setItem(LOCK_STORAGE_KEY, JSON.stringify(cadenceLocks));
+    } catch {
+      // keep session-only cadence locks if storage is unavailable
+    }
+  }
+
+  function loadActiveCadenceLockId() {
+    try {
+      return window.localStorage.getItem(ACTIVE_LOCK_STORAGE_KEY) || '';
+    } catch {
+      return '';
+    }
+  }
+
+  function persistActiveCadenceLockId() {
+    try {
+      if (activeCadenceLockId) {
+        window.localStorage.setItem(ACTIVE_LOCK_STORAGE_KEY, activeCadenceLockId);
+      } else {
+        window.localStorage.removeItem(ACTIVE_LOCK_STORAGE_KEY);
+      }
+    } catch {
+      // ignore persistence loss
     }
   }
 
@@ -1287,11 +1401,55 @@
   }
 
   function getPersonaLibrary() {
-    return [...basePersonas, ...savedPersonas];
+    return [...(resolvedBasePersonas.length ? resolvedBasePersonas : basePersonas), ...savedPersonas];
   }
 
   function findPersona(id) {
     return getPersonaLibrary().find((persona) => persona.id === id) || null;
+  }
+
+  function getActiveCadenceLock() {
+    const activeLock = cadenceLocks.find((lock) => lock.id === activeCadenceLockId) || cadenceLocks[0] || null;
+    if (activeLock && activeLock.id !== activeCadenceLockId) {
+      activeCadenceLockId = activeLock.id;
+      persistActiveCadenceLockId();
+    }
+    return activeLock;
+  }
+
+  function getSelectedMask() {
+    const library = getPersonaLibrary();
+    const selected = library.find((persona) => persona.id === selectedMaskId) || null;
+    if (selected) {
+      return selected;
+    }
+    selectedMaskId = library[0]?.id || '';
+    return selectedMaskId ? findPersona(selectedMaskId) : null;
+  }
+
+  function buildPersonaGalleryState() {
+    const lock = getActiveCadenceLock();
+    const comparisonText = $('personaComparisonText') ? $('personaComparisonText').value : '';
+    const selectedMask = getSelectedMask();
+    const dossier = personaGalleryModel && lock
+      ? personaGalleryModel.buildLockDossier(window.TCP_ENGINE, lock)
+      : null;
+    const comparison = personaGalleryModel && comparisonText.trim() && selectedMask
+      ? personaGalleryModel.buildMaskTransformationResult(window.TCP_ENGINE, {
+          comparisonText,
+          lock,
+          persona: selectedMask
+        })
+      : null;
+
+    return {
+      library: getPersonaLibrary(),
+      lock,
+      dossier,
+      comparisonText,
+      selectedMask,
+      comparison
+    };
   }
 
   function getBayShell(slot) {
@@ -1840,38 +1998,278 @@
 
   function personaSourceLabel(persona = {}) {
     if (persona.source === 'saved') {
-      return 'captured witness shell';
+      return 'captured shell';
     }
     if (persona.source === 'trainer') {
-      return 'trained retrieval shell';
+      return 'trained shell';
     }
-    return 'built-in field attractor';
+    return 'built-in field mask';
   }
 
-  function renderPersonas() {
-    $('personaDeck').innerHTML = getPersonaLibrary()
+  function personaMaskStateLabel(persona = {}) {
+    return persona.maskState || (persona.source === 'built-in' ? 'mask ready' : 'unforged');
+  }
+
+  function personaStateKicker(persona = {}) {
+    const assignment = personaAssignmentLabel(persona.id);
+    return assignment === 'Assign shell' ? 'Unassigned' : assignment;
+  }
+
+  function createdAtLabel(value = '') {
+    if (!value) {
+      return '';
+    }
+    try {
+      return new Date(value).toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+      });
+    } catch {
+      return value;
+    }
+  }
+
+  function comparisonMetricSummary(summary = null) {
+    if (!summary) {
+      return '--';
+    }
+    return `${formatPct(summary.meanSimilarity || 0)} sim // ${formatPct(summary.meanTraceability || 0)} trace`;
+  }
+
+  function renderLockArchive(state) {
+    const archive = $('cadenceLockArchive');
+    if (!archive) {
+      return;
+    }
+
+    if (!cadenceLocks.length) {
+      archive.innerHTML = '<div class="persona-empty">No cadence base is locked yet. Paste a corpus, split it with blank lines, then lock the base.</div>';
+      return;
+    }
+
+    archive.innerHTML = cadenceLocks.map((lock) => {
+      const selected = state.lock && state.lock.id === lock.id;
+      const fingerprint = lock.fingerprintSummary || {};
+      const meta = `${lock.stats?.sampleCount || lock.samples?.length || 0} samples // ${fingerprint.stickinessClass || 'portable'}`;
+      const trace = `self trace ${formatPct(lock.selfSimilarity?.meanTraceability || 0)} // ${fingerprint.distinctivenessClass || 'noticeable'}`;
+      return `
+        <div class="lock-card ${selected ? 'selected' : ''}">
+          <button type="button" class="lock-card-main" data-lock-action="select" data-lock-id="${lock.id}">
+            <div class="persona-kicker">cadence home</div>
+            <div class="name">${escapeHtml(lock.name || 'Cadence Lock')}</div>
+            <div class="lock-meta">${escapeHtml(meta)}</div>
+            <div class="lock-note">${escapeHtml(trace)}</div>
+          </button>
+          <button type="button" class="ghost lock-card-delete" data-lock-action="delete" data-lock-id="${lock.id}">Delete</button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderLockDossier(state) {
+    const dossierNode = $('cadenceLockDossier');
+    if (!dossierNode) {
+      return;
+    }
+
+    if (!state.dossier) {
+      dossierNode.innerHTML = '<div class="persona-empty">Select a cadence lock to open the dossier. The detail is the warning.</div>';
+      return;
+    }
+
+    const dossier = state.dossier;
+    const fingerprint = dossier.fingerprintSummary || {};
+    const riskNotes = (dossier.riskInterpretation || [])
+      .map((note) => `<li>${escapeHtml(note)}</li>`)
+      .join('');
+    const functionWords = (dossier.functionWordSnapshot || [])
+      .map((entry) => `<span class="chip">${escapeHtml(entry.label)} ${entry.value.toFixed(3)}</span>`)
+      .join('');
+    const punctuation = (dossier.punctuationSnapshot || [])
+      .map((entry) => `<span class="chip">${escapeHtml(entry.label)} ${entry.value.toFixed(3)}</span>`)
+      .join('');
+    const axes = (dossier.dominantAxes || [])
+      .map((axis) => `<span class="chip">${escapeHtml(axis)}</span>`)
+      .join('');
+
+    dossierNode.innerHTML = `
+      <div class="dossier-head">
+        <div>
+          <div class="section-kicker">${glyphChar('tabPersonas', '')} Deep dossier</div>
+          <h3>${escapeHtml(dossier.name)}</h3>
+        </div>
+        <button id="sendLockToDeckBtn" type="button" class="secondary">Send to Deck</button>
+      </div>
+      <div class="trainer-summary-grid persona-dossier-grid">
+        <div class="trainer-summary-card">
+          <div class="persona-kicker">corpus</div>
+          <strong>${dossier.stats.sampleCount}</strong>
+          <span>${dossier.stats.totalWords} words // ${formatFixed(dossier.stats.avgSentencesPerSample, 1)} sentences per sample</span>
+        </div>
+        <div class="trainer-summary-card">
+          <div class="persona-kicker">self trace</div>
+          <strong>${formatPct(dossier.selfSimilarity.meanTraceability || 0)}</strong>
+          <span>${formatPct(dossier.selfSimilarity.meanSimilarity || 0)} similarity</span>
+        </div>
+        <div class="trainer-summary-card">
+          <div class="persona-kicker">fingerprint</div>
+          <strong>${escapeHtml(fingerprint.stickinessClass || 'portable')}</strong>
+          <span>${escapeHtml(fingerprint.stabilityClass || 'steady')} // ${escapeHtml(fingerprint.distinctivenessClass || 'noticeable')}</span>
+        </div>
+      </div>
+      <div class="persona-dossier-metrics">
+        <div class="persona-dossier-card"><div class="persona-kicker">sentence rhythm</div><strong>${dossier.profile.avgSentenceLength.toFixed(1)}w</strong><span>spread ${dossier.profile.sentenceLengthSpread.toFixed(1)}</span></div>
+        <div class="persona-dossier-card"><div class="persona-kicker">punctuation / contraction</div><strong>${dossier.profile.punctuationDensity.toFixed(3)}</strong><span>contraction ${dossier.profile.contractionDensity.toFixed(3)}</span></div>
+        <div class="persona-dossier-card"><div class="persona-kicker">recurrence / dispersion</div><strong>${dossier.profile.recurrencePressure.toFixed(3)}</strong><span>dispersion ${dossier.profile.lexicalDispersion.toFixed(3)}</span></div>
+        <div class="persona-dossier-card"><div class="persona-kicker">abstraction / directness</div><strong>${dossier.profile.abstractionPosture.toFixed(3)}</strong><span>directness ${dossier.profile.directness.toFixed(3)}</span></div>
+        <div class="persona-dossier-card"><div class="persona-kicker">hedge / modifier</div><strong>${dossier.profile.hedgeDensity.toFixed(3)}</strong><span>modifier ${dossier.profile.modifierDensity.toFixed(3)}</span></div>
+        <div class="persona-dossier-card"><div class="persona-kicker">register mode</div><strong>${escapeHtml(dossier.profile.registerMode || 'unknown')}</strong><span>latinate ${dossier.profile.latinatePreference.toFixed(3)}</span></div>
+      </div>
+      <div class="persona-dossier-snapshots">
+        <div class="trainer-surface">
+          <div class="persona-kicker">function-word snapshot</div>
+          <div class="chips">${functionWords || '<span class="chip">none loaded</span>'}</div>
+        </div>
+        <div class="trainer-surface">
+          <div class="persona-kicker">punctuation mix</div>
+          <div class="chips">${punctuation || '<span class="chip">none loaded</span>'}</div>
+        </div>
+        <div class="trainer-surface">
+          <div class="persona-kicker">dominant axes</div>
+          <div class="chips">${axes || '<span class="chip">no dominant axis yet</span>'}</div>
+        </div>
+      </div>
+      <div class="trainer-surface persona-dossier-risk">
+        <div class="persona-kicker">Risk interpretation</div>
+        <ul class="persona-risk-list">${riskNotes}</ul>
+      </div>
+    `;
+  }
+
+  function renderMaskBench(state) {
+    const statusNode = $('maskBenchStatus');
+    const outputNode = $('personaMaskOutput');
+    const beforeNode = $('maskRawToLock');
+    const afterNode = $('maskMaskedToLock');
+    const deltaNode = $('maskDeltaToLock');
+    const notesNode = $('maskStickinessNotes');
+
+    if (!statusNode || !outputNode || !beforeNode || !afterNode || !deltaNode || !notesNode) {
+      return;
+    }
+
+    if (!state.lock) {
+      statusNode.textContent = 'Lock a cadence base to turn this bench on.';
+      outputNode.value = '';
+      beforeNode.textContent = '--';
+      afterNode.textContent = '--';
+      deltaNode.textContent = '--';
+      notesNode.innerHTML = '<li>Select or create a cadence home first.</li>';
+      return;
+    }
+
+    if (!state.comparisonText.trim()) {
+      statusNode.textContent = `Cadence home live // ${state.lock.name}. Paste comparison text, then try on a mask.`;
+      outputNode.value = '';
+      beforeNode.textContent = '--';
+      afterNode.textContent = '--';
+      deltaNode.textContent = '--';
+      notesNode.innerHTML = '<li>The bench compares raw text and masked text against the active lock.</li>';
+      return;
+    }
+
+    if (!state.selectedMask || !state.comparison) {
+      statusNode.textContent = 'Pick a mask to see how the comparison text travels against the active lock.';
+      outputNode.value = '';
+      beforeNode.textContent = '--';
+      afterNode.textContent = '--';
+      deltaNode.textContent = '--';
+      notesNode.innerHTML = '<li>No mask is active yet.</li>';
+      return;
+    }
+
+    const result = state.comparison;
+    const delta = result.deltaToLock || {};
+    const effect = result.effectSummary || {};
+    statusNode.textContent = `${state.selectedMask.name} is on the bench. Raw text and masked text are both being read against ${state.lock.name}.`;
+    outputNode.value = result.maskedText || '';
+    beforeNode.textContent = comparisonMetricSummary(result.rawToLock);
+    afterNode.textContent = comparisonMetricSummary(result.maskedToLock);
+    deltaNode.textContent = `${delta.traceability >= 0 ? '+' : ''}${formatPct(Math.abs(delta.traceability || 0))} trace // ${delta.similarity >= 0 ? '+' : ''}${formatPct(Math.abs(delta.similarity || 0))} similarity`;
+    notesNode.innerHTML = [
+      `Effect summary // ${escapeHtml(effect.sentenceShift || 'span holds')} // ${escapeHtml(effect.punctuationShift || 'punctuation holds')} // ${escapeHtml(effect.contractionShift || 'contraction holds')} // ${escapeHtml(effect.registerShift || 'register holds')} // ${escapeHtml(effect.legibilityEffect || 'home residue persists')}`,
+      ...(result.stickinessNotes || [])
+    ].map((note) => `<li>${escapeHtml(note)}</li>`).join('');
+  }
+
+  function renderMaskGallery(state) {
+    const deck = $('personaDeck');
+    if (!deck) {
+      return;
+    }
+
+    deck.innerHTML = state.library
       .map((persona) => {
-        const selected = bayShells[activeVoice].personaId === persona.id;
+        const selected = state.selectedMask && state.selectedMask.id === persona.id;
         const assigned = bayShells.A.personaId === persona.id || bayShells.B.personaId === persona.id;
+        const shellSelected = bayShells[activeVoice].personaId === persona.id;
         const source = personaSourceLabel(persona);
+        const effectSummary = personaGalleryModel && state.comparisonText.trim()
+          ? personaGalleryModel.buildMaskEffectSummary(window.TCP_ENGINE, {
+              comparisonText: state.comparisonText,
+              lock: state.lock,
+              persona
+            })
+          : null;
+        const effectLine = effectSummary
+          ? [effectSummary.sentenceShift, effectSummary.punctuationShift, effectSummary.contractionShift, effectSummary.legibilityEffect]
+              .filter(Boolean)
+              .map((entry) => `<span class="chip">${escapeHtml(entry)}</span>`)
+              .join('')
+          : persona.chips.map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
+        const generateHook = persona.source !== 'built-in'
+          ? `<button type="button" class="ghost persona-inline-action" data-persona-action="generate-mask" data-persona-id="${persona.id}">Generate Mask</button>`
+          : '';
 
         return `
-          <div class="persona ${selected ? 'selected' : ''} ${assigned ? 'assigned' : ''}" data-id="${persona.id}" role="button" tabindex="0" aria-pressed="${selected}">
+          <div class="persona ${selected ? 'selected' : ''} ${assigned ? 'assigned' : ''} ${shellSelected ? 'shell-selected' : ''}" data-id="${persona.id}" role="button" tabindex="0" aria-pressed="${selected}">
             <div class="persona-top">
               <div>
-                <div class="persona-kicker">${source}</div>
-                <div class="name">${persona.name}</div>
+                <div class="persona-kicker">${escapeHtml(source)}</div>
+                <div class="name">${escapeHtml(persona.name)}</div>
               </div>
-              <div class="persona-action">${personaAssignmentLabel(persona.id)}</div>
+              <div class="persona-action">${escapeHtml(personaStateKicker(persona))}</div>
             </div>
-            <div class="blurb">${persona.blurb}</div>
-            <div class="chips">${persona.chips.map((chip) => `<span class="chip">${chip}</span>`).join('')}</div>
+            <div class="persona-mask-portrait ${escapeHtml(persona.maskVisualClass || 'field-mask')}" data-mask-state="${escapeHtml(personaMaskStateLabel(persona))}">
+              <span class="persona-mask-sigil">${escapeHtml(persona.maskSigil || '[]')}</span>
+              <span class="persona-mask-label">${escapeHtml(persona.maskArtLabel || 'field mask')}</span>
+              <span class="persona-mask-state">${escapeHtml(personaMaskStateLabel(persona))}</span>
+            </div>
+            <div class="blurb">${escapeHtml(persona.blurb || '')}</div>
+            <div class="chips">${effectLine}</div>
+            <div class="persona-actions">
+              <button type="button" class="secondary persona-inline-action" data-persona-action="select-mask" data-persona-id="${persona.id}">Wear on text</button>
+              <button type="button" class="ghost persona-inline-action" data-persona-action="assign-reference" data-persona-id="${persona.id}">Try on reference</button>
+              <button type="button" class="ghost persona-inline-action" data-persona-action="assign-probe" data-persona-id="${persona.id}">Try on probe</button>
+              ${generateHook}
+            </div>
           </div>
         `;
       })
       .join('');
+  }
 
-    $('personaStatus').textContent = `${glyphChar('tabPersonas', '')} Active bay // ${SLOT_LABELS[activeVoice]} // ${bayShells[activeVoice].label}`;
+  function renderPersonas() {
+    const state = buildPersonaGalleryState();
+    renderLockArchive(state);
+    renderLockDossier(state);
+    renderMaskBench(state);
+    renderMaskGallery(state);
+
+    const activeLockLabel = state.lock ? state.lock.name : 'no cadence home';
+    $('personaStatus').textContent = `${glyphChar('tabPersonas', '')} Active bay // ${SLOT_LABELS[activeVoice]} // ${bayShells[activeVoice].label} // home ${activeLockLabel}`;
     applyGlyphMetadata($('personaStatus'), 'tabPersonas');
     renderActiveBayStatus();
   }
@@ -1911,15 +2309,15 @@
       }
     }
 
-    if (announce) {
-      const viewLabels = {
-        play: 'Deck ready.',
-        readout: 'Readout ready.',
-        personas: 'Persona deck ready.',
-        trainer: 'Trainer ready.'
-      };
-      setStatusMessage(viewLabels[activeArtifactTab] || 'View updated.');
-    }
+      if (announce) {
+        const viewLabels = {
+          play: 'Deck ready.',
+          readout: 'Readout ready.',
+          personas: 'Mask gallery ready.',
+          trainer: 'Trainer ready.'
+        };
+        setStatusMessage(viewLabels[activeArtifactTab] || 'View updated.');
+      }
   }
 
   function updateControls() {
@@ -2386,16 +2784,130 @@ DeltaE = ${ledger.reuse_gain}`;
     updateControls();
   }
 
-  function assignPersonaToActiveBay(id) {
+  function selectMaskPersona(id) {
+    if (!findPersona(id)) {
+      return;
+    }
+    selectedMaskId = id;
+    renderPersonas();
+  }
+
+  function assignPersonaToBay(id, slot = activeVoice) {
     const persona = findPersona(id);
     if (!persona) {
       return;
     }
 
+    activeVoice = slot;
+    selectedMaskId = id;
     clearSwapCadenceAudit();
-    bayShells[activeVoice] = createPersonaShell(persona);
+    bayShells[slot] = createPersonaShell(persona);
     analyzeCadences();
-    setStatusMessage(`${persona.name} is now shaping the ${SLOT_SHORT[activeVoice]} cadence shell. The text stayed put; only the cadence shell changed.`);
+    setStatusMessage(`${persona.name} is now shaping the ${SLOT_SHORT[slot]} cadence shell. The text stayed put; only the cadence shell changed.`);
+  }
+
+  function assignPersonaToActiveBay(id) {
+    assignPersonaToBay(id, activeVoice);
+  }
+
+  function lockCadenceFromGallery() {
+    if (!personaGalleryModel) {
+      return;
+    }
+
+    const corpusText = $('cadenceLockCorpus') ? $('cadenceLockCorpus').value : '';
+    const lockName = $('cadenceLockName') ? $('cadenceLockName').value : '';
+
+    try {
+      const lock = normalizeCadenceLock(personaGalleryModel.buildCadenceLockRecord(window.TCP_ENGINE, {
+        corpusText,
+        name: lockName
+      }));
+      cadenceLocks = [
+        lock,
+        ...cadenceLocks.filter((entry) => entry.id !== lock.id)
+      ];
+      activeCadenceLockId = lock.id;
+      persistCadenceLocks();
+      persistActiveCadenceLockId();
+      renderPersonas();
+      setStatusMessage(`${lock.name} is now locked as a private cadence home. The dossier is live.`);
+    } catch (error) {
+      setStatusMessage(error.message || 'Paste at least one sample before locking a cadence home.');
+    }
+  }
+
+  function selectCadenceLock(lockId = '') {
+    if (!cadenceLocks.some((lock) => lock.id === lockId)) {
+      return;
+    }
+    activeCadenceLockId = lockId;
+    persistActiveCadenceLockId();
+    renderPersonas();
+    const lock = getActiveCadenceLock();
+    setStatusMessage(`${lock?.name || 'Cadence home'} is active. The dossier and mask bench have been refreshed.`);
+  }
+
+  function deleteCadenceLock(lockId = '') {
+    const lock = cadenceLocks.find((entry) => entry.id === lockId);
+    cadenceLocks = cadenceLocks.filter((entry) => entry.id !== lockId);
+    if (activeCadenceLockId === lockId) {
+      activeCadenceLockId = cadenceLocks[0]?.id || '';
+      persistActiveCadenceLockId();
+    }
+    persistCadenceLocks();
+    renderPersonas();
+    setStatusMessage(`${lock?.name || 'Cadence home'} was removed from the local archive.`);
+  }
+
+  function sendActiveLockToDeck() {
+    const lock = getActiveCadenceLock();
+    const sample = lock?.samples?.[0];
+    if (!sample) {
+      setStatusMessage('Select a cadence home before sending it back into the Deck.');
+      return;
+    }
+
+    const slot = activeVoice;
+    $(slotTextId(slot)).value = sample.text;
+    baySampleIds[slot] = null;
+    bayShells[slot] = createNativeShell();
+    clearSwapCadenceAudit();
+    syncBaySampleMetadata();
+    analyzeCadences();
+    setStatusMessage(`${lock.name} sample one is now loaded into the ${SLOT_SHORT[slot]} bay.`);
+  }
+
+  function updateSavedPersona(id, updater) {
+    savedPersonas = savedPersonas.map((persona) => {
+      if (persona.id !== id) {
+        return persona;
+      }
+      return normalizeStoredPersona(updater(persona));
+    });
+    persistSavedPersonas();
+    renderPersonas();
+  }
+
+  function generateMaskForPersona(id) {
+    const persona = findPersona(id);
+    if (!persona) {
+      return;
+    }
+
+    if (persona.source === 'built-in') {
+      selectedMaskId = id;
+      renderPersonas();
+      setStatusMessage(`${persona.name} already ships with a ready mask scaffold.`);
+      return;
+    }
+
+    selectedMaskId = id;
+    updateSavedPersona(id, (entry) => ({
+      ...entry,
+      maskState: 'generated'
+    }));
+    setStatusMessage(`${persona.name} now has a local mask scaffold. Portrait generation can attach later without changing the shell.`);
   }
 
   function swapCadences() {
@@ -2470,18 +2982,19 @@ DeltaE = ${ledger.reuse_gain}`;
     }
 
     const profile = voiceState.effectiveProfile;
-    const persona = {
+    const persona = normalizeStoredPersona({
       id: `saved-${Date.now()}`,
       name: buildSavedPersonaName(activeVoice),
       blurb: `Captured from the ${SLOT_SHORT[activeVoice]} bay. Rhythm ${profile.avgSentenceLength.toFixed(1)}w, recurrence ${formatPct(profile.recurrencePressure)}.`,
-      chips: ['captured', SLOT_SHORT[activeVoice], `rhythm ${profile.avgSentenceLength.toFixed(1)}w`],
+      chips: ['captured shell', SLOT_SHORT[activeVoice], `rhythm ${profile.avgSentenceLength.toFixed(1)}w`],
       mod: cadenceModFromProfile(profile),
       profile: { ...profile },
       strength: 0.76,
       source: 'saved'
-    };
+    });
 
     savedPersonas = [persona, ...savedPersonas];
+    selectedMaskId = persona.id;
     persistSavedPersonas();
     bayShells[activeVoice] = createPersonaShell(persona);
     renderPersonas();
@@ -2491,7 +3004,7 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function normalizeTrainerPersona(persona = {}) {
-    return {
+    return normalizeStoredPersona({
       id: persona.id || `trainer-${Date.now()}`,
       name: persona.name || 'Trainer Persona',
       blurb: persona.blurb || 'Derived retrieval shell.',
@@ -2500,7 +3013,7 @@ DeltaE = ${ledger.reuse_gain}`;
       profile: persona.profile ? { ...persona.profile } : null,
       strength: persona.strength || 0.82,
       source: 'trainer'
-    };
+    });
   }
 
   function injectTrainerPersona(persona = {}) {
@@ -2509,6 +3022,7 @@ DeltaE = ${ledger.reuse_gain}`;
       normalized,
       ...savedPersonas.filter((entry) => entry.id !== normalized.id)
     ];
+    selectedMaskId = normalized.id;
     persistSavedPersonas();
     renderPersonas();
     updateControls();
@@ -2569,6 +3083,9 @@ DeltaE = ${ledger.reuse_gain}`;
     return {
       voiceA: $('voiceA').value,
       voiceB: $('voiceB').value,
+      cadenceLockName: $('cadenceLockName') ? $('cadenceLockName').value : '',
+      cadenceLockCorpus: $('cadenceLockCorpus') ? $('cadenceLockCorpus').value : '',
+      personaComparisonText: $('personaComparisonText') ? $('personaComparisonText').value : '',
       baySampleIds: {
         A: baySampleIds.A,
         B: baySampleIds.B
@@ -2583,6 +3100,9 @@ DeltaE = ${ledger.reuse_gain}`;
         B: cloneShell(bayShells.B)
       },
       savedPersonas: JSON.parse(JSON.stringify(savedPersonas)),
+      cadenceLocks: JSON.parse(JSON.stringify(cadenceLocks)),
+      activeCadenceLockId,
+      selectedMaskId,
       trainerState: trainerController && typeof trainerController.serializeState === 'function'
         ? trainerController.serializeState()
         : null
@@ -2592,6 +3112,15 @@ DeltaE = ${ledger.reuse_gain}`;
   function restoreFlightState(state) {
     $('voiceA').value = state.voiceA;
     $('voiceB').value = state.voiceB;
+    if ($('cadenceLockName')) {
+      $('cadenceLockName').value = state.cadenceLockName || '';
+    }
+    if ($('cadenceLockCorpus')) {
+      $('cadenceLockCorpus').value = state.cadenceLockCorpus || '';
+    }
+    if ($('personaComparisonText')) {
+      $('personaComparisonText').value = state.personaComparisonText || '';
+    }
     baySampleIds = {
       A: state.baySampleIds?.A || inferSampleIdFromText(state.voiceA),
       B: state.baySampleIds?.B || inferSampleIdFromText(state.voiceB)
@@ -2605,8 +3134,13 @@ DeltaE = ${ledger.reuse_gain}`;
       A: cloneShell(state.bayShells.A),
       B: cloneShell(state.bayShells.B)
     };
-    savedPersonas = JSON.parse(JSON.stringify(state.savedPersonas));
+    savedPersonas = (state.savedPersonas || []).map((persona) => normalizeStoredPersona(persona));
+    cadenceLocks = (state.cadenceLocks || []).map((lock) => normalizeCadenceLock(lock));
+    activeCadenceLockId = state.activeCadenceLockId || cadenceLocks[0]?.id || '';
+    selectedMaskId = state.selectedMaskId || getPersonaLibrary()[0]?.id || '';
     persistSavedPersonas();
+    persistCadenceLocks();
+    persistActiveCadenceLockId();
     setArtifactTab(activeArtifactTab);
     syncBaySampleMetadata();
     renderVoiceProfiles();
@@ -2788,6 +3322,30 @@ DeltaE = ${ledger.reuse_gain}`;
         };
   }
 
+  function readPersonaGallerySnapshot() {
+    const state = buildPersonaGalleryState();
+    return {
+      lockCount: cadenceLocks.length,
+      activeLockId: state.lock?.id || '',
+      activeLockName: state.lock?.name || '',
+      dossierReady: Boolean(state.dossier),
+      selectedMaskId: state.selectedMask?.id || '',
+      selectedMaskName: state.selectedMask?.name || '',
+      comparisonReady: Boolean(state.comparisonText.trim()),
+      comparisonLength: state.comparisonText.trim().length,
+      maskedOutputLength: state.comparison?.maskedText?.trim().length || 0,
+      rawSimilarity: state.comparison?.rawToLock?.meanSimilarity || 0,
+      rawTraceability: state.comparison?.rawToLock?.meanTraceability || 0,
+      maskedSimilarity: state.comparison?.maskedToLock?.meanSimilarity || 0,
+      maskedTraceability: state.comparison?.maskedToLock?.meanTraceability || 0,
+      deltaSimilarity: state.comparison?.deltaToLock?.similarity || 0,
+      deltaTraceability: state.comparison?.deltaToLock?.traceability || 0,
+      homeStickyLanes: state.comparison?.whatHeld || [],
+      maskState: state.selectedMask?.maskState || '',
+      personaCount: state.library.length
+    };
+  }
+
   function runSwapCadenceMatrixReport() {
     return buildSwapCadenceMatrix(SAMPLE_LIBRARY, {
       flagshipPairs: SWAP_FLAGSHIP_PAIRS,
@@ -2864,6 +3422,30 @@ DeltaE = ${ledger.reuse_gain}`;
       return JSON.parse(JSON.stringify(runSwapCadenceMatrixReport()));
     }
   });
+
+  async function initializePersonaGallery() {
+    personaGalleryModel = await import(PERSONA_GALLERY_MODULE_URL);
+    resolvedBasePersonas = personaGalleryModel.resolvePersonaCatalog(window.TCP_ENGINE, basePersonas, SAMPLE_LIBRARY);
+    savedPersonas = loadSavedPersonas();
+    cadenceLocks = loadCadenceLocks();
+    activeCadenceLockId = loadActiveCadenceLockId();
+    const activeLock = getActiveCadenceLock();
+    if (activeLock && activeLock.id !== activeCadenceLockId) {
+      activeCadenceLockId = activeLock.id;
+      persistActiveCadenceLockId();
+    }
+    selectedMaskId = getPersonaLibrary()[0]?.id || '';
+
+    window.TCP_PERSONA_GALLERY = Object.freeze({
+      snapshot: () => readPersonaGallerySnapshot(),
+      selectLock: (lockId) => selectCadenceLock(lockId),
+      lock: () => lockCadenceFromGallery(),
+      selectMask: (personaId) => selectMaskPersona(personaId),
+      generateMask: (personaId) => generateMaskForPersona(personaId)
+    });
+
+    return personaGalleryModel;
+  }
 
   async function initializeTrainerLab() {
     const root = $('trainerPane');
@@ -3324,19 +3906,20 @@ DeltaE = ${ledger.reuse_gain}`;
         samplesDistinct: ownSourceSnapshot.duelReferenceSample !== ownSourceSnapshot.duelProbeSample
       };
 
-      const firstPersona = document.querySelector('.persona');
-      if (firstPersona) {
-        firstPersona.click();
-      }
+        const firstPersonaAssign = document.querySelector('[data-persona-action="assign-reference"]');
+        if (firstPersonaAssign) {
+          firstPersonaAssign.click();
+        }
 
-      report.assignPersona = {
-        snapshot: readDeckSnapshot(),
-        personaStatus: $('personaStatus').textContent.trim()
-      };
+        report.assignPersona = {
+          snapshot: readDeckSnapshot(),
+          personaStatus: $('personaStatus').textContent.trim(),
+          gallery: readPersonaGallerySnapshot()
+        };
 
-      const assignedLabelBeforeSwap = $('personaStatus').textContent.trim();
-      const beforeA = $('voiceA').value;
-      const beforeB = $('voiceB').value;
+        const assignedLabelBeforeSwap = $('personaStatus').textContent.trim();
+        const beforeA = $('voiceA').value;
+        const beforeB = $('voiceB').value;
       $('swapCadencesBtn').click();
       report.swapCadences = {
         snapshot: readDeckSnapshot(),
@@ -3353,16 +3936,44 @@ DeltaE = ${ledger.reuse_gain}`;
       };
 
       $('savePersonaBtn').click();
-      report.savePersona = {
-        snapshot: readDeckSnapshot(),
-        personasAfterSave: document.querySelectorAll('.persona').length,
-        savedPersonaAdded: document.querySelectorAll('.persona').length === beforePersonaCount + 1
-      };
+        report.savePersona = {
+          snapshot: readDeckSnapshot(),
+          personasAfterSave: document.querySelectorAll('.persona').length,
+          savedPersonaAdded: document.querySelectorAll('.persona').length === beforePersonaCount + 1
+        };
 
-      $('voiceB').value = '';
-      analyzeCadences();
-      report.soloScan = {
-        snapshot: readDeckSnapshot(),
+        $('tabPersonas').click();
+        const galleryBaseline = readPersonaGallerySnapshot();
+        $('cadenceLockName').value = 'Field Home One';
+        $('cadenceLockCorpus').value = `${seededPair.voiceA}\n\n${seededPair.voiceB}`;
+        $('lockCadenceBtn').click();
+        const firstLockSnapshot = readPersonaGallerySnapshot();
+        const firstLockId = firstLockSnapshot.activeLockId;
+        $('cadenceLockName').value = 'Field Home Two';
+        $('cadenceLockCorpus').value = `${seededPair.voiceB}\n\n${SAMPLE_LIBRARY_BY_ID['grant-narrative']?.text || seededPair.voiceA}`;
+        $('lockCadenceBtn').click();
+        const secondLockSnapshot = readPersonaGallerySnapshot();
+        const firstLockButton = firstLockId ? document.querySelector(`[data-lock-action="select"][data-lock-id="${firstLockId}"]`) : null;
+        if (firstLockButton) {
+          firstLockButton.click();
+        }
+        $('personaComparisonText').value = SAMPLE_LIBRARY_BY_ID['critical-review']?.text || seededPair.voiceB;
+        $('personaComparisonText').dispatchEvent(new Event('input', { bubbles: true }));
+        const sparkMaskButton = document.querySelector('[data-persona-id="spark"][data-persona-action="select-mask"]');
+        if (sparkMaskButton) {
+          sparkMaskButton.click();
+        }
+        report.personaGallery = {
+          baseline: galleryBaseline,
+          afterFirstLock: firstLockSnapshot,
+          afterSecondLock: secondLockSnapshot,
+          afterMask: readPersonaGallerySnapshot()
+        };
+
+        $('voiceB').value = '';
+        analyzeCadences();
+        report.soloScan = {
+          snapshot: readDeckSnapshot(),
         similarityKey: $('similarityKey').textContent.trim(),
         routeKey: $('routeKey').textContent.trim()
       };
@@ -3453,14 +4064,24 @@ DeltaE = ${ledger.reuse_gain}`;
           )
         };
 
-        $('tabPersonas').click();
-        const injectedTrainerPersona = injectedTrainerId ? document.querySelector(`.persona[data-id="${injectedTrainerId}"]`) : null;
-        if (injectedTrainerPersona) {
-          injectedTrainerPersona.click();
-        }
-        report.trainer.personaAssigned =
-          Boolean(injectedTrainerPersona) && bayShells[activeVoice].personaId === injectedTrainerId;
-        report.swapMatrix = runSwapCadenceMatrixReport();
+          $('tabPersonas').click();
+          const injectedTrainerPersona = injectedTrainerId ? document.querySelector(`.persona[data-id="${injectedTrainerId}"]`) : null;
+          const injectedTrainerGenerate = injectedTrainerId
+            ? document.querySelector(`[data-persona-id="${injectedTrainerId}"][data-persona-action="generate-mask"]`)
+            : null;
+          if (injectedTrainerGenerate) {
+            injectedTrainerGenerate.click();
+          }
+          const injectedTrainerAssign = injectedTrainerId
+            ? document.querySelector(`[data-persona-id="${injectedTrainerId}"][data-persona-action="assign-reference"]`)
+            : null;
+          if (injectedTrainerAssign) {
+            injectedTrainerAssign.click();
+          }
+          report.trainer.personaAssigned =
+            Boolean(injectedTrainerPersona) && bayShells[activeVoice].personaId === injectedTrainerId;
+          report.trainer.gallerySnapshot = readPersonaGallerySnapshot();
+          report.swapMatrix = runSwapCadenceMatrixReport();
 
         const matrix = [];
         const scenarios = [
@@ -3551,22 +4172,25 @@ DeltaE = ${ledger.reuse_gain}`;
         });
 
         report.matrix = matrix;
-        const supportChecks = [
-          { id: 'sample_randomizer_distinct', pass: report.sampleRandomizer.referenceChanged && report.sampleRandomizer.probeChanged && report.sampleRandomizer.pairDistinct },
-          { id: 'sample_randomizer_keeps_deck_latent', pass: report.sampleRandomizer.deckStillLatent },
-          { id: 'swap_shells_preserve_raw_text', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
-          { id: 'swap_cadences_retrieval_audit_present', pass: Boolean(report.swapCadences.audit && report.swapCadences.audit.lanes && report.swapCadences.audit.lanes.A && report.swapCadences.audit.lanes.B) },
-          { id: 'save_persona_adds_entry', pass: report.savePersona.savedPersonaAdded },
-          { id: 'swap_medallion_moves_bay_text', pass: report.textSwapMedallion.voiceASwapped && report.textSwapMedallion.voiceBSwapped },
-          { id: 'swap_medallion_updates_duel', pass: report.textSwapMedallion.duelSamplesChanged },
-          { id: 'duel_uses_own_sources', pass: report.ownSourceDuel.referenceOwnSource && report.ownSourceDuel.probeOwnSource && report.ownSourceDuel.samplesDistinct },
-          { id: 'swap_cadences_updates_shell_label', pass: report.swapCadences.personaStatusChanged },
-          { id: 'swap_cadence_cue_key', pass: report.swapCadences.cueVisible && report.swapCadences.snapshot.statusCueKey === STATUS_CUE_KEYS.shellDuelUpdated },
-          { id: 'solo_scan_uses_scan_mode', pass: report.soloScan.similarityKey === 'Scan mode' },
-          { id: 'baseline_duel_live', pass: report.baseline.snapshot.duelState === 'live' },
-          { id: 'readout_tab_visible', pass: report.viewTabs.activeTab === 'readout' },
+          const supportChecks = [
+            { id: 'sample_randomizer_distinct', pass: report.sampleRandomizer.referenceChanged && report.sampleRandomizer.probeChanged && report.sampleRandomizer.pairDistinct },
+            { id: 'sample_randomizer_keeps_deck_latent', pass: report.sampleRandomizer.deckStillLatent },
+            { id: 'swap_shells_preserve_raw_text', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
+            { id: 'swap_cadences_retrieval_audit_present', pass: Boolean(report.swapCadences.audit && report.swapCadences.audit.lanes && report.swapCadences.audit.lanes.A && report.swapCadences.audit.lanes.B) },
+            { id: 'save_persona_adds_entry', pass: report.savePersona.savedPersonaAdded },
+            { id: 'persona_gallery_creates_first_lock', pass: report.personaGallery.afterFirstLock.lockCount === report.personaGallery.baseline.lockCount + 1 && report.personaGallery.afterFirstLock.dossierReady },
+            { id: 'persona_gallery_stores_multiple_locks', pass: report.personaGallery.afterSecondLock.lockCount >= report.personaGallery.afterFirstLock.lockCount + 1 },
+            { id: 'persona_gallery_masks_comparison_text', pass: report.personaGallery.afterMask.comparisonReady && report.personaGallery.afterMask.maskedOutputLength > 0 && report.personaGallery.afterMask.selectedMaskId === 'spark' },
+            { id: 'swap_medallion_moves_bay_text', pass: report.textSwapMedallion.voiceASwapped && report.textSwapMedallion.voiceBSwapped },
+            { id: 'swap_medallion_updates_duel', pass: report.textSwapMedallion.duelSamplesChanged },
+            { id: 'duel_uses_own_sources', pass: report.ownSourceDuel.referenceOwnSource && report.ownSourceDuel.probeOwnSource && report.ownSourceDuel.samplesDistinct },
+            { id: 'swap_cadences_updates_shell_label', pass: report.swapCadences.personaStatusChanged },
+            { id: 'swap_cadence_cue_key', pass: report.swapCadences.cueVisible && report.swapCadences.snapshot.statusCueKey === STATUS_CUE_KEYS.shellDuelUpdated },
+            { id: 'solo_scan_uses_scan_mode', pass: report.soloScan.similarityKey === 'Scan mode' },
+            { id: 'baseline_duel_live', pass: report.baseline.snapshot.duelState === 'live' },
+            { id: 'readout_tab_visible', pass: report.viewTabs.activeTab === 'readout' },
           { id: 'trainer_validates_generated_output', pass: Boolean(report.trainer && report.trainer.snapshotBeforeInject.validationPass && report.trainer.snapshotBeforeInject.promptReady && report.trainer.snapshotBeforeInject.exportReady) },
-          { id: 'trainer_injects_persona', pass: Boolean(report.trainer && report.trainer.personaAdded && report.trainer.personaAssigned) },
+            { id: 'trainer_injects_persona', pass: Boolean(report.trainer && report.trainer.personaAdded && report.trainer.personaAssigned && report.trainer.gallerySnapshot.maskState === 'generated') },
           { id: 'trainer_bridge_present', pass: Boolean(report.trainer && report.trainer.bridgePresent) },
           { id: 'trainer_restore_roundtrip', pass: Boolean(report.trainer && report.trainer.roundtripRestored) },
           { id: 'trainer_restore_keeps_injected_summary', pass: Boolean(report.trainer && report.trainer.injectedSummaryRestored) },
@@ -3626,6 +4250,8 @@ DeltaE = ${ledger.reuse_gain}`;
   $('voiceB').addEventListener('focus', () => setActiveVoice('B'));
   $('voiceA').addEventListener('input', () => handleTextInput('A'));
   $('voiceB').addEventListener('input', () => handleTextInput('B'));
+  $('lockCadenceBtn').addEventListener('click', lockCadenceFromGallery);
+  $('personaComparisonText').addEventListener('input', () => renderPersonas());
   $('tabPlay').addEventListener('click', () => setArtifactTab('play', { announce: true, scroll: true }));
   $('tabReadout').addEventListener('click', () => setArtifactTab('readout', { announce: true, scroll: true }));
   $('tabPersonas').addEventListener('click', () => setArtifactTab('personas', { announce: true, scroll: true }));
@@ -3656,12 +4282,45 @@ DeltaE = ${ledger.reuse_gain}`;
   $('ingressSealNodeBc').addEventListener('click', () => chooseIngressSealNode('bc'));
 
   document.addEventListener('click', (event) => {
+    const lockAction = event.target.closest('[data-lock-action]');
+    if (lockAction) {
+      const action = lockAction.dataset.lockAction;
+      const lockId = lockAction.dataset.lockId;
+      if (action === 'select') {
+        selectCadenceLock(lockId);
+      } else if (action === 'delete') {
+        deleteCadenceLock(lockId);
+      }
+      return;
+    }
+
+    if (event.target.closest('#sendLockToDeckBtn')) {
+      sendActiveLockToDeck();
+      return;
+    }
+
+    const personaAction = event.target.closest('[data-persona-action]');
+    if (personaAction) {
+      const action = personaAction.dataset.personaAction;
+      const personaId = personaAction.dataset.personaId;
+      if (action === 'select-mask') {
+        selectMaskPersona(personaId);
+      } else if (action === 'assign-reference') {
+        assignPersonaToBay(personaId, 'A');
+      } else if (action === 'assign-probe') {
+        assignPersonaToBay(personaId, 'B');
+      } else if (action === 'generate-mask') {
+        generateMaskForPersona(personaId);
+      }
+      return;
+    }
+
     const persona = event.target.closest('.persona');
     if (!persona) {
       return;
     }
 
-    assignPersonaToActiveBay(persona.dataset.id);
+    selectMaskPersona(persona.dataset.id);
   });
 
   document.addEventListener('keydown', (event) => {
@@ -3671,7 +4330,7 @@ DeltaE = ${ledger.reuse_gain}`;
     }
 
     event.preventDefault();
-    assignPersonaToActiveBay(persona.dataset.id);
+    selectMaskPersona(persona.dataset.id);
   });
 
   async function boot() {
@@ -3680,6 +4339,8 @@ DeltaE = ${ledger.reuse_gain}`;
     setArtifactTab(activeArtifactTab);
     renderVoiceProfiles();
     document.body.dataset.bootStage = 'boot-rendered-profiles';
+    await initializePersonaGallery();
+    document.body.dataset.bootStage = 'boot-rendered-gallery';
     renderPersonas();
     document.body.dataset.bootStage = 'boot-rendered-personas';
     await initializeTrainerLab();

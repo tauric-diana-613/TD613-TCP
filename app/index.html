@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP - The Cadence Playground</title>
-  <link rel="stylesheet" href="./styles.css?v=20260327e" />
+  <link rel="stylesheet" href="./styles.css?v=20260327f" />
 </head>
 <body>
   <div id="ingressMembrane" class="ingress-membrane" aria-live="polite">
@@ -265,23 +265,106 @@
         </div>
       </section>
 
-      <section id="viewPanePersonas" class="view-pane" hidden>
-        <section class="panel personas-panel">
-          <div class="panel-heading">
-            <div>
-              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Persona deck</div>
-              <h2>Load, save, and remix cadence shells</h2>
+        <section id="viewPanePersonas" class="view-pane" hidden>
+          <section class="panel personas-panel">
+            <div class="panel-heading">
+              <div>
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Cadence mask gallery</div>
+                <h2>Lock a cadence home, open the dossier, and try on masks</h2>
+              </div>
+              <p class="section-note">The warning is in the detail: lock a private cadence base, compare raw and masked text against it, and keep a local archive of masks that actually feel different.</p>
             </div>
-            <p class="section-note">Persona shells bend cadence, not content. The words stay put.</p>
-          </div>
 
-          <div class="persona-toolbar">
-            <div id="personaStatus" class="analysis-status">Active bay // Reference voice // native cadence</div>
-          </div>
+            <div class="persona-toolbar">
+              <div id="personaStatus" class="analysis-status">Active bay // Reference voice // native cadence</div>
+            </div>
 
-          <div id="personaDeck" class="personagrid"></div>
+            <div class="persona-home-grid">
+              <div class="persona-home-sidebar">
+                <section class="trainer-surface">
+                  <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Lock bench</div>
+                  <label class="field trainer-name-field" for="cadenceLockName">
+                    <div class="field-head">
+                      <div class="field-head-copy">
+                        <span class="field-label">Lock name</span>
+                        <span class="field-copy">Optional short name for the cadence home you are about to lock.</span>
+                      </div>
+                    </div>
+                    <input id="cadenceLockName" type="text" placeholder="Cadence Home" autocomplete="off">
+                  </label>
+                  <label class="field" for="cadenceLockCorpus">
+                    <div class="field-head">
+                      <div class="field-head-copy">
+                        <span class="field-label">Reference corpus</span>
+                        <span class="field-copy">Paste one or more samples from the same voice. Blank lines split the corpus into separate samples.</span>
+                      </div>
+                    </div>
+                    <textarea id="cadenceLockCorpus"></textarea>
+                  </label>
+                  <div class="trainer-actions">
+                    <button id="lockCadenceBtn" type="button" class="primary-cta">Lock Cadence</button>
+                  </div>
+                </section>
+
+                <section class="trainer-surface">
+                  <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Lock archive</div>
+                  <div id="cadenceLockArchive" class="lock-archive"></div>
+                </section>
+              </div>
+
+              <div class="persona-home-main">
+                <section class="trainer-surface">
+                  <div id="cadenceLockDossier" class="persona-dossier"></div>
+                </section>
+
+                <section class="trainer-surface">
+                  <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Mask bench</div>
+                  <label class="field" for="personaComparisonText">
+                    <div class="field-head">
+                      <div class="field-head-copy">
+                        <span class="field-label">Comparison text</span>
+                        <span class="field-copy">Paste any text you want to test against the active lock, then wear a mask and watch what still reads as home.</span>
+                      </div>
+                    </div>
+                    <textarea id="personaComparisonText"></textarea>
+                  </label>
+                  <div id="maskBenchStatus" class="analysis-status">Lock a cadence base to turn this bench on.</div>
+                  <div class="trainer-summary-grid persona-mask-summary">
+                    <div class="trainer-summary-card">
+                      <div class="persona-kicker">Raw to lock</div>
+                      <strong id="maskRawToLock">--</strong>
+                      <span>Similarity and traceability before masking.</span>
+                    </div>
+                    <div class="trainer-summary-card">
+                      <div class="persona-kicker">Masked to lock</div>
+                      <strong id="maskMaskedToLock">--</strong>
+                      <span>How the transformed text still reads against home.</span>
+                    </div>
+                    <div class="trainer-summary-card">
+                      <div class="persona-kicker">Delta to lock</div>
+                      <strong id="maskDeltaToLock">--</strong>
+                      <span>What changed once the mask touched the comparison text.</span>
+                    </div>
+                  </div>
+                  <div class="persona-mask-output-grid">
+                    <div class="trainer-surface">
+                      <div class="persona-kicker">Masked output</div>
+                      <textarea id="personaMaskOutput" readonly></textarea>
+                    </div>
+                    <div class="trainer-surface">
+                      <div class="persona-kicker">Stickiness notes</div>
+                      <ul id="maskStickinessNotes" class="persona-risk-list">
+                        <li>Select a cadence home to begin.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+
+            <div id="personaDeck" class="personagrid"></div>
+          </section>
         </section>
-      </section>
 
       <section id="viewPaneTrainer" class="view-pane" hidden>
         <section id="trainerPane" class="panel trainer-panel">
@@ -381,9 +464,9 @@
     <footer class="footer">TCP / retrieval-first research playground / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
   </div>
 
-  <script src="./browser-data.js?v=20260327e"></script>
-  <script src="./browser-engine.js?v=20260327e"></script>
-  <script src="./retrieval-fixtures.js?v=20260327e"></script>
-  <script src="./browser-main.js?v=20260327e"></script>
+  <script src="./browser-data.js?v=20260327f"></script>
+  <script src="./browser-engine.js?v=20260327f"></script>
+  <script src="./retrieval-fixtures.js?v=20260327f"></script>
+  <script src="./browser-main.js?v=20260327f"></script>
 </body>
 </html>

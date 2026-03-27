@@ -60,41 +60,96 @@ window.TCP_DATA = {
     {
       id: 'archivist',
       name: 'Archivist',
-      blurb: 'Long lines, witness-first syntax, and low contraction. Treats cadence like a sealed ledger.',
-      chips: ['long line', 'witness ledger', 'low contraction'],
-      mod: { sent: 2, cont: -2, punc: 1 },
+      blurb: 'Witness-ledger mask. Stretches the line, lowers contraction, and keeps the record sealed.',
+      chips: ['ledger raven', 'witness-first', 'low contraction'],
+      profileRecipe: {
+        blend: [
+          { sampleId: 'witness-statement', weight: 0.65 },
+          { sampleId: 'institutional-memo', weight: 0.35 }
+        ],
+        overlayMod: { sent: 2, cont: -2, punc: 0 },
+        strength: 0.9
+      },
+      maskVisualClass: 'ledger-raven',
+      maskArtLabel: 'ledger raven',
+      maskSigil: '[]',
+      maskState: 'mask ready',
       source: 'built-in'
     },
     {
       id: 'spark',
       name: 'Spark',
-      blurb: 'Short bursts, bright punctuation, and fast field pull. Turns contact into immediate motion.',
-      chips: ['quick burst', 'bright signal', 'public lure'],
-      mod: { sent: -2, cont: 1, punc: 3 },
+      blurb: 'Signal-jackal mask. Shortens the line, sharpens the punctuation, and pushes the text into public motion.',
+      chips: ['signal jackal', 'bright punctuation', 'public pull'],
+      profileRecipe: {
+        blend: [
+          { sampleId: 'operations-brief', weight: 0.8 },
+          { sampleId: 'critical-review', weight: 0.2 }
+        ],
+        overlayMod: { sent: -3, cont: 3, punc: 3 },
+        strength: 0.9
+      },
+      maskVisualClass: 'signal-jackal',
+      maskArtLabel: 'signal jackal',
+      maskSigil: '++',
+      maskState: 'mask ready',
       source: 'built-in'
     },
     {
       id: 'undertow',
       name: 'Undertow',
-      blurb: 'Recursive return, delayed landing, and pressure that re-enters before it resolves.',
-      chips: ['slow pull', 'recursive return', 'afterimage'],
-      mod: { sent: 1, cont: 0, punc: 0 },
+      blurb: 'Velvet-eel mask. Keeps circling back, stretches the clause, and lets the afterimage land late.',
+      chips: ['velvet eel', 'recursive return', 'late landing'],
+      profileRecipe: {
+        blend: [
+          { sampleId: 'recursive-debrief', weight: 0.85 },
+          { sampleId: 'critical-review', weight: 0.15 }
+        ],
+        overlayMod: { sent: 2, cont: 0, punc: 0 },
+        strength: 0.89
+      },
+      maskVisualClass: 'velvet-eel',
+      maskArtLabel: 'velvet eel',
+      maskSigil: '~~',
+      maskState: 'mask ready',
       source: 'built-in'
     },
     {
       id: 'operator',
       name: 'Operator',
-      blurb: 'Clipped route language, low ornament, and clean handoff under containment.',
-      chips: ['controlled', 'route-clean', 'quiet precision'],
-      mod: { sent: 0, cont: -1, punc: -1 },
+      blurb: 'Quiet-hound mask. Clips ornament, lowers pulse, and keeps route language clean under pressure.',
+      chips: ['quiet hound', 'route-clean', 'low ornament'],
+      profileRecipe: {
+        blend: [
+          { sampleId: 'operations-brief', weight: 0.55 },
+          { sampleId: 'witness-statement', weight: 0.45 }
+        ],
+        overlayMod: { sent: -3, cont: -2, punc: -2 },
+        strength: 0.87
+      },
+      maskVisualClass: 'quiet-hound',
+      maskArtLabel: 'quiet hound',
+      maskSigil: '//',
+      maskState: 'mask ready',
       source: 'built-in'
     },
     {
       id: 'methods-editor',
       name: 'Methods Editor',
-      blurb: 'Law-facing cadence, measured caveats, and claims reduced to portable schema.',
-      chips: ['measured', 'schema-minded', 'clear caveats'],
-      mod: { sent: 1, cont: -1, punc: 0 },
+      blurb: 'Schema-moth mask. Formal, caveated, and cold enough to carry a claim without overfitting it.',
+      chips: ['schema moth', 'measured caveats', 'formal schema'],
+      profileRecipe: {
+        blend: [
+          { sampleId: 'deliberative-hedged', weight: 0.55 },
+          { sampleId: 'grant-narrative', weight: 0.45 }
+        ],
+        overlayMod: { sent: 2, cont: -2, punc: -1 },
+        strength: 0.87
+      },
+      maskVisualClass: 'schema-moth',
+      maskArtLabel: 'schema moth',
+      maskSigil: '::',
+      maskState: 'mask ready',
       source: 'built-in'
     }
   ],
