@@ -241,6 +241,29 @@ Two entry points use the same path:
 
 That matters because solo Telemetry and Harbor are no longer a Deck-only behavior. `Reveal` in `Homebase` wakes the same similarity, route, archive, and harbor logic that a one-sample deck run uses, while mask comparison and lock staging can remain active before reveal.
 
+## Runtime field grammar
+
+`Patch 28.3` promotes the field registry into a runtime grammar layer. `browser-main.js` now derives a compact presentation summary for the major public surfaces:
+
+- `surfaceRole`
+- `surfacePhase`
+- `cueGlyphKey`
+- `cueTone`
+- `statusGrammar`
+
+Those summaries do not create a second truth system. They are fed from existing runtime state so the visible surface language stays aligned with retrieval truth, route law, and custody state.
+
+Current role mapping:
+
+- `Ingress` = threshold
+- `Homebase` = anchor / contact / residue
+- `Personas` = shelf
+- `Readout` = witness / law
+- `Deck` = encounter / duel / aftermath
+- `Trainer` = forge
+
+The practical reason for this layer is simple: TCP no longer presents every state with the same generic status grammar. A `Homebase` contact state, a `Readout` criticality state, and a `Trainer` forge-ready state are all distinct runtime phases even when they share the same engine underneath.
+
 ## Public surface split
 
 The public browser surface is now split across distinct roles:
@@ -250,6 +273,13 @@ The public browser surface is now split across distinct roles:
 - `Readout` stays the strict proof surface
 - `Deck` handles live solo and paired play, shell assignment, `Swap Cadences`, and `Shell Duel`
 - `Trainer` remains the manual persona lab
+
+Inside that split, the Homebase/Personas loop now has an explicit state distinction:
+
+- shelf choice is tracked as `gallerySelectedMaskId`
+- Homebase wear is tracked as `homebaseWornMaskId`
+
+That distinction matters because choosing a mask is no longer the same event as wearing it in Homebase. `Personas` is the shelf and preview surface; `Homebase` is the contact chamber where the chosen mask becomes worn and source text is passed through it.
 
 ## Deck-facing Shell Duel
 
@@ -287,7 +317,7 @@ When both shells are native, the duel should collapse toward identity on the sam
 - `stylometry.js` - profile extraction, distance functions, similarity, traceability, shell transforms, and cadence signatures
 - `harbor.js` - harbor selection, witness load, reuse gain, and ledger rows
 - `badges.js` - compact custody mode cycling for the demo UI
-- `browser-main.js` - Homebase, Personas, Readout, Deck, Trainer, shared solo-readout behavior, and test-flight orchestration
+- `browser-main.js` - Homebase, Personas, Readout, Deck, Trainer, runtime field grammar, shared solo-readout behavior, and test-flight orchestration
 
 ## Interpretive boundary
 

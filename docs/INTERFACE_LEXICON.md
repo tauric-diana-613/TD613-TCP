@@ -4,6 +4,8 @@ Use this after [START_HERE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/S
 
 TCP uses a small vocabulary that does double duty: it has interface meaning and model meaning at the same time. This file keeps those terms brief, explicit, and non-mystical.
 
+The glyph/state language is part of that vocabulary. In TCP, surface roles such as threshold, anchor, shelf, witness, encounter, and forge are registered runtime states, not decoration.
+
 ## Core controls
 
 | Term | In the app | In the model |
@@ -21,9 +23,21 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Lock` | Builds a staged cadence draft from the lockbox text without writing it into the archive. | Extracts a draft lock profile and makes it available for unrevealed mask comparison. |
 | `Reveal` | Opens the deep dossier and wakes the global solo Telemetry/Harbor path for the active lock. | Runs the shared one-sample readout logic on the current Homebase lock. |
 | `Save` | Persists the staged lock into the local lock archive. | Commits the draft cadence lock to local storage without changing its measured profile. |
-| `Wear in Homebase` | Applies a mask to the comparison bench for the active lock. | Runs comparison text through the chosen persona shell against the active lock profile. |
+| `Bring into Homebase` | Moves the chosen shelf mask into the Homebase worn-mask stage. | Sets the current Homebase mask without changing deck shell assignment. |
 | `Try on Deck A` | Sends a persona shell to the reference bay in `Deck`. | Assigns the selected shell to slot `A` for live deck analysis. |
 | `Try on Deck B` | Sends a persona shell to the probe bay in `Deck`. | Assigns the selected shell to slot `B` for live deck analysis. |
+
+## Contact loop
+
+| Term | In the app | In the model |
+| --- | --- | --- |
+| `chosen on shelf` | A mask has been selected in `Personas`, but is not yet worn in `Homebase`. | `gallerySelectedMaskId` is set while `homebaseWornMaskId` is still empty or different. |
+| `Worn mask` | The dedicated Homebase stage that shows which mask is actively steering passage. | The current `homebaseWornMaskId` plus its resolved shell/profile data. |
+| `Source` | The unmasked comparison text on the Homebase passage bench. | The raw comparison passage before persona transfer. |
+| `Through Mask` | The transformed passage produced by the worn mask. | The retrieval-safe output of `buildCadenceTransfer(...)` through the worn shell. |
+| `Before Contact` | Raw-to-lock reading before the mask touches the text. | Similarity and traceability of the source passage against the active lock. |
+| `After Contact` | Masked-to-lock reading after the passage has been transformed. | Similarity and traceability of the transformed passage against the active lock. |
+| `What Clung` | The residue list that names what still reads as home after contact. | Sticky axes, held lanes, and contact summaries derived from the lock comparison. |
 
 ## State controls
 
@@ -47,7 +61,8 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Shell Duel` | The side-by-side instrument on the `Deck` tab that stages the reference bay under its shell and the probe bay under its shell. | A direct view of shell transfer using each bay's transformed sample, heatmaps, signatures, and a pairwise delta strip. |
 | `Ingress Membrane` | The full-screen ritual that appears before the deck unlocks on normal visits. | A custody-handshake layer that resolves containment, mirror posture, and badge state before the live shell opens. |
 | `Deep dossier` | The revealed Homebase panel that shows cadence metrics, risk interpretation, and archive character for the active lock. | A rich summary layer built from the lock profile and solo readout quantities. |
-| `Mask bench` | The Homebase comparison area that shows raw-to-lock, masked-to-lock, delta, masked output, and stickiness notes. | A local counterstyle test surface that compares transformed text against the active lock profile. |
+| `Mask bench` | The Homebase comparison area that stages source passage, through-mask passage, before/after readings, and residue. | A local counterstyle test surface that compares transformed text against the active lock profile. |
+| `Cast report` | The pre-analysis Deck strip that names contrast, branch heat, and swap promise before the duel wakes. | A lightweight pre-scan summary derived from the current pair state before route law is computed. |
 
 ## Shell language
 
@@ -75,7 +90,7 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Deck` | The main interaction surface with bays, controls, and `Shell Duel`. | The public membrane where cadence play and route-state education happen first. |
 | `Homebase` | The cadence home for lock, reveal, save, archive, dossier, and mask work. | The private lock-and-compare surface that stages one voice before or alongside deck play. |
 | `Readout` | The tab that exposes scores, formulas, and ledger preview. | The explicit metric layer where similarity, route, and archive state are made legible. |
-| `Personas` | The compact collectible mask gallery. | The reusable shell gallery that feeds Homebase and Deck without owning the lock workflow itself. |
+| `Personas` | The compact collectible mask shelf and preview stage. | The reusable shell gallery that feeds Homebase and Deck without owning the lock workflow itself. |
 | `Branch` | The branch formula shown in the readout/debug layer. | The rule that unwanted surplus is preserved until it can be interpreted or dismissed responsibly. |
 | `Field` | The whole comparison environment shown on the deck. | The bounded environment in which similarity, recurrence, and route pressure interact. |
 | `Harbor deck` | The panel that recommends structured passage. | The safe-harbor layer that lowers witness burden without destroying provenance. |

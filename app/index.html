@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP - The Cadence Playground</title>
-    <link rel="stylesheet" href="./styles.css?v=20260327g" />
+    <link rel="stylesheet" href="./styles.css?v=20260327h" />
 </head>
 <body>
   <div id="ingressMembrane" class="ingress-membrane" aria-live="polite">
@@ -142,7 +142,7 @@
 
           <div class="persona-toolbar">
             <div id="homebaseStatus" class="analysis-status">Homebase // no cadence staged yet</div>
-            <div id="homebaseMaskStatus" class="analysis-status">Mask // no mask armed</div>
+            <div id="homebaseMaskStatus" class="analysis-status">Worn mask // none // choose on the shelf, then bring into Homebase</div>
           </div>
 
           <div class="persona-home-grid">
@@ -174,59 +174,75 @@
                 </div>
                 <div id="homebaseLockStatus" class="analysis-status">Stage a cadence draft. Reveal opens the dossier. Save writes it into the local archive.</div>
               </section>
-
-              <section class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Lock archive</div>
-                <div id="cadenceLockArchive" class="lock-archive"></div>
-              </section>
             </div>
 
             <div class="persona-home-main">
-              <section id="cadenceLockDossierSurface" class="trainer-surface persona-dossier-surface" data-revealed="false">
-                <div id="cadenceLockDossier" class="persona-dossier"></div>
+              <section id="homebaseWornMaskStage" class="trainer-surface homebase-mask-stage" data-mask-phase="latent">
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionMaskBench">&#xDBF5;&#xDE13;</span> Worn mask</div>
+                <div id="homebaseMaskRoute" class="homebase-mask-route" aria-label="Mask contact route">
+                  <span class="homebase-route-chip" data-step="chosen">Chosen</span>
+                  <span class="homebase-route-chip" data-step="worn">Worn</span>
+                  <span class="homebase-route-chip" data-step="contact">In contact</span>
+                  <span class="homebase-route-chip" data-step="residue">Residue read</span>
+                </div>
+                <div id="homebaseWornMask" class="homebase-worn-mask"></div>
               </section>
 
               <section class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionMaskBench">&#xDBF5;&#xDE13;</span> Mask bench</div>
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionMaskBench">&#xDBF5;&#xDE13;</span> Passage bench</div>
                 <label class="field" for="personaComparisonText">
                   <div class="field-head">
                     <div class="field-head-copy">
                       <span class="field-label">Comparison text</span>
-                      <span class="field-copy">Paste any text you want to test against the active cadence home, then wear a mask and watch what still reads as home.</span>
+                      <span class="field-copy">Paste any text you want to pass through the worn mask. Homebase then reads source, transformed passage, and residue against the active cadence home.</span>
                     </div>
                   </div>
                   <textarea id="personaComparisonText"></textarea>
                 </label>
                 <div id="maskBenchStatus" class="analysis-status">Stage or select a cadence home to turn this bench on.</div>
+                <div id="maskContactSummary" class="analysis-status">Contact is latent.</div>
                 <div class="trainer-summary-grid persona-mask-summary">
                   <div class="trainer-summary-card">
-                    <div class="persona-kicker">Raw to lock</div>
+                    <div class="persona-kicker">Before Contact</div>
                     <strong id="maskRawToLock">--</strong>
-                    <span>Similarity and traceability before masking.</span>
+                    <span>How the source reads against home before the mask touches it.</span>
                   </div>
                   <div class="trainer-summary-card">
-                    <div class="persona-kicker">Masked to lock</div>
+                    <div class="persona-kicker">After Contact</div>
                     <strong id="maskMaskedToLock">--</strong>
-                    <span>How the transformed text still reads against home.</span>
+                    <span>How the transformed passage still reads against home.</span>
                   </div>
                   <div class="trainer-summary-card">
-                    <div class="persona-kicker">Delta to lock</div>
+                    <div class="persona-kicker">Contact shift</div>
                     <strong id="maskDeltaToLock">--</strong>
-                    <span>What changed once the mask touched the comparison text.</span>
+                    <span>Whether proximity moved, surface texture moved, both, or neither.</span>
                   </div>
                 </div>
                 <div class="persona-mask-output-grid">
                   <div class="trainer-surface">
-                    <div class="persona-kicker">Masked output</div>
+                    <div class="persona-kicker">Source</div>
+                    <textarea id="personaMaskSource" readonly></textarea>
+                  </div>
+                  <div class="trainer-surface">
+                    <div class="persona-kicker">Through Mask</div>
                     <textarea id="personaMaskOutput" readonly></textarea>
                   </div>
                   <div class="trainer-surface">
-                    <div class="persona-kicker">Stickiness notes</div>
+                    <div class="persona-kicker">What Clung</div>
                     <ul id="maskStickinessNotes" class="persona-risk-list">
                       <li>Select or create a cadence home first.</li>
                     </ul>
                   </div>
                 </div>
+              </section>
+
+              <section id="cadenceLockDossierSurface" class="trainer-surface persona-dossier-surface" data-revealed="false">
+                <div id="cadenceLockDossier" class="persona-dossier"></div>
+              </section>
+
+              <section class="trainer-surface">
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Lock archive</div>
+                <div id="cadenceLockArchive" class="lock-archive"></div>
               </section>
             </div>
           </div>
@@ -244,8 +260,13 @@
           </div>
 
           <div class="persona-toolbar">
-            <div id="personaStatus" class="analysis-status">Gallery // choose a mask to wear in Homebase or test in the Deck</div>
+            <div id="personaStatus" class="analysis-status">Shelf // choose a mask on the shelf, then bring it into Homebase or test it in the Deck</div>
           </div>
+
+          <section id="personaPreviewStage" class="trainer-surface persona-preview-stage">
+            <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Mask preview</div>
+            <div id="personaPreviewBody" class="persona-preview-body"></div>
+          </section>
 
           <div id="personaDeck" class="personagrid compact"></div>
         </section>
@@ -359,6 +380,8 @@
             <button id="savePersonaBtn" type="button" class="secondary">Save Cadence as Persona</button>
           </div>
 
+          <div id="deckCastReport" class="analysis-status deck-cast-report">Cast report // waiting on both bays.</div>
+
           <div class="analysis-rail">
             <div id="activeBayStatus" class="statepill active">Active bay // reference voice</div>
             <div id="analysisStatus" class="analysis-status">
@@ -392,9 +415,9 @@
           <div class="panel-heading">
             <div>
               <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Trainer lab</div>
-              <h2>Manual persona lab, retrieval first</h2>
+              <h2>Forge a persona under retrieval law</h2>
             </div>
-            <p class="section-note">Paste a corpus, pull out the shell, test a generated sample, then export or inject only if the retrieval lane agrees.</p>
+            <p class="section-note">Extract the target field, inspect the prompt, validate a candidate, correct it if needed, then inject only when the retrieval lane will actually stand behind it.</p>
           </div>
 
           <div class="trainer-grid">
@@ -412,8 +435,8 @@
               <label class="field" for="trainerCorpusInput">
                 <div class="field-head">
                   <div class="field-head-copy">
-                    <span class="field-label">Reference corpus</span>
-                    <span class="field-copy">Paste one or more samples from the target voice. Blank lines split the set.</span>
+                      <span class="field-label">Forge corpus</span>
+                      <span class="field-copy">Paste one or more samples from the target voice. Blank lines split the set before extraction.</span>
                   </div>
                 </div>
                 <textarea id="trainerCorpusInput"></textarea>
@@ -424,7 +447,7 @@
               </div>
 
               <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Fingerprint readout</div>
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Field readout</div>
                 <div id="trainerFingerprintSummary" class="trainer-readout-body"></div>
               </div>
 
@@ -438,26 +461,26 @@
               <label class="field" for="trainerGeneratedOutput">
                 <div class="field-head">
                   <div class="field-head-copy">
-                    <span class="field-label">Generated output</span>
-                    <span class="field-copy">Paste the model output you want TCP to grade. Manual loop only; no hidden provider wiring.</span>
+                      <span class="field-label">Candidate passage</span>
+                      <span class="field-copy">Paste the generated passage you want the forge to inspect. Manual loop only; no hidden provider wiring.</span>
                   </div>
                 </div>
                 <textarea id="trainerGeneratedOutput"></textarea>
               </label>
 
               <div class="trainer-actions">
-                <button id="trainerValidateBtn" type="button" class="secondary">Validate Output</button>
+                <button id="trainerValidateBtn" type="button" class="secondary">Validate Passage</button>
                 <button id="trainerExportBtn" type="button" class="secondary">Export JSON</button>
                 <button id="trainerInjectBtn" type="button" class="secondary">Inject into Personas</button>
               </div>
 
               <div id="trainerStatus" class="analysis-status trainer-status">
-                <span id="trainerStatusBase" class="analysis-status-base">Paste a corpus, extract the shell, then validate a generated sample.</span>
+                <span id="trainerStatusBase" class="analysis-status-base">Paste a corpus, extract the field, then validate a candidate passage.</span>
                 <span id="trainerStatusCue" class="analysis-status-cue" hidden></span>
               </div>
 
               <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Retrieval validation</div>
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Forge validation</div>
                 <div id="trainerValidationReport" class="trainer-readout-body"></div>
               </div>
 
@@ -467,7 +490,7 @@
               </div>
 
               <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Persona export</div>
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Forged persona export</div>
                 <textarea id="trainerExportOutput" readonly></textarea>
               </div>
             </div>
@@ -485,9 +508,9 @@
     <footer class="footer">TCP / retrieval-first research playground / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
   </div>
 
-    <script src="./browser-data.js?v=20260327g"></script>
-    <script src="./browser-engine.js?v=20260327g"></script>
-    <script src="./retrieval-fixtures.js?v=20260327g"></script>
-    <script src="./browser-main.js?v=20260327g"></script>
+    <script src="./browser-data.js?v=20260327h"></script>
+    <script src="./browser-engine.js?v=20260327h"></script>
+    <script src="./retrieval-fixtures.js?v=20260327h"></script>
+    <script src="./browser-main.js?v=20260327h"></script>
 </body>
 </html>

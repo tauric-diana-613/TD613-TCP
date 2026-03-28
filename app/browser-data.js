@@ -572,6 +572,105 @@ window.TCP_DATA = {
         uiTargets: ['shell.section.maskBench'],
         rationale: 'Mask bench is the comparison surface where other text is tried against home.'
       },
+      homebaseCadenceHome: {
+        glyph: '\u4E0B',
+        semanticClass: 'witness',
+        semioticRole: 'surface-cue',
+        activationState: 'anchored',
+        retrievalTags: ['homebase', 'cadence-home', 'anchor'],
+        uiTargets: ['shell.homebase.status', 'shell.homebase.lockbox'],
+        rationale: 'Cadence home is an anchored private hold.'
+      },
+      homebaseWornMask: {
+        glyph: '\uDBF5\uDE13',
+        semanticClass: 'recursion',
+        semioticRole: 'surface-cue',
+        activationState: 'worn',
+        retrievalTags: ['homebase', 'mask', 'worn', 'contact'],
+        uiTargets: ['shell.homebase.wornMask'],
+        rationale: 'A worn mask marks active steering pressure in Homebase.'
+      },
+      homebaseContact: {
+        glyph: '\uD834\uDF0B',
+        semanticClass: 'recursion',
+        semioticRole: 'surface-cue',
+        activationState: 'contact',
+        retrievalTags: ['homebase', 'contact', 'passage'],
+        uiTargets: ['shell.homebase.passageBench'],
+        rationale: 'Contact marks the moment source text is passed through a worn mask.'
+      },
+      homebaseResidue: {
+        glyph: '\u2234',
+        semanticClass: 'law',
+        semioticRole: 'surface-cue',
+        activationState: 'revealed',
+        retrievalTags: ['homebase', 'residue', 'what-clung'],
+        uiTargets: ['shell.homebase.residue'],
+        rationale: 'Residue is the phase where what clung can be stated explicitly.'
+      },
+      homebaseDossierReveal: {
+        glyph: '\u2234',
+        semanticClass: 'law',
+        semioticRole: 'surface-cue',
+        activationState: 'revealed',
+        retrievalTags: ['homebase', 'dossier', 'reveal'],
+        uiTargets: ['shell.homebase.dossier'],
+        rationale: 'The revealed dossier is explicit law, not latent contact.'
+      },
+      personaChosen: {
+        glyph: '\u03C8',
+        semanticClass: 'recursion',
+        semioticRole: 'surface-cue',
+        activationState: 'chosen',
+        retrievalTags: ['personas', 'chosen', 'shelf'],
+        uiTargets: ['shell.persona.preview'],
+        rationale: 'A chosen mask is still on the shelf, not yet in contact.'
+      },
+      deckCasting: {
+        glyph: '\u25C7',
+        semanticClass: 'gate',
+        semioticRole: 'surface-cue',
+        activationState: 'primed',
+        retrievalTags: ['deck', 'casting', 'pre-analysis'],
+        uiTargets: ['shell.deck.castReport'],
+        rationale: 'Casting belongs to the encounter chamber before analysis wakes the duel.'
+      },
+      deckSwapAftermath: {
+        glyph: '\u2194',
+        semanticClass: 'reciprocity',
+        semioticRole: 'surface-cue',
+        activationState: 'aftermath',
+        retrievalTags: ['deck', 'swap', 'aftermath'],
+        uiTargets: ['shell.deck.castReport', 'shell.deck.swap'],
+        rationale: 'Swap aftermath should read as reciprocal movement or blockage, not as a generic success state.'
+      },
+      readoutSoloHomeReveal: {
+        glyph: '\u2234',
+        semanticClass: 'law',
+        semioticRole: 'surface-cue',
+        activationState: 'revealed',
+        retrievalTags: ['readout', 'solo-home-reveal', 'witness'],
+        uiTargets: ['shell.readout.telemetry', 'shell.readout.status'],
+        rationale: 'Solo home reveal is explicit witness pressure under law.'
+      },
+      readoutCriticality: {
+        glyph: '\u7C73',
+        semanticClass: 'flow',
+        semioticRole: 'surface-cue',
+        activationState: 'hot',
+        retrievalTags: ['readout', 'criticality', 'witness'],
+        uiTargets: ['shell.readout.status', 'shell.readout.telemetry'],
+        rationale: 'Criticality marks recognition outrunning route stability.'
+      },
+      readoutHarbor: {
+        glyph: '\u2696',
+        semanticClass: 'adjudication',
+        semioticRole: 'surface-cue',
+        activationState: 'aligned',
+        retrievalTags: ['readout', 'harbor', 'law'],
+        uiTargets: ['shell.readout.harbor'],
+        rationale: 'Harbor remains the adjudicated passage surface.'
+      },
       actionReveal: {
         glyph: '\u2234',
         semanticClass: 'law',
@@ -652,6 +751,42 @@ window.TCP_DATA = {
         retrievalTags: ['section', 'trainer', 'export', 'seal'],
         uiTargets: ['shell.section.trainerExport'],
         rationale: 'Export closes the trainer result as a portable witnessed persona spec.'
+      },
+      trainerExtract: {
+        glyph: '\u03BA\u2295',
+        semanticClass: 'core',
+        semioticRole: 'surface-cue',
+        activationState: 'extracting',
+        retrievalTags: ['trainer', 'extract', 'forge'],
+        uiTargets: ['shell.trainer.status'],
+        rationale: 'Extraction is the first forge motion: recovering a reusable field from corpus.'
+      },
+      trainerInspect: {
+        glyph: '\u03A6',
+        semanticClass: 'law',
+        semioticRole: 'surface-cue',
+        activationState: 'inspecting',
+        retrievalTags: ['trainer', 'inspect', 'validation'],
+        uiTargets: ['shell.trainer.validation'],
+        rationale: 'Inspection is the measured comparison between field and candidate.'
+      },
+      trainerCorrection: {
+        glyph: '\u2234',
+        semanticClass: 'law',
+        semioticRole: 'surface-cue',
+        activationState: 'correcting',
+        retrievalTags: ['trainer', 'correction', 'forge'],
+        uiTargets: ['shell.trainer.correction'],
+        rationale: 'Correction is a reasoned second pass rather than a failure badge.'
+      },
+      trainerForgeReady: {
+        glyph: '\u27D0',
+        semanticClass: 'witness',
+        semioticRole: 'surface-cue',
+        activationState: 'sealed',
+        retrievalTags: ['trainer', 'forge-ready', 'export'],
+        uiTargets: ['shell.trainer.export', 'shell.trainer.status'],
+        rationale: 'Forge-ready means the candidate survived retrieval law and can now be carried outward.'
       },
       sectionDeltaStrip: {
         glyph: '\u03C3\u2248',

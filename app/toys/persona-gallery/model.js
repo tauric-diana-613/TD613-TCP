@@ -455,6 +455,78 @@ function effectSummaryFromProfiles(sourceProfile = {}, outputProfile = {}, delta
   };
 }
 
+function compactSwatch(text = '', maxLength = 180) {
+  const normalized = normalizeText(text).replace(/\s+/g, ' ');
+  if (!normalized) {
+    return '';
+  }
+  if (normalized.length <= maxLength) {
+    return normalized;
+  }
+  return `${normalized.slice(0, Math.max(0, maxLength - 1)).trimEnd()}…`;
+}
+
+function maskContactSummary(result = null) {
+  if (!result) {
+    return {
+      changedProximity: false,
+      changedSurfaceTexture: false,
+      contactClass: 'latent',
+      fieldEffect: 'unresolved',
+      line: 'No contact has been staged yet.'
+    };
+  }
+
+  const delta = result.deltaToLock || {};
+  const effect = result.effectSummary || {};
+  const changedProximity = Math.abs(delta.traceability || 0) >= 0.05 || Math.abs(delta.similarity || 0) >= 0.05;
+  const changedSurfaceTexture = Boolean(
+    normalizeText(result.maskedText) &&
+    normalizeText(result.rawText) &&
+    normalizeText(result.maskedText) !== normalizeText(result.rawText)
+  );
+  const fieldEffect =
+    changedProximity && changedSurfaceTexture
+      ? 'both'
+      : changedProximity
+        ? 'proximity'
+        : changedSurfaceTexture
+          ? 'surface-texture'
+          : 'neither';
+  const proximityLine =
+    (delta.traceability || 0) <= -0.05
+      ? `Home trace eased by ${Math.round(Math.abs(delta.traceability || 0) * 100)} points.`
+      : (delta.traceability || 0) >= 0.05
+        ? `Home trace tightened by ${Math.round(Math.abs(delta.traceability || 0) * 100)} points.`
+        : 'Home distance barely moved.';
+  const textureLine =
+    changedSurfaceTexture
+      ? `${effect.sentenceShift || 'span holds'}, ${effect.punctuationShift || 'punctuation holds'}, ${effect.contractionShift || 'contraction holds'}.`
+      : 'Surface texture held near source.';
+
+  return {
+    changedProximity,
+    changedSurfaceTexture,
+    contactClass:
+      fieldEffect === 'both'
+        ? 'full-contact'
+        : fieldEffect === 'proximity'
+          ? 'deep-drift'
+          : fieldEffect === 'surface-texture'
+            ? 'surface-drift'
+            : 'near-hold',
+    fieldEffect,
+    line:
+      fieldEffect === 'both'
+        ? `${proximityLine} Surface texture shifted too.`
+        : fieldEffect === 'proximity'
+          ? proximityLine
+          : fieldEffect === 'surface-texture'
+            ? `Surface texture changed while home distance held. ${textureLine}`
+            : 'The mask touched the passage, but home pressure and surface texture largely held.'
+  };
+}
+
 export function buildMaskTransformationResult(engine, { comparisonText = '', lock = null, persona = null } = {}) {
   const normalized = normalizeText(comparisonText);
   if (!normalized || !persona?.profile) {
@@ -504,6 +576,14 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     stickinessNotes.push('No lock selected yet. The mask can still be sampled, but home proximity is unresolved.');
   }
 
+  const swatch = compactSwatch(transfer.text || '');
+  const contactSummary = maskContactSummary({
+    rawText: normalized,
+    maskedText: transfer.text,
+    deltaToLock,
+    effectSummary
+  });
+
   return {
     rawText: normalized,
     maskedText: transfer.text,
@@ -514,11 +594,23 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     effectSummary,
     whatMoved,
     whatHeld: heldLanes,
-    stickinessNotes
+    stickinessNotes,
+    swatch,
+    contactSummary
   };
 }
 
 export function buildMaskEffectSummary(engine, { comparisonText = '', lock = null, persona = null } = {}) {
   const result = buildMaskTransformationResult(engine, { comparisonText, lock, persona });
   return result ? result.effectSummary : null;
+}
+
+export function buildMaskSwatch(engine, { comparisonText = '', persona = null } = {}) {
+  const result = buildMaskTransformationResult(engine, { comparisonText, lock: null, persona });
+  return result ? result.swatch : '';
+}
+
+export function buildMaskContactSummary(engine, { comparisonText = '', lock = null, persona = null } = {}) {
+  const result = buildMaskTransformationResult(engine, { comparisonText, lock, persona });
+  return result ? result.contactSummary : maskContactSummary(null);
 }

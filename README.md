@@ -6,6 +6,21 @@ The project therefore treats stylometry as bounded signal modeling rather than a
 
 The live browser surface is playful by design, but the model is not loose. TCP is thresholded, auditable, deterministic, and explicit about where measurement ends and policy begins.
 
+## Registered field language
+
+TCP's glyph system is operational, not decorative. The browser uses a registered field language to keep surface role, state transition, and retrieval truth aligned.
+
+The current public membrane is organized as six roles:
+
+- `Ingress` = threshold
+- `Homebase` = anchor, contact, residue
+- `Personas` = cast shelf
+- `Readout` = witness and law
+- `Deck` = encounter and duel
+- `Trainer` = forge
+
+That role split matters because TCP does not present every state in the same voice. `Homebase` is where a cadence home is locked, a mask is worn, and residue is read. `Personas` is where masks are chosen on the shelf before being brought into `Homebase` or thrown into `Deck`. `Readout` stays colder because it is the proof surface. `Trainer` stays retrieval-first, but the visible loop now reads as extraction, inspection, validation, correction, and injection rather than as generic tooling.
+
 ## Problem statement
 
 Most language systems flatten three different acts into one gesture:

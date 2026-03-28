@@ -243,7 +243,8 @@
   let stagedCadenceLock = null;
   let revealedCadenceLockKey = '';
   let readoutOwner = 'idle';
-  let selectedMaskId = '';
+  let gallerySelectedMaskId = '';
+  let homebaseWornMaskId = '';
   let trainerController = null;
   let ingress = createIngressState();
 
@@ -350,9 +351,9 @@
 
     const otherSlot = slot === 'A' ? 'B' : 'A';
     const otherSample = sampleEntry(baySampleIds[otherSlot]);
-    const pairNote = otherSample ? ` Pair locked against ${otherSample.name}.` : '';
+    const pairNote = otherSample ? ` Cast against ${otherSample.name}.` : '';
     setStatusMessage(
-      `${SLOT_LABELS[slot]} now holds ${sample.name}.${pairNote}${releasedBorrowedShell ? ' Borrowed shell cleared so the fresh sample starts native.' : ' Press Analyze Cadences when you want the deck live.'}`
+      `${SLOT_LABELS[slot]} now carries ${sample.name}.${pairNote}${releasedBorrowedShell ? ' Borrowed shell cleared so the fresh sample starts native.' : ' The cast report is live; press Analyze Cadences when you want the duel awake.'}`
     );
   }
 
@@ -1473,12 +1474,171 @@
 
   function getSelectedMask() {
     const library = getPersonaLibrary();
-    const selected = library.find((persona) => persona.id === selectedMaskId) || null;
-    if (selected) {
-      return selected;
+    return library.find((persona) => persona.id === gallerySelectedMaskId) || null;
+  }
+
+  function getHomebaseWornMask() {
+    const library = getPersonaLibrary();
+    return library.find((persona) => persona.id === homebaseWornMaskId) || null;
+  }
+
+  function buildSurfacePhaseMap({
+    lock,
+    revealed,
+    selectedMask,
+    wornMask,
+    comparisonText,
+    comparison,
+    deckCastingSummary
+  }) {
+    const comparisonReady = Boolean(String(comparisonText || '').trim());
+    const maskContactSummary = comparison?.contactSummary || null;
+    const readoutWitnessMode = readoutOwner === 'homebase'
+      ? (revealed ? 'solo-home-reveal' : 'homebase-latent')
+      : (document.body.dataset.decision === 'criticality'
+        ? 'criticality'
+        : document.body.dataset.decision === 'passage'
+          ? 'harbor'
+          : 'observing');
+    const trainerSnapshot = typeof trainerController?.snapshot === 'function' ? trainerController.snapshot() : null;
+    const trainerForgeState = !trainerSnapshot || !trainerSnapshot.corpusReady
+      ? 'latent'
+      : trainerSnapshot.validationPass
+        ? 'forge-ready'
+        : trainerSnapshot.validationReady
+          ? 'correcting'
+          : trainerSnapshot.promptReady
+            ? 'inspect'
+            : 'extract';
+
+    return {
+      homebase: {
+        surfaceRole: 'anchor',
+        surfacePhase: !lock
+          ? 'latent'
+          : !wornMask
+            ? 'home-only'
+            : !comparisonReady
+              ? 'mask-worn'
+              : comparison
+                ? 'residue'
+                : 'contact-staged',
+        cueGlyphKey: revealed ? 'homebaseDossierReveal' : lock ? 'homebaseCadenceHome' : 'tabHomebase',
+        cueTone: revealed ? 'cold' : lock ? 'warm' : 'latent',
+        statusGrammar: !lock
+          ? 'homebase-latent'
+          : revealed
+            ? 'homebase-revealed'
+            : 'homebase-staged'
+      },
+      personas: {
+        surfaceRole: 'shelf',
+        surfacePhase: selectedMask
+          ? 'chosen'
+          : homebaseWornMaskId
+            ? 'worn-elsewhere'
+            : 'latent',
+        cueGlyphKey: selectedMask ? 'personaChosen' : 'tabPersonas',
+        cueTone: selectedMask ? 'warm' : 'latent',
+        statusGrammar: selectedMask ? 'persona-preview' : 'persona-shelf'
+      },
+      readout: {
+        surfaceRole: 'witness',
+        surfacePhase: readoutWitnessMode,
+        cueGlyphKey:
+          readoutWitnessMode === 'solo-home-reveal'
+            ? 'readoutSoloHomeReveal'
+            : readoutWitnessMode === 'criticality'
+              ? 'readoutCriticality'
+              : readoutWitnessMode === 'harbor'
+                ? 'readoutHarbor'
+                : 'tabReadout',
+        cueTone:
+          readoutWitnessMode === 'criticality' || readoutWitnessMode === 'solo-home-reveal'
+            ? 'cold'
+            : readoutWitnessMode === 'harbor'
+              ? 'clear'
+              : 'latent',
+        statusGrammar: readoutWitnessMode
+      },
+      deck: {
+        surfaceRole: 'encounter',
+        surfacePhase: lastSwapCadenceAudit
+          ? 'aftermath'
+          : document.body.dataset.bootStage === 'analyze-pair'
+            ? 'duel-wake'
+            : (deckCastingSummary?.ready ? 'casting' : 'latent'),
+        cueGlyphKey: lastSwapCadenceAudit ? 'deckSwapAftermath' : deckCastingSummary?.ready ? 'deckCasting' : 'tabDeck',
+        cueTone: lastSwapCadenceAudit ? 'warm' : deckCastingSummary?.ready ? 'play' : 'latent',
+        statusGrammar: lastSwapCadenceAudit ? 'deck-aftermath' : deckCastingSummary?.ready ? 'deck-casting' : 'deck-latent'
+      },
+      trainer: {
+        surfaceRole: 'forge',
+        surfacePhase: trainerForgeState,
+        cueGlyphKey:
+          trainerForgeState === 'forge-ready'
+            ? 'trainerForgeReady'
+            : trainerForgeState === 'correcting'
+              ? 'trainerCorrection'
+              : trainerForgeState === 'inspect'
+                ? 'trainerInspect'
+                : trainerForgeState === 'extract'
+                  ? 'trainerExtract'
+                  : 'tabTrainer',
+        cueTone: trainerForgeState === 'forge-ready' ? 'clear' : trainerForgeState === 'correcting' ? 'warm' : 'latent',
+        statusGrammar: trainerForgeState
+      },
+      maskContactSummary
+    };
+  }
+
+  function buildDeckCastingSummary(voiceStateA, voiceStateB) {
+    if (!voiceStateA.hasText || !voiceStateB.hasText) {
+      return {
+        ready: false,
+        contrast: 'awaiting both bays',
+        branchHeat: 'latent',
+        swapPromise: 'unresolved',
+        line: 'Cast two voices to expose contrast, branch heat, and swap promise before the duel wakes.'
+      };
     }
-    selectedMaskId = library[0]?.id || '';
-    return selectedMaskId ? findPersona(selectedMaskId) : null;
+
+    const cmp = compareTexts(voiceStateA.text, voiceStateB.text, {
+      profileA: voiceStateA.rawProfile,
+      profileB: voiceStateB.rawProfile
+    });
+    const branch = branchDynamics({
+      ...cmp,
+      coherence: cadenceCoherence(cmp)
+    });
+    const contrast =
+      cmp.similarity <= 0.42
+        ? 'hard contrast'
+        : cmp.similarity <= 0.58
+          ? 'live contrast'
+          : cmp.similarity <= 0.72
+            ? 'close weave'
+            : 'near lock';
+    const branchHeat =
+      branch.branchPressure >= 0.48
+        ? 'hot branch'
+        : branch.branchPressure >= 0.3
+          ? 'warm branch'
+          : 'cool branch';
+    const swapPromise =
+      cmp.traceability >= 0.68
+        ? 'high swap promise'
+        : cmp.traceability >= 0.48
+          ? 'partial swap promise'
+          : 'low swap promise';
+
+    return {
+      ready: true,
+      contrast,
+      branchHeat,
+      swapPromise,
+      line: `Cast report // ${contrast} // ${branchHeat} // ${swapPromise}`
+    };
   }
 
   function buildPersonaGalleryState() {
@@ -1486,17 +1646,40 @@
     const lock = currentHomebaseLock();
     const comparisonText = $('personaComparisonText') ? $('personaComparisonText').value : '';
     const selectedMask = getSelectedMask();
+    const wornMask = getHomebaseWornMask();
     const revealed = homebaseLockRevealed(lock);
-    const dossier = personaGalleryModel && lock && revealed
-      ? personaGalleryModel.buildLockDossier(window.TCP_ENGINE, lock)
-      : null;
-    const comparison = personaGalleryModel && comparisonText.trim() && selectedMask
+    const selectedMaskPreview = personaGalleryModel && comparisonText.trim() && selectedMask
       ? personaGalleryModel.buildMaskTransformationResult(window.TCP_ENGINE, {
           comparisonText,
           lock,
           persona: selectedMask
         })
       : null;
+    const dossier = personaGalleryModel && lock && revealed
+      ? personaGalleryModel.buildLockDossier(window.TCP_ENGINE, lock)
+      : null;
+    const comparison = personaGalleryModel && comparisonText.trim() && wornMask
+      ? personaGalleryModel.buildMaskTransformationResult(window.TCP_ENGINE, {
+          comparisonText,
+          lock,
+          persona: wornMask
+        })
+      : null;
+    const selectedMaskSwatch = selectedMaskPreview?.swatch || '';
+    const selectedMaskContact = selectedMaskPreview?.contactSummary || null;
+    const selectedMaskEffect = selectedMaskPreview?.effectSummary || null;
+    const voiceStateA = getVoiceState('A');
+    const voiceStateB = getVoiceState('B');
+    const deckCastingSummary = buildDeckCastingSummary(voiceStateA, voiceStateB);
+    const fieldGrammar = buildSurfacePhaseMap({
+      lock,
+      revealed,
+      selectedMask,
+      wornMask,
+      comparisonText,
+      comparison,
+      deckCastingSummary
+    });
 
     return {
       library: getPersonaLibrary(),
@@ -1507,7 +1690,18 @@
       dossier,
       comparisonText,
       selectedMask,
-      comparison
+      wornMask,
+      comparison,
+      selectedMaskSwatch,
+      selectedMaskContact,
+      selectedMaskEffect,
+      deckCastingSummary,
+      fieldGrammar,
+      galleryGroups: {
+        builtIn: getPersonaLibrary().filter((persona) => persona.source === 'built-in'),
+        captured: getPersonaLibrary().filter((persona) => persona.source === 'saved'),
+        trained: getPersonaLibrary().filter((persona) => persona.source === 'trainer')
+      }
     };
   }
 
@@ -2097,27 +2291,104 @@
     return `${formatPct(summary.meanSimilarity || 0)} sim // ${formatPct(summary.meanTraceability || 0)} trace`;
   }
 
-  function homebaseMaskLine(state) {
-    const selectedMask = state.selectedMask;
-    if (!selectedMask) {
-      return 'Mask // no mask armed // choose one in Personas';
+  function applySurfaceFieldGrammar(node, summary = null) {
+    if (!node) {
+      return;
+    }
+    node.dataset.surfaceRole = summary?.surfaceRole || '';
+    node.dataset.surfacePhase = summary?.surfacePhase || '';
+    node.dataset.cueGlyphKey = summary?.cueGlyphKey || '';
+    node.dataset.cueTone = summary?.cueTone || '';
+    node.dataset.statusGrammar = summary?.statusGrammar || '';
+  }
+
+  function maskRouteState(state) {
+    if (state.comparison?.contactSummary) {
+      return 'residue';
+    }
+    if (state.wornMask && String(state.comparisonText || '').trim()) {
+      return 'contact';
+    }
+    if (state.wornMask) {
+      return 'worn';
+    }
+    if (state.selectedMask) {
+      return 'chosen';
+    }
+    return 'latent';
+  }
+
+  function renderHomebaseWornMask(state) {
+    const stage = $('homebaseWornMaskStage');
+    const route = $('homebaseMaskRoute');
+    const body = $('homebaseWornMask');
+    if (!stage || !route || !body) {
+      return;
     }
 
-    const source = personaSourceLabel(selectedMask);
-    if (!state.lock) {
-      return `Mask // ${selectedMask.name} armed // ${source} // stage or select a cadence home`;
+    const routeState = maskRouteState(state);
+    stage.dataset.maskPhase = routeState;
+    route.querySelectorAll('[data-step]').forEach((chip) => {
+      const step = chip.dataset.step;
+      const active =
+        (step === 'chosen' && ['chosen', 'worn', 'contact', 'residue'].includes(routeState)) ||
+        (step === 'worn' && ['worn', 'contact', 'residue'].includes(routeState)) ||
+        (step === 'contact' && ['contact', 'residue'].includes(routeState)) ||
+        (step === 'residue' && routeState === 'residue');
+      chip.dataset.active = active ? 'true' : 'false';
+    });
+
+    if (!state.wornMask) {
+      const shelfLine = state.selectedMask
+        ? `${state.selectedMask.name} is chosen on the shelf, but not yet worn in Homebase.`
+        : 'No mask is being worn in Homebase yet.';
+      body.innerHTML = `
+        <div class="homebase-worn-mask-empty">
+          <div class="persona-kicker">${escapeHtml(routeState === 'chosen' ? 'chosen on shelf' : 'no mask worn')}</div>
+          <h3>${escapeHtml(routeState === 'chosen' ? state.selectedMask.name : 'Bring one in from Personas')}</h3>
+          <p class="persona-empty">${escapeHtml(shelfLine)}</p>
+        </div>
+      `;
+      return;
     }
 
-    if (!state.comparisonText.trim()) {
-      return `Mask // ${selectedMask.name} armed for ${state.lock.name} // paste comparison text`;
-    }
+    const swatch = state.comparison?.swatch || state.selectedMaskSwatch || '';
+    const source = personaSourceLabel(state.wornMask);
+    const stageLine = state.comparison?.contactSummary?.line
+      || (!state.lock
+        ? 'The mask is worn, but Homebase still needs a cadence home.'
+        : !String(state.comparisonText || '').trim()
+          ? `The mask is worn against ${state.lock.name}. Paste source text to pass through it.`
+          : 'Passage is staged. Read the source, the through-mask output, and what clung.');
 
-    return `Mask // ${selectedMask.name} active against ${state.lock.name} // bench live`;
+    body.innerHTML = `
+      <div class="homebase-worn-mask-card">
+        <div class="persona-mask-portrait ${escapeHtml(state.wornMask.maskVisualClass || 'field-mask')}" data-mask-state="${escapeHtml(personaMaskStateLabel(state.wornMask))}">
+          <span class="persona-mask-sigil">${escapeHtml(state.wornMask.maskSigil || '[]')}</span>
+          <span class="persona-mask-label">${escapeHtml(state.wornMask.maskArtLabel || 'field mask')}</span>
+          <span class="persona-mask-state">${escapeHtml(personaMaskStateLabel(state.wornMask))}</span>
+        </div>
+        <div class="homebase-worn-mask-copy">
+          <div class="persona-kicker">${escapeHtml(source)}</div>
+          <h3>${escapeHtml(state.wornMask.name)}</h3>
+          <p class="blurb">${escapeHtml(state.wornMask.blurb || '')}</p>
+          <div class="trainer-surface homebase-swatch-card">
+            <div class="persona-kicker">${escapeHtml(swatch ? 'writing swatch' : 'voice promise')}</div>
+            <p class="persona-empty">${escapeHtml(swatch || state.wornMask.blurb || 'Bring source text into contact to see how the mask begins a passage.')}</p>
+          </div>
+          <div class="analysis-status homebase-worn-mask-line">${escapeHtml(stageLine)}</div>
+          <div class="persona-actions">
+            <button type="button" class="ghost persona-inline-action" data-persona-action="clear-homebase">Clear worn mask</button>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   function renderHomebaseChrome(state) {
     const lockboxSurface = $('cadenceLockboxSurface');
     const dossierSurface = $('cadenceLockDossierSurface');
+    const homebasePane = $('viewPaneHomebase');
     const revealButton = $('revealCadenceBtn');
     const saveButton = $('saveCadenceLockBtn');
     const homebaseStatus = $('homebaseStatus');
@@ -2126,6 +2397,7 @@
     const activeLockLabel = state.lock ? state.lock.name : 'no cadence home';
     const stagedLabel = state.hasStagedLock ? `${glyphChar('stateLockStaged', '')} staged draft` : 'archive latent';
 
+    applySurfaceFieldGrammar(homebasePane, state.fieldGrammar?.homebase);
     if (lockboxSurface) {
       lockboxSurface.classList.toggle('is-staged', state.hasStagedLock);
     }
@@ -2139,12 +2411,32 @@
       saveButton.disabled = !state.hasStagedLock;
     }
     if (homebaseStatus) {
-      homebaseStatus.textContent = `${glyphChar('tabHomebase', '')} Homebase // ${activeLockLabel} // ${stagedLabel}`;
+      homebaseStatus.textContent = !state.lock
+        ? `${glyphChar('tabHomebase', '')} Homebase // anchor latent // stage a cadence home`
+        : `${glyphChar('tabHomebase', '')} Homebase // ${activeLockLabel} // ${stagedLabel}`;
       applyGlyphMetadata(homebaseStatus, 'tabHomebase');
     }
     if (homebaseMaskStatus) {
-      homebaseMaskStatus.textContent = `${glyphChar('sectionMaskBench', '')} ${homebaseMaskLine(state)}`;
-      applyGlyphMetadata(homebaseMaskStatus, 'sectionMaskBench');
+      const wornMask = state.wornMask;
+      homebaseMaskStatus.textContent = !wornMask
+        ? `${glyphChar('homebaseWornMask', glyphChar('sectionMaskBench', ''))} Worn mask // none // choose on shelf, then bring into Homebase`
+        : !state.lock
+          ? `${glyphChar('homebaseWornMask', glyphChar('sectionMaskBench', ''))} Worn mask // ${wornMask.name} // cadence home still missing`
+          : !String(state.comparisonText || '').trim()
+            ? `${glyphChar('homebaseContact', glyphChar('sectionMaskBench', ''))} Worn mask // ${wornMask.name} // source text still missing`
+            : state.comparison?.contactSummary
+              ? `${glyphChar('homebaseResidue', glyphChar('sectionMaskBench', ''))} Worn mask // ${wornMask.name} // ${state.comparison.contactSummary.fieldEffect}`
+              : `${glyphChar('homebaseContact', glyphChar('sectionMaskBench', ''))} Worn mask // ${wornMask.name} // contact staging`;
+      applyGlyphMetadata(
+        homebaseMaskStatus,
+        state.comparison?.contactSummary
+          ? 'homebaseResidue'
+          : wornMask && String(state.comparisonText || '').trim()
+            ? 'homebaseContact'
+            : wornMask
+              ? 'homebaseWornMask'
+              : 'sectionMaskBench'
+      );
     }
     if (lockStatus) {
       lockStatus.textContent = !state.lock
@@ -2157,6 +2449,7 @@
               ? `${glyphChar('actionReveal', '')} Saved cadence home revealed. Telemetry and Harbor are reading it through the solo path.`
               : 'Saved cadence home selected. Reveal when you want the dossier and solo readout live.';
     }
+    renderHomebaseWornMask(state);
   }
 
   function renderLockArchive(state) {
@@ -2299,66 +2592,150 @@
 
   function renderMaskBench(state) {
     const statusNode = $('maskBenchStatus');
+    const contactNode = $('maskContactSummary');
+    const sourceNode = $('personaMaskSource');
     const outputNode = $('personaMaskOutput');
     const beforeNode = $('maskRawToLock');
     const afterNode = $('maskMaskedToLock');
     const deltaNode = $('maskDeltaToLock');
     const notesNode = $('maskStickinessNotes');
 
-    if (!statusNode || !outputNode || !beforeNode || !afterNode || !deltaNode || !notesNode) {
+    if (!statusNode || !contactNode || !sourceNode || !outputNode || !beforeNode || !afterNode || !deltaNode || !notesNode) {
       return;
     }
 
     if (!state.lock) {
-      statusNode.textContent = state.selectedMask
-        ? `${state.selectedMask.name} is armed, but Homebase still needs a cadence home. Lock one or select one from the archive first.`
+      statusNode.textContent = state.wornMask
+        ? `${state.wornMask.name} is worn, but Homebase still needs a cadence home. Lock one or select one from the archive first.`
         : 'Stage or select a cadence home to turn this bench on.';
+      contactNode.textContent = 'Contact state // cadence home missing';
+      applyGlyphMetadata(contactNode, 'homebaseCadenceHome');
+      sourceNode.value = String(state.comparisonText || '').trim();
       outputNode.value = '';
       beforeNode.textContent = '--';
       afterNode.textContent = '--';
       deltaNode.textContent = '--';
-      notesNode.innerHTML = state.selectedMask
-        ? `<li>${escapeHtml(state.selectedMask.name)} is ready. The missing ingredient is the cadence home.</li>`
+      notesNode.innerHTML = state.wornMask
+        ? `<li>${escapeHtml(state.wornMask.name)} is worn and ready. The missing ingredient is the cadence home.</li>`
         : '<li>Select or create a cadence home first.</li>';
       return;
     }
 
     if (!state.comparisonText.trim()) {
-      statusNode.textContent = state.selectedMask
-        ? `${state.selectedMask.name} is armed against ${state.lock.name}. Paste comparison text to run the bench.`
-        : `Cadence home live // ${state.lock.name}. Paste comparison text, then try on a mask from Personas.`;
+      statusNode.textContent = state.wornMask
+        ? `${state.wornMask.name} is worn against ${state.lock.name}. Paste source text to run contact.`
+        : `Cadence home live // ${state.lock.name}. Choose a shelf mask, bring it into Homebase, then paste source text.`;
+      contactNode.textContent = state.wornMask
+        ? 'Contact state // worn mask waiting on source passage'
+        : 'Contact state // no worn mask';
+      applyGlyphMetadata(contactNode, state.wornMask ? 'homebaseWornMask' : 'homebaseCadenceHome');
+      sourceNode.value = '';
       outputNode.value = '';
       beforeNode.textContent = '--';
       afterNode.textContent = '--';
       deltaNode.textContent = '--';
-      notesNode.innerHTML = state.selectedMask
-        ? `<li>${escapeHtml(state.selectedMask.name)} is waiting on comparison text.</li><li>The bench compares raw text and masked text against ${escapeHtml(state.lock.name)}.</li>`
-        : '<li>The bench compares raw text and masked text against the active lock.</li>';
+      notesNode.innerHTML = state.wornMask
+        ? `<li>${escapeHtml(state.wornMask.name)} is waiting on source passage.</li><li>The bench compares source and through-mask text against ${escapeHtml(state.lock.name)}.</li>`
+        : '<li>The bench compares source and through-mask text against the active lock.</li>';
       return;
     }
 
-    if (!state.selectedMask || !state.comparison) {
-      statusNode.textContent = `Comparison text is ready against ${state.lock.name}. Pick a mask in Personas to see what still reads as home.`;
+    if (!state.wornMask || !state.comparison) {
+      statusNode.textContent = `Source text is ready against ${state.lock.name}. Bring a mask into Homebase to see what still reads as home.`;
+      contactNode.textContent = 'Contact state // source staged, mask missing';
+      applyGlyphMetadata(contactNode, 'homebaseContact');
+      sourceNode.value = state.comparisonText || '';
       outputNode.value = '';
       beforeNode.textContent = '--';
       afterNode.textContent = '--';
       deltaNode.textContent = '--';
-      notesNode.innerHTML = '<li>No mask is active yet.</li><li>Choose one in Personas, then come back here to compare raw text and masked text against the active lock.</li>';
+      notesNode.innerHTML = '<li>No mask is worn yet.</li><li>Choose one in Personas, bring it into Homebase, then read what clings after contact.</li>';
       return;
     }
 
     const result = state.comparison;
     const delta = result.deltaToLock || {};
-    const effect = result.effectSummary || {};
-    statusNode.textContent = `${state.selectedMask.name} is on the bench. Raw text and masked text are both being read against ${state.lock.name}.`;
+    const contact = result.contactSummary || {};
+    statusNode.textContent = `${state.wornMask.name} is passing source text through ${state.lock.name}.`;
+    contactNode.textContent = `Contact state // ${contact.line || 'Residue is now readable.'}`;
+    applyGlyphMetadata(contactNode, contact.fieldEffect === 'neither' ? 'homebaseContact' : 'homebaseResidue');
+    sourceNode.value = result.rawText || state.comparisonText || '';
     outputNode.value = result.maskedText || '';
     beforeNode.textContent = comparisonMetricSummary(result.rawToLock);
     afterNode.textContent = comparisonMetricSummary(result.maskedToLock);
-    deltaNode.textContent = `${delta.traceability >= 0 ? '+' : ''}${formatPct(Math.abs(delta.traceability || 0))} trace // ${delta.similarity >= 0 ? '+' : ''}${formatPct(Math.abs(delta.similarity || 0))} similarity`;
+    deltaNode.textContent =
+      contact.fieldEffect === 'both'
+        ? `${delta.traceability >= 0 ? '+' : ''}${formatPct(Math.abs(delta.traceability || 0))} trace // surface texture shifted too`
+        : contact.fieldEffect === 'proximity'
+          ? `${delta.traceability >= 0 ? '+' : ''}${formatPct(Math.abs(delta.traceability || 0))} trace // home distance moved`
+          : contact.fieldEffect === 'surface-texture'
+            ? 'surface texture shifted // home distance held'
+            : 'surface texture held // home distance held';
     notesNode.innerHTML = [
-      `Effect summary // ${escapeHtml(effect.sentenceShift || 'span holds')} // ${escapeHtml(effect.punctuationShift || 'punctuation holds')} // ${escapeHtml(effect.contractionShift || 'contraction holds')} // ${escapeHtml(effect.registerShift || 'register holds')} // ${escapeHtml(effect.legibilityEffect || 'home residue persists')}`,
+      `What clung // ${escapeHtml(contact.line || 'Residue remains readable.')} `,
       ...(result.stickinessNotes || [])
     ].map((note) => `<li>${escapeHtml(note)}</li>`).join('');
+  }
+
+  function renderPersonaPreview(state) {
+    const node = $('personaPreviewBody');
+    const stage = $('personaPreviewStage');
+    if (!node || !stage) {
+      return;
+    }
+
+    applySurfaceFieldGrammar(stage, state.fieldGrammar?.personas);
+
+    if (!state.selectedMask) {
+      node.innerHTML = `
+        <div class="persona-preview-empty">
+          <h3>Choose a mask on the shelf</h3>
+          <p class="persona-empty">The shelf is for choosing. Homebase is where the mask gets worn and the passage gets tested.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const persona = state.selectedMask;
+    const swatch = state.selectedMaskSwatch || '';
+    const effectSummary = state.selectedMaskEffect || null;
+    const effectLine = effectSummary
+      ? [effectSummary.sentenceShift, effectSummary.punctuationShift, effectSummary.contractionShift, effectSummary.registerShift]
+          .filter(Boolean)
+          .map((entry) => `<span class="chip">${escapeHtml(entry)}</span>`)
+          .join('')
+      : persona.chips.map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
+    const source = personaSourceLabel(persona);
+    const generateHook = persona.source !== 'built-in'
+      ? `<button type="button" class="ghost persona-inline-action" data-persona-action="generate-mask" data-persona-id="${persona.id}">Generate Mask</button>`
+      : '';
+    const wornHere = state.wornMask?.id === persona.id;
+
+    node.innerHTML = `
+      <div class="persona-preview-grid">
+        <div class="persona-mask-portrait ${escapeHtml(persona.maskVisualClass || 'field-mask')}" data-mask-state="${escapeHtml(personaMaskStateLabel(persona))}">
+          <span class="persona-mask-sigil">${escapeHtml(persona.maskSigil || '[]')}</span>
+          <span class="persona-mask-label">${escapeHtml(persona.maskArtLabel || 'field mask')}</span>
+          <span class="persona-mask-state">${escapeHtml(personaMaskStateLabel(persona))}</span>
+        </div>
+        <div class="persona-preview-copy">
+          <div class="persona-kicker">${escapeHtml(source)}</div>
+          <h3>${escapeHtml(persona.name)}</h3>
+          <p class="blurb">${escapeHtml(persona.blurb || '')}</p>
+          <div class="chips">${effectLine}</div>
+          <div class="trainer-surface persona-preview-swatch">
+            <div class="persona-kicker">${escapeHtml(swatch ? 'writing swatch' : 'voice promise')}</div>
+            <p class="persona-empty">${escapeHtml(swatch || persona.blurb || 'Paste comparison text in Homebase to see how this mask begins a passage.')}</p>
+          </div>
+          <div class="persona-actions">
+            <button type="button" class="secondary persona-inline-action" data-persona-action="wear-homebase" data-persona-id="${persona.id}">Bring into Homebase</button>
+            <button type="button" class="ghost persona-inline-action" data-persona-action="assign-reference" data-persona-id="${persona.id}">Try on Deck A</button>
+            <button type="button" class="ghost persona-inline-action" data-persona-action="assign-probe" data-persona-id="${persona.id}">Try on Deck B</button>
+            ${generateHook}
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   function renderMaskGallery(state) {
@@ -2367,52 +2744,53 @@
       return;
     }
 
-    deck.innerHTML = state.library
-      .map((persona) => {
-        const selected = state.selectedMask && state.selectedMask.id === persona.id;
-        const assigned = bayShells.A.personaId === persona.id || bayShells.B.personaId === persona.id;
-        const shellSelected = bayShells[activeVoice].personaId === persona.id;
-        const source = personaSourceLabel(persona);
-        const effectSummary = personaGalleryModel && state.comparisonText.trim()
-          ? personaGalleryModel.buildMaskEffectSummary(window.TCP_ENGINE, {
-              comparisonText: state.comparisonText,
-              lock: state.lock,
-              persona
-            })
-          : null;
-        const effectLine = effectSummary
-          ? [effectSummary.sentenceShift, effectSummary.punctuationShift, effectSummary.contractionShift, effectSummary.legibilityEffect]
-              .filter(Boolean)
-              .map((entry) => `<span class="chip">${escapeHtml(entry)}</span>`)
-              .join('')
-          : persona.chips.map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
-        const generateHook = persona.source !== 'built-in'
-          ? `<button type="button" class="ghost persona-inline-action" data-persona-action="generate-mask" data-persona-id="${persona.id}">Generate Mask</button>`
-          : '';
+    const sectionConfigs = [
+      { key: 'builtIn', title: 'Built-in masks', kicker: 'field cast' },
+      { key: 'captured', title: 'Captured shells', kicker: 'saved from live cadence' },
+      { key: 'trained', title: 'Trained shells', kicker: 'forged in trainer' }
+    ];
+
+    deck.innerHTML = sectionConfigs
+      .filter((section) => (state.galleryGroups?.[section.key] || []).length)
+      .map((section) => {
+        const cards = (state.galleryGroups?.[section.key] || []).map((persona) => {
+          const selected = state.selectedMask && state.selectedMask.id === persona.id;
+          const assigned = bayShells.A.personaId === persona.id || bayShells.B.personaId === persona.id;
+          const shellSelected = bayShells[activeVoice].personaId === persona.id;
+          const wornHere = state.wornMask && state.wornMask.id === persona.id;
+          const source = personaSourceLabel(persona);
+          const effectLine = persona.chips.map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
+
+          return `
+            <div class="persona ${selected ? 'selected chosen-shelf' : ''} ${assigned ? 'assigned deck-assigned' : ''} ${shellSelected ? 'shell-selected' : ''} ${wornHere ? 'worn-homebase' : ''}" data-id="${persona.id}" role="button" tabindex="0" aria-pressed="${selected}">
+              <div class="persona-top">
+                <div>
+                  <div class="persona-kicker">${escapeHtml(source)}</div>
+                  <div class="name">${escapeHtml(persona.name)}</div>
+                </div>
+                <div class="persona-action">${escapeHtml(wornHere ? 'Worn in Homebase' : personaStateKicker(persona))}</div>
+              </div>
+              <div class="persona-mask-portrait ${escapeHtml(persona.maskVisualClass || 'field-mask')}" data-mask-state="${escapeHtml(personaMaskStateLabel(persona))}">
+                <span class="persona-mask-sigil">${escapeHtml(persona.maskSigil || '[]')}</span>
+                <span class="persona-mask-label">${escapeHtml(persona.maskArtLabel || 'field mask')}</span>
+                <span class="persona-mask-state">${escapeHtml(personaMaskStateLabel(persona))}</span>
+              </div>
+              <div class="blurb">${escapeHtml(persona.blurb || '')}</div>
+              <div class="chips">${effectLine}</div>
+            </div>
+          `;
+        }).join('');
 
         return `
-          <div class="persona ${selected ? 'selected' : ''} ${assigned ? 'assigned' : ''} ${shellSelected ? 'shell-selected' : ''}" data-id="${persona.id}" role="button" tabindex="0" aria-pressed="${selected}">
-            <div class="persona-top">
+          <section class="persona-gallery-section">
+            <div class="persona-gallery-heading">
               <div>
-                <div class="persona-kicker">${escapeHtml(source)}</div>
-                <div class="name">${escapeHtml(persona.name)}</div>
+                <div class="persona-kicker">${escapeHtml(section.kicker)}</div>
+                <h3>${escapeHtml(section.title)}</h3>
               </div>
-              <div class="persona-action">${escapeHtml(personaStateKicker(persona))}</div>
             </div>
-            <div class="persona-mask-portrait ${escapeHtml(persona.maskVisualClass || 'field-mask')}" data-mask-state="${escapeHtml(personaMaskStateLabel(persona))}">
-              <span class="persona-mask-sigil">${escapeHtml(persona.maskSigil || '[]')}</span>
-              <span class="persona-mask-label">${escapeHtml(persona.maskArtLabel || 'field mask')}</span>
-              <span class="persona-mask-state">${escapeHtml(personaMaskStateLabel(persona))}</span>
-            </div>
-            <div class="blurb">${escapeHtml(persona.blurb || '')}</div>
-            <div class="chips">${effectLine}</div>
-            <div class="persona-actions">
-              <button type="button" class="secondary persona-inline-action" data-persona-action="wear-homebase" data-persona-id="${persona.id}">Wear in Homebase</button>
-              <button type="button" class="ghost persona-inline-action" data-persona-action="assign-reference" data-persona-id="${persona.id}">Try on Deck A</button>
-              <button type="button" class="ghost persona-inline-action" data-persona-action="assign-probe" data-persona-id="${persona.id}">Try on Deck B</button>
-              ${generateHook}
-            </div>
-          </div>
+            <div class="personagrid compact persona-shelf-grid">${cards}</div>
+          </section>
         `;
       })
       .join('');
@@ -2424,27 +2802,56 @@
       return;
     }
 
-    const maskLabel = state.selectedMask ? state.selectedMask.name : 'no mask selected';
+    const maskLabel = state.selectedMask ? state.selectedMask.name : 'no mask chosen';
     const homeLabel = state.lock ? state.lock.name : 'no cadence home';
     const nextStep = !state.selectedMask
-      ? 'choose a mask'
+      ? 'choose a mask on the shelf'
       : !state.lock
-        ? 'Homebase needs a cadence home'
-        : !state.comparisonText.trim()
-          ? `Homebase is waiting on comparison text for ${homeLabel}`
-          : `${maskLabel} can run against ${homeLabel} now`;
-    node.textContent = `${glyphChar('tabPersonas', '')} Gallery // ${maskLabel} // ${nextStep} // ${state.library.length} masks loaded`;
+        ? 'bring it into Homebase or throw it into the Deck'
+        : !state.wornMask
+          ? `${maskLabel} is chosen; bring it into Homebase to start contact`
+          : !state.comparisonText.trim()
+            ? `Homebase is waiting on source text for ${homeLabel}`
+            : `${maskLabel} is now writing against ${homeLabel}`;
+    node.textContent = `${glyphChar('tabPersonas', '')} Shelf // ${maskLabel} // ${nextStep} // ${state.library.length} masks loaded`;
     applyGlyphMetadata(node, 'tabPersonas');
+  }
+
+  function renderDeckCastReport(state) {
+    const node = $('deckCastReport');
+    const pane = $('viewPanePlay');
+    if (!node) {
+      return;
+    }
+
+    applySurfaceFieldGrammar(pane, state.fieldGrammar?.deck);
+
+    if (lastSwapCadenceAudit) {
+      const classification = lastSwapCadenceAudit.classification || 'aftermath';
+      const held = [
+        lastSwapCadenceAudit.lanes?.A?.borrowedShellOutcome || '',
+        lastSwapCadenceAudit.lanes?.B?.borrowedShellOutcome || ''
+      ].filter(Boolean).join(' / ');
+      node.textContent = `${glyphChar('deckSwapAftermath', glyphChar('tabDeck', ''))} Aftermath // ${classification} // ${held || 'read Shell Duel for movement'}`;
+      return;
+    }
+
+    const summary = state.deckCastingSummary;
+    node.textContent = `${glyphChar('deckCasting', glyphChar('tabDeck', ''))} ${summary.line}`;
   }
 
   function renderPersonas() {
     const state = buildPersonaGalleryState();
     renderHomebaseChrome(state);
-    renderLockArchive(state);
-    renderLockDossier(state);
     renderMaskBench(state);
+    renderLockDossier(state);
+    renderLockArchive(state);
+    renderPersonaPreview(state);
     renderMaskGallery(state);
     renderPersonaGalleryStatus(state);
+    renderDeckCastReport(state);
+    applySurfaceFieldGrammar($('viewPaneReadout'), state.fieldGrammar?.readout);
+    applySurfaceFieldGrammar($('trainerPane'), state.fieldGrammar?.trainer);
     renderActiveBayStatus();
   }
 
@@ -2486,10 +2893,10 @@
       if (announce) {
         const viewLabels = {
           homebase: 'Homebase ready.',
-          personas: 'Personas ready.',
+          personas: 'Shelf ready.',
           readout: 'Readout ready.',
-          play: 'Deck ready.',
-          trainer: 'Trainer ready.'
+          play: 'Encounter chamber ready.',
+          trainer: 'Forge ready.'
         };
         setStatusMessage(viewLabels[activeArtifactTab] || 'View updated.');
       }
@@ -2544,31 +2951,31 @@
     $('heroSignalValue').textContent = formatPct(cmp.similarity);
     $('heroSignalNote').textContent =
       cmp.similarity >= 0.78
-        ? 'The two samples are locking into each other.'
+        ? 'Witness pressure is tightening. These voices are starting to read like the same weather system.'
         : cmp.similarity >= 0.55
-          ? 'Shared field habits are surfacing without forcing passage.'
-          : 'These voices are still keeping their own weather.';
+          ? 'Shared field habits are surfacing, but the encounter has not earned passage yet.'
+          : 'The two voices are still holding separate weather.';
     $('heroRouteValue').textContent = formatPct(routePressure);
     $('heroRouteNote').textContent =
       decision === 'criticality'
-        ? 'Recognition is rising faster than the route can stabilize.'
+        ? 'Witness pressure is outrunning route stability.'
         : decision === 'passage'
-          ? 'A structured harbor is available before the field spills open.'
+          ? 'Route, harbor, and archive are aligned enough to move without bluffing.'
           : decision === 'hold-branch'
-            ? 'The branch is live, but passage is still being decided.'
+            ? 'The branch is live, but passage is still being argued in law.'
             : 'The field is still more atmospheric than traceable.';
     if (decision === 'weak-signal') {
       $('heroHarborValue').textContent = 'observe';
-      $('heroHarborNote').textContent = 'No harbor yet. Keep it exploratory until the field can support custody.';
+      $('heroHarborNote').textContent = 'No harbor yet. Keep the encounter playful until custody can actually support it.';
     } else {
       $('heroHarborValue').textContent = harbor;
       $('heroHarborNote').textContent = HARBOR_LIBRARY[harbor].mode_class;
     }
     $('decisionTone').textContent = `${glyphChar('stateDecision', '')} ${
       decision === 'criticality'
-        ? 'Route heating up'
+        ? 'Witness pressure rising'
         : decision === 'passage'
-          ? 'Harbor available'
+          ? 'Harbor law aligned'
           : decision === 'hold-branch'
             ? 'Branch preserved'
             : 'Weak signal'
@@ -2580,15 +2987,15 @@
 
   function updateHeroConsoleSolo(voiceState) {
     $('heroSignalValue').textContent = 'SOLO';
-    $('heroSignalNote').textContent = `Cadence captured from the ${SLOT_SHORT[voiceState.slot]} bay. Add a second voice if you want a real matchup.`;
+    $('heroSignalNote').textContent = `Cadence captured from the ${SLOT_SHORT[voiceState.slot]} bay. Add a second voice when you want contrast instead of signature alone.`;
     $('heroRouteValue').textContent = formatPct(voiceState.effectiveProfile.recurrencePressure);
-    $('heroRouteNote').textContent = 'Solo scans catch rhythm and recurrence, but route still needs a second voice.';
+    $('heroRouteNote').textContent = 'Solo scans expose recurrence and cadence signature, but route still needs a second voice.';
     $('heroHarborValue').textContent = voiceState.shell.mode === 'native' ? 'save.persona' : voiceState.shell.label;
     $('heroHarborNote').textContent =
       voiceState.shell.mode === 'native'
-        ? 'You can save this cadence as a persona or pair it with a second voice.'
+        ? 'Save the captured cadence or pair it with a second voice.'
         : 'A cadence shell is already shaping this bay.';
-    $('decisionTone').textContent = `${glyphChar('stateDecision', '')} Solo capture`;
+    $('decisionTone').textContent = `${glyphChar('stateDecision', '')} Solo witness`;
     applyGlyphMetadata($('decisionTone'), 'stateDecision');
     $('decisionTone').dataset.state = 'hold-branch';
     document.body.dataset.decision = 'hold-branch';
@@ -2700,11 +3107,11 @@
     $('waveFormula').textContent = 'Paste a voice to expose cadence metrics.\nPair two voices to compute resonance, density, and criticality.';
     $('harborFormula').textContent = 'Analyze one or two voices to surface custody drift, archive state, and reuse gain.';
     $('ledgerPreview').textContent = '{\n  "status": "idle"\n}';
-    $('fieldNotice').textContent = 'Bring one or two voices into the room. Solo scans catch rhythm. Paired scans test whether the pattern can travel.';
+    $('fieldNotice').textContent = 'Bring one or two voices into the room. Readout keeps witness, route, harbor, and archive in separate lanes.';
     $('heroSignalValue').textContent = '--';
-    $('heroSignalNote').textContent = 'Stage one voice or two and wake the deck.';
+    $('heroSignalNote').textContent = 'Stage one voice or two and wake the field.';
     $('heroRouteValue').textContent = '--';
-    $('heroRouteNote').textContent = 'Route stays asleep until a scan runs.';
+    $('heroRouteNote').textContent = 'Route stays latent until a scan runs.';
     $('heroHarborValue').textContent = '--';
     $('heroHarborNote').textContent = 'Harbor shows up only when the field actually earns passage.';
     $('decisionTone').textContent = `${glyphChar('stateDecision', '')} Waiting on a scan`;
@@ -2794,10 +3201,10 @@
     renderSoloReadoutCore({
       metricTraceability: `${voiceState.effectiveProfile.avgSentenceLength.toFixed(1)}w`,
       metricCustody: SLOT_SHORT[voiceState.slot],
-      simHint: 'A second voice unlocks cadence contrast. Solo mode captures a signature you can save in-app.',
-      traceHint: 'Sentence rhythm shows how quickly clauses turn and settle.',
+      simHint: 'A second voice unlocks contrast. Solo witness mode captures a signature you can save in-app.',
+      traceHint: 'Sentence rhythm shows how quickly clauses turn, settle, and recur.',
       routeHint: 'Recurrence pressure tracks punctuation, line-break drag, and repeated return-patterns.',
-      custodyHint: 'The active bay is where persona assignment and save operations land.',
+      custodyHint: 'The active bay is where shell assignment and save operations land.',
       branchFormula: 'Delta_branch needs two voices.\nSolo capture stays native to the active bay until a second sample exposes stylometric surplus.',
       waveFormula: `signature = {\n  rhythm: ${voiceState.effectiveProfile.avgSentenceLength.toFixed(1)} words,\n  punct: ${voiceState.effectiveProfile.punctuationDensity},\n  cont: ${voiceState.effectiveProfile.contractionDensity},\n  recurrence: ${voiceState.effectiveProfile.recurrencePressure}\n}`,
       harborFormula: 'Pair a second voice to compute route pressure, custody drift, archive thresholds, and reuse gain.',
@@ -2812,7 +3219,7 @@
         null,
         2
       ),
-      fieldNotice: `Solo capture is live in the ${SLOT_SHORT[voiceState.slot]} bay. Save the cadence as a persona or add a second voice to see whether the pattern can do more than echo.`,
+      fieldNotice: `Solo witness is live in the ${SLOT_SHORT[voiceState.slot]} bay. Save the cadence as a persona or add a second voice to see whether the pattern can do more than echo.`,
       heroSignalValue: 'SOLO',
       heroSignalNote: `Cadence captured from the ${SLOT_SHORT[voiceState.slot]} bay. Add a second voice if you want a real matchup.`,
       heroRouteValue: formatPct(voiceState.effectiveProfile.recurrencePressure),
@@ -2822,7 +3229,7 @@
         voiceState.shell.mode === 'native'
           ? 'You can save this cadence as a persona or pair it with a second voice.'
           : 'A cadence shell is already shaping this bay.',
-      decisionLabel: 'Solo capture',
+      decisionLabel: 'Solo witness',
       harborName: voiceState.shell.mode === 'native' ? 'cadence capture' : voiceState.shell.label,
       harborStat: `${formatPct(voiceState.effectiveProfile.recurrencePressure)} recurrence`,
       harborItems: [
@@ -2830,7 +3237,7 @@
         { label: 'Shell', value: voiceState.shell.label },
         { label: 'Next move', value: 'Save or pair' }
       ],
-      harborKicker: 'A solo scan keeps the branch open. Save this cadence as a persona or invite a second voice into the ring.'
+      harborKicker: 'A solo scan keeps the branch open. Save this cadence as a persona or invite a second voice into the encounter chamber.'
     });
   }
 
@@ -2845,9 +3252,9 @@
     renderSoloReadoutCore({
       metricTraceability: `${lock.profile.avgSentenceLength.toFixed(1)}w`,
       metricCustody: 'homebase',
-      simHint: 'Reveal is now reading a single locked cadence home through the same solo path the Deck uses for one live sample.',
-      traceHint: 'Sentence rhythm, punctuation pressure, and return-patterns are enough to make a cadence feel alarmingly familiar.',
-      routeHint: 'Recurrence pressure is still being measured without a second voice, but the signature is already legible.',
+      simHint: 'Reveal is reading one locked cadence home through the same solo path the Deck uses for one live sample.',
+      traceHint: 'Sentence rhythm, punctuation pressure, and return-patterns are enough to make a cadence feel uncomfortably legible.',
+      routeHint: 'Recurrence pressure is still being measured without a second voice, but the signature is already exposed.',
       custodyHint: 'This is a private cadence home, not a Deck bay. Save controls the archive; Reveal controls exposure.',
       branchFormula: 'Delta_branch still needs two voices.\nHomebase reveal uses the solo capture path: one cadence, one signature, no verdict.',
       waveFormula: `signature = {\n  rhythm: ${lock.profile.avgSentenceLength.toFixed(1)} words,\n  punct: ${lock.profile.punctuationDensity},\n  cont: ${lock.profile.contractionDensity},\n  recurrence: ${lock.profile.recurrencePressure}\n}`,
@@ -2865,12 +3272,12 @@
       ),
       fieldNotice: `${lock.name} is revealed. The browser can already recover enough rhythm, punctuation, and recurrence to make this cadence home feel cross-context legible before any second voice enters the room.`,
       heroSignalValue: 'SOLO',
-      heroSignalNote: `${lock.name} is now being read as a single locked cadence home.`,
+      heroSignalNote: `${lock.name} is now reading as an exposed cadence signature.`,
       heroRouteValue: formatPct(lock.profile.recurrencePressure),
-      heroRouteNote: 'Solo reveal does not force route. It only shows how much of the cadence already persists as a signature.',
+      heroRouteNote: 'Homebase reveal does not force route. It only shows how much of the cadence already persists as a signature.',
       heroHarborValue: lock.name,
       heroHarborNote: 'The cadence home is revealed, but still private until you decide what to save, compare, or send back into the Deck.',
-      decisionLabel: 'Homebase reveal',
+      decisionLabel: 'Exposed signature',
       harborName: lock.name,
       harborStat: `${formatPct(lock.profile.recurrencePressure)} recurrence`,
       harborItems: [
@@ -2878,7 +3285,7 @@
         { label: 'Shell', value: 'cadence home' },
         { label: 'Next move', value: 'Save, mask, or pair' }
       ],
-      harborKicker: 'Homebase reveal is not a verdict. It is the moment the private cadence home becomes explicitly measurable through the solo field.',
+      harborKicker: 'Homebase reveal is not a verdict. It is the point where a private cadence home becomes explicitly measurable through the solo witness path.',
       routeStatus: 'awaiting pair'
     });
   }
@@ -3002,10 +3409,10 @@
     $('simHint').textContent =
       cmp.similarity > 0.78
         ? microcopy.compare_hint
-        : 'Similarity is present, but TCP still separates surface overlap from actual routing pressure.';
+        : 'Similarity is present, but TCP still separates surface overlap from actual route pressure.';
     $('traceHint').textContent =
       cmp.traceability > 0.7
-        ? 'Cadence habits are surviving paraphrase, which makes authorship pressure more legible.'
+        ? 'Cadence habits are surviving paraphrase, which makes witness pressure more legible.'
         : 'Traceability is still diffuse, so the pattern stays more atmospheric than evidentiary.';
     $('routeHint').textContent =
       decision === 'criticality'
@@ -3017,8 +3424,8 @@
             : 'The resemblance is still too light for routing, so TCP keeps the interaction exploratory.';
     $('custodyHint').textContent =
       custody.archive === 'witness'
-        ? 'The custody delta fell below the collapse threshold, so witness custody is functioning as the effective archive.'
-        : 'Institutional custody remains above the collapse threshold and therefore continues to function as the effective archive.';
+        ? 'The custody delta fell below collapse, so witness custody is functioning as the effective archive.'
+        : 'Institutional custody remains above collapse and therefore continues to function as the effective archive.';
     $('branchFormula').textContent = `Delta_branch = 0.68 max(0, T - L) + 0.32 max(0, C_style - L) = ${branch.branchPressure}
 x^2 - beta x + gamma = 0
 beta = 1 + S + T = ${branch.beta}
@@ -3047,7 +3454,7 @@ DeltaE = ${ledger.reuse_gain}`;
               ? `${microcopy.harbor_success} Exploratory play has resolved into a viable harbor with ${formatPct(HARBOR_LIBRARY[harbor].provenance_retention)} provenance retention.`
               : decision === 'hold-branch'
                 ? `TCP is keeping the pair in branch mode. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so the deck can stay curious without pretending it has a verdict.`
-                : `The pattern is still light. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so TCP keeps the field playful instead of forcing route.`;
+                : `The pattern is still light. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so TCP keeps the encounter playful instead of forcing route.`;
     updateHarborBox(harbor, ledger, decision);
     updateHeroConsolePair({ cmp, routePressure, harbor, decision });
     updateStatePills(ledger.route_status, decision);
@@ -3082,7 +3489,7 @@ DeltaE = ${ledger.reuse_gain}`;
       document.body.dataset.bootStage = 'analyze-solo';
       const soloState = voiceStateA.hasText ? voiceStateA : voiceStateB;
       renderSoloState(soloState);
-      setStatusMessage(`Solo scan complete in the ${SLOT_SHORT[soloState.slot]} bay. Save it as a persona or throw in a second voice.`);
+      setStatusMessage(`Solo witness complete in the ${SLOT_SHORT[soloState.slot]} bay. Save it as a persona or throw in a second voice for contrast.`);
       updateControls();
       renderPersonas();
       return;
@@ -3090,7 +3497,7 @@ DeltaE = ${ledger.reuse_gain}`;
 
     document.body.dataset.bootStage = 'analyze-pair';
     renderPairState(voiceStateA, voiceStateB);
-    setStatusMessage('Paired cadence scan complete. Read the shell cards, try a swap, or save a persona.');
+    setStatusMessage('Duel wake complete. Read the shell cards, try a swap, or save a persona.');
     updateControls();
     renderPersonas();
     document.body.dataset.bootStage = 'analyze-complete';
@@ -3112,7 +3519,7 @@ DeltaE = ${ledger.reuse_gain}`;
     if (!findPersona(id)) {
       return;
     }
-    selectedMaskId = id;
+    gallerySelectedMaskId = id;
     renderPersonas();
   }
 
@@ -3121,23 +3528,33 @@ DeltaE = ${ledger.reuse_gain}`;
     if (!persona) {
       return;
     }
-    selectedMaskId = id;
+    gallerySelectedMaskId = id;
+    homebaseWornMaskId = id;
     setArtifactTab('homebase');
     renderPersonas();
     const lock = currentHomebaseLock();
     const comparisonText = String($('personaComparisonText')?.value || '').trim();
     if (!lock) {
       $('cadenceLockCorpus')?.focus();
-      setStatusMessage(`${persona.name} is armed in Homebase. Stage or select a cadence home first, then the bench can use it.`);
+      setStatusMessage(`${persona.name} is now worn in Homebase. Stage or select a cadence home so the passage bench has something real to read against.`);
       return;
     }
     if (!comparisonText) {
       $('personaComparisonText')?.focus();
-      setStatusMessage(`${persona.name} is armed against ${lock.name}. Paste comparison text to watch what sticks.`);
+      setStatusMessage(`${persona.name} is worn against ${lock.name}. Paste comparison text to pass a source through it and read what clings.`);
       return;
     }
     $('personaComparisonText')?.focus();
-    setStatusMessage(`${persona.name} is active in Homebase against ${lock.name}. Raw and masked readings are both live.`);
+    setStatusMessage(`${persona.name} is now carrying passage in Homebase against ${lock.name}. Source, through-mask, and residue are all live.`);
+  }
+
+  function clearHomebaseWornMask() {
+    const wornMask = getHomebaseWornMask();
+    homebaseWornMaskId = '';
+    renderPersonas();
+    if (wornMask) {
+      setStatusMessage(`${wornMask.name} was released from Homebase. The cadence home is still there; bring in another mask when you want passage back on the bench.`);
+    }
   }
 
   function assignPersonaToBay(id, slot = activeVoice) {
@@ -3147,7 +3564,7 @@ DeltaE = ${ledger.reuse_gain}`;
     }
 
     activeVoice = slot;
-    selectedMaskId = id;
+    gallerySelectedMaskId = id;
     clearSwapCadenceAudit();
     bayShells[slot] = createPersonaShell(persona);
     setArtifactTab('play');
@@ -3284,13 +3701,13 @@ DeltaE = ${ledger.reuse_gain}`;
     }
 
     if (persona.source === 'built-in') {
-      selectedMaskId = id;
+      gallerySelectedMaskId = id;
       renderPersonas();
       setStatusMessage(`${persona.name} already ships with a ready mask scaffold.`);
       return;
     }
 
-    selectedMaskId = id;
+    gallerySelectedMaskId = id;
     updateSavedPersona(id, (entry) => ({
       ...entry,
       maskState: 'generated'
@@ -3382,7 +3799,7 @@ DeltaE = ${ledger.reuse_gain}`;
     });
 
     savedPersonas = [persona, ...savedPersonas];
-    selectedMaskId = persona.id;
+    gallerySelectedMaskId = persona.id;
     persistSavedPersonas();
     bayShells[activeVoice] = createPersonaShell(persona);
     renderPersonas();
@@ -3410,7 +3827,7 @@ DeltaE = ${ledger.reuse_gain}`;
       normalized,
       ...savedPersonas.filter((entry) => entry.id !== normalized.id)
     ];
-    selectedMaskId = normalized.id;
+    gallerySelectedMaskId = normalized.id;
     persistSavedPersonas();
     renderPersonas();
     updateControls();
@@ -3497,7 +3914,8 @@ DeltaE = ${ledger.reuse_gain}`;
       stagedCadenceLock: stagedCadenceLock ? JSON.parse(JSON.stringify(stagedCadenceLock)) : null,
       revealedCadenceLockKey,
       readoutOwner,
-      selectedMaskId,
+      gallerySelectedMaskId,
+      homebaseWornMaskId,
       trainerState: trainerController && typeof trainerController.serializeState === 'function'
         ? trainerController.serializeState()
         : null
@@ -3535,7 +3953,8 @@ DeltaE = ${ledger.reuse_gain}`;
     stagedCadenceLock = state.stagedCadenceLock ? normalizeCadenceLock(state.stagedCadenceLock) : null;
     revealedCadenceLockKey = state.revealedCadenceLockKey || '';
     readoutOwner = state.readoutOwner || 'idle';
-    selectedMaskId = state.selectedMaskId || getPersonaLibrary()[0]?.id || '';
+    gallerySelectedMaskId = state.gallerySelectedMaskId || '';
+    homebaseWornMaskId = state.homebaseWornMaskId || '';
     persistSavedPersonas();
     persistCadenceLocks();
     persistActiveCadenceLockId();
@@ -3573,6 +3992,7 @@ DeltaE = ${ledger.reuse_gain}`;
       custody: readText('custodyState'),
       heroHarbor: readText('heroHarborValue'),
       routeState: readText('routeState'),
+      castReport: readText('deckCastReport'),
       statusBase: readText('analysisStatusBase'),
       routeStatusKey: routeNode ? routeNode.dataset.routeStatusKey || '' : '',
       statusCue: cueNode ? cueNode.textContent.trim() : '',
@@ -3744,6 +4164,10 @@ DeltaE = ${ledger.reuse_gain}`;
       dossierReady: Boolean(state.dossier),
       selectedMaskId: state.selectedMask?.id || '',
       selectedMaskName: state.selectedMask?.name || '',
+      homebaseWornMaskId: state.wornMask?.id || '',
+      homebaseWornMaskName: state.wornMask?.name || '',
+      selectedMaskState: state.selectedMask?.maskState || '',
+      homebaseWornMaskState: state.wornMask?.maskState || '',
       comparisonReady: Boolean(state.comparisonText.trim()),
       comparisonLength: state.comparisonText.trim().length,
       maskedOutputLength: state.comparison?.maskedText?.trim().length || 0,
@@ -3754,7 +4178,10 @@ DeltaE = ${ledger.reuse_gain}`;
       deltaSimilarity: state.comparison?.deltaToLock?.similarity || 0,
       deltaTraceability: state.comparison?.deltaToLock?.traceability || 0,
       homeStickyLanes: state.comparison?.whatHeld || [],
-      maskState: state.selectedMask?.maskState || '',
+      maskState: state.wornMask?.maskState || state.selectedMask?.maskState || '',
+      maskContactFieldEffect: state.comparison?.contactSummary?.fieldEffect || '',
+      homebasePhase: state.fieldGrammar?.homebase?.surfacePhase || '',
+      personasPhase: state.fieldGrammar?.personas?.surfacePhase || '',
       personaCount: state.library.length,
       readoutOwner,
       homebaseStatusText: $('homebaseStatus')?.textContent.trim() || '',
@@ -3851,7 +4278,8 @@ DeltaE = ${ledger.reuse_gain}`;
       activeCadenceLockId = activeLock.id;
       persistActiveCadenceLockId();
     }
-    selectedMaskId = getPersonaLibrary()[0]?.id || '';
+    gallerySelectedMaskId = '';
+    homebaseWornMaskId = '';
 
     window.TCP_PERSONA_GALLERY = Object.freeze({
       snapshot: () => readPersonaGallerySnapshot(),
@@ -3861,6 +4289,7 @@ DeltaE = ${ledger.reuse_gain}`;
       save: () => saveStagedCadenceLock(),
       selectMask: (personaId) => selectMaskPersona(personaId),
       wearHomebase: (personaId) => wearPersonaInHomebase(personaId),
+      bringHomebase: (personaId) => wearPersonaInHomebase(personaId),
       generateMask: (personaId) => generateMaskForPersona(personaId)
     });
 
@@ -4279,7 +4708,8 @@ DeltaE = ${ledger.reuse_gain}`;
       baseline: {
         snapshot: null,
         personas: beforePersonaCount
-      }
+      },
+      galleryBootstrap: readPersonaGallerySnapshot()
     };
 
     try {
@@ -4402,6 +4832,10 @@ DeltaE = ${ledger.reuse_gain}`;
         $('personaComparisonText').value = SAMPLE_LIBRARY_BY_ID['critical-review']?.text || seededPair.voiceB;
         $('personaComparisonText').dispatchEvent(new Event('input', { bubbles: true }));
         $('tabPersonas').click();
+        const sparkMaskCard = document.querySelector('.persona[data-id="spark"]');
+        if (sparkMaskCard) {
+          sparkMaskCard.click();
+        }
         const sparkMaskButton = document.querySelector('[data-persona-id="spark"][data-persona-action="wear-homebase"]');
         if (sparkMaskButton) {
           sparkMaskButton.click();
@@ -4621,10 +5055,12 @@ DeltaE = ${ledger.reuse_gain}`;
         });
 
         report.matrix = matrix;
-          const supportChecks = [
-            { id: 'sample_randomizer_distinct', pass: report.sampleRandomizer.referenceChanged && report.sampleRandomizer.probeChanged && report.sampleRandomizer.pairDistinct },
-            { id: 'sample_randomizer_keeps_deck_latent', pass: report.sampleRandomizer.deckStillLatent },
-            { id: 'swap_shells_preserve_raw_text', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
+        const supportChecks = [
+          { id: 'homebase_boot_has_no_worn_mask', pass: !report.galleryBootstrap.homebaseWornMaskId && report.galleryBootstrap.homebasePhase !== 'mask-worn' && report.galleryBootstrap.homebasePhase !== 'residue' },
+          { id: 'sample_randomizer_distinct', pass: report.sampleRandomizer.referenceChanged && report.sampleRandomizer.probeChanged && report.sampleRandomizer.pairDistinct },
+          { id: 'sample_randomizer_keeps_deck_latent', pass: report.sampleRandomizer.deckStillLatent },
+          { id: 'deck_cast_report_preanalysis', pass: String(report.sampleRandomizer.snapshot.castReport || '').toLowerCase().includes('cast report') },
+          { id: 'swap_shells_preserve_raw_text', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
             { id: 'swap_cadences_retrieval_audit_present', pass: Boolean(report.swapCadences.audit && report.swapCadences.audit.lanes && report.swapCadences.audit.lanes.A && report.swapCadences.audit.lanes.B) },
             { id: 'save_persona_adds_entry', pass: report.savePersona.savedPersonaAdded },
             { id: 'homebase_stage_does_not_autosave', pass: report.personaGallery.afterFirstStage.lockCount === report.personaGallery.baseline.lockCount && report.personaGallery.afterFirstStage.stagedLockPresent && !report.personaGallery.afterFirstStage.revealed },
@@ -4632,8 +5068,9 @@ DeltaE = ${ledger.reuse_gain}`;
             { id: 'homebase_save_persists_lock', pass: report.personaGallery.afterFirstSave.lockCount === report.personaGallery.baseline.lockCount + 1 && !report.personaGallery.afterFirstSave.stagedLockPresent },
             { id: 'homebase_stores_multiple_locks', pass: report.personaGallery.afterSecondSave.lockCount >= report.personaGallery.afterFirstSave.lockCount + 1 },
             { id: 'saved_lock_reselection_stays_latent', pass: report.personaGallery.afterFirstSelect.activeLockId === report.personaGallery.afterFirstSave.activeLockId && !report.personaGallery.afterFirstSelect.revealed },
-            { id: 'persona_gallery_masks_comparison_text', pass: report.personaGallery.afterMask.comparisonReady && report.personaGallery.afterMask.maskedOutputLength > 0 && report.personaGallery.afterMask.selectedMaskId === 'spark' },
+            { id: 'persona_gallery_masks_comparison_text', pass: report.personaGallery.afterMask.comparisonReady && report.personaGallery.afterMask.maskedOutputLength > 0 && report.personaGallery.afterMask.selectedMaskId === 'spark' && report.personaGallery.afterMask.homebaseWornMaskId === 'spark' },
             { id: 'persona_homebase_handoff_explains_active_mask', pass: report.personaGallery.afterMask.homebaseMaskStatusText.toLowerCase().includes('spark') && report.personaGallery.afterMask.maskBenchStatusText.toLowerCase().includes('spark') },
+            { id: 'persona_homebase_separates_chosen_from_worn', pass: report.personaGallery.afterMask.selectedMaskId === 'spark' && report.personaGallery.afterMask.homebaseWornMaskId === 'spark' && report.personaGallery.afterMask.homebasePhase === 'residue' },
             { id: 'swap_medallion_moves_bay_text', pass: report.textSwapMedallion.voiceASwapped && report.textSwapMedallion.voiceBSwapped },
             { id: 'swap_medallion_updates_duel', pass: report.textSwapMedallion.duelSamplesChanged },
             { id: 'duel_uses_own_sources', pass: report.ownSourceDuel.referenceOwnSource && report.ownSourceDuel.probeOwnSource && report.ownSourceDuel.samplesDistinct },
@@ -4643,7 +5080,7 @@ DeltaE = ${ledger.reuse_gain}`;
             { id: 'baseline_duel_live', pass: report.baseline.snapshot.duelState === 'live' },
             { id: 'readout_tab_visible', pass: report.viewTabs.activeTab === 'readout' && !report.viewTabs.readoutHidden },
           { id: 'trainer_validates_generated_output', pass: Boolean(report.trainer && report.trainer.snapshotBeforeInject.validationPass && report.trainer.snapshotBeforeInject.promptReady && report.trainer.snapshotBeforeInject.exportReady) },
-            { id: 'trainer_injects_persona', pass: Boolean(report.trainer && report.trainer.personaAdded && report.trainer.personaAssigned && report.trainer.gallerySnapshot.maskState === 'generated') },
+            { id: 'trainer_injects_persona', pass: Boolean(report.trainer && report.trainer.personaAdded && report.trainer.personaAssigned && report.trainer.gallerySnapshot.selectedMaskId === report.trainer.injectedPersonaId && report.trainer.gallerySnapshot.selectedMaskState === 'generated') },
           { id: 'trainer_bridge_present', pass: Boolean(report.trainer && report.trainer.bridgePresent) },
           { id: 'trainer_restore_roundtrip', pass: Boolean(report.trainer && report.trainer.roundtripRestored) },
           { id: 'trainer_restore_keeps_injected_summary', pass: Boolean(report.trainer && report.trainer.injectedSummaryRestored) },
@@ -4761,6 +5198,8 @@ DeltaE = ${ledger.reuse_gain}`;
       const personaId = personaAction.dataset.personaId;
       if (action === 'wear-homebase') {
         wearPersonaInHomebase(personaId);
+      } else if (action === 'clear-homebase') {
+        clearHomebaseWornMask();
       } else if (action === 'assign-reference') {
         assignPersonaToBay(personaId, 'A');
       } else if (action === 'assign-probe') {

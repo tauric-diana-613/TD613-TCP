@@ -1906,6 +1906,7 @@ button:disabled {
   grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
   gap: 16px;
   margin-bottom: 16px;
+  align-items: start;
 }
 
 .persona-home-sidebar,
@@ -1920,6 +1921,69 @@ button:disabled {
 .persona-mask-output-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: 14px;
+}
+
+.persona-mask-output-grid > :last-child {
+  grid-column: 1 / -1;
+}
+
+.homebase-mask-stage {
+  position: relative;
+  overflow: hidden;
+}
+
+.homebase-mask-route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.homebase-route-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(116, 234, 255, 0.12);
+  background: rgba(116, 234, 255, 0.04);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.homebase-route-chip[data-active="true"] {
+  border-color: rgba(188, 255, 138, 0.28);
+  background: rgba(188, 255, 138, 0.1);
+  color: #f0ffd8;
+}
+
+.homebase-worn-mask,
+.homebase-worn-mask-card,
+.homebase-worn-mask-copy,
+.persona-preview-body,
+.persona-preview-grid,
+.persona-preview-copy,
+.persona-gallery-section {
+  display: grid;
+  gap: 14px;
+}
+
+.homebase-worn-mask-card,
+.persona-preview-grid {
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  align-items: start;
+}
+
+.homebase-swatch-card,
+.persona-preview-swatch {
+  padding: 14px;
+}
+
+.homebase-worn-mask-line {
+  width: 100%;
 }
 
 .persona-dossier-grid {
@@ -2007,8 +2071,45 @@ button:disabled {
   margin-top: 14px;
 }
 
+#personaMaskSource,
 #personaMaskOutput {
   min-height: 240px;
+}
+
+#maskContactSummary,
+.deck-cast-report {
+  margin-top: 12px;
+}
+
+.persona-preview-stage {
+  margin-bottom: 16px;
+}
+
+.persona-preview-empty {
+  display: grid;
+  gap: 10px;
+}
+
+.persona-gallery-section + .persona-gallery-section {
+  margin-top: 18px;
+}
+
+.persona-gallery-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.persona-gallery-heading h3,
+.persona-preview-copy h3,
+.homebase-worn-mask-copy h3 {
+  margin: 0;
+}
+
+.persona-shelf-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .persona-risk-list {
@@ -2186,12 +2287,27 @@ button:disabled {
   border-color: rgba(116, 234, 255, 0.34);
 }
 
+.persona.chosen-shelf {
+  box-shadow: inset 0 0 0 1px rgba(116, 234, 255, 0.1);
+}
+
 .persona.assigned {
   border-color: rgba(188, 255, 138, 0.28);
 }
 
+.persona.deck-assigned {
+  box-shadow: inset 0 0 0 1px rgba(188, 255, 138, 0.08);
+}
+
 .persona.shell-selected {
   box-shadow: inset 0 0 0 1px rgba(188, 255, 138, 0.08);
+}
+
+.persona.worn-homebase {
+  border-color: rgba(255, 214, 92, 0.46);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 214, 92, 0.08),
+    0 0 24px rgba(255, 214, 92, 0.08);
 }
 
 .persona-action {
@@ -2246,6 +2362,24 @@ button:disabled {
 
 .persona-mask-portrait[data-mask-state="generated"] .persona-mask-state {
   color: var(--cyan-bright);
+}
+
+.view-pane[data-surface-role="witness"] .panel-heading .section-note,
+.view-pane[data-surface-phase="solo-home-reveal"] .field-notice,
+.view-pane[data-surface-phase="criticality"] .field-notice {
+  color: #ffd1d1;
+}
+
+.view-pane[data-surface-phase="solo-home-reveal"] .metric,
+.view-pane[data-surface-phase="criticality"] .metric {
+  border-color: rgba(214, 63, 63, 0.18);
+  background: rgba(20, 6, 9, 0.72);
+}
+
+.view-pane[data-surface-phase="criticality"] #decisionTone,
+.view-pane[data-surface-phase="solo-home-reveal"] #decisionTone {
+  border-color: rgba(214, 63, 63, 0.22);
+  background: rgba(33, 8, 12, 0.82);
 }
 
 .ledger-raven {
@@ -2356,6 +2490,11 @@ button:disabled {
   .trainer-summary-grid,
   .trainer-contract-grid,
   .duel-visual-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .homebase-worn-mask-card,
+  .persona-preview-grid {
     grid-template-columns: 1fr;
   }
 

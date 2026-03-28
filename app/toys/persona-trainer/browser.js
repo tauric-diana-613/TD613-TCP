@@ -163,7 +163,7 @@ export async function createTrainerController(options = {}) {
     state.validation = null;
     state.exportSpec = null;
     render();
-    setStatus(`${personaName()} extracted from corpus.`, `samples ${state.extraction.stats.sampleCount}`);
+    setStatus(`${personaName()} forged a target field from corpus.`, `samples ${state.extraction.stats.sampleCount}`);
     return snapshot();
   }
 
@@ -190,9 +190,9 @@ export async function createTrainerController(options = {}) {
     render();
     setStatus(
       state.validation.pass
-        ? `${personaName()} cleared retrieval checks and is ready for export or injection.`
-        : `${personaName()} still needs another pass before persona injection.`,
-      state.validation.pass ? 'ready' : state.validation.status
+        ? `${personaName()} held retrieval law and is ready to export or inject into the shelf.`
+        : `${personaName()} still needs another forge pass before persona injection.`,
+      state.validation.pass ? 'forge-ready' : state.validation.status
     );
     return snapshot();
   }
@@ -205,7 +205,7 @@ export async function createTrainerController(options = {}) {
       validate();
     }
     render();
-    setStatus(`Persona spec ready for ${personaName()}.`, 'json');
+    setStatus(`Forge export ready for ${personaName()}.`, 'json');
     return state.exportSpec;
   }
 
@@ -221,7 +221,7 @@ export async function createTrainerController(options = {}) {
       ? { id: inserted.id, name: inserted.name, source: inserted.source }
       : { id: state.exportSpec.browserPersona.id, name: state.exportSpec.browserPersona.name, source: state.exportSpec.browserPersona.source };
     render();
-    setStatus(`${state.lastInjectedPersonaSummary.name} is now live in the Personas deck.`, 'injected');
+    setStatus(`${state.lastInjectedPersonaSummary.name} is now live on the shelf and ready for Homebase or Deck.`, 'injected');
     return state.lastInjectedPersonaSummary;
   }
 
@@ -305,7 +305,7 @@ export async function createTrainerController(options = {}) {
   nodes.corpusInput.addEventListener('input', () => {
     resetDerivedState();
     render();
-    setStatus('Trainer corpus changed. Extract again to refresh the target fingerprint.');
+    setStatus('Forge corpus changed. Extract again to refresh the target field.');
   });
   nodes.personaName.addEventListener('input', () => {
     if (state.extraction) {
@@ -330,11 +330,11 @@ export async function createTrainerController(options = {}) {
     state.validation = null;
     state.exportSpec = null;
     render();
-    setStatus('Generated sample changed. Validate again to refresh retrieval and scalar checks.');
+    setStatus('Candidate passage changed. Validate again to refresh retrieval and scalar checks.');
   });
 
   render();
-  setStatus('Paste a corpus, extract the shell, then validate a generated sample.');
+  setStatus('Paste a corpus, extract the field, then validate a candidate passage.');
 
   return {
     extract,
