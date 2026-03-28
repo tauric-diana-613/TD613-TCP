@@ -2097,12 +2097,31 @@
     return `${formatPct(summary.meanSimilarity || 0)} sim // ${formatPct(summary.meanTraceability || 0)} trace`;
   }
 
+  function homebaseMaskLine(state) {
+    const selectedMask = state.selectedMask;
+    if (!selectedMask) {
+      return 'Mask // no mask armed // choose one in Personas';
+    }
+
+    const source = personaSourceLabel(selectedMask);
+    if (!state.lock) {
+      return `Mask // ${selectedMask.name} armed // ${source} // stage or select a cadence home`;
+    }
+
+    if (!state.comparisonText.trim()) {
+      return `Mask // ${selectedMask.name} armed for ${state.lock.name} // paste comparison text`;
+    }
+
+    return `Mask // ${selectedMask.name} active against ${state.lock.name} // bench live`;
+  }
+
   function renderHomebaseChrome(state) {
     const lockboxSurface = $('cadenceLockboxSurface');
     const dossierSurface = $('cadenceLockDossierSurface');
     const revealButton = $('revealCadenceBtn');
     const saveButton = $('saveCadenceLockBtn');
     const homebaseStatus = $('homebaseStatus');
+    const homebaseMaskStatus = $('homebaseMaskStatus');
     const lockStatus = $('homebaseLockStatus');
     const activeLockLabel = state.lock ? state.lock.name : 'no cadence home';
     const stagedLabel = state.hasStagedLock ? `${glyphChar('stateLockStaged', '')} staged draft` : 'archive latent';
@@ -2122,6 +2141,10 @@
     if (homebaseStatus) {
       homebaseStatus.textContent = `${glyphChar('tabHomebase', '')} Homebase // ${activeLockLabel} // ${stagedLabel}`;
       applyGlyphMetadata(homebaseStatus, 'tabHomebase');
+    }
+    if (homebaseMaskStatus) {
+      homebaseMaskStatus.textContent = `${glyphChar('sectionMaskBench', '')} ${homebaseMaskLine(state)}`;
+      applyGlyphMetadata(homebaseMaskStatus, 'sectionMaskBench');
     }
     if (lockStatus) {
       lockStatus.textContent = !state.lock
@@ -2287,32 +2310,40 @@
     }
 
     if (!state.lock) {
-      statusNode.textContent = 'Stage or select a cadence home to turn this bench on.';
+      statusNode.textContent = state.selectedMask
+        ? `${state.selectedMask.name} is armed, but Homebase still needs a cadence home. Lock one or select one from the archive first.`
+        : 'Stage or select a cadence home to turn this bench on.';
       outputNode.value = '';
       beforeNode.textContent = '--';
       afterNode.textContent = '--';
       deltaNode.textContent = '--';
-      notesNode.innerHTML = '<li>Select or create a cadence home first.</li>';
+      notesNode.innerHTML = state.selectedMask
+        ? `<li>${escapeHtml(state.selectedMask.name)} is ready. The missing ingredient is the cadence home.</li>`
+        : '<li>Select or create a cadence home first.</li>';
       return;
     }
 
     if (!state.comparisonText.trim()) {
-      statusNode.textContent = `Cadence home live // ${state.lock.name}. Paste comparison text, then try on a mask from Personas.`;
+      statusNode.textContent = state.selectedMask
+        ? `${state.selectedMask.name} is armed against ${state.lock.name}. Paste comparison text to run the bench.`
+        : `Cadence home live // ${state.lock.name}. Paste comparison text, then try on a mask from Personas.`;
       outputNode.value = '';
       beforeNode.textContent = '--';
       afterNode.textContent = '--';
       deltaNode.textContent = '--';
-      notesNode.innerHTML = '<li>The bench compares raw text and masked text against the active lock.</li>';
+      notesNode.innerHTML = state.selectedMask
+        ? `<li>${escapeHtml(state.selectedMask.name)} is waiting on comparison text.</li><li>The bench compares raw text and masked text against ${escapeHtml(state.lock.name)}.</li>`
+        : '<li>The bench compares raw text and masked text against the active lock.</li>';
       return;
     }
 
     if (!state.selectedMask || !state.comparison) {
-      statusNode.textContent = 'Pick a mask in Personas to see how the comparison text travels against the active lock.';
+      statusNode.textContent = `Comparison text is ready against ${state.lock.name}. Pick a mask in Personas to see what still reads as home.`;
       outputNode.value = '';
       beforeNode.textContent = '--';
       afterNode.textContent = '--';
       deltaNode.textContent = '--';
-      notesNode.innerHTML = '<li>No mask is active yet.</li>';
+      notesNode.innerHTML = '<li>No mask is active yet.</li><li>Choose one in Personas, then come back here to compare raw text and masked text against the active lock.</li>';
       return;
     }
 
@@ -2395,7 +2426,14 @@
 
     const maskLabel = state.selectedMask ? state.selectedMask.name : 'no mask selected';
     const homeLabel = state.lock ? state.lock.name : 'no cadence home';
-    node.textContent = `${glyphChar('tabPersonas', '')} Gallery // ${maskLabel} // home ${homeLabel} // ${state.library.length} masks loaded`;
+    const nextStep = !state.selectedMask
+      ? 'choose a mask'
+      : !state.lock
+        ? 'Homebase needs a cadence home'
+        : !state.comparisonText.trim()
+          ? `Homebase is waiting on comparison text for ${homeLabel}`
+          : `${maskLabel} can run against ${homeLabel} now`;
+    node.textContent = `${glyphChar('tabPersonas', '')} Gallery // ${maskLabel} // ${nextStep} // ${state.library.length} masks loaded`;
     applyGlyphMetadata(node, 'tabPersonas');
   }
 
@@ -3079,13 +3117,27 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function wearPersonaInHomebase(id) {
-    if (!findPersona(id)) {
+    const persona = findPersona(id);
+    if (!persona) {
       return;
     }
     selectedMaskId = id;
     setArtifactTab('homebase');
     renderPersonas();
-    setStatusMessage(`${findPersona(id)?.name || 'Mask'} is active in Homebase. The bench is ready the next time comparison text hits the lock.`);
+    const lock = currentHomebaseLock();
+    const comparisonText = String($('personaComparisonText')?.value || '').trim();
+    if (!lock) {
+      $('cadenceLockCorpus')?.focus();
+      setStatusMessage(`${persona.name} is armed in Homebase. Stage or select a cadence home first, then the bench can use it.`);
+      return;
+    }
+    if (!comparisonText) {
+      $('personaComparisonText')?.focus();
+      setStatusMessage(`${persona.name} is armed against ${lock.name}. Paste comparison text to watch what sticks.`);
+      return;
+    }
+    $('personaComparisonText')?.focus();
+    setStatusMessage(`${persona.name} is active in Homebase against ${lock.name}. Raw and masked readings are both live.`);
   }
 
   function assignPersonaToBay(id, slot = activeVoice) {
@@ -3704,7 +3756,10 @@ DeltaE = ${ledger.reuse_gain}`;
       homeStickyLanes: state.comparison?.whatHeld || [],
       maskState: state.selectedMask?.maskState || '',
       personaCount: state.library.length,
-      readoutOwner
+      readoutOwner,
+      homebaseStatusText: $('homebaseStatus')?.textContent.trim() || '',
+      homebaseMaskStatusText: $('homebaseMaskStatus')?.textContent.trim() || '',
+      maskBenchStatusText: $('maskBenchStatus')?.textContent.trim() || ''
     };
   }
 
@@ -4578,6 +4633,7 @@ DeltaE = ${ledger.reuse_gain}`;
             { id: 'homebase_stores_multiple_locks', pass: report.personaGallery.afterSecondSave.lockCount >= report.personaGallery.afterFirstSave.lockCount + 1 },
             { id: 'saved_lock_reselection_stays_latent', pass: report.personaGallery.afterFirstSelect.activeLockId === report.personaGallery.afterFirstSave.activeLockId && !report.personaGallery.afterFirstSelect.revealed },
             { id: 'persona_gallery_masks_comparison_text', pass: report.personaGallery.afterMask.comparisonReady && report.personaGallery.afterMask.maskedOutputLength > 0 && report.personaGallery.afterMask.selectedMaskId === 'spark' },
+            { id: 'persona_homebase_handoff_explains_active_mask', pass: report.personaGallery.afterMask.homebaseMaskStatusText.toLowerCase().includes('spark') && report.personaGallery.afterMask.maskBenchStatusText.toLowerCase().includes('spark') },
             { id: 'swap_medallion_moves_bay_text', pass: report.textSwapMedallion.voiceASwapped && report.textSwapMedallion.voiceBSwapped },
             { id: 'swap_medallion_updates_duel', pass: report.textSwapMedallion.duelSamplesChanged },
             { id: 'duel_uses_own_sources', pass: report.ownSourceDuel.referenceOwnSource && report.ownSourceDuel.probeOwnSource && report.ownSourceDuel.samplesDistinct },
