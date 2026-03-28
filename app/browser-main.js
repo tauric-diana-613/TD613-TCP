@@ -2318,6 +2318,21 @@
     return 'latent';
   }
 
+  function maskFieldEffectLabel(fieldEffect = '') {
+    switch (fieldEffect) {
+      case 'both':
+        return 'proximity + surface texture moved';
+      case 'proximity':
+        return 'home distance moved';
+      case 'surface-texture':
+        return 'surface texture moved';
+      case 'neither':
+        return 'contact held near home';
+      default:
+        return 'contact staging';
+    }
+  }
+
   function renderHomebaseWornMask(state) {
     const stage = $('homebaseWornMaskStage');
     const route = $('homebaseMaskRoute');
@@ -2425,7 +2440,7 @@
           : !String(state.comparisonText || '').trim()
             ? `${glyphChar('homebaseContact', glyphChar('sectionMaskBench', ''))} Worn mask // ${wornMask.name} // source text still missing`
             : state.comparison?.contactSummary
-              ? `${glyphChar('homebaseResidue', glyphChar('sectionMaskBench', ''))} Worn mask // ${wornMask.name} // ${state.comparison.contactSummary.fieldEffect}`
+              ? `${glyphChar('homebaseResidue', glyphChar('sectionMaskBench', ''))} Worn mask // ${wornMask.name} // ${maskFieldEffectLabel(state.comparison.contactSummary.fieldEffect)}`
               : `${glyphChar('homebaseContact', glyphChar('sectionMaskBench', ''))} Worn mask // ${wornMask.name} // contact staging`;
       applyGlyphMetadata(
         homebaseMaskStatus,
