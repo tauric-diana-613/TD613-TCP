@@ -30,6 +30,18 @@ const BUILTIN_MASK_ART = Object.freeze({
     artLabel: 'schema moth',
     sigil: '::',
     state: 'mask ready'
+  }),
+  'cross-examiner': Object.freeze({
+    visualClass: 'gavel-viper',
+    artLabel: 'gavel viper',
+    sigil: '?!',
+    state: 'mask ready'
+  }),
+  matron: Object.freeze({
+    visualClass: 'velvet-stag',
+    artLabel: 'velvet stag',
+    sigil: '()',
+    state: 'mask ready'
   })
 });
 

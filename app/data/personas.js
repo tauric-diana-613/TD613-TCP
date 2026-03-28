@@ -113,6 +113,53 @@ const personas = [
     maskSigil: '::',
     maskState: 'mask ready',
     source: 'built-in'
+  },
+  {
+    id: 'cross-examiner',
+    name: 'Cross-Examiner',
+    blurb: 'Gavel-viper mask. Clips the line, sharpens the pressure, and turns soft claims into pointed challenges.',
+    chips: ['gavel viper', 'adversarial pull', 'sharp punctuation'],
+    profileRecipe: {
+      blend: [
+        { sampleId: 'critical-review', weight: 0.55 },
+        { sampleId: 'operations-brief', weight: 0.45 }
+      ],
+      overlayMod: {
+        sent: -3,
+        cont: -2,
+        punc: 4
+      },
+      strength: 0.89
+    },
+    maskVisualClass: 'gavel-viper',
+    maskArtLabel: 'gavel viper',
+    maskSigil: '?!',
+    maskState: 'mask ready',
+    source: 'built-in'
+  },
+  {
+    id: 'matron',
+    name: 'Matron',
+    blurb: 'Velvet-stag mask. Cushions the cadence, steadies the breath, and makes the line feel sheltering without going vague.',
+    chips: ['velvet stag', 'maternal shelter', 'steadying pull'],
+    profileRecipe: {
+      blend: [
+        { sampleId: 'witness-statement', weight: 0.45 },
+        { sampleId: 'recursive-debrief', weight: 0.35 },
+        { sampleId: 'institutional-memo', weight: 0.2 }
+      ],
+      overlayMod: {
+        sent: 2,
+        cont: -1,
+        punc: -1
+      },
+      strength: 0.88
+    },
+    maskVisualClass: 'velvet-stag',
+    maskArtLabel: 'velvet stag',
+    maskSigil: '()',
+    maskState: 'mask ready',
+    source: 'built-in'
   }
 ];
 

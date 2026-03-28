@@ -22,7 +22,7 @@ assert.ok(recursiveDebrief, 'recursive-debrief sample is present');
 assert.ok(witnessStatement, 'witness-statement sample is present');
 
 const resolvedPersonas = resolvePersonaCatalog(engine, personas, sampleLibrary);
-assert.equal(resolvedPersonas.length, 5, 'five built-in masks resolve for the gallery');
+assert.equal(resolvedPersonas.length, 7, 'seven built-in masks resolve for the gallery');
 assert.ok(resolvedPersonas.every((persona) => persona.profile && persona.mod), 'each built-in mask resolves to a concrete profile-backed shell');
 
 const lock = buildCadenceLockRecord(engine, {
@@ -77,6 +77,18 @@ assert.ok(
 assert.ok(
   Math.abs((results.get('spark').deltaToLock?.traceability || 0) - (results.get('operator').deltaToLock?.traceability || 0)) >= 0.02,
   'different masks produce meaningfully different traceability deltas against the same lock'
+);
+assert.ok(
+  outputProfiles['cross-examiner'].avgSentenceLength <= outputProfiles.archivist.avgSentenceLength - 8,
+  'Cross-Examiner stays much more clipped than Archivist on the same source text'
+);
+assert.ok(
+  outputProfiles.matron.avgSentenceLength >= outputProfiles.spark.avgSentenceLength + 8,
+  'Matron lands a more sheltering longer-line span than Spark on the same source text'
+);
+assert.ok(
+  (results.get('cross-examiner').deltaToLock?.traceability || 0) < (results.get('matron').deltaToLock?.traceability || 0),
+  'Cross-Examiner and Matron create meaningfully different home-trace pressure against the same lock'
 );
 
 console.log('persona-gallery.test.mjs passed');

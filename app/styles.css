@@ -1896,6 +1896,11 @@ button:disabled {
   gap: 14px;
 }
 
+.personagrid.compact {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
 .persona-home-grid {
   display: grid;
   grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
@@ -1951,6 +1956,14 @@ button:disabled {
 .persona-actions {
   flex-wrap: wrap;
   margin-top: 14px;
+}
+
+.lockbox-surface.is-staged {
+  border-color: rgba(255, 214, 92, 0.66);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 214, 92, 0.16),
+    0 0 0 1px rgba(255, 214, 92, 0.1),
+    0 0 28px rgba(255, 214, 92, 0.1);
 }
 
 .persona-inline-action {
@@ -2037,6 +2050,45 @@ button:disabled {
   background: rgba(6, 16, 24, 0.74);
 }
 
+.persona-dossier-surface {
+  position: relative;
+  overflow: hidden;
+}
+
+.persona-dossier-surface[data-revealed="true"] {
+  border-color: rgba(214, 63, 63, 0.44);
+  background:
+    radial-gradient(circle at top right, rgba(126, 18, 18, 0.22), transparent 34%),
+    linear-gradient(180deg, rgba(14, 5, 8, 0.98) 0%, rgba(5, 2, 4, 0.99) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(214, 63, 63, 0.1),
+    0 0 0 1px rgba(214, 63, 63, 0.08),
+    0 0 36px rgba(74, 6, 11, 0.22);
+}
+
+.persona-dossier-surface[data-revealed="true"] .trainer-summary-card,
+.persona-dossier-surface[data-revealed="true"] .persona-dossier-card,
+.persona-dossier-surface[data-revealed="true"] .trainer-surface {
+  border-color: rgba(214, 63, 63, 0.18);
+  background: rgba(32, 8, 12, 0.6);
+}
+
+.persona-dossier-surface[data-revealed="true"] .persona-kicker,
+.persona-dossier-surface[data-revealed="true"] .section-kicker,
+.persona-dossier-surface[data-revealed="true"] .chip {
+  color: #ff8b8b;
+}
+
+.persona-dossier-surface[data-revealed="true"] strong,
+.persona-dossier-surface[data-revealed="true"] h3 {
+  color: #ffe5e5;
+}
+
+.persona-dossier-latent {
+  display: grid;
+  gap: 14px;
+}
+
 .trainer-readout-body {
   margin-top: 12px;
 }
@@ -2120,6 +2172,14 @@ button:disabled {
 
 .persona {
   cursor: pointer;
+}
+
+.personas-gallery-panel .persona {
+  padding: 14px;
+}
+
+.personas-gallery-panel .name {
+  font-size: 18px;
 }
 
 .persona.selected {
@@ -2221,6 +2281,20 @@ button:disabled {
     radial-gradient(circle at 22% 20%, rgba(116, 234, 255, 0.12), transparent 24%),
     linear-gradient(135deg, rgba(188, 255, 138, 0.08), rgba(116, 234, 255, 0.03)),
     linear-gradient(180deg, rgba(8, 14, 22, 0.96), rgba(3, 7, 12, 0.98));
+}
+
+.gavel-viper {
+  background:
+    radial-gradient(circle at 76% 22%, rgba(255, 126, 89, 0.16), transparent 24%),
+    linear-gradient(135deg, rgba(214, 63, 63, 0.16), rgba(28, 10, 12, 0.08)),
+    linear-gradient(180deg, rgba(22, 7, 9, 0.97), rgba(7, 4, 8, 0.99));
+}
+
+.velvet-stag {
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 214, 92, 0.12), transparent 24%),
+    linear-gradient(135deg, rgba(184, 143, 123, 0.16), rgba(40, 18, 24, 0.06)),
+    linear-gradient(180deg, rgba(18, 10, 16, 0.96), rgba(7, 4, 9, 0.98));
 }
 
 .captured-mask,

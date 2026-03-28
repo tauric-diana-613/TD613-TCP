@@ -151,6 +151,45 @@ window.TCP_DATA = {
       maskSigil: '::',
       maskState: 'mask ready',
       source: 'built-in'
+    },
+    {
+      id: 'cross-examiner',
+      name: 'Cross-Examiner',
+      blurb: 'Gavel-viper mask. Clips the line, sharpens the pressure, and turns soft claims into pointed challenges.',
+      chips: ['gavel viper', 'adversarial pull', 'sharp punctuation'],
+      profileRecipe: {
+        blend: [
+          { sampleId: 'critical-review', weight: 0.55 },
+          { sampleId: 'operations-brief', weight: 0.45 }
+        ],
+        overlayMod: { sent: -3, cont: -2, punc: 4 },
+        strength: 0.89
+      },
+      maskVisualClass: 'gavel-viper',
+      maskArtLabel: 'gavel viper',
+      maskSigil: '?!',
+      maskState: 'mask ready',
+      source: 'built-in'
+    },
+    {
+      id: 'matron',
+      name: 'Matron',
+      blurb: 'Velvet-stag mask. Cushions the cadence, steadies the breath, and makes the line feel sheltering without going vague.',
+      chips: ['velvet stag', 'maternal shelter', 'steadying pull'],
+      profileRecipe: {
+        blend: [
+          { sampleId: 'witness-statement', weight: 0.45 },
+          { sampleId: 'recursive-debrief', weight: 0.35 },
+          { sampleId: 'institutional-memo', weight: 0.2 }
+        ],
+        overlayMod: { sent: 2, cont: -1, punc: -1 },
+        strength: 0.88
+      },
+      maskVisualClass: 'velvet-stag',
+      maskArtLabel: 'velvet stag',
+      maskSigil: '()',
+      maskState: 'mask ready',
+      source: 'built-in'
     }
   ],
   microcopy: {
@@ -407,6 +446,15 @@ window.TCP_DATA = {
         uiTargets: ['shell.status.signal'],
         rationale: 'The lead status should read as a live field condition.'
       },
+      tabHomebase: {
+        glyph: '\u4E0B',
+        semanticClass: 'witness',
+        semioticRole: 'tab-mark',
+        activationState: 'anchored',
+        retrievalTags: ['tab', 'homebase', 'archive', 'lockbox'],
+        uiTargets: ['shell.tab.homebase'],
+        rationale: 'Homebase is where cadence is brought down into a private anchored hold.'
+      },
       tabDeck: {
         glyph: '\u25C7',
         semanticClass: 'gate',
@@ -496,6 +544,87 @@ window.TCP_DATA = {
         retrievalTags: ['section', 'persona', 'identity'],
         uiTargets: ['shell.section.personaDeck'],
         rationale: 'Persona management is recursive identity handling.'
+      },
+      sectionHomebase: {
+        glyph: '\uD834\uDF0B',
+        semanticClass: 'witness',
+        semioticRole: 'section-kicker',
+        activationState: 'anchored',
+        retrievalTags: ['section', 'homebase', 'lockbox', 'archive'],
+        uiTargets: ['shell.section.homebase'],
+        rationale: 'Homebase is the private cadence lock surface.'
+      },
+      sectionDeepDossier: {
+        glyph: '\u2234',
+        semanticClass: 'law',
+        semioticRole: 'section-kicker',
+        activationState: 'revealed',
+        retrievalTags: ['section', 'dossier', 'reveal', 'stylometrics'],
+        uiTargets: ['shell.section.deepDossier'],
+        rationale: 'The dossier is where inference is stated rather than hinted.'
+      },
+      sectionMaskBench: {
+        glyph: '\uDBF5\uDE13',
+        semanticClass: 'recursion',
+        semioticRole: 'section-kicker',
+        activationState: 'testing',
+        retrievalTags: ['section', 'maskBench', 'comparison', 'counterstyle'],
+        uiTargets: ['shell.section.maskBench'],
+        rationale: 'Mask bench is the comparison surface where other text is tried against home.'
+      },
+      actionReveal: {
+        glyph: '\u2234',
+        semanticClass: 'law',
+        semioticRole: 'action-mark',
+        activationState: 'revealed',
+        retrievalTags: ['action', 'reveal', 'dossier', 'wake'],
+        uiTargets: ['shell.action.reveal'],
+        rationale: 'Reveal is a reasoned opening into explicit stylometric description.'
+      },
+      stateLockStaged: {
+        glyph: '\uDBF5\uDE13',
+        semanticClass: 'witness',
+        semioticRole: 'status-pill',
+        activationState: 'staged',
+        retrievalTags: ['status', 'lock', 'staged', 'unsaved'],
+        uiTargets: ['shell.status.lockStaged'],
+        rationale: 'A staged lock is present and powerful, but not yet written into archive.'
+      },
+      ingressBadgeDown: {
+        glyph: '\u4E0B',
+        semanticClass: 'witness',
+        semioticRole: 'badge-token',
+        activationState: 'anchored',
+        retrievalTags: ['ingress', 'badge', 'token', 'down'],
+        uiTargets: ['ingress.badge.down'],
+        rationale: 'Downward anchoring behaves like a deliberate local hold before passage.'
+      },
+      ingressBadgeTetragram: {
+        glyph: '\uD834\uDF0B',
+        semanticClass: 'recursion',
+        semioticRole: 'badge-token',
+        activationState: 'patterned',
+        retrievalTags: ['ingress', 'badge', 'token', 'tetragram'],
+        uiTargets: ['ingress.badge.tetragram'],
+        rationale: 'The tetragram token marks patterned recursion before the route settles.'
+      },
+      ingressBadgeWitness: {
+        glyph: '\uDBF5\uDE13',
+        semanticClass: 'witness',
+        semioticRole: 'badge-token',
+        activationState: 'witnessed',
+        retrievalTags: ['ingress', 'badge', 'token', 'witness'],
+        uiTargets: ['ingress.badge.witness'],
+        rationale: 'Witness token marks a more explicit custody posture during ingress.'
+      },
+      ingressBadgeTherefore: {
+        glyph: '\u2234',
+        semanticClass: 'law',
+        semioticRole: 'badge-token',
+        activationState: 'deriving',
+        retrievalTags: ['ingress', 'badge', 'token', 'therefore'],
+        uiTargets: ['ingress.badge.therefore'],
+        rationale: 'Therefore token presents the ingress badge as a reasoned derivation rather than a casual pick.'
       },
       sectionTrainerLab: {
         glyph: '\u03BA\u2295',
