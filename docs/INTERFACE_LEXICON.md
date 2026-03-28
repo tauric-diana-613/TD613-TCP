@@ -13,6 +13,18 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Save Cadence as Persona` | Captures the active bay as a reusable in-app shell. | Converts the current cadence profile into a reusable stylometric modifier. |
 | `Reset bay` | Restores the seeded opening pair and default switches. | Clears local shell state and returns the demo to native cadence mode. |
 
+## Homebase controls
+
+| Term | In the app | In the model |
+| --- | --- | --- |
+| `Cadence Lockbox` | The corpus input in `Homebase` where you stage one voice across one or more samples. | The local corpus used to derive a stable cadence lock profile. |
+| `Lock` | Builds a staged cadence draft from the lockbox text without writing it into the archive. | Extracts a draft lock profile and makes it available for unrevealed mask comparison. |
+| `Reveal` | Opens the deep dossier and wakes the global solo Telemetry/Harbor path for the active lock. | Runs the shared one-sample readout logic on the current Homebase lock. |
+| `Save` | Persists the staged lock into the local lock archive. | Commits the draft cadence lock to local storage without changing its measured profile. |
+| `Wear in Homebase` | Applies a mask to the comparison bench for the active lock. | Runs comparison text through the chosen persona shell against the active lock profile. |
+| `Try on Deck A` | Sends a persona shell to the reference bay in `Deck`. | Assigns the selected shell to slot `A` for live deck analysis. |
+| `Try on Deck B` | Sends a persona shell to the probe bay in `Deck`. | Assigns the selected shell to slot `B` for live deck analysis. |
+
 ## State controls
 
 | Term | In the app | In the model |
@@ -34,6 +46,8 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | `Receipt stream` | The demo ledger preview in the UI. | A sample row showing how event, archive, burden, and harbor are recorded. |
 | `Shell Duel` | The side-by-side instrument on the `Deck` tab that stages the reference bay under its shell and the probe bay under its shell. | A direct view of shell transfer using each bay's transformed sample, heatmaps, signatures, and a pairwise delta strip. |
 | `Ingress Membrane` | The full-screen ritual that appears before the deck unlocks on normal visits. | A custody-handshake layer that resolves containment, mirror posture, and badge state before the live shell opens. |
+| `Deep dossier` | The revealed Homebase panel that shows cadence metrics, risk interpretation, and archive character for the active lock. | A rich summary layer built from the lock profile and solo readout quantities. |
+| `Mask bench` | The Homebase comparison area that shows raw-to-lock, masked-to-lock, delta, masked output, and stickiness notes. | A local counterstyle test surface that compares transformed text against the active lock profile. |
 
 ## Shell language
 
@@ -59,8 +73,9 @@ TCP uses a small vocabulary that does double duty: it has interface meaning and 
 | Term | In the app | In the model |
 | --- | --- | --- |
 | `Deck` | The main interaction surface with bays, controls, and `Shell Duel`. | The public membrane where cadence play and route-state education happen first. |
+| `Homebase` | The cadence home for lock, reveal, save, archive, dossier, and mask work. | The private lock-and-compare surface that stages one voice before or alongside deck play. |
 | `Readout` | The tab that exposes scores, formulas, and ledger preview. | The explicit metric layer where similarity, route, and archive state are made legible. |
-| `Personas` | The tab that exposes saved and built-in shells. | The shell library used to reapply cadence bias without changing source text. |
+| `Personas` | The compact collectible mask gallery. | The reusable shell gallery that feeds Homebase and Deck without owning the lock workflow itself. |
 | `Branch` | The branch formula shown in the readout/debug layer. | The rule that unwanted surplus is preserved until it can be interpreted or dismissed responsibly. |
 | `Field` | The whole comparison environment shown on the deck. | The bounded environment in which similarity, recurrence, and route pressure interact. |
 | `Harbor deck` | The panel that recommends structured passage. | The safe-harbor layer that lowers witness burden without destroying provenance. |
@@ -72,5 +87,6 @@ If a label sounds ceremonial, the plain reading is usually this:
 - `mirror` = route gate
 - `badge` = posture switch
 - `shell` = stylometric wrapper
+- `lock` = staged cadence base
 - `harbor` = structured passage
 - `archive` = who is carrying continuity

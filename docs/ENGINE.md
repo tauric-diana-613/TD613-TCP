@@ -230,6 +230,27 @@ else if recognized and not explained and denseSignal -> criticality
 else -> hold-branch
 ```
 
+## Shared solo readout path
+
+TCP now has one shared solo-readout helper for one-voice inspection.
+
+Two entry points use the same path:
+
+1. a one-sample `Deck` analysis
+2. a `Homebase` `Reveal` on the active cadence lock
+
+That matters because solo Telemetry and Harbor are no longer a Deck-only behavior. `Reveal` in `Homebase` wakes the same similarity, route, archive, and harbor logic that a one-sample deck run uses, while mask comparison and lock staging can remain active before reveal.
+
+## Public surface split
+
+The public browser surface is now split across distinct roles:
+
+- `Homebase` handles cadence lock staging, reveal, save, archive, dossier, and mask comparison
+- `Personas` exposes the collectible mask gallery and quick-apply actions into `Homebase` and `Deck`
+- `Readout` stays the strict proof surface
+- `Deck` handles live solo and paired play, shell assignment, `Swap Cadences`, and `Shell Duel`
+- `Trainer` remains the manual persona lab
+
 ## Deck-facing Shell Duel
 
 The current `Deck` tab exposes one direct stylometry instrument: `Shell Duel`.
@@ -266,7 +287,7 @@ When both shells are native, the duel should collapse toward identity on the sam
 - `stylometry.js` - profile extraction, distance functions, similarity, traceability, shell transforms, and cadence signatures
 - `harbor.js` - harbor selection, witness load, reuse gain, and ledger rows
 - `badges.js` - compact custody mode cycling for the demo UI
-- `browser-main.js` - deck runtime, tab state, shell-duel rendering, and test-flight orchestration
+- `browser-main.js` - Homebase, Personas, Readout, Deck, Trainer, shared solo-readout behavior, and test-flight orchestration
 
 ## Interpretive boundary
 
