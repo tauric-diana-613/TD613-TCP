@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Undertow portrait</title>
+  <desc id="desc">A recursive undertow portrait with violet drift and submerged cyan wake.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b0a14"/>
+      <stop offset="100%" stop-color="#030409"/>
+    </linearGradient>
+    <linearGradient id="wake" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#885ed4" stop-opacity=".84"/>
+      <stop offset="100%" stop-color="#74eaff" stop-opacity=".18"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <path d="M80 190c120 46 180 46 300 0s180-46 340 0" fill="none" stroke="#885ed4" stroke-width="3" opacity=".26"/>
+  <path d="M50 254c138 52 212 52 350 0s212-52 350 0" fill="none" stroke="#74eaff" stroke-width="2" opacity=".18"/>
+  <path d="M220 884c42-122 78-222 124-316 20-44 36-90 56-160 20 70 36 116 56 160 46 94 82 194 124 316H220z" fill="#090b12"/>
+  <path d="M324 204c28-48 54-72 76-90 22 18 48 42 76 90l-20 242-56 82-56-82-20-242z" fill="#110e1d" stroke="#31284b" stroke-width="3"/>
+  <path d="M312 250c44-28 88-42 176 0" fill="none" stroke="#885ed4" stroke-width="3" opacity=".8"/>
+  <path d="M328 330c36 22 72 34 144 0" fill="none" stroke="#74eaff" stroke-width="3" opacity=".72"/>
+  <path d="M346 414c18 12 37 18 54 18 17 0 36-6 54-18" fill="none" stroke="#d3c7ff" stroke-width="3" opacity=".82"/>
+  <path d="M244 788c66-10 124-42 156-96 32 54 90 86 156 96" fill="none" stroke="url(#wake)" stroke-width="5" opacity=".45"/>
+</svg>

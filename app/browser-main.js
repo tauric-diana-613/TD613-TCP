@@ -1194,7 +1194,15 @@
         maskVisualClass: 'trained-mask',
         maskArtLabel: 'trained shell',
         maskSigil: '##',
-        maskState: 'unforged'
+        maskState: 'unforged',
+        family: 'Forged shell',
+        tagline: 'Derived under retrieval law.',
+        voicePromise: 'A trained shell carrying the pressure of a validated forge pass.',
+        fieldUse: 'Use when you want a trainer-forged shell available in Homebase or Deck.',
+        riskTell: 'Forge residue can still cling where validation left the strongest lanes intact.',
+        frameTone: 'bruise-violet',
+        collectorClass: 'trained',
+        portrait: { src: '', alt: 'Forged shell portrait' }
       };
     }
 
@@ -1203,7 +1211,15 @@
         maskVisualClass: 'captured-mask',
         maskArtLabel: 'captured shell',
         maskSigil: '::',
-        maskState: 'unforged'
+        maskState: 'unforged',
+        family: 'Captured shell',
+        tagline: 'Lifted from live cadence.',
+        voicePromise: 'A captured shell carrying residue from saved live cadence.',
+        fieldUse: 'Use when you want to replay a saved shell through Homebase or Deck.',
+        riskTell: 'Captured residue often preserves the strongest visible lanes.',
+        frameTone: 'ash',
+        collectorClass: 'captured',
+        portrait: { src: '', alt: 'Captured shell portrait' }
       };
     }
 
@@ -1211,7 +1227,15 @@
       maskVisualClass: 'field-mask',
       maskArtLabel: 'field mask',
       maskSigil: '[]',
-      maskState: 'mask ready'
+      maskState: 'mask ready',
+      family: 'Field mask',
+      tagline: 'Unknown pressure. Unregistered surface.',
+      voicePromise: 'A field mask with no registered portrait metadata yet.',
+      fieldUse: 'Use to test pressure without a stronger registered cast identity.',
+      riskTell: 'No explicit risk tell has been registered yet.',
+      frameTone: 'cyan',
+      collectorClass: 'built-in',
+      portrait: { src: '', alt: 'Field mask portrait' }
     };
   }
 
@@ -1228,7 +1252,15 @@
       maskVisualClass: persona.maskVisualClass || scaffold.maskVisualClass,
       maskArtLabel: persona.maskArtLabel || scaffold.maskArtLabel,
       maskSigil: persona.maskSigil || scaffold.maskSigil,
-      maskState: persona.maskState || scaffold.maskState
+      maskState: persona.maskState || scaffold.maskState,
+      family: persona.family || scaffold.family,
+      tagline: persona.tagline || scaffold.tagline,
+      voicePromise: persona.voicePromise || scaffold.voicePromise,
+      fieldUse: persona.fieldUse || scaffold.fieldUse,
+      riskTell: persona.riskTell || scaffold.riskTell,
+      frameTone: persona.frameTone || scaffold.frameTone,
+      collectorClass: persona.collectorClass || scaffold.collectorClass,
+      portrait: persona.portrait ? { ...persona.portrait } : { ...scaffold.portrait }
     };
   }
 
@@ -2268,6 +2300,56 @@
     return assignment === 'Assign shell' ? 'Unassigned' : assignment;
   }
 
+  function personaFamilyLabel(persona = {}) {
+    return persona.family || persona.maskArtLabel || 'Field mask';
+  }
+
+  function personaTagline(persona = {}) {
+    return persona.tagline || persona.blurb || 'Unregistered mask surface.';
+  }
+
+  function personaVoicePromise(persona = {}) {
+    return persona.voicePromise || persona.blurb || 'This mask has no registered voice promise yet.';
+  }
+
+  function personaFieldUse(persona = {}) {
+    return persona.fieldUse || 'Use in Homebase or Deck when you want to test its pull.';
+  }
+
+  function personaRiskTell(persona = {}) {
+    return persona.riskTell || 'No explicit risk tell has been registered yet.';
+  }
+
+  function personaCollectorClass(persona = {}) {
+    return persona.collectorClass || (persona.source === 'trainer' ? 'trained' : persona.source === 'saved' ? 'captured' : 'built-in');
+  }
+
+  function personaToneClass(persona = {}) {
+    return `tone-${persona.frameTone || 'cyan'}`;
+  }
+
+  function renderPersonaPortrait(persona = {}, { loading = 'lazy', active = false } = {}) {
+    const portrait = persona.portrait || {};
+    const hasImage = Boolean(portrait.src);
+    const toneClass = personaToneClass(persona);
+    const family = personaFamilyLabel(persona);
+    return `
+      <div class="persona-mask-portrait ${escapeHtml(persona.maskVisualClass || 'field-mask')} ${escapeHtml(toneClass)} ${active ? 'is-active' : ''}" data-mask-state="${escapeHtml(personaMaskStateLabel(persona))}" data-collector-class="${escapeHtml(personaCollectorClass(persona))}">
+        ${hasImage ? `<img class="persona-mask-image" src="${escapeHtml(portrait.src)}" alt="${escapeHtml(portrait.alt || `${persona.name || 'Mask'} portrait`)}" loading="${escapeHtml(loading)}" decoding="async">` : ''}
+        <span class="persona-mask-shade" aria-hidden="true"></span>
+        <span class="persona-mask-noise" aria-hidden="true"></span>
+        <div class="persona-mask-meta">
+          <span class="persona-mask-family">${escapeHtml(family)}</span>
+          <span class="persona-mask-state">${escapeHtml(personaMaskStateLabel(persona))}</span>
+        </div>
+        <div class="persona-mask-plate">
+          <span class="persona-mask-sigil">${escapeHtml(persona.maskSigil || '[]')}</span>
+          <span class="persona-mask-label">${escapeHtml(persona.maskArtLabel || 'field mask')}</span>
+        </div>
+      </div>
+    `;
+  }
+
   function createdAtLabel(value = '') {
     if (!value) {
       return '';
@@ -2369,6 +2451,11 @@
 
     const swatch = state.comparison?.swatch || state.selectedMaskSwatch || '';
     const source = personaSourceLabel(state.wornMask);
+    const family = personaFamilyLabel(state.wornMask);
+    const tagline = personaTagline(state.wornMask);
+    const voicePromise = personaVoicePromise(state.wornMask);
+    const fieldUse = personaFieldUse(state.wornMask);
+    const riskTell = personaRiskTell(state.wornMask);
     const stageLine = state.comparison?.contactSummary?.line
       || (!state.lock
         ? 'The mask is worn, but Homebase still needs a cadence home.'
@@ -2378,18 +2465,29 @@
 
     body.innerHTML = `
       <div class="homebase-worn-mask-card">
-        <div class="persona-mask-portrait ${escapeHtml(state.wornMask.maskVisualClass || 'field-mask')}" data-mask-state="${escapeHtml(personaMaskStateLabel(state.wornMask))}">
-          <span class="persona-mask-sigil">${escapeHtml(state.wornMask.maskSigil || '[]')}</span>
-          <span class="persona-mask-label">${escapeHtml(state.wornMask.maskArtLabel || 'field mask')}</span>
-          <span class="persona-mask-state">${escapeHtml(personaMaskStateLabel(state.wornMask))}</span>
-        </div>
+        ${renderPersonaPortrait(state.wornMask, { loading: 'eager', active: true })}
         <div class="homebase-worn-mask-copy">
           <div class="persona-kicker">${escapeHtml(source)}</div>
           <h3>${escapeHtml(state.wornMask.name)}</h3>
-          <p class="blurb">${escapeHtml(state.wornMask.blurb || '')}</p>
+          <div class="persona-family-line">${escapeHtml(family)}</div>
+          <p class="persona-tagline">${escapeHtml(tagline)}</p>
+          <div class="persona-note-grid">
+            <article class="persona-note">
+              <div class="persona-kicker">Voice promise</div>
+              <p>${escapeHtml(voicePromise)}</p>
+            </article>
+            <article class="persona-note">
+              <div class="persona-kicker">Field use</div>
+              <p>${escapeHtml(fieldUse)}</p>
+            </article>
+            <article class="persona-note danger-note">
+              <div class="persona-kicker">Risk tell</div>
+              <p>${escapeHtml(riskTell)}</p>
+            </article>
+          </div>
           <div class="trainer-surface homebase-swatch-card">
             <div class="persona-kicker">${escapeHtml(swatch ? 'writing swatch' : 'voice promise')}</div>
-            <p class="persona-empty">${escapeHtml(swatch || state.wornMask.blurb || 'Bring source text into contact to see how the mask begins a passage.')}</p>
+            <p class="persona-empty">${escapeHtml(swatch || voicePromise || 'Bring source text into contact to see how the mask begins a passage.')}</p>
           </div>
           <div class="analysis-status homebase-worn-mask-line">${escapeHtml(stageLine)}</div>
           <div class="persona-actions">
@@ -2715,32 +2813,47 @@
     const swatch = state.selectedMaskSwatch || '';
     const effectSummary = state.selectedMaskEffect || null;
     const effectLine = effectSummary
-      ? [effectSummary.sentenceShift, effectSummary.punctuationShift, effectSummary.contractionShift, effectSummary.registerShift]
+      ? [effectSummary.sentenceShift, effectSummary.registerShift]
           .filter(Boolean)
           .map((entry) => `<span class="chip">${escapeHtml(entry)}</span>`)
           .join('')
-      : persona.chips.map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
+      : persona.chips.slice(0, 2).map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
     const source = personaSourceLabel(persona);
+    const family = personaFamilyLabel(persona);
+    const tagline = personaTagline(persona);
+    const voicePromise = personaVoicePromise(persona);
+    const fieldUse = personaFieldUse(persona);
+    const riskTell = personaRiskTell(persona);
     const generateHook = persona.source !== 'built-in'
       ? `<button type="button" class="ghost persona-inline-action" data-persona-action="generate-mask" data-persona-id="${persona.id}">Generate Mask</button>`
       : '';
-    const wornHere = state.wornMask?.id === persona.id;
 
     node.innerHTML = `
       <div class="persona-preview-grid">
-        <div class="persona-mask-portrait ${escapeHtml(persona.maskVisualClass || 'field-mask')}" data-mask-state="${escapeHtml(personaMaskStateLabel(persona))}">
-          <span class="persona-mask-sigil">${escapeHtml(persona.maskSigil || '[]')}</span>
-          <span class="persona-mask-label">${escapeHtml(persona.maskArtLabel || 'field mask')}</span>
-          <span class="persona-mask-state">${escapeHtml(personaMaskStateLabel(persona))}</span>
-        </div>
+        ${renderPersonaPortrait(persona, { loading: 'eager' })}
         <div class="persona-preview-copy">
           <div class="persona-kicker">${escapeHtml(source)}</div>
           <h3>${escapeHtml(persona.name)}</h3>
-          <p class="blurb">${escapeHtml(persona.blurb || '')}</p>
+          <div class="persona-family-line">${escapeHtml(family)}</div>
+          <p class="persona-tagline">${escapeHtml(tagline)}</p>
           <div class="chips">${effectLine}</div>
+          <div class="persona-note-grid">
+            <article class="persona-note">
+              <div class="persona-kicker">Voice promise</div>
+              <p>${escapeHtml(voicePromise)}</p>
+            </article>
+            <article class="persona-note">
+              <div class="persona-kicker">Field use</div>
+              <p>${escapeHtml(fieldUse)}</p>
+            </article>
+            <article class="persona-note danger-note">
+              <div class="persona-kicker">Risk tell</div>
+              <p>${escapeHtml(riskTell)}</p>
+            </article>
+          </div>
           <div class="trainer-surface persona-preview-swatch">
             <div class="persona-kicker">${escapeHtml(swatch ? 'writing swatch' : 'voice promise')}</div>
-            <p class="persona-empty">${escapeHtml(swatch || persona.blurb || 'Paste comparison text in Homebase to see how this mask begins a passage.')}</p>
+            <p class="persona-empty">${escapeHtml(swatch || voicePromise || 'Paste comparison text in Homebase to see how this mask begins a passage.')}</p>
           </div>
           <div class="persona-actions">
             <button type="button" class="secondary persona-inline-action" data-persona-action="wear-homebase" data-persona-id="${persona.id}">Bring into Homebase</button>
@@ -2774,7 +2887,9 @@
           const shellSelected = bayShells[activeVoice].personaId === persona.id;
           const wornHere = state.wornMask && state.wornMask.id === persona.id;
           const source = personaSourceLabel(persona);
-          const effectLine = persona.chips.map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
+          const family = personaFamilyLabel(persona);
+          const tagline = personaTagline(persona);
+          const effectLine = persona.chips.slice(0, 2).map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
 
           return `
             <div class="persona ${selected ? 'selected chosen-shelf' : ''} ${assigned ? 'assigned deck-assigned' : ''} ${shellSelected ? 'shell-selected' : ''} ${wornHere ? 'worn-homebase' : ''}" data-id="${persona.id}" role="button" tabindex="0" aria-pressed="${selected}">
@@ -2785,12 +2900,11 @@
                 </div>
                 <div class="persona-action">${escapeHtml(wornHere ? 'Worn in Homebase' : personaStateKicker(persona))}</div>
               </div>
-              <div class="persona-mask-portrait ${escapeHtml(persona.maskVisualClass || 'field-mask')}" data-mask-state="${escapeHtml(personaMaskStateLabel(persona))}">
-                <span class="persona-mask-sigil">${escapeHtml(persona.maskSigil || '[]')}</span>
-                <span class="persona-mask-label">${escapeHtml(persona.maskArtLabel || 'field mask')}</span>
-                <span class="persona-mask-state">${escapeHtml(personaMaskStateLabel(persona))}</span>
+              ${renderPersonaPortrait(persona)}
+              <div class="persona-card-copy">
+                <div class="persona-family-line">${escapeHtml(family)}</div>
+                <p class="persona-tagline">${escapeHtml(tagline)}</p>
               </div>
-              <div class="blurb">${escapeHtml(persona.blurb || '')}</div>
               <div class="chips">${effectLine}</div>
             </div>
           `;

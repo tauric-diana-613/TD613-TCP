@@ -240,16 +240,76 @@ function resolveRecipeProfile(engine, recipe = {}, sampleLibraryById = {}) {
 
 function fallbackMaskScaffold(persona = {}, index = 0) {
   const sources = {
-    'built-in': { visualClass: 'field-mask', artLabel: 'field mask', sigil: '[]', state: 'mask ready' },
-    saved: { visualClass: 'captured-mask', artLabel: 'captured shell', sigil: '::', state: 'unforged' },
-    trainer: { visualClass: 'trained-mask', artLabel: 'trained shell', sigil: '##', state: 'unforged' }
+    'built-in': {
+      visualClass: 'field-mask',
+      artLabel: 'field mask',
+      sigil: '[]',
+      state: 'mask ready',
+      family: 'Field mask',
+      tagline: 'Unknown pressure. Unregistered surface.',
+      voicePromise: 'A field mask with no registered portrait metadata yet.',
+      fieldUse: 'Use to test pressure without a stronger registered cast identity.',
+      riskTell: 'No explicit risk tell has been registered yet.',
+      frameTone: 'cyan',
+      collectorClass: 'built-in',
+      portrait: { src: '', alt: 'Field mask portrait' }
+    },
+    saved: {
+      visualClass: 'captured-mask',
+      artLabel: 'captured shell',
+      sigil: '::',
+      state: 'unforged',
+      family: 'Captured shell',
+      tagline: 'Lifted from live cadence.',
+      voicePromise: 'A captured shell carrying residue from saved live cadence.',
+      fieldUse: 'Use when you want to replay a saved shell through Homebase or Deck.',
+      riskTell: 'Captured residue often preserves the strongest visible lanes.',
+      frameTone: 'ash',
+      collectorClass: 'captured',
+      portrait: { src: '', alt: 'Captured shell portrait' }
+    },
+    trainer: {
+      visualClass: 'trained-mask',
+      artLabel: 'trained shell',
+      sigil: '##',
+      state: 'unforged',
+      family: 'Forged shell',
+      tagline: 'Derived under retrieval law.',
+      voicePromise: 'A trained shell carrying the pressure of a validated forge pass.',
+      fieldUse: 'Use when you want a trainer-forged shell available in Homebase or Deck.',
+      riskTell: 'Forge residue can still cling where validation left the strongest lanes intact.',
+      frameTone: 'bruise-violet',
+      collectorClass: 'trained',
+      portrait: { src: '', alt: 'Forged shell portrait' }
+    }
   };
-  const fallback = sources[persona.source] || { visualClass: 'field-mask', artLabel: `mask ${index + 1}`, sigil: '[]', state: 'unforged' };
+  const fallback = sources[persona.source] || {
+    visualClass: 'field-mask',
+    artLabel: `mask ${index + 1}`,
+    sigil: '[]',
+    state: 'unforged',
+    family: 'Unregistered mask',
+    tagline: 'Unknown field identity.',
+    voicePromise: 'This mask has no registered portrait metadata yet.',
+    fieldUse: 'Use to test an unregistered shell.',
+    riskTell: 'No explicit risk tell has been registered yet.',
+    frameTone: 'cyan',
+    collectorClass: 'unknown',
+    portrait: { src: '', alt: 'Unregistered mask portrait' }
+  };
   return {
     visualClass: persona.maskVisualClass || fallback.visualClass,
     artLabel: persona.maskArtLabel || fallback.artLabel,
     sigil: persona.maskSigil || fallback.sigil,
-    state: persona.maskState || fallback.state
+    state: persona.maskState || fallback.state,
+    family: persona.family || fallback.family,
+    tagline: persona.tagline || fallback.tagline,
+    voicePromise: persona.voicePromise || fallback.voicePromise,
+    fieldUse: persona.fieldUse || fallback.fieldUse,
+    riskTell: persona.riskTell || fallback.riskTell,
+    frameTone: persona.frameTone || fallback.frameTone,
+    collectorClass: persona.collectorClass || fallback.collectorClass,
+    portrait: persona.portrait ? { ...persona.portrait } : { ...fallback.portrait }
   };
 }
 
@@ -288,6 +348,14 @@ export function resolvePersonaCatalog(engine, basePersonas = [], sampleLibrary =
       maskArtLabel: persona.maskArtLabel || art.artLabel,
       maskSigil: persona.maskSigil || art.sigil,
       maskState: persona.maskState || art.state,
+      family: persona.family || art.family,
+      tagline: persona.tagline || art.tagline,
+      voicePromise: persona.voicePromise || art.voicePromise,
+      fieldUse: persona.fieldUse || art.fieldUse,
+      riskTell: persona.riskTell || art.riskTell,
+      frameTone: persona.frameTone || art.frameTone,
+      collectorClass: persona.collectorClass || art.collectorClass,
+      portrait: persona.portrait ? { ...persona.portrait } : { ...art.portrait },
       source: persona.source || 'built-in'
     };
   });

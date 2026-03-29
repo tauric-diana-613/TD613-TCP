@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Operator portrait</title>
+  <desc id="desc">A clipped operational portrait with ash metal and low-ornament route geometry.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b0d11"/>
+      <stop offset="100%" stop-color="#040506"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <rect x="152" y="136" width="496" height="728" rx="24" fill="none" stroke="#c6ced7" stroke-width="2" opacity=".12"/>
+  <path d="M210 860c26-116 54-210 96-292 42-82 72-170 94-274 22 104 52 192 94 274 42 82 70 176 96 292H210z" fill="#0a0d11"/>
+  <path d="M306 206 400 132l94 74v256l-94 80-94-80V206z" fill="#0d1014" stroke="#394047" stroke-width="3"/>
+  <path d="M332 262h136M332 318h136M352 380h96" stroke="#d8dee6" stroke-width="4" opacity=".76"/>
+  <path d="M358 444c14 10 28 14 42 14s28-4 42-14" fill="none" stroke="#74eaff" stroke-width="2" opacity=".56"/>
+  <path d="M246 764h308" stroke="#c6ced7" stroke-width="2" opacity=".28"/>
+  <path d="M258 806h284" stroke="#74eaff" stroke-width="1.5" opacity=".24"/>
+  <path d="M182 180h436" stroke="#c6ced7" stroke-width="1" opacity=".12"/>
+  <path d="M182 220h436" stroke="#c6ced7" stroke-width="1" opacity=".08"/>
+</svg>

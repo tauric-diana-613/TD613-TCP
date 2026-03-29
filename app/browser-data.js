@@ -60,8 +60,13 @@ window.TCP_DATA = {
     {
       id: 'archivist',
       name: 'Archivist',
-      blurb: 'Witness-ledger mask. Stretches the line, lowers contraction, and keeps the record sealed.',
-      chips: ['ledger raven', 'witness-first', 'low contraction'],
+      family: 'Witness ledger',
+      tagline: 'Long line. Cold seal.',
+      blurb: 'Witness-ledger mask. Long line, cold seal, low contraction.',
+      voicePromise: 'Lengthens the sentence and cools the surface until the record sounds sealed.',
+      fieldUse: 'Use when the passage needs procedural gravity without losing human witness pressure.',
+      riskTell: 'Sentence span and witness posture tend to cling after contact.',
+      chips: ['cold seal', 'low contraction'],
       profileRecipe: {
         blend: [
           { sampleId: 'witness-statement', weight: 0.65 },
@@ -74,13 +79,24 @@ window.TCP_DATA = {
       maskArtLabel: 'ledger raven',
       maskSigil: '[]',
       maskState: 'mask ready',
+      frameTone: 'sick-gold',
+      collectorClass: 'built-in',
+      portrait: {
+        src: 'assets/persona-portraits/archivist.svg',
+        alt: 'Archivist portrait'
+      },
       source: 'built-in'
     },
     {
       id: 'spark',
       name: 'Spark',
-      blurb: 'Signal-jackal mask. Shortens the line, sharpens the punctuation, and pushes the text into public motion.',
-      chips: ['signal jackal', 'bright punctuation', 'public pull'],
+      family: 'Public signal',
+      tagline: 'Fast surface. Bright cut.',
+      blurb: 'Signal-jackal mask. Fast surface, bright cut, public motion.',
+      voicePromise: 'Cuts the line short, sharpens punctuation, and pushes the passage outward.',
+      fieldUse: 'Use when you need public-facing velocity, directness, and visible momentum.',
+      riskTell: 'Directness often survives even when home distance loosens.',
+      chips: ['bright cut', 'public pull'],
       profileRecipe: {
         blend: [
           { sampleId: 'operations-brief', weight: 0.8 },
@@ -93,13 +109,24 @@ window.TCP_DATA = {
       maskArtLabel: 'signal jackal',
       maskSigil: '++',
       maskState: 'mask ready',
+      frameTone: 'cyan',
+      collectorClass: 'built-in',
+      portrait: {
+        src: 'assets/persona-portraits/spark.svg',
+        alt: 'Spark portrait'
+      },
       source: 'built-in'
     },
     {
       id: 'undertow',
       name: 'Undertow',
-      blurb: 'Velvet-eel mask. Keeps circling back, stretches the clause, and lets the afterimage land late.',
-      chips: ['velvet eel', 'recursive return', 'late landing'],
+      family: 'Recursive undertow',
+      tagline: 'Late landing. Return current.',
+      blurb: 'Recursive undertow mask. Late landing, return current, delayed afterimage.',
+      voicePromise: 'Lets the sentence drift longer and land after the surface seems finished.',
+      fieldUse: 'Use when you want recursive drag, delayed closure, and a submerged emotional wake.',
+      riskTell: 'Recurrence and late-closing sentence rhythm tend to stay visible.',
+      chips: ['late landing', 'return current'],
       profileRecipe: {
         blend: [
           { sampleId: 'recursive-debrief', weight: 0.85 },
@@ -112,13 +139,24 @@ window.TCP_DATA = {
       maskArtLabel: 'velvet eel',
       maskSigil: '~~',
       maskState: 'mask ready',
+      frameTone: 'bruise-violet',
+      collectorClass: 'built-in',
+      portrait: {
+        src: 'assets/persona-portraits/undertow.svg',
+        alt: 'Undertow portrait'
+      },
       source: 'built-in'
     },
     {
       id: 'operator',
       name: 'Operator',
-      blurb: 'Quiet-hound mask. Clips ornament, lowers pulse, and keeps route language clean under pressure.',
-      chips: ['quiet hound', 'route-clean', 'low ornament'],
+      family: 'Route discipline',
+      tagline: 'Dry hand. Clean route.',
+      blurb: 'Route-discipline mask. Dry hand, clipped surface, clean route language.',
+      voicePromise: 'Strips ornament, lowers pulse, and keeps the line operational under pressure.',
+      fieldUse: 'Use when the passage needs clipped control and low-ornament route clarity.',
+      riskTell: 'Route-clean phrasing can remain visible even when the shell shifts elsewhere.',
+      chips: ['clean route', 'dry hand'],
       profileRecipe: {
         blend: [
           { sampleId: 'operations-brief', weight: 0.55 },
@@ -131,13 +169,24 @@ window.TCP_DATA = {
       maskArtLabel: 'quiet hound',
       maskSigil: '//',
       maskState: 'mask ready',
+      frameTone: 'ash',
+      collectorClass: 'built-in',
+      portrait: {
+        src: 'assets/persona-portraits/operator.svg',
+        alt: 'Operator portrait'
+      },
       source: 'built-in'
     },
     {
       id: 'methods-editor',
       name: 'Methods Editor',
-      blurb: 'Schema-moth mask. Formal, caveated, and cold enough to carry a claim without overfitting it.',
-      chips: ['schema moth', 'measured caveats', 'formal schema'],
+      family: 'Schema cold',
+      tagline: 'Measured caveat. Clean proof.',
+      blurb: 'Schema-cold mask. Formal, caveated, and stripped of warmth.',
+      voicePromise: 'Flattens heat, formalizes claims, and keeps the sentence inside a colder proof surface.',
+      fieldUse: 'Use when a claim needs caveat, formal distance, and procedural restraint.',
+      riskTell: 'Caveat structure and abstraction posture often remain after transfer.',
+      chips: ['measured caveat', 'clean proof'],
       profileRecipe: {
         blend: [
           { sampleId: 'deliberative-hedged', weight: 0.55 },
@@ -150,13 +199,24 @@ window.TCP_DATA = {
       maskArtLabel: 'schema moth',
       maskSigil: '::',
       maskState: 'mask ready',
+      frameTone: 'ice',
+      collectorClass: 'built-in',
+      portrait: {
+        src: 'assets/persona-portraits/methods-editor.svg',
+        alt: 'Methods Editor portrait'
+      },
       source: 'built-in'
     },
     {
       id: 'cross-examiner',
       name: 'Cross-Examiner',
-      blurb: 'Gavel-viper mask. Clips the line, sharpens the pressure, and turns soft claims into pointed challenges.',
-      chips: ['gavel viper', 'adversarial pull', 'sharp punctuation'],
+      family: 'Adversarial pressure',
+      tagline: 'Hard edge. Closed throat.',
+      blurb: 'Adversarial-pressure mask. Hard edge, clipped line, sharpened pressure.',
+      voicePromise: 'Tightens the sentence, hardens the edge, and turns soft claims into challenge surfaces.',
+      fieldUse: 'Use when the passage needs interrogation pressure and minimal softness.',
+      riskTell: 'Pressure syntax and abrupt punctuation can keep showing through.',
+      chips: ['hard edge', 'pressure syntax'],
       profileRecipe: {
         blend: [
           { sampleId: 'critical-review', weight: 0.55 },
@@ -169,13 +229,24 @@ window.TCP_DATA = {
       maskArtLabel: 'gavel viper',
       maskSigil: '?!',
       maskState: 'mask ready',
+      frameTone: 'oxide-red',
+      collectorClass: 'built-in',
+      portrait: {
+        src: 'assets/persona-portraits/cross-examiner.svg',
+        alt: 'Cross-Examiner portrait'
+      },
       source: 'built-in'
     },
     {
       id: 'matron',
       name: 'Matron',
-      blurb: 'Velvet-stag mask. Cushions the cadence, steadies the breath, and makes the line feel sheltering without going vague.',
-      chips: ['velvet stag', 'maternal shelter', 'steadying pull'],
+      family: 'Protective veil',
+      tagline: 'Soft shelter. Held pulse.',
+      blurb: 'Protective-veil mask. Held pulse, softened cadence, shelter without blur.',
+      voicePromise: 'Steadies the breath and softens the cadence while keeping the line legible.',
+      fieldUse: 'Use when the passage needs shelter, steadiness, and controlled warmth.',
+      riskTell: 'Steady sentence pulse can persist even when the tone cools elsewhere.',
+      chips: ['held pulse', 'soft shelter'],
       profileRecipe: {
         blend: [
           { sampleId: 'witness-statement', weight: 0.45 },
@@ -189,6 +260,12 @@ window.TCP_DATA = {
       maskArtLabel: 'velvet stag',
       maskSigil: '()',
       maskState: 'mask ready',
+      frameTone: 'velvet',
+      collectorClass: 'built-in',
+      portrait: {
+        src: 'assets/persona-portraits/matron.svg',
+        alt: 'Matron portrait'
+      },
       source: 'built-in'
     }
   ],

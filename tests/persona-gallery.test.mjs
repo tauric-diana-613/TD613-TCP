@@ -1,4 +1,7 @@
 import assert from 'assert';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import defaults from '../app/data/defaults.js';
 import personas from '../app/data/personas.js';
@@ -9,6 +12,9 @@ import {
   buildMaskTransformationResult,
   resolvePersonaCatalog
 } from '../app/toys/persona-gallery/model.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(__dirname, '..');
 
 const sampleLibrary = defaults.sample_library || [];
 const sampleById = (id) => sampleLibrary.find((sample) => sample.id === id);
@@ -24,6 +30,18 @@ assert.ok(witnessStatement, 'witness-statement sample is present');
 const resolvedPersonas = resolvePersonaCatalog(engine, personas, sampleLibrary);
 assert.equal(resolvedPersonas.length, 7, 'seven built-in masks resolve for the gallery');
 assert.ok(resolvedPersonas.every((persona) => persona.profile && persona.mod), 'each built-in mask resolves to a concrete profile-backed shell');
+assert.ok(
+  resolvedPersonas.every((persona) => persona.family && persona.tagline && persona.voicePromise && persona.fieldUse && persona.riskTell && persona.frameTone),
+  'each built-in mask carries the upgraded psychomystery metadata'
+);
+assert.ok(
+  resolvedPersonas.every((persona) => persona.portrait && typeof persona.portrait.alt === 'string'),
+  'each built-in mask resolves with portrait metadata'
+);
+assert.ok(
+  resolvedPersonas.every((persona) => persona.portrait?.src && fs.existsSync(path.join(repoRoot, 'app', persona.portrait.src))),
+  'each built-in mask points at a real local portrait asset'
+);
 
 const lock = buildCadenceLockRecord(engine, {
   name: 'Archive Home',

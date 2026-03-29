@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Spark portrait</title>
+  <desc id="desc">A sharp public-signal portrait with cyan cuts and metallic scanline glare.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#061019"/>
+      <stop offset="100%" stop-color="#04060a"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#74eaff" stop-opacity=".95"/>
+      <stop offset="100%" stop-color="#b4fff5" stop-opacity=".15"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <path d="M120 920 720 80" stroke="url(#beam)" stroke-width="7" opacity=".35"/>
+  <path d="M170 930 760 220" stroke="#74eaff" stroke-width="2" opacity=".18"/>
+  <g opacity=".15">
+    <path d="M0 156h800M0 222h800M0 288h800M0 354h800M0 420h800M0 486h800M0 552h800M0 618h800M0 684h800M0 750h800" stroke="#dffcff" stroke-width="1"/>
+  </g>
+  <path d="M228 868c18-132 58-228 108-314 18-34 36-62 64-98 28 36 46 64 64 98 50 86 90 182 108 314H228z" fill="#090f14"/>
+  <path d="M300 270 400 142l100 128-28 208-72 70-72-70-28-208z" fill="#0a1721" stroke="#203645" stroke-width="3"/>
+  <path d="M400 142 540 234 460 246 400 198 340 246 260 234z" fill="#74eaff" opacity=".16"/>
+  <path d="M334 286h132M320 332h160M344 382h112" stroke="#74eaff" stroke-width="4" opacity=".8"/>
+  <path d="M356 444c14 10 28 14 44 14s30-4 44-14" fill="none" stroke="#b4fff5" stroke-width="3" opacity=".9"/>
+  <path d="M382 214h36v230h-36z" fill="#74eaff" opacity=".2"/>
+  <path d="M245 818h310" stroke="#74eaff" stroke-width="2" opacity=".42"/>
+</svg>
