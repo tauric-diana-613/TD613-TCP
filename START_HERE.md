@@ -6,16 +6,19 @@ This is the shortest practical path into TCP.
 
 1. Open `app/index.html`.
 2. Complete the `Ingress Membrane`, or use `?ingress=off` during development.
-3. Start in `Homebase`.
-4. Paste your corpus into `Cadence Lockbox`, press `Lock`, then use `Reveal` when you want the dossier and solo Telemetry/Harbor wake path.
-5. If you want to test transformation first, stay in `Homebase`: the passage bench works before `Reveal`.
-6. Open `Personas`, choose a mask on the shelf, then use `Bring into Homebase` when you want that mask to become worn instead of merely previewed.
-7. In `Homebase`, read the sequence in order: `Worn Mask`, `Source`, `Through Mask`, `Before Contact`, `After Contact`, `What Clung`.
-8. In `Deck`, use the cast report before analysis, then press `Analyze Cadences`, read the shell cards after the duel wakes, and try `Swap Cadences`.
-9. Use `Readout` as the witness/law proof surface, and `Trainer` when you want the manual forge.
+3. Let ingress hand off to `#console`.
+4. Use the console to enter a focused station:
+   `Homebase`, `Personas`, `Readout`, `Deck`, or `Trainer`.
+5. If you are starting with your own cadence, open `Homebase`, paste your corpus into `Cadence Lockbox`, press `Lock`, and use `Reveal` only when you want the dossier and solo Telemetry/Harbor wake path.
+6. If you want to test transformation first, stay in `Homebase`: the passage bench works before `Reveal`.
+7. Open `Personas`, choose a mask on the shelf, then use `Bring into Homebase` when you want that mask to become worn instead of merely previewed.
+8. In `Homebase`, read the sequence in order: `Worn Mask`, `Source`, `Through Mask`, `Before Contact`, `After Contact`, `What Clung`.
+9. In `Deck`, use the cast report before analysis, then press `Analyze Cadences`, read the shell cards after the duel wakes, and try `Swap Cadences`.
+10. Use `Readout` as the witness/law proof surface, and `Trainer` when you want the manual forge.
 
-## What each view is for
+## What each station is for
 
+- `Console` is the front door after ingress: it routes into the stations without creating a second runtime
 - `Homebase` is the private cadence base: `Cadence Lockbox`, staged `Lock -> Reveal -> Save`, worn mask, passage bench, dossier, and lock archive
 - `Personas` is the collectible mask shelf: built-ins, captured shells, trained shells, and the preview stage that feeds `Homebase` and `Deck`
 - `Readout` is the witness/law proof surface: similarity, traceability, route pressure, archive state, harbor, and formulas
@@ -26,11 +29,12 @@ This is the shortest practical path into TCP.
 
 For a clean read, use this order:
 
-1. `Lock` / `Reveal` in `Homebase`, or `Analyze Cadences` in `Deck`
-2. worn mask / source / through-mask result
-3. `Shell Duel` when the `Deck` is live
-4. `Readout`
-5. swap audit or trainer validation if you are tuning
+1. `Console` -> station of choice
+2. `Lock` / `Reveal` in `Homebase`, or `Analyze Cadences` in `Deck`
+3. worn mask / source / through-mask result
+4. `Shell Duel` when the `Deck` is live
+5. `Readout`
+6. swap audit or trainer validation if you are tuning
 
 That order matters because TCP is built to separate surface resemblance from route, custody, and semantic integrity.
 
@@ -39,6 +43,12 @@ One important split to keep straight:
 - choosing a mask in `Personas` only selects it on the shelf
 - `Bring into Homebase` makes that mask worn in `Homebase`
 - `Try on Deck A` / `Try on Deck B` assigns it to the live encounter chamber instead
+
+Another one:
+
+- route changes such as `#console`, `#homebase`, `#personas`, `#readout`, `#deck`, and `#trainer` change the station shell
+- they do not create separate page-local engines or separate persona/lock stores
+- Homebase locks, worn masks, deck text, and trainer state stay on one runtime as you move around
 
 ## Browser flights
 

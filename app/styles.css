@@ -1243,6 +1243,135 @@ body[data-analysis-revealed="false"] .ledger-stage.analysis-gated {
   gap: 16px;
 }
 
+.station-view-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 6px;
+}
+
+.station-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(116, 234, 255, 0.14);
+  background: rgba(4, 11, 16, 0.78);
+  color: var(--text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.station-back:hover,
+.station-back:focus-visible {
+  border-color: rgba(183, 251, 255, 0.34);
+  background: rgba(7, 18, 27, 0.92);
+}
+
+.station-view-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.console-index-panel {
+  min-height: 420px;
+}
+
+.console-station-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.console-station-card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  min-height: 220px;
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(116, 234, 255, 0.12);
+  background:
+    radial-gradient(circle at top right, rgba(116, 234, 255, 0.08), transparent 34%),
+    radial-gradient(circle at bottom left, rgba(214, 63, 63, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(9, 12, 19, 0.98), rgba(4, 7, 12, 0.995));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 22px 40px rgba(0, 0, 0, 0.32);
+  text-align: left;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.console-station-card::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: calc(var(--radius-lg) - 6px);
+  pointer-events: none;
+}
+
+.console-station-card:hover,
+.console-station-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(183, 251, 255, 0.24);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 28px 46px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(116, 234, 255, 0.08);
+}
+
+.console-station-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.console-station-kicker,
+.console-station-open {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.console-station-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.console-station-card h3 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.console-station-summary,
+.console-station-detail {
+  margin: 0;
+}
+
+.console-station-summary {
+  color: #f3f5fb;
+}
+
+.console-station-detail {
+  color: rgba(214, 220, 233, 0.72);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
 .panel {
   padding: 22px;
 }
@@ -2144,6 +2273,25 @@ button:disabled {
   min-height: 56px;
 }
 
+.trainer-bridge-card {
+  display: grid;
+  gap: 14px;
+}
+
+.trainer-bridge-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.trainer-bridge-copy h3 {
+  margin: 0;
+}
+
+.trainer-bridge-empty {
+  min-height: 120px;
+  align-content: center;
+}
+
 .trainer-surface {
   padding: 16px;
   border: 1px solid rgba(116, 234, 255, 0.12);
@@ -2766,6 +2914,11 @@ button:disabled {
   .homebase-worn-mask-card,
   .persona-preview-grid {
     grid-template-columns: 1fr;
+  }
+
+  .station-view-head {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .ingress-topline,

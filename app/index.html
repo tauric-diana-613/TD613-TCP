@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP - The Cadence Playground</title>
-    <link rel="stylesheet" href="./styles.css?v=20260329a" />
+    <link rel="stylesheet" href="./styles.css?v=20260331a" />
 </head>
 <body>
   <div id="ingressMembrane" class="ingress-membrane" aria-live="polite">
@@ -81,7 +81,7 @@
   </div>
 
   <div class="shell">
-    <header class="masthead">
+    <header id="consoleMasthead" class="masthead">
       <div class="masthead-copy">
         <div class="topline">
           <span class="eyebrow">TD613 / public membrane / cadence console <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="shellEyebrow">&#x25C7;</span></span>
@@ -121,8 +121,9 @@
       <span id="routeState" class="statepill">Route // buffered</span>
     </div>
 
-    <nav class="top-tabs" aria-label="TCP views">
-      <button id="tabHomebase" type="button" class="top-tab active"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
+    <nav class="top-tabs" aria-label="TCP stations">
+      <button id="tabConsole" type="button" class="top-tab active"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabConsole">&#x25C7;</span> Console</button>
+      <button id="tabHomebase" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
       <button id="tabPersonas" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
       <button id="tabReadout" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
       <button id="tabPlay" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
@@ -130,7 +131,25 @@
     </nav>
 
     <main class="view-stack">
-      <section id="viewPaneHomebase" class="view-pane active">
+      <section id="viewPaneConsole" class="view-pane active">
+        <section class="panel console-index-panel">
+          <div class="panel-heading">
+            <div>
+              <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="consoleIndex">&#x25C7;</span> Console Index</div>
+              <h2>Choose a station, keep the same field</h2>
+            </div>
+            <p class="section-note">Each station below is a focused room on the same runtime. Navigation changes the pacing and surface identity, not the underlying engine or custody logic.</p>
+          </div>
+
+          <div id="consoleStationGrid" class="console-station-grid"></div>
+        </section>
+      </section>
+
+      <section id="viewPaneHomebase" class="view-pane" hidden>
+        <div class="station-view-head">
+          <button type="button" class="station-back" data-station-target="console">&#x2190; Back to Console</button>
+          <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase station</div>
+        </div>
         <section class="panel personas-panel">
           <div class="panel-heading">
             <div>
@@ -250,6 +269,10 @@
       </section>
 
       <section id="viewPanePersonas" class="view-pane" hidden>
+        <div class="station-view-head">
+          <button type="button" class="station-back" data-station-target="console">&#x2190; Back to Console</button>
+          <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas station</div>
+        </div>
         <section class="panel personas-panel personas-gallery-panel">
           <div class="panel-heading">
             <div>
@@ -273,6 +296,10 @@
       </section>
 
       <section id="viewPaneReadout" class="view-pane" hidden>
+        <div class="station-view-head">
+          <button type="button" class="station-back" data-station-target="console">&#x2190; Back to Console</button>
+          <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout station</div>
+        </div>
         <div class="readout-layout">
           <section class="panel telemetry-panel">
             <div class="panel-heading">
@@ -335,13 +362,17 @@
       </section>
 
       <section id="viewPanePlay" class="view-pane" hidden>
+        <div class="station-view-head">
+          <button type="button" class="station-back" data-station-target="console">&#x2190; Back to Console</button>
+          <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck station</div>
+        </div>
         <div class="panel intake-panel">
           <div class="panel-heading">
             <div>
               <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionCadenceDeck">&#x25C7;</span> Cadence deck</div>
               <h2>Bring two voices into the room</h2>
             </div>
-            <p class="section-note">Drop in a reference voice and a probe voice. Scan them, trade shells, save a persona, and see what really moves.</p>
+            <p class="section-note">Drop in a reference voice and a probe voice. Use the medallion to swap bay text. Use <code>Swap Cadences</code> when you want the retrieval-audited shell lane to move instead of the text.</p>
           </div>
 
           <div class="input-grid-wrap">
@@ -411,6 +442,10 @@
       </section>
 
       <section id="viewPaneTrainer" class="view-pane" hidden>
+        <div class="station-view-head">
+          <button type="button" class="station-back" data-station-target="console">&#x2190; Back to Console</button>
+          <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer station</div>
+        </div>
         <section id="trainerPane" class="panel trainer-panel">
           <div class="panel-heading">
             <div>
@@ -479,6 +514,11 @@
                 <span id="trainerStatusCue" class="analysis-status-cue" hidden></span>
               </div>
 
+              <div id="trainerBridgeSurface" class="trainer-surface trainer-bridge-surface">
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Next move</div>
+                <div id="trainerBridgeBody" class="trainer-readout-body">Inject a passing persona to light up direct routes into the shelf, Homebase, or Deck.</div>
+              </div>
+
               <div class="trainer-surface">
                 <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Forge validation</div>
                 <div id="trainerValidationReport" class="trainer-readout-body"></div>
@@ -508,9 +548,9 @@
     <footer class="footer">TCP / retrieval-first research playground / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
   </div>
 
-    <script src="./browser-data.js?v=20260329a"></script>
-    <script src="./browser-engine.js?v=20260329a"></script>
-    <script src="./retrieval-fixtures.js?v=20260329a"></script>
-    <script src="./browser-main.js?v=20260329a"></script>
+    <script src="./browser-data.js?v=20260331a"></script>
+    <script src="./browser-engine.js?v=20260331a"></script>
+    <script src="./retrieval-fixtures.js?v=20260331a"></script>
+    <script src="./browser-main.js?v=20260331a"></script>
   </body>
 </html>

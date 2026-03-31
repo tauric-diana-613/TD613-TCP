@@ -241,6 +241,32 @@ Two entry points use the same path:
 
 That matters because solo Telemetry and Harbor are no longer a Deck-only behavior. `Reveal` in `Homebase` wakes the same similarity, route, archive, and harbor logic that a one-sample deck run uses, while mask comparison and lock staging can remain active before reveal.
 
+## Routed station shell
+
+`Patch 28.6` keeps TCP on one browser runtime while changing the public shell into routed stations.
+
+Public routes are:
+
+- `#console`
+- `#homebase`
+- `#personas`
+- `#readout`
+- `#deck`
+- `#trainer`
+
+Those routes do not create per-page engines. They are aliases over the shared `browser-main.js` state. `#deck` resolves to the same internal encounter surface that older code paths still call `play`, so existing helpers and tests do not have to fork their truth model.
+
+Ingress now hands off to `#console` by default. From there, each station exposes a focused surface:
+
+- `Console` = station index and live summaries
+- `Homebase` = lock, reveal, mask contact, dossier, archive
+- `Personas` = shelf, preview, dispatch
+- `Readout` = witness/law proof surface
+- `Deck` = encounter, cast, duel, aftermath
+- `Trainer` = forge
+
+The important implementation rule is unchanged: routing changes the shell and pacing, not the measured quantities or their custody logic.
+
 ## Runtime field grammar
 
 `Patch 28.3` promotes the field registry into a runtime grammar layer. `browser-main.js` now derives a compact presentation summary for the major public surfaces:
@@ -255,6 +281,7 @@ Those summaries do not create a second truth system. They are fed from existing 
 
 Current role mapping:
 
+- `Console` = index
 - `Ingress` = threshold
 - `Homebase` = anchor / contact / residue
 - `Personas` = shelf

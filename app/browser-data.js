@@ -532,6 +532,15 @@ window.TCP_DATA = {
         uiTargets: ['shell.tab.homebase'],
         rationale: 'Homebase is where cadence is brought down into a private anchored hold.'
       },
+      tabConsole: {
+        glyph: '\u25C7',
+        semanticClass: 'gate',
+        semioticRole: 'tab-mark',
+        activationState: 'indexed',
+        retrievalTags: ['tab', 'console', 'routing', 'index'],
+        uiTargets: ['shell.tab.console'],
+        rationale: 'Console is the front-door station index that routes into the shared field.'
+      },
       tabDeck: {
         glyph: '\u25C7',
         semanticClass: 'gate',
@@ -630,6 +639,15 @@ window.TCP_DATA = {
         retrievalTags: ['section', 'homebase', 'lockbox', 'archive'],
         uiTargets: ['shell.section.homebase'],
         rationale: 'Homebase is the private cadence lock surface.'
+      },
+      consoleIndex: {
+        glyph: '\u25C7',
+        semanticClass: 'gate',
+        semioticRole: 'section-kicker',
+        activationState: 'indexed',
+        retrievalTags: ['section', 'console', 'station', 'index'],
+        uiTargets: ['shell.section.console'],
+        rationale: 'The console index is the routed front door into the shared runtime.'
       },
       sectionDeepDossier: {
         glyph: '\u2234',

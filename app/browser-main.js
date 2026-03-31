@@ -155,6 +155,40 @@
     none: '',
     shellDuelUpdated: 'shell-duel-updated'
   });
+  const ARTIFACT_TABS = Object.freeze(['console', 'homebase', 'personas', 'readout', 'play', 'trainer']);
+  const ARTIFACT_TAB_TO_HASH = Object.freeze({
+    console: 'console',
+    homebase: 'homebase',
+    personas: 'personas',
+    readout: 'readout',
+    play: 'deck',
+    trainer: 'trainer'
+  });
+  const HASH_TO_ARTIFACT_TAB = Object.freeze({
+    console: 'console',
+    homebase: 'homebase',
+    personas: 'personas',
+    readout: 'readout',
+    deck: 'play',
+    play: 'play',
+    trainer: 'trainer'
+  });
+  const ARTIFACT_TAB_PANE_IDS = Object.freeze({
+    console: 'viewPaneConsole',
+    homebase: 'viewPaneHomebase',
+    personas: 'viewPanePersonas',
+    readout: 'viewPaneReadout',
+    play: 'viewPanePlay',
+    trainer: 'viewPaneTrainer'
+  });
+  const ARTIFACT_TAB_BUTTON_IDS = Object.freeze({
+    console: 'tabConsole',
+    homebase: 'tabHomebase',
+    personas: 'tabPersonas',
+    readout: 'tabReadout',
+    play: 'tabPlay',
+    trainer: 'tabTrainer'
+  });
 
   const TCP_GLYPH_SYSTEM = {
     substrateVocabulary: { ...GLYPH_SUBSTRATE },
@@ -217,11 +251,57 @@
     return byValue ? byValue.id : null;
   }
 
+  function normalizeArtifactTab(value = '') {
+    return HASH_TO_ARTIFACT_TAB[String(value || '').replace(/^#/, '').trim().toLowerCase()] || 'console';
+  }
+
+  function artifactHashForTab(tab = 'console') {
+    const normalized = ARTIFACT_TAB_TO_HASH[normalizeArtifactTab(tab)] || 'console';
+    return `#${normalized}`;
+  }
+
+  function publicArtifactLabel(tab = 'console') {
+    return {
+      console: 'Console',
+      homebase: 'Homebase',
+      personas: 'Personas',
+      readout: 'Readout',
+      play: 'Deck',
+      trainer: 'Trainer'
+    }[normalizeArtifactTab(tab)] || 'Console';
+  }
+
+  function resolveArtifactTabFromHash(hash = window.location.hash) {
+    const cleaned = String(hash || '').trim();
+    if (!cleaned) {
+      return 'console';
+    }
+    return normalizeArtifactTab(cleaned);
+  }
+
+  function syncArtifactHash(tab, { replace = false } = {}) {
+    const nextHash = artifactHashForTab(tab);
+    if ((window.location.hash || '') === nextHash) {
+      return;
+    }
+    const nextUrl = new URL(window.location.href);
+    nextUrl.hash = nextHash;
+    if (replace && window.history && typeof window.history.replaceState === 'function') {
+      window.history.replaceState(null, '', nextUrl);
+      return;
+    }
+    if (window.history && typeof window.history.pushState === 'function') {
+      window.history.pushState(null, '', nextUrl);
+      return;
+    }
+    window.location.hash = nextHash;
+  }
+
   let badge = defaults.badge;
   let mirrorLogic = defaults.mirror_logic;
   let containment = defaults.containment;
   let activeVoice = 'A';
-  let activeArtifactTab = 'homebase';
+  let activeArtifactTab = resolveArtifactTabFromHash(window.location.hash);
   let analysisRevealed = false;
   let shellDuelPulseTimer = null;
   let swapButtonPulseTimer = null;
@@ -1544,6 +1624,19 @@
             : 'extract';
 
     return {
+      console: {
+        surfaceRole: 'index',
+        surfacePhase: readoutOwner === 'homebase'
+          ? 'solo-home-reveal'
+          : lastSwapCadenceAudit
+            ? 'aftermath'
+            : deckCastingSummary?.ready
+              ? 'overview-hot'
+              : 'overview-latent',
+        cueGlyphKey: 'consoleIndex',
+        cueTone: readoutOwner === 'homebase' || lastSwapCadenceAudit ? 'clear' : 'latent',
+        statusGrammar: 'console-index'
+      },
       homebase: {
         surfaceRole: 'anchor',
         surfacePhase: !lock
@@ -2969,8 +3062,172 @@
     node.textContent = `${glyphChar('deckCasting', glyphChar('tabDeck', ''))} ${summary.line}`;
   }
 
+  function buildConsoleStationCards(state) {
+    const trainerSnapshot = readTrainerSnapshot();
+    const routeLine = $('routeState')?.textContent.trim() || 'Route // buffered';
+    const decisionLine = $('decisionTone')?.textContent.trim() || 'Waiting on a scan';
+    const homeSummary = !state.lock
+      ? 'No cadence home staged yet.'
+      : state.revealed
+        ? `${state.lock.name} is revealed on the solo witness lane.`
+        : `${state.lock.name} is anchored and waiting on Reveal.`;
+    const homeDetail = !state.lock
+      ? 'Lock a corpus, then Reveal when you want the dossier and solo witness live.'
+      : state.wornMask && state.comparison?.contactSummary
+        ? `${state.wornMask.name} is in contact. ${maskFieldEffectLabel(state.comparison.contactSummary.fieldEffect)}.`
+        : state.wornMask
+          ? `${state.wornMask.name} is worn. Add source text to wake passage.`
+          : 'Bring a mask in when you want passage and residue live.';
+    const selectedShelfMask = state.selectedMask?.name || '';
+    const wornMask = state.wornMask?.name || '';
+    const personaSummary = wornMask && selectedShelfMask && wornMask === selectedShelfMask
+      ? `${selectedShelfMask} is chosen on the shelf and worn in Homebase.`
+      : selectedShelfMask
+        ? `${selectedShelfMask} is chosen on the shelf.`
+        : wornMask
+          ? `${wornMask} is worn in Homebase.`
+          : 'The shelf is latent until you choose a mask.';
+    const personaDetail = !state.library.length
+      ? 'No masks loaded.'
+      : `${state.galleryGroups.builtIn.length} built-in / ${state.galleryGroups.captured.length} captured / ${state.galleryGroups.trained.length} trained.`;
+    const readoutSummary = readoutOwner === 'homebase' && state.revealed
+      ? `${state.lock?.name || 'Cadence home'} is driving the solo witness path.`
+      : readoutOwner === 'idle'
+        ? 'Telemetry is latent until the field is actually read.'
+        : decisionLine;
+    const deckSummary = lastSwapCadenceAudit
+      ? `Aftermath // ${lastSwapCadenceAudit.classification || 'aftermath'}`
+      : state.deckCastingSummary?.ready
+        ? state.deckCastingSummary.line
+        : 'No pair awake yet.';
+    const trainerSummary = trainerSnapshot.lastInjectedPersonaSummary
+      ? `${trainerSnapshot.lastInjectedPersonaSummary.name} is live on the shelf.`
+      : trainerSnapshot.validationPass
+        ? `${trainerSnapshot.personaName} is forge-ready for injection.`
+        : trainerSnapshot.corpusReady
+          ? 'Corpus extracted. Validation is waiting on a candidate.'
+          : 'The forge is latent.';
+
+    return [
+      {
+        target: 'homebase',
+        glyphKey: 'tabHomebase',
+        glyphClass: 'glyph-lime',
+        kicker: 'Anchor',
+        title: 'Homebase',
+        summary: homeSummary,
+        detail: homeDetail
+      },
+      {
+        target: 'personas',
+        glyphKey: 'tabPersonas',
+        glyphClass: 'glyph-lime',
+        kicker: 'Shelf',
+        title: 'Personas',
+        summary: personaSummary,
+        detail: personaDetail
+      },
+      {
+        target: 'readout',
+        glyphKey: 'tabReadout',
+        glyphClass: 'glyph-cyan',
+        kicker: 'Witness',
+        title: 'Readout',
+        summary: readoutSummary,
+        detail: routeLine
+      },
+      {
+        target: 'deck',
+        glyphKey: 'tabDeck',
+        glyphClass: 'glyph-lime',
+        kicker: 'Encounter',
+        title: 'Deck',
+        summary: deckSummary,
+        detail: lastSwapCadenceAudit
+          ? 'Read the aftermath there; the shell audit is already live.'
+          : state.deckCastingSummary?.detail || 'Load one voice or two and press Analyze Cadences when you want the duel awake.'
+      },
+      {
+        target: 'trainer',
+        glyphKey: 'tabTrainer',
+        glyphClass: 'glyph-cyan',
+        kicker: 'Forge',
+        title: 'Trainer',
+        summary: trainerSummary,
+        detail: trainerSnapshot.lastInjectedPersonaSummary
+          ? 'Open the forge to route the injected persona into the shelf, Homebase, or Deck.'
+          : 'Extract, inspect, validate, correct, and inject on one runtime.'
+      }
+    ];
+  }
+
+  function renderConsoleStationGrid(state) {
+    const pane = $('viewPaneConsole');
+    const grid = $('consoleStationGrid');
+    if (!pane || !grid) {
+      return;
+    }
+
+    applySurfaceFieldGrammar(pane, state.fieldGrammar?.console);
+    const cards = buildConsoleStationCards(state);
+    grid.innerHTML = cards.map((card) => `
+      <button type="button" class="console-station-card" data-station-target="${card.target}">
+        <div class="console-station-topline">
+          <div class="console-station-kicker">
+            ${glyphSpanHtml(card.glyphKey, card.glyphClass)}
+            ${escapeHtml(card.kicker)}
+          </div>
+          <span class="console-station-open">Open &rarr;</span>
+        </div>
+        <h3>${escapeHtml(card.title)}</h3>
+        <p class="console-station-summary">${escapeHtml(card.summary)}</p>
+        <p class="console-station-detail">${escapeHtml(card.detail)}</p>
+      </button>
+    `).join('');
+  }
+
+  function renderTrainerBridge() {
+    const surface = $('trainerBridgeSurface');
+    const body = $('trainerBridgeBody');
+    if (!surface || !body) {
+      return;
+    }
+
+    const snapshot = readTrainerSnapshot();
+    const injected = snapshot.lastInjectedPersonaSummary || null;
+    surface.hidden = false;
+
+    if (!injected) {
+      body.innerHTML = `
+        <div class="trainer-bridge-card trainer-bridge-empty">
+          <div>
+            <div class="persona-kicker">Next move</div>
+            <p class="persona-empty">A successful inject opens direct routes into the shelf, Homebase, and Deck. Until then, the forge stays local.</p>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    body.innerHTML = `
+      <div class="trainer-bridge-card">
+        <div class="trainer-bridge-copy">
+          <div class="persona-kicker">Injected persona</div>
+          <h3>${escapeHtml(injected.name)}</h3>
+          <p>${escapeHtml(injected.name)} is live on the shelf. Open it in Personas, bring it into Homebase, or test it in Deck without leaving the shared runtime.</p>
+        </div>
+        <div class="persona-actions">
+          <button type="button" class="ghost" data-station-target="personas">Open in Personas</button>
+          <button type="button" class="secondary" data-persona-action="wear-homebase" data-persona-id="${escapeHtml(injected.id)}">Bring into Homebase</button>
+          <button type="button" class="ghost" data-persona-action="assign-reference" data-persona-id="${escapeHtml(injected.id)}">Try in Deck</button>
+        </div>
+      </div>
+    `;
+  }
+
   function renderPersonas() {
     const state = buildPersonaGalleryState();
+    renderConsoleStationGrid(state);
     renderHomebaseChrome(state);
     renderMaskBench(state);
     renderLockDossier(state);
@@ -2979,20 +3236,29 @@
     renderMaskGallery(state);
     renderPersonaGalleryStatus(state);
     renderDeckCastReport(state);
+    renderTrainerBridge();
+    applySurfaceFieldGrammar($('viewPaneConsole'), state.fieldGrammar?.console);
+    applySurfaceFieldGrammar($('viewPaneHomebase'), state.fieldGrammar?.homebase);
+    applySurfaceFieldGrammar($('viewPanePersonas'), state.fieldGrammar?.personas);
     applySurfaceFieldGrammar($('viewPaneReadout'), state.fieldGrammar?.readout);
+    applySurfaceFieldGrammar($('viewPaneTrainer'), state.fieldGrammar?.trainer);
     applySurfaceFieldGrammar($('trainerPane'), state.fieldGrammar?.trainer);
     renderActiveBayStatus();
   }
 
   function setArtifactTab(tab, options = {}) {
-    const { announce = false, scroll = false } = options;
-    const panes = ['homebase', 'personas', 'readout', 'play', 'trainer'];
-    activeArtifactTab = panes.includes(tab) ? tab : 'homebase';
+    const {
+      announce = false,
+      scroll = false,
+      updateHash = true,
+      replaceHash = false
+    } = options;
+    activeArtifactTab = normalizeArtifactTab(tab);
     let activePaneNode = null;
 
-    panes.forEach((pane) => {
-      const paneNode = $(`viewPane${pane.charAt(0).toUpperCase()}${pane.slice(1)}`);
-      const tabNode = $(`tab${pane.charAt(0).toUpperCase()}${pane.slice(1)}`);
+    ARTIFACT_TABS.forEach((pane) => {
+      const paneNode = $(ARTIFACT_TAB_PANE_IDS[pane]);
+      const tabNode = $(ARTIFACT_TAB_BUTTON_IDS[pane]);
       const isActive = pane === activeArtifactTab;
 
       if (paneNode) {
@@ -3010,25 +3276,47 @@
     });
 
     document.body.dataset.artifactTab = activeArtifactTab;
+    document.body.dataset.stationRoute = ARTIFACT_TAB_TO_HASH[activeArtifactTab] || activeArtifactTab;
 
-    if (scroll && activePaneNode && typeof activePaneNode.scrollIntoView === 'function') {
+    const masthead = $('consoleMasthead');
+    if (masthead) {
+      masthead.hidden = activeArtifactTab !== 'console';
+    }
+    if (updateHash) {
+      syncArtifactHash(activeArtifactTab, { replace: replaceHash });
+    }
+
+    const scrollTarget = activeArtifactTab === 'console' ? (masthead || activePaneNode) : activePaneNode;
+    if (scroll && scrollTarget && typeof scrollTarget.scrollIntoView === 'function') {
       try {
-        activePaneNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch {
-        activePaneNode.scrollIntoView();
+        scrollTarget.scrollIntoView();
       }
     }
 
-      if (announce) {
-        const viewLabels = {
-          homebase: 'Homebase ready.',
-          personas: 'Shelf ready.',
-          readout: 'Readout ready.',
-          play: 'Encounter chamber ready.',
-          trainer: 'Forge ready.'
-        };
-        setStatusMessage(viewLabels[activeArtifactTab] || 'View updated.');
+    if (announce) {
+      const viewLabels = {
+        console: 'Console index ready.',
+        homebase: 'Homebase ready.',
+        personas: 'Shelf ready.',
+        readout: 'Readout ready.',
+        play: 'Deck ready.',
+        trainer: 'Forge ready.'
+      };
+      setStatusMessage(viewLabels[activeArtifactTab] || 'View updated.');
+    }
+  }
+
+  function handleArtifactRouteChange() {
+    const nextTab = resolveArtifactTabFromHash(window.location.hash);
+    if (nextTab === activeArtifactTab) {
+      if (!window.location.hash) {
+        syncArtifactHash(activeArtifactTab, { replace: true });
       }
+      return;
+    }
+    setArtifactTab(nextTab, { updateHash: false });
   }
 
   function updateControls() {
@@ -4033,6 +4321,7 @@ DeltaE = ${ledger.reuse_gain}`;
       containment,
       activeVoice,
       activeArtifactTab,
+      artifactHash: window.location.hash || artifactHashForTab(activeArtifactTab),
       bayShells: {
         A: cloneShell(bayShells.A),
         B: cloneShell(bayShells.B)
@@ -4071,7 +4360,7 @@ DeltaE = ${ledger.reuse_gain}`;
     mirrorLogic = state.mirrorLogic;
     containment = state.containment;
     activeVoice = state.activeVoice;
-    activeArtifactTab = state.activeArtifactTab;
+    activeArtifactTab = normalizeArtifactTab(state.artifactHash || state.activeArtifactTab);
     bayShells = {
       A: cloneShell(state.bayShells.A),
       B: cloneShell(state.bayShells.B)
@@ -4087,7 +4376,7 @@ DeltaE = ${ledger.reuse_gain}`;
     persistSavedPersonas();
     persistCadenceLocks();
     persistActiveCadenceLockId();
-    setArtifactTab(activeArtifactTab);
+    setArtifactTab(activeArtifactTab, { updateHash: true, replaceHash: true });
     syncBaySampleMetadata();
     renderVoiceProfiles();
     renderPersonas();
@@ -4229,6 +4518,7 @@ DeltaE = ${ledger.reuse_gain}`;
 
     return {
       tabs: {
+        console: readGlyph('tabConsole'),
         homebase: readGlyph('tabHomebase'),
         deck: readGlyph('tabDeck'),
         readout: readGlyph('tabReadout'),
@@ -4437,7 +4727,11 @@ DeltaE = ${ledger.reuse_gain}`;
       engine: window.TCP_ENGINE,
       sampleLibrary: SAMPLE_LIBRARY,
       onInjectPersona: injectTrainerPersona,
-      onStatus: (message) => setStatusMessage(message),
+      onStatus: (message) => {
+        setStatusMessage(message);
+        renderTrainerBridge();
+        renderConsoleStationGrid(buildPersonaGalleryState());
+      },
       applyStaticGlyphs
     });
 
@@ -4450,6 +4744,8 @@ DeltaE = ${ledger.reuse_gain}`;
       exportSpec: () => trainerController?.exportSpec(),
       inject: () => trainerController?.inject()
     });
+
+    renderTrainerBridge();
 
     return trainerController;
   }
@@ -4990,16 +5286,20 @@ DeltaE = ${ledger.reuse_gain}`;
       $('tabReadout').click();
       report.viewTabs = {
         activeTab: document.body.dataset.artifactTab,
+        stationRoute: document.body.dataset.stationRoute || '',
+        consoleHidden: $('viewPaneConsole').hidden,
         homebaseHidden: $('viewPaneHomebase').hidden,
         personasHidden: $('viewPanePersonas').hidden,
         readoutHidden: $('viewPaneReadout').hidden,
-        playHidden: $('viewPanePlay').hidden
+        playHidden: $('viewPanePlay').hidden,
+        trainerHidden: $('viewPaneTrainer').hidden
       };
       report.glyphSystem = {
         snapshot: readShellGlyphSnapshot(),
         pass: (() => {
           const snapshot = readShellGlyphSnapshot();
-          return snapshot.tabs.homebase.glyph === glyphChar('tabHomebase') &&
+          return snapshot.tabs.console.glyph === glyphChar('tabConsole') &&
+            snapshot.tabs.homebase.glyph === glyphChar('tabHomebase') &&
             snapshot.tabs.deck.glyph === glyphChar('tabDeck') &&
             snapshot.tabs.readout.glyph === glyphChar('tabReadout') &&
             snapshot.tabs.personas.glyph === glyphChar('tabPersonas') &&
@@ -5014,6 +5314,27 @@ DeltaE = ${ledger.reuse_gain}`;
             snapshot.readoutStrip.harbor.semanticClass === 'adjudication';
         })()
       };
+      report.stationRouting = (() => {
+        const homebaseBefore = readPersonaGallerySnapshot();
+        window.history.pushState(null, '', artifactHashForTab('homebase'));
+        handleArtifactRouteChange();
+        const homebaseMounted = document.body.dataset.artifactTab === 'homebase' && !$('viewPaneHomebase').hidden;
+        const homebaseAfter = readPersonaGallerySnapshot();
+        window.history.pushState(null, '', artifactHashForTab('play'));
+        handleArtifactRouteChange();
+        const deckActive = document.body.dataset.artifactTab === 'play' && !$('viewPanePlay').hidden;
+        window.history.pushState(null, '', artifactHashForTab('readout'));
+        handleArtifactRouteChange();
+        return {
+          initialTab: initialState.activeArtifactTab,
+          initialHash: initialState.artifactHash || '',
+          homebaseDeepLinkWorks: homebaseMounted && document.body.dataset.artifactTab === 'readout' && !$('viewPaneReadout').hidden && homebaseAfter.homebaseLockId === homebaseBefore.homebaseLockId,
+          deckDeepLinkWorks: deckActive,
+          statePreservedAcrossRouteChange:
+            homebaseAfter.homebaseLockId === homebaseBefore.homebaseLockId &&
+            homebaseAfter.homebaseWornMaskId === homebaseBefore.homebaseWornMaskId
+        };
+      })();
 
       if (mode === 'full') {
         $('tabTrainer').click();
@@ -5185,6 +5506,9 @@ DeltaE = ${ledger.reuse_gain}`;
 
         report.matrix = matrix;
         const supportChecks = [
+          { id: 'console_is_default_post_threshold_route', pass: report.stationRouting.initialTab === 'console' && report.stationRouting.initialHash === '#console' },
+          { id: 'station_deep_links_mount_shared_views', pass: report.stationRouting.homebaseDeepLinkWorks && report.stationRouting.deckDeepLinkWorks },
+          { id: 'station_routes_preserve_runtime_state', pass: report.stationRouting.statePreservedAcrossRouteChange },
           { id: 'homebase_boot_has_no_worn_mask', pass: !report.galleryBootstrap.homebaseWornMaskId && report.galleryBootstrap.homebasePhase !== 'mask-worn' && report.galleryBootstrap.homebasePhase !== 'residue' },
           { id: 'sample_randomizer_distinct', pass: report.sampleRandomizer.referenceChanged && report.sampleRandomizer.probeChanged && report.sampleRandomizer.pairDistinct },
           { id: 'sample_randomizer_keeps_deck_latent', pass: report.sampleRandomizer.deckStillLatent },
@@ -5207,7 +5531,7 @@ DeltaE = ${ledger.reuse_gain}`;
             { id: 'swap_cadence_cue_key', pass: report.swapCadences.cueVisible && report.swapCadences.snapshot.statusCueKey === STATUS_CUE_KEYS.shellDuelUpdated },
             { id: 'solo_scan_uses_scan_mode', pass: report.soloScan.similarityKey === 'Scan mode' },
             { id: 'baseline_duel_live', pass: report.baseline.snapshot.duelState === 'live' },
-            { id: 'readout_tab_visible', pass: report.viewTabs.activeTab === 'readout' && !report.viewTabs.readoutHidden },
+            { id: 'readout_station_visible', pass: report.viewTabs.activeTab === 'readout' && report.viewTabs.stationRoute === 'readout' && !report.viewTabs.readoutHidden },
           { id: 'trainer_validates_generated_output', pass: Boolean(report.trainer && report.trainer.snapshotBeforeInject.validationPass && report.trainer.snapshotBeforeInject.promptReady && report.trainer.snapshotBeforeInject.exportReady) },
             { id: 'trainer_injects_persona', pass: Boolean(report.trainer && report.trainer.personaAdded && report.trainer.personaAssigned && report.trainer.gallerySnapshot.selectedMaskId === report.trainer.injectedPersonaId && report.trainer.gallerySnapshot.selectedMaskState === 'generated') },
           { id: 'trainer_bridge_present', pass: Boolean(report.trainer && report.trainer.bridgePresent) },
@@ -5273,6 +5597,7 @@ DeltaE = ${ledger.reuse_gain}`;
   $('revealCadenceBtn').addEventListener('click', revealCadenceLock);
   $('saveCadenceLockBtn').addEventListener('click', saveStagedCadenceLock);
   $('personaComparisonText').addEventListener('input', () => renderPersonas());
+  $('tabConsole').addEventListener('click', () => setArtifactTab('console', { announce: true, scroll: true }));
   $('tabHomebase').addEventListener('click', () => setArtifactTab('homebase', { announce: true, scroll: true }));
   $('tabPlay').addEventListener('click', () => setArtifactTab('play', { announce: true, scroll: true }));
   $('tabReadout').addEventListener('click', () => setArtifactTab('readout', { announce: true, scroll: true }));
@@ -5304,6 +5629,12 @@ DeltaE = ${ledger.reuse_gain}`;
   $('ingressSealNodeBc').addEventListener('click', () => chooseIngressSealNode('bc'));
 
   document.addEventListener('click', (event) => {
+    const stationAction = event.target.closest('[data-station-target]');
+    if (stationAction) {
+      setArtifactTab(stationAction.dataset.stationTarget || 'console', { announce: true, scroll: true });
+      return;
+    }
+
     const lockAction = event.target.closest('[data-lock-action]');
     if (lockAction) {
       const action = lockAction.dataset.lockAction;
@@ -5357,10 +5688,13 @@ DeltaE = ${ledger.reuse_gain}`;
     selectMaskPersona(persona.dataset.id);
   });
 
+  window.addEventListener('hashchange', handleArtifactRouteChange);
+  window.addEventListener('popstate', handleArtifactRouteChange);
+
   async function boot() {
     document.body.dataset.bootStage = 'boot-start';
     setAnalysisRevealState(false);
-    setArtifactTab(activeArtifactTab);
+    setArtifactTab(activeArtifactTab, { updateHash: true, replaceHash: !window.location.hash });
     renderVoiceProfiles();
     document.body.dataset.bootStage = 'boot-rendered-profiles';
     await initializePersonaGallery();
