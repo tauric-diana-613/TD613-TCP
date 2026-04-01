@@ -1,11 +1,11 @@
 import { SCALAR_DIMENSIONS } from './extractor.js';
 
 export const TRAINER_CALIBRATION_SAMPLE_IDS = Object.freeze([
-  'operations-brief',
-  'recursive-debrief',
-  'institutional-memo',
-  'witness-statement',
-  'critical-review'
+  'building-access-formal-record',
+  'committee-budget-formal-record',
+  'overwork-debrief-professional-message',
+  'customer-support-formal-record',
+  'school-coordination-professional-message'
 ]);
 
 const DIMENSION_SCALES = Object.freeze({

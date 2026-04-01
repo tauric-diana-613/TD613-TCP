@@ -4725,18 +4725,18 @@ export function applyCadenceToText(text = '', shell = {}) {
 }
 
 export const SWAP_CADENCE_FLAGSHIP_PAIRS = Object.freeze([
-  Object.freeze({ sourceId: 'institutional-memo', donorId: 'recursive-debrief' }),
-  Object.freeze({ sourceId: 'recursive-debrief', donorId: 'institutional-memo' }),
-  Object.freeze({ sourceId: 'ethnographic-fieldnote', donorId: 'operations-brief' }),
-  Object.freeze({ sourceId: 'operations-brief', donorId: 'ethnographic-fieldnote' }),
-  Object.freeze({ sourceId: 'grant-narrative', donorId: 'witness-statement' }),
-  Object.freeze({ sourceId: 'witness-statement', donorId: 'grant-narrative' }),
-  Object.freeze({ sourceId: 'deliberative-hedged', donorId: 'operations-brief' }),
-  Object.freeze({ sourceId: 'operations-brief', donorId: 'deliberative-hedged' }),
-  Object.freeze({ sourceId: 'critical-review', donorId: 'institutional-memo' }),
-  Object.freeze({ sourceId: 'institutional-memo', donorId: 'critical-review' }),
-  Object.freeze({ sourceId: 'grant-narrative', donorId: 'recursive-debrief' }),
-  Object.freeze({ sourceId: 'recursive-debrief', donorId: 'grant-narrative' })
+  Object.freeze({ sourceId: 'building-access-formal-record', donorId: 'building-access-rushed-mobile' }),
+  Object.freeze({ sourceId: 'building-access-rushed-mobile', donorId: 'building-access-formal-record' }),
+  Object.freeze({ sourceId: 'package-handoff-formal-record', donorId: 'package-handoff-rushed-mobile' }),
+  Object.freeze({ sourceId: 'package-handoff-rushed-mobile', donorId: 'package-handoff-formal-record' }),
+  Object.freeze({ sourceId: 'volunteer-cleanup-formal-record', donorId: 'volunteer-cleanup-rushed-mobile' }),
+  Object.freeze({ sourceId: 'volunteer-cleanup-rushed-mobile', donorId: 'volunteer-cleanup-formal-record' }),
+  Object.freeze({ sourceId: 'clinic-scheduling-formal-record', donorId: 'clinic-scheduling-rushed-mobile' }),
+  Object.freeze({ sourceId: 'clinic-scheduling-rushed-mobile', donorId: 'clinic-scheduling-formal-record' }),
+  Object.freeze({ sourceId: 'committee-budget-formal-record', donorId: 'committee-budget-rushed-mobile' }),
+  Object.freeze({ sourceId: 'committee-budget-rushed-mobile', donorId: 'committee-budget-formal-record' }),
+  Object.freeze({ sourceId: 'customer-support-formal-record', donorId: 'customer-support-rushed-mobile' }),
+  Object.freeze({ sourceId: 'customer-support-rushed-mobile', donorId: 'customer-support-formal-record' })
 ]);
 
 function normalizeSwapSample(sample = {}, index = 0) {
@@ -4892,20 +4892,29 @@ export function buildSwapCadenceMatrix(sampleLibrary = [], options = {}) {
       donorId: pair.donorId
     }))
     .filter((pair) => samplesById[pair.sourceId] && samplesById[pair.donorId] && pair.sourceId !== pair.donorId);
-  const allPairs = [];
+  const allPairs = Array.isArray(options.orderedPairs) && options.orderedPairs.length
+    ? options.orderedPairs
+      .map((pair) => ({
+        sourceId: pair.sourceId,
+        donorId: pair.donorId
+      }))
+      .filter((pair) => samplesById[pair.sourceId] && samplesById[pair.donorId] && pair.sourceId !== pair.donorId)
+    : (() => {
+      const pairs = [];
+      for (const sourceSample of samples) {
+        for (const donorSample of samples) {
+          if (sourceSample.id === donorSample.id) {
+            continue;
+          }
 
-  for (const sourceSample of samples) {
-    for (const donorSample of samples) {
-      if (sourceSample.id === donorSample.id) {
-        continue;
+          pairs.push({
+            sourceId: sourceSample.id,
+            donorId: donorSample.id
+          });
+        }
       }
-
-      allPairs.push({
-        sourceId: sourceSample.id,
-        donorId: donorSample.id
-      });
-    }
-  }
+      return pairs;
+    })();
 
   const fullMatrix = allPairs.map((pair) =>
     buildSwapCadencePairReport(samplesById[pair.sourceId], samplesById[pair.donorId], strength)

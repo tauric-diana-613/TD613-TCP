@@ -1,0 +1,794 @@
+{
+  "id": "customer-support-rushed-mobile-under-formal-record",
+  "category": "retrieval-same-fact",
+  "strength": 0.88,
+  "sourceText": "acct still locked. can get the code but login dies at fraud review every time. case CS-88412. support keeps saying reset again even tho reset isnt the problem. last 4 + recovery email match. need someone to clear hold not send same script",
+  "donorText": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud hold. The user could still receive one-time codes but could not complete login because the system flagged the device as new and placed the account in manual review. Case number CS-88412. The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which matched account records. A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying issue was not credential mismatch. It was the fraud lock itself. The account remains inaccessible until review removes the device challenge or support performs verified override. The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched.",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 18.38,
+      "sentenceCount": 8,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.095,
+      "contentWordComplexity": 0.436,
+      "modifierDensity": 0.061,
+      "directness": 0.36,
+      "abstractionPosture": 0.667
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "acct still locked. can get the code but login dies at fraud review every time. case CS-88412. support keeps saying reset again even tho reset isnt the problem. last 4 + recovery email match. need someone to clear hold not send same script",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 18.14,
+        "sentenceCount": 6,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.096,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.388,
+        "modifierDensity": 0.046,
+        "hedgeDensity": 0,
+        "directness": 0.36,
+        "abstractionPosture": 0.627,
+        "latinatePreference": 0.015,
+        "recurrencePressure": 0.175
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 6,
+        "clauseCount": 6,
+        "literalSpans": [
+          {
+            "value": "CS-88412",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "4",
+            "placeholder": "zzprotlitbzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "acct still locked",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "acct still locked",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "acct",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "can get the code but login dies at fraud review every time",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "can get the code but login dies at fraud review every time",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "get",
+              "actor": "the code",
+              "action": "get",
+              "object": "code login dies at fraud",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "case zzprotlitazz",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "case zzprotlitazz",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "case",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "support keeps saying reset again even tho reset isnt the problem",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "support keeps saying reset again even tho reset isnt the problem",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "keeps",
+              "actor": "the problem",
+              "action": "keeps",
+              "object": "saying reset again even tho",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "last zzprotlitbzz + recovery email match",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "last zzprotlitbzz + recovery email match",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "last",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "need someone to clear hold not send same script",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "need someone to clear hold not send same script",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "past",
+              "propositionHead": "need",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 0,
+      "sentenceMerge": 5,
+      "contraction": 0,
+      "connector": 2,
+      "lineBreak": 5,
+      "additive": 0,
+      "contrastive": 2,
+      "causal": 0,
+      "temporal": 0,
+      "clarifying": 0,
+      "resumptive": 1
+    },
+    "planSummary": {
+      "transferMode": "expand",
+      "structuralOperationsSelected": [
+        "baseline-merge",
+        "planned-sentence-merge",
+        "sentence-structure",
+        "clause-join-split",
+        "structural-rescue"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "baseline-voice-realization"
+      ],
+      "connectorStrategy": "contrastive",
+      "contractionStrategy": "hold",
+      "relationInventory": {
+        "additive": 0,
+        "contrastive": 2,
+        "causal": 0,
+        "temporal": 0,
+        "clarifying": 0,
+        "resumptive": 1
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": 10.97
+      },
+      "discourseGoals": {
+        "contractionDelta": 0,
+        "hedgeDelta": 0
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": 0.154,
+        "modifierDensityDelta": 0.046,
+        "directnessDelta": 0,
+        "abstractionDelta": 0.127,
+        "latinateDelta": 0.015,
+        "registerMode": "reflective"
+      },
+      "operationBudget": {
+        "splitSentence": 0,
+        "mergeSentence": 11,
+        "swapConnector": 2,
+        "applyHedge": 2,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "mixed-structural",
+        "score": 183.926,
+        "passesApplied": [
+          "baseline-merge",
+          "baseline-voice-realization",
+          "planned-sentence-merge",
+          "sentence-structure",
+          "clause-join-split",
+          "cleanup-restore",
+          "structural-rescue"
+        ],
+        "rescuePasses": [
+          "structural-rescue"
+        ],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "lexical-register",
+          "modifier-density",
+          "directness",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": false,
+        "notes": [
+          "Structural opportunity existed but the current candidate collapsed into additive drift."
+        ]
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 181.626,
+          "passesApplied": [
+            "merge-pairs",
+            "clause-texture"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 183.926,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "planned-sentence-merge",
+            "sentence-structure",
+            "clause-join-split",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
+        },
+        {
+          "spec": "merge-heavy",
+          "score": 183.926,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "planned-sentence-merge",
+            "sentence-structure",
+            "clause-join-split",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 183.926,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "planned-sentence-merge",
+            "sentence-structure",
+            "clause-join-split",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 183.926,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "planned-sentence-merge",
+            "sentence-structure",
+            "clause-join-split",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "Acct quiet locked, but can receive the code but login dies at fraud review every time. Case CS-88412 - and support keeps explaining reset again even tho reset isnt the problem. Last 4 + recovery email match. And need someone to clear retain not send same script.",
+      "transferClass": "weak",
+      "borrowedShellOutcome": "partial",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "modifier-density",
+        "directness",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "say",
+          "from": "saying",
+          "to": "explaining",
+          "kind": "lexeme"
+        },
+        {
+          "family": "get",
+          "from": "get",
+          "to": "receive",
+          "kind": "lexeme"
+        },
+        {
+          "family": "keep",
+          "from": "keeps",
+          "to": "retain",
+          "kind": "lexeme"
+        },
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "rescuePasses": [
+        "structural-rescue",
+        "partial-rescue"
+      ],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 0.933,
+      "polarityMismatches": 0,
+      "tenseMismatches": 1,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.8,
+          "polarityMismatch": 0,
+          "tenseMismatch": 1,
+          "bagScore": 0.714,
+          "globalBagScore": 0.294
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.063
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s1c0+s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.8,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.667,
+          "globalBagScore": 0.353
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.063
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.063
+        }
+      ],
+      "sourceClauseCount": 6,
+      "outputClauseCount": 5
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 2,
+      "resolvedAnchors": 2,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 4,
+        "clauseCount": 5,
+        "literalSpans": [
+          {
+            "value": "CS-88412",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "4",
+            "placeholder": "zzprotlitbzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Acct quiet locked, but can receive the code but login dies at fraud review every time",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Acct quiet locked, but can receive the code but login dies at fraud review every time",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "can",
+              "actor": "the code",
+              "action": "can",
+              "object": "receive code login dies at",
+              "modifiers": [
+                "quiet",
+                "receive"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "Case CS-88412 - and support keeps explaining reset again even tho reset isnt the problem",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "Case CS-88412",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "case",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "and support keeps explaining reset again even tho reset isnt the problem",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "keeps",
+              "actor": "the problem",
+              "action": "keeps",
+              "object": "explaining reset again even tho",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "Last 4 + recovery email match",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "Last 4 + recovery email match",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "last",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "And need someone to clear retain not send same script.",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "And need someone to clear retain not send same script",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "past",
+              "propositionHead": "need",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "weak",
+      "borrowedShellOutcome": "partial",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "modifier-density",
+        "directness",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "say",
+          "from": "saying",
+          "to": "explaining",
+          "kind": "lexeme"
+        },
+        {
+          "family": "get",
+          "from": "get",
+          "to": "receive",
+          "kind": "lexeme"
+        },
+        {
+          "family": "keep",
+          "from": "keeps",
+          "to": "retain",
+          "kind": "lexeme"
+        },
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "realizationNotes": [
+        "4 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, modifier-density, directness.",
+        "Semantic risk is elevated; review the realized output before relying on it."
+      ],
+      "rescuePasses": [
+        "structural-rescue",
+        "partial-rescue"
+      ],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    }
+  },
+  "semanticContract": {
+    "transferClass": "weak",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "connector-stance",
+      "directness",
+      "lexical-register",
+      "modifier-density",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [
+      "get",
+      "keep",
+      "quiet",
+      "say"
+    ],
+    "relationInventory": [
+      "additive:0",
+      "causal:0",
+      "clarifying:0",
+      "contrastive:2",
+      "resumptive:1",
+      "temporal:0"
+    ],
+    "structuralOperations": [
+      "baseline-merge",
+      "clause-join-split",
+      "planned-sentence-merge",
+      "sentence-structure",
+      "structural-rescue"
+    ],
+    "lexicalOperations": [
+      "baseline-voice-realization"
+    ],
+    "connectorStrategy": "contrastive",
+    "contractionStrategy": "hold",
+    "propositionCoverage": 1,
+    "actorCoverage": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 0.933,
+    "polarityMismatches": 0,
+    "tenseMismatches": 1,
+    "protectedAnchorIntegrity": 1
+  }
+}

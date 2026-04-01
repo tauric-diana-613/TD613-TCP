@@ -1,5 +1,12 @@
 (function () {
-  const { defaults, basePersonas, microcopy, glyphFieldTech = {} } = window.TCP_DATA;
+  const {
+    defaults,
+    basePersonas,
+    microcopy,
+    glyphFieldTech = {},
+    diagnostic_corpus: diagnosticCorpus = {},
+    diagnostic_battery: diagnosticBattery = {}
+  } = window.TCP_DATA;
   const {
     HARBOR_LIBRARY,
     compareTexts,
@@ -30,8 +37,20 @@
     SWAP_CADENCE_FLAGSHIP_PAIRS
   } = window.TCP_ENGINE;
   const RETRIEVAL_FIXTURE_BUNDLE = window.TCP_RETRIEVAL_FIXTURES || { cases: {} };
-  const SAMPLE_LIBRARY = Object.freeze((defaults.sample_library || []).map((sample) => Object.freeze({ ...sample })));
-  const SAMPLE_LIBRARY_BY_ID = Object.freeze(SAMPLE_LIBRARY.reduce((acc, sample) => {
+  const SAMPLE_LIBRARY = Object.freeze(
+    (diagnosticCorpus.promotedSampleLibrary || defaults.sample_library || []).map((sample) => Object.freeze({ ...sample }))
+  );
+  const FULL_SAMPLE_LIBRARY = Object.freeze(
+    (diagnosticCorpus.samples || SAMPLE_LIBRARY).map((sample) => Object.freeze({ ...sample }))
+  );
+  const DIAGNOSTIC_BATTERY = Object.freeze({
+    swapPairs: Object.freeze(diagnosticBattery.swapPairs || []),
+    maskCases: Object.freeze(diagnosticBattery.maskCases || []),
+    trainerCases: Object.freeze(diagnosticBattery.trainerCases || []),
+    retrievalCases: Object.freeze(diagnosticBattery.retrievalCases || []),
+    falseNeighborCases: Object.freeze(diagnosticBattery.falseNeighborCases || [])
+  });
+  const SAMPLE_LIBRARY_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
     acc[sample.id] = sample;
     return acc;
   }, {}));
@@ -55,8 +74,8 @@
     return url.href;
   })();
   const TEST_FLIGHT_SAMPLE_IDS = Object.freeze({
-    A: 'recursive-debrief',
-    B: 'operations-brief'
+    A: 'overwork-debrief-professional-message',
+    B: 'volunteer-cleanup-rushed-mobile'
   });
   const SWAP_FLAGSHIP_PAIRS = Object.freeze((SWAP_CADENCE_FLAGSHIP_PAIRS || []).map((pair) => Object.freeze({
     sourceId: pair.sourceId,
@@ -4770,7 +4789,8 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function runSwapCadenceMatrixReport() {
-    return buildSwapCadenceMatrix(SAMPLE_LIBRARY, {
+    return buildSwapCadenceMatrix(FULL_SAMPLE_LIBRARY, {
+      orderedPairs: DIAGNOSTIC_BATTERY.swapPairs,
       flagshipPairs: SWAP_FLAGSHIP_PAIRS,
       strength: 0.82
     });
@@ -4848,7 +4868,7 @@ DeltaE = ${ledger.reuse_gain}`;
 
   async function initializePersonaGallery() {
     personaGalleryModel = await import(PERSONA_GALLERY_MODULE_URL);
-    resolvedBasePersonas = personaGalleryModel.resolvePersonaCatalog(window.TCP_ENGINE, basePersonas, SAMPLE_LIBRARY);
+    resolvedBasePersonas = personaGalleryModel.resolvePersonaCatalog(window.TCP_ENGINE, basePersonas, FULL_SAMPLE_LIBRARY);
     savedPersonas = loadSavedPersonas();
     cadenceLocks = loadCadenceLocks();
     activeCadenceLockId = loadActiveCadenceLockId();
@@ -4886,7 +4906,7 @@ DeltaE = ${ledger.reuse_gain}`;
     trainerController = await module.createTrainerController({
       root,
       engine: window.TCP_ENGINE,
-      sampleLibrary: SAMPLE_LIBRARY,
+      sampleLibrary: FULL_SAMPLE_LIBRARY,
       onInjectPersona: injectTrainerPersona,
       resolveDraftContext: () => buildTrainerDraftContext(),
       onStatus: (message) => {
@@ -5409,7 +5429,7 @@ DeltaE = ${ledger.reuse_gain}`;
         const firstSaveSnapshot = readPersonaGallerySnapshot();
         const firstLockId = firstSaveSnapshot.activeLockId;
         $('cadenceLockName').value = 'Field Home Two';
-        $('cadenceLockCorpus').value = `${seededPair.voiceB}\n\n${SAMPLE_LIBRARY_BY_ID['grant-narrative']?.text || seededPair.voiceA}`;
+        $('cadenceLockCorpus').value = `${seededPair.voiceB}\n\n${SAMPLE_LIBRARY_BY_ID['archive-grant-formal-record']?.text || seededPair.voiceA}`;
         $('lockCadenceBtn').click();
         $('saveCadenceLockBtn').click();
         const secondSaveSnapshot = readPersonaGallerySnapshot();
@@ -5418,7 +5438,7 @@ DeltaE = ${ledger.reuse_gain}`;
           firstLockButton.click();
         }
         const firstSelectSnapshot = readPersonaGallerySnapshot();
-        $('personaComparisonText').value = SAMPLE_LIBRARY_BY_ID['critical-review']?.text || seededPair.voiceB;
+        $('personaComparisonText').value = SAMPLE_LIBRARY_BY_ID['customer-support-formal-record']?.text || seededPair.voiceB;
         $('personaComparisonText').dispatchEvent(new Event('input', { bubbles: true }));
         $('tabPersonas').click();
         const sparkMaskCard = document.querySelector('.persona[data-id="spark"]');
@@ -5506,7 +5526,7 @@ DeltaE = ${ledger.reuse_gain}`;
 
       if (mode === 'full') {
         $('tabTrainer').click();
-        const trainerCorpus = SAMPLE_LIBRARY_BY_ID['institutional-memo']?.text || seededPair.voiceA;
+        const trainerCorpus = SAMPLE_LIBRARY_BY_ID['building-access-formal-record']?.text || seededPair.voiceA;
         $('trainerPersonaName').value = 'Trainer Smoke Persona';
         $('trainerPersonaName').dispatchEvent(new Event('input', { bubbles: true }));
         $('trainerCorpusInput').value = trainerCorpus;

@@ -1,0 +1,1124 @@
+{
+  "id": "customer-support-formal-record-under-rushed-mobile",
+  "category": "retrieval-same-fact",
+  "strength": 0.88,
+  "sourceText": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud hold. The user could still receive one-time codes but could not complete login because the system flagged the device as new and placed the account in manual review. Case number CS-88412. The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which matched account records. A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying issue was not credential mismatch. It was the fraud lock itself. The account remains inaccessible until review removes the device challenge or support performs verified override. The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched.",
+  "donorText": "acct still locked. can get the code but login dies at fraud review every time. case CS-88412. support keeps saying reset again even tho reset isnt the problem. last 4 + recovery email match. need someone to clear hold not send same script",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 7.17,
+      "sentenceCount": 6,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.14,
+      "contentWordComplexity": 0.234,
+      "modifierDensity": 0,
+      "directness": 0.36,
+      "abstractionPosture": 0
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud hold. The user could still receive one-time codes but could not complete login because the system flagged the device as new and placed the account in manual review. Case number CS-88412. The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which matched account records. A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying issue was not credential mismatch. It was the fraud lock itself. The account remains inaccessible until review removes the device challenge or support performs verified override. The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched.",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 7.41,
+        "sentenceCount": 8,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.139,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.282,
+        "modifierDensity": 0.061,
+        "hedgeDensity": 0,
+        "directness": 0.36,
+        "abstractionPosture": 0.667,
+        "latinatePreference": 0.005,
+        "recurrencePressure": 0.137
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 8,
+        "clauseCount": 13,
+        "literalSpans": [
+          {
+            "value": "@elmfield.net",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "11:23 AM",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "CS-88412",
+            "placeholder": "zzprotlitczz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Customer contacted support at zzprotlitbzz regarding account access loss after a password reset attempt triggered the fraud hold",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Customer contacted support at zzprotlitbzz regarding account access loss after a password reset attempt triggered the fraud hold",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "customer",
+              "actor": "a password",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "The user could still receive one-time codes but could not complete login because the system flagged the device as new and placed the account in manual review",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "The user could still receive one-time codes but could not complete login",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "could",
+              "actor": "The user",
+              "action": "could",
+              "object": "receive one time codes complete",
+              "modifiers": [
+                "receive"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "the system flagged the device",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "system",
+              "actor": "the system",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c2",
+              "text": "new and placed the account in manual review",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "new",
+              "actor": "the account",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "manual"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "Case number zzprotlitczz",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "Case number zzprotlitczz",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "case",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "The customer confirmed the last four digits on file and the recovery email ending in zzprotlitazz, which matched account records",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "The customer confirmed the last four digits on file and the recovery email ending in zzprotlitazz, which matched account records",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "customer",
+              "actor": "The customer",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying issue was not credential mismatch",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "A prior support thread had already instructed the user to retry the reset flow",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "had",
+              "actor": "A prior",
+              "action": "had",
+              "object": "already instructed user retry reset",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s4c1",
+              "text": "that advice did not clear the hold because the underlying issue was not credential mismatch",
+              "relationToPrev": "causal",
+              "clauseType": "relative",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "did",
+              "actor": "that",
+              "action": "did",
+              "object": "clear hold underlying issue credential",
+              "modifiers": [
+                "credential"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "It was the fraud lock itself",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "It was the fraud lock itself",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "was",
+              "actor": "It",
+              "action": "was",
+              "object": "fraud lock itself",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s6",
+          "raw": "The account remains inaccessible until review removes the device challenge or support performs verified override",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s6c0",
+              "text": "The account remains inaccessible",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "account",
+              "actor": "The account",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "inaccessible"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s6c1",
+              "text": "review removes the device challenge or support performs verified override",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "review",
+              "actor": "the device",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s7",
+          "raw": "The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched.",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s7c0",
+              "text": "The procedural risk is repeated generic guidance that makes the customer loop through the same dead path",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "is",
+              "actor": "The procedural",
+              "action": "is",
+              "object": "repeated generic guidance makes customer",
+              "modifiers": [
+                "procedural",
+                "generic"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s7c1",
+              "text": "the fraud queue stays untouched",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "fraud",
+              "actor": "the fraud",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 2,
+      "sentenceMerge": 8,
+      "contraction": 2,
+      "connector": 9,
+      "lineBreak": 7,
+      "additive": 2,
+      "contrastive": 3,
+      "causal": 3,
+      "temporal": 2,
+      "clarifying": 0,
+      "resumptive": 1
+    },
+    "planSummary": {
+      "transferMode": "compress",
+      "structuralOperationsSelected": [
+        "baseline-split"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "baseline-voice-realization",
+        "baseline-function-word",
+        "connector-stance-lexicon"
+      ],
+      "connectorStrategy": "contrastive",
+      "contractionStrategy": "hold",
+      "relationInventory": {
+        "additive": 2,
+        "contrastive": 3,
+        "causal": 3,
+        "temporal": 2,
+        "clarifying": 0,
+        "resumptive": 1
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": -10.969999999999999
+      },
+      "discourseGoals": {
+        "contractionDelta": 0,
+        "hedgeDelta": 0
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": -0.15400000000000003,
+        "modifierDensityDelta": 0,
+        "directnessDelta": 0,
+        "abstractionDelta": 0,
+        "latinateDelta": -0.015,
+        "registerMode": "reflective"
+      },
+      "operationBudget": {
+        "splitSentence": 24,
+        "mergeSentence": 0,
+        "swapConnector": 2,
+        "applyHedge": 2,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "mixed-structural",
+        "score": 331.762,
+        "passesApplied": [
+          "baseline-split",
+          "baseline-voice-realization",
+          "baseline-function-word",
+          "connector-stance-lexicon"
+        ],
+        "rescuePasses": [],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "lexical-register",
+          "directness",
+          "abstraction-posture",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": true,
+        "notes": []
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 328.34,
+          "passesApplied": [
+            "split-rules",
+            "phrase-texture"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abstraction-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 331.762,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abstraction-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "split-heavy",
+          "score": 331.762,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abstraction-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 331.762,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abstraction-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "Customer contacted help at 11:23 AM regarding point access loss after a password reset attempt triggered the fraud hold. The user could quiet grab one-time codes but could not complete login because the system flagged the device as new but placed the account in manual review. Case number CS-88412. The customer confirmed the last four digits on file but the recovery email ending in @elmfield.net. Which matched account records. A prior support thread had already instructed the user to retry the reset flow. But that advice did not clear the hold because the underlying issue was not credential mismatch. It was the fraud lock itself. The account remains inaccessible until review removes the device challenge or support performs verified override. The procedural risk is repeated generic guidance that makes the customer loop through the same dead route while the fraud queue stays untouched.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "abstraction-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "get",
+          "from": "receive",
+          "to": "grab",
+          "kind": "lexeme"
+        },
+        {
+          "family": "route",
+          "from": "path",
+          "to": "route",
+          "kind": "lexeme"
+        },
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 0.985,
+      "polarityMismatches": 0,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.5,
+          "globalBagScore": 0.048
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.75,
+          "globalBagScore": 0.143
+        },
+        {
+          "sourceClauseId": "s1c1",
+          "matchedClauseId": "s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.024
+        },
+        {
+          "sourceClauseId": "s1c2",
+          "matchedClauseId": "s1c2",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.071
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.024
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.024
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s5c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.143
+        },
+        {
+          "sourceClauseId": "s4c1",
+          "matchedClauseId": "s6c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.8,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.4,
+          "globalBagScore": 0.093
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s7c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.071
+        },
+        {
+          "sourceClauseId": "s6c0",
+          "matchedClauseId": "s8c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.048
+        },
+        {
+          "sourceClauseId": "s6c1",
+          "matchedClauseId": "s8c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.048
+        },
+        {
+          "sourceClauseId": "s7c0",
+          "matchedClauseId": "s9c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.143
+        },
+        {
+          "sourceClauseId": "s7c1",
+          "matchedClauseId": "s9c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.024
+        }
+      ],
+      "sourceClauseCount": 13,
+      "outputClauseCount": 15
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 3,
+      "resolvedAnchors": 3,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 10,
+        "clauseCount": 15,
+        "literalSpans": [
+          {
+            "value": "@elmfield.net",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "11:23 AM",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "CS-88412",
+            "placeholder": "zzprotlitczz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Customer contacted help at 11:23 AM regarding point access loss after a password reset attempt triggered the fraud hold",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Customer contacted help at 11:23 AM regarding point access loss after a password reset attempt triggered the fraud hold",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "progressive",
+              "propositionHead": "AM",
+              "actor": "a password",
+              "action": "AM",
+              "object": "regarding point access loss after",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "The user could quiet grab one-time codes but could not complete login because the system flagged the device as new but placed the account in manual review",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "The user could quiet grab one-time codes but could not complete login",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "grab",
+              "actor": "The user",
+              "action": "grab",
+              "object": "one time codes complete login",
+              "modifiers": [
+                "quiet"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "the system flagged the device",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "system",
+              "actor": "the system",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c2",
+              "text": "new but placed the account in manual review",
+              "relationToPrev": "contrastive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "new",
+              "actor": "the account",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "manual"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "Case number CS-88412",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "Case number CS-88412",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "case",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "The customer confirmed the last four digits on file but the recovery email ending in @elmfield.net",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "The customer confirmed the last four digits on file but the recovery email ending in @elmfield.net",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "customer",
+              "actor": "The customer",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "Which matched account records",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "Which matched account records",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "which",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "A prior support thread had already instructed the user to retry the reset flow",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "A prior support thread had already instructed the user to retry the reset flow",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "had",
+              "actor": "A prior",
+              "action": "had",
+              "object": "already instructed user retry reset",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s6",
+          "raw": "But that advice did not clear the hold because the underlying issue was not credential mismatch",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s6c0",
+              "text": "But that advice did not clear the hold",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "did",
+              "actor": "that",
+              "action": "did",
+              "object": "clear hold",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s6c1",
+              "text": "the underlying issue was not credential mismatch",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "was",
+              "actor": "the underlying",
+              "action": "was",
+              "object": "credential mismatch",
+              "modifiers": [
+                "credential"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s7",
+          "raw": "It was the fraud lock itself",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s7c0",
+              "text": "It was the fraud lock itself",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "was",
+              "actor": "It",
+              "action": "was",
+              "object": "fraud lock itself",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s8",
+          "raw": "The account remains inaccessible until review removes the device challenge or support performs verified override",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s8c0",
+              "text": "The account remains inaccessible",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "account",
+              "actor": "The account",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "inaccessible"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s8c1",
+              "text": "review removes the device challenge or support performs verified override",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "review",
+              "actor": "the device",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s9",
+          "raw": "The procedural risk is repeated generic guidance that makes the customer loop through the same dead route while the fraud queue stays untouched.",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s9c0",
+              "text": "The procedural risk is repeated generic guidance that makes the customer loop through the same dead route",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "is",
+              "actor": "The procedural",
+              "action": "is",
+              "object": "repeated generic guidance makes customer",
+              "modifiers": [
+                "procedural",
+                "generic"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s9c1",
+              "text": "the fraud queue stays untouched",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "fraud",
+              "actor": "the fraud",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "abstraction-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "get",
+          "from": "receive",
+          "to": "grab",
+          "kind": "lexeme"
+        },
+        {
+          "family": "route",
+          "from": "path",
+          "to": "route",
+          "kind": "lexeme"
+        },
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "realizationNotes": [
+        "3 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, directness, abstraction-posture.",
+        "Semantic risk is elevated; review the realized output before relying on it."
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    }
+  },
+  "semanticContract": {
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "abstraction-posture",
+      "connector-stance",
+      "directness",
+      "lexical-register",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [
+      "get",
+      "quiet",
+      "route"
+    ],
+    "relationInventory": [
+      "additive:2",
+      "causal:3",
+      "clarifying:0",
+      "contrastive:3",
+      "resumptive:1",
+      "temporal:2"
+    ],
+    "structuralOperations": [
+      "baseline-split"
+    ],
+    "lexicalOperations": [
+      "baseline-function-word",
+      "baseline-voice-realization",
+      "connector-stance-lexicon"
+    ],
+    "connectorStrategy": "contrastive",
+    "contractionStrategy": "hold",
+    "propositionCoverage": 1,
+    "actorCoverage": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 0.985,
+    "polarityMismatches": 0,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}

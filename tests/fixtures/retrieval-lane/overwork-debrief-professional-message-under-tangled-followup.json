@@ -1,0 +1,880 @@
+{
+  "id": "overwork-debrief-professional-message-under-tangled-followup",
+  "category": "retrieval-same-fact",
+  "strength": 0.88,
+  "sourceText": "I owe you a cleaner explanation for why the memo landed late. It was not one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that. What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday because each extra ask arrived as if it were the last one. I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately. The memo itself is now in good shape, but the route we took to get there was not. For the next round I would like us to define a stop point before weekend work starts presenting itself as thoughtfulness.",
+  "donorText": "I am following up because my first apology still made the weekend sound accidental, and that is too gentle. The pattern was familiar long before the final send: one more pass because the table looked sloppy, one more pass because the citations were not defensible enough, one more pass because the tone in chat suddenly shifted and I did not want to be the person who said no after everyone else had already stayed online. None of that was a formal demand, which is exactly how I kept talking myself into it. By Sunday night the memo was fine and my capacity was not. I am trying to name the thing correctly this time: the problem was not dedication. It was the way I kept translating exhaustion into politeness until the schedule looked consensual.",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 22.33,
+      "sentenceCount": 6,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.09,
+      "contentWordComplexity": 0.371,
+      "modifierDensity": 0.114,
+      "directness": 0.18,
+      "abstractionPosture": 0
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "I owe you a cleaner explanation for why the memo landed late. It was not one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that. What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday because each extra ask arrived as if it were the last one. I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately. The memo itself is now in good shape, but the route we took to get there was not. For the next round I would like us to define a stop point before weekend work starts presenting itself as thoughtfulness.",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 22.31,
+        "sentenceCount": 6,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.09,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.371,
+        "modifierDensity": 0.096,
+        "hedgeDensity": 0,
+        "directness": 0.156,
+        "abstractionPosture": 0.333,
+        "latinatePreference": 0.044,
+        "recurrencePressure": 0.229
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 6,
+        "clauseCount": 11,
+        "literalSpans": []
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "I owe you a cleaner explanation for why the memo landed late",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "I owe you a cleaner explanation for why the memo landed late",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "owe",
+              "actor": "I",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "It was not one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "It was not one giant emergency so much",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "was",
+              "actor": "It",
+              "action": "was",
+              "object": "one giant emergency much",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "a stack of small revision asks that kept sounding manageable long after they stopped being that",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "kept",
+              "actor": "a stack",
+              "action": "kept",
+              "object": "sounding manageable long after stopped",
+              "modifiers": [
+                "manageable"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday because each extra ask arrived as if it were the last one",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "What began",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "began",
+              "actor": "",
+              "action": "began",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c1",
+              "text": "a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "friday",
+              "actor": "a Friday",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "table"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c2",
+              "text": "each extra ask arrived",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "each",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c3",
+              "text": "if it were the last one",
+              "relationToPrev": "additive",
+              "clauseType": "subordinate",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "were",
+              "actor": "it",
+              "action": "were",
+              "object": "last one",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "perfect",
+              "propositionHead": "have",
+              "actor": "I",
+              "action": "have",
+              "object": "named capacity limit earlier instead",
+              "modifiers": [
+                "privately"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "The memo itself is now in good shape, but the route we took to get there was not",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "The memo itself is now in good shape, but the route we took to get there was not",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "get",
+              "actor": "The memo",
+              "action": "get",
+              "object": "there",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "For the next round I would like us to define a stop point before weekend work starts presenting itself as thoughtfulness.",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "For the next round I would like us to define a stop point before weekend work starts presenting itself",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "future-modal",
+              "propositionHead": "would",
+              "actor": "the next",
+              "action": "would",
+              "object": "like us define stop point",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s5c1",
+              "text": "thoughtfulness",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "thoughtfulness",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 2,
+      "sentenceMerge": 5,
+      "contraction": 3,
+      "connector": 9,
+      "lineBreak": 5,
+      "additive": 1,
+      "contrastive": 2,
+      "causal": 6,
+      "temporal": 2,
+      "clarifying": 0,
+      "resumptive": 0
+    },
+    "planSummary": {
+      "transferMode": "expand",
+      "structuralOperationsSelected": [],
+      "lexicalRegisterOperationsSelected": [
+        "contraction",
+        "phrase-texture"
+      ],
+      "connectorStrategy": "causal",
+      "contractionStrategy": "hold",
+      "relationInventory": {
+        "additive": 1,
+        "contrastive": 2,
+        "causal": 6,
+        "temporal": 2,
+        "clarifying": 0,
+        "resumptive": 0
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": 0.9800000000000004
+      },
+      "discourseGoals": {
+        "contractionDelta": 0,
+        "hedgeDelta": 0
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": -0.0020000000000000018,
+        "modifierDensityDelta": 0.058,
+        "directnessDelta": 0.076,
+        "abstractionDelta": 0,
+        "latinateDelta": -0.019000000000000003,
+        "registerMode": "plain"
+      },
+      "operationBudget": {
+        "splitSentence": 0,
+        "mergeSentence": 1,
+        "swapConnector": 2,
+        "applyHedge": 0,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "ir-beam-search",
+        "score": 206.042,
+        "passesApplied": [
+          "contraction",
+          "phrase-texture"
+        ],
+        "rescuePasses": [],
+        "changedDimensions": [
+          "contraction-posture",
+          "connector-stance",
+          "directness"
+        ],
+        "qualityGatePassed": true,
+        "notes": []
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 206.042,
+          "passesApplied": [
+            "contraction",
+            "phrase-texture"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "contraction-posture",
+            "connector-stance",
+            "directness"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 177.76,
+          "passesApplied": [
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "connector-stance",
+            "abstraction-posture"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "merge-heavy",
+          "score": 177.76,
+          "passesApplied": [
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "connector-stance",
+            "abstraction-posture"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 177.76,
+          "passesApplied": [
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "connector-stance",
+            "abstraction-posture"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 177.76,
+          "passesApplied": [
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "connector-stance",
+            "abstraction-posture"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "I owe you a cleaner explanation for why the memo landed late. It wasn't one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that. What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday because each extra ask arrived as if it were the last one. I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately. The memo itself is now in good shape, but the route we took to grab there wasn't. For the next round I'd like us to define a stop point before weekend work kicks off presenting itself as thoughtfulness.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "contraction-posture",
+        "connector-stance",
+        "directness"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "get",
+          "from": "get",
+          "to": "grab",
+          "kind": "lexeme"
+        },
+        {
+          "family": "start",
+          "from": "starts",
+          "to": "kicks off",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 0.955,
+      "polarityMismatches": 1,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.038
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s0c0+s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 1,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0.034
+        },
+        {
+          "sourceClauseId": "s1c1",
+          "matchedClauseId": "s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.269
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.038
+        },
+        {
+          "sourceClauseId": "s2c1",
+          "matchedClauseId": "s2c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.077
+        },
+        {
+          "sourceClauseId": "s2c2",
+          "matchedClauseId": "s2c2",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.038
+        },
+        {
+          "sourceClauseId": "s2c3",
+          "matchedClauseId": "s2c3",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.077
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.231
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s4c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.75,
+          "globalBagScore": 0.115
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s5c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.167,
+          "globalBagScore": 0.032
+        },
+        {
+          "sourceClauseId": "s5c1",
+          "matchedClauseId": "s5c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.038
+        }
+      ],
+      "sourceClauseCount": 11,
+      "outputClauseCount": 11
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 0,
+      "resolvedAnchors": 0,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 6,
+        "clauseCount": 11,
+        "literalSpans": []
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "I owe you a cleaner explanation for why the memo landed late",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "I owe you a cleaner explanation for why the memo landed late",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "owe",
+              "actor": "I",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "It wasn't one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "It wasn't one giant emergency so much",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "wasn't",
+              "actor": "It",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "a stack of small revision asks that kept sounding manageable long after they stopped being that",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "kept",
+              "actor": "a stack",
+              "action": "kept",
+              "object": "sounding manageable long after stopped",
+              "modifiers": [
+                "manageable"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday because each extra ask arrived as if it were the last one",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "What began",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "began",
+              "actor": "",
+              "action": "began",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c1",
+              "text": "a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "friday",
+              "actor": "a Friday",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "table"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c2",
+              "text": "each extra ask arrived",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "each",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c3",
+              "text": "if it were the last one",
+              "relationToPrev": "additive",
+              "clauseType": "subordinate",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "were",
+              "actor": "it",
+              "action": "were",
+              "object": "last one",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "perfect",
+              "propositionHead": "have",
+              "actor": "I",
+              "action": "have",
+              "object": "named capacity limit earlier instead",
+              "modifiers": [
+                "privately"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "The memo itself is now in good shape, but the route we took to grab there wasn't",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "The memo itself is now in good shape, but the route we took to grab there wasn't",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "grab",
+              "actor": "The memo",
+              "action": "grab",
+              "object": "there wasn't",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "For the next round I'd like us to define a stop point before weekend work kicks off presenting itself as thoughtfulness.",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "For the next round I'd like us to define a stop point before weekend work kicks off presenting itself",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "next",
+              "actor": "the next",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s5c1",
+              "text": "thoughtfulness",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "thoughtfulness",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "contraction-posture",
+        "connector-stance",
+        "directness"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "get",
+          "from": "get",
+          "to": "grab",
+          "kind": "lexeme"
+        },
+        {
+          "family": "start",
+          "from": "starts",
+          "to": "kicks off",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0,
+      "realizationNotes": [
+        "2 lexical family swaps landed.",
+        "Register shift surfaced through directness."
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    }
+  },
+  "semanticContract": {
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "connector-stance",
+      "contraction-posture",
+      "directness"
+    ],
+    "lexemeSwapFamilies": [
+      "get",
+      "start"
+    ],
+    "relationInventory": [
+      "additive:1",
+      "causal:6",
+      "clarifying:0",
+      "contrastive:2",
+      "resumptive:0",
+      "temporal:2"
+    ],
+    "structuralOperations": [],
+    "lexicalOperations": [
+      "contraction",
+      "phrase-texture"
+    ],
+    "connectorStrategy": "causal",
+    "contractionStrategy": "hold",
+    "propositionCoverage": 1,
+    "actorCoverage": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 0.955,
+    "polarityMismatches": 1,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}

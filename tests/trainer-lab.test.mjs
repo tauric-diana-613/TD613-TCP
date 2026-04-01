@@ -1,27 +1,20 @@
 import assert from 'assert';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 import * as engine from '../app/engine/stylometry.js';
+import defaults from '../app/data/defaults.js';
 import { buildCorpusExtraction, splitCorpusSamples } from '../app/toys/persona-trainer/extractor.js';
 import { buildPersonaPrompt } from '../app/toys/persona-trainer/translator.js';
 import { validateCandidateAgainstFingerprint } from '../app/toys/persona-trainer/validator.js';
 import { buildPersonaSpec } from '../app/toys/persona-trainer/persona.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const defaults = JSON.parse(
-  fs.readFileSync(path.join(path.dirname(__filename), '..', 'app', 'data', 'defaults.json'), 'utf8')
-);
-
 const sampleLibrary = defaults.sample_library || [];
-const institutionalMemo = sampleLibrary.find((sample) => sample.id === 'institutional-memo');
-assert.ok(institutionalMemo, 'institutional-memo sample is present');
+const buildingAccess = sampleLibrary.find((sample) => sample.id === 'building-access-formal-record');
+assert.ok(buildingAccess, 'building-access-formal-record sample is present');
 
-const splitSamples = splitCorpusSamples(`${institutionalMemo.text}\n\n${institutionalMemo.text}`);
+const splitSamples = splitCorpusSamples(`${buildingAccess.text}\n\n${buildingAccess.text}`);
 assert.equal(splitSamples.length, 2, 'blank-line corpus splitting returns two samples');
 
-const extraction = buildCorpusExtraction(engine, institutionalMemo.text);
+const extraction = buildCorpusExtraction(engine, buildingAccess.text);
 assert.equal(extraction.stats.sampleCount, 1, 'single pasted sample still extracts a corpus fingerprint');
 assert.ok(extraction.targetProfile.avgSentenceLength > 0, 'target profile carries scalar means');
 assert.ok(extraction.selfSimilarity.meanSimilarity === 1, 'single-sample self-similarity defaults to identity');
@@ -33,7 +26,7 @@ const promptBuild = buildPersonaPrompt(extraction.fingerprint, {
 assert.ok(promptBuild.systemPrompt.includes('Lab Persona'), 'prompt build carries the persona name');
 assert.ok(promptBuild.promptConstraints.length >= 4, 'prompt build exposes structured constraints');
 
-const validation = validateCandidateAgainstFingerprint(engine, institutionalMemo.text, extraction, {
+const validation = validateCandidateAgainstFingerprint(engine, buildingAccess.text, extraction, {
   personaName: 'Lab Persona',
   sampleLibrary
 });

@@ -1,0 +1,906 @@
+{
+  "id": "school-coordination-professional-message-under-rushed-mobile",
+  "category": "retrieval-same-fact",
+  "strength": 0.88,
+  "sourceText": "Hello, confirming today's dismissal change: Aunt Maribel was approved for pickup and signed the student out at 3:17 PM after ID verification. We also wanted to note that the museum field-trip permission slip still was not located by close of day, even though the fee waiver form is already on file. During the 1:48 PM phone call, you mentioned the signed slip might still be in the backpack. We sent a reminder to the classroom at 2:03 PM, but the paper did not surface before dismissal. If the signed permission page comes home tonight, please return it tomorrow morning so Friday's trip record is complete.",
+  "donorText": "hi office - aunt maribel has to do pickup today not grandma. shell have id. also i swear i signed the museum slip, it might still be in backpack w the waiver papers. if class can check before 3 that would help. sorry for late change",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 9,
+      "sentenceCount": 5,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.133,
+      "contentWordComplexity": 0.269,
+      "modifierDensity": 0,
+      "directness": 0.18,
+      "abstractionPosture": 0
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "Hello, confirming today's dismissal change: Aunt Maribel was approved for pickup and signed the student out at 3:17 PM after ID verification. We also wanted to note that the museum field-trip permission slip still was not located by close of day, even though the fee waiver form is already on file. During the 1:48 PM phone call, you mentioned the signed slip might still be in the backpack. We sent a reminder to the classroom at 2:03 PM, but the paper did not surface before dismissal. If the signed permission page comes home tonight, please return it tomorrow morning so Friday's trip record is complete.",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 9.28,
+        "sentenceCount": 5,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.133,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.284,
+        "modifierDensity": 0.028,
+        "hedgeDensity": 0,
+        "directness": 0.199,
+        "abstractionPosture": 0.5,
+        "latinatePreference": 0.04,
+        "recurrencePressure": 0.129
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 5,
+        "clauseCount": 7,
+        "literalSpans": [
+          {
+            "value": "3:17 PM",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "1:48 PM",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "2:03 PM",
+            "placeholder": "zzprotlitczz"
+          },
+          {
+            "value": "ID",
+            "placeholder": "zzprotlitdzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Hello, confirming today's dismissal change: Aunt Maribel was approved for pickup and signed the student out at zzprotlitazz after zzprotlitdzz verification",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Hello, confirming today's dismissal change: Aunt Maribel was approved for pickup and signed the student out at zzprotlitazz after zzprotlitdzz verification",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "change",
+              "actor": "the student",
+              "action": "change",
+              "object": "aunt maribel approved pickup signed",
+              "modifiers": [
+                "dismissal"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "We also wanted to note that the museum field-trip permission slip still was not located by close of day, even though the fee waiver form is already on file",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "We also wanted to note that the museum field-trip permission slip still was not located by close of day",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "past",
+              "propositionHead": "was",
+              "actor": "We",
+              "action": "was",
+              "object": "located by close day",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "the fee waiver form is already on file",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "is",
+              "actor": "the fee",
+              "action": "is",
+              "object": "already file",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "During the zzprotlitbzz phone call, you mentioned the signed slip might still be in the backpack",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "During the zzprotlitbzz phone call, you mentioned the signed slip might still be in the backpack",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "call",
+              "actor": "the zzprotlitbzz",
+              "action": "call",
+              "object": "mentioned signed slip backpack",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "We sent a reminder to the classroom at zzprotlitczz, but the paper did not surface before dismissal",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "We sent a reminder to the classroom at zzprotlitczz, but the paper did not surface before dismissal",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "did",
+              "actor": "We",
+              "action": "did",
+              "object": "surface before dismissal",
+              "modifiers": [
+                "dismissal"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "If the signed permission page comes home tonight, please return it tomorrow morning so Friday's trip record is complete.",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "If the signed permission page comes home tonight, please return it tomorrow morning",
+              "relationToPrev": "start",
+              "clauseType": "subordinate",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "comes",
+              "actor": "the signed",
+              "action": "comes",
+              "object": "home tonight please return tomorrow",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s4c1",
+              "text": "Friday's trip record is complete",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "is",
+              "actor": "",
+              "action": "is",
+              "object": "complete",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 3,
+      "sentenceMerge": 4,
+      "contraction": 2,
+      "connector": 6,
+      "lineBreak": 4,
+      "additive": 2,
+      "contrastive": 4,
+      "causal": 1,
+      "temporal": 2,
+      "clarifying": 0,
+      "resumptive": 2
+    },
+    "planSummary": {
+      "transferMode": "compress",
+      "structuralOperationsSelected": [
+        "baseline-split",
+        "planned-sentence-split"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "baseline-voice-realization",
+        "connector-stance-lexicon"
+      ],
+      "connectorStrategy": "contrastive",
+      "contractionStrategy": "decrease",
+      "relationInventory": {
+        "additive": 2,
+        "contrastive": 4,
+        "causal": 1,
+        "temporal": 2,
+        "clarifying": 0,
+        "resumptive": 2
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": -12.520000000000001
+      },
+      "discourseGoals": {
+        "contractionDelta": -0.018,
+        "hedgeDelta": 0
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": -0.04600000000000004,
+        "modifierDensityDelta": 0,
+        "directnessDelta": -0.061,
+        "abstractionDelta": 0,
+        "latinateDelta": -0.0020000000000000018,
+        "registerMode": "plain"
+      },
+      "operationBudget": {
+        "splitSentence": 21,
+        "mergeSentence": 0,
+        "swapConnector": 2,
+        "applyHedge": 2,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "mixed-structural",
+        "score": 285.252,
+        "passesApplied": [
+          "baseline-split",
+          "baseline-voice-realization",
+          "planned-sentence-split",
+          "connector-stance-lexicon",
+          "cleanup-restore"
+        ],
+        "rescuePasses": [],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "modifier-density",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": true,
+        "notes": []
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 280.752,
+          "passesApplied": [
+            "baseline-floor",
+            "clause-texture"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "modifier-density",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 285.252,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "planned-sentence-split",
+            "connector-stance-lexicon",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "modifier-density",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "split-heavy",
+          "score": 285.252,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "planned-sentence-split",
+            "connector-stance-lexicon",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "modifier-density",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 285.252,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "planned-sentence-split",
+            "connector-stance-lexicon",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "modifier-density",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 285.252,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "planned-sentence-split",
+            "connector-stance-lexicon",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "modifier-density",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "Hello. Confirming today's dismissal change. Aunt Maribel was approved for pickup and signed the student out at 3:17 PM after ID verification. We also wanted to note that the museum field-trip permission slip quiet was not located by close of day. Even though the fee waiver form is already on file. During the 1:48 PM phone call. You mentioned the signed slip might quiet be in the backpack. We sent a reminder to the classroom at 2:03 PM. But the paper did not surface before dismissal. If the signed permission page comes home tonight. Please return it tomorrow morning so Friday's trip record is complete.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "modifier-density",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.42,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 0.889,
+      "actionCoverage": 1,
+      "objectCoverage": 0.893,
+      "polarityMismatches": 0,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s1c0+s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.667,
+          "globalBagScore": 0.194
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.8,
+          "globalBagScore": 0.138
+        },
+        {
+          "sourceClauseId": "s1c1",
+          "matchedClauseId": "s4c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.103
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s5c0+s6c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 0.225,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.25,
+          "globalBagScore": 0.094
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s8c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.75,
+          "globalBagScore": 0.103
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s9c0+s10c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.714,
+          "globalBagScore": 0.161
+        },
+        {
+          "sourceClauseId": "s4c1",
+          "matchedClauseId": "s10c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.034
+        }
+      ],
+      "sourceClauseCount": 7,
+      "outputClauseCount": 13
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 4,
+      "resolvedAnchors": 4,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 11,
+        "clauseCount": 13,
+        "literalSpans": [
+          {
+            "value": "3:17 PM",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "1:48 PM",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "2:03 PM",
+            "placeholder": "zzprotlitczz"
+          },
+          {
+            "value": "ID",
+            "placeholder": "zzprotlitdzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Hello",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Hello",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "hello",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "Confirming today's dismissal change",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "Confirming today's dismissal change",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "change",
+              "actor": "",
+              "action": "change",
+              "object": "",
+              "modifiers": [
+                "dismissal"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "Aunt Maribel was approved for pickup and signed the student out at 3:17 PM after ID verification",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "Aunt Maribel was approved for pickup and signed the student out at 3:17 PM after ID verification",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "was",
+              "actor": "the student",
+              "action": "was",
+              "object": "approved pickup signed student out",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "We also wanted to note that the museum field-trip permission slip quiet was not located by close of day",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "We also wanted to note that the museum field-trip permission slip quiet was not located by close of day",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "past",
+              "propositionHead": "was",
+              "actor": "We",
+              "action": "was",
+              "object": "located by close day",
+              "modifiers": [
+                "quiet"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "Even though the fee waiver form is already on file",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "Even",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "even",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s4c1",
+              "text": "the fee waiver form is already on file",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "is",
+              "actor": "the fee",
+              "action": "is",
+              "object": "already file",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "During the 1:48 PM phone call",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "During the 1:48 PM phone call",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "call",
+              "actor": "the 1",
+              "action": "call",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s6",
+          "raw": "You mentioned the signed slip might quiet be in the backpack",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s6c0",
+              "text": "You mentioned the signed slip might quiet be in the backpack",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "might",
+              "actor": "You",
+              "action": "might",
+              "object": "quiet backpack",
+              "modifiers": [
+                "quiet"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s7",
+          "raw": "We sent a reminder to the classroom at 2:03 PM",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s7c0",
+              "text": "We sent a reminder to the classroom at 2:03 PM",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "sent",
+              "actor": "We",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s8",
+          "raw": "But the paper did not surface before dismissal",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s8c0",
+              "text": "But the paper did not surface before dismissal",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "did",
+              "actor": "the paper",
+              "action": "did",
+              "object": "surface before dismissal",
+              "modifiers": [
+                "dismissal"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s9",
+          "raw": "If the signed permission page comes home tonight",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s9c0",
+              "text": "If the signed permission page comes home tonight",
+              "relationToPrev": "start",
+              "clauseType": "subordinate",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "comes",
+              "actor": "the signed",
+              "action": "comes",
+              "object": "home tonight",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s10",
+          "raw": "Please return it tomorrow morning so Friday's trip record is complete.",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s10c0",
+              "text": "Please return it tomorrow morning",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "please",
+              "actor": "it",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s10c1",
+              "text": "Friday's trip record is complete",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "is",
+              "actor": "",
+              "action": "is",
+              "object": "complete",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "modifier-density",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.42,
+      "realizationNotes": [
+        "1 lexical family swap landed.",
+        "Register shift surfaced through modifier-density.",
+        "Semantic risk is elevated; review the realized output before relying on it."
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    }
+  },
+  "semanticContract": {
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "connector-stance",
+      "modifier-density",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [
+      "quiet"
+    ],
+    "relationInventory": [
+      "additive:2",
+      "causal:1",
+      "clarifying:0",
+      "contrastive:4",
+      "resumptive:2",
+      "temporal:2"
+    ],
+    "structuralOperations": [
+      "baseline-split",
+      "planned-sentence-split"
+    ],
+    "lexicalOperations": [
+      "baseline-voice-realization",
+      "connector-stance-lexicon"
+    ],
+    "connectorStrategy": "contrastive",
+    "contractionStrategy": "decrease",
+    "propositionCoverage": 1,
+    "actorCoverage": 0.889,
+    "actionCoverage": 1,
+    "objectCoverage": 0.893,
+    "polarityMismatches": 0,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}

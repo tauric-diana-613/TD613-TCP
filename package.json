@@ -8,10 +8,15 @@
     "serve": "python3 -m http.server 8000",
     "test": "npm run test:stylometry && node tests/harbor.test.mjs",
     "test:stylometry": "node tests/stylometry.test.mjs && node tests/benchmark.test.mjs && node tests/browser-parity.test.mjs && node tests/retrieval-lane.test.mjs && node tests/swap-cadence-matrix.test.mjs && node tests/trainer-lab.test.mjs && node tests/persona-gallery.test.mjs",
+    "test:diagnostics": "node scripts/run-diagnostics-battery.mjs && node tests/diagnostics.test.mjs",
     "test:trainer": "node tests/trainer-lab.test.mjs",
     "test:legacy:formulas": "node tests/formulas.test.mjs",
     "sync:browser-engine": "node scripts/generate-browser-engine.mjs",
+    "sync:browser-diagnostics": "node scripts/generate-browser-diagnostics.mjs",
+    "sync:defaults-json": "node scripts/generate-defaults-json.mjs",
+    "sync:personas-json": "node scripts/generate-personas-json.mjs",
     "sync:retrieval-fixtures": "node scripts/generate-retrieval-fixtures.mjs",
+    "diag:battery": "node scripts/run-diagnostics-battery.mjs",
     "validate": "node scripts/validate-samples.mjs"
   }
 }

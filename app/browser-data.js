@@ -69,8 +69,8 @@ window.TCP_DATA = {
       chips: ['cold seal', 'low contraction'],
       profileRecipe: {
         blend: [
-          { sampleId: 'witness-statement', weight: 0.65 },
-          { sampleId: 'institutional-memo', weight: 0.35 }
+          { sampleId: 'building-access-formal-record', weight: 0.55 },
+          { sampleId: 'package-handoff-formal-record', weight: 0.45 }
         ],
       overlayMod: { sent: 4, cont: -3, punc: -1 },
       strength: 0.94
@@ -99,8 +99,8 @@ window.TCP_DATA = {
       chips: ['bright cut', 'public pull'],
       profileRecipe: {
         blend: [
-          { sampleId: 'operations-brief', weight: 0.8 },
-          { sampleId: 'critical-review', weight: 0.2 }
+          { sampleId: 'volunteer-cleanup-rushed-mobile', weight: 0.55 },
+          { sampleId: 'mutual-aid-professional-message', weight: 0.45 }
         ],
       overlayMod: { sent: -5, cont: 4, punc: 4 },
       strength: 0.92
@@ -129,8 +129,8 @@ window.TCP_DATA = {
       chips: ['late landing', 'return current'],
       profileRecipe: {
         blend: [
-          { sampleId: 'recursive-debrief', weight: 0.85 },
-          { sampleId: 'critical-review', weight: 0.15 }
+          { sampleId: 'overwork-debrief-tangled-followup', weight: 0.7 },
+          { sampleId: 'archive-grant-tangled-followup', weight: 0.3 }
         ],
         overlayMod: { sent: 2, cont: 0, punc: 0 },
         strength: 0.89
@@ -159,8 +159,8 @@ window.TCP_DATA = {
       chips: ['clean route', 'dry hand'],
       profileRecipe: {
         blend: [
-          { sampleId: 'operations-brief', weight: 0.55 },
-          { sampleId: 'witness-statement', weight: 0.45 }
+          { sampleId: 'volunteer-cleanup-professional-message', weight: 0.55 },
+          { sampleId: 'building-access-formal-record', weight: 0.45 }
         ],
       overlayMod: { sent: -4, cont: -2, punc: -2 },
         strength: 0.87
@@ -189,8 +189,8 @@ window.TCP_DATA = {
       chips: ['measured caveat', 'clean proof'],
       profileRecipe: {
         blend: [
-          { sampleId: 'deliberative-hedged', weight: 0.55 },
-          { sampleId: 'grant-narrative', weight: 0.45 }
+          { sampleId: 'committee-budget-formal-record', weight: 0.55 },
+          { sampleId: 'archive-grant-formal-record', weight: 0.45 }
         ],
       overlayMod: { sent: 4, cont: -3, punc: -1 },
       strength: 0.9
@@ -219,8 +219,8 @@ window.TCP_DATA = {
       chips: ['hard edge', 'pressure syntax'],
       profileRecipe: {
         blend: [
-          { sampleId: 'critical-review', weight: 0.55 },
-          { sampleId: 'operations-brief', weight: 0.45 }
+          { sampleId: 'performance-review-formal-record', weight: 0.55 },
+          { sampleId: 'customer-support-professional-message', weight: 0.45 }
         ],
       overlayMod: { sent: -5, cont: -3, punc: 5 },
       strength: 0.91
@@ -249,9 +249,9 @@ window.TCP_DATA = {
       chips: ['held pulse', 'soft shelter'],
       profileRecipe: {
         blend: [
-          { sampleId: 'witness-statement', weight: 0.45 },
-          { sampleId: 'recursive-debrief', weight: 0.35 },
-          { sampleId: 'institutional-memo', weight: 0.2 }
+          { sampleId: 'school-coordination-professional-message', weight: 0.45 },
+          { sampleId: 'clinic-scheduling-professional-message', weight: 0.35 },
+          { sampleId: 'package-handoff-professional-message', weight: 0.2 }
         ],
       overlayMod: { sent: 4, cont: -1, punc: -2 },
       strength: 0.9

@@ -1,0 +1,899 @@
+{
+  "id": "building-access-rushed-mobile-under-formal-record",
+  "category": "retrieval-same-fact",
+  "strength": 0.88,
+  "sourceText": "west annex d3 still fake open. reader goes green + buzzes but door wont release. first hit was like 8:19 maybe 8:20. courier for suite 118 is here w fridge meds and he cant just wait in sun. weird part: my renewed badge fails, old temp badge worked once. not power i dont think. can someone pls check controller before they keep telling me to jiggle latch again",
+  "donorText": "At 08:14 on Monday, Door 3 at the West Annex began presenting a false-open state. The reader accepted active badges and flashed green, but the strike did not release. The first confirmed access failure affected courier intake at 08:19, when a refrigerated medication delivery for Suite 118 could not clear the corridor. Facilities first treated the event as a low-voltage latch issue; the meter reading did not support that assumption. By 08:31 we confirmed that the overnight badge-renewal push had stopped validating newly renewed credentials while older local cache entries still passed. Deliveries were rerouted to the south receiving desk at 08:37. Manual escort restored controlled entry at 08:42, and the controller was rolled back at 09:06. No restricted room was breached, no cold-chain item was lost, and the custody log remains continuous. Required correction: no future firmware push may close without a live-door test, a latch release check, and a signed handoff from systems to archive operations.",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 18.78,
+      "sentenceCount": 9,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.178,
+      "contentWordComplexity": 0.373,
+      "modifierDensity": 0.065,
+      "directness": 0.54,
+      "abstractionPosture": 0.2
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "west annex d3 still fake open. reader goes green + buzzes but door wont release. first hit was like 8:19 maybe 8:20. courier for suite 118 is here w fridge meds and he cant just wait in sun. weird part: my renewed badge fails, old temp badge worked once. not power i dont think. can someone pls check controller before they keep telling me to jiggle latch again",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 18.59,
+        "sentenceCount": 7,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.177,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.334,
+        "modifierDensity": 0.049,
+        "hedgeDensity": 0.029,
+        "directness": 0.54,
+        "abstractionPosture": 0.272,
+        "latinatePreference": 0.049,
+        "recurrencePressure": 0.218
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 7,
+        "clauseCount": 8,
+        "literalSpans": [
+          {
+            "value": "8:19",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "8:20",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "d3",
+            "placeholder": "zzprotlitczz"
+          },
+          {
+            "value": "118",
+            "placeholder": "zzprotlitdzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "west annex zzprotlitczz still fake open",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "west annex zzprotlitczz still fake open",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "west",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "reader goes green + buzzes but door wont release",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "reader goes green + buzzes but door wont release",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "goes",
+              "actor": "",
+              "action": "goes",
+              "object": "green buzzes door wont release",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "first hit was like zzprotlitazz maybe zzprotlitbzz",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "first hit was like zzprotlitazz maybe zzprotlitbzz",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "was",
+              "actor": "",
+              "action": "was",
+              "object": "like zzprotlitazz zzprotlitbzz",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "uncertainty"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "courier for suite zzprotlitdzz is here w fridge meds and he cant just wait in sun",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "courier for suite zzprotlitdzz is here w fridge meds",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "is",
+              "actor": "",
+              "action": "is",
+              "object": "here w fridge meds",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s3c1",
+              "text": "he cant just wait in sun",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "wait",
+              "actor": "he",
+              "action": "wait",
+              "object": "sun",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "weird part: my renewed badge fails, old temp badge worked once",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "weird part: my renewed badge fails, old temp badge worked once",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "weird",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "not power i dont think",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "not power i dont think",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "power",
+              "actor": "i",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s6",
+          "raw": "can someone pls check controller before they keep telling me to jiggle latch again",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s6c0",
+              "text": "can someone pls check controller before they keep telling me to jiggle latch again",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "keep",
+              "actor": "they",
+              "action": "keep",
+              "object": "telling me jiggle latch again",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 1,
+      "sentenceMerge": 6,
+      "contraction": 0,
+      "connector": 5,
+      "lineBreak": 6,
+      "additive": 1,
+      "contrastive": 2,
+      "causal": 0,
+      "temporal": 2,
+      "clarifying": 0,
+      "resumptive": 1
+    },
+    "planSummary": {
+      "transferMode": "expand",
+      "structuralOperationsSelected": [
+        "baseline-merge",
+        "planned-sentence-merge",
+        "sentence-structure",
+        "clause-join-split",
+        "structural-rescue"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "baseline-voice-realization",
+        "baseline-function-word",
+        "punctuation-finish"
+      ],
+      "connectorStrategy": "contrastive",
+      "contractionStrategy": "hold",
+      "relationInventory": {
+        "additive": 1,
+        "contrastive": 2,
+        "causal": 0,
+        "temporal": 2,
+        "clarifying": 0,
+        "resumptive": 1
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": 8.73
+      },
+      "discourseGoals": {
+        "contractionDelta": 0,
+        "hedgeDelta": 0
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": 0.12500000000000003,
+        "modifierDensityDelta": 0.049,
+        "directnessDelta": 0,
+        "abstractionDelta": -0.22799999999999998,
+        "latinateDelta": 0.049,
+        "registerMode": "operational"
+      },
+      "operationBudget": {
+        "splitSentence": 0,
+        "mergeSentence": 9,
+        "swapConnector": 2,
+        "applyHedge": 2,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "connector-stance-heavy",
+        "score": 140.998,
+        "passesApplied": [
+          "baseline-merge",
+          "baseline-voice-realization",
+          "baseline-function-word",
+          "planned-sentence-merge",
+          "sentence-structure",
+          "clause-join-split",
+          "punctuation-finish",
+          "cleanup-restore",
+          "structural-rescue"
+        ],
+        "rescuePasses": [
+          "structural-rescue"
+        ],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": false,
+        "notes": [
+          "Transfer missed donor lexical/register realization."
+        ]
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 132.94,
+          "passesApplied": [
+            "merge-pairs",
+            "clause-texture"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer missed donor lexical/register realization."
+          ]
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 139.822,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "planned-sentence-merge",
+            "sentence-structure",
+            "clause-join-split",
+            "punctuation-finish",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer missed donor lexical/register realization."
+          ]
+        },
+        {
+          "spec": "merge-heavy",
+          "score": 139.822,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "planned-sentence-merge",
+            "sentence-structure",
+            "clause-join-split",
+            "punctuation-finish",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer missed donor lexical/register realization."
+          ]
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 140.998,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "planned-sentence-merge",
+            "sentence-structure",
+            "clause-join-split",
+            "punctuation-finish",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer missed donor lexical/register realization."
+          ]
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 140.242,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "planned-sentence-merge",
+            "sentence-structure",
+            "clause-join-split",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer missed donor lexical/register realization."
+          ]
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "West annex d3 quiet fake open. But reader goes green + buzzes but doorway wont release. First hit was like 8:19 maybe 8:20. Courier for suite 118 is here w fridge meds and he cant just wait in sun; and weird part: my renewed badge fails; old temp badge worked when; and not power I dont think. Can someone pls check controller before they keep explaining me to jiggle latch again",
+      "transferClass": "weak",
+      "borrowedShellOutcome": "partial",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "say",
+          "from": "telling",
+          "to": "explaining",
+          "kind": "lexeme"
+        },
+        {
+          "family": "door",
+          "from": "door",
+          "to": "doorway",
+          "kind": "lexeme"
+        },
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "rescuePasses": [
+        "structural-rescue",
+        "partial-rescue"
+      ],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 0.912,
+      "polarityMismatches": 0,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.5,
+          "globalBagScore": 0.043
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.261
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.167,
+          "globalBagScore": 0.04
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s3c1",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.087
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s3c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.043
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s3c3",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.043
+        },
+        {
+          "sourceClauseId": "s6c0",
+          "matchedClauseId": "s4c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.8,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.714,
+          "globalBagScore": 0.208
+        }
+      ],
+      "sourceClauseCount": 8,
+      "outputClauseCount": 8
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 4,
+      "resolvedAnchors": 4,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 5,
+        "clauseCount": 8,
+        "literalSpans": [
+          {
+            "value": "8:19",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "8:20",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "d3",
+            "placeholder": "zzprotlitczz"
+          },
+          {
+            "value": "118",
+            "placeholder": "zzprotlitdzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "West annex d3 quiet fake open",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "West annex d3 quiet fake open",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "west",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "quiet"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "But reader goes green + buzzes but doorway wont release",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "But reader goes green + buzzes but doorway wont release",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "goes",
+              "actor": "",
+              "action": "goes",
+              "object": "green buzzes doorway wont release",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "First hit was like 8:19 maybe 8:20",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "First hit was like 8:19 maybe 8:20",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "was",
+              "actor": "",
+              "action": "was",
+              "object": "like 8 19 8 20",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "uncertainty"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "Courier for suite 118 is here w fridge meds and he cant just wait in sun; and weird part: my renewed badge fails; old temp badge worked when; and not power I dont think",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "Courier for suite 118 is here w fridge meds and he cant just wait in sun",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "wait",
+              "actor": "he",
+              "action": "wait",
+              "object": "sun",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            },
+            {
+              "id": "s3c1",
+              "text": "and weird part: my renewed badge fails",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "weird",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s3c2",
+              "text": "old temp badge worked when",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "old",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s3c3",
+              "text": "and not power I dont think",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "power",
+              "actor": "I",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "Can someone pls check controller before they keep explaining me to jiggle latch again",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "Can someone pls check controller before they keep explaining me to jiggle latch again",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "keep",
+              "actor": "they",
+              "action": "keep",
+              "object": "explaining me jiggle latch again",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "weak",
+      "borrowedShellOutcome": "partial",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "say",
+          "from": "telling",
+          "to": "explaining",
+          "kind": "lexeme"
+        },
+        {
+          "family": "door",
+          "from": "door",
+          "to": "doorway",
+          "kind": "lexeme"
+        },
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "realizationNotes": [
+        "3 lexical family swaps landed.",
+        "Semantic risk is elevated; review the realized output before relying on it."
+      ],
+      "rescuePasses": [
+        "structural-rescue",
+        "partial-rescue"
+      ],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    }
+  },
+  "semanticContract": {
+    "transferClass": "weak",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "connector-stance",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [
+      "door",
+      "quiet",
+      "say"
+    ],
+    "relationInventory": [
+      "additive:1",
+      "causal:0",
+      "clarifying:0",
+      "contrastive:2",
+      "resumptive:1",
+      "temporal:2"
+    ],
+    "structuralOperations": [
+      "baseline-merge",
+      "clause-join-split",
+      "planned-sentence-merge",
+      "sentence-structure",
+      "structural-rescue"
+    ],
+    "lexicalOperations": [
+      "baseline-function-word",
+      "baseline-voice-realization",
+      "punctuation-finish"
+    ],
+    "connectorStrategy": "contrastive",
+    "contractionStrategy": "hold",
+    "propositionCoverage": 1,
+    "actorCoverage": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 0.912,
+    "polarityMismatches": 0,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}

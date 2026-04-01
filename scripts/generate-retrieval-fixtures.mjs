@@ -97,6 +97,11 @@ function buildFixturePayload(testCase) {
 }
 
 ensureDir(fixturesDir);
+for (const entry of fs.readdirSync(fixturesDir)) {
+  if (entry.endsWith('.json')) {
+    fs.unlinkSync(path.join(fixturesDir, entry));
+  }
+}
 
 const fixtureIndex = {
   generatedAt: new Date().toISOString(),

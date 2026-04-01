@@ -1,0 +1,776 @@
+{
+  "id": "volunteer-cleanup-rushed-mobile-under-professional-message",
+  "category": "retrieval-same-fact",
+  "strength": 0.88,
+  "sourceText": "if youre late thats ok just dont start random jobs. check in west fence table first. glass + pallets first pass. saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands. pls bring water for real, not saying it to be annoying",
+  "donorText": "Team, here is the cleanup flow for Saturday so we do not lose the first hour to improvisation. Please check in at the west fence table when you arrive, even if you already know the site. We are starting with glass pickup, pallet pull, pantry-post reset, and salvage sorting. Tool lanes are fixed on purpose: shovels at the fence, brooms at the tarp, saws under canopy B, and paint only if the wind holds. Gloves, water, and closed-toe shoes are required. If you forgot any of those, tell me before you start rather than trying to work around it. Kids can help at labeling and pantry sort, but they stay clear of saws and thinner. We stop for inventory at 10:15 because a clean handoff matters more than heroic freelancing.",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 16.63,
+      "sentenceCount": 8,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.18,
+      "contentWordComplexity": 0.296,
+      "modifierDensity": 0.034,
+      "directness": 0.68,
+      "abstractionPosture": 0
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "if youre late thats ok just dont start random jobs. check in west fence table first. glass + pallets first pass. saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands. pls bring water for real, not saying it to be annoying",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 16.46,
+        "sentenceCount": 6,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.18,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.28,
+        "modifierDensity": 0.037,
+        "hedgeDensity": 0.016,
+        "directness": 0.723,
+        "abstractionPosture": 0.5,
+        "latinatePreference": 0.046,
+        "recurrencePressure": 0.21
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 6,
+        "clauseCount": 7,
+        "literalSpans": [
+          {
+            "value": "10:15",
+            "placeholder": "zzprotlitazz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "if youre late thats ok just dont start random jobs",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "if youre late thats ok just dont start random jobs",
+              "relationToPrev": "start",
+              "clauseType": "subordinate",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "youre",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "check in west fence table first",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "check in west fence table first",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "check",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "table"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "glass + pallets first pass",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "glass + pallets first pass",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "glass",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "saws stay under canopy b, kids stay off solvent side, paint only",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "saws",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "only"
+              ],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            },
+            {
+              "id": "s3c1",
+              "text": "wind chills out",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "wind",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "zzprotlitazz inventory stop still stands",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "zzprotlitazz inventory stop still stands",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "zzprotlitazz",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "pls bring water for real, not saying it to be annoying",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "pls bring water for real, not saying it to be annoying",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "bring",
+              "actor": "it",
+              "action": "bring",
+              "object": "water real saying annoying",
+              "modifiers": [
+                "real"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 0,
+      "sentenceMerge": 5,
+      "contraction": 0,
+      "connector": 2,
+      "lineBreak": 5,
+      "additive": 0,
+      "contrastive": 1,
+      "causal": 0,
+      "temporal": 0,
+      "clarifying": 0,
+      "resumptive": 1
+    },
+    "planSummary": {
+      "transferMode": "expand",
+      "structuralOperationsSelected": [
+        "merge-pairs",
+        "clause-texture"
+      ],
+      "lexicalRegisterOperationsSelected": [],
+      "connectorStrategy": "contrastive",
+      "contractionStrategy": "hold",
+      "relationInventory": {
+        "additive": 0,
+        "contrastive": 1,
+        "causal": 0,
+        "temporal": 0,
+        "clarifying": 0,
+        "resumptive": 1
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": 7.630000000000001
+      },
+      "discourseGoals": {
+        "contractionDelta": 0,
+        "hedgeDelta": -0.002999999999999999
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": 0.049000000000000016,
+        "modifierDensityDelta": -0.011000000000000003,
+        "directnessDelta": -0.137,
+        "abstractionDelta": 0,
+        "latinateDelta": -0.0020000000000000018,
+        "registerMode": "operational"
+      },
+      "operationBudget": {
+        "splitSentence": 0,
+        "mergeSentence": 8,
+        "swapConnector": 2,
+        "applyHedge": 2,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "ir-beam-search",
+        "score": 332.896,
+        "passesApplied": [
+          "merge-pairs",
+          "clause-texture"
+        ],
+        "rescuePasses": [],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "lexical-register",
+          "modifier-density",
+          "directness",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": true,
+        "notes": []
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 332.896,
+          "passesApplied": [
+            "merge-pairs",
+            "clause-texture"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 255.324,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Protected literals did not survive the rewrite intact.",
+            "Protected placeholders leaked into the output."
+          ]
+        },
+        {
+          "spec": "merge-heavy",
+          "score": 255.324,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Protected literals did not survive the rewrite intact.",
+            "Protected placeholders leaked into the output."
+          ]
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 255.324,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Protected literals did not survive the rewrite intact.",
+            "Protected placeholders leaked into the output."
+          ]
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 255.324,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "cleanup-restore",
+            "structural-rescue"
+          ],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "modifier-density",
+            "directness",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": false,
+          "notes": [
+            "Protected literals did not survive the rewrite intact.",
+            "Protected placeholders leaked into the output."
+          ]
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "If youre late thats ok just dont begin random jobs, and check in west fence table first. Glass + pallets first pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop quiet stands, but pls bring water for real, not explaining it to be annoying.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "modifier-density",
+        "directness",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "say",
+          "from": "saying",
+          "to": "explaining",
+          "kind": "lexeme"
+        },
+        {
+          "family": "start",
+          "from": "start",
+          "to": "begin",
+          "kind": "lexeme"
+        },
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 0.964,
+      "polarityMismatches": 0,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.286,
+          "globalBagScore": 0.133
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.067
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.067
+        },
+        {
+          "sourceClauseId": "s3c1",
+          "matchedClauseId": "s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.571,
+          "globalBagScore": 0.25
+        }
+      ],
+      "sourceClauseCount": 7,
+      "outputClauseCount": 4
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 1,
+      "resolvedAnchors": 1,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 3,
+        "clauseCount": 4,
+        "literalSpans": [
+          {
+            "value": "10:15",
+            "placeholder": "zzprotlitazz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "If youre late thats ok just dont begin random jobs, and check in west fence table first",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "If youre late thats ok just dont begin random jobs, and check in west fence table first",
+              "relationToPrev": "start",
+              "clauseType": "subordinate",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "begin",
+              "actor": "",
+              "action": "begin",
+              "object": "random jobs check west fence",
+              "modifiers": [
+                "table"
+              ],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "Glass + pallets first pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "Glass + pallets first pass",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "glass",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "saws",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "only"
+              ],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "10:15 inventory stop quiet stands, but pls bring water for real, not explaining it to be annoying.",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "10:15 inventory stop quiet stands, but pls bring water for real, not explaining it to be annoying",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "bring",
+              "actor": "it",
+              "action": "bring",
+              "object": "water real explaining annoying",
+              "modifiers": [
+                "quiet",
+                "real"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "modifier-density",
+        "directness",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "say",
+          "from": "saying",
+          "to": "explaining",
+          "kind": "lexeme"
+        },
+        {
+          "family": "start",
+          "from": "start",
+          "to": "begin",
+          "kind": "lexeme"
+        },
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "realizationNotes": [
+        "3 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, modifier-density, directness.",
+        "Semantic risk is elevated; review the realized output before relying on it."
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    }
+  },
+  "semanticContract": {
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "connector-stance",
+      "directness",
+      "lexical-register",
+      "modifier-density",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [
+      "quiet",
+      "say",
+      "start"
+    ],
+    "relationInventory": [
+      "additive:0",
+      "causal:0",
+      "clarifying:0",
+      "contrastive:1",
+      "resumptive:1",
+      "temporal:0"
+    ],
+    "structuralOperations": [
+      "clause-texture",
+      "merge-pairs"
+    ],
+    "lexicalOperations": [],
+    "connectorStrategy": "contrastive",
+    "contractionStrategy": "hold",
+    "propositionCoverage": 1,
+    "actorCoverage": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 0.964,
+    "polarityMismatches": 0,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}

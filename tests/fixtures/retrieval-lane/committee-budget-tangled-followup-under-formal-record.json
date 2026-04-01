@@ -1,0 +1,934 @@
+{
+  "id": "committee-budget-tangled-followup-under-formal-record",
+  "category": "retrieval-same-fact",
+  "strength": 0.88,
+  "sourceText": "I want to revise one phrase from my earlier recap before it starts hardening into the story. I wrote that the committee was considering a \"service adjustment,\" which is technically true in the narrow memo sense and misleading in the lived one. What the table actually showed is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks and the intake queue either gets redistributed badly or evening hours shrink. Those are not abstract efficiencies. They are service consequences. Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule and the dean signs off. But I do not want the language to get gentler than the problem just because we are waiting for the Thursday table.",
+  "donorText": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is that the student-support coordinator line remains unfunded for another twelve weeks, even though the underlying service demand has not eased. Members agreed that the program can absorb a temporary delay in furniture and print costs, but not a full quarter without intake coverage. Three short-term options were discussed: reclassify one vacant analyst line for bridge staffing, reduce evening service hours, or draw against restricted reserves pending dean approval. No option was adopted in session. What did resolve was the frame: this is not a generic belt-tightening exercise. It is a staffing exposure problem with public-facing consequences, and the next memo needs to say that without overstating certainty. Action items: revised table by Thursday, reserve-rule clarification from finance, and a staffing scenario note that distinguishes pause from actual service reduction.",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 20,
+      "sentenceCount": 8,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.15,
+      "contentWordComplexity": 0.484,
+      "modifierDensity": 0.052,
+      "directness": 0,
+      "abstractionPosture": 0.5
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "I want to revise one phrase from my earlier recap before it starts hardening into the story. I wrote that the committee was considering a \"service adjustment,\" which is technically true in the narrow memo sense and misleading in the lived one. What the table actually showed is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks and the intake queue either gets redistributed badly or evening hours shrink. Those are not abstract efficiencies. They are service consequences. Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule and the dean signs off. But I do not want the language to get gentler than the problem just because we are waiting for the Thursday table.",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 20,
+        "sentenceCount": 7,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.149,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.473,
+        "modifierDensity": 0.054,
+        "hedgeDensity": 0.014,
+        "directness": 0.043,
+        "abstractionPosture": 0.46,
+        "latinatePreference": 0.065,
+        "recurrencePressure": 0.173
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 7,
+        "clauseCount": 10,
+        "literalSpans": [
+          {
+            "value": "\"service adjustment,\"",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "Q3",
+            "placeholder": "zzprotlitbzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "I want to revise one phrase from my earlier recap before it starts hardening into the story",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "I want to revise one phrase from my earlier recap before it starts hardening into the story",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "want",
+              "actor": "I",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "I wrote that the committee was considering a zzprotlitazz which is technically true in the narrow memo sense and misleading in the lived one",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "I wrote that the committee was considering a zzprotlitazz which is technically true in the narrow memo sense and misleading in the lived one",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "progressive",
+              "propositionHead": "was",
+              "actor": "I",
+              "action": "was",
+              "object": "considering zzprotlitazz which technically true",
+              "modifiers": [
+                "technically"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "What the table actually showed is that if the hiring freeze runs through zzprotlitbzz, the coordinator line stays empty for twelve more weeks and the intake queue either gets redistributed badly or evening hours shrink",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "What the table actually showed is that",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "showed",
+              "actor": "the table",
+              "action": "showed",
+              "object": "",
+              "modifiers": [
+                "table",
+                "actually"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c1",
+              "text": "the hiring freeze runs through zzprotlitbzz, the coordinator line stays empty for twelve more weeks and the intake queue either gets redistributed badly or evening hours shrink",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "gets",
+              "actor": "the hiring",
+              "action": "gets",
+              "object": "redistributed badly evening hours shrink",
+              "modifiers": [
+                "badly"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "Those are not abstract efficiencies",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "Those are not abstract efficiencies",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "are",
+              "actor": "",
+              "action": "are",
+              "object": "abstract efficiencies",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "They are service consequences",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "They are service consequences",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "are",
+              "actor": "They",
+              "action": "are",
+              "object": "service consequences",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule and the dean signs off",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "use",
+              "actor": "we",
+              "action": "use",
+              "object": "analyst line reduced evening coverage",
+              "modifiers": [
+                "provisional"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s5c1",
+              "text": "finance confirms the rule and the dean signs off",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "finance",
+              "actor": "the rule",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s6",
+          "raw": "But I do not want the language to get gentler than the problem just because we are waiting for the Thursday table.",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s6c0",
+              "text": "But I do not want the language to get gentler than the problem just",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "get",
+              "actor": "I",
+              "action": "get",
+              "object": "gentler than problem",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            },
+            {
+              "id": "s6c1",
+              "text": "we are waiting for the Thursday table",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "progressive",
+              "propositionHead": "are",
+              "actor": "we",
+              "action": "are",
+              "object": "waiting thursday table",
+              "modifiers": [
+                "table"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 1,
+      "sentenceMerge": 6,
+      "contraction": 4,
+      "connector": 7,
+      "lineBreak": 6,
+      "additive": 3,
+      "contrastive": 2,
+      "causal": 1,
+      "temporal": 1,
+      "clarifying": 1,
+      "resumptive": 1
+    },
+    "planSummary": {
+      "transferMode": "rebalance",
+      "structuralOperationsSelected": [
+        "clause-texture"
+      ],
+      "lexicalRegisterOperationsSelected": [],
+      "connectorStrategy": "additive",
+      "contractionStrategy": "hold",
+      "relationInventory": {
+        "additive": 3,
+        "contrastive": 2,
+        "causal": 1,
+        "temporal": 1,
+        "clarifying": 1,
+        "resumptive": 1
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": 0
+      },
+      "discourseGoals": {
+        "contractionDelta": 0,
+        "hedgeDelta": 0
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": 0.035999999999999976,
+        "modifierDensityDelta": -0.005999999999999998,
+        "directnessDelta": -0.137,
+        "abstractionDelta": 0.127,
+        "latinateDelta": 0.041,
+        "registerMode": "plain"
+      },
+      "operationBudget": {
+        "splitSentence": 0,
+        "mergeSentence": 0,
+        "swapConnector": 2,
+        "applyHedge": 2,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "ir-beam-search",
+        "score": 238.334,
+        "passesApplied": [
+          "baseline-floor",
+          "clause-texture"
+        ],
+        "rescuePasses": [],
+        "changedDimensions": [
+          "contraction-posture",
+          "connector-stance",
+          "modifier-density",
+          "abstraction-posture"
+        ],
+        "qualityGatePassed": true,
+        "notes": []
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 238.334,
+          "passesApplied": [
+            "baseline-floor",
+            "clause-texture"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "contraction-posture",
+            "connector-stance",
+            "modifier-density",
+            "abstraction-posture"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 215.67,
+          "passesApplied": [
+            "baseline-phrase",
+            "baseline-voice-realization",
+            "baseline-stance",
+            "baseline-function-word",
+            "connector-stance-lexicon",
+            "contraction-auxiliary",
+            "punctuation-finish"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "connector-stance",
+            "modifier-density",
+            "abstraction-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 215.67,
+          "passesApplied": [
+            "baseline-phrase",
+            "baseline-voice-realization",
+            "baseline-stance",
+            "baseline-function-word",
+            "connector-stance-lexicon",
+            "contraction-auxiliary",
+            "punctuation-finish"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "connector-stance",
+            "modifier-density",
+            "abstraction-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 213.768,
+          "passesApplied": [
+            "baseline-phrase",
+            "baseline-voice-realization",
+            "baseline-stance",
+            "baseline-function-word",
+            "connector-stance-lexicon",
+            "contraction-auxiliary"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "connector-stance",
+            "modifier-density",
+            "abstraction-posture"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "I want to revise one phrase from my earlier recap before it begins hardening into the account. I wrote that the committee was considering a \"service adjustment,\" that's technically true in the narrow memo sense but misleading in the lived one. What the table actually explained is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks but the intake queue either receives redistributed badly or evening hours shrink. Those are not abstract efficiencies. They are service consequences. Yes, we quiet have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule but the dean signs off. Though I do not want the language to receive gentler than the problem just because we are waiting for the Thursday table.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "contraction-posture",
+        "connector-stance",
+        "modifier-density",
+        "abstraction-posture"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "get",
+          "from": "gets",
+          "to": "receives",
+          "kind": "lexeme"
+        },
+        {
+          "family": "start",
+          "from": "starts",
+          "to": "begins",
+          "kind": "lexeme"
+        },
+        {
+          "family": "show",
+          "from": "showed",
+          "to": "explained",
+          "kind": "lexeme"
+        },
+        {
+          "family": "story",
+          "from": "story",
+          "to": "account",
+          "kind": "lexeme"
+        },
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    },
+    "semanticAudit": {
+      "propositionCoverage": 0.99,
+      "actorCoverage": 1,
+      "actionCoverage": 0.981,
+      "objectCoverage": 0.915,
+      "polarityMismatches": 1,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s6c0+s6c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 1,
+          "tenseMismatch": 0,
+          "bagScore": 0.125,
+          "globalBagScore": 0.031
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.25,
+          "globalBagScore": 0.057
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 0.9,
+          "actorCoverage": 1,
+          "actionCoverage": 0.81,
+          "objectCoverage": 0.9,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.5,
+          "globalBagScore": 0.03
+        },
+        {
+          "sourceClauseId": "s2c1",
+          "matchedClauseId": "s2c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.286,
+          "globalBagScore": 0.114
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.063
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s4c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.063
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s5c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.875,
+          "globalBagScore": 0.219
+        },
+        {
+          "sourceClauseId": "s5c1",
+          "matchedClauseId": "s5c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.063
+        },
+        {
+          "sourceClauseId": "s6c0",
+          "matchedClauseId": "s6c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.5,
+          "globalBagScore": 0.091
+        },
+        {
+          "sourceClauseId": "s6c1",
+          "matchedClauseId": "s6c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.094
+        }
+      ],
+      "sourceClauseCount": 10,
+      "outputClauseCount": 10
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 2,
+      "resolvedAnchors": 2,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 7,
+        "clauseCount": 10,
+        "literalSpans": [
+          {
+            "value": "\"service adjustment,\"",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "Q3",
+            "placeholder": "zzprotlitbzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "I want to revise one phrase from my earlier recap before it begins hardening into the account",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "I want to revise one phrase from my earlier recap before it begins hardening into the account",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "begins",
+              "actor": "I",
+              "action": "begins",
+              "object": "hardening into account",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "I wrote that the committee was considering a \"service adjustment,\" that's technically true in the narrow memo sense but misleading in the lived one",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "I wrote that the committee was considering a \"service adjustment,\" that's technically true in the narrow memo sense but misleading in the lived one",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "progressive",
+              "propositionHead": "was",
+              "actor": "I",
+              "action": "was",
+              "object": "considering service adjustment that's technically",
+              "modifiers": [
+                "technically"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "What the table actually explained is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks but the intake queue either receives redistributed badly or evening hours shrink",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "What the table actually explained is that",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "is",
+              "actor": "the table",
+              "action": "is",
+              "object": "",
+              "modifiers": [
+                "table",
+                "actually"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c1",
+              "text": "the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks but the intake queue either receives redistributed badly or evening hours shrink",
+              "relationToPrev": "contrastive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "hiring",
+              "actor": "the hiring",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "badly"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "Those are not abstract efficiencies",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "Those are not abstract efficiencies",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "are",
+              "actor": "",
+              "action": "are",
+              "object": "abstract efficiencies",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "They are service consequences",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "They are service consequences",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "are",
+              "actor": "They",
+              "action": "are",
+              "object": "service consequences",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "Yes, we quiet have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule but the dean signs off",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "Yes, we quiet have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "use",
+              "actor": "we",
+              "action": "use",
+              "object": "analyst line reduced evening coverage",
+              "modifiers": [
+                "quiet",
+                "provisional"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s5c1",
+              "text": "finance confirms the rule but the dean signs off",
+              "relationToPrev": "contrastive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "finance",
+              "actor": "the rule",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s6",
+          "raw": "Though I do not want the language to receive gentler than the problem just because we are waiting for the Thursday table.",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s6c0",
+              "text": "Though I do not want the language to receive gentler than the problem just",
+              "relationToPrev": "start",
+              "clauseType": "subordinate",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "do",
+              "actor": "I",
+              "action": "do",
+              "object": "want language receive gentler than",
+              "modifiers": [
+                "receive"
+              ],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            },
+            {
+              "id": "s6c1",
+              "text": "we are waiting for the Thursday table",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "progressive",
+              "propositionHead": "are",
+              "actor": "we",
+              "action": "are",
+              "object": "waiting thursday table",
+              "modifiers": [
+                "table"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "contraction-posture",
+        "connector-stance",
+        "modifier-density",
+        "abstraction-posture"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "get",
+          "from": "gets",
+          "to": "receives",
+          "kind": "lexeme"
+        },
+        {
+          "family": "start",
+          "from": "starts",
+          "to": "begins",
+          "kind": "lexeme"
+        },
+        {
+          "family": "show",
+          "from": "showed",
+          "to": "explained",
+          "kind": "lexeme"
+        },
+        {
+          "family": "story",
+          "from": "story",
+          "to": "account",
+          "kind": "lexeme"
+        },
+        {
+          "family": "quiet",
+          "from": "still",
+          "to": "quiet",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "realizationNotes": [
+        "5 lexical family swaps landed.",
+        "Register shift surfaced through modifier-density, abstraction-posture.",
+        "Semantic risk is elevated; review the realized output before relying on it."
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    }
+  },
+  "semanticContract": {
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "abstraction-posture",
+      "connector-stance",
+      "contraction-posture",
+      "modifier-density"
+    ],
+    "lexemeSwapFamilies": [
+      "get",
+      "quiet",
+      "show",
+      "start",
+      "story"
+    ],
+    "relationInventory": [
+      "additive:3",
+      "causal:1",
+      "clarifying:1",
+      "contrastive:2",
+      "resumptive:1",
+      "temporal:1"
+    ],
+    "structuralOperations": [
+      "clause-texture"
+    ],
+    "lexicalOperations": [],
+    "connectorStrategy": "additive",
+    "contractionStrategy": "hold",
+    "propositionCoverage": 0.99,
+    "actorCoverage": 1,
+    "actionCoverage": 0.981,
+    "objectCoverage": 0.915,
+    "polarityMismatches": 1,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}
