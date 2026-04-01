@@ -365,7 +365,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 339.988,
+        "score": 337.36,
         "passesApplied": [
           "contraction",
           "phrase-texture"
@@ -387,7 +387,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 339.988,
+          "score": 337.36,
           "passesApplied": [
             "contraction",
             "phrase-texture"
@@ -408,7 +408,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 93.532,
+          "score": 90.366,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -438,7 +438,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 93.532,
+          "score": 90.366,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -468,7 +468,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 93.532,
+          "score": 90.366,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -498,7 +498,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 93.532,
+          "score": 90.366,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -529,7 +529,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Trying another time because each person I speak with describes the same blockage as if it lives somewhere else. The portal notice made it sound finished. The payer line confirmed PR-44719, so that sounded finished too. Scheduling then explained the approval could not be used because it details to the downtown clinic while the actual order quiet says North River, which means the approval is real and unusable at the same time, and I was told a corrected order request went out at 10:26 AM, then told to wait for a callback, then told the next-day slot could not be retained indefinitely. I'm not confused about whether an authorization exists. I'm confused about why an approved case can sit in limbo all day because no one owns the location mismatch long enough to close it.",
+      "text": "Trying another time because each person I speak with describes the same blockage as if it lives somewhere else. The portal notice made it sound finished. The payer line confirmed PR-44719, so that sounded finished too. Scheduling then explained the approval could not be used because it details to the downtown clinic while the actual order still says North River, which means the approval is real and unusable at the same time, and I was told a corrected order request went out at 10:26 AM, then told to wait for a callback, then told the next-day slot could not be retained indefinitely. I'm not confused about whether an authorization exists. I'm confused about why an approved case can sit in limbo all day because no one owns the location mismatch long enough to close it.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -562,12 +562,6 @@
           "from": "points",
           "to": "details",
           "kind": "lexeme"
-        },
-        {
-          "family": "quiet",
-          "from": "still",
-          "to": "quiet",
-          "kind": "lexeme"
         }
       ],
       "semanticRisk": 0.3,
@@ -594,7 +588,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.03
+          "globalBagScore": 0.031
         },
         {
           "sourceClauseId": "s0c1",
@@ -606,7 +600,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.03
+          "globalBagScore": 0.031
         },
         {
           "sourceClauseId": "s0c2",
@@ -618,7 +612,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.03
+          "globalBagScore": 0.031
         },
         {
           "sourceClauseId": "s1c0",
@@ -630,7 +624,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.061
+          "globalBagScore": 0.063
         },
         {
           "sourceClauseId": "s2c0",
@@ -642,7 +636,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.4,
-          "globalBagScore": 0.059
+          "globalBagScore": 0.061
         },
         {
           "sourceClauseId": "s2c1",
@@ -654,7 +648,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.061
+          "globalBagScore": 0.063
         },
         {
           "sourceClauseId": "s3c0",
@@ -665,8 +659,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.188,
-          "globalBagScore": 0.091
+          "bagScore": 0.2,
+          "globalBagScore": 0.094
         },
         {
           "sourceClauseId": "s3c1",
@@ -678,7 +672,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
-          "globalBagScore": 0.061
+          "globalBagScore": 0.063
         },
         {
           "sourceClauseId": "s3c2",
@@ -689,8 +683,8 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 1,
           "tenseMismatch": 1,
-          "bagScore": 0.235,
-          "globalBagScore": 0.135
+          "bagScore": 0.25,
+          "globalBagScore": 0.139
         },
         {
           "sourceClauseId": "s4c0",
@@ -702,7 +696,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.212
+          "globalBagScore": 0.219
         },
         {
           "sourceClauseId": "s5c0",
@@ -738,7 +732,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.061
+          "globalBagScore": 0.063
         }
       ],
       "sourceClauseCount": 13,
@@ -878,13 +872,13 @@
         },
         {
           "id": "s3",
-          "raw": "Scheduling then explained the approval could not be used because it details to the downtown clinic while the actual order quiet says North River, which means the approval is real and unusable at the same time, and I was told a corrected order request went out at 10:26 AM, then told to wait for a callback, then told the next-day slot could not be retained indefinitely",
+          "raw": "Scheduling then explained the approval could not be used because it details to the downtown clinic while the actual order still says North River, which means the approval is real and unusable at the same time, and I was told a corrected order request went out at 10:26 AM, then told to wait for a callback, then told the next-day slot could not be retained indefinitely",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "Scheduling then explained the approval could not be used because it details to the downtown clinic while the actual order quiet says North River, which means the approval is real and unusable at the same time",
+              "text": "Scheduling then explained the approval could not be used because it details to the downtown clinic while the actual order still says North River, which means the approval is real and unusable at the same time",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -897,7 +891,6 @@
                 "approval",
                 "clinic",
                 "actual",
-                "quiet",
                 "approval",
                 "real",
                 "unusable"
@@ -1015,17 +1008,11 @@
           "from": "points",
           "to": "details",
           "kind": "lexeme"
-        },
-        {
-          "family": "quiet",
-          "from": "still",
-          "to": "quiet",
-          "kind": "lexeme"
         }
       ],
       "semanticRisk": 0.3,
       "realizationNotes": [
-        "4 lexical family swaps landed.",
+        "3 lexical family swaps landed.",
         "Register shift surfaced through lexical-register, abstraction-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
@@ -1050,7 +1037,6 @@
     "lexemeSwapFamilies": [
       "detail",
       "keep",
-      "quiet",
       "say"
     ],
     "relationInventory": [

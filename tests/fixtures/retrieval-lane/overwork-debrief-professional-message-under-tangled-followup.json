@@ -273,8 +273,9 @@
       "transferMode": "expand",
       "structuralOperationsSelected": [],
       "lexicalRegisterOperationsSelected": [
-        "contraction",
-        "phrase-texture"
+        "baseline-voice-realization",
+        "baseline-function-word",
+        "connector-stance-lexicon"
       ],
       "connectorStrategy": "causal",
       "contractionStrategy": "hold",
@@ -312,19 +313,18 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "ir-beam-search",
-        "score": 261.884,
+        "spec": "mixed-structural",
+        "score": 208.844,
         "passesApplied": [
-          "contraction",
-          "phrase-texture"
+          "baseline-voice-realization",
+          "baseline-function-word",
+          "connector-stance-lexicon"
         ],
         "rescuePasses": [],
         "changedDimensions": [
-          "contraction-posture",
           "connector-stance",
           "lexical-register",
-          "directness",
-          "abstraction-posture"
+          "directness"
         ],
         "qualityGatePassed": true,
         "notes": []
@@ -332,21 +332,27 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 261.884,
+          "score": 187.072,
           "passesApplied": [
             "contraction",
             "phrase-texture"
           ],
           "rescuePasses": [],
           "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
             "contraction-posture",
             "connector-stance",
             "lexical-register",
             "directness",
-            "abstraction-posture"
+            "abstraction-posture",
+            "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
         },
         {
           "spec": "mixed-structural",
@@ -419,23 +425,21 @@
       ]
     },
     "finalRealization": {
-      "text": "I owe you a cleaner explanation for why the memo landed late. It wasn't one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that. What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full check cycle across Saturday because each extra ask arrived as if it were the last one. I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately. The memo itself is now in good shape, but the route we took to get there wasn't. For the next round I'd like us to define a stop point before weekend work kicks off presenting itself as thoughtfulness.",
+      "text": "I owe you a cleaner explanation for why the memo landed late. It was not one giant emergency so much because a stack of small revision asks that kept sounding manageable long after they stopped being that. What began because a Friday afternoon tone pass turned into table cleanup, citation repair, and another full check cycle across Saturday because each extra ask arrived because if it were the last one. I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately. The memo itself is now in good shape, but the route we took to get there was not. For the next round I would like us to define a stop detail before weekend work starts presenting itself because thoughtfulness.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
-        "contraction-posture",
         "connector-stance",
         "lexical-register",
-        "directness",
-        "abstraction-posture"
+        "directness"
       ],
       "lexemeSwaps": [
         {
-          "family": "start",
-          "from": "starts",
-          "to": "kicks off",
+          "family": "detail",
+          "from": "point",
+          "to": "detail",
           "kind": "lexeme"
         },
         {
@@ -454,8 +458,8 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.955,
-      "polarityMismatches": 1,
+      "objectCoverage": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -469,19 +473,19 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.033
+          "globalBagScore": 0.027
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c0+s1c0",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0.03
+          "bagScore": 1,
+          "globalBagScore": 0.108
         },
         {
           "sourceClauseId": "s1c1",
@@ -493,7 +497,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.233
+          "globalBagScore": 0.189
         },
         {
           "sourceClauseId": "s2c0",
@@ -505,7 +509,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.033
+          "globalBagScore": 0.027
         },
         {
           "sourceClauseId": "s2c1",
@@ -517,7 +521,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.2
+          "globalBagScore": 0.162
         },
         {
           "sourceClauseId": "s2c2",
@@ -529,7 +533,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.067
+          "globalBagScore": 0.054
         },
         {
           "sourceClauseId": "s2c3",
@@ -541,7 +545,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.067
+          "globalBagScore": 0.054
         },
         {
           "sourceClauseId": "s3c0",
@@ -553,7 +557,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.2
+          "globalBagScore": 0.162
         },
         {
           "sourceClauseId": "s4c0",
@@ -564,8 +568,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.75,
-          "globalBagScore": 0.1
+          "bagScore": 1,
+          "globalBagScore": 0.081
         },
         {
           "sourceClauseId": "s5c0",
@@ -573,11 +577,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.167,
-          "globalBagScore": 0.029
+          "bagScore": 1,
+          "globalBagScore": 0.162
         },
         {
           "sourceClauseId": "s5c1",
@@ -589,7 +593,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.033
+          "globalBagScore": 0.027
         }
       ],
       "sourceClauseCount": 11,
@@ -632,21 +636,21 @@
         },
         {
           "id": "s1",
-          "raw": "It wasn't one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that",
+          "raw": "It was not one giant emergency so much because a stack of small revision asks that kept sounding manageable long after they stopped being that",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "It wasn't one giant emergency so much",
+              "text": "It was not one giant emergency so much",
               "relationToPrev": "start",
-              "clauseType": "fragment",
+              "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "present",
-              "propositionHead": "wasn't",
+              "propositionHead": "was",
               "actor": "It",
-              "action": "",
-              "object": "",
+              "action": "was",
+              "object": "one giant emergency much",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -670,7 +674,7 @@
         },
         {
           "id": "s2",
-          "raw": "What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full check cycle across Saturday because each extra ask arrived as if it were the last one",
+          "raw": "What began because a Friday afternoon tone pass turned into table cleanup, citation repair, and another full check cycle across Saturday because each extra ask arrived because if it were the last one",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
@@ -760,13 +764,13 @@
         },
         {
           "id": "s4",
-          "raw": "The memo itself is now in good shape, but the route we took to get there wasn't",
+          "raw": "The memo itself is now in good shape, but the route we took to get there was not",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "The memo itself is now in good shape, but the route we took to get there wasn't",
+              "text": "The memo itself is now in good shape, but the route we took to get there was not",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -774,7 +778,7 @@
               "propositionHead": "get",
               "actor": "The memo",
               "action": "get",
-              "object": "there wasn't",
+              "object": "there",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -782,21 +786,21 @@
         },
         {
           "id": "s5",
-          "raw": "For the next round I'd like us to define a stop point before weekend work kicks off presenting itself as thoughtfulness.",
+          "raw": "For the next round I would like us to define a stop detail before weekend work starts presenting itself because thoughtfulness.",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s5c0",
-              "text": "For the next round I'd like us to define a stop point before weekend work kicks off presenting itself",
+              "text": "For the next round I would like us to define a stop detail before weekend work starts presenting itself",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "next",
+              "tenseAspect": "future-modal",
+              "propositionHead": "would",
               "actor": "the next",
-              "action": "",
-              "object": "",
+              "action": "would",
+              "object": "like us define stop detail",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -824,17 +828,15 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
-        "contraction-posture",
         "connector-stance",
         "lexical-register",
-        "directness",
-        "abstraction-posture"
+        "directness"
       ],
       "lexemeSwaps": [
         {
-          "family": "start",
-          "from": "starts",
-          "to": "kicks off",
+          "family": "detail",
+          "from": "point",
+          "to": "detail",
           "kind": "lexeme"
         },
         {
@@ -847,7 +849,7 @@
       "semanticRisk": 0,
       "realizationNotes": [
         "2 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, directness, abstraction-posture."
+        "Register shift surfaced through lexical-register, directness."
       ],
       "rescuePasses": [],
       "visibleShift": true,
@@ -858,15 +860,13 @@
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
-      "abstraction-posture",
       "connector-stance",
-      "contraction-posture",
       "directness",
       "lexical-register"
     ],
     "lexemeSwapFamilies": [
       "check",
-      "start"
+      "detail"
     ],
     "relationInventory": [
       "additive:1",
@@ -878,16 +878,17 @@
     ],
     "structuralOperations": [],
     "lexicalOperations": [
-      "contraction",
-      "phrase-texture"
+      "baseline-function-word",
+      "baseline-voice-realization",
+      "connector-stance-lexicon"
     ],
     "connectorStrategy": "causal",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.955,
-    "polarityMismatches": 1,
+    "objectCoverage": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

@@ -334,10 +334,14 @@
     "planSummary": {
       "transferMode": "compress",
       "structuralOperationsSelected": [
-        "split-rules"
+        "baseline-split",
+        "planned-sentence-split"
       ],
       "lexicalRegisterOperationsSelected": [
-        "phrase-texture"
+        "baseline-voice-realization",
+        "baseline-function-word",
+        "connector-stance-lexicon",
+        "punctuation-finish"
       ],
       "connectorStrategy": "contrastive",
       "contractionStrategy": "hold",
@@ -375,159 +379,122 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "ir-beam-search",
-        "score": 343.658,
+        "spec": "mixed-structural",
+        "score": -34.094,
         "passesApplied": [
-          "split-rules",
-          "phrase-texture"
+          "baseline-split",
+          "baseline-voice-realization",
+          "baseline-function-word",
+          "planned-sentence-split",
+          "connector-stance-lexicon",
+          "punctuation-finish",
+          "cleanup-restore"
         ],
         "rescuePasses": [],
         "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "connector-stance",
-          "lexical-register",
-          "directness",
-          "abstraction-posture",
-          "punctuation-shape"
+          "connector-stance"
         ],
-        "qualityGatePassed": true,
-        "notes": []
+        "qualityGatePassed": false,
+        "notes": [
+          "Transfer stayed too close to punctuation-only drift.",
+          "Transfer missed donor lexical/register realization."
+        ]
       },
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 343.658,
+          "score": -41.968,
           "passesApplied": [
-            "split-rules",
-            "phrase-texture"
+            "baseline-floor",
+            "clause-texture"
           ],
           "rescuePasses": [],
           "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "directness",
-            "abstraction-posture",
-            "punctuation-shape"
+            "connector-stance"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer stayed too close to punctuation-only drift.",
+            "Transfer missed donor lexical/register realization."
+          ]
         },
         {
           "spec": "mixed-structural",
-          "score": 295.044,
+          "score": -34.094,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
             "baseline-function-word",
+            "planned-sentence-split",
             "connector-stance-lexicon",
-            "contraction-auxiliary",
-            "punctuation-finish"
+            "punctuation-finish",
+            "cleanup-restore"
           ],
           "rescuePasses": [],
           "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "contraction-posture",
-            "connector-stance",
-            "abstraction-posture",
-            "punctuation-shape"
+            "connector-stance"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer stayed too close to punctuation-only drift.",
+            "Transfer missed donor lexical/register realization."
+          ]
         },
         {
           "spec": "split-heavy",
-          "score": 295.044,
+          "score": -34.094,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
             "baseline-function-word",
+            "planned-sentence-split",
             "connector-stance-lexicon",
-            "contraction-auxiliary",
-            "punctuation-finish"
+            "punctuation-finish",
+            "cleanup-restore"
           ],
           "rescuePasses": [],
           "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "contraction-posture",
-            "connector-stance",
-            "abstraction-posture",
-            "punctuation-shape"
+            "connector-stance"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer stayed too close to punctuation-only drift.",
+            "Transfer missed donor lexical/register realization."
+          ]
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 293.664,
+          "score": -35.594,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
             "baseline-function-word",
+            "planned-sentence-split",
             "connector-stance-lexicon",
-            "contraction-auxiliary"
+            "cleanup-restore"
           ],
           "rescuePasses": [],
           "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "contraction-posture",
-            "connector-stance",
-            "abstraction-posture",
-            "punctuation-shape"
+            "connector-stance"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer stayed too close to punctuation-only drift.",
+            "Transfer missed donor lexical/register realization."
+          ]
         }
       ]
     },
     "finalRealization": {
-      "text": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud retain. The user could quiet receive one-time codes but could not complete login because the system flagged the device as new and placed the account in manual review. Case number CS-88412. The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net. Which aligned account records. A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying provide was not credential mismatch. It was the fraud lock itself. The account remains inaccessible until review removes the device challenge or support performs reviewed override. The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
+      "text": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud hold. The user could still receive one-time codes but could not complete login because the system flagged the device as new but placed the account in manual review. Case number CS-88412. The customer confirmed the last four digits on file but the recovery email ending in @elmfield.net, which aligned account records. A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying issue was not credential mismatch. It was the fraud lock itself. The account remains inaccessible until review removes the device challenge or support performs verified override. The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched.",
+      "transferClass": "weak",
+      "borrowedShellOutcome": "partial",
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "directness",
-        "abstraction-posture",
-        "punctuation-shape"
+        "connector-stance"
       ],
       "lexemeSwaps": [
-        {
-          "family": "keep",
-          "from": "hold",
-          "to": "retain",
-          "kind": "lexeme"
-        },
-        {
-          "family": "quiet",
-          "from": "still",
-          "to": "quiet",
-          "kind": "lexeme"
-        },
-        {
-          "family": "give",
-          "from": "issue",
-          "to": "provide",
-          "kind": "lexeme"
-        },
-        {
-          "family": "check",
-          "from": "verified",
-          "to": "reviewed",
-          "kind": "lexeme"
-        },
         {
           "family": "match",
           "from": "matched",
@@ -536,7 +503,9 @@
         }
       ],
       "semanticRisk": 0.3,
-      "rescuePasses": [],
+      "rescuePasses": [
+        "partial-rescue"
+      ],
       "visibleShift": true,
       "nonTrivialShift": true
     },
@@ -544,7 +513,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.969,
+      "objectCoverage": 0.985,
       "polarityMismatches": 0,
       "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
@@ -559,7 +528,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 1,
           "bagScore": 0.556,
-          "globalBagScore": 0.12
+          "globalBagScore": 0.125
         },
         {
           "sourceClauseId": "s1c0",
@@ -567,11 +536,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.8,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.714,
-          "globalBagScore": 0.1
+          "bagScore": 1,
+          "globalBagScore": 0.128
         },
         {
           "sourceClauseId": "s1c1",
@@ -583,7 +552,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.061
+          "globalBagScore": 0.064
         },
         {
           "sourceClauseId": "s1c2",
@@ -595,7 +564,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.061
+          "globalBagScore": 0.064
         },
         {
           "sourceClauseId": "s2c0",
@@ -607,7 +576,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.02
+          "globalBagScore": 0.021
         },
         {
           "sourceClauseId": "s3c0",
@@ -619,10 +588,34 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.143
+          "globalBagScore": 0.149
         },
         {
           "sourceClauseId": "s4c0",
+          "matchedClauseId": "s4c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.128
+        },
+        {
+          "sourceClauseId": "s4c1",
+          "matchedClauseId": "s4c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.064
+        },
+        {
+          "sourceClauseId": "s5c0",
           "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -631,22 +624,10 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.122
+          "globalBagScore": 0.064
         },
         {
-          "sourceClauseId": "s4c1",
-          "matchedClauseId": "s5c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.061
-        },
-        {
-          "sourceClauseId": "s5c0",
+          "sourceClauseId": "s6c0",
           "matchedClauseId": "s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -655,10 +636,22 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.061
+          "globalBagScore": 0.043
         },
         {
-          "sourceClauseId": "s6c0",
+          "sourceClauseId": "s6c1",
+          "matchedClauseId": "s6c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.128
+        },
+        {
+          "sourceClauseId": "s7c0",
           "matchedClauseId": "s7c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -667,10 +660,10 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.041
+          "globalBagScore": 0.128
         },
         {
-          "sourceClauseId": "s6c1",
+          "sourceClauseId": "s7c1",
           "matchedClauseId": "s7c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -679,35 +672,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.122
-        },
-        {
-          "sourceClauseId": "s7c0",
-          "matchedClauseId": "s8c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.122
-        },
-        {
-          "sourceClauseId": "s7c1",
-          "matchedClauseId": "s8c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.02
+          "globalBagScore": 0.021
         }
       ],
       "sourceClauseCount": 13,
-      "outputClauseCount": 14
+      "outputClauseCount": 13
     },
     "protectedAnchorAudit": {
       "totalAnchors": 3,
@@ -717,8 +686,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 9,
-        "clauseCount": 14,
+        "sentenceCount": 8,
+        "clauseCount": 13,
         "literalSpans": [
           {
             "value": "@elmfield.net",
@@ -737,15 +706,15 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud retain",
+          "raw": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud hold",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud retain",
+              "text": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud hold",
               "relationToPrev": "start",
-              "clauseType": "fragment",
+              "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "progressive",
               "propositionHead": "contacted",
@@ -759,13 +728,13 @@
         },
         {
           "id": "s1",
-          "raw": "The user could quiet receive one-time codes but could not complete login because the system flagged the device as new and placed the account in manual review",
-          "rhetoricalRole": "causal",
+          "raw": "The user could still receive one-time codes but could not complete login because the system flagged the device as new but placed the account in manual review",
+          "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "The user could quiet receive one-time codes but could not complete login",
+              "text": "The user could still receive one-time codes but could not complete login",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -773,9 +742,8 @@
               "propositionHead": "could",
               "actor": "The user",
               "action": "could",
-              "object": "quiet receive one time codes",
+              "object": "receive one time codes complete",
               "modifiers": [
-                "quiet",
                 "receive"
               ],
               "hedgeMarkers": []
@@ -796,8 +764,8 @@
             },
             {
               "id": "s1c2",
-              "text": "new and placed the account in manual review",
-              "relationToPrev": "additive",
+              "text": "new but placed the account in manual review",
+              "relationToPrev": "contrastive",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
@@ -836,13 +804,13 @@
         },
         {
           "id": "s3",
-          "raw": "The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net",
-          "rhetoricalRole": "additive",
+          "raw": "The customer confirmed the last four digits on file but the recovery email ending in @elmfield.net, which aligned account records",
+          "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net",
+              "text": "The customer confirmed the last four digits on file but the recovery email ending in @elmfield.net, which aligned account records",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -858,34 +826,12 @@
         },
         {
           "id": "s4",
-          "raw": "Which aligned account records",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s4c0",
-              "text": "Which aligned account records",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "aligned",
-              "actor": "",
-              "action": "aligned",
-              "object": "account records",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s5",
-          "raw": "A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying provide was not credential mismatch",
+          "raw": "A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying issue was not credential mismatch",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s5c0",
+              "id": "s4c0",
               "text": "A prior support thread had already instructed the user to retry the reset flow",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -899,15 +845,15 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s5c1",
-              "text": "that advice did not clear the hold because the underlying provide was not credential mismatch",
+              "id": "s4c1",
+              "text": "that advice did not clear the hold because the underlying issue was not credential mismatch",
               "relationToPrev": "causal",
               "clauseType": "relative",
               "polarity": "negative",
               "tenseAspect": "present",
-              "propositionHead": "provide",
+              "propositionHead": "issue",
               "actor": "that",
-              "action": "provide",
+              "action": "issue",
               "object": "credential mismatch",
               "modifiers": [
                 "credential"
@@ -917,13 +863,13 @@
           ]
         },
         {
-          "id": "s6",
+          "id": "s5",
           "raw": "It was the fraud lock itself",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s6c0",
+              "id": "s5c0",
               "text": "It was the fraud lock itself",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -939,13 +885,13 @@
           ]
         },
         {
-          "id": "s7",
-          "raw": "The account remains inaccessible until review removes the device challenge or support performs reviewed override",
+          "id": "s6",
+          "raw": "The account remains inaccessible until review removes the device challenge or support performs verified override",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s7c0",
+              "id": "s6c0",
               "text": "The account remains inaccessible",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -961,8 +907,8 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s7c1",
-              "text": "review removes the device challenge or support performs reviewed override",
+              "id": "s6c1",
+              "text": "review removes the device challenge or support performs verified override",
               "relationToPrev": "additive",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -977,13 +923,13 @@
           ]
         },
         {
-          "id": "s8",
+          "id": "s7",
           "raw": "The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched.",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s8c0",
+              "id": "s7c0",
               "text": "The procedural risk is repeated generic guidance that makes the customer loop through the same dead path",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -1000,7 +946,7 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s8c1",
+              "id": "s7c1",
               "text": "the fraud queue stays untouched",
               "relationToPrev": "additive",
               "clauseType": "main",
@@ -1018,45 +964,14 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
+      "transferClass": "weak",
+      "borrowedShellOutcome": "partial",
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "directness",
-        "abstraction-posture",
-        "punctuation-shape"
+        "connector-stance"
       ],
       "lexemeSwaps": [
-        {
-          "family": "keep",
-          "from": "hold",
-          "to": "retain",
-          "kind": "lexeme"
-        },
-        {
-          "family": "quiet",
-          "from": "still",
-          "to": "quiet",
-          "kind": "lexeme"
-        },
-        {
-          "family": "give",
-          "from": "issue",
-          "to": "provide",
-          "kind": "lexeme"
-        },
-        {
-          "family": "check",
-          "from": "verified",
-          "to": "reviewed",
-          "kind": "lexeme"
-        },
         {
           "family": "match",
           "from": "matched",
@@ -1066,34 +981,24 @@
       ],
       "semanticRisk": 0.3,
       "realizationNotes": [
-        "5 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, directness, abstraction-posture.",
+        "1 lexical family swap landed.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
-      "rescuePasses": [],
+      "rescuePasses": [
+        "partial-rescue"
+      ],
       "visibleShift": true,
       "nonTrivialShift": true
     }
   },
   "semanticContract": {
-    "transferClass": "structural",
+    "transferClass": "weak",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
-      "abstraction-posture",
-      "connector-stance",
-      "directness",
-      "lexical-register",
-      "punctuation-shape",
-      "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "connector-stance"
     ],
     "lexemeSwapFamilies": [
-      "check",
-      "give",
-      "keep",
-      "match",
-      "quiet"
+      "match"
     ],
     "relationInventory": [
       "additive:2",
@@ -1104,17 +1009,21 @@
       "temporal:2"
     ],
     "structuralOperations": [
-      "split-rules"
+      "baseline-split",
+      "planned-sentence-split"
     ],
     "lexicalOperations": [
-      "phrase-texture"
+      "baseline-function-word",
+      "baseline-voice-realization",
+      "connector-stance-lexicon",
+      "punctuation-finish"
     ],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.969,
+    "objectCoverage": 0.985,
     "polarityMismatches": 0,
     "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1

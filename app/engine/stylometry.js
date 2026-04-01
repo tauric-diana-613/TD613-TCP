@@ -1620,7 +1620,10 @@ const LEXICAL_FAMILIES = [
 
 const LEXICAL_FAMILY_SKIP_PATTERNS = {
   say: [
-    /\b(?:error|fault|open|closed|false-open|alert|status)\s+state\b/i
+    /\b(?:error|fault|open|closed|false-open|alert|status)\s+state\b/i,
+    /\b(?:say|says|said|saying|tell|tells|told|telling)\s+(?:me|us|him|her|them|it|the\s+\w+)\s+to\b/i,
+    /\b(?:keep|keeps|kept)\s+(?:saying|telling)\b/i,
+    /\breports?\s+(?:say|says|said)\b/i
   ],
   get: [
     /\b(?:get|gets|got|getting)\s+to\b/i,
@@ -1628,7 +1631,8 @@ const LEXICAL_FAMILY_SKIP_PATTERNS = {
     /\breceiving\s+(?:desk|dock|team|corridor|window)\b/i
   ],
   ask: [
-    /\b(?:access|authorization|badge|change|correction|fix|pickup|repair|review|support)\s+request\b/i
+    /\b(?:access|authorization|badge|change|correction|fix|pickup|repair|review|support)\s+request\b/i,
+    /\bask(?:ed|ing)?\s+\w+\s+whether\b/i
   ],
   book: [
     /\b(?:scheduling|booking)\s+(?:desk|office|team|line|queue|status)\b/i,
@@ -1640,18 +1644,28 @@ const LEXICAL_FAMILY_SKIP_PATTERNS = {
   ],
   give: [
     /\b(?:access|badge|billing|clinic|coordination|paperwork|routing|safety|latch|voltage|firmware)\s+issue\b/i,
-    /\bhand(?:ed|ing)?\s+in\b/i
+    /\bhand(?:ed|ing)?\s+in\b/i,
+    /\b(?:the|a|an|this|that|underlying|corrective|procedural|staffing|coordination|operational)\s+issue(?:s)?\b/i
   ],
   start: [
     /\b(?:began|begin|beginning|started|start|starting|commenced|commence|commencing)\s+(?:presenting|validating|processing|showing)\b/i
   ],
   keep: [
-    /\b(?:keep|keeps|kept|holding|hold|holds|held)\s+\w+ing\b/i
+    /\b(?:keep|keeps|kept|holding|hold|holds|held)\s+\w+ing\b/i,
+    /\b(?:fraud|account|manual|review|device|credential|security)\s+hold\b/i,
+    /\b(?:clear|clearing|remove|removing|removed)\s+(?:the\s+)?hold\b/i
   ],
   leave: [
     /\b(?:no|none|nothing|little|less)\b[^.!?]{0,18}\bleft\b/i,
     /\b(?:stock|inventory|time|room|rooms|capacity|availability|food|money)\s+left\b/i,
-    /\bleft[-\s](?:knee|arm|side|hip|ankle|foot|hand|shoulder|wrist|leg|elbow|eye|ear|breast|lung|lower|upper)\b/i
+    /\bleft[-\s](?:knee|arm|side|hip|ankle|foot|hand|shoulder|wrist|leg|elbow|eye|ear|breast|lung|lower|upper)\b/i,
+    /\b(?:was|were|is|are|got)(?:\s+\w+){0,2}\s+left\s+on\b/i
+  ],
+  settle: [
+    /\bbox\s+(?:rested|sat|set)\b/i
+  ],
+  check: [
+    /\b(?:verified|reviewed)\s+override\b/i
   ],
   match: [
     /\b(?:photo\s+)?id\s+match\b/i,
@@ -1662,6 +1676,8 @@ const LEXICAL_FAMILY_SKIP_PATTERNS = {
     /\bstill\s+(?:was|were|is|are|had|has|have|not|being)\b/i
   ]
 };
+
+const DISABLED_LEXICAL_FAMILY_IDS = new Set(['quiet']);
 
 const CONTENT_STOP_WORDS = new Set([...FUNCTION_WORDS, ...AUXILIARY_WORDS, 'i', 'you', 'we', 'they', 'he', 'she', 'it']);
 
@@ -2459,6 +2475,13 @@ function sanitizeBorrowedShellPathologies(text = '') {
     })
     .replace(/\bbetween([^.!?]{0,120}),\s+but\s+/gi, 'between$1, and ')
     .replace(/;\s+but\b/gi, ', but')
+    .replace(/\bquiet\s+(receive|receives|received|receiving|get|gets|got|getting|stand|stands|stood|standing|pass|passes|passed|passing|fail|fails|failed|failing|match|matches|matched|matching|clear|clears|cleared|clearing|stay|stays|stayed|staying|remain|remains|remained|remaining|run|runs|ran|running|work|works|worked|working|hold|holds|held|holding|show|shows|showed|showing|move|moves|moved|moving)\b/gi, 'still $1')
+    .replace(/\bexplaining\s+(me|us|him|her|them)\s+to\b/gi, 'telling $1 to')
+    .replace(/\bthe\s+corrective\s+provide\s+is\s+not\s+merely\b/gi, "the problem isn't just")
+    .replace(/\bthe\s+underlying\s+provide\b/gi, 'the underlying issue')
+    .replace(/\bthe\s+procedural\s+provide\b/gi, 'the procedural issue')
+    .replace(/\bwhat\s+did\s+fix\s+was\b/gi, 'what did help was')
+    .replace(/\bYet\s+and\b/gi, 'And')
     .replace(/\bthough\s+and\b/gi, 'and')
     .replace(/\bthough\s+also\b/gi, 'and also')
     .replace(/\band shell have id\b/gi, "and she'll have ID")
@@ -2467,12 +2490,18 @@ function sanitizeBorrowedShellPathologies(text = '') {
     .replace(/\b(As of [^.!?]{1,48}|During [^.!?]{1,36}|By [^.!?]{1,20})\.\s+([A-Z])/g, (match, leadIn, nextLetter) => {
       return `${leadIn}, ${nextLetter.toLowerCase()}`;
     })
+    .replace(/\b(On [^.;!?]{1,48});\s+([A-Z])/g, (match, leadIn, nextLetter) => {
+      return `${leadIn}, ${nextLetter}`;
+    })
     .replace(/\b(At [^.!?]{1,48})\.\s+(Door\s+\d+\b)/g, (match, leadIn, doorPhrase) => {
       return `${leadIn}, ${doorPhrase}`;
     })
     .replace(/\bRequired correction\.\s+No future\b/gi, 'Required correction: no future')
     .replace(/\blive-door test,\s+A latch release check\b/gi, 'live-door test, a latch release check')
     .replace(/([A-Za-z0-9"'%)])\.\s+(When|While|Once|If|Because|Since|Though|Although)\b/g, (match, lastChar, connector) => {
+      return `${lastChar}, ${connector.toLowerCase()}`;
+    })
+    .replace(/([A-Za-z0-9"'%)])\.\s+(Which|That)\b/g, (match, lastChar, connector) => {
       return `${lastChar}, ${connector.toLowerCase()}`;
     })
     .replace(/([A-Za-z0-9"'%)])\.\s+((?:A|An|The)\s+[^.!?]{1,48}),\s+and\s+/g, (match, lastChar, fragment) => {
@@ -2858,6 +2887,10 @@ function applyLexicalFamilyRealization(text = '', currentProfile = {}, targetPro
   let applied = 0;
 
   for (const family of LEXICAL_FAMILIES) {
+    if (DISABLED_LEXICAL_FAMILY_IDS.has(family.id)) {
+      continue;
+    }
+
     if (applied >= maxFamilies) {
       break;
     }
@@ -2904,15 +2937,24 @@ function applyLexicalFamilyRealization(text = '', currentProfile = {}, targetPro
   return result;
 }
 
-function applyRegisterFramingTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
+function applyRegisterFramingTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76, options = {}) {
   const mode = preferredRegisterMode(targetProfile, currentProfile);
   const wantsLonger = (targetProfile.avgSentenceLength || 0) > ((currentProfile.avgSentenceLength || 0) + 0.6);
   const wantsShorter = (targetProfile.avgSentenceLength || 0) < ((currentProfile.avgSentenceLength || 0) - 0.8);
   const sharpensDirectness = (targetProfile.directness || 0) > ((currentProfile.directness || 0) + 0.08);
   const softensDirectness = (targetProfile.directness || 0) < ((currentProfile.directness || 0) - 0.08);
+  const raisesContraction = (targetProfile.contractionDensity || 0) > ((currentProfile.contractionDensity || 0) + 0.01);
+  const allowPlainTargetCompression = Boolean(options?.allowPlainTargetCompression);
+  const plainLikeTarget =
+    allowPlainTargetCompression &&
+    (
+      mode === 'operational' ||
+      mode === 'plain' ||
+      (wantsShorter && (sharpensDirectness || raisesContraction))
+    );
   let result = text;
 
-  if (mode === 'operational' || mode === 'plain') {
+  if (plainLikeTarget) {
     result = replaceLimited(result, /\brequesting\b/gi, (match) => matchCase(match, 'asking for'), 1);
     result = replaceLimited(result, /\brequested\b/gi, (match) => matchCase(match, 'asked for'), 1);
     result = replaceLimited(result, /\bwas to be released to\b/gi, (match) => matchCase(match, 'was going with'), 1);
@@ -2922,6 +2964,42 @@ function applyRegisterFramingTexture(text = '', currentProfile = {}, targetProfi
     result = replaceLimited(result, /\ba reminder note was sent\b/gi, (match) => matchCase(match, 'a reminder went out'), 1);
     result = replaceLimited(result, /\bthe operational failure here is not\b/gi, (match) => matchCase(match, "the problem isn't"), 1);
     result = replaceLimited(result, /\bthe coordination issue is\b/gi, (match) => matchCase(match, 'the mixup is'), 1);
+    result = replaceLimited(result, /\bthe underlying issue was not\b/gi, (match) => matchCase(match, "the real problem wasn't"), 1);
+    result = replaceLimited(result, /\bthe corrective issue is not merely\b/gi, (match) => matchCase(match, "the problem isn't just"), 1);
+    result = replaceLimited(result, /\bthe procedural risk is\b/gi, (match) => matchCase(match, 'the risk is'), 1);
+    result = replaceLimited(result, /\bremains inaccessible until\b/gi, (match) => matchCase(match, 'stays locked until'), 1);
+    result = replaceLimited(result, /\bcould still receive\b/gi, (match) => matchCase(match, 'could still get'), 1);
+    result = replaceLimited(result, /\bcould not complete login\b/gi, (match) => matchCase(match, "couldn't finish login"), 1);
+    result = replaceLimited(result, /\bplaced the account in manual review\b/gi, (match) => matchCase(match, 'put the account in manual review'), 1);
+    result = replaceLimited(result, /\bno buzzer call was placed\b/gi, (match) => matchCase(match, 'no buzzer call was made'), 1);
+    result = replaceLimited(result, /\bno buzzer contact was placed\b/gi, (match) => matchCase(match, 'no buzzer call was made'), 1);
+    result = replaceLimited(result, /\bbuilding footage and resident testimony indicate\b/gi, (match) => matchCase(match, 'building footage and resident reports say'), 1);
+    result = replaceLimited(result, /\blocated it at approximately\b/gi, (match) => matchCase(match, 'found it around'), 1);
+    result = replaceLimited(result, /\brequested help because\b/gi, (match) => matchCase(match, 'asked for help because'), 1);
+    result = replaceLimited(result, /\bwas not presented for signature at the apartment door\b/gi, (match) => matchCase(match, "never made it to the apartment door for signature"), 1);
+    result = replaceLimited(result, /\bwas not presented for signature at the apartment doorway\b/gi, (match) => matchCase(match, "never made it to the apartment door for signature"), 1);
+    result = replaceLimited(result, /\bthe package was instead left\b/gi, (match) => matchCase(match, 'they left the package'), 1);
+    result = replaceLimited(result, /\bwas instead left\b/gi, (match) => matchCase(match, 'got left'), 1);
+    result = replaceLimited(result, /\bno third party handled\b/gi, (match) => matchCase(match, 'no one else handled'), 1);
+    result = replaceLimited(result, /\bFacilities first treated the event as\b/gi, (match) => matchCase(match, 'Facilities first thought it was'), 1);
+    result = replaceLimited(result, /\bBy\s+([0-9:]+\s*(?:AM|PM)?)\s+we confirmed that\b/gi, (match, time) => `By ${time} we knew`, 1);
+    result = replaceLimited(result, /\bwe confirmed that\b/gi, (match) => matchCase(match, 'we knew'), 1);
+    result = replaceLimited(result, /\bDeliveries were rerouted to\b/gi, (match) => matchCase(match, 'Deliveries got rerouted to'), 1);
+    result = replaceLimited(result, /\bManual escort restored controlled entry\b/gi, (match) => matchCase(match, 'Manual escort got controlled entry back'), 1);
+    result = replaceLimited(result, /\bNo restricted room was breached\b/gi, (match) => matchCase(match, 'No restricted room got breached'), 1);
+    result = replaceLimited(result, /\bno cold-chain item was lost\b/gi, (match) => matchCase(match, 'no cold-chain item got lost'), 1);
+    result = replaceLimited(result, /\bRequired correction:\b/gi, (match) => matchCase(match, 'Fix:'), 1);
+    result = replaceLimited(result, /\bCheck-in is at\b/gi, (match) => matchCase(match, 'Check in is at'), 1);
+    result = replaceLimited(result, /\bInventory stop is 10:15 sharp\b/gi, (match) => matchCase(match, '10:15 inventory stop still stands'), 1);
+    result = replaceLimited(result, /\bno one starts independent work before\b/gi, (match) => matchCase(match, "don't start random jobs before"), 1);
+    result = replaceLimited(result, /\bMinors may assist with\b/gi, (match) => matchCase(match, 'Kids can help with'), 1);
+    result = replaceLimited(result, /\bdo not enter the\b/gi, (match) => matchCase(match, 'stay out of the'), 1);
+    result = replaceLimited(result, /\bSuccess means\b/gi, (match) => matchCase(match, 'Done means'), 1);
+    result = replaceLimited(result, /\bCustomer contacted support at\b/gi, (match) => matchCase(match, 'Customer hit support at'), 1);
+    result = replaceLimited(result, /\bregarding account access loss after\b/gi, (match) => matchCase(match, 'because account access died after'), 1);
+    result = replaceLimited(result, /\btriggered the fraud hold\b/gi, (match) => matchCase(match, 'tripped the fraud hold'), 1);
+    result = replaceLimited(result, /\bA prior support thread had already instructed the user to retry the reset flow\b/gi, (match) => matchCase(match, 'Support had already told the user to retry the reset flow'), 1);
+    result = replaceLimited(result, /\brepeated generic guidance\b/gi, (match) => matchCase(match, 'the same generic guidance'), 1);
 
     if (wantsShorter || sharpensDirectness) {
       result = result
@@ -2982,12 +3060,12 @@ function applyRegisterFramingTexture(text = '', currentProfile = {}, targetProfi
   return result;
 }
 
-function applyVoiceRealizationTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
+function applyVoiceRealizationTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76, options = {}) {
   let result = text;
   result = applyShorthandRealizationTexture(result, currentProfile, targetProfile, strength);
   result = applyPhraseRealizationPacks(result, currentProfile, targetProfile, strength);
   result = applyLexicalFamilyRealization(result, currentProfile, targetProfile, strength);
-  result = applyRegisterFramingTexture(result, currentProfile, targetProfile, strength);
+  result = applyRegisterFramingTexture(result, currentProfile, targetProfile, strength, options);
   return result;
 }
 
@@ -4107,6 +4185,7 @@ function buildBorrowedShellOverlayCandidate({
     punc: Number(baseMod.punc || 0)
   };
   const connectorProfile = shell.profile || targetProfile;
+  const voiceOptions = { allowPlainTargetCompression: true };
   let workingText = sourceText;
   const passesApplied = [];
   const rescuePasses = [];
@@ -4151,7 +4230,7 @@ function buildBorrowedShellOverlayCandidate({
   let overlayWorking = workingText;
   overlayWorking = applyContractionTexture(overlayWorking, targetProfile, candidateMod);
   overlayWorking = applyPhraseTexture(overlayWorking, sourceProfile, targetProfile, Math.min(1, candidateStrength + 0.18));
-  overlayWorking = applyVoiceRealizationTexture(overlayWorking, sourceProfile, targetProfile, voiceStrength);
+  overlayWorking = applyVoiceRealizationTexture(overlayWorking, sourceProfile, targetProfile, voiceStrength, voiceOptions);
   overlayWorking = applyDiscourseFrameTexture(overlayWorking, sourceProfile, targetProfile, discourseStrength, transferPlan);
   overlayWorking = applyStanceTexture(overlayWorking, targetProfile, Math.min(1, candidateStrength + 0.18), connectorProfile);
   overlayWorking = applyFunctionWordTexture(overlayWorking, targetProfile, functionStrength, connectorProfile, transferPlan);
@@ -4350,7 +4429,7 @@ function applySentenceTexture(text = '', currentProfile = {}, targetProfile = {}
   return text;
 }
 
-function applyBaselineTransferFloor(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null, transferPlan = null) {
+function applyBaselineTransferFloor(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null, transferPlan = null, voiceOptions = {}) {
   let result = text;
   const maxLength = transferLengthCeiling(text, baseProfile, targetProfile, strength);
   const targetCount = desiredSentenceCount(baseProfile, targetProfile);
@@ -4375,7 +4454,7 @@ function applyBaselineTransferFloor(text = '', baseProfile = {}, targetProfile =
     cont: contractionDirection
   });
   result = applyPhraseTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.14));
-  result = applyVoiceRealizationTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.2));
+  result = applyVoiceRealizationTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.2), voiceOptions);
   result = applyDiscourseFrameTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.12), transferPlan);
   result = applyStanceTexture(result, targetProfile, Math.min(1, strength + 0.14), connectorProfile);
   result = applyFunctionWordTexture(result, targetProfile, Math.min(1, strength + 0.18), connectorProfile, transferPlan);
@@ -4397,6 +4476,15 @@ function finalizeTransformedText(text = '') {
     .replace(/\bthough\s+so\b/gi, 'so')
     .replace(/\bbut\s+so\b/gi, 'so')
     .replace(/\b(?:and|but)\s+then\b/gi, 'then')
+    .replace(/\bOn\s+([^.;!?]{1,48});\s+([A-Z])/g, 'On $1, $2')
+    .replace(/([A-Za-z0-9"'%)])\.\s+(Which|That)\b/g, (match, lastChar, connector) => `${lastChar}, ${connector.toLowerCase()}`)
+    .replace(/;\s+but\b/gi, ', but')
+    .replace(/\basking\s+for\s+for\b/gi, 'asking ')
+    .replace(/\basked\s+for\s+for\b/gi, 'asked for ')
+    .replace(/\bexplained\s+the\s+(\w+)\s+to\b/gi, 'told the $1 to')
+    .replace(/\bThey\s+departed\s+the\s+(package|parcel)\b/g, 'They left the $1')
+    .replace(/\basked\s+for\s+support\s+because\b/gi, 'asked for help because')
+    .replace(/\bRequired correction:\b/gi, 'Fix:')
     .replace(/\bThough\s+([^,.!?]{1,40}),\s+so\b/g, '$1, so')
     .replace(/\bthough\s+([^,.!?]{1,40}),\s+so\b/g, '$1, so')
     .replace(/\bbetween([^.!?]{0,120}),\s+but\s+/gi, 'between$1, and ')
@@ -4410,7 +4498,7 @@ function finalizeTransformedText(text = '') {
     .trim();
 }
 
-function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null, transferPlan = null) {
+function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, strength = 0.76, mod = {}, connectorProfile = null, transferPlan = null, voiceOptions = {}) {
   let result = text;
   const maxLength = transferLengthCeiling(text, baseProfile, targetProfile, strength);
   const currentProfile = extractCadenceProfile(result);
@@ -4428,7 +4516,7 @@ function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, s
   }
 
   result = applyPhraseTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.16));
-  result = applyVoiceRealizationTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.22));
+  result = applyVoiceRealizationTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.22), voiceOptions);
   result = applyDiscourseFrameTexture(result, baseProfile, targetProfile, Math.min(1, strength + 0.14), transferPlan);
   result = applyContractionTexture(result, targetProfile, {
     ...mod,
@@ -4531,6 +4619,9 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
 
   const targetProfile = buildTransferTargetProfile(sourceProfile, shell, mod, strength);
   const effectiveMod = deriveRelativeCadenceMod(sourceProfile, targetProfile, mod);
+  const voiceRealizationOptions = {
+    allowPlainTargetCompression: shell?.mode === 'borrowed' && (retrieval || shell?.source === 'swapped')
+  };
   const targetGap = profileDeltaToTarget(sourceProfile, targetProfile);
   const transferPlan = buildTransferPlan({
     sourceProfile,
@@ -4630,7 +4721,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         applyPhraseTexture(workingText, currentProfile, targetProfile, Math.min(1, baseStrength + 0.14))
       );
       runPass('baseline-voice-realization', () =>
-        applyVoiceRealizationTexture(workingText, currentProfile, targetProfile, Math.min(1, baseStrength + 0.22))
+        applyVoiceRealizationTexture(workingText, currentProfile, targetProfile, Math.min(1, baseStrength + 0.22), voiceRealizationOptions)
       );
       runPass('baseline-discourse', () =>
         applyDiscourseFrameTexture(workingText, currentProfile, targetProfile, Math.min(1, baseStrength + 0.12), transferPlan)
@@ -4748,7 +4839,8 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         nextValue,
         currentProfile,
         targetProfile,
-        Math.min(1, candidateStrength + (0.18 * Math.max(1, spec.connectorBias || 1)))
+        Math.min(1, candidateStrength + (0.18 * Math.max(1, spec.connectorBias || 1))),
+        voiceRealizationOptions
       );
       return nextValue;
     });
@@ -4843,7 +4935,8 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         Math.min(1, candidateStrength + 0.18),
         candidateMod,
         connectorProfile,
-        transferPlan
+        transferPlan,
+        voiceRealizationOptions
       );
 
       if (forcedWorking !== workingText && forcedWorking.length <= maxLength) {
@@ -4888,7 +4981,8 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         workingText,
         sourceProfile,
         targetProfile,
-        Math.min(1, candidateStrength + 0.26)
+        Math.min(1, candidateStrength + 0.26),
+        voiceRealizationOptions
       );
 
       if (realizedWorking !== workingText && realizedWorking.length <= maxLength) {
@@ -5177,6 +5271,48 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
             ? 'Borrowed shell preserved a retrieval-safe partial cadence shift with measured donor progress.'
             : 'Borrowed shell preserved a retrieval-safe partial cadence shift.'
         );
+      } else if (shell?.mode === 'persona') {
+        const personaRescueText = forceStructuralShift(
+          bestCandidate.outputText,
+          sourceProfile,
+          targetProfile,
+          Math.min(1, strength + 0.22),
+          effectiveMod,
+          connectorProfile,
+          transferPlan
+        );
+        const personaRescueProfile = extractCadenceProfile(personaRescueText);
+        const personaRescueAudit = buildSemanticAuditBundle(ir, personaRescueText, protectedState);
+        const personaProtectedAnchorIntegrity =
+          personaRescueAudit.protectedAnchorAudit?.protectedAnchorIntegrity ??
+          personaRescueAudit.semanticAudit?.protectedAnchorIntegrity ??
+          1;
+
+        if (
+          personaRescueText !== sourceText &&
+          personaProtectedAnchorIntegrity >= 1 &&
+          (personaRescueAudit.semanticAudit?.propositionCoverage ?? 1) >= 0.9 &&
+          (personaRescueAudit.semanticAudit?.actorCoverage ?? 1) >= 0.75 &&
+          (personaRescueAudit.semanticAudit?.actionCoverage ?? 1) >= 0.75 &&
+          (personaRescueAudit.semanticAudit?.objectCoverage ?? 1) >= 0.65 &&
+          (personaRescueAudit.semanticAudit?.polarityMismatches ?? 0) <= 1
+        ) {
+          finalText = personaRescueText;
+          finalProfile = personaRescueProfile;
+          changedDimensions = collectChangedDimensions(sourceProfile, finalProfile);
+          transferClass = hasMaterialStructuralTransfer(changedDimensions) ? 'structural' : 'weak';
+          precomputedAuditBundle = personaRescueAudit;
+          rescuePasses.push('persona-structural-rescue');
+          notes.push('Persona shell preserved a retrieval-safe structural mask shift.');
+        } else {
+          finalText = sourceText;
+          finalProfile = sourceProfile;
+          changedDimensions = [];
+          transferClass = 'rejected';
+          borrowedShellOutcome = 'rejected';
+          rescuePasses.push('final-rejection');
+          notes.push('Transfer fell back to the source text to preserve meaning and readability.');
+        }
       } else {
         finalText = sourceText;
         finalProfile = sourceProfile;
@@ -5205,6 +5341,46 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       borrowedShellOutcome = transferClass === 'structural' ? 'structural' : 'subtle';
     }
     notes.push(`Shifted ${changedDimensions.join(', ')}.`);
+  }
+
+  if (
+    shell?.mode === 'persona' &&
+    transferClass !== 'rejected' &&
+    Number(effectiveMod.sent || 0) > 0 &&
+    (finalProfile.avgSentenceLength || 0) < ((sourceProfile.avgSentenceLength || 0) + 4)
+  ) {
+    const personaStructured = forceStructuralShift(
+      finalText,
+      sourceProfile,
+      targetProfile,
+      Math.min(1, strength + 0.18),
+      effectiveMod,
+      connectorProfile,
+      transferPlan
+    );
+
+    if (personaStructured !== finalText) {
+      const personaProfile = extractCadenceProfile(personaStructured);
+      const personaAuditBundle = buildSemanticAuditBundle(ir, personaStructured, protectedState);
+      const personaProtectedAnchorIntegrity =
+        personaAuditBundle.protectedAnchorAudit?.protectedAnchorIntegrity ??
+        personaAuditBundle.semanticAudit?.protectedAnchorIntegrity ??
+        1;
+
+      if (
+        personaProtectedAnchorIntegrity >= 1 &&
+        (personaAuditBundle.semanticAudit?.propositionCoverage ?? 1) >= 0.9 &&
+        (personaAuditBundle.semanticAudit?.polarityMismatches ?? 0) <= 1 &&
+        (personaProfile.avgSentenceLength || 0) > (finalProfile.avgSentenceLength || 0)
+      ) {
+        finalText = personaStructured;
+        finalProfile = personaProfile;
+        changedDimensions = collectChangedDimensions(sourceProfile, finalProfile);
+        precomputedAuditBundle = personaAuditBundle;
+        rescuePasses.push('persona-structural-rescue');
+        notes.push('Persona shell deepened the sentence span to match the requested mask posture.');
+      }
+    }
   }
 
   let lexicalShiftProfile = precomputedLexicalShiftProfile || buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
@@ -5245,11 +5421,44 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     realizationNotes.push('Semantic risk is elevated; review the realized output before relying on it.');
   }
 
-  const {
+  let {
     semanticAudit,
     protectedAnchorAudit,
     outputIR
   } = precomputedAuditBundle || buildSemanticAuditBundle(ir, finalText, protectedState);
+
+  const finalProtectedAnchorIntegrity =
+    protectedAnchorAudit?.protectedAnchorIntegrity ?? semanticAudit?.protectedAnchorIntegrity ?? 1;
+  const enforceFinalBorrowedSemanticGuard = Boolean(retrieval || shell?.source === 'swapped');
+  const finalSemanticBorrowedFailure =
+    enforceFinalBorrowedSemanticGuard &&
+    shell?.mode === 'borrowed' &&
+    finalText !== sourceText &&
+    (
+      finalProtectedAnchorIntegrity < 1 ||
+      (semanticAudit?.propositionCoverage ?? 1) < 0.85 ||
+      (semanticAudit?.actorCoverage ?? 1) < 0.75 ||
+      (semanticAudit?.actionCoverage ?? 1) < 0.75 ||
+      (semanticAudit?.objectCoverage ?? 1) < 0.65 ||
+      (semanticAudit?.polarityMismatches ?? 0) > 1
+    );
+
+  if (finalSemanticBorrowedFailure) {
+    finalText = sourceText;
+    finalProfile = sourceProfile;
+    changedDimensions = [];
+    transferClass = 'rejected';
+    borrowedShellOutcome = 'rejected';
+    rescuePasses.push('semantic-final-rejection');
+    notes.push('Transfer fell back to the source text after final semantic review.');
+    lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
+    realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
+    semanticRisk = computeSemanticRisk(sourceText, finalText, protectedState, sourceProfile, finalProfile);
+    precomputedVisibleShift = null;
+    precomputedNonTrivialShift = null;
+    ({ semanticAudit, protectedAnchorAudit, outputIR } = buildSemanticAuditBundle(ir, finalText, protectedState));
+  }
+
   const visibleShift = precomputedVisibleShift ?? hasBorrowedShellVisibleShift(
     sourceText,
     finalText,

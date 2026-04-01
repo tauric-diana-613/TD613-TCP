@@ -212,7 +212,8 @@
         "structural-rescue"
       ],
       "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization"
+        "baseline-voice-realization",
+        "connector-stance-rescue"
       ],
       "connectorStrategy": "contrastive",
       "contractionStrategy": "hold",
@@ -251,7 +252,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 234.356,
+        "score": 201.068,
         "passesApplied": [
           "baseline-merge",
           "baseline-voice-realization",
@@ -259,10 +260,12 @@
           "sentence-structure",
           "clause-join-split",
           "cleanup-restore",
-          "structural-rescue"
+          "structural-rescue",
+          "connector-stance-rescue"
         ],
         "rescuePasses": [
-          "structural-rescue"
+          "structural-rescue",
+          "connector-stance-rescue"
         ],
         "changedDimensions": [
           "sentence-mean",
@@ -270,7 +273,6 @@
           "sentence-spread",
           "connector-stance",
           "lexical-register",
-          "content-word-complexity",
           "modifier-density",
           "directness",
           "punctuation-shape"
@@ -283,7 +285,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 228.098,
+          "score": 193.31,
           "passesApplied": [
             "merge-pairs",
             "clause-texture"
@@ -295,7 +297,6 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "modifier-density",
             "directness",
             "punctuation-shape"
@@ -307,7 +308,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 234.356,
+          "score": 201.068,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -315,10 +316,12 @@
             "sentence-structure",
             "clause-join-split",
             "cleanup-restore",
-            "structural-rescue"
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue"
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -326,7 +329,6 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "modifier-density",
             "directness",
             "punctuation-shape"
@@ -338,7 +340,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 234.356,
+          "score": 201.068,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -346,10 +348,12 @@
             "sentence-structure",
             "clause-join-split",
             "cleanup-restore",
-            "structural-rescue"
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue"
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -357,7 +361,6 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "modifier-density",
             "directness",
             "punctuation-shape"
@@ -369,7 +372,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 234.356,
+          "score": 201.068,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -377,10 +380,12 @@
             "sentence-structure",
             "clause-join-split",
             "cleanup-restore",
-            "structural-rescue"
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue"
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -388,7 +393,6 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "modifier-density",
             "directness",
             "punctuation-shape"
@@ -400,7 +404,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 234.356,
+          "score": 201.068,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -408,10 +412,12 @@
             "sentence-structure",
             "clause-join-split",
             "cleanup-restore",
-            "structural-rescue"
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue"
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -419,7 +425,6 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "modifier-density",
             "directness",
             "punctuation-shape"
@@ -432,7 +437,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Acct quiet locked, but can receive the code but login dies at fraud review every time. Case CS-88412 - and support keeps explaining reset again even tho reset isnt the problem. Last 4, recovery email align. And need someone to clear retain not forward same script.",
+      "text": "Acct still locked, but can receive the code but login dies at fraud review every time - case CS-88412. And support keeps saying reset again even tho reset isnt the problem. Last 4, recovery email align. And need someone to clear hold not forward same script.",
       "transferClass": "weak",
       "borrowedShellOutcome": "partial",
       "borrowedShellFailureClass": null,
@@ -443,34 +448,15 @@
         "sentence-spread",
         "connector-stance",
         "lexical-register",
-        "content-word-complexity",
         "modifier-density",
         "directness",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
         {
-          "family": "say",
-          "from": "saying",
-          "to": "explaining",
-          "kind": "lexeme"
-        },
-        {
           "family": "get",
           "from": "get",
           "to": "receive",
-          "kind": "lexeme"
-        },
-        {
-          "family": "keep",
-          "from": "keeps",
-          "to": "retain",
-          "kind": "lexeme"
-        },
-        {
-          "family": "quiet",
-          "from": "still",
-          "to": "quiet",
           "kind": "lexeme"
         },
         {
@@ -489,6 +475,7 @@
       "semanticRisk": 0.3,
       "rescuePasses": [
         "structural-rescue",
+        "connector-stance-rescue",
         "progress-admit"
       ],
       "visibleShift": true,
@@ -498,14 +485,14 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.925,
+      "objectCoverage": 0.958,
       "polarityMismatches": 0,
       "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -524,11 +511,23 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 1,
-          "bagScore": 0.2,
-          "globalBagScore": 0.083
+          "bagScore": 0.167,
+          "globalBagScore": 0.08
         },
         {
           "sourceClauseId": "s2c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0.048
+        },
+        {
+          "sourceClauseId": "s3c0",
           "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -537,19 +536,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.05
-        },
-        {
-          "sourceClauseId": "s3c0",
-          "matchedClauseId": "s1c0+s1c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.8,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.667,
-          "globalBagScore": 0.286
+          "globalBagScore": 0.333
         },
         {
           "sourceClauseId": "s4c0",
@@ -561,7 +548,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.05
+          "globalBagScore": 0.048
         },
         {
           "sourceClauseId": "s5c0",
@@ -573,11 +560,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.3
+          "globalBagScore": 0.286
         }
       ],
       "sourceClauseCount": 6,
-      "outputClauseCount": 5
+      "outputClauseCount": 4
     },
     "protectedAnchorAudit": {
       "totalAnchors": 2,
@@ -588,7 +575,7 @@
     "realizedIR": {
       "metadata": {
         "sentenceCount": 4,
-        "clauseCount": 5,
+        "clauseCount": 4,
         "literalSpans": [
           {
             "value": "CS-88412",
@@ -603,13 +590,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Acct quiet locked, but can receive the code but login dies at fraud review every time",
+          "raw": "Acct still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Acct quiet locked, but can receive the code but login dies at fraud review every time",
+              "text": "Acct still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -617,9 +604,8 @@
               "propositionHead": "review",
               "actor": "the code",
               "action": "review",
-              "object": "every time",
+              "object": "every time case cs 88412",
               "modifiers": [
-                "quiet",
                 "receive"
               ],
               "hedgeMarkers": []
@@ -628,35 +614,21 @@
         },
         {
           "id": "s1",
-          "raw": "Case CS-88412 - and support keeps explaining reset again even tho reset isnt the problem",
+          "raw": "And support keeps saying reset again even tho reset isnt the problem",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "Case CS-88412",
+              "text": "And support keeps saying reset again even tho reset isnt the problem",
               "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "case",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s1c1",
-              "text": "and support keeps explaining reset again even tho reset isnt the problem",
-              "relationToPrev": "additive",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "keeps",
               "actor": "the problem",
               "action": "keeps",
-              "object": "explaining reset again even tho",
+              "object": "saying reset again even tho",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -686,21 +658,21 @@
         },
         {
           "id": "s3",
-          "raw": "And need someone to clear retain not forward same script.",
+          "raw": "And need someone to clear hold not forward same script.",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "And need someone to clear retain not forward same script",
+              "text": "And need someone to clear hold not forward same script",
               "relationToPrev": "start",
-              "clauseType": "fragment",
+              "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "past",
               "propositionHead": "need",
               "actor": "",
               "action": "need",
-              "object": "someone clear retain forward same",
+              "object": "someone clear hold forward same",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -719,34 +691,15 @@
         "sentence-spread",
         "connector-stance",
         "lexical-register",
-        "content-word-complexity",
         "modifier-density",
         "directness",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
         {
-          "family": "say",
-          "from": "saying",
-          "to": "explaining",
-          "kind": "lexeme"
-        },
-        {
           "family": "get",
           "from": "get",
           "to": "receive",
-          "kind": "lexeme"
-        },
-        {
-          "family": "keep",
-          "from": "keeps",
-          "to": "retain",
-          "kind": "lexeme"
-        },
-        {
-          "family": "quiet",
-          "from": "still",
-          "to": "quiet",
           "kind": "lexeme"
         },
         {
@@ -764,12 +717,13 @@
       ],
       "semanticRisk": 0.3,
       "realizationNotes": [
-        "6 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, content-word-complexity, modifier-density, directness.",
+        "3 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, modifier-density, directness.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
         "structural-rescue",
+        "connector-stance-rescue",
         "progress-admit"
       ],
       "visibleShift": true,
@@ -781,7 +735,6 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "connector-stance",
-      "content-word-complexity",
       "directness",
       "lexical-register",
       "modifier-density",
@@ -792,10 +745,7 @@
     ],
     "lexemeSwapFamilies": [
       "get",
-      "keep",
       "match",
-      "quiet",
-      "say",
       "send"
     ],
     "relationInventory": [
@@ -814,14 +764,15 @@
       "structural-rescue"
     ],
     "lexicalOperations": [
-      "baseline-voice-realization"
+      "baseline-voice-realization",
+      "connector-stance-rescue"
     ],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.925,
+    "objectCoverage": 0.958,
     "polarityMismatches": 0,
     "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1

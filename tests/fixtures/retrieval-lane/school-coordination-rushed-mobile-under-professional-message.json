@@ -265,7 +265,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 143.774,
+          "score": 144.872,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -297,7 +297,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 143.774,
+          "score": 144.872,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -329,7 +329,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 143.774,
+          "score": 144.872,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -393,7 +393,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Hi office - aunt maribel has to do pickup today not grandma. And she'll have ID, and I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help. Sorry for late shift",
+      "text": "Hi office - aunt maribel has to do pickup today not grandma. And she'll have ID; and I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help. Sorry for late shift",
       "transferClass": "weak",
       "borrowedShellOutcome": "partial",
       "borrowedShellFailureClass": null,
@@ -538,7 +538,7 @@
         },
         {
           "id": "s1",
-          "raw": "And she'll have ID, and I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help",
+          "raw": "And she'll have ID; and I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
@@ -558,7 +558,7 @@
             },
             {
               "id": "s1c1",
-              "text": "I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help",
+              "text": "and I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help",
               "relationToPrev": "contrastive",
               "clauseType": "main",
               "polarity": "positive",

@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-01T22:19:14.363Z
+Generated: 2026-04-01T23:08:20.224Z
 
 Corpus: 48 samples across 12 families
 Promoted deck subset: 16 samples
@@ -8,44 +8,44 @@ Total diagnostics cases: 160
 
 ## Failure Buckets
 
-- semantic_drift: 49
-- over_flattened_output: 25
-- trainer_retrieval_fail: 22
-- false_neighbor_convergence: 19
-- sentence_span_miss: 14
-- one_sided_swap: 14
-- register_miss: 12
-- mask_near_home_hold: 12
-- surface_close_under_large_gap: 7
+- semantic_drift: 46
+- one_sided_swap: 38
+- over_flattened_output: 29
+- register_miss: 23
+- trainer_retrieval_fail: 18
+- false_neighbor_convergence: 17
+- sentence_span_miss: 7
+- surface_close_under_large_gap: 4
+- both_rejected_swap: 4
+- mask_near_home_hold: 4
 - punctuation_only_shift: 0
 - anchor_break: 0
-- both_rejected_swap: 0
 
 ## Worst Families
 
-- package-handoff: 27
-- school-coordination: 23
-- tenant-leak: 19
-- overwork-debrief: 19
-- building-access: 17
-- committee-budget: 17
-- clinic-scheduling: 14
-- customer-support: 12
+- customer-support: 22
+- school-coordination: 22
+- clinic-scheduling: 21
+- package-handoff: 20
+- committee-budget: 20
+- building-access: 18
+- tenant-leak: 18
+- archive-grant: 17
 
 ## Worst Cases
 
-- package-handoff-mask-same-family: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- overwork-debrief-mask-same-family: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- school-coordination-mask-same-family: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- tenant-leak-mask-same-family: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap.
-- committee-budget-mask-same-family: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap.
-- mutual-aid-under-customer-support-mask-cross-family: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap.
-- overwork-debrief-under-performance-review-mask-cross-family: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap.
-- tenant-leak-under-school-coordination-mask-cross-family: mask_near_home_hold, over_flattened_output, register_miss, semantic_drift // Buckets: mask_near_home_hold, over_flattened_output, register_miss, semantic_drift.
-- school-coordination-trainer-sibling: over_flattened_output, register_miss, sentence_span_miss, trainer_retrieval_fail // Buckets: over_flattened_output, register_miss, sentence_span_miss, trainer_retrieval_fail.
-- building-access-trainer-under-package-handoff: over_flattened_output, register_miss, sentence_span_miss, trainer_retrieval_fail // Buckets: over_flattened_output, register_miss, sentence_span_miss, trainer_retrieval_fail.
+- tenant-leak-rushed-to-formal: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- mutual-aid-rushed-to-formal: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- school-coordination-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- overwork-debrief-rushed-to-formal: one_sided_swap, over_flattened_output, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, sentence_span_miss, surface_close_under_large_gap.
 - package-handoff-to-building-access-false-neighbor: false_neighbor_convergence, one_sided_swap, semantic_drift // Buckets: false_neighbor_convergence, one_sided_swap, semantic_drift.
+- customer-support-to-clinic-scheduling-false-neighbor: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
+- committee-budget-to-archive-grant-false-neighbor: both_rejected_swap, over_flattened_output, register_miss // Buckets: both_rejected_swap, over_flattened_output, register_miss.
+- archive-grant-to-committee-budget-false-neighbor: both_rejected_swap, over_flattened_output, register_miss // Buckets: both_rejected_swap, over_flattened_output, register_miss.
 - clinic-scheduling-to-school-coordination-false-neighbor: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
+- customer-support-to-building-access-literal-risk: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
+- building-access-to-package-handoff-literal-risk: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
+- customer-support-to-clinic-scheduling-literal-risk: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
 
 ## Sample Audit
 
@@ -71,22 +71,22 @@ Total diagnostics cases: 160
 
 ### Closest Persona Pairs
 
-- archivist <-> undertow: distance 1.073, similarity 0.713, traceability 0.821
-- spark <-> cross-examiner: distance 1.192, similarity 0.661, traceability 0.772
-- undertow <-> cross-examiner: distance 1.25, similarity 0.676, traceability 0.775
-- spark <-> operator: distance 1.299, similarity 0.723, traceability 0.844
-- archivist <-> spark: distance 1.898, similarity 0.566, traceability 0.645
-- archivist <-> cross-examiner: distance 1.943, similarity 0.628, traceability 0.702
+- archivist <-> undertow: distance 0.877, similarity 0.726, traceability 0.839
+- spark <-> cross-examiner: distance 0.972, similarity 0.656, traceability 0.764
+- archivist <-> cross-examiner: distance 1.246, similarity 0.643, traceability 0.721
+- spark <-> operator: distance 1.376, similarity 0.711, traceability 0.829
+- operator <-> cross-examiner: distance 1.475, similarity 0.666, traceability 0.755
+- undertow <-> cross-examiner: distance 1.567, similarity 0.667, traceability 0.763
 
 ## Private EO-RFD Working State
 
-- state: warning
-- blocked_generative_passage: no
+- state: buffered
+- blocked_generative_passage: yes
 - donor_pressure: real
 - witness_pressure: rising
-- realized_passage: landing
+- realized_passage: weak
 - provenance_floor: maintained
-- swap_matrix: bilateral 64/72, one-sided 8/72, flagship 12/12
+- swap_matrix: bilateral 40/72, one-sided 30/72, flagship 8/12
 - representative_pairs: bilateral visible 4/4, bilateral non-trivial 4/4, average score 35
 
 ## Private EO-RFD Representative Pairs

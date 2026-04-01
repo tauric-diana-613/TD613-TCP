@@ -352,8 +352,7 @@
       "transferMode": "compress",
       "structuralOperationsSelected": [
         "baseline-split",
-        "planned-sentence-split",
-        "structural-rescue"
+        "planned-sentence-split"
       ],
       "lexicalRegisterOperationsSelected": [
         "baseline-voice-realization",
@@ -399,7 +398,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 146.67,
+        "score": 145.188,
         "passesApplied": [
           "baseline-split",
           "baseline-voice-realization",
@@ -407,12 +406,10 @@
           "contraction-auxiliary",
           "punctuation-finish",
           "cleanup-restore",
-          "structural-rescue",
           "lexical-register-rescue",
           "connector-stance-rescue"
         ],
         "rescuePasses": [
-          "structural-rescue",
           "lexical-register-rescue",
           "connector-stance-rescue"
         ],
@@ -433,10 +430,10 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 7.218,
+          "score": 6.394,
           "passesApplied": [
-            "discourse-frame",
-            "stance-texture"
+            "contraction",
+            "phrase-texture"
           ],
           "rescuePasses": [],
           "changedDimensions": [
@@ -451,7 +448,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 146.67,
+          "score": 145.188,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -459,12 +456,10 @@
             "contraction-auxiliary",
             "punctuation-finish",
             "cleanup-restore",
-            "structural-rescue",
             "lexical-register-rescue",
             "connector-stance-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue",
             "lexical-register-rescue",
             "connector-stance-rescue"
           ],
@@ -484,7 +479,7 @@
         },
         {
           "spec": "split-heavy",
-          "score": 146.67,
+          "score": 145.188,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -492,12 +487,10 @@
             "contraction-auxiliary",
             "punctuation-finish",
             "cleanup-restore",
-            "structural-rescue",
             "lexical-register-rescue",
             "connector-stance-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue",
             "lexical-register-rescue",
             "connector-stance-rescue"
           ],
@@ -517,7 +510,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 146.67,
+          "score": 145.188,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -525,12 +518,10 @@
             "contraction-auxiliary",
             "punctuation-finish",
             "cleanup-restore",
-            "structural-rescue",
             "lexical-register-rescue",
             "connector-stance-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue",
             "lexical-register-rescue",
             "connector-stance-rescue"
           ],
@@ -551,7 +542,7 @@
       ]
     },
     "finalRealization": {
-      "text": "At 08:14 on Monday, Door 3 at the West Annex began presenting a false-open state. The reader accepted active badges and flashed green, but the strike didn't release. The first confirmed access failure affected courier intake at 08:19, when a refrigerated medication delivery for Suite 118 couldn't clear the corridor. Facilities first treated the event as a low-voltage latch issue. The meter reading didn't help that assumption. By 08:31 we confirmed that the overnight badge-renewal push had stopped validating newly renewed credentials while older local cache entries still passed. Deliveries were rerouted to the south receiving desk at 08:37. Manual escort restored controlled entry at 08:42, and the controller was rolled back at 09:06. No restricted room was breached, no cold-chain item was lost, and the custody log remains continuous. Required correction: no future firmware push may close without a live-door test, a latch release check, and a signed handoff from systems to archive operations.",
+      "text": "At 08:14 on Monday, Door 3 at the West Annex began presenting a false-open state. The reader accepted active badges and flashed green, but the strike didn't release. The first confirmed access failure affected courier intake at 08:19, when a refrigerated medication delivery for Suite 118 couldn't clear the corridor. Facilities first thought it was a low-voltage latch issue. The meter reading didn't help that assumption. By 08:31 we knew the overnight badge-renewal push had stopped validating newly renewed credentials while older local cache entries still passed. Deliveries got rerouted to the south receiving desk at 08:37. Manual escort got controlled entry back at 08:42, and the controller was rolled back at 09:06. No restricted room got breached, no cold-chain item got lost, and the custody log remains continuous. Required correction: no future firmware push may close without a live-door test, a latch release check, and a signed handoff from systems to archive operations.",
       "transferClass": "weak",
       "borrowedShellOutcome": "partial",
       "borrowedShellFailureClass": null,
@@ -580,7 +571,6 @@
       ],
       "semanticRisk": 0.3,
       "rescuePasses": [
-        "structural-rescue",
         "lexical-register-rescue",
         "connector-stance-rescue",
         "progress-admit"
@@ -589,12 +579,12 @@
       "nonTrivialShift": true
     },
     "semanticAudit": {
-      "propositionCoverage": 1,
-      "actorCoverage": 1,
-      "actionCoverage": 1,
-      "objectCoverage": 0.938,
+      "propositionCoverage": 0.954,
+      "actorCoverage": 0.954,
+      "actionCoverage": 0.95,
+      "objectCoverage": 0.875,
       "polarityMismatches": 0,
-      "tenseMismatches": 0,
+      "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -647,15 +637,15 @@
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s3c0+s3c1",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0.45,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
-          "tenseMismatch": 0,
+          "tenseMismatch": 1,
           "bagScore": 0.5,
-          "globalBagScore": 0.038
+          "globalBagScore": 0.019
         },
         {
           "sourceClauseId": "s3c1",
@@ -675,11 +665,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.135
+          "bagScore": 0.3,
+          "globalBagScore": 0.093
         },
         {
           "sourceClauseId": "s4c1",
@@ -714,20 +704,20 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.625,
-          "globalBagScore": 0.094
+          "bagScore": 0.4,
+          "globalBagScore": 0.074
         },
         {
           "sourceClauseId": "s7c0",
           "matchedClauseId": "s8c0",
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.45,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
+          "actionCoverage": 0.405,
+          "objectCoverage": 0.5,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.077
+          "bagScore": 0.2,
+          "globalBagScore": 0.037
         },
         {
           "sourceClauseId": "s8c0",
@@ -743,7 +733,7 @@
         }
       ],
       "sourceClauseCount": 12,
-      "outputClauseCount": 13
+      "outputClauseCount": 12
     },
     "protectedAnchorAudit": {
       "totalAnchors": 8,
@@ -754,7 +744,7 @@
     "realizedIR": {
       "metadata": {
         "sentenceCount": 10,
-        "clauseCount": 13,
+        "clauseCount": 12,
         "literalSpans": [
           {
             "value": "08:14",
@@ -875,33 +865,19 @@
         },
         {
           "id": "s3",
-          "raw": "Facilities first treated the event as a low-voltage latch issue",
-          "rhetoricalRole": "causal",
+          "raw": "Facilities first thought it was a low-voltage latch issue",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "Facilities first treated the event",
+              "text": "Facilities first thought it was a low-voltage latch issue",
               "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "facilities",
-              "actor": "the event",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s3c1",
-              "text": "a low-voltage latch issue",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
+              "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "issue",
-              "actor": "a low",
+              "actor": "it",
               "action": "issue",
               "object": "",
               "modifiers": [],
@@ -933,21 +909,21 @@
         },
         {
           "id": "s5",
-          "raw": "By 08:31 we confirmed that the overnight badge-renewal push had stopped validating newly renewed credentials while older local cache entries still passed",
+          "raw": "By 08:31 we knew the overnight badge-renewal push had stopped validating newly renewed credentials while older local cache entries still passed",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s5c0",
-              "text": "By 08:31 we confirmed that the overnight badge-renewal push had stopped validating newly renewed credentials",
+              "text": "By 08:31 we knew the overnight badge-renewal push had stopped validating newly renewed credentials",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "perfect",
-              "propositionHead": "confirmed",
+              "propositionHead": "had",
               "actor": "we",
-              "action": "confirmed",
-              "object": "overnight badge renewal push stopped",
+              "action": "had",
+              "object": "stopped validating newly renewed credentials",
               "modifiers": [
                 "renewal",
                 "newly"
@@ -974,20 +950,20 @@
         },
         {
           "id": "s6",
-          "raw": "Deliveries were rerouted to the south receiving desk at 08:37",
+          "raw": "Deliveries got rerouted to the south receiving desk at 08:37",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s6c0",
-              "text": "Deliveries were rerouted to the south receiving desk at 08:37",
+              "text": "Deliveries got rerouted to the south receiving desk at 08:37",
               "relationToPrev": "start",
-              "clauseType": "main",
+              "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "were",
+              "propositionHead": "got",
               "actor": "the south",
-              "action": "were",
+              "action": "got",
               "object": "rerouted south receiving desk at",
               "modifiers": [],
               "hedgeMarkers": []
@@ -996,21 +972,21 @@
         },
         {
           "id": "s7",
-          "raw": "Manual escort restored controlled entry at 08:42, and the controller was rolled back at 09:06",
+          "raw": "Manual escort got controlled entry back at 08:42, and the controller was rolled back at 09:06",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s7c0",
-              "text": "Manual escort restored controlled entry at 08:42, and the controller was rolled back at 09:06",
+              "text": "Manual escort got controlled entry back at 08:42, and the controller was rolled back at 09:06",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "was",
+              "propositionHead": "got",
               "actor": "the controller",
-              "action": "was",
-              "object": "rolled back at 09 06",
+              "action": "got",
+              "object": "controlled entry back at 08",
               "modifiers": [
                 "manual"
               ],
@@ -1020,21 +996,21 @@
         },
         {
           "id": "s8",
-          "raw": "No restricted room was breached, no cold-chain item was lost, and the custody log remains continuous",
+          "raw": "No restricted room got breached, no cold-chain item got lost, and the custody log remains continuous",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s8c0",
-              "text": "No restricted room was breached, no cold-chain item was lost, and the custody log remains continuous",
+              "text": "No restricted room got breached, no cold-chain item got lost, and the custody log remains continuous",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "past",
-              "propositionHead": "log",
+              "propositionHead": "got",
               "actor": "the custody",
-              "action": "log",
-              "object": "remains continuous",
+              "action": "got",
+              "object": "breached no cold chain item",
               "modifiers": [
                 "continuous"
               ],
@@ -1102,7 +1078,6 @@
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "structural-rescue",
         "lexical-register-rescue",
         "connector-stance-rescue",
         "progress-admit"
@@ -1136,8 +1111,7 @@
     ],
     "structuralOperations": [
       "baseline-split",
-      "planned-sentence-split",
-      "structural-rescue"
+      "planned-sentence-split"
     ],
     "lexicalOperations": [
       "baseline-voice-realization",
@@ -1148,12 +1122,12 @@
     ],
     "connectorStrategy": "additive",
     "contractionStrategy": "hold",
-    "propositionCoverage": 1,
-    "actorCoverage": 1,
-    "actionCoverage": 1,
-    "objectCoverage": 0.938,
+    "propositionCoverage": 0.954,
+    "actorCoverage": 0.954,
+    "actionCoverage": 0.95,
+    "objectCoverage": 0.875,
     "polarityMismatches": 0,
-    "tenseMismatches": 0,
+    "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1
   }
 }
