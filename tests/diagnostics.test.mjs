@@ -89,6 +89,19 @@ assert.equal(latestReport.sections.maskCases.length, 24, 'diagnostics JSON repor
 assert.equal(latestReport.sections.trainerCases.length, 24, 'diagnostics JSON report includes trainer section');
 assert.equal(latestReport.sections.retrievalCases.length, 16, 'diagnostics JSON report includes retrieval section');
 assert.equal(latestReport.sections.falseNeighborCases.length, 24, 'diagnostics JSON report includes false-neighbor section');
+assert.ok(latestReport.sampleAudit, 'diagnostics JSON report includes sample audit');
+assert.ok(latestReport.personaAudit, 'diagnostics JSON report includes persona audit');
+assert.equal(latestReport.sampleAudit.randomizerCorpusSize, DIAGNOSTIC_CORPUS.samples.length, 'sample audit uses the full diagnostics corpus');
+assert.equal(latestReport.sampleAudit.uniqueResolvedProfileCount, DIAGNOSTIC_CORPUS.samples.length, 'sample audit resolves distinct profiles across the corpus');
+assert.ok(Array.isArray(latestReport.sampleAudit.closestPairs), 'sample audit closest pairs serialize');
+assert.ok(Array.isArray(latestReport.sampleAudit.exactProfileCollisions), 'sample audit exact collisions serialize');
+assert.equal(latestReport.sampleAudit.exactProfileCollisions.length, 0, 'sample audit reports no exact profile collisions for the current corpus');
+assert.equal(latestReport.personaAudit.resolvedPersonaCount, 7, 'persona audit resolves all built-in personas');
+assert.equal(latestReport.personaAudit.uniqueResolvedProfileCount, 7, 'persona audit resolves distinct built-in persona profiles');
+assert.ok(Array.isArray(latestReport.personaAudit.closestPairs), 'persona audit closest pairs serialize');
+assert.ok(Array.isArray(latestReport.personaAudit.missingRecipeSampleIds), 'persona audit missing recipe ids serialize');
+assert.equal(latestReport.personaAudit.missingRecipeSampleIds.length, 0, 'persona audit reports no missing recipe sample ids for current built-ins');
+assert.ok(latestReport.personaAudit.distinctOutputCheck?.allDistinct, 'persona audit distinct-output check stays true');
 assert.ok(latestReport.workingDoctrine, 'diagnostics JSON report includes private EO-RFD working doctrine');
 assert.ok(
   ['playable', 'warning', 'buffered', 'harbor-eligible'].includes(latestReport.workingDoctrine.state),
@@ -103,6 +116,10 @@ assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralVi
 assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralNonTrivialRate, 'number', 'private EO-RFD representative non-trivial rate is numeric');
 
 const latestMarkdown = fs.readFileSync(latestMdPath, 'utf8');
+assert.ok(latestMarkdown.includes('## Sample Audit'), 'diagnostics Markdown report includes sample audit section');
+assert.ok(latestMarkdown.includes('### Closest Sample Pairs'), 'diagnostics Markdown report includes closest sample pairs section');
+assert.ok(latestMarkdown.includes('## Persona Audit'), 'diagnostics Markdown report includes persona audit section');
+assert.ok(latestMarkdown.includes('### Closest Persona Pairs'), 'diagnostics Markdown report includes closest persona pairs section');
 assert.ok(latestMarkdown.includes('## Private EO-RFD Working State'), 'diagnostics Markdown report includes private EO-RFD working-state section');
 assert.ok(latestMarkdown.includes('## Private EO-RFD Representative Pairs'), 'diagnostics Markdown report includes representative pair section');
 

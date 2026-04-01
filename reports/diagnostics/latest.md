@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-01T11:06:26.768Z
+Generated: 2026-04-01T12:17:51.612Z
 
 Corpus: 48 samples across 12 families
 Promoted deck subset: 16 samples
@@ -46,6 +46,37 @@ Total diagnostics cases: 160
 - overwork-debrief-under-performance-review-mask-cross-family: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap.
 - tenant-leak-under-school-coordination-mask-cross-family: mask_near_home_hold, over_flattened_output, register_miss, semantic_drift // Buckets: mask_near_home_hold, over_flattened_output, register_miss, semantic_drift.
 - school-coordination-trainer-sibling: over_flattened_output, register_miss, sentence_span_miss, trainer_retrieval_fail // Buckets: over_flattened_output, register_miss, sentence_span_miss, trainer_retrieval_fail.
+
+## Sample Audit
+
+- randomizer_corpus_size: 48
+- unique_resolved_sample_profile_count: 48
+- exact_profile_collisions: none
+
+### Closest Sample Pairs
+
+- customer-support-tangled-followup <-> school-coordination-formal-record: distance 0.213, similarity 0.693, traceability 0.815
+- package-handoff-tangled-followup <-> clinic-scheduling-tangled-followup: distance 0.223, similarity 0.743, traceability 0.87
+- tenant-leak-rushed-mobile <-> committee-budget-rushed-mobile: distance 0.235, similarity 0.666, traceability 0.807
+- package-handoff-rushed-mobile <-> tenant-leak-rushed-mobile: distance 0.261, similarity 0.652, traceability 0.777
+- package-handoff-rushed-mobile <-> performance-review-rushed-mobile: distance 0.323, similarity 0.601, traceability 0.728
+- archive-grant-professional-message <-> performance-review-tangled-followup: distance 0.368, similarity 0.721, traceability 0.846
+
+## Persona Audit
+
+- resolved_persona_count: 7
+- unique_resolved_persona_profile_count: 7
+- missing_recipe_sample_ids: none
+- distinct_output_check: 7/7 distinct on customer-support-formal-record
+
+### Closest Persona Pairs
+
+- archivist <-> undertow: distance 1.081, similarity 0.713, traceability 0.82
+- spark <-> cross-examiner: distance 1.192, similarity 0.661, traceability 0.772
+- undertow <-> cross-examiner: distance 1.25, similarity 0.676, traceability 0.775
+- spark <-> operator: distance 1.292, similarity 0.724, traceability 0.845
+- archivist <-> spark: distance 1.906, similarity 0.565, traceability 0.643
+- archivist <-> cross-examiner: distance 1.955, similarity 0.626, traceability 0.7
 
 ## Private EO-RFD Working State
 

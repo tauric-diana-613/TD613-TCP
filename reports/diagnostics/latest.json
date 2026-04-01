@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-01T11:06:26.768Z",
+  "generatedAt": "2026-04-01T12:17:51.612Z",
   "summary": {
     "corpusVersion": "wild-corpus-v1",
     "familyCount": 12,
@@ -6802,6 +6802,158 @@
         "notes": "Buckets: one_sided_swap, over_flattened_output."
       }
     ]
+  },
+  "sampleAudit": {
+    "randomizerCorpusSize": 48,
+    "uniqueResolvedProfileCount": 48,
+    "closestPairs": [
+      {
+        "leftId": "customer-support-tangled-followup",
+        "leftName": "Account Recovery Fraud Hold / Tangled Follow-up",
+        "rightId": "school-coordination-formal-record",
+        "rightName": "Pickup Change and Permission Slip / Formal Record",
+        "distance": 0.213,
+        "similarity": 0.693,
+        "traceability": 0.815,
+        "sameFamily": false,
+        "sameVariant": false
+      },
+      {
+        "leftId": "package-handoff-tangled-followup",
+        "leftName": "Second-Floor Rush Parcel / Tangled Follow-up",
+        "rightId": "clinic-scheduling-tangled-followup",
+        "rightName": "MRI Authorization Callback / Tangled Follow-up",
+        "distance": 0.223,
+        "similarity": 0.743,
+        "traceability": 0.87,
+        "sameFamily": false,
+        "sameVariant": true
+      },
+      {
+        "leftId": "tenant-leak-rushed-mobile",
+        "leftName": "Unit 4C Cabinet Leak / Rushed Mobile",
+        "rightId": "committee-budget-rushed-mobile",
+        "rightName": "Bridge Budget Freeze / Rushed Mobile",
+        "distance": 0.235,
+        "similarity": 0.666,
+        "traceability": 0.807,
+        "sameFamily": false,
+        "sameVariant": true
+      },
+      {
+        "leftId": "package-handoff-rushed-mobile",
+        "leftName": "Second-Floor Rush Parcel / Rushed Mobile",
+        "rightId": "tenant-leak-rushed-mobile",
+        "rightName": "Unit 4C Cabinet Leak / Rushed Mobile",
+        "distance": 0.261,
+        "similarity": 0.652,
+        "traceability": 0.777,
+        "sameFamily": false,
+        "sameVariant": true
+      },
+      {
+        "leftId": "package-handoff-rushed-mobile",
+        "leftName": "Second-Floor Rush Parcel / Rushed Mobile",
+        "rightId": "performance-review-rushed-mobile",
+        "rightName": "Annual Review / Rushed Mobile",
+        "distance": 0.323,
+        "similarity": 0.601,
+        "traceability": 0.728,
+        "sameFamily": false,
+        "sameVariant": true
+      },
+      {
+        "leftId": "archive-grant-professional-message",
+        "leftName": "Neighborhood Archive Grant Scope / Professional Message",
+        "rightId": "performance-review-tangled-followup",
+        "rightName": "Annual Review / Tangled Follow-up",
+        "distance": 0.368,
+        "similarity": 0.721,
+        "traceability": 0.846,
+        "sameFamily": false,
+        "sameVariant": false
+      }
+    ],
+    "exactProfileCollisions": []
+  },
+  "personaAudit": {
+    "resolvedPersonaCount": 7,
+    "uniqueResolvedProfileCount": 7,
+    "missingRecipeSampleIds": [],
+    "closestPairs": [
+      {
+        "leftId": "archivist",
+        "leftName": "Archivist",
+        "rightId": "undertow",
+        "rightName": "Undertow",
+        "distance": 1.081,
+        "similarity": 0.713,
+        "traceability": 0.82,
+        "sameFamily": false,
+        "sameVariant": false
+      },
+      {
+        "leftId": "spark",
+        "leftName": "Spark",
+        "rightId": "cross-examiner",
+        "rightName": "Cross-Examiner",
+        "distance": 1.192,
+        "similarity": 0.661,
+        "traceability": 0.772,
+        "sameFamily": false,
+        "sameVariant": false
+      },
+      {
+        "leftId": "undertow",
+        "leftName": "Undertow",
+        "rightId": "cross-examiner",
+        "rightName": "Cross-Examiner",
+        "distance": 1.25,
+        "similarity": 0.676,
+        "traceability": 0.775,
+        "sameFamily": false,
+        "sameVariant": false
+      },
+      {
+        "leftId": "spark",
+        "leftName": "Spark",
+        "rightId": "operator",
+        "rightName": "Operator",
+        "distance": 1.292,
+        "similarity": 0.724,
+        "traceability": 0.845,
+        "sameFamily": false,
+        "sameVariant": false
+      },
+      {
+        "leftId": "archivist",
+        "leftName": "Archivist",
+        "rightId": "spark",
+        "rightName": "Spark",
+        "distance": 1.906,
+        "similarity": 0.565,
+        "traceability": 0.643,
+        "sameFamily": false,
+        "sameVariant": false
+      },
+      {
+        "leftId": "archivist",
+        "leftName": "Archivist",
+        "rightId": "cross-examiner",
+        "rightName": "Cross-Examiner",
+        "distance": 1.955,
+        "similarity": 0.626,
+        "traceability": 0.7,
+        "sameFamily": false,
+        "sameVariant": false
+      }
+    ],
+    "distinctOutputCheck": {
+      "comparisonSampleId": "customer-support-formal-record",
+      "resolvedPersonaCount": 7,
+      "distinctOutputCount": 7,
+      "allDistinct": true
+    }
   },
   "workingDoctrine": {
     "state": "buffered",

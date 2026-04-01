@@ -43,6 +43,7 @@
   const FULL_SAMPLE_LIBRARY = Object.freeze(
     (diagnosticCorpus.samples || SAMPLE_LIBRARY).map((sample) => Object.freeze({ ...sample }))
   );
+  const DECK_RANDOMIZER_SAMPLE_LIBRARY = FULL_SAMPLE_LIBRARY;
   const DIAGNOSTIC_BATTERY = Object.freeze({
     swapPairs: Object.freeze(diagnosticBattery.swapPairs || []),
     maskCases: Object.freeze(diagnosticBattery.maskCases || []),
@@ -52,6 +53,10 @@
   });
   const SAMPLE_LIBRARY_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
     acc[sample.id] = sample;
+    return acc;
+  }, {}));
+  const SAMPLE_PROFILE_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
+    acc[sample.id] = Object.freeze(extractCadenceProfile(sample.text));
     return acc;
   }, {}));
   const CURRENT_SCRIPT_SRC = document.currentScript?.src || Array.from(document.querySelectorAll('script[src]'))
@@ -416,7 +421,7 @@
   }
 
   function escapeHtml(value = '') {
-    return value
+    return String(value ?? '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
@@ -426,6 +431,170 @@
 
   function sampleEntry(sampleId = '') {
     return SAMPLE_LIBRARY_BY_ID[sampleId] || null;
+  }
+
+  function sampleProfileEntry(sample = null) {
+    if (!sample) {
+      return null;
+    }
+    return (sample.id && SAMPLE_PROFILE_BY_ID[sample.id]) || extractCadenceProfile(sample.text || '');
+  }
+
+  function humanizeToken(value = '') {
+    return String(value || '')
+      .split(/[-_]/g)
+      .filter(Boolean)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ');
+  }
+
+  function registerModeLabel(mode = '') {
+    return humanizeToken(mode || 'unresolved');
+  }
+
+  function sampleFamilyLabel(sample = null) {
+    return sample?.familyId ? humanizeToken(sample.familyId) : 'Ad hoc input';
+  }
+
+  function sampleVariantLabel(sample = null) {
+    return sample?.variant ? humanizeToken(sample.variant) : 'Custom text';
+  }
+
+  function renderMetricChips(entries = [], containerClass = 'chips', itemClass = 'chip') {
+    if (!entries.length) {
+      return '';
+    }
+    return `
+      <div class="${containerClass}">
+        ${entries.map((entry) => `<span class="${itemClass}">${escapeHtml(entry.label)} ${escapeHtml(entry.value)}</span>`).join('')}
+      </div>
+    `;
+  }
+
+  function bayFingerprintEntries(profile = {}) {
+    return [
+      { label: 'Rhythm', value: `${formatFixed(profile.avgSentenceLength, 1)}w` },
+      { label: 'Punct', value: formatPct(profile.punctuationDensity || 0) },
+      { label: 'Contractions', value: formatPct(profile.contractionDensity || 0) },
+      { label: 'Recurrence', value: formatPct(profile.recurrencePressure || 0) },
+      { label: 'Directness', value: formatPct(profile.directness || 0) },
+      { label: 'Abstraction', value: formatPct(profile.abstractionPosture || 0) },
+      { label: 'Register', value: registerModeLabel(profile.registerMode) }
+    ];
+  }
+
+  function personaFingerprintEntries(profile = {}) {
+    return [
+      { label: 'Rhythm', value: `${formatFixed(profile.avgSentenceLength, 1)}w` },
+      { label: 'Sentence span', value: `${formatFixed(profile.sentenceLengthSpread || 0, 1)} spread` },
+      { label: 'Recurrence', value: formatPct(profile.recurrencePressure || 0) },
+      { label: 'Directness', value: formatPct(profile.directness || 0) },
+      { label: 'Abstraction', value: formatPct(profile.abstractionPosture || 0) },
+      { label: 'Register', value: registerModeLabel(profile.registerMode) }
+    ];
+  }
+
+  function personaShelfChipLabels(profile = {}) {
+    if (!profile || profile.empty) {
+      return [];
+    }
+    return [
+      `Register ${registerModeLabel(profile.registerMode)}`,
+      `Rhythm ${formatFixed(profile.avgSentenceLength, 1)}w`,
+      `Recurrence ${formatPct(profile.recurrencePressure || 0)}`
+    ];
+  }
+
+  function baySampleProvenanceHtml(sample = null) {
+    if (!sample) {
+      return `
+        <div class="bay-source">
+          <div class="persona-kicker">Ad hoc input</div>
+          <div class="bay-source-name">Live text without a diagnostics sample bind</div>
+          <div class="bay-source-meta">Family // Ad hoc input | Variant // Custom text</div>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="bay-source">
+        <div class="persona-kicker">Diagnostics sample</div>
+        <div class="bay-source-name">${escapeHtml(sample.name || sample.id)}</div>
+        <div class="bay-source-meta">Family // ${escapeHtml(sampleFamilyLabel(sample))} | Variant // ${escapeHtml(sampleVariantLabel(sample))}</div>
+      </div>
+    `;
+  }
+
+  function signedBias(value = 0) {
+    const numeric = Number(value || 0);
+    return `${numeric >= 0 ? '+' : ''}${numeric}`;
+  }
+
+  function overlayModLabel(mod = null) {
+    if (!mod) {
+      return 'native';
+    }
+    return `sent ${signedBias(mod.sent)} / cont ${signedBias(mod.cont)} / punc ${signedBias(mod.punc)}`;
+  }
+
+  function buildPersonaProvenanceLines(persona = {}) {
+    const resolution = persona.recipeResolution || null;
+    if (resolution && ((resolution.entries || []).length || (resolution.missingSampleIds || []).length)) {
+      const sampleLine = (resolution.entries || []).length
+        ? `Samples // ${(resolution.entries || []).map((entry) => `${entry.sampleName} [${entry.sampleId}] x${formatFixed(entry.weight, 2)}`).join(' | ')}`
+        : 'Samples // unresolved';
+      const missingLine = (resolution.missingSampleIds || []).length
+        ? `Missing // ${(resolution.missingSampleIds || []).join(', ')}`
+        : null;
+      return [
+        sampleLine,
+        `Resolved strength // ${Math.round((resolution.strength || persona.strength || 0) * 100)}%`,
+        `Overlay mod // ${overlayModLabel(resolution.overlayMod || persona.mod)}`,
+        missingLine
+      ].filter(Boolean);
+    }
+
+    if (persona.source === 'saved') {
+      return [
+        'Samples // live cadence capture',
+        `Resolved strength // ${Math.round((persona.strength || 0.82) * 100)}%`,
+        `Overlay mod // ${overlayModLabel(persona.mod)}`
+      ];
+    }
+
+    if (persona.source === 'trainer') {
+      return [
+        'Samples // trainer-forged shell',
+        `Resolved strength // ${Math.round((persona.strength || 0.82) * 100)}%`,
+        `Overlay mod // ${overlayModLabel(persona.mod)}`
+      ];
+    }
+
+    return [
+      'Samples // built-in field mask',
+      `Resolved strength // ${Math.round((persona.strength || 0.84) * 100)}%`,
+      `Overlay mod // ${overlayModLabel(persona.mod)}`
+    ];
+  }
+
+  function profileDistanceScore(profileA = null, profileB = null) {
+    if (!profileA || !profileB) {
+      return 0;
+    }
+    const fit = compareTexts('', '', {
+      profileA,
+      profileB
+    });
+    return Number((
+      (fit.sentenceDistance || 0) +
+      (fit.spreadDistance || 0) +
+      (fit.punctDistance || 0) +
+      (fit.contractionDistance || 0) +
+      (fit.recurrenceDistance || 0) +
+      (fit.directnessDistance || 0) +
+      (fit.abstractionDistance || 0) +
+      (fit.registerDistance || 0)
+    ).toFixed(4));
   }
 
   function inferSampleIdFromText(text = '') {
@@ -453,14 +622,14 @@
     const otherSlot = slot === 'A' ? 'B' : 'A';
     const otherId = baySampleIds[otherSlot];
     const ownId = baySampleIds[slot];
-    let candidates = SAMPLE_LIBRARY.filter((sample) => sample.id !== otherId && sample.id !== ownId);
+    let candidates = DECK_RANDOMIZER_SAMPLE_LIBRARY.filter((sample) => sample.id !== otherId && sample.id !== ownId);
     if (!candidates.length) {
-      candidates = SAMPLE_LIBRARY.filter((sample) => sample.id !== otherId);
+      candidates = DECK_RANDOMIZER_SAMPLE_LIBRARY.filter((sample) => sample.id !== otherId);
     }
     if (!candidates.length) {
-      candidates = SAMPLE_LIBRARY.filter((sample) => sample.id !== ownId);
+      candidates = DECK_RANDOMIZER_SAMPLE_LIBRARY.filter((sample) => sample.id !== ownId);
     }
-    return candidates.length ? candidates : [...SAMPLE_LIBRARY];
+    return candidates.length ? candidates : [...DECK_RANDOMIZER_SAMPLE_LIBRARY];
   }
 
   function testFlightSeedPair() {
@@ -494,6 +663,7 @@
     syncBaySampleMetadata();
     activeVoice = slot;
     collapseAnalysisDeck();
+    renderVoiceProfiles();
     renderPersonas();
     updateControls();
 
@@ -1738,34 +1908,69 @@
 
   function randomizerSamplePool(slot, candidates = []) {
     const otherSlot = slot === 'A' ? 'B' : 'A';
+    const ownText = $(slotTextId(slot))?.value || '';
     const otherText = $(slotTextId(otherSlot))?.value || '';
-    if (!otherText.trim()) {
+    if (!candidates.length) {
       return candidates;
     }
 
-    const scored = candidates.map((sample) => {
-      const referenceText = slot === 'A' ? sample.text : otherText;
-      const probeText = slot === 'A' ? otherText : sample.text;
+    const diversityAnchorSample = sampleEntry(baySampleIds[slot]) || sampleEntry(baySampleIds[otherSlot]) || null;
+    const diversityAnchorProfile = diversityAnchorSample
+      ? sampleProfileEntry(diversityAnchorSample)
+      : ownText.trim()
+        ? extractCadenceProfile(ownText)
+        : otherText.trim()
+          ? extractCadenceProfile(otherText)
+          : null;
+    const bothBaysPopulated = Boolean(ownText.trim() && otherText.trim());
+
+    const ranked = candidates.map((sample) => {
+      const candidateProfile = sampleProfileEntry(sample);
       return {
         sample,
-        evaluation: evaluateSwapCadencePairing(referenceText, probeText)
+        evaluation: bothBaysPopulated
+          ? evaluateSwapCadencePairing(
+              slot === 'A' ? sample.text : otherText,
+              slot === 'A' ? otherText : sample.text
+            )
+          : null,
+        diversity: {
+          familyBonus: diversityAnchorSample && sample.familyId !== diversityAnchorSample.familyId ? 1 : 0,
+          variantBonus: diversityAnchorSample && sample.variant !== diversityAnchorSample.variant ? 1 : 0,
+          profileDelta: profileDistanceScore(candidateProfile, diversityAnchorProfile)
+        }
       };
+    }).sort((left, right) => {
+      if (bothBaysPopulated) {
+        return (
+          compareSwapCadencePairings(left.evaluation, right.evaluation) ||
+          Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
+          Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
+          Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
+          left.sample.id.localeCompare(right.sample.id)
+        );
+      }
+
+      return (
+        Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
+        Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
+        Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
+        left.sample.id.localeCompare(right.sample.id)
+      );
     });
-    const ranked = [...scored].sort((left, right) =>
-      compareSwapCadencePairings(left.evaluation, right.evaluation) ||
-      left.sample.id.localeCompare(right.sample.id)
-    );
-    const best = ranked[0];
 
-    if (!best) {
-      return candidates;
-    }
+    return ranked.slice(0, Math.min(6, ranked.length)).map((entry) => entry.sample);
+  }
 
-    const preferred = scored
-      .filter((entry) => compareSwapCadencePairings(entry.evaluation, best.evaluation) === 0)
-      .map((entry) => entry.sample);
-
-    return preferred.length ? preferred : candidates;
+  function inspectRandomizerPool(slot) {
+    const candidates = randomSampleCandidates(slot);
+    const preferred = randomizerSamplePool(slot, candidates);
+    return {
+      corpusSize: DECK_RANDOMIZER_SAMPLE_LIBRARY.length,
+      candidateCount: candidates.length,
+      preferredCount: preferred.length,
+      preferredIds: preferred.map((sample) => sample.id)
+    };
   }
 
   function getPersonaLibrary() {
@@ -2567,18 +2772,15 @@
 
     const profile = voiceState.effectiveProfile;
     const shellNote = describeShellNote(voiceState);
+    const sample = sampleEntry(baySampleIds[voiceState.slot]);
 
     panel.innerHTML = `
       <div class="bay-shell-row">
         <span class="bay-shell">${activeVoice === voiceState.slot ? 'Active bay' : 'Cadence bay'}</span>
         <span class="bay-shell">${describeCadenceShell(voiceState.shell)}</span>
       </div>
-      <div class="bay-metrics">
-        <span class="bay-metric">Rhythm ${profile.avgSentenceLength.toFixed(1)}w</span>
-        <span class="bay-metric">Punct ${formatPct(profile.punctuationDensity)}</span>
-        <span class="bay-metric">Contractions ${formatPct(profile.contractionDensity)}</span>
-        <span class="bay-metric">Recurrence ${formatPct(profile.recurrencePressure)}</span>
-      </div>
+      ${baySampleProvenanceHtml(sample)}
+      ${renderMetricChips(bayFingerprintEntries(profile), 'bay-metrics', 'bay-metric')}
       <p class="bay-copy">${shellNote}</p>
     `;
   }
@@ -3179,6 +3381,8 @@
     const voicePromise = personaVoicePromise(persona);
     const fieldUse = personaFieldUse(persona);
     const riskTell = personaRiskTell(persona);
+    const fingerprintEntries = persona.profile ? personaFingerprintEntries(persona.profile) : [];
+    const provenanceLines = buildPersonaProvenanceLines(persona);
     node.innerHTML = `
       <div class="persona-preview-grid">
         ${renderPersonaPortrait(persona, { loading: 'eager' })}
@@ -3205,6 +3409,20 @@
           <div class="trainer-surface persona-preview-swatch">
             <div class="persona-kicker">${escapeHtml(swatch ? 'writing swatch' : 'voice promise')}</div>
             <p class="persona-empty">${escapeHtml(swatch || voicePromise || 'Paste comparison text in Homebase to see how this mask begins a passage.')}</p>
+          </div>
+          <div class="trainer-surface persona-preview-swatch">
+            <div class="persona-kicker">Resolved mask fingerprint</div>
+            <div id="selectedMaskFingerprint">
+              ${fingerprintEntries.length
+                ? renderMetricChips(fingerprintEntries, 'chips persona-fingerprint-chips', 'chip')
+                : '<p class="persona-empty">No resolved fingerprint registered yet.</p>'}
+            </div>
+          </div>
+          <div class="trainer-surface persona-preview-swatch">
+            <div class="persona-kicker">Recipe provenance</div>
+            <div id="selectedMaskProvenance" class="persona-provenance-copy">
+              ${provenanceLines.map((line) => `<p class="persona-empty">${escapeHtml(line)}</p>`).join('')}
+            </div>
           </div>
           <div class="persona-actions">
             <button type="button" class="secondary persona-inline-action" data-persona-action="wear-homebase" data-persona-id="${persona.id}">Bring into Homebase</button>
@@ -3240,7 +3458,10 @@
           const source = personaSourceLabel(persona);
           const family = personaFamilyLabel(persona);
           const tagline = personaTagline(persona);
-          const effectLine = persona.chips.slice(0, 2).map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
+          const effectLine = [
+            ...persona.chips.slice(0, 1),
+            ...personaShelfChipLabels(persona.profile)
+          ].map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
 
           return `
             <div class="persona ${selected ? 'selected chosen-shelf' : ''} ${assigned ? 'assigned deck-assigned' : ''} ${shellSelected ? 'shell-selected' : ''} ${wornHere ? 'worn-homebase' : ''}" data-id="${persona.id}" role="button" tabindex="0" aria-pressed="${selected}">
@@ -4632,6 +4853,7 @@ DeltaE = ${ledger.reuse_gain}`;
     if (readoutOwner !== 'homebase') {
       collapseAnalysisDeck();
     }
+    renderVoiceProfiles();
     updateControls();
     renderPersonas();
     setStatusMessage(
@@ -4761,6 +4983,10 @@ DeltaE = ${ledger.reuse_gain}`;
       duelTraceability: readText('duelTraceability'),
       duelSentenceDrift: readText('duelSentenceDrift'),
       duelFunctionWordDistance: readText('duelFunctionWordDistance'),
+      voiceAProfile: readText('voiceAProfile'),
+      voiceBProfile: readText('voiceBProfile'),
+      voiceASampleId: $('voiceA')?.dataset.sampleId || '',
+      voiceBSampleId: $('voiceB')?.dataset.sampleId || '',
       duelReferenceSample: readText('duelSampleA'),
       duelProbeSample: readText('duelSampleB')
     };
@@ -4914,6 +5140,9 @@ DeltaE = ${ledger.reuse_gain}`;
 
   function readPersonaGallerySnapshot() {
     const state = buildPersonaGalleryState();
+    const selectedShelfChipText = state.selectedMask?.id
+      ? Array.from(document.querySelectorAll(`.persona[data-id="${state.selectedMask.id}"] .chip`)).map((node) => node.textContent.trim()).join(' | ')
+      : '';
     return {
       lockCount: cadenceLocks.length,
       activeLockId: state.savedLock?.id || '',
@@ -4948,7 +5177,10 @@ DeltaE = ${ledger.reuse_gain}`;
       readoutOwner,
       homebaseStatusText: $('homebaseStatus')?.textContent.trim() || '',
       homebaseMaskStatusText: $('homebaseMaskStatus')?.textContent.trim() || '',
-      maskBenchStatusText: $('maskBenchStatus')?.textContent.trim() || ''
+      maskBenchStatusText: $('maskBenchStatus')?.textContent.trim() || '',
+      selectedMaskFingerprintText: $('selectedMaskFingerprint')?.textContent.trim() || '',
+      selectedMaskProvenanceText: $('selectedMaskProvenance')?.textContent.trim() || '',
+      selectedShelfChipText
     };
   }
 
@@ -5490,6 +5722,7 @@ DeltaE = ${ledger.reuse_gain}`;
     };
 
     try {
+      const profileLooksLive = (text = '') => /rhythm/i.test(text) && /register/i.test(text);
       report.baseline.snapshot = applyScenario({
         voiceA: seededPair.voiceA,
         voiceB: seededPair.voiceB,
@@ -5519,11 +5752,24 @@ DeltaE = ${ledger.reuse_gain}`;
       };
 
       $('resetBtn').click();
+      $('voiceA').value = '';
+      handleTextInput('A');
+      const placeholderProfileA = $('voiceAProfile').textContent.trim();
+      const referencePool = inspectRandomizerPool('A');
       const beforeRandomA = $('voiceA').value;
       const beforeRandomB = $('voiceB').value;
       $('randomizeVoiceABtn').click();
       const afterRandomA = $('voiceA').value;
       const randomizedReferenceSampleId = $('voiceA').dataset.sampleId || '';
+      const referenceProfileAfterRandomize = $('voiceAProfile').textContent.trim();
+      const afterRandomReferenceSnapshot = readDeckSnapshot();
+      analyzeCadences();
+      const analyzedReferenceSampleId = $('voiceA').dataset.sampleId || '';
+      const analyzedReferenceProfile = $('voiceAProfile').textContent.trim();
+      $('randomizeVoiceABtn').click();
+      const rerandomizedReferenceSampleId = $('voiceA').dataset.sampleId || '';
+      const rerandomizedReferenceProfile = $('voiceAProfile').textContent.trim();
+      const probePool = inspectRandomizerPool('B');
       $('randomizeVoiceBBtn').click();
       const afterRandomB = $('voiceB').value;
       const randomizedProbeSampleId = $('voiceB').dataset.sampleId || '';
@@ -5534,7 +5780,18 @@ DeltaE = ${ledger.reuse_gain}`;
         probeSampleId: randomizedProbeSampleId,
         pairDistinct: Boolean(randomizedReferenceSampleId) && randomizedReferenceSampleId !== randomizedProbeSampleId,
         snapshot: readDeckSnapshot(),
-        deckStillLatent: readDeckSnapshot().duelState === 'empty'
+        referencePool,
+        probePool,
+        placeholderCleared: /paste a voice here/i.test(placeholderProfileA) && profileLooksLive(referenceProfileAfterRandomize),
+        rerenderAfterAnalysis:
+          Boolean(rerandomizedReferenceSampleId) &&
+          rerandomizedReferenceSampleId !== analyzedReferenceSampleId &&
+          rerandomizedReferenceProfile !== analyzedReferenceProfile,
+        readoutCleared:
+          afterRandomReferenceSnapshot.similarity === '--' &&
+          afterRandomReferenceSnapshot.routePressure === '--' &&
+          afterRandomReferenceSnapshot.traceability === '--',
+        duelLivePreanalysis: afterRandomReferenceSnapshot.duelState === 'live'
       };
 
       const ownSourceSnapshot = applyScenario({
@@ -5878,7 +6135,10 @@ DeltaE = ${ledger.reuse_gain}`;
           { id: 'station_routes_preserve_runtime_state', pass: report.stationRouting.statePreservedAcrossRouteChange },
           { id: 'homebase_boot_has_no_worn_mask', pass: !report.galleryBootstrap.homebaseWornMaskId && report.galleryBootstrap.homebasePhase !== 'mask-worn' && report.galleryBootstrap.homebasePhase !== 'residue' },
           { id: 'sample_randomizer_distinct', pass: report.sampleRandomizer.referenceChanged && report.sampleRandomizer.probeChanged && report.sampleRandomizer.pairDistinct },
-          { id: 'sample_randomizer_keeps_deck_latent', pass: report.sampleRandomizer.deckStillLatent },
+          { id: 'sample_randomizer_pool_uses_full_corpus', pass: report.sampleRandomizer.referencePool.candidateCount >= FULL_SAMPLE_LIBRARY.length - 1 && report.sampleRandomizer.probePool.candidateCount >= FULL_SAMPLE_LIBRARY.length - 2 },
+          { id: 'sample_randomizer_live_profile_from_placeholder', pass: report.sampleRandomizer.placeholderCleared },
+          { id: 'sample_randomizer_rerenders_after_prior_analysis', pass: report.sampleRandomizer.rerenderAfterAnalysis },
+          { id: 'sample_randomizer_clears_readout_but_keeps_duel_live', pass: report.sampleRandomizer.readoutCleared && report.sampleRandomizer.duelLivePreanalysis },
           { id: 'deck_cast_report_preanalysis', pass: String(report.sampleRandomizer.snapshot.castReport || '').toLowerCase().includes('cast report') },
           { id: 'swap_shells_preserve_raw_text', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
             { id: 'swap_cadences_retrieval_audit_present', pass: Boolean(report.swapCadences.audit && report.swapCadences.audit.lanes && report.swapCadences.audit.lanes.A && report.swapCadences.audit.lanes.B) },
@@ -5891,6 +6151,9 @@ DeltaE = ${ledger.reuse_gain}`;
           { id: 'persona_gallery_masks_comparison_text', pass: report.personaGallery.afterMask.comparisonReady && report.personaGallery.afterMask.maskedOutputLength > 0 && report.personaGallery.afterMask.selectedMaskId === 'spark' && report.personaGallery.afterMask.homebaseWornMaskId === 'spark' },
           { id: 'generate_mask_removed_from_public_ui', pass: !document.querySelector('[data-persona-action="generate-mask"]') },
           { id: 'persona_homebase_handoff_explains_active_mask', pass: report.personaGallery.afterMask.homebaseMaskStatusText.toLowerCase().includes('spark') && report.personaGallery.afterMask.maskBenchStatusText.toLowerCase().includes('spark') },
+            { id: 'persona_preview_shows_fingerprint', pass: report.personaGallery.afterMask.selectedMaskFingerprintText.toLowerCase().includes('register') && report.personaGallery.afterMask.selectedMaskFingerprintText.toLowerCase().includes('rhythm') },
+            { id: 'persona_preview_shows_provenance', pass: report.personaGallery.afterMask.selectedMaskProvenanceText.toLowerCase().includes('samples //') && report.personaGallery.afterMask.selectedMaskProvenanceText.toLowerCase().includes('resolved strength //') },
+            { id: 'persona_shelf_shows_stylometric_chips', pass: report.personaGallery.afterMask.selectedShelfChipText.toLowerCase().includes('register') && report.personaGallery.afterMask.selectedShelfChipText.toLowerCase().includes('rhythm') },
             { id: 'persona_homebase_separates_chosen_from_worn', pass: report.personaGallery.afterMask.selectedMaskId === 'spark' && report.personaGallery.afterMask.homebaseWornMaskId === 'spark' && report.personaGallery.afterMask.homebasePhase === 'residue' },
             { id: 'swap_medallion_moves_bay_text', pass: report.textSwapMedallion.voiceASwapped && report.textSwapMedallion.voiceBSwapped },
             { id: 'swap_medallion_updates_duel', pass: report.textSwapMedallion.duelSamplesChanged },

@@ -197,24 +197,40 @@ function riskInterpretation(profile = {}, extraction = {}, signature = null) {
 function resolveRecipeSamples(recipe = {}, sampleLibraryById = {}) {
   const blend = Array.isArray(recipe.blend) ? recipe.blend : [];
   const samples = [];
+  const resolvedEntries = [];
+  const missingSampleIds = [];
   blend.forEach((entry) => {
-    const sample = sampleLibraryById[entry?.sampleId];
+    const sampleId = entry?.sampleId;
+    const sample = sampleLibraryById[sampleId];
     if (!sample || !sample.text) {
+      if (sampleId) {
+        missingSampleIds.push(sampleId);
+      }
       return;
     }
     const count = repeatCount(entry.weight);
+    resolvedEntries.push({
+      sampleId,
+      sampleName: sample.name || sampleId,
+      familyId: sample.familyId || '',
+      variant: sample.variant || '',
+      weight: Number(entry.weight || 0),
+      repeats: count
+    });
     for (let index = 0; index < count; index += 1) {
       samples.push(sample.text);
     }
   });
-  return samples;
+  return {
+    samples,
+    resolvedEntries,
+    missingSampleIds: [...new Set(missingSampleIds)]
+  };
 }
 
 function resolveRecipeProfile(engine, recipe = {}, sampleLibraryById = {}) {
-  const samples = resolveRecipeSamples(recipe, sampleLibraryById);
-  if (!samples.length) {
-    return null;
-  }
+  const resolution = resolveRecipeSamples(recipe, sampleLibraryById);
+  const samples = resolution.samples;
 
   const strength = Number(recipe.strength || 0.86);
   const overlayShell = recipe.overlayMod
@@ -225,6 +241,18 @@ function resolveRecipeProfile(engine, recipe = {}, sampleLibraryById = {}) {
       }
     : null;
 
+  if (!samples.length) {
+    return {
+      profile: null,
+      mod: recipe.overlayMod ? { ...recipe.overlayMod } : null,
+      strength,
+      sampleCount: 0,
+      resolvedEntries: resolution.resolvedEntries.map((entry) => ({ ...entry })),
+      missingSampleIds: [...resolution.missingSampleIds],
+      overlayMod: recipe.overlayMod ? { ...recipe.overlayMod } : null
+    };
+  }
+
   const transformedSamples = overlayShell
     ? samples.map((sample) => engine.buildCadenceTransfer(sample, overlayShell).text)
     : samples;
@@ -234,7 +262,10 @@ function resolveRecipeProfile(engine, recipe = {}, sampleLibraryById = {}) {
     profile: extraction.targetProfile,
     mod: recipe.overlayMod ? { ...recipe.overlayMod } : engine.cadenceModFromProfile(extraction.targetProfile),
     strength,
-    sampleCount: transformedSamples.length
+    sampleCount: transformedSamples.length,
+    resolvedEntries: resolution.resolvedEntries.map((entry) => ({ ...entry })),
+    missingSampleIds: [...resolution.missingSampleIds],
+    overlayMod: recipe.overlayMod ? { ...recipe.overlayMod } : null
   };
 }
 
@@ -337,13 +368,23 @@ export function resolvePersonaCatalog(engine, basePersonas = [], sampleLibrary =
         ? engine.cadenceModFromProfile(profile)
         : { sent: 0, cont: 0, punc: 0 };
     const art = BUILTIN_MASK_ART[persona.id] || fallbackMaskScaffold(persona, index);
+    const strength = Number(persona.strength || resolvedRecipe?.strength || 0.84);
 
     return {
       ...persona,
       chips: Array.isArray(persona.chips) ? [...persona.chips] : [],
       profile,
       mod,
-      strength: Number(persona.strength || resolvedRecipe?.strength || 0.84),
+      strength,
+      recipeResolution: persona.profileRecipe
+        ? {
+            entries: (resolvedRecipe?.resolvedEntries || []).map((entry) => ({ ...entry })),
+            missingSampleIds: [...(resolvedRecipe?.missingSampleIds || [])],
+            strength,
+            overlayMod: resolvedRecipe?.overlayMod ? { ...resolvedRecipe.overlayMod } : null,
+            sampleCount: resolvedRecipe?.sampleCount || 0
+          }
+        : null,
       maskVisualClass: persona.maskVisualClass || art.visualClass,
       maskArtLabel: persona.maskArtLabel || art.artLabel,
       maskSigil: persona.maskSigil || art.sigil,

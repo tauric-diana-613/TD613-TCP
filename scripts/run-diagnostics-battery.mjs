@@ -61,6 +61,82 @@ function sortUnique(values = []) {
   return [...new Set(values.filter(Boolean))].sort((left, right) => left.localeCompare(right));
 }
 
+function profileKey(profile = {}) {
+  return JSON.stringify(profile || {});
+}
+
+function profileDistance(fit = {}) {
+  return round(
+    (fit.sentenceDistance || 0) +
+    (fit.spreadDistance || 0) +
+    (fit.punctDistance || 0) +
+    (fit.contractionDistance || 0) +
+    (fit.recurrenceDistance || 0) +
+    (fit.directnessDistance || 0) +
+    (fit.abstractionDistance || 0) +
+    (fit.registerDistance || 0),
+    4
+  );
+}
+
+function buildClosestProfilePairs(items = [], getProfile = (item) => item.profile, limit = 6) {
+  const pairs = [];
+  for (let leftIndex = 0; leftIndex < items.length; leftIndex += 1) {
+    for (let rightIndex = leftIndex + 1; rightIndex < items.length; rightIndex += 1) {
+      const left = items[leftIndex];
+      const right = items[rightIndex];
+      const leftProfile = getProfile(left);
+      const rightProfile = getProfile(right);
+      if (!leftProfile || !rightProfile) {
+        continue;
+      }
+      const fit = engine.compareTexts('', '', {
+        profileA: leftProfile,
+        profileB: rightProfile
+      });
+      pairs.push({
+        leftId: left.id,
+        leftName: left.name || left.id,
+        rightId: right.id,
+        rightName: right.name || right.id,
+        distance: profileDistance(fit),
+        similarity: round(fit.similarity || 0, 4),
+        traceability: round(fit.traceability || 0, 4),
+        sameFamily: left.familyId ? left.familyId === right.familyId : false,
+        sameVariant: left.variant ? left.variant === right.variant : false
+      });
+    }
+  }
+  return pairs
+    .sort((left, right) =>
+      left.distance - right.distance ||
+      right.similarity - left.similarity ||
+      left.leftId.localeCompare(right.leftId) ||
+      left.rightId.localeCompare(right.rightId)
+    )
+    .slice(0, limit);
+}
+
+function buildExactProfileCollisions(items = [], getProfile = (item) => item.profile) {
+  const groups = new Map();
+  items.forEach((item) => {
+    const key = profileKey(getProfile(item));
+    if (!groups.has(key)) {
+      groups.set(key, []);
+    }
+    groups.get(key).push({
+      id: item.id,
+      name: item.name || item.id
+    });
+  });
+  return [...groups.values()]
+    .filter((group) => group.length > 1)
+    .map((group) => ({
+      ids: group.map((entry) => entry.id),
+      names: group.map((entry) => entry.name)
+    }));
+}
+
 function donorDistance(value, donorProfile) {
   const profile = typeof value === 'string' ? engine.extractCadenceProfile(value) : value;
   const fit = engine.compareTexts('', '', {
@@ -781,6 +857,57 @@ function summarize(sectionResults = {}) {
   };
 }
 
+function buildSampleAudit(sampleLibrary = DIAGNOSTIC_SAMPLE_LIBRARY) {
+  const resolvedSamples = sampleLibrary.map((sample) => ({
+    ...sample,
+    profile: engine.extractCadenceProfile(sample.text)
+  }));
+  return {
+    randomizerCorpusSize: sampleLibrary.length,
+    uniqueResolvedProfileCount: new Set(resolvedSamples.map((sample) => profileKey(sample.profile))).size,
+    closestPairs: buildClosestProfilePairs(resolvedSamples, (sample) => sample.profile),
+    exactProfileCollisions: buildExactProfileCollisions(resolvedSamples, (sample) => sample.profile)
+  };
+}
+
+function buildPersonaAudit(personaLibrary = PERSONA_LIBRARY) {
+  const resolvedPersonas = personaLibrary.filter((persona) => persona.profile);
+  const comparisonSampleId = 'customer-support-formal-record';
+  const comparisonText = DIAGNOSTIC_CORPUS_BY_ID[comparisonSampleId]?.text || DIAGNOSTIC_SAMPLE_LIBRARY[0]?.text || '';
+  const lock = buildCadenceLockRecord(engine, {
+    name: 'persona-audit-lock',
+    corpusText: [
+      DIAGNOSTIC_CORPUS_BY_ID['overwork-debrief-professional-message']?.text || '',
+      DIAGNOSTIC_CORPUS_BY_ID['package-handoff-formal-record']?.text || ''
+    ].join('\n\n').trim()
+  });
+  const renderedOutputs = resolvedPersonas.map((persona) => buildMaskTransformationResult(engine, {
+    comparisonText,
+    lock,
+    persona
+  }).maskedText);
+  const distinctOutputCount = new Set(renderedOutputs).size;
+  const missingRecipeSampleIds = personaLibrary.flatMap((persona) =>
+    (persona.recipeResolution?.missingSampleIds || []).map((sampleId) => ({
+      personaId: persona.id,
+      sampleId
+    }))
+  );
+
+  return {
+    resolvedPersonaCount: personaLibrary.length,
+    uniqueResolvedProfileCount: new Set(resolvedPersonas.map((persona) => profileKey(persona.profile))).size,
+    missingRecipeSampleIds,
+    closestPairs: buildClosestProfilePairs(resolvedPersonas, (persona) => persona.profile),
+    distinctOutputCheck: {
+      comparisonSampleId,
+      resolvedPersonaCount: resolvedPersonas.length,
+      distinctOutputCount,
+      allDistinct: distinctOutputCount === resolvedPersonas.length
+    }
+  };
+}
+
 function buildMarkdownReport(report) {
   const lines = [
     '# Diagnostics Battery',
@@ -810,6 +937,29 @@ function buildMarkdownReport(report) {
   report.summary.worstCases.forEach((entry) => {
     lines.push(`- ${entry.id}: ${entry.failureBuckets.join(', ') || 'none'} // ${entry.notes}`);
   });
+
+  if (report.sampleAudit) {
+    lines.push('', '## Sample Audit', '');
+    lines.push(`- randomizer_corpus_size: ${report.sampleAudit.randomizerCorpusSize}`);
+    lines.push(`- unique_resolved_sample_profile_count: ${report.sampleAudit.uniqueResolvedProfileCount}`);
+    lines.push(`- exact_profile_collisions: ${report.sampleAudit.exactProfileCollisions.length ? report.sampleAudit.exactProfileCollisions.map((entry) => entry.ids.join(', ')).join(' | ') : 'none'}`);
+    lines.push('', '### Closest Sample Pairs', '');
+    report.sampleAudit.closestPairs.forEach((entry) => {
+      lines.push(`- ${entry.leftId} <-> ${entry.rightId}: distance ${entry.distance}, similarity ${entry.similarity}, traceability ${entry.traceability}`);
+    });
+  }
+
+  if (report.personaAudit) {
+    lines.push('', '## Persona Audit', '');
+    lines.push(`- resolved_persona_count: ${report.personaAudit.resolvedPersonaCount}`);
+    lines.push(`- unique_resolved_persona_profile_count: ${report.personaAudit.uniqueResolvedProfileCount}`);
+    lines.push(`- missing_recipe_sample_ids: ${report.personaAudit.missingRecipeSampleIds.length ? report.personaAudit.missingRecipeSampleIds.map((entry) => `${entry.personaId}:${entry.sampleId}`).join(', ') : 'none'}`);
+    lines.push(`- distinct_output_check: ${report.personaAudit.distinctOutputCheck.distinctOutputCount}/${report.personaAudit.distinctOutputCheck.resolvedPersonaCount} distinct on ${report.personaAudit.distinctOutputCheck.comparisonSampleId}`);
+    lines.push('', '### Closest Persona Pairs', '');
+    report.personaAudit.closestPairs.forEach((entry) => {
+      lines.push(`- ${entry.leftId} <-> ${entry.rightId}: distance ${entry.distance}, similarity ${entry.similarity}, traceability ${entry.traceability}`);
+    });
+  }
 
   if (report.workingDoctrine) {
     const doctrine = report.workingDoctrine;
@@ -855,6 +1005,8 @@ const report = {
   generatedAt: new Date().toISOString(),
   summary: summarize(sectionResults),
   sections: sectionResults,
+  sampleAudit: buildSampleAudit(DIAGNOSTIC_SAMPLE_LIBRARY),
+  personaAudit: buildPersonaAudit(PERSONA_LIBRARY),
   workingDoctrine: null
 };
 report.workingDoctrine = buildPrivateWorkingDoctrine(report.summary, swapMatrix, representativePairs);

@@ -1534,12 +1534,30 @@ textarea:focus {
 }
 
 .bay-profile {
-  min-height: 110px;
+  min-height: 164px;
 }
 
 .bay-shell {
   color: var(--chrome);
   font-size: 12px;
+}
+
+.bay-source,
+.persona-provenance-copy {
+  display: grid;
+  gap: 6px;
+}
+
+.bay-source-name {
+  color: rgba(240, 239, 245, 0.9);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.bay-source-meta {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .bay-metric {
@@ -2753,6 +2771,10 @@ button:disabled {
 .persona-preview-stage .chips,
 .homebase-worn-mask-copy .chips {
   margin-top: 6px;
+}
+
+.persona-fingerprint-chips {
+  margin-top: 4px;
 }
 
 .persona-preview-stage .chip,

@@ -33,6 +33,15 @@ const resolvedPersonas = resolvePersonaCatalog(engine, personas, sampleLibrary);
 assert.equal(resolvedPersonas.length, 7, 'seven built-in masks resolve for the gallery');
 assert.ok(resolvedPersonas.every((persona) => persona.profile && persona.mod), 'each built-in mask resolves to a concrete profile-backed shell');
 assert.ok(
+  resolvedPersonas.every((persona) => persona.recipeResolution && (persona.recipeResolution.entries || []).length > 0),
+  'each built-in mask preserves diagnostics recipe provenance'
+);
+assert.equal(
+  resolvedPersonas.flatMap((persona) => persona.recipeResolution?.missingSampleIds || []).length,
+  0,
+  'built-in recipe blends resolve against the full diagnostics corpus without missing sample ids'
+);
+assert.ok(
   resolvedPersonas.every((persona) => persona.family && persona.tagline && persona.voicePromise && persona.fieldUse && persona.riskTell && persona.frameTone),
   'each built-in mask carries the upgraded psychomystery metadata'
 );
@@ -43,6 +52,11 @@ assert.ok(
 assert.ok(
   resolvedPersonas.every((persona) => persona.portrait?.src && fs.existsSync(path.join(repoRoot, 'app', persona.portrait.src))),
   'each built-in mask points at a real local portrait asset'
+);
+assert.equal(
+  new Set(resolvedPersonas.map((persona) => JSON.stringify(persona.profile))).size,
+  resolvedPersonas.length,
+  'each built-in mask resolves to a distinct stylometric fingerprint'
 );
 
 const lock = buildCadenceLockRecord(engine, {
