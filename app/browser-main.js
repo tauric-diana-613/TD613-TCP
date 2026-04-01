@@ -1570,19 +1570,51 @@
     return score;
   }
 
-  function evaluateRepresentativeSwapPair(referenceSample, probeSample) {
-    const referenceProfile = extractCadenceProfile(referenceSample.text);
-    const probeProfile = extractCadenceProfile(probeSample.text);
-    const laneA = buildCadenceTransfer(referenceSample.text, borrowedShellFromProfile(probeProfile, 'B'), { retrieval: true });
-    const laneB = buildCadenceTransfer(probeSample.text, borrowedShellFromProfile(referenceProfile, 'A'), { retrieval: true });
+  function evaluateSwapCadencePairing(referenceText = '', probeText = '') {
+    if (!referenceText.trim() || !probeText.trim()) {
+      return {
+        score: 0,
+        bilateralVisible: false,
+        bilateralNonTrivial: false,
+        engagedLaneCount: 0,
+        rejectedLaneCount: 0,
+        laneOutcomes: [],
+        laneTransferClasses: [],
+        minProtectedAnchorIntegrity: 1,
+        minPropositionCoverage: 1
+      };
+    }
+
+    const referenceProfile = extractCadenceProfile(referenceText);
+    const probeProfile = extractCadenceProfile(probeText);
+    const laneA = buildCadenceTransfer(referenceText, borrowedShellFromProfile(probeProfile, 'B'), { retrieval: true });
+    const laneB = buildCadenceTransfer(probeText, borrowedShellFromProfile(referenceProfile, 'A'), { retrieval: true });
+    const laneOutcomes = [
+      laneA.borrowedShellOutcome || laneA.transferClass,
+      laneB.borrowedShellOutcome || laneB.transferClass
+    ];
+    const engagedLaneCount = laneOutcomes.filter((outcome) => ['structural', 'partial'].includes(outcome)).length;
+    const rejectedLaneCount = laneOutcomes.filter((outcome) => outcome === 'rejected').length;
+    const bilateralVisible = Boolean(laneA.visibleShift) && Boolean(laneB.visibleShift);
+    const bilateralNonTrivial = Boolean(laneA.nonTrivialShift) && Boolean(laneB.nonTrivialShift);
+    let score = swapCadenceScoreLane(laneA, referenceText) + swapCadenceScoreLane(laneB, probeText);
+
+    if (bilateralVisible) {
+      score += 4;
+    }
+    if (bilateralNonTrivial) {
+      score += 6;
+    }
+    score += engagedLaneCount * 3;
+    score -= rejectedLaneCount * 4;
 
     return {
-      anchorId: referenceSample.id,
-      candidateId: probeSample.id,
-      score: swapCadenceScoreLane(laneA, referenceSample.text) + swapCadenceScoreLane(laneB, probeSample.text),
-      bilateralVisible: Boolean(laneA.visibleShift) && Boolean(laneB.visibleShift),
-      bilateralNonTrivial: Boolean(laneA.nonTrivialShift) && Boolean(laneB.nonTrivialShift),
-      laneOutcomes: [laneA.borrowedShellOutcome || laneA.transferClass, laneB.borrowedShellOutcome || laneB.transferClass],
+      score,
+      bilateralVisible,
+      bilateralNonTrivial,
+      engagedLaneCount,
+      rejectedLaneCount,
+      laneOutcomes,
       laneTransferClasses: [laneA.transferClass, laneB.transferClass],
       minProtectedAnchorIntegrity: Math.min(
         laneA.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1,
@@ -1592,6 +1624,28 @@
         laneA.semanticAudit?.propositionCoverage ?? 1,
         laneB.semanticAudit?.propositionCoverage ?? 1
       )
+    };
+  }
+
+  function compareSwapCadencePairings(left = {}, right = {}) {
+    return (
+      Number(Boolean(right.bilateralNonTrivial)) - Number(Boolean(left.bilateralNonTrivial)) ||
+      Number(Boolean(right.bilateralVisible)) - Number(Boolean(left.bilateralVisible)) ||
+      Number(right.engagedLaneCount || 0) - Number(left.engagedLaneCount || 0) ||
+      Number(left.rejectedLaneCount || 0) - Number(right.rejectedLaneCount || 0) ||
+      Number(right.score || 0) - Number(left.score || 0) ||
+      Number(right.minProtectedAnchorIntegrity ?? 1) - Number(left.minProtectedAnchorIntegrity ?? 1) ||
+      Number(right.minPropositionCoverage ?? 1) - Number(left.minPropositionCoverage ?? 1)
+    );
+  }
+
+  function evaluateRepresentativeSwapPair(referenceSample, probeSample) {
+    const evaluation = evaluateSwapCadencePairing(referenceSample.text, probeSample.text);
+
+    return {
+      anchorId: referenceSample.id,
+      candidateId: probeSample.id,
+      ...evaluation
     };
   }
 
@@ -1612,8 +1666,8 @@
         const evaluation = evaluateRepresentativeSwapPair(anchor, candidate);
         if (
           !best ||
-          evaluation.score > best.score ||
-          (evaluation.score === best.score && candidate.id.localeCompare(best.candidateId) < 0)
+          compareSwapCadencePairings(evaluation, best) < 0 ||
+          (compareSwapCadencePairings(evaluation, best) === 0 && candidate.id.localeCompare(best.candidateId) < 0)
         ) {
           best = evaluation;
         }
@@ -1679,16 +1733,7 @@
   }
 
   function predictedSwapCadenceScore(referenceText = '', probeText = '') {
-    if (!referenceText.trim() || !probeText.trim()) {
-      return 0;
-    }
-
-    const referenceProfile = extractCadenceProfile(referenceText);
-    const probeProfile = extractCadenceProfile(probeText);
-    const underProbe = buildCadenceTransfer(referenceText, borrowedShellFromProfile(probeProfile, 'B'), { retrieval: true });
-    const underReference = buildCadenceTransfer(probeText, borrowedShellFromProfile(referenceProfile, 'A'), { retrieval: true });
-
-    return swapCadenceScoreLane(underProbe, referenceText) + swapCadenceScoreLane(underReference, probeText);
+    return evaluateSwapCadencePairing(referenceText, probeText).score;
   }
 
   function randomizerSamplePool(slot, candidates = []) {
@@ -1703,17 +1748,21 @@
       const probeText = slot === 'A' ? otherText : sample.text;
       return {
         sample,
-        score: predictedSwapCadenceScore(referenceText, probeText)
+        evaluation: evaluateSwapCadencePairing(referenceText, probeText)
       };
     });
-    const bestScore = Math.max(...scored.map((entry) => entry.score));
+    const ranked = [...scored].sort((left, right) =>
+      compareSwapCadencePairings(left.evaluation, right.evaluation) ||
+      left.sample.id.localeCompare(right.sample.id)
+    );
+    const best = ranked[0];
 
-    if (!Number.isFinite(bestScore)) {
+    if (!best) {
       return candidates;
     }
 
     const preferred = scored
-      .filter((entry) => entry.score === bestScore)
+      .filter((entry) => compareSwapCadencePairings(entry.evaluation, best.evaluation) === 0)
       .map((entry) => entry.sample);
 
     return preferred.length ? preferred : candidates;

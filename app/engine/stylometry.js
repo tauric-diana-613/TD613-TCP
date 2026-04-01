@@ -3938,7 +3938,13 @@ function buildBorrowedShellOverlayCandidate({
   }
 
   const candidateStrength = clamp(Number(shell.strength ?? 0.82), 0, 1);
-  const transferPlan = buildTransferPlanFromIR(ir, sourceProfile, targetProfile, targetGap, shell.mod || {});
+  const transferPlan = buildTransferPlanFromIR(
+    ir,
+    sourceProfile,
+    targetProfile,
+    candidateStrength,
+    opportunityProfile
+  );
   const baseMod = shell.mod || {};
   const candidateMod = {
     ...baseMod,
@@ -3950,11 +3956,11 @@ function buildBorrowedShellOverlayCandidate({
     cont: Number(baseMod.cont || 0),
     punc: Number(baseMod.punc || 0)
   };
-  const connectorProfile = extractCadenceProfile(sourceText);
+  const connectorProfile = shell.profile || targetProfile;
   let workingText = sourceText;
   const passesApplied = [];
   const rescuePasses = [];
-  const maxLength = transferLengthCeiling(sourceText, sourceProfile, targetProfile, 0.76);
+  const maxLength = transferLengthCeiling(sourceText, sourceProfile, targetProfile, candidateStrength);
   const shouldStructure = variant !== 'conservative' && (
     transferPlan.shiftSentenceLength ||
     transferPlan.shiftSentenceCount ||
@@ -3983,7 +3989,6 @@ function buildBorrowedShellOverlayCandidate({
       targetProfile,
       Math.min(1, candidateStrength + 0.16),
       candidateMod,
-      connectorProfile,
       transferPlan
     );
     if (overlayStructured !== workingText && overlayStructured.length <= maxLength) {
@@ -4043,7 +4048,7 @@ function buildBorrowedShellOverlayCandidate({
       targetProfile,
       changedDimensions,
       passesApplied,
-      targetProgressBias: shell?.mode === 'persona'
+      targetProgressBias: shell?.mode === 'persona' || shell?.mode === 'borrowed'
     })
   };
 }

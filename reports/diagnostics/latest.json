@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-01T10:30:07.264Z",
+  "generatedAt": "2026-04-01T11:06:26.768Z",
   "summary": {
     "corpusVersion": "wild-corpus-v1",
     "familyCount": 12,
@@ -2800,7 +2800,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.291,
-          "output": 0.686,
+          "output": 0.668,
           "improved": true
         },
         "semanticAudit": {
@@ -6810,7 +6810,7 @@
     "donorPressure": {
       "status": "real",
       "bilateralEngaged": 48,
-      "representativeAverageScore": 19.5
+      "representativeAverageScore": 35.5
     },
     "witnessPressure": {
       "status": "rising",
@@ -6847,16 +6847,18 @@
       "bilateralNonTrivialCount": 4,
       "bilateralVisibleRate": 1,
       "bilateralNonTrivialRate": 1,
-      "averageScore": 19.5,
+      "averageScore": 35.5,
       "minProtectedAnchorIntegrity": 1,
       "minPropositionCoverage": 0.98,
       "selections": [
         {
           "anchorId": "building-access-rushed-mobile",
           "candidateId": "committee-budget-tangled-followup",
-          "score": 20,
+          "score": 36,
           "bilateralVisible": true,
           "bilateralNonTrivial": true,
+          "engagedLaneCount": 2,
+          "rejectedLaneCount": 0,
           "laneOutcomes": [
             "structural",
             "structural"
@@ -6871,9 +6873,11 @@
         {
           "anchorId": "package-handoff-formal-record",
           "candidateId": "archive-grant-tangled-followup",
-          "score": 20,
+          "score": 36,
           "bilateralVisible": true,
           "bilateralNonTrivial": true,
+          "engagedLaneCount": 2,
+          "rejectedLaneCount": 0,
           "laneOutcomes": [
             "structural",
             "structural"
@@ -6888,9 +6892,11 @@
         {
           "anchorId": "overwork-debrief-professional-message",
           "candidateId": "archive-grant-tangled-followup",
-          "score": 18,
+          "score": 34,
           "bilateralVisible": true,
           "bilateralNonTrivial": true,
+          "engagedLaneCount": 2,
+          "rejectedLaneCount": 0,
           "laneOutcomes": [
             "structural",
             "structural"
@@ -6905,9 +6911,11 @@
         {
           "anchorId": "school-coordination-rushed-mobile",
           "candidateId": "customer-support-formal-record",
-          "score": 20,
+          "score": 36,
           "bilateralVisible": true,
           "bilateralNonTrivial": true,
+          "engagedLaneCount": 2,
+          "rejectedLaneCount": 0,
           "laneOutcomes": [
             "structural",
             "structural"

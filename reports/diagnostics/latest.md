@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-01T10:30:07.264Z
+Generated: 2026-04-01T11:06:26.768Z
 
 Corpus: 48 samples across 12 families
 Promoted deck subset: 16 samples
@@ -56,11 +56,11 @@ Total diagnostics cases: 160
 - realized_passage: weak
 - provenance_floor: maintained
 - swap_matrix: bilateral 48/72, one-sided 24/72, flagship 8/12
-- representative_pairs: bilateral visible 4/4, bilateral non-trivial 4/4, average score 19.5
+- representative_pairs: bilateral visible 4/4, bilateral non-trivial 4/4, average score 35.5
 
 ## Private EO-RFD Representative Pairs
 
-- building-access-rushed-mobile -> committee-budget-tangled-followup: score 20, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
-- package-handoff-formal-record -> archive-grant-tangled-followup: score 20, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
-- overwork-debrief-professional-message -> archive-grant-tangled-followup: score 18, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
-- school-coordination-rushed-mobile -> customer-support-formal-record: score 20, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- building-access-rushed-mobile -> committee-budget-tangled-followup: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- package-handoff-formal-record -> archive-grant-tangled-followup: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- overwork-debrief-professional-message -> archive-grant-tangled-followup: score 34, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- school-coordination-rushed-mobile -> customer-support-formal-record: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
