@@ -7,7 +7,8 @@ import {
   DIAGNOSTIC_BATTERY,
   DIAGNOSTIC_CORPUS,
   DIAGNOSTIC_CORPUS_BY_ID,
-  DIAGNOSTIC_SAMPLE_LIBRARY
+  DIAGNOSTIC_SAMPLE_LIBRARY,
+  PROMOTED_SAMPLE_LIBRARY
 } from '../app/data/diagnostics.js';
 import {
   buildCadenceLockRecord,
@@ -37,6 +38,12 @@ const FAILURE_BUCKETS = Object.freeze([
   'over_flattened_output',
   'register_miss',
   'sentence_span_miss'
+]);
+const PRIVATE_EORFD_REPRESENTATIVE_ANCHORS = Object.freeze([
+  'building-access-rushed-mobile',
+  'package-handoff-formal-record',
+  'overwork-debrief-professional-message',
+  'school-coordination-rushed-mobile'
 ]);
 
 const PERSONA_LIBRARY = resolvePersonaCatalog(engine, personas, DIAGNOSTIC_SAMPLE_LIBRARY);
@@ -117,6 +124,206 @@ function bucketIf(condition, bucket, collection) {
 
 function buildCaseNote(buckets = [], fallback) {
   return buckets.length ? `Buckets: ${buckets.join(', ')}.` : fallback;
+}
+
+function buildBorrowedShellFromProfile(profile, fromSlot = 'B') {
+  return {
+    mode: 'borrowed',
+    label: `borrowed ${fromSlot} cadence`,
+    mod: engine.cadenceModFromProfile(profile),
+    profile: { ...profile },
+    source: 'swapped',
+    fromSlot,
+    strength: 0.82
+  };
+}
+
+function swapCadenceScoreLane(result = {}, sourceText = '') {
+  let score = 0;
+  const changed = result.text !== sourceText;
+
+  if (result.transferClass === 'structural') {
+    score += 5;
+  } else if (result.transferClass === 'weak' && changed) {
+    score += 3;
+  } else if (result.transferClass === 'rejected') {
+    score -= 4;
+  }
+
+  if (changed) {
+    score += 2;
+  }
+  if (result.realizationTier === 'lexical-structural') {
+    score += 2;
+  }
+  if ((result.semanticAudit?.propositionCoverage ?? 1) >= 0.85) {
+    score += 1;
+  }
+  if ((result.semanticAudit?.polarityMismatches ?? 0) > 0) {
+    score -= 2;
+  }
+
+  return score;
+}
+
+function evaluateRepresentativeSwapPair(sourceSample, donorSample) {
+  const sourceProfile = engine.extractCadenceProfile(sourceSample.text);
+  const donorProfile = engine.extractCadenceProfile(donorSample.text);
+  const laneA = engine.buildCadenceTransfer(
+    sourceSample.text,
+    buildBorrowedShellFromProfile(donorProfile, 'B'),
+    { retrieval: true }
+  );
+  const laneB = engine.buildCadenceTransfer(
+    donorSample.text,
+    buildBorrowedShellFromProfile(sourceProfile, 'A'),
+    { retrieval: true }
+  );
+
+  return {
+    anchorId: sourceSample.id,
+    candidateId: donorSample.id,
+    score: swapCadenceScoreLane(laneA, sourceSample.text) + swapCadenceScoreLane(laneB, donorSample.text),
+    bilateralVisible: Boolean(laneA.visibleShift) && Boolean(laneB.visibleShift),
+    bilateralNonTrivial: Boolean(laneA.nonTrivialShift) && Boolean(laneB.nonTrivialShift),
+    laneOutcomes: [laneA.borrowedShellOutcome || laneA.transferClass, laneB.borrowedShellOutcome || laneB.transferClass],
+    laneTransferClasses: [laneA.transferClass, laneB.transferClass],
+    minProtectedAnchorIntegrity: round(Math.min(protectedAnchorIntegrity(laneA), protectedAnchorIntegrity(laneB))),
+    minPropositionCoverage: round(Math.min(
+      laneA.semanticAudit?.propositionCoverage ?? 1,
+      laneB.semanticAudit?.propositionCoverage ?? 1
+    ))
+  };
+}
+
+function buildRepresentativeSwapSelections(sampleLibrary = PROMOTED_SAMPLE_LIBRARY, anchorIds = PRIVATE_EORFD_REPRESENTATIVE_ANCHORS) {
+  const sampleById = Object.fromEntries(sampleLibrary.map((sample) => [sample.id, sample]));
+
+  return anchorIds.map((anchorId) => {
+    const anchor = sampleById[anchorId];
+    if (!anchor) {
+      return null;
+    }
+
+    let best = null;
+    for (const candidate of sampleLibrary) {
+      if (candidate.id === anchor.id) {
+        continue;
+      }
+      const evaluation = evaluateRepresentativeSwapPair(anchor, candidate);
+      if (
+        !best ||
+        evaluation.score > best.score ||
+        (evaluation.score === best.score && candidate.id.localeCompare(best.candidateId) < 0)
+      ) {
+        best = evaluation;
+      }
+    }
+    return best;
+  }).filter(Boolean);
+}
+
+function summarizeRepresentativeSwapSelections(selections = []) {
+  const count = selections.length;
+  const bilateralVisibleCount = selections.filter((entry) => entry.bilateralVisible).length;
+  const bilateralNonTrivialCount = selections.filter((entry) => entry.bilateralNonTrivial).length;
+
+  return {
+    count,
+    bilateralVisibleCount,
+    bilateralNonTrivialCount,
+    bilateralVisibleRate: count ? round(bilateralVisibleCount / count) : 0,
+    bilateralNonTrivialRate: count ? round(bilateralNonTrivialCount / count) : 0,
+    averageScore: count ? round(selections.reduce((sum, entry) => sum + Number(entry.score || 0), 0) / count, 2) : 0,
+    minProtectedAnchorIntegrity: count ? round(Math.min(...selections.map((entry) => entry.minProtectedAnchorIntegrity ?? 1))) : 1,
+    minPropositionCoverage: count ? round(Math.min(...selections.map((entry) => entry.minPropositionCoverage ?? 1))) : 1,
+    selections
+  };
+}
+
+function buildPrivateWorkingDoctrine(summary, swapMatrix, representativePairs) {
+  const bucketCounts = summary.failureBucketCounts || {};
+  const topWitnessBuckets = {
+    semantic_drift: bucketCounts.semantic_drift || 0,
+    over_flattened_output: bucketCounts.over_flattened_output || 0,
+    one_sided_swap: bucketCounts.one_sided_swap || 0
+  };
+  const witnessBurdenCount = Object.values(topWitnessBuckets).reduce((sum, value) => sum + value, 0);
+  const witnessBurdenRatio = round(witnessBurdenCount / Math.max(summary.totalCases || 1, 1));
+  const swapSummary = swapMatrix.summary || {};
+  const oneSidedRate = round((swapSummary.oneSided || 0) / Math.max(swapSummary.caseCount || 1, 1));
+  const donorPressureReal = (swapSummary.bilateralEngaged || 0) >= 24 || (representativePairs.averageScore || 0) >= 12;
+  const witnessPressureRising =
+    witnessBurdenRatio >= 0.5 ||
+    (bucketCounts.register_miss || 0) >= 18 ||
+    (bucketCounts.sentence_span_miss || 0) >= 18;
+  const realizedPassageWeak =
+    !swapSummary.flagshipAllPassed ||
+    oneSidedRate >= 0.3 ||
+    witnessBurdenRatio >= 0.65;
+  const provenanceMaintained =
+    (bucketCounts.anchor_break || 0) === 0 &&
+    (representativePairs.minProtectedAnchorIntegrity || 1) >= 1;
+
+  let state = 'playable';
+  if (donorPressureReal && (!swapSummary.flagshipAllPassed || oneSidedRate >= 0.18 || witnessBurdenRatio >= 0.4)) {
+    state = 'warning';
+  }
+  if (donorPressureReal && witnessPressureRising && realizedPassageWeak && provenanceMaintained) {
+    state = 'buffered';
+  }
+  if (state === 'buffered' && (representativePairs.bilateralNonTrivialRate || 0) < 0.5) {
+    state = 'harbor-eligible';
+  }
+
+  const blockedGenerativePassage = state === 'buffered' || state === 'harbor-eligible';
+  const guidance = blockedGenerativePassage
+    ? [
+        'prioritize buildCadenceTransfer(...) and pairing logic before new witness/law surface work',
+        'defer explanatory or aftermath expansions unless a debugging need is explicit',
+        'require before/after comparison on representative pairs, swap flight, and diagnostics buckets'
+      ]
+    : [
+        'maintain retrieval safety floors while tracking whether vitality remains stable'
+      ];
+
+  return {
+    state,
+    blockedGenerativePassage,
+    actionBias: blockedGenerativePassage ? 'loosen-exploration-first' : 'hold-current-boundary',
+    donorPressure: {
+      status: donorPressureReal ? 'real' : 'latent',
+      bilateralEngaged: swapSummary.bilateralEngaged || 0,
+      representativeAverageScore: representativePairs.averageScore || 0
+    },
+    witnessPressure: {
+      status: witnessPressureRising ? 'rising' : 'contained',
+      witnessBurdenCount,
+      witnessBurdenRatio,
+      topWitnessBuckets
+    },
+    realizedPassage: {
+      status: realizedPassageWeak ? 'weak' : 'landing',
+      oneSidedRate,
+      flagshipAllPassed: Boolean(swapSummary.flagshipAllPassed)
+    },
+    provenanceFloor: {
+      status: provenanceMaintained ? 'maintained' : 'degraded',
+      anchorBreakCount: bucketCounts.anchor_break || 0,
+      minProtectedAnchorIntegrity: representativePairs.minProtectedAnchorIntegrity || 1
+    },
+    swapMatrix: {
+      caseCount: swapSummary.caseCount || 0,
+      bilateralEngaged: swapSummary.bilateralEngaged || 0,
+      oneSided: swapSummary.oneSided || 0,
+      bothRejected: swapSummary.bothRejected || 0,
+      flagshipPassCount: swapSummary.flagshipPassCount || 0,
+      flagshipCaseCount: swapSummary.flagshipCaseCount || 0,
+      flagshipAllPassed: Boolean(swapSummary.flagshipAllPassed)
+    },
+    representativePairs,
+    guidance
+  };
 }
 
 function evaluateSwapCase(caseSpec, report) {
@@ -550,6 +757,23 @@ function buildMarkdownReport(report) {
     lines.push(`- ${entry.id}: ${entry.failureBuckets.join(', ') || 'none'} // ${entry.notes}`);
   });
 
+  if (report.workingDoctrine) {
+    const doctrine = report.workingDoctrine;
+    lines.push('', '## Private EO-RFD Working State', '');
+    lines.push(`- state: ${doctrine.state}`);
+    lines.push(`- blocked_generative_passage: ${doctrine.blockedGenerativePassage ? 'yes' : 'no'}`);
+    lines.push(`- donor_pressure: ${doctrine.donorPressure?.status || 'unknown'}`);
+    lines.push(`- witness_pressure: ${doctrine.witnessPressure?.status || 'unknown'}`);
+    lines.push(`- realized_passage: ${doctrine.realizedPassage?.status || 'unknown'}`);
+    lines.push(`- provenance_floor: ${doctrine.provenanceFloor?.status || 'unknown'}`);
+    lines.push(`- swap_matrix: bilateral ${doctrine.swapMatrix?.bilateralEngaged || 0}/${doctrine.swapMatrix?.caseCount || 0}, one-sided ${doctrine.swapMatrix?.oneSided || 0}/${doctrine.swapMatrix?.caseCount || 0}, flagship ${doctrine.swapMatrix?.flagshipPassCount || 0}/${doctrine.swapMatrix?.flagshipCaseCount || 0}`);
+    lines.push(`- representative_pairs: bilateral visible ${doctrine.representativePairs?.bilateralVisibleCount || 0}/${doctrine.representativePairs?.count || 0}, bilateral non-trivial ${doctrine.representativePairs?.bilateralNonTrivialCount || 0}/${doctrine.representativePairs?.count || 0}, average score ${doctrine.representativePairs?.averageScore || 0}`);
+    lines.push('', '## Private EO-RFD Representative Pairs', '');
+    (doctrine.representativePairs?.selections || []).forEach((entry) => {
+      lines.push(`- ${entry.anchorId} -> ${entry.candidateId}: score ${entry.score}, outcomes ${entry.laneOutcomes.join(' / ')}, bilateral visible ${entry.bilateralVisible ? 'yes' : 'no'}, bilateral non-trivial ${entry.bilateralNonTrivial ? 'yes' : 'no'}`);
+    });
+  }
+
   return `${lines.join('\n')}\n`;
 }
 
@@ -571,12 +795,15 @@ const sectionResults = {
     evaluateSwapCase(caseSpec, swapReportById[`${caseSpec.sourceId}__${caseSpec.donorId}`])
   )
 };
+const representativePairs = summarizeRepresentativeSwapSelections(buildRepresentativeSwapSelections());
 
 const report = {
   generatedAt: new Date().toISOString(),
   summary: summarize(sectionResults),
-  sections: sectionResults
+  sections: sectionResults,
+  workingDoctrine: null
 };
+report.workingDoctrine = buildPrivateWorkingDoctrine(report.summary, swapMatrix, representativePairs);
 
 ensureDir(reportsDir);
 fs.writeFileSync(latestJsonPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');

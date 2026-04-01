@@ -89,5 +89,21 @@ assert.equal(latestReport.sections.maskCases.length, 24, 'diagnostics JSON repor
 assert.equal(latestReport.sections.trainerCases.length, 24, 'diagnostics JSON report includes trainer section');
 assert.equal(latestReport.sections.retrievalCases.length, 16, 'diagnostics JSON report includes retrieval section');
 assert.equal(latestReport.sections.falseNeighborCases.length, 24, 'diagnostics JSON report includes false-neighbor section');
+assert.ok(latestReport.workingDoctrine, 'diagnostics JSON report includes private EO-RFD working doctrine');
+assert.ok(
+  ['playable', 'warning', 'buffered', 'harbor-eligible'].includes(latestReport.workingDoctrine.state),
+  'private EO-RFD state stays within the declared doctrine grammar'
+);
+assert.equal(typeof latestReport.workingDoctrine.blockedGenerativePassage, 'boolean', 'private EO-RFD blockedGenerativePassage is boolean');
+assert.equal(typeof latestReport.workingDoctrine.actionBias, 'string', 'private EO-RFD actionBias is present');
+assert.ok(latestReport.workingDoctrine.representativePairs, 'private EO-RFD representative pair summary exists');
+assert.ok(Array.isArray(latestReport.workingDoctrine.representativePairs.selections), 'private EO-RFD representative selections are serialized');
+assert.ok(latestReport.workingDoctrine.representativePairs.selections.length > 0, 'private EO-RFD representative selections stay populated');
+assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralVisibleRate, 'number', 'private EO-RFD representative visible rate is numeric');
+assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralNonTrivialRate, 'number', 'private EO-RFD representative non-trivial rate is numeric');
+
+const latestMarkdown = fs.readFileSync(latestMdPath, 'utf8');
+assert.ok(latestMarkdown.includes('## Private EO-RFD Working State'), 'diagnostics Markdown report includes private EO-RFD working-state section');
+assert.ok(latestMarkdown.includes('## Private EO-RFD Representative Pairs'), 'diagnostics Markdown report includes representative pair section');
 
 console.log('diagnostics.test.mjs passed');

@@ -77,6 +77,12 @@
     A: 'overwork-debrief-professional-message',
     B: 'volunteer-cleanup-rushed-mobile'
   });
+  const PRIVATE_EORFD_REPRESENTATIVE_ANCHORS = Object.freeze([
+    'building-access-rushed-mobile',
+    'package-handoff-formal-record',
+    'overwork-debrief-professional-message',
+    'school-coordination-rushed-mobile'
+  ]);
   const SWAP_FLAGSHIP_PAIRS = Object.freeze((SWAP_CADENCE_FLAGSHIP_PAIRS || []).map((pair) => Object.freeze({
     sourceId: pair.sourceId,
     donorId: pair.donorId
@@ -1536,6 +1542,142 @@
     };
   }
 
+  function swapCadenceScoreLane(result = {}, sourceText = '') {
+    let score = 0;
+    const changed = result.text !== sourceText;
+
+    if (result.transferClass === 'structural') {
+      score += 5;
+    } else if (result.transferClass === 'weak' && changed) {
+      score += 3;
+    } else if (result.transferClass === 'rejected') {
+      score -= 4;
+    }
+
+    if (changed) {
+      score += 2;
+    }
+    if (result.realizationTier === 'lexical-structural') {
+      score += 2;
+    }
+    if ((result.semanticAudit?.propositionCoverage ?? 1) >= 0.85) {
+      score += 1;
+    }
+    if ((result.semanticAudit?.polarityMismatches ?? 0) > 0) {
+      score -= 2;
+    }
+
+    return score;
+  }
+
+  function evaluateRepresentativeSwapPair(referenceSample, probeSample) {
+    const referenceProfile = extractCadenceProfile(referenceSample.text);
+    const probeProfile = extractCadenceProfile(probeSample.text);
+    const laneA = buildCadenceTransfer(referenceSample.text, borrowedShellFromProfile(probeProfile, 'B'), { retrieval: true });
+    const laneB = buildCadenceTransfer(probeSample.text, borrowedShellFromProfile(referenceProfile, 'A'), { retrieval: true });
+
+    return {
+      anchorId: referenceSample.id,
+      candidateId: probeSample.id,
+      score: swapCadenceScoreLane(laneA, referenceSample.text) + swapCadenceScoreLane(laneB, probeSample.text),
+      bilateralVisible: Boolean(laneA.visibleShift) && Boolean(laneB.visibleShift),
+      bilateralNonTrivial: Boolean(laneA.nonTrivialShift) && Boolean(laneB.nonTrivialShift),
+      laneOutcomes: [laneA.borrowedShellOutcome || laneA.transferClass, laneB.borrowedShellOutcome || laneB.transferClass],
+      laneTransferClasses: [laneA.transferClass, laneB.transferClass],
+      minProtectedAnchorIntegrity: Math.min(
+        laneA.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1,
+        laneB.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1
+      ),
+      minPropositionCoverage: Math.min(
+        laneA.semanticAudit?.propositionCoverage ?? 1,
+        laneB.semanticAudit?.propositionCoverage ?? 1
+      )
+    };
+  }
+
+  function buildRepresentativeSwapSelections(sampleLibrary = SAMPLE_LIBRARY, anchorIds = PRIVATE_EORFD_REPRESENTATIVE_ANCHORS) {
+    const sampleById = Object.fromEntries(sampleLibrary.map((sample) => [sample.id, sample]));
+
+    return anchorIds.map((anchorId) => {
+      const anchor = sampleById[anchorId];
+      if (!anchor) {
+        return null;
+      }
+
+      let best = null;
+      for (const candidate of sampleLibrary) {
+        if (candidate.id === anchor.id) {
+          continue;
+        }
+        const evaluation = evaluateRepresentativeSwapPair(anchor, candidate);
+        if (
+          !best ||
+          evaluation.score > best.score ||
+          (evaluation.score === best.score && candidate.id.localeCompare(best.candidateId) < 0)
+        ) {
+          best = evaluation;
+        }
+      }
+      return best;
+    }).filter(Boolean);
+  }
+
+  function summarizeRepresentativeSwapSelections(selections = []) {
+    const count = selections.length;
+    const bilateralVisibleCount = selections.filter((entry) => entry.bilateralVisible).length;
+    const bilateralNonTrivialCount = selections.filter((entry) => entry.bilateralNonTrivial).length;
+
+    return {
+      count,
+      bilateralVisibleCount,
+      bilateralNonTrivialCount,
+      bilateralVisibleRate: count ? Number((bilateralVisibleCount / count).toFixed(4)) : 0,
+      bilateralNonTrivialRate: count ? Number((bilateralNonTrivialCount / count).toFixed(4)) : 0,
+      averageScore: count ? Number((selections.reduce((sum, entry) => sum + Number(entry.score || 0), 0) / count).toFixed(2)) : 0,
+      minProtectedAnchorIntegrity: count ? Number(Math.min(...selections.map((entry) => Number(entry.minProtectedAnchorIntegrity ?? 1))).toFixed(4)) : 1,
+      minPropositionCoverage: count ? Number(Math.min(...selections.map((entry) => Number(entry.minPropositionCoverage ?? 1))).toFixed(4)) : 1,
+      selections
+    };
+  }
+
+  function buildPrivateSwapDoctrine(matrixReport) {
+    const summary = matrixReport?.summary || {};
+    const representativePairs = summarizeRepresentativeSwapSelections(buildRepresentativeSwapSelections());
+    const caseCount = Math.max(summary.caseCount || 1, 1);
+    const oneSidedRate = Number(((summary.oneSided || 0) / caseCount).toFixed(4));
+    const donorPressureReal = (summary.bilateralEngaged || 0) >= 24 || (representativePairs.averageScore || 0) >= 12;
+    const realizedPassageWeak = !summary.flagshipAllPassed || oneSidedRate >= 0.3;
+
+    let state = 'playable';
+    if (donorPressureReal && (!summary.flagshipAllPassed || oneSidedRate >= 0.18)) {
+      state = 'warning';
+    }
+    if (donorPressureReal && realizedPassageWeak) {
+      state = 'buffered';
+    }
+    if (state === 'buffered' && (representativePairs.bilateralNonTrivialRate || 0) < 0.5) {
+      state = 'harbor-eligible';
+    }
+
+    return {
+      state,
+      blockedGenerativePassage: state === 'buffered' || state === 'harbor-eligible',
+      donorPressure: donorPressureReal ? 'real' : 'latent',
+      realizedPassage: realizedPassageWeak ? 'weak' : 'landing',
+      matrix: {
+        caseCount: summary.caseCount || 0,
+        bilateralEngaged: summary.bilateralEngaged || 0,
+        oneSided: summary.oneSided || 0,
+        bothRejected: summary.bothRejected || 0,
+        flagshipPassCount: summary.flagshipPassCount || 0,
+        flagshipCaseCount: summary.flagshipCaseCount || 0,
+        flagshipAllPassed: Boolean(summary.flagshipAllPassed),
+        oneSidedRate
+      },
+      representativePairs
+    };
+  }
+
   function predictedSwapCadenceScore(referenceText = '', probeText = '') {
     if (!referenceText.trim() || !probeText.trim()) {
       return 0;
@@ -1545,35 +1687,8 @@
     const probeProfile = extractCadenceProfile(probeText);
     const underProbe = buildCadenceTransfer(referenceText, borrowedShellFromProfile(probeProfile, 'B'), { retrieval: true });
     const underReference = buildCadenceTransfer(probeText, borrowedShellFromProfile(referenceProfile, 'A'), { retrieval: true });
-    const scoreLane = (result, sourceText) => {
-      let score = 0;
-      const changed = result.text !== sourceText;
 
-      if (result.transferClass === 'structural') {
-        score += 5;
-      } else if (result.transferClass === 'weak' && changed) {
-        score += 3;
-      } else if (result.transferClass === 'rejected') {
-        score -= 4;
-      }
-
-      if (changed) {
-        score += 2;
-      }
-      if (result.realizationTier === 'lexical-structural') {
-        score += 2;
-      }
-      if ((result.semanticAudit?.propositionCoverage ?? 1) >= 0.85) {
-        score += 1;
-      }
-      if ((result.semanticAudit?.polarityMismatches ?? 0) > 0) {
-        score -= 2;
-      }
-
-      return score;
-    };
-
-    return scoreLane(underProbe, referenceText) + scoreLane(underReference, probeText);
+    return swapCadenceScoreLane(underProbe, referenceText) + swapCadenceScoreLane(underReference, probeText);
   }
 
   function randomizerSamplePool(slot, candidates = []) {
@@ -5261,25 +5376,29 @@ DeltaE = ${ledger.reuse_gain}`;
   function runSwapTestFlight() {
     const matrixReport = runSwapCadenceMatrixReport();
     const flagshipCases = matrixReport.flagshipReports || [];
+    const workingDoctrine = buildPrivateSwapDoctrine(matrixReport);
     const summary = matrixReport.summary || {};
     const report = {
       mode: 'swap',
       flagshipPairs: matrixReport.flagshipPairs || [],
       flagshipCases,
       fullSummary: summary,
+      workingDoctrine,
       summary: {
         allPassed:
           Boolean(summary.flagshipAllPassed) &&
           (summary.bilateralEngaged || 0) >= 24 &&
           (summary.bothRejected || 0) <= 8 &&
-          (summary.oneSided || 0) <= 18,
+          (summary.oneSided || 0) <= 18 &&
+          (workingDoctrine.representativePairs?.bilateralNonTrivialRate || 0) >= 0.75,
         passCount: [
           Boolean(summary.flagshipAllPassed),
           (summary.bilateralEngaged || 0) >= 24,
           (summary.bothRejected || 0) <= 8,
-          (summary.oneSided || 0) <= 18
+          (summary.oneSided || 0) <= 18,
+          (workingDoctrine.representativePairs?.bilateralNonTrivialRate || 0) >= 0.75
         ].filter(Boolean).length,
-        caseCount: 4
+        caseCount: 5
       }
     };
 

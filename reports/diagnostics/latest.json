@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-01T09:12:28.271Z",
+  "generatedAt": "2026-04-01T10:06:14.180Z",
   "summary": {
     "corpusVersion": "wild-corpus-v1",
     "familyCount": 12,
@@ -6801,6 +6801,130 @@
         ],
         "notes": "Buckets: one_sided_swap, over_flattened_output."
       }
+    ]
+  },
+  "workingDoctrine": {
+    "state": "buffered",
+    "blockedGenerativePassage": true,
+    "actionBias": "loosen-exploration-first",
+    "donorPressure": {
+      "status": "real",
+      "bilateralEngaged": 48,
+      "representativeAverageScore": 19.5
+    },
+    "witnessPressure": {
+      "status": "rising",
+      "witnessBurdenCount": 112,
+      "witnessBurdenRatio": 0.7,
+      "topWitnessBuckets": {
+        "semantic_drift": 42,
+        "over_flattened_output": 36,
+        "one_sided_swap": 34
+      }
+    },
+    "realizedPassage": {
+      "status": "weak",
+      "oneSidedRate": 0.3333,
+      "flagshipAllPassed": false
+    },
+    "provenanceFloor": {
+      "status": "maintained",
+      "anchorBreakCount": 0,
+      "minProtectedAnchorIntegrity": 1
+    },
+    "swapMatrix": {
+      "caseCount": 72,
+      "bilateralEngaged": 48,
+      "oneSided": 24,
+      "bothRejected": 0,
+      "flagshipPassCount": 8,
+      "flagshipCaseCount": 12,
+      "flagshipAllPassed": false
+    },
+    "representativePairs": {
+      "count": 4,
+      "bilateralVisibleCount": 4,
+      "bilateralNonTrivialCount": 4,
+      "bilateralVisibleRate": 1,
+      "bilateralNonTrivialRate": 1,
+      "averageScore": 19.5,
+      "minProtectedAnchorIntegrity": 1,
+      "minPropositionCoverage": 0.98,
+      "selections": [
+        {
+          "anchorId": "building-access-rushed-mobile",
+          "candidateId": "committee-budget-tangled-followup",
+          "score": 20,
+          "bilateralVisible": true,
+          "bilateralNonTrivial": true,
+          "laneOutcomes": [
+            "structural",
+            "structural"
+          ],
+          "laneTransferClasses": [
+            "structural",
+            "structural"
+          ],
+          "minProtectedAnchorIntegrity": 1,
+          "minPropositionCoverage": 1
+        },
+        {
+          "anchorId": "package-handoff-formal-record",
+          "candidateId": "archive-grant-tangled-followup",
+          "score": 20,
+          "bilateralVisible": true,
+          "bilateralNonTrivial": true,
+          "laneOutcomes": [
+            "structural",
+            "structural"
+          ],
+          "laneTransferClasses": [
+            "structural",
+            "structural"
+          ],
+          "minProtectedAnchorIntegrity": 1,
+          "minPropositionCoverage": 1
+        },
+        {
+          "anchorId": "overwork-debrief-professional-message",
+          "candidateId": "archive-grant-tangled-followup",
+          "score": 18,
+          "bilateralVisible": true,
+          "bilateralNonTrivial": true,
+          "laneOutcomes": [
+            "structural",
+            "structural"
+          ],
+          "laneTransferClasses": [
+            "structural",
+            "structural"
+          ],
+          "minProtectedAnchorIntegrity": 1,
+          "minPropositionCoverage": 1
+        },
+        {
+          "anchorId": "school-coordination-rushed-mobile",
+          "candidateId": "customer-support-formal-record",
+          "score": 20,
+          "bilateralVisible": true,
+          "bilateralNonTrivial": true,
+          "laneOutcomes": [
+            "structural",
+            "structural"
+          ],
+          "laneTransferClasses": [
+            "structural",
+            "structural"
+          ],
+          "minProtectedAnchorIntegrity": 1,
+          "minPropositionCoverage": 0.98
+        }
+      ]
+    },
+    "guidance": [
+      "prioritize buildCadenceTransfer(...) and pairing logic before new witness/law surface work",
+      "defer explanatory or aftermath expansions unless a debugging need is explicit",
+      "require before/after comparison on representative pairs, swap flight, and diagnostics buckets"
     ]
   }
 }

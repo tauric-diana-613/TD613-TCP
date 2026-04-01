@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-01T09:12:28.271Z
+Generated: 2026-04-01T10:06:14.180Z
 
 Corpus: 48 samples across 12 families
 Promoted deck subset: 16 samples
@@ -46,3 +46,21 @@ Total diagnostics cases: 160
 - overwork-debrief-under-performance-review-mask-cross-family: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, sentence_span_miss, surface_close_under_large_gap.
 - tenant-leak-under-school-coordination-mask-cross-family: mask_near_home_hold, over_flattened_output, register_miss, semantic_drift // Buckets: mask_near_home_hold, over_flattened_output, register_miss, semantic_drift.
 - school-coordination-trainer-sibling: over_flattened_output, register_miss, sentence_span_miss, trainer_retrieval_fail // Buckets: over_flattened_output, register_miss, sentence_span_miss, trainer_retrieval_fail.
+
+## Private EO-RFD Working State
+
+- state: buffered
+- blocked_generative_passage: yes
+- donor_pressure: real
+- witness_pressure: rising
+- realized_passage: weak
+- provenance_floor: maintained
+- swap_matrix: bilateral 48/72, one-sided 24/72, flagship 8/12
+- representative_pairs: bilateral visible 4/4, bilateral non-trivial 4/4, average score 19.5
+
+## Private EO-RFD Representative Pairs
+
+- building-access-rushed-mobile -> committee-budget-tangled-followup: score 20, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- package-handoff-formal-record -> archive-grant-tangled-followup: score 20, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- overwork-debrief-professional-message -> archive-grant-tangled-followup: score 18, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- school-coordination-rushed-mobile -> customer-support-formal-record: score 20, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
