@@ -50,7 +50,8 @@ export async function createTrainerController(options = {}) {
     sampleLibrary = [],
     onInjectPersona,
     onStatus,
-    applyStaticGlyphs
+    applyStaticGlyphs,
+    resolveDraftContext
   } = options;
 
   if (!root) {
@@ -73,10 +74,12 @@ export async function createTrainerController(options = {}) {
     fingerprintSummary: byId(root, 'trainerFingerprintSummary'),
     promptOutput: byId(root, 'trainerPromptOutput'),
     generatedOutput: byId(root, 'trainerGeneratedOutput'),
+    draftContext: byId(root, 'trainerDraftContext'),
     validationReport: byId(root, 'trainerValidationReport'),
     correctionHints: byId(root, 'trainerCorrectionHints'),
     exportOutput: byId(root, 'trainerExportOutput'),
     extractBtn: byId(root, 'trainerExtractBtn'),
+    forgeDraftBtn: byId(root, 'trainerForgeDraftBtn'),
     validateBtn: byId(root, 'trainerValidateBtn'),
     exportBtn: byId(root, 'trainerExportBtn'),
     injectBtn: byId(root, 'trainerInjectBtn'),
@@ -89,6 +92,8 @@ export async function createTrainerController(options = {}) {
     promptBuild: null,
     validation: null,
     exportSpec: null,
+    draftResult: null,
+    draftContext: null,
     lastInjectedPersonaSummary: null,
     statusMessage: '',
     statusCue: '',
@@ -120,12 +125,79 @@ export async function createTrainerController(options = {}) {
     return String(nodes.personaName?.value || '').trim() || 'Trainer Persona';
   }
 
+  function cloneContext(value) {
+    return value ? clone(value) : null;
+  }
+
+  function currentDraftContext() {
+    const resolved = typeof resolveDraftContext === 'function' ? (resolveDraftContext() || {}) : {};
+    const merged = {
+      ...cloneContext(resolved),
+      ...(state.draftContext || {})
+    };
+
+    if (!String(merged.sourceText || '').trim() && state.extraction?.samples?.[0]) {
+      merged.sourceText = state.extraction.samples[0];
+      merged.sourceOrigin = merged.sourceOrigin || 'first extracted corpus sample';
+    }
+    if (!String(merged.corpusText || '').trim() && state.extraction?.rawCorpus) {
+      merged.corpusText = state.extraction.rawCorpus;
+      merged.corpusOrigin = merged.corpusOrigin || 'extracted corpus';
+    }
+    return merged;
+  }
+
+  function draftShell(context = {}) {
+    const persona = context.persona || null;
+    const profile = persona?.profile || state.extraction?.targetProfile || null;
+    if (!profile) {
+      return null;
+    }
+    return {
+      mode: 'persona',
+      label: persona?.name || personaName(),
+      profile: { ...profile },
+      mod: persona?.mod ? { ...persona.mod } : (typeof engine.cadenceModFromProfile === 'function' ? engine.cadenceModFromProfile(profile) : null),
+      strength: Number(persona?.strength || (state.extraction ? 0.84 : 0.82)),
+      source: persona?.source || 'trainer'
+    };
+  }
+
+  function renderDraftContext() {
+    if (!nodes.draftContext) {
+      return;
+    }
+    const context = currentDraftContext();
+    const persona = context.persona || null;
+    const sourceText = String(context.sourceText || '').trim();
+    const sourceOrigin = context.sourceOrigin || (state.extraction?.samples?.[0] ? 'first extracted corpus sample' : 'no live source');
+    const sourcePreview = sourceText
+      ? `${sourceText.replace(/\s+/g, ' ').slice(0, 120)}${sourceText.replace(/\s+/g, ' ').length > 120 ? '…' : ''}`
+      : 'Forge Draft will fall back to the extracted corpus once you extract the field.';
+    const shellLine = persona
+      ? `${persona.name} will steer the draft.`
+      : state.extraction
+        ? `${personaName()} can draft directly from the extracted field.`
+        : 'Choose a shelf mask, wear one in Homebase, or extract a field first.';
+    nodes.draftContext.innerHTML = `
+      <div class="trainer-draft-context">
+        <div><strong>Shell</strong> ${shellLine}</div>
+        <div><strong>Source</strong> ${sourceOrigin}</div>
+        <div><strong>Preview</strong> ${sourcePreview}</div>
+      </div>
+    `;
+  }
+
   function updateButtons() {
     const hasCorpus = Boolean(nodes.corpusInput?.value.trim());
     const hasExtraction = Boolean(state.extraction);
     const hasGenerated = Boolean(nodes.generatedOutput?.value.trim());
+    const context = currentDraftContext();
+    const hasDraftSource = Boolean(String(context.sourceText || '').trim()) || Boolean(state.extraction?.samples?.[0]);
+    const hasDraftShell = Boolean(draftShell(context));
 
     nodes.extractBtn.disabled = !hasCorpus;
+    nodes.forgeDraftBtn.disabled = !(hasCorpus || hasExtraction || hasDraftSource) || !hasDraftShell;
     nodes.validateBtn.disabled = !(hasExtraction && hasGenerated);
     nodes.exportBtn.disabled = !hasExtraction;
     nodes.injectBtn.disabled = !(state.exportSpec && state.validation?.pass);
@@ -136,6 +208,7 @@ export async function createTrainerController(options = {}) {
       applyStaticGlyphs(root);
     }
     applyStatus();
+    renderDraftContext();
     nodes.fingerprintSummary.innerHTML = renderFingerprintSummary(state.extraction, state.promptBuild);
     nodes.validationReport.innerHTML = renderValidationReport(state.validation);
     nodes.correctionHints.innerHTML = renderCorrectionHints(state.validation);
@@ -151,6 +224,7 @@ export async function createTrainerController(options = {}) {
     }
     state.validation = null;
     state.exportSpec = null;
+    state.draftResult = null;
     nodes.exportOutput.value = '';
   }
 
@@ -164,6 +238,158 @@ export async function createTrainerController(options = {}) {
     state.exportSpec = null;
     render();
     setStatus(`${personaName()} forged a target field from corpus.`, `samples ${state.extraction.stats.sampleCount}`);
+    return snapshot();
+  }
+
+  function openContext(nextContext = {}) {
+    const context = cloneContext(nextContext) || {};
+    state.draftContext = {
+      ...(state.draftContext || {}),
+      ...context
+    };
+
+    if (context.forcePopulate) {
+      if (context.persona?.name) {
+        nodes.personaName.value = context.persona.name;
+      }
+      if (String(context.corpusText || '').trim()) {
+        nodes.corpusInput.value = context.corpusText;
+        resetDerivedState();
+      }
+      nodes.generatedOutput.value = '';
+    }
+
+    render();
+    setStatus(
+      context.persona?.name
+        ? `${context.persona.name} opened in Trainer. Forge Draft can seed a live candidate from current field context.`
+        : 'Trainer context refreshed. Forge Draft can now seed a live candidate from the field.',
+      'trainer-context'
+    );
+    return snapshot();
+  }
+
+  function forgeDraft() {
+    if (!state.extraction && nodes.corpusInput.value.trim()) {
+      extract();
+    }
+
+    const context = currentDraftContext();
+    const sourceText = String(context.sourceText || state.extraction?.samples?.[0] || '').trim();
+    if (!sourceText) {
+      throw new Error('Forge Draft needs source text from Homebase, Deck, or the extracted corpus.');
+    }
+
+    const shell = draftShell(context);
+    if (!shell) {
+      throw new Error('Forge Draft needs either a selected persona, a worn mask, or an extracted corpus field.');
+    }
+
+    const candidates = [];
+    const seenTexts = new Set();
+    const pushCandidate = (text, meta = {}) => {
+      const normalizedText = String(text || '').trim();
+      if (!normalizedText || seenTexts.has(normalizedText)) {
+        return;
+      }
+      seenTexts.add(normalizedText);
+      let validationPreview = null;
+      try {
+        validationPreview = validateCandidateAgainstFingerprint(engine, normalizedText, state.extraction, {
+          personaName: personaName(),
+          sampleLibrary
+        });
+      } catch (error) {
+        validationPreview = null;
+      }
+      candidates.push({
+        text: normalizedText,
+        validationPreview,
+        ...meta
+      });
+    };
+
+    pushCandidate(sourceText, {
+      transfer: null,
+      strength: 0,
+      changedDimensions: [],
+      transferClass: 'native',
+      visibleShift: false,
+      nonTrivialShift: false
+    });
+
+    const strengthVariants = [...new Set([
+      Number(shell.strength || 0.84),
+      Math.max(0.58, Number(shell.strength || 0.84) * 0.84),
+      Math.max(0.42, Number(shell.strength || 0.84) * 0.68)
+    ].map((value) => Number(value.toFixed(3))))];
+
+    strengthVariants.forEach((candidateStrength) => {
+      const transfer = engine.buildCadenceTransfer(sourceText, shell, {
+        retrieval: true,
+        strength: candidateStrength
+      });
+      pushCandidate(transfer.text || sourceText, {
+        transfer,
+        strength: candidateStrength,
+        changedDimensions: [...(transfer.changedDimensions || [])],
+        transferClass: transfer.transferClass || 'native',
+        visibleShift: Boolean(transfer.visibleShift),
+        nonTrivialShift: Boolean(transfer.nonTrivialShift)
+      });
+    });
+
+    candidates.sort((left, right) => {
+      const leftValidation = left.validationPreview;
+      const rightValidation = right.validationPreview;
+      const leftScore =
+        (leftValidation?.pass ? 1000 : 0) +
+        (leftValidation?.retrievalContract?.retrievalPass ? 300 : 0) +
+        ((leftValidation?.scalarSummary?.aggregate || 0) * 100) +
+        ((leftValidation?.retrievalContract?.meanAgreement || 0) * 40) +
+        (left.nonTrivialShift ? 14 : left.visibleShift ? 6 : 0) +
+        ((left.changedDimensions || []).length * 1.5) -
+        (left.transfer ? 0 : 8);
+      const rightScore =
+        (rightValidation?.pass ? 1000 : 0) +
+        (rightValidation?.retrievalContract?.retrievalPass ? 300 : 0) +
+        ((rightValidation?.scalarSummary?.aggregate || 0) * 100) +
+        ((rightValidation?.retrievalContract?.meanAgreement || 0) * 40) +
+        (right.nonTrivialShift ? 14 : right.visibleShift ? 6 : 0) +
+        ((right.changedDimensions || []).length * 1.5) -
+        (right.transfer ? 0 : 8);
+      return rightScore - leftScore;
+    });
+
+    const chosen = candidates[0] || {
+      text: sourceText,
+      transfer: null,
+      changedDimensions: [],
+      transferClass: 'native',
+      visibleShift: false,
+      nonTrivialShift: false
+    };
+
+    nodes.generatedOutput.value = chosen.text || sourceText;
+    state.validation = null;
+    state.exportSpec = null;
+    state.draftResult = {
+      sourceOrigin: context.sourceOrigin || 'extracted corpus',
+      sourceText,
+      personaId: context.persona?.id || '',
+      personaName: context.persona?.name || '',
+      changedDimensions: [...(chosen.changedDimensions || [])],
+      transferClass: chosen.transferClass || 'native',
+      visibleShift: Boolean(chosen.visibleShift),
+      nonTrivialShift: Boolean(chosen.nonTrivialShift)
+    };
+    render();
+    setStatus(
+      chosen.transfer
+        ? `${personaName()} forged a live draft from ${state.draftResult.sourceOrigin}.`
+        : `${personaName()} held the draft close to source to preserve retrieval law.`,
+      chosen.nonTrivialShift ? 'draft-live' : 'draft-near-home'
+    );
     return snapshot();
   }
 
@@ -230,6 +456,8 @@ export async function createTrainerController(options = {}) {
       personaName: nodes.personaName.value,
       corpusInput: nodes.corpusInput.value,
       generatedOutput: nodes.generatedOutput.value,
+      draftContext: clone(state.draftContext),
+      draftResult: clone(state.draftResult),
       extraction: clone(state.extraction),
       promptBuild: clone(state.promptBuild),
       validation: clone(state.validation),
@@ -245,6 +473,8 @@ export async function createTrainerController(options = {}) {
     nodes.personaName.value = nextState.personaName || '';
     nodes.corpusInput.value = nextState.corpusInput || '';
     nodes.generatedOutput.value = nextState.generatedOutput || '';
+    state.draftContext = clone(nextState.draftContext) || null;
+    state.draftResult = clone(nextState.draftResult) || null;
     state.extraction = clone(nextState.extraction) || null;
     state.promptBuild = clone(nextState.promptBuild) || null;
     state.validation = clone(nextState.validation) || null;
@@ -265,6 +495,11 @@ export async function createTrainerController(options = {}) {
       validationReady: Boolean(state.validation),
       validationPass: Boolean(state.validation?.pass),
       validationStatus: state.validation?.status || 'idle',
+      draftReady: Boolean(state.draftResult && nodes.generatedOutput.value.trim()),
+      draftSource: state.draftResult?.sourceOrigin || '',
+      draftPersonaId: state.draftResult?.personaId || '',
+      draftPersonaName: state.draftResult?.personaName || '',
+      generatedLength: nodes.generatedOutput.value.trim().length,
       exportReady: Boolean(state.exportSpec),
       canInject: !nodes.injectBtn.disabled,
       lastInjectedPersonaSummary: clone(state.lastInjectedPersonaSummary),
@@ -277,6 +512,13 @@ export async function createTrainerController(options = {}) {
   nodes.extractBtn.addEventListener('click', () => {
     try {
       extract();
+    } catch (error) {
+      setStatus(error.message);
+    }
+  });
+  nodes.forgeDraftBtn.addEventListener('click', () => {
+    try {
+      forgeDraft();
     } catch (error) {
       setStatus(error.message);
     }
@@ -334,10 +576,12 @@ export async function createTrainerController(options = {}) {
   });
 
   render();
-  setStatus('Paste a corpus, extract the field, then validate a candidate passage.');
+  setStatus('Paste a corpus, extract the field, forge a draft, then validate the passage.');
 
   return {
+    openContext,
     extract,
+    forgeDraft,
     validate,
     exportSpec,
     inject,

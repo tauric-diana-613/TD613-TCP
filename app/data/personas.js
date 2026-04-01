@@ -15,11 +15,11 @@ const personas = [
         { sampleId: 'institutional-memo', weight: 0.35 }
       ],
       overlayMod: {
-        sent: 2,
-        cont: -2,
-        punc: 0
+        sent: 4,
+        cont: -3,
+        punc: -1
       },
-      strength: 0.9
+      strength: 0.94
     },
     maskVisualClass: 'ledger-raven',
     maskArtLabel: 'ledger raven',
@@ -49,11 +49,11 @@ const personas = [
         { sampleId: 'critical-review', weight: 0.2 }
       ],
       overlayMod: {
-        sent: -3,
-        cont: 3,
-        punc: 3
+        sent: -5,
+        cont: 4,
+        punc: 4
       },
-      strength: 0.9
+      strength: 0.92
     },
     maskVisualClass: 'signal-jackal',
     maskArtLabel: 'signal jackal',
@@ -117,7 +117,7 @@ const personas = [
         { sampleId: 'witness-statement', weight: 0.45 }
       ],
       overlayMod: {
-        sent: -3,
+        sent: -4,
         cont: -2,
         punc: -2
       },
@@ -151,11 +151,11 @@ const personas = [
         { sampleId: 'grant-narrative', weight: 0.45 }
       ],
       overlayMod: {
-        sent: 2,
-        cont: -2,
+        sent: 4,
+        cont: -3,
         punc: -1
       },
-      strength: 0.87
+      strength: 0.9
     },
     maskVisualClass: 'schema-moth',
     maskArtLabel: 'schema moth',
@@ -185,11 +185,11 @@ const personas = [
         { sampleId: 'operations-brief', weight: 0.45 }
       ],
       overlayMod: {
-        sent: -3,
-        cont: -2,
-        punc: 4
+        sent: -5,
+        cont: -3,
+        punc: 5
       },
-      strength: 0.89
+      strength: 0.91
     },
     maskVisualClass: 'gavel-viper',
     maskArtLabel: 'gavel viper',
@@ -220,11 +220,11 @@ const personas = [
         { sampleId: 'institutional-memo', weight: 0.2 }
       ],
       overlayMod: {
-        sent: 2,
+        sent: 4,
         cont: -1,
-        punc: -1
+        punc: -2
       },
-      strength: 0.88
+      strength: 0.9
     },
     maskVisualClass: 'velvet-stag',
     maskArtLabel: 'velvet stag',

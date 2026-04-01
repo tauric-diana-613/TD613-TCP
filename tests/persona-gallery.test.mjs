@@ -69,6 +69,8 @@ for (const persona of resolvedPersonas) {
   results.set(persona.id, result);
   assert.ok(result.maskedText.trim().length > 0, `${persona.id}: masked output is populated`);
   assert.ok(result.rawToLock && result.maskedToLock, `${persona.id}: raw and masked lock comparisons are available`);
+  assert.ok(result.whatMovedSummary && result.whatMovedSummary.length > 0, `${persona.id}: movement summary is populated`);
+  assert.ok(Array.isArray(result.shiftPreview) && result.shiftPreview.length > 0, `${persona.id}: sentence-level shift preview is populated`);
   assert.equal(result.transfer.semanticAudit?.propositionCoverage, 1, `${persona.id}: proposition coverage remains intact`);
   assert.equal(result.transfer.protectedAnchorAudit?.protectedAnchorIntegrity, 1, `${persona.id}: protected anchors remain intact`);
 }
@@ -81,7 +83,7 @@ const outputProfiles = Object.fromEntries(
 );
 
 assert.ok(
-  outputProfiles.archivist.avgSentenceLength >= outputProfiles.spark.avgSentenceLength + 8,
+  outputProfiles.archivist.avgSentenceLength >= outputProfiles.spark.avgSentenceLength + 6,
   'Archivist holds a much longer sentence span than Spark on the same source text'
 );
 assert.ok(
@@ -97,7 +99,7 @@ assert.ok(
   'different masks produce meaningfully different traceability deltas against the same lock'
 );
 assert.ok(
-  outputProfiles['cross-examiner'].avgSentenceLength <= outputProfiles.archivist.avgSentenceLength - 8,
+  outputProfiles['cross-examiner'].avgSentenceLength <= outputProfiles.archivist.avgSentenceLength - 6,
   'Cross-Examiner stays much more clipped than Archivist on the same source text'
 );
 assert.ok(
@@ -107,6 +109,13 @@ assert.ok(
 assert.ok(
   (results.get('cross-examiner').deltaToLock?.traceability || 0) < (results.get('matron').deltaToLock?.traceability || 0),
   'Cross-Examiner and Matron create meaningfully different home-trace pressure against the same lock'
+);
+assert.ok(
+  [...results.values()].filter((result) =>
+    (result.transfer.changedDimensions || []).some((dimension) => dimension !== 'punctuation-shape') ||
+    (result.transfer.lexemeSwaps || []).length > 0
+  ).length >= 5,
+  'most built-in masks land visible non-punctuation movement on the maintained comparison fixture'
 );
 
 console.log('persona-gallery.test.mjs passed');

@@ -243,27 +243,25 @@ That matters because solo Telemetry and Harbor are no longer a Deck-only behavio
 
 ## Routed station shell
 
-`Patch 28.6` keeps TCP on one browser runtime while changing the public shell into routed stations.
+`Patch 28.6.1` keeps TCP on one browser runtime while changing the public shell into routed stations that behave like a connected site instead of a console dashboard.
 
 Public routes are:
 
-- `#console`
 - `#homebase`
 - `#personas`
 - `#readout`
 - `#deck`
 - `#trainer`
 
-Those routes do not create per-page engines. They are aliases over the shared `browser-main.js` state. `#deck` resolves to the same internal encounter surface that older code paths still call `play`, so existing helpers and tests do not have to fork their truth model.
+Those routes do not create per-page engines. They are aliases over the shared `browser-main.js` state. `#deck` resolves to the same internal encounter surface that older code paths still call `play`, so existing helpers and tests do not have to fork their truth model. `#console` remains only as a compatibility alias and resolves immediately to `#homebase`.
 
-Ingress now hands off to `#console` by default. From there, each station exposes a focused surface:
+Ingress now hands off to `#homebase` by default. From there, each station exposes a focused surface:
 
-- `Console` = station index and live summaries
 - `Homebase` = lock, reveal, mask contact, dossier, archive
 - `Personas` = shelf, preview, dispatch
 - `Readout` = witness/law proof surface
 - `Deck` = encounter, cast, duel, aftermath
-- `Trainer` = forge
+- `Trainer` = extraction, live draft generation, validation, injection
 
 The important implementation rule is unchanged: routing changes the shell and pacing, not the measured quantities or their custody logic.
 
@@ -281,7 +279,6 @@ Those summaries do not create a second truth system. They are fed from existing 
 
 Current role mapping:
 
-- `Console` = index
 - `Ingress` = threshold
 - `Homebase` = anchor / contact / residue
 - `Personas` = shelf
@@ -299,14 +296,14 @@ The public browser surface is now split across distinct roles:
 - `Personas` exposes the collectible mask gallery and quick-apply actions into `Homebase` and `Deck`
 - `Readout` stays the strict proof surface
 - `Deck` handles live solo and paired play, shell assignment, `Swap Cadences`, and `Shell Duel`
-- `Trainer` remains the manual persona lab
+- `Trainer` remains the manual persona lab, but public draft generation now happens there through the shared transfer engine instead of a UI-only generated state
 
 Inside that split, the Homebase/Personas loop now has an explicit state distinction:
 
 - shelf choice is tracked as `gallerySelectedMaskId`
 - Homebase wear is tracked as `homebaseWornMaskId`
 
-That distinction matters because choosing a mask is no longer the same event as wearing it in Homebase. `Personas` is the shelf and preview surface; `Homebase` is the contact chamber where the chosen mask becomes worn and source text is passed through it.
+That distinction matters because choosing a mask is no longer the same event as wearing it in Homebase. `Personas` is the shelf and preview surface; `Homebase` is the contact chamber where the chosen mask becomes worn and source text is passed through it. Public UI no longer exposes a fake generation button on the shelf; the live draft path is `Open in Trainer` followed by `Forge Draft`.
 
 ## Deck-facing Shell Duel
 

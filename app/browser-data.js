@@ -72,8 +72,8 @@ window.TCP_DATA = {
           { sampleId: 'witness-statement', weight: 0.65 },
           { sampleId: 'institutional-memo', weight: 0.35 }
         ],
-        overlayMod: { sent: 2, cont: -2, punc: 0 },
-        strength: 0.9
+      overlayMod: { sent: 4, cont: -3, punc: -1 },
+      strength: 0.94
       },
       maskVisualClass: 'ledger-raven',
       maskArtLabel: 'ledger raven',
@@ -102,8 +102,8 @@ window.TCP_DATA = {
           { sampleId: 'operations-brief', weight: 0.8 },
           { sampleId: 'critical-review', weight: 0.2 }
         ],
-        overlayMod: { sent: -3, cont: 3, punc: 3 },
-        strength: 0.9
+      overlayMod: { sent: -5, cont: 4, punc: 4 },
+      strength: 0.92
       },
       maskVisualClass: 'signal-jackal',
       maskArtLabel: 'signal jackal',
@@ -162,7 +162,7 @@ window.TCP_DATA = {
           { sampleId: 'operations-brief', weight: 0.55 },
           { sampleId: 'witness-statement', weight: 0.45 }
         ],
-        overlayMod: { sent: -3, cont: -2, punc: -2 },
+      overlayMod: { sent: -4, cont: -2, punc: -2 },
         strength: 0.87
       },
       maskVisualClass: 'quiet-hound',
@@ -192,8 +192,8 @@ window.TCP_DATA = {
           { sampleId: 'deliberative-hedged', weight: 0.55 },
           { sampleId: 'grant-narrative', weight: 0.45 }
         ],
-        overlayMod: { sent: 2, cont: -2, punc: -1 },
-        strength: 0.87
+      overlayMod: { sent: 4, cont: -3, punc: -1 },
+      strength: 0.9
       },
       maskVisualClass: 'schema-moth',
       maskArtLabel: 'schema moth',
@@ -222,8 +222,8 @@ window.TCP_DATA = {
           { sampleId: 'critical-review', weight: 0.55 },
           { sampleId: 'operations-brief', weight: 0.45 }
         ],
-        overlayMod: { sent: -3, cont: -2, punc: 4 },
-        strength: 0.89
+      overlayMod: { sent: -5, cont: -3, punc: 5 },
+      strength: 0.91
       },
       maskVisualClass: 'gavel-viper',
       maskArtLabel: 'gavel viper',
@@ -253,8 +253,8 @@ window.TCP_DATA = {
           { sampleId: 'recursive-debrief', weight: 0.35 },
           { sampleId: 'institutional-memo', weight: 0.2 }
         ],
-        overlayMod: { sent: 2, cont: -1, punc: -1 },
-        strength: 0.88
+      overlayMod: { sent: 4, cont: -1, punc: -2 },
+      strength: 0.9
       },
       maskVisualClass: 'velvet-stag',
       maskArtLabel: 'velvet stag',

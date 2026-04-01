@@ -3206,22 +3206,48 @@ function candidateScore({
   quality = {},
   outputText = '',
   sourceText = '',
+  sourceProfile = {},
   outputProfile = {},
   targetProfile = {},
   changedDimensions = [],
-  passesApplied = []
+  passesApplied = [],
+  targetProgressBias = false
 }) {
   const fit = compareTexts('', '', {
     profileA: outputProfile,
     profileB: targetProfile
   });
+  const nonPunctuationDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
+  const signalSource = normalizeText(sourceText).replace(/[.,!?;:'"()[\]{}]/g, ' ').replace(/\s+/g, ' ').trim();
+  const signalOutput = normalizeText(outputText).replace(/[.,!?;:'"()[\]{}]/g, ' ').replace(/\s+/g, ' ').trim();
+  const signalRewrite = Boolean(signalOutput) && signalOutput !== signalSource;
+  const sentenceDelta = Math.abs(sentenceSplit(sourceText).length - sentenceSplit(outputText).length);
+  const sourceSentenceDistance = Math.abs((sourceProfile.avgSentenceLength || 0) - (targetProfile.avgSentenceLength || 0));
+  const outputSentenceDistance = Math.abs((outputProfile.avgSentenceLength || 0) - (targetProfile.avgSentenceLength || 0));
+  const sourceSentenceCountDistance = Math.abs((sourceProfile.sentenceCount || 0) - (targetProfile.sentenceCount || 0));
+  const outputSentenceCountDistance = Math.abs((outputProfile.sentenceCount || 0) - (targetProfile.sentenceCount || 0));
+  const sentenceProgress = Math.max(0, sourceSentenceDistance - outputSentenceDistance);
+  const sentenceCountProgress = Math.max(0, sourceSentenceCountDistance - outputSentenceCountDistance);
+  const sentenceDriftPenalty = Math.max(0, outputSentenceDistance - sourceSentenceDistance);
+  const sentenceCountDriftPenalty = Math.max(0, outputSentenceCountDistance - sourceSentenceCountDistance);
+  const sentenceStartRewrite = normalizeSentenceStarts(sourceText) !== normalizeSentenceStarts(outputText);
 
   let score = quality.qualityGatePassed ? 80 : -30;
   score += structuralDimensions(changedDimensions).length * 16;
   score += lexicalDimensions(changedDimensions).length * 14;
   score += quality.nonPunctuationDimensions.length * 10;
+  score += nonPunctuationDimensions.length * 6;
   score += hasMaterialStructuralTransfer(changedDimensions) ? 24 : 0;
   score += passesApplied.length * 1.5;
+  score += signalRewrite ? 18 : 0;
+  if (targetProgressBias) {
+    score += Math.min(24, sentenceProgress * 8);
+    score += Math.min(12, sentenceCountProgress * 6);
+    score += sentenceStartRewrite && (sentenceProgress > 0 || sentenceCountProgress > 0) ? 6 : 0;
+  } else {
+    score += Math.min(12, sentenceDelta * 4);
+    score += sentenceStartRewrite ? 8 : 0;
+  }
   score -= (fit.sentenceDistance || 0) * 12;
   score -= (fit.functionWordDistance || 0) * 22;
   score -= (fit.contractionDistance || 0) * 8;
@@ -3230,9 +3256,21 @@ function candidateScore({
   score -= (fit.abstractionDistance || 0) * 8;
   score -= (fit.punctShapeDistance || 0) * 6;
   score -= (fit.punctDistance || 0) * 4;
+  if (targetProgressBias) {
+    score -= Math.min(20, sentenceDriftPenalty * 8);
+    score -= Math.min(10, sentenceCountDriftPenalty * 5);
+  }
 
   if (outputText === sourceText) {
     score -= 24;
+  }
+
+  if (outputText !== sourceText && !signalRewrite) {
+    score -= 24;
+  }
+
+  if (outputText !== sourceText && nonPunctuationDimensions.length === 0) {
+    score -= 28;
   }
 
   if ((quality.notes || []).some((note) => /additive drift/i.test(note))) {
@@ -3589,10 +3627,12 @@ function buildBorrowedShellOverlayCandidate({
       quality,
       outputText,
       sourceText,
+      sourceProfile,
       outputProfile,
       targetProfile,
       changedDimensions,
-      passesApplied
+      passesApplied,
+      targetProgressBias: shell?.mode === 'persona'
     })
   };
 }
@@ -4362,10 +4402,12 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         quality,
         outputText,
         sourceText,
+        sourceProfile,
         outputProfile,
         targetProfile,
         changedDimensions,
-        passesApplied
+        passesApplied,
+        targetProgressBias: shell?.mode === 'persona'
       }),
       debug: candidateDebugPasses
         ? {
@@ -4410,10 +4452,12 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       quality: beamQuality,
       outputText: beamOutputText,
       sourceText,
+      sourceProfile,
       outputProfile: beamOutputProfile,
       targetProfile,
       changedDimensions: beamChangedDimensions,
-      passesApplied: beamBest.operationHistory || []
+      passesApplied: beamBest.operationHistory || [],
+      targetProgressBias: shell?.mode === 'persona'
     }),
     debug: null
   };

@@ -534,6 +534,88 @@ function compactSwatch(text = '', maxLength = 180) {
   return `${normalized.slice(0, Math.max(0, maxLength - 1)).trimEnd()}…`;
 }
 
+function stripSignalPunctuation(text = '') {
+  return normalizeText(text)
+    .toLowerCase()
+    .replace(/[.,!?;:'"()[\]{}]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function sentencePreviewRows(engine, sourceText = '', maskedText = '') {
+  const split = (text) => {
+    if (!normalizeText(text)) {
+      return [];
+    }
+    if (engine && typeof engine.sentenceSplit === 'function') {
+      return engine.sentenceSplit(text).map((entry) => normalizeText(entry)).filter(Boolean);
+    }
+    return normalizeText(text)
+      .split(/(?<=[.!?])\s+/)
+      .map((entry) => normalizeText(entry))
+      .filter(Boolean);
+  };
+
+  const sourceSentences = split(sourceText);
+  const maskedSentences = split(maskedText);
+  const limit = Math.min(Math.max(sourceSentences.length, maskedSentences.length), 4);
+  const rows = [];
+
+  for (let index = 0; index < limit; index += 1) {
+    const source = sourceSentences[index] || '';
+    const masked = maskedSentences[index] || '';
+    const sourceSignal = stripSignalPunctuation(source);
+    const maskedSignal = stripSignalPunctuation(masked);
+    let effect = 'hold';
+    if (source && masked && sourceSignal !== maskedSignal) {
+      effect = 'shift';
+    } else if (source && !masked) {
+      effect = 'source-only';
+    } else if (!source && masked) {
+      effect = 'mask-only';
+    }
+    rows.push({
+      effect,
+      source: compactSwatch(source, 120),
+      output: compactSwatch(masked, 120)
+    });
+  }
+
+  return rows;
+}
+
+function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {}) {
+  const changedDimensions = Array.isArray(transfer.changedDimensions) ? transfer.changedDimensions : [];
+  const lexemeSwaps = Array.isArray(transfer.lexemeSwaps) ? transfer.lexemeSwaps : [];
+  const visibleDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
+  const dimensionLine = visibleDimensions
+    .slice(0, 4)
+    .map((dimension) => dimension.replace(/-/g, ' '))
+    .join(' // ');
+
+  if (!changedDimensions.length && !lexemeSwaps.length) {
+    return 'near-home hold';
+  }
+
+  if (!visibleDimensions.length && lexemeSwaps.length) {
+    return `lexical lane // ${lexemeSwaps.slice(0, 2).map((entry) => entry.family).filter(Boolean).join(' + ') || 'word family shift'}`;
+  }
+
+  if (!visibleDimensions.length) {
+    return 'punctuation edge shift';
+  }
+
+  if (contactSummary.fieldEffect === 'neither') {
+    return `${dimensionLine} // home held`;
+  }
+
+  if (effectSummary.registerShift && effectSummary.registerShift !== 'register holds') {
+    return `${dimensionLine} // ${effectSummary.registerShift}`;
+  }
+
+  return dimensionLine;
+}
+
 function maskContactSummary(result = null) {
   if (!result) {
     return {
@@ -651,6 +733,8 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     deltaToLock,
     effectSummary
   });
+  const shiftPreview = sentencePreviewRows(engine, normalized, transfer.text);
+  const whatMovedSummary = movementSummary(transfer, effectSummary, contactSummary);
 
   return {
     rawText: normalized,
@@ -661,10 +745,12 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     deltaToLock,
     effectSummary,
     whatMoved,
+    whatMovedSummary,
     whatHeld: heldLanes,
     stickinessNotes,
     swatch,
-    contactSummary
+    contactSummary,
+    shiftPreview
   };
 }
 

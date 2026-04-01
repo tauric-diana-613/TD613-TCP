@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP - The Cadence Playground</title>
-    <link rel="stylesheet" href="./styles.css?v=20260331a" />
+    <link rel="stylesheet" href="./styles.css?v=20260331c" />
 </head>
 <body>
   <div id="ingressMembrane" class="ingress-membrane" aria-live="polite">
@@ -81,17 +81,17 @@
   </div>
 
   <div class="shell">
-    <header id="consoleMasthead" class="masthead">
+    <header id="consoleMasthead" class="masthead site-masthead">
       <div class="masthead-copy">
         <div class="topline">
-          <span class="eyebrow">TD613 / public membrane / cadence console <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="shellEyebrow">&#x25C7;</span></span>
+          <span class="eyebrow">TD613 / public membrane / cadence station field <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="shellEyebrow">&#x25C7;</span></span>
           <span class="pilot-chip">conceptual pilot / active development <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="shellPilot">&#x2299;</span></span>
         </div>
         <div class="title-lockup">
           <h1>TCP</h1>
           <p class="deck-name">The Cadence Playground <span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="shellDeckName">&#x7C73;</span></p>
         </div>
-        <p id="heroLead" class="lead">Bring one voice or bring a pair. TCP measures cadence, recurrence, and route pressure, then shows whether the field stays curious, opens a branch, or earns passage.</p>
+        <p id="heroLead" class="lead">Move between Homebase, Personas, Readout, Deck, and Trainer without leaving the same runtime. One field, one engine, cleaner rooms.</p>
       </div>
 
       <aside class="readout-strip analysis-gated" data-latent-label="Latent readout // press Analyze Cadences">
@@ -121,9 +121,9 @@
       <span id="routeState" class="statepill">Route // buffered</span>
     </div>
 
-    <nav class="top-tabs" aria-label="TCP stations">
-      <button id="tabConsole" type="button" class="top-tab active"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabConsole">&#x25C7;</span> Console</button>
-      <button id="tabHomebase" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
+    <nav class="top-tabs site-nav" aria-label="TCP stations">
+      <button id="tabConsole" type="button" class="top-tab" hidden aria-hidden="true" tabindex="-1"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabConsole">&#x25C7;</span> Console</button>
+      <button id="tabHomebase" type="button" class="top-tab active"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
       <button id="tabPersonas" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
       <button id="tabReadout" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
       <button id="tabPlay" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
@@ -131,7 +131,7 @@
     </nav>
 
     <main class="view-stack">
-      <section id="viewPaneConsole" class="view-pane active">
+      <section id="viewPaneConsole" class="view-pane" hidden>
         <section class="panel console-index-panel">
           <div class="panel-heading">
             <div>
@@ -147,7 +147,6 @@
 
       <section id="viewPaneHomebase" class="view-pane" hidden>
         <div class="station-view-head">
-          <button type="button" class="station-back" data-station-target="console">&#x2190; Back to Console</button>
           <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase station</div>
         </div>
         <section class="panel personas-panel">
@@ -232,9 +231,9 @@
                     <span>How the transformed passage still reads against home.</span>
                   </div>
                   <div class="trainer-summary-card">
-                    <div class="persona-kicker">Contact shift</div>
-                    <strong id="maskDeltaToLock">--</strong>
-                    <span>Whether proximity moved, surface texture moved, both, or neither.</span>
+                    <div class="persona-kicker">What moved</div>
+                    <strong id="maskWhatMoved">--</strong>
+                    <span id="maskDeltaToLock">Whether proximity moved, surface texture moved, both, or neither.</span>
                   </div>
                 </div>
                 <div class="persona-mask-output-grid">
@@ -251,6 +250,10 @@
                     <ul id="maskStickinessNotes" class="persona-risk-list">
                       <li>Select or create a cadence home first.</li>
                     </ul>
+                  </div>
+                  <div class="trainer-surface">
+                    <div class="persona-kicker">Shift preview</div>
+                    <div id="personaMaskShiftPreview" class="mask-shift-preview">Sentence-level movement will appear here once the mask rewrites a passage.</div>
                   </div>
                 </div>
               </section>
@@ -270,7 +273,7 @@
 
       <section id="viewPanePersonas" class="view-pane" hidden>
         <div class="station-view-head">
-          <button type="button" class="station-back" data-station-target="console">&#x2190; Back to Console</button>
+          <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
           <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas station</div>
         </div>
         <section class="panel personas-panel personas-gallery-panel">
@@ -297,7 +300,7 @@
 
       <section id="viewPaneReadout" class="view-pane" hidden>
         <div class="station-view-head">
-          <button type="button" class="station-back" data-station-target="console">&#x2190; Back to Console</button>
+          <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
           <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout station</div>
         </div>
         <div class="readout-layout">
@@ -363,7 +366,7 @@
 
       <section id="viewPanePlay" class="view-pane" hidden>
         <div class="station-view-head">
-          <button type="button" class="station-back" data-station-target="console">&#x2190; Back to Console</button>
+          <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
           <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck station</div>
         </div>
         <div class="panel intake-panel">
@@ -372,11 +375,10 @@
               <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionCadenceDeck">&#x25C7;</span> Cadence deck</div>
               <h2>Bring two voices into the room</h2>
             </div>
-            <p class="section-note">Drop in a reference voice and a probe voice. Use the medallion to swap bay text. Use <code>Swap Cadences</code> when you want the retrieval-audited shell lane to move instead of the text.</p>
+            <p class="section-note">Drop in a reference voice and a probe voice. Keep setup moves separate from encounter moves: <code>Swap Text</code> reorders the source bays, while <code>Swap Cadences</code> keeps the text in place and trades shell behavior under audit.</p>
           </div>
 
           <div class="input-grid-wrap">
-            <button id="swapMedallion" type="button" class="swap-medallion" aria-label="Swap bay text" title="Swap bay text">&#x21C6;</button>
             <div class="input-grid">
               <label id="voiceAField" class="field" for="voiceA">
                 <div class="field-head">
@@ -404,6 +406,14 @@
             </div>
           </div>
 
+          <div class="deck-setup-row">
+            <div class="deck-setup-copy">
+              <div class="persona-kicker">Setup utility</div>
+              <p class="section-note deck-setup-note"><strong>Swap Text</strong> moves the source text between bays. It is a staging move, not the shell-transfer event.</p>
+            </div>
+            <button id="swapMedallion" type="button" class="secondary swap-text-btn" aria-label="Swap bay text" title="Swap bay text">Swap Text</button>
+          </div>
+
           <div class="action-row">
             <button id="compareBtn" type="button" class="primary-cta">Analyze Cadences</button>
             <button id="swapCadencesBtn" type="button" class="secondary">Swap Cadences</button>
@@ -411,7 +421,12 @@
             <button id="savePersonaBtn" type="button" class="secondary">Save Cadence as Persona</button>
           </div>
 
+          <div class="deck-action-legend">
+            <p class="section-note deck-action-note"><strong>Swap Cadences</strong> keeps the source text in place and runs the retrieval-audited shell lane. This is the actual duel event.</p>
+          </div>
+
           <div id="deckCastReport" class="analysis-status deck-cast-report">Cast report // waiting on both bays.</div>
+          <div id="deckAftermathPreview" class="deck-aftermath-preview" hidden></div>
 
           <div class="analysis-rail">
             <div id="activeBayStatus" class="statepill active">Active bay // reference voice</div>
@@ -443,7 +458,7 @@
 
       <section id="viewPaneTrainer" class="view-pane" hidden>
         <div class="station-view-head">
-          <button type="button" class="station-back" data-station-target="console">&#x2190; Back to Console</button>
+          <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
           <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer station</div>
         </div>
         <section id="trainerPane" class="panel trainer-panel">
@@ -482,6 +497,11 @@
               </div>
 
               <div class="trainer-surface">
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Draft source</div>
+                <div id="trainerDraftContext" class="trainer-readout-body">Forge Draft will use current Homebase, Deck, or extracted-corpus context when available.</div>
+              </div>
+
+              <div class="trainer-surface">
                 <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Field readout</div>
                 <div id="trainerFingerprintSummary" class="trainer-readout-body"></div>
               </div>
@@ -497,13 +517,14 @@
                 <div class="field-head">
                   <div class="field-head-copy">
                       <span class="field-label">Candidate passage</span>
-                      <span class="field-copy">Paste the generated passage you want the forge to inspect. Manual loop only; no hidden provider wiring.</span>
+                      <span class="field-copy">Forge Draft can seed a live candidate from the current shelf, Homebase, or Deck context. You can still edit the passage manually before validation.</span>
                   </div>
                 </div>
                 <textarea id="trainerGeneratedOutput"></textarea>
               </label>
 
               <div class="trainer-actions">
+                <button id="trainerForgeDraftBtn" type="button" class="primary-cta">Forge Draft</button>
                 <button id="trainerValidateBtn" type="button" class="secondary">Validate Passage</button>
                 <button id="trainerExportBtn" type="button" class="secondary">Export JSON</button>
                 <button id="trainerInjectBtn" type="button" class="secondary">Inject into Personas</button>
@@ -548,9 +569,9 @@
     <footer class="footer">TCP / retrieval-first research playground / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
   </div>
 
-    <script src="./browser-data.js?v=20260331a"></script>
-    <script src="./browser-engine.js?v=20260331a"></script>
-    <script src="./retrieval-fixtures.js?v=20260331a"></script>
-    <script src="./browser-main.js?v=20260331a"></script>
+  <script src="./browser-data.js?v=20260331c"></script>
+  <script src="./browser-engine.js?v=20260331c"></script>
+  <script src="./retrieval-fixtures.js?v=20260331c"></script>
+  <script src="./browser-main.js?v=20260331c"></script>
   </body>
 </html>

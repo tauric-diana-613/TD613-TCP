@@ -3135,3 +3135,166 @@ button:disabled {
     margin-top: 12px;
   }
 }
+
+.site-nav .top-tab[hidden] {
+  display: none !important;
+}
+
+.site-masthead {
+  margin-bottom: 18px;
+}
+
+.site-masthead[data-station="readout"] .readout-strip {
+  display: none;
+}
+
+.site-masthead[data-station="trainer"] .readout-strip,
+.site-masthead[data-station="personas"] .readout-strip {
+  opacity: 0.7;
+}
+
+.site-nav {
+  margin-bottom: 24px;
+  border-radius: 20px;
+  padding: 12px 14px;
+}
+
+.station-view-head {
+  margin-bottom: 2px;
+  padding: 0;
+}
+
+.station-view-label {
+  font-family: var(--display);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--chrome);
+}
+
+.deck-setup-row,
+.deck-action-legend,
+.deck-aftermath-preview {
+  display: grid;
+  gap: 12px;
+}
+
+.deck-setup-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid rgba(116, 234, 255, 0.1);
+  border-radius: var(--radius-md);
+  background: rgba(4, 12, 18, 0.68);
+}
+
+.deck-setup-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.deck-setup-note,
+.deck-action-note {
+  margin: 0;
+}
+
+.deck-action-legend {
+  margin-top: 10px;
+}
+
+.deck-aftermath-preview {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.deck-aftermath-card {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid rgba(116, 234, 255, 0.12);
+  border-radius: var(--radius-md);
+  background: rgba(5, 13, 20, 0.84);
+}
+
+.deck-aftermath-card p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--chrome);
+}
+
+.swap-text-btn,
+.deck-setup-row .swap-medallion {
+  position: static;
+  inset: auto;
+  transform: none;
+  width: auto;
+  min-width: 132px;
+  min-height: 44px;
+  height: auto;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.deck-setup-row .swap-medallion:hover:not(:disabled),
+.deck-setup-row .swap-medallion:focus-visible,
+.swap-text-btn:hover:not(:disabled),
+.swap-text-btn:focus-visible {
+  transform: translateY(-1px);
+}
+
+.mask-shift-preview {
+  display: grid;
+  gap: 10px;
+  min-height: 120px;
+}
+
+.mask-shift-row {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid rgba(116, 234, 255, 0.1);
+  border-radius: 12px;
+  background: rgba(4, 10, 16, 0.72);
+}
+
+.mask-shift-row[data-effect="shift"] {
+  border-color: rgba(116, 234, 255, 0.28);
+  box-shadow: 0 0 0 1px rgba(116, 234, 255, 0.06);
+}
+
+.mask-shift-row[data-effect="mask-only"] {
+  border-color: rgba(188, 255, 138, 0.22);
+}
+
+.mask-shift-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.mask-shift-copy {
+  display: grid;
+  gap: 6px;
+  line-height: 1.55;
+  color: var(--chrome);
+}
+
+.trainer-draft-context {
+  display: grid;
+  gap: 8px;
+  line-height: 1.6;
+  color: var(--chrome);
+}
+
+@media (max-width: 960px) {
+  .deck-setup-row,
+  .deck-aftermath-preview {
+    grid-template-columns: 1fr;
+  }
+}

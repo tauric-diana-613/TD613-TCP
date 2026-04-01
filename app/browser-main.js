@@ -252,29 +252,32 @@
   }
 
   function normalizeArtifactTab(value = '') {
-    return HASH_TO_ARTIFACT_TAB[String(value || '').replace(/^#/, '').trim().toLowerCase()] || 'console';
+    const normalized = String(value || '').replace(/^#/, '').trim().toLowerCase();
+    if (!normalized || normalized === 'console') {
+      return 'homebase';
+    }
+    return HASH_TO_ARTIFACT_TAB[normalized] || 'homebase';
   }
 
-  function artifactHashForTab(tab = 'console') {
-    const normalized = ARTIFACT_TAB_TO_HASH[normalizeArtifactTab(tab)] || 'console';
+  function artifactHashForTab(tab = 'homebase') {
+    const normalized = ARTIFACT_TAB_TO_HASH[normalizeArtifactTab(tab)] || 'homebase';
     return `#${normalized}`;
   }
 
-  function publicArtifactLabel(tab = 'console') {
+  function publicArtifactLabel(tab = 'homebase') {
     return {
-      console: 'Console',
       homebase: 'Homebase',
       personas: 'Personas',
       readout: 'Readout',
       play: 'Deck',
       trainer: 'Trainer'
-    }[normalizeArtifactTab(tab)] || 'Console';
+    }[normalizeArtifactTab(tab)] || 'Homebase';
   }
 
   function resolveArtifactTabFromHash(hash = window.location.hash) {
     const cleaned = String(hash || '').trim();
     if (!cleaned) {
-      return 'console';
+      return 'homebase';
     }
     return normalizeArtifactTab(cleaned);
   }
@@ -1322,6 +1325,7 @@
   function normalizeStoredPersona(persona = {}) {
     const scaffold = defaultMaskScaffold(persona);
     const profile = persona.profile ? { ...persona.profile } : null;
+    const normalizedMaskState = persona.maskState === 'generated' ? 'mask ready' : persona.maskState;
     return {
       ...persona,
       chips: Array.isArray(persona.chips) ? [...persona.chips] : [],
@@ -1332,7 +1336,7 @@
       maskVisualClass: persona.maskVisualClass || scaffold.maskVisualClass,
       maskArtLabel: persona.maskArtLabel || scaffold.maskArtLabel,
       maskSigil: persona.maskSigil || scaffold.maskSigil,
-      maskState: persona.maskState || scaffold.maskState,
+      maskState: normalizedMaskState || scaffold.maskState,
       family: persona.family || scaffold.family,
       tagline: persona.tagline || scaffold.tagline,
       voicePromise: persona.voicePromise || scaffold.voicePromise,
@@ -2385,7 +2389,8 @@
   }
 
   function personaMaskStateLabel(persona = {}) {
-    return persona.maskState || (persona.source === 'built-in' ? 'mask ready' : 'unforged');
+    const normalized = persona.maskState === 'generated' ? 'mask ready' : persona.maskState;
+    return normalized || (persona.source === 'built-in' ? 'mask ready' : 'unforged');
   }
 
   function personaStateKicker(persona = {}) {
@@ -2542,7 +2547,7 @@
       return;
     }
 
-    const swatch = state.comparison?.swatch || state.selectedMaskSwatch || '';
+    const swatch = state.comparison?.swatch || '';
     const source = personaSourceLabel(state.wornMask);
     const family = personaFamilyLabel(state.wornMask);
     const tagline = personaTagline(state.wornMask);
@@ -2584,6 +2589,7 @@
           </div>
           <div class="analysis-status homebase-worn-mask-line">${escapeHtml(stageLine)}</div>
           <div class="persona-actions">
+            <button type="button" class="secondary persona-inline-action" data-persona-action="open-trainer" data-persona-id="${state.wornMask.id}">Open in Trainer</button>
             <button type="button" class="ghost persona-inline-action" data-persona-action="clear-homebase">Clear worn mask</button>
           </div>
         </div>
@@ -2803,10 +2809,31 @@
     const outputNode = $('personaMaskOutput');
     const beforeNode = $('maskRawToLock');
     const afterNode = $('maskMaskedToLock');
+    const movedNode = $('maskWhatMoved');
     const deltaNode = $('maskDeltaToLock');
     const notesNode = $('maskStickinessNotes');
+    const shiftPreviewNode = $('personaMaskShiftPreview');
 
-    if (!statusNode || !contactNode || !sourceNode || !outputNode || !beforeNode || !afterNode || !deltaNode || !notesNode) {
+    const renderShiftPreview = (rows = [], fallback = 'Sentence-level movement will appear here once the mask rewrites a passage.') => {
+      if (!shiftPreviewNode) {
+        return;
+      }
+      if (!rows.length) {
+        shiftPreviewNode.textContent = fallback;
+        return;
+      }
+      shiftPreviewNode.innerHTML = rows.map((row) => `
+        <article class="mask-shift-row" data-effect="${escapeHtml(row.effect || 'hold')}">
+          <div class="mask-shift-label">${escapeHtml((row.effect || 'hold').replace(/-/g, ' '))}</div>
+          <div class="mask-shift-copy">
+            <div><strong>Source</strong> ${escapeHtml(row.source || '—')}</div>
+            <div><strong>Through Mask</strong> ${escapeHtml(row.output || '—')}</div>
+          </div>
+        </article>
+      `).join('');
+    };
+
+    if (!statusNode || !contactNode || !sourceNode || !outputNode || !beforeNode || !afterNode || !movedNode || !deltaNode || !notesNode) {
       return;
     }
 
@@ -2820,10 +2847,14 @@
       outputNode.value = '';
       beforeNode.textContent = '--';
       afterNode.textContent = '--';
+      movedNode.textContent = '--';
       deltaNode.textContent = '--';
       notesNode.innerHTML = state.wornMask
         ? `<li>${escapeHtml(state.wornMask.name)} is worn and ready. The missing ingredient is the cadence home.</li>`
         : '<li>Select or create a cadence home first.</li>';
+      renderShiftPreview([], state.wornMask
+        ? `${state.wornMask.name} is worn, but Homebase still needs a cadence home before movement can be read.`
+        : 'Stage or select a cadence home first.');
       return;
     }
 
@@ -2839,10 +2870,14 @@
       outputNode.value = '';
       beforeNode.textContent = '--';
       afterNode.textContent = '--';
+      movedNode.textContent = '--';
       deltaNode.textContent = '--';
       notesNode.innerHTML = state.wornMask
         ? `<li>${escapeHtml(state.wornMask.name)} is waiting on source passage.</li><li>The bench compares source and through-mask text against ${escapeHtml(state.lock.name)}.</li>`
         : '<li>The bench compares source and through-mask text against the active lock.</li>';
+      renderShiftPreview([], state.wornMask
+        ? `${state.wornMask.name} is worn against ${state.lock.name}. Paste source text to read the rewrite.`
+        : `Choose a mask and bring it into Homebase to read movement against ${state.lock.name}.`);
       return;
     }
 
@@ -2854,8 +2889,10 @@
       outputNode.value = '';
       beforeNode.textContent = '--';
       afterNode.textContent = '--';
+      movedNode.textContent = '--';
       deltaNode.textContent = '--';
       notesNode.innerHTML = '<li>No mask is worn yet.</li><li>Choose one in Personas, bring it into Homebase, then read what clings after contact.</li>';
+      renderShiftPreview([], 'Source text is staged. Bring a worn mask in to read the rewrite sentence by sentence.');
       return;
     }
 
@@ -2869,6 +2906,7 @@
     outputNode.value = result.maskedText || '';
     beforeNode.textContent = comparisonMetricSummary(result.rawToLock);
     afterNode.textContent = comparisonMetricSummary(result.maskedToLock);
+    movedNode.textContent = result.whatMovedSummary || '--';
     deltaNode.textContent =
       contact.fieldEffect === 'both'
         ? `${delta.traceability >= 0 ? '+' : ''}${formatPct(Math.abs(delta.traceability || 0))} trace // surface texture shifted too`
@@ -2881,6 +2919,7 @@
       `What clung // ${escapeHtml(contact.line || 'Residue remains readable.')} `,
       ...(result.stickinessNotes || [])
     ].map((note) => `<li>${escapeHtml(note)}</li>`).join('');
+    renderShiftPreview(result.shiftPreview || [], 'The mask held close enough to source that sentence movement stayed minimal.');
   }
 
   function renderPersonaPreview(state) {
@@ -2917,10 +2956,6 @@
     const voicePromise = personaVoicePromise(persona);
     const fieldUse = personaFieldUse(persona);
     const riskTell = personaRiskTell(persona);
-    const generateHook = persona.source !== 'built-in'
-      ? `<button type="button" class="ghost persona-inline-action" data-persona-action="generate-mask" data-persona-id="${persona.id}">Generate Mask</button>`
-      : '';
-
     node.innerHTML = `
       <div class="persona-preview-grid">
         ${renderPersonaPortrait(persona, { loading: 'eager' })}
@@ -2952,7 +2987,7 @@
             <button type="button" class="secondary persona-inline-action" data-persona-action="wear-homebase" data-persona-id="${persona.id}">Bring into Homebase</button>
             <button type="button" class="ghost persona-inline-action" data-persona-action="assign-reference" data-persona-id="${persona.id}">Try on Deck A</button>
             <button type="button" class="ghost persona-inline-action" data-persona-action="assign-probe" data-persona-id="${persona.id}">Try on Deck B</button>
-            ${generateHook}
+            <button type="button" class="ghost persona-inline-action" data-persona-action="open-trainer" data-persona-id="${persona.id}">Open in Trainer</button>
           </div>
         </div>
       </div>
@@ -3042,6 +3077,7 @@
   function renderDeckCastReport(state) {
     const node = $('deckCastReport');
     const pane = $('viewPanePlay');
+    const previewNode = $('deckAftermathPreview');
     if (!node) {
       return;
     }
@@ -3055,11 +3091,34 @@
         lastSwapCadenceAudit.lanes?.B?.borrowedShellOutcome || ''
       ].filter(Boolean).join(' / ');
       node.textContent = `${glyphChar('deckSwapAftermath', glyphChar('tabDeck', ''))} Aftermath // ${classification} // ${held || 'read Shell Duel for movement'}`;
+      if (previewNode) {
+        const voiceStateA = getVoiceState('A');
+        const voiceStateB = getVoiceState('B');
+        const compact = (text = '') => {
+          const normalized = String(text || '').replace(/\s+/g, ' ').trim();
+          return normalized.length > 160 ? `${normalized.slice(0, 157).trimEnd()}...` : normalized;
+        };
+        previewNode.hidden = false;
+        previewNode.innerHTML = `
+          <article class="deck-aftermath-card">
+            <div class="persona-kicker">A borrowed shell</div>
+            <p>${escapeHtml(compact(voiceStateA.effectiveText || voiceStateA.text || 'No preview yet.'))}</p>
+          </article>
+          <article class="deck-aftermath-card">
+            <div class="persona-kicker">B borrowed shell</div>
+            <p>${escapeHtml(compact(voiceStateB.effectiveText || voiceStateB.text || 'No preview yet.'))}</p>
+          </article>
+        `;
+      }
       return;
     }
 
     const summary = state.deckCastingSummary;
     node.textContent = `${glyphChar('deckCasting', glyphChar('tabDeck', ''))} ${summary.line}`;
+    if (previewNode) {
+      previewNode.hidden = true;
+      previewNode.innerHTML = '';
+    }
   }
 
   function buildConsoleStationCards(state) {
@@ -3280,13 +3339,14 @@
 
     const masthead = $('consoleMasthead');
     if (masthead) {
-      masthead.hidden = activeArtifactTab !== 'console';
+      masthead.hidden = false;
+      masthead.dataset.station = activeArtifactTab;
     }
     if (updateHash) {
       syncArtifactHash(activeArtifactTab, { replace: replaceHash });
     }
 
-    const scrollTarget = activeArtifactTab === 'console' ? (masthead || activePaneNode) : activePaneNode;
+    const scrollTarget = activePaneNode || masthead;
     if (scroll && scrollTarget && typeof scrollTarget.scrollIntoView === 'function') {
       try {
         scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -3297,7 +3357,6 @@
 
     if (announce) {
       const viewLabels = {
-        console: 'Console index ready.',
         homebase: 'Homebase ready.',
         personas: 'Shelf ready.',
         readout: 'Readout ready.',
@@ -3309,21 +3368,28 @@
   }
 
   function handleArtifactRouteChange() {
+    const currentHash = String(window.location.hash || '').trim().toLowerCase();
     const nextTab = resolveArtifactTabFromHash(window.location.hash);
     if (nextTab === activeArtifactTab) {
-      if (!window.location.hash) {
+      if (currentHash === '#console') {
+        syncArtifactHash('homebase', { replace: true });
+      } else if (!window.location.hash) {
         syncArtifactHash(activeArtifactTab, { replace: true });
       }
       return;
     }
     setArtifactTab(nextTab, { updateHash: false });
+    if (currentHash === '#console') {
+      syncArtifactHash('homebase', { replace: true });
+    }
   }
 
   function updateControls() {
     $('compareBtn').textContent = 'Analyze Cadences';
     $('swapCadencesBtn').textContent = 'Swap Cadences';
-    $('swapMedallion').setAttribute('aria-label', 'Swap bay text');
-    $('swapMedallion').title = 'Swap bay text';
+    $('swapMedallion').textContent = 'Swap Text';
+    $('swapMedallion').setAttribute('aria-label', 'Swap source text between bays');
+    $('swapMedallion').title = 'Swap source text between bays';
     const referenceSample = sampleEntry(baySampleIds.A);
     const probeSample = sampleEntry(baySampleIds.B);
     $('randomizeVoiceABtn').setAttribute('aria-label', 'Randomize reference voice sample');
@@ -3932,6 +3998,71 @@ DeltaE = ${ledger.reuse_gain}`;
     updateControls();
   }
 
+  function buildTrainerDraftContext(preferredPersonaId = '') {
+    const state = buildPersonaGalleryState();
+    const preferredPersona = preferredPersonaId ? findPersona(preferredPersonaId) : null;
+    const activeVoiceState = getVoiceState(activeVoice);
+    const sourceText = String(
+      state.comparisonText?.trim()
+        ? state.comparisonText
+        : activeVoiceState.text?.trim()
+          ? activeVoiceState.text
+          : state.lock?.samples?.[0] || ''
+    ).trim();
+    const sourceOrigin = state.comparisonText?.trim()
+      ? 'Homebase comparison text'
+      : activeVoiceState.text?.trim()
+        ? `${SLOT_SHORT[activeVoice]} bay source text`
+        : state.lock?.samples?.[0]
+          ? `${state.lock.name} sample one`
+          : '';
+    const persona = preferredPersona || state.selectedMask || state.wornMask || null;
+    const corpusText = String(
+      state.lock?.samples?.length
+        ? state.lock.samples.join('\n\n')
+        : activeVoiceState.text?.trim()
+          ? activeVoiceState.text
+          : ''
+    ).trim();
+
+    return {
+      persona,
+      sourceText,
+      sourceOrigin,
+      corpusText,
+      corpusOrigin: state.lock?.samples?.length
+        ? `${state.lock.name} cadence home`
+        : activeVoiceState.text?.trim()
+          ? `${SLOT_SHORT[activeVoice]} bay`
+          : '',
+      selectedMaskId: state.selectedMask?.id || '',
+      wornMaskId: state.wornMask?.id || '',
+      activeLockId: state.lock?.id || ''
+    };
+  }
+
+  function openPersonaInTrainer(id) {
+    const persona = findPersona(id);
+    if (!persona) {
+      return;
+    }
+    gallerySelectedMaskId = id;
+    const context = buildTrainerDraftContext(id);
+    setArtifactTab('trainer');
+    renderPersonas();
+    if (trainerController && typeof trainerController.openContext === 'function') {
+      trainerController.openContext({
+        ...context,
+        forcePopulate: true
+      });
+    }
+    const focusTarget = $('trainerForgeDraftBtn');
+    if (focusTarget && typeof focusTarget.focus === 'function') {
+      focusTarget.focus({ preventScroll: true });
+    }
+    setStatusMessage(`${persona.name} is staged in Trainer. Forge Draft can now seed a live candidate from current field context.`);
+  }
+
   function selectMaskPersona(id) {
     if (!findPersona(id)) {
       return;
@@ -4112,24 +4243,7 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function generateMaskForPersona(id) {
-    const persona = findPersona(id);
-    if (!persona) {
-      return;
-    }
-
-    if (persona.source === 'built-in') {
-      gallerySelectedMaskId = id;
-      renderPersonas();
-      setStatusMessage(`${persona.name} already ships with a ready mask scaffold.`);
-      return;
-    }
-
-    gallerySelectedMaskId = id;
-    updateSavedPersona(id, (entry) => ({
-      ...entry,
-      maskState: 'generated'
-    }));
-    setStatusMessage(`${persona.name} now has a local mask scaffold. Portrait generation can attach later without changing the shell.`);
+    openPersonaInTrainer(id);
   }
 
   function swapCadences() {
@@ -4556,6 +4670,11 @@ DeltaE = ${ledger.reuse_gain}`;
           validationReady: false,
           validationPass: false,
           validationStatus: 'unavailable',
+          draftReady: false,
+          draftSource: '',
+          draftPersonaId: '',
+          draftPersonaName: '',
+          generatedLength: 0,
           exportReady: false,
           canInject: false,
           lastInjectedPersonaSummary: null,
@@ -4709,7 +4828,8 @@ DeltaE = ${ledger.reuse_gain}`;
       selectMask: (personaId) => selectMaskPersona(personaId),
       wearHomebase: (personaId) => wearPersonaInHomebase(personaId),
       bringHomebase: (personaId) => wearPersonaInHomebase(personaId),
-      generateMask: (personaId) => generateMaskForPersona(personaId)
+      openTrainer: (personaId) => openPersonaInTrainer(personaId),
+      generateMask: (personaId) => openPersonaInTrainer(personaId)
     });
 
     return personaGalleryModel;
@@ -4727,6 +4847,7 @@ DeltaE = ${ledger.reuse_gain}`;
       engine: window.TCP_ENGINE,
       sampleLibrary: SAMPLE_LIBRARY,
       onInjectPersona: injectTrainerPersona,
+      resolveDraftContext: () => buildTrainerDraftContext(),
       onStatus: (message) => {
         setStatusMessage(message);
         renderTrainerBridge();
@@ -4739,7 +4860,9 @@ DeltaE = ${ledger.reuse_gain}`;
       snapshot: () => trainerController?.snapshot() || null,
       serializeState: () => trainerController?.serializeState() || null,
       restoreState: (state) => trainerController?.restoreState(state),
+      openContext: (context) => trainerController?.openContext(context),
       extract: () => trainerController?.extract(),
+      forgeDraft: () => trainerController?.forgeDraft(),
       validate: () => trainerController?.validate(),
       exportSpec: () => trainerController?.exportSpec(),
       inject: () => trainerController?.inject()
@@ -5316,6 +5439,9 @@ DeltaE = ${ledger.reuse_gain}`;
       };
       report.stationRouting = (() => {
         const homebaseBefore = readPersonaGallerySnapshot();
+        window.history.pushState(null, '', '#console');
+        handleArtifactRouteChange();
+        const consoleAliasWorks = document.body.dataset.artifactTab === 'homebase' && (window.location.hash || '') === '#homebase';
         window.history.pushState(null, '', artifactHashForTab('homebase'));
         handleArtifactRouteChange();
         const homebaseMounted = document.body.dataset.artifactTab === 'homebase' && !$('viewPaneHomebase').hidden;
@@ -5328,6 +5454,7 @@ DeltaE = ${ledger.reuse_gain}`;
         return {
           initialTab: initialState.activeArtifactTab,
           initialHash: initialState.artifactHash || '',
+          consoleAliasWorks,
           homebaseDeepLinkWorks: homebaseMounted && document.body.dataset.artifactTab === 'readout' && !$('viewPaneReadout').hidden && homebaseAfter.homebaseLockId === homebaseBefore.homebaseLockId,
           deckDeepLinkWorks: deckActive,
           statePreservedAcrossRouteChange:
@@ -5343,9 +5470,18 @@ DeltaE = ${ledger.reuse_gain}`;
         $('trainerPersonaName').dispatchEvent(new Event('input', { bubbles: true }));
         $('trainerCorpusInput').value = trainerCorpus;
         $('trainerCorpusInput').dispatchEvent(new Event('input', { bubbles: true }));
-        $('trainerGeneratedOutput').value = trainerCorpus;
-        $('trainerGeneratedOutput').dispatchEvent(new Event('input', { bubbles: true }));
+        const trainerBridge = window.TCP_TRAINER_LAB || null;
+        if (trainerBridge && typeof trainerBridge.openContext === 'function') {
+          trainerBridge.openContext({
+            sourceText: trainerCorpus,
+            sourceOrigin: 'trainer corpus',
+            corpusText: trainerCorpus,
+            corpusOrigin: 'trainer corpus',
+            forcePopulate: true
+          });
+        }
         $('trainerExtractBtn').click();
+        $('trainerForgeDraftBtn').click();
         $('trainerValidateBtn').click();
         $('trainerExportBtn').click();
         const trainerBeforeInject = readTrainerSnapshot();
@@ -5353,13 +5489,14 @@ DeltaE = ${ledger.reuse_gain}`;
         $('trainerInjectBtn').click();
         const trainerAfterInject = readTrainerSnapshot();
         const injectedTrainerId = trainerAfterInject.lastInjectedPersonaSummary?.id || '';
-        const trainerBridge = window.TCP_TRAINER_LAB || null;
         const trainerBridgePresent = Boolean(
           trainerBridge &&
           typeof trainerBridge.snapshot === 'function' &&
           typeof trainerBridge.serializeState === 'function' &&
           typeof trainerBridge.restoreState === 'function' &&
+          typeof trainerBridge.openContext === 'function' &&
           typeof trainerBridge.extract === 'function' &&
+          typeof trainerBridge.forgeDraft === 'function' &&
           typeof trainerBridge.validate === 'function' &&
           typeof trainerBridge.exportSpec === 'function' &&
           typeof trainerBridge.inject === 'function'
@@ -5399,11 +5536,11 @@ DeltaE = ${ledger.reuse_gain}`;
 
           $('tabPersonas').click();
           const injectedTrainerPersona = injectedTrainerId ? document.querySelector(`.persona[data-id="${injectedTrainerId}"]`) : null;
-          const injectedTrainerGenerate = injectedTrainerId
-            ? document.querySelector(`[data-persona-id="${injectedTrainerId}"][data-persona-action="generate-mask"]`)
+          const injectedTrainerOpen = injectedTrainerId
+            ? document.querySelector(`[data-persona-id="${injectedTrainerId}"][data-persona-action="open-trainer"]`)
             : null;
-          if (injectedTrainerGenerate) {
-            injectedTrainerGenerate.click();
+          if (injectedTrainerOpen) {
+            injectedTrainerOpen.click();
           }
           const injectedTrainerAssign = injectedTrainerId
             ? document.querySelector(`[data-persona-id="${injectedTrainerId}"][data-persona-action="assign-reference"]`)
@@ -5506,7 +5643,8 @@ DeltaE = ${ledger.reuse_gain}`;
 
         report.matrix = matrix;
         const supportChecks = [
-          { id: 'console_is_default_post_threshold_route', pass: report.stationRouting.initialTab === 'console' && report.stationRouting.initialHash === '#console' },
+          { id: 'homebase_is_default_post_threshold_route', pass: report.stationRouting.initialTab === 'homebase' && report.stationRouting.initialHash === '#homebase' },
+          { id: 'console_alias_redirects_to_homebase', pass: report.stationRouting.consoleAliasWorks },
           { id: 'station_deep_links_mount_shared_views', pass: report.stationRouting.homebaseDeepLinkWorks && report.stationRouting.deckDeepLinkWorks },
           { id: 'station_routes_preserve_runtime_state', pass: report.stationRouting.statePreservedAcrossRouteChange },
           { id: 'homebase_boot_has_no_worn_mask', pass: !report.galleryBootstrap.homebaseWornMaskId && report.galleryBootstrap.homebasePhase !== 'mask-worn' && report.galleryBootstrap.homebasePhase !== 'residue' },
@@ -5521,8 +5659,9 @@ DeltaE = ${ledger.reuse_gain}`;
             { id: 'homebase_save_persists_lock', pass: report.personaGallery.afterFirstSave.lockCount === report.personaGallery.baseline.lockCount + 1 && !report.personaGallery.afterFirstSave.stagedLockPresent },
             { id: 'homebase_stores_multiple_locks', pass: report.personaGallery.afterSecondSave.lockCount >= report.personaGallery.afterFirstSave.lockCount + 1 },
             { id: 'saved_lock_reselection_stays_latent', pass: report.personaGallery.afterFirstSelect.activeLockId === report.personaGallery.afterFirstSave.activeLockId && !report.personaGallery.afterFirstSelect.revealed },
-            { id: 'persona_gallery_masks_comparison_text', pass: report.personaGallery.afterMask.comparisonReady && report.personaGallery.afterMask.maskedOutputLength > 0 && report.personaGallery.afterMask.selectedMaskId === 'spark' && report.personaGallery.afterMask.homebaseWornMaskId === 'spark' },
-            { id: 'persona_homebase_handoff_explains_active_mask', pass: report.personaGallery.afterMask.homebaseMaskStatusText.toLowerCase().includes('spark') && report.personaGallery.afterMask.maskBenchStatusText.toLowerCase().includes('spark') },
+          { id: 'persona_gallery_masks_comparison_text', pass: report.personaGallery.afterMask.comparisonReady && report.personaGallery.afterMask.maskedOutputLength > 0 && report.personaGallery.afterMask.selectedMaskId === 'spark' && report.personaGallery.afterMask.homebaseWornMaskId === 'spark' },
+          { id: 'generate_mask_removed_from_public_ui', pass: !document.querySelector('[data-persona-action="generate-mask"]') },
+          { id: 'persona_homebase_handoff_explains_active_mask', pass: report.personaGallery.afterMask.homebaseMaskStatusText.toLowerCase().includes('spark') && report.personaGallery.afterMask.maskBenchStatusText.toLowerCase().includes('spark') },
             { id: 'persona_homebase_separates_chosen_from_worn', pass: report.personaGallery.afterMask.selectedMaskId === 'spark' && report.personaGallery.afterMask.homebaseWornMaskId === 'spark' && report.personaGallery.afterMask.homebasePhase === 'residue' },
             { id: 'swap_medallion_moves_bay_text', pass: report.textSwapMedallion.voiceASwapped && report.textSwapMedallion.voiceBSwapped },
             { id: 'swap_medallion_updates_duel', pass: report.textSwapMedallion.duelSamplesChanged },
@@ -5532,8 +5671,9 @@ DeltaE = ${ledger.reuse_gain}`;
             { id: 'solo_scan_uses_scan_mode', pass: report.soloScan.similarityKey === 'Scan mode' },
             { id: 'baseline_duel_live', pass: report.baseline.snapshot.duelState === 'live' },
             { id: 'readout_station_visible', pass: report.viewTabs.activeTab === 'readout' && report.viewTabs.stationRoute === 'readout' && !report.viewTabs.readoutHidden },
+          { id: 'trainer_forges_real_draft', pass: Boolean(report.trainer && report.trainer.snapshotBeforeInject.draftReady && report.trainer.snapshotBeforeInject.generatedLength > 0 && report.trainer.snapshotBeforeInject.draftSource) },
           { id: 'trainer_validates_generated_output', pass: Boolean(report.trainer && report.trainer.snapshotBeforeInject.validationPass && report.trainer.snapshotBeforeInject.promptReady && report.trainer.snapshotBeforeInject.exportReady) },
-            { id: 'trainer_injects_persona', pass: Boolean(report.trainer && report.trainer.personaAdded && report.trainer.personaAssigned && report.trainer.gallerySnapshot.selectedMaskId === report.trainer.injectedPersonaId && report.trainer.gallerySnapshot.selectedMaskState === 'generated') },
+            { id: 'trainer_injects_persona', pass: Boolean(report.trainer && report.trainer.personaAdded && report.trainer.personaAssigned && report.trainer.gallerySnapshot.selectedMaskId === report.trainer.injectedPersonaId) },
           { id: 'trainer_bridge_present', pass: Boolean(report.trainer && report.trainer.bridgePresent) },
           { id: 'trainer_restore_roundtrip', pass: Boolean(report.trainer && report.trainer.roundtripRestored) },
           { id: 'trainer_restore_keeps_injected_summary', pass: Boolean(report.trainer && report.trainer.injectedSummaryRestored) },
@@ -5597,7 +5737,7 @@ DeltaE = ${ledger.reuse_gain}`;
   $('revealCadenceBtn').addEventListener('click', revealCadenceLock);
   $('saveCadenceLockBtn').addEventListener('click', saveStagedCadenceLock);
   $('personaComparisonText').addEventListener('input', () => renderPersonas());
-  $('tabConsole').addEventListener('click', () => setArtifactTab('console', { announce: true, scroll: true }));
+  $('tabConsole').addEventListener('click', () => setArtifactTab('homebase', { announce: true, scroll: true }));
   $('tabHomebase').addEventListener('click', () => setArtifactTab('homebase', { announce: true, scroll: true }));
   $('tabPlay').addEventListener('click', () => setArtifactTab('play', { announce: true, scroll: true }));
   $('tabReadout').addEventListener('click', () => setArtifactTab('readout', { announce: true, scroll: true }));
@@ -5631,7 +5771,7 @@ DeltaE = ${ledger.reuse_gain}`;
   document.addEventListener('click', (event) => {
     const stationAction = event.target.closest('[data-station-target]');
     if (stationAction) {
-      setArtifactTab(stationAction.dataset.stationTarget || 'console', { announce: true, scroll: true });
+      setArtifactTab(stationAction.dataset.stationTarget || 'homebase', { announce: true, scroll: true });
       return;
     }
 
@@ -5664,6 +5804,8 @@ DeltaE = ${ledger.reuse_gain}`;
         assignPersonaToBay(personaId, 'A');
       } else if (action === 'assign-probe') {
         assignPersonaToBay(personaId, 'B');
+      } else if (action === 'open-trainer') {
+        openPersonaInTrainer(personaId);
       } else if (action === 'generate-mask') {
         generateMaskForPersona(personaId);
       }

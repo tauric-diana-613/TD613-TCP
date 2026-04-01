@@ -10,8 +10,8 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 
 | Term | In the app | In the model |
 | --- | --- | --- |
-| `Console` | The post-ingress station index and the default routed landing surface. | A front-door shell that changes pacing and navigation without creating a second runtime or engine. |
 | `Analyze Cadences` | Runs a solo or paired scan on the current text bays and wakes the latent metric surfaces. | Recomputes stylometric features, route pressure, archive state, and harbor recommendation. |
+| `Swap Text` | Moves the raw source text between the two deck bays. | A setup utility that changes bay placement without performing shell transfer. |
 | `Swap Cadences` | Moves the cadence shells between the two bays without moving the text. | Tests whether shell-level stylometric bias changes the readout and `Shell Duel` when content stays fixed. |
 | `Save Cadence as Persona` | Captures the active bay as a reusable in-app shell. | Converts the current cadence profile into a reusable stylometric modifier. |
 | `Reset bay` | Restores the seeded opening pair and default switches. | Clears local shell state and returns the demo to native cadence mode. |
@@ -25,9 +25,10 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 | `Reveal` | Opens the deep dossier and wakes the global solo Telemetry/Harbor path for the active lock. | Runs the shared one-sample readout logic on the current Homebase lock. |
 | `Save` | Persists the staged lock into the local lock archive. | Commits the draft cadence lock to local storage without changing its measured profile. |
 | `Bring into Homebase` | Moves the chosen shelf mask into the Homebase worn-mask stage. | Sets the current Homebase mask without changing deck shell assignment. |
+| `Open in Trainer` | Sends the current mask context into the forge without claiming a generated result yet. | Carries persona and source context into the shared trainer runtime so a real draft can be forged there. |
+| `Forge Draft` | Builds a live candidate passage in `Trainer`. | Uses the maintained cadence-transfer engine on current Homebase/Deck/extracted-corpus context instead of flipping a UI-only generated state. |
 | `Try on Deck A` | Sends a persona shell to the reference bay in `Deck`. | Assigns the selected shell to slot `A` for live deck analysis. |
 | `Try on Deck B` | Sends a persona shell to the probe bay in `Deck`. | Assigns the selected shell to slot `B` for live deck analysis. |
-| `Back to Console` | Returns from a station page to the station index without clearing state. | Navigates the routed shell back to `#console` while keeping the current shared runtime alive. |
 
 ## Contact loop
 
@@ -39,6 +40,7 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 | `Through Mask` | The transformed passage produced by the worn mask. | The retrieval-safe output of `buildCadenceTransfer(...)` through the worn shell. |
 | `Before Contact` | Raw-to-lock reading before the mask touches the text. | Similarity and traceability of the source passage against the active lock. |
 | `After Contact` | Masked-to-lock reading after the passage has been transformed. | Similarity and traceability of the transformed passage against the active lock. |
+| `What Moved` | The compact line that names the changed dimensions and whether the passage stayed near home. | A transfer summary derived from real changed dimensions, lexical movement, and contact state. |
 | `What Clung` | The residue list that names what still reads as home after contact. | Sticky axes, held lanes, and contact summaries derived from the lock comparison. |
 
 ## State controls
@@ -89,12 +91,11 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 
 | Term | In the app | In the model |
 | --- | --- | --- |
-| `Console` | The routed front door with one card per station and live status summaries. | A navigation shell over the same runtime state used by every station. |
 | `Deck` | The encounter station with bays, controls, cast report, and `Shell Duel`. | The public membrane where cadence play and route-state education happen first. |
 | `Homebase` | The cadence home for lock, reveal, save, archive, dossier, and mask work. | The private lock-and-compare surface that stages one voice before or alongside deck play. |
 | `Readout` | The witness/law station that exposes scores, formulas, and ledger preview. | The explicit metric layer where similarity, route, and archive state are made legible. |
 | `Personas` | The compact mask shelf and preview station. | The reusable shell gallery that feeds Homebase and Deck without owning the lock workflow itself. |
-| `Station route` | The hash-routed room selector such as `#console`, `#homebase`, `#personas`, `#readout`, `#deck`, or `#trainer`. | A public navigation alias over one browser runtime; the route changes shell identity, not engine truth. |
+| `Station route` | The hash-routed room selector such as `#homebase`, `#personas`, `#readout`, `#deck`, or `#trainer`. | A public navigation alias over one browser runtime; the route changes shell identity, not engine truth. `#console` remains a compatibility alias that resolves to `#homebase`. |
 | `Branch` | The branch formula shown in the readout/debug layer. | The rule that unwanted surplus is preserved until it can be interpreted or dismissed responsibly. |
 | `Field` | The whole comparison environment shown on the deck. | The bounded environment in which similarity, recurrence, and route pressure interact. |
 | `Harbor deck` | The panel that recommends structured passage. | The safe-harbor layer that lowers witness burden without destroying provenance. |
