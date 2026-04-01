@@ -142,10 +142,10 @@
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "payer",
+              "propositionHead": "confirmed",
               "actor": "The payer",
-              "action": "",
-              "object": "",
+              "action": "confirmed",
+              "object": "zzprotlitbzz",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -309,7 +309,7 @@
       ]
     },
     "opportunityProfile": {
-      "sentenceSplit": 2,
+      "sentenceSplit": 1,
       "sentenceMerge": 6,
       "contraction": 2,
       "connector": 11,
@@ -365,7 +365,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 337.168,
+        "score": 339.988,
         "passesApplied": [
           "contraction",
           "phrase-texture"
@@ -387,7 +387,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 337.168,
+          "score": 339.988,
           "passesApplied": [
             "contraction",
             "phrase-texture"
@@ -408,7 +408,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 253.456,
+          "score": 271.624,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -427,6 +427,7 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "content-word-complexity",
             "punctuation-shape"
@@ -436,7 +437,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 253.456,
+          "score": 271.624,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -455,6 +456,7 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "content-word-complexity",
             "punctuation-shape"
@@ -464,7 +466,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 253.456,
+          "score": 271.624,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -483,6 +485,7 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "content-word-complexity",
             "punctuation-shape"
@@ -492,7 +495,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 253.456,
+          "score": 271.624,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -511,6 +514,7 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "content-word-complexity",
             "punctuation-shape"
@@ -571,7 +575,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.942,
+      "objectCoverage": 0.923,
       "polarityMismatches": 1,
       "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
@@ -586,7 +590,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.033
+          "globalBagScore": 0.03
         },
         {
           "sourceClauseId": "s0c1",
@@ -598,7 +602,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.033
+          "globalBagScore": 0.03
         },
         {
           "sourceClauseId": "s0c2",
@@ -610,7 +614,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.033
+          "globalBagScore": 0.03
         },
         {
           "sourceClauseId": "s1c0",
@@ -622,7 +626,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.067
+          "globalBagScore": 0.061
         },
         {
           "sourceClauseId": "s2c0",
@@ -630,11 +634,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.033
+          "bagScore": 0.4,
+          "globalBagScore": 0.059
         },
         {
           "sourceClauseId": "s2c1",
@@ -646,7 +650,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.067
+          "globalBagScore": 0.061
         },
         {
           "sourceClauseId": "s3c0",
@@ -658,7 +662,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.188,
-          "globalBagScore": 0.1
+          "globalBagScore": 0.091
         },
         {
           "sourceClauseId": "s3c1",
@@ -670,7 +674,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
-          "globalBagScore": 0.067
+          "globalBagScore": 0.061
         },
         {
           "sourceClauseId": "s3c2",
@@ -682,7 +686,7 @@
           "polarityMismatch": 1,
           "tenseMismatch": 1,
           "bagScore": 0.235,
-          "globalBagScore": 0.147
+          "globalBagScore": 0.135
         },
         {
           "sourceClauseId": "s4c0",
@@ -694,7 +698,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.233
+          "globalBagScore": 0.212
         },
         {
           "sourceClauseId": "s5c0",
@@ -730,7 +734,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.067
+          "globalBagScore": 0.061
         }
       ],
       "sourceClauseCount": 13,
@@ -845,10 +849,10 @@
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "payer",
+              "propositionHead": "confirmed",
               "actor": "The payer",
-              "action": "",
-              "object": "",
+              "action": "confirmed",
+              "object": "pr 44719",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -1063,7 +1067,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.942,
+    "objectCoverage": 0.923,
     "polarityMismatches": 1,
     "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1

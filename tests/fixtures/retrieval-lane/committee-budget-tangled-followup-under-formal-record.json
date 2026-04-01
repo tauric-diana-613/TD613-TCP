@@ -215,10 +215,10 @@
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "finance",
+              "propositionHead": "confirms",
               "actor": "the rule",
-              "action": "",
-              "object": "",
+              "action": "confirms",
+              "object": "rule dean signs off",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -322,7 +322,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 238.334,
+        "score": 221.436,
         "passesApplied": [
           "baseline-floor",
           "clause-texture"
@@ -331,7 +331,6 @@
         "changedDimensions": [
           "contraction-posture",
           "connector-stance",
-          "modifier-density",
           "abstraction-posture"
         ],
         "qualityGatePassed": true,
@@ -340,7 +339,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 238.334,
+          "score": 221.436,
           "passesApplied": [
             "baseline-floor",
             "clause-texture"
@@ -349,7 +348,6 @@
           "changedDimensions": [
             "contraction-posture",
             "connector-stance",
-            "modifier-density",
             "abstraction-posture"
           ],
           "qualityGatePassed": true,
@@ -357,7 +355,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 215.67,
+          "score": 199.974,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -370,7 +368,6 @@
           "rescuePasses": [],
           "changedDimensions": [
             "connector-stance",
-            "modifier-density",
             "abstraction-posture",
             "punctuation-shape"
           ],
@@ -379,7 +376,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 215.67,
+          "score": 199.974,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -392,7 +389,6 @@
           "rescuePasses": [],
           "changedDimensions": [
             "connector-stance",
-            "modifier-density",
             "abstraction-posture",
             "punctuation-shape"
           ],
@@ -401,7 +397,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 213.768,
+          "score": 198.072,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -413,7 +409,6 @@
           "rescuePasses": [],
           "changedDimensions": [
             "connector-stance",
-            "modifier-density",
             "abstraction-posture"
           ],
           "qualityGatePassed": true,
@@ -422,7 +417,7 @@
       ]
     },
     "finalRealization": {
-      "text": "I want to revise one phrase from my earlier recap before it begins hardening into the account. I wrote that the committee was considering a \"service adjustment,\" that's technically true in the narrow memo sense but misleading in the lived one. What the table actually explained is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks but the intake queue either receives redistributed badly or evening hours shrink. Those are not abstract efficiencies. They are service consequences. Yes, we quiet have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule but the dean signs off. Though I do not want the language to receive gentler than the problem just because we are waiting for the Thursday table.",
+      "text": "I want to revise one phrase from my earlier recap before it begins hardening into the account. I wrote that the committee was considering a \"service adjustment,\" that's technically true in the narrow memo sense but misleading in the lived one. What the table actually explained is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks but the intake queue either receives redistributed badly or evening hours shrink. Those are not abstract efficiencies. They are service consequences. Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule but the dean signs off. Though I do not want the language to receive gentler than the problem just because we are waiting for the Thursday table.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -430,7 +425,6 @@
       "changedDimensions": [
         "contraction-posture",
         "connector-stance",
-        "modifier-density",
         "abstraction-posture"
       ],
       "lexemeSwaps": [
@@ -456,12 +450,6 @@
           "family": "story",
           "from": "story",
           "to": "account",
-          "kind": "lexeme"
-        },
-        {
-          "family": "quiet",
-          "from": "still",
-          "to": "quiet",
           "kind": "lexeme"
         }
       ],
@@ -489,7 +477,7 @@
           "polarityMismatch": 1,
           "tenseMismatch": 0,
           "bagScore": 0.125,
-          "globalBagScore": 0.031
+          "globalBagScore": 0.029
         },
         {
           "sourceClauseId": "s1c0",
@@ -501,7 +489,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.25,
-          "globalBagScore": 0.057
+          "globalBagScore": 0.054
         },
         {
           "sourceClauseId": "s2c0",
@@ -513,7 +501,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.5,
-          "globalBagScore": 0.03
+          "globalBagScore": 0.029
         },
         {
           "sourceClauseId": "s2c1",
@@ -525,7 +513,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.286,
-          "globalBagScore": 0.114
+          "globalBagScore": 0.108
         },
         {
           "sourceClauseId": "s3c0",
@@ -537,7 +525,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.063
+          "globalBagScore": 0.059
         },
         {
           "sourceClauseId": "s4c0",
@@ -549,7 +537,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.063
+          "globalBagScore": 0.059
         },
         {
           "sourceClauseId": "s5c0",
@@ -560,8 +548,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.875,
-          "globalBagScore": 0.219
+          "bagScore": 1,
+          "globalBagScore": 0.206
         },
         {
           "sourceClauseId": "s5c1",
@@ -573,7 +561,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.063
+          "globalBagScore": 0.147
         },
         {
           "sourceClauseId": "s6c0",
@@ -585,7 +573,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.5,
-          "globalBagScore": 0.091
+          "globalBagScore": 0.086
         },
         {
           "sourceClauseId": "s6c1",
@@ -597,7 +585,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.094
+          "globalBagScore": 0.088
         }
       ],
       "sourceClauseCount": 10,
@@ -758,13 +746,13 @@
         },
         {
           "id": "s5",
-          "raw": "Yes, we quiet have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule but the dean signs off",
+          "raw": "Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule but the dean signs off",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s5c0",
-              "text": "Yes, we quiet have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw",
+              "text": "Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -774,7 +762,6 @@
               "action": "use",
               "object": "analyst line reduced evening coverage",
               "modifiers": [
-                "quiet",
                 "provisional"
               ],
               "hedgeMarkers": []
@@ -786,10 +773,10 @@
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "finance",
+              "propositionHead": "confirms",
               "actor": "the rule",
-              "action": "",
-              "object": "",
+              "action": "confirms",
+              "object": "rule dean signs off",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -847,7 +834,6 @@
       "changedDimensions": [
         "contraction-posture",
         "connector-stance",
-        "modifier-density",
         "abstraction-posture"
       ],
       "lexemeSwaps": [
@@ -874,18 +860,12 @@
           "from": "story",
           "to": "account",
           "kind": "lexeme"
-        },
-        {
-          "family": "quiet",
-          "from": "still",
-          "to": "quiet",
-          "kind": "lexeme"
         }
       ],
       "semanticRisk": 0.3,
       "realizationNotes": [
-        "5 lexical family swaps landed.",
-        "Register shift surfaced through modifier-density, abstraction-posture.",
+        "4 lexical family swaps landed.",
+        "Register shift surfaced through abstraction-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [],
@@ -899,12 +879,10 @@
     "changedDimensions": [
       "abstraction-posture",
       "connector-stance",
-      "contraction-posture",
-      "modifier-density"
+      "contraction-posture"
     ],
     "lexemeSwapFamilies": [
       "get",
-      "quiet",
       "show",
       "start",
       "story"

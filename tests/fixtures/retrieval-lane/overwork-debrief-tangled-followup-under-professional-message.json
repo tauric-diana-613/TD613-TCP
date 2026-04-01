@@ -97,10 +97,10 @@
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "past",
-              "propositionHead": "shifted",
+              "propositionHead": "send",
               "actor": "The pattern",
-              "action": "shifted",
-              "object": "",
+              "action": "send",
+              "object": "one more pass table looked",
               "modifiers": [
                 "final",
                 "table",
@@ -225,8 +225,8 @@
               "tenseAspect": "past",
               "propositionHead": "schedule",
               "actor": "the schedule",
-              "action": "",
-              "object": "",
+              "action": "schedule",
+              "object": "looked consensual",
               "modifiers": [
                 "consensual"
               ],
@@ -237,7 +237,7 @@
       ]
     },
     "opportunityProfile": {
-      "sentenceSplit": 5,
+      "sentenceSplit": 4,
       "sentenceMerge": 5,
       "contraction": 6,
       "connector": 8,
@@ -292,7 +292,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 168.834,
+        "score": 307.668,
         "passesApplied": [
           "baseline-floor",
           "clause-texture"
@@ -304,17 +304,17 @@
           "sentence-spread",
           "contraction-posture",
           "connector-stance",
+          "lexical-register",
+          "directness",
           "punctuation-shape"
         ],
-        "qualityGatePassed": false,
-        "notes": [
-          "Transfer missed donor lexical/register realization."
-        ]
+        "qualityGatePassed": true,
+        "notes": []
       },
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 168.834,
+          "score": 307.668,
           "passesApplied": [
             "baseline-floor",
             "clause-texture"
@@ -326,16 +326,16 @@
             "sentence-spread",
             "contraction-posture",
             "connector-stance",
+            "lexical-register",
+            "directness",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer missed donor lexical/register realization."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "mixed-structural",
-          "score": 81.572,
+          "score": 293.382,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -343,6 +343,7 @@
             "baseline-function-word",
             "planned-sentence-split",
             "sentence-structure",
+            "clause-join-split",
             "connector-stance-lexicon",
             "contraction-auxiliary",
             "punctuation-finish",
@@ -355,16 +356,17 @@
           "changedDimensions": [
             "sentence-spread",
             "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "directness",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer missed donor lexical/register realization."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "split-heavy",
-          "score": 81.42,
+          "score": 300.714,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -384,16 +386,17 @@
           "changedDimensions": [
             "sentence-spread",
             "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "directness",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer missed donor lexical/register realization."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 81.572,
+          "score": 293.382,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -401,6 +404,7 @@
             "baseline-function-word",
             "planned-sentence-split",
             "sentence-structure",
+            "clause-join-split",
             "connector-stance-lexicon",
             "contraction-auxiliary",
             "punctuation-finish",
@@ -413,16 +417,17 @@
           "changedDimensions": [
             "sentence-spread",
             "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "directness",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer missed donor lexical/register realization."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 109.006,
+          "score": 300.498,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -430,33 +435,42 @@
             "baseline-function-word",
             "planned-sentence-split",
             "sentence-structure",
+            "clause-join-split",
             "connector-stance-lexicon",
-            "contraction-auxiliary"
+            "contraction-auxiliary",
+            "cleanup-restore",
+            "structural-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
           "changedDimensions": [
-            "sentence-mean",
             "sentence-spread",
-            "connector-stance"
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "directness"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer missed donor lexical/register realization."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         }
       ]
     },
     "finalRealization": {
-      "text": "I am following up because my first apology quiet made the weekend sound accidental, and that is too gentle. The pattern was familiar long before the final send: another pass because the table looked sloppy, another pass because the citations were not defensible enough, one more pass because the tone in chat suddenly altered and I did not want to be the person who explained no after everyone else had already stayed online. None of that was a formal demand, that's exactly how I kept talking myself into it. By Sunday night the memo was fine and my capacity was not. I am trying to name the thing correctly this time: the problem was not dedication. It was the way I kept translating exhaustion into politeness until the schedule looked consensual.",
-      "transferClass": "weak",
-      "borrowedShellOutcome": "partial",
+      "text": "I am following up as my first apology quiet made the weekend sound accidental, but that is too gentle. The pattern was familiar long before the final forward. Another pass as the table looked sloppy, another pass as the citations were not defensible enough, another pass as the tone in chat suddenly altered. But I did not want to be the person who explained no after everyone else had already stayed online. None of that was a formal demand. That's exactly how I kept talking myself into it. By Sunday night the memo was fine but my capacity was not. I am trying to name the thing correctly this time. The problem was not dedication. It was the way I kept translating exhaustion into politeness until the schedule looked consensual.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
+        "sentence-count",
         "sentence-spread",
         "contraction-posture",
-        "connector-stance"
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "punctuation-shape"
       ],
       "lexemeSwaps": [
         {
@@ -476,23 +490,26 @@
           "from": "still",
           "to": "quiet",
           "kind": "lexeme"
+        },
+        {
+          "family": "send",
+          "from": "send",
+          "to": "forward",
+          "kind": "lexeme"
         }
       ],
       "semanticRisk": 0,
-      "rescuePasses": [
-        "overlay-conservative",
-        "partial-rescue"
-      ],
+      "rescuePasses": [],
       "visibleShift": true,
       "nonTrivialShift": true
     },
     "semanticAudit": {
-      "propositionCoverage": 0.898,
+      "propositionCoverage": 0.909,
       "actorCoverage": 1,
-      "actionCoverage": 0.886,
-      "objectCoverage": 0.878,
-      "polarityMismatches": 0,
-      "tenseMismatches": 0,
+      "actionCoverage": 0.907,
+      "objectCoverage": 0.861,
+      "polarityMismatches": 1,
+      "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -505,7 +522,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.714,
-          "globalBagScore": 0.119
+          "globalBagScore": 0.104
         },
         {
           "sourceClauseId": "s0c1",
@@ -517,23 +534,23 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.049
+          "globalBagScore": 0.043
         },
         {
           "sourceClauseId": "s1c0",
           "matchedClauseId": "s1c0",
-          "propositionCoverage": 0.9,
+          "propositionCoverage": 1,
           "actorCoverage": 1,
-          "actionCoverage": 0.81,
-          "objectCoverage": 0.9,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.119
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 1,
+          "tenseMismatch": 1,
+          "bagScore": 0.3,
+          "globalBagScore": 0.163
         },
         {
           "sourceClauseId": "s1c1",
-          "matchedClauseId": "s1c1",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 0.18000000000000002,
           "actorCoverage": 1,
           "actionCoverage": 0.16200000000000003,
@@ -541,23 +558,23 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.1,
-          "globalBagScore": 0.022
+          "globalBagScore": 0.019
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s4c0+s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.146
+          "bagScore": 0.857,
+          "globalBagScore": 0.128
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s3c0",
+          "matchedClauseId": "s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -565,11 +582,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.073
+          "globalBagScore": 0.064
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s4c0",
+          "matchedClauseId": "s7c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -577,11 +594,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.122
+          "globalBagScore": 0.106
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s5c0",
+          "matchedClauseId": "s9c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -589,11 +606,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.122
+          "globalBagScore": 0.106
         },
         {
           "sourceClauseId": "s5c1",
-          "matchedClauseId": "s5c1",
+          "matchedClauseId": "s9c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -601,11 +618,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.049
+          "globalBagScore": 0.064
         }
       ],
       "sourceClauseCount": 9,
-      "outputClauseCount": 9
+      "outputClauseCount": 15
     },
     "protectedAnchorAudit": {
       "totalAnchors": 0,
@@ -615,20 +632,20 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 6,
-        "clauseCount": 9,
+        "sentenceCount": 10,
+        "clauseCount": 15,
         "literalSpans": []
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "I am following up because my first apology quiet made the weekend sound accidental, and that is too gentle",
-          "rhetoricalRole": "additive",
+          "raw": "I am following up as my first apology quiet made the weekend sound accidental, but that is too gentle",
+          "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "I am following up because my first apology quiet made the weekend sound accidental",
+              "text": "I am following up as my first apology quiet made the weekend sound accidental",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -661,33 +678,108 @@
         },
         {
           "id": "s1",
-          "raw": "The pattern was familiar long before the final send: another pass because the table looked sloppy, another pass because the citations were not defensible enough, one more pass because the tone in chat suddenly altered and I did not want to be the person who explained no after everyone else had already stayed online",
-          "rhetoricalRole": "causal",
+          "raw": "The pattern was familiar long before the final forward",
+          "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "The pattern was familiar long before the final send: another pass because the table looked sloppy, another pass because the citations were not defensible enough, one more pass because the tone in chat suddenly altered",
+              "text": "The pattern was familiar long before the final forward",
               "relationToPrev": "start",
               "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "was",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "forward",
               "actor": "The pattern",
-              "action": "was",
-              "object": "familiar long before final send",
+              "action": "forward",
+              "object": "",
               "modifiers": [
-                "final",
-                "table",
-                "defensible",
-                "suddenly"
+                "final"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "Another pass as the table looked sloppy, another pass as the citations were not defensible enough, another pass as the tone in chat suddenly altered",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "Another pass",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "another",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c1",
+              "text": "the table looked sloppy, another pass",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "table",
+              "actor": "the table",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "table"
               ],
               "hedgeMarkers": []
             },
             {
-              "id": "s1c1",
-              "text": "I did not want to be the person who explained no after everyone else had already stayed online",
+              "id": "s2c2",
+              "text": "the citations were not defensible enough, another pass",
               "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "were",
+              "actor": "the citations",
+              "action": "were",
+              "object": "defensible enough another pass",
+              "modifiers": [
+                "defensible"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c3",
+              "text": "the tone in chat suddenly altered",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "tone",
+              "actor": "the tone",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "suddenly"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "But I did not want to be the person who explained no after everyone else had already stayed online",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "But I did not want to be the person who explained no after everyone else had already stayed online",
+              "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "past",
@@ -701,24 +793,47 @@
           ]
         },
         {
-          "id": "s2",
-          "raw": "None of that was a formal demand, that's exactly how I kept talking myself into it",
+          "id": "s4",
+          "raw": "None of that was a formal demand",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s2c0",
-              "text": "None of that was a formal demand, that's exactly how I kept talking myself into it",
+              "id": "s4c0",
+              "text": "None of that was a formal demand",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "kept",
+              "propositionHead": "was",
               "actor": "that",
+              "action": "was",
+              "object": "formal demand",
+              "modifiers": [
+                "formal"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "That's exactly how I kept talking myself into it",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "That's exactly how I kept talking myself into it",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "kept",
+              "actor": "That",
               "action": "kept",
               "object": "talking myself into",
               "modifiers": [
-                "formal",
                 "exactly"
               ],
               "hedgeMarkers": []
@@ -726,14 +841,14 @@
           ]
         },
         {
-          "id": "s3",
-          "raw": "By Sunday night the memo was fine and my capacity was not",
-          "rhetoricalRole": "additive",
+          "id": "s6",
+          "raw": "By Sunday night the memo was fine but my capacity was not",
+          "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s3c0",
-              "text": "By Sunday night the memo was fine and my capacity was not",
+              "id": "s6c0",
+              "text": "By Sunday night the memo was fine but my capacity was not",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -748,17 +863,17 @@
           ]
         },
         {
-          "id": "s4",
-          "raw": "I am trying to name the thing correctly this time: the problem was not dedication",
+          "id": "s7",
+          "raw": "I am trying to name the thing correctly this time",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s4c0",
-              "text": "I am trying to name the thing correctly this time: the problem was not dedication",
+              "id": "s7c0",
+              "text": "I am trying to name the thing correctly this time",
               "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
+              "clauseType": "fragment",
+              "polarity": "positive",
               "tenseAspect": "progressive",
               "propositionHead": "am",
               "actor": "I",
@@ -772,13 +887,35 @@
           ]
         },
         {
-          "id": "s5",
+          "id": "s8",
+          "raw": "The problem was not dedication",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s8c0",
+              "text": "The problem was not dedication",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "was",
+              "actor": "The problem",
+              "action": "was",
+              "object": "dedication",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s9",
           "raw": "It was the way I kept translating exhaustion into politeness until the schedule looked consensual.",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s5c0",
+              "id": "s9c0",
               "text": "It was the way I kept translating exhaustion into politeness",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -792,7 +929,7 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s5c1",
+              "id": "s9c1",
               "text": "the schedule looked consensual",
               "relationToPrev": "additive",
               "clauseType": "fragment",
@@ -800,8 +937,8 @@
               "tenseAspect": "past",
               "propositionHead": "schedule",
               "actor": "the schedule",
-              "action": "",
-              "object": "",
+              "action": "schedule",
+              "object": "looked consensual",
               "modifiers": [
                 "consensual"
               ],
@@ -812,15 +949,19 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "weak",
-      "borrowedShellOutcome": "partial",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
+        "sentence-count",
         "sentence-spread",
         "contraction-posture",
-        "connector-stance"
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "punctuation-shape"
       ],
       "lexemeSwaps": [
         {
@@ -840,33 +981,42 @@
           "from": "still",
           "to": "quiet",
           "kind": "lexeme"
+        },
+        {
+          "family": "send",
+          "from": "send",
+          "to": "forward",
+          "kind": "lexeme"
         }
       ],
       "semanticRisk": 0,
       "realizationNotes": [
-        "3 lexical family swaps landed."
+        "4 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, directness."
       ],
-      "rescuePasses": [
-        "overlay-conservative",
-        "partial-rescue"
-      ],
+      "rescuePasses": [],
       "visibleShift": true,
       "nonTrivialShift": true
     }
   },
   "semanticContract": {
-    "transferClass": "weak",
+    "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "connector-stance",
       "contraction-posture",
+      "directness",
+      "lexical-register",
+      "punctuation-shape",
+      "sentence-count",
       "sentence-mean",
       "sentence-spread"
     ],
     "lexemeSwapFamilies": [
       "change",
       "quiet",
-      "say"
+      "say",
+      "send"
     ],
     "relationInventory": [
       "additive:3",
@@ -882,12 +1032,12 @@
     "lexicalOperations": [],
     "connectorStrategy": "causal",
     "contractionStrategy": "hold",
-    "propositionCoverage": 0.898,
+    "propositionCoverage": 0.909,
     "actorCoverage": 1,
-    "actionCoverage": 0.886,
-    "objectCoverage": 0.878,
-    "polarityMismatches": 0,
-    "tenseMismatches": 0,
+    "actionCoverage": 0.907,
+    "objectCoverage": 0.861,
+    "polarityMismatches": 1,
+    "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1
   }
 }

@@ -130,10 +130,10 @@
               "clauseType": "subordinate",
               "polarity": "positive",
               "tenseAspect": "future-modal",
-              "propositionHead": "can",
+              "propositionHead": "check",
               "actor": "that",
-              "action": "can",
-              "object": "check before zzprotlitazz help",
+              "action": "check",
+              "object": "before zzprotlitazz help",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -228,7 +228,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 144.31,
+        "score": 152.31,
         "passesApplied": [
           "baseline-merge",
           "baseline-voice-realization",
@@ -258,7 +258,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 142.7,
+          "score": 146.7,
           "passesApplied": [
             "merge-pairs",
             "clause-texture",
@@ -279,7 +279,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 144.31,
+          "score": 152.31,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -308,7 +308,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 144.31,
+          "score": 152.31,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -337,7 +337,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 144.31,
+          "score": 152.31,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -366,7 +366,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 141.712,
+          "score": 149.712,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -580,10 +580,10 @@
               "clauseType": "subordinate",
               "polarity": "positive",
               "tenseAspect": "future-modal",
-              "propositionHead": "can",
+              "propositionHead": "check",
               "actor": "that",
-              "action": "can",
-              "object": "check before 3 help",
+              "action": "check",
+              "object": "before 3 help",
               "modifiers": [],
               "hedgeMarkers": []
             }

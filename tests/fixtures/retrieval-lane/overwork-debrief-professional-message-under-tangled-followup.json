@@ -95,10 +95,10 @@
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "kept",
+              "propositionHead": "asks",
               "actor": "a stack",
-              "action": "kept",
-              "object": "sounding manageable long after stopped",
+              "action": "asks",
+              "object": "kept sounding manageable long after",
               "modifiers": [
                 "manageable"
               ],
@@ -133,10 +133,10 @@
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "friday",
+              "propositionHead": "review",
               "actor": "a Friday",
-              "action": "",
-              "object": "",
+              "action": "review",
+              "object": "cycle across saturday",
               "modifiers": [
                 "table"
               ],
@@ -149,10 +149,10 @@
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "each",
+              "propositionHead": "ask",
               "actor": "",
-              "action": "",
-              "object": "",
+              "action": "ask",
+              "object": "arrived",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -257,7 +257,7 @@
       ]
     },
     "opportunityProfile": {
-      "sentenceSplit": 2,
+      "sentenceSplit": 0,
       "sentenceMerge": 5,
       "contraction": 3,
       "connector": 9,
@@ -313,7 +313,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 206.042,
+        "score": 261.884,
         "passesApplied": [
           "contraction",
           "phrase-texture"
@@ -322,7 +322,9 @@
         "changedDimensions": [
           "contraction-posture",
           "connector-stance",
-          "directness"
+          "lexical-register",
+          "directness",
+          "abstraction-posture"
         ],
         "qualityGatePassed": true,
         "notes": []
@@ -330,7 +332,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 206.042,
+          "score": 261.884,
           "passesApplied": [
             "contraction",
             "phrase-texture"
@@ -339,14 +341,16 @@
           "changedDimensions": [
             "contraction-posture",
             "connector-stance",
-            "directness"
+            "lexical-register",
+            "directness",
+            "abstraction-posture"
           ],
           "qualityGatePassed": true,
           "notes": []
         },
         {
           "spec": "mixed-structural",
-          "score": 177.76,
+          "score": 208.844,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-function-word",
@@ -355,14 +359,15 @@
           "rescuePasses": [],
           "changedDimensions": [
             "connector-stance",
-            "abstraction-posture"
+            "lexical-register",
+            "directness"
           ],
           "qualityGatePassed": true,
           "notes": []
         },
         {
           "spec": "merge-heavy",
-          "score": 177.76,
+          "score": 208.844,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-function-word",
@@ -371,14 +376,15 @@
           "rescuePasses": [],
           "changedDimensions": [
             "connector-stance",
-            "abstraction-posture"
+            "lexical-register",
+            "directness"
           ],
           "qualityGatePassed": true,
           "notes": []
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 177.76,
+          "score": 208.844,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-function-word",
@@ -387,14 +393,15 @@
           "rescuePasses": [],
           "changedDimensions": [
             "connector-stance",
-            "abstraction-posture"
+            "lexical-register",
+            "directness"
           ],
           "qualityGatePassed": true,
           "notes": []
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 177.76,
+          "score": 208.844,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-function-word",
@@ -403,7 +410,8 @@
           "rescuePasses": [],
           "changedDimensions": [
             "connector-stance",
-            "abstraction-posture"
+            "lexical-register",
+            "directness"
           ],
           "qualityGatePassed": true,
           "notes": []
@@ -411,7 +419,7 @@
       ]
     },
     "finalRealization": {
-      "text": "I owe you a cleaner explanation for why the memo landed late. It wasn't one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that. What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday because each extra ask arrived as if it were the last one. I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately. The memo itself is now in good shape, but the route we took to grab there wasn't. For the next round I'd like us to define a stop point before weekend work kicks off presenting itself as thoughtfulness.",
+      "text": "I owe you a cleaner explanation for why the memo landed late. It wasn't one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that. What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full check cycle across Saturday because each extra ask arrived as if it were the last one. I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately. The memo itself is now in good shape, but the route we took to get there wasn't. For the next round I'd like us to define a stop point before weekend work kicks off presenting itself as thoughtfulness.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -419,19 +427,21 @@
       "changedDimensions": [
         "contraction-posture",
         "connector-stance",
-        "directness"
+        "lexical-register",
+        "directness",
+        "abstraction-posture"
       ],
       "lexemeSwaps": [
-        {
-          "family": "get",
-          "from": "get",
-          "to": "grab",
-          "kind": "lexeme"
-        },
         {
           "family": "start",
           "from": "starts",
           "to": "kicks off",
+          "kind": "lexeme"
+        },
+        {
+          "family": "check",
+          "from": "review",
+          "to": "check",
           "kind": "lexeme"
         }
       ],
@@ -459,7 +469,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.038
+          "globalBagScore": 0.033
         },
         {
           "sourceClauseId": "s1c0",
@@ -471,7 +481,7 @@
           "polarityMismatch": 1,
           "tenseMismatch": 0,
           "bagScore": 0,
-          "globalBagScore": 0.034
+          "globalBagScore": 0.03
         },
         {
           "sourceClauseId": "s1c1",
@@ -483,7 +493,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.269
+          "globalBagScore": 0.233
         },
         {
           "sourceClauseId": "s2c0",
@@ -495,7 +505,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.038
+          "globalBagScore": 0.033
         },
         {
           "sourceClauseId": "s2c1",
@@ -507,7 +517,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.077
+          "globalBagScore": 0.2
         },
         {
           "sourceClauseId": "s2c2",
@@ -519,7 +529,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.038
+          "globalBagScore": 0.067
         },
         {
           "sourceClauseId": "s2c3",
@@ -531,7 +541,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.077
+          "globalBagScore": 0.067
         },
         {
           "sourceClauseId": "s3c0",
@@ -543,7 +553,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.231
+          "globalBagScore": 0.2
         },
         {
           "sourceClauseId": "s4c0",
@@ -555,7 +565,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.75,
-          "globalBagScore": 0.115
+          "globalBagScore": 0.1
         },
         {
           "sourceClauseId": "s5c0",
@@ -567,7 +577,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.167,
-          "globalBagScore": 0.032
+          "globalBagScore": 0.029
         },
         {
           "sourceClauseId": "s5c1",
@@ -579,7 +589,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.038
+          "globalBagScore": 0.033
         }
       ],
       "sourceClauseCount": 11,
@@ -647,10 +657,10 @@
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "kept",
+              "propositionHead": "asks",
               "actor": "a stack",
-              "action": "kept",
-              "object": "sounding manageable long after stopped",
+              "action": "asks",
+              "object": "kept sounding manageable long after",
               "modifiers": [
                 "manageable"
               ],
@@ -660,7 +670,7 @@
         },
         {
           "id": "s2",
-          "raw": "What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday because each extra ask arrived as if it were the last one",
+          "raw": "What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full check cycle across Saturday because each extra ask arrived as if it were the last one",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
@@ -680,15 +690,15 @@
             },
             {
               "id": "s2c1",
-              "text": "a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday",
+              "text": "a Friday afternoon tone pass turned into table cleanup, citation repair, and another full check cycle across Saturday",
               "relationToPrev": "additive",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "friday",
+              "propositionHead": "check",
               "actor": "a Friday",
-              "action": "",
-              "object": "",
+              "action": "check",
+              "object": "cycle across saturday",
               "modifiers": [
                 "table"
               ],
@@ -701,10 +711,10 @@
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "each",
+              "propositionHead": "ask",
               "actor": "",
-              "action": "",
-              "object": "",
+              "action": "ask",
+              "object": "arrived",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -750,20 +760,20 @@
         },
         {
           "id": "s4",
-          "raw": "The memo itself is now in good shape, but the route we took to grab there wasn't",
+          "raw": "The memo itself is now in good shape, but the route we took to get there wasn't",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "The memo itself is now in good shape, but the route we took to grab there wasn't",
+              "text": "The memo itself is now in good shape, but the route we took to get there wasn't",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "present",
-              "propositionHead": "grab",
+              "propositionHead": "get",
               "actor": "The memo",
-              "action": "grab",
+              "action": "get",
               "object": "there wasn't",
               "modifiers": [],
               "hedgeMarkers": []
@@ -816,26 +826,28 @@
       "changedDimensions": [
         "contraction-posture",
         "connector-stance",
-        "directness"
+        "lexical-register",
+        "directness",
+        "abstraction-posture"
       ],
       "lexemeSwaps": [
-        {
-          "family": "get",
-          "from": "get",
-          "to": "grab",
-          "kind": "lexeme"
-        },
         {
           "family": "start",
           "from": "starts",
           "to": "kicks off",
+          "kind": "lexeme"
+        },
+        {
+          "family": "check",
+          "from": "review",
+          "to": "check",
           "kind": "lexeme"
         }
       ],
       "semanticRisk": 0,
       "realizationNotes": [
         "2 lexical family swaps landed.",
-        "Register shift surfaced through directness."
+        "Register shift surfaced through lexical-register, directness, abstraction-posture."
       ],
       "rescuePasses": [],
       "visibleShift": true,
@@ -846,12 +858,14 @@
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
+      "abstraction-posture",
       "connector-stance",
       "contraction-posture",
-      "directness"
+      "directness",
+      "lexical-register"
     ],
     "lexemeSwapFamilies": [
-      "get",
+      "check",
       "start"
     ],
     "relationInventory": [

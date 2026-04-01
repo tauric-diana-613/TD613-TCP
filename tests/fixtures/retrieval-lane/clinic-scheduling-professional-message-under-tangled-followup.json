@@ -112,10 +112,10 @@
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "is",
+              "propositionHead": "confirmed",
               "actor": "The payer",
-              "action": "is",
-              "object": "tied downtown clinic",
+              "action": "confirmed",
+              "object": "auth number zzprotlitdzz record tied",
               "modifiers": [
                 "clinic"
               ],
@@ -150,10 +150,10 @@
               "clauseType": "subordinate",
               "polarity": "negative",
               "tenseAspect": "future-modal",
-              "propositionHead": "do",
+              "propositionHead": "match",
               "actor": "the site",
-              "action": "do",
-              "object": "match scheduling see approval cannot",
+              "action": "match",
+              "object": "scheduling see approval cannot legally",
               "modifiers": [
                 "approval",
                 "legally"
@@ -175,10 +175,10 @@
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "were",
+              "propositionHead": "sent",
               "actor": "We",
-              "action": "were",
-              "object": "waiting reissued order at zzprotlitbzz",
+              "action": "sent",
+              "object": "correction request at zzprotlitazz waiting",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -231,7 +231,7 @@
       ]
     },
     "opportunityProfile": {
-      "sentenceSplit": 1,
+      "sentenceSplit": 0,
       "sentenceMerge": 5,
       "contraction": 3,
       "connector": 9,
@@ -286,7 +286,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 335.404,
+        "score": 340.488,
         "passesApplied": [
           "baseline-floor",
           "clause-texture"
@@ -298,6 +298,7 @@
           "sentence-spread",
           "connector-stance",
           "lexical-register",
+          "content-word-complexity",
           "modifier-density",
           "directness",
           "punctuation-shape"
@@ -308,7 +309,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 335.404,
+          "score": 340.488,
           "passesApplied": [
             "baseline-floor",
             "clause-texture"
@@ -320,6 +321,7 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
+            "content-word-complexity",
             "modifier-density",
             "directness",
             "punctuation-shape"
@@ -329,31 +331,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 254.204,
-          "passesApplied": [
-            "baseline-voice-realization",
-            "baseline-stance",
-            "baseline-function-word",
-            "planned-sentence-split",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "connector-stance",
-            "modifier-density",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "split-heavy",
-          "score": 286.204,
+          "score": 308.692,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -370,6 +348,33 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "content-word-complexity",
+            "modifier-density",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "split-heavy",
+          "score": 309.824,
+          "passesApplied": [
+            "baseline-voice-realization",
+            "baseline-stance",
+            "baseline-function-word",
+            "planned-sentence-split",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "content-word-complexity",
             "modifier-density",
             "punctuation-shape"
           ],
@@ -378,7 +383,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 254.204,
+          "score": 308.692,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -393,7 +398,9 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
+            "content-word-complexity",
             "modifier-density",
             "punctuation-shape"
           ],
@@ -402,7 +409,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 254.204,
+          "score": 308.692,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -417,7 +424,9 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
+            "content-word-complexity",
             "modifier-density",
             "punctuation-shape"
           ],
@@ -427,7 +436,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Hi team. I am documenting why the MRI for the departed knee is quiet not scheduled even though the patient was explained the authorization had cleared. The payer line confirmed auth number PR-44719. But their record is tied to the downtown clinic while the order in our queue quiet accounts to North River. Because the site on the authorization and the site on the order do not match. Scheduling can see the approval and still cannot legally book the scan. We sent the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback. If the ordering office can resend under the correct location today. We may still retain the next-day slot. Otherwise the case rolls again.",
+      "text": "Hi team. I am documenting why the MRI for the left knee is still not scheduled even though the patient was explained the authorization had cleared. The payer line confirmed authorization number PR-44719, but their record is tied to the downtown clinic while the order in our queue quiet accounts to North River. Because the site on the authorization and the site on the order do not align, scheduling can see the approval and quiet cannot legally schedule the scan. We forwarded the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback. If the ordering office can resend under the correct location today. We may still retain the next-day slot. Otherwise the case rolls again.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -438,6 +447,7 @@
         "sentence-spread",
         "connector-stance",
         "lexical-register",
+        "content-word-complexity",
         "modifier-density",
         "directness",
         "punctuation-shape"
@@ -456,15 +466,21 @@
           "kind": "lexeme"
         },
         {
-          "family": "leave",
-          "from": "left",
-          "to": "departed",
-          "kind": "lexeme"
-        },
-        {
           "family": "quiet",
           "from": "still",
           "to": "quiet",
+          "kind": "lexeme"
+        },
+        {
+          "family": "send",
+          "from": "sent",
+          "to": "forwarded",
+          "kind": "lexeme"
+        },
+        {
+          "family": "match",
+          "from": "match",
+          "to": "align",
           "kind": "lexeme"
         }
       ],
@@ -477,7 +493,7 @@
       "propositionCoverage": 0.988,
       "actorCoverage": 1,
       "actionCoverage": 0.976,
-      "objectCoverage": 0.919,
+      "objectCoverage": 0.938,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -488,11 +504,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.286,
-          "globalBagScore": 0.051
+          "bagScore": 1,
+          "globalBagScore": 0.075
         },
         {
           "sourceClauseId": "s0c1",
@@ -504,23 +520,23 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.6,
-          "globalBagScore": 0.077
+          "globalBagScore": 0.073
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s2c0+s3c0",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.105
+          "bagScore": 0.455,
+          "globalBagScore": 0.116
         },
         {
           "sourceClauseId": "s1c1",
-          "matchedClauseId": "s3c1",
+          "matchedClauseId": "s2c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -528,35 +544,35 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.5,
-          "globalBagScore": 0.026
+          "globalBagScore": 0.025
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s4c0+s5c0",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.8,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.75,
-          "globalBagScore": 0.154
+          "bagScore": 0.875,
+          "globalBagScore": 0.175
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s6c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.8,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.667,
-          "globalBagScore": 0.103
+          "bagScore": 0.5,
+          "globalBagScore": 0.095
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s8c0",
+          "matchedClauseId": "s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -564,11 +580,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.8,
-          "globalBagScore": 0.132
+          "globalBagScore": 0.125
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s9c0",
+          "matchedClauseId": "s7c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -576,11 +592,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.053
+          "globalBagScore": 0.05
         }
       ],
       "sourceClauseCount": 8,
-      "outputClauseCount": 12
+      "outputClauseCount": 10
     },
     "protectedAnchorAudit": {
       "totalAnchors": 4,
@@ -590,8 +606,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 10,
-        "clauseCount": 12,
+        "sentenceCount": 8,
+        "clauseCount": 10,
         "literalSpans": [
           {
             "value": "10:26 AM",
@@ -636,24 +652,22 @@
         },
         {
           "id": "s1",
-          "raw": "I am documenting why the MRI for the departed knee is quiet not scheduled even though the patient was explained the authorization had cleared",
+          "raw": "I am documenting why the MRI for the left knee is still not scheduled even though the patient was explained the authorization had cleared",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "I am documenting why the MRI for the departed knee is quiet not scheduled",
+              "text": "I am documenting why the MRI for the left knee is still not scheduled",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "progressive",
-              "propositionHead": "am",
+              "propositionHead": "left",
               "actor": "I",
-              "action": "am",
-              "object": "documenting why mri departed knee",
-              "modifiers": [
-                "quiet"
-              ],
+              "action": "left",
+              "object": "knee scheduled",
+              "modifiers": [],
               "hedgeMarkers": []
             },
             {
@@ -674,50 +688,28 @@
         },
         {
           "id": "s2",
-          "raw": "The payer line confirmed auth number PR-44719",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "The payer line confirmed auth number PR-44719",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "payer",
-              "actor": "The payer",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "But their record is tied to the downtown clinic while the order in our queue quiet accounts to North River",
+          "raw": "The payer line confirmed authorization number PR-44719, but their record is tied to the downtown clinic while the order in our queue quiet accounts to North River",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s3c0",
-              "text": "But their record is tied to the downtown clinic",
+              "id": "s2c0",
+              "text": "The payer line confirmed authorization number PR-44719, but their record is tied to the downtown clinic",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "is",
-              "actor": "the downtown",
-              "action": "is",
-              "object": "tied downtown clinic",
+              "propositionHead": "confirmed",
+              "actor": "The payer",
+              "action": "confirmed",
+              "object": "authorization number pr 44719 record",
               "modifiers": [
                 "clinic"
               ],
               "hedgeMarkers": []
             },
             {
-              "id": "s3c1",
+              "id": "s2c1",
               "text": "the order in our queue quiet accounts to North River",
               "relationToPrev": "additive",
               "clauseType": "fragment",
@@ -735,46 +727,25 @@
           ]
         },
         {
-          "id": "s4",
-          "raw": "Because the site on the authorization and the site on the order do not match",
+          "id": "s3",
+          "raw": "Because the site on the authorization and the site on the order do not align, scheduling can see the approval and quiet cannot legally schedule the scan",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s4c0",
-              "text": "Because the site on the authorization and the site on the order do not match",
+              "id": "s3c0",
+              "text": "Because the site on the authorization and the site on the order do not align, scheduling can see the approval and quiet cannot legally schedule the scan",
               "relationToPrev": "start",
               "clauseType": "subordinate",
               "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "do",
-              "actor": "the site",
-              "action": "do",
-              "object": "match",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s5",
-          "raw": "Scheduling can see the approval and still cannot legally book the scan",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s5c0",
-              "text": "Scheduling can see the approval and still cannot legally book the scan",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
               "tenseAspect": "future-modal",
-              "propositionHead": "can",
-              "actor": "the approval",
-              "action": "can",
-              "object": "see approval cannot legally book",
+              "propositionHead": "align",
+              "actor": "the site",
+              "action": "align",
+              "object": "scheduling see approval quiet cannot",
               "modifiers": [
                 "approval",
+                "quiet",
                 "legally"
               ],
               "hedgeMarkers": []
@@ -782,35 +753,35 @@
           ]
         },
         {
-          "id": "s6",
-          "raw": "We sent the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
+          "id": "s4",
+          "raw": "We forwarded the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s6c0",
-              "text": "We sent the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
+              "id": "s4c0",
+              "text": "We forwarded the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "AM",
+              "propositionHead": "forwarded",
               "actor": "We",
-              "action": "AM",
-              "object": "waiting reissued order at 3",
+              "action": "forwarded",
+              "object": "correction request at 10 26",
               "modifiers": [],
               "hedgeMarkers": []
             }
           ]
         },
         {
-          "id": "s7",
+          "id": "s5",
           "raw": "If the ordering office can resend under the correct location today",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s7c0",
+              "id": "s5c0",
               "text": "If the ordering office can resend under the correct location today",
               "relationToPrev": "start",
               "clauseType": "subordinate",
@@ -826,13 +797,13 @@
           ]
         },
         {
-          "id": "s8",
+          "id": "s6",
           "raw": "We may still retain the next-day slot",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s8c0",
+              "id": "s6c0",
               "text": "We may still retain the next-day slot",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -848,13 +819,13 @@
           ]
         },
         {
-          "id": "s9",
+          "id": "s7",
           "raw": "Otherwise the case rolls again.",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s9c0",
+              "id": "s7c0",
               "text": "Otherwise the case rolls again",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -882,6 +853,7 @@
         "sentence-spread",
         "connector-stance",
         "lexical-register",
+        "content-word-complexity",
         "modifier-density",
         "directness",
         "punctuation-shape"
@@ -900,22 +872,28 @@
           "kind": "lexeme"
         },
         {
-          "family": "leave",
-          "from": "left",
-          "to": "departed",
-          "kind": "lexeme"
-        },
-        {
           "family": "quiet",
           "from": "still",
           "to": "quiet",
+          "kind": "lexeme"
+        },
+        {
+          "family": "send",
+          "from": "sent",
+          "to": "forwarded",
+          "kind": "lexeme"
+        },
+        {
+          "family": "match",
+          "from": "match",
+          "to": "align",
           "kind": "lexeme"
         }
       ],
       "semanticRisk": 0.3,
       "realizationNotes": [
-        "4 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, modifier-density, directness.",
+        "5 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, content-word-complexity, modifier-density, directness.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [],
@@ -928,6 +906,7 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "connector-stance",
+      "content-word-complexity",
       "directness",
       "lexical-register",
       "modifier-density",
@@ -938,9 +917,10 @@
     ],
     "lexemeSwapFamilies": [
       "keep",
-      "leave",
+      "match",
       "quiet",
-      "say"
+      "say",
+      "send"
     ],
     "relationInventory": [
       "additive:3",
@@ -959,7 +939,7 @@
     "propositionCoverage": 0.988,
     "actorCoverage": 1,
     "actionCoverage": 0.976,
-    "objectCoverage": 0.919,
+    "objectCoverage": 0.938,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

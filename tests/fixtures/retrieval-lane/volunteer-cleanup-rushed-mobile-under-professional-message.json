@@ -90,8 +90,8 @@
               "tenseAspect": "present",
               "propositionHead": "check",
               "actor": "",
-              "action": "",
-              "object": "",
+              "action": "check",
+              "object": "west fence table first",
               "modifiers": [
                 "table"
               ],
@@ -266,7 +266,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 332.896,
+        "score": 347.468,
         "passesApplied": [
           "merge-pairs",
           "clause-texture"
@@ -288,7 +288,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 332.896,
+          "score": 347.468,
           "passesApplied": [
             "merge-pairs",
             "clause-texture"
@@ -309,136 +309,104 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 255.324,
+          "score": 316.432,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
-            "modifier-density",
             "directness",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Protected literals did not survive the rewrite intact.",
-            "Protected placeholders leaked into the output."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "merge-heavy",
-          "score": 255.324,
+          "score": 316.432,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
-            "modifier-density",
             "directness",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Protected literals did not survive the rewrite intact.",
-            "Protected placeholders leaked into the output."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 255.324,
+          "score": 316.432,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
-            "modifier-density",
             "directness",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Protected literals did not survive the rewrite intact.",
-            "Protected placeholders leaked into the output."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 255.324,
+          "score": 316.432,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
-            "modifier-density",
             "directness",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Protected literals did not survive the rewrite intact.",
-            "Protected placeholders leaked into the output."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         }
       ]
     },
     "finalRealization": {
-      "text": "If youre late thats ok just dont begin random jobs, and check in west fence table first. Glass + pallets first pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop quiet stands, but pls bring water for real, not explaining it to be annoying.",
+      "text": "If youre late thats ok just dont begin random jobs, and review in west fence table first. Glass, pallets first pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop quiet stands, but please bring water for real, not explaining it to be annoying.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -471,6 +439,12 @@
           "from": "still",
           "to": "quiet",
           "kind": "lexeme"
+        },
+        {
+          "family": "check",
+          "from": "check",
+          "to": "review",
+          "kind": "lexeme"
         }
       ],
       "semanticRisk": 0.3,
@@ -482,7 +456,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.964,
+      "objectCoverage": 0.929,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -505,11 +479,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.286,
-          "globalBagScore": 0.133
+          "bagScore": 0.5,
+          "globalBagScore": 0.25
         },
         {
           "sourceClauseId": "s2c0",
@@ -595,13 +569,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "If youre late thats ok just dont begin random jobs, and check in west fence table first",
+          "raw": "If youre late thats ok just dont begin random jobs, and review in west fence table first",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "If youre late thats ok just dont begin random jobs, and check in west fence table first",
+              "text": "If youre late thats ok just dont begin random jobs, and review in west fence table first",
               "relationToPrev": "start",
               "clauseType": "subordinate",
               "polarity": "positive",
@@ -609,7 +583,7 @@
               "propositionHead": "begin",
               "actor": "",
               "action": "begin",
-              "object": "random jobs check west fence",
+              "object": "random jobs review west fence",
               "modifiers": [
                 "table"
               ],
@@ -621,13 +595,13 @@
         },
         {
           "id": "s1",
-          "raw": "Glass + pallets first pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+          "raw": "Glass, pallets first pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "Glass + pallets first pass",
+              "text": "Glass, pallets first pass",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -661,13 +635,13 @@
         },
         {
           "id": "s2",
-          "raw": "10:15 inventory stop quiet stands, but pls bring water for real, not explaining it to be annoying.",
+          "raw": "10:15 inventory stop quiet stands, but please bring water for real, not explaining it to be annoying.",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "10:15 inventory stop quiet stands, but pls bring water for real, not explaining it to be annoying",
+              "text": "10:15 inventory stop quiet stands, but please bring water for real, not explaining it to be annoying",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -719,11 +693,17 @@
           "from": "still",
           "to": "quiet",
           "kind": "lexeme"
+        },
+        {
+          "family": "check",
+          "from": "check",
+          "to": "review",
+          "kind": "lexeme"
         }
       ],
       "semanticRisk": 0.3,
       "realizationNotes": [
-        "3 lexical family swaps landed.",
+        "4 lexical family swaps landed.",
         "Register shift surfaced through lexical-register, modifier-density, directness.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
@@ -746,6 +726,7 @@
       "sentence-spread"
     ],
     "lexemeSwapFamilies": [
+      "check",
       "quiet",
       "say",
       "start"
@@ -768,7 +749,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.964,
+    "objectCoverage": 0.929,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

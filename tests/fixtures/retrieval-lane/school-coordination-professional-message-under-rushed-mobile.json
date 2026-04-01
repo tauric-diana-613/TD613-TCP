@@ -100,10 +100,10 @@
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "past",
-              "propositionHead": "was",
+              "propositionHead": "located",
               "actor": "We",
-              "action": "was",
-              "object": "located by close day",
+              "action": "located",
+              "object": "by close day",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -158,10 +158,10 @@
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "present",
-              "propositionHead": "did",
+              "propositionHead": "sent",
               "actor": "We",
-              "action": "did",
-              "object": "surface before dismissal",
+              "action": "sent",
+              "object": "reminder classroom at zzprotlitczz paper",
               "modifiers": [
                 "dismissal"
               ],
@@ -208,7 +208,7 @@
       ]
     },
     "opportunityProfile": {
-      "sentenceSplit": 3,
+      "sentenceSplit": 2,
       "sentenceMerge": 4,
       "contraction": 2,
       "connector": 6,
@@ -223,13 +223,9 @@
     "planSummary": {
       "transferMode": "compress",
       "structuralOperationsSelected": [
-        "baseline-split",
-        "planned-sentence-split"
+        "clause-texture"
       ],
-      "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "connector-stance-lexicon"
-      ],
+      "lexicalRegisterOperationsSelected": [],
       "connectorStrategy": "contrastive",
       "contractionStrategy": "decrease",
       "relationInventory": {
@@ -266,20 +262,18 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "mixed-structural",
-        "score": 285.252,
+        "spec": "ir-beam-search",
+        "score": 314.598,
         "passesApplied": [
-          "baseline-split",
-          "baseline-voice-realization",
-          "planned-sentence-split",
-          "connector-stance-lexicon",
-          "cleanup-restore"
+          "baseline-floor",
+          "clause-texture"
         ],
         "rescuePasses": [],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
+          "contraction-posture",
           "connector-stance",
           "modifier-density",
           "punctuation-shape"
@@ -290,7 +284,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 280.752,
+          "score": 314.598,
           "passesApplied": [
             "baseline-floor",
             "clause-texture"
@@ -300,6 +294,7 @@
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
+            "contraction-posture",
             "connector-stance",
             "modifier-density",
             "punctuation-shape"
@@ -309,12 +304,14 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 285.252,
+          "score": 291.656,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
             "planned-sentence-split",
             "connector-stance-lexicon",
+            "contraction-auxiliary",
+            "punctuation-finish",
             "cleanup-restore"
           ],
           "rescuePasses": [],
@@ -331,12 +328,14 @@
         },
         {
           "spec": "split-heavy",
-          "score": 285.252,
+          "score": 291.656,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
             "planned-sentence-split",
             "connector-stance-lexicon",
+            "contraction-auxiliary",
+            "punctuation-finish",
             "cleanup-restore"
           ],
           "rescuePasses": [],
@@ -353,12 +352,14 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 285.252,
+          "score": 291.656,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
             "planned-sentence-split",
             "connector-stance-lexicon",
+            "contraction-auxiliary",
+            "punctuation-finish",
             "cleanup-restore"
           ],
           "rescuePasses": [],
@@ -375,12 +376,13 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 285.252,
+          "score": 289.562,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
             "planned-sentence-split",
             "connector-stance-lexicon",
+            "contraction-auxiliary",
             "cleanup-restore"
           ],
           "rescuePasses": [],
@@ -398,7 +400,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Hello. Confirming today's dismissal change. Aunt Maribel was approved for pickup and signed the student out at 3:17 PM after ID verification. We also wanted to note that the museum field-trip permission slip quiet was not located by close of day. Even though the fee waiver form is already on file. During the 1:48 PM phone call. You mentioned the signed slip might quiet be in the backpack. We sent a reminder to the classroom at 2:03 PM. But the paper did not surface before dismissal. If the signed permission page comes home tonight. Please return it tomorrow morning so Friday's trip record is complete.",
+      "text": "Hello, confirming today's dismissal change. Aunt Maribel was approved for pickup and signed the student out at 3:17 PM after ID verification. We also wanted to note that the museum field-trip slip quiet wasn't found by close of day. Even though the fee waiver form is already on file. During the 1:48 PM phone call, you mentioned the signed slip might quiet be in the backpack. We sent a reminder to the classroom at 2:03 PM, but the paper didn't surface before dismissal. If the signed permission page comes home tonight, please return it tomorrow morning so Friday's trip record is complete.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -407,6 +409,7 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
+        "contraction-posture",
         "connector-stance",
         "modifier-density",
         "punctuation-shape"
@@ -417,25 +420,31 @@
           "from": "still",
           "to": "quiet",
           "kind": "lexeme"
+        },
+        {
+          "family": "find",
+          "from": "located",
+          "to": "found",
+          "kind": "lexeme"
         }
       ],
-      "semanticRisk": 0.42,
+      "semanticRisk": 0.3,
       "rescuePasses": [],
       "visibleShift": true,
       "nonTrivialShift": true
     },
     "semanticAudit": {
       "propositionCoverage": 1,
-      "actorCoverage": 0.889,
+      "actorCoverage": 0.938,
       "actionCoverage": 1,
-      "objectCoverage": 0.893,
+      "objectCoverage": 0.929,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s1c0+s2c0",
+          "matchedClauseId": "s0c0+s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -443,11 +452,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.667,
-          "globalBagScore": 0.194
+          "globalBagScore": 0.167
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s3c0",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -455,11 +464,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.8,
-          "globalBagScore": 0.138
+          "globalBagScore": 0.118
         },
         {
           "sourceClauseId": "s1c1",
-          "matchedClauseId": "s4c1",
+          "matchedClauseId": "s3c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -467,47 +476,35 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.103
+          "globalBagScore": 0.088
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s5c0+s6c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
-          "actorCoverage": 0.225,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.25,
-          "globalBagScore": 0.094
-        },
-        {
-          "sourceClauseId": "s3c0",
-          "matchedClauseId": "s8c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0.563,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.75,
-          "globalBagScore": 0.103
+          "bagScore": 0.625,
+          "globalBagScore": 0.143
         },
         {
-          "sourceClauseId": "s4c0",
-          "matchedClauseId": "s9c0+s10c0",
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.714,
-          "globalBagScore": 0.161
+          "bagScore": 0.556,
+          "globalBagScore": 0.139
         },
         {
-          "sourceClauseId": "s4c1",
-          "matchedClauseId": "s10c1",
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -515,11 +512,23 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.034
+          "globalBagScore": 0.206
+        },
+        {
+          "sourceClauseId": "s4c1",
+          "matchedClauseId": "s6c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.029
         }
       ],
       "sourceClauseCount": 7,
-      "outputClauseCount": 13
+      "outputClauseCount": 9
     },
     "protectedAnchorAudit": {
       "totalAnchors": 4,
@@ -529,8 +538,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 11,
-        "clauseCount": 13,
+        "sentenceCount": 7,
+        "clauseCount": 9,
         "literalSpans": [
           {
             "value": "3:17 PM",
@@ -553,35 +562,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Hello",
+          "raw": "Hello, confirming today's dismissal change",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Hello",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "hello",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "Confirming today's dismissal change",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "Confirming today's dismissal change",
+              "text": "Hello, confirming today's dismissal change",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -598,13 +585,13 @@
           ]
         },
         {
-          "id": "s2",
+          "id": "s1",
           "raw": "Aunt Maribel was approved for pickup and signed the student out at 3:17 PM after ID verification",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s2c0",
+              "id": "s1c0",
               "text": "Aunt Maribel was approved for pickup and signed the student out at 3:17 PM after ID verification",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -620,22 +607,22 @@
           ]
         },
         {
-          "id": "s3",
-          "raw": "We also wanted to note that the museum field-trip permission slip quiet was not located by close of day",
+          "id": "s2",
+          "raw": "We also wanted to note that the museum field-trip slip quiet wasn't found by close of day",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s3c0",
-              "text": "We also wanted to note that the museum field-trip permission slip quiet was not located by close of day",
+              "id": "s2c0",
+              "text": "We also wanted to note that the museum field-trip slip quiet wasn't found by close of day",
               "relationToPrev": "start",
-              "clauseType": "main",
+              "clauseType": "fragment",
               "polarity": "negative",
               "tenseAspect": "past",
-              "propositionHead": "was",
+              "propositionHead": "found",
               "actor": "We",
-              "action": "was",
-              "object": "located by close day",
+              "action": "found",
+              "object": "by close day",
               "modifiers": [
                 "quiet"
               ],
@@ -644,13 +631,13 @@
           ]
         },
         {
-          "id": "s4",
+          "id": "s3",
           "raw": "Even though the fee waiver form is already on file",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s4c0",
+              "id": "s3c0",
               "text": "Even",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -664,7 +651,7 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s4c1",
+              "id": "s3c1",
               "text": "the fee waiver form is already on file",
               "relationToPrev": "additive",
               "clauseType": "main",
@@ -680,44 +667,22 @@
           ]
         },
         {
-          "id": "s5",
-          "raw": "During the 1:48 PM phone call",
+          "id": "s4",
+          "raw": "During the 1:48 PM phone call, you mentioned the signed slip might quiet be in the backpack",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s5c0",
-              "text": "During the 1:48 PM phone call",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "call",
-              "actor": "the 1",
-              "action": "call",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s6",
-          "raw": "You mentioned the signed slip might quiet be in the backpack",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s6c0",
-              "text": "You mentioned the signed slip might quiet be in the backpack",
+              "id": "s4c0",
+              "text": "During the 1:48 PM phone call, you mentioned the signed slip might quiet be in the backpack",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "might",
-              "actor": "You",
-              "action": "might",
-              "object": "quiet backpack",
+              "propositionHead": "call",
+              "actor": "the 1",
+              "action": "call",
+              "object": "mentioned signed slip quiet backpack",
               "modifiers": [
                 "quiet"
               ],
@@ -726,44 +691,22 @@
           ]
         },
         {
-          "id": "s7",
-          "raw": "We sent a reminder to the classroom at 2:03 PM",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s7c0",
-              "text": "We sent a reminder to the classroom at 2:03 PM",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "sent",
-              "actor": "We",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s8",
-          "raw": "But the paper did not surface before dismissal",
+          "id": "s5",
+          "raw": "We sent a reminder to the classroom at 2:03 PM, but the paper didn't surface before dismissal",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s8c0",
-              "text": "But the paper did not surface before dismissal",
+              "id": "s5c0",
+              "text": "We sent a reminder to the classroom at 2:03 PM, but the paper didn't surface before dismissal",
               "relationToPrev": "start",
-              "clauseType": "main",
+              "clauseType": "fragment",
               "polarity": "negative",
               "tenseAspect": "present",
-              "propositionHead": "did",
-              "actor": "the paper",
-              "action": "did",
-              "object": "surface before dismissal",
+              "propositionHead": "sent",
+              "actor": "We",
+              "action": "sent",
+              "object": "reminder classroom at 2 03",
               "modifiers": [
                 "dismissal"
               ],
@@ -772,14 +715,14 @@
           ]
         },
         {
-          "id": "s9",
-          "raw": "If the signed permission page comes home tonight",
-          "rhetoricalRole": "additive",
+          "id": "s6",
+          "raw": "If the signed permission page comes home tonight, please return it tomorrow morning so Friday's trip record is complete.",
+          "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s9c0",
-              "text": "If the signed permission page comes home tonight",
+              "id": "s6c0",
+              "text": "If the signed permission page comes home tonight, please return it tomorrow morning",
               "relationToPrev": "start",
               "clauseType": "subordinate",
               "polarity": "positive",
@@ -787,34 +730,12 @@
               "propositionHead": "comes",
               "actor": "the signed",
               "action": "comes",
-              "object": "home tonight",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s10",
-          "raw": "Please return it tomorrow morning so Friday's trip record is complete.",
-          "rhetoricalRole": "causal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s10c0",
-              "text": "Please return it tomorrow morning",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "please",
-              "actor": "it",
-              "action": "",
-              "object": "",
+              "object": "home tonight please return tomorrow",
               "modifiers": [],
               "hedgeMarkers": []
             },
             {
-              "id": "s10c1",
+              "id": "s6c1",
               "text": "Friday's trip record is complete",
               "relationToPrev": "additive",
               "clauseType": "main",
@@ -840,6 +761,7 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
+        "contraction-posture",
         "connector-stance",
         "modifier-density",
         "punctuation-shape"
@@ -850,11 +772,17 @@
           "from": "still",
           "to": "quiet",
           "kind": "lexeme"
+        },
+        {
+          "family": "find",
+          "from": "located",
+          "to": "found",
+          "kind": "lexeme"
         }
       ],
-      "semanticRisk": 0.42,
+      "semanticRisk": 0.3,
       "realizationNotes": [
-        "1 lexical family swap landed.",
+        "2 lexical family swaps landed.",
         "Register shift surfaced through modifier-density.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
@@ -868,6 +796,7 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "connector-stance",
+      "contraction-posture",
       "modifier-density",
       "punctuation-shape",
       "sentence-count",
@@ -875,6 +804,7 @@
       "sentence-spread"
     ],
     "lexemeSwapFamilies": [
+      "find",
       "quiet"
     ],
     "relationInventory": [
@@ -886,19 +816,15 @@
       "temporal:2"
     ],
     "structuralOperations": [
-      "baseline-split",
-      "planned-sentence-split"
+      "clause-texture"
     ],
-    "lexicalOperations": [
-      "baseline-voice-realization",
-      "connector-stance-lexicon"
-    ],
+    "lexicalOperations": [],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "decrease",
     "propositionCoverage": 1,
-    "actorCoverage": 0.889,
+    "actorCoverage": 0.938,
     "actionCoverage": 1,
-    "objectCoverage": 0.893,
+    "objectCoverage": 0.929,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

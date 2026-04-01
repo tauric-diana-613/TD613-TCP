@@ -160,14 +160,14 @@ function protectTransferLiterals(text = '') {
 function restoreProtectedLiterals(text = '', literals = []) {
   let output = text;
   for (const literal of literals) {
-    output = output.replace(new RegExp(escapeRegex(literal.placeholder), 'g'), literal.value);
+    output = output.replace(new RegExp(escapeRegex(literal.placeholder), 'gi'), literal.value);
   }
   return output;
 }
 
 function protectedLiteralIntegrity(text = '', literals = []) {
   return literals.every((literal) => {
-    const matches = text.match(new RegExp(escapeRegex(literal.placeholder), 'g')) || [];
+    const matches = text.match(new RegExp(escapeRegex(literal.placeholder), 'gi')) || [];
     return matches.length === 1;
   });
 }
@@ -193,7 +193,7 @@ function countPatternMatches(text = '', patterns = []) {
 const SPLIT_OPPORTUNITY_PATTERNS = [
   /;\s+/g,
   /\s-\s+/g,
-  /,\s+(and|but|so|because|though|while|if|when|which|that)\s+/gi,
+  /,\s+(because|though|while|if|when|which|that)\s+/gi,
   /,\s+(because|though|while|when|if|once|since|as)\s+/gi,
   /,\s+(apparently|basically|honestly|frankly|maybe|still|though)\b/gi,
   /,\s+(i think|i guess|i mean|to be honest|at least|if anything)\b/gi,
@@ -553,7 +553,7 @@ function applySplitRules(text = '', desiredSplits = 1) {
 
   applyRule(/;\s+/g, () => '. ');
   applyRule(/\s-\s+/g, () => '. ');
-  applyRule(/,\s+(and|but|so|because|though|while|if|when|which|that)\s+/gi, (match, connector) => `. ${connector} `);
+  applyRule(/,\s+(because|though|while|if|when|which|that)\s+/gi, (match, connector) => `. ${connector} `);
   applyRule(/\s+(and|but|so)\s+(i|we|you|they|he|she)\b/gi, (match, connector, subject) => `. ${connector} ${subject} `);
   applyRule(/,\s+(because|though|while|when|if|once|since|as)\s+/gi, (match, connector) => `. ${connector} `);
   applyRule(/,\s+(apparently|basically|honestly|frankly|maybe|still|though)\b,?\s*/gi, (match, phrase) => `. ${phrase} `);
@@ -561,7 +561,7 @@ function applySplitRules(text = '', desiredSplits = 1) {
   applyRule(/,\s+(even though|even if|as if|as though|unless)\s+/gi, (match, phrase) => `. ${phrase} `);
   applyRule(/,\s+(who|which|that)\s+(is|was|were|are|do|did|can|could|would|will)\s+/gi, (match, pronoun, verb) => `. ${pronoun} ${verb} `);
   applyRule(/:\s+/g, () => '. ');
-  applyRule(/,\s+/g, () => '. ');
+  applyRule(/,\s+(?=(?:I|we|you|they|he|she|it|there|this|that|the|a|an)\b)/gi, () => '. ');
 
   return result;
 }
@@ -1205,7 +1205,134 @@ const PHRASE_REALIZATION_PACKS = [
       reflective: 'the difficult part',
       formal: 'the difficult portion'
     }
+  },
+  {
+    id: 'received-call',
+    pattern: /\breceived a call\b/gi,
+    replacements: {
+      plain: 'got a call',
+      operational: 'got a call',
+      reflective: 'received a call',
+      formal: 'received a call'
+    }
+  },
+  {
+    id: 'remains-pending',
+    pattern: /\bremains pending\b/gi,
+    replacements: {
+      plain: 'is still pending',
+      operational: 'is still pending',
+      reflective: 'remains pending',
+      formal: 'remains pending'
+    }
+  },
+  {
+    id: 'could-not',
+    pattern: /\bcould not\b/gi,
+    replacements: {
+      plain: "couldn't",
+      operational: "couldn't",
+      reflective: 'could not',
+      formal: 'could not'
+    }
+  },
+  {
+    id: 'does-not-match',
+    pattern: /\bdoes not match\b/gi,
+    replacements: {
+      plain: "doesn't match",
+      operational: "doesn't line up with",
+      reflective: 'does not match',
+      formal: 'does not match'
+    }
+  },
+  {
+    id: 'verbally-confirmed',
+    pattern: /\bwas verbally confirmed\b/gi,
+    replacements: {
+      plain: 'was confirmed',
+      operational: 'got confirmed',
+      reflective: 'was verbally confirmed',
+      formal: 'was verbally confirmed'
+    }
+  },
+  {
+    id: 'as-of-close',
+    pattern: /\bas of close\b/gi,
+    replacements: {
+      plain: 'by close',
+      operational: 'by close',
+      reflective: 'as of close',
+      formal: 'as of close'
+    }
+  },
+  {
+    id: 'remained-unlocated',
+    pattern: /\bremained unlocated\b/gi,
+    replacements: {
+      plain: "still wasn't found",
+      operational: "still wasn't found",
+      reflective: 'remained unlocated',
+      formal: 'remained unlocated'
+    }
+  },
+  {
+    id: 'reminder-note-sent',
+    pattern: /\ba reminder note was sent\b/gi,
+    replacements: {
+      plain: 'a reminder went out',
+      operational: 'a reminder went out',
+      reflective: 'a reminder note was sent',
+      formal: 'a reminder note was sent'
+    }
+  },
+  {
+    id: 'not-saying-no',
+    pattern: /\bnot saying no\b/gi,
+    replacements: {
+      plain: 'not saying no',
+      operational: 'not saying no',
+      reflective: 'not refusing support',
+      formal: 'this is not a denial'
+    }
+  },
+  {
+    id: 'case-split-twice',
+    pattern: /\bdon['’]?t want (?:the )?case split twice\b/gi,
+    replacements: {
+      plain: "don't want the case split twice",
+      operational: "don't want the case split twice",
+      reflective: 'do not want the case split twice',
+      formal: 'the case should not be split twice'
+    }
+  },
+  {
+    id: 'kinda-matches',
+    pattern: /\bkinda matches\b/gi,
+    replacements: {
+      plain: 'kind of matches',
+      operational: 'kind of matches',
+      reflective: 'seems to match',
+      formal: 'partially matched'
+    }
   }
+];
+
+const SHORTHAND_REALIZATION_PACKS = [
+  { id: 'fam', pattern: /\bfam\b/gi, formal: 'family', operational: 'family' },
+  { id: 'pkg', pattern: /\bpkg\b/gi, formal: 'package', operational: 'package' },
+  { id: 'appt', pattern: /\bappt\b/gi, formal: 'appointment', operational: 'appt' },
+  { id: 'auth', pattern: /\bauth\b/gi, formal: 'authorization', operational: 'auth' },
+  { id: 'mgmt', pattern: /\bmgmt\b/gi, formal: 'management', operational: 'mgmt' },
+  { id: 'wk', pattern: /\bwk\b/gi, formal: 'week', operational: 'wk' },
+  { id: 'msg', pattern: /\bmsg\b/gi, formal: 'message', operational: 'msg' },
+  { id: 'ref', pattern: /\bref\b/gi, formal: 'referral', operational: 'ref' },
+  { id: 'bc', pattern: /\bbc\b/gi, formal: 'because', operational: 'bc' },
+  { id: 'w-slash', pattern: /\bw\/\s*/gi, formal: 'with ', operational: 'w/ ' },
+  { id: 'wo-slash', pattern: /\bw\/o\b/gi, formal: 'without', operational: 'w/o' },
+  { id: 'thru', pattern: /\bthru\b/gi, formal: 'through', operational: 'through' },
+  { id: 'tmrw', pattern: /\btmrw\b/gi, formal: 'tomorrow', operational: 'tomorrow' },
+  { id: 'pls', pattern: /\bpls\b/gi, formal: 'please', operational: 'please' }
 ];
 
 const LEXICAL_FAMILIES = [
@@ -1222,9 +1349,9 @@ const LEXICAL_FAMILIES = [
     id: 'get',
     forms: {
       plain: { base: 'get', past: 'got', ing: 'getting', third: 'gets' },
-      operational: { base: 'grab', past: 'grabbed', ing: 'grabbing', third: 'grabs' },
+      operational: { base: 'get', past: 'got', ing: 'getting', third: 'gets' },
       reflective: { base: 'receive', past: 'received', ing: 'receiving', third: 'receives' },
-      formal: { base: 'obtain', past: 'obtained', ing: 'obtaining', third: 'obtains' }
+      formal: { base: 'receive', past: 'received', ing: 'receiving', third: 'receives' }
     }
   },
   {
@@ -1380,26 +1507,151 @@ const LEXICAL_FAMILIES = [
       formal: { adjective: 'rapid', adverb: 'rapidly' }
     }
   },
-  {
-    id: 'settle',
-    forms: {
-      plain: { base: 'settle', past: 'settled', ing: 'settling', third: 'settles' },
-      operational: { base: 'set', past: 'set', ing: 'setting', third: 'sets' },
-      reflective: { base: 'rest', past: 'rested', ing: 'resting', third: 'rests' },
-      formal: { base: 'stabilize', past: 'stabilized', ing: 'stabilizing', third: 'stabilizes' }
+    {
+      id: 'settle',
+      forms: {
+        plain: { base: 'settle', past: 'settled', ing: 'settling', third: 'settles' },
+        operational: { base: 'set', past: 'set', ing: 'setting', third: 'sets' },
+        reflective: { base: 'rest', past: 'rested', ing: 'resting', third: 'rests' },
+        formal: { base: 'stabilize', past: 'stabilized', ing: 'stabilizing', third: 'stabilizes' }
+      }
+    },
+    {
+      id: 'ask',
+      forms: {
+        plain: { base: 'ask', past: 'asked', ing: 'asking', third: 'asks' },
+        operational: { base: 'ask', past: 'asked', ing: 'asking', third: 'asks' },
+        reflective: { base: 'request', past: 'requested', ing: 'requesting', third: 'requests' },
+        formal: { base: 'request', past: 'requested', ing: 'requesting', third: 'requests' }
+      }
+    },
+    {
+      id: 'need',
+      forms: {
+        plain: { base: 'need', past: 'needed', ing: 'needing', third: 'needs' },
+        operational: { base: 'need', past: 'needed', ing: 'needing', third: 'needs' },
+        reflective: { base: 'need', past: 'needed', ing: 'needing', third: 'needs' },
+        formal: { base: 'need', past: 'needed', ing: 'needing', third: 'needs' }
+      }
+    },
+    {
+      id: 'give',
+      forms: {
+        plain: { base: 'give', past: 'gave', ing: 'giving', third: 'gives' },
+        operational: { base: 'hand', past: 'handed', ing: 'handing', third: 'hands' },
+        reflective: { base: 'provide', past: 'provided', ing: 'providing', third: 'provides' },
+        formal: { base: 'issue', past: 'issued', ing: 'issuing', third: 'issues' }
+      }
+    },
+    {
+      id: 'find',
+      forms: {
+        plain: { base: 'find', past: 'found', ing: 'finding', third: 'finds' },
+        operational: { base: 'find', past: 'found', ing: 'finding', third: 'finds' },
+        reflective: { base: 'identify', past: 'identified', ing: 'identifying', third: 'identifies' },
+        formal: { base: 'locate', past: 'located', ing: 'locating', third: 'locates' }
+      }
+    },
+    {
+      id: 'call',
+      forms: {
+        plain: { base: 'call', past: 'called', ing: 'calling', third: 'calls' },
+        operational: { base: 'call', past: 'called', ing: 'calling', third: 'calls' },
+        reflective: { base: 'contact', past: 'contacted', ing: 'contacting', third: 'contacts' },
+        formal: { base: 'contact', past: 'contacted', ing: 'contacting', third: 'contacts' }
+      }
+    },
+    {
+      id: 'book',
+      forms: {
+        plain: { base: 'book', past: 'booked', ing: 'booking', third: 'books' },
+        operational: { base: 'book', past: 'booked', ing: 'booking', third: 'books' },
+        reflective: { base: 'schedule', past: 'scheduled', ing: 'scheduling', third: 'schedules' },
+        formal: { base: 'schedule', past: 'scheduled', ing: 'scheduling', third: 'schedules' }
+      }
+    },
+    {
+      id: 'send',
+      forms: {
+        plain: { base: 'send', past: 'sent', ing: 'sending', third: 'sends' },
+        operational: { base: 'send', past: 'sent', ing: 'sending', third: 'sends' },
+        reflective: { base: 'forward', past: 'forwarded', ing: 'forwarding', third: 'forwards' },
+        formal: { base: 'transmit', past: 'transmitted', ing: 'transmitting', third: 'transmits' }
+      }
+    },
+    {
+      id: 'fix',
+      forms: {
+        plain: { base: 'fix', past: 'fixed', ing: 'fixing', third: 'fixes' },
+        operational: { base: 'fix', past: 'fixed', ing: 'fixing', third: 'fixes' },
+        reflective: { base: 'resolve', past: 'resolved', ing: 'resolving', third: 'resolves' },
+        formal: { base: 'resolve', past: 'resolved', ing: 'resolving', third: 'resolves' }
+      }
+    },
+    {
+      id: 'check',
+      forms: {
+        plain: { base: 'check', past: 'checked', ing: 'checking', third: 'checks' },
+        operational: { base: 'check', past: 'checked', ing: 'checking', third: 'checks' },
+        reflective: { base: 'review', past: 'reviewed', ing: 'reviewing', third: 'reviews' },
+        formal: { base: 'verify', past: 'verified', ing: 'verifying', third: 'verifies' }
+      }
+    },
+    {
+      id: 'move',
+      forms: {
+        plain: { base: 'move', past: 'moved', ing: 'moving', third: 'moves' },
+        operational: { base: 'move', past: 'moved', ing: 'moving', third: 'moves' },
+        reflective: { base: 'relocate', past: 'relocated', ing: 'relocating', third: 'relocates' },
+        formal: { base: 'transfer', past: 'transferred', ing: 'transferring', third: 'transfers' }
+      }
+    },
+    {
+      id: 'match',
+      forms: {
+        plain: { base: 'match', past: 'matched', ing: 'matching', third: 'matches' },
+        operational: { base: 'line up', past: 'lined up', ing: 'lining up', third: 'lines up' },
+        reflective: { base: 'align', past: 'aligned', ing: 'aligning', third: 'aligns' },
+        formal: { base: 'align', past: 'aligned', ing: 'aligning', third: 'aligns' }
+      }
     }
-  }
-];
+  ];
 
 const LEXICAL_FAMILY_SKIP_PATTERNS = {
   get: [
-    /\b(?:get|gets|got|getting)\s+to\b/i
+    /\b(?:get|gets|got|getting)\s+to\b/i,
+    /\b(?:get|gets|got|getting)\s+(?:a\s+)?(?:call|text|message|reply|note|pickup|dropoff)\b/i
+  ],
+  ask: [
+    /\b(?:access|authorization|badge|change|correction|fix|pickup|repair|review|support)\s+request\b/i
+  ],
+  book: [
+    /\b(?:scheduling|booking)\s+(?:desk|office|team|line|queue|status)\b/i,
+    /\b(?:scheduling|booking)\s+could(?:\s+not|n't)\s+book\b/i
+  ],
+  change: [
+    /\b(?:pickup|schedule|staffing|policy|room|address)\s+change\b/i,
+    /\bchange\s+in\s+the\s+(?:dismissal|incident|pickup|routing)\s+log\b/i
+  ],
+  give: [
+    /\b(?:access|badge|billing|clinic|coordination|paperwork|routing|safety)\s+issue\b/i,
+    /\bhand(?:ed|ing)?\s+in\b/i
   ],
   keep: [
     /\b(?:keep|keeps|kept|holding|hold|holds|held)\s+\w+ing\b/i
   ],
+  leave: [
+    /\b(?:no|none|nothing|little|less)\b[^.!?]{0,18}\bleft\b/i,
+    /\b(?:stock|inventory|time|room|rooms|capacity|availability|food|money)\s+left\b/i,
+    /\bleft[-\s](?:knee|arm|side|hip|ankle|foot|hand|shoulder|wrist|leg|elbow|eye|ear|breast|lung|lower|upper)\b/i
+  ],
+  match: [
+    /\b(?:photo\s+)?id\s+match\b/i,
+    /\b(?:badge|name|pickup|record)\s+match\b/i
+  ],
   quiet: [
-    /\bstill\s+(?:out|in|there|here)\b/i
+    /\bstill\s+(?:out|in|there|here)\b/i,
+    /\bstill\s+(?:was|were|is|are|had|has|have|not|being)\b/i
   ]
 };
 
@@ -2197,6 +2449,18 @@ function sanitizeBorrowedShellPathologies(text = '') {
       }
       return matchCase(match, 'honestly,');
     })
+    .replace(/\bbetween([^.!?]{0,120}),\s+but\s+/gi, 'between$1, and ')
+    .replace(/\b(As of [^.!?]{1,48}|During [^.!?]{1,36}|By [^.!?]{1,20})\.\s+([A-Z])/g, (match, leadIn, nextLetter) => {
+      return `${leadIn}, ${nextLetter.toLowerCase()}`;
+    })
+    .replace(/([.!?]\s+)(And|But|So|Yet|Still)\s+([^.!?]{1,28})\.\s+([A-Z][^.!?]{1,160}[.!?]?)/g, (match, lead, connector, fragment, nextSentence) => {
+      const fragmentWords = tokenize(`${connector} ${fragment}`);
+      if (fragmentWords.length > 3) {
+        return match;
+      }
+      const stitchedNext = nextSentence.replace(/^[A-Z]/, (letter) => letter.toLowerCase());
+      return `${lead}${connector} ${fragment} ${stitchedNext}`;
+    })
     .replace(/([.!?])\s+(?:and|but|so|yet|still)\s*\./gi, '$1 ')
     .replace(/([.!?])\s+(?:and|but|so|yet|still)\s+([A-Z])/g, '$1 $2');
 
@@ -2441,7 +2705,7 @@ function extractClauseSemanticScaffold(text = '') {
   const tokens = tokenize(text);
   const actorMatch = normalizeText(text).match(/\b(?:I|we|you|they|he|she|it|there|this|that|the\s+\w+|a\s+\w+|an\s+\w+)\b/i);
   const actor = actorMatch ? actorMatch[0] : '';
-  const lexicalActionMatch = normalizeText(text).match(/\b(?:go|goes|went|get|gets|got|keep|keeps|kept|leave|leaves|left|remember|remembers|remembered|wait|waits|waited|pause|pauses|paused|grab|grabs|grabbed|bring|brings|brought|use|uses|used|pull|pulls|pulled|call|calls|called|knock|knocks|knocked|lean|leans|leaned|change|changes|changed|say|says|said|tell|tells|told|show|shows|showed|shift|shifts|shifted|begin|begins|began|finish|finishes|finished|wrap|wraps|wrapped|conclude|concludes|concluded|come|comes|came|catch|catches|caught|deploy|deploys|deployed|head|heads|headed|circle|circles|circled|stall|stalls|stalled)\b/i);
+  const lexicalActionMatch = normalizeText(text).match(/\b(?:go|goes|went|get|gets|got|keep|keeps|kept|leave|leaves|left|remember|remembers|remembered|wait|waits|waited|pause|pauses|paused|grab|grabs|grabbed|bring|brings|brought|use|uses|used|pull|pulls|pulled|call|calls|called|contact|contacts|contacted|knock|knocks|knocked|lean|leans|leaned|change|changes|changed|say|says|said|tell|tells|told|ask|asks|asked|request|requests|requested|need|needs|needed|require|requires|required|show|shows|showed|check|checks|checked|review|reviews|reviewed|verify|verifies|verified|confirm|confirms|confirmed|shift|shifts|shifted|begin|begins|began|finish|finishes|finished|wrap|wraps|wrapped|conclude|concludes|concluded|come|comes|came|catch|catches|caught|deploy|deploys|deployed|head|heads|headed|circle|circles|circled|stall|stalls|stalled|provide|provides|provided|issue|issues|issued|find|finds|found|locate|locates|located|identify|identifies|identified|book|books|booked|schedule|schedules|scheduled|send|sends|sent|forward|forwards|forwarded|transmit|transmits|transmitted|fix|fixes|fixed|resolve|resolves|resolved|move|moves|moved|relocate|relocates|relocated|transfer|transfers|transferred|match|matches|matched|align|aligns|aligned|log|logs|logged|flag|flags|flagged|release|releases|released)\b/i);
   const auxiliaryActionMatch = normalizeText(text).match(/\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|could|may|might|must)\b/i);
   const actionMatch = lexicalActionMatch || auxiliaryActionMatch;
   const action = actionMatch ? actionMatch[0] : '';
@@ -2504,6 +2768,34 @@ function preferredRegisterMode(targetProfile = {}, currentProfile = {}) {
   return targetMode;
 }
 
+function applyShorthandRealizationTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
+  const mode = preferredRegisterMode(targetProfile, currentProfile);
+  const towardFormal = mode === 'formal' || mode === 'reflective';
+  const towardOperational = mode === 'operational' || mode === 'plain';
+  const maxPacks = Math.max(2, Math.min(SHORTHAND_REALIZATION_PACKS.length, Math.round(2 + (strength * 5))));
+  let result = text;
+  let applied = 0;
+
+  for (const pack of SHORTHAND_REALIZATION_PACKS) {
+    if (applied >= maxPacks) {
+      break;
+    }
+
+    const replacement = towardFormal ? pack.formal : towardOperational ? pack.operational : '';
+    if (!replacement) {
+      continue;
+    }
+
+    const next = replaceLimited(result, pack.pattern, (match) => matchCase(match, replacement), 1);
+    if (next !== result) {
+      result = next;
+      applied += 1;
+    }
+  }
+
+  return result;
+}
+
 function applyPhraseRealizationPacks(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
   let result = text;
   const mode = preferredRegisterMode(targetProfile, currentProfile);
@@ -2563,7 +2855,7 @@ function applyLexicalFamilyRealization(text = '', currentProfile = {}, targetPro
           return match;
         }
 
-        const context = fullText.slice(Math.max(0, offset - 18), Math.min(fullText.length, offset + match.length + 18));
+        const context = fullText.slice(Math.max(0, offset - 32), Math.min(fullText.length, offset + match.length + 32));
         if (skipPatterns.some((candidate) => candidate.test(context))) {
           return match;
         }
@@ -2590,14 +2882,43 @@ function applyLexicalFamilyRealization(text = '', currentProfile = {}, targetPro
 function applyRegisterFramingTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
   const mode = preferredRegisterMode(targetProfile, currentProfile);
   const wantsLonger = (targetProfile.avgSentenceLength || 0) > ((currentProfile.avgSentenceLength || 0) + 0.6);
+  const wantsShorter = (targetProfile.avgSentenceLength || 0) < ((currentProfile.avgSentenceLength || 0) - 0.8);
+  const sharpensDirectness = (targetProfile.directness || 0) > ((currentProfile.directness || 0) + 0.08);
   const softensDirectness = (targetProfile.directness || 0) < ((currentProfile.directness || 0) - 0.08);
   let result = text;
 
-  if (mode !== 'reflective' && mode !== 'formal') {
+  if (mode === 'operational' || mode === 'plain') {
+    result = replaceLimited(result, /\brequesting\b/gi, (match) => matchCase(match, 'asking for'), 1);
+    result = replaceLimited(result, /\brequested\b/gi, (match) => matchCase(match, 'asked for'), 1);
+    result = replaceLimited(result, /\bwas to be released to\b/gi, (match) => matchCase(match, 'was going with'), 1);
+    result = replaceLimited(result, /\bwas verbally confirmed\b/gi, (match) => matchCase(match, 'got confirmed'), 1);
+    result = replaceLimited(result, /\bhad not yet been returned\b/gi, (match) => matchCase(match, "still wasn't back"), 1);
+    result = replaceLimited(result, /\bremained unlocated\b/gi, (match) => matchCase(match, "still wasn't found"), 1);
+    result = replaceLimited(result, /\ba reminder note was sent\b/gi, (match) => matchCase(match, 'a reminder went out'), 1);
+    result = replaceLimited(result, /\bthe operational failure here is not\b/gi, (match) => matchCase(match, "the problem isn't"), 1);
+    result = replaceLimited(result, /\bthe coordination issue is\b/gi, (match) => matchCase(match, 'the mixup is'), 1);
+
+    if (wantsShorter || sharpensDirectness) {
+      result = result
+        .replace(/\bauthorization number\b/gi, 'auth #')
+        .replace(/\bauthorization\b/gi, 'auth')
+        .replace(/\bphoto ID\b/gi, 'ID')
+        .replace(/\bphoto ID line up\b/gi, 'ID check')
+        .replace(/\bID line up\b/gi, 'ID check')
+        .replace(/\bpermission slip\b/gi, 'slip')
+        .replace(/\bsplit custody of information\b/gi, 'info split across people')
+        .replace(/\bcorrection request\b/gi, 'fix request')
+        .replace(/\bdoes not\b/gi, "doesn't")
+        .replace(/\bcould not\b/gi, "couldn't")
+        .replace(/\bwas not\b/gi, "wasn't")
+        .replace(/\bdid not\b/gi, "didn't");
+    }
+
     return result;
   }
 
   result = result.replace(/^\s*hey[,.]?\s+/i, '');
+  result = result.replace(/\s+\+\s+/g, ', ').replace(/\s+\/\s+/g, '; ');
 
   if (wantsLonger || softensDirectness) {
     result = result.replace(/\.\s+So\s+/g, ', so ');
@@ -2626,6 +2947,11 @@ function applyRegisterFramingTexture(text = '', currentProfile = {}, targetProfi
     result = replaceLimited(result, /\bone more\b/gi, (match) => matchCase(match, 'an additional'), Math.max(1, Math.round(strength * 2)));
     result = replaceLimited(result, /\bthe rest of it\b/gi, (match) => matchCase(match, 'the remainder'), 1);
     result = replaceLimited(result, /\bI know that pattern\b/gi, (match) => matchCase(match, 'I recognize that pattern'), 1);
+    result = replaceLimited(result, /\bno motel stock left\b/gi, (match) => matchCase(match, 'motel placement was unavailable'), 1);
+    result = replaceLimited(result, /\bfood tonight\b/gi, (match) => matchCase(match, 'same-night food support'), 1);
+    result = replaceLimited(result, /\bkinda matches\b/gi, (match) => matchCase(match, 'partially matched'), 1);
+    result = replaceLimited(result, /\bnot saying no\b/gi, (match) => matchCase(match, 'this is not a denial'), 1);
+    result = replaceLimited(result, /\bdon['’]?t want (?:the )?case split twice\b/gi, (match) => matchCase(match, 'the case should not be split twice'), 1);
   }
 
   return result;
@@ -2633,6 +2959,7 @@ function applyRegisterFramingTexture(text = '', currentProfile = {}, targetProfi
 
 function applyVoiceRealizationTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
   let result = text;
+  result = applyShorthandRealizationTexture(result, currentProfile, targetProfile, strength);
   result = applyPhraseRealizationPacks(result, currentProfile, targetProfile, strength);
   result = applyLexicalFamilyRealization(result, currentProfile, targetProfile, strength);
   result = applyRegisterFramingTexture(result, currentProfile, targetProfile, strength);
@@ -3007,6 +3334,14 @@ function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, pr
     const candidateProfile = extractCadenceProfile(candidate.text);
     const donorVector = cadenceAxisVector(targetProfile);
     const outputVector = cadenceAxisVector(candidateProfile);
+    const sourceFit = compareTexts('', '', {
+      profileA: sourceProfile,
+      profileB: targetProfile
+    });
+    const fit = compareTexts('', '', {
+      profileA: candidateProfile,
+      profileB: targetProfile
+    });
     const donorImprovement = donorVector.reduce((sum, axis, idx) => {
       const outputAxis = outputVector[idx] || { normalized: 0 };
       const gap = Math.abs(axis.normalized - outputAxis.normalized);
@@ -3019,23 +3354,50 @@ function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, strength, pr
     const discDims = changedDims.filter((d) => !structuralDimensions([d]).length && !lexicalDimensions([d]).length).length;
     const readability = 1 - (candidateProfile.sentenceLengthSpread || 0) / 14;
     const pathologyPenalty = candidate.pathologyFlags.length * 35;
-    const registerPenalty = (compareTexts('', '', {
-      profileA: candidateProfile,
-      profileB: targetProfile
-    }).registerDistance || 0) * 20;
+    const registerPenalty = (fit.registerDistance || 0) * 20;
+    const registerProgress = Math.max(0, (sourceFit.registerDistance || 0) - (fit.registerDistance || 0));
+    const sentenceProgress = Math.max(0, (sourceFit.sentenceDistance || 0) - (fit.sentenceDistance || 0));
+    const lexemeSwapCount = detectLexemeSwaps(sourceText, candidate.text).length;
+    const outputMode = detectRegisterMode(candidateProfile);
+    const targetMode = detectRegisterMode(targetProfile);
+    const materialRegisterGap =
+      (sourceFit.registerDistance || 0) >= 0.11 ||
+      (sourceFit.directnessDistance || 0) >= 0.08 ||
+      (sourceFit.abstractionDistance || 0) >= 0.08;
+    const materialSentenceGap = (sourceFit.sentenceDistance || 0) >= 6;
 
     const score =
-      (donorImprovement * 40) +
+      (donorImprovement * 34) +
       (structDims * 18) +
-      (lexicalDims * 14) +
+      (lexicalDims * 18) +
       (discDims * 10) +
-      (readability * 8) -
+      (readability * 6) +
+      (registerProgress * 28) +
+      (sentenceProgress * 18) +
+      (lexemeSwapCount * 4) +
+      (outputMode === targetMode ? 8 : 0) -
       pathologyPenalty -
       registerPenalty;
 
+    const adjustedScore =
+      (sourceFit.registerDistance || 0) >= 0.11 && lexicalDims === 0 && lexemeSwapCount === 0
+        ? score - 24
+        : score;
+
+    const sentenceAwareScore =
+      materialSentenceGap && structDims === 0
+        ? adjustedScore - 18
+        : adjustedScore;
+
+    const finalScore =
+      (materialRegisterGap || materialSentenceGap) &&
+      (structDims + lexicalDims + discDims) < 2
+        ? sentenceAwareScore - 24
+        : sentenceAwareScore;
+
     return {
       text: candidate.text,
-      score,
+      score: finalScore,
       changedDimensions: changedDims,
       pathologyFlags: candidate.pathologyFlags,
       operationHistory: candidate.operationHistory
@@ -3233,6 +3595,25 @@ function candidateScore({
   const sentenceDriftPenalty = Math.max(0, outputSentenceDistance - sourceSentenceDistance);
   const sentenceCountDriftPenalty = Math.max(0, outputSentenceCountDistance - sourceSentenceCountDistance);
   const sentenceStartRewrite = normalizeSentenceStarts(sourceText) !== normalizeSentenceStarts(outputText);
+  const targetGap = profileDeltaToTarget(sourceProfile, targetProfile);
+  const materialRegisterGap =
+    (targetGap.register || 0) >= 0.11 ||
+    (targetGap.directness || 0) >= 0.08 ||
+    (targetGap.abstraction || 0) >= 0.08 ||
+    (targetGap.modifierDensity || 0) >= 0.03 ||
+    (targetGap.lexicalComplexity || 0) >= 0.05;
+  const materialSentenceGap =
+    (targetGap.avgSentence || 0) >= 6 ||
+    (targetGap.sentenceCount || 0) >= 1;
+  const registerProgress = Math.max(0, (targetGap.register || 0) - (fit.registerDistance || 0));
+  const directnessProgress = Math.max(0, (targetGap.directness || 0) - (fit.directnessDistance || 0));
+  const abstractionProgress = Math.max(0, (targetGap.abstraction || 0) - (fit.abstractionDistance || 0));
+  const modifierProgress = Math.max(0, (targetGap.modifierDensity || 0) - (fit.modifierDensityDistance || 0));
+  const lexicalComplexityProgress = Math.max(0, (targetGap.lexicalComplexity || 0) - (fit.contentWordComplexityDistance || 0));
+  const lexemeSwapCount = detectLexemeSwaps(sourceText, outputText).length;
+  const targetMode = detectRegisterMode(targetProfile);
+  const sourceMode = detectRegisterMode(sourceProfile);
+  const outputMode = detectRegisterMode(outputProfile);
 
   let score = quality.qualityGatePassed ? 80 : -30;
   score += structuralDimensions(changedDimensions).length * 16;
@@ -3242,6 +3623,11 @@ function candidateScore({
   score += hasMaterialStructuralTransfer(changedDimensions) ? 24 : 0;
   score += passesApplied.length * 1.5;
   score += signalRewrite ? 18 : 0;
+  score += Math.min(28, registerProgress * 90);
+  score += Math.min(16, (directnessProgress * 55) + (abstractionProgress * 55));
+  score += Math.min(12, (modifierProgress * 48) + (lexicalComplexityProgress * 42));
+  score += Math.min(16, lexemeSwapCount * 4);
+  score += targetMode !== sourceMode && outputMode === targetMode ? 14 : 0;
   if (targetProgressBias) {
     score += Math.min(24, sentenceProgress * 8);
     score += Math.min(12, sentenceCountProgress * 6);
@@ -3273,6 +3659,31 @@ function candidateScore({
 
   if (outputText !== sourceText && nonPunctuationDimensions.length === 0) {
     score -= 28;
+  }
+
+  if ((targetGap.register || 0) >= 0.11 && lexicalDimensions(changedDimensions).length === 0 && lexemeSwapCount === 0) {
+    score -= 34;
+  }
+
+  if ((targetGap.avgSentence || 0) >= 6 && !changedDimensions.some((dimension) => /^sentence-/.test(dimension))) {
+    score -= 18;
+  }
+
+  if (targetProgressBias && materialRegisterGap && lexicalDimensions(changedDimensions).length < 1 && lexemeSwapCount < 1) {
+    score -= 28;
+  }
+
+  if (targetProgressBias && materialSentenceGap && structuralDimensions(changedDimensions).length < 1) {
+    score -= 22;
+  }
+
+  if (
+    targetProgressBias &&
+    (materialRegisterGap || materialSentenceGap) &&
+    nonPunctuationDimensions.length < 2 &&
+    lexicalDimensions(changedDimensions).length + structuralDimensions(changedDimensions).length < 2
+  ) {
+    score -= 24;
   }
 
   if ((quality.notes || []).some((note) => /additive drift/i.test(note))) {
@@ -3835,6 +4246,10 @@ function finalizeTransformedText(text = '') {
     .replace(/\b(?:and|but)\s+then\b/gi, 'then')
     .replace(/\bThough\s+([^,.!?]{1,40}),\s+so\b/g, '$1, so')
     .replace(/\bthough\s+([^,.!?]{1,40}),\s+so\b/g, '$1, so')
+    .replace(/\bbetween([^.!?]{0,120}),\s+but\s+/gi, 'between$1, and ')
+    .replace(/\b(As of [^.!?]{1,48}|During [^.!?]{1,36}|By [^.!?]{1,20})\.\s+([A-Z])/g, (match, leadIn, nextLetter) => {
+      return `${leadIn}, ${nextLetter.toLowerCase()}`;
+    })
     .replace(/\.{2,}/g, '.')
     .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
@@ -4409,7 +4824,7 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         targetProfile,
         changedDimensions,
         passesApplied,
-        targetProgressBias: shell?.mode === 'persona'
+        targetProgressBias: shell?.mode === 'persona' || shell?.mode === 'borrowed'
       }),
       debug: candidateDebugPasses
         ? {
@@ -4459,7 +4874,7 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       targetProfile,
       changedDimensions: beamChangedDimensions,
       passesApplied: beamBest.operationHistory || [],
-      targetProgressBias: shell?.mode === 'persona'
+      targetProgressBias: shell?.mode === 'persona' || shell?.mode === 'borrowed'
     }),
     debug: null
   };
@@ -5255,6 +5670,44 @@ const SEMANTIC_EQUIVALENT_FORMS = Object.freeze({
   wrap: 'finish',
   deployed: 'use',
   deploy: 'use',
+  requested: 'ask',
+  request: 'ask',
+  asked: 'ask',
+  requires: 'need',
+  required: 'need',
+  require: 'need',
+  provided: 'give',
+  provide: 'give',
+  issued: 'give',
+  issue: 'give',
+  located: 'find',
+  locate: 'find',
+  identified: 'find',
+  identify: 'find',
+  contacted: 'call',
+  contact: 'call',
+  scheduled: 'book',
+  schedule: 'book',
+  verified: 'check',
+  verify: 'check',
+  reviewed: 'check',
+  review: 'check',
+  confirmed: 'check',
+  confirm: 'check',
+  resolved: 'fix',
+  resolve: 'fix',
+  transferred: 'move',
+  transfer: 'move',
+  relocated: 'move',
+  relocate: 'move',
+  matched: 'match',
+  aligns: 'match',
+  aligned: 'match',
+  align: 'match',
+  logged: 'record',
+  log: 'record',
+  flagged: 'note',
+  flag: 'note',
   speech: 'tell',
   said: 'tell',
   says: 'tell',
@@ -6450,6 +6903,7 @@ function solveQuadratic(a, b, c) {
     badgeMeaning
   };
 })();
+
 
 
 
