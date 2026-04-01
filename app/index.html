@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP - The Cadence Playground</title>
-    <link rel="stylesheet" href="./styles.css?v=20260331c" />
+    <link rel="stylesheet" href="./styles.css?v=20260331d" />
 </head>
 <body>
   <div id="ingressMembrane" class="ingress-membrane" aria-live="polite">
@@ -91,6 +91,7 @@
           <h1>TCP</h1>
           <p class="deck-name">The Cadence Playground <span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="shellDeckName">&#x7C73;</span></p>
         </div>
+        <p id="heroStationLine" class="hero-station-line">Homebase / anchor, contact, residue</p>
         <p id="heroLead" class="lead">Move between Homebase, Personas, Readout, Deck, and Trainer without leaving the same runtime. One field, one engine, cleaner rooms.</p>
       </div>
 
@@ -146,8 +147,12 @@
       </section>
 
       <section id="viewPaneHomebase" class="view-pane" hidden>
-        <div class="station-view-head">
-          <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase station</div>
+        <div class="station-view-head station-view-head-homebase">
+          <div class="station-view-meta">
+            <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase station</div>
+            <h2 class="station-view-title">Anchor the cadence. Bring the mask across. Read the residue.</h2>
+            <p class="station-view-summary">This is the tactile room: lock a cadence home, wear one mask at a time, and inspect what the browser can still hold onto.</p>
+          </div>
         </div>
         <section class="panel personas-panel">
           <div class="panel-heading">
@@ -272,9 +277,13 @@
       </section>
 
       <section id="viewPanePersonas" class="view-pane" hidden>
-        <div class="station-view-head">
+        <div class="station-view-head station-view-head-personas">
           <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
-          <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas station</div>
+          <div class="station-view-meta">
+            <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas station</div>
+            <h2 class="station-view-title">Choose on the shelf before you wake the object.</h2>
+            <p class="station-view-summary">Browse the cast, read the selected mask dossier, and dispatch the same object into Homebase or Deck without breaking runtime continuity.</p>
+          </div>
         </div>
         <section class="panel personas-panel personas-gallery-panel">
           <div class="panel-heading">
@@ -299,9 +308,13 @@
       </section>
 
       <section id="viewPaneReadout" class="view-pane" hidden>
-        <div class="station-view-head">
+        <div class="station-view-head station-view-head-readout">
           <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
-          <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout station</div>
+          <div class="station-view-meta">
+            <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout station</div>
+            <h2 class="station-view-title">Witness page. Law page. No softening.</h2>
+            <p class="station-view-summary">Similarity, traceability, route pressure, harbor, and ledger output stay colder here so resemblance never gets mistaken for passage.</p>
+          </div>
         </div>
         <div class="readout-layout">
           <section class="panel telemetry-panel">
@@ -365,9 +378,13 @@
       </section>
 
       <section id="viewPanePlay" class="view-pane" hidden>
-        <div class="station-view-head">
+        <div class="station-view-head station-view-head-play">
           <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
-          <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck station</div>
+          <div class="station-view-meta">
+            <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck station</div>
+            <h2 class="station-view-title">Stage two voices, then decide whether you want setup or encounter.</h2>
+            <p class="station-view-summary">Keep source text moves separate from shell-transfer moves. The Deck is for contrast, duel wake, and aftermath you can actually inspect.</p>
+          </div>
         </div>
         <div class="panel intake-panel">
           <div class="panel-heading">
@@ -457,9 +474,13 @@
       </section>
 
       <section id="viewPaneTrainer" class="view-pane" hidden>
-        <div class="station-view-head">
+        <div class="station-view-head station-view-head-trainer">
           <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
-          <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer station</div>
+          <div class="station-view-meta">
+            <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer station</div>
+            <h2 class="station-view-title">Forge drafts, validate them, then inject only if the field agrees.</h2>
+            <p class="station-view-summary">This room is procedural on purpose: extract the field, build a candidate, run the trainer contract, and only then return the shell to the shared shelf.</p>
+          </div>
         </div>
         <section id="trainerPane" class="panel trainer-panel">
           <div class="panel-heading">
@@ -569,9 +590,9 @@
     <footer class="footer">TCP / retrieval-first research playground / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
   </div>
 
-  <script src="./browser-data.js?v=20260331c"></script>
-  <script src="./browser-engine.js?v=20260331c"></script>
-  <script src="./retrieval-fixtures.js?v=20260331c"></script>
-  <script src="./browser-main.js?v=20260331c"></script>
+  <script src="./browser-data.js?v=20260331d"></script>
+  <script src="./browser-engine.js?v=20260331d"></script>
+  <script src="./retrieval-fixtures.js?v=20260331d"></script>
+  <script src="./browser-main.js?v=20260331d"></script>
   </body>
 </html>

@@ -189,6 +189,33 @@
     play: 'tabPlay',
     trainer: 'tabTrainer'
   });
+  const STATION_CHROME = Object.freeze({
+    homebase: Object.freeze({
+      title: 'TCP / Homebase',
+      line: 'Homebase / anchor, contact, residue',
+      lead: 'Lock a cadence home, bring a worn mask across, and read the passage room without losing the underlying runtime.'
+    }),
+    personas: Object.freeze({
+      title: 'TCP / Personas',
+      line: 'Personas / shelf, dossier, dispatch',
+      lead: 'Choose on the shelf first. The selected mask stays collectible here until you carry it into Homebase or Deck.'
+    }),
+    readout: Object.freeze({
+      title: 'TCP / Readout',
+      line: 'Readout / witness, law, harbor',
+      lead: 'This page stays colder than the rest of the site so similarity, traceability, route pressure, and harbor never collapse into one feeling.'
+    }),
+    play: Object.freeze({
+      title: 'TCP / Deck',
+      line: 'Deck / encounter, duel, aftermath',
+      lead: 'Stage two voices, keep text swap separate from cadence swap, and inspect the duel aftermath without leaving the shared field.'
+    }),
+    trainer: Object.freeze({
+      title: 'TCP / Trainer',
+      line: 'Trainer / extract, forge, validate, inject',
+      lead: 'Use the forge lane when the shelf needs a real draft, a retrieval contract, and a clean path back into Personas, Homebase, or Deck.'
+    })
+  });
 
   const TCP_GLYPH_SYSTEM = {
     substrateVocabulary: { ...GLYPH_SUBSTRATE },
@@ -300,6 +327,20 @@
     window.location.hash = nextHash;
   }
 
+  function applyStationChrome(tab = 'homebase') {
+    const station = normalizeArtifactTab(tab);
+    const chrome = STATION_CHROME[station] || STATION_CHROME.homebase;
+    document.title = chrome.title;
+    const heroStationLine = $('heroStationLine');
+    const heroLead = $('heroLead');
+    if (heroStationLine) {
+      heroStationLine.textContent = chrome.line;
+    }
+    if (heroLead) {
+      heroLead.textContent = chrome.lead;
+    }
+  }
+
   let badge = defaults.badge;
   let mirrorLogic = defaults.mirror_logic;
   let containment = defaults.containment;
@@ -331,8 +372,7 @@
   let trainerController = null;
   let ingress = createIngressState();
 
-  document.title = microcopy.hero_title;
-  $('heroLead').textContent = microcopy.hero_lead;
+  applyStationChrome(activeArtifactTab);
   $('voiceA').value = defaults.voiceA;
   $('voiceB').value = defaults.voiceB;
   baySampleIds = {
@@ -3342,6 +3382,7 @@
       masthead.hidden = false;
       masthead.dataset.station = activeArtifactTab;
     }
+    applyStationChrome(activeArtifactTab);
     if (updateHash) {
       syncArtifactHash(activeArtifactTab, { replace: replaceHash });
     }
