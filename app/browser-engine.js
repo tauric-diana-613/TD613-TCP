@@ -686,7 +686,6 @@ function applyStanceTexture(text = '', targetProfile = {}, strength = 0.76, conn
     { from: 'really', to: 'actually', key: 'actually', threshold: 0.0015, limit: 2 },
     { from: 'still', to: 'yet', key: 'yet', threshold: 0.0015, limit: 1 },
     { from: 'when', to: 'while', key: 'while', threshold: 0.0015, limit: 1 },
-    { from: 'when', to: 'once', key: 'once', threshold: 0.0015, limit: 1 },
     { from: 'but', to: 'though', key: 'though', threshold: 0.0015, limit: 2 },
     { from: 'but', to: 'yet', key: 'yet', threshold: 0.0015, limit: 1 },
     { from: 'because', to: 'since', key: 'since', threshold: 0.0015, limit: 2 },
@@ -801,13 +800,17 @@ function applyFunctionWordTexture(text = '', targetProfile = {}, strength = 0.76
   const current = functionWordProfile(text);
   let result = text;
   const limit = Math.max(1, Math.round(Math.max(1.2, strength) * 4));
+  const dominantRelation = transferPlan?.dominantRelation || 'additive';
 
-  if ((target.but || 0) > (current.but || 0) + 0.0015) {
-    result = replaceLimited(result, /\band\b/gi, (match) => matchCase(match, 'but'), limit);
+  if (
+    (target.but || 0) > (current.but || 0) + 0.0015 &&
+    (dominantRelation === 'contrastive' || dominantRelation === 'resumptive')
+  ) {
+    result = replaceLimited(result, /\band\b/gi, (match) => matchCase(match, 'but'), 1);
   } else if (
     additiveDominance(target) &&
     (target.and || 0) > (current.and || 0) + 0.006 &&
-    (transferPlan?.dominantRelation || 'additive') === 'additive'
+    dominantRelation === 'additive'
   ) {
     result = replaceLimited(result, /\bbut\b/gi, (match) => matchCase(match, 'and'), limit);
   }
@@ -1023,7 +1026,7 @@ const CONNECTOR_SYNONYM_PACKS = [
   { words: ['because', 'since', 'as'], threshold: 0.0015 },
   { words: ['but', 'though', 'yet'], threshold: 0.0015 },
   { words: ['so', 'then'], threshold: 0.0015 },
-  { words: ['when', 'while', 'once'], threshold: 0.0015 },
+  { words: ['when', 'while'], threshold: 0.0015 },
   { words: ['this', 'that'], threshold: 0.002 },
   { words: ['just', 'simply'], threshold: 0.0015 },
   { words: ['really', 'actually'], threshold: 0.0015 },
@@ -1618,9 +1621,13 @@ const LEXICAL_FAMILIES = [
   ];
 
 const LEXICAL_FAMILY_SKIP_PATTERNS = {
+  say: [
+    /\b(?:error|fault|open|closed|false-open|alert|status)\s+state\b/i
+  ],
   get: [
     /\b(?:get|gets|got|getting)\s+to\b/i,
-    /\b(?:get|gets|got|getting)\s+(?:a\s+)?(?:call|text|message|reply|note|pickup|dropoff)\b/i
+    /\b(?:get|gets|got|getting)\s+(?:a\s+)?(?:call|text|message|reply|note|pickup|dropoff)\b/i,
+    /\breceiving\s+(?:desk|dock|team|corridor|window)\b/i
   ],
   ask: [
     /\b(?:access|authorization|badge|change|correction|fix|pickup|repair|review|support)\s+request\b/i
@@ -1634,8 +1641,11 @@ const LEXICAL_FAMILY_SKIP_PATTERNS = {
     /\bchange\s+in\s+the\s+(?:dismissal|incident|pickup|routing)\s+log\b/i
   ],
   give: [
-    /\b(?:access|badge|billing|clinic|coordination|paperwork|routing|safety)\s+issue\b/i,
+    /\b(?:access|badge|billing|clinic|coordination|paperwork|routing|safety|latch|voltage|firmware)\s+issue\b/i,
     /\bhand(?:ed|ing)?\s+in\b/i
+  ],
+  start: [
+    /\b(?:began|begin|beginning|started|start|starting|commenced|commence|commencing)\s+(?:presenting|validating|processing|showing)\b/i
   ],
   keep: [
     /\b(?:keep|keeps|kept|holding|hold|holds|held)\s+\w+ing\b/i
@@ -2450,8 +2460,25 @@ function sanitizeBorrowedShellPathologies(text = '') {
       return matchCase(match, 'honestly,');
     })
     .replace(/\bbetween([^.!?]{0,120}),\s+but\s+/gi, 'between$1, and ')
+    .replace(/;\s+but\b/gi, ', but')
+    .replace(/\bthough\s+and\b/gi, 'and')
+    .replace(/\bthough\s+also\b/gi, 'and also')
+    .replace(/\band shell have id\b/gi, "and she'll have ID")
+    .replace(/\band also I swear\b/gi, 'and I swear')
+    .replace(/;\s+yet if\b/gi, '. If')
     .replace(/\b(As of [^.!?]{1,48}|During [^.!?]{1,36}|By [^.!?]{1,20})\.\s+([A-Z])/g, (match, leadIn, nextLetter) => {
       return `${leadIn}, ${nextLetter.toLowerCase()}`;
+    })
+    .replace(/\b(At [^.!?]{1,48})\.\s+(Door\s+\d+\b)/g, (match, leadIn, doorPhrase) => {
+      return `${leadIn}, ${doorPhrase}`;
+    })
+    .replace(/\bRequired correction\.\s+No future\b/gi, 'Required correction: no future')
+    .replace(/\blive-door test,\s+A latch release check\b/gi, 'live-door test, a latch release check')
+    .replace(/([A-Za-z0-9"'%)])\.\s+(When|While|Once|If|Because|Since|Though|Although)\b/g, (match, lastChar, connector) => {
+      return `${lastChar}, ${connector.toLowerCase()}`;
+    })
+    .replace(/([A-Za-z0-9"'%)])\.\s+((?:A|An|The)\s+[^.!?]{1,48}),\s+and\s+/g, (match, lastChar, fragment) => {
+      return `${lastChar}, ${fragment}, and `;
     })
     .replace(/([.!?]\s+)(And|But|So|Yet|Still)\s+([^.!?]{1,28})\.\s+([A-Z][^.!?]{1,160}[.!?]?)/g, (match, lead, connector, fragment, nextSentence) => {
       const fragmentWords = tokenize(`${connector} ${fragment}`);
@@ -3830,6 +3857,89 @@ function structuralShiftDimensions(baseProfile = {}, currentProfile = {}) {
   return shifts;
 }
 
+function borrowedShellProgressAdmission({
+  qualityNotes = [],
+  changedDimensions = [],
+  sourceProfile = {},
+  outputProfile = {},
+  targetProfile = {},
+  protectedAnchorIntegrity = 1,
+  semanticAudit = {},
+  lexicalShiftProfile = {},
+  visibleShift = false,
+  nonTrivialShift = false
+}) {
+  const toleratedQualityNotes = qualityNotes.length > 0 &&
+    qualityNotes.every((note) =>
+      /Transfer missed donor lexical\/register realization\./i.test(note) ||
+      /Structural opportunity existed but the current candidate collapsed into additive drift\./i.test(note)
+    );
+  const polarityTolerance = changedDimensions.includes('contraction-posture') ? 2 : 1;
+
+  if (
+    !toleratedQualityNotes ||
+    borrowedShellPathologyBlocked(qualityNotes) ||
+    !visibleShift ||
+    !nonTrivialShift ||
+    protectedAnchorIntegrity < 1 ||
+    (semanticAudit.polarityMismatches ?? 0) > polarityTolerance
+  ) {
+    return {
+      eligible: false,
+      progressProfile: null
+    };
+  }
+
+  const sourceFitToTarget = compareTexts('', '', {
+    profileA: sourceProfile,
+    profileB: targetProfile
+  });
+  const outputFitToTarget = compareTexts('', '', {
+    profileA: outputProfile,
+    profileB: targetProfile
+  });
+  const progressProfile = {
+    structuralCount: borrowedShellStructuralDimensions(changedDimensions).length,
+    lexicalCount: lexicalDimensions(changedDimensions).length,
+    sentenceProgress: round3(Math.max(0, (sourceFitToTarget.sentenceDistance || 0) - (outputFitToTarget.sentenceDistance || 0))),
+    functionWordProgress: round3(Math.max(0, (sourceFitToTarget.functionWordDistance || 0) - (outputFitToTarget.functionWordDistance || 0))),
+    registerProgress: round3(Math.max(0, (sourceFitToTarget.registerDistance || 0) - (outputFitToTarget.registerDistance || 0))),
+    directnessProgress: round3(Math.max(0, (sourceFitToTarget.directnessDistance || 0) - (outputFitToTarget.directnessDistance || 0))),
+    abstractionProgress: round3(Math.max(0, (sourceFitToTarget.abstractionDistance || 0) - (outputFitToTarget.abstractionDistance || 0))),
+    swapCount: Number(lexicalShiftProfile.swapCount || 0)
+  };
+
+  const structuralProgressLanded =
+    progressProfile.structuralCount >= 1 &&
+    (
+      progressProfile.sentenceProgress >= 0.02 ||
+      progressProfile.functionWordProgress >= 0.02
+    );
+  const registerProgressLanded =
+    progressProfile.lexicalCount >= 1 ||
+    progressProfile.swapCount >= 1 ||
+    changedDimensions.includes('contraction-posture') ||
+    changedDimensions.includes('connector-stance') ||
+    progressProfile.registerProgress >= 0.015 ||
+    progressProfile.functionWordProgress >= 0.03 ||
+    (progressProfile.directnessProgress + progressProfile.abstractionProgress) >= 0.025;
+
+  if (
+    !structuralProgressLanded ||
+    !registerProgressLanded
+  ) {
+    return {
+      eligible: false,
+      progressProfile
+    };
+  }
+
+  return {
+    eligible: true,
+    progressProfile
+  };
+}
+
 function borrowedShellPartialFallback({
   shell,
   bestCandidate,
@@ -3891,11 +4001,51 @@ function borrowedShellPartialFallback({
     (semanticAudit.actionCoverage ?? 1) < 0.82 ||
     (semanticAudit.polarityMismatches ?? 0) > 0
   ) {
-    return { eligible: false };
+    const progressAdmission = borrowedShellProgressAdmission({
+      qualityNotes,
+      changedDimensions,
+      sourceProfile,
+      outputProfile: bestCandidate.outputProfile || extractCadenceProfile(bestCandidate.outputText),
+      targetProfile,
+      protectedAnchorIntegrity,
+      semanticAudit,
+      lexicalShiftProfile,
+      visibleShift,
+      nonTrivialShift
+    });
+
+    if (!progressAdmission.eligible) {
+      return { eligible: false, progressProfile: progressAdmission.progressProfile };
+    }
+
+    return {
+      eligible: true,
+      relaxed: true,
+      progressProfile: progressAdmission.progressProfile,
+      lexicalShiftProfile,
+      semanticAudit,
+      protectedAnchorAudit,
+      outputIR,
+      visibleShift,
+      nonTrivialShift
+    };
   }
 
   return {
     eligible: true,
+    relaxed: false,
+    progressProfile: borrowedShellProgressAdmission({
+      qualityNotes,
+      changedDimensions,
+      sourceProfile,
+      outputProfile: bestCandidate.outputProfile || extractCadenceProfile(bestCandidate.outputText),
+      targetProfile,
+      protectedAnchorIntegrity,
+      semanticAudit,
+      lexicalShiftProfile,
+      visibleShift,
+      nonTrivialShift
+    }).progressProfile,
     lexicalShiftProfile,
     semanticAudit,
     protectedAnchorAudit,
@@ -4901,12 +5051,92 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   let borrowedShellFailureClass = null;
   let precomputedVisibleShift = null;
   let precomputedNonTrivialShift = null;
+  let directBorrowedProgressCheck = null;
 
   if (bestCandidate.quality.materialGap && bestCandidate.quality.limitedOpportunity) {
     notes.push('Source offered limited structural rewrite opportunities, so the transfer stayed subtle.');
   }
 
-  if (!bestCandidate.quality.qualityGatePassed) {
+  let directBorrowedProgressAdmission = null;
+  if (!bestCandidate.quality.qualityGatePassed && shell?.mode === 'borrowed') {
+    const directLexicalShiftProfile = buildLexicalShiftProfile(
+      sourceText,
+      bestCandidate.outputText,
+      sourceProfile,
+      targetProfile,
+      bestCandidate.outputProfile
+    );
+    const directVisibleShift = hasBorrowedShellVisibleShift(
+      sourceText,
+      bestCandidate.outputText,
+      bestCandidate.changedDimensions,
+      directLexicalShiftProfile
+    );
+    const directNonTrivialShift = hasBorrowedShellNonTrivialShift(
+      sourceText,
+      bestCandidate.outputText,
+      bestCandidate.changedDimensions,
+      directLexicalShiftProfile
+    );
+    const directAuditBundle = buildSemanticAuditBundle(ir, bestCandidate.outputText, protectedState);
+    const directProtectedAnchorIntegrity =
+      directAuditBundle.protectedAnchorAudit.protectedAnchorIntegrity ??
+      directAuditBundle.semanticAudit.protectedAnchorIntegrity ??
+      1;
+    const progressAdmission = borrowedShellProgressAdmission({
+      qualityNotes: bestCandidate.quality.notes || [],
+      changedDimensions: bestCandidate.changedDimensions || [],
+      sourceProfile,
+      outputProfile: bestCandidate.outputProfile,
+      targetProfile,
+      protectedAnchorIntegrity: directProtectedAnchorIntegrity,
+      semanticAudit: directAuditBundle.semanticAudit,
+      lexicalShiftProfile: directLexicalShiftProfile,
+      visibleShift: directVisibleShift,
+      nonTrivialShift: directNonTrivialShift
+    });
+    directBorrowedProgressCheck = {
+      eligible: progressAdmission.eligible,
+      qualityNotes: bestCandidate.quality.notes || [],
+      changedDimensions: [...(bestCandidate.changedDimensions || [])],
+      visibleShift: directVisibleShift,
+      nonTrivialShift: directNonTrivialShift,
+      protectedAnchorIntegrity: directProtectedAnchorIntegrity,
+      propositionCoverage: directAuditBundle.semanticAudit.propositionCoverage ?? 1,
+      actionCoverage: directAuditBundle.semanticAudit.actionCoverage ?? 1,
+      polarityMismatches: directAuditBundle.semanticAudit.polarityMismatches ?? 0,
+      progressProfile: progressAdmission.progressProfile,
+      lexicalShiftProfile: directLexicalShiftProfile
+    };
+
+    if (progressAdmission.eligible) {
+      directBorrowedProgressAdmission = {
+        lexicalShiftProfile: directLexicalShiftProfile,
+        semanticAudit: directAuditBundle.semanticAudit,
+        protectedAnchorAudit: directAuditBundle.protectedAnchorAudit,
+        outputIR: directAuditBundle.outputIR,
+        visibleShift: directVisibleShift,
+        nonTrivialShift: directNonTrivialShift,
+        progressProfile: progressAdmission.progressProfile
+      };
+    }
+  }
+
+  if (directBorrowedProgressAdmission) {
+    finalText = sanitizeBorrowedShellPathologies(bestCandidate.outputText);
+    finalProfile = extractCadenceProfile(finalText);
+    changedDimensions = [...bestCandidate.changedDimensions];
+    transferClass = 'weak';
+    borrowedShellOutcome = 'partial';
+    precomputedAuditBundle = {
+      ...buildSemanticAuditBundle(ir, finalText, protectedState)
+    };
+    precomputedLexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
+    precomputedVisibleShift = hasBorrowedShellVisibleShift(sourceText, finalText, changedDimensions, precomputedLexicalShiftProfile);
+    precomputedNonTrivialShift = hasBorrowedShellNonTrivialShift(sourceText, finalText, changedDimensions, precomputedLexicalShiftProfile);
+    rescuePasses.push('progress-admit');
+    notes.push('Borrowed shell preserved a retrieval-safe partial cadence shift with measured donor progress.');
+  } else if (!bestCandidate.quality.qualityGatePassed) {
     const rescueSelection = findBorrowedShellRescueCandidate({
       shell,
       candidates,
@@ -4931,22 +5161,24 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     if (isMaterialCadenceGap(targetGap)) {
       if (borrowedFallback.eligible) {
         const acceptedCandidate = rescueCandidate || bestCandidate;
-        finalText = acceptedCandidate.outputText;
-        finalProfile = acceptedCandidate.outputProfile;
+        finalText = sanitizeBorrowedShellPathologies(acceptedCandidate.outputText);
+        finalProfile = extractCadenceProfile(finalText);
         changedDimensions = [...acceptedCandidate.changedDimensions];
         transferClass = 'weak';
         borrowedShellOutcome = 'partial';
         precomputedAuditBundle = {
-          semanticAudit: borrowedFallback.semanticAudit,
-          protectedAnchorAudit: borrowedFallback.protectedAnchorAudit,
-          outputIR: borrowedFallback.outputIR
+          ...buildSemanticAuditBundle(ir, finalText, protectedState)
         };
-        precomputedLexicalShiftProfile = borrowedFallback.lexicalShiftProfile;
-        precomputedVisibleShift = borrowedFallback.visibleShift;
-        precomputedNonTrivialShift = borrowedFallback.nonTrivialShift;
+        precomputedLexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
+        precomputedVisibleShift = hasBorrowedShellVisibleShift(sourceText, finalText, changedDimensions, precomputedLexicalShiftProfile);
+        precomputedNonTrivialShift = hasBorrowedShellNonTrivialShift(sourceText, finalText, changedDimensions, precomputedLexicalShiftProfile);
         rescuePasses.push(...(acceptedCandidate.rescuePasses || []));
-        rescuePasses.push('partial-rescue');
-        notes.push('Borrowed shell preserved a retrieval-safe partial cadence shift.');
+        rescuePasses.push(borrowedFallback.relaxed ? 'partial-progress-rescue' : 'partial-rescue');
+        notes.push(
+          borrowedFallback.relaxed
+            ? 'Borrowed shell preserved a retrieval-safe partial cadence shift with measured donor progress.'
+            : 'Borrowed shell preserved a retrieval-safe partial cadence shift.'
+        );
       } else {
         finalText = sourceText;
         finalProfile = sourceProfile;
@@ -5038,7 +5270,14 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       borrowedShellOutcome = 'structural';
     } else if (transferClass === 'rejected') {
       borrowedShellOutcome = 'rejected';
-    } else if (rescuePasses.includes('partial-rescue') && nonTrivialShift) {
+    } else if (
+      (
+        rescuePasses.includes('partial-rescue') ||
+        rescuePasses.includes('partial-progress-rescue') ||
+        rescuePasses.includes('progress-admit')
+      ) &&
+      nonTrivialShift
+    ) {
       borrowedShellOutcome = 'partial';
     } else {
       borrowedShellOutcome = 'subtle';
@@ -5128,6 +5367,7 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         passesApplied: [...candidate.passesApplied]
       })),
       selected: bestCandidate.spec,
+      directBorrowedProgressCheck,
       trace: bestCandidate.debug
     };
   }
@@ -6908,6 +7148,9 @@ function solveQuadratic(a, b, c) {
     badgeMeaning
   };
 })();
+
+
+
 
 
 

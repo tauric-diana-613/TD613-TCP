@@ -357,11 +357,10 @@
       ],
       "lexicalRegisterOperationsSelected": [
         "baseline-voice-realization",
-        "baseline-stance",
-        "baseline-function-word",
         "contraction-auxiliary",
         "punctuation-finish",
-        "lexical-register-rescue"
+        "lexical-register-rescue",
+        "connector-stance-rescue"
       ],
       "connectorStrategy": "additive",
       "contractionStrategy": "hold",
@@ -400,173 +399,200 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 169.1,
+        "score": 146.67,
         "passesApplied": [
           "baseline-split",
           "baseline-voice-realization",
-          "baseline-stance",
-          "baseline-function-word",
           "planned-sentence-split",
           "contraction-auxiliary",
           "punctuation-finish",
           "cleanup-restore",
           "structural-rescue",
-          "lexical-register-rescue"
+          "lexical-register-rescue",
+          "connector-stance-rescue"
         ],
         "rescuePasses": [
           "structural-rescue",
-          "lexical-register-rescue"
+          "lexical-register-rescue",
+          "connector-stance-rescue"
         ],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "contraction-posture",
           "connector-stance",
           "punctuation-shape"
         ],
         "qualityGatePassed": false,
         "notes": [
-          "Transfer missed donor lexical/register realization."
+          "Transfer missed donor lexical/register realization.",
+          "Structural opportunity existed but the current candidate collapsed into additive drift."
         ]
       },
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 155.678,
+          "score": 7.218,
           "passesApplied": [
-            "baseline-floor",
-            "clause-texture"
+            "discourse-frame",
+            "stance-texture"
           ],
           "rescuePasses": [],
           "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
             "contraction-posture",
-            "connector-stance",
-            "punctuation-shape"
+            "connector-stance"
           ],
           "qualityGatePassed": false,
           "notes": [
-            "Transfer missed donor lexical/register realization."
+            "Transfer missed donor lexical/register realization.",
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
           ]
         },
         {
           "spec": "mixed-structural",
-          "score": 169.1,
+          "score": 146.67,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
-            "baseline-stance",
-            "baseline-function-word",
             "planned-sentence-split",
             "contraction-auxiliary",
             "punctuation-finish",
             "cleanup-restore",
             "structural-rescue",
-            "lexical-register-rescue"
+            "lexical-register-rescue",
+            "connector-stance-rescue"
           ],
           "rescuePasses": [
             "structural-rescue",
-            "lexical-register-rescue"
+            "lexical-register-rescue",
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "contraction-posture",
             "connector-stance",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
           "notes": [
-            "Transfer missed donor lexical/register realization."
+            "Transfer missed donor lexical/register realization.",
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
           ]
         },
         {
           "spec": "split-heavy",
-          "score": 169.1,
+          "score": 146.67,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
-            "baseline-stance",
-            "baseline-function-word",
             "planned-sentence-split",
             "contraction-auxiliary",
             "punctuation-finish",
             "cleanup-restore",
             "structural-rescue",
-            "lexical-register-rescue"
+            "lexical-register-rescue",
+            "connector-stance-rescue"
           ],
           "rescuePasses": [
             "structural-rescue",
-            "lexical-register-rescue"
+            "lexical-register-rescue",
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "contraction-posture",
             "connector-stance",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
           "notes": [
-            "Transfer missed donor lexical/register realization."
+            "Transfer missed donor lexical/register realization.",
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
           ]
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 169.1,
+          "score": 146.67,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
-            "baseline-stance",
-            "baseline-function-word",
             "planned-sentence-split",
             "contraction-auxiliary",
             "punctuation-finish",
             "cleanup-restore",
             "structural-rescue",
-            "lexical-register-rescue"
+            "lexical-register-rescue",
+            "connector-stance-rescue"
           ],
           "rescuePasses": [
             "structural-rescue",
-            "lexical-register-rescue"
+            "lexical-register-rescue",
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "contraction-posture",
             "connector-stance",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
           "notes": [
-            "Transfer missed donor lexical/register realization."
+            "Transfer missed donor lexical/register realization.",
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
           ]
         }
       ]
     },
     "finalRealization": {
-      "text": "At 08:14 on Monday, Door 3 at the West Annex began presenting a false-open state. The reader accepted active badges and flashed green, but the strike did not release. The first confirmed access failure affected courier intake at 08:19, when a refrigerated medication delivery for Suite 118 could not clear the corridor. Facilities first treated the event as a low-voltage latch issue; the meter reading did not support that assumption. By 08:31 we confirmed that the overnight badge-renewal push had stopped validating newly renewed credentials while older local cache entries still passed. Deliveries were rerouted to the south receiving desk at 08:37. Manual escort restored controlled entry at 08:42, and the controller was rolled back at 09:06. No restricted room was breached, no cold-chain item was lost, and the custody log remains continuous. Required correction: no future firmware push may close without a live-door test, a latch release check, and a signed handoff from systems to archive operations.",
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
+      "text": "At 08:14 on Monday, Door 3 at the West Annex began presenting a false-open state. The reader accepted active badges and flashed green, but the strike didn't release. The first confirmed access failure affected courier intake at 08:19, when a refrigerated medication delivery for Suite 118 couldn't clear the corridor. Facilities first treated the event as a low-voltage latch issue. The meter reading didn't help that assumption. By 08:31 we confirmed that the overnight badge-renewal push had stopped validating newly renewed credentials while older local cache entries still passed. Deliveries were rerouted to the south receiving desk at 08:37. Manual escort restored controlled entry at 08:42, and the controller was rolled back at 09:06. No restricted room was breached, no cold-chain item was lost, and the custody log remains continuous. Required correction: no future firmware push may close without a live-door test, a latch release check, and a signed handoff from systems to archive operations.",
+      "transferClass": "weak",
+      "borrowedShellOutcome": "partial",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "contraction-posture",
+        "connector-stance",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "could-not",
+          "from": "could not",
+          "to": "couldn't",
+          "kind": "phrase"
+        },
+        {
+          "family": "help",
+          "from": "support",
+          "to": "help",
+          "kind": "lexeme"
+        }
+      ],
       "semanticRisk": 0.3,
       "rescuePasses": [
         "structural-rescue",
         "lexical-register-rescue",
-        "final-rejection"
+        "connector-stance-rescue",
+        "progress-admit"
       ],
-      "visibleShift": false,
-      "nonTrivialShift": false
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.979,
+      "objectCoverage": 0.938,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -581,7 +607,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.111
+          "globalBagScore": 0.115
         },
         {
           "sourceClauseId": "s1c0",
@@ -593,7 +619,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.056
+          "globalBagScore": 0.058
         },
         {
           "sourceClauseId": "s2c0",
@@ -605,7 +631,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.13
+          "globalBagScore": 0.135
         },
         {
           "sourceClauseId": "s2c1",
@@ -613,62 +639,38 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.056
+          "bagScore": 0.333,
+          "globalBagScore": 0.019
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s3c0",
+          "matchedClauseId": "s3c0+s3c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.037
+          "bagScore": 0.5,
+          "globalBagScore": 0.038
         },
         {
           "sourceClauseId": "s3c1",
-          "matchedClauseId": "s3c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.056
-        },
-        {
-          "sourceClauseId": "s4c0",
           "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.13
+          "bagScore": 0.333,
+          "globalBagScore": 0.019
         },
         {
-          "sourceClauseId": "s4c1",
-          "matchedClauseId": "s4c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.037
-        },
-        {
-          "sourceClauseId": "s5c0",
+          "sourceClauseId": "s4c0",
           "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -677,23 +679,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.093
+          "globalBagScore": 0.135
         },
         {
-          "sourceClauseId": "s6c0",
-          "matchedClauseId": "s6c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.625,
-          "globalBagScore": 0.091
-        },
-        {
-          "sourceClauseId": "s7c0",
-          "matchedClauseId": "s7c0",
+          "sourceClauseId": "s4c1",
+          "matchedClauseId": "s5c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -701,10 +691,34 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.074
+          "globalBagScore": 0.038
         },
         {
-          "sourceClauseId": "s8c0",
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s6c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.096
+        },
+        {
+          "sourceClauseId": "s6c0",
+          "matchedClauseId": "s7c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.625,
+          "globalBagScore": 0.094
+        },
+        {
+          "sourceClauseId": "s7c0",
           "matchedClauseId": "s8c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -713,11 +727,23 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.148
+          "globalBagScore": 0.077
+        },
+        {
+          "sourceClauseId": "s8c0",
+          "matchedClauseId": "s9c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.154
         }
       ],
       "sourceClauseCount": 12,
-      "outputClauseCount": 12
+      "outputClauseCount": 13
     },
     "protectedAnchorAudit": {
       "totalAnchors": 8,
@@ -727,8 +753,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 9,
-        "clauseCount": 12,
+        "sentenceCount": 10,
+        "clauseCount": 13,
         "literalSpans": [
           {
             "value": "08:14",
@@ -789,15 +815,15 @@
         },
         {
           "id": "s1",
-          "raw": "The reader accepted active badges and flashed green, but the strike did not release",
+          "raw": "The reader accepted active badges and flashed green, but the strike didn't release",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "The reader accepted active badges and flashed green, but the strike did not release",
+              "text": "The reader accepted active badges and flashed green, but the strike didn't release",
               "relationToPrev": "start",
-              "clauseType": "main",
+              "clauseType": "fragment",
               "polarity": "negative",
               "tenseAspect": "past",
               "propositionHead": "release",
@@ -813,7 +839,7 @@
         },
         {
           "id": "s2",
-          "raw": "The first confirmed access failure affected courier intake at 08:19, when a refrigerated medication delivery for Suite 118 could not clear the corridor",
+          "raw": "The first confirmed access failure affected courier intake at 08:19, when a refrigerated medication delivery for Suite 118 couldn't clear the corridor",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
@@ -833,15 +859,15 @@
             },
             {
               "id": "s2c1",
-              "text": "a refrigerated medication delivery for Suite 118 could not clear the corridor",
+              "text": "a refrigerated medication delivery for Suite 118 couldn't clear the corridor",
               "relationToPrev": "additive",
-              "clauseType": "main",
+              "clauseType": "fragment",
               "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "could",
+              "tenseAspect": "future-modal",
+              "propositionHead": "refrigerated",
               "actor": "a refrigerated",
-              "action": "could",
-              "object": "clear corridor",
+              "action": "",
+              "object": "",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -849,35 +875,35 @@
         },
         {
           "id": "s3",
-          "raw": "Facilities first treated the event as a low-voltage latch issue; the meter reading did not support that assumption",
+          "raw": "Facilities first treated the event as a low-voltage latch issue",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "Facilities first treated the event as a low-voltage latch issue",
+              "text": "Facilities first treated the event",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "issue",
+              "propositionHead": "facilities",
               "actor": "the event",
-              "action": "issue",
+              "action": "",
               "object": "",
               "modifiers": [],
               "hedgeMarkers": []
             },
             {
               "id": "s3c1",
-              "text": "the meter reading did not support that assumption",
+              "text": "a low-voltage latch issue",
               "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "negative",
+              "clauseType": "fragment",
+              "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "did",
-              "actor": "the meter",
-              "action": "did",
-              "object": "support assumption",
+              "propositionHead": "issue",
+              "actor": "a low",
+              "action": "issue",
+              "object": "",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -885,12 +911,34 @@
         },
         {
           "id": "s4",
+          "raw": "The meter reading didn't help that assumption",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "The meter reading didn't help that assumption",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "meter",
+              "actor": "The meter",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
           "raw": "By 08:31 we confirmed that the overnight badge-renewal push had stopped validating newly renewed credentials while older local cache entries still passed",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s4c0",
+              "id": "s5c0",
               "text": "By 08:31 we confirmed that the overnight badge-renewal push had stopped validating newly renewed credentials",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -907,7 +955,7 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s4c1",
+              "id": "s5c1",
               "text": "older local cache entries still passed",
               "relationToPrev": "contrastive",
               "clauseType": "fragment",
@@ -925,13 +973,13 @@
           ]
         },
         {
-          "id": "s5",
+          "id": "s6",
           "raw": "Deliveries were rerouted to the south receiving desk at 08:37",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s5c0",
+              "id": "s6c0",
               "text": "Deliveries were rerouted to the south receiving desk at 08:37",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -947,13 +995,13 @@
           ]
         },
         {
-          "id": "s6",
+          "id": "s7",
           "raw": "Manual escort restored controlled entry at 08:42, and the controller was rolled back at 09:06",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s6c0",
+              "id": "s7c0",
               "text": "Manual escort restored controlled entry at 08:42, and the controller was rolled back at 09:06",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -971,13 +1019,13 @@
           ]
         },
         {
-          "id": "s7",
+          "id": "s8",
           "raw": "No restricted room was breached, no cold-chain item was lost, and the custody log remains continuous",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s7c0",
+              "id": "s8c0",
               "text": "No restricted room was breached, no cold-chain item was lost, and the custody log remains continuous",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -995,13 +1043,13 @@
           ]
         },
         {
-          "id": "s8",
+          "id": "s9",
           "raw": "Required correction: no future firmware push may close without a live-door test, a latch release check, and a signed handoff from systems to archive operations.",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s8c0",
+              "id": "s9c0",
               "text": "Required correction: no future firmware push may close without a live-door test, a latch release check, and a signed handoff from systems to archive operations",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -1022,30 +1070,62 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
+      "transferClass": "weak",
+      "borrowedShellOutcome": "partial",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "contraction-posture",
+        "connector-stance",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "could-not",
+          "from": "could not",
+          "to": "couldn't",
+          "kind": "phrase"
+        },
+        {
+          "family": "help",
+          "from": "support",
+          "to": "help",
+          "kind": "lexeme"
+        }
+      ],
       "semanticRisk": 0.3,
       "realizationNotes": [
+        "2 lexical family swaps landed.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
         "structural-rescue",
         "lexical-register-rescue",
-        "final-rejection"
+        "connector-stance-rescue",
+        "progress-admit"
       ],
-      "visibleShift": false,
-      "nonTrivialShift": false
+      "visibleShift": true,
+      "nonTrivialShift": true
     }
   },
   "semanticContract": {
-    "transferClass": "rejected",
-    "realizationTier": "none",
-    "changedDimensions": [],
-    "lexemeSwapFamilies": [],
+    "transferClass": "weak",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "connector-stance",
+      "contraction-posture",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [
+      "could-not",
+      "help"
+    ],
     "relationInventory": [
       "additive:4",
       "causal:1",
@@ -1060,9 +1140,8 @@
       "structural-rescue"
     ],
     "lexicalOperations": [
-      "baseline-function-word",
-      "baseline-stance",
       "baseline-voice-realization",
+      "connector-stance-rescue",
       "contraction-auxiliary",
       "lexical-register-rescue",
       "punctuation-finish"
@@ -1072,7 +1151,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.979,
+    "objectCoverage": 0.938,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

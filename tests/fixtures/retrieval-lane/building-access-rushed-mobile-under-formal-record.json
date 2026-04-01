@@ -261,7 +261,6 @@
       ],
       "lexicalRegisterOperationsSelected": [
         "baseline-voice-realization",
-        "baseline-function-word",
         "connector-stance-lexicon",
         "punctuation-finish"
       ],
@@ -302,11 +301,10 @@
     "candidateSummary": {
       "selected": {
         "spec": "connector-stance-heavy",
-        "score": 328.732,
+        "score": 326.704,
         "passesApplied": [
           "baseline-merge",
           "baseline-voice-realization",
-          "baseline-function-word",
           "planned-sentence-merge",
           "sentence-structure",
           "clause-join-split",
@@ -353,11 +351,10 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 326.956,
+          "score": 324.928,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "baseline-function-word",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
@@ -383,11 +380,10 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 326.956,
+          "score": 324.928,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "baseline-function-word",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
@@ -413,11 +409,10 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 328.732,
+          "score": 326.704,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "baseline-function-word",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
@@ -443,11 +438,10 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 327.838,
+          "score": 325.81,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "baseline-function-word",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
@@ -473,7 +467,7 @@
       ]
     },
     "finalRealization": {
-      "text": "West annex d3 quiet fake open. But reader goes green; buzzes but doorway wont release. First hit was like 8:19 maybe 8:20. Courier for suite 118 is here w fridge meds and he cant just wait in sun, and weird part: my renewed badge fails, old temp badge worked when; and not power I dont think. Can someone please review controller before they keep explaining me to jiggle latch again",
+      "text": "West annex d3 quiet fake open. But reader goes green; buzzes but doorway wont release. First hit was like 8:19 maybe 8:20. Courier for suite 118 is here w fridge meds and he cant just wait in sun, and weird part: my renewed badge fails, old temp badge worked once; and not power I dont think. Can someone please review controller before they keep explaining me to jiggle latch again",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -745,13 +739,13 @@
         },
         {
           "id": "s3",
-          "raw": "Courier for suite 118 is here w fridge meds and he cant just wait in sun, and weird part: my renewed badge fails, old temp badge worked when; and not power I dont think",
+          "raw": "Courier for suite 118 is here w fridge meds and he cant just wait in sun, and weird part: my renewed badge fails, old temp badge worked once; and not power I dont think",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "Courier for suite 118 is here w fridge meds and he cant just wait in sun, and weird part: my renewed badge fails, old temp badge worked when",
+              "text": "Courier for suite 118 is here w fridge meds and he cant just wait in sun, and weird part: my renewed badge fails, old temp badge worked once",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -892,7 +886,6 @@
       "structural-rescue"
     ],
     "lexicalOperations": [
-      "baseline-function-word",
       "baseline-voice-realization",
       "connector-stance-lexicon",
       "punctuation-finish"

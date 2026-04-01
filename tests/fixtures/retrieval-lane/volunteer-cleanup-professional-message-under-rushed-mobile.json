@@ -349,7 +349,8 @@
       ],
       "lexicalRegisterOperationsSelected": [
         "baseline-voice-realization",
-        "connector-stance-lexicon"
+        "connector-stance-lexicon",
+        "connector-stance-rescue"
       ],
       "connectorStrategy": "additive",
       "contractionStrategy": "hold",
@@ -388,7 +389,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 76.054,
+        "score": 108.402,
         "passesApplied": [
           "baseline-split",
           "baseline-voice-realization",
@@ -396,12 +397,16 @@
           "sentence-structure",
           "clause-join-split",
           "connector-stance-lexicon",
-          "cleanup-restore"
+          "cleanup-restore",
+          "connector-stance-rescue"
         ],
-        "rescuePasses": [],
+        "rescuePasses": [
+          "connector-stance-rescue"
+        ],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "connector-stance",
           "punctuation-shape"
         ],
@@ -432,7 +437,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 76.054,
+          "score": 108.402,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -440,12 +445,16 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore"
+            "cleanup-restore",
+            "connector-stance-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "connector-stance-rescue"
+          ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "punctuation-shape"
           ],
@@ -457,7 +466,7 @@
         },
         {
           "spec": "split-heavy",
-          "score": 76.054,
+          "score": 108.402,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -465,12 +474,16 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore"
+            "cleanup-restore",
+            "connector-stance-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "connector-stance-rescue"
+          ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "punctuation-shape"
           ],
@@ -482,7 +495,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 76.054,
+          "score": 108.402,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -490,12 +503,16 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore"
+            "cleanup-restore",
+            "connector-stance-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "connector-stance-rescue"
+          ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "punctuation-shape"
           ],
@@ -507,7 +524,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 76.054,
+          "score": 108.402,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -515,12 +532,16 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore"
+            "cleanup-restore",
+            "connector-stance-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "connector-stance-rescue"
+          ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "punctuation-shape"
           ],
@@ -533,7 +554,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Team, here is the cleanup flow for Saturday. So we do not lose the first hour to improvisation. Please check in at the west fence table when you arrive. Even if you already know the site. We are kicking off with glass pickup, pallet pull, pantry-post reset, and salvage sorting. Tool lanes are fixed on purpose. Shovels at the fence, brooms at the tarp, saws under canopy B, and paint only if the wind holds. Gloves, water, and closed-toe shoes are required. If you forgot any of those, tell me before you kick off rather than trying to work around it. Kids can help at labeling and pantry sort,. But they stay clear of saws and thinner. We stop for inventory at 10:15 because a clean handoff matters more than heroic freelancing.",
+      "text": "Team, here is the cleanup flow for Saturday. So we do not lose the first hour to improvisation. Please check in at the west fence table when you arrive. Even if you already know the site. We are kicking off with glass pickup, pallet pull, pantry-post reset, and salvage sorting. Tool lanes are fixed on purpose. Shovels at the fence, brooms at the tarp, saws under canopy B, and paint only if the wind holds. Gloves, water, and closed-toe shoes are required, if you forgot any of those, tell me before you kick off rather than trying to work around it. Kids can help at labeling and pantry sort,. But they stay clear of saws and thinner. We stop for inventory at 10:15 because a clean handoff matters more than heroic freelancing.",
       "transferClass": "weak",
       "borrowedShellOutcome": "partial",
       "borrowedShellFailureClass": null,
@@ -541,6 +562,7 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "sentence-spread",
         "connector-stance",
         "punctuation-shape"
       ],
@@ -554,7 +576,8 @@
       ],
       "semanticRisk": 0.3,
       "rescuePasses": [
-        "partial-rescue"
+        "connector-stance-rescue",
+        "progress-admit"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
@@ -678,7 +701,7 @@
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s8c0",
+          "matchedClauseId": "s7c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -690,7 +713,7 @@
         },
         {
           "sourceClauseId": "s6c0",
-          "matchedClauseId": "s9c0",
+          "matchedClauseId": "s8c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -702,7 +725,7 @@
         },
         {
           "sourceClauseId": "s6c1",
-          "matchedClauseId": "s10c0",
+          "matchedClauseId": "s9c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -714,7 +737,7 @@
         },
         {
           "sourceClauseId": "s7c0",
-          "matchedClauseId": "s11c0",
+          "matchedClauseId": "s10c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -726,7 +749,7 @@
         },
         {
           "sourceClauseId": "s7c1",
-          "matchedClauseId": "s11c1",
+          "matchedClauseId": "s10c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -748,7 +771,7 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 12,
+        "sentenceCount": 11,
         "clauseCount": 16,
         "literalSpans": [
           {
@@ -964,7 +987,7 @@
         },
         {
           "id": "s7",
-          "raw": "Gloves, water, and closed-toe shoes are required",
+          "raw": "Gloves, water, and closed-toe shoes are required, if you forgot any of those, tell me before you kick off rather than trying to work around it",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
@@ -981,20 +1004,12 @@
               "object": "",
               "modifiers": [],
               "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s8",
-          "raw": "If you forgot any of those, tell me before you kick off rather than trying to work around it",
-          "rhetoricalRole": "temporal",
-          "terminalPunct": ".",
-          "clauses": [
+            },
             {
-              "id": "s8c0",
-              "text": "If you forgot any of those, tell me before you kick off rather than trying to work around it",
-              "relationToPrev": "start",
-              "clauseType": "subordinate",
+              "id": "s7c1",
+              "text": "you forgot any of those, tell me before you kick off rather than trying to work around it",
+              "relationToPrev": "additive",
+              "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "tell",
@@ -1010,13 +1025,13 @@
           ]
         },
         {
-          "id": "s9",
+          "id": "s8",
           "raw": "Kids can help at labeling and pantry sort,",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s9c0",
+              "id": "s8c0",
               "text": "Kids can help at labeling and pantry sort,",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -1032,13 +1047,13 @@
           ]
         },
         {
-          "id": "s10",
+          "id": "s9",
           "raw": "But they stay clear of saws and thinner",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s10c0",
+              "id": "s9c0",
               "text": "But they stay clear of saws and thinner",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -1054,13 +1069,13 @@
           ]
         },
         {
-          "id": "s11",
+          "id": "s10",
           "raw": "We stop for inventory at 10:15 because a clean handoff matters more than heroic freelancing.",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s11c0",
+              "id": "s10c0",
               "text": "We stop for inventory at 10:15",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -1074,7 +1089,7 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s11c1",
+              "id": "s10c1",
               "text": "a clean handoff matters more than heroic freelancing",
               "relationToPrev": "additive",
               "clauseType": "fragment",
@@ -1101,6 +1116,7 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "sentence-spread",
         "connector-stance",
         "punctuation-shape"
       ],
@@ -1118,7 +1134,8 @@
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "partial-rescue"
+        "connector-stance-rescue",
+        "progress-admit"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
@@ -1131,7 +1148,8 @@
       "connector-stance",
       "punctuation-shape",
       "sentence-count",
-      "sentence-mean"
+      "sentence-mean",
+      "sentence-spread"
     ],
     "lexemeSwapFamilies": [
       "start"
@@ -1152,7 +1170,8 @@
     ],
     "lexicalOperations": [
       "baseline-voice-realization",
-      "connector-stance-lexicon"
+      "connector-stance-lexicon",
+      "connector-stance-rescue"
     ],
     "connectorStrategy": "additive",
     "contractionStrategy": "hold",

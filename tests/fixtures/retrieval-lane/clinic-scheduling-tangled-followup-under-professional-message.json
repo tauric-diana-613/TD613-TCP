@@ -408,11 +408,10 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 271.624,
+          "score": 93.532,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "baseline-function-word",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
@@ -432,16 +431,17 @@
             "content-word-complexity",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
         },
         {
           "spec": "merge-heavy",
-          "score": 271.624,
+          "score": 93.532,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "baseline-function-word",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
@@ -461,16 +461,17 @@
             "content-word-complexity",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 271.624,
+          "score": 93.532,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "baseline-function-word",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
@@ -490,16 +491,17 @@
             "content-word-complexity",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 271.624,
+          "score": 93.532,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "baseline-function-word",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
@@ -519,8 +521,10 @@
             "content-word-complexity",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
         }
       ]
     },

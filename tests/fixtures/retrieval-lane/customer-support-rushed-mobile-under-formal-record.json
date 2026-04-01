@@ -489,7 +489,7 @@
       "semanticRisk": 0.3,
       "rescuePasses": [
         "structural-rescue",
-        "partial-rescue"
+        "progress-admit"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
@@ -770,7 +770,7 @@
       ],
       "rescuePasses": [
         "structural-rescue",
-        "partial-rescue"
+        "progress-admit"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
