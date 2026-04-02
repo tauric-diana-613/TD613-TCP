@@ -17,6 +17,7 @@ const latestMdPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.md');
 assert.equal(DIAGNOSTIC_CORPUS.families.length, 12, 'diagnostic corpus exposes 12 families');
 assert.equal(DIAGNOSTIC_CORPUS.samples.length, 48, 'diagnostic corpus exposes 48 samples');
 assert.equal(DIAGNOSTIC_CORPUS.promotedSampleIds.length, 16, 'diagnostic corpus exposes 16 promoted deck samples');
+assert.equal(DIAGNOSTIC_CORPUS.deckRandomizerSampleIds.length, 16, 'diagnostic corpus exposes 16 deck randomizer samples');
 assert.equal(DIAGNOSTIC_BATTERY.swapPairs.length, 72, 'diagnostic battery exposes 72 ordered swap pairs');
 assert.equal(DIAGNOSTIC_BATTERY.maskCases.length, 24, 'diagnostic battery exposes 24 mask cases');
 assert.equal(DIAGNOSTIC_BATTERY.trainerCases.length, 24, 'diagnostic battery exposes 24 trainer cases');
@@ -36,6 +37,10 @@ for (const family of DIAGNOSTIC_CORPUS.families) {
 
 for (const id of DIAGNOSTIC_CORPUS.promotedSampleIds) {
   assert.ok(DIAGNOSTIC_CORPUS_BY_ID[id], `${id}: promoted deck sample belongs to diagnostics corpus`);
+}
+
+for (const id of DIAGNOSTIC_CORPUS.deckRandomizerSampleIds) {
+  assert.ok(DIAGNOSTIC_CORPUS_BY_ID[id], `${id}: deck randomizer sample belongs to diagnostics corpus`);
 }
 
 for (const caseSpec of DIAGNOSTIC_BATTERY.swapPairs) {

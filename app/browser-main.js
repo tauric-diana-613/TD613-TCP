@@ -43,7 +43,12 @@
   const FULL_SAMPLE_LIBRARY = Object.freeze(
     (diagnosticCorpus.samples || SAMPLE_LIBRARY).map((sample) => Object.freeze({ ...sample }))
   );
-  const DECK_RANDOMIZER_SAMPLE_LIBRARY = FULL_SAMPLE_LIBRARY;
+  const DECK_RANDOMIZER_SAMPLE_LIBRARY = Object.freeze(
+    (diagnosticCorpus.deckRandomizerSampleLibrary || diagnosticCorpus.promotedSampleLibrary || FULL_SAMPLE_LIBRARY)
+      .map((sample) => Object.freeze({ ...sample }))
+  );
+  const DECK_RANDOMIZER_TOP_COUNT = 6;
+  const DECK_RANDOMIZER_PROFILE_DELTA_FLOOR = 1.05;
   const DIAGNOSTIC_BATTERY = Object.freeze({
     swapPairs: Object.freeze(diagnosticBattery.swapPairs || []),
     maskCases: Object.freeze(diagnosticBattery.maskCases || []),
@@ -624,7 +629,7 @@
 
   function inferSampleIdFromText(text = '') {
     const normalized = String(text || '').trim();
-    return SAMPLE_LIBRARY.find((sample) => sample.text.trim() === normalized)?.id || null;
+    return FULL_SAMPLE_LIBRARY.find((sample) => sample.text.trim() === normalized)?.id || null;
   }
 
   function slotTextId(slot) {
@@ -701,7 +706,7 @@
   }
 
   function randomizeVoiceSample(slot) {
-    if (!SAMPLE_LIBRARY.length) {
+    if (!DECK_RANDOMIZER_SAMPLE_LIBRARY.length) {
       setStatusMessage('No sample library is loaded for the Cadence Desk yet.');
       return;
     }
@@ -1871,7 +1876,7 @@
     };
   }
 
-  function buildRepresentativeSwapSelections(sampleLibrary = SAMPLE_LIBRARY, anchorIds = PRIVATE_EORFD_REPRESENTATIVE_ANCHORS) {
+  function buildRepresentativeSwapSelections(sampleLibrary = DECK_RANDOMIZER_SAMPLE_LIBRARY, anchorIds = PRIVATE_EORFD_REPRESENTATIVE_ANCHORS) {
     const sampleById = Object.fromEntries(sampleLibrary.map((sample) => [sample.id, sample]));
 
     return anchorIds.map((anchorId) => {
@@ -1958,6 +1963,22 @@
     return evaluateSwapCadencePairing(referenceText, probeText).score;
   }
 
+  function randomizerEvaluationTier(evaluation = null) {
+    if (!evaluation) {
+      return 0;
+    }
+    if (evaluation.bilateralNonTrivial) {
+      return 3;
+    }
+    if (evaluation.bilateralVisible) {
+      return 2;
+    }
+    if ((evaluation.engagedLaneCount || 0) >= 1 && (evaluation.rejectedLaneCount || 0) === 0) {
+      return 1;
+    }
+    return 0;
+  }
+
   function randomizerSamplePool(slot, candidates = []) {
     const otherSlot = slot === 'A' ? 'B' : 'A';
     const ownText = $(slotTextId(slot))?.value || '';
@@ -1978,27 +1999,39 @@
 
     const ranked = candidates.map((sample) => {
       const candidateProfile = sampleProfileEntry(sample);
+      const evaluation = bothBaysPopulated
+        ? evaluateSwapCadencePairing(
+            slot === 'A' ? sample.text : otherText,
+            slot === 'A' ? otherText : sample.text
+          )
+        : null;
+      const profileDelta = profileDistanceScore(candidateProfile, diversityAnchorProfile);
       return {
         sample,
-        evaluation: bothBaysPopulated
-          ? evaluateSwapCadencePairing(
-              slot === 'A' ? sample.text : otherText,
-              slot === 'A' ? otherText : sample.text
-            )
-          : null,
+        evaluation,
         diversity: {
           familyBonus: diversityAnchorSample && sample.familyId !== diversityAnchorSample.familyId ? 1 : 0,
           variantBonus: diversityAnchorSample && sample.variant !== diversityAnchorSample.variant ? 1 : 0,
-          profileDelta: profileDistanceScore(candidateProfile, diversityAnchorProfile)
-        }
+          profileDelta
+        },
+        profileDelta,
+        evaluationTier: randomizerEvaluationTier(evaluation)
       };
-    }).sort((left, right) => {
+    });
+
+    const spreadPreferred = ranked.filter((entry) => entry.profileDelta >= DECK_RANDOMIZER_PROFILE_DELTA_FLOOR);
+    const pool = spreadPreferred.length >= Math.min(DECK_RANDOMIZER_TOP_COUNT, ranked.length)
+      ? spreadPreferred
+      : ranked;
+
+    const sorted = [...pool].sort((left, right) => {
       if (bothBaysPopulated) {
         return (
-          compareSwapCadencePairings(left.evaluation, right.evaluation) ||
           Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
           Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
           Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
+          Number(right.evaluationTier || 0) - Number(left.evaluationTier || 0) ||
+          compareSwapCadencePairings(left.evaluation, right.evaluation) ||
           left.sample.id.localeCompare(right.sample.id)
         );
       }
@@ -2011,17 +2044,29 @@
       );
     });
 
-    return ranked.slice(0, Math.min(6, ranked.length)).map((entry) => entry.sample);
+    return sorted.slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, sorted.length)).map((entry) => entry.sample);
   }
 
   function inspectRandomizerPool(slot) {
     const candidates = randomSampleCandidates(slot);
     const preferred = randomizerSamplePool(slot, candidates);
+    const preferredProfiles = preferred.map((sample) => sampleProfileEntry(sample));
+    const pairwiseProfileDeltas = [];
+    for (let index = 0; index < preferredProfiles.length; index += 1) {
+      for (let otherIndex = index + 1; otherIndex < preferredProfiles.length; otherIndex += 1) {
+        pairwiseProfileDeltas.push(profileDistanceScore(preferredProfiles[index], preferredProfiles[otherIndex]));
+      }
+    }
     return {
       corpusSize: DECK_RANDOMIZER_SAMPLE_LIBRARY.length,
       candidateCount: candidates.length,
       preferredCount: preferred.length,
-      preferredIds: preferred.map((sample) => sample.id)
+      preferredIds: preferred.map((sample) => sample.id),
+      minPreferredProfileDelta: pairwiseProfileDeltas.length ? Math.min(...pairwiseProfileDeltas) : 0,
+      maxPreferredProfileDelta: pairwiseProfileDeltas.length ? Math.max(...pairwiseProfileDeltas) : 0,
+      averagePreferredProfileDelta: pairwiseProfileDeltas.length
+        ? Number((pairwiseProfileDeltas.reduce((sum, value) => sum + value, 0) / pairwiseProfileDeltas.length).toFixed(4))
+        : 0
     };
   }
 
@@ -3902,8 +3947,8 @@
     const voiceStateB = getVoiceState('B');
     $('swapCadencesBtn').disabled = !(voiceStateA.hasText && voiceStateB.hasText);
     $('swapMedallion').disabled = !(voiceStateA.hasText && voiceStateB.hasText);
-    $('randomizeVoiceABtn').disabled = !SAMPLE_LIBRARY.length;
-    $('randomizeVoiceBBtn').disabled = !SAMPLE_LIBRARY.length;
+    $('randomizeVoiceABtn').disabled = !DECK_RANDOMIZER_SAMPLE_LIBRARY.length;
+    $('randomizeVoiceBBtn').disabled = !DECK_RANDOMIZER_SAMPLE_LIBRARY.length;
     $('savePersonaBtn').disabled = !getVoiceState(activeVoice).hasText;
   }
 
@@ -6229,7 +6274,14 @@ DeltaE = ${ledger.reuse_gain}`;
           { id: 'station_routes_preserve_runtime_state', pass: report.stationRouting.statePreservedAcrossRouteChange },
           { id: 'homebase_boot_has_no_worn_mask', pass: !report.galleryBootstrap.homebaseWornMaskId && report.galleryBootstrap.homebasePhase !== 'mask-worn' && report.galleryBootstrap.homebasePhase !== 'residue' },
           { id: 'sample_randomizer_distinct', pass: report.sampleRandomizer.referenceChanged && report.sampleRandomizer.probeChanged && report.sampleRandomizer.pairDistinct },
-          { id: 'sample_randomizer_pool_uses_full_corpus', pass: report.sampleRandomizer.referencePool.candidateCount >= FULL_SAMPLE_LIBRARY.length - 1 && report.sampleRandomizer.probePool.candidateCount >= FULL_SAMPLE_LIBRARY.length - 2 },
+          {
+            id: 'sample_randomizer_pool_uses_diverse_deck_corpus',
+            pass:
+              report.sampleRandomizer.referencePool.corpusSize === DECK_RANDOMIZER_SAMPLE_LIBRARY.length &&
+              report.sampleRandomizer.probePool.corpusSize === DECK_RANDOMIZER_SAMPLE_LIBRARY.length &&
+              report.sampleRandomizer.referencePool.averagePreferredProfileDelta >= 1 &&
+              report.sampleRandomizer.probePool.averagePreferredProfileDelta >= 1
+          },
           { id: 'sample_randomizer_live_profile_from_placeholder', pass: report.sampleRandomizer.placeholderCleared },
           { id: 'sample_randomizer_rerenders_after_prior_analysis', pass: report.sampleRandomizer.rerenderAfterAnalysis },
           { id: 'sample_randomizer_clears_readout_but_keeps_duel_live', pass: report.sampleRandomizer.readoutCleared && report.sampleRandomizer.duelLivePreanalysis },

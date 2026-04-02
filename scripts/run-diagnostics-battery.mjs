@@ -4,11 +4,11 @@ import { fileURLToPath } from 'url';
 import * as engine from '../app/engine/stylometry.js';
 import personas from '../app/data/personas.js';
 import {
+  DECK_RANDOMIZER_SAMPLE_LIBRARY,
   DIAGNOSTIC_BATTERY,
   DIAGNOSTIC_CORPUS,
   DIAGNOSTIC_CORPUS_BY_ID,
-  DIAGNOSTIC_SAMPLE_LIBRARY,
-  PROMOTED_SAMPLE_LIBRARY
+  DIAGNOSTIC_SAMPLE_LIBRARY
 } from '../app/data/diagnostics.js';
 import {
   buildCadenceLockRecord,
@@ -326,7 +326,7 @@ function evaluateRepresentativeSwapPair(sourceSample, donorSample) {
   };
 }
 
-function buildRepresentativeSwapSelections(sampleLibrary = PROMOTED_SAMPLE_LIBRARY, anchorIds = PRIVATE_EORFD_REPRESENTATIVE_ANCHORS) {
+function buildRepresentativeSwapSelections(sampleLibrary = DECK_RANDOMIZER_SAMPLE_LIBRARY, anchorIds = PRIVATE_EORFD_REPRESENTATIVE_ANCHORS) {
   const sampleById = Object.fromEntries(sampleLibrary.map((sample) => [sample.id, sample]));
 
   return anchorIds.map((anchorId) => {

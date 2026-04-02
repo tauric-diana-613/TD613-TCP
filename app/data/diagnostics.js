@@ -675,6 +675,25 @@ const PROMOTED_SAMPLE_IDS = Object.freeze([
   sampleId('school-coordination', 'rushed-mobile')
 ]);
 
+const DECK_RANDOMIZER_SAMPLE_IDS = Object.freeze([
+  sampleId('building-access', 'formal-record'),
+  sampleId('performance-review', 'professional-message'),
+  sampleId('volunteer-cleanup', 'rushed-mobile'),
+  sampleId('school-coordination', 'tangled-followup'),
+  sampleId('tenant-leak', 'tangled-followup'),
+  sampleId('mutual-aid', 'rushed-mobile'),
+  sampleId('archive-grant', 'formal-record'),
+  sampleId('package-handoff', 'formal-record'),
+  sampleId('clinic-scheduling', 'rushed-mobile'),
+  sampleId('customer-support', 'formal-record'),
+  sampleId('overwork-debrief', 'tangled-followup'),
+  sampleId('school-coordination', 'professional-message'),
+  sampleId('volunteer-cleanup', 'formal-record'),
+  sampleId('committee-budget', 'tangled-followup'),
+  sampleId('mutual-aid', 'tangled-followup'),
+  sampleId('archive-grant', 'rushed-mobile')
+]);
+
 const CORPUS_BY_ID = Object.freeze(CORPUS_SAMPLES.reduce((acc, sample) => {
   acc[sample.id] = freezeRecord({
     ...sample,
@@ -690,6 +709,20 @@ const PROMOTED_SAMPLE_LIBRARY = Object.freeze(
     const sample = CORPUS_BY_ID[id];
     return freezeRecord({
       id: sample.id,
+      name: sample.name,
+      intention: sample.intention,
+      text: sample.text
+    });
+  })
+);
+
+const DECK_RANDOMIZER_SAMPLE_LIBRARY = Object.freeze(
+  DECK_RANDOMIZER_SAMPLE_IDS.map((id) => {
+    const sample = CORPUS_BY_ID[id];
+    return freezeRecord({
+      id: sample.id,
+      familyId: sample.familyId,
+      variant: sample.variant,
       name: sample.name,
       intention: sample.intention,
       text: sample.text
@@ -939,11 +972,15 @@ export const DIAGNOSTIC_CORPUS = freezeRecord({
   }))),
   samples: DIAGNOSTIC_SAMPLE_LIBRARY,
   promotedSampleIds: PROMOTED_SAMPLE_IDS,
-  promotedSampleLibrary: PROMOTED_SAMPLE_LIBRARY
+  promotedSampleLibrary: PROMOTED_SAMPLE_LIBRARY,
+  deckRandomizerSampleIds: DECK_RANDOMIZER_SAMPLE_IDS,
+  deckRandomizerSampleLibrary: DECK_RANDOMIZER_SAMPLE_LIBRARY
 });
 
 export {
   CORPUS_BY_ID as DIAGNOSTIC_CORPUS_BY_ID,
+  DECK_RANDOMIZER_SAMPLE_IDS,
+  DECK_RANDOMIZER_SAMPLE_LIBRARY,
   DIAGNOSTIC_SAMPLE_LIBRARY,
   DIAGNOSTIC_STRESS_TAGS,
   PROMOTED_SAMPLE_IDS,
