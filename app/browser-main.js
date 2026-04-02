@@ -2596,6 +2596,72 @@
     };
   }
 
+  function realizedTransferPercent(transfer = {}, hasEffectiveTextShift = false) {
+    if (!transfer || transfer.transferClass === 'native' || transfer.transferClass === 'rejected') {
+      return 0;
+    }
+
+    const semanticAudit = transfer.retrievalTrace?.semanticAudit || transfer.semanticAudit || {};
+    const protectedAnchorIntegrity =
+      transfer.protectedAnchorAudit?.protectedAnchorIntegrity ??
+      semanticAudit.protectedAnchorIntegrity ??
+      1;
+    const changedDimensions = [...new Set(transfer.changedDimensions || [])];
+    const nonPunctuationDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
+    const lexicalShiftCount = Math.min((transfer.lexemeSwaps || []).length, 3);
+    let score = 0;
+
+    if (hasEffectiveTextShift) {
+      score += 12;
+    }
+    if (transfer.visibleShift) {
+      score += 12;
+    }
+    if (transfer.nonTrivialShift) {
+      score += 16;
+    }
+
+    score += Math.min(nonPunctuationDimensions.length, 4) * 12;
+    score += lexicalShiftCount * 10;
+
+    if (transfer.transferClass === 'structural') {
+      score += 14;
+    } else if (transfer.borrowedShellOutcome === 'partial' || transfer.transferClass === 'weak') {
+      score += 6;
+    }
+
+    if (transfer.realizationTier === 'lexical-structural') {
+      score += 10;
+    } else if (transfer.realizationTier === 'structural') {
+      score += 6;
+    }
+
+    if (!nonPunctuationDimensions.length && lexicalShiftCount === 0) {
+      score = Math.min(score, changedDimensions.includes('punctuation-shape') ? 8 : 4);
+    }
+
+    if ((semanticAudit.propositionCoverage ?? 1) < 0.9) {
+      score -= 12;
+    }
+    if ((semanticAudit.actionCoverage ?? 1) < 0.75) {
+      score -= 8;
+    }
+    if ((semanticAudit.objectCoverage ?? 1) < 0.65) {
+      score -= 6;
+    }
+    if ((semanticAudit.polarityMismatches ?? 0) > 0) {
+      score -= 10;
+    }
+    if (protectedAnchorIntegrity < 1) {
+      score -= 20;
+    }
+    if ((transfer.semanticRisk ?? 0) >= 0.4) {
+      score -= 10;
+    }
+
+    return Math.max(0, Math.min(100, Math.round(score)));
+  }
+
   function buildSwapCadenceAudit(beforeSnapshot, afterSnapshot, voiceStateA, voiceStateB) {
     const laneA = summarizeTransferLane(voiceStateA);
     const laneB = summarizeTransferLane(voiceStateB);
@@ -2690,18 +2756,18 @@
     }
 
     if (voiceState.shell.profile) {
-      return `Profile shell transfer live at ${Math.round((voiceState.shell.strength || 0.76) * 100)}%. ${transferSummary} ${literalNote}`.trim();
+      return `Profile shell realized ${realizedTransferPercent(transfer, voiceState.hasEffectiveTextShift)}% transfer. ${transferSummary} ${literalNote}`.trim();
     }
 
     return `Applied shell bias: sent ${voiceState.shell.mod.sent >= 0 ? '+' : ''}${voiceState.shell.mod.sent}, cont ${voiceState.shell.mod.cont >= 0 ? '+' : ''}${voiceState.shell.mod.cont}, punc ${voiceState.shell.mod.punc >= 0 ? '+' : ''}${voiceState.shell.mod.punc}.`;
   }
 
-  function shellStrengthCopy(shell) {
+  function shellStrengthCopy(shell, transfer = {}, hasEffectiveTextShift = false) {
     if (!shell || shell.mode === 'native') {
       return 'native shell';
     }
 
-    return `${Math.round(((shell.strength || 0.76)) * 100)}% transfer`;
+    return `${realizedTransferPercent(transfer, hasEffectiveTextShift)}% realized transfer`;
   }
 
   function compactAxisLabel(id) {
@@ -2816,7 +2882,7 @@
             <div class="section-kicker">${glyphSpanHtml('sectionShellDuel', 'glyph-cyan')} ${side.title}</div>
             <div class="duel-shell-name">${escapeHtml(side.shell.label)}</div>
           </div>
-          <div class="duel-shell-strength">${shellStrengthCopy(side.shell)}</div>
+          <div class="duel-shell-strength">${shellStrengthCopy(side.shell, side.transfer, side.hasEffectiveTextShift)}</div>
         </div>
         <div id="duelSample${side.slot}" class="duel-sample">${escapeHtml(side.text)}</div>
         <div class="duel-mini-metrics">
