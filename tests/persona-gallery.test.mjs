@@ -68,6 +68,49 @@ assert.equal(
   'each built-in mask resolves to a distinct stylometric fingerprint'
 );
 
+const personaFieldDistances = [];
+for (let leftIndex = 0; leftIndex < resolvedPersonas.length; leftIndex += 1) {
+  for (let rightIndex = leftIndex + 1; rightIndex < resolvedPersonas.length; rightIndex += 1) {
+    const left = resolvedPersonas[leftIndex];
+    const right = resolvedPersonas[rightIndex];
+    const fit = engine.compareTexts('', '', {
+      profileA: left.profile,
+      profileB: right.profile
+    });
+    const axisDistance = engine.cadenceAxisVector(left.profile).reduce((sum, axis, index) =>
+      sum + Math.abs(Number(axis.normalized || 0) - Number(engine.cadenceAxisVector(right.profile)[index]?.normalized || 0)),
+    0);
+    const heatmapLeft = engine.cadenceHeatmap(left.diagnosticSpecimen?.text || '');
+    const heatmapRight = engine.cadenceHeatmap(right.diagnosticSpecimen?.text || '');
+    let heatmapDistance = 0;
+    for (let rowIndex = 0; rowIndex < Math.max(heatmapLeft.matrix.length, heatmapRight.matrix.length); rowIndex += 1) {
+      const rowA = Array.isArray(heatmapLeft.matrix[rowIndex]) ? heatmapLeft.matrix[rowIndex] : [];
+      const rowB = Array.isArray(heatmapRight.matrix[rowIndex]) ? heatmapRight.matrix[rowIndex] : [];
+      for (let colIndex = 0; colIndex < Math.max(rowA.length, rowB.length); colIndex += 1) {
+        heatmapDistance += Math.abs(Number(rowA[colIndex] || 0) - Number(rowB[colIndex] || 0));
+      }
+    }
+    personaFieldDistances.push(
+      Number((
+        (fit.sentenceDistance || 0) +
+        (fit.spreadDistance || 0) +
+        (fit.punctDistance || 0) +
+        (fit.contractionDistance || 0) +
+        (fit.recurrenceDistance || 0) +
+        (fit.directnessDistance || 0) +
+        (fit.abstractionDistance || 0) +
+        (fit.registerDistance || 0) +
+        axisDistance +
+        heatmapDistance
+      ).toFixed(4))
+    );
+  }
+}
+assert.ok(
+  Math.min(...personaFieldDistances) >= 1.4,
+  'built-in masks keep a materially separated field distance across the 7-axis plus heatmap audit'
+);
+
 const lock = buildCadenceLockRecord(engine, {
   name: 'Archive Home',
   corpusText: `${overworkDebrief.text}\n\n${packageHandoff.text}`

@@ -52,7 +52,7 @@
     B: 'volunteer-cleanup-rushed-mobile'
   });
   const DECK_RANDOMIZER_TOP_COUNT = 6;
-  const DECK_RANDOMIZER_PROFILE_DELTA_FLOOR = 1.05;
+  const DECK_RANDOMIZER_FIELD_POOL_COUNT = 12;
   const DIAGNOSTIC_BATTERY = Object.freeze({
     swapPairs: Object.freeze(diagnosticBattery.swapPairs || []),
     maskCases: Object.freeze(diagnosticBattery.maskCases || []),
@@ -66,6 +66,10 @@
   }, {}));
   const SAMPLE_PROFILE_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
     acc[sample.id] = Object.freeze(extractCadenceProfile(sample.text));
+    return acc;
+  }, {}));
+  const SAMPLE_SIGNATURE_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
+    acc[sample.id] = Object.freeze(buildCadenceSignature(sample.text, SAMPLE_PROFILE_BY_ID[sample.id]));
     return acc;
   }, {}));
   if (!defaults.voiceA && !defaults.voiceB) {
@@ -101,9 +105,9 @@
   });
   const PRIVATE_EORFD_REPRESENTATIVE_ANCHORS = Object.freeze([
     'building-access-rushed-mobile',
-    'package-handoff-formal-record',
-    'overwork-debrief-professional-message',
-    'school-coordination-rushed-mobile'
+    'customer-support-formal-record',
+    'overwork-debrief-formal-record',
+    'school-coordination-tangled-followup'
   ]);
   const SWAP_FLAGSHIP_PAIRS = Object.freeze((SWAP_CADENCE_FLAGSHIP_PAIRS || []).map((pair) => Object.freeze({
     sourceId: pair.sourceId,
@@ -480,6 +484,56 @@
       return null;
     }
     return (sample.id && SAMPLE_PROFILE_BY_ID[sample.id]) || extractCadenceProfile(sample.text || '');
+  }
+
+  function buildSignatureEntry(text = '', profile = null) {
+    const resolvedProfile = profile || extractCadenceProfile(text || '');
+    return buildCadenceSignature(text || '', resolvedProfile);
+  }
+
+  function sampleSignatureEntry(sample = null) {
+    if (!sample) {
+      return null;
+    }
+    return (sample.id && SAMPLE_SIGNATURE_BY_ID[sample.id]) || buildSignatureEntry(sample.text || '', sampleProfileEntry(sample));
+  }
+
+  function signatureAxisDistance(signatureA = null, signatureB = null) {
+    const axesA = Array.isArray(signatureA?.axes) ? signatureA.axes : [];
+    const axesB = Array.isArray(signatureB?.axes) ? signatureB.axes : [];
+    if (!axesA.length || !axesB.length) {
+      return 0;
+    }
+    return Number(axesA.reduce((sum, axis, index) =>
+      sum + Math.abs(Number(axis.normalized || 0) - Number(axesB[index]?.normalized || 0)),
+    0).toFixed(4));
+  }
+
+  function heatmapDistanceScore(heatmapA = null, heatmapB = null) {
+    const matrixA = Array.isArray(heatmapA?.matrix) ? heatmapA.matrix : [];
+    const matrixB = Array.isArray(heatmapB?.matrix) ? heatmapB.matrix : [];
+    if (!matrixA.length || !matrixB.length) {
+      return 0;
+    }
+    let total = 0;
+    for (let rowIndex = 0; rowIndex < Math.max(matrixA.length, matrixB.length); rowIndex += 1) {
+      const rowA = Array.isArray(matrixA[rowIndex]) ? matrixA[rowIndex] : [];
+      const rowB = Array.isArray(matrixB[rowIndex]) ? matrixB[rowIndex] : [];
+      for (let colIndex = 0; colIndex < Math.max(rowA.length, rowB.length); colIndex += 1) {
+        total += Math.abs(Number(rowA[colIndex] || 0) - Number(rowB[colIndex] || 0));
+      }
+    }
+    return Number(total.toFixed(4));
+  }
+
+  function fieldSpreadScore(signatureA = null, signatureB = null) {
+    if (!signatureA || !signatureB) {
+      return 0;
+    }
+    const profileDelta = profileDistanceScore(signatureA.profile, signatureB.profile);
+    const axisDelta = signatureAxisDistance(signatureA, signatureB);
+    const heatmapDelta = heatmapDistanceScore(signatureA.heatmap, signatureB.heatmap);
+    return Number((profileDelta + axisDelta + heatmapDelta).toFixed(4));
   }
 
   function humanizeToken(value = '') {
@@ -2003,47 +2057,68 @@
     }
 
     const diversityAnchorSample = sampleEntry(baySampleIds[slot]) || sampleEntry(baySampleIds[otherSlot]) || null;
-    const diversityAnchorProfile = diversityAnchorSample
-      ? sampleProfileEntry(diversityAnchorSample)
+    const diversityAnchorSignature = diversityAnchorSample
+      ? sampleSignatureEntry(diversityAnchorSample)
       : ownText.trim()
-        ? extractCadenceProfile(ownText)
+        ? buildSignatureEntry(ownText, extractCadenceProfile(ownText))
         : otherText.trim()
-          ? extractCadenceProfile(otherText)
+          ? buildSignatureEntry(otherText, extractCadenceProfile(otherText))
           : null;
     const bothBaysPopulated = Boolean(ownText.trim() && otherText.trim());
 
     const ranked = candidates.map((sample) => {
       const candidateProfile = sampleProfileEntry(sample);
+      const candidateSignature = sampleSignatureEntry(sample);
       const evaluation = bothBaysPopulated
         ? evaluateSwapCadencePairing(
             slot === 'A' ? sample.text : otherText,
             slot === 'A' ? otherText : sample.text
           )
         : null;
-      const profileDelta = profileDistanceScore(candidateProfile, diversityAnchorProfile);
+      const profileDelta = profileDistanceScore(candidateProfile, diversityAnchorSignature?.profile);
+      const axisDelta = signatureAxisDistance(candidateSignature, diversityAnchorSignature);
+      const heatmapDelta = heatmapDistanceScore(candidateSignature?.heatmap, diversityAnchorSignature?.heatmap);
+      const fieldDelta = fieldSpreadScore(candidateSignature, diversityAnchorSignature);
       return {
         sample,
         evaluation,
         diversity: {
           familyBonus: diversityAnchorSample && sample.familyId !== diversityAnchorSample.familyId ? 1 : 0,
           variantBonus: diversityAnchorSample && sample.variant !== diversityAnchorSample.variant ? 1 : 0,
-          profileDelta
+          profileDelta,
+          axisDelta,
+          heatmapDelta,
+          fieldDelta
         },
         profileDelta,
+        axisDelta,
+        heatmapDelta,
+        fieldDelta,
         evaluationTier: randomizerEvaluationTier(evaluation)
       };
     });
 
-    const spreadPreferred = ranked.filter((entry) => entry.profileDelta >= DECK_RANDOMIZER_PROFILE_DELTA_FLOOR);
-    const pool = spreadPreferred.length >= Math.min(DECK_RANDOMIZER_TOP_COUNT, ranked.length)
-      ? spreadPreferred
-      : ranked;
+    const fieldPreferredIds = new Set(
+      [...ranked]
+        .sort((left, right) =>
+          Number(right.fieldDelta || 0) - Number(left.fieldDelta || 0) ||
+          Number(right.heatmapDelta || 0) - Number(left.heatmapDelta || 0) ||
+          Number(right.axisDelta || 0) - Number(left.axisDelta || 0) ||
+          left.sample.id.localeCompare(right.sample.id)
+        )
+        .slice(0, Math.min(DECK_RANDOMIZER_FIELD_POOL_COUNT, ranked.length))
+        .map((entry) => entry.sample.id)
+    );
+    const pool = ranked.filter((entry) => fieldPreferredIds.has(entry.sample.id));
 
     const sorted = [...pool].sort((left, right) => {
       if (bothBaysPopulated) {
         return (
           Number(right.evaluationTier || 0) - Number(left.evaluationTier || 0) ||
           compareSwapCadencePairings(left.evaluation, right.evaluation) ||
+          Number(right.fieldDelta || 0) - Number(left.fieldDelta || 0) ||
+          Number(right.heatmapDelta || 0) - Number(left.heatmapDelta || 0) ||
+          Number(right.axisDelta || 0) - Number(left.axisDelta || 0) ||
           Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
           Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
           Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
@@ -2052,6 +2127,9 @@
       }
 
       return (
+        Number(right.fieldDelta || 0) - Number(left.fieldDelta || 0) ||
+        Number(right.heatmapDelta || 0) - Number(left.heatmapDelta || 0) ||
+        Number(right.axisDelta || 0) - Number(left.axisDelta || 0) ||
         Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
         Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
         Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
@@ -2066,10 +2144,13 @@
     const candidates = randomSampleCandidates(slot);
     const preferred = randomizerSamplePool(slot, candidates);
     const preferredProfiles = preferred.map((sample) => sampleProfileEntry(sample));
+    const preferredSignatures = preferred.map((sample) => sampleSignatureEntry(sample));
     const pairwiseProfileDeltas = [];
+    const pairwiseFieldDeltas = [];
     for (let index = 0; index < preferredProfiles.length; index += 1) {
       for (let otherIndex = index + 1; otherIndex < preferredProfiles.length; otherIndex += 1) {
         pairwiseProfileDeltas.push(profileDistanceScore(preferredProfiles[index], preferredProfiles[otherIndex]));
+        pairwiseFieldDeltas.push(fieldSpreadScore(preferredSignatures[index], preferredSignatures[otherIndex]));
       }
     }
     return {
@@ -2081,6 +2162,11 @@
       maxPreferredProfileDelta: pairwiseProfileDeltas.length ? Math.max(...pairwiseProfileDeltas) : 0,
       averagePreferredProfileDelta: pairwiseProfileDeltas.length
         ? Number((pairwiseProfileDeltas.reduce((sum, value) => sum + value, 0) / pairwiseProfileDeltas.length).toFixed(4))
+        : 0,
+      minPreferredFieldDelta: pairwiseFieldDeltas.length ? Math.min(...pairwiseFieldDeltas) : 0,
+      maxPreferredFieldDelta: pairwiseFieldDeltas.length ? Math.max(...pairwiseFieldDeltas) : 0,
+      averagePreferredFieldDelta: pairwiseFieldDeltas.length
+        ? Number((pairwiseFieldDeltas.reduce((sum, value) => sum + value, 0) / pairwiseFieldDeltas.length).toFixed(4))
         : 0
     };
   }

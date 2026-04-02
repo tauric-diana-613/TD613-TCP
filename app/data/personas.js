@@ -46,16 +46,16 @@ const personas = [
     chips: ['bright cut', 'public pull'],
     profileRecipe: {
       blend: [
-        { sampleId: 'volunteer-cleanup-rushed-mobile', weight: 0.4 },
-        { sampleId: 'mutual-aid-rushed-mobile', weight: 0.35 },
-        { sampleId: 'customer-support-rushed-mobile', weight: 0.25 }
+        { sampleId: 'volunteer-cleanup-rushed-mobile', weight: 0.45 },
+        { sampleId: 'performance-review-rushed-mobile', weight: 0.3 },
+        { sampleId: 'building-access-rushed-mobile', weight: 0.25 }
       ],
       overlayMod: {
-        sent: -6,
+        sent: -8,
         cont: 5,
-        punc: 5
+        punc: 8
       },
-      strength: 0.96
+      strength: 0.97
     },
     maskVisualClass: 'signal-jackal',
     maskArtLabel: 'signal jackal',
@@ -81,16 +81,16 @@ const personas = [
     chips: ['late landing', 'return current'],
     profileRecipe: {
       blend: [
-        { sampleId: 'overwork-debrief-tangled-followup', weight: 0.45 },
+        { sampleId: 'overwork-debrief-tangled-followup', weight: 0.5 },
         { sampleId: 'tenant-leak-tangled-followup', weight: 0.3 },
-        { sampleId: 'archive-grant-tangled-followup', weight: 0.25 }
+        { sampleId: 'mutual-aid-tangled-followup', weight: 0.2 }
       ],
       overlayMod: {
-        sent: 4,
+        sent: 6,
         cont: -1,
-        punc: 0
+        punc: -1
       },
-      strength: 0.93
+      strength: 0.94
     },
     maskVisualClass: 'velvet-eel',
     maskArtLabel: 'velvet eel',
@@ -116,14 +116,14 @@ const personas = [
     chips: ['clean route', 'dry hand'],
     profileRecipe: {
       blend: [
-        { sampleId: 'building-access-formal-record', weight: 0.4 },
-        { sampleId: 'volunteer-cleanup-professional-message', weight: 0.35 },
-        { sampleId: 'committee-budget-formal-record', weight: 0.25 }
+        { sampleId: 'building-access-professional-message', weight: 0.45 },
+        { sampleId: 'package-handoff-professional-message', weight: 0.35 },
+        { sampleId: 'clinic-scheduling-formal-record', weight: 0.2 }
       ],
       overlayMod: {
-        sent: 1,
-        cont: -2,
-        punc: -2
+        sent: -3,
+        cont: -3,
+        punc: -3
       },
       strength: 0.92
     },
@@ -151,16 +151,16 @@ const personas = [
     chips: ['measured caveat', 'clean proof'],
     profileRecipe: {
       blend: [
-        { sampleId: 'committee-budget-formal-record', weight: 0.4 },
-        { sampleId: 'archive-grant-formal-record', weight: 0.35 },
-        { sampleId: 'performance-review-formal-record', weight: 0.25 }
+        { sampleId: 'performance-review-professional-message', weight: 0.5 },
+        { sampleId: 'archive-grant-formal-record', weight: 0.3 },
+        { sampleId: 'customer-support-formal-record', weight: 0.2 }
       ],
       overlayMod: {
-        sent: 5,
-        cont: -3,
-        punc: -1
+        sent: 3,
+        cont: -4,
+        punc: -4
       },
-      strength: 0.94
+      strength: 0.95
     },
     maskVisualClass: 'schema-moth',
     maskArtLabel: 'schema moth',
@@ -186,16 +186,16 @@ const personas = [
     chips: ['hard edge', 'pressure syntax'],
     profileRecipe: {
       blend: [
-        { sampleId: 'performance-review-rushed-mobile', weight: 0.4 },
-        { sampleId: 'customer-support-professional-message', weight: 0.35 },
-        { sampleId: 'tenant-leak-rushed-mobile', weight: 0.25 }
+        { sampleId: 'performance-review-rushed-mobile', weight: 0.45 },
+        { sampleId: 'tenant-leak-rushed-mobile', weight: 0.3 },
+        { sampleId: 'package-handoff-rushed-mobile', weight: 0.25 }
       ],
       overlayMod: {
-        sent: -6,
-        cont: -3,
-        punc: 6
+        sent: -10,
+        cont: -5,
+        punc: 9
       },
-      strength: 0.95
+      strength: 0.97
     },
     maskVisualClass: 'gavel-viper',
     maskArtLabel: 'gavel viper',
@@ -223,13 +223,13 @@ const personas = [
       blend: [
         { sampleId: 'school-coordination-professional-message', weight: 0.35 },
         { sampleId: 'clinic-scheduling-professional-message', weight: 0.3 },
-        { sampleId: 'package-handoff-tangled-followup', weight: 0.2 },
-        { sampleId: 'tenant-leak-professional-message', weight: 0.15 }
+        { sampleId: 'building-access-professional-message', weight: 0.2 },
+        { sampleId: 'customer-support-professional-message', weight: 0.15 }
       ],
       overlayMod: {
-        sent: 5,
+        sent: 4,
         cont: -1,
-        punc: -3
+        punc: -4
       },
       strength: 0.93
     },

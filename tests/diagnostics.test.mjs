@@ -101,11 +101,18 @@ assert.equal(latestReport.sampleAudit.uniqueResolvedProfileCount, DIAGNOSTIC_COR
 assert.ok(Array.isArray(latestReport.sampleAudit.closestPairs), 'sample audit closest pairs serialize');
 assert.ok(Array.isArray(latestReport.sampleAudit.exactProfileCollisions), 'sample audit exact collisions serialize');
 assert.equal(latestReport.sampleAudit.exactProfileCollisions.length, 0, 'sample audit reports no exact profile collisions for the current corpus');
+assert.equal(latestReport.sampleAudit.deckRandomizerSize, DIAGNOSTIC_CORPUS.deckRandomizerSampleIds.length, 'sample audit reports the live deck randomizer size');
+assert.ok(latestReport.sampleAudit.deckRandomizerFamilyCount >= 8, 'sample audit reports at least 8 families in the live deck randomizer');
+assert.ok(latestReport.sampleAudit.deckRandomizerPairedFamilyCount >= 6, 'sample audit reports at least 6 same-family contrast pairs in the live deck randomizer');
+assert.ok(latestReport.sampleAudit.averageNearestFieldDistance >= 2.5, 'sample audit reports a widened deck nearest-field distance');
+assert.ok(latestReport.sampleAudit.minNearestFieldDistance >= 2, 'sample audit reports a bounded minimum deck field distance');
 assert.equal(latestReport.personaAudit.resolvedPersonaCount, 7, 'persona audit resolves all built-in personas');
 assert.equal(latestReport.personaAudit.uniqueResolvedProfileCount, 7, 'persona audit resolves distinct built-in persona profiles');
 assert.ok(Array.isArray(latestReport.personaAudit.closestPairs), 'persona audit closest pairs serialize');
 assert.ok(Array.isArray(latestReport.personaAudit.missingRecipeSampleIds), 'persona audit missing recipe ids serialize');
 assert.equal(latestReport.personaAudit.missingRecipeSampleIds.length, 0, 'persona audit reports no missing recipe sample ids for current built-ins');
+assert.ok(latestReport.personaAudit.averageNearestFieldDistance >= 1.75, 'persona audit reports a widened average nearest field distance');
+assert.ok(latestReport.personaAudit.minNearestFieldDistance >= 1.4, 'persona audit reports a materially separated minimum field distance');
 assert.ok(latestReport.personaAudit.distinctOutputCheck?.allDistinct, 'persona audit distinct-output check stays true');
 assert.ok(latestReport.workingDoctrine, 'diagnostics JSON report includes private EO-RFD working doctrine');
 assert.ok(
@@ -123,6 +130,7 @@ assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralNo
 const latestMarkdown = fs.readFileSync(latestMdPath, 'utf8');
 assert.ok(latestMarkdown.includes('## Sample Audit'), 'diagnostics Markdown report includes sample audit section');
 assert.ok(latestMarkdown.includes('### Closest Sample Pairs'), 'diagnostics Markdown report includes closest sample pairs section');
+assert.ok(latestMarkdown.includes('deck_randomizer_average_nearest_field_distance') || latestMarkdown.includes('average_nearest_field_distance'), 'diagnostics Markdown report includes field-distance spread details');
 assert.ok(latestMarkdown.includes('## Persona Audit'), 'diagnostics Markdown report includes persona audit section');
 assert.ok(latestMarkdown.includes('### Closest Persona Pairs'), 'diagnostics Markdown report includes closest persona pairs section');
 assert.ok(latestMarkdown.includes('## Private EO-RFD Working State'), 'diagnostics Markdown report includes private EO-RFD working-state section');

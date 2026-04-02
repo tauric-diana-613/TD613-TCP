@@ -5,7 +5,12 @@ import {
   DIAGNOSTIC_CORPUS,
   PROMOTED_SAMPLE_LIBRARY
 } from '../app/data/diagnostics.js';
-import { compareTexts, extractCadenceProfile } from '../app/engine/stylometry.js';
+import {
+  cadenceAxisVector,
+  cadenceHeatmap,
+  compareTexts,
+  extractCadenceProfile
+} from '../app/engine/stylometry.js';
 
 function profileDistance(profileA = null, profileB = null) {
   if (!profileA || !profileB) {
@@ -27,8 +32,29 @@ function profileDistance(profileA = null, profileB = null) {
 function averageNearestDistance(samples = []) {
   const profiled = samples.map((sample) => ({
     ...sample,
-    profile: extractCadenceProfile(sample.text)
+    profile: extractCadenceProfile(sample.text),
+    heatmap: cadenceHeatmap(sample.text)
   }));
+
+  const axisDistance = (profileA = {}, profileB = {}) => {
+    const vectorA = cadenceAxisVector(profileA).map((axis) => axis.normalized);
+    const vectorB = cadenceAxisVector(profileB).map((axis) => axis.normalized);
+    return Number(vectorA.reduce((sum, value, index) => sum + Math.abs(value - Number(vectorB[index] || 0)), 0).toFixed(4));
+  };
+
+  const heatmapDistance = (heatmapA = null, heatmapB = null) => {
+    let total = 0;
+    const matrixA = Array.isArray(heatmapA?.matrix) ? heatmapA.matrix : [];
+    const matrixB = Array.isArray(heatmapB?.matrix) ? heatmapB.matrix : [];
+    for (let rowIndex = 0; rowIndex < Math.max(matrixA.length, matrixB.length); rowIndex += 1) {
+      const rowA = Array.isArray(matrixA[rowIndex]) ? matrixA[rowIndex] : [];
+      const rowB = Array.isArray(matrixB[rowIndex]) ? matrixB[rowIndex] : [];
+      for (let colIndex = 0; colIndex < Math.max(rowA.length, rowB.length); colIndex += 1) {
+        total += Math.abs(Number(rowA[colIndex] || 0) - Number(rowB[colIndex] || 0));
+      }
+    }
+    return Number(total.toFixed(4));
+  };
 
   const distances = profiled.map((left) => {
     let nearest = Infinity;
@@ -36,7 +62,14 @@ function averageNearestDistance(samples = []) {
       if (left.id === right.id) {
         continue;
       }
-      nearest = Math.min(nearest, profileDistance(left.profile, right.profile));
+      nearest = Math.min(
+        nearest,
+        Number((
+          profileDistance(left.profile, right.profile) +
+          axisDistance(left.profile, right.profile) +
+          heatmapDistance(left.heatmap, right.heatmap)
+        ).toFixed(4))
+      );
     }
     return nearest;
   });
@@ -69,8 +102,8 @@ assert.deepEqual(
 const promotedNearest = averageNearestDistance(PROMOTED_SAMPLE_LIBRARY);
 const deckNearest = averageNearestDistance(DECK_RANDOMIZER_SAMPLE_LIBRARY);
 assert(
-  deckNearest >= Math.max(0.8, promotedNearest),
-  `deck randomizer library should keep a materially varied cadence spread while preserving duel-ready pairs (${deckNearest} vs ${promotedNearest})`
+  deckNearest >= promotedNearest + 0.25,
+  `deck randomizer library should widen total field spread beyond the promoted subset while preserving duel-ready pairs (${deckNearest} vs ${promotedNearest})`
 );
 
 console.log('deck-randomizer.test.mjs passed');

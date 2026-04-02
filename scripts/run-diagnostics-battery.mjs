@@ -41,9 +41,9 @@ const FAILURE_BUCKETS = Object.freeze([
 ]);
 const PRIVATE_EORFD_REPRESENTATIVE_ANCHORS = Object.freeze([
   'building-access-rushed-mobile',
-  'package-handoff-formal-record',
-  'overwork-debrief-professional-message',
-  'school-coordination-rushed-mobile'
+  'customer-support-formal-record',
+  'overwork-debrief-formal-record',
+  'school-coordination-tangled-followup'
 ]);
 
 const PERSONA_LIBRARY = resolvePersonaCatalog(engine, personas, DIAGNOSTIC_SAMPLE_LIBRARY);
@@ -79,7 +79,34 @@ function profileDistance(fit = {}) {
   );
 }
 
-function buildClosestProfilePairs(items = [], getProfile = (item) => item.profile, limit = 6) {
+function axisDistance(profileA = {}, profileB = {}) {
+  const axesA = engine.cadenceAxisVector(profileA);
+  const axesB = engine.cadenceAxisVector(profileB);
+  return round(axesA.reduce((sum, axis, index) =>
+    sum + Math.abs(Number(axis.normalized || 0) - Number(axesB[index]?.normalized || 0)),
+  0), 4);
+}
+
+function heatmapDistance(textA = '', textB = '') {
+  const matrixA = engine.cadenceHeatmap(textA).matrix || [];
+  const matrixB = engine.cadenceHeatmap(textB).matrix || [];
+  let total = 0;
+  for (let rowIndex = 0; rowIndex < Math.max(matrixA.length, matrixB.length); rowIndex += 1) {
+    const rowA = Array.isArray(matrixA[rowIndex]) ? matrixA[rowIndex] : [];
+    const rowB = Array.isArray(matrixB[rowIndex]) ? matrixB[rowIndex] : [];
+    for (let colIndex = 0; colIndex < Math.max(rowA.length, rowB.length); colIndex += 1) {
+      total += Math.abs(Number(rowA[colIndex] || 0) - Number(rowB[colIndex] || 0));
+    }
+  }
+  return round(total, 4);
+}
+
+function buildClosestProfilePairs(
+  items = [],
+  getProfile = (item) => item.profile,
+  getText = (item) => item.text || item.diagnosticSpecimen?.text || '',
+  limit = 6
+) {
   const pairs = [];
   for (let leftIndex = 0; leftIndex < items.length; leftIndex += 1) {
     for (let rightIndex = leftIndex + 1; rightIndex < items.length; rightIndex += 1) {
@@ -94,12 +121,18 @@ function buildClosestProfilePairs(items = [], getProfile = (item) => item.profil
         profileA: leftProfile,
         profileB: rightProfile
       });
+      const profileDistanceValue = profileDistance(fit);
+      const axisDistanceValue = axisDistance(leftProfile, rightProfile);
+      const heatmapDistanceValue = heatmapDistance(getText(left), getText(right));
       pairs.push({
         leftId: left.id,
         leftName: left.name || left.id,
         rightId: right.id,
         rightName: right.name || right.id,
-        distance: profileDistance(fit),
+        distance: round(profileDistanceValue + axisDistanceValue + heatmapDistanceValue, 4),
+        profileDistance: profileDistanceValue,
+        axisDistance: axisDistanceValue,
+        heatmapDistance: heatmapDistanceValue,
         similarity: round(fit.similarity || 0, 4),
         traceability: round(fit.traceability || 0, 4),
         sameFamily: left.familyId ? left.familyId === right.familyId : false,
@@ -110,11 +143,56 @@ function buildClosestProfilePairs(items = [], getProfile = (item) => item.profil
   return pairs
     .sort((left, right) =>
       left.distance - right.distance ||
+      left.heatmapDistance - right.heatmapDistance ||
       right.similarity - left.similarity ||
       left.leftId.localeCompare(right.leftId) ||
       left.rightId.localeCompare(right.rightId)
     )
     .slice(0, limit);
+}
+
+function buildNearestFieldSummary(
+  items = [],
+  getProfile = (item) => item.profile,
+  getText = (item) => item.text || item.diagnosticSpecimen?.text || ''
+) {
+  if (items.length <= 1) {
+    return {
+      averageNearestFieldDistance: 0,
+      minNearestFieldDistance: 0
+    };
+  }
+  const nearestDistances = items.map((left, leftIndex) => {
+    const leftProfile = getProfile(left);
+    const leftText = getText(left);
+    let nearest = Infinity;
+    for (let rightIndex = 0; rightIndex < items.length; rightIndex += 1) {
+      if (leftIndex === rightIndex) {
+        continue;
+      }
+      const right = items[rightIndex];
+      nearest = Math.min(
+        nearest,
+        round(
+          profileDistance(engine.compareTexts('', '', {
+            profileA: leftProfile,
+            profileB: getProfile(right)
+          })) +
+            axisDistance(leftProfile, getProfile(right)) +
+            heatmapDistance(leftText, getText(right)),
+          4
+        )
+      );
+    }
+    return nearest;
+  });
+  return {
+    averageNearestFieldDistance: round(
+      nearestDistances.reduce((sum, value) => sum + value, 0) / nearestDistances.length,
+      4
+    ),
+    minNearestFieldDistance: round(Math.min(...nearestDistances), 4)
+  };
 }
 
 function buildExactProfileCollisions(items = [], getProfile = (item) => item.profile) {
@@ -862,11 +940,25 @@ function buildSampleAudit(sampleLibrary = DIAGNOSTIC_SAMPLE_LIBRARY) {
     ...sample,
     profile: engine.extractCadenceProfile(sample.text)
   }));
+  const resolvedDeckSamples = DECK_RANDOMIZER_SAMPLE_LIBRARY.map((sample) => ({
+    ...sample,
+    profile: engine.extractCadenceProfile(sample.text)
+  }));
+  const pairedFamilyCount = [...DECK_RANDOMIZER_SAMPLE_LIBRARY.reduce((acc, sample) => {
+    const variants = acc.get(sample.familyId) || new Set();
+    variants.add(sample.variant);
+    acc.set(sample.familyId, variants);
+    return acc;
+  }, new Map()).values()].filter((variants) => variants.size >= 2).length;
   return {
     randomizerCorpusSize: sampleLibrary.length,
     uniqueResolvedProfileCount: new Set(resolvedSamples.map((sample) => profileKey(sample.profile))).size,
-    closestPairs: buildClosestProfilePairs(resolvedSamples, (sample) => sample.profile),
-    exactProfileCollisions: buildExactProfileCollisions(resolvedSamples, (sample) => sample.profile)
+    closestPairs: buildClosestProfilePairs(resolvedSamples, (sample) => sample.profile, (sample) => sample.text),
+    exactProfileCollisions: buildExactProfileCollisions(resolvedSamples, (sample) => sample.profile),
+    deckRandomizerSize: DECK_RANDOMIZER_SAMPLE_LIBRARY.length,
+    deckRandomizerFamilyCount: new Set(DECK_RANDOMIZER_SAMPLE_LIBRARY.map((sample) => sample.familyId)).size,
+    deckRandomizerPairedFamilyCount: pairedFamilyCount,
+    ...buildNearestFieldSummary(resolvedDeckSamples, (sample) => sample.profile, (sample) => sample.text)
   };
 }
 
@@ -898,7 +990,16 @@ function buildPersonaAudit(personaLibrary = PERSONA_LIBRARY) {
     resolvedPersonaCount: personaLibrary.length,
     uniqueResolvedProfileCount: new Set(resolvedPersonas.map((persona) => profileKey(persona.profile))).size,
     missingRecipeSampleIds,
-    closestPairs: buildClosestProfilePairs(resolvedPersonas, (persona) => persona.profile),
+    closestPairs: buildClosestProfilePairs(
+      resolvedPersonas,
+      (persona) => persona.profile,
+      (persona) => persona.diagnosticSpecimen?.text || ''
+    ),
+    ...buildNearestFieldSummary(
+      resolvedPersonas,
+      (persona) => persona.profile,
+      (persona) => persona.diagnosticSpecimen?.text || ''
+    ),
     distinctOutputCheck: {
       comparisonSampleId,
       resolvedPersonaCount: resolvedPersonas.length,
@@ -942,10 +1043,15 @@ function buildMarkdownReport(report) {
     lines.push('', '## Sample Audit', '');
     lines.push(`- randomizer_corpus_size: ${report.sampleAudit.randomizerCorpusSize}`);
     lines.push(`- unique_resolved_sample_profile_count: ${report.sampleAudit.uniqueResolvedProfileCount}`);
+    lines.push(`- deck_randomizer_size: ${report.sampleAudit.deckRandomizerSize}`);
+    lines.push(`- deck_randomizer_family_count: ${report.sampleAudit.deckRandomizerFamilyCount}`);
+    lines.push(`- deck_randomizer_paired_family_count: ${report.sampleAudit.deckRandomizerPairedFamilyCount}`);
+    lines.push(`- average_nearest_field_distance: ${report.sampleAudit.averageNearestFieldDistance}`);
+    lines.push(`- min_nearest_field_distance: ${report.sampleAudit.minNearestFieldDistance}`);
     lines.push(`- exact_profile_collisions: ${report.sampleAudit.exactProfileCollisions.length ? report.sampleAudit.exactProfileCollisions.map((entry) => entry.ids.join(', ')).join(' | ') : 'none'}`);
     lines.push('', '### Closest Sample Pairs', '');
     report.sampleAudit.closestPairs.forEach((entry) => {
-      lines.push(`- ${entry.leftId} <-> ${entry.rightId}: distance ${entry.distance}, similarity ${entry.similarity}, traceability ${entry.traceability}`);
+      lines.push(`- ${entry.leftId} <-> ${entry.rightId}: field distance ${entry.distance}, profile ${entry.profileDistance}, heatmap ${entry.heatmapDistance}, traceability ${entry.traceability}`);
     });
   }
 
@@ -953,11 +1059,13 @@ function buildMarkdownReport(report) {
     lines.push('', '## Persona Audit', '');
     lines.push(`- resolved_persona_count: ${report.personaAudit.resolvedPersonaCount}`);
     lines.push(`- unique_resolved_persona_profile_count: ${report.personaAudit.uniqueResolvedProfileCount}`);
+    lines.push(`- average_nearest_field_distance: ${report.personaAudit.averageNearestFieldDistance}`);
+    lines.push(`- min_nearest_field_distance: ${report.personaAudit.minNearestFieldDistance}`);
     lines.push(`- missing_recipe_sample_ids: ${report.personaAudit.missingRecipeSampleIds.length ? report.personaAudit.missingRecipeSampleIds.map((entry) => `${entry.personaId}:${entry.sampleId}`).join(', ') : 'none'}`);
     lines.push(`- distinct_output_check: ${report.personaAudit.distinctOutputCheck.distinctOutputCount}/${report.personaAudit.distinctOutputCheck.resolvedPersonaCount} distinct on ${report.personaAudit.distinctOutputCheck.comparisonSampleId}`);
     lines.push('', '### Closest Persona Pairs', '');
     report.personaAudit.closestPairs.forEach((entry) => {
-      lines.push(`- ${entry.leftId} <-> ${entry.rightId}: distance ${entry.distance}, similarity ${entry.similarity}, traceability ${entry.traceability}`);
+      lines.push(`- ${entry.leftId} <-> ${entry.rightId}: field distance ${entry.distance}, profile ${entry.profileDistance}, heatmap ${entry.heatmapDistance}, traceability ${entry.traceability}`);
     });
   }
 
