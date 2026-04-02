@@ -393,42 +393,26 @@
       ]
     },
     "finalRealization": {
-      "text": "Hi office - aunt maribel has to do pickup today not grandma. And she'll have ID; and I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help. Sorry for late shift",
-      "transferClass": "weak",
-      "borrowedShellOutcome": "partial",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "contraction-posture",
-        "connector-stance",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "change",
-          "from": "change",
-          "to": "shift",
-          "kind": "lexeme"
-        }
-      ],
+      "text": "hi office - aunt maribel has to do pickup today not grandma. shell have id. also i swear i signed the museum slip, it might still be in backpack w the waiver papers. if class can check before 3 that would help. sorry for late change",
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
       "rescuePasses": [
-        "structural-rescue",
-        "connector-stance-rescue",
-        "partial-progress-rescue"
+        "final-rejection"
       ],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "visibleShift": false,
+      "nonTrivialShift": false
     },
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.9,
-      "polarityMismatches": 1,
+      "objectCoverage": 0.95,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -442,7 +426,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.333
+          "globalBagScore": 0.231
         },
         {
           "sourceClauseId": "s1c0",
@@ -454,34 +438,10 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.111
+          "globalBagScore": 0.077
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s0c0+s1c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 1,
-          "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
-        },
-        {
-          "sourceClauseId": "s3c0",
-          "matchedClauseId": "s1c0+s1c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.3
-        },
-        {
-          "sourceClauseId": "s4c0",
           "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -490,11 +450,35 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.111
+          "globalBagScore": 0.308
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.6,
+          "globalBagScore": 0.214
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s4c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.077
         }
       ],
       "sourceClauseCount": 5,
-      "outputClauseCount": 4
+      "outputClauseCount": 5
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
@@ -504,8 +488,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 3,
-        "clauseCount": 4,
+        "sentenceCount": 5,
+        "clauseCount": 5,
         "literalSpans": [
           {
             "value": "3",
@@ -516,13 +500,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Hi office - aunt maribel has to do pickup today not grandma",
+          "raw": "hi office - aunt maribel has to do pickup today not grandma",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Hi office - aunt maribel has to do pickup today not grandma",
+              "text": "hi office - aunt maribel has to do pickup today not grandma",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -538,33 +522,63 @@
         },
         {
           "id": "s1",
-          "raw": "And she'll have ID; and I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help",
+          "raw": "shell have id",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "And she'll have ID",
+              "text": "shell have id",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
-              "tenseAspect": "future-modal",
+              "tenseAspect": "present",
               "propositionHead": "have",
-              "actor": "she",
+              "actor": "",
               "action": "have",
               "object": "id",
               "modifiers": [],
               "hedgeMarkers": []
-            },
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "also i swear i signed the museum slip, it might still be in backpack w the waiver papers",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
             {
-              "id": "s1c1",
-              "text": "and I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help",
-              "relationToPrev": "contrastive",
+              "id": "s2c0",
+              "text": "also i swear i signed the museum slip, it might still be in backpack w the waiver papers",
+              "relationToPrev": "start",
               "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "might",
+              "actor": "i",
+              "action": "might",
+              "object": "backpack w waiver papers",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "if class can check before 3 that would help",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "if class can check before 3 that would help",
+              "relationToPrev": "start",
+              "clauseType": "subordinate",
               "polarity": "positive",
               "tenseAspect": "future-modal",
               "propositionHead": "check",
-              "actor": "I",
+              "actor": "that",
               "action": "check",
               "object": "before 3 help",
               "modifiers": [],
@@ -573,21 +587,21 @@
           ]
         },
         {
-          "id": "s2",
-          "raw": "Sorry for late shift",
+          "id": "s4",
+          "raw": "sorry for late change",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s2c0",
-              "text": "Sorry for late shift",
+              "id": "s4c0",
+              "text": "sorry for late change",
               "relationToPrev": "start",
-              "clauseType": "fragment",
+              "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "shift",
+              "propositionHead": "change",
               "actor": "",
-              "action": "shift",
+              "action": "change",
               "object": "",
               "modifiers": [],
               "hedgeMarkers": []
@@ -597,54 +611,28 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "weak",
-      "borrowedShellOutcome": "partial",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "contraction-posture",
-        "connector-stance",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "change",
-          "from": "change",
-          "to": "shift",
-          "kind": "lexeme"
-        }
-      ],
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
       "realizationNotes": [
-        "1 lexical family swap landed.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "structural-rescue",
-        "connector-stance-rescue",
-        "partial-progress-rescue"
+        "final-rejection"
       ],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "visibleShift": false,
+      "nonTrivialShift": false
     }
   },
   "semanticContract": {
-    "transferClass": "weak",
-    "realizationTier": "lexical-structural",
-    "changedDimensions": [
-      "connector-stance",
-      "contraction-posture",
-      "punctuation-shape",
-      "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
-    ],
-    "lexemeSwapFamilies": [
-      "change"
-    ],
+    "transferClass": "rejected",
+    "realizationTier": "none",
+    "changedDimensions": [],
+    "lexemeSwapFamilies": [],
     "relationInventory": [
       "additive:1",
       "causal:0",
@@ -665,8 +653,8 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.9,
-    "polarityMismatches": 1,
+    "objectCoverage": 0.95,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

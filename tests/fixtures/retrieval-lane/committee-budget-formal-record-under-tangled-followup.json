@@ -319,7 +319,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 295.223,
+        "score": 291.241,
         "passesApplied": [
           "baseline-voice-realization",
           "baseline-function-word",
@@ -363,7 +363,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 295.223,
+          "score": 291.241,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-function-word",
@@ -389,7 +389,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 295.223,
+          "score": 291.241,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-function-word",
@@ -415,7 +415,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 220.345,
+          "score": 216.363,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-function-word",
@@ -436,7 +436,7 @@
       ]
     },
     "finalRealization": {
-      "text": "The finance committee met at 4:05 PM to check the bridge budget after central administration extended the hiring freeze through Q3, but the immediate effect is that the student-help coordinator line remains unfunded for another twelve weeks, even but the underlying service demand has not eased. Members agreed that the program can absorb a temporary delay in furniture and print costs, but not a full quarter without intake coverage - three short-term options were discussed. Reclassify one vacant analyst line for bridge staffing, reduce evening service hours, or draw against restricted reserves pending dean approval. No option was adopted in session. What did fix was the frame. This is not a generic belt-tightening exercise. It is a staffing exposure problem with public-facing consequences, and the next memo needs to tell that without overstating certainty. Action items. Revised table by Thursday, reserve-rule clarification from finance, and a staffing scenario note that distinguishes pause from actual service reduction.",
+      "text": "The finance committee met at 4:05 PM to check the bridge budget after central administration extended the hiring freeze through Q3, but the immediate effect is that the student-help coordinator line remains unfunded for another twelve weeks, even but the underlying service demand has not eased. Members agreed that the program can absorb a temporary delay in furniture and print costs, but not a full quarter without intake coverage - three short-term options were discussed. Reclassify one vacant analyst line for bridge staffing, reduce evening service hours, or draw against restricted reserves pending dean approval. No option was adopted in session. What did help was the frame. This is not a generic belt-tightening exercise. It is a staffing exposure problem with public-facing consequences, and the next memo needs to say that without overstating certainty. Action items. Revised table by Thursday, reserve-rule clarification from finance, and a staffing scenario note that distinguishes pause from actual service reduction.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -451,12 +451,6 @@
         "punctuation-shape"
       ],
       "lexemeSwaps": [
-        {
-          "family": "say",
-          "from": "say",
-          "to": "tell",
-          "kind": "lexeme"
-        },
         {
           "family": "help",
           "from": "support",
@@ -766,13 +760,13 @@
         },
         {
           "id": "s6",
-          "raw": "It is a staffing exposure problem with public-facing consequences, and the next memo needs to tell that without overstating certainty",
+          "raw": "It is a staffing exposure problem with public-facing consequences, and the next memo needs to say that without overstating certainty",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s6c0",
-              "text": "It is a staffing exposure problem with public-facing consequences, and the next memo needs to tell that without overstating certainty",
+              "text": "It is a staffing exposure problem with public-facing consequences, and the next memo needs to say that without overstating certainty",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -780,7 +774,7 @@
               "propositionHead": "needs",
               "actor": "It",
               "action": "needs",
-              "object": "tell without overstating certainty",
+              "object": "say without overstating certainty",
               "modifiers": [
                 "public"
               ],
@@ -853,12 +847,6 @@
       ],
       "lexemeSwaps": [
         {
-          "family": "say",
-          "from": "say",
-          "to": "tell",
-          "kind": "lexeme"
-        },
-        {
           "family": "help",
           "from": "support",
           "to": "help",
@@ -879,7 +867,7 @@
       ],
       "semanticRisk": 0.3,
       "realizationNotes": [
-        "4 lexical family swaps landed.",
+        "3 lexical family swaps landed.",
         "Register shift surfaced through lexical-register, directness.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
@@ -905,8 +893,7 @@
     "lexemeSwapFamilies": [
       "check",
       "fix",
-      "help",
-      "say"
+      "help"
     ],
     "relationInventory": [
       "additive:3",

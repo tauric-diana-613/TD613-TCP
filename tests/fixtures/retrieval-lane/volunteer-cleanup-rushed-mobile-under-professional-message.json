@@ -225,14 +225,10 @@
     "planSummary": {
       "transferMode": "expand",
       "structuralOperationsSelected": [
-        "baseline-merge",
-        "sentence-structure",
-        "clause-join-split"
+        "merge-pairs",
+        "clause-texture"
       ],
-      "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "connector-stance-lexicon"
-      ],
+      "lexicalRegisterOperationsSelected": [],
       "connectorStrategy": "contrastive",
       "contractionStrategy": "hold",
       "relationInventory": {
@@ -269,15 +265,11 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "mixed-structural",
-        "score": 312.414,
+        "spec": "ir-beam-search",
+        "score": 308.958,
         "passesApplied": [
-          "baseline-merge",
-          "baseline-voice-realization",
-          "sentence-structure",
-          "clause-join-split",
-          "connector-stance-lexicon",
-          "cleanup-restore"
+          "merge-pairs",
+          "clause-texture"
         ],
         "rescuePasses": [],
         "changedDimensions": [
@@ -412,7 +404,7 @@
       ]
     },
     "finalRealization": {
-      "text": "If youre late thats ok just dont kick off random jobs, and check in west fence table first; glass, pallets first pass. And saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands, but please bring water for real, not saying it to be annoying.",
+      "text": "If youre late thats ok just dont begin random jobs, and review in west fence table first. Glass, pallets first pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands, but please bring water for real, not saying it to be annoying.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -430,7 +422,13 @@
         {
           "family": "start",
           "from": "start",
-          "to": "kick off",
+          "to": "begin",
+          "kind": "lexeme"
+        },
+        {
+          "family": "check",
+          "from": "check",
+          "to": "review",
           "kind": "lexeme"
         }
       ],
@@ -443,7 +441,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 1,
+      "objectCoverage": 0.964,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -466,26 +464,14 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.385
+          "bagScore": 0.5,
+          "globalBagScore": 0.267
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s0c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.077
-        },
-        {
-          "sourceClauseId": "s3c0",
           "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -494,7 +480,19 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.077
+          "globalBagScore": 0.071
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.071
         },
         {
           "sourceClauseId": "s3c1",
@@ -505,8 +503,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.077
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s4c0",
@@ -530,11 +528,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.385
+          "globalBagScore": 0.357
         }
       ],
       "sourceClauseCount": 7,
-      "outputClauseCount": 5
+      "outputClauseCount": 4
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
@@ -545,7 +543,7 @@
     "realizedIR": {
       "metadata": {
         "sentenceCount": 3,
-        "clauseCount": 5,
+        "clauseCount": 4,
         "literalSpans": [
           {
             "value": "10:15",
@@ -556,32 +554,40 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "If youre late thats ok just dont kick off random jobs, and check in west fence table first; glass, pallets first pass",
+          "raw": "If youre late thats ok just dont begin random jobs, and review in west fence table first",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "If youre late thats ok just dont kick off random jobs, and check in west fence table first",
+              "text": "If youre late thats ok just dont begin random jobs, and review in west fence table first",
               "relationToPrev": "start",
               "clauseType": "subordinate",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "check",
+              "propositionHead": "begin",
               "actor": "",
-              "action": "check",
-              "object": "west fence table first",
+              "action": "begin",
+              "object": "random jobs review west fence",
               "modifiers": [
                 "table"
               ],
               "hedgeMarkers": [
                 "minimization"
               ]
-            },
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "Glass, pallets first pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
             {
-              "id": "s0c1",
-              "text": "glass, pallets first pass",
-              "relationToPrev": "additive",
+              "id": "s1c0",
+              "text": "Glass, pallets first pass",
+              "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
@@ -591,19 +597,11 @@
               "object": "",
               "modifiers": [],
               "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "And saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
+            },
             {
-              "id": "s1c0",
-              "text": "And saws stay under canopy b, kids stay off solvent side, paint only",
-              "relationToPrev": "start",
+              "id": "s1c1",
+              "text": "and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+              "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
@@ -617,20 +615,6 @@
               "hedgeMarkers": [
                 "minimization"
               ]
-            },
-            {
-              "id": "s1c1",
-              "text": "wind chills out",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "wind",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
             }
           ]
         },
@@ -678,13 +662,19 @@
         {
           "family": "start",
           "from": "start",
-          "to": "kick off",
+          "to": "begin",
+          "kind": "lexeme"
+        },
+        {
+          "family": "check",
+          "from": "check",
+          "to": "review",
           "kind": "lexeme"
         }
       ],
       "semanticRisk": 0.3,
       "realizationNotes": [
-        "1 lexical family swap landed.",
+        "2 lexical family swaps landed.",
         "Register shift surfaced through lexical-register, directness.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
@@ -706,6 +696,7 @@
       "sentence-spread"
     ],
     "lexemeSwapFamilies": [
+      "check",
       "start"
     ],
     "relationInventory": [
@@ -717,20 +708,16 @@
       "temporal:0"
     ],
     "structuralOperations": [
-      "baseline-merge",
-      "clause-join-split",
-      "sentence-structure"
+      "clause-texture",
+      "merge-pairs"
     ],
-    "lexicalOperations": [
-      "baseline-voice-realization",
-      "connector-stance-lexicon"
-    ],
+    "lexicalOperations": [],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 1,
+    "objectCoverage": 0.964,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

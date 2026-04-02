@@ -195,7 +195,7 @@
                   <button id="revealCadenceBtn" type="button" class="secondary">Reveal</button>
                   <button id="saveCadenceLockBtn" type="button" class="secondary">Save</button>
                 </div>
-                <div id="homebaseLockStatus" class="analysis-status">Stage a cadence draft. Reveal opens the dossier. Save writes it into the local archive.</div>
+                <div id="homebaseLockStatus" class="analysis-status">Stage a cadence draft. Reveal opens the dossier. Save keeps it in the session archive for this tab only.</div>
               </section>
             </div>
 
@@ -479,7 +479,7 @@
           <div class="station-view-meta">
             <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer station</div>
             <h2 class="station-view-title">Forge drafts, validate them, then inject only if the field agrees.</h2>
-            <p class="station-view-summary">This room is procedural on purpose: extract the field, build a candidate, run the trainer contract, and only then return the shell to the shared shelf.</p>
+            <p class="station-view-summary">This room is procedural on purpose: extract the field, build a candidate, run the trainer contract, keep session-local inject separate from export release, and only then return the shell to the shared shelf.</p>
           </div>
         </div>
         <section id="trainerPane" class="panel trainer-panel">
@@ -488,7 +488,7 @@
               <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Trainer lab</div>
               <h2>Forge a persona under retrieval law</h2>
             </div>
-            <p class="section-note">Extract the target field, inspect the prompt, validate a candidate, correct it if needed, then inject only when the retrieval lane will actually stand behind it.</p>
+            <p class="section-note">Extract the target field, inspect the prompt, validate a candidate, correct it if needed, then inject only when the retrieval lane will actually stand behind it. Externalized export stays sealed until you open a one-session release gate.</p>
           </div>
 
           <div class="trainer-grid">
@@ -547,8 +547,9 @@
               <div class="trainer-actions">
                 <button id="trainerForgeDraftBtn" type="button" class="primary-cta">Forge Draft</button>
                 <button id="trainerValidateBtn" type="button" class="secondary">Validate Passage</button>
+                <button id="trainerReleaseGateBtn" type="button" class="secondary">Arm Release Gate</button>
                 <button id="trainerExportBtn" type="button" class="secondary">Export JSON</button>
-                <button id="trainerInjectBtn" type="button" class="secondary">Inject into Personas</button>
+                <button id="trainerInjectBtn" type="button" class="secondary">Inject into Session Personas</button>
               </div>
 
               <div id="trainerStatus" class="analysis-status trainer-status">
@@ -558,7 +559,7 @@
 
               <div id="trainerBridgeSurface" class="trainer-surface trainer-bridge-surface">
                 <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Next move</div>
-                <div id="trainerBridgeBody" class="trainer-readout-body">Inject a passing persona to light up direct routes into the shelf, Homebase, or Deck.</div>
+                <div id="trainerBridgeBody" class="trainer-readout-body">Inject a passing persona into the session shelf, or arm a one-session release gate before exporting anything beyond this tab.</div>
               </div>
 
               <div class="trainer-surface">
@@ -573,6 +574,7 @@
 
               <div class="trainer-surface">
                 <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Forged persona export</div>
+                <div id="trainerReleaseGateHint" class="analysis-status">Export stays sealed until you arm a one-session release gate after validation.</div>
                 <textarea id="trainerExportOutput" readonly></textarea>
               </div>
             </div>

@@ -245,16 +245,10 @@
     },
     "planSummary": {
       "transferMode": "compress",
-      "structuralOperationsSelected": [
-        "planned-sentence-split",
-        "sentence-structure",
-        "clause-join-split"
-      ],
+      "structuralOperationsSelected": [],
       "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "baseline-stance",
-        "baseline-function-word",
-        "connector-stance-lexicon"
+        "contraction",
+        "phrase-texture"
       ],
       "connectorStrategy": "contrastive",
       "contractionStrategy": "hold",
@@ -292,26 +286,19 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "split-heavy",
-        "score": 274.076,
+        "spec": "ir-beam-search",
+        "score": 273.026,
         "passesApplied": [
-          "baseline-voice-realization",
-          "baseline-stance",
-          "baseline-function-word",
-          "planned-sentence-split",
-          "sentence-structure",
-          "clause-join-split",
-          "connector-stance-lexicon",
-          "cleanup-restore"
+          "contraction",
+          "phrase-texture"
         ],
         "rescuePasses": [],
         "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
+          "contraction-posture",
           "connector-stance",
-          "content-word-complexity",
-          "punctuation-shape"
+          "lexical-register",
+          "directness",
+          "abstraction-posture"
         ],
         "qualityGatePassed": true,
         "notes": []
@@ -337,7 +324,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 272.944,
+          "score": 103.388,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -346,23 +333,29 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore"
+            "cleanup-restore",
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "content-word-complexity",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer missed donor lexical/register realization."
+          ]
         },
         {
           "spec": "split-heavy",
-          "score": 274.076,
+          "score": 114.114,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -371,23 +364,29 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore"
+            "cleanup-restore",
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "content-word-complexity",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer missed donor lexical/register realization."
+          ]
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 272.944,
+          "score": 103.388,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -396,23 +395,29 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore"
+            "cleanup-restore",
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "content-word-complexity",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer missed donor lexical/register realization."
+          ]
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 272.944,
+          "score": 103.388,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -421,44 +426,85 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore"
+            "cleanup-restore",
+            "structural-rescue",
+            "connector-stance-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "structural-rescue",
+            "connector-stance-rescue"
+          ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "content-word-complexity",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer missed donor lexical/register realization."
+          ]
         }
       ]
     },
     "finalRealization": {
-      "text": "Hi team, I am documenting why the MRI for the left knee is still not scheduled even though the patient was told the authorization had cleared. The payer line confirmed auth number PR-44719, but their record is tied to the downtown clinic while the order in our queue still points to North River. Because the site on the authorization and the site on the order do not match, scheduling can see the approval and still cannot legally book the scan. We sent the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback. If the ordering office can resend under the correct location today, we may still keep the next-day slot. Otherwise the case rolls again.",
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
-      "semanticRisk": 0.3,
-      "rescuePasses": [
-        "semantic-final-rejection"
+      "text": "Hi team, I'm documenting why the MRI for the left knee is still not scheduled even though the patient was explained the authorization had cleared. The payer line confirmed authorization number PR-44719, but their record is tied to the downtown clinic while the order in our queue still details to North River, because the site on the authorization and the site on the order don't align, scheduling can see the approval and still can't legally schedule the scan. We forwarded the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback, if the ordering office can resend under the correct location today, we may still retain the next-day slot. Otherwise the case rolls again.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "contraction-posture",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "abstraction-posture"
       ],
-      "visibleShift": false,
-      "nonTrivialShift": false
+      "lexemeSwaps": [
+        {
+          "family": "say",
+          "from": "told",
+          "to": "explained",
+          "kind": "lexeme"
+        },
+        {
+          "family": "keep",
+          "from": "keep",
+          "to": "retain",
+          "kind": "lexeme"
+        },
+        {
+          "family": "detail",
+          "from": "points",
+          "to": "details",
+          "kind": "lexeme"
+        },
+        {
+          "family": "send",
+          "from": "sent",
+          "to": "forwarded",
+          "kind": "lexeme"
+        },
+        {
+          "family": "match",
+          "from": "match",
+          "to": "align",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
     "semanticAudit": {
-      "propositionCoverage": 1,
+      "propositionCoverage": 0.875,
       "actorCoverage": 1,
-      "actionCoverage": 1,
-      "objectCoverage": 0.938,
+      "actionCoverage": 0.864,
+      "objectCoverage": 0.798,
       "polarityMismatches": 0,
-      "tenseMismatches": 0,
+      "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -469,21 +515,21 @@
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
-          "tenseMismatch": 0,
+          "tenseMismatch": 1,
           "bagScore": 1,
           "globalBagScore": 0.088
         },
         {
           "sourceClauseId": "s0c1",
           "matchedClauseId": "s0c1",
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.9,
           "actorCoverage": 1,
-          "actionCoverage": 1,
+          "actionCoverage": 0.81,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.118
+          "bagScore": 0.6,
+          "globalBagScore": 0.086
         },
         {
           "sourceClauseId": "s1c0",
@@ -494,8 +540,8 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.6,
-          "globalBagScore": 0.167
+          "bagScore": 0.455,
+          "globalBagScore": 0.135
         },
         {
           "sourceClauseId": "s1c1",
@@ -515,11 +561,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.8,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.206
+          "bagScore": 0.75,
+          "globalBagScore": 0.171
         },
         {
           "sourceClauseId": "s3c0",
@@ -536,14 +582,14 @@
         {
           "sourceClauseId": "s4c0",
           "matchedClauseId": "s4c0",
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.1,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
+          "actionCoverage": 0.1,
+          "objectCoverage": 0.082,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.147
+          "bagScore": 0.1,
+          "globalBagScore": 0.026
         },
         {
           "sourceClauseId": "s5c0",
@@ -593,17 +639,17 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Hi team, I am documenting why the MRI for the left knee is still not scheduled even though the patient was told the authorization had cleared",
+          "raw": "Hi team, I'm documenting why the MRI for the left knee is still not scheduled even though the patient was explained the authorization had cleared",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Hi team, I am documenting why the MRI for the left knee is still not scheduled",
+              "text": "Hi team, I'm documenting why the MRI for the left knee is still not scheduled",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
-              "tenseAspect": "progressive",
+              "tenseAspect": "past",
               "propositionHead": "left",
               "actor": "I",
               "action": "left",
@@ -613,15 +659,15 @@
             },
             {
               "id": "s0c1",
-              "text": "the patient was told the authorization had cleared",
+              "text": "the patient was explained the authorization had cleared",
               "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "perfect",
-              "propositionHead": "told",
+              "propositionHead": "was",
               "actor": "the patient",
-              "action": "told",
-              "object": "authorization cleared",
+              "action": "was",
+              "object": "explained authorization cleared",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -629,13 +675,13 @@
         },
         {
           "id": "s1",
-          "raw": "The payer line confirmed auth number PR-44719, but their record is tied to the downtown clinic while the order in our queue still points to North River",
+          "raw": "The payer line confirmed authorization number PR-44719, but their record is tied to the downtown clinic while the order in our queue still details to North River",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "The payer line confirmed auth number PR-44719, but their record is tied to the downtown clinic",
+              "text": "The payer line confirmed authorization number PR-44719, but their record is tied to the downtown clinic",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -643,7 +689,7 @@
               "propositionHead": "confirmed",
               "actor": "The payer",
               "action": "confirmed",
-              "object": "auth number pr 44719 record",
+              "object": "authorization number pr 44719 record",
               "modifiers": [
                 "clinic"
               ],
@@ -651,7 +697,7 @@
             },
             {
               "id": "s1c1",
-              "text": "the order in our queue still points to North River",
+              "text": "the order in our queue still details to North River",
               "relationToPrev": "contrastive",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -667,21 +713,21 @@
         },
         {
           "id": "s2",
-          "raw": "Because the site on the authorization and the site on the order do not match, scheduling can see the approval and still cannot legally book the scan",
+          "raw": "Because the site on the authorization and the site on the order don't align, scheduling can see the approval and still can't legally schedule the scan",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "Because the site on the authorization and the site on the order do not match, scheduling can see the approval and still cannot legally book the scan",
+              "text": "Because the site on the authorization and the site on the order don't align, scheduling can see the approval and still can't legally schedule the scan",
               "relationToPrev": "start",
               "clauseType": "subordinate",
               "polarity": "negative",
               "tenseAspect": "future-modal",
-              "propositionHead": "match",
+              "propositionHead": "align",
               "actor": "the site",
-              "action": "match",
-              "object": "scheduling see approval cannot legally",
+              "action": "align",
+              "object": "scheduling see approval can't legally",
               "modifiers": [
                 "approval",
                 "legally"
@@ -692,20 +738,20 @@
         },
         {
           "id": "s3",
-          "raw": "We sent the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
+          "raw": "We forwarded the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "We sent the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
+              "text": "We forwarded the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "sent",
+              "propositionHead": "forwarded",
               "actor": "We",
-              "action": "sent",
+              "action": "forwarded",
               "object": "correction request at 10 26",
               "modifiers": [],
               "hedgeMarkers": []
@@ -714,21 +760,21 @@
         },
         {
           "id": "s4",
-          "raw": "If the ordering office can resend under the correct location today, we may still keep the next-day slot",
+          "raw": "If the ordering office can resend under the correct location today, we may still retain the next-day slot",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "If the ordering office can resend under the correct location today, we may still keep the next-day slot",
+              "text": "If the ordering office can resend under the correct location today, we may still retain the next-day slot",
               "relationToPrev": "start",
               "clauseType": "subordinate",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "keep",
+              "propositionHead": "can",
               "actor": "the ordering",
-              "action": "keep",
-              "object": "next day slot",
+              "action": "can",
+              "object": "resend under correct location today",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -759,30 +805,77 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "contraction-posture",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "abstraction-posture"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "say",
+          "from": "told",
+          "to": "explained",
+          "kind": "lexeme"
+        },
+        {
+          "family": "keep",
+          "from": "keep",
+          "to": "retain",
+          "kind": "lexeme"
+        },
+        {
+          "family": "detail",
+          "from": "points",
+          "to": "details",
+          "kind": "lexeme"
+        },
+        {
+          "family": "send",
+          "from": "sent",
+          "to": "forwarded",
+          "kind": "lexeme"
+        },
+        {
+          "family": "match",
+          "from": "match",
+          "to": "align",
+          "kind": "lexeme"
+        }
+      ],
       "semanticRisk": 0.3,
       "realizationNotes": [
-        "2 lexical family swaps landed.",
-        "Register shift surfaced through content-word-complexity.",
+        "5 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, directness, abstraction-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
-      "rescuePasses": [
-        "semantic-final-rejection"
-      ],
-      "visibleShift": false,
-      "nonTrivialShift": false
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     }
   },
   "semanticContract": {
-    "transferClass": "rejected",
-    "realizationTier": "none",
-    "changedDimensions": [],
-    "lexemeSwapFamilies": [],
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "abstraction-posture",
+      "connector-stance",
+      "contraction-posture",
+      "directness",
+      "lexical-register"
+    ],
+    "lexemeSwapFamilies": [
+      "detail",
+      "keep",
+      "match",
+      "say",
+      "send"
+    ],
     "relationInventory": [
       "additive:3",
       "causal:1",
@@ -791,25 +884,19 @@
       "resumptive:5",
       "temporal:1"
     ],
-    "structuralOperations": [
-      "clause-join-split",
-      "planned-sentence-split",
-      "sentence-structure"
-    ],
+    "structuralOperations": [],
     "lexicalOperations": [
-      "baseline-function-word",
-      "baseline-stance",
-      "baseline-voice-realization",
-      "connector-stance-lexicon"
+      "contraction",
+      "phrase-texture"
     ],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "hold",
-    "propositionCoverage": 1,
+    "propositionCoverage": 0.875,
     "actorCoverage": 1,
-    "actionCoverage": 1,
-    "objectCoverage": 0.938,
+    "actionCoverage": 0.864,
+    "objectCoverage": 0.798,
     "polarityMismatches": 0,
-    "tenseMismatches": 0,
+    "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1
   }
 }

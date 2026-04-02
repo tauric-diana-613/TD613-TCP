@@ -81,6 +81,8 @@ export async function createTrainerController(options = {}) {
     extractBtn: byId(root, 'trainerExtractBtn'),
     forgeDraftBtn: byId(root, 'trainerForgeDraftBtn'),
     validateBtn: byId(root, 'trainerValidateBtn'),
+    releaseGateBtn: byId(root, 'trainerReleaseGateBtn'),
+    releaseGateHint: byId(root, 'trainerReleaseGateHint'),
     exportBtn: byId(root, 'trainerExportBtn'),
     injectBtn: byId(root, 'trainerInjectBtn'),
     statusBase: byId(root, 'trainerStatusBase'),
@@ -92,6 +94,7 @@ export async function createTrainerController(options = {}) {
     promptBuild: null,
     validation: null,
     exportSpec: null,
+    releaseGateArmed: false,
     draftResult: null,
     draftContext: null,
     lastInjectedPersonaSummary: null,
@@ -195,11 +198,15 @@ export async function createTrainerController(options = {}) {
     const context = currentDraftContext();
     const hasDraftSource = Boolean(String(context.sourceText || '').trim()) || Boolean(state.extraction?.samples?.[0]);
     const hasDraftShell = Boolean(draftShell(context));
+    const releaseGateReady = Boolean(state.validation?.pass && state.exportSpec);
 
     nodes.extractBtn.disabled = !hasCorpus;
     nodes.forgeDraftBtn.disabled = !(hasCorpus || hasExtraction || hasDraftSource) || !hasDraftShell;
     nodes.validateBtn.disabled = !(hasExtraction && hasGenerated);
-    nodes.exportBtn.disabled = !hasExtraction;
+    if (nodes.releaseGateBtn) {
+      nodes.releaseGateBtn.disabled = !releaseGateReady;
+    }
+    nodes.exportBtn.disabled = !(releaseGateReady && state.releaseGateArmed);
     nodes.injectBtn.disabled = !(state.exportSpec && state.validation?.pass);
   }
 
@@ -213,7 +220,19 @@ export async function createTrainerController(options = {}) {
     nodes.validationReport.innerHTML = renderValidationReport(state.validation);
     nodes.correctionHints.innerHTML = renderCorrectionHints(state.validation);
     nodes.promptOutput.value = state.promptBuild?.systemPrompt || '';
-    nodes.exportOutput.value = state.exportSpec ? exportPersonaSpec(state.exportSpec) : '';
+    if (nodes.releaseGateBtn) {
+      nodes.releaseGateBtn.textContent = state.releaseGateArmed ? 'Close Release Gate' : 'Arm Release Gate';
+      nodes.releaseGateBtn.dataset.armed = state.releaseGateArmed ? 'true' : 'false';
+    }
+    if (nodes.releaseGateHint) {
+      nodes.releaseGateHint.textContent =
+        state.releaseGateArmed && state.exportSpec
+          ? 'Release gate armed for this tab. Export is materialized until you close the gate or refresh.'
+          : state.validation?.pass && state.exportSpec
+            ? 'Validation passed. Arm the one-session release gate if you need an export artifact outside this tab.'
+            : 'Export stays sealed until you validate a passing sample and arm a one-session release gate.';
+    }
+    nodes.exportOutput.value = state.releaseGateArmed && state.exportSpec ? exportPersonaSpec(state.exportSpec) : '';
     updateButtons();
   }
 
@@ -224,6 +243,7 @@ export async function createTrainerController(options = {}) {
     }
     state.validation = null;
     state.exportSpec = null;
+    state.releaseGateArmed = false;
     state.draftResult = null;
     nodes.exportOutput.value = '';
   }
@@ -413,12 +433,31 @@ export async function createTrainerController(options = {}) {
       validation: state.validation,
       buildMod: engine.cadenceModFromProfile
     });
+    state.releaseGateArmed = false;
     render();
     setStatus(
       state.validation.pass
-        ? `${personaName()} held retrieval law and is ready to export or inject into the shelf.`
+        ? `${personaName()} held retrieval law and is ready for session-local inject. Arm the release gate only if export is necessary.`
         : `${personaName()} still needs another forge pass before persona injection.`,
       state.validation.pass ? 'forge-ready' : state.validation.status
+    );
+    return snapshot();
+  }
+
+  function toggleReleaseGate() {
+    if (!state.exportSpec || !state.validation?.pass) {
+      render();
+      setStatus('Validate a passing trainer sample before opening the release gate.', 'sealed');
+      return snapshot();
+    }
+
+    state.releaseGateArmed = !state.releaseGateArmed;
+    render();
+    setStatus(
+      state.releaseGateArmed
+        ? `One-session release gate armed for ${personaName()}. Export can materialize in this tab.`
+        : `Release gate closed for ${personaName()}. Export is sealed again.`,
+      state.releaseGateArmed ? 'release-open' : 'sealed'
     );
     return snapshot();
   }
@@ -430,8 +469,13 @@ export async function createTrainerController(options = {}) {
     if (!state.validation) {
       validate();
     }
+    if (!state.releaseGateArmed) {
+      render();
+      setStatus('Arm the one-session release gate before materializing export.', 'sealed');
+      return null;
+    }
     render();
-    setStatus(`Forge export ready for ${personaName()}.`, 'json');
+    setStatus(`Forge export ready for ${personaName()} in this tab.`, 'json');
     return state.exportSpec;
   }
 
@@ -447,7 +491,7 @@ export async function createTrainerController(options = {}) {
       ? { id: inserted.id, name: inserted.name, source: inserted.source }
       : { id: state.exportSpec.browserPersona.id, name: state.exportSpec.browserPersona.name, source: state.exportSpec.browserPersona.source };
     render();
-    setStatus(`${state.lastInjectedPersonaSummary.name} is now live on the shelf and ready for Homebase or Deck.`, 'injected');
+    setStatus(`${state.lastInjectedPersonaSummary.name} is now live on the session shelf and ready for Homebase or Deck.`, 'injected');
     return state.lastInjectedPersonaSummary;
   }
 
@@ -462,6 +506,7 @@ export async function createTrainerController(options = {}) {
       promptBuild: clone(state.promptBuild),
       validation: clone(state.validation),
       exportSpec: clone(state.exportSpec),
+      releaseGateArmed: Boolean(state.releaseGateArmed),
       lastInjectedPersonaSummary: clone(state.lastInjectedPersonaSummary),
       statusMessage: state.statusMessage,
       statusCue: state.statusCue,
@@ -479,6 +524,7 @@ export async function createTrainerController(options = {}) {
     state.promptBuild = clone(nextState.promptBuild) || null;
     state.validation = clone(nextState.validation) || null;
     state.exportSpec = clone(nextState.exportSpec) || null;
+    state.releaseGateArmed = Boolean(nextState.releaseGateArmed);
     state.lastInjectedPersonaSummary = clone(nextState.lastInjectedPersonaSummary) || null;
     state.statusMessage = nextState.statusMessage || '';
     state.statusCue = nextState.statusCue || '';
@@ -500,7 +546,8 @@ export async function createTrainerController(options = {}) {
       draftPersonaId: state.draftResult?.personaId || '',
       draftPersonaName: state.draftResult?.personaName || '',
       generatedLength: nodes.generatedOutput.value.trim().length,
-      exportReady: Boolean(state.exportSpec),
+      exportReady: Boolean(state.releaseGateArmed && state.exportSpec),
+      releaseGateArmed: Boolean(state.releaseGateArmed),
       canInject: !nodes.injectBtn.disabled,
       lastInjectedPersonaSummary: clone(state.lastInjectedPersonaSummary),
       statusMessage: state.statusMessage,
@@ -526,6 +573,13 @@ export async function createTrainerController(options = {}) {
   nodes.validateBtn.addEventListener('click', () => {
     try {
       validate();
+    } catch (error) {
+      setStatus(error.message);
+    }
+  });
+  nodes.releaseGateBtn.addEventListener('click', () => {
+    try {
+      toggleReleaseGate();
     } catch (error) {
       setStatus(error.message);
     }
@@ -565,6 +619,7 @@ export async function createTrainerController(options = {}) {
           buildMod: engine.cadenceModFromProfile
         });
       }
+      state.releaseGateArmed = false;
       render();
     }
   });
@@ -583,6 +638,7 @@ export async function createTrainerController(options = {}) {
     extract,
     forgeDraft,
     validate,
+    toggleReleaseGate,
     exportSpec,
     inject,
     snapshot,

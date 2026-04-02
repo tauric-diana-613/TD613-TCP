@@ -437,82 +437,54 @@
       ]
     },
     "finalRealization": {
-      "text": "Acct still locked, but can receive the code but login dies at fraud review every time - case CS-88412. And support keeps saying reset again even tho reset isnt the problem. Last 4, recovery email align. And need someone to clear hold not forward same script.",
-      "transferClass": "weak",
-      "borrowedShellOutcome": "partial",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "modifier-density",
-        "directness",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "get",
-          "from": "get",
-          "to": "receive",
-          "kind": "lexeme"
-        },
-        {
-          "family": "send",
-          "from": "send",
-          "to": "forward",
-          "kind": "lexeme"
-        },
-        {
-          "family": "match",
-          "from": "match",
-          "to": "align",
-          "kind": "lexeme"
-        }
-      ],
+      "text": "acct still locked. can get the code but login dies at fraud review every time. case CS-88412. support keeps saying reset again even tho reset isnt the problem. last 4 + recovery email match. need someone to clear hold not send same script",
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
       "rescuePasses": [
         "structural-rescue",
         "connector-stance-rescue",
-        "progress-admit"
+        "final-rejection"
       ],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "visibleShift": false,
+      "nonTrivialShift": false
     },
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.958,
+      "objectCoverage": 1,
       "polarityMismatches": 0,
-      "tenseMismatches": 1,
+      "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
+          "bagScore": 1,
+          "globalBagScore": 0.048
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c0",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
-          "tenseMismatch": 1,
-          "bagScore": 0.167,
-          "globalBagScore": 0.08
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.286
         },
         {
           "sourceClauseId": "s2c0",
@@ -523,12 +495,12 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
+          "bagScore": 1,
           "globalBagScore": 0.048
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -540,7 +512,7 @@
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -552,7 +524,7 @@
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s3c0",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -564,7 +536,7 @@
         }
       ],
       "sourceClauseCount": 6,
-      "outputClauseCount": 4
+      "outputClauseCount": 6
     },
     "protectedAnchorAudit": {
       "totalAnchors": 2,
@@ -574,8 +546,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 4,
-        "clauseCount": 4,
+        "sentenceCount": 6,
+        "clauseCount": 6,
         "literalSpans": [
           {
             "value": "CS-88412",
@@ -590,37 +562,79 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Acct still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
+          "raw": "acct still locked",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Acct still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
+              "text": "acct still locked",
               "relationToPrev": "start",
-              "clauseType": "main",
+              "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "review",
-              "actor": "the code",
-              "action": "review",
-              "object": "every time case cs 88412",
-              "modifiers": [
-                "receive"
-              ],
+              "propositionHead": "acct",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
               "hedgeMarkers": []
             }
           ]
         },
         {
           "id": "s1",
-          "raw": "And support keeps saying reset again even tho reset isnt the problem",
-          "rhetoricalRole": "additive",
+          "raw": "can get the code but login dies at fraud review every time",
+          "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "And support keeps saying reset again even tho reset isnt the problem",
+              "text": "can get the code but login dies at fraud review every time",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "get",
+              "actor": "the code",
+              "action": "get",
+              "object": "code login dies at fraud",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "case CS-88412",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "case CS-88412",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "case",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "support keeps saying reset again even tho reset isnt the problem",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "support keeps saying reset again even tho reset isnt the problem",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -635,21 +649,21 @@
           ]
         },
         {
-          "id": "s2",
-          "raw": "Last 4, recovery email align",
+          "id": "s4",
+          "raw": "last 4 + recovery email match",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s2c0",
-              "text": "Last 4, recovery email align",
+              "id": "s4c0",
+              "text": "last 4 + recovery email match",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "align",
+              "propositionHead": "match",
               "actor": "",
-              "action": "align",
+              "action": "match",
               "object": "",
               "modifiers": [],
               "hedgeMarkers": []
@@ -657,14 +671,14 @@
           ]
         },
         {
-          "id": "s3",
-          "raw": "And need someone to clear hold not forward same script.",
+          "id": "s5",
+          "raw": "need someone to clear hold not send same script",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s3c0",
-              "text": "And need someone to clear hold not forward same script",
+              "id": "s5c0",
+              "text": "need someone to clear hold not send same script",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -672,7 +686,7 @@
               "propositionHead": "need",
               "actor": "",
               "action": "need",
-              "object": "someone clear hold forward same",
+              "object": "someone clear hold send same",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -681,73 +695,30 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "weak",
-      "borrowedShellOutcome": "partial",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "modifier-density",
-        "directness",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "get",
-          "from": "get",
-          "to": "receive",
-          "kind": "lexeme"
-        },
-        {
-          "family": "send",
-          "from": "send",
-          "to": "forward",
-          "kind": "lexeme"
-        },
-        {
-          "family": "match",
-          "from": "match",
-          "to": "align",
-          "kind": "lexeme"
-        }
-      ],
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
       "realizationNotes": [
-        "3 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, modifier-density, directness.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
         "structural-rescue",
         "connector-stance-rescue",
-        "progress-admit"
+        "final-rejection"
       ],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "visibleShift": false,
+      "nonTrivialShift": false
     }
   },
   "semanticContract": {
-    "transferClass": "weak",
-    "realizationTier": "lexical-structural",
-    "changedDimensions": [
-      "connector-stance",
-      "directness",
-      "lexical-register",
-      "modifier-density",
-      "punctuation-shape",
-      "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
-    ],
-    "lexemeSwapFamilies": [
-      "get",
-      "match",
-      "send"
-    ],
+    "transferClass": "rejected",
+    "realizationTier": "none",
+    "changedDimensions": [],
+    "lexemeSwapFamilies": [],
     "relationInventory": [
       "additive:0",
       "causal:0",
@@ -772,9 +743,9 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.958,
+    "objectCoverage": 1,
     "polarityMismatches": 0,
-    "tenseMismatches": 1,
+    "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }
 }

@@ -1680,6 +1680,7 @@ const LEXICAL_FAMILY_SKIP_PATTERNS = {
 };
 
 const DISABLED_LEXICAL_FAMILY_IDS = new Set(['quiet']);
+const BORROWED_SHELL_DISABLED_LEXICAL_FAMILY_IDS = new Set(['quiet', 'say', 'keep', 'leave', 'give']);
 
 const CONTENT_STOP_WORDS = new Set([...FUNCTION_WORDS, ...AUXILIARY_WORDS, 'i', 'you', 'we', 'they', 'he', 'she', 'it']);
 
@@ -2882,14 +2883,18 @@ function preferredFamilySurface(family, formKey, mode = 'plain') {
   return family.forms?.[mode]?.[formKey] || family.forms?.plain?.[formKey] || '';
 }
 
-function applyLexicalFamilyRealization(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
+function applyLexicalFamilyRealization(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76, options = {}) {
   let result = text;
   const mode = preferredRegisterMode(targetProfile, currentProfile);
   const maxFamilies = Math.max(1, Math.min(6, Math.round(2 + (strength * 4))));
+  const disabledFamilyIds = new Set([
+    ...DISABLED_LEXICAL_FAMILY_IDS,
+    ...(options?.disabledLexicalFamilies || [])
+  ]);
   let applied = 0;
 
   for (const family of LEXICAL_FAMILIES) {
-    if (DISABLED_LEXICAL_FAMILY_IDS.has(family.id)) {
+    if (disabledFamilyIds.has(family.id)) {
       continue;
     }
 
@@ -3066,7 +3071,7 @@ function applyVoiceRealizationTexture(text = '', currentProfile = {}, targetProf
   let result = text;
   result = applyShorthandRealizationTexture(result, currentProfile, targetProfile, strength);
   result = applyPhraseRealizationPacks(result, currentProfile, targetProfile, strength);
-  result = applyLexicalFamilyRealization(result, currentProfile, targetProfile, strength);
+  result = applyLexicalFamilyRealization(result, currentProfile, targetProfile, strength, options);
   result = applyRegisterFramingTexture(result, currentProfile, targetProfile, strength, options);
   return result;
 }
@@ -4546,6 +4551,7 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   const strength = clamp(Number(options?.strength ?? shell?.strength ?? (shell?.profile ? 0.82 : 0.68)), 0, 1);
   const debug = Boolean(options?.debug);
   const retrieval = Boolean(options?.retrieval);
+  const strictBorrowedMode = shell?.mode === 'borrowed' && (retrieval || shell?.source === 'swapped');
 
   if (!sourceText || ((!mod.sent && !mod.cont && !mod.punc) && !shell?.profile) || shell?.mode === 'native') {
     const protectedState = protectTransferLiterals(sourceText);
@@ -4622,7 +4628,11 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   const targetProfile = buildTransferTargetProfile(sourceProfile, shell, mod, strength);
   const effectiveMod = deriveRelativeCadenceMod(sourceProfile, targetProfile, mod);
   const voiceRealizationOptions = {
-    allowPlainTargetCompression: shell?.mode === 'borrowed' && (retrieval || shell?.source === 'swapped')
+    allowPlainTargetCompression: shell?.mode === 'borrowed' && (retrieval || shell?.source === 'swapped'),
+    disabledLexicalFamilies:
+      shell?.mode === 'borrowed' && (retrieval || shell?.source === 'swapped')
+        ? [...BORROWED_SHELL_DISABLED_LEXICAL_FAMILY_IDS]
+        : []
   };
   const targetGap = profileDeltaToTarget(sourceProfile, targetProfile);
   const transferPlan = buildTransferPlan({
@@ -5128,9 +5138,131 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     debug: null
   };
 
-  // Pool beam + legacy candidates; best score wins
+  // Pool beam + legacy candidates; accepted retrieval-safe survivors win first.
   const allCandidates = [beamCandidate, ...candidates];
-  const bestCandidate = [...allCandidates].sort((left, right) => right.score - left.score)[0];
+  const candidateAcceptanceSummary = (candidate = {}) => {
+    const candidateOutputText = candidate.outputText || sourceText;
+    const candidateOutputProfile = candidate.outputProfile || extractCadenceProfile(candidateOutputText);
+    const candidateChangedDimensions = [...(candidate.changedDimensions || [])];
+    const lexicalShiftProfile = buildLexicalShiftProfile(
+      sourceText,
+      candidateOutputText,
+      sourceProfile,
+      targetProfile,
+      candidateOutputProfile
+    );
+    const visibleShift = hasBorrowedShellVisibleShift(
+      sourceText,
+      candidateOutputText,
+      candidateChangedDimensions,
+      lexicalShiftProfile
+    );
+    const nonTrivialShift = hasBorrowedShellNonTrivialShift(
+      sourceText,
+      candidateOutputText,
+      candidateChangedDimensions,
+      lexicalShiftProfile
+    );
+    const auditBundle = buildSemanticAuditBundle(ir, candidateOutputText, protectedState);
+    const semanticAudit = auditBundle.semanticAudit || {};
+    const protectedAnchorAudit = auditBundle.protectedAnchorAudit || {};
+    const protectedAnchorIntegrity =
+      protectedAnchorAudit.protectedAnchorIntegrity ??
+      semanticAudit.protectedAnchorIntegrity ??
+      1;
+    const sourceFitToTarget = compareTexts('', '', {
+      profileA: sourceProfile,
+      profileB: targetProfile
+    });
+    const outputFitToTarget = compareTexts('', '', {
+      profileA: candidateOutputProfile,
+      profileB: targetProfile
+    });
+    const sourceDonorDistance =
+      (sourceFitToTarget.sentenceDistance || 0) +
+      (sourceFitToTarget.functionWordDistance || 0) +
+      (sourceFitToTarget.contractionDistance || 0) +
+      (sourceFitToTarget.punctShapeDistance || 0) +
+      (sourceFitToTarget.registerDistance || 0);
+    const outputDonorDistance =
+      (outputFitToTarget.sentenceDistance || 0) +
+      (outputFitToTarget.functionWordDistance || 0) +
+      (outputFitToTarget.contractionDistance || 0) +
+      (outputFitToTarget.punctShapeDistance || 0) +
+      (outputFitToTarget.registerDistance || 0);
+    const donorImprovement = Math.max(0, sourceDonorDistance - outputDonorDistance);
+    const donorRegression = Math.max(0, outputDonorDistance - sourceDonorDistance);
+    const structuralCount = borrowedShellStructuralDimensions(candidateChangedDimensions).length;
+    const lexicalCount = lexicalDimensions(candidateChangedDimensions).length;
+    const registerRealization =
+      lexicalCount >= 1 ||
+      Number(lexicalShiftProfile.swapCount || 0) > 0 ||
+      candidateChangedDimensions.includes('connector-stance') ||
+      candidateChangedDimensions.includes('contraction-posture');
+    const transferClass =
+      hasMaterialStructuralTransfer(candidateChangedDimensions) &&
+      (!strictBorrowedMode || registerRealization)
+        ? 'structural'
+        : 'weak';
+    const acceptedForBorrowed =
+      candidate.quality?.qualityGatePassed &&
+      !borrowedShellPathologyBlocked(candidate.quality?.notes || []) &&
+      candidateOutputText !== sourceText &&
+      visibleShift &&
+      nonTrivialShift &&
+      protectedAnchorIntegrity >= 1 &&
+      (semanticAudit.propositionCoverage ?? 1) >= 0.85 &&
+      (semanticAudit.actorCoverage ?? 1) >= 0.75 &&
+      (semanticAudit.actionCoverage ?? 1) >= 0.75 &&
+      (semanticAudit.objectCoverage ?? 1) >= 0.65 &&
+      (semanticAudit.polarityMismatches ?? 0) <= 1 &&
+      structuralCount >= 1 &&
+      registerRealization;
+    const acceptedForPersona =
+      candidate.quality?.qualityGatePassed &&
+      !borrowedShellPathologyBlocked(candidate.quality?.notes || []) &&
+      candidateOutputText !== sourceText &&
+      protectedAnchorIntegrity >= 1 &&
+      (semanticAudit.propositionCoverage ?? 1) >= 0.9 &&
+      (semanticAudit.polarityMismatches ?? 0) <= 1 &&
+      (visibleShift || lexicalCount > 0 || structuralCount > 0);
+    const accepted =
+      strictBorrowedMode
+        ? acceptedForBorrowed
+        : shell?.mode === 'persona'
+          ? acceptedForPersona
+          : Boolean(candidate.quality?.qualityGatePassed);
+    const acceptanceScore =
+      candidate.score +
+      (transferClass === 'structural' ? 36 : 12) +
+      (structuralCount * 18) +
+      (lexicalCount * 14) +
+      (Number(lexicalShiftProfile.swapCount || 0) * 8) +
+      (visibleShift ? 8 : 0) +
+      (nonTrivialShift ? 12 : 0) +
+      Math.min(40, donorImprovement * 80) -
+      Math.min(32, donorRegression * 60) +
+      (((semanticAudit.propositionCoverage ?? 1) * 12) + ((semanticAudit.actionCoverage ?? 1) * 8));
+
+    return {
+      candidate,
+      accepted,
+      acceptanceScore,
+      transferClass,
+      lexicalShiftProfile,
+      visibleShift,
+      nonTrivialShift,
+      auditBundle
+    };
+  };
+  const acceptedSelection =
+    strictBorrowedMode || shell?.mode === 'persona'
+      ? allCandidates
+        .map((candidate) => candidateAcceptanceSummary(candidate))
+        .filter((entry) => entry.accepted)
+        .sort((left, right) => right.acceptanceScore - left.acceptanceScore)[0] || null
+      : null;
+  let bestCandidate = acceptedSelection?.candidate || [...allCandidates].sort((left, right) => right.score - left.score)[0];
 
   let finalText = bestCandidate.outputText;
   let finalProfile = bestCandidate.outputProfile;
@@ -5151,129 +5283,78 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     notes.push('Source offered limited structural rewrite opportunities, so the transfer stayed subtle.');
   }
 
-  let directBorrowedProgressAdmission = null;
-  if (!bestCandidate.quality.qualityGatePassed && shell?.mode === 'borrowed') {
-    const directLexicalShiftProfile = buildLexicalShiftProfile(
-      sourceText,
-      bestCandidate.outputText,
-      sourceProfile,
-      targetProfile,
-      bestCandidate.outputProfile
-    );
-    const directVisibleShift = hasBorrowedShellVisibleShift(
-      sourceText,
-      bestCandidate.outputText,
-      bestCandidate.changedDimensions,
-      directLexicalShiftProfile
-    );
-    const directNonTrivialShift = hasBorrowedShellNonTrivialShift(
-      sourceText,
-      bestCandidate.outputText,
-      bestCandidate.changedDimensions,
-      directLexicalShiftProfile
-    );
-    const directAuditBundle = buildSemanticAuditBundle(ir, bestCandidate.outputText, protectedState);
-    const directProtectedAnchorIntegrity =
-      directAuditBundle.protectedAnchorAudit.protectedAnchorIntegrity ??
-      directAuditBundle.semanticAudit.protectedAnchorIntegrity ??
-      1;
-    const progressAdmission = borrowedShellProgressAdmission({
-      qualityNotes: bestCandidate.quality.notes || [],
-      changedDimensions: bestCandidate.changedDimensions || [],
-      sourceProfile,
-      outputProfile: bestCandidate.outputProfile,
-      targetProfile,
-      protectedAnchorIntegrity: directProtectedAnchorIntegrity,
-      semanticAudit: directAuditBundle.semanticAudit,
-      lexicalShiftProfile: directLexicalShiftProfile,
-      visibleShift: directVisibleShift,
-      nonTrivialShift: directNonTrivialShift
-    });
-    directBorrowedProgressCheck = {
-      eligible: progressAdmission.eligible,
-      qualityNotes: bestCandidate.quality.notes || [],
-      changedDimensions: [...(bestCandidate.changedDimensions || [])],
-      visibleShift: directVisibleShift,
-      nonTrivialShift: directNonTrivialShift,
-      protectedAnchorIntegrity: directProtectedAnchorIntegrity,
-      propositionCoverage: directAuditBundle.semanticAudit.propositionCoverage ?? 1,
-      actionCoverage: directAuditBundle.semanticAudit.actionCoverage ?? 1,
-      polarityMismatches: directAuditBundle.semanticAudit.polarityMismatches ?? 0,
-      progressProfile: progressAdmission.progressProfile,
-      lexicalShiftProfile: directLexicalShiftProfile
-    };
-
-    if (progressAdmission.eligible) {
-      directBorrowedProgressAdmission = {
-        lexicalShiftProfile: directLexicalShiftProfile,
-        semanticAudit: directAuditBundle.semanticAudit,
-        protectedAnchorAudit: directAuditBundle.protectedAnchorAudit,
-        outputIR: directAuditBundle.outputIR,
-        visibleShift: directVisibleShift,
-        nonTrivialShift: directNonTrivialShift,
-        progressProfile: progressAdmission.progressProfile
-      };
-    }
-  }
-
-  if (directBorrowedProgressAdmission) {
-    finalText = sanitizeBorrowedShellPathologies(bestCandidate.outputText);
+  if (acceptedSelection) {
+    finalText = shell?.mode === 'borrowed'
+      ? sanitizeBorrowedShellPathologies(bestCandidate.outputText)
+      : bestCandidate.outputText;
     finalProfile = extractCadenceProfile(finalText);
+    qualityGatePassed = true;
     changedDimensions = [...bestCandidate.changedDimensions];
-    transferClass = 'weak';
-    borrowedShellOutcome = 'partial';
+    transferClass = acceptedSelection.transferClass;
+    precomputedAuditBundle = {
+      ...acceptedSelection.auditBundle
+    };
+    precomputedLexicalShiftProfile = acceptedSelection.lexicalShiftProfile;
+    precomputedVisibleShift = acceptedSelection.visibleShift;
+    precomputedNonTrivialShift = acceptedSelection.nonTrivialShift;
+    rescuePasses.push(...(bestCandidate.rescuePasses || []));
+    if (shell?.mode === 'borrowed') {
+      borrowedShellOutcome = transferClass === 'structural' ? 'structural' : 'subtle';
+      directBorrowedProgressCheck = {
+        eligible: true,
+        qualityNotes: bestCandidate.quality.notes || [],
+        changedDimensions: [...(bestCandidate.changedDimensions || [])],
+        visibleShift: acceptedSelection.visibleShift,
+        nonTrivialShift: acceptedSelection.nonTrivialShift,
+        protectedAnchorIntegrity: acceptedSelection.auditBundle.protectedAnchorAudit?.protectedAnchorIntegrity ??
+          acceptedSelection.auditBundle.semanticAudit?.protectedAnchorIntegrity ??
+          1,
+        propositionCoverage: acceptedSelection.auditBundle.semanticAudit?.propositionCoverage ?? 1,
+        actionCoverage: acceptedSelection.auditBundle.semanticAudit?.actionCoverage ?? 1,
+        polarityMismatches: acceptedSelection.auditBundle.semanticAudit?.polarityMismatches ?? 0,
+        progressProfile: {
+          accepted: true,
+          structuralCount: borrowedShellStructuralDimensions(bestCandidate.changedDimensions || []).length,
+          lexicalCount: lexicalDimensions(bestCandidate.changedDimensions || []).length,
+          swapCount: Number(acceptedSelection.lexicalShiftProfile?.swapCount || 0)
+        },
+        lexicalShiftProfile: acceptedSelection.lexicalShiftProfile
+      };
+      notes.push('Borrowed shell landed a retrieval-safe donor realization without partial fallback.');
+    } else if (shell?.mode === 'persona') {
+      notes.push('Persona shell landed a retrieval-safe mask realization.');
+    }
+  } else if (strictBorrowedMode) {
+    finalText = sourceText;
+    finalProfile = sourceProfile;
+    qualityGatePassed = false;
+    transferClass = 'rejected';
+    changedDimensions = [];
+    borrowedShellOutcome = 'rejected';
     precomputedAuditBundle = {
       ...buildSemanticAuditBundle(ir, finalText, protectedState)
     };
     precomputedLexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
-    precomputedVisibleShift = hasBorrowedShellVisibleShift(sourceText, finalText, changedDimensions, precomputedLexicalShiftProfile);
-    precomputedNonTrivialShift = hasBorrowedShellNonTrivialShift(sourceText, finalText, changedDimensions, precomputedLexicalShiftProfile);
-    rescuePasses.push('progress-admit');
-    notes.push('Borrowed shell preserved a retrieval-safe partial cadence shift with measured donor progress.');
+    precomputedVisibleShift = false;
+    precomputedNonTrivialShift = false;
+    rescuePasses.push('final-rejection');
+    directBorrowedProgressCheck = {
+      eligible: false,
+      qualityNotes: bestCandidate.quality.notes || [],
+      changedDimensions: [...(bestCandidate.changedDimensions || [])],
+      visibleShift: false,
+      nonTrivialShift: false,
+      protectedAnchorIntegrity: 1,
+      propositionCoverage: 1,
+      actionCoverage: 1,
+      polarityMismatches: 0,
+      progressProfile: null,
+      lexicalShiftProfile: precomputedLexicalShiftProfile
+    };
+    notes.push('No retrieval-safe borrowed-shell candidate survived semantic review.');
   } else if (!bestCandidate.quality.qualityGatePassed) {
-    const rescueSelection = findBorrowedShellRescueCandidate({
-      shell,
-      candidates,
-      sourceText,
-      sourceProfile,
-      targetProfile,
-      targetGap,
-      protectedState,
-      opportunityProfile,
-      ir
-    });
-    const rescueCandidate = rescueSelection.candidate;
-    const borrowedFallback = rescueSelection.fallback || borrowedShellPartialFallback({
-      shell,
-      bestCandidate,
-      sourceText,
-      sourceProfile,
-      targetProfile,
-      protectedState,
-      ir
-    });
     if (isMaterialCadenceGap(targetGap)) {
-      if (borrowedFallback.eligible) {
-        const acceptedCandidate = rescueCandidate || bestCandidate;
-        finalText = sanitizeBorrowedShellPathologies(acceptedCandidate.outputText);
-        finalProfile = extractCadenceProfile(finalText);
-        changedDimensions = [...acceptedCandidate.changedDimensions];
-        transferClass = 'weak';
-        borrowedShellOutcome = 'partial';
-        precomputedAuditBundle = {
-          ...buildSemanticAuditBundle(ir, finalText, protectedState)
-        };
-        precomputedLexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
-        precomputedVisibleShift = hasBorrowedShellVisibleShift(sourceText, finalText, changedDimensions, precomputedLexicalShiftProfile);
-        precomputedNonTrivialShift = hasBorrowedShellNonTrivialShift(sourceText, finalText, changedDimensions, precomputedLexicalShiftProfile);
-        rescuePasses.push(...(acceptedCandidate.rescuePasses || []));
-        rescuePasses.push(borrowedFallback.relaxed ? 'partial-progress-rescue' : 'partial-rescue');
-        notes.push(
-          borrowedFallback.relaxed
-            ? 'Borrowed shell preserved a retrieval-safe partial cadence shift with measured donor progress.'
-            : 'Borrowed shell preserved a retrieval-safe partial cadence shift.'
-        );
-      } else if (shell?.mode === 'persona') {
+      if (shell?.mode === 'persona') {
         const personaRescueText = forceStructuralShift(
           bestCandidate.outputText,
           sourceProfile,
@@ -5602,10 +5683,6 @@ const SWAP_CADENCE_FLAGSHIP_PAIRS = Object.freeze([
   Object.freeze({ sourceId: 'package-handoff-rushed-mobile', donorId: 'package-handoff-formal-record' }),
   Object.freeze({ sourceId: 'volunteer-cleanup-formal-record', donorId: 'volunteer-cleanup-rushed-mobile' }),
   Object.freeze({ sourceId: 'volunteer-cleanup-rushed-mobile', donorId: 'volunteer-cleanup-formal-record' }),
-  Object.freeze({ sourceId: 'clinic-scheduling-formal-record', donorId: 'clinic-scheduling-rushed-mobile' }),
-  Object.freeze({ sourceId: 'clinic-scheduling-rushed-mobile', donorId: 'clinic-scheduling-formal-record' }),
-  Object.freeze({ sourceId: 'committee-budget-formal-record', donorId: 'committee-budget-rushed-mobile' }),
-  Object.freeze({ sourceId: 'committee-budget-rushed-mobile', donorId: 'committee-budget-formal-record' }),
   Object.freeze({ sourceId: 'customer-support-formal-record', donorId: 'customer-support-rushed-mobile' }),
   Object.freeze({ sourceId: 'customer-support-rushed-mobile', donorId: 'customer-support-formal-record' })
 ]);
@@ -5674,8 +5751,12 @@ function buildSwapLaneResult(sourceSample, donorSample, slot = 'A', donorSlot = 
 }
 
 function classifySwapCadencePair(laneA = {}, laneB = {}) {
-  const engagedA = ['structural', 'partial'].includes(laneA.borrowedShellOutcome);
-  const engagedB = ['structural', 'partial'].includes(laneB.borrowedShellOutcome);
+  const engagedA =
+    laneA.borrowedShellOutcome === 'structural' ||
+    (laneA.borrowedShellOutcome === 'subtle' && laneA.nonTrivialShift);
+  const engagedB =
+    laneB.borrowedShellOutcome === 'structural' ||
+    (laneB.borrowedShellOutcome === 'subtle' && laneB.nonTrivialShift);
 
   if (laneA.borrowedShellOutcome === 'rejected' && laneB.borrowedShellOutcome === 'rejected') {
     return 'both-rejected';
@@ -7357,20 +7438,3 @@ function solveQuadratic(a, b, c) {
     badgeMeaning
   };
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

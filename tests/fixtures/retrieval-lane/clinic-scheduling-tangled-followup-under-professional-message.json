@@ -408,7 +408,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 90.366,
+          "score": -10.918,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -416,29 +416,27 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "structural-rescue",
-            "lexical-register-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue",
-            "lexical-register-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "content-word-complexity",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
           "notes": [
+            "Transfer missed donor lexical/register realization.",
             "Structural opportunity existed but the current candidate collapsed into additive drift."
           ]
         },
         {
           "spec": "merge-heavy",
-          "score": 90.366,
+          "score": -10.918,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -446,29 +444,27 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "structural-rescue",
-            "lexical-register-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue",
-            "lexical-register-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "content-word-complexity",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
           "notes": [
+            "Transfer missed donor lexical/register realization.",
             "Structural opportunity existed but the current candidate collapsed into additive drift."
           ]
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 90.366,
+          "score": -10.918,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -476,29 +472,27 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "structural-rescue",
-            "lexical-register-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue",
-            "lexical-register-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "content-word-complexity",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
           "notes": [
+            "Transfer missed donor lexical/register realization.",
             "Structural opportunity existed but the current candidate collapsed into additive drift."
           ]
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 90.366,
+          "score": -10.918,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -506,23 +500,21 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "structural-rescue",
-            "lexical-register-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue",
-            "lexical-register-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "content-word-complexity",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
           "notes": [
+            "Transfer missed donor lexical/register realization.",
             "Structural opportunity existed but the current candidate collapsed into additive drift."
           ]
         }

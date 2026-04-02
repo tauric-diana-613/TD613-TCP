@@ -375,17 +375,10 @@
     "planSummary": {
       "transferMode": "expand",
       "structuralOperationsSelected": [
-        "baseline-merge",
-        "planned-sentence-merge",
-        "clause-join-split",
-        "structural-rescue"
+        "clause-texture"
       ],
       "lexicalRegisterOperationsSelected": [
-        "baseline-contraction",
-        "baseline-voice-realization",
-        "baseline-stance",
-        "baseline-function-word",
-        "connector-stance-lexicon"
+        "contraction"
       ],
       "connectorStrategy": "additive",
       "contractionStrategy": "increase",
@@ -423,23 +416,14 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "mixed-structural",
-        "score": 368.766,
+        "spec": "ir-beam-search",
+        "score": 366.748,
         "passesApplied": [
-          "baseline-merge",
-          "baseline-contraction",
-          "baseline-voice-realization",
-          "baseline-stance",
-          "baseline-function-word",
-          "planned-sentence-merge",
-          "clause-join-split",
-          "connector-stance-lexicon",
-          "cleanup-restore",
-          "structural-rescue"
+          "baseline-floor",
+          "clause-texture",
+          "contraction"
         ],
-        "rescuePasses": [
-          "structural-rescue"
-        ],
+        "rescuePasses": [],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
@@ -603,28 +587,53 @@
       ]
     },
     "finalRealization": {
-      "text": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that minute. The package was instead left on the second-floor landing near the stair rail. Ms. Chen located it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come through. I moved the parcel from the landing to the hallway table outside 2B only after Ms. Chen confirmed it was hers and requested help because she was already carrying groceries. The outer carton remained sealed. The red rush label remained attached. No third party handled the parcel after pickup from the landing. The corrective issue is not merely where the box rested, but that the signature record implies a contact attempt that the building log does not support.",
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
-      "semanticRisk": 0.3,
-      "rescuePasses": [
-        "structural-rescue",
-        "semantic-final-rejection"
+      "text": "On Tuesday, March 18, the rush parcel addressed to Unit 2B wasn't presented for signature at the apartment doorway; yet the carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer contact was placed to Unit 2B during that minute, but the package was instead left on the second-floor landing near the stair rail, but ms. Chen identified it at approximately 7:06 PM after noticing the doorway tag and asking maintenance whether a delivery had come through. I relocated the parcel from the landing to the hallway table outside 2B only after Ms. Chen confirmed it was hers and requested support because she was already carrying groceries. The outer carton remained sealed. The red rush label remained attached. No third party handled the parcel after pickup from the landing. The corrective issue is not merely where the box rested, but that the signature record implies a contact attempt that the building log doesn't support.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "contraction-posture",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "punctuation-shape"
       ],
-      "visibleShift": false,
-      "nonTrivialShift": false
+      "lexemeSwaps": [
+        {
+          "family": "door",
+          "from": "door",
+          "to": "doorway",
+          "kind": "lexeme"
+        },
+        {
+          "family": "find",
+          "from": "located",
+          "to": "identified",
+          "kind": "lexeme"
+        },
+        {
+          "family": "move",
+          "from": "moved",
+          "to": "relocated",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
     "semanticAudit": {
-      "propositionCoverage": 1,
-      "actorCoverage": 1,
-      "actionCoverage": 1,
-      "objectCoverage": 0.965,
-      "polarityMismatches": 0,
-      "tenseMismatches": 0,
+      "propositionCoverage": 0.937,
+      "actorCoverage": 0.929,
+      "actionCoverage": 0.936,
+      "objectCoverage": 0.885,
+      "polarityMismatches": 1,
+      "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -633,15 +642,15 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.12
+          "bagScore": 0.143,
+          "globalBagScore": 0.044
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -649,10 +658,46 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.75,
-          "globalBagScore": 0.118
+          "globalBagScore": 0.143
         },
         {
           "sourceClauseId": "s2c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 0.18000000000000002,
+          "actorCoverage": 0.075,
+          "actionCoverage": 0.16200000000000003,
+          "objectCoverage": 0.2,
+          "polarityMismatch": 0,
+          "tenseMismatch": 1,
+          "bagScore": 0.083,
+          "globalBagScore": 0.021
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s3c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.333,
+          "globalBagScore": 0.068
+        },
+        {
+          "sourceClauseId": "s5c0",
           "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -661,10 +706,10 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.14
+          "globalBagScore": 0.146
         },
         {
-          "sourceClauseId": "s3c0",
+          "sourceClauseId": "s6c0",
           "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -673,22 +718,34 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.02
+          "globalBagScore": 0.098
         },
         {
-          "sourceClauseId": "s4c0",
+          "sourceClauseId": "s6c1",
+          "matchedClauseId": "s3c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.073
+        },
+        {
+          "sourceClauseId": "s7c0",
           "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.333,
-          "globalBagScore": 0.057
+          "bagScore": 1,
+          "globalBagScore": 0.024
         },
         {
-          "sourceClauseId": "s5c0",
+          "sourceClauseId": "s8c0",
           "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -697,10 +754,10 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.12
+          "globalBagScore": 0.024
         },
         {
-          "sourceClauseId": "s6c0",
+          "sourceClauseId": "s9c0",
           "matchedClauseId": "s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -709,22 +766,10 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.08
+          "globalBagScore": 0.049
         },
         {
-          "sourceClauseId": "s6c1",
-          "matchedClauseId": "s6c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.06
-        },
-        {
-          "sourceClauseId": "s7c0",
+          "sourceClauseId": "s10c0",
           "matchedClauseId": "s7c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -733,59 +778,23 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.02
-        },
-        {
-          "sourceClauseId": "s8c0",
-          "matchedClauseId": "s8c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.02
-        },
-        {
-          "sourceClauseId": "s9c0",
-          "matchedClauseId": "s9c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.04
-        },
-        {
-          "sourceClauseId": "s10c0",
-          "matchedClauseId": "s10c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.12
+          "globalBagScore": 0.146
         },
         {
           "sourceClauseId": "s10c1",
-          "matchedClauseId": "s10c1",
+          "matchedClauseId": "s7c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
-          "polarityMismatch": 0,
+          "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.1
+          "bagScore": 0.833,
+          "globalBagScore": 0.122
         }
       ],
       "sourceClauseCount": 13,
-      "outputClauseCount": 13
+      "outputClauseCount": 11
     },
     "protectedAnchorAudit": {
       "totalAnchors": 7,
@@ -795,8 +804,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 11,
-        "clauseCount": 13,
+        "sentenceCount": 8,
+        "clauseCount": 11,
         "literalSpans": [
           {
             "value": "6:41 PM",
@@ -831,42 +840,34 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door",
-          "rhetoricalRole": "additive",
+          "raw": "On Tuesday, March 18, the rush parcel addressed to Unit 2B wasn't presented for signature at the apartment doorway; yet the carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer contact was placed to Unit 2B during that minute, but the package was instead left on the second-floor landing near the stair rail, but ms",
+          "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door",
+              "text": "On Tuesday, March 18, the rush parcel addressed to Unit 2B wasn't presented for signature at the apartment doorway",
               "relationToPrev": "start",
-              "clauseType": "main",
+              "clauseType": "fragment",
               "polarity": "negative",
               "tenseAspect": "past",
-              "propositionHead": "was",
+              "propositionHead": "tuesday",
               "actor": "the rush",
-              "action": "was",
-              "object": "presented signature at apartment door",
+              "action": "",
+              "object": "",
               "modifiers": [],
               "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "The carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that minute",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
+            },
             {
-              "id": "s1c0",
-              "text": "The carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that minute",
-              "relationToPrev": "start",
+              "id": "s0c1",
+              "text": "yet the carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer contact was placed to Unit 2B during that minute, but the package was instead left on the second-floor landing near the stair rail, but ms",
+              "relationToPrev": "contrastive",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "past",
-              "propositionHead": "call",
-              "actor": "The carrier",
-              "action": "call",
+              "propositionHead": "contact",
+              "actor": "the carrier",
+              "action": "contact",
               "object": "placed unit 2b during minute",
               "modifiers": [],
               "hedgeMarkers": []
@@ -874,65 +875,21 @@
           ]
         },
         {
-          "id": "s2",
-          "raw": "The package was instead left on the second-floor landing near the stair rail",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "The package was instead left on the second-floor landing near the stair rail",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "left",
-              "actor": "The package",
-              "action": "left",
-              "object": "second floor landing near stair",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "Ms",
+          "id": "s1",
+          "raw": "Chen identified it at approximately 7:06 PM after noticing the doorway tag and asking maintenance whether a delivery had come through",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s3c0",
-              "text": "Ms",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "ms",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s4",
-          "raw": "Chen located it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come through",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s4c0",
-              "text": "Chen located it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come through",
+              "id": "s1c0",
+              "text": "Chen identified it at approximately 7:06 PM after noticing the doorway tag and asking maintenance whether a delivery had come through",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "located",
+              "propositionHead": "identified",
               "actor": "it",
-              "action": "located",
+              "action": "identified",
               "object": "at approximately 7 06 pm",
               "modifiers": [
                 "approximately"
@@ -942,21 +899,21 @@
           ]
         },
         {
-          "id": "s5",
-          "raw": "I moved the parcel from the landing to the hallway table outside 2B only after Ms",
+          "id": "s2",
+          "raw": "I relocated the parcel from the landing to the hallway table outside 2B only after Ms",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s5c0",
-              "text": "I moved the parcel from the landing to the hallway table outside 2B only after Ms",
+              "id": "s2c0",
+              "text": "I relocated the parcel from the landing to the hallway table outside 2B only after Ms",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "moved",
+              "propositionHead": "relocated",
               "actor": "I",
-              "action": "moved",
+              "action": "relocated",
               "object": "parcel from landing hallway table",
               "modifiers": [
                 "table",
@@ -969,14 +926,14 @@
           ]
         },
         {
-          "id": "s6",
-          "raw": "Chen confirmed it was hers and requested help because she was already carrying groceries",
+          "id": "s3",
+          "raw": "Chen confirmed it was hers and requested support because she was already carrying groceries",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s6c0",
-              "text": "Chen confirmed it was hers and requested help",
+              "id": "s3c0",
+              "text": "Chen confirmed it was hers and requested support",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -984,12 +941,12 @@
               "propositionHead": "confirmed",
               "actor": "it",
               "action": "confirmed",
-              "object": "hers requested help",
+              "object": "hers requested support",
               "modifiers": [],
               "hedgeMarkers": []
             },
             {
-              "id": "s6c1",
+              "id": "s3c1",
               "text": "she was already carrying groceries",
               "relationToPrev": "additive",
               "clauseType": "main",
@@ -1005,13 +962,13 @@
           ]
         },
         {
-          "id": "s7",
+          "id": "s4",
           "raw": "The outer carton remained sealed",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s7c0",
+              "id": "s4c0",
               "text": "The outer carton remained sealed",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -1027,13 +984,13 @@
           ]
         },
         {
-          "id": "s8",
+          "id": "s5",
           "raw": "The red rush label remained attached",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s8c0",
+              "id": "s5c0",
               "text": "The red rush label remained attached",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -1049,13 +1006,13 @@
           ]
         },
         {
-          "id": "s9",
+          "id": "s6",
           "raw": "No third party handled the parcel after pickup from the landing",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s9c0",
+              "id": "s6c0",
               "text": "No third party handled the parcel after pickup from the landing",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -1071,13 +1028,13 @@
           ]
         },
         {
-          "id": "s10",
-          "raw": "The corrective issue is not merely where the box rested, but that the signature record implies a contact attempt that the building log does not support.",
+          "id": "s7",
+          "raw": "The corrective issue is not merely where the box rested, but that the signature record implies a contact attempt that the building log doesn't support.",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s10c0",
+              "id": "s7c0",
               "text": "The corrective issue is not merely where the box rested",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -1096,16 +1053,16 @@
               ]
             },
             {
-              "id": "s10c1",
-              "text": "that the signature record implies a contact attempt that the building log does not support",
+              "id": "s7c1",
+              "text": "that the signature record implies a contact attempt that the building log doesn't support",
               "relationToPrev": "additive",
               "clauseType": "relative",
-              "polarity": "negative",
+              "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "contact",
               "actor": "that",
               "action": "contact",
-              "object": "attempt building log support",
+              "object": "attempt building log doesn't support",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -1114,31 +1071,69 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "contraction-posture",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "door",
+          "from": "door",
+          "to": "doorway",
+          "kind": "lexeme"
+        },
+        {
+          "family": "find",
+          "from": "located",
+          "to": "identified",
+          "kind": "lexeme"
+        },
+        {
+          "family": "move",
+          "from": "moved",
+          "to": "relocated",
+          "kind": "lexeme"
+        }
+      ],
       "semanticRisk": 0.3,
       "realizationNotes": [
         "3 lexical family swaps landed.",
         "Register shift surfaced through lexical-register, directness.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
-      "rescuePasses": [
-        "structural-rescue",
-        "semantic-final-rejection"
-      ],
-      "visibleShift": false,
-      "nonTrivialShift": false
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     }
   },
   "semanticContract": {
-    "transferClass": "rejected",
-    "realizationTier": "none",
-    "changedDimensions": [],
-    "lexemeSwapFamilies": [],
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "connector-stance",
+      "contraction-posture",
+      "directness",
+      "lexical-register",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [
+      "door",
+      "find",
+      "move"
+    ],
     "relationInventory": [
       "additive:3",
       "causal:1",
@@ -1148,26 +1143,19 @@
       "temporal:3"
     ],
     "structuralOperations": [
-      "baseline-merge",
-      "clause-join-split",
-      "planned-sentence-merge",
-      "structural-rescue"
+      "clause-texture"
     ],
     "lexicalOperations": [
-      "baseline-contraction",
-      "baseline-function-word",
-      "baseline-stance",
-      "baseline-voice-realization",
-      "connector-stance-lexicon"
+      "contraction"
     ],
     "connectorStrategy": "additive",
     "contractionStrategy": "increase",
-    "propositionCoverage": 1,
-    "actorCoverage": 1,
-    "actionCoverage": 1,
-    "objectCoverage": 0.965,
-    "polarityMismatches": 0,
-    "tenseMismatches": 0,
+    "propositionCoverage": 0.937,
+    "actorCoverage": 0.929,
+    "actionCoverage": 0.936,
+    "objectCoverage": 0.885,
+    "polarityMismatches": 1,
+    "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1
   }
 }

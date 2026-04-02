@@ -24,6 +24,23 @@ import { nextBadge, badgeMeaning } from './engine/badges.js';
 const $ = (id) => document.getElementById(id);
 
 const STORAGE_KEY = 'tcp.savedPersonas.v1';
+function createRuntimeStore() {
+  const memory = new Map();
+  return Object.freeze({
+    mode: 'session-memory',
+    isPersistent: false,
+    getItem(key) {
+      return memory.has(key) ? memory.get(key) : null;
+    },
+    setItem(key, value) {
+      memory.set(key, String(value));
+    },
+    removeItem(key) {
+      memory.delete(key);
+    }
+  });
+}
+const runtimeStore = createRuntimeStore();
 const SLOT_LABELS = {
   A: 'Reference voice',
   B: 'Probe voice'
@@ -109,20 +126,20 @@ function renderActiveBayStatus() {
 }
 
 function loadSavedPersonas() {
+  const payload = runtimeStore.getItem(STORAGE_KEY);
+  if (!payload) {
+    return [];
+  }
   try {
-    const payload = window.localStorage.getItem(STORAGE_KEY);
-    return payload ? JSON.parse(payload) : [];
+    return JSON.parse(payload);
   } catch {
+    runtimeStore.removeItem(STORAGE_KEY);
     return [];
   }
 }
 
 function persistSavedPersonas() {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(savedPersonas));
-  } catch {
-    // localStorage can be unavailable on some file:// contexts; keep the session alive anyway
-  }
+  runtimeStore.setItem(STORAGE_KEY, JSON.stringify(savedPersonas));
 }
 
 function getPersonaLibrary() {
@@ -730,7 +747,7 @@ function saveActiveCadence() {
   renderPersonas();
   updateControls();
   analyzeCadences();
-  setStatusMessage(`${persona.name} was saved in-app and assigned to the ${SLOT_SHORT[activeVoice]} bay.`);
+  setStatusMessage(`${persona.name} was kept in this tab and assigned to the ${SLOT_SHORT[activeVoice]} bay.`);
 }
 
 function resetDeck() {

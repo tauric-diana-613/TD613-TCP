@@ -97,6 +97,26 @@
   const STORAGE_KEY = 'tcp.savedPersonas.v1';
   const LOCK_STORAGE_KEY = 'tcp.cadenceLocks.v1';
   const ACTIVE_LOCK_STORAGE_KEY = 'tcp.activeCadenceLock.v1';
+  function createRuntimeStore() {
+    const memory = new Map();
+    return Object.freeze({
+      mode: 'session-memory',
+      isPersistent: false,
+      getItem(key) {
+        return memory.has(key) ? memory.get(key) : null;
+      },
+      setItem(key, value) {
+        memory.set(key, String(value));
+      },
+      removeItem(key) {
+        memory.delete(key);
+      },
+      clear() {
+        memory.clear();
+      }
+    });
+  }
+  const runtimeStore = createRuntimeStore();
   const SLOT_LABELS = { A: 'Reference voice', B: 'Probe voice' };
   const SLOT_SHORT = { A: 'reference', B: 'probe' };
   const BADGE_LABELS = {
@@ -113,6 +133,11 @@
     return acc;
   }, {}));
   const GLYPH_SUBSTRATE = Object.freeze({ ...(glyphFieldTech.substrateVocabulary || {}) });
+  window.TCP_RUNTIME_STORE = runtimeStore;
+  window.TCP_RUNTIME_RETENTION = Object.freeze({
+    mode: runtimeStore.mode,
+    persistent: runtimeStore.isPersistent
+  });
   const MIRROR_COPY = {
     off: { pill: 'Mirror shield // armed', button: 'Open mirror shield' },
     on: { pill: 'Mirror shield // open', button: 'Arm mirror shield' }
@@ -1603,56 +1628,48 @@
   }
 
   function loadSavedPersonas() {
+    const payload = runtimeStore.getItem(STORAGE_KEY);
+    if (!payload) {
+      return [];
+    }
     try {
-      const payload = window.localStorage.getItem(STORAGE_KEY);
-      return payload ? JSON.parse(payload).map((persona) => normalizeStoredPersona(persona)) : [];
+      return JSON.parse(payload).map((persona) => normalizeStoredPersona(persona));
     } catch {
+      runtimeStore.removeItem(STORAGE_KEY);
       return [];
     }
   }
 
   function persistSavedPersonas() {
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(savedPersonas));
-    } catch {
-      // keep session-only saved personas if storage is unavailable
-    }
+    runtimeStore.setItem(STORAGE_KEY, JSON.stringify(savedPersonas));
   }
 
   function loadCadenceLocks() {
+    const payload = runtimeStore.getItem(LOCK_STORAGE_KEY);
+    if (!payload) {
+      return [];
+    }
     try {
-      const payload = window.localStorage.getItem(LOCK_STORAGE_KEY);
-      return payload ? JSON.parse(payload).map((lock) => normalizeCadenceLock(lock)) : [];
+      return JSON.parse(payload).map((lock) => normalizeCadenceLock(lock));
     } catch {
+      runtimeStore.removeItem(LOCK_STORAGE_KEY);
       return [];
     }
   }
 
   function persistCadenceLocks() {
-    try {
-      window.localStorage.setItem(LOCK_STORAGE_KEY, JSON.stringify(cadenceLocks));
-    } catch {
-      // keep session-only cadence locks if storage is unavailable
-    }
+    runtimeStore.setItem(LOCK_STORAGE_KEY, JSON.stringify(cadenceLocks));
   }
 
   function loadActiveCadenceLockId() {
-    try {
-      return window.localStorage.getItem(ACTIVE_LOCK_STORAGE_KEY) || '';
-    } catch {
-      return '';
-    }
+    return runtimeStore.getItem(ACTIVE_LOCK_STORAGE_KEY) || '';
   }
 
   function persistActiveCadenceLockId() {
-    try {
-      if (activeCadenceLockId) {
-        window.localStorage.setItem(ACTIVE_LOCK_STORAGE_KEY, activeCadenceLockId);
-      } else {
-        window.localStorage.removeItem(ACTIVE_LOCK_STORAGE_KEY);
-      }
-    } catch {
-      // ignore persistence loss
+    if (activeCadenceLockId) {
+      runtimeStore.setItem(ACTIVE_LOCK_STORAGE_KEY, activeCadenceLockId);
+    } else {
+      runtimeStore.removeItem(ACTIVE_LOCK_STORAGE_KEY);
     }
   }
 
@@ -1713,28 +1730,55 @@
   }
 
   function swapCadenceScoreLane(result = {}, sourceText = '') {
+    const semanticAudit = result.semanticAudit || {};
+    const protectedAnchorIntegrity =
+      result.protectedAnchorAudit?.protectedAnchorIntegrity ??
+      semanticAudit.protectedAnchorIntegrity ??
+      1;
+    const nonPunctuationDimensions = (result.changedDimensions || []).filter((dimension) => dimension !== 'punctuation-shape');
+    const accepted =
+      result.transferClass !== 'rejected' &&
+      result.text !== sourceText &&
+      protectedAnchorIntegrity >= 1 &&
+      (semanticAudit.propositionCoverage ?? 1) >= 0.85 &&
+      (semanticAudit.actorCoverage ?? 1) >= 0.75 &&
+      (semanticAudit.actionCoverage ?? 1) >= 0.75 &&
+      (semanticAudit.objectCoverage ?? 1) >= 0.65 &&
+      (semanticAudit.polarityMismatches ?? 0) <= 1 &&
+      Boolean(result.visibleShift) &&
+      Boolean(result.nonTrivialShift) &&
+      nonPunctuationDimensions.length > 0;
     let score = 0;
     const changed = result.text !== sourceText;
 
-    if (result.transferClass === 'structural') {
-      score += 5;
-    } else if (result.transferClass === 'weak' && changed) {
-      score += 3;
+    if (accepted) {
+      score += result.transferClass === 'structural' ? 12 : 4;
     } else if (result.transferClass === 'rejected') {
-      score -= 4;
+      score -= 12;
+    } else {
+      score -= changed ? 6 : 10;
     }
 
-    if (changed) {
+    if (accepted && changed) {
+      score += 3;
+    }
+    if (accepted && result.realizationTier === 'lexical-structural') {
+      score += 4;
+    }
+    if (accepted && nonPunctuationDimensions.length >= 2) {
+      score += 3;
+    }
+    if (accepted && (semanticAudit.propositionCoverage ?? 1) >= 0.9) {
       score += 2;
     }
-    if (result.realizationTier === 'lexical-structural') {
-      score += 2;
+    if (changed && !Boolean(result.nonTrivialShift)) {
+      score -= 6;
     }
-    if ((result.semanticAudit?.propositionCoverage ?? 1) >= 0.85) {
-      score += 1;
+    if (changed && nonPunctuationDimensions.length === 0) {
+      score -= 8;
     }
-    if ((result.semanticAudit?.polarityMismatches ?? 0) > 0) {
-      score -= 2;
+    if ((semanticAudit.polarityMismatches ?? 0) > 0) {
+      score -= 4;
     }
 
     return score;
@@ -1763,20 +1807,27 @@
       laneA.borrowedShellOutcome || laneA.transferClass,
       laneB.borrowedShellOutcome || laneB.transferClass
     ];
-    const engagedLaneCount = laneOutcomes.filter((outcome) => ['structural', 'partial'].includes(outcome)).length;
+    const laneAccepted = [
+      swapCadenceScoreLane(laneA, referenceText) > 0,
+      swapCadenceScoreLane(laneB, probeText) > 0
+    ];
+    const engagedLaneCount = laneAccepted.filter(Boolean).length;
     const rejectedLaneCount = laneOutcomes.filter((outcome) => outcome === 'rejected').length;
-    const bilateralVisible = Boolean(laneA.visibleShift) && Boolean(laneB.visibleShift);
-    const bilateralNonTrivial = Boolean(laneA.nonTrivialShift) && Boolean(laneB.nonTrivialShift);
+    const bilateralVisible = laneAccepted[0] && laneAccepted[1] && Boolean(laneA.visibleShift) && Boolean(laneB.visibleShift);
+    const bilateralNonTrivial = laneAccepted[0] && laneAccepted[1] && Boolean(laneA.nonTrivialShift) && Boolean(laneB.nonTrivialShift);
     let score = swapCadenceScoreLane(laneA, referenceText) + swapCadenceScoreLane(laneB, probeText);
 
     if (bilateralVisible) {
-      score += 4;
+      score += 8;
     }
     if (bilateralNonTrivial) {
-      score += 6;
+      score += 8;
     }
-    score += engagedLaneCount * 3;
-    score -= rejectedLaneCount * 4;
+    score += engagedLaneCount * 4;
+    if (engagedLaneCount === 1) {
+      score -= 6;
+    }
+    score -= rejectedLaneCount * 6;
 
     return {
       score,
@@ -1784,6 +1835,7 @@
       bilateralNonTrivial,
       engagedLaneCount,
       rejectedLaneCount,
+      laneAccepted,
       laneOutcomes,
       laneTransferClasses: [laneA.transferClass, laneB.transferClass],
       minProtectedAnchorIntegrity: Math.min(
@@ -3077,14 +3129,14 @@
     }
     if (lockStatus) {
       lockStatus.textContent = !state.lock
-        ? 'Stage a cadence draft. Reveal opens the dossier. Save writes it into the local archive.'
+        ? 'Stage a cadence draft. Reveal opens the dossier. Save keeps it in the session archive for this tab only.'
         : state.hasStagedLock && !state.revealed
           ? `${glyphChar('stateLockStaged', '')} Draft staged. The mask bench is live now. Reveal wakes the dossier and the solo readout path.`
-          : state.hasStagedLock && state.revealed
-            ? `${glyphChar('actionReveal', '')} Draft revealed. Stylometrics and solo harbor are live. Save when you want this cadence home to persist.`
-            : state.revealed
-              ? `${glyphChar('actionReveal', '')} Saved cadence home revealed. Telemetry and Harbor are reading it through the solo path.`
-              : 'Saved cadence home selected. Reveal when you want the dossier and solo readout live.';
+        : state.hasStagedLock && state.revealed
+            ? `${glyphChar('actionReveal', '')} Draft revealed. Stylometrics and solo harbor are live. Save when you want this cadence home to stay in the session archive.`
+          : state.revealed
+            ? `${glyphChar('actionReveal', '')} Saved cadence home revealed. Telemetry and Harbor are reading it through the solo path.`
+            : 'Saved cadence home selected. Reveal when you want the dossier and solo readout live.';
     }
     renderHomebaseWornMask(state);
   }
@@ -3096,7 +3148,7 @@
     }
 
     if (!cadenceLocks.length) {
-      archive.innerHTML = '<div class="persona-empty">No saved cadence home yet. Stage one in the lockbox, then press Save when you want it kept locally.</div>';
+      archive.innerHTML = '<div class="persona-empty">No session cadence home yet. Stage one in the lockbox, then press Save when you want it kept in this tab.</div>';
       return;
     }
 
@@ -3140,7 +3192,7 @@
             <div class="trainer-summary-card">
               <div class="persona-kicker">corpus</div>
               <strong>${state.lock.stats?.sampleCount || state.lock.samples?.length || 0}</strong>
-              <span>${state.lock.stats?.totalWords || 0} words held in local draft or archive</span>
+              <span>${state.lock.stats?.totalWords || 0} words held in staged or session archive memory</span>
             </div>
             <div class="trainer-summary-card">
               <div class="persona-kicker">state</div>
@@ -3604,9 +3656,9 @@
         ? state.deckCastingSummary.line
         : 'No pair awake yet.';
     const trainerSummary = trainerSnapshot.lastInjectedPersonaSummary
-      ? `${trainerSnapshot.lastInjectedPersonaSummary.name} is live on the shelf.`
+      ? `${trainerSnapshot.lastInjectedPersonaSummary.name} is live on the session shelf.`
       : trainerSnapshot.validationPass
-        ? `${trainerSnapshot.personaName} is forge-ready for injection.`
+        ? `${trainerSnapshot.personaName} is forge-ready for session inject${trainerSnapshot.releaseGateArmed ? ' and release' : ''}.`
         : trainerSnapshot.corpusReady
           ? 'Corpus extracted. Validation is waiting on a candidate.'
           : 'The forge is latent.';
@@ -3658,8 +3710,8 @@
         title: 'Trainer',
         summary: trainerSummary,
         detail: trainerSnapshot.lastInjectedPersonaSummary
-          ? 'Open the forge to route the injected persona into the shelf, Homebase, or Deck.'
-          : 'Extract, inspect, validate, correct, and inject on one runtime.'
+          ? 'Open the forge to route the injected persona into the session shelf, Homebase, or Deck.'
+          : 'Extract, inspect, validate, session-inject, and release only when the field still stands behind it.'
       }
     ];
   }
@@ -3705,7 +3757,7 @@
         <div class="trainer-bridge-card trainer-bridge-empty">
           <div>
             <div class="persona-kicker">Next move</div>
-            <p class="persona-empty">A successful inject opens direct routes into the shelf, Homebase, and Deck. Until then, the forge stays local.</p>
+            <p class="persona-empty">A successful inject opens direct routes into the session shelf, Homebase, and Deck. Export stays sealed until you open the release gate in this tab.</p>
           </div>
         </div>
       `;
@@ -3717,7 +3769,7 @@
         <div class="trainer-bridge-copy">
           <div class="persona-kicker">Injected persona</div>
           <h3>${escapeHtml(injected.name)}</h3>
-          <p>${escapeHtml(injected.name)} is live on the shelf. Open it in Personas, bring it into Homebase, or test it in Deck without leaving the shared runtime.</p>
+          <p>${escapeHtml(injected.name)} is live on the session shelf. Open it in Personas, bring it into Homebase, or test it in Deck without leaving the shared runtime.</p>
         </div>
         <div class="persona-actions">
           <button type="button" class="ghost" data-station-target="personas">Open in Personas</button>
@@ -4129,7 +4181,7 @@
     renderSoloReadoutCore({
       metricTraceability: `${voiceState.effectiveProfile.avgSentenceLength.toFixed(1)}w`,
       metricCustody: SLOT_SHORT[voiceState.slot],
-      simHint: 'A second voice unlocks contrast. Solo witness mode captures a signature you can save in-app.',
+      simHint: 'A second voice unlocks contrast. Solo witness mode captures a signature you can keep in this tab.',
       traceHint: 'Sentence rhythm shows how quickly clauses turn, settle, and recur.',
       routeHint: 'Recurrence pressure tracks punctuation, line-break drag, and repeated return-patterns.',
       custodyHint: 'The active bay is where shell assignment and save operations land.',
@@ -4147,7 +4199,7 @@
         null,
         2
       ),
-      fieldNotice: `Solo witness is live in the ${SLOT_SHORT[voiceState.slot]} bay. Save the cadence as a persona or add a second voice to see whether the pattern can do more than echo.`,
+      fieldNotice: `Solo witness is live in the ${SLOT_SHORT[voiceState.slot]} bay. Save the cadence into the session shelf or add a second voice to see whether the pattern can do more than echo.`,
       heroSignalValue: 'SOLO',
       heroSignalNote: `Cadence captured from the ${SLOT_SHORT[voiceState.slot]} bay. Add a second voice if you want a real matchup.`,
       heroRouteValue: formatPct(voiceState.effectiveProfile.recurrencePressure),
@@ -4155,7 +4207,7 @@
       heroHarborValue: voiceState.shell.mode === 'native' ? 'save.persona' : voiceState.shell.label,
       heroHarborNote:
         voiceState.shell.mode === 'native'
-          ? 'You can save this cadence as a persona or pair it with a second voice.'
+          ? 'You can save this cadence into the session shelf or pair it with a second voice.'
           : 'A cadence shell is already shaping this bay.',
       decisionLabel: 'Solo witness',
       harborName: voiceState.shell.mode === 'native' ? 'cadence capture' : voiceState.shell.label,
@@ -4163,9 +4215,9 @@
       harborItems: [
         { label: 'Bay', value: SLOT_LABELS[voiceState.slot] },
         { label: 'Shell', value: voiceState.shell.label },
-        { label: 'Next move', value: 'Save or pair' }
+        { label: 'Next move', value: 'Save in session or pair' }
       ],
-      harborKicker: 'A solo scan keeps the branch open. Save this cadence as a persona or invite a second voice into the encounter chamber.'
+      harborKicker: 'A solo scan keeps the branch open. Save this cadence into the session shelf or invite a second voice into the encounter chamber.'
     });
   }
 
@@ -4204,14 +4256,14 @@
       heroRouteValue: formatPct(lock.profile.recurrencePressure),
       heroRouteNote: 'Homebase reveal does not force route. It only shows how much of the cadence already persists as a signature.',
       heroHarborValue: lock.name,
-      heroHarborNote: 'The cadence home is revealed, but still private until you decide what to save, compare, or send back into the Deck.',
+      heroHarborNote: 'The cadence home is revealed, but still private until you decide what to keep in session, compare, or send back into the Deck.',
       decisionLabel: 'Exposed signature',
       harborName: lock.name,
       harborStat: `${formatPct(lock.profile.recurrencePressure)} recurrence`,
       harborItems: [
         { label: 'State', value: homebaseLockKey(lock) === 'staged' ? 'staged reveal' : 'saved reveal' },
         { label: 'Shell', value: 'cadence home' },
-        { label: 'Next move', value: 'Save, mask, or pair' }
+        { label: 'Next move', value: 'Keep in session, mask, or pair' }
       ],
       harborKicker: 'Homebase reveal is not a verdict. It is the point where a private cadence home becomes explicitly measurable through the solo witness path.',
       routeStatus: 'awaiting pair'
@@ -4586,7 +4638,7 @@ DeltaE = ${ledger.reuse_gain}`;
       clearHomebaseReveal();
       releaseHomebaseReadout();
       renderPersonas();
-      setStatusMessage(`${lock.name} is staged in Homebase. The mask bench is live now; Reveal opens the dossier, and Save writes it into the local archive.`);
+      setStatusMessage(`${lock.name} is staged in Homebase. The mask bench is live now; Reveal opens the dossier, and Save keeps it in the session archive for this tab.`);
     } catch (error) {
       setStatusMessage(error.message || 'Paste at least one sample before locking a cadence home.');
     }
@@ -4611,7 +4663,7 @@ DeltaE = ${ledger.reuse_gain}`;
       revealedCadenceLockKey = activeCadenceLockId;
     }
     renderPersonas();
-    setStatusMessage(`${getActiveCadenceLock()?.name || 'Cadence home'} is now saved in the local archive.`);
+    setStatusMessage(`${getActiveCadenceLock()?.name || 'Cadence home'} is now saved in the session archive for this tab.`);
   }
 
   function revealCadenceLock() {
@@ -4654,7 +4706,7 @@ DeltaE = ${ledger.reuse_gain}`;
     }
     persistCadenceLocks();
     renderPersonas();
-    setStatusMessage(`${lock?.name || 'Cadence home'} was removed from the local archive.`);
+    setStatusMessage(`${lock?.name || 'Cadence home'} was removed from the session archive in this tab.`);
   }
 
   function sendActiveLockToDeck() {
@@ -4781,7 +4833,7 @@ DeltaE = ${ledger.reuse_gain}`;
     renderPersonas();
     updateControls();
     analyzeCadences();
-    setStatusMessage(`${persona.name} was saved in-app and assigned to the ${SLOT_SHORT[activeVoice]} bay.`);
+    setStatusMessage(`${persona.name} was kept in this tab and assigned to the ${SLOT_SHORT[activeVoice]} bay.`);
   }
 
   function normalizeTrainerPersona(persona = {}) {
@@ -5321,6 +5373,7 @@ DeltaE = ${ledger.reuse_gain}`;
       extract: () => trainerController?.extract(),
       forgeDraft: () => trainerController?.forgeDraft(),
       validate: () => trainerController?.validate(),
+      toggleReleaseGate: () => trainerController?.toggleReleaseGate(),
       exportSpec: () => trainerController?.exportSpec(),
       inject: () => trainerController?.inject()
     });
@@ -5712,13 +5765,30 @@ DeltaE = ${ledger.reuse_gain}`;
     const initialState = captureFlightState();
     const beforePersonaCount = document.querySelectorAll('.persona').length;
     const seededPair = testFlightSeedPair();
+    const readPersistentKey = (key) => {
+      try {
+        return window.localStorage.getItem(key);
+      } catch {
+        return '__unavailable__';
+      }
+    };
+    const persistentStorageBaseline = {
+      savedPersonas: readPersistentKey(STORAGE_KEY),
+      cadenceLocks: readPersistentKey(LOCK_STORAGE_KEY),
+      activeCadenceLock: readPersistentKey(ACTIVE_LOCK_STORAGE_KEY)
+    };
     const report = {
       mode,
       baseline: {
         snapshot: null,
         personas: beforePersonaCount
       },
-      galleryBootstrap: readPersonaGallerySnapshot()
+      galleryBootstrap: readPersonaGallerySnapshot(),
+      runtimeRetention: {
+        mode: window.TCP_RUNTIME_STORE?.mode || '',
+        persistent: Boolean(window.TCP_RUNTIME_STORE?.isPersistent),
+        localStorageBaseline: persistentStorageBaseline
+      }
     };
 
     try {
@@ -5839,7 +5909,12 @@ DeltaE = ${ledger.reuse_gain}`;
         report.savePersona = {
           snapshot: readDeckSnapshot(),
           personasAfterSave: document.querySelectorAll('.persona').length,
-          savedPersonaAdded: document.querySelectorAll('.persona').length === beforePersonaCount + 1
+          savedPersonaAdded: document.querySelectorAll('.persona').length === beforePersonaCount + 1,
+          localStorageAfterSave: {
+            savedPersonas: readPersistentKey(STORAGE_KEY),
+            cadenceLocks: readPersistentKey(LOCK_STORAGE_KEY),
+            activeCadenceLock: readPersistentKey(ACTIVE_LOCK_STORAGE_KEY)
+          }
         };
 
         $('tabHomebase').click();
@@ -5858,6 +5933,11 @@ DeltaE = ${ledger.reuse_gain}`;
         $('lockCadenceBtn').click();
         $('saveCadenceLockBtn').click();
         const secondSaveSnapshot = readPersonaGallerySnapshot();
+        report.runtimeRetention.localStorageAfterLockSave = {
+          savedPersonas: readPersistentKey(STORAGE_KEY),
+          cadenceLocks: readPersistentKey(LOCK_STORAGE_KEY),
+          activeCadenceLock: readPersistentKey(ACTIVE_LOCK_STORAGE_KEY)
+        };
         const firstLockButton = firstLockId ? document.querySelector(`[data-lock-action="select"][data-lock-id="${firstLockId}"]`) : null;
         if (firstLockButton) {
           firstLockButton.click();
@@ -5969,6 +6049,11 @@ DeltaE = ${ledger.reuse_gain}`;
         $('trainerExtractBtn').click();
         $('trainerForgeDraftBtn').click();
         $('trainerValidateBtn').click();
+        const trainerBeforeRelease = readTrainerSnapshot();
+        $('trainerExportBtn').click();
+        const trainerAfterBlockedExport = readTrainerSnapshot();
+        $('trainerReleaseGateBtn').click();
+        const trainerAfterReleaseGate = readTrainerSnapshot();
         $('trainerExportBtn').click();
         const trainerBeforeInject = readTrainerSnapshot();
         const personaCountBeforeTrainerInject = document.querySelectorAll('.persona').length;
@@ -5984,6 +6069,7 @@ DeltaE = ${ledger.reuse_gain}`;
           typeof trainerBridge.extract === 'function' &&
           typeof trainerBridge.forgeDraft === 'function' &&
           typeof trainerBridge.validate === 'function' &&
+          typeof trainerBridge.toggleReleaseGate === 'function' &&
           typeof trainerBridge.exportSpec === 'function' &&
           typeof trainerBridge.inject === 'function'
         );
@@ -5996,6 +6082,9 @@ DeltaE = ${ledger.reuse_gain}`;
           trainerAfterRestore = readTrainerSnapshot();
         }
         report.trainer = {
+          snapshotBeforeRelease: trainerBeforeRelease,
+          snapshotAfterBlockedExport: trainerAfterBlockedExport,
+          snapshotAfterReleaseGate: trainerAfterReleaseGate,
           snapshotBeforeInject: trainerBeforeInject,
           snapshotAfterInject: trainerAfterInject,
           snapshotAfterRestore: trainerAfterRestore,
@@ -6004,6 +6093,11 @@ DeltaE = ${ledger.reuse_gain}`;
           injectedPersonaId: injectedTrainerId,
           trainerTabActive: document.body.dataset.artifactTab === 'trainer',
           bridgePresent: trainerBridgePresent,
+          localStorageAfterInject: {
+            savedPersonas: readPersistentKey(STORAGE_KEY),
+            cadenceLocks: readPersistentKey(LOCK_STORAGE_KEY),
+            activeCadenceLock: readPersistentKey(ACTIVE_LOCK_STORAGE_KEY)
+          },
           roundtripRestored: Boolean(
             trainerAfterRestore &&
             trainerSerializedState &&
@@ -6143,10 +6237,25 @@ DeltaE = ${ledger.reuse_gain}`;
           { id: 'swap_shells_preserve_raw_text', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
             { id: 'swap_cadences_retrieval_audit_present', pass: Boolean(report.swapCadences.audit && report.swapCadences.audit.lanes && report.swapCadences.audit.lanes.A && report.swapCadences.audit.lanes.B) },
             { id: 'save_persona_adds_entry', pass: report.savePersona.savedPersonaAdded },
+            {
+              id: 'session_artifacts_do_not_touch_local_storage',
+              pass:
+                report.runtimeRetention.mode === 'session-memory' &&
+                !report.runtimeRetention.persistent &&
+                report.savePersona.localStorageAfterSave.savedPersonas === report.runtimeRetention.localStorageBaseline.savedPersonas &&
+                report.savePersona.localStorageAfterSave.cadenceLocks === report.runtimeRetention.localStorageBaseline.cadenceLocks &&
+                report.savePersona.localStorageAfterSave.activeCadenceLock === report.runtimeRetention.localStorageBaseline.activeCadenceLock &&
+                report.runtimeRetention.localStorageAfterLockSave.savedPersonas === report.runtimeRetention.localStorageBaseline.savedPersonas &&
+                report.runtimeRetention.localStorageAfterLockSave.cadenceLocks === report.runtimeRetention.localStorageBaseline.cadenceLocks &&
+                report.runtimeRetention.localStorageAfterLockSave.activeCadenceLock === report.runtimeRetention.localStorageBaseline.activeCadenceLock &&
+                report.trainer.localStorageAfterInject.savedPersonas === report.runtimeRetention.localStorageBaseline.savedPersonas &&
+                report.trainer.localStorageAfterInject.cadenceLocks === report.runtimeRetention.localStorageBaseline.cadenceLocks &&
+                report.trainer.localStorageAfterInject.activeCadenceLock === report.runtimeRetention.localStorageBaseline.activeCadenceLock
+            },
             { id: 'homebase_stage_does_not_autosave', pass: report.personaGallery.afterFirstStage.lockCount === report.personaGallery.baseline.lockCount && report.personaGallery.afterFirstStage.stagedLockPresent && !report.personaGallery.afterFirstStage.revealed },
             { id: 'homebase_reveal_wakes_solo_path', pass: report.personaGallery.afterFirstReveal.revealed && report.personaGallery.afterFirstReveal.dossierReady && report.personaGallery.afterFirstReveal.readoutOwner === 'homebase' },
-            { id: 'homebase_save_persists_lock', pass: report.personaGallery.afterFirstSave.lockCount === report.personaGallery.baseline.lockCount + 1 && !report.personaGallery.afterFirstSave.stagedLockPresent },
-            { id: 'homebase_stores_multiple_locks', pass: report.personaGallery.afterSecondSave.lockCount >= report.personaGallery.afterFirstSave.lockCount + 1 },
+            { id: 'homebase_save_keeps_session_lock', pass: report.personaGallery.afterFirstSave.lockCount === report.personaGallery.baseline.lockCount + 1 && !report.personaGallery.afterFirstSave.stagedLockPresent },
+            { id: 'homebase_keeps_multiple_session_locks', pass: report.personaGallery.afterSecondSave.lockCount >= report.personaGallery.afterFirstSave.lockCount + 1 },
             { id: 'saved_lock_reselection_stays_latent', pass: report.personaGallery.afterFirstSelect.activeLockId === report.personaGallery.afterFirstSave.activeLockId && !report.personaGallery.afterFirstSelect.revealed },
           { id: 'persona_gallery_masks_comparison_text', pass: report.personaGallery.afterMask.comparisonReady && report.personaGallery.afterMask.maskedOutputLength > 0 && report.personaGallery.afterMask.selectedMaskId === 'spark' && report.personaGallery.afterMask.homebaseWornMaskId === 'spark' },
           { id: 'generate_mask_removed_from_public_ui', pass: !document.querySelector('[data-persona-action="generate-mask"]') },
@@ -6164,7 +6273,26 @@ DeltaE = ${ledger.reuse_gain}`;
             { id: 'baseline_duel_live', pass: report.baseline.snapshot.duelState === 'live' },
             { id: 'readout_station_visible', pass: report.viewTabs.activeTab === 'readout' && report.viewTabs.stationRoute === 'readout' && !report.viewTabs.readoutHidden },
           { id: 'trainer_forges_real_draft', pass: Boolean(report.trainer && report.trainer.snapshotBeforeInject.draftReady && report.trainer.snapshotBeforeInject.generatedLength > 0 && report.trainer.snapshotBeforeInject.draftSource) },
-          { id: 'trainer_validates_generated_output', pass: Boolean(report.trainer && report.trainer.snapshotBeforeInject.validationPass && report.trainer.snapshotBeforeInject.promptReady && report.trainer.snapshotBeforeInject.exportReady) },
+          {
+            id: 'trainer_validates_generated_output',
+            pass: Boolean(
+              report.trainer &&
+              report.trainer.snapshotBeforeRelease.validationPass &&
+              report.trainer.snapshotBeforeRelease.promptReady &&
+              !report.trainer.snapshotBeforeRelease.exportReady &&
+              !report.trainer.snapshotBeforeRelease.releaseGateArmed &&
+              !report.trainer.snapshotAfterBlockedExport.exportReady
+            )
+          },
+          {
+            id: 'trainer_release_gate_arms_export',
+            pass: Boolean(
+              report.trainer &&
+              report.trainer.snapshotAfterReleaseGate.releaseGateArmed &&
+              report.trainer.snapshotBeforeInject.exportReady &&
+              report.trainer.snapshotBeforeInject.generatedLength > 0
+            )
+          },
             { id: 'trainer_injects_persona', pass: Boolean(report.trainer && report.trainer.personaAdded && report.trainer.personaAssigned && report.trainer.gallerySnapshot.selectedMaskId === report.trainer.injectedPersonaId) },
           { id: 'trainer_bridge_present', pass: Boolean(report.trainer && report.trainer.bridgePresent) },
           { id: 'trainer_restore_roundtrip', pass: Boolean(report.trainer && report.trainer.roundtripRestored) },

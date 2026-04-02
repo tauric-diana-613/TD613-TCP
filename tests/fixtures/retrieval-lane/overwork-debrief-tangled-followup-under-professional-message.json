@@ -337,7 +337,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 289.278,
+          "score": 255.602,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -359,7 +359,6 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "directness",
             "punctuation-shape"
           ],
@@ -368,7 +367,7 @@
         },
         {
           "spec": "split-heavy",
-          "score": 289.024,
+          "score": 255.348,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -390,7 +389,6 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "directness",
             "punctuation-shape"
           ],
@@ -399,7 +397,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 289.278,
+          "score": 255.602,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -421,7 +419,6 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "directness",
             "punctuation-shape"
           ],
@@ -430,7 +427,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 297.69,
+          "score": 264.014,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -451,7 +448,6 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "directness"
           ],
           "qualityGatePassed": true,

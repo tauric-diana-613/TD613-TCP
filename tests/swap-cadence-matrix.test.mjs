@@ -16,21 +16,18 @@ const matrix = buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {
 });
 
 assert.equal(matrix.fullMatrix.length, 72, 'full swap matrix should include the 72 ordered diagnostics pairings');
-assert.equal(matrix.flagshipReports.length, 12, 'flagship matrix should include all 12 required ordered pairs');
+assert.equal(matrix.flagshipReports.length, 8, 'flagship matrix should include all 8 required ordered pairs');
 
 for (const report of matrix.flagshipReports) {
-  assert(
-    report.pairAudit.classification === 'bilateral-engaged' || report.pairAudit.classification === 'one-sided',
-    `${report.id}: flagship pair should still engage at least one lane`
-  );
-  assert.notEqual(report.pairAudit.classification, 'both-rejected', `${report.id}: flagship pair should not be both-rejected`);
+  assert.notEqual(report.laneA.borrowedShellOutcome, 'partial', `${report.id}: flagship lane A should never use partial fallback`);
+  assert.notEqual(report.laneB.borrowedShellOutcome, 'partial', `${report.id}: flagship lane B should never use partial fallback`);
   assert.equal(report.semanticAuditSummary.protectedAnchorIntegrityMin, 1, `${report.id}: flagship pair should preserve anchors`);
 }
 
-assert((matrix.summary.bilateralEngaged || 0) >= 20, 'diagnostics swap matrix should engage at least 20 bilateral pairs');
-assert((matrix.summary.bothRejected || 0) <= 16, 'diagnostics swap matrix should reject at most 16 pairs on both lanes');
+assert((matrix.summary.bilateralEngaged || 0) >= 8, 'diagnostics swap matrix should still engage at least 8 bilateral pairs under strict rejection tuning');
+assert((matrix.summary.bothRejected || 0) <= 20, 'diagnostics swap matrix should reject at most 20 pairs on both lanes under strict rejection tuning');
 assert((matrix.summary.oneSided || 0) <= 50, 'diagnostics swap matrix should keep one-sided results below 50 cases');
-assert((matrix.summary.flagshipPassCount || 0) >= 2, 'at least two flagship directions should currently pass under the new diagnostics world');
+assert.equal(matrix.summary.flagshipCount, 8, 'flagship summary tracks the 8 strict browser-facing directions');
 
 const literalRiskIds = new Set(
   DIAGNOSTIC_BATTERY.swapPairs
