@@ -323,10 +323,15 @@
     },
     "planSummary": {
       "transferMode": "expand",
-      "structuralOperationsSelected": [],
+      "structuralOperationsSelected": [
+        "baseline-merge",
+        "sentence-structure",
+        "clause-join-split",
+        "structural-rescue"
+      ],
       "lexicalRegisterOperationsSelected": [
-        "contraction",
-        "phrase-texture"
+        "baseline-voice-realization",
+        "connector-stance-lexicon"
       ],
       "connectorStrategy": "causal",
       "contractionStrategy": "hold",
@@ -364,25 +369,31 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "ir-beam-search",
-        "score": 337.36,
+        "spec": "mixed-structural",
+        "score": -10.918,
         "passesApplied": [
-          "contraction",
-          "phrase-texture"
+          "baseline-merge",
+          "baseline-voice-realization",
+          "sentence-structure",
+          "clause-join-split",
+          "connector-stance-lexicon",
+          "cleanup-restore",
+          "structural-rescue"
         ],
-        "rescuePasses": [],
+        "rescuePasses": [
+          "structural-rescue"
+        ],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "contraction-posture",
           "connector-stance",
-          "lexical-register",
-          "abstraction-posture",
           "punctuation-shape"
         ],
-        "qualityGatePassed": true,
-        "notes": []
+        "qualityGatePassed": false,
+        "notes": [
+          "Structural opportunity existed but the current candidate collapsed into additive drift."
+        ]
       },
       "candidates": [
         {
@@ -517,53 +528,37 @@
       ]
     },
     "finalRealization": {
-      "text": "Trying another time because each person I speak with describes the same blockage as if it lives somewhere else. The portal notice made it sound finished. The payer line confirmed PR-44719, so that sounded finished too. Scheduling then explained the approval could not be used because it details to the downtown clinic while the actual order still says North River, which means the approval is real and unusable at the same time, and I was told a corrected order request went out at 10:26 AM, then told to wait for a callback, then told the next-day slot could not be retained indefinitely. I'm not confused about whether an authorization exists. I'm confused about why an approved case can sit in limbo all day because no one owns the location mismatch long enough to close it.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "contraction-posture",
-        "connector-stance",
-        "lexical-register",
-        "abstraction-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "say",
-          "from": "said",
-          "to": "explained",
-          "kind": "lexeme"
-        },
-        {
-          "family": "keep",
-          "from": "held",
-          "to": "retained",
-          "kind": "lexeme"
-        },
-        {
-          "family": "detail",
-          "from": "points",
-          "to": "details",
-          "kind": "lexeme"
-        }
-      ],
+      "text": "Trying one more time because each person I speak with describes the same blockage as if it lives somewhere else. The portal notice made it sound finished. The payer line confirmed PR-44719, so that sounded finished too. Scheduling then said the approval could not be used because it points to the downtown clinic while the actual order still says North River, which means the approval is real and unusable at the same time. I was told a corrected order request went out at 10:26 AM, then told to wait for a callback, then told the next-day slot could not be held indefinitely. I am not confused about whether an authorization exists. I am confused about why an approved case can sit in limbo all day because no one owns the location mismatch long enough to close it.",
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 0.965,
+        "outputDonorDistance": 2.045,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 0.951
+      },
+      "rescuePasses": [
+        "structural-rescue",
+        "progress-admit",
+        "semantic-final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     },
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.923,
-      "polarityMismatches": 1,
-      "tenseMismatches": 1,
+      "objectCoverage": 0.981,
+      "polarityMismatches": 0,
+      "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -576,7 +571,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.031
+          "globalBagScore": 0.026
         },
         {
           "sourceClauseId": "s0c1",
@@ -588,7 +583,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.031
+          "globalBagScore": 0.026
         },
         {
           "sourceClauseId": "s0c2",
@@ -600,7 +595,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.031
+          "globalBagScore": 0.026
         },
         {
           "sourceClauseId": "s1c0",
@@ -612,7 +607,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.063
+          "globalBagScore": 0.053
         },
         {
           "sourceClauseId": "s2c0",
@@ -624,7 +619,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.4,
-          "globalBagScore": 0.061
+          "globalBagScore": 0.051
         },
         {
           "sourceClauseId": "s2c1",
@@ -636,46 +631,22 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.063
+          "globalBagScore": 0.053
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s3c0+s3c1",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.2,
-          "globalBagScore": 0.094
+          "bagScore": 1,
+          "globalBagScore": 0.079
         },
         {
           "sourceClauseId": "s3c1",
-          "matchedClauseId": "s0c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0.063
-        },
-        {
-          "sourceClauseId": "s3c2",
-          "matchedClauseId": "s2c1+s3c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 1,
-          "tenseMismatch": 1,
-          "bagScore": 0.25,
-          "globalBagScore": 0.139
-        },
-        {
-          "sourceClauseId": "s4c0",
           "matchedClauseId": "s3c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -684,35 +655,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.219
+          "globalBagScore": 0.053
         },
         {
-          "sourceClauseId": "s5c0",
-          "matchedClauseId": "s4c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
-        },
-        {
-          "sourceClauseId": "s6c0",
-          "matchedClauseId": "s0c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
-        },
-        {
-          "sourceClauseId": "s6c1",
-          "matchedClauseId": "s5c1",
+          "sourceClauseId": "s3c2",
+          "matchedClauseId": "s3c2",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -720,11 +667,59 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.063
+          "globalBagScore": 0.237
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s4c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.184
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s5c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.132
+        },
+        {
+          "sourceClauseId": "s6c0",
+          "matchedClauseId": "s6c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.132
+        },
+        {
+          "sourceClauseId": "s6c1",
+          "matchedClauseId": "s6c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.053
         }
       ],
       "sourceClauseCount": 13,
-      "outputClauseCount": 11
+      "outputClauseCount": 13
     },
     "protectedAnchorAudit": {
       "totalAnchors": 2,
@@ -734,8 +729,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 6,
-        "clauseCount": 11,
+        "sentenceCount": 7,
+        "clauseCount": 13,
         "literalSpans": [
           {
             "value": "10:26 AM",
@@ -750,13 +745,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Trying another time because each person I speak with describes the same blockage as if it lives somewhere else",
+          "raw": "Trying one more time because each person I speak with describes the same blockage as if it lives somewhere else",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Trying another time",
+              "text": "Trying one more time",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -860,35 +855,73 @@
         },
         {
           "id": "s3",
-          "raw": "Scheduling then explained the approval could not be used because it details to the downtown clinic while the actual order still says North River, which means the approval is real and unusable at the same time, and I was told a corrected order request went out at 10:26 AM, then told to wait for a callback, then told the next-day slot could not be retained indefinitely",
+          "raw": "Scheduling then said the approval could not be used because it points to the downtown clinic while the actual order still says North River, which means the approval is real and unusable at the same time",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "Scheduling then explained the approval could not be used because it details to the downtown clinic while the actual order still says North River, which means the approval is real and unusable at the same time",
+              "text": "Scheduling then said the approval could not be used",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "past",
-              "propositionHead": "used",
+              "propositionHead": "said",
               "actor": "the approval",
-              "action": "used",
-              "object": "details downtown clinic actual order",
+              "action": "said",
+              "object": "approval used",
               "modifiers": [
-                "approval",
-                "clinic",
+                "approval"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s3c1",
+              "text": "it points to the downtown clinic",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "points",
+              "actor": "it",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "clinic"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s3c2",
+              "text": "the actual order still says North River, which means the approval is real and unusable at the same time",
+              "relationToPrev": "contrastive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "says",
+              "actor": "the actual",
+              "action": "says",
+              "object": "north river which means approval",
+              "modifiers": [
                 "actual",
                 "approval",
                 "real",
                 "unusable"
               ],
               "hedgeMarkers": []
-            },
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "I was told a corrected order request went out at 10:26 AM, then told to wait for a callback, then told the next-day slot could not be held indefinitely",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
             {
-              "id": "s3c1",
-              "text": "I was told a corrected order request went out at 10:26 AM, then told to wait for a callback, then told the next-day slot could not be retained indefinitely",
-              "relationToPrev": "additive",
+              "id": "s4c0",
+              "text": "I was told a corrected order request went out at 10:26 AM, then told to wait for a callback, then told the next-day slot could not be held indefinitely",
+              "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "past",
@@ -904,49 +937,49 @@
           ]
         },
         {
-          "id": "s4",
-          "raw": "I'm not confused about whether an authorization exists",
+          "id": "s5",
+          "raw": "I am not confused about whether an authorization exists",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s4c0",
-              "text": "I'm not confused about whether an authorization exists",
+              "id": "s5c0",
+              "text": "I am not confused about whether an authorization exists",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "negative",
               "tenseAspect": "past",
-              "propositionHead": "i'm",
+              "propositionHead": "am",
               "actor": "I",
-              "action": "",
-              "object": "",
+              "action": "am",
+              "object": "confused about whether authorization exists",
               "modifiers": [],
               "hedgeMarkers": []
             }
           ]
         },
         {
-          "id": "s5",
-          "raw": "I'm confused about why an approved case can sit in limbo all day because no one owns the location mismatch long enough to close it.",
+          "id": "s6",
+          "raw": "I am confused about why an approved case can sit in limbo all day because no one owns the location mismatch long enough to close it.",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s5c0",
-              "text": "I'm confused about why an approved case can sit in limbo all day",
+              "id": "s6c0",
+              "text": "I am confused about why an approved case can sit in limbo all day",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "can",
+              "propositionHead": "am",
               "actor": "I",
-              "action": "can",
-              "object": "sit limbo all day",
+              "action": "am",
+              "object": "confused about why approved case",
               "modifiers": [],
               "hedgeMarkers": []
             },
             {
-              "id": "s5c1",
+              "id": "s6c1",
               "text": "no one owns the location mismatch long enough to close it",
               "relationToPrev": "additive",
               "clauseType": "fragment",
@@ -964,69 +997,38 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "contraction-posture",
-        "connector-stance",
-        "lexical-register",
-        "abstraction-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "say",
-          "from": "said",
-          "to": "explained",
-          "kind": "lexeme"
-        },
-        {
-          "family": "keep",
-          "from": "held",
-          "to": "retained",
-          "kind": "lexeme"
-        },
-        {
-          "family": "detail",
-          "from": "points",
-          "to": "details",
-          "kind": "lexeme"
-        }
-      ],
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 0.965,
+        "outputDonorDistance": 2.045,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 0.951
+      },
       "realizationNotes": [
-        "3 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, abstraction-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "rescuePasses": [
+        "structural-rescue",
+        "progress-admit",
+        "semantic-final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     }
   },
   "semanticContract": {
-    "transferClass": "structural",
-    "realizationTier": "lexical-structural",
-    "changedDimensions": [
-      "abstraction-posture",
-      "connector-stance",
-      "contraction-posture",
-      "lexical-register",
-      "punctuation-shape",
-      "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
-    ],
-    "lexemeSwapFamilies": [
-      "detail",
-      "keep",
-      "say"
-    ],
+    "transferClass": "rejected",
+    "realizationTier": "none",
+    "changedDimensions": [],
+    "lexemeSwapFamilies": [],
     "relationInventory": [
       "additive:1",
       "causal:5",
@@ -1035,19 +1037,24 @@
       "resumptive:1",
       "temporal:4"
     ],
-    "structuralOperations": [],
+    "structuralOperations": [
+      "baseline-merge",
+      "clause-join-split",
+      "sentence-structure",
+      "structural-rescue"
+    ],
     "lexicalOperations": [
-      "contraction",
-      "phrase-texture"
+      "baseline-voice-realization",
+      "connector-stance-lexicon"
     ],
     "connectorStrategy": "causal",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.923,
-    "polarityMismatches": 1,
-    "tenseMismatches": 1,
+    "objectCoverage": 0.981,
+    "polarityMismatches": 0,
+    "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }
 }

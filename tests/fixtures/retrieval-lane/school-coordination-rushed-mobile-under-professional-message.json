@@ -382,6 +382,14 @@
         }
       ],
       "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 2.349,
+        "outputDonorDistance": 1.244,
+        "donorImprovement": 1.105,
+        "donorImprovementRatio": 0.47,
+        "sourceOutputLexicalOverlap": 0.851
+      },
       "rescuePasses": [],
       "visibleShift": true,
       "nonTrivialShift": true
@@ -572,6 +580,14 @@
         }
       ],
       "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 2.349,
+        "outputDonorDistance": 1.244,
+        "donorImprovement": 1.105,
+        "donorImprovementRatio": 0.47,
+        "sourceOutputLexicalOverlap": 0.851
+      },
       "realizationNotes": [
         "1 lexical family swap landed.",
         "Semantic risk is elevated; review the realized output before relying on it."

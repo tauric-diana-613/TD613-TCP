@@ -433,6 +433,14 @@
         }
       ],
       "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 1.807,
+        "outputDonorDistance": 1.319,
+        "donorImprovement": 0.488,
+        "donorImprovementRatio": 0.27,
+        "sourceOutputLexicalOverlap": 0.855
+      },
       "rescuePasses": [],
       "visibleShift": true,
       "nonTrivialShift": true
@@ -673,6 +681,14 @@
         }
       ],
       "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 1.807,
+        "outputDonorDistance": 1.319,
+        "donorImprovement": 0.488,
+        "donorImprovementRatio": 0.27,
+        "sourceOutputLexicalOverlap": 0.855
+      },
       "realizationNotes": [
         "2 lexical family swaps landed.",
         "Register shift surfaced through lexical-register, directness.",

@@ -206,6 +206,28 @@ const lowOpportunityTransfer = buildCadenceTransfer(
     strength: 0.9
   }
 );
+const truthGuardFormal = `I want to revise one phrase from my earlier recap before it starts hardening into the story. I wrote that the committee was considering a "service adjustment," which is technically true in the narrow memo sense and misleading in the lived one. What the table actually showed is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks and the intake queue either gets redistributed badly or evening hours shrink. Those are not abstract efficiencies. They are service consequences. Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule and the dean signs off. But I do not want the language to get gentler than the problem just because we are waiting for the Thursday table.`;
+const truthGuardRushed = `if youre late thats ok just dont start random jobs. check in west fence table first. glass + pallets first pass. saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands. pls bring water for real, not saying it to be annoying`;
+const truthGuardFormalTransfer = buildCadenceTransfer(
+  truthGuardFormal,
+  {
+    mode: 'borrowed',
+    profile: extractCadenceProfile(truthGuardRushed),
+    strength: 0.82,
+    source: 'swapped'
+  },
+  { retrieval: true }
+);
+const truthGuardRushedTransfer = buildCadenceTransfer(
+  truthGuardRushed,
+  {
+    mode: 'borrowed',
+    profile: extractCadenceProfile(truthGuardFormal),
+    strength: 0.82,
+    source: 'swapped'
+  },
+  { retrieval: true }
+);
 
 assert.notEqual(swapped.avgSentenceLength, baseProfile.avgSentenceLength);
 assert.notEqual(swapped.contractionDensity, baseProfile.contractionDensity);
@@ -287,6 +309,14 @@ assert(lowOpportunityTransfer.opportunityProfile.sentenceSplit === 0);
 assert(lowOpportunityTransfer.opportunityProfile.sentenceMerge === 0);
 assert(['weak', 'rejected'].includes(lowOpportunityTransfer.transferClass));
 assert.notEqual(lowOpportunityTransfer.transferClass, 'structural');
+assert.equal(truthGuardFormalTransfer.borrowedShellOutcome, 'rejected');
+assert.equal(truthGuardFormalTransfer.transferClass, 'rejected');
+assert.equal(truthGuardFormalTransfer.text, truthGuardFormal);
+assert((truthGuardFormalTransfer.donorProgress?.donorImprovement || 0) < 0.2);
+assert.equal(truthGuardRushedTransfer.borrowedShellOutcome, 'rejected');
+assert.equal(truthGuardRushedTransfer.transferClass, 'rejected');
+assert.equal(truthGuardRushedTransfer.text, truthGuardRushed);
+assert((truthGuardRushedTransfer.donorProgress?.donorImprovement || 0) < 0.12);
 
 const signature = buildCadenceSignature(
   "I kept talking because the first version sounded too neat. Then I stopped, crossed it out, and started over."

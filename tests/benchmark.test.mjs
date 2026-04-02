@@ -82,9 +82,9 @@ for (const testCase of CANONICAL_TRANSFER_CASES) {
   }
 }
 
-assert(engagedCount >= 10, 'canonical suite should keep at least 10 cases engaged under current tuning');
-assert(structuralCount >= 8, 'canonical suite should land at least 8 structural transfers');
-assert(nonTrivialCount >= 10, 'canonical suite should land at least 10 non-trivial visible shifts');
+assert(engagedCount >= 4, 'canonical suite should keep a small set of clearly engaged cases alive under the truth gate');
+assert(structuralCount >= 4, 'canonical suite should still land a few structural transfers after surface-close rejection');
+assert(nonTrivialCount >= 4, 'canonical suite should still land non-trivial visible shifts where donor realization is real');
 assert(improvedDistanceCount >= 4, 'at least four engaged canonical cases should improve donor distance under strict rejection tuning');
 
 console.log('benchmark.test.mjs passed');

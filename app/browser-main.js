@@ -2531,6 +2531,10 @@
       return 'Transfer stayed on source cadence.';
     }
 
+     if (borrowedTransferSurfaceClose(transfer)) {
+      return 'Transfer stayed surface-close to the source cadence.';
+    }
+
     if (transfer.borrowedShellOutcome === 'structural' || transfer.transferClass === 'structural') {
       return shifted ? `Transfer moved ${shifted}.` : 'Transfer landed a structural cadence shift.';
     }
@@ -2546,12 +2550,101 @@
     return 'Transfer stayed close to the source cadence.';
   }
 
+  function transferDonorProgress(transfer = {}) {
+    if (transfer?.donorProgress?.eligible) {
+      return transfer.donorProgress;
+    }
+
+    if (!transfer?.sourceProfile || !transfer?.targetProfile || !transfer?.outputProfile) {
+      return {
+        eligible: false,
+        sourceDonorDistance: 0,
+        outputDonorDistance: 0,
+        donorImprovement: 0,
+        donorImprovementRatio: 0,
+        sourceOutputLexicalOverlap: 1
+      };
+    }
+
+    const sourceFit = compareTexts('', '', {
+      profileA: transfer.sourceProfile,
+      profileB: transfer.targetProfile
+    });
+    const outputFit = compareTexts('', '', {
+      profileA: transfer.outputProfile,
+      profileB: transfer.targetProfile
+    });
+    const sourceOutputFit = compareTexts('', '', {
+      profileA: transfer.sourceProfile,
+      profileB: transfer.outputProfile
+    });
+    const sourceDonorDistance =
+      (sourceFit.sentenceDistance || 0) +
+      (sourceFit.functionWordDistance || 0) +
+      (sourceFit.contractionDistance || 0) +
+      (sourceFit.punctShapeDistance || 0) +
+      (sourceFit.registerDistance || 0);
+    const outputDonorDistance =
+      (outputFit.sentenceDistance || 0) +
+      (outputFit.functionWordDistance || 0) +
+      (outputFit.contractionDistance || 0) +
+      (outputFit.punctShapeDistance || 0) +
+      (outputFit.registerDistance || 0);
+    const donorImprovement = Math.max(0, sourceDonorDistance - outputDonorDistance);
+
+    return {
+      eligible: true,
+      sourceDonorDistance,
+      outputDonorDistance,
+      donorImprovement,
+      donorImprovementRatio: sourceDonorDistance > 0 ? donorImprovement / sourceDonorDistance : 0,
+      sourceOutputLexicalOverlap: sourceOutputFit.lexicalOverlap ?? 1
+    };
+  }
+
+  function borrowedTransferSurfaceClose(transfer = {}) {
+    const donorProgress = transferDonorProgress(transfer);
+    if (!donorProgress.eligible) {
+      return false;
+    }
+
+    return (
+      donorProgress.donorImprovement <= 0.1 ||
+      donorProgress.donorImprovementRatio <= 0.08 ||
+      (
+        donorProgress.sourceOutputLexicalOverlap >= 0.88 &&
+        donorProgress.donorImprovement < 0.42
+      )
+    );
+  }
+
+  function realizedTransferLabel(transfer = {}, hasEffectiveTextShift = false) {
+    const percent = realizedTransferPercent(transfer, hasEffectiveTextShift);
+    if (percent === 0) {
+      return 'no transfer';
+    }
+    if (borrowedTransferSurfaceClose(transfer) || percent <= 18) {
+      return 'surface-close';
+    }
+    if (percent <= 38) {
+      return 'weak';
+    }
+    if (percent <= 68) {
+      return 'partial';
+    }
+    return 'structural';
+  }
+
   function classifySwapPairFromLanes(laneA, laneB) {
     const engagedA = ['structural', 'partial'].includes(laneA.borrowedShellOutcome);
     const engagedB = ['structural', 'partial'].includes(laneB.borrowedShellOutcome);
 
     if (laneA.borrowedShellOutcome === 'rejected' && laneB.borrowedShellOutcome === 'rejected') {
       return 'both-rejected';
+    }
+
+    if (laneA.surfaceClose && laneB.surfaceClose) {
+      return 'surface-close';
     }
 
     if (engagedA && engagedB) {
@@ -2583,6 +2676,8 @@
       changedDimensions: [...new Set(transfer.changedDimensions || [])],
       lexemeSwapFamilies: [...new Set((transfer.lexemeSwaps || []).map((swap) => swap.family))],
       rescuePasses: [...new Set(transfer.rescuePasses || [])],
+      donorProgress: transferDonorProgress(transfer),
+      surfaceClose: borrowedTransferSurfaceClose(transfer),
       propositionCoverage: semanticAudit.propositionCoverage ?? 1,
       actorCoverage: semanticAudit.actorCoverage ?? 1,
       actionCoverage: semanticAudit.actionCoverage ?? 1,
@@ -2601,43 +2696,55 @@
       return 0;
     }
 
+    if (borrowedTransferSurfaceClose(transfer)) {
+      return 8;
+    }
+
     const semanticAudit = transfer.retrievalTrace?.semanticAudit || transfer.semanticAudit || {};
     const protectedAnchorIntegrity =
       transfer.protectedAnchorAudit?.protectedAnchorIntegrity ??
       semanticAudit.protectedAnchorIntegrity ??
       1;
+    const donorProgress = transferDonorProgress(transfer);
     const changedDimensions = [...new Set(transfer.changedDimensions || [])];
     const nonPunctuationDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
     const lexicalShiftCount = Math.min((transfer.lexemeSwaps || []).length, 3);
     let score = 0;
 
-    if (hasEffectiveTextShift) {
-      score += 12;
+    score += Math.min(42, Math.round((donorProgress.donorImprovementRatio || 0) * 160));
+    score += Math.min(20, Math.round(Math.max(0, donorProgress.donorImprovement || 0) * 40));
+
+    if (hasEffectiveTextShift && transfer.visibleShift) {
+      score += 6;
     }
-    if (transfer.visibleShift) {
-      score += 12;
+    if (transfer.visibleShift && donorProgress.donorImprovementRatio >= 0.1) {
+      score += 6;
     }
-    if (transfer.nonTrivialShift) {
-      score += 16;
+    if (transfer.nonTrivialShift && donorProgress.donorImprovementRatio >= 0.12) {
+      score += 8;
     }
 
-    score += Math.min(nonPunctuationDimensions.length, 4) * 12;
-    score += lexicalShiftCount * 10;
+    score += Math.min(nonPunctuationDimensions.length, 3) * 4;
+    score += lexicalShiftCount * 4;
 
     if (transfer.transferClass === 'structural') {
-      score += 14;
+      score += 8;
     } else if (transfer.borrowedShellOutcome === 'partial' || transfer.transferClass === 'weak') {
       score += 6;
     }
 
     if (transfer.realizationTier === 'lexical-structural') {
-      score += 10;
-    } else if (transfer.realizationTier === 'structural') {
       score += 6;
+    } else if (transfer.realizationTier === 'structural') {
+      score += 4;
     }
 
     if (!nonPunctuationDimensions.length && lexicalShiftCount === 0) {
       score = Math.min(score, changedDimensions.includes('punctuation-shape') ? 8 : 4);
+    }
+
+    if ((donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.82) {
+      score -= Math.round(((donorProgress.sourceOutputLexicalOverlap ?? 1) - 0.82) * 60);
     }
 
     if ((semanticAudit.propositionCoverage ?? 1) < 0.9) {
@@ -2756,7 +2863,7 @@
     }
 
     if (voiceState.shell.profile) {
-      return `Profile shell realized ${realizedTransferPercent(transfer, voiceState.hasEffectiveTextShift)}% transfer. ${transferSummary} ${literalNote}`.trim();
+      return `Profile shell reads ${realizedTransferPercent(transfer, voiceState.hasEffectiveTextShift)}% ${realizedTransferLabel(transfer, voiceState.hasEffectiveTextShift)} transfer. ${transferSummary} ${literalNote}`.trim();
     }
 
     return `Applied shell bias: sent ${voiceState.shell.mod.sent >= 0 ? '+' : ''}${voiceState.shell.mod.sent}, cont ${voiceState.shell.mod.cont >= 0 ? '+' : ''}${voiceState.shell.mod.cont}, punc ${voiceState.shell.mod.punc >= 0 ? '+' : ''}${voiceState.shell.mod.punc}.`;
@@ -2767,7 +2874,7 @@
       return 'native shell';
     }
 
-    return `${realizedTransferPercent(transfer, hasEffectiveTextShift)}% realized transfer`;
+    return `${realizedTransferPercent(transfer, hasEffectiveTextShift)}% ${realizedTransferLabel(transfer, hasEffectiveTextShift)}`;
   }
 
   function compactAxisLabel(id) {

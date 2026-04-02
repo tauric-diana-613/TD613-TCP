@@ -417,66 +417,47 @@
       ]
     },
     "finalRealization": {
-      "text": "I want to revise one phrase from my earlier recap before it begins hardening into the account. I wrote that the committee was considering a \"service adjustment,\" that's technically true in the narrow memo sense and misleading in the lived one. What the table actually explained is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks and the intake queue either receives redistributed badly or evening hours shrink. Those are not abstract efficiencies. They are service consequences. Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule and the dean signs off. But I do not want the language to receive gentler than the problem just because we are waiting for the Thursday table.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "contraction-posture",
-        "connector-stance",
-        "abstraction-posture"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "get",
-          "from": "gets",
-          "to": "receives",
-          "kind": "lexeme"
-        },
-        {
-          "family": "start",
-          "from": "starts",
-          "to": "begins",
-          "kind": "lexeme"
-        },
-        {
-          "family": "show",
-          "from": "showed",
-          "to": "explained",
-          "kind": "lexeme"
-        },
-        {
-          "family": "story",
-          "from": "story",
-          "to": "account",
-          "kind": "lexeme"
-        }
-      ],
+      "text": "I want to revise one phrase from my earlier recap before it starts hardening into the story. I wrote that the committee was considering a \"service adjustment,\" which is technically true in the narrow memo sense and misleading in the lived one. What the table actually showed is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks and the intake queue either gets redistributed badly or evening hours shrink. Those are not abstract efficiencies. They are service consequences. Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule and the dean signs off. But I do not want the language to get gentler than the problem just because we are waiting for the Thursday table.",
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 0.793,
+        "outputDonorDistance": 0.793,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 1
+      },
+      "rescuePasses": [
+        "final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     },
     "semanticAudit": {
-      "propositionCoverage": 0.99,
+      "propositionCoverage": 1,
       "actorCoverage": 1,
-      "actionCoverage": 0.981,
-      "objectCoverage": 0.915,
-      "polarityMismatches": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 0.975,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s6c0+s6c1",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.125,
+          "bagScore": 1,
           "globalBagScore": 0.029
         },
         {
@@ -488,20 +469,20 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.25,
-          "globalBagScore": 0.054
+          "bagScore": 0.429,
+          "globalBagScore": 0.083
         },
         {
           "sourceClauseId": "s2c0",
           "matchedClauseId": "s2c0",
-          "propositionCoverage": 0.9,
+          "propositionCoverage": 1,
           "actorCoverage": 1,
-          "actionCoverage": 0.81,
-          "objectCoverage": 0.9,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.029
+          "bagScore": 1,
+          "globalBagScore": 0.059
         },
         {
           "sourceClauseId": "s2c1",
@@ -509,11 +490,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.286,
-          "globalBagScore": 0.108
+          "bagScore": 1,
+          "globalBagScore": 0.206
         },
         {
           "sourceClauseId": "s3c0",
@@ -569,11 +550,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.086
+          "bagScore": 1,
+          "globalBagScore": 0.118
         },
         {
           "sourceClauseId": "s6c1",
@@ -615,21 +596,21 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "I want to revise one phrase from my earlier recap before it begins hardening into the account",
+          "raw": "I want to revise one phrase from my earlier recap before it starts hardening into the story",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "I want to revise one phrase from my earlier recap before it begins hardening into the account",
+              "text": "I want to revise one phrase from my earlier recap before it starts hardening into the story",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "begins",
+              "propositionHead": "want",
               "actor": "I",
-              "action": "begins",
-              "object": "hardening into account",
+              "action": "",
+              "object": "",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -637,13 +618,13 @@
         },
         {
           "id": "s1",
-          "raw": "I wrote that the committee was considering a \"service adjustment,\" that's technically true in the narrow memo sense and misleading in the lived one",
+          "raw": "I wrote that the committee was considering a \"service adjustment,\" which is technically true in the narrow memo sense and misleading in the lived one",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "I wrote that the committee was considering a \"service adjustment,\" that's technically true in the narrow memo sense and misleading in the lived one",
+              "text": "I wrote that the committee was considering a \"service adjustment,\" which is technically true in the narrow memo sense and misleading in the lived one",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -651,7 +632,7 @@
               "propositionHead": "was",
               "actor": "I",
               "action": "was",
-              "object": "considering service adjustment that's technically",
+              "object": "considering service adjustment which technically",
               "modifiers": [
                 "technically"
               ],
@@ -661,20 +642,20 @@
         },
         {
           "id": "s2",
-          "raw": "What the table actually explained is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks and the intake queue either receives redistributed badly or evening hours shrink",
+          "raw": "What the table actually showed is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks and the intake queue either gets redistributed badly or evening hours shrink",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "What the table actually explained is that",
+              "text": "What the table actually showed is that",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "is",
+              "propositionHead": "showed",
               "actor": "the table",
-              "action": "is",
+              "action": "showed",
               "object": "",
               "modifiers": [
                 "table",
@@ -684,15 +665,15 @@
             },
             {
               "id": "s2c1",
-              "text": "the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks and the intake queue either receives redistributed badly or evening hours shrink",
+              "text": "the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks and the intake queue either gets redistributed badly or evening hours shrink",
               "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "hiring",
+              "propositionHead": "gets",
               "actor": "the hiring",
-              "action": "",
-              "object": "",
+              "action": "gets",
+              "object": "redistributed badly evening hours shrink",
               "modifiers": [
                 "badly"
               ],
@@ -784,24 +765,22 @@
         },
         {
           "id": "s6",
-          "raw": "But I do not want the language to receive gentler than the problem just because we are waiting for the Thursday table.",
+          "raw": "But I do not want the language to get gentler than the problem just because we are waiting for the Thursday table.",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s6c0",
-              "text": "But I do not want the language to receive gentler than the problem just",
+              "text": "But I do not want the language to get gentler than the problem just",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "present",
-              "propositionHead": "do",
+              "propositionHead": "get",
               "actor": "I",
-              "action": "do",
-              "object": "want language receive gentler than",
-              "modifiers": [
-                "receive"
-              ],
+              "action": "get",
+              "object": "gentler than problem",
+              "modifiers": [],
               "hedgeMarkers": [
                 "minimization"
               ]
@@ -827,66 +806,36 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "contraction-posture",
-        "connector-stance",
-        "abstraction-posture"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "get",
-          "from": "gets",
-          "to": "receives",
-          "kind": "lexeme"
-        },
-        {
-          "family": "start",
-          "from": "starts",
-          "to": "begins",
-          "kind": "lexeme"
-        },
-        {
-          "family": "show",
-          "from": "showed",
-          "to": "explained",
-          "kind": "lexeme"
-        },
-        {
-          "family": "story",
-          "from": "story",
-          "to": "account",
-          "kind": "lexeme"
-        }
-      ],
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 0.793,
+        "outputDonorDistance": 0.793,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 1
+      },
       "realizationNotes": [
-        "4 lexical family swaps landed.",
-        "Register shift surfaced through abstraction-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "rescuePasses": [
+        "final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     }
   },
   "semanticContract": {
-    "transferClass": "structural",
-    "realizationTier": "lexical-structural",
-    "changedDimensions": [
-      "abstraction-posture",
-      "connector-stance",
-      "contraction-posture"
-    ],
-    "lexemeSwapFamilies": [
-      "get",
-      "show",
-      "start",
-      "story"
-    ],
+    "transferClass": "rejected",
+    "realizationTier": "none",
+    "changedDimensions": [],
+    "lexemeSwapFamilies": [],
     "relationInventory": [
       "additive:3",
       "causal:1",
@@ -901,11 +850,11 @@
     "lexicalOperations": [],
     "connectorStrategy": "additive",
     "contractionStrategy": "hold",
-    "propositionCoverage": 0.99,
+    "propositionCoverage": 1,
     "actorCoverage": 1,
-    "actionCoverage": 0.981,
-    "objectCoverage": 0.915,
-    "polarityMismatches": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 0.975,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

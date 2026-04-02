@@ -272,11 +272,7 @@
     "planSummary": {
       "transferMode": "expand",
       "structuralOperationsSelected": [],
-      "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "baseline-function-word",
-        "connector-stance-lexicon"
-      ],
+      "lexicalRegisterOperationsSelected": [],
       "connectorStrategy": "causal",
       "contractionStrategy": "hold",
       "relationInventory": {
@@ -313,18 +309,19 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "mixed-structural",
-        "score": 208.844,
+        "spec": "borrowed-shell-overlay",
+        "score": 243.068,
         "passesApplied": [
-          "baseline-voice-realization",
-          "baseline-function-word",
-          "connector-stance-lexicon"
+          "overlay-conservative"
         ],
-        "rescuePasses": [],
+        "rescuePasses": [
+          "overlay-conservative"
+        ],
         "changedDimensions": [
           "connector-stance",
           "lexical-register",
-          "directness"
+          "directness",
+          "abstraction-posture"
         ],
         "qualityGatePassed": true,
         "notes": []
@@ -425,34 +422,29 @@
       ]
     },
     "finalRealization": {
-      "text": "I owe you a cleaner explanation for why the memo landed late. It was not one giant emergency so much because a stack of small revision asks that kept sounding manageable long after they stopped being that. What began because a Friday afternoon tone pass turned into table cleanup, citation repair, and another full check cycle across Saturday because each extra ask arrived because if it were the last one. I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately. The memo itself is now in good shape, but the route we took to get there was not. For the next round I would like us to define a stop detail before weekend work starts presenting itself because thoughtfulness.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "connector-stance",
-        "lexical-register",
-        "directness"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "detail",
-          "from": "point",
-          "to": "detail",
-          "kind": "lexeme"
-        },
-        {
-          "family": "check",
-          "from": "review",
-          "to": "check",
-          "kind": "lexeme"
-        }
-      ],
+      "text": "I owe you a cleaner explanation for why the memo landed late. It was not one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that. What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday because each extra ask arrived as if it were the last one. I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately. The memo itself is now in good shape, but the route we took to get there was not. For the next round I would like us to define a stop point before weekend work starts presenting itself as thoughtfulness.",
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0,
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 0.972,
+        "outputDonorDistance": 0.935,
+        "donorImprovement": 0.037,
+        "donorImprovementRatio": 0.038,
+        "sourceOutputLexicalOverlap": 0.943
+      },
+      "rescuePasses": [
+        "overlay-conservative",
+        "partial-rescue",
+        "semantic-final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     },
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -636,7 +628,7 @@
         },
         {
           "id": "s1",
-          "raw": "It was not one giant emergency so much because a stack of small revision asks that kept sounding manageable long after they stopped being that",
+          "raw": "It was not one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
@@ -674,7 +666,7 @@
         },
         {
           "id": "s2",
-          "raw": "What began because a Friday afternoon tone pass turned into table cleanup, citation repair, and another full check cycle across Saturday because each extra ask arrived because if it were the last one",
+          "raw": "What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday because each extra ask arrived as if it were the last one",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
@@ -694,14 +686,14 @@
             },
             {
               "id": "s2c1",
-              "text": "a Friday afternoon tone pass turned into table cleanup, citation repair, and another full check cycle across Saturday",
+              "text": "a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday",
               "relationToPrev": "additive",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "check",
+              "propositionHead": "review",
               "actor": "a Friday",
-              "action": "check",
+              "action": "review",
               "object": "cycle across saturday",
               "modifiers": [
                 "table"
@@ -786,13 +778,13 @@
         },
         {
           "id": "s5",
-          "raw": "For the next round I would like us to define a stop detail before weekend work starts presenting itself because thoughtfulness.",
+          "raw": "For the next round I would like us to define a stop point before weekend work starts presenting itself as thoughtfulness.",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s5c0",
-              "text": "For the next round I would like us to define a stop detail before weekend work starts presenting itself",
+              "text": "For the next round I would like us to define a stop point before weekend work starts presenting itself",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -800,7 +792,7 @@
               "propositionHead": "would",
               "actor": "the next",
               "action": "would",
-              "object": "like us define stop detail",
+              "object": "like us define stop point",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -823,51 +815,39 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "connector-stance",
-        "lexical-register",
-        "directness"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "detail",
-          "from": "point",
-          "to": "detail",
-          "kind": "lexeme"
-        },
-        {
-          "family": "check",
-          "from": "review",
-          "to": "check",
-          "kind": "lexeme"
-        }
-      ],
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 0.972,
+        "outputDonorDistance": 0.935,
+        "donorImprovement": 0.037,
+        "donorImprovementRatio": 0.038,
+        "sourceOutputLexicalOverlap": 0.943
+      },
       "realizationNotes": [
         "2 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, directness."
+        "Register shift surfaced through lexical-register, directness, abstraction-posture."
       ],
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "rescuePasses": [
+        "overlay-conservative",
+        "partial-rescue",
+        "semantic-final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     }
   },
   "semanticContract": {
-    "transferClass": "structural",
-    "realizationTier": "lexical-structural",
-    "changedDimensions": [
-      "connector-stance",
-      "directness",
-      "lexical-register"
-    ],
-    "lexemeSwapFamilies": [
-      "check",
-      "detail"
-    ],
+    "transferClass": "rejected",
+    "realizationTier": "none",
+    "changedDimensions": [],
+    "lexemeSwapFamilies": [],
     "relationInventory": [
       "additive:1",
       "causal:6",
@@ -877,11 +857,7 @@
       "temporal:2"
     ],
     "structuralOperations": [],
-    "lexicalOperations": [
-      "baseline-function-word",
-      "baseline-voice-realization",
-      "connector-stance-lexicon"
-    ],
+    "lexicalOperations": [],
     "connectorStrategy": "causal",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,

@@ -22,12 +22,13 @@ for (const report of matrix.flagshipReports) {
   assert.equal(report.semanticAuditSummary.protectedAnchorIntegrityMin, 1, `${report.id}: flagship pair should preserve anchors`);
 }
 
-assert((matrix.summary.bilateralEngaged || 0) >= 50, 'diagnostics swap matrix should engage most ordered pairs once donor rescue is live');
-assert((matrix.summary.bothRejected || 0) <= 4, 'diagnostics swap matrix should keep both-rejected cases near zero once donor rescue is live');
-assert((matrix.summary.oneSided || 0) <= 20, 'diagnostics swap matrix should materially reduce one-sided results once donor rescue is live');
+assert((matrix.summary.bilateralEngaged || 0) >= 4, 'diagnostics swap matrix should still keep some ordered pairs genuinely live');
+assert((matrix.summary.bothRejected || 0) >= 20, 'diagnostics swap matrix should now reject a substantial set of underfit ordered pairs instead of admitting false passage');
+assert((matrix.summary.oneSided || 0) >= 10, 'diagnostics swap matrix should still surface one-sided donor pressure where only one lane clears truthfully');
 assert.equal(matrix.summary.flagshipCount, 8, 'flagship summary tracks the 8 strict browser-facing directions');
-assert.equal(matrix.summary.flagshipPassCount, 8, 'flagship summary keeps all 8 same-family directions live');
-assert.equal(matrix.summary.flagshipAllPassed, true, 'flagship summary should now pass all browser-facing same-family directions');
+assert((matrix.summary.failureFamilyCounts['donor-underfit'] || 0) >= 20, 'diagnostics swap matrix should explicitly track donor-underfit failures once the truth gate is active');
+assert((matrix.summary.flagshipPassCount || 0) < 8, 'flagship summary should stop reporting universal passage when same-family pairs remain underfit');
+assert.equal(matrix.summary.flagshipAllPassed, false, 'flagship summary should not mark all browser-facing same-family directions as live when the truth gate is active');
 
 const literalRiskIds = new Set(
   DIAGNOSTIC_BATTERY.swapPairs

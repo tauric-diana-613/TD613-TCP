@@ -413,47 +413,28 @@
       ]
     },
     "finalRealization": {
-      "text": "The finance committee met at 4:05 PM to check the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is that the student-help coordinator line remains unfunded for another twelve weeks, even though the underlying service demand has not eased. Members agreed that the program can absorb a temporary delay in furniture and print costs, but not a full quarter without intake coverage. Three short-term options were discussed: reclassify one vacant analyst line for bridge staffing, reduce evening service hours, or draw against restricted reserves pending dean approval. No option was adopted in session. What did help was the frame: this is not a generic belt-tightening exercise. It's a staffing exposure problem with public-facing consequences, and the next memo needs to tell that without overstating certainty. Action items: revised table by Thursday, reserve-rule clarification from finance, and a staffing scenario note that distinguishes pause from actual service reduction.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "contraction-posture",
-        "connector-stance",
-        "lexical-register",
-        "directness"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "say",
-          "from": "say",
-          "to": "tell",
-          "kind": "lexeme"
-        },
-        {
-          "family": "help",
-          "from": "support",
-          "to": "help",
-          "kind": "lexeme"
-        },
-        {
-          "family": "fix",
-          "from": "resolve",
-          "to": "fix",
-          "kind": "lexeme"
-        },
-        {
-          "family": "check",
-          "from": "review",
-          "to": "check",
-          "kind": "lexeme"
-        }
-      ],
+      "text": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is that the student-support coordinator line remains unfunded for another twelve weeks, even though the underlying service demand has not eased. Members agreed that the program can absorb a temporary delay in furniture and print costs, but not a full quarter without intake coverage. Three short-term options were discussed: reclassify one vacant analyst line for bridge staffing, reduce evening service hours, or draw against restricted reserves pending dean approval. No option was adopted in session. What did resolve was the frame: this is not a generic belt-tightening exercise. It is a staffing exposure problem with public-facing consequences, and the next memo needs to say that without overstating certainty. Action items: revised table by Thursday, reserve-rule clarification from finance, and a staffing scenario note that distinguishes pause from actual service reduction.",
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 0.807,
+        "outputDonorDistance": 0.874,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 0.931
+      },
+      "rescuePasses": [
+        "partial-rescue",
+        "semantic-final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     },
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -600,20 +581,20 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "The finance committee met at 4:05 PM to check the bridge budget after central administration extended the hiring freeze through Q3",
+          "raw": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "The finance committee met at 4:05 PM to check the bridge budget after central administration extended the hiring freeze through Q3",
+              "text": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "check",
+              "propositionHead": "review",
               "actor": "The finance",
-              "action": "check",
+              "action": "review",
               "object": "bridge budget after central administration",
               "modifiers": [
                 "central"
@@ -624,13 +605,13 @@
         },
         {
           "id": "s1",
-          "raw": "The immediate effect is that the student-help coordinator line remains unfunded for another twelve weeks, even though the underlying service demand has not eased",
+          "raw": "The immediate effect is that the student-support coordinator line remains unfunded for another twelve weeks, even though the underlying service demand has not eased",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "The immediate effect is that the student-help coordinator line remains unfunded for another twelve weeks",
+              "text": "The immediate effect is that the student-support coordinator line remains unfunded for another twelve weeks",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -638,7 +619,7 @@
               "propositionHead": "is",
               "actor": "The immediate",
               "action": "is",
-              "object": "student help coordinator line remains",
+              "object": "student support coordinator line remains",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -728,20 +709,20 @@
         },
         {
           "id": "s5",
-          "raw": "What did fix was the frame: this is not a generic belt-tightening exercise",
+          "raw": "What did resolve was the frame: this is not a generic belt-tightening exercise",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s5c0",
-              "text": "What did fix was the frame: this is not a generic belt-tightening exercise",
+              "text": "What did resolve was the frame: this is not a generic belt-tightening exercise",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "present",
-              "propositionHead": "fix",
+              "propositionHead": "resolve",
               "actor": "the frame",
-              "action": "fix",
+              "action": "resolve",
               "object": "frame generic belt tightening exercise",
               "modifiers": [
                 "generic"
@@ -752,13 +733,13 @@
         },
         {
           "id": "s6",
-          "raw": "It's a staffing exposure problem with public-facing consequences, and the next memo needs to tell that without overstating certainty",
+          "raw": "It is a staffing exposure problem with public-facing consequences, and the next memo needs to say that without overstating certainty",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s6c0",
-              "text": "It's a staffing exposure problem with public-facing consequences, and the next memo needs to tell that without overstating certainty",
+              "text": "It is a staffing exposure problem with public-facing consequences, and the next memo needs to say that without overstating certainty",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -766,7 +747,7 @@
               "propositionHead": "needs",
               "actor": "It",
               "action": "needs",
-              "object": "tell without overstating certainty",
+              "object": "say without overstating certainty",
               "modifiers": [
                 "public"
               ],
@@ -802,68 +783,39 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "contraction-posture",
-        "connector-stance",
-        "lexical-register",
-        "directness"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "say",
-          "from": "say",
-          "to": "tell",
-          "kind": "lexeme"
-        },
-        {
-          "family": "help",
-          "from": "support",
-          "to": "help",
-          "kind": "lexeme"
-        },
-        {
-          "family": "fix",
-          "from": "resolve",
-          "to": "fix",
-          "kind": "lexeme"
-        },
-        {
-          "family": "check",
-          "from": "review",
-          "to": "check",
-          "kind": "lexeme"
-        }
-      ],
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 0.807,
+        "outputDonorDistance": 0.874,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 0.931
+      },
       "realizationNotes": [
         "4 lexical family swaps landed.",
         "Register shift surfaced through lexical-register, directness.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "rescuePasses": [
+        "partial-rescue",
+        "semantic-final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     }
   },
   "semanticContract": {
-    "transferClass": "structural",
-    "realizationTier": "lexical-structural",
-    "changedDimensions": [
-      "connector-stance",
-      "contraction-posture",
-      "directness",
-      "lexical-register"
-    ],
-    "lexemeSwapFamilies": [
-      "check",
-      "fix",
-      "help",
-      "say"
-    ],
+    "transferClass": "rejected",
+    "realizationTier": "none",
+    "changedDimensions": [],
+    "lexemeSwapFamilies": [],
     "relationInventory": [
       "additive:3",
       "causal:0",

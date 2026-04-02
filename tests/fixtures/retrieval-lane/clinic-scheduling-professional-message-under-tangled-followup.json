@@ -421,62 +421,36 @@
       ]
     },
     "finalRealization": {
-      "text": "Hi team, I'm documenting why the MRI for the left knee is still not scheduled even though the patient was explained the authorization had cleared. The payer line confirmed authorization number PR-44719, but their record is tied to the downtown clinic while the order in our queue still details to North River, because the site on the authorization and the site on the order don't align, scheduling can see the approval and still can't legally schedule the scan. We forwarded the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback, if the ordering office can resend under the correct location today, we may still retain the next-day slot. Otherwise the case rolls again.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "contraction-posture",
-        "connector-stance",
-        "lexical-register",
-        "directness",
-        "abstraction-posture"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "say",
-          "from": "told",
-          "to": "explained",
-          "kind": "lexeme"
-        },
-        {
-          "family": "keep",
-          "from": "keep",
-          "to": "retain",
-          "kind": "lexeme"
-        },
-        {
-          "family": "detail",
-          "from": "points",
-          "to": "details",
-          "kind": "lexeme"
-        },
-        {
-          "family": "send",
-          "from": "sent",
-          "to": "forwarded",
-          "kind": "lexeme"
-        },
-        {
-          "family": "match",
-          "from": "match",
-          "to": "align",
-          "kind": "lexeme"
-        }
-      ],
+      "text": "Hi team, I am documenting why the MRI for the left knee is still not scheduled even though the patient was told the authorization had cleared. The payer line confirmed auth number PR-44719, but their record is tied to the downtown clinic while the order in our queue still points to North River. Because the site on the authorization and the site on the order do not match, scheduling can see the approval and still cannot legally book the scan. We sent the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback. If the ordering office can resend under the correct location today, we may still keep the next-day slot. Otherwise the case rolls again.",
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 0.965,
+        "outputDonorDistance": 2.145,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 0.81
+      },
+      "rescuePasses": [
+        "partial-rescue",
+        "semantic-final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     },
     "semanticAudit": {
-      "propositionCoverage": 0.875,
+      "propositionCoverage": 1,
       "actorCoverage": 1,
-      "actionCoverage": 0.864,
-      "objectCoverage": 0.798,
+      "actionCoverage": 1,
+      "objectCoverage": 0.938,
       "polarityMismatches": 0,
-      "tenseMismatches": 1,
+      "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -487,21 +461,21 @@
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
-          "tenseMismatch": 1,
+          "tenseMismatch": 0,
           "bagScore": 1,
           "globalBagScore": 0.088
         },
         {
           "sourceClauseId": "s0c1",
           "matchedClauseId": "s0c1",
-          "propositionCoverage": 0.9,
+          "propositionCoverage": 1,
           "actorCoverage": 1,
-          "actionCoverage": 0.81,
+          "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.6,
-          "globalBagScore": 0.086
+          "bagScore": 1,
+          "globalBagScore": 0.118
         },
         {
           "sourceClauseId": "s1c0",
@@ -512,8 +486,8 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.455,
-          "globalBagScore": 0.135
+          "bagScore": 0.6,
+          "globalBagScore": 0.167
         },
         {
           "sourceClauseId": "s1c1",
@@ -533,11 +507,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.8,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.75,
-          "globalBagScore": 0.171
+          "bagScore": 1,
+          "globalBagScore": 0.206
         },
         {
           "sourceClauseId": "s3c0",
@@ -554,14 +528,14 @@
         {
           "sourceClauseId": "s4c0",
           "matchedClauseId": "s4c0",
-          "propositionCoverage": 0.1,
+          "propositionCoverage": 1,
           "actorCoverage": 1,
-          "actionCoverage": 0.1,
-          "objectCoverage": 0.082,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.1,
-          "globalBagScore": 0.026
+          "bagScore": 1,
+          "globalBagScore": 0.147
         },
         {
           "sourceClauseId": "s5c0",
@@ -611,17 +585,17 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Hi team, I'm documenting why the MRI for the left knee is still not scheduled even though the patient was explained the authorization had cleared",
+          "raw": "Hi team, I am documenting why the MRI for the left knee is still not scheduled even though the patient was told the authorization had cleared",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Hi team, I'm documenting why the MRI for the left knee is still not scheduled",
+              "text": "Hi team, I am documenting why the MRI for the left knee is still not scheduled",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
-              "tenseAspect": "past",
+              "tenseAspect": "progressive",
               "propositionHead": "left",
               "actor": "I",
               "action": "left",
@@ -631,15 +605,15 @@
             },
             {
               "id": "s0c1",
-              "text": "the patient was explained the authorization had cleared",
+              "text": "the patient was told the authorization had cleared",
               "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "perfect",
-              "propositionHead": "was",
+              "propositionHead": "told",
               "actor": "the patient",
-              "action": "was",
-              "object": "explained authorization cleared",
+              "action": "told",
+              "object": "authorization cleared",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -647,13 +621,13 @@
         },
         {
           "id": "s1",
-          "raw": "The payer line confirmed authorization number PR-44719, but their record is tied to the downtown clinic while the order in our queue still details to North River",
+          "raw": "The payer line confirmed auth number PR-44719, but their record is tied to the downtown clinic while the order in our queue still points to North River",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "The payer line confirmed authorization number PR-44719, but their record is tied to the downtown clinic",
+              "text": "The payer line confirmed auth number PR-44719, but their record is tied to the downtown clinic",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -661,7 +635,7 @@
               "propositionHead": "confirmed",
               "actor": "The payer",
               "action": "confirmed",
-              "object": "authorization number pr 44719 record",
+              "object": "auth number pr 44719 record",
               "modifiers": [
                 "clinic"
               ],
@@ -669,7 +643,7 @@
             },
             {
               "id": "s1c1",
-              "text": "the order in our queue still details to North River",
+              "text": "the order in our queue still points to North River",
               "relationToPrev": "contrastive",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -685,21 +659,21 @@
         },
         {
           "id": "s2",
-          "raw": "Because the site on the authorization and the site on the order don't align, scheduling can see the approval and still can't legally schedule the scan",
+          "raw": "Because the site on the authorization and the site on the order do not match, scheduling can see the approval and still cannot legally book the scan",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "Because the site on the authorization and the site on the order don't align, scheduling can see the approval and still can't legally schedule the scan",
+              "text": "Because the site on the authorization and the site on the order do not match, scheduling can see the approval and still cannot legally book the scan",
               "relationToPrev": "start",
               "clauseType": "subordinate",
               "polarity": "negative",
               "tenseAspect": "future-modal",
-              "propositionHead": "align",
+              "propositionHead": "match",
               "actor": "the site",
-              "action": "align",
-              "object": "scheduling see approval can't legally",
+              "action": "match",
+              "object": "scheduling see approval cannot legally",
               "modifiers": [
                 "approval",
                 "legally"
@@ -710,20 +684,20 @@
         },
         {
           "id": "s3",
-          "raw": "We forwarded the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
+          "raw": "We sent the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "We forwarded the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
+              "text": "We sent the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "forwarded",
+              "propositionHead": "sent",
               "actor": "We",
-              "action": "forwarded",
+              "action": "sent",
               "object": "correction request at 10 26",
               "modifiers": [],
               "hedgeMarkers": []
@@ -732,21 +706,21 @@
         },
         {
           "id": "s4",
-          "raw": "If the ordering office can resend under the correct location today, we may still retain the next-day slot",
+          "raw": "If the ordering office can resend under the correct location today, we may still keep the next-day slot",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "If the ordering office can resend under the correct location today, we may still retain the next-day slot",
+              "text": "If the ordering office can resend under the correct location today, we may still keep the next-day slot",
               "relationToPrev": "start",
               "clauseType": "subordinate",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "can",
+              "propositionHead": "keep",
               "actor": "the ordering",
-              "action": "can",
-              "object": "resend under correct location today",
+              "action": "keep",
+              "object": "next day slot",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -777,77 +751,39 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "contraction-posture",
-        "connector-stance",
-        "lexical-register",
-        "directness",
-        "abstraction-posture"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "say",
-          "from": "told",
-          "to": "explained",
-          "kind": "lexeme"
-        },
-        {
-          "family": "keep",
-          "from": "keep",
-          "to": "retain",
-          "kind": "lexeme"
-        },
-        {
-          "family": "detail",
-          "from": "points",
-          "to": "details",
-          "kind": "lexeme"
-        },
-        {
-          "family": "send",
-          "from": "sent",
-          "to": "forwarded",
-          "kind": "lexeme"
-        },
-        {
-          "family": "match",
-          "from": "match",
-          "to": "align",
-          "kind": "lexeme"
-        }
-      ],
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 0.965,
+        "outputDonorDistance": 2.145,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 0.81
+      },
       "realizationNotes": [
         "5 lexical family swaps landed.",
         "Register shift surfaced through lexical-register, directness, abstraction-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "rescuePasses": [
+        "partial-rescue",
+        "semantic-final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     }
   },
   "semanticContract": {
-    "transferClass": "structural",
-    "realizationTier": "lexical-structural",
-    "changedDimensions": [
-      "abstraction-posture",
-      "connector-stance",
-      "contraction-posture",
-      "directness",
-      "lexical-register"
-    ],
-    "lexemeSwapFamilies": [
-      "detail",
-      "keep",
-      "match",
-      "say",
-      "send"
-    ],
+    "transferClass": "rejected",
+    "realizationTier": "none",
+    "changedDimensions": [],
+    "lexemeSwapFamilies": [],
     "relationInventory": [
       "additive:3",
       "causal:1",
@@ -863,12 +799,12 @@
     ],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "hold",
-    "propositionCoverage": 0.875,
+    "propositionCoverage": 1,
     "actorCoverage": 1,
-    "actionCoverage": 0.864,
-    "objectCoverage": 0.798,
+    "actionCoverage": 1,
+    "objectCoverage": 0.938,
     "polarityMismatches": 0,
-    "tenseMismatches": 1,
+    "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }
 }

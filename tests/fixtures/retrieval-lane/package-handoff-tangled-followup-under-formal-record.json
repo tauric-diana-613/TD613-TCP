@@ -530,71 +530,34 @@
       ]
     },
     "finalRealization": {
-      "text": "Following up because I think yesterday's thread accidentally made it sound as if the parcel relocated through three provides before anyone could say whose it was, that's not quite right. The carrier marked \"attempted / no answer\" at 6:41 PM, but there was no contact to 2B that anyone can detail to. Ms. Chen saw the tag, requested around, then the parcel was spotted on the second-floor landing near the stair rail. I lifted it from there only after she explained it was the expected rush shipment and after she said she didn't want to carry another thing while balancing groceries. So yes, the hallway table outside 2B is where it ended up, but the actual miss happened earlier, on the landing, when the delivery record pretended the signature step had been tried.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "contraction-posture",
-        "connector-stance",
-        "lexical-register",
-        "directness",
-        "abstraction-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "say",
-          "from": "said",
-          "to": "explained",
-          "kind": "lexeme"
-        },
-        {
-          "family": "detail",
-          "from": "point",
-          "to": "detail",
-          "kind": "lexeme"
-        },
-        {
-          "family": "ask",
-          "from": "asked",
-          "to": "requested",
-          "kind": "lexeme"
-        },
-        {
-          "family": "give",
-          "from": "hands",
-          "to": "provides",
-          "kind": "lexeme"
-        },
-        {
-          "family": "call",
-          "from": "call",
-          "to": "contact",
-          "kind": "lexeme"
-        },
-        {
-          "family": "move",
-          "from": "moved",
-          "to": "relocated",
-          "kind": "lexeme"
-        }
-      ],
+      "text": "Following up because I think yesterday's thread accidentally made it sound as if the parcel moved through three hands before anyone could say whose it was. That is not quite right. The carrier marked \"attempted / no answer\" at 6:41 PM, but there was no call to 2B that anyone can point to. Ms. Chen saw the tag, asked around, and then the parcel was spotted on the second-floor landing near the stair rail. I lifted it from there only after she said it was the expected rush shipment and after she said she did not want to carry one more thing while balancing groceries. So yes, the hallway table outside 2B is where it ended up, but the actual miss happened earlier, on the landing, when the delivery record pretended the signature step had been tried.",
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 1.141,
+        "outputDonorDistance": 1.141,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 1
+      },
+      "rescuePasses": [
+        "final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     },
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.938,
-      "polarityMismatches": 1,
+      "objectCoverage": 0.979,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -636,18 +599,6 @@
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 1,
-          "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
-        },
-        {
-          "sourceClauseId": "s2c0",
           "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -659,19 +610,7 @@
           "globalBagScore": 0.026
         },
         {
-          "sourceClauseId": "s2c1",
-          "matchedClauseId": "s1c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.667,
-          "globalBagScore": 0.103
-        },
-        {
-          "sourceClauseId": "s3c0",
+          "sourceClauseId": "s2c0",
           "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -683,8 +622,32 @@
           "globalBagScore": 0.026
         },
         {
-          "sourceClauseId": "s4c0",
+          "sourceClauseId": "s2c1",
+          "matchedClauseId": "s2c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.667,
+          "globalBagScore": 0.103
+        },
+        {
+          "sourceClauseId": "s3c0",
           "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.026
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -696,19 +659,19 @@
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s4c0",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.1,
-          "globalBagScore": 0.024
+          "bagScore": 1,
+          "globalBagScore": 0.132
         },
         {
           "sourceClauseId": "s5c1",
-          "matchedClauseId": "s4c1",
+          "matchedClauseId": "s5c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -720,7 +683,7 @@
         },
         {
           "sourceClauseId": "s6c0",
-          "matchedClauseId": "s5c0",
+          "matchedClauseId": "s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -732,7 +695,7 @@
         },
         {
           "sourceClauseId": "s6c1",
-          "matchedClauseId": "s5c1",
+          "matchedClauseId": "s6c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -744,7 +707,7 @@
         }
       ],
       "sourceClauseCount": 12,
-      "outputClauseCount": 11
+      "outputClauseCount": 12
     },
     "protectedAnchorAudit": {
       "totalAnchors": 4,
@@ -754,8 +717,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 6,
-        "clauseCount": 11,
+        "sentenceCount": 7,
+        "clauseCount": 12,
         "literalSpans": [
           {
             "value": "6:41 PM",
@@ -778,7 +741,7 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Following up because I think yesterday's thread accidentally made it sound as if the parcel relocated through three provides before anyone could say whose it was, that's not quite right",
+          "raw": "Following up because I think yesterday's thread accidentally made it sound as if the parcel moved through three hands before anyone could say whose it was",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
@@ -816,15 +779,37 @@
             },
             {
               "id": "s0c2",
-              "text": "if the parcel relocated through three provides before anyone could say whose it was, that's not quite right",
+              "text": "if the parcel moved through three hands before anyone could say whose it was",
               "relationToPrev": "additive",
               "clauseType": "subordinate",
-              "polarity": "negative",
+              "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "relocated",
+              "propositionHead": "moved",
               "actor": "the parcel",
-              "action": "relocated",
-              "object": "through three provides before anyone",
+              "action": "moved",
+              "object": "through three hands before anyone",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "That is not quite right",
+          "rhetoricalRole": "clarifying",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "That is not quite right",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "is",
+              "actor": "That",
+              "action": "is",
+              "object": "right",
               "modifiers": [],
               "hedgeMarkers": [
                 "uncertainty",
@@ -834,13 +819,13 @@
           ]
         },
         {
-          "id": "s1",
-          "raw": "The carrier marked \"attempted / no answer\" at 6:41 PM, but there was no contact to 2B that anyone can detail to",
+          "id": "s2",
+          "raw": "The carrier marked \"attempted / no answer\" at 6:41 PM, but there was no call to 2B that anyone can point to",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s1c0",
+              "id": "s2c0",
               "text": "The carrier marked \"attempted / no answer\" at 6:41 PM",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -854,29 +839,29 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s1c1",
-              "text": "there was no contact to 2B that anyone can detail to",
+              "id": "s2c1",
+              "text": "there was no call to 2B that anyone can point to",
               "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "present",
-              "propositionHead": "contact",
+              "propositionHead": "call",
               "actor": "there",
-              "action": "contact",
-              "object": "2b anyone detail",
+              "action": "call",
+              "object": "2b anyone point",
               "modifiers": [],
               "hedgeMarkers": []
             }
           ]
         },
         {
-          "id": "s2",
+          "id": "s3",
           "raw": "Ms",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s2c0",
+              "id": "s3c0",
               "text": "Ms",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -892,21 +877,21 @@
           ]
         },
         {
-          "id": "s3",
-          "raw": "Chen saw the tag, requested around, then the parcel was spotted on the second-floor landing near the stair rail",
-          "rhetoricalRole": "temporal",
+          "id": "s4",
+          "raw": "Chen saw the tag, asked around, and then the parcel was spotted on the second-floor landing near the stair rail",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s3c0",
-              "text": "Chen saw the tag, requested around, then the parcel was spotted on the second-floor landing near the stair rail",
+              "id": "s4c0",
+              "text": "Chen saw the tag, asked around, and then the parcel was spotted on the second-floor landing near the stair rail",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "requested",
+              "propositionHead": "asked",
               "actor": "the tag",
-              "action": "requested",
+              "action": "asked",
               "object": "around parcel spotted second floor",
               "modifiers": [],
               "hedgeMarkers": []
@@ -914,14 +899,14 @@
           ]
         },
         {
-          "id": "s4",
-          "raw": "I lifted it from there only after she explained it was the expected rush shipment and after she said she didn't want to carry another thing while balancing groceries",
+          "id": "s5",
+          "raw": "I lifted it from there only after she said it was the expected rush shipment and after she said she did not want to carry one more thing while balancing groceries",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s4c0",
-              "text": "I lifted it from there only after she explained it was the expected rush shipment and after she said she didn't want to carry another thing",
+              "id": "s5c0",
+              "text": "I lifted it from there only after she said it was the expected rush shipment and after she said she did not want to carry one more thing",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -929,7 +914,7 @@
               "propositionHead": "said",
               "actor": "I",
               "action": "said",
-              "object": "didn't want carry another thing",
+              "object": "expected rush shipment after said",
               "modifiers": [
                 "only"
               ],
@@ -938,7 +923,7 @@
               ]
             },
             {
-              "id": "s4c1",
+              "id": "s5c1",
               "text": "balancing groceries",
               "relationToPrev": "additive",
               "clauseType": "fragment",
@@ -954,13 +939,13 @@
           ]
         },
         {
-          "id": "s5",
+          "id": "s6",
           "raw": "So yes, the hallway table outside 2B is where it ended up, but the actual miss happened earlier, on the landing, when the delivery record pretended the signature step had been tried.",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s5c0",
+              "id": "s6c0",
               "text": "So yes, the hallway table outside 2B is where it ended up, but the actual miss happened earlier, on the landing",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -977,7 +962,7 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s5c1",
+              "id": "s6c1",
               "text": "the delivery record pretended the signature step had been tried",
               "relationToPrev": "additive",
               "clauseType": "main",
@@ -995,92 +980,36 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "contraction-posture",
-        "connector-stance",
-        "lexical-register",
-        "directness",
-        "abstraction-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "say",
-          "from": "said",
-          "to": "explained",
-          "kind": "lexeme"
-        },
-        {
-          "family": "detail",
-          "from": "point",
-          "to": "detail",
-          "kind": "lexeme"
-        },
-        {
-          "family": "ask",
-          "from": "asked",
-          "to": "requested",
-          "kind": "lexeme"
-        },
-        {
-          "family": "give",
-          "from": "hands",
-          "to": "provides",
-          "kind": "lexeme"
-        },
-        {
-          "family": "call",
-          "from": "call",
-          "to": "contact",
-          "kind": "lexeme"
-        },
-        {
-          "family": "move",
-          "from": "moved",
-          "to": "relocated",
-          "kind": "lexeme"
-        }
-      ],
+      "transferClass": "rejected",
+      "borrowedShellOutcome": "rejected",
+      "borrowedShellFailureClass": "donor-underfit",
+      "realizationTier": "none",
+      "changedDimensions": [],
+      "lexemeSwaps": [],
       "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 1.141,
+        "outputDonorDistance": 1.141,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 1
+      },
       "realizationNotes": [
-        "6 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, directness, abstraction-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
-      "rescuePasses": [],
-      "visibleShift": true,
-      "nonTrivialShift": true
+      "rescuePasses": [
+        "final-rejection"
+      ],
+      "visibleShift": false,
+      "nonTrivialShift": false
     }
   },
   "semanticContract": {
-    "transferClass": "structural",
-    "realizationTier": "lexical-structural",
-    "changedDimensions": [
-      "abstraction-posture",
-      "connector-stance",
-      "contraction-posture",
-      "directness",
-      "lexical-register",
-      "punctuation-shape",
-      "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
-    ],
-    "lexemeSwapFamilies": [
-      "ask",
-      "call",
-      "detail",
-      "give",
-      "move",
-      "say"
-    ],
+    "transferClass": "rejected",
+    "realizationTier": "none",
+    "changedDimensions": [],
+    "lexemeSwapFamilies": [],
     "relationInventory": [
       "additive:2",
       "causal:3",
@@ -1099,8 +1028,8 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.938,
-    "polarityMismatches": 1,
+    "objectCoverage": 0.979,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }
