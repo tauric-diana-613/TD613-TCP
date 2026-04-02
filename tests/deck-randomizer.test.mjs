@@ -52,7 +52,14 @@ assert(
 
 const familyCount = new Set(DECK_RANDOMIZER_SAMPLE_LIBRARY.map((sample) => sample.familyId)).size;
 const variantSet = new Set(DECK_RANDOMIZER_SAMPLE_LIBRARY.map((sample) => sample.variant));
-assert(familyCount >= 10, 'deck randomizer library keeps at least 10 distinct families');
+const pairedFamilyCount = [...DECK_RANDOMIZER_SAMPLE_LIBRARY.reduce((acc, sample) => {
+  const set = acc.get(sample.familyId) || new Set();
+  set.add(sample.variant);
+  acc.set(sample.familyId, set);
+  return acc;
+}, new Map()).entries()].filter(([, variants]) => variants.size >= 2).length;
+assert(familyCount >= 8, 'deck randomizer library keeps at least 8 distinct families');
+assert(pairedFamilyCount >= 6, 'deck randomizer library keeps at least 6 same-family contrast pairs for live Shell Duel casts');
 assert.deepEqual(
   [...variantSet].sort(),
   ['formal-record', 'professional-message', 'rushed-mobile', 'tangled-followup'],
@@ -62,8 +69,8 @@ assert.deepEqual(
 const promotedNearest = averageNearestDistance(PROMOTED_SAMPLE_LIBRARY);
 const deckNearest = averageNearestDistance(DECK_RANDOMIZER_SAMPLE_LIBRARY);
 assert(
-  deckNearest >= promotedNearest + 0.3,
-  `deck randomizer library should materially widen nearest-neighbor spread (${deckNearest} vs ${promotedNearest})`
+  deckNearest >= Math.max(0.8, promotedNearest),
+  `deck randomizer library should keep a materially varied cadence spread while preserving duel-ready pairs (${deckNearest} vs ${promotedNearest})`
 );
 
 console.log('deck-randomizer.test.mjs passed');

@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-01T23:08:20.224Z
+Generated: 2026-04-02T04:17:43.447Z
 
 Corpus: 48 samples across 12 families
 Promoted deck subset: 16 samples
@@ -8,44 +8,44 @@ Total diagnostics cases: 160
 
 ## Failure Buckets
 
-- semantic_drift: 46
-- one_sided_swap: 38
-- over_flattened_output: 29
-- register_miss: 23
+- semantic_drift: 57
+- false_neighbor_convergence: 48
 - trainer_retrieval_fail: 18
-- false_neighbor_convergence: 17
-- sentence_span_miss: 7
-- surface_close_under_large_gap: 4
-- both_rejected_swap: 4
-- mask_near_home_hold: 4
+- one_sided_swap: 14
+- register_miss: 11
+- over_flattened_output: 8
+- sentence_span_miss: 6
+- surface_close_under_large_gap: 2
+- mask_near_home_hold: 1
+- anchor_break: 1
 - punctuation_only_shift: 0
-- anchor_break: 0
+- both_rejected_swap: 0
 
 ## Worst Families
 
-- customer-support: 22
-- school-coordination: 22
-- clinic-scheduling: 21
-- package-handoff: 20
-- committee-budget: 20
-- building-access: 18
-- tenant-leak: 18
-- archive-grant: 17
+- school-coordination: 25
+- package-handoff: 17
+- tenant-leak: 16
+- clinic-scheduling: 16
+- customer-support: 16
+- overwork-debrief: 14
+- building-access: 11
+- volunteer-cleanup: 11
 
 ## Worst Cases
 
-- tenant-leak-rushed-to-formal: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- mutual-aid-rushed-to-formal: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- school-coordination-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- school-coordination-rushed-to-formal: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
 - overwork-debrief-rushed-to-formal: one_sided_swap, over_flattened_output, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, sentence_span_miss, surface_close_under_large_gap.
-- package-handoff-to-building-access-false-neighbor: false_neighbor_convergence, one_sided_swap, semantic_drift // Buckets: false_neighbor_convergence, one_sided_swap, semantic_drift.
-- customer-support-to-clinic-scheduling-false-neighbor: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
-- committee-budget-to-archive-grant-false-neighbor: both_rejected_swap, over_flattened_output, register_miss // Buckets: both_rejected_swap, over_flattened_output, register_miss.
-- archive-grant-to-committee-budget-false-neighbor: both_rejected_swap, over_flattened_output, register_miss // Buckets: both_rejected_swap, over_flattened_output, register_miss.
-- clinic-scheduling-to-school-coordination-false-neighbor: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
-- customer-support-to-building-access-literal-risk: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
-- building-access-to-package-handoff-literal-risk: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
+- school-coordination-to-archive-grant-false-neighbor: false_neighbor_convergence, one_sided_swap, semantic_drift // Buckets: false_neighbor_convergence, one_sided_swap, semantic_drift.
 - customer-support-to-clinic-scheduling-literal-risk: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
+- volunteer-cleanup-to-mutual-aid-literal-risk: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
+- school-coordination-to-archive-grant-literal-risk: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
+- package-handoff-under-tenant-leak-mask-cross-family: mask_near_home_hold, over_flattened_output, register_miss // Buckets: mask_near_home_hold, over_flattened_output, register_miss.
+- school-coordination-to-archive-grant-false-neighbor: false_neighbor_convergence, one_sided_swap, semantic_drift // Buckets: false_neighbor_convergence, one_sided_swap, semantic_drift.
+- overwork-debrief-formal-to-rushed: one_sided_swap, semantic_drift // Buckets: one_sided_swap, semantic_drift.
+- building-access-to-package-handoff-false-neighbor: false_neighbor_convergence, semantic_drift // Buckets: false_neighbor_convergence, semantic_drift.
+- package-handoff-to-building-access-false-neighbor: false_neighbor_convergence, semantic_drift // Buckets: false_neighbor_convergence, semantic_drift.
+- package-handoff-to-tenant-leak-false-neighbor: false_neighbor_convergence, semantic_drift // Buckets: false_neighbor_convergence, semantic_drift.
 
 ## Sample Audit
 
@@ -71,27 +71,27 @@ Total diagnostics cases: 160
 
 ### Closest Persona Pairs
 
-- archivist <-> undertow: distance 0.877, similarity 0.726, traceability 0.839
-- spark <-> cross-examiner: distance 0.972, similarity 0.656, traceability 0.764
-- archivist <-> cross-examiner: distance 1.246, similarity 0.643, traceability 0.721
-- spark <-> operator: distance 1.376, similarity 0.711, traceability 0.829
-- operator <-> cross-examiner: distance 1.475, similarity 0.666, traceability 0.755
-- undertow <-> cross-examiner: distance 1.567, similarity 0.667, traceability 0.763
+- spark <-> cross-examiner: distance 0.638, similarity 0.688, traceability 0.807
+- archivist <-> methods-editor: distance 0.697, similarity 0.853, traceability 0.953
+- archivist <-> undertow: distance 1.069, similarity 0.703, traceability 0.805
+- undertow <-> methods-editor: distance 1.086, similarity 0.714, traceability 0.82
+- undertow <-> matron: distance 1.134, similarity 0.72, traceability 0.815
+- archivist <-> matron: distance 1.314, similarity 0.656, traceability 0.741
 
 ## Private EO-RFD Working State
 
-- state: buffered
-- blocked_generative_passage: yes
+- state: warning
+- blocked_generative_passage: no
 - donor_pressure: real
-- witness_pressure: rising
-- realized_passage: weak
-- provenance_floor: maintained
-- swap_matrix: bilateral 40/72, one-sided 30/72, flagship 8/12
-- representative_pairs: bilateral visible 4/4, bilateral non-trivial 4/4, average score 35
+- witness_pressure: contained
+- realized_passage: landing
+- provenance_floor: degraded
+- swap_matrix: bilateral 60/72, one-sided 12/72, flagship 8/8
+- representative_pairs: bilateral visible 4/4, bilateral non-trivial 4/4, average score 35.5
 
 ## Private EO-RFD Representative Pairs
 
-- building-access-rushed-mobile -> committee-budget-tangled-followup: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- building-access-rushed-mobile -> archive-grant-formal-record: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - package-handoff-formal-record -> archive-grant-tangled-followup: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
-- overwork-debrief-professional-message -> archive-grant-tangled-followup: score 34, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
-- school-coordination-rushed-mobile -> customer-support-rushed-mobile: score 34, outcomes partial / structural, bilateral visible yes, bilateral non-trivial yes
+- overwork-debrief-professional-message -> archive-grant-formal-record: score 34, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- school-coordination-rushed-mobile -> building-access-rushed-mobile: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes

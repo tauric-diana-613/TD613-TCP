@@ -677,21 +677,21 @@ const PROMOTED_SAMPLE_IDS = Object.freeze([
 
 const DECK_RANDOMIZER_SAMPLE_IDS = Object.freeze([
   sampleId('building-access', 'formal-record'),
-  sampleId('performance-review', 'professional-message'),
-  sampleId('volunteer-cleanup', 'rushed-mobile'),
-  sampleId('school-coordination', 'tangled-followup'),
-  sampleId('tenant-leak', 'tangled-followup'),
-  sampleId('mutual-aid', 'rushed-mobile'),
-  sampleId('archive-grant', 'formal-record'),
-  sampleId('package-handoff', 'formal-record'),
-  sampleId('clinic-scheduling', 'rushed-mobile'),
+  sampleId('building-access', 'rushed-mobile'),
   sampleId('customer-support', 'formal-record'),
-  sampleId('overwork-debrief', 'tangled-followup'),
+  sampleId('customer-support', 'rushed-mobile'),
+  sampleId('volunteer-cleanup', 'professional-message'),
+  sampleId('volunteer-cleanup', 'rushed-mobile'),
   sampleId('school-coordination', 'professional-message'),
-  sampleId('volunteer-cleanup', 'formal-record'),
+  sampleId('school-coordination', 'rushed-mobile'),
+  sampleId('package-handoff', 'formal-record'),
+  sampleId('package-handoff', 'tangled-followup'),
+  sampleId('committee-budget', 'formal-record'),
   sampleId('committee-budget', 'tangled-followup'),
-  sampleId('mutual-aid', 'tangled-followup'),
-  sampleId('archive-grant', 'rushed-mobile')
+  sampleId('overwork-debrief', 'professional-message'),
+  sampleId('overwork-debrief', 'tangled-followup'),
+  sampleId('archive-grant', 'formal-record'),
+  sampleId('archive-grant', 'tangled-followup')
 ]);
 
 const CORPUS_BY_ID = Object.freeze(CORPUS_SAMPLES.reduce((acc, sample) => {

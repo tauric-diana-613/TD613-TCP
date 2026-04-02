@@ -47,6 +47,10 @@
     (diagnosticCorpus.deckRandomizerSampleLibrary || diagnosticCorpus.promotedSampleLibrary || FULL_SAMPLE_LIBRARY)
       .map((sample) => Object.freeze({ ...sample }))
   );
+  const STARTER_DUEL_SAMPLE_IDS = Object.freeze({
+    A: 'volunteer-cleanup-professional-message',
+    B: 'volunteer-cleanup-rushed-mobile'
+  });
   const DECK_RANDOMIZER_TOP_COUNT = 6;
   const DECK_RANDOMIZER_PROFILE_DELTA_FLOOR = 1.05;
   const DIAGNOSTIC_BATTERY = Object.freeze({
@@ -64,6 +68,14 @@
     acc[sample.id] = Object.freeze(extractCadenceProfile(sample.text));
     return acc;
   }, {}));
+  if (!defaults.voiceA && !defaults.voiceB) {
+    const starterA = FULL_SAMPLE_LIBRARY.find((sample) => sample.id === STARTER_DUEL_SAMPLE_IDS.A) || null;
+    const starterB = FULL_SAMPLE_LIBRARY.find((sample) => sample.id === STARTER_DUEL_SAMPLE_IDS.B) || null;
+    defaults.voiceA = starterA?.text || '';
+    defaults.voiceB = starterB?.text || '';
+    defaults.voiceA_sample_id = starterA?.id || '';
+    defaults.voiceB_sample_id = starterB?.id || '';
+  }
   const CURRENT_SCRIPT_SRC = document.currentScript?.src || Array.from(document.querySelectorAll('script[src]'))
     .map((node) => node.getAttribute('src') || '')
     .find((src) => /browser-main\.js/i.test(src)) || '';
@@ -2030,11 +2042,11 @@
     const sorted = [...pool].sort((left, right) => {
       if (bothBaysPopulated) {
         return (
+          Number(right.evaluationTier || 0) - Number(left.evaluationTier || 0) ||
+          compareSwapCadencePairings(left.evaluation, right.evaluation) ||
           Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
           Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
           Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
-          Number(right.evaluationTier || 0) - Number(left.evaluationTier || 0) ||
-          compareSwapCadencePairings(left.evaluation, right.evaluation) ||
           left.sample.id.localeCompare(right.sample.id)
         );
       }

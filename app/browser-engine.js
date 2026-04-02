@@ -3646,6 +3646,8 @@ function buildCandidateSpecs(transferPlan = {}) {
 function additiveDriftState({
   sourceText = '',
   outputText = '',
+  sourceProfile = {},
+  outputProfile = {},
   targetProfile = {},
   opportunityProfile = {}
 }) {
@@ -3663,8 +3665,19 @@ function additiveDriftState({
     (opportunityProfile.clarifying || 0);
   const additivePreferred = additiveDominance(targetWords);
   const flattenedContrast = sourceBut > outputBut && addedAnd > 0;
+  const targetMode = detectRegisterMode(targetProfile);
+  const outputMode = detectRegisterMode(outputProfile);
+  const compressionLanded =
+    ((sourceProfile.avgSentenceLength || 0) - (outputProfile.avgSentenceLength || 0)) >= 1.2 ||
+    ((outputProfile.sentenceCount || 0) - (sourceProfile.sentenceCount || 0)) >= 1 ||
+    ((outputProfile.contractionDensity || 0) - (sourceProfile.contractionDensity || 0)) >= 0.006;
 
-  if (sourceStructuredRelations > 0 && !additivePreferred && (glueJoins >= 2 || addedAnd >= 2 || flattenedContrast)) {
+  if (
+    sourceStructuredRelations > 0 &&
+    !additivePreferred &&
+    (glueJoins >= 2 || addedAnd >= 2 || flattenedContrast) &&
+    !(targetMode !== 'formal' && outputMode === targetMode && compressionLanded && glueJoins <= 2 && addedAnd <= 2)
+  ) {
     return {
       failed: true,
       note: 'Structural opportunity existed but the current candidate collapsed into additive drift.'
@@ -3822,6 +3835,31 @@ function evaluateTransferQuality({
   const nonPunctuationDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
   const structuralDimensionsChanged = structuralDimensions(changedDimensions);
   const lexicalDimensionsChanged = lexicalDimensions(changedDimensions);
+  const sourceFit = compareTexts('', '', {
+    profileA: sourceProfile,
+    profileB: targetProfile
+  });
+  const outputFit = compareTexts('', '', {
+    profileA: outputProfile,
+    profileB: targetProfile
+  });
+  const sourceMode = detectRegisterMode(sourceProfile);
+  const targetMode = detectRegisterMode(targetProfile);
+  const outputMode = detectRegisterMode(outputProfile);
+  const registerProgress = Math.max(0, (sourceFit.registerDistance || 0) - (outputFit.registerDistance || 0));
+  const functionWordProgress = Math.max(0, (sourceFit.functionWordDistance || 0) - (outputFit.functionWordDistance || 0));
+  const directnessProgress = Math.max(0, (sourceFit.directnessDistance || 0) - (outputFit.directnessDistance || 0));
+  const abstractionProgress = Math.max(0, (sourceFit.abstractionDistance || 0) - (outputFit.abstractionDistance || 0));
+  const contractionProgress = Math.max(0, (sourceFit.contractionDistance || 0) - (outputFit.contractionDistance || 0));
+  const stylisticRegisterLanding =
+    lexicalDimensionsChanged.length >= 1 ||
+    (targetMode !== sourceMode && outputMode === targetMode) ||
+    registerProgress >= 0.015 ||
+    functionWordProgress >= 0.025 ||
+    contractionProgress >= 0.006 ||
+    (directnessProgress + abstractionProgress) >= 0.025 ||
+    changedDimensions.includes('connector-stance') ||
+    changedDimensions.includes('contraction-posture');
   const materialLexicalGap =
     (targetGap.register || 0) >= 0.11 ||
     (targetGap.directness || 0) >= 0.06 ||
@@ -3884,7 +3922,7 @@ function evaluateTransferQuality({
     notes.push('Transfer stayed too close to punctuation-only drift.');
   }
 
-  if (materialLexicalGap && lexicalDimensionsChanged.length < 1) {
+  if (materialLexicalGap && !stylisticRegisterLanding) {
     notes.push('Transfer missed donor lexical/register realization.');
   }
 
@@ -3895,6 +3933,8 @@ function evaluateTransferQuality({
   const additiveDrift = additiveDriftState({
     sourceText,
     outputText,
+    sourceProfile,
+    outputProfile,
     targetProfile,
     opportunityProfile
   });
@@ -5263,7 +5303,24 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         .filter((entry) => entry.accepted)
         .sort((left, right) => right.acceptanceScore - left.acceptanceScore)[0] || null
       : null;
-  let bestCandidate = acceptedSelection?.candidate || [...allCandidates].sort((left, right) => right.score - left.score)[0];
+  const borrowedRescue =
+    strictBorrowedMode && !acceptedSelection
+      ? findBorrowedShellRescueCandidate({
+          shell,
+          candidates: allCandidates,
+          sourceText,
+          sourceProfile,
+          targetProfile,
+          targetGap,
+          protectedState,
+          opportunityProfile,
+          ir
+        })
+      : { candidate: null, fallback: null };
+  let bestCandidate =
+    acceptedSelection?.candidate ||
+    borrowedRescue.candidate ||
+    [...allCandidates].sort((left, right) => right.score - left.score)[0];
 
   let finalText = bestCandidate.outputText;
   let finalProfile = bestCandidate.outputProfile;
@@ -5325,6 +5382,42 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     } else if (shell?.mode === 'persona') {
       notes.push('Persona shell landed a retrieval-safe mask realization.');
     }
+  } else if (strictBorrowedMode && borrowedRescue.candidate && borrowedRescue.fallback) {
+    finalText = sanitizeBorrowedShellPathologies(borrowedRescue.candidate.outputText);
+    finalProfile = extractCadenceProfile(finalText);
+    qualityGatePassed = Boolean(borrowedRescue.candidate.quality?.qualityGatePassed);
+    changedDimensions = collectChangedDimensions(sourceProfile, finalProfile);
+    transferClass = hasMaterialStructuralTransfer(changedDimensions) ? 'structural' : 'weak';
+    precomputedAuditBundle = {
+      semanticAudit: borrowedRescue.fallback.semanticAudit,
+      protectedAnchorAudit: borrowedRescue.fallback.protectedAnchorAudit,
+      outputIR: borrowedRescue.fallback.outputIR
+    };
+    precomputedLexicalShiftProfile = borrowedRescue.fallback.lexicalShiftProfile;
+    precomputedVisibleShift = borrowedRescue.fallback.visibleShift;
+    precomputedNonTrivialShift = borrowedRescue.fallback.nonTrivialShift;
+    rescuePasses.push(borrowedRescue.fallback.relaxed ? 'progress-admit' : 'partial-rescue');
+    directBorrowedProgressCheck = {
+      eligible: true,
+      relaxed: Boolean(borrowedRescue.fallback.relaxed),
+      qualityNotes: borrowedRescue.candidate.quality?.notes || [],
+      changedDimensions: [...(borrowedRescue.candidate.changedDimensions || [])],
+      visibleShift: borrowedRescue.fallback.visibleShift,
+      nonTrivialShift: borrowedRescue.fallback.nonTrivialShift,
+      protectedAnchorIntegrity: borrowedRescue.fallback.protectedAnchorAudit?.protectedAnchorIntegrity ??
+        borrowedRescue.fallback.semanticAudit?.protectedAnchorIntegrity ??
+        1,
+      propositionCoverage: borrowedRescue.fallback.semanticAudit?.propositionCoverage ?? 1,
+      actionCoverage: borrowedRescue.fallback.semanticAudit?.actionCoverage ?? 1,
+      polarityMismatches: borrowedRescue.fallback.semanticAudit?.polarityMismatches ?? 0,
+      progressProfile: borrowedRescue.fallback.progressProfile,
+      lexicalShiftProfile: borrowedRescue.fallback.lexicalShiftProfile
+    };
+    notes.push(
+      borrowedRescue.fallback.relaxed
+        ? 'Borrowed shell held a retrieval-safe rescue shift under progress admission.'
+        : 'Borrowed shell held a retrieval-safe rescue shift.'
+    );
   } else if (strictBorrowedMode) {
     finalText = sourceText;
     finalProfile = sourceProfile;
@@ -5855,9 +5948,11 @@ function buildSwapLaneResult(sourceSample, donorSample, slot = 'A', donorSlot = 
 function classifySwapCadencePair(laneA = {}, laneB = {}) {
   const engagedA =
     laneA.borrowedShellOutcome === 'structural' ||
+    laneA.borrowedShellOutcome === 'partial' ||
     (laneA.borrowedShellOutcome === 'subtle' && laneA.nonTrivialShift);
   const engagedB =
     laneB.borrowedShellOutcome === 'structural' ||
+    laneB.borrowedShellOutcome === 'partial' ||
     (laneB.borrowedShellOutcome === 'subtle' && laneB.nonTrivialShift);
 
   if (laneA.borrowedShellOutcome === 'rejected' && laneB.borrowedShellOutcome === 'rejected') {
@@ -7540,6 +7635,7 @@ function solveQuadratic(a, b, c) {
     badgeMeaning
   };
 })();
+
 
 
 

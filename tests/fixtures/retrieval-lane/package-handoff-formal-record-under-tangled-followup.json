@@ -462,7 +462,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 368.766,
+          "score": 299.558,
           "passesApplied": [
             "baseline-merge",
             "baseline-contraction",
@@ -472,20 +472,15 @@
             "planned-sentence-merge",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "contraction-posture",
             "connector-stance",
-            "lexical-register",
-            "directness",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -493,7 +488,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 368.766,
+          "score": 299.558,
           "passesApplied": [
             "baseline-merge",
             "baseline-contraction",
@@ -503,20 +498,15 @@
             "planned-sentence-merge",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "contraction-posture",
             "connector-stance",
-            "lexical-register",
-            "directness",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -524,7 +514,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 368.766,
+          "score": 299.558,
           "passesApplied": [
             "baseline-merge",
             "baseline-contraction",
@@ -534,20 +524,15 @@
             "planned-sentence-merge",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "contraction-posture",
             "connector-stance",
-            "lexical-register",
-            "directness",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -555,7 +540,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 368.766,
+          "score": 299.558,
           "passesApplied": [
             "baseline-merge",
             "baseline-contraction",
@@ -565,20 +550,15 @@
             "planned-sentence-merge",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
             "contraction-posture",
             "connector-stance",
-            "lexical-register",
-            "directness",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,

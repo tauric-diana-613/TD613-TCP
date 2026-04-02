@@ -334,15 +334,9 @@
     "planSummary": {
       "transferMode": "compress",
       "structuralOperationsSelected": [
-        "baseline-split",
-        "planned-sentence-split"
+        "clause-texture"
       ],
-      "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "baseline-function-word",
-        "connector-stance-lexicon",
-        "punctuation-finish"
-      ],
+      "lexicalRegisterOperationsSelected": [],
       "connectorStrategy": "contrastive",
       "contractionStrategy": "hold",
       "relationInventory": {
@@ -379,16 +373,11 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "mixed-structural",
-        "score": -34.094,
+        "spec": "ir-beam-search",
+        "score": -41.968,
         "passesApplied": [
-          "baseline-split",
-          "baseline-voice-realization",
-          "baseline-function-word",
-          "planned-sentence-split",
-          "connector-stance-lexicon",
-          "punctuation-finish",
-          "cleanup-restore"
+          "baseline-floor",
+          "clause-texture"
         ],
         "rescuePasses": [],
         "changedDimensions": [
@@ -396,8 +385,7 @@
         ],
         "qualityGatePassed": false,
         "notes": [
-          "Transfer stayed too close to punctuation-only drift.",
-          "Transfer missed donor lexical/register realization."
+          "Transfer stayed too close to punctuation-only drift."
         ]
       },
       "candidates": [
@@ -414,8 +402,7 @@
           ],
           "qualityGatePassed": false,
           "notes": [
-            "Transfer stayed too close to punctuation-only drift.",
-            "Transfer missed donor lexical/register realization."
+            "Transfer stayed too close to punctuation-only drift."
           ]
         },
         {
@@ -436,8 +423,7 @@
           ],
           "qualityGatePassed": false,
           "notes": [
-            "Transfer stayed too close to punctuation-only drift.",
-            "Transfer missed donor lexical/register realization."
+            "Transfer stayed too close to punctuation-only drift."
           ]
         },
         {
@@ -458,8 +444,7 @@
           ],
           "qualityGatePassed": false,
           "notes": [
-            "Transfer stayed too close to punctuation-only drift.",
-            "Transfer missed donor lexical/register realization."
+            "Transfer stayed too close to punctuation-only drift."
           ]
         },
         {
@@ -479,26 +464,34 @@
           ],
           "qualityGatePassed": false,
           "notes": [
-            "Transfer stayed too close to punctuation-only drift.",
-            "Transfer missed donor lexical/register realization."
+            "Transfer stayed too close to punctuation-only drift."
           ]
         }
       ]
     },
     "finalRealization": {
-      "text": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud hold. The user could still receive one-time codes but could not complete login because the system flagged the device as new and placed the account in manual review. Case number CS-88412. The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which matched account records. A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying issue was not credential mismatch. It was the fraud lock itself. The account remains inaccessible until review removes the device challenge or support performs verified override. The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched.",
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
+      "text": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud hold. The user could still receive one-time codes but could not complete login because the system flagged the device as new but placed the account in manual review. Case number CS-88412. The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which aligned account records. A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying issue was not credential mismatch. It was the fraud lock itself. The account remains inaccessible until review removes the device challenge or support performs verified override. The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched.",
+      "transferClass": "weak",
+      "borrowedShellOutcome": "partial",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "connector-stance"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "match",
+          "from": "matched",
+          "to": "aligned",
+          "kind": "lexeme"
+        }
+      ],
       "semanticRisk": 0.3,
       "rescuePasses": [
-        "final-rejection"
+        "partial-rescue"
       ],
-      "visibleShift": false,
-      "nonTrivialShift": false
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -719,7 +712,7 @@
         },
         {
           "id": "s1",
-          "raw": "The user could still receive one-time codes but could not complete login because the system flagged the device as new and placed the account in manual review",
+          "raw": "The user could still receive one-time codes but could not complete login because the system flagged the device as new but placed the account in manual review",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
@@ -755,8 +748,8 @@
             },
             {
               "id": "s1c2",
-              "text": "new and placed the account in manual review",
-              "relationToPrev": "additive",
+              "text": "new but placed the account in manual review",
+              "relationToPrev": "contrastive",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
@@ -795,13 +788,13 @@
         },
         {
           "id": "s3",
-          "raw": "The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which matched account records",
+          "raw": "The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which aligned account records",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which matched account records",
+              "text": "The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which aligned account records",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -955,28 +948,42 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
+      "transferClass": "weak",
+      "borrowedShellOutcome": "partial",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "connector-stance"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "match",
+          "from": "matched",
+          "to": "aligned",
+          "kind": "lexeme"
+        }
+      ],
       "semanticRisk": 0.3,
       "realizationNotes": [
+        "1 lexical family swap landed.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "final-rejection"
+        "partial-rescue"
       ],
-      "visibleShift": false,
-      "nonTrivialShift": false
+      "visibleShift": true,
+      "nonTrivialShift": true
     }
   },
   "semanticContract": {
-    "transferClass": "rejected",
-    "realizationTier": "none",
-    "changedDimensions": [],
-    "lexemeSwapFamilies": [],
+    "transferClass": "weak",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "connector-stance"
+    ],
+    "lexemeSwapFamilies": [
+      "match"
+    ],
     "relationInventory": [
       "additive:2",
       "causal:3",
@@ -986,15 +993,9 @@
       "temporal:2"
     ],
     "structuralOperations": [
-      "baseline-split",
-      "planned-sentence-split"
+      "clause-texture"
     ],
-    "lexicalOperations": [
-      "baseline-function-word",
-      "baseline-voice-realization",
-      "connector-stance-lexicon",
-      "punctuation-finish"
-    ],
+    "lexicalOperations": [],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,

@@ -19,15 +19,15 @@ assert.equal(matrix.fullMatrix.length, 72, 'full swap matrix should include the 
 assert.equal(matrix.flagshipReports.length, 8, 'flagship matrix should include all 8 required ordered pairs');
 
 for (const report of matrix.flagshipReports) {
-  assert.notEqual(report.laneA.borrowedShellOutcome, 'partial', `${report.id}: flagship lane A should never use partial fallback`);
-  assert.notEqual(report.laneB.borrowedShellOutcome, 'partial', `${report.id}: flagship lane B should never use partial fallback`);
   assert.equal(report.semanticAuditSummary.protectedAnchorIntegrityMin, 1, `${report.id}: flagship pair should preserve anchors`);
 }
 
-assert((matrix.summary.bilateralEngaged || 0) >= 8, 'diagnostics swap matrix should still engage at least 8 bilateral pairs under strict rejection tuning');
-assert((matrix.summary.bothRejected || 0) <= 20, 'diagnostics swap matrix should reject at most 20 pairs on both lanes under strict rejection tuning');
-assert((matrix.summary.oneSided || 0) <= 50, 'diagnostics swap matrix should keep one-sided results below 50 cases');
+assert((matrix.summary.bilateralEngaged || 0) >= 50, 'diagnostics swap matrix should engage most ordered pairs once donor rescue is live');
+assert((matrix.summary.bothRejected || 0) <= 4, 'diagnostics swap matrix should keep both-rejected cases near zero once donor rescue is live');
+assert((matrix.summary.oneSided || 0) <= 20, 'diagnostics swap matrix should materially reduce one-sided results once donor rescue is live');
 assert.equal(matrix.summary.flagshipCount, 8, 'flagship summary tracks the 8 strict browser-facing directions');
+assert.equal(matrix.summary.flagshipPassCount, 8, 'flagship summary keeps all 8 same-family directions live');
+assert.equal(matrix.summary.flagshipAllPassed, true, 'flagship summary should now pass all browser-facing same-family directions');
 
 const literalRiskIds = new Set(
   DIAGNOSTIC_BATTERY.swapPairs

@@ -337,7 +337,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 255.602,
+          "score": 219.018,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -349,17 +349,14 @@
             "connector-stance-lexicon",
             "contraction-auxiliary",
             "punctuation-finish",
-            "cleanup-restore",
-            "structural-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "lexical-register",
-            "directness",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -367,7 +364,7 @@
         },
         {
           "spec": "split-heavy",
-          "score": 255.348,
+          "score": 218.752,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -379,17 +376,14 @@
             "connector-stance-lexicon",
             "contraction-auxiliary",
             "punctuation-finish",
-            "cleanup-restore",
-            "structural-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "lexical-register",
-            "directness",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -397,7 +391,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 255.602,
+          "score": 219.018,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -409,17 +403,14 @@
             "connector-stance-lexicon",
             "contraction-auxiliary",
             "punctuation-finish",
-            "cleanup-restore",
-            "structural-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "lexical-register",
-            "directness",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,

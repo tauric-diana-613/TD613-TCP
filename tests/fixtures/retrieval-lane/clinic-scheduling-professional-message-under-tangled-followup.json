@@ -324,7 +324,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 103.388,
+          "score": 240.082,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -333,14 +333,9 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue",
-            "connector-stance-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue",
-            "connector-stance-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -348,14 +343,12 @@
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer missed donor lexical/register realization."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "split-heavy",
-          "score": 114.114,
+          "score": 241.214,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -364,14 +357,9 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue",
-            "connector-stance-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue",
-            "connector-stance-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -379,14 +367,12 @@
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer missed donor lexical/register realization."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 103.388,
+          "score": 240.082,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -395,14 +381,9 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue",
-            "connector-stance-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue",
-            "connector-stance-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -410,14 +391,12 @@
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer missed donor lexical/register realization."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 103.388,
+          "score": 240.082,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -426,14 +405,9 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue",
-            "connector-stance-rescue"
+            "cleanup-restore"
           ],
-          "rescuePasses": [
-            "structural-rescue",
-            "connector-stance-rescue"
-          ],
+          "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
@@ -441,10 +415,8 @@
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer missed donor lexical/register realization."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         }
       ]
     },

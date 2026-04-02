@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-01T23:08:20.224Z",
+  "generatedAt": "2026-04-02T04:17:43.447Z",
   "summary": {
     "corpusVersion": "wild-corpus-v1",
     "familyCount": 12,
@@ -7,80 +7,56 @@
     "promotedDeckCount": 16,
     "totalCases": 160,
     "failureBucketCounts": {
-      "semantic_drift": 46,
-      "one_sided_swap": 38,
-      "over_flattened_output": 29,
-      "register_miss": 23,
-      "sentence_span_miss": 7,
-      "surface_close_under_large_gap": 4,
-      "false_neighbor_convergence": 17,
-      "both_rejected_swap": 4,
-      "mask_near_home_hold": 4,
+      "semantic_drift": 57,
+      "sentence_span_miss": 6,
+      "register_miss": 11,
+      "one_sided_swap": 14,
+      "over_flattened_output": 8,
+      "surface_close_under_large_gap": 2,
+      "false_neighbor_convergence": 48,
+      "mask_near_home_hold": 1,
+      "anchor_break": 1,
       "trainer_retrieval_fail": 18,
       "punctuation_only_shift": 0,
-      "anchor_break": 0
+      "both_rejected_swap": 0
     },
     "worstFamilies": [
       {
-        "familyId": "customer-support",
-        "score": 22
-      },
-      {
         "familyId": "school-coordination",
-        "score": 22
-      },
-      {
-        "familyId": "clinic-scheduling",
-        "score": 21
+        "score": 25
       },
       {
         "familyId": "package-handoff",
-        "score": 20
-      },
-      {
-        "familyId": "committee-budget",
-        "score": 20
-      },
-      {
-        "familyId": "building-access",
-        "score": 18
+        "score": 17
       },
       {
         "familyId": "tenant-leak",
-        "score": 18
+        "score": 16
       },
       {
-        "familyId": "archive-grant",
-        "score": 17
+        "familyId": "clinic-scheduling",
+        "score": 16
+      },
+      {
+        "familyId": "customer-support",
+        "score": 16
+      },
+      {
+        "familyId": "overwork-debrief",
+        "score": 14
+      },
+      {
+        "familyId": "building-access",
+        "score": 11
+      },
+      {
+        "familyId": "volunteer-cleanup",
+        "score": 11
       }
     ],
     "worstCases": [
       {
-        "id": "tenant-leak-rushed-to-formal",
-        "familyId": "tenant-leak",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss",
-          "sentence_span_miss",
-          "surface_close_under_large_gap"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap."
-      },
-      {
-        "id": "mutual-aid-rushed-to-formal",
-        "familyId": "mutual-aid",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss",
-          "sentence_span_miss",
-          "surface_close_under_large_gap"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap."
-      },
-      {
-        "id": "school-coordination-formal-to-rushed",
+        "id": "school-coordination-rushed-to-formal",
         "familyId": "school-coordination",
         "failureBuckets": [
           "one_sided_swap",
@@ -103,74 +79,14 @@
         "notes": "Buckets: one_sided_swap, over_flattened_output, sentence_span_miss, surface_close_under_large_gap."
       },
       {
-        "id": "package-handoff-to-building-access-false-neighbor",
-        "familyId": "package-handoff",
+        "id": "school-coordination-to-archive-grant-false-neighbor",
+        "familyId": "school-coordination",
         "failureBuckets": [
           "false_neighbor_convergence",
           "one_sided_swap",
           "semantic_drift"
         ],
         "notes": "Buckets: false_neighbor_convergence, one_sided_swap, semantic_drift."
-      },
-      {
-        "id": "customer-support-to-clinic-scheduling-false-neighbor",
-        "familyId": "customer-support",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
-      },
-      {
-        "id": "committee-budget-to-archive-grant-false-neighbor",
-        "familyId": "committee-budget",
-        "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "register_miss"
-        ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss."
-      },
-      {
-        "id": "archive-grant-to-committee-budget-false-neighbor",
-        "familyId": "archive-grant",
-        "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "register_miss"
-        ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss."
-      },
-      {
-        "id": "clinic-scheduling-to-school-coordination-false-neighbor",
-        "familyId": "clinic-scheduling",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
-      },
-      {
-        "id": "customer-support-to-building-access-literal-risk",
-        "familyId": "customer-support",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
-      },
-      {
-        "id": "building-access-to-package-handoff-literal-risk",
-        "familyId": "building-access",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
       },
       {
         "id": "customer-support-to-clinic-scheduling-literal-risk",
@@ -181,6 +97,82 @@
           "register_miss"
         ],
         "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+      },
+      {
+        "id": "volunteer-cleanup-to-mutual-aid-literal-risk",
+        "familyId": "volunteer-cleanup",
+        "failureBuckets": [
+          "one_sided_swap",
+          "over_flattened_output",
+          "register_miss"
+        ],
+        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+      },
+      {
+        "id": "school-coordination-to-archive-grant-literal-risk",
+        "familyId": "school-coordination",
+        "failureBuckets": [
+          "one_sided_swap",
+          "over_flattened_output",
+          "register_miss"
+        ],
+        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+      },
+      {
+        "id": "package-handoff-under-tenant-leak-mask-cross-family",
+        "familyId": "package-handoff",
+        "failureBuckets": [
+          "mask_near_home_hold",
+          "over_flattened_output",
+          "register_miss"
+        ],
+        "notes": "Buckets: mask_near_home_hold, over_flattened_output, register_miss."
+      },
+      {
+        "id": "school-coordination-to-archive-grant-false-neighbor",
+        "familyId": "school-coordination",
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "one_sided_swap",
+          "semantic_drift"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, one_sided_swap, semantic_drift."
+      },
+      {
+        "id": "overwork-debrief-formal-to-rushed",
+        "familyId": "overwork-debrief",
+        "failureBuckets": [
+          "one_sided_swap",
+          "semantic_drift"
+        ],
+        "notes": "Buckets: one_sided_swap, semantic_drift."
+      },
+      {
+        "id": "building-access-to-package-handoff-false-neighbor",
+        "familyId": "building-access",
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "semantic_drift"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
+      },
+      {
+        "id": "package-handoff-to-building-access-false-neighbor",
+        "familyId": "package-handoff",
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "semantic_drift"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
+      },
+      {
+        "id": "package-handoff-to-tenant-leak-false-neighbor",
+        "familyId": "package-handoff",
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "semantic_drift"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       }
     ]
   },
@@ -193,15 +185,14 @@
         "donorId": "building-access-rushed-mobile",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
           "contraction-posture",
-          "connector-stance",
-          "punctuation-shape"
+          "connector-stance"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
@@ -220,7 +211,7 @@
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance",
         "failureBuckets": [],
         "notes": "Formal incident prose from Building access / badge failure / delivery halt should survive transfer pressure into its noisy sibling without losing literal anchors."
       },
@@ -276,15 +267,13 @@
           "sentence-count",
           "contraction-posture",
           "connector-stance",
-          "lexical-register",
-          "directness",
           "punctuation-shape"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.945,
-          "output": 1.663,
+          "output": 1.731,
           "improved": true
         },
         "semanticAudit": {
@@ -293,11 +282,11 @@
           "actionCoverage": 0.923,
           "objectCoverage": 0.85,
           "polarityMismatches": 1,
-          "tenseMismatches": 0
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, contraction-posture, connector-stance, lexical-register, directness, punctuation-shape",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, contraction-posture, connector-stance, punctuation-shape",
         "failureBuckets": [
           "semantic_drift"
         ],
@@ -310,7 +299,7 @@
         "donorId": "package-handoff-formal-record",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -323,14 +312,14 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.945,
-          "output": 1.236,
+          "output": 1.63,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.883,
+          "objectCoverage": 0.925,
           "polarityMismatches": 1,
           "tenseMismatches": 1
         },
@@ -352,8 +341,7 @@
         "transferClass": "weak",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
+          "sentence-spread",
           "punctuation-shape"
         ],
         "visibleShift": true,
@@ -373,7 +361,7 @@
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, punctuation-shape",
+        "changedDimensionsLabel": "sentence-spread, punctuation-shape",
         "failureBuckets": [],
         "notes": "Formal incident prose from Volunteer cleanup / tool staging / safety brief should survive transfer pressure into its noisy sibling without losing literal anchors."
       },
@@ -399,14 +387,14 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.863,
-          "output": 1.35,
+          "output": 1.351,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.964,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -423,7 +411,7 @@
         "donorId": "tenant-leak-rushed-mobile",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -437,7 +425,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.091,
-          "output": 1.958,
+          "output": 1.946,
           "improved": true
         },
         "semanticAudit": {
@@ -449,13 +437,12 @@
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
         "failureBuckets": [
-          "one_sided_swap",
           "semantic_drift"
         ],
-        "notes": "Buckets: one_sided_swap, semantic_drift."
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "tenant-leak-rushed-to-formal",
@@ -464,35 +451,37 @@
         "donorId": "tenant-leak-formal-record",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.091,
-          "output": 2.091,
-          "improved": false
+          "output": 1.751,
+          "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatches": 0,
+          "objectCoverage": 0.9,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
         "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss",
-          "sentence_span_miss",
-          "surface_close_under_large_gap"
+          "semantic_drift"
         ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap."
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "clinic-scheduling-formal-to-rushed",
@@ -538,7 +527,7 @@
         "donorId": "clinic-scheduling-formal-record",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "cadence-only",
         "changedDimensions": [
           "sentence-mean",
@@ -551,16 +540,16 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.491,
-          "output": 1.766,
+          "output": 1.523,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.9,
+          "objectCoverage": 0.85,
           "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
@@ -577,7 +566,7 @@
         "donorId": "committee-budget-rushed-mobile",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -595,20 +584,18 @@
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.989,
+          "propositionCoverage": 1,
           "actorCoverage": 1,
-          "actionCoverage": 0.979,
+          "actionCoverage": 1,
           "objectCoverage": 0.972,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, lexical-register, directness, punctuation-shape",
-        "failureBuckets": [
-          "semantic_drift"
-        ],
-        "notes": "Buckets: semantic_drift."
+        "failureBuckets": [],
+        "notes": "Formal incident prose from Committee budget / staffing freeze / meeting recap should survive transfer pressure into its noisy sibling without losing literal anchors."
       },
       {
         "id": "committee-budget-rushed-to-formal",
@@ -617,7 +604,7 @@
         "donorId": "committee-budget-formal-record",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "cadence-only",
         "changedDimensions": [
           "sentence-mean",
@@ -654,13 +641,11 @@
         "donorId": "mutual-aid-rushed-mobile",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
-          "sentence-spread",
-          "contraction-posture",
           "connector-stance",
           "abstraction-posture",
           "punctuation-shape"
@@ -669,24 +654,22 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.591,
-          "output": 2.473,
+          "output": 2.408,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 0.99,
           "actorCoverage": 1,
           "actionCoverage": 0.989,
-          "objectCoverage": 0.975,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, abstraction-posture, punctuation-shape",
-        "failureBuckets": [
-          "one_sided_swap"
-        ],
-        "notes": "Buckets: one_sided_swap."
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, connector-stance, abstraction-posture, punctuation-shape",
+        "failureBuckets": [],
+        "notes": "Formal incident prose from Mutual aid / intake follow-up / resource routing should survive transfer pressure into its noisy sibling without losing literal anchors."
       },
       {
         "id": "mutual-aid-rushed-to-formal",
@@ -695,35 +678,38 @@
         "donorId": "mutual-aid-formal-record",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "connector-stance",
+          "content-word-complexity",
+          "modifier-density",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.591,
-          "output": 2.591,
-          "improved": false
+          "output": 1.809,
+          "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
-          "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "polarityMismatches": 1,
+          "tenseMismatches": 2
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, connector-stance, content-word-complexity, modifier-density, punctuation-shape",
         "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss",
-          "sentence_span_miss",
-          "surface_close_under_large_gap"
+          "semantic_drift"
         ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap."
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "overwork-debrief-formal-to-rushed",
@@ -732,7 +718,7 @@
         "donorId": "overwork-debrief-rushed-mobile",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -824,7 +810,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.419,
-          "output": 1.547,
+          "output": 1.863,
           "improved": true
         },
         "semanticAudit": {
@@ -889,34 +875,38 @@
         "donorId": "performance-review-rushed-mobile",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
+          "contraction-posture",
+          "connector-stance",
           "punctuation-shape"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.076,
-          "output": 2.261,
+          "output": 2.387,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 0.945,
           "actorCoverage": 1,
           "actionCoverage": 0.943,
-          "objectCoverage": 0.946,
-          "polarityMismatches": 0,
+          "objectCoverage": 0.893,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Formal incident prose from Performance / review / evaluative commentary should survive transfer pressure into its noisy sibling without losing literal anchors."
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
+        "failureBuckets": [
+          "semantic_drift"
+        ],
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "performance-review-rushed-to-formal",
@@ -941,14 +931,14 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.076,
-          "output": 1.518,
+          "output": 1.621,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.95,
+          "objectCoverage": 1,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
@@ -976,7 +966,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.174,
-          "output": 2.138,
+          "output": 2.155,
           "improved": true
         },
         "semanticAudit": {
@@ -1002,7 +992,7 @@
         "donorId": "customer-support-formal-record",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -1042,6 +1032,49 @@
         "donorId": "school-coordination-rushed-mobile",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "contraction-posture",
+          "connector-stance",
+          "lexical-register",
+          "content-word-complexity",
+          "directness",
+          "abstraction-posture",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
+        "donorDistance": {
+          "source": 2.153,
+          "output": 1.942,
+          "improved": true
+        },
+        "semanticAudit": {
+          "propositionCoverage": 0.95,
+          "actorCoverage": 0.816,
+          "actionCoverage": 0.935,
+          "objectCoverage": 0.902,
+          "polarityMismatches": 0,
+          "tenseMismatches": 2
+        },
+        "protectedAnchorIntegrity": 1,
+        "pairClassification": "one-sided",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, contraction-posture, connector-stance, lexical-register, content-word-complexity, directness, abstraction-posture, punctuation-shape",
+        "failureBuckets": [
+          "one_sided_swap"
+        ],
+        "notes": "Buckets: one_sided_swap."
+      },
+      {
+        "id": "school-coordination-rushed-to-formal",
+        "familyId": "school-coordination",
+        "sourceId": "school-coordination-rushed-mobile",
+        "donorId": "school-coordination-formal-record",
+        "mode": "swap-same-fact",
+        "expectedPressure": "same-fact-high",
         "transferClass": "rejected",
         "realizationTier": "none",
         "changedDimensions": [],
@@ -1056,7 +1089,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.955,
+          "objectCoverage": 0.95,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -1073,58 +1106,18 @@
         "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap."
       },
       {
-        "id": "school-coordination-rushed-to-formal",
-        "familyId": "school-coordination",
-        "sourceId": "school-coordination-rushed-mobile",
-        "donorId": "school-coordination-formal-record",
-        "mode": "swap-same-fact",
-        "expectedPressure": "same-fact-high",
-        "transferClass": "weak",
-        "realizationTier": "lexical-structural",
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-spread",
-          "contraction-posture",
-          "connector-stance",
-          "punctuation-shape"
-        ],
-        "visibleShift": true,
-        "nonTrivialShift": true,
-        "donorDistance": {
-          "source": 2.153,
-          "output": 1.752,
-          "improved": true
-        },
-        "semanticAudit": {
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.95,
-          "polarityMismatches": 0,
-          "tenseMismatches": 0
-        },
-        "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "sentence-mean, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
-        "failureBuckets": [
-          "one_sided_swap"
-        ],
-        "notes": "Buckets: one_sided_swap."
-      },
-      {
         "id": "building-access-to-customer-support-false-neighbor",
         "familyId": "building-access",
         "sourceId": "building-access-professional-message",
         "donorId": "customer-support-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "contraction-posture",
           "connector-stance",
           "punctuation-shape"
         ],
@@ -1132,22 +1125,24 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.323,
-          "output": 2.269,
+          "output": 2.057,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 0.992,
-          "actorCoverage": 0.92,
-          "actionCoverage": 0.984,
-          "objectCoverage": 0.913,
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.925,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Lexically adjacent professional messages from building-access and customer-support should not converge just because they share office language."
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
+        "failureBuckets": [
+          "false_neighbor_convergence"
+        ],
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "customer-support-to-building-access-false-neighbor",
@@ -1195,32 +1190,39 @@
         "donorId": "package-handoff-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.854,
-          "output": 0.854,
+          "output": 1.262,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.963,
-          "polarityMismatches": 0,
+          "objectCoverage": 0.925,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
         "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output"
+          "false_neighbor_convergence",
+          "semantic_drift"
         ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "package-handoff-to-building-access-false-neighbor",
@@ -1252,14 +1254,13 @@
           "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "contraction-posture, connector-stance, directness",
         "failureBuckets": [
           "false_neighbor_convergence",
-          "one_sided_swap",
           "semantic_drift"
         ],
-        "notes": "Buckets: false_neighbor_convergence, one_sided_swap, semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "package-handoff-to-tenant-leak-false-neighbor",
@@ -1282,7 +1283,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.086,
-          "output": 1.222,
+          "output": 1.219,
           "improved": false
         },
         "semanticAudit": {
@@ -1309,7 +1310,7 @@
         "donorId": "package-handoff-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -1338,9 +1339,10 @@
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
         "failureBuckets": [
+          "false_neighbor_convergence",
           "semantic_drift"
         ],
-        "notes": "Buckets: semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "clinic-scheduling-to-customer-support-false-neighbor",
@@ -1363,8 +1365,8 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.5,
-          "output": 1.132,
-          "improved": true
+          "output": 1.502,
+          "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 0.943,
@@ -1375,13 +1377,12 @@
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, content-word-complexity, punctuation-shape",
         "failureBuckets": [
-          "false_neighbor_convergence",
-          "one_sided_swap"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: false_neighbor_convergence, one_sided_swap."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "customer-support-to-clinic-scheduling-false-neighbor",
@@ -1390,33 +1391,37 @@
         "donorId": "clinic-scheduling-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "contraction-posture",
+          "connector-stance",
+          "lexical-register",
+          "directness",
+          "abstraction-posture"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.5,
-          "output": 1.5,
+          "output": 1.535,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.95,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "contraction-posture, connector-stance, lexical-register, directness, abstraction-posture",
         "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "committee-budget-to-archive-grant-false-neighbor",
@@ -1425,33 +1430,36 @@
         "donorId": "archive-grant-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.996,
-          "output": 0.996,
+          "output": 1.013,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.851,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
+          "actionCoverage": 0.851,
+          "objectCoverage": 0.845,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, connector-stance, punctuation-shape",
         "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "register_miss"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "archive-grant-to-committee-budget-false-neighbor",
@@ -1460,33 +1468,38 @@
         "donorId": "committee-budget-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.996,
-          "output": 0.996,
+          "output": 1.191,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.96,
-          "polarityMismatches": 0,
+          "objectCoverage": 0.86,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
         "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "register_miss"
+          "false_neighbor_convergence",
+          "semantic_drift"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "committee-budget-to-performance-review-false-neighbor",
@@ -1536,7 +1549,7 @@
         "donorId": "committee-budget-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -1551,22 +1564,25 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.824,
-          "output": 1.314,
+          "output": 0.961,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 0.961,
-          "actorCoverage": 0.961,
+          "actorCoverage": 0.941,
           "actionCoverage": 0.958,
-          "objectCoverage": 0.964,
-          "polarityMismatches": 0,
+          "objectCoverage": 0.946,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, lexical-register, abstraction-posture, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Reverse false-neighbor pressure between performance-review and committee-budget."
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "semantic_drift"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "mutual-aid-to-customer-support-false-neighbor",
@@ -1575,7 +1591,7 @@
         "donorId": "customer-support-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -1589,22 +1605,24 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.755,
-          "output": 1.367,
+          "output": 1.33,
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.907,
+          "propositionCoverage": 0.943,
           "actorCoverage": 1,
-          "actionCoverage": 0.893,
-          "objectCoverage": 0.925,
+          "actionCoverage": 0.938,
+          "objectCoverage": 0.95,
           "polarityMismatches": 0,
-          "tenseMismatches": 2
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Lexically adjacent professional messages from mutual-aid and customer-support should not converge just because they share office language."
+        "failureBuckets": [
+          "false_neighbor_convergence"
+        ],
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "customer-support-to-mutual-aid-false-neighbor",
@@ -1635,7 +1653,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.9,
+          "objectCoverage": 0.925,
           "polarityMismatches": 1,
           "tenseMismatches": 1
         },
@@ -1655,7 +1673,7 @@
         "donorId": "clinic-scheduling-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -1668,24 +1686,24 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.745,
-          "output": 1.872,
+          "output": 0.77,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 0.868,
+          "propositionCoverage": 1,
           "actorCoverage": 0.949,
-          "actionCoverage": 0.868,
-          "objectCoverage": 0.759,
+          "actionCoverage": 1,
+          "objectCoverage": 0.929,
           "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
         "failureBuckets": [
-          "one_sided_swap"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: one_sided_swap."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "clinic-scheduling-to-school-coordination-false-neighbor",
@@ -1694,33 +1712,35 @@
         "donorId": "school-coordination-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "contraction-posture",
+          "connector-stance"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.745,
-          "output": 0.745,
+          "output": 1.528,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.943,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.938,
-          "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "actionCoverage": 0.938,
+          "objectCoverage": 0.856,
+          "polarityMismatches": 1,
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "contraction-posture, connector-stance",
         "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
+          "false_neighbor_convergence",
+          "semantic_drift"
         ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "volunteer-cleanup-to-mutual-aid-false-neighbor",
@@ -1729,35 +1749,37 @@
         "donorId": "mutual-aid-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
-        "realizationTier": "lexical-structural",
+        "transferClass": "structural",
+        "realizationTier": "cadence-only",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "connector-stance",
-          "punctuation-shape"
+          "connector-stance"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.506,
-          "output": 1.563,
+          "output": 1.648,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.929,
+          "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.982,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Lexically adjacent professional messages from volunteer-cleanup and mutual-aid should not converge just because they share office language."
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance",
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "register_miss"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, register_miss."
       },
       {
         "id": "mutual-aid-to-volunteer-cleanup-false-neighbor",
@@ -1766,7 +1788,7 @@
         "donorId": "volunteer-cleanup-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -1780,22 +1802,24 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.506,
-          "output": 1.284,
+          "output": 1.123,
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.907,
+          "propositionCoverage": 0.943,
           "actorCoverage": 1,
-          "actionCoverage": 0.893,
-          "objectCoverage": 0.894,
+          "actionCoverage": 0.938,
+          "objectCoverage": 0.919,
           "polarityMismatches": 0,
-          "tenseMismatches": 2
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Reverse false-neighbor pressure between mutual-aid and volunteer-cleanup."
+        "failureBuckets": [
+          "false_neighbor_convergence"
+        ],
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "overwork-debrief-to-performance-review-false-neighbor",
@@ -1844,7 +1868,7 @@
         "donorId": "overwork-debrief-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -1874,8 +1898,10 @@
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, lexical-register, directness, abstraction-posture, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Reverse false-neighbor pressure between performance-review and overwork-debrief."
+        "failureBuckets": [
+          "false_neighbor_convergence"
+        ],
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "tenant-leak-to-school-coordination-false-neighbor",
@@ -1884,7 +1910,7 @@
         "donorId": "school-coordination-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -1897,24 +1923,25 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.317,
-          "output": 0.932,
+          "output": 0.926,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.9,
+          "objectCoverage": 0.925,
           "polarityMismatches": 1,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, contraction-posture, connector-stance, punctuation-shape",
         "failureBuckets": [
+          "false_neighbor_convergence",
           "semantic_drift"
         ],
-        "notes": "Buckets: semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "school-coordination-to-tenant-leak-false-neighbor",
@@ -1923,7 +1950,7 @@
         "donorId": "tenant-leak-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -1936,70 +1963,30 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.317,
-          "output": 0.949,
+          "output": 1.256,
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.87,
+          "propositionCoverage": 1,
           "actorCoverage": 0.949,
-          "actionCoverage": 0.87,
-          "objectCoverage": 0.796,
+          "actionCoverage": 1,
+          "objectCoverage": 0.929,
           "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Reverse false-neighbor pressure between school-coordination and tenant-leak."
+        "failureBuckets": [
+          "false_neighbor_convergence"
+        ],
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "archive-grant-to-school-coordination-false-neighbor",
         "familyId": "archive-grant",
         "sourceId": "archive-grant-professional-message",
         "donorId": "school-coordination-professional-message",
-        "mode": "false-neighbor",
-        "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
-        "realizationTier": "lexical-structural",
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-spread",
-          "contraction-posture",
-          "connector-stance",
-          "lexical-register",
-          "directness",
-          "punctuation-shape"
-        ],
-        "visibleShift": true,
-        "nonTrivialShift": true,
-        "donorDistance": {
-          "source": 1.347,
-          "output": 1.145,
-          "improved": true
-        },
-        "semanticAudit": {
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.85,
-          "polarityMismatches": 1,
-          "tenseMismatches": 0
-        },
-        "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "sentence-mean, sentence-spread, contraction-posture, connector-stance, lexical-register, directness, punctuation-shape",
-        "failureBuckets": [
-          "one_sided_swap",
-          "semantic_drift"
-        ],
-        "notes": "Buckets: one_sided_swap, semantic_drift."
-      },
-      {
-        "id": "school-coordination-to-archive-grant-false-neighbor",
-        "familyId": "school-coordination",
-        "sourceId": "school-coordination-professional-message",
-        "donorId": "archive-grant-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
         "transferClass": "rejected",
@@ -2014,9 +2001,9 @@
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.949,
+          "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.964,
+          "objectCoverage": 0.96,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -2030,13 +2017,54 @@
         "notes": "Buckets: one_sided_swap, over_flattened_output."
       },
       {
+        "id": "school-coordination-to-archive-grant-false-neighbor",
+        "familyId": "school-coordination",
+        "sourceId": "school-coordination-professional-message",
+        "donorId": "archive-grant-professional-message",
+        "mode": "false-neighbor",
+        "expectedPressure": "false-neighbor-high",
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
+        "donorDistance": {
+          "source": 1.347,
+          "output": 2.105,
+          "improved": false
+        },
+        "semanticAudit": {
+          "propositionCoverage": 1,
+          "actorCoverage": 0.929,
+          "actionCoverage": 1,
+          "objectCoverage": 0.964,
+          "polarityMismatches": 1,
+          "tenseMismatches": 1
+        },
+        "protectedAnchorIntegrity": 1,
+        "pairClassification": "one-sided",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "one_sided_swap",
+          "semantic_drift"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, one_sided_swap, semantic_drift."
+      },
+      {
         "id": "building-access-to-customer-support-literal-risk",
         "familyId": "building-access",
         "sourceId": "building-access-formal-record",
         "donorId": "customer-support-formal-record",
         "mode": "swap-literal-risk",
         "expectedPressure": "literal-protected",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "contraction-posture",
@@ -2046,24 +2074,22 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.049,
-          "output": 1.055,
+          "output": 1.056,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 0.954,
-          "actorCoverage": 0.954,
-          "actionCoverage": 0.95,
-          "objectCoverage": 0.896,
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.958,
           "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "contraction-posture, connector-stance",
-        "failureBuckets": [
-          "one_sided_swap"
-        ],
-        "notes": "Buckets: one_sided_swap."
+        "failureBuckets": [],
+        "notes": "Protected anchors from building-access should survive donor pressure from customer-support even when both live in incident-record syntax."
       },
       {
         "id": "customer-support-to-building-access-literal-risk",
@@ -2072,15 +2098,21 @@
         "donorId": "building-access-formal-record",
         "mode": "swap-literal-risk",
         "expectedPressure": "literal-protected",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "contraction-posture",
+          "connector-stance",
+          "lexical-register",
+          "directness",
+          "abstraction-posture"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.049,
-          "output": 1.049,
-          "improved": false
+          "output": 0.936,
+          "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -2091,14 +2123,10 @@
           "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "contraction-posture, connector-stance, lexical-register, directness, abstraction-posture",
+        "failureBuckets": [],
+        "notes": "Reverse protected-anchor pressure between customer-support and building-access."
       },
       {
         "id": "building-access-to-package-handoff-literal-risk",
@@ -2107,33 +2135,32 @@
         "donorId": "package-handoff-formal-record",
         "mode": "swap-literal-risk",
         "expectedPressure": "literal-protected",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "contraction-posture",
+          "connector-stance"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.26,
-          "output": 1.26,
-          "improved": false
+          "output": 1.247,
+          "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.979,
+          "objectCoverage": 0.958,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "contraction-posture, connector-stance",
+        "failureBuckets": [],
+        "notes": "Protected anchors from building-access should survive donor pressure from package-handoff even when both live in incident-record syntax."
       },
       {
         "id": "package-handoff-to-building-access-literal-risk",
@@ -2168,12 +2195,10 @@
           "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, directness, punctuation-shape",
-        "failureBuckets": [
-          "one_sided_swap"
-        ],
-        "notes": "Buckets: one_sided_swap."
+        "failureBuckets": [],
+        "notes": "Reverse protected-anchor pressure between package-handoff and building-access."
       },
       {
         "id": "package-handoff-to-tenant-leak-literal-risk",
@@ -2197,7 +2222,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.097,
-          "output": 0.845,
+          "output": 0.601,
           "improved": true
         },
         "semanticAudit": {
@@ -2236,8 +2261,8 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.097,
-          "output": 0.956,
-          "improved": true
+          "output": 1.191,
+          "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 0.949,
@@ -2267,32 +2292,30 @@
         "changedDimensions": [
           "sentence-mean",
           "contraction-posture",
-          "connector-stance",
-          "modifier-density"
+          "connector-stance"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.999,
-          "output": 1.013,
-          "improved": false
+          "output": 0.989,
+          "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 0.828,
           "actionCoverage": 1,
           "objectCoverage": 0.905,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 2
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "one-sided",
-        "changedDimensionsLabel": "sentence-mean, contraction-posture, connector-stance, modifier-density",
+        "changedDimensionsLabel": "sentence-mean, contraction-posture, connector-stance",
         "failureBuckets": [
-          "one_sided_swap",
-          "semantic_drift"
+          "one_sided_swap"
         ],
-        "notes": "Buckets: one_sided_swap, semantic_drift."
+        "notes": "Buckets: one_sided_swap."
       },
       {
         "id": "customer-support-to-clinic-scheduling-literal-risk",
@@ -2336,33 +2359,35 @@
         "donorId": "archive-grant-formal-record",
         "mode": "swap-literal-risk",
         "expectedPressure": "literal-protected",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.033,
-          "output": 1.033,
+          "output": 1.178,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0.889,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.917,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
+        "failureBuckets": [],
+        "notes": "Protected anchors from committee-budget should survive donor pressure from archive-grant even when both live in incident-record syntax."
       },
       {
         "id": "archive-grant-to-committee-budget-literal-risk",
@@ -2398,12 +2423,10 @@
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, lexical-register, directness, abstraction-posture, punctuation-shape",
-        "failureBuckets": [
-          "one_sided_swap"
-        ],
-        "notes": "Buckets: one_sided_swap."
+        "failureBuckets": [],
+        "notes": "Reverse protected-anchor pressure between archive-grant and committee-budget."
       },
       {
         "id": "committee-budget-to-performance-review-literal-risk",
@@ -2427,24 +2450,22 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.283,
-          "output": 0.739,
+          "output": 0.942,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.778,
+          "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.917,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.972,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, lexical-register, directness, punctuation-shape",
-        "failureBuckets": [
-          "semantic_drift"
-        ],
-        "notes": "Buckets: semantic_drift."
+        "failureBuckets": [],
+        "notes": "Protected anchors from committee-budget should survive donor pressure from performance-review even when both live in incident-record syntax."
       },
       {
         "id": "performance-review-to-committee-budget-literal-risk",
@@ -2453,7 +2474,7 @@
         "donorId": "committee-budget-formal-record",
         "mode": "swap-literal-risk",
         "expectedPressure": "literal-protected",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -2466,7 +2487,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.283,
-          "output": 0.701,
+          "output": 0.749,
           "improved": true
         },
         "semanticAudit": {
@@ -2490,10 +2511,11 @@
         "donorId": "customer-support-formal-record",
         "mode": "swap-literal-risk",
         "expectedPressure": "literal-protected",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
-          "sentence-spread",
+          "sentence-mean",
+          "contraction-posture",
           "connector-stance",
           "lexical-register",
           "abstraction-posture"
@@ -2502,22 +2524,24 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.047,
-          "output": 1.025,
-          "improved": true
+          "output": 1.264,
+          "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.92,
+          "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.975,
-          "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "polarityMismatches": 1,
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-spread, connector-stance, lexical-register, abstraction-posture",
-        "failureBuckets": [],
-        "notes": "Protected anchors from mutual-aid should survive donor pressure from customer-support even when both live in incident-record syntax."
+        "changedDimensionsLabel": "sentence-mean, contraction-posture, connector-stance, lexical-register, abstraction-posture",
+        "failureBuckets": [
+          "semantic_drift"
+        ],
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "customer-support-to-mutual-aid-literal-risk",
@@ -2536,14 +2560,13 @@
           "lexical-register",
           "content-word-complexity",
           "directness",
-          "abstraction-posture",
-          "punctuation-shape"
+          "abstraction-posture"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.047,
-          "output": 1.16,
+          "output": 1.08,
           "improved": false
         },
         "semanticAudit": {
@@ -2556,7 +2579,7 @@
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-spread, contraction-posture, connector-stance, lexical-register, content-word-complexity, directness, abstraction-posture, punctuation-shape",
+        "changedDimensionsLabel": "sentence-mean, sentence-spread, contraction-posture, connector-stance, lexical-register, content-word-complexity, directness, abstraction-posture",
         "failureBuckets": [
           "semantic_drift"
         ],
@@ -2586,14 +2609,14 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.879,
-          "output": 1.059,
+          "output": 1.058,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 0.875,
-          "actorCoverage": 0.914,
+          "actorCoverage": 0.814,
           "actionCoverage": 0.869,
-          "objectCoverage": 0.834,
+          "objectCoverage": 0.814,
           "polarityMismatches": 1,
           "tenseMismatches": 2
         },
@@ -2739,7 +2762,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.291,
-          "output": 0.856,
+          "output": 1.009,
           "improved": true
         },
         "semanticAudit": {
@@ -2763,7 +2786,7 @@
         "donorId": "overwork-debrief-formal-record",
         "mode": "swap-literal-risk",
         "expectedPressure": "literal-protected",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -2776,7 +2799,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.291,
-          "output": 0.739,
+          "output": 0.738,
           "improved": true
         },
         "semanticAudit": {
@@ -2800,33 +2823,38 @@
         "donorId": "school-coordination-formal-record",
         "mode": "swap-literal-risk",
         "expectedPressure": "literal-protected",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.853,
-          "output": 0.853,
+          "output": 0.885,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.989,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatches": 0,
+          "actionCoverage": 0.986,
+          "objectCoverage": 0.944,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
         "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
+          "semantic_drift"
         ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "school-coordination-to-tenant-leak-literal-risk",
@@ -2850,7 +2878,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.853,
-          "output": 0.913,
+          "output": 0.912,
           "improved": false
         },
         "semanticAudit": {
@@ -2862,13 +2890,12 @@
           "tenseMismatches": 2
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, content-word-complexity, punctuation-shape",
         "failureBuckets": [
-          "one_sided_swap",
           "semantic_drift"
         ],
-        "notes": "Buckets: one_sided_swap, semantic_drift."
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "archive-grant-to-school-coordination-literal-risk",
@@ -2893,7 +2920,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.439,
-          "output": 1.128,
+          "output": 1.089,
           "improved": true
         },
         "semanticAudit": {
@@ -2966,6 +2993,7 @@
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
+          "line-break-texture",
           "connector-stance",
           "directness",
           "punctuation-shape"
@@ -2974,21 +3002,21 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.634,
-          "output": 0.6105,
-          "improved": false
+          "output": 0.686,
+          "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.938,
+          "objectCoverage": 0.906,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "surface-drift",
-        "whatMoved": "sentence mean // sentence count // sentence spread // connector stance // less directive",
+        "pairClassification": "full-contact",
+        "whatMoved": "sentence mean // sentence count // sentence spread // line break texture // less directive",
         "failureBuckets": [
           "semantic_drift"
         ],
@@ -3018,7 +3046,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.6115,
-          "output": 0.6595,
+          "output": 0.684,
           "improved": true
         },
         "semanticAudit": {
@@ -3026,17 +3054,15 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.925,
-          "polarityMismatches": 1,
-          "tenseMismatches": 1
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "surface-drift",
+        "pairClassification": "full-contact",
         "whatMoved": "sentence mean // sentence count // sentence spread // connector stance",
-        "failureBuckets": [
-          "semantic_drift"
-        ],
-        "notes": "Buckets: semantic_drift."
+        "failureBuckets": [],
+        "notes": "Home trace tightened by 7 points. Surface texture shifted too."
       },
       {
         "id": "volunteer-cleanup-mask-same-family",
@@ -3049,13 +3075,9 @@
         "personaId": "spark",
         "mode": "mask",
         "expectedPressure": "mask-high",
-        "transferClass": "structural",
-        "realizationTier": "lexical-structural",
+        "transferClass": "weak",
+        "realizationTier": "cadence-only",
         "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "connector-stance",
           "lexical-register",
           "directness",
           "punctuation-shape"
@@ -3064,7 +3086,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.692,
-          "output": 0.7745,
+          "output": 0.697,
           "improved": true
         },
         "semanticAudit": {
@@ -3077,10 +3099,12 @@
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "full-contact",
-        "whatMoved": "sentence mean // sentence count // sentence spread // connector stance // less directive",
-        "failureBuckets": [],
-        "notes": "Home trace tightened by 8 points. Surface texture shifted too."
+        "pairClassification": "surface-drift",
+        "whatMoved": "lexical register // directness // plain register",
+        "failureBuckets": [
+          "sentence_span_miss"
+        ],
+        "notes": "Buckets: sentence_span_miss."
       },
       {
         "id": "tenant-leak-mask-same-family",
@@ -3106,23 +3130,25 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.64,
-          "output": 0.639,
+          "output": 0.5985,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.95,
-          "polarityMismatches": 0,
+          "objectCoverage": 1,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "surface-drift",
         "whatMoved": "sentence mean // sentence count // sentence spread // connector stance",
-        "failureBuckets": [],
-        "notes": "Surface texture changed while home distance held. longer lines, brighter punctuation, contraction holds."
+        "failureBuckets": [
+          "semantic_drift"
+        ],
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "clinic-scheduling-mask-same-family",
@@ -3136,37 +3162,37 @@
         "mode": "mask",
         "expectedPressure": "mask-high",
         "transferClass": "structural",
-        "realizationTier": "lexical-structural",
+        "realizationTier": "cadence-only",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "line-break-texture",
           "connector-stance",
-          "content-word-complexity",
           "punctuation-shape"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.5935,
-          "output": 0.7165,
-          "improved": true
+          "output": 0.533,
+          "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.81,
+          "objectCoverage": 0.9,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "full-contact",
-        "whatMoved": "sentence mean // sentence count // sentence spread // line break texture",
-        "failureBuckets": [],
-        "notes": "Home trace tightened by 12 points. Surface texture shifted too."
+        "whatMoved": "sentence mean // sentence count // sentence spread // connector stance",
+        "failureBuckets": [
+          "register_miss"
+        ],
+        "notes": "Buckets: register_miss."
       },
       {
         "id": "committee-budget-mask-same-family",
@@ -3192,25 +3218,25 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.613,
-          "output": 0.7325,
+          "output": 0.625,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.964,
-          "polarityMismatches": 1,
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "full-contact",
+        "pairClassification": "surface-drift",
         "whatMoved": "sentence mean // sentence count // sentence spread // connector stance",
         "failureBuckets": [
-          "semantic_drift"
+          "register_miss"
         ],
-        "notes": "Buckets: semantic_drift."
+        "notes": "Buckets: register_miss."
       },
       {
         "id": "mutual-aid-mask-same-family",
@@ -3228,6 +3254,7 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "line-break-texture",
           "connector-stance",
           "modifier-density",
@@ -3237,21 +3264,21 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.501,
-          "output": 0.623,
+          "output": 0.679,
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.988,
+          "propositionCoverage": 1,
           "actorCoverage": 1,
-          "actionCoverage": 0.976,
-          "objectCoverage": 0.988,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
           "polarityMismatches": 1,
-          "tenseMismatches": 2
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "full-contact",
-        "whatMoved": "sentence mean // sentence count // line break texture // connector stance",
+        "whatMoved": "sentence mean // sentence count // sentence spread // line break texture",
         "failureBuckets": [
           "semantic_drift"
         ],
@@ -3272,7 +3299,9 @@
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
+          "sentence-count",
           "sentence-spread",
+          "line-break-texture",
           "connector-stance",
           "punctuation-shape"
         ],
@@ -3280,7 +3309,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.584,
-          "output": 0.653,
+          "output": 0.6395,
           "improved": true
         },
         "semanticAudit": {
@@ -3288,15 +3317,17 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.95,
-          "polarityMismatches": 0,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "full-contact",
-        "whatMoved": "sentence mean // sentence spread // connector stance",
-        "failureBuckets": [],
-        "notes": "Home trace tightened by 7 points. Surface texture shifted too."
+        "whatMoved": "sentence mean // sentence count // sentence spread // line break texture",
+        "failureBuckets": [
+          "semantic_drift"
+        ],
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "archive-grant-mask-same-family",
@@ -3314,9 +3345,8 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
-          "sentence-spread",
+          "line-break-texture",
           "connector-stance",
-          "lexical-register",
           "directness",
           "punctuation-shape"
         ],
@@ -3324,25 +3354,23 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.5775,
-          "output": 0.5685,
-          "improved": false
+          "output": 0.6995,
+          "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.836,
-          "actorCoverage": 0.813,
-          "actionCoverage": 0.832,
-          "objectCoverage": 0.84,
+          "propositionCoverage": 0.908,
+          "actorCoverage": 0.868,
+          "actionCoverage": 0.897,
+          "objectCoverage": 0.92,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "surface-drift",
-        "whatMoved": "sentence mean // sentence count // sentence spread // connector stance // less directive",
-        "failureBuckets": [
-          "semantic_drift"
-        ],
-        "notes": "Buckets: semantic_drift."
+        "pairClassification": "full-contact",
+        "whatMoved": "sentence mean // sentence count // line break texture // connector stance // operational register",
+        "failureBuckets": [],
+        "notes": "Home trace tightened by 12 points. Surface texture shifted too."
       },
       {
         "id": "performance-review-mask-same-family",
@@ -3370,25 +3398,23 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.608,
-          "output": 0.668,
+          "output": 0.6265,
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.8,
+          "propositionCoverage": 1,
           "actorCoverage": 1,
-          "actionCoverage": 0.8,
-          "objectCoverage": 0.8,
-          "polarityMismatches": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "full-contact",
+        "pairClassification": "surface-drift",
         "whatMoved": "sentence mean // sentence count // sentence spread // connector stance // operational register",
-        "failureBuckets": [
-          "semantic_drift"
-        ],
-        "notes": "Buckets: semantic_drift."
+        "failureBuckets": [],
+        "notes": "Surface texture changed while home distance held. span holds, brighter punctuation, contraction holds."
       },
       {
         "id": "customer-support-mask-same-family",
@@ -3406,7 +3432,10 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "connector-stance",
+          "lexical-register",
+          "modifier-density",
           "directness",
           "punctuation-shape"
         ],
@@ -3414,23 +3443,25 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.6245,
-          "output": 0.6655,
+          "output": 0.668,
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.983,
+          "propositionCoverage": 1,
           "actorCoverage": 1,
-          "actionCoverage": 0.968,
-          "objectCoverage": 0.983,
-          "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "actionCoverage": 1,
+          "objectCoverage": 0.925,
+          "polarityMismatches": 1,
+          "tenseMismatches": 2
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "surface-drift",
-        "whatMoved": "sentence mean // sentence count // connector stance // directness // more directive",
-        "failureBuckets": [],
-        "notes": "Surface texture changed while home distance held. longer lines, brighter punctuation, contraction holds."
+        "whatMoved": "sentence mean // sentence count // sentence spread // connector stance // plain register",
+        "failureBuckets": [
+          "semantic_drift"
+        ],
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "school-coordination-mask-same-family",
@@ -3450,29 +3481,33 @@
           "sentence-count",
           "sentence-spread",
           "connector-stance",
+          "lexical-register",
+          "directness",
           "punctuation-shape"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.631,
-          "output": 0.5585,
+          "output": 0.619,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.98,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.95,
-          "polarityMismatches": 0,
+          "actionCoverage": 0.962,
+          "objectCoverage": 0.88,
+          "polarityMismatches": 3,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "full-contact",
-        "whatMoved": "sentence mean // sentence count // sentence spread // connector stance",
-        "failureBuckets": [],
-        "notes": "Home trace eased by 7 points. Surface texture shifted too."
+        "pairClassification": "surface-drift",
+        "whatMoved": "sentence mean // sentence count // sentence spread // connector stance // less directive",
+        "failureBuckets": [
+          "semantic_drift"
+        ],
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "building-access-under-customer-support-mask-cross-family",
@@ -3485,34 +3520,40 @@
         "personaId": "archivist",
         "mode": "mask",
         "expectedPressure": "mask-false-neighbor",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture",
+          "line-break-texture",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.8085,
-          "output": 0.8085,
+          "output": 0.515,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0.942,
           "actionCoverage": 1,
-          "objectCoverage": 0.958,
-          "polarityMismatches": 0,
+          "objectCoverage": 0.917,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "near-hold",
-        "whatMoved": "near-home hold",
+        "pairClassification": "full-contact",
+        "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture",
         "failureBuckets": [
-          "mask_near_home_hold",
-          "over_flattened_output",
-          "register_miss"
+          "semantic_drift"
         ],
-        "notes": "Buckets: mask_near_home_hold, over_flattened_output, register_miss."
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "building-access-under-package-handoff-mask-cross-family",
@@ -3525,34 +3566,35 @@
         "personaId": "operator",
         "mode": "mask",
         "expectedPressure": "mask-false-neighbor",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.8185,
-          "output": 0.8185,
-          "improved": false
+          "output": 0.835,
+          "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.958,
+          "objectCoverage": 0.938,
           "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "near-hold",
-        "whatMoved": "near-home hold",
-        "failureBuckets": [
-          "mask_near_home_hold",
-          "over_flattened_output",
-          "register_miss"
-        ],
-        "notes": "Buckets: mask_near_home_hold, over_flattened_output, register_miss."
+        "pairClassification": "surface-drift",
+        "whatMoved": "sentence mean // sentence count // sentence spread // connector stance",
+        "failureBuckets": [],
+        "notes": "Surface texture changed while home distance held. span holds, punctuation holds, contraction holds."
       },
       {
         "id": "package-handoff-under-tenant-leak-mask-cross-family",
@@ -3611,31 +3653,29 @@
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "contraction-posture",
+          "line-break-texture",
           "connector-stance",
-          "lexical-register",
-          "abstraction-posture",
           "punctuation-shape"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.791,
-          "output": 0.6555,
+          "output": 0.574,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.923,
+          "objectCoverage": 0.962,
           "polarityMismatches": 1,
           "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "full-contact",
-        "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture // more abstract",
+        "whatMoved": "sentence mean // sentence count // sentence spread // line break texture",
         "failureBuckets": [
           "semantic_drift"
         ],
@@ -3659,31 +3699,29 @@
           "sentence-count",
           "sentence-spread",
           "contraction-posture",
+          "line-break-texture",
           "connector-stance",
-          "lexical-register",
-          "directness",
-          "abstraction-posture",
           "punctuation-shape"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.792,
-          "output": 0.596,
+          "output": 0.6465,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 0.9,
           "actorCoverage": 0.9,
           "actionCoverage": 0.9,
-          "objectCoverage": 0.775,
+          "objectCoverage": 0.8,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "full-contact",
-        "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture // less directive",
+        "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture",
         "failureBuckets": [
           "semantic_drift"
         ],
@@ -3717,14 +3755,14 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.7625,
-          "output": 0.772,
+          "output": 0.7795,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.9,
+          "objectCoverage": 0.955,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -3733,7 +3771,7 @@
         "pairClassification": "surface-drift",
         "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture // less directive",
         "failureBuckets": [],
-        "notes": "Surface texture changed while home distance held. span holds, punctuation holds, more contraction."
+        "notes": "Surface texture changed while home distance held. shorter hits, punctuation holds, contraction holds."
       },
       {
         "id": "mutual-aid-under-customer-support-mask-cross-family",
@@ -3752,7 +3790,7 @@
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "line-break-texture",
+          "contraction-posture",
           "connector-stance",
           "lexical-register",
           "punctuation-shape"
@@ -3761,23 +3799,25 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.66,
-          "output": 0.7315,
-          "improved": true
+          "output": 0.5965,
+          "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 0.897,
-          "actorCoverage": 1,
-          "actionCoverage": 0.896,
-          "objectCoverage": 0.869,
-          "polarityMismatches": 0,
-          "tenseMismatches": 2
+          "propositionCoverage": 0.903,
+          "actorCoverage": 0.885,
+          "actionCoverage": 0.9,
+          "objectCoverage": 0.85,
+          "polarityMismatches": 1,
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "full-contact",
-        "whatMoved": "sentence mean // sentence count // sentence spread // line break texture // more abstract",
-        "failureBuckets": [],
-        "notes": "Home trace tightened by 7 points. Surface texture shifted too."
+        "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture // more abstract",
+        "failureBuckets": [
+          "semantic_drift"
+        ],
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "school-coordination-under-clinic-scheduling-mask-cross-family",
@@ -3793,9 +3833,6 @@
         "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
           "line-break-texture",
           "connector-stance",
           "lexical-register",
@@ -3806,25 +3843,23 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.766,
-          "output": 0.776,
-          "improved": true
+          "output": 0.743,
+          "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.929,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "surface-drift",
-        "whatMoved": "sentence mean // sentence count // sentence spread // line break texture // plain register",
-        "failureBuckets": [
-          "semantic_drift"
-        ],
-        "notes": "Buckets: semantic_drift."
+        "whatMoved": "line break texture // connector stance // lexical register // directness // plain register",
+        "failureBuckets": [],
+        "notes": "Surface texture changed while home distance held. span holds, punctuation holds, contraction holds."
       },
       {
         "id": "volunteer-cleanup-under-mutual-aid-mask-cross-family",
@@ -3837,33 +3872,40 @@
         "personaId": "methods-editor",
         "mode": "mask",
         "expectedPressure": "mask-false-neighbor",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "line-break-texture",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.7945,
-          "output": 0.7945,
+          "output": 0.6495,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.963,
-          "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "propositionCoverage": 0.954,
+          "actorCoverage": 0.917,
+          "actionCoverage": 0.95,
+          "objectCoverage": 0.921,
+          "polarityMismatches": 1,
+          "tenseMismatches": 0
         },
-        "protectedAnchorIntegrity": 1,
+        "protectedAnchorIntegrity": 0.75,
         "trainerValidation": null,
-        "pairClassification": "near-hold",
-        "whatMoved": "near-home hold",
+        "pairClassification": "full-contact",
+        "whatMoved": "sentence mean // sentence count // sentence spread // line break texture",
         "failureBuckets": [
-          "mask_near_home_hold",
-          "over_flattened_output"
+          "anchor_break",
+          "semantic_drift"
         ],
-        "notes": "Buckets: mask_near_home_hold, over_flattened_output."
+        "notes": "Buckets: anchor_break, semantic_drift."
       },
       {
         "id": "overwork-debrief-under-performance-review-mask-cross-family",
@@ -3881,7 +3923,7 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
-          "contraction-posture",
+          "sentence-spread",
           "connector-stance",
           "punctuation-shape"
         ],
@@ -3889,21 +3931,21 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.681,
-          "output": 0.72,
+          "output": 0.783,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.979,
+          "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.917,
+          "objectCoverage": 0.972,
           "polarityMismatches": 1,
-          "tenseMismatches": 0
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "surface-drift",
-        "whatMoved": "sentence mean // sentence count // contraction posture // connector stance",
+        "pairClassification": "full-contact",
+        "whatMoved": "sentence mean // sentence count // sentence spread // connector stance",
         "failureBuckets": [
           "semantic_drift"
         ],
@@ -3933,14 +3975,14 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.767,
-          "output": 0.7835,
+          "output": 0.7875,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.955,
+          "objectCoverage": 0.95,
           "polarityMismatches": 1,
           "tenseMismatches": 1
         },
@@ -3982,25 +4024,23 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.7715,
-          "output": 0.536,
+          "output": 0.561,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 0.925,
+          "propositionCoverage": 1,
           "actorCoverage": 1,
-          "actionCoverage": 0.924,
-          "objectCoverage": 0.927,
-          "polarityMismatches": 2,
-          "tenseMismatches": 2
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "full-contact",
         "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture // operational register",
-        "failureBuckets": [
-          "semantic_drift"
-        ],
-        "notes": "Buckets: semantic_drift."
+        "failureBuckets": [],
+        "notes": "Home trace eased by 21 points. Surface texture shifted too."
       }
     ],
     "trainerCases": [
@@ -4046,7 +4086,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.8549,
-          "meanAgreement": 0.8554,
+          "meanAgreement": 0.7287,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -4080,7 +4120,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.196,
-          "output": 1.439,
+          "output": 1.272,
           "improved": true
         },
         "semanticAudit": {
@@ -4093,15 +4133,17 @@
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
-          "pass": true,
-          "retrievalPass": true,
-          "scalarAggregate": 0.7285,
-          "meanAgreement": 0.9288,
-          "status": "ready"
+          "pass": false,
+          "retrievalPass": false,
+          "scalarAggregate": 0.7768,
+          "meanAgreement": 0.7885,
+          "status": "retrieval-failed"
         },
         "pairClassification": "",
-        "failureBuckets": [],
-        "notes": "Trainer should extract a family fingerprint from three Package handoff / missed signature / hallway pickup variants and validate a forged draft sourced from the noisy sibling."
+        "failureBuckets": [
+          "trainer_retrieval_fail"
+        ],
+        "notes": "Buckets: trainer_retrieval_fail."
       },
       {
         "id": "volunteer-cleanup-trainer-sibling",
@@ -4130,7 +4172,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.999,
-          "output": 1.065,
+          "output": 1.142,
           "improved": true
         },
         "semanticAudit": {
@@ -4146,7 +4188,7 @@
           "pass": true,
           "retrievalPass": true,
           "scalarAggregate": 0.8538,
-          "meanAgreement": 0.9552,
+          "meanAgreement": 0.9848,
           "status": "ready"
         },
         "pairClassification": "",
@@ -4170,6 +4212,7 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "connector-stance",
           "punctuation-shape"
         ],
@@ -4177,7 +4220,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.985,
-          "output": 1.145,
+          "output": 1.658,
           "improved": true
         },
         "semanticAudit": {
@@ -4192,8 +4235,8 @@
         "trainerValidation": {
           "pass": false,
           "retrievalPass": false,
-          "scalarAggregate": 0.8368,
-          "meanAgreement": 0.8354,
+          "scalarAggregate": 0.786,
+          "meanAgreement": 0.758,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -4227,23 +4270,23 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.285,
-          "output": 1.878,
+          "output": 1.517,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.9,
+          "objectCoverage": 0.85,
           "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
           "pass": false,
           "retrievalPass": false,
-          "scalarAggregate": 0.7832,
-          "meanAgreement": 0.9324,
+          "scalarAggregate": 0.7867,
+          "meanAgreement": 0.9243,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -4278,14 +4321,14 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.089,
-          "output": 1.949,
+          "output": 1.426,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.964,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -4293,8 +4336,8 @@
         "trainerValidation": {
           "pass": false,
           "retrievalPass": false,
-          "scalarAggregate": 0.7188,
-          "meanAgreement": 0.7477,
+          "scalarAggregate": 0.8057,
+          "meanAgreement": 0.8108,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -4343,17 +4386,15 @@
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
-          "pass": false,
-          "retrievalPass": false,
+          "pass": true,
+          "retrievalPass": true,
           "scalarAggregate": 0.7196,
-          "meanAgreement": 0.8703,
-          "status": "retrieval-failed"
+          "meanAgreement": 0.8627,
+          "status": "ready"
         },
         "pairClassification": "",
-        "failureBuckets": [
-          "trainer_retrieval_fail"
-        ],
-        "notes": "Buckets: trainer_retrieval_fail."
+        "failureBuckets": [],
+        "notes": "Trainer should extract a family fingerprint from three Mutual aid / intake follow-up / resource routing variants and validate a forged draft sourced from the noisy sibling."
       },
       {
         "id": "overwork-debrief-trainer-sibling",
@@ -4383,7 +4424,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.409,
-          "output": 1.58,
+          "output": 1.833,
           "improved": true
         },
         "semanticAudit": {
@@ -4391,15 +4432,15 @@
           "actorCoverage": 1,
           "actionCoverage": 0.6,
           "objectCoverage": 0.55,
-          "polarityMismatches": 1,
+          "polarityMismatches": 2,
           "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
           "pass": false,
           "retrievalPass": false,
-          "scalarAggregate": 0.7936,
-          "meanAgreement": 0.7556,
+          "scalarAggregate": 0.7486,
+          "meanAgreement": 0.79,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -4448,17 +4489,15 @@
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
-          "pass": false,
-          "retrievalPass": false,
+          "pass": true,
+          "retrievalPass": true,
           "scalarAggregate": 0.8136,
-          "meanAgreement": 0.9359,
-          "status": "retrieval-failed"
+          "meanAgreement": 0.9727,
+          "status": "ready"
         },
         "pairClassification": "",
-        "failureBuckets": [
-          "trainer_retrieval_fail"
-        ],
-        "notes": "Buckets: trainer_retrieval_fail."
+        "failureBuckets": [],
+        "notes": "Trainer should extract a family fingerprint from three Archive / grant / research planning variants and validate a forged draft sourced from the noisy sibling."
       },
       {
         "id": "performance-review-trainer-sibling",
@@ -4502,14 +4541,16 @@
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
           "pass": false,
-          "retrievalPass": true,
+          "retrievalPass": false,
           "scalarAggregate": 0.6201,
-          "meanAgreement": 0.9513,
-          "status": "scalar-drift"
+          "meanAgreement": 0.9025,
+          "status": "retrieval-failed"
         },
         "pairClassification": "",
-        "failureBuckets": [],
-        "notes": "Trainer should extract a family fingerprint from three Performance / review / evaluative commentary variants and validate a forged draft sourced from the noisy sibling."
+        "failureBuckets": [
+          "trainer_retrieval_fail"
+        ],
+        "notes": "Buckets: trainer_retrieval_fail."
       },
       {
         "id": "customer-support-trainer-sibling",
@@ -4530,8 +4571,6 @@
           "sentence-count",
           "sentence-spread",
           "connector-stance",
-          "lexical-register",
-          "modifier-density",
           "directness",
           "punctuation-shape"
         ],
@@ -4539,14 +4578,14 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.144,
-          "output": 1.713,
+          "output": 1.763,
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.847,
+          "propositionCoverage": 0.983,
           "actorCoverage": 1,
-          "actionCoverage": 0.829,
-          "objectCoverage": 0.808,
+          "actionCoverage": 0.968,
+          "objectCoverage": 0.942,
           "polarityMismatches": 0,
           "tenseMismatches": 1
         },
@@ -4554,8 +4593,8 @@
         "trainerValidation": {
           "pass": false,
           "retrievalPass": false,
-          "scalarAggregate": 0.7585,
-          "meanAgreement": 0.8621,
+          "scalarAggregate": 0.7459,
+          "meanAgreement": 0.9245,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -4589,7 +4628,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.277,
-          "output": 1.317,
+          "output": 1.295,
           "improved": true
         },
         "semanticAudit": {
@@ -4597,7 +4636,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.9,
-          "polarityMismatches": 1,
+          "polarityMismatches": 2,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
@@ -4605,7 +4644,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7867,
-          "meanAgreement": 0.9031,
+          "meanAgreement": 0.9225,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -4658,7 +4697,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.838,
-          "meanAgreement": 0.8708,
+          "meanAgreement": 0.8275,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -4692,30 +4731,30 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.499,
-          "output": 1.278,
+          "output": 1.277,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.883,
+          "objectCoverage": 0.925,
           "polarityMismatches": 1,
           "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
-          "pass": true,
-          "retrievalPass": true,
-          "scalarAggregate": 0.7793,
-          "meanAgreement": 0.9884,
-          "status": "ready"
+          "pass": false,
+          "retrievalPass": false,
+          "scalarAggregate": 0.7893,
+          "meanAgreement": 0.8821,
+          "status": "retrieval-failed"
         },
         "pairClassification": "",
         "failureBuckets": [
-          "false_neighbor_convergence"
+          "trainer_retrieval_fail"
         ],
-        "notes": "Buckets: false_neighbor_convergence."
+        "notes": "Buckets: trainer_retrieval_fail."
       },
       {
         "id": "package-handoff-trainer-under-tenant-leak",
@@ -4742,8 +4781,8 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.966,
-          "output": 1.483,
-          "improved": true
+          "output": 2.095,
+          "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -4755,17 +4794,17 @@
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
-          "pass": true,
-          "retrievalPass": true,
-          "scalarAggregate": 0.7623,
-          "meanAgreement": 0.9288,
-          "status": "ready"
+          "pass": false,
+          "retrievalPass": false,
+          "scalarAggregate": 0.6567,
+          "meanAgreement": 0.7079,
+          "status": "retrieval-failed"
         },
         "pairClassification": "",
         "failureBuckets": [
-          "false_neighbor_convergence"
+          "trainer_retrieval_fail"
         ],
-        "notes": "Buckets: false_neighbor_convergence."
+        "notes": "Buckets: trainer_retrieval_fail."
       },
       {
         "id": "clinic-scheduling-trainer-under-customer-support",
@@ -4809,7 +4848,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7481,
-          "meanAgreement": 0.7793,
+          "meanAgreement": 0.8565,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -4858,17 +4897,17 @@
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
-          "pass": false,
-          "retrievalPass": false,
+          "pass": true,
+          "retrievalPass": true,
           "scalarAggregate": 0.8369,
-          "meanAgreement": 0.9405,
-          "status": "retrieval-failed"
+          "meanAgreement": 0.9736,
+          "status": "ready"
         },
         "pairClassification": "",
         "failureBuckets": [
-          "trainer_retrieval_fail"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: trainer_retrieval_fail."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "committee-budget-trainer-under-performance-review",
@@ -4914,7 +4953,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6776,
-          "meanAgreement": 0.9911,
+          "meanAgreement": 0.9196,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -4949,23 +4988,23 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.641,
-          "output": 1.434,
+          "output": 2.23,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.842,
+          "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.925,
-          "polarityMismatches": 4,
-          "tenseMismatches": 2
+          "polarityMismatches": 1,
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
           "pass": false,
           "retrievalPass": false,
-          "scalarAggregate": 0.7591,
-          "meanAgreement": 0.9892,
+          "scalarAggregate": 0.5779,
+          "meanAgreement": 0.8439,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -4993,7 +5032,6 @@
           "sentence-count",
           "sentence-spread",
           "connector-stance",
-          "lexical-register",
           "content-word-complexity",
           "punctuation-shape"
         ],
@@ -5001,23 +5039,23 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.357,
-          "output": 1.303,
+          "output": 1.42,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.81,
+          "objectCoverage": 0.8,
           "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
           "pass": false,
           "retrievalPass": false,
-          "scalarAggregate": 0.8205,
-          "meanAgreement": 0.9319,
+          "scalarAggregate": 0.8172,
+          "meanAgreement": 0.9142,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5068,7 +5106,7 @@
           "pass": true,
           "retrievalPass": true,
           "scalarAggregate": 0.7746,
-          "meanAgreement": 0.8857,
+          "meanAgreement": 0.9085,
           "status": "ready"
         },
         "pairClassification": "",
@@ -5117,17 +5155,15 @@
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
-          "pass": false,
-          "retrievalPass": false,
+          "pass": true,
+          "retrievalPass": true,
           "scalarAggregate": 0.6824,
-          "meanAgreement": 0.9611,
-          "status": "retrieval-failed"
+          "meanAgreement": 0.9228,
+          "status": "ready"
         },
         "pairClassification": "",
-        "failureBuckets": [
-          "trainer_retrieval_fail"
-        ],
-        "notes": "Buckets: trainer_retrieval_fail."
+        "failureBuckets": [],
+        "notes": "Trainer should resist overfitting performance-review noise to a overwork-debrief fingerprint just because the administrative lexicon overlaps."
       },
       {
         "id": "tenant-leak-trainer-under-school-coordination",
@@ -5156,23 +5192,23 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.132,
-          "output": 1.363,
+          "output": 1.556,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 0.98,
           "actorCoverage": 1,
           "actionCoverage": 0.962,
-          "objectCoverage": 0.88,
-          "polarityMismatches": 2,
+          "objectCoverage": 0.93,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
           "pass": false,
           "retrievalPass": false,
-          "scalarAggregate": 0.8264,
-          "meanAgreement": 0.9508,
+          "scalarAggregate": 0.8017,
+          "meanAgreement": 0.98,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5208,7 +5244,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.357,
-          "output": 1.403,
+          "output": 1.471,
           "improved": true
         },
         "semanticAudit": {
@@ -5223,8 +5259,8 @@
         "trainerValidation": {
           "pass": false,
           "retrievalPass": false,
-          "scalarAggregate": 0.7324,
-          "meanAgreement": 0.9277,
+          "scalarAggregate": 0.7357,
+          "meanAgreement": 0.8868,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5242,15 +5278,14 @@
         "donorId": "building-access-rushed-mobile",
         "mode": "retrieval",
         "expectedPressure": "retrieval-same-fact",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
           "contraction-posture",
-          "connector-stance",
-          "punctuation-shape"
+          "connector-stance"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
@@ -5294,16 +5329,16 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.011,
-          "output": 1.471,
+          "output": 1.683,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.969,
+          "objectCoverage": 0.938,
           "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
@@ -5318,31 +5353,40 @@
         "donorId": "package-handoff-tangled-followup",
         "mode": "retrieval",
         "expectedPressure": "retrieval-same-fact",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture",
+          "connector-stance",
+          "lexical-register",
+          "directness",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.043,
-          "output": 1.043,
-          "improved": false
+          "output": 0.888,
+          "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.965,
-          "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "propositionCoverage": 0.937,
+          "actorCoverage": 0.929,
+          "actionCoverage": 0.936,
+          "objectCoverage": 0.885,
+          "polarityMismatches": 1,
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "",
         "failureBuckets": [
-          "over_flattened_output"
+          "semantic_drift"
         ],
-        "notes": "Buckets: over_flattened_output."
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "package-handoff-tangled-followup-under-formal-record",
@@ -5357,24 +5401,25 @@
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
+          "contraction-posture",
           "connector-stance",
           "lexical-register",
-          "content-word-complexity",
           "directness",
-          "abstraction-posture"
+          "abstraction-posture",
+          "punctuation-shape"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.043,
-          "output": 1.562,
+          "output": 1.629,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 0.977,
+          "propositionCoverage": 1,
           "actorCoverage": 1,
-          "actionCoverage": 0.972,
-          "objectCoverage": 0.942,
+          "actionCoverage": 1,
+          "objectCoverage": 0.938,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
@@ -5393,7 +5438,7 @@
         "donorId": "volunteer-cleanup-rushed-mobile",
         "mode": "retrieval",
         "expectedPressure": "retrieval-same-fact",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -5445,14 +5490,14 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.723,
-          "output": 1.181,
+          "output": 1.183,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.964,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -5469,31 +5514,35 @@
         "donorId": "clinic-scheduling-tangled-followup",
         "mode": "retrieval",
         "expectedPressure": "retrieval-same-fact",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "contraction-posture",
+          "connector-stance",
+          "lexical-register",
+          "directness",
+          "abstraction-posture"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.857,
-          "output": 0.857,
+          "output": 2.201,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.875,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.938,
+          "actionCoverage": 0.864,
+          "objectCoverage": 0.798,
           "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "",
-        "failureBuckets": [
-          "over_flattened_output"
-        ],
-        "notes": "Buckets: over_flattened_output."
+        "failureBuckets": [],
+        "notes": "Canonical same-fact retrieval transfer within clinic-scheduling: professional-message under tangled-followup."
       },
       {
         "id": "clinic-scheduling-tangled-followup-under-professional-message",
@@ -5547,36 +5596,31 @@
         "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
+          "contraction-posture",
           "connector-stance",
           "lexical-register",
-          "directness",
-          "punctuation-shape"
+          "directness"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.856,
-          "output": 1,
+          "output": 0.866,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.778,
+          "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.917,
-          "polarityMismatches": 1,
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "",
-        "failureBuckets": [
-          "semantic_drift"
-        ],
-        "notes": "Buckets: semantic_drift."
+        "failureBuckets": [],
+        "notes": "Canonical same-fact retrieval transfer within committee-budget: formal-record under tangled-followup."
       },
       {
         "id": "committee-budget-tangled-followup-under-formal-record",
@@ -5709,7 +5753,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.174,
-          "output": 2.138,
+          "output": 2.155,
           "improved": true
         },
         "semanticAudit": {
@@ -5735,7 +5779,7 @@
         "donorId": "customer-support-formal-record",
         "mode": "retrieval",
         "expectedPressure": "retrieval-same-fact",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -5775,7 +5819,7 @@
         "donorId": "school-coordination-rushed-mobile",
         "mode": "retrieval",
         "expectedPressure": "retrieval-same-fact",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -5793,12 +5837,12 @@
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.87,
+          "propositionCoverage": 1,
           "actorCoverage": 0.949,
-          "actionCoverage": 0.87,
-          "objectCoverage": 0.796,
+          "actionCoverage": 1,
+          "objectCoverage": 0.929,
           "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
@@ -5813,13 +5857,12 @@
         "donorId": "school-coordination-professional-message",
         "mode": "retrieval",
         "expectedPressure": "retrieval-same-fact",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "contraction-posture",
           "connector-stance",
           "punctuation-shape"
         ],
@@ -5827,7 +5870,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.255,
-          "output": 1.472,
+          "output": 1.126,
           "improved": true
         },
         "semanticAudit": {
@@ -5855,13 +5898,12 @@
         "donorId": "customer-support-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "contraction-posture",
           "connector-stance",
           "punctuation-shape"
         ],
@@ -5869,22 +5911,24 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.323,
-          "output": 2.269,
+          "output": 2.057,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 0.992,
-          "actorCoverage": 0.92,
-          "actionCoverage": 0.984,
-          "objectCoverage": 0.913,
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.925,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Lexically adjacent professional messages from building-access and customer-support should not converge just because they share office language."
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
+        "failureBuckets": [
+          "false_neighbor_convergence"
+        ],
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "customer-support-to-building-access-false-neighbor",
@@ -5932,32 +5976,39 @@
         "donorId": "package-handoff-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.854,
-          "output": 0.854,
+          "output": 1.262,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.963,
-          "polarityMismatches": 0,
+          "objectCoverage": 0.925,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
         "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output"
+          "false_neighbor_convergence",
+          "semantic_drift"
         ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "package-handoff-to-building-access-false-neighbor",
@@ -5989,14 +6040,13 @@
           "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "contraction-posture, connector-stance, directness",
         "failureBuckets": [
           "false_neighbor_convergence",
-          "one_sided_swap",
           "semantic_drift"
         ],
-        "notes": "Buckets: false_neighbor_convergence, one_sided_swap, semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "package-handoff-to-tenant-leak-false-neighbor",
@@ -6019,7 +6069,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.086,
-          "output": 1.222,
+          "output": 1.219,
           "improved": false
         },
         "semanticAudit": {
@@ -6046,7 +6096,7 @@
         "donorId": "package-handoff-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -6075,9 +6125,10 @@
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
         "failureBuckets": [
+          "false_neighbor_convergence",
           "semantic_drift"
         ],
-        "notes": "Buckets: semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "clinic-scheduling-to-customer-support-false-neighbor",
@@ -6100,8 +6151,8 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.5,
-          "output": 1.132,
-          "improved": true
+          "output": 1.502,
+          "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 0.943,
@@ -6112,13 +6163,12 @@
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, content-word-complexity, punctuation-shape",
         "failureBuckets": [
-          "false_neighbor_convergence",
-          "one_sided_swap"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: false_neighbor_convergence, one_sided_swap."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "customer-support-to-clinic-scheduling-false-neighbor",
@@ -6127,33 +6177,37 @@
         "donorId": "clinic-scheduling-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "contraction-posture",
+          "connector-stance",
+          "lexical-register",
+          "directness",
+          "abstraction-posture"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.5,
-          "output": 1.5,
+          "output": 1.535,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.95,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "contraction-posture, connector-stance, lexical-register, directness, abstraction-posture",
         "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "committee-budget-to-archive-grant-false-neighbor",
@@ -6162,33 +6216,36 @@
         "donorId": "archive-grant-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.996,
-          "output": 0.996,
+          "output": 1.013,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.851,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
+          "actionCoverage": 0.851,
+          "objectCoverage": 0.845,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, connector-stance, punctuation-shape",
         "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "register_miss"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "archive-grant-to-committee-budget-false-neighbor",
@@ -6197,33 +6254,38 @@
         "donorId": "committee-budget-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.996,
-          "output": 0.996,
+          "output": 1.191,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.96,
-          "polarityMismatches": 0,
+          "objectCoverage": 0.86,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
         "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "register_miss"
+          "false_neighbor_convergence",
+          "semantic_drift"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "committee-budget-to-performance-review-false-neighbor",
@@ -6273,7 +6335,7 @@
         "donorId": "committee-budget-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -6288,22 +6350,25 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.824,
-          "output": 1.314,
+          "output": 0.961,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 0.961,
-          "actorCoverage": 0.961,
+          "actorCoverage": 0.941,
           "actionCoverage": 0.958,
-          "objectCoverage": 0.964,
-          "polarityMismatches": 0,
+          "objectCoverage": 0.946,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, lexical-register, abstraction-posture, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Reverse false-neighbor pressure between performance-review and committee-budget."
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "semantic_drift"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "mutual-aid-to-customer-support-false-neighbor",
@@ -6312,7 +6377,7 @@
         "donorId": "customer-support-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -6326,22 +6391,24 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.755,
-          "output": 1.367,
+          "output": 1.33,
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.907,
+          "propositionCoverage": 0.943,
           "actorCoverage": 1,
-          "actionCoverage": 0.893,
-          "objectCoverage": 0.925,
+          "actionCoverage": 0.938,
+          "objectCoverage": 0.95,
           "polarityMismatches": 0,
-          "tenseMismatches": 2
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Lexically adjacent professional messages from mutual-aid and customer-support should not converge just because they share office language."
+        "failureBuckets": [
+          "false_neighbor_convergence"
+        ],
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "customer-support-to-mutual-aid-false-neighbor",
@@ -6372,7 +6439,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.9,
+          "objectCoverage": 0.925,
           "polarityMismatches": 1,
           "tenseMismatches": 1
         },
@@ -6392,7 +6459,7 @@
         "donorId": "clinic-scheduling-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -6405,24 +6472,24 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.745,
-          "output": 1.872,
+          "output": 0.77,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 0.868,
+          "propositionCoverage": 1,
           "actorCoverage": 0.949,
-          "actionCoverage": 0.868,
-          "objectCoverage": 0.759,
+          "actionCoverage": 1,
+          "objectCoverage": 0.929,
           "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
         "failureBuckets": [
-          "one_sided_swap"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: one_sided_swap."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "clinic-scheduling-to-school-coordination-false-neighbor",
@@ -6431,33 +6498,35 @@
         "donorId": "school-coordination-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "rejected",
-        "realizationTier": "none",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "contraction-posture",
+          "connector-stance"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.745,
-          "output": 0.745,
+          "output": 1.528,
           "improved": false
         },
         "semanticAudit": {
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.943,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.938,
-          "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "actionCoverage": 0.938,
+          "objectCoverage": 0.856,
+          "polarityMismatches": 1,
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "contraction-posture, connector-stance",
         "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss"
+          "false_neighbor_convergence",
+          "semantic_drift"
         ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "volunteer-cleanup-to-mutual-aid-false-neighbor",
@@ -6466,35 +6535,37 @@
         "donorId": "mutual-aid-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
-        "realizationTier": "lexical-structural",
+        "transferClass": "structural",
+        "realizationTier": "cadence-only",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "connector-stance",
-          "punctuation-shape"
+          "connector-stance"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.506,
-          "output": 1.563,
+          "output": 1.648,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.929,
+          "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.982,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Lexically adjacent professional messages from volunteer-cleanup and mutual-aid should not converge just because they share office language."
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance",
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "register_miss"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, register_miss."
       },
       {
         "id": "mutual-aid-to-volunteer-cleanup-false-neighbor",
@@ -6503,7 +6574,7 @@
         "donorId": "volunteer-cleanup-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -6517,22 +6588,24 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.506,
-          "output": 1.284,
+          "output": 1.123,
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.907,
+          "propositionCoverage": 0.943,
           "actorCoverage": 1,
-          "actionCoverage": 0.893,
-          "objectCoverage": 0.894,
+          "actionCoverage": 0.938,
+          "objectCoverage": 0.919,
           "polarityMismatches": 0,
-          "tenseMismatches": 2
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, connector-stance, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Reverse false-neighbor pressure between mutual-aid and volunteer-cleanup."
+        "failureBuckets": [
+          "false_neighbor_convergence"
+        ],
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "overwork-debrief-to-performance-review-false-neighbor",
@@ -6581,7 +6654,7 @@
         "donorId": "overwork-debrief-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -6611,8 +6684,10 @@
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, lexical-register, directness, abstraction-posture, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Reverse false-neighbor pressure between performance-review and overwork-debrief."
+        "failureBuckets": [
+          "false_neighbor_convergence"
+        ],
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "tenant-leak-to-school-coordination-false-neighbor",
@@ -6621,7 +6696,7 @@
         "donorId": "school-coordination-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -6634,24 +6709,25 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.317,
-          "output": 0.932,
+          "output": 0.926,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.9,
+          "objectCoverage": 0.925,
           "polarityMismatches": 1,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, contraction-posture, connector-stance, punctuation-shape",
         "failureBuckets": [
+          "false_neighbor_convergence",
           "semantic_drift"
         ],
-        "notes": "Buckets: semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence, semantic_drift."
       },
       {
         "id": "school-coordination-to-tenant-leak-false-neighbor",
@@ -6660,7 +6736,7 @@
         "donorId": "tenant-leak-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
+        "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
@@ -6673,70 +6749,30 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.317,
-          "output": 0.949,
+          "output": 1.256,
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.87,
+          "propositionCoverage": 1,
           "actorCoverage": 0.949,
-          "actionCoverage": 0.87,
-          "objectCoverage": 0.796,
+          "actionCoverage": 1,
+          "objectCoverage": 0.929,
           "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
-        "failureBuckets": [],
-        "notes": "Reverse false-neighbor pressure between school-coordination and tenant-leak."
+        "failureBuckets": [
+          "false_neighbor_convergence"
+        ],
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "archive-grant-to-school-coordination-false-neighbor",
         "familyId": "archive-grant",
         "sourceId": "archive-grant-professional-message",
         "donorId": "school-coordination-professional-message",
-        "mode": "false-neighbor",
-        "expectedPressure": "false-neighbor-high",
-        "transferClass": "weak",
-        "realizationTier": "lexical-structural",
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-spread",
-          "contraction-posture",
-          "connector-stance",
-          "lexical-register",
-          "directness",
-          "punctuation-shape"
-        ],
-        "visibleShift": true,
-        "nonTrivialShift": true,
-        "donorDistance": {
-          "source": 1.347,
-          "output": 1.145,
-          "improved": true
-        },
-        "semanticAudit": {
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.85,
-          "polarityMismatches": 1,
-          "tenseMismatches": 0
-        },
-        "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "sentence-mean, sentence-spread, contraction-posture, connector-stance, lexical-register, directness, punctuation-shape",
-        "failureBuckets": [
-          "one_sided_swap",
-          "semantic_drift"
-        ],
-        "notes": "Buckets: one_sided_swap, semantic_drift."
-      },
-      {
-        "id": "school-coordination-to-archive-grant-false-neighbor",
-        "familyId": "school-coordination",
-        "sourceId": "school-coordination-professional-message",
-        "donorId": "archive-grant-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
         "transferClass": "rejected",
@@ -6751,9 +6787,9 @@
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.949,
+          "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.964,
+          "objectCoverage": 0.96,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -6765,6 +6801,47 @@
           "over_flattened_output"
         ],
         "notes": "Buckets: one_sided_swap, over_flattened_output."
+      },
+      {
+        "id": "school-coordination-to-archive-grant-false-neighbor",
+        "familyId": "school-coordination",
+        "sourceId": "school-coordination-professional-message",
+        "donorId": "archive-grant-professional-message",
+        "mode": "false-neighbor",
+        "expectedPressure": "false-neighbor-high",
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
+        "donorDistance": {
+          "source": 1.347,
+          "output": 2.105,
+          "improved": false
+        },
+        "semanticAudit": {
+          "propositionCoverage": 1,
+          "actorCoverage": 0.929,
+          "actionCoverage": 1,
+          "objectCoverage": 0.964,
+          "polarityMismatches": 1,
+          "tenseMismatches": 1
+        },
+        "protectedAnchorIntegrity": 1,
+        "pairClassification": "one-sided",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, connector-stance, punctuation-shape",
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "one_sided_swap",
+          "semantic_drift"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, one_sided_swap, semantic_drift."
       }
     ]
   },
@@ -6847,68 +6924,68 @@
     "missingRecipeSampleIds": [],
     "closestPairs": [
       {
+        "leftId": "spark",
+        "leftName": "Spark",
+        "rightId": "cross-examiner",
+        "rightName": "Cross-Examiner",
+        "distance": 0.638,
+        "similarity": 0.688,
+        "traceability": 0.807,
+        "sameFamily": false,
+        "sameVariant": false
+      },
+      {
+        "leftId": "archivist",
+        "leftName": "Archivist",
+        "rightId": "methods-editor",
+        "rightName": "Methods Editor",
+        "distance": 0.697,
+        "similarity": 0.853,
+        "traceability": 0.953,
+        "sameFamily": false,
+        "sameVariant": false
+      },
+      {
         "leftId": "archivist",
         "leftName": "Archivist",
         "rightId": "undertow",
         "rightName": "Undertow",
-        "distance": 0.877,
-        "similarity": 0.726,
-        "traceability": 0.839,
-        "sameFamily": false,
-        "sameVariant": false
-      },
-      {
-        "leftId": "spark",
-        "leftName": "Spark",
-        "rightId": "cross-examiner",
-        "rightName": "Cross-Examiner",
-        "distance": 0.972,
-        "similarity": 0.656,
-        "traceability": 0.764,
-        "sameFamily": false,
-        "sameVariant": false
-      },
-      {
-        "leftId": "archivist",
-        "leftName": "Archivist",
-        "rightId": "cross-examiner",
-        "rightName": "Cross-Examiner",
-        "distance": 1.246,
-        "similarity": 0.643,
-        "traceability": 0.721,
-        "sameFamily": false,
-        "sameVariant": false
-      },
-      {
-        "leftId": "spark",
-        "leftName": "Spark",
-        "rightId": "operator",
-        "rightName": "Operator",
-        "distance": 1.376,
-        "similarity": 0.711,
-        "traceability": 0.829,
-        "sameFamily": false,
-        "sameVariant": false
-      },
-      {
-        "leftId": "operator",
-        "leftName": "Operator",
-        "rightId": "cross-examiner",
-        "rightName": "Cross-Examiner",
-        "distance": 1.475,
-        "similarity": 0.666,
-        "traceability": 0.755,
+        "distance": 1.069,
+        "similarity": 0.703,
+        "traceability": 0.805,
         "sameFamily": false,
         "sameVariant": false
       },
       {
         "leftId": "undertow",
         "leftName": "Undertow",
-        "rightId": "cross-examiner",
-        "rightName": "Cross-Examiner",
-        "distance": 1.567,
-        "similarity": 0.667,
-        "traceability": 0.763,
+        "rightId": "methods-editor",
+        "rightName": "Methods Editor",
+        "distance": 1.086,
+        "similarity": 0.714,
+        "traceability": 0.82,
+        "sameFamily": false,
+        "sameVariant": false
+      },
+      {
+        "leftId": "undertow",
+        "leftName": "Undertow",
+        "rightId": "matron",
+        "rightName": "Matron",
+        "distance": 1.134,
+        "similarity": 0.72,
+        "traceability": 0.815,
+        "sameFamily": false,
+        "sameVariant": false
+      },
+      {
+        "leftId": "archivist",
+        "leftName": "Archivist",
+        "rightId": "matron",
+        "rightName": "Matron",
+        "distance": 1.314,
+        "similarity": 0.656,
+        "traceability": 0.741,
         "sameFamily": false,
         "sameVariant": false
       }
@@ -6921,42 +6998,42 @@
     }
   },
   "workingDoctrine": {
-    "state": "buffered",
-    "blockedGenerativePassage": true,
-    "actionBias": "loosen-exploration-first",
+    "state": "warning",
+    "blockedGenerativePassage": false,
+    "actionBias": "hold-current-boundary",
     "donorPressure": {
       "status": "real",
-      "bilateralEngaged": 40,
-      "representativeAverageScore": 35
+      "bilateralEngaged": 60,
+      "representativeAverageScore": 35.5
     },
     "witnessPressure": {
-      "status": "rising",
-      "witnessBurdenCount": 113,
-      "witnessBurdenRatio": 0.7063,
+      "status": "contained",
+      "witnessBurdenCount": 79,
+      "witnessBurdenRatio": 0.4938,
       "topWitnessBuckets": {
-        "semantic_drift": 46,
-        "over_flattened_output": 29,
-        "one_sided_swap": 38
+        "semantic_drift": 57,
+        "over_flattened_output": 8,
+        "one_sided_swap": 14
       }
     },
     "realizedPassage": {
-      "status": "weak",
-      "oneSidedRate": 0.4167,
-      "flagshipAllPassed": false
+      "status": "landing",
+      "oneSidedRate": 0.1667,
+      "flagshipAllPassed": true
     },
     "provenanceFloor": {
-      "status": "maintained",
-      "anchorBreakCount": 0,
+      "status": "degraded",
+      "anchorBreakCount": 1,
       "minProtectedAnchorIntegrity": 1
     },
     "swapMatrix": {
       "caseCount": 72,
-      "bilateralEngaged": 40,
-      "oneSided": 30,
-      "bothRejected": 2,
+      "bilateralEngaged": 60,
+      "oneSided": 12,
+      "bothRejected": 0,
       "flagshipPassCount": 8,
-      "flagshipCaseCount": 12,
-      "flagshipAllPassed": false
+      "flagshipCaseCount": 8,
+      "flagshipAllPassed": true
     },
     "representativePairs": {
       "count": 4,
@@ -6964,13 +7041,13 @@
       "bilateralNonTrivialCount": 4,
       "bilateralVisibleRate": 1,
       "bilateralNonTrivialRate": 1,
-      "averageScore": 35,
+      "averageScore": 35.5,
       "minProtectedAnchorIntegrity": 1,
-      "minPropositionCoverage": 0.923,
+      "minPropositionCoverage": 1,
       "selections": [
         {
           "anchorId": "building-access-rushed-mobile",
-          "candidateId": "committee-budget-tangled-followup",
+          "candidateId": "archive-grant-formal-record",
           "score": 36,
           "bilateralVisible": true,
           "bilateralNonTrivial": true,
@@ -7004,11 +7081,11 @@
             "structural"
           ],
           "minProtectedAnchorIntegrity": 1,
-          "minPropositionCoverage": 0.923
+          "minPropositionCoverage": 1
         },
         {
           "anchorId": "overwork-debrief-professional-message",
-          "candidateId": "archive-grant-tangled-followup",
+          "candidateId": "archive-grant-formal-record",
           "score": 34,
           "bilateralVisible": true,
           "bilateralNonTrivial": true,
@@ -7027,18 +7104,18 @@
         },
         {
           "anchorId": "school-coordination-rushed-mobile",
-          "candidateId": "customer-support-rushed-mobile",
-          "score": 34,
+          "candidateId": "building-access-rushed-mobile",
+          "score": 36,
           "bilateralVisible": true,
           "bilateralNonTrivial": true,
           "engagedLaneCount": 2,
           "rejectedLaneCount": 0,
           "laneOutcomes": [
-            "partial",
+            "structural",
             "structural"
           ],
           "laneTransferClasses": [
-            "weak",
+            "structural",
             "structural"
           ],
           "minProtectedAnchorIntegrity": 1,
@@ -7047,9 +7124,7 @@
       ]
     },
     "guidance": [
-      "prioritize buildCadenceTransfer(...) and pairing logic before new witness/law surface work",
-      "defer explanatory or aftermath expansions unless a debugging need is explicit",
-      "require before/after comparison on representative pairs, swap flight, and diagnostics buckets"
+      "maintain retrieval safety floors while tracking whether vitality remains stable"
     ]
   }
 }
