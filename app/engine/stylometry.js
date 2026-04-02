@@ -2192,9 +2192,10 @@ function buildTransferTargetProfile(baseProfile = {}, shell = {}, fallbackMod = 
   }
 
   const donor = shell.profile;
-  const visibleBlend = clamp(0.82 + (strength * 0.18), 0, 1);
-  const recurrenceBlend = clamp(0.76 + (strength * 0.18), 0, 1);
-  const lexicalBlend = clamp(0.62 + (strength * 0.16), 0, 0.96);
+  const isPersonaShell = shell?.mode === 'persona';
+  const visibleBlend = clamp(isPersonaShell ? 0.88 + (strength * 0.1) : 0.82 + (strength * 0.18), 0, isPersonaShell ? 0.99 : 1);
+  const recurrenceBlend = clamp(isPersonaShell ? 0.84 + (strength * 0.12) : 0.76 + (strength * 0.18), 0, isPersonaShell ? 0.99 : 1);
+  const lexicalBlend = clamp(isPersonaShell ? 0.78 + (strength * 0.16) : 0.62 + (strength * 0.16), 0, isPersonaShell ? 0.99 : 0.96);
 
   const result = {
     ...baseProfile,
@@ -2274,7 +2275,7 @@ function buildTransferTargetProfile(baseProfile = {}, shell = {}, fallbackMod = 
     shellBias: {
       mode: shell.mode,
       strength: round3(strength),
-      targetMode: 'donor'
+      targetMode: isPersonaShell ? 'persona-donor' : 'donor'
     }
   };
 
@@ -5426,40 +5427,141 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
 
   if (
     shell?.mode === 'persona' &&
-    transferClass !== 'rejected' &&
-    Number(effectiveMod.sent || 0) > 0 &&
-    (finalProfile.avgSentenceLength || 0) < ((sourceProfile.avgSentenceLength || 0) + 4)
+    transferClass !== 'rejected'
   ) {
-    const personaStructured = forceStructuralShift(
-      finalText,
-      sourceProfile,
-      targetProfile,
-      Math.min(1, strength + 0.18),
-      effectiveMod,
-      connectorProfile,
-      transferPlan
-    );
+    const personaGapBefore = profileDeltaToTarget(finalProfile, targetProfile);
+    const personaNeedsVividRescue =
+      profileDeltaScore(personaGapBefore) >= 0.18 ||
+      personaGapBefore.avgSentence >= 1.2 ||
+      personaGapBefore.functionWord >= 0.025 ||
+      personaGapBefore.directness >= 0.09 ||
+      personaGapBefore.abstraction >= 0.09 ||
+      personaGapBefore.register >= 0.12;
 
-    if (personaStructured !== finalText) {
-      const personaProfile = extractCadenceProfile(personaStructured);
-      const personaAuditBundle = buildSemanticAuditBundle(ir, personaStructured, protectedState);
-      const personaProtectedAnchorIntegrity =
-        personaAuditBundle.protectedAnchorAudit?.protectedAnchorIntegrity ??
-        personaAuditBundle.semanticAudit?.protectedAnchorIntegrity ??
-        1;
+    if (personaNeedsVividRescue) {
+      let personaStructured = finalText;
+      let personaWorkingProfile = finalProfile;
+      const personaRescueStrength = Math.min(1, strength + 0.22);
+      const personaWantsShorter =
+        (targetProfile.avgSentenceLength || 0) < ((personaWorkingProfile.avgSentenceLength || 0) - 0.8) ||
+        desiredSentenceCount(personaWorkingProfile, targetProfile) > (personaWorkingProfile.sentenceCount || 0);
+
+      if (personaWantsShorter) {
+        personaStructured = splitLongSentences(
+          personaStructured,
+          targetProfile,
+          Math.min(1, personaRescueStrength + 0.08)
+        );
+        personaWorkingProfile = extractCadenceProfile(personaStructured);
+        personaStructured = applySentenceTexture(
+          personaStructured,
+          personaWorkingProfile,
+          targetProfile,
+          Math.min(1, personaRescueStrength + 0.08),
+          effectiveMod
+        );
+        personaWorkingProfile = extractCadenceProfile(personaStructured);
+      }
+
+      if (Number(effectiveMod.sent || 0) !== 0 || personaGapBefore.avgSentence >= 1.2 || personaGapBefore.sentenceCount >= 1) {
+        personaStructured = forceStructuralShift(
+          personaStructured,
+          personaWorkingProfile,
+          targetProfile,
+          personaRescueStrength,
+          effectiveMod,
+          connectorProfile,
+          transferPlan,
+          voiceRealizationOptions
+        );
+        personaWorkingProfile = extractCadenceProfile(personaStructured);
+      }
+
+      personaStructured = applyDiscourseFrameTexture(
+        personaStructured,
+        personaWorkingProfile,
+        targetProfile,
+        personaRescueStrength,
+        transferPlan
+      );
+      personaWorkingProfile = extractCadenceProfile(personaStructured);
+
+      personaStructured = applyStanceTexture(
+        personaStructured,
+        targetProfile,
+        personaRescueStrength,
+        connectorProfile
+      );
+      personaStructured = applyFunctionWordTexture(
+        personaStructured,
+        targetProfile,
+        personaRescueStrength,
+        connectorProfile,
+        transferPlan
+      );
+      personaWorkingProfile = extractCadenceProfile(personaStructured);
+
+      personaStructured = applyVoiceRealizationTexture(
+        personaStructured,
+        personaWorkingProfile,
+        targetProfile,
+        Math.min(1, personaRescueStrength + 0.06),
+        voiceRealizationOptions
+      );
+
+      if (personaGapBefore.contraction >= 0.008 || Math.abs(Number(effectiveMod.cont || 0)) > 0) {
+        personaStructured = applyContractionTexture(personaStructured, targetProfile, effectiveMod);
+      }
 
       if (
-        personaProtectedAnchorIntegrity >= 1 &&
-        (personaAuditBundle.semanticAudit?.propositionCoverage ?? 1) >= 0.9 &&
-        (personaAuditBundle.semanticAudit?.polarityMismatches ?? 0) <= 1 &&
-        (personaProfile.avgSentenceLength || 0) > (finalProfile.avgSentenceLength || 0)
+        (personaGapBefore.punctuation >= 0.01 || personaGapBefore.punctuationShape >= 0.06 || Math.abs(Number(effectiveMod.punc || 0)) > 0) &&
+        !(transferPlan.wantsLonger && (effectiveMod.punc || 0) < 0)
       ) {
-        finalText = personaStructured;
-        finalProfile = personaProfile;
-        changedDimensions = collectChangedDimensions(sourceProfile, finalProfile);
-        precomputedAuditBundle = personaAuditBundle;
-        rescuePasses.push('persona-structural-rescue');
-        notes.push('Persona shell deepened the sentence span to match the requested mask posture.');
+        personaStructured = applyPunctuationTexture(personaStructured, targetProfile, effectiveMod);
+      }
+
+      personaWorkingProfile = extractCadenceProfile(personaStructured);
+      if (
+        personaWantsShorter &&
+        (personaWorkingProfile.avgSentenceLength || 0) > ((targetProfile.avgSentenceLength || 0) + 1.5)
+      ) {
+        const desiredSplits = Math.max(
+          1,
+          Math.round(
+            (((personaWorkingProfile.avgSentenceLength || 0) - (targetProfile.avgSentenceLength || 0)) / 2.4) +
+            Math.max(1, personaGapBefore.sentenceCount || 0)
+          )
+        );
+        personaStructured = applySplitRules(personaStructured, desiredSplits);
+      }
+
+      personaStructured = finalizeTransformedText(personaStructured);
+
+      if (personaStructured !== finalText) {
+        const personaProfile = extractCadenceProfile(personaStructured);
+        const personaGapAfter = profileDeltaToTarget(personaProfile, targetProfile);
+        const personaAuditBundle = buildSemanticAuditBundle(ir, personaStructured, protectedState);
+        const personaProtectedAnchorIntegrity =
+          personaAuditBundle.protectedAnchorAudit?.protectedAnchorIntegrity ??
+          personaAuditBundle.semanticAudit?.protectedAnchorIntegrity ??
+          1;
+
+        if (
+          personaProtectedAnchorIntegrity >= 1 &&
+          (personaAuditBundle.semanticAudit?.propositionCoverage ?? 1) >= 0.9 &&
+          (personaAuditBundle.semanticAudit?.actorCoverage ?? 1) >= 0.75 &&
+          (personaAuditBundle.semanticAudit?.actionCoverage ?? 1) >= 0.75 &&
+          (personaAuditBundle.semanticAudit?.objectCoverage ?? 1) >= 0.65 &&
+          (personaAuditBundle.semanticAudit?.polarityMismatches ?? 0) <= 1 &&
+          profileDeltaScore(personaGapAfter) + 0.02 < profileDeltaScore(personaGapBefore)
+        ) {
+          finalText = personaStructured;
+          finalProfile = personaProfile;
+          changedDimensions = collectChangedDimensions(sourceProfile, finalProfile);
+          precomputedAuditBundle = personaAuditBundle;
+          rescuePasses.push('persona-vivid-rescue');
+          notes.push('Persona shell deepened cadence alignment to hold the requested mask posture.');
+        }
       }
     }
   }

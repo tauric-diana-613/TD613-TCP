@@ -269,6 +269,52 @@ function resolveRecipeProfile(engine, recipe = {}, sampleLibraryById = {}) {
   };
 }
 
+function recipeFieldSpan(entries = []) {
+  const families = [...new Set((entries || []).map((entry) => entry.familyId).filter(Boolean))];
+  const variants = [...new Set((entries || []).map((entry) => entry.variant).filter(Boolean))];
+  const formatLabel = (value = '') => String(value || '').replace(/-/g, ' ');
+
+  return {
+    families,
+    variants,
+    line: families.length || variants.length
+      ? `Families // ${families.map(formatLabel).join(' + ') || 'unbound'} | Variants // ${variants.map(formatLabel).join(' + ') || 'unbound'}`
+      : 'Families // unresolved | Variants // unresolved',
+    shortLine: families.length || variants.length
+      ? `${families.length || 0} diagnostics families // ${variants.map(formatLabel).join(' + ') || 'unbound'}`
+      : 'Diagnostics specimen unresolved'
+  };
+}
+
+function buildDiagnosticSpecimen(engine, shell = {}, resolvedEntries = [], sampleLibraryById = {}) {
+  if (!resolvedEntries.length || !shell?.profile) {
+    return null;
+  }
+
+  const rankedEntries = [...resolvedEntries].sort((left, right) =>
+    Number(right.weight || 0) - Number(left.weight || 0) ||
+    Number(right.repeats || 0) - Number(left.repeats || 0) ||
+    String(left.sampleId || '').localeCompare(String(right.sampleId || ''))
+  );
+  const dominantEntry = rankedEntries[0];
+  const dominantSample = sampleLibraryById[dominantEntry.sampleId];
+  if (!dominantSample?.text) {
+    return null;
+  }
+
+  const specimenTransfer = engine.buildCadenceTransfer(dominantSample.text, shell, { retrieval: true });
+  const span = recipeFieldSpan(resolvedEntries);
+
+  return {
+    sourceSampleId: dominantEntry.sampleId,
+    sourceSampleName: dominantEntry.sampleName || dominantEntry.sampleId,
+    swatch: compactSwatch(specimenTransfer.text || dominantSample.text, 180),
+    fieldSpanLine: span.line,
+    fieldSpanShort: span.shortLine,
+    contributorLine: `Specimen anchor // ${dominantEntry.sampleName || dominantEntry.sampleId} x${round(dominantEntry.weight || 0, 2)}`
+  };
+}
+
 function fallbackMaskScaffold(persona = {}, index = 0) {
   const sources = {
     'built-in': {
@@ -369,6 +415,18 @@ export function resolvePersonaCatalog(engine, basePersonas = [], sampleLibrary =
         : { sent: 0, cont: 0, punc: 0 };
     const art = BUILTIN_MASK_ART[persona.id] || fallbackMaskScaffold(persona, index);
     const strength = Number(persona.strength || resolvedRecipe?.strength || 0.84);
+    const resolvedShell = profile
+      ? {
+          mode: 'persona',
+          label: persona.name,
+          mod: mod ? { ...mod } : null,
+          profile: { ...profile },
+          strength
+        }
+      : null;
+    const diagnosticSpecimen = resolvedShell && resolvedRecipe?.resolvedEntries?.length
+      ? buildDiagnosticSpecimen(engine, resolvedShell, resolvedRecipe.resolvedEntries, sampleLibraryById)
+      : null;
 
     return {
       ...persona,
@@ -384,6 +442,9 @@ export function resolvePersonaCatalog(engine, basePersonas = [], sampleLibrary =
             overlayMod: resolvedRecipe?.overlayMod ? { ...resolvedRecipe.overlayMod } : null,
             sampleCount: resolvedRecipe?.sampleCount || 0
           }
+        : null,
+      diagnosticSpecimen: diagnosticSpecimen
+        ? { ...diagnosticSpecimen }
         : null,
       maskVisualClass: persona.maskVisualClass || art.visualClass,
       maskArtLabel: persona.maskArtLabel || art.artLabel,

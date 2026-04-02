@@ -56,218 +56,340 @@ window.TCP_DATA = {
       }
     ]
   },
-  basePersonas: [
-    {
-      id: 'archivist',
-      name: 'Archivist',
-      family: 'Witness ledger',
-      tagline: 'Long line. Cold seal.',
-      blurb: 'Witness-ledger mask. Long line, cold seal, low contraction.',
-      voicePromise: 'Lengthens the sentence and cools the surface until the record sounds sealed.',
-      fieldUse: 'Use when the passage needs procedural gravity without losing human witness pressure.',
-      riskTell: 'Sentence span and witness posture tend to cling after contact.',
-      chips: ['cold seal', 'low contraction'],
-      profileRecipe: {
-        blend: [
-          { sampleId: 'building-access-formal-record', weight: 0.55 },
-          { sampleId: 'package-handoff-formal-record', weight: 0.45 }
-        ],
-      overlayMod: { sent: 4, cont: -3, punc: -1 },
-      strength: 0.94
+  basePersonas:   [
+      {
+          "id": "archivist",
+          "name": "Archivist",
+          "family": "Witness ledger",
+          "tagline": "Long line. Cold seal.",
+          "blurb": "Witness-ledger mask. Long line, cold seal, low contraction.",
+          "voicePromise": "Lengthens the sentence and cools the surface until the record sounds sealed.",
+          "fieldUse": "Use when the passage needs procedural gravity without losing human witness pressure.",
+          "riskTell": "Sentence span and witness posture tend to cling after contact.",
+          "chips": [
+              "cold seal",
+              "low contraction"
+          ],
+          "profileRecipe": {
+              "blend": [
+                  {
+                      "sampleId": "building-access-formal-record",
+                      "weight": 0.4
+                  },
+                  {
+                      "sampleId": "archive-grant-formal-record",
+                      "weight": 0.35
+                  },
+                  {
+                      "sampleId": "committee-budget-formal-record",
+                      "weight": 0.25
+                  }
+              ],
+              "overlayMod": {
+                  "sent": 5,
+                  "cont": -4,
+                  "punc": -1
+              },
+              "strength": 0.97
+          },
+          "maskVisualClass": "ledger-raven",
+          "maskArtLabel": "ledger raven",
+          "maskSigil": "[]",
+          "maskState": "mask ready",
+          "frameTone": "sick-gold",
+          "collectorClass": "built-in",
+          "portrait": {
+              "src": "assets/persona-portraits/archivist.svg",
+              "alt": "Archivist portrait"
+          },
+          "source": "built-in"
       },
-      maskVisualClass: 'ledger-raven',
-      maskArtLabel: 'ledger raven',
-      maskSigil: '[]',
-      maskState: 'mask ready',
-      frameTone: 'sick-gold',
-      collectorClass: 'built-in',
-      portrait: {
-        src: 'assets/persona-portraits/archivist.svg',
-        alt: 'Archivist portrait'
+      {
+          "id": "spark",
+          "name": "Spark",
+          "family": "Public signal",
+          "tagline": "Fast surface. Bright cut.",
+          "blurb": "Signal-jackal mask. Fast surface, bright cut, public motion.",
+          "voicePromise": "Cuts the line short, sharpens punctuation, and pushes the passage outward.",
+          "fieldUse": "Use when you need public-facing velocity, directness, and visible momentum.",
+          "riskTell": "Directness often survives even when home distance loosens.",
+          "chips": [
+              "bright cut",
+              "public pull"
+          ],
+          "profileRecipe": {
+              "blend": [
+                  {
+                      "sampleId": "volunteer-cleanup-rushed-mobile",
+                      "weight": 0.4
+                  },
+                  {
+                      "sampleId": "mutual-aid-rushed-mobile",
+                      "weight": 0.35
+                  },
+                  {
+                      "sampleId": "customer-support-rushed-mobile",
+                      "weight": 0.25
+                  }
+              ],
+              "overlayMod": {
+                  "sent": -6,
+                  "cont": 5,
+                  "punc": 5
+              },
+              "strength": 0.96
+          },
+          "maskVisualClass": "signal-jackal",
+          "maskArtLabel": "signal jackal",
+          "maskSigil": "++",
+          "maskState": "mask ready",
+          "frameTone": "cyan",
+          "collectorClass": "built-in",
+          "portrait": {
+              "src": "assets/persona-portraits/spark.svg",
+              "alt": "Spark portrait"
+          },
+          "source": "built-in"
       },
-      source: 'built-in'
-    },
-    {
-      id: 'spark',
-      name: 'Spark',
-      family: 'Public signal',
-      tagline: 'Fast surface. Bright cut.',
-      blurb: 'Signal-jackal mask. Fast surface, bright cut, public motion.',
-      voicePromise: 'Cuts the line short, sharpens punctuation, and pushes the passage outward.',
-      fieldUse: 'Use when you need public-facing velocity, directness, and visible momentum.',
-      riskTell: 'Directness often survives even when home distance loosens.',
-      chips: ['bright cut', 'public pull'],
-      profileRecipe: {
-        blend: [
-          { sampleId: 'volunteer-cleanup-rushed-mobile', weight: 0.55 },
-          { sampleId: 'mutual-aid-professional-message', weight: 0.45 }
-        ],
-      overlayMod: { sent: -5, cont: 4, punc: 4 },
-      strength: 0.92
+      {
+          "id": "undertow",
+          "name": "Undertow",
+          "family": "Recursive undertow",
+          "tagline": "Late landing. Return current.",
+          "blurb": "Recursive undertow mask. Late landing, return current, delayed afterimage.",
+          "voicePromise": "Lets the sentence drift longer and land after the surface seems finished.",
+          "fieldUse": "Use when you want recursive drag, delayed closure, and a submerged emotional wake.",
+          "riskTell": "Recurrence and late-closing sentence rhythm tend to stay visible.",
+          "chips": [
+              "late landing",
+              "return current"
+          ],
+          "profileRecipe": {
+              "blend": [
+                  {
+                      "sampleId": "overwork-debrief-tangled-followup",
+                      "weight": 0.45
+                  },
+                  {
+                      "sampleId": "tenant-leak-tangled-followup",
+                      "weight": 0.3
+                  },
+                  {
+                      "sampleId": "archive-grant-tangled-followup",
+                      "weight": 0.25
+                  }
+              ],
+              "overlayMod": {
+                  "sent": 4,
+                  "cont": -1,
+                  "punc": 0
+              },
+              "strength": 0.93
+          },
+          "maskVisualClass": "velvet-eel",
+          "maskArtLabel": "velvet eel",
+          "maskSigil": "~~",
+          "maskState": "mask ready",
+          "frameTone": "bruise-violet",
+          "collectorClass": "built-in",
+          "portrait": {
+              "src": "assets/persona-portraits/undertow.svg",
+              "alt": "Undertow portrait"
+          },
+          "source": "built-in"
       },
-      maskVisualClass: 'signal-jackal',
-      maskArtLabel: 'signal jackal',
-      maskSigil: '++',
-      maskState: 'mask ready',
-      frameTone: 'cyan',
-      collectorClass: 'built-in',
-      portrait: {
-        src: 'assets/persona-portraits/spark.svg',
-        alt: 'Spark portrait'
+      {
+          "id": "operator",
+          "name": "Operator",
+          "family": "Route discipline",
+          "tagline": "Dry hand. Clean route.",
+          "blurb": "Route-discipline mask. Dry hand, clipped surface, clean route language.",
+          "voicePromise": "Strips ornament, lowers pulse, and keeps the line operational under pressure.",
+          "fieldUse": "Use when the passage needs clipped control and low-ornament route clarity.",
+          "riskTell": "Route-clean phrasing can remain visible even when the shell shifts elsewhere.",
+          "chips": [
+              "clean route",
+              "dry hand"
+          ],
+          "profileRecipe": {
+              "blend": [
+                  {
+                      "sampleId": "building-access-formal-record",
+                      "weight": 0.4
+                  },
+                  {
+                      "sampleId": "volunteer-cleanup-professional-message",
+                      "weight": 0.35
+                  },
+                  {
+                      "sampleId": "committee-budget-formal-record",
+                      "weight": 0.25
+                  }
+              ],
+              "overlayMod": {
+                  "sent": 1,
+                  "cont": -2,
+                  "punc": -2
+              },
+              "strength": 0.92
+          },
+          "maskVisualClass": "quiet-hound",
+          "maskArtLabel": "quiet hound",
+          "maskSigil": "//",
+          "maskState": "mask ready",
+          "frameTone": "ash",
+          "collectorClass": "built-in",
+          "portrait": {
+              "src": "assets/persona-portraits/operator.svg",
+              "alt": "Operator portrait"
+          },
+          "source": "built-in"
       },
-      source: 'built-in'
-    },
-    {
-      id: 'undertow',
-      name: 'Undertow',
-      family: 'Recursive undertow',
-      tagline: 'Late landing. Return current.',
-      blurb: 'Recursive undertow mask. Late landing, return current, delayed afterimage.',
-      voicePromise: 'Lets the sentence drift longer and land after the surface seems finished.',
-      fieldUse: 'Use when you want recursive drag, delayed closure, and a submerged emotional wake.',
-      riskTell: 'Recurrence and late-closing sentence rhythm tend to stay visible.',
-      chips: ['late landing', 'return current'],
-      profileRecipe: {
-        blend: [
-          { sampleId: 'overwork-debrief-tangled-followup', weight: 0.7 },
-          { sampleId: 'archive-grant-tangled-followup', weight: 0.3 }
-        ],
-        overlayMod: { sent: 2, cont: 0, punc: 0 },
-        strength: 0.89
+      {
+          "id": "methods-editor",
+          "name": "Methods Editor",
+          "family": "Schema cold",
+          "tagline": "Measured caveat. Clean proof.",
+          "blurb": "Schema-cold mask. Formal, caveated, and stripped of warmth.",
+          "voicePromise": "Flattens heat, formalizes claims, and keeps the sentence inside a colder proof surface.",
+          "fieldUse": "Use when a claim needs caveat, formal distance, and procedural restraint.",
+          "riskTell": "Caveat structure and abstraction posture often remain after transfer.",
+          "chips": [
+              "measured caveat",
+              "clean proof"
+          ],
+          "profileRecipe": {
+              "blend": [
+                  {
+                      "sampleId": "committee-budget-formal-record",
+                      "weight": 0.4
+                  },
+                  {
+                      "sampleId": "archive-grant-formal-record",
+                      "weight": 0.35
+                  },
+                  {
+                      "sampleId": "performance-review-formal-record",
+                      "weight": 0.25
+                  }
+              ],
+              "overlayMod": {
+                  "sent": 5,
+                  "cont": -3,
+                  "punc": -1
+              },
+              "strength": 0.94
+          },
+          "maskVisualClass": "schema-moth",
+          "maskArtLabel": "schema moth",
+          "maskSigil": "::",
+          "maskState": "mask ready",
+          "frameTone": "ice",
+          "collectorClass": "built-in",
+          "portrait": {
+              "src": "assets/persona-portraits/methods-editor.svg",
+              "alt": "Methods Editor portrait"
+          },
+          "source": "built-in"
       },
-      maskVisualClass: 'velvet-eel',
-      maskArtLabel: 'velvet eel',
-      maskSigil: '~~',
-      maskState: 'mask ready',
-      frameTone: 'bruise-violet',
-      collectorClass: 'built-in',
-      portrait: {
-        src: 'assets/persona-portraits/undertow.svg',
-        alt: 'Undertow portrait'
+      {
+          "id": "cross-examiner",
+          "name": "Cross-Examiner",
+          "family": "Adversarial pressure",
+          "tagline": "Hard edge. Closed throat.",
+          "blurb": "Adversarial-pressure mask. Hard edge, clipped line, sharpened pressure.",
+          "voicePromise": "Tightens the sentence, hardens the edge, and turns soft claims into challenge surfaces.",
+          "fieldUse": "Use when the passage needs interrogation pressure and minimal softness.",
+          "riskTell": "Pressure syntax and abrupt punctuation can keep showing through.",
+          "chips": [
+              "hard edge",
+              "pressure syntax"
+          ],
+          "profileRecipe": {
+              "blend": [
+                  {
+                      "sampleId": "performance-review-rushed-mobile",
+                      "weight": 0.4
+                  },
+                  {
+                      "sampleId": "customer-support-professional-message",
+                      "weight": 0.35
+                  },
+                  {
+                      "sampleId": "tenant-leak-rushed-mobile",
+                      "weight": 0.25
+                  }
+              ],
+              "overlayMod": {
+                  "sent": -6,
+                  "cont": -3,
+                  "punc": 6
+              },
+              "strength": 0.95
+          },
+          "maskVisualClass": "gavel-viper",
+          "maskArtLabel": "gavel viper",
+          "maskSigil": "?!",
+          "maskState": "mask ready",
+          "frameTone": "oxide-red",
+          "collectorClass": "built-in",
+          "portrait": {
+              "src": "assets/persona-portraits/cross-examiner.svg",
+              "alt": "Cross-Examiner portrait"
+          },
+          "source": "built-in"
       },
-      source: 'built-in'
-    },
-    {
-      id: 'operator',
-      name: 'Operator',
-      family: 'Route discipline',
-      tagline: 'Dry hand. Clean route.',
-      blurb: 'Route-discipline mask. Dry hand, clipped surface, clean route language.',
-      voicePromise: 'Strips ornament, lowers pulse, and keeps the line operational under pressure.',
-      fieldUse: 'Use when the passage needs clipped control and low-ornament route clarity.',
-      riskTell: 'Route-clean phrasing can remain visible even when the shell shifts elsewhere.',
-      chips: ['clean route', 'dry hand'],
-      profileRecipe: {
-        blend: [
-          { sampleId: 'volunteer-cleanup-professional-message', weight: 0.55 },
-          { sampleId: 'building-access-formal-record', weight: 0.45 }
-        ],
-      overlayMod: { sent: -4, cont: -2, punc: -2 },
-        strength: 0.87
-      },
-      maskVisualClass: 'quiet-hound',
-      maskArtLabel: 'quiet hound',
-      maskSigil: '//',
-      maskState: 'mask ready',
-      frameTone: 'ash',
-      collectorClass: 'built-in',
-      portrait: {
-        src: 'assets/persona-portraits/operator.svg',
-        alt: 'Operator portrait'
-      },
-      source: 'built-in'
-    },
-    {
-      id: 'methods-editor',
-      name: 'Methods Editor',
-      family: 'Schema cold',
-      tagline: 'Measured caveat. Clean proof.',
-      blurb: 'Schema-cold mask. Formal, caveated, and stripped of warmth.',
-      voicePromise: 'Flattens heat, formalizes claims, and keeps the sentence inside a colder proof surface.',
-      fieldUse: 'Use when a claim needs caveat, formal distance, and procedural restraint.',
-      riskTell: 'Caveat structure and abstraction posture often remain after transfer.',
-      chips: ['measured caveat', 'clean proof'],
-      profileRecipe: {
-        blend: [
-          { sampleId: 'committee-budget-formal-record', weight: 0.55 },
-          { sampleId: 'archive-grant-formal-record', weight: 0.45 }
-        ],
-      overlayMod: { sent: 4, cont: -3, punc: -1 },
-      strength: 0.9
-      },
-      maskVisualClass: 'schema-moth',
-      maskArtLabel: 'schema moth',
-      maskSigil: '::',
-      maskState: 'mask ready',
-      frameTone: 'ice',
-      collectorClass: 'built-in',
-      portrait: {
-        src: 'assets/persona-portraits/methods-editor.svg',
-        alt: 'Methods Editor portrait'
-      },
-      source: 'built-in'
-    },
-    {
-      id: 'cross-examiner',
-      name: 'Cross-Examiner',
-      family: 'Adversarial pressure',
-      tagline: 'Hard edge. Closed throat.',
-      blurb: 'Adversarial-pressure mask. Hard edge, clipped line, sharpened pressure.',
-      voicePromise: 'Tightens the sentence, hardens the edge, and turns soft claims into challenge surfaces.',
-      fieldUse: 'Use when the passage needs interrogation pressure and minimal softness.',
-      riskTell: 'Pressure syntax and abrupt punctuation can keep showing through.',
-      chips: ['hard edge', 'pressure syntax'],
-      profileRecipe: {
-        blend: [
-          { sampleId: 'performance-review-formal-record', weight: 0.55 },
-          { sampleId: 'customer-support-professional-message', weight: 0.45 }
-        ],
-      overlayMod: { sent: -5, cont: -3, punc: 5 },
-      strength: 0.91
-      },
-      maskVisualClass: 'gavel-viper',
-      maskArtLabel: 'gavel viper',
-      maskSigil: '?!',
-      maskState: 'mask ready',
-      frameTone: 'oxide-red',
-      collectorClass: 'built-in',
-      portrait: {
-        src: 'assets/persona-portraits/cross-examiner.svg',
-        alt: 'Cross-Examiner portrait'
-      },
-      source: 'built-in'
-    },
-    {
-      id: 'matron',
-      name: 'Matron',
-      family: 'Protective veil',
-      tagline: 'Soft shelter. Held pulse.',
-      blurb: 'Protective-veil mask. Held pulse, softened cadence, shelter without blur.',
-      voicePromise: 'Steadies the breath and softens the cadence while keeping the line legible.',
-      fieldUse: 'Use when the passage needs shelter, steadiness, and controlled warmth.',
-      riskTell: 'Steady sentence pulse can persist even when the tone cools elsewhere.',
-      chips: ['held pulse', 'soft shelter'],
-      profileRecipe: {
-        blend: [
-          { sampleId: 'school-coordination-professional-message', weight: 0.45 },
-          { sampleId: 'clinic-scheduling-professional-message', weight: 0.35 },
-          { sampleId: 'package-handoff-professional-message', weight: 0.2 }
-        ],
-      overlayMod: { sent: 4, cont: -1, punc: -2 },
-      strength: 0.9
-      },
-      maskVisualClass: 'velvet-stag',
-      maskArtLabel: 'velvet stag',
-      maskSigil: '()',
-      maskState: 'mask ready',
-      frameTone: 'velvet',
-      collectorClass: 'built-in',
-      portrait: {
-        src: 'assets/persona-portraits/matron.svg',
-        alt: 'Matron portrait'
-      },
-      source: 'built-in'
-    }
+      {
+          "id": "matron",
+          "name": "Matron",
+          "family": "Protective veil",
+          "tagline": "Soft shelter. Held pulse.",
+          "blurb": "Protective-veil mask. Held pulse, softened cadence, shelter without blur.",
+          "voicePromise": "Steadies the breath and softens the cadence while keeping the line legible.",
+          "fieldUse": "Use when the passage needs shelter, steadiness, and controlled warmth.",
+          "riskTell": "Steady sentence pulse can persist even when the tone cools elsewhere.",
+          "chips": [
+              "held pulse",
+              "soft shelter"
+          ],
+          "profileRecipe": {
+              "blend": [
+                  {
+                      "sampleId": "school-coordination-professional-message",
+                      "weight": 0.35
+                  },
+                  {
+                      "sampleId": "clinic-scheduling-professional-message",
+                      "weight": 0.3
+                  },
+                  {
+                      "sampleId": "package-handoff-tangled-followup",
+                      "weight": 0.2
+                  },
+                  {
+                      "sampleId": "tenant-leak-professional-message",
+                      "weight": 0.15
+                  }
+              ],
+              "overlayMod": {
+                  "sent": 5,
+                  "cont": -1,
+                  "punc": -3
+              },
+              "strength": 0.93
+          },
+          "maskVisualClass": "velvet-stag",
+          "maskArtLabel": "velvet stag",
+          "maskSigil": "()",
+          "maskState": "mask ready",
+          "frameTone": "velvet",
+          "collectorClass": "built-in",
+          "portrait": {
+              "src": "assets/persona-portraits/matron.svg",
+              "alt": "Matron portrait"
+          },
+          "source": "built-in"
+      }
   ],
   microcopy: {
     hero_title: 'TCP - The Cadence Playground',

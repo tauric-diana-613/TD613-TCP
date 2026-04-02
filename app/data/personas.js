@@ -11,15 +11,16 @@ const personas = [
     chips: ['cold seal', 'low contraction'],
     profileRecipe: {
       blend: [
-        { sampleId: 'building-access-formal-record', weight: 0.55 },
-        { sampleId: 'package-handoff-formal-record', weight: 0.45 }
+        { sampleId: 'building-access-formal-record', weight: 0.4 },
+        { sampleId: 'archive-grant-formal-record', weight: 0.35 },
+        { sampleId: 'committee-budget-formal-record', weight: 0.25 }
       ],
       overlayMod: {
-        sent: 4,
-        cont: -3,
+        sent: 5,
+        cont: -4,
         punc: -1
       },
-      strength: 0.94
+      strength: 0.97
     },
     maskVisualClass: 'ledger-raven',
     maskArtLabel: 'ledger raven',
@@ -45,15 +46,16 @@ const personas = [
     chips: ['bright cut', 'public pull'],
     profileRecipe: {
       blend: [
-        { sampleId: 'volunteer-cleanup-rushed-mobile', weight: 0.55 },
-        { sampleId: 'mutual-aid-professional-message', weight: 0.45 }
+        { sampleId: 'volunteer-cleanup-rushed-mobile', weight: 0.4 },
+        { sampleId: 'mutual-aid-rushed-mobile', weight: 0.35 },
+        { sampleId: 'customer-support-rushed-mobile', weight: 0.25 }
       ],
       overlayMod: {
-        sent: -5,
-        cont: 4,
-        punc: 4
+        sent: -6,
+        cont: 5,
+        punc: 5
       },
-      strength: 0.92
+      strength: 0.96
     },
     maskVisualClass: 'signal-jackal',
     maskArtLabel: 'signal jackal',
@@ -79,15 +81,16 @@ const personas = [
     chips: ['late landing', 'return current'],
     profileRecipe: {
       blend: [
-        { sampleId: 'overwork-debrief-tangled-followup', weight: 0.7 },
-        { sampleId: 'archive-grant-tangled-followup', weight: 0.3 }
+        { sampleId: 'overwork-debrief-tangled-followup', weight: 0.45 },
+        { sampleId: 'tenant-leak-tangled-followup', weight: 0.3 },
+        { sampleId: 'archive-grant-tangled-followup', weight: 0.25 }
       ],
       overlayMod: {
-        sent: 2,
-        cont: 0,
+        sent: 4,
+        cont: -1,
         punc: 0
       },
-      strength: 0.89
+      strength: 0.93
     },
     maskVisualClass: 'velvet-eel',
     maskArtLabel: 'velvet eel',
@@ -113,15 +116,16 @@ const personas = [
     chips: ['clean route', 'dry hand'],
     profileRecipe: {
       blend: [
-        { sampleId: 'volunteer-cleanup-professional-message', weight: 0.55 },
-        { sampleId: 'building-access-formal-record', weight: 0.45 }
+        { sampleId: 'building-access-formal-record', weight: 0.4 },
+        { sampleId: 'volunteer-cleanup-professional-message', weight: 0.35 },
+        { sampleId: 'committee-budget-formal-record', weight: 0.25 }
       ],
       overlayMod: {
-        sent: -4,
+        sent: 1,
         cont: -2,
         punc: -2
       },
-      strength: 0.87
+      strength: 0.92
     },
     maskVisualClass: 'quiet-hound',
     maskArtLabel: 'quiet hound',
@@ -147,15 +151,16 @@ const personas = [
     chips: ['measured caveat', 'clean proof'],
     profileRecipe: {
       blend: [
-        { sampleId: 'committee-budget-formal-record', weight: 0.55 },
-        { sampleId: 'archive-grant-formal-record', weight: 0.45 }
+        { sampleId: 'committee-budget-formal-record', weight: 0.4 },
+        { sampleId: 'archive-grant-formal-record', weight: 0.35 },
+        { sampleId: 'performance-review-formal-record', weight: 0.25 }
       ],
       overlayMod: {
-        sent: 4,
+        sent: 5,
         cont: -3,
         punc: -1
       },
-      strength: 0.9
+      strength: 0.94
     },
     maskVisualClass: 'schema-moth',
     maskArtLabel: 'schema moth',
@@ -181,15 +186,16 @@ const personas = [
     chips: ['hard edge', 'pressure syntax'],
     profileRecipe: {
       blend: [
-        { sampleId: 'performance-review-formal-record', weight: 0.55 },
-        { sampleId: 'customer-support-professional-message', weight: 0.45 }
+        { sampleId: 'performance-review-rushed-mobile', weight: 0.4 },
+        { sampleId: 'customer-support-professional-message', weight: 0.35 },
+        { sampleId: 'tenant-leak-rushed-mobile', weight: 0.25 }
       ],
       overlayMod: {
-        sent: -5,
+        sent: -6,
         cont: -3,
-        punc: 5
+        punc: 6
       },
-      strength: 0.91
+      strength: 0.95
     },
     maskVisualClass: 'gavel-viper',
     maskArtLabel: 'gavel viper',
@@ -215,16 +221,17 @@ const personas = [
     chips: ['held pulse', 'soft shelter'],
     profileRecipe: {
       blend: [
-        { sampleId: 'school-coordination-professional-message', weight: 0.45 },
-        { sampleId: 'clinic-scheduling-professional-message', weight: 0.35 },
-        { sampleId: 'package-handoff-professional-message', weight: 0.2 }
+        { sampleId: 'school-coordination-professional-message', weight: 0.35 },
+        { sampleId: 'clinic-scheduling-professional-message', weight: 0.3 },
+        { sampleId: 'package-handoff-tangled-followup', weight: 0.2 },
+        { sampleId: 'tenant-leak-professional-message', weight: 0.15 }
       ],
       overlayMod: {
-        sent: 4,
+        sent: 5,
         cont: -1,
-        punc: -2
+        punc: -3
       },
-      strength: 0.9
+      strength: 0.93
     },
     maskVisualClass: 'velvet-stag',
     maskArtLabel: 'velvet stag',

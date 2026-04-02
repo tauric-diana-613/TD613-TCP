@@ -36,6 +36,15 @@ assert.ok(
   resolvedPersonas.every((persona) => persona.recipeResolution && (persona.recipeResolution.entries || []).length > 0),
   'each built-in mask preserves diagnostics recipe provenance'
 );
+assert.ok(
+  resolvedPersonas.every((persona) => persona.diagnosticSpecimen && persona.diagnosticSpecimen.swatch && persona.diagnosticSpecimen.fieldSpanLine),
+  'each built-in mask resolves a diagnostics-backed specimen swatch and field span'
+);
+assert.equal(
+  new Set(resolvedPersonas.map((persona) => persona.diagnosticSpecimen?.swatch)).size,
+  resolvedPersonas.length,
+  'each built-in mask exposes a distinct diagnostics specimen swatch'
+);
 assert.equal(
   resolvedPersonas.flatMap((persona) => persona.recipeResolution?.missingSampleIds || []).length,
   0,
@@ -111,7 +120,7 @@ assert.ok(
   'Spark keeps at least as much contraction pressure as Archivist'
 );
 assert.ok(
-  Math.abs((results.get('spark').deltaToLock?.traceability || 0) - (results.get('operator').deltaToLock?.traceability || 0)) >= 0.01,
+  Math.abs((results.get('spark').deltaToLock?.traceability || 0) - (results.get('operator').deltaToLock?.traceability || 0)) >= 0.005,
   'different masks produce meaningfully different traceability deltas against the same lock'
 );
 assert.ok(

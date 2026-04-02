@@ -568,6 +568,7 @@
   }
 
   function buildPersonaProvenanceLines(persona = {}) {
+    const diagnosticSpecimen = persona.diagnosticSpecimen || null;
     const resolution = persona.recipeResolution || null;
     if (resolution && ((resolution.entries || []).length || (resolution.missingSampleIds || []).length)) {
       const sampleLine = (resolution.entries || []).length
@@ -580,6 +581,8 @@
         sampleLine,
         `Resolved strength // ${Math.round((resolution.strength || persona.strength || 0) * 100)}%`,
         `Overlay mod // ${overlayModLabel(resolution.overlayMod || persona.mod)}`,
+        diagnosticSpecimen?.fieldSpanLine || null,
+        diagnosticSpecimen?.contributorLine || null,
         missingLine
       ].filter(Boolean);
     }
@@ -3465,6 +3468,13 @@
 
     const persona = state.selectedMask;
     const swatch = state.selectedMaskSwatch || '';
+    const diagnosticSpecimen = persona.diagnosticSpecimen || null;
+    const specimenSwatch = swatch || diagnosticSpecimen?.swatch || '';
+    const specimenLabel = swatch
+      ? 'writing swatch'
+      : diagnosticSpecimen?.swatch
+        ? 'diagnostic field swatch'
+        : 'voice promise';
     const effectSummary = state.selectedMaskEffect || null;
     const effectLine = effectSummary
       ? [effectSummary.sentenceShift, effectSummary.registerShift]
@@ -3504,8 +3514,15 @@
             </article>
           </div>
           <div class="trainer-surface persona-preview-swatch">
-            <div class="persona-kicker">${escapeHtml(swatch ? 'writing swatch' : 'voice promise')}</div>
-            <p class="persona-empty">${escapeHtml(swatch || voicePromise || 'Paste comparison text in Homebase to see how this mask begins a passage.')}</p>
+            <div class="persona-kicker">${escapeHtml(specimenLabel)}</div>
+            <p class="persona-empty">${escapeHtml(specimenSwatch || voicePromise || 'Paste comparison text in Homebase to see how this mask begins a passage.')}</p>
+          </div>
+          <div class="trainer-surface persona-preview-swatch">
+            <div class="persona-kicker">Diagnostics field span</div>
+            <div class="persona-provenance-copy">
+              <p class="persona-empty">${escapeHtml(diagnosticSpecimen?.fieldSpanLine || 'Diagnostics field span is unresolved for this mask.')}</p>
+              <p class="persona-empty">${escapeHtml(diagnosticSpecimen?.contributorLine || 'No dominant diagnostics specimen registered yet.')}</p>
+            </div>
           </div>
           <div class="trainer-surface persona-preview-swatch">
             <div class="persona-kicker">Resolved mask fingerprint</div>
@@ -3555,6 +3572,7 @@
           const source = personaSourceLabel(persona);
           const family = personaFamilyLabel(persona);
           const tagline = personaTagline(persona);
+          const diagnosticSpecimen = persona.diagnosticSpecimen || null;
           const effectLine = [
             ...persona.chips.slice(0, 1),
             ...personaShelfChipLabels(persona.profile)
@@ -3573,6 +3591,8 @@
               <div class="persona-card-copy">
                 <div class="persona-family-line">${escapeHtml(family)}</div>
                 <p class="persona-tagline">${escapeHtml(tagline)}</p>
+                <div class="persona-diagnostic-line">${escapeHtml(diagnosticSpecimen?.fieldSpanShort || 'Diagnostics specimen unresolved')}</div>
+                ${diagnosticSpecimen?.swatch ? `<p class="persona-diagnostic-swatch">${escapeHtml(diagnosticSpecimen.swatch)}</p>` : ''}
               </div>
               <div class="chips">${effectLine}</div>
             </div>
