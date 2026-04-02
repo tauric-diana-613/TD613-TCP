@@ -48,11 +48,11 @@
       .map((sample) => Object.freeze({ ...sample }))
   );
   const STARTER_DUEL_SAMPLE_IDS = Object.freeze({
-    A: 'volunteer-cleanup-professional-message',
-    B: 'volunteer-cleanup-rushed-mobile'
+    A: 'performance-review-professional-message',
+    B: 'performance-review-rushed-mobile'
   });
   const DECK_RANDOMIZER_TOP_COUNT = 6;
-  const DECK_RANDOMIZER_FIELD_POOL_COUNT = 12;
+  const DECK_RANDOMIZER_FIELD_POOL_COUNT = 18;
   const DIAGNOSTIC_BATTERY = Object.freeze({
     swapPairs: Object.freeze(diagnosticBattery.swapPairs || []),
     maskCases: Object.freeze(diagnosticBattery.maskCases || []),
@@ -100,8 +100,8 @@
     return url.href;
   })();
   const TEST_FLIGHT_SAMPLE_IDS = Object.freeze({
-    A: 'overwork-debrief-professional-message',
-    B: 'volunteer-cleanup-rushed-mobile'
+    A: 'performance-review-professional-message',
+    B: 'performance-review-rushed-mobile'
   });
   const PRIVATE_EORFD_REPRESENTATIVE_ANCHORS = Object.freeze([
     'building-access-rushed-mobile',
