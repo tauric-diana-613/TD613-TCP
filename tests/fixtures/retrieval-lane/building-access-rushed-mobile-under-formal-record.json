@@ -243,6 +243,10 @@
       "contraction": 0,
       "connector": 5,
       "lineBreak": 6,
+      "abbreviation": 1,
+      "orthography": 10,
+      "fragment": 2,
+      "conversational": 1,
       "additive": 1,
       "contrastive": 2,
       "causal": 0,
@@ -281,7 +285,7 @@
         "directnessDelta": 0,
         "abstractionDelta": -0.22799999999999998,
         "latinateDelta": 0.049,
-        "registerMode": "operational"
+        "registerMode": "compressed"
       },
       "operationBudget": {
         "splitSentence": 0,
@@ -294,7 +298,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 276.824,
+        "score": 370.068,
         "passesApplied": [
           "merge-pairs",
           "clause-texture"
@@ -305,7 +309,10 @@
           "sentence-count",
           "sentence-spread",
           "connector-stance",
+          "lexical-register",
           "directness",
+          "abbreviation-posture",
+          "fragment-posture",
           "punctuation-shape"
         ],
         "qualityGatePassed": true,
@@ -314,7 +321,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 276.824,
+          "score": 370.068,
           "passesApplied": [
             "merge-pairs",
             "clause-texture"
@@ -325,7 +332,10 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "lexical-register",
             "directness",
+            "abbreviation-posture",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -333,7 +343,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 190.226,
+          "score": 346.1,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -350,6 +360,9 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "lexical-register",
+            "abbreviation-posture",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -357,7 +370,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 190.226,
+          "score": 346.1,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -374,6 +387,9 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "lexical-register",
+            "abbreviation-posture",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -381,7 +397,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 190.418,
+          "score": 346.292,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -398,6 +414,9 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "lexical-register",
+            "abbreviation-posture",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -405,15 +424,14 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 188.918,
+          "score": 343.292,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
+            "connector-stance-lexicon"
           ],
           "rescuePasses": [],
           "changedDimensions": [
@@ -421,6 +439,9 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "lexical-register",
+            "abbreviation-posture",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -429,40 +450,72 @@
       ]
     },
     "finalRealization": {
-      "text": "west annex d3 still fake open. reader goes green + buzzes but door wont release. first hit was like 8:19 maybe 8:20. courier for suite 118 is here w fridge meds and he cant just wait in sun. weird part: my renewed badge fails, old temp badge worked once. not power i dont think. can someone pls check controller before they keep telling me to jiggle latch again",
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
+      "text": "west annex d3 still fake open, but reader goes green, buzzes but doorway wont release; first hit was like 8:19 maybe 8:20; courier for suite 118 is here w fridge meds and he cant just wait in sun. weird part: my renewed badge fails, old temp badge worked once; and not power i dont think. can someone please review controller before they keep telling me to jiggle latch again",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "abbreviation-posture",
+        "fragment-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "door",
+          "from": "door",
+          "to": "doorway",
+          "kind": "lexeme"
+        },
+        {
+          "family": "check",
+          "from": "check",
+          "to": "review",
+          "kind": "lexeme"
+        }
+      ],
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 1.936,
-        "outputDonorDistance": 1.649,
-        "donorImprovement": 0.287,
-        "donorImprovementRatio": 0.148,
+        "sourceDonorDistance": 4.785,
+        "outputDonorDistance": 3.205,
+        "donorImprovement": 1.58,
+        "donorImprovementRatio": 0.33,
         "sourceOutputLexicalOverlap": 0.914
       },
-      "rescuePasses": [
-        "partial-rescue",
-        "semantic-final-rejection"
-      ],
-      "visibleShift": false,
-      "nonTrivialShift": false
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.969,
+      "objectCoverage": 0.938,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s1c0",
           "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -471,10 +524,46 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.04
+          "globalBagScore": 0.3
         },
         {
-          "sourceClauseId": "s1c0",
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s0c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.167,
+          "globalBagScore": 0.045
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s3c1",
+          "matchedClauseId": "s0c2",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.1
+        },
+        {
+          "sourceClauseId": "s4c0",
           "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -483,83 +572,35 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.24
+          "globalBagScore": 0.05
         },
         {
-          "sourceClauseId": "s2c0",
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.05
+        },
+        {
+          "sourceClauseId": "s6c0",
           "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.167,
-          "globalBagScore": 0.037
-        },
-        {
-          "sourceClauseId": "s3c0",
-          "matchedClauseId": "s3c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.16
-        },
-        {
-          "sourceClauseId": "s3c1",
-          "matchedClauseId": "s3c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.08
-        },
-        {
-          "sourceClauseId": "s4c0",
-          "matchedClauseId": "s4c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.04
-        },
-        {
-          "sourceClauseId": "s5c0",
-          "matchedClauseId": "s5c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.04
-        },
-        {
-          "sourceClauseId": "s6c0",
-          "matchedClauseId": "s6c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.24
+          "globalBagScore": 0.3
         }
       ],
       "sourceClauseCount": 8,
-      "outputClauseCount": 8
+      "outputClauseCount": 6
     },
     "protectedAnchorAudit": {
       "totalAnchors": 4,
@@ -569,8 +610,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 7,
-        "clauseCount": 8,
+        "sentenceCount": 3,
+        "clauseCount": 6,
         "literalSpans": [
           {
             "value": "8:19",
@@ -593,58 +634,28 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "west annex d3 still fake open",
+          "raw": "west annex d3 still fake open, but reader goes green, buzzes but doorway wont release; first hit was like 8:19 maybe 8:20; courier for suite 118 is here w fridge meds and he cant just wait in sun",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "west annex d3 still fake open",
+              "text": "west annex d3 still fake open, but reader goes green, buzzes but doorway wont release",
               "relationToPrev": "start",
               "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "west",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "reader goes green + buzzes but door wont release",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "reader goes green + buzzes but door wont release",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "goes",
               "actor": "",
               "action": "goes",
-              "object": "green buzzes door wont release",
+              "object": "green buzzes doorway wont release",
               "modifiers": [],
               "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "first hit was like 8:19 maybe 8:20",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
+            },
             {
-              "id": "s2c0",
+              "id": "s0c1",
               "text": "first hit was like 8:19 maybe 8:20",
-              "relationToPrev": "start",
+              "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
@@ -656,32 +667,10 @@
               "hedgeMarkers": [
                 "uncertainty"
               ]
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "courier for suite 118 is here w fridge meds and he cant just wait in sun",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "courier for suite 118 is here w fridge meds",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "is",
-              "actor": "",
-              "action": "is",
-              "object": "here w fridge meds",
-              "modifiers": [],
-              "hedgeMarkers": []
             },
             {
-              "id": "s3c1",
-              "text": "he cant just wait in sun",
+              "id": "s0c2",
+              "text": "courier for suite 118 is here w fridge meds and he cant just wait in sun",
               "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "positive",
@@ -698,13 +687,13 @@
           ]
         },
         {
-          "id": "s4",
-          "raw": "weird part: my renewed badge fails, old temp badge worked once",
-          "rhetoricalRole": "temporal",
+          "id": "s1",
+          "raw": "weird part: my renewed badge fails, old temp badge worked once; and not power i dont think",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s4c0",
+              "id": "s1c0",
               "text": "weird part: my renewed badge fails, old temp badge worked once",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -716,19 +705,11 @@
               "object": "",
               "modifiers": [],
               "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s5",
-          "raw": "not power i dont think",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
+            },
             {
-              "id": "s5c0",
-              "text": "not power i dont think",
-              "relationToPrev": "start",
+              "id": "s1c1",
+              "text": "and not power i dont think",
+              "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "present",
@@ -742,21 +723,21 @@
           ]
         },
         {
-          "id": "s6",
-          "raw": "can someone pls check controller before they keep telling me to jiggle latch again",
+          "id": "s2",
+          "raw": "can someone please review controller before they keep telling me to jiggle latch again",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s6c0",
-              "text": "can someone pls check controller before they keep telling me to jiggle latch again",
+              "id": "s2c0",
+              "text": "can someone please review controller before they keep telling me to jiggle latch again",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "check",
+              "propositionHead": "review",
               "actor": "they",
-              "action": "check",
+              "action": "review",
               "object": "controller before keep telling me",
               "modifiers": [],
               "hedgeMarkers": []
@@ -766,39 +747,72 @@
       ]
     },
     "realizationSummary": {
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "abbreviation-posture",
+        "fragment-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "door",
+          "from": "door",
+          "to": "doorway",
+          "kind": "lexeme"
+        },
+        {
+          "family": "check",
+          "from": "check",
+          "to": "review",
+          "kind": "lexeme"
+        }
+      ],
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 1.936,
-        "outputDonorDistance": 1.649,
-        "donorImprovement": 0.287,
-        "donorImprovementRatio": 0.148,
+        "sourceDonorDistance": 4.785,
+        "outputDonorDistance": 3.205,
+        "donorImprovement": 1.58,
+        "donorImprovementRatio": 0.33,
         "sourceOutputLexicalOverlap": 0.914
       },
       "realizationNotes": [
         "2 lexical family swaps landed.",
-        "Register shift surfaced through directness.",
+        "Register shift surfaced through lexical-register, directness, abbreviation-posture, fragment-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
-      "rescuePasses": [
-        "partial-rescue",
-        "semantic-final-rejection"
-      ],
-      "visibleShift": false,
-      "nonTrivialShift": false
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
     }
   },
   "semanticContract": {
-    "transferClass": "rejected",
-    "realizationTier": "none",
-    "changedDimensions": [],
-    "lexemeSwapFamilies": [],
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "abbreviation-posture",
+      "connector-stance",
+      "directness",
+      "fragment-posture",
+      "lexical-register",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [
+      "check",
+      "door"
+    ],
     "relationInventory": [
       "additive:1",
       "causal:0",
@@ -817,7 +831,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.969,
+    "objectCoverage": 0.938,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

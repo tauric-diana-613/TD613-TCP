@@ -228,6 +228,19 @@ const truthGuardRushedTransfer = buildCadenceTransfer(
   },
   { retrieval: true }
 );
+const compressedSurfaceSource = 'If you are late, that is okay. Please do not start independent work before you check in at the west fence table first. Glass and pallets need a first pass. Saws stay under canopy B, and paint only if the wind settles. Please bring water.';
+const compressedSurfaceTransfer = buildCadenceTransfer(
+  compressedSurfaceSource,
+  {
+    mode: 'borrowed',
+    profile: extractCadenceProfile(truthGuardRushed),
+    strength: 0.82,
+    source: 'swapped'
+  },
+  { retrieval: true }
+);
+const truthGuardFormalProfile = extractCadenceProfile(truthGuardFormal);
+const truthGuardRushedProfile = extractCadenceProfile(truthGuardRushed);
 
 assert.notEqual(swapped.avgSentenceLength, baseProfile.avgSentenceLength);
 assert.notEqual(swapped.contractionDensity, baseProfile.contractionDensity);
@@ -309,14 +322,28 @@ assert(lowOpportunityTransfer.opportunityProfile.sentenceSplit === 0);
 assert(lowOpportunityTransfer.opportunityProfile.sentenceMerge === 0);
 assert(['weak', 'rejected'].includes(lowOpportunityTransfer.transferClass));
 assert.notEqual(lowOpportunityTransfer.transferClass, 'structural');
-assert.equal(truthGuardFormalTransfer.borrowedShellOutcome, 'rejected');
-assert.equal(truthGuardFormalTransfer.transferClass, 'rejected');
-assert.equal(truthGuardFormalTransfer.text, truthGuardFormal);
-assert((truthGuardFormalTransfer.donorProgress?.donorImprovement || 0) < 0.2);
-assert.equal(truthGuardRushedTransfer.borrowedShellOutcome, 'rejected');
-assert.equal(truthGuardRushedTransfer.transferClass, 'rejected');
-assert.equal(truthGuardRushedTransfer.text, truthGuardRushed);
-assert((truthGuardRushedTransfer.donorProgress?.donorImprovement || 0) < 0.12);
+assert(truthGuardRushedProfile.abbreviationDensity > truthGuardFormalProfile.abbreviationDensity);
+assert(truthGuardRushedProfile.orthographicLooseness > truthGuardFormalProfile.orthographicLooseness);
+assert(truthGuardRushedProfile.fragmentPressure > truthGuardFormalProfile.fragmentPressure);
+assert(truthGuardRushedProfile.conversationalPosture > truthGuardFormalProfile.conversationalPosture);
+assert.equal(compressedSurfaceTransfer.borrowedShellOutcome, 'structural');
+assert.equal(compressedSurfaceTransfer.transferClass, 'structural');
+assert.notEqual(compressedSurfaceTransfer.text, compressedSurfaceSource);
+assert(compressedSurfaceTransfer.changedDimensions.includes('abbreviation-posture'));
+assert(compressedSurfaceTransfer.changedDimensions.includes('orthography-posture'));
+assert(/pls|thats|dont|if youre/i.test(compressedSurfaceTransfer.text.toLowerCase()));
+assert.equal(truthGuardFormalTransfer.borrowedShellOutcome, 'structural');
+assert.equal(truthGuardFormalTransfer.transferClass, 'structural');
+assert.notEqual(truthGuardFormalTransfer.text, truthGuardFormal);
+assert(!truthGuardFormalTransfer.text.includes('$1'));
+assert(!truthGuardFormalTransfer.text.includes('signals off'));
+assert(truthGuardFormalTransfer.changedDimensions.includes('abbreviation-posture'));
+assert((truthGuardFormalTransfer.donorProgress?.donorImprovement || 0) > 0.5);
+assert.equal(truthGuardRushedTransfer.borrowedShellOutcome, 'structural');
+assert.equal(truthGuardRushedTransfer.transferClass, 'structural');
+assert.notEqual(truthGuardRushedTransfer.text, truthGuardRushed);
+assert(truthGuardRushedTransfer.changedDimensions.includes('abbreviation-posture'));
+assert((truthGuardRushedTransfer.donorProgress?.donorImprovement || 0) > 0.5);
 
 const signature = buildCadenceSignature(
   "I kept talking because the first version sounded too neat. Then I stopped, crossed it out, and started over."

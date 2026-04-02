@@ -236,6 +236,10 @@
       "contraction": 3,
       "connector": 9,
       "lineBreak": 5,
+      "abbreviation": 0,
+      "orthography": 0,
+      "fragment": 1,
+      "conversational": 0,
       "additive": 3,
       "contrastive": 7,
       "causal": 1,
@@ -245,11 +249,10 @@
     },
     "planSummary": {
       "transferMode": "compress",
-      "structuralOperationsSelected": [],
-      "lexicalRegisterOperationsSelected": [
-        "contraction",
-        "phrase-texture"
+      "structuralOperationsSelected": [
+        "clause-texture"
       ],
+      "lexicalRegisterOperationsSelected": [],
       "connectorStrategy": "contrastive",
       "contractionStrategy": "hold",
       "relationInventory": {
@@ -287,18 +290,22 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 273.026,
+        "score": 331.32,
         "passesApplied": [
-          "contraction",
-          "phrase-texture"
+          "baseline-floor",
+          "clause-texture"
         ],
         "rescuePasses": [],
         "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
           "contraction-posture",
           "connector-stance",
           "lexical-register",
           "directness",
-          "abstraction-posture"
+          "fragment-posture",
+          "punctuation-shape"
         ],
         "qualityGatePassed": true,
         "notes": []
@@ -306,25 +313,29 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 273.026,
+          "score": 331.32,
           "passesApplied": [
-            "contraction",
-            "phrase-texture"
+            "baseline-floor",
+            "clause-texture"
           ],
           "rescuePasses": [],
           "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
             "contraction-posture",
             "connector-stance",
             "lexical-register",
             "directness",
-            "abstraction-posture"
+            "fragment-posture",
+            "punctuation-shape"
           ],
           "qualityGatePassed": true,
           "notes": []
         },
         {
           "spec": "mixed-structural",
-          "score": 240.082,
+          "score": 266.724,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -333,6 +344,7 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
+            "contraction-auxiliary",
             "cleanup-restore"
           ],
           "rescuePasses": [],
@@ -341,6 +353,7 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -348,7 +361,7 @@
         },
         {
           "spec": "split-heavy",
-          "score": 241.214,
+          "score": 240.976,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -357,6 +370,7 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
+            "contraction-auxiliary",
             "cleanup-restore"
           ],
           "rescuePasses": [],
@@ -372,7 +386,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 240.082,
+          "score": 266.724,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -381,6 +395,7 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
+            "contraction-auxiliary",
             "cleanup-restore"
           ],
           "rescuePasses": [],
@@ -389,6 +404,7 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -396,7 +412,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 240.082,
+          "score": 266.724,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-stance",
@@ -405,6 +421,7 @@
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
+            "contraction-auxiliary",
             "cleanup-restore"
           ],
           "rescuePasses": [],
@@ -413,6 +430,7 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -431,11 +449,11 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 0.965,
-        "outputDonorDistance": 2.145,
+        "sourceDonorDistance": 1.302,
+        "outputDonorDistance": 1.774,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 0.81
+        "sourceOutputLexicalOverlap": 0.828
       },
       "rescuePasses": [
         "partial-rescue",
@@ -760,15 +778,15 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 0.965,
-        "outputDonorDistance": 2.145,
+        "sourceDonorDistance": 1.302,
+        "outputDonorDistance": 1.774,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 0.81
+        "sourceOutputLexicalOverlap": 0.828
       },
       "realizationNotes": [
-        "5 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, directness, abstraction-posture.",
+        "4 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, directness, fragment-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
@@ -792,11 +810,10 @@
       "resumptive:5",
       "temporal:1"
     ],
-    "structuralOperations": [],
-    "lexicalOperations": [
-      "contraction",
-      "phrase-texture"
+    "structuralOperations": [
+      "clause-texture"
     ],
+    "lexicalOperations": [],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,

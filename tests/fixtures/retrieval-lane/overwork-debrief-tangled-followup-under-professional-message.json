@@ -242,6 +242,10 @@
       "contraction": 6,
       "connector": 8,
       "lineBreak": 5,
+      "abbreviation": 0,
+      "orthography": 0,
+      "fragment": 0,
+      "conversational": 0,
       "additive": 3,
       "contrastive": 1,
       "causal": 4,
@@ -290,7 +294,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "borrowed-shell-overlay",
-        "score": 318.282,
+        "score": 317.848,
         "passesApplied": [
           "overlay-conservative"
         ],
@@ -311,7 +315,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 336.218,
+          "score": 329.696,
           "passesApplied": [
             "baseline-floor",
             "clause-texture"
@@ -324,8 +328,8 @@
             "contraction-posture",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "directness",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -333,7 +337,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 219.018,
+          "score": 218.092,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -341,7 +345,6 @@
             "baseline-function-word",
             "planned-sentence-split",
             "sentence-structure",
-            "clause-join-split",
             "connector-stance-lexicon",
             "contraction-auxiliary",
             "punctuation-finish",
@@ -360,7 +363,7 @@
         },
         {
           "spec": "split-heavy",
-          "score": 218.752,
+          "score": 234.8,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -368,7 +371,6 @@
             "baseline-function-word",
             "planned-sentence-split",
             "sentence-structure",
-            "clause-join-split",
             "connector-stance-lexicon",
             "contraction-auxiliary",
             "punctuation-finish",
@@ -387,7 +389,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 219.018,
+          "score": 218.092,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -395,7 +397,6 @@
             "baseline-function-word",
             "planned-sentence-split",
             "sentence-structure",
-            "clause-join-split",
             "connector-stance-lexicon",
             "contraction-auxiliary",
             "punctuation-finish",
@@ -414,7 +415,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 264.014,
+          "score": 260.492,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -422,7 +423,6 @@
             "baseline-function-word",
             "planned-sentence-split",
             "sentence-structure",
-            "clause-join-split",
             "connector-stance-lexicon",
             "contraction-auxiliary",
             "cleanup-restore",
@@ -453,11 +453,11 @@
       "semanticRisk": 0,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 1.05,
-        "outputDonorDistance": 0.953,
-        "donorImprovement": 0.097,
-        "donorImprovementRatio": 0.092,
-        "sourceOutputLexicalOverlap": 0.887
+        "sourceDonorDistance": 0.991,
+        "outputDonorDistance": 1.074,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 0.84
       },
       "rescuePasses": [
         "overlay-conservative",
@@ -801,11 +801,11 @@
       "semanticRisk": 0,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 1.05,
-        "outputDonorDistance": 0.953,
-        "donorImprovement": 0.097,
-        "donorImprovementRatio": 0.092,
-        "sourceOutputLexicalOverlap": 0.887
+        "sourceDonorDistance": 0.991,
+        "outputDonorDistance": 1.074,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 0.84
       },
       "realizationNotes": [
         "3 lexical family swaps landed.",

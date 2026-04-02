@@ -324,6 +324,10 @@
       "contraction": 2,
       "connector": 9,
       "lineBreak": 7,
+      "abbreviation": 0,
+      "orthography": 0,
+      "fragment": 1,
+      "conversational": 0,
       "additive": 2,
       "contrastive": 3,
       "causal": 3,
@@ -361,7 +365,7 @@
         "directnessDelta": 0,
         "abstractionDelta": 0,
         "latinateDelta": -0.015,
-        "registerMode": "reflective"
+        "registerMode": "compressed"
       },
       "operationBudget": {
         "splitSentence": 24,
@@ -374,98 +378,162 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": -41.968,
+        "score": 472.754,
         "passesApplied": [
           "baseline-floor",
           "clause-texture"
         ],
         "rescuePasses": [],
         "changedDimensions": [
-          "connector-stance"
+          "sentence-mean",
+          "sentence-count",
+          "connector-stance",
+          "lexical-register",
+          "content-word-complexity",
+          "directness",
+          "abstraction-posture",
+          "abbreviation-posture",
+          "orthography-posture",
+          "fragment-posture",
+          "surface-marker-posture",
+          "punctuation-shape"
         ],
-        "qualityGatePassed": false,
-        "notes": [
-          "Transfer stayed too close to punctuation-only drift."
-        ]
+        "qualityGatePassed": true,
+        "notes": []
       },
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": -41.968,
+          "score": 472.754,
           "passesApplied": [
             "baseline-floor",
             "clause-texture"
           ],
           "rescuePasses": [],
           "changedDimensions": [
-            "connector-stance"
+            "sentence-mean",
+            "sentence-count",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "directness",
+            "abstraction-posture",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "surface-marker-posture",
+            "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer stayed too close to punctuation-only drift."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "mixed-structural",
-          "score": -34.094,
+          "score": 459.928,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
             "baseline-function-word",
-            "planned-sentence-split",
             "connector-stance-lexicon",
             "punctuation-finish",
             "cleanup-restore"
           ],
           "rescuePasses": [],
           "changedDimensions": [
-            "connector-stance"
+            "sentence-mean",
+            "sentence-count",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abstraction-posture",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "surface-marker-posture",
+            "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer stayed too close to punctuation-only drift."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "split-heavy",
-          "score": -34.094,
+          "score": 459.928,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
             "baseline-function-word",
-            "planned-sentence-split",
             "connector-stance-lexicon",
             "punctuation-finish",
             "cleanup-restore"
           ],
           "rescuePasses": [],
           "changedDimensions": [
-            "connector-stance"
+            "sentence-mean",
+            "sentence-count",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abstraction-posture",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "surface-marker-posture",
+            "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer stayed too close to punctuation-only drift."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "connector-stance-heavy",
-          "score": -35.594,
+          "score": 456.928,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
             "baseline-function-word",
-            "planned-sentence-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
+            "connector-stance-lexicon"
           ],
           "rescuePasses": [],
           "changedDimensions": [
-            "connector-stance"
+            "sentence-mean",
+            "sentence-count",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abstraction-posture",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "surface-marker-posture",
+            "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Transfer stayed too close to punctuation-only drift."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 456.928,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "baseline-function-word",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abstraction-posture",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "surface-marker-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
         }
       ]
     },
@@ -480,15 +548,14 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 1.899,
-        "outputDonorDistance": 1.88,
-        "donorImprovement": 0.019,
-        "donorImprovementRatio": 0.01,
-        "sourceOutputLexicalOverlap": 0.981
+        "sourceDonorDistance": 4.63,
+        "outputDonorDistance": 4.63,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 1
       },
       "rescuePasses": [
-        "partial-rescue",
-        "semantic-final-rejection"
+        "final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false
@@ -957,19 +1024,17 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 1.899,
-        "outputDonorDistance": 1.88,
-        "donorImprovement": 0.019,
-        "donorImprovementRatio": 0.01,
-        "sourceOutputLexicalOverlap": 0.981
+        "sourceDonorDistance": 4.63,
+        "outputDonorDistance": 4.63,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
+        "sourceOutputLexicalOverlap": 1
       },
       "realizationNotes": [
-        "1 lexical family swap landed.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "partial-rescue",
-        "semantic-final-rejection"
+        "final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false

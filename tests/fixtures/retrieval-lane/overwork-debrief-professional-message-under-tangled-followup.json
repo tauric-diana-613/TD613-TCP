@@ -262,6 +262,10 @@
       "contraction": 3,
       "connector": 9,
       "lineBreak": 5,
+      "abbreviation": 0,
+      "orthography": 0,
+      "fragment": 0,
+      "conversational": 0,
       "additive": 1,
       "contrastive": 2,
       "causal": 6,
@@ -310,7 +314,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "borrowed-shell-overlay",
-        "score": 243.068,
+        "score": 124.688,
         "passesApplied": [
           "overlay-conservative"
         ],
@@ -318,18 +322,23 @@
           "overlay-conservative"
         ],
         "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
           "connector-stance",
-          "lexical-register",
           "directness",
-          "abstraction-posture"
+          "abstraction-posture",
+          "punctuation-shape"
         ],
-        "qualityGatePassed": true,
-        "notes": []
+        "qualityGatePassed": false,
+        "notes": [
+          "Structural opportunity existed but the current candidate collapsed into additive drift."
+        ]
       },
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 187.072,
+          "score": 157.596,
           "passesApplied": [
             "contraction",
             "phrase-texture"
@@ -341,7 +350,6 @@
             "sentence-spread",
             "contraction-posture",
             "connector-stance",
-            "lexical-register",
             "directness",
             "abstraction-posture",
             "punctuation-shape"
@@ -353,68 +361,76 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 208.844,
+          "score": 189.798,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-function-word",
-            "connector-stance-lexicon"
+            "sentence-structure",
+            "connector-stance-lexicon",
+            "cleanup-restore"
           ],
           "rescuePasses": [],
           "changedDimensions": [
             "connector-stance",
-            "lexical-register",
-            "directness"
+            "directness",
+            "punctuation-shape"
           ],
           "qualityGatePassed": true,
           "notes": []
         },
         {
           "spec": "merge-heavy",
-          "score": 208.844,
+          "score": 189.798,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-function-word",
-            "connector-stance-lexicon"
+            "sentence-structure",
+            "connector-stance-lexicon",
+            "cleanup-restore"
           ],
           "rescuePasses": [],
           "changedDimensions": [
             "connector-stance",
-            "lexical-register",
-            "directness"
+            "directness",
+            "punctuation-shape"
           ],
           "qualityGatePassed": true,
           "notes": []
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 208.844,
+          "score": 189.798,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-function-word",
-            "connector-stance-lexicon"
+            "sentence-structure",
+            "connector-stance-lexicon",
+            "cleanup-restore"
           ],
           "rescuePasses": [],
           "changedDimensions": [
             "connector-stance",
-            "lexical-register",
-            "directness"
+            "directness",
+            "punctuation-shape"
           ],
           "qualityGatePassed": true,
           "notes": []
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 208.844,
+          "score": 189.798,
           "passesApplied": [
             "baseline-voice-realization",
             "baseline-function-word",
-            "connector-stance-lexicon"
+            "sentence-structure",
+            "connector-stance-lexicon",
+            "cleanup-restore"
           ],
           "rescuePasses": [],
           "changedDimensions": [
             "connector-stance",
-            "lexical-register",
-            "directness"
+            "directness",
+            "punctuation-shape"
           ],
           "qualityGatePassed": true,
           "notes": []
@@ -432,15 +448,15 @@
       "semanticRisk": 0,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 0.972,
-        "outputDonorDistance": 0.935,
-        "donorImprovement": 0.037,
-        "donorImprovementRatio": 0.038,
+        "sourceDonorDistance": 0.95,
+        "outputDonorDistance": 1.134,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
         "sourceOutputLexicalOverlap": 0.943
       },
       "rescuePasses": [
         "overlay-conservative",
-        "partial-rescue",
+        "progress-admit",
         "semantic-final-rejection"
       ],
       "visibleShift": false,
@@ -824,19 +840,19 @@
       "semanticRisk": 0,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 0.972,
-        "outputDonorDistance": 0.935,
-        "donorImprovement": 0.037,
-        "donorImprovementRatio": 0.038,
+        "sourceDonorDistance": 0.95,
+        "outputDonorDistance": 1.134,
+        "donorImprovement": 0,
+        "donorImprovementRatio": 0,
         "sourceOutputLexicalOverlap": 0.943
       },
       "realizationNotes": [
         "2 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, directness, abstraction-posture."
+        "Register shift surfaced through directness, abstraction-posture."
       ],
       "rescuePasses": [
         "overlay-conservative",
-        "partial-rescue",
+        "progress-admit",
         "semantic-final-rejection"
       ],
       "visibleShift": false,

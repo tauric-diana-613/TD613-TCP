@@ -314,6 +314,10 @@
       "contraction": 2,
       "connector": 11,
       "lineBreak": 6,
+      "abbreviation": 0,
+      "orthography": 0,
+      "fragment": 0,
+      "conversational": 0,
       "additive": 1,
       "contrastive": 1,
       "causal": 5,
@@ -323,15 +327,10 @@
     },
     "planSummary": {
       "transferMode": "expand",
-      "structuralOperationsSelected": [
-        "baseline-merge",
-        "sentence-structure",
-        "clause-join-split",
-        "structural-rescue"
-      ],
+      "structuralOperationsSelected": [],
       "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "connector-stance-lexicon"
+        "contraction",
+        "phrase-texture"
       ],
       "connectorStrategy": "causal",
       "contractionStrategy": "hold",
@@ -369,36 +368,29 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "mixed-structural",
-        "score": -10.918,
+        "spec": "ir-beam-search",
+        "score": 302.644,
         "passesApplied": [
-          "baseline-merge",
-          "baseline-voice-realization",
-          "sentence-structure",
-          "clause-join-split",
-          "connector-stance-lexicon",
-          "cleanup-restore",
-          "structural-rescue"
+          "contraction",
+          "phrase-texture"
         ],
-        "rescuePasses": [
-          "structural-rescue"
-        ],
+        "rescuePasses": [],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
+          "contraction-posture",
           "connector-stance",
+          "abstraction-posture",
           "punctuation-shape"
         ],
-        "qualityGatePassed": false,
-        "notes": [
-          "Structural opportunity existed but the current candidate collapsed into additive drift."
-        ]
+        "qualityGatePassed": true,
+        "notes": []
       },
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 337.36,
+          "score": 302.644,
           "passesApplied": [
             "contraction",
             "phrase-texture"
@@ -410,7 +402,6 @@
             "sentence-spread",
             "contraction-posture",
             "connector-stance",
-            "lexical-register",
             "abstraction-posture",
             "punctuation-shape"
           ],
@@ -419,7 +410,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": -10.918,
+          "score": 247.976,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -427,26 +418,25 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "structural-rescue"
+            "connector-stance-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue"
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
+            "contraction-posture",
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Structural opportunity existed but the current candidate collapsed into additive drift."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "merge-heavy",
-          "score": -10.918,
+          "score": 247.976,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -454,26 +444,25 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "structural-rescue"
+            "connector-stance-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue"
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
+            "contraction-posture",
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Structural opportunity existed but the current candidate collapsed into additive drift."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "connector-stance-heavy",
-          "score": -10.918,
+          "score": 247.976,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -481,26 +470,25 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "structural-rescue"
+            "connector-stance-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue"
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
+            "contraction-posture",
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Structural opportunity existed but the current candidate collapsed into additive drift."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         },
         {
           "spec": "lexical-register-heavy",
-          "score": -10.918,
+          "score": 247.976,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -508,22 +496,21 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "structural-rescue"
+            "connector-stance-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue"
+            "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
+            "contraction-posture",
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Structural opportunity existed but the current candidate collapsed into additive drift."
-          ]
+          "qualityGatePassed": true,
+          "notes": []
         }
       ]
     },
@@ -538,16 +525,14 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 0.965,
-        "outputDonorDistance": 2.045,
+        "sourceDonorDistance": 1.302,
+        "outputDonorDistance": 1.302,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 0.951
+        "sourceOutputLexicalOverlap": 1
       },
       "rescuePasses": [
-        "structural-rescue",
-        "progress-admit",
-        "semantic-final-rejection"
+        "final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false
@@ -1006,19 +991,17 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 0.965,
-        "outputDonorDistance": 2.045,
+        "sourceDonorDistance": 1.302,
+        "outputDonorDistance": 1.302,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 0.951
+        "sourceOutputLexicalOverlap": 1
       },
       "realizationNotes": [
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "structural-rescue",
-        "progress-admit",
-        "semantic-final-rejection"
+        "final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false
@@ -1037,15 +1020,10 @@
       "resumptive:1",
       "temporal:4"
     ],
-    "structuralOperations": [
-      "baseline-merge",
-      "clause-join-split",
-      "sentence-structure",
-      "structural-rescue"
-    ],
+    "structuralOperations": [],
     "lexicalOperations": [
-      "baseline-voice-realization",
-      "connector-stance-lexicon"
+      "contraction",
+      "phrase-texture"
     ],
     "connectorStrategy": "causal",
     "contractionStrategy": "hold",

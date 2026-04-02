@@ -309,6 +309,10 @@
       "contraction": 2,
       "connector": 10,
       "lineBreak": 6,
+      "abbreviation": 0,
+      "orthography": 0,
+      "fragment": 1,
+      "conversational": 0,
       "additive": 2,
       "contrastive": 2,
       "causal": 3,
@@ -318,10 +322,19 @@
     },
     "planSummary": {
       "transferMode": "compress",
-      "structuralOperationsSelected": [],
+      "structuralOperationsSelected": [
+        "baseline-split",
+        "planned-sentence-split",
+        "structural-rescue"
+      ],
       "lexicalRegisterOperationsSelected": [
-        "contraction",
-        "phrase-texture"
+        "baseline-phrase",
+        "baseline-voice-realization",
+        "baseline-discourse",
+        "connector-stance-lexicon",
+        "contraction-auxiliary",
+        "lexical-register-rescue",
+        "connector-stance-rescue"
       ],
       "connectorStrategy": "temporal",
       "contractionStrategy": "decrease",
@@ -359,13 +372,26 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "ir-beam-search",
-        "score": 334.704,
+        "spec": "mixed-structural",
+        "score": 344.038,
         "passesApplied": [
-          "contraction",
-          "phrase-texture"
+          "baseline-split",
+          "baseline-phrase",
+          "baseline-voice-realization",
+          "baseline-discourse",
+          "planned-sentence-split",
+          "connector-stance-lexicon",
+          "contraction-auxiliary",
+          "cleanup-restore",
+          "structural-rescue",
+          "lexical-register-rescue",
+          "connector-stance-rescue"
         ],
-        "rescuePasses": [],
+        "rescuePasses": [
+          "structural-rescue",
+          "lexical-register-rescue",
+          "connector-stance-rescue"
+        ],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
@@ -374,8 +400,7 @@
           "connector-stance",
           "lexical-register",
           "directness",
-          "abstraction-posture",
-          "punctuation-shape"
+          "abstraction-posture"
         ],
         "qualityGatePassed": true,
         "notes": []
@@ -383,9 +408,9 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 334.704,
+          "score": 307.124,
           "passesApplied": [
-            "contraction",
+            "split-rules",
             "phrase-texture"
           ],
           "rescuePasses": [],
@@ -398,14 +423,17 @@
             "lexical-register",
             "directness",
             "abstraction-posture",
+            "fragment-posture",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Orphan fragment detected: \"So yes.\""
+          ]
         },
         {
           "spec": "mixed-structural",
-          "score": 311.368,
+          "score": 344.038,
           "passesApplied": [
             "baseline-split",
             "baseline-phrase",
@@ -416,16 +444,19 @@
             "contraction-auxiliary",
             "cleanup-restore",
             "structural-rescue",
+            "lexical-register-rescue",
             "connector-stance-rescue"
           ],
           "rescuePasses": [
             "structural-rescue",
+            "lexical-register-rescue",
             "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "directness",
@@ -436,7 +467,7 @@
         },
         {
           "spec": "split-heavy",
-          "score": 311.368,
+          "score": 344.038,
           "passesApplied": [
             "baseline-split",
             "baseline-phrase",
@@ -447,16 +478,19 @@
             "contraction-auxiliary",
             "cleanup-restore",
             "structural-rescue",
+            "lexical-register-rescue",
             "connector-stance-rescue"
           ],
           "rescuePasses": [
             "structural-rescue",
+            "lexical-register-rescue",
             "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "directness",
@@ -467,7 +501,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 311.368,
+          "score": 344.038,
           "passesApplied": [
             "baseline-split",
             "baseline-phrase",
@@ -478,47 +512,19 @@
             "contraction-auxiliary",
             "cleanup-restore",
             "structural-rescue",
+            "lexical-register-rescue",
             "connector-stance-rescue"
           ],
           "rescuePasses": [
             "structural-rescue",
+            "lexical-register-rescue",
             "connector-stance-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "directness",
-            "abstraction-posture"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 311.368,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-phrase",
-            "baseline-voice-realization",
-            "baseline-discourse",
-            "planned-sentence-split",
-            "connector-stance-lexicon",
-            "contraction-auxiliary",
-            "cleanup-restore",
-            "structural-rescue",
-            "connector-stance-rescue"
-          ],
-          "rescuePasses": [
-            "structural-rescue",
-            "connector-stance-rescue"
-          ],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "directness",
@@ -540,13 +546,16 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 1.141,
-        "outputDonorDistance": 1.141,
+        "sourceDonorDistance": 1.293,
+        "outputDonorDistance": 1.293,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
         "sourceOutputLexicalOverlap": 1
       },
       "rescuePasses": [
+        "structural-rescue",
+        "lexical-register-rescue",
+        "connector-stance-rescue",
         "final-rejection"
       ],
       "visibleShift": false,
@@ -989,8 +998,8 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 1.141,
-        "outputDonorDistance": 1.141,
+        "sourceDonorDistance": 1.293,
+        "outputDonorDistance": 1.293,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
         "sourceOutputLexicalOverlap": 1
@@ -999,6 +1008,9 @@
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
+        "structural-rescue",
+        "lexical-register-rescue",
+        "connector-stance-rescue",
         "final-rejection"
       ],
       "visibleShift": false,
@@ -1018,10 +1030,19 @@
       "resumptive:1",
       "temporal:6"
     ],
-    "structuralOperations": [],
+    "structuralOperations": [
+      "baseline-split",
+      "planned-sentence-split",
+      "structural-rescue"
+    ],
     "lexicalOperations": [
-      "contraction",
-      "phrase-texture"
+      "baseline-discourse",
+      "baseline-phrase",
+      "baseline-voice-realization",
+      "connector-stance-lexicon",
+      "connector-stance-rescue",
+      "contraction-auxiliary",
+      "lexical-register-rescue"
     ],
     "connectorStrategy": "temporal",
     "contractionStrategy": "decrease",

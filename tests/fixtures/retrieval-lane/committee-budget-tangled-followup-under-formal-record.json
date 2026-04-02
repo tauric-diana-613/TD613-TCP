@@ -272,6 +272,10 @@
       "contraction": 4,
       "connector": 7,
       "lineBreak": 6,
+      "abbreviation": 0,
+      "orthography": 0,
+      "fragment": 0,
+      "conversational": 1,
       "additive": 3,
       "contrastive": 2,
       "causal": 1,
@@ -281,10 +285,11 @@
     },
     "planSummary": {
       "transferMode": "rebalance",
-      "structuralOperationsSelected": [
-        "clause-texture"
+      "structuralOperationsSelected": [],
+      "lexicalRegisterOperationsSelected": [
+        "contraction",
+        "phrase-texture"
       ],
-      "lexicalRegisterOperationsSelected": [],
       "connectorStrategy": "additive",
       "contractionStrategy": "hold",
       "relationInventory": {
@@ -322,16 +327,17 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 222.052,
+        "score": 233.622,
         "passesApplied": [
-          "baseline-floor",
-          "clause-texture"
+          "contraction",
+          "phrase-texture"
         ],
         "rescuePasses": [],
         "changedDimensions": [
+          "sentence-mean",
           "contraction-posture",
           "connector-stance",
-          "abstraction-posture"
+          "fragment-posture"
         ],
         "qualityGatePassed": true,
         "notes": []
@@ -339,23 +345,24 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 222.052,
+          "score": 233.622,
           "passesApplied": [
-            "baseline-floor",
-            "clause-texture"
+            "contraction",
+            "phrase-texture"
           ],
           "rescuePasses": [],
           "changedDimensions": [
+            "sentence-mean",
             "contraction-posture",
             "connector-stance",
-            "abstraction-posture"
+            "fragment-posture"
           ],
           "qualityGatePassed": true,
           "notes": []
         },
         {
           "spec": "mixed-structural",
-          "score": 199.974,
+          "score": 198.194,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -376,7 +383,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 199.974,
+          "score": 198.194,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -397,7 +404,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 198.072,
+          "score": 196.292,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
@@ -427,14 +434,15 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 0.793,
-        "outputDonorDistance": 0.793,
+        "sourceDonorDistance": 0.912,
+        "outputDonorDistance": 1.806,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 1
+        "sourceOutputLexicalOverlap": 0.841
       },
       "rescuePasses": [
-        "final-rejection"
+        "partial-rescue",
+        "semantic-final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false
@@ -815,17 +823,20 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 0.793,
-        "outputDonorDistance": 0.793,
+        "sourceDonorDistance": 0.912,
+        "outputDonorDistance": 1.806,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 1
+        "sourceOutputLexicalOverlap": 0.841
       },
       "realizationNotes": [
+        "4 lexical family swaps landed.",
+        "Register shift surfaced through fragment-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "final-rejection"
+        "partial-rescue",
+        "semantic-final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false
@@ -844,10 +855,11 @@
       "resumptive:1",
       "temporal:1"
     ],
-    "structuralOperations": [
-      "clause-texture"
+    "structuralOperations": [],
+    "lexicalOperations": [
+      "contraction",
+      "phrase-texture"
     ],
-    "lexicalOperations": [],
     "connectorStrategy": "additive",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,

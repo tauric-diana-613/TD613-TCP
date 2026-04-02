@@ -169,6 +169,10 @@
       "contraction": 0,
       "connector": 2,
       "lineBreak": 4,
+      "abbreviation": 0,
+      "orthography": 6,
+      "fragment": 1,
+      "conversational": 0,
       "additive": 1,
       "contrastive": 1,
       "causal": 0,
@@ -213,7 +217,7 @@
         "directnessDelta": 0.061,
         "abstractionDelta": 0,
         "latinateDelta": 0.0020000000000000018,
-        "registerMode": "operational"
+        "registerMode": "compressed"
       },
       "operationBudget": {
         "splitSentence": 0,
@@ -226,7 +230,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 262.568,
+        "score": 272.204,
         "passesApplied": [
           "baseline-merge",
           "baseline-voice-realization",
@@ -242,6 +246,7 @@
           "sentence-count",
           "sentence-spread",
           "connector-stance",
+          "fragment-posture",
           "punctuation-shape"
         ],
         "qualityGatePassed": true,
@@ -250,7 +255,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 256.7,
+          "score": 266.224,
           "passesApplied": [
             "merge-pairs",
             "clause-texture",
@@ -262,6 +267,7 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -269,7 +275,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 262.568,
+          "score": 272.204,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -285,6 +291,7 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -292,7 +299,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 262.568,
+          "score": 272.204,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -308,6 +315,7 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -315,7 +323,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 262.568,
+          "score": 272.204,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -331,6 +339,7 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -338,7 +347,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 260.906,
+          "score": 270.542,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -353,6 +362,7 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -361,7 +371,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Hi office - aunt maribel has to do pickup today not grandma; and she'll have ID; and I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help. Sorry for late shift",
+      "text": "hi office - aunt maribel has to do pickup today not grandma; and she'll have ID; and I swear i signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help. sorry for late shift",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -371,6 +381,7 @@
         "sentence-count",
         "sentence-spread",
         "connector-stance",
+        "fragment-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
@@ -384,10 +395,10 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 2.349,
-        "outputDonorDistance": 1.244,
-        "donorImprovement": 1.105,
-        "donorImprovementRatio": 0.47,
+        "sourceDonorDistance": 3.93,
+        "outputDonorDistance": 3.44,
+        "donorImprovement": 0.49,
+        "donorImprovementRatio": 0.125,
         "sourceOutputLexicalOverlap": 0.851
       },
       "rescuePasses": [],
@@ -487,13 +498,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Hi office - aunt maribel has to do pickup today not grandma; yet and shell have id; though also I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help",
+          "raw": "hi office - aunt maribel has to do pickup today not grandma; yet and shell have id; though also i swear i signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Hi office - aunt maribel has to do pickup today not grandma",
+              "text": "hi office - aunt maribel has to do pickup today not grandma",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -521,13 +532,13 @@
             },
             {
               "id": "s0c2",
-              "text": "though also I swear I signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help",
+              "text": "though also i swear i signed the museum slip, it might still be in backpack w the waiver papers, but if class can check before 3 that would help",
               "relationToPrev": "contrastive",
               "clauseType": "subordinate",
               "polarity": "positive",
               "tenseAspect": "future-modal",
               "propositionHead": "check",
-              "actor": "I",
+              "actor": "i",
               "action": "check",
               "object": "before 3 help",
               "modifiers": [],
@@ -537,13 +548,13 @@
         },
         {
           "id": "s1",
-          "raw": "Sorry for late shift",
+          "raw": "sorry for late shift",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "Sorry for late shift",
+              "text": "sorry for late shift",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -569,6 +580,7 @@
         "sentence-count",
         "sentence-spread",
         "connector-stance",
+        "fragment-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
@@ -582,14 +594,15 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 2.349,
-        "outputDonorDistance": 1.244,
-        "donorImprovement": 1.105,
-        "donorImprovementRatio": 0.47,
+        "sourceDonorDistance": 3.93,
+        "outputDonorDistance": 3.44,
+        "donorImprovement": 0.49,
+        "donorImprovementRatio": 0.125,
         "sourceOutputLexicalOverlap": 0.851
       },
       "realizationNotes": [
         "1 lexical family swap landed.",
+        "Register shift surfaced through fragment-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [],
@@ -602,6 +615,7 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "connector-stance",
+      "fragment-posture",
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",

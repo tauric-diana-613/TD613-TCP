@@ -195,6 +195,10 @@
       "contraction": 0,
       "connector": 2,
       "lineBreak": 5,
+      "abbreviation": 1,
+      "orthography": 7,
+      "fragment": 2,
+      "conversational": 0,
       "additive": 0,
       "contrastive": 2,
       "causal": 0,
@@ -213,6 +217,7 @@
       ],
       "lexicalRegisterOperationsSelected": [
         "baseline-voice-realization",
+        "connector-stance-lexicon",
         "connector-stance-rescue"
       ],
       "connectorStrategy": "contrastive",
@@ -252,13 +257,14 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 201.068,
+        "score": 315.376,
         "passesApplied": [
           "baseline-merge",
           "baseline-voice-realization",
           "planned-sentence-merge",
           "sentence-structure",
           "clause-join-split",
+          "connector-stance-lexicon",
           "cleanup-restore",
           "structural-rescue",
           "connector-stance-rescue"
@@ -275,6 +281,10 @@
           "lexical-register",
           "modifier-density",
           "directness",
+          "abbreviation-posture",
+          "orthography-posture",
+          "fragment-posture",
+          "conversation-posture",
           "punctuation-shape"
         ],
         "qualityGatePassed": false,
@@ -285,7 +295,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 193.31,
+          "score": 251.774,
           "passesApplied": [
             "merge-pairs",
             "clause-texture"
@@ -299,6 +309,8 @@
             "lexical-register",
             "modifier-density",
             "directness",
+            "abbreviation-posture",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
@@ -308,13 +320,14 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 201.068,
+          "score": 315.376,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
+            "connector-stance-lexicon",
             "cleanup-restore",
             "structural-rescue",
             "connector-stance-rescue"
@@ -331,6 +344,10 @@
             "lexical-register",
             "modifier-density",
             "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
@@ -340,13 +357,14 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 201.068,
+          "score": 315.376,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
+            "connector-stance-lexicon",
             "cleanup-restore",
             "structural-rescue",
             "connector-stance-rescue"
@@ -363,6 +381,10 @@
             "lexical-register",
             "modifier-density",
             "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
@@ -372,13 +394,14 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 201.068,
+          "score": 315.376,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
+            "connector-stance-lexicon",
             "cleanup-restore",
             "structural-rescue",
             "connector-stance-rescue"
@@ -395,6 +418,10 @@
             "lexical-register",
             "modifier-density",
             "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
@@ -404,13 +431,14 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 201.068,
+          "score": 315.376,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
+            "connector-stance-lexicon",
             "cleanup-restore",
             "structural-rescue",
             "connector-stance-rescue"
@@ -427,6 +455,10 @@
             "lexical-register",
             "modifier-density",
             "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
@@ -437,7 +469,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Acct still locked, but can receive the code but login dies at fraud review every time - case CS-88412. And support keeps saying reset again even tho reset isnt the problem. Last 4, recovery email align. And need someone to clear hold not forward same script.",
+      "text": "account still locked, but can receive the code but login dies at fraud review every time - case CS-88412. And support keeps saying reset again even tho reset isnt the problem. last 4, recovery email align. and need someone to clear hold not forward same script.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -450,6 +482,10 @@
         "lexical-register",
         "modifier-density",
         "directness",
+        "abbreviation-posture",
+        "orthography-posture",
+        "fragment-posture",
+        "conversation-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
@@ -475,11 +511,11 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 2.116,
-        "outputDonorDistance": 1.805,
-        "donorImprovement": 0.311,
-        "donorImprovementRatio": 0.147,
-        "sourceOutputLexicalOverlap": 0.844
+        "sourceDonorDistance": 4.769,
+        "outputDonorDistance": 3.723,
+        "donorImprovement": 1.046,
+        "donorImprovementRatio": 0.219,
+        "sourceOutputLexicalOverlap": 0.804
       },
       "rescuePasses": [
         "structural-rescue",
@@ -598,13 +634,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Acct still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
+          "raw": "account still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Acct still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
+              "text": "account still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -644,13 +680,13 @@
         },
         {
           "id": "s2",
-          "raw": "Last 4, recovery email align",
+          "raw": "last 4, recovery email align",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "Last 4, recovery email align",
+              "text": "last 4, recovery email align",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -666,13 +702,13 @@
         },
         {
           "id": "s3",
-          "raw": "And need someone to clear hold not forward same script.",
+          "raw": "and need someone to clear hold not forward same script.",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "And need someone to clear hold not forward same script",
+              "text": "and need someone to clear hold not forward same script",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -701,6 +737,10 @@
         "lexical-register",
         "modifier-density",
         "directness",
+        "abbreviation-posture",
+        "orthography-posture",
+        "fragment-posture",
+        "conversation-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
@@ -726,15 +766,15 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 2.116,
-        "outputDonorDistance": 1.805,
-        "donorImprovement": 0.311,
-        "donorImprovementRatio": 0.147,
-        "sourceOutputLexicalOverlap": 0.844
+        "sourceDonorDistance": 4.769,
+        "outputDonorDistance": 3.723,
+        "donorImprovement": 1.046,
+        "donorImprovementRatio": 0.219,
+        "sourceOutputLexicalOverlap": 0.804
       },
       "realizationNotes": [
         "3 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, modifier-density, directness.",
+        "Register shift surfaced through lexical-register, modifier-density, directness, abbreviation-posture, orthography-posture, fragment-posture, conversation-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
@@ -750,10 +790,14 @@
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
+      "abbreviation-posture",
       "connector-stance",
+      "conversation-posture",
       "directness",
+      "fragment-posture",
       "lexical-register",
       "modifier-density",
+      "orthography-posture",
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",
@@ -781,6 +825,7 @@
     ],
     "lexicalOperations": [
       "baseline-voice-realization",
+      "connector-stance-lexicon",
       "connector-stance-rescue"
     ],
     "connectorStrategy": "contrastive",

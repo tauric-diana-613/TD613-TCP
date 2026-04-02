@@ -221,17 +221,18 @@ const personas = [
     chips: ['held pulse', 'soft shelter'],
     profileRecipe: {
       blend: [
-        { sampleId: 'school-coordination-professional-message', weight: 0.35 },
-        { sampleId: 'clinic-scheduling-professional-message', weight: 0.3 },
-        { sampleId: 'building-access-professional-message', weight: 0.2 },
-        { sampleId: 'customer-support-professional-message', weight: 0.15 }
+        { sampleId: 'school-coordination-professional-message', weight: 0.22 },
+        { sampleId: 'clinic-scheduling-professional-message', weight: 0.2 },
+        { sampleId: 'building-access-professional-message', weight: 0.15 },
+        { sampleId: 'school-coordination-rushed-mobile', weight: 0.2 },
+        { sampleId: 'customer-support-rushed-mobile', weight: 0.23 }
       ],
       overlayMod: {
-        sent: 4,
-        cont: -1,
-        punc: -4
+        sent: 5,
+        cont: 2,
+        punc: -5
       },
-      strength: 0.93
+      strength: 0.94
     },
     maskVisualClass: 'velvet-stag',
     maskArtLabel: 'velvet stag',

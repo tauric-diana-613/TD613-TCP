@@ -365,6 +365,10 @@
       "contraction": 2,
       "connector": 6,
       "lineBreak": 10,
+      "abbreviation": 0,
+      "orthography": 0,
+      "fragment": 1,
+      "conversational": 0,
       "additive": 3,
       "contrastive": 3,
       "causal": 1,
@@ -417,7 +421,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 366.748,
+        "score": 390.134,
         "passesApplied": [
           "baseline-floor",
           "clause-texture",
@@ -432,6 +436,7 @@
           "connector-stance",
           "lexical-register",
           "directness",
+          "fragment-posture",
           "punctuation-shape"
         ],
         "qualityGatePassed": true,
@@ -440,7 +445,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 366.748,
+          "score": 390.134,
           "passesApplied": [
             "baseline-floor",
             "clause-texture",
@@ -455,6 +460,7 @@
             "connector-stance",
             "lexical-register",
             "directness",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -462,7 +468,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 299.558,
+          "score": 301.318,
           "passesApplied": [
             "baseline-merge",
             "baseline-contraction",
@@ -488,7 +494,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 299.558,
+          "score": 301.318,
           "passesApplied": [
             "baseline-merge",
             "baseline-contraction",
@@ -514,7 +520,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 299.558,
+          "score": 301.318,
           "passesApplied": [
             "baseline-merge",
             "baseline-contraction",
@@ -540,7 +546,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 299.558,
+          "score": 301.318,
           "passesApplied": [
             "baseline-merge",
             "baseline-contraction",
@@ -577,8 +583,8 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 1.149,
-        "outputDonorDistance": 1.149,
+        "sourceDonorDistance": 1.298,
+        "outputDonorDistance": 1.298,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
         "sourceOutputLexicalOverlap": 1
@@ -1094,8 +1100,8 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 1.149,
-        "outputDonorDistance": 1.149,
+        "sourceDonorDistance": 1.298,
+        "outputDonorDistance": 1.298,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
         "sourceOutputLexicalOverlap": 1
