@@ -297,32 +297,28 @@
     "profileRecipe": {
       "blend": [
         {
-          "sampleId": "school-coordination-professional-message",
-          "weight": 0.22
+          "sampleId": "school-coordination-formal-record",
+          "weight": 0.3
         },
         {
           "sampleId": "clinic-scheduling-professional-message",
           "weight": 0.2
         },
         {
-          "sampleId": "building-access-professional-message",
-          "weight": 0.15
+          "sampleId": "archive-grant-formal-record",
+          "weight": 0.25
         },
         {
-          "sampleId": "school-coordination-rushed-mobile",
-          "weight": 0.2
-        },
-        {
-          "sampleId": "customer-support-rushed-mobile",
-          "weight": 0.23
+          "sampleId": "performance-review-professional-message",
+          "weight": 0.25
         }
       ],
       "overlayMod": {
-        "sent": 5,
-        "cont": 2,
-        "punc": -5
+        "sent": 7,
+        "cont": 1,
+        "punc": -6
       },
-      "strength": 0.94
+      "strength": 0.96
     },
     "maskVisualClass": "velvet-stag",
     "maskArtLabel": "velvet stag",

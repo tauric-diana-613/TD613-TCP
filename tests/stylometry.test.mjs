@@ -241,6 +241,28 @@ const compressedSurfaceTransfer = buildCadenceTransfer(
 );
 const truthGuardFormalProfile = extractCadenceProfile(truthGuardFormal);
 const truthGuardRushedProfile = extractCadenceProfile(truthGuardRushed);
+const performanceReviewFormal = `Ahead of the formal review, I want to name the pattern as clearly as I can. You are consistently strong in onboarding and peer support. New staff trust your explanations, and multiple people pointed to your calm escalation style when procedures changed quickly this year. The harder part is documentation timing. We had reporting slips in three different months, and in each case the direct service was done but the written record lagged until the details were harder to rebuild. I am not treating that as a paperwork footnote. It affects handoff quality and makes later review more difficult than it needs to be. My goal for the review is to protect the mentoring strengths while making the documentation correction concrete rather than vague.`;
+const performanceReviewRushed = `review gist: great w onboarding / ppl trust them / calm under change. real issue is docs lag. 3 diff months same thing - service got done, writeup came late, handoff got muddy. dont write it like "minor admin gap." not punitive either. needs concrete correction plan`;
+const performanceReviewFormalTransfer = buildCadenceTransfer(
+  performanceReviewFormal,
+  {
+    mode: 'borrowed',
+    profile: extractCadenceProfile(performanceReviewRushed),
+    strength: 0.82,
+    source: 'swapped'
+  },
+  { retrieval: true }
+);
+const performanceReviewRushedTransfer = buildCadenceTransfer(
+  performanceReviewRushed,
+  {
+    mode: 'borrowed',
+    profile: extractCadenceProfile(performanceReviewFormal),
+    strength: 0.82,
+    source: 'swapped'
+  },
+  { retrieval: true }
+);
 
 assert.notEqual(swapped.avgSentenceLength, baseProfile.avgSentenceLength);
 assert.notEqual(swapped.contractionDensity, baseProfile.contractionDensity);
@@ -344,6 +366,13 @@ assert.equal(truthGuardRushedTransfer.transferClass, 'structural');
 assert.notEqual(truthGuardRushedTransfer.text, truthGuardRushed);
 assert(truthGuardRushedTransfer.changedDimensions.includes('abbreviation-posture'));
 assert((truthGuardRushedTransfer.donorProgress?.donorImprovement || 0) > 0.5);
+assert.notEqual(performanceReviewFormalTransfer.text, performanceReviewFormal);
+assert.notEqual(performanceReviewRushedTransfer.text, performanceReviewRushed);
+assert(!['native', 'rejected'].includes(performanceReviewFormalTransfer.transferClass));
+assert(!['native', 'rejected'].includes(performanceReviewRushedTransfer.transferClass));
+assert(/review gist|docs lag|3 diff months|writeup/i.test(performanceReviewFormalTransfer.text.toLowerCase()));
+assert(/documentation|written record|concrete correction plan|formal review/i.test(performanceReviewRushedTransfer.text.toLowerCase()));
+assert(!/real provide is|service received done|handoff received muddy|calm under alter/i.test(performanceReviewRushedTransfer.text.toLowerCase()));
 
 const signature = buildCadenceSignature(
   "I kept talking because the first version sounded too neat. Then I stopped, crossed it out, and started over."

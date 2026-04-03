@@ -338,13 +338,10 @@
     "planSummary": {
       "transferMode": "compress",
       "structuralOperationsSelected": [
-        "baseline-split"
+        "split-rules"
       ],
       "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "baseline-function-word",
-        "connector-stance-lexicon",
-        "punctuation-finish"
+        "phrase-texture"
       ],
       "connectorStrategy": "contrastive",
       "contractionStrategy": "hold",
@@ -382,15 +379,11 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "mixed-structural",
-        "score": 477.632,
+        "spec": "ir-beam-search",
+        "score": 452.382,
         "passesApplied": [
-          "baseline-split",
-          "baseline-voice-realization",
-          "baseline-function-word",
-          "connector-stance-lexicon",
-          "punctuation-finish",
-          "cleanup-restore"
+          "split-rules",
+          "phrase-texture"
         ],
         "rescuePasses": [],
         "changedDimensions": [
@@ -438,7 +431,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 477.632,
+          "score": 444.202,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -453,7 +446,6 @@
             "sentence-count",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "directness",
             "abstraction-posture",
             "abbreviation-posture",
@@ -467,7 +459,7 @@
         },
         {
           "spec": "split-heavy",
-          "score": 477.632,
+          "score": 444.202,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -482,7 +474,6 @@
             "sentence-count",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "directness",
             "abstraction-posture",
             "abbreviation-posture",
@@ -496,7 +487,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 474.632,
+          "score": 441.202,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -509,7 +500,6 @@
             "sentence-count",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "directness",
             "abstraction-posture",
             "abbreviation-posture",
@@ -523,7 +513,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 474.632,
+          "score": 441.202,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -536,7 +526,6 @@
             "sentence-count",
             "connector-stance",
             "lexical-register",
-            "content-word-complexity",
             "directness",
             "abstraction-posture",
             "abbreviation-posture",
@@ -1067,13 +1056,10 @@
       "temporal:2"
     ],
     "structuralOperations": [
-      "baseline-split"
+      "split-rules"
     ],
     "lexicalOperations": [
-      "baseline-function-word",
-      "baseline-voice-realization",
-      "connector-stance-lexicon",
-      "punctuation-finish"
+      "phrase-texture"
     ],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "hold",

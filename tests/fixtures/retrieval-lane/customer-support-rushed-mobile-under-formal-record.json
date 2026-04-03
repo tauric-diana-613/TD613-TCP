@@ -257,7 +257,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 375.378,
+        "score": 364.618,
         "passesApplied": [
           "baseline-merge",
           "baseline-voice-realization",
@@ -279,8 +279,8 @@
           "sentence-spread",
           "connector-stance",
           "lexical-register",
-          "modifier-density",
           "directness",
+          "abstraction-posture",
           "abbreviation-posture",
           "orthography-posture",
           "fragment-posture",
@@ -323,7 +323,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 375.378,
+          "score": 364.618,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -345,8 +345,8 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "modifier-density",
             "directness",
+            "abstraction-posture",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
@@ -361,7 +361,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 375.378,
+          "score": 364.618,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -383,8 +383,8 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "modifier-density",
             "directness",
+            "abstraction-posture",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
@@ -399,7 +399,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 375.378,
+          "score": 364.618,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -421,8 +421,8 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "modifier-density",
             "directness",
+            "abstraction-posture",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
@@ -437,7 +437,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 375.378,
+          "score": 364.618,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -459,8 +459,8 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "modifier-density",
             "directness",
+            "abstraction-posture",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
@@ -476,7 +476,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Account still locked, but can receive the code but login dies at fraud review every time - case CS-88412. And support keeps saying reset again even tho reset isnt the problem. Last 4, recovery email align. And need someone to clear hold not forward same script.",
+      "text": "Account still locked, but can get the code but login dies at fraud review every time - case CS-88412. And support keeps saying reset again even tho reset isnt the problem. Last 4, recovery email align. And need someone to clear hold not forward same script.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -487,8 +487,8 @@
         "sentence-spread",
         "connector-stance",
         "lexical-register",
-        "modifier-density",
         "directness",
+        "abstraction-posture",
         "abbreviation-posture",
         "orthography-posture",
         "fragment-posture",
@@ -497,12 +497,6 @@
         "punctuation-shape"
       ],
       "lexemeSwaps": [
-        {
-          "family": "get",
-          "from": "get",
-          "to": "receive",
-          "kind": "lexeme"
-        },
         {
           "family": "send",
           "from": "send",
@@ -520,10 +514,10 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.769,
-        "outputDonorDistance": 2.899,
-        "donorImprovement": 1.87,
-        "donorImprovementRatio": 0.392,
-        "sourceOutputLexicalOverlap": 0.804
+        "outputDonorDistance": 2.941,
+        "donorImprovement": 1.828,
+        "donorImprovementRatio": 0.383,
+        "sourceOutputLexicalOverlap": 0.844
       },
       "rescuePasses": [
         "structural-rescue",
@@ -537,7 +531,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.958,
+      "objectCoverage": 1,
       "polarityMismatches": 0,
       "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
@@ -560,11 +554,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 1,
-          "bagScore": 0.167,
-          "globalBagScore": 0.08
+          "bagScore": 1,
+          "globalBagScore": 0.316
         },
         {
           "sourceClauseId": "s2c0",
@@ -576,7 +570,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
-          "globalBagScore": 0.048
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s3c0",
@@ -588,7 +582,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.333
+          "globalBagScore": 0.368
         },
         {
           "sourceClauseId": "s4c0",
@@ -600,7 +594,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.048
+          "globalBagScore": 0.053
         },
         {
           "sourceClauseId": "s5c0",
@@ -612,7 +606,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.286
+          "globalBagScore": 0.316
         }
       ],
       "sourceClauseCount": 6,
@@ -642,24 +636,22 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Account still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
+          "raw": "Account still locked, but can get the code but login dies at fraud review every time - case CS-88412",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Account still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
+              "text": "Account still locked, but can get the code but login dies at fraud review every time - case CS-88412",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "review",
+              "propositionHead": "get",
               "actor": "the code",
-              "action": "review",
-              "object": "every time case cs 88412",
-              "modifiers": [
-                "receive"
-              ],
+              "action": "get",
+              "object": "code login dies at fraud",
+              "modifiers": [],
               "hedgeMarkers": []
             }
           ]
@@ -743,8 +735,8 @@
         "sentence-spread",
         "connector-stance",
         "lexical-register",
-        "modifier-density",
         "directness",
+        "abstraction-posture",
         "abbreviation-posture",
         "orthography-posture",
         "fragment-posture",
@@ -753,12 +745,6 @@
         "punctuation-shape"
       ],
       "lexemeSwaps": [
-        {
-          "family": "get",
-          "from": "get",
-          "to": "receive",
-          "kind": "lexeme"
-        },
         {
           "family": "send",
           "from": "send",
@@ -776,14 +762,14 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.769,
-        "outputDonorDistance": 2.899,
-        "donorImprovement": 1.87,
-        "donorImprovementRatio": 0.392,
-        "sourceOutputLexicalOverlap": 0.804
+        "outputDonorDistance": 2.941,
+        "donorImprovement": 1.828,
+        "donorImprovementRatio": 0.383,
+        "sourceOutputLexicalOverlap": 0.844
       },
       "realizationNotes": [
-        "3 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, modifier-density, directness, abbreviation-posture, orthography-posture, fragment-posture, conversation-posture, surface-marker-posture.",
+        "2 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, directness, abstraction-posture, abbreviation-posture, orthography-posture, fragment-posture, conversation-posture, surface-marker-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
@@ -800,12 +786,12 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
+      "abstraction-posture",
       "connector-stance",
       "conversation-posture",
       "directness",
       "fragment-posture",
       "lexical-register",
-      "modifier-density",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
@@ -814,7 +800,6 @@
       "surface-marker-posture"
     ],
     "lexemeSwapFamilies": [
-      "get",
       "match",
       "send"
     ],
@@ -843,7 +828,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.958,
+    "objectCoverage": 1,
     "polarityMismatches": 0,
     "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1

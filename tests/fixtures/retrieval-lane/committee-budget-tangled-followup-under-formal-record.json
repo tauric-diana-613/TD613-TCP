@@ -286,9 +286,16 @@
     "planSummary": {
       "transferMode": "rebalance",
       "structuralOperationsSelected": [
-        "clause-texture"
+        "structural-rescue"
       ],
-      "lexicalRegisterOperationsSelected": [],
+      "lexicalRegisterOperationsSelected": [
+        "baseline-phrase",
+        "baseline-voice-realization",
+        "baseline-stance",
+        "baseline-function-word",
+        "contraction-auxiliary",
+        "punctuation-finish"
+      ],
       "connectorStrategy": "additive",
       "contractionStrategy": "hold",
       "relationInventory": {
@@ -325,20 +332,28 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "ir-beam-search",
-        "score": 220.272,
+        "spec": "mixed-structural",
+        "score": -0.546,
         "passesApplied": [
-          "baseline-floor",
-          "clause-texture"
+          "baseline-phrase",
+          "baseline-voice-realization",
+          "baseline-stance",
+          "baseline-function-word",
+          "contraction-auxiliary",
+          "punctuation-finish",
+          "structural-rescue"
         ],
-        "rescuePasses": [],
+        "rescuePasses": [
+          "structural-rescue"
+        ],
         "changedDimensions": [
-          "contraction-posture",
           "connector-stance",
-          "abstraction-posture"
+          "punctuation-shape"
         ],
-        "qualityGatePassed": true,
-        "notes": []
+        "qualityGatePassed": false,
+        "notes": [
+          "Transfer stayed too close to punctuation-only drift."
+        ]
       },
       "candidates": [
         {
@@ -359,64 +374,74 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 198.194,
+          "score": -0.546,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
             "baseline-stance",
             "baseline-function-word",
-            "connector-stance-lexicon",
             "contraction-auxiliary",
-            "punctuation-finish"
+            "punctuation-finish",
+            "structural-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
           "changedDimensions": [
             "connector-stance",
-            "abstraction-posture",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer stayed too close to punctuation-only drift."
+          ]
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 198.194,
+          "score": -0.546,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
             "baseline-stance",
             "baseline-function-word",
-            "connector-stance-lexicon",
             "contraction-auxiliary",
-            "punctuation-finish"
+            "punctuation-finish",
+            "structural-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
           "changedDimensions": [
             "connector-stance",
-            "abstraction-posture",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer stayed too close to punctuation-only drift."
+          ]
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 196.292,
+          "score": -1.866,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",
             "baseline-stance",
             "baseline-function-word",
-            "connector-stance-lexicon",
-            "contraction-auxiliary"
+            "contraction-auxiliary",
+            "structural-rescue"
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "structural-rescue"
+          ],
           "changedDimensions": [
             "connector-stance",
-            "abstraction-posture"
+            "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Transfer stayed too close to punctuation-only drift."
+          ]
         }
       ]
     },
@@ -432,13 +457,15 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 0.912,
-        "outputDonorDistance": 0.912,
-        "donorImprovement": 0,
-        "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 1
+        "outputDonorDistance": 0.866,
+        "donorImprovement": 0.046,
+        "donorImprovementRatio": 0.05,
+        "sourceOutputLexicalOverlap": 0.935
       },
       "rescuePasses": [
-        "final-rejection"
+        "structural-rescue",
+        "partial-rescue",
+        "semantic-final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false
@@ -820,16 +847,19 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 0.912,
-        "outputDonorDistance": 0.912,
-        "donorImprovement": 0,
-        "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 1
+        "outputDonorDistance": 0.866,
+        "donorImprovement": 0.046,
+        "donorImprovementRatio": 0.05,
+        "sourceOutputLexicalOverlap": 0.935
       },
       "realizationNotes": [
+        "3 lexical family swaps landed.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "final-rejection"
+        "structural-rescue",
+        "partial-rescue",
+        "semantic-final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false
@@ -849,9 +879,16 @@
       "temporal:1"
     ],
     "structuralOperations": [
-      "clause-texture"
+      "structural-rescue"
     ],
-    "lexicalOperations": [],
+    "lexicalOperations": [
+      "baseline-function-word",
+      "baseline-phrase",
+      "baseline-stance",
+      "baseline-voice-realization",
+      "contraction-auxiliary",
+      "punctuation-finish"
+    ],
     "connectorStrategy": "additive",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,

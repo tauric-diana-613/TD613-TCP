@@ -415,7 +415,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 260.492,
+          "score": 256.492,
           "passesApplied": [
             "baseline-phrase",
             "baseline-voice-realization",

@@ -369,7 +369,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 302.644,
+        "score": 304.002,
         "passesApplied": [
           "contraction",
           "phrase-texture"
@@ -390,7 +390,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 302.644,
+          "score": 304.002,
           "passesApplied": [
             "contraction",
             "phrase-texture"

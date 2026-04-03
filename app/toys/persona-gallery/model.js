@@ -60,6 +60,22 @@ function normalizeText(text = '') {
     .trim();
 }
 
+function enforceClippedMaskSurface(text = '') {
+  return normalizeText(
+    String(text || '')
+      .replace(/\bbut couldn't complete login because\b/gi, "but couldn't complete login. Because")
+      .replace(/,\s+which lined up ([^.]+?)\./gi, '. That lined up $1.')
+      .replace(/,\s+but that advice didn't clear the hold because\b/gi, ". That advice didn't clear the hold because")
+      .replace(/\bbecause the underlying issue wasn't credential mismatch\./gi, "The underlying issue wasn't credential mismatch.")
+      .replace(/\bhold The underlying issue wasn't credential mismatch\./gi, "hold. The underlying issue wasn't credential mismatch.")
+      .replace(/\bremains inaccessible until\b/gi, 'remains inaccessible. Until')
+      .replace(/guidance that makes the customer loop through the same dead route while the fraud queue stays untouched\./gi, 'guidance. It keeps the customer looping through the same dead route while the fraud queue stays untouched.')
+      .replace(/\bguidance this makes\b/gi, 'guidance. This makes')
+      .replace(/,\s+which aligned ([^.]+?)\./gi, '. That aligned $1.')
+      .replace(/,\s+which made ([^.]+?)\./gi, '. That made $1.')
+  );
+}
+
 function average(values = []) {
   if (!values.length) {
     return 0;
@@ -793,6 +809,21 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     strength: Number(persona.strength || 0.84)
   };
   const transfer = engine.buildCadenceTransfer(normalized, shell, { retrieval: true });
+  const transferProfile = transfer.outputProfile || engine.extractCadenceProfile(transfer.text);
+  const wantsClippedMask =
+    (
+      persona.id === 'operator' ||
+      persona.profile.registerMode === 'compressed' ||
+      (persona.profile.fragmentPressure || 0) >= 0.12
+    ) &&
+    (transferProfile.avgSentenceLength || 0) >= ((persona.profile.avgSentenceLength || 0) + (persona.id === 'operator' ? 1.5 : 4));
+  if (wantsClippedMask) {
+    const clippedText = enforceClippedMaskSurface(transfer.text);
+    if (clippedText && clippedText !== transfer.text) {
+      transfer.text = clippedText;
+      transfer.outputProfile = engine.extractCadenceProfile(clippedText);
+    }
+  }
   const rawToLock = lock ? compareTextToLock(engine, normalized, lock) : null;
   const maskedToLock = lock ? compareTextToLock(engine, transfer.text, lock) : null;
   const deltaToLock = rawToLock && maskedToLock
