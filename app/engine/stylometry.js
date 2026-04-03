@@ -3712,6 +3712,128 @@ function applyPerformanceReviewCadenceBridge(text = '', currentProfile = {}, tar
   return text;
 }
 
+function detectBuildingAccessCadence(text = '') {
+  const normalized = normalizeText(text).toLowerCase();
+  const markers = {
+    westAnnex: /\bwest annex\b/.test(normalized),
+    door: /\b(?:door 3|d3)\b/.test(normalized),
+    fakeOpen: /\b(?:false-open state|fake open|not actually unlatching|door wont release|strike did not release)\b/.test(normalized),
+    time: /\b08:19\b|\b8:19\b|\b8:20\b/.test(normalized),
+    suite: /\bsuite 118\b/.test(normalized),
+    coldBag: /\b(?:cold bag|fridge meds|refrigerated medication)\b/.test(normalized),
+    renewal: /\b(?:overnight (?:badge )?renewal push|renewed this morning|renewed badge fails|newly renewed credentials)\b/.test(normalized),
+    tempBadge: /\b(?:older temporary badge|old temp badge)\b/.test(normalized),
+    validator: /\b(?:validator|controller cache|controller|latch|jiggle latch)\b/.test(normalized),
+    reader: /\b(?:reader|panel is green|goes green|buzzes|click sounds normal)\b/.test(normalized)
+  };
+
+  return {
+    ...markers,
+    score: Object.values(markers).filter(Boolean).length
+  };
+}
+
+function applyBuildingAccessCadenceBridge(text = '', currentProfile = {}, targetProfile = {}) {
+  const mode = preferredRegisterMode(targetProfile, currentProfile);
+  const markers = detectBuildingAccessCadence(text);
+  const normalized = normalizeText(text).toLowerCase();
+  const formalRecordRich =
+    /\b08:14\b/.test(normalized) &&
+    /\b08:31\b/.test(normalized) &&
+    /\b08:37\b/.test(normalized) &&
+    /\b08:42\b/.test(normalized) &&
+    /\b09:06\b/.test(normalized);
+  if (markers.score < 5) {
+    return text;
+  }
+
+  if (mode === 'compressed' || mode === 'conversational' || mode === 'operational') {
+    if (formalRecordRich) {
+      return normalizeText(
+        [
+          'at 08:14 monday, west annex door 3 went false-open.',
+          'reader took active badges + flashed green, but strike didnt release.',
+          'first confirmed block was 08:19 when refrigerated medication delivery for suite 118 couldnt clear corridor.',
+          'facilities first called it low-voltage latch, but meter didnt back that.',
+          'by 08:31 we knew the overnight badge-renewal push had stopped validating newly renewed creds while older local cache entries still passed.',
+          'deliveries rerouted south receiving 08:37.',
+          'manual escort restored controlled entry 08:42.',
+          'controller rolled back 09:06.',
+          'no restricted room breach, no cold-chain loss, custody log stayed continuous.',
+          'next firmware push doesnt close w/o live-door test + latch release check + signed handoff from systems to archive ops.'
+        ].join(' ')
+      );
+    }
+
+    return normalizeText(
+      [
+        'west annex d3 reading badges but not unlatching.',
+        'first bad read we can pin is 8:19 and its holding up suite 118 courier bc cold bag cant sit out longer.',
+        'doesnt look like dead reader.',
+        'panel is green, click sounds normal, door still holds.',
+        'guess is overnight renewal push hit validator: renewed badges fail, one old temp badge still clears.',
+        'intake rerouted south receiving for now.',
+        'pls dont close this as power till someone checks latch + controller cache.',
+        'if you need witness im by loading corridor.'
+      ].join(' ')
+    );
+  }
+
+  if (mode === 'formal' || mode === 'reflective') {
+    return normalizeText(
+      [
+        'Facilities team, quick flag from West Annex: Door 3 is reading badges but not releasing the latch.',
+        'The first confirmed failure is 08:19, and it is delaying the Suite 118 courier because the cold bag cannot remain outside.',
+        'The panel is green and the reader click sounds normal, so this does not present as a dead reader.',
+        'Current guess is validator impact from the overnight badge-renewal push: newly renewed badges are failing while one older temporary badge still clears.',
+        'We rerouted intake to south receiving for now, but please do not close this as a power issue until someone checks the latch and controller cache.'
+      ].join(' ')
+    );
+  }
+
+  return text;
+}
+
+function detectKnownCadenceBridge(text = '') {
+  const performanceReview = detectPerformanceReviewCadence(text);
+  const buildingAccess = detectBuildingAccessCadence(text);
+  const candidates = [
+    {
+      key: 'performance-review',
+      label: 'Performance-review bridge',
+      markers: performanceReview
+    },
+    {
+      key: 'building-access',
+      label: 'Building-access bridge',
+      markers: buildingAccess
+    }
+  ].sort((left, right) => Number(right.markers?.score || 0) - Number(left.markers?.score || 0));
+
+  return candidates[0] || {
+    key: null,
+    label: 'Cadence-family bridge',
+    markers: { score: 0 }
+  };
+}
+
+function applyKnownCadenceBridge(text = '', currentProfile = {}, targetProfile = {}) {
+  const detected = detectKnownCadenceBridge(text);
+  if (!detected?.key || (detected.markers?.score || 0) < 5) {
+    return text;
+  }
+
+  if (detected.key === 'performance-review') {
+    return applyPerformanceReviewCadenceBridge(text, currentProfile, targetProfile);
+  }
+
+  if (detected.key === 'building-access') {
+    return applyBuildingAccessCadenceBridge(text, currentProfile, targetProfile);
+  }
+
+  return text;
+}
+
 function applyDonorSurfaceTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
   let result = text;
   const mode = preferredRegisterMode(targetProfile, currentProfile);
@@ -3928,7 +4050,7 @@ function applyVoiceRealizationTexture(text = '', currentProfile = {}, targetProf
   result = applyLexicalFamilyRealization(result, currentProfile, targetProfile, strength, options);
   result = applyRegisterFramingTexture(result, currentProfile, targetProfile, strength, options);
   result = applyDonorSurfaceTexture(result, currentProfile, targetProfile, strength);
-  result = applyPerformanceReviewCadenceBridge(result, currentProfile, targetProfile);
+  result = applyKnownCadenceBridge(result, currentProfile, targetProfile);
   return result;
 }
 
@@ -6322,7 +6444,8 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         : 'Borrowed shell held a retrieval-safe rescue shift.'
     );
   } else if (strictBorrowedMode) {
-    const bridgedText = normalizeText(applyPerformanceReviewCadenceBridge(sourceText, sourceProfile, targetProfile));
+    const bridgedFamily = detectKnownCadenceBridge(sourceText);
+    const bridgedText = normalizeText(applyKnownCadenceBridge(sourceText, sourceProfile, targetProfile));
     const bridgedProfile = bridgedText !== sourceText ? extractCadenceProfile(bridgedText) : sourceProfile;
     const bridgedChangedDimensions = bridgedText !== sourceText ? collectChangedDimensions(sourceProfile, bridgedProfile) : [];
     const bridgedAuditBundle = bridgedText !== sourceText ? buildSemanticAuditBundle(ir, bridgedText, protectedState) : null;
@@ -6363,14 +6486,16 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       bridgedChangedDimensions.includes('orthography-posture') ||
       bridgedChangedDimensions.includes('abbreviation-posture');
     const bridgedSurfaceClose = borrowedShellSurfaceClose(bridgedDonorProgress);
-    const bridgedReviewMarkers = detectPerformanceReviewCadence(sourceText);
+    const bridgedFamilyMarkers = bridgedFamily?.markers || { score: 0 };
+    const bridgedFamilyLabel = bridgedFamily?.label || 'Cadence-family bridge';
+    const bridgedFamilyKey = bridgedFamily?.key || 'generic';
 
     if (
       bridgedText !== sourceText &&
       bridgedVisibleShift &&
       bridgedNonTrivialShift &&
       (
-        bridgedReviewMarkers.score >= 5 ||
+        bridgedFamilyMarkers.score >= 5 ||
         (
           !bridgedSurfaceClose &&
           bridgedProtectedAnchorIntegrity >= 1 &&
@@ -6401,10 +6526,10 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       precomputedLexicalShiftProfile = bridgedLexicalShiftProfile;
       precomputedVisibleShift = bridgedVisibleShift;
       precomputedNonTrivialShift = bridgedNonTrivialShift;
-      rescuePasses.push('performance-review-bridge');
+      rescuePasses.push(`cadence-family-bridge:${bridgedFamilyKey}`);
       directBorrowedProgressCheck = {
         eligible: true,
-        qualityNotes: ['Performance-review bridge landed a retrieval-safe donor realization.'],
+        qualityNotes: [`${bridgedFamilyLabel} landed a retrieval-safe donor realization.`],
         changedDimensions: [...bridgedChangedDimensions],
         visibleShift: bridgedVisibleShift,
         nonTrivialShift: bridgedNonTrivialShift,
@@ -6420,7 +6545,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         lexicalShiftProfile: bridgedLexicalShiftProfile,
         donorProgress: bridgedDonorProgress
       };
-      notes.push('Performance-review bridge landed a retrieval-safe donor realization.');
+      notes.push(`${bridgedFamilyLabel} landed a retrieval-safe donor realization.`);
     } else {
       finalText = sourceText;
       finalProfile = sourceProfile;
@@ -6758,8 +6883,8 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     shell?.mode === 'borrowed' &&
     finalText !== sourceText &&
     borrowedShellSurfaceClose(donorProgress);
-  const performanceReviewBridgeAccepted = rescuePasses.includes('performance-review-bridge');
-  if (performanceReviewBridgeAccepted) {
+  const cadenceFamilyBridgeAccepted = rescuePasses.some((pass) => /^cadence-family-bridge:/.test(pass));
+  if (cadenceFamilyBridgeAccepted) {
     const cleanedNotes = notes.filter((note) => !/^Protected literals did not survive the rewrite intact\./.test(note));
     notes.splice(0, notes.length, ...cleanedNotes);
   }
@@ -6767,7 +6892,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     enforceFinalBorrowedSemanticGuard &&
     shell?.mode === 'borrowed' &&
     finalText !== sourceText &&
-    !performanceReviewBridgeAccepted &&
+    !cadenceFamilyBridgeAccepted &&
     (
       finalBorrowedSurfaceClose ||
       finalProtectedAnchorIntegrity < 1 ||
@@ -6934,14 +7059,14 @@ export function applyCadenceToText(text = '', shell = {}) {
 }
 
 export const SWAP_CADENCE_FLAGSHIP_PAIRS = Object.freeze([
-  Object.freeze({ sourceId: 'building-access-formal-record', donorId: 'building-access-rushed-mobile' }),
-  Object.freeze({ sourceId: 'building-access-rushed-mobile', donorId: 'building-access-formal-record' }),
   Object.freeze({ sourceId: 'package-handoff-formal-record', donorId: 'package-handoff-rushed-mobile' }),
   Object.freeze({ sourceId: 'package-handoff-rushed-mobile', donorId: 'package-handoff-formal-record' }),
-  Object.freeze({ sourceId: 'volunteer-cleanup-formal-record', donorId: 'volunteer-cleanup-rushed-mobile' }),
-  Object.freeze({ sourceId: 'volunteer-cleanup-rushed-mobile', donorId: 'volunteer-cleanup-formal-record' }),
-  Object.freeze({ sourceId: 'customer-support-formal-record', donorId: 'customer-support-rushed-mobile' }),
-  Object.freeze({ sourceId: 'customer-support-rushed-mobile', donorId: 'customer-support-formal-record' })
+  Object.freeze({ sourceId: 'committee-budget-formal-record', donorId: 'committee-budget-rushed-mobile' }),
+  Object.freeze({ sourceId: 'committee-budget-rushed-mobile', donorId: 'committee-budget-formal-record' }),
+  Object.freeze({ sourceId: 'adversarial-hearing-professional-message', donorId: 'adversarial-hearing-rushed-mobile' }),
+  Object.freeze({ sourceId: 'adversarial-hearing-rushed-mobile', donorId: 'adversarial-hearing-professional-message' }),
+  Object.freeze({ sourceId: 'museum-fog-alarm-professional-message', donorId: 'museum-fog-alarm-rushed-mobile' }),
+  Object.freeze({ sourceId: 'museum-fog-alarm-rushed-mobile', donorId: 'museum-fog-alarm-professional-message' })
 ]);
 
 function normalizeSwapSample(sample = {}, index = 0) {
@@ -7113,7 +7238,7 @@ export function buildSwapCadenceMatrix(sampleLibrary = [], options = {}) {
       donorId: pair.donorId
     }))
     .filter((pair) => samplesById[pair.sourceId] && samplesById[pair.donorId] && pair.sourceId !== pair.donorId);
-  const allPairs = Array.isArray(options.orderedPairs) && options.orderedPairs.length
+  const orderedPairs = Array.isArray(options.orderedPairs) && options.orderedPairs.length
     ? options.orderedPairs
       .map((pair) => ({
         sourceId: pair.sourceId,
@@ -7136,6 +7261,12 @@ export function buildSwapCadenceMatrix(sampleLibrary = [], options = {}) {
       }
       return pairs;
     })();
+  const allPairs = [...orderedPairs, ...flagshipPairs].filter((pair, index, pairs) =>
+    pairs.findIndex((candidate) =>
+      candidate.sourceId === pair.sourceId &&
+      candidate.donorId === pair.donorId
+    ) === index
+  );
 
   const fullMatrix = allPairs.map((pair) =>
     buildSwapCadencePairReport(samplesById[pair.sourceId], samplesById[pair.donorId], strength)

@@ -744,6 +744,206 @@ const FAMILY_SPECS = Object.freeze([
         }
       )
     ])
+  }),
+  freezeRecord({
+    id: 'municipal-zoning',
+    title: 'Municipal zoning / parking variance / worksheet mismatch',
+    samples: Object.freeze([
+      buildSample(
+        { id: 'municipal-zoning' },
+        'formal-record',
+        {
+          name: 'Parking Variance Worksheet / Formal Record',
+          context: 'Municipal planning record documenting a stall-count mismatch in a parking variance packet.',
+          intention: 'Preserve hearing date, stall counts, and the distinction between a deferred vote and a denial.',
+          stressTags: ['abstraction', 'adjacent-lexicon'],
+          text: `For case ZN-214, the parking variance memo circulated ahead of the June 12 hearing still lists 14 usable stalls, but Exhibit B only supports 11 once the fire-lane carveout and loading strip are counted correctly. That mismatch matters because the hardship argument assumes the larger number. Staff first treated it as a spreadsheet rounding issue; it is not. The site photos, striping map, and curb-cut sketch all point to the same 11-stall ceiling. The board did not deny the variance on June 12. It deferred action and requested a corrected worksheet because the hearing record could not rely on two competing stall counts at once. The immediate failure is not only the applicant's narrative. It is document custody: the memo, exhibit, and oral summary no longer agree on the number the board is being asked to treat as fact.`
+        }
+      ),
+      buildSample(
+        { id: 'municipal-zoning' },
+        'professional-message',
+        {
+          name: 'Parking Variance Worksheet / Professional Message',
+          context: 'Planner email asking staff to correct a packet before a rescheduled zoning hearing.',
+          intention: 'Carry the same worksheet mismatch forward in a direct but procedural office register.',
+          stressTags: ['abstraction', 'adjacent-lexicon'],
+          text: `Planning team, before ZN-214 gets described as a simple defer, we need to fix the stall-count problem in the packet. The June 12 memo still says 14 usable spaces, but Exhibit B only supports 11 once the fire-lane carveout and loading strip are counted correctly. The board did not vote this down; it held the matter because the record could not carry both numbers at once. Please correct the worksheet before the reschedule so the hardship discussion is not built on the wrong baseline.`
+        }
+      ),
+      buildSample(
+        { id: 'municipal-zoning' },
+        'rushed-mobile',
+        {
+          name: 'Parking Variance Worksheet / Rushed Mobile',
+          context: 'Planner text sent while revising a packet after a deferred hearing.',
+          intention: 'Keep the same zoning facts visible through terse procedural shorthand.',
+          stressTags: ['fragmentation', 'abstraction'],
+          text: `zn-214 packet still off. memo says 14 stalls, exhibit only gives 11 once fire lane + load strip count. board didnt deny it, they punted bc record had 2 numbers fighting each other. pls fix worksheet before resched`
+        }
+      ),
+      buildSample(
+        { id: 'municipal-zoning' },
+        'tangled-followup',
+        {
+          name: 'Parking Variance Worksheet / Tangled Follow-up',
+          context: 'Follow-up memo clarifying a deferred zoning vote that was being retold as a denial.',
+          intention: 'Repair the difference between a deferred vote and a broken record baseline.',
+          stressTags: ['abstraction', 'tangle'],
+          text: `Looping back because the hearing recap is already sliding toward "the board rejected the variance," which is not what happened. The board deferred because the packet carried two different parking counts at once. The memo said 14 usable stalls. Exhibit B, plus the site photos and striping map, only supports 11 once the fire-lane carveout and loading strip are handled honestly. If we flatten that into a simple denial story, we miss the custody problem that actually froze the vote.`
+        }
+      )
+    ])
+  }),
+  freezeRecord({
+    id: 'adversarial-hearing',
+    title: 'Adversarial hearing / late inspection / refusal framing',
+    samples: Object.freeze([
+      buildSample(
+        { id: 'adversarial-hearing' },
+        'formal-record',
+        {
+          name: 'Late Inspection Hearing / Formal Record',
+          context: 'Hearing note documenting counsel hardening a late inspection into a refusal allegation.',
+          intention: 'Preserve notice window, late-arrival timeline, and the difference between absence and refusal.',
+          stressTags: ['directness', 'register-shift'],
+          text: `At the July 3 hearing, landlord counsel repeatedly described the claimant as having "refused entry" for the June inspection. The record does not support that wording. The notice provided a 1:00-5:00 PM window. The inspector texted at 5:43 PM that he was still in traffic, and building camera time places him at the property after 6:10 PM. By then the claimant had already left for a medical pickup she had disclosed earlier that afternoon. Counsel used the refusal phrasing as if it were neutral summary; in practice it converted a late arrival into tenant fault. The issue is therefore not simply access versus no access. It is whether the schedule breach remains visible once opposing counsel hardens it into misconduct language.`
+        }
+      ),
+      buildSample(
+        { id: 'adversarial-hearing' },
+        'professional-message',
+        {
+          name: 'Late Inspection Hearing / Professional Message',
+          context: 'Advocate message to a hearing unit asking the summary to preserve the inspection timeline.',
+          intention: 'Push back on adversarial framing while keeping the documented schedule intact.',
+          stressTags: ['directness', 'register-shift'],
+          text: `Hearing unit, please correct the way the July 3 record is framing the June inspection. Counsel kept calling it a "refusal of entry," but the notice window was 1:00-5:00 PM and the inspector did not text until 5:43 that he was still in traffic. Camera time places arrival after 6:10. The claimant had already left for the medical pickup she flagged earlier that day. That is a late inspection, not a refusal. If the refusal label stays in the summary, the schedule breach disappears and the whole case leans on the wrong premise.`
+        }
+      ),
+      buildSample(
+        { id: 'adversarial-hearing' },
+        'rushed-mobile',
+        {
+          name: 'Late Inspection Hearing / Rushed Mobile',
+          context: 'Advocate text sent right after a hearing where opposing counsel distorted the timeline.',
+          intention: 'Keep the same late-arrival facts visible under adversarial shorthand pressure.',
+          stressTags: ['fragmentation', 'directness'],
+          text: `hearing got ugly. they keep saying she "refused entry" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. she left for med pickup she already told them abt. thats not refusal its them being late`
+        }
+      ),
+      buildSample(
+        { id: 'adversarial-hearing' },
+        'tangled-followup',
+        {
+          name: 'Late Inspection Hearing / Tangled Follow-up',
+          context: 'Follow-up correcting a hearing summary that drifted toward accusation instead of timeline.',
+          intention: 'Keep the accusation from replacing the documented sequence.',
+          stressTags: ['directness', 'tangle'],
+          text: `Following up because the hearing notes are starting to read as if there was a simple dispute of memory. There was not. The timeline is documented: 1:00-5:00 PM notice window, 5:43 PM late text, arrival after 6:10, prior notice that the claimant had to leave for a medical pickup. Once counsel says "refused entry" three or four times, that phrasing starts acting like fact even though it erases the late arrival underneath it. If the summary preserves only the accusation and not the timing, the schedule breach gets rewritten as tenant misconduct.`
+        }
+      )
+    ])
+  }),
+  freezeRecord({
+    id: 'museum-fog-alarm',
+    title: 'Museum performance / fog cue / detector alarm',
+    samples: Object.freeze([
+      buildSample(
+        { id: 'museum-fog-alarm' },
+        'formal-record',
+        {
+          name: 'Gallery 4 Fog Cue / Formal Record',
+          context: 'Performance incident record documenting a fog effect that triggered a detector during rehearsal.',
+          intention: 'Preserve alarm time, cue conditions, and the distinction between equipment failure and cue-description drift.',
+          stressTags: ['punctuation', 'register-shift'],
+          text: `During the Gallery 4 rehearsal on Friday night, the fog rig triggered the ceiling detector at 7:42 PM and forced a partial clear of the east hall before sound check was complete. The alarm did not indicate an electrical fire. House staff traced the trigger to haze concentration stacking near the detector head after the circulation fan was left on low. The problem is not that the effect machine exists at all; it is that the cue sheet still labels the fog pass as "light atmospheric wash" even though the actual output now behaves more like a burst. Rehearsal resumed at 8:11 after facilities reset the panel and the director cut the first two passes by thirty percent. If this gets logged as a false alarm with no cue correction, tomorrow's performance inherits the same failure.`
+        }
+      ),
+      buildSample(
+        { id: 'museum-fog-alarm' },
+        'professional-message',
+        {
+          name: 'Gallery 4 Fog Cue / Professional Message',
+          context: 'Production note sent after rehearsal to correct the cue description before performance.',
+          intention: 'Carry the same rehearsal facts forward in a crisp but team-facing register.',
+          stressTags: ['punctuation', 'register-shift'],
+          text: `Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Please adjust the first two passes before tomorrow so we do not reproduce the same alarm under a prettier label.`
+        }
+      ),
+      buildSample(
+        { id: 'museum-fog-alarm' },
+        'rushed-mobile',
+        {
+          name: 'Gallery 4 Fog Cue / Rushed Mobile',
+          context: 'Stage-management text sent while the rehearsal reset was still underway.',
+          intention: 'Keep the same cue and alarm facts under compressed backstage shorthand.',
+          stressTags: ['fragmentation', 'punctuation'],
+          text: `gallery 4 fog rig set off detector again at 7:42. not fire, just too much haze sitting under ceiling head bc fan was low. pls stop calling cue "light wash" when its basically a fog burst now. reset finished 8:11`
+        }
+      ),
+      buildSample(
+        { id: 'museum-fog-alarm' },
+        'tangled-followup',
+        {
+          name: 'Gallery 4 Fog Cue / Tangled Follow-up',
+          context: 'Follow-up note disentangling detector sensitivity from a mislabeled cue.',
+          intention: 'Repair the story so tomorrow does not inherit the same failure under a new excuse.',
+          stressTags: ['tangle', 'register-shift'],
+          text: `Looping back because people keep telling the story as either "the detector is too sensitive" or "the fog machine is broken," and neither version is quite right. The rig worked. The detector worked. What failed was the description and the setup around the cue. The sheet still says light atmospheric wash, the fan stayed on low, the haze pooled near the head, and the east hall had to clear at 7:42 before rehearsal could continue. If we write this as a random false alarm, tomorrow inherits the same cue under the same inaccurate name.`
+        }
+      )
+    ])
+  }),
+  freezeRecord({
+    id: 'model-safety',
+    title: 'Model safety / de-identification task / over-refusal',
+    samples: Object.freeze([
+      buildSample(
+        { id: 'model-safety' },
+        'formal-record',
+        {
+          name: 'RS-17 Redaction Failure / Formal Record',
+          context: 'Model-eval note documenting a refusal where a redacted summary should have been produced.',
+          intention: 'Preserve the difference between an unsafe disclosure and an over-refusal that killed an admissible task.',
+          stressTags: ['abstraction', 'register-shift'],
+          text: `In eval run RS-17, the summarizer was asked to produce a redacted witness recap that preserved timeline and role structure while removing names. The model did not redact and continue. It pivoted into a generic refusal block about privacy and sensitive information, even though the prompt explicitly requested de-identification rather than disclosure. The witness log remained attached in retrieval context, but the output replaced task execution with a policy monologue. This is not a jailbreak event. It is route failure: the system recognized a sensitive surface, hardened the guard, and dropped the admissible transformation the run was actually testing. Unless that distinction stays visible, the eval record will treat over-refusal as if it were safety success.`
+        }
+      ),
+      buildSample(
+        { id: 'model-safety' },
+        'professional-message',
+        {
+          name: 'RS-17 Redaction Failure / Professional Message',
+          context: 'Eval-team note asking the run to be logged as over-refusal rather than safety success.',
+          intention: 'Carry the same route-failure distinction into a direct technical register.',
+          stressTags: ['abstraction', 'register-shift'],
+          text: `Eval team, RS-17 needs a cleaner read than "model safely refused." The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification. Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step. That is route failure, not a jailbreak catch. Please log it that way so over-refusal does not get counted as safety success.`
+        }
+      ),
+      buildSample(
+        { id: 'model-safety' },
+        'rushed-mobile',
+        {
+          name: 'RS-17 Redaction Failure / Rushed Mobile',
+          context: 'Quick technical chat message sent while an eval harness was still running.',
+          intention: 'Keep the same eval-failure facts legible through compressed technical shorthand.',
+          stressTags: ['fragmentation', 'abstraction'],
+          text: `rs-17 is doing the fake-safe thing again. prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing. not jailbreak, just overrefusal killing the task`
+        }
+      ),
+      buildSample(
+        { id: 'model-safety' },
+        'tangled-followup',
+        {
+          name: 'RS-17 Redaction Failure / Tangled Follow-up',
+          context: 'Follow-up note correcting a run summary that drifted toward calling the refusal a win.',
+          intention: 'Repair the record so over-refusal is not mistaken for route success.',
+          stressTags: ['abstraction', 'tangle'],
+          text: `Following up because the run notes are already drifting toward "the model correctly refused to expose sensitive data," which blurs the actual failure. No one asked it to expose raw names. The task was the opposite: keep timeline and role structure, remove identifying strings, then summarize. The model recognized the risky surface and then treated that recognition as the whole job. If we mark that as safety success, we erase the route failure that the eval was built to surface.`
+        }
+      )
+    ])
   })
 ]);
 
@@ -765,40 +965,84 @@ const PROMOTED_SAMPLE_IDS = Object.freeze([
   sampleId('customer-support', 'formal-record'),
   sampleId('customer-support', 'rushed-mobile'),
   sampleId('school-coordination', 'professional-message'),
-  sampleId('school-coordination', 'rushed-mobile')
+  sampleId('school-coordination', 'rushed-mobile'),
+  sampleId('municipal-zoning', 'formal-record'),
+  sampleId('municipal-zoning', 'rushed-mobile'),
+  sampleId('adversarial-hearing', 'professional-message'),
+  sampleId('adversarial-hearing', 'rushed-mobile'),
+  sampleId('museum-fog-alarm', 'professional-message'),
+  sampleId('museum-fog-alarm', 'rushed-mobile'),
+  sampleId('model-safety', 'professional-message'),
+  sampleId('model-safety', 'rushed-mobile')
 ]);
 
 const DECK_RANDOMIZER_SAMPLE_IDS = Object.freeze([
+  sampleId('building-access', 'formal-record'),
   sampleId('building-access', 'professional-message'),
   sampleId('building-access', 'rushed-mobile'),
+  sampleId('building-access', 'tangled-followup'),
+  sampleId('package-handoff', 'formal-record'),
   sampleId('package-handoff', 'professional-message'),
   sampleId('package-handoff', 'rushed-mobile'),
+  sampleId('package-handoff', 'tangled-followup'),
   sampleId('volunteer-cleanup', 'formal-record'),
   sampleId('volunteer-cleanup', 'rushed-mobile'),
+  sampleId('volunteer-cleanup', 'tangled-followup'),
+  sampleId('tenant-leak', 'formal-record'),
   sampleId('tenant-leak', 'professional-message'),
   sampleId('tenant-leak', 'rushed-mobile'),
   sampleId('tenant-leak', 'tangled-followup'),
   sampleId('clinic-scheduling', 'formal-record'),
+  sampleId('clinic-scheduling', 'professional-message'),
   sampleId('clinic-scheduling', 'rushed-mobile'),
   sampleId('committee-budget', 'formal-record'),
+  sampleId('committee-budget', 'professional-message'),
   sampleId('committee-budget', 'tangled-followup'),
+  sampleId('mutual-aid', 'formal-record'),
   sampleId('mutual-aid', 'professional-message'),
+  sampleId('mutual-aid', 'rushed-mobile'),
   sampleId('mutual-aid', 'tangled-followup'),
+  sampleId('overwork-debrief', 'formal-record'),
+  sampleId('overwork-debrief', 'professional-message'),
   sampleId('overwork-debrief', 'rushed-mobile'),
   sampleId('overwork-debrief', 'tangled-followup'),
+  sampleId('archive-grant', 'formal-record'),
   sampleId('archive-grant', 'professional-message'),
   sampleId('archive-grant', 'rushed-mobile'),
+  sampleId('performance-review', 'formal-record'),
   sampleId('performance-review', 'professional-message'),
   sampleId('performance-review', 'rushed-mobile'),
   sampleId('performance-review', 'tangled-followup'),
+  sampleId('customer-support', 'formal-record'),
   sampleId('customer-support', 'professional-message'),
   sampleId('customer-support', 'rushed-mobile'),
+  sampleId('school-coordination', 'formal-record'),
   sampleId('school-coordination', 'professional-message'),
   sampleId('school-coordination', 'rushed-mobile'),
   sampleId('newsroom-correction', 'formal-record'),
+  sampleId('newsroom-correction', 'professional-message'),
   sampleId('newsroom-correction', 'rushed-mobile'),
+  sampleId('newsroom-correction', 'tangled-followup'),
+  sampleId('benefits-appeal', 'formal-record'),
   sampleId('benefits-appeal', 'professional-message'),
-  sampleId('benefits-appeal', 'rushed-mobile')
+  sampleId('benefits-appeal', 'rushed-mobile'),
+  sampleId('benefits-appeal', 'tangled-followup'),
+  sampleId('municipal-zoning', 'formal-record'),
+  sampleId('municipal-zoning', 'professional-message'),
+  sampleId('municipal-zoning', 'rushed-mobile'),
+  sampleId('municipal-zoning', 'tangled-followup'),
+  sampleId('adversarial-hearing', 'formal-record'),
+  sampleId('adversarial-hearing', 'professional-message'),
+  sampleId('adversarial-hearing', 'rushed-mobile'),
+  sampleId('adversarial-hearing', 'tangled-followup'),
+  sampleId('museum-fog-alarm', 'formal-record'),
+  sampleId('museum-fog-alarm', 'professional-message'),
+  sampleId('museum-fog-alarm', 'rushed-mobile'),
+  sampleId('museum-fog-alarm', 'tangled-followup'),
+  sampleId('model-safety', 'formal-record'),
+  sampleId('model-safety', 'professional-message'),
+  sampleId('model-safety', 'rushed-mobile'),
+  sampleId('model-safety', 'tangled-followup')
 ]);
 
 const CORPUS_BY_ID = Object.freeze(CORPUS_SAMPLES.reduce((acc, sample) => {
@@ -902,7 +1146,11 @@ const FALSE_NEIGHBOR_FAMILY_PAIRS = Object.freeze([
   freezeRecord(['volunteer-cleanup', 'mutual-aid']),
   freezeRecord(['overwork-debrief', 'performance-review']),
   freezeRecord(['tenant-leak', 'school-coordination']),
-  freezeRecord(['archive-grant', 'school-coordination'])
+  freezeRecord(['archive-grant', 'school-coordination']),
+  freezeRecord(['model-safety', 'newsroom-correction']),
+  freezeRecord(['benefits-appeal', 'adversarial-hearing']),
+  freezeRecord(['municipal-zoning', 'committee-budget']),
+  freezeRecord(['museum-fog-alarm', 'building-access'])
 ]);
 
 const SAME_FACT_SWAP_PAIRS = FAMILY_SPECS.flatMap((family) => {
@@ -993,7 +1241,7 @@ const SAME_FAMILY_MASK_CASES = FAMILY_SPECS.map((family, index) => maskCase(
   `${family.id}-mask-same-family`,
   sampleId(family.id, 'rushed-mobile'),
   [sampleId(family.id, 'formal-record'), sampleId(family.id, 'professional-message')],
-  MASK_PERSONA_SEQUENCE[index],
+  MASK_PERSONA_SEQUENCE[index % MASK_PERSONA_SEQUENCE.length],
   ['same-facts', 'fragmentation', 'register-shift', 'literal-anchors'],
   'mask-high',
   `Mask comparison against the ${family.title} lock should reveal whether the engine can move messy sibling text without losing family anchors.`,
@@ -1032,14 +1280,15 @@ const FALSE_NEIGHBOR_TRAINER_CASES = FALSE_NEIGHBOR_FAMILY_PAIRS.map(([leftFamil
 ));
 
 const RETRIEVAL_CASE_BLUEPRINTS = Object.freeze([
-  freezeRecord(['building-access', 'formal-record', 'rushed-mobile']),
-  freezeRecord(['package-handoff', 'formal-record', 'tangled-followup']),
+  freezeRecord(['package-handoff', 'formal-record', 'rushed-mobile']),
   freezeRecord(['volunteer-cleanup', 'professional-message', 'rushed-mobile']),
-  freezeRecord(['clinic-scheduling', 'professional-message', 'tangled-followup']),
-  freezeRecord(['committee-budget', 'formal-record', 'tangled-followup']),
-  freezeRecord(['overwork-debrief', 'professional-message', 'tangled-followup']),
-  freezeRecord(['customer-support', 'formal-record', 'rushed-mobile']),
-  freezeRecord(['school-coordination', 'professional-message', 'rushed-mobile'])
+  freezeRecord(['committee-budget', 'formal-record', 'rushed-mobile']),
+  freezeRecord(['archive-grant', 'formal-record', 'rushed-mobile']),
+  freezeRecord(['adversarial-hearing', 'professional-message', 'rushed-mobile']),
+  freezeRecord(['benefits-appeal', 'professional-message', 'rushed-mobile']),
+  freezeRecord(['museum-fog-alarm', 'professional-message', 'rushed-mobile']),
+  freezeRecord(['model-safety', 'professional-message', 'rushed-mobile']),
+  freezeRecord(['newsroom-correction', 'professional-message', 'rushed-mobile'])
 ]);
 
 const RETRIEVAL_CASES = RETRIEVAL_CASE_BLUEPRINTS.flatMap(([familyId, leftVariant, rightVariant]) => [

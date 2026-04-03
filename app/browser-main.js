@@ -51,8 +51,8 @@
     A: 'building-access-professional-message',
     B: 'building-access-rushed-mobile'
   });
-  const DECK_RANDOMIZER_TOP_COUNT = 6;
-  const DECK_RANDOMIZER_FIELD_POOL_COUNT = 18;
+  const DECK_RANDOMIZER_TOP_COUNT = 8;
+  const DECK_RANDOMIZER_FIELD_POOL_COUNT = 24;
   const DIAGNOSTIC_BATTERY = Object.freeze({
     swapPairs: Object.freeze(diagnosticBattery.swapPairs || []),
     maskCases: Object.freeze(diagnosticBattery.maskCases || []),
@@ -2115,10 +2115,10 @@
       if (bothBaysPopulated) {
         return (
           Number(right.evaluationTier || 0) - Number(left.evaluationTier || 0) ||
-          compareSwapCadencePairings(left.evaluation, right.evaluation) ||
           Number(right.fieldDelta || 0) - Number(left.fieldDelta || 0) ||
           Number(right.heatmapDelta || 0) - Number(left.heatmapDelta || 0) ||
           Number(right.axisDelta || 0) - Number(left.axisDelta || 0) ||
+          compareSwapCadencePairings(left.evaluation, right.evaluation) ||
           Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
           Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
           Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||

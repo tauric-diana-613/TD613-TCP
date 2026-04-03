@@ -1,0 +1,702 @@
+{
+  "id": "archive-grant-rushed-mobile-under-formal-record",
+  "category": "retrieval-same-fact",
+  "strength": 0.88,
+  "sourceText": "grant isnt just digitize + pray. its shared catalog protocol + 6 steward reviewers + portable exhibit kit. main risk is if description outruns local review and we start calling extraction access. pls keep the 2 wk review buffer + translation line in budget",
+  "donorText": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First, the team will complete a shared cataloging protocol for neighborhood collections now described with inconsistent local vocabularies. Second, six community stewards will be trained to review descriptive language before records are published or exhibited. Third, a portable exhibition kit will be built for circulation through branch libraries, school sites, and tenant meetings. The scheduling risk is not the catalog build itself, but the interval between description and community review. If that interval stretches, the project drifts back toward extractive efficiency rather than reciprocal stewardship. Planning assumptions therefore include a two-week review buffer in each cycle, a modest translation budget, and a rule that no descriptive template is treated as final before local review has actually occurred.",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 19,
+      "sentenceCount": 7,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.128,
+      "contentWordComplexity": 0.588,
+      "modifierDensity": 0.115,
+      "directness": 0,
+      "abstractionPosture": 0.667
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "grant isnt just digitize + pray. its shared catalog protocol + 6 steward reviewers + portable exhibit kit. main risk is if description outruns local review and we start calling extraction access. pls keep the 2 wk review buffer + translation line in budget",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 18.81,
+        "sentenceCount": 4,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.127,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.539,
+        "modifierDensity": 0.102,
+        "hedgeDensity": 0.023,
+        "directness": 0.043,
+        "abstractionPosture": 0.627,
+        "latinatePreference": 0.116,
+        "recurrencePressure": 0.144
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 4,
+        "clauseCount": 5,
+        "literalSpans": [
+          {
+            "value": "6",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "2",
+            "placeholder": "zzprotlitbzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "grant isnt just digitize + pray",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "grant isnt just digitize + pray",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "grant",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "its shared catalog protocol + zzprotlitazz steward reviewers + portable exhibit kit",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "its shared catalog protocol + zzprotlitazz steward reviewers + portable exhibit kit",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "its",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "portable"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "main risk is if description outruns local review and we start calling extraction access",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "main risk is if description outruns local review",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "review",
+              "actor": "",
+              "action": "review",
+              "object": "",
+              "modifiers": [
+                "local"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c1",
+              "text": "we start calling extraction access",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "start",
+              "actor": "we",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "pls keep the zzprotlitbzz wk review buffer + translation line in budget",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "pls keep the zzprotlitbzz wk review buffer + translation line in budget",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "keep",
+              "actor": "the zzprotlitbzz",
+              "action": "keep",
+              "object": "zzprotlitbzz wk review buffer translation",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 0,
+      "sentenceMerge": 3,
+      "contraction": 0,
+      "connector": 1,
+      "lineBreak": 3,
+      "abbreviation": 2,
+      "orthography": 5,
+      "fragment": 1,
+      "conversational": 1,
+      "additive": 1,
+      "contrastive": 0,
+      "causal": 0,
+      "temporal": 0,
+      "clarifying": 0,
+      "resumptive": 0
+    },
+    "planSummary": {
+      "transferMode": "expand",
+      "structuralOperationsSelected": [
+        "merge-pairs",
+        "clause-texture"
+      ],
+      "lexicalRegisterOperationsSelected": [],
+      "connectorStrategy": "additive",
+      "contractionStrategy": "hold",
+      "relationInventory": {
+        "additive": 1,
+        "contrastive": 0,
+        "causal": 0,
+        "temporal": 0,
+        "clarifying": 0,
+        "resumptive": 0
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": 8.809999999999999
+      },
+      "discourseGoals": {
+        "contractionDelta": 0,
+        "hedgeDelta": -0.0020000000000000018
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": 0.15400000000000003,
+        "modifierDensityDelta": 0.040999999999999995,
+        "directnessDelta": -0.137,
+        "abstractionDelta": 0.127,
+        "latinateDelta": -0.0049999999999999906,
+        "registerMode": "compressed"
+      },
+      "operationBudget": {
+        "splitSentence": 0,
+        "mergeSentence": 8,
+        "swapConnector": 2,
+        "applyHedge": 0,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "ir-beam-search",
+        "score": 476.337,
+        "passesApplied": [
+          "merge-pairs",
+          "clause-texture"
+        ],
+        "rescuePasses": [],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "lexical-register",
+          "directness",
+          "abbreviation-posture",
+          "orthography-posture",
+          "fragment-posture",
+          "surface-marker-posture",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": true,
+        "notes": []
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 476.337,
+          "passesApplied": [
+            "merge-pairs",
+            "clause-texture"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "surface-marker-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 390.024,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "punctuation-finish",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "merge-heavy",
+          "score": 390.024,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "punctuation-finish",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 388.986,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 388.986,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit. Main risk is if description outruns local review and we begin contacting extraction access, and please retain the 2 week review buffer, translation line in budget.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "abbreviation-posture",
+        "orthography-posture",
+        "fragment-posture",
+        "surface-marker-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "keep",
+          "from": "keep",
+          "to": "retain",
+          "kind": "lexeme"
+        },
+        {
+          "family": "start",
+          "from": "start",
+          "to": "begin",
+          "kind": "lexeme"
+        },
+        {
+          "family": "call",
+          "from": "calling",
+          "to": "contacting",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 5.394,
+        "outputDonorDistance": 2.7,
+        "donorImprovement": 2.694,
+        "donorImprovementRatio": 0.499,
+        "sourceOutputLexicalOverlap": 0.773
+      },
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 0.83,
+      "actionCoverage": 1,
+      "objectCoverage": 0.95,
+      "polarityMismatches": 0,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.5,
+          "globalBagScore": 0.1
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.333,
+          "globalBagScore": 0.091
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.2
+        },
+        {
+          "sourceClauseId": "s2c1",
+          "matchedClauseId": "s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.167,
+          "globalBagScore": 0.1
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s1c0+s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 0.15,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.167,
+          "globalBagScore": 0.143
+        }
+      ],
+      "sourceClauseCount": 5,
+      "outputClauseCount": 3
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 2,
+      "resolvedAnchors": 2,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 2,
+        "clauseCount": 3,
+        "literalSpans": [
+          {
+            "value": "6",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "2",
+            "placeholder": "zzprotlitbzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "grant",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "portable"
+              ],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "Main risk is if description outruns local review and we begin contacting extraction access, and please retain the 2 week review buffer, translation line in budget.",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "Main risk is if description outruns local review",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "review",
+              "actor": "",
+              "action": "review",
+              "object": "",
+              "modifiers": [
+                "local"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "we begin contacting extraction access, and please retain the 2 week review buffer, translation line in budget",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "begin",
+              "actor": "we",
+              "action": "begin",
+              "object": "contacting extraction access please retain",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "abbreviation-posture",
+        "orthography-posture",
+        "fragment-posture",
+        "surface-marker-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "keep",
+          "from": "keep",
+          "to": "retain",
+          "kind": "lexeme"
+        },
+        {
+          "family": "start",
+          "from": "start",
+          "to": "begin",
+          "kind": "lexeme"
+        },
+        {
+          "family": "call",
+          "from": "calling",
+          "to": "contacting",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 5.394,
+        "outputDonorDistance": 2.7,
+        "donorImprovement": 2.694,
+        "donorImprovementRatio": 0.499,
+        "sourceOutputLexicalOverlap": 0.773
+      },
+      "realizationNotes": [
+        "3 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, directness, abbreviation-posture, orthography-posture, fragment-posture, surface-marker-posture.",
+        "Semantic risk is elevated; review the realized output before relying on it."
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    }
+  },
+  "semanticContract": {
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "abbreviation-posture",
+      "connector-stance",
+      "directness",
+      "fragment-posture",
+      "lexical-register",
+      "orthography-posture",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread",
+      "surface-marker-posture"
+    ],
+    "lexemeSwapFamilies": [
+      "call",
+      "keep",
+      "start"
+    ],
+    "relationInventory": [
+      "additive:1",
+      "causal:0",
+      "clarifying:0",
+      "contrastive:0",
+      "resumptive:0",
+      "temporal:0"
+    ],
+    "structuralOperations": [
+      "clause-texture",
+      "merge-pairs"
+    ],
+    "lexicalOperations": [],
+    "connectorStrategy": "additive",
+    "contractionStrategy": "hold",
+    "propositionCoverage": 1,
+    "actorCoverage": 0.83,
+    "actionCoverage": 1,
+    "objectCoverage": 0.95,
+    "polarityMismatches": 0,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}

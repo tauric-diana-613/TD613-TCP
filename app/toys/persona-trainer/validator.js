@@ -1,7 +1,7 @@
 import { SCALAR_DIMENSIONS } from './extractor.js';
 
 export const TRAINER_CALIBRATION_SAMPLE_IDS = Object.freeze([
-  'building-access-formal-record',
+  'package-handoff-formal-record',
   'committee-budget-formal-record',
   'overwork-debrief-professional-message',
   'customer-support-formal-record',

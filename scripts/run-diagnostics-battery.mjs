@@ -41,9 +41,11 @@ const FAILURE_BUCKETS = Object.freeze([
 ]);
 const PRIVATE_EORFD_REPRESENTATIVE_ANCHORS = Object.freeze([
   'building-access-rushed-mobile',
-  'customer-support-formal-record',
-  'overwork-debrief-formal-record',
-  'school-coordination-tangled-followup'
+  'benefits-appeal-professional-message',
+  'municipal-zoning-formal-record',
+  'adversarial-hearing-rushed-mobile',
+  'museum-fog-alarm-professional-message',
+  'model-safety-rushed-mobile'
 ]);
 
 const PERSONA_LIBRARY = resolvePersonaCatalog(engine, personas, DIAGNOSTIC_SAMPLE_LIBRARY);
@@ -63,6 +65,24 @@ function sortUnique(values = []) {
 
 function profileKey(profile = {}) {
   return JSON.stringify(profile || {});
+}
+
+const HEATMAP_MATRIX_CACHE = new Map();
+const PAIR_METRICS_CACHE = new Map();
+
+function cachedHeatmapMatrix(text = '') {
+  const key = String(text || '');
+  if (!HEATMAP_MATRIX_CACHE.has(key)) {
+    HEATMAP_MATRIX_CACHE.set(key, engine.cadenceHeatmap(key).matrix || []);
+  }
+  return HEATMAP_MATRIX_CACHE.get(key);
+}
+
+function itemCacheKey(item, getProfile = (value) => value.profile, getText = (value) => value.text || value.diagnosticSpecimen?.text || '') {
+  if (item?.id) {
+    return String(item.id);
+  }
+  return `${profileKey(getProfile(item))}::${String(getText(item) || '')}`;
 }
 
 function profileDistance(fit = {}) {
@@ -88,8 +108,8 @@ function axisDistance(profileA = {}, profileB = {}) {
 }
 
 function heatmapDistance(textA = '', textB = '') {
-  const matrixA = engine.cadenceHeatmap(textA).matrix || [];
-  const matrixB = engine.cadenceHeatmap(textB).matrix || [];
+  const matrixA = cachedHeatmapMatrix(textA);
+  const matrixB = cachedHeatmapMatrix(textB);
   let total = 0;
   for (let rowIndex = 0; rowIndex < Math.max(matrixA.length, matrixB.length); rowIndex += 1) {
     const rowA = Array.isArray(matrixA[rowIndex]) ? matrixA[rowIndex] : [];
@@ -99,6 +119,37 @@ function heatmapDistance(textA = '', textB = '') {
     }
   }
   return round(total, 4);
+}
+
+function pairMetricsBetweenItems(
+  left,
+  right,
+  getProfile = (item) => item.profile,
+  getText = (item) => item.text || item.diagnosticSpecimen?.text || ''
+) {
+  const leftKey = itemCacheKey(left, getProfile, getText);
+  const rightKey = itemCacheKey(right, getProfile, getText);
+  const cacheKey = [leftKey, rightKey].sort((a, b) => a.localeCompare(b)).join('::');
+  if (!PAIR_METRICS_CACHE.has(cacheKey)) {
+    const leftProfile = getProfile(left);
+    const rightProfile = getProfile(right);
+    const fit = engine.compareTexts('', '', {
+      profileA: leftProfile,
+      profileB: rightProfile
+    });
+    const profileDistanceValue = profileDistance(fit);
+    const axisDistanceValue = axisDistance(leftProfile, rightProfile);
+    const heatmapDistanceValue = heatmapDistance(getText(left), getText(right));
+    PAIR_METRICS_CACHE.set(cacheKey, {
+      profileDistance: profileDistanceValue,
+      axisDistance: axisDistanceValue,
+      heatmapDistance: heatmapDistanceValue,
+      distance: round(profileDistanceValue + axisDistanceValue + heatmapDistanceValue, 4),
+      similarity: round(fit.similarity || 0, 4),
+      traceability: round(fit.traceability || 0, 4)
+    });
+  }
+  return PAIR_METRICS_CACHE.get(cacheKey);
 }
 
 function buildClosestProfilePairs(
@@ -117,24 +168,18 @@ function buildClosestProfilePairs(
       if (!leftProfile || !rightProfile) {
         continue;
       }
-      const fit = engine.compareTexts('', '', {
-        profileA: leftProfile,
-        profileB: rightProfile
-      });
-      const profileDistanceValue = profileDistance(fit);
-      const axisDistanceValue = axisDistance(leftProfile, rightProfile);
-      const heatmapDistanceValue = heatmapDistance(getText(left), getText(right));
+      const metrics = pairMetricsBetweenItems(left, right, getProfile, getText);
       pairs.push({
         leftId: left.id,
         leftName: left.name || left.id,
         rightId: right.id,
         rightName: right.name || right.id,
-        distance: round(profileDistanceValue + axisDistanceValue + heatmapDistanceValue, 4),
-        profileDistance: profileDistanceValue,
-        axisDistance: axisDistanceValue,
-        heatmapDistance: heatmapDistanceValue,
-        similarity: round(fit.similarity || 0, 4),
-        traceability: round(fit.traceability || 0, 4),
+        distance: metrics.distance,
+        profileDistance: metrics.profileDistance,
+        axisDistance: metrics.axisDistance,
+        heatmapDistance: metrics.heatmapDistance,
+        similarity: metrics.similarity,
+        traceability: metrics.traceability,
         sameFamily: left.familyId ? left.familyId === right.familyId : false,
         sameVariant: left.variant ? left.variant === right.variant : false
       });
@@ -171,18 +216,7 @@ function buildNearestFieldSummary(
         continue;
       }
       const right = items[rightIndex];
-      nearest = Math.min(
-        nearest,
-        round(
-          profileDistance(engine.compareTexts('', '', {
-            profileA: leftProfile,
-            profileB: getProfile(right)
-          })) +
-            axisDistance(leftProfile, getProfile(right)) +
-            heatmapDistance(leftText, getText(right)),
-          4
-        )
-      );
+      nearest = Math.min(nearest, pairMetricsBetweenItems(left, right, getProfile, getText).distance);
     }
     return nearest;
   });
@@ -201,15 +235,7 @@ function fieldDistanceBetweenItems(
   getProfile = (item) => item.profile,
   getText = (item) => item.text || item.diagnosticSpecimen?.text || ''
 ) {
-  return round(
-    profileDistance(engine.compareTexts('', '', {
-      profileA: getProfile(left),
-      profileB: getProfile(right)
-    })) +
-      axisDistance(getProfile(left), getProfile(right)) +
-      heatmapDistance(getText(left), getText(right)),
-    4
-  );
+  return pairMetricsBetweenItems(left, right, getProfile, getText).distance;
 }
 
 function buildWideFieldSubset(

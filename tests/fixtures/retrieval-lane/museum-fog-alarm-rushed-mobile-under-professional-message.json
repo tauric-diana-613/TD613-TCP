@@ -1,74 +1,82 @@
 {
-  "id": "customer-support-rushed-mobile-under-formal-record",
+  "id": "museum-fog-alarm-rushed-mobile-under-professional-message",
   "category": "retrieval-same-fact",
   "strength": 0.88,
-  "sourceText": "acct still locked. can get the code but login dies at fraud review every time. case CS-88412. support keeps saying reset again even tho reset isnt the problem. last 4 + recovery email match. need someone to clear hold not send same script",
-  "donorText": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud hold. The user could still receive one-time codes but could not complete login because the system flagged the device as new and placed the account in manual review. Case number CS-88412. The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which matched account records. A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying issue was not credential mismatch. It was the fraud lock itself. The account remains inaccessible until review removes the device challenge or support performs verified override. The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched.",
+  "sourceText": "gallery 4 fog rig set off detector again at 7:42. not fire, just too much haze sitting under ceiling head bc fan was low. pls stop calling cue \"light wash\" when its basically a fog burst now. reset finished 8:11",
+  "donorText": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Please adjust the first two passes before tomorrow so we do not reproduce the same alarm under a prettier label.",
   "donorSummary": {
     "mode": "borrowed",
     "strength": 0.88,
     "profile": {
-      "avgSentenceLength": 18.38,
-      "sentenceCount": 8,
+      "avgSentenceLength": 27.33,
+      "sentenceCount": 3,
       "contractionDensity": 0,
-      "punctuationDensity": 0.095,
-      "contentWordComplexity": 0.436,
-      "modifierDensity": 0.061,
-      "directness": 0.36,
-      "abstractionPosture": 0.667
+      "punctuationDensity": 0.11,
+      "contentWordComplexity": 0.329,
+      "modifierDensity": 0.075,
+      "directness": 0,
+      "abstractionPosture": 0.5
     }
   },
   "retrievalTrace": {
-    "sourceText": "acct still locked. can get the code but login dies at fraud review every time. case CS-88412. support keeps saying reset again even tho reset isnt the problem. last 4 + recovery email match. need someone to clear hold not send same script",
+    "sourceText": "gallery 4 fog rig set off detector again at 7:42. not fire, just too much haze sitting under ceiling head bc fan was low. pls stop calling cue \"light wash\" when its basically a fog burst now. reset finished 8:11",
     "donorProfileSummary": {
       "mode": "borrowed",
       "label": "native cadence",
       "strength": 0.88,
       "profile": {
-        "avgSentenceLength": 18.14,
-        "sentenceCount": 6,
+        "avgSentenceLength": 26.97,
+        "sentenceCount": 4,
         "contractionDensity": 0,
-        "punctuationDensity": 0.096,
+        "punctuationDensity": 0.111,
         "lineBreakDensity": 0,
-        "contentWordComplexity": 0.388,
-        "modifierDensity": 0.046,
-        "hedgeDensity": 0,
-        "directness": 0.36,
-        "abstractionPosture": 0.627,
-        "latinatePreference": 0.015,
-        "recurrencePressure": 0.175
+        "contentWordComplexity": 0.285,
+        "modifierDensity": 0.064,
+        "hedgeDensity": 0.024,
+        "directness": 0,
+        "abstractionPosture": 0.5,
+        "latinatePreference": 0.029,
+        "recurrencePressure": 0.108
       }
     },
     "sourceIR": {
       "metadata": {
-        "sentenceCount": 6,
-        "clauseCount": 6,
+        "sentenceCount": 4,
+        "clauseCount": 5,
         "literalSpans": [
           {
-            "value": "CS-88412",
+            "value": "7:42",
             "placeholder": "zzprotlitazz"
           },
           {
-            "value": "4",
+            "value": "8:11",
             "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "\"light wash\"",
+            "placeholder": "zzprotlitczz"
+          },
+          {
+            "value": "4",
+            "placeholder": "zzprotlitdzz"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "acct still locked",
-          "rhetoricalRole": "contrastive",
+          "raw": "gallery zzprotlitdzz fog rig set off detector again at zzprotlitazz",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "acct still locked",
+              "text": "gallery zzprotlitdzz fog rig set off detector again at zzprotlitazz",
               "relationToPrev": "start",
-              "clauseType": "fragment",
+              "clauseType": "main",
               "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "acct",
+              "tenseAspect": "present",
+              "propositionHead": "gallery",
               "actor": "",
               "action": "",
               "object": "",
@@ -79,109 +87,83 @@
         },
         {
           "id": "s1",
-          "raw": "can get the code but login dies at fraud review every time",
-          "rhetoricalRole": "contrastive",
+          "raw": "not fire, just too much haze sitting under ceiling head bc fan was low",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "can get the code but login dies at fraud review every time",
+              "text": "not fire, just too much haze sitting under ceiling head bc fan was low",
               "relationToPrev": "start",
               "clauseType": "main",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "present",
-              "propositionHead": "get",
-              "actor": "the code",
-              "action": "get",
-              "object": "code login dies at fraud",
+              "propositionHead": "head",
+              "actor": "",
+              "action": "head",
+              "object": "bc fan low",
               "modifiers": [],
-              "hedgeMarkers": []
+              "hedgeMarkers": [
+                "minimization"
+              ]
             }
           ]
         },
         {
           "id": "s2",
-          "raw": "case zzprotlitazz",
-          "rhetoricalRole": "additive",
+          "raw": "pls stop calling cue zzprotlitczz when its basically a fog burst now",
+          "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "case zzprotlitazz",
+              "text": "pls stop calling cue zzprotlitczz",
               "relationToPrev": "start",
-              "clauseType": "fragment",
+              "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "case",
+              "propositionHead": "pls",
               "actor": "",
               "action": "",
               "object": "",
               "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c1",
+              "text": "its basically a fog burst now",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "its",
+              "actor": "a fog",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "basically"
+              ],
               "hedgeMarkers": []
             }
           ]
         },
         {
           "id": "s3",
-          "raw": "support keeps saying reset again even tho reset isnt the problem",
+          "raw": "reset finished zzprotlitbzz",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "support keeps saying reset again even tho reset isnt the problem",
+              "text": "reset finished zzprotlitbzz",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "keeps",
-              "actor": "the problem",
-              "action": "keeps",
-              "object": "saying reset again even tho",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s4",
-          "raw": "last zzprotlitbzz + recovery email match",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s4c0",
-              "text": "last zzprotlitbzz + recovery email match",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "match",
-              "actor": "",
-              "action": "match",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s5",
-          "raw": "need someone to clear hold not send same script",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s5c0",
-              "text": "need someone to clear hold not send same script",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
               "tenseAspect": "past",
-              "propositionHead": "need",
+              "propositionHead": "finished",
               "actor": "",
-              "action": "need",
-              "object": "someone clear hold send same",
+              "action": "finished",
+              "object": "zzprotlitbzz",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -191,18 +173,18 @@
     },
     "opportunityProfile": {
       "sentenceSplit": 0,
-      "sentenceMerge": 5,
+      "sentenceMerge": 3,
       "contraction": 0,
       "connector": 2,
-      "lineBreak": 5,
-      "abbreviation": 1,
-      "orthography": 7,
-      "fragment": 2,
-      "conversational": 0,
+      "lineBreak": 3,
+      "abbreviation": 2,
+      "orthography": 4,
+      "fragment": 0,
+      "conversational": 1,
       "additive": 0,
-      "contrastive": 2,
+      "contrastive": 0,
       "causal": 0,
-      "temporal": 0,
+      "temporal": 1,
       "clarifying": 0,
       "resumptive": 1
     },
@@ -217,38 +199,38 @@
       ],
       "lexicalRegisterOperationsSelected": [
         "baseline-voice-realization",
-        "connector-stance-lexicon",
-        "connector-stance-rescue"
+        "baseline-stance",
+        "connector-stance-lexicon"
       ],
-      "connectorStrategy": "contrastive",
+      "connectorStrategy": "temporal",
       "contractionStrategy": "hold",
       "relationInventory": {
         "additive": 0,
-        "contrastive": 2,
+        "contrastive": 0,
         "causal": 0,
-        "temporal": 0,
+        "temporal": 1,
         "clarifying": 0,
         "resumptive": 1
       },
       "structuralGoals": {
         "sentenceCountDelta": 0,
-        "avgSentenceDelta": 10.97
+        "avgSentenceDelta": 16.47
       },
       "discourseGoals": {
         "contractionDelta": 0,
         "hedgeDelta": 0
       },
       "registerGoals": {
-        "contentWordComplexityDelta": 0.154,
-        "modifierDensityDelta": 0.046,
+        "contentWordComplexityDelta": 0.13799999999999998,
+        "modifierDensityDelta": 0.037000000000000005,
         "directnessDelta": 0,
-        "abstractionDelta": 0.127,
-        "latinateDelta": 0.015,
-        "registerMode": "reflective"
+        "abstractionDelta": 0,
+        "latinateDelta": 0.029,
+        "registerMode": "plain"
       },
       "operationBudget": {
         "splitSentence": 0,
-        "mergeSentence": 11,
+        "mergeSentence": 14,
         "swapConnector": 2,
         "applyHedge": 2,
         "realizeLexicon": 5
@@ -257,21 +239,19 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 364.618,
+        "score": 204.844,
         "passesApplied": [
           "baseline-merge",
           "baseline-voice-realization",
+          "baseline-stance",
           "planned-sentence-merge",
           "sentence-structure",
           "clause-join-split",
           "connector-stance-lexicon",
-          "cleanup-restore",
-          "structural-rescue",
-          "connector-stance-rescue"
+          "structural-rescue"
         ],
         "rescuePasses": [
-          "structural-rescue",
-          "connector-stance-rescue"
+          "structural-rescue"
         ],
         "changedDimensions": [
           "sentence-mean",
@@ -279,12 +259,8 @@
           "sentence-spread",
           "connector-stance",
           "lexical-register",
-          "directness",
-          "abstraction-posture",
           "abbreviation-posture",
           "orthography-posture",
-          "fragment-posture",
-          "conversation-posture",
           "surface-marker-posture",
           "punctuation-shape"
         ],
@@ -296,9 +272,9 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 341.776,
+          "score": 196.432,
           "passesApplied": [
-            "merge-pairs",
+            "baseline-floor",
             "clause-texture"
           ],
           "rescuePasses": [],
@@ -308,11 +284,8 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "modifier-density",
-            "directness",
             "abbreviation-posture",
             "orthography-posture",
-            "fragment-posture",
             "surface-marker-posture",
             "punctuation-shape"
           ],
@@ -323,21 +296,19 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 364.618,
+          "score": 204.844,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
+            "baseline-stance",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -345,12 +316,8 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "directness",
-            "abstraction-posture",
             "abbreviation-posture",
             "orthography-posture",
-            "fragment-posture",
-            "conversation-posture",
             "surface-marker-posture",
             "punctuation-shape"
           ],
@@ -361,21 +328,19 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 364.618,
+          "score": 204.844,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
+            "baseline-stance",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -383,12 +348,8 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "directness",
-            "abstraction-posture",
             "abbreviation-posture",
             "orthography-posture",
-            "fragment-posture",
-            "conversation-posture",
             "surface-marker-posture",
             "punctuation-shape"
           ],
@@ -399,21 +360,19 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 364.618,
+          "score": 204.844,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
+            "baseline-stance",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -421,12 +380,8 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "directness",
-            "abstraction-posture",
             "abbreviation-posture",
             "orthography-posture",
-            "fragment-posture",
-            "conversation-posture",
             "surface-marker-posture",
             "punctuation-shape"
           ],
@@ -437,21 +392,19 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 364.618,
+          "score": 204.844,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
+            "baseline-stance",
             "planned-sentence-merge",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
-            "cleanup-restore",
-            "structural-rescue",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "structural-rescue",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -459,12 +412,8 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
-            "directness",
-            "abstraction-posture",
             "abbreviation-posture",
             "orthography-posture",
-            "fragment-posture",
-            "conversation-posture",
             "surface-marker-posture",
             "punctuation-shape"
           ],
@@ -476,7 +425,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Account still locked, but can get the code but login dies at fraud review every time - case CS-88412. And support keeps saying reset again even tho reset isnt the problem. Last 4, recovery email align. And need someone to clear hold not forward same script.",
+      "text": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -487,42 +436,31 @@
         "sentence-spread",
         "connector-stance",
         "lexical-register",
-        "directness",
-        "abstraction-posture",
         "abbreviation-posture",
         "orthography-posture",
-        "fragment-posture",
-        "conversation-posture",
         "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
         {
-          "family": "send",
-          "from": "send",
-          "to": "forward",
-          "kind": "lexeme"
-        },
-        {
-          "family": "match",
-          "from": "match",
-          "to": "align",
+          "family": "settle",
+          "from": "set",
+          "to": "settle",
           "kind": "lexeme"
         }
       ],
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 4.769,
-        "outputDonorDistance": 2.941,
-        "donorImprovement": 1.828,
-        "donorImprovementRatio": 0.383,
+        "sourceDonorDistance": 4.521,
+        "outputDonorDistance": 3.181,
+        "donorImprovement": 1.34,
+        "donorImprovementRatio": 0.296,
         "sourceOutputLexicalOverlap": 0.844
       },
       "rescuePasses": [
         "structural-rescue",
-        "connector-stance-rescue",
-        "partial-rescue"
+        "progress-admit"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
@@ -531,38 +469,38 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 1,
-      "polarityMismatches": 0,
+      "objectCoverage": 0.9,
+      "polarityMismatches": 1,
       "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s2c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
-        },
-        {
-          "sourceClauseId": "s1c0",
           "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
-          "tenseMismatch": 1,
+          "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.316
+          "globalBagScore": 0.1
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s0c2",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 1,
+          "tenseMismatch": 0,
+          "bagScore": 0.75,
+          "globalBagScore": 0.273
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -573,151 +511,127 @@
           "globalBagScore": 0
         },
         {
+          "sourceClauseId": "s2c1",
+          "matchedClauseId": "s0c3",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.333,
+          "globalBagScore": 0.182
+        },
+        {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.368
-        },
-        {
-          "sourceClauseId": "s4c0",
-          "matchedClauseId": "s2c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.053
-        },
-        {
-          "sourceClauseId": "s5c0",
-          "matchedClauseId": "s3c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.316
+          "tenseMismatch": 1,
+          "bagScore": 0,
+          "globalBagScore": 0.091
         }
       ],
-      "sourceClauseCount": 6,
+      "sourceClauseCount": 5,
       "outputClauseCount": 4
     },
     "protectedAnchorAudit": {
-      "totalAnchors": 2,
-      "resolvedAnchors": 2,
+      "totalAnchors": 4,
+      "resolvedAnchors": 4,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 4,
+        "sentenceCount": 1,
         "clauseCount": 4,
         "literalSpans": [
           {
-            "value": "CS-88412",
+            "value": "7:42",
             "placeholder": "zzprotlitazz"
           },
           {
-            "value": "4",
+            "value": "8:11",
             "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "\"light wash\"",
+            "placeholder": "zzprotlitczz"
+          },
+          {
+            "value": "4",
+            "placeholder": "zzprotlitdzz"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "Account still locked, but can get the code but login dies at fraud review every time - case CS-88412",
-          "rhetoricalRole": "contrastive",
+          "raw": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Account still locked, but can get the code but login dies at fraud review every time - case CS-88412",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "get",
-              "actor": "the code",
-              "action": "get",
-              "object": "code login dies at fraud",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "And support keeps saying reset again even tho reset isnt the problem",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "And support keeps saying reset again even tho reset isnt the problem",
+              "text": "Gallery 4 fog rig settle off detector again at 7:42",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "keeps",
-              "actor": "the problem",
-              "action": "keeps",
-              "object": "saying reset again even tho",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "Last 4, recovery email align",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "Last 4, recovery email align",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "align",
+              "propositionHead": "gallery",
               "actor": "",
-              "action": "align",
+              "action": "",
               "object": "",
               "modifiers": [],
               "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "And need someone to clear hold not forward same script.",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
+            },
             {
-              "id": "s3c0",
-              "text": "And need someone to clear hold not forward same script",
-              "relationToPrev": "start",
-              "clauseType": "main",
+              "id": "s0c1",
+              "text": "and not fire",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
               "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "need",
+              "tenseAspect": "present",
+              "propositionHead": "fire",
               "actor": "",
-              "action": "need",
-              "object": "someone clear hold forward same",
+              "action": "",
+              "object": "",
               "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s0c2",
+              "text": "just too much haze sitting under ceiling head as fan was low",
+              "relationToPrev": "causal",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "head",
+              "actor": "",
+              "action": "head",
+              "object": "fan low",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            },
+            {
+              "id": "s0c3",
+              "text": "please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11",
+              "relationToPrev": "causal",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "finished",
+              "actor": "a fog",
+              "action": "finished",
+              "object": "8 11",
+              "modifiers": [
+                "basically"
+              ],
               "hedgeMarkers": []
             }
           ]
@@ -735,47 +649,36 @@
         "sentence-spread",
         "connector-stance",
         "lexical-register",
-        "directness",
-        "abstraction-posture",
         "abbreviation-posture",
         "orthography-posture",
-        "fragment-posture",
-        "conversation-posture",
         "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
         {
-          "family": "send",
-          "from": "send",
-          "to": "forward",
-          "kind": "lexeme"
-        },
-        {
-          "family": "match",
-          "from": "match",
-          "to": "align",
+          "family": "settle",
+          "from": "set",
+          "to": "settle",
           "kind": "lexeme"
         }
       ],
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 4.769,
-        "outputDonorDistance": 2.941,
-        "donorImprovement": 1.828,
-        "donorImprovementRatio": 0.383,
+        "sourceDonorDistance": 4.521,
+        "outputDonorDistance": 3.181,
+        "donorImprovement": 1.34,
+        "donorImprovementRatio": 0.296,
         "sourceOutputLexicalOverlap": 0.844
       },
       "realizationNotes": [
-        "2 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, directness, abstraction-posture, abbreviation-posture, orthography-posture, fragment-posture, conversation-posture, surface-marker-posture.",
+        "1 lexical family swap landed.",
+        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, surface-marker-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
         "structural-rescue",
-        "connector-stance-rescue",
-        "partial-rescue"
+        "progress-admit"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
@@ -786,11 +689,7 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "abstraction-posture",
       "connector-stance",
-      "conversation-posture",
-      "directness",
-      "fragment-posture",
       "lexical-register",
       "orthography-posture",
       "punctuation-shape",
@@ -800,16 +699,15 @@
       "surface-marker-posture"
     ],
     "lexemeSwapFamilies": [
-      "match",
-      "send"
+      "settle"
     ],
     "relationInventory": [
       "additive:0",
       "causal:0",
       "clarifying:0",
-      "contrastive:2",
+      "contrastive:0",
       "resumptive:1",
-      "temporal:0"
+      "temporal:1"
     ],
     "structuralOperations": [
       "baseline-merge",
@@ -819,17 +717,17 @@
       "structural-rescue"
     ],
     "lexicalOperations": [
+      "baseline-stance",
       "baseline-voice-realization",
-      "connector-stance-lexicon",
-      "connector-stance-rescue"
+      "connector-stance-lexicon"
     ],
-    "connectorStrategy": "contrastive",
+    "connectorStrategy": "temporal",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 1,
-    "polarityMismatches": 0,
+    "objectCoverage": 0.9,
+    "polarityMismatches": 1,
     "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1
   }

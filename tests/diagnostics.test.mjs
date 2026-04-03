@@ -14,15 +14,15 @@ const repoRoot = path.resolve(path.dirname(__filename), '..');
 const latestJsonPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.json');
 const latestMdPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.md');
 
-assert.equal(DIAGNOSTIC_CORPUS.families.length, 14, 'diagnostic corpus exposes 14 families');
-assert.equal(DIAGNOSTIC_CORPUS.samples.length, 56, 'diagnostic corpus exposes 56 samples');
-assert.equal(DIAGNOSTIC_CORPUS.promotedSampleIds.length, 16, 'diagnostic corpus exposes 16 promoted deck samples');
+assert.equal(DIAGNOSTIC_CORPUS.families.length, 18, 'diagnostic corpus exposes 18 families');
+assert.equal(DIAGNOSTIC_CORPUS.samples.length, 72, 'diagnostic corpus exposes 72 samples');
+assert.equal(DIAGNOSTIC_CORPUS.promotedSampleIds.length, 24, 'diagnostic corpus exposes 24 promoted deck samples');
 assert.ok(DIAGNOSTIC_CORPUS.deckRandomizerSampleIds.length >= 24, 'diagnostic corpus exposes an expanded deck randomizer sample set');
-assert.equal(DIAGNOSTIC_BATTERY.swapPairs.length, 76, 'diagnostic battery exposes 76 ordered swap pairs');
-assert.equal(DIAGNOSTIC_BATTERY.maskCases.length, 26, 'diagnostic battery exposes 26 mask cases');
-assert.equal(DIAGNOSTIC_BATTERY.trainerCases.length, 26, 'diagnostic battery exposes 26 trainer cases');
-assert.equal(DIAGNOSTIC_BATTERY.retrievalCases.length, 16, 'diagnostic battery exposes 16 retrieval cases');
-assert.equal(DIAGNOSTIC_BATTERY.falseNeighborCases.length, 24, 'diagnostic battery exposes 24 false-neighbor cases');
+assert.equal(DIAGNOSTIC_BATTERY.swapPairs.length, 100, 'diagnostic battery exposes 100 ordered swap pairs');
+assert.equal(DIAGNOSTIC_BATTERY.maskCases.length, 34, 'diagnostic battery exposes 34 mask cases');
+assert.equal(DIAGNOSTIC_BATTERY.trainerCases.length, 34, 'diagnostic battery exposes 34 trainer cases');
+assert.equal(DIAGNOSTIC_BATTERY.retrievalCases.length, 18, 'diagnostic battery exposes 18 retrieval cases');
+assert.equal(DIAGNOSTIC_BATTERY.falseNeighborCases.length, 32, 'diagnostic battery exposes 32 false-neighbor cases');
 
 for (const family of DIAGNOSTIC_CORPUS.families) {
   const samples = DIAGNOSTIC_CORPUS.samples.filter((sample) => sample.familyId === family.id);
@@ -79,7 +79,7 @@ const literalRiskMatrix = engine.buildSwapCadenceMatrix(DIAGNOSTIC_CORPUS.sample
   strength: 0.82
 });
 
-assert.equal(literalRiskMatrix.fullMatrix.length, 24, 'literal-risk swap diagnostics include 24 ordered cases');
+assert.equal(literalRiskMatrix.fullMatrix.length, 32, 'literal-risk swap diagnostics include 32 ordered cases');
 assert(
   literalRiskMatrix.fullMatrix.every((report) => report.semanticAuditSummary.protectedAnchorIntegrityMin === 1),
   'literal-risk swap diagnostics preserve protected anchors'
@@ -89,11 +89,11 @@ assert.ok(fs.existsSync(latestJsonPath), 'diagnostics JSON report exists');
 assert.ok(fs.existsSync(latestMdPath), 'diagnostics Markdown report exists');
 
 const latestReport = JSON.parse(fs.readFileSync(latestJsonPath, 'utf8'));
-assert.equal(latestReport.sections.swapPairs.length, 76, 'diagnostics JSON report includes swap section');
-assert.equal(latestReport.sections.maskCases.length, 26, 'diagnostics JSON report includes mask section');
-assert.equal(latestReport.sections.trainerCases.length, 26, 'diagnostics JSON report includes trainer section');
-assert.equal(latestReport.sections.retrievalCases.length, 16, 'diagnostics JSON report includes retrieval section');
-assert.equal(latestReport.sections.falseNeighborCases.length, 24, 'diagnostics JSON report includes false-neighbor section');
+assert.equal(latestReport.sections.swapPairs.length, 100, 'diagnostics JSON report includes swap section');
+assert.equal(latestReport.sections.maskCases.length, 34, 'diagnostics JSON report includes mask section');
+assert.equal(latestReport.sections.trainerCases.length, 34, 'diagnostics JSON report includes trainer section');
+assert.equal(latestReport.sections.retrievalCases.length, 18, 'diagnostics JSON report includes retrieval section');
+assert.equal(latestReport.sections.falseNeighborCases.length, 32, 'diagnostics JSON report includes false-neighbor section');
 assert.ok(latestReport.sampleAudit, 'diagnostics JSON report includes sample audit');
 assert.ok(latestReport.personaAudit, 'diagnostics JSON report includes persona audit');
 assert.equal(latestReport.sampleAudit.randomizerCorpusSize, DIAGNOSTIC_CORPUS.samples.length, 'sample audit uses the full diagnostics corpus');
@@ -103,18 +103,18 @@ assert.ok(Array.isArray(latestReport.sampleAudit.exactProfileCollisions), 'sampl
 assert.equal(latestReport.sampleAudit.exactProfileCollisions.length, 0, 'sample audit reports no exact profile collisions for the current corpus');
 assert.equal(latestReport.sampleAudit.deckRandomizerSize, DIAGNOSTIC_CORPUS.deckRandomizerSampleIds.length, 'sample audit reports the live deck randomizer size');
 assert.ok(latestReport.sampleAudit.deckRandomizerSize >= 24, 'sample audit reports an expanded deck randomizer size');
-assert.ok(latestReport.sampleAudit.deckRandomizerFamilyCount >= 12, 'sample audit reports at least 12 families in the live deck randomizer');
-assert.ok(latestReport.sampleAudit.deckRandomizerPairedFamilyCount >= 10, 'sample audit reports at least 10 same-family contrast pairs in the live deck randomizer');
+assert.ok(latestReport.sampleAudit.deckRandomizerFamilyCount >= 18, 'sample audit reports at least 18 families in the live deck randomizer');
+assert.ok(latestReport.sampleAudit.deckRandomizerPairedFamilyCount >= 18, 'sample audit reports at least 18 same-family contrast pairs in the live deck randomizer');
 assert.equal(latestReport.sampleAudit.deckRandomizerWideSubsetSize, 16, 'sample audit reports a 16-sample wide subset for spread scoring');
-assert.ok(latestReport.sampleAudit.averageNearestFieldDistance >= 2.5, 'sample audit reports a widened deck nearest-field distance');
-assert.ok(latestReport.sampleAudit.minNearestFieldDistance >= 2, 'sample audit reports a bounded minimum deck field distance');
+assert.ok(latestReport.sampleAudit.averageNearestFieldDistance >= 3, 'sample audit reports a widened deck nearest-field distance');
+assert.ok(latestReport.sampleAudit.minNearestFieldDistance >= 2.7, 'sample audit reports a bounded minimum deck field distance');
 assert.equal(latestReport.personaAudit.resolvedPersonaCount, 7, 'persona audit resolves all built-in personas');
 assert.equal(latestReport.personaAudit.uniqueResolvedProfileCount, 7, 'persona audit resolves distinct built-in persona profiles');
 assert.ok(Array.isArray(latestReport.personaAudit.closestPairs), 'persona audit closest pairs serialize');
 assert.ok(Array.isArray(latestReport.personaAudit.missingRecipeSampleIds), 'persona audit missing recipe ids serialize');
 assert.equal(latestReport.personaAudit.missingRecipeSampleIds.length, 0, 'persona audit reports no missing recipe sample ids for current built-ins');
-assert.ok(latestReport.personaAudit.averageNearestFieldDistance >= 1.75, 'persona audit reports a widened average nearest field distance');
-assert.ok(latestReport.personaAudit.minNearestFieldDistance >= 1.4, 'persona audit reports a materially separated minimum field distance');
+assert.ok(latestReport.personaAudit.averageNearestFieldDistance >= 1.7, 'persona audit reports a widened average nearest field distance');
+assert.ok(latestReport.personaAudit.minNearestFieldDistance >= 1.45, 'persona audit reports a materially separated minimum field distance');
 assert.ok(latestReport.personaAudit.distinctOutputCheck?.allDistinct, 'persona audit distinct-output check stays true');
 assert.ok(latestReport.workingDoctrine, 'diagnostics JSON report includes private EO-RFD working doctrine');
 assert.ok(

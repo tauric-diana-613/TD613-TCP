@@ -1,0 +1,630 @@
+{
+  "id": "adversarial-hearing-rushed-mobile-under-professional-message",
+  "category": "retrieval-same-fact",
+  "strength": 0.88,
+  "sourceText": "hearing got ugly. they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. she left for med pickup she already told them abt. thats not refusal its them being late",
+  "donorText": "Hearing unit, please correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector did not text until 5:43 that he was still in traffic. Camera time places arrival after 6:10. The claimant had already left for the medical pickup she flagged earlier that day. That is a late inspection, not a refusal. If the refusal label stays in the summary, the schedule breach disappears and the whole case leans on the wrong premise.",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 16.33,
+      "sentenceCount": 6,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.153,
+      "contentWordComplexity": 0.327,
+      "modifierDensity": 0.119,
+      "directness": 0,
+      "abstractionPosture": 0.5
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "hearing got ugly. they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. she left for med pickup she already told them abt. thats not refusal its them being late",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 16.21,
+        "sentenceCount": 4,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.153,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.294,
+        "modifierDensity": 0.106,
+        "hedgeDensity": 0,
+        "directness": 0.043,
+        "abstractionPosture": 0.5,
+        "latinatePreference": 0.054,
+        "recurrencePressure": 0.181
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 4,
+        "clauseCount": 4,
+        "literalSpans": [
+          {
+            "value": "5:43",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "6:10",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "\"refused entry\"",
+            "placeholder": "zzprotlitczz"
+          },
+          {
+            "value": "1-5",
+            "placeholder": "zzprotlitdzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "hearing got ugly",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "hearing got ugly",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "got",
+              "actor": "",
+              "action": "got",
+              "object": "ugly",
+              "modifiers": [
+                "ugly"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "they keep saying she zzprotlitczz but inspector texted zzprotlitazz he was late + showed after zzprotlitbzz on a zzprotlitdzz window",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "they keep saying she zzprotlitczz but inspector texted zzprotlitazz he was late + showed after zzprotlitbzz on a zzprotlitdzz window",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "keep",
+              "actor": "they",
+              "action": "keep",
+              "object": "saying zzprotlitczz inspector texted zzprotlitazz",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "she left for med pickup she already told them abt",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "she left for med pickup she already told them abt",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "left",
+              "actor": "she",
+              "action": "left",
+              "object": "med pickup already told them",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "thats not refusal its them being late",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "thats not refusal its them being late",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "being",
+              "actor": "",
+              "action": "being",
+              "object": "late",
+              "modifiers": [
+                "refusal"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 0,
+      "sentenceMerge": 3,
+      "contraction": 0,
+      "connector": 1,
+      "lineBreak": 3,
+      "abbreviation": 0,
+      "orthography": 5,
+      "fragment": 0,
+      "conversational": 0,
+      "additive": 0,
+      "contrastive": 1,
+      "causal": 0,
+      "temporal": 1,
+      "clarifying": 0,
+      "resumptive": 0
+    },
+    "planSummary": {
+      "transferMode": "expand",
+      "structuralOperationsSelected": [
+        "baseline-merge",
+        "sentence-structure",
+        "clause-join-split"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "baseline-voice-realization",
+        "connector-stance-lexicon"
+      ],
+      "connectorStrategy": "contrastive",
+      "contractionStrategy": "hold",
+      "relationInventory": {
+        "additive": 0,
+        "contrastive": 1,
+        "causal": 0,
+        "temporal": 1,
+        "clarifying": 0,
+        "resumptive": 0
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": 5.460000000000001
+      },
+      "discourseGoals": {
+        "contractionDelta": 0,
+        "hedgeDelta": 0
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": 0.10499999999999998,
+        "modifierDensityDelta": 0.040999999999999995,
+        "directnessDelta": -0.137,
+        "abstractionDelta": 0,
+        "latinateDelta": -0.011000000000000003,
+        "registerMode": "compressed"
+      },
+      "operationBudget": {
+        "splitSentence": 0,
+        "mergeSentence": 5,
+        "swapConnector": 2,
+        "applyHedge": 0,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "lexical-register-heavy",
+        "score": 247.744,
+        "passesApplied": [
+          "baseline-merge",
+          "baseline-voice-realization",
+          "sentence-structure",
+          "clause-join-split",
+          "connector-stance-lexicon"
+        ],
+        "rescuePasses": [],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "abbreviation-posture",
+          "orthography-posture",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": true,
+        "notes": []
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 388.264,
+          "passesApplied": [
+            "merge-pairs",
+            "clause-texture"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "content-word-complexity",
+            "abbreviation-posture",
+            "orthography-posture",
+            "surface-marker-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 247.93,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "punctuation-finish"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "abbreviation-posture",
+            "orthography-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "merge-heavy",
+          "score": 247.93,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "punctuation-finish"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "abbreviation-posture",
+            "orthography-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 247.93,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "punctuation-finish"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "abbreviation-posture",
+            "orthography-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 247.744,
+          "passesApplied": [
+            "baseline-merge",
+            "baseline-voice-realization",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "abbreviation-posture",
+            "orthography-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late, showed after 6:10 on a 1-5 window. she left for med pickup she already told them abt; not refusal its them being late.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "abbreviation-posture",
+        "orthography-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [],
+      "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 3.338,
+        "outputDonorDistance": 2.854,
+        "donorImprovement": 0.484,
+        "donorImprovementRatio": 0.145,
+        "sourceOutputLexicalOverlap": 0.974
+      },
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 0.938,
+      "polarityMismatches": 0,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.133
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s0c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.5,
+          "globalBagScore": 0.235
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.4
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.133
+        }
+      ],
+      "sourceClauseCount": 4,
+      "outputClauseCount": 4
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 4,
+      "resolvedAnchors": 4,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 2,
+        "clauseCount": 4,
+        "literalSpans": [
+          {
+            "value": "5:43",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "6:10",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "\"refused entry\"",
+            "placeholder": "zzprotlitczz"
+          },
+          {
+            "value": "1-5",
+            "placeholder": "zzprotlitdzz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late, showed after 6:10 on a 1-5 window",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "hearing got ugly",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "got",
+              "actor": "",
+              "action": "got",
+              "object": "ugly",
+              "modifiers": [
+                "ugly"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s0c1",
+              "text": "they keep saying she \"refused entry\" but inspector texted 5:43 he was late, showed after 6:10 on a 1-5 window",
+              "relationToPrev": "contrastive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "keep",
+              "actor": "they",
+              "action": "keep",
+              "object": "saying refused entry inspector texted",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "she left for med pickup she already told them abt; not refusal its them being late.",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "she left for med pickup she already told them abt",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "left",
+              "actor": "she",
+              "action": "left",
+              "object": "med pickup already told them",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "not refusal its them being late",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "being",
+              "actor": "",
+              "action": "being",
+              "object": "late",
+              "modifiers": [
+                "refusal"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "abbreviation-posture",
+        "orthography-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [],
+      "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 3.338,
+        "outputDonorDistance": 2.854,
+        "donorImprovement": 0.484,
+        "donorImprovementRatio": 0.145,
+        "sourceOutputLexicalOverlap": 0.974
+      },
+      "realizationNotes": [
+        "Register shift surfaced through abbreviation-posture, orthography-posture.",
+        "Semantic risk is elevated; review the realized output before relying on it."
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    }
+  },
+  "semanticContract": {
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "abbreviation-posture",
+      "orthography-posture",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [],
+    "relationInventory": [
+      "additive:0",
+      "causal:0",
+      "clarifying:0",
+      "contrastive:1",
+      "resumptive:0",
+      "temporal:1"
+    ],
+    "structuralOperations": [
+      "baseline-merge",
+      "clause-join-split",
+      "sentence-structure"
+    ],
+    "lexicalOperations": [
+      "baseline-voice-realization",
+      "connector-stance-lexicon"
+    ],
+    "connectorStrategy": "contrastive",
+    "contractionStrategy": "hold",
+    "propositionCoverage": 1,
+    "actorCoverage": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 0.938,
+    "polarityMismatches": 0,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}

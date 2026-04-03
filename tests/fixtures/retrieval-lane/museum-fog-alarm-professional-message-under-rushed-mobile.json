@@ -1,0 +1,799 @@
+{
+  "id": "museum-fog-alarm-professional-message-under-rushed-mobile",
+  "category": "retrieval-same-fact",
+  "strength": 0.88,
+  "sourceText": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Please adjust the first two passes before tomorrow so we do not reproduce the same alarm under a prettier label.",
+  "donorText": "gallery 4 fog rig set off detector again at 7:42. not fire, just too much haze sitting under ceiling head bc fan was low. pls stop calling cue \"light wash\" when its basically a fog burst now. reset finished 8:11",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 10.5,
+      "sentenceCount": 4,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.143,
+      "contentWordComplexity": 0.147,
+      "modifierDensity": 0.027,
+      "directness": 0,
+      "abstractionPosture": 0.5
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Please adjust the first two passes before tomorrow so we do not reproduce the same alarm under a prettier label.",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 10.86,
+        "sentenceCount": 3,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.142,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.191,
+        "modifierDensity": 0.038,
+        "hedgeDensity": 0.018,
+        "directness": 0,
+        "abstractionPosture": 0.5,
+        "latinatePreference": 0.009,
+        "recurrencePressure": 0.133
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 3,
+        "clauseCount": 5,
+        "literalSpans": [
+          {
+            "value": "7:42 PM",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "8:11",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "4",
+            "placeholder": "zzprotlitczz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Production team, quick correction from Gallery zzprotlitczz: the fog cue at zzprotlitazz is what tripped the detector, not an electrical issue",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Production team, quick correction from Gallery zzprotlitczz: the fog cue at zzprotlitazz is what tripped the detector, not an electrical issue",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "past",
+              "propositionHead": "issue",
+              "actor": "the fog",
+              "action": "issue",
+              "object": "",
+              "modifiers": [
+                "quick",
+                "electrical"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "Facilities reset the panel and we resumed at zzprotlitbzz, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "Facilities reset the panel",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "facilities",
+              "actor": "the panel",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "we resumed at zzprotlitbzz, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
+              "relationToPrev": "contrastive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "is",
+              "actor": "we",
+              "action": "is",
+              "object": "cue sheet describes effect light",
+              "modifiers": [
+                "real",
+                "atmospheric"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "Please adjust the first two passes before tomorrow so we do not reproduce the same alarm under a prettier label.",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "Please adjust the first two passes before tomorrow",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "please",
+              "actor": "the first",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c1",
+              "text": "we do not reproduce the same alarm under a prettier label",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "do",
+              "actor": "we",
+              "action": "do",
+              "object": "reproduce same alarm under prettier",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 1,
+      "sentenceMerge": 2,
+      "contraction": 1,
+      "connector": 6,
+      "lineBreak": 2,
+      "abbreviation": 0,
+      "orthography": 0,
+      "fragment": 0,
+      "conversational": 0,
+      "additive": 1,
+      "contrastive": 3,
+      "causal": 2,
+      "temporal": 1,
+      "clarifying": 0,
+      "resumptive": 1
+    },
+    "planSummary": {
+      "transferMode": "compress",
+      "structuralOperationsSelected": [
+        "split-rules"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "phrase-texture"
+      ],
+      "connectorStrategy": "contrastive",
+      "contractionStrategy": "hold",
+      "relationInventory": {
+        "additive": 1,
+        "contrastive": 3,
+        "causal": 2,
+        "temporal": 1,
+        "clarifying": 0,
+        "resumptive": 1
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": -16.47
+      },
+      "discourseGoals": {
+        "contractionDelta": 0,
+        "hedgeDelta": 0.018
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": -0.138,
+        "modifierDensityDelta": -0.037,
+        "directnessDelta": 0,
+        "abstractionDelta": 0,
+        "latinateDelta": -0.028999999999999998,
+        "registerMode": "compressed"
+      },
+      "operationBudget": {
+        "splitSentence": 23,
+        "mergeSentence": 0,
+        "swapConnector": 2,
+        "applyHedge": 2,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "ir-beam-search",
+        "score": 477.018,
+        "passesApplied": [
+          "split-rules",
+          "phrase-texture"
+        ],
+        "rescuePasses": [],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "lexical-register",
+          "abbreviation-posture",
+          "orthography-posture",
+          "fragment-posture",
+          "conversation-posture",
+          "surface-marker-posture",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": true,
+        "notes": []
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 477.018,
+          "passesApplied": [
+            "split-rules",
+            "phrase-texture"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
+            "surface-marker-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 443.388,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "planned-sentence-split",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "punctuation-finish",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "split-heavy",
+          "score": 443.388,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "planned-sentence-split",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "punctuation-finish",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 443.388,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "planned-sentence-split",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "punctuation-finish",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 441.534,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "planned-sentence-split",
+            "sentence-structure",
+            "clause-join-split",
+            "connector-stance-lexicon",
+            "cleanup-restore"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "conversation-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "production team, fast correction from Gallery 4. the fog cue at 7:42 PM is what tripped the detector, not an electrical give. facilities reset the panel. and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Pls adjust the first two passes before tmrw. so we dont reproduce the same alarm under a prettier label.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "abbreviation-posture",
+        "orthography-posture",
+        "fragment-posture",
+        "conversation-posture",
+        "surface-marker-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "fast",
+          "from": "quick",
+          "to": "fast",
+          "kind": "lexeme"
+        },
+        {
+          "family": "give",
+          "from": "issue",
+          "to": "give",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 4.535,
+        "outputDonorDistance": 1.878,
+        "donorImprovement": 2.657,
+        "donorImprovementRatio": 0.586,
+        "sourceOutputLexicalOverlap": 0.859
+      },
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 0.95,
+      "polarityMismatches": 1,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.429,
+          "globalBagScore": 0.12
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.083
+        },
+        {
+          "sourceClauseId": "s1c1",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.714,
+          "globalBagScore": 0.292
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s4c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.333,
+          "globalBagScore": 0.04
+        },
+        {
+          "sourceClauseId": "s2c1",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 1,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        }
+      ],
+      "sourceClauseCount": 5,
+      "outputClauseCount": 8
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 3,
+      "resolvedAnchors": 3,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 6,
+        "clauseCount": 8,
+        "literalSpans": [
+          {
+            "value": "7:42 PM",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "8:11",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "4",
+            "placeholder": "zzprotlitczz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "production team, fast correction from Gallery 4",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "production team, fast correction from Gallery 4",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "production",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "the fog cue at 7:42 PM is what tripped the detector, not an electrical give",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "the fog cue at 7:42 PM is what tripped the detector, not an electrical give",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "past",
+              "propositionHead": "is",
+              "actor": "the fog",
+              "action": "is",
+              "object": "what tripped detector electrical give",
+              "modifiers": [
+                "electrical",
+                "give"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "facilities reset the panel",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "facilities reset the panel",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "facilities",
+              "actor": "the panel",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "is",
+              "actor": "we",
+              "action": "is",
+              "object": "cue sheet describes effect",
+              "modifiers": [
+                "real"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s3c1",
+              "text": "a light atmospheric wash",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "light",
+              "actor": "a light",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "atmospheric"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s3c2",
+              "text": "the rig is now outputting closer to a burst",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "is",
+              "actor": "the rig",
+              "action": "is",
+              "object": "now outputting closer burst",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "Pls adjust the first two passes before tmrw",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "Pls adjust the first two passes before tmrw",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "pls",
+              "actor": "the first",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "so we dont reproduce the same alarm under a prettier label.",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "so we dont reproduce the same alarm under a prettier label",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "dont",
+              "actor": "we",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "abbreviation-posture",
+        "orthography-posture",
+        "fragment-posture",
+        "conversation-posture",
+        "surface-marker-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "fast",
+          "from": "quick",
+          "to": "fast",
+          "kind": "lexeme"
+        },
+        {
+          "family": "give",
+          "from": "issue",
+          "to": "give",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 4.535,
+        "outputDonorDistance": 1.878,
+        "donorImprovement": 2.657,
+        "donorImprovementRatio": 0.586,
+        "sourceOutputLexicalOverlap": 0.859
+      },
+      "realizationNotes": [
+        "2 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, fragment-posture, conversation-posture, surface-marker-posture.",
+        "Semantic risk is elevated; review the realized output before relying on it."
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    }
+  },
+  "semanticContract": {
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "abbreviation-posture",
+      "connector-stance",
+      "conversation-posture",
+      "fragment-posture",
+      "lexical-register",
+      "orthography-posture",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread",
+      "surface-marker-posture"
+    ],
+    "lexemeSwapFamilies": [
+      "fast",
+      "give"
+    ],
+    "relationInventory": [
+      "additive:1",
+      "causal:2",
+      "clarifying:0",
+      "contrastive:3",
+      "resumptive:1",
+      "temporal:1"
+    ],
+    "structuralOperations": [
+      "split-rules"
+    ],
+    "lexicalOperations": [
+      "phrase-texture"
+    ],
+    "connectorStrategy": "contrastive",
+    "contractionStrategy": "hold",
+    "propositionCoverage": 1,
+    "actorCoverage": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 0.95,
+    "polarityMismatches": 1,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}

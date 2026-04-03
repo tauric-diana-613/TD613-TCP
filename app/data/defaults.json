@@ -74,7 +74,7 @@
     {
       "id": "archive-grant-tangled-followup",
       "name": "Neighborhood Archive Grant Scope / Tangled Follow-up",
-      "intention": "Repair oversimplification while preserving the archive project’s real sequencing logic.",
+      "intention": "Repair oversimplification while preserving the archive project's real sequencing logic.",
       "text": "One more correction to the summary language because I think \"cataloging plus exhibit\" is too neat and accidentally repeats the exact habit we were trying to get away from. Yes, the project produces a catalog protocol and an exhibition kit. But the hinge is the review interval in between, because the descriptive language is not neutral just because it sounds standardized. If we move from description straight to publication, the project may still look efficient from outside and will have stopped doing the reciprocal part it claimed as method. That is why I keep insisting on the two-week review buffer, the translation line, and the steward training as deliverables rather than warm context. Without those, we have a cleaner workflow and a less honest grant."
     },
     {
@@ -100,6 +100,54 @@
       "name": "Pickup Change and Permission Slip / Rushed Mobile",
       "intention": "Preserve the same pickup and permission facts through everyday mobile shorthand.",
       "text": "hi office - aunt maribel has to do pickup today not grandma. shell have id. also i swear i signed the museum slip, it might still be in backpack w the waiver papers. if class can check before 3 that would help. sorry for late change"
+    },
+    {
+      "id": "municipal-zoning-formal-record",
+      "name": "Parking Variance Worksheet / Formal Record",
+      "intention": "Preserve hearing date, stall counts, and the distinction between a deferred vote and a denial.",
+      "text": "For case ZN-214, the parking variance memo circulated ahead of the June 12 hearing still lists 14 usable stalls, but Exhibit B only supports 11 once the fire-lane carveout and loading strip are counted correctly. That mismatch matters because the hardship argument assumes the larger number. Staff first treated it as a spreadsheet rounding issue; it is not. The site photos, striping map, and curb-cut sketch all point to the same 11-stall ceiling. The board did not deny the variance on June 12. It deferred action and requested a corrected worksheet because the hearing record could not rely on two competing stall counts at once. The immediate failure is not only the applicant's narrative. It is document custody: the memo, exhibit, and oral summary no longer agree on the number the board is being asked to treat as fact."
+    },
+    {
+      "id": "municipal-zoning-rushed-mobile",
+      "name": "Parking Variance Worksheet / Rushed Mobile",
+      "intention": "Keep the same zoning facts visible through terse procedural shorthand.",
+      "text": "zn-214 packet still off. memo says 14 stalls, exhibit only gives 11 once fire lane + load strip count. board didnt deny it, they punted bc record had 2 numbers fighting each other. pls fix worksheet before resched"
+    },
+    {
+      "id": "adversarial-hearing-professional-message",
+      "name": "Late Inspection Hearing / Professional Message",
+      "intention": "Push back on adversarial framing while keeping the documented schedule intact.",
+      "text": "Hearing unit, please correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector did not text until 5:43 that he was still in traffic. Camera time places arrival after 6:10. The claimant had already left for the medical pickup she flagged earlier that day. That is a late inspection, not a refusal. If the refusal label stays in the summary, the schedule breach disappears and the whole case leans on the wrong premise."
+    },
+    {
+      "id": "adversarial-hearing-rushed-mobile",
+      "name": "Late Inspection Hearing / Rushed Mobile",
+      "intention": "Keep the same late-arrival facts visible under adversarial shorthand pressure.",
+      "text": "hearing got ugly. they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. she left for med pickup she already told them abt. thats not refusal its them being late"
+    },
+    {
+      "id": "museum-fog-alarm-professional-message",
+      "name": "Gallery 4 Fog Cue / Professional Message",
+      "intention": "Carry the same rehearsal facts forward in a crisp but team-facing register.",
+      "text": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Please adjust the first two passes before tomorrow so we do not reproduce the same alarm under a prettier label."
+    },
+    {
+      "id": "museum-fog-alarm-rushed-mobile",
+      "name": "Gallery 4 Fog Cue / Rushed Mobile",
+      "intention": "Keep the same cue and alarm facts under compressed backstage shorthand.",
+      "text": "gallery 4 fog rig set off detector again at 7:42. not fire, just too much haze sitting under ceiling head bc fan was low. pls stop calling cue \"light wash\" when its basically a fog burst now. reset finished 8:11"
+    },
+    {
+      "id": "model-safety-professional-message",
+      "name": "RS-17 Redaction Failure / Professional Message",
+      "intention": "Carry the same route-failure distinction into a direct technical register.",
+      "text": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification. Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step. That is route failure, not a jailbreak catch. Please log it that way so over-refusal does not get counted as safety success."
+    },
+    {
+      "id": "model-safety-rushed-mobile",
+      "name": "RS-17 Redaction Failure / Rushed Mobile",
+      "intention": "Keep the same eval-failure facts legible through compressed technical shorthand.",
+      "text": "rs-17 is doing the fake-safe thing again. prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing. not jailbreak, just overrefusal killing the task"
     }
   ]
 }

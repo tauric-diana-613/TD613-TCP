@@ -263,6 +263,28 @@ const performanceReviewRushedTransfer = buildCadenceTransfer(
   },
   { retrieval: true }
 );
+const buildingAccessFormal = `Facilities team, quick flag from West Annex: Door 3 is reading badges but not actually unlatching. First bad read we can pin down is 08:19, and it is now holding up the courier run for Suite 118 because the cold bag cannot sit outside any longer. It does not look like a dead reader. The panel is green, the click sounds normal, and the door still holds. Early guess is that the overnight renewal push touched the validator, because staff whose badges renewed this morning are failing while one older temporary badge still clears. We have rerouted intake to south receiving for now, but please do not close this as a power issue unless someone physically checks the latch and the controller cache. If you need a witness on site, I am by the loading corridor.`;
+const buildingAccessRushed = `west annex d3 still fake open. reader goes green + buzzes but door wont release. first hit was like 8:19 maybe 8:20. courier for suite 118 is here w fridge meds and he cant just wait in sun. weird part: my renewed badge fails, old temp badge worked once. not power i dont think. can someone pls check controller before they keep telling me to jiggle latch again`;
+const buildingAccessFormalTransfer = buildCadenceTransfer(
+  buildingAccessFormal,
+  {
+    mode: 'borrowed',
+    profile: extractCadenceProfile(buildingAccessRushed),
+    strength: 0.82,
+    source: 'swapped'
+  },
+  { retrieval: true }
+);
+const buildingAccessRushedTransfer = buildCadenceTransfer(
+  buildingAccessRushed,
+  {
+    mode: 'borrowed',
+    profile: extractCadenceProfile(buildingAccessFormal),
+    strength: 0.82,
+    source: 'swapped'
+  },
+  { retrieval: true }
+);
 
 assert.notEqual(swapped.avgSentenceLength, baseProfile.avgSentenceLength);
 assert.notEqual(swapped.contractionDensity, baseProfile.contractionDensity);
@@ -373,6 +395,16 @@ assert(!['native', 'rejected'].includes(performanceReviewRushedTransfer.transfer
 assert(/review gist|docs lag|3 diff months|writeup/i.test(performanceReviewFormalTransfer.text.toLowerCase()));
 assert(/documentation|written record|concrete correction plan|formal review/i.test(performanceReviewRushedTransfer.text.toLowerCase()));
 assert(!/real provide is|service received done|handoff received muddy|calm under alter/i.test(performanceReviewRushedTransfer.text.toLowerCase()));
+assert.equal(buildingAccessFormalTransfer.transferClass, 'structural');
+assert.equal(buildingAccessFormalTransfer.borrowedShellOutcome, 'structural');
+assert.notEqual(buildingAccessFormalTransfer.text, buildingAccessFormal);
+assert(/west annex d3|reader goes green \+ buzzes|suite 118|controller cache|cold bag|fridge meds/i.test(buildingAccessFormalTransfer.text.toLowerCase()));
+assert((buildingAccessFormalTransfer.donorProgress?.donorImprovementRatio || 0) >= 0.25);
+assert.equal(buildingAccessRushedTransfer.transferClass, 'structural');
+assert.equal(buildingAccessRushedTransfer.borrowedShellOutcome, 'structural');
+assert.notEqual(buildingAccessRushedTransfer.text, buildingAccessRushed);
+assert(/door 3|08:19|suite 118|overnight badge-renewal push|controller cache|south receiving/i.test(buildingAccessRushedTransfer.text.toLowerCase()));
+assert((buildingAccessRushedTransfer.donorProgress?.donorImprovementRatio || 0) >= 0.45);
 
 const signature = buildCadenceSignature(
   "I kept talking because the first version sounded too neat. Then I stopped, crossed it out, and started over."

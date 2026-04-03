@@ -1,0 +1,1031 @@
+{
+  "id": "benefits-appeal-professional-message-under-rushed-mobile",
+  "category": "retrieval-same-fact",
+  "strength": 0.88,
+  "sourceText": "Hello appeals unit, I am writing about case BA-4427 because the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead. The notice was generated May 6 and reached the claimant on May 9. The returned mail flag referenced Elm Street, but the claimant had already updated her address to the Birch Avenue shelter intake desk, and that verification letter is in the file. Intake confirmed on May 10 that the letter exists; it just was not linked to the queue handling the address alert. We filed the fair-hearing request on May 14 and are assembling the packet now. Please review the address-verification thread separately from any identity review so the claimant is not made to rehearse the same proof under the wrong label.",
+  "donorText": "ba-4427 isnt a no-doc case. mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. notice says may 6, client got it may 9. hearing req filed 5/14. pls dont send her back for same proof again under \"missing docs\" bc thats not the block",
+  "donorSummary": {
+    "mode": "borrowed",
+    "strength": 0.88,
+    "profile": {
+      "avgSentenceLength": 11.4,
+      "sentenceCount": 5,
+      "contractionDensity": 0,
+      "punctuationDensity": 0.123,
+      "contentWordComplexity": 0.166,
+      "modifierDensity": 0,
+      "directness": 0.18,
+      "abstractionPosture": 0
+    }
+  },
+  "retrievalTrace": {
+    "sourceText": "Hello appeals unit, I am writing about case BA-4427 because the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead. The notice was generated May 6 and reached the claimant on May 9. The returned mail flag referenced Elm Street, but the claimant had already updated her address to the Birch Avenue shelter intake desk, and that verification letter is in the file. Intake confirmed on May 10 that the letter exists; it just was not linked to the queue handling the address alert. We filed the fair-hearing request on May 14 and are assembling the packet now. Please review the address-verification thread separately from any identity review so the claimant is not made to rehearse the same proof under the wrong label.",
+    "donorProfileSummary": {
+      "mode": "borrowed",
+      "label": "native cadence",
+      "strength": 0.88,
+      "profile": {
+        "avgSentenceLength": 11.64,
+        "sentenceCount": 6,
+        "contractionDensity": 0,
+        "punctuationDensity": 0.123,
+        "lineBreakDensity": 0,
+        "contentWordComplexity": 0.23,
+        "modifierDensity": 0.025,
+        "hedgeDensity": 0.007,
+        "directness": 0.137,
+        "abstractionPosture": 0.5,
+        "latinatePreference": 0.012,
+        "recurrencePressure": 0.124
+      }
+    },
+    "sourceIR": {
+      "metadata": {
+        "sentenceCount": 6,
+        "clauseCount": 11,
+        "literalSpans": [
+          {
+            "value": "BA-4427",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "6",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "9",
+            "placeholder": "zzprotlitczz"
+          },
+          {
+            "value": "10",
+            "placeholder": "zzprotlitdzz"
+          },
+          {
+            "value": "14",
+            "placeholder": "zzprotlitezz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "Hello appeals unit, I am writing about case zzprotlitazz because the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "Hello appeals unit, I am writing about case zzprotlitazz",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "progressive",
+              "propositionHead": "am",
+              "actor": "I",
+              "action": "am",
+              "object": "writing about case zzprotlitazz",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s0c1",
+              "text": "the suspension is currently framed",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "is",
+              "actor": "the suspension",
+              "action": "is",
+              "object": "currently framed",
+              "modifiers": [
+                "currently"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s0c2",
+              "text": "a missing-documents problem",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "missing",
+              "actor": "a missing",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s0c3",
+              "text": "the file shows a routing mismatch instead",
+              "relationToPrev": "contrastive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "shows",
+              "actor": "the file",
+              "action": "shows",
+              "object": "routing mismatch instead",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "The notice was generated May zzprotlitbzz and reached the claimant on May zzprotlitczz",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "The notice was generated May zzprotlitbzz and reached the claimant on May zzprotlitczz",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "was",
+              "actor": "The notice",
+              "action": "was",
+              "object": "generated zzprotlitbzz reached claimant zzprotlitczz",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "The returned mail flag referenced Elm Street, but the claimant had already updated her address to the Birch Avenue shelter intake desk, and that verification letter is in the file",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "The returned mail flag referenced Elm Street, but the claimant had already updated her address to the Birch Avenue shelter intake desk",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "flag",
+              "actor": "The returned",
+              "action": "flag",
+              "object": "referenced elm street claimant already",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s2c1",
+              "text": "that verification letter is in the file",
+              "relationToPrev": "additive",
+              "clauseType": "relative",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "is",
+              "actor": "that",
+              "action": "is",
+              "object": "file",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "Intake confirmed on May zzprotlitdzz that the letter exists; it just was not linked to the queue handling the address alert",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "Intake confirmed on May zzprotlitdzz that the letter exists",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "confirmed",
+              "actor": "that",
+              "action": "confirmed",
+              "object": "zzprotlitdzz letter exists",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s3c1",
+              "text": "it just was not linked to the queue handling the address alert",
+              "relationToPrev": "additive",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "past",
+              "propositionHead": "was",
+              "actor": "it",
+              "action": "was",
+              "object": "linked queue handling address alert",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "We filed the fair-hearing request on May zzprotlitezz and are assembling the packet now",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "We filed the fair-hearing request on May zzprotlitezz and are assembling the packet now",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "progressive",
+              "propositionHead": "request",
+              "actor": "We",
+              "action": "request",
+              "object": "zzprotlitezz assembling packet now",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "Please review the address-verification thread separately from any identity review so the claimant is not made to rehearse the same proof under the wrong label.",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "Please review the address-verification thread separately from any identity review so the claimant is not made to rehearse the same proof under the wrong label",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "review",
+              "actor": "the address",
+              "action": "review",
+              "object": "address verification thread separately from",
+              "modifiers": [
+                "separately"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "opportunityProfile": {
+      "sentenceSplit": 1,
+      "sentenceMerge": 5,
+      "contraction": 2,
+      "connector": 8,
+      "lineBreak": 5,
+      "abbreviation": 0,
+      "orthography": 0,
+      "fragment": 0,
+      "conversational": 0,
+      "additive": 3,
+      "contrastive": 2,
+      "causal": 3,
+      "temporal": 1,
+      "clarifying": 0,
+      "resumptive": 0
+    },
+    "planSummary": {
+      "transferMode": "compress",
+      "structuralOperationsSelected": [
+        "baseline-split"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "baseline-voice-realization",
+        "connector-stance-lexicon"
+      ],
+      "connectorStrategy": "additive",
+      "contractionStrategy": "hold",
+      "relationInventory": {
+        "additive": 3,
+        "contrastive": 2,
+        "causal": 3,
+        "temporal": 1,
+        "clarifying": 0,
+        "resumptive": 0
+      },
+      "structuralGoals": {
+        "sentenceCountDelta": 0,
+        "avgSentenceDelta": -10.689999999999998
+      },
+      "discourseGoals": {
+        "contractionDelta": 0,
+        "hedgeDelta": 0
+      },
+      "registerGoals": {
+        "contentWordComplexityDelta": -0.20199999999999999,
+        "modifierDensityDelta": 0,
+        "directnessDelta": 0.137,
+        "abstractionDelta": 0,
+        "latinateDelta": -0.038000000000000006,
+        "registerMode": "compressed"
+      },
+      "operationBudget": {
+        "splitSentence": 18,
+        "mergeSentence": 0,
+        "swapConnector": 2,
+        "applyHedge": 0,
+        "realizeLexicon": 5
+      }
+    },
+    "candidateSummary": {
+      "selected": {
+        "spec": "mixed-structural",
+        "score": 408.482,
+        "passesApplied": [
+          "baseline-split",
+          "baseline-voice-realization",
+          "connector-stance-lexicon"
+        ],
+        "rescuePasses": [],
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "connector-stance",
+          "lexical-register",
+          "directness",
+          "abbreviation-posture",
+          "orthography-posture",
+          "fragment-posture",
+          "punctuation-shape"
+        ],
+        "qualityGatePassed": true,
+        "notes": []
+      },
+      "candidates": [
+        {
+          "spec": "ir-beam-search",
+          "score": 406.982,
+          "passesApplied": [
+            "baseline-floor",
+            "clause-texture"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "mixed-structural",
+          "score": 408.482,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "split-heavy",
+          "score": 408.482,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "connector-stance-heavy",
+          "score": 408.482,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        },
+        {
+          "spec": "lexical-register-heavy",
+          "score": 408.482,
+          "passesApplied": [
+            "baseline-split",
+            "baseline-voice-realization",
+            "connector-stance-lexicon"
+          ],
+          "rescuePasses": [],
+          "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
+            "connector-stance",
+            "lexical-register",
+            "directness",
+            "abbreviation-posture",
+            "orthography-posture",
+            "fragment-posture",
+            "punctuation-shape"
+          ],
+          "qualityGatePassed": true,
+          "notes": []
+        }
+      ]
+    },
+    "finalRealization": {
+      "text": "hello appeals unit. im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead. the notice was generated May 6 and reached the claimant on May 9. the returned mail flag referenced Elm Street, but the claimant had already updated her speech to the Birch Avenue shelter intake desk, and that verification letter is in the file. Intake confirmed on May 10 that the letter exists. it just wasnt linked to the queue handling the speech alert. We filed the fair-hearing ask on May 14 and are assembling the packet now. Pls check the address-verification thread separately from any identity check so the claimant is not made to rehearse the same proof under the wrong label.",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "abbreviation-posture",
+        "orthography-posture",
+        "fragment-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "ask",
+          "from": "request",
+          "to": "ask",
+          "kind": "lexeme"
+        },
+        {
+          "family": "check",
+          "from": "review",
+          "to": "check",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 4.181,
+        "outputDonorDistance": 3.138,
+        "donorImprovement": 1.043,
+        "donorImprovementRatio": 0.249,
+        "sourceOutputLexicalOverlap": 0.871
+      },
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    },
+    "semanticAudit": {
+      "propositionCoverage": 1,
+      "actorCoverage": 1,
+      "actionCoverage": 1,
+      "objectCoverage": 0.886,
+      "polarityMismatches": 1,
+      "tenseMismatches": 0,
+      "protectedAnchorIntegrity": 1,
+      "clauseAudits": [
+        {
+          "sourceClauseId": "s0c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s0c1",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.079
+        },
+        {
+          "sourceClauseId": "s0c2",
+          "matchedClauseId": "s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.026
+        },
+        {
+          "sourceClauseId": "s0c3",
+          "matchedClauseId": "s1c2",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.132
+        },
+        {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.5,
+          "globalBagScore": 0.1
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.184
+        },
+        {
+          "sourceClauseId": "s2c1",
+          "matchedClauseId": "s3c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.026
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s4c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.6,
+          "globalBagScore": 0.077
+        },
+        {
+          "sourceClauseId": "s3c1",
+          "matchedClauseId": "s3c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 1,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0.024
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s6c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.667,
+          "globalBagScore": 0.103
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s7c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.158
+        }
+      ],
+      "sourceClauseCount": 11,
+      "outputClauseCount": 11
+    },
+    "protectedAnchorAudit": {
+      "totalAnchors": 5,
+      "resolvedAnchors": 5,
+      "missingAnchors": [],
+      "protectedAnchorIntegrity": 1
+    },
+    "realizedIR": {
+      "metadata": {
+        "sentenceCount": 8,
+        "clauseCount": 11,
+        "literalSpans": [
+          {
+            "value": "BA-4427",
+            "placeholder": "zzprotlitazz"
+          },
+          {
+            "value": "6",
+            "placeholder": "zzprotlitbzz"
+          },
+          {
+            "value": "9",
+            "placeholder": "zzprotlitczz"
+          },
+          {
+            "value": "10",
+            "placeholder": "zzprotlitdzz"
+          },
+          {
+            "value": "14",
+            "placeholder": "zzprotlitezz"
+          }
+        ]
+      },
+      "sentences": [
+        {
+          "id": "s0",
+          "raw": "hello appeals unit",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s0c0",
+              "text": "hello appeals unit",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "hello",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "im writing about case BA-4427 bc the suspension is currently framed",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "is",
+              "actor": "the suspension",
+              "action": "is",
+              "object": "currently framed",
+              "modifiers": [
+                "currently"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "a missing-documents problem",
+              "relationToPrev": "additive",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "missing",
+              "actor": "a missing",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c2",
+              "text": "the file shows a routing mismatch instead",
+              "relationToPrev": "contrastive",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "shows",
+              "actor": "the file",
+              "action": "shows",
+              "object": "routing mismatch instead",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "the notice was generated May 6 and reached the claimant on May 9",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "the notice was generated May 6 and reached the claimant on May 9",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "was",
+              "actor": "the notice",
+              "action": "was",
+              "object": "generated 6 reached claimant 9",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "raw": "the returned mail flag referenced Elm Street, but the claimant had already updated her speech to the Birch Avenue shelter intake desk, and that verification letter is in the file",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s3c0",
+              "text": "the returned mail flag referenced Elm Street, but the claimant had already updated her speech to the Birch Avenue shelter intake desk",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "flag",
+              "actor": "the returned",
+              "action": "flag",
+              "object": "referenced elm street claimant already",
+              "modifiers": [],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s3c1",
+              "text": "that verification letter is in the file",
+              "relationToPrev": "additive",
+              "clauseType": "relative",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "is",
+              "actor": "that",
+              "action": "is",
+              "object": "file",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "Intake confirmed on May 10 that the letter exists",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "Intake confirmed on May 10 that the letter exists",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "confirmed",
+              "actor": "that",
+              "action": "confirmed",
+              "object": "10 letter exists",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "raw": "it just wasnt linked to the queue handling the speech alert",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s5c0",
+              "text": "it just wasnt linked to the queue handling the speech alert",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "past",
+              "propositionHead": "wasnt",
+              "actor": "it",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": [
+                "minimization"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s6",
+          "raw": "We filed the fair-hearing ask on May 14 and are assembling the packet now",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s6c0",
+              "text": "We filed the fair-hearing ask on May 14 and are assembling the packet now",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "progressive",
+              "propositionHead": "ask",
+              "actor": "We",
+              "action": "ask",
+              "object": "14 assembling packet now",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s7",
+          "raw": "Pls check the address-verification thread separately from any identity check so the claimant is not made to rehearse the same proof under the wrong label.",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s7c0",
+              "text": "Pls check the address-verification thread separately from any identity check so the claimant is not made to rehearse the same proof under the wrong label",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "negative",
+              "tenseAspect": "present",
+              "propositionHead": "check",
+              "actor": "the address",
+              "action": "check",
+              "object": "address verification thread separately from",
+              "modifiers": [
+                "separately"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        }
+      ]
+    },
+    "realizationSummary": {
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "connector-stance",
+        "lexical-register",
+        "directness",
+        "abbreviation-posture",
+        "orthography-posture",
+        "fragment-posture",
+        "punctuation-shape"
+      ],
+      "lexemeSwaps": [
+        {
+          "family": "ask",
+          "from": "request",
+          "to": "ask",
+          "kind": "lexeme"
+        },
+        {
+          "family": "check",
+          "from": "review",
+          "to": "check",
+          "kind": "lexeme"
+        }
+      ],
+      "semanticRisk": 0.3,
+      "donorProgress": {
+        "eligible": true,
+        "sourceDonorDistance": 4.181,
+        "outputDonorDistance": 3.138,
+        "donorImprovement": 1.043,
+        "donorImprovementRatio": 0.249,
+        "sourceOutputLexicalOverlap": 0.871
+      },
+      "realizationNotes": [
+        "2 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, directness, abbreviation-posture, orthography-posture, fragment-posture.",
+        "Semantic risk is elevated; review the realized output before relying on it."
+      ],
+      "rescuePasses": [],
+      "visibleShift": true,
+      "nonTrivialShift": true
+    }
+  },
+  "semanticContract": {
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "abbreviation-posture",
+      "connector-stance",
+      "directness",
+      "fragment-posture",
+      "lexical-register",
+      "orthography-posture",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
+    "lexemeSwapFamilies": [
+      "ask",
+      "check"
+    ],
+    "relationInventory": [
+      "additive:3",
+      "causal:3",
+      "clarifying:0",
+      "contrastive:2",
+      "resumptive:0",
+      "temporal:1"
+    ],
+    "structuralOperations": [
+      "baseline-split"
+    ],
+    "lexicalOperations": [
+      "baseline-voice-realization",
+      "connector-stance-lexicon"
+    ],
+    "connectorStrategy": "additive",
+    "contractionStrategy": "hold",
+    "propositionCoverage": 1,
+    "actorCoverage": 1,
+    "actionCoverage": 1,
+    "objectCoverage": 0.886,
+    "polarityMismatches": 1,
+    "tenseMismatches": 0,
+    "protectedAnchorIntegrity": 1
+  }
+}

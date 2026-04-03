@@ -11,9 +11,9 @@ const personas = [
     chips: ['cold seal', 'low contraction'],
     profileRecipe: {
       blend: [
-        { sampleId: 'building-access-formal-record', weight: 0.4 },
-        { sampleId: 'archive-grant-formal-record', weight: 0.35 },
-        { sampleId: 'committee-budget-formal-record', weight: 0.25 }
+        { sampleId: 'municipal-zoning-formal-record', weight: 0.4 },
+        { sampleId: 'archive-grant-formal-record', weight: 0.3 },
+        { sampleId: 'model-safety-formal-record', weight: 0.3 }
       ],
       overlayMod: {
         sent: 5,
@@ -46,9 +46,9 @@ const personas = [
     chips: ['bright cut', 'public pull'],
     profileRecipe: {
       blend: [
-        { sampleId: 'volunteer-cleanup-rushed-mobile', weight: 0.45 },
-        { sampleId: 'performance-review-rushed-mobile', weight: 0.3 },
-        { sampleId: 'building-access-rushed-mobile', weight: 0.25 }
+        { sampleId: 'museum-fog-alarm-rushed-mobile', weight: 0.35 },
+        { sampleId: 'volunteer-cleanup-rushed-mobile', weight: 0.35 },
+        { sampleId: 'building-access-rushed-mobile', weight: 0.3 }
       ],
       overlayMod: {
         sent: -8,
@@ -81,9 +81,9 @@ const personas = [
     chips: ['late landing', 'return current'],
     profileRecipe: {
       blend: [
-        { sampleId: 'overwork-debrief-tangled-followup', weight: 0.5 },
-        { sampleId: 'tenant-leak-tangled-followup', weight: 0.3 },
-        { sampleId: 'mutual-aid-tangled-followup', weight: 0.2 }
+        { sampleId: 'overwork-debrief-tangled-followup', weight: 0.4 },
+        { sampleId: 'museum-fog-alarm-tangled-followup', weight: 0.3 },
+        { sampleId: 'model-safety-tangled-followup', weight: 0.3 }
       ],
       overlayMod: {
         sent: 6,
@@ -116,9 +116,9 @@ const personas = [
     chips: ['clean route', 'dry hand'],
     profileRecipe: {
       blend: [
-        { sampleId: 'building-access-professional-message', weight: 0.45 },
-        { sampleId: 'package-handoff-professional-message', weight: 0.35 },
-        { sampleId: 'clinic-scheduling-formal-record', weight: 0.2 }
+        { sampleId: 'building-access-professional-message', weight: 0.35 },
+        { sampleId: 'benefits-appeal-professional-message', weight: 0.35 },
+        { sampleId: 'model-safety-professional-message', weight: 0.3 }
       ],
       overlayMod: {
         sent: -3,
@@ -151,14 +151,14 @@ const personas = [
     chips: ['measured caveat', 'clean proof'],
     profileRecipe: {
       blend: [
-        { sampleId: 'performance-review-professional-message', weight: 0.5 },
-        { sampleId: 'archive-grant-formal-record', weight: 0.3 },
-        { sampleId: 'customer-support-formal-record', weight: 0.2 }
+        { sampleId: 'benefits-appeal-formal-record', weight: 0.35 },
+        { sampleId: 'newsroom-correction-professional-message', weight: 0.35 },
+        { sampleId: 'model-safety-professional-message', weight: 0.3 }
       ],
       overlayMod: {
-        sent: 3,
-        cont: -4,
-        punc: -4
+        sent: 8,
+        cont: -5,
+        punc: -5
       },
       strength: 0.95
     },
@@ -186,7 +186,7 @@ const personas = [
     chips: ['hard edge', 'pressure syntax'],
     profileRecipe: {
       blend: [
-        { sampleId: 'performance-review-rushed-mobile', weight: 0.45 },
+        { sampleId: 'adversarial-hearing-rushed-mobile', weight: 0.45 },
         { sampleId: 'tenant-leak-rushed-mobile', weight: 0.3 },
         { sampleId: 'package-handoff-rushed-mobile', weight: 0.25 }
       ],
@@ -221,10 +221,10 @@ const personas = [
     chips: ['held pulse', 'soft shelter'],
     profileRecipe: {
       blend: [
-        { sampleId: 'school-coordination-formal-record', weight: 0.3 },
+        { sampleId: 'school-coordination-formal-record', weight: 0.25 },
         { sampleId: 'clinic-scheduling-professional-message', weight: 0.2 },
-        { sampleId: 'archive-grant-formal-record', weight: 0.25 },
-        { sampleId: 'performance-review-professional-message', weight: 0.25 }
+        { sampleId: 'benefits-appeal-professional-message', weight: 0.3 },
+        { sampleId: 'archive-grant-formal-record', weight: 0.25 }
       ],
       overlayMod: {
         sent: 7,
