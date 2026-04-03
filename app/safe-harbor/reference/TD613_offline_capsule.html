@@ -1,77 +1,145 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TD613 — Offline Capsule v7.2.1</title>
-<style>
-  body{margin:0;background:#0a0a0a;color:#eaeaea;font:16px/1.6 system-ui,Segoe UI,Roboto,Helvetica,Arial}
-  .wrap{max-width:880px;margin:0 auto;padding:32px 16px}
-  .card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:16px;margin:12px 0}
-  code,pre{background:#0e0e0e;border:1px solid #272727;border-radius:8px;padding:6px 8px;white-space:pre-wrap;word-break:break-word}
-  .muted{color:#9aa0a6;font-size:13px}
-  input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #333;background:#0f0f0f;color:#eaeaea}
-  button{padding:10px 14px;border-radius:8px;border:1px solid #2a2a2a;background:#191919;color:#eaeaea;cursor:pointer}
-  button:hover{background:#202020}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TD613 Safe Harbor Offline Capsule</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #080910 0%, #05070d 100%);
+      color: #eef6ff;
+      font: 16px/1.6 "Segoe UI", system-ui, sans-serif;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 28px 18px 48px; }
+    .card {
+      background: rgba(10, 15, 24, 0.92);
+      border: 1px solid rgba(134, 240, 255, 0.2);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    h1, h2 { font-family: "Cormorant Garamond", Georgia, serif; }
+    h1 { margin: 0 0 8px; font-size: clamp(2rem, 4vw, 3rem); }
+    code, pre, input { font-family: "Cascadia Code", Consolas, monospace; }
+    pre, input {
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(3, 7, 14, 0.92);
+      color: inherit;
+      padding: 12px 14px;
+    }
+    button {
+      border: 1px solid rgba(134, 240, 255, 0.32);
+      background: rgba(134, 240, 255, 0.12);
+      color: inherit;
+      border-radius: 999px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font: 600 0.9rem/1 "Cascadia Code", Consolas, monospace;
+    }
+    .muted { color: #93a5bf; }
+    .operator[hidden] { display: none; }
+  </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>TD613 — Offline Capsule</h1>
-    <div class="card">
-      <div class="muted">Short Authenticity Code (SAC) · scheme CrockfordBase32(8)+mod97(2)</div>
-      <pre><code id="sac">X6ZNK5NO51</code></pre>
-      <div class="muted">Corpus SHA-256:</div>
-      <pre><code id="cch">BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88</code></pre>
-    </div>
+    <h1>TD613 Safe Harbor Offline Capsule</h1>
+    <p class="muted">Public verification remains compact. The capsule checks the compat footer and keeps packet hash, route diagnostics, and detached signature metadata in an operator lane.</p>
 
-    <div class="card">
-      <strong>Verify a footer</strong>
-      <div class="muted">Paste an accepted footer line (legacy, legacy-compat, or sac-only). Canonical public mode is <code>legacy-compat</code>.</div>
-      <input id="footer" placeholder="Paste footer line here" />
-      <div style="margin-top:8px;">
-        <button onclick="verify()">Check</button>
-      </div>
-      <pre id="out"></pre>
-    </div>
+    <section class="card">
+      <h2>Canon</h2>
+      <pre id="canonBlock"></pre>
+    </section>
 
-    <div class="card">
-      <strong>Manifest</strong>
-      <pre><code id="manifest"></code></pre>
-    </div>
+    <section class="card">
+      <h2>Verify a footer</h2>
+      <p class="muted">Paste a TD613 public footer. The canonical live template is compat mode, and the historical example is pinned to payload 5 / 2025-10-17.</p>
+      <input id="footerInput" placeholder="TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐">
+      <p style="margin-top:12px"><button id="verifyButton" type="button">Check Footer</button></p>
+      <pre id="verifyOutput">awaiting footer</pre>
+    </section>
+
+    <section class="card">
+      <h2>Signature Distinction</h2>
+      <pre id="signatureExplain"></pre>
+      <p><button id="toggleOperator" type="button">Reveal Operator Pane</button></p>
+    </section>
+
+    <section class="card operator" id="operatorPane" hidden>
+      <h2>Operator Pane</h2>
+      <pre id="operatorBlock">operator packet view pending</pre>
+    </section>
   </div>
 
-    <div class="card">
-      <strong>Accepted footer modes</strong>
-      <pre><code>legacy: TD613-Binding:#9B07D8B · payload {n} · YYYY-MM-DD · ⟐
-legacy-compat: TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐
-sac-only: TD613-Binding:SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐</code></pre>
-    </div>
-  </div>
-<script>
-const manifest = {"principal":"tauric.diana.613","current_public_mode":"legacy-compat","internal_validation_accepts":["legacy","legacy-compat","sac-only"],,"generated_at":"2025-10-18T01:19:02.441287Z","corpus_hash_sha256":"BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88","short_code":"X6ZNK5NO51","short_code_scheme":"CrockfordBase32(8)+mod97(2)","leaves":[{"name":"binding_event_envelope.json","sha256":"ae25c3aa50ad50ab94ab8ebe50d518c73d3663ba4c016fef41b770e6d5f9f8a7","size":3987},{"name":"binding_event_receipt.json","sha256":"3ab2a184fde86a35969825613435ac418f307beb7ff4f03b8bfcd753f64b6826","size":275},{"name":"binding_event_text.txt","sha256":"9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04","size":3085},{"name":"td_signed_payloads_bundle.json","sha256":"b9bb3f4b993ae7de7eae4b5781200f55803166d861296a5071edeb0654466fdd","size":5355}]};
-function verify() {
-  const t = document.getElementById('footer').value.trim();
-  const out = document.getElementById('out');
-  const m = t.match(/SAC\[(.*?)\]/);
-  if(!m) { out.textContent = "No SAC[] found."; return; }
-  const sac = m[1].toUpperCase();
-  const want = manifest.short_code.toUpperCase();
-  // Basic validation: exact match and mod97 check on first 8 chars
-  function base36Val(s){
-    const A='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let v=0n;
-    for(const ch of s.toUpperCase()){ const i=BigInt(A.indexOf(ch)); if(i<0n) return null; v=v*36n+i; }
-    return v;
-  }
-  if(sac.length!==10) { out.textContent = "SAC must be 10 chars."; return; }
-  if(sac!==want) { out.textContent = "Mismatch: SAC does not match this capsule."; return; }
-  const body=sac.slice(0,8); const chk=parseInt(sac.slice(8),10);
-  const mod = Number(base36Val(body) % 97n);
-  if(mod!==chk) { out.textContent = "Check digits invalid (mod97)."; return; }
-  out.textContent = "OK: SAC matches corpus and check digits verify.";
-}
-document.getElementById('manifest').textContent = JSON.stringify(manifest,null,2);
-</script>
+  <script src="../app/data.js"></script>
+  <script src="../safe_harbor/canonicalize.js"></script>
+  <script>
+    (function () {
+      const D = window.TD613_SAFE_HARBOR_DATA;
+      const raw = sessionStorage.getItem('td613.safe-harbor.session.v1');
+      const session = raw ? JSON.parse(raw) : {};
+      const packet = session.packet || null;
+      const sig = session.signatureEnvelope || null;
+      const $ = (id) => document.getElementById(id);
+
+      $('canonBlock').textContent = JSON.stringify({
+        principal: D.canon.principal,
+        claimed_pua: D.canon.claimed_pua,
+        badge_id: D.canon.badge_id,
+        binding_fragment: D.canon.binding_fragment,
+        sac: D.canon.sac,
+        current_public_mode: D.trustProfile.current_public_mode,
+        public_footer_template: D.trustProfile.public_footer_template,
+        historical_example: D.canon.historical_example
+      }, null, 2);
+
+      $('signatureExplain').textContent = [
+        'cadence signature = ' + D.signatureModel.cadence_signature,
+        'cryptographic signature = ' + D.signatureModel.cryptographic_signature,
+        'rule = ' + D.signatureModel.rule
+      ].join('\n');
+
+      $('operatorBlock').textContent = JSON.stringify({
+        packet_hash_sha256: packet ? packet.packet_hash_sha256 : null,
+        receipt_state: packet && packet.receipt ? packet.receipt.state : null,
+        sig_type: sig ? sig.sig_type : null,
+        kid: sig ? sig.kid : null,
+        canonical_json_preview: packet && window.TD613SafeHarborCore && window.TD613SafeHarborCore.canonical_packet_body
+          ? window.TD613SafeHarborCore.canonical_packet_body(packet)
+          : null
+      }, null, 2);
+
+      $('verifyButton').addEventListener('click', function () {
+        const value = $('footerInput').value.trim();
+        const out = $('verifyOutput');
+        if (!value) {
+          out.textContent = 'No footer supplied.';
+          return;
+        }
+        if (value === D.canon.historical_example.public_footer) {
+          out.textContent = 'Historical example recognized. This line is pinned to payload 5 / 2025-10-17.';
+          return;
+        }
+        const compatPattern = /^TD613-Binding:#9B07D8B\/SAC\[X6ZNK5NO51\] · payload (?:\{n\}|\d+) · (?:YYYY-MM-DD|\d{4}-\d{2}-\d{2}) · ⟐$/u;
+        const legacyPattern = /^TD613-Binding:#9B07D8B · payload (?:\{n\}|\d+) · (?:YYYY-MM-DD|\d{4}-\d{2}-\d{2}) · ⟐$/u;
+        const sacOnlyPattern = /^TD613-Binding:SAC\[X6ZNK5NO51\] · payload (?:\{n\}|\d+) · (?:YYYY-MM-DD|\d{4}-\d{2}-\d{2}) · ⟐$/u;
+        if (compatPattern.test(value) || legacyPattern.test(value) || sacOnlyPattern.test(value)) {
+          out.textContent = 'Accepted footer grammar. Public default remains LEGACY-COMPAT.';
+          return;
+        }
+        out.textContent = 'Footer does not match TD613 accepted grammar.';
+      });
+
+      $('toggleOperator').addEventListener('click', function () {
+        const pane = $('operatorPane');
+        pane.hidden = !pane.hidden;
+        this.textContent = pane.hidden ? 'Reveal Operator Pane' : 'Hide Operator Pane';
+      });
+    })();
+  </script>
 </body>
 </html>

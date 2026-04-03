@@ -1,60 +1,80 @@
 {
-  "profile_name": "TD613 public trust grammar v7.2.1 bridge",
+  "profile_name": "TD613 Safe Harbor trust grammar v0.4.0",
   "principal": "tauric.diana.613",
-  "current_public_mode": "legacy-compat",
+  "claimed_pua": "U+10D613",
+  "badge_id": "bdg_glyph_U10D613",
+  "binding_fragment": "#9B07D8B",
+  "sac": "SAC[X6ZNK5NO51]",
+  "current_public_mode": "LEGACY-COMPAT",
   "internal_validation_accepts": [
-    "legacy",
-    "legacy-compat",
-    "sac-only"
+    "LEGACY",
+    "LEGACY-COMPAT",
+    "SAC-ONLY"
   ],
-  "future_public_mode": "sac-only",
-  "binding_fragment": "9B07D8B",
-  "binding_fragment_derivation": "first 7 hex chars of SHA-256 over binding_event_text.txt (NFC UTF-8)",
-  "sac": "X6ZNK5NO51",
-  "sac_scheme": "CrockfordBase32(8)+mod97(2)",
+  "future_public_mode": "SAC-ONLY",
   "corpus_hash_sha256": "BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88",
-  "payload_latest": 5,
-  "canonical_public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-  "canonical_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-  "accepted_footer_examples": {
-    "legacy_template": "TD613-Binding:#9B07D8B \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-    "legacy_compat_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-    "sac_only_template": "TD613-Binding:SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-    "current_published_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27d0"
+  "packet_schema_file": "../safe_harbor/packet.schema.json",
+  "canonicalizer_file": "../safe_harbor/canonicalize.js",
+  "hash_file": "../safe_harbor/hash.js",
+  "signature_file": "../safe_harbor/signature.js",
+  "lifecycle_file": "../safe_harbor/lifecycle.js",
+  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0",
+  "historical_example": {
+    "label": "historical",
+    "payload_index": 5,
+    "attestation_date": "2025-10-17",
+    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0"
   },
-  "source_files": {
-    "verify_page": "TD613_verify.html",
-    "manifest": "td613_manifest.json",
-    "footer_templates": "TD613_footer_templates.txt",
-    "offline_capsule": "TD613_offline_capsule.html"
+  "live_template": {
+    "payload_suggestion": 6,
+    "payload_rule": "Suggest next payload from signed bundle if available; manual override only in operator mode.",
+    "attestation_date": "YYYY-MM-DD"
   },
-  "intended_use": "Source-of-truth config for generators, labs, and verifier surfaces so the TD613 stack emits one public trust grammar.",
-  "updated_at": "2026-04-02T00:00:00Z",
-  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-  "current_published_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27d0",
-  "current_published_payload": 5,
-  "current_published_date": "2025-10-17",
-  "canonical_public_footer_note": "Template for new attestations. Use current_published_footer only when referring to the already-published historical example.",
-  "dummy_proof_rules": [
-    "Use payload {n} in templates and generators.",
-    "Use the fixed payload 5 / 2025-10-17 footer only when citing the already-published historical example.",
-    "Public now = legacy-compat.",
-    "Internal validation accepts legacy, legacy-compat, and sac-only.",
-    "Future public migration = sac-only."
-  ],
-  "bridge_release": "7.2.1",
   "signature_lanes": {
-    "historical_signed_zone": {
-      "status": "reference-only",
-      "algorithm": "Ed25519 / EdDSA detached .sig over canonical zone JSON",
-      "purpose": "signed badge/zone registry continuity and public verification",
-      "operator_only": true
-    },
     "runtime_request_signing": {
-      "status": "advanced / operator-only",
-      "algorithm": "detached JWS request-signing lane",
-      "purpose": "middleware/runtime authorization flows such as request signing",
-      "operator_only": true
+      "status": "operator-only",
+      "sig_type": "JWS-detached",
+      "purpose": "runtime request sealing over canonical_json(packet)"
+    },
+    "durable_archive_signing": {
+      "status": "optional future lane",
+      "sig_type": "detached-ed25519",
+      "purpose": "durable archive and zone sealing over canonical_json(packet)"
     }
-  }
+  },
+  "signature_distinction": {
+    "cadence_signature": "Stylometric credential derived from TCP-style intake and the Safe Harbor triad.",
+    "cryptographic_signature": "Detached seal over canonical_json(packet).",
+    "rule": "Cadence signature is never the cryptographic sig."
+  },
+  "public_boundary": {
+    "may_show": [
+      "binding_fragment",
+      "sac",
+      "payload",
+      "date",
+      "receipt_state_summary",
+      "packet_verified_status"
+    ],
+    "must_hide": [
+      "badge_id",
+      "sig",
+      "route_diagnostics",
+      "packet_hash_sha256"
+    ]
+  },
+  "operator_boundary": {
+    "may_show": [
+      "packet_json",
+      "packet_hash_sha256",
+      "sig",
+      "sig_type",
+      "kid",
+      "route_state",
+      "harbor_status",
+      "cadence_credentials",
+      "canonical_json_preview"
+    ]
+  },
+  "updated_at": "2026-04-03T00:00:00Z"
 }

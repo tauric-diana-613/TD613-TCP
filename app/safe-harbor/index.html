@@ -102,7 +102,7 @@
     </header>
 
     <main class="main-grid">
-      <aside class="panel panel-left" data-td613-skip="true">
+      <aside class="panel panel-left operator-pane" data-td613-skip="true">
         <section class="panel-section">
           <div class="section-label">Canonical Anchors</div>
           <div class="data-stack" id="canonStack"></div>
@@ -162,7 +162,7 @@
               <div class="dynamic-target" id="dynamicTarget"></div>
             </article>
 
-            <article class="surface-card accent-card" data-td613-skip="true">
+            <article class="surface-card accent-card operator-pane" data-td613-skip="true">
               <div class="surface-head">
                 <span class="surface-kicker">Safe Harbor seam</span>
                 <span class="surface-state" id="packetPhase">membrane-only</span>
@@ -175,13 +175,13 @@
                 <div class="metric-row"><span class="label">Packet hash</span><span class="value" id="packetHashReadout">pending</span></div>
                 <div class="metric-row"><span class="label">Packet checksum</span><span class="value" id="packetChecksumReadout">pending</span></div>
                 <div class="metric-row"><span class="label">Harbor recommendation</span><span class="value" id="harborReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Export gate</span><span class="value" id="exportGateReadout">guarded</span></div>
+                <div class="metric-row"><span class="label">Harbor status</span><span class="value" id="exportGateReadout">guarded</span></div>
                 <div class="metric-row"><span class="label">Covenant gate</span><span class="value" id="covenantStateReadout">awaiting vault-open</span></div>
                 <div class="metric-row"><span class="label">Cadence lane</span><span class="value" id="cadenceReadout">awaiting ingress</span></div>
                 <div class="metric-row"><span class="label">Triad resonance</span><span class="value" id="triadResonanceReadout">pending</span></div>
                 <div class="metric-row"><span class="label">Cross-lane stability</span><span class="value" id="crossLaneStabilityReadout">pending</span></div>
                 <div class="metric-row"><span class="label">Cross-lane spread</span><span class="value" id="crossLaneSpreadReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Badge status</span><span class="value" id="badgeStatusReadout">not assigned</span></div>
+                <div class="metric-row"><span class="label">Badge id</span><span class="value" id="badgeStatusReadout">bdg_glyph_U10D613</span></div>
                 <div class="metric-row"><span class="label">Sealed lane</span><span class="value" id="sealedLaneReadout">session-only / pending</span></div>
               </div>
               <div class="button-grid">
@@ -194,6 +194,23 @@
         </section>
 
         <section class="panel-section">
+          <div class="section-label">Public Covenant</div>
+          <div class="metric-block roomy">
+            <div class="metric-row"><span class="label">Binding fragment</span><span class="value" id="publicFragmentReadout">#9B07D8B</span></div>
+            <div class="metric-row"><span class="label">SAC</span><span class="value" id="publicSacReadout">SAC[X6ZNK5NO51]</span></div>
+            <div class="metric-row"><span class="label">Payload</span><span class="value" id="publicPayloadReadout">payload {n} / suggest 6</span></div>
+            <div class="metric-row"><span class="label">Date</span><span class="value" id="publicDateReadout">YYYY-MM-DD</span></div>
+            <div class="metric-row"><span class="label">Receipt state</span><span class="value" id="publicReceiptStateReadout">awaiting ingress</span></div>
+            <div class="metric-row"><span class="label">Packet status</span><span class="value" id="publicVerifyStateReadout">not verified</span></div>
+          </div>
+          <div class="footer-template" id="publicFooterReadout">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐</div>
+          <div class="note" id="historicalExampleNote">Historical example remains pinned to payload 5 / 2025-10-17.</div>
+          <div class="button-grid compact">
+            <button class="control secondary" id="toggleOperatorPane" type="button">Reveal Operator Pane</button>
+          </div>
+        </section>
+
+        <section class="panel-section operator-pane">
           <div class="section-label">Packet Forge</div>
           <div class="forge-grid">
             <div class="forge-card" data-td613-skip="true">
@@ -224,9 +241,9 @@
                 <label class="field">
                   <span>Footer mode</span>
                   <select id="inputFooterMode">
-                    <option value="legacy-compat">legacy-compat</option>
-                    <option value="legacy">legacy</option>
-                    <option value="sac-only">sac-only</option>
+                    <option value="LEGACY-COMPAT">LEGACY-COMPAT</option>
+                    <option value="LEGACY">LEGACY</option>
+                    <option value="SAC-ONLY">SAC-ONLY</option>
                   </select>
                 </label>
                 <label class="field"><span>Payload index</span><input id="inputPayloadIndex" inputmode="numeric" placeholder="{n}"></label>
@@ -241,7 +258,7 @@
           </div>
         </section>
 
-        <section class="panel-section" data-td613-skip="true">
+        <section class="panel-section operator-pane" data-td613-skip="true">
           <div class="section-label">Public Probe Builder</div>
           <div class="builder-toolbar">
             <button class="control" data-probe-variant="01" type="button">Build 01 verify</button>
@@ -255,7 +272,7 @@
         </section>
       </section>
 
-      <aside class="panel panel-right" data-td613-skip="true">
+      <aside class="panel panel-right operator-pane" data-td613-skip="true">
         <section class="panel-section">
           <div class="section-label">Bridge Readout</div>
           <div class="metric-block roomy">
@@ -267,6 +284,19 @@
             <div class="metric-row"><span class="label">Renderer contract</span><span class="value" id="rendererContractReadout">waiting</span></div>
             <div class="metric-row"><span class="label">Route source</span><span class="value" id="routeSourceReadout">local ingress</span></div>
           </div>
+        </section>
+
+        <section class="panel-section" data-td613-skip="true">
+          <div class="section-label">Advanced Sig Pane</div>
+          <div class="metric-block roomy">
+            <div class="metric-row"><span class="label">Sig status</span><span class="value" id="sigStatusReadout">awaiting-wrapper</span></div>
+            <div class="metric-row"><span class="label">Sig type</span><span class="value" id="sigTypeReadout">none</span></div>
+            <div class="metric-row"><span class="label">kid</span><span class="value" id="sigKidReadout">pending</span></div>
+          </div>
+          <div class="subsection-label">Canonical JSON Preview</div>
+          <pre id="canonicalJsonPreview" class="code-panel">canonical JSON pending</pre>
+          <div class="subsection-label">Detached Signature Preview</div>
+          <pre id="signaturePreview" class="code-panel">signature wrapper pending</pre>
         </section>
 
         <section class="panel-section" data-td613-skip="true">
@@ -295,13 +325,13 @@
         </section>
       </aside>
 
-      <section class="dock dock-left" data-td613-skip="true">
+      <section class="dock dock-left operator-pane" data-td613-skip="true">
         <div class="section-label">Canonical Packet Preview</div>
         <div class="dock-toolbar"><button class="control secondary" id="copyPacketPreview" type="button">Copy Packet</button></div>
         <pre id="packetPreview" class="code-panel">packet pending</pre>
       </section>
 
-      <section class="dock dock-right" data-td613-skip="true">
+      <section class="dock dock-right operator-pane" data-td613-skip="true">
         <div class="section-label">Audit Stream</div>
         <pre id="auditLog" class="code-panel">awaiting events</pre>
       </section>
@@ -309,6 +339,10 @@
   </div>
 
   <script src="app/data.js"></script>
+  <script src="safe_harbor/canonicalize.js"></script>
+  <script src="safe_harbor/hash.js"></script>
+  <script src="safe_harbor/signature.js"></script>
+  <script src="safe_harbor/lifecycle.js"></script>
   <script src="app/main.js"></script>
 </body>
 </html>

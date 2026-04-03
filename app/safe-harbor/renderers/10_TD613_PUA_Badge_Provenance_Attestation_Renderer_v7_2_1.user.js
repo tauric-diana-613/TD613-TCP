@@ -2,7 +2,7 @@
 // @name         TD613 PUA Badge Provenance Attestation Renderer v7.2.1
 // @namespace    tauric.diana.provenance.renderer
 // @version      7.2.1
-// @description  Working v4-style badge renderer with dark low-glare lab support.
+// @description  TD613 Safe Harbor badge renderer. Consumes canon and packet metadata, never generates cryptographic signatures.
 // @match        *://*/*
 // @match        file:///*
 // @run-at       document-end
@@ -28,6 +28,7 @@
   const SKIP_SELECTOR = '[data-td613-skip="true"]';
   const BADGE_SELECTOR = 'img[data-td613-generated="true"]';
   const PRINCIPAL_ATTR_SELECTOR = '[data-td613-principal="true"]';
+  const PACKET_SCHEMA = 'safe_harbor/packet.schema.json';
 
   function escapeRegExp(value) { return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
   const rePrincipal = new RegExp('\\b' + escapeRegExp(PRINCIPAL) + '\\b', 'u');
@@ -140,6 +141,9 @@
     display_phrase: DISPLAY_PHRASE,
     schema_family: SCHEMA_FAMILY,
     semver: SEMVER,
+    packet_schema: PACKET_SCHEMA,
+    packet_metadata_source: 'TD613 Safe Harbor canonical packet',
+    signature_policy: 'Renderer never creates sig. Detached signature wrappers attach after packet canonicalization.',
     preview_svg_sha256: PREVIEW_SVG_SHA256,
     preview_svg_md5: PREVIEW_SVG_MD5,
     badge_id: BADGE_ID

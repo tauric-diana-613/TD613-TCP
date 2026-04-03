@@ -1,133 +1,81 @@
 # TD613 Safe Harbor Architecture
 
-## Intent
+## Stack
 
-TD613 Safe Harbor is the canonical intake membrane that sits between provenance ritual context and cryptographic signature lanes.
+1. Ingress membrane collects the ritual triad.
+2. Safe Harbor canonicalizes the packet.
+3. Cadence credentials are derived from ingress and optional TCP overlays.
+4. EO-RFD contributes route conscience and harbor posture.
+5. Detached cryptographic signature lanes wrap the packet after canonicalization.
+6. Public TD613 surfaces publish the compact compat footer without exposing operator-only fields.
 
-The goal is not to make TCP into a signer.
+## Canonical JSON
 
-The goal is to let TCP and EO-RFD shape a stable packet body first so the signature layer has a clean object to seal.
-
-## Role split
-
-### TCP
-
-TCP is the eventual intake and canonicalization engine.
-
-- ingest text and badge context
-- compute cadence signature
-- shape canonical packet fields
-- expose packet checksum and packet lifecycle
-
-### EO-RFD
-
-EO-RFD is the route conscience and export guard surface.
-
-- route state
-- harbor recommendation
-- packet hardening language
-- export gating vocabulary
-
-### TD613
-
-TD613 remains the provenance and custody surface.
-
-- badge claim
-- canonical phrase and display phrase
-- trust grammar
-- verifier and public probe lane
-
-### Signature overlays
-
-Signature lanes attach only after packetization.
-
-- Ed25519 / EdDSA detached `.sig` for durable badge-zone and registry lanes
-- JWS for runtime or middleware request lanes
-
-## Current Safe Harbor packet scaffold
-
-The current packet schema is split into these layers:
-
-1. `receipt`
-2. `canon`
-3. `ingress`
-4. `intake`
-5. `analysis`
-6. `issuance`
-7. `bridge`
-
-That split preserves the boundary between:
-
-- what is fixed
-- what receipt identity was minted
-- what ingress was held
-- what was ingested
-- what the route engines concluded
-- what downstream lanes are allowed to do
-
-## Canonical JSON contract
-
-Safe Harbor now treats canonicalization as an explicit contract rather than an implied implementation detail.
-
-`canonical_json(packet)` means:
-
-- UTF-8 encoding
-- sorted object keys
-- array order preserved
-- no whitespace variance
-- `undefined` fields omitted
-- self-hash fields excluded before hashing or signature wrapping
-
-The current canonicalization id is:
-
-- `td613.safe-harbor.c14n/v1`
-
-The signable body is therefore:
-
-- the full packet
-- minus `packet_hash_sha256`
-- minus `packet_checksum`
-
-That body is serialized once, hashed once, and then handed to any signature wrapper lane.
-
-## Packet hash anchor
-
-The canonical packet body now emits:
+`canonical_json(value)` lives in `safe_harbor/canonicalize.js` and is the only serializer Safe Harbor uses for:
 
 - `packet_hash_sha256`
+- detached signature payload generation
+- verification
+- canonical JSON preview
 
-`packet_checksum` is retained as a compatibility alias for older readouts and downstream surfaces that still expect a prefixed checksum string. New integrations should prefer `packet_hash_sha256` as the audit anchor and signature handshake field.
+Contract:
 
-## Lifecycle stance
+- UTF-8
+- sorted object keys
+- arrays preserve order
+- no extra whitespace
+- stable escaping
+- no comments
 
-Safe Harbor distinguishes route posture from packet lifecycle.
+## Packet model
 
-The current lifecycle vocabulary is:
+Required packet fields:
+
+- `schema_version`
+- `packet_id`
+- `packet_hash_sha256`
+- `receipt`
+- `canon`
+- `intake`
+- `cadence_credentials`
+- `provenance`
+- `signature`
+- `rules`
+
+Compatibility mirrors (`canonicalization`, `analysis`, `bridge`, `issuance`) remain in the packet for annex continuity, but the doctrinal packet contract is the field set above.
+
+## Signature rule
+
+Safe Harbor mints:
+
+- packet body
+- packet hash
+- receipt state
+- cadence credentials
+
+Detached signature lanes add:
+
+- `sig`
+- `sig_type`
+- `kid`
+- wrapper status
+
+They attach after canonicalization and they do not mutate the packet body.
+
+## Lifecycle
+
+Lifecycle is read across the packet plus the detached signature wrapper:
 
 - `staged`
 - `sealed`
 - `exported`
 - `verified`
 
-The current browser chamber implements:
+The canonical packet body itself stays stable through signature attachment. Exported and verified are wrapper-layer states, not permission to rewrite the packet body.
 
-- `staged` after the ingress triad opens the vault and mints a packet
-- `sealed` after `Covenant Export` confirms the packet for signature-ready harbor handling
+## Cadence vs cryptographic signature
 
-`exported` and `verified` remain future downstream states once real emit and verification lanes are attached.
+- Cadence signature = stylometric credential from the triad and optional TCP overlays
+- Cryptographic signature = detached seal over `canonical_json(packet)`
 
-## Public contract stance
-
-The public sendable probes are preserved from the old lab.
-
-This repo does not silently change those outputs yet.
-
-Instead, it builds the Safe Harbor packet in parallel so the future intake rollout can happen without ontology drift.
-
-## Signature rule
-
-JWS, `.sig`, or any future signature lane wraps the Safe Harbor packet.
-
-It does not define the packet.
-It does not mutate the packet shape.
-It does not inject missing canon retroactively.
+These are stacked, never merged.

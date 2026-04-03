@@ -1,93 +1,52 @@
 {
   "kit": {
-    "name": "TD613 PUA Badge Provenance Attestation Renderer v7.2.1 \u2014 bridge release",
-    "subtitle": "Dark live-send badge lab with stable 7.2 canon, sendable probe builder, dual signature-lane notes, and reconciled TD613 trust grammar.",
+    "name": "TD613 Safe Harbor command surfaces",
+    "subtitle": "Canonical packet intake, compact public footer, detached signature wrappers.",
     "schema_family": "cpfg://v2",
     "semver": "2.1.0"
   },
-  "sendable_files": {
-    "01": "Minimal verify command. Send first.",
-    "02": "Verify command with receipt-completion return contract.",
-    "03": "Minimal render JSON. Send second when render proof is needed.",
-    "04": "Extended render JSON with receipt-only return contract."
+  "public_sendables": {
+    "01": "Minimal verify command. Public by default and unsigned.",
+    "02": "Verify command with receipt-completion contract. Public by default and unsigned.",
+    "03": "Minimal render JSON. Can include packet metadata but never packet hash or sig in public mode.",
+    "04": "Extended render JSON with receipt contract. Still no live sig generation."
   },
-  "reference_only": [
-    "06_TD613_PUA_Badge_Provenance_Attestation_Commands.json",
-    "12_TD613_PUA_Badge_Provenance_Attestation_Registry.json",
-    "20_KIT_MANIFEST.json",
-    "td613_trust_profile.json"
-  ],
-  "helper_fields": [
-    "ts_utc",
-    "derived request_id",
-    "sealed_at suggestion",
-    "fresh nonce",
-    "filename-safe UTC"
-  ],
-  "canonical_face": {
-    "preview_svg_filename": "13_U10D613_preview.svg",
-    "preview_svg_sha256": "ba5eee59d2a0184c328c40c33e8ca4e2eeee8354fcbe41255abd70693c2f74ed",
-    "preview_svg_md5": "96c4129424443100aae47576e692cc97",
-    "preview_svg_base64_filename": "14_U10D613_preview.base64.txt"
-  },
-  "trust_profile": {
-    "profile_name": "TD613 public trust grammar",
-    "principal": "tauric.diana.613",
-    "current_public_mode": "legacy-compat",
-    "internal_validation_accepts": [
-      "legacy",
-      "legacy-compat",
-      "sac-only"
-    ],
-    "future_public_mode": "sac-only",
-    "binding_fragment": "9B07D8B",
-    "binding_fragment_derivation": "first 7 hex chars of SHA-256 over binding_event_text.txt (NFC UTF-8)",
-    "sac": "X6ZNK5NO51",
-    "sac_scheme": "CrockfordBase32(8)+mod97(2)",
-    "corpus_hash_sha256": "BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88",
-    "payload_latest": 5,
-    "canonical_public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-    "canonical_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-    "accepted_footer_examples": {
-      "legacy_template": "TD613-Binding:#9B07D8B \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-      "legacy_compat_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-      "sac_only_template": "TD613-Binding:SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-      "current_published_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27d0"
-    },
-    "source_files": {
-      "verify_page": "TD613_verify.html",
-      "manifest": "td613_manifest.json",
-      "footer_templates": "TD613_footer_templates.txt",
-      "offline_capsule": "TD613_offline_capsule.html"
-    },
-    "intended_use": "Source-of-truth config for generators, labs, and verifier surfaces so the TD613 stack emits one public trust grammar.",
-    "updated_at": "2026-03-11T00:30:00Z",
-    "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-    "current_published_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27d0",
-    "current_published_payload": 5,
-    "current_published_date": "2025-10-17",
-    "canonical_public_footer_note": "Template for new attestations. Use current_published_footer only when referring to the already-published historical example.",
-    "dummy_proof_rules": [
-      "Use payload {n} in templates and generators.",
-      "Use the fixed payload 5 / 2025-10-17 footer only when citing the already-published historical example.",
-      "Public now = legacy-compat.",
-      "Internal validation accepts legacy, legacy-compat, and sac-only.",
-      "Future public migration = sac-only."
+  "packet_contract": {
+    "schema_file": "../safe_harbor/packet.schema.json",
+    "canonicalizer_file": "../safe_harbor/canonicalize.js",
+    "hash_file": "../safe_harbor/hash.js",
+    "signature_file": "../safe_harbor/signature.js",
+    "lifecycle_file": "../safe_harbor/lifecycle.js",
+    "required_fields": [
+      "schema_version",
+      "packet_id",
+      "packet_hash_sha256",
+      "receipt",
+      "canon",
+      "intake",
+      "cadence_credentials",
+      "provenance",
+      "signature",
+      "rules"
     ]
   },
-  "signature_lanes": {
-    "historical_signed_zone": {
-      "status": "reference-only",
-      "algorithm": "Ed25519 / EdDSA detached .sig over canonical zone JSON",
-      "purpose": "signed badge/zone registry continuity and public verification",
-      "operator_only": true
-    },
-    "runtime_request_signing": {
-      "status": "advanced / operator-only",
-      "algorithm": "detached JWS request-signing lane",
-      "purpose": "middleware/runtime authorization flows such as request signing",
-      "operator_only": true
-    }
+  "live_template": {
+    "public_mode_default": "LEGACY-COMPAT",
+    "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0",
+    "payload_suggestion": 6,
+    "payload_rule": "Suggest next payload from signed bundle if available; manual override only in operator mode."
   },
-  "external_renderer_file": "10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js"
+  "historical_example": {
+    "label": "historical",
+    "payload_index": 5,
+    "attestation_date": "2025-10-17",
+    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0"
+  },
+  "signature_distinction": {
+    "cadence_signature": "stylometric credential from TCP-style cadence intake",
+    "cryptographic_signature": "detached seal over canonical_json(packet)",
+    "rule": "JWS or detached-ed25519 wraps the packet after canonicalization."
+  },
+  "badge_generator_rule": "Consumes canon and packet metadata but never generates sig.",
+  "updated_at": "2026-04-03T00:00:00Z"
 }

@@ -1,48 +1,72 @@
 # TD613 Safe Harbor
 
-TD613 Safe Harbor is a preservation-first rebuild of the original provenance attestation lab. It keeps the public TD613 probe grammar stable while introducing the missing middle layer: a canonical Safe Harbor packet that can eventually receive TCP intake, EO-RFD route guidance, and downstream signature overlays without forcing the badge surface to invent a signable object ad hoc.
+TD613 Safe Harbor is the canonical intake engine for the TD613 provenance sweep. It stages the packet first, derives cadence credentials from ingress, keeps the public footer compact and compat-first, and only lets detached cryptographic signatures attach after canonicalization.
 
-The original lab remains untouched in `C:\Users\timst\OneDrive\Desktop\TD613 Provenance Attestation Lab`. This repo is the new scaffold.
+## Non-negotiable canon
 
-## What does not drift
+- `principal = tauric.diana.613`
+- `claimed_pua = U+10D613`
+- `badge_id = bdg_glyph_U10D613`
+- `binding_fragment = #9B07D8B`
+- `SAC = SAC[X6ZNK5NO51]`
+- Public default remains `LEGACY-COMPAT`
+- Public footer remains `TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐`
 
-- Canonical anchors remain fixed: `tauric.diana.613`, `bdg_glyph_U10D613`, `U+10D613`, the canonical phrase, and the display phrase.
-- Public mode remains `legacy-compat`.
-- New attestations use `payload {n}` logic. The fixed `payload 5 · 2025-10-17` line remains a historical example only.
-- Public probes remain unsigned by default.
-- Historical `.sig` and runtime JWS lanes remain overlays, not the default public path.
+## Packet rule
 
-## Safe Harbor seam
+Safe Harbor mints:
 
-This repo treats the signature problem as a packetization problem first.
+- canonical packet body
+- packet hash
+- receipt state
+- cadence credentials
 
-1. TCP intake will eventually shape the canonical packet and cadence signature.
-2. EO-RFD route logic can guide harbor readiness and export gating.
-3. TD613 continues to own badge, provenance, custody, and verification surface.
-4. Signature lanes attach after the packet body is stable.
+Signature lanes add detached wrappers:
+
+- `sig`
+- `sig_type`
+- `kid`
+- wrapper status
+
+They do not define the packet and they do not mutate the packet body.
+
+## Cadence vs crypto
+
+- Cadence signature = stylometric credential from ingress and TCP-style cadence analysis
+- Cryptographic signature = detached seal over `canonical_json(packet)`
+
+That distinction is explicit in the runtime, trust profile, verify page, capsule, manifest, registry, and renderer metadata.
 
 ## Repo layout
 
-- `index.html` - primary Safe Harbor interface.
-- `app/` - styles, hook bus logic, packet preview, probe builder.
-- `probes/` - unchanged public sendable artifacts from the legacy lab.
-- `corpus/` - binding corpus and signed bundle references.
-- `reference/` - trust profile, manifests, verifier references.
-- `renderers/` - userscript renderer contract.
-- `schemas/` - Safe Harbor packet and hook event schema scaffolds.
-- `examples/` - sample Safe Harbor packet.
-- `assets/` - stable face preview assets.
+- `index.html` - primary Safe Harbor chamber
+- `11_TD613_PUA_Badge_Provenance_Attestation_Lab.html` - legacy lab bridge into Safe Harbor
+- `app/` - ingress runtime, UI shell, operator/public boundary, packet preview
+- `safe_harbor/` - canonicalizer, hash, signature, lifecycle, packet schema
+- `probes/` - public sendables and command references
+- `reference/` - trust profile, manifest, verify, capsule, registry
+- `renderers/` - badge renderer metadata and append-only userscript
 
-## Hook model
+## Public/operator boundary
 
-The UI listens for three external event lanes:
+Public surfaces may show:
 
-- `td613:tcp-intake`
-- `td613:eo-route`
-- `td613:signature-lane`
+- binding fragment
+- SAC
+- payload
+- date
+- receipt summary
+- verified / not verified
 
-When those hooks attach, the app emits the current packet on:
+Operator surfaces may show:
 
-- `td613:safe-harbor-packet`
+- packet JSON
+- packet hash
+- detached sig
+- sig type
+- kid
+- route and harbor diagnostics
+- cadence credentials
+- canonical JSON preview
 
-The browser also exposes `window.TD613SafeHarbor` for direct integration. See `docs/HOOKS.md`.
+The public footer must never include badge id, sig, packet hash, or route diagnostics.
