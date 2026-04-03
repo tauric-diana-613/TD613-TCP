@@ -46,7 +46,7 @@
         "literalSpans": [
           {
             "value": "10:15",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           }
         ]
       },
@@ -288,13 +288,13 @@
         },
         {
           "id": "s7",
-          "raw": "We stop for inventory at zzprotlitazz because a clean handoff matters more than heroic freelancing.",
+          "raw": "We stop for inventory at __PROTLIT_A__ because a clean handoff matters more than heroic freelancing.",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s7c0",
-              "text": "We stop for inventory at zzprotlitazz",
+              "text": "We stop for inventory at __PROTLIT_A__",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -598,7 +598,7 @@
           "kind": "lexeme"
         }
       ],
-      "semanticRisk": 0.48,
+      "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.847,
@@ -608,7 +608,7 @@
         "sourceOutputLexicalOverlap": 0.856
       },
       "rescuePasses": [
-        "progress-admit"
+        "partial-rescue"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
@@ -618,7 +618,7 @@
       "actorCoverage": 0.945,
       "actionCoverage": 1,
       "objectCoverage": 0.968,
-      "polarityMismatches": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -641,7 +641,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
           "globalBagScore": 0
@@ -807,7 +807,7 @@
         "literalSpans": [
           {
             "value": "10:15",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           }
         ]
       },
@@ -837,7 +837,7 @@
               "text": "we dont lose the first hr to improvisation",
               "relationToPrev": "additive",
               "clauseType": "fragment",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "present",
               "propositionHead": "dont",
               "actor": "we",
@@ -1124,7 +1124,7 @@
           "kind": "lexeme"
         }
       ],
-      "semanticRisk": 0.48,
+      "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.847,
@@ -1139,7 +1139,7 @@
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "progress-admit"
+        "partial-rescue"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
@@ -1181,7 +1181,7 @@
     "actorCoverage": 0.945,
     "actionCoverage": 1,
     "objectCoverage": 0.968,
-    "polarityMismatches": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

@@ -46,15 +46,15 @@
         "literalSpans": [
           {
             "value": "9:31 AM",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "9:47",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "10:03",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           }
         ]
       },
@@ -105,13 +105,13 @@
         },
         {
           "id": "s2",
-          "raw": "Brooks flagged it at zzprotlitazz, and we corrected the body at zzprotlitbzz with a note appended",
+          "raw": "Brooks flagged it at __PROTLIT_A__, and we corrected the body at __PROTLIT_B__ with a note appended",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "Brooks flagged it at zzprotlitazz",
+              "text": "Brooks flagged it at __PROTLIT_A__",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -119,13 +119,13 @@
               "propositionHead": "flagged",
               "actor": "it",
               "action": "flagged",
-              "object": "at zzprotlitazz",
+              "object": "at protlit",
               "modifiers": [],
               "hedgeMarkers": []
             },
             {
               "id": "s2c1",
-              "text": "we corrected the body at zzprotlitbzz with a note appended",
+              "text": "we corrected the body at __PROTLIT_B__ with a note appended",
               "relationToPrev": "additive",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -141,13 +141,13 @@
         },
         {
           "id": "s3",
-          "raw": "We also changed the homepage headline at zzprotlitczz because the first version implied budget approval when the vote had only cleared committee",
+          "raw": "We also changed the homepage headline at __PROTLIT_C__ because the first version implied budget approval when the vote had only cleared committee",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "We also changed the homepage headline at zzprotlitczz",
+              "text": "We also changed the homepage headline at __PROTLIT_C__",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -155,7 +155,7 @@
               "propositionHead": "changed",
               "actor": "We",
               "action": "changed",
-              "object": "homepage headline at zzprotlitczz",
+              "object": "homepage headline at protlit c",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -595,8 +595,8 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.095
+          "bagScore": 0.444,
+          "globalBagScore": 0.093
         },
         {
           "sourceClauseId": "s3c1",
@@ -675,15 +675,15 @@
         "literalSpans": [
           {
             "value": "9:31 AM",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "9:47",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "10:03",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           }
         ]
       },

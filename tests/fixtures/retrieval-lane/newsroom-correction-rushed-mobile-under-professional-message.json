@@ -46,15 +46,15 @@
         "literalSpans": [
           {
             "value": "9:31",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "9:47",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "6",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           }
         ]
       },
@@ -85,13 +85,13 @@
         },
         {
           "id": "s1",
-          "raw": "quote in graf zzprotlitczz is nia brooks not moreno",
+          "raw": "quote in graf __PROTLIT_C__ is nia brooks not moreno",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "quote in graf zzprotlitczz is nia brooks not moreno",
+              "text": "quote in graf __PROTLIT_C__ is nia brooks not moreno",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -116,7 +116,7 @@
               "text": "words are right, speaker tag isnt",
               "relationToPrev": "start",
               "clauseType": "main",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "present",
               "propositionHead": "are",
               "actor": "",
@@ -129,13 +129,13 @@
         },
         {
           "id": "s3",
-          "raw": "brooks emailed zzprotlitazz",
+          "raw": "brooks emailed __PROTLIT_A__",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "brooks emailed zzprotlitazz",
+              "text": "brooks emailed __PROTLIT_A__",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -151,13 +151,13 @@
         },
         {
           "id": "s4",
-          "raw": "body fixed zzprotlitbzz + note added",
+          "raw": "body fixed __PROTLIT_B__ + note added",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "body fixed zzprotlitbzz + note added",
+              "text": "body fixed __PROTLIT_B__ + note added",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -165,7 +165,7 @@
               "propositionHead": "fixed",
               "actor": "",
               "action": "fixed",
-              "object": "zzprotlitbzz note added",
+              "object": "protlit b note added",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -255,7 +255,6 @@
     "planSummary": {
       "transferMode": "expand",
       "structuralOperationsSelected": [
-        "merge-pairs",
         "clause-texture"
       ],
       "lexicalRegisterOperationsSelected": [],
@@ -296,9 +295,9 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 368.926,
+        "score": 370.082,
         "passesApplied": [
-          "merge-pairs",
+          "baseline-floor",
           "clause-texture"
         ],
         "rescuePasses": [],
@@ -318,9 +317,9 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 368.926,
+          "score": 370.082,
           "passesApplied": [
-            "merge-pairs",
+            "baseline-floor",
             "clause-texture"
           ],
           "rescuePasses": [],
@@ -339,7 +338,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 352.414,
+          "score": 352.564,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -366,7 +365,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 352.414,
+          "score": 352.564,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -393,7 +392,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 353.332,
+          "score": 353.482,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -420,7 +419,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 352.264,
+          "score": 352.414,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -447,7 +446,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Need steady fix on housing account; and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31. Body resolved 9:47, note added; also homepage hed now sounds like vote passed when it only cleared committee. Can someone swap that before newsletter grab",
+      "text": "Need steady resolve on housing account; quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31. Body resolved 9:47, note added; also homepage hed now sounds like vote passed when it only cleared committee. Can someone swap this before newsletter grab",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -486,10 +485,10 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 3.408,
-        "outputDonorDistance": 1.905,
-        "donorImprovement": 1.503,
-        "donorImprovementRatio": 0.441,
-        "sourceOutputLexicalOverlap": 0.868
+        "outputDonorDistance": 1.85,
+        "donorImprovement": 1.558,
+        "donorImprovementRatio": 0.457,
+        "sourceOutputLexicalOverlap": 0.8
       },
       "rescuePasses": [],
       "visibleShift": true,
@@ -561,8 +560,8 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.158
+          "bagScore": 0.429,
+          "globalBagScore": 0.15
         },
         {
           "sourceClauseId": "s5c0",
@@ -578,7 +577,7 @@
         },
         {
           "sourceClauseId": "s5c1",
-          "matchedClauseId": "s0c1+s0c2",
+          "matchedClauseId": "s0c2+s0c3",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -617,28 +616,28 @@
         "literalSpans": [
           {
             "value": "9:31",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "9:47",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "6",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "Need steady fix on housing account; and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31",
+          "raw": "Need steady resolve on housing account; quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Need steady fix on housing account",
+              "text": "Need steady resolve on housing account",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -646,7 +645,7 @@
               "propositionHead": "Need",
               "actor": "",
               "action": "Need",
-              "object": "steady fix housing account",
+              "object": "steady resolve housing account",
               "modifiers": [
                 "steady"
               ],
@@ -654,7 +653,7 @@
             },
             {
               "id": "s0c1",
-              "text": "and quote in graf 6 is nia brooks not moreno",
+              "text": "quote in graf 6 is nia brooks not moreno",
               "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "negative",
@@ -671,7 +670,7 @@
               "text": "words are right, speaker tag isnt",
               "relationToPrev": "additive",
               "clauseType": "main",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "present",
               "propositionHead": "are",
               "actor": "",
@@ -738,19 +737,19 @@
         },
         {
           "id": "s2",
-          "raw": "Can someone swap that before newsletter grab",
+          "raw": "Can someone swap this before newsletter grab",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "Can someone swap that before newsletter grab",
+              "text": "Can someone swap this before newsletter grab",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "grab",
-              "actor": "that",
+              "actor": "this",
               "action": "grab",
               "object": "",
               "modifiers": [],
@@ -799,10 +798,10 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 3.408,
-        "outputDonorDistance": 1.905,
-        "donorImprovement": 1.503,
-        "donorImprovementRatio": 0.441,
-        "sourceOutputLexicalOverlap": 0.868
+        "outputDonorDistance": 1.85,
+        "donorImprovement": 1.558,
+        "donorImprovementRatio": 0.457,
+        "sourceOutputLexicalOverlap": 0.8
       },
       "realizationNotes": [
         "3 lexical family swaps landed.",
@@ -841,8 +840,7 @@
       "temporal:2"
     ],
     "structuralOperations": [
-      "clause-texture",
-      "merge-pairs"
+      "clause-texture"
     ],
     "lexicalOperations": [],
     "connectorStrategy": "temporal",

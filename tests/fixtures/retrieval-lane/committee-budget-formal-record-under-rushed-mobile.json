@@ -46,24 +46,24 @@
         "literalSpans": [
           {
             "value": "4:05 PM",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "Q3",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "The finance committee met at zzprotlitazz to review the bridge budget after central administration extended the hiring freeze through zzprotlitbzz",
+          "raw": "The finance committee met at __PROTLIT_A__ to review the bridge budget after central administration extended the hiring freeze through __PROTLIT_B__",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "The finance committee met at zzprotlitazz to review the bridge budget after central administration extended the hiring freeze through zzprotlitbzz",
+              "text": "The finance committee met at __PROTLIT_A__ to review the bridge budget after central administration extended the hiring freeze through __PROTLIT_B__",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -664,11 +664,11 @@
         "literalSpans": [
           {
             "value": "4:05 PM",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "Q3",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           }
         ]
       },

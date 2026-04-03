@@ -46,32 +46,32 @@
         "literalSpans": [
           {
             "value": "7:42",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "8:11",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "\"light wash\"",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "4",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "gallery zzprotlitdzz fog rig set off detector again at zzprotlitazz",
+          "raw": "gallery __PROTLIT_D__ fog rig set off detector again at __PROTLIT_A__",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "gallery zzprotlitdzz fog rig set off detector again at zzprotlitazz",
+              "text": "gallery __PROTLIT_D__ fog rig set off detector again at __PROTLIT_A__",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -111,13 +111,13 @@
         },
         {
           "id": "s2",
-          "raw": "pls stop calling cue zzprotlitczz when its basically a fog burst now",
+          "raw": "pls stop calling cue __PROTLIT_C__ when its basically a fog burst now",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "pls stop calling cue zzprotlitczz",
+              "text": "pls stop calling cue __PROTLIT_C__",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -149,13 +149,13 @@
         },
         {
           "id": "s3",
-          "raw": "reset finished zzprotlitbzz",
+          "raw": "reset finished __PROTLIT_B__",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "reset finished zzprotlitbzz",
+              "text": "reset finished __PROTLIT_B__",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -163,7 +163,7 @@
               "propositionHead": "finished",
               "actor": "",
               "action": "finished",
-              "object": "zzprotlitbzz",
+              "object": "protlit b",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -532,7 +532,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 1,
           "bagScore": 0,
-          "globalBagScore": 0.091
+          "globalBagScore": 0.083
         }
       ],
       "sourceClauseCount": 5,
@@ -551,19 +551,19 @@
         "literalSpans": [
           {
             "value": "7:42",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "8:11",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "\"light wash\"",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "4",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           }
         ]
       },

@@ -46,36 +46,36 @@
         "literalSpans": [
           {
             "value": "BA-4427",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "6",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "9",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "10",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           },
           {
             "value": "14",
-            "placeholder": "zzprotlitezz"
+            "placeholder": "__PROTLIT_E__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "Hello appeals unit, I am writing about case zzprotlitazz because the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead",
+          "raw": "Hello appeals unit, I am writing about case __PROTLIT_A__ because the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Hello appeals unit, I am writing about case zzprotlitazz",
+              "text": "Hello appeals unit, I am writing about case __PROTLIT_A__",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -83,7 +83,7 @@
               "propositionHead": "am",
               "actor": "I",
               "action": "am",
-              "object": "writing about case zzprotlitazz",
+              "object": "writing about case protlit",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -135,13 +135,13 @@
         },
         {
           "id": "s1",
-          "raw": "The notice was generated May zzprotlitbzz and reached the claimant on May zzprotlitczz",
+          "raw": "The notice was generated May __PROTLIT_B__ and reached the claimant on May __PROTLIT_C__",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "The notice was generated May zzprotlitbzz and reached the claimant on May zzprotlitczz",
+              "text": "The notice was generated May __PROTLIT_B__ and reached the claimant on May __PROTLIT_C__",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -149,7 +149,7 @@
               "propositionHead": "was",
               "actor": "The notice",
               "action": "was",
-              "object": "generated zzprotlitbzz reached claimant zzprotlitczz",
+              "object": "generated protlit b reached claimant",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -193,13 +193,13 @@
         },
         {
           "id": "s3",
-          "raw": "Intake confirmed on May zzprotlitdzz that the letter exists; it just was not linked to the queue handling the address alert",
+          "raw": "Intake confirmed on May __PROTLIT_D__ that the letter exists; it just was not linked to the queue handling the address alert",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "Intake confirmed on May zzprotlitdzz that the letter exists",
+              "text": "Intake confirmed on May __PROTLIT_D__ that the letter exists",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -207,7 +207,7 @@
               "propositionHead": "confirmed",
               "actor": "that",
               "action": "confirmed",
-              "object": "zzprotlitdzz letter exists",
+              "object": "protlit d letter exists",
               "modifiers": [],
               "hedgeMarkers": []
             },
@@ -231,13 +231,13 @@
         },
         {
           "id": "s4",
-          "raw": "We filed the fair-hearing request on May zzprotlitezz and are assembling the packet now",
+          "raw": "We filed the fair-hearing request on May __PROTLIT_E__ and are assembling the packet now",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "We filed the fair-hearing request on May zzprotlitezz and are assembling the packet now",
+              "text": "We filed the fair-hearing request on May __PROTLIT_E__ and are assembling the packet now",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -245,7 +245,7 @@
               "propositionHead": "request",
               "actor": "We",
               "action": "request",
-              "object": "zzprotlitezz assembling packet now",
+              "object": "protlit e assembling packet now",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -631,8 +631,8 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.6,
-          "globalBagScore": 0.077
+          "bagScore": 0.5,
+          "globalBagScore": 0.075
         },
         {
           "sourceClauseId": "s3c1",
@@ -655,8 +655,8 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.667,
-          "globalBagScore": 0.103
+          "bagScore": 0.571,
+          "globalBagScore": 0.1
         },
         {
           "sourceClauseId": "s5c0",
@@ -687,23 +687,23 @@
         "literalSpans": [
           {
             "value": "BA-4427",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "6",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "9",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "10",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           },
           {
             "value": "14",
-            "placeholder": "zzprotlitezz"
+            "placeholder": "__PROTLIT_E__"
           }
         ]
       },
@@ -873,7 +873,7 @@
               "text": "it just wasnt linked to the queue handling the speech alert",
               "relationToPrev": "start",
               "clauseType": "fragment",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "past",
               "propositionHead": "wasnt",
               "actor": "it",

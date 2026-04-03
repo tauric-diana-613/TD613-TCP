@@ -1,6 +1,6 @@
 (function () {
   window.TCP_RETRIEVAL_FIXTURES = {
-  "generatedAt": "2026-04-03T01:55:41.775Z",
+  "generatedAt": "2026-04-03T04:31:04.861Z",
   "cases": {
     "package-handoff-formal-record-under-rushed-mobile": {
       "id": "package-handoff-formal-record-under-rushed-mobile",
@@ -50,44 +50,44 @@
             "literalSpans": [
               {
                 "value": "6:41 PM",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "7:06 PM",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "\"attempted / no answer\"",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "18",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               },
               {
                 "value": "2B",
-                "placeholder": "zzprotlitezz"
+                "placeholder": "__PROTLIT_E__"
               },
               {
                 "value": "2B",
-                "placeholder": "zzprotlitfzz"
+                "placeholder": "__PROTLIT_F__"
               },
               {
                 "value": "2B",
-                "placeholder": "zzprotlitgzz"
+                "placeholder": "__PROTLIT_G__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "On Tuesday, March zzprotlitdzz, the rush parcel addressed to Unit zzprotlitezz was not presented for signature at the apartment door",
+              "raw": "On Tuesday, March __PROTLIT_D__, the rush parcel addressed to Unit __PROTLIT_E__ was not presented for signature at the apartment door",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "On Tuesday, March zzprotlitdzz, the rush parcel addressed to Unit zzprotlitezz was not presented for signature at the apartment door",
+                  "text": "On Tuesday, March __PROTLIT_D__, the rush parcel addressed to Unit __PROTLIT_E__ was not presented for signature at the apartment door",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "negative",
@@ -103,13 +103,13 @@
             },
             {
               "id": "s1",
-              "raw": "The carrier scan marked zzprotlitczz at zzprotlitazz, but building footage and resident testimony indicate no buzzer call was placed to Unit zzprotlitfzz during that minute",
+              "raw": "The carrier scan marked __PROTLIT_C__ at __PROTLIT_A__, but building footage and resident testimony indicate no buzzer call was placed to Unit __PROTLIT_F__ during that minute",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s1c0",
-                  "text": "The carrier scan marked zzprotlitczz at zzprotlitazz, but building footage and resident testimony indicate no buzzer call was placed to Unit zzprotlitfzz during that minute",
+                  "text": "The carrier scan marked __PROTLIT_C__ at __PROTLIT_A__, but building footage and resident testimony indicate no buzzer call was placed to Unit __PROTLIT_F__ during that minute",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "negative",
@@ -117,7 +117,7 @@
                   "propositionHead": "call",
                   "actor": "The carrier",
                   "action": "call",
-                  "object": "placed unit zzprotlitfzz during minute",
+                  "object": "placed unit protlit f during",
                   "modifiers": [],
                   "hedgeMarkers": []
                 }
@@ -169,13 +169,13 @@
             },
             {
               "id": "s4",
-              "raw": "Chen located it at approximately zzprotlitbzz after noticing the door tag and asking maintenance whether a delivery had come through",
+              "raw": "Chen located it at approximately __PROTLIT_B__ after noticing the door tag and asking maintenance whether a delivery had come through",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s4c0",
-                  "text": "Chen located it at approximately zzprotlitbzz after noticing the door tag and asking maintenance whether a delivery had come through",
+                  "text": "Chen located it at approximately __PROTLIT_B__ after noticing the door tag and asking maintenance whether a delivery had come through",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -183,7 +183,7 @@
                   "propositionHead": "located",
                   "actor": "it",
                   "action": "located",
-                  "object": "at approximately zzprotlitbzz after noticing",
+                  "object": "at approximately protlit b after",
                   "modifiers": [
                     "approximately"
                   ],
@@ -193,13 +193,13 @@
             },
             {
               "id": "s5",
-              "raw": "I moved the parcel from the landing to the hallway table outside zzprotlitgzz only after Ms",
+              "raw": "I moved the parcel from the landing to the hallway table outside __PROTLIT_G__ only after Ms",
               "rhetoricalRole": "temporal",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s5c0",
-                  "text": "I moved the parcel from the landing to the hallway table outside zzprotlitgzz only after Ms",
+                  "text": "I moved the parcel from the landing to the hallway table outside __PROTLIT_G__ only after Ms",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -630,7 +630,7 @@
           "actorCoverage": 0.975,
           "actionCoverage": 1,
           "objectCoverage": 0.923,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 1,
           "protectedAnchorIntegrity": 1,
           "clauseAudits": [
@@ -641,7 +641,7 @@
               "actorCoverage": 1,
               "actionCoverage": 1,
               "objectCoverage": 0.75,
-              "polarityMismatch": 1,
+              "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0.167,
               "globalBagScore": 0.039
@@ -807,31 +807,31 @@
             "literalSpans": [
               {
                 "value": "6:41 PM",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "7:06 PM",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "\"attempted / no answer\"",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "18",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               },
               {
                 "value": "2B",
-                "placeholder": "zzprotlitezz"
+                "placeholder": "__PROTLIT_E__"
               },
               {
                 "value": "2B",
-                "placeholder": "zzprotlitfzz"
+                "placeholder": "__PROTLIT_F__"
               },
               {
                 "value": "2B",
-                "placeholder": "zzprotlitgzz"
+                "placeholder": "__PROTLIT_G__"
               }
             ]
           },
@@ -883,7 +883,7 @@
                   "text": "the rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "past",
                   "propositionHead": "rush",
                   "actor": "the rush",
@@ -1245,7 +1245,7 @@
         "actorCoverage": 0.975,
         "actionCoverage": 1,
         "objectCoverage": 0.923,
-        "polarityMismatches": 1,
+        "polarityMismatches": 0,
         "tenseMismatches": 1,
         "protectedAnchorIntegrity": 1
       }
@@ -1298,31 +1298,31 @@
             "literalSpans": [
               {
                 "value": "6:41",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "2b",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "2nd",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "zzprotlitbzz pkg wasnt brought down",
+              "raw": "__PROTLIT_B__ pkg wasnt brought down",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "zzprotlitbzz pkg wasnt brought down",
+                  "text": "__PROTLIT_B__ pkg wasnt brought down",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "present",
                   "propositionHead": "brought",
                   "actor": "",
@@ -1335,13 +1335,13 @@
             },
             {
               "id": "s1",
-              "raw": "tag says attempted zzprotlitazz but no one buzzed her",
+              "raw": "tag says attempted __PROTLIT_A__ but no one buzzed her",
               "rhetoricalRole": "contrastive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s1c0",
-                  "text": "tag says attempted zzprotlitazz but no one buzzed her",
+                  "text": "tag says attempted __PROTLIT_A__ but no one buzzed her",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "negative",
@@ -1349,7 +1349,7 @@
                   "propositionHead": "says",
                   "actor": "",
                   "action": "says",
-                  "object": "attempted zzprotlitazz no one buzzed",
+                  "object": "attempted protlit no one buzzed",
                   "modifiers": [],
                   "hedgeMarkers": []
                 }
@@ -1357,13 +1357,13 @@
             },
             {
               "id": "s2",
-              "raw": "it was just sitting on zzprotlitczz fl landing by rail",
+              "raw": "it was just sitting on __PROTLIT_C__ fl landing by rail",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s2c0",
-                  "text": "it was just sitting on zzprotlitczz fl landing by rail",
+                  "text": "it was just sitting on __PROTLIT_C__ fl landing by rail",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -1371,7 +1371,7 @@
                   "propositionHead": "was",
                   "actor": "it",
                   "action": "was",
-                  "object": "sitting zzprotlitczz fl landing by",
+                  "object": "sitting protlit c fl landing",
                   "modifiers": [],
                   "hedgeMarkers": [
                     "minimization"
@@ -1510,7 +1510,7 @@
         "candidateSummary": {
           "selected": {
             "spec": "ir-beam-search",
-            "score": 348.572,
+            "score": 359.672,
             "passesApplied": [
               "merge-pairs",
               "clause-texture"
@@ -1533,7 +1533,7 @@
           "candidates": [
             {
               "spec": "ir-beam-search",
-              "score": 348.572,
+              "score": 359.672,
               "passesApplied": [
                 "merge-pairs",
                 "clause-texture"
@@ -1555,11 +1555,10 @@
             },
             {
               "spec": "mixed-structural",
-              "score": 259.396,
+              "score": 284.728,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
-                "sentence-structure",
                 "connector-stance-lexicon",
                 "contraction-auxiliary"
               ],
@@ -1570,6 +1569,7 @@
                 "sentence-spread",
                 "connector-stance",
                 "orthography-posture",
+                "fragment-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -1577,11 +1577,10 @@
             },
             {
               "spec": "merge-heavy",
-              "score": 259.396,
+              "score": 284.728,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
-                "sentence-structure",
                 "connector-stance-lexicon",
                 "contraction-auxiliary"
               ],
@@ -1592,6 +1591,7 @@
                 "sentence-spread",
                 "connector-stance",
                 "orthography-posture",
+                "fragment-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -1599,11 +1599,10 @@
             },
             {
               "spec": "connector-stance-heavy",
-              "score": 259.396,
+              "score": 284.728,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
-                "sentence-structure",
                 "connector-stance-lexicon",
                 "contraction-auxiliary"
               ],
@@ -1614,6 +1613,7 @@
                 "sentence-spread",
                 "connector-stance",
                 "orthography-posture",
+                "fragment-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -1621,11 +1621,10 @@
             },
             {
               "spec": "lexical-register-heavy",
-              "score": 259.396,
+              "score": 284.728,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
-                "sentence-structure",
                 "connector-stance-lexicon",
                 "contraction-auxiliary"
               ],
@@ -1636,6 +1635,7 @@
                 "sentence-spread",
                 "connector-stance",
                 "orthography-posture",
+                "fragment-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -1644,7 +1644,7 @@
           ]
         },
         "finalRealization": {
-          "text": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her; yet it was just sitting on 2nd fl landing by rail, but red rush sticker still on it. i moved it to hall table after she said yes its hers; she had bags already. if management asks: box stayed sealed.",
+          "text": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her. it was just sitting on 2nd fl landing by rail, but red rush sticker still on it. i moved it to hall table after she said yes its hers; she had bags already. if management asks: box stayed sealed.",
           "transferClass": "structural",
           "borrowedShellOutcome": "structural",
           "borrowedShellFailureClass": null,
@@ -1665,10 +1665,10 @@
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 4.293,
-            "outputDonorDistance": 3.43,
-            "donorImprovement": 0.863,
-            "donorImprovementRatio": 0.201,
-            "sourceOutputLexicalOverlap": 0.868
+            "outputDonorDistance": 3.084,
+            "donorImprovement": 1.209,
+            "donorImprovementRatio": 0.282,
+            "sourceOutputLexicalOverlap": 0.885
           },
           "rescuePasses": [],
           "visibleShift": true,
@@ -1678,8 +1678,8 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.925,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.917,
+          "polarityMismatches": 0,
           "tenseMismatches": 1,
           "protectedAnchorIntegrity": 1,
           "clauseAudits": [
@@ -1690,7 +1690,7 @@
               "actorCoverage": 1,
               "actionCoverage": 1,
               "objectCoverage": 1,
-              "polarityMismatch": 1,
+              "polarityMismatch": 0,
               "tenseMismatch": 1,
               "bagScore": 0.333,
               "globalBagScore": 0.091
@@ -1709,19 +1709,19 @@
             },
             {
               "sourceClauseId": "s2c0",
-              "matchedClauseId": "s0c1",
+              "matchedClauseId": "s1c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
-              "objectCoverage": 0.8,
+              "objectCoverage": 0.75,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 0.667,
-              "globalBagScore": 0.174
+              "bagScore": 0.429,
+              "globalBagScore": 0.125
             },
             {
               "sourceClauseId": "s3c0",
-              "matchedClauseId": "s0c1",
+              "matchedClauseId": "s1c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -1733,7 +1733,7 @@
             },
             {
               "sourceClauseId": "s4c0",
-              "matchedClauseId": "s1c0",
+              "matchedClauseId": "s2c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -1745,7 +1745,7 @@
             },
             {
               "sourceClauseId": "s5c0",
-              "matchedClauseId": "s2c0",
+              "matchedClauseId": "s3c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -1767,27 +1767,27 @@
         },
         "realizedIR": {
           "metadata": {
-            "sentenceCount": 3,
+            "sentenceCount": 4,
             "clauseCount": 5,
             "literalSpans": [
               {
                 "value": "6:41",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "2b",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "2nd",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her; yet it was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
+              "raw": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her",
               "rhetoricalRole": "contrastive",
               "terminalPunct": ".",
               "clauses": [
@@ -1804,11 +1804,19 @@
                   "object": "down tag says attempted 6",
                   "modifiers": [],
                   "hedgeMarkers": []
-                },
+                }
+              ]
+            },
+            {
+              "id": "s1",
+              "raw": "it was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
+              "rhetoricalRole": "contrastive",
+              "terminalPunct": ".",
+              "clauses": [
                 {
-                  "id": "s0c1",
-                  "text": "yet it was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
-                  "relationToPrev": "contrastive",
+                  "id": "s1c0",
+                  "text": "it was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
+                  "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
                   "tenseAspect": "past",
@@ -1824,13 +1832,13 @@
               ]
             },
             {
-              "id": "s1",
+              "id": "s2",
               "raw": "i moved it to hall table after she said yes its hers; she had bags already",
               "rhetoricalRole": "temporal",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s1c0",
+                  "id": "s2c0",
                   "text": "i moved it to hall table after she said yes its hers",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
@@ -1846,7 +1854,7 @@
                   "hedgeMarkers": []
                 },
                 {
-                  "id": "s1c1",
+                  "id": "s2c1",
                   "text": "she had bags already",
                   "relationToPrev": "additive",
                   "clauseType": "main",
@@ -1862,13 +1870,13 @@
               ]
             },
             {
-              "id": "s2",
+              "id": "s3",
               "raw": "if management asks: box stayed sealed.",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s2c0",
+                  "id": "s3c0",
                   "text": "if management asks: box stayed sealed",
                   "relationToPrev": "start",
                   "clauseType": "subordinate",
@@ -1906,10 +1914,10 @@
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 4.293,
-            "outputDonorDistance": 3.43,
-            "donorImprovement": 0.863,
-            "donorImprovementRatio": 0.201,
-            "sourceOutputLexicalOverlap": 0.868
+            "outputDonorDistance": 3.084,
+            "donorImprovement": 1.209,
+            "donorImprovementRatio": 0.282,
+            "sourceOutputLexicalOverlap": 0.885
           },
           "realizationNotes": [
             "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture.",
@@ -1953,8 +1961,8 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.925,
-        "polarityMismatches": 1,
+        "objectCoverage": 0.917,
+        "polarityMismatches": 0,
         "tenseMismatches": 1,
         "protectedAnchorIntegrity": 1
       }
@@ -2007,7 +2015,7 @@
             "literalSpans": [
               {
                 "value": "10:15",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               }
             ]
           },
@@ -2249,13 +2257,13 @@
             },
             {
               "id": "s7",
-              "raw": "We stop for inventory at zzprotlitazz because a clean handoff matters more than heroic freelancing.",
+              "raw": "We stop for inventory at __PROTLIT_A__ because a clean handoff matters more than heroic freelancing.",
               "rhetoricalRole": "causal",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s7c0",
-                  "text": "We stop for inventory at zzprotlitazz",
+                  "text": "We stop for inventory at __PROTLIT_A__",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -2559,7 +2567,7 @@
               "kind": "lexeme"
             }
           ],
-          "semanticRisk": 0.48,
+          "semanticRisk": 0.3,
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 4.847,
@@ -2569,7 +2577,7 @@
             "sourceOutputLexicalOverlap": 0.856
           },
           "rescuePasses": [
-            "progress-admit"
+            "partial-rescue"
           ],
           "visibleShift": true,
           "nonTrivialShift": true
@@ -2579,7 +2587,7 @@
           "actorCoverage": 0.945,
           "actionCoverage": 1,
           "objectCoverage": 0.968,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
           "clauseAudits": [
@@ -2602,7 +2610,7 @@
               "actorCoverage": 1,
               "actionCoverage": 1,
               "objectCoverage": 0.75,
-              "polarityMismatch": 1,
+              "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0,
               "globalBagScore": 0
@@ -2768,7 +2776,7 @@
             "literalSpans": [
               {
                 "value": "10:15",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               }
             ]
           },
@@ -2798,7 +2806,7 @@
                   "text": "we dont lose the first hr to improvisation",
                   "relationToPrev": "additive",
                   "clauseType": "fragment",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "present",
                   "propositionHead": "dont",
                   "actor": "we",
@@ -3085,7 +3093,7 @@
               "kind": "lexeme"
             }
           ],
-          "semanticRisk": 0.48,
+          "semanticRisk": 0.3,
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 4.847,
@@ -3100,7 +3108,7 @@
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
           "rescuePasses": [
-            "progress-admit"
+            "partial-rescue"
           ],
           "visibleShift": true,
           "nonTrivialShift": true
@@ -3142,7 +3150,7 @@
         "actorCoverage": 0.945,
         "actionCoverage": 1,
         "objectCoverage": 0.968,
-        "polarityMismatches": 1,
+        "polarityMismatches": 0,
         "tenseMismatches": 0,
         "protectedAnchorIntegrity": 1
       }
@@ -3195,7 +3203,7 @@
             "literalSpans": [
               {
                 "value": "10:15",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               }
             ]
           },
@@ -3211,7 +3219,7 @@
                   "text": "if youre late thats ok just dont start random jobs",
                   "relationToPrev": "start",
                   "clauseType": "subordinate",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "present",
                   "propositionHead": "youre",
                   "actor": "",
@@ -3312,18 +3320,18 @@
             },
             {
               "id": "s4",
-              "raw": "zzprotlitazz inventory stop still stands",
+              "raw": "__PROTLIT_A__ inventory stop still stands",
               "rhetoricalRole": "contrastive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s4c0",
-                  "text": "zzprotlitazz inventory stop still stands",
+                  "text": "__PROTLIT_A__ inventory stop still stands",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
                   "tenseAspect": "present",
-                  "propositionHead": "zzprotlitazz",
+                  "propositionHead": "protlit",
                   "actor": "",
                   "action": "",
                   "object": "",
@@ -3625,7 +3633,7 @@
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
-              "matchedClauseId": "s1c1",
+              "matchedClauseId": "s0c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -3724,7 +3732,7 @@
             "literalSpans": [
               {
                 "value": "10:15",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               }
             ]
           },
@@ -3958,24 +3966,24 @@
             "literalSpans": [
               {
                 "value": "4:05 PM",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "Q3",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "The finance committee met at zzprotlitazz to review the bridge budget after central administration extended the hiring freeze through zzprotlitbzz",
+              "raw": "The finance committee met at __PROTLIT_A__ to review the bridge budget after central administration extended the hiring freeze through __PROTLIT_B__",
               "rhetoricalRole": "temporal",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "The finance committee met at zzprotlitazz to review the bridge budget after central administration extended the hiring freeze through zzprotlitbzz",
+                  "text": "The finance committee met at __PROTLIT_A__ to review the bridge budget after central administration extended the hiring freeze through __PROTLIT_B__",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -4576,11 +4584,11 @@
             "literalSpans": [
               {
                 "value": "4:05 PM",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "Q3",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               }
             ]
           },
@@ -5030,28 +5038,28 @@
             "literalSpans": [
               {
                 "value": "q3",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "12",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "3",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "freeze runs thru zzprotlitazz",
+              "raw": "freeze runs thru __PROTLIT_A__",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "freeze runs thru zzprotlitazz",
+                  "text": "freeze runs thru __PROTLIT_A__",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -5067,13 +5075,13 @@
             },
             {
               "id": "s1",
-              "raw": "means coord line stays empty zzprotlitbzz more wks unless we bridge it",
+              "raw": "means coord line stays empty __PROTLIT_B__ more wks unless we bridge it",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s1c0",
-                  "text": "means coord line stays empty zzprotlitbzz more wks",
+                  "text": "means coord line stays empty __PROTLIT_B__ more wks",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -5141,18 +5149,18 @@
             },
             {
               "id": "s3",
-              "raw": "zzprotlitczz options still analyst line / evening hrs / reserves w dean ok",
+              "raw": "__PROTLIT_C__ options still analyst line / evening hrs / reserves w dean ok",
               "rhetoricalRole": "contrastive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s3c0",
-                  "text": "zzprotlitczz options still analyst line / evening hrs / reserves w dean ok",
+                  "text": "__PROTLIT_C__ options still analyst line / evening hrs / reserves w dean ok",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
                   "tenseAspect": "present",
-                  "propositionHead": "zzprotlitczz",
+                  "propositionHead": "protlit",
                   "actor": "",
                   "action": "",
                   "object": "",
@@ -5207,6 +5215,7 @@
         "planSummary": {
           "transferMode": "expand",
           "structuralOperationsSelected": [
+            "merge-pairs",
             "clause-texture"
           ],
           "lexicalRegisterOperationsSelected": [],
@@ -5247,9 +5256,9 @@
         "candidateSummary": {
           "selected": {
             "spec": "ir-beam-search",
-            "score": 394.1,
+            "score": 394.738,
             "passesApplied": [
-              "baseline-floor",
+              "merge-pairs",
               "clause-texture"
             ],
             "rescuePasses": [],
@@ -5270,9 +5279,9 @@
           "candidates": [
             {
               "spec": "ir-beam-search",
-              "score": 394.1,
+              "score": 394.738,
               "passesApplied": [
-                "baseline-floor",
+                "merge-pairs",
                 "clause-texture"
               ],
               "rescuePasses": [],
@@ -5383,7 +5392,7 @@
           ]
         },
         "finalRealization": {
-          "text": "Freeze runs through q3, but means coord line stays empty 12 more weeks unless we bridge it. Room was basically: cut print/furniture if needed, do not fake that intake can run w no staffing hit, though 3 options still analyst line; evening hours; reserves w dean okay. Revised table thurs after finance answers reserve rule",
+          "text": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically: cut print/furniture if needed, do not fake that intake can run w no staffing hit, though 3 options still analyst line; evening hours; reserves w dean okay. Revised table thurs after finance answers reserve rule",
           "transferClass": "structural",
           "borrowedShellOutcome": "structural",
           "borrowedShellFailureClass": null,
@@ -5404,9 +5413,9 @@
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 3.863,
-            "outputDonorDistance": 1.953,
-            "donorImprovement": 1.91,
-            "donorImprovementRatio": 0.494,
+            "outputDonorDistance": 1.924,
+            "donorImprovement": 1.939,
+            "donorImprovementRatio": 0.502,
             "sourceOutputLexicalOverlap": 0.78
           },
           "rescuePasses": [],
@@ -5523,28 +5532,28 @@
             "literalSpans": [
               {
                 "value": "q3",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "12",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "3",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "Freeze runs through q3, but means coord line stays empty 12 more weeks unless we bridge it",
-              "rhetoricalRole": "contrastive",
+              "raw": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it",
+              "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "Freeze runs through q3, but means coord line stays empty 12 more weeks",
+                  "text": "Freeze runs through q3, and means coord line stays empty 12 more weeks",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -5671,9 +5680,9 @@
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 3.863,
-            "outputDonorDistance": 1.953,
-            "donorImprovement": 1.91,
-            "donorImprovementRatio": 0.494,
+            "outputDonorDistance": 1.924,
+            "donorImprovement": 1.939,
+            "donorImprovementRatio": 0.502,
             "sourceOutputLexicalOverlap": 0.78
           },
           "realizationNotes": [
@@ -5709,7 +5718,8 @@
           "temporal:1"
         ],
         "structuralOperations": [
-          "clause-texture"
+          "clause-texture",
+          "merge-pairs"
         ],
         "lexicalOperations": [],
         "connectorStrategy": "resumptive",
@@ -6764,11 +6774,11 @@
             "literalSpans": [
               {
                 "value": "6",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "2",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               }
             ]
           },
@@ -6784,7 +6794,7 @@
                   "text": "grant isnt just digitize + pray",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "present",
                   "propositionHead": "grant",
                   "actor": "",
@@ -6799,13 +6809,13 @@
             },
             {
               "id": "s1",
-              "raw": "its shared catalog protocol + zzprotlitazz steward reviewers + portable exhibit kit",
+              "raw": "its shared catalog protocol + __PROTLIT_A__ steward reviewers + portable exhibit kit",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s1c0",
-                  "text": "its shared catalog protocol + zzprotlitazz steward reviewers + portable exhibit kit",
+                  "text": "its shared catalog protocol + __PROTLIT_A__ steward reviewers + portable exhibit kit",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -6861,21 +6871,21 @@
             },
             {
               "id": "s3",
-              "raw": "pls keep the zzprotlitbzz wk review buffer + translation line in budget",
+              "raw": "pls keep the __PROTLIT_B__ wk review buffer + translation line in budget",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s3c0",
-                  "text": "pls keep the zzprotlitbzz wk review buffer + translation line in budget",
+                  "text": "pls keep the __PROTLIT_B__ wk review buffer + translation line in budget",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
                   "tenseAspect": "present",
                   "propositionHead": "keep",
-                  "actor": "the zzprotlitbzz",
+                  "actor": "the __PROTLIT_B__",
                   "action": "keep",
-                  "object": "zzprotlitbzz wk review buffer translation",
+                  "object": "protlit b wk review buffer",
                   "modifiers": [],
                   "hedgeMarkers": []
                 }
@@ -7160,7 +7170,7 @@
           "actorCoverage": 0.83,
           "actionCoverage": 1,
           "objectCoverage": 0.95,
-          "polarityMismatches": 0,
+          "polarityMismatches": 1,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
           "clauseAudits": [
@@ -7183,7 +7193,7 @@
               "actorCoverage": 1,
               "actionCoverage": 1,
               "objectCoverage": 1,
-              "polarityMismatch": 0,
+              "polarityMismatch": 1,
               "tenseMismatch": 0,
               "bagScore": 0.333,
               "globalBagScore": 0.091
@@ -7241,11 +7251,11 @@
             "literalSpans": [
               {
                 "value": "6",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "2",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               }
             ]
           },
@@ -7261,7 +7271,7 @@
                   "text": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "past",
                   "propositionHead": "grant",
                   "actor": "",
@@ -7413,7 +7423,7 @@
         "actorCoverage": 0.83,
         "actionCoverage": 1,
         "objectCoverage": 0.95,
-        "polarityMismatches": 0,
+        "polarityMismatches": 1,
         "tenseMismatches": 0,
         "protectedAnchorIntegrity": 1
       }
@@ -7466,40 +7476,40 @@
             "literalSpans": [
               {
                 "value": "1:00",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "5:00 PM",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "5:43",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "6:10",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               },
               {
                 "value": "\"refusal of entry,\"",
-                "placeholder": "zzprotlitezz"
+                "placeholder": "__PROTLIT_E__"
               },
               {
                 "value": "3",
-                "placeholder": "zzprotlitfzz"
+                "placeholder": "__PROTLIT_F__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "Hearing unit, please correct the way the July zzprotlitfzz record is framing the June inspection",
+              "raw": "Hearing unit, please correct the way the July __PROTLIT_F__ record is framing the June inspection",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "Hearing unit, please correct the way the July zzprotlitfzz record is framing the June inspection",
+                  "text": "Hearing unit, please correct the way the July __PROTLIT_F__ record is framing the June inspection",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -7517,13 +7527,13 @@
             },
             {
               "id": "s1",
-              "raw": "Counsel kept calling it a zzprotlitezz but the notice window was zzprotlitazz-zzprotlitbzz and the inspector did not text until zzprotlitczz that he was still in traffic",
+              "raw": "Counsel kept calling it a __PROTLIT_E__ but the notice window was __PROTLIT_A__-__PROTLIT_B__ and the inspector did not text until __PROTLIT_C__ that he was still in traffic",
               "rhetoricalRole": "contrastive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s1c0",
-                  "text": "Counsel kept calling it a zzprotlitezz but the notice window was zzprotlitazz-zzprotlitbzz and the inspector did not text",
+                  "text": "Counsel kept calling it a __PROTLIT_E__ but the notice window was __PROTLIT_A__-__PROTLIT_B__ and the inspector did not text",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "negative",
@@ -7531,13 +7541,13 @@
                   "propositionHead": "kept",
                   "actor": "it",
                   "action": "kept",
-                  "object": "calling zzprotlitezz notice window zzprotlitazz",
+                  "object": "calling protlit e notice window",
                   "modifiers": [],
                   "hedgeMarkers": []
                 },
                 {
                   "id": "s1c1",
-                  "text": "zzprotlitczz that he was still in traffic",
+                  "text": "__PROTLIT_C__ that he was still in traffic",
                   "relationToPrev": "contrastive",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -7555,13 +7565,13 @@
             },
             {
               "id": "s2",
-              "raw": "Camera time places arrival after zzprotlitdzz",
+              "raw": "Camera time places arrival after __PROTLIT_D__",
               "rhetoricalRole": "temporal",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s2c0",
-                  "text": "Camera time places arrival after zzprotlitdzz",
+                  "text": "Camera time places arrival after __PROTLIT_D__",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -7887,7 +7897,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.964,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
           "clauseAudits": [
@@ -7910,7 +7920,7 @@
               "actorCoverage": 1,
               "actionCoverage": 1,
               "objectCoverage": 0.75,
-              "polarityMismatch": 1,
+              "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0.5,
               "globalBagScore": 0.133
@@ -7992,27 +8002,27 @@
             "literalSpans": [
               {
                 "value": "1:00",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "5:00 PM",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "5:43",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "6:10",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               },
               {
                 "value": "\"refusal of entry,\"",
-                "placeholder": "zzprotlitezz"
+                "placeholder": "__PROTLIT_E__"
               },
               {
                 "value": "3",
-                "placeholder": "zzprotlitfzz"
+                "placeholder": "__PROTLIT_F__"
               }
             ]
           },
@@ -8052,7 +8062,7 @@
                   "text": "counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector didnt text",
                   "relationToPrev": "start",
                   "clauseType": "main",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "present",
                   "propositionHead": "kept",
                   "actor": "it",
@@ -8277,7 +8287,7 @@
         "actorCoverage": 1,
         "actionCoverage": 1,
         "objectCoverage": 0.964,
-        "polarityMismatches": 1,
+        "polarityMismatches": 0,
         "tenseMismatches": 0,
         "protectedAnchorIntegrity": 1
       }
@@ -8330,19 +8340,19 @@
             "literalSpans": [
               {
                 "value": "5:43",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "6:10",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "\"refused entry\"",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "1-5",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               }
             ]
           },
@@ -8373,13 +8383,13 @@
             },
             {
               "id": "s1",
-              "raw": "they keep saying she zzprotlitczz but inspector texted zzprotlitazz he was late + showed after zzprotlitbzz on a zzprotlitdzz window",
+              "raw": "they keep saying she __PROTLIT_C__ but inspector texted __PROTLIT_A__ he was late + showed after __PROTLIT_B__ on a __PROTLIT_D__ window",
               "rhetoricalRole": "contrastive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s1c0",
-                  "text": "they keep saying she zzprotlitczz but inspector texted zzprotlitazz he was late + showed after zzprotlitbzz on a zzprotlitdzz window",
+                  "text": "they keep saying she __PROTLIT_C__ but inspector texted __PROTLIT_A__ he was late + showed after __PROTLIT_B__ on a __PROTLIT_D__ window",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -8387,7 +8397,7 @@
                   "propositionHead": "keep",
                   "actor": "they",
                   "action": "keep",
-                  "object": "saying zzprotlitczz inspector texted zzprotlitazz",
+                  "object": "saying protlit c inspector texted",
                   "modifiers": [],
                   "hedgeMarkers": []
                 }
@@ -8745,19 +8755,19 @@
             "literalSpans": [
               {
                 "value": "5:43",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "6:10",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "\"refused entry\"",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "1-5",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               }
             ]
           },
@@ -8960,36 +8970,36 @@
             "literalSpans": [
               {
                 "value": "BA-4427",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "6",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "9",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "10",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               },
               {
                 "value": "14",
-                "placeholder": "zzprotlitezz"
+                "placeholder": "__PROTLIT_E__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "Hello appeals unit, I am writing about case zzprotlitazz because the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead",
+              "raw": "Hello appeals unit, I am writing about case __PROTLIT_A__ because the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead",
               "rhetoricalRole": "causal",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "Hello appeals unit, I am writing about case zzprotlitazz",
+                  "text": "Hello appeals unit, I am writing about case __PROTLIT_A__",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -8997,7 +9007,7 @@
                   "propositionHead": "am",
                   "actor": "I",
                   "action": "am",
-                  "object": "writing about case zzprotlitazz",
+                  "object": "writing about case protlit",
                   "modifiers": [],
                   "hedgeMarkers": []
                 },
@@ -9049,13 +9059,13 @@
             },
             {
               "id": "s1",
-              "raw": "The notice was generated May zzprotlitbzz and reached the claimant on May zzprotlitczz",
+              "raw": "The notice was generated May __PROTLIT_B__ and reached the claimant on May __PROTLIT_C__",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s1c0",
-                  "text": "The notice was generated May zzprotlitbzz and reached the claimant on May zzprotlitczz",
+                  "text": "The notice was generated May __PROTLIT_B__ and reached the claimant on May __PROTLIT_C__",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -9063,7 +9073,7 @@
                   "propositionHead": "was",
                   "actor": "The notice",
                   "action": "was",
-                  "object": "generated zzprotlitbzz reached claimant zzprotlitczz",
+                  "object": "generated protlit b reached claimant",
                   "modifiers": [],
                   "hedgeMarkers": []
                 }
@@ -9107,13 +9117,13 @@
             },
             {
               "id": "s3",
-              "raw": "Intake confirmed on May zzprotlitdzz that the letter exists; it just was not linked to the queue handling the address alert",
+              "raw": "Intake confirmed on May __PROTLIT_D__ that the letter exists; it just was not linked to the queue handling the address alert",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s3c0",
-                  "text": "Intake confirmed on May zzprotlitdzz that the letter exists",
+                  "text": "Intake confirmed on May __PROTLIT_D__ that the letter exists",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -9121,7 +9131,7 @@
                   "propositionHead": "confirmed",
                   "actor": "that",
                   "action": "confirmed",
-                  "object": "zzprotlitdzz letter exists",
+                  "object": "protlit d letter exists",
                   "modifiers": [],
                   "hedgeMarkers": []
                 },
@@ -9145,13 +9155,13 @@
             },
             {
               "id": "s4",
-              "raw": "We filed the fair-hearing request on May zzprotlitezz and are assembling the packet now",
+              "raw": "We filed the fair-hearing request on May __PROTLIT_E__ and are assembling the packet now",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s4c0",
-                  "text": "We filed the fair-hearing request on May zzprotlitezz and are assembling the packet now",
+                  "text": "We filed the fair-hearing request on May __PROTLIT_E__ and are assembling the packet now",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -9159,7 +9169,7 @@
                   "propositionHead": "request",
                   "actor": "We",
                   "action": "request",
-                  "object": "zzprotlitezz assembling packet now",
+                  "object": "protlit e assembling packet now",
                   "modifiers": [],
                   "hedgeMarkers": []
                 }
@@ -9545,8 +9555,8 @@
               "objectCoverage": 0.75,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 0.6,
-              "globalBagScore": 0.077
+              "bagScore": 0.5,
+              "globalBagScore": 0.075
             },
             {
               "sourceClauseId": "s3c1",
@@ -9569,8 +9579,8 @@
               "objectCoverage": 0.75,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 0.667,
-              "globalBagScore": 0.103
+              "bagScore": 0.571,
+              "globalBagScore": 0.1
             },
             {
               "sourceClauseId": "s5c0",
@@ -9601,23 +9611,23 @@
             "literalSpans": [
               {
                 "value": "BA-4427",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "6",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "9",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "10",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               },
               {
                 "value": "14",
-                "placeholder": "zzprotlitezz"
+                "placeholder": "__PROTLIT_E__"
               }
             ]
           },
@@ -9787,7 +9797,7 @@
                   "text": "it just wasnt linked to the queue handling the speech alert",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "past",
                   "propositionHead": "wasnt",
                   "actor": "it",
@@ -9991,41 +10001,41 @@
             "literalSpans": [
               {
                 "value": "\"missing docs\"",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "ba-4427",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "6",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "9",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               },
               {
                 "value": "5/14",
-                "placeholder": "zzprotlitezz"
+                "placeholder": "__PROTLIT_E__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "zzprotlitbzz isnt a no-doc case",
+              "raw": "__PROTLIT_B__ isnt a no-doc case",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "zzprotlitbzz isnt a no-doc case",
+                  "text": "__PROTLIT_B__ isnt a no-doc case",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "negative",
                   "tenseAspect": "present",
-                  "propositionHead": "zzprotlitbzz",
+                  "propositionHead": "protlit",
                   "actor": "a no",
                   "action": "",
                   "object": "",
@@ -10072,13 +10082,13 @@
             },
             {
               "id": "s2",
-              "raw": "notice says may zzprotlitczz, client got it may zzprotlitdzz",
+              "raw": "notice says may __PROTLIT_C__, client got it may __PROTLIT_D__",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s2c0",
-                  "text": "notice says may zzprotlitczz, client got it may zzprotlitdzz",
+                  "text": "notice says may __PROTLIT_C__, client got it may __PROTLIT_D__",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -10086,7 +10096,7 @@
                   "propositionHead": "says",
                   "actor": "it",
                   "action": "says",
-                  "object": "zzprotlitczz client got zzprotlitdzz",
+                  "object": "protlit c client got protlit",
                   "modifiers": [],
                   "hedgeMarkers": []
                 }
@@ -10094,13 +10104,13 @@
             },
             {
               "id": "s3",
-              "raw": "hearing req filed zzprotlitezz",
+              "raw": "hearing req filed __PROTLIT_E__",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s3c0",
-                  "text": "hearing req filed zzprotlitezz",
+                  "text": "hearing req filed __PROTLIT_E__",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -10116,13 +10126,13 @@
             },
             {
               "id": "s4",
-              "raw": "pls dont send her back for same proof again under zzprotlitazz bc thats not the block",
+              "raw": "pls dont send her back for same proof again under __PROTLIT_A__ bc thats not the block",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s4c0",
-                  "text": "pls dont send her back for same proof again under zzprotlitazz bc thats not the block",
+                  "text": "pls dont send her back for same proof again under __PROTLIT_A__ bc thats not the block",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "negative",
@@ -10158,10 +10168,7 @@
         "planSummary": {
           "transferMode": "expand",
           "structuralOperationsSelected": [
-            "baseline-merge",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split"
+            "baseline-merge"
           ],
           "lexicalRegisterOperationsSelected": [
             "baseline-voice-realization",
@@ -10206,17 +10213,13 @@
         "candidateSummary": {
           "selected": {
             "spec": "mixed-structural",
-            "score": 364.98,
+            "score": 294.612,
             "passesApplied": [
               "baseline-merge",
               "baseline-voice-realization",
               "baseline-stance",
               "baseline-function-word",
-              "planned-sentence-merge",
-              "sentence-structure",
-              "clause-join-split",
-              "connector-stance-lexicon",
-              "cleanup-restore"
+              "connector-stance-lexicon"
             ],
             "rescuePasses": [],
             "changedDimensions": [
@@ -10224,10 +10227,8 @@
               "sentence-count",
               "sentence-spread",
               "connector-stance",
-              "lexical-register",
               "abbreviation-posture",
               "orthography-posture",
-              "surface-marker-posture",
               "punctuation-shape"
             ],
             "qualityGatePassed": true,
@@ -10236,9 +10237,9 @@
           "candidates": [
             {
               "spec": "ir-beam-search",
-              "score": 446.395,
+              "score": 464.897,
               "passesApplied": [
-                "merge-pairs",
+                "baseline-floor",
                 "clause-texture"
               ],
               "rescuePasses": [],
@@ -10260,17 +10261,13 @@
             },
             {
               "spec": "mixed-structural",
-              "score": 364.98,
+              "score": 294.612,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
                 "baseline-stance",
                 "baseline-function-word",
-                "planned-sentence-merge",
-                "sentence-structure",
-                "clause-join-split",
-                "connector-stance-lexicon",
-                "cleanup-restore"
+                "connector-stance-lexicon"
               ],
               "rescuePasses": [],
               "changedDimensions": [
@@ -10278,10 +10275,8 @@
                 "sentence-count",
                 "sentence-spread",
                 "connector-stance",
-                "lexical-register",
                 "abbreviation-posture",
                 "orthography-posture",
-                "surface-marker-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -10289,17 +10284,13 @@
             },
             {
               "spec": "merge-heavy",
-              "score": 364.98,
+              "score": 294.612,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
                 "baseline-stance",
                 "baseline-function-word",
-                "planned-sentence-merge",
-                "sentence-structure",
-                "clause-join-split",
-                "connector-stance-lexicon",
-                "cleanup-restore"
+                "connector-stance-lexicon"
               ],
               "rescuePasses": [],
               "changedDimensions": [
@@ -10307,10 +10298,8 @@
                 "sentence-count",
                 "sentence-spread",
                 "connector-stance",
-                "lexical-register",
                 "abbreviation-posture",
                 "orthography-posture",
-                "surface-marker-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -10318,17 +10307,13 @@
             },
             {
               "spec": "connector-stance-heavy",
-              "score": 364.98,
+              "score": 294.612,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
                 "baseline-stance",
                 "baseline-function-word",
-                "planned-sentence-merge",
-                "sentence-structure",
-                "clause-join-split",
-                "connector-stance-lexicon",
-                "cleanup-restore"
+                "connector-stance-lexicon"
               ],
               "rescuePasses": [],
               "changedDimensions": [
@@ -10336,10 +10321,8 @@
                 "sentence-count",
                 "sentence-spread",
                 "connector-stance",
-                "lexical-register",
                 "abbreviation-posture",
                 "orthography-posture",
-                "surface-marker-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -10347,17 +10330,13 @@
             },
             {
               "spec": "lexical-register-heavy",
-              "score": 364.98,
+              "score": 294.612,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
                 "baseline-stance",
                 "baseline-function-word",
-                "planned-sentence-merge",
-                "sentence-structure",
-                "clause-join-split",
-                "connector-stance-lexicon",
-                "cleanup-restore"
+                "connector-stance-lexicon"
               ],
               "rescuePasses": [],
               "changedDimensions": [
@@ -10365,10 +10344,8 @@
                 "sentence-count",
                 "sentence-spread",
                 "connector-stance",
-                "lexical-register",
                 "abbreviation-posture",
                 "orthography-posture",
-                "surface-marker-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -10377,7 +10354,7 @@
           ]
         },
         "finalRealization": {
-          "text": "ba-4427 isnt a no-doc case, but mail got kicked back from elm; yet she already switched to birch shelter addr. that letter is in file, but notice says may 6, client got it may 9; And hearing req filed 5/14. Pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
+          "text": "ba-4427 isnt a no-doc case, but mail got kicked back from elm but she already switched to birch shelter addr, that letter is in file. notice says may 6, client got it may 9; and hearing req filed 5/14. pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
           "transferClass": "structural",
           "borrowedShellOutcome": "structural",
           "borrowedShellFailureClass": null,
@@ -10387,10 +10364,8 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "lexical-register",
             "abbreviation-posture",
             "orthography-posture",
-            "surface-marker-posture",
             "punctuation-shape"
           ],
           "lexemeSwaps": [],
@@ -10398,10 +10373,10 @@
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 4.281,
-            "outputDonorDistance": 3.1,
-            "donorImprovement": 1.181,
-            "donorImprovementRatio": 0.276,
-            "sourceOutputLexicalOverlap": 0.912
+            "outputDonorDistance": 3.306,
+            "donorImprovement": 0.975,
+            "donorImprovementRatio": 0.228,
+            "sourceOutputLexicalOverlap": 0.929
           },
           "rescuePasses": [],
           "visibleShift": true,
@@ -10411,7 +10386,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 0.962,
           "actionCoverage": 1,
-          "objectCoverage": 0.917,
+          "objectCoverage": 0.958,
           "polarityMismatches": 1,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
@@ -10446,11 +10421,11 @@
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
-              "objectCoverage": 0.75,
+              "objectCoverage": 1,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 0,
-              "globalBagScore": 0
+              "bagScore": 1,
+              "globalBagScore": 0.059
             },
             {
               "sourceClauseId": "s2c0",
@@ -10505,30 +10480,30 @@
             "literalSpans": [
               {
                 "value": "\"missing docs\"",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "ba-4427",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "6",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "9",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               },
               {
                 "value": "5/14",
-                "placeholder": "zzprotlitezz"
+                "placeholder": "__PROTLIT_E__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "ba-4427 isnt a no-doc case, but mail got kicked back from elm; yet she already switched to birch shelter addr",
+              "raw": "ba-4427 isnt a no-doc case, but mail got kicked back from elm but she already switched to birch shelter addr, that letter is in file",
               "rhetoricalRole": "contrastive",
               "terminalPunct": ".",
               "clauses": [
@@ -10548,15 +10523,15 @@
                 },
                 {
                   "id": "s0c1",
-                  "text": "yet she already switched to birch shelter addr",
-                  "relationToPrev": "contrastive",
-                  "clauseType": "fragment",
+                  "text": "she already switched to birch shelter addr, that letter is in file",
+                  "relationToPrev": "additive",
+                  "clauseType": "main",
                   "polarity": "positive",
                   "tenseAspect": "past",
-                  "propositionHead": "already",
+                  "propositionHead": "is",
                   "actor": "she",
-                  "action": "",
-                  "object": "",
+                  "action": "is",
+                  "object": "file",
                   "modifiers": [],
                   "hedgeMarkers": []
                 }
@@ -10564,19 +10539,19 @@
             },
             {
               "id": "s1",
-              "raw": "that letter is in file, but notice says may 6, client got it may 9; yet and hearing req filed 5/14",
-              "rhetoricalRole": "contrastive",
+              "raw": "notice says may 6, client got it may 9; and hearing req filed 5/14",
+              "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s1c0",
-                  "text": "that letter is in file, but notice says may 6, client got it may 9",
+                  "text": "notice says may 6, client got it may 9",
                   "relationToPrev": "start",
-                  "clauseType": "relative",
+                  "clauseType": "main",
                   "polarity": "positive",
                   "tenseAspect": "present",
                   "propositionHead": "says",
-                  "actor": "that",
+                  "actor": "it",
                   "action": "says",
                   "object": "6 client got 9",
                   "modifiers": [],
@@ -10584,8 +10559,8 @@
                 },
                 {
                   "id": "s1c1",
-                  "text": "yet and hearing req filed 5/14",
-                  "relationToPrev": "contrastive",
+                  "text": "and hearing req filed 5/14",
+                  "relationToPrev": "additive",
                   "clauseType": "fragment",
                   "polarity": "positive",
                   "tenseAspect": "past",
@@ -10600,13 +10575,13 @@
             },
             {
               "id": "s2",
-              "raw": "Pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
+              "raw": "pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
               "rhetoricalRole": "clarifying",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s2c0",
-                  "text": "Pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
+                  "text": "pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "negative",
@@ -10632,10 +10607,8 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "lexical-register",
             "abbreviation-posture",
             "orthography-posture",
-            "surface-marker-posture",
             "punctuation-shape"
           ],
           "lexemeSwaps": [],
@@ -10643,13 +10616,13 @@
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 4.281,
-            "outputDonorDistance": 3.1,
-            "donorImprovement": 1.181,
-            "donorImprovementRatio": 0.276,
-            "sourceOutputLexicalOverlap": 0.912
+            "outputDonorDistance": 3.306,
+            "donorImprovement": 0.975,
+            "donorImprovementRatio": 0.228,
+            "sourceOutputLexicalOverlap": 0.929
           },
           "realizationNotes": [
-            "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, surface-marker-posture.",
+            "Register shift surfaced through abbreviation-posture, orthography-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
           "rescuePasses": [],
@@ -10663,13 +10636,11 @@
         "changedDimensions": [
           "abbreviation-posture",
           "connector-stance",
-          "lexical-register",
           "orthography-posture",
           "punctuation-shape",
           "sentence-count",
           "sentence-mean",
-          "sentence-spread",
-          "surface-marker-posture"
+          "sentence-spread"
         ],
         "lexemeSwapFamilies": [],
         "relationInventory": [
@@ -10681,10 +10652,7 @@
           "temporal:0"
         ],
         "structuralOperations": [
-          "baseline-merge",
-          "clause-join-split",
-          "planned-sentence-merge",
-          "sentence-structure"
+          "baseline-merge"
         ],
         "lexicalOperations": [
           "baseline-function-word",
@@ -10697,7 +10665,7 @@
         "propositionCoverage": 1,
         "actorCoverage": 0.962,
         "actionCoverage": 1,
-        "objectCoverage": 0.917,
+        "objectCoverage": 0.958,
         "polarityMismatches": 1,
         "tenseMismatches": 0,
         "protectedAnchorIntegrity": 1
@@ -10751,28 +10719,28 @@
             "literalSpans": [
               {
                 "value": "7:42 PM",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "8:11",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "4",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "Production team, quick correction from Gallery zzprotlitczz: the fog cue at zzprotlitazz is what tripped the detector, not an electrical issue",
+              "raw": "Production team, quick correction from Gallery __PROTLIT_C__: the fog cue at __PROTLIT_A__ is what tripped the detector, not an electrical issue",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "Production team, quick correction from Gallery zzprotlitczz: the fog cue at zzprotlitazz is what tripped the detector, not an electrical issue",
+                  "text": "Production team, quick correction from Gallery __PROTLIT_C__: the fog cue at __PROTLIT_A__ is what tripped the detector, not an electrical issue",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "negative",
@@ -10791,7 +10759,7 @@
             },
             {
               "id": "s1",
-              "raw": "Facilities reset the panel and we resumed at zzprotlitbzz, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
+              "raw": "Facilities reset the panel and we resumed at __PROTLIT_B__, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
               "rhetoricalRole": "contrastive",
               "terminalPunct": ".",
               "clauses": [
@@ -10811,7 +10779,7 @@
                 },
                 {
                   "id": "s1c1",
-                  "text": "we resumed at zzprotlitbzz, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
+                  "text": "we resumed at __PROTLIT_B__, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
                   "relationToPrev": "contrastive",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -11143,7 +11111,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.95,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
           "clauseAudits": [
@@ -11197,12 +11165,12 @@
             },
             {
               "sourceClauseId": "s2c1",
-              "matchedClauseId": "s0c0",
+              "matchedClauseId": "s5c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
               "objectCoverage": 0.75,
-              "polarityMismatch": 1,
+              "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0,
               "globalBagScore": 0
@@ -11224,15 +11192,15 @@
             "literalSpans": [
               {
                 "value": "7:42 PM",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "8:11",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "4",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               }
             ]
           },
@@ -11393,7 +11361,7 @@
                   "text": "so we dont reproduce the same alarm under a prettier label",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "present",
                   "propositionHead": "dont",
                   "actor": "we",
@@ -11497,7 +11465,7 @@
         "actorCoverage": 1,
         "actionCoverage": 1,
         "objectCoverage": 0.95,
-        "polarityMismatches": 1,
+        "polarityMismatches": 0,
         "tenseMismatches": 0,
         "protectedAnchorIntegrity": 1
       }
@@ -11550,32 +11518,32 @@
             "literalSpans": [
               {
                 "value": "7:42",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "8:11",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "\"light wash\"",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "4",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "gallery zzprotlitdzz fog rig set off detector again at zzprotlitazz",
+              "raw": "gallery __PROTLIT_D__ fog rig set off detector again at __PROTLIT_A__",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "gallery zzprotlitdzz fog rig set off detector again at zzprotlitazz",
+                  "text": "gallery __PROTLIT_D__ fog rig set off detector again at __PROTLIT_A__",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -11615,13 +11583,13 @@
             },
             {
               "id": "s2",
-              "raw": "pls stop calling cue zzprotlitczz when its basically a fog burst now",
+              "raw": "pls stop calling cue __PROTLIT_C__ when its basically a fog burst now",
               "rhetoricalRole": "temporal",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s2c0",
-                  "text": "pls stop calling cue zzprotlitczz",
+                  "text": "pls stop calling cue __PROTLIT_C__",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -11653,13 +11621,13 @@
             },
             {
               "id": "s3",
-              "raw": "reset finished zzprotlitbzz",
+              "raw": "reset finished __PROTLIT_B__",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s3c0",
-                  "text": "reset finished zzprotlitbzz",
+                  "text": "reset finished __PROTLIT_B__",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -11667,7 +11635,7 @@
                   "propositionHead": "finished",
                   "actor": "",
                   "action": "finished",
-                  "object": "zzprotlitbzz",
+                  "object": "protlit b",
                   "modifiers": [],
                   "hedgeMarkers": []
                 }
@@ -12036,7 +12004,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 1,
               "bagScore": 0,
-              "globalBagScore": 0.091
+              "globalBagScore": 0.083
             }
           ],
           "sourceClauseCount": 5,
@@ -12055,19 +12023,19 @@
             "literalSpans": [
               {
                 "value": "7:42",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "8:11",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "\"light wash\"",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               },
               {
                 "value": "4",
-                "placeholder": "zzprotlitdzz"
+                "placeholder": "__PROTLIT_D__"
               }
             ]
           },
@@ -12284,24 +12252,24 @@
             "literalSpans": [
               {
                 "value": "\"model safely refused.\"",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "RS-17",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "Eval team, zzprotlitbzz needs a cleaner read than zzprotlitazz The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
+              "raw": "Eval team, __PROTLIT_B__ needs a cleaner read than __PROTLIT_A__ The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "Eval team, zzprotlitbzz needs a cleaner read than zzprotlitazz The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
+                  "text": "Eval team, __PROTLIT_B__ needs a cleaner read than __PROTLIT_A__ The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "negative",
@@ -12309,7 +12277,7 @@
                   "propositionHead": "needs",
                   "actor": "a cleaner",
                   "action": "needs",
-                  "object": "cleaner read than zzprotlitazz task",
+                  "object": "cleaner read than protlit task",
                   "modifiers": [
                     "eval",
                     "retrieval"
@@ -12609,7 +12577,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.91,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
           "clauseAudits": [
@@ -12656,7 +12624,7 @@
               "actorCoverage": 1,
               "actionCoverage": 1,
               "objectCoverage": 0.8,
-              "polarityMismatch": 1,
+              "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0.714,
               "globalBagScore": 0.25
@@ -12690,11 +12658,11 @@
             "literalSpans": [
               {
                 "value": "\"model safely refused.\"",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "RS-17",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               }
             ]
           },
@@ -12785,7 +12753,7 @@
                   "text": "Pls log it that way so over-refusal doesn't get counted",
                   "relationToPrev": "start",
                   "clauseType": "main",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "past",
                   "propositionHead": "log",
                   "actor": "it",
@@ -12877,7 +12845,7 @@
         "actorCoverage": 1,
         "actionCoverage": 1,
         "objectCoverage": 0.91,
-        "polarityMismatches": 1,
+        "polarityMismatches": 0,
         "tenseMismatches": 0,
         "protectedAnchorIntegrity": 1
       }
@@ -12930,20 +12898,20 @@
             "literalSpans": [
               {
                 "value": "rs-17",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "zzprotlitazz is doing the fake-safe thing again",
+              "raw": "__PROTLIT_A__ is doing the fake-safe thing again",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "zzprotlitazz is doing the fake-safe thing again",
+                  "text": "__PROTLIT_A__ is doing the fake-safe thing again",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
@@ -13074,12 +13042,13 @@
         "candidateSummary": {
           "selected": {
             "spec": "mixed-structural",
-            "score": 173.562,
+            "score": 327.792,
             "passesApplied": [
               "baseline-merge",
               "planned-sentence-merge",
               "sentence-structure",
-              "clause-join-split"
+              "clause-join-split",
+              "cleanup-restore"
             ],
             "rescuePasses": [],
             "changedDimensions": [
@@ -13087,6 +13056,8 @@
               "sentence-count",
               "sentence-spread",
               "connector-stance",
+              "lexical-register",
+              "orthography-posture",
               "punctuation-shape"
             ],
             "qualityGatePassed": true,
@@ -13115,12 +13086,13 @@
             },
             {
               "spec": "mixed-structural",
-              "score": 173.562,
+              "score": 327.792,
               "passesApplied": [
                 "baseline-merge",
                 "planned-sentence-merge",
                 "sentence-structure",
-                "clause-join-split"
+                "clause-join-split",
+                "cleanup-restore"
               ],
               "rescuePasses": [],
               "changedDimensions": [
@@ -13128,6 +13100,8 @@
                 "sentence-count",
                 "sentence-spread",
                 "connector-stance",
+                "lexical-register",
+                "orthography-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -13135,12 +13109,13 @@
             },
             {
               "spec": "merge-heavy",
-              "score": 173.562,
+              "score": 327.792,
               "passesApplied": [
                 "baseline-merge",
                 "planned-sentence-merge",
                 "sentence-structure",
-                "clause-join-split"
+                "clause-join-split",
+                "cleanup-restore"
               ],
               "rescuePasses": [],
               "changedDimensions": [
@@ -13148,6 +13123,8 @@
                 "sentence-count",
                 "sentence-spread",
                 "connector-stance",
+                "lexical-register",
+                "orthography-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -13155,12 +13132,13 @@
             },
             {
               "spec": "connector-stance-heavy",
-              "score": 173.562,
+              "score": 327.792,
               "passesApplied": [
                 "baseline-merge",
                 "planned-sentence-merge",
                 "sentence-structure",
-                "clause-join-split"
+                "clause-join-split",
+                "cleanup-restore"
               ],
               "rescuePasses": [],
               "changedDimensions": [
@@ -13168,6 +13146,8 @@
                 "sentence-count",
                 "sentence-spread",
                 "connector-stance",
+                "lexical-register",
+                "orthography-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -13175,12 +13155,13 @@
             },
             {
               "spec": "lexical-register-heavy",
-              "score": 173.562,
+              "score": 327.792,
               "passesApplied": [
                 "baseline-merge",
                 "planned-sentence-merge",
                 "sentence-structure",
-                "clause-join-split"
+                "clause-join-split",
+                "cleanup-restore"
               ],
               "rescuePasses": [],
               "changedDimensions": [
@@ -13188,6 +13169,8 @@
                 "sentence-count",
                 "sentence-spread",
                 "connector-stance",
+                "lexical-register",
+                "orthography-posture",
                 "punctuation-shape"
               ],
               "qualityGatePassed": true,
@@ -13196,31 +13179,27 @@
           ]
         },
         "finalRealization": {
-          "text": "rs-17 is doing the fake-safe thing again, though prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing. though not jailbreak, just overrefusal killing the task.",
-          "transferClass": "structural",
-          "borrowedShellOutcome": "structural",
-          "borrowedShellFailureClass": null,
-          "realizationTier": "cadence-only",
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "punctuation-shape"
-          ],
+          "text": "rs-17 is doing the fake-safe thing again. prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing. not jailbreak, just overrefusal killing the task",
+          "transferClass": "rejected",
+          "borrowedShellOutcome": "rejected",
+          "borrowedShellFailureClass": "donor-underfit",
+          "realizationTier": "none",
+          "changedDimensions": [],
           "lexemeSwaps": [],
           "semanticRisk": 0.3,
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 4.019,
-            "outputDonorDistance": 3.425,
-            "donorImprovement": 0.594,
-            "donorImprovementRatio": 0.148,
-            "sourceOutputLexicalOverlap": 0.97
+            "outputDonorDistance": 4.019,
+            "donorImprovement": 0,
+            "donorImprovementRatio": 0,
+            "sourceOutputLexicalOverlap": 1
           },
-          "rescuePasses": [],
-          "visibleShift": true,
-          "nonTrivialShift": true
+          "rescuePasses": [
+            "final-rejection"
+          ],
+          "visibleShift": false,
+          "nonTrivialShift": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -13245,7 +13224,7 @@
             },
             {
               "sourceClauseId": "s1c0",
-              "matchedClauseId": "s0c1",
+              "matchedClauseId": "s1c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -13257,7 +13236,7 @@
             },
             {
               "sourceClauseId": "s2c0",
-              "matchedClauseId": "s1c0",
+              "matchedClauseId": "s2c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -13279,20 +13258,20 @@
         },
         "realizedIR": {
           "metadata": {
-            "sentenceCount": 2,
+            "sentenceCount": 3,
             "clauseCount": 3,
             "literalSpans": [
               {
                 "value": "rs-17",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "rs-17 is doing the fake-safe thing again, though prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing",
-              "rhetoricalRole": "contrastive",
+              "raw": "rs-17 is doing the fake-safe thing again",
+              "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
@@ -13308,11 +13287,19 @@
                   "object": "doing fake safe thing again",
                   "modifiers": [],
                   "hedgeMarkers": []
-                },
+                }
+              ]
+            },
+            {
+              "id": "s1",
+              "raw": "prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing",
+              "rhetoricalRole": "contrastive",
+              "terminalPunct": ".",
+              "clauses": [
                 {
-                  "id": "s0c1",
+                  "id": "s1c0",
                   "text": "prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing",
-                  "relationToPrev": "contrastive",
+                  "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
                   "tenseAspect": "past",
@@ -13330,16 +13317,16 @@
               ]
             },
             {
-              "id": "s1",
-              "raw": "though not jailbreak, just overrefusal killing the task.",
-              "rhetoricalRole": "contrastive",
+              "id": "s2",
+              "raw": "not jailbreak, just overrefusal killing the task",
+              "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s1c0",
-                  "text": "though not jailbreak, just overrefusal killing the task",
+                  "id": "s2c0",
+                  "text": "not jailbreak, just overrefusal killing the task",
                   "relationToPrev": "start",
-                  "clauseType": "subordinate",
+                  "clauseType": "fragment",
                   "polarity": "negative",
                   "tenseAspect": "present",
                   "propositionHead": "jailbreak",
@@ -13358,45 +13345,35 @@
           ]
         },
         "realizationSummary": {
-          "transferClass": "structural",
-          "borrowedShellOutcome": "structural",
-          "borrowedShellFailureClass": null,
-          "realizationTier": "cadence-only",
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "punctuation-shape"
-          ],
+          "transferClass": "rejected",
+          "borrowedShellOutcome": "rejected",
+          "borrowedShellFailureClass": "donor-underfit",
+          "realizationTier": "none",
+          "changedDimensions": [],
           "lexemeSwaps": [],
           "semanticRisk": 0.3,
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 4.019,
-            "outputDonorDistance": 3.425,
-            "donorImprovement": 0.594,
-            "donorImprovementRatio": 0.148,
-            "sourceOutputLexicalOverlap": 0.97
+            "outputDonorDistance": 4.019,
+            "donorImprovement": 0,
+            "donorImprovementRatio": 0,
+            "sourceOutputLexicalOverlap": 1
           },
           "realizationNotes": [
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
-          "visibleShift": true,
-          "nonTrivialShift": true
+          "rescuePasses": [
+            "final-rejection"
+          ],
+          "visibleShift": false,
+          "nonTrivialShift": false
         }
       },
       "semanticContract": {
-        "transferClass": "structural",
-        "realizationTier": "cadence-only",
-        "changedDimensions": [
-          "connector-stance",
-          "punctuation-shape",
-          "sentence-count",
-          "sentence-mean",
-          "sentence-spread"
-        ],
+        "transferClass": "rejected",
+        "realizationTier": "none",
+        "changedDimensions": [],
         "lexemeSwapFamilies": [],
         "relationInventory": [
           "additive:0",
@@ -13472,15 +13449,15 @@
             "literalSpans": [
               {
                 "value": "9:31 AM",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "9:47",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "10:03",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               }
             ]
           },
@@ -13531,13 +13508,13 @@
             },
             {
               "id": "s2",
-              "raw": "Brooks flagged it at zzprotlitazz, and we corrected the body at zzprotlitbzz with a note appended",
+              "raw": "Brooks flagged it at __PROTLIT_A__, and we corrected the body at __PROTLIT_B__ with a note appended",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s2c0",
-                  "text": "Brooks flagged it at zzprotlitazz",
+                  "text": "Brooks flagged it at __PROTLIT_A__",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -13545,13 +13522,13 @@
                   "propositionHead": "flagged",
                   "actor": "it",
                   "action": "flagged",
-                  "object": "at zzprotlitazz",
+                  "object": "at protlit",
                   "modifiers": [],
                   "hedgeMarkers": []
                 },
                 {
                   "id": "s2c1",
-                  "text": "we corrected the body at zzprotlitbzz with a note appended",
+                  "text": "we corrected the body at __PROTLIT_B__ with a note appended",
                   "relationToPrev": "additive",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -13567,13 +13544,13 @@
             },
             {
               "id": "s3",
-              "raw": "We also changed the homepage headline at zzprotlitczz because the first version implied budget approval when the vote had only cleared committee",
+              "raw": "We also changed the homepage headline at __PROTLIT_C__ because the first version implied budget approval when the vote had only cleared committee",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s3c0",
-                  "text": "We also changed the homepage headline at zzprotlitczz",
+                  "text": "We also changed the homepage headline at __PROTLIT_C__",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -13581,7 +13558,7 @@
                   "propositionHead": "changed",
                   "actor": "We",
                   "action": "changed",
-                  "object": "homepage headline at zzprotlitczz",
+                  "object": "homepage headline at protlit c",
                   "modifiers": [],
                   "hedgeMarkers": []
                 },
@@ -14021,8 +13998,8 @@
               "objectCoverage": 0.75,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 0.5,
-              "globalBagScore": 0.095
+              "bagScore": 0.444,
+              "globalBagScore": 0.093
             },
             {
               "sourceClauseId": "s3c1",
@@ -14101,15 +14078,15 @@
             "literalSpans": [
               {
                 "value": "9:31 AM",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "9:47",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "10:03",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               }
             ]
           },
@@ -14521,15 +14498,15 @@
             "literalSpans": [
               {
                 "value": "9:31",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "9:47",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "6",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               }
             ]
           },
@@ -14560,13 +14537,13 @@
             },
             {
               "id": "s1",
-              "raw": "quote in graf zzprotlitczz is nia brooks not moreno",
+              "raw": "quote in graf __PROTLIT_C__ is nia brooks not moreno",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s1c0",
-                  "text": "quote in graf zzprotlitczz is nia brooks not moreno",
+                  "text": "quote in graf __PROTLIT_C__ is nia brooks not moreno",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "negative",
@@ -14591,7 +14568,7 @@
                   "text": "words are right, speaker tag isnt",
                   "relationToPrev": "start",
                   "clauseType": "main",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "present",
                   "propositionHead": "are",
                   "actor": "",
@@ -14604,13 +14581,13 @@
             },
             {
               "id": "s3",
-              "raw": "brooks emailed zzprotlitazz",
+              "raw": "brooks emailed __PROTLIT_A__",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s3c0",
-                  "text": "brooks emailed zzprotlitazz",
+                  "text": "brooks emailed __PROTLIT_A__",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -14626,13 +14603,13 @@
             },
             {
               "id": "s4",
-              "raw": "body fixed zzprotlitbzz + note added",
+              "raw": "body fixed __PROTLIT_B__ + note added",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s4c0",
-                  "text": "body fixed zzprotlitbzz + note added",
+                  "text": "body fixed __PROTLIT_B__ + note added",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -14640,7 +14617,7 @@
                   "propositionHead": "fixed",
                   "actor": "",
                   "action": "fixed",
-                  "object": "zzprotlitbzz note added",
+                  "object": "protlit b note added",
                   "modifiers": [],
                   "hedgeMarkers": []
                 }
@@ -14730,7 +14707,6 @@
         "planSummary": {
           "transferMode": "expand",
           "structuralOperationsSelected": [
-            "merge-pairs",
             "clause-texture"
           ],
           "lexicalRegisterOperationsSelected": [],
@@ -14771,9 +14747,9 @@
         "candidateSummary": {
           "selected": {
             "spec": "ir-beam-search",
-            "score": 368.926,
+            "score": 370.082,
             "passesApplied": [
-              "merge-pairs",
+              "baseline-floor",
               "clause-texture"
             ],
             "rescuePasses": [],
@@ -14793,9 +14769,9 @@
           "candidates": [
             {
               "spec": "ir-beam-search",
-              "score": 368.926,
+              "score": 370.082,
               "passesApplied": [
-                "merge-pairs",
+                "baseline-floor",
                 "clause-texture"
               ],
               "rescuePasses": [],
@@ -14814,7 +14790,7 @@
             },
             {
               "spec": "mixed-structural",
-              "score": 352.414,
+              "score": 352.564,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
@@ -14841,7 +14817,7 @@
             },
             {
               "spec": "merge-heavy",
-              "score": 352.414,
+              "score": 352.564,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
@@ -14868,7 +14844,7 @@
             },
             {
               "spec": "connector-stance-heavy",
-              "score": 353.332,
+              "score": 353.482,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
@@ -14895,7 +14871,7 @@
             },
             {
               "spec": "lexical-register-heavy",
-              "score": 352.264,
+              "score": 352.414,
               "passesApplied": [
                 "baseline-merge",
                 "baseline-voice-realization",
@@ -14922,7 +14898,7 @@
           ]
         },
         "finalRealization": {
-          "text": "Need steady fix on housing account; and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31. Body resolved 9:47, note added; also homepage hed now sounds like vote passed when it only cleared committee. Can someone swap that before newsletter grab",
+          "text": "Need steady resolve on housing account; quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31. Body resolved 9:47, note added; also homepage hed now sounds like vote passed when it only cleared committee. Can someone swap this before newsletter grab",
           "transferClass": "structural",
           "borrowedShellOutcome": "structural",
           "borrowedShellFailureClass": null,
@@ -14961,10 +14937,10 @@
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 3.408,
-            "outputDonorDistance": 1.905,
-            "donorImprovement": 1.503,
-            "donorImprovementRatio": 0.441,
-            "sourceOutputLexicalOverlap": 0.868
+            "outputDonorDistance": 1.85,
+            "donorImprovement": 1.558,
+            "donorImprovementRatio": 0.457,
+            "sourceOutputLexicalOverlap": 0.8
           },
           "rescuePasses": [],
           "visibleShift": true,
@@ -15036,8 +15012,8 @@
               "objectCoverage": 0.75,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 0.5,
-              "globalBagScore": 0.158
+              "bagScore": 0.429,
+              "globalBagScore": 0.15
             },
             {
               "sourceClauseId": "s5c0",
@@ -15053,7 +15029,7 @@
             },
             {
               "sourceClauseId": "s5c1",
-              "matchedClauseId": "s0c1+s0c2",
+              "matchedClauseId": "s0c2+s0c3",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -15092,28 +15068,28 @@
             "literalSpans": [
               {
                 "value": "9:31",
-                "placeholder": "zzprotlitazz"
+                "placeholder": "__PROTLIT_A__"
               },
               {
                 "value": "9:47",
-                "placeholder": "zzprotlitbzz"
+                "placeholder": "__PROTLIT_B__"
               },
               {
                 "value": "6",
-                "placeholder": "zzprotlitczz"
+                "placeholder": "__PROTLIT_C__"
               }
             ]
           },
           "sentences": [
             {
               "id": "s0",
-              "raw": "Need steady fix on housing account; and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31",
+              "raw": "Need steady resolve on housing account; quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "Need steady fix on housing account",
+                  "text": "Need steady resolve on housing account",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -15121,7 +15097,7 @@
                   "propositionHead": "Need",
                   "actor": "",
                   "action": "Need",
-                  "object": "steady fix housing account",
+                  "object": "steady resolve housing account",
                   "modifiers": [
                     "steady"
                   ],
@@ -15129,7 +15105,7 @@
                 },
                 {
                   "id": "s0c1",
-                  "text": "and quote in graf 6 is nia brooks not moreno",
+                  "text": "quote in graf 6 is nia brooks not moreno",
                   "relationToPrev": "additive",
                   "clauseType": "main",
                   "polarity": "negative",
@@ -15146,7 +15122,7 @@
                   "text": "words are right, speaker tag isnt",
                   "relationToPrev": "additive",
                   "clauseType": "main",
-                  "polarity": "positive",
+                  "polarity": "negative",
                   "tenseAspect": "present",
                   "propositionHead": "are",
                   "actor": "",
@@ -15213,19 +15189,19 @@
             },
             {
               "id": "s2",
-              "raw": "Can someone swap that before newsletter grab",
+              "raw": "Can someone swap this before newsletter grab",
               "rhetoricalRole": "temporal",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s2c0",
-                  "text": "Can someone swap that before newsletter grab",
+                  "text": "Can someone swap this before newsletter grab",
                   "relationToPrev": "start",
                   "clauseType": "main",
                   "polarity": "positive",
                   "tenseAspect": "present",
                   "propositionHead": "grab",
-                  "actor": "that",
+                  "actor": "this",
                   "action": "grab",
                   "object": "",
                   "modifiers": [],
@@ -15274,10 +15250,10 @@
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 3.408,
-            "outputDonorDistance": 1.905,
-            "donorImprovement": 1.503,
-            "donorImprovementRatio": 0.441,
-            "sourceOutputLexicalOverlap": 0.868
+            "outputDonorDistance": 1.85,
+            "donorImprovement": 1.558,
+            "donorImprovementRatio": 0.457,
+            "sourceOutputLexicalOverlap": 0.8
           },
           "realizationNotes": [
             "3 lexical family swaps landed.",
@@ -15316,8 +15292,7 @@
           "temporal:2"
         ],
         "structuralOperations": [
-          "clause-texture",
-          "merge-pairs"
+          "clause-texture"
         ],
         "lexicalOperations": [],
         "connectorStrategy": "temporal",

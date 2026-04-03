@@ -46,40 +46,40 @@
         "literalSpans": [
           {
             "value": "1:00",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "5:00 PM",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "5:43",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "6:10",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           },
           {
             "value": "\"refusal of entry,\"",
-            "placeholder": "zzprotlitezz"
+            "placeholder": "__PROTLIT_E__"
           },
           {
             "value": "3",
-            "placeholder": "zzprotlitfzz"
+            "placeholder": "__PROTLIT_F__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "Hearing unit, please correct the way the July zzprotlitfzz record is framing the June inspection",
+          "raw": "Hearing unit, please correct the way the July __PROTLIT_F__ record is framing the June inspection",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Hearing unit, please correct the way the July zzprotlitfzz record is framing the June inspection",
+              "text": "Hearing unit, please correct the way the July __PROTLIT_F__ record is framing the June inspection",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -97,13 +97,13 @@
         },
         {
           "id": "s1",
-          "raw": "Counsel kept calling it a zzprotlitezz but the notice window was zzprotlitazz-zzprotlitbzz and the inspector did not text until zzprotlitczz that he was still in traffic",
+          "raw": "Counsel kept calling it a __PROTLIT_E__ but the notice window was __PROTLIT_A__-__PROTLIT_B__ and the inspector did not text until __PROTLIT_C__ that he was still in traffic",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "Counsel kept calling it a zzprotlitezz but the notice window was zzprotlitazz-zzprotlitbzz and the inspector did not text",
+              "text": "Counsel kept calling it a __PROTLIT_E__ but the notice window was __PROTLIT_A__-__PROTLIT_B__ and the inspector did not text",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -111,13 +111,13 @@
               "propositionHead": "kept",
               "actor": "it",
               "action": "kept",
-              "object": "calling zzprotlitezz notice window zzprotlitazz",
+              "object": "calling protlit e notice window",
               "modifiers": [],
               "hedgeMarkers": []
             },
             {
               "id": "s1c1",
-              "text": "zzprotlitczz that he was still in traffic",
+              "text": "__PROTLIT_C__ that he was still in traffic",
               "relationToPrev": "contrastive",
               "clauseType": "main",
               "polarity": "positive",
@@ -135,13 +135,13 @@
         },
         {
           "id": "s2",
-          "raw": "Camera time places arrival after zzprotlitdzz",
+          "raw": "Camera time places arrival after __PROTLIT_D__",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "Camera time places arrival after zzprotlitdzz",
+              "text": "Camera time places arrival after __PROTLIT_D__",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -467,7 +467,7 @@
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.964,
-      "polarityMismatches": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -490,7 +490,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.5,
           "globalBagScore": 0.133
@@ -572,27 +572,27 @@
         "literalSpans": [
           {
             "value": "1:00",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "5:00 PM",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "5:43",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "6:10",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           },
           {
             "value": "\"refusal of entry,\"",
-            "placeholder": "zzprotlitezz"
+            "placeholder": "__PROTLIT_E__"
           },
           {
             "value": "3",
-            "placeholder": "zzprotlitfzz"
+            "placeholder": "__PROTLIT_F__"
           }
         ]
       },
@@ -632,7 +632,7 @@
               "text": "counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector didnt text",
               "relationToPrev": "start",
               "clauseType": "main",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "present",
               "propositionHead": "kept",
               "actor": "it",
@@ -857,7 +857,7 @@
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.964,
-    "polarityMismatches": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

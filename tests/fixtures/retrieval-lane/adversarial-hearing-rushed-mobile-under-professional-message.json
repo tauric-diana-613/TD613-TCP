@@ -46,19 +46,19 @@
         "literalSpans": [
           {
             "value": "5:43",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "6:10",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "\"refused entry\"",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "1-5",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           }
         ]
       },
@@ -89,13 +89,13 @@
         },
         {
           "id": "s1",
-          "raw": "they keep saying she zzprotlitczz but inspector texted zzprotlitazz he was late + showed after zzprotlitbzz on a zzprotlitdzz window",
+          "raw": "they keep saying she __PROTLIT_C__ but inspector texted __PROTLIT_A__ he was late + showed after __PROTLIT_B__ on a __PROTLIT_D__ window",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "they keep saying she zzprotlitczz but inspector texted zzprotlitazz he was late + showed after zzprotlitbzz on a zzprotlitdzz window",
+              "text": "they keep saying she __PROTLIT_C__ but inspector texted __PROTLIT_A__ he was late + showed after __PROTLIT_B__ on a __PROTLIT_D__ window",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -103,7 +103,7 @@
               "propositionHead": "keep",
               "actor": "they",
               "action": "keep",
-              "object": "saying zzprotlitczz inspector texted zzprotlitazz",
+              "object": "saying protlit c inspector texted",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -461,19 +461,19 @@
         "literalSpans": [
           {
             "value": "5:43",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "6:10",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "\"refused entry\"",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "1-5",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           }
         ]
       },

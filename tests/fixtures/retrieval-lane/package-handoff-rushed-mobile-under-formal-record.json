@@ -46,31 +46,31 @@
         "literalSpans": [
           {
             "value": "6:41",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "2b",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "2nd",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "zzprotlitbzz pkg wasnt brought down",
+          "raw": "__PROTLIT_B__ pkg wasnt brought down",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "zzprotlitbzz pkg wasnt brought down",
+              "text": "__PROTLIT_B__ pkg wasnt brought down",
               "relationToPrev": "start",
               "clauseType": "fragment",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "present",
               "propositionHead": "brought",
               "actor": "",
@@ -83,13 +83,13 @@
         },
         {
           "id": "s1",
-          "raw": "tag says attempted zzprotlitazz but no one buzzed her",
+          "raw": "tag says attempted __PROTLIT_A__ but no one buzzed her",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "tag says attempted zzprotlitazz but no one buzzed her",
+              "text": "tag says attempted __PROTLIT_A__ but no one buzzed her",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -97,7 +97,7 @@
               "propositionHead": "says",
               "actor": "",
               "action": "says",
-              "object": "attempted zzprotlitazz no one buzzed",
+              "object": "attempted protlit no one buzzed",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -105,13 +105,13 @@
         },
         {
           "id": "s2",
-          "raw": "it was just sitting on zzprotlitczz fl landing by rail",
+          "raw": "it was just sitting on __PROTLIT_C__ fl landing by rail",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "it was just sitting on zzprotlitczz fl landing by rail",
+              "text": "it was just sitting on __PROTLIT_C__ fl landing by rail",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -119,7 +119,7 @@
               "propositionHead": "was",
               "actor": "it",
               "action": "was",
-              "object": "sitting zzprotlitczz fl landing by",
+              "object": "sitting protlit c fl landing",
               "modifiers": [],
               "hedgeMarkers": [
                 "minimization"
@@ -258,7 +258,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 348.572,
+        "score": 359.672,
         "passesApplied": [
           "merge-pairs",
           "clause-texture"
@@ -281,7 +281,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 348.572,
+          "score": 359.672,
           "passesApplied": [
             "merge-pairs",
             "clause-texture"
@@ -303,11 +303,10 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 259.396,
+          "score": 284.728,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "sentence-structure",
             "connector-stance-lexicon",
             "contraction-auxiliary"
           ],
@@ -318,6 +317,7 @@
             "sentence-spread",
             "connector-stance",
             "orthography-posture",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -325,11 +325,10 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 259.396,
+          "score": 284.728,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "sentence-structure",
             "connector-stance-lexicon",
             "contraction-auxiliary"
           ],
@@ -340,6 +339,7 @@
             "sentence-spread",
             "connector-stance",
             "orthography-posture",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -347,11 +347,10 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 259.396,
+          "score": 284.728,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "sentence-structure",
             "connector-stance-lexicon",
             "contraction-auxiliary"
           ],
@@ -362,6 +361,7 @@
             "sentence-spread",
             "connector-stance",
             "orthography-posture",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -369,11 +369,10 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 259.396,
+          "score": 284.728,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "sentence-structure",
             "connector-stance-lexicon",
             "contraction-auxiliary"
           ],
@@ -384,6 +383,7 @@
             "sentence-spread",
             "connector-stance",
             "orthography-posture",
+            "fragment-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -392,7 +392,7 @@
       ]
     },
     "finalRealization": {
-      "text": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her; yet it was just sitting on 2nd fl landing by rail, but red rush sticker still on it. i moved it to hall table after she said yes its hers; she had bags already. if management asks: box stayed sealed.",
+      "text": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her. it was just sitting on 2nd fl landing by rail, but red rush sticker still on it. i moved it to hall table after she said yes its hers; she had bags already. if management asks: box stayed sealed.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -413,10 +413,10 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.293,
-        "outputDonorDistance": 3.43,
-        "donorImprovement": 0.863,
-        "donorImprovementRatio": 0.201,
-        "sourceOutputLexicalOverlap": 0.868
+        "outputDonorDistance": 3.084,
+        "donorImprovement": 1.209,
+        "donorImprovementRatio": 0.282,
+        "sourceOutputLexicalOverlap": 0.885
       },
       "rescuePasses": [],
       "visibleShift": true,
@@ -426,8 +426,8 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.925,
-      "polarityMismatches": 1,
+      "objectCoverage": 0.917,
+      "polarityMismatches": 0,
       "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -438,7 +438,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 1,
           "bagScore": 0.333,
           "globalBagScore": 0.091
@@ -457,19 +457,19 @@
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.8,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.667,
-          "globalBagScore": 0.174
+          "bagScore": 0.429,
+          "globalBagScore": 0.125
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -481,7 +481,7 @@
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -493,7 +493,7 @@
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -515,27 +515,27 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 3,
+        "sentenceCount": 4,
         "clauseCount": 5,
         "literalSpans": [
           {
             "value": "6:41",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "2b",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "2nd",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her; yet it was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
+          "raw": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
@@ -552,11 +552,19 @@
               "object": "down tag says attempted 6",
               "modifiers": [],
               "hedgeMarkers": []
-            },
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "it was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
             {
-              "id": "s0c1",
-              "text": "yet it was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
-              "relationToPrev": "contrastive",
+              "id": "s1c0",
+              "text": "it was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
+              "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
@@ -572,13 +580,13 @@
           ]
         },
         {
-          "id": "s1",
+          "id": "s2",
           "raw": "i moved it to hall table after she said yes its hers; she had bags already",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s1c0",
+              "id": "s2c0",
               "text": "i moved it to hall table after she said yes its hers",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -594,7 +602,7 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s1c1",
+              "id": "s2c1",
               "text": "she had bags already",
               "relationToPrev": "additive",
               "clauseType": "main",
@@ -610,13 +618,13 @@
           ]
         },
         {
-          "id": "s2",
+          "id": "s3",
           "raw": "if management asks: box stayed sealed.",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s2c0",
+              "id": "s3c0",
               "text": "if management asks: box stayed sealed",
               "relationToPrev": "start",
               "clauseType": "subordinate",
@@ -654,10 +662,10 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.293,
-        "outputDonorDistance": 3.43,
-        "donorImprovement": 0.863,
-        "donorImprovementRatio": 0.201,
-        "sourceOutputLexicalOverlap": 0.868
+        "outputDonorDistance": 3.084,
+        "donorImprovement": 1.209,
+        "donorImprovementRatio": 0.282,
+        "sourceOutputLexicalOverlap": 0.885
       },
       "realizationNotes": [
         "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture.",
@@ -701,8 +709,8 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.925,
-    "polarityMismatches": 1,
+    "objectCoverage": 0.917,
+    "polarityMismatches": 0,
     "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1
   }

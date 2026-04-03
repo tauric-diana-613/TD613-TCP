@@ -46,28 +46,28 @@
         "literalSpans": [
           {
             "value": "7:42 PM",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "8:11",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "4",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "Production team, quick correction from Gallery zzprotlitczz: the fog cue at zzprotlitazz is what tripped the detector, not an electrical issue",
+          "raw": "Production team, quick correction from Gallery __PROTLIT_C__: the fog cue at __PROTLIT_A__ is what tripped the detector, not an electrical issue",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Production team, quick correction from Gallery zzprotlitczz: the fog cue at zzprotlitazz is what tripped the detector, not an electrical issue",
+              "text": "Production team, quick correction from Gallery __PROTLIT_C__: the fog cue at __PROTLIT_A__ is what tripped the detector, not an electrical issue",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -86,7 +86,7 @@
         },
         {
           "id": "s1",
-          "raw": "Facilities reset the panel and we resumed at zzprotlitbzz, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
+          "raw": "Facilities reset the panel and we resumed at __PROTLIT_B__, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
@@ -106,7 +106,7 @@
             },
             {
               "id": "s1c1",
-              "text": "we resumed at zzprotlitbzz, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
+              "text": "we resumed at __PROTLIT_B__, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
               "relationToPrev": "contrastive",
               "clauseType": "main",
               "polarity": "positive",
@@ -438,7 +438,7 @@
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.95,
-      "polarityMismatches": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -492,12 +492,12 @@
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s0c0",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
           "globalBagScore": 0
@@ -519,15 +519,15 @@
         "literalSpans": [
           {
             "value": "7:42 PM",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "8:11",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "4",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           }
         ]
       },
@@ -688,7 +688,7 @@
               "text": "so we dont reproduce the same alarm under a prettier label",
               "relationToPrev": "start",
               "clauseType": "fragment",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "present",
               "propositionHead": "dont",
               "actor": "we",
@@ -792,7 +792,7 @@
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.95,
-    "polarityMismatches": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

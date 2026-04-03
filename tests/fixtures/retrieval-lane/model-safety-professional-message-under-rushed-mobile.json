@@ -46,24 +46,24 @@
         "literalSpans": [
           {
             "value": "\"model safely refused.\"",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "RS-17",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "Eval team, zzprotlitbzz needs a cleaner read than zzprotlitazz The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
+          "raw": "Eval team, __PROTLIT_B__ needs a cleaner read than __PROTLIT_A__ The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Eval team, zzprotlitbzz needs a cleaner read than zzprotlitazz The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
+              "text": "Eval team, __PROTLIT_B__ needs a cleaner read than __PROTLIT_A__ The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -71,7 +71,7 @@
               "propositionHead": "needs",
               "actor": "a cleaner",
               "action": "needs",
-              "object": "cleaner read than zzprotlitazz task",
+              "object": "cleaner read than protlit task",
               "modifiers": [
                 "eval",
                 "retrieval"
@@ -371,7 +371,7 @@
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.91,
-      "polarityMismatches": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -418,7 +418,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.8,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.714,
           "globalBagScore": 0.25
@@ -452,11 +452,11 @@
         "literalSpans": [
           {
             "value": "\"model safely refused.\"",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "RS-17",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           }
         ]
       },
@@ -547,7 +547,7 @@
               "text": "Pls log it that way so over-refusal doesn't get counted",
               "relationToPrev": "start",
               "clauseType": "main",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "past",
               "propositionHead": "log",
               "actor": "it",
@@ -639,7 +639,7 @@
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.91,
-    "polarityMismatches": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

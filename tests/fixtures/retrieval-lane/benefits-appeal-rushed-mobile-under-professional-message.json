@@ -46,41 +46,41 @@
         "literalSpans": [
           {
             "value": "\"missing docs\"",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "ba-4427",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "6",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "9",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           },
           {
             "value": "5/14",
-            "placeholder": "zzprotlitezz"
+            "placeholder": "__PROTLIT_E__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "zzprotlitbzz isnt a no-doc case",
+          "raw": "__PROTLIT_B__ isnt a no-doc case",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "zzprotlitbzz isnt a no-doc case",
+              "text": "__PROTLIT_B__ isnt a no-doc case",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "negative",
               "tenseAspect": "present",
-              "propositionHead": "zzprotlitbzz",
+              "propositionHead": "protlit",
               "actor": "a no",
               "action": "",
               "object": "",
@@ -127,13 +127,13 @@
         },
         {
           "id": "s2",
-          "raw": "notice says may zzprotlitczz, client got it may zzprotlitdzz",
+          "raw": "notice says may __PROTLIT_C__, client got it may __PROTLIT_D__",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "notice says may zzprotlitczz, client got it may zzprotlitdzz",
+              "text": "notice says may __PROTLIT_C__, client got it may __PROTLIT_D__",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -141,7 +141,7 @@
               "propositionHead": "says",
               "actor": "it",
               "action": "says",
-              "object": "zzprotlitczz client got zzprotlitdzz",
+              "object": "protlit c client got protlit",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -149,13 +149,13 @@
         },
         {
           "id": "s3",
-          "raw": "hearing req filed zzprotlitezz",
+          "raw": "hearing req filed __PROTLIT_E__",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "hearing req filed zzprotlitezz",
+              "text": "hearing req filed __PROTLIT_E__",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -171,13 +171,13 @@
         },
         {
           "id": "s4",
-          "raw": "pls dont send her back for same proof again under zzprotlitazz bc thats not the block",
+          "raw": "pls dont send her back for same proof again under __PROTLIT_A__ bc thats not the block",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "pls dont send her back for same proof again under zzprotlitazz bc thats not the block",
+              "text": "pls dont send her back for same proof again under __PROTLIT_A__ bc thats not the block",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -213,10 +213,7 @@
     "planSummary": {
       "transferMode": "expand",
       "structuralOperationsSelected": [
-        "baseline-merge",
-        "planned-sentence-merge",
-        "sentence-structure",
-        "clause-join-split"
+        "baseline-merge"
       ],
       "lexicalRegisterOperationsSelected": [
         "baseline-voice-realization",
@@ -261,17 +258,13 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 364.98,
+        "score": 294.612,
         "passesApplied": [
           "baseline-merge",
           "baseline-voice-realization",
           "baseline-stance",
           "baseline-function-word",
-          "planned-sentence-merge",
-          "sentence-structure",
-          "clause-join-split",
-          "connector-stance-lexicon",
-          "cleanup-restore"
+          "connector-stance-lexicon"
         ],
         "rescuePasses": [],
         "changedDimensions": [
@@ -279,10 +272,8 @@
           "sentence-count",
           "sentence-spread",
           "connector-stance",
-          "lexical-register",
           "abbreviation-posture",
           "orthography-posture",
-          "surface-marker-posture",
           "punctuation-shape"
         ],
         "qualityGatePassed": true,
@@ -291,9 +282,9 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 446.395,
+          "score": 464.897,
           "passesApplied": [
-            "merge-pairs",
+            "baseline-floor",
             "clause-texture"
           ],
           "rescuePasses": [],
@@ -315,17 +306,13 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 364.98,
+          "score": 294.612,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "baseline-stance",
             "baseline-function-word",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
+            "connector-stance-lexicon"
           ],
           "rescuePasses": [],
           "changedDimensions": [
@@ -333,10 +320,8 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "lexical-register",
             "abbreviation-posture",
             "orthography-posture",
-            "surface-marker-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -344,17 +329,13 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 364.98,
+          "score": 294.612,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "baseline-stance",
             "baseline-function-word",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
+            "connector-stance-lexicon"
           ],
           "rescuePasses": [],
           "changedDimensions": [
@@ -362,10 +343,8 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "lexical-register",
             "abbreviation-posture",
             "orthography-posture",
-            "surface-marker-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -373,17 +352,13 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 364.98,
+          "score": 294.612,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "baseline-stance",
             "baseline-function-word",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
+            "connector-stance-lexicon"
           ],
           "rescuePasses": [],
           "changedDimensions": [
@@ -391,10 +366,8 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "lexical-register",
             "abbreviation-posture",
             "orthography-posture",
-            "surface-marker-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -402,17 +375,13 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 364.98,
+          "score": 294.612,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "baseline-stance",
             "baseline-function-word",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
+            "connector-stance-lexicon"
           ],
           "rescuePasses": [],
           "changedDimensions": [
@@ -420,10 +389,8 @@
             "sentence-count",
             "sentence-spread",
             "connector-stance",
-            "lexical-register",
             "abbreviation-posture",
             "orthography-posture",
-            "surface-marker-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -432,7 +399,7 @@
       ]
     },
     "finalRealization": {
-      "text": "ba-4427 isnt a no-doc case, but mail got kicked back from elm; yet she already switched to birch shelter addr. that letter is in file, but notice says may 6, client got it may 9; And hearing req filed 5/14. Pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
+      "text": "ba-4427 isnt a no-doc case, but mail got kicked back from elm but she already switched to birch shelter addr, that letter is in file. notice says may 6, client got it may 9; and hearing req filed 5/14. pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -442,10 +409,8 @@
         "sentence-count",
         "sentence-spread",
         "connector-stance",
-        "lexical-register",
         "abbreviation-posture",
         "orthography-posture",
-        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [],
@@ -453,10 +418,10 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.281,
-        "outputDonorDistance": 3.1,
-        "donorImprovement": 1.181,
-        "donorImprovementRatio": 0.276,
-        "sourceOutputLexicalOverlap": 0.912
+        "outputDonorDistance": 3.306,
+        "donorImprovement": 0.975,
+        "donorImprovementRatio": 0.228,
+        "sourceOutputLexicalOverlap": 0.929
       },
       "rescuePasses": [],
       "visibleShift": true,
@@ -466,7 +431,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 0.962,
       "actionCoverage": 1,
-      "objectCoverage": 0.917,
+      "objectCoverage": 0.958,
       "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -501,11 +466,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
+          "bagScore": 1,
+          "globalBagScore": 0.059
         },
         {
           "sourceClauseId": "s2c0",
@@ -560,30 +525,30 @@
         "literalSpans": [
           {
             "value": "\"missing docs\"",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "ba-4427",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "6",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "9",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           },
           {
             "value": "5/14",
-            "placeholder": "zzprotlitezz"
+            "placeholder": "__PROTLIT_E__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "ba-4427 isnt a no-doc case, but mail got kicked back from elm; yet she already switched to birch shelter addr",
+          "raw": "ba-4427 isnt a no-doc case, but mail got kicked back from elm but she already switched to birch shelter addr, that letter is in file",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
@@ -603,15 +568,15 @@
             },
             {
               "id": "s0c1",
-              "text": "yet she already switched to birch shelter addr",
-              "relationToPrev": "contrastive",
-              "clauseType": "fragment",
+              "text": "she already switched to birch shelter addr, that letter is in file",
+              "relationToPrev": "additive",
+              "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
-              "propositionHead": "already",
+              "propositionHead": "is",
               "actor": "she",
-              "action": "",
-              "object": "",
+              "action": "is",
+              "object": "file",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -619,19 +584,19 @@
         },
         {
           "id": "s1",
-          "raw": "that letter is in file, but notice says may 6, client got it may 9; yet and hearing req filed 5/14",
-          "rhetoricalRole": "contrastive",
+          "raw": "notice says may 6, client got it may 9; and hearing req filed 5/14",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "that letter is in file, but notice says may 6, client got it may 9",
+              "text": "notice says may 6, client got it may 9",
               "relationToPrev": "start",
-              "clauseType": "relative",
+              "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "says",
-              "actor": "that",
+              "actor": "it",
               "action": "says",
               "object": "6 client got 9",
               "modifiers": [],
@@ -639,8 +604,8 @@
             },
             {
               "id": "s1c1",
-              "text": "yet and hearing req filed 5/14",
-              "relationToPrev": "contrastive",
+              "text": "and hearing req filed 5/14",
+              "relationToPrev": "additive",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
@@ -655,13 +620,13 @@
         },
         {
           "id": "s2",
-          "raw": "Pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
+          "raw": "pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
           "rhetoricalRole": "clarifying",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "Pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
+              "text": "pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -687,10 +652,8 @@
         "sentence-count",
         "sentence-spread",
         "connector-stance",
-        "lexical-register",
         "abbreviation-posture",
         "orthography-posture",
-        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [],
@@ -698,13 +661,13 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.281,
-        "outputDonorDistance": 3.1,
-        "donorImprovement": 1.181,
-        "donorImprovementRatio": 0.276,
-        "sourceOutputLexicalOverlap": 0.912
+        "outputDonorDistance": 3.306,
+        "donorImprovement": 0.975,
+        "donorImprovementRatio": 0.228,
+        "sourceOutputLexicalOverlap": 0.929
       },
       "realizationNotes": [
-        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, surface-marker-posture.",
+        "Register shift surfaced through abbreviation-posture, orthography-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [],
@@ -718,13 +681,11 @@
     "changedDimensions": [
       "abbreviation-posture",
       "connector-stance",
-      "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",
-      "sentence-spread",
-      "surface-marker-posture"
+      "sentence-spread"
     ],
     "lexemeSwapFamilies": [],
     "relationInventory": [
@@ -736,10 +697,7 @@
       "temporal:0"
     ],
     "structuralOperations": [
-      "baseline-merge",
-      "clause-join-split",
-      "planned-sentence-merge",
-      "sentence-structure"
+      "baseline-merge"
     ],
     "lexicalOperations": [
       "baseline-function-word",
@@ -752,7 +710,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 0.962,
     "actionCoverage": 1,
-    "objectCoverage": 0.917,
+    "objectCoverage": 0.958,
     "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

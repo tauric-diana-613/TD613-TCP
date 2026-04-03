@@ -46,28 +46,28 @@
         "literalSpans": [
           {
             "value": "q3",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "12",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "3",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "freeze runs thru zzprotlitazz",
+          "raw": "freeze runs thru __PROTLIT_A__",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "freeze runs thru zzprotlitazz",
+              "text": "freeze runs thru __PROTLIT_A__",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -83,13 +83,13 @@
         },
         {
           "id": "s1",
-          "raw": "means coord line stays empty zzprotlitbzz more wks unless we bridge it",
+          "raw": "means coord line stays empty __PROTLIT_B__ more wks unless we bridge it",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "means coord line stays empty zzprotlitbzz more wks",
+              "text": "means coord line stays empty __PROTLIT_B__ more wks",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -157,18 +157,18 @@
         },
         {
           "id": "s3",
-          "raw": "zzprotlitczz options still analyst line / evening hrs / reserves w dean ok",
+          "raw": "__PROTLIT_C__ options still analyst line / evening hrs / reserves w dean ok",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "zzprotlitczz options still analyst line / evening hrs / reserves w dean ok",
+              "text": "__PROTLIT_C__ options still analyst line / evening hrs / reserves w dean ok",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "zzprotlitczz",
+              "propositionHead": "protlit",
               "actor": "",
               "action": "",
               "object": "",
@@ -223,6 +223,7 @@
     "planSummary": {
       "transferMode": "expand",
       "structuralOperationsSelected": [
+        "merge-pairs",
         "clause-texture"
       ],
       "lexicalRegisterOperationsSelected": [],
@@ -263,9 +264,9 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 394.1,
+        "score": 394.738,
         "passesApplied": [
-          "baseline-floor",
+          "merge-pairs",
           "clause-texture"
         ],
         "rescuePasses": [],
@@ -286,9 +287,9 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 394.1,
+          "score": 394.738,
           "passesApplied": [
-            "baseline-floor",
+            "merge-pairs",
             "clause-texture"
           ],
           "rescuePasses": [],
@@ -399,7 +400,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Freeze runs through q3, but means coord line stays empty 12 more weeks unless we bridge it. Room was basically: cut print/furniture if needed, do not fake that intake can run w no staffing hit, though 3 options still analyst line; evening hours; reserves w dean okay. Revised table thurs after finance answers reserve rule",
+      "text": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically: cut print/furniture if needed, do not fake that intake can run w no staffing hit, though 3 options still analyst line; evening hours; reserves w dean okay. Revised table thurs after finance answers reserve rule",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -420,9 +421,9 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 3.863,
-        "outputDonorDistance": 1.953,
-        "donorImprovement": 1.91,
-        "donorImprovementRatio": 0.494,
+        "outputDonorDistance": 1.924,
+        "donorImprovement": 1.939,
+        "donorImprovementRatio": 0.502,
         "sourceOutputLexicalOverlap": 0.78
       },
       "rescuePasses": [],
@@ -539,28 +540,28 @@
         "literalSpans": [
           {
             "value": "q3",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "12",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "3",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "Freeze runs through q3, but means coord line stays empty 12 more weeks unless we bridge it",
-          "rhetoricalRole": "contrastive",
+          "raw": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Freeze runs through q3, but means coord line stays empty 12 more weeks",
+              "text": "Freeze runs through q3, and means coord line stays empty 12 more weeks",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -687,9 +688,9 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 3.863,
-        "outputDonorDistance": 1.953,
-        "donorImprovement": 1.91,
-        "donorImprovementRatio": 0.494,
+        "outputDonorDistance": 1.924,
+        "donorImprovement": 1.939,
+        "donorImprovementRatio": 0.502,
         "sourceOutputLexicalOverlap": 0.78
       },
       "realizationNotes": [
@@ -725,7 +726,8 @@
       "temporal:1"
     ],
     "structuralOperations": [
-      "clause-texture"
+      "clause-texture",
+      "merge-pairs"
     ],
     "lexicalOperations": [],
     "connectorStrategy": "resumptive",

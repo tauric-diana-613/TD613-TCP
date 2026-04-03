@@ -46,7 +46,7 @@
         "literalSpans": [
           {
             "value": "10:15",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           }
         ]
       },
@@ -62,7 +62,7 @@
               "text": "if youre late thats ok just dont start random jobs",
               "relationToPrev": "start",
               "clauseType": "subordinate",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "present",
               "propositionHead": "youre",
               "actor": "",
@@ -163,18 +163,18 @@
         },
         {
           "id": "s4",
-          "raw": "zzprotlitazz inventory stop still stands",
+          "raw": "__PROTLIT_A__ inventory stop still stands",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "zzprotlitazz inventory stop still stands",
+              "text": "__PROTLIT_A__ inventory stop still stands",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "zzprotlitazz",
+              "propositionHead": "protlit",
               "actor": "",
               "action": "",
               "object": "",
@@ -476,7 +476,7 @@
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s1c1",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -575,7 +575,7 @@
         "literalSpans": [
           {
             "value": "10:15",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           }
         ]
       },

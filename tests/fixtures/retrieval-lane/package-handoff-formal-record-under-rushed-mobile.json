@@ -46,44 +46,44 @@
         "literalSpans": [
           {
             "value": "6:41 PM",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "7:06 PM",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "\"attempted / no answer\"",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "18",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           },
           {
             "value": "2B",
-            "placeholder": "zzprotlitezz"
+            "placeholder": "__PROTLIT_E__"
           },
           {
             "value": "2B",
-            "placeholder": "zzprotlitfzz"
+            "placeholder": "__PROTLIT_F__"
           },
           {
             "value": "2B",
-            "placeholder": "zzprotlitgzz"
+            "placeholder": "__PROTLIT_G__"
           }
         ]
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "On Tuesday, March zzprotlitdzz, the rush parcel addressed to Unit zzprotlitezz was not presented for signature at the apartment door",
+          "raw": "On Tuesday, March __PROTLIT_D__, the rush parcel addressed to Unit __PROTLIT_E__ was not presented for signature at the apartment door",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "On Tuesday, March zzprotlitdzz, the rush parcel addressed to Unit zzprotlitezz was not presented for signature at the apartment door",
+              "text": "On Tuesday, March __PROTLIT_D__, the rush parcel addressed to Unit __PROTLIT_E__ was not presented for signature at the apartment door",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -99,13 +99,13 @@
         },
         {
           "id": "s1",
-          "raw": "The carrier scan marked zzprotlitczz at zzprotlitazz, but building footage and resident testimony indicate no buzzer call was placed to Unit zzprotlitfzz during that minute",
+          "raw": "The carrier scan marked __PROTLIT_C__ at __PROTLIT_A__, but building footage and resident testimony indicate no buzzer call was placed to Unit __PROTLIT_F__ during that minute",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "The carrier scan marked zzprotlitczz at zzprotlitazz, but building footage and resident testimony indicate no buzzer call was placed to Unit zzprotlitfzz during that minute",
+              "text": "The carrier scan marked __PROTLIT_C__ at __PROTLIT_A__, but building footage and resident testimony indicate no buzzer call was placed to Unit __PROTLIT_F__ during that minute",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -113,7 +113,7 @@
               "propositionHead": "call",
               "actor": "The carrier",
               "action": "call",
-              "object": "placed unit zzprotlitfzz during minute",
+              "object": "placed unit protlit f during",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -165,13 +165,13 @@
         },
         {
           "id": "s4",
-          "raw": "Chen located it at approximately zzprotlitbzz after noticing the door tag and asking maintenance whether a delivery had come through",
+          "raw": "Chen located it at approximately __PROTLIT_B__ after noticing the door tag and asking maintenance whether a delivery had come through",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "Chen located it at approximately zzprotlitbzz after noticing the door tag and asking maintenance whether a delivery had come through",
+              "text": "Chen located it at approximately __PROTLIT_B__ after noticing the door tag and asking maintenance whether a delivery had come through",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -179,7 +179,7 @@
               "propositionHead": "located",
               "actor": "it",
               "action": "located",
-              "object": "at approximately zzprotlitbzz after noticing",
+              "object": "at approximately protlit b after",
               "modifiers": [
                 "approximately"
               ],
@@ -189,13 +189,13 @@
         },
         {
           "id": "s5",
-          "raw": "I moved the parcel from the landing to the hallway table outside zzprotlitgzz only after Ms",
+          "raw": "I moved the parcel from the landing to the hallway table outside __PROTLIT_G__ only after Ms",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s5c0",
-              "text": "I moved the parcel from the landing to the hallway table outside zzprotlitgzz only after Ms",
+              "text": "I moved the parcel from the landing to the hallway table outside __PROTLIT_G__ only after Ms",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -626,7 +626,7 @@
       "actorCoverage": 0.975,
       "actionCoverage": 1,
       "objectCoverage": 0.923,
-      "polarityMismatches": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -637,7 +637,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.167,
           "globalBagScore": 0.039
@@ -803,31 +803,31 @@
         "literalSpans": [
           {
             "value": "6:41 PM",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "7:06 PM",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           },
           {
             "value": "\"attempted / no answer\"",
-            "placeholder": "zzprotlitczz"
+            "placeholder": "__PROTLIT_C__"
           },
           {
             "value": "18",
-            "placeholder": "zzprotlitdzz"
+            "placeholder": "__PROTLIT_D__"
           },
           {
             "value": "2B",
-            "placeholder": "zzprotlitezz"
+            "placeholder": "__PROTLIT_E__"
           },
           {
             "value": "2B",
-            "placeholder": "zzprotlitfzz"
+            "placeholder": "__PROTLIT_F__"
           },
           {
             "value": "2B",
-            "placeholder": "zzprotlitgzz"
+            "placeholder": "__PROTLIT_G__"
           }
         ]
       },
@@ -879,7 +879,7 @@
               "text": "the rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door",
               "relationToPrev": "start",
               "clauseType": "fragment",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "past",
               "propositionHead": "rush",
               "actor": "the rush",
@@ -1241,7 +1241,7 @@
     "actorCoverage": 0.975,
     "actionCoverage": 1,
     "objectCoverage": 0.923,
-    "polarityMismatches": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1
   }

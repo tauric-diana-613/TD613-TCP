@@ -146,6 +146,35 @@ for (const persona of resolvedPersonas) {
 const uniqueOutputs = new Set([...results.values()].map((result) => result.maskedText));
 assert.equal(uniqueOutputs.size, resolvedPersonas.length, 'each built-in mask produces a distinct transformed output on the same comparison text');
 
+const sparkPersona = resolvedPersonas.find((persona) => persona.id === 'spark');
+const sparkBuildingAccess = buildMaskTransformationResult(engine, {
+  comparisonText: buildingAccess.text,
+  lock,
+  persona: sparkPersona
+});
+assert.ok(sparkBuildingAccess, 'Spark resolves a building-access mask result');
+assert.notEqual(
+  sparkBuildingAccess.maskedText,
+  buildingAccess.text,
+  'Spark no longer collapses the building-access fixture back to source text'
+);
+assert.equal(
+  sparkBuildingAccess.transfer.transferClass,
+  'structural',
+  'Spark lands a structural mask shift on the building-access fixture'
+);
+assert.equal(
+  sparkBuildingAccess.transfer.protectedAnchorAudit?.protectedAnchorIntegrity,
+  1,
+  'Spark preserves protected anchors on the building-access fixture'
+);
+assert.ok(
+  sparkBuildingAccess.maskedText.includes('08:19') &&
+    sparkBuildingAccess.maskedText.includes('118') &&
+    /\b(?:door 3|d3)\b/i.test(sparkBuildingAccess.maskedText),
+  'Spark preserves the protected building-access literals while shifting cadence'
+);
+
 const outputProfiles = Object.fromEntries(
   [...results.entries()].map(([id, result]) => [id, engine.extractCadenceProfile(result.maskedText)])
 );

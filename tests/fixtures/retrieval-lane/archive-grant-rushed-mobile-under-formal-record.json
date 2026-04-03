@@ -46,11 +46,11 @@
         "literalSpans": [
           {
             "value": "6",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "2",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           }
         ]
       },
@@ -66,7 +66,7 @@
               "text": "grant isnt just digitize + pray",
               "relationToPrev": "start",
               "clauseType": "fragment",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "present",
               "propositionHead": "grant",
               "actor": "",
@@ -81,13 +81,13 @@
         },
         {
           "id": "s1",
-          "raw": "its shared catalog protocol + zzprotlitazz steward reviewers + portable exhibit kit",
+          "raw": "its shared catalog protocol + __PROTLIT_A__ steward reviewers + portable exhibit kit",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "its shared catalog protocol + zzprotlitazz steward reviewers + portable exhibit kit",
+              "text": "its shared catalog protocol + __PROTLIT_A__ steward reviewers + portable exhibit kit",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -143,21 +143,21 @@
         },
         {
           "id": "s3",
-          "raw": "pls keep the zzprotlitbzz wk review buffer + translation line in budget",
+          "raw": "pls keep the __PROTLIT_B__ wk review buffer + translation line in budget",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "pls keep the zzprotlitbzz wk review buffer + translation line in budget",
+              "text": "pls keep the __PROTLIT_B__ wk review buffer + translation line in budget",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "keep",
-              "actor": "the zzprotlitbzz",
+              "actor": "the __PROTLIT_B__",
               "action": "keep",
-              "object": "zzprotlitbzz wk review buffer translation",
+              "object": "protlit b wk review buffer",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -442,7 +442,7 @@
       "actorCoverage": 0.83,
       "actionCoverage": 1,
       "objectCoverage": 0.95,
-      "polarityMismatches": 0,
+      "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -465,7 +465,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
-          "polarityMismatch": 0,
+          "polarityMismatch": 1,
           "tenseMismatch": 0,
           "bagScore": 0.333,
           "globalBagScore": 0.091
@@ -523,11 +523,11 @@
         "literalSpans": [
           {
             "value": "6",
-            "placeholder": "zzprotlitazz"
+            "placeholder": "__PROTLIT_A__"
           },
           {
             "value": "2",
-            "placeholder": "zzprotlitbzz"
+            "placeholder": "__PROTLIT_B__"
           }
         ]
       },
@@ -543,7 +543,7 @@
               "text": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit",
               "relationToPrev": "start",
               "clauseType": "fragment",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "past",
               "propositionHead": "grant",
               "actor": "",
@@ -695,7 +695,7 @@
     "actorCoverage": 0.83,
     "actionCoverage": 1,
     "objectCoverage": 0.95,
-    "polarityMismatches": 0,
+    "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }
