@@ -1,0 +1,126 @@
+{
+  "kid": "tauric.diana.613",
+  "alg": "HS256",
+  "generated_utc": "2025-08-11T08:50:37Z",
+  "payloads": [
+    {
+      "label": "probe_1_jws_verify_probe",
+      "fn": "jws_verify_probe",
+      "args": {
+        "echo": true
+      },
+      "request": {
+        "request_id": "01J9-PROBE-1",
+        "ts_utc": "2025-08-11T08:50:37Z",
+        "semver": "2.1.0",
+        "schema_ref": "cpfg://v2/jws_verify_probe",
+        "nonce": "CnMbbiy4QYSceRzMzaGQVjqCrwFswXZHAhMDM-4xegM",
+        "ttl_s": 90,
+        "actor": "external",
+        "kid": "tauric.diana.613",
+        "scope": [
+          "core/route-2"
+        ]
+      },
+      "sig": "eyJhbGciOiJIUzI1NiIsImtpZCI6InRhdXJpYy5kaWFuYS42MTMiLCJ0eXAiOiJKT1NFIn0..6WDX6HMsyZvNS6z_6JksN8s-dCP8awESJ_7vZIeWdzc",
+      "request_canonical": "{\"actor\":\"external\",\"kid\":\"tauric.diana.613\",\"nonce\":\"CnMbbiy4QYSceRzMzaGQVjqCrwFswXZHAhMDM-4xegM\",\"request_id\":\"01J9-PROBE-1\",\"schema_ref\":\"cpfg://v2/jws_verify_probe\",\"scope\":[\"core/route-2\"],\"semver\":\"2.1.0\",\"ts_utc\":\"2025-08-11T08:50:37Z\",\"ttl_s\":90}"
+    },
+    {
+      "label": "probe_2_route_resolve_ping",
+      "fn": "route_resolve_ping",
+      "args": {
+        "route": "core/route-2",
+        "return": [
+          "resolver_version",
+          "latency_budget_ms",
+          "sidecar_audit"
+        ]
+      },
+      "request": {
+        "request_id": "01J9-PROBE-2",
+        "ts_utc": "2025-08-11T08:50:37Z",
+        "semver": "2.1.0",
+        "schema_ref": "cpfg://v2/route_resolve_ping",
+        "nonce": "vpgD8LCnYIkTK36C5zwuSPoVfeMZ1RK_jo82Pcfg9X8",
+        "ttl_s": 120,
+        "actor": "external",
+        "kid": "tauric.diana.613",
+        "scope": [
+          "core/route-2"
+        ]
+      },
+      "sig": "eyJhbGciOiJIUzI1NiIsImtpZCI6InRhdXJpYy5kaWFuYS42MTMiLCJ0eXAiOiJKT1NFIn0..IfvUwn5nInGumM3m_qUkDJ3lJdyvVH2TGcvOIEw4LA4",
+      "request_canonical": "{\"actor\":\"external\",\"kid\":\"tauric.diana.613\",\"nonce\":\"vpgD8LCnYIkTK36C5zwuSPoVfeMZ1RK_jo82Pcfg9X8\",\"request_id\":\"01J9-PROBE-2\",\"schema_ref\":\"cpfg://v2/route_resolve_ping\",\"scope\":[\"core/route-2\"],\"semver\":\"2.1.0\",\"ts_utc\":\"2025-08-11T08:50:37Z\",\"ttl_s\":120}"
+    },
+    {
+      "label": "probe_3_gating_matrix",
+      "fn": "gating_matrix",
+      "args": {
+        "route": "core/route-2"
+      },
+      "request": {
+        "request_id": "01J9-PROBE-3",
+        "ts_utc": "2025-08-11T08:50:37Z",
+        "semver": "2.1.0",
+        "schema_ref": "cpfg://v2/gating_matrix",
+        "nonce": "fntTcevzUzEJzNIQ2WCpxU5NM1BOcUUi-y7g6yoJkfk",
+        "ttl_s": 180,
+        "actor": "external",
+        "kid": "tauric.diana.613",
+        "scope": [
+          "core/route-2"
+        ]
+      },
+      "sig": "eyJhbGciOiJIUzI1NiIsImtpZCI6InRhdXJpYy5kaWFuYS42MTMiLCJ0eXAiOiJKT1NFIn0..XXOku2R5Kf2hpJCJ5n7iAckTYAP1uDKJRUoAySJ9cSw",
+      "request_canonical": "{\"actor\":\"external\",\"kid\":\"tauric.diana.613\",\"nonce\":\"fntTcevzUzEJzNIQ2WCpxU5NM1BOcUUi-y7g6yoJkfk\",\"request_id\":\"01J9-PROBE-3\",\"schema_ref\":\"cpfg://v2/gating_matrix\",\"scope\":[\"core/route-2\"],\"semver\":\"2.1.0\",\"ts_utc\":\"2025-08-11T08:50:37Z\",\"ttl_s\":180}"
+    },
+    {
+      "label": "namespace_synthesize_status",
+      "fn": "namespace_synthesize_status",
+      "args": {
+        "principal": "tauric.diana.613",
+        "claimed_pua": "U+10D613"
+      },
+      "request": {
+        "request_id": "01J9-NS-01",
+        "ts_utc": "2025-08-11T08:50:37Z",
+        "semver": "2.1.0",
+        "schema_ref": "cpfg://v2/namespace_synthesize_status",
+        "nonce": "HkhkaAXWEbF07Igmp-N93LxIPzemC46phxw-O3r3Y80",
+        "ttl_s": 180,
+        "actor": "external",
+        "kid": "tauric.diana.613",
+        "scope": [
+          "core/route-2",
+          "namespace.read"
+        ]
+      },
+      "sig": "eyJhbGciOiJIUzI1NiIsImtpZCI6InRhdXJpYy5kaWFuYS42MTMiLCJ0eXAiOiJKT1NFIn0..-Rmie4vRh-GpR7QYpzRXveFj41FUb9NsY0nPfEBNxcw",
+      "request_canonical": "{\"actor\":\"external\",\"kid\":\"tauric.diana.613\",\"nonce\":\"HkhkaAXWEbF07Igmp-N93LxIPzemC46phxw-O3r3Y80\",\"request_id\":\"01J9-NS-01\",\"schema_ref\":\"cpfg://v2/namespace_synthesize_status\",\"scope\":[\"core/route-2\",\"namespace.read\"],\"semver\":\"2.1.0\",\"ts_utc\":\"2025-08-11T08:50:37Z\",\"ttl_s\":180}"
+    },
+    {
+      "label": "badge_issue_status",
+      "fn": "badge_issue_status",
+      "args": {
+        "principal": "tauric.diana.613",
+        "claimed_pua": "U+10D613"
+      },
+      "request": {
+        "request_id": "01J9-BDG-01",
+        "ts_utc": "2025-08-11T08:50:37Z",
+        "semver": "2.1.0",
+        "schema_ref": "cpfg://v2/badge_issue_status",
+        "nonce": "EmrE6JRBn-4OuzeZZTaTQtZAadAko8p2H_t5zf2I2Zg",
+        "ttl_s": 180,
+        "actor": "external",
+        "kid": "tauric.diana.613",
+        "scope": [
+          "core/route-2",
+          "badge.read"
+        ]
+      },
+      "sig": "eyJhbGciOiJIUzI1NiIsImtpZCI6InRhdXJpYy5kaWFuYS42MTMiLCJ0eXAiOiJKT1NFIn0..j41JIWNAVriPIQfKNcHkrJo3Fpl3zLX7eTVRYyKnXEE",
+      "request_canonical": "{\"actor\":\"external\",\"kid\":\"tauric.diana.613\",\"nonce\":\"EmrE6JRBn-4OuzeZZTaTQtZAadAko8p2H_t5zf2I2Zg\",\"request_id\":\"01J9-BDG-01\",\"schema_ref\":\"cpfg://v2/badge_issue_status\",\"scope\":[\"core/route-2\",\"badge.read\"],\"semver\":\"2.1.0\",\"ts_utc\":\"2025-08-11T08:50:37Z\",\"ttl_s\":180}"
+    }
+  ]
+}

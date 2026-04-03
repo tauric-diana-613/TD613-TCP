@@ -1,0 +1,49 @@
+{
+  "renderer": "TD613 Safe Harbor registry bridge",
+  "principal": "tauric.diana.613",
+  "claimed_pua": "U+10D613",
+  "badge_id": "bdg_glyph_U10D613",
+  "canonical_phrase": "Tauric Diana \u2014 Crimean heritage custodianship",
+  "display_phrase": "Covenant: Blood Rite 613",
+  "binding_fragment": "#9B07D8B",
+  "sac": "SAC[X6ZNK5NO51]",
+  "current_public_mode": "LEGACY-COMPAT",
+  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0",
+  "historical_example": {
+    "label": "historical",
+    "payload_index": 5,
+    "attestation_date": "2025-10-17",
+    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0"
+  },
+  "safe_harbor_packet": {
+    "schema_file": "../safe_harbor/packet.schema.json",
+    "canonicalizer_file": "../safe_harbor/canonicalize.js",
+    "hash_file": "../safe_harbor/hash.js",
+    "signature_file": "../safe_harbor/signature.js",
+    "lifecycle_file": "../safe_harbor/lifecycle.js",
+    "primary_chamber": "../index.html",
+    "legacy_lab_bridge": "../11_TD613_PUA_Badge_Provenance_Attestation_Lab.html"
+  },
+  "signature_distinction": {
+    "cadence_signature": "stylometric credential",
+    "cryptographic_signature": "detached seal over canonical_json(packet)",
+    "rule": "Badge generator consumes canon and packet metadata but never invents sig."
+  },
+  "public_boundary": {
+    "may_show": [
+      "binding_fragment",
+      "sac",
+      "payload",
+      "date",
+      "receipt_state_summary",
+      "packet_verified_status"
+    ],
+    "must_hide": [
+      "badge_id",
+      "sig",
+      "route_diagnostics",
+      "packet_hash_sha256"
+    ]
+  },
+  "updated_at": "2026-04-03T00:00:00Z"
+}

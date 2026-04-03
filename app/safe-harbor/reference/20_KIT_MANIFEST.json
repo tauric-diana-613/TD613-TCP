@@ -1,0 +1,50 @@
+{
+  "kit": {
+    "name": "TD613 Safe Harbor",
+    "subtitle": "Canonical packet intake engine with compact compat footer and detached signature wrappers.",
+    "version": "0.4.0"
+  },
+  "canon": {
+    "principal": "tauric.diana.613",
+    "claimed_pua": "U+10D613",
+    "badge_id": "bdg_glyph_U10D613",
+    "binding_fragment": "#9B07D8B",
+    "sac": "SAC[X6ZNK5NO51]",
+    "current_public_mode": "LEGACY-COMPAT",
+    "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0"
+  },
+  "historical_example": {
+    "label": "historical",
+    "payload_index": 5,
+    "attestation_date": "2025-10-17",
+    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0"
+  },
+  "safe_harbor_runtime": {
+    "primary_chamber": "../index.html",
+    "legacy_lab_bridge": "../11_TD613_PUA_Badge_Provenance_Attestation_Lab.html",
+    "packet_schema": "../safe_harbor/packet.schema.json",
+    "canonicalizer": "../safe_harbor/canonicalize.js",
+    "hash": "../safe_harbor/hash.js",
+    "signature": "../safe_harbor/signature.js",
+    "lifecycle": "../safe_harbor/lifecycle.js"
+  },
+  "reference_surfaces": {
+    "trust_profile": "td613_trust_profile.json",
+    "manifest": "td613_manifest.json",
+    "verify_page": "TD613_verify.html",
+    "offline_capsule": "TD613_offline_capsule.html",
+    "registry": "12_TD613_PUA_Badge_Provenance_Attestation_Registry.json",
+    "commands": "../probes/06_TD613_PUA_Badge_Provenance_Attestation_Commands.json"
+  },
+  "signature_distinction": {
+    "cadence_signature": "stylometric credential from cadence intake",
+    "cryptographic_signature": "detached seal over canonical_json(packet)",
+    "rule": "Badge generator never invents sig."
+  },
+  "notes": [
+    "Public footer default remains LEGACY-COMPAT.",
+    "Historical payload 5 / 2025-10-17 remains labeled historical.",
+    "Packet hash is stable over canonical JSON before detached signature attachment."
+  ],
+  "updated_at": "2026-04-03T00:00:00Z"
+}

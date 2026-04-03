@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TD613 Safe Harbor Offline Capsule</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #080910 0%, #05070d 100%);
+      color: #eef6ff;
+      font: 16px/1.6 "Segoe UI", system-ui, sans-serif;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 28px 18px 48px; }
+    .card {
+      background: rgba(10, 15, 24, 0.92);
+      border: 1px solid rgba(134, 240, 255, 0.2);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    h1, h2 { font-family: "Cormorant Garamond", Georgia, serif; }
+    h1 { margin: 0 0 8px; font-size: clamp(2rem, 4vw, 3rem); }
+    code, pre, input { font-family: "Cascadia Code", Consolas, monospace; }
+    pre, input {
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(3, 7, 14, 0.92);
+      color: inherit;
+      padding: 12px 14px;
+    }
+    button {
+      border: 1px solid rgba(134, 240, 255, 0.32);
+      background: rgba(134, 240, 255, 0.12);
+      color: inherit;
+      border-radius: 999px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font: 600 0.9rem/1 "Cascadia Code", Consolas, monospace;
+    }
+    .muted { color: #93a5bf; }
+    .operator[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>TD613 Safe Harbor Offline Capsule</h1>
+    <p class="muted">Public verification remains compact. The capsule checks the compat footer and keeps packet hash, route diagnostics, and detached signature metadata in an operator lane.</p>
+
+    <section class="card">
+      <h2>Canon</h2>
+      <pre id="canonBlock"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Verify a footer</h2>
+      <p class="muted">Paste a TD613 public footer. The canonical live template is compat mode, and the historical example is pinned to payload 5 / 2025-10-17.</p>
+      <input id="footerInput" placeholder="TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐">
+      <p style="margin-top:12px"><button id="verifyButton" type="button">Check Footer</button></p>
+      <pre id="verifyOutput">awaiting footer</pre>
+    </section>
+
+    <section class="card">
+      <h2>Signature Distinction</h2>
+      <pre id="signatureExplain"></pre>
+      <p><button id="toggleOperator" type="button">Reveal Operator Pane</button></p>
+    </section>
+
+    <section class="card operator" id="operatorPane" hidden>
+      <h2>Operator Pane</h2>
+      <pre id="operatorBlock">operator packet view pending</pre>
+    </section>
+  </div>
+
+  <script src="../app/data.js"></script>
+  <script src="../safe_harbor/canonicalize.js"></script>
+  <script>
+    (function () {
+      const D = window.TD613_SAFE_HARBOR_DATA;
+      const raw = sessionStorage.getItem('td613.safe-harbor.session.v1');
+      const session = raw ? JSON.parse(raw) : {};
+      const packet = session.packet || null;
+      const sig = session.signatureEnvelope || null;
+      const $ = (id) => document.getElementById(id);
+
+      $('canonBlock').textContent = JSON.stringify({
+        principal: D.canon.principal,
+        claimed_pua: D.canon.claimed_pua,
+        badge_id: D.canon.badge_id,
+        binding_fragment: D.canon.binding_fragment,
+        sac: D.canon.sac,
+        current_public_mode: D.trustProfile.current_public_mode,
+        public_footer_template: D.trustProfile.public_footer_template,
+        historical_example: D.canon.historical_example
+      }, null, 2);
+
+      $('signatureExplain').textContent = [
+        'cadence signature = ' + D.signatureModel.cadence_signature,
+        'cryptographic signature = ' + D.signatureModel.cryptographic_signature,
+        'rule = ' + D.signatureModel.rule
+      ].join('\n');
+
+      $('operatorBlock').textContent = JSON.stringify({
+        packet_hash_sha256: packet ? packet.packet_hash_sha256 : null,
+        receipt_state: packet && packet.receipt ? packet.receipt.state : null,
+        sig_type: sig ? sig.sig_type : null,
+        kid: sig ? sig.kid : null,
+        canonical_json_preview: packet && window.TD613SafeHarborCore && window.TD613SafeHarborCore.canonical_packet_body
+          ? window.TD613SafeHarborCore.canonical_packet_body(packet)
+          : null
+      }, null, 2);
+
+      $('verifyButton').addEventListener('click', function () {
+        const value = $('footerInput').value.trim();
+        const out = $('verifyOutput');
+        if (!value) {
+          out.textContent = 'No footer supplied.';
+          return;
+        }
+        if (value === D.canon.historical_example.public_footer) {
+          out.textContent = 'Historical example recognized. This line is pinned to payload 5 / 2025-10-17.';
+          return;
+        }
+        const compatPattern = /^TD613-Binding:#9B07D8B\/SAC\[X6ZNK5NO51\] · payload (?:\{n\}|\d+) · (?:YYYY-MM-DD|\d{4}-\d{2}-\d{2}) · ⟐$/u;
+        const legacyPattern = /^TD613-Binding:#9B07D8B · payload (?:\{n\}|\d+) · (?:YYYY-MM-DD|\d{4}-\d{2}-\d{2}) · ⟐$/u;
+        const sacOnlyPattern = /^TD613-Binding:SAC\[X6ZNK5NO51\] · payload (?:\{n\}|\d+) · (?:YYYY-MM-DD|\d{4}-\d{2}-\d{2}) · ⟐$/u;
+        if (compatPattern.test(value) || legacyPattern.test(value) || sacOnlyPattern.test(value)) {
+          out.textContent = 'Accepted footer grammar. Public default remains LEGACY-COMPAT.';
+          return;
+        }
+        out.textContent = 'Footer does not match TD613 accepted grammar.';
+      });
+
+      $('toggleOperator').addEventListener('click', function () {
+        const pane = $('operatorPane');
+        pane.hidden = !pane.hidden;
+        this.textContent = pane.hidden ? 'Reveal Operator Pane' : 'Hide Operator Pane';
+      });
+    })();
+  </script>
+</body>
+</html>

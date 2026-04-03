@@ -1,0 +1,435 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TD613SafeHarborCanonicalPacket",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "packet_id",
+    "packet_hash_sha256",
+    "receipt",
+    "canon",
+    "intake",
+    "cadence_credentials",
+    "provenance",
+    "signature",
+    "rules"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "td613.safe-harbor.packet/v2"
+    },
+    "packet_id": {
+      "type": "string"
+    },
+    "packet_hash_sha256": {
+      "type": "string"
+    },
+    "packet_checksum": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "receipt": {
+      "type": "object",
+      "required": [
+        "receipt_id",
+        "minted_at",
+        "state"
+      ],
+      "properties": {
+        "receipt_id": {
+          "type": "string"
+        },
+        "minted_at": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "staged",
+            "sealed"
+          ]
+        },
+        "state_summary": {
+          "type": "string"
+        },
+        "badge_number": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "canon": {
+      "type": "object",
+      "required": [
+        "principal",
+        "badge_id",
+        "claimed_pua",
+        "binding_fragment",
+        "sac",
+        "public_mode",
+        "public_footer",
+        "historical_example"
+      ],
+      "properties": {
+        "principal": {
+          "const": "tauric.diana.613"
+        },
+        "badge_id": {
+          "const": "bdg_glyph_U10D613"
+        },
+        "claimed_pua": {
+          "const": "U+10D613"
+        },
+        "canonical_phrase": {
+          "type": "string"
+        },
+        "display_phrase": {
+          "type": "string"
+        },
+        "binding_fragment": {
+          "const": "#9B07D8B"
+        },
+        "sac": {
+          "const": "SAC[X6ZNK5NO51]"
+        },
+        "public_mode": {
+          "const": "LEGACY-COMPAT"
+        },
+        "payload_index": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "attestation_date": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "public_footer": {
+          "type": "string"
+        },
+        "historical_example": {
+          "type": "object",
+          "required": [
+            "label",
+            "payload_index",
+            "attestation_date",
+            "public_footer"
+          ],
+          "properties": {
+            "label": {
+              "const": "historical"
+            },
+            "payload_index": {
+              "const": 5
+            },
+            "attestation_date": {
+              "const": "2025-10-17"
+            },
+            "public_footer": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "intake": {
+      "type": "object",
+      "required": [
+        "request_id",
+        "ts_utc",
+        "sealed_at",
+        "nonce",
+        "helper_filename_safe",
+        "source_class",
+        "witness_channel",
+        "hook_status"
+      ],
+      "properties": {
+        "request_id": {
+          "type": "string"
+        },
+        "ts_utc": {
+          "type": "string"
+        },
+        "sealed_at": {
+          "type": "string"
+        },
+        "nonce": {
+          "type": "string"
+        },
+        "helper_filename_safe": {
+          "type": "string"
+        },
+        "operator_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_class": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "witness_channel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "operator_notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "hook_status": {
+          "type": "object",
+          "required": [
+            "tcp",
+            "eo",
+            "signature"
+          ],
+          "properties": {
+            "tcp": {
+              "type": "string"
+            },
+            "eo": {
+              "type": "string"
+            },
+            "signature": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "required": [
+        "future_self",
+        "past_self",
+        "higher_self"
+      ],
+      "properties": {
+        "future_self": {
+          "$ref": "#/$defs/ingressSegment"
+        },
+        "past_self": {
+          "$ref": "#/$defs/ingressSegment"
+        },
+        "higher_self": {
+          "$ref": "#/$defs/ingressSegment"
+        }
+      }
+    },
+    "cadence_credentials": {
+      "type": "object",
+      "required": [
+        "credential_type",
+        "cadence_signature",
+        "segment_cadence_signatures",
+        "triad_resonance",
+        "cross_lane_stability",
+        "cross_lane_spread",
+        "distinction_note"
+      ],
+      "properties": {
+        "credential_type": {
+          "const": "stylometric-cadence"
+        },
+        "cadence_signature": {
+          "type": "object"
+        },
+        "segment_cadence_signatures": {
+          "type": "object"
+        },
+        "triad_resonance": {
+          "type": "number"
+        },
+        "cross_lane_stability": {
+          "type": "number"
+        },
+        "cross_lane_spread": {
+          "type": "number"
+        },
+        "distinction_note": {
+          "type": "string"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "route_state",
+        "harbor_status",
+        "recommended_harbor",
+        "route_source",
+        "membrane_note",
+        "export_ready",
+        "metrics"
+      ],
+      "properties": {
+        "route_state": {
+          "type": "string"
+        },
+        "harbor_status": {
+          "type": "string"
+        },
+        "recommended_harbor": {
+          "type": "string"
+        },
+        "route_source": {
+          "type": "string"
+        },
+        "membrane_note": {
+          "type": "string"
+        },
+        "export_ready": {
+          "type": "boolean"
+        },
+        "metrics": {
+          "type": "object"
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "required": [
+        "status",
+        "sig",
+        "sig_type",
+        "kid",
+        "attachment_mode",
+        "supported_lanes",
+        "packet_hash_sha256",
+        "canonical_json_spec",
+        "explanation"
+      ],
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "sig": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sig_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "kid": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "attachment_mode": {
+          "const": "wrapper-only"
+        },
+        "supported_lanes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "packet_hash_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "canonical_json_spec": {
+          "type": "string"
+        },
+        "explanation": {
+          "type": "string"
+        }
+      }
+    },
+    "rules": {
+      "type": "object",
+      "required": [
+        "public_mode_default",
+        "public_footer_template",
+        "historical_example",
+        "live_template",
+        "public_boundary",
+        "operator_boundary",
+        "signature_rule"
+      ],
+      "properties": {
+        "public_mode_default": {
+          "const": "LEGACY-COMPAT"
+        },
+        "public_footer_template": {
+          "type": "string"
+        },
+        "historical_example": {
+          "type": "object"
+        },
+        "live_template": {
+          "type": "object"
+        },
+        "public_boundary": {
+          "type": "object"
+        },
+        "operator_boundary": {
+          "type": "object"
+        },
+        "signature_rule": {
+          "type": "string"
+        }
+      }
+    },
+    "analysis": {
+      "type": "object"
+    },
+    "bridge": {
+      "type": "object"
+    },
+    "issuance": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "ingressSegment": {
+      "type": "object",
+      "required": [
+        "prompt_label",
+        "response_checksum",
+        "char_count",
+        "word_count",
+        "sealed_text_ref"
+      ],
+      "properties": {
+        "prompt_label": {
+          "type": "string"
+        },
+        "response_checksum": {
+          "type": "string"
+        },
+        "char_count": {
+          "type": "integer"
+        },
+        "word_count": {
+          "type": "integer"
+        },
+        "sealed_text_ref": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

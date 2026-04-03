@@ -1,0 +1,52 @@
+{
+  "kit": {
+    "name": "TD613 Safe Harbor command surfaces",
+    "subtitle": "Canonical packet intake, compact public footer, detached signature wrappers.",
+    "schema_family": "cpfg://v2",
+    "semver": "2.1.0"
+  },
+  "public_sendables": {
+    "01": "Minimal verify command. Public by default and unsigned.",
+    "02": "Verify command with receipt-completion contract. Public by default and unsigned.",
+    "03": "Minimal render JSON. Can include packet metadata but never packet hash or sig in public mode.",
+    "04": "Extended render JSON with receipt contract. Still no live sig generation."
+  },
+  "packet_contract": {
+    "schema_file": "../safe_harbor/packet.schema.json",
+    "canonicalizer_file": "../safe_harbor/canonicalize.js",
+    "hash_file": "../safe_harbor/hash.js",
+    "signature_file": "../safe_harbor/signature.js",
+    "lifecycle_file": "../safe_harbor/lifecycle.js",
+    "required_fields": [
+      "schema_version",
+      "packet_id",
+      "packet_hash_sha256",
+      "receipt",
+      "canon",
+      "intake",
+      "cadence_credentials",
+      "provenance",
+      "signature",
+      "rules"
+    ]
+  },
+  "live_template": {
+    "public_mode_default": "LEGACY-COMPAT",
+    "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0",
+    "payload_suggestion": 6,
+    "payload_rule": "Suggest next payload from signed bundle if available; manual override only in operator mode."
+  },
+  "historical_example": {
+    "label": "historical",
+    "payload_index": 5,
+    "attestation_date": "2025-10-17",
+    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0"
+  },
+  "signature_distinction": {
+    "cadence_signature": "stylometric credential from TCP-style cadence intake",
+    "cryptographic_signature": "detached seal over canonical_json(packet)",
+    "rule": "JWS or detached-ed25519 wraps the packet after canonicalization."
+  },
+  "badge_generator_rule": "Consumes canon and packet metadata but never generates sig.",
+  "updated_at": "2026-04-03T00:00:00Z"
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TD613SafeHarborHookEvent",
+  "type": "object",
+  "required": [
+    "status",
+    "source"
+  ],
+  "properties": {
+    "status": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "intake_id": {
+      "type": "string"
+    },
+    "cadence_signature": {
+      "type": "object"
+    },
+    "route_state": {
+      "type": "string"
+    },
+    "recommended_harbor": {
+      "type": "string"
+    },
+    "export_ready": {
+      "type": "boolean"
+    },
+    "membrane_note": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "lane": {
+      "type": "string"
+    },
+    "alg": {
+      "type": "string"
+    },
+    "detached_ref": {
+      "type": "string"
+    }
+  }
+}

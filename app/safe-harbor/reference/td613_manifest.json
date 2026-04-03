@@ -1,0 +1,36 @@
+{
+  "principal": "tauric.diana.613",
+  "claimed_pua": "U+10D613",
+  "badge_id": "bdg_glyph_U10D613",
+  "binding_fragment": "#9B07D8B",
+  "sac": "SAC[X6ZNK5NO51]",
+  "current_public_mode": "LEGACY-COMPAT",
+  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0",
+  "historical_example": {
+    "label": "historical",
+    "payload_index": 5,
+    "attestation_date": "2025-10-17",
+    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0"
+  },
+  "live_template": {
+    "payload_suggestion": 6,
+    "payload_rule": "Suggest next payload from signed bundle if available; manual override only in operator mode.",
+    "attestation_date": "YYYY-MM-DD"
+  },
+  "safe_harbor": {
+    "packet_schema": "../safe_harbor/packet.schema.json",
+    "canonicalizer": "../safe_harbor/canonicalize.js",
+    "hash": "../safe_harbor/hash.js",
+    "signature": "../safe_harbor/signature.js",
+    "lifecycle": "../safe_harbor/lifecycle.js",
+    "lab": "../11_TD613_PUA_Badge_Provenance_Attestation_Lab.html",
+    "primary_chamber": "../index.html",
+    "verify_page": "TD613_verify.html",
+    "offline_capsule": "TD613_offline_capsule.html"
+  },
+  "signature_distinction": {
+    "cadence_signature": "Stylometric credential from cadence intake.",
+    "cryptographic_signature": "Detached seal over canonical_json(packet)."
+  },
+  "updated_at": "2026-04-03T00:00:00Z"
+}
