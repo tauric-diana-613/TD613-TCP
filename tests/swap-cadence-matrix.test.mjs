@@ -15,7 +15,7 @@ const matrix = buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {
   strength: 0.82
 });
 
-assert.equal(matrix.fullMatrix.length, 72, 'full swap matrix should include the 72 ordered diagnostics pairings');
+assert.equal(matrix.fullMatrix.length, 76, 'full swap matrix should include the 76 ordered diagnostics pairings');
 assert.equal(matrix.flagshipReports.length, 8, 'flagship matrix should include all 8 required ordered pairs');
 
 for (const report of matrix.flagshipReports) {

@@ -285,11 +285,10 @@
     },
     "planSummary": {
       "transferMode": "rebalance",
-      "structuralOperationsSelected": [],
-      "lexicalRegisterOperationsSelected": [
-        "contraction",
-        "phrase-texture"
+      "structuralOperationsSelected": [
+        "clause-texture"
       ],
+      "lexicalRegisterOperationsSelected": [],
       "connectorStrategy": "additive",
       "contractionStrategy": "hold",
       "relationInventory": {
@@ -327,17 +326,16 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 233.622,
+        "score": 220.272,
         "passesApplied": [
-          "contraction",
-          "phrase-texture"
+          "baseline-floor",
+          "clause-texture"
         ],
         "rescuePasses": [],
         "changedDimensions": [
-          "sentence-mean",
           "contraction-posture",
           "connector-stance",
-          "fragment-posture"
+          "abstraction-posture"
         ],
         "qualityGatePassed": true,
         "notes": []
@@ -345,17 +343,16 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 233.622,
+          "score": 220.272,
           "passesApplied": [
-            "contraction",
-            "phrase-texture"
+            "baseline-floor",
+            "clause-texture"
           ],
           "rescuePasses": [],
           "changedDimensions": [
-            "sentence-mean",
             "contraction-posture",
             "connector-stance",
-            "fragment-posture"
+            "abstraction-posture"
           ],
           "qualityGatePassed": true,
           "notes": []
@@ -435,14 +432,13 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 0.912,
-        "outputDonorDistance": 1.806,
+        "outputDonorDistance": 0.912,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 0.841
+        "sourceOutputLexicalOverlap": 1
       },
       "rescuePasses": [
-        "partial-rescue",
-        "semantic-final-rejection"
+        "final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false
@@ -824,19 +820,16 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 0.912,
-        "outputDonorDistance": 1.806,
+        "outputDonorDistance": 0.912,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 0.841
+        "sourceOutputLexicalOverlap": 1
       },
       "realizationNotes": [
-        "4 lexical family swaps landed.",
-        "Register shift surfaced through fragment-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "partial-rescue",
-        "semantic-final-rejection"
+        "final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false
@@ -855,11 +848,10 @@
       "resumptive:1",
       "temporal:1"
     ],
-    "structuralOperations": [],
-    "lexicalOperations": [
-      "contraction",
-      "phrase-texture"
+    "structuralOperations": [
+      "clause-texture"
     ],
+    "lexicalOperations": [],
     "connectorStrategy": "additive",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,

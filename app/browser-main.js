@@ -48,8 +48,8 @@
       .map((sample) => Object.freeze({ ...sample }))
   );
   const STARTER_DUEL_SAMPLE_IDS = Object.freeze({
-    A: 'performance-review-professional-message',
-    B: 'performance-review-rushed-mobile'
+    A: 'building-access-professional-message',
+    B: 'building-access-rushed-mobile'
   });
   const DECK_RANDOMIZER_TOP_COUNT = 6;
   const DECK_RANDOMIZER_FIELD_POOL_COUNT = 18;
@@ -2708,43 +2708,79 @@
     const donorProgress = transferDonorProgress(transfer);
     const changedDimensions = [...new Set(transfer.changedDimensions || [])];
     const nonPunctuationDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
+    const surfaceDimensions = nonPunctuationDimensions.filter((dimension) => [
+      'abbreviation-posture',
+      'orthography-posture',
+      'fragment-posture',
+      'conversation-posture',
+      'surface-marker-posture',
+      'contraction-posture'
+    ].includes(dimension));
+    const structuralDimensions = nonPunctuationDimensions.filter((dimension) => [
+      'sentence-mean',
+      'sentence-count',
+      'sentence-spread',
+      'connector-stance',
+      'directness',
+      'abstraction-posture',
+      'lexical-register'
+    ].includes(dimension));
     const lexicalShiftCount = Math.min((transfer.lexemeSwaps || []).length, 3);
     let score = 0;
 
-    score += Math.min(42, Math.round((donorProgress.donorImprovementRatio || 0) * 160));
-    score += Math.min(20, Math.round(Math.max(0, donorProgress.donorImprovement || 0) * 40));
+    score += Math.min(30, Math.round((donorProgress.donorImprovementRatio || 0) * 92));
+    score += Math.min(16, Math.round(Math.max(0, donorProgress.donorImprovement || 0) * 7));
 
     if (hasEffectiveTextShift && transfer.visibleShift) {
-      score += 6;
+      score += 4;
     }
     if (transfer.visibleShift && donorProgress.donorImprovementRatio >= 0.1) {
-      score += 6;
+      score += 4;
     }
     if (transfer.nonTrivialShift && donorProgress.donorImprovementRatio >= 0.12) {
-      score += 8;
+      score += 5;
     }
 
-    score += Math.min(nonPunctuationDimensions.length, 3) * 4;
-    score += lexicalShiftCount * 4;
+    score += Math.min(structuralDimensions.length, 4) * 4;
+    score += Math.min(surfaceDimensions.length, 4) * 5;
+    score += lexicalShiftCount * 3;
 
     if (transfer.transferClass === 'structural') {
-      score += 8;
-    } else if (transfer.borrowedShellOutcome === 'partial' || transfer.transferClass === 'weak') {
       score += 6;
+    } else if (transfer.borrowedShellOutcome === 'partial' || transfer.transferClass === 'weak') {
+      score += 3;
     }
 
     if (transfer.realizationTier === 'lexical-structural') {
-      score += 6;
-    } else if (transfer.realizationTier === 'structural') {
       score += 4;
+    } else if (transfer.realizationTier === 'structural') {
+      score += 2;
     }
 
     if (!nonPunctuationDimensions.length && lexicalShiftCount === 0) {
       score = Math.min(score, changedDimensions.includes('punctuation-shape') ? 8 : 4);
     }
 
+    if ((donorProgress.donorImprovementRatio || 0) < 0.14) {
+      score = Math.min(score, 18);
+    }
+
+    if (
+      (donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.9 &&
+      surfaceDimensions.length < 3 &&
+      lexicalShiftCount === 0
+    ) {
+      score = Math.min(score, 24);
+    } else if (
+      (donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.88 &&
+      surfaceDimensions.length < 2 &&
+      structuralDimensions.length < 3
+    ) {
+      score = Math.min(score, 32);
+    }
+
     if ((donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.82) {
-      score -= Math.round(((donorProgress.sourceOutputLexicalOverlap ?? 1) - 0.82) * 60);
+      score -= Math.round(((donorProgress.sourceOutputLexicalOverlap ?? 1) - 0.82) * 72);
     }
 
     if ((semanticAudit.propositionCoverage ?? 1) < 0.9) {
@@ -2765,6 +2801,11 @@
     if ((transfer.semanticRisk ?? 0) >= 0.4) {
       score -= 10;
     }
+
+    const overlapCap = Math.round(Math.max(0, 1 - (donorProgress.sourceOutputLexicalOverlap ?? 1)) * 120) +
+      Math.min(12, surfaceDimensions.length * 3) +
+      Math.min(10, structuralDimensions.length * 2);
+    score = Math.min(score, Math.max(8, overlapCap));
 
     return Math.max(0, Math.min(100, Math.round(score)));
   }

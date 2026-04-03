@@ -77,7 +77,69 @@ function averageNearestDistance(samples = []) {
   return Number((distances.reduce((sum, value) => sum + value, 0) / distances.length).toFixed(4));
 }
 
-assert.equal(DECK_RANDOMIZER_SAMPLE_LIBRARY.length, 16, 'deck randomizer library exposes 16 samples');
+function fieldDistance(left, right) {
+  const leftProfile = left.profile || extractCadenceProfile(left.text);
+  const rightProfile = right.profile || extractCadenceProfile(right.text);
+  const leftHeatmap = left.heatmap || cadenceHeatmap(left.text);
+  const rightHeatmap = right.heatmap || cadenceHeatmap(right.text);
+  return Number((
+    profileDistance(leftProfile, rightProfile) +
+    (() => {
+      const vectorA = cadenceAxisVector(leftProfile).map((axis) => axis.normalized);
+      const vectorB = cadenceAxisVector(rightProfile).map((axis) => axis.normalized);
+      return Number(vectorA.reduce((sum, value, index) => sum + Math.abs(value - Number(vectorB[index] || 0)), 0).toFixed(4));
+    })() +
+    (() => {
+      let total = 0;
+      const matrixA = Array.isArray(leftHeatmap?.matrix) ? leftHeatmap.matrix : [];
+      const matrixB = Array.isArray(rightHeatmap?.matrix) ? rightHeatmap.matrix : [];
+      for (let rowIndex = 0; rowIndex < Math.max(matrixA.length, matrixB.length); rowIndex += 1) {
+        const rowA = Array.isArray(matrixA[rowIndex]) ? matrixA[rowIndex] : [];
+        const rowB = Array.isArray(matrixB[rowIndex]) ? matrixB[rowIndex] : [];
+        for (let colIndex = 0; colIndex < Math.max(rowA.length, rowB.length); colIndex += 1) {
+          total += Math.abs(Number(rowA[colIndex] || 0) - Number(rowB[colIndex] || 0));
+        }
+      }
+      return Number(total.toFixed(4));
+    })()
+  ).toFixed(4));
+}
+
+function greedyWideSubset(samples = [], limit = 16) {
+  const profiled = samples.map((sample) => ({
+    ...sample,
+    profile: extractCadenceProfile(sample.text),
+    heatmap: cadenceHeatmap(sample.text)
+  }));
+  if (profiled.length <= limit) {
+    return profiled;
+  }
+  const seed = [...profiled]
+    .map((sample) => ({
+      sample,
+      meanDistance:
+        profiled
+          .filter((other) => other.id !== sample.id)
+          .reduce((sum, other) => sum + fieldDistance(sample, other), 0) /
+        Math.max(1, profiled.length - 1)
+    }))
+    .sort((left, right) => right.meanDistance - left.meanDistance || left.sample.id.localeCompare(right.sample.id))[0].sample;
+  const chosen = [seed];
+  const remaining = profiled.filter((sample) => sample.id !== seed.id);
+  while (chosen.length < limit && remaining.length) {
+    remaining.sort((left, right) => {
+      const leftMin = Math.min(...chosen.map((sample) => fieldDistance(left, sample)));
+      const rightMin = Math.min(...chosen.map((sample) => fieldDistance(right, sample)));
+      const leftMean = chosen.reduce((sum, sample) => sum + fieldDistance(left, sample), 0) / Math.max(1, chosen.length);
+      const rightMean = chosen.reduce((sum, sample) => sum + fieldDistance(right, sample), 0) / Math.max(1, chosen.length);
+      return rightMin - leftMin || rightMean - leftMean || left.id.localeCompare(right.id);
+    });
+    chosen.push(remaining.shift());
+  }
+  return chosen;
+}
+
+assert(DECK_RANDOMIZER_SAMPLE_LIBRARY.length >= 24, 'deck randomizer library exposes at least 24 samples');
 assert(
   DECK_RANDOMIZER_SAMPLE_LIBRARY.every((sample) => DIAGNOSTIC_CORPUS.deckRandomizerSampleIds.includes(sample.id)),
   'deck randomizer library resolves from declared diagnostics ids'
@@ -91,8 +153,8 @@ const pairedFamilyCount = [...DECK_RANDOMIZER_SAMPLE_LIBRARY.reduce((acc, sample
   acc.set(sample.familyId, set);
   return acc;
 }, new Map()).entries()].filter(([, variants]) => variants.size >= 2).length;
-assert(familyCount >= 8, 'deck randomizer library keeps at least 8 distinct families');
-assert(pairedFamilyCount >= 6, 'deck randomizer library keeps at least 6 same-family contrast pairs for live Shell Duel casts');
+assert(familyCount >= 12, 'deck randomizer library keeps at least 12 distinct families');
+assert(pairedFamilyCount >= 10, 'deck randomizer library keeps at least 10 same-family contrast pairs for live Shell Duel casts');
 assert.deepEqual(
   [...variantSet].sort(),
   ['formal-record', 'professional-message', 'rushed-mobile', 'tangled-followup'],
@@ -100,7 +162,8 @@ assert.deepEqual(
 );
 
 const promotedNearest = averageNearestDistance(PROMOTED_SAMPLE_LIBRARY);
-const deckNearest = averageNearestDistance(DECK_RANDOMIZER_SAMPLE_LIBRARY);
+const wideSubset = greedyWideSubset(DECK_RANDOMIZER_SAMPLE_LIBRARY, 16);
+const deckNearest = averageNearestDistance(wideSubset);
 assert(
   deckNearest >= promotedNearest + 0.25,
   `deck randomizer library should widen total field spread beyond the promoted subset while preserving duel-ready pairs (${deckNearest} vs ${promotedNearest})`

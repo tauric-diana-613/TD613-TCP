@@ -229,14 +229,9 @@
     "planSummary": {
       "transferMode": "expand",
       "structuralOperationsSelected": [
-        "baseline-merge",
-        "sentence-structure",
-        "clause-join-split"
+        "clause-texture"
       ],
-      "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "connector-stance-lexicon"
-      ],
+      "lexicalRegisterOperationsSelected": [],
       "connectorStrategy": "contrastive",
       "contractionStrategy": "hold",
       "relationInventory": {
@@ -273,14 +268,11 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "mixed-structural",
-        "score": 425.496,
+        "spec": "ir-beam-search",
+        "score": 480.73,
         "passesApplied": [
-          "baseline-merge",
-          "baseline-voice-realization",
-          "sentence-structure",
-          "clause-join-split",
-          "connector-stance-lexicon"
+          "baseline-floor",
+          "clause-texture"
         ],
         "rescuePasses": [],
         "changedDimensions": [
@@ -289,11 +281,12 @@
           "sentence-spread",
           "connector-stance",
           "lexical-register",
+          "modifier-density",
           "directness",
           "abbreviation-posture",
           "orthography-posture",
           "fragment-posture",
-          "conversation-posture",
+          "surface-marker-posture",
           "punctuation-shape"
         ],
         "qualityGatePassed": true,
@@ -302,9 +295,9 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 403.204,
+          "score": 480.73,
           "passesApplied": [
-            "merge-pairs",
+            "baseline-floor",
             "clause-texture"
           ],
           "rescuePasses": [],
@@ -314,10 +307,12 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
+            "modifier-density",
             "directness",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
+            "surface-marker-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -325,12 +320,11 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 425.496,
+          "score": 403.928,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "sentence-structure",
-            "clause-join-split",
             "connector-stance-lexicon"
           ],
           "rescuePasses": [],
@@ -340,11 +334,11 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
+            "modifier-density",
             "directness",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
-            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -352,12 +346,11 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 425.496,
+          "score": 403.928,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "sentence-structure",
-            "clause-join-split",
             "connector-stance-lexicon"
           ],
           "rescuePasses": [],
@@ -367,11 +360,11 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
+            "modifier-density",
             "directness",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
-            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -379,12 +372,11 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 425.496,
+          "score": 403.928,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "sentence-structure",
-            "clause-join-split",
             "connector-stance-lexicon"
           ],
           "rescuePasses": [],
@@ -394,11 +386,11 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
+            "modifier-density",
             "directness",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
-            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -406,12 +398,11 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 425.496,
+          "score": 403.928,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
             "sentence-structure",
-            "clause-join-split",
             "connector-stance-lexicon"
           ],
           "rescuePasses": [],
@@ -421,11 +412,11 @@
             "sentence-spread",
             "connector-stance",
             "lexical-register",
+            "modifier-density",
             "directness",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
-            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -434,7 +425,7 @@
       ]
     },
     "finalRealization": {
-      "text": "if youre late thats ok just dont start random jobs, and check in west fence table first; glass, pallets first pass. and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands, but pls bring water for real, not saying it to be annoying.",
+      "text": "If you are late that is okay please do not begin new tasks, and check in at the west fence table first. Glass, pallets require an initial pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands, but please bring water for real, not saying it to be annoying.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -445,22 +436,30 @@
         "sentence-spread",
         "connector-stance",
         "lexical-register",
+        "modifier-density",
         "directness",
         "abbreviation-posture",
         "orthography-posture",
         "fragment-posture",
-        "conversation-posture",
+        "surface-marker-posture",
         "punctuation-shape"
       ],
-      "lexemeSwaps": [],
+      "lexemeSwaps": [
+        {
+          "family": "start",
+          "from": "start",
+          "to": "begin",
+          "kind": "lexeme"
+        }
+      ],
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.847,
-        "outputDonorDistance": 3.166,
-        "donorImprovement": 1.681,
-        "donorImprovementRatio": 0.347,
-        "sourceOutputLexicalOverlap": 0.962
+        "outputDonorDistance": 2.291,
+        "donorImprovement": 2.556,
+        "donorImprovementRatio": 0.527,
+        "sourceOutputLexicalOverlap": 0.612
       },
       "rescuePasses": [],
       "visibleShift": true,
@@ -470,14 +469,14 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 1,
-      "polarityMismatches": 0,
+      "objectCoverage": 0.964,
+      "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -493,27 +492,27 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.385
+          "bagScore": 0.333,
+          "globalBagScore": 0.167
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.077
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -521,7 +520,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.077
+          "globalBagScore": 0.063
         },
         {
           "sourceClauseId": "s3c1",
@@ -532,12 +531,12 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.077
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -557,11 +556,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.385
+          "globalBagScore": 0.313
         }
       ],
       "sourceClauseCount": 7,
-      "outputClauseCount": 5
+      "outputClauseCount": 4
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
@@ -572,7 +571,7 @@
     "realizedIR": {
       "metadata": {
         "sentenceCount": 3,
-        "clauseCount": 5,
+        "clauseCount": 4,
         "literalSpans": [
           {
             "value": "10:15",
@@ -583,54 +582,54 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "if youre late thats ok just dont start random jobs, and check in west fence table first; glass, pallets first pass",
+          "raw": "If you are late that is okay please do not begin new tasks, and check in at the west fence table first",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "if youre late thats ok just dont start random jobs, and check in west fence table first",
+              "text": "If you are late that is okay please do not begin new tasks, and check in at the west fence table first",
               "relationToPrev": "start",
               "clauseType": "subordinate",
-              "polarity": "positive",
+              "polarity": "negative",
               "tenseAspect": "present",
-              "propositionHead": "check",
-              "actor": "",
-              "action": "check",
-              "object": "west fence table first",
+              "propositionHead": "begin",
+              "actor": "you",
+              "action": "begin",
+              "object": "new tasks check at west",
               "modifiers": [
                 "table"
               ],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            },
-            {
-              "id": "s0c1",
-              "text": "glass, pallets first pass",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "glass",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
               "hedgeMarkers": []
             }
           ]
         },
         {
           "id": "s1",
-          "raw": "and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+          "raw": "Glass, pallets require an initial pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "and saws stay under canopy b, kids stay off solvent side, paint only",
+              "text": "Glass, pallets require an initial pass",
               "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "require",
+              "actor": "an initial",
+              "action": "require",
+              "object": "initial pass",
+              "modifiers": [
+                "initial"
+              ],
+              "hedgeMarkers": []
+            },
+            {
+              "id": "s1c1",
+              "text": "and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+              "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
@@ -644,32 +643,18 @@
               "hedgeMarkers": [
                 "minimization"
               ]
-            },
-            {
-              "id": "s1c1",
-              "text": "wind chills out",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "wind",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
             }
           ]
         },
         {
           "id": "s2",
-          "raw": "10:15 inventory stop still stands, but pls bring water for real, not saying it to be annoying.",
+          "raw": "10:15 inventory stop still stands, but please bring water for real, not saying it to be annoying.",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "10:15 inventory stop still stands, but pls bring water for real, not saying it to be annoying",
+              "text": "10:15 inventory stop still stands, but please bring water for real, not saying it to be annoying",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -698,25 +683,34 @@
         "sentence-spread",
         "connector-stance",
         "lexical-register",
+        "modifier-density",
         "directness",
         "abbreviation-posture",
         "orthography-posture",
         "fragment-posture",
-        "conversation-posture",
+        "surface-marker-posture",
         "punctuation-shape"
       ],
-      "lexemeSwaps": [],
+      "lexemeSwaps": [
+        {
+          "family": "start",
+          "from": "start",
+          "to": "begin",
+          "kind": "lexeme"
+        }
+      ],
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.847,
-        "outputDonorDistance": 3.166,
-        "donorImprovement": 1.681,
-        "donorImprovementRatio": 0.347,
-        "sourceOutputLexicalOverlap": 0.962
+        "outputDonorDistance": 2.291,
+        "donorImprovement": 2.556,
+        "donorImprovementRatio": 0.527,
+        "sourceOutputLexicalOverlap": 0.612
       },
       "realizationNotes": [
-        "Register shift surfaced through lexical-register, directness, abbreviation-posture, orthography-posture, fragment-posture, conversation-posture.",
+        "1 lexical family swap landed.",
+        "Register shift surfaced through lexical-register, modifier-density, directness, abbreviation-posture, orthography-posture, fragment-posture, surface-marker-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [],
@@ -730,17 +724,20 @@
     "changedDimensions": [
       "abbreviation-posture",
       "connector-stance",
-      "conversation-posture",
       "directness",
       "fragment-posture",
       "lexical-register",
+      "modifier-density",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",
-      "sentence-spread"
+      "sentence-spread",
+      "surface-marker-posture"
     ],
-    "lexemeSwapFamilies": [],
+    "lexemeSwapFamilies": [
+      "start"
+    ],
     "relationInventory": [
       "additive:0",
       "causal:0",
@@ -750,21 +747,16 @@
       "temporal:0"
     ],
     "structuralOperations": [
-      "baseline-merge",
-      "clause-join-split",
-      "sentence-structure"
+      "clause-texture"
     ],
-    "lexicalOperations": [
-      "baseline-voice-realization",
-      "connector-stance-lexicon"
-    ],
+    "lexicalOperations": [],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 1,
-    "polarityMismatches": 0,
+    "objectCoverage": 0.964,
+    "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

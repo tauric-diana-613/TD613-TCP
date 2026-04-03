@@ -354,17 +354,10 @@
     },
     "planSummary": {
       "transferMode": "compress",
-      "structuralOperationsSelected": [
-        "baseline-split",
-        "planned-sentence-split",
-        "structural-rescue"
-      ],
+      "structuralOperationsSelected": [],
       "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "connector-stance-lexicon",
-        "punctuation-finish",
-        "lexical-register-rescue",
-        "connector-stance-rescue"
+        "discourse-frame",
+        "stance-texture"
       ],
       "connectorStrategy": "additive",
       "contractionStrategy": "hold",
@@ -402,33 +395,22 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "mixed-structural",
-        "score": 261.916,
+        "spec": "ir-beam-search",
+        "score": 219.432,
         "passesApplied": [
-          "baseline-split",
-          "baseline-voice-realization",
-          "planned-sentence-split",
-          "connector-stance-lexicon",
-          "punctuation-finish",
-          "structural-rescue",
-          "lexical-register-rescue",
-          "connector-stance-rescue"
+          "discourse-frame",
+          "stance-texture"
         ],
-        "rescuePasses": [
-          "structural-rescue",
-          "lexical-register-rescue",
-          "connector-stance-rescue"
-        ],
+        "rescuePasses": [],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
+          "contraction-posture",
           "connector-stance",
           "lexical-register",
           "abbreviation-posture",
-          "orthography-posture",
-          "fragment-posture",
-          "punctuation-shape"
+          "orthography-posture"
         ],
         "qualityGatePassed": false,
         "notes": [
@@ -438,13 +420,16 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 93.534,
+          "score": 219.432,
           "passesApplied": [
             "discourse-frame",
             "stance-texture"
           ],
           "rescuePasses": [],
           "changedDimensions": [
+            "sentence-mean",
+            "sentence-count",
+            "sentence-spread",
             "contraction-posture",
             "connector-stance",
             "lexical-register",
@@ -603,16 +588,14 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.737,
-        "outputDonorDistance": 4.737,
-        "donorImprovement": 0,
-        "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 1
+        "outputDonorDistance": 4.145,
+        "donorImprovement": 0.592,
+        "donorImprovementRatio": 0.125,
+        "sourceOutputLexicalOverlap": 0.91
       },
       "rescuePasses": [
-        "structural-rescue",
-        "lexical-register-rescue",
-        "connector-stance-rescue",
-        "final-rejection"
+        "progress-admit",
+        "semantic-final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false
@@ -1087,19 +1070,19 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.737,
-        "outputDonorDistance": 4.737,
-        "donorImprovement": 0,
-        "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 1
+        "outputDonorDistance": 4.145,
+        "donorImprovement": 0.592,
+        "donorImprovementRatio": 0.125,
+        "sourceOutputLexicalOverlap": 0.91
       },
       "realizationNotes": [
+        "1 lexical family swap landed.",
+        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "structural-rescue",
-        "lexical-register-rescue",
-        "connector-stance-rescue",
-        "final-rejection"
+        "progress-admit",
+        "semantic-final-rejection"
       ],
       "visibleShift": false,
       "nonTrivialShift": false
@@ -1118,17 +1101,10 @@
       "resumptive:1",
       "temporal:2"
     ],
-    "structuralOperations": [
-      "baseline-split",
-      "planned-sentence-split",
-      "structural-rescue"
-    ],
+    "structuralOperations": [],
     "lexicalOperations": [
-      "baseline-voice-realization",
-      "connector-stance-lexicon",
-      "connector-stance-rescue",
-      "lexical-register-rescue",
-      "punctuation-finish"
+      "discourse-frame",
+      "stance-texture"
     ],
     "connectorStrategy": "additive",
     "contractionStrategy": "hold",

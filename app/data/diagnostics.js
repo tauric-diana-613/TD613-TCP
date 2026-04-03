@@ -651,6 +651,99 @@ const FAMILY_SPECS = Object.freeze([
         }
       )
     ])
+  }),
+  freezeRecord({
+    id: 'newsroom-correction',
+    title: 'Newsroom / correction workflow / source clarification',
+    samples: Object.freeze([
+      buildSample(
+        { id: 'newsroom-correction' },
+        'formal-record',
+        {
+          name: 'Metro Desk Correction Chain / Formal Record',
+          context: 'Internal newsroom correction log documenting a misattributed quote and late headline change.',
+          intention: 'Preserve publication times, quote custody, and the distinction between correction, clarification, and retraction.',
+          text: `At 9:12 AM the metro desk published the council-housing piece with a quote attributed to Deputy Director Laila Moreno that should have been attributed to the tenant organizer, Nia Brooks. The wording itself was accurate to the recording, but the speaker label in paragraph six was not. At 9:31 AM Brooks emailed asking for correction after noticing the mismatch in the push alert. The article was updated at 9:47 AM with the quote reassigned and a correction note appended at the foot. At 10:03 AM the homepage headline was also revised because the first headline implied a budget approval that had not yet happened; the vote had only cleared committee. This is not a retraction event. The reporting remains sound. The failure is attribution custody plus a headline that hardened a pending action into an accomplished one before the desk corrected it.`
+        }
+      ),
+      buildSample(
+        { id: 'newsroom-correction' },
+        'professional-message',
+        {
+          name: 'Metro Desk Correction Chain / Professional Message',
+          context: 'Editor email to the reporting team after a quote attribution error went live.',
+          intention: 'Correct the public record while keeping the internal correction chain legible.',
+          text: `Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks, not Deputy Director Laila Moreno. Brooks flagged it at 9:31 AM, and we corrected the body at 9:47 with a note appended. We also changed the homepage headline at 10:03 because the first version implied budget approval when the vote had only cleared committee. Please keep the distinction clear in any follow-up: this is a correction and clarification sequence, not a retraction. The reporting is still good. The problem was attribution custody and an over-hardened headline frame.`
+        }
+      ),
+      buildSample(
+        { id: 'newsroom-correction' },
+        'rushed-mobile',
+        {
+          name: 'Metro Desk Correction Chain / Rushed Mobile',
+          context: 'Reporter chat message sent while trying to fix the story before the next newsletter send.',
+          intention: 'Hold the same correction facts under compressed deadline pressure.',
+          stressTags: ['fragmentation', 'adjacent-lexicon'],
+          text: `need quick fix on housing story. quote in graf 6 is nia brooks not moreno. words are right, speaker tag isnt. brooks emailed 9:31. body fixed 9:47 + note added. also homepage hed now sounds like vote passed when it only cleared committee. can someone swap that before newsletter grab`
+        }
+      ),
+      buildSample(
+        { id: 'newsroom-correction' },
+        'tangled-followup',
+        {
+          name: 'Metro Desk Correction Chain / Tangled Follow-up',
+          context: 'Later note disentangling an attribution correction from accusations that the entire story had collapsed.',
+          intention: 'Untangle quote speaker, headline implication, and overall reporting validity without flattening the failure.',
+          text: `Looping back because the correction thread started sliding toward "the whole story was wrong," which is not actually what happened. The quote text was right. The problem was that the speaker tag in paragraph six pointed to Moreno when the audio and notes show Brooks. Then, while people were already reacting to that, the homepage headline also got read as if council had approved the housing package outright, when the vote had only moved through committee. So there were two linked errors, but they were not the same error and they do not amount to a collapsed report. If we describe this as a retraction, we erase the real custody problem. If we describe it as a tiny typo, we erase the public effect of hardening a pending vote into a completed one.`
+        }
+      )
+    ])
+  }),
+  freezeRecord({
+    id: 'benefits-appeal',
+    title: 'Benefits appeal / intake packet / hearing preparation',
+    samples: Object.freeze([
+      buildSample(
+        { id: 'benefits-appeal' },
+        'formal-record',
+        {
+          name: 'Benefits Suspension Appeal / Formal Record',
+          context: 'Case note documenting a benefits suspension tied to an address mismatch and a pending appeal packet.',
+          intention: 'Preserve notice date, hearing deadline, and the distinction between identity review and missing paperwork.',
+          text: `The benefits suspension notice for case BA-4427 was generated on May 6 and delivered to the claimant on May 9. The stated basis was unresolved address mismatch after the agency mailing to Elm Street was returned, even though the claimant had already filed an address update placing her at the Birch Avenue shelter intake desk. Intake review on May 10 confirmed that the shelter verification letter was present in the file but had not been linked to the same queue that handled the returned mail flag. A fair-hearing request was filed on May 14, within deadline, and packet assembly began the same afternoon. The immediate risk is not a total absence of documentation. It is split custody between address verification, identity review, and the hearing calendar. If those threads keep being written as one generic "missing documents" problem, the claimant will appear noncompliant when the actual failure sits inside agency routing.`
+        }
+      ),
+      buildSample(
+        { id: 'benefits-appeal' },
+        'professional-message',
+        {
+          name: 'Benefits Suspension Appeal / Professional Message',
+          context: 'Advocate email requesting packet review before the hearing calendar closes.',
+          intention: 'Carry the timeline and routing failure forward in a direct service-facing register.',
+          text: `Hello appeals unit, I am writing about case BA-4427 because the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead. The notice was generated May 6 and reached the claimant on May 9. The returned mail flag referenced Elm Street, but the claimant had already updated her address to the Birch Avenue shelter intake desk, and that verification letter is in the file. Intake confirmed on May 10 that the letter exists; it just was not linked to the queue handling the address alert. We filed the fair-hearing request on May 14 and are assembling the packet now. Please review the address-verification thread separately from any identity review so the claimant is not made to rehearse the same proof under the wrong label.`
+        }
+      ),
+      buildSample(
+        { id: 'benefits-appeal' },
+        'rushed-mobile',
+        {
+          name: 'Benefits Suspension Appeal / Rushed Mobile',
+          context: 'Text from an advocate trying to stop a client from being bounced between intake and appeals.',
+          intention: 'Keep the same notice + shelter-letter facts visible through shorthand and urgency.',
+          text: `ba-4427 isnt a no-doc case. mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. notice says may 6, client got it may 9. hearing req filed 5/14. pls dont send her back for same proof again under \"missing docs\" bc thats not the block`
+        }
+      ),
+      buildSample(
+        { id: 'benefits-appeal' },
+        'tangled-followup',
+        {
+          name: 'Benefits Suspension Appeal / Tangled Follow-up',
+          context: 'Follow-up note disentangling address mismatch, identity review, and packet assembly.',
+          intention: 'Repair the record so the claimant is not misread as failing multiple requirements at once.',
+          text: `Following up because the case notes are beginning to stack three different review lanes on top of each other. The returned Elm Street mailing created the address mismatch alert. The Birch shelter letter resolves that part, and it was already in the file when intake checked on May 10. The fair-hearing request filed on May 14 addresses deadline custody. Those are real steps and they happened. What has not happened yet is a clean relink between the shelter verification and the alert queue, so the same case keeps getting written as if the claimant never supplied anything. If we keep calling this "missing documents," the hearing packet will inherit the wrong story from the start.`
+        }
+      )
+    ])
   })
 ]);
 
@@ -678,20 +771,34 @@ const PROMOTED_SAMPLE_IDS = Object.freeze([
 const DECK_RANDOMIZER_SAMPLE_IDS = Object.freeze([
   sampleId('building-access', 'professional-message'),
   sampleId('building-access', 'rushed-mobile'),
-  sampleId('volunteer-cleanup', 'professional-message'),
-  sampleId('volunteer-cleanup', 'tangled-followup'),
+  sampleId('package-handoff', 'professional-message'),
+  sampleId('package-handoff', 'rushed-mobile'),
+  sampleId('volunteer-cleanup', 'formal-record'),
+  sampleId('volunteer-cleanup', 'rushed-mobile'),
+  sampleId('tenant-leak', 'professional-message'),
+  sampleId('tenant-leak', 'rushed-mobile'),
+  sampleId('tenant-leak', 'tangled-followup'),
   sampleId('clinic-scheduling', 'formal-record'),
   sampleId('clinic-scheduling', 'rushed-mobile'),
-  sampleId('committee-budget', 'rushed-mobile'),
+  sampleId('committee-budget', 'formal-record'),
   sampleId('committee-budget', 'tangled-followup'),
-  sampleId('overwork-debrief', 'formal-record'),
+  sampleId('mutual-aid', 'professional-message'),
+  sampleId('mutual-aid', 'tangled-followup'),
   sampleId('overwork-debrief', 'rushed-mobile'),
+  sampleId('overwork-debrief', 'tangled-followup'),
+  sampleId('archive-grant', 'professional-message'),
+  sampleId('archive-grant', 'rushed-mobile'),
   sampleId('performance-review', 'professional-message'),
   sampleId('performance-review', 'rushed-mobile'),
-  sampleId('customer-support', 'formal-record'),
+  sampleId('performance-review', 'tangled-followup'),
+  sampleId('customer-support', 'professional-message'),
   sampleId('customer-support', 'rushed-mobile'),
-  sampleId('school-coordination', 'formal-record'),
-  sampleId('school-coordination', 'tangled-followup')
+  sampleId('school-coordination', 'professional-message'),
+  sampleId('school-coordination', 'rushed-mobile'),
+  sampleId('newsroom-correction', 'formal-record'),
+  sampleId('newsroom-correction', 'rushed-mobile'),
+  sampleId('benefits-appeal', 'professional-message'),
+  sampleId('benefits-appeal', 'rushed-mobile')
 ]);
 
 const CORPUS_BY_ID = Object.freeze(CORPUS_SAMPLES.reduce((acc, sample) => {
@@ -877,7 +984,9 @@ const MASK_PERSONA_SEQUENCE = Object.freeze([
   'methods-editor',
   'cross-examiner',
   'operator',
-  'matron'
+  'matron',
+  'spark',
+  'undertow'
 ]);
 
 const SAME_FAMILY_MASK_CASES = FAMILY_SPECS.map((family, index) => maskCase(

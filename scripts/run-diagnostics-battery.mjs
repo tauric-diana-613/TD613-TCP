@@ -195,6 +195,73 @@ function buildNearestFieldSummary(
   };
 }
 
+function fieldDistanceBetweenItems(
+  left,
+  right,
+  getProfile = (item) => item.profile,
+  getText = (item) => item.text || item.diagnosticSpecimen?.text || ''
+) {
+  return round(
+    profileDistance(engine.compareTexts('', '', {
+      profileA: getProfile(left),
+      profileB: getProfile(right)
+    })) +
+      axisDistance(getProfile(left), getProfile(right)) +
+      heatmapDistance(getText(left), getText(right)),
+    4
+  );
+}
+
+function buildWideFieldSubset(
+  items = [],
+  limit = 16,
+  getProfile = (item) => item.profile,
+  getText = (item) => item.text || item.diagnosticSpecimen?.text || ''
+) {
+  if (items.length <= limit) {
+    return items;
+  }
+
+  const working = [...items];
+  const seed = working
+    .map((item) => ({
+      item,
+      meanDistance:
+        working
+          .filter((other) => other !== item)
+          .reduce((sum, other) => sum + fieldDistanceBetweenItems(item, other, getProfile, getText), 0) /
+        Math.max(1, working.length - 1)
+    }))
+    .sort((left, right) =>
+      right.meanDistance - left.meanDistance ||
+      String(left.item.id || '').localeCompare(String(right.item.id || ''))
+    )[0]?.item;
+
+  const chosen = seed ? [seed] : [working[0]];
+  const remaining = working.filter((item) => item !== chosen[0]);
+
+  while (chosen.length < limit && remaining.length) {
+    remaining.sort((left, right) => {
+      const leftMin = Math.min(...chosen.map((picked) => fieldDistanceBetweenItems(left, picked, getProfile, getText)));
+      const rightMin = Math.min(...chosen.map((picked) => fieldDistanceBetweenItems(right, picked, getProfile, getText)));
+      const leftMean =
+        chosen.reduce((sum, picked) => sum + fieldDistanceBetweenItems(left, picked, getProfile, getText), 0) /
+        Math.max(1, chosen.length);
+      const rightMean =
+        chosen.reduce((sum, picked) => sum + fieldDistanceBetweenItems(right, picked, getProfile, getText), 0) /
+        Math.max(1, chosen.length);
+      return (
+        rightMin - leftMin ||
+        rightMean - leftMean ||
+        String(left.id || '').localeCompare(String(right.id || ''))
+      );
+    });
+    chosen.push(remaining.shift());
+  }
+
+  return chosen;
+}
+
 function buildExactProfileCollisions(items = [], getProfile = (item) => item.profile) {
   const groups = new Map();
   items.forEach((item) => {
@@ -950,6 +1017,17 @@ function buildSampleAudit(sampleLibrary = DIAGNOSTIC_SAMPLE_LIBRARY) {
     acc.set(sample.familyId, variants);
     return acc;
   }, new Map()).values()].filter((variants) => variants.size >= 2).length;
+  const fullDeckFieldSummary = buildNearestFieldSummary(
+    resolvedDeckSamples,
+    (sample) => sample.profile,
+    (sample) => sample.text
+  );
+  const deckWideSubset = buildWideFieldSubset(
+    resolvedDeckSamples,
+    Math.min(16, resolvedDeckSamples.length),
+    (sample) => sample.profile,
+    (sample) => sample.text
+  );
   return {
     randomizerCorpusSize: sampleLibrary.length,
     uniqueResolvedProfileCount: new Set(resolvedSamples.map((sample) => profileKey(sample.profile))).size,
@@ -958,7 +1036,11 @@ function buildSampleAudit(sampleLibrary = DIAGNOSTIC_SAMPLE_LIBRARY) {
     deckRandomizerSize: DECK_RANDOMIZER_SAMPLE_LIBRARY.length,
     deckRandomizerFamilyCount: new Set(DECK_RANDOMIZER_SAMPLE_LIBRARY.map((sample) => sample.familyId)).size,
     deckRandomizerPairedFamilyCount: pairedFamilyCount,
-    ...buildNearestFieldSummary(resolvedDeckSamples, (sample) => sample.profile, (sample) => sample.text)
+    deckRandomizerWideSubsetSize: deckWideSubset.length,
+    deckRandomizerWideSubsetIds: deckWideSubset.map((sample) => sample.id),
+    deckRandomizerLibraryAverageNearestFieldDistance: fullDeckFieldSummary.averageNearestFieldDistance,
+    deckRandomizerLibraryMinNearestFieldDistance: fullDeckFieldSummary.minNearestFieldDistance,
+    ...buildNearestFieldSummary(deckWideSubset, (sample) => sample.profile, (sample) => sample.text)
   };
 }
 
@@ -1046,8 +1128,11 @@ function buildMarkdownReport(report) {
     lines.push(`- deck_randomizer_size: ${report.sampleAudit.deckRandomizerSize}`);
     lines.push(`- deck_randomizer_family_count: ${report.sampleAudit.deckRandomizerFamilyCount}`);
     lines.push(`- deck_randomizer_paired_family_count: ${report.sampleAudit.deckRandomizerPairedFamilyCount}`);
+    lines.push(`- deck_randomizer_wide_subset_size: ${report.sampleAudit.deckRandomizerWideSubsetSize}`);
     lines.push(`- average_nearest_field_distance: ${report.sampleAudit.averageNearestFieldDistance}`);
     lines.push(`- min_nearest_field_distance: ${report.sampleAudit.minNearestFieldDistance}`);
+    lines.push(`- deck_randomizer_library_average_nearest_field_distance: ${report.sampleAudit.deckRandomizerLibraryAverageNearestFieldDistance}`);
+    lines.push(`- deck_randomizer_library_min_nearest_field_distance: ${report.sampleAudit.deckRandomizerLibraryMinNearestFieldDistance}`);
     lines.push(`- exact_profile_collisions: ${report.sampleAudit.exactProfileCollisions.length ? report.sampleAudit.exactProfileCollisions.map((entry) => entry.ids.join(', ')).join(' | ') : 'none'}`);
     lines.push('', '### Closest Sample Pairs', '');
     report.sampleAudit.closestPairs.forEach((entry) => {

@@ -410,7 +410,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 247.976,
+          "score": 92.112,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -418,10 +418,10 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -431,12 +431,14 @@
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
         },
         {
           "spec": "merge-heavy",
-          "score": 247.976,
+          "score": 92.112,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -444,10 +446,10 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -457,12 +459,14 @@
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 247.976,
+          "score": 92.112,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -470,10 +474,10 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -483,12 +487,14 @@
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 247.976,
+          "score": 92.112,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -496,10 +502,10 @@
             "clause-join-split",
             "connector-stance-lexicon",
             "cleanup-restore",
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "rescuePasses": [
-            "connector-stance-rescue"
+            "structural-rescue"
           ],
           "changedDimensions": [
             "sentence-mean",
@@ -509,8 +515,10 @@
             "connector-stance",
             "punctuation-shape"
           ],
-          "qualityGatePassed": true,
-          "notes": []
+          "qualityGatePassed": false,
+          "notes": [
+            "Structural opportunity existed but the current candidate collapsed into additive drift."
+          ]
         }
       ]
     },

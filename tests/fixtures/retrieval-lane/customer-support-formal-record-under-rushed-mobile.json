@@ -338,9 +338,14 @@
     "planSummary": {
       "transferMode": "compress",
       "structuralOperationsSelected": [
-        "clause-texture"
+        "baseline-split"
       ],
-      "lexicalRegisterOperationsSelected": [],
+      "lexicalRegisterOperationsSelected": [
+        "baseline-voice-realization",
+        "baseline-function-word",
+        "connector-stance-lexicon",
+        "punctuation-finish"
+      ],
       "connectorStrategy": "contrastive",
       "contractionStrategy": "hold",
       "relationInventory": {
@@ -377,11 +382,15 @@
     },
     "candidateSummary": {
       "selected": {
-        "spec": "ir-beam-search",
-        "score": 472.754,
+        "spec": "mixed-structural",
+        "score": 477.632,
         "passesApplied": [
-          "baseline-floor",
-          "clause-texture"
+          "baseline-split",
+          "baseline-voice-realization",
+          "baseline-function-word",
+          "connector-stance-lexicon",
+          "punctuation-finish",
+          "cleanup-restore"
         ],
         "rescuePasses": [],
         "changedDimensions": [
@@ -404,10 +413,10 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 472.754,
+          "score": 452.382,
           "passesApplied": [
-            "baseline-floor",
-            "clause-texture"
+            "split-rules",
+            "phrase-texture"
           ],
           "rescuePasses": [],
           "changedDimensions": [
@@ -429,7 +438,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 459.928,
+          "score": 477.632,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -444,6 +453,7 @@
             "sentence-count",
             "connector-stance",
             "lexical-register",
+            "content-word-complexity",
             "directness",
             "abstraction-posture",
             "abbreviation-posture",
@@ -457,7 +467,7 @@
         },
         {
           "spec": "split-heavy",
-          "score": 459.928,
+          "score": 477.632,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -472,6 +482,7 @@
             "sentence-count",
             "connector-stance",
             "lexical-register",
+            "content-word-complexity",
             "directness",
             "abstraction-posture",
             "abbreviation-posture",
@@ -485,7 +496,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 456.928,
+          "score": 474.632,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -498,6 +509,7 @@
             "sentence-count",
             "connector-stance",
             "lexical-register",
+            "content-word-complexity",
             "directness",
             "abstraction-posture",
             "abbreviation-posture",
@@ -511,7 +523,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 456.928,
+          "score": 474.632,
           "passesApplied": [
             "baseline-split",
             "baseline-voice-realization",
@@ -524,6 +536,7 @@
             "sentence-count",
             "connector-stance",
             "lexical-register",
+            "content-word-complexity",
             "directness",
             "abstraction-posture",
             "abbreviation-posture",
@@ -1054,9 +1067,14 @@
       "temporal:2"
     ],
     "structuralOperations": [
-      "clause-texture"
+      "baseline-split"
     ],
-    "lexicalOperations": [],
+    "lexicalOperations": [
+      "baseline-function-word",
+      "baseline-voice-realization",
+      "connector-stance-lexicon",
+      "punctuation-finish"
+    ],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,

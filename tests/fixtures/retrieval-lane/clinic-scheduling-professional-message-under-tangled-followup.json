@@ -250,9 +250,11 @@
     "planSummary": {
       "transferMode": "compress",
       "structuralOperationsSelected": [
-        "clause-texture"
+        "split-rules"
       ],
-      "lexicalRegisterOperationsSelected": [],
+      "lexicalRegisterOperationsSelected": [
+        "phrase-texture"
+      ],
       "connectorStrategy": "contrastive",
       "contractionStrategy": "hold",
       "relationInventory": {
@@ -290,10 +292,10 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 331.32,
+        "score": 374.28,
         "passesApplied": [
-          "baseline-floor",
-          "clause-texture"
+          "split-rules",
+          "phrase-texture"
         ],
         "rescuePasses": [],
         "changedDimensions": [
@@ -304,6 +306,7 @@
           "connector-stance",
           "lexical-register",
           "directness",
+          "abstraction-posture",
           "fragment-posture",
           "punctuation-shape"
         ],
@@ -313,10 +316,10 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 331.32,
+          "score": 374.28,
           "passesApplied": [
-            "baseline-floor",
-            "clause-texture"
+            "split-rules",
+            "phrase-texture"
           ],
           "rescuePasses": [],
           "changedDimensions": [
@@ -327,6 +330,7 @@
             "connector-stance",
             "lexical-register",
             "directness",
+            "abstraction-posture",
             "fragment-posture",
             "punctuation-shape"
           ],
@@ -450,7 +454,7 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 1.302,
-        "outputDonorDistance": 1.774,
+        "outputDonorDistance": 2.407,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
         "sourceOutputLexicalOverlap": 0.828
@@ -779,14 +783,14 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 1.302,
-        "outputDonorDistance": 1.774,
+        "outputDonorDistance": 2.407,
         "donorImprovement": 0,
         "donorImprovementRatio": 0,
         "sourceOutputLexicalOverlap": 0.828
       },
       "realizationNotes": [
-        "4 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, directness, fragment-posture.",
+        "5 lexical family swaps landed.",
+        "Register shift surfaced through lexical-register, directness, abstraction-posture, fragment-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
@@ -811,9 +815,11 @@
       "temporal:1"
     ],
     "structuralOperations": [
-      "clause-texture"
+      "split-rules"
     ],
-    "lexicalOperations": [],
+    "lexicalOperations": [
+      "phrase-texture"
+    ],
     "connectorStrategy": "contrastive",
     "contractionStrategy": "hold",
     "propositionCoverage": 1,

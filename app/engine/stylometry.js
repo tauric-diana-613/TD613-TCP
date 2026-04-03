@@ -1541,6 +1541,15 @@ const PHRASE_REALIZATION_PACKS = [
 ];
 
 const SHORTHAND_REALIZATION_PACKS = [
+  { id: 'youre', pattern: /\byoure\b/gi, formal: 'you are', operational: 'youre' },
+  { id: 'thats', pattern: /\bthats\b/gi, formal: 'that is', operational: 'thats' },
+  { id: 'dont', pattern: /\bdont\b/gi, formal: 'do not', operational: 'dont' },
+  { id: 'cant', pattern: /\bcant\b/gi, formal: 'cannot', operational: 'cant' },
+  { id: 'wont', pattern: /\bwont\b/gi, formal: 'will not', operational: 'wont' },
+  { id: 'im', pattern: /\bim\b/gi, formal: 'I am', operational: 'im' },
+  { id: 'ive', pattern: /\bive\b/gi, formal: 'I have', operational: 'ive' },
+  { id: 'ill', pattern: /\bill\b/gi, formal: 'I will', operational: 'ill' },
+  { id: 'ok', pattern: /\bok\b/gi, formal: 'okay', operational: 'ok' },
   { id: 'acct', pattern: /\bacct\b/gi, formal: 'account', operational: 'acct' },
   { id: 'fam', pattern: /\bfam\b/gi, formal: 'family', operational: 'family' },
   { id: 'pkg', pattern: /\bpkg\b/gi, formal: 'package', operational: 'package' },
@@ -1548,6 +1557,12 @@ const SHORTHAND_REALIZATION_PACKS = [
   { id: 'auth', pattern: /\bauth\b/gi, formal: 'authorization', operational: 'auth' },
   { id: 'mgmt', pattern: /\bmgmt\b/gi, formal: 'management', operational: 'mgmt' },
   { id: 'wk', pattern: /\bwk\b/gi, formal: 'week', operational: 'wk' },
+  { id: 'wks', pattern: /\bwks\b/gi, formal: 'weeks', operational: 'wks' },
+  { id: 'hr', pattern: /\bhr\b/gi, formal: 'hour', operational: 'hr' },
+  { id: 'hrs', pattern: /\bhrs\b/gi, formal: 'hours', operational: 'hrs' },
+  { id: 'min', pattern: /\bmin\b/gi, formal: 'minute', operational: 'min' },
+  { id: 'mins', pattern: /\bmins\b/gi, formal: 'minutes', operational: 'mins' },
+  { id: 'temp', pattern: /\btemp\b/gi, formal: 'temporary', operational: 'temp' },
   { id: 'msg', pattern: /\bmsg\b/gi, formal: 'message', operational: 'msg' },
   { id: 'ref', pattern: /\bref\b/gi, formal: 'referral', operational: 'ref' },
   { id: 'bc', pattern: /\bbc\b/gi, formal: 'because', operational: 'bc' },
@@ -3321,17 +3336,24 @@ function applyPhraseRealizationPacks(text = '', currentProfile = {}, targetProfi
 }
 
 const DONOR_SURFACE_PACKS = [
+  { key: 'ok', expandedPattern: /\bokay\b/gi, compressed: 'ok' },
   { key: 'pls', expandedPattern: /\bplease\b/gi, compressed: 'pls' },
   { key: 'bc', expandedPattern: /\bbecause\b/gi, compressed: 'bc' },
   { key: 'wSlash', expandedPattern: /\bwith\b/gi, compressed: 'w/' },
   { key: 'woSlash', expandedPattern: /\bwithout\b/gi, compressed: 'w/o' },
   { key: 'thru', expandedPattern: /\bthrough\b/gi, compressed: 'thru' },
   { key: 'tmrw', expandedPattern: /\btomorrow\b/gi, compressed: 'tmrw' },
+  { key: 'temp', expandedPattern: /\btemporary\b/gi, compressed: 'temp' },
   { key: 'acct', expandedPattern: /\baccount\b/gi, compressed: 'acct' },
   { key: 'pkg', expandedPattern: /\bpackage\b/gi, compressed: 'pkg' },
   { key: 'appt', expandedPattern: /\bappointment\b/gi, compressed: 'appt' },
   { key: 'mgmt', expandedPattern: /\bmanagement\b/gi, compressed: 'mgmt' },
   { key: 'wk', expandedPattern: /\bweek\b/gi, compressed: 'wk' },
+  { key: 'wks', expandedPattern: /\bweeks\b/gi, compressed: 'wks' },
+  { key: 'hr', expandedPattern: /\bhour\b/gi, compressed: 'hr' },
+  { key: 'hrs', expandedPattern: /\bhours\b/gi, compressed: 'hrs' },
+  { key: 'min', expandedPattern: /\bminute\b/gi, compressed: 'min' },
+  { key: 'mins', expandedPattern: /\bminutes\b/gi, compressed: 'mins' },
   { key: 'msg', expandedPattern: /\bmessage\b/gi, compressed: 'msg' },
   { key: 'ref', expandedPattern: /\breferral\b/gi, compressed: 'ref' }
 ];
@@ -3379,6 +3401,108 @@ function loosenSentenceStarts(text = '', limit = 3) {
   });
 }
 
+function expandLooseContractions(text = '', mode = 'formal', limit = 6) {
+  const prefersFullExpansion = mode === 'formal' || mode === 'reflective';
+  const packs = [
+    { pattern: /\byoure\b/gi, replacement: prefersFullExpansion ? 'you are' : "you're" },
+    { pattern: /\bdont\b/gi, replacement: prefersFullExpansion ? 'do not' : "don't" },
+    { pattern: /\bcant\b/gi, replacement: prefersFullExpansion ? 'cannot' : "can't" },
+    { pattern: /\bwont\b/gi, replacement: prefersFullExpansion ? 'will not' : "won't" },
+    { pattern: /\bwasnt\b/gi, replacement: prefersFullExpansion ? 'was not' : "wasn't" },
+    { pattern: /\bdidnt\b/gi, replacement: prefersFullExpansion ? 'did not' : "didn't" },
+    { pattern: /\bcouldnt\b/gi, replacement: prefersFullExpansion ? 'could not' : "couldn't" },
+    { pattern: /\bshouldnt\b/gi, replacement: prefersFullExpansion ? 'should not' : "shouldn't" },
+    { pattern: /\bim\b/gi, replacement: prefersFullExpansion ? 'I am' : "I'm" },
+    { pattern: /\bive\b/gi, replacement: prefersFullExpansion ? 'I have' : "I've" },
+    { pattern: /\bill\b/gi, replacement: prefersFullExpansion ? 'I will' : "I'll" },
+    { pattern: /\bthats\b/gi, replacement: prefersFullExpansion ? 'that is' : "that's" }
+  ];
+  let result = text;
+  let applied = 0;
+
+  for (const pack of packs) {
+    if (applied >= limit) {
+      break;
+    }
+    const next = replaceLimited(result, pack.pattern, (match) => matchCase(match, pack.replacement), 1);
+    if (next !== result) {
+      result = next;
+      applied += 1;
+    }
+  }
+
+  return result;
+}
+
+function applyCompressedClauseTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
+  let result = text;
+  const wantsFragments = (targetProfile.fragmentPressure || 0) > ((currentProfile.fragmentPressure || 0) + 0.05);
+  const wantsConversation = (targetProfile.conversationalPosture || 0) > ((currentProfile.conversationalPosture || 0) + 0.05);
+
+  if (wantsConversation || wantsFragments) {
+    result = replaceLimited(result, /\bthat is\b/gi, (match) => matchCase(match, 'thats'), 2);
+    result = replaceLimited(result, /\bit is\b/gi, (match) => matchCase(match, 'its'), 1);
+    result = replaceLimited(result, /\bI do not\b/gi, (match) => matchCase(match, 'I dont'), 1);
+    result = replaceLimited(result, /\bdo not\b/gi, (match) => matchCase(match, 'dont'), 2);
+    result = replaceLimited(result, /\bjust because\b/gi, (match) => matchCase(match, 'just bc'), 1);
+    result = replaceLimited(result, /\bWhat ([^.!?]{6,88}?) showed is that\b/gi, (match, clause) => `what ${clause} showed:`, 1);
+  }
+
+  if (wantsFragments) {
+    result = replaceLimited(
+      result,
+      /\bThose are not ([^.!?]{4,80})\.\s+They are ([^.!?]{4,80})\./gi,
+      (match, left, right) => `thats not ${left}. thats ${right}.`,
+      1
+    );
+    result = replaceLimited(result, /:\s+/g, '. ', Math.max(1, Math.round(strength * 2)));
+  }
+
+  return result;
+}
+
+function applyExpandedImperativeTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
+  let result = text;
+  const mode = preferredRegisterMode(targetProfile, currentProfile);
+  const imperativeLift =
+    mode === 'formal' ||
+    mode === 'reflective' ||
+    (targetProfile.conversationalPosture || 0) + 0.05 < (currentProfile.conversationalPosture || 0);
+
+  result = expandLooseContractions(result, mode, Math.max(4, Math.round(4 + (strength * 2))));
+
+  if (!imperativeLift) {
+    return result;
+  }
+
+  result = replaceLimited(result, /\bthats ok\b/gi, (match) => matchCase(match, 'that is okay'), 1);
+  result = replaceLimited(result, /\bjust do not\b/gi, (match) => matchCase(match, 'please do not'), 1);
+  result = replaceLimited(result, /\bcheck in ([A-Za-z0-9][^.!?]{2,42}? table) first\b/gi, (match, location) => {
+    const normalized = String(location || '').trim();
+    if (/^at\s+the\b/i.test(normalized)) {
+      return `check in ${normalized} first`;
+    }
+    if (/^the\b/i.test(normalized)) {
+      return `check in at ${normalized} first`;
+    }
+    return `check in at the ${normalized} first`;
+  }, 1);
+  result = replaceLimited(result, /\b(?:review|verify) in ([A-Za-z0-9][^.!?]{2,42}? table) first\b/gi, (match, location) => {
+    const normalized = String(location || '').trim();
+    if (/^at\s+the\b/i.test(normalized)) {
+      return `check in ${normalized} first`;
+    }
+    if (/^the\b/i.test(normalized)) {
+      return `check in at ${normalized} first`;
+    }
+    return `check in at the ${normalized} first`;
+  }, 1);
+  result = replaceLimited(result, /\b(?:begin|start) random jobs\b/gi, (match) => matchCase(match, 'start new tasks'), 1);
+  result = replaceLimited(result, /\b([A-Za-z][A-Za-z0-9-]*(?:,\s*[A-Za-z][A-Za-z0-9-]*)+)\s+first pass\b/gi, (match, items) => `${items} require an initial pass`, 1);
+  result = result.replace(/(^|[.!?]\s+)(?!(?:please|Please)\b)(check|bring|send|review|confirm|verify|return|wait|use|keep|route|call)\b/g, (match, prefix, verb) => `${prefix}Please ${verb}`);
+  return normalizeSentenceStarts(result);
+}
+
 function applyDonorSurfaceTexture(text = '', currentProfile = {}, targetProfile = {}, strength = 0.76) {
   let result = text;
   const mode = preferredRegisterMode(targetProfile, currentProfile);
@@ -3412,7 +3536,12 @@ function applyDonorSurfaceTexture(text = '', currentProfile = {}, targetProfile 
         continue;
       }
 
-      const next = replaceLimited(result, pack.expandedPattern, (match) => matchCase(match, pack.compressed), 1);
+      const next = replaceLimited(
+        result,
+        pack.expandedPattern,
+        (match) => matchCase(match, pack.compressed),
+        Math.max(1, Math.round(1 + (strength * 2)))
+      );
       if (next !== result) {
         result = next;
         applied += 1;
@@ -3434,13 +3563,15 @@ function applyDonorSurfaceTexture(text = '', currentProfile = {}, targetProfile 
         result,
         /\b([A-Za-z][A-Za-z'-]{2,})\s+and\s+([A-Za-z][A-Za-z'-]{2,})(?=[,.;!?]|$)/g,
         (match, left, right) => `${left} + ${right}`,
-        1
+        2
       );
     }
 
     if ((targetProfile.orthographicLooseness || 0) > ((currentProfile.orthographicLooseness || 0) + 0.07)) {
       result = loosenSentenceStarts(result, 2);
     }
+
+    result = applyCompressedClauseTexture(result, currentProfile, targetProfile, strength);
 
     return result;
   }
@@ -3451,6 +3582,7 @@ function applyDonorSurfaceTexture(text = '', currentProfile = {}, targetProfile 
       abbreviationDensity: 0,
       orthographicLooseness: 0
     }, strength);
+    result = applyExpandedImperativeTexture(result, currentProfile, targetProfile, strength);
   }
 
   return result;

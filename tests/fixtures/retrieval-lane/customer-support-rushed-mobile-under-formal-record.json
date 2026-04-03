@@ -257,7 +257,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "mixed-structural",
-        "score": 315.376,
+        "score": 375.378,
         "passesApplied": [
           "baseline-merge",
           "baseline-voice-realization",
@@ -285,6 +285,7 @@
           "orthography-posture",
           "fragment-posture",
           "conversation-posture",
+          "surface-marker-posture",
           "punctuation-shape"
         ],
         "qualityGatePassed": false,
@@ -295,7 +296,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 251.774,
+          "score": 341.776,
           "passesApplied": [
             "merge-pairs",
             "clause-texture"
@@ -310,7 +311,9 @@
             "modifier-density",
             "directness",
             "abbreviation-posture",
+            "orthography-posture",
             "fragment-posture",
+            "surface-marker-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
@@ -320,7 +323,7 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 315.376,
+          "score": 375.378,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -348,6 +351,7 @@
             "orthography-posture",
             "fragment-posture",
             "conversation-posture",
+            "surface-marker-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
@@ -357,7 +361,7 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 315.376,
+          "score": 375.378,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -385,6 +389,7 @@
             "orthography-posture",
             "fragment-posture",
             "conversation-posture",
+            "surface-marker-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
@@ -394,7 +399,7 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 315.376,
+          "score": 375.378,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -422,6 +427,7 @@
             "orthography-posture",
             "fragment-posture",
             "conversation-posture",
+            "surface-marker-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
@@ -431,7 +437,7 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 315.376,
+          "score": 375.378,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
@@ -459,6 +465,7 @@
             "orthography-posture",
             "fragment-posture",
             "conversation-posture",
+            "surface-marker-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": false,
@@ -469,7 +476,7 @@
       ]
     },
     "finalRealization": {
-      "text": "account still locked, but can receive the code but login dies at fraud review every time - case CS-88412. And support keeps saying reset again even tho reset isnt the problem. last 4, recovery email align. and need someone to clear hold not forward same script.",
+      "text": "Account still locked, but can receive the code but login dies at fraud review every time - case CS-88412. And support keeps saying reset again even tho reset isnt the problem. Last 4, recovery email align. And need someone to clear hold not forward same script.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -486,6 +493,7 @@
         "orthography-posture",
         "fragment-posture",
         "conversation-posture",
+        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
@@ -512,9 +520,9 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.769,
-        "outputDonorDistance": 3.723,
-        "donorImprovement": 1.046,
-        "donorImprovementRatio": 0.219,
+        "outputDonorDistance": 2.899,
+        "donorImprovement": 1.87,
+        "donorImprovementRatio": 0.392,
         "sourceOutputLexicalOverlap": 0.804
       },
       "rescuePasses": [
@@ -634,13 +642,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "account still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
+          "raw": "Account still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "account still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
+              "text": "Account still locked, but can receive the code but login dies at fraud review every time - case CS-88412",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -680,13 +688,13 @@
         },
         {
           "id": "s2",
-          "raw": "last 4, recovery email align",
+          "raw": "Last 4, recovery email align",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "last 4, recovery email align",
+              "text": "Last 4, recovery email align",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -702,13 +710,13 @@
         },
         {
           "id": "s3",
-          "raw": "and need someone to clear hold not forward same script.",
+          "raw": "And need someone to clear hold not forward same script.",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "and need someone to clear hold not forward same script",
+              "text": "And need someone to clear hold not forward same script",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -741,6 +749,7 @@
         "orthography-posture",
         "fragment-posture",
         "conversation-posture",
+        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
@@ -767,14 +776,14 @@
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 4.769,
-        "outputDonorDistance": 3.723,
-        "donorImprovement": 1.046,
-        "donorImprovementRatio": 0.219,
+        "outputDonorDistance": 2.899,
+        "donorImprovement": 1.87,
+        "donorImprovementRatio": 0.392,
         "sourceOutputLexicalOverlap": 0.804
       },
       "realizationNotes": [
         "3 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, modifier-density, directness, abbreviation-posture, orthography-posture, fragment-posture, conversation-posture.",
+        "Register shift surfaced through lexical-register, modifier-density, directness, abbreviation-posture, orthography-posture, fragment-posture, conversation-posture, surface-marker-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
@@ -801,7 +810,8 @@
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",
-      "sentence-spread"
+      "sentence-spread",
+      "surface-marker-posture"
     ],
     "lexemeSwapFamilies": [
       "get",
