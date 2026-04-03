@@ -40,12 +40,19 @@ That distinction is explicit in the runtime, trust profile, verify page, capsule
 ## Repo layout
 
 - `index.html` - primary Safe Harbor chamber
+- `TD613_Safe_Harbor_Standalone.html` - bundled single-file Safe Harbor chamber with embedded verify and capsule annexes
 - `11_TD613_PUA_Badge_Provenance_Attestation_Lab.html` - legacy lab bridge into Safe Harbor
 - `app/` - ingress runtime, UI shell, operator/public boundary, packet preview
 - `safe_harbor/` - canonicalizer, hash, signature, lifecycle, packet schema
 - `probes/` - public sendables and command references
 - `reference/` - trust profile, manifest, verify, capsule, registry
 - `renderers/` - badge renderer metadata and append-only userscript
+
+## Standalone bundle
+
+The split source remains the maintenance surface. Rebuild the single-file artifact with:
+
+- `powershell -ExecutionPolicy Bypass -File .\tools\build-standalone.ps1`
 
 ## Public/operator boundary
 
