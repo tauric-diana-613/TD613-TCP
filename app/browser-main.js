@@ -48,8 +48,8 @@
       .map((sample) => Object.freeze({ ...sample }))
   );
   const STARTER_DUEL_SAMPLE_IDS = Object.freeze({
-    A: 'building-access-professional-message',
-    B: 'building-access-rushed-mobile'
+    A: 'package-handoff-formal-record',
+    B: 'package-handoff-rushed-mobile'
   });
   const DECK_RANDOMIZER_TOP_COUNT = 8;
   const DECK_RANDOMIZER_FIELD_POOL_COUNT = 24;
@@ -2048,6 +2048,16 @@
     return 0;
   }
 
+  function randomizerCarriesLiveDuel(evaluation = null) {
+    if (!evaluation) {
+      return false;
+    }
+    if (evaluation.bilateralNonTrivial || evaluation.bilateralVisible) {
+      return true;
+    }
+    return (evaluation.engagedLaneCount || 0) >= 1 && (evaluation.rejectedLaneCount || 0) === 0 && (evaluation.score || 0) > 0;
+  }
+
   function randomizerSamplePool(slot, candidates = []) {
     const otherSlot = slot === 'A' ? 'B' : 'A';
     const ownText = $(slotTextId(slot))?.value || '';
@@ -2056,7 +2066,9 @@
       return candidates;
     }
 
-    const diversityAnchorSample = sampleEntry(baySampleIds[slot]) || sampleEntry(baySampleIds[otherSlot]) || null;
+    const ownSample = sampleEntry(baySampleIds[slot]) || null;
+    const otherSample = sampleEntry(baySampleIds[otherSlot]) || null;
+    const diversityAnchorSample = ownSample || otherSample || null;
     const diversityAnchorSignature = diversityAnchorSample
       ? sampleSignatureEntry(diversityAnchorSample)
       : ownText.trim()
@@ -2065,6 +2077,13 @@
           ? buildSignatureEntry(otherText, extractCadenceProfile(otherText))
           : null;
     const bothBaysPopulated = Boolean(ownText.trim() && otherText.trim());
+    const sameFamilyPairLoaded = Boolean(
+      bothBaysPopulated &&
+      ownSample &&
+      otherSample &&
+      ownSample.familyId &&
+      ownSample.familyId === otherSample.familyId
+    );
 
     const ranked = candidates.map((sample) => {
       const candidateProfile = sampleProfileEntry(sample);
@@ -2098,6 +2117,70 @@
       };
     });
 
+    const sortByLiveDuelThenField = (left, right) => (
+      Number(right.evaluationTier || 0) - Number(left.evaluationTier || 0) ||
+      compareSwapCadencePairings(left.evaluation, right.evaluation) ||
+      Number(right.fieldDelta || 0) - Number(left.fieldDelta || 0) ||
+      Number(right.heatmapDelta || 0) - Number(left.heatmapDelta || 0) ||
+      Number(right.axisDelta || 0) - Number(left.axisDelta || 0) ||
+      Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
+      Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
+      Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
+      left.sample.id.localeCompare(right.sample.id)
+    );
+    const sortByFieldThenLiveDuel = (left, right) => (
+      Number(right.fieldDelta || 0) - Number(left.fieldDelta || 0) ||
+      Number(right.heatmapDelta || 0) - Number(left.heatmapDelta || 0) ||
+      Number(right.axisDelta || 0) - Number(left.axisDelta || 0) ||
+      Number(right.evaluationTier || 0) - Number(left.evaluationTier || 0) ||
+      compareSwapCadencePairings(left.evaluation, right.evaluation) ||
+      Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
+      Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
+      Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
+      left.sample.id.localeCompare(right.sample.id)
+    );
+    const liveCapable = ranked.filter((entry) => randomizerCarriesLiveDuel(entry.evaluation));
+
+    if (bothBaysPopulated && otherSample?.familyId) {
+      if (sameFamilyPairLoaded) {
+        const pivotPool = ranked.filter((entry) => entry.sample.familyId !== otherSample.familyId);
+        const livePivotPool = pivotPool.filter((entry) => randomizerCarriesLiveDuel(entry.evaluation));
+        const selectedPivotPool = livePivotPool.length ? livePivotPool : pivotPool;
+        return [...selectedPivotPool]
+          .sort(sortByFieldThenLiveDuel)
+          .slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, selectedPivotPool.length))
+          .map((entry) => entry.sample);
+      }
+
+      const sameFamilyLive = liveCapable.filter((entry) =>
+        entry.sample.familyId === otherSample.familyId &&
+        entry.sample.id !== otherSample.id
+      );
+      if (sameFamilyLive.length) {
+        return [...sameFamilyLive]
+          .sort(sortByLiveDuelThenField)
+          .slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, sameFamilyLive.length))
+          .map((entry) => entry.sample);
+      }
+
+      const sameFamily = ranked.filter((entry) =>
+        entry.sample.familyId === otherSample.familyId &&
+        entry.sample.id !== otherSample.id
+      );
+      if (sameFamily.length) {
+        return [...sameFamily]
+          .sort(sortByLiveDuelThenField)
+          .slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, sameFamily.length))
+          .map((entry) => entry.sample);
+      }
+
+      const livePool = liveCapable.length ? liveCapable : ranked;
+      return [...livePool]
+        .sort(sortByLiveDuelThenField)
+        .slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, livePool.length))
+        .map((entry) => entry.sample);
+    }
+
     const fieldPreferredIds = new Set(
       [...ranked]
         .sort((left, right) =>
@@ -2111,31 +2194,7 @@
     );
     const pool = ranked.filter((entry) => fieldPreferredIds.has(entry.sample.id));
 
-    const sorted = [...pool].sort((left, right) => {
-      if (bothBaysPopulated) {
-        return (
-          Number(right.evaluationTier || 0) - Number(left.evaluationTier || 0) ||
-          Number(right.fieldDelta || 0) - Number(left.fieldDelta || 0) ||
-          Number(right.heatmapDelta || 0) - Number(left.heatmapDelta || 0) ||
-          Number(right.axisDelta || 0) - Number(left.axisDelta || 0) ||
-          compareSwapCadencePairings(left.evaluation, right.evaluation) ||
-          Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
-          Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
-          Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
-          left.sample.id.localeCompare(right.sample.id)
-        );
-      }
-
-      return (
-        Number(right.fieldDelta || 0) - Number(left.fieldDelta || 0) ||
-        Number(right.heatmapDelta || 0) - Number(left.heatmapDelta || 0) ||
-        Number(right.axisDelta || 0) - Number(left.axisDelta || 0) ||
-        Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
-        Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
-        Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
-        left.sample.id.localeCompare(right.sample.id)
-      );
-    });
+    const sorted = [...pool].sort(sortByFieldThenLiveDuel);
 
     return sorted.slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, sorted.length)).map((entry) => entry.sample);
   }
