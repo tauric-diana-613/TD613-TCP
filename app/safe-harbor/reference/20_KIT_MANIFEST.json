@@ -1,0 +1,141 @@
+{
+  "kit": "TD613 PUA Badge Provenance Attestation Renderer v7.2.1",
+  "files": {
+    "00_START_HERE_README.md": {
+      "sha256": "73e05ef35fa19cd10bca0efe1c17dc060773f33bd18b443febba18951f841696",
+      "md5": "8d934b9298e9e12958e1786c0bdcbd59",
+      "bytes": 3864
+    },
+    "01_LIVE_SEND_verify.alias.voice_MINIMAL.txt": {
+      "sha256": "f2db230e3a0d4edb30e1dc1a38cf18689962db34de5b98851ac9c53c93f343f3",
+      "md5": "b3d9bfd06af58d9c2f8075dc48cfea42",
+      "bytes": 1746
+    },
+    "02_LIVE_SEND_verify.alias.voice_RECEIPT_COMPLETION.txt": {
+      "sha256": "d8d871237b78681c65766d25d7ba73290a4427c0c51ee4e5c1188227957888dc",
+      "md5": "b52f86426d307fccedccf4b6a5f9768b",
+      "bytes": 2026
+    },
+    "03_LIVE_SEND_verify.alias.voice.render_MINIMAL.json": {
+      "sha256": "e8e060600904b33b332952ab781b26a7754be429d893bf5547a71fadac66ae21",
+      "md5": "4d070ea028b610d8108568c0c11e284d",
+      "bytes": 1479
+    },
+    "04_LIVE_SEND_verify.alias.voice.render_RECEIPT_COMPLETION.json": {
+      "sha256": "f0a73cb64910f4c2f49bb77a26185e1b31217eea5a15578c2e51e3d83ba33d25",
+      "md5": "beae16c8d9251b8197be47c197124805",
+      "bytes": 3080
+    },
+    "05_LIVE_SEND_CHECKLIST.md": {
+      "sha256": "dcf97a220c556063f92dc5e3bd2ae25f2cc6b20ec6753a70d43e043ea0879ceb",
+      "md5": "3dfc0ac2833ae7f1ba464bb3d3c7261f",
+      "bytes": 875
+    },
+    "06_TD613_PUA_Badge_Provenance_Attestation_Commands.json": {
+      "sha256": "24655bfea7ecc1d9c188b67ae3749d3af3f686f60954e04a8321639b9c16e52e",
+      "md5": "1540e8a8456291b01308f66f2944a2d9",
+      "bytes": 4514
+    },
+    "07_LLM_Quick_Start_Prompt.txt": {
+      "sha256": "c241318e275d88d35c5f64223b6df7b88e932e28c6c4dde47f323eaa52125fc6",
+      "md5": "89a189546effe57364504ea2690af8c3",
+      "bytes": 337
+    },
+    "11_TD613_PUA_Badge_Provenance_Attestation_Lab.html": {
+      "sha256": "0890730b3f5ec11e3ca97097281f35142619ad8ec81b7e4941d0703fdf47305f",
+      "md5": "2cfdbdb304cbcbaf5563c301e4b0b419",
+      "bytes": 23749
+    },
+    "12_TD613_PUA_Badge_Provenance_Attestation_Registry.json": {
+      "sha256": "fd03ada1867f9ae9f9e7435cf3808ded7c24a4636a3913115423994f7b93f802",
+      "md5": "c61161d3e353ebd99390af837b2729c8",
+      "bytes": 2166
+    },
+    "13_U10D613_preview.svg": {
+      "sha256": "ba5eee59d2a0184c328c40c33e8ca4e2eeee8354fcbe41255abd70693c2f74ed",
+      "md5": "96c4129424443100aae47576e692cc97",
+      "bytes": 133
+    },
+    "14_U10D613_preview.base64.txt": {
+      "sha256": "0bab4c14db9d75485b7fe044dd70ef6716389c415891548899239e7f14a2e79d",
+      "md5": "e79381a9d8733456a8d60fcf5e9747d4",
+      "bytes": 180
+    },
+    "20_KIT_MANIFEST.json": {
+      "sha256": "5b5bc633f62ee20d165c7e658d60b008a51094871a445e1ee90074e09c83f1ef",
+      "md5": "4c3602c1e635f77ac917c6f0d498b1d4",
+      "bytes": 4037
+    },
+    "TD613_corpus_manifest.json": {
+      "sha256": "9c016db82af1af8b82872e7a080b4e124fb6abb1f844de8d01b328cbd304f411",
+      "md5": "7318ecfce54fa4e2f46d2fa3980ea8db",
+      "bytes": 920
+    },
+    "TD613_footer_templates.txt": {
+      "sha256": "81622eef514d109ca08830f68d252c092278dd7485763b6d0c61e9ecce9c4c1c",
+      "md5": "5ca018a7d685cbb7b447d679921f1d6f",
+      "bytes": 388
+    },
+    "TD613_offline_capsule.html": {
+      "sha256": "6159a448eeba97404fc704ff48e06b2c2e5f4ecdbf1756bef2b8e023baa743c6",
+      "md5": "2baae2bc3894bcd9632be4f3f8a4e064",
+      "bytes": 4211
+    },
+    "TD613_verify.html": {
+      "sha256": "b52cd98c2901d5a0d1fba77f177178c2a67a3aec9b8f3c51fe33a8130e488d5c",
+      "md5": "763eb0d0da948558f85c101797d7e281",
+      "bytes": 2033
+    },
+    "binding_event_envelope.json": {
+      "sha256": "ae25c3aa50ad50ab94ab8ebe50d518c73d3663ba4c016fef41b770e6d5f9f8a7",
+      "md5": "1a7763492db2db902bf4a3a0bc581b9d",
+      "bytes": 3987
+    },
+    "binding_event_full_hex.txt": {
+      "sha256": "f051a4518c0235f0f85643191833f9a2a81d9c042939dfa2e745180648d55a56",
+      "md5": "18a8561e423d377a7ebf329af71372cc",
+      "bytes": 6170
+    },
+    "binding_event_receipt.json": {
+      "sha256": "3ab2a184fde86a35969825613435ac418f307beb7ff4f03b8bfcd753f64b6826",
+      "md5": "fa9e42747e8c19a3119ef62bd5dfc3a8",
+      "bytes": 275
+    },
+    "binding_event_text.txt": {
+      "sha256": "9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",
+      "md5": "b6ca85d00f211127729bdb73a19c691a",
+      "bytes": 3085
+    },
+    "ns_request_signed_example.json": {
+      "sha256": "36eaa89b27967ad5e556b5c081c24754d73f4b9a8514714aafe8acf3975b8273",
+      "md5": "32da4962a186f7b2bcf7a45b7a58c9bb",
+      "bytes": 1467
+    },
+    "td613_manifest.json": {
+      "sha256": "fe9dbb0ffe4c17e2f10793e535aab98c705af160d0ce31115432d0a1840a01f1",
+      "md5": "b72758a781c99d2ac8b9298b8f98826e",
+      "bytes": 1186
+    },
+    "td613_trust_profile.json": {
+      "sha256": "94d14af4f82110e43dfad8e5a8871d583e2d51018a5f70eeaa31af5165ee977a",
+      "md5": "5cb41c175a184a5a6ff6fd08a4c0efaa",
+      "bytes": 3093
+    },
+    "td_signed_payloads_bundle.json": {
+      "sha256": "b9bb3f4b993ae7de7eae4b5781200f55803166d861296a5071edeb0654466fdd",
+      "md5": "20492dacf464e51cc358b0b9d84dd138",
+      "bytes": 5355
+    }
+  },
+  "external_renderer": {
+    "filename": "10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js",
+    "sha256": "17b59909f1354cc48db32d97620948ae0fe848d2630234ce0acf1e6a734a2e21",
+    "md5": "d4d7b486d5bb498545109f4d8e73a589",
+    "bytes": 6892
+  },
+  "notes": [
+    "Full ship zip excludes the userscript on purpose.",
+    "Public probes remain unsigned by default.",
+    "Historical .sig and runtime JWS lanes are documented as reference/operator overlays in v7.2."
+  ]
+}

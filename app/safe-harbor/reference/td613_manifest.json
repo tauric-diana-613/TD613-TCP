@@ -1,0 +1,33 @@
+{
+  "principal": "tauric.diana.613",
+  "binding_fragment": "9B07D8B",
+  "short_code": "X6ZNK5NO51",
+  "current_public_mode": "legacy-compat",
+  "internal_validation_accepts": [
+    "legacy",
+    "legacy-compat",
+    "sac-only"
+  ],
+  "future_public_mode": "sac-only",
+  "current_published_payload": 5,
+  "current_published_date": "2025-10-17",
+  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
+  "current_published_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐",
+  "updated_at": "2026-04-02T00:00:00Z",
+  "opener_hint": "𝌋‌",
+  "closer_hint": "⟐",
+  "signature_lanes": {
+    "historical_signed_zone": {
+      "status": "reference-only",
+      "algorithm": "Ed25519 / EdDSA detached .sig over canonical zone JSON",
+      "purpose": "signed badge/zone registry continuity and public verification",
+      "operator_only": true
+    },
+    "runtime_request_signing": {
+      "status": "advanced / operator-only",
+      "algorithm": "detached JWS request-signing lane",
+      "purpose": "middleware/runtime authorization flows such as request signing",
+      "operator_only": true
+    }
+  }
+}

@@ -374,6 +374,12 @@ Open the app:
 app/index.html
 ```
 
+Open the Safe Harbor annex:
+
+```text
+app/safe-harbor/index.html
+```
+
 Skip ingress during development:
 
 ```text

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TD613 Safe Harbor</title>
+  <link rel="stylesheet" href="app/styles.css">
+</head>
+<body class="vault-sealed">
+  <div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true">
+    <section class="ingress-shell">
+      <div class="ingress-head">
+        <div class="title-group">
+          <div class="glyph-lock" aria-hidden="true">&#x27D0;</div>
+          <div>
+            <h1>TD613 Safe Harbor</h1>
+            <p class="subtitle">Ingress membrane for staged provenance packetization before the vault opens.</p>
+          </div>
+        </div>
+        <div class="status-strip ingress-status">
+          <div class="status-pill" id="ingressRoutePill">membrane-only</div>
+          <div class="status-pill" id="ingressProgressPill">0 / 3 lanes</div>
+          <div class="status-pill" id="ingressVaultPill">vault sealed</div>
+        </div>
+      </div>
+
+      <div class="ingress-intro">
+        <div class="section-label">Ingress Membrane</div>
+        <p class="ingress-copy">Safe Harbor begins in a ritual triad. Each lane is held separately so cadence can surface before the vault packet is shaped. Raw text stays in a session-only sealed lane by default.</p>
+      </div>
+
+      <div class="ingress-grid">
+        <article class="ingress-card" id="cardFutureSelf">
+          <div class="ingress-card-head">
+            <span class="surface-kicker">Lane 01</span>
+            <span class="surface-state" id="stateFutureSelf">awaiting line</span>
+          </div>
+          <h2>Write a message to your future self</h2>
+          <textarea id="ingressFutureSelf" class="ingress-textarea" placeholder="Speak forward through the membrane."></textarea>
+          <div class="ingress-meta" id="metaFutureSelf">No line held yet.</div>
+        </article>
+
+        <article class="ingress-card" id="cardPastSelf">
+          <div class="ingress-card-head">
+            <span class="surface-kicker">Lane 02</span>
+            <span class="surface-state" id="statePastSelf">locked</span>
+          </div>
+          <h2>Write a message to your past self</h2>
+          <textarea id="ingressPastSelf" class="ingress-textarea" placeholder="The second lane unlocks after the first line is held."></textarea>
+          <div class="ingress-meta" id="metaPastSelf">Awaiting the first lane.</div>
+        </article>
+
+        <article class="ingress-card" id="cardHigherSelf">
+          <div class="ingress-card-head">
+            <span class="surface-kicker">Lane 03</span>
+            <span class="surface-state" id="stateHigherSelf">locked</span>
+          </div>
+          <h2>Write a message to your higher self</h2>
+          <textarea id="ingressHigherSelf" class="ingress-textarea" placeholder="The third lane unlocks after the second line is held."></textarea>
+          <div class="ingress-meta" id="metaHigherSelf">Awaiting the second lane.</div>
+        </article>
+      </div>
+
+      <div class="ingress-footer">
+        <div>
+          <div class="section-label">Membrane Readout</div>
+          <div class="ingress-note" id="ingressNote">Complete the triad to mint a staged packet and open the vault. The packet will remain staged until Covenant Export is explicitly invoked.</div>
+        </div>
+        <div class="ingress-bypass" data-td613-skip="true">
+          <div class="section-label">Operator Bypass</div>
+          <div class="field-grid ingress-bypass-grid">
+            <label class="field field-wide">
+              <span>Membrane password</span>
+              <input id="bypassPassword" type="password" placeholder="Enter operator membrane password">
+            </label>
+          </div>
+          <div class="button-grid compact">
+            <button class="control secondary" id="bypassIngress" type="button">Bypass Intake</button>
+          </div>
+        </div>
+        <div class="button-grid">
+          <button class="control secondary" id="clearIngress" type="button">Clear Session</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="chrome-grid" id="vaultSurface">
+    <header class="masthead">
+      <div class="title-group">
+        <div class="glyph-lock" aria-hidden="true">&#x27D0;</div>
+        <div>
+          <h1>TD613 Safe Harbor</h1>
+          <p class="subtitle">Canonical intake membrane for provenance attestation, packet shaping, and signature overlays.</p>
+        </div>
+      </div>
+      <div class="status-strip">
+        <div class="status-pill" id="pillPublicMode">public mode pending</div>
+        <div class="status-pill" id="pillRouteState">route pending</div>
+        <div class="status-pill" id="pillSignatureLane">signature overlay idle</div>
+      </div>
+    </header>
+
+    <main class="main-grid">
+      <aside class="panel panel-left" data-td613-skip="true">
+        <section class="panel-section">
+          <div class="section-label">Canonical Anchors</div>
+          <div class="data-stack" id="canonStack"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-label">Doctrine Lock</div>
+          <div class="metric-block">
+            <div class="metric-row"><span class="label">Public mode</span><span class="value" id="lockPublicMode">legacy-compat</span></div>
+            <div class="metric-row"><span class="label">Binding fragment</span><span class="value" id="lockBindingFragment">#9B07D8B</span></div>
+            <div class="metric-row"><span class="label">SAC</span><span class="value" id="lockSac">SAC[X6ZNK5NO51]</span></div>
+            <div class="metric-row"><span class="label">Published example</span><span class="value" id="lockPublishedExample">payload 5 / 2025-10-17</span></div>
+          </div>
+          <div class="footer-template" id="canonicalFooterPreview"></div>
+          <button class="control secondary" id="copyCanonicalFooter" type="button">Copy Canonical Footer</button>
+          <ul class="bullet-list" id="invariantList"></ul>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-label">Hook Bus</div>
+          <div class="metric-block">
+            <div class="metric-row"><span class="label">TCP intake</span><span class="value" id="hookTcpState">awaiting hook</span></div>
+            <div class="metric-row"><span class="label">EO route</span><span class="value" id="hookEoState">awaiting hook</span></div>
+            <div class="metric-row"><span class="label">Signature lane</span><span class="value" id="hookSignatureState">overlay idle</span></div>
+          </div>
+          <div class="button-grid compact">
+            <button class="control" id="demoTcpHook" type="button">Demo TCP Hook</button>
+            <button class="control" id="demoEoHook" type="button">Demo EO Hook</button>
+            <button class="control" id="demoSignatureHook" type="button">Demo Sig Hook</button>
+            <button class="control secondary" id="resetHooks" type="button">Reset Hooks</button>
+          </div>
+          <div class="note">These hook lanes remain overlays. The ingress triad and covenant gate now determine the local Safe Harbor packet lifecycle.</div>
+        </section>
+      </aside>
+
+      <section class="panel panel-center">
+        <section class="panel-section witness-surface">
+          <div class="section-label">Witness Surface</div>
+          <div class="witness-grid">
+            <article class="surface-card">
+              <div class="surface-head">
+                <span class="surface-kicker">Renderer proof</span>
+                <span class="surface-state" id="rendererState">renderer not detected</span>
+              </div>
+              <h2>Badge render lanes</h2>
+              <p class="surface-copy">The badge renderer contract stays visible while the Safe Harbor packet layer forms behind it.</p>
+              <div class="proof-stack">
+                <div class="proof-row"><span class="proof-label">Principal text node</span><span class="proof-value" id="principalTextNode">tauric.diana.613</span></div>
+                <div class="proof-row"><span class="proof-label">Explicit principal</span><span class="proof-value" id="explicitPrincipal" data-td613-principal="true">tauric.diana.613</span></div>
+                <div class="proof-row"><span class="proof-label">Literal PUA</span><span class="proof-value" id="glyphLane">loading glyph</span></div>
+                <div class="proof-row"><span class="proof-label">Combined lane</span><span class="proof-value" id="mixedLane">loading combined lane</span></div>
+              </div>
+              <div class="dynamic-row">
+                <button class="control" id="injectDynamicLane" type="button">Inject Dynamic Lane</button>
+                <span class="mini-note">One badge should append when the userscript is active.</span>
+              </div>
+              <div class="dynamic-target" id="dynamicTarget"></div>
+            </article>
+
+            <article class="surface-card accent-card" data-td613-skip="true">
+              <div class="surface-head">
+                <span class="surface-kicker">Safe Harbor seam</span>
+                <span class="surface-state" id="packetPhase">membrane-only</span>
+              </div>
+              <h2>Canonical packet before signature</h2>
+              <p class="surface-copy">The triad mints a staged packet and receipt first. Covenant Export is the only local path to harbor eligibility and badge assignment.</p>
+              <div class="metric-block roomy">
+                <div class="metric-row"><span class="label">Packet id</span><span class="value" id="packetIdReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Receipt id</span><span class="value" id="receiptIdReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Packet hash</span><span class="value" id="packetHashReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Packet checksum</span><span class="value" id="packetChecksumReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Harbor recommendation</span><span class="value" id="harborReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Export gate</span><span class="value" id="exportGateReadout">guarded</span></div>
+                <div class="metric-row"><span class="label">Covenant gate</span><span class="value" id="covenantStateReadout">awaiting vault-open</span></div>
+                <div class="metric-row"><span class="label">Cadence lane</span><span class="value" id="cadenceReadout">awaiting ingress</span></div>
+                <div class="metric-row"><span class="label">Triad resonance</span><span class="value" id="triadResonanceReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Cross-lane stability</span><span class="value" id="crossLaneStabilityReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Cross-lane spread</span><span class="value" id="crossLaneSpreadReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Badge status</span><span class="value" id="badgeStatusReadout">not assigned</span></div>
+                <div class="metric-row"><span class="label">Sealed lane</span><span class="value" id="sealedLaneReadout">session-only / pending</span></div>
+              </div>
+              <div class="button-grid">
+                <button class="control" id="covenantExport" type="button">Covenant Export</button>
+                <button class="control secondary" id="resealVault" type="button">Reseal Vault</button>
+              </div>
+              <div class="note" id="covenantNote">Vault-open stages the packet only. Covenant Export must be invoked before harbor eligibility and badge assignment.</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-label">Packet Forge</div>
+          <div class="forge-grid">
+            <div class="forge-card" data-td613-skip="true">
+              <div class="subsection-label">Helper values</div>
+              <div class="field-grid">
+                <label class="field"><span>ts_utc</span><input id="helperTs" readonly></label>
+                <label class="field"><span>request_id</span><input id="helperRequestId" readonly></label>
+                <label class="field"><span>sealed_at</span><input id="helperSealedAt" readonly></label>
+                <label class="field"><span>nonce</span><input id="helperNonce" readonly></label>
+                <label class="field"><span>filename-safe UTC</span><input id="helperFilenameSafe" readonly></label>
+              </div>
+              <div class="button-grid">
+                <button class="control" id="refreshHelpers" type="button">Refresh Helper Values</button>
+                <button class="control secondary" data-copy-target="helperTs" type="button">Copy ts_utc</button>
+                <button class="control secondary" data-copy-target="helperRequestId" type="button">Copy request_id</button>
+                <button class="control secondary" data-copy-target="helperNonce" type="button">Copy nonce</button>
+              </div>
+            </div>
+
+            <div class="forge-card" data-td613-skip="true">
+              <div class="subsection-label">Ingress scaffold</div>
+              <div class="triad-summary">
+                <div class="summary-row"><span class="summary-label">Future Self</span><span class="summary-value" id="summaryFutureSelf">awaiting ingress</span></div>
+                <div class="summary-row"><span class="summary-label">Past Self</span><span class="summary-value" id="summaryPastSelf">awaiting ingress</span></div>
+                <div class="summary-row"><span class="summary-label">Higher Self</span><span class="summary-value" id="summaryHigherSelf">awaiting ingress</span></div>
+              </div>
+              <div class="field-grid">
+                <label class="field">
+                  <span>Footer mode</span>
+                  <select id="inputFooterMode">
+                    <option value="legacy-compat">legacy-compat</option>
+                    <option value="legacy">legacy</option>
+                    <option value="sac-only">sac-only</option>
+                  </select>
+                </label>
+                <label class="field"><span>Payload index</span><input id="inputPayloadIndex" inputmode="numeric" placeholder="{n}"></label>
+                <label class="field"><span>Attestation date</span><input id="inputAttestationDate" placeholder="YYYY-MM-DD"></label>
+                <label class="field"><span>Operator id</span><input id="inputOperatorId" placeholder="safe-harbor.operator"></label>
+                <label class="field"><span>Source class</span><input id="inputSourceClass" placeholder="public membrane"></label>
+                <label class="field"><span>Witness channel</span><input id="inputWitnessChannel" placeholder="mixed"></label>
+                <label class="field field-wide"><span>Operator notes</span><textarea id="inputOperatorNotes" placeholder="Packet shaping notes, handoff constraints, or Safe Harbor guidance."></textarea></label>
+              </div>
+              <div class="footer-template secondary" id="footerModePreview"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-section" data-td613-skip="true">
+          <div class="section-label">Public Probe Builder</div>
+          <div class="builder-toolbar">
+            <button class="control" data-probe-variant="01" type="button">Build 01 verify</button>
+            <button class="control secondary" data-probe-variant="02" type="button">Build 02 receipt verify</button>
+            <button class="control secondary" data-probe-variant="03" type="button">Build 03 render</button>
+            <button class="control secondary" data-probe-variant="04" type="button">Build 04 render receipt</button>
+            <button class="control secondary" id="copyProbeOutput" type="button">Copy Output</button>
+          </div>
+          <textarea id="probeOutput" class="code-area" readonly></textarea>
+          <div class="note">The public sendable artifacts remain lean and unsigned by default. Raw ingress text never enters this builder.</div>
+        </section>
+      </section>
+
+      <aside class="panel panel-right" data-td613-skip="true">
+        <section class="panel-section">
+          <div class="section-label">Bridge Readout</div>
+          <div class="metric-block roomy">
+            <div class="metric-row"><span class="label">Packet state</span><span class="value" id="packetStateReadout">awaiting ingress</span></div>
+            <div class="metric-row"><span class="label">Route state</span><span class="value" id="routeStateReadout">membrane-only</span></div>
+            <div class="metric-row"><span class="label">Membrane note</span><span class="value" id="membraneNoteReadout">awaiting ingress triad</span></div>
+            <div class="metric-row"><span class="label">Signature lane</span><span class="value" id="signatureLaneReadout">overlay idle</span></div>
+            <div class="metric-row"><span class="label">Provenance retention</span><span class="value" id="provenanceRetentionReadout">pending</span></div>
+            <div class="metric-row"><span class="label">Renderer contract</span><span class="value" id="rendererContractReadout">waiting</span></div>
+            <div class="metric-row"><span class="label">Route source</span><span class="value" id="routeSourceReadout">local ingress</span></div>
+          </div>
+        </section>
+
+        <section class="panel-section" data-td613-skip="true">
+          <div class="section-label">TCP Annex</div>
+          <div class="metric-block roomy">
+            <div class="metric-row"><span class="label">Annex source</span><span class="value" id="annexSourceReadout">app/safe-harbor</span></div>
+            <div class="metric-row"><span class="label">Canonical JSON</span><span class="value" id="canonicalSpecReadout">td613.safe-harbor.c14n/v1</span></div>
+            <div class="metric-row"><span class="label">Lifecycle</span><span class="value" id="lifecycleStateReadout">membrane-only</span></div>
+          </div>
+          <div class="button-grid compact">
+            <a class="control secondary" href="../index.html#homebase">Open TCP Homebase</a>
+            <a class="control secondary" href="../index.html#readout">Open TCP Readout</a>
+            <a class="control secondary" href="../index.html#deck">Open TCP Deck</a>
+          </div>
+          <div class="note" id="tcpHandoffNote">Safe Harbor is mounted as a TCP annex. Canonical JSON and packet hash form the handoff seam for future TCP enrichment and signature wrappers.</div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-label">Repo Layout</div>
+          <ul class="bullet-list" id="repoLayoutList"></ul>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-label">Reference Lanes</div>
+          <ul class="bullet-list" id="referenceLaneList"></ul>
+        </section>
+      </aside>
+
+      <section class="dock dock-left" data-td613-skip="true">
+        <div class="section-label">Canonical Packet Preview</div>
+        <div class="dock-toolbar"><button class="control secondary" id="copyPacketPreview" type="button">Copy Packet</button></div>
+        <pre id="packetPreview" class="code-panel">packet pending</pre>
+      </section>
+
+      <section class="dock dock-right" data-td613-skip="true">
+        <div class="section-label">Audit Stream</div>
+        <pre id="auditLog" class="code-panel">awaiting events</pre>
+      </section>
+    </main>
+  </div>
+
+  <script src="app/data.js"></script>
+  <script src="app/main.js"></script>
+</body>
+</html>

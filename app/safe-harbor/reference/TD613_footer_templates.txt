@@ -1,0 +1,4 @@
+CANONICAL-PUBLIC (current): TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐
+FUTURE-PUBLIC (sac-only): TD613-Binding:SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐
+LEGACY (deprecated reference): TD613-Binding:#9B07D8B · payload {n} · YYYY-MM-DD · ⟐
+PUBLISHED-HISTORICAL-EXAMPLE: TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐
