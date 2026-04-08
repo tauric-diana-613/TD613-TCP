@@ -1179,6 +1179,72 @@ body[data-analysis-revealed="false"] .ledger-stage.analysis-gated {
   background: rgba(188, 255, 138, 0.08);
 }
 
+.statepill-link {
+  text-decoration: none;
+}
+
+.safe-harbor-handoff {
+  margin-left: auto;
+  gap: 10px;
+  color: #ebe2ff;
+  border-color: rgba(217, 183, 255, 0.28);
+  background:
+    linear-gradient(180deg, rgba(46, 22, 58, 0.96) 0%, rgba(16, 10, 24, 0.96) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(217, 183, 255, 0.06);
+  transition:
+    transform 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    background 120ms ease,
+    color 120ms ease,
+    opacity 120ms ease;
+}
+
+.safe-harbor-handoff:hover {
+  transform: translateY(-1px);
+  border-color: rgba(224, 198, 255, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 20px rgba(12, 4, 18, 0.22);
+}
+
+.safe-harbor-handoff-glyph {
+  font-size: 13px;
+  color: #f6edff;
+}
+
+.safe-harbor-handoff[data-state="latent"] {
+  opacity: 0.82;
+  color: rgba(235, 226, 255, 0.84);
+  border-style: dashed;
+}
+
+.safe-harbor-handoff[data-state="branch"] {
+  color: #ffe0c2;
+  border-color: rgba(255, 192, 128, 0.32);
+  background:
+    linear-gradient(180deg, rgba(55, 31, 30, 0.96) 0%, rgba(20, 10, 14, 0.96) 100%);
+}
+
+.safe-harbor-handoff[data-state="guarded"] {
+  color: #ffd6df;
+  border-color: rgba(255, 132, 176, 0.34);
+  background:
+    linear-gradient(180deg, rgba(57, 18, 33, 0.96) 0%, rgba(22, 9, 16, 0.96) 100%);
+}
+
+.safe-harbor-handoff[data-state="ready"] {
+  color: #f4ffd8;
+  border-color: rgba(188, 255, 138, 0.4);
+  background:
+    linear-gradient(180deg, rgba(40, 52, 24, 0.96) 0%, rgba(20, 12, 25, 0.96) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 24px rgba(188, 255, 138, 0.12);
+}
+
 .statepill.warn {
   color: #ffd2c5;
   border-color: rgba(255, 126, 89, 0.32);
@@ -3632,6 +3698,12 @@ body[data-station-route="trainer"] .station-view-head {
 @media (max-width: 720px) {
   .statusrail {
     gap: 8px;
+  }
+
+  .safe-harbor-handoff {
+    margin-left: 0;
+    justify-content: center;
+    width: 100%;
   }
 
   .station-view-head {
