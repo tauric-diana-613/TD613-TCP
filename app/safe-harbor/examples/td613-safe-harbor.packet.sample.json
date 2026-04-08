@@ -4,7 +4,7 @@
   "created_at": "2026-04-03T00:00:00Z",
   "canonicalization": {
     "engine": "TD613 Safe Harbor",
-    "version": "0.4.1",
+    "version": "0.5.0",
     "mode": "staged-intake-packet",
     "public_mode": "legacy-compat",
     "corpus_hash_sha256": "BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88"
@@ -12,7 +12,7 @@
   "receipt": {
     "receipt_id": "SHR-20260403T000000-4f2a9c1d",
     "minted_at": "2026-04-03T00:00:00Z",
-    "state": "harbor-eligible"
+    "state": "sealed"
   },
   "canon": {
     "principal": "tauric.diana.613",
@@ -65,6 +65,29 @@
       "tcp": "attached",
       "eo": "attached",
       "signature": "overlay-bound"
+    }
+  },
+  "handshake": {
+    "principal_assertion": {
+      "required": true,
+      "principal_id": "tauric.diana.613",
+      "asserted": true,
+      "asserted_at": "2026-04-03T00:00:00Z"
+    },
+    "operator_witness": {
+      "required": true,
+      "operator_id": "safe-harbor.operator",
+      "recorded_operator_id": "safe-harbor.operator",
+      "witnessed": true,
+      "witnessed_at": "2026-04-03T00:00:00Z"
+    },
+    "countersign_rule": {
+      "required": [
+        "principal_assertion",
+        "operator_witness"
+      ],
+      "satisfied": true,
+      "blockers": []
     }
   },
   "analysis": {
@@ -183,11 +206,11 @@
     "cross_lane_stability": 0.8889,
     "cross_lane_spread": 0.1111,
     "route": {
-      "state": "staged",
+      "state": "sealed",
       "source": "local ingress + demo-eo",
       "recommended_harbor": "provenance.seal",
       "export_ready": false,
-      "membrane_note": "A staged packet is present. Covenant Export is still required before the packet becomes harbor-eligible.",
+      "membrane_note": "A signature overlay is attached. Principal assertion and operator witness must align before Covenant Export can clear the harbor gate.",
       "provenance": {
         "integrity": 0.94,
         "confidence": 0.89,
@@ -200,10 +223,10 @@
     }
   },
   "issuance": {
-    "badge_number": "TD613-SH-9B07D8B-0C8F9A2D",
-    "badge_state": "assigned",
-    "assigned_at": "2026-04-03T00:00:00Z",
-    "assignment_basis": "deterministic-hash(packet_id|receipt_id|binding_fragment|payload|date|principal|request_id)"
+    "badge_number": null,
+    "badge_state": "not-assigned",
+    "assigned_at": null,
+    "assignment_basis": null
   },
   "bridge": {
     "public_probe_defaults": {
@@ -223,19 +246,26 @@
     "covenant_gate": {
       "confirmed": false,
       "confirmed_at": null,
+      "principal_asserted": true,
+      "operator_witnessed": true,
+      "countersign_satisfied": true,
+      "ready_for_export": true,
+      "blockers": [
+        "covenant-confirmation-required"
+      ],
       "required": true,
       "action_label": "Covenant Export"
     },
     "export_gate": {
       "ready": false,
-      "state": "guarded",
+      "state": "sealed",
       "blockers": [
         "covenant-confirmation-required"
       ],
       "scrub_passed": true
     }
   },
-  "packet_hash_sha256": "sha256:6d3ca449f6a403dc2cbf5e92c4b2d592355cb38d73bd89243c6536efec96ad98",
+  "packet_hash_sha256": "sha256:58a88af8907e81cbd2664072abebe48842d5b3f9bdf093f126f36172f2d27079",
   "signature": {
     "sig_type": "JWS-detached",
     "kid": "tauric.diana.613",

@@ -31,7 +31,7 @@
     }
   },
   "safe_harbor": {
-    "version": "0.4.1",
+    "version": "0.5.0",
     "packet_schema_version": "td613.safe-harbor.packet/v1",
     "packet_hash_field": "packet_hash_sha256",
     "lifecycle_states": [

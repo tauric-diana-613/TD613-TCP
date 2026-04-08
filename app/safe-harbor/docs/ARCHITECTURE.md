@@ -69,10 +69,12 @@ This repo does not silently change those outputs yet.
 Instead, it builds the Safe Harbor packet in parallel so the future intake rollout can happen without ontology drift.
 
 
-## Stabilization notes (0.4.0)
+## Stabilization notes (0.5.0)
 
 - The ingress membrane no longer auto-opens when the third lane fills. Operators must explicitly mint the staged packet.
+- Boot-safe membrane state is now explicit: pending boot clears on success and remains sealed on runtime faults.
 - Operator bypass is a distinct packetless shell state and must not be treated as equivalent to a staged packet.
+- Principal assertion and operator witness are separate handshake records on the packet and must both exist before Covenant Export can clear the harbor gate.
 - Signature lanes still attach after packetization; they do not mint or mutate the packet body.
 - Canonical lifecycle names now prefer `staged`, `sealed`, `harbor-eligible`, `exported`, and `verified`.
 

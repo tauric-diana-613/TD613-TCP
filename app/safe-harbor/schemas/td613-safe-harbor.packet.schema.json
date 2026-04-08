@@ -11,6 +11,7 @@
     "canon",
     "ingress",
     "intake",
+    "handshake",
     "analysis",
     "issuance",
     "signature",
@@ -229,6 +230,100 @@
         }
       }
     },
+    "handshake": {
+      "type": "object",
+      "required": [
+        "principal_assertion",
+        "operator_witness",
+        "countersign_rule"
+      ],
+      "properties": {
+        "principal_assertion": {
+          "type": "object",
+          "required": [
+            "required",
+            "principal_id",
+            "asserted",
+            "asserted_at"
+          ],
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "principal_id": {
+              "type": "string"
+            },
+            "asserted": {
+              "type": "boolean"
+            },
+            "asserted_at": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "operator_witness": {
+          "type": "object",
+          "required": [
+            "required",
+            "operator_id",
+            "recorded_operator_id",
+            "witnessed",
+            "witnessed_at"
+          ],
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "operator_id": {
+              "type": "string"
+            },
+            "recorded_operator_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "witnessed": {
+              "type": "boolean"
+            },
+            "witnessed_at": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "countersign_rule": {
+          "type": "object",
+          "required": [
+            "required",
+            "satisfied",
+            "blockers"
+          ],
+          "properties": {
+            "required": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "satisfied": {
+              "type": "boolean"
+            },
+            "blockers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
     "analysis": {
       "type": "object",
       "required": [
@@ -291,6 +386,7 @@
                 "buffer-prep",
                 "triad-ready",
                 "staged",
+                "sealed",
                 "harbor-eligible",
                 "exported",
                 "verified",
@@ -387,6 +483,11 @@
           "required": [
             "confirmed",
             "confirmed_at",
+            "principal_asserted",
+            "operator_witnessed",
+            "countersign_satisfied",
+            "ready_for_export",
+            "blockers",
             "required",
             "action_label"
           ],
@@ -399,6 +500,24 @@
                 "string",
                 "null"
               ]
+            },
+            "principal_asserted": {
+              "type": "boolean"
+            },
+            "operator_witnessed": {
+              "type": "boolean"
+            },
+            "countersign_satisfied": {
+              "type": "boolean"
+            },
+            "ready_for_export": {
+              "type": "boolean"
+            },
+            "blockers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "required": {
               "type": "boolean"
@@ -424,6 +543,7 @@
               "type": "string",
               "enum": [
                 "guarded",
+                "sealed",
                 "harbor-eligible",
                 "exported",
                 "verified"

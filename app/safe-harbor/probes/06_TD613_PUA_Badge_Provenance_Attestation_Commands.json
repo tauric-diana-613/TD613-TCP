@@ -91,7 +91,7 @@
   },
   "external_renderer_file": "10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js",
   "safe_harbor": {
-    "version": "0.4.1",
+    "version": "0.5.0",
     "packet_schema_version": "td613.safe-harbor.packet/v1",
     "packet_hash_field": "packet_hash_sha256",
     "boundary_modes": {

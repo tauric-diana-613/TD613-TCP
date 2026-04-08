@@ -188,11 +188,18 @@
                 <div class="metric-row"><span class="label">Cross-lane spread</span><span class="value" id="crossLaneSpreadReadout">pending</span></div>
                 <div class="metric-row"><span class="label">Badge status</span><span class="value" id="badgeStatusReadout">not assigned</span></div>
                 <div class="metric-row"><span class="label">Sealed lane</span><span class="value" id="sealedLaneReadout">session-only / pending</span></div>
+                <div class="metric-row"><span class="label">Principal assertion</span><span class="value" id="principalAssertionReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Operator witness</span><span class="value" id="operatorWitnessReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Countersign rule</span><span class="value" id="countersignRuleReadout">awaiting staged packet</span></div>
               </div>
               <div class="button-grid">
+                <button class="control secondary" id="assertPrincipal" type="button">Principal Assertion</button>
+                <button class="control secondary" id="operatorWitness" type="button">Operator Witness</button>
                 <button class="control" id="covenantExport" type="button">Covenant Export</button>
+                <button class="control secondary" id="clearHandshake" type="button">Reset Handshake</button>
                 <button class="control secondary" id="resealVault" type="button">Reseal Vault</button>
               </div>
+              <div class="note" id="handshakeNote">The staged packet requires principal assertion and operator witness before Covenant Export can clear the harbor gate.</div>
               <div class="note" id="covenantNote">Vault-open stages the packet only. Covenant Export must be invoked before harbor eligibility and badge assignment.</div>
             </article>
           </div>

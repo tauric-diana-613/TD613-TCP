@@ -77,8 +77,15 @@
     crossLaneSpreadReadout: $('crossLaneSpreadReadout'),
     badgeStatusReadout: $('badgeStatusReadout'),
     sealedLaneReadout: $('sealedLaneReadout'),
+    principalAssertionReadout: $('principalAssertionReadout'),
+    operatorWitnessReadout: $('operatorWitnessReadout'),
+    countersignRuleReadout: $('countersignRuleReadout'),
+    assertPrincipal: $('assertPrincipal'),
+    operatorWitness: $('operatorWitness'),
     covenantExport: $('covenantExport'),
+    clearHandshake: $('clearHandshake'),
     resealVault: $('resealVault'),
+    handshakeNote: $('handshakeNote'),
     covenantNote: $('covenantNote'),
     helperTs: $('helperTs'),
     helperRequestId: $('helperRequestId'),
@@ -136,13 +143,27 @@
       packetId: null,
       bypass: false
     },
+    handshake: {
+      principal_asserted: false,
+      principal_asserted_at: null,
+      operator_witnessed: false,
+      operator_witnessed_at: null,
+      operator_id: null
+    },
     covenant: { confirmed: false, confirmedAt: null, badgeNumber: null },
     operatorSignature: null
   };
 
   let refreshSeq = 0;
 
-  init();
+  installBootHandlers();
+  try {
+    init();
+    markBootReady();
+  } catch (error) {
+    markBootFailed(error);
+    console.error('TD613 Safe Harbor boot failed.', error);
+  }
 
   function init() {
     renderStatic();
@@ -151,6 +172,31 @@
     hydrate();
     void rebuild('init');
     exposeApi();
+  }
+
+  function installBootHandlers() {
+    window.addEventListener('error', (event) => {
+      markBootFailed(event && event.error ? event.error : event);
+    });
+    window.addEventListener('unhandledrejection', (event) => {
+      markBootFailed(event && event.reason ? event.reason : event);
+    });
+  }
+
+  function markBootReady() {
+    if (!dom.body) return;
+    dom.body.classList.remove('boot-pending', 'boot-failed');
+    dom.body.classList.add('boot-ready');
+  }
+
+  function markBootFailed(error) {
+    if (!dom.body) return;
+    dom.body.classList.remove('boot-pending');
+    dom.body.classList.add('boot-failed');
+    if (dom.ingressNote && !surfaceOpen()) {
+      dom.ingressNote.textContent = 'Boot-safe membrane caught a runtime fault. Intake remains sealed until operator review.';
+    }
+    if (error && console && console.error) console.error(error);
   }
 
   function bind() {
@@ -164,7 +210,10 @@
     dom.clearIngress.addEventListener('click', resetAll);
     dom.resealVault.addEventListener('click', resetAll);
     dom.refreshHelpers.addEventListener('click', () => refreshHelpers());
+    dom.assertPrincipal.addEventListener('click', () => void assertPrincipal());
+    dom.operatorWitness.addEventListener('click', () => void witnessOperator());
     dom.covenantExport.addEventListener('click', () => void covenantExport());
+    dom.clearHandshake.addEventListener('click', clearHandshake);
     dom.mintStagedPacket.addEventListener('click', () => void mintStagedPacket());
     dom.setBypassToken.addEventListener('click', () => void setLocalBypassToken());
     dom.clearBypassToken.addEventListener('click', clearLocalBypassToken);
@@ -243,6 +292,7 @@
       audit: Array.isArray(saved.audit) ? saved.audit.slice(0, MAX_AUDIT) : [],
       renderer: saved.renderer || state.renderer,
       ingress: Object.assign(state.ingress, saved.ingress || {}),
+      handshake: Object.assign(state.handshake, saved.handshake || {}),
       covenant: Object.assign(state.covenant, saved.covenant || {}),
       operatorSignature: saved.operatorSignature || null
     });
@@ -272,6 +322,7 @@
       audit: state.audit,
       renderer: state.renderer,
       ingress: state.ingress,
+      handshake: state.handshake,
       covenant: state.covenant,
       operatorSignature: state.operatorSignature,
       forms: {
@@ -297,6 +348,7 @@
   }
 
   async function handleFormChange() {
+    if (state.ingress.packetId) invalidateAttestationState('form-change');
     render();
     persist();
     if (state.ingress.packetId) await rebuild('form');
@@ -320,6 +372,7 @@
     const bypassReady = Boolean(getOperatorBypassHash());
     const devModeEnabled = getDevModeEnabled();
     const activeKey = count < KEYS.length ? KEYS[count] : null;
+    const resettable = hasResettableState();
     dom.ingressVaultPill.textContent = state.ingress.operatorShellOpen ? 'operator shell' : state.ingress.vaultOpen ? 'packet staged' : count === 3 ? 'triad ready' : 'vault sealed';
     dom.ingressNote.textContent = state.ingress.bypass
       ? 'Operator bypass accepted. The shell is open in packetless mode. No staged packet, covenant transition, or badge issuance exists yet.'
@@ -336,6 +389,7 @@
     dom.bypassPassword.disabled = surfaceIsOpen;
     dom.setBypassToken.disabled = surfaceIsOpen || !(dom.bypassPassword.value || '').trim();
     dom.clearBypassToken.disabled = surfaceIsOpen || !bypassReady;
+    dom.clearIngress.disabled = !resettable;
     dom.bypassPassword.placeholder = bypassReady ? 'Enter local operator token for packetless bypass' : 'Set a local operator token for this session';
     dom.demoTcpHook.disabled = !devModeEnabled;
     dom.demoEoHook.disabled = !devModeEnabled;
@@ -404,35 +458,59 @@
       dom.crossLaneSpreadReadout.textContent = 'pending';
       dom.badgeStatusReadout.textContent = 'not assigned';
       dom.sealedLaneReadout.textContent = state.ingress.bypass ? 'not staged' : 'session-only / pending';
+      dom.principalAssertionReadout.textContent = state.ingress.bypass ? 'operator-bypass / no packet' : 'pending';
+      dom.operatorWitnessReadout.textContent = state.ingress.bypass ? 'operator-bypass / no packet' : 'pending';
+      dom.countersignRuleReadout.textContent = state.ingress.bypass ? 'no packet' : 'awaiting staged packet';
       dom.packetStateReadout.textContent = state.ingress.bypass ? 'operator-bypass / packetless' : (completedCount() === 3 ? 'triad-ready / awaiting staged packet' : 'awaiting ingress');
       dom.provenanceRetentionReadout.textContent = 'pending';
       dom.packetPreview.textContent = 'packet pending';
+      dom.handshakeNote.textContent = state.ingress.bypass
+        ? 'Operator bypass opens a packetless shell only. Principal assertion and operator witness do not exist until a staged packet is minted.'
+        : 'The staged packet requires principal assertion and operator witness before Covenant Export can clear the harbor gate.';
       dom.covenantNote.textContent = state.ingress.bypass
         ? 'The shell is open through operator bypass only. No staged packet, covenant transition, or badge issuance exists yet.'
-        : 'Vault-open stages the packet only. Covenant Export must be invoked before harbor eligibility and badge assignment. Signature overlays attach only after a staged packet exists.';
+        : 'Vault-open stages the packet only. Attach any overlay lanes, then record principal assertion and operator witness before invoking Covenant Export.';
+      dom.assertPrincipal.disabled = true;
+      dom.operatorWitness.disabled = true;
       dom.covenantExport.disabled = true;
+      dom.clearHandshake.disabled = true;
       return;
     }
 
+    const handshake = state.packet.handshake || handshakeSnapshot(updateFormValues());
+    const countersignBlockers = handshake.countersign_rule && Array.isArray(handshake.countersign_rule.blockers) ? handshake.countersign_rule.blockers : [];
     dom.packetIdReadout.textContent = state.packet.packet_id;
     dom.receiptIdReadout.textContent = state.packet.receipt.receipt_id;
     dom.packetHashReadout.textContent = state.packet.packet_hash_sha256;
     dom.harborReadout.textContent = state.packet.analysis.route.recommended_harbor;
     dom.exportGateReadout.textContent = state.packet.bridge.export_gate.state;
-    dom.covenantStateReadout.textContent = state.packet.bridge.covenant_gate.confirmed ? ('harbor-eligible / ' + state.packet.issuance.badge_number) : (state.packet.signature.status === 'sealed' ? 'sealed / signature attached' : 'staged / confirmation required');
+    dom.covenantStateReadout.textContent = state.packet.bridge.covenant_gate.confirmed
+      ? ('harbor-eligible / ' + state.packet.issuance.badge_number)
+      : (state.packet.bridge.covenant_gate.ready_for_export ? 'ready / covenant export' : ('guarded / ' + describeBlockers(state.packet.bridge.covenant_gate.blockers)));
     dom.cadenceReadout.textContent = cadenceLabel(state.packet.analysis.cadence_signature);
     dom.triadResonanceReadout.textContent = metric(state.packet.analysis.triad_resonance);
     dom.crossLaneStabilityReadout.textContent = metric(state.packet.analysis.cross_lane_stability);
     dom.crossLaneSpreadReadout.textContent = metric(state.packet.analysis.cross_lane_spread);
     dom.badgeStatusReadout.textContent = state.packet.issuance.badge_number || 'not assigned';
     dom.sealedLaneReadout.textContent = 'session-only / operator-only';
+    dom.principalAssertionReadout.textContent = handshake.principal_assertion.asserted ? ('asserted / ' + handshake.principal_assertion.asserted_at) : 'awaiting principal assertion';
+    dom.operatorWitnessReadout.textContent = handshake.operator_witness.witnessed ? ('witnessed / ' + handshake.operator_witness.witnessed_at) : 'awaiting operator witness';
+    dom.countersignRuleReadout.textContent = handshake.countersign_rule.satisfied ? 'principal + operator aligned' : describeBlockers(countersignBlockers);
     dom.packetStateReadout.textContent = state.packet.receipt.state;
     dom.provenanceRetentionReadout.textContent = state.packet.analysis.route.provenance ? metric(state.packet.analysis.route.provenance.retention_target) : 'pending';
     dom.packetPreview.textContent = JSON.stringify(state.packet, null, 2);
+    dom.handshakeNote.textContent = handshake.countersign_rule.satisfied
+      ? 'Principal assertion and operator witness are present on this packet. Covenant Export can clear the harbor gate once the signature overlay and scrub checks remain clean.'
+      : ('Handshake blockers: ' + describeBlockers(countersignBlockers));
     dom.covenantNote.textContent = state.packet.bridge.covenant_gate.confirmed
       ? 'Covenant is confirmed. The packet is sealed, harbor-eligible, and ready for downstream export lanes once operator policy allows.'
-      : (state.packet.signature.status === 'sealed' ? 'A signature overlay is attached. Covenant Export is still required before harbor eligibility and badge assignment.' : 'The packet is staged only. Covenant Export must be invoked before harbor eligibility and badge assignment.');
-    dom.covenantExport.disabled = state.packet.bridge.covenant_gate.confirmed;
+      : (state.packet.signature.status === 'sealed'
+          ? 'A signature overlay is attached. Principal assertion and operator witness still gate Covenant Export.'
+          : 'The packet is staged only. Attach any signature overlay, then complete the handshake before Covenant Export.');
+    dom.assertPrincipal.disabled = state.packet.bridge.covenant_gate.confirmed || handshake.principal_assertion.asserted;
+    dom.operatorWitness.disabled = state.packet.bridge.covenant_gate.confirmed || handshake.operator_witness.witnessed;
+    dom.covenantExport.disabled = state.packet.bridge.covenant_gate.confirmed || !state.packet.bridge.covenant_gate.ready_for_export;
+    dom.clearHandshake.disabled = !(handshake.principal_assertion.asserted || handshake.operator_witness.witnessed || state.packet.bridge.covenant_gate.confirmed);
   }
 
   function renderAudit() {
@@ -555,16 +633,23 @@
   async function covenantExport() {
 
     if (!state.ingress.packetId || !state.packet) return;
+    const blockers = pendingCovenantBlockers(state.packet.bridge && state.packet.bridge.export_gate ? state.packet.bridge.export_gate.blockers : []);
+    if (blockers.length) {
+      dom.covenantNote.textContent = 'Covenant Export is blocked: ' + describeBlockers(blockers) + '.';
+      logEvent('covenant-export-blocked', { blockers: blockers });
+      return;
+    }
     if (!state.covenant.confirmed) {
       state.covenant.confirmed = true;
       state.covenant.confirmedAt = nowIso();
-      state.covenant.badgeNumber = badgeNumber(state.ingress.packetId, state.ingress.receiptId);
+      state.covenant.badgeNumber = badgeNumberForContext(state.ingress.packetId, state.ingress.receiptId, state.packet.canon.payload_index, state.packet.canon.attestation_date, D.canon.principal, state.packet.intake.request_id);
       await rebuild('covenant-export');
       logEvent('covenant-export', { badge_number: state.covenant.badgeNumber });
     }
   }
 
   async function resetHooks() {
+    invalidateAttestationState('hooks-reset');
     state.hooks = { tcp: null, eo: null, signature: null };
     if (state.ingress.packetId) await rebuild('hooks-reset');
     else { render(); persist(); }
@@ -572,6 +657,7 @@
   }
 
   async function attachHook(kind, detail) {
+    if (state.ingress.packetId) invalidateAttestationState(kind + '-hook');
     state.hooks[kind] = detail;
     if (state.ingress.packetId) await rebuild(kind + '-hook');
     else { render(); persist(); }
@@ -608,6 +694,7 @@
     state.audit = [];
     state.renderer = { detected: false, meta: null };
     state.ingress = { segments: { future_self: '', past_self: '', higher_self: '' }, vaultOpen: false, operatorShellOpen: false, openedAt: null, receiptId: null, packetId: null, bypass: false };
+    state.handshake = { principal_asserted: false, principal_asserted_at: null, operator_witnessed: false, operator_witnessed_at: null, operator_id: null };
     state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
     state.operatorSignature = null;
     dom.inputFooterMode.value = D.trustProfile.current_public_mode;
@@ -631,6 +718,23 @@
 
   function surfaceOpen() { return Boolean(state.ingress.vaultOpen || state.ingress.operatorShellOpen); }
 
+  function hasResettableState() {
+    if (completedCount() > 0) return true;
+    if (state.ingress.vaultOpen || state.ingress.operatorShellOpen || state.ingress.bypass || state.ingress.packetId || state.ingress.receiptId) return true;
+    if (state.packet || state.sealed || state.operatorSignature) return true;
+    if (state.handshake.principal_asserted || state.handshake.operator_witnessed || state.covenant.confirmed) return true;
+    if (state.hooks.tcp || state.hooks.eo || state.hooks.signature) return true;
+    const defaults = updateFormValues();
+    if (defaults.footerMode !== D.trustProfile.current_public_mode) return true;
+    if (defaults.payloadIndex !== null || defaults.attestationDate !== null) return true;
+    if ((defaults.operatorId || 'safe-harbor.operator') !== 'safe-harbor.operator') return true;
+    if ((defaults.sourceClass || 'public membrane') !== 'public membrane') return true;
+    if ((defaults.witnessChannel || 'mixed') !== 'mixed') return true;
+    if (defaults.operatorNotes) return true;
+    if (trim(dom.inputSigType.value) || trim(dom.inputSigDetachedRef.value) || trim(dom.inputSigValue.value)) return true;
+    return false;
+  }
+
   function normalizeHash(value) {
     return String(value || '').trim().toLowerCase();
   }
@@ -647,13 +751,110 @@
     return (D.operatorBypass && D.operatorBypass.token_hash_sha256) || null;
   }
 
+  function getDevModeEnabled() {
+    try {
+      const local = window.TD613_SAFE_HARBOR_OPERATOR && window.TD613_SAFE_HARBOR_OPERATOR.dev_mode_enabled;
+      if (local === true) return true;
+    } catch (error) {}
+    try {
+      const stored = sessionStorage.getItem((D.operatorBypass && D.operatorBypass.dev_mode_storage_key) || 'td613.safe-harbor.dev-mode.enabled');
+      if (stored === 'true' || stored === '1') return true;
+    } catch (error) {}
+    return Boolean(D.uiBoundaries && D.uiBoundaries.dev_mode && D.uiBoundaries.dev_mode.default_enabled);
+  }
+
   function routeState() {
     if (state.ingress.operatorShellOpen && !state.ingress.packetId) return 'operator-bypass';
     if (!state.ingress.vaultOpen) {
       const count = completedCount();
       return count <= 0 ? 'membrane-only' : count === 1 ? 'warning' : count === 2 ? 'buffer-prep' : 'triad-ready';
     }
-    return state.covenant.confirmed && state.ingress.packetId ? 'harbor-eligible' : 'staged';
+    if (state.packet && state.packet.bridge && state.packet.bridge.export_gate && state.packet.bridge.export_gate.ready) return 'harbor-eligible';
+    if (state.packet && state.packet.signature && state.packet.signature.status === 'sealed') return 'sealed';
+    return 'staged';
+  }
+
+  async function assertPrincipal() {
+    if (!state.ingress.packetId || !state.packet || state.covenant.confirmed) return;
+    if (!state.handshake.principal_asserted) {
+      state.handshake.principal_asserted = true;
+      state.handshake.principal_asserted_at = nowIso();
+      await rebuild('principal-asserted');
+      logEvent('principal-asserted', { principal: D.canon.principal, packet_id: state.ingress.packetId });
+    }
+  }
+
+  async function witnessOperator() {
+    if (!state.ingress.packetId || !state.packet || state.covenant.confirmed) return;
+    const operatorId = operatorIdentity(updateFormValues());
+    state.handshake.operator_witnessed = true;
+    state.handshake.operator_witnessed_at = nowIso();
+    state.handshake.operator_id = operatorId;
+    await rebuild('operator-witnessed');
+    logEvent('operator-witnessed', { operator_id: operatorId, packet_id: state.ingress.packetId });
+  }
+
+  function clearHandshake() {
+    if (!state.ingress.packetId && !(state.handshake.principal_asserted || state.handshake.operator_witnessed || state.covenant.confirmed)) return;
+    invalidateAttestationState('handshake-reset');
+    if (state.ingress.packetId) void rebuild('handshake-reset');
+    else { render(); persist(); }
+  }
+
+  function invalidateAttestationState(reason) {
+    const hadAttestation = Boolean(state.handshake.principal_asserted || state.handshake.operator_witnessed || state.covenant.confirmed);
+    state.handshake = { principal_asserted: false, principal_asserted_at: null, operator_witnessed: false, operator_witnessed_at: null, operator_id: null };
+    state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
+    if (hadAttestation) logEvent('attestation-invalidated', { reason: reason || 'packet-mutation' });
+  }
+
+  function operatorIdentity(form) {
+    return (form && form.operatorId) ? form.operatorId : 'safe-harbor.operator';
+  }
+
+  function handshakeSnapshot(form) {
+    const operatorId = operatorIdentity(form);
+    const principalAsserted = Boolean(state.handshake.principal_asserted);
+    const operatorWitnessed = Boolean(state.handshake.operator_witnessed && state.handshake.operator_id && state.handshake.operator_id === operatorId);
+    const blockers = [];
+    if (!principalAsserted) blockers.push('principal-assertion-required');
+    if (!operatorWitnessed) blockers.push('operator-witness-required');
+    return {
+      principal_assertion: {
+        required: true,
+        principal_id: D.canon.principal,
+        asserted: principalAsserted,
+        asserted_at: principalAsserted ? state.handshake.principal_asserted_at : null
+      },
+      operator_witness: {
+        required: true,
+        operator_id: operatorId,
+        recorded_operator_id: state.handshake.operator_id,
+        witnessed: operatorWitnessed,
+        witnessed_at: operatorWitnessed ? state.handshake.operator_witnessed_at : null
+      },
+      countersign_rule: {
+        required: ['principal_assertion', 'operator_witness'],
+        satisfied: blockers.length === 0,
+        blockers: blockers
+      }
+    };
+  }
+
+  function pendingCovenantBlockers(blockers) {
+    return (blockers || []).filter((blocker) => blocker !== 'covenant-confirmation-required');
+  }
+
+  function describeBlockers(blockers) {
+    const labels = {
+      'principal-assertion-required': 'principal assertion required',
+      'operator-witness-required': 'operator witness required',
+      'covenant-confirmation-required': 'covenant export required',
+      'public-packet-scrub-failed': 'public packet scrub failed',
+      'signature-seal-required': 'signature seal required'
+    };
+    const values = (blockers || []).map((blocker) => labels[blocker] || blocker);
+    return values.length ? values.join(', ') : 'none';
   }
 
   function completedCount() {
@@ -783,7 +984,7 @@
       sig: lane.sig || null,
       detached_ref: lane.detached_ref || null,
       status: sigPresent ? 'sealed' : ((lane.sig_type || laneName) ? 'declared' : 'unsigned'),
-      attached_at: sigPresent ? nowIso() : null
+      attached_at: sigPresent ? (lane.attached_at || nowIso()) : null
     };
   }
   async function attachSignatureOverlay() {
@@ -792,11 +993,13 @@
     const detachedRef = trim(dom.inputSigDetachedRef.value) || null;
     const sig = trim(dom.inputSigValue.value) || null;
     if (!sigType && !sig && !detachedRef) {
+      if (state.ingress.packetId && state.operatorSignature) invalidateAttestationState('signature-overlay-cleared');
       state.operatorSignature = null;
-      render();
-      persist();
+      if (state.ingress.packetId) await rebuild('signature-overlay-cleared');
+      else { render(); persist(); }
       return;
     }
+    if (state.ingress.packetId) invalidateAttestationState('signature-overlay');
     state.operatorSignature = {
       status: sig ? 'sealed' : 'declared',
       source: 'operator-signature-overlay',
@@ -805,13 +1008,15 @@
       kid: kid,
       alg: sigType === 'detached-ed25519' ? 'Ed25519' : 'HS256',
       detached_ref: detachedRef,
-      sig: sig
+      sig: sig,
+      attached_at: sig ? nowIso() : null
     };
     if (state.ingress.packetId) await rebuild('signature-overlay');
     else { render(); persist(); }
     logEvent('signature-overlay-attached', { sig_type: state.operatorSignature.sig_type, kid: state.operatorSignature.kid });
   }
   async function clearSignatureOverlay() {
+    if (state.ingress.packetId) invalidateAttestationState('signature-overlay-cleared');
     state.operatorSignature = null;
     dom.inputSigType.value = '';
     dom.inputSigKid.value = (D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal;
@@ -859,6 +1064,7 @@
 
     const triad = triadMetrics(signatures);
     const cadence = overlayCadence(summaryCadence(signatures, triad));
+    const handshake = handshakeSnapshot(form);
     const signatureLane = resolvedSignatureLane();
     const signatureObject = signatureForPacket();
     const badgeAssignment = state.covenant.confirmed ? badgeNumberForContext(state.ingress.packetId, state.ingress.receiptId, form.payloadIndex, form.attestationDate, D.canon.principal, state.helper.request_id) : null;
@@ -910,6 +1116,7 @@
           signature: state.hooks.signature ? state.hooks.signature.status || 'overlay-bound' : 'overlay idle'
         }
       },
+      handshake: handshake,
       analysis: {
         cadence_signature: cadence,
         segment_cadence_signatures: signatures,
@@ -917,16 +1124,16 @@
         cross_lane_stability: triad.cross_lane_stability,
         cross_lane_spread: triad.cross_lane_spread,
         route: {
-          state: routeState(),
+          state: signatureObject.status === 'sealed' ? 'sealed' : 'staged',
           source: state.hooks.eo ? ('local ingress + ' + (state.hooks.eo.source || 'eo-hook')) : 'local ingress',
           recommended_harbor: state.hooks.eo ? (state.hooks.eo.recommended_harbor || 'provenance.seal') : (state.covenant.confirmed ? 'provenance.seal' : 'packet.stage'),
           export_ready: false,
-          membrane_note: D.routeCopy[routeState()] || '',
+          membrane_note: D.routeCopy[signatureObject.status === 'sealed' ? 'sealed' : 'staged'] || '',
           provenance: state.hooks.eo && state.hooks.eo.provenance ? state.hooks.eo.provenance : { integrity: 0.91, confidence: 0.86, retention_target: 0.98 }
         },
         eo_alignment: {
           route_source: state.hooks.eo ? (state.hooks.eo.source || 'eo-hook') : 'local ingress',
-          membrane_note: state.hooks.eo && state.hooks.eo.membrane_note ? state.hooks.eo.membrane_note : (D.routeCopy[routeState()] || '')
+          membrane_note: state.hooks.eo && state.hooks.eo.membrane_note ? state.hooks.eo.membrane_note : (D.routeCopy[signatureObject.status === 'sealed' ? 'sealed' : 'staged'] || '')
         }
       },
       issuance: {
@@ -945,6 +1152,11 @@
         covenant_gate: {
           confirmed: state.covenant.confirmed,
           confirmed_at: state.covenant.confirmed ? state.covenant.confirmedAt : null,
+          principal_asserted: handshake.principal_assertion.asserted,
+          operator_witnessed: handshake.operator_witness.witnessed,
+          countersign_satisfied: handshake.countersign_rule.satisfied,
+          ready_for_export: false,
+          blockers: [],
           required: true,
           action_label: 'Covenant Export'
         },
@@ -953,18 +1165,25 @@
     };
 
     const scrub = scrubCheck(packet, sealedSegments);
+    const blockers = exportBlockers(scrub, handshake, packet.signature);
+    const readyForExport = blockers.length === 1 && blockers[0] === 'covenant-confirmation-required';
+    packet.bridge.covenant_gate.ready_for_export = readyForExport;
+    packet.bridge.covenant_gate.blockers = blockers;
     packet.bridge.export_gate.scrub_passed = scrub.passed;
-    packet.bridge.export_gate.ready = Boolean(state.covenant.confirmed && scrub.passed && packet.signature.status === 'sealed');
+    packet.bridge.export_gate.ready = Boolean(state.covenant.confirmed && scrub.passed && handshake.countersign_rule.satisfied && packet.signature.status === 'sealed');
     packet.bridge.export_gate.state = packet.bridge.export_gate.ready ? 'harbor-eligible' : (packet.signature.status === 'sealed' ? 'sealed' : 'guarded');
-    packet.bridge.export_gate.blockers = exportBlockers(scrub);
+    packet.bridge.export_gate.blockers = blockers;
     packet.analysis.route.export_ready = packet.bridge.export_gate.ready;
+    packet.analysis.route.state = packet.bridge.export_gate.ready ? 'harbor-eligible' : (packet.signature.status === 'sealed' ? 'sealed' : 'staged');
+    packet.analysis.route.membrane_note = D.routeCopy[packet.analysis.route.state] || '';
+    packet.analysis.eo_alignment.membrane_note = state.hooks.eo && state.hooks.eo.membrane_note ? state.hooks.eo.membrane_note : (D.routeCopy[packet.analysis.route.state] || '');
     const packetHashMaterial = clone(packet);
     if (packetHashMaterial.signature) {
       packetHashMaterial.signature.sig = null;
       packetHashMaterial.signature.attached_at = null;
       if (packetHashMaterial.signature.status === 'sealed') packetHashMaterial.signature.status = 'declared';
     }
-    packet.packet_hash_sha256 = await checksum(stable(packetHashMaterial));
+    packet.packet_hash_sha256 = await checksum(canonicalJson(packetHashMaterial));
 
     return {
       packet: packet,
@@ -1044,7 +1263,7 @@
   }
 
   function scrubCheck(packet, sealedSegments) {
-    const preview = stable(packet);
+    const preview = canonicalJson(packet);
     const errors = [];
     if (preview.indexOf('"raw_text"') !== -1) errors.push('raw_text field leaked into public packet');
     KEYS.forEach((key) => {
@@ -1055,12 +1274,14 @@
     return { passed: errors.length === 0, errors: errors };
   }
 
-  function exportBlockers(scrub) {
+  function exportBlockers(scrub, handshake, signature) {
     const blockers = [];
     const signatureLane = resolvedSignatureLane();
     if (!state.covenant.confirmed) blockers.push('covenant-confirmation-required');
+    if (!(handshake && handshake.principal_assertion && handshake.principal_assertion.asserted)) blockers.push('principal-assertion-required');
+    if (!(handshake && handshake.operator_witness && handshake.operator_witness.witnessed)) blockers.push('operator-witness-required');
     if (!scrub.passed) blockers.push('public-packet-scrub-failed');
-    if (!(signatureLane && signatureLane.sig)) blockers.push('signature-seal-required');
+    if (!(signature && signature.status === 'sealed') && !(signatureLane && signatureLane.sig)) blockers.push('signature-seal-required');
     return blockers;
   }
 
@@ -1117,10 +1338,14 @@
     return 'hash64:' + hash64(text);
   }
 
-  function stable(value) {
+  function canonicalJson(value) {
     if (value === null || typeof value !== 'object') return JSON.stringify(value);
-    if (Array.isArray(value)) return '[' + value.map((item) => stable(item)).join(',') + ']';
-    return '{' + Object.keys(value).filter((key) => value[key] !== undefined).sort().map((key) => JSON.stringify(key) + ':' + stable(value[key])).join(',') + '}';
+    if (Array.isArray(value)) return '[' + value.map((item) => canonicalJson(item)).join(',') + ']';
+    return '{' + Object.keys(value).filter((key) => value[key] !== undefined).sort().map((key) => JSON.stringify(key) + ':' + canonicalJson(value[key])).join(',') + '}';
+  }
+
+  function stable(value) {
+    return canonicalJson(value);
   }
 
   function hash64(text) {
@@ -1243,7 +1468,11 @@
       mintStagedPacket: async function () { return mintStagedPacket(); },
       buildProbe: function (variant) { return buildProbeOutput(variant); },
       buildPacket: async function () { return state.packet ? clone(state.packet) : null; },
+      canonicalJson: function (value) { return canonicalJson(value); },
       getSealedPayload: function () { return state.sealed ? clone(state.sealed) : null; },
+      assertPrincipal: async function () { return assertPrincipal(); },
+      witnessOperator: async function () { return witnessOperator(); },
+      clearHandshake: function () { return clearHandshake(); },
       attachSignatureOverlay: async function (detail) {
         if (detail && detail.sigType !== undefined) dom.inputSigType.value = detail.sigType || '';
         if (detail && detail.kid !== undefined) dom.inputSigKid.value = detail.kid || '';

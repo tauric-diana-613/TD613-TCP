@@ -140,6 +140,11 @@ h2 {
   color: var(--accent);
 }
 
+.boot-failed .ingress-note::after {
+  content: " Boot fault captured. Intake remains sealed.";
+  color: var(--aliased);
+}
+
 .chrome-grid {
   min-height: 100vh;
   display: grid;

@@ -2,7 +2,7 @@
   window.TD613_SAFE_HARBOR_DATA = {
     meta: {
       repoName: 'TD613 Safe Harbor',
-      version: '0.4.0',
+      version: '0.5.0',
       subtitle: 'Canonical intake membrane for staged provenance packetization, packet-aware probes, and operator signature sealing. Public, operator, and dev lanes are separated by design.'
     },
     canon: {
@@ -46,6 +46,7 @@
       'New attestations use payload {n}; the fixed payload-5 footer is historical only.',
       'Historical .sig and runtime JWS lanes remain overlays, not the public default path.',
       'Safe Harbor packetization happens before signature attachment.',
+      'Principal assertion and operator witness stay distinct. Covenant Export is blocked until both are present on the staged packet.',
       'Operator bypass is disabled in public ship until a local token hash is configured.',
       'Advanced probe building derives packet context from the staged packet whenever one exists.',
       'Cadence signatures are stylometric credentials; cryptographic signatures are separate seals attached after packetization.'
@@ -103,7 +104,10 @@
       'buffer-prep': 'Two lanes are held. Buffer-prep is active while the third line resolves.',
       'triad-ready': 'The triad is complete. Mint Staged Packet to shape the packet and receipt.',
       staged: 'A staged packet is present. Covenant Export is the only local path to harbor eligibility and badge assignment.',
+      sealed: 'A signature overlay is attached. Principal assertion and operator witness must align before Covenant Export can clear the harbor gate.',
       'harbor-eligible': 'Covenant has been invoked. The sealed packet is now harbor-eligible.',
+      exported: 'The packet has crossed the membrane into an emitted downstream lane.',
+      verified: 'The emitted packet has returned with verification intact.',
       'packet-exported': 'The packet has crossed the membrane into an emitted downstream lane.',
       'operator-bypass': 'Operator bypass opened a packetless shell. No staged packet or harbor transition exists yet.'
     },

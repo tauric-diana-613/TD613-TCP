@@ -4,9 +4,9 @@ TD613 Safe Harbor is a preservation-first rebuild of the original provenance att
 
 The original lab remains untouched in `C:\Users\timst\OneDrive\Desktop\TD613 Provenance Attestation Lab`. This repo is the new scaffold.
 
-## Current stabilization pass (0.4.1)
+## Current stabilization pass (0.5.0)
 
-This pass does five things first: remove auto-unvault, require explicit staged-packet minting, move operator bypass to a distinct packetless shell state, remove the hardcoded bypass secret from the client ship, normalize packet lifecycle naming, and rename `packet_checksum` to `packet_hash_sha256`.
+This pass hardens the live chamber: it keeps the boot-safe membrane honest, restores the staged-packet boot path, makes principal assertion and operator witness explicit handshake steps, blocks Covenant Export until the packet is actually ready, and aligns the packet schema/sample/runtime under `0.5.0`.
 
 ## What does not drift
 
@@ -60,7 +60,7 @@ Operator bypass is no longer protected by a hardcoded client-side password. Publ
 
 ## Current stabilization pass — do next layer
 
-This pass patches canon drift in the reference verifier surfaces, removes `.git` from the shipped archive, aligns Safe Harbor internal version labels to `0.4.0`, and sharpens the boundary between:
+This pass patches canon drift in the reference verifier surfaces, removes `.git` from the shipped archive, aligns Safe Harbor internal version labels to `0.5.0`, and sharpens the boundary between:
 - public mode
 - operator mode
 - dev/demo mode

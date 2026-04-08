@@ -137,12 +137,12 @@
     "Full ship zip excludes the userscript on purpose.",
     "Public probes remain unsigned by default.",
     "Historical .sig and runtime JWS lanes are documented as reference/operator overlays in v7.2.1.",
-    "Safe Harbor internal version aligned to 0.4.1 for the current housekeeping layer.",
+    "Safe Harbor internal version aligned to 0.5.0 for the current handshake and boot-safe layer.",
     "Public / operator / dev boundaries are now explicit; dev hook simulation is disabled by default in public ship.",
     "Reference verifier surfaces now distinguish historical published example from live template and note packet schema td613.safe-harbor.packet/v1."
   ],
   "safe_harbor": {
-    "version": "0.4.1",
+    "version": "0.5.0",
     "packet_schema_version": "td613.safe-harbor.packet/v1",
     "advanced_signature_lane": {
       "public_default": "unsigned",
