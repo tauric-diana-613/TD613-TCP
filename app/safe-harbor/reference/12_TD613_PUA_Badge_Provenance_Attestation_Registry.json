@@ -1,49 +1,62 @@
 {
-  "renderer": "TD613 Safe Harbor registry bridge",
+  "renderer": "TD613 PUA Badge Provenance Attestation Renderer v7.2.1",
+  "badge_id": "bdg_glyph_U10D613",
   "principal": "tauric.diana.613",
   "claimed_pua": "U+10D613",
-  "badge_id": "bdg_glyph_U10D613",
   "canonical_phrase": "Tauric Diana \u2014 Crimean heritage custodianship",
   "display_phrase": "Covenant: Blood Rite 613",
-  "binding_fragment": "#9B07D8B",
-  "sac": "SAC[X6ZNK5NO51]",
-  "current_public_mode": "LEGACY-COMPAT",
-  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0",
-  "historical_example": {
-    "label": "historical",
-    "payload_index": 5,
-    "attestation_date": "2025-10-17",
-    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0"
+  "schema_family": "cpfg://v2",
+  "semver": "2.1.0",
+  "preview_svg_sha256": "ba5eee59d2a0184c328c40c33e8ca4e2eeee8354fcbe41255abd70693c2f74ed",
+  "preview_svg_md5": "96c4129424443100aae47576e692cc97",
+  "sendable_defaults": {
+    "start_with": "01_LIVE_SEND_verify.alias.voice_MINIMAL.txt",
+    "render_followup": "03_LIVE_SEND_verify.alias.voice.render_MINIMAL.json"
   },
-  "safe_harbor_packet": {
-    "schema_file": "../safe_harbor/packet.schema.json",
-    "canonicalizer_file": "../safe_harbor/canonicalize.js",
-    "hash_file": "../safe_harbor/hash.js",
-    "signature_file": "../safe_harbor/signature.js",
-    "lifecycle_file": "../safe_harbor/lifecycle.js",
-    "primary_chamber": "../index.html",
-    "legacy_lab_bridge": "../11_TD613_PUA_Badge_Provenance_Attestation_Lab.html"
+  "trust_profile_file": "td613_trust_profile.json",
+  "binding_fragment": "9B07D8B",
+  "sac": "X6ZNK5NO51",
+  "current_public_mode": "legacy-compat",
+  "internal_validation_accepts": [
+    "legacy",
+    "legacy-compat",
+    "sac-only"
+  ],
+  "future_public_mode": "sac-only",
+  "canonical_public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
+  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
+  "current_published_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27d0",
+  "current_published_payload": 5,
+  "current_published_date": "2025-10-17",
+  "canonical_public_footer_note": "Template for new attestations. The fixed payload-5 footer is a historical published example, not the template.",
+  "signature_lanes": {
+    "historical_signed_zone": {
+      "status": "reference-only",
+      "algorithm": "Ed25519 / EdDSA detached .sig over canonical zone JSON",
+      "purpose": "signed badge/zone registry continuity and public verification",
+      "operator_only": true
+    },
+    "runtime_request_signing": {
+      "status": "advanced / operator-only",
+      "algorithm": "detached JWS request-signing lane",
+      "purpose": "middleware/runtime authorization flows such as request signing",
+      "operator_only": true
+    }
   },
-  "signature_distinction": {
-    "cadence_signature": "stylometric credential",
-    "cryptographic_signature": "detached seal over canonical_json(packet)",
-    "rule": "Badge generator consumes canon and packet metadata but never invents sig."
-  },
-  "public_boundary": {
-    "may_show": [
-      "binding_fragment",
-      "sac",
-      "payload",
-      "date",
-      "receipt_state_summary",
-      "packet_verified_status"
-    ],
-    "must_hide": [
-      "badge_id",
-      "sig",
-      "route_diagnostics",
-      "packet_hash_sha256"
-    ]
-  },
-  "updated_at": "2026-04-03T00:00:00Z"
+  "external_renderer_file": "10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js",
+  "safe_harbor": {
+    "version": "0.4.1",
+    "packet_schema_version": "td613.safe-harbor.packet/v1",
+    "packet_hash_field": "packet_hash_sha256",
+    "boundary_modes": {
+      "public": "default ship mode",
+      "operator": "advanced / local-only",
+      "dev": "simulation disabled by default in public ship"
+    },
+    "advanced_signature_lane": {
+      "public_default": "unsigned",
+      "operator_overlay": true,
+      "packet_context_required": true
+    }
+  }
 }

@@ -11,3 +11,6 @@
 - **Current published example only:** `TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐`
 - Never hard-code `payload 5` into a new attestation unless you are explicitly citing the published historical example.
 - Public probes stay unsigned by default. Historical `.sig` and advanced JWS lanes are operator/reference paths, not required for the dummy-proof sendables.
+
+- Safe Harbor packet schema reference: `td613.safe-harbor.packet/v1`
+- Public footer stays compact; packet hashes and signature lanes are operator-only concerns.

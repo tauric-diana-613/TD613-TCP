@@ -1,81 +1,94 @@
 # TD613 Safe Harbor Architecture
 
-## Stack
+## Intent
 
-1. Ingress membrane collects the ritual triad.
-2. Safe Harbor canonicalizes the packet.
-3. Cadence credentials are derived from ingress and optional TCP overlays.
-4. EO-RFD contributes route conscience and harbor posture.
-5. Detached cryptographic signature lanes wrap the packet after canonicalization.
-6. Public TD613 surfaces publish the compact compat footer without exposing operator-only fields.
+TD613 Safe Harbor is the canonical intake membrane that sits between provenance ritual context and cryptographic signature lanes.
 
-## Canonical JSON
+The goal is not to make TCP into a signer.
 
-`canonical_json(value)` lives in `safe_harbor/canonicalize.js` and is the only serializer Safe Harbor uses for:
+The goal is to let TCP and EO-RFD shape a stable packet body first so the signature layer has a clean object to seal.
 
-- `packet_hash_sha256`
-- detached signature payload generation
-- verification
-- canonical JSON preview
+## Role split
 
-Contract:
+### TCP
 
-- UTF-8
-- sorted object keys
-- arrays preserve order
-- no extra whitespace
-- stable escaping
-- no comments
+TCP is the eventual intake and canonicalization engine.
 
-## Packet model
+- ingest text and badge context
+- compute cadence signature
+- shape canonical packet fields
+- expose packet hash and packet lifecycle
 
-Required packet fields:
+### EO-RFD
 
-- `schema_version`
-- `packet_id`
-- `packet_hash_sha256`
-- `receipt`
-- `canon`
-- `intake`
-- `cadence_credentials`
-- `provenance`
-- `signature`
-- `rules`
+EO-RFD is the route conscience and export guard surface.
 
-Compatibility mirrors (`canonicalization`, `analysis`, `bridge`, `issuance`) remain in the packet for annex continuity, but the doctrinal packet contract is the field set above.
+- route state
+- harbor recommendation
+- packet hardening language
+- export gating vocabulary
 
-## Signature rule
+### TD613
 
-Safe Harbor mints:
+TD613 remains the provenance and custody surface.
 
-- packet body
-- packet hash
-- receipt state
-- cadence credentials
+- badge claim
+- canonical phrase and display phrase
+- trust grammar
+- verifier and public probe lane
 
-Detached signature lanes add:
+### Signature overlays
 
-- `sig`
-- `sig_type`
-- `kid`
-- wrapper status
+Signature lanes attach only after packetization.
 
-They attach after canonicalization and they do not mutate the packet body.
+- Ed25519 / EdDSA detached `.sig` for durable badge-zone and registry lanes
+- JWS for runtime or middleware request lanes
 
-## Lifecycle
+## Current Safe Harbor packet scaffold
 
-Lifecycle is read across the packet plus the detached signature wrapper:
+The current packet schema is split into these layers:
 
-- `staged`
-- `sealed`
-- `exported`
-- `verified`
+1. `canon`
+2. `intake`
+3. `analysis`
+4. `bridge`
 
-The canonical packet body itself stays stable through signature attachment. Exported and verified are wrapper-layer states, not permission to rewrite the packet body.
+That split preserves the boundary between:
 
-## Cadence vs cryptographic signature
+- what is fixed
+- what was ingested
+- what the route engines concluded
+- what downstream lanes are allowed to do
 
-- Cadence signature = stylometric credential from the triad and optional TCP overlays
-- Cryptographic signature = detached seal over `canonical_json(packet)`
+## Public contract stance
 
-These are stacked, never merged.
+The public sendable probes are preserved from the old lab.
+
+This repo does not silently change those outputs yet.
+
+Instead, it builds the Safe Harbor packet in parallel so the future intake rollout can happen without ontology drift.
+
+
+## Stabilization notes (0.4.0)
+
+- The ingress membrane no longer auto-opens when the third lane fills. Operators must explicitly mint the staged packet.
+- Operator bypass is a distinct packetless shell state and must not be treated as equivalent to a staged packet.
+- Signature lanes still attach after packetization; they do not mint or mutate the packet body.
+- Canonical lifecycle names now prefer `staged`, `sealed`, `harbor-eligible`, `exported`, and `verified`.
+
+
+## Public / operator / dev boundary
+
+- Public mode ships with canonical intake, staged packet minting, and public-safe readouts only.
+- Operator mode may inspect packet internals and attach signature-lane overlays after local authorization.
+- Dev mode is reserved for local hook simulation and is disabled by default in public ship.
+
+
+## Current stabilization pass — do later layer
+
+This pass makes three structural changes:
+- public probe building now derives packet context from the staged packet instead of helper values alone,
+- placeholder badge-number minting is replaced with a deterministic badge assignment id derived from canonical intake context,
+- operator signature overlays attach to the staged packet cleanly after packetization rather than floating beside it.
+
+Public mode remains unsigned by default. Advanced signature sealing is operator-only and never changes the compact public footer.

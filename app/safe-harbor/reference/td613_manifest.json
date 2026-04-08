@@ -1,36 +1,54 @@
 {
   "principal": "tauric.diana.613",
-  "claimed_pua": "U+10D613",
-  "badge_id": "bdg_glyph_U10D613",
-  "binding_fragment": "#9B07D8B",
-  "sac": "SAC[X6ZNK5NO51]",
-  "current_public_mode": "LEGACY-COMPAT",
-  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0",
-  "historical_example": {
-    "label": "historical",
-    "payload_index": 5,
-    "attestation_date": "2025-10-17",
-    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0"
-  },
-  "live_template": {
-    "payload_suggestion": 6,
-    "payload_rule": "Suggest next payload from signed bundle if available; manual override only in operator mode.",
-    "attestation_date": "YYYY-MM-DD"
+  "binding_fragment": "9B07D8B",
+  "short_code": "X6ZNK5NO51",
+  "current_public_mode": "legacy-compat",
+  "internal_validation_accepts": [
+    "legacy",
+    "legacy-compat",
+    "sac-only"
+  ],
+  "future_public_mode": "sac-only",
+  "current_published_payload": 5,
+  "current_published_date": "2025-10-17",
+  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
+  "current_published_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27d0",
+  "updated_at": "2026-04-02T00:00:00Z",
+  "opener_hint": "\ud834\udf0b\u200c",
+  "closer_hint": "\u27d0",
+  "signature_lanes": {
+    "historical_signed_zone": {
+      "status": "reference-only",
+      "algorithm": "Ed25519 / EdDSA detached .sig over canonical zone JSON",
+      "purpose": "signed badge/zone registry continuity and public verification",
+      "operator_only": true
+    },
+    "runtime_request_signing": {
+      "status": "advanced / operator-only",
+      "algorithm": "detached JWS request-signing lane",
+      "purpose": "middleware/runtime authorization flows such as request signing",
+      "operator_only": true
+    }
   },
   "safe_harbor": {
-    "packet_schema": "../safe_harbor/packet.schema.json",
-    "canonicalizer": "../safe_harbor/canonicalize.js",
-    "hash": "../safe_harbor/hash.js",
-    "signature": "../safe_harbor/signature.js",
-    "lifecycle": "../safe_harbor/lifecycle.js",
-    "lab": "../11_TD613_PUA_Badge_Provenance_Attestation_Lab.html",
-    "primary_chamber": "../index.html",
-    "verify_page": "TD613_verify.html",
-    "offline_capsule": "TD613_offline_capsule.html"
+    "version": "0.4.1",
+    "packet_schema_version": "td613.safe-harbor.packet/v1",
+    "packet_hash_field": "packet_hash_sha256",
+    "lifecycle_states": [
+      "staged",
+      "sealed",
+      "harbor-eligible",
+      "exported",
+      "verified"
+    ],
+    "public_mode": "public",
+    "operator_mode": "advanced / local-only",
+    "dev_mode": "disabled by default in public ship",
+    "advanced_signature_lane": {
+      "public_default": "unsigned",
+      "operator_overlay": true,
+      "packet_context_required": true
+    }
   },
-  "signature_distinction": {
-    "cadence_signature": "Stylometric credential from cadence intake.",
-    "cryptographic_signature": "Detached seal over canonical_json(packet)."
-  },
-  "updated_at": "2026-04-03T00:00:00Z"
+  "historical_example_note": "The published payload-5 footer is historical only. New attestations must use the live template with payload {n}."
 }

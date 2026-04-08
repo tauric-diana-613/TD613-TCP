@@ -3,160 +3,50 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TD613 Safe Harbor Verify</title>
+  <title>TD613 — Verify v7.2.1</title>
   <style>
-    :root {
-      --bg: #05070d;
-      --panel: rgba(11, 14, 24, 0.9);
-      --line: rgba(93, 246, 255, 0.24);
-      --text: #eff6ff;
-      --muted: #93a5bf;
-      --accent: #86f0ff;
-      --accent-soft: rgba(134, 240, 255, 0.12);
-      --rose: #ff7ea8;
-      --mono: "Cascadia Code", "Fira Code", Consolas, monospace;
-      --serif: "Cormorant Garamond", Georgia, serif;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top, rgba(87, 22, 60, 0.28), transparent 28rem),
-        radial-gradient(circle at right, rgba(10, 77, 93, 0.18), transparent 26rem),
-        linear-gradient(180deg, #080912 0%, #05070d 58%, #030408 100%);
-      color: var(--text);
-      font: 16px/1.6 "Segoe UI", system-ui, sans-serif;
-    }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 32px 18px 48px; }
-    h1, h2 { font-family: var(--serif); letter-spacing: 0.02em; }
-    h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); margin: 0 0 8px; }
-    h2 { margin: 0 0 10px; font-size: 1.35rem; }
-    .eyebrow { color: var(--accent); font: 700 0.78rem/1 var(--mono); letter-spacing: 0.22em; text-transform: uppercase; }
-    .lede { max-width: 70ch; color: var(--muted); margin: 0 0 24px; }
-    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(10px);
-    }
-    .metric { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
-    .metric:last-child { border-bottom: 0; }
-    .label { color: var(--muted); }
-    .value, code, pre { font-family: var(--mono); }
-    .value { text-align: right; }
-    .footer-line, pre {
-      margin: 0;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(3, 7, 14, 0.92);
-      padding: 14px 16px;
-      overflow: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    button {
-      border: 1px solid rgba(134, 240, 255, 0.35);
-      background: linear-gradient(180deg, rgba(134, 240, 255, 0.2), rgba(134, 240, 255, 0.08));
-      color: var(--text);
-      border-radius: 999px;
-      padding: 10px 16px;
-      cursor: pointer;
-      font: 600 0.92rem/1 var(--mono);
-    }
-    .operator[hidden] { display: none; }
-    .note { color: var(--muted); }
-    .warning { color: var(--rose); }
+    html,body{margin:0;padding:0;background:#0a0a0a;color:#eaeaea;font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;}
+    .wrap{max-width:840px;margin:0 auto;padding:40px 20px}
+    h1{font-size:28px;margin:0 0 8px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+    .card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:20px;margin:16px 0}
+    .hint{color:#9aa0a6;font-size:13px} code,pre{background:#0e0e0e;border:1px solid #272727;border-radius:8px;padding:6px 8px;white-space:pre-wrap;word-break:break-word}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="eyebrow">TD613 Verify</div>
-    <h1>Safe Harbor verification stays packet-first.</h1>
-    <p class="lede">Public verification stays compact and compat-first: fragment, SAC, payload, date, receipt summary, and verified status. The detached cryptographic seal and canonical packet body remain in the operator lane.</p>
+    <h1>TD613 — Verify v7.2.1</h1>
+    <div class="hint">Public now = legacy-compat. Internal validation accepts legacy, legacy-compat, and sac-only.</div>
 
-    <div class="grid">
-      <section class="panel">
-        <h2>Public Canon</h2>
-        <div class="metric"><span class="label">Public mode</span><span class="value" id="publicMode">LEGACY-COMPAT</span></div>
-        <div class="metric"><span class="label">Binding fragment</span><span class="value" id="bindingFragment">#9B07D8B</span></div>
-        <div class="metric"><span class="label">SAC</span><span class="value" id="sac">SAC[X6ZNK5NO51]</span></div>
-        <div class="metric"><span class="label">Receipt state</span><span class="value" id="receiptState">awaiting ingress</span></div>
-        <div class="metric"><span class="label">Packet status</span><span class="value" id="verifyState">not verified</span></div>
-      </section>
-
-      <section class="panel">
-        <h2>Live Template</h2>
-        <p class="footer-line" id="templateFooter">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐</p>
-        <p class="note" id="liveRule">Suggest next payload from signed bundle if available; manual override only in operator mode.</p>
-      </section>
+    <div class="card">
+      <strong>Canonical public footer template</strong>
+      <pre class="mono">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐</pre>
+      <div class="hint">Use this template for new attestations.</div>
     </div>
 
-    <section class="panel" style="margin-top:16px">
-      <h2>Historical Example</h2>
-      <p class="footer-line" id="historicalFooter">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐</p>
-      <p class="warning">Historical means historical. It stays pinned to payload 5 / 2025-10-17 and never becomes the live template.</p>
-    </section>
+    <div class="card">
+      <strong>Current published historical example</strong>
+      <pre class="mono">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐</pre>
+      <div class="hint">This is a fixed historical example, not the reusable template.</div>
+    </div>
 
-    <section class="panel" style="margin-top:16px">
-      <h2>Signature Distinction</h2>
-      <div class="metric"><span class="label">Cadence signature</span><span class="value" id="cadenceNote">stylometric credential</span></div>
-      <div class="metric"><span class="label">Cryptographic signature</span><span class="value" id="cryptoNote">detached seal</span></div>
-      <p class="note" id="signatureRule">Safe Harbor mints the packet and packet hash first. Signature lanes wrap the packet after canonicalization and never define or mutate it.</p>
-      <p><button type="button" id="toggleOperator">Reveal Operator Pane</button></p>
-    </section>
+    <div class="card">
+      <strong>Signature lanes (operator overlays)</strong>
+      <div class="hint">Historical signed-zone <code>.sig</code> and runtime detached JWS remain operator/reference overlays. Public verification stays footer-first and packet-aware without exposing raw signing material.</div>
+      <pre class="mono">Packet schema: td613.safe-harbor.packet/v1
+Packet hash field: packet_hash_sha256
+Lifecycle: staged → sealed → harbor-eligible → exported → verified
+Probe builder: packet-aware when a staged packet exists</pre>
+    </div>
 
-    <section class="panel operator" id="operatorPane" hidden>
-      <h2>Operator Pane</h2>
-      <div class="metric"><span class="label">Packet hash</span><span class="value" id="packetHash">pending</span></div>
-      <div class="metric"><span class="label">Sig type</span><span class="value" id="sigType">none</span></div>
-      <div class="metric"><span class="label">kid</span><span class="value" id="sigKid">pending</span></div>
-      <div class="note">Canonical JSON preview</div>
-      <pre id="canonicalPreview">canonical JSON pending</pre>
-      <div class="note" style="margin-top:12px">Detached signature preview</div>
-      <pre id="sigPreview">signature wrapper pending</pre>
-    </section>
+    <div class="card">
+      <strong>What to check</strong>
+      <div class="hint">Safe Harbor packet schema: <code>td613.safe-harbor.packet/v1</code>. Public footer remains compact; packet hash and signatures belong to operator tooling, not the footer.</div>
+      <ol>
+        <li>Does the line use <code>#9B07D8B</code>, <code>SAC[X6ZNK5NO51]</code>, or another accepted internal footer mode?</li>
+        <li>If it is a new attestation, does it use <code>payload {n}</code> logic rather than reusing the published example?</li>
+        <li>If it cites the historical example, does it use <code>payload 5 · 2025-10-17</code> exactly?</li>
+      </ol>
+    </div>
   </div>
-
-  <script src="../app/data.js"></script>
-  <script src="../safe_harbor/canonicalize.js"></script>
-  <script src="../safe_harbor/lifecycle.js"></script>
-  <script>
-    (function () {
-      const D = window.TD613_SAFE_HARBOR_DATA;
-      const Core = window.TD613SafeHarborCore || {};
-      const raw = sessionStorage.getItem('td613.safe-harbor.session.v1');
-      const session = raw ? JSON.parse(raw) : {};
-      const packet = session.packet || null;
-      const sig = session.signatureEnvelope || null;
-      const $ = (id) => document.getElementById(id);
-
-      $('publicMode').textContent = D.trustProfile.current_public_mode;
-      $('bindingFragment').textContent = D.canon.binding_fragment;
-      $('sac').textContent = D.canon.sac;
-      $('templateFooter').textContent = D.trustProfile.public_footer_template;
-      $('historicalFooter').textContent = D.canon.historical_example.public_footer;
-      $('liveRule').textContent = D.trustProfile.live_template_rule;
-      $('cadenceNote').textContent = D.signatureModel.cadence_signature;
-      $('cryptoNote').textContent = D.signatureModel.cryptographic_signature;
-      $('signatureRule').textContent = D.signatureModel.rule;
-      $('receiptState').textContent = packet && packet.receipt ? (packet.receipt.state_summary || packet.receipt.state) : 'awaiting ingress';
-      $('verifyState').textContent = typeof Core.verification_state === 'function' ? Core.verification_state(sig) : (sig && sig.status === 'verified' ? 'verified' : 'not verified');
-      $('packetHash').textContent = packet && packet.packet_hash_sha256 ? packet.packet_hash_sha256 : 'pending';
-      $('sigType').textContent = sig && sig.sig_type ? sig.sig_type : 'none';
-      $('sigKid').textContent = sig && sig.kid ? sig.kid : 'pending';
-      $('canonicalPreview').textContent = packet && typeof Core.canonical_packet_body === 'function' ? Core.canonical_packet_body(packet) : 'canonical JSON pending';
-      $('sigPreview').textContent = sig ? JSON.stringify(sig, null, 2) : 'signature wrapper pending';
-
-      $('toggleOperator').addEventListener('click', function () {
-        const pane = $('operatorPane');
-        pane.hidden = !pane.hidden;
-        this.textContent = pane.hidden ? 'Reveal Operator Pane' : 'Hide Operator Pane';
-      });
-    })();
-  </script>
 </body>
 </html>

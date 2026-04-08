@@ -1,34 +1,31 @@
 {
-  "schema_version": "td613.safe-harbor.packet/v2",
+  "schema_version": "td613.safe-harbor.packet/v1",
   "packet_id": "SH-20260403T000000-4f2a9c1d",
-  "packet_hash_sha256": "e49440f5d74d6ef4c52dd5fbc0ee35d3d3b0c46a86522f6c27b50f03fc060c54",
-  "packet_checksum": "sha256:e49440f5d74d6ef4c52dd5fbc0ee35d3d3b0c46a86522f6c27b50f03fc060c54",
   "created_at": "2026-04-03T00:00:00Z",
+  "canonicalization": {
+    "engine": "TD613 Safe Harbor",
+    "version": "0.4.1",
+    "mode": "staged-intake-packet",
+    "public_mode": "legacy-compat",
+    "corpus_hash_sha256": "BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88"
+  },
   "receipt": {
     "receipt_id": "SHR-20260403T000000-4f2a9c1d",
     "minted_at": "2026-04-03T00:00:00Z",
-    "state": "staged",
-    "state_summary": "staged / confirmation required",
-    "badge_number": null
+    "state": "harbor-eligible"
   },
   "canon": {
     "principal": "tauric.diana.613",
     "badge_id": "bdg_glyph_U10D613",
     "claimed_pua": "U+10D613",
-    "canonical_phrase": "Tauric Diana \u2014 Crimean heritage custodianship",
+    "canonical_phrase": "Tauric Diana - Crimean heritage custodianship",
     "display_phrase": "Covenant: Blood Rite 613",
     "binding_fragment": "#9B07D8B",
     "sac": "SAC[X6ZNK5NO51]",
-    "public_mode": "LEGACY-COMPAT",
+    "footer_mode": "legacy-compat",
     "payload_index": null,
     "attestation_date": null,
-    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0",
-    "historical_example": {
-      "label": "historical",
-      "payload_index": 5,
-      "attestation_date": "2025-10-17",
-      "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0"
-    }
+    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0"
   },
   "ingress": {
     "future_self": {
@@ -54,6 +51,7 @@
     }
   },
   "intake": {
+    "status": "staged",
     "request_id": "TD613-RUN-20260403T000000Z",
     "ts_utc": "2026-04-03T00:00:00Z",
     "sealed_at": "2026-04-03T00:00:00Z",
@@ -66,11 +64,10 @@
     "hook_status": {
       "tcp": "attached",
       "eo": "attached",
-      "signature": "wrapper-only"
+      "signature": "overlay-bound"
     }
   },
-  "cadence_credentials": {
-    "credential_type": "stylometric-cadence",
+  "analysis": {
     "cadence_signature": {
       "status": "attached",
       "source": "demo-tcp",
@@ -78,7 +75,33 @@
         "signal",
         "recall",
         "covenant"
-      ]
+      ],
+      "local_summary": {
+        "status": "derived",
+        "source": "safe-harbor.local",
+        "dominant_axes": [
+          "signal",
+          "covenant",
+          "recall"
+        ],
+        "triad_resonance": 0.8427,
+        "cross_lane_stability": 0.8889,
+        "cross_lane_spread": 0.1111,
+        "pairwise_similarity": [
+          {
+            "pair": "future_self::past_self",
+            "similarity": 0.8331
+          },
+          {
+            "pair": "future_self::higher_self",
+            "similarity": 0.8614
+          },
+          {
+            "pair": "past_self::higher_self",
+            "similarity": 0.8337
+          }
+        ]
+      }
     },
     "segment_cadence_signatures": {
       "future_self": {
@@ -92,6 +115,14 @@
         "punctuation_density": 0.0254,
         "line_break_density": 0,
         "unique_ratio": 0.9048,
+        "punctuation_mix": {
+          "comma": 0.3333,
+          "dash": 0,
+          "colon": 0,
+          "semicolon": 0,
+          "exclamation": 0.3333,
+          "question": 0.3333
+        },
         "dominant_axes": [
           "signal",
           "projection",
@@ -109,6 +140,14 @@
         "punctuation_density": 0.0227,
         "line_break_density": 0,
         "unique_ratio": 0.875,
+        "punctuation_mix": {
+          "comma": 0.5,
+          "dash": 0,
+          "colon": 0,
+          "semicolon": 0,
+          "exclamation": 0.25,
+          "question": 0.25
+        },
         "dominant_axes": [
           "signal",
           "recall"
@@ -125,6 +164,14 @@
         "punctuation_density": 0.0204,
         "line_break_density": 0.0068,
         "unique_ratio": 0.8889,
+        "punctuation_mix": {
+          "comma": 0.4,
+          "dash": 0.2,
+          "colon": 0,
+          "semicolon": 0,
+          "exclamation": 0.2,
+          "question": 0.2
+        },
         "dominant_axes": [
           "signal",
           "covenant",
@@ -135,128 +182,12 @@
     "triad_resonance": 0.8427,
     "cross_lane_stability": 0.8889,
     "cross_lane_spread": 0.1111,
-    "distinction_note": "Cadence signature is stylometric. Cryptographic signature is a detached seal over canonical JSON."
-  },
-  "provenance": {
-    "route_state": "handoff-ready",
-    "harbor_status": "guarded",
-    "recommended_harbor": "provenance.seal",
-    "route_source": "local ingress + demo-eo",
-    "membrane_note": "The triad is complete. A staged packet is present, but Covenant Export is still required.",
-    "export_ready": false,
-    "metrics": {
-      "integrity": 0.94,
-      "confidence": 0.89,
-      "retention_target": 0.99
-    },
-    "route_diagnostics": {
-      "eo_alignment": "demo-eo",
-      "retention_target": 0.99
-    }
-  },
-  "signature": {
-    "status": "awaiting-wrapper",
-    "sig": null,
-    "sig_type": null,
-    "kid": null,
-    "attachment_mode": "wrapper-only",
-    "supported_lanes": [
-      "JWS-detached",
-      "detached-ed25519"
-    ],
-    "packet_hash_sha256": null,
-    "canonical_json_spec": "td613.safe-harbor.c14n/v1",
-    "explanation": "Cadence signature is stylometric. Cryptographic signature is a detached seal over canonical JSON."
-  },
-  "rules": {
-    "public_mode_default": "LEGACY-COMPAT",
-    "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0",
-    "historical_example": {
-      "label": "historical",
-      "payload_index": 5,
-      "attestation_date": "2025-10-17",
-      "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0"
-    },
-    "live_template": {
-      "payload_suggestion": 6,
-      "payload_rule": "Suggest next payload from signed bundle if available; manual override only in operator mode.",
-      "attestation_date": "YYYY-MM-DD",
-      "manual_override": "operator-only"
-    },
-    "public_boundary": {
-      "may_show": [
-        "binding_fragment",
-        "sac",
-        "payload",
-        "date",
-        "receipt_state_summary",
-        "packet_verified_status"
-      ],
-      "must_hide": [
-        "badge_id",
-        "sig",
-        "route_diagnostics",
-        "packet_hash_sha256"
-      ]
-    },
-    "operator_boundary": {
-      "may_show": [
-        "packet_json",
-        "packet_hash_sha256",
-        "sig",
-        "sig_type",
-        "kid",
-        "route_state",
-        "harbor_status",
-        "cadence_credentials",
-        "canonical_json_preview"
-      ]
-    },
-    "signature_rule": "Safe Harbor mints the packet and packet hash first. Signature lanes wrap the packet after canonicalization and never define or mutate it."
-  },
-  "canonicalization": {
-    "engine": "TD613 Safe Harbor",
-    "version": "0.4.0",
-    "mode": "staged-intake-packet",
-    "public_mode": "LEGACY-COMPAT",
-    "corpus_hash_sha256": "BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88",
-    "canonical_json_spec": "td613.safe-harbor.c14n/v1",
-    "canonical_json_encoding": "utf-8",
-    "signature_scope": "canonical-packet-body-minus-self-hash-fields"
-  },
-  "analysis": {
-    "cadence_signature": {
-      "status": "attached",
-      "source": "demo-tcp",
-      "dominant_axes": [
-        "signal",
-        "recall",
-        "covenant"
-      ]
-    },
-    "segment_cadence_signatures": {
-      "future_self": {
-        "source": "safe-harbor.local",
-        "lane": "future_self"
-      },
-      "past_self": {
-        "source": "safe-harbor.local",
-        "lane": "past_self"
-      },
-      "higher_self": {
-        "source": "safe-harbor.local",
-        "lane": "higher_self"
-      }
-    },
-    "triad_resonance": 0.8427,
-    "cross_lane_stability": 0.8889,
-    "cross_lane_spread": 0.1111,
     "route": {
-      "state": "handoff-ready",
+      "state": "staged",
       "source": "local ingress + demo-eo",
       "recommended_harbor": "provenance.seal",
       "export_ready": false,
-      "membrane_note": "The triad is complete. A staged packet is present, but Covenant Export is still required.",
+      "membrane_note": "A staged packet is present. Covenant Export is still required before the packet becomes harbor-eligible.",
       "provenance": {
         "integrity": 0.94,
         "confidence": 0.89,
@@ -269,9 +200,10 @@
     }
   },
   "issuance": {
-    "badge_number": null,
-    "badge_state": "not-assigned",
-    "assigned_at": null
+    "badge_number": "TD613-SH-9B07D8B-0C8F9A2D",
+    "badge_state": "assigned",
+    "assigned_at": "2026-04-03T00:00:00Z",
+    "assignment_basis": "deterministic-hash(packet_id|receipt_id|binding_fragment|payload|date|principal|request_id)"
   },
   "bridge": {
     "public_probe_defaults": {
@@ -279,10 +211,14 @@
       "render_followup": "03_LIVE_SEND_verify.alias.voice.render_MINIMAL.json"
     },
     "signature_lane": {
-      "lane": "wrapper-only",
-      "state": "detached",
-      "sig_type": null,
-      "kid": null
+      "status": "sealed",
+      "source": "operator-signature-overlay",
+      "lane": "jws-detached",
+      "sig_type": "JWS-detached",
+      "kid": "tauric.diana.613",
+      "alg": "HS256",
+      "detached_ref": "jws://safe-harbor/packet",
+      "sig_present": true
     },
     "covenant_gate": {
       "confirmed": false,
@@ -298,5 +234,14 @@
       ],
       "scrub_passed": true
     }
+  },
+  "packet_hash_sha256": "sha256:6d3ca449f6a403dc2cbf5e92c4b2d592355cb38d73bd89243c6536efec96ad98",
+  "signature": {
+    "sig_type": "JWS-detached",
+    "kid": "tauric.diana.613",
+    "sig": "__DETACHED_SIG__",
+    "detached_ref": "jws://safe-harbor/packet",
+    "status": "sealed",
+    "attached_at": "2026-04-03T00:00:00Z"
   }
 }

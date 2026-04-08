@@ -1,34 +1,58 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "TD613SafeHarborCanonicalPacket",
+  "title": "TD613SafeHarborPacket",
   "type": "object",
   "required": [
     "schema_version",
     "packet_id",
-    "packet_hash_sha256",
+    "created_at",
+    "canonicalization",
     "receipt",
     "canon",
+    "ingress",
     "intake",
-    "cadence_credentials",
-    "provenance",
+    "analysis",
+    "issuance",
     "signature",
-    "rules"
+    "bridge",
+    "packet_hash_sha256"
   ],
   "properties": {
     "schema_version": {
-      "const": "td613.safe-harbor.packet/v2"
+      "const": "td613.safe-harbor.packet/v1"
     },
     "packet_id": {
       "type": "string"
     },
-    "packet_hash_sha256": {
-      "type": "string"
-    },
-    "packet_checksum": {
-      "type": "string"
-    },
     "created_at": {
       "type": "string"
+    },
+    "canonicalization": {
+      "type": "object",
+      "required": [
+        "engine",
+        "version",
+        "mode",
+        "public_mode",
+        "corpus_hash_sha256"
+      ],
+      "properties": {
+        "engine": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "public_mode": {
+          "type": "string"
+        },
+        "corpus_hash_sha256": {
+          "type": "string"
+        }
+      }
     },
     "receipt": {
       "type": "object",
@@ -45,18 +69,13 @@
           "type": "string"
         },
         "state": {
+          "type": "string",
           "enum": [
             "staged",
-            "sealed"
-          ]
-        },
-        "state_summary": {
-          "type": "string"
-        },
-        "badge_number": {
-          "type": [
-            "string",
-            "null"
+            "sealed",
+            "exported",
+            "verified",
+            "harbor-eligible"
           ]
         }
       }
@@ -67,21 +86,22 @@
         "principal",
         "badge_id",
         "claimed_pua",
+        "canonical_phrase",
+        "display_phrase",
         "binding_fragment",
         "sac",
-        "public_mode",
-        "public_footer",
-        "historical_example"
+        "footer_mode",
+        "public_footer"
       ],
       "properties": {
         "principal": {
-          "const": "tauric.diana.613"
+          "type": "string"
         },
         "badge_id": {
-          "const": "bdg_glyph_U10D613"
+          "type": "string"
         },
         "claimed_pua": {
-          "const": "U+10D613"
+          "type": "string"
         },
         "canonical_phrase": {
           "type": "string"
@@ -90,13 +110,13 @@
           "type": "string"
         },
         "binding_fragment": {
-          "const": "#9B07D8B"
+          "type": "string"
         },
         "sac": {
-          "const": "SAC[X6ZNK5NO51]"
+          "type": "string"
         },
-        "public_mode": {
-          "const": "LEGACY-COMPAT"
+        "footer_mode": {
+          "type": "string"
         },
         "payload_index": {
           "type": [
@@ -112,45 +132,43 @@
         },
         "public_footer": {
           "type": "string"
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "required": [
+        "future_self",
+        "past_self",
+        "higher_self"
+      ],
+      "properties": {
+        "future_self": {
+          "$ref": "#/$defs/ingressSegment"
         },
-        "historical_example": {
-          "type": "object",
-          "required": [
-            "label",
-            "payload_index",
-            "attestation_date",
-            "public_footer"
-          ],
-          "properties": {
-            "label": {
-              "const": "historical"
-            },
-            "payload_index": {
-              "const": 5
-            },
-            "attestation_date": {
-              "const": "2025-10-17"
-            },
-            "public_footer": {
-              "type": "string"
-            }
-          }
+        "past_self": {
+          "$ref": "#/$defs/ingressSegment"
+        },
+        "higher_self": {
+          "$ref": "#/$defs/ingressSegment"
         }
       }
     },
     "intake": {
       "type": "object",
       "required": [
+        "status",
         "request_id",
         "ts_utc",
         "sealed_at",
         "nonce",
         "helper_filename_safe",
-        "source_class",
-        "witness_channel",
         "hook_status"
       ],
       "properties": {
+        "status": {
+          "type": "string"
+        },
         "request_id": {
           "type": "string"
         },
@@ -211,45 +229,39 @@
         }
       }
     },
-    "ingress": {
+    "analysis": {
       "type": "object",
       "required": [
-        "future_self",
-        "past_self",
-        "higher_self"
-      ],
-      "properties": {
-        "future_self": {
-          "$ref": "#/$defs/ingressSegment"
-        },
-        "past_self": {
-          "$ref": "#/$defs/ingressSegment"
-        },
-        "higher_self": {
-          "$ref": "#/$defs/ingressSegment"
-        }
-      }
-    },
-    "cadence_credentials": {
-      "type": "object",
-      "required": [
-        "credential_type",
         "cadence_signature",
         "segment_cadence_signatures",
         "triad_resonance",
         "cross_lane_stability",
         "cross_lane_spread",
-        "distinction_note"
+        "route",
+        "eo_alignment"
       ],
       "properties": {
-        "credential_type": {
-          "const": "stylometric-cadence"
-        },
         "cadence_signature": {
           "type": "object"
         },
         "segment_cadence_signatures": {
-          "type": "object"
+          "type": "object",
+          "required": [
+            "future_self",
+            "past_self",
+            "higher_self"
+          ],
+          "properties": {
+            "future_self": {
+              "type": "object"
+            },
+            "past_self": {
+              "type": "object"
+            },
+            "higher_self": {
+              "type": "object"
+            }
+          }
         },
         "triad_resonance": {
           "type": "number"
@@ -260,69 +272,190 @@
         "cross_lane_spread": {
           "type": "number"
         },
-        "distinction_note": {
-          "type": "string"
+        "route": {
+          "type": "object",
+          "required": [
+            "state",
+            "source",
+            "recommended_harbor",
+            "export_ready",
+            "membrane_note",
+            "provenance"
+          ],
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": [
+                "membrane-only",
+                "warning",
+                "buffer-prep",
+                "triad-ready",
+                "staged",
+                "harbor-eligible",
+                "exported",
+                "verified",
+                "operator-bypass"
+              ]
+            },
+            "source": {
+              "type": "string"
+            },
+            "recommended_harbor": {
+              "type": "string"
+            },
+            "export_ready": {
+              "type": "boolean"
+            },
+            "membrane_note": {
+              "type": "string"
+            },
+            "provenance": {
+              "type": "object"
+            }
+          }
+        },
+        "eo_alignment": {
+          "type": "object",
+          "required": [
+            "route_source",
+            "membrane_note"
+          ],
+          "properties": {
+            "route_source": {
+              "type": "string"
+            },
+            "membrane_note": {
+              "type": "string"
+            }
+          }
         }
       }
     },
-    "provenance": {
+    "issuance": {
       "type": "object",
       "required": [
-        "route_state",
-        "harbor_status",
-        "recommended_harbor",
-        "route_source",
-        "membrane_note",
-        "export_ready",
-        "metrics"
+        "badge_number",
+        "badge_state",
+        "assigned_at",
+        "assignment_basis"
       ],
       "properties": {
-        "route_state": {
-          "type": "string"
-        },
-        "harbor_status": {
-          "type": "string"
-        },
-        "recommended_harbor": {
-          "type": "string"
-        },
-        "route_source": {
-          "type": "string"
-        },
-        "membrane_note": {
-          "type": "string"
-        },
-        "export_ready": {
-          "type": "boolean"
-        },
-        "metrics": {
-          "type": "object"
-        }
-      }
-    },
-    "signature": {
-      "type": "object",
-      "required": [
-        "status",
-        "sig",
-        "sig_type",
-        "kid",
-        "attachment_mode",
-        "supported_lanes",
-        "packet_hash_sha256",
-        "canonical_json_spec",
-        "explanation"
-      ],
-      "properties": {
-        "status": {
-          "type": "string"
-        },
-        "sig": {
+        "badge_number": {
           "type": [
             "string",
             "null"
           ]
         },
+        "badge_state": {
+          "type": "string",
+          "enum": [
+            "not-assigned",
+            "assigned"
+          ]
+        },
+        "assigned_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "assignment_basis": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "bridge": {
+      "type": "object",
+      "required": [
+        "public_probe_defaults",
+        "signature_lane",
+        "covenant_gate",
+        "export_gate"
+      ],
+      "properties": {
+        "public_probe_defaults": {
+          "type": "object"
+        },
+        "signature_lane": {
+          "type": "object"
+        },
+        "covenant_gate": {
+          "type": "object",
+          "required": [
+            "confirmed",
+            "confirmed_at",
+            "required",
+            "action_label"
+          ],
+          "properties": {
+            "confirmed": {
+              "type": "boolean"
+            },
+            "confirmed_at": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "required": {
+              "type": "boolean"
+            },
+            "action_label": {
+              "type": "string"
+            }
+          }
+        },
+        "export_gate": {
+          "type": "object",
+          "required": [
+            "ready",
+            "state",
+            "blockers",
+            "scrub_passed"
+          ],
+          "properties": {
+            "ready": {
+              "type": "boolean"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "guarded",
+                "harbor-eligible",
+                "exported",
+                "verified"
+              ]
+            },
+            "blockers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "scrub_passed": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "packet_hash_sha256": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "object",
+      "required": [
+        "sig_type",
+        "kid",
+        "sig",
+        "detached_ref",
+        "status",
+        "attached_at"
+      ],
+      "properties": {
         "sig_type": {
           "type": [
             "string",
@@ -335,72 +468,34 @@
             "null"
           ]
         },
-        "attachment_mode": {
-          "const": "wrapper-only"
-        },
-        "supported_lanes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "packet_hash_sha256": {
+        "sig": {
           "type": [
             "string",
             "null"
           ]
         },
-        "canonical_json_spec": {
-          "type": "string"
+        "detached_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
         },
-        "explanation": {
-          "type": "string"
+        "status": {
+          "type": "string",
+          "enum": [
+            "unsigned",
+            "declared",
+            "sealed",
+            "verified"
+          ]
+        },
+        "attached_at": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
-    },
-    "rules": {
-      "type": "object",
-      "required": [
-        "public_mode_default",
-        "public_footer_template",
-        "historical_example",
-        "live_template",
-        "public_boundary",
-        "operator_boundary",
-        "signature_rule"
-      ],
-      "properties": {
-        "public_mode_default": {
-          "const": "LEGACY-COMPAT"
-        },
-        "public_footer_template": {
-          "type": "string"
-        },
-        "historical_example": {
-          "type": "object"
-        },
-        "live_template": {
-          "type": "object"
-        },
-        "public_boundary": {
-          "type": "object"
-        },
-        "operator_boundary": {
-          "type": "object"
-        },
-        "signature_rule": {
-          "type": "string"
-        }
-      }
-    },
-    "analysis": {
-      "type": "object"
-    },
-    "bridge": {
-      "type": "object"
-    },
-    "issuance": {
-      "type": "object"
     }
   },
   "$defs": {

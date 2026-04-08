@@ -3,39 +3,7 @@
     meta: {
       repoName: 'TD613 Safe Harbor',
       version: '0.4.0',
-      subtitle: 'Canonical intake engine for provenance attestation.'
-    },
-    canonicalizationSpec: {
-      id: 'td613.safe-harbor.c14n/v1',
-      encoding: 'utf-8',
-      scope: 'canonical-packet-body-minus-self-hash-fields',
-      rules: [
-        'sorted-object-keys',
-        'array-order-preserved',
-        'no-extra-whitespace',
-        'stable-escaping',
-        'undefined-omitted',
-        'no-comments'
-      ]
-    },
-    packetContract: {
-      schemaFile: 'safe_harbor/packet.schema.json',
-      compatibilitySchemaFile: 'schemas/td613-safe-harbor.packet.schema.json',
-      modules: {
-        canonicalize: 'safe_harbor/canonicalize.js',
-        hash: 'safe_harbor/hash.js',
-        signature: 'safe_harbor/signature.js',
-        lifecycle: 'safe_harbor/lifecycle.js'
-      }
-    },
-    annex: {
-      host: 'TCP',
-      source: 'app/safe-harbor',
-      returnLanes: [
-        '../index.html#homebase',
-        '../index.html#readout',
-        '../index.html#deck'
-      ]
+      subtitle: 'Canonical intake membrane for staged provenance packetization, packet-aware probes, and operator signature sealing. Public, operator, and dev lanes are separated by design.'
     },
     canon: {
       principal: 'tauric.diana.613',
@@ -44,91 +12,76 @@
       codepoint: 0x10D613,
       canonical_phrase: 'Tauric Diana \u2014 Crimean heritage custodianship',
       display_phrase: 'Covenant: Blood Rite 613',
-      binding_fragment: '#9B07D8B',
-      sac: 'SAC[X6ZNK5NO51]',
+      binding_fragment: '9B07D8B',
+      sac: 'X6ZNK5NO51',
       schema_family: 'cpfg://v2',
       semver: '2.1.0',
       preview_svg_sha256: 'ba5eee59d2a0184c328c40c33e8ca4e2eeee8354fcbe41255abd70693c2f74ed',
       preview_svg_md5: '96c4129424443100aae47576e692cc97',
-      corpus_hash_sha256: 'BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88',
-      current_public_default: 'LEGACY-COMPAT',
-      public_footer_template: 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0',
-      historical_example: {
-        label: 'historical',
-        payload_index: 5,
-        attestation_date: '2025-10-17',
-        public_footer: 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0'
-      }
+      corpus_hash_sha256: 'BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88'
+    },
+
+    operatorBypass: {
+      public_ship_enabled: false,
+      requires_local_token: true,
+      token_hash_sha256: null,
+      storage_key: 'td613.safe-harbor.operator-bypass.hash',
+      dev_mode_storage_key: 'td613.safe-harbor.dev-mode.enabled'
     },
     trustProfile: {
-      current_public_mode: 'LEGACY-COMPAT',
-      internal_validation_accepts: ['LEGACY', 'LEGACY-COMPAT', 'SAC-ONLY'],
-      future_public_mode: 'SAC-ONLY',
-      binding_fragment: '#9B07D8B',
-      sac: 'SAC[X6ZNK5NO51]',
+      current_public_mode: 'legacy-compat',
+      internal_validation_accepts: ['legacy', 'legacy-compat', 'sac-only'],
+      future_public_mode: 'sac-only',
+      binding_fragment: '9B07D8B',
+      sac: 'X6ZNK5NO51',
       payload_latest: 5,
-      signed_bundle_payload_count: 5,
-      suggested_next_payload: 6,
       public_footer_template: 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0',
       current_published_footer: 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0',
       current_published_payload: 5,
-      current_published_date: '2025-10-17',
-      live_template_rule: 'Suggest next payload from signed bundle if available; manual override only in operator mode.'
-    },
-    signatureModel: {
-      cadence_signature: 'stylometric credential from TCP-style intake and Safe Harbor triad analysis',
-      cryptographic_signature: 'detached seal over canonical JSON of the packet',
-      rule: 'Safe Harbor mints the packet and packet hash first. Signature lanes wrap the packet after canonicalization and never define or mutate it.'
-    },
-    publicBoundary: {
-      public_may_show: [
-        'binding_fragment',
-        'sac',
-        'payload',
-        'date',
-        'receipt_state_summary',
-        'packet_verified_status'
-      ],
-      operator_may_show: [
-        'packet_json',
-        'packet_hash_sha256',
-        'sig',
-        'sig_type',
-        'kid',
-        'route_state',
-        'harbor_status',
-        'cadence_credentials',
-        'canonical_json_preview'
-      ],
-      public_must_hide: [
-        'badge_id',
-        'sig',
-        'route_diagnostics',
-        'packet_hash_sha256'
-      ]
+      current_published_date: '2025-10-17'
     },
     invariants: [
-      'Canonical anchors stay fixed: tauric.diana.613, bdg_glyph_U10D613, U+10D613, #9B07D8B, and SAC[X6ZNK5NO51].',
-      'Public default remains LEGACY-COMPAT with the compact footer canon.',
-      'Historical payload 5 / 2025-10-17 stays labeled historical and never becomes the live template.',
-      'Cadence signature is a stylometric credential. Cryptographic signature is a detached seal over canonical JSON.',
-      'Safe Harbor packetization happens before signature attachment, and live sig attachment never mutates the packet body.'
+      'Canonical anchors stay fixed: principal, badge_id, claimed_pua, canonical phrase, display phrase.',
+      'Public probes remain unsigned by default unless an operator intentionally overlays a signature lane.',
+      'New attestations use payload {n}; the fixed payload-5 footer is historical only.',
+      'Historical .sig and runtime JWS lanes remain overlays, not the public default path.',
+      'Safe Harbor packetization happens before signature attachment.',
+      'Operator bypass is disabled in public ship until a local token hash is configured.',
+      'Advanced probe building derives packet context from the staged packet whenever one exists.',
+      'Cadence signatures are stylometric credentials; cryptographic signatures are separate seals attached after packetization.'
     ],
+
+    uiBoundaries: {
+      public_mode: {
+        purpose: 'Dummy-proof intake, canonical footer guidance, staged packet minting, and public-safe readouts only.',
+        allows: ['ingress triad', 'mint staged packet', 'canonical footer preview', 'public-safe packet summary'],
+        forbids: ['raw signature material', 'operator bypass secrets', 'dev hook demos']
+      },
+      operator_mode: {
+        purpose: 'Packet inspection, operator shell, signature-lane overlays, and controlled covenant/export transitions.',
+        allows: ['packet preview', 'signature lane overlay', 'operator bypass with local token hash', 'advanced metadata'],
+        forbids: ['public release of secrets', 'treating bypass as a staged packet']
+      },
+      dev_mode: {
+        purpose: 'Local hook simulation and debugging only.',
+        allows: ['demo TCP hook', 'demo EO hook', 'demo signature hook'],
+        default_enabled: false
+      }
+    },
     repoLayout: [
-      'index.html - primary Safe Harbor chamber',
-      '11_TD613_PUA_Badge_Provenance_Attestation_Lab.html - legacy bridge into the Safe Harbor lab',
-      'app/ - ingress runtime, public/operator surfaces, packet preview logic',
-      'safe_harbor/ - canonicalizer, hash, signature, lifecycle, and packet schema runtime',
-      'probes/ - public sendable artifacts and command references',
+      'index.html - primary Safe Harbor surface',
+      'app/ - UI shell, ingress runtime, hook bus, packet preview logic',
+      'probes/ - unchanged public sendable artifacts',
       'corpus/ - binding corpus and signed bundle references',
-      'reference/ - trust profile, manifest, verify, capsule, and registry surfaces',
-      'renderers/ - badge renderer contract'
+      'reference/ - trust profile, manifests, verifier references',
+      'renderers/ - userscript renderer contract',
+      'schemas/ and examples/ - packet and hook scaffolding'
     ],
     referenceLanes: [
-      'EO-RFD supplies route conscience, rupture detection, and export ethics.',
-      'TCP supplies cadence credentials, route and harbor pressure, and intake shaping.',
-      'TD613 owns the badge, provenance, custody, public footer, and verifier surface.',
-      'Signature lanes attach after Safe Harbor canonicalization as detached wrappers.'
+      'EO-RFD supplies route conscience, safe-harbor readout, and export guard language.',
+      'TCP will eventually supply canonical intake, cadence signature, and packet shaping.',
+      'TD613 remains the badge, provenance, custody, and verifier surface.',
+      'Signature lanes attach to the packet after Safe Harbor canonicalization.'
     ],
     ingressPrompts: {
       future_self: {
@@ -148,10 +101,17 @@
       'membrane-only': 'The vault remains sealed while the first line gathers.',
       warning: 'One lane is held. The membrane has begun to answer.',
       'buffer-prep': 'Two lanes are held. Buffer-prep is active while the third line resolves.',
-      'handoff-ready': 'The triad is complete. A staged packet is present, but Covenant Export is still required.',
-      'harbor-eligible': 'Covenant has been invoked. The staged packet is now harbor-eligible.',
-      'packet-exported': 'A detached signature wrapper has sealed the packet for export.',
-      verified: 'The detached signature wrapper has been verified against the packet hash.'
+      'triad-ready': 'The triad is complete. Mint Staged Packet to shape the packet and receipt.',
+      staged: 'A staged packet is present. Covenant Export is the only local path to harbor eligibility and badge assignment.',
+      'harbor-eligible': 'Covenant has been invoked. The sealed packet is now harbor-eligible.',
+      'packet-exported': 'The packet has crossed the membrane into an emitted downstream lane.',
+      'operator-bypass': 'Operator bypass opened a packetless shell. No staged packet or harbor transition exists yet.'
+    },
+    signatureDefaults: {
+      sig_type: 'JWS-detached',
+      kid: 'tauric.diana.613',
+      detached_ref: 'jws://detached-signature',
+      status: 'unsigned'
     },
     hookBus: {
       events: {
@@ -195,14 +155,14 @@
           membrane_note: 'EO route satisfied. The staged packet can stand in the seal lane once covenant is invoked.'
         },
         signature: {
-          status: 'verified',
+          status: 'sealed',
           source: 'demo-signature',
+          lane: 'jws-detached',
           sig_type: 'JWS-detached',
-          lane: 'JWS-detached',
           kid: 'tauric.diana.613',
-          sig: 'eyJhbGciOiJIUzI1NiIsImtpZCI6InRhdXJpYy5kaWFuYS42MTMiLCJ0eXAiOiJKT1NFIn0..demo_safe_harbor_sig',
+          alg: 'HS256',
           detached_ref: 'demo://safe-harbor/signature-lane',
-          attached_at: '2026-04-03T00:00:00Z'
+          sig: '__DEMO_SIG__'
         }
       }
     }
