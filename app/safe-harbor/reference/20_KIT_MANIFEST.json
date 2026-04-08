@@ -42,9 +42,9 @@
       "bytes": 337
     },
     "11_TD613_PUA_Badge_Provenance_Attestation_Lab.html": {
-      "sha256": "c25bb822fe52de049644acb466822f6ad5b9b2ead14524f546762c953d30b802",
-      "md5": "cfca6c64c06749913630bbcfb22aee25",
-      "bytes": 1421
+      "sha256": "2001e16fb1db0295ffe4d73c1e11d89301e3cf2156e0e86491d2ed7d16e32809",
+      "md5": "4ee54a8856bcc35300bd437dc950b63a",
+      "bytes": 1480
     },
     "12_TD613_PUA_Badge_Provenance_Attestation_Registry.json": {
       "sha256": "fd03ada1867f9ae9f9e7435cf3808ded7c24a4636a3913115423994f7b93f802",
@@ -129,9 +129,9 @@
   },
   "external_renderer": {
     "filename": "10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js",
-    "sha256": "17b59909f1354cc48db32d97620948ae0fe848d2630234ce0acf1e6a734a2e21",
-    "md5": "d4d7b486d5bb498545109f4d8e73a589",
-    "bytes": 6892
+    "sha256": "99a72cbe7efde0658e7cbb34feec807fde1e54190470426d6a02de2c5ea245c2",
+    "md5": "7e8f31cb7bc83f76df54ea6576197ba2",
+    "bytes": 7060
   },
   "notes": [
     "Full ship zip excludes the userscript on purpose.",

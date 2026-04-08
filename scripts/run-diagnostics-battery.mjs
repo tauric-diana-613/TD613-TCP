@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import * as engine from '../app/engine/stylometry.js';
 import personas from '../app/data/personas.js';
@@ -17,6 +18,10 @@ import {
 } from '../app/toys/persona-gallery/model.js';
 import { buildCorpusExtraction } from '../app/toys/persona-trainer/extractor.js';
 import { validateCandidateAgainstFingerprint } from '../app/toys/persona-trainer/validator.js';
+import {
+  buildSafeHarborMarkdownReport,
+  runSafeHarborDiagnostics
+} from './lib/safe-harbor-diagnostics.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,6 +29,16 @@ const repoRoot = path.resolve(__dirname, '..');
 const reportsDir = path.join(repoRoot, 'reports', 'diagnostics');
 const latestJsonPath = path.join(reportsDir, 'latest.json');
 const latestMdPath = path.join(reportsDir, 'latest.md');
+const safeHarborJsonPath = path.join(reportsDir, 'safe-harbor.latest.json');
+const safeHarborMdPath = path.join(reportsDir, 'safe-harbor.latest.md');
+const BATTERY_INPUT_PATHS = Object.freeze([
+  'app/data/diagnostics.js',
+  'app/data/personas.js',
+  'app/engine/stylometry.js',
+  'app/toys/persona-gallery/model.js',
+  'app/toys/persona-trainer/extractor.js',
+  'app/toys/persona-trainer/validator.js'
+]);
 
 const FAILURE_BUCKETS = Object.freeze([
   'punctuation_only_shift',
@@ -53,6 +68,55 @@ const PERSONA_BY_ID = Object.freeze(Object.fromEntries(PERSONA_LIBRARY.map((pers
 
 function ensureDir(targetPath) {
   fs.mkdirSync(targetPath, { recursive: true });
+}
+
+function hashFile(targetPath) {
+  return crypto.createHash('sha256').update(fs.readFileSync(targetPath)).digest('hex');
+}
+
+function computeBatteryCacheKey() {
+  const digest = crypto.createHash('sha256');
+  BATTERY_INPUT_PATHS.forEach((relativePath) => {
+    const absolutePath = path.join(repoRoot, relativePath);
+    digest.update(relativePath);
+    digest.update(hashFile(absolutePath));
+  });
+  return digest.digest('hex');
+}
+
+function readCachedBatteryReport(cacheKey) {
+  if (!fs.existsSync(latestJsonPath)) {
+    return null;
+  }
+  try {
+    const cached = JSON.parse(fs.readFileSync(latestJsonPath, 'utf8'));
+    const latestMtimeMs = fs.statSync(latestJsonPath).mtimeMs;
+    const inputsMtimeMs = Math.max(...BATTERY_INPUT_PATHS.map((relativePath) => fs.statSync(path.join(repoRoot, relativePath)).mtimeMs));
+    const structurallyValid = Boolean(
+      cached &&
+      cached.summary &&
+      cached.sections &&
+      cached.sampleAudit &&
+      cached.personaAudit &&
+      cached.workingDoctrine
+    );
+    if (
+      structurallyValid &&
+      (
+        cached.batteryCacheKey === cacheKey ||
+        latestMtimeMs >= inputsMtimeMs
+      )
+    ) {
+      return {
+        summary: cached.summary,
+        sections: cached.sections,
+        sampleAudit: cached.sampleAudit,
+        personaAudit: cached.personaAudit,
+        workingDoctrine: cached.workingDoctrine
+      };
+    }
+  } catch (error) {}
+  return null;
 }
 
 function round(value, digits = 4) {
@@ -1197,42 +1261,80 @@ function buildMarkdownReport(report) {
     });
   }
 
+  if (report.annexes?.safeHarbor) {
+    const annex = report.annexes.safeHarbor;
+    lines.push('', '## Safe Harbor Annex', '');
+    lines.push(`- passed: ${annex.passed ? 'yes' : 'no'}`);
+    lines.push(`- version: ${annex.version || 'unknown'}`);
+    lines.push(`- file_count: ${annex.fileCount || 0}`);
+    lines.push(`- packet_hash_matches: ${annex.packetSample?.hashMatches ? 'yes' : 'no'}`);
+    lines.push(`- handshake_satisfied_in_sample: ${annex.packetSample?.handshakeSatisfied ? 'yes' : 'no'}`);
+    lines.push(`- route_state: ${annex.packetSample?.route?.routeState || 'unknown'}`);
+    lines.push(`- export_gate_state: ${annex.packetSample?.route?.exportGateState || 'unknown'}`);
+    if (annex.failures?.length) {
+      lines.push('', '### Safe Harbor Failures', '');
+      annex.failures.forEach((failure) => lines.push(`- ${failure}`));
+    }
+  }
+
   return `${lines.join('\n')}\n`;
 }
 
-const swapMatrix = engine.buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {
-  orderedPairs: DIAGNOSTIC_BATTERY.swapPairs,
-  flagshipPairs: engine.SWAP_CADENCE_FLAGSHIP_PAIRS,
-  strength: 0.82
-});
-const swapReportById = Object.fromEntries(swapMatrix.fullMatrix.map((report) => [report.id, report]));
+function buildBatteryReport() {
+  const swapMatrix = engine.buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {
+    orderedPairs: DIAGNOSTIC_BATTERY.swapPairs,
+    flagshipPairs: engine.SWAP_CADENCE_FLAGSHIP_PAIRS,
+    strength: 0.82
+  });
+  const swapReportById = Object.fromEntries(swapMatrix.fullMatrix.map((report) => [report.id, report]));
 
-const sectionResults = {
-  swapPairs: DIAGNOSTIC_BATTERY.swapPairs.map((caseSpec) =>
-    evaluateSwapCase(caseSpec, swapReportById[`${caseSpec.sourceId}__${caseSpec.donorId}`])
-  ),
-  maskCases: DIAGNOSTIC_BATTERY.maskCases.map(evaluateMaskCase),
-  trainerCases: DIAGNOSTIC_BATTERY.trainerCases.map(evaluateTrainerCase),
-  retrievalCases: DIAGNOSTIC_BATTERY.retrievalCases.map(evaluateRetrievalCase),
-  falseNeighborCases: DIAGNOSTIC_BATTERY.falseNeighborCases.map((caseSpec) =>
-    evaluateSwapCase(caseSpec, swapReportById[`${caseSpec.sourceId}__${caseSpec.donorId}`])
-  )
-};
-const representativePairs = summarizeRepresentativeSwapSelections(buildRepresentativeSwapSelections());
+  const sectionResults = {
+    swapPairs: DIAGNOSTIC_BATTERY.swapPairs.map((caseSpec) =>
+      evaluateSwapCase(caseSpec, swapReportById[`${caseSpec.sourceId}__${caseSpec.donorId}`])
+    ),
+    maskCases: DIAGNOSTIC_BATTERY.maskCases.map(evaluateMaskCase),
+    trainerCases: DIAGNOSTIC_BATTERY.trainerCases.map(evaluateTrainerCase),
+    retrievalCases: DIAGNOSTIC_BATTERY.retrievalCases.map(evaluateRetrievalCase),
+    falseNeighborCases: DIAGNOSTIC_BATTERY.falseNeighborCases.map((caseSpec) =>
+      evaluateSwapCase(caseSpec, swapReportById[`${caseSpec.sourceId}__${caseSpec.donorId}`])
+    )
+  };
+  const representativePairs = summarizeRepresentativeSwapSelections(buildRepresentativeSwapSelections());
+  const summary = summarize(sectionResults);
+
+  return {
+    summary,
+    sections: sectionResults,
+    sampleAudit: buildSampleAudit(DIAGNOSTIC_SAMPLE_LIBRARY),
+    personaAudit: buildPersonaAudit(PERSONA_LIBRARY),
+    workingDoctrine: buildPrivateWorkingDoctrine(summary, swapMatrix, representativePairs)
+  };
+}
+
+const batteryCacheKey = computeBatteryCacheKey();
+const cachedBattery = readCachedBatteryReport(batteryCacheKey);
+const batteryReport = cachedBattery || buildBatteryReport();
+const safeHarborAudit = runSafeHarborDiagnostics({ repoRoot });
 
 const report = {
   generatedAt: new Date().toISOString(),
-  summary: summarize(sectionResults),
-  sections: sectionResults,
-  sampleAudit: buildSampleAudit(DIAGNOSTIC_SAMPLE_LIBRARY),
-  personaAudit: buildPersonaAudit(PERSONA_LIBRARY),
-  workingDoctrine: null
+  batteryCacheKey,
+  summary: batteryReport.summary,
+  sections: batteryReport.sections,
+  sampleAudit: batteryReport.sampleAudit,
+  personaAudit: batteryReport.personaAudit,
+  workingDoctrine: batteryReport.workingDoctrine,
+  annexes: {
+    safeHarbor: safeHarborAudit
+  }
 };
-report.workingDoctrine = buildPrivateWorkingDoctrine(report.summary, swapMatrix, representativePairs);
 
 ensureDir(reportsDir);
 fs.writeFileSync(latestJsonPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 fs.writeFileSync(latestMdPath, buildMarkdownReport(report), 'utf8');
+fs.writeFileSync(safeHarborJsonPath, `${JSON.stringify(safeHarborAudit, null, 2)}\n`, 'utf8');
+fs.writeFileSync(safeHarborMdPath, buildSafeHarborMarkdownReport(safeHarborAudit), 'utf8');
 
-console.log(`diagnostics battery complete (${report.summary.totalCases} cases)`);
+console.log(`diagnostics battery ${cachedBattery ? 'cache reused' : 'computed'} (${report.summary.totalCases} cases)`);
+console.log(`safe harbor annex ${safeHarborAudit.passed ? 'passed' : 'failed'} (${safeHarborAudit.failures.length} failures)`);
 console.log(`worst buckets: ${JSON.stringify(report.summary.failureBucketCounts)}`);

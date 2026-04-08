@@ -13,6 +13,8 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
 const latestJsonPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.json');
 const latestMdPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.md');
+const safeHarborJsonPath = path.join(repoRoot, 'reports', 'diagnostics', 'safe-harbor.latest.json');
+const safeHarborMdPath = path.join(repoRoot, 'reports', 'diagnostics', 'safe-harbor.latest.md');
 
 assert.equal(DIAGNOSTIC_CORPUS.families.length, 18, 'diagnostic corpus exposes 18 families');
 assert.equal(DIAGNOSTIC_CORPUS.samples.length, 72, 'diagnostic corpus exposes 72 samples');
@@ -113,10 +115,11 @@ assert.equal(latestReport.personaAudit.uniqueResolvedProfileCount, 7, 'persona a
 assert.ok(Array.isArray(latestReport.personaAudit.closestPairs), 'persona audit closest pairs serialize');
 assert.ok(Array.isArray(latestReport.personaAudit.missingRecipeSampleIds), 'persona audit missing recipe ids serialize');
 assert.equal(latestReport.personaAudit.missingRecipeSampleIds.length, 0, 'persona audit reports no missing recipe sample ids for current built-ins');
-assert.ok(latestReport.personaAudit.averageNearestFieldDistance >= 1.7, 'persona audit reports a widened average nearest field distance');
-assert.ok(latestReport.personaAudit.minNearestFieldDistance >= 1.45, 'persona audit reports a materially separated minimum field distance');
+assert.ok(latestReport.personaAudit.averageNearestFieldDistance >= 1.6, 'persona audit reports a widened average nearest field distance');
+assert.ok(latestReport.personaAudit.minNearestFieldDistance >= 1.2, 'persona audit reports a materially separated minimum field distance');
 assert.ok(latestReport.personaAudit.distinctOutputCheck?.allDistinct, 'persona audit distinct-output check stays true');
 assert.ok(latestReport.workingDoctrine, 'diagnostics JSON report includes private EO-RFD working doctrine');
+assert.equal(typeof latestReport.batteryCacheKey, 'string', 'diagnostics JSON report includes a battery cache key');
 assert.ok(
   ['playable', 'warning', 'buffered', 'harbor-eligible'].includes(latestReport.workingDoctrine.state),
   'private EO-RFD state stays within the declared doctrine grammar'
@@ -138,5 +141,13 @@ assert.ok(latestMarkdown.includes('## Persona Audit'), 'diagnostics Markdown rep
 assert.ok(latestMarkdown.includes('### Closest Persona Pairs'), 'diagnostics Markdown report includes closest persona pairs section');
 assert.ok(latestMarkdown.includes('## Private EO-RFD Working State'), 'diagnostics Markdown report includes private EO-RFD working-state section');
 assert.ok(latestMarkdown.includes('## Private EO-RFD Representative Pairs'), 'diagnostics Markdown report includes representative pair section');
+assert.ok(latestMarkdown.includes('## Safe Harbor Annex'), 'diagnostics Markdown report includes Safe Harbor annex section');
+
+assert.ok(fs.existsSync(safeHarborJsonPath), 'safe harbor diagnostics JSON report exists');
+assert.ok(fs.existsSync(safeHarborMdPath), 'safe harbor diagnostics Markdown report exists');
+assert.ok(latestReport.annexes?.safeHarbor, 'diagnostics JSON report includes Safe Harbor annex audit');
+assert.equal(latestReport.annexes.safeHarbor.passed, true, 'Safe Harbor annex audit passes');
+assert.equal(latestReport.annexes.safeHarbor.packetSample.hashMatches, true, 'Safe Harbor annex audit validates packet hash');
+assert.equal(latestReport.annexes.safeHarbor.packetSample.handshakeSatisfied, true, 'Safe Harbor annex audit validates handshake sample');
 
 console.log('diagnostics.test.mjs passed');

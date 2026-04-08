@@ -5682,6 +5682,150 @@
         "notes": "Reverse false-neighbor pressure between building-access and museum-fog-alarm."
       }
     ]
+  },
+  "diagnostic_annexes": {
+    "safeHarbor": {
+      "id": "safe-harbor-annex",
+      "root": "app/safe-harbor",
+      "passed": true,
+      "version": "0.5.0",
+      "fileCount": 42,
+      "requiredFiles": [
+        {
+          "path": "app/safe-harbor/index.html",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/11_TD613_PUA_Badge_Provenance_Attestation_Lab.html",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/app/data.js",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/app/main.js",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/app/styles.css",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/docs/ARCHITECTURE.md",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/docs/HOOKS.md",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/examples/td613-safe-harbor.packet.sample.json",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/probes/06_TD613_PUA_Badge_Provenance_Attestation_Commands.json",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/reference/12_TD613_PUA_Badge_Provenance_Attestation_Registry.json",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/reference/20_KIT_MANIFEST.json",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/reference/td613_manifest.json",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/reference/td613_trust_profile.json",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/reference/TD613_verify.html",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/reference/TD613_offline_capsule.html",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/renderers/10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/assets/13_U10D613_preview.svg",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/schemas/td613-safe-harbor.packet.schema.json",
+          "exists": true
+        },
+        {
+          "path": "app/safe-harbor/schemas/td613-safe-harbor.hook-event.schema.json",
+          "exists": true
+        }
+      ],
+      "versions": {
+        "app": "0.5.0",
+        "sample": "0.5.0",
+        "commands": "0.5.0",
+        "registry": "0.5.0",
+        "manifest": "0.5.0",
+        "trust": "0.5.0",
+        "kit": "0.5.0"
+      },
+      "canon": {
+        "principal": "tauric.diana.613",
+        "claimed_pua": "U+10D613",
+        "badge_id": "bdg_glyph_U10D613",
+        "binding_fragment": "#9B07D8B",
+        "sac": "SAC[X6ZNK5NO51]",
+        "public_mode": "legacy-compat",
+        "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐"
+      },
+      "packetSample": {
+        "hashMatches": true,
+        "computedHash": "sha256:58a88af8907e81cbd2664072abebe48842d5b3f9bdf093f126f36172f2d27079",
+        "publicFooter": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
+        "handshakeSatisfied": true,
+        "route": {
+          "schemaVersion": "td613.safe-harbor.packet/v1",
+          "receiptState": "sealed",
+          "routeState": "sealed",
+          "exportGateState": "sealed"
+        }
+      },
+      "htmlSurface": {
+        "missingIds": [],
+        "verifyMentionsPacketSchema": true,
+        "capsuleMentionsPacketSchema": true
+      },
+      "hookBus": {
+        "events": {
+          "tcp": "td613:tcp-intake",
+          "eo": "td613:eo-route",
+          "signature": "td613:signature-lane",
+          "packet": "td613:safe-harbor-packet"
+        },
+        "documented": true
+      },
+      "renderer": {
+        "previewSvgBytes": 133,
+        "previewSvgSha256": "ba5eee59d2a0184c328c40c33e8ca4e2eeee8354fcbe41255abd70693c2f74ed",
+        "previewSvgMd5": "96c4129424443100aae47576e692cc97",
+        "rendererPreviewSvgSha256": "ba5eee59d2a0184c328c40c33e8ca4e2eeee8354fcbe41255abd70693c2f74ed",
+        "rendererPreviewSvgMd5": "96c4129424443100aae47576e692cc97",
+        "rendererSha256": "99a72cbe7efde0658e7cbb34feec807fde1e54190470426d6a02de2c5ea245c2",
+        "canonLinked": true,
+        "kitManifestLinked": true,
+        "labBridgeManifested": true
+      },
+      "failures": [],
+      "warnings": []
+    }
   }
 });
 })();

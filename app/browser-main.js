@@ -5,7 +5,8 @@
     microcopy,
     glyphFieldTech = {},
     diagnostic_corpus: diagnosticCorpus = {},
-    diagnostic_battery: diagnosticBattery = {}
+    diagnostic_battery: diagnosticBattery = {},
+    diagnostic_annexes: diagnosticAnnexes = {}
   } = window.TCP_DATA;
   const {
     HARBOR_LIBRARY,
@@ -59,6 +60,9 @@
     trainerCases: Object.freeze(diagnosticBattery.trainerCases || []),
     retrievalCases: Object.freeze(diagnosticBattery.retrievalCases || []),
     falseNeighborCases: Object.freeze(diagnosticBattery.falseNeighborCases || [])
+  });
+  const DIAGNOSTIC_ANNEXES = Object.freeze({
+    safeHarbor: Object.freeze(diagnosticAnnexes.safeHarbor || {})
   });
   const SAMPLE_LIBRARY_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
     acc[sample.id] = sample;
@@ -159,6 +163,7 @@
     mode: runtimeStore.mode,
     persistent: runtimeStore.isPersistent
   });
+  window.TCP_DIAGNOSTIC_ANNEXES = DIAGNOSTIC_ANNEXES;
   const MIRROR_COPY = {
     off: { pill: 'Mirror shield // armed', button: 'Open mirror shield' },
     on: { pill: 'Mirror shield // open', button: 'Arm mirror shield' }
