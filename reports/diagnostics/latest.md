@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-03T03:41:05.873Z
+Generated: 2026-04-08T21:40:34.593Z
 
 Corpus: 72 samples across 18 families
 Promoted deck subset: 24 samples
@@ -8,15 +8,15 @@ Total diagnostics cases: 218
 
 ## Failure Buckets
 
-- over_flattened_output: 93
-- register_miss: 80
-- both_rejected_swap: 66
-- semantic_drift: 64
+- over_flattened_output: 92
+- register_miss: 79
+- both_rejected_swap: 64
+- semantic_drift: 55
 - one_sided_swap: 36
-- trainer_retrieval_fail: 33
-- sentence_span_miss: 29
-- surface_close_under_large_gap: 14
-- false_neighbor_convergence: 13
+- sentence_span_miss: 27
+- trainer_retrieval_fail: 24
+- false_neighbor_convergence: 17
+- surface_close_under_large_gap: 11
 - anchor_break: 8
 - mask_near_home_hold: 3
 - punctuation_only_shift: 0
@@ -24,28 +24,28 @@ Total diagnostics cases: 218
 ## Worst Families
 
 - building-access: 41
-- school-coordination: 35
-- clinic-scheduling: 32
-- customer-support: 31
-- tenant-leak: 28
-- committee-budget: 28
-- package-handoff: 23
-- performance-review: 23
+- school-coordination: 38
+- clinic-scheduling: 29
+- tenant-leak: 27
+- committee-budget: 27
+- customer-support: 24
+- archive-grant: 22
+- performance-review: 22
 
 ## Worst Cases
 
 - tenant-leak-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- clinic-scheduling-formal-to-rushed: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- clinic-scheduling-rushed-to-formal: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- clinic-scheduling-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
 - overwork-debrief-rushed-to-formal: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
 - performance-review-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- customer-support-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- school-coordination-rushed-to-formal: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- school-coordination-formal-to-rushed: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- school-coordination-rushed-to-formal: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
 - newsroom-correction-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- benefits-appeal-formal-to-rushed: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- benefits-appeal-rushed-to-formal: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- municipal-zoning-formal-to-rushed: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
-- municipal-zoning-rushed-to-formal: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- benefits-appeal-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- municipal-zoning-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- building-access-mask-same-family: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- package-handoff-to-tenant-leak-false-neighbor: both_rejected_swap, over_flattened_output, register_miss, semantic_drift // Buckets: both_rejected_swap, over_flattened_output, register_miss, semantic_drift.
+- performance-review-to-committee-budget-false-neighbor: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss.
 
 ## Sample Audit
 
@@ -74,19 +74,19 @@ Total diagnostics cases: 218
 
 - resolved_persona_count: 7
 - unique_resolved_persona_profile_count: 7
-- average_nearest_field_distance: 1.7186
-- min_nearest_field_distance: 1.469
+- average_nearest_field_distance: 1.6491
+- min_nearest_field_distance: 1.249
 - missing_recipe_sample_ids: none
 - distinct_output_check: 7/7 distinct on customer-support-formal-record
 
 ### Closest Persona Pairs
 
-- methods-editor <-> matron: field distance 1.469, profile 0.982, heatmap 0, traceability 1
-- archivist <-> methods-editor: field distance 1.633, profile 1.319, heatmap 0, traceability 1
+- methods-editor <-> matron: field distance 1.249, profile 0.885, heatmap 0, traceability 1
+- archivist <-> methods-editor: field distance 1.654, profile 1.331, heatmap 0, traceability 1
 - spark <-> cross-examiner: field distance 1.696, profile 1.407, heatmap 0, traceability 0.972
-- undertow <-> matron: field distance 1.895, profile 1.311, heatmap 0, traceability 0.96
-- undertow <-> methods-editor: field distance 2.069, profile 1.616, heatmap 0, traceability 0.988
-- undertow <-> operator: field distance 2.172, profile 1.321, heatmap 0, traceability 0.954
+- undertow <-> operator: field distance 2, profile 1.189, heatmap 0, traceability 0.98
+- undertow <-> matron: field distance 2.139, profile 1.463, heatmap 0, traceability 0.922
+- archivist <-> matron: field distance 2.488, profile 2.077, heatmap 0, traceability 1
 
 ## Private EO-RFD Working State
 
@@ -96,14 +96,14 @@ Total diagnostics cases: 218
 - witness_pressure: rising
 - realized_passage: weak
 - provenance_floor: degraded
-- swap_matrix: bilateral 24/104, one-sided 28/104, flagship 8/8
-- representative_pairs: bilateral visible 6/6, bilateral non-trivial 6/6, average score 35.5
+- swap_matrix: bilateral 26/104, one-sided 28/104, flagship 8/8
+- representative_pairs: bilateral visible 5/6, bilateral non-trivial 5/6, average score 30.5
 
 ## Private EO-RFD Representative Pairs
 
-- building-access-rushed-mobile -> adversarial-hearing-tangled-followup: score 35, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- building-access-rushed-mobile -> adversarial-hearing-professional-message: score 35, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - benefits-appeal-professional-message -> adversarial-hearing-rushed-mobile: score 34, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - municipal-zoning-formal-record -> overwork-debrief-tangled-followup: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
-- adversarial-hearing-rushed-mobile -> benefits-appeal-formal-record: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
-- museum-fog-alarm-professional-message -> package-handoff-formal-record: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
-- model-safety-rushed-mobile -> model-safety-tangled-followup: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- adversarial-hearing-rushed-mobile -> adversarial-hearing-professional-message: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- museum-fog-alarm-professional-message -> clinic-scheduling-rushed-mobile: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- model-safety-rushed-mobile -> adversarial-hearing-professional-message: score 6, outcomes rejected / structural, bilateral visible no, bilateral non-trivial no
