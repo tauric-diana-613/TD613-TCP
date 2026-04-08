@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TD613 — Verify v7.2.1</title>
+  <style>
+    html,body{margin:0;padding:0;background:#0a0a0a;color:#eaeaea;font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;}
+    .wrap{max-width:840px;margin:0 auto;padding:40px 20px}
+    h1{font-size:28px;margin:0 0 8px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+    .card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:20px;margin:16px 0}
+    .hint{color:#9aa0a6;font-size:13px} code,pre{background:#0e0e0e;border:1px solid #272727;border-radius:8px;padding:6px 8px;white-space:pre-wrap;word-break:break-word}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>TD613 — Verify v7.2.1</h1>
+    <div class="hint">Public now = legacy-compat. Internal validation accepts legacy, legacy-compat, and sac-only.</div>
+
+    <div class="card">
+      <strong>Canonical public footer template</strong>
+      <pre class="mono">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐</pre>
+      <div class="hint">Use this template for new attestations.</div>
+    </div>
+
+    <div class="card">
+      <strong>Current published historical example</strong>
+      <pre class="mono">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐</pre>
+      <div class="hint">This is a fixed historical example, not the reusable template.</div>
+    </div>
+
+    <div class="card">
+      <strong>Signature lanes (operator overlays)</strong>
+      <div class="hint">Historical signed-zone <code>.sig</code> and runtime detached JWS remain operator/reference overlays. Public verification stays footer-first and packet-aware without exposing raw signing material.</div>
+      <pre class="mono">Packet schema: td613.safe-harbor.packet/v1
+Packet hash field: packet_hash_sha256
+Lifecycle: staged → sealed → harbor-eligible → exported → verified
+Probe builder: packet-aware when a staged packet exists</pre>
+    </div>
+
+    <div class="card">
+      <strong>What to check</strong>
+      <div class="hint">Safe Harbor packet schema: <code>td613.safe-harbor.packet/v1</code>. Public footer remains compact; packet hash and signatures belong to operator tooling, not the footer.</div>
+      <ol>
+        <li>Does the line use <code>#9B07D8B</code>, <code>SAC[X6ZNK5NO51]</code>, or another accepted internal footer mode?</li>
+        <li>If it is a new attestation, does it use <code>payload {n}</code> logic rather than reusing the published example?</li>
+        <li>If it cites the historical example, does it use <code>payload 5 · 2025-10-17</code> exactly?</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>

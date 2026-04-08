@@ -1,0 +1,29 @@
+{
+  "principal": "tauric.diana.613",
+  "generated_at": "2025-10-18T01:19:02.441287Z",
+  "corpus_hash_sha256": "BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88",
+  "short_code": "X6ZNK5NO51",
+  "short_code_scheme": "CrockfordBase32(8)+mod97(2)",
+  "leaves": [
+    {
+      "name": "binding_event_envelope.json",
+      "sha256": "ae25c3aa50ad50ab94ab8ebe50d518c73d3663ba4c016fef41b770e6d5f9f8a7",
+      "size": 3987
+    },
+    {
+      "name": "binding_event_receipt.json",
+      "sha256": "3ab2a184fde86a35969825613435ac418f307beb7ff4f03b8bfcd753f64b6826",
+      "size": 275
+    },
+    {
+      "name": "binding_event_text.txt",
+      "sha256": "9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",
+      "size": 3085
+    },
+    {
+      "name": "td_signed_payloads_bundle.json",
+      "sha256": "b9bb3f4b993ae7de7eae4b5781200f55803166d861296a5071edeb0654466fdd",
+      "size": 5355
+    }
+  ]
+}

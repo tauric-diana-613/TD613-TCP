@@ -1,0 +1,530 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TD613SafeHarborPacket",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "packet_id",
+    "created_at",
+    "canonicalization",
+    "receipt",
+    "canon",
+    "ingress",
+    "intake",
+    "analysis",
+    "issuance",
+    "signature",
+    "bridge",
+    "packet_hash_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "td613.safe-harbor.packet/v1"
+    },
+    "packet_id": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "canonicalization": {
+      "type": "object",
+      "required": [
+        "engine",
+        "version",
+        "mode",
+        "public_mode",
+        "corpus_hash_sha256"
+      ],
+      "properties": {
+        "engine": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "public_mode": {
+          "type": "string"
+        },
+        "corpus_hash_sha256": {
+          "type": "string"
+        }
+      }
+    },
+    "receipt": {
+      "type": "object",
+      "required": [
+        "receipt_id",
+        "minted_at",
+        "state"
+      ],
+      "properties": {
+        "receipt_id": {
+          "type": "string"
+        },
+        "minted_at": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "staged",
+            "sealed",
+            "exported",
+            "verified",
+            "harbor-eligible"
+          ]
+        }
+      }
+    },
+    "canon": {
+      "type": "object",
+      "required": [
+        "principal",
+        "badge_id",
+        "claimed_pua",
+        "canonical_phrase",
+        "display_phrase",
+        "binding_fragment",
+        "sac",
+        "footer_mode",
+        "public_footer"
+      ],
+      "properties": {
+        "principal": {
+          "type": "string"
+        },
+        "badge_id": {
+          "type": "string"
+        },
+        "claimed_pua": {
+          "type": "string"
+        },
+        "canonical_phrase": {
+          "type": "string"
+        },
+        "display_phrase": {
+          "type": "string"
+        },
+        "binding_fragment": {
+          "type": "string"
+        },
+        "sac": {
+          "type": "string"
+        },
+        "footer_mode": {
+          "type": "string"
+        },
+        "payload_index": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "attestation_date": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "public_footer": {
+          "type": "string"
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "required": [
+        "future_self",
+        "past_self",
+        "higher_self"
+      ],
+      "properties": {
+        "future_self": {
+          "$ref": "#/$defs/ingressSegment"
+        },
+        "past_self": {
+          "$ref": "#/$defs/ingressSegment"
+        },
+        "higher_self": {
+          "$ref": "#/$defs/ingressSegment"
+        }
+      }
+    },
+    "intake": {
+      "type": "object",
+      "required": [
+        "status",
+        "request_id",
+        "ts_utc",
+        "sealed_at",
+        "nonce",
+        "helper_filename_safe",
+        "hook_status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "ts_utc": {
+          "type": "string"
+        },
+        "sealed_at": {
+          "type": "string"
+        },
+        "nonce": {
+          "type": "string"
+        },
+        "helper_filename_safe": {
+          "type": "string"
+        },
+        "operator_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_class": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "witness_channel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "operator_notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "hook_status": {
+          "type": "object",
+          "required": [
+            "tcp",
+            "eo",
+            "signature"
+          ],
+          "properties": {
+            "tcp": {
+              "type": "string"
+            },
+            "eo": {
+              "type": "string"
+            },
+            "signature": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "required": [
+        "cadence_signature",
+        "segment_cadence_signatures",
+        "triad_resonance",
+        "cross_lane_stability",
+        "cross_lane_spread",
+        "route",
+        "eo_alignment"
+      ],
+      "properties": {
+        "cadence_signature": {
+          "type": "object"
+        },
+        "segment_cadence_signatures": {
+          "type": "object",
+          "required": [
+            "future_self",
+            "past_self",
+            "higher_self"
+          ],
+          "properties": {
+            "future_self": {
+              "type": "object"
+            },
+            "past_self": {
+              "type": "object"
+            },
+            "higher_self": {
+              "type": "object"
+            }
+          }
+        },
+        "triad_resonance": {
+          "type": "number"
+        },
+        "cross_lane_stability": {
+          "type": "number"
+        },
+        "cross_lane_spread": {
+          "type": "number"
+        },
+        "route": {
+          "type": "object",
+          "required": [
+            "state",
+            "source",
+            "recommended_harbor",
+            "export_ready",
+            "membrane_note",
+            "provenance"
+          ],
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": [
+                "membrane-only",
+                "warning",
+                "buffer-prep",
+                "triad-ready",
+                "staged",
+                "harbor-eligible",
+                "exported",
+                "verified",
+                "operator-bypass"
+              ]
+            },
+            "source": {
+              "type": "string"
+            },
+            "recommended_harbor": {
+              "type": "string"
+            },
+            "export_ready": {
+              "type": "boolean"
+            },
+            "membrane_note": {
+              "type": "string"
+            },
+            "provenance": {
+              "type": "object"
+            }
+          }
+        },
+        "eo_alignment": {
+          "type": "object",
+          "required": [
+            "route_source",
+            "membrane_note"
+          ],
+          "properties": {
+            "route_source": {
+              "type": "string"
+            },
+            "membrane_note": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "issuance": {
+      "type": "object",
+      "required": [
+        "badge_number",
+        "badge_state",
+        "assigned_at",
+        "assignment_basis"
+      ],
+      "properties": {
+        "badge_number": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "badge_state": {
+          "type": "string",
+          "enum": [
+            "not-assigned",
+            "assigned"
+          ]
+        },
+        "assigned_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "assignment_basis": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "bridge": {
+      "type": "object",
+      "required": [
+        "public_probe_defaults",
+        "signature_lane",
+        "covenant_gate",
+        "export_gate"
+      ],
+      "properties": {
+        "public_probe_defaults": {
+          "type": "object"
+        },
+        "signature_lane": {
+          "type": "object"
+        },
+        "covenant_gate": {
+          "type": "object",
+          "required": [
+            "confirmed",
+            "confirmed_at",
+            "required",
+            "action_label"
+          ],
+          "properties": {
+            "confirmed": {
+              "type": "boolean"
+            },
+            "confirmed_at": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "required": {
+              "type": "boolean"
+            },
+            "action_label": {
+              "type": "string"
+            }
+          }
+        },
+        "export_gate": {
+          "type": "object",
+          "required": [
+            "ready",
+            "state",
+            "blockers",
+            "scrub_passed"
+          ],
+          "properties": {
+            "ready": {
+              "type": "boolean"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "guarded",
+                "harbor-eligible",
+                "exported",
+                "verified"
+              ]
+            },
+            "blockers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "scrub_passed": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "packet_hash_sha256": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "object",
+      "required": [
+        "sig_type",
+        "kid",
+        "sig",
+        "detached_ref",
+        "status",
+        "attached_at"
+      ],
+      "properties": {
+        "sig_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "kid": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sig": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "detached_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "unsigned",
+            "declared",
+            "sealed",
+            "verified"
+          ]
+        },
+        "attached_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ingressSegment": {
+      "type": "object",
+      "required": [
+        "prompt_label",
+        "response_checksum",
+        "char_count",
+        "word_count",
+        "sealed_text_ref"
+      ],
+      "properties": {
+        "prompt_label": {
+          "type": "string"
+        },
+        "response_checksum": {
+          "type": "string"
+        },
+        "char_count": {
+          "type": "integer"
+        },
+        "word_count": {
+          "type": "integer"
+        },
+        "sealed_text_ref": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

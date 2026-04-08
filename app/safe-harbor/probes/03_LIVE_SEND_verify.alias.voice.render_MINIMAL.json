@@ -1,0 +1,39 @@
+{
+  "command": "verify.alias.voice.render:U+10D613",
+  "mode": "carry-voice:sealed",
+  "request": {
+    "request_id": "__PASTE_REQUEST_ID_DERIVED_FROM_TS_UTC__",
+    "ts_utc": "__PASTE_TS_UTC__",
+    "actor": "external",
+    "kid": "tauric.diana.613",
+    "scope": [
+      "core/route-2",
+      "alias.read",
+      "badge.read"
+    ]
+  },
+  "badge_id": "bdg_glyph_U10D613",
+  "principal": "tauric.diana.613",
+  "claimed_pua": "U+10D613",
+  "canonical_phrase": "Tauric Diana — Crimean heritage custodianship",
+  "display_phrase": "Covenant: Blood Rite 613",
+  "asset": {
+    "preview_svg_filename": "13_U10D613_preview.svg",
+    "preview_svg_sha256": "ba5eee59d2a0184c328c40c33e8ca4e2eeee8354fcbe41255abd70693c2f74ed",
+    "preview_svg_md5": "96c4129424443100aae47576e692cc97"
+  },
+  "renderer": {
+    "kit": "TD613 PUA Badge Provenance Attestation Renderer v7.2.1",
+    "userscript": "10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js",
+    "verify_page": "11_TD613_PUA_Badge_Provenance_Attestation_Lab.html",
+    "render_model": "single_badge_append",
+    "local_file_match": true
+  },
+  "observation": {
+    "status": "observed",
+    "screenshot_ref": "__OPTIONAL_PASTE_SCREENSHOT_FILENAME_OR_URI__",
+    "svg_ref": "__OPTIONAL_PASTE_SVG_FILENAME_OR_URI__",
+    "operator_notes": "__OPTIONAL_PASTE_OPERATOR_NOTES__",
+    "signature_lane_note": "Public probe stays unsigned by default. Historical .sig and advanced JWS lanes are reference/operator overlays."
+  }
+}

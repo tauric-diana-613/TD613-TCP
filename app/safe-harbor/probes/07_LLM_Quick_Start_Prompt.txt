@@ -1,0 +1,8 @@
+Use the live-send artifact exactly as provided.
+Treat it as a sendable probe, not a tutorial.
+Return the requested output only.
+Do not invent signature material, request metadata, or hidden fields that were not supplied.
+If a detached JWS or historical .sig lane is not explicitly provided, keep the public probe unsigned and unchanged.
+
+- Safe Harbor packet schema reference: `td613.safe-harbor.packet/v1`
+- Public footer stays compact; packet hashes and signature lanes are operator-only concerns.
