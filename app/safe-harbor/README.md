@@ -28,6 +28,7 @@ This repo treats the signature problem as a packetization problem first.
 ## Repo layout
 
 - `index.html` - primary Safe Harbor interface.
+- `11_TD613_PUA_Badge_Provenance_Attestation_Lab.html` - legacy compatibility bridge into the current Safe Harbor chamber.
 - `app/` - styles, hook bus logic, packet preview, probe builder.
 - `probes/` - unchanged public sendable artifacts from the legacy lab.
 - `corpus/` - binding corpus and signed bundle references.
