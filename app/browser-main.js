@@ -60,6 +60,7 @@
     retrievalCases: Object.freeze(diagnosticBattery.retrievalCases || []),
     falseNeighborCases: Object.freeze(diagnosticBattery.falseNeighborCases || [])
   });
+  const SAFE_HARBOR_HANDOFF_PATH = './safe-harbor/index.html';
   const SAMPLE_LIBRARY_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
     acc[sample.id] = sample;
     return acc;
@@ -326,6 +327,85 @@
       .replace(/\s+/g, ' ')
       .trim();
     return ROUTE_STATUS_KEYS[normalized] || normalized.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  function buildSafeHarborHandoffHref({
+    decision = 'weak-signal',
+    harbor = '',
+    routeStatus = ''
+  } = {}) {
+    const url = new URL(SAFE_HARBOR_HANDOFF_PATH, window.location.href);
+    url.searchParams.set('source', 'tcp');
+    url.searchParams.set('decision', String(decision || 'weak-signal'));
+    if (harbor) {
+      url.searchParams.set('harbor', String(harbor));
+    }
+    if (routeStatus) {
+      url.searchParams.set('route', String(routeStatus));
+    }
+    return url.toString();
+  }
+
+  function safeHarborHandoffState(decision = 'weak-signal') {
+    if (decision === 'passage') {
+      return 'ready';
+    }
+    if (decision === 'criticality') {
+      return 'guarded';
+    }
+    if (decision === 'hold-branch') {
+      return 'branch';
+    }
+    return 'latent';
+  }
+
+  function updateSafeHarborEntryPoints({
+    decision = 'weak-signal',
+    harbor = '',
+    routeStatus = ''
+  } = {}) {
+    const state = safeHarborHandoffState(decision);
+    const href = buildSafeHarborHandoffHref({ decision, harbor, routeStatus });
+    const detail =
+      state === 'ready'
+        ? `Open Safe Harbor to packetize this ${harbor || 'harbor'} handoff.`
+        : state === 'guarded'
+          ? 'Open Safe Harbor for a guarded handoff chamber while TCP keeps the route constrained.'
+          : state === 'branch'
+            ? 'Open Safe Harbor if you want to stage the branch without pretending it is resolved passage.'
+            : 'Safe Harbor remains available as a separate chamber for canonical intake and packet shaping.';
+
+    const railNode = $('safeHarborHandoff');
+    const railLabelNode = $('safeHarborHandoffLabel');
+    if (railNode && railLabelNode) {
+      railNode.dataset.state = state;
+      railNode.href = href;
+      railNode.title = detail;
+      railNode.setAttribute('aria-label', detail);
+      railLabelNode.textContent =
+        state === 'ready'
+          ? 'Safe Harbor // packetize now'
+          : state === 'guarded'
+            ? 'Safe Harbor // guarded route'
+            : state === 'branch'
+              ? 'Safe Harbor // branch lane'
+              : 'Safe Harbor // latent';
+    }
+
+    const heroActionNode = $('heroHarborAction');
+    if (heroActionNode) {
+      const showHeroAction = state !== 'latent';
+      heroActionNode.hidden = !showHeroAction;
+      heroActionNode.dataset.state = state;
+      heroActionNode.href = href;
+      heroActionNode.title = detail;
+      heroActionNode.textContent =
+        state === 'ready'
+          ? 'Enter Safe Harbor'
+          : state === 'guarded'
+            ? 'Open Guarded Safe Harbor'
+            : 'Stage In Safe Harbor';
+    }
   }
 
   function retrievalFixtureIds() {
@@ -4343,7 +4423,7 @@
     $('savePersonaBtn').disabled = !getVoiceState(activeVoice).hasText;
   }
 
-  function updateStatePills(routeStatus, decision) {
+  function updateStatePills(routeStatus, decision, { harbor = '' } = {}) {
     $('badgeState').textContent = `${glyphChar(glyphKeyForBadge(badge), '')} Badge // ${badgeMeaning(badge)}`;
     applyGlyphMetadata($('badgeState'), glyphKeyForBadge(badge));
     $('badgeState').classList.toggle('active', badge === 'badge.holds');
@@ -4359,6 +4439,7 @@
     $('routeState').classList.toggle('warn', decision === 'criticality');
     $('routeState').classList.toggle('active', decision === 'passage');
     document.body.dataset.routeStatusKey = $('routeState').dataset.routeStatusKey;
+    updateSafeHarborEntryPoints({ decision, harbor, routeStatus });
   }
 
   function updateHeroConsolePair(payload) {
@@ -4376,7 +4457,7 @@
       decision === 'criticality'
         ? 'Witness pressure is outrunning route stability.'
         : decision === 'passage'
-          ? 'Route, harbor, and archive are aligned enough to move without bluffing.'
+          ? 'Route, harbor, and archive are aligned enough to move without bluffing. Safe Harbor can packetize the handoff now.'
           : decision === 'hold-branch'
             ? 'The branch is live, but passage is still being argued in law.'
             : 'The field is still more atmospheric than traceable.';
@@ -4385,7 +4466,10 @@
       $('heroHarborNote').textContent = 'No harbor yet. Keep the encounter playful until custody can actually support it.';
     } else {
       $('heroHarborValue').textContent = harbor;
-      $('heroHarborNote').textContent = HARBOR_LIBRARY[harbor].mode_class;
+      $('heroHarborNote').textContent =
+        decision === 'passage'
+          ? `${HARBOR_LIBRARY[harbor].mode_class}. Safe Harbor is now the clean intake chamber for this route.`
+          : HARBOR_LIBRARY[harbor].mode_class;
     }
     $('decisionTone').textContent = `${glyphChar('stateDecision', '')} ${
       decision === 'criticality'
@@ -4479,6 +4563,7 @@
         </div>
       </div>
       <p class="kicker">${harborData.trigger_condition}. ${kicker}</p>
+      <a class="harbor-action-link" data-state="${decision === 'passage' ? 'ready' : decision === 'criticality' ? 'guarded' : 'branch'}" href="${escapeHtml(buildSafeHarborHandoffHref({ decision, harbor, routeStatus: ledger.route_status }))}">${decision === 'passage' ? 'Enter Safe Harbor' : decision === 'criticality' ? 'Open Guarded Safe Harbor' : 'Stage In Safe Harbor'}</a>
     `;
   }
 
@@ -4534,7 +4619,7 @@
     applyGlyphMetadata($('decisionTone'), 'stateDecision');
     $('decisionTone').dataset.state = 'weak-signal';
     $('harborBox').innerHTML = '';
-    updateStatePills('buffered', 'weak-signal');
+    updateStatePills('buffered', 'weak-signal', { harbor: 'observe' });
     resetMetricTones();
     document.body.dataset.decision = 'weak-signal';
   }
@@ -4605,7 +4690,7 @@
       </div>
       <p class="kicker">${escapeHtml(harborKicker)}</p>
     `;
-    updateStatePills(routeStatus, 'hold-branch');
+    updateStatePills(routeStatus, 'hold-branch', { harbor: harborName });
     setMetricTone('similarityCard', 'warm');
     setMetricTone('traceabilityCard', 'live');
     setMetricTone('routePressureCard', 'live');
@@ -4873,7 +4958,7 @@ DeltaE = ${ledger.reuse_gain}`;
                 : `The pattern is still light. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so TCP keeps the encounter playful instead of forcing route.`;
     updateHarborBox(harbor, ledger, decision);
     updateHeroConsolePair({ cmp, routePressure, harbor, decision });
-    updateStatePills(ledger.route_status, decision);
+    updateStatePills(ledger.route_status, decision, { harbor });
     setMetricTone('similarityCard', cmp.similarity >= 0.78 ? 'live' : cmp.similarity >= 0.55 ? 'warm' : 'idle');
     setMetricTone('traceabilityCard', cmp.traceability >= 0.7 ? 'live' : cmp.traceability >= 0.45 ? 'warm' : 'idle');
     setMetricTone('routePressureCard', decision === 'criticality' ? 'hot' : decision === 'passage' ? 'live' : 'warm');
