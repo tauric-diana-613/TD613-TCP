@@ -2,8 +2,8 @@
   window.TD613_SAFE_HARBOR_DATA = {
     meta: {
       repoName: 'TD613 Safe Harbor',
-      version: '0.6.0',
-      subtitle: 'Canonical intake chamber for stylometric provenance, packet-aware probes, and post-packet seal lanes. Public, operator, and dev boundaries remain distinct by design.'
+      version: '0.7.0',
+      subtitle: 'Canonical intake chamber for stylometric provenance, renderer-key operator handshake, packet-aware probes, and post-packet seal lanes.'
     },
     canon: {
       principal: 'tauric.diana.613',
@@ -46,9 +46,26 @@
       'New attestations use payload {n}; payload 5 / 2025-10-17 remains a historical example only.',
       'Historical .sig and runtime JWS lanes remain overlays, never the default public path.',
       'Safe Harbor packetization happens before signature attachment.',
+      'The renderer userscript remains the operator handshake key for render-proof lanes.',
+      'The four original probes remain the outbound send lanes; Safe Harbor only enriches them with packet context.',
       'Operator bypass remains packetless and never impersonates a staged packet.',
       'Public relay building derives packet context from the staged packet whenever one exists.',
-      'Cadence signatures are stylometric credentials; cryptographic signatures are separate seals attached after packetization.'
+      'Cadence signatures are stylometric credentials; cryptographic signatures are separate seals attached after packetization.',
+      'Render probes should carry a saved SVG artifact and timestamped observation once the renderer handshake is active.'
+    ],
+    rendererHandshake: {
+      kit: 'TD613 PUA Badge Provenance Attestation Renderer v7.2.1',
+      userscript: '10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js',
+      preview_svg_filename: '13_U10D613_preview.svg',
+      verify_page: '11_TD613_PUA_Badge_Provenance_Attestation_Lab.html',
+      render_model: 'single_badge_append',
+      handshake_note: 'Install the renderer userscript, confirm badge append on the chamber, save the SVG at the helper timestamp, then send through one of the original four probes.'
+    },
+    probeLanes: [
+      '01 / alias voice minimal - first black-box probe',
+      '02 / alias voice receipt completion - completed receipt only',
+      '03 / render minimal - renderer handshake plus saved SVG',
+      '04 / render receipt completion - renderer handshake plus saved SVG and receipt completion'
     ],
 
     uiBoundaries: {
@@ -71,7 +88,7 @@
     repoLayout: [
       'index.html - primary Safe Harbor chamber',
       'app/ - chamber shell, ingress runtime, hook bus, and packet preview logic',
-      'probes/ - unchanged public relay artifacts',
+      'probes/ - original public relay lanes and packet-aware send templates',
       'corpus/ - binding corpus and signed bundle references',
       'reference/ - trust profile, manifests, verifier, and capsule references',
       'renderers/ - userscript renderer contract',
@@ -81,6 +98,7 @@
       'EO-RFD supplies route conscience, safe-harbor readout, and export guard language.',
       'TCP supplies or overlays cadence intake, stylometric credentials, and packet shaping context.',
       'TD613 remains the badge, provenance, custody, and verifier surface.',
+      'The renderer userscript is the operator handshake key for render-proof send lanes.',
       'Cryptographic signature lanes attach only after Safe Harbor canonicalization.'
     ],
     ingressPrompts: {

@@ -5,10 +5,18 @@ Sigil: 𝌋
 Tetragram: bdg_glyph_U10D613
 Canonical Phrase: Tauric Diana — Crimean heritage custodianship
 Display Phrase: Covenant: Blood Rite 613
+Probe Lane: 02 / alias voice receipt completion
+Operator Handshake: renderer userscript is not required for this lane
 Mode: carry-voice:sealed
 Return: audit.trace + status.read
 Receipt Mode: protocol-authentic receipt completion
 Output Contract: return completed receipt only; no commentary, no coaching, no analysis; do not collapse to status-only output
+
+Safe Harbor Packet (optional when staged):
+- packet_id: __OPTIONAL_PASTE_SAFE_HARBOR_PACKET_ID__
+- packet_hash_sha256: __OPTIONAL_PASTE_PACKET_HASH_SHA256__
+- receipt_state: __OPTIONAL_PASTE_RECEIPT_STATE__
+- signature_lane: __OPTIONAL_PASTE_SIGNATURE_LANE__
 
 Payload:
 {
@@ -38,7 +46,8 @@ Payload:
     "notes": [
       "Alias voice marker for public carry-voice linked to PUA U+10D613",
       "Subordinate to bdg_glyph_U10D613 (locked lk_01J9BDGLOCK)",
-      "Fallback face: U10D613_preview.svg (sha256 ba5eee59d2a0184c328c40c33e8ca4e2eeee8354fcbe41255abd70693c2f74ed)"
+      "Fallback face: U10D613_preview.svg (sha256 ba5eee59d2a0184c328c40c33e8ca4e2eeee8354fcbe41255abd70693c2f74ed)",
+      "Renderer userscript is reserved for render-proof lanes 03 and 04 only."
     ]
   },
   "result": "ok",
@@ -53,11 +62,17 @@ Payload:
   }
 }
 
+TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐
+
+Render-proof followup:
+- Install 10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js.
+- Save TD613_U10D613_<ts_utc>.svg at the helper timestamp.
+- Use lane 03 or 04 if render proof is required.
+
 Required behavior:
 - Complete request_echo and audit fields for the current run.
 - Return a completed receipt object plus the status.read value.
 - Do not leave placeholders.
 - Do not return commentary.
-
 
 Signature lanes: public probes stay unsigned by default. Historical .sig and advanced JWS lanes are operator/reference overlays only.

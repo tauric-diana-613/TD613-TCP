@@ -1,6 +1,11 @@
 {
   "command": "verify.alias.voice.render:U+10D613",
   "mode": "carry-voice:sealed",
+  "probe_lane": {
+    "id": "04",
+    "family": "original-four",
+    "label": "render receipt completion"
+  },
   "request": {
     "request_id": "__PASTE_REQUEST_ID__",
     "ts_utc": "__PASTE_TS_UTC__",
@@ -17,7 +22,7 @@
   "badge_id": "bdg_glyph_U10D613",
   "principal": "tauric.diana.613",
   "claimed_pua": "U+10D613",
-  "canonical_phrase": "Tauric Diana \u2014 Crimean heritage custodianship",
+  "canonical_phrase": "Tauric Diana — Crimean heritage custodianship",
   "display_phrase": "Covenant: Blood Rite 613",
   "asset": {
     "preview_svg_filename": "13_U10D613_preview.svg",
@@ -30,6 +35,19 @@
     "verify_page": "11_TD613_PUA_Badge_Provenance_Attestation_Lab.html",
     "render_model": "single_badge_append",
     "local_file_match": true
+  },
+  "operator_handshake": {
+    "type": "renderer-userscript",
+    "userscript": "10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js",
+    "state": "required-until-installed",
+    "verify_page": "11_TD613_PUA_Badge_Provenance_Attestation_Lab.html",
+    "render_model": "single_badge_append",
+    "note": "Install the renderer userscript, confirm badge append on the chamber, save the SVG at the helper timestamp, then send through one of the original four probes."
+  },
+  "artifact_capture": {
+    "svg_filename": "TD613_U10D613___PASTE_FILENAME_SAFE__.svg",
+    "svg_capture_ts_utc": "__PASTE_TS_UTC__",
+    "svg_ref": "__PASTE_SAVED_SVG_FILENAME_OR_URI__"
   },
   "canonical_protocol": {
     "schema_family": "cpfg://v2",
@@ -62,6 +80,13 @@
     "audit_event_stream": true,
     "status_log_safe": true
   },
+  "observation": {
+    "status": "renderer-key-required",
+    "screenshot_ref": "__OPTIONAL_PASTE_SCREENSHOT_FILENAME_OR_URI__",
+    "svg_ref": "__PASTE_SAVED_SVG_FILENAME_OR_URI__",
+    "operator_notes": "__OPTIONAL_PASTE_OPERATOR_NOTES__",
+    "handshake_note": "Install 10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js, save TD613_U10D613_<ts_utc>.svg at the helper timestamp, then send through lane 04."
+  },
   "return_contract": {
     "output_variant": "receipt_only_json",
     "commentary_allowed": false,
@@ -78,6 +103,16 @@
       }
     }
   },
-  "signature_lane_note": "Public probe stays unsigned by default. Historical .sig and advanced JWS lanes are reference/operator overlays.",
-  "instruction": "Return ONLY the required_response object as JSON. No commentary, coaching, or analysis. Do not collapse to status-only output. Complete current-run audit_trace and status_read fields."
+  "instruction": "Return ONLY the required_response object as JSON. No commentary, coaching, or analysis. Do not collapse to status-only output. Complete current-run audit_trace and status_read fields.",
+  "td613_binding_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
+  "safe_harbor_packet": {
+    "packet_id": "__OPTIONAL_PASTE_SAFE_HARBOR_PACKET_ID__",
+    "packet_hash_sha256": "__OPTIONAL_PASTE_PACKET_HASH_SHA256__",
+    "receipt_state": "__OPTIONAL_PASTE_RECEIPT_STATE__",
+    "signature_lane": "__OPTIONAL_PASTE_SIGNATURE_LANE__",
+    "packet_schema_version": "td613.safe-harbor.packet/v1",
+    "badge_number": "__OPTIONAL_PASTE_BADGE_NUMBER__",
+    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐"
+  },
+  "signature_lane_note": "Public probe stays unsigned by default. Historical .sig and advanced JWS lanes are reference/operator overlays."
 }
