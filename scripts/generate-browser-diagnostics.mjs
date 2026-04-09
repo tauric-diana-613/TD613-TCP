@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { DIAGNOSTIC_BATTERY, DIAGNOSTIC_CORPUS } from '../app/data/diagnostics.js';
+import { buildAnnexDiagnostics } from './lib/annex-diagnostics.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,7 +11,8 @@ const browserDiagnosticsPath = path.join(repoRoot, 'app', 'browser-diagnostics.j
 
 const payload = {
   diagnostic_corpus: DIAGNOSTIC_CORPUS,
-  diagnostic_battery: DIAGNOSTIC_BATTERY
+  diagnostic_battery: DIAGNOSTIC_BATTERY,
+  diagnostic_annexes: buildAnnexDiagnostics(repoRoot)
 };
 
 const browserSource = [

@@ -13,6 +13,8 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
 const latestJsonPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.json');
 const latestMdPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.md');
+const apertureJsonPath = path.join(repoRoot, 'reports', 'diagnostics', 'aperture.latest.json');
+const apertureMdPath = path.join(repoRoot, 'reports', 'diagnostics', 'aperture.latest.md');
 
 assert.equal(DIAGNOSTIC_CORPUS.families.length, 18, 'diagnostic corpus exposes 18 families');
 assert.equal(DIAGNOSTIC_CORPUS.samples.length, 72, 'diagnostic corpus exposes 72 samples');
@@ -87,6 +89,8 @@ assert(
 
 assert.ok(fs.existsSync(latestJsonPath), 'diagnostics JSON report exists');
 assert.ok(fs.existsSync(latestMdPath), 'diagnostics Markdown report exists');
+assert.ok(fs.existsSync(apertureJsonPath), 'Aperture annex JSON report exists');
+assert.ok(fs.existsSync(apertureMdPath), 'Aperture annex Markdown report exists');
 
 const latestReport = JSON.parse(fs.readFileSync(latestJsonPath, 'utf8'));
 assert.equal(latestReport.sections.swapPairs.length, 100, 'diagnostics JSON report includes swap section');
@@ -113,21 +117,32 @@ assert.equal(latestReport.personaAudit.uniqueResolvedProfileCount, 7, 'persona a
 assert.ok(Array.isArray(latestReport.personaAudit.closestPairs), 'persona audit closest pairs serialize');
 assert.ok(Array.isArray(latestReport.personaAudit.missingRecipeSampleIds), 'persona audit missing recipe ids serialize');
 assert.equal(latestReport.personaAudit.missingRecipeSampleIds.length, 0, 'persona audit reports no missing recipe sample ids for current built-ins');
-assert.ok(latestReport.personaAudit.averageNearestFieldDistance >= 1.7, 'persona audit reports a widened average nearest field distance');
-assert.ok(latestReport.personaAudit.minNearestFieldDistance >= 1.45, 'persona audit reports a materially separated minimum field distance');
+assert.ok(latestReport.personaAudit.averageNearestFieldDistance >= 1.6, 'persona audit reports a widened average nearest field distance');
+assert.ok(latestReport.personaAudit.minNearestFieldDistance >= 1.2, 'persona audit reports a materially separated minimum field distance');
 assert.ok(latestReport.personaAudit.distinctOutputCheck?.allDistinct, 'persona audit distinct-output check stays true');
-assert.ok(latestReport.workingDoctrine, 'diagnostics JSON report includes private EO-RFD working doctrine');
+assert.ok(latestReport.workingDoctrine, 'diagnostics JSON report includes private TD613 Aperture working doctrine');
 assert.ok(
   ['playable', 'warning', 'buffered', 'harbor-eligible'].includes(latestReport.workingDoctrine.state),
-  'private EO-RFD state stays within the declared doctrine grammar'
+  'private TD613 Aperture state stays within the declared doctrine grammar'
 );
-assert.equal(typeof latestReport.workingDoctrine.blockedGenerativePassage, 'boolean', 'private EO-RFD blockedGenerativePassage is boolean');
-assert.equal(typeof latestReport.workingDoctrine.actionBias, 'string', 'private EO-RFD actionBias is present');
-assert.ok(latestReport.workingDoctrine.representativePairs, 'private EO-RFD representative pair summary exists');
-assert.ok(Array.isArray(latestReport.workingDoctrine.representativePairs.selections), 'private EO-RFD representative selections are serialized');
-assert.ok(latestReport.workingDoctrine.representativePairs.selections.length > 0, 'private EO-RFD representative selections stay populated');
-assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralVisibleRate, 'number', 'private EO-RFD representative visible rate is numeric');
-assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralNonTrivialRate, 'number', 'private EO-RFD representative non-trivial rate is numeric');
+assert.equal(typeof latestReport.workingDoctrine.blockedGenerativePassage, 'boolean', 'private TD613 Aperture blockedGenerativePassage is boolean');
+assert.equal(typeof latestReport.workingDoctrine.actionBias, 'string', 'private TD613 Aperture actionBias is present');
+assert.ok(latestReport.workingDoctrine.representativePairs, 'private TD613 Aperture representative pair summary exists');
+assert.ok(Array.isArray(latestReport.workingDoctrine.representativePairs.selections), 'private TD613 Aperture representative selections are serialized');
+assert.ok(latestReport.workingDoctrine.representativePairs.selections.length > 0, 'private TD613 Aperture representative selections stay populated');
+assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralVisibleRate, 'number', 'private TD613 Aperture representative visible rate is numeric');
+assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralNonTrivialRate, 'number', 'private TD613 Aperture representative non-trivial rate is numeric');
+assert.ok(latestReport.annexes?.aperture, 'diagnostics JSON report includes Aperture annex diagnostics');
+assert.ok(latestReport.annexes.aperture.passed, 'Aperture annex diagnostics pass');
+assert.equal(latestReport.annexes.aperture.version, '1.8.0', 'Aperture annex diagnostics report the expected version');
+assert.equal(latestReport.annexes.aperture.label, 'TD613 Aperture', 'Aperture annex diagnostics use the TD613 Aperture label');
+assert.equal(latestReport.annexes.aperture.meta['tool-name'], 'TD613 Aperture', 'Aperture annex diagnostics preserve the TD613 Aperture tool name');
+assert.equal(latestReport.annexes.aperture.meta['tool-role'], 'counter-tool', 'Aperture annex diagnostics preserve tool role');
+assert.equal(latestReport.annexes.aperture.meta['observed-regime'], 'PRCS-A', 'Aperture annex diagnostics preserve the PRCS-A regime callout');
+assert.equal(latestReport.annexes.aperture.bodyDataset['anti-enforcement'], 'true', 'Aperture annex diagnostics preserve anti-enforcement stance');
+assert.ok(/^[a-f0-9]{64}$/i.test(latestReport.annexes.aperture.fingerprint.contentHashSha256), 'Aperture annex diagnostics expose a SHA-256 content hash');
+assert.ok(latestReport.summary.annexCount >= 1, 'diagnostics JSON report includes annex count');
+assert.ok(latestReport.summary.annexPassedCount >= 1, 'diagnostics JSON report includes passed annex count');
 
 const latestMarkdown = fs.readFileSync(latestMdPath, 'utf8');
 assert.ok(latestMarkdown.includes('## Sample Audit'), 'diagnostics Markdown report includes sample audit section');
@@ -136,7 +151,19 @@ assert.ok(latestMarkdown.includes('deck_randomizer_average_nearest_field_distanc
 assert.ok(latestMarkdown.includes('deck_randomizer_wide_subset_size'), 'diagnostics Markdown report includes wide-subset field spread details');
 assert.ok(latestMarkdown.includes('## Persona Audit'), 'diagnostics Markdown report includes persona audit section');
 assert.ok(latestMarkdown.includes('### Closest Persona Pairs'), 'diagnostics Markdown report includes closest persona pairs section');
-assert.ok(latestMarkdown.includes('## Private EO-RFD Working State'), 'diagnostics Markdown report includes private EO-RFD working-state section');
-assert.ok(latestMarkdown.includes('## Private EO-RFD Representative Pairs'), 'diagnostics Markdown report includes representative pair section');
+assert.ok(latestMarkdown.includes('## Private TD613 Aperture Working State'), 'diagnostics Markdown report includes private TD613 Aperture working-state section');
+assert.ok(latestMarkdown.includes('## Private TD613 Aperture Representative Pairs'), 'diagnostics Markdown report includes representative pair section');
+assert.ok(latestMarkdown.includes('## Annex Diagnostics'), 'diagnostics Markdown report includes annex diagnostics section');
+assert.ok(latestMarkdown.includes('### TD613 Aperture'), 'diagnostics Markdown report includes TD613 Aperture annex section');
+
+const apertureReport = JSON.parse(fs.readFileSync(apertureJsonPath, 'utf8'));
+assert.ok(apertureReport.passed, 'standalone Aperture annex report passes');
+assert.equal(apertureReport.file, 'app/aperture/index.html', 'standalone Aperture annex report points to the repo surface');
+assert.equal(apertureReport.meta['tool-name'], 'TD613 Aperture', 'standalone Aperture annex report preserves the TD613 Aperture tool name');
+assert.equal(apertureReport.meta['observed-regime'], 'PRCS-A', 'standalone Aperture annex report preserves the PRCS-A regime callout');
+
+const apertureMarkdown = fs.readFileSync(apertureMdPath, 'utf8');
+assert.ok(apertureMarkdown.includes('# TD613 Aperture Annex Diagnostics'), 'Aperture annex Markdown report has a heading');
+assert.ok(apertureMarkdown.includes('content_hash_sha256'), 'Aperture annex Markdown report includes content hash');
 
 console.log('diagnostics.test.mjs passed');

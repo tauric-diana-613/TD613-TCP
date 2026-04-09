@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import * as engine from '../app/engine/stylometry.js';
 import personas from '../app/data/personas.js';
+import { buildAnnexDiagnostics, buildAnnexMarkdown } from './lib/annex-diagnostics.mjs';
 import {
   DECK_RANDOMIZER_SAMPLE_LIBRARY,
   DIAGNOSTIC_BATTERY,
@@ -1182,7 +1183,7 @@ function buildMarkdownReport(report) {
 
   if (report.workingDoctrine) {
     const doctrine = report.workingDoctrine;
-    lines.push('', '## Private EO-RFD Working State', '');
+    lines.push('', '## Private TD613 Aperture Working State', '');
     lines.push(`- state: ${doctrine.state}`);
     lines.push(`- blocked_generative_passage: ${doctrine.blockedGenerativePassage ? 'yes' : 'no'}`);
     lines.push(`- donor_pressure: ${doctrine.donorPressure?.status || 'unknown'}`);
@@ -1191,9 +1192,28 @@ function buildMarkdownReport(report) {
     lines.push(`- provenance_floor: ${doctrine.provenanceFloor?.status || 'unknown'}`);
     lines.push(`- swap_matrix: bilateral ${doctrine.swapMatrix?.bilateralEngaged || 0}/${doctrine.swapMatrix?.caseCount || 0}, one-sided ${doctrine.swapMatrix?.oneSided || 0}/${doctrine.swapMatrix?.caseCount || 0}, flagship ${doctrine.swapMatrix?.flagshipPassCount || 0}/${doctrine.swapMatrix?.flagshipCaseCount || 0}`);
     lines.push(`- representative_pairs: bilateral visible ${doctrine.representativePairs?.bilateralVisibleCount || 0}/${doctrine.representativePairs?.count || 0}, bilateral non-trivial ${doctrine.representativePairs?.bilateralNonTrivialCount || 0}/${doctrine.representativePairs?.count || 0}, average score ${doctrine.representativePairs?.averageScore || 0}`);
-    lines.push('', '## Private EO-RFD Representative Pairs', '');
+    lines.push('', '## Private TD613 Aperture Representative Pairs', '');
     (doctrine.representativePairs?.selections || []).forEach((entry) => {
       lines.push(`- ${entry.anchorId} -> ${entry.candidateId}: score ${entry.score}, outcomes ${entry.laneOutcomes.join(' / ')}, bilateral visible ${entry.bilateralVisible ? 'yes' : 'no'}, bilateral non-trivial ${entry.bilateralNonTrivial ? 'yes' : 'no'}`);
+    });
+  }
+
+  const annexEntries = Object.values(report.annexes || {});
+  if (annexEntries.length) {
+    lines.push('', '## Annex Diagnostics', '');
+    annexEntries.forEach((entry) => {
+      lines.push(`### ${entry.label}`);
+      lines.push('');
+      lines.push(`- status: ${entry.passed ? 'passed' : 'failed'}`);
+      lines.push(`- version: ${entry.version || 'unknown'}`);
+      lines.push(`- source: ${entry.file}`);
+      if (entry.fingerprint) {
+        lines.push(`- content_hash_sha256: ${entry.fingerprint.contentHashSha256}`);
+        lines.push(`- inline_script_count: ${entry.fingerprint.inlineScriptCount}`);
+      }
+      const failedChecks = (entry.failedChecks || []).map((check) => check.label);
+      lines.push(`- failed_checks: ${failedChecks.length ? failedChecks.join(', ') : 'none'}`);
+      lines.push('');
     });
   }
 
@@ -1219,6 +1239,7 @@ const sectionResults = {
   )
 };
 const representativePairs = summarizeRepresentativeSwapSelections(buildRepresentativeSwapSelections());
+const annexes = buildAnnexDiagnostics(repoRoot);
 
 const report = {
   generatedAt: new Date().toISOString(),
@@ -1226,13 +1247,20 @@ const report = {
   sections: sectionResults,
   sampleAudit: buildSampleAudit(DIAGNOSTIC_SAMPLE_LIBRARY),
   personaAudit: buildPersonaAudit(PERSONA_LIBRARY),
-  workingDoctrine: null
+  workingDoctrine: null,
+  annexes
 };
 report.workingDoctrine = buildPrivateWorkingDoctrine(report.summary, swapMatrix, representativePairs);
+report.summary.annexCount = Object.keys(annexes).length;
+report.summary.annexPassedCount = Object.values(annexes).filter((entry) => entry.passed).length;
 
 ensureDir(reportsDir);
 fs.writeFileSync(latestJsonPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 fs.writeFileSync(latestMdPath, buildMarkdownReport(report), 'utf8');
+Object.values(annexes).forEach((entry) => {
+  fs.writeFileSync(path.join(reportsDir, `${entry.id}.latest.json`), `${JSON.stringify(entry, null, 2)}\n`, 'utf8');
+  fs.writeFileSync(path.join(reportsDir, `${entry.id}.latest.md`), buildAnnexMarkdown(entry), 'utf8');
+});
 
 console.log(`diagnostics battery complete (${report.summary.totalCases} cases)`);
 console.log(`worst buckets: ${JSON.stringify(report.summary.failureBucketCounts)}`);

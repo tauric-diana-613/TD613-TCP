@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-08T21:40:34.593Z
+Generated: 2026-04-09T06:58:47.940Z
 
 Corpus: 72 samples across 18 families
 Promoted deck subset: 24 samples
@@ -88,7 +88,7 @@ Total diagnostics cases: 218
 - undertow <-> matron: field distance 2.139, profile 1.463, heatmap 0, traceability 0.922
 - archivist <-> matron: field distance 2.488, profile 2.077, heatmap 0, traceability 1
 
-## Private EO-RFD Working State
+## Private TD613 Aperture Working State
 
 - state: warning
 - blocked_generative_passage: no
@@ -99,7 +99,7 @@ Total diagnostics cases: 218
 - swap_matrix: bilateral 26/104, one-sided 28/104, flagship 8/8
 - representative_pairs: bilateral visible 5/6, bilateral non-trivial 5/6, average score 30.5
 
-## Private EO-RFD Representative Pairs
+## Private TD613 Aperture Representative Pairs
 
 - building-access-rushed-mobile -> adversarial-hearing-professional-message: score 35, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - benefits-appeal-professional-message -> adversarial-hearing-rushed-mobile: score 34, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
@@ -107,3 +107,15 @@ Total diagnostics cases: 218
 - adversarial-hearing-rushed-mobile -> adversarial-hearing-professional-message: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - museum-fog-alarm-professional-message -> clinic-scheduling-rushed-mobile: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - model-safety-rushed-mobile -> adversarial-hearing-professional-message: score 6, outcomes rejected / structural, bilateral visible no, bilateral non-trivial no
+
+## Annex Diagnostics
+
+### TD613 Aperture
+
+- status: passed
+- version: 1.8.0
+- source: app/aperture/index.html
+- content_hash_sha256: 9936ca676be42b2501ca7bcd0f18920e9d99b4f489978a1527d8e998748ad040
+- inline_script_count: 2
+- failed_checks: none
+

@@ -1,0 +1,286 @@
+{
+  "id": "aperture",
+  "label": "TD613 Aperture",
+  "file": "app/aperture/index.html",
+  "passed": true,
+  "title": "TD613 Aperture · v1.8.0",
+  "version": "1.8.0",
+  "meta": {
+    "viewport": "width=device-width, initial-scale=1.0",
+    "tool-name": "TD613 Aperture",
+    "tool-role": "counter-tool",
+    "observed-regime": "PRCS-A",
+    "anti-enforcement": "true",
+    "source-note": "PRCS-A receives explicit regime callouts; legacy Eclipse-Omega naming remains a non-normative strain marker."
+  },
+  "bodyDataset": {
+    "tool-name": "TD613 Aperture",
+    "tool-role": "counter-tool",
+    "observed-regime": "PRCS-A",
+    "anti-enforcement": "true"
+  },
+  "fingerprint": {
+    "bytes": 285090,
+    "lineCount": 6158,
+    "inlineScriptCount": 2,
+    "panelCount": 3,
+    "buttonCount": 18,
+    "contentHashSha256": "9936ca676be42b2501ca7bcd0f18920e9d99b4f489978a1527d8e998748ad040"
+  },
+  "checks": [
+    {
+      "id": "title",
+      "label": "title marker",
+      "ok": true,
+      "detail": "TD613 Aperture · v1.8.0 observed",
+      "expected": "TD613 Aperture + v1.8.0",
+      "actual": "TD613 Aperture · v1.8.0"
+    },
+    {
+      "id": "version",
+      "label": "version marker",
+      "ok": true,
+      "detail": "version 1.8.0 observed",
+      "expected": "1.8.0",
+      "actual": "1.8.0"
+    },
+    {
+      "id": "inline-script",
+      "label": "inline runtime present",
+      "ok": true,
+      "detail": "2 inline script block(s)",
+      "expected": ">= 1",
+      "actual": 2
+    },
+    {
+      "id": "meta:tool-name",
+      "label": "meta tool-name",
+      "ok": true,
+      "detail": "tool-name => TD613 Aperture",
+      "expected": "TD613 Aperture",
+      "actual": "TD613 Aperture"
+    },
+    {
+      "id": "meta:tool-role",
+      "label": "meta tool-role",
+      "ok": true,
+      "detail": "tool-role => counter-tool",
+      "expected": "counter-tool",
+      "actual": "counter-tool"
+    },
+    {
+      "id": "meta:observed-regime",
+      "label": "meta observed-regime",
+      "ok": true,
+      "detail": "observed-regime => PRCS-A",
+      "expected": "PRCS-A",
+      "actual": "PRCS-A"
+    },
+    {
+      "id": "meta:anti-enforcement",
+      "label": "meta anti-enforcement",
+      "ok": true,
+      "detail": "anti-enforcement => true",
+      "expected": "true",
+      "actual": "true"
+    },
+    {
+      "id": "body:tool-name",
+      "label": "body dataset tool-name",
+      "ok": true,
+      "detail": "tool-name => TD613 Aperture",
+      "expected": "TD613 Aperture",
+      "actual": "TD613 Aperture"
+    },
+    {
+      "id": "body:tool-role",
+      "label": "body dataset tool-role",
+      "ok": true,
+      "detail": "tool-role => counter-tool",
+      "expected": "counter-tool",
+      "actual": "counter-tool"
+    },
+    {
+      "id": "body:observed-regime",
+      "label": "body dataset observed-regime",
+      "ok": true,
+      "detail": "observed-regime => PRCS-A",
+      "expected": "PRCS-A",
+      "actual": "PRCS-A"
+    },
+    {
+      "id": "body:anti-enforcement",
+      "label": "body dataset anti-enforcement",
+      "ok": true,
+      "detail": "anti-enforcement => true",
+      "expected": "true",
+      "actual": "true"
+    },
+    {
+      "id": "id:leftPanel",
+      "label": "id leftPanel",
+      "ok": true,
+      "detail": "leftPanel present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "id:centerArea",
+      "label": "id centerArea",
+      "ok": true,
+      "detail": "centerArea present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "id:rightPanel",
+      "label": "id rightPanel",
+      "ok": true,
+      "detail": "rightPanel present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "id:humanRoutePanel",
+      "label": "id humanRoutePanel",
+      "ok": true,
+      "detail": "humanRoutePanel present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "id:tcpBridgePanel",
+      "label": "id tcpBridgePanel",
+      "ok": true,
+      "detail": "tcpBridgePanel present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "id:btnTCPExport",
+      "label": "id btnTCPExport",
+      "ok": true,
+      "detail": "btnTCPExport present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "fn:resetSystem",
+      "label": "function resetSystem",
+      "ok": true,
+      "detail": "resetSystem present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "fn:createTCPHandoffPacket",
+      "label": "function createTCPHandoffPacket",
+      "ok": true,
+      "detail": "createTCPHandoffPacket present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "fn:scrubPacketEnvelope",
+      "label": "function scrubPacketEnvelope",
+      "ok": true,
+      "detail": "scrubPacketEnvelope present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "fn:triggerPreparedTCPHandoff",
+      "label": "function triggerPreparedTCPHandoff",
+      "ok": true,
+      "detail": "triggerPreparedTCPHandoff present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:source-declaration",
+      "label": "source declaration",
+      "ok": true,
+      "detail": "source declaration present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:counter-tool-stance",
+      "label": "counter-tool stance",
+      "ok": true,
+      "detail": "counter-tool stance present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:anti-enforcement-stance",
+      "label": "anti-enforcement stance",
+      "ok": true,
+      "detail": "anti-enforcement stance present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:observed-regime",
+      "label": "PRCS-A regime marker",
+      "ok": true,
+      "detail": "PRCS-A regime marker present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:tool-identity",
+      "label": "TD613 Aperture identity marker",
+      "ok": true,
+      "detail": "TD613 Aperture identity marker present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:source-global",
+      "label": "source declaration global",
+      "ok": true,
+      "detail": "source declaration global present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:aperture-global",
+      "label": "Aperture runtime definition",
+      "ok": true,
+      "detail": "Aperture runtime definition present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:packet-export-gate",
+      "label": "packet export gate",
+      "ok": true,
+      "detail": "packet export gate present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:route-classes",
+      "label": "route class sync",
+      "ok": true,
+      "detail": "route class sync present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:residue-packet",
+      "label": "non-identifying packet copy",
+      "ok": true,
+      "detail": "non-identifying packet copy present",
+      "expected": null,
+      "actual": null
+    }
+  ],
+  "failedChecks": [],
+  "checkSummary": {
+    "total": 31,
+    "passed": 31,
+    "failed": 0
+  }
+}
