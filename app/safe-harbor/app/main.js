@@ -7,6 +7,25 @@
   const KEYS = ['future_self', 'past_self', 'higher_self'];
   const STORAGE_KEY = 'td613.safe-harbor.session.v1';
   const MAX_AUDIT = 24;
+  const INGRESS_STEP_COPY = {
+    future_self: {
+      support: 'Speak forward first. Let the membrane hear direction, residue, or warning before it hears revision.',
+      placeholder: 'Speak forward through the membrane.'
+    },
+    past_self: {
+      support: 'Now answer backward. Keep it candid enough to carry cadence without forcing disclosure you do not want to bind.',
+      placeholder: 'Send a line backward through the membrane.'
+    },
+    higher_self: {
+      support: 'The third page addresses the witness above the loop. Let the covenant surface without rushing the seal.',
+      placeholder: 'Address your higher self through the membrane.'
+    },
+    seal: {
+      kicker: 'Seal Step',
+      prompt: 'Resolve the staged packet threshold',
+      support: 'The triad is now held as three distinct acts. Review the cadence lanes, then mint the staged packet when the handshake feels true.'
+    }
+  };
 
   const $ = (id) => document.getElementById(id);
   const dom = {
@@ -15,6 +34,10 @@
     ingressRoutePill: $('ingressRoutePill'),
     ingressProgressPill: $('ingressProgressPill'),
     ingressVaultPill: $('ingressVaultPill'),
+    ingressStageFuture: $('ingressStageFuture'),
+    ingressStagePast: $('ingressStagePast'),
+    ingressStageHigher: $('ingressStageHigher'),
+    ingressStageSeal: $('ingressStageSeal'),
     ingressNote: $('ingressNote'),
     clearIngress: $('clearIngress'),
     bypassPassword: $('bypassPassword'),
@@ -22,18 +45,23 @@
     clearBypassToken: $('clearBypassToken'),
     bypassIngress: $('bypassIngress'),
     mintStagedPacket: $('mintStagedPacket'),
-    ingressFutureSelf: $('ingressFutureSelf'),
-    ingressPastSelf: $('ingressPastSelf'),
-    ingressHigherSelf: $('ingressHigherSelf'),
-    cardFutureSelf: $('cardFutureSelf'),
-    cardPastSelf: $('cardPastSelf'),
-    cardHigherSelf: $('cardHigherSelf'),
-    stateFutureSelf: $('stateFutureSelf'),
-    statePastSelf: $('statePastSelf'),
-    stateHigherSelf: $('stateHigherSelf'),
-    metaFutureSelf: $('metaFutureSelf'),
-    metaPastSelf: $('metaPastSelf'),
-    metaHigherSelf: $('metaHigherSelf'),
+    ingressStepKicker: $('ingressStepKicker'),
+    ingressStepPrompt: $('ingressStepPrompt'),
+    ingressStepState: $('ingressStepState'),
+    ingressStepSupport: $('ingressStepSupport'),
+    ingressStepEntry: $('ingressStepEntry'),
+    ingressStepInput: $('ingressStepInput'),
+    ingressStepMeta: $('ingressStepMeta'),
+    ingressSealReview: $('ingressSealReview'),
+    ingressSealNote: $('ingressSealNote'),
+    ingressBack: $('ingressBack'),
+    ingressContinue: $('ingressContinue'),
+    ingressPageReadout: $('ingressPageReadout'),
+    ingressResolvedReadout: $('ingressResolvedReadout'),
+    ingressThresholdReadout: $('ingressThresholdReadout'),
+    ingressSummaryFutureSelf: $('ingressSummaryFutureSelf'),
+    ingressSummaryPastSelf: $('ingressSummaryPastSelf'),
+    ingressSummaryHigherSelf: $('ingressSummaryHigherSelf'),
     pillPublicMode: $('pillPublicMode'),
     pillBoundaryMode: $('pillBoundaryMode'),
     pillRouteState: $('pillRouteState'),
@@ -129,6 +157,7 @@
     renderer: { detected: false, meta: null },
     ingress: {
       segments: { future_self: '', past_self: '', higher_self: '' },
+      stepIndex: 0,
       vaultOpen: false,
       operatorShellOpen: false,
       openedAt: null,
@@ -149,13 +178,28 @@
     bind();
     loadSession();
     hydrate();
+    dom.body.classList.remove('boot-pending');
+    dom.body.classList.add('boot-ready');
     void rebuild('init');
     exposeApi();
   }
 
   function bind() {
-    [['future_self', dom.ingressFutureSelf], ['past_self', dom.ingressPastSelf], ['higher_self', dom.ingressHigherSelf]].forEach(([key, el]) => {
-      el.addEventListener('input', () => handleIngressInput(key, el.value));
+    dom.ingressStepInput.addEventListener('input', () => {
+      const key = currentIngressKey();
+      if (!key) return;
+      handleIngressInput(key, dom.ingressStepInput.value);
+    });
+    dom.ingressStepInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        advanceIngressStep();
+      }
+    });
+    dom.ingressBack.addEventListener('click', retreatIngressStep);
+    dom.ingressContinue.addEventListener('click', advanceIngressStep);
+    [[dom.ingressStageFuture, 0], [dom.ingressStagePast, 1], [dom.ingressStageHigher, 2], [dom.ingressStageSeal, 3]].forEach(([button, index]) => {
+      button.addEventListener('click', () => setIngressStep(index));
     });
     [dom.inputFooterMode, dom.inputPayloadIndex, dom.inputAttestationDate, dom.inputOperatorId, dom.inputSourceClass, dom.inputWitnessChannel, dom.inputOperatorNotes, dom.inputSigType, dom.inputSigKid, dom.inputSigDetachedRef, dom.inputSigValue].forEach((el) => {
       el.addEventListener('input', () => void handleFormChange());
@@ -217,9 +261,6 @@
   }
 
   function hydrate() {
-    dom.ingressFutureSelf.value = state.ingress.segments.future_self;
-    dom.ingressPastSelf.value = state.ingress.segments.past_self;
-    dom.ingressHigherSelf.value = state.ingress.segments.higher_self;
     dom.probeOutput.value = state.lastProbe;
     dom.bypassPassword.value = '';
     updateHelpers();
@@ -249,6 +290,7 @@
     state.ingress.operatorShellOpen = Boolean(state.ingress.operatorShellOpen);
     const segments = (saved.ingress && saved.ingress.segments) || {};
     KEYS.forEach((key) => { state.ingress.segments[key] = typeof segments[key] === 'string' ? segments[key] : ''; });
+    state.ingress.stepIndex = clampIngressStepIndex(saved.ingress && typeof saved.ingress.stepIndex === 'number' ? saved.ingress.stepIndex : defaultIngressStepIndex());
     const forms = saved.forms || {};
     dom.inputFooterMode.value = forms.footerMode || D.trustProfile.current_public_mode;
     dom.inputPayloadIndex.value = forms.payloadIndex || '';
@@ -292,6 +334,7 @@
 
   function handleIngressInput(key, value) {
     state.ingress.segments[key] = value;
+    syncIngressStepIndex();
     render();
     persist();
   }
@@ -314,28 +357,60 @@
   function renderIngress() {
     const route = routeState();
     const count = completedCount();
+    const stepIndex = currentIngressStepIndex();
+    const step = ingressStepDescriptor(stepIndex);
+    const key = step.key;
+    const sealStep = !key;
     dom.ingressRoutePill.textContent = route;
     dom.ingressProgressPill.textContent = count + ' / 3 lanes';
     const surfaceIsOpen = surfaceOpen();
     const bypassReady = Boolean(getOperatorBypassHash());
     const devModeEnabled = getDevModeEnabled();
-    const activeKey = count < KEYS.length ? KEYS[count] : null;
-    dom.ingressVaultPill.textContent = state.ingress.operatorShellOpen ? 'operator shell' : state.ingress.vaultOpen ? 'packet staged' : count === 3 ? 'triad ready' : 'vault sealed';
+    dom.ingressVaultPill.textContent = state.ingress.operatorShellOpen ? 'operator shell' : state.ingress.vaultOpen ? 'packet staged' : sealStep && count === 3 ? 'seal step' : 'vault sealed';
     dom.ingressNote.textContent = state.ingress.bypass
       ? 'Operator bypass accepted. The shell is open in packetless mode. No staged packet, covenant transition, or badge issuance exists yet.'
       : state.ingress.vaultOpen
         ? 'The staged packet is present. Covenant Export is the only local path to harbor eligibility and badge assignment.'
-        : count === 3
-          ? 'The triad is complete. Mint Staged Packet to shape the packet and receipt.'
+        : sealStep && count === 3
+          ? 'The triad is complete. Review the three held pages, then mint the staged packet to open Safe Harbor.'
           : (D.routeCopy[route] || '');
-    updateLane('future_self', dom.cardFutureSelf, dom.stateFutureSelf, dom.metaFutureSelf, dom.ingressFutureSelf, true, activeKey);
-    updateLane('past_self', dom.cardPastSelf, dom.statePastSelf, dom.metaPastSelf, dom.ingressPastSelf, laneUnlocked('past_self'), activeKey);
-    updateLane('higher_self', dom.cardHigherSelf, dom.stateHigherSelf, dom.metaHigherSelf, dom.ingressHigherSelf, laneUnlocked('higher_self'), activeKey);
-    dom.mintStagedPacket.disabled = !(count === 3 && !surfaceIsOpen);
+    dom.ingressPageReadout.textContent = step.pageLabel;
+    dom.ingressResolvedReadout.textContent = count + ' / 3';
+    dom.ingressThresholdReadout.textContent = state.ingress.bypass ? 'packetless operator shell' : ingressThresholdCopy(stepIndex, count, surfaceIsOpen);
+    dom.ingressStepKicker.textContent = step.kicker;
+    dom.ingressStepPrompt.textContent = step.prompt;
+    dom.ingressStepState.textContent = ingressStepStateLabel(stepIndex, count);
+    dom.ingressStepSupport.textContent = step.support;
+    dom.ingressStepEntry.hidden = sealStep;
+    dom.ingressSealReview.hidden = !sealStep;
+    dom.ingressBack.disabled = surfaceIsOpen || stepIndex <= 0;
+    dom.ingressContinue.hidden = sealStep;
+    dom.ingressContinue.disabled = surfaceIsOpen || sealStep || !key || !trim(state.ingress.segments[key] || '');
+    dom.ingressContinue.textContent = ingressContinueLabel(stepIndex);
+    if (key) {
+      dom.ingressStepInput.disabled = surfaceIsOpen;
+      dom.ingressStepInput.placeholder = step.placeholder;
+      dom.ingressStepInput.value = state.ingress.segments[key] || '';
+      dom.ingressStepMeta.textContent = ingressMetaCopy(key);
+    } else {
+      dom.ingressStepMeta.textContent = 'The triad is held as three separate pages.';
+      renderIngressSummaryRow(dom.ingressSummaryFutureSelf, 'future_self');
+      renderIngressSummaryRow(dom.ingressSummaryPastSelf, 'past_self');
+      renderIngressSummaryRow(dom.ingressSummaryHigherSelf, 'higher_self');
+      dom.ingressSealNote.textContent = count === 3
+        ? 'Safe Harbor can now mint the staged packet. TCP stylometry and EO route overlays remain attachable after packetization.'
+        : 'The seal step remains locked until all three pages are held.';
+    }
+    renderIngressStageChip(dom.ingressStageFuture, 0, stepIndex, count, surfaceIsOpen);
+    renderIngressStageChip(dom.ingressStagePast, 1, stepIndex, count, surfaceIsOpen);
+    renderIngressStageChip(dom.ingressStageHigher, 2, stepIndex, count, surfaceIsOpen);
+    renderIngressStageChip(dom.ingressStageSeal, 3, stepIndex, count, surfaceIsOpen);
+    dom.mintStagedPacket.disabled = !(count === 3 && !surfaceIsOpen && sealStep);
     dom.bypassIngress.disabled = surfaceIsOpen || !bypassReady;
     dom.bypassPassword.disabled = surfaceIsOpen;
     dom.setBypassToken.disabled = surfaceIsOpen || !(dom.bypassPassword.value || '').trim();
     dom.clearBypassToken.disabled = surfaceIsOpen || !bypassReady;
+    dom.clearIngress.disabled = surfaceIsOpen ? true : false;
     dom.bypassPassword.placeholder = bypassReady ? 'Enter local operator token for packetless bypass' : 'Set a local operator token for this session';
     dom.demoTcpHook.disabled = !devModeEnabled;
     dom.demoEoHook.disabled = !devModeEnabled;
@@ -348,21 +423,133 @@
     dom.body.classList.toggle('vault-open', surfaceIsOpen);
   }
 
-  function updateLane(key, card, label, meta, input, unlocked, activeKey) {
+  function advanceIngressStep() {
+    if (surfaceOpen()) return;
+    const index = currentIngressStepIndex();
+    const key = currentIngressKey(index);
+    if (!key) return;
+    if (!trim(state.ingress.segments[key] || '')) {
+      dom.ingressNote.textContent = 'That page needs a held line before the handshake can continue.';
+      render();
+      return;
+    }
+    setIngressStep(index + 1);
+  }
+
+  function retreatIngressStep() {
+    if (surfaceOpen()) return;
+    setIngressStep(currentIngressStepIndex() - 1);
+  }
+
+  function setIngressStep(index) {
+    if (surfaceOpen()) return;
+    const next = clampIngressStepIndex(index);
+    if (next === state.ingress.stepIndex) {
+      render();
+      return;
+    }
+    state.ingress.stepIndex = next;
+    render();
+    persist();
+  }
+
+  function defaultIngressStepIndex() {
+    return Math.min(completedCount(), KEYS.length);
+  }
+
+  function maxAccessibleIngressStep() {
+    return Math.min(completedCount(), KEYS.length);
+  }
+
+  function clampIngressStepIndex(index) {
+    const normalized = Number.isFinite(index) ? Math.trunc(index) : defaultIngressStepIndex();
+    return Math.max(0, Math.min(normalized, maxAccessibleIngressStep()));
+  }
+
+  function syncIngressStepIndex() {
+    state.ingress.stepIndex = clampIngressStepIndex(state.ingress.stepIndex);
+  }
+
+  function currentIngressStepIndex() {
+    syncIngressStepIndex();
+    return state.ingress.stepIndex;
+  }
+
+  function currentIngressKey(index) {
+    const stepIndex = typeof index === 'number' ? index : currentIngressStepIndex();
+    return stepIndex >= 0 && stepIndex < KEYS.length ? KEYS[stepIndex] : null;
+  }
+
+  function ingressStepDescriptor(index) {
+    const key = currentIngressKey(index);
+    if (!key) {
+      return {
+        key: null,
+        pageLabel: '04 / seal step',
+        kicker: INGRESS_STEP_COPY.seal.kicker,
+        prompt: INGRESS_STEP_COPY.seal.prompt,
+        support: INGRESS_STEP_COPY.seal.support,
+        placeholder: ''
+      };
+    }
+    const prompt = D.ingressPrompts[key] || { shortLabel: key, promptLabel: key };
+    const copy = INGRESS_STEP_COPY[key] || { support: '', placeholder: '' };
+    return {
+      key: key,
+      pageLabel: String(index + 1).padStart(2, '0') + ' / ' + prompt.shortLabel.toLowerCase(),
+      kicker: 'Lane ' + String(index + 1).padStart(2, '0'),
+      prompt: prompt.promptLabel,
+      support: copy.support,
+      placeholder: copy.placeholder
+    };
+  }
+
+  function ingressThresholdCopy(stepIndex, count, surfaceIsOpen) {
+    if (surfaceIsOpen) return 'vault already open';
+    if (stepIndex <= 0) return 'first line required';
+    if (stepIndex === 1) return count >= 1 ? 'past-self page unlocked' : 'future-self line required';
+    if (stepIndex === 2) return count >= 2 ? 'higher-self page unlocked' : 'past-self line required';
+    return count === 3 ? 'seal page ready / mint packet' : 'complete all three pages';
+  }
+
+  function ingressStepStateLabel(stepIndex, count) {
+    if (stepIndex >= KEYS.length) return count === 3 ? 'seal ready' : 'locked';
+    const key = KEYS[stepIndex];
+    return trim(state.ingress.segments[key] || '') ? 'line held' : 'awaiting line';
+  }
+
+  function ingressContinueLabel(stepIndex) {
+    if (stepIndex === 0) return 'Continue to Past Self';
+    if (stepIndex === 1) return 'Continue to Higher Self';
+    return 'Continue to Seal Step';
+  }
+
+  function ingressMetaCopy(key) {
     const raw = state.ingress.segments[key] || '';
+    const unlocked = laneUnlocked(key);
+    if (!unlocked) return key === 'past_self' ? 'Awaiting the first page.' : 'Awaiting the second page.';
+    if (!trim(raw)) return 'No line held yet.';
     const stats = basicStats(raw);
-    const complete = laneComplete(key);
-    const open = surfaceOpen();
-    const shouldShow = open || (activeKey ? key === activeKey : false);
-    card.hidden = !shouldShow;
-    card.classList.toggle('locked', !unlocked);
-    card.classList.toggle('ready', unlocked && !complete);
-    card.classList.toggle('complete', complete);
-    input.disabled = !unlocked || open;
-    label.textContent = complete ? 'line held' : (unlocked ? (trim(raw) ? 'buffering' : 'awaiting line') : 'locked');
-    meta.textContent = complete
-      ? stats.word_count + ' words / ' + stats.char_count + ' chars / ' + shortChecksum(null, raw)
-      : (unlocked ? (trim(raw) ? 'Lane is reading as you write.' : 'No line held yet.') : (key === 'past_self' ? 'Awaiting the first lane.' : 'Awaiting the second lane.'));
+    return stats.word_count + ' words / ' + stats.char_count + ' chars / ' + shortChecksum(null, raw);
+  }
+
+  function renderIngressStageChip(button, index, activeIndex, count, surfaceIsOpen) {
+    const unlocked = surfaceIsOpen || index === 0 || count >= index;
+    const complete = index < count;
+    button.disabled = surfaceIsOpen || !unlocked;
+    button.classList.toggle('is-active', index === activeIndex);
+    button.classList.toggle('is-complete', complete);
+    button.classList.toggle('is-locked', !unlocked);
+  }
+
+  function renderIngressSummaryRow(target, key) {
+    const raw = state.ingress.segments[key] || '';
+    if (!trim(raw)) {
+      target.textContent = 'awaiting line';
+      return;
+    }
+    const stats = basicStats(raw);
+    target.textContent = stats.word_count + 'w / ' + stats.char_count + 'c / ' + shortChecksum(null, raw);
   }
 
   function renderHooks() {
@@ -558,7 +745,14 @@
     if (!state.covenant.confirmed) {
       state.covenant.confirmed = true;
       state.covenant.confirmedAt = nowIso();
-      state.covenant.badgeNumber = badgeNumber(state.ingress.packetId, state.ingress.receiptId);
+      state.covenant.badgeNumber = badgeNumberForContext(
+        state.ingress.packetId,
+        state.ingress.receiptId,
+        dom.inputPayloadIndex.value,
+        dom.inputAttestationDate.value,
+        D.canon.principal,
+        state.helper && state.helper.request_id
+      );
       await rebuild('covenant-export');
       logEvent('covenant-export', { badge_number: state.covenant.badgeNumber });
     }
@@ -607,7 +801,7 @@
     state.lastProbe = '';
     state.audit = [];
     state.renderer = { detected: false, meta: null };
-    state.ingress = { segments: { future_self: '', past_self: '', higher_self: '' }, vaultOpen: false, operatorShellOpen: false, openedAt: null, receiptId: null, packetId: null, bypass: false };
+    state.ingress = { segments: { future_self: '', past_self: '', higher_self: '' }, stepIndex: 0, vaultOpen: false, operatorShellOpen: false, openedAt: null, receiptId: null, packetId: null, bypass: false };
     state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
     state.operatorSignature = null;
     dom.inputFooterMode.value = D.trustProfile.current_public_mode;
@@ -645,6 +839,19 @@
       if (stored) return stored;
     } catch (error) {}
     return (D.operatorBypass && D.operatorBypass.token_hash_sha256) || null;
+  }
+
+  function getDevModeEnabled() {
+    try {
+      if (window.TD613_SAFE_HARBOR_OPERATOR && typeof window.TD613_SAFE_HARBOR_OPERATOR.dev_mode_enabled === 'boolean') {
+        return window.TD613_SAFE_HARBOR_OPERATOR.dev_mode_enabled;
+      }
+    } catch (error) {}
+    try {
+      const stored = sessionStorage.getItem((D.operatorBypass && D.operatorBypass.dev_mode_storage_key) || 'td613.safe-harbor.dev-mode.enabled');
+      if (stored != null) return stored === '1' || stored === 'true';
+    } catch (error) {}
+    return Boolean(D.uiBoundaries && D.uiBoundaries.dev_mode && D.uiBoundaries.dev_mode.default_enabled);
   }
 
   function routeState() {

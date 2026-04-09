@@ -27,64 +27,79 @@
 
       <div class="ingress-intro">
         <div class="section-label">Ingress Membrane</div>
-        <p class="ingress-copy">Safe Harbor begins in a ritual triad. Each lane is held separately so cadence can surface before the vault packet is shaped. Raw text stays in a session-only sealed lane by default.</p>
+        <p class="ingress-copy">Safe Harbor now resolves as a sequential handshake. Each prompt gets its own page so cadence, hesitation, and transition read as distinct acts before the vault packet is shaped.</p>
       </div>
 
-      <div class="ingress-grid">
-        <article class="ingress-card" id="cardFutureSelf">
-          <div class="ingress-card-head">
-            <span class="surface-kicker">Lane 01</span>
-            <span class="surface-state" id="stateFutureSelf">awaiting line</span>
-          </div>
-          <h2>Write a message to your future self</h2>
-          <textarea id="ingressFutureSelf" class="ingress-textarea" placeholder="Speak forward through the membrane."></textarea>
-          <div class="ingress-meta" id="metaFutureSelf">No line held yet.</div>
-        </article>
-
-        <article class="ingress-card" id="cardPastSelf" hidden>
-          <div class="ingress-card-head">
-            <span class="surface-kicker">Lane 02</span>
-            <span class="surface-state" id="statePastSelf">locked</span>
-          </div>
-          <h2>Write a message to your past self</h2>
-          <textarea id="ingressPastSelf" class="ingress-textarea" placeholder="The second lane unlocks after the first line is held."></textarea>
-          <div class="ingress-meta" id="metaPastSelf">Awaiting the first lane.</div>
-        </article>
-
-        <article class="ingress-card" id="cardHigherSelf" hidden>
-          <div class="ingress-card-head">
-            <span class="surface-kicker">Lane 03</span>
-            <span class="surface-state" id="stateHigherSelf">locked</span>
-          </div>
-          <h2>Write a message to your higher self</h2>
-          <textarea id="ingressHigherSelf" class="ingress-textarea" placeholder="The third lane unlocks after the second line is held."></textarea>
-          <div class="ingress-meta" id="metaHigherSelf">Awaiting the second lane.</div>
-        </article>
+      <div class="ingress-stage-rail" aria-label="Ingress handshake pages">
+        <button class="ingress-stage-chip" id="ingressStageFuture" type="button">01 Future Self</button>
+        <button class="ingress-stage-chip" id="ingressStagePast" type="button">02 Past Self</button>
+        <button class="ingress-stage-chip" id="ingressStageHigher" type="button">03 Higher Self</button>
+        <button class="ingress-stage-chip" id="ingressStageSeal" type="button">04 Seal Step</button>
       </div>
 
-      <div class="ingress-footer">
-        <div>
+      <div class="ingress-handshake-grid">
+        <section class="ingress-step-panel">
+          <div class="section-label">Sequential Handshake</div>
+          <div class="ingress-step-head">
+            <div>
+              <div class="surface-kicker" id="ingressStepKicker">Lane 01</div>
+              <h2 id="ingressStepPrompt">Write a message to your future self</h2>
+            </div>
+            <div class="surface-state" id="ingressStepState">awaiting line</div>
+          </div>
+          <p class="ingress-copy ingress-step-support" id="ingressStepSupport">Speak forward first. Let the membrane hear direction before it hears revision.</p>
+
+          <div class="ingress-step-entry" id="ingressStepEntry">
+            <textarea id="ingressStepInput" class="ingress-textarea" placeholder="Speak forward through the membrane."></textarea>
+            <div class="ingress-meta" id="ingressStepMeta">No line held yet.</div>
+          </div>
+
+          <div class="ingress-seal-review" id="ingressSealReview" hidden>
+            <div class="subsection-label">Seal Review</div>
+            <div class="triad-summary">
+              <div class="summary-row"><span class="summary-label">Future Self</span><span class="summary-value" id="ingressSummaryFutureSelf">awaiting line</span></div>
+              <div class="summary-row"><span class="summary-label">Past Self</span><span class="summary-value" id="ingressSummaryPastSelf">awaiting line</span></div>
+              <div class="summary-row"><span class="summary-label">Higher Self</span><span class="summary-value" id="ingressSummaryHigherSelf">awaiting line</span></div>
+            </div>
+            <div class="ingress-note" id="ingressSealNote">Resolve the triad, then mint the staged packet. The vault remains sealed until you explicitly invoke the seal step.</div>
+          </div>
+
+          <div class="button-grid ingress-step-nav">
+            <button class="control secondary" id="ingressBack" type="button">Back</button>
+            <button class="control" id="ingressContinue" type="button">Continue</button>
+          </div>
+        </section>
+
+        <aside class="ingress-console-panel">
           <div class="section-label">Membrane Readout</div>
-          <div class="ingress-note" id="ingressNote">Complete the triad, then explicitly mint a staged packet. The packet remains staged until Covenant Export is explicitly invoked.</div>
-        </div>
-        <div class="ingress-bypass" data-td613-skip="true">
-          <div class="section-label">Operator Bypass</div>
-          <div class="field-grid ingress-bypass-grid">
-            <label class="field field-wide">
-              <span>Operator token</span>
-              <input id="bypassPassword" type="password" placeholder="Local operator token required for packetless bypass" disabled>
-            </label>
+          <div class="ingress-note" id="ingressNote">Complete each page in sequence. The staged packet remains unavailable until the seal step resolves.</div>
+
+          <div class="metric-block roomy ingress-console-block">
+            <div class="metric-row"><span class="label">Handshake page</span><span class="value" id="ingressPageReadout">01 / future self</span></div>
+            <div class="metric-row"><span class="label">Pages resolved</span><span class="value" id="ingressResolvedReadout">0 / 3</span></div>
+            <div class="metric-row"><span class="label">Next threshold</span><span class="value" id="ingressThresholdReadout">first line required</span></div>
           </div>
-          <div class="button-grid compact">
-            <button class="control secondary" id="setBypassToken" type="button" disabled>Set Local Token</button>
-            <button class="control secondary" id="clearBypassToken" type="button" disabled>Clear Local Token</button>
-            <button class="control secondary" id="bypassIngress" type="button" disabled>Bypass Intake</button>
+
+          <div class="ingress-bypass" data-td613-skip="true">
+            <div class="section-label">Operator Bypass</div>
+            <div class="field-grid ingress-bypass-grid">
+              <label class="field field-wide">
+                <span>Operator token</span>
+                <input id="bypassPassword" type="password" placeholder="Local operator token required for packetless bypass" disabled>
+              </label>
+            </div>
+            <div class="button-grid compact">
+              <button class="control secondary" id="setBypassToken" type="button" disabled>Set Local Token</button>
+              <button class="control secondary" id="clearBypassToken" type="button" disabled>Clear Local Token</button>
+              <button class="control secondary" id="bypassIngress" type="button" disabled>Bypass Intake</button>
+            </div>
           </div>
-        </div>
-        <div class="button-grid">
-          <button class="control" id="mintStagedPacket" type="button" disabled>Mint Staged Packet</button>
-          <button class="control secondary" id="clearIngress" type="button" disabled>Clear Session</button>
-        </div>
+
+          <div class="button-grid ingress-final-actions">
+            <button class="control" id="mintStagedPacket" type="button" disabled>Mint Staged Packet</button>
+            <button class="control secondary" id="clearIngress" type="button">Clear Session</button>
+          </div>
+        </aside>
       </div>
     </section>
   </div>
