@@ -660,24 +660,322 @@ function stripSignalPunctuation(text = '') {
     .trim();
 }
 
-function sentencePreviewRows(engine, sourceText = '', maskedText = '') {
-  const split = (text) => {
-    if (!normalizeText(text)) {
-      return [];
-    }
-    if (engine && typeof engine.sentenceSplit === 'function') {
-      return engine.sentenceSplit(text).map((entry) => normalizeText(entry)).filter(Boolean);
-    }
-    return normalizeText(text)
-      .split(/(?<=[.!?])\s+/)
-      .map((entry) => normalizeText(entry))
-      .filter(Boolean);
-  };
+const MASK_LEAD_MARKER_RE = /^(?:apparently|basically|clearly|frankly|honestly|look|okay|ok|well)\b[,:;.!?\-\s]*/i;
+const MASK_STOPWORDS = new Set([
+  'a', 'an', 'and', 'are', 'as', 'at', 'be', 'because', 'been', 'but', 'by', 'for', 'from',
+  'had', 'has', 'have', 'he', 'her', 'hers', 'him', 'his', 'i', 'if', 'in', 'into', 'is',
+  'it', 'its', 'me', 'my', 'of', 'on', 'or', 'our', 'ours', 'she', 'so', 'that', 'the',
+  'their', 'theirs', 'them', 'there', 'they', 'this', 'to', 'us', 'was', 'we', 'were',
+  'what', 'when', 'where', 'who', 'why', 'will', 'with', 'you', 'your', 'yours'
+]);
+const CONTRACTION_REPLACEMENTS = Object.freeze([
+  ['\\bI am\\b', "I'm"],
+  ['\\bI have\\b', "I've"],
+  ['\\bI will\\b', "I'll"],
+  ['\\bI would\\b', "I'd"],
+  ['\\bit is\\b', "it's"],
+  ['\\bthat is\\b', "that's"],
+  ['\\bthere is\\b', "there's"],
+  ['\\bthere are\\b', "there're"],
+  ['\\bwe are\\b', "we're"],
+  ['\\bwe have\\b', "we've"],
+  ['\\byou are\\b', "you're"],
+  ['\\byou have\\b', "you've"],
+  ['\\bthey are\\b', "they're"],
+  ['\\bthey have\\b', "they've"],
+  ['\\bdoes not\\b', "doesn't"],
+  ['\\bdo not\\b', "don't"],
+  ['\\bdid not\\b', "didn't"],
+  ['\\bwas not\\b', "wasn't"],
+  ['\\bwere not\\b', "weren't"],
+  ['\\bhas not\\b', "hasn't"],
+  ['\\bhave not\\b', "haven't"],
+  ['\\bhad not\\b', "hadn't"],
+  ['\\bwill not\\b', "won't"],
+  ['\\bwould not\\b', "wouldn't"],
+  ['\\bcould not\\b', "couldn't"],
+  ['\\bshould not\\b', "shouldn't"],
+  ['\\bcan not\\b', "can't"]
+]);
+const EXPANSION_REPLACEMENTS = Object.freeze([
+  ["\\bI'm\\b", 'I am'],
+  ["\\bI've\\b", 'I have'],
+  ["\\bI'll\\b", 'I will'],
+  ["\\bI'd\\b", 'I would'],
+  ["\\bit's\\b", 'it is'],
+  ["\\bthat's\\b", 'that is'],
+  ["\\bthere's\\b", 'there is'],
+  ["\\bwe're\\b", 'we are'],
+  ["\\bwe've\\b", 'we have'],
+  ["\\byou're\\b", 'you are'],
+  ["\\byou've\\b", 'you have'],
+  ["\\bthey're\\b", 'they are'],
+  ["\\bthey've\\b", 'they have'],
+  ["\\bdoesn't\\b", 'does not'],
+  ["\\bdon't\\b", 'do not'],
+  ["\\bdidn't\\b", 'did not'],
+  ["\\bwasn't\\b", 'was not'],
+  ["\\bweren't\\b", 'were not'],
+  ["\\bhasn't\\b", 'has not'],
+  ["\\bhaven't\\b", 'have not'],
+  ["\\bhadn't\\b", 'had not'],
+  ["\\bwon't\\b", 'will not'],
+  ["\\bwouldn't\\b", 'would not'],
+  ["\\bcouldn't\\b", 'could not'],
+  ["\\bshouldn't\\b", 'should not'],
+  ["\\bcan't\\b", 'can not']
+]);
 
-  const sourceSentences = split(sourceText);
-  const maskedSentences = split(maskedText);
-  const limit = Math.min(Math.max(sourceSentences.length, maskedSentences.length), 4);
+function splitSentencesPreservePunctuation(text = '') {
+  const normalized = String(text || '').replace(/\r\n/g, '\n').trim();
+  if (!normalized) {
+    return [];
+  }
+  const matches = normalized.match(/[^.!?\n]+(?:[.!?]+["')\]]*)?|[^\n]+$/g) || [];
+  return matches
+    .map((entry) => normalizeText(entry))
+    .filter(Boolean);
+}
+
+function maskWordTokens(text = '') {
+  return normalizeText(text)
+    .toLowerCase()
+    .replace(/[^a-z0-9' ]+/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function maskContentWords(text = '') {
+  return maskWordTokens(text)
+    .filter((token) => token.length > 2 && !MASK_STOPWORDS.has(token));
+}
+
+function lexicalDriftSummary(source = '', output = '') {
+  const sourceContent = maskContentWords(source);
+  const outputContent = maskContentWords(output);
+  const sourceSet = new Set(sourceContent);
+  const outputSet = new Set(outputContent);
+  const preservedCount = [...sourceSet].filter((token) => outputSet.has(token)).length;
+  const introduced = [...outputSet].filter((token) => !sourceSet.has(token));
+  return {
+    sourceContentCount: sourceSet.size,
+    outputContentCount: outputSet.size,
+    preservedContentRatio: sourceSet.size ? round(preservedCount / sourceSet.size, 4) : 1,
+    introducedContentCount: introduced.length,
+    introducedContent: introduced
+  };
+}
+
+function tidyMaskSentenceText(text = '') {
+  return normalizeText(
+    String(text || '')
+      .replace(/\s+([,;:.!?])/g, '$1')
+      .replace(/,\s*;/g, ';')
+      .replace(/;\s*,/g, ';')
+      .replace(/;\s*\./g, '.')
+      .replace(/,\s*\./g, '.')
+      .replace(/\.{2,}/g, '.')
+      .replace(/!{2,}/g, '!')
+      .replace(/\?{2,}/g, '?')
+      .replace(/^[,;:\-–—\s]+/g, '')
+  );
+}
+
+function matchSentenceSurface(source = '', output = '') {
+  const sourceText = normalizeText(source);
+  let working = tidyMaskSentenceText(output);
+  if (!sourceText || !working) {
+    return working;
+  }
+
+  if (/^[A-Z]/.test(sourceText) && /^[a-z]/.test(working)) {
+    working = working.charAt(0).toUpperCase() + working.slice(1);
+  }
+
+  const sourceTerminal = sourceText.match(/[.!?]["')\]]*$/)?.[0] || '';
+  if (sourceTerminal && !/[.!?]["')\]]*$/.test(working)) {
+    working = `${working}${sourceTerminal}`;
+  }
+
+  return tidyMaskSentenceText(working);
+}
+
+function stripLeadingMaskIntrusion(source = '', output = '') {
+  let working = tidyMaskSentenceText(output);
+  if (!working) {
+    return working;
+  }
+
+  if (MASK_LEAD_MARKER_RE.test(working) && !MASK_LEAD_MARKER_RE.test(normalizeText(source))) {
+    working = working.replace(MASK_LEAD_MARKER_RE, '');
+  }
+
+  if (/^and\b/i.test(working) && !/^and\b/i.test(normalizeText(source))) {
+    working = working.replace(/^and\b[,\s]*/i, '');
+  }
+
+  if (/^but\b/i.test(working) && !/^but\b/i.test(normalizeText(source))) {
+    working = working.replace(/^but\b[,\s]*/i, '');
+  }
+
+  return matchSentenceSurface(source, working);
+}
+
+function outputHasMaskPathology(text = '') {
+  const normalized = normalizeText(text);
+  if (!normalized) {
+    return true;
+  }
+  return /(?:,\s*;|;\s*,|;\.|,\.|\.{2,}|,,|;;)/.test(normalized);
+}
+
+function replaceWithCaseAware(text = '', pattern = '', replacement = '') {
+  return text.replace(new RegExp(pattern, 'gi'), (match) => {
+    if (match.toUpperCase() === match) {
+      return replacement.toUpperCase();
+    }
+    if (match.charAt(0).toUpperCase() === match.charAt(0)) {
+      return replacement.charAt(0).toUpperCase() + replacement.slice(1);
+    }
+    return replacement;
+  });
+}
+
+function contractCommonPhrases(text = '') {
+  return CONTRACTION_REPLACEMENTS.reduce(
+    (working, [pattern, replacement]) => replaceWithCaseAware(working, pattern, replacement),
+    String(text || '')
+  );
+}
+
+function expandCommonContractions(text = '') {
+  return EXPANSION_REPLACEMENTS.reduce(
+    (working, [pattern, replacement]) => replaceWithCaseAware(working, pattern, replacement),
+    String(text || '')
+  );
+}
+
+function applySurfaceOnlyMaskSentence(source = '', sourceProfile = {}, targetProfile = {}) {
+  let working = String(source || '');
+  const contractionDelta = Number(targetProfile.contractionDensity || 0) - Number(sourceProfile.contractionDensity || 0);
+
+  if (contractionDelta >= 0.03) {
+    working = contractCommonPhrases(working);
+  } else if (contractionDelta <= -0.03) {
+    working = expandCommonContractions(working);
+  }
+
+  return matchSentenceSurface(source, working);
+}
+
+function deriveRealizedMaskDimensions(sourceProfile = {}, outputProfile = {}) {
+  const changed = [];
+  if (Math.abs((outputProfile.avgSentenceLength || 0) - (sourceProfile.avgSentenceLength || 0)) >= 1.5) {
+    changed.push('sentence-mean');
+  }
+  if (Math.abs((outputProfile.sentenceCount || 0) - (sourceProfile.sentenceCount || 0)) >= 1) {
+    changed.push('sentence-count');
+  }
+  if (Math.abs((outputProfile.sentenceLengthSpread || 0) - (sourceProfile.sentenceLengthSpread || 0)) >= 1.25) {
+    changed.push('sentence-spread');
+  }
+  if (Math.abs((outputProfile.contractionDensity || 0) - (sourceProfile.contractionDensity || 0)) >= 0.03) {
+    changed.push('contraction-posture');
+  }
+  if (Math.abs((outputProfile.lineBreakDensity || 0) - (sourceProfile.lineBreakDensity || 0)) >= 0.01) {
+    changed.push('line-break-texture');
+  }
+  if (Math.abs((outputProfile.punctuationDensity || 0) - (sourceProfile.punctuationDensity || 0)) >= 0.015) {
+    changed.push('punctuation-shape');
+  }
+  if ((outputProfile.registerMode || '') !== (sourceProfile.registerMode || '')) {
+    changed.push('lexical-register');
+  }
+  if (Math.abs((outputProfile.directness || 0) - (sourceProfile.directness || 0)) >= 0.08) {
+    changed.push('directness');
+  }
+  if (Math.abs((outputProfile.abstractionPosture || 0) - (sourceProfile.abstractionPosture || 0)) >= 0.08) {
+    changed.push('abstraction-posture');
+  }
+  if (Math.abs((outputProfile.conversationalPosture || 0) - (sourceProfile.conversationalPosture || 0)) >= 0.08) {
+    changed.push('conversation-posture');
+  }
+  if (Math.abs((outputProfile.modifierDensity || 0) - (sourceProfile.modifierDensity || 0)) >= 0.03) {
+    changed.push('modifier-density');
+  }
+  return changed;
+}
+
+function sentenceTransferIsUsable(source = '', output = '', transfer = {}) {
+  const semantic = transfer.semanticAudit || {};
+  const drift = lexicalDriftSummary(source, output);
+  const sourceContentCount = drift.sourceContentCount;
+  const outputClauseCount = semantic.outputClauseCount ?? semantic.clauseAudits?.length ?? 0;
+  const sourceClauseCount = semantic.sourceClauseCount ?? 0;
+
+  if (outputHasMaskPathology(output)) {
+    return false;
+  }
+  if ((semantic.protectedAnchorIntegrity ?? 1) < 1) {
+    return false;
+  }
+  if ((semantic.propositionCoverage ?? 1) < 0.95 || (semantic.actorCoverage ?? 1) < 0.9 || (semantic.actionCoverage ?? 1) < 0.9) {
+    return false;
+  }
+  if ((semantic.objectCoverage ?? 1) < 0.85 || (semantic.polarityMismatches ?? 0) > 0 || (semantic.tenseMismatches ?? 0) > 0) {
+    return false;
+  }
+  if (sourceContentCount <= 4 && drift.introducedContentCount > 0) {
+    return false;
+  }
+  if (drift.preservedContentRatio < 0.72 || drift.introducedContentCount > 1) {
+    return false;
+  }
+  if (sourceContentCount <= 6 && outputClauseCount > sourceClauseCount) {
+    return false;
+  }
+  return true;
+}
+
+function buildStableMaskSurface(engine, sourceText = '', shell = {}) {
+  const paragraphs = String(sourceText || '')
+    .replace(/\r\n/g, '\n')
+    .split(/\n{2,}/);
+  const targetProfile = shell?.profile || {};
+  let rescueCount = 0;
+
+  const text = paragraphs
+    .map((paragraph) => {
+      const sentences = splitSentencesPreservePunctuation(paragraph);
+      if (!sentences.length) {
+        return '';
+      }
+
+      return sentences.map((sentence) => {
+        const sourceProfile = engine.extractCadenceProfile(sentence);
+        const transfer = engine.buildCadenceTransfer(sentence, shell, { retrieval: true });
+        const candidate = stripLeadingMaskIntrusion(sentence, transfer.text || sentence);
+        if (sentenceTransferIsUsable(sentence, candidate, transfer)) {
+          return candidate;
+        }
+        rescueCount += 1;
+        return applySurfaceOnlyMaskSentence(sentence, sourceProfile, targetProfile);
+      }).join(' ');
+    })
+    .filter(Boolean)
+    .join('\n\n');
+
+  return {
+    text: normalizeText(text),
+    rescueCount
+  };
+}
+
+function sentencePreviewRows(engine, sourceText = '', maskedText = '') {
+  const sourceSentences = splitSentencesPreservePunctuation(sourceText);
+  const maskedSentences = splitSentencesPreservePunctuation(maskedText);
   const rows = [];
+  const limit = Math.max(sourceSentences.length, maskedSentences.length);
 
   for (let index = 0; index < limit; index += 1) {
     const source = sourceSentences[index] || '';
@@ -699,7 +997,8 @@ function sentencePreviewRows(engine, sourceText = '', maskedText = '') {
     });
   }
 
-  return rows;
+  const shiftedRows = rows.filter((row) => row.effect !== 'hold');
+  return (shiftedRows.length ? shiftedRows : rows).slice(0, 4);
 }
 
 function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {}) {
@@ -808,8 +1107,14 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     profile: { ...persona.profile },
     strength: Number(persona.strength || 0.84)
   };
-  const transfer = engine.buildCadenceTransfer(normalized, shell, { retrieval: false });
-  const transferProfile = transfer.outputProfile || engine.extractCadenceProfile(transfer.text);
+  const transfer = engine.buildCadenceTransfer(normalized, shell, { retrieval: true });
+  const stableSurface = transfer.transferClass === 'rejected'
+    ? { text: normalized, rescueCount: 0 }
+    : buildStableMaskSurface(engine, normalized, shell);
+  const finalizedMaskedText = stableSurface.text || transfer.text || normalized;
+  transfer.text = finalizedMaskedText;
+  transfer.outputProfile = engine.extractCadenceProfile(finalizedMaskedText);
+  const transferProfile = transfer.outputProfile || engine.extractCadenceProfile(finalizedMaskedText);
   const wantsClippedMask =
     (
       persona.id === 'operator' ||
@@ -818,12 +1123,23 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     ) &&
     (transferProfile.avgSentenceLength || 0) >= ((persona.profile.avgSentenceLength || 0) + (persona.id === 'operator' ? 1.5 : 4));
   if (wantsClippedMask) {
-    const clippedText = enforceClippedMaskSurface(transfer.text);
-    if (clippedText && clippedText !== transfer.text) {
+    const clippedText = enforceClippedMaskSurface(finalizedMaskedText);
+    if (clippedText && clippedText !== finalizedMaskedText) {
       transfer.text = clippedText;
       transfer.outputProfile = engine.extractCadenceProfile(clippedText);
     }
   }
+  if (stableSurface.rescueCount > 0) {
+    transfer.notes = [...new Set([
+      ...(transfer.notes || []),
+      `Mask lane rescued ${stableSurface.rescueCount} sentence${stableSurface.rescueCount === 1 ? '' : 's'} back to a source-preserving surface.`
+    ])];
+  }
+  const realizedProfile = transfer.outputProfile || engine.extractCadenceProfile(transfer.text);
+  const realizedChangedDimensions = deriveRealizedMaskDimensions(
+    engine.extractCadenceProfile(normalized),
+    realizedProfile
+  );
   const rawToLock = lock ? compareTextToLock(engine, normalized, lock) : null;
   const maskedToLock = lock ? compareTextToLock(engine, transfer.text, lock) : null;
   const deltaToLock = rawToLock && maskedToLock
@@ -834,11 +1150,11 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     : null;
   const effectSummary = effectSummaryFromProfiles(
     engine.extractCadenceProfile(normalized),
-    transfer.outputProfile || engine.extractCadenceProfile(transfer.text),
+    realizedProfile,
     deltaToLock
   );
   const heldLanes = maskedToLock?.stickyLanes || [];
-  const whatMoved = (transfer.changedDimensions || []).slice(0, 5);
+  const whatMoved = realizedChangedDimensions.slice(0, 5);
   const stickinessNotes = [];
 
   if (deltaToLock) {
@@ -867,7 +1183,14 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     effectSummary
   });
   const shiftPreview = sentencePreviewRows(engine, normalized, transfer.text);
-  const whatMovedSummary = movementSummary(transfer, effectSummary, contactSummary);
+  const whatMovedSummary = movementSummary(
+    {
+      ...transfer,
+      changedDimensions: realizedChangedDimensions
+    },
+    effectSummary,
+    contactSummary
+  );
 
   return {
     rawText: normalized,
