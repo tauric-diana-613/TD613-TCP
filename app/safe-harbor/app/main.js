@@ -9,21 +9,21 @@
   const MAX_AUDIT = 24;
   const INGRESS_STEP_COPY = {
     future_self: {
-      support: 'Speak forward first. Let the membrane hear direction, residue, or warning before it hears revision.',
+      support: 'Speak forward first. Let the chamber hear direction, residue, or warning before it hears revision.',
       placeholder: 'Speak forward through the membrane.'
     },
     past_self: {
-      support: 'Now answer backward. Keep it candid enough to carry cadence without forcing disclosure you do not want to bind.',
+      support: 'Now answer backward. Keep it candid enough to carry cadence without forcing disclosure you do not intend to bind.',
       placeholder: 'Send a line backward through the membrane.'
     },
     higher_self: {
-      support: 'The third page addresses the witness above the loop. Let the covenant surface without rushing the seal.',
+      support: 'The third page addresses the witness above the loop. Let the covenant surface without rushing the seal lane.',
       placeholder: 'Address your higher self through the membrane.'
     },
     seal: {
       kicker: 'Seal Step',
       prompt: 'Resolve the staged packet threshold',
-      support: 'The triad is now held as three distinct acts. Review the cadence lanes, then mint the staged packet when the handshake feels true.'
+      support: 'The triad is now held as three distinct acts. Review the cadence witness, the route posture, and the public doctrine before you mint the staged packet.'
     }
   };
 
@@ -272,8 +272,8 @@
     if (!saved) {
       dom.inputFooterMode.value = D.trustProfile.current_public_mode;
       dom.inputOperatorId.value = 'safe-harbor.operator';
-      dom.inputSourceClass.value = 'public membrane';
-      dom.inputWitnessChannel.value = 'mixed';
+      dom.inputSourceClass.value = 'futurecore membrane';
+      dom.inputWitnessChannel.value = 'ritual + cadence';
       return;
     }
     Object.assign(state, {
@@ -296,8 +296,8 @@
     dom.inputPayloadIndex.value = forms.payloadIndex || '';
     dom.inputAttestationDate.value = forms.attestationDate || '';
     dom.inputOperatorId.value = forms.operatorId !== undefined ? forms.operatorId : 'safe-harbor.operator';
-    dom.inputSourceClass.value = forms.sourceClass !== undefined ? forms.sourceClass : 'public membrane';
-    dom.inputWitnessChannel.value = forms.witnessChannel !== undefined ? forms.witnessChannel : 'mixed';
+    dom.inputSourceClass.value = forms.sourceClass !== undefined ? forms.sourceClass : 'futurecore membrane';
+    dom.inputWitnessChannel.value = forms.witnessChannel !== undefined ? forms.witnessChannel : 'ritual + cadence';
     dom.inputOperatorNotes.value = forms.operatorNotes || '';
     dom.inputSigType.value = forms.sigType || '';
     dom.inputSigKid.value = forms.sigKid !== undefined ? forms.sigKid : ((D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal);
@@ -372,7 +372,7 @@
       : state.ingress.vaultOpen
         ? 'The staged packet is present. Covenant Export is the only local path to harbor eligibility and badge assignment.'
         : sealStep && count === 3
-          ? 'The triad is complete. Review the three held pages, then mint the staged packet to open Safe Harbor.'
+          ? 'The triad is complete. Review the held testimony, then mint the staged packet to open the chamber.'
           : (D.routeCopy[route] || '');
     dom.ingressPageReadout.textContent = step.pageLabel;
     dom.ingressResolvedReadout.textContent = count + ' / 3';
@@ -398,7 +398,7 @@
       renderIngressSummaryRow(dom.ingressSummaryPastSelf, 'past_self');
       renderIngressSummaryRow(dom.ingressSummaryHigherSelf, 'higher_self');
       dom.ingressSealNote.textContent = count === 3
-        ? 'Safe Harbor can now mint the staged packet. TCP stylometry and EO route overlays remain attachable after packetization.'
+        ? 'Safe Harbor can now mint the staged packet. TCP stylometry remains a cadence credential, while EO and the seal lane stay attachable after packetization.'
         : 'The seal step remains locked until all three pages are held.';
     }
     renderIngressStageChip(dom.ingressStageFuture, 0, stepIndex, count, surfaceIsOpen);
@@ -582,10 +582,10 @@
       dom.packetIdReadout.textContent = 'pending';
       dom.receiptIdReadout.textContent = 'pending';
       dom.packetHashReadout.textContent = 'pending';
-      dom.harborReadout.textContent = state.ingress.bypass ? 'packetless operator shell' : 'pending';
+      dom.harborReadout.textContent = state.ingress.bypass ? 'packetless operator shell' : 'awaiting route conscience';
       dom.exportGateReadout.textContent = 'guarded';
       dom.covenantStateReadout.textContent = state.ingress.bypass ? 'operator-bypass / no packet' : (completedCount() === 3 ? 'ready to mint staged packet' : 'awaiting triad completion');
-      dom.cadenceReadout.textContent = state.ingress.bypass ? 'packetless / intake bypassed' : (completedCount() === 3 ? 'ready to derive on staged packet' : 'awaiting ingress');
+      dom.cadenceReadout.textContent = state.ingress.bypass ? 'packetless / intake bypassed' : (completedCount() === 3 ? 'stylometric witness ready on staged packet' : 'awaiting ingress');
       dom.triadResonanceReadout.textContent = 'pending';
       dom.crossLaneStabilityReadout.textContent = 'pending';
       dom.crossLaneSpreadReadout.textContent = 'pending';
@@ -596,7 +596,7 @@
       dom.packetPreview.textContent = 'packet pending';
       dom.covenantNote.textContent = state.ingress.bypass
         ? 'The shell is open through operator bypass only. No staged packet, covenant transition, or badge issuance exists yet.'
-        : 'Vault-open stages the packet only. Covenant Export must be invoked before harbor eligibility and badge assignment. Signature overlays attach only after a staged packet exists.';
+        : 'Vault-open stages the packet only. Covenant Export must be invoked before harbor eligibility and badge assignment. Stylometric cadence may already be present, but cryptographic seals still attach only after packetization.';
       dom.covenantExport.disabled = true;
       return;
     }
@@ -618,7 +618,7 @@
     dom.packetPreview.textContent = JSON.stringify(state.packet, null, 2);
     dom.covenantNote.textContent = state.packet.bridge.covenant_gate.confirmed
       ? 'Covenant is confirmed. The packet is sealed, harbor-eligible, and ready for downstream export lanes once operator policy allows.'
-      : (state.packet.signature.status === 'sealed' ? 'A signature overlay is attached. Covenant Export is still required before harbor eligibility and badge assignment.' : 'The packet is staged only. Covenant Export must be invoked before harbor eligibility and badge assignment.');
+      : (state.packet.signature.status === 'sealed' ? 'A cryptographic overlay is attached. Covenant Export is still required before harbor eligibility and badge assignment.' : 'The packet is staged only. Covenant Export must be invoked before harbor eligibility and badge assignment.');
     dom.covenantExport.disabled = state.packet.bridge.covenant_gate.confirmed;
   }
 
@@ -808,8 +808,8 @@
     dom.inputPayloadIndex.value = '';
     dom.inputAttestationDate.value = '';
     dom.inputOperatorId.value = 'safe-harbor.operator';
-    dom.inputSourceClass.value = 'public membrane';
-    dom.inputWitnessChannel.value = 'mixed';
+    dom.inputSourceClass.value = 'futurecore membrane';
+    dom.inputWitnessChannel.value = 'ritual + cadence';
     dom.inputOperatorNotes.value = '';
     dom.inputSigType.value = '';
     dom.inputSigKid.value = (D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal;
@@ -971,9 +971,9 @@
   function sacText() { return D.trustProfile.sac.indexOf('SAC[') === 0 ? D.trustProfile.sac : ('SAC[' + D.trustProfile.sac + ']'); }
   function basicStats(text) { return { char_count: (text || '').length, word_count: splitWords(text).length }; }
   function signatureNote(signatureLane) {
-    if (!signatureLane || !signatureLane.lane || signatureLane.lane === 'none') return 'Signature overlays attach after packetization. Public probes remain unsigned by default.';
-    if (signatureLane.source === 'operator-signature-overlay') return 'Operator signature overlay is staged for packet sealing. Public footer remains unchanged.';
-    return 'External signature overlay detected from ' + (signatureLane.source || 'overlay lane') + '. Public footer remains unchanged.';
+    if (!signatureLane || !signatureLane.lane || signatureLane.lane === 'none') return 'Cryptographic overlays attach after packetization. TCP cadence remains a separate stylometric witness and public probes remain unsigned by default.';
+    if (signatureLane.source === 'operator-signature-overlay') return 'Operator cryptographic overlay is staged for packet sealing. The cadence witness and public footer remain unchanged.';
+    return 'External cryptographic overlay detected from ' + (signatureLane.source || 'overlay lane') + '. The cadence witness and public footer remain unchanged.';
   }
   function resolvedSignatureLane() {
     if (state.operatorSignature) return clone(state.operatorSignature);
@@ -1028,7 +1028,13 @@
     else { render(); persist(); }
     logEvent('signature-overlay-cleared', { state: 'unsigned' });
   }
-  function cadenceLabel(sig) { return sig && Array.isArray(sig.dominant_axes) && sig.dominant_axes.length ? sig.dominant_axes.join(', ') : 'derived'; }
+  function cadenceLabel(sig) {
+    if (!sig) return 'derived / awaiting witness';
+    const axes = Array.isArray(sig.dominant_axes) && sig.dominant_axes.length ? sig.dominant_axes.join(', ') : 'derived';
+    const source = String(sig.overlay_source || sig.source || '').toLowerCase();
+    const prefix = source.indexOf('tcp') !== -1 ? 'tcp cadence' : 'local cadence';
+    return prefix + ' // ' + axes;
+  }
   function metric(value) { return typeof value === 'number' && !Number.isNaN(value) ? value.toFixed(4) : 'pending'; }
   function shortChecksum(checksum, raw) { return (checksum ? checksum.split(':').pop() : hash64(raw)).slice(0, 8); }
   function trim(value) { const text = typeof value === 'string' ? value.trim() : ''; return text || null; }

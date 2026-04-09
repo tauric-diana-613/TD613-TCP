@@ -456,6 +456,36 @@ select {
 .dock-left { grid-column: 1 / span 2; grid-row: 2; }
 .dock-right { grid-column: 3; grid-row: 2; }
 
+.canon-panel {
+  background:
+    linear-gradient(180deg, rgba(18, 13, 27, 0.94), rgba(7, 6, 11, 0.98)) padding-box,
+    linear-gradient(150deg, rgba(255, 203, 136, 0.24), rgba(255, 255, 255, 0.03), rgba(208, 167, 255, 0.16)) border-box;
+}
+
+.chamber-panel {
+  background:
+    linear-gradient(180deg, rgba(17, 11, 24, 0.9), rgba(7, 6, 11, 0.97)) padding-box,
+    linear-gradient(140deg, rgba(208, 167, 255, 0.26), rgba(255, 143, 181, 0.08), rgba(144, 231, 255, 0.16)) border-box;
+}
+
+.conscience-panel {
+  background:
+    linear-gradient(180deg, rgba(13, 14, 21, 0.92), rgba(6, 7, 12, 0.98)) padding-box,
+    linear-gradient(145deg, rgba(144, 231, 255, 0.22), rgba(255, 255, 255, 0.03), rgba(208, 167, 255, 0.14)) border-box;
+}
+
+.operator-dock {
+  background:
+    linear-gradient(180deg, rgba(20, 13, 28, 0.95), rgba(7, 6, 11, 0.98)) padding-box,
+    linear-gradient(135deg, rgba(208, 167, 255, 0.28), rgba(255, 203, 136, 0.12), rgba(255, 255, 255, 0.03)) border-box;
+}
+
+.audit-dock {
+  background:
+    linear-gradient(180deg, rgba(11, 11, 18, 0.95), rgba(6, 6, 10, 0.99)) padding-box,
+    linear-gradient(135deg, rgba(144, 231, 255, 0.24), rgba(208, 167, 255, 0.18), rgba(255, 255, 255, 0.03)) border-box;
+}
+
 .panel-section + .panel-section {
   margin-top: 20px;
 }
@@ -503,6 +533,37 @@ select {
   background:
     linear-gradient(180deg, rgba(40, 18, 32, 0.96), rgba(15, 11, 22, 0.96)) padding-box,
     linear-gradient(135deg, rgba(255, 143, 181, 0.32), rgba(215, 255, 131, 0.14), rgba(208, 167, 255, 0.24)) border-box;
+}
+
+.render-face-card {
+  background:
+    linear-gradient(180deg, rgba(26, 18, 35, 0.94), rgba(10, 9, 16, 0.96)) padding-box,
+    linear-gradient(140deg, rgba(255, 203, 136, 0.18), rgba(255, 255, 255, 0.03), rgba(208, 167, 255, 0.2)) border-box;
+}
+
+.reliquary-card {
+  box-shadow:
+    var(--shadow-soft),
+    0 0 30px rgba(255, 143, 181, 0.12),
+    0 0 52px rgba(208, 167, 255, 0.08);
+}
+
+.helper-card {
+  background:
+    linear-gradient(180deg, rgba(15, 15, 22, 0.96), rgba(8, 7, 12, 0.98)) padding-box,
+    linear-gradient(135deg, rgba(144, 231, 255, 0.22), rgba(255, 255, 255, 0.03), rgba(208, 167, 255, 0.16)) border-box;
+}
+
+.intake-card {
+  background:
+    linear-gradient(180deg, rgba(25, 18, 34, 0.96), rgba(10, 8, 14, 0.98)) padding-box,
+    linear-gradient(135deg, rgba(208, 167, 255, 0.24), rgba(255, 143, 181, 0.1), rgba(255, 255, 255, 0.03)) border-box;
+}
+
+.signature-card {
+  background:
+    linear-gradient(180deg, rgba(18, 13, 24, 0.96), rgba(8, 7, 12, 0.98)) padding-box,
+    linear-gradient(135deg, rgba(255, 203, 136, 0.24), rgba(144, 231, 255, 0.1), rgba(255, 255, 255, 0.03)) border-box;
 }
 
 .metric-block.roomy,
@@ -568,6 +629,40 @@ select {
 
 .bullet-list li + li {
   margin-top: 9px;
+}
+
+.reference-link-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.reference-link-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(216, 225, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(17, 15, 23, 0.96), rgba(7, 7, 11, 0.98));
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.reference-link-card strong {
+  color: var(--text-bright);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.reference-link-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(208, 167, 255, 0.34);
+  box-shadow:
+    var(--shadow-soft),
+    0 0 24px rgba(208, 167, 255, 0.08);
 }
 
 .note,
@@ -1197,8 +1292,639 @@ body.vault-open .dock-right { animation-delay: 0.28s; }
     min-height: 180px;
   }
 
-  .section-label,
+    .section-label,
   .subsection-label {
     letter-spacing: 0.18em;
+  }
+}
+
+/* Futurecore goth refinement: leaner editorial chamber grammar */
+
+:root {
+  --bg-0: #020205;
+  --bg-1: #07060b;
+  --bg-2: #0d0912;
+  --bg-3: #120c17;
+  --panel: rgba(9, 8, 13, 0.76);
+  --panel-strong: rgba(6, 6, 10, 0.94);
+  --panel-soft: rgba(17, 13, 22, 0.58);
+  --line: rgba(233, 230, 245, 0.09);
+  --line-strong: rgba(233, 230, 245, 0.17);
+  --line-glow: rgba(204, 171, 255, 0.18);
+  --text: #d9d4df;
+  --text-soft: #c1b9cc;
+  --text-dim: #978ba7;
+  --text-faint: #746a82;
+  --text-bright: #f8f4fc;
+  --accent: #cfb0ff;
+  --accent-strong: #f2e7ff;
+  --cyan: #9ae2ff;
+  --lime: #cfeaa2;
+  --rose: #c97a9f;
+  --gold: #d8bf94;
+  --shadow-panel: 0 26px 64px rgba(0, 0, 0, 0.34);
+  --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.22);
+  --radius-xl: 22px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+}
+
+body {
+  background:
+    radial-gradient(circle at 10% 14%, rgba(201, 122, 159, 0.12), transparent 22%),
+    radial-gradient(circle at 82% 12%, rgba(154, 226, 255, 0.08), transparent 18%),
+    radial-gradient(circle at 52% 78%, rgba(207, 176, 255, 0.08), transparent 26%),
+    linear-gradient(180deg, #020205 0%, #06050a 34%, #09060c 68%, #030306 100%);
+  font-size: 14px;
+}
+
+body::before {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.012), transparent 18%, rgba(255, 255, 255, 0.008) 82%, transparent),
+    repeating-linear-gradient(180deg, transparent 0, transparent 28px, rgba(255, 255, 255, 0.013) 29px, transparent 30px),
+    repeating-linear-gradient(90deg, transparent 0, transparent 109px, rgba(255, 255, 255, 0.01) 110px, transparent 111px);
+  opacity: 0.34;
+}
+
+body::after {
+  inset: -16%;
+  background:
+    radial-gradient(circle at 16% 24%, rgba(201, 122, 159, 0.12), transparent 24%),
+    radial-gradient(circle at 78% 20%, rgba(154, 226, 255, 0.08), transparent 20%),
+    radial-gradient(circle at 48% 72%, rgba(207, 176, 255, 0.1), transparent 26%);
+  filter: blur(54px);
+  opacity: 0.28;
+}
+
+h1 {
+  font-size: clamp(2.9rem, 4.8vw, 5rem);
+  letter-spacing: 0.025em;
+  line-height: 0.88;
+}
+
+h2 {
+  font-size: clamp(1.55rem, 2vw, 2.25rem);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.subtitle {
+  max-width: 68ch;
+  margin-top: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.14em;
+  font-size: 0.68rem;
+}
+
+.glyph-lock {
+  width: 64px;
+  height: 64px;
+  flex-basis: 64px;
+  border-radius: 14px;
+  border: 1px solid rgba(233, 230, 245, 0.12);
+  background:
+    linear-gradient(180deg, rgba(25, 18, 33, 0.94), rgba(9, 8, 12, 0.98)),
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.1), transparent 34%);
+  box-shadow: none;
+}
+
+.glyph-lock::after {
+  inset: 6px;
+  border-radius: 10px;
+  border-color: rgba(154, 226, 255, 0.12);
+}
+
+.status-pill {
+  min-height: 32px;
+  padding: 6px 11px;
+  border: 1px solid rgba(233, 230, 245, 0.09);
+  background: rgba(8, 8, 12, 0.68);
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  box-shadow: none;
+}
+
+.chrome-grid {
+  gap: 22px;
+  padding: 16px clamp(14px, 2vw, 28px) 28px;
+}
+
+.chrome-grid::before {
+  inset: 8px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.035);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.016), transparent 20%),
+    radial-gradient(circle at top, rgba(207, 176, 255, 0.04), transparent 40%);
+}
+
+.masthead {
+  top: 12px;
+  gap: 18px;
+  padding: 18px 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(233, 230, 245, 0.08);
+  background:
+    linear-gradient(180deg, rgba(12, 10, 16, 0.74), rgba(7, 7, 11, 0.94));
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(18px) saturate(120%);
+}
+
+.masthead::before {
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03), transparent 16%, transparent 84%, rgba(154, 226, 255, 0.03)),
+    radial-gradient(circle at 8% 16%, rgba(201, 122, 159, 0.08), transparent 18%);
+  opacity: 0.7;
+}
+
+.masthead::after {
+  display: none;
+}
+
+.main-grid {
+  gap: 22px;
+  grid-template-columns: minmax(268px, 306px) minmax(0, 1fr) minmax(248px, 292px);
+  grid-template-rows: minmax(0, 1fr) minmax(220px, 300px);
+}
+
+.panel,
+.dock,
+.surface-card,
+.forge-card,
+.ingress-step-panel,
+.ingress-console-panel,
+.data-stack,
+.metric-block,
+.code-panel,
+.code-area,
+.ingress-card,
+.proof-row,
+.dynamic-target,
+.footer-template {
+  border: 1px solid rgba(233, 230, 245, 0.08);
+  background: linear-gradient(180deg, rgba(10, 9, 14, 0.78), rgba(7, 7, 11, 0.95));
+  box-shadow: none;
+}
+
+.panel,
+.dock {
+  padding: 20px 18px;
+  border-radius: 16px;
+  backdrop-filter: blur(14px) saturate(125%);
+}
+
+.surface-card,
+.forge-card,
+.ingress-card,
+.data-stack,
+.metric-block,
+.code-panel,
+.code-area,
+.footer-template,
+.dynamic-target {
+  border-radius: 12px;
+}
+
+.panel::before,
+.panel::after,
+.dock::before,
+.dock::after,
+.surface-card::before,
+.surface-card::after,
+.forge-card::before,
+.forge-card::after,
+.ingress-step-panel::before,
+.ingress-step-panel::after,
+.ingress-console-panel::before,
+.ingress-console-panel::after,
+.ingress-card::before,
+.ingress-card::after,
+.data-stack::before,
+.metric-block::before {
+  display: none;
+}
+
+.canon-panel,
+.chamber-panel,
+.conscience-panel,
+.operator-dock,
+.audit-dock,
+.render-face-card,
+.helper-card,
+.intake-card,
+.signature-card,
+.surface-card.accent-card {
+  background: linear-gradient(180deg, rgba(10, 9, 14, 0.8), rgba(7, 7, 11, 0.95));
+}
+
+.reliquary-card {
+  background:
+    linear-gradient(180deg, rgba(16, 10, 16, 0.84), rgba(8, 7, 11, 0.96));
+  border-color: rgba(201, 122, 159, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.panel-section + .panel-section {
+  margin-top: 24px;
+}
+
+.section-label,
+.subsection-label {
+  margin-bottom: 18px;
+  color: var(--text-soft);
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+}
+
+.section-label::before,
+.subsection-label::before {
+  width: 18px;
+  height: 1px;
+  border-radius: 0;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  box-shadow: none;
+}
+
+.section-label::after,
+.subsection-label::after {
+  background: linear-gradient(90deg, rgba(233, 230, 245, 0.12), transparent 62%);
+}
+
+.data-row,
+.metric-row,
+.summary-row {
+  gap: 20px;
+  padding: 11px 0;
+}
+
+.data-row + .data-row,
+.metric-row + .metric-row,
+.summary-row + .summary-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.label,
+.data-label,
+.summary-label,
+.proof-label,
+.field span,
+.surface-kicker,
+.surface-state,
+.ingress-meta,
+.mini-note {
+  color: var(--text-dim);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+}
+
+.value,
+.data-value,
+.summary-value,
+.proof-value {
+  color: var(--text-bright);
+}
+
+.reference-link-grid {
+  gap: 0;
+}
+
+.reference-link-card {
+  gap: 6px;
+  padding: 14px 0 14px 16px;
+  border-radius: 0;
+  border: 0;
+  border-left: 1px solid rgba(233, 230, 245, 0.1);
+  background: transparent;
+  box-shadow: none;
+}
+
+.reference-link-card + .reference-link-card {
+  margin-top: 8px;
+}
+
+.reference-link-card:hover {
+  transform: none;
+  border-color: rgba(207, 176, 255, 0.28);
+  background: linear-gradient(90deg, rgba(207, 176, 255, 0.06), transparent 84%);
+  box-shadow: none;
+}
+
+.surface-copy,
+.ingress-copy,
+.note,
+.ingress-note {
+  color: var(--text-soft);
+  line-height: 1.8;
+}
+
+.control {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(233, 230, 245, 0.11);
+  background:
+    linear-gradient(180deg, rgba(20, 15, 28, 0.92), rgba(10, 9, 14, 0.96));
+  font-size: 0.67rem;
+  letter-spacing: 0.19em;
+  box-shadow: none;
+}
+
+.control.secondary {
+  background: rgba(10, 10, 14, 0.34);
+}
+
+.control:hover:not(:disabled) {
+  transform: none;
+  border-color: rgba(207, 176, 255, 0.3);
+  background:
+    linear-gradient(180deg, rgba(26, 18, 36, 0.96), rgba(11, 10, 16, 0.98));
+  box-shadow: none;
+}
+
+input,
+textarea,
+select {
+  border-radius: 10px;
+  padding: 14px 14px;
+  border: 1px solid rgba(233, 230, 245, 0.09);
+  background:
+    linear-gradient(180deg, rgba(5, 5, 8, 0.94), rgba(10, 9, 14, 0.98));
+  box-shadow: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: rgba(207, 176, 255, 0.28);
+  box-shadow: 0 0 0 1px rgba(207, 176, 255, 0.12);
+}
+
+textarea {
+  min-height: 280px;
+  padding: 18px 18px 20px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.code-area,
+.code-panel,
+.footer-template,
+.dynamic-target {
+  background:
+    linear-gradient(180deg, rgba(5, 5, 8, 0.96), rgba(10, 9, 14, 0.99));
+  border: 1px solid rgba(233, 230, 245, 0.08);
+  box-shadow: none;
+}
+
+.proof-row {
+  grid-template-columns: 136px 1fr;
+  padding: 12px 0;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.proof-stack .proof-row + .proof-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dynamic-target {
+  min-height: 52px;
+}
+
+.ingress-membrane {
+  padding: 18px clamp(16px, 3vw, 38px) 34px;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(201, 122, 159, 0.11), transparent 24%),
+    radial-gradient(circle at 84% 14%, rgba(154, 226, 255, 0.08), transparent 20%),
+    linear-gradient(180deg, rgba(2, 2, 5, 0.95), rgba(2, 2, 5, 0.985));
+}
+
+.ingress-shell {
+  width: min(1400px, 100%);
+  padding: 24px clamp(18px, 3vw, 34px) 26px;
+  border-radius: 22px;
+  border: 1px solid rgba(233, 230, 245, 0.08);
+  background:
+    linear-gradient(180deg, rgba(11, 10, 15, 0.8), rgba(7, 7, 11, 0.97));
+  box-shadow: 0 32px 84px rgba(0, 0, 0, 0.42);
+}
+
+.ingress-shell::before {
+  inset: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.ingress-shell::after {
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent, rgba(207, 176, 255, 0.05), transparent),
+    radial-gradient(circle at 10% 16%, rgba(201, 122, 159, 0.08), transparent 18%);
+  opacity: 0.7;
+}
+
+.ingress-head {
+  margin-bottom: 18px;
+}
+
+.ingress-intro {
+  max-width: 72ch;
+  margin-bottom: 18px;
+}
+
+.ingress-stage-rail {
+  gap: 0;
+  margin: 6px 0 22px;
+  border-top: 1px solid rgba(233, 230, 245, 0.08);
+  border-bottom: 1px solid rgba(233, 230, 245, 0.08);
+}
+
+.ingress-stage-chip {
+  min-height: 50px;
+  padding: 15px 16px 13px;
+  border: 0;
+  border-right: 1px solid rgba(233, 230, 245, 0.08);
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-faint);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+}
+
+.ingress-stage-chip:last-child {
+  border-right: 0;
+}
+
+.ingress-stage-chip.is-active {
+  border-bottom-color: rgba(207, 176, 255, 0.56);
+  background: linear-gradient(180deg, rgba(207, 176, 255, 0.08), transparent 74%);
+  color: var(--text-bright);
+  box-shadow: none;
+}
+
+.ingress-stage-chip.is-complete {
+  border-bottom-color: rgba(207, 234, 162, 0.42);
+  color: var(--lime);
+}
+
+.ingress-stage-chip.is-locked {
+  opacity: 0.34;
+}
+
+.ingress-handshake-grid {
+  grid-template-columns: minmax(0, 1.48fr) minmax(280px, 0.72fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.ingress-step-panel {
+  padding: clamp(22px, 3vw, 34px);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(10, 9, 14, 0.82), rgba(5, 5, 8, 0.97));
+}
+
+.ingress-step-head {
+  margin-bottom: 16px;
+  gap: 20px;
+}
+
+#ingressStepPrompt {
+  max-width: 11ch;
+  font-size: clamp(2.6rem, 5vw, 4.9rem);
+  line-height: 0.92;
+}
+
+.surface-state {
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(233, 230, 245, 0.09);
+  background: rgba(8, 8, 12, 0.56);
+}
+
+.ingress-step-support {
+  max-width: 44ch;
+  margin-bottom: 18px;
+  font-size: 1rem;
+}
+
+.ingress-step-entry {
+  gap: 14px;
+}
+
+.ingress-step-nav {
+  margin-top: 20px;
+  justify-content: flex-start;
+}
+
+.ingress-seal-review {
+  padding: 2px 0 0;
+}
+
+.ingress-console-panel {
+  display: grid;
+  gap: 16px;
+  padding: 10px 0 0 24px;
+  border: 0;
+  border-left: 1px solid rgba(233, 230, 245, 0.08);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.ingress-console-block {
+  padding: 16px 0;
+  border: 0;
+  border-top: 1px solid rgba(233, 230, 245, 0.08);
+  border-bottom: 1px solid rgba(233, 230, 245, 0.08);
+  border-radius: 0;
+  background: transparent;
+}
+
+.ingress-bypass,
+.ingress-final-actions {
+  padding-top: 14px;
+  border-top: 1px solid rgba(233, 230, 245, 0.08);
+}
+
+.ingress-bypass-grid {
+  gap: 12px;
+}
+
+.witness-grid,
+.forge-grid {
+  gap: 14px;
+}
+
+.surface-card,
+.forge-card,
+.ingress-card {
+  padding: 18px;
+}
+
+@media (max-width: 1080px) {
+  .masthead,
+  .ingress-head,
+  .ingress-step-head {
+    gap: 14px;
+  }
+
+  .ingress-console-panel {
+    padding: 16px 0 0;
+    border-left: 0;
+    border-top: 1px solid rgba(233, 230, 245, 0.08);
+  }
+
+  #ingressStepPrompt {
+    max-width: none;
+    font-size: clamp(2.4rem, 7vw, 4rem);
+  }
+}
+
+@media (max-width: 920px) {
+  .masthead,
+  .ingress-shell {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .chrome-grid::before {
+    inset: 6px;
+    border-radius: 18px;
+  }
+
+  .proof-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .glyph-lock {
+    width: 54px;
+    height: 54px;
+    flex-basis: 54px;
+  }
+
+  .status-pill,
+  .control {
+    width: 100%;
+  }
+
+  .ingress-stage-chip {
+    border-right: 0;
+    border-bottom: 1px solid rgba(233, 230, 245, 0.08);
+  }
+
+  .ingress-stage-chip.is-active,
+  .ingress-stage-chip.is-complete {
+    border-bottom-width: 1px;
+    box-shadow: inset 3px 0 0 rgba(207, 176, 255, 0.4);
   }
 }

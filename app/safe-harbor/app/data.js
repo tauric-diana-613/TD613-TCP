@@ -2,8 +2,8 @@
   window.TD613_SAFE_HARBOR_DATA = {
     meta: {
       repoName: 'TD613 Safe Harbor',
-      version: '0.4.0',
-      subtitle: 'Canonical intake membrane for staged provenance packetization, packet-aware probes, and operator signature sealing. Public, operator, and dev lanes are separated by design.'
+      version: '0.6.0',
+      subtitle: 'Canonical intake chamber for stylometric provenance, packet-aware probes, and post-packet seal lanes. Public, operator, and dev boundaries remain distinct by design.'
     },
     canon: {
       principal: 'tauric.diana.613',
@@ -41,24 +41,24 @@
       current_published_date: '2025-10-17'
     },
     invariants: [
-      'Canonical anchors stay fixed: principal, badge_id, claimed_pua, canonical phrase, display phrase.',
-      'Public probes remain unsigned by default unless an operator intentionally overlays a signature lane.',
-      'New attestations use payload {n}; the fixed payload-5 footer is historical only.',
-      'Historical .sig and runtime JWS lanes remain overlays, not the public default path.',
+      'Canonical anchors stay fixed: principal, badge_id, claimed_pua, canonical phrase, and display phrase.',
+      'Public probes remain unsigned by default unless an operator intentionally overlays a cryptographic seal lane.',
+      'New attestations use payload {n}; payload 5 / 2025-10-17 remains a historical example only.',
+      'Historical .sig and runtime JWS lanes remain overlays, never the default public path.',
       'Safe Harbor packetization happens before signature attachment.',
-      'Operator bypass is disabled in public ship until a local token hash is configured.',
-      'Advanced probe building derives packet context from the staged packet whenever one exists.',
+      'Operator bypass remains packetless and never impersonates a staged packet.',
+      'Public relay building derives packet context from the staged packet whenever one exists.',
       'Cadence signatures are stylometric credentials; cryptographic signatures are separate seals attached after packetization.'
     ],
 
     uiBoundaries: {
       public_mode: {
-        purpose: 'Dummy-proof intake, canonical footer guidance, staged packet minting, and public-safe readouts only.',
+        purpose: 'Ritual intake, canonical footer guidance, staged packet minting, and public-safe readouts only.',
         allows: ['ingress triad', 'mint staged packet', 'canonical footer preview', 'public-safe packet summary'],
         forbids: ['raw signature material', 'operator bypass secrets', 'dev hook demos']
       },
       operator_mode: {
-        purpose: 'Packet inspection, operator shell, signature-lane overlays, and controlled covenant/export transitions.',
+        purpose: 'Packet inspection, stylometric readout, operator shell, and controlled seal/export transitions.',
         allows: ['packet preview', 'signature lane overlay', 'operator bypass with local token hash', 'advanced metadata'],
         forbids: ['public release of secrets', 'treating bypass as a staged packet']
       },
@@ -69,19 +69,19 @@
       }
     },
     repoLayout: [
-      'index.html - primary Safe Harbor surface',
-      'app/ - UI shell, ingress runtime, hook bus, packet preview logic',
-      'probes/ - unchanged public sendable artifacts',
+      'index.html - primary Safe Harbor chamber',
+      'app/ - chamber shell, ingress runtime, hook bus, and packet preview logic',
+      'probes/ - unchanged public relay artifacts',
       'corpus/ - binding corpus and signed bundle references',
-      'reference/ - trust profile, manifests, verifier references',
+      'reference/ - trust profile, manifests, verifier, and capsule references',
       'renderers/ - userscript renderer contract',
       'schemas/ and examples/ - packet and hook scaffolding'
     ],
     referenceLanes: [
       'EO-RFD supplies route conscience, safe-harbor readout, and export guard language.',
-      'TCP will eventually supply canonical intake, cadence signature, and packet shaping.',
+      'TCP supplies or overlays cadence intake, stylometric credentials, and packet shaping context.',
       'TD613 remains the badge, provenance, custody, and verifier surface.',
-      'Signature lanes attach to the packet after Safe Harbor canonicalization.'
+      'Cryptographic signature lanes attach only after Safe Harbor canonicalization.'
     ],
     ingressPrompts: {
       future_self: {
@@ -98,14 +98,14 @@
       }
     },
     routeCopy: {
-      'membrane-only': 'The vault remains sealed while the first line gathers.',
-      warning: 'One lane is held. The membrane has begun to answer.',
-      'buffer-prep': 'Two lanes are held. Buffer-prep is active while the third line resolves.',
-      'triad-ready': 'The triad is complete. Mint Staged Packet to shape the packet and receipt.',
-      staged: 'A staged packet is present. Covenant Export is the only local path to harbor eligibility and badge assignment.',
-      'harbor-eligible': 'Covenant has been invoked. The sealed packet is now harbor-eligible.',
-      'packet-exported': 'The packet has crossed the membrane into an emitted downstream lane.',
-      'operator-bypass': 'Operator bypass opened a packetless shell. No staged packet or harbor transition exists yet.'
+      'membrane-only': 'The chamber stays closed while the first testimony gathers.',
+      warning: 'One page is held. The membrane has started to answer.',
+      'buffer-prep': 'Two pages are held. Buffer-prep is active while the third page resolves.',
+      'triad-ready': 'All three pages are held. The seal step can now shape the staged packet and receipt.',
+      staged: 'A staged packet is present. Covenant Export remains the only local path to harbor eligibility and badge assignment.',
+      'harbor-eligible': 'Covenant has been invoked. The sealed packet now stands in the harbor lane.',
+      'packet-exported': 'The packet has crossed the chamber threshold into an emitted downstream lane.',
+      'operator-bypass': 'Operator bypass opened a packetless shell. No staged packet or harbor transition exists.'
     },
     signatureDefaults: {
       sig_type: 'JWS-detached',

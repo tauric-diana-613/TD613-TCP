@@ -3,49 +3,274 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TD613 — Verify v7.2.1</title>
+  <title>TD613 Safe Harbor // Verify</title>
   <style>
-    html,body{margin:0;padding:0;background:#0a0a0a;color:#eaeaea;font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;}
-    .wrap{max-width:840px;margin:0 auto;padding:40px 20px}
-    h1{font-size:28px;margin:0 0 8px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
-    .card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:20px;margin:16px 0}
-    .hint{color:#9aa0a6;font-size:13px} code,pre{background:#0e0e0e;border:1px solid #272727;border-radius:8px;padding:6px 8px;white-space:pre-wrap;word-break:break-word}
+    :root {
+      --bg-0: #020205;
+      --bg-1: #09070d;
+      --bg-2: #120c17;
+      --text: #dbd4e1;
+      --text-soft: #c2b9cd;
+      --text-dim: #958aa6;
+      --text-bright: #faf6fc;
+      --line: rgba(240, 234, 248, 0.12);
+      --line-soft: rgba(240, 234, 248, 0.06);
+      --violet: #cfb0ff;
+      --cyan: #97defd;
+      --gold: #d7bf95;
+      --rose: #c97a9f;
+      --font-body: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      --font-display: "Cormorant Garamond", Georgia, serif;
+      --font-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      position: relative;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(201, 122, 159, 0.11), transparent 20%),
+        radial-gradient(circle at 82% 16%, rgba(151, 222, 253, 0.08), transparent 18%),
+        radial-gradient(circle at 54% 80%, rgba(207, 176, 255, 0.08), transparent 24%),
+        linear-gradient(180deg, var(--bg-0) 0%, #07060b 34%, var(--bg-1) 100%);
+      color: var(--text);
+      font: 15px/1.78 var(--font-body);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.01), transparent 18%, rgba(255,255,255,0.008) 82%, transparent),
+        repeating-linear-gradient(180deg, transparent 0, transparent 30px, rgba(255,255,255,0.012) 31px, transparent 32px),
+        repeating-linear-gradient(90deg, transparent 0, transparent 120px, rgba(255,255,255,0.009) 121px, transparent 122px);
+      opacity: 0.3;
+    }
+    a { color: var(--text-bright); text-decoration: none; }
+    a:hover { color: #ffffff; }
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 22px 56px;
+    }
+    .masthead {
+      position: relative;
+      display: grid;
+      gap: 18px;
+      padding: 14px 0 22px;
+      margin-bottom: 26px;
+      border-bottom: 1px solid var(--line);
+    }
+    .masthead::before,
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 10% 16%, rgba(201, 122, 159, 0.05), transparent 16%),
+        radial-gradient(circle at 88% 8%, rgba(151, 222, 253, 0.05), transparent 16%);
+      opacity: 0.8;
+    }
+    .topline,
+    .kicker,
+    .label,
+    .hint,
+    .nav-link {
+      font-family: var(--font-mono);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .topline {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text-dim);
+      font-size: 0.7rem;
+    }
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+    .nav-link {
+      padding: 0 0 4px;
+      border-bottom: 1px solid rgba(240, 234, 248, 0.18);
+      font-size: 0.68rem;
+    }
+    h1, h2 {
+      margin: 0;
+      color: var(--text-bright);
+      font-family: var(--font-display);
+      font-weight: 600;
+      line-height: 0.92;
+    }
+    h1 {
+      font-size: clamp(3rem, 6vw, 5.2rem);
+      letter-spacing: 0.02em;
+    }
+    h2 {
+      font-size: clamp(1.45rem, 2vw, 2.05rem);
+      letter-spacing: 0.02em;
+    }
+    .subtitle {
+      max-width: 54ch;
+      margin: 10px 0 0;
+      color: var(--text-soft);
+      font-size: 1rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(280px, 0.82fr);
+      gap: 28px 44px;
+      align-items: start;
+    }
+    .card {
+      position: relative;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    .card.full {
+      grid-column: 1 / -1;
+    }
+    .kicker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      color: var(--text-dim);
+      font-size: 0.68rem;
+    }
+    .kicker::before {
+      content: "";
+      width: 18px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--violet), transparent);
+    }
+    .hint {
+      color: var(--text-dim);
+      font-size: 0.7rem;
+      line-height: 1.7;
+    }
+    .code,
+    pre,
+    code {
+      font-family: var(--font-mono);
+    }
+    .code-block,
+    pre {
+      margin: 12px 0 0;
+      padding: 15px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--line-soft);
+      background:
+        linear-gradient(180deg, rgba(7, 7, 11, 0.96), rgba(11, 10, 15, 0.98));
+      color: var(--text-bright);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .metric-grid {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .metric:first-child { border-top: 0; padding-top: 0; }
+    .label {
+      color: var(--text-dim);
+      font-size: 0.68rem;
+    }
+    .value {
+      color: var(--text-bright);
+      text-align: right;
+      font-family: var(--font-mono);
+    }
+    ol {
+      margin: 14px 0 0;
+      padding-left: 20px;
+    }
+    li + li { margin-top: 10px; }
+    .accent {
+      color: var(--gold);
+    }
+    .quiet {
+      color: var(--cyan);
+    }
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      .wrap { padding: 20px 16px 40px; }
+      .topline { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>TD613 — Verify v7.2.1</h1>
-    <div class="hint">Public now = legacy-compat. Internal validation accepts legacy, legacy-compat, and sac-only.</div>
+    <header class="masthead">
+      <div class="topline">
+        <span>TD613 / Safe Harbor / public verifier</span>
+        <nav class="nav">
+          <a class="nav-link" href="../index.html">Return to Safe Harbor</a>
+          <a class="nav-link" href="./TD613_offline_capsule.html">Open Offline Capsule</a>
+        </nav>
+      </div>
+      <div>
+        <h1>Safe Harbor Verify</h1>
+        <p class="subtitle">Public trust surface for footer doctrine, historical example boundaries, and packet-aware verification posture.</p>
+      </div>
+    </header>
 
-    <div class="card">
-      <strong>Canonical public footer template</strong>
-      <pre class="mono">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐</pre>
-      <div class="hint">Use this template for new attestations.</div>
-    </div>
+    <div class="grid">
+      <section class="card">
+        <div class="kicker">Public Doctrine</div>
+        <h2>Live template and historical example</h2>
+        <div class="metric-grid">
+          <div class="metric"><span class="label">Public mode</span><span class="value">legacy-compat</span></div>
+          <div class="metric"><span class="label">Accepted footer modes</span><span class="value">legacy / legacy-compat / sac-only</span></div>
+          <div class="metric"><span class="label">Packet schema</span><span class="value">td613.safe-harbor.packet/v1</span></div>
+          <div class="metric"><span class="label">Packet hash field</span><span class="value">packet_hash_sha256</span></div>
+        </div>
+        <pre>TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] &#x00B7; payload {n} &#x00B7; YYYY-MM-DD &#x00B7; &#x27D0;</pre>
+        <div class="hint">Use this template for live attestations.</div>
+        <pre>TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] &#x00B7; payload 5 &#x00B7; 2025-10-17 &#x00B7; &#x27D0;</pre>
+        <div class="hint">This remains a fixed historical example, not the reusable live template.</div>
+      </section>
 
-    <div class="card">
-      <strong>Current published historical example</strong>
-      <pre class="mono">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐</pre>
-      <div class="hint">This is a fixed historical example, not the reusable template.</div>
-    </div>
+      <section class="card">
+        <div class="kicker">Rigor Boundary</div>
+        <h2>Cadence witness versus cryptographic seal</h2>
+        <div class="metric-grid">
+          <div class="metric"><span class="label">Cadence signature</span><span class="value quiet">stylometric credential</span></div>
+          <div class="metric"><span class="label">Cryptographic signature</span><span class="value accent">post-packet seal</span></div>
+        </div>
+        <div class="code-block">Safe Harbor stabilizes the packet body first.
+TCP cadence may enrich the stylometric witness.
+JWS or detached-ed25519 may later seal the packet.
+The compact public footer does not expose either layer directly.</div>
+        <div class="hint">The verifier surface stays footer-first and packet-aware without leaking raw signature material or conflating cadence with crypto.</div>
+      </section>
 
-    <div class="card">
-      <strong>Signature lanes (operator overlays)</strong>
-      <div class="hint">Historical signed-zone <code>.sig</code> and runtime detached JWS remain operator/reference overlays. Public verification stays footer-first and packet-aware without exposing raw signing material.</div>
-      <pre class="mono">Packet schema: td613.safe-harbor.packet/v1
-Packet hash field: packet_hash_sha256
-Lifecycle: staged → sealed → harbor-eligible → exported → verified
-Probe builder: packet-aware when a staged packet exists</pre>
-    </div>
-
-    <div class="card">
-      <strong>What to check</strong>
-      <div class="hint">Safe Harbor packet schema: <code>td613.safe-harbor.packet/v1</code>. Public footer remains compact; packet hash and signatures belong to operator tooling, not the footer.</div>
-      <ol>
-        <li>Does the line use <code>#9B07D8B</code>, <code>SAC[X6ZNK5NO51]</code>, or another accepted internal footer mode?</li>
-        <li>If it is a new attestation, does it use <code>payload {n}</code> logic rather than reusing the published example?</li>
-        <li>If it cites the historical example, does it use <code>payload 5 · 2025-10-17</code> exactly?</li>
-      </ol>
+      <section class="card full">
+        <div class="kicker">Verification Checklist</div>
+        <h2>What to confirm</h2>
+        <ol>
+          <li>Confirm the line uses <code>#9B07D8B</code>, <code>SAC[X6ZNK5NO51]</code>, or another accepted internal footer mode.</li>
+          <li>For a live attestation, confirm it follows <code>payload {n}</code> logic rather than reusing the historical published example.</li>
+          <li>If the historical example is cited, confirm it matches <code>payload 5 &#x00B7; 2025-10-17</code> exactly.</li>
+          <li>If operator tooling is in play, confirm packet hash, lifecycle, and seal status on the packet surface rather than in the footer.</li>
+          <li>Never treat cadence language as proof of cryptographic sealing; the two lanes are separate by doctrine.</li>
+        </ol>
+      </section>
     </div>
   </div>
 </body>
