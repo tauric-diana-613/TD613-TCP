@@ -23,6 +23,20 @@ const buildingAccess = sampleById('building-access-formal-record');
 const overworkDebrief = sampleById('overwork-debrief-professional-message');
 const packageHandoff = sampleById('package-handoff-formal-record');
 const customerSupport = sampleById('customer-support-formal-record');
+const normalizeComparable = (text = '') => String(text || '')
+  .replace(/\r\n/g, '\n')
+  .toLowerCase()
+  .replace(/\s+/g, ' ')
+  .trim();
+const hasDuplicatedSourceReplay = (source = '', output = '') => {
+  const normalizedSource = normalizeComparable(source);
+  const normalizedOutput = normalizeComparable(output);
+  if (!normalizedSource || !normalizedOutput || normalizedSource === normalizedOutput) {
+    return false;
+  }
+  return normalizedOutput.indexOf(normalizedSource) !== -1 &&
+    normalizedOutput.indexOf(normalizedSource, normalizedSource.length) !== -1;
+};
 
 assert.ok(buildingAccess, 'building-access-formal-record sample is present');
 assert.ok(overworkDebrief, 'overwork-debrief-professional-message sample is present');
@@ -141,6 +155,10 @@ for (const persona of resolvedPersonas) {
   assert.ok(Array.isArray(result.shiftPreview) && result.shiftPreview.length > 0, `${persona.id}: sentence-level shift preview is populated`);
   assert.ok((result.transfer.semanticAudit?.propositionCoverage ?? 0) >= 0.9, `${persona.id}: proposition coverage remains retrieval-safe`);
   assert.equal(result.transfer.protectedAnchorAudit?.protectedAnchorIntegrity, 1, `${persona.id}: protected anchors remain intact`);
+  assert.ok(typeof result.apertureOutcome === 'string', `${persona.id}: Aperture outcome is attached`);
+  assert.ok(typeof result.movementConfidence === 'number', `${persona.id}: movement confidence is attached`);
+  assert.ok(result.previewAlignment && typeof result.previewAlignment.ratio === 'number', `${persona.id}: preview alignment is attached`);
+  assert.ok(result.contactHonesty && typeof result.contactHonesty.line === 'string', `${persona.id}: contact honesty surface is attached`);
 }
 
 const uniqueOutputs = new Set([...results.values()].map((result) => result.maskedText));
@@ -168,6 +186,11 @@ assert.ok(
     (sparkBuildingAccess.transfer.notes || []).some((note) => /fell back to the source text/i.test(note)),
   'Spark keeps the building-access fixture unchanged when Aperture routes the record back to source'
 );
+assert.equal(
+  sparkBuildingAccess.apertureOutcome,
+  'source-rerouted',
+  'Spark exposes source-rerouted as the Aperture process outcome on the building-access fixture'
+);
 
 const sparkPackageHandoff = buildMaskTransformationResult(engine, {
   comparisonText: packageHandoff.text,
@@ -189,6 +212,10 @@ assert.ok(
   sparkPackageHandoff.maskedText.includes('6:41 PM') &&
     sparkPackageHandoff.maskedText.includes('Unit 2B'),
   'Spark preserves the protected handoff literals while shifting cadence'
+);
+assert.ok(
+  sparkPackageHandoff.apertureOutcome === 'projected' || sparkPackageHandoff.apertureOutcome === 'repaired',
+  'Spark exposes a projected Aperture outcome on the safer handoff fixture'
 );
 
 const outputProfiles = Object.fromEntries(
@@ -258,6 +285,48 @@ assert.ok(
 assert.ok(
   !/tell hi|trying to tell/i.test(sparkRegression.maskedText),
   'Spark mask rescue avoids the earlier lexical glitch on the regression sample'
+);
+assert.ok(
+  !hasDuplicatedSourceReplay(sparkRegression.rawText, sparkRegression.maskedText),
+  'Spark regression output does not duplicate or concatenate the source passage'
+);
+
+const regressionMaskResults = ['spark', 'matron', 'undertow', 'archivist', 'cross-examiner']
+  .map((id) => {
+    const persona = resolvedPersonas.find((entry) => entry.id === id);
+    return buildMaskTransformationResult(engine, {
+      comparisonText: sparkRegressionText,
+      lock,
+      persona
+    });
+  });
+
+assert.equal(
+  new Set(regressionMaskResults.map((result) => result.maskedText)).size,
+  regressionMaskResults.length,
+  'the conversational regression sample resolves to distinct outputs across the major built-in masks'
+);
+assert.ok(
+  regressionMaskResults.every((result) => !hasDuplicatedSourceReplay(result.rawText, result.maskedText)),
+  'major built-in masks never duplicate or append the source passage on the conversational regression sample'
+);
+assert.ok(
+  regressionMaskResults.filter((result) => result.apertureOutcome === 'projected' || result.apertureOutcome === 'repaired').length >= 4,
+  'the conversational regression sample now lands projected or repaired Aperture outcomes for most major masks'
+);
+assert.ok(
+  regressionMaskResults.every((result) => result.contactHonesty.renderSafe !== false),
+  'major built-in masks keep the conversational regression sample render-safe for Homebase'
+);
+assert.ok(
+  regressionMaskResults.every((result) => result.previewAlignment && result.previewAlignment.ratio >= 0.34),
+  'major built-in masks keep preview alignment above the fake-shift floor on the conversational regression sample'
+);
+assert.ok(
+  regressionMaskResults.every((result) =>
+    result.apertureOutcome !== 'projected' || result.contactHonesty.overclaimRisk !== 'high'
+  ),
+  'projected outputs do not carry a high overclaim risk on the conversational regression sample'
 );
 
 console.log('persona-gallery.test.mjs passed');

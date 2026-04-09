@@ -1,4 +1,8 @@
-import { reviewTD613ApertureTransfer } from './td613-aperture.js';
+import {
+  classifyTD613ApertureProjection,
+  repairTD613ApertureProjection,
+  reviewTD613ApertureTransfer
+} from './td613-aperture.js';
 
 function clamp01(value) {
   return Math.max(0, Math.min(1, value));
@@ -7033,6 +7037,44 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     changedDimensions,
     lexicalShiftProfile
   );
+  let apertureRepair = {
+    outputText: finalText,
+    repaired: false,
+    repairPasses: [],
+    pathologies: null
+  };
+  if ((retrieval || shell?.mode === 'borrowed' || shell?.mode === 'persona') && finalText !== sourceText) {
+    apertureRepair = repairTD613ApertureProjection({
+      sourceText,
+      outputText: finalText,
+      personaId: shell?.personaId || '',
+      sourceProfile,
+      targetProfile
+    });
+    if (apertureRepair.outputText !== finalText) {
+      finalText = apertureRepair.outputText;
+      finalProfile = extractCadenceProfile(finalText);
+      changedDimensions = collectChangedDimensions(sourceProfile, finalProfile);
+      lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
+      realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
+      semanticRisk = computeSemanticRisk(sourceText, finalText, protectedState, sourceProfile, finalProfile);
+      precomputedVisibleShift = null;
+      precomputedNonTrivialShift = null;
+      ({ semanticAudit, protectedAnchorAudit, outputIR } = buildSemanticAuditBundle(ir, finalText, protectedState));
+      visibleShift = hasBorrowedShellVisibleShift(
+        sourceText,
+        finalText,
+        changedDimensions,
+        lexicalShiftProfile
+      );
+      nonTrivialShift = hasBorrowedShellNonTrivialShift(
+        sourceText,
+        finalText,
+        changedDimensions,
+        lexicalShiftProfile
+      );
+    }
+  }
   let apertureProtocol = reviewTD613ApertureTransfer({
     sourceText,
     outputText: finalText,
@@ -7070,6 +7112,29 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       enforcedFallback: true,
       recaptureRisk: Math.max(apertureProtocol.recaptureRisk || 0, 0.58)
     };
+  }
+
+  const apertureProjection = classifyTD613ApertureProjection({
+    sourceText,
+    outputText: finalText,
+    changedDimensions,
+    lexemeSwaps: lexicalShiftProfile.lexemeSwaps,
+    visibleShift,
+    nonTrivialShift,
+    repaired: apertureRepair.repaired,
+    pathologies: apertureRepair.pathologies,
+    blocked: apertureProtocol.blocked
+  });
+  apertureProtocol = {
+    ...apertureProtocol,
+    ...apertureProjection,
+    repairPasses: [...new Set(apertureRepair.repairPasses || [])]
+  };
+  if (apertureRepair.repaired && finalText !== sourceText) {
+    notes.push(`TD613 Aperture repaired the projection before final output (${(apertureRepair.repairPasses || []).join(', ')}).`);
+  }
+  if (apertureProjection.outcome === 'surface-held' && finalText !== sourceText) {
+    notes.push('TD613 Aperture held the passage near source after repair to avoid false generator confidence.');
   }
 
   if (shell?.mode === 'borrowed') {

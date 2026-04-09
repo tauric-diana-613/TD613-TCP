@@ -1,3 +1,8 @@
+import {
+  classifyTD613ApertureProjection,
+  detectTD613ApertureTextPathologies,
+  repairTD613ApertureProjection
+} from '../../engine/td613-aperture.js';
 import { buildCorpusExtraction, splitCorpusSamples as splitTrainerCorpusSamples } from '../persona-trainer/extractor.js';
 
 const BUILTIN_MASK_ART = Object.freeze({
@@ -737,6 +742,17 @@ function splitSentencesPreservePunctuation(text = '') {
     .filter(Boolean);
 }
 
+function splitPreviewSegments(text = '') {
+  const normalized = String(text || '').replace(/\r\n/g, '\n').trim();
+  if (!normalized) {
+    return [];
+  }
+  const matches = normalized.match(/[^.!?;\n]+(?:[.!?;]+["')\]]*)?|[^\n]+$/g) || [];
+  return matches
+    .map((entry) => normalizeText(entry))
+    .filter(Boolean);
+}
+
 function maskWordTokens(text = '') {
   return normalizeText(text)
     .toLowerCase()
@@ -906,6 +922,71 @@ function deriveRealizedMaskDimensions(sourceProfile = {}, outputProfile = {}) {
   return changed;
 }
 
+function substantiveMaskDimensions(changedDimensions = []) {
+  return (changedDimensions || []).filter((dimension) =>
+    dimension !== 'contraction-posture' && dimension !== 'punctuation-shape'
+  );
+}
+
+function evaluateMaskProjection(engine, sourceText = '', outputText = '', transfer = {}, options = {}) {
+  const normalizedSource = normalizeText(sourceText);
+  const normalizedOutput = normalizeText(outputText);
+  const sourceProfile = engine.extractCadenceProfile(normalizedSource);
+  const outputProfile = engine.extractCadenceProfile(normalizedOutput);
+  const changedDimensions = deriveRealizedMaskDimensions(sourceProfile, outputProfile);
+  const drift = lexicalDriftSummary(normalizedSource, normalizedOutput);
+  const visibleShift = Boolean(normalizedOutput && normalizedOutput !== normalizedSource);
+  const nonTrivialShift = substantiveMaskDimensions(changedDimensions).length > 0 || Number(transfer?.lexemeSwaps?.length || 0) > 0;
+  const pathologies = options.pathologies || detectTD613ApertureTextPathologies({
+    sourceText: normalizedSource,
+    outputText: normalizedOutput
+  });
+  const aperture = classifyTD613ApertureProjection({
+    sourceText: normalizedSource,
+    outputText: normalizedOutput,
+    changedDimensions,
+    lexemeSwaps: transfer?.lexemeSwaps || [],
+    visibleShift,
+    nonTrivialShift,
+    repaired: Boolean(options.repaired),
+    pathologies,
+    blocked: Boolean(options.blocked)
+  });
+
+  return {
+    text: normalizedOutput,
+    outputProfile,
+    changedDimensions,
+    drift,
+    visibleShift,
+    nonTrivialShift,
+    pathologies,
+    aperture
+  };
+}
+
+function scoreMaskProjection(candidate = {}) {
+  const outcomeWeights = {
+    projected: 4,
+    repaired: 3,
+    'surface-held': 1,
+    'source-rerouted': 0
+  };
+  const substantiveMovement = substantiveMaskDimensions(candidate.changedDimensions).length;
+  const pathologyPenalty = (candidate.pathologies?.flags || []).length * 0.12;
+  const driftPenalty =
+    Math.max(0, Number(candidate.drift?.introducedContentCount || 0) - 1) * 0.32 +
+    (Number(candidate.drift?.preservedContentRatio || 1) < 0.88 ? 0.9 : 0);
+  return (
+    (outcomeWeights[candidate.aperture?.outcome] || 0) +
+    Number(candidate.aperture?.movementConfidence || 0) +
+    (substantiveMovement * 0.25) -
+    pathologyPenalty -
+    driftPenalty -
+    (candidate.aperture?.renderSafe === false ? 10 : 0)
+  );
+}
+
 function sentenceTransferIsUsable(source = '', output = '', transfer = {}) {
   const semantic = transfer.semanticAudit || {};
   const drift = lexicalDriftSummary(source, output);
@@ -943,6 +1024,8 @@ function buildStableMaskSurface(engine, sourceText = '', shell = {}) {
     .split(/\n{2,}/);
   const targetProfile = shell?.profile || {};
   let rescueCount = 0;
+  let repairedCount = 0;
+  let projectedCount = 0;
 
   const text = paragraphs
     .map((paragraph) => {
@@ -954,8 +1037,25 @@ function buildStableMaskSurface(engine, sourceText = '', shell = {}) {
       return sentences.map((sentence) => {
         const sourceProfile = engine.extractCadenceProfile(sentence);
         const transfer = engine.buildCadenceTransfer(sentence, shell, { retrieval: true });
-        const candidate = stripLeadingMaskIntrusion(sentence, transfer.text || sentence);
-        if (sentenceTransferIsUsable(sentence, candidate, transfer)) {
+        const repaired = repairTD613ApertureProjection({
+          sourceText: sentence,
+          outputText: transfer.text || sentence,
+          personaId: shell?.personaId || '',
+          sourceProfile,
+          targetProfile
+        });
+        const candidate = stripLeadingMaskIntrusion(sentence, repaired.outputText || transfer.text || sentence);
+        const evaluated = evaluateMaskProjection(engine, sentence, candidate, transfer, {
+          repaired: repaired.repaired,
+          pathologies: repaired.pathologies
+        });
+        if (sentenceTransferIsUsable(sentence, candidate, transfer) && evaluated.aperture.outcome !== 'source-rerouted') {
+          if (repaired.repaired) {
+            repairedCount += 1;
+          }
+          if (evaluated.aperture.outcome !== 'surface-held') {
+            projectedCount += 1;
+          }
           return candidate;
         }
         rescueCount += 1;
@@ -967,48 +1067,119 @@ function buildStableMaskSurface(engine, sourceText = '', shell = {}) {
 
   return {
     text: normalizeText(text),
-    rescueCount
+    rescueCount,
+    repairedCount,
+    projectedCount
   };
 }
 
-function sentencePreviewRows(engine, sourceText = '', maskedText = '') {
-  const sourceSentences = splitSentencesPreservePunctuation(sourceText);
-  const maskedSentences = splitSentencesPreservePunctuation(maskedText);
-  const rows = [];
-  const limit = Math.max(sourceSentences.length, maskedSentences.length);
+function sentenceAnchorSimilarity(source = '', output = '') {
+  const sourceTokens = stripSignalPunctuation(source).split(/\s+/).filter(Boolean);
+  const outputTokens = stripSignalPunctuation(output).split(/\s+/).filter(Boolean);
+  if (!sourceTokens.length || !outputTokens.length) {
+    return 0;
+  }
+  const sourceSet = new Set(sourceTokens);
+  const outputSet = new Set(outputTokens);
+  const overlap = sourceTokens.filter((token) => outputSet.has(token)).length;
+  const union = new Set([...sourceSet, ...outputSet]).size || 1;
+  const prefixBonus = sourceTokens[0] === outputTokens[0] ? 0.12 : 0;
+  const suffixBonus = sourceTokens[sourceTokens.length - 1] === outputTokens[outputTokens.length - 1] ? 0.08 : 0;
+  return round(Math.min(1, (overlap / union) + prefixBonus + suffixBonus), 4);
+}
 
-  for (let index = 0; index < limit; index += 1) {
-    const source = sourceSentences[index] || '';
-    const masked = maskedSentences[index] || '';
-    const sourceSignal = stripSignalPunctuation(source);
-    const maskedSignal = stripSignalPunctuation(masked);
-    let effect = 'hold';
-    if (source && masked && sourceSignal !== maskedSignal) {
-      effect = 'shift';
-    } else if (source && !masked) {
-      effect = 'source-only';
-    } else if (!source && masked) {
-      effect = 'mask-only';
+function sentencePreviewRows(engine, sourceText = '', maskedText = '') {
+  const sourceSentences = splitPreviewSegments(sourceText);
+  const maskedSentences = splitPreviewSegments(maskedText);
+  const rows = [];
+  let outputIndex = 0;
+  let alignedCount = 0;
+
+  for (let sourceIndex = 0; sourceIndex < sourceSentences.length; sourceIndex += 1) {
+    const source = sourceSentences[sourceIndex];
+    let bestIndex = -1;
+    let bestScore = 0;
+
+    for (let candidateIndex = outputIndex; candidateIndex < Math.min(maskedSentences.length, outputIndex + 3); candidateIndex += 1) {
+      const score = sentenceAnchorSimilarity(source, maskedSentences[candidateIndex]);
+      if (score > bestScore) {
+        bestScore = score;
+        bestIndex = candidateIndex;
+      }
     }
+
+    if (bestIndex !== -1 && bestScore >= 0.34) {
+      while (outputIndex < bestIndex) {
+        rows.push({
+          effect: 'mask-only',
+          source: '--',
+          output: compactSwatch(maskedSentences[outputIndex], 120)
+        });
+        outputIndex += 1;
+      }
+      const masked = maskedSentences[bestIndex] || '';
+      const sourceSignal = stripSignalPunctuation(source);
+      const maskedSignal = stripSignalPunctuation(masked);
+      rows.push({
+        effect: sourceSignal === maskedSignal ? 'hold' : 'shift',
+        source: compactSwatch(source, 120),
+        output: compactSwatch(masked, 120)
+      });
+      alignedCount += 1;
+      outputIndex = bestIndex + 1;
+      continue;
+    }
+
     rows.push({
-      effect,
+      effect: 'source-only',
       source: compactSwatch(source, 120),
-      output: compactSwatch(masked, 120)
+      output: '--'
     });
   }
 
+  while (outputIndex < maskedSentences.length) {
+    rows.push({
+      effect: 'mask-only',
+      source: '--',
+      output: compactSwatch(maskedSentences[outputIndex], 120)
+    });
+    outputIndex += 1;
+  }
+
   const shiftedRows = rows.filter((row) => row.effect !== 'hold');
-  return (shiftedRows.length ? shiftedRows : rows).slice(0, 4);
+  const alignmentRatio = round(
+    alignedCount / Math.max(sourceSentences.length, maskedSentences.length, 1),
+    4
+  );
+
+  return {
+    rows: (shiftedRows.length ? shiftedRows : rows).slice(0, 4),
+    alignment: {
+      ratio: alignmentRatio,
+      alignedCount,
+      sourceCount: sourceSentences.length,
+      outputCount: maskedSentences.length,
+      trustworthy: alignmentRatio >= 0.5 || sourceSentences.length <= 1
+    }
+  };
 }
 
-function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {}) {
+function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {}, contactHonesty = {}) {
   const changedDimensions = Array.isArray(transfer.changedDimensions) ? transfer.changedDimensions : [];
   const lexemeSwaps = Array.isArray(transfer.lexemeSwaps) ? transfer.lexemeSwaps : [];
-  const visibleDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
+  const visibleDimensions = substantiveMaskDimensions(changedDimensions);
   const dimensionLine = visibleDimensions
     .slice(0, 4)
     .map((dimension) => dimension.replace(/-/g, ' '))
     .join(' // ');
+
+  if (contactHonesty.outcome === 'source-rerouted') {
+    return 'source rerouted // counter-recognition hold';
+  }
+
+  if (contactHonesty.outcome === 'surface-held') {
+    return 'surface-held // minimal safe movement';
+  }
 
   if (!changedDimensions.length && !lexemeSwaps.length) {
     return 'near-home hold';
@@ -1026,6 +1197,10 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {})
     return `${dimensionLine} // home held`;
   }
 
+  if (contactHonesty.outcome === 'repaired') {
+    return dimensionLine ? `${dimensionLine} // repaired projection` : 'repaired projection // safe counter-surface';
+  }
+
   if (effectSummary.registerShift && effectSummary.registerShift !== 'register holds') {
     return `${dimensionLine} // ${effectSummary.registerShift}`;
   }
@@ -1041,6 +1216,27 @@ function maskContactSummary(result = null) {
       contactClass: 'latent',
       fieldEffect: 'unresolved',
       line: 'No contact has been staged yet.'
+    };
+  }
+
+  const honesty = result.contactHonesty || {};
+  if (honesty.outcome === 'source-rerouted') {
+    return {
+      changedProximity: false,
+      changedSurfaceTexture: false,
+      contactClass: 'source-rerouted',
+      fieldEffect: 'source-rerouted',
+      line: honesty.line || 'Aperture routed the passage back to source.'
+    };
+  }
+
+  if (honesty.outcome === 'surface-held') {
+    return {
+      changedProximity: false,
+      changedSurfaceTexture: normalizeText(result.maskedText) !== normalizeText(result.rawText),
+      contactClass: 'surface-held',
+      fieldEffect: 'surface-held',
+      line: honesty.line || 'Aperture held the passage near source and only allowed surface-safe movement.'
     };
   }
 
@@ -1089,7 +1285,7 @@ function maskContactSummary(result = null) {
         : fieldEffect === 'proximity'
           ? proximityLine
           : fieldEffect === 'surface-texture'
-            ? `Surface texture changed while home distance held. ${textureLine}`
+            ? `${honesty.outcome === 'repaired' ? 'Aperture repaired the projection into a safe counter-surface. ' : ''}Surface texture changed while home distance held. ${textureLine}`
             : 'The mask touched the passage, but home pressure and surface texture largely held.'
   };
 }
@@ -1100,20 +1296,75 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     return null;
   }
 
+  const rawProfile = engine.extractCadenceProfile(normalized);
   const shell = {
     mode: 'persona',
     label: persona.name,
+    personaId: persona.id,
     mod: persona.mod ? { ...persona.mod } : null,
     profile: { ...persona.profile },
     strength: Number(persona.strength || 0.84)
   };
   const transfer = engine.buildCadenceTransfer(normalized, shell, { retrieval: true });
+  const rawTransferText = normalizeText(transfer.text || normalized);
   const stableSurface = transfer.transferClass === 'rejected'
-    ? { text: normalized, rescueCount: 0 }
+    ? { text: normalized, rescueCount: 0, repairedCount: 0, projectedCount: 0 }
     : buildStableMaskSurface(engine, normalized, shell);
-  const finalizedMaskedText = stableSurface.text || transfer.text || normalized;
+  const transferCandidate = evaluateMaskProjection(
+    engine,
+    normalized,
+    transfer.text || normalized,
+    transfer,
+    {
+      repaired: Boolean(transfer.apertureProtocol?.repairPasses?.length),
+      pathologies: detectTD613ApertureTextPathologies({
+        sourceText: normalized,
+        outputText: transfer.text || normalized
+      }),
+      blocked: transfer.apertureProtocol?.outcome === 'source-rerouted'
+    }
+  );
+  transferCandidate.notes = [...(transfer.notes || [])];
+
+  const stableCandidate = evaluateMaskProjection(
+    engine,
+    normalized,
+    stableSurface.text || normalized,
+    { lexemeSwaps: [] },
+    {
+      repaired: Boolean(stableSurface.repairedCount),
+      pathologies: detectTD613ApertureTextPathologies({
+        sourceText: normalized,
+        outputText: stableSurface.text || normalized
+      })
+    }
+  );
+  stableCandidate.notes = [];
+
+  const preferredCandidate = scoreMaskProjection(transferCandidate) >= scoreMaskProjection(stableCandidate)
+    ? { ...transferCandidate, label: 'transfer' }
+    : { ...stableCandidate, label: 'stable-surface' };
+  const finalizedMaskedText = preferredCandidate.text || normalized;
   transfer.text = finalizedMaskedText;
-  transfer.outputProfile = engine.extractCadenceProfile(finalizedMaskedText);
+  transfer.outputProfile = preferredCandidate.outputProfile || engine.extractCadenceProfile(finalizedMaskedText);
+  transfer.changedDimensions = [...preferredCandidate.changedDimensions];
+  transfer.apertureProtocol = {
+    ...(transfer.apertureProtocol || {}),
+    ...preferredCandidate.aperture,
+    pathologies: [...(preferredCandidate.pathologies?.flags || [])]
+  };
+  if (preferredCandidate.label === 'stable-surface' && finalizedMaskedText !== rawTransferText) {
+    transfer.notes = [...new Set([
+      ...(transfer.notes || []),
+      'TD613 Aperture selected the repaired sentence-governed surface over the raw projection.'
+    ])];
+  }
+  if (stableSurface.rescueCount > 0) {
+    transfer.notes = [...new Set([
+      ...(transfer.notes || []),
+      `Mask lane rescued ${stableSurface.rescueCount} sentence${stableSurface.rescueCount === 1 ? '' : 's'} back to a source-preserving surface.`
+    ])];
+  }
   const transferProfile = transfer.outputProfile || engine.extractCadenceProfile(finalizedMaskedText);
   const wantsClippedMask =
     (
@@ -1127,19 +1378,31 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     if (clippedText && clippedText !== finalizedMaskedText) {
       transfer.text = clippedText;
       transfer.outputProfile = engine.extractCadenceProfile(clippedText);
+      transfer.changedDimensions = deriveRealizedMaskDimensions(rawProfile, transfer.outputProfile);
     }
   }
-  if (stableSurface.rescueCount > 0) {
-    transfer.notes = [...new Set([
-      ...(transfer.notes || []),
-      `Mask lane rescued ${stableSurface.rescueCount} sentence${stableSurface.rescueCount === 1 ? '' : 's'} back to a source-preserving surface.`
-    ])];
-  }
   const realizedProfile = transfer.outputProfile || engine.extractCadenceProfile(transfer.text);
-  const realizedChangedDimensions = deriveRealizedMaskDimensions(
-    engine.extractCadenceProfile(normalized),
-    realizedProfile
-  );
+  const realizedChangedDimensions = deriveRealizedMaskDimensions(rawProfile, realizedProfile);
+  const realizedPathologies = detectTD613ApertureTextPathologies({
+    sourceText: normalized,
+    outputText: transfer.text
+  });
+  const apertureOutcome = classifyTD613ApertureProjection({
+    sourceText: normalized,
+    outputText: transfer.text,
+    changedDimensions: realizedChangedDimensions,
+    lexemeSwaps: transfer.lexemeSwaps || [],
+    visibleShift: transfer.text !== normalized,
+    nonTrivialShift: substantiveMaskDimensions(realizedChangedDimensions).length > 0 || Number(transfer.lexemeSwaps?.length || 0) > 0,
+    repaired: Boolean(stableSurface.repairedCount) || Boolean(transfer.apertureProtocol?.repairPasses?.length),
+    pathologies: realizedPathologies,
+    blocked: transfer.text === normalized && transfer.apertureProtocol?.outcome === 'source-rerouted'
+  });
+  transfer.apertureProtocol = {
+    ...(transfer.apertureProtocol || {}),
+    ...apertureOutcome,
+    pathologies: [...(realizedPathologies.flags || [])]
+  };
   const rawToLock = lock ? compareTextToLock(engine, normalized, lock) : null;
   const maskedToLock = lock ? compareTextToLock(engine, transfer.text, lock) : null;
   const deltaToLock = rawToLock && maskedToLock
@@ -1176,20 +1439,31 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
   }
 
   const swatch = compactSwatch(transfer.text || '');
+  const preview = sentencePreviewRows(engine, normalized, transfer.text);
+  const contactHonesty = {
+    outcome: apertureOutcome.outcome,
+    line: apertureOutcome.line,
+    movementConfidence: apertureOutcome.movementConfidence,
+    previewAlignment: preview.alignment,
+    pathologyFlags: [...(realizedPathologies.flags || [])],
+    renderSafe: apertureOutcome.renderSafe,
+    overclaimRisk: apertureOutcome.outcome === 'surface-held' ? 'high' : apertureOutcome.outcome === 'repaired' ? 'medium' : 'low'
+  };
   const contactSummary = maskContactSummary({
     rawText: normalized,
     maskedText: transfer.text,
     deltaToLock,
-    effectSummary
+    effectSummary,
+    contactHonesty
   });
-  const shiftPreview = sentencePreviewRows(engine, normalized, transfer.text);
   const whatMovedSummary = movementSummary(
     {
       ...transfer,
       changedDimensions: realizedChangedDimensions
     },
     effectSummary,
-    contactSummary
+    contactSummary,
+    contactHonesty
   );
 
   return {
@@ -1206,7 +1480,15 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     stickinessNotes,
     swatch,
     contactSummary,
-    shiftPreview
+    shiftPreview: preview.rows,
+    previewAlignment: preview.alignment,
+    apertureOutcome: apertureOutcome.outcome,
+    apertureNotes: [
+      ...(transfer.apertureProtocol?.reasons || []),
+      ...(transfer.apertureProtocol?.repairPasses || [])
+    ],
+    movementConfidence: apertureOutcome.movementConfidence,
+    contactHonesty
   };
 }
 

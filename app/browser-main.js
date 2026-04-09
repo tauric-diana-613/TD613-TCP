@@ -3872,6 +3872,13 @@
         </article>
       `).join('');
     };
+    const hasPathologicalMaskRender = (result = null) => {
+      const flags = result?.contactHonesty?.pathologyFlags || [];
+      return flags.includes('duplicated-source') ||
+        flags.includes('source-replay') ||
+        flags.includes('empty-output') ||
+        result?.contactHonesty?.renderSafe === false;
+    };
 
     if (!statusNode || !contactNode || !sourceNode || !outputNode || !beforeNode || !afterNode || !movedNode || !deltaNode || !notesNode) {
       return;
@@ -3937,6 +3944,23 @@
     }
 
     const result = state.comparison;
+    if (hasPathologicalMaskRender(result)) {
+      statusNode.textContent = `${state.wornMask.name} hit an Aperture render hold against ${state.lock.name}.`;
+      contactNode.textContent = `Contact state // ${result.contactHonesty?.line || 'Aperture suppressed the rendered output after detecting a generator pathology.'}`;
+      applyGlyphMetadata(contactNode, 'homebaseContact');
+      sourceNode.value = result.rawText || state.comparisonText || '';
+      outputNode.value = '';
+      beforeNode.textContent = comparisonMetricSummary(result.rawToLock);
+      afterNode.textContent = '--';
+      movedNode.textContent = 'render hold // output withheld';
+      deltaNode.textContent = 'pathology detected // masked output blocked';
+      notesNode.innerHTML = [
+        'What clung // Aperture withheld the rendered output after detecting a replay or concatenation fault.',
+        ...(result.apertureNotes || [])
+      ].map((note) => `<li>${escapeHtml(note)}</li>`).join('');
+      renderShiftPreview([], 'Aperture suppressed the rendered output after detecting a duplicated or concatenated passage.');
+      return;
+    }
     const delta = result.deltaToLock || {};
     const contact = result.contactSummary || {};
     statusNode.textContent = `${state.wornMask.name} is passing source text through ${state.lock.name}.`;
@@ -3948,7 +3972,11 @@
     afterNode.textContent = comparisonMetricSummary(result.maskedToLock);
     movedNode.textContent = result.whatMovedSummary || '--';
     deltaNode.textContent =
-      contact.fieldEffect === 'both'
+      result.apertureOutcome === 'source-rerouted'
+        ? 'source rerouted // projection withheld'
+        : result.apertureOutcome === 'surface-held'
+          ? 'surface-held // home distance held'
+          : contact.fieldEffect === 'both'
         ? `${delta.traceability >= 0 ? '+' : ''}${formatPct(Math.abs(delta.traceability || 0))} trace // surface texture shifted too`
         : contact.fieldEffect === 'proximity'
           ? `${delta.traceability >= 0 ? '+' : ''}${formatPct(Math.abs(delta.traceability || 0))} trace // home distance moved`
@@ -3957,9 +3985,15 @@
             : 'surface texture held // home distance held';
     notesNode.innerHTML = [
       `What clung // ${escapeHtml(contact.line || 'Residue remains readable.')} `,
-      ...(result.stickinessNotes || [])
+      ...(result.stickinessNotes || []),
+      ...(result.apertureNotes || [])
     ].map((note) => `<li>${escapeHtml(note)}</li>`).join('');
-    renderShiftPreview(result.shiftPreview || [], 'The mask held close enough to source that sentence movement stayed minimal.');
+    renderShiftPreview(
+      result.shiftPreview || [],
+      result.previewAlignment?.trustworthy === false
+        ? 'Preview alignment stayed low, so Aperture withheld a sentence-by-sentence claim.'
+        : 'The mask held close enough to source that sentence movement stayed minimal.'
+    );
   }
 
   function renderPersonaPreview(state) {
