@@ -33,7 +33,6 @@
     chooseHarbor,
     buildLedgerRow,
     nextBadge,
-    badgeMeaning,
     SWAP_CADENCE_FLAGSHIP_PAIRS
   } = window.TCP_ENGINE;
   const RETRIEVAL_FIXTURE_BUNDLE = window.TCP_RETRIEVAL_FIXTURES || { cases: {} };
@@ -526,6 +525,9 @@
   let gallerySelectedMaskId = '';
   let homebaseWornMaskId = '';
   let trainerController = null;
+  let personaGalleryLoadError = null;
+  let trainerLoadError = null;
+  let bootWarnings = [];
   let ingress = createIngressState();
 
   applyStationChrome(activeArtifactTab);
@@ -1025,6 +1027,68 @@
     if (swapButton) {
       swapButton.dataset.pulse = 'off';
     }
+  }
+
+  function bootWarningMessage(scope, error) {
+    const detail = error && error.message ? error.message : String(error || 'unavailable');
+    return `${scope} offline // ${detail}`;
+  }
+
+  function recordBootWarning(scope, error) {
+    const message = bootWarningMessage(scope, error);
+    if (!bootWarnings.includes(message)) {
+      bootWarnings.push(message);
+    }
+    return message;
+  }
+
+  function hydratePersonaRuntimeState() {
+    savedPersonas = loadSavedPersonas();
+    cadenceLocks = loadCadenceLocks();
+    activeCadenceLockId = loadActiveCadenceLockId();
+    const activeLock = getActiveCadenceLock();
+    if (activeLock && activeLock.id !== activeCadenceLockId) {
+      activeCadenceLockId = activeLock.id;
+      persistActiveCadenceLockId();
+    }
+    gallerySelectedMaskId = '';
+    homebaseWornMaskId = '';
+  }
+
+  function installPersonaGalleryBridge(model = null, error = null) {
+    const detail = error ? bootWarningMessage('Persona gallery', error) : '';
+    window.TCP_PERSONA_GALLERY = Object.freeze({
+      available: Boolean(model),
+      error: detail,
+      snapshot: () => readPersonaGallerySnapshot(),
+      selectLock: (lockId) => selectCadenceLock(lockId),
+      lock: () => lockCadenceFromGallery(),
+      reveal: () => revealCadenceLock(),
+      save: () => saveStagedCadenceLock(),
+      selectMask: (personaId) => selectMaskPersona(personaId),
+      wearHomebase: (personaId) => wearPersonaInHomebase(personaId),
+      bringHomebase: (personaId) => wearPersonaInHomebase(personaId),
+      openTrainer: (personaId) => openPersonaInTrainer(personaId),
+      generateMask: (personaId) => openPersonaInTrainer(personaId)
+    });
+  }
+
+  function installTrainerBridge(error = null) {
+    const detail = error ? bootWarningMessage('Trainer lab', error) : '';
+    window.TCP_TRAINER_LAB = Object.freeze({
+      available: Boolean(trainerController),
+      error: detail,
+      snapshot: () => trainerController?.snapshot() || null,
+      serializeState: () => trainerController?.serializeState() || null,
+      restoreState: (state) => trainerController?.restoreState(state),
+      openContext: (context) => trainerController?.openContext(context),
+      extract: () => trainerController?.extract(),
+      forgeDraft: () => trainerController?.forgeDraft(),
+      validate: () => trainerController?.validate(),
+      toggleReleaseGate: () => trainerController?.toggleReleaseGate(),
+      exportSpec: () => trainerController?.exportSpec(),
+      inject: () => trainerController?.inject()
+    });
   }
 
   function clearStatusCueTimer() {
@@ -4071,6 +4135,12 @@
       return;
     }
 
+    if (personaGalleryLoadError) {
+      node.textContent = `${glyphChar('tabPersonas', '')} Shelf // degraded lane // built-in masks stay visible while Persona Gallery is offline`;
+      applyGlyphMetadata(node, 'tabPersonas');
+      return;
+    }
+
     const maskLabel = state.selectedMask ? state.selectedMask.name : 'no mask chosen';
     const homeLabel = state.lock ? state.lock.name : 'no cadence home';
     const nextStep = !state.selectedMask
@@ -4158,9 +4228,11 @@
         : wornMask
           ? `${wornMask} is worn in Homebase.`
           : 'The shelf is latent until you choose a mask.';
-    const personaDetail = !state.library.length
-      ? 'No masks loaded.'
-      : `${state.galleryGroups.builtIn.length} built-in / ${state.galleryGroups.captured.length} captured / ${state.galleryGroups.trained.length} trained.`;
+    const personaDetail = personaGalleryLoadError
+      ? 'Gallery annex offline. Built-in masks remain available while TCP stays live.'
+      : !state.library.length
+        ? 'No masks loaded.'
+        : `${state.galleryGroups.builtIn.length} built-in / ${state.galleryGroups.captured.length} captured / ${state.galleryGroups.trained.length} trained.`;
     const readoutSummary = readoutOwner === 'homebase' && state.revealed
       ? `${state.lock?.name || 'Cadence home'} is driving the solo witness path.`
       : readoutOwner === 'idle'
@@ -4171,13 +4243,15 @@
       : state.deckCastingSummary?.ready
         ? state.deckCastingSummary.line
         : 'No pair awake yet.';
-    const trainerSummary = trainerSnapshot.lastInjectedPersonaSummary
-      ? `${trainerSnapshot.lastInjectedPersonaSummary.name} is live on the session shelf.`
-      : trainerSnapshot.validationPass
-        ? `${trainerSnapshot.personaName} is forge-ready for session inject${trainerSnapshot.releaseGateArmed ? ' and release' : ''}.`
-        : trainerSnapshot.corpusReady
-          ? 'Corpus extracted. Validation is waiting on a candidate.'
-          : 'The forge is latent.';
+    const trainerSummary = trainerLoadError
+      ? 'Trainer annex offline. TCP core and ingress remain live.'
+      : trainerSnapshot.lastInjectedPersonaSummary
+        ? `${trainerSnapshot.lastInjectedPersonaSummary.name} is live on the session shelf.`
+        : trainerSnapshot.validationPass
+          ? `${trainerSnapshot.personaName} is forge-ready for session inject${trainerSnapshot.releaseGateArmed ? ' and release' : ''}.`
+          : trainerSnapshot.corpusReady
+            ? 'Corpus extracted. Validation is waiting on a candidate.'
+            : 'The forge is latent.';
 
     return [
       {
@@ -4267,6 +4341,18 @@
     const snapshot = readTrainerSnapshot();
     const injected = snapshot.lastInjectedPersonaSummary || null;
     surface.hidden = false;
+
+    if (trainerLoadError) {
+      body.innerHTML = `
+        <div class="trainer-bridge-card trainer-bridge-empty">
+          <div>
+            <div class="persona-kicker">Forge lane degraded</div>
+            <p class="persona-empty">Trainer Lab did not load, so TCP keeps the core deck, ingress membrane, and witness surfaces live without pretending the forge is available.</p>
+          </div>
+        </div>
+      `;
+      return;
+    }
 
     if (!injected) {
       body.innerHTML = `
@@ -4424,7 +4510,7 @@
   }
 
   function updateStatePills(routeStatus, decision, { harbor = '' } = {}) {
-    $('badgeState').textContent = `${glyphChar(glyphKeyForBadge(badge), '')} Badge // ${badgeMeaning(badge)}`;
+    $('badgeState').textContent = `${glyphChar(glyphKeyForBadge(badge), '')} Badge // ${BADGE_LABELS[badge] || badge}`;
     applyGlyphMetadata($('badgeState'), glyphKeyForBadge(badge));
     $('badgeState').classList.toggle('active', badge === 'badge.holds');
     $('mirrorState').textContent = `${glyphChar('stateMirror', '')} ${MIRROR_COPY[mirrorLogic].pill}`;
@@ -5081,6 +5167,10 @@ DeltaE = ${ledger.reuse_gain}`;
     if (!persona) {
       return;
     }
+    if (trainerLoadError || !trainerController) {
+      setStatusMessage('Trainer Lab is offline in this runtime. TCP kept the core chamber alive, but the forge lane is unavailable.');
+      return;
+    }
     gallerySelectedMaskId = id;
     const context = buildTrainerDraftContext(id);
     setArtifactTab('trainer');
@@ -5703,6 +5793,8 @@ DeltaE = ${ledger.reuse_gain}`;
           hintsTextLength: hints ? hints.textContent.trim().length : 0
         }
       : {
+          available: false,
+          error: trainerLoadError ? bootWarningMessage('Trainer lab', trainerLoadError) : '',
           personaName: '',
           corpusReady: false,
           sampleCount: 0,
@@ -5853,33 +5945,22 @@ DeltaE = ${ledger.reuse_gain}`;
   });
 
   async function initializePersonaGallery() {
-    personaGalleryModel = await import(PERSONA_GALLERY_MODULE_URL);
-    resolvedBasePersonas = personaGalleryModel.resolvePersonaCatalog(window.TCP_ENGINE, basePersonas, FULL_SAMPLE_LIBRARY);
-    savedPersonas = loadSavedPersonas();
-    cadenceLocks = loadCadenceLocks();
-    activeCadenceLockId = loadActiveCadenceLockId();
-    const activeLock = getActiveCadenceLock();
-    if (activeLock && activeLock.id !== activeCadenceLockId) {
-      activeCadenceLockId = activeLock.id;
-      persistActiveCadenceLockId();
+    hydratePersonaRuntimeState();
+    personaGalleryLoadError = null;
+    resolvedBasePersonas = [];
+
+    try {
+      personaGalleryModel = await import(PERSONA_GALLERY_MODULE_URL);
+      resolvedBasePersonas = personaGalleryModel.resolvePersonaCatalog(window.TCP_ENGINE, basePersonas, FULL_SAMPLE_LIBRARY);
+      installPersonaGalleryBridge(personaGalleryModel);
+      return personaGalleryModel;
+    } catch (error) {
+      personaGalleryModel = null;
+      personaGalleryLoadError = error;
+      recordBootWarning('Persona gallery', error);
+      installPersonaGalleryBridge(null, error);
+      return null;
     }
-    gallerySelectedMaskId = '';
-    homebaseWornMaskId = '';
-
-    window.TCP_PERSONA_GALLERY = Object.freeze({
-      snapshot: () => readPersonaGallerySnapshot(),
-      selectLock: (lockId) => selectCadenceLock(lockId),
-      lock: () => lockCadenceFromGallery(),
-      reveal: () => revealCadenceLock(),
-      save: () => saveStagedCadenceLock(),
-      selectMask: (personaId) => selectMaskPersona(personaId),
-      wearHomebase: (personaId) => wearPersonaInHomebase(personaId),
-      bringHomebase: (personaId) => wearPersonaInHomebase(personaId),
-      openTrainer: (personaId) => openPersonaInTrainer(personaId),
-      generateMask: (personaId) => openPersonaInTrainer(personaId)
-    });
-
-    return personaGalleryModel;
   }
 
   async function initializeTrainerLab() {
@@ -5888,37 +5969,34 @@ DeltaE = ${ledger.reuse_gain}`;
       return null;
     }
 
-    const module = await import(TRAINER_MODULE_URL);
-    trainerController = await module.createTrainerController({
-      root,
-      engine: window.TCP_ENGINE,
-      sampleLibrary: FULL_SAMPLE_LIBRARY,
-      onInjectPersona: injectTrainerPersona,
-      resolveDraftContext: () => buildTrainerDraftContext(),
-      onStatus: (message) => {
-        setStatusMessage(message);
-        renderTrainerBridge();
-        renderConsoleStationGrid(buildPersonaGalleryState());
-      },
-      applyStaticGlyphs
-    });
+    trainerLoadError = null;
 
-    window.TCP_TRAINER_LAB = Object.freeze({
-      snapshot: () => trainerController?.snapshot() || null,
-      serializeState: () => trainerController?.serializeState() || null,
-      restoreState: (state) => trainerController?.restoreState(state),
-      openContext: (context) => trainerController?.openContext(context),
-      extract: () => trainerController?.extract(),
-      forgeDraft: () => trainerController?.forgeDraft(),
-      validate: () => trainerController?.validate(),
-      toggleReleaseGate: () => trainerController?.toggleReleaseGate(),
-      exportSpec: () => trainerController?.exportSpec(),
-      inject: () => trainerController?.inject()
-    });
-
-    renderTrainerBridge();
-
-    return trainerController;
+    try {
+      const module = await import(TRAINER_MODULE_URL);
+      trainerController = await module.createTrainerController({
+        root,
+        engine: window.TCP_ENGINE,
+        sampleLibrary: FULL_SAMPLE_LIBRARY,
+        onInjectPersona: injectTrainerPersona,
+        resolveDraftContext: () => buildTrainerDraftContext(),
+        onStatus: (message) => {
+          setStatusMessage(message);
+          renderTrainerBridge();
+          renderConsoleStationGrid(buildPersonaGalleryState());
+        },
+        applyStaticGlyphs
+      });
+      installTrainerBridge();
+      renderTrainerBridge();
+      return trainerController;
+    } catch (error) {
+      trainerController = null;
+      trainerLoadError = error;
+      recordBootWarning('Trainer lab', error);
+      installTrainerBridge(error);
+      renderTrainerBridge();
+      return null;
+    }
   }
 
   function primeIngressScenario({
@@ -6999,6 +7077,11 @@ DeltaE = ${ledger.reuse_gain}`;
   window.addEventListener('popstate', handleArtifactRouteChange);
 
   async function boot() {
+    bootWarnings = [];
+    personaGalleryLoadError = null;
+    trainerLoadError = null;
+    document.body.dataset.bootWarnings = '0';
+    delete document.body.dataset.bootDegraded;
     document.body.dataset.bootStage = 'boot-start';
     setAnalysisRevealState(false);
     setArtifactTab(activeArtifactTab, { updateHash: true, replaceHash: !window.location.hash });
@@ -7012,7 +7095,13 @@ DeltaE = ${ledger.reuse_gain}`;
     document.body.dataset.bootStage = 'boot-rendered-trainer';
     renderIdleState();
     document.body.dataset.bootStage = 'boot-idle';
-    setStatusMessage('Press Analyze Cadences for a solo scan or a head-to-head run.');
+    document.body.dataset.bootWarnings = String(bootWarnings.length);
+    document.body.dataset.bootDegraded = bootWarnings.length ? 'true' : 'false';
+    setStatusMessage(
+      bootWarnings.length
+        ? `TCP core ready // annex degraded // ${bootWarnings.join(' // ')}`
+        : 'Press Analyze Cadences for a solo scan or a head-to-head run.'
+    );
     updateControls();
     document.body.dataset.bootStage = 'boot-ready';
     analyzeCadences({ reveal: Boolean(testFlightMode) });
