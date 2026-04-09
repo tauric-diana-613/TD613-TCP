@@ -129,33 +129,24 @@
         </section>
 
         <section class="panel-section">
-          <div class="section-label">Public Doctrine</div>
-          <div class="metric-block">
-            <div class="metric-row"><span class="label">Public mode</span><span class="value" id="lockPublicMode">legacy-compat</span></div>
-            <div class="metric-row"><span class="label">Binding fragment</span><span class="value" id="lockBindingFragment">#9B07D8B</span></div>
-            <div class="metric-row"><span class="label">SAC</span><span class="value" id="lockSac">SAC[X6ZNK5NO51]</span></div>
-            <div class="metric-row"><span class="label">Published example</span><span class="value" id="lockPublishedExample">payload 5 / 2025-10-17</span></div>
-          </div>
-          <div class="footer-template" id="canonicalFooterPreview"></div>
-          <button class="control secondary" id="copyCanonicalFooter" type="button">Copy Canonical Footer</button>
-          <ul class="bullet-list" id="invariantList"></ul>
+          <details class="fold-panel">
+            <summary>Public doctrine</summary>
+            <div class="metric-block">
+              <div class="metric-row"><span class="label">Public mode</span><span class="value" id="lockPublicMode">legacy-compat</span></div>
+              <div class="metric-row"><span class="label">Binding fragment</span><span class="value" id="lockBindingFragment">#9B07D8B</span></div>
+              <div class="metric-row"><span class="label">SAC</span><span class="value" id="lockSac">SAC[X6ZNK5NO51]</span></div>
+              <div class="metric-row"><span class="label">Published example</span><span class="value" id="lockPublishedExample">payload 5 / 2025-10-17</span></div>
+            </div>
+            <div class="footer-template" id="canonicalFooterPreview"></div>
+            <button class="control secondary" id="copyCanonicalFooter" type="button">Copy Canonical Footer</button>
+          </details>
         </section>
 
         <section class="panel-section">
-          <div class="section-label">Field Interlocks</div>
-          <div class="metric-block">
-            <div class="metric-row"><span class="label">TCP intake</span><span class="value" id="hookTcpState">awaiting hook</span></div>
-            <div class="metric-row"><span class="label">EO route</span><span class="value" id="hookEoState">awaiting hook</span></div>
-            <div class="metric-row"><span class="label">Signature lane</span><span class="value" id="hookSignatureState">overlay idle</span></div>
-          </div>
-          <div class="button-grid compact">
-            <button class="control" id="demoTcpHook" type="button">Demo TCP Hook</button>
-            <button class="control" id="demoEoHook" type="button">Demo EO Hook</button>
-            <button class="control" id="demoSignatureHook" type="button">Demo Sig Hook</button>
-            <button class="control secondary" id="resetHooks" type="button">Reset Hooks</button>
-            <div class="note" id="devModeNote">Dev hook simulation is disabled in public ship unless local dev mode is enabled.</div>
-          </div>
-          <div class="note">TCP remains the cadence witness, EO remains the route conscience, and the seal lane still attaches only after Safe Harbor shapes the packet body.</div>
+          <details class="fold-panel">
+            <summary>Doctrine invariants</summary>
+            <ul class="bullet-list" id="invariantList"></ul>
+          </details>
         </section>
 
         <section class="panel-section">
@@ -170,6 +161,25 @@
               <strong>Open the offline authenticity capsule</strong>
             </a>
           </div>
+        </section>
+
+        <section class="panel-section">
+          <details class="fold-panel">
+            <summary>Field interlocks</summary>
+            <div class="metric-block">
+              <div class="metric-row"><span class="label">TCP intake</span><span class="value" id="hookTcpState">awaiting hook</span></div>
+              <div class="metric-row"><span class="label">EO route</span><span class="value" id="hookEoState">awaiting hook</span></div>
+              <div class="metric-row"><span class="label">Signature lane</span><span class="value" id="hookSignatureState">overlay idle</span></div>
+            </div>
+            <div class="button-grid compact">
+              <button class="control" id="demoTcpHook" type="button">Demo TCP Hook</button>
+              <button class="control" id="demoEoHook" type="button">Demo EO Hook</button>
+              <button class="control" id="demoSignatureHook" type="button">Demo Sig Hook</button>
+              <button class="control secondary" id="resetHooks" type="button">Reset Hooks</button>
+              <div class="note" id="devModeNote">Dev hook simulation is disabled in public ship unless local dev mode is enabled.</div>
+            </div>
+            <div class="note">TCP remains the cadence witness, EO remains the route conscience, and the seal lane still attaches only after Safe Harbor shapes the packet body.</div>
+          </details>
         </section>
       </aside>
 
@@ -228,91 +238,99 @@
         </section>
 
         <section class="panel-section">
-          <div class="section-label">Packet Forge</div>
-          <div class="forge-grid">
-            <div class="forge-card helper-card" data-td613-skip="true">
-              <div class="subsection-label">Temporal keys</div>
-              <div class="field-grid">
-                <label class="field"><span>ts_utc</span><input id="helperTs" readonly></label>
-                <label class="field"><span>request_id</span><input id="helperRequestId" readonly></label>
-                <label class="field"><span>sealed_at</span><input id="helperSealedAt" readonly></label>
-                <label class="field"><span>nonce</span><input id="helperNonce" readonly></label>
-                <label class="field"><span>filename-safe UTC</span><input id="helperFilenameSafe" readonly></label>
-              </div>
-              <div class="button-grid">
-                <button class="control" id="refreshHelpers" type="button">Refresh Helper Values</button>
-                <button class="control secondary" data-copy-target="helperTs" type="button">Copy ts_utc</button>
-                <button class="control secondary" data-copy-target="helperRequestId" type="button">Copy request_id</button>
-                <button class="control secondary" data-copy-target="helperNonce" type="button">Copy nonce</button>
-              </div>
-            </div>
+          <details class="fold-panel" data-td613-skip="true">
+            <summary>Packet forge</summary>
+            <div class="forge-grid">
+              <details class="fold-panel forge-fold">
+                <summary>Temporal keys</summary>
+                <div class="forge-card helper-card">
+                  <div class="field-grid">
+                    <label class="field"><span>ts_utc</span><input id="helperTs" readonly></label>
+                    <label class="field"><span>request_id</span><input id="helperRequestId" readonly></label>
+                    <label class="field"><span>sealed_at</span><input id="helperSealedAt" readonly></label>
+                    <label class="field"><span>nonce</span><input id="helperNonce" readonly></label>
+                    <label class="field"><span>filename-safe UTC</span><input id="helperFilenameSafe" readonly></label>
+                  </div>
+                  <div class="button-grid">
+                    <button class="control" id="refreshHelpers" type="button">Refresh Helper Values</button>
+                    <button class="control secondary" data-copy-target="helperTs" type="button">Copy ts_utc</button>
+                    <button class="control secondary" data-copy-target="helperRequestId" type="button">Copy request_id</button>
+                    <button class="control secondary" data-copy-target="helperNonce" type="button">Copy nonce</button>
+                  </div>
+                </div>
+              </details>
 
-            <div class="forge-card intake-card" data-td613-skip="true">
-              <div class="subsection-label">Intake canon</div>
-              <div class="triad-summary">
-                <div class="summary-row"><span class="summary-label">Future Self</span><span class="summary-value" id="summaryFutureSelf">awaiting ingress</span></div>
-                <div class="summary-row"><span class="summary-label">Past Self</span><span class="summary-value" id="summaryPastSelf">awaiting ingress</span></div>
-                <div class="summary-row"><span class="summary-label">Higher Self</span><span class="summary-value" id="summaryHigherSelf">awaiting ingress</span></div>
+              <div class="forge-card intake-card">
+                <div class="subsection-label">Intake canon</div>
+                <div class="triad-summary">
+                  <div class="summary-row"><span class="summary-label">Future Self</span><span class="summary-value" id="summaryFutureSelf">awaiting ingress</span></div>
+                  <div class="summary-row"><span class="summary-label">Past Self</span><span class="summary-value" id="summaryPastSelf">awaiting ingress</span></div>
+                  <div class="summary-row"><span class="summary-label">Higher Self</span><span class="summary-value" id="summaryHigherSelf">awaiting ingress</span></div>
+                </div>
+                <div class="field-grid">
+                  <label class="field">
+                    <span>Footer mode</span>
+                    <select id="inputFooterMode">
+                      <option value="legacy-compat">legacy-compat</option>
+                      <option value="legacy">legacy</option>
+                      <option value="sac-only">sac-only</option>
+                    </select>
+                  </label>
+                  <label class="field"><span>Payload index</span><input id="inputPayloadIndex" inputmode="numeric" placeholder="{n}"></label>
+                  <label class="field"><span>Attestation date</span><input id="inputAttestationDate" placeholder="YYYY-MM-DD"></label>
+                  <label class="field"><span>Operator id</span><input id="inputOperatorId" placeholder="safe-harbor.operator"></label>
+                  <label class="field"><span>Source class</span><input id="inputSourceClass" placeholder="futurecore membrane"></label>
+                  <label class="field"><span>Witness channel</span><input id="inputWitnessChannel" placeholder="ritual + cadence"></label>
+                  <label class="field field-wide"><span>Operator notes</span><textarea id="inputOperatorNotes" placeholder="Packet shaping notes, harbor constraints, route posture, or Safe Harbor guidance."></textarea></label>
+                </div>
+                <div class="footer-template secondary" id="footerModePreview"></div>
               </div>
-              <div class="field-grid">
-                <label class="field">
-                  <span>Footer mode</span>
-                  <select id="inputFooterMode">
-                    <option value="legacy-compat">legacy-compat</option>
-                    <option value="legacy">legacy</option>
-                    <option value="sac-only">sac-only</option>
-                  </select>
-                </label>
-                <label class="field"><span>Payload index</span><input id="inputPayloadIndex" inputmode="numeric" placeholder="{n}"></label>
-                <label class="field"><span>Attestation date</span><input id="inputAttestationDate" placeholder="YYYY-MM-DD"></label>
-                <label class="field"><span>Operator id</span><input id="inputOperatorId" placeholder="safe-harbor.operator"></label>
-                <label class="field"><span>Source class</span><input id="inputSourceClass" placeholder="futurecore membrane"></label>
-                <label class="field"><span>Witness channel</span><input id="inputWitnessChannel" placeholder="ritual + cadence"></label>
-                <label class="field field-wide"><span>Operator notes</span><textarea id="inputOperatorNotes" placeholder="Packet shaping notes, harbor constraints, route posture, or Safe Harbor guidance."></textarea></label>
-              </div>
-              <div class="footer-template secondary" id="footerModePreview"></div>
             </div>
-          </div>
+          </details>
         </section>
 
         <section class="panel-section" data-td613-skip="true">
-          <div class="section-label">Operator Seal Lane</div>
-          <div class="forge-grid">
-            <div class="forge-card signature-card" data-td613-skip="true">
-              <div class="subsection-label">Cryptographic overlay</div>
-              <div class="field-grid">
-                <label class="field">
-                  <span>Signature type</span>
-                  <select id="inputSigType">
-                    <option value="">none</option>
-                    <option value="JWS-detached">JWS-detached</option>
-                    <option value="detached-ed25519">detached-ed25519</option>
-                  </select>
-                </label>
-                <label class="field"><span>kid</span><input id="inputSigKid" placeholder="tauric.diana.613"></label>
-                <label class="field"><span>Detached ref</span><input id="inputSigDetachedRef" placeholder="jws://detached-signature"></label>
-                <label class="field field-wide"><span>Detached signature</span><textarea id="inputSigValue" placeholder="Paste detached signature or signature reference here."></textarea></label>
+          <details class="fold-panel" data-td613-skip="true">
+            <summary>Operator seal lane</summary>
+            <div class="forge-grid">
+              <div class="forge-card signature-card">
+                <div class="subsection-label">Cryptographic overlay</div>
+                <div class="field-grid">
+                  <label class="field">
+                    <span>Signature type</span>
+                    <select id="inputSigType">
+                      <option value="">none</option>
+                      <option value="JWS-detached">JWS-detached</option>
+                      <option value="detached-ed25519">detached-ed25519</option>
+                    </select>
+                  </label>
+                  <label class="field"><span>kid</span><input id="inputSigKid" placeholder="tauric.diana.613"></label>
+                  <label class="field"><span>Detached ref</span><input id="inputSigDetachedRef" placeholder="jws://detached-signature"></label>
+                  <label class="field field-wide"><span>Detached signature</span><textarea id="inputSigValue" placeholder="Paste detached signature or signature reference here."></textarea></label>
+                </div>
+                <div class="button-grid">
+                  <button class="control" id="attachSignature" type="button">Attach Signature Overlay</button>
+                  <button class="control secondary" id="clearSignature" type="button">Clear Signature Overlay</button>
+                </div>
+                <div class="note" id="signatureNote">Signature overlays attach after packetization. Public probes remain unsigned by default.</div>
               </div>
-              <div class="button-grid">
-                <button class="control" id="attachSignature" type="button">Attach Signature Overlay</button>
-                <button class="control secondary" id="clearSignature" type="button">Clear Signature Overlay</button>
-              </div>
-              <div class="note" id="signatureNote">Signature overlays attach after packetization. Public probes remain unsigned by default.</div>
             </div>
-          </div>
+          </details>
         </section>
 
         <section class="panel-section" data-td613-skip="true">
-          <div class="section-label">Public Relay Forge</div>
-          <div class="builder-toolbar">
-            <button class="control" data-probe-variant="01" type="button">Build 01 verify</button>
-            <button class="control secondary" data-probe-variant="02" type="button">Build 02 receipt verify</button>
-            <button class="control secondary" data-probe-variant="03" type="button">Build 03 render</button>
-            <button class="control secondary" data-probe-variant="04" type="button">Build 04 render receipt</button>
-            <button class="control secondary" id="copyProbeOutput" type="button">Copy Output</button>
-          </div>
-          <textarea id="probeOutput" class="code-area" readonly></textarea>
-          <div class="note">Public sendables stay lean and footer-first. When a staged packet exists, this forge adds packet context without exposing raw ingress text, cadence internals, or detached signature material.</div>
+          <details class="fold-panel" data-td613-skip="true">
+            <summary>Public relay forge</summary>
+            <div class="builder-toolbar">
+              <button class="control" data-probe-variant="01" type="button">Build 01 verify</button>
+              <button class="control secondary" data-probe-variant="02" type="button">Build 02 receipt verify</button>
+              <button class="control secondary" data-probe-variant="03" type="button">Build 03 render</button>
+              <button class="control secondary" data-probe-variant="04" type="button">Build 04 render receipt</button>
+              <button class="control secondary" id="copyProbeOutput" type="button">Copy Output</button>
+            </div>
+            <textarea id="probeOutput" class="code-area" readonly></textarea>
+            <div class="note">Public sendables stay lean and footer-first. When a staged packet exists, this forge adds packet context without exposing raw ingress text, cadence internals, or detached signature material.</div>
+          </details>
         </section>
       </section>
 
@@ -331,25 +349,33 @@
         </section>
 
         <section class="panel-section">
-          <div class="section-label">Chamber Structure</div>
-          <ul class="bullet-list" id="repoLayoutList"></ul>
+          <details class="fold-panel">
+            <summary>Chamber structure</summary>
+            <ul class="bullet-list" id="repoLayoutList"></ul>
+          </details>
         </section>
 
         <section class="panel-section">
-          <div class="section-label">Reference Interlocks</div>
-          <ul class="bullet-list" id="referenceLaneList"></ul>
+          <details class="fold-panel">
+            <summary>Reference interlocks</summary>
+            <ul class="bullet-list" id="referenceLaneList"></ul>
+          </details>
         </section>
       </aside>
 
       <section class="dock dock-left operator-dock" data-td613-skip="true">
-        <div class="section-label">Operator Packet Mirror</div>
-        <div class="dock-toolbar"><button class="control secondary" id="copyPacketPreview" type="button">Copy Packet</button></div>
-        <pre id="packetPreview" class="code-panel">packet pending</pre>
+        <details class="dock-fold">
+          <summary>Operator packet mirror</summary>
+          <div class="dock-toolbar"><button class="control secondary" id="copyPacketPreview" type="button">Copy Packet</button></div>
+          <pre id="packetPreview" class="code-panel">packet pending</pre>
+        </details>
       </section>
 
       <section class="dock dock-right audit-dock" data-td613-skip="true">
-        <div class="section-label">Audit Veil</div>
-        <pre id="auditLog" class="code-panel">awaiting events</pre>
+        <details class="dock-fold">
+          <summary>Audit veil</summary>
+          <pre id="auditLog" class="code-panel">awaiting events</pre>
+        </details>
       </section>
     </main>
   </div>

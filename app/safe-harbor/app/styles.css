@@ -1449,7 +1449,7 @@ h2 {
 .main-grid {
   gap: 22px;
   grid-template-columns: minmax(268px, 306px) minmax(0, 1fr) minmax(248px, 292px);
-  grid-template-rows: minmax(0, 1fr) minmax(220px, 300px);
+  grid-template-rows: auto auto;
 }
 
 .panel,
@@ -1530,7 +1530,7 @@ h2 {
 }
 
 .panel-section + .panel-section {
-  margin-top: 24px;
+  margin-top: 18px;
 }
 
 .section-label,
@@ -1612,6 +1612,65 @@ h2 {
   border-color: rgba(207, 176, 255, 0.28);
   background: linear-gradient(90deg, rgba(207, 176, 255, 0.06), transparent 84%);
   box-shadow: none;
+}
+
+.fold-panel,
+.dock-fold {
+  display: grid;
+  gap: 14px;
+}
+
+.fold-panel summary,
+.dock-fold summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.fold-panel summary::-webkit-details-marker,
+.dock-fold summary::-webkit-details-marker {
+  display: none;
+}
+
+.fold-panel summary::before,
+.dock-fold summary::before {
+  content: '';
+  width: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.fold-panel summary::after,
+.dock-fold summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  letter-spacing: 0;
+}
+
+.fold-panel[open] summary::after,
+.dock-fold[open] summary::after {
+  content: '−';
+  color: var(--text-bright);
+}
+
+.fold-panel .metric-block,
+.fold-panel .forge-card,
+.fold-panel .button-grid,
+.fold-panel .note,
+.fold-panel .bullet-list,
+.dock-fold .dock-toolbar,
+.dock-fold .code-panel {
+  margin-top: 0;
 }
 
 .surface-copy,
@@ -1864,6 +1923,14 @@ textarea {
 .witness-grid,
 .forge-grid {
   gap: 14px;
+}
+
+.forge-fold {
+  align-content: start;
+}
+
+.forge-fold > .forge-card {
+  margin-top: 0;
 }
 
 .surface-card,
