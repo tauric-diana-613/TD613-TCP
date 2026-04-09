@@ -14,6 +14,10 @@
   const RENDERER = 'TD613 PUA Badge Provenance Attestation Renderer v7.2.1';
   const RENDER_MODEL = 'single_badge_append';
   const BADGE_ID = 'bdg_glyph_U10D613';
+  const SHI_LABEL = 'SHI #';
+  const SHI_TEMPLATE = 'TD613-SH-9B07D8B-XXXXXXXX';
+  const SHI_CANONICAL_HEADER = 'SHI#:TD613-SH-9B07D8B-XXXXXXXX';
+  const SHI_EXTENDED_FOOTER = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · SHI#:TD613-SH-9B07D8B-XXXXXXXX · payload {n} · YYYY-MM-DD · ⟐';
   const NAMESPACE = 'tauric.diana';
   const PRINCIPAL = 'tauric.diana.613';
   const CODEPOINT = 'U+10D613';
@@ -42,6 +46,10 @@
       principal: PRINCIPAL,
       codepoint: CODEPOINT,
       badge_id: BADGE_ID,
+      shi_label: SHI_LABEL,
+      shi_template: SHI_TEMPLATE,
+      shi_canonical_header: SHI_CANONICAL_HEADER,
+      shi_extended_footer: SHI_EXTENDED_FOOTER,
       renderer: RENDERER,
       render_model: RENDER_MODEL,
       schema_family: SCHEMA_FAMILY,
@@ -142,7 +150,11 @@
     semver: SEMVER,
     preview_svg_sha256: PREVIEW_SVG_SHA256,
     preview_svg_md5: PREVIEW_SVG_MD5,
-    badge_id: BADGE_ID
+    badge_id: BADGE_ID,
+    shi_label: SHI_LABEL,
+    shi_template: SHI_TEMPLATE,
+    shi_canonical_header: SHI_CANONICAL_HEADER,
+    shi_extended_footer: SHI_EXTENDED_FOOTER
   };
 
   scan(document.body);

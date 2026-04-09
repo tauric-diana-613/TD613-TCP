@@ -335,12 +335,23 @@
     "issuance": {
       "type": "object",
       "required": [
+        "display_label",
+        "format",
         "badge_number",
+        "canonical_header",
+        "extended_footer",
         "badge_state",
         "assigned_at",
         "assignment_basis"
       ],
       "properties": {
+        "display_label": {
+          "const": "SHI #"
+        },
+        "format": {
+          "const": "TD613-SH-9B07D8B-XXXXXXXX",
+          "description": "Locked Safe Harbor Issuance number format."
+        },
         "badge_number": {
           "type": [
             "string",
@@ -348,6 +359,20 @@
           ],
           "pattern": "^(TD613-SH-9B07D8B-[A-F0-9]{8})?$",
           "description": "Minted Safe Harbor Issuance number (SHI #) derived deterministically from packet context."
+        },
+        "canonical_header": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^(SHI#:TD613-SH-9B07D8B-[A-F0-9]{8})?$"
+        },
+        "extended_footer": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^(TD613-Binding:#9B07D8B\\/SAC\\[X6ZNK5NO51\\] · SHI#:TD613-SH-9B07D8B-[A-F0-9]{8} · payload .+ · .+ · ⟐)?$"
         },
         "badge_state": {
           "type": "string",

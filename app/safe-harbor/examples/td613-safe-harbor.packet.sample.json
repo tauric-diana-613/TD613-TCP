@@ -200,7 +200,11 @@
     }
   },
   "issuance": {
+    "display_label": "SHI #",
+    "format": "TD613-SH-9B07D8B-XXXXXXXX",
     "badge_number": "TD613-SH-9B07D8B-0C8F9A2D",
+    "canonical_header": "SHI#:TD613-SH-9B07D8B-0C8F9A2D",
+    "extended_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 SHI#:TD613-SH-9B07D8B-0C8F9A2D \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
     "badge_state": "assigned",
     "assigned_at": "2026-04-03T00:00:00Z",
     "assignment_basis": "deterministic-hash(packet_id|receipt_id|binding_fragment|payload|date|principal|request_id)"

@@ -70,6 +70,7 @@
     lockPublicMode: $('lockPublicMode'),
     lockBindingFragment: $('lockBindingFragment'),
     lockSac: $('lockSac'),
+    lockShiFormat: $('lockShiFormat'),
     lockPublishedExample: $('lockPublishedExample'),
     canonicalFooterPreview: $('canonicalFooterPreview'),
     footerModePreview: $('footerModePreview'),
@@ -109,6 +110,14 @@
     crossLaneSpreadReadout: $('crossLaneSpreadReadout'),
     badgeStatusReadout: $('badgeStatusReadout'),
     sealedLaneReadout: $('sealedLaneReadout'),
+    shiMintState: $('shiMintState'),
+    shiMintValue: $('shiMintValue'),
+    shiCopyNote: $('shiCopyNote'),
+    canonicalHeaderPreview: $('canonicalHeaderPreview'),
+    extendedFooterPreview: $('extendedFooterPreview'),
+    copyShiNumber: $('copyShiNumber'),
+    copyCanonicalHeader: $('copyCanonicalHeader'),
+    copyExtendedFooter: $('copyExtendedFooter'),
     covenantExport: $('covenantExport'),
     resealVault: $('resealVault'),
     covenantNote: $('covenantNote'),
@@ -223,6 +232,9 @@
     dom.bypassPassword.addEventListener('input', () => render());
     dom.bypassPassword.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void bypassIngress(); } });
     dom.copyCanonicalFooter.addEventListener('click', () => void copyText(dom.canonicalFooterPreview.textContent || ''));
+    dom.copyShiNumber.addEventListener('click', () => void copyText(dom.shiMintValue.textContent || ''));
+    dom.copyCanonicalHeader.addEventListener('click', () => void copyText(dom.canonicalHeaderPreview.textContent || ''));
+    dom.copyExtendedFooter.addEventListener('click', () => void copyText(dom.extendedFooterPreview.textContent || ''));
     dom.copyProbeOutput.addEventListener('click', () => void copyText(dom.probeOutput.value || ''));
     dom.copyPacketPreview.addEventListener('click', () => void copyText(dom.packetPreview.textContent || ''));
     dom.injectDynamicLane.addEventListener('click', injectDynamicLane);
@@ -258,6 +270,7 @@
     dom.lockPublicMode.textContent = D.trustProfile.current_public_mode;
     dom.lockBindingFragment.textContent = bindingFragment();
     dom.lockSac.textContent = sacText();
+    if (dom.lockShiFormat) dom.lockShiFormat.textContent = shiFormatTemplate();
     dom.lockPublishedExample.textContent = 'payload ' + D.trustProfile.current_published_payload + ' / ' + D.trustProfile.current_published_date;
     if (dom.rendererKeyReadout) dom.rendererKeyReadout.textContent = (D.rendererHandshake && D.rendererHandshake.userscript) || 'renderer userscript';
     if (dom.probeLaneReadout) dom.probeLaneReadout.textContent = (D.probeLanes || []).map((line) => line.split(' - ')[0]).join(' / ') || '01 / 02 / 03 / 04';
@@ -286,6 +299,7 @@
     Object.assign(state, {
       helper: saved.helper || null,
       hooks: saved.hooks || state.hooks,
+      packet: saved.packet || null,
       sealed: saved.sealed || null,
       lastProbe: saved.lastProbe || '',
       audit: Array.isArray(saved.audit) ? saved.audit.slice(0, MAX_AUDIT) : [],
@@ -317,6 +331,7 @@
     writeStorage({
       helper: state.helper,
       hooks: state.hooks,
+      packet: state.packet,
       sealed: state.sealed,
       lastProbe: state.lastProbe,
       audit: state.audit,
@@ -369,18 +384,20 @@
     const step = ingressStepDescriptor(stepIndex);
     const key = step.key;
     const sealStep = !key;
+    const recallReady = Boolean(recoverableShiNumber() || getOperatorBypassHash());
     dom.ingressRoutePill.textContent = route;
     dom.ingressProgressPill.textContent = count + ' / 3 lanes';
     const surfaceIsOpen = surfaceOpen();
-    const bypassReady = Boolean(getOperatorBypassHash());
     const devModeEnabled = getDevModeEnabled();
-    dom.ingressVaultPill.textContent = state.ingress.operatorShellOpen ? 'operator shell' : state.ingress.vaultOpen ? 'packet staged' : sealStep && count === 3 ? 'seal step' : 'vault sealed';
+    dom.ingressVaultPill.textContent = state.ingress.operatorShellOpen ? 'operator shell' : state.ingress.vaultOpen ? 'packet staged' : recoverableShiNumber() ? 'packet recall' : sealStep && count === 3 ? 'seal step' : 'vault sealed';
     dom.ingressNote.textContent = state.ingress.bypass
-      ? 'Operator bypass accepted. The shell is open in packetless mode. No staged packet, covenant transition, or badge issuance exists yet.'
+      ? 'Operator bypass accepted. The shell is open in packetless mode. No staged packet, covenant transition, or SHI issuance exists yet.'
+      : recoverableShiNumber() && !surfaceIsOpen
+        ? 'A minted packet is still held behind the membrane. Enter the same SHI # to reopen the chamber and recover the packet, copies, and footer surfaces without repeating the ritual.'
       : state.ingress.recovered
         ? 'A prior chamber state was recovered and returned to the membrane. Review the held testimony, then re-open or clear the session.'
       : state.ingress.vaultOpen
-        ? 'The staged packet is present. Covenant Export is the only local path to harbor eligibility and badge assignment.'
+        ? 'The staged packet is present. Covenant Export is the only local path to harbor eligibility and SHI issuance.'
         : sealStep && count === 3
           ? 'The triad is complete. Review the held testimony, then mint the staged packet to open the chamber.'
           : (D.routeCopy[route] || '');
@@ -416,12 +433,12 @@
     renderIngressStageChip(dom.ingressStageHigher, 2, stepIndex, count, surfaceIsOpen);
     renderIngressStageChip(dom.ingressStageSeal, 3, stepIndex, count, surfaceIsOpen);
     dom.mintStagedPacket.disabled = !(count === 3 && !surfaceIsOpen && sealStep);
-    dom.bypassIngress.disabled = surfaceIsOpen || !bypassReady;
+    dom.bypassIngress.disabled = surfaceIsOpen || !recallReady;
     dom.bypassPassword.disabled = surfaceIsOpen;
-    dom.setBypassToken.disabled = surfaceIsOpen || !(dom.bypassPassword.value || '').trim();
-    dom.clearBypassToken.disabled = surfaceIsOpen || !bypassReady;
+    dom.setBypassToken.disabled = surfaceIsOpen || !isShiNumber(dom.bypassPassword.value || '');
+    dom.clearBypassToken.disabled = surfaceIsOpen || !getOperatorBypassHash();
     dom.clearIngress.disabled = surfaceIsOpen ? true : false;
-    dom.bypassPassword.placeholder = bypassReady ? 'Enter local operator token for packetless bypass' : 'Set a local operator token for this session';
+    dom.bypassPassword.placeholder = recoverableShiNumber() ? recoverableShiNumber() : shiFormatTemplate();
     dom.demoTcpHook.disabled = !devModeEnabled;
     dom.demoEoHook.disabled = !devModeEnabled;
     dom.demoSignatureHook.disabled = !devModeEnabled;
@@ -607,8 +624,9 @@
       dom.packetStateReadout.textContent = state.ingress.bypass ? 'operator-bypass / packetless' : (completedCount() === 3 ? 'triad-ready / awaiting staged packet' : 'awaiting ingress');
       dom.provenanceRetentionReadout.textContent = 'pending';
       dom.packetPreview.textContent = 'packet pending';
+      renderMintSurface(null);
       dom.covenantNote.textContent = state.ingress.bypass
-        ? 'The shell is open through operator bypass only. No staged packet, covenant transition, or badge issuance exists yet.'
+        ? 'The shell is open through operator bypass only. No staged packet, covenant transition, or SHI issuance exists yet.'
         : 'Vault-open stages the packet only. Covenant Export must be invoked before harbor eligibility and SHI # assignment. Stylometric cadence may already be present, but cryptographic seals still attach only after packetization.';
       dom.covenantExport.disabled = true;
       return;
@@ -629,6 +647,7 @@
     dom.packetStateReadout.textContent = state.packet.receipt.state;
     dom.provenanceRetentionReadout.textContent = state.packet.analysis.route.provenance ? metric(state.packet.analysis.route.provenance.retention_target) : 'pending';
     dom.packetPreview.textContent = JSON.stringify(state.packet, null, 2);
+    renderMintSurface(state.packet.issuance.badge_number || null);
     dom.covenantNote.textContent = state.packet.bridge.covenant_gate.confirmed
       ? 'Covenant is confirmed. The packet is sealed, harbor-eligible, and carries an issued SHI # for downstream export lanes.'
       : (state.packet.signature.status === 'sealed' ? 'A cryptographic overlay is attached. Covenant Export is still required before harbor eligibility and SHI # assignment.' : 'The packet is staged only. Covenant Export must be invoked before harbor eligibility and SHI # assignment.');
@@ -665,10 +684,31 @@
     dom.footerModePreview.textContent = footerString();
   }
 
+  function renderMintSurface(shiNumber) {
+    const issued = shiNumber || null;
+    const recoverable = recoverableShiNumber();
+    dom.shiMintState.textContent = issued ? 'minted / copy forward' : (recoverable ? 'session recall armed' : 'format locked');
+    dom.shiMintValue.textContent = issued || recoverable || shiFormatTemplate();
+    dom.canonicalHeaderPreview.textContent = canonicalHeaderString(issued || recoverable);
+    dom.extendedFooterPreview.textContent = extendedFooterString(issued || recoverable);
+    dom.shiCopyNote.textContent = issued
+      ? 'Copy this exactly. The minted SHI # is the Safe Harbor issuance code that should travel unchanged through packet, probe, renderer, and LLM lanes.'
+      : recoverable
+        ? 'A minted SHI # is still held in session. Enter that same SHI # at the membrane to reopen packet and copy surfaces without repeating the ritual.'
+        : 'The SHI # mints only at covenant. Once assigned, copy it exactly. This issuance code should not drift across packet, probe, renderer, or LLM intake.';
+    dom.copyShiNumber.disabled = !issued;
+    dom.copyCanonicalHeader.disabled = !issued;
+    dom.copyExtendedFooter.disabled = !issued;
+  }
+
   async function setLocalBypassToken() {
-    const token = (dom.bypassPassword.value || '').trim();
+    const token = normalizeShiNumber(dom.bypassPassword.value);
     if (!token) {
-      dom.ingressNote.textContent = 'Enter a local operator token first. Intake remains sealed.';
+      dom.ingressNote.textContent = 'Enter a SHI # first. Intake remains sealed.';
+      return;
+    }
+    if (!isShiNumber(token)) {
+      dom.ingressNote.textContent = 'Recall codes must use the minted SHI # format: ' + shiFormatTemplate() + '.';
       return;
     }
     const tokenHash = await checksum(token);
@@ -676,10 +716,10 @@
       sessionStorage.setItem((D.operatorBypass && D.operatorBypass.storage_key) || 'td613.safe-harbor.operator-bypass.hash', tokenHash);
     } catch (error) {}
     window.TD613_SAFE_HARBOR_OPERATOR = Object.assign({}, window.TD613_SAFE_HARBOR_OPERATOR || {}, { bypass_hash_sha256: tokenHash });
-    dom.ingressNote.textContent = 'Local operator token configured for this session. Use Operator Bypass to open the packetless shell.';
+    dom.ingressNote.textContent = 'SHI recall code stored for this session. Use that same SHI # to reopen the chamber and recover packet copies without repeating the ritual.';
     render();
     persist();
-    logEvent('bypass-token-configured', { scope: 'session-local' });
+    logEvent('shi-recall-configured', { scope: 'session-local', shi_number: token });
   }
 
   function clearLocalBypassToken() {
@@ -689,43 +729,54 @@
     if (window.TD613_SAFE_HARBOR_OPERATOR && Object.prototype.hasOwnProperty.call(window.TD613_SAFE_HARBOR_OPERATOR, 'bypass_hash_sha256')) {
       window.TD613_SAFE_HARBOR_OPERATOR = Object.assign({}, window.TD613_SAFE_HARBOR_OPERATOR, { bypass_hash_sha256: null });
     }
-    dom.ingressNote.textContent = 'Local operator token cleared for this session.';
+    dom.ingressNote.textContent = 'Stored SHI recall code cleared for this session.';
     render();
     persist();
-    logEvent('bypass-token-cleared', { scope: 'session-local' });
+    logEvent('shi-recall-cleared', { scope: 'session-local' });
   }
 
   async function bypassIngress() {
-    const configuredHash = getOperatorBypassHash();
-    if (!configuredHash) {
-      dom.ingressNote.textContent = 'Operator bypass is unavailable in public ship until a local token hash is configured.';
-      logEvent('bypass-unavailable', { state: 'public-ship', reason: 'missing-local-token-hash' });
+    const token = normalizeShiNumber(dom.bypassPassword.value);
+    if (!token) {
+      dom.ingressNote.textContent = 'SHI # required. Intake remains sealed.';
+      logEvent('bypass-denied', { state: 'sealed', reason: 'missing-token' });
       return;
     }
-    const token = (dom.bypassPassword.value || '').trim();
-    if (!token) {
-      dom.ingressNote.textContent = 'Operator token required. Intake remains sealed.';
-      logEvent('bypass-denied', { state: 'sealed', reason: 'missing-token' });
+    if (!isShiNumber(token)) {
+      dom.ingressNote.textContent = 'Safe Harbor recall requires a minted SHI # in the form ' + shiFormatTemplate() + '.';
+      logEvent('bypass-denied', { state: 'sealed', reason: 'invalid-shi-format' });
+      return;
+    }
+    const recoverable = recoverableShiNumber();
+    if (recoverable && normalizeShiNumber(recoverable) === token) {
+      state.ingress.operatorShellOpen = false;
+      state.ingress.vaultOpen = true;
+      state.ingress.bypass = false;
+      state.ingress.recovered = false;
+      state.ingress.openedAt = state.packet.created_at || state.packet.receipt.minted_at || nowIso();
+      state.ingress.packetId = state.packet.packet_id;
+      state.ingress.receiptId = state.packet.receipt.receipt_id;
+      dom.bypassPassword.value = '';
+      render();
+      persist();
+      logEvent('shi-recall-reopened', { packet_id: state.packet.packet_id, shi_number: recoverable });
+      return;
+    }
+    const configuredHash = getOperatorBypassHash();
+    if (!configuredHash) {
+      dom.ingressNote.textContent = 'No recoverable packet or stored SHI recall code was found for this session.';
+      logEvent('bypass-unavailable', { state: 'sealed', reason: 'missing-shi-recall' });
       return;
     }
     const tokenHash = await checksum(token);
     if (normalizeHash(tokenHash) !== normalizeHash(configuredHash)) {
-      dom.ingressNote.textContent = 'Operator token rejected. Intake remains sealed.';
+      dom.ingressNote.textContent = 'SHI # rejected. Safe Harbor cannot reopen the chamber with that code.';
       logEvent('bypass-denied', { state: 'sealed', reason: 'hash-mismatch' });
       return;
     }
-    state.ingress.operatorShellOpen = true;
-    state.ingress.vaultOpen = false;
-    state.ingress.bypass = true;
-    state.ingress.openedAt = state.ingress.openedAt || nowIso();
-    state.ingress.packetId = null;
-    state.ingress.receiptId = null;
-    state.packet = null;
-    state.sealed = null;
+    dom.ingressNote.textContent = 'The SHI # is recognized, but no packet is still retained in this session. Re-run the ritual if you need a fresh chamber.';
     dom.bypassPassword.value = '';
-    render();
-    persist();
-    logEvent('bypass-granted', { access: 'operator-shell', mode: 'packetless' });
+    logEvent('bypass-deferred', { state: 'sealed', reason: 'no-recoverable-packet', shi_number: token });
   }
 
   function refreshHelpers() {
@@ -783,6 +834,9 @@
         state.helper && state.helper.request_id
       );
       await rebuild('covenant-export');
+      dom.bypassPassword.value = state.covenant.badgeNumber;
+      await setLocalBypassToken();
+      dom.bypassPassword.value = '';
       logEvent('covenant-export', { badge_number: state.covenant.badgeNumber });
     }
   }
@@ -846,6 +900,7 @@
     dom.inputSigValue.value = '';
     dom.dynamicTarget.innerHTML = '';
     dom.probeOutput.value = '';
+    clearLocalBypassToken();
     writeStorage(null);
     hydrate();
     logEvent('session-reset', { state: 'sealed' });
@@ -874,16 +929,17 @@
     const opts = options || {};
     const preservedSegments = opts.preserveSegments ? clone(state.ingress.segments) : { future_self: '', past_self: '', higher_self: '' };
     const preservedStepIndex = opts.preserveSegments ? clampIngressStepIndex(defaultIngressStepIndex()) : 0;
-    state.helper = null;
-    state.packet = null;
-    state.sealed = null;
-    state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
-    state.operatorSignature = null;
+    const preservePacket = opts.preservePacket !== false;
+    state.helper = preservePacket ? state.helper : null;
+    state.packet = preservePacket ? state.packet : null;
+    state.sealed = preservePacket ? state.sealed : null;
+    state.covenant = preservePacket ? state.covenant : { confirmed: false, confirmedAt: null, badgeNumber: null };
+    state.operatorSignature = preservePacket ? state.operatorSignature : null;
     state.ingress.vaultOpen = false;
     state.ingress.operatorShellOpen = false;
-    state.ingress.openedAt = null;
-    state.ingress.receiptId = null;
-    state.ingress.packetId = null;
+    state.ingress.openedAt = preservePacket && state.packet ? (state.packet.created_at || state.packet.receipt.minted_at || null) : null;
+    state.ingress.receiptId = preservePacket && state.packet ? state.packet.receipt.receipt_id : null;
+    state.ingress.packetId = preservePacket && state.packet ? state.packet.packet_id : null;
     state.ingress.bypass = false;
     state.ingress.recovered = Boolean(opts.recovered);
     state.ingress.segments = preservedSegments;
@@ -1008,6 +1064,33 @@
     if (mode === 'legacy') return 'TD613-Binding:' + bindingFragment() + ' · ' + payload + ' · ' + date + ' · ' + glyph;
     if (mode === 'sac-only') return sacText() + ' · ' + payload + ' · ' + date + ' · ' + glyph;
     return 'TD613-Binding:' + bindingFragment() + '/' + sacText() + ' · ' + payload + ' · ' + date + ' · ' + glyph;
+  }
+
+  function shiFormatTemplate() {
+    return (D.trustProfile && D.trustProfile.shi_number_template) || ('TD613-SH-' + bindingFragment().replace('#', '') + '-XXXXXXXX');
+  }
+
+  function isShiNumber(value) {
+    return /^TD613-SH-9B07D8B-[A-F0-9]{8}$/u.test(String(value || '').trim().toUpperCase());
+  }
+
+  function normalizeShiNumber(value) {
+    return String(value || '').trim().toUpperCase();
+  }
+
+  function recoverableShiNumber() {
+    return state.packet && state.packet.issuance && state.packet.issuance.badge_number ? state.packet.issuance.badge_number : null;
+  }
+
+  function canonicalHeaderString(shiNumber) {
+    const template = (D.trustProfile && D.trustProfile.shi_canonical_header_template) || ('SHI#:' + shiFormatTemplate());
+    return template.replace(shiFormatTemplate(), shiNumber || shiFormatTemplate());
+  }
+
+  function extendedFooterString(shiNumber) {
+    const compact = footerString();
+    const value = shiNumber || shiFormatTemplate();
+    return compact.replace(/\s(?:Â·|·)\spayload/u, ' \u00b7 SHI#:' + value + ' \u00b7 payload');
   }
 
   function updateFormValues() {
@@ -1239,7 +1322,11 @@
         }
       },
       issuance: {
+        display_label: 'SHI #',
+        format: shiFormatTemplate(),
         badge_number: badgeAssignment,
+        canonical_header: badgeAssignment ? canonicalHeaderString(badgeAssignment) : null,
+        extended_footer: badgeAssignment ? extendedFooterString(badgeAssignment) : null,
         badge_state: state.covenant.confirmed ? 'assigned' : 'not-assigned',
         assigned_at: state.covenant.confirmed ? state.covenant.confirmedAt : null,
         assignment_basis: state.covenant.confirmed ? 'deterministic-hash(packet_id|receipt_id|binding_fragment|payload|date|principal|request_id)' : null
@@ -1452,19 +1539,28 @@
       '- receipt_state: ' + state.packet.receipt.state,
       '- signature_lane: ' + line
     ];
-    if (state.packet.issuance && state.packet.issuance.badge_number) lines.push('- badge_number: ' + state.packet.issuance.badge_number);
+    if (state.packet.issuance && state.packet.issuance.badge_number) {
+      lines.push('- shi_number: ' + state.packet.issuance.badge_number);
+      lines.push('- canonical_header: ' + canonicalHeaderString(state.packet.issuance.badge_number));
+      lines.push('- extended_footer: ' + extendedFooterString(state.packet.issuance.badge_number));
+    }
     return lines;
   }
 
   function probePacketContextObject() {
     if (!state.packet) return null;
+    const shiNumber = state.packet.issuance ? state.packet.issuance.badge_number || null : null;
     return {
       packet_id: state.packet.packet_id,
       packet_hash_sha256: state.packet.packet_hash_sha256,
       receipt_state: state.packet.receipt.state,
       signature_lane: state.packet.bridge && state.packet.bridge.signature_lane ? (state.packet.bridge.signature_lane.lane || 'none') : (state.packet.signature.sig_type || 'none'),
       packet_schema_version: state.packet.schema_version,
-      badge_number: state.packet.issuance ? state.packet.issuance.badge_number || null : null,
+      shi_label: 'SHI #',
+      shi_number: shiNumber,
+      badge_number: shiNumber,
+      canonical_header: shiNumber ? canonicalHeaderString(shiNumber) : null,
+      extended_footer: shiNumber ? extendedFooterString(shiNumber) : null,
       public_footer: state.packet.canon ? state.packet.canon.public_footer || footerString() : footerString()
     };
   }
@@ -1476,6 +1572,8 @@
     const packetCtxText = probePacketContextText();
     const packetCtxObject = probePacketContextObject();
     const footer = footerString();
+    const shiNumber = recoverableShiNumber();
+    const extendedFooter = shiNumber ? extendedFooterString(shiNumber) : null;
     const rendererGuidance = renderProbeGuidance(helper, lane === '03' || lane === '04' ? lane : '03 or 04');
     const rendererHandshake = {
       type: 'renderer-userscript',
@@ -1548,6 +1646,7 @@
         '}',
         '',
         footer,
+        ...(extendedFooter ? ['', extendedFooter] : []),
         '',
         'Render-proof followup:',
         '- ' + rendererGuidance,
@@ -1618,6 +1717,7 @@
         '}',
         '',
         footer,
+        ...(extendedFooter ? ['', extendedFooter] : []),
         '',
         'Render-proof followup:',
         '- ' + rendererGuidance,
@@ -1652,7 +1752,8 @@
           handshake_note: rendererGuidance,
           signature_lane_note: 'Public probe stays unsigned by default. Historical .sig and advanced JWS lanes are reference/operator overlays.'
         },
-        td613_binding_footer: footer
+        td613_binding_footer: footer,
+        td613_binding_extended_footer: extendedFooter
       };
       if (packetCtxObject) payload.safe_harbor_packet = packetCtxObject;
       state.lastProbe = JSON.stringify(payload, null, 2);
@@ -1683,7 +1784,8 @@
         },
         return_contract: { output_variant: 'receipt_only_json', commentary_allowed: false, required_response: { status_response: 'verify.alias.status.carry-voice.render', audit_trace: { decision_id: '__SYSTEM_COMPLETES_CURRENT_RUN__', hash: '__SYSTEM_COMPLETES_CURRENT_RUN__', sidecar_audit: true }, status_read: { alias_status: '__SYSTEM_COMPLETES_CURRENT_RUN__', render_status: '__SYSTEM_COMPLETES_CURRENT_RUN__' } } },
         instruction: 'Return ONLY the required_response object as JSON. No commentary, coaching, or analysis. Do not collapse to status-only output. Complete current-run audit_trace and status_read fields.',
-        td613_binding_footer: footer
+        td613_binding_footer: footer,
+        td613_binding_extended_footer: extendedFooter
       };
       if (packetCtxObject) payload.safe_harbor_packet = packetCtxObject;
       state.lastProbe = JSON.stringify(payload, null, 2);
@@ -1720,6 +1822,11 @@
         window.TD613_SAFE_HARBOR_OPERATOR = Object.assign({}, window.TD613_SAFE_HARBOR_OPERATOR || {}, { bypass_hash_sha256: hash });
         render();
         return true;
+      },
+      configureShiRecall: function (config) {
+        const shiNumber = normalizeShiNumber(config && config.shiNumber ? config.shiNumber : '');
+        if (!isShiNumber(shiNumber)) return false;
+        return checksum(shiNumber).then((hash) => this.configureOperatorBypass({ tokenHashSha256: hash, persist: !(config && config.persist === false) }));
       },
       hooks: {
         attachTCPIntake: function (detail) { window.dispatchEvent(new CustomEvent(D.hookBus.events.tcp, { detail: detail })); },

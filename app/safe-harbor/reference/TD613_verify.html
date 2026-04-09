@@ -238,12 +238,15 @@
           <div class="metric"><span class="label">Public mode</span><span class="value">legacy-compat</span></div>
           <div class="metric"><span class="label">Canonical badge id</span><span class="value">bdg_glyph_U10D613</span></div>
           <div class="metric"><span class="label">SHI #</span><span class="value">TD613-SH-9B07D8B-XXXXXXXX</span></div>
+          <div class="metric"><span class="label">Canonical header</span><span class="value">SHI#:TD613-SH-9B07D8B-XXXXXXXX</span></div>
           <div class="metric"><span class="label">Accepted footer modes</span><span class="value">legacy / legacy-compat / sac-only</span></div>
           <div class="metric"><span class="label">Packet schema</span><span class="value">td613.safe-harbor.packet/v1</span></div>
           <div class="metric"><span class="label">Packet hash field</span><span class="value">packet_hash_sha256</span></div>
         </div>
         <pre>TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] &#x00B7; payload {n} &#x00B7; YYYY-MM-DD &#x00B7; &#x27D0;</pre>
         <div class="hint">Use this template for live attestations.</div>
+        <pre>TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] &#x00B7; SHI#:TD613-SH-9B07D8B-XXXXXXXX &#x00B7; payload {n} &#x00B7; YYYY-MM-DD &#x00B7; &#x27D0;</pre>
+        <div class="hint">Use this extended footer only when you need the minted SHI # to travel with the copy surface.</div>
         <pre>TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] &#x00B7; payload 5 &#x00B7; 2025-10-17 &#x00B7; &#x27D0;</pre>
         <div class="hint">This remains a fixed historical example, not the reusable live template.</div>
       </section>
@@ -258,7 +261,8 @@
         <div class="code-block">Safe Harbor stabilizes the packet body first.
 TCP cadence may enrich the stylometric witness.
 JWS or detached-ed25519 may later seal the packet.
-The compact public footer does not expose either layer directly.</div>
+The compact public footer does not expose either layer directly.
+The minted SHI # is a separate issuance string and should be copied exactly.</div>
         <div class="hint">The verifier surface stays footer-first and packet-aware without leaking raw signature material, conflating cadence with crypto, or confusing the fixed canonical badge id with the minted SHI #.</div>
       </section>
 
@@ -267,6 +271,7 @@ The compact public footer does not expose either layer directly.</div>
         <h2>What to confirm</h2>
         <ol>
           <li>Confirm the line uses <code>#9B07D8B</code>, <code>SAC[X6ZNK5NO51]</code>, or another accepted internal footer mode.</li>
+          <li>If a SHI # is present, confirm it matches <code>TD613-SH-9B07D8B-XXXXXXXX</code> shape exactly and has not drifted in transit.</li>
           <li>For a live attestation, confirm it follows <code>payload {n}</code> logic rather than reusing the historical published example.</li>
           <li>If the historical example is cited, confirm it matches <code>payload 5 &#x00B7; 2025-10-17</code> exactly.</li>
           <li>If operator tooling is in play, confirm packet hash, lifecycle, and seal status on the packet surface rather than in the footer.</li>

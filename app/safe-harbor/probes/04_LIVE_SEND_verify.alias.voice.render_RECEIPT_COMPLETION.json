@@ -105,13 +105,18 @@
   },
   "instruction": "Return ONLY the required_response object as JSON. No commentary, coaching, or analysis. Do not collapse to status-only output. Complete current-run audit_trace and status_read fields.",
   "td613_binding_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
+  "td613_binding_extended_footer": "__OPTIONAL_PASTE_EXTENDED_FOOTER__",
   "safe_harbor_packet": {
     "packet_id": "__OPTIONAL_PASTE_SAFE_HARBOR_PACKET_ID__",
     "packet_hash_sha256": "__OPTIONAL_PASTE_PACKET_HASH_SHA256__",
     "receipt_state": "__OPTIONAL_PASTE_RECEIPT_STATE__",
     "signature_lane": "__OPTIONAL_PASTE_SIGNATURE_LANE__",
     "packet_schema_version": "td613.safe-harbor.packet/v1",
-    "badge_number": "__OPTIONAL_PASTE_BADGE_NUMBER__",
+    "shi_label": "SHI #",
+    "shi_number": "__OPTIONAL_PASTE_SHI_NUMBER__",
+    "badge_number": "__OPTIONAL_PASTE_SHI_NUMBER__",
+    "canonical_header": "__OPTIONAL_PASTE_CANONICAL_HEADER__",
+    "extended_footer": "__OPTIONAL_PASTE_EXTENDED_FOOTER__",
     "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐"
   },
   "signature_lane_note": "Public probe stays unsigned by default. Historical .sig and advanced JWS lanes are reference/operator overlays."
