@@ -609,7 +609,7 @@
       dom.packetPreview.textContent = 'packet pending';
       dom.covenantNote.textContent = state.ingress.bypass
         ? 'The shell is open through operator bypass only. No staged packet, covenant transition, or badge issuance exists yet.'
-        : 'Vault-open stages the packet only. Covenant Export must be invoked before harbor eligibility and issued badge-number assignment. Stylometric cadence may already be present, but cryptographic seals still attach only after packetization.';
+        : 'Vault-open stages the packet only. Covenant Export must be invoked before harbor eligibility and SHI # assignment. Stylometric cadence may already be present, but cryptographic seals still attach only after packetization.';
       dom.covenantExport.disabled = true;
       return;
     }
@@ -619,7 +619,7 @@
     dom.packetHashReadout.textContent = state.packet.packet_hash_sha256;
     dom.harborReadout.textContent = state.packet.analysis.route.recommended_harbor;
     dom.exportGateReadout.textContent = state.packet.bridge.export_gate.state;
-    dom.covenantStateReadout.textContent = state.packet.bridge.covenant_gate.confirmed ? ('harbor-eligible / issued ' + state.packet.issuance.badge_number) : (state.packet.signature.status === 'sealed' ? 'sealed / signature attached' : 'staged / confirmation required');
+    dom.covenantStateReadout.textContent = state.packet.bridge.covenant_gate.confirmed ? ('harbor-eligible / SHI # ' + state.packet.issuance.badge_number) : (state.packet.signature.status === 'sealed' ? 'sealed / signature attached' : 'staged / confirmation required');
     dom.cadenceReadout.textContent = cadenceLabel(state.packet.analysis.cadence_signature);
     dom.triadResonanceReadout.textContent = metric(state.packet.analysis.triad_resonance);
     dom.crossLaneStabilityReadout.textContent = metric(state.packet.analysis.cross_lane_stability);
@@ -630,8 +630,8 @@
     dom.provenanceRetentionReadout.textContent = state.packet.analysis.route.provenance ? metric(state.packet.analysis.route.provenance.retention_target) : 'pending';
     dom.packetPreview.textContent = JSON.stringify(state.packet, null, 2);
     dom.covenantNote.textContent = state.packet.bridge.covenant_gate.confirmed
-      ? 'Covenant is confirmed. The packet is sealed, harbor-eligible, and carries an issued Safe Harbor badge number for downstream export lanes.'
-      : (state.packet.signature.status === 'sealed' ? 'A cryptographic overlay is attached. Covenant Export is still required before harbor eligibility and issued badge-number assignment.' : 'The packet is staged only. Covenant Export must be invoked before harbor eligibility and issued badge-number assignment.');
+      ? 'Covenant is confirmed. The packet is sealed, harbor-eligible, and carries an issued SHI # for downstream export lanes.'
+      : (state.packet.signature.status === 'sealed' ? 'A cryptographic overlay is attached. Covenant Export is still required before harbor eligibility and SHI # assignment.' : 'The packet is staged only. Covenant Export must be invoked before harbor eligibility and SHI # assignment.');
     dom.covenantExport.disabled = state.packet.bridge.covenant_gate.confirmed;
   }
 

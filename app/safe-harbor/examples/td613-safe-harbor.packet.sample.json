@@ -187,7 +187,7 @@
       "source": "local ingress + demo-eo",
       "recommended_harbor": "provenance.seal",
       "export_ready": true,
-      "membrane_note": "Covenant is confirmed. The packet is sealed, harbor-eligible, and carries an issued Safe Harbor badge number.",
+      "membrane_note": "Covenant is confirmed. The packet is sealed, harbor-eligible, and carries an issued SHI #.",
       "provenance": {
         "integrity": 0.94,
         "confidence": 0.89,

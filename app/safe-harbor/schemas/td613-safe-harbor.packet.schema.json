@@ -347,7 +347,7 @@
             "null"
           ],
           "pattern": "^(TD613-SH-9B07D8B-[A-F0-9]{8})?$",
-          "description": "Minted Safe Harbor issuance number derived deterministically from packet context."
+          "description": "Minted Safe Harbor Issuance number (SHI #) derived deterministically from packet context."
         },
         "badge_state": {
           "type": "string",
