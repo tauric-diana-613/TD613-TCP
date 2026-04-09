@@ -7,18 +7,18 @@ Title: TD613 Aperture · v1.8.0
 
 ## Fingerprint
 
-- bytes: 285090
-- line_count: 6158
-- inline_script_count: 2
+- bytes: 300144
+- line_count: 6448
+- inline_script_count: 3
 - panel_count: 3
 - button_count: 18
-- content_hash_sha256: 9936ca676be42b2501ca7bcd0f18920e9d99b4f489978a1527d8e998748ad040
+- content_hash_sha256: f8a7a4d10d6cd62a0215ae8d0bb525183f6257829bd9cc6a4746dc0a1c28b193
 
 ## Checks
 
 - [pass] title marker: TD613 Aperture · v1.8.0 observed
 - [pass] version marker: version 1.8.0 observed
-- [pass] inline runtime present: 2 inline script block(s)
+- [pass] inline runtime present: 3 inline script block(s)
 - [pass] meta tool-name: tool-name => TD613 Aperture
 - [pass] meta tool-role: tool-role => counter-tool
 - [pass] meta observed-regime: observed-regime => PRCS-A
@@ -33,6 +33,12 @@ Title: TD613 Aperture · v1.8.0
 - [pass] id humanRoutePanel: humanRoutePanel present
 - [pass] id tcpBridgePanel: tcpBridgePanel present
 - [pass] id btnTCPExport: btnTCPExport present
+- [pass] id td613SchemaPanel: td613SchemaPanel present
+- [pass] id diffAuditPanel: diffAuditPanel present
+- [pass] id ethicsAuditPanel: ethicsAuditPanel present
+- [pass] id schemaVersionReadout: schemaVersionReadout present
+- [pass] id diffAuditMatrix: diffAuditMatrix present
+- [pass] id ethicsAuditTable: ethicsAuditTable present
 - [pass] function resetSystem: resetSystem present
 - [pass] function createTCPHandoffPacket: createTCPHandoffPacket present
 - [pass] function scrubPacketEnvelope: scrubPacketEnvelope present
@@ -47,3 +53,7 @@ Title: TD613 Aperture · v1.8.0
 - [pass] packet export gate: packet export gate present
 - [pass] route class sync: route class sync present
 - [pass] non-identifying packet copy: non-identifying packet copy present
+- [pass] governed exposure schema marker: governed exposure schema marker present
+- [pass] differential admissibility panel: differential admissibility panel present
+- [pass] protective vocabulary reassignment panel: protective vocabulary reassignment panel present
+- [pass] packet forensic schema export: packet forensic schema export present

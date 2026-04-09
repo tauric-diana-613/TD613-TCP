@@ -1287,14 +1287,14 @@ function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}) {
         const surfaceProfile = engine.extractCadenceProfile(surfaceText);
         const projectedDrift = profileDriftToTarget(projectedProfile, shell.profile || {});
         const surfaceDrift = profileDriftToTarget(surfaceProfile, shell.profile || {});
-        if (surfaceDrift + 0.05 < projectedDrift) {
+        if (surfaceText !== segment && surfaceDrift + 0.05 < projectedDrift) {
           registeredText = surfaceText;
-          registeredOutcome = 'surface-held';
+          registeredOutcome = 'repaired';
           registeredPathologies = detectTD613ApertureTextPathologies({
             sourceText: segment,
             outputText: registeredText
           }).flags;
-          entryNotes.push('Aperture preferred the surface-held counter-record because it preserved witness anchors while landing the target persona pressure more honestly.');
+          entryNotes.push('Aperture preferred the safer visible counter-record because it preserved witness anchors while landing the target persona pressure more honestly.');
         }
       }
 

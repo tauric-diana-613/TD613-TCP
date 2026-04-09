@@ -229,7 +229,7 @@ function detectSourceReplay(sourceText = '', outputText = '') {
 }
 
 function witnessTokens(text = '') {
-  return normalizeComparableText(text)
+  return expandCommonContractions(normalizeComparableText(text))
     .replace(/[^a-z0-9@:'/-]+/g, ' ')
     .split(/\s+/)
     .filter(Boolean);
@@ -802,6 +802,21 @@ function applyPersonaProjectionRepairs(text = '', plan = {}) {
   return normalizeReadableText(working);
 }
 
+function requiresPersonaProjectionRepair(text = '', pathologyState = null, commonRepairApplied = false) {
+  const normalized = normalizeReadableText(text);
+  const flags = pathologyState?.flags || [];
+  if (commonRepairApplied || flags.length) {
+    return true;
+  }
+
+  return (
+    /\b(?:I'd|I would)\s+would\b/i.test(normalized) ||
+    /\b(?:I'm|I am)\s+am\b/i.test(normalized) ||
+    /\b(?:you know)\.\s*You know\b/i.test(normalized) ||
+    /\b(?:that's|that is)\s+that is\b/i.test(normalized)
+  );
+}
+
 function repairTD613ApertureProjection({
   sourceText = '',
   outputText = '',
@@ -824,14 +839,17 @@ function repairTD613ApertureProjection({
   }
 
   let working = applyCommonProjectionRepairs(outputText);
-  if (working !== normalizeReadableText(outputText)) {
+  const commonRepairApplied = working !== normalizeReadableText(outputText);
+  if (commonRepairApplied) {
     repairPasses.push('common-repair');
   }
 
-  const personaRepaired = applyPersonaProjectionRepairs(working, plan);
-  if (personaRepaired !== working) {
-    repairPasses.push(`persona-governor:${plan.personaId || 'native'}`);
-    working = personaRepaired;
+  if (requiresPersonaProjectionRepair(working, before, commonRepairApplied)) {
+    const personaRepaired = applyPersonaProjectionRepairs(working, plan);
+    if (personaRepaired !== working) {
+      repairPasses.push(`persona-governor:${plan.personaId || 'native'}`);
+      working = personaRepaired;
+    }
   }
 
   const postPersonaRepaired = applyCommonProjectionRepairs(working);

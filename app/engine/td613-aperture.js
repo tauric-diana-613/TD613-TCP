@@ -226,7 +226,7 @@ function detectSourceReplay(sourceText = '', outputText = '') {
 }
 
 function witnessTokens(text = '') {
-  return normalizeComparableText(text)
+  return expandCommonContractions(normalizeComparableText(text))
     .replace(/[^a-z0-9@:'/-]+/g, ' ')
     .split(/\s+/)
     .filter(Boolean);
@@ -799,6 +799,21 @@ function applyPersonaProjectionRepairs(text = '', plan = {}) {
   return normalizeReadableText(working);
 }
 
+function requiresPersonaProjectionRepair(text = '', pathologyState = null, commonRepairApplied = false) {
+  const normalized = normalizeReadableText(text);
+  const flags = pathologyState?.flags || [];
+  if (commonRepairApplied || flags.length) {
+    return true;
+  }
+
+  return (
+    /\b(?:I'd|I would)\s+would\b/i.test(normalized) ||
+    /\b(?:I'm|I am)\s+am\b/i.test(normalized) ||
+    /\b(?:you know)\.\s*You know\b/i.test(normalized) ||
+    /\b(?:that's|that is)\s+that is\b/i.test(normalized)
+  );
+}
+
 export function repairTD613ApertureProjection({
   sourceText = '',
   outputText = '',
@@ -821,14 +836,17 @@ export function repairTD613ApertureProjection({
   }
 
   let working = applyCommonProjectionRepairs(outputText);
-  if (working !== normalizeReadableText(outputText)) {
+  const commonRepairApplied = working !== normalizeReadableText(outputText);
+  if (commonRepairApplied) {
     repairPasses.push('common-repair');
   }
 
-  const personaRepaired = applyPersonaProjectionRepairs(working, plan);
-  if (personaRepaired !== working) {
-    repairPasses.push(`persona-governor:${plan.personaId || 'native'}`);
-    working = personaRepaired;
+  if (requiresPersonaProjectionRepair(working, before, commonRepairApplied)) {
+    const personaRepaired = applyPersonaProjectionRepairs(working, plan);
+    if (personaRepaired !== working) {
+      repairPasses.push(`persona-governor:${plan.personaId || 'native'}`);
+      working = personaRepaired;
+    }
   }
 
   const postPersonaRepaired = applyCommonProjectionRepairs(working);
@@ -1167,20 +1185,20 @@ export function registerTD613ApertureSegment({
       collapseComparableWhitespace(surfaceCandidate) !== sourceComparable &&
       surfaceWitnessAudit.witnessAnchorIntegrity > projectedWitnessAudit.witnessAnchorIntegrity
     ) {
-      outcome = 'surface-held';
+      outcome = 'repaired';
       registeredText = surfaceCandidate;
       note(
         'surface-hold-applied',
-        'Aperture preferred a surface-held counter-record because it reduced witness drift without suppressing the segment.'
+        'Aperture preferred the safer visible counter-record because it reduced witness drift without suppressing the segment.'
       );
     }
   } else if (projectedCompression.state === 'compressed' && !projectedCompression.previewSafe) {
     if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable) {
-      outcome = 'surface-held';
+      outcome = 'repaired';
       registeredText = surfaceCandidate;
       note(
         'preview-hold',
-        'Aperture published a shallower counter-record because compression pressure made a deeper row-level claim unreliable.'
+        'Aperture published the safer visible counter-record because compression pressure made a deeper row-level claim unreliable.'
       );
     } else {
       outcome = repairedProjection.repaired ? 'repaired' : 'projected';
@@ -1191,11 +1209,11 @@ export function registerTD613ApertureSegment({
     }
   } else if (internalComparable === sourceComparable) {
     if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable) {
-      outcome = 'surface-held';
+      outcome = 'repaired';
       registeredText = surfaceCandidate;
       note(
         'surface-hold-applied',
-        'The deeper projection stayed too close to source, so Aperture published a visible surface-held counter-record instead.'
+        'The deeper projection stayed too close to source, so Aperture published the visible counter-record instead of flattening the segment back to source.'
       );
     } else {
       outcome = 'surface-held';
