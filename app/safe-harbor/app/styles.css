@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root {
   --font-body: 'Space Grotesk', 'Segoe UI', sans-serif;
@@ -1305,23 +1305,26 @@ body.vault-open .dock-right { animation-delay: 0.28s; }
   --bg-1: #07060b;
   --bg-2: #0d0912;
   --bg-3: #120c17;
+  --font-body: 'Manrope', 'Segoe UI', sans-serif;
+  --font-display: 'Bodoni Moda', 'Times New Roman', serif;
+  --font-mono: 'IBM Plex Mono', monospace;
   --panel: rgba(9, 8, 13, 0.76);
   --panel-strong: rgba(6, 6, 10, 0.94);
   --panel-soft: rgba(17, 13, 22, 0.58);
   --line: rgba(233, 230, 245, 0.09);
   --line-strong: rgba(233, 230, 245, 0.17);
   --line-glow: rgba(204, 171, 255, 0.18);
-  --text: #d9d4df;
-  --text-soft: #c1b9cc;
-  --text-dim: #978ba7;
-  --text-faint: #746a82;
-  --text-bright: #f8f4fc;
-  --accent: #cfb0ff;
-  --accent-strong: #f2e7ff;
-  --cyan: #9ae2ff;
-  --lime: #cfeaa2;
-  --rose: #c97a9f;
-  --gold: #d8bf94;
+  --text: #d7d2da;
+  --text-soft: #c0bac6;
+  --text-dim: #93899a;
+  --text-faint: #6e6674;
+  --text-bright: #f5f2f7;
+  --accent: #c9c2d7;
+  --accent-strong: #efebf4;
+  --cyan: #91b7c7;
+  --lime: #c9d2bb;
+  --rose: #665a66;
+  --gold: #a58d67;
   --shadow-panel: 0 26px 64px rgba(0, 0, 0, 0.34);
   --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.22);
   --radius-xl: 22px;
@@ -1332,9 +1335,9 @@ body.vault-open .dock-right { animation-delay: 0.28s; }
 
 body {
   background:
-    radial-gradient(circle at 10% 14%, rgba(201, 122, 159, 0.12), transparent 22%),
-    radial-gradient(circle at 82% 12%, rgba(154, 226, 255, 0.08), transparent 18%),
-    radial-gradient(circle at 52% 78%, rgba(207, 176, 255, 0.08), transparent 26%),
+    radial-gradient(circle at 10% 14%, rgba(165, 141, 103, 0.1), transparent 22%),
+    radial-gradient(circle at 82% 12%, rgba(145, 183, 199, 0.08), transparent 18%),
+    radial-gradient(circle at 52% 78%, rgba(201, 194, 215, 0.08), transparent 26%),
     linear-gradient(180deg, #020205 0%, #06050a 34%, #09060c 68%, #030306 100%);
   font-size: 14px;
 }
@@ -1350,9 +1353,9 @@ body::before {
 body::after {
   inset: -16%;
   background:
-    radial-gradient(circle at 16% 24%, rgba(201, 122, 159, 0.12), transparent 24%),
-    radial-gradient(circle at 78% 20%, rgba(154, 226, 255, 0.08), transparent 20%),
-    radial-gradient(circle at 48% 72%, rgba(207, 176, 255, 0.1), transparent 26%);
+    radial-gradient(circle at 16% 24%, rgba(165, 141, 103, 0.1), transparent 24%),
+    radial-gradient(circle at 78% 20%, rgba(145, 183, 199, 0.08), transparent 20%),
+    radial-gradient(circle at 48% 72%, rgba(201, 194, 215, 0.09), transparent 26%);
   filter: blur(54px);
   opacity: 0.28;
 }
@@ -1435,7 +1438,7 @@ h2 {
   inset: 0;
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.03), transparent 16%, transparent 84%, rgba(154, 226, 255, 0.03)),
-    radial-gradient(circle at 8% 16%, rgba(201, 122, 159, 0.08), transparent 18%);
+    radial-gradient(circle at 8% 16%, rgba(165, 141, 103, 0.08), transparent 18%);
   opacity: 0.7;
 }
 
@@ -1522,7 +1525,7 @@ h2 {
 .reliquary-card {
   background:
     linear-gradient(180deg, rgba(16, 10, 16, 0.84), rgba(8, 7, 11, 0.96));
-  border-color: rgba(201, 122, 159, 0.2);
+  border-color: rgba(165, 141, 103, 0.18);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
@@ -1699,8 +1702,8 @@ textarea {
 .ingress-membrane {
   padding: 18px clamp(16px, 3vw, 38px) 34px;
   background:
-    radial-gradient(circle at 12% 12%, rgba(201, 122, 159, 0.11), transparent 24%),
-    radial-gradient(circle at 84% 14%, rgba(154, 226, 255, 0.08), transparent 20%),
+    radial-gradient(circle at 12% 12%, rgba(165, 141, 103, 0.09), transparent 24%),
+    radial-gradient(circle at 84% 14%, rgba(145, 183, 199, 0.08), transparent 20%),
     linear-gradient(180deg, rgba(2, 2, 5, 0.95), rgba(2, 2, 5, 0.985));
 }
 
@@ -1724,7 +1727,7 @@ textarea {
   inset: 0;
   background:
     linear-gradient(90deg, transparent, rgba(207, 176, 255, 0.05), transparent),
-    radial-gradient(circle at 10% 16%, rgba(201, 122, 159, 0.08), transparent 18%);
+    radial-gradient(circle at 10% 16%, rgba(165, 141, 103, 0.07), transparent 18%);
   opacity: 0.7;
 }
 

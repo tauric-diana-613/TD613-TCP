@@ -727,16 +727,31 @@
 
   async function mintStagedPacket() {
     if (surfaceOpen() || completedCount() !== 3) return;
-    if (!state.helper) state.helper = stampBundle();
-    state.ingress.vaultOpen = true;
-    state.ingress.operatorShellOpen = false;
-    state.ingress.bypass = false;
-    state.ingress.openedAt = state.helper.ts_utc;
-    state.ingress.receiptId = receiptId(state.helper);
-    state.ingress.packetId = packetId(state.helper);
-    updateHelpers();
-    await rebuild('packet-staged');
-    logEvent('packet-staged', { packet_id: state.ingress.packetId, receipt_id: state.ingress.receiptId });
+    const previousIngress = clone(state.ingress);
+    const previousPacket = clone(state.packet);
+    const previousSealed = clone(state.sealed);
+    try {
+      if (!state.helper) state.helper = stampBundle();
+      state.ingress.vaultOpen = true;
+      state.ingress.operatorShellOpen = false;
+      state.ingress.bypass = false;
+      state.ingress.openedAt = state.helper.ts_utc;
+      state.ingress.receiptId = receiptId(state.helper);
+      state.ingress.packetId = packetId(state.helper);
+      updateHelpers();
+      await rebuild('packet-staged');
+      dom.ingressNote.textContent = 'Staged packet minted. The chamber is open and awaiting covenant discipline.';
+      logEvent('packet-staged', { packet_id: state.ingress.packetId, receipt_id: state.ingress.receiptId });
+    } catch (error) {
+      state.ingress = previousIngress;
+      state.packet = previousPacket;
+      state.sealed = previousSealed;
+      dom.ingressNote.textContent = 'Packet mint failed. The triad is still held, but Safe Harbor could not shape the staged packet.';
+      render();
+      persist();
+      logEvent('packet-stage-failed', { error: String(error && error.message ? error.message : error) });
+      throw error;
+    }
   }
 
   async function covenantExport() {
@@ -1057,11 +1072,11 @@
     for (const key of KEYS) {
       const raw = state.ingress.segments[key] || '';
       const stats = basicStats(raw);
-      const checksum = await checksum(raw);
+      const responseChecksum = await checksum(raw);
       const ref = 'sealed://' + state.ingress.receiptId + '/' + key;
       ingress[key] = {
         prompt_label: D.ingressPrompts[key].promptLabel,
-        response_checksum: checksum,
+        response_checksum: responseChecksum,
         char_count: stats.char_count,
         word_count: stats.word_count,
         sealed_text_ref: ref
