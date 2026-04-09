@@ -34,6 +34,7 @@ const generated = [
   'window.TCP_ENGINE = Object.assign(window.TCP_ENGINE || {}, {',
   '  TD613_APERTURE_PROTOCOL,',
   '  TD613_APERTURE_ENFORCEMENT_TERMS,',
+  '  buildTD613GovernedExposureSchema,',
   '  buildTD613ApertureContext,',
   '  selectTD613ApertureDecision,',
   '  selectTD613ApertureHarbor,',

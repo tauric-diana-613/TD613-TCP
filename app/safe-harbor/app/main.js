@@ -110,6 +110,12 @@
     crossLaneSpreadReadout: $('crossLaneSpreadReadout'),
     badgeStatusReadout: $('badgeStatusReadout'),
     sealedLaneReadout: $('sealedLaneReadout'),
+    forensicSchemaStateReadout: $('forensicSchemaStateReadout'),
+    forensicExposureReadout: $('forensicExposureReadout'),
+    forensicSourceClassReadout: $('forensicSourceClassReadout'),
+    forensicAuthorityReadout: $('forensicAuthorityReadout'),
+    forensicOperatorReadout: $('forensicOperatorReadout'),
+    forensicSchemaPreview: $('forensicSchemaPreview'),
     shiMintState: $('shiMintState'),
     shiMintValue: $('shiMintValue'),
     shiCopyNote: $('shiCopyNote'),
@@ -163,6 +169,7 @@
   const state = {
     helper: null,
     hooks: { tcp: null, eo: null, signature: null },
+    handoff: null,
     packet: null,
     sealed: null,
     lastProbe: '',
@@ -191,11 +198,94 @@
     renderStatic();
     bind();
     loadSession();
+    primeInboundContext();
     hydrate();
     dom.body.classList.remove('boot-pending');
     dom.body.classList.add('boot-ready');
     void rebuild('init');
     exposeApi();
+  }
+
+  function parseInboundContext() {
+    let params = null;
+    try {
+      params = new URL(window.location.href).searchParams;
+    } catch (error) {
+      return null;
+    }
+    if (!params) return null;
+    const source = trim(params.get('source'));
+    if (!source) return null;
+    const numeric = (key) => {
+      const value = params.get(key);
+      if (value === null || value === '') return null;
+      return round4(clamp01(Number(value)));
+    };
+    const count = (key) => {
+      const value = params.get(key);
+      if (value === null || value === '') return null;
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? Math.max(0, Math.round(parsed)) : null;
+    };
+    const sourceClasses = String(params.get('source_classes') || '')
+      .split(',')
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+    return {
+      source: source,
+      decision: trim(params.get('decision')),
+      harbor: trim(params.get('harbor')),
+      route: trim(params.get('route')),
+      sourceClass: trim(params.get('source_class')),
+      sourceClasses,
+      authority: trim(params.get('authority')),
+      theta: numeric('theta_u'),
+      O: numeric('o'),
+      O_star: numeric('o_star'),
+      delta_obs: numeric('delta_obs'),
+      Gap: numeric('gap'),
+      NameSens: numeric('name_sens'),
+      AliasPersist: numeric('alias_persist'),
+      Red: numeric('red'),
+      Supp_tau: numeric('supp_tau'),
+      provenanceIntegrity: numeric('provenance_integrity'),
+      burdenConcentration: numeric('burden_concentration'),
+      dominantOperator: trim(params.get('dominant_operator')),
+      S: count('latent_s'),
+      S_prime: count('projected_s'),
+      Y: count('registered_y')
+    };
+  }
+
+  function primeInboundContext() {
+    const inbound = parseInboundContext();
+    state.handoff = inbound;
+    if (!inbound) return;
+    if (!dom.inputSourceClass.value || dom.inputSourceClass.value === 'futurecore membrane') {
+      dom.inputSourceClass.value = inbound.sourceClass || 'tcp governed exposure handoff';
+    }
+    if (!dom.inputOperatorNotes.value) {
+      const noteParts = [
+        inbound.source ? ('source=' + inbound.source) : null,
+        inbound.route ? ('route=' + inbound.route) : null,
+        inbound.authority ? ('authority=' + inbound.authority) : null,
+        inbound.dominantOperator ? ('dominant=' + inbound.dominantOperator) : null
+      ].filter(Boolean);
+      dom.inputOperatorNotes.value = noteParts.length
+        ? ('Inbound governed exposure context // ' + noteParts.join(' // '))
+        : 'Inbound governed exposure context attached.';
+    }
+    if (inbound.source === 'tcp' && !state.hooks.tcp) {
+      state.hooks.tcp = {
+        status: 'attached',
+        source: 'tcp-handoff',
+        cadence_signature: {
+          status: 'attached',
+          source: 'tcp-handoff',
+          dominant_axes: ['governed-exposure', 'route', 'witness']
+        }
+      };
+    }
   }
 
   function bind() {
@@ -609,6 +699,9 @@
     dom.signatureLaneReadout.textContent = state.packet ? (state.packet.bridge.signature_lane.lane || state.packet.signature.sig_type || 'none') : (activeSignatureLane.lane && activeSignatureLane.lane !== 'none' ? activeSignatureLane.lane : 'overlay idle');
 
     if (!state.packet) {
+      const inboundSource = state.handoff && state.handoff.sourceClass ? state.handoff.sourceClass : (dom.inputSourceClass.value || 'awaiting ingress');
+      const inboundAuthority = state.handoff && state.handoff.authority ? state.handoff.authority : (state.ingress.bypass ? 'operator shell' : 'staged witness');
+      const inboundRoute = state.handoff && state.handoff.route ? state.handoff.route : route;
       dom.packetIdReadout.textContent = 'pending';
       dom.receiptIdReadout.textContent = 'pending';
       dom.packetHashReadout.textContent = 'pending';
@@ -621,6 +714,12 @@
       dom.crossLaneSpreadReadout.textContent = 'pending';
       dom.badgeStatusReadout.textContent = 'not issued';
       dom.sealedLaneReadout.textContent = state.ingress.bypass ? 'not staged' : 'session-only / pending';
+      if (dom.forensicSchemaStateReadout) dom.forensicSchemaStateReadout.textContent = 'pending / pending';
+      if (dom.forensicExposureReadout) dom.forensicExposureReadout.textContent = `pending / ${inboundRoute}`;
+      if (dom.forensicSourceClassReadout) dom.forensicSourceClassReadout.textContent = inboundSource;
+      if (dom.forensicAuthorityReadout) dom.forensicAuthorityReadout.textContent = inboundAuthority;
+      if (dom.forensicOperatorReadout) dom.forensicOperatorReadout.textContent = 'pending / awaiting packet';
+      if (dom.forensicSchemaPreview) dom.forensicSchemaPreview.textContent = state.handoff ? JSON.stringify(state.handoff, null, 2) : 'forensic schema pending';
       dom.packetStateReadout.textContent = state.ingress.bypass ? 'operator-bypass / packetless' : (completedCount() === 3 ? 'triad-ready / awaiting staged packet' : 'awaiting ingress');
       dom.provenanceRetentionReadout.textContent = 'pending';
       dom.packetPreview.textContent = 'packet pending';
@@ -644,6 +743,12 @@
     dom.crossLaneSpreadReadout.textContent = metric(state.packet.analysis.cross_lane_spread);
     dom.badgeStatusReadout.textContent = state.packet.issuance.badge_number || 'not issued';
     dom.sealedLaneReadout.textContent = 'session-only / operator-only';
+    if (dom.forensicSchemaStateReadout) dom.forensicSchemaStateReadout.textContent = `${state.packet.forensic_schema.S.count} / ${state.packet.forensic_schema.S_prime.count}`;
+    if (dom.forensicExposureReadout) dom.forensicExposureReadout.textContent = `${state.packet.forensic_schema.Y.count} / ${state.packet.forensic_schema.routeState}`;
+    if (dom.forensicSourceClassReadout) dom.forensicSourceClassReadout.textContent = state.packet.forensic_schema.sourceClass;
+    if (dom.forensicAuthorityReadout) dom.forensicAuthorityReadout.textContent = state.packet.forensic_schema.authorityCeiling;
+    if (dom.forensicOperatorReadout) dom.forensicOperatorReadout.textContent = `${metric(state.packet.forensic_schema.Gap)} / ${state.packet.forensic_schema.dominantOperator.code} ${state.packet.forensic_schema.dominantOperator.label}`;
+    if (dom.forensicSchemaPreview) dom.forensicSchemaPreview.textContent = JSON.stringify(state.packet.forensic_schema, null, 2);
     dom.packetStateReadout.textContent = state.packet.receipt.state;
     dom.provenanceRetentionReadout.textContent = state.packet.analysis.route.provenance ? metric(state.packet.analysis.route.provenance.retention_target) : 'pending';
     dom.packetPreview.textContent = JSON.stringify(state.packet, null, 2);
@@ -1245,6 +1350,77 @@
       withheldReason: (fault || withheld) ? String(record.withheldReason || 'sealed-segment-boundary') : null
     };
   }
+  function dominantOperatorRecord(detail) {
+    const operator = String(detail || '').toUpperCase();
+    if (operator === 'R') return { code: 'R', label: 'retrieval gating' };
+    if (operator === 'K') return { code: 'K', label: 'capacity squeeze' };
+    if (operator === 'C') return { code: 'C', label: 'context compression' };
+    if (operator === 'P') return { code: 'P', label: 'projection loss' };
+    if (operator === 'F') return { code: 'F', label: 'format / naming drift' };
+    return { code: 'A', label: 'admissibility filter' };
+  }
+  function resolvedForensicCounts(packet, audit) {
+    const ingressWordCount = KEYS.reduce((sum, key) => sum + Number(packet && packet.ingress && packet.ingress[key] ? packet.ingress[key].word_count || 0 : 0), 0);
+    const latentCount = Math.max(1, state.handoff && state.handoff.S ? state.handoff.S : ingressWordCount);
+    const projectedCount = Math.max(
+      0,
+      state.handoff && state.handoff.S_prime
+        ? state.handoff.S_prime
+        : Math.round(latentCount * clamp01(1 - Math.max(Number(audit.observabilityDeficit || 0), Number(state.handoff && state.handoff.O || 0))))
+    );
+    const registeredCount = Math.max(
+      0,
+      state.handoff && state.handoff.Y
+        ? state.handoff.Y
+        : Math.round(latentCount * clamp01(1 - Math.max(Number(state.handoff && state.handoff.O_star || 0), Number(audit.candidateSuppression || 0) * 0.4)))
+    );
+    return { latentCount, projectedCount, registeredCount };
+  }
+  function buildForensicSchemaRecord(packet, scrub) {
+    const audit = packet && packet.aperture_audit ? packet.aperture_audit : buildApertureAuditRecord({});
+    const counts = resolvedForensicCounts(packet, audit);
+    const O = state.handoff && state.handoff.O !== null ? state.handoff.O : round4(clamp01(1 - (counts.projectedCount / Math.max(counts.latentCount, 1))));
+    const O_star = state.handoff && state.handoff.O_star !== null ? state.handoff.O_star : round4(clamp01(1 - (counts.registeredCount / Math.max(counts.latentCount, 1))));
+    const deltaObs = state.handoff && state.handoff.delta_obs !== null ? state.handoff.delta_obs : round4(clamp01(audit.observabilityDeficit));
+    const gap = state.handoff && state.handoff.Gap !== null ? state.handoff.Gap : round4(clamp01(Math.max(audit.candidateSuppression, deltaObs, O_star - O)));
+    const authorityCeiling = (state.handoff && state.handoff.authority) || (packet.bridge.export_gate.ready ? 'packetized handoff' : packet.bridge.covenant_gate.confirmed ? 'sealed witness' : 'staged witness');
+    const sourceClass = trim(packet.intake.source_class) || (state.handoff && state.handoff.sourceClass) || 'safe-harbor intake';
+    const sourceClasses = uniqueList([sourceClass].concat((state.handoff && state.handoff.sourceClasses) || []).concat(['safe-harbor packet', packet.intake.hook_status.tcp === 'attached' ? 'tcp cadence witness' : 'local ingress']));
+    const thetaCurrent = state.handoff && state.handoff.theta !== null ? state.handoff.theta : (packet.bridge.export_gate.ready ? 0.82 : packet.bridge.covenant_gate.confirmed ? 0.66 : 0.38);
+    const dominant = dominantOperatorRecord((state.handoff && state.handoff.dominantOperator) || (audit.policyPressure >= Math.max(audit.capacityPressure, audit.observabilityDeficit, audit.namingSensitivity) ? 'A' : audit.capacityPressure >= Math.max(audit.observabilityDeficit, audit.namingSensitivity) ? 'K' : audit.observabilityDeficit >= Math.max(audit.namingSensitivity, audit.aliasPersistence) ? 'P' : audit.namingSensitivity >= audit.aliasPersistence ? 'F' : 'P'));
+    return {
+      schemaVersion: 'td613-governed-exposure/v1',
+      observedRegime: 'PRCS-A',
+      instrumentRole: 'counter-tool',
+      narrowingChain: 'R∘K∘C∘P∘F∘A',
+      S: { label: 'latent intake field', count: counts.latentCount, ratio: 1, note: 'Available ingress material before Safe Harbor shapes the packet.' },
+      S_prime: { label: 'projected packet field', count: counts.projectedCount, ratio: round4(clamp01(counts.projectedCount / Math.max(counts.latentCount, 1))), note: 'What the chamber can still hold after shaping and route conscience.' },
+      Y: { label: 'registered packet surface', count: counts.registeredCount, ratio: round4(clamp01(counts.registeredCount / Math.max(counts.latentCount, 1))), note: 'What survives into the staged public packet and proof lanes.' },
+      O: round4(clamp01(O)),
+      O_star: round4(clamp01(O_star)),
+      delta_obs: round4(clamp01(deltaObs)),
+      Gap: round4(clamp01(gap)),
+      NameSens: state.handoff && state.handoff.NameSens !== null ? state.handoff.NameSens : round4(clamp01(audit.namingSensitivity)),
+      AliasPersist: state.handoff && state.handoff.AliasPersist !== null ? state.handoff.AliasPersist : round4(clamp01(audit.aliasPersistence)),
+      Red: state.handoff && state.handoff.Red !== null ? state.handoff.Red : round4(clamp01(audit.redundancyInflation)),
+      Supp_tau: state.handoff && state.handoff.Supp_tau !== null ? state.handoff.Supp_tau : round4(clamp01(audit.candidateSuppression)),
+      Theta_u: {
+        current: round4(clamp01(thetaCurrent)),
+        classes: sourceClasses
+      },
+      dominantOperator: {
+        code: dominant.code,
+        label: dominant.label,
+        pressure: round4(clamp01(Math.max(audit.policyPressure, audit.capacityPressure, audit.observabilityDeficit, audit.namingSensitivity, audit.aliasPersistence)))
+      },
+      sourceClass: sourceClass,
+      sourceClasses: sourceClasses,
+      authorityCeiling: authorityCeiling,
+      provenanceIntegrity: state.handoff && state.handoff.provenanceIntegrity !== null ? state.handoff.provenanceIntegrity : round4(clamp01(packet.analysis.route.provenance && packet.analysis.route.provenance.integrity !== undefined ? packet.analysis.route.provenance.integrity : 0.88)),
+      burdenConcentration: state.handoff && state.handoff.burdenConcentration !== null ? state.handoff.burdenConcentration : round4(clamp01((audit.policyPressure * 0.32) + (audit.capacityPressure * 0.18) + ((scrub && !scrub.passed) ? 0.18 : 0.04))),
+      routeState: (state.handoff && state.handoff.route) || packet.analysis.route.state
+    };
+  }
   function safeHarborApertureAudit(packet, scrub) {
     const warningSignals = [];
     const repairPasses = [];
@@ -1277,8 +1453,8 @@
       policyPressure:
         (scrub && !scrub.passed ? 0.42 : 0.14) +
         ((packet && packet.bridge && packet.bridge.export_gate && packet.bridge.export_gate.ready) ? 0.04 : 0.16),
-      withheldMaterial: true,
-      withheldReason: scrub && !scrub.passed ? 'scrub-boundary' : 'sealed-segment-boundary'
+      withheldMaterial: Boolean(scrub && !scrub.passed),
+      withheldReason: scrub && !scrub.passed ? 'scrub-boundary' : null
     });
   }
   function nowIso() { return new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'); }
@@ -1393,6 +1569,7 @@
       },
       signature: signatureObject,
       aperture_audit: null,
+      forensic_schema: null,
       bridge: {
         public_probe_defaults: {
           start_with: '01_LIVE_SEND_verify.alias.voice_MINIMAL.txt',
@@ -1416,6 +1593,7 @@
     packet.bridge.export_gate.blockers = exportBlockers(scrub);
     packet.analysis.route.export_ready = packet.bridge.export_gate.ready;
     packet.aperture_audit = safeHarborApertureAudit(packet, scrub);
+    packet.forensic_schema = buildForensicSchemaRecord(packet, scrub);
     const packetHashMaterial = clone(packet);
     if (packetHashMaterial.signature) {
       packetHashMaterial.signature.sig = null;
@@ -1600,7 +1778,8 @@
       '- packet_hash_sha256: ' + state.packet.packet_hash_sha256,
       '- receipt_state: ' + state.packet.receipt.state,
       '- signature_lane: ' + line,
-      '- aperture_audit: ' + (state.packet.aperture_audit ? 'present' : 'absent')
+      '- aperture_audit: ' + (state.packet.aperture_audit ? 'present' : 'absent'),
+      '- forensic_schema: ' + (state.packet.forensic_schema ? 'present' : 'absent')
     ];
     if (state.packet.aperture_audit) {
       lines.push('- aperture_observed_regime: ' + (state.packet.aperture_audit.observedRegime || 'PRCS-A'));
@@ -1609,6 +1788,14 @@
       lines.push('- aperture_repair_passes: ' + ((state.packet.aperture_audit.repairPasses || []).join(', ') || 'none'));
       lines.push('- aperture_withheld_material: ' + (state.packet.aperture_audit.withheldMaterial ? 'yes' : 'no'));
       lines.push('- aperture_withheld_reason: ' + (state.packet.aperture_audit.withheldReason || 'none'));
+    }
+    if (state.packet.forensic_schema) {
+      lines.push('- forensic_source_class: ' + (state.packet.forensic_schema.sourceClass || 'unknown'));
+      lines.push('- forensic_authority_ceiling: ' + (state.packet.forensic_schema.authorityCeiling || 'unknown'));
+      lines.push('- forensic_route_state: ' + (state.packet.forensic_schema.routeState || 'unknown'));
+      lines.push('- forensic_dominant_operator: ' + ((state.packet.forensic_schema.dominantOperator && state.packet.forensic_schema.dominantOperator.code) ? state.packet.forensic_schema.dominantOperator.code : 'A'));
+      lines.push('- forensic_gap: ' + metric(state.packet.forensic_schema.Gap));
+      lines.push('- forensic_delta_obs: ' + metric(state.packet.forensic_schema.delta_obs));
     }
     if (state.packet.issuance && state.packet.issuance.badge_number) {
       lines.push('- shi_number: ' + state.packet.issuance.badge_number);
@@ -1628,6 +1815,7 @@
       signature_lane: state.packet.bridge && state.packet.bridge.signature_lane ? (state.packet.bridge.signature_lane.lane || 'none') : (state.packet.signature.sig_type || 'none'),
       packet_schema_version: state.packet.schema_version,
       aperture_audit: state.packet.aperture_audit || null,
+      forensic_schema: state.packet.forensic_schema || null,
       aperture_warning_signals: state.packet.aperture_audit ? state.packet.aperture_audit.warningSignals || [] : [],
       aperture_repair_passes: state.packet.aperture_audit ? state.packet.aperture_audit.repairPasses || [] : [],
       aperture_withheld_material: state.packet.aperture_audit ? Boolean(state.packet.aperture_audit.withheldMaterial) : false,

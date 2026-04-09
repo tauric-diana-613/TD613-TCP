@@ -245,7 +245,13 @@ const ANNEX_SPECS = Object.freeze([
       'rightPanel',
       'humanRoutePanel',
       'tcpBridgePanel',
-      'btnTCPExport'
+      'btnTCPExport',
+      'td613SchemaPanel',
+      'diffAuditPanel',
+      'ethicsAuditPanel',
+      'schemaVersionReadout',
+      'diffAuditMatrix',
+      'ethicsAuditTable'
     ]),
     requiredFunctions: Object.freeze([
       'resetSystem',
@@ -303,6 +309,26 @@ const ANNEX_SPECS = Object.freeze([
         id: 'residue-packet',
         label: 'non-identifying packet copy',
         pattern: /non-identifying audit packet/i
+      },
+      {
+        id: 'governed-exposure-schema',
+        label: 'governed exposure schema marker',
+        pattern: /td613-governed-exposure\/v1/i
+      },
+      {
+        id: 'differential-admissibility',
+        label: 'differential admissibility panel',
+        pattern: /DIFFERENTIAL ADMISSIBILITY/i
+      },
+      {
+        id: 'ethics-audit',
+        label: 'protective vocabulary reassignment panel',
+        pattern: /PROTECTIVE VOCABULARY REASSIGNMENT/i
+      },
+      {
+        id: 'packet-forensic-schema',
+        label: 'packet forensic schema export',
+        pattern: /packet\.forensicSchema\s*=/i
       }
     ])
   })

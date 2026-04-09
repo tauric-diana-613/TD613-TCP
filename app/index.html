@@ -24,10 +24,10 @@
       </div>
 
       <div class="ingress-stage-rail" aria-label="Ingress stages">
-        <span id="ingressStageContainment" class="ingress-stage-chip">Containment</span>
-        <span id="ingressStageMirror" class="ingress-stage-chip">Mirror</span>
-        <span id="ingressStageBadge" class="ingress-stage-chip">Token</span>
-        <span id="ingressStageSeal" class="ingress-stage-chip">Seal</span>
+        <span id="ingressStageContainment" class="ingress-stage-chip">Latent S</span>
+        <span id="ingressStageMirror" class="ingress-stage-chip">Projected S'</span>
+        <span id="ingressStageBadge" class="ingress-stage-chip">Registered Y</span>
+        <span id="ingressStageSeal" class="ingress-stage-chip">Route / ceiling</span>
       </div>
 
       <div class="ingress-grid">
@@ -39,6 +39,17 @@
             <p id="ingressCueCopy" class="ingress-cue-copy">Four gates. One valid posture.</p>
           </div>
           <div id="ingressStatus" class="ingress-status">Wait for the first cue.</div>
+          <div class="ingress-cue-card ingress-forensic-card">
+            <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionReadout">&#x0398;</span> Governed exposure</div>
+            <div class="ingress-forensic-grid" aria-label="Governed exposure backbone">
+              <div class="ingress-forensic-row"><span class="ingress-forensic-label">S</span><span id="ingressLatentState" class="ingress-forensic-value">latent state // available before narrowing</span></div>
+              <div class="ingress-forensic-row"><span class="ingress-forensic-label">S'</span><span id="ingressProjectedState" class="ingress-forensic-value">projected state // what the membrane can hold</span></div>
+              <div class="ingress-forensic-row"><span class="ingress-forensic-label">Y</span><span id="ingressRegisteredSurface" class="ingress-forensic-value">registered surface // what survives as answer-like output</span></div>
+              <div class="ingress-forensic-row"><span class="ingress-forensic-label">Source class</span><span id="ingressSourceClass" class="ingress-forensic-value">open text / cadence witness / packet witness</span></div>
+              <div class="ingress-forensic-row"><span class="ingress-forensic-label">Authority ceiling</span><span id="ingressAuthorityCeiling" class="ingress-forensic-value">exploratory until the route earns more</span></div>
+              <div class="ingress-forensic-row"><span class="ingress-forensic-label">Route state</span><span id="ingressRouteStateReadout" class="ingress-forensic-value">buffered</span></div>
+            </div>
+          </div>
         </section>
 
         <section class="ingress-ritual">
@@ -92,7 +103,7 @@
           <p class="deck-name">The Cadence Playground <span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="shellDeckName">&#x7C73;</span></p>
         </div>
         <p id="heroStationLine" class="hero-station-line">Homebase / anchor, contact, residue</p>
-        <p id="heroLead" class="lead">Move between Homebase, Personas, Readout, Deck, and Trainer without leaving the same runtime. One field, one engine, cleaner rooms.</p>
+        <p id="heroLead" class="lead">Move between Homebase, Personas, Readout, Deck, and Trainer without leaving the same runtime. One field, one engine, and a colder question running underneath: what narrowed before this surface felt sufficient?</p>
       </div>
 
       <aside class="readout-strip analysis-gated" data-latent-label="Latent readout // press Analyze Cadences">
@@ -319,7 +330,7 @@
           <div class="station-view-meta">
             <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout station</div>
             <h2 class="station-view-title">Witness page. Law page. No softening.</h2>
-            <p class="station-view-summary">Similarity, traceability, route pressure, harbor, and ledger output stay colder here so resemblance never gets mistaken for passage.</p>
+            <p class="station-view-summary">Read this as a governed exposure surface: what was available, what got narrowed, what survived, and how much authority the runtime actually earned.</p>
           </div>
         </div>
         <div class="readout-layout">
@@ -329,10 +340,57 @@
                 <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTelemetry">&#x0398;</span> Telemetry</div>
               <h2>What the field is actually doing</h2>
             </div>
-            <p class="section-note">Fun on the surface, strict underneath: these metrics stay separate so resemblance never masquerades as route.</p>
+            <p class="section-note">Cadence resemblance is downstream. The first question is what the runtime lost before the result felt sufficient.</p>
             </div>
 
-            <p id="fieldNotice" class="field-notice analysis-gated" data-latent-label="Telemetry latent // wake the field">Bring one or two voices into the room. TCP keeps similarity, traceability, and route pressure in separate lanes.</p>
+            <p id="fieldNotice" class="field-notice analysis-gated" data-latent-label="Telemetry latent // wake the field">Bring one or two voices into the room. TCP now keeps latent state, projected state, registered surface, and route law separate from cadence resemblance.</p>
+
+            <div class="governed-exposure-panel analysis-gated" data-latent-label="Governed exposure latent // wake the field">
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionRecommendedHarbor">&#x2696;</span> Governed exposure</div>
+              <div class="governed-exposure-grid">
+                <article class="metric governed-exposure-card">
+                  <div class="key">Latent state <span class="key-meta">S</span></div>
+                  <div id="geLatentState" class="val">--</div>
+                  <div id="geLatentHint" class="hint">Available witness field before route and formatting narrow it.</div>
+                </article>
+                <article class="metric governed-exposure-card">
+                  <div class="key">Projected state <span class="key-meta">S'</span></div>
+                  <div id="geProjectedState" class="val">--</div>
+                  <div id="geProjectedHint" class="hint">What the runtime can actually hold onto long enough to compare.</div>
+                </article>
+                <article class="metric governed-exposure-card">
+                  <div class="key">Registered surface <span class="key-meta">Y</span></div>
+                  <div id="geRegisteredSurface" class="val">--</div>
+                  <div id="geRegisteredHint" class="hint">What survives as the answer-like public surface.</div>
+                </article>
+                <article class="metric governed-exposure-card">
+                  <div class="key">Authority ceiling</div>
+                  <div id="geAuthorityCeiling" class="val">--</div>
+                  <div id="geAuthorityHint" class="hint">How much claim this runtime has actually earned.</div>
+                </article>
+                <article class="metric governed-exposure-card">
+                  <div class="key">Source class</div>
+                  <div id="geSourceClass" class="val">--</div>
+                  <div id="geSourceHint" class="hint">Where the current witness material came from.</div>
+                </article>
+                <article class="metric governed-exposure-card">
+                  <div class="key">Route state</div>
+                  <div id="geRouteState" class="val">--</div>
+                  <div id="geRouteHint" class="hint">Whether the field is buffered, branching, guarded, or ready for harbor.</div>
+                </article>
+                <article class="metric governed-exposure-card">
+                  <div class="key">O / O*</div>
+                  <div id="geOmission" class="val">--</div>
+                  <div id="geOmissionHint" class="hint">Omission before projection, then omission after ratification.</div>
+                </article>
+                <article class="metric governed-exposure-card">
+                  <div class="key">Gap / dominant operator</div>
+                  <div id="geGap" class="val">--</div>
+                  <div id="geGapHint" class="hint">Which narrowing operator appears to have authored the loss.</div>
+                </article>
+              </div>
+              <pre id="governedExposurePreview" class="formula"></pre>
+            </div>
 
             <div class="results analysis-gated" data-latent-label="Metrics latent // press Analyze Cadences">
               <article id="similarityCard" class="metric">

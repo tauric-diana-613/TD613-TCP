@@ -434,6 +434,167 @@ export function buildTD613ApertureAudit({
   });
 }
 
+function normalizeTD613ExposureState(state = {}, fallbackLabel = '') {
+  const count = Math.max(0, Math.round(Number(state.count ?? state.available ?? state.value ?? 0)));
+  const ratio = state.ratio === undefined || state.ratio === null
+    ? null
+    : round3(clamp01(state.ratio));
+  return Object.freeze({
+    label: String(state.label || fallbackLabel || 'state'),
+    count,
+    ratio,
+    note: state.note ? String(state.note) : null
+  });
+}
+
+function resolveTD613ThetaProfile(theta = null) {
+  if (theta && typeof theta === 'object') {
+    return Object.freeze({
+      current: round3(clamp01(theta.current)),
+      classes: Object.freeze(uniqueStrings(theta.classes || []))
+    });
+  }
+  return Object.freeze({
+    current: round3(clamp01(theta)),
+    classes: Object.freeze([])
+  });
+}
+
+function resolveTD613DominantOperator({
+  candidateSuppression = 0,
+  observabilityDeficit = 0,
+  aliasPersistence = 0,
+  namingSensitivity = 0,
+  redundancyInflation = 0,
+  capacityPressure = 0,
+  policyPressure = 0,
+  dominantOperator = null
+} = {}) {
+  if (dominantOperator && typeof dominantOperator === 'object') {
+    return Object.freeze({
+      code: String(dominantOperator.code || 'A'),
+      label: String(dominantOperator.label || 'admissibility'),
+      pressure: round3(clamp01(dominantOperator.pressure))
+    });
+  }
+  if (dominantOperator) {
+    return Object.freeze({
+      code: String(dominantOperator),
+      label: String(dominantOperator),
+      pressure: round3(clamp01(Math.max(
+        candidateSuppression,
+        observabilityDeficit,
+        aliasPersistence,
+        namingSensitivity,
+        redundancyInflation,
+        capacityPressure,
+        policyPressure
+      )))
+    });
+  }
+
+  const ranked = [
+    { code: 'R', label: 'retrieval gating', pressure: clamp01(candidateSuppression) },
+    { code: 'K', label: 'capacity squeeze', pressure: clamp01(capacityPressure) },
+    { code: 'C', label: 'context compression', pressure: clamp01(redundancyInflation) },
+    { code: 'P', label: 'projection loss', pressure: clamp01(Math.max(observabilityDeficit, aliasPersistence)) },
+    { code: 'F', label: 'format / naming drift', pressure: clamp01(namingSensitivity) },
+    { code: 'A', label: 'admissibility filter', pressure: clamp01(policyPressure) }
+  ].sort((left, right) => right.pressure - left.pressure);
+  const winner = ranked[0] || { code: 'A', label: 'admissibility filter', pressure: 0 };
+  return Object.freeze({
+    code: winner.code,
+    label: winner.label,
+    pressure: round3(winner.pressure)
+  });
+}
+
+export function buildTD613GovernedExposureSchema({
+  latentState = {},
+  projectedState = {},
+  registeredSurface = {},
+  sourceClass = 'unclassified',
+  sourceClasses = [],
+  authorityCeiling = 'exploratory',
+  routeState = 'buffered',
+  candidateSuppression = 0,
+  observabilityDeficit = 0,
+  aliasPersistence = 0,
+  namingSensitivity = 0,
+  redundancyInflation = 0,
+  capacityPressure = 0,
+  policyPressure = 0,
+  provenanceIntegrity = 1,
+  burdenConcentration = 0,
+  theta = null,
+  dominantOperator = null
+} = {}) {
+  const S = normalizeTD613ExposureState(latentState, 'latent state S');
+  const S_prime = normalizeTD613ExposureState(projectedState, "projected state S'");
+  const Y = normalizeTD613ExposureState(registeredSurface, 'registered surface Y');
+  const latentCount = Math.max(S.count, 1);
+  const projectedRatio = S_prime.ratio === null ? round3(clamp01(S_prime.count / latentCount)) : S_prime.ratio;
+  const registeredRatio = Y.ratio === null ? round3(clamp01(Y.count / latentCount)) : Y.ratio;
+  const O = round3(clamp01(1 - projectedRatio));
+  const O_star = round3(clamp01(1 - registeredRatio));
+  const delta_obs = round3(clamp01(observabilityDeficit));
+  const Gap = round3(clamp01(Math.max(
+    candidateSuppression,
+    observabilityDeficit,
+    O_star - O
+  )));
+  const Theta_u = resolveTD613ThetaProfile(theta);
+  const dominant = resolveTD613DominantOperator({
+    candidateSuppression,
+    observabilityDeficit,
+    aliasPersistence,
+    namingSensitivity,
+    redundancyInflation,
+    capacityPressure,
+    policyPressure,
+    dominantOperator
+  });
+
+  return Object.freeze({
+    schemaVersion: 'td613-governed-exposure/v1',
+    observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
+    instrumentRole: 'counter-tool',
+    narrowingChain: 'R∘K∘C∘P∘F∘A',
+    S: Object.freeze({
+      ...S,
+      ratio: 1
+    }),
+    S_prime: Object.freeze({
+      ...S_prime,
+      ratio: projectedRatio
+    }),
+    Y: Object.freeze({
+      ...Y,
+      ratio: registeredRatio
+    }),
+    O,
+    O_star,
+    delta_obs,
+    Gap,
+    NameSens: round3(clamp01(namingSensitivity)),
+    AliasPersist: round3(clamp01(aliasPersistence)),
+    Red: round3(clamp01(redundancyInflation)),
+    Supp_tau: round3(clamp01(candidateSuppression)),
+    Theta_u,
+    dominantOperator: dominant,
+    sourceClass: String(sourceClass || 'unclassified'),
+    sourceClasses: Object.freeze(uniqueStrings(
+      sourceClasses && sourceClasses.length
+        ? sourceClasses
+        : [sourceClass]
+    )),
+    authorityCeiling: String(authorityCeiling || 'exploratory'),
+    provenanceIntegrity: round3(clamp01(provenanceIntegrity)),
+    burdenConcentration: round3(clamp01(burdenConcentration)),
+    routeState: String(routeState || 'buffered')
+  });
+}
+
 function detectIntroducedTerms(sourceText = '', outputText = '') {
   const source = normalizeComparableText(sourceText);
   const output = normalizeComparableText(outputText);

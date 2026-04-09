@@ -3,6 +3,7 @@ import {
   TD613_APERTURE_PROTOCOL,
   auditTD613ApertureWitnessAnchors,
   buildTD613ApertureContext,
+  buildTD613GovernedExposureSchema,
   buildTD613ApertureProjectionPlan,
   classifyTD613ApertureProjection,
   detectTD613ApertureTextPathologies,
@@ -36,6 +37,35 @@ assert.equal(guardedContext.toolIdentity, 'TD613 Aperture');
 assert.equal(guardedContext.counterRecognitionRequired, true);
 assert.equal(guardedContext.generativePassageBlocked, true);
 assert(guardedContext.recaptureRisk >= 0.46);
+
+const governedExposure = buildTD613GovernedExposureSchema({
+  latentState: { label: 'latent witness field', count: 100 },
+  projectedState: { label: 'projected witness field', count: 62 },
+  registeredSurface: { label: 'registered surface', count: 41 },
+  sourceClass: 'paired witness comparison',
+  sourceClasses: ['paired witness comparison', 'cadence witness'],
+  authorityCeiling: 'witness',
+  routeState: 'hold-branch',
+  candidateSuppression: 0.29,
+  observabilityDeficit: 0.38,
+  aliasPersistence: 0.16,
+  namingSensitivity: 0.12,
+  redundancyInflation: 0.21,
+  capacityPressure: 0.34,
+  policyPressure: 0.18,
+  provenanceIntegrity: 0.83,
+  burdenConcentration: 0.42,
+  theta: { current: 0.4, classes: ['public', 'protected'] }
+});
+assert.equal(governedExposure.schemaVersion, 'td613-governed-exposure/v1');
+assert.equal(governedExposure.S.count, 100);
+assert.equal(governedExposure.S_prime.count, 62);
+assert.equal(governedExposure.Y.count, 41);
+assert.equal(governedExposure.sourceClass, 'paired witness comparison');
+assert.equal(governedExposure.authorityCeiling, 'witness');
+assert.equal(governedExposure.routeState, 'hold-branch');
+assert.equal(governedExposure.Theta_u.current, 0.4);
+assert.equal(governedExposure.dominantOperator.code, 'P');
 
 assert.equal(
   selectTD613ApertureDecision({ apertureContext: guardedContext }),

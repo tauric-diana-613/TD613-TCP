@@ -2092,6 +2092,66 @@ button:disabled {
   background: rgba(116, 234, 255, 0.04);
 }
 
+.governed-exposure-panel {
+  margin: 0 0 14px;
+  padding: 16px;
+  border: 1px solid rgba(188, 255, 138, 0.12);
+  border-radius: var(--radius-md);
+  background: rgba(188, 255, 138, 0.03);
+}
+
+.governed-exposure-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.governed-exposure-card {
+  min-height: 100%;
+}
+
+.ingress-forensic-card {
+  margin-top: 14px;
+}
+
+.ingress-forensic-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.ingress-forensic-row {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding-top: 10px;
+  border-top: 1px solid rgba(116, 234, 255, 0.08);
+}
+
+.ingress-forensic-row:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.ingress-forensic-label,
+.ingress-forensic-value {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.ingress-forensic-label {
+  color: var(--steel);
+  text-transform: uppercase;
+}
+
+.ingress-forensic-value {
+  color: var(--chrome);
+  line-height: 1.55;
+}
+
 .results {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3207,6 +3267,10 @@ button:disabled {
     padding: 16px;
   }
 
+  .governed-exposure-grid {
+    grid-template-columns: 1fr;
+  }
+
   .ingress-core-stage {
     min-height: clamp(244px, 31vh, 300px);
   }
@@ -3257,6 +3321,11 @@ button:disabled {
 
   .ingress-grid {
     gap: 14px;
+  }
+
+  .ingress-forensic-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 
   .ingress-core-stage {

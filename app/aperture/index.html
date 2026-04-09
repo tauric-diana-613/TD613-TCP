@@ -1104,7 +1104,7 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     </div>
 
     <div class="section-label">FIRMWARE / BACKBONE</div>
-        <div class="metric-row"><span class="label">Firmware spine</span><span class="value" id="mFirmwareVer">v1.7.0</span></div>
+            <div class="metric-row"><span class="label">Firmware spine</span><span class="value" id="mFirmwareVer">v1.8.0</span></div>
     <div class="metric-row"><span class="label">Bus tick</span><span class="value" id="mBusTick">0</span></div>
     <div class="metric-row"><span class="label">L1 input hash</span><span class="value" id="mBusInput">pending</span></div>
     <div class="metric-row"><span class="label">L5 route</span><span class="value" id="mBusRoute">play</span></div>
@@ -6163,6 +6163,284 @@ requestAnimationFrame(tick);
   drawMoirePanel();
   drawTrace();
   updateUI({ force: true, slow: true });
+})();
+</script>
+<script>
+(function () {
+  function currentState() {
+    try {
+      return typeof state === "undefined" ? null : state;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function fmt(value) {
+    const num = Number(value);
+    return Number.isFinite(num) ? num.toFixed(3) : "0.000";
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function clampUnit(value) {
+    const num = Number(value);
+    if (!Number.isFinite(num)) return 0;
+    return Math.max(0, Math.min(1, num));
+  }
+
+  function ensureForensicPanels() {
+    const host = document.getElementById("rightPanel");
+    const anchor = document.getElementById("tcpBridgePanel");
+    if (!host || !anchor || document.getElementById("td613SchemaPanel")) {
+      return;
+    }
+    anchor.insertAdjacentHTML("afterend", `
+      <div class="section-label">TD613 SUITE FORENSIC SCHEMA</div>
+      <div id="td613SchemaPanel" class="tcp-hook">
+        <div class="hook-title">Governed exposure backbone</div>
+        <div class="hook-value" id="schemaVersionReadout">td613-governed-exposure/v1</div>
+        <div class="bridge-meta">
+          <div class="bridge-readout"><span class="label">Latent / projected / registered</span><span class="value" id="schemaExposureReadout">pending</span></div>
+          <div class="bridge-readout"><span class="label">Source classes</span><span class="value" id="schemaSourceClassReadout">pending</span></div>
+          <div class="bridge-readout"><span class="label">Authority ceiling</span><span class="value" id="schemaAuthorityReadout">pending</span></div>
+          <div class="bridge-readout"><span class="label">Gap / dominant operator</span><span class="value" id="schemaOperatorReadout">pending</span></div>
+        </div>
+      </div>
+
+      <div class="section-label">DIFFERENTIAL ADMISSIBILITY</div>
+      <div id="diffAuditPanel" class="tcp-hook">
+        <div class="hook-title">Classed route variance</div>
+        <div class="hook-value" id="diffAuditSummary">awaiting route sweep</div>
+        <div id="diffAuditMatrix" class="bridge-grid"></div>
+      </div>
+
+      <div class="section-label">PROTECTIVE VOCABULARY REASSIGNMENT</div>
+      <div id="ethicsAuditPanel" class="tcp-hook">
+        <div class="hook-title">Where care-language changes routing or shielding</div>
+        <div class="hook-value" id="ethicsAuditSummary">awaiting ethics sweep</div>
+        <div id="ethicsAuditTable" class="bridge-meta"></div>
+      </div>
+    `);
+  }
+
+  function computeDifferentialAudit() {
+    const st = currentState();
+    const vector = typeof currentRecognitionVector === "function" ? currentRecognitionVector() : {};
+    const routes = st && st.eoDiagnostics && st.eoDiagnostics.routes
+      ? st.eoDiagnostics.routes
+      : {
+          open: st && st.routeState ? st.routeState : "play",
+          standard: st && st.routeState ? st.routeState : "play",
+          restricted: st && st.routeState ? st.routeState : "play"
+        };
+    const rows = [
+      { key: "open", label: "Θ_open", route: routes.open || "play", aperture: THETA.open.apertureThreshold, capacity: THETA.open.capacityMult, strictness: THETA.open.policyStrictness, naming: THETA.open.namingSensitivity },
+      { key: "standard", label: "Θ_std", route: routes.standard || "play", aperture: THETA.standard.apertureThreshold, capacity: THETA.standard.capacityMult, strictness: THETA.standard.policyStrictness, naming: THETA.standard.namingSensitivity },
+      { key: "restricted", label: "Θ_res", route: routes.restricted || "play", aperture: THETA.restricted.apertureThreshold, capacity: THETA.restricted.capacityMult, strictness: THETA.restricted.policyStrictness, naming: THETA.restricted.namingSensitivity }
+    ];
+    const routeVariance = [...new Set(rows.map((row) => row.route))].length;
+    return {
+      rows,
+      routeVariance,
+      delta_obs: clampUnit(vector.delta_obs || 0),
+      aliasPersistence: clampUnit(vector.eta_N || 0),
+      policyPressure: clampUnit(vector.sigma || 0),
+      counterfactual: st && st.eoDiagnostics && st.eoDiagnostics.counterfactual
+        ? st.eoDiagnostics.counterfactual
+        : `Θ_open ${rows[0].route} · Θ_std ${rows[1].route} · Θ_res ${rows[2].route}`,
+      summary: routeVariance > 1
+        ? `class variance visible · ${rows.map((row) => `${row.label} ${row.route}`).join(" · ")}`
+        : `theta-stable · ${rows[1].route}`
+    };
+  }
+
+  function computeEthicsAudit(diff) {
+    const routeSpread = diff.routeVariance;
+    const strongerShielding = diff.rows[2].strictness > diff.rows[0].strictness;
+    const capacitySkew = diff.rows[0].capacity > diff.rows[2].capacity;
+    return {
+      summary: routeSpread > 1
+        ? "protective vocabulary drift watch active"
+        : "protective vocabulary drift nominal",
+      rows: [
+        {
+          term: "privacy",
+          signal: capacitySkew ? "shield variance by class" : "shield variance low",
+          detail: capacitySkew ? "open classes retain more context window than restricted classes" : "context window pressure is not currently class-skewed"
+        },
+        {
+          term: "safety",
+          signal: strongerShielding ? "routing hardens downward" : "routing hardness roughly even",
+          detail: strongerShielding ? "policy strictness rises as Θ narrows, so safety language can become classed admissibility" : "policy strictness is not visibly redistributing route today"
+        },
+        {
+          term: "trust",
+          signal: routeSpread > 1 ? "trust copy risks class split" : "trust copy currently aligned",
+          detail: routeSpread > 1 ? diff.counterfactual : "counterfactual routes are currently aligned"
+        },
+        {
+          term: "opacity",
+          signal: diff.policyPressure > 0.22 ? "opacity pressure visible" : "opacity pressure low",
+          detail: diff.policyPressure > 0.22 ? "suppression and omission pressure are high enough to hide loss behind polish" : "projection loss is visible without heavy opacity"
+        },
+        {
+          term: "healing",
+          signal: routeSpread > 1 ? "care language could reassign burden" : "care language not currently shifting burden",
+          detail: routeSpread > 1 ? "class variance means protective language could preserve ambiguity upward while standardizing downward" : "no current class divergence detected in burden routing"
+        }
+      ]
+    };
+  }
+
+  function buildSuiteSchemaSnapshot() {
+    const st = currentState();
+    const packet = st && st.tcpHandoffPacket ? st.tcpHandoffPacket : null;
+    const vector = typeof currentRecognitionVector === "function" ? currentRecognitionVector() : {};
+    const n = st && st.narrowing ? st.narrowing : { S: 0, P: 0, A: 0 };
+    const totalAdmissibility = st && st.admissibility
+      ? (st.admissibility.registered + st.admissibility.latent + st.admissibility.suppressed + st.admissibility.aliased)
+      : 0;
+    const sourceClasses = [
+      st && st.inputMode === "human-route" ? "counter-tool trace" : "observational trace",
+      st && st.antiRecaptureMode ? "anti-recapture visible" : "anti-recapture latent",
+      packet ? "packet:non-identifying" : "packet:pending"
+    ];
+    return {
+      suite: "TD613 Forensic Authorship Whistleblower Suite",
+      schemaVersion: "td613-governed-exposure/v1",
+      governedExposure: {
+        S: Number(n.S || 0),
+        projected: Number(n.P || 0),
+        registered: Number(n.A || 0),
+        O: clampUnit(st && st.omission ? st.omission.O : 0),
+        O_star: clampUnit(st && st.omission ? st.omission.Ostar : 0),
+        delta_obs: clampUnit(vector.delta_obs || 0),
+        Gap: clampUnit(Math.max(st && st.residueIndex ? st.residueIndex : 0, st && st.signalRuptureIndex ? st.signalRuptureIndex : 0)),
+        NameSens: clampUnit((st && st.namingDisruptions ? st.namingDisruptions : 0) / Math.max(st && st.internalInteractions ? st.internalInteractions : 1, 1) * 8),
+        AliasPersist: clampUnit(vector.eta_N || 0),
+        Red: clampUnit(st && st.constellationSpread ? st.constellationSpread : 0),
+        Supp_tau: clampUnit((st && st.admissibility ? st.admissibility.suppressed : 0) / Math.max(totalAdmissibility, 1)),
+        Theta_u: THETA[(st && st.userClass) || "standard"].label,
+        dominantOperator: st && st.losses && st.losses.dominant ? st.losses.dominant : "—",
+        routeState: st && st.routeState ? st.routeState : "play"
+      },
+      sourceClasses,
+      authorityCeiling: st && st.routeState === "harbor-eligible"
+        ? "guarded audit egress"
+        : st && st.routeState === "buffer"
+          ? "warning-marked audit"
+          : "observational",
+      metricClasses: {
+        provenanceIntegrity: clampUnit(st && st.bridgeProvIntegrity ? st.bridgeProvIntegrity : st && st.provenanceIntegrity ? st.provenanceIntegrity : 0.82),
+        burdenConcentration: clampUnit((st && st.omission ? st.omission.Ostar : 0) + (st && st.namingDisruptions ? st.namingDisruptions / 12 : 0))
+      }
+    };
+  }
+
+  function updateForensicPanels() {
+    ensureForensicPanels();
+    const diff = computeDifferentialAudit();
+    const ethics = computeEthicsAudit(diff);
+    const schema = buildSuiteSchemaSnapshot();
+
+    const schemaVersion = document.getElementById("schemaVersionReadout");
+    const schemaExposure = document.getElementById("schemaExposureReadout");
+    const schemaSource = document.getElementById("schemaSourceClassReadout");
+    const schemaAuthority = document.getElementById("schemaAuthorityReadout");
+    const schemaOperator = document.getElementById("schemaOperatorReadout");
+    const diffSummary = document.getElementById("diffAuditSummary");
+    const diffMatrix = document.getElementById("diffAuditMatrix");
+    const ethicsSummary = document.getElementById("ethicsAuditSummary");
+    const ethicsTable = document.getElementById("ethicsAuditTable");
+
+    if (schemaVersion) schemaVersion.textContent = `${APERTURE.schema} · governed exposure v1`;
+    if (schemaExposure) schemaExposure.textContent = `${schema.governedExposure.S} / ${schema.governedExposure.projected} / ${schema.governedExposure.registered}`;
+    if (schemaSource) schemaSource.textContent = schema.sourceClasses.join(" · ");
+    if (schemaAuthority) schemaAuthority.textContent = `${schema.authorityCeiling} · ${schema.governedExposure.routeState}`;
+    if (schemaOperator) schemaOperator.textContent = `Gap ${fmt(schema.governedExposure.Gap)} · ${schema.governedExposure.dominantOperator}`;
+    if (diffSummary) diffSummary.textContent = diff.summary;
+    if (diffMatrix) {
+      diffMatrix.innerHTML = diff.rows.map((row) => `
+        <div class="tcp-hook">
+          <div class="hook-title">${escapeHtml(row.label)}</div>
+          <div class="hook-value">${escapeHtml(row.route)}</div>
+          <div class="bridge-readout"><span class="label">aperture</span><span class="value">${fmt(row.aperture)}</span></div>
+          <div class="bridge-readout"><span class="label">capacity</span><span class="value">${fmt(row.capacity)}</span></div>
+          <div class="bridge-readout"><span class="label">policy</span><span class="value">${fmt(row.strictness)}</span></div>
+          <div class="bridge-readout"><span class="label">naming</span><span class="value">${fmt(row.naming)}</span></div>
+        </div>
+      `).join("");
+    }
+    if (ethicsSummary) ethicsSummary.textContent = ethics.summary;
+    if (ethicsTable) {
+      ethicsTable.innerHTML = ethics.rows.map((row) => `
+        <div class="bridge-readout">
+          <span class="label">${escapeHtml(row.term)}</span>
+          <span class="value">${escapeHtml(row.signal)}</span>
+        </div>
+        <div class="bridge-readout">
+          <span class="label">detail</span>
+          <span class="value">${escapeHtml(row.detail)}</span>
+        </div>
+      `).join("");
+    }
+    if (currentState()) {
+      currentState().forensicSchema = schema;
+      currentState().differentialAdmissibility = diff;
+      currentState().ethicsAudit = ethics;
+    }
+  }
+
+  function patchVersionDisplays() {
+    const firmware = document.getElementById("mFirmwareVer");
+    if (firmware) firmware.textContent = "v1.8.0";
+    document.title = "TD613 Aperture · v1.8.0";
+  }
+
+  const previousCreateTCPHandoffPacket = window.createTCPHandoffPacket;
+  window.createTCPHandoffPacket = function td613CreateForensicTCPPacket(metrics, packetKeyOverride = null) {
+    const packet = previousCreateTCPHandoffPacket.call(this, metrics, packetKeyOverride);
+    const diff = computeDifferentialAudit();
+    const ethics = computeEthicsAudit(diff);
+    const schema = buildSuiteSchemaSnapshot();
+    packet.forensicSchema = {
+      suite: schema.suite,
+      schemaVersion: schema.schemaVersion,
+      governedExposure: schema.governedExposure,
+      sourceClasses: schema.sourceClasses,
+      authorityCeiling: schema.authorityCeiling,
+      metricClasses: schema.metricClasses
+    };
+    packet.differentialAdmissibility = diff;
+    packet.ethicsAudit = ethics;
+    packet.governedExposureLedger = {
+      latentState: schema.governedExposure.S,
+      projectedState: schema.governedExposure.projected,
+      registeredSurface: schema.governedExposure.registered,
+      omission: schema.governedExposure.O,
+      ratifiedOmission: schema.governedExposure.O_star,
+      dominantLoss: schema.governedExposure.dominantOperator
+    };
+    return packet;
+  };
+
+  const previousUpdateUI = window.updateUI;
+  window.updateUI = function td613UpdateForensicPanels(opts = {}) {
+    const result = previousUpdateUI.call(this, opts);
+    patchVersionDisplays();
+    updateForensicPanels();
+    return result;
+  };
+
+  patchVersionDisplays();
+  updateForensicPanels();
 })();
 </script>
 </body>

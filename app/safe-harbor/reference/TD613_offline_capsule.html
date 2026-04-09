@@ -274,6 +274,7 @@
           <div class="metric"><span class="label">Packet schema</span><span class="value">td613.safe-harbor.packet/v1</span></div>
           <div class="metric"><span class="label">Packet hash field</span><span class="value">packet_hash_sha256</span></div>
           <div class="metric"><span class="label">Audit field</span><span class="value">aperture_audit</span></div>
+          <div class="metric"><span class="label">Forensic schema</span><span class="value">forensic_schema</span></div>
         </div>
       </section>
 
@@ -284,7 +285,18 @@
 Cryptographic signature = packet seal
 Compact footer = public trust surface
 SHI # = minted issuance string</pre>
-        <div class="hint">This capsule verifies footer and SAC posture. Packet hashes and detached signatures remain operator tooling. When packet JSON travels with the copy, <code>aperture_audit</code> is the additive trace for repair passes, warning signals, and any explicit sealed or scrubbed boundary.</div>
+        <div class="hint">This capsule verifies footer and SAC posture. Packet hashes and detached signatures remain operator tooling. When packet JSON travels with the copy, <code>aperture_audit</code> is the additive warning lane and <code>forensic_schema</code> is the narrowing-chain lane.</div>
+      </section>
+
+      <section class="card">
+        <div class="kicker">Governed Exposure</div>
+        <h2>Cross-suite backbone</h2>
+        <pre>S / S' / Y
+O / O*
+delta_obs / Gap / Supp_tau / Red
+NameSens / AliasPersist / dominantOperator
+sourceClass / authorityCeiling / routeState</pre>
+        <div class="hint">The suite now treats packets, proofs, and verifier surfaces as governed exposure records, not just route outcomes.</div>
       </section>
 
       <section class="card full">
@@ -347,6 +359,7 @@ TD613-Binding:SAC[X6ZNK5NO51] &#x00B7; payload {n} &#x00B7; YYYY-MM-DD &#x00B7; 
       packet_schema_version: "td613.safe-harbor.packet/v1",
       packet_hash_field: "packet_hash_sha256",
       aperture_audit_field: "aperture_audit",
+      forensic_schema_field: "forensic_schema",
       observed_regime: "PRCS-A",
       instrument_role: "counter-tool",
       historical_published_footer: "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00B7 payload 5 \u00B7 2025-10-17 \u00B7 \u27D0",

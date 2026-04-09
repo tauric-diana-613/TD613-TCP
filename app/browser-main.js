@@ -9,6 +9,7 @@
   } = window.TCP_DATA;
   const {
     HARBOR_LIBRARY,
+    buildTD613GovernedExposureSchema,
     compareTexts,
     extractCadenceProfile,
     buildCadenceTransfer,
@@ -331,7 +332,8 @@
   function buildSafeHarborHandoffHref({
     decision = 'weak-signal',
     harbor = '',
-    routeStatus = ''
+    routeStatus = '',
+    forensicSchema = null
   } = {}) {
     const url = new URL(SAFE_HARBOR_HANDOFF_PATH, window.location.href);
     url.searchParams.set('source', 'tcp');
@@ -342,7 +344,264 @@
     if (routeStatus) {
       url.searchParams.set('route', String(routeStatus));
     }
+    if (forensicSchema) {
+      url.searchParams.set('source_class', String(forensicSchema.sourceClass || 'tcp-field'));
+      url.searchParams.set('source_classes', (forensicSchema.sourceClasses || []).join(','));
+      url.searchParams.set('authority', String(forensicSchema.authorityCeiling || 'exploratory'));
+      url.searchParams.set('theta_u', String(forensicSchema.Theta_u?.current ?? '0'));
+      url.searchParams.set('o', String(forensicSchema.O ?? '0'));
+      url.searchParams.set('o_star', String(forensicSchema.O_star ?? '0'));
+      url.searchParams.set('delta_obs', String(forensicSchema.delta_obs ?? '0'));
+      url.searchParams.set('gap', String(forensicSchema.Gap ?? '0'));
+      url.searchParams.set('name_sens', String(forensicSchema.NameSens ?? '0'));
+      url.searchParams.set('alias_persist', String(forensicSchema.AliasPersist ?? '0'));
+      url.searchParams.set('red', String(forensicSchema.Red ?? '0'));
+      url.searchParams.set('supp_tau', String(forensicSchema.Supp_tau ?? '0'));
+      url.searchParams.set('provenance_integrity', String(forensicSchema.provenanceIntegrity ?? '0'));
+      url.searchParams.set('burden_concentration', String(forensicSchema.burdenConcentration ?? '0'));
+      url.searchParams.set('dominant_operator', String(forensicSchema.dominantOperator?.code || 'A'));
+      url.searchParams.set('latent_s', String(forensicSchema.S?.count ?? '0'));
+      url.searchParams.set('projected_s', String(forensicSchema.S_prime?.count ?? '0'));
+      url.searchParams.set('registered_y', String(forensicSchema.Y?.count ?? '0'));
+    }
     return url.toString();
+  }
+
+  function voiceSourceClass(voiceState) {
+    if (voiceState.sourceClass) {
+      return voiceState.sourceClass;
+    }
+    const sample = sampleEntry(baySampleIds[voiceState.slot]);
+    if (voiceState.shell.mode === 'borrowed' && voiceState.persona) {
+      return `masked transfer / ${voiceState.persona.name.toLowerCase()}`;
+    }
+    if (sample?.id) {
+      return `sample corpus / ${sample.id}`;
+    }
+    return 'open witness text';
+  }
+
+  function governedExposureAuthorityCeiling(decision = 'weak-signal') {
+    if (decision === 'passage') {
+      return 'packetizable handoff';
+    }
+    if (decision === 'criticality') {
+      return 'guarded witness';
+    }
+    if (decision === 'hold-branch') {
+      return 'witness';
+    }
+    return 'exploratory';
+  }
+
+  function buildIdleGovernedExposure() {
+    return buildTD613GovernedExposureSchema({
+      latentState: {
+        label: 'latent witness field',
+        count: 0,
+        note: 'No source material is staged yet.'
+      },
+      projectedState: {
+        label: 'projected comparison field',
+        count: 0,
+        note: 'The membrane cannot project anything until a voice enters the room.'
+      },
+      registeredSurface: {
+        label: 'registered readout surface',
+        count: 0,
+        note: 'No output survives because no scan has run.'
+      },
+      sourceClass: 'idle / no witness material',
+      authorityCeiling: 'latent',
+      routeState: 'buffered',
+      theta: { current: 0, classes: ['public membrane'] },
+      provenanceIntegrity: 0,
+      burdenConcentration: 0
+    });
+  }
+
+  function buildSoloGovernedExposure(voiceState, routeStateValue = 'awaiting pair', authorityCeiling = 'witness') {
+    const rawWordCount = Math.max(0, Math.round(Number(voiceState.rawProfile?.wordCount || 0)));
+    const projectedRatio = clamp01(0.54 + Number(voiceState.effectiveProfile?.recurrencePressure || 0) * 0.18);
+    const registeredRatio = clamp01(0.36 + Number(voiceState.effectiveProfile?.recurrencePressure || 0) * 0.12);
+    return buildTD613GovernedExposureSchema({
+      latentState: {
+        label: 'latent witness field',
+        count: rawWordCount,
+        note: 'Single-voice witness material before contrast.'
+      },
+      projectedState: {
+        label: 'projected cadence field',
+        count: Math.round(rawWordCount * projectedRatio),
+        ratio: projectedRatio,
+        note: 'What the solo witness lane can hold as signature.'
+      },
+      registeredSurface: {
+        label: 'registered solo surface',
+        count: Math.round(rawWordCount * registeredRatio),
+        ratio: registeredRatio,
+        note: 'What TCP can publish before a second voice tests the field.'
+      },
+      sourceClass: voiceSourceClass(voiceState),
+      sourceClasses: [voiceSourceClass(voiceState), voiceState.shell.mode === 'borrowed' ? 'borrowed shell' : 'native bay'],
+      authorityCeiling,
+      routeState: routeStateValue,
+      candidateSuppression: clamp01(0.16 + (1 - Number(voiceState.effectiveProfile?.recurrencePressure || 0)) * 0.22),
+      observabilityDeficit: clamp01(0.28 + (1 - projectedRatio) * 0.36),
+      aliasPersistence: clamp01(Number(voiceState.effectiveProfile?.recurrencePressure || 0) * 0.18),
+      namingSensitivity: clamp01(Number(voiceState.effectiveProfile?.modifierDensity || 0) * 0.34),
+      redundancyInflation: clamp01(Number(voiceState.effectiveProfile?.repeatedBigramPressure || 0) * 0.55),
+      capacityPressure: clamp01(0.22 + Number(voiceState.effectiveProfile?.lineBreakDensity || 0) * 0.9),
+      policyPressure: clamp01(routeStateValue === 'awaiting pair' ? 0.18 : 0.26),
+      provenanceIntegrity: clamp01(0.58 + projectedRatio * 0.26),
+      burdenConcentration: clamp01(0.18 + Number(voiceState.effectiveProfile?.recurrencePressure || 0) * 0.2),
+      theta: { current: routeStateValue === 'awaiting pair' ? 0.26 : 0.34, classes: ['public membrane', 'solo witness'] }
+    });
+  }
+
+  function buildPairGovernedExposure(voiceStateA, voiceStateB, cmp, branch, routePressure, decision, ledger, custody, criticality) {
+    const latentWordCount = Math.max(
+      1,
+      Math.round(Number(voiceStateA.rawProfile?.wordCount || 0) + Number(voiceStateB.rawProfile?.wordCount || 0))
+    );
+    const projectedRatio = clamp01(
+      0.52 +
+      (cmp.traceability * 0.18) +
+      (cmp.similarity * 0.08) -
+      (branch.branchPressure * 0.14) -
+      (cmp.recurrenceDistance * 0.08)
+    );
+    const registeredRatio = clamp01(
+      0.3 +
+      (routePressure * 0.2) +
+      (decision === 'passage' ? 0.18 : decision === 'hold-branch' ? 0.08 : 0.02) -
+      (decision === 'criticality' ? 0.04 : 0)
+    );
+    const sourceClasses = [
+      voiceSourceClass(voiceStateA),
+      voiceSourceClass(voiceStateB),
+      voiceStateA.shell.mode === 'borrowed' || voiceStateB.shell.mode === 'borrowed' ? 'masked comparison' : 'native comparison'
+    ];
+    const candidateSuppression = clamp01(
+      ((1 - cmp.traceability) * 0.26) +
+      (branch.branchPressure * 0.34) +
+      (decision === 'weak-signal' ? 0.12 : 0.04)
+    );
+    const observabilityDeficit = clamp01(
+      ((1 - cmp.traceability) * 0.52) +
+      (cmp.recurrenceDistance * 0.16) +
+      (branch.branchPressure * 0.16)
+    );
+    const aliasPersistence = clamp01(
+      (cmp.functionWordDistance * 0.34) +
+      (cmp.charGramDistance * 0.22) +
+      ((1 - cmp.traceability) * 0.16)
+    );
+    const namingSensitivity = clamp01(
+      (cmp.lexicalDistance * 0.22) +
+      (cmp.surfaceMarkerDistance * 0.22) +
+      (cmp.registerDistance * 0.18)
+    );
+    const redundancyInflation = clamp01(
+      (cmp.similarity * 0.24) +
+      (cmp.recurrencePressure * 0.18) +
+      ((1 - cmp.lexicalOverlap) * 0.12)
+    );
+    const capacityPressure = clamp01(
+      ((1 - cmp.traceability) * 0.2) +
+      (cmp.recurrencePressure * 0.2) +
+      (branch.branchPressure * 0.18)
+    );
+    const policyPressure = clamp01(
+      (decision === 'criticality' ? 0.64 : decision === 'hold-branch' ? 0.42 : decision === 'passage' ? 0.24 : 0.18) +
+      (mirrorLogic === 'off' ? 0.06 : 0) +
+      (containment === 'on' ? 0.08 : 0)
+    );
+    const provenanceIntegrity = clamp01(
+      (cmp.traceability * 0.44) +
+      (custody.integrity * 0.24) +
+      ((1 - branch.branchPressure) * 0.18) +
+      (decision === 'passage' ? 0.12 : decision === 'hold-branch' ? 0.06 : 0)
+    );
+    const burdenConcentration = clamp01(
+      (criticality * 0.34) +
+      (branch.branchPressure * 0.24) +
+      (decision === 'criticality' ? 0.18 : decision === 'hold-branch' ? 0.08 : 0) +
+      (custody.archive === 'witness' ? 0.08 : 0.02)
+    );
+
+    return buildTD613GovernedExposureSchema({
+      latentState: {
+        label: 'latent pair field',
+        count: latentWordCount,
+        note: 'Available source material before deck narrowing.'
+      },
+      projectedState: {
+        label: 'projected comparison field',
+        count: Math.round(latentWordCount * projectedRatio),
+        ratio: projectedRatio,
+        note: 'What the runtime can still compare after stylometric narrowing.'
+      },
+      registeredSurface: {
+        label: 'registered public surface',
+        count: Math.round(latentWordCount * registeredRatio),
+        ratio: registeredRatio,
+        note: 'What survives as the readout and handoff surface.'
+      },
+      sourceClass: sourceClasses.join(' // '),
+      sourceClasses,
+      authorityCeiling: governedExposureAuthorityCeiling(decision),
+      routeState: ledger.route_status,
+      candidateSuppression,
+      observabilityDeficit,
+      aliasPersistence,
+      namingSensitivity,
+      redundancyInflation,
+      capacityPressure,
+      policyPressure,
+      provenanceIntegrity,
+      burdenConcentration,
+      theta: {
+        current: decision === 'passage' ? 0.78 : decision === 'criticality' ? 0.62 : decision === 'hold-branch' ? 0.44 : 0.22,
+        classes: ['public membrane', 'paired witness', governedExposureAuthorityCeiling(decision)]
+      }
+    });
+  }
+
+  function renderGovernedExposure(schema) {
+    const activeSchema = schema || buildIdleGovernedExposure();
+    window.TCP_GOVERNED_EXPOSURE = activeSchema;
+    const omissionText = `${formatPct(activeSchema.O)} / ${formatPct(activeSchema.O_star)}`;
+    const gapText = `${formatPct(activeSchema.Gap)} // ${activeSchema.dominantOperator.code} ${activeSchema.dominantOperator.label}`;
+    const sourceSummary = activeSchema.sourceClasses.length > 1
+      ? `${activeSchema.sourceClass} // ${activeSchema.sourceClasses.join(' | ')}`
+      : activeSchema.sourceClass;
+
+    if ($('ingressLatentState')) $('ingressLatentState').textContent = `${activeSchema.S.label} // ${activeSchema.S.count}`;
+    if ($('ingressProjectedState')) $('ingressProjectedState').textContent = `${activeSchema.S_prime.label} // ${activeSchema.S_prime.count}`;
+    if ($('ingressRegisteredSurface')) $('ingressRegisteredSurface').textContent = `${activeSchema.Y.label} // ${activeSchema.Y.count}`;
+    if ($('ingressSourceClass')) $('ingressSourceClass').textContent = sourceSummary;
+    if ($('ingressAuthorityCeiling')) $('ingressAuthorityCeiling').textContent = activeSchema.authorityCeiling;
+    if ($('ingressRouteStateReadout')) $('ingressRouteStateReadout').textContent = activeSchema.routeState;
+
+    if ($('geLatentState')) $('geLatentState').textContent = `${activeSchema.S.count}`;
+    if ($('geLatentHint')) $('geLatentHint').textContent = activeSchema.S.note || 'Available witness field before narrowing.';
+    if ($('geProjectedState')) $('geProjectedState').textContent = `${activeSchema.S_prime.count} // ${formatPct(activeSchema.S_prime.ratio)}`;
+    if ($('geProjectedHint')) $('geProjectedHint').textContent = activeSchema.S_prime.note || 'Projected comparison field.';
+    if ($('geRegisteredSurface')) $('geRegisteredSurface').textContent = `${activeSchema.Y.count} // ${formatPct(activeSchema.Y.ratio)}`;
+    if ($('geRegisteredHint')) $('geRegisteredHint').textContent = activeSchema.Y.note || 'Registered public surface.';
+    if ($('geAuthorityCeiling')) $('geAuthorityCeiling').textContent = activeSchema.authorityCeiling;
+    if ($('geAuthorityHint')) $('geAuthorityHint').textContent = `Theta(u) ${formatPct(activeSchema.Theta_u.current)} // ${activeSchema.Theta_u.classes.join(' | ') || 'public membrane'}`;
+    if ($('geSourceClass')) $('geSourceClass').textContent = activeSchema.sourceClass;
+    if ($('geSourceHint')) $('geSourceHint').textContent = activeSchema.sourceClasses.join(' | ') || activeSchema.sourceClass;
+    if ($('geRouteState')) $('geRouteState').textContent = activeSchema.routeState;
+    if ($('geRouteHint')) $('geRouteHint').textContent = `Provenance integrity ${formatPct(activeSchema.provenanceIntegrity)} // burden ${formatPct(activeSchema.burdenConcentration)}`;
+    if ($('geOmission')) $('geOmission').textContent = omissionText;
+    if ($('geOmissionHint')) $('geOmissionHint').textContent = `delta_obs ${formatPct(activeSchema.delta_obs)} // Supp_tau ${formatPct(activeSchema.Supp_tau)}`;
+    if ($('geGap')) $('geGap').textContent = gapText;
+    if ($('geGapHint')) $('geGapHint').textContent = `NameSens ${formatPct(activeSchema.NameSens)} // AliasPersist ${formatPct(activeSchema.AliasPersist)} // Red ${formatPct(activeSchema.Red)}`;
+    if ($('governedExposurePreview')) $('governedExposurePreview').textContent = JSON.stringify(activeSchema, null, 2);
+    return activeSchema;
   }
 
   function safeHarborHandoffState(decision = 'weak-signal') {
@@ -361,10 +620,11 @@
   function updateSafeHarborEntryPoints({
     decision = 'weak-signal',
     harbor = '',
-    routeStatus = ''
+    routeStatus = '',
+    forensicSchema = null
   } = {}) {
     const state = safeHarborHandoffState(decision);
-    const href = buildSafeHarborHandoffHref({ decision, harbor, routeStatus });
+    const href = buildSafeHarborHandoffHref({ decision, harbor, routeStatus, forensicSchema });
     const detail =
       state === 'ready'
         ? `Open Safe Harbor to packetize this ${harbor || 'harbor'} handoff.`
@@ -4543,7 +4803,7 @@
     $('savePersonaBtn').disabled = !getVoiceState(activeVoice).hasText;
   }
 
-  function updateStatePills(routeStatus, decision, { harbor = '' } = {}) {
+  function updateStatePills(routeStatus, decision, { harbor = '', forensicSchema = null } = {}) {
     $('badgeState').textContent = `${glyphChar(glyphKeyForBadge(badge), '')} Badge // ${BADGE_LABELS[badge] || badge}`;
     applyGlyphMetadata($('badgeState'), glyphKeyForBadge(badge));
     $('badgeState').classList.toggle('active', badge === 'badge.holds');
@@ -4559,7 +4819,7 @@
     $('routeState').classList.toggle('warn', decision === 'criticality');
     $('routeState').classList.toggle('active', decision === 'passage');
     document.body.dataset.routeStatusKey = $('routeState').dataset.routeStatusKey;
-    updateSafeHarborEntryPoints({ decision, harbor, routeStatus });
+    updateSafeHarborEntryPoints({ decision, harbor, routeStatus, forensicSchema });
   }
 
   function updateHeroConsolePair(payload) {
@@ -4628,7 +4888,7 @@
     setMetricTone('custodyCard', 'idle');
   }
 
-  function updateHarborBox(harbor, ledger, decision) {
+  function updateHarborBox(harbor, ledger, decision, forensicSchema = null) {
     if (decision === 'weak-signal') {
       $('harborBox').innerHTML = `
         <div class="harbor-head">
@@ -4683,7 +4943,7 @@
         </div>
       </div>
       <p class="kicker">${harborData.trigger_condition}. ${kicker}</p>
-      <a class="harbor-action-link" data-state="${decision === 'passage' ? 'ready' : decision === 'criticality' ? 'guarded' : 'branch'}" href="${escapeHtml(buildSafeHarborHandoffHref({ decision, harbor, routeStatus: ledger.route_status }))}">${decision === 'passage' ? 'Enter Safe Harbor' : decision === 'criticality' ? 'Open Guarded Safe Harbor' : 'Stage In Safe Harbor'}</a>
+      <a class="harbor-action-link" data-state="${decision === 'passage' ? 'ready' : decision === 'criticality' ? 'guarded' : 'branch'}" href="${escapeHtml(buildSafeHarborHandoffHref({ decision, harbor, routeStatus: ledger.route_status, forensicSchema }))}">${decision === 'passage' ? 'Enter Safe Harbor' : decision === 'criticality' ? 'Open Guarded Safe Harbor' : 'Stage In Safe Harbor'}</a>
     `;
   }
 
@@ -4715,6 +4975,7 @@
   }
 
   function renderIdleState() {
+    const forensicSchema = renderGovernedExposure(buildIdleGovernedExposure());
     setMetricKeys('pair');
     $('similarity').textContent = '--';
     $('traceability').textContent = '--';
@@ -4728,7 +4989,7 @@
     $('waveFormula').textContent = 'Paste a voice to expose cadence metrics.\nPair two voices to compute resonance, density, and criticality.';
     $('harborFormula').textContent = 'Analyze one or two voices to surface custody drift, archive state, and reuse gain.';
     $('ledgerPreview').textContent = '{\n  "status": "idle"\n}';
-    $('fieldNotice').textContent = 'Bring one or two voices into the room. Readout keeps witness, route, harbor, and archive in separate lanes.';
+    $('fieldNotice').textContent = 'Bring one or two voices into the room. TCP stages latent state, projected state, registered surface, and route law separately before it flatters resemblance.';
     $('heroSignalValue').textContent = '--';
     $('heroSignalNote').textContent = 'Stage one voice or two and wake the field.';
     $('heroRouteValue').textContent = '--';
@@ -4739,7 +5000,7 @@
     applyGlyphMetadata($('decisionTone'), 'stateDecision');
     $('decisionTone').dataset.state = 'weak-signal';
     $('harborBox').innerHTML = '';
-    updateStatePills('buffered', 'weak-signal', { harbor: 'observe' });
+    updateStatePills('buffered', 'weak-signal', { harbor: 'observe', forensicSchema });
     resetMetricTones();
     document.body.dataset.decision = 'weak-signal';
   }
@@ -4767,8 +5028,10 @@
     harborStat,
     harborItems,
     harborKicker,
-    routeStatus = 'awaiting pair'
+    routeStatus = 'awaiting pair',
+    forensicSchema = null
   }) {
+    const activeSchema = renderGovernedExposure(forensicSchema || buildIdleGovernedExposure());
     setMetricKeys('solo');
     $('similarity').textContent = heroSignalValue;
     $('traceability').textContent = metricTraceability;
@@ -4810,7 +5073,7 @@
       </div>
       <p class="kicker">${escapeHtml(harborKicker)}</p>
     `;
-    updateStatePills(routeStatus, 'hold-branch', { harbor: harborName });
+    updateStatePills(routeStatus, 'hold-branch', { harbor: harborName, forensicSchema: activeSchema });
     setMetricTone('similarityCard', 'warm');
     setMetricTone('traceabilityCard', 'live');
     setMetricTone('routePressureCard', 'live');
@@ -4819,6 +5082,7 @@
   }
 
   function renderSoloState(voiceState) {
+    const forensicSchema = buildSoloGovernedExposure(voiceState, 'awaiting pair', 'witness');
     renderSoloReadoutCore({
       metricTraceability: `${voiceState.effectiveProfile.avgSentenceLength.toFixed(1)}w`,
       metricCustody: SLOT_SHORT[voiceState.slot],
@@ -4858,7 +5122,8 @@
         { label: 'Shell', value: voiceState.shell.label },
         { label: 'Next move', value: 'Save in session or pair' }
       ],
-      harborKicker: 'A solo scan keeps the branch open. Save this cadence into the session shelf or invite a second voice into the encounter chamber.'
+      harborKicker: 'A solo scan keeps the branch open. Save this cadence into the session shelf or invite a second voice into the encounter chamber.',
+      forensicSchema
     });
   }
 
@@ -4866,6 +5131,15 @@
     if (!lock?.profile) {
       return;
     }
+    const pseudoVoiceState = {
+      slot: 'H',
+      rawProfile: lock.profile,
+      effectiveProfile: lock.profile,
+      shell: { mode: 'native', label: 'cadence home' },
+      persona: null,
+      sourceClass: 'homebase cadence lock'
+    };
+    const forensicSchema = buildSoloGovernedExposure(pseudoVoiceState, 'awaiting pair', 'home witness');
 
     setAnalysisRevealState(true);
     readoutOwner = 'homebase';
@@ -4907,7 +5181,8 @@
         { label: 'Next move', value: 'Keep in session, mask, or pair' }
       ],
       harborKicker: 'Homebase reveal is not a verdict. It is the point where a private cadence home becomes explicitly measurable through the solo witness path.',
-      routeStatus: 'awaiting pair'
+      routeStatus: 'awaiting pair',
+      forensicSchema
     });
   }
 
@@ -5038,6 +5313,19 @@
       explained,
       recognized
     });
+    const forensicSchema = renderGovernedExposure(
+      buildPairGovernedExposure(
+        voiceStateA,
+        voiceStateB,
+        cmp,
+        branch,
+        routePressure,
+        decision,
+        ledger,
+        custody,
+        criticality
+      )
+    );
 
     setMetricKeys('pair');
     $('similarity').textContent = cmp.similarity.toFixed(2);
@@ -5089,13 +5377,13 @@ DeltaE = ${ledger.reuse_gain}`;
       decision === 'criticality'
             ? `${microcopy.criticality_warning} ${harbor} is the cleanest structured response while route pressure sits at ${routePressure.toFixed(2)}.`
             : decision === 'passage'
-              ? `${microcopy.harbor_success} Exploratory play has resolved into a viable harbor with ${formatPct(HARBOR_LIBRARY[harbor].provenance_retention)} provenance retention.`
+              ? `${microcopy.harbor_success} Exploratory play has resolved into a viable harbor with ${formatPct(HARBOR_LIBRARY[harbor].provenance_retention)} provenance retention. O is ${formatPct(forensicSchema.O)} and O* is ${formatPct(forensicSchema.O_star)} across the current route.`
               : decision === 'hold-branch'
-                ? `TCP is keeping the pair in branch mode. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so the deck can stay curious without pretending it has a verdict.`
-                : `The pattern is still light. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so TCP keeps the encounter playful instead of forcing route.`;
-    updateHarborBox(harbor, ledger, decision);
+                ? `TCP is keeping the pair in branch mode. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, but the real question is what narrowed before this surface felt sufficient.`
+                : `The pattern is still light. Similarity is ${cmp.similarity.toFixed(2)} and traceability is ${cmp.traceability.toFixed(2)}, so TCP keeps the encounter playful instead of pretending the narrowed surface is the whole field.`;
+    updateHarborBox(harbor, ledger, decision, forensicSchema);
     updateHeroConsolePair({ cmp, routePressure, harbor, decision });
-    updateStatePills(ledger.route_status, decision, { harbor });
+    updateStatePills(ledger.route_status, decision, { harbor, forensicSchema });
     setMetricTone('similarityCard', cmp.similarity >= 0.78 ? 'live' : cmp.similarity >= 0.55 ? 'warm' : 'idle');
     setMetricTone('traceabilityCard', cmp.traceability >= 0.7 ? 'live' : cmp.traceability >= 0.45 ? 'warm' : 'idle');
     setMetricTone('routePressureCard', decision === 'criticality' ? 'hot' : decision === 'passage' ? 'live' : 'warm');

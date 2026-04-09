@@ -255,10 +255,65 @@
     "redundancyInflation": 0.24,
     "capacityPressure": 0.1378,
     "policyPressure": 0.18,
-    "withheldMaterial": true,
-    "withheldReason": "sealed-segment-boundary"
+    "withheldMaterial": false,
+    "withheldReason": null
   },
-  "packet_hash_sha256": "sha256:6d3ca449f6a403dc2cbf5e92c4b2d592355cb38d73bd89243c6536efec96ad98",
+  "forensic_schema": {
+    "schemaVersion": "td613-governed-exposure/v1",
+    "observedRegime": "PRCS-A",
+    "instrumentRole": "counter-tool",
+    "narrowingChain": "R∘K∘C∘P∘F∘A",
+    "S": {
+      "label": "latent intake field",
+      "count": 72,
+      "ratio": 1,
+      "note": "Available ingress material before Safe Harbor shapes the packet."
+    },
+    "S_prime": {
+      "label": "projected packet field",
+      "count": 53,
+      "ratio": 0.7361,
+      "note": "What the chamber can still hold after shaping and route conscience."
+    },
+    "Y": {
+      "label": "registered packet surface",
+      "count": 44,
+      "ratio": 0.6111,
+      "note": "What survives into the staged public packet and proof lanes."
+    },
+    "O": 0.2639,
+    "O_star": 0.3889,
+    "delta_obs": 0.26,
+    "Gap": 0.26,
+    "NameSens": 0.08,
+    "AliasPersist": 0.04,
+    "Red": 0.24,
+    "Supp_tau": 0.18,
+    "Theta_u": {
+      "current": 0.82,
+      "classes": [
+        "public membrane",
+        "tcp cadence witness",
+        "safe-harbor packet"
+      ]
+    },
+    "dominantOperator": {
+      "code": "P",
+      "label": "projection loss",
+      "pressure": 0.26
+    },
+    "sourceClass": "public membrane",
+    "sourceClasses": [
+      "public membrane",
+      "safe-harbor packet",
+      "tcp cadence witness"
+    ],
+    "authorityCeiling": "packetized handoff",
+    "provenanceIntegrity": 0.94,
+    "burdenConcentration": 0.16,
+    "routeState": "harbor-eligible"
+  },
+  "packet_hash_sha256": "sha256:b9fd6431085f9384381ab59d0865f5ce27d0739334497e47205fb21b3547cc5a",
   "signature": {
     "sig_type": "JWS-detached",
     "kid": "tauric.diana.613",

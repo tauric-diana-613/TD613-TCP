@@ -15,6 +15,7 @@
     "issuance",
     "signature",
     "aperture_audit",
+    "forensic_schema",
     "bridge",
     "packet_hash_sha256"
   ],
@@ -528,6 +529,9 @@
     },
     "aperture_audit": {
       "$ref": "#/$defs/apertureAudit"
+    },
+    "forensic_schema": {
+      "$ref": "#/$defs/forensicSchema"
     }
   },
   "$defs": {
@@ -641,6 +645,191 @@
         },
         "sealed_text_ref": {
           "type": "string"
+        }
+      }
+    },
+    "forensicSchema": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "observedRegime",
+        "instrumentRole",
+        "narrowingChain",
+        "S",
+        "S_prime",
+        "Y",
+        "O",
+        "O_star",
+        "delta_obs",
+        "Gap",
+        "NameSens",
+        "AliasPersist",
+        "Red",
+        "Supp_tau",
+        "Theta_u",
+        "dominantOperator",
+        "sourceClass",
+        "sourceClasses",
+        "authorityCeiling",
+        "provenanceIntegrity",
+        "burdenConcentration",
+        "routeState"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "td613-governed-exposure/v1"
+        },
+        "observedRegime": {
+          "const": "PRCS-A"
+        },
+        "instrumentRole": {
+          "const": "counter-tool"
+        },
+        "narrowingChain": {
+          "const": "R∘K∘C∘P∘F∘A"
+        },
+        "S": {
+          "$ref": "#/$defs/forensicState"
+        },
+        "S_prime": {
+          "$ref": "#/$defs/forensicState"
+        },
+        "Y": {
+          "$ref": "#/$defs/forensicState"
+        },
+        "O": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "O_star": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "delta_obs": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "Gap": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "NameSens": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "AliasPersist": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "Red": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "Supp_tau": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "Theta_u": {
+          "type": "object",
+          "required": [
+            "current",
+            "classes"
+          ],
+          "properties": {
+            "current": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "classes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "dominantOperator": {
+          "type": "object",
+          "required": [
+            "code",
+            "label",
+            "pressure"
+          ],
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "pressure": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "sourceClass": {
+          "type": "string"
+        },
+        "sourceClasses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authorityCeiling": {
+          "type": "string"
+        },
+        "provenanceIntegrity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "burdenConcentration": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "routeState": {
+          "type": "string"
+        }
+      }
+    },
+    "forensicState": {
+      "type": "object",
+      "required": [
+        "label",
+        "count",
+        "ratio",
+        "note"
+      ],
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     }

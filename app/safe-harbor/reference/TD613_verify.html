@@ -243,6 +243,7 @@
           <div class="metric"><span class="label">Packet schema</span><span class="value">td613.safe-harbor.packet/v1</span></div>
           <div class="metric"><span class="label">Packet hash field</span><span class="value">packet_hash_sha256</span></div>
           <div class="metric"><span class="label">Audit field</span><span class="value">aperture_audit</span></div>
+          <div class="metric"><span class="label">Forensic schema</span><span class="value">forensic_schema</span></div>
         </div>
         <pre>TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] &#x00B7; payload {n} &#x00B7; YYYY-MM-DD &#x00B7; &#x27D0;</pre>
         <div class="hint">Use this template for live attestations.</div>
@@ -264,7 +265,19 @@ TCP cadence may enrich the stylometric witness.
 JWS or detached-ed25519 may later seal the packet.
 The compact public footer does not expose either layer directly.
 The minted SHI # is a separate issuance string and should be copied exactly.</div>
-        <div class="hint">The verifier surface stays footer-first and packet-aware without leaking raw signature material, conflating cadence with crypto, or confusing the fixed canonical badge id with the minted SHI #. When a packet is present, <code>aperture_audit</code> is the additive warning lane that explains repair pressure, explicit sealed/scrub boundaries, and any disclosed withholding reason.</div>
+        <div class="hint">The verifier surface stays footer-first and packet-aware without leaking raw signature material, conflating cadence with crypto, or confusing the fixed canonical badge id with the minted SHI #. When a packet is present, <code>aperture_audit</code> is the additive warning lane and <code>forensic_schema</code> is the narrowing-chain lane that explains what was available, what narrowed, what survived, and under which regime.</div>
+      </section>
+
+      <section class="card">
+        <div class="kicker">Governed Exposure</div>
+        <h2>What the packet now preserves</h2>
+        <div class="metric-grid">
+          <div class="metric"><span class="label">Backbone fields</span><span class="value">S / S' / Y / O / O*</span></div>
+          <div class="metric"><span class="label">Loss metrics</span><span class="value">delta_obs / Gap / Supp_tau / Red</span></div>
+          <div class="metric"><span class="label">Routing metrics</span><span class="value">NameSens / AliasPersist / dominantOperator</span></div>
+          <div class="metric"><span class="label">Custody metrics</span><span class="value">sourceClass / authorityCeiling / routeState</span></div>
+        </div>
+        <div class="hint">Safe Harbor now preserves narrowing-chain evidence alongside the packet so route and issuance do not travel as unsupported vibes.</div>
       </section>
 
       <section class="card full">
@@ -275,7 +288,7 @@ The minted SHI # is a separate issuance string and should be copied exactly.</di
           <li>If a SHI # is present, confirm it matches <code>TD613-SH-9B07D8B-XXXXXXXX</code> shape exactly and has not drifted in transit.</li>
           <li>For a live attestation, confirm it follows <code>payload {n}</code> logic rather than reusing the historical published example.</li>
           <li>If the historical example is cited, confirm it matches <code>payload 5 &#x00B7; 2025-10-17</code> exactly.</li>
-          <li>If operator tooling is in play, confirm packet hash, lifecycle, seal status, and <code>aperture_audit</code> on the packet surface rather than in the footer.</li>
+          <li>If operator tooling is in play, confirm packet hash, lifecycle, seal status, <code>aperture_audit</code>, and <code>forensic_schema</code> on the packet surface rather than in the footer.</li>
           <li>Never treat cadence language as proof of cryptographic sealing; the two lanes are separate by doctrine.</li>
         </ol>
       </section>
