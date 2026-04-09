@@ -273,6 +273,7 @@
           <div class="metric"><span class="label">SHI format</span><span class="value">TD613-SH-9B07D8B-XXXXXXXX</span></div>
           <div class="metric"><span class="label">Packet schema</span><span class="value">td613.safe-harbor.packet/v1</span></div>
           <div class="metric"><span class="label">Packet hash field</span><span class="value">packet_hash_sha256</span></div>
+          <div class="metric"><span class="label">Audit field</span><span class="value">aperture_audit</span></div>
         </div>
       </section>
 
@@ -283,7 +284,7 @@
 Cryptographic signature = packet seal
 Compact footer = public trust surface
 SHI # = minted issuance string</pre>
-        <div class="hint">This capsule verifies footer and SAC posture. Packet hashes and detached signatures remain operator tooling.</div>
+        <div class="hint">This capsule verifies footer and SAC posture. Packet hashes and detached signatures remain operator tooling. When packet JSON travels with the copy, <code>aperture_audit</code> is the additive trace for repair passes, warning signals, and any explicit sealed or scrubbed boundary.</div>
       </section>
 
       <section class="card full">
@@ -345,6 +346,9 @@ TD613-Binding:SAC[X6ZNK5NO51] &#x00B7; payload {n} &#x00B7; YYYY-MM-DD &#x00B7; 
       short_code_scheme: "CrockfordBase32(8)+mod97(2)",
       packet_schema_version: "td613.safe-harbor.packet/v1",
       packet_hash_field: "packet_hash_sha256",
+      aperture_audit_field: "aperture_audit",
+      observed_regime: "PRCS-A",
+      instrument_role: "counter-tool",
       historical_published_footer: "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00B7 payload 5 \u00B7 2025-10-17 \u00B7 \u27D0",
       live_template_footer: "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00B7 payload {n} \u00B7 YYYY-MM-DD \u00B7 \u27D0",
       signature_lanes: {

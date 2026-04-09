@@ -1221,6 +1221,66 @@
   function splitSentences(text) { const value = (text || '').trim(); return value ? value.split(/[.!?]+/u).map((part) => part.trim()).filter(Boolean) : []; }
   function countLines(text) { return text ? text.split('\n').length - 1 : 0; }
   function clone(value) { return value ? JSON.parse(JSON.stringify(value)) : value; }
+  function clamp01(value) { return Math.max(0, Math.min(1, Number(value) || 0)); }
+  function round4(value) { return Number((Number(value) || 0).toFixed(4)); }
+  function uniqueList(values) { return [...new Set((values || []).filter(Boolean).map((value) => String(value)))]; }
+  function buildApertureAuditRecord(detail) {
+    const record = detail || {};
+    const fault = Boolean(record.generatorFault);
+    const withheld = Boolean(record.withheldMaterial);
+    return {
+      observedRegime: 'PRCS-A',
+      instrumentRole: 'counter-tool',
+      generatorFault: fault,
+      warningSignals: uniqueList(record.warningSignals || []),
+      repairPasses: uniqueList(record.repairPasses || []),
+      candidateSuppression: round4(clamp01(record.candidateSuppression)),
+      observabilityDeficit: round4(clamp01(record.observabilityDeficit)),
+      aliasPersistence: round4(clamp01(record.aliasPersistence)),
+      namingSensitivity: round4(clamp01(record.namingSensitivity)),
+      redundancyInflation: round4(clamp01(record.redundancyInflation)),
+      capacityPressure: round4(clamp01(record.capacityPressure)),
+      policyPressure: round4(clamp01(record.policyPressure)),
+      withheldMaterial: fault || withheld,
+      withheldReason: (fault || withheld) ? String(record.withheldReason || 'sealed-segment-boundary') : null
+    };
+  }
+  function safeHarborApertureAudit(packet, scrub) {
+    const warningSignals = [];
+    const repairPasses = [];
+    if (packet && packet.analysis && packet.analysis.cadence_signature) repairPasses.push('stylometric-witness-attached');
+    if (packet && packet.bridge && packet.bridge.signature_lane && packet.bridge.signature_lane.sig_present) repairPasses.push('signature-overlay-visible');
+    if (!(packet && packet.bridge && packet.bridge.covenant_gate && packet.bridge.covenant_gate.confirmed)) warningSignals.push('covenant-pending');
+    if (!(packet && packet.signature && packet.signature.status === 'sealed')) warningSignals.push('seal-pending');
+    if (scrub && !scrub.passed) warningSignals.push('scrub-pending');
+    if (!(packet && packet.bridge && packet.bridge.export_gate && packet.bridge.export_gate.ready)) warningSignals.push('export-guarded');
+    if (!(packet && packet.analysis && packet.analysis.route && packet.analysis.route.state === 'harbor-eligible')) warningSignals.push('route-pressure');
+    warningSignals.push('sealed-segment-boundary');
+    return buildApertureAuditRecord({
+      generatorFault: false,
+      warningSignals,
+      repairPasses,
+      candidateSuppression:
+        ((packet && packet.bridge && packet.bridge.export_gate && packet.bridge.export_gate.blockers ? packet.bridge.export_gate.blockers.length : 0) * 0.16) +
+        ((packet && packet.bridge && packet.bridge.covenant_gate && packet.bridge.covenant_gate.confirmed) ? 0.02 : 0.14),
+      observabilityDeficit:
+        0.22 +
+        ((packet && packet.bridge && packet.bridge.export_gate && packet.bridge.export_gate.ready) ? 0.04 : 0.16),
+      aliasPersistence:
+        (packet && packet.analysis && packet.analysis.cadence_signature && packet.analysis.cadence_signature.status === 'attached') ? 0.04 : 0,
+      namingSensitivity:
+        (packet && packet.issuance && packet.issuance.badge_number) ? 0.08 : 0.16,
+      redundancyInflation:
+        0.08 + ((packet && packet.analysis && typeof packet.analysis.cross_lane_stability === 'number') ? packet.analysis.cross_lane_stability * 0.18 : 0),
+      capacityPressure:
+        0.08 + ((packet && packet.analysis && typeof packet.analysis.cross_lane_spread === 'number') ? packet.analysis.cross_lane_spread * 0.52 : 0),
+      policyPressure:
+        (scrub && !scrub.passed ? 0.42 : 0.14) +
+        ((packet && packet.bridge && packet.bridge.export_gate && packet.bridge.export_gate.ready) ? 0.04 : 0.16),
+      withheldMaterial: true,
+      withheldReason: scrub && !scrub.passed ? 'scrub-boundary' : 'sealed-segment-boundary'
+    });
+  }
   function nowIso() { return new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'); }
   function randBase62(len) { const bytes = new Uint8Array(len); crypto.getRandomValues(bytes); const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; return Array.from(bytes).map((b) => chars[b % chars.length]).join(''); }
   function randHex(len) { const bytes = new Uint8Array(len); crypto.getRandomValues(bytes); return Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join(''); }
@@ -1332,6 +1392,7 @@
         assignment_basis: state.covenant.confirmed ? 'deterministic-hash(packet_id|receipt_id|binding_fragment|payload|date|principal|request_id)' : null
       },
       signature: signatureObject,
+      aperture_audit: null,
       bridge: {
         public_probe_defaults: {
           start_with: '01_LIVE_SEND_verify.alias.voice_MINIMAL.txt',
@@ -1354,6 +1415,7 @@
     packet.bridge.export_gate.state = packet.bridge.export_gate.ready ? 'harbor-eligible' : (packet.signature.status === 'sealed' ? 'sealed' : 'guarded');
     packet.bridge.export_gate.blockers = exportBlockers(scrub);
     packet.analysis.route.export_ready = packet.bridge.export_gate.ready;
+    packet.aperture_audit = safeHarborApertureAudit(packet, scrub);
     const packetHashMaterial = clone(packet);
     if (packetHashMaterial.signature) {
       packetHashMaterial.signature.sig = null;
@@ -1537,8 +1599,17 @@
       '- packet_id: ' + state.packet.packet_id,
       '- packet_hash_sha256: ' + state.packet.packet_hash_sha256,
       '- receipt_state: ' + state.packet.receipt.state,
-      '- signature_lane: ' + line
+      '- signature_lane: ' + line,
+      '- aperture_audit: ' + (state.packet.aperture_audit ? 'present' : 'absent')
     ];
+    if (state.packet.aperture_audit) {
+      lines.push('- aperture_observed_regime: ' + (state.packet.aperture_audit.observedRegime || 'PRCS-A'));
+      lines.push('- aperture_instrument_role: ' + (state.packet.aperture_audit.instrumentRole || 'counter-tool'));
+      lines.push('- aperture_warning_signals: ' + ((state.packet.aperture_audit.warningSignals || []).join(', ') || 'none'));
+      lines.push('- aperture_repair_passes: ' + ((state.packet.aperture_audit.repairPasses || []).join(', ') || 'none'));
+      lines.push('- aperture_withheld_material: ' + (state.packet.aperture_audit.withheldMaterial ? 'yes' : 'no'));
+      lines.push('- aperture_withheld_reason: ' + (state.packet.aperture_audit.withheldReason || 'none'));
+    }
     if (state.packet.issuance && state.packet.issuance.badge_number) {
       lines.push('- shi_number: ' + state.packet.issuance.badge_number);
       lines.push('- canonical_header: ' + canonicalHeaderString(state.packet.issuance.badge_number));
@@ -1556,6 +1627,11 @@
       receipt_state: state.packet.receipt.state,
       signature_lane: state.packet.bridge && state.packet.bridge.signature_lane ? (state.packet.bridge.signature_lane.lane || 'none') : (state.packet.signature.sig_type || 'none'),
       packet_schema_version: state.packet.schema_version,
+      aperture_audit: state.packet.aperture_audit || null,
+      aperture_warning_signals: state.packet.aperture_audit ? state.packet.aperture_audit.warningSignals || [] : [],
+      aperture_repair_passes: state.packet.aperture_audit ? state.packet.aperture_audit.repairPasses || [] : [],
+      aperture_withheld_material: state.packet.aperture_audit ? Boolean(state.packet.aperture_audit.withheldMaterial) : false,
+      aperture_withheld_reason: state.packet.aperture_audit ? state.packet.aperture_audit.withheldReason || null : null,
       shi_label: 'SHI #',
       shi_number: shiNumber,
       badge_number: shiNumber,

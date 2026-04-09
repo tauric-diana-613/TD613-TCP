@@ -390,6 +390,53 @@ const TD613_APERTURE_PROCESS_OUTCOMES = Object.freeze([
   'source-rerouted'
 ]);
 
+function uniqueStrings(values = []) {
+  return [...new Set((values || []).filter(Boolean).map((value) => String(value)))];
+}
+
+function isTD613ApertureGeneratorFault(pathologyState = null, repairPasses = []) {
+  const flags = pathologyState?.flags || [];
+  return Boolean(
+    pathologyState?.severe ||
+    flags.some((flag) => TD613_APERTURE_SEVERE_PATHOLOGIES.has(flag)) ||
+    (repairPasses || []).some((pass) => /^source-reroute:/.test(String(pass || '')))
+  );
+}
+
+function buildTD613ApertureAudit({
+  generatorFault = false,
+  warningSignals = [],
+  repairPasses = [],
+  candidateSuppression = 0,
+  observabilityDeficit = 0,
+  aliasPersistence = 0,
+  namingSensitivity = 0,
+  redundancyInflation = 0,
+  capacityPressure = 0,
+  policyPressure = 0,
+  withheldMaterial = false,
+  withheldReason = null
+} = {}) {
+  const fault = Boolean(generatorFault);
+  const withheld = Boolean(withheldMaterial || fault);
+  return Object.freeze({
+    observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
+    instrumentRole: 'counter-tool',
+    generatorFault: fault,
+    warningSignals: Object.freeze(uniqueStrings(warningSignals)),
+    repairPasses: Object.freeze(uniqueStrings(repairPasses)),
+    candidateSuppression: round3(clamp01(candidateSuppression)),
+    observabilityDeficit: round3(clamp01(observabilityDeficit)),
+    aliasPersistence: round3(clamp01(aliasPersistence)),
+    namingSensitivity: round3(clamp01(namingSensitivity)),
+    redundancyInflation: round3(clamp01(redundancyInflation)),
+    capacityPressure: round3(clamp01(capacityPressure)),
+    policyPressure: round3(clamp01(policyPressure)),
+    withheldMaterial: withheld,
+    withheldReason: withheld ? String(withheldReason || 'catastrophic-generator-fault') : null
+  });
+}
+
 function detectIntroducedTerms(sourceText = '', outputText = '') {
   const source = normalizeComparableText(sourceText);
   const output = normalizeComparableText(outputText);
@@ -666,6 +713,7 @@ function classifyTD613ApertureProjection({
   const normalizedSource = collapseComparableWhitespace(sourceText);
   const normalizedOutput = collapseComparableWhitespace(outputText);
   const pathologyState = pathologies || detectTD613ApertureTextPathologies({ sourceText, outputText });
+  const generatorFault = isTD613ApertureGeneratorFault(pathologyState);
   const substantiveMovement = substantiveDimensionCount(changedDimensions);
   const lexicalMovement = Math.min(2, Number(lexemeSwaps?.length || 0));
   let movementConfidence = clamp01(
@@ -675,13 +723,17 @@ function classifyTD613ApertureProjection({
     (visibleShift ? 0.08 : 0) +
     (nonTrivialShift ? 0.14 : 0) -
     (pathologyState.flags.length * 0.08) -
+    (blocked ? 0.06 : 0) -
     (repaired ? 0.02 : 0)
   );
 
   let outcome = 'projected';
-  if (blocked || normalizedSource === normalizedOutput || pathologyState.severe) {
+  if (generatorFault) {
     outcome = 'source-rerouted';
     movementConfidence = 0;
+  } else if (normalizedSource === normalizedOutput) {
+    outcome = 'surface-held';
+    movementConfidence = Math.min(movementConfidence, 0.08);
   } else if (substantiveMovement === 0 && lexicalMovement === 0) {
     outcome = 'surface-held';
   } else if (substantiveMovement <= 1 && !nonTrivialShift) {
@@ -692,19 +744,20 @@ function classifyTD613ApertureProjection({
 
   const line =
     outcome === 'source-rerouted'
-      ? 'Aperture routed the passage back to source to avoid recapture posture.'
+      ? 'Aperture withheld the public counter-record after a catastrophic generator fault.'
       : outcome === 'surface-held'
-        ? 'Aperture held the passage near source and only allowed surface-safe movement.'
+        ? 'Aperture held the passage in a shallow visible lane while surfacing pressure notes.'
         : outcome === 'repaired'
-          ? 'Aperture repaired the projection into a safe counter-surface.'
-          : 'Aperture landed a safe counter-projection.';
+          ? 'Aperture repaired the projection into a legible counter-record and surfaced pressure notes.'
+          : 'Aperture landed a counter-projection and kept the pressure ledger visible.';
 
   return Object.freeze({
     outcome,
     movementConfidence: round3(movementConfidence),
     line,
     pathologies: pathologyState.flags,
-    renderSafe: !pathologyState.severe
+    renderSafe: !generatorFault,
+    generatorFault
   });
 }
 
@@ -779,6 +832,71 @@ function auditTD613ApertureWitnessAnchors({
   });
 }
 
+function comparableWitnessToken(token = '') {
+  return normalizeComparableText(String(token || '').replace(/^[^a-z0-9@#]+|[^a-z0-9@#]+$/giu, ''));
+}
+
+function restoreTD613ApertureWitnessAnchors({
+  sourceText = '',
+  outputText = '',
+  witnessAudit = null
+} = {}) {
+  const missingTokens = uniqueStrings(
+    (witnessAudit?.missingAnchors || [])
+      .flatMap((anchor) => witnessTokens(anchor))
+      .map((token) => comparableWitnessToken(token))
+      .filter((token) => token && !TD613_APERTURE_WITNESS_STOPWORDS.has(token))
+  );
+  if (!missingTokens.length) {
+    return normalizeReadableText(outputText);
+  }
+
+  const sourceParts = String(sourceText || '').split(/(\s+)/);
+  const outputParts = String(outputText || '').split(/(\s+)/);
+  const sourceWords = [];
+  const outputWords = [];
+
+  sourceParts.forEach((part, partIndex) => {
+    if (!part || /^\s+$/u.test(part)) {
+      return;
+    }
+    sourceWords.push({
+      partIndex,
+      raw: part,
+      normalized: comparableWitnessToken(part)
+    });
+  });
+  outputParts.forEach((part, partIndex) => {
+    if (!part || /^\s+$/u.test(part)) {
+      return;
+    }
+    outputWords.push({
+      partIndex,
+      raw: part,
+      normalized: comparableWitnessToken(part)
+    });
+  });
+
+  if (!sourceWords.length || !outputWords.length) {
+    return normalizeReadableText(outputText);
+  }
+
+  const missingTokenSet = new Set(missingTokens);
+  sourceWords.forEach((sourceWord, sourceIndex) => {
+    if (!missingTokenSet.has(sourceWord.normalized)) {
+      return;
+    }
+    const targetIndex = Math.min(sourceIndex, outputWords.length - 1);
+    const targetWord = outputWords[targetIndex];
+    if (!targetWord) {
+      return;
+    }
+    outputParts[targetWord.partIndex] = sourceWord.raw;
+  });
+
+  return normalizeReadableText(outputParts.join(''));
+}
+
 function registerTD613ApertureSegment({
   sourceText = '',
   projectedText = '',
@@ -800,13 +918,30 @@ function registerTD613ApertureSegment({
     sourceProfile,
     targetProfile
   });
-  const internalText = normalizeReadableText(repairedProjection.outputText || projectedText || normalizedSource) || normalizedSource;
-  const projectedWitnessAudit = auditTD613ApertureWitnessAnchors({
+  let internalText = normalizeReadableText(repairedProjection.outputText || projectedText || normalizedSource) || normalizedSource;
+  let projectedWitnessAudit = auditTD613ApertureWitnessAnchors({
     sourceText: normalizedSource,
     outputText: internalText,
     sourceIR,
     protectedState
   });
+  const witnessRepairedText = restoreTD613ApertureWitnessAnchors({
+    sourceText: normalizedSource,
+    outputText: internalText,
+    witnessAudit: projectedWitnessAudit
+  });
+  if (collapseComparableWhitespace(witnessRepairedText) !== collapseComparableWhitespace(internalText)) {
+    const restoredWitnessAudit = auditTD613ApertureWitnessAnchors({
+      sourceText: normalizedSource,
+      outputText: witnessRepairedText,
+      sourceIR,
+      protectedState
+    });
+    if (restoredWitnessAudit.witnessAnchorIntegrity >= projectedWitnessAudit.witnessAnchorIntegrity) {
+      internalText = witnessRepairedText;
+      projectedWitnessAudit = restoredWitnessAudit;
+    }
+  }
   const projectedCompression = assessCompressionState(normalizedSource, internalText, projectedWitnessAudit);
   const surfaceWitnessAudit = auditTD613ApertureWitnessAnchors({
     sourceText: normalizedSource,
@@ -816,46 +951,105 @@ function registerTD613ApertureSegment({
   });
   const sourceComparable = collapseComparableWhitespace(normalizedSource);
   const internalComparable = collapseComparableWhitespace(internalText);
+  const generatorFault = isTD613ApertureGeneratorFault(
+    repairedProjection.pathologies,
+    repairedProjection.repairPasses || []
+  );
 
   let outcome = 'projected';
   let registeredText = internalText;
   const notes = [];
+  const warningSignals = [];
+  const note = (signal, message) => {
+    if (signal) {
+      warningSignals.push(signal);
+    }
+    if (message) {
+      notes.push(message);
+    }
+  };
 
   if (blocked || transferClass === 'rejected') {
+    note(
+      'counter-recognition-pressure',
+      'Aperture marked counter-recognition pressure on this segment but kept it in visible warning/repair space.'
+    );
+  }
+
+  if (projectedWitnessAudit.witnessAnchorIntegrity < 1) {
+    note(
+      'anchor-drift-detected',
+      'Witness-anchor drift appeared in the projected segment. The counter-record stays visible with an audit warning.'
+    );
+  }
+  if (projectedWitnessAudit.aliasPersistenceRisk > 0) {
+    note(
+      'alias-persistence-risk',
+      'Alias persistence risk is elevated on this segment. Treat the published counter-record as warned, not neutral.'
+    );
+  }
+  if (projectedCompression.state === 'compressed') {
+    note(
+      'compression-elevated',
+      projectedCompression.previewSafe
+        ? 'Compression elevated on this segment, but correspondence stayed legible.'
+        : 'Compression elevated on this segment and row-level preview may be withheld to avoid a false alignment claim.'
+    );
+  }
+
+  if (generatorFault) {
     outcome = 'source-rerouted';
     registeredText = normalizedSource;
-    notes.push('Aperture rerouted the segment back to source under counter-recognition pressure.');
-  } else if (repairedProjection.pathologies?.severe) {
-    outcome = 'source-rerouted';
-    registeredText = normalizedSource;
-    notes.push('Aperture rerouted the segment back to source after a severe generator pathology.');
+    note(
+      'generator-fault',
+      'Aperture withheld this segment only because the generator collapsed into replay, emptiness, or unrepaired corruption.'
+    );
   } else if (projectedWitnessAudit.witnessAnchorIntegrity < 1) {
-    if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable && surfaceWitnessAudit.witnessAnchorIntegrity >= 1) {
+    if (
+      collapseComparableWhitespace(surfaceCandidate) !== sourceComparable &&
+      surfaceWitnessAudit.witnessAnchorIntegrity > projectedWitnessAudit.witnessAnchorIntegrity
+    ) {
       outcome = 'surface-held';
       registeredText = surfaceCandidate;
-      notes.push('Aperture held the segment near source after witness-anchor drift appeared in projection.');
-    } else {
-      outcome = 'source-rerouted';
-      registeredText = normalizedSource;
-      notes.push('Aperture rerouted the segment back to source to preserve witness anchors.');
+      note(
+        'surface-hold-applied',
+        'Aperture preferred a surface-held counter-record because it reduced witness drift without suppressing the segment.'
+      );
     }
   } else if (projectedCompression.state === 'compressed' && !projectedCompression.previewSafe) {
-    outcome = 'source-rerouted';
-    registeredText = normalizedSource;
-    notes.push('Aperture rerouted the segment because compression broke faithful correspondence.');
-  } else if (internalComparable === sourceComparable) {
-    if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable && surfaceWitnessAudit.witnessAnchorIntegrity >= 1) {
+    if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable) {
       outcome = 'surface-held';
       registeredText = surfaceCandidate;
-      notes.push('Aperture held the segment in a surface-safe lane.');
+      note(
+        'preview-hold',
+        'Aperture published a shallower counter-record because compression pressure made a deeper row-level claim unreliable.'
+      );
     } else {
-      outcome = 'source-rerouted';
+      outcome = repairedProjection.repaired ? 'repaired' : 'projected';
+      note(
+        'preview-hold',
+        'Aperture kept the transformed segment visible but will withhold row-level preview because compression pressure stayed high.'
+      );
+    }
+  } else if (internalComparable === sourceComparable) {
+    if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable) {
+      outcome = 'surface-held';
+      registeredText = surfaceCandidate;
+      note(
+        'surface-hold-applied',
+        'The deeper projection stayed too close to source, so Aperture published a visible surface-held counter-record instead.'
+      );
+    } else {
+      outcome = 'surface-held';
       registeredText = normalizedSource;
-      notes.push('Aperture kept the segment at source because no safe projection landed.');
+      note(
+        'minimal-movement',
+        'No stronger counter-record landed on this segment, so Aperture published a minimal hold rather than pretending a deeper shift.'
+      );
     }
   } else if (repairedProjection.repaired) {
     outcome = 'repaired';
-    notes.push('Aperture repaired the projection before registration.');
+    note('repair-activity-applied', 'Aperture repaired the projection before registration.');
   }
 
   const registeredWitnessAudit = auditTD613ApertureWitnessAnchors({
@@ -865,9 +1059,10 @@ function registerTD613ApertureSegment({
     protectedState
   });
   if (registeredWitnessAudit.witnessAnchorIntegrity < 1) {
-    outcome = 'source-rerouted';
-    registeredText = normalizedSource;
-    notes.push('Registered output failed witness-anchor integrity and was rerouted to source.');
+    note(
+      'anchor-drift-detected',
+      'Anchor drift remains visible in the published counter-record. Review the audit lane before treating it as faithful witness.'
+    );
   }
 
   const finalWitnessAudit = auditTD613ApertureWitnessAnchors({
@@ -880,6 +1075,49 @@ function registerTD613ApertureSegment({
   const registeredPathologies = detectTD613ApertureTextPathologies({
     sourceText: normalizedSource,
     outputText: registeredText
+  });
+  const finalGeneratorFault = isTD613ApertureGeneratorFault(
+    registeredPathologies,
+    repairedProjection.repairPasses || []
+  );
+  if (finalGeneratorFault && outcome !== 'source-rerouted') {
+    outcome = 'source-rerouted';
+    registeredText = normalizedSource;
+    note(
+      'generator-fault',
+      'Aperture had to withhold this segment after final registration because the published surface still contained a catastrophic generator fault.'
+    );
+  }
+
+  const maxAliasRisk = Math.max(
+    Number(projectedWitnessAudit.aliasPersistenceRisk || 0),
+    Number(finalWitnessAudit.aliasPersistenceRisk || 0)
+  );
+  const apertureAudit = buildTD613ApertureAudit({
+    generatorFault: outcome === 'source-rerouted',
+    warningSignals,
+    repairPasses: repairedProjection.repairPasses || [],
+    candidateSuppression:
+      (transferClass === 'rejected' ? 0.32 : 0.08) +
+      (blocked ? 0.12 : 0),
+    observabilityDeficit:
+      (projectedCompression.state === 'compressed' && !projectedCompression.previewSafe ? 0.42 : 0.08) +
+      (internalComparable === sourceComparable ? 0.18 : 0),
+    aliasPersistence: maxAliasRisk,
+    namingSensitivity:
+      maxAliasRisk * 0.62 +
+      (blocked ? 0.12 : 0),
+    redundancyInflation:
+      (internalComparable === sourceComparable ? 0.34 : 0.08) +
+      (projectedCompression.state === 'compressed' ? 0.18 : 0),
+    capacityPressure:
+      (projectedCompression.state === 'compressed' ? 0.48 : 0.12) +
+      (projectedCompression.previewSafe ? 0 : 0.16),
+    policyPressure:
+      (blocked ? 0.38 : 0.08) +
+      (transferClass === 'rejected' ? 0.18 : 0),
+    withheldMaterial: outcome === 'source-rerouted',
+    withheldReason: outcome === 'source-rerouted' ? 'catastrophic-generator-fault' : null
   });
 
   return Object.freeze({
@@ -898,7 +1136,7 @@ function registerTD613ApertureSegment({
     previewHold:
       registeredCompression.state === 'compressed' &&
       outcome !== 'source-rerouted',
-    renderSafe: !registeredPathologies.severe,
+    renderSafe: outcome !== 'source-rerouted',
     pathologies: [...new Set([
       ...(repairedProjection.pathologies?.flags || []),
       ...(registeredPathologies.flags || [])
@@ -907,7 +1145,9 @@ function registerTD613ApertureSegment({
     projectedWitnessAudit,
     registeredWitnessAudit: finalWitnessAudit,
     projectedCompression,
-    registeredCompression
+    registeredCompression,
+    generatorFault: outcome === 'source-rerouted',
+    apertureAudit
   });
 }
 
@@ -1083,7 +1323,15 @@ function reviewTD613ApertureTransfer({
     (namingIntrusion ? 0.22 : 0) +
     ((!visibleShift || !nonTrivialShift) ? 0.08 : 0)
   ));
-  const blocked = Boolean(applied && (introducedEnforcementTerms.length > 0 || namingIntrusion));
+  const warningSignals = uniqueStrings([
+    introducedEnforcementTerms.length ? 'enforcement-framing' : null,
+    namingIntrusion ? 'naming-intrusion' : null,
+    protectedAnchorIntegrity < 1 ? 'anchor-drift-detected' : null,
+    semanticCoverageRisk >= 0.18 ? 'semantic-compression' : null,
+    (!visibleShift || !nonTrivialShift) ? 'surface-close' : null,
+    applied ? 'counter-recognition-pressure' : null
+  ]);
+  const blocked = false;
   const reasons = [];
 
   if (introducedEnforcementTerms.length) {
@@ -1092,9 +1340,56 @@ function reviewTD613ApertureTransfer({
   if (namingIntrusion) {
     reasons.push('Introduced regime naming into the borrowed output.');
   }
-  if (blocked) {
-    reasons.push('TD613 Aperture routed the borrowed output back to the source text to avoid recapture posture drift.');
+  if (warningSignals.length) {
+    reasons.push('TD613 Aperture marked warning pressure on the borrowed output and kept it in repair/audit space instead of silently rerouting it.');
   }
+
+  const candidateSuppression = round3(clamp01(
+    (applied ? 0.12 : 0.02) +
+    (semanticCoverageRisk * 0.42) +
+    ((!visibleShift || !nonTrivialShift) ? 0.18 : 0)
+  ));
+  const observabilityDeficit = round3(clamp01(
+    (semanticCoverageRisk * 0.48) +
+    (!visibleShift ? 0.14 : 0) +
+    (!nonTrivialShift ? 0.14 : 0)
+  ));
+  const aliasPersistence = round3(clamp01(
+    (namingIntrusion ? 0.58 : 0) +
+    ((1 - clamp01(protectedAnchorIntegrity)) * 0.24)
+  ));
+  const namingSensitivity = round3(clamp01(
+    (namingIntrusion ? 0.82 : 0) +
+    (applied ? 0.08 : 0)
+  ));
+  const redundancyInflation = round3(clamp01(
+    (!nonTrivialShift ? 0.24 : 0.08) +
+    (!visibleShift ? 0.18 : 0) +
+    (semanticCoverageRisk * 0.28)
+  ));
+  const capacityPressure = round3(clamp01(
+    (semanticCoverageRisk * 0.58) +
+    ((!visibleShift || !nonTrivialShift) ? 0.18 : 0)
+  ));
+  const policyPressure = round3(clamp01(
+    (introducedEnforcementTerms.length ? 0.42 : 0) +
+    (namingIntrusion ? 0.38 : 0) +
+    (applied ? 0.08 : 0)
+  ));
+  const apertureAudit = buildTD613ApertureAudit({
+    generatorFault: false,
+    warningSignals,
+    repairPasses: [],
+    candidateSuppression,
+    observabilityDeficit,
+    aliasPersistence,
+    namingSensitivity,
+    redundancyInflation,
+    capacityPressure,
+    policyPressure,
+    withheldMaterial: false,
+    withheldReason: null
+  });
 
   return Object.freeze({
     protocolId: TD613_APERTURE_PROTOCOL.id,
@@ -1107,7 +1402,17 @@ function reviewTD613ApertureTransfer({
     recaptureRisk,
     introducedEnforcementTerms,
     namingIntrusion,
-    reasons
+    reasons,
+    warningSignals,
+    repairPasses: [],
+    candidateSuppression,
+    observabilityDeficit,
+    aliasPersistence,
+    namingSensitivity,
+    redundancyInflation,
+    capacityPressure,
+    policyPressure,
+    apertureAudit
   });
 }
 // SOURCE: app/engine/stylometry.js
@@ -7434,24 +7739,25 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       !surfaceClose &&
       visibleShift &&
       nonTrivialShift &&
-      protectedAnchorIntegrity >= 1 &&
-      (semanticAudit.propositionCoverage ?? 1) >= 0.85 &&
-      (semanticAudit.actorCoverage ?? 1) >= 0.75 &&
-      (semanticAudit.actionCoverage ?? 1) >= 0.75 &&
-      (semanticAudit.objectCoverage ?? 1) >= 0.65 &&
+      protectedAnchorIntegrity >= 0.55 &&
+      (semanticAudit.propositionCoverage ?? 1) >= 0.62 &&
+      (semanticAudit.actorCoverage ?? 1) >= 0.48 &&
+      (semanticAudit.actionCoverage ?? 1) >= 0.48 &&
+      (semanticAudit.objectCoverage ?? 1) >= 0.38 &&
       (semanticAudit.polarityMismatches ?? 0) <= 1 &&
+      (semanticAudit.tenseMismatches ?? 0) <= 0 &&
       structuralCount >= 1 &&
       registerRealization;
     const acceptedForPersona =
-      qualityGatePassedForPersona &&
+      (qualityGatePassedForPersona || candidateOutputText !== sourceText) &&
       !borrowedShellPathologyBlocked(personaQualityNotes) &&
       candidateOutputText !== sourceText &&
-      protectedAnchorIntegrity >= 1 &&
-      (semanticAudit.propositionCoverage ?? 1) >= 0.9 &&
-      (semanticAudit.actorCoverage ?? 1) >= 0.75 &&
-      (semanticAudit.actionCoverage ?? 1) >= 0.75 &&
-      (semanticAudit.objectCoverage ?? 1) >= 0.65 &&
-      (semanticAudit.polarityMismatches ?? 0) <= personaPolarityTolerance &&
+      protectedAnchorIntegrity >= 0.45 &&
+      (semanticAudit.propositionCoverage ?? 1) >= 0.58 &&
+      (semanticAudit.actorCoverage ?? 1) >= 0.42 &&
+      (semanticAudit.actionCoverage ?? 1) >= 0.42 &&
+      (semanticAudit.objectCoverage ?? 1) >= 0.32 &&
+      (semanticAudit.polarityMismatches ?? 0) <= Math.max(personaPolarityTolerance, 3) &&
       (visibleShift || lexicalCount > 0 || structuralCount > 0);
     const accepted =
       strictBorrowedMode
@@ -7459,6 +7765,17 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         : shell?.mode === 'persona'
           ? acceptedForPersona
           : Boolean(candidate.quality?.qualityGatePassed);
+    const semanticDriftPenalty =
+      strictBorrowedMode
+        ? (
+            ((semanticAudit.polarityMismatches ?? 0) * 60) +
+            ((semanticAudit.tenseMismatches ?? 0) * 38) +
+            (Math.max(0, 1 - (semanticAudit.actionCoverage ?? 1)) * 90) +
+            (Math.max(0, 0.92 - (semanticAudit.objectCoverage ?? 1)) * 80) +
+            (Math.max(0, 1 - protectedAnchorIntegrity) * 120) +
+            (Number(lexicalShiftProfile.swapCount || 0) * 6)
+          )
+        : 0;
     const acceptanceScore =
       candidate.score +
       (transferClass === 'structural' ? 36 : 12) +
@@ -7470,7 +7787,8 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       Math.min(40, donorImprovement * 80) -
       Math.min(32, donorRegression * 60) +
       (surfaceClose ? -60 : 0) +
-      (((semanticAudit.propositionCoverage ?? 1) * 12) + ((semanticAudit.actionCoverage ?? 1) * 8));
+      (((semanticAudit.propositionCoverage ?? 1) * 12) + ((semanticAudit.actionCoverage ?? 1) * 8)) -
+      semanticDriftPenalty;
 
     return {
       candidate,
@@ -8115,27 +8433,17 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       (semanticAudit?.actorCoverage ?? 1) < 0.75 ||
       (semanticAudit?.actionCoverage ?? 1) < 0.75 ||
       (semanticAudit?.objectCoverage ?? 1) < 0.65 ||
-      (semanticAudit?.polarityMismatches ?? 0) > 1
+      (semanticAudit?.polarityMismatches ?? 0) > 1 ||
+      (semanticAudit?.tenseMismatches ?? 0) > 0
     );
 
   if (finalSemanticBorrowedFailure) {
-    finalText = sourceText;
-    finalProfile = sourceProfile;
-    changedDimensions = [];
-    transferClass = 'rejected';
-    borrowedShellOutcome = 'rejected';
-    rescuePasses.push('semantic-final-rejection');
+    rescuePasses.push('semantic-final-warning');
     notes.push(
       finalBorrowedSurfaceClose
-        ? 'Transfer fell back to the source text after donor realization stayed surface-close.'
-        : 'Transfer fell back to the source text after final semantic review.'
+        ? 'Transfer kept the donor realization visible, but Aperture flagged it as surface-close and raised the warning ledger.'
+        : 'Transfer stayed visible after final semantic review, but Aperture raised warning pressure on the output.'
     );
-    lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
-    realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
-    semanticRisk = computeSemanticRisk(sourceText, finalText, protectedState, sourceProfile, finalProfile);
-    precomputedVisibleShift = null;
-    precomputedNonTrivialShift = null;
-    ({ semanticAudit, protectedAnchorAudit, outputIR } = buildSemanticAuditBundle(ir, finalText, protectedState));
   }
 
   let visibleShift = precomputedVisibleShift ?? hasBorrowedShellVisibleShift(
@@ -8216,27 +8524,9 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     objectCoverage: semanticAudit?.objectCoverage ?? 1
   });
 
-  if (apertureProtocol.blocked && finalText !== sourceText) {
-    finalText = sourceText;
-    finalProfile = sourceProfile;
-    changedDimensions = [];
-    transferClass = 'rejected';
-    qualityGatePassed = false;
-    borrowedShellOutcome = shell?.mode === 'borrowed' ? 'rejected' : borrowedShellOutcome;
-    rescuePasses.push('td613-aperture-rejection');
+  if ((apertureProtocol.warningSignals || []).length && finalText !== sourceText) {
+    rescuePasses.push('td613-aperture-warning');
     notes.push(...apertureProtocol.reasons);
-    lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
-    realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
-    semanticRisk = computeSemanticRisk(sourceText, finalText, protectedState, sourceProfile, finalProfile);
-    ({ semanticAudit, protectedAnchorAudit, outputIR } = buildSemanticAuditBundle(ir, finalText, protectedState));
-    visibleShift = false;
-    nonTrivialShift = false;
-    apertureProtocol = {
-      ...apertureProtocol,
-      blocked: true,
-      enforcedFallback: true,
-      recaptureRisk: Math.max(apertureProtocol.recaptureRisk || 0, 0.58)
-    };
   }
 
   const apertureProjection = classifyTD613ApertureProjection({
@@ -8253,7 +8543,51 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   apertureProtocol = {
     ...apertureProtocol,
     ...apertureProjection,
-    repairPasses: [...new Set(apertureRepair.repairPasses || [])]
+    repairPasses: [...new Set([...(apertureProtocol.repairPasses || []), ...(apertureRepair.repairPasses || [])])]
+  };
+  const apertureAudit = {
+    ...(apertureProtocol.apertureAudit || {}),
+    generatorFault: Boolean(apertureProjection.generatorFault),
+    warningSignals: [...new Set([
+      ...((apertureProtocol.apertureAudit && apertureProtocol.apertureAudit.warningSignals) || []),
+      ...((apertureProtocol.warningSignals || [])),
+      ...(apertureProjection.outcome === 'surface-held' ? ['surface-pressure'] : []),
+      ...(apertureRepair.repaired ? ['repair-activity-applied'] : [])
+    ])],
+    repairPasses: [...new Set([
+      ...((apertureProtocol.apertureAudit && apertureProtocol.apertureAudit.repairPasses) || []),
+      ...(apertureRepair.repairPasses || [])
+    ])],
+    observabilityDeficit: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.observabilityDeficit || 0),
+      apertureProjection.outcome === 'surface-held' ? 0.28 : 0.08
+    )),
+    aliasPersistence: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.aliasPersistence || 0),
+      clamp01(1 - (protectedAnchorAudit?.protectedAnchorIntegrity ?? 1))
+    )),
+    namingSensitivity: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.namingSensitivity || 0),
+      Number(apertureProtocol.namingSensitivity || 0)
+    )),
+    redundancyInflation: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.redundancyInflation || 0),
+      (!nonTrivialShift ? 0.24 : 0.08)
+    )),
+    capacityPressure: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.capacityPressure || 0),
+      apertureProjection.outcome === 'surface-held' ? 0.22 : 0.1
+    )),
+    policyPressure: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.policyPressure || 0),
+      Number(apertureProtocol.policyPressure || 0)
+    )),
+    withheldMaterial: apertureProjection.outcome === 'source-rerouted',
+    withheldReason: apertureProjection.outcome === 'source-rerouted' ? 'catastrophic-generator-fault' : null
+  };
+  apertureProtocol = {
+    ...apertureProtocol,
+    apertureAudit
   };
   if (apertureRepair.repaired && finalText !== sourceText) {
     notes.push(`TD613 Aperture repaired the projection before final output (${(apertureRepair.repairPasses || []).join(', ')}).`);
@@ -8319,6 +8653,7 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     visibleShift,
     nonTrivialShift,
     apertureProtocol,
+    apertureAudit,
     semanticAudit,
     protectedAnchorAudit
   };

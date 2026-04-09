@@ -237,6 +237,27 @@
       "scrub_passed": true
     }
   },
+  "aperture_audit": {
+    "observedRegime": "PRCS-A",
+    "instrumentRole": "counter-tool",
+    "generatorFault": false,
+    "warningSignals": [
+      "sealed-segment-boundary"
+    ],
+    "repairPasses": [
+      "stylometric-witness-attached",
+      "signature-overlay-visible"
+    ],
+    "candidateSuppression": 0.18,
+    "observabilityDeficit": 0.26,
+    "aliasPersistence": 0.04,
+    "namingSensitivity": 0.08,
+    "redundancyInflation": 0.24,
+    "capacityPressure": 0.1378,
+    "policyPressure": 0.18,
+    "withheldMaterial": true,
+    "withheldReason": "sealed-segment-boundary"
+  },
   "packet_hash_sha256": "sha256:6d3ca449f6a403dc2cbf5e92c4b2d592355cb38d73bd89243c6536efec96ad98",
   "signature": {
     "sig_type": "JWS-detached",

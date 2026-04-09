@@ -490,7 +490,9 @@
         "donorImprovementRatio": 0.313,
         "sourceOutputLexicalOverlap": 0.918
       },
-      "rescuePasses": [],
+      "rescuePasses": [
+        "td613-aperture-warning"
+      ],
       "visibleShift": true,
       "nonTrivialShift": true
     },
@@ -975,7 +977,9 @@
         "1 lexical family swap landed.",
         "Register shift surfaced through lexical-register, directness, abstraction-posture, abbreviation-posture, orthography-posture, fragment-posture."
       ],
-      "rescuePasses": [],
+      "rescuePasses": [
+        "td613-aperture-warning"
+      ],
       "visibleShift": true,
       "nonTrivialShift": true
     }

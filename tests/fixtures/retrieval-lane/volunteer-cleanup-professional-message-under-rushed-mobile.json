@@ -609,7 +609,8 @@
         "sourceOutputLexicalOverlap": 0.856
       },
       "rescuePasses": [
-        "partial-rescue"
+        "partial-rescue",
+        "td613-aperture-warning"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
@@ -1199,7 +1200,8 @@
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
-        "partial-rescue"
+        "partial-rescue",
+        "td613-aperture-warning"
       ],
       "visibleShift": true,
       "nonTrivialShift": true

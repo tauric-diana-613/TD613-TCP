@@ -14,6 +14,7 @@
     "analysis",
     "issuance",
     "signature",
+    "aperture_audit",
     "bridge",
     "packet_hash_sha256"
   ],
@@ -524,9 +525,98 @@
           ]
         }
       }
+    },
+    "aperture_audit": {
+      "$ref": "#/$defs/apertureAudit"
     }
   },
   "$defs": {
+    "apertureAudit": {
+      "type": "object",
+      "required": [
+        "observedRegime",
+        "instrumentRole",
+        "generatorFault",
+        "warningSignals",
+        "repairPasses",
+        "candidateSuppression",
+        "observabilityDeficit",
+        "aliasPersistence",
+        "namingSensitivity",
+        "redundancyInflation",
+        "capacityPressure",
+        "policyPressure",
+        "withheldMaterial",
+        "withheldReason"
+      ],
+      "properties": {
+        "observedRegime": {
+          "const": "PRCS-A"
+        },
+        "instrumentRole": {
+          "const": "counter-tool"
+        },
+        "generatorFault": {
+          "type": "boolean"
+        },
+        "warningSignals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "repairPasses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "candidateSuppression": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "observabilityDeficit": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "aliasPersistence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "namingSensitivity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "redundancyInflation": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "capacityPressure": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "policyPressure": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "withheldMaterial": {
+          "type": "boolean"
+        },
+        "withheldReason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
     "ingressSegment": {
       "type": "object",
       "required": [

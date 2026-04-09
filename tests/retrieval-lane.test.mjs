@@ -103,7 +103,7 @@ for (const { sourceId, donorId } of [
   } else {
     assert.notEqual(result.text, sourceSample.text, `${sourceId} under ${donorId}: accepted borrowed shell should produce visible output drift`);
   }
-  assert.notEqual(result.borrowedShellOutcome, 'partial', `${sourceId} under ${donorId}: strict swap lane should not surface partial fallback`);
+  assert.notEqual(result.borrowedShellOutcome, 'rejected', `${sourceId} under ${donorId}: strict swap lane should land a visible borrowed shell unless a catastrophic fault forces rejection`);
   assert.equal(result.protectedAnchorAudit.protectedAnchorIntegrity, 1, `${sourceId} under ${donorId}: protected anchors stay intact`);
   assert.ok((result.semanticAudit.propositionCoverage ?? 1) >= 0.82, `${sourceId} under ${donorId}: proposition coverage stays retrieval-safe`);
   assert.ok((result.semanticAudit.actionCoverage ?? 1) >= 0.75, `${sourceId} under ${donorId}: action coverage stays retrieval-safe`);

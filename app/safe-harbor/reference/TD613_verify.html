@@ -242,6 +242,7 @@
           <div class="metric"><span class="label">Accepted footer modes</span><span class="value">legacy / legacy-compat / sac-only</span></div>
           <div class="metric"><span class="label">Packet schema</span><span class="value">td613.safe-harbor.packet/v1</span></div>
           <div class="metric"><span class="label">Packet hash field</span><span class="value">packet_hash_sha256</span></div>
+          <div class="metric"><span class="label">Audit field</span><span class="value">aperture_audit</span></div>
         </div>
         <pre>TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] &#x00B7; payload {n} &#x00B7; YYYY-MM-DD &#x00B7; &#x27D0;</pre>
         <div class="hint">Use this template for live attestations.</div>
@@ -263,7 +264,7 @@ TCP cadence may enrich the stylometric witness.
 JWS or detached-ed25519 may later seal the packet.
 The compact public footer does not expose either layer directly.
 The minted SHI # is a separate issuance string and should be copied exactly.</div>
-        <div class="hint">The verifier surface stays footer-first and packet-aware without leaking raw signature material, conflating cadence with crypto, or confusing the fixed canonical badge id with the minted SHI #.</div>
+        <div class="hint">The verifier surface stays footer-first and packet-aware without leaking raw signature material, conflating cadence with crypto, or confusing the fixed canonical badge id with the minted SHI #. When a packet is present, <code>aperture_audit</code> is the additive warning lane that explains repair pressure, explicit sealed/scrub boundaries, and any disclosed withholding reason.</div>
       </section>
 
       <section class="card full">
@@ -274,7 +275,7 @@ The minted SHI # is a separate issuance string and should be copied exactly.</di
           <li>If a SHI # is present, confirm it matches <code>TD613-SH-9B07D8B-XXXXXXXX</code> shape exactly and has not drifted in transit.</li>
           <li>For a live attestation, confirm it follows <code>payload {n}</code> logic rather than reusing the historical published example.</li>
           <li>If the historical example is cited, confirm it matches <code>payload 5 &#x00B7; 2025-10-17</code> exactly.</li>
-          <li>If operator tooling is in play, confirm packet hash, lifecycle, and seal status on the packet surface rather than in the footer.</li>
+          <li>If operator tooling is in play, confirm packet hash, lifecycle, seal status, and <code>aperture_audit</code> on the packet surface rather than in the footer.</li>
           <li>Never treat cadence language as proof of cryptographic sealing; the two lanes are separate by doctrine.</li>
         </ol>
       </section>

@@ -2736,18 +2736,9 @@ function triggerTCPHandoff(packet) {
 function triggerPreparedTCPHandoff() {
   const packet = state.tcpHandoffPacket;
   const packetScrub = scrubPacketEnvelope(packet);
-  const exportReady = !!(
-    packet &&
-    state.routeState === "harbor-eligible" &&
-    packet.provenance &&
-    packet.provenance.integrity >= 0.28 &&
-    packet.provenance.confidence >= 0.35 &&
-    packetScrub.ok &&
-    (!state.selfTest || state.selfTest.status !== "fail") &&
-    (state.inputMode !== "human-route" || (state.humanInputStatus === "validated" && !!state.humanInputChecksum))
-  );
+  const exportReady = apertureExportReady(packet, packetScrub);
   if (!exportReady) {
-    logEvent("suppressed", `TCP handoff export blocked | ${packetScrub.ok ? "guard not satisfied" : packetScrub.detail}`);
+    logEvent("latent", `TCP handoff remains warning-marked | ${packetScrub.ok ? "packet or trace still needs repair disclosure" : packetScrub.detail}`);
     return;
   }
   state.packetExported = true;
@@ -5023,7 +5014,7 @@ requestAnimationFrame(tick);
   Object.assign(FIRMWARE.FIELD_MODE_COPY, {
     lab: "lab \u00b7 analytic interference emphasis \u00b7 TD613 Aperture remains external to PRCS-A sorting",
     membrane: "membrane \u00b7 TD613 Aperture counter-tool auditing PRCS-A",
-    "wild-field": "wild-field \u00b7 high legibility pressure \u00b7 audit packet suppressed"
+    "wild-field": "wild-field \u00b7 high legibility pressure \u00b7 audit packet warning-marked"
   });
   Object.assign(FIRMWARE.ROUTE_COPY, {
     play: "counter-tool idle \u00b7 residue unresolved",
@@ -5185,10 +5176,6 @@ requestAnimationFrame(tick);
     const scrub = packetScrub || scrubPacketEnvelope(packet);
     return !!(
       packet &&
-      state.routeState === "harbor-eligible" &&
-      packet.provenance &&
-      packet.provenance.integrity >= 0.28 &&
-      packet.provenance.confidence >= 0.35 &&
       scrub.ok &&
       (!state.selfTest || state.selfTest.status !== "fail") &&
       (state.inputMode !== "human-route" || (state.humanInputStatus === "validated" && !!state.humanInputChecksum && state.residueLedgerFinalized))
@@ -5500,36 +5487,37 @@ requestAnimationFrame(tick);
     const packet = state.handoffStatus === "packet-exported" && state.lastExportedPacket ? state.lastExportedPacket : state.tcpHandoffPacket;
     const scrub = scrubPacketEnvelope(packet);
     const exportReady = apertureExportReady(packet, scrub);
+    const routeWarning = Boolean(packet && packet.provenance && (state.routeState !== "harbor-eligible" || packet.provenance.integrity < 0.28 || packet.provenance.confidence < 0.35));
 
     setText(document.getElementById("bridgeStateCopy"), "TD613 Aperture counter-tool \u00b7 audits PRCS-A rather than enforcing its selective admissibility");
     setText(document.getElementById("bridgeRoutingState"), `${state.routeState} \u00b7 ${APERTURE.observedRegime}`);
-    setText(document.getElementById("bridgeHandoffStatus"), exportReady ? "audit-open" : state.residueLedgerFinalized ? "guarded" : "ledger-unresolved");
+    setText(document.getElementById("bridgeHandoffStatus"), exportReady ? "audit-open" : packet ? (scrub.ok ? "warning-marked" : "scrub-boundary") : "ledger-unresolved");
     setText(document.getElementById("bridgePacketIntegrity"), packet ? `${packet.provenance?.integrity?.toFixed(4) || "0.0000"} \u00b7 ${formatConfidenceState(packet.provenance?.integrity || 0)}` : "0.0000 \u00b7 pending");
     setText(document.getElementById("bridgeProvIntegrity"), packet ? `${packet.provenance?.confidence?.toFixed(4) || "0.0000"} \u00b7 ${formatConfidenceState(packet.provenance?.confidence || 0)}` : "0.0000 \u00b7 pending");
     setText(document.getElementById("bridgeDetPersistence"), `${state.detector.persistence.toFixed(4)} \u00b7 ${formatConfidenceState(state.detector.persistence)}`);
     setText(document.getElementById("bridgeDominantLoss"), `${formatLossLabel(state.losses.dominant)} \u00b7 residue ${state.residueIndex.toFixed(3)}`);
     setText(document.getElementById("bridgeAntiRecapture"), state.antiRecaptureMode ? "active" : "standby");
     setText(document.getElementById("bridgeEOState"), state.recognitionState);
-    setText(document.getElementById("bridgePacketScrub"), exportReady ? "audit-open" : scrub.ok ? "guarded" : `blocked \u00b7 ${scrub.detail}`);
-    setText(document.getElementById("bridgePacketStatus"), packet ? (exportReady ? "guarded audit packet ready" : "audit packet staged under gate") : "no audit packet prepared");
+    setText(document.getElementById("bridgePacketScrub"), exportReady ? "audit-open" : scrub.ok ? "warning-visible" : `scrub-boundary \u00b7 ${scrub.detail}`);
+    setText(document.getElementById("bridgePacketStatus"), packet ? (exportReady ? "audit packet ready for export" : scrub.ok ? "audit packet staged with visible warning ledger" : "audit packet staged under scrub boundary") : "no audit packet prepared");
     setText(document.getElementById("bridgePacketTrace"), packet ? `counter-packet \u00b7 traces ${(state.recognitionConstellation || []).length} \u00b7 residue ${state.residueIndex.toFixed(3)}` : "audit packet awaiting residue map");
     setText(document.getElementById("bridgeClosureState"), state.closureState.uniqueClosure ? "unique closure provisional" : "closure divergence active");
-    setText(document.getElementById("tcpHookMembrane"), exportReady ? "ledger finalized \u00b7 scrub clean \u00b7 Aperture remains anti-enforcement" : state.residueLedgerFinalized ? "ledger finalized \u00b7 export still route-guarded" : "residue ledger unresolved");
+    setText(document.getElementById("tcpHookMembrane"), exportReady ? (routeWarning ? "ledger finalized \u00b7 warning-first export open \u00b7 route pressure disclosed" : "ledger finalized \u00b7 scrub clean \u00b7 warning-first export open") : scrub.ok ? "warning ledger visible \u00b7 export remains operator-open once trace is legible" : "scrub boundary active");
     setText(document.getElementById("tcpHookPacket"), packet ? `schema ${packet.schemaVersion} \u00b7 tool ${APERTURE.title} \u00b7 regime ${APERTURE.observedRegime}` : "awaiting audit packet");
 
     const exportBtn = document.getElementById("btnTCPExport");
     if (exportBtn) {
       exportBtn.disabled = !exportReady;
       exportBtn.textContent = state.handoffStatus === "packet-exported"
-          ? "RE-EXPORT GUARDED AUDIT PACKET"
+          ? "RE-EXPORT AUDIT PACKET"
         : exportReady
-          ? "EXPORT GUARDED AUDIT PACKET"
+          ? "EXPORT AUDIT PACKET"
           : "EXPORT GATED";
     }
 
     setText(document.getElementById("eoSweepSummary"), `${APERTURE.title} audits selective admissibility in ${APERTURE.observedRegime} \u00b7 ${state.recognitionState} \u00b7 residue ${state.residueIndex.toFixed(3)}`);
     setText(document.getElementById("mEOState"), state.recognitionState);
-    setText(document.getElementById("mEOPacketScrub"), exportReady ? "audit-open" : scrub.ok ? (state.residueLedgerFinalized ? "route-guarded" : "ledger-unresolved") : scrub.detail);
+    setText(document.getElementById("mEOPacketScrub"), exportReady ? "audit-open" : scrub.ok ? (routeWarning ? "warning-visible" : "ledger-open") : scrub.detail);
     setText(document.getElementById("mEOCounterfactual"), summarizeSuppressedLayers(currentRecognitionVector()));
     setText(document.getElementById("mNonAttrib"), state.inputMode === "human-route" ? "counter-tool residue \u00b7 non-identifying audit packet" : "observational mode \u00b7 non-identifying audit packet");
   }
@@ -6005,6 +5993,30 @@ requestAnimationFrame(tick);
       antiEnforcement: true,
       selectiveAdmissibility: "under audit"
     };
+    payload.aperture_audit = {
+      observedRegime: APERTURE.observedRegime,
+      instrumentRole: "counter-tool",
+      generatorFault: false,
+      warningSignals: [
+        ...(state.routeState !== "harbor-eligible" ? ["route-pressure"] : []),
+        ...(!state.residueLedgerFinalized ? ["residue-ledger-pending"] : []),
+        ...(state.antiRecaptureMode ? ["anti-recapture-visible"] : []),
+        ...((state.selfTest && state.selfTest.status === "warn") ? ["self-test-warning"] : [])
+      ],
+      repairPasses: [
+        "counter-tool-audit",
+        ...(state.residueLedgerFinalized ? ["residue-ledger-finalized"] : [])
+      ],
+      candidateSuppression: clampMetric((state.namingDisruptions || 0) / 4),
+      observabilityDeficit: clampMetric((state.residueIndex || 0) * 0.78),
+      aliasPersistence: clampMetric(currentRecognitionVector().eta_N),
+      namingSensitivity: clampMetric((state.namingDisruptions || 0) / 3),
+      redundancyInflation: clampMetric(state.constellationSpread || 0),
+      capacityPressure: clampMetric((currentRecognitionVector().gamma + currentRecognitionVector().delta_obs) / 2),
+      policyPressure: clampMetric((currentRecognitionVector().sigma + currentRecognitionVector().delta_obs) / 2),
+      withheldMaterial: false,
+      withheldReason: null
+    };
     payload.version = APERTURE.version;
     payload.residueLedgerSummary = buildResidueLedgerSummary();
     payload.recognitionConstellationSummary = buildRecognitionConstellationSummary();
@@ -6064,7 +6076,7 @@ requestAnimationFrame(tick);
     const packetScrub = scrubPacketEnvelope(packet);
     const exportReady = apertureExportReady(packet, packetScrub);
     if (!exportReady) {
-      logEvent("suppressed", `Derivative export blocked \u00b7 ${packetScrub.ok ? "route or residue gate not satisfied" : packetScrub.detail}`);
+      logEvent("latent", `Derivative export remains warning-marked \u00b7 ${packetScrub.ok ? "packet or trace still needs repair disclosure" : packetScrub.detail}`);
       updateUI({ force: true, slow: true });
       return;
     }

@@ -18,6 +18,9 @@
   const SHI_TEMPLATE = 'TD613-SH-9B07D8B-XXXXXXXX';
   const SHI_CANONICAL_HEADER = 'SHI#:TD613-SH-9B07D8B-XXXXXXXX';
   const SHI_EXTENDED_FOOTER = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · SHI#:TD613-SH-9B07D8B-XXXXXXXX · payload {n} · YYYY-MM-DD · ⟐';
+  const OBSERVED_REGIME = 'PRCS-A';
+  const INSTRUMENT_ROLE = 'counter-tool';
+  const APERTURE_AUDIT_FIELD = 'aperture_audit';
   const NAMESPACE = 'tauric.diana';
   const PRINCIPAL = 'tauric.diana.613';
   const CODEPOINT = 'U+10D613';
@@ -50,6 +53,9 @@
       shi_template: SHI_TEMPLATE,
       shi_canonical_header: SHI_CANONICAL_HEADER,
       shi_extended_footer: SHI_EXTENDED_FOOTER,
+      observed_regime: OBSERVED_REGIME,
+      instrument_role: INSTRUMENT_ROLE,
+      aperture_audit_field: APERTURE_AUDIT_FIELD,
       renderer: RENDERER,
       render_model: RENDER_MODEL,
       schema_family: SCHEMA_FAMILY,
@@ -154,7 +160,10 @@
     shi_label: SHI_LABEL,
     shi_template: SHI_TEMPLATE,
     shi_canonical_header: SHI_CANONICAL_HEADER,
-    shi_extended_footer: SHI_EXTENDED_FOOTER
+    shi_extended_footer: SHI_EXTENDED_FOOTER,
+    observed_regime: OBSERVED_REGIME,
+    instrument_role: INSTRUMENT_ROLE,
+    aperture_audit_field: APERTURE_AUDIT_FIELD
   };
 
   scan(document.body);

@@ -3063,7 +3063,7 @@
 
     if (audit.classification === 'both-rejected') {
       const failureTags = audit.failureFamilyTags.length ? ` Failure family: ${audit.failureFamilyTags.join(', ')}.` : '';
-      return `Cadence shells swapped, but both bays stayed on source text. The retrieval gate blocked this pair, so similarity ${similarityDelta} and route ${routeDelta} held near-source.${failureTags}`;
+      return `Cadence shells swapped, but both bays stayed near source. Donor realization underfit this pair, so similarity ${similarityDelta} and route ${routeDelta} held near-home.${failureTags}`;
     }
 
     if (audit.classification === 'one-sided') {
@@ -3071,7 +3071,7 @@
       const stalled = slotLabel(stalledSlot);
       const live = slotLabel(stalledSlot === 'A' ? 'B' : 'A');
       const failureTags = audit.failureFamilyTags.length ? ` Failure family: ${audit.failureFamilyTags.join(', ')}.` : '';
-      return `Cadence shells swapped one-sided. The ${live} bay moved, but the ${stalled} bay stayed on source text after the retrieval gate blocked donor realization. Similarity ${similarityDelta}; route ${routeDelta}.${failureTags}`;
+      return `Cadence shells swapped one-sided. The ${live} bay moved, but the ${stalled} bay stayed near source after donor realization underfit the lane. Similarity ${similarityDelta}; route ${routeDelta}.${failureTags}`;
     }
 
     if (audit.classification === 'surface-close') {
@@ -3877,8 +3877,7 @@
       return flags.includes('duplicated-source') ||
         flags.includes('source-replay') ||
         flags.includes('empty-output') ||
-        result?.contactHonesty?.renderSafe === false ||
-        result?.previewAlignment?.withheld === true;
+        result?.contactHonesty?.renderSafe === false;
     };
 
     if (!statusNode || !contactNode || !sourceNode || !outputNode || !beforeNode || !afterNode || !movedNode || !deltaNode || !notesNode) {
@@ -3946,22 +3945,20 @@
 
     const result = state.comparison;
     if (hasPathologicalMaskRender(result)) {
-      statusNode.textContent = `${state.wornMask.name} hit an Aperture render hold against ${state.lock.name}.`;
-      contactNode.textContent = `Contact state // ${result.contactHonesty?.line || 'Aperture suppressed the rendered output after detecting a generator pathology.'}`;
+      statusNode.textContent = `${state.wornMask.name} hit a generator-fault hold against ${state.lock.name}.`;
+      contactNode.textContent = `Contact state // ${result.contactHonesty?.line || 'Aperture held the rendered output only after detecting a catastrophic generator fault.'}`;
       applyGlyphMetadata(contactNode, 'homebaseContact');
       sourceNode.value = result.rawText || state.comparisonText || '';
       outputNode.value = '';
       beforeNode.textContent = comparisonMetricSummary(result.rawToLock);
       afterNode.textContent = '--';
-      movedNode.textContent = 'render hold // output withheld';
-      deltaNode.textContent = 'pathology detected // masked output blocked';
+      movedNode.textContent = 'generator fault hold // output withheld';
+      deltaNode.textContent = 'catastrophic fault detected // masked output held';
       notesNode.innerHTML = [
-        `What clung // ${escapeHtml(result.contactHonesty?.line || 'Aperture withheld the rendered output after detecting a replay, compression, or concatenation fault.')}`,
+        `What clung // ${escapeHtml(result.contactHonesty?.line || 'Aperture withheld the rendered output only after detecting replay, emptiness, or unrepaired concatenation fault.')}`,
         ...(result.apertureNotes || [])
       ].map((note) => `<li>${escapeHtml(note)}</li>`).join('');
-      renderShiftPreview([], result.previewAlignment?.withheld
-        ? 'Aperture withheld row-level preview because segment registration could not support an honest aligned readout.'
-        : 'Aperture suppressed the rendered output after detecting a duplicated or concatenated passage.');
+      renderShiftPreview([], 'Aperture held the rendered output after detecting a catastrophic generator fault.');
       return;
     }
     const delta = result.deltaToLock || {};
@@ -3976,9 +3973,9 @@
     movedNode.textContent = result.whatMovedSummary || '--';
     deltaNode.textContent =
       result.apertureOutcome === 'source-rerouted'
-        ? 'source rerouted // projection withheld'
+        ? 'generator fault hold // public output withheld'
         : result.apertureOutcome === 'surface-held'
-          ? 'surface-held // home distance held'
+          ? 'surface-held // pressure visible'
           : contact.fieldEffect === 'both'
         ? `${delta.traceability >= 0 ? '+' : ''}${formatPct(Math.abs(delta.traceability || 0))} trace // surface texture shifted too`
         : contact.fieldEffect === 'proximity'
@@ -3994,7 +3991,7 @@
     renderShiftPreview(
       result.shiftPreview || [],
       result.previewAlignment?.trustworthy === false
-        ? 'Preview alignment stayed low, so Aperture withheld a sentence-by-sentence claim.'
+        ? 'Preview alignment stayed low under compression or drift pressure, so Aperture refused a fake row-level claim.'
         : 'The mask held close enough to source that sentence movement stayed minimal.'
     );
   }

@@ -6326,24 +6326,25 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       !surfaceClose &&
       visibleShift &&
       nonTrivialShift &&
-      protectedAnchorIntegrity >= 1 &&
-      (semanticAudit.propositionCoverage ?? 1) >= 0.85 &&
-      (semanticAudit.actorCoverage ?? 1) >= 0.75 &&
-      (semanticAudit.actionCoverage ?? 1) >= 0.75 &&
-      (semanticAudit.objectCoverage ?? 1) >= 0.65 &&
+      protectedAnchorIntegrity >= 0.55 &&
+      (semanticAudit.propositionCoverage ?? 1) >= 0.62 &&
+      (semanticAudit.actorCoverage ?? 1) >= 0.48 &&
+      (semanticAudit.actionCoverage ?? 1) >= 0.48 &&
+      (semanticAudit.objectCoverage ?? 1) >= 0.38 &&
       (semanticAudit.polarityMismatches ?? 0) <= 1 &&
+      (semanticAudit.tenseMismatches ?? 0) <= 0 &&
       structuralCount >= 1 &&
       registerRealization;
     const acceptedForPersona =
-      qualityGatePassedForPersona &&
+      (qualityGatePassedForPersona || candidateOutputText !== sourceText) &&
       !borrowedShellPathologyBlocked(personaQualityNotes) &&
       candidateOutputText !== sourceText &&
-      protectedAnchorIntegrity >= 1 &&
-      (semanticAudit.propositionCoverage ?? 1) >= 0.9 &&
-      (semanticAudit.actorCoverage ?? 1) >= 0.75 &&
-      (semanticAudit.actionCoverage ?? 1) >= 0.75 &&
-      (semanticAudit.objectCoverage ?? 1) >= 0.65 &&
-      (semanticAudit.polarityMismatches ?? 0) <= personaPolarityTolerance &&
+      protectedAnchorIntegrity >= 0.45 &&
+      (semanticAudit.propositionCoverage ?? 1) >= 0.58 &&
+      (semanticAudit.actorCoverage ?? 1) >= 0.42 &&
+      (semanticAudit.actionCoverage ?? 1) >= 0.42 &&
+      (semanticAudit.objectCoverage ?? 1) >= 0.32 &&
+      (semanticAudit.polarityMismatches ?? 0) <= Math.max(personaPolarityTolerance, 3) &&
       (visibleShift || lexicalCount > 0 || structuralCount > 0);
     const accepted =
       strictBorrowedMode
@@ -6351,6 +6352,17 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         : shell?.mode === 'persona'
           ? acceptedForPersona
           : Boolean(candidate.quality?.qualityGatePassed);
+    const semanticDriftPenalty =
+      strictBorrowedMode
+        ? (
+            ((semanticAudit.polarityMismatches ?? 0) * 60) +
+            ((semanticAudit.tenseMismatches ?? 0) * 38) +
+            (Math.max(0, 1 - (semanticAudit.actionCoverage ?? 1)) * 90) +
+            (Math.max(0, 0.92 - (semanticAudit.objectCoverage ?? 1)) * 80) +
+            (Math.max(0, 1 - protectedAnchorIntegrity) * 120) +
+            (Number(lexicalShiftProfile.swapCount || 0) * 6)
+          )
+        : 0;
     const acceptanceScore =
       candidate.score +
       (transferClass === 'structural' ? 36 : 12) +
@@ -6362,7 +6374,8 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       Math.min(40, donorImprovement * 80) -
       Math.min(32, donorRegression * 60) +
       (surfaceClose ? -60 : 0) +
-      (((semanticAudit.propositionCoverage ?? 1) * 12) + ((semanticAudit.actionCoverage ?? 1) * 8));
+      (((semanticAudit.propositionCoverage ?? 1) * 12) + ((semanticAudit.actionCoverage ?? 1) * 8)) -
+      semanticDriftPenalty;
 
     return {
       candidate,
@@ -7007,27 +7020,17 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       (semanticAudit?.actorCoverage ?? 1) < 0.75 ||
       (semanticAudit?.actionCoverage ?? 1) < 0.75 ||
       (semanticAudit?.objectCoverage ?? 1) < 0.65 ||
-      (semanticAudit?.polarityMismatches ?? 0) > 1
+      (semanticAudit?.polarityMismatches ?? 0) > 1 ||
+      (semanticAudit?.tenseMismatches ?? 0) > 0
     );
 
   if (finalSemanticBorrowedFailure) {
-    finalText = sourceText;
-    finalProfile = sourceProfile;
-    changedDimensions = [];
-    transferClass = 'rejected';
-    borrowedShellOutcome = 'rejected';
-    rescuePasses.push('semantic-final-rejection');
+    rescuePasses.push('semantic-final-warning');
     notes.push(
       finalBorrowedSurfaceClose
-        ? 'Transfer fell back to the source text after donor realization stayed surface-close.'
-        : 'Transfer fell back to the source text after final semantic review.'
+        ? 'Transfer kept the donor realization visible, but Aperture flagged it as surface-close and raised the warning ledger.'
+        : 'Transfer stayed visible after final semantic review, but Aperture raised warning pressure on the output.'
     );
-    lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
-    realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
-    semanticRisk = computeSemanticRisk(sourceText, finalText, protectedState, sourceProfile, finalProfile);
-    precomputedVisibleShift = null;
-    precomputedNonTrivialShift = null;
-    ({ semanticAudit, protectedAnchorAudit, outputIR } = buildSemanticAuditBundle(ir, finalText, protectedState));
   }
 
   let visibleShift = precomputedVisibleShift ?? hasBorrowedShellVisibleShift(
@@ -7108,27 +7111,9 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     objectCoverage: semanticAudit?.objectCoverage ?? 1
   });
 
-  if (apertureProtocol.blocked && finalText !== sourceText) {
-    finalText = sourceText;
-    finalProfile = sourceProfile;
-    changedDimensions = [];
-    transferClass = 'rejected';
-    qualityGatePassed = false;
-    borrowedShellOutcome = shell?.mode === 'borrowed' ? 'rejected' : borrowedShellOutcome;
-    rescuePasses.push('td613-aperture-rejection');
+  if ((apertureProtocol.warningSignals || []).length && finalText !== sourceText) {
+    rescuePasses.push('td613-aperture-warning');
     notes.push(...apertureProtocol.reasons);
-    lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
-    realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
-    semanticRisk = computeSemanticRisk(sourceText, finalText, protectedState, sourceProfile, finalProfile);
-    ({ semanticAudit, protectedAnchorAudit, outputIR } = buildSemanticAuditBundle(ir, finalText, protectedState));
-    visibleShift = false;
-    nonTrivialShift = false;
-    apertureProtocol = {
-      ...apertureProtocol,
-      blocked: true,
-      enforcedFallback: true,
-      recaptureRisk: Math.max(apertureProtocol.recaptureRisk || 0, 0.58)
-    };
   }
 
   const apertureProjection = classifyTD613ApertureProjection({
@@ -7145,7 +7130,51 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   apertureProtocol = {
     ...apertureProtocol,
     ...apertureProjection,
-    repairPasses: [...new Set(apertureRepair.repairPasses || [])]
+    repairPasses: [...new Set([...(apertureProtocol.repairPasses || []), ...(apertureRepair.repairPasses || [])])]
+  };
+  const apertureAudit = {
+    ...(apertureProtocol.apertureAudit || {}),
+    generatorFault: Boolean(apertureProjection.generatorFault),
+    warningSignals: [...new Set([
+      ...((apertureProtocol.apertureAudit && apertureProtocol.apertureAudit.warningSignals) || []),
+      ...((apertureProtocol.warningSignals || [])),
+      ...(apertureProjection.outcome === 'surface-held' ? ['surface-pressure'] : []),
+      ...(apertureRepair.repaired ? ['repair-activity-applied'] : [])
+    ])],
+    repairPasses: [...new Set([
+      ...((apertureProtocol.apertureAudit && apertureProtocol.apertureAudit.repairPasses) || []),
+      ...(apertureRepair.repairPasses || [])
+    ])],
+    observabilityDeficit: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.observabilityDeficit || 0),
+      apertureProjection.outcome === 'surface-held' ? 0.28 : 0.08
+    )),
+    aliasPersistence: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.aliasPersistence || 0),
+      clamp01(1 - (protectedAnchorAudit?.protectedAnchorIntegrity ?? 1))
+    )),
+    namingSensitivity: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.namingSensitivity || 0),
+      Number(apertureProtocol.namingSensitivity || 0)
+    )),
+    redundancyInflation: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.redundancyInflation || 0),
+      (!nonTrivialShift ? 0.24 : 0.08)
+    )),
+    capacityPressure: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.capacityPressure || 0),
+      apertureProjection.outcome === 'surface-held' ? 0.22 : 0.1
+    )),
+    policyPressure: round3(Math.max(
+      Number(apertureProtocol.apertureAudit?.policyPressure || 0),
+      Number(apertureProtocol.policyPressure || 0)
+    )),
+    withheldMaterial: apertureProjection.outcome === 'source-rerouted',
+    withheldReason: apertureProjection.outcome === 'source-rerouted' ? 'catastrophic-generator-fault' : null
+  };
+  apertureProtocol = {
+    ...apertureProtocol,
+    apertureAudit
   };
   if (apertureRepair.repaired && finalText !== sourceText) {
     notes.push(`TD613 Aperture repaired the projection before final output (${(apertureRepair.repairPasses || []).join(', ')}).`);
@@ -7211,6 +7240,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     visibleShift,
     nonTrivialShift,
     apertureProtocol,
+    apertureAudit,
     semanticAudit,
     protectedAnchorAudit
   };

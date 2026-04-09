@@ -424,7 +424,9 @@
         "donorImprovementRatio": 0.228,
         "sourceOutputLexicalOverlap": 0.929
       },
-      "rescuePasses": [],
+      "rescuePasses": [
+        "td613-aperture-warning"
+      ],
       "visibleShift": true,
       "nonTrivialShift": true
     },
@@ -672,7 +674,9 @@
         "Register shift surfaced through abbreviation-posture, orthography-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
-      "rescuePasses": [],
+      "rescuePasses": [
+        "td613-aperture-warning"
+      ],
       "visibleShift": true,
       "nonTrivialShift": true
     }

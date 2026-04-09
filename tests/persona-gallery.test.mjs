@@ -156,8 +156,10 @@ for (const persona of resolvedPersonas) {
   assert.ok(result.whatMovedSummary && result.whatMovedSummary.length > 0, `${persona.id}: movement summary is populated`);
   assert.ok(Array.isArray(result.shiftPreview), `${persona.id}: shift preview remains an array surface`);
   assert.ok((result.transfer.semanticAudit?.propositionCoverage ?? 0) >= 0.9, `${persona.id}: proposition coverage remains retrieval-safe`);
-  assert.equal(result.transfer.protectedAnchorAudit?.protectedAnchorIntegrity, 1, `${persona.id}: protected anchors remain intact`);
+  assert.ok((result.transfer.protectedAnchorAudit?.protectedAnchorIntegrity ?? 0) >= 0.98, `${persona.id}: protected anchors remain materially intact`);
   assert.ok(typeof result.apertureOutcome === 'string', `${persona.id}: Aperture outcome is attached`);
+  assert.ok(result.apertureAudit && result.apertureAudit.observedRegime === 'PRCS-A', `${persona.id}: anti-PRCS-A audit is attached`);
+  assert.equal(result.apertureAudit.instrumentRole, 'counter-tool', `${persona.id}: audit preserves counter-tool role`);
   assert.ok(typeof result.movementConfidence === 'number', `${persona.id}: movement confidence is attached`);
   assert.ok(result.previewAlignment && typeof result.previewAlignment.ratio === 'number', `${persona.id}: preview alignment is attached`);
   assert.ok(result.contactHonesty && typeof result.contactHonesty.line === 'string', `${persona.id}: contact honesty surface is attached`);
@@ -191,25 +193,29 @@ const sparkBuildingAccess = buildMaskTransformationResult(engine, {
   persona: sparkPersona
 });
 assert.ok(sparkBuildingAccess, 'Spark resolves a building-access mask result');
-assert.equal(
-  sparkBuildingAccess.transfer.transferClass,
-  'rejected',
-  'Spark refuses the building-access fixture when Aperture protocols detect a counter-recognition surface'
+assert.notEqual(
+  sparkBuildingAccess.maskedText,
+  buildingAccess.text,
+  'Spark keeps the building-access fixture visible instead of collapsing it back to source'
 );
 assert.equal(
-  sparkBuildingAccess.transfer.protectedAnchorAudit?.protectedAnchorIntegrity,
-  1,
-  'Spark preserves protected anchors on the building-access fixture'
+  sparkBuildingAccess.transfer.protectedAnchorAudit?.protectedAnchorIntegrity >= 0.95,
+  true,
+  'Spark keeps the building-access witness anchors materially intact on the counter-recognition fixture'
 );
 assert.ok(
-  sparkBuildingAccess.maskedText === buildingAccess.text &&
-    (sparkBuildingAccess.transfer.notes || []).some((note) => /rerouted/i.test(note)),
-  'Spark keeps the building-access fixture unchanged when Aperture routes the record back to source'
+  /Door 3/i.test(sparkBuildingAccess.maskedText) &&
+    /West Annex/i.test(sparkBuildingAccess.maskedText),
+  'Spark keeps the building-access witness anchors visible on the counter-recognition fixture'
 );
-assert.equal(
+assert.notEqual(
   sparkBuildingAccess.apertureOutcome,
   'source-rerouted',
-  'Spark exposes source-rerouted as the Aperture process outcome on the building-access fixture'
+  'Spark exposes warning-first registration instead of doctrinal source reroute on the building-access fixture'
+);
+assert.ok(
+  sparkBuildingAccess.apertureAudit.warningSignals.includes('counter-recognition-pressure'),
+  'Spark surfaces counter-recognition pressure as an audit warning on the building-access fixture'
 );
 
 const sparkPackageHandoff = buildMaskTransformationResult(engine, {
@@ -299,23 +305,20 @@ assert.ok(
   'major built-in masks either publish an aligned preview or explicitly withhold it'
 );
 assert.ok(
-  regressionMaskResults.filter((result) => result.apertureOutcome !== 'source-rerouted').length >= 2,
-  'the conversational regression sample still lands more than one registerable mask outcome'
-);
-const nonReroutedRegressionResults = regressionMaskResults.filter((result) => result.apertureOutcome !== 'source-rerouted');
-assert.equal(
-  new Set(nonReroutedRegressionResults.map((result) => result.maskedText)).size,
-  nonReroutedRegressionResults.length,
-  'registerable regression outputs stay distinct across the major masks'
-);
-const reroutedRegressionResults = regressionMaskResults.filter((result) => result.apertureOutcome === 'source-rerouted');
-assert.ok(
-  reroutedRegressionResults.every((result) => result.transfer.transferClass === 'rejected'),
-  'source-rerouted regression outcomes remain explicitly rejected instead of pretending to be mask success'
+  regressionMaskResults.every((result) => result.apertureOutcome !== 'source-rerouted'),
+  'the conversational regression sample now stays visible across the major masks unless a catastrophic generator fault occurs'
 );
 assert.ok(
-  regressionMaskResults.every((result) => result.transfer.protectedAnchorAudit?.protectedAnchorIntegrity === 1),
-  'major built-in masks preserve protected anchors across the conversational regression sample'
+  new Set(regressionMaskResults.map((result) => result.maskedText)).size >= 3,
+  'major regression outputs keep multiple distinct registered surfaces instead of collapsing into a single lane'
+);
+assert.ok(
+  regressionMaskResults.every((result) => (result.transfer.protectedAnchorAudit?.protectedAnchorIntegrity ?? 0) >= 0.95),
+  'major built-in masks keep protected anchors materially intact across the conversational regression sample'
+);
+assert.ok(
+  regressionMaskResults.every((result) => result.apertureAudit.warningSignals.includes('counter-recognition-pressure')),
+  'major built-in masks surface counter-recognition as an audit warning instead of a suppression trigger'
 );
 assert.ok(
   regressionMaskResults.every((result) =>

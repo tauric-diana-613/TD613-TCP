@@ -93,9 +93,11 @@ const transferReview = reviewTD613ApertureTransfer({
 });
 
 assert.equal(transferReview.applied, true);
-assert.equal(transferReview.blocked, true);
+assert.equal(transferReview.blocked, false);
 assert(transferReview.introducedEnforcementTerms.includes('eligible'));
-assert(transferReview.reasons.some((reason) => /recapture posture drift/i.test(reason)));
+assert(transferReview.reasons.some((reason) => /warning pressure/i.test(reason)));
+assert(transferReview.warningSignals.includes('enforcement-framing'));
+assert.equal(transferReview.apertureAudit.generatorFault, false);
 
 const sparkPlan = buildTD613ApertureProjectionPlan({
   personaId: 'spark',
@@ -182,8 +184,10 @@ const registeredSegment = registerTD613ApertureSegment({
   },
   protectedState: { literals: [] }
 });
-assert.equal(registeredSegment.outcome, 'source-rerouted');
+assert.equal(registeredSegment.outcome, 'surface-held');
 assert.equal(registeredSegment.registeredText, 'Customer contacted support regarding account review.');
+assert.equal(registeredSegment.apertureAudit.generatorFault, false);
+assert.equal(registeredSegment.witnessAnchorIntegrity, 1);
 
 const projectedOutcome = classifyTD613ApertureProjection({
   sourceText: 'Keep doing what you are doing.',
@@ -209,6 +213,7 @@ const reroutedOutcome = classifyTD613ApertureProjection({
   pathologies: { flags: [], severe: false },
   blocked: true
 });
-assert.equal(reroutedOutcome.outcome, 'source-rerouted');
+assert.equal(reroutedOutcome.outcome, 'surface-held');
+assert.equal(reroutedOutcome.generatorFault, false);
 
 console.log('td613-aperture.test.mjs passed');

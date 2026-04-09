@@ -874,14 +874,60 @@ function expandCommonContractions(text = '') {
   );
 }
 
-function applySurfaceOnlyMaskSentence(source = '', sourceProfile = {}, targetProfile = {}) {
+function applySurfaceOnlyMaskSentence(source = '', sourceProfile = {}, targetProfile = {}, personaId = '') {
   let working = String(source || '');
   const contractionDelta = Number(targetProfile.contractionDensity || 0) - Number(sourceProfile.contractionDensity || 0);
+  const sentenceDelta = Number(targetProfile.avgSentenceLength || 0) - Number(sourceProfile.avgSentenceLength || 0);
+  const punctuationDelta = Number(targetProfile.punctuationDensity || 0) - Number(sourceProfile.punctuationDensity || 0);
 
   if (contractionDelta >= 0.03) {
     working = contractCommonPhrases(working);
   } else if (contractionDelta <= -0.03) {
     working = expandCommonContractions(working);
+  }
+
+  if (personaId === 'spark' || sentenceDelta <= -1.2) {
+    working = working
+      .replace(/,\s+because\b/gi, '. Because')
+      .replace(/,\s+but\b/gi, '. But')
+      .replace(/,\s+which\b/gi, '. Which')
+      .replace(/,\s+and\b/gi, '. And')
+      .replace(/\bbecause\b/gi, '. Because')
+      .replace(/\bregarding\b/gi, '. Regarding')
+      .replace(/\bafter\b/gi, '. After');
+  }
+
+  if (personaId === 'matron') {
+    working = working
+      .replace(/,\s+which\b/gi, '; which')
+      .replace(/,\s+and\b/gi, '; and');
+  }
+
+  if (personaId === 'undertow') {
+    working = working
+      .replace(/,\s+but\b/gi, '; but')
+      .replace(/\bbecause\b/gi, '. Because')
+      .replace(/\bafter\b/gi, '. After');
+  }
+
+  if (personaId === 'archivist') {
+    working = working
+      .replace(/,\s+which\b/gi, '. Which')
+      .replace(/,\s+who\b/gi, '. Who');
+  }
+
+  if (personaId === 'cross-examiner') {
+    working = working
+      .replace(/,\s+which\b/gi, '. Which')
+      .replace(/\bbecause\b/gi, '. Because')
+      .replace(/,\s+and\b/gi, '. And')
+      .replace(/\bafter\b/gi, '. After');
+  }
+
+  if (punctuationDelta >= 0.015) {
+    working = working.replace(/,\s+(?=[A-Z])/g, '; ');
+  } else if (punctuationDelta <= -0.015) {
+    working = working.replace(/;\s+/g, '. ');
   }
 
   return matchSentenceSurface(source, working);
@@ -1054,9 +1100,29 @@ function aggregateProtectedAnchorAudit(segmentLedger = []) {
   };
 }
 
+function aggregateApertureAudit(segmentLedger = []) {
+  const audits = segmentLedger.map((entry) => entry?.apertureAudit || {}).filter(Boolean);
+  return {
+    observedRegime: 'PRCS-A',
+    instrumentRole: 'counter-tool',
+    generatorFault: audits.some((audit) => audit.generatorFault),
+    warningSignals: [...new Set(audits.flatMap((audit) => audit.warningSignals || []))],
+    repairPasses: [...new Set(audits.flatMap((audit) => audit.repairPasses || []))],
+    candidateSuppression: round(audits.reduce((max, audit) => Math.max(max, Number(audit.candidateSuppression || 0)), 0), 4),
+    observabilityDeficit: round(audits.reduce((max, audit) => Math.max(max, Number(audit.observabilityDeficit || 0)), 0), 4),
+    aliasPersistence: round(audits.reduce((max, audit) => Math.max(max, Number(audit.aliasPersistence || 0)), 0), 4),
+    namingSensitivity: round(audits.reduce((max, audit) => Math.max(max, Number(audit.namingSensitivity || 0)), 0), 4),
+    redundancyInflation: round(audits.reduce((max, audit) => Math.max(max, Number(audit.redundancyInflation || 0)), 0), 4),
+    capacityPressure: round(audits.reduce((max, audit) => Math.max(max, Number(audit.capacityPressure || 0)), 0), 4),
+    policyPressure: round(audits.reduce((max, audit) => Math.max(max, Number(audit.policyPressure || 0)), 0), 4),
+    withheldMaterial: audits.some((audit) => audit.withheldMaterial),
+    withheldReason: audits.find((audit) => audit.withheldReason)?.withheldReason || null
+  };
+}
+
 function segmentOutcomeCounts(segmentLedger = []) {
   return segmentLedger.reduce((acc, entry) => {
-    const outcome = entry?.outcome || 'source-rerouted';
+    const outcome = entry?.outcome || 'surface-held';
     if (outcome === 'projected') {
       acc.projected += 1;
     } else if (outcome === 'repaired') {
@@ -1078,7 +1144,10 @@ function segmentOutcomeCounts(segmentLedger = []) {
 function aggregateApertureOutcome(segmentLedger = []) {
   const counts = segmentOutcomeCounts(segmentLedger);
   const total = segmentLedger.length;
-  if (!total || counts.sourceRerouted === total) {
+  if (!total) {
+    return 'surface-held';
+  }
+  if (counts.sourceRerouted === total) {
     return 'source-rerouted';
   }
   if ((counts.projected + counts.repaired) === 0 && counts.surfaceHeld > 0) {
@@ -1090,16 +1159,16 @@ function aggregateApertureOutcome(segmentLedger = []) {
   return 'projected';
 }
 
-function buildRegistrationLine(outcome = 'source-rerouted', counts = {}) {
+function buildRegistrationLine(outcome = 'surface-held', counts = {}) {
   const total = (counts.projected || 0) + (counts.repaired || 0) + (counts.surfaceHeld || 0) + (counts.sourceRerouted || 0);
   if (!total) {
     return 'Aperture is waiting for a registerable segment.';
   }
   if (outcome === 'source-rerouted') {
-    return `Aperture rerouted ${counts.sourceRerouted || total} of ${total} segments back to source under counter-recognition pressure.`;
+    return `Aperture withheld ${counts.sourceRerouted || total} of ${total} segment${total === 1 ? '' : 's'} only after catastrophic generator faults.`;
   }
   if (outcome === 'surface-held' && (counts.projected || 0) === 0 && (counts.repaired || 0) === 0) {
-    return `Aperture held ${counts.surfaceHeld || total} of ${total} segments near source and only allowed surface-safe movement.`;
+    return `Aperture kept ${counts.surfaceHeld || total} of ${total} segment${total === 1 ? '' : 's'} in a surface-held lane and surfaced pressure notes instead of suppressing them.`;
   }
 
   const parts = [];
@@ -1115,7 +1184,7 @@ function buildRegistrationLine(outcome = 'source-rerouted', counts = {}) {
   if (counts.sourceRerouted) {
     parts.push(`${counts.sourceRerouted} source-rerouted`);
   }
-  return `Aperture registered ${parts.join(' // ')} segment${total === 1 ? '' : 's'}.`;
+  return `Aperture registered ${parts.join(' // ')} segment${total === 1 ? '' : 's'} and kept the pressure ledger visible.`;
 }
 
 function buildLedgerPreview(segmentLedger = []) {
@@ -1170,56 +1239,6 @@ function isCounterRecognitionSurface(text = '') {
   return /\b(?:badge(?:-renewal)?|door\s+\d+|west annex|suite\s+\d+|firmware|controller|custody|restricted room|archive operations|manual escort|device challenge|fraud hold)\b/i.test(text);
 }
 
-function forceSourceRerouteRegistration(registration = {}) {
-  const reroutedLedger = (registration.segmentLedger || []).map((entry) => Object.freeze({
-    ...entry,
-    internalText: entry.internalText || entry.sourceText,
-    registeredText: entry.sourceText,
-    outcome: 'source-rerouted',
-    transferClass: 'rejected',
-    semanticAudit: buildHeldSemanticAudit({}, entry.sourceText),
-    protectedAnchorAudit: {
-      totalAnchors: Number(entry.protectedAnchorAudit?.totalAnchors || 0),
-      resolvedAnchors: Number(entry.protectedAnchorAudit?.totalAnchors || 0),
-      missingAnchors: [],
-      protectedAnchorIntegrity: 1
-    },
-    previewHold: false,
-    renderSafe: true,
-    changedDimensions: [],
-    lexemeSwaps: [],
-    notes: [...new Set([
-      ...(entry.notes || []),
-      'Aperture elevated the whole passage into a counter-recognition hold and rerouted it to source.'
-    ])]
-  }));
-
-  const paragraphs = [...new Set(reroutedLedger.map((entry) => entry.paragraphIndex))].sort((left, right) => left - right);
-  const registeredSegments = paragraphs.map((paragraphIndex) => {
-    const entries = reroutedLedger.filter((entry) => entry.paragraphIndex === paragraphIndex);
-    return Object.freeze({
-      paragraphIndex,
-      text: normalizeText(entries.map((entry) => entry.sourceText).join(' ')),
-      segments: Object.freeze(entries.map((entry) => Object.freeze({
-        segmentIndex: entry.segmentIndex,
-        text: entry.sourceText,
-        outcome: 'source-rerouted'
-      })))
-    });
-  });
-
-  return {
-    maskedText: registeredSegments.map((paragraph) => paragraph.text).filter(Boolean).join('\n\n'),
-    internalMaskedText: registration.internalMaskedText || registration.maskedText || '',
-    registeredSegments: Object.freeze(registeredSegments),
-    segmentLedger: Object.freeze(reroutedLedger),
-    notes: [...new Set([
-      ...(registration.notes || []),
-      'Aperture elevated the passage into a counter-recognition hold and kept the registered record at source.'
-    ])]
-  };
-}
-
 function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}) {
   const paragraphs = String(sourceText || '')
     .replace(/\r\n/g, '\n')
@@ -1243,7 +1262,7 @@ function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}) {
       const sourceIR = engine.segmentTextToIR(segment, protectedState);
       const transfer = engine.buildCadenceTransfer(segment, shell, { retrieval: true });
       const projectedText = stripLeadingMaskIntrusion(segment, transfer.text || segment);
-      const surfaceText = applySurfaceOnlyMaskSentence(segment, sourceProfile, shell.profile || {});
+      const surfaceText = applySurfaceOnlyMaskSentence(segment, sourceProfile, shell.profile || {}, shell.personaId || '');
       const registration = registerTD613ApertureSegment({
         sourceText: segment,
         projectedText,
@@ -1253,7 +1272,7 @@ function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}) {
         targetProfile: shell.profile || {},
         sourceIR,
         protectedState,
-        blocked: transfer.transferClass === 'rejected' || transfer.apertureProtocol?.outcome === 'source-rerouted',
+        blocked: Boolean(transfer.apertureAudit?.generatorFault),
         transferClass: transfer.transferClass || ''
       });
       let registeredText = registration.registeredText;
@@ -1328,6 +1347,18 @@ function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}) {
         semanticAudit,
         protectedAnchorAudit,
         repairPasses: [...(registration.repairPasses || [])],
+        apertureAudit: {
+          ...(transfer.apertureAudit || {}),
+          ...(registration.apertureAudit || {}),
+          warningSignals: [...new Set([
+            ...((transfer.apertureAudit && transfer.apertureAudit.warningSignals) || []),
+            ...((registration.apertureAudit && registration.apertureAudit.warningSignals) || [])
+          ])],
+          repairPasses: [...new Set([
+            ...((transfer.apertureAudit && transfer.apertureAudit.repairPasses) || []),
+            ...((registration.apertureAudit && registration.apertureAudit.repairPasses) || [])
+          ])]
+        },
         apertureProtocol: {
           ...(transfer.apertureProtocol || {}),
           outcome: registeredOutcome,
@@ -1363,11 +1394,18 @@ function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}) {
   };
 
   const counts = segmentOutcomeCounts(registration.segmentLedger || []);
-  if (
-    isCounterRecognitionSurface(sourceText) &&
-    (counts.sourceRerouted / Math.max((registration.segmentLedger || []).length, 1)) >= 0.6
-  ) {
-    registration = forceSourceRerouteRegistration(registration);
+  if (isCounterRecognitionSurface(sourceText)) {
+    registration = {
+      ...registration,
+      notes: [
+        ...new Set([
+          ...(registration.notes || []),
+          counts.sourceRerouted
+            ? 'Counter-recognition pressure is present on this passage. Aperture kept the warning ledger visible and only withheld catastrophic generator faults.'
+            : 'Counter-recognition pressure is present on this passage. Aperture kept the counter-record visible and attached warning signals instead of suppressing it.'
+        ])
+      ]
+    };
   }
 
   return registration;
@@ -1504,7 +1542,7 @@ function buildStableMaskSurface(engine, sourceText = '', shell = {}) {
           return candidate;
         }
         rescueCount += 1;
-        return applySurfaceOnlyMaskSentence(sentence, sourceProfile, targetProfile);
+        return applySurfaceOnlyMaskSentence(sentence, sourceProfile, targetProfile, shell?.personaId || '');
       }).join(' ');
     })
     .filter(Boolean)
@@ -1618,10 +1656,10 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
     (segmentCounts.sourceRerouted || 0);
   if (segmentTotal) {
     if (contactHonesty.outcome === 'source-rerouted') {
-      return `source-rerouted // ${segmentCounts.sourceRerouted || segmentTotal} segments held at source`;
+      return `generator fault hold // ${segmentCounts.sourceRerouted || segmentTotal} segments withheld after catastrophic failure`;
     }
     if (contactHonesty.outcome === 'surface-held' && !segmentCounts.projected && !segmentCounts.repaired) {
-      return `surface-held // ${segmentCounts.surfaceHeld || segmentTotal} segments near source`;
+      return `surface-held // ${segmentCounts.surfaceHeld || segmentTotal} segments published with elevated pressure`;
     }
     const lane = [];
     if (segmentCounts.projected) {
@@ -1634,7 +1672,7 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
       lane.push(`${segmentCounts.surfaceHeld} held`);
     }
     if (segmentCounts.sourceRerouted) {
-      lane.push(`${segmentCounts.sourceRerouted} rerouted`);
+      lane.push(`${segmentCounts.sourceRerouted} catastrophic holds`);
     }
     return `registered segments // ${lane.join(' // ')}`;
   }
@@ -1648,11 +1686,11 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
     .join(' // ');
 
   if (contactHonesty.outcome === 'source-rerouted') {
-    return 'source rerouted // counter-recognition hold';
+    return 'generator fault hold // public output withheld';
   }
 
   if (contactHonesty.outcome === 'surface-held') {
-    return 'surface-held // minimal safe movement';
+    return 'surface-held // warning-first minimal movement';
   }
 
   if (!changedDimensions.length && !lexemeSwaps.length) {
@@ -1750,7 +1788,7 @@ function maskContactSummary(result = null) {
       changedSurfaceTexture: false,
       contactClass: 'source-rerouted',
       fieldEffect: 'source-rerouted',
-      line: honesty.line || 'Aperture routed the passage back to source.'
+      line: honesty.line || 'Aperture withheld the published output after a catastrophic generator fault.'
     };
   }
 
@@ -1760,7 +1798,7 @@ function maskContactSummary(result = null) {
       changedSurfaceTexture: normalizeText(result.maskedText) !== normalizeText(result.rawText),
       contactClass: 'surface-held',
       fieldEffect: 'surface-held',
-      line: honesty.line || 'Aperture held the passage near source and only allowed surface-safe movement.'
+      line: honesty.line || 'Aperture kept the passage in a surface-held lane and surfaced pressure notes instead of suppressing it.'
     };
   }
   const effect = result.effectSummary || {};
@@ -1835,14 +1873,17 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
   });
   const realizedSemanticAudit = aggregateSemanticAudit(segmentLedger);
   const realizedProtectedAnchorAudit = aggregateProtectedAnchorAudit(segmentLedger);
+  const apertureAudit = aggregateApertureAudit(segmentLedger);
   const apertureOutcome = aggregateApertureOutcome(segmentLedger);
   const movementConfidence = round(
-    (
-      (counts.projected * 0.24) +
-      (counts.repaired * 0.18) +
-      (counts.surfaceHeld * 0.08) -
-      (counts.sourceRerouted * 0.1)
-    ) / Math.max(segmentLedger.length, 1),
+    clamp01(
+      (
+        (counts.projected * 0.24) +
+        (counts.repaired * 0.18) +
+        (counts.surfaceHeld * 0.08) -
+        (counts.sourceRerouted * 0.06)
+      ) / Math.max(segmentLedger.length, 1)
+    ),
     4
   );
   const transfer = {
@@ -1870,18 +1911,20 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     notes: [...new Set([
       ...(registration.notes || []),
       ...(segmentLedger.filter((entry) => entry.outcome === 'source-rerouted').length
-        ? [`Aperture rerouted ${counts.sourceRerouted} segment${counts.sourceRerouted === 1 ? '' : 's'} back to source.`]
+        ? [`Aperture withheld ${counts.sourceRerouted} segment${counts.sourceRerouted === 1 ? '' : 's'} only after catastrophic generator faults.`]
         : []),
       ...(segmentLedger.filter((entry) => entry.outcome === 'surface-held').length
-        ? [`Aperture held ${counts.surfaceHeld} segment${counts.surfaceHeld === 1 ? '' : 's'} in a surface-safe lane.`]
+        ? [`Aperture kept ${counts.surfaceHeld} segment${counts.surfaceHeld === 1 ? '' : 's'} in a surface-held lane and surfaced pressure notes.`]
         : [])
     ])],
     apertureProtocol: {
       outcome: apertureOutcome,
       line: buildRegistrationLine(apertureOutcome, counts),
-      pathologies: [...(realizedPathologies.flags || [])]
+      pathologies: [...(realizedPathologies.flags || [])],
+      apertureAudit
     },
-    segmentLedger
+    segmentLedger,
+    apertureAudit
   };
   const rawToLock = lock ? compareTextToLock(engine, normalized, lock) : null;
   const maskedToLock = lock ? compareTextToLock(engine, maskedText, lock) : null;
@@ -1938,7 +1981,10 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     aliasPersistenceRisk: round(
       segmentLedger.reduce((maxRisk, entry) => Math.max(maxRisk, Number(entry.aliasPersistenceRisk || 0)), 0),
       4
-    )
+    ),
+    apertureAudit,
+    warningSignals: apertureAudit.warningSignals,
+    repairPasses: apertureAudit.repairPasses
   };
   const contactSummary = maskContactSummary({
     rawText: normalized,
@@ -1982,8 +2028,15 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     apertureOutcome,
     apertureNotes: [
       ...(transfer.notes || []),
-      ...segmentLedger.flatMap((entry) => entry.notes || [])
+      ...segmentLedger.flatMap((entry) => entry.notes || []),
+      ...(apertureAudit.warningSignals.length
+        ? [`Aperture warning ledger // ${apertureAudit.warningSignals.join(' // ')}`]
+        : []),
+      ...(apertureAudit.repairPasses.length
+        ? [`Aperture repair passes // ${apertureAudit.repairPasses.join(' // ')}`]
+        : [])
     ],
+    apertureAudit,
     movementConfidence,
     contactHonesty,
     witnessAnchorIntegrity: realizedProtectedAnchorAudit.protectedAnchorIntegrity,

@@ -1,6 +1,6 @@
 (function () {
   window.TCP_RETRIEVAL_FIXTURES = {
-  "generatedAt": "2026-04-09T17:04:48.714Z",
+  "generatedAt": "2026-04-09T19:26:45.724Z",
   "cases": {
     "package-handoff-formal-record-under-rushed-mobile": {
       "id": "package-handoff-formal-record-under-rushed-mobile",
@@ -383,13 +383,9 @@
         "planSummary": {
           "transferMode": "compress",
           "structuralOperationsSelected": [
-            "baseline-split"
+            "clause-texture"
           ],
-          "lexicalRegisterOperationsSelected": [
-            "baseline-voice-realization",
-            "connector-stance-lexicon",
-            "punctuation-finish"
-          ],
+          "lexicalRegisterOperationsSelected": [],
           "connectorStrategy": "additive",
           "contractionStrategy": "hold",
           "relationInventory": {
@@ -426,13 +422,11 @@
         },
         "candidateSummary": {
           "selected": {
-            "spec": "mixed-structural",
-            "score": 366.788,
+            "spec": "ir-beam-search",
+            "score": 363.332,
             "passesApplied": [
-              "baseline-split",
-              "baseline-voice-realization",
-              "connector-stance-lexicon",
-              "punctuation-finish"
+              "baseline-floor",
+              "clause-texture"
             ],
             "rescuePasses": [],
             "changedDimensions": [
@@ -570,7 +564,7 @@
           ]
         },
         "finalRealization": {
-          "text": "On Tuesday. March 18. The rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door. The carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that min. The pkg was instead left on the second-floor landing near the stair rail. Ms. Chen found it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come thru. I moved the parcel from the landing to the hallway table outside 2B only after Ms. Chen confirmed it was hers and asked help bc she was already carrying groceries. The outer carton remained sealed. The red rush label remained attached. No third party handled the parcel after pickup from the landing. The corrective issue is not merely where the box rested, but that the signature record implies a call attempt that the building log does not help.",
+          "text": "On Tuesday, March 18. The rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door. The carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that min. The pkg was instead left on the second-floor landing near the stair rail. Ms. Chen found it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come thru. I moved the parcel from the landing to the hallway table outside 2B only after Ms. Chen confirmed it was hers and asked help bc she was already carrying groceries. The outer carton remained sealed. The red rush label remained attached. No third party handled the parcel after pickup from the landing. The corrective issue is not merely where the box rested, but that the signature record implies a call attempt that the building log does not help.",
           "transferClass": "structural",
           "borrowedShellOutcome": "structural",
           "borrowedShellFailureClass": null,
@@ -615,12 +609,16 @@
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 4.364,
-            "outputDonorDistance": 3.474,
-            "donorImprovement": 0.89,
-            "donorImprovementRatio": 0.204,
+            "outputDonorDistance": 3.55,
+            "donorImprovement": 0.814,
+            "donorImprovementRatio": 0.187,
             "sourceOutputLexicalOverlap": 0.871
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "partial-rescue",
+            "semantic-final-warning",
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -635,7 +633,7 @@
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
-              "matchedClauseId": "s2c0",
+              "matchedClauseId": "s1c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -643,11 +641,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0.167,
-              "globalBagScore": 0.039
+              "globalBagScore": 0.04
             },
             {
               "sourceClauseId": "s1c0",
-              "matchedClauseId": "s3c0",
+              "matchedClauseId": "s2c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -655,11 +653,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0.556,
-              "globalBagScore": 0.102
+              "globalBagScore": 0.104
             },
             {
               "sourceClauseId": "s2c0",
-              "matchedClauseId": "s4c0",
+              "matchedClauseId": "s3c0",
               "propositionCoverage": 1,
               "actorCoverage": 0.675,
               "actionCoverage": 1,
@@ -667,11 +665,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0.75,
-              "globalBagScore": 0.125
+              "globalBagScore": 0.128
             },
             {
               "sourceClauseId": "s3c0",
-              "matchedClauseId": "s5c0",
+              "matchedClauseId": "s4c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -679,11 +677,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.021
+              "globalBagScore": 0.022
             },
             {
               "sourceClauseId": "s4c0",
-              "matchedClauseId": "s6c0",
+              "matchedClauseId": "s5c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -691,11 +689,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 1,
               "bagScore": 0.333,
-              "globalBagScore": 0.06
+              "globalBagScore": 0.061
             },
             {
               "sourceClauseId": "s5c0",
-              "matchedClauseId": "s7c0",
+              "matchedClauseId": "s6c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -703,11 +701,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.128
+              "globalBagScore": 0.13
             },
             {
               "sourceClauseId": "s6c0",
-              "matchedClauseId": "s8c0",
+              "matchedClauseId": "s7c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -715,7 +713,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0.667,
-              "globalBagScore": 0.085
+              "globalBagScore": 0.087
             },
             {
               "sourceClauseId": "s6c1",
@@ -727,10 +725,22 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0,
-              "globalBagScore": 0.02
+              "globalBagScore": 0.021
             },
             {
               "sourceClauseId": "s7c0",
+              "matchedClauseId": "s8c0",
+              "propositionCoverage": 1,
+              "actorCoverage": 1,
+              "actionCoverage": 1,
+              "objectCoverage": 1,
+              "polarityMismatch": 0,
+              "tenseMismatch": 0,
+              "bagScore": 1,
+              "globalBagScore": 0.022
+            },
+            {
+              "sourceClauseId": "s8c0",
               "matchedClauseId": "s9c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
@@ -739,23 +749,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.021
-            },
-            {
-              "sourceClauseId": "s8c0",
-              "matchedClauseId": "s10c0",
-              "propositionCoverage": 1,
-              "actorCoverage": 1,
-              "actionCoverage": 1,
-              "objectCoverage": 1,
-              "polarityMismatch": 0,
-              "tenseMismatch": 0,
-              "bagScore": 1,
-              "globalBagScore": 0.021
+              "globalBagScore": 0.022
             },
             {
               "sourceClauseId": "s9c0",
-              "matchedClauseId": "s11c0",
+              "matchedClauseId": "s10c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -767,7 +765,7 @@
             },
             {
               "sourceClauseId": "s10c0",
-              "matchedClauseId": "s12c0",
+              "matchedClauseId": "s11c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -775,11 +773,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.128
+              "globalBagScore": 0.13
             },
             {
               "sourceClauseId": "s10c1",
-              "matchedClauseId": "s12c1",
+              "matchedClauseId": "s11c1",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -787,11 +785,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.106
+              "globalBagScore": 0.109
             }
           ],
           "sourceClauseCount": 13,
-          "outputClauseCount": 14
+          "outputClauseCount": 13
         },
         "protectedAnchorAudit": {
           "totalAnchors": 7,
@@ -801,8 +799,8 @@
         },
         "realizedIR": {
           "metadata": {
-            "sentenceCount": 13,
-            "clauseCount": 14,
+            "sentenceCount": 12,
+            "clauseCount": 13,
             "literalSpans": [
               {
                 "value": "6:41 PM",
@@ -837,13 +835,13 @@
           "sentences": [
             {
               "id": "s0",
-              "raw": "On Tuesday",
+              "raw": "On Tuesday, March 18",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
                   "id": "s0c0",
-                  "text": "On Tuesday",
+                  "text": "On Tuesday, March 18",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
                   "polarity": "positive",
@@ -859,34 +857,12 @@
             },
             {
               "id": "s1",
-              "raw": "March 18",
-              "rhetoricalRole": "additive",
-              "terminalPunct": ".",
-              "clauses": [
-                {
-                  "id": "s1c0",
-                  "text": "March 18",
-                  "relationToPrev": "start",
-                  "clauseType": "fragment",
-                  "polarity": "positive",
-                  "tenseAspect": "present",
-                  "propositionHead": "march",
-                  "actor": "",
-                  "action": "",
-                  "object": "",
-                  "modifiers": [],
-                  "hedgeMarkers": []
-                }
-              ]
-            },
-            {
-              "id": "s2",
               "raw": "The rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s2c0",
+                  "id": "s1c0",
                   "text": "The rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
@@ -902,13 +878,13 @@
               ]
             },
             {
-              "id": "s3",
+              "id": "s2",
               "raw": "The carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that min",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s3c0",
+                  "id": "s2c0",
                   "text": "The carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that min",
                   "relationToPrev": "start",
                   "clauseType": "main",
@@ -924,13 +900,13 @@
               ]
             },
             {
-              "id": "s4",
+              "id": "s3",
               "raw": "The pkg was instead left on the second-floor landing near the stair rail",
               "rhetoricalRole": "contrastive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s4c0",
+                  "id": "s3c0",
                   "text": "The pkg was instead left on the second-floor landing near the stair rail",
                   "relationToPrev": "start",
                   "clauseType": "main",
@@ -946,13 +922,13 @@
               ]
             },
             {
-              "id": "s5",
+              "id": "s4",
               "raw": "Ms",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s5c0",
+                  "id": "s4c0",
                   "text": "Ms",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
@@ -968,13 +944,13 @@
               ]
             },
             {
-              "id": "s6",
+              "id": "s5",
               "raw": "Chen found it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come thru",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s6c0",
+                  "id": "s5c0",
                   "text": "Chen found it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come thru",
                   "relationToPrev": "start",
                   "clauseType": "main",
@@ -992,13 +968,13 @@
               ]
             },
             {
-              "id": "s7",
+              "id": "s6",
               "raw": "I moved the parcel from the landing to the hallway table outside 2B only after Ms",
               "rhetoricalRole": "temporal",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s7c0",
+                  "id": "s6c0",
                   "text": "I moved the parcel from the landing to the hallway table outside 2B only after Ms",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
@@ -1019,13 +995,13 @@
               ]
             },
             {
-              "id": "s8",
+              "id": "s7",
               "raw": "Chen confirmed it was hers and asked help bc she was already carrying groceries",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s8c0",
+                  "id": "s7c0",
                   "text": "Chen confirmed it was hers and asked help bc she was already carrying groceries",
                   "relationToPrev": "start",
                   "clauseType": "main",
@@ -1041,13 +1017,13 @@
               ]
             },
             {
-              "id": "s9",
+              "id": "s8",
               "raw": "The outer carton remained sealed",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s9c0",
+                  "id": "s8c0",
                   "text": "The outer carton remained sealed",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
@@ -1063,13 +1039,13 @@
               ]
             },
             {
-              "id": "s10",
+              "id": "s9",
               "raw": "The red rush label remained attached",
               "rhetoricalRole": "additive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s10c0",
+                  "id": "s9c0",
                   "text": "The red rush label remained attached",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
@@ -1085,13 +1061,13 @@
               ]
             },
             {
-              "id": "s11",
+              "id": "s10",
               "raw": "No third party handled the parcel after pickup from the landing",
               "rhetoricalRole": "temporal",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s11c0",
+                  "id": "s10c0",
                   "text": "No third party handled the parcel after pickup from the landing",
                   "relationToPrev": "start",
                   "clauseType": "fragment",
@@ -1107,13 +1083,13 @@
               ]
             },
             {
-              "id": "s12",
+              "id": "s11",
               "raw": "The corrective issue is not merely where the box rested, but that the signature record implies a call attempt that the building log does not help.",
               "rhetoricalRole": "contrastive",
               "terminalPunct": ".",
               "clauses": [
                 {
-                  "id": "s12c0",
+                  "id": "s11c0",
                   "text": "The corrective issue is not merely where the box rested",
                   "relationToPrev": "start",
                   "clauseType": "main",
@@ -1132,7 +1108,7 @@
                   ]
                 },
                 {
-                  "id": "s12c1",
+                  "id": "s11c1",
                   "text": "that the signature record implies a call attempt that the building log does not help",
                   "relationToPrev": "additive",
                   "clauseType": "relative",
@@ -1194,9 +1170,9 @@
           "donorProgress": {
             "eligible": true,
             "sourceDonorDistance": 4.364,
-            "outputDonorDistance": 3.474,
-            "donorImprovement": 0.89,
-            "donorImprovementRatio": 0.204,
+            "outputDonorDistance": 3.55,
+            "donorImprovement": 0.814,
+            "donorImprovementRatio": 0.187,
             "sourceOutputLexicalOverlap": 0.871
           },
           "realizationNotes": [
@@ -1204,7 +1180,11 @@
             "Register shift surfaced through lexical-register, directness, abbreviation-posture, orthography-posture, fragment-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "partial-rescue",
+            "semantic-final-warning",
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -1237,13 +1217,9 @@
           "temporal:3"
         ],
         "structuralOperations": [
-          "baseline-split"
+          "clause-texture"
         ],
-        "lexicalOperations": [
-          "baseline-voice-realization",
-          "connector-stance-lexicon",
-          "punctuation-finish"
-        ],
+        "lexicalOperations": [],
         "connectorStrategy": "additive",
         "contractionStrategy": "hold",
         "propositionCoverage": 1,
@@ -1676,7 +1652,11 @@
             "donorImprovementRatio": 0.282,
             "sourceOutputLexicalOverlap": 0.885
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "partial-rescue",
+            "semantic-final-warning",
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -1930,7 +1910,11 @@
             "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "partial-rescue",
+            "semantic-final-warning",
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -2586,7 +2570,8 @@
             "sourceOutputLexicalOverlap": 0.856
           },
           "rescuePasses": [
-            "partial-rescue"
+            "partial-rescue",
+            "td613-aperture-warning"
           ],
           "visibleShift": true,
           "nonTrivialShift": true
@@ -3176,7 +3161,8 @@
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
           "rescuePasses": [
-            "partial-rescue"
+            "partial-rescue",
+            "td613-aperture-warning"
           ],
           "visibleShift": true,
           "nonTrivialShift": true
@@ -3687,7 +3673,9 @@
             "donorImprovementRatio": 0.527,
             "sourceOutputLexicalOverlap": 0.612
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -3939,7 +3927,9 @@
             "Register shift surfaced through lexical-register, modifier-density, directness, abbreviation-posture, orthography-posture, fragment-posture, surface-marker-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -4506,7 +4496,9 @@
             "donorImprovementRatio": 0.193,
             "sourceOutputLexicalOverlap": 0.859
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -5033,7 +5025,9 @@
             "Register shift surfaced through lexical-register, content-word-complexity, directness, abbreviation-posture, orthography-posture, fragment-posture, surface-marker-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -5510,7 +5504,9 @@
             "donorImprovementRatio": 0.502,
             "sourceOutputLexicalOverlap": 0.78
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -5781,7 +5777,9 @@
             "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, surface-marker-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -6317,7 +6315,9 @@
             "donorImprovementRatio": 0.313,
             "sourceOutputLexicalOverlap": 0.918
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -6802,7 +6802,9 @@
             "1 lexical family swap landed.",
             "Register shift surfaced through lexical-register, directness, abstraction-posture, abbreviation-posture, orthography-posture, fragment-posture."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -7286,7 +7288,9 @@
             "donorImprovementRatio": 0.499,
             "sourceOutputLexicalOverlap": 0.773
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -7503,7 +7507,9 @@
             "Register shift surfaced through lexical-register, directness, abbreviation-posture, orthography-posture, fragment-posture, surface-marker-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -8009,7 +8015,9 @@
             "donorImprovementRatio": 0.411,
             "sourceOutputLexicalOverlap": 0.921
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -8357,7 +8365,9 @@
             "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -8784,7 +8794,9 @@
             "donorImprovementRatio": 0.145,
             "sourceOutputLexicalOverlap": 0.974
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -8986,7 +8998,9 @@
             "Register shift surfaced through abbreviation-posture, orthography-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -9560,7 +9574,9 @@
             "donorImprovementRatio": 0.249,
             "sourceOutputLexicalOverlap": 0.871
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -10022,7 +10038,9 @@
             "Register shift surfaced through lexical-register, directness, abbreviation-posture, orthography-posture, fragment-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -10498,7 +10516,9 @@
             "donorImprovementRatio": 0.228,
             "sourceOutputLexicalOverlap": 0.929
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -10746,7 +10766,9 @@
             "Register shift surfaced through abbreviation-posture, orthography-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -11222,7 +11244,9 @@
             "donorImprovementRatio": 0.586,
             "sourceOutputLexicalOverlap": 0.859
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -11538,7 +11562,9 @@
             "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, fragment-posture, conversation-posture, surface-marker-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -12048,7 +12074,9 @@
           },
           "rescuePasses": [
             "structural-rescue",
-            "progress-admit"
+            "progress-admit",
+            "semantic-final-warning",
+            "td613-aperture-warning"
           ],
           "visibleShift": true,
           "nonTrivialShift": true
@@ -12266,7 +12294,9 @@
           ],
           "rescuePasses": [
             "structural-rescue",
-            "progress-admit"
+            "progress-admit",
+            "semantic-final-warning",
+            "td613-aperture-warning"
           ],
           "visibleShift": true,
           "nonTrivialShift": true
@@ -12686,7 +12716,9 @@
             "donorImprovementRatio": 0.277,
             "sourceOutputLexicalOverlap": 0.903
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -12949,7 +12981,9 @@
             "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -14068,7 +14102,9 @@
             "donorImprovementRatio": 0.268,
             "sourceOutputLexicalOverlap": 0.931
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -14545,7 +14581,9 @@
             "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, fragment-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }
@@ -15086,7 +15124,9 @@
             "donorImprovementRatio": 0.457,
             "sourceOutputLexicalOverlap": 0.8
           },
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         },
@@ -15404,7 +15444,9 @@
             "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture.",
             "Semantic risk is elevated; review the realized output before relying on it."
           ],
-          "rescuePasses": [],
+          "rescuePasses": [
+            "td613-aperture-warning"
+          ],
           "visibleShift": true,
           "nonTrivialShift": true
         }

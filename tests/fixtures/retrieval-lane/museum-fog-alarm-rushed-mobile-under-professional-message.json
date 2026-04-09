@@ -460,7 +460,9 @@
       },
       "rescuePasses": [
         "structural-rescue",
-        "progress-admit"
+        "progress-admit",
+        "semantic-final-warning",
+        "td613-aperture-warning"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
@@ -678,7 +680,9 @@
       ],
       "rescuePasses": [
         "structural-rescue",
-        "progress-admit"
+        "progress-admit",
+        "semantic-final-warning",
+        "td613-aperture-warning"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
