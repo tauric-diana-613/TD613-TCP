@@ -163,7 +163,8 @@
       openedAt: null,
       receiptId: null,
       packetId: null,
-      bypass: false
+      bypass: false,
+      recovered: false
     },
     covenant: { confirmed: false, confirmedAt: null, badgeNumber: null },
     operatorSignature: null
@@ -206,7 +207,7 @@
       el.addEventListener('change', () => void handleFormChange());
     });
     dom.clearIngress.addEventListener('click', resetAll);
-    dom.resealVault.addEventListener('click', resetAll);
+    dom.resealVault.addEventListener('click', returnToIngress);
     dom.refreshHelpers.addEventListener('click', () => refreshHelpers());
     dom.covenantExport.addEventListener('click', () => void covenantExport());
     dom.mintStagedPacket.addEventListener('click', () => void mintStagedPacket());
@@ -303,6 +304,7 @@
     dom.inputSigKid.value = forms.sigKid !== undefined ? forms.sigKid : ((D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal);
     dom.inputSigDetachedRef.value = forms.sigDetachedRef !== undefined ? forms.sigDetachedRef : ((D.signatureDefaults && D.signatureDefaults.detached_ref) || '');
     dom.inputSigValue.value = forms.sigValue || '';
+    if (state.ingress.vaultOpen || state.ingress.operatorShellOpen) returnToIngress({ preserveSegments: true, preserveForms: true, recovered: true, persistAfter: false });
   }
 
   function persist() {
@@ -369,6 +371,8 @@
     dom.ingressVaultPill.textContent = state.ingress.operatorShellOpen ? 'operator shell' : state.ingress.vaultOpen ? 'packet staged' : sealStep && count === 3 ? 'seal step' : 'vault sealed';
     dom.ingressNote.textContent = state.ingress.bypass
       ? 'Operator bypass accepted. The shell is open in packetless mode. No staged packet, covenant transition, or badge issuance exists yet.'
+      : state.ingress.recovered
+        ? 'A prior chamber state was recovered and returned to the membrane. Review the held testimony, then re-open or clear the session.'
       : state.ingress.vaultOpen
         ? 'The staged packet is present. Covenant Export is the only local path to harbor eligibility and badge assignment.'
         : sealStep && count === 3
@@ -393,7 +397,7 @@
       dom.ingressStepInput.value = state.ingress.segments[key] || '';
       dom.ingressStepMeta.textContent = ingressMetaCopy(key);
     } else {
-      dom.ingressStepMeta.textContent = 'The triad is held as three separate pages.';
+    dom.ingressStepMeta.textContent = 'The triad is held as three separate pages.';
       renderIngressSummaryRow(dom.ingressSummaryFutureSelf, 'future_self');
       renderIngressSummaryRow(dom.ingressSummaryPastSelf, 'past_self');
       renderIngressSummaryRow(dom.ingressSummaryHigherSelf, 'higher_self');
@@ -735,6 +739,7 @@
       state.ingress.vaultOpen = true;
       state.ingress.operatorShellOpen = false;
       state.ingress.bypass = false;
+      state.ingress.recovered = false;
       state.ingress.openedAt = state.helper.ts_utc;
       state.ingress.receiptId = receiptId(state.helper);
       state.ingress.packetId = packetId(state.helper);
@@ -816,7 +821,7 @@
     state.lastProbe = '';
     state.audit = [];
     state.renderer = { detected: false, meta: null };
-    state.ingress = { segments: { future_self: '', past_self: '', higher_self: '' }, stepIndex: 0, vaultOpen: false, operatorShellOpen: false, openedAt: null, receiptId: null, packetId: null, bypass: false };
+    state.ingress = { segments: { future_self: '', past_self: '', higher_self: '' }, stepIndex: 0, vaultOpen: false, operatorShellOpen: false, openedAt: null, receiptId: null, packetId: null, bypass: false, recovered: false };
     state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
     state.operatorSignature = null;
     dom.inputFooterMode.value = D.trustProfile.current_public_mode;
@@ -854,6 +859,42 @@
       if (stored) return stored;
     } catch (error) {}
     return (D.operatorBypass && D.operatorBypass.token_hash_sha256) || null;
+  }
+
+  function returnToIngress(options) {
+    const opts = options || {};
+    const preservedSegments = opts.preserveSegments ? clone(state.ingress.segments) : { future_self: '', past_self: '', higher_self: '' };
+    const preservedStepIndex = opts.preserveSegments ? clampIngressStepIndex(defaultIngressStepIndex()) : 0;
+    state.helper = null;
+    state.packet = null;
+    state.sealed = null;
+    state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
+    state.operatorSignature = null;
+    state.ingress.vaultOpen = false;
+    state.ingress.operatorShellOpen = false;
+    state.ingress.openedAt = null;
+    state.ingress.receiptId = null;
+    state.ingress.packetId = null;
+    state.ingress.bypass = false;
+    state.ingress.recovered = Boolean(opts.recovered);
+    state.ingress.segments = preservedSegments;
+    state.ingress.stepIndex = preservedStepIndex;
+    if (!opts.preserveForms) {
+      dom.inputFooterMode.value = D.trustProfile.current_public_mode;
+      dom.inputPayloadIndex.value = '';
+      dom.inputAttestationDate.value = '';
+      dom.inputOperatorId.value = 'safe-harbor.operator';
+      dom.inputSourceClass.value = 'futurecore membrane';
+      dom.inputWitnessChannel.value = 'ritual + cadence';
+      dom.inputOperatorNotes.value = '';
+      dom.inputSigType.value = '';
+      dom.inputSigKid.value = (D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal;
+      dom.inputSigDetachedRef.value = (D.signatureDefaults && D.signatureDefaults.detached_ref) || '';
+      dom.inputSigValue.value = '';
+    }
+    render();
+    if (opts.persistAfter !== false) persist();
+    if (!opts.recovered) logEvent('returned-to-ingress', { state: 'sealed', preserved_segments: opts.preserveSegments !== false });
   }
 
   function getDevModeEnabled() {
