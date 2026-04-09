@@ -1,3 +1,5 @@
+import { selectTD613ApertureDecision } from './td613-aperture.js';
+
 function clamp01(value) {
   return Math.max(0, Math.min(1, value));
 }
@@ -305,9 +307,37 @@ export function providerDecision({
   explained,
   routeAvailable,
   density = 0,
-  recurrencePressure = 0
+  recurrencePressure = 0,
+  routePressure = 0,
+  branchPressure = 0,
+  criticality = 0,
+  traceability = 0,
+  mirrorLogic = 'off',
+  custodyArchive = 'institutional',
+  badge = 'badge.holds',
+  apertureContext = null,
+  apertureProtocol = true
 }) {
   const denseSignal = clamp01(density) >= 0.28 || clamp01(recurrencePressure) >= 0.58;
+
+  if (apertureProtocol !== false) {
+    return selectTD613ApertureDecision({
+      recognized,
+      explained,
+      routeAvailable,
+      density,
+      recurrencePressure,
+      routePressure,
+      branchPressure,
+      criticality,
+      traceability,
+      mirrorLogic,
+      custodyArchive,
+      badge,
+      denseSignal,
+      apertureContext
+    });
+  }
 
   if (!recognized) {
     return 'weak-signal';

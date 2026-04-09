@@ -4877,7 +4877,14 @@
       explained,
       routeAvailable,
       density: wave.density,
-      recurrencePressure: cmp.recurrencePressure
+      recurrencePressure: cmp.recurrencePressure,
+      routePressure,
+      branchPressure: branch.branchPressure,
+      criticality,
+      traceability: cmp.traceability,
+      mirrorLogic,
+      custodyArchive: custody.archive,
+      badge
     });
     const harbor = chooseHarbor({
       routePressure,
@@ -4887,7 +4894,12 @@
       mirrorLogic,
       custodyArchive: custody.archive,
       decision,
-      routeAvailable
+      routeAvailable,
+      density: wave.density,
+      recurrencePressure: cmp.recurrencePressure,
+      traceability: cmp.traceability,
+      explained,
+      recognized
     });
     const ledger = buildLedgerRow({
       eventId: `evt-${Date.now()}`,
@@ -4899,7 +4911,12 @@
       density: wave.density,
       routeAvailable,
       custodyArchive: custody.archive,
-      decision
+      decision,
+      mirrorLogic,
+      recurrencePressure: cmp.recurrencePressure,
+      badge,
+      explained,
+      recognized
     });
 
     setMetricKeys('pair');

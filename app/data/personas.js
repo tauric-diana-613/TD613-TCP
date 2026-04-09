@@ -221,10 +221,10 @@ const personas = [
     chips: ['held pulse', 'soft shelter'],
     profileRecipe: {
       blend: [
-        { sampleId: 'school-coordination-formal-record', weight: 0.25 },
-        { sampleId: 'clinic-scheduling-professional-message', weight: 0.2 },
-        { sampleId: 'benefits-appeal-professional-message', weight: 0.3 },
-        { sampleId: 'archive-grant-formal-record', weight: 0.25 }
+        { sampleId: 'school-coordination-professional-message', weight: 0.3 },
+        { sampleId: 'clinic-scheduling-professional-message', weight: 0.25 },
+        { sampleId: 'mutual-aid-professional-message', weight: 0.25 },
+        { sampleId: 'archive-grant-professional-message', weight: 0.2 }
       ],
       overlayMod: {
         sent: 7,

@@ -1,3 +1,5 @@
+import { buildTD613ApertureContext, selectTD613ApertureHarbor } from './td613-aperture.js';
+
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
@@ -80,8 +82,34 @@ export function chooseHarbor({
   mirrorLogic = 'off',
   custodyArchive = 'institutional',
   decision = 'hold-branch',
-  routeAvailable = false
+  routeAvailable = false,
+  density = 0,
+  recurrencePressure = 0,
+  traceability = 0,
+  explained = decision === 'passage',
+  recognized = decision !== 'weak-signal',
+  apertureContext = null,
+  apertureProtocol = true
 }) {
+  if (apertureProtocol !== false) {
+    return selectTD613ApertureHarbor({
+      routePressure,
+      branchPressure,
+      criticality,
+      badge,
+      mirrorLogic,
+      custodyArchive,
+      decision,
+      routeAvailable,
+      density,
+      recurrencePressure,
+      traceability,
+      explained,
+      recognized,
+      apertureContext
+    });
+  }
+
   const pressure = clamp01(routePressure);
   const branch = clamp01(branchPressure);
   const critical = clamp01(criticality);
@@ -146,9 +174,29 @@ export function buildLedgerRow({
   custodyArchive = 'institutional',
   decision = 'hold-branch',
   operatorId = 'demo-operator',
-  sourceClass = 'public membrane'
+  sourceClass = 'public membrane',
+  mirrorLogic = 'off',
+  recurrencePressure = 0,
+  badge = 'badge.holds',
+  explained = decision === 'passage',
+  recognized = decision !== 'weak-signal',
+  apertureContext = null
 }) {
   const harbor = HARBOR_LIBRARY[harborFunction];
+  const aperture = apertureContext || buildTD613ApertureContext({
+    recognized,
+    explained,
+    routeAvailable,
+    density,
+    recurrencePressure,
+    routePressure,
+    branchPressure,
+    criticality,
+    traceability,
+    mirrorLogic,
+    custodyArchive,
+    badge
+  });
   const groupSize = estimateGroupSize({
     routePressure,
     traceability,
@@ -218,8 +266,16 @@ export function buildLedgerRow({
     route_status: routeStatus,
     route_available: routeAvailable,
     signal_density: round3(clamp01(density)),
+    route_pressure: round3(clamp01(routePressure)),
     branch_pressure: round3(clamp01(branchPressure)),
     criticality_index: round3(clamp01(criticality)),
+    protocol_id: aperture.protocolId,
+    protocol_identity: aperture.toolIdentity,
+    observed_regime: aperture.observedRegime,
+    anti_enforcement: true,
+    counter_recognition_required: aperture.counterRecognitionRequired,
+    generative_passage_blocked: aperture.generativePassageBlocked,
+    recapture_risk: aperture.recaptureRisk,
     receipt_hash: `sha256:${eventId}`
   };
 }

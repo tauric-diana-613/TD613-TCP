@@ -43,6 +43,25 @@ assert.equal(
   'provenance.seal'
 );
 
+assert.equal(
+  chooseHarbor({
+    routePressure: 0.52,
+    branchPressure: 0.38,
+    criticality: 0.46,
+    badge: 'badge.holds',
+    mirrorLogic: 'off',
+    custodyArchive: 'institutional',
+    decision: 'passage',
+    routeAvailable: true,
+    density: 0.34,
+    recurrencePressure: 0.58,
+    traceability: 0.82,
+    explained: false,
+    recognized: true
+  }),
+  'mirror.off'
+);
+
 const row = buildLedgerRow({
   eventId: 'evt-test',
   harborFunction: 'mirror.off',
@@ -53,7 +72,12 @@ const row = buildLedgerRow({
   density: 0.41,
   routeAvailable: false,
   custodyArchive: 'witness',
-  decision: 'criticality'
+  decision: 'criticality',
+  mirrorLogic: 'off',
+  recurrencePressure: 0.58,
+  badge: 'badge.holds',
+  explained: false,
+  recognized: true
 });
 
 assert.equal(row.harbor_function, 'mirror.off');
@@ -65,8 +89,15 @@ assert(row.reuse_gain > 0);
 assert.equal(row.route_status, 'buffered');
 assert.equal(row.route_available, false);
 assert.equal(row.signal_density, 0.41);
+assert.equal(row.route_pressure, 0.8);
 assert.equal(row.branch_pressure, 0.46);
 assert.equal(row.criticality_index, 0.69);
+assert.equal(row.protocol_identity, 'TD613 Aperture');
+assert.equal(row.observed_regime, 'PRCS-A');
+assert.equal(row.anti_enforcement, true);
+assert.equal(row.counter_recognition_required, true);
+assert.equal(row.generative_passage_blocked, true);
+assert(row.recapture_risk >= 0.46);
 
 const passageRow = buildLedgerRow({
   eventId: 'evt-passage',
@@ -78,9 +109,15 @@ const passageRow = buildLedgerRow({
   density: 0.62,
   routeAvailable: true,
   custodyArchive: 'institutional',
-  decision: 'passage'
+  decision: 'passage',
+  mirrorLogic: 'on',
+  recurrencePressure: 0.18,
+  badge: 'badge.holds',
+  explained: true,
+  recognized: true
 });
 
 assert.equal(passageRow.route_status, 'safe-passage achieved');
+assert.equal(passageRow.generative_passage_blocked, false);
 
 console.log('harbor.test.mjs passed');

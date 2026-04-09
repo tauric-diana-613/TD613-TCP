@@ -808,7 +808,7 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     profile: { ...persona.profile },
     strength: Number(persona.strength || 0.84)
   };
-  const transfer = engine.buildCadenceTransfer(normalized, shell, { retrieval: true });
+  const transfer = engine.buildCadenceTransfer(normalized, shell, { retrieval: false });
   const transferProfile = transfer.outputProfile || engine.extractCadenceProfile(transfer.text);
   const wantsClippedMask =
     (

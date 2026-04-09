@@ -562,7 +562,14 @@ function renderPairState(voiceStateA, voiceStateB) {
     explained: routePressure < 0.52 && branch.branchPressure < 0.42,
     routeAvailable,
     density: wave.density,
-    recurrencePressure: cmp.recurrencePressure
+    recurrencePressure: cmp.recurrencePressure,
+    routePressure,
+    branchPressure: branch.branchPressure,
+    criticality,
+    traceability: cmp.traceability,
+    mirrorLogic,
+    custodyArchive: custody.archive,
+    badge
   });
   const harbor = chooseHarbor({
     routePressure,
@@ -572,7 +579,12 @@ function renderPairState(voiceStateA, voiceStateB) {
     mirrorLogic,
     custodyArchive: custody.archive,
     decision,
-    routeAvailable
+    routeAvailable,
+    density: wave.density,
+    recurrencePressure: cmp.recurrencePressure,
+    traceability: cmp.traceability,
+    explained: routePressure < 0.52 && branch.branchPressure < 0.42,
+    recognized: resonance >= 0.54 || cmp.similarity >= 0.56
   });
   const ledger = buildLedgerRow({
     eventId: `evt-${Date.now()}`,
@@ -584,7 +596,12 @@ function renderPairState(voiceStateA, voiceStateB) {
     density: wave.density,
     routeAvailable,
     custodyArchive: custody.archive,
-    decision
+    decision,
+    mirrorLogic,
+    recurrencePressure: cmp.recurrencePressure,
+    badge,
+    explained: routePressure < 0.52 && branch.branchPressure < 0.42,
+    recognized: resonance >= 0.54 || cmp.similarity >= 0.56
   });
 
   setMetricKeys('pair');

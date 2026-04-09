@@ -114,7 +114,7 @@ const custody = custodyThreshold({
   theta: 0.2
 });
 assert(custody.integrity > custody.drift);
-assert.equal(custody.archive, 'institutional');
+assert.equal(custody.archive, 'witness');
 
 assert.equal(
   providerDecision({
@@ -122,7 +122,13 @@ assert.equal(
     explained: false,
     routeAvailable: false,
     density: 0.3,
-    recurrencePressure: 0.6
+    recurrencePressure: 0.6,
+    routePressure: 0.58,
+    branchPressure: 0.44,
+    criticality: 0.46,
+    traceability: 0.78,
+    mirrorLogic: 'off',
+    custodyArchive: 'witness'
   }),
   'criticality'
 );
@@ -132,7 +138,29 @@ assert.equal(
     explained: false,
     routeAvailable: true,
     density: 0.3,
-    recurrencePressure: 0.6
+    recurrencePressure: 0.6,
+    routePressure: 0.58,
+    branchPressure: 0.44,
+    criticality: 0.46,
+    traceability: 0.78,
+    mirrorLogic: 'off',
+    custodyArchive: 'witness'
+  }),
+  'criticality'
+);
+assert.equal(
+  providerDecision({
+    recognized: true,
+    explained: true,
+    routeAvailable: true,
+    density: 0.14,
+    recurrencePressure: 0.18,
+    routePressure: 0.32,
+    branchPressure: 0.16,
+    criticality: 0.2,
+    traceability: 0.74,
+    mirrorLogic: 'on',
+    custodyArchive: 'institutional'
   }),
   'passage'
 );

@@ -306,6 +306,8 @@ assert(typeof shellTransfer.lexicalShiftProfile === 'object');
 assert(Array.isArray(shellTransfer.lexemeSwaps));
 assert(Array.isArray(shellTransfer.realizationNotes));
 assert(typeof shellTransfer.semanticRisk === 'number');
+assert(typeof shellTransfer.apertureProtocol === 'object');
+assert.equal(shellTransfer.apertureProtocol.toolIdentity, 'TD613 Aperture');
 assert(shellTransfer.protectedLiteralCount === 0);
 assert(shellTransfer.changedDimensions.filter((dimension) => dimension !== 'punctuation-shape').length >= 2);
 assert(shellTransfer.passesApplied.length >= 2);

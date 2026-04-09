@@ -1,3 +1,5 @@
+import { reviewTD613ApertureTransfer } from './td613-aperture.js';
+
 function clamp01(value) {
   return Math.max(0, Math.min(1, value));
 }
@@ -6368,13 +6370,14 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       personaProtectedLiteralOnlyFailure
     };
   };
-  const acceptedSelection =
+  const acceptanceSummaries =
     strictBorrowedMode || shell?.mode === 'persona'
-      ? allCandidates
-        .map((candidate) => candidateAcceptanceSummary(candidate))
-        .filter((entry) => entry.accepted)
-        .sort((left, right) => right.acceptanceScore - left.acceptanceScore)[0] || null
-      : null;
+      ? allCandidates.map((candidate) => candidateAcceptanceSummary(candidate))
+      : [];
+  const acceptedSelection =
+    acceptanceSummaries
+      .filter((entry) => entry.accepted)
+      .sort((left, right) => right.acceptanceScore - left.acceptanceScore)[0] || null;
   const borrowedRescue =
     strictBorrowedMode && !acceptedSelection
       ? findBorrowedShellRescueCandidate({
@@ -6640,8 +6643,37 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   } else if (!bestCandidate.quality.qualityGatePassed) {
     if (isMaterialCadenceGap(targetGap)) {
       if (shell?.mode === 'persona') {
+        const personaLiteralOnlyAudit = buildSemanticAuditBundle(ir, bestCandidate.outputText, protectedState);
+        const personaLiteralOnlyIntegrity =
+          personaLiteralOnlyAudit.protectedAnchorAudit?.protectedAnchorIntegrity ??
+          personaLiteralOnlyAudit.semanticAudit?.protectedAnchorIntegrity ??
+          1;
+        const personaLiteralOnlyFailure =
+          (bestCandidate.quality?.notes || []).length > 0 &&
+          (bestCandidate.quality?.notes || []).every((note) => /^Protected literals did not survive the rewrite intact\./.test(note)) &&
+          bestCandidate.outputText !== sourceText &&
+          personaLiteralOnlyIntegrity >= 1 &&
+          unresolvedProtectedLiteralCount(bestCandidate.outputText) === 0 &&
+          (personaLiteralOnlyAudit.semanticAudit?.propositionCoverage ?? 1) >= 0.9 &&
+          (personaLiteralOnlyAudit.semanticAudit?.actorCoverage ?? 1) >= 0.75 &&
+          (personaLiteralOnlyAudit.semanticAudit?.actionCoverage ?? 1) >= 0.75 &&
+          (personaLiteralOnlyAudit.semanticAudit?.objectCoverage ?? 1) >= 0.65 &&
+          (personaLiteralOnlyAudit.semanticAudit?.polarityMismatches ?? 0) <= 1;
+
+        if (personaLiteralOnlyFailure) {
+          finalText = bestCandidate.outputText;
+          finalProfile = bestCandidate.outputProfile || extractCadenceProfile(finalText);
+          qualityGatePassed = true;
+          changedDimensions = [...bestCandidate.changedDimensions];
+          transferClass = hasMaterialStructuralTransfer(changedDimensions) ? 'structural' : 'weak';
+          precomputedAuditBundle = personaLiteralOnlyAudit;
+          const cleanedNotes = notes.filter((note) => !/^Protected literals did not survive the rewrite intact\./.test(note));
+          cleanedNotes.push('Protected anchor literals were preserved through persona masking.');
+          notes.splice(0, notes.length, ...cleanedNotes);
+          rescuePasses.push('persona-literal-tolerance');
+        } else {
         const personaRescueText = forceStructuralShift(
-          cloakProtectedLiterals(bestCandidate.outputText, protectedState.literals),
+          cloakProtectedLiterals(sourceText, protectedState.literals),
           sourceProfile,
           targetProfile,
           Math.min(1, strength + 0.22),
@@ -6681,6 +6713,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
           borrowedShellOutcome = 'rejected';
           rescuePasses.push('final-rejection');
           notes.push('Transfer fell back to the source text to preserve meaning and readability.');
+        }
         }
       } else {
         finalText = sourceText;
@@ -6988,18 +7021,56 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     ({ semanticAudit, protectedAnchorAudit, outputIR } = buildSemanticAuditBundle(ir, finalText, protectedState));
   }
 
-  const visibleShift = precomputedVisibleShift ?? hasBorrowedShellVisibleShift(
+  let visibleShift = precomputedVisibleShift ?? hasBorrowedShellVisibleShift(
     sourceText,
     finalText,
     changedDimensions,
     lexicalShiftProfile
   );
-  const nonTrivialShift = precomputedNonTrivialShift ?? hasBorrowedShellNonTrivialShift(
+  let nonTrivialShift = precomputedNonTrivialShift ?? hasBorrowedShellNonTrivialShift(
     sourceText,
     finalText,
     changedDimensions,
     lexicalShiftProfile
   );
+  let apertureProtocol = reviewTD613ApertureTransfer({
+    sourceText,
+    outputText: finalText,
+    shellMode: shell?.mode || 'native',
+    shellSource: shell?.source || '',
+    retrieval,
+    semanticRisk,
+    visibleShift,
+    nonTrivialShift,
+    protectedAnchorIntegrity: protectedAnchorAudit?.protectedAnchorIntegrity ?? 1,
+    propositionCoverage: semanticAudit?.propositionCoverage ?? 1,
+    actorCoverage: semanticAudit?.actorCoverage ?? 1,
+    actionCoverage: semanticAudit?.actionCoverage ?? 1,
+    objectCoverage: semanticAudit?.objectCoverage ?? 1
+  });
+
+  if (apertureProtocol.blocked && finalText !== sourceText) {
+    finalText = sourceText;
+    finalProfile = sourceProfile;
+    changedDimensions = [];
+    transferClass = 'rejected';
+    qualityGatePassed = false;
+    borrowedShellOutcome = shell?.mode === 'borrowed' ? 'rejected' : borrowedShellOutcome;
+    rescuePasses.push('td613-aperture-rejection');
+    notes.push(...apertureProtocol.reasons);
+    lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
+    realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
+    semanticRisk = computeSemanticRisk(sourceText, finalText, protectedState, sourceProfile, finalProfile);
+    ({ semanticAudit, protectedAnchorAudit, outputIR } = buildSemanticAuditBundle(ir, finalText, protectedState));
+    visibleShift = false;
+    nonTrivialShift = false;
+    apertureProtocol = {
+      ...apertureProtocol,
+      blocked: true,
+      enforcedFallback: true,
+      recaptureRisk: Math.max(apertureProtocol.recaptureRisk || 0, 0.58)
+    };
+  }
 
   if (shell?.mode === 'borrowed') {
     if (transferClass === 'structural') {
@@ -7057,6 +7128,7 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     borrowedShellFailureClass,
     visibleShift,
     nonTrivialShift,
+    apertureProtocol,
     semanticAudit,
     protectedAnchorAudit
   };
@@ -7102,6 +7174,31 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         lexicalDimensions: [...candidate.quality.lexicalDimensions],
         notes: [...candidate.quality.notes],
         passesApplied: [...candidate.passesApplied]
+      })),
+      acceptanceSummaries: acceptanceSummaries.map((entry) => ({
+        spec: entry.candidate?.spec,
+        accepted: entry.accepted,
+        acceptanceScore: round3(entry.acceptanceScore),
+        adjustedQualityGatePassed: entry.adjustedQualityGatePassed,
+        transferClass: entry.transferClass,
+        visibleShift: entry.visibleShift,
+        nonTrivialShift: entry.nonTrivialShift,
+        surfaceClose: entry.surfaceClose,
+        personaProtectedLiteralOnlyFailure: entry.personaProtectedLiteralOnlyFailure,
+        semanticAudit: {
+          propositionCoverage: entry.auditBundle?.semanticAudit?.propositionCoverage ?? 1,
+          actorCoverage: entry.auditBundle?.semanticAudit?.actorCoverage ?? 1,
+          actionCoverage: entry.auditBundle?.semanticAudit?.actionCoverage ?? 1,
+          objectCoverage: entry.auditBundle?.semanticAudit?.objectCoverage ?? 1,
+          polarityMismatches: entry.auditBundle?.semanticAudit?.polarityMismatches ?? 0
+        },
+        protectedAnchorIntegrity:
+          entry.auditBundle?.protectedAnchorAudit?.protectedAnchorIntegrity ??
+          entry.auditBundle?.semanticAudit?.protectedAnchorIntegrity ??
+          1,
+        outputPreview: previewText(entry.candidate?.outputText || '', 220),
+        changedDimensions: [...(entry.candidate?.changedDimensions || [])],
+        notes: [...(entry.candidate?.quality?.notes || [])]
       })),
       selected: bestCandidate.spec,
       directBorrowedProgressCheck,

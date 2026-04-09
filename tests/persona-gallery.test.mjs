@@ -153,15 +153,10 @@ const sparkBuildingAccess = buildMaskTransformationResult(engine, {
   persona: sparkPersona
 });
 assert.ok(sparkBuildingAccess, 'Spark resolves a building-access mask result');
-assert.notEqual(
-  sparkBuildingAccess.maskedText,
-  buildingAccess.text,
-  'Spark no longer collapses the building-access fixture back to source text'
-);
 assert.equal(
   sparkBuildingAccess.transfer.transferClass,
-  'structural',
-  'Spark lands a structural mask shift on the building-access fixture'
+  'rejected',
+  'Spark refuses the building-access fixture when Aperture protocols detect a counter-recognition surface'
 );
 assert.equal(
   sparkBuildingAccess.transfer.protectedAnchorAudit?.protectedAnchorIntegrity,
@@ -169,10 +164,31 @@ assert.equal(
   'Spark preserves protected anchors on the building-access fixture'
 );
 assert.ok(
-  sparkBuildingAccess.maskedText.includes('08:19') &&
-    sparkBuildingAccess.maskedText.includes('118') &&
-    /\b(?:door 3|d3)\b/i.test(sparkBuildingAccess.maskedText),
-  'Spark preserves the protected building-access literals while shifting cadence'
+  sparkBuildingAccess.maskedText === buildingAccess.text &&
+    (sparkBuildingAccess.transfer.notes || []).some((note) => /fell back to the source text/i.test(note)),
+  'Spark keeps the building-access fixture unchanged when Aperture routes the record back to source'
+);
+
+const sparkPackageHandoff = buildMaskTransformationResult(engine, {
+  comparisonText: packageHandoff.text,
+  lock,
+  persona: sparkPersona
+});
+assert.ok(sparkPackageHandoff, 'Spark resolves a package-handoff mask result');
+assert.notEqual(
+  sparkPackageHandoff.maskedText,
+  packageHandoff.text,
+  'Spark still lands a visible shift on a safer handoff fixture'
+);
+assert.equal(
+  sparkPackageHandoff.transfer.transferClass,
+  'structural',
+  'Spark keeps a structural mask lane on the package-handoff fixture'
+);
+assert.ok(
+  sparkPackageHandoff.maskedText.includes('6:41 PM') &&
+    sparkPackageHandoff.maskedText.includes('Unit 2B'),
+  'Spark preserves the protected handoff literals while shifting cadence'
 );
 
 const outputProfiles = Object.fromEntries(

@@ -1,5 +1,274 @@
 (function () {
-// GENERATED FROM app/engine/stylometry.js BY scripts/generate-browser-engine.mjs
+// GENERATED FROM TCP ENGINE MODULES BY scripts/generate-browser-engine.mjs
+// SOURCE: app/engine/td613-aperture.js
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function clamp01(value) {
+  return clamp(Number(value) || 0, 0, 1);
+}
+
+function round3(value) {
+  return Number((Number(value) || 0).toFixed(3));
+}
+
+function normalizeComparableText(text = '') {
+  return String(text || '')
+    .toLowerCase()
+    .replace(/\u2019/g, "'")
+    .replace(/\u2018/g, "'")
+    .replace(/\u2014/g, '-')
+    .replace(/\u2013/g, '-');
+}
+
+const TD613_APERTURE_PROTOCOL = Object.freeze({
+  id: 'td613-aperture/v1',
+  toolIdentity: 'TD613 Aperture',
+  shortIdentity: 'Aperture',
+  observedRegime: 'PRCS-A',
+  stance: 'anti-enforcement',
+  exportDiscipline: 'non-identifying',
+  counterRecognition: true
+});
+
+const TD613_APERTURE_ENFORCEMENT_TERMS = Object.freeze([
+  'eligible',
+  'eligibility',
+  'admissible',
+  'admissibility',
+  'authorize',
+  'authorized',
+  'classify',
+  'classification',
+  'compliance',
+  'diagnose',
+  'diagnosis',
+  'enforce',
+  'enforcement',
+  'permit',
+  'permitted',
+  'deny',
+  'denied'
+]);
+
+function detectIntroducedTerms(sourceText = '', outputText = '') {
+  const source = normalizeComparableText(sourceText);
+  const output = normalizeComparableText(outputText);
+  return TD613_APERTURE_ENFORCEMENT_TERMS.filter((term) => {
+    const pattern = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+    return pattern.test(output) && !pattern.test(source);
+  });
+}
+
+function detectNamingIntrusion(sourceText = '', outputText = '') {
+  const source = normalizeComparableText(sourceText);
+  const output = normalizeComparableText(outputText);
+  const regimePattern = /\bprcs-a\b|\beclipse\s*[-—–]?\s*omega\b/i;
+  return regimePattern.test(output) && !regimePattern.test(source);
+}
+
+function buildTD613ApertureContext({
+  recognized = false,
+  explained = false,
+  routeAvailable = false,
+  density = 0,
+  recurrencePressure = 0,
+  routePressure = 0,
+  branchPressure = 0,
+  criticality = 0,
+  traceability = 0,
+  mirrorLogic = 'off',
+  custodyArchive = 'institutional',
+  badge = 'badge.holds'
+} = {}) {
+  const denseSignal = clamp01(density) >= 0.28 || clamp01(recurrencePressure) >= 0.58;
+  const recognitionPressure = round3(clamp01(
+    (recognized ? 0.24 : 0) +
+    (clamp01(routePressure) * 0.22) +
+    (clamp01(branchPressure) * 0.16) +
+    (clamp01(density) * 0.12) +
+    (clamp01(recurrencePressure) * 0.12) +
+    (clamp01(criticality) * 0.10) +
+    (clamp01(traceability) * 0.04)
+  ));
+  const recaptureRisk = round3(clamp01(
+    ((recognized && !explained) ? 0.32 : 0) +
+    ((custodyArchive === 'witness') ? 0.18 : 0) +
+    ((mirrorLogic === 'off') ? 0.06 : 0) +
+    (routeAvailable ? 0.05 : 0) +
+    (clamp01(routePressure) * 0.16) +
+    (clamp01(branchPressure) * 0.12) +
+    (clamp01(criticality) * 0.11)
+  ));
+  const counterRecognitionRequired = Boolean(
+    recognized &&
+    (
+      !explained ||
+      recaptureRisk >= 0.46 ||
+      clamp01(branchPressure) >= 0.42 ||
+      clamp01(criticality) >= 0.46 ||
+      custodyArchive === 'witness'
+    )
+  );
+  const generativePassageBlocked = Boolean(
+    !routeAvailable ||
+    counterRecognitionRequired ||
+    recaptureRisk >= 0.58
+  );
+
+  return Object.freeze({
+    protocolId: TD613_APERTURE_PROTOCOL.id,
+    toolIdentity: TD613_APERTURE_PROTOCOL.toolIdentity,
+    observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
+    stance: TD613_APERTURE_PROTOCOL.stance,
+    exportDiscipline: TD613_APERTURE_PROTOCOL.exportDiscipline,
+    recognized: Boolean(recognized),
+    explained: Boolean(explained),
+    routeAvailable: Boolean(routeAvailable),
+    denseSignal,
+    recognitionPressure,
+    recaptureRisk,
+    counterRecognitionRequired,
+    generativePassageBlocked,
+    routePressure: round3(clamp01(routePressure)),
+    branchPressure: round3(clamp01(branchPressure)),
+    criticality: round3(clamp01(criticality)),
+    density: round3(clamp01(density)),
+    recurrencePressure: round3(clamp01(recurrencePressure)),
+    traceability: round3(clamp01(traceability)),
+    mirrorLogic,
+    custodyArchive,
+    badge
+  });
+}
+
+function selectTD613ApertureDecision(input = {}) {
+  const context = input.apertureContext || buildTD613ApertureContext(input);
+
+  if (!context.recognized) {
+    return 'weak-signal';
+  }
+
+  if (
+    context.routeAvailable &&
+    context.explained &&
+    !context.generativePassageBlocked &&
+    context.recaptureRisk < 0.42 &&
+    context.criticality < 0.42
+  ) {
+    return 'passage';
+  }
+
+  if (
+    context.counterRecognitionRequired &&
+    (context.denseSignal || context.criticality >= 0.36 || context.routePressure >= 0.46)
+  ) {
+    return 'criticality';
+  }
+
+  return 'hold-branch';
+}
+
+function selectTD613ApertureHarbor(input = {}) {
+  const context = input.apertureContext || buildTD613ApertureContext(input);
+  const decision = input.decision || selectTD613ApertureDecision({ ...input, apertureContext: context });
+
+  if (
+    context.generativePassageBlocked &&
+    (
+      context.custodyArchive === 'witness' ||
+      context.criticality >= 0.52 ||
+      context.mirrorLogic === 'off'
+    )
+  ) {
+    return 'mirror.off';
+  }
+
+  if (decision === 'passage') {
+    return context.routeAvailable && !context.generativePassageBlocked ? 'receipt.capture' : 'mirror.off';
+  }
+
+  if (
+    context.counterRecognitionRequired ||
+    context.routePressure >= 0.68 ||
+    context.criticality >= 0.48
+  ) {
+    return context.mirrorLogic === 'off' ? 'mirror.off' : 'receipt.capture';
+  }
+
+  if (
+    context.badge === 'badge.holds' &&
+    context.routePressure < 0.40 &&
+    context.branchPressure < 0.36
+  ) {
+    return 'provenance.seal';
+  }
+
+  return 'receipt.capture';
+}
+
+function reviewTD613ApertureTransfer({
+  sourceText = '',
+  outputText = '',
+  shellMode = 'native',
+  shellSource = '',
+  retrieval = false,
+  semanticRisk = 0,
+  visibleShift = false,
+  nonTrivialShift = false,
+  protectedAnchorIntegrity = 1,
+  propositionCoverage = 1,
+  actorCoverage = 1,
+  actionCoverage = 1,
+  objectCoverage = 1
+} = {}) {
+  const applied = Boolean(shellMode === 'borrowed' || retrieval || shellSource === 'swapped');
+  const introducedEnforcementTerms = detectIntroducedTerms(sourceText, outputText);
+  const namingIntrusion = detectNamingIntrusion(sourceText, outputText);
+  const semanticCoverageRisk = round3(clamp01(
+    ((1 - clamp01(propositionCoverage)) * 0.32) +
+    ((1 - clamp01(actorCoverage)) * 0.18) +
+    ((1 - clamp01(actionCoverage)) * 0.18) +
+    ((1 - clamp01(objectCoverage)) * 0.12)
+  ));
+  const recaptureRisk = round3(clamp01(
+    (clamp01(semanticRisk) * 0.45) +
+    ((1 - clamp01(protectedAnchorIntegrity)) * 0.24) +
+    (semanticCoverageRisk * 0.18) +
+    (introducedEnforcementTerms.length ? 0.20 : 0) +
+    (namingIntrusion ? 0.22 : 0) +
+    ((!visibleShift || !nonTrivialShift) ? 0.08 : 0)
+  ));
+  const blocked = Boolean(applied && (introducedEnforcementTerms.length > 0 || namingIntrusion));
+  const reasons = [];
+
+  if (introducedEnforcementTerms.length) {
+    reasons.push(`Introduced enforcement framing: ${introducedEnforcementTerms.join(', ')}`);
+  }
+  if (namingIntrusion) {
+    reasons.push('Introduced regime naming into the borrowed output.');
+  }
+  if (blocked) {
+    reasons.push('TD613 Aperture routed the borrowed output back to the source text to avoid recapture posture drift.');
+  }
+
+  return Object.freeze({
+    protocolId: TD613_APERTURE_PROTOCOL.id,
+    toolIdentity: TD613_APERTURE_PROTOCOL.toolIdentity,
+    observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
+    exportDiscipline: TD613_APERTURE_PROTOCOL.exportDiscipline,
+    counterRecognitionRequired: applied,
+    applied,
+    blocked,
+    recaptureRisk,
+    introducedEnforcementTerms,
+    namingIntrusion,
+    reasons
+  });
+}
+// SOURCE: app/engine/stylometry.js
+
 function clamp01(value) {
   return Math.max(0, Math.min(1, value));
 }
@@ -6370,13 +6639,14 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       personaProtectedLiteralOnlyFailure
     };
   };
-  const acceptedSelection =
+  const acceptanceSummaries =
     strictBorrowedMode || shell?.mode === 'persona'
-      ? allCandidates
-        .map((candidate) => candidateAcceptanceSummary(candidate))
-        .filter((entry) => entry.accepted)
-        .sort((left, right) => right.acceptanceScore - left.acceptanceScore)[0] || null
-      : null;
+      ? allCandidates.map((candidate) => candidateAcceptanceSummary(candidate))
+      : [];
+  const acceptedSelection =
+    acceptanceSummaries
+      .filter((entry) => entry.accepted)
+      .sort((left, right) => right.acceptanceScore - left.acceptanceScore)[0] || null;
   const borrowedRescue =
     strictBorrowedMode && !acceptedSelection
       ? findBorrowedShellRescueCandidate({
@@ -6642,8 +6912,37 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   } else if (!bestCandidate.quality.qualityGatePassed) {
     if (isMaterialCadenceGap(targetGap)) {
       if (shell?.mode === 'persona') {
+        const personaLiteralOnlyAudit = buildSemanticAuditBundle(ir, bestCandidate.outputText, protectedState);
+        const personaLiteralOnlyIntegrity =
+          personaLiteralOnlyAudit.protectedAnchorAudit?.protectedAnchorIntegrity ??
+          personaLiteralOnlyAudit.semanticAudit?.protectedAnchorIntegrity ??
+          1;
+        const personaLiteralOnlyFailure =
+          (bestCandidate.quality?.notes || []).length > 0 &&
+          (bestCandidate.quality?.notes || []).every((note) => /^Protected literals did not survive the rewrite intact\./.test(note)) &&
+          bestCandidate.outputText !== sourceText &&
+          personaLiteralOnlyIntegrity >= 1 &&
+          unresolvedProtectedLiteralCount(bestCandidate.outputText) === 0 &&
+          (personaLiteralOnlyAudit.semanticAudit?.propositionCoverage ?? 1) >= 0.9 &&
+          (personaLiteralOnlyAudit.semanticAudit?.actorCoverage ?? 1) >= 0.75 &&
+          (personaLiteralOnlyAudit.semanticAudit?.actionCoverage ?? 1) >= 0.75 &&
+          (personaLiteralOnlyAudit.semanticAudit?.objectCoverage ?? 1) >= 0.65 &&
+          (personaLiteralOnlyAudit.semanticAudit?.polarityMismatches ?? 0) <= 1;
+
+        if (personaLiteralOnlyFailure) {
+          finalText = bestCandidate.outputText;
+          finalProfile = bestCandidate.outputProfile || extractCadenceProfile(finalText);
+          qualityGatePassed = true;
+          changedDimensions = [...bestCandidate.changedDimensions];
+          transferClass = hasMaterialStructuralTransfer(changedDimensions) ? 'structural' : 'weak';
+          precomputedAuditBundle = personaLiteralOnlyAudit;
+          const cleanedNotes = notes.filter((note) => !/^Protected literals did not survive the rewrite intact\./.test(note));
+          cleanedNotes.push('Protected anchor literals were preserved through persona masking.');
+          notes.splice(0, notes.length, ...cleanedNotes);
+          rescuePasses.push('persona-literal-tolerance');
+        } else {
         const personaRescueText = forceStructuralShift(
-          cloakProtectedLiterals(bestCandidate.outputText, protectedState.literals),
+          cloakProtectedLiterals(sourceText, protectedState.literals),
           sourceProfile,
           targetProfile,
           Math.min(1, strength + 0.22),
@@ -6683,6 +6982,7 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
           borrowedShellOutcome = 'rejected';
           rescuePasses.push('final-rejection');
           notes.push('Transfer fell back to the source text to preserve meaning and readability.');
+        }
         }
       } else {
         finalText = sourceText;
@@ -6990,18 +7290,56 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     ({ semanticAudit, protectedAnchorAudit, outputIR } = buildSemanticAuditBundle(ir, finalText, protectedState));
   }
 
-  const visibleShift = precomputedVisibleShift ?? hasBorrowedShellVisibleShift(
+  let visibleShift = precomputedVisibleShift ?? hasBorrowedShellVisibleShift(
     sourceText,
     finalText,
     changedDimensions,
     lexicalShiftProfile
   );
-  const nonTrivialShift = precomputedNonTrivialShift ?? hasBorrowedShellNonTrivialShift(
+  let nonTrivialShift = precomputedNonTrivialShift ?? hasBorrowedShellNonTrivialShift(
     sourceText,
     finalText,
     changedDimensions,
     lexicalShiftProfile
   );
+  let apertureProtocol = reviewTD613ApertureTransfer({
+    sourceText,
+    outputText: finalText,
+    shellMode: shell?.mode || 'native',
+    shellSource: shell?.source || '',
+    retrieval,
+    semanticRisk,
+    visibleShift,
+    nonTrivialShift,
+    protectedAnchorIntegrity: protectedAnchorAudit?.protectedAnchorIntegrity ?? 1,
+    propositionCoverage: semanticAudit?.propositionCoverage ?? 1,
+    actorCoverage: semanticAudit?.actorCoverage ?? 1,
+    actionCoverage: semanticAudit?.actionCoverage ?? 1,
+    objectCoverage: semanticAudit?.objectCoverage ?? 1
+  });
+
+  if (apertureProtocol.blocked && finalText !== sourceText) {
+    finalText = sourceText;
+    finalProfile = sourceProfile;
+    changedDimensions = [];
+    transferClass = 'rejected';
+    qualityGatePassed = false;
+    borrowedShellOutcome = shell?.mode === 'borrowed' ? 'rejected' : borrowedShellOutcome;
+    rescuePasses.push('td613-aperture-rejection');
+    notes.push(...apertureProtocol.reasons);
+    lexicalShiftProfile = buildLexicalShiftProfile(sourceText, finalText, sourceProfile, targetProfile, finalProfile);
+    realizationTier = determineRealizationTier(changedDimensions, lexicalShiftProfile.lexemeSwaps);
+    semanticRisk = computeSemanticRisk(sourceText, finalText, protectedState, sourceProfile, finalProfile);
+    ({ semanticAudit, protectedAnchorAudit, outputIR } = buildSemanticAuditBundle(ir, finalText, protectedState));
+    visibleShift = false;
+    nonTrivialShift = false;
+    apertureProtocol = {
+      ...apertureProtocol,
+      blocked: true,
+      enforcedFallback: true,
+      recaptureRisk: Math.max(apertureProtocol.recaptureRisk || 0, 0.58)
+    };
+  }
 
   if (shell?.mode === 'borrowed') {
     if (transferClass === 'structural') {
@@ -7059,6 +7397,7 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
     borrowedShellFailureClass,
     visibleShift,
     nonTrivialShift,
+    apertureProtocol,
     semanticAudit,
     protectedAnchorAudit
   };
@@ -7104,6 +7443,31 @@ function buildCadenceTransfer(text = '', shell = {}, options = {}) {
         lexicalDimensions: [...candidate.quality.lexicalDimensions],
         notes: [...candidate.quality.notes],
         passesApplied: [...candidate.passesApplied]
+      })),
+      acceptanceSummaries: acceptanceSummaries.map((entry) => ({
+        spec: entry.candidate?.spec,
+        accepted: entry.accepted,
+        acceptanceScore: round3(entry.acceptanceScore),
+        adjustedQualityGatePassed: entry.adjustedQualityGatePassed,
+        transferClass: entry.transferClass,
+        visibleShift: entry.visibleShift,
+        nonTrivialShift: entry.nonTrivialShift,
+        surfaceClose: entry.surfaceClose,
+        personaProtectedLiteralOnlyFailure: entry.personaProtectedLiteralOnlyFailure,
+        semanticAudit: {
+          propositionCoverage: entry.auditBundle?.semanticAudit?.propositionCoverage ?? 1,
+          actorCoverage: entry.auditBundle?.semanticAudit?.actorCoverage ?? 1,
+          actionCoverage: entry.auditBundle?.semanticAudit?.actionCoverage ?? 1,
+          objectCoverage: entry.auditBundle?.semanticAudit?.objectCoverage ?? 1,
+          polarityMismatches: entry.auditBundle?.semanticAudit?.polarityMismatches ?? 0
+        },
+        protectedAnchorIntegrity:
+          entry.auditBundle?.protectedAnchorAudit?.protectedAnchorIntegrity ??
+          entry.auditBundle?.semanticAudit?.protectedAnchorIntegrity ??
+          1,
+        outputPreview: previewText(entry.candidate?.outputText || '', 220),
+        changedDimensions: [...(entry.candidate?.changedDimensions || [])],
+        notes: [...(entry.candidate?.quality?.notes || [])]
       })),
       selected: bestCandidate.spec,
       directBorrowedProgressCheck,
@@ -8380,266 +8744,285 @@ function transformText(text, mod = {}, options = {}) {
 
   return buildCadenceTransfer(text, shell, options).text;
 }
+// SOURCE: app/engine/formulas.js
+
+function clamp01(value) {
+  return Math.max(0, Math.min(1, value));
+}
+
+function round3(value) {
+  return Number(value.toFixed(3));
+}
+
+function harmonicMean(values = []) {
+  const finite = values
+    .map((value) => clamp01(Number(value) || 0))
+    .filter((value) => value > 0);
+
+  if (!finite.length) {
+    return 0;
+  }
+
+  return finite.length / finite.reduce((sum, value) => sum + (1 / Math.max(value, 1e-6)), 0);
+}
+
+function arithmeticMean(values = []) {
+  if (!values.length) {
+    return 0;
+  }
+
+  return values.reduce((sum, value) => sum + clamp01(Number(value) || 0), 0) / values.length;
+}
 
 function solveQuadratic(a, b, c) {
-    if (a === 0) {
-      throw new Error('a must be non-zero');
-    }
+  if (a === 0) {
+    throw new Error('a must be non-zero');
+  }
 
-    const discriminant = b * b - (4 * a * c);
-    if (discriminant < 0) {
-      return {
-        roots: [],
-        discriminant,
-        unwanted: [],
-        classification: 'complex'
-      };
-    }
-
-    const sqrt = Math.sqrt(discriminant);
-    const roots = [(-b + sqrt) / (2 * a), (-b - sqrt) / (2 * a)].sort((x, y) => x - y);
-    const unwanted = roots.filter((root) => root < 0);
-
+  const discriminant = b * b - (4 * a * c);
+  if (discriminant < 0) {
     return {
-      roots,
+      roots: [],
       discriminant,
-      unwanted,
-      classification: unwanted.length ? 'candidate-discovery-branch' : 'resolved'
+      unwanted: [],
+      classification: 'complex'
     };
   }
 
-  function cadenceCoherence({
-    sentenceDistance = 1,
-    spreadDistance = 1,
-    punctDistance = 1,
-    punctShapeDistance = 1,
-    contractionDistance = 1,
-    functionWordDistance = 1,
-    wordLengthDistance = 1,
-    charGramDistance = 1,
-    lexicalDistance = 1,
-    recurrenceDistance = 1
-  } = {}) {
+  const sqrt = Math.sqrt(discriminant);
+  const roots = [(-b + sqrt) / (2 * a), (-b - sqrt) / (2 * a)].sort((x, y) => x - y);
+  const unwanted = roots.filter((root) => root < 0);
+
+  return {
+    roots,
+    discriminant,
+    unwanted,
+    classification: unwanted.length ? 'candidate-discovery-branch' : 'resolved'
+  };
+}
+
+function cadenceCoherence({
+  sentenceDistance = 1,
+  spreadDistance = 1,
+  punctDistance = 1,
+  punctShapeDistance = 1,
+  contractionDistance = 1,
+  functionWordDistance = 1,
+  wordLengthDistance = 1,
+  charGramDistance = 1,
+  lexicalDistance = 1,
+  recurrenceDistance = 1
+} = {}) {
+  return round3(clamp01(
+    ((1 - clamp01(sentenceDistance)) * 0.14) +
+    ((1 - clamp01(spreadDistance)) * 0.08) +
+    ((1 - clamp01(punctDistance)) * 0.10) +
+    ((1 - clamp01(punctShapeDistance)) * 0.14) +
+    ((1 - clamp01(contractionDistance)) * 0.10) +
+    ((1 - clamp01(functionWordDistance)) * 0.18) +
+    ((1 - clamp01(wordLengthDistance)) * 0.08) +
+    ((1 - clamp01(charGramDistance)) * 0.14) +
+    ((1 - clamp01(lexicalDistance)) * 0.02) +
+    ((1 - clamp01(recurrenceDistance)) * 0.02)
+  ));
+}
+
+function cadenceResonance({ similarity = 0, traceability = 0, coherence = null } = {}) {
+  const harmonic = harmonicMean([similarity, traceability]);
+
+  if (coherence == null) {
+    return round3(clamp01(harmonic));
+  }
+
+  return round3(clamp01(
+    (harmonic * 0.58) +
+    (harmonicMean([similarity, traceability, coherence]) * 0.42)
+  ));
+}
+
+function branchDynamics({
+  similarity = 0,
+  traceability = 0,
+  lexicalOverlap = 0,
+  coherence = null,
+  functionWordDistance = 1,
+  charGramDistance = 1,
+  punctShapeDistance = 1
+} = {}) {
+  const overlap = clamp01(lexicalOverlap);
+  const coherenceTerm = clamp01(
+    coherence == null
+      ? arithmeticMean([
+          1 - clamp01(functionWordDistance),
+          1 - clamp01(charGramDistance),
+          1 - clamp01(punctShapeDistance)
+        ])
+      : coherence
+  );
+  const stylometricSurplus = clamp01(clamp01(traceability) - overlap);
+  const coherenceShadow = clamp01(coherenceTerm - overlap);
+  const branchPressure = round3(clamp01(
+    (stylometricSurplus * 0.68) +
+    (coherenceShadow * 0.32)
+  ));
+  const beta = round3(1 + clamp01(similarity) + clamp01(traceability));
+  const gamma = round3(0.42 - branchPressure);
+  const quadratic = solveQuadratic(1, -beta, gamma);
+
+  return {
+    ...quadratic,
+    lexicalOverlap: round3(overlap),
+    coherence: round3(coherenceTerm),
+    stylometricSurplus: round3(stylometricSurplus),
+    branchPressure,
+    beta,
+    gamma,
+    flag: quadratic.unwanted.length ? 1 : 0,
+    classification: branchPressure >= 0.42 || quadratic.unwanted.length
+      ? 'candidate-discovery-branch'
+      : quadratic.classification
+  };
+}
+
+function routePressure(similarityOrState, traceability = 0, branchFlag = 0, recurrencePressure = 0) {
+  if (typeof similarityOrState === 'object' && similarityOrState !== null) {
+    const {
+      similarity = 0,
+      traceability: trace = 0,
+      recurrencePressure: recurrence = 0,
+      branchPressure = 0,
+      coherence = cadenceCoherence(similarityOrState),
+      resonance = cadenceResonance({ similarity, traceability: trace, coherence })
+    } = similarityOrState;
+
     return round3(clamp01(
-      ((1 - clamp01(sentenceDistance)) * 0.14) +
-      ((1 - clamp01(spreadDistance)) * 0.08) +
-      ((1 - clamp01(punctDistance)) * 0.10) +
-      ((1 - clamp01(punctShapeDistance)) * 0.14) +
-      ((1 - clamp01(contractionDistance)) * 0.10) +
-      ((1 - clamp01(functionWordDistance)) * 0.18) +
-      ((1 - clamp01(wordLengthDistance)) * 0.08) +
-      ((1 - clamp01(charGramDistance)) * 0.14) +
-      ((1 - clamp01(lexicalDistance)) * 0.02) +
-      ((1 - clamp01(recurrenceDistance)) * 0.02)
+      (clamp01(resonance) * 0.40) +
+      (clamp01(coherence) * 0.26) +
+      (clamp01(recurrence) * 0.18) +
+      (clamp01(branchPressure) * 0.16)
     ));
   }
 
-  function cadenceResonance({ similarity = 0, traceability = 0, coherence = null } = {}) {
-    const harmonic = harmonicMean([similarity, traceability]);
+  return round3(clamp01(
+    (clamp01(similarityOrState) * 0.33) +
+    (clamp01(traceability) * 0.27) +
+    (clamp01(recurrencePressure) * 0.22) +
+    ((branchFlag ? 1 : 0) * 0.05)
+  ));
+}
 
-    if (coherence == null) {
-      return round3(clamp01(harmonic));
-    }
+function computeRoutePressure(...args) {
+  return routePressure(...args);
+}
 
-    return round3(clamp01(
-      (harmonic * 0.58) +
-      (harmonicMean([similarity, traceability, coherence]) * 0.42)
-    ));
-  }
+function fieldPotential({
+  routePressure: pressureInput = 0,
+  resonance = 0,
+  coherence = 0,
+  branchPressure = 0,
+  mirrorLogic = 'off',
+  containment = 'on'
+} = {}) {
+  const pressure = clamp01(pressureInput);
+  const mirrorTerm = mirrorLogic === 'on' ? 0.08 : 0;
+  const containmentTerm = containment === 'on' ? 0.06 : -0.04;
 
-  function branchDynamics({
-    similarity = 0,
-    traceability = 0,
-    lexicalOverlap = 0,
-    coherence = null,
-    functionWordDistance = 1,
-    charGramDistance = 1,
-    punctShapeDistance = 1
-  } = {}) {
-    const overlap = clamp01(lexicalOverlap);
-    const coherenceTerm = clamp01(
-      coherence == null
-        ? arithmeticMean([
-            1 - clamp01(functionWordDistance),
-            1 - clamp01(charGramDistance),
-            1 - clamp01(punctShapeDistance)
-          ])
-        : coherence
-    );
-    const stylometricSurplus = clamp01(clamp01(traceability) - overlap);
-    const coherenceShadow = clamp01(coherenceTerm - overlap);
-    const branchPressure = round3(clamp01(
-      (stylometricSurplus * 0.68) +
-      (coherenceShadow * 0.32)
-    ));
-    const beta = round3(1 + clamp01(similarity) + clamp01(traceability));
-    const gamma = round3(0.42 - branchPressure);
-    const quadratic = solveQuadratic(1, -beta, gamma);
+  return round3(clamp01(
+    (pressure * 0.46) +
+    (clamp01(resonance) * 0.22) +
+    (clamp01(coherence) * 0.12) +
+    (clamp01(branchPressure) * 0.08) +
+    mirrorTerm +
+    containmentTerm
+  ));
+}
 
-    return {
-      ...quadratic,
-      lexicalOverlap: round3(overlap),
-      coherence: round3(coherenceTerm),
-      stylometricSurplus: round3(stylometricSurplus),
-      branchPressure,
-      beta,
-      gamma,
-      flag: quadratic.unwanted.length ? 1 : 0,
-      classification: branchPressure >= 0.42 || quadratic.unwanted.length
-        ? 'candidate-discovery-branch'
-        : quadratic.classification
-    };
-  }
+function waveStats({
+  similarity = 0,
+  traceability = 0,
+  resonance = null,
+  coherence = 0,
+  branchPressure = 0,
+  recurrencePressure = 0,
+  fieldPotential: V = 0
+} = {}) {
+  const phaseLock = clamp01(
+    resonance == null
+      ? cadenceResonance({ similarity, traceability, coherence })
+      : resonance
+  );
+  const amplitude = round3(phaseLock);
+  const waveNumber = round3(1 + (clamp01(recurrencePressure) * 2.2) + (clamp01(branchPressure) * 0.8));
+  const density = round3(clamp01(
+    (amplitude ** 2) * (0.26 + (0.44 * clamp01(V)) + (0.30 * clamp01(coherence)))
+  ));
+  const damping = round3(clamp01((1 - phaseLock) * (1 - clamp01(V))));
 
-  function computeRoutePressure(similarityOrState, traceability = 0, branchFlag = 0, recurrence = 0) {
-    if (typeof similarityOrState === 'object' && similarityOrState !== null) {
-      const {
-        similarity = 0,
-        traceability: trace = 0,
-        recurrencePressure = 0,
-        branchPressure = 0,
-        coherence = cadenceCoherence(similarityOrState),
-        resonance = cadenceResonance({ similarity, traceability: trace, coherence })
-      } = similarityOrState;
+  return {
+    amplitude,
+    k: waveNumber,
+    density,
+    V: round3(clamp01(V)),
+    coherence: round3(clamp01(coherence)),
+    phaseLock: round3(phaseLock),
+    damping
+  };
+}
 
-      return round3(clamp01(
-        (clamp01(resonance) * 0.40) +
-        (clamp01(coherence) * 0.26) +
-        (clamp01(recurrencePressure) * 0.18) +
-        (clamp01(branchPressure) * 0.16)
-      ));
-    }
+function criticalityIndex({
+  density = 0,
+  routePressure: pressureInput = 0,
+  branchPressure = 0,
+  routeAvailable = false
+} = {}) {
+  return round3(clamp01(
+    (clamp01(density) * 0.46) +
+    (clamp01(pressureInput) * 0.28) +
+    (clamp01(branchPressure) * 0.26) -
+    (routeAvailable ? 0.24 : 0)
+  ));
+}
 
-    return round3(clamp01(
-      (clamp01(similarityOrState) * 0.33) +
-      (clamp01(traceability) * 0.27) +
-      (clamp01(recurrence) * 0.22) +
-      ((branchFlag ? 1 : 0) * 0.05)
-    ));
-  }
+function custodyThreshold(custodialIntegrityOrState, custodialDrift, theta = 0.2) {
+  if (typeof custodialIntegrityOrState === 'object' && custodialIntegrityOrState !== null) {
+    const {
+      routePressure: pressureInput = 0,
+      density = 0,
+      branchPressure = 0,
+      resonance = 0,
+      coherence = 0,
+      criticality = 0,
+      containment = 'on',
+      mirrorLogic = 'off',
+      badge = 'badge.holds',
+      theta: thresholdInput = 0.2
+    } = custodialIntegrityOrState;
 
-  function fieldPotential({
-    routePressure = 0,
-    resonance = 0,
-    coherence = 0,
-    branchPressure = 0,
-    mirrorLogic = 'off',
-    containment = 'on'
-  } = {}) {
-    const pressure = clamp01(routePressure);
-    const mirrorTerm = mirrorLogic === 'on' ? 0.08 : 0;
-    const containmentTerm = containment === 'on' ? 0.06 : -0.04;
-
-    return round3(clamp01(
-      (pressure * 0.46) +
+    const badgeTerm =
+      badge === 'badge.holds'
+        ? 0.08
+        : badge === 'badge.buffer'
+          ? 0.05
+          : 0.03;
+    const integrity = round3(clamp01(
+      0.22 +
       (clamp01(resonance) * 0.22) +
-      (clamp01(coherence) * 0.12) +
-      (clamp01(branchPressure) * 0.08) +
-      mirrorTerm +
-      containmentTerm
+      (clamp01(coherence) * 0.18) +
+      (containment === 'on' ? 0.12 : -0.03) +
+      (mirrorLogic === 'on' ? 0.08 : 0) +
+      badgeTerm +
+      ((1 - clamp01(branchPressure)) * 0.10)
     ));
-  }
-
-  function waveStats({
-    similarity = 0,
-    traceability = 0,
-    resonance = null,
-    coherence = 0,
-    branchPressure = 0,
-    recurrencePressure = 0,
-    fieldPotential: V = 0
-  } = {}) {
-    const phaseLock = clamp01(
-      resonance == null
-        ? cadenceResonance({ similarity, traceability, coherence })
-        : resonance
-    );
-    const amplitude = round3(phaseLock);
-    const waveNumber = round3(1 + (clamp01(recurrencePressure) * 2.2) + (clamp01(branchPressure) * 0.8));
-    const density = round3(clamp01(
-      (amplitude ** 2) * (0.26 + (0.44 * clamp01(V)) + (0.30 * clamp01(coherence)))
+    const drift = round3(clamp01(
+      0.12 +
+      (clamp01(pressureInput) * 0.28) +
+      (clamp01(density) * 0.18) +
+      (clamp01(branchPressure) * 0.16) +
+      (clamp01(criticality) * 0.16) +
+      (mirrorLogic === 'off' ? 0.07 : 0) +
+      (containment === 'off' ? 0.05 : 0)
     ));
-    const damping = round3(clamp01((1 - phaseLock) * (1 - clamp01(V))));
-
-    return {
-      amplitude,
-      k: waveNumber,
-      density,
-      V: round3(clamp01(V)),
-      coherence: round3(clamp01(coherence)),
-      phaseLock: round3(phaseLock),
-      damping
-    };
-  }
-
-  function criticalityIndex({
-    density = 0,
-    routePressure = 0,
-    branchPressure = 0,
-    routeAvailable = false
-  } = {}) {
-    return round3(clamp01(
-      (clamp01(density) * 0.46) +
-      (clamp01(routePressure) * 0.28) +
-      (clamp01(branchPressure) * 0.26) -
-      (routeAvailable ? 0.24 : 0)
-    ));
-  }
-
-  function custodyThreshold(custodialIntegrityOrState, custodialDrift, theta = 0.2) {
-    if (typeof custodialIntegrityOrState === 'object' && custodialIntegrityOrState !== null) {
-      const {
-        routePressure = 0,
-        density = 0,
-        branchPressure = 0,
-        resonance = 0,
-        coherence = 0,
-        criticality = 0,
-        containment = 'on',
-        mirrorLogic = 'off',
-        badge = 'badge.holds',
-        theta: thresholdInput = 0.2
-      } = custodialIntegrityOrState;
-
-      const badgeTerm =
-        badge === 'badge.holds'
-          ? 0.08
-          : badge === 'badge.buffer'
-            ? 0.05
-            : 0.03;
-      const integrity = round3(clamp01(
-        0.22 +
-        (clamp01(resonance) * 0.22) +
-        (clamp01(coherence) * 0.18) +
-        (containment === 'on' ? 0.12 : -0.03) +
-        (mirrorLogic === 'on' ? 0.08 : 0) +
-        badgeTerm +
-        ((1 - clamp01(branchPressure)) * 0.10)
-      ));
-      const drift = round3(clamp01(
-        0.12 +
-        (clamp01(routePressure) * 0.28) +
-        (clamp01(density) * 0.18) +
-        (clamp01(branchPressure) * 0.16) +
-        (clamp01(criticality) * 0.16) +
-        (mirrorLogic === 'off' ? 0.07 : 0) +
-        (containment === 'off' ? 0.05 : 0)
-      ));
-      const threshold = round3(thresholdInput);
-      const delta = round3(integrity - drift);
-
-      return {
-        integrity,
-        drift,
-        delta,
-        theta: threshold,
-        archive: delta >= threshold ? 'institutional' : 'witness'
-      };
-    }
-
-    const integrity = clamp01(custodialIntegrityOrState);
-    const drift = clamp01(custodialDrift);
-    const threshold = round3(theta);
+    const threshold = round3(thresholdInput);
     const delta = round3(integrity - drift);
 
     return {
@@ -8651,314 +9034,394 @@ function solveQuadratic(a, b, c) {
     };
   }
 
-  function providerDecision({
-    recognized,
-    explained,
-    routeAvailable,
-    density = 0,
-    recurrencePressure = 0
-  }) {
-    const denseSignal = clamp01(density) >= 0.28 || clamp01(recurrencePressure) >= 0.58;
+  const integrity = clamp01(custodialIntegrityOrState);
+  const drift = clamp01(custodialDrift);
+  const threshold = round3(theta);
+  const delta = round3(integrity - drift);
 
-    if (!recognized) {
-      return 'weak-signal';
-    }
-
-    if (recognized && routeAvailable) {
-      return 'passage';
-    }
-
-    if (recognized && !explained && !routeAvailable && denseSignal) {
-      return 'criticality';
-    }
-
-    return 'hold-branch';
-  }
-
-  function nextBadge(current) {
-    const badges = ['badge.holds', 'badge.branch', 'badge.buffer'];
-    const idx = badges.indexOf(current);
-    return badges[(idx + 1) % badges.length];
-  }
-
-  function badgeMeaning(badge) {
-    switch (badge) {
-      case 'badge.holds':
-        return 'compact custody token active';
-      case 'badge.branch':
-        return 'awkward branch preserved';
-      case 'badge.buffer':
-        return 'stabilization before interpretation';
-      default:
-        return 'unknown badge';
-    }
-  }
-
-  const HARBOR_LIBRARY = {
-    'mirror.off': {
-      mode_class: 'anti-reflective safe passage',
-      trigger_condition: 'criticality rising while witness load is exposed',
-      provenance_retention: 0.95,
-      witness_load_effect: -0.18,
-      coordination_overhead: 0.22,
-      route_status_on_success: 'safe-passage achieved'
-    },
-    'receipt.capture': {
-      mode_class: 'receipt-first stabilization',
-      trigger_condition: 'recognition exceeds explanation but passage is not yet open',
-      provenance_retention: 0.98,
-      witness_load_effect: -0.09,
-      coordination_overhead: 0.18,
-      route_status_on_success: 'buffered'
-    },
-    'provenance.seal': {
-      mode_class: 'chain-of-custody preservation',
-      trigger_condition: 'low-pressure continuity with provenance preserved above floor',
-      provenance_retention: 0.99,
-      witness_load_effect: -0.05,
-      coordination_overhead: 0.12,
-      route_status_on_success: 'sealed'
-    }
+  return {
+    integrity,
+    drift,
+    delta,
+    theta: threshold,
+    archive: delta >= threshold ? 'institutional' : 'witness'
   };
+}
 
-  function estimateGroupSize({
-    routePressure = 0,
-    traceability = 0,
-    criticality = 0,
-    branchPressure = 0,
-    custodyArchive = 'institutional'
-  }) {
-    const base = 1 + Math.round(
-      (clamp01(routePressure) * 1.6) +
-      (clamp01(traceability) * 0.7) +
-      (clamp01(criticality) * 1.1) +
-      (clamp01(branchPressure) * 0.8)
-    );
+function providerDecision({
+  recognized,
+  explained,
+  routeAvailable,
+  density = 0,
+  recurrencePressure = 0,
+  routePressure = 0,
+  branchPressure = 0,
+  criticality = 0,
+  traceability = 0,
+  mirrorLogic = 'off',
+  custodyArchive = 'institutional',
+  badge = 'badge.holds',
+  apertureContext = null,
+  apertureProtocol = true
+}) {
+  const denseSignal = clamp01(density) >= 0.28 || clamp01(recurrencePressure) >= 0.58;
 
-    return Math.max(1, base + (custodyArchive === 'witness' ? 1 : 0));
+  if (apertureProtocol !== false) {
+    return selectTD613ApertureDecision({
+      recognized,
+      explained,
+      routeAvailable,
+      density,
+      recurrencePressure,
+      routePressure,
+      branchPressure,
+      criticality,
+      traceability,
+      mirrorLogic,
+      custodyArchive,
+      badge,
+      denseSignal,
+      apertureContext
+    });
   }
 
-  function estimateSoloCostPerOperator({
-    routePressure = 0,
-    traceability = 0,
-    criticality = 0,
-    branchPressure = 0,
-    custodyArchive = 'institutional'
-  }) {
-    const archivePenalty = custodyArchive === 'witness' ? 0.12 : 0.04;
-    return round3(
-      0.16 +
-      (clamp01(routePressure) * 0.34) +
-      (clamp01(traceability) * 0.18) +
-      (clamp01(criticality) * 0.16) +
-      (clamp01(branchPressure) * 0.12) +
-      archivePenalty
-    );
+  if (!recognized) {
+    return 'weak-signal';
   }
 
-  function chooseHarbor({
-    routePressure = 0,
-    branchPressure = 0,
-    criticality = 0,
-    badge = 'badge.holds',
-    mirrorLogic = 'off',
-    custodyArchive = 'institutional',
-    decision = 'hold-branch',
-    routeAvailable = false
-  }) {
-    const pressure = clamp01(routePressure);
-    const branch = clamp01(branchPressure);
-    const critical = clamp01(criticality);
+  if (recognized && routeAvailable) {
+    return 'passage';
+  }
 
-    if ((custodyArchive === 'witness' || decision === 'criticality' || critical >= 0.6) && mirrorLogic === 'off') {
-      return 'mirror.off';
-    }
+  if (recognized && !explained && !routeAvailable && denseSignal) {
+    return 'criticality';
+  }
 
-    if (decision === 'passage') {
-      return routeAvailable ? 'receipt.capture' : 'mirror.off';
-    }
+  return 'hold-branch';
+}
+// SOURCE: app/engine/harbor.js
 
-    if (pressure >= 0.72 || critical >= 0.52) {
-      return mirrorLogic === 'off' ? 'mirror.off' : 'receipt.capture';
-    }
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
 
-    if (branch >= 0.42 || pressure >= 0.46) {
-      return 'receipt.capture';
-    }
+function clamp01(value) {
+  return clamp(value, 0, 1);
+}
 
-    if (badge === 'badge.holds') {
-      return 'provenance.seal';
-    }
+function round3(value) {
+  return Number(value.toFixed(3));
+}
 
+const HARBOR_LIBRARY = {
+  'mirror.off': {
+    mode_class: 'anti-reflective safe passage',
+    trigger_condition: 'criticality rising while witness load is exposed',
+    provenance_retention: 0.95,
+    witness_load_effect: -0.18,
+    coordination_overhead: 0.22,
+    route_status_on_success: 'safe-passage achieved'
+  },
+  'receipt.capture': {
+    mode_class: 'receipt-first stabilization',
+    trigger_condition: 'recognition exceeds explanation but passage is not yet open',
+    provenance_retention: 0.98,
+    witness_load_effect: -0.09,
+    coordination_overhead: 0.18,
+    route_status_on_success: 'buffered'
+  },
+  'provenance.seal': {
+    mode_class: 'chain-of-custody preservation',
+    trigger_condition: 'low-pressure continuity with provenance preserved above floor',
+    provenance_retention: 0.99,
+    witness_load_effect: -0.05,
+    coordination_overhead: 0.12,
+    route_status_on_success: 'sealed'
+  }
+};
+
+function estimateGroupSize({
+  routePressure = 0,
+  traceability = 0,
+  criticality = 0,
+  branchPressure = 0,
+  custodyArchive = 'institutional'
+}) {
+  const base = 1 + Math.round(
+    (clamp01(routePressure) * 1.6) +
+    (clamp01(traceability) * 0.7) +
+    (clamp01(criticality) * 1.1) +
+    (clamp01(branchPressure) * 0.8)
+  );
+
+  return Math.max(1, base + (custodyArchive === 'witness' ? 1 : 0));
+}
+
+function estimateSoloCostPerOperator({
+  routePressure = 0,
+  traceability = 0,
+  criticality = 0,
+  branchPressure = 0,
+  custodyArchive = 'institutional'
+}) {
+  const archivePenalty = custodyArchive === 'witness' ? 0.12 : 0.04;
+  return round3(
+    0.16 +
+    (clamp01(routePressure) * 0.34) +
+    (clamp01(traceability) * 0.18) +
+    (clamp01(criticality) * 0.16) +
+    (clamp01(branchPressure) * 0.12) +
+    archivePenalty
+  );
+}
+
+function chooseHarbor({
+  routePressure = 0,
+  branchPressure = 0,
+  criticality = 0,
+  badge = 'badge.holds',
+  mirrorLogic = 'off',
+  custodyArchive = 'institutional',
+  decision = 'hold-branch',
+  routeAvailable = false,
+  density = 0,
+  recurrencePressure = 0,
+  traceability = 0,
+  explained = decision === 'passage',
+  recognized = decision !== 'weak-signal',
+  apertureContext = null,
+  apertureProtocol = true
+}) {
+  if (apertureProtocol !== false) {
+    return selectTD613ApertureHarbor({
+      routePressure,
+      branchPressure,
+      criticality,
+      badge,
+      mirrorLogic,
+      custodyArchive,
+      decision,
+      routeAvailable,
+      density,
+      recurrencePressure,
+      traceability,
+      explained,
+      recognized,
+      apertureContext
+    });
+  }
+
+  const pressure = clamp01(routePressure);
+  const branch = clamp01(branchPressure);
+  const critical = clamp01(criticality);
+
+  if ((custodyArchive === 'witness' || decision === 'criticality' || critical >= 0.6) && mirrorLogic === 'off') {
+    return 'mirror.off';
+  }
+
+  if (decision === 'passage') {
+    return routeAvailable ? 'receipt.capture' : 'mirror.off';
+  }
+
+  if (pressure >= 0.72 || critical >= 0.52) {
+    return mirrorLogic === 'off' ? 'mirror.off' : 'receipt.capture';
+  }
+
+  if (branch >= 0.42 || pressure >= 0.46) {
     return 'receipt.capture';
   }
 
-  function computeReuseGain(soloCost, sharedCost) {
-    return round3(Math.max(0, soloCost - sharedCost));
+  if (badge === 'badge.holds') {
+    return 'provenance.seal';
   }
 
-  function estimateWitnessLoad({
-    routePressure = 0,
-    traceability = 0,
-    criticality = 0,
-    branchPressure = 0,
-    harborFunction,
-    custodyArchive = 'institutional'
-  }) {
-    const harbor = HARBOR_LIBRARY[harborFunction];
-    const archivePenalty = custodyArchive === 'witness' ? 0.14 : 0.02;
-    const base =
-      0.12 +
-      (clamp01(routePressure) * 0.28) +
-      (clamp01(traceability) * 0.14) +
-      (clamp01(criticality) * 0.20) +
-      (clamp01(branchPressure) * 0.14) +
-      archivePenalty;
+  return 'receipt.capture';
+}
 
-    return round3(clamp(base + ((harbor && harbor.witness_load_effect) || 0), 0, 2));
-  }
+function computeReuseGain(soloCost, sharedCost) {
+  return round3(Math.max(0, soloCost - sharedCost));
+}
 
-  function buildLedgerRow({
-    eventId,
+function estimateWitnessLoad({
+  routePressure = 0,
+  traceability = 0,
+  criticality = 0,
+  branchPressure = 0,
+  harborFunction,
+  custodyArchive = 'institutional'
+}) {
+  const harbor = HARBOR_LIBRARY[harborFunction];
+  const archivePenalty = custodyArchive === 'witness' ? 0.14 : 0.02;
+  const base =
+    0.12 +
+    (clamp01(routePressure) * 0.28) +
+    (clamp01(traceability) * 0.14) +
+    (clamp01(criticality) * 0.20) +
+    (clamp01(branchPressure) * 0.14) +
+    archivePenalty;
+
+  return round3(clamp(base + (harbor?.witness_load_effect ?? 0), 0, 2));
+}
+
+function buildLedgerRow({
+  eventId,
+  harborFunction,
+  routePressure = 0,
+  traceability = 0,
+  branchPressure = 0,
+  criticality = 0,
+  density = 0,
+  routeAvailable = false,
+  custodyArchive = 'institutional',
+  decision = 'hold-branch',
+  operatorId = 'demo-operator',
+  sourceClass = 'public membrane',
+  mirrorLogic = 'off',
+  recurrencePressure = 0,
+  badge = 'badge.holds',
+  explained = decision === 'passage',
+  recognized = decision !== 'weak-signal',
+  apertureContext = null
+}) {
+  const harbor = HARBOR_LIBRARY[harborFunction];
+  const aperture = apertureContext || buildTD613ApertureContext({
+    recognized,
+    explained,
+    routeAvailable,
+    density,
+    recurrencePressure,
+    routePressure,
+    branchPressure,
+    criticality,
+    traceability,
+    mirrorLogic,
+    custodyArchive,
+    badge
+  });
+  const groupSize = estimateGroupSize({
+    routePressure,
+    traceability,
+    criticality,
+    branchPressure,
+    custodyArchive
+  });
+  const soloCostPerOperator = estimateSoloCostPerOperator({
+    routePressure,
+    traceability,
+    criticality,
+    branchPressure,
+    custodyArchive
+  });
+  const soloCost = round3(groupSize * soloCostPerOperator);
+  const sharedCost = round3(
+    soloCostPerOperator + (harbor.coordination_overhead * Math.log2(groupSize + 1))
+  );
+  const witnessLoad = estimateWitnessLoad({
+    routePressure,
+    traceability,
+    criticality,
+    branchPressure,
     harborFunction,
-    routePressure = 0,
-    traceability = 0,
-    branchPressure = 0,
-    criticality = 0,
-    density = 0,
-    routeAvailable = false,
-    custodyArchive = 'institutional',
-    decision = 'hold-branch',
-    operatorId = 'demo-operator',
-    sourceClass = 'public membrane'
-  }) {
-    const harbor = HARBOR_LIBRARY[harborFunction];
-    const groupSize = estimateGroupSize({
-      routePressure,
-      traceability,
-      criticality,
-      branchPressure,
-      custodyArchive
-    });
-    const soloCostPerOperator = estimateSoloCostPerOperator({
-      routePressure,
-      traceability,
-      criticality,
-      branchPressure,
-      custodyArchive
-    });
-    const soloCost = round3(groupSize * soloCostPerOperator);
-    const sharedCost = round3(
-      soloCostPerOperator + (harbor.coordination_overhead * Math.log2(groupSize + 1))
-    );
-    const witnessLoad = estimateWitnessLoad({
-      routePressure,
-      traceability,
-      criticality,
-      branchPressure,
-      harborFunction,
-      custodyArchive
-    });
-    const justiceDeficit = round3(
-      clamp(
-        0.10 +
-        (clamp01(criticality) * 0.34) +
-        (clamp01(branchPressure) * 0.22) +
-        (clamp01(routePressure) * 0.18) +
-        (custodyArchive === 'witness' ? 0.16 : 0.04),
-        0,
-        2
-      )
-    );
-    const routeStatus =
-      decision === 'passage'
-        ? 'safe-passage achieved'
-        : decision === 'criticality'
+    custodyArchive
+  });
+  const justiceDeficit = round3(clamp(
+    0.10 +
+    (clamp01(criticality) * 0.34) +
+    (clamp01(branchPressure) * 0.22) +
+    (clamp01(routePressure) * 0.18) +
+    (custodyArchive === 'witness' ? 0.16 : 0.04),
+    0,
+    2
+  ));
+  const routeStatus =
+    decision === 'passage'
+      ? 'safe-passage achieved'
+      : decision === 'criticality'
+        ? 'buffered'
+        : decision === 'hold-branch'
           ? 'buffered'
-          : decision === 'hold-branch'
-            ? 'buffered'
-            : 'observing';
-    const evidentiaryClass =
-      custodyArchive === 'witness' || decision === 'criticality'
-        ? 'receipt-bearing'
-        : harborFunction === 'provenance.seal' || decision === 'passage'
-          ? 'provenance-bearing'
-          : 'exploratory';
+          : 'observing';
+  const evidentiaryClass =
+    custodyArchive === 'witness' || decision === 'criticality'
+      ? 'receipt-bearing'
+      : harborFunction === 'provenance.seal' || decision === 'passage'
+        ? 'provenance-bearing'
+        : 'exploratory';
 
-    return {
-      event_id: eventId,
-      timestamp: new Date().toISOString(),
-      operator_id: operatorId,
-      witness_channel: custodyArchive === 'witness' ? 'inside-frame' : 'mixed',
-      source_class: sourceClass,
-      evidentiary_class: evidentiaryClass,
-      harbor_function: harborFunction,
-      group_size: groupSize,
-      effective_archive: custodyArchive === 'witness' ? 'A_W' : 'A_I',
-      solo_cost: soloCost,
-      shared_cost: sharedCost,
-      reuse_gain: computeReuseGain(soloCost, sharedCost),
-      provenance_retention: harbor.provenance_retention,
-      witness_load: witnessLoad,
-      justice_deficit: justiceDeficit,
-      route_status: routeStatus,
-      route_available: routeAvailable,
-      signal_density: round3(clamp01(density)),
-      branch_pressure: round3(clamp01(branchPressure)),
-      criticality_index: round3(clamp01(criticality)),
-      receipt_hash: `sha256:${eventId}`
-    };
-  }
-
-  window.TCP_ENGINE = {
-    HARBOR_LIBRARY,
-    compareTexts,
-    extractCadenceProfile,
-    sentenceSplit,
-    segmentTextToIR,
-    buildOpportunityProfileFromIR,
-    buildTransferPlanFromIR,
-    beamSearchTransfer,
-    functionWordProfile,
-    wordLengthProfile,
-    charTrigramProfile,
-    applyCadenceMod,
-    applyCadenceShell,
-    buildCadenceTransfer,
-    buildCadenceTransferTrace,
-    buildSwapCadenceMatrix,
-    applyCadenceToText,
-    transformText,
-    SWAP_CADENCE_FLAGSHIP_PAIRS,
-    cadenceModFromProfile,
-    cadenceAxisVector,
-    cadenceHeatmap,
-    buildCadenceSignature,
-    solveQuadratic,
-    cadenceCoherence,
-    cadenceResonance,
-    branchDynamics,
-    fieldPotential,
-    waveStats,
-    custodyThreshold,
-    criticalityIndex,
-    routePressure: computeRoutePressure,
-    computeRoutePressure,
-    providerDecision,
-    chooseHarbor,
-    buildLedgerRow,
-    nextBadge,
-    badgeMeaning
+  return {
+    event_id: eventId,
+    timestamp: new Date().toISOString(),
+    operator_id: operatorId,
+    witness_channel: custodyArchive === 'witness' ? 'inside-frame' : 'mixed',
+    source_class: sourceClass,
+    evidentiary_class: evidentiaryClass,
+    harbor_function: harborFunction,
+    group_size: groupSize,
+    effective_archive: custodyArchive === 'witness' ? 'A_W' : 'A_I',
+    solo_cost: soloCost,
+    shared_cost: sharedCost,
+    reuse_gain: computeReuseGain(soloCost, sharedCost),
+    provenance_retention: harbor.provenance_retention,
+    witness_load: witnessLoad,
+    justice_deficit: justiceDeficit,
+    route_status: routeStatus,
+    route_available: routeAvailable,
+    signal_density: round3(clamp01(density)),
+    route_pressure: round3(clamp01(routePressure)),
+    branch_pressure: round3(clamp01(branchPressure)),
+    criticality_index: round3(clamp01(criticality)),
+    protocol_id: aperture.protocolId,
+    protocol_identity: aperture.toolIdentity,
+    observed_regime: aperture.observedRegime,
+    anti_enforcement: true,
+    counter_recognition_required: aperture.counterRecognitionRequired,
+    generative_passage_blocked: aperture.generativePassageBlocked,
+    recapture_risk: aperture.recaptureRisk,
+    receipt_hash: `sha256:${eventId}`
   };
+}
+
+window.TCP_ENGINE = Object.assign(window.TCP_ENGINE || {}, {
+  TD613_APERTURE_PROTOCOL,
+  TD613_APERTURE_ENFORCEMENT_TERMS,
+  buildTD613ApertureContext,
+  selectTD613ApertureDecision,
+  selectTD613ApertureHarbor,
+  reviewTD613ApertureTransfer,
+  solveQuadratic,
+  cadenceCoherence,
+  cadenceResonance,
+  branchDynamics,
+  routePressure,
+  computeRoutePressure,
+  fieldPotential,
+  waveStats,
+  custodyThreshold,
+  criticalityIndex,
+  providerDecision,
+  HARBOR_LIBRARY,
+  chooseHarbor,
+  buildLedgerRow,
+  computeReuseGain,
+  estimateWitnessLoad,
+  normalizeText,
+  extractCadenceProfile,
+  compareTexts,
+  buildCadenceTransfer,
+  buildCadenceTransferTrace,
+  buildCadenceSignature,
+  applyCadenceShell,
+  applyCadenceToText,
+  transformText,
+  functionWordProfile,
+  charTrigramProfile,
+  recurrencePressure,
+  sentenceSplit,
+  segmentTextToIR,
+  buildOpportunityProfileFromIR,
+  buildTransferPlanFromIR,
+  beamSearchTransfer,
+  cadenceModFromProfile,
+  SWAP_CADENCE_FLAGSHIP_PAIRS
+});
 })();
-
-
-
-
-
-
-
-
-
-
-
