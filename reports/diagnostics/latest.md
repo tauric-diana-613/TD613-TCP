@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-09T23:13:41.641Z
+Generated: 2026-04-09T23:31:17.935Z
 
 Corpus: 72 samples across 18 families
 Promoted deck subset: 24 samples
@@ -9,28 +9,28 @@ Total diagnostics cases: 218
 ## Failure Buckets
 
 - false_neighbor_convergence: 53
-- over_flattened_output: 48
-- register_miss: 43
-- semantic_drift: 36
-- sentence_span_miss: 30
-- trainer_retrieval_fail: 26
-- anchor_break: 15
-- surface_close_under_large_gap: 13
+- over_flattened_output: 45
+- semantic_drift: 39
+- register_miss: 39
+- sentence_span_miss: 32
+- trainer_retrieval_fail: 25
+- anchor_break: 20
 - both_rejected_swap: 12
+- surface_close_under_large_gap: 10
 - one_sided_swap: 8
-- mask_near_home_hold: 5
-- punctuation_only_shift: 2
+- punctuation_only_shift: 5
+- mask_near_home_hold: 1
 
 ## Worst Families
 
-- school-coordination: 32
-- building-access: 29
+- school-coordination: 33
+- building-access: 28
 - clinic-scheduling: 24
+- package-handoff: 19
+- tenant-leak: 17
+- committee-budget: 17
 - overwork-debrief: 17
-- archive-grant: 17
-- package-handoff: 16
-- tenant-leak: 16
-- committee-budget: 16
+- archive-grant: 16
 
 ## Worst Cases
 
@@ -42,8 +42,8 @@ Total diagnostics cases: 218
 - school-coordination-formal-to-rushed: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
 - school-coordination-rushed-to-formal: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: both_rejected_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
 - municipal-zoning-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
+- package-handoff-mask-same-family: anchor_break, over_flattened_output, punctuation_only_shift, register_miss, sentence_span_miss // Buckets: anchor_break, over_flattened_output, punctuation_only_shift, register_miss, sentence_span_miss.
 - clinic-scheduling-mask-same-family: anchor_break, over_flattened_output, punctuation_only_shift, register_miss, sentence_span_miss // Buckets: anchor_break, over_flattened_output, punctuation_only_shift, register_miss, sentence_span_miss.
-- archive-grant-mask-same-family: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
 - school-coordination-mask-same-family: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: mask_near_home_hold, over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
 - benefits-appeal-rushed-to-formal: over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap // Buckets: over_flattened_output, register_miss, sentence_span_miss, surface_close_under_large_gap.
 
@@ -103,7 +103,7 @@ Total diagnostics cases: 218
 
 - building-access-rushed-mobile -> adversarial-hearing-formal-record: score 35, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - benefits-appeal-professional-message -> adversarial-hearing-rushed-mobile: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
-- municipal-zoning-formal-record -> benefits-appeal-formal-record: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- municipal-zoning-formal-record -> archive-grant-formal-record: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - adversarial-hearing-rushed-mobile -> adversarial-hearing-formal-record: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - museum-fog-alarm-professional-message -> adversarial-hearing-professional-message: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - model-safety-rushed-mobile -> newsroom-correction-rushed-mobile: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
