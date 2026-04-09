@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-09T08:14:54.798Z
+Generated: 2026-04-09T09:39:22.818Z
 
 Corpus: 72 samples across 18 families
 Promoted deck subset: 24 samples
@@ -14,8 +14,8 @@ Total diagnostics cases: 218
 - semantic_drift: 55
 - one_sided_swap: 36
 - sentence_span_miss: 27
-- trainer_retrieval_fail: 24
-- false_neighbor_convergence: 17
+- trainer_retrieval_fail: 21
+- false_neighbor_convergence: 18
 - surface_close_under_large_gap: 11
 - anchor_break: 8
 - mask_near_home_hold: 3
@@ -24,10 +24,10 @@ Total diagnostics cases: 218
 ## Worst Families
 
 - building-access: 41
-- school-coordination: 38
-- clinic-scheduling: 29
+- school-coordination: 39
+- clinic-scheduling: 28
 - tenant-leak: 27
-- committee-budget: 27
+- committee-budget: 26
 - customer-support: 24
 - archive-grant: 22
 - performance-review: 22
@@ -74,19 +74,19 @@ Total diagnostics cases: 218
 
 - resolved_persona_count: 7
 - unique_resolved_persona_profile_count: 7
-- average_nearest_field_distance: 1.6491
-- min_nearest_field_distance: 1.249
+- average_nearest_field_distance: 1.8099
+- min_nearest_field_distance: 1.654
 - missing_recipe_sample_ids: none
 - distinct_output_check: 7/7 distinct on customer-support-formal-record
 
 ### Closest Persona Pairs
 
-- methods-editor <-> matron: field distance 1.249, profile 0.885, heatmap 0, traceability 1
 - archivist <-> methods-editor: field distance 1.654, profile 1.331, heatmap 0, traceability 1
 - spark <-> cross-examiner: field distance 1.696, profile 1.407, heatmap 0, traceability 0.972
+- methods-editor <-> matron: field distance 1.969, profile 1.507, heatmap 0, traceability 0.982
 - undertow <-> operator: field distance 2, profile 1.189, heatmap 0, traceability 0.98
-- undertow <-> matron: field distance 2.139, profile 1.463, heatmap 0, traceability 0.922
-- archivist <-> matron: field distance 2.488, profile 2.077, heatmap 0, traceability 1
+- undertow <-> methods-editor: field distance 2.678, profile 1.968, heatmap 0, traceability 0.936
+- operator <-> cross-examiner: field distance 2.829, profile 1.746, heatmap 0, traceability 0.734
 
 ## Private TD613 Aperture Working State
 

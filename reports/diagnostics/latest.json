@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-09T08:14:54.798Z",
+  "generatedAt": "2026-04-09T09:39:22.818Z",
   "summary": {
     "corpusVersion": "wild-corpus-v1",
     "familyCount": 18,
@@ -15,9 +15,9 @@
       "sentence_span_miss": 27,
       "surface_close_under_large_gap": 11,
       "both_rejected_swap": 64,
-      "false_neighbor_convergence": 17,
+      "false_neighbor_convergence": 18,
       "mask_near_home_hold": 3,
-      "trainer_retrieval_fail": 24,
+      "trainer_retrieval_fail": 21,
       "punctuation_only_shift": 0
     },
     "worstFamilies": [
@@ -27,11 +27,11 @@
       },
       {
         "familyId": "school-coordination",
-        "score": 38
+        "score": 39
       },
       {
         "familyId": "clinic-scheduling",
-        "score": 29
+        "score": 28
       },
       {
         "familyId": "tenant-leak",
@@ -39,7 +39,7 @@
       },
       {
         "familyId": "committee-budget",
-        "score": 27
+        "score": 26
       },
       {
         "familyId": "customer-support",
@@ -4244,6 +4244,7 @@
           "line-break-texture",
           "connector-stance",
           "lexical-register",
+          "content-word-complexity",
           "modifier-density",
           "abbreviation-posture",
           "orthography-posture",
@@ -4255,7 +4256,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.641,
-          "output": 0.804,
+          "output": 0.7695,
           "improved": true
         },
         "semanticAudit": {
@@ -4264,12 +4265,12 @@
           "actionCoverage": 1,
           "objectCoverage": 0.85,
           "polarityMismatches": 1,
-          "tenseMismatches": 1
+          "tenseMismatches": 2
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "full-contact",
-        "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture",
+        "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture // operational register",
         "failureBuckets": [
           "semantic_drift"
         ],
@@ -4591,7 +4592,6 @@
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "line-break-texture",
           "connector-stance",
           "lexical-register",
           "orthography-posture",
@@ -4602,23 +4602,25 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.7115,
-          "output": 0.7305,
+          "output": 0.7345,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.9,
-          "polarityMismatches": 0,
+          "objectCoverage": 0.95,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "surface-drift",
-        "whatMoved": "sentence mean // sentence count // sentence spread // line break texture",
-        "failureBuckets": [],
-        "notes": "Surface texture changed while home distance held. longer lines, punctuation holds, contraction holds."
+        "whatMoved": "sentence mean // sentence count // sentence spread // connector stance",
+        "failureBuckets": [
+          "semantic_drift"
+        ],
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "newsroom-correction-mask-same-family",
@@ -5097,36 +5099,31 @@
           "sentence-count",
           "sentence-spread",
           "contraction-posture",
-          "line-break-texture",
           "connector-stance",
-          "lexical-register",
-          "directness",
-          "abstraction-posture",
+          "fragment-posture",
           "punctuation-shape"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.9375,
-          "output": 0.697,
+          "output": 0.8495,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 0.9,
           "actorCoverage": 0.9,
           "actionCoverage": 0.9,
-          "objectCoverage": 0.775,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.8,
+          "polarityMismatches": 0,
           "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "full-contact",
-        "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture // less directive",
-        "failureBuckets": [
-          "semantic_drift"
-        ],
-        "notes": "Buckets: semantic_drift."
+        "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture // compressed register",
+        "failureBuckets": [],
+        "notes": "Home trace eased by 9 points. Surface texture shifted too."
       },
       {
         "id": "committee-budget-under-performance-review-mask-cross-family",
@@ -5409,10 +5406,11 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
-          "sentence-spread",
           "contraction-posture",
           "line-break-texture",
           "connector-stance",
+          "lexical-register",
+          "directness",
           "abstraction-posture",
           "punctuation-shape"
         ],
@@ -5420,23 +5418,23 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.91,
-          "output": 0.8395,
+          "output": 0.799,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.977,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "full-contact",
-        "whatMoved": "sentence mean // sentence count // sentence spread // contraction posture // more abstract",
+        "whatMoved": "sentence mean // sentence count // contraction posture // line break texture // operational register",
         "failureBuckets": [],
-        "notes": "Home trace eased by 7 points. Surface texture shifted too."
+        "notes": "Home trace eased by 11 points. Surface texture shifted too."
       },
       {
         "id": "model-safety-under-newsroom-correction-mask-cross-family",
@@ -5875,17 +5873,15 @@
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
-          "pass": false,
-          "retrievalPass": false,
+          "pass": true,
+          "retrievalPass": true,
           "scalarAggregate": 0.7961,
-          "meanAgreement": 0.9022,
-          "status": "retrieval-failed"
+          "meanAgreement": 0.9187,
+          "status": "ready"
         },
         "pairClassification": "",
-        "failureBuckets": [
-          "trainer_retrieval_fail"
-        ],
-        "notes": "Buckets: trainer_retrieval_fail."
+        "failureBuckets": [],
+        "notes": "Trainer should extract a family fingerprint from three Clinic scheduling / insurance authorization / callback confusion variants and validate a forged draft sourced from the noisy sibling."
       },
       {
         "id": "committee-budget-trainer-sibling",
@@ -6417,7 +6413,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.746,
-          "meanAgreement": 0.8473,
+          "meanAgreement": 0.846,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6523,7 +6519,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7959,
-          "meanAgreement": 0.864,
+          "meanAgreement": 0.8656,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6574,17 +6570,15 @@
         },
         "protectedAnchorIntegrity": 0,
         "trainerValidation": {
-          "pass": false,
-          "retrievalPass": false,
+          "pass": true,
+          "retrievalPass": true,
           "scalarAggregate": 0.7882,
-          "meanAgreement": 0.8421,
-          "status": "retrieval-failed"
+          "meanAgreement": 0.9221,
+          "status": "ready"
         },
         "pairClassification": "",
-        "failureBuckets": [
-          "trainer_retrieval_fail"
-        ],
-        "notes": "Buckets: trainer_retrieval_fail."
+        "failureBuckets": [],
+        "notes": "Trainer should extract a family fingerprint from three Model safety / de-identification task / over-refusal variants and validate a forged draft sourced from the noisy sibling."
       },
       {
         "id": "building-access-trainer-under-customer-support",
@@ -6631,7 +6625,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.8014,
-          "meanAgreement": 0.9435,
+          "meanAgreement": 0.9451,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6793,7 +6787,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7646,
-          "meanAgreement": 0.8302,
+          "meanAgreement": 0.8139,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -7336,18 +7330,18 @@
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": {
-          "pass": false,
-          "retrievalPass": false,
+          "pass": true,
+          "retrievalPass": true,
           "scalarAggregate": 0.7585,
-          "meanAgreement": 0.8906,
-          "status": "retrieval-failed"
+          "meanAgreement": 0.9071,
+          "status": "ready"
         },
         "pairClassification": "",
         "failureBuckets": [
-          "register_miss",
-          "trainer_retrieval_fail"
+          "false_neighbor_convergence",
+          "register_miss"
         ],
-        "notes": "Buckets: register_miss, trainer_retrieval_fail."
+        "notes": "Buckets: false_neighbor_convergence, register_miss."
       },
       {
         "id": "municipal-zoning-trainer-under-committee-budget",
@@ -7394,7 +7388,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.8849,
-          "meanAgreement": 0.9363,
+          "meanAgreement": 0.9278,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -9519,20 +9513,6 @@
     "missingRecipeSampleIds": [],
     "closestPairs": [
       {
-        "leftId": "methods-editor",
-        "leftName": "Methods Editor",
-        "rightId": "matron",
-        "rightName": "Matron",
-        "distance": 1.249,
-        "profileDistance": 0.885,
-        "axisDistance": 0.364,
-        "heatmapDistance": 0,
-        "similarity": 0.901,
-        "traceability": 1,
-        "sameFamily": false,
-        "sameVariant": false
-      },
-      {
         "leftId": "archivist",
         "leftName": "Archivist",
         "rightId": "methods-editor",
@@ -9561,6 +9541,20 @@
         "sameVariant": false
       },
       {
+        "leftId": "methods-editor",
+        "leftName": "Methods Editor",
+        "rightId": "matron",
+        "rightName": "Matron",
+        "distance": 1.969,
+        "profileDistance": 1.507,
+        "axisDistance": 0.462,
+        "heatmapDistance": 0,
+        "similarity": 0.846,
+        "traceability": 0.982,
+        "sameFamily": false,
+        "sameVariant": false
+      },
+      {
         "leftId": "undertow",
         "leftName": "Undertow",
         "rightId": "operator",
@@ -9577,34 +9571,34 @@
       {
         "leftId": "undertow",
         "leftName": "Undertow",
-        "rightId": "matron",
-        "rightName": "Matron",
-        "distance": 2.139,
-        "profileDistance": 1.463,
-        "axisDistance": 0.676,
+        "rightId": "methods-editor",
+        "rightName": "Methods Editor",
+        "distance": 2.678,
+        "profileDistance": 1.968,
+        "axisDistance": 0.71,
         "heatmapDistance": 0,
-        "similarity": 0.804,
-        "traceability": 0.922,
+        "similarity": 0.814,
+        "traceability": 0.936,
         "sameFamily": false,
         "sameVariant": false
       },
       {
-        "leftId": "archivist",
-        "leftName": "Archivist",
-        "rightId": "matron",
-        "rightName": "Matron",
-        "distance": 2.488,
-        "profileDistance": 2.077,
-        "axisDistance": 0.411,
+        "leftId": "operator",
+        "leftName": "Operator",
+        "rightId": "cross-examiner",
+        "rightName": "Cross-Examiner",
+        "distance": 2.829,
+        "profileDistance": 1.746,
+        "axisDistance": 1.083,
         "heatmapDistance": 0,
-        "similarity": 0.874,
-        "traceability": 1,
+        "similarity": 0.635,
+        "traceability": 0.734,
         "sameFamily": false,
         "sameVariant": false
       }
     ],
-    "averageNearestFieldDistance": 1.6491,
-    "minNearestFieldDistance": 1.249,
+    "averageNearestFieldDistance": 1.8099,
+    "minNearestFieldDistance": 1.654,
     "distinctOutputCheck": {
       "comparisonSampleId": "customer-support-formal-record",
       "resolvedPersonaCount": 7,
