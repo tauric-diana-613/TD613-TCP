@@ -98,7 +98,8 @@
           "type": "string"
         },
         "badge_id": {
-          "type": "string"
+          "type": "string",
+          "description": "Fixed canonical TD613 badge identifier copied from canon, not minted from intake."
         },
         "claimed_pua": {
           "type": "string"
@@ -344,7 +345,9 @@
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "pattern": "^(TD613-SH-9B07D8B-[A-F0-9]{8})?$",
+          "description": "Minted Safe Harbor issuance number derived deterministically from packet context."
         },
         "badge_state": {
           "type": "string",

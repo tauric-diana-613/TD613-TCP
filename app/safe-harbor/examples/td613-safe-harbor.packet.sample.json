@@ -4,7 +4,7 @@
   "created_at": "2026-04-03T00:00:00Z",
   "canonicalization": {
     "engine": "TD613 Safe Harbor",
-    "version": "0.4.1",
+    "version": "0.7.0",
     "mode": "staged-intake-packet",
     "public_mode": "legacy-compat",
     "corpus_hash_sha256": "BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88"
@@ -51,7 +51,7 @@
     }
   },
   "intake": {
-    "status": "staged",
+    "status": "sealed",
     "request_id": "TD613-RUN-20260403T000000Z",
     "ts_utc": "2026-04-03T00:00:00Z",
     "sealed_at": "2026-04-03T00:00:00Z",
@@ -183,11 +183,11 @@
     "cross_lane_stability": 0.8889,
     "cross_lane_spread": 0.1111,
     "route": {
-      "state": "staged",
+      "state": "harbor-eligible",
       "source": "local ingress + demo-eo",
       "recommended_harbor": "provenance.seal",
-      "export_ready": false,
-      "membrane_note": "A staged packet is present. Covenant Export is still required before the packet becomes harbor-eligible.",
+      "export_ready": true,
+      "membrane_note": "Covenant is confirmed. The packet is sealed, harbor-eligible, and carries an issued Safe Harbor badge number.",
       "provenance": {
         "integrity": 0.94,
         "confidence": 0.89,
@@ -221,17 +221,15 @@
       "sig_present": true
     },
     "covenant_gate": {
-      "confirmed": false,
-      "confirmed_at": null,
+      "confirmed": true,
+      "confirmed_at": "2026-04-03T00:00:00Z",
       "required": true,
       "action_label": "Covenant Export"
     },
     "export_gate": {
-      "ready": false,
-      "state": "guarded",
-      "blockers": [
-        "covenant-confirmation-required"
-      ],
+      "ready": true,
+      "state": "harbor-eligible",
+      "blockers": [],
       "scrub_passed": true
     }
   },

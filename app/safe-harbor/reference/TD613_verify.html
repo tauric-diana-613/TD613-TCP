@@ -236,6 +236,8 @@
         <h2>Live template and historical example</h2>
         <div class="metric-grid">
           <div class="metric"><span class="label">Public mode</span><span class="value">legacy-compat</span></div>
+          <div class="metric"><span class="label">Canonical badge id</span><span class="value">bdg_glyph_U10D613</span></div>
+          <div class="metric"><span class="label">Issued badge number</span><span class="value">TD613-SH-9B07D8B-XXXXXXXX</span></div>
           <div class="metric"><span class="label">Accepted footer modes</span><span class="value">legacy / legacy-compat / sac-only</span></div>
           <div class="metric"><span class="label">Packet schema</span><span class="value">td613.safe-harbor.packet/v1</span></div>
           <div class="metric"><span class="label">Packet hash field</span><span class="value">packet_hash_sha256</span></div>
@@ -257,7 +259,7 @@
 TCP cadence may enrich the stylometric witness.
 JWS or detached-ed25519 may later seal the packet.
 The compact public footer does not expose either layer directly.</div>
-        <div class="hint">The verifier surface stays footer-first and packet-aware without leaking raw signature material or conflating cadence with crypto.</div>
+        <div class="hint">The verifier surface stays footer-first and packet-aware without leaking raw signature material, conflating cadence with crypto, or confusing the fixed canonical badge id with the minted Safe Harbor issuance number.</div>
       </section>
 
       <section class="card full">
