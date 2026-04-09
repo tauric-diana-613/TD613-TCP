@@ -1,7 +1,10 @@
 import {
   classifyTD613ApertureProjection,
   detectTD613ApertureTextPathologies,
-  repairTD613ApertureProjection
+  extractTD613ApertureWitnessAnchors,
+  registerTD613ApertureSegment,
+  repairTD613ApertureProjection,
+  splitTD613ApertureSourceSegments
 } from '../../engine/td613-aperture.js';
 import { buildCorpusExtraction, splitCorpusSamples as splitTrainerCorpusSamples } from '../persona-trainer/extractor.js';
 
@@ -736,8 +739,8 @@ function splitSentencesPreservePunctuation(text = '') {
   if (!normalized) {
     return [];
   }
-  const matches = normalized.match(/[^.!?\n]+(?:[.!?]+["')\]]*)?|[^\n]+$/g) || [];
-  return matches
+  return normalized
+    .split(/(?<=[.!?]["')\]]*)(?=\s+|\n|$)/g)
     .map((entry) => normalizeText(entry))
     .filter(Boolean);
 }
@@ -747,8 +750,8 @@ function splitPreviewSegments(text = '') {
   if (!normalized) {
     return [];
   }
-  const matches = normalized.match(/[^.!?;\n]+(?:[.!?;]+["')\]]*)?|[^\n]+$/g) || [];
-  return matches
+  return normalized
+    .split(/(?<=[.!?;]["')\]]*)(?=\s+|\n|$)/g)
     .map((entry) => normalizeText(entry))
     .filter(Boolean);
 }
@@ -926,6 +929,448 @@ function substantiveMaskDimensions(changedDimensions = []) {
   return (changedDimensions || []).filter((dimension) =>
     dimension !== 'contraction-posture' && dimension !== 'punctuation-shape'
   );
+}
+
+const MASK_REALIZATION_STRUCTURAL_DIMENSIONS = new Set([
+  'sentence-mean',
+  'sentence-count',
+  'sentence-spread',
+  'contraction-posture',
+  'line-break-texture',
+  'connector-stance'
+]);
+
+const MASK_REALIZATION_LEXICAL_DIMENSIONS = new Set([
+  'lexical-register',
+  'content-word-complexity',
+  'modifier-density',
+  'directness',
+  'abstraction-posture',
+  'abbreviation-posture',
+  'orthography-posture',
+  'fragment-posture',
+  'conversation-posture',
+  'surface-marker-posture'
+]);
+
+function determineMaskRealizationTier(changedDimensions = [], lexemeSwaps = []) {
+  const hasStructural = (changedDimensions || []).some((dimension) =>
+    MASK_REALIZATION_STRUCTURAL_DIMENSIONS.has(dimension)
+  );
+  const hasLexical = (changedDimensions || []).some((dimension) =>
+    MASK_REALIZATION_LEXICAL_DIMENSIONS.has(dimension)
+  ) || (lexemeSwaps || []).length > 0;
+
+  if (!(changedDimensions || []).length && !(lexemeSwaps || []).length) {
+    return 'none';
+  }
+  if (hasStructural && hasLexical) {
+    return 'lexical-structural';
+  }
+  return 'cadence-only';
+}
+
+function buildSegmentProtectedState(sourceText = '') {
+  const exactAnchors = extractTD613ApertureWitnessAnchors({ sourceText })
+    .filter((anchor) => anchor.exact)
+    .map((anchor) => ({ value: anchor.value }));
+  return {
+    literals: exactAnchors,
+    text: sourceText
+  };
+}
+
+function buildHeldSemanticAudit(sourceIR = {}, registeredText = '') {
+  const sourceClauseCount = Number(sourceIR?.metadata?.clauseCount || 0);
+  const outputClauseCount = Math.max(sourceClauseCount, splitPreviewSegments(registeredText).length || 0);
+  return {
+    propositionCoverage: 1,
+    actorCoverage: 1,
+    actionCoverage: 1,
+    objectCoverage: 1,
+    polarityMismatches: 0,
+    tenseMismatches: 0,
+    protectedAnchorIntegrity: 1,
+    clauseAudits: [],
+    sourceClauseCount,
+    outputClauseCount
+  };
+}
+
+function buildHeldProtectedAnchorAudit(registration = {}) {
+  const audit = registration.registeredWitnessAudit || {};
+  return {
+    totalAnchors: Number(audit.totalAnchors || 0),
+    resolvedAnchors: Number(audit.totalAnchors || 0),
+    missingAnchors: [],
+    protectedAnchorIntegrity: 1
+  };
+}
+
+function profileDriftToTarget(profile = {}, targetProfile = {}) {
+  return round(
+    (Math.abs((profile.avgSentenceLength || 0) - (targetProfile.avgSentenceLength || 0)) / 20) +
+    (Math.abs((profile.contractionDensity || 0) - (targetProfile.contractionDensity || 0)) * 6) +
+    (Math.abs((profile.punctuationDensity || 0) - (targetProfile.punctuationDensity || 0)) * 8) +
+    (Math.abs((profile.directness || 0) - (targetProfile.directness || 0)) * 3) +
+    (Math.abs((profile.abstractionPosture || 0) - (targetProfile.abstractionPosture || 0)) * 3) +
+    ((profile.registerMode || '') === (targetProfile.registerMode || '') ? 0 : 0.5),
+    4
+  );
+}
+
+function aggregateSemanticAudit(segmentLedger = []) {
+  if (!segmentLedger.length) {
+    return buildHeldSemanticAudit({}, '');
+  }
+  const averageKey = (key, fallback = 1) => round(
+    segmentLedger.reduce((sum, entry) => sum + Number(entry.semanticAudit?.[key] ?? fallback), 0) /
+    Math.max(segmentLedger.length, 1),
+    4
+  );
+  return {
+    propositionCoverage: averageKey('propositionCoverage'),
+    actorCoverage: averageKey('actorCoverage'),
+    actionCoverage: averageKey('actionCoverage'),
+    objectCoverage: averageKey('objectCoverage'),
+    polarityMismatches: segmentLedger.reduce((sum, entry) => sum + Number(entry.semanticAudit?.polarityMismatches || 0), 0),
+    tenseMismatches: segmentLedger.reduce((sum, entry) => sum + Number(entry.semanticAudit?.tenseMismatches || 0), 0),
+    protectedAnchorIntegrity: averageKey('protectedAnchorIntegrity'),
+    clauseAudits: segmentLedger.flatMap((entry) => entry.semanticAudit?.clauseAudits || []),
+    sourceClauseCount: segmentLedger.reduce((sum, entry) => sum + Number(entry.semanticAudit?.sourceClauseCount || 0), 0),
+    outputClauseCount: segmentLedger.reduce((sum, entry) => sum + Number(entry.semanticAudit?.outputClauseCount || 0), 0)
+  };
+}
+
+function aggregateProtectedAnchorAudit(segmentLedger = []) {
+  const totalAnchors = segmentLedger.reduce((sum, entry) => sum + Number(entry.protectedAnchorAudit?.totalAnchors || 0), 0);
+  const resolvedAnchors = segmentLedger.reduce((sum, entry) => sum + Number(entry.protectedAnchorAudit?.resolvedAnchors || 0), 0);
+  const missingAnchors = [...new Set(segmentLedger.flatMap((entry) => entry.protectedAnchorAudit?.missingAnchors || []))];
+  return {
+    totalAnchors,
+    resolvedAnchors,
+    missingAnchors,
+    protectedAnchorIntegrity: totalAnchors ? round(resolvedAnchors / totalAnchors, 4) : 1
+  };
+}
+
+function segmentOutcomeCounts(segmentLedger = []) {
+  return segmentLedger.reduce((acc, entry) => {
+    const outcome = entry?.outcome || 'source-rerouted';
+    if (outcome === 'projected') {
+      acc.projected += 1;
+    } else if (outcome === 'repaired') {
+      acc.repaired += 1;
+    } else if (outcome === 'surface-held') {
+      acc.surfaceHeld += 1;
+    } else {
+      acc.sourceRerouted += 1;
+    }
+    return acc;
+  }, {
+    projected: 0,
+    repaired: 0,
+    surfaceHeld: 0,
+    sourceRerouted: 0
+  });
+}
+
+function aggregateApertureOutcome(segmentLedger = []) {
+  const counts = segmentOutcomeCounts(segmentLedger);
+  const total = segmentLedger.length;
+  if (!total || counts.sourceRerouted === total) {
+    return 'source-rerouted';
+  }
+  if ((counts.projected + counts.repaired) === 0 && counts.surfaceHeld > 0) {
+    return 'surface-held';
+  }
+  if (counts.repaired > 0 || counts.surfaceHeld > 0 || counts.sourceRerouted > 0) {
+    return 'repaired';
+  }
+  return 'projected';
+}
+
+function buildRegistrationLine(outcome = 'source-rerouted', counts = {}) {
+  const total = (counts.projected || 0) + (counts.repaired || 0) + (counts.surfaceHeld || 0) + (counts.sourceRerouted || 0);
+  if (!total) {
+    return 'Aperture is waiting for a registerable segment.';
+  }
+  if (outcome === 'source-rerouted') {
+    return `Aperture rerouted ${counts.sourceRerouted || total} of ${total} segments back to source under counter-recognition pressure.`;
+  }
+  if (outcome === 'surface-held' && (counts.projected || 0) === 0 && (counts.repaired || 0) === 0) {
+    return `Aperture held ${counts.surfaceHeld || total} of ${total} segments near source and only allowed surface-safe movement.`;
+  }
+
+  const parts = [];
+  if (counts.projected) {
+    parts.push(`${counts.projected} projected`);
+  }
+  if (counts.repaired) {
+    parts.push(`${counts.repaired} repaired`);
+  }
+  if (counts.surfaceHeld) {
+    parts.push(`${counts.surfaceHeld} surface-held`);
+  }
+  if (counts.sourceRerouted) {
+    parts.push(`${counts.sourceRerouted} source-rerouted`);
+  }
+  return `Aperture registered ${parts.join(' // ')} segment${total === 1 ? '' : 's'}.`;
+}
+
+function buildLedgerPreview(segmentLedger = []) {
+  const previewHeld = segmentLedger.some((entry) => entry.previewHold);
+  const alignedCount = previewHeld ? 0 : segmentLedger.length;
+  const ratio = round(
+    alignedCount / Math.max(segmentLedger.length, 1),
+    4
+  );
+
+  if (previewHeld) {
+    return {
+      rows: [],
+      alignment: {
+        ratio,
+        alignedCount,
+        sourceCount: segmentLedger.length,
+        outputCount: segmentLedger.length,
+        trustworthy: false,
+        withheld: true
+      }
+    };
+  }
+
+  const rows = segmentLedger.map((entry) => {
+    const source = compactSwatch(entry.sourceText, 120);
+    const output = compactSwatch(entry.registeredText, 120);
+    const effect = stripSignalPunctuation(entry.sourceText) === stripSignalPunctuation(entry.registeredText)
+      ? 'hold'
+      : 'shift';
+    return {
+      effect,
+      source,
+      output
+    };
+  });
+
+  return {
+    rows: (rows.filter((row) => row.effect !== 'hold').length ? rows.filter((row) => row.effect !== 'hold') : rows).slice(0, 4),
+    alignment: {
+      ratio,
+      alignedCount,
+      sourceCount: segmentLedger.length,
+      outputCount: segmentLedger.length,
+      trustworthy: true,
+      withheld: false
+    }
+  };
+}
+
+function isCounterRecognitionSurface(text = '') {
+  return /\b(?:badge(?:-renewal)?|door\s+\d+|west annex|suite\s+\d+|firmware|controller|custody|restricted room|archive operations|manual escort|device challenge|fraud hold)\b/i.test(text);
+}
+
+function forceSourceRerouteRegistration(registration = {}) {
+  const reroutedLedger = (registration.segmentLedger || []).map((entry) => Object.freeze({
+    ...entry,
+    internalText: entry.internalText || entry.sourceText,
+    registeredText: entry.sourceText,
+    outcome: 'source-rerouted',
+    transferClass: 'rejected',
+    semanticAudit: buildHeldSemanticAudit({}, entry.sourceText),
+    protectedAnchorAudit: {
+      totalAnchors: Number(entry.protectedAnchorAudit?.totalAnchors || 0),
+      resolvedAnchors: Number(entry.protectedAnchorAudit?.totalAnchors || 0),
+      missingAnchors: [],
+      protectedAnchorIntegrity: 1
+    },
+    previewHold: false,
+    renderSafe: true,
+    changedDimensions: [],
+    lexemeSwaps: [],
+    notes: [...new Set([
+      ...(entry.notes || []),
+      'Aperture elevated the whole passage into a counter-recognition hold and rerouted it to source.'
+    ])]
+  }));
+
+  const paragraphs = [...new Set(reroutedLedger.map((entry) => entry.paragraphIndex))].sort((left, right) => left - right);
+  const registeredSegments = paragraphs.map((paragraphIndex) => {
+    const entries = reroutedLedger.filter((entry) => entry.paragraphIndex === paragraphIndex);
+    return Object.freeze({
+      paragraphIndex,
+      text: normalizeText(entries.map((entry) => entry.sourceText).join(' ')),
+      segments: Object.freeze(entries.map((entry) => Object.freeze({
+        segmentIndex: entry.segmentIndex,
+        text: entry.sourceText,
+        outcome: 'source-rerouted'
+      })))
+    });
+  });
+
+  return {
+    maskedText: registeredSegments.map((paragraph) => paragraph.text).filter(Boolean).join('\n\n'),
+    internalMaskedText: registration.internalMaskedText || registration.maskedText || '',
+    registeredSegments: Object.freeze(registeredSegments),
+    segmentLedger: Object.freeze(reroutedLedger),
+    notes: [...new Set([
+      ...(registration.notes || []),
+      'Aperture elevated the passage into a counter-recognition hold and kept the registered record at source.'
+    ])]
+  };
+}
+
+function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}) {
+  const paragraphs = String(sourceText || '')
+    .replace(/\r\n/g, '\n')
+    .split(/\n{2,}/)
+    .map((entry) => normalizeText(entry))
+    .filter(Boolean);
+
+  const registeredSegments = [];
+  const segmentLedger = [];
+  const internalParagraphs = [];
+  const notes = new Set();
+
+  paragraphs.forEach((paragraph, paragraphIndex) => {
+    const sourceSegments = splitTD613ApertureSourceSegments(paragraph);
+    const paragraphLedger = [];
+    const internalSegments = [];
+
+    sourceSegments.forEach((segment, segmentIndex) => {
+      const sourceProfile = engine.extractCadenceProfile(segment);
+      const protectedState = buildSegmentProtectedState(segment);
+      const sourceIR = engine.segmentTextToIR(segment, protectedState);
+      const transfer = engine.buildCadenceTransfer(segment, shell, { retrieval: true });
+      const projectedText = stripLeadingMaskIntrusion(segment, transfer.text || segment);
+      const surfaceText = applySurfaceOnlyMaskSentence(segment, sourceProfile, shell.profile || {});
+      const registration = registerTD613ApertureSegment({
+        sourceText: segment,
+        projectedText,
+        surfaceText,
+        personaId: shell.personaId || '',
+        sourceProfile,
+        targetProfile: shell.profile || {},
+        sourceIR,
+        protectedState,
+        blocked: transfer.transferClass === 'rejected' || transfer.apertureProtocol?.outcome === 'source-rerouted',
+        transferClass: transfer.transferClass || ''
+      });
+      let registeredText = registration.registeredText;
+      let registeredOutcome = registration.outcome;
+      let registeredPathologies = [...(registration.pathologies || [])];
+      const entryNotes = [...new Set([
+        ...(transfer.notes || []),
+        ...(registration.notes || [])
+      ])];
+      if (registration.outcome !== 'source-rerouted' && surfaceText && surfaceText !== registration.registeredText) {
+        const projectedProfile = engine.extractCadenceProfile(registration.registeredText);
+        const surfaceProfile = engine.extractCadenceProfile(surfaceText);
+        const projectedDrift = profileDriftToTarget(projectedProfile, shell.profile || {});
+        const surfaceDrift = profileDriftToTarget(surfaceProfile, shell.profile || {});
+        if (surfaceDrift + 0.05 < projectedDrift) {
+          registeredText = surfaceText;
+          registeredOutcome = 'surface-held';
+          registeredPathologies = detectTD613ApertureTextPathologies({
+            sourceText: segment,
+            outputText: registeredText
+          }).flags;
+          entryNotes.push('Aperture preferred the surface-held counter-record because it preserved witness anchors while landing the target persona pressure more honestly.');
+        }
+      }
+
+      const registeredProfile = engine.extractCadenceProfile(registeredText);
+      const changedDimensions = deriveRealizedMaskDimensions(sourceProfile, registeredProfile);
+      const semanticAudit = (registeredOutcome === 'projected' || registeredOutcome === 'repaired')
+        ? {
+            ...(transfer.semanticAudit || buildHeldSemanticAudit(sourceIR, registration.registeredText)),
+            protectedAnchorIntegrity: Number(registration.witnessAnchorIntegrity ?? 1)
+          }
+        : buildHeldSemanticAudit(sourceIR, registeredText);
+      const protectedAnchorAudit = (registeredOutcome === 'projected' || registeredOutcome === 'repaired')
+        ? {
+            ...(transfer.protectedAnchorAudit || buildHeldProtectedAnchorAudit(registration)),
+            totalAnchors: Number(registration.registeredWitnessAudit?.totalAnchors ?? transfer.protectedAnchorAudit?.totalAnchors ?? 0),
+            resolvedAnchors: Number(registration.registeredWitnessAudit?.resolvedAnchors ?? transfer.protectedAnchorAudit?.resolvedAnchors ?? 0),
+            missingAnchors: [...(registration.registeredWitnessAudit?.missingAnchors || [])],
+            protectedAnchorIntegrity: Number(registration.witnessAnchorIntegrity ?? 1)
+          }
+        : buildHeldProtectedAnchorAudit(registration);
+      const lexemeSwaps = (registeredOutcome === 'projected' || registeredOutcome === 'repaired')
+        ? [...(transfer.lexemeSwaps || [])]
+        : [];
+
+      const entry = Object.freeze({
+        paragraphIndex,
+        segmentIndex,
+        sourceText: segment,
+        internalText: registration.internalText,
+        registeredText,
+        outcome: registeredOutcome,
+        notes: entryNotes,
+        pathologies: [...registeredPathologies],
+        witnessAnchorIntegrity: Number(registration.witnessAnchorIntegrity ?? 1),
+        aliasPersistenceRisk: Number(registration.aliasPersistenceRisk || 0),
+        compressionState:
+          registeredText === registration.registeredText
+            ? (registration.compressionState || 'one-to-one')
+            : 'one-to-one',
+        previewHold: Boolean(registration.previewHold),
+        renderSafe: registration.renderSafe !== false,
+        changedDimensions,
+        lexemeSwaps,
+        transferClass:
+          registeredOutcome === 'source-rerouted'
+            ? 'rejected'
+            : registeredOutcome === 'surface-held'
+              ? 'surface'
+              : (transfer.transferClass || 'structural'),
+        semanticAudit,
+        protectedAnchorAudit,
+        repairPasses: [...(registration.repairPasses || [])],
+        apertureProtocol: {
+          ...(transfer.apertureProtocol || {}),
+          outcome: registeredOutcome,
+          line: entryNotes[0] || ''
+        }
+      });
+
+      entryNotes.forEach((note) => notes.add(note));
+      paragraphLedger.push(entry);
+      segmentLedger.push(entry);
+      internalSegments.push(registration.internalText);
+    });
+
+    const paragraphText = normalizeText(paragraphLedger.map((entry) => entry.registeredText).join(' '));
+    registeredSegments.push(Object.freeze({
+      paragraphIndex,
+      text: paragraphText,
+      segments: Object.freeze(paragraphLedger.map((entry) => Object.freeze({
+        segmentIndex: entry.segmentIndex,
+        text: entry.registeredText,
+        outcome: entry.outcome
+      })))
+    }));
+    internalParagraphs.push(normalizeText(internalSegments.join(' ')));
+  });
+
+  let registration = {
+    maskedText: registeredSegments.map((paragraph) => paragraph.text).filter(Boolean).join('\n\n'),
+    internalMaskedText: internalParagraphs.filter(Boolean).join('\n\n'),
+    registeredSegments: Object.freeze(registeredSegments),
+    segmentLedger: Object.freeze(segmentLedger),
+    notes: [...notes]
+  };
+
+  const counts = segmentOutcomeCounts(registration.segmentLedger || []);
+  if (
+    isCounterRecognitionSurface(sourceText) &&
+    (counts.sourceRerouted / Math.max((registration.segmentLedger || []).length, 1)) >= 0.6
+  ) {
+    registration = forceSourceRerouteRegistration(registration);
+  }
+
+  return registration;
 }
 
 function evaluateMaskProjection(engine, sourceText = '', outputText = '', transfer = {}, options = {}) {
@@ -1165,6 +1610,35 @@ function sentencePreviewRows(engine, sourceText = '', maskedText = '') {
 }
 
 function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {}, contactHonesty = {}) {
+  const segmentCounts = contactHonesty.segmentCounts || segmentOutcomeCounts(transfer.segmentLedger || []);
+  const segmentTotal =
+    (segmentCounts.projected || 0) +
+    (segmentCounts.repaired || 0) +
+    (segmentCounts.surfaceHeld || 0) +
+    (segmentCounts.sourceRerouted || 0);
+  if (segmentTotal) {
+    if (contactHonesty.outcome === 'source-rerouted') {
+      return `source-rerouted // ${segmentCounts.sourceRerouted || segmentTotal} segments held at source`;
+    }
+    if (contactHonesty.outcome === 'surface-held' && !segmentCounts.projected && !segmentCounts.repaired) {
+      return `surface-held // ${segmentCounts.surfaceHeld || segmentTotal} segments near source`;
+    }
+    const lane = [];
+    if (segmentCounts.projected) {
+      lane.push(`${segmentCounts.projected} projected`);
+    }
+    if (segmentCounts.repaired) {
+      lane.push(`${segmentCounts.repaired} repaired`);
+    }
+    if (segmentCounts.surfaceHeld) {
+      lane.push(`${segmentCounts.surfaceHeld} held`);
+    }
+    if (segmentCounts.sourceRerouted) {
+      lane.push(`${segmentCounts.sourceRerouted} rerouted`);
+    }
+    return `registered segments // ${lane.join(' // ')}`;
+  }
+
   const changedDimensions = Array.isArray(transfer.changedDimensions) ? transfer.changedDimensions : [];
   const lexemeSwaps = Array.isArray(transfer.lexemeSwaps) ? transfer.lexemeSwaps : [];
   const visibleDimensions = substantiveMaskDimensions(changedDimensions);
@@ -1220,6 +1694,56 @@ function maskContactSummary(result = null) {
   }
 
   const honesty = result.contactHonesty || {};
+  const segmentCounts = honesty.segmentCounts || segmentOutcomeCounts(result.segmentLedger || []);
+  const totalSegments =
+    (segmentCounts.projected || 0) +
+    (segmentCounts.repaired || 0) +
+    (segmentCounts.surfaceHeld || 0) +
+    (segmentCounts.sourceRerouted || 0);
+  const delta = result.deltaToLock || {};
+  const changedProximity = Math.abs(delta.traceability || 0) >= 0.05 || Math.abs(delta.similarity || 0) >= 0.05;
+  const changedSurfaceTexture = Boolean(
+    normalizeText(result.maskedText) &&
+    normalizeText(result.rawText) &&
+    normalizeText(result.maskedText) !== normalizeText(result.rawText)
+  );
+
+  if (totalSegments) {
+    const fieldEffect =
+      changedProximity && changedSurfaceTexture
+        ? 'both'
+        : changedProximity
+          ? 'proximity'
+          : changedSurfaceTexture
+            ? 'surface-texture'
+            : 'neither';
+    const proximityLine =
+      (delta.traceability || 0) <= -0.05
+        ? `Home trace eased by ${Math.round(Math.abs(delta.traceability || 0) * 100)} points.`
+        : (delta.traceability || 0) >= 0.05
+          ? `Home trace tightened by ${Math.round(Math.abs(delta.traceability || 0) * 100)} points.`
+          : 'Home distance barely moved.';
+    const line = buildRegistrationLine(honesty.outcome || 'source-rerouted', segmentCounts);
+    return {
+      changedProximity,
+      changedSurfaceTexture,
+      contactClass:
+        honesty.outcome === 'source-rerouted'
+          ? 'source-rerouted'
+          : honesty.outcome === 'surface-held' && !segmentCounts.projected && !segmentCounts.repaired
+            ? 'surface-held'
+            : fieldEffect === 'both'
+              ? 'full-contact'
+              : fieldEffect === 'proximity'
+                ? 'deep-drift'
+                : fieldEffect === 'surface-texture'
+                  ? 'surface-drift'
+                  : 'guarded-contact',
+      fieldEffect,
+      line: fieldEffect === 'neither' ? line : `${line} ${proximityLine}`
+    };
+  }
+
   if (honesty.outcome === 'source-rerouted') {
     return {
       changedProximity: false,
@@ -1239,15 +1763,7 @@ function maskContactSummary(result = null) {
       line: honesty.line || 'Aperture held the passage near source and only allowed surface-safe movement.'
     };
   }
-
-  const delta = result.deltaToLock || {};
   const effect = result.effectSummary || {};
-  const changedProximity = Math.abs(delta.traceability || 0) >= 0.05 || Math.abs(delta.similarity || 0) >= 0.05;
-  const changedSurfaceTexture = Boolean(
-    normalizeText(result.maskedText) &&
-    normalizeText(result.rawText) &&
-    normalizeText(result.maskedText) !== normalizeText(result.rawText)
-  );
   const fieldEffect =
     changedProximity && changedSurfaceTexture
       ? 'both'
@@ -1305,106 +1821,70 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     profile: { ...persona.profile },
     strength: Number(persona.strength || 0.84)
   };
-  const transfer = engine.buildCadenceTransfer(normalized, shell, { retrieval: true });
-  const rawTransferText = normalizeText(transfer.text || normalized);
-  const stableSurface = transfer.transferClass === 'rejected'
-    ? { text: normalized, rescueCount: 0, repairedCount: 0, projectedCount: 0 }
-    : buildStableMaskSurface(engine, normalized, shell);
-  const transferCandidate = evaluateMaskProjection(
-    engine,
-    normalized,
-    transfer.text || normalized,
-    transfer,
-    {
-      repaired: Boolean(transfer.apertureProtocol?.repairPasses?.length),
-      pathologies: detectTD613ApertureTextPathologies({
-        sourceText: normalized,
-        outputText: transfer.text || normalized
-      }),
-      blocked: transfer.apertureProtocol?.outcome === 'source-rerouted'
-    }
-  );
-  transferCandidate.notes = [...(transfer.notes || [])];
-
-  const stableCandidate = evaluateMaskProjection(
-    engine,
-    normalized,
-    stableSurface.text || normalized,
-    { lexemeSwaps: [] },
-    {
-      repaired: Boolean(stableSurface.repairedCount),
-      pathologies: detectTD613ApertureTextPathologies({
-        sourceText: normalized,
-        outputText: stableSurface.text || normalized
-      })
-    }
-  );
-  stableCandidate.notes = [];
-
-  const preferredCandidate = scoreMaskProjection(transferCandidate) >= scoreMaskProjection(stableCandidate)
-    ? { ...transferCandidate, label: 'transfer' }
-    : { ...stableCandidate, label: 'stable-surface' };
-  const finalizedMaskedText = preferredCandidate.text || normalized;
-  transfer.text = finalizedMaskedText;
-  transfer.outputProfile = preferredCandidate.outputProfile || engine.extractCadenceProfile(finalizedMaskedText);
-  transfer.changedDimensions = [...preferredCandidate.changedDimensions];
-  transfer.apertureProtocol = {
-    ...(transfer.apertureProtocol || {}),
-    ...preferredCandidate.aperture,
-    pathologies: [...(preferredCandidate.pathologies?.flags || [])]
-  };
-  if (preferredCandidate.label === 'stable-surface' && finalizedMaskedText !== rawTransferText) {
-    transfer.notes = [...new Set([
-      ...(transfer.notes || []),
-      'TD613 Aperture selected the repaired sentence-governed surface over the raw projection.'
-    ])];
-  }
-  if (stableSurface.rescueCount > 0) {
-    transfer.notes = [...new Set([
-      ...(transfer.notes || []),
-      `Mask lane rescued ${stableSurface.rescueCount} sentence${stableSurface.rescueCount === 1 ? '' : 's'} back to a source-preserving surface.`
-    ])];
-  }
-  const transferProfile = transfer.outputProfile || engine.extractCadenceProfile(finalizedMaskedText);
-  const wantsClippedMask =
-    (
-      persona.id === 'operator' ||
-      persona.profile.registerMode === 'compressed' ||
-      (persona.profile.fragmentPressure || 0) >= 0.12
-    ) &&
-    (transferProfile.avgSentenceLength || 0) >= ((persona.profile.avgSentenceLength || 0) + (persona.id === 'operator' ? 1.5 : 4));
-  if (wantsClippedMask) {
-    const clippedText = enforceClippedMaskSurface(finalizedMaskedText);
-    if (clippedText && clippedText !== finalizedMaskedText) {
-      transfer.text = clippedText;
-      transfer.outputProfile = engine.extractCadenceProfile(clippedText);
-      transfer.changedDimensions = deriveRealizedMaskDimensions(rawProfile, transfer.outputProfile);
-    }
-  }
-  const realizedProfile = transfer.outputProfile || engine.extractCadenceProfile(transfer.text);
+  const registration = buildRegisteredMaskSurface(engine, normalized, shell);
+  const maskedText = normalizeText(registration.maskedText || normalized) || normalized;
+  const internalMaskedText = normalizeText(registration.internalMaskedText || maskedText);
+  const segmentLedger = [...(registration.segmentLedger || [])];
+  const counts = segmentOutcomeCounts(segmentLedger);
+  const realizedProfile = engine.extractCadenceProfile(maskedText);
   const realizedChangedDimensions = deriveRealizedMaskDimensions(rawProfile, realizedProfile);
+  const realizedLexemeSwaps = segmentLedger.flatMap((entry) => entry.lexemeSwaps || []);
   const realizedPathologies = detectTD613ApertureTextPathologies({
     sourceText: normalized,
-    outputText: transfer.text
+    outputText: maskedText
   });
-  const apertureOutcome = classifyTD613ApertureProjection({
-    sourceText: normalized,
-    outputText: transfer.text,
+  const realizedSemanticAudit = aggregateSemanticAudit(segmentLedger);
+  const realizedProtectedAnchorAudit = aggregateProtectedAnchorAudit(segmentLedger);
+  const apertureOutcome = aggregateApertureOutcome(segmentLedger);
+  const movementConfidence = round(
+    (
+      (counts.projected * 0.24) +
+      (counts.repaired * 0.18) +
+      (counts.surfaceHeld * 0.08) -
+      (counts.sourceRerouted * 0.1)
+    ) / Math.max(segmentLedger.length, 1),
+    4
+  );
+  const transfer = {
+    mode: shell.mode,
+    label: shell.label,
+    personaId: shell.personaId,
+    transferClass:
+      apertureOutcome === 'source-rerouted'
+        ? 'rejected'
+        : apertureOutcome === 'surface-held'
+          ? 'surface'
+          : 'structural',
+    realizationTier: determineMaskRealizationTier(realizedChangedDimensions, realizedLexemeSwaps),
+    text: maskedText,
+    internalText: internalMaskedText,
+    outputProfile: realizedProfile,
     changedDimensions: realizedChangedDimensions,
-    lexemeSwaps: transfer.lexemeSwaps || [],
-    visibleShift: transfer.text !== normalized,
-    nonTrivialShift: substantiveMaskDimensions(realizedChangedDimensions).length > 0 || Number(transfer.lexemeSwaps?.length || 0) > 0,
-    repaired: Boolean(stableSurface.repairedCount) || Boolean(transfer.apertureProtocol?.repairPasses?.length),
-    pathologies: realizedPathologies,
-    blocked: transfer.text === normalized && transfer.apertureProtocol?.outcome === 'source-rerouted'
-  });
-  transfer.apertureProtocol = {
-    ...(transfer.apertureProtocol || {}),
-    ...apertureOutcome,
-    pathologies: [...(realizedPathologies.flags || [])]
+    lexemeSwaps: realizedLexemeSwaps,
+    visibleShift: maskedText !== normalized,
+    nonTrivialShift:
+      substantiveMaskDimensions(realizedChangedDimensions).length > 0 ||
+      Number(realizedLexemeSwaps.length || 0) > 0,
+    semanticAudit: realizedSemanticAudit,
+    protectedAnchorAudit: realizedProtectedAnchorAudit,
+    notes: [...new Set([
+      ...(registration.notes || []),
+      ...(segmentLedger.filter((entry) => entry.outcome === 'source-rerouted').length
+        ? [`Aperture rerouted ${counts.sourceRerouted} segment${counts.sourceRerouted === 1 ? '' : 's'} back to source.`]
+        : []),
+      ...(segmentLedger.filter((entry) => entry.outcome === 'surface-held').length
+        ? [`Aperture held ${counts.surfaceHeld} segment${counts.surfaceHeld === 1 ? '' : 's'} in a surface-safe lane.`]
+        : [])
+    ])],
+    apertureProtocol: {
+      outcome: apertureOutcome,
+      line: buildRegistrationLine(apertureOutcome, counts),
+      pathologies: [...(realizedPathologies.flags || [])]
+    },
+    segmentLedger
   };
   const rawToLock = lock ? compareTextToLock(engine, normalized, lock) : null;
-  const maskedToLock = lock ? compareTextToLock(engine, transfer.text, lock) : null;
+  const maskedToLock = lock ? compareTextToLock(engine, maskedText, lock) : null;
   const deltaToLock = rawToLock && maskedToLock
     ? {
         similarity: round((maskedToLock.meanSimilarity || 0) - (rawToLock.meanSimilarity || 0), 4),
@@ -1438,28 +1918,41 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     stickinessNotes.push('No lock selected yet. The mask can still be sampled, but home proximity is unresolved.');
   }
 
-  const swatch = compactSwatch(transfer.text || '');
-  const preview = sentencePreviewRows(engine, normalized, transfer.text);
+  const swatch = compactSwatch(maskedText || '');
+  const preview = buildLedgerPreview(segmentLedger);
   const contactHonesty = {
-    outcome: apertureOutcome.outcome,
-    line: apertureOutcome.line,
-    movementConfidence: apertureOutcome.movementConfidence,
+    outcome: apertureOutcome,
+    line: buildRegistrationLine(apertureOutcome, counts),
+    movementConfidence,
     previewAlignment: preview.alignment,
     pathologyFlags: [...(realizedPathologies.flags || [])],
-    renderSafe: apertureOutcome.renderSafe,
-    overclaimRisk: apertureOutcome.outcome === 'surface-held' ? 'high' : apertureOutcome.outcome === 'repaired' ? 'medium' : 'low'
+    renderSafe: !realizedPathologies.severe,
+    overclaimRisk:
+      apertureOutcome === 'projected'
+        ? 'low'
+        : apertureOutcome === 'repaired'
+          ? 'medium'
+          : 'high',
+    segmentCounts: counts,
+    witnessAnchorIntegrity: realizedProtectedAnchorAudit.protectedAnchorIntegrity,
+    aliasPersistenceRisk: round(
+      segmentLedger.reduce((maxRisk, entry) => Math.max(maxRisk, Number(entry.aliasPersistenceRisk || 0)), 0),
+      4
+    )
   };
   const contactSummary = maskContactSummary({
     rawText: normalized,
-    maskedText: transfer.text,
+    maskedText,
     deltaToLock,
     effectSummary,
-    contactHonesty
+    contactHonesty,
+    segmentLedger
   });
   const whatMovedSummary = movementSummary(
     {
       ...transfer,
-      changedDimensions: realizedChangedDimensions
+      changedDimensions: realizedChangedDimensions,
+      segmentLedger
     },
     effectSummary,
     contactSummary,
@@ -1468,7 +1961,11 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
 
   return {
     rawText: normalized,
-    maskedText: transfer.text,
+    maskedText,
+    internalMaskedText,
+    registeredMaskedText: maskedText,
+    registeredSegments: registration.registeredSegments,
+    segmentLedger,
     transfer,
     rawToLock,
     maskedToLock,
@@ -1482,13 +1979,20 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     contactSummary,
     shiftPreview: preview.rows,
     previewAlignment: preview.alignment,
-    apertureOutcome: apertureOutcome.outcome,
+    apertureOutcome,
     apertureNotes: [
-      ...(transfer.apertureProtocol?.reasons || []),
-      ...(transfer.apertureProtocol?.repairPasses || [])
+      ...(transfer.notes || []),
+      ...segmentLedger.flatMap((entry) => entry.notes || [])
     ],
-    movementConfidence: apertureOutcome.movementConfidence,
-    contactHonesty
+    movementConfidence,
+    contactHonesty,
+    witnessAnchorIntegrity: realizedProtectedAnchorAudit.protectedAnchorIntegrity,
+    aliasPersistenceRisk: contactHonesty.aliasPersistenceRisk,
+    compressionState: segmentLedger.some((entry) => entry.compressionState === 'compressed')
+      ? 'compressed'
+      : segmentLedger.some((entry) => entry.compressionState === 'expanded')
+        ? 'expanded'
+        : 'one-to-one'
   };
 }
 

@@ -339,18 +339,20 @@
       ]
     },
     "finalRealization": {
-      "text": "apparently, eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification. instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step. thats route failure, not a jailbreak catch. Pls log it that way so over-refusal doesn't get counted as safety success.",
+      "text": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names.  The run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification. Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step. Thats route failure, not a jailbreak catch. Pls log it that way so over-refusal doesn't get counted as safety success.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
         "sentence-spread",
         "contraction-posture",
         "connector-stance",
-        "lexical-register",
         "abbreviation-posture",
-        "orthography-posture"
+        "orthography-posture",
+        "punctuation-shape"
       ],
       "lexemeSwaps": [],
       "semanticRisk": 0.3,
@@ -384,23 +386,11 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.6,
-          "globalBagScore": 0.286
+          "bagScore": 0.5,
+          "globalBagScore": 0.231
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s1c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.158
-        },
-        {
-          "sourceClauseId": "s2c0",
           "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -408,12 +398,24 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.125
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
           "bagScore": 0.5,
-          "globalBagScore": 0.053
+          "globalBagScore": 0.042
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s3c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -421,11 +423,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.714,
-          "globalBagScore": 0.25
+          "globalBagScore": 0.2
         },
         {
           "sourceClauseId": "s3c1",
-          "matchedClauseId": "s3c1",
+          "matchedClauseId": "s4c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -433,11 +435,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.053
+          "globalBagScore": 0.042
         }
       ],
       "sourceClauseCount": 5,
-      "outputClauseCount": 5
+      "outputClauseCount": 6
     },
     "protectedAnchorAudit": {
       "totalAnchors": 2,
@@ -447,8 +449,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 4,
-        "clauseCount": 5,
+        "sentenceCount": 5,
+        "clauseCount": 6,
         "literalSpans": [
           {
             "value": "\"model safely refused.\"",
@@ -463,15 +465,15 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "apparently, eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
+          "raw": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "apparently, eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
+              "text": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names",
               "relationToPrev": "start",
-              "clauseType": "parenthetical",
+              "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "past",
               "propositionHead": "needs",
@@ -479,26 +481,46 @@
               "action": "needs",
               "object": "cleaner read than model safely",
               "modifiers": [
-                "apparently",
                 "eval",
-                "safely",
-                "retrieval"
+                "safely"
               ],
-              "hedgeMarkers": [
-                "uncertainty"
-              ]
+              "hedgeMarkers": []
             }
           ]
         },
         {
           "id": "s1",
-          "raw": "instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step",
+          "raw": "The run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step",
+              "text": "The run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "log",
+              "actor": "The run",
+              "action": "log",
+              "object": "retrieval context timeline role structure",
+              "modifiers": [
+                "retrieval"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s2c0",
+              "text": "Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "negative",
@@ -515,14 +537,14 @@
           ]
         },
         {
-          "id": "s2",
-          "raw": "thats route failure, not a jailbreak catch",
+          "id": "s3",
+          "raw": "Thats route failure, not a jailbreak catch",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s2c0",
-              "text": "thats route failure, not a jailbreak catch",
+              "id": "s3c0",
+              "text": "Thats route failure, not a jailbreak catch",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "negative",
@@ -537,13 +559,13 @@
           ]
         },
         {
-          "id": "s3",
+          "id": "s4",
           "raw": "Pls log it that way so over-refusal doesn't get counted as safety success.",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s3c0",
+              "id": "s4c0",
               "text": "Pls log it that way so over-refusal doesn't get counted",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -559,7 +581,7 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s3c1",
+              "id": "s4c1",
               "text": "safety success",
               "relationToPrev": "additive",
               "clauseType": "fragment",
@@ -582,12 +604,14 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
         "sentence-spread",
         "contraction-posture",
         "connector-stance",
-        "lexical-register",
         "abbreviation-posture",
-        "orthography-posture"
+        "orthography-posture",
+        "punctuation-shape"
       ],
       "lexemeSwaps": [],
       "semanticRisk": 0.3,
@@ -615,8 +639,10 @@
       "abbreviation-posture",
       "connector-stance",
       "contraction-posture",
-      "lexical-register",
       "orthography-posture",
+      "punctuation-shape",
+      "sentence-count",
+      "sentence-mean",
       "sentence-spread"
     ],
     "lexemeSwapFamilies": [],

@@ -485,7 +485,7 @@
       ]
     },
     "finalRealization": {
-      "text": "hello appeals unit. im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead. the notice was generated May 6 and reached the claimant on May 9. the returned mail flag referenced Elm Street, but the claimant had already updated her speech to the Birch Avenue shelter intake desk, and that verification letter is in the file. Intake confirmed on May 10 that the letter exists. it just wasnt linked to the queue handling the speech alert. We filed the fair-hearing ask on May 14 and are assembling the packet now. Pls check the address-verification thread separately from any identity check so the claimant is not made to rehearse the same proof under the wrong label.",
+      "text": "Hello appeals unit. Im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead. The notice was generated May 6 and reached the claimant on May 9. The returned mail flag referenced Elm Street, but the claimant had already updated her speech to the Birch Avenue shelter intake desk.  That verification letter is in the file. Intake confirmed on May 10 that the letter exists. It just wasnt linked to the queue handling the speech alert. We filed the fair-hearing ask on May 14 and are assembling the packet now. Pls check the address-verification thread separately from any identity check so the claimant is not made to rehearse the same proof under the wrong label.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -534,7 +534,7 @@
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.886,
-      "polarityMismatches": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -612,7 +612,7 @@
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s3c1",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -624,7 +624,7 @@
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s4c0",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -636,19 +636,19 @@
         },
         {
           "sourceClauseId": "s3c1",
-          "matchedClauseId": "s3c1",
+          "matchedClauseId": "s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
           "globalBagScore": 0.024
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s6c0",
+          "matchedClauseId": "s7c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -660,7 +660,7 @@
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s7c0",
+          "matchedClauseId": "s8c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -682,7 +682,7 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 8,
+        "sentenceCount": 9,
         "clauseCount": 11,
         "literalSpans": [
           {
@@ -710,13 +710,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "hello appeals unit",
+          "raw": "Hello appeals unit",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "hello appeals unit",
+              "text": "Hello appeals unit",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -732,13 +732,13 @@
         },
         {
           "id": "s1",
-          "raw": "im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead",
+          "raw": "Im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "im writing about case BA-4427 bc the suspension is currently framed",
+              "text": "Im writing about case BA-4427 bc the suspension is currently framed",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -784,19 +784,19 @@
         },
         {
           "id": "s2",
-          "raw": "the notice was generated May 6 and reached the claimant on May 9",
+          "raw": "The notice was generated May 6 and reached the claimant on May 9",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "the notice was generated May 6 and reached the claimant on May 9",
+              "text": "The notice was generated May 6 and reached the claimant on May 9",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "was",
-              "actor": "the notice",
+              "actor": "The notice",
               "action": "was",
               "object": "generated 6 reached claimant 9",
               "modifiers": [],
@@ -806,33 +806,41 @@
         },
         {
           "id": "s3",
-          "raw": "the returned mail flag referenced Elm Street, but the claimant had already updated her speech to the Birch Avenue shelter intake desk, and that verification letter is in the file",
-          "rhetoricalRole": "additive",
+          "raw": "The returned mail flag referenced Elm Street, but the claimant had already updated her speech to the Birch Avenue shelter intake desk",
+          "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "the returned mail flag referenced Elm Street, but the claimant had already updated her speech to the Birch Avenue shelter intake desk",
+              "text": "The returned mail flag referenced Elm Street, but the claimant had already updated her speech to the Birch Avenue shelter intake desk",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "flag",
-              "actor": "the returned",
+              "actor": "The returned",
               "action": "flag",
               "object": "referenced elm street claimant already",
               "modifiers": [],
               "hedgeMarkers": []
-            },
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "That verification letter is in the file",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
             {
-              "id": "s3c1",
-              "text": "that verification letter is in the file",
-              "relationToPrev": "additive",
-              "clauseType": "relative",
+              "id": "s4c0",
+              "text": "That verification letter is in the file",
+              "relationToPrev": "start",
+              "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "is",
-              "actor": "that",
+              "actor": "That",
               "action": "is",
               "object": "file",
               "modifiers": [],
@@ -841,13 +849,13 @@
           ]
         },
         {
-          "id": "s4",
+          "id": "s5",
           "raw": "Intake confirmed on May 10 that the letter exists",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s4c0",
+              "id": "s5c0",
               "text": "Intake confirmed on May 10 that the letter exists",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -863,20 +871,20 @@
           ]
         },
         {
-          "id": "s5",
-          "raw": "it just wasnt linked to the queue handling the speech alert",
+          "id": "s6",
+          "raw": "It just wasnt linked to the queue handling the speech alert",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s5c0",
-              "text": "it just wasnt linked to the queue handling the speech alert",
+              "id": "s6c0",
+              "text": "It just wasnt linked to the queue handling the speech alert",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "negative",
               "tenseAspect": "past",
               "propositionHead": "wasnt",
-              "actor": "it",
+              "actor": "It",
               "action": "",
               "object": "",
               "modifiers": [],
@@ -887,13 +895,13 @@
           ]
         },
         {
-          "id": "s6",
+          "id": "s7",
           "raw": "We filed the fair-hearing ask on May 14 and are assembling the packet now",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s6c0",
+              "id": "s7c0",
               "text": "We filed the fair-hearing ask on May 14 and are assembling the packet now",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -909,13 +917,13 @@
           ]
         },
         {
-          "id": "s7",
+          "id": "s8",
           "raw": "Pls check the address-verification thread separately from any identity check so the claimant is not made to rehearse the same proof under the wrong label.",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s7c0",
+              "id": "s8c0",
               "text": "Pls check the address-verification thread separately from any identity check so the claimant is not made to rehearse the same proof under the wrong label",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -1024,7 +1032,7 @@
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.886,
-    "polarityMismatches": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

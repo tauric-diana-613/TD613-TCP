@@ -426,20 +426,16 @@
       ]
     },
     "finalRealization": {
-      "text": "hearing unit, pls correct the way the July 3 record is framing the June inspection. counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector didnt text until 5:43 that he was still in traffic. camera time places arrival after 6:10. the claimant had already left for the medical pickup she flagged earlier that day. that is a late inspection, not a refusal, if the refusal label stays in the summary. the book breach disappears and the whole case leans on the wrong premise.",
+      "text": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector didnt text until 5:43 that he was still in traffic. Camera time places arrival after 6:10. The claimant had already left for the medical pickup she flagged earlier that day. That is a late inspection, not a refusal, if the refusal label stays in the summary. The book breach disappears and the whole case leans on the wrong premise.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
         "sentence-spread",
         "connector-stance",
-        "lexical-register",
         "abbreviation-posture",
-        "orthography-posture",
-        "punctuation-shape"
+        "orthography-posture"
       ],
       "lexemeSwaps": [
         {
@@ -545,7 +541,7 @@
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s5c0+s6c0",
+          "matchedClauseId": "s4c1+s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -567,7 +563,7 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 7,
+        "sentenceCount": 6,
         "clauseCount": 8,
         "literalSpans": [
           {
@@ -599,13 +595,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "hearing unit, pls correct the way the July 3 record is framing the June inspection",
+          "raw": "Hearing unit, pls correct the way the July 3 record is framing the June inspection",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "hearing unit, pls correct the way the July 3 record is framing the June inspection",
+              "text": "Hearing unit, pls correct the way the July 3 record is framing the June inspection",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -623,13 +619,13 @@
         },
         {
           "id": "s1",
-          "raw": "counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector didnt text until 5:43 that he was still in traffic",
+          "raw": "Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector didnt text until 5:43 that he was still in traffic",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector didnt text",
+              "text": "Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector didnt text",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -663,13 +659,13 @@
         },
         {
           "id": "s2",
-          "raw": "camera time places arrival after 6:10",
+          "raw": "Camera time places arrival after 6:10",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "camera time places arrival after 6:10",
+              "text": "Camera time places arrival after 6:10",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -687,19 +683,19 @@
         },
         {
           "id": "s3",
-          "raw": "the claimant had already left for the medical pickup she flagged earlier that day",
+          "raw": "The claimant had already left for the medical pickup she flagged earlier that day",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "the claimant had already left for the medical pickup she flagged earlier that day",
+              "text": "The claimant had already left for the medical pickup she flagged earlier that day",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "left",
-              "actor": "the claimant",
+              "actor": "The claimant",
               "action": "left",
               "object": "medical pickup flagged earlier day",
               "modifiers": [
@@ -711,39 +707,31 @@
         },
         {
           "id": "s4",
-          "raw": "that is a late inspection, not a refusal",
+          "raw": "That is a late inspection, not a refusal, if the refusal label stays in the summary",
           "rhetoricalRole": "clarifying",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "that is a late inspection, not a refusal",
+              "text": "That is a late inspection, not a refusal",
               "relationToPrev": "start",
-              "clauseType": "relative",
+              "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "present",
               "propositionHead": "is",
-              "actor": "that",
+              "actor": "That",
               "action": "is",
               "object": "late inspection refusal",
               "modifiers": [
                 "refusal"
               ],
               "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s5",
-          "raw": "If the refusal label stays in the summary",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
+            },
             {
-              "id": "s5c0",
-              "text": "If the refusal label stays in the summary",
-              "relationToPrev": "start",
-              "clauseType": "subordinate",
+              "id": "s4c1",
+              "text": "the refusal label stays in the summary",
+              "relationToPrev": "additive",
+              "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "refusal",
@@ -758,20 +746,20 @@
           ]
         },
         {
-          "id": "s6",
-          "raw": "the book breach disappears and the whole case leans on the wrong premise.",
+          "id": "s5",
+          "raw": "The book breach disappears and the whole case leans on the wrong premise.",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s6c0",
-              "text": "the book breach disappears and the whole case leans on the wrong premise",
+              "id": "s5c0",
+              "text": "The book breach disappears and the whole case leans on the wrong premise",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "book",
-              "actor": "the book",
+              "actor": "The book",
               "action": "book",
               "object": "breach disappears whole case leans",
               "modifiers": [],
@@ -787,14 +775,10 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
         "sentence-spread",
         "connector-stance",
-        "lexical-register",
         "abbreviation-posture",
-        "orthography-posture",
-        "punctuation-shape"
+        "orthography-posture"
       ],
       "lexemeSwaps": [
         {
@@ -829,11 +813,7 @@
     "changedDimensions": [
       "abbreviation-posture",
       "connector-stance",
-      "lexical-register",
       "orthography-posture",
-      "punctuation-shape",
-      "sentence-count",
-      "sentence-mean",
       "sentence-spread"
     ],
     "lexemeSwapFamilies": [

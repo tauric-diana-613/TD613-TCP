@@ -3877,7 +3877,8 @@
       return flags.includes('duplicated-source') ||
         flags.includes('source-replay') ||
         flags.includes('empty-output') ||
-        result?.contactHonesty?.renderSafe === false;
+        result?.contactHonesty?.renderSafe === false ||
+        result?.previewAlignment?.withheld === true;
     };
 
     if (!statusNode || !contactNode || !sourceNode || !outputNode || !beforeNode || !afterNode || !movedNode || !deltaNode || !notesNode) {
@@ -3955,10 +3956,12 @@
       movedNode.textContent = 'render hold // output withheld';
       deltaNode.textContent = 'pathology detected // masked output blocked';
       notesNode.innerHTML = [
-        'What clung // Aperture withheld the rendered output after detecting a replay or concatenation fault.',
+        `What clung // ${escapeHtml(result.contactHonesty?.line || 'Aperture withheld the rendered output after detecting a replay, compression, or concatenation fault.')}`,
         ...(result.apertureNotes || [])
       ].map((note) => `<li>${escapeHtml(note)}</li>`).join('');
-      renderShiftPreview([], 'Aperture suppressed the rendered output after detecting a duplicated or concatenated passage.');
+      renderShiftPreview([], result.previewAlignment?.withheld
+        ? 'Aperture withheld row-level preview because segment registration could not support an honest aligned readout.'
+        : 'Aperture suppressed the rendered output after detecting a duplicated or concatenated passage.');
       return;
     }
     const delta = result.deltaToLock || {};
@@ -3967,7 +3970,7 @@
     contactNode.textContent = `Contact state // ${contact.line || 'Residue is now readable.'}`;
     applyGlyphMetadata(contactNode, contact.fieldEffect === 'neither' ? 'homebaseContact' : 'homebaseResidue');
     sourceNode.value = result.rawText || state.comparisonText || '';
-    outputNode.value = result.maskedText || '';
+    outputNode.value = result.registeredMaskedText || result.maskedText || '';
     beforeNode.textContent = comparisonMetricSummary(result.rawToLock);
     afterNode.textContent = comparisonMetricSummary(result.maskedToLock);
     movedNode.textContent = result.whatMovedSummary || '--';

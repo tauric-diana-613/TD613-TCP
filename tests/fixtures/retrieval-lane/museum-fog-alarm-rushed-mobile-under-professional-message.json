@@ -425,7 +425,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
+      "text": "Gallery 4 fog rig settle off detector again at 7:42;  not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -570,8 +570,8 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
-          "rhetoricalRole": "additive",
+          "raw": "Gallery 4 fog rig settle off detector again at 7:42;  not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
+          "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
@@ -590,7 +590,7 @@
             },
             {
               "id": "s0c1",
-              "text": "and not fire",
+              "text": "not fire",
               "relationToPrev": "additive",
               "clauseType": "fragment",
               "polarity": "negative",

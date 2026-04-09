@@ -392,7 +392,7 @@
       ]
     },
     "finalRealization": {
-      "text": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her. it was just sitting on 2nd fl landing by rail, but red rush sticker still on it. i moved it to hall table after she said yes its hers; she had bags already. if management asks: box stayed sealed.",
+      "text": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail, but red rush sticker still on it. I moved it to hall table after she said yes its hers; she had bags already. If management asks: box stayed sealed.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -406,6 +406,7 @@
         "lexical-register",
         "abbreviation-posture",
         "orthography-posture",
+        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [],
@@ -557,19 +558,19 @@
         },
         {
           "id": "s1",
-          "raw": "it was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
+          "raw": "It was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "it was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
+              "text": "It was just sitting on 2nd fl landing by rail, but red rush sticker still on it",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "was",
-              "actor": "it",
+              "actor": "It",
               "action": "was",
               "object": "sitting 2nd fl landing by",
               "modifiers": [],
@@ -581,19 +582,19 @@
         },
         {
           "id": "s2",
-          "raw": "i moved it to hall table after she said yes its hers; she had bags already",
+          "raw": "I moved it to hall table after she said yes its hers; she had bags already",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "i moved it to hall table after she said yes its hers",
+              "text": "I moved it to hall table after she said yes its hers",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "moved",
-              "actor": "i",
+              "actor": "I",
               "action": "moved",
               "object": "hall table after said yes",
               "modifiers": [
@@ -619,13 +620,13 @@
         },
         {
           "id": "s3",
-          "raw": "if management asks: box stayed sealed.",
+          "raw": "If management asks: box stayed sealed.",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "if management asks: box stayed sealed",
+              "text": "If management asks: box stayed sealed",
               "relationToPrev": "start",
               "clauseType": "subordinate",
               "polarity": "positive",
@@ -655,6 +656,7 @@
         "lexical-register",
         "abbreviation-posture",
         "orthography-posture",
+        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [],
@@ -688,7 +690,8 @@
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",
-      "sentence-spread"
+      "sentence-spread",
+      "surface-marker-posture"
     ],
     "lexemeSwapFamilies": [],
     "relationInventory": [

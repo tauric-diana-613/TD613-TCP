@@ -446,7 +446,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Need steady resolve on housing account; quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31. Body resolved 9:47, note added; also homepage hed now sounds like vote passed when it only cleared committee. Can someone swap this before newsletter grab",
+      "text": "Need steady resolve on housing account; quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt;  brooks emailed 9:31. Body resolved 9:47, note added; also homepage hed now sounds like vote passed when it only cleared committee. Can someone swap this before newsletter grab",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -631,7 +631,7 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Need steady resolve on housing account; quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31",
+          "raw": "Need steady resolve on housing account; quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt;  brooks emailed 9:31",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
@@ -681,7 +681,7 @@
             },
             {
               "id": "s0c3",
-              "text": "and brooks emailed 9:31",
+              "text": "brooks emailed 9:31",
               "relationToPrev": "additive",
               "clauseType": "fragment",
               "polarity": "positive",

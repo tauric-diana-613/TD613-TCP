@@ -121,6 +121,69 @@ const TD613_APERTURE_SEVERE_PATHOLOGIES = new Set([
   'source-replay'
 ]);
 
+const TD613_APERTURE_WITNESS_STOPWORDS = new Set([
+  'a',
+  'an',
+  'and',
+  'are',
+  'as',
+  'at',
+  'be',
+  'but',
+  'by',
+  'for',
+  'from',
+  'had',
+  'has',
+  'have',
+  'he',
+  'her',
+  'hers',
+  'him',
+  'his',
+  'i',
+  'if',
+  'in',
+  'into',
+  'is',
+  'it',
+  'its',
+  'me',
+  'my',
+  'no',
+  'not',
+  'of',
+  'on',
+  'or',
+  'our',
+  'ours',
+  'she',
+  'so',
+  'than',
+  'that',
+  'the',
+  'their',
+  'theirs',
+  'them',
+  'they',
+  'this',
+  'to',
+  'up',
+  'us',
+  'was',
+  'we',
+  'were',
+  'what',
+  'when',
+  'where',
+  'which',
+  'who',
+  'with',
+  'you',
+  'your',
+  'yours'
+]);
+
 function contractCommonPhrases(text = '') {
   return CONTRACTION_REPLACEMENTS.reduce(
     (working, [pattern, replacement]) => replaceWithCaseAware(working, pattern, replacement),
@@ -160,6 +223,131 @@ function detectSourceReplay(sourceText = '', outputText = '') {
   const pattern = new RegExp(escapePattern(source), 'g');
   const matches = output.match(pattern) || [];
   return matches.length >= 2;
+}
+
+function witnessTokens(text = '') {
+  return normalizeComparableText(text)
+    .replace(/[^a-z0-9@:'/-]+/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function normalizeWitnessPhrase(value = '') {
+  return collapseComparableWhitespace(
+    String(value || '')
+      .replace(/^["“”'`]+|["“”'`]+$/g, '')
+      .trim()
+  );
+}
+
+function collectUniqueWitnessAnchors(entries = []) {
+  const seen = new Set();
+  return entries.filter((entry) => {
+    const value = normalizeWitnessPhrase(entry?.value || '');
+    const key = `${entry?.mode || 'token-set'}::${value}`;
+    if (!value || seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    entry.value = value;
+    entry.tokens = witnessTokens(value).filter((token) =>
+      token.length > 2 && !TD613_APERTURE_WITNESS_STOPWORDS.has(token)
+    );
+    return entry.tokens.length > 0 || entry.mode === 'exact';
+  });
+}
+
+function flattenSemanticClauses(sourceIR = {}) {
+  return (sourceIR?.sentences || []).flatMap((sentence) => sentence?.clauses || []);
+}
+
+function extractExactWitnessAnchors(sourceText = '') {
+  const anchors = [];
+  const normalized = String(sourceText || '');
+  const matchAll = (pattern, type) => {
+    for (const match of normalized.matchAll(pattern)) {
+      anchors.push({
+        value: match[0],
+        type,
+        mode: 'exact'
+      });
+    }
+  };
+
+  matchAll(/"[^"\n]+"|“[^”\n]+”/g, 'quote');
+  matchAll(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, 'email');
+  matchAll(/\b(?:[A-Z]{1,4}-\d{2,}|\d{1,2}:\d{2}\s?(?:AM|PM)|(?:Unit|Suite|Door)\s+[A-Z0-9-]+)\b/gi, 'identifier');
+  matchAll(/\b\d+(?:[:./-]\d+)*(?:\s?(?:AM|PM))?\b/gi, 'numeric');
+
+  return anchors;
+}
+
+function extractSemanticWitnessAnchors(sourceIR = {}) {
+  return flattenSemanticClauses(sourceIR).flatMap((clause) => {
+    const phrases = [
+      clause?.propositionHead,
+      clause?.actor,
+      clause?.action,
+      clause?.object
+    ]
+      .map((value) => normalizeWitnessPhrase(value))
+      .filter(Boolean);
+
+    return phrases.map((value) => ({
+      value,
+      type: 'semantic',
+      mode: 'token-set'
+    }));
+  });
+}
+
+function extractContentTokenAnchors(sourceText = '') {
+  const seen = new Set();
+  return witnessTokens(sourceText)
+    .filter((token) => token.length > 2 && !TD613_APERTURE_WITNESS_STOPWORDS.has(token))
+    .filter((token) => {
+      if (seen.has(token)) {
+        return false;
+      }
+      seen.add(token);
+      return true;
+    })
+    .slice(0, 16)
+    .map((token) => ({
+      value: token,
+      type: 'content-token',
+      mode: 'token-set'
+    }));
+}
+
+function assessCompressionState(sourceText = '', outputText = '', witnessAudit = {}) {
+  const sourceSegments = splitTD613ApertureSourceSegments(sourceText);
+  const outputSegments = splitTD613ApertureSourceSegments(outputText);
+  const sourceWordCount = witnessTokens(sourceText).length || 1;
+  const outputWordCount = witnessTokens(outputText).length;
+  let state = 'one-to-one';
+
+  if (!outputWordCount) {
+    state = 'empty';
+  } else if (outputSegments.length < sourceSegments.length) {
+    state = 'compressed';
+  } else if (outputSegments.length > sourceSegments.length) {
+    state = 'expanded';
+  }
+
+  return Object.freeze({
+    state,
+    sourceCount: sourceSegments.length,
+    outputCount: outputSegments.length,
+    wordRatio: round3(outputWordCount / sourceWordCount),
+    preservesWitnessAnchors: (witnessAudit?.witnessAnchorIntegrity ?? 1) >= 1,
+    previewSafe:
+      Boolean(outputWordCount) &&
+      (
+        state !== 'compressed' ||
+        (witnessAudit?.witnessAnchorIntegrity ?? 1) >= 1
+      )
+  });
 }
 
 export const TD613_APERTURE_PROTOCOL = Object.freeze({
@@ -341,9 +529,14 @@ function applyCommonProjectionRepairs(text = '') {
       .replace(/\btrying to tell\b/gi, 'trying to say')
       .replace(/\btrying to explain\b/gi, 'trying to say')
       .replace(/\bexplain hi\b/gi, 'say hi')
+      .replace(/\bI'd tell\b/gi, "I'd say")
+      .replace(/\bI would tell\b/gi, 'I would say')
+      .replace(/\bI'd explain\b/gi, "I'd say")
+      .replace(/\bI would explain\b/gi, 'I would say')
       .replace(/\bcontact him\b/gi, 'call him')
       .replace(/\breceive more familiar\b/gi, 'get more familiar')
       .replace(/\bwe've amnesia\b/gi, 'we have amnesia')
+      .replace(/\bWe've amnesia\b/g, 'We have amnesia')
       .replace(/\bI needed this\b/gi, 'I needed that')
       .replace(/\btaking this away from me\b/gi, 'taking that away from me')
       .replace(/\breceived into\b/gi, 'got into')
@@ -430,6 +623,12 @@ export function repairTD613ApertureProjection({
     working = personaRepaired;
   }
 
+  const postPersonaRepaired = applyCommonProjectionRepairs(working);
+  if (postPersonaRepaired !== working) {
+    repairPasses.push('post-persona-repair');
+    working = postPersonaRepaired;
+  }
+
   const after = detectTD613ApertureTextPathologies({ sourceText, outputText: working });
   if (after.severe) {
     return Object.freeze({
@@ -503,6 +702,209 @@ export function classifyTD613ApertureProjection({
     line,
     pathologies: pathologyState.flags,
     renderSafe: !pathologyState.severe
+  });
+}
+
+export function splitTD613ApertureSourceSegments(text = '') {
+  const normalized = String(text || '').replace(/\r\n/g, '\n').trim();
+  if (!normalized) {
+    return [];
+  }
+  return normalized
+    .split(/(?<=[.!?;]["')\]]*)(?=\s+|\n|$)/g)
+    .map((entry) => normalizeReadableText(entry))
+    .filter(Boolean);
+}
+
+export function extractTD613ApertureWitnessAnchors({
+  sourceText = '',
+  sourceIR = null,
+  protectedState = { literals: [] }
+} = {}) {
+  const literalAnchors = (protectedState?.literals || []).map((entry) => ({
+    value: entry?.value || entry,
+    type: 'literal',
+    mode: 'exact'
+  }));
+
+  return Object.freeze(
+    collectUniqueWitnessAnchors([
+      ...literalAnchors,
+      ...extractExactWitnessAnchors(sourceText),
+      ...extractSemanticWitnessAnchors(sourceIR),
+      ...extractContentTokenAnchors(sourceText)
+    ]).map((entry) => Object.freeze({
+      ...entry,
+      exact: entry.mode === 'exact'
+    }))
+  );
+}
+
+export function auditTD613ApertureWitnessAnchors({
+  sourceText = '',
+  outputText = '',
+  sourceIR = null,
+  protectedState = { literals: [] }
+} = {}) {
+  const anchors = extractTD613ApertureWitnessAnchors({ sourceText, sourceIR, protectedState });
+  const comparableOutput = collapseComparableWhitespace(outputText);
+  const outputTokenSet = new Set(witnessTokens(outputText));
+  const missingAnchors = anchors.filter((anchor) => {
+    if (anchor.mode === 'exact') {
+      return !comparableOutput.includes(anchor.value);
+    }
+    return !(anchor.tokens || []).every((token) => outputTokenSet.has(token));
+  });
+  const resolvedAnchors = anchors.length - missingAnchors.length;
+  const witnessAnchorIntegrity = anchors.length
+    ? round3(resolvedAnchors / anchors.length)
+    : 1;
+  const aliasPersistenceRisk = anchors.length
+    ? round3(clamp01(
+      (missingAnchors.length / anchors.length) +
+      (missingAnchors.some((anchor) => anchor.mode === 'exact') ? 0.18 : 0)
+    ))
+    : 0;
+
+  return Object.freeze({
+    anchors,
+    totalAnchors: anchors.length,
+    resolvedAnchors,
+    missingAnchors: missingAnchors.map((anchor) => anchor.value),
+    witnessAnchorIntegrity,
+    aliasPersistenceRisk
+  });
+}
+
+export function registerTD613ApertureSegment({
+  sourceText = '',
+  projectedText = '',
+  surfaceText = '',
+  personaId = '',
+  sourceProfile = {},
+  targetProfile = {},
+  sourceIR = null,
+  protectedState = { literals: [] },
+  blocked = false,
+  transferClass = ''
+} = {}) {
+  const normalizedSource = normalizeReadableText(sourceText);
+  const surfaceCandidate = normalizeReadableText(surfaceText || normalizedSource) || normalizedSource;
+  const repairedProjection = repairTD613ApertureProjection({
+    sourceText: normalizedSource,
+    outputText: projectedText || normalizedSource,
+    personaId,
+    sourceProfile,
+    targetProfile
+  });
+  const internalText = normalizeReadableText(repairedProjection.outputText || projectedText || normalizedSource) || normalizedSource;
+  const projectedWitnessAudit = auditTD613ApertureWitnessAnchors({
+    sourceText: normalizedSource,
+    outputText: internalText,
+    sourceIR,
+    protectedState
+  });
+  const projectedCompression = assessCompressionState(normalizedSource, internalText, projectedWitnessAudit);
+  const surfaceWitnessAudit = auditTD613ApertureWitnessAnchors({
+    sourceText: normalizedSource,
+    outputText: surfaceCandidate,
+    sourceIR,
+    protectedState
+  });
+  const sourceComparable = collapseComparableWhitespace(normalizedSource);
+  const internalComparable = collapseComparableWhitespace(internalText);
+
+  let outcome = 'projected';
+  let registeredText = internalText;
+  const notes = [];
+
+  if (blocked || transferClass === 'rejected') {
+    outcome = 'source-rerouted';
+    registeredText = normalizedSource;
+    notes.push('Aperture rerouted the segment back to source under counter-recognition pressure.');
+  } else if (repairedProjection.pathologies?.severe) {
+    outcome = 'source-rerouted';
+    registeredText = normalizedSource;
+    notes.push('Aperture rerouted the segment back to source after a severe generator pathology.');
+  } else if (projectedWitnessAudit.witnessAnchorIntegrity < 1) {
+    if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable && surfaceWitnessAudit.witnessAnchorIntegrity >= 1) {
+      outcome = 'surface-held';
+      registeredText = surfaceCandidate;
+      notes.push('Aperture held the segment near source after witness-anchor drift appeared in projection.');
+    } else {
+      outcome = 'source-rerouted';
+      registeredText = normalizedSource;
+      notes.push('Aperture rerouted the segment back to source to preserve witness anchors.');
+    }
+  } else if (projectedCompression.state === 'compressed' && !projectedCompression.previewSafe) {
+    outcome = 'source-rerouted';
+    registeredText = normalizedSource;
+    notes.push('Aperture rerouted the segment because compression broke faithful correspondence.');
+  } else if (internalComparable === sourceComparable) {
+    if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable && surfaceWitnessAudit.witnessAnchorIntegrity >= 1) {
+      outcome = 'surface-held';
+      registeredText = surfaceCandidate;
+      notes.push('Aperture held the segment in a surface-safe lane.');
+    } else {
+      outcome = 'source-rerouted';
+      registeredText = normalizedSource;
+      notes.push('Aperture kept the segment at source because no safe projection landed.');
+    }
+  } else if (repairedProjection.repaired) {
+    outcome = 'repaired';
+    notes.push('Aperture repaired the projection before registration.');
+  }
+
+  const registeredWitnessAudit = auditTD613ApertureWitnessAnchors({
+    sourceText: normalizedSource,
+    outputText: registeredText,
+    sourceIR,
+    protectedState
+  });
+  if (registeredWitnessAudit.witnessAnchorIntegrity < 1) {
+    outcome = 'source-rerouted';
+    registeredText = normalizedSource;
+    notes.push('Registered output failed witness-anchor integrity and was rerouted to source.');
+  }
+
+  const finalWitnessAudit = auditTD613ApertureWitnessAnchors({
+    sourceText: normalizedSource,
+    outputText: registeredText,
+    sourceIR,
+    protectedState
+  });
+  const registeredCompression = assessCompressionState(normalizedSource, registeredText, finalWitnessAudit);
+  const registeredPathologies = detectTD613ApertureTextPathologies({
+    sourceText: normalizedSource,
+    outputText: registeredText
+  });
+
+  return Object.freeze({
+    sourceText: normalizedSource,
+    internalText,
+    surfaceText: surfaceCandidate,
+    registeredText,
+    outcome,
+    notes: [...new Set(notes)],
+    witnessAnchorIntegrity: finalWitnessAudit.witnessAnchorIntegrity,
+    aliasPersistenceRisk: round3(Math.max(
+      projectedWitnessAudit.aliasPersistenceRisk || 0,
+      finalWitnessAudit.aliasPersistenceRisk || 0
+    )),
+    compressionState: registeredCompression.state,
+    previewHold:
+      registeredCompression.state === 'compressed' &&
+      outcome !== 'source-rerouted',
+    renderSafe: !registeredPathologies.severe,
+    pathologies: [...new Set([
+      ...(repairedProjection.pathologies?.flags || []),
+      ...(registeredPathologies.flags || [])
+    ])],
+    repairPasses: repairedProjection.repairPasses || [],
+    projectedWitnessAudit,
+    registeredWitnessAudit: finalWitnessAudit,
+    projectedCompression,
+    registeredCompression
   });
 }
 

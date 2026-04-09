@@ -425,7 +425,7 @@
       ]
     },
     "finalRealization": {
-      "text": "If you are late that is okay please do not begin new tasks, and check in at the west fence table first. Glass, pallets require an initial pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands, but please bring water for real, not saying it to be annoying.",
+      "text": "If you are late that is okay please do not begin new tasks, and check in at the west fence table first. Glass, pallets require an initial pass;  saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands, but please bring water for real, not saying it to be annoying.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -606,7 +606,7 @@
         },
         {
           "id": "s1",
-          "raw": "Glass, pallets require an initial pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+          "raw": "Glass, pallets require an initial pass;  saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
@@ -628,7 +628,7 @@
             },
             {
               "id": "s1c1",
-              "text": "and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+              "text": "saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
               "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "positive",

@@ -383,6 +383,11 @@ function reconcileProtectedLiteralSurface(text = '', literals = []) {
       continue;
     }
 
+    output = output.replace(new RegExp(escapeRegex(value), 'i'), value);
+    if (output.includes(value)) {
+      continue;
+    }
+
     if (/^0\d:\d{2}(?:\s?[ap]m)?$/i.test(value)) {
       const unpadded = value.replace(/^0(?=\d:\d{2})/, '');
       output = output.replace(new RegExp(`\\b${escapeRegex(unpadded)}\\b`, 'i'), value);
@@ -7051,6 +7056,18 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
       sourceProfile,
       targetProfile
     });
+    const reconciledApertureOutput = reconcileProtectedLiteralSurface(
+      apertureRepair.outputText,
+      protectedState.literals || []
+    );
+    if (reconciledApertureOutput !== apertureRepair.outputText) {
+      apertureRepair = {
+        ...apertureRepair,
+        outputText: reconciledApertureOutput,
+        repaired: true,
+        repairPasses: [...new Set([...(apertureRepair.repairPasses || []), 'literal-reconcile'])]
+      };
+    }
     if (apertureRepair.outputText !== finalText) {
       finalText = apertureRepair.outputText;
       finalProfile = extractCadenceProfile(finalText);

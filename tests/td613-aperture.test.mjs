@@ -1,14 +1,18 @@
 import assert from 'assert';
 import {
   TD613_APERTURE_PROTOCOL,
+  auditTD613ApertureWitnessAnchors,
   buildTD613ApertureContext,
   buildTD613ApertureProjectionPlan,
   classifyTD613ApertureProjection,
   detectTD613ApertureTextPathologies,
+  extractTD613ApertureWitnessAnchors,
+  registerTD613ApertureSegment,
   repairTD613ApertureProjection,
   reviewTD613ApertureTransfer,
   selectTD613ApertureDecision,
-  selectTD613ApertureHarbor
+  selectTD613ApertureHarbor,
+  splitTD613ApertureSourceSegments
 } from '../app/engine/td613-aperture.js';
 
 const guardedContext = buildTD613ApertureContext({
@@ -118,6 +122,68 @@ const repairedProjection = repairTD613ApertureProjection({
 assert.equal(repairedProjection.repaired, true);
 assert(!/\btell hi\b/i.test(repairedProjection.outputText));
 assert(!/\band and\b/i.test(repairedProjection.outputText));
+
+const segmentedSource = splitTD613ApertureSourceSegments('Case number CS-88412. The recovery email ends in @elmfield.net, which matched account records.');
+assert.equal(segmentedSource.length, 2);
+assert(segmentedSource[1].includes('@elmfield.net'));
+
+const witnessAnchors = extractTD613ApertureWitnessAnchors({
+  sourceText: 'Customer contacted support at 11:23 AM regarding account review.',
+  sourceIR: {
+    sentences: [{
+      clauses: [{
+        propositionHead: 'contacted support',
+        actor: 'customer',
+        action: 'contacted',
+        object: 'account review'
+      }]
+    }]
+  },
+  protectedState: {
+    literals: [{ value: '11:23 AM' }]
+  }
+});
+assert(witnessAnchors.some((anchor) => anchor.value === '11:23 am'));
+assert(witnessAnchors.some((anchor) => anchor.value === 'account review'));
+
+const witnessAudit = auditTD613ApertureWitnessAnchors({
+  sourceText: 'Customer contacted support regarding account review.',
+  outputText: 'Customer contacted help regarding account check.',
+  sourceIR: {
+    sentences: [{
+      clauses: [{
+        propositionHead: 'contacted support',
+        actor: 'customer',
+        action: 'contacted',
+        object: 'account review'
+      }]
+    }]
+  }
+});
+assert(witnessAudit.missingAnchors.includes('support'));
+assert(witnessAudit.aliasPersistenceRisk > 0);
+
+const registeredSegment = registerTD613ApertureSegment({
+  sourceText: 'Customer contacted support regarding account review.',
+  projectedText: 'Customer contacted help regarding account check.',
+  surfaceText: 'Customer contacted support regarding account review.',
+  personaId: 'spark',
+  sourceProfile: { avgSentenceLength: 8, contractionDensity: 0.02, punctuationDensity: 0.06 },
+  targetProfile: { avgSentenceLength: 6, contractionDensity: 0.08, punctuationDensity: 0.08 },
+  sourceIR: {
+    sentences: [{
+      clauses: [{
+        propositionHead: 'contacted support',
+        actor: 'customer',
+        action: 'contacted',
+        object: 'account review'
+      }]
+    }]
+  },
+  protectedState: { literals: [] }
+});
+assert.equal(registeredSegment.outcome, 'source-rerouted');
+assert.equal(registeredSegment.registeredText, 'Customer contacted support regarding account review.');
 
 const projectedOutcome = classifyTD613ApertureProjection({
   sourceText: 'Keep doing what you are doing.',

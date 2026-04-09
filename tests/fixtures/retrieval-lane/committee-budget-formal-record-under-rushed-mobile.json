@@ -478,7 +478,7 @@
       ]
     },
     "finalRealization": {
-      "text": "the finance committee met at 4:05 PM to check the bridge budget after central administration extended the hiring freeze thru Q3. the immediate effect is that the student-help coordinator line remains unfunded for another twelve wks. even though the underlying service demand has not eased. members agreed that the program can absorb a temp delay in furniture and print costs, but not a full quarter w/ o intake coverage. three short-term options were discussed. reclassify one vacant analyst line for bridge staffing, reduce evening service hrs, or draw against restricted reserves pending dean approval. No option was adopted in session. what did help was the frame. this is not a generic belt-tightening exercise. Its a staffing exposure problem w/ public-facing consequences, and the next memo needs to say that w/o overstating certainty. Action items. revised table by Thursday, reserve-rule clarification from finance, and a staffing scenario note that distinguishes pause from actual service reduction.",
+      "text": "The finance committee met at 4:05 PM to check the bridge budget after central administration extended the hiring freeze thru Q3. The immediate effect is that the student-help coordinator line remains unfunded for another twelve wks. Even though the underlying service demand has not eased. Members agreed that the program can absorb a temp delay in furniture and print costs, but not a full quarter w/ o intake coverage. Three short-term options were discussed. Reclassify one vacant analyst line for bridge staffing, reduce evening service hrs, or draw against restricted reserves pending dean approval. No option was adopted in session. What did help was the frame. This is not a generic belt-tightening exercise. Its a staffing exposure problem w/ public-facing consequences.  The next memo needs to say that w/o overstating certainty. Action items. Revised table by Thursday, reserve-rule clarification from finance.  A staffing scenario note that distinguishes pause from actual service reduction.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -486,15 +486,12 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
         "connector-stance",
         "lexical-register",
         "content-word-complexity",
         "directness",
         "abbreviation-posture",
-        "orthography-posture",
         "fragment-posture",
-        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
@@ -505,19 +502,13 @@
           "kind": "lexeme"
         },
         {
-          "family": "fix",
-          "from": "resolve",
-          "to": "fix",
-          "kind": "lexeme"
-        },
-        {
           "family": "check",
           "from": "review",
           "to": "check",
           "kind": "lexeme"
         }
       ],
-      "semanticRisk": 0.3,
+      "semanticRisk": 0.42,
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 3.863,
@@ -531,11 +522,11 @@
       "nonTrivialShift": true
     },
     "semanticAudit": {
-      "propositionCoverage": 1,
+      "propositionCoverage": 0.989,
       "actorCoverage": 1,
-      "actionCoverage": 1,
+      "actionCoverage": 0.979,
       "objectCoverage": 0.922,
-      "polarityMismatches": 0,
+      "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -549,7 +540,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.149
+          "globalBagScore": 0.143
         },
         {
           "sourceClauseId": "s1c0",
@@ -561,7 +552,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.128
+          "globalBagScore": 0.122
         },
         {
           "sourceClauseId": "s1c1",
@@ -573,7 +564,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.043
+          "globalBagScore": 0.041
         },
         {
           "sourceClauseId": "s2c0",
@@ -585,7 +576,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.667,
-          "globalBagScore": 0.083
+          "globalBagScore": 0.08
         },
         {
           "sourceClauseId": "s3c0",
@@ -597,7 +588,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.5,
-          "globalBagScore": 0.06
+          "globalBagScore": 0.058
         },
         {
           "sourceClauseId": "s4c0",
@@ -609,47 +600,47 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.043
+          "globalBagScore": 0.041
         },
         {
           "sourceClauseId": "s5c0",
           "matchedClauseId": "s7c0+s8c0",
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.9,
           "actorCoverage": 1,
-          "actionCoverage": 1,
+          "actionCoverage": 0.81,
           "objectCoverage": 1,
-          "polarityMismatch": 0,
+          "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.128
+          "bagScore": 0.714,
+          "globalBagScore": 0.1
         },
         {
           "sourceClauseId": "s6c0",
-          "matchedClauseId": "s9c0",
+          "matchedClauseId": "s9c0+s10c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.556,
-          "globalBagScore": 0.104
+          "bagScore": 0.455,
+          "globalBagScore": 0.1
         },
         {
           "sourceClauseId": "s7c0",
-          "matchedClauseId": "s11c0",
+          "matchedClauseId": "s12c0+s13c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.149
+          "bagScore": 0.875,
+          "globalBagScore": 0.143
         }
       ],
       "sourceClauseCount": 9,
-      "outputClauseCount": 13
+      "outputClauseCount": 15
     },
     "protectedAnchorAudit": {
       "totalAnchors": 2,
@@ -659,8 +650,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 12,
-        "clauseCount": 13,
+        "sentenceCount": 14,
+        "clauseCount": 15,
         "literalSpans": [
           {
             "value": "4:05 PM",
@@ -675,19 +666,19 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "the finance committee met at 4:05 PM to check the bridge budget after central administration extended the hiring freeze thru Q3",
+          "raw": "The finance committee met at 4:05 PM to check the bridge budget after central administration extended the hiring freeze thru Q3",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "the finance committee met at 4:05 PM to check the bridge budget after central administration extended the hiring freeze thru Q3",
+              "text": "The finance committee met at 4:05 PM to check the bridge budget after central administration extended the hiring freeze thru Q3",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "check",
-              "actor": "the finance",
+              "actor": "The finance",
               "action": "check",
               "object": "bridge budget after central administration",
               "modifiers": [
@@ -699,19 +690,19 @@
         },
         {
           "id": "s1",
-          "raw": "the immediate effect is that the student-help coordinator line remains unfunded for another twelve wks",
+          "raw": "The immediate effect is that the student-help coordinator line remains unfunded for another twelve wks",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "the immediate effect is that the student-help coordinator line remains unfunded for another twelve wks",
+              "text": "The immediate effect is that the student-help coordinator line remains unfunded for another twelve wks",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "is",
-              "actor": "the immediate",
+              "actor": "The immediate",
               "action": "is",
               "object": "student help coordinator line remains",
               "modifiers": [],
@@ -721,13 +712,13 @@
         },
         {
           "id": "s2",
-          "raw": "even though the underlying service demand has not eased",
+          "raw": "Even though the underlying service demand has not eased",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "even",
+              "text": "Even",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -757,13 +748,13 @@
         },
         {
           "id": "s3",
-          "raw": "members agreed that the program can absorb a temp delay in furniture and print costs, but not a full quarter w/ o intake coverage",
+          "raw": "Members agreed that the program can absorb a temp delay in furniture and print costs, but not a full quarter w/ o intake coverage",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "members agreed that the program can absorb a temp delay in furniture and print costs, but not a full quarter w/ o intake coverage",
+              "text": "Members agreed that the program can absorb a temp delay in furniture and print costs, but not a full quarter w/ o intake coverage",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -779,13 +770,13 @@
         },
         {
           "id": "s4",
-          "raw": "three short-term options were discussed",
+          "raw": "Three short-term options were discussed",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "three short-term options were discussed",
+              "text": "Three short-term options were discussed",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -801,13 +792,13 @@
         },
         {
           "id": "s5",
-          "raw": "reclassify one vacant analyst line for bridge staffing, reduce evening service hrs, or draw against restricted reserves pending dean approval",
+          "raw": "Reclassify one vacant analyst line for bridge staffing, reduce evening service hrs, or draw against restricted reserves pending dean approval",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s5c0",
-              "text": "reclassify one vacant analyst line for bridge staffing, reduce evening service hrs, or draw against restricted reserves pending dean approval",
+              "text": "Reclassify one vacant analyst line for bridge staffing, reduce evening service hrs, or draw against restricted reserves pending dean approval",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -847,21 +838,21 @@
         },
         {
           "id": "s7",
-          "raw": "What did fix was the frame",
+          "raw": "What did help was the frame",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s7c0",
-              "text": "What did fix was the frame",
+              "text": "What did help was the frame",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "fix",
+              "propositionHead": "did",
               "actor": "the frame",
-              "action": "fix",
-              "object": "frame",
+              "action": "did",
+              "object": "help frame",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -869,19 +860,19 @@
         },
         {
           "id": "s8",
-          "raw": "this is not a generic belt-tightening exercise",
+          "raw": "This is not a generic belt-tightening exercise",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s8c0",
-              "text": "this is not a generic belt-tightening exercise",
+              "text": "This is not a generic belt-tightening exercise",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "present",
               "propositionHead": "is",
-              "actor": "this",
+              "actor": "This",
               "action": "is",
               "object": "generic belt tightening exercise",
               "modifiers": [
@@ -893,21 +884,21 @@
         },
         {
           "id": "s9",
-          "raw": "Its a staffing exposure problem w/ public-facing consequences, and the next memo needs to say that w/o overstating certainty",
+          "raw": "Its a staffing exposure problem w/ public-facing consequences",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s9c0",
-              "text": "Its a staffing exposure problem w/ public-facing consequences, and the next memo needs to say that w/o overstating certainty",
+              "text": "Its a staffing exposure problem w/ public-facing consequences",
               "relationToPrev": "start",
-              "clauseType": "main",
+              "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "needs",
+              "propositionHead": "its",
               "actor": "a staffing",
-              "action": "needs",
-              "object": "say w o overstating certainty",
+              "action": "",
+              "object": "",
               "modifiers": [
                 "public"
               ],
@@ -917,12 +908,34 @@
         },
         {
           "id": "s10",
-          "raw": "Action items",
+          "raw": "The next memo needs to say that w/o overstating certainty",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s10c0",
+              "text": "The next memo needs to say that w/o overstating certainty",
+              "relationToPrev": "start",
+              "clauseType": "main",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "needs",
+              "actor": "The next",
+              "action": "needs",
+              "object": "say w o overstating certainty",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s11",
+          "raw": "Action items",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s11c0",
               "text": "Action items",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -938,24 +951,47 @@
           ]
         },
         {
-          "id": "s11",
-          "raw": "revised table by Thursday, reserve-rule clarification from finance, and a staffing scenario note that distinguishes pause from actual service reduction.",
+          "id": "s12",
+          "raw": "Revised table by Thursday, reserve-rule clarification from finance",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s11c0",
-              "text": "revised table by Thursday, reserve-rule clarification from finance, and a staffing scenario note that distinguishes pause from actual service reduction",
+              "id": "s12c0",
+              "text": "Revised table by Thursday, reserve-rule clarification from finance",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
+              "propositionHead": "revised",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [
+                "table"
+              ],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s13",
+          "raw": "A staffing scenario note that distinguishes pause from actual service reduction.",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s13c0",
+              "text": "A staffing scenario note that distinguishes pause from actual service reduction",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
               "propositionHead": "pause",
-              "actor": "a staffing",
+              "actor": "A staffing",
               "action": "pause",
               "object": "from actual service reduction",
               "modifiers": [
-                "table",
                 "actual"
               ],
               "hedgeMarkers": []
@@ -972,15 +1008,12 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
         "connector-stance",
         "lexical-register",
         "content-word-complexity",
         "directness",
         "abbreviation-posture",
-        "orthography-posture",
         "fragment-posture",
-        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
@@ -991,19 +1024,13 @@
           "kind": "lexeme"
         },
         {
-          "family": "fix",
-          "from": "resolve",
-          "to": "fix",
-          "kind": "lexeme"
-        },
-        {
           "family": "check",
           "from": "review",
           "to": "check",
           "kind": "lexeme"
         }
       ],
-      "semanticRisk": 0.3,
+      "semanticRisk": 0.42,
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 3.863,
@@ -1032,16 +1059,12 @@
       "directness",
       "fragment-posture",
       "lexical-register",
-      "orthography-posture",
       "punctuation-shape",
       "sentence-count",
-      "sentence-mean",
-      "sentence-spread",
-      "surface-marker-posture"
+      "sentence-mean"
     ],
     "lexemeSwapFamilies": [
       "check",
-      "fix",
       "help"
     ],
     "relationInventory": [
@@ -1061,11 +1084,11 @@
     ],
     "connectorStrategy": "additive",
     "contractionStrategy": "hold",
-    "propositionCoverage": 1,
+    "propositionCoverage": 0.989,
     "actorCoverage": 1,
-    "actionCoverage": 1,
+    "actionCoverage": 0.979,
     "objectCoverage": 0.922,
-    "polarityMismatches": 0,
+    "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

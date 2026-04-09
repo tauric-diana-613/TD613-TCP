@@ -399,7 +399,7 @@
       ]
     },
     "finalRealization": {
-      "text": "ba-4427 isnt a no-doc case, but mail got kicked back from elm but she already switched to birch shelter addr, that letter is in file. notice says may 6, client got it may 9; and hearing req filed 5/14. pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
+      "text": "ba-4427 isnt a no-doc case, but mail got kicked back from elm but she already switched to birch shelter addr, that letter is in file. Notice says may 6, client got it may 9;  hearing req filed 5/14. Pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -407,10 +407,11 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
         "connector-stance",
+        "lexical-register",
         "abbreviation-posture",
         "orthography-posture",
+        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [],
@@ -584,13 +585,13 @@
         },
         {
           "id": "s1",
-          "raw": "notice says may 6, client got it may 9; and hearing req filed 5/14",
+          "raw": "Notice says may 6, client got it may 9;  hearing req filed 5/14",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "notice says may 6, client got it may 9",
+              "text": "Notice says may 6, client got it may 9",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -604,7 +605,7 @@
             },
             {
               "id": "s1c1",
-              "text": "and hearing req filed 5/14",
+              "text": "hearing req filed 5/14",
               "relationToPrev": "additive",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -620,13 +621,13 @@
         },
         {
           "id": "s2",
-          "raw": "pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
+          "raw": "Pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
           "rhetoricalRole": "clarifying",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
+              "text": "Pls do not send her back for same proof again under \"missing docs\" bc that is not the block",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
@@ -650,10 +651,11 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
         "connector-stance",
+        "lexical-register",
         "abbreviation-posture",
         "orthography-posture",
+        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [],
@@ -681,11 +683,12 @@
     "changedDimensions": [
       "abbreviation-posture",
       "connector-stance",
+      "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",
-      "sentence-spread"
+      "surface-marker-posture"
     ],
     "lexemeSwapFamilies": [],
     "relationInventory": [

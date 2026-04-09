@@ -360,7 +360,7 @@
       ]
     },
     "finalRealization": {
-      "text": "hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late, showed after 6:10 on a 1-5 window. she left for med pickup she already told them abt; not refusal its them being late.",
+      "text": "Hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late, showed after 6:10 on a 1-5 window. She left for med pickup she already told them abt; not refusal its them being late.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -369,8 +369,10 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
+        "lexical-register",
         "abbreviation-posture",
         "orthography-posture",
+        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [],
@@ -480,13 +482,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late, showed after 6:10 on a 1-5 window",
+          "raw": "Hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late, showed after 6:10 on a 1-5 window",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "hearing got ugly",
+              "text": "Hearing got ugly",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -518,19 +520,19 @@
         },
         {
           "id": "s1",
-          "raw": "she left for med pickup she already told them abt; not refusal its them being late.",
+          "raw": "She left for med pickup she already told them abt; not refusal its them being late.",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "she left for med pickup she already told them abt",
+              "text": "She left for med pickup she already told them abt",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "left",
-              "actor": "she",
+              "actor": "She",
               "action": "left",
               "object": "med pickup already told them",
               "modifiers": [],
@@ -565,8 +567,10 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
+        "lexical-register",
         "abbreviation-posture",
         "orthography-posture",
+        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [],
@@ -593,11 +597,13 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
+      "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",
-      "sentence-spread"
+      "sentence-spread",
+      "surface-marker-posture"
     ],
     "lexemeSwapFamilies": [],
     "relationInventory": [

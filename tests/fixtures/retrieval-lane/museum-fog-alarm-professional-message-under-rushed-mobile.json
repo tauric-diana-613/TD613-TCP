@@ -388,7 +388,7 @@
       ]
     },
     "finalRealization": {
-      "text": "production team, fast correction from Gallery 4. the fog cue at 7:42 PM is what tripped the detector, not an electrical give. facilities reset the panel. and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Pls adjust the first two passes before tmrw. so we dont reproduce the same alarm under a prettier label.",
+      "text": "Production team, fast correction from Gallery 4. The fog cue at 7:42 PM is what tripped the detector, not an electrical give. Facilities reset the panel.  We resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Pls adjust the first two passes before tmrw. So we dont reproduce the same alarm under a prettier label.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -402,8 +402,6 @@
         "abbreviation-posture",
         "orthography-posture",
         "fragment-posture",
-        "conversation-posture",
-        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
@@ -534,13 +532,13 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "production team, fast correction from Gallery 4",
+          "raw": "Production team, fast correction from Gallery 4",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "production team, fast correction from Gallery 4",
+              "text": "Production team, fast correction from Gallery 4",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -556,19 +554,19 @@
         },
         {
           "id": "s1",
-          "raw": "the fog cue at 7:42 PM is what tripped the detector, not an electrical give",
+          "raw": "The fog cue at 7:42 PM is what tripped the detector, not an electrical give",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "the fog cue at 7:42 PM is what tripped the detector, not an electrical give",
+              "text": "The fog cue at 7:42 PM is what tripped the detector, not an electrical give",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "past",
               "propositionHead": "is",
-              "actor": "the fog",
+              "actor": "The fog",
               "action": "is",
               "object": "what tripped detector electrical give",
               "modifiers": [
@@ -581,13 +579,13 @@
         },
         {
           "id": "s2",
-          "raw": "facilities reset the panel",
+          "raw": "Facilities reset the panel",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "facilities reset the panel",
+              "text": "Facilities reset the panel",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -603,19 +601,19 @@
         },
         {
           "id": "s3",
-          "raw": "and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
+          "raw": "We resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect",
+              "text": "We resumed at 8:11, but the real problem is that the cue sheet still describes the effect",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "is",
-              "actor": "we",
+              "actor": "We",
               "action": "is",
               "object": "cue sheet describes effect",
               "modifiers": [
@@ -679,13 +677,13 @@
         },
         {
           "id": "s5",
-          "raw": "so we dont reproduce the same alarm under a prettier label.",
+          "raw": "So we dont reproduce the same alarm under a prettier label.",
           "rhetoricalRole": "causal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s5c0",
-              "text": "so we dont reproduce the same alarm under a prettier label",
+              "text": "So we dont reproduce the same alarm under a prettier label",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "negative",
@@ -715,8 +713,6 @@
         "abbreviation-posture",
         "orthography-posture",
         "fragment-posture",
-        "conversation-posture",
-        "surface-marker-posture",
         "punctuation-shape"
       ],
       "lexemeSwaps": [
@@ -758,15 +754,13 @@
     "changedDimensions": [
       "abbreviation-posture",
       "connector-stance",
-      "conversation-posture",
       "fragment-posture",
       "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",
-      "sentence-spread",
-      "surface-marker-posture"
+      "sentence-spread"
     ],
     "lexemeSwapFamilies": [
       "fast",

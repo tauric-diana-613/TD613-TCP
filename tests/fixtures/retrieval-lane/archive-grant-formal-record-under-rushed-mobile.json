@@ -456,7 +456,7 @@
       ]
     },
     "finalRealization": {
-      "text": "the proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. first. the team will complete a shared cataloging protocol for neighborhood collections now described w/ inconsistent local vocabularies. second, six community stewards will be trained to check descriptive language before records are published or exhibited. third. a portable exhibition kit will be built for circulation thru branch libraries, school sites, and tenant meetings. The booking risk is not the catalog build itself, but the interval between description and community check, if that interval stretches. the project drifts back toward extractive efficiency rather than reciprocal stewardship. Planning assumptions therefore include a two-wk review buffer in each cycle. a modest translation budget, and a rule that no descriptive template is treated as final before local review has actually occurred.",
+      "text": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First. The team will complete a shared cataloging protocol for neighborhood collections now described w/ inconsistent local vocabularies. Second, six community stewards will be trained to check descriptive language before records are published or exhibited. Third. A portable exhibition kit will be built for circulation thru branch libraries, school sites.  Tenant meetings. The booking risk is not the catalog build itself, but the interval between description and community check, if that interval stretches. The project drifts back toward extractive efficiency rather than reciprocal stewardship. Planning assumptions therefore include a two-wk review buffer in each cycle. A modest translation budget.  A rule that no descriptive template is treated as final before local review has actually occurred.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -470,7 +470,6 @@
         "directness",
         "abstraction-posture",
         "abbreviation-posture",
-        "orthography-posture",
         "fragment-posture",
         "punctuation-shape"
       ],
@@ -482,7 +481,7 @@
           "kind": "lexeme"
         }
       ],
-      "semanticRisk": 0,
+      "semanticRisk": 0.12,
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 5.273,
@@ -501,7 +500,7 @@
       "actionCoverage": 1,
       "objectCoverage": 0.95,
       "polarityMismatches": 1,
-      "tenseMismatches": 0,
+      "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -514,7 +513,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.171
+          "globalBagScore": 0.163
         },
         {
           "sourceClauseId": "s1c0",
@@ -526,7 +525,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.171
+          "globalBagScore": 0.163
         },
         {
           "sourceClauseId": "s2c0",
@@ -538,7 +537,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.146
+          "globalBagScore": 0.14
         },
         {
           "sourceClauseId": "s3c0",
@@ -550,11 +549,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.714,
-          "globalBagScore": 0.119
+          "globalBagScore": 0.114
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s6c0",
+          "matchedClauseId": "s7c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -562,11 +561,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.073
+          "globalBagScore": 0.07
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s7c0+s8c0",
+          "matchedClauseId": "s7c1+s8c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -574,23 +573,23 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.75,
-          "globalBagScore": 0.073
+          "globalBagScore": 0.07
         },
         {
           "sourceClauseId": "s6c0",
-          "matchedClauseId": "s9c0+s10c0",
+          "matchedClauseId": "s9c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.8,
           "polarityMismatch": 1,
-          "tenseMismatch": 0,
-          "bagScore": 0.778,
-          "globalBagScore": 0.167
+          "tenseMismatch": 1,
+          "bagScore": 0.625,
+          "globalBagScore": 0.159
         },
         {
           "sourceClauseId": "s6c1",
-          "matchedClauseId": "s10c1",
+          "matchedClauseId": "s11c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -598,11 +597,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.098
+          "globalBagScore": 0.093
         }
       ],
       "sourceClauseCount": 8,
-      "outputClauseCount": 12
+      "outputClauseCount": 14
     },
     "protectedAnchorAudit": {
       "totalAnchors": 0,
@@ -612,26 +611,26 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 11,
-        "clauseCount": 12,
+        "sentenceCount": 12,
+        "clauseCount": 14,
         "literalSpans": []
       },
       "sentences": [
         {
           "id": "s0",
-          "raw": "the proposed archive grant has three linked deliverables rather than one large undifferentiated access claim",
+          "raw": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "the proposed archive grant has three linked deliverables rather than one large undifferentiated access claim",
+              "text": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "past",
               "propositionHead": "has",
-              "actor": "the proposed",
+              "actor": "The proposed",
               "action": "has",
               "object": "three linked deliverables than one",
               "modifiers": [
@@ -646,13 +645,13 @@
         },
         {
           "id": "s1",
-          "raw": "first",
+          "raw": "First",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s1c0",
-              "text": "first",
+              "text": "First",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -668,19 +667,19 @@
         },
         {
           "id": "s2",
-          "raw": "the team will complete a shared cataloging protocol for neighborhood collections now described w/ inconsistent local vocabularies",
+          "raw": "The team will complete a shared cataloging protocol for neighborhood collections now described w/ inconsistent local vocabularies",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s2c0",
-              "text": "the team will complete a shared cataloging protocol for neighborhood collections now described w/ inconsistent local vocabularies",
+              "text": "The team will complete a shared cataloging protocol for neighborhood collections now described w/ inconsistent local vocabularies",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "future-modal",
               "propositionHead": "will",
-              "actor": "the team",
+              "actor": "The team",
               "action": "will",
               "object": "complete shared cataloging protocol neighborhood",
               "modifiers": [
@@ -692,13 +691,13 @@
         },
         {
           "id": "s3",
-          "raw": "second, six community stewards will be trained to check descriptive language before records are published or exhibited",
+          "raw": "Second, six community stewards will be trained to check descriptive language before records are published or exhibited",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s3c0",
-              "text": "second, six community stewards will be trained to check descriptive language before records are published or exhibited",
+              "text": "Second, six community stewards will be trained to check descriptive language before records are published or exhibited",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -716,13 +715,13 @@
         },
         {
           "id": "s4",
-          "raw": "third",
+          "raw": "Third",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s4c0",
-              "text": "third",
+              "text": "Third",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -738,19 +737,19 @@
         },
         {
           "id": "s5",
-          "raw": "a portable exhibition kit will be built for circulation thru branch libraries, school sites, and tenant meetings",
+          "raw": "A portable exhibition kit will be built for circulation thru branch libraries, school sites",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s5c0",
-              "text": "a portable exhibition kit will be built for circulation thru branch libraries, school sites, and tenant meetings",
+              "text": "A portable exhibition kit will be built for circulation thru branch libraries, school sites",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "future-modal",
               "propositionHead": "will",
-              "actor": "a portable",
+              "actor": "A portable",
               "action": "will",
               "object": "built circulation thru branch libraries",
               "modifiers": [
@@ -762,12 +761,34 @@
         },
         {
           "id": "s6",
-          "raw": "The booking risk is not the catalog build itself, but the interval between description and community check",
+          "raw": "Tenant meetings",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s6c0",
+              "text": "Tenant meetings",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "tenant",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s7",
+          "raw": "The booking risk is not the catalog build itself, but the interval between description and community check, if that interval stretches",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s7c0",
               "text": "The booking risk is not the catalog build itself, but the interval between description and community check",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -781,20 +802,12 @@
                 "interval"
               ],
               "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s7",
-          "raw": "If that interval stretches",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
+            },
             {
-              "id": "s7c0",
-              "text": "If that interval stretches",
-              "relationToPrev": "start",
-              "clauseType": "subordinate",
+              "id": "s7c1",
+              "text": "that interval stretches",
+              "relationToPrev": "additive",
+              "clauseType": "relative",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "interval",
@@ -810,19 +823,19 @@
         },
         {
           "id": "s8",
-          "raw": "the project drifts back toward extractive efficiency rather than reciprocal stewardship",
+          "raw": "The project drifts back toward extractive efficiency rather than reciprocal stewardship",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s8c0",
-              "text": "the project drifts back toward extractive efficiency rather than reciprocal stewardship",
+              "text": "The project drifts back toward extractive efficiency rather than reciprocal stewardship",
               "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "positive",
               "tenseAspect": "present",
               "propositionHead": "project",
-              "actor": "the project",
+              "actor": "The project",
               "action": "",
               "object": "",
               "modifiers": [
@@ -860,19 +873,41 @@
         },
         {
           "id": "s10",
-          "raw": "a modest translation budget, and a rule that no descriptive template is treated as final before local review has actually occurred.",
+          "raw": "A modest translation budget",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s10c0",
-              "text": "a modest translation budget, and a rule that no descriptive template is treated",
+              "text": "A modest translation budget",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "modest",
+              "actor": "A modest",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s11",
+          "raw": "A rule that no descriptive template is treated as final before local review has actually occurred.",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s11c0",
+              "text": "A rule that no descriptive template is treated",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "negative",
               "tenseAspect": "past",
               "propositionHead": "is",
-              "actor": "a modest",
+              "actor": "A rule",
               "action": "is",
               "object": "treated",
               "modifiers": [
@@ -881,7 +916,7 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s10c1",
+              "id": "s11c1",
               "text": "final before local review has actually occurred",
               "relationToPrev": "additive",
               "clauseType": "main",
@@ -916,7 +951,6 @@
         "directness",
         "abstraction-posture",
         "abbreviation-posture",
-        "orthography-posture",
         "fragment-posture",
         "punctuation-shape"
       ],
@@ -928,7 +962,7 @@
           "kind": "lexeme"
         }
       ],
-      "semanticRisk": 0,
+      "semanticRisk": 0.12,
       "donorProgress": {
         "eligible": true,
         "sourceDonorDistance": 5.273,
@@ -956,7 +990,6 @@
       "directness",
       "fragment-posture",
       "lexical-register",
-      "orthography-posture",
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",
@@ -987,7 +1020,7 @@
     "actionCoverage": 1,
     "objectCoverage": 0.95,
     "polarityMismatches": 1,
-    "tenseMismatches": 0,
+    "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1
   }
 }
