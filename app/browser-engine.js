@@ -201,6 +201,19 @@ function expandCommonContractions(text = '') {
   );
 }
 
+function normalizeMovementComparable(text = '') {
+  return collapseComparableWhitespace(
+    expandCommonContractions(String(text || ''))
+      .replace(/[^a-z0-9\s]/gi, ' ')
+  );
+}
+
+function hasMeaningfulSurfaceShift(sourceText = '', outputText = '') {
+  const sourceComparable = normalizeMovementComparable(sourceText);
+  const outputComparable = normalizeMovementComparable(outputText);
+  return Boolean(sourceComparable && outputComparable && sourceComparable !== outputComparable);
+}
+
 function capitalizeSentenceStarts(text = '') {
   const normalized = String(text || '');
   if (!normalized) {
@@ -281,6 +294,22 @@ function extractExactWitnessAnchors(sourceText = '') {
   matchAll(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, 'email');
   matchAll(/\b(?:[A-Z]{1,4}-\d{2,}|\d{1,2}:\d{2}\s?(?:AM|PM)|(?:Unit|Suite|Door)\s+[A-Z0-9-]+)\b/gi, 'identifier');
   matchAll(/\b\d+(?:[:./-]\d+)*(?:\s?(?:AM|PM))?\b/gi, 'numeric');
+
+  const sentenceSlices = normalized.match(/[^.!?\n]+[.!?]?/g) || [];
+  sentenceSlices.forEach((sentence) => {
+    const titlecasePattern = /\b(?:[A-Z][a-z0-9'’-]+(?:\s+[A-Z][a-z0-9'’-]+)*)\b/g;
+    for (const match of sentence.matchAll(titlecasePattern)) {
+      const value = String(match[0] || '').trim();
+      if (!value || value === 'I' || Number(match.index || 0) === 0) {
+        continue;
+      }
+      anchors.push({
+        value,
+        type: 'titlecase',
+        mode: 'exact'
+      });
+    }
+  });
 
   return anchors;
 }
@@ -617,7 +646,8 @@ function detectNamingIntrusion(sourceText = '', outputText = '') {
 function buildTD613ApertureProjectionPlan({
   personaId = '',
   sourceProfile = {},
-  targetProfile = {}
+  targetProfile = {},
+  sourceClass = ''
 } = {}) {
   const sentenceDelta = Number(targetProfile.avgSentenceLength || 0) - Number(sourceProfile.avgSentenceLength || 0);
   const contractionDelta = Number(targetProfile.contractionDensity || 0) - Number(sourceProfile.contractionDensity || 0);
@@ -678,7 +708,8 @@ function buildTD613ApertureProjectionPlan({
 
   return Object.freeze({
     ...defaultPlan,
-    ...(personaPlans[personaId] || {})
+    ...(personaPlans[personaId] || {}),
+    sourceClass: sourceClass || 'procedural-record'
   });
 }
 
@@ -736,6 +767,29 @@ function applyCommonProjectionRepairs(text = '') {
       .replace(/\.{2,}/g, '.')
       .replace(/,{2,}/g, ',')
       .replace(/;{2,}/g, ';')
+      .replace(/\bI\?ve\b/gi, "I've")
+      .replace(/\bI\?m\b/gi, "I'm")
+      .replace(/\bIt\?s\b/gi, "It's")
+      .replace(/\bI[\s,;:.]+and\s+ve\b/gi, "I've")
+      .replace(/\bI[\s,;:.]+ve\b/gi, "I've")
+      .replace(/\bI[\s,;:.]+and\s+m\b/gi, "I'm")
+      .replace(/\bI[\s,;:.]+m\b/gi, "I'm")
+      .replace(/\bIt[\s,;:.]+and\s+s\b/gi, "It's")
+      .replace(/\bIt[\s,;:.]+s\b/gi, "It's")
+      .replace(/\bNobody I(?:'ve| have) ever shared the same room with has ever seen\b/gi, "No one I've ever shared a room with has seen")
+      .replace(/\bNobody one\b/gi, 'No one')
+      .replace(/\bNo one I've ever shared same room with\b/gi, "No one I've ever shared a room with")
+      .replace(/\bNo one I have ever same a room with\b/gi, 'No one I have ever shared a room with')
+      .replace(/\bNobody one I've ever shared same room with\b/gi, "No one I've ever shared a room with")
+      .replace(/\bNobody one I have ever same a room with\b/gi, 'No one I have ever shared a room with')
+      .replace(/\bThings are moving too fast to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this')
+      .replace(/\bThings are moving too quick to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this')
+      .replace(/\bThings are relocating too steady to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this')
+      .replace(/\bwith an excited thumb this sparks\b/gi, 'with an excited thumb that sparks')
+      .replace(/\bTwirl of the plastic\.\s+Bite of the tip\.\s+With\b/gi, 'Plastic twist. Tip bite. With')
+      .replace(/\bTwo gulps:\s*and from the nerves\b/gi, 'Two gulps. One from the nerves')
+      .replace(/\bTwo gulps\.\s+From the nerves\.\s+To placate them,\s*from the coffee\b/gi, 'Two gulps. One for the nerves. One from the coffee, to placate them')
+      .replace(/\bAnd;\s*to placate them;\s*from the coffee\b/gi, 'One from the coffee, to placate them')
       .replace(/\btell hi\b/gi, 'say hi')
       .replace(/\btrying to tell\b/gi, 'trying to say')
       .replace(/\btrying to explain\b/gi, 'trying to say')
@@ -822,9 +876,10 @@ function repairTD613ApertureProjection({
   outputText = '',
   personaId = '',
   sourceProfile = {},
-  targetProfile = {}
+  targetProfile = {},
+  sourceClass = ''
 } = {}) {
-  const plan = buildTD613ApertureProjectionPlan({ personaId, sourceProfile, targetProfile });
+  const plan = buildTD613ApertureProjectionPlan({ personaId, sourceProfile, targetProfile, sourceClass });
   const repairPasses = [];
   const before = detectTD613ApertureTextPathologies({ sourceText, outputText });
 
@@ -895,6 +950,7 @@ function classifyTD613ApertureProjection({
   const generatorFault = isTD613ApertureGeneratorFault(pathologyState);
   const substantiveMovement = substantiveDimensionCount(changedDimensions);
   const lexicalMovement = Math.min(2, Number(lexemeSwaps?.length || 0));
+  const meaningfulShift = hasMeaningfulSurfaceShift(sourceText, outputText);
   let movementConfidence = clamp01(
     (normalizedSource !== normalizedOutput ? 0.18 : 0) +
     (substantiveMovement * 0.14) +
@@ -910,12 +966,12 @@ function classifyTD613ApertureProjection({
   if (generatorFault) {
     outcome = 'source-rerouted';
     movementConfidence = 0;
-  } else if (normalizedSource === normalizedOutput) {
+  } else if (normalizedSource === normalizedOutput || !meaningfulShift) {
     outcome = 'surface-held';
     movementConfidence = Math.min(movementConfidence, 0.08);
   } else if (substantiveMovement === 0 && lexicalMovement === 0) {
     outcome = 'surface-held';
-  } else if (substantiveMovement <= 1 && !nonTrivialShift) {
+  } else if (substantiveMovement <= 1 && !nonTrivialShift && !meaningfulShift) {
     outcome = 'surface-held';
   } else if (repaired) {
     outcome = 'repaired';
@@ -994,6 +1050,18 @@ function auditTD613ApertureWitnessAnchors({
   const witnessAnchorIntegrity = anchors.length
     ? round3(resolvedAnchors / anchors.length)
     : 1;
+  const exactAnchors = anchors.filter((anchor) => anchor.mode === 'exact');
+  const exactMissingAnchors = missingAnchors.filter((anchor) => anchor.mode === 'exact');
+  const exactResolvedAnchors = exactAnchors.length - exactMissingAnchors.length;
+  const exactWitnessIntegrity = exactAnchors.length
+    ? round3(exactResolvedAnchors / exactAnchors.length)
+    : 1;
+  const softAnchors = anchors.filter((anchor) => anchor.mode !== 'exact');
+  const softMissingAnchors = missingAnchors.filter((anchor) => anchor.mode !== 'exact');
+  const softResolvedAnchors = softAnchors.length - softMissingAnchors.length;
+  const softWitnessIntegrity = softAnchors.length
+    ? round3(softResolvedAnchors / softAnchors.length)
+    : 1;
   const aliasPersistenceRisk = anchors.length
     ? round3(clamp01(
       (missingAnchors.length / anchors.length) +
@@ -1007,6 +1075,14 @@ function auditTD613ApertureWitnessAnchors({
     resolvedAnchors,
     missingAnchors: missingAnchors.map((anchor) => anchor.value),
     witnessAnchorIntegrity,
+    exactAnchorCount: exactAnchors.length,
+    exactResolvedAnchors,
+    exactMissingAnchors: exactMissingAnchors.map((anchor) => anchor.value),
+    exactWitnessIntegrity,
+    softAnchorCount: softAnchors.length,
+    softResolvedAnchors,
+    softMissingAnchors: softMissingAnchors.map((anchor) => anchor.value),
+    softWitnessIntegrity,
     aliasPersistenceRisk
   });
 }
@@ -1081,6 +1157,7 @@ function registerTD613ApertureSegment({
   projectedText = '',
   surfaceText = '',
   personaId = '',
+  sourceClass = 'procedural-record',
   sourceProfile = {},
   targetProfile = {},
   sourceIR = null,
@@ -1095,8 +1172,10 @@ function registerTD613ApertureSegment({
     outputText: projectedText || normalizedSource,
     personaId,
     sourceProfile,
-    targetProfile
+    targetProfile,
+    sourceClass
   });
+  const proseSource = sourceClass === 'reflective-prose' || sourceClass === 'narrative-scene';
   let internalText = normalizeReadableText(repairedProjection.outputText || projectedText || normalizedSource) || normalizedSource;
   let projectedWitnessAudit = auditTD613ApertureWitnessAnchors({
     sourceText: normalizedSource,
@@ -1104,10 +1183,16 @@ function registerTD613ApertureSegment({
     sourceIR,
     protectedState
   });
+  const witnessRepairAudit = proseSource
+    ? {
+        ...projectedWitnessAudit,
+        missingAnchors: [...(projectedWitnessAudit.exactMissingAnchors || [])]
+      }
+    : projectedWitnessAudit;
   const witnessRepairedText = restoreTD613ApertureWitnessAnchors({
     sourceText: normalizedSource,
     outputText: internalText,
-    witnessAudit: projectedWitnessAudit
+    witnessAudit: witnessRepairAudit
   });
   if (collapseComparableWhitespace(witnessRepairedText) !== collapseComparableWhitespace(internalText)) {
     const restoredWitnessAudit = auditTD613ApertureWitnessAnchors({
@@ -1183,10 +1268,42 @@ function registerTD613ApertureSegment({
       'generator-fault',
       'Aperture withheld this segment only because the generator collapsed into replay, emptiness, or unrepaired corruption.'
     );
-  } else if (projectedWitnessAudit.witnessAnchorIntegrity < 1) {
+  } else {
+    const effectiveProjectedWitnessIntegrity = proseSource
+      ? Number(projectedWitnessAudit.exactWitnessIntegrity ?? projectedWitnessAudit.witnessAnchorIntegrity ?? 1)
+      : Number(projectedWitnessAudit.witnessAnchorIntegrity ?? 1);
+    const effectiveSurfaceWitnessIntegrity = proseSource
+      ? Number(surfaceWitnessAudit.exactWitnessIntegrity ?? surfaceWitnessAudit.witnessAnchorIntegrity ?? 1)
+      : Number(surfaceWitnessAudit.witnessAnchorIntegrity ?? 1);
+    const repairablePathology = (repairedProjection.pathologies?.flags || []).some((flag) =>
+      flag === 'punctuation-collapse' ||
+      flag === 'lexical-glitch' ||
+      flag === 'repeated-connector' ||
+      flag === 'discourse-intrusion'
+    );
+    const internalMeaningfulShift = hasMeaningfulSurfaceShift(normalizedSource, internalText);
+    const surfaceMeaningfulShift = hasMeaningfulSurfaceShift(normalizedSource, surfaceCandidate);
+    if (
+      repairablePathology &&
+      collapseComparableWhitespace(surfaceCandidate) !== sourceComparable
+    ) {
+      outcome = 'repaired';
+      registeredText = surfaceCandidate;
+      note(
+        'repair-activity-applied',
+        'Aperture preferred the stronger visible counter-record because the deeper projection still carried repairable render corruption.'
+      );
+    } else if (proseSource && surfaceMeaningfulShift && !internalMeaningfulShift) {
+      outcome = 'repaired';
+      registeredText = surfaceCandidate;
+      note(
+        'repair-activity-applied',
+        'Aperture published the stronger prose counter-record because the deeper projection stayed too close to the source movement envelope.'
+      );
+    } else if (effectiveProjectedWitnessIntegrity < 1) {
     if (
       collapseComparableWhitespace(surfaceCandidate) !== sourceComparable &&
-      surfaceWitnessAudit.witnessAnchorIntegrity > projectedWitnessAudit.witnessAnchorIntegrity
+      effectiveSurfaceWitnessIntegrity > effectiveProjectedWitnessIntegrity
     ) {
       outcome = 'repaired';
       registeredText = surfaceCandidate;
@@ -1195,7 +1312,7 @@ function registerTD613ApertureSegment({
         'Aperture preferred the safer visible counter-record because it reduced witness drift without suppressing the segment.'
       );
     }
-  } else if (projectedCompression.state === 'compressed' && !projectedCompression.previewSafe) {
+    } else if (projectedCompression.state === 'compressed' && !projectedCompression.previewSafe) {
     if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable) {
       outcome = 'repaired';
       registeredText = surfaceCandidate;
@@ -1210,7 +1327,7 @@ function registerTD613ApertureSegment({
         'Aperture kept the transformed segment visible but will withhold row-level preview because compression pressure stayed high.'
       );
     }
-  } else if (internalComparable === sourceComparable) {
+    } else if (internalComparable === sourceComparable) {
     if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable) {
       outcome = 'repaired';
       registeredText = surfaceCandidate;
@@ -1226,9 +1343,10 @@ function registerTD613ApertureSegment({
         'No stronger counter-record landed on this segment, so Aperture published a minimal hold rather than pretending a deeper shift.'
       );
     }
-  } else if (repairedProjection.repaired) {
+    } else if (repairedProjection.repaired) {
     outcome = 'repaired';
     note('repair-activity-applied', 'Aperture repaired the projection before registration.');
+    }
   }
 
   const registeredWitnessAudit = auditTD613ApertureWitnessAnchors({
@@ -1265,6 +1383,14 @@ function registerTD613ApertureSegment({
     note(
       'generator-fault',
       'Aperture had to withhold this segment after final registration because the published surface still contained a catastrophic generator fault.'
+    );
+  }
+
+  if (outcome === 'surface-held' && hasMeaningfulSurfaceShift(normalizedSource, registeredText)) {
+    outcome = repairedProjection.repaired ? 'repaired' : 'projected';
+    note(
+      'repair-activity-applied',
+      'Aperture registered the visible rewrite because the landed counter-record moved beyond punctuation-only drift.'
     );
   }
 

@@ -28,6 +28,15 @@ const normalizeComparable = (text = '') => String(text || '')
   .toLowerCase()
   .replace(/\s+/g, ' ')
   .trim();
+const normalizeMovementComparable = (text = '') => String(text || '')
+  .replace(/\r\n/g, '\n')
+  .toLowerCase()
+  .replace(/(?:\bi'm\b)/g, 'i am')
+  .replace(/(?:\bi've\b)/g, 'i have')
+  .replace(/(?:\bit's\b)/g, 'it is')
+  .replace(/[^a-z0-9\s]/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
 const hasDuplicatedSourceReplay = (source = '', output = '') => {
   const normalizedSource = normalizeComparable(source);
   const normalizedOutput = normalizeComparable(output);
@@ -325,6 +334,66 @@ assert.ok(
     !/\btell hi\b|\btrying to tell\b|\bstory\b|\bhelp\b|\bcheck\b/i.test(result.maskedText)
   ),
   'major built-in masks avoid the known alias and lexical-drift failures on the conversational regression sample'
+);
+
+const proseSceneRegressionText = `I must keep reminding myself that this will work. Nobody I’ve ever shared the same room with has ever seen Cheers! Things are moving too fast to dissuade myself of this. On the ready, I pull out the next pack of Crushes, turn them over and spank its bottom like a bad boy. Twirl of the plastic, and bite of the tip, with an excited thumb that sparks but keeps missing the gas pedal. Two gulps: from the nerves, and, to placate them, from the coffee. The wall breaks with a shuddering, misanthropic swing. It’s the middle of the night, and suddenly, I’m not alone.`;
+const proseSceneResults = ['spark', 'matron', 'undertow', 'archivist', 'cross-examiner']
+  .map((id) => {
+    const persona = resolvedPersonas.find((entry) => entry.id === id);
+    return buildMaskTransformationResult(engine, {
+      comparisonText: proseSceneRegressionText,
+      lock,
+      persona
+    });
+  });
+
+assert.ok(
+  proseSceneResults.every((result) => result.sourceClass === 'narrative-scene'),
+  'the new prose regression sample resolves as a narrative-scene source class'
+);
+assert.ok(
+  proseSceneResults.every((result) => !hasDuplicatedSourceReplay(result.rawText, result.maskedText)),
+  'major built-in masks never replay or concatenate the prose regression sample'
+);
+assert.ok(
+  proseSceneResults.filter((result) => result.registeredTransformClass === 'strong-rewrite' || result.registeredTransformClass === 'cadence-rewrite').length >= 4,
+  'at least four of the five major built-in masks land a strong or cadence rewrite on the prose regression sample'
+);
+assert.ok(
+  proseSceneResults.every((result) => result.registeredTransformClass !== 'surface-only' || normalizeMovementComparable(result.rawText) === normalizeMovementComparable(result.maskedText)),
+  'surface-only classification is reserved for truly source-close prose outputs'
+);
+assert.ok(
+  new Set(proseSceneResults.map((result) => result.maskedText)).size >= 4,
+  'the prose regression sample lands materially distinct registered outputs across the major masks'
+);
+assert.ok(
+  proseSceneResults.every((result) => (result.apertureSummary?.bullets || []).length <= 4),
+  'What Clung summary bullets stay capped in the main Homebase surface'
+);
+assert.ok(
+  proseSceneResults.every((result) => {
+    const drawerItems = result.apertureSummary?.drawerItems || [];
+    return drawerItems.length === new Set(drawerItems).size;
+  }),
+  'Aperture drawer items stay deduplicated instead of flooding the main surface with repeated notes'
+);
+assert.ok(
+  proseSceneResults.every((result) => typeof result.previewAlignment?.reason === 'string'),
+  'preview alignment now includes an explicit reason code'
+);
+assert.ok(
+  proseSceneResults.every((result) =>
+    result.previewAlignment.reason === 'shown' ||
+    result.shiftPreview.length === 0
+  ),
+  'preview rows are only published when the aligned sentence preview is actually shown'
+);
+assert.ok(
+  proseSceneResults.every((result) =>
+    !/\bNobody one\b|\bsame a room\b|\btell hi\b|\btrying to tell\b/i.test(result.maskedText)
+  ),
+  'the prose regression sample avoids the known malformed rewrite artifacts'
 );
 
 console.log('persona-gallery.test.mjs passed');

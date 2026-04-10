@@ -4118,7 +4118,15 @@
     const movedNode = $('maskWhatMoved');
     const deltaNode = $('maskDeltaToLock');
     const notesNode = $('maskStickinessNotes');
+    const ledgerNode = $('maskApertureLedgerItems');
+    const ledgerMetaNode = $('maskApertureLedgerMeta');
     const shiftPreviewNode = $('personaMaskShiftPreview');
+    const renderNoteList = (node, items = []) => {
+      if (!node) {
+        return;
+      }
+      node.innerHTML = items.map((note) => `<li>${escapeHtml(note)}</li>`).join('');
+    };
 
     const renderShiftPreview = (rows = [], fallback = 'Sentence-level movement will appear here once the mask rewrites a passage.') => {
       if (!shiftPreviewNode) {
@@ -4162,9 +4170,13 @@
       afterNode.textContent = '--';
       movedNode.textContent = '--';
       deltaNode.textContent = '--';
-      notesNode.innerHTML = state.wornMask
-        ? `<li>${escapeHtml(state.wornMask.name)} is worn and ready. The missing ingredient is the cadence home.</li>`
-        : '<li>Select or create a cadence home first.</li>';
+      renderNoteList(notesNode, state.wornMask
+        ? [`${state.wornMask.name} is worn and ready. The missing ingredient is the cadence home.`]
+        : ['Select or create a cadence home first.']);
+      renderNoteList(ledgerNode, ['Detailed warning and repair traces will appear here once contact runs.']);
+      if (ledgerMetaNode) {
+        ledgerMetaNode.textContent = 'Detailed warning and repair traces appear here.';
+      }
       renderShiftPreview([], state.wornMask
         ? `${state.wornMask.name} is worn, but Homebase still needs a cadence home before movement can be read.`
         : 'Stage or select a cadence home first.');
@@ -4185,9 +4197,13 @@
       afterNode.textContent = '--';
       movedNode.textContent = '--';
       deltaNode.textContent = '--';
-      notesNode.innerHTML = state.wornMask
-        ? `<li>${escapeHtml(state.wornMask.name)} is waiting on source passage.</li><li>The bench compares source and through-mask text against ${escapeHtml(state.lock.name)}.</li>`
-        : '<li>The bench compares source and through-mask text against the active lock.</li>';
+      renderNoteList(notesNode, state.wornMask
+        ? [`${state.wornMask.name} is waiting on source passage.`, `The bench compares source and through-mask text against ${state.lock.name}.`]
+        : ['The bench compares source and through-mask text against the active lock.']);
+      renderNoteList(ledgerNode, ['Detailed warning and repair traces will appear here once a passage is staged.']);
+      if (ledgerMetaNode) {
+        ledgerMetaNode.textContent = 'Detailed warning and repair traces appear here.';
+      }
       renderShiftPreview([], state.wornMask
         ? `${state.wornMask.name} is worn against ${state.lock.name}. Paste source text to read the rewrite.`
         : `Choose a mask and bring it into Homebase to read movement against ${state.lock.name}.`);
@@ -4204,7 +4220,11 @@
       afterNode.textContent = '--';
       movedNode.textContent = '--';
       deltaNode.textContent = '--';
-      notesNode.innerHTML = '<li>No mask is worn yet.</li><li>Choose one in Personas, bring it into Homebase, then read what clings after contact.</li>';
+      renderNoteList(notesNode, ['No mask is worn yet.', 'Choose one in Personas, bring it into Homebase, then read what clings after contact.']);
+      renderNoteList(ledgerNode, ['Detailed warning and repair traces appear after a mask makes contact.']);
+      if (ledgerMetaNode) {
+        ledgerMetaNode.textContent = 'Detailed warning and repair traces appear here.';
+      }
       renderShiftPreview([], 'Source text is staged. Bring a worn mask in to read the rewrite sentence by sentence.');
       return;
     }
@@ -4220,10 +4240,13 @@
       afterNode.textContent = '--';
       movedNode.textContent = 'generator fault hold // output withheld';
       deltaNode.textContent = 'catastrophic fault detected // masked output held';
-      notesNode.innerHTML = [
-        `What clung // ${escapeHtml(result.contactHonesty?.line || 'Aperture withheld the rendered output only after detecting replay, emptiness, or unrepaired concatenation fault.')}`,
-        ...(result.apertureNotes || [])
-      ].map((note) => `<li>${escapeHtml(note)}</li>`).join('');
+      renderNoteList(notesNode, [
+        result.apertureSummary?.headline || result.contactHonesty?.line || 'Aperture withheld the rendered output only after detecting replay, emptiness, or unrepaired concatenation fault.'
+      ]);
+      renderNoteList(ledgerNode, result.apertureSummary?.drawerItems || result.apertureNotes || []);
+      if (ledgerMetaNode) {
+        ledgerMetaNode.textContent = 'Generator fault ledger';
+      }
       renderShiftPreview([], 'Aperture held the rendered output after detecting a catastrophic generator fault.');
       return;
     }
@@ -4249,16 +4272,27 @@
           : contact.fieldEffect === 'surface-texture'
             ? 'surface texture shifted // home distance held'
             : 'surface texture held // home distance held';
-    notesNode.innerHTML = [
-      `What clung // ${escapeHtml(contact.line || 'Residue remains readable.')} `,
-      ...(result.stickinessNotes || []),
-      ...(result.apertureNotes || [])
-    ].map((note) => `<li>${escapeHtml(note)}</li>`).join('');
+    renderNoteList(notesNode, result.apertureSummary?.bullets || [
+      contact.line || 'Residue remains readable.',
+      ...(result.stickinessNotes || []).slice(0, 2)
+    ]);
+    renderNoteList(ledgerNode, result.apertureSummary?.drawerItems || result.apertureNotes || []);
+    if (ledgerMetaNode) {
+      ledgerMetaNode.textContent = result.apertureSummary?.warningLevel === 'high'
+        ? 'High-pressure warning and repair traces'
+        : result.apertureSummary?.warningLevel === 'medium'
+          ? 'Active warning and repair traces'
+          : 'Low-pressure warning and repair traces';
+    }
     renderShiftPreview(
       result.shiftPreview || [],
-      result.previewAlignment?.trustworthy === false
-        ? 'Preview alignment stayed low under compression or drift pressure, so Aperture refused a fake row-level claim.'
-        : 'The mask held close enough to source that sentence movement stayed minimal.'
+      result.previewAlignment?.reason === 'compression-pressure'
+        ? 'Preview withheld because compression pressure made a row-level claim unreliable.'
+        : result.previewAlignment?.reason === 'low-alignment'
+          ? 'Preview withheld because the alignment stayed too weak to claim sentence movement honestly.'
+          : result.previewAlignment?.reason === 'surface-only-drift'
+            ? 'Preview withheld because the landed rewrite stayed in a surface-only lane.'
+            : 'The mask held close enough to source that sentence movement stayed minimal.'
     );
   }
 

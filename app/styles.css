@@ -2445,6 +2445,39 @@ button:disabled {
   gap: 8px;
 }
 
+.persona-ledger-drawer {
+  margin-top: 14px;
+  border: 1px solid rgba(116, 234, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(7, 14, 20, 0.78);
+  overflow: hidden;
+}
+
+.persona-ledger-drawer summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--text);
+}
+
+.persona-ledger-drawer summary::-webkit-details-marker {
+  display: none;
+}
+
+.persona-ledger-meta {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.persona-ledger-list {
+  margin: 0;
+  padding: 0 18px 14px 32px;
+}
+
 .trainer-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

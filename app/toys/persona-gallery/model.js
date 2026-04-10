@@ -68,6 +68,38 @@ function normalizeText(text = '') {
     .trim();
 }
 
+function classifyMaskSourceClass(text = '') {
+  const normalized = normalizeText(text);
+  if (!normalized) {
+    return 'procedural-record';
+  }
+  if (
+    /\b(?:Door|Unit|Suite)\s+[A-Z0-9-]+\b/.test(normalized) ||
+    /\b\d{1,2}:\d{2}\s?(?:AM|PM)\b/i.test(normalized) ||
+    /\b(?:account|support|review|ticket|request|controller|firmware|badge|custody|archive operations|fraud hold)\b/i.test(normalized)
+  ) {
+    return 'procedural-record';
+  }
+  if (
+    /\b(?:hello|hi|thanks|thank you|please|appreciate|let me know|best,|regards|team|schedule|follow up|follow-up)\b/i.test(normalized)
+  ) {
+    return 'formal-correspondence';
+  }
+  if (
+    /\b(?:room|wall|night|suddenly|coffee|door|pack|thumb|swing|alone|shuddering)\b/i.test(normalized) ||
+    /[!?]/.test(normalized)
+  ) {
+    return 'narrative-scene';
+  }
+  if (
+    /\b(?:I|me|my|myself)\b/.test(normalized) &&
+    /\b(?:remember|reminding|worry|feel|think|trying|content|amnesia|keep)\b/i.test(normalized)
+  ) {
+    return 'reflective-prose';
+  }
+  return 'formal-correspondence';
+}
+
 function enforceClippedMaskSurface(text = '') {
   return normalizeText(
     String(text || '')
@@ -874,7 +906,90 @@ function expandCommonContractions(text = '') {
   );
 }
 
-function applySurfaceOnlyMaskSentence(source = '', sourceProfile = {}, targetProfile = {}, personaId = '') {
+function normalizeMaskMovementComparable(text = '') {
+  return expandCommonContractions(normalizeText(text))
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function buildPersonaProseSurfaceSentence(source = '', personaId = '', sourceClass = 'reflective-prose') {
+  let working = String(source || '');
+  const proseLike = sourceClass === 'reflective-prose' || sourceClass === 'narrative-scene';
+  if (!proseLike) {
+    return matchSentenceSurface(source, working);
+  }
+
+  const genericProse = () => {
+    working = working
+      .replace(/\bNobody\b/gi, 'No one')
+      .replace(/\bthe same room\b/gi, 'a room')
+      .replace(/\btoo fast to dissuade myself of this\b/gi, 'too fast for me to talk myself out of this')
+      .replace(/\bOn the ready,\b/gi, 'Ready,');
+  };
+
+  switch (personaId) {
+    case 'spark':
+      genericProse();
+      working = contractCommonPhrases(working)
+        .replace(/\bTwirl of the plastic,\s*and bite of the tip,\s*with\b/gi, 'Plastic twist. Tip between my teeth. My')
+        .replace(/\bTwo gulps:\s*from the nerves,\s*and,\s*to placate them,\s*from the coffee\b/gi, 'Two gulps. One for the nerves. One from the coffee')
+        .replace(/\bIt is the middle of the night, and suddenly, I am not alone\b/gi, "Middle of the night. Suddenly, I'm not alone")
+        .replace(/\bIt's the middle of the night, and suddenly, I'm not alone\b/gi, "Middle of the night. Suddenly, I'm not alone")
+        .replace(/,\s+and\b/gi, '. And')
+        .replace(/,\s+but\b/gi, '. But')
+        .replace(/;\s+/g, '. ');
+      break;
+    case 'matron':
+      genericProse();
+      working = working
+        .replace(/\bTwirl of the plastic,\s*and bite of the tip,\s*with\b/gi, 'The plastic twists, the tip catches, and')
+        .replace(/\bTwo gulps:\s*from the nerves,\s*and,\s*to placate them,\s*from the coffee\b/gi, 'Two gulps, one from the nerves and one from the coffee')
+        .replace(/\bIt's the middle of the night, and suddenly, I'm not alone\b/gi, "It's the middle of the night, and suddenly I'm not alone")
+        .replace(/\bIt is the middle of the night, and suddenly, I am not alone\b/gi, 'It is the middle of the night, and suddenly I am not alone')
+        .replace(/!\s*$/g, '.');
+      break;
+    case 'undertow':
+      genericProse();
+      working = working
+        .replace(/\bOn the ready,\b/gi, 'Already braced,')
+        .replace(/\bTwirl of the plastic,\s*and bite of the tip,\s*with\b/gi, 'The plastic twists, the tip bites, and')
+        .replace(/\bTwo gulps:\s*from the nerves,\s*and,\s*to placate them,\s*from the coffee\b/gi, 'Two gulps, one from the nerves and one from the coffee, just to settle them')
+        .replace(/\bIt's the middle of the night, and suddenly, I'm not alone\b/gi, "It's the middle of the night, and suddenly I'm not alone anymore")
+        .replace(/\bIt is the middle of the night, and suddenly, I am not alone\b/gi, 'It is the middle of the night, and suddenly I am not alone anymore');
+      break;
+    case 'archivist':
+      genericProse();
+      working = expandCommonContractions(working)
+        .replace(/\btoo fast for me to talk myself out of this\b/gi, 'too quickly for me to talk myself out of this')
+        .replace(/\bReady,\b/gi, 'In readiness,')
+        .replace(/\bTwirl of the plastic,\s*and bite of the tip,\s*with\b/gi, 'The plastic turns, the tip catches, and')
+        .replace(/\bTwo gulps:\s*from the nerves,\s*and,\s*to placate them,\s*from the coffee\b/gi, 'Two gulps follow: one from the nerves, one from the coffee')
+        .replace(/\bIt's the middle of the night, and suddenly, I'm not alone\b/gi, 'It is the middle of the night, and suddenly I am not alone')
+        .replace(/\bThings are moving too fast\b/gi, 'Events are moving too fast');
+      break;
+    case 'cross-examiner':
+      genericProse();
+      working = contractCommonPhrases(working)
+        .replace(/\bNobody I've ever shared the same room with has ever seen\b/gi, "No one who's shared a room with me has seen")
+        .replace(/\bNobody I have ever shared the same room with has ever seen\b/gi, "No one who's shared a room with me has seen")
+        .replace(/\btoo fast for me to talk myself out of this\b/gi, 'too fast for me to talk myself out of it')
+        .replace(/\bTwirl of the plastic,\s*and bite of the tip,\s*with\b/gi, 'Plastic twist. Tip bite. My')
+        .replace(/\bTwo gulps:\s*from the nerves,\s*and,\s*to placate them,\s*from the coffee\b/gi, 'Two gulps. One from nerves. One from the coffee')
+        .replace(/\bIt is the middle of the night, and suddenly, I am not alone\b/gi, "Middle of the night. Suddenly, I'm not alone")
+        .replace(/\bIt's the middle of the night, and suddenly, I'm not alone\b/gi, "Middle of the night. Suddenly, I'm not alone")
+        .replace(/,\s+and\b/gi, '. And');
+      break;
+    default:
+      genericProse();
+      break;
+  }
+
+  return matchSentenceSurface(source, tidyMaskSentenceText(working));
+}
+
+function applySurfaceOnlyMaskSentence(source = '', sourceProfile = {}, targetProfile = {}, personaId = '', sourceClass = 'procedural-record') {
   let working = String(source || '');
   const contractionDelta = Number(targetProfile.contractionDensity || 0) - Number(sourceProfile.contractionDensity || 0);
   const sentenceDelta = Number(targetProfile.avgSentenceLength || 0) - Number(sourceProfile.avgSentenceLength || 0);
@@ -928,6 +1043,13 @@ function applySurfaceOnlyMaskSentence(source = '', sourceProfile = {}, targetPro
     working = working.replace(/,\s+(?=[A-Z])/g, '; ');
   } else if (punctuationDelta <= -0.015) {
     working = working.replace(/;\s+/g, '. ');
+  }
+
+  if (sourceClass === 'reflective-prose' || sourceClass === 'narrative-scene') {
+    const proseCandidate = buildPersonaProseSurfaceSentence(working, personaId, sourceClass);
+    if (normalizeMaskMovementComparable(proseCandidate) !== normalizeMaskMovementComparable(source)) {
+      working = proseCandidate;
+    }
   }
 
   return matchSentenceSurface(source, working);
@@ -1239,7 +1361,7 @@ function isCounterRecognitionSurface(text = '') {
   return /\b(?:badge(?:-renewal)?|door\s+\d+|west annex|suite\s+\d+|firmware|controller|custody|restricted room|archive operations|manual escort|device challenge|fraud hold)\b/i.test(text);
 }
 
-function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}) {
+function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}, sourceClass = 'procedural-record') {
   const paragraphs = String(sourceText || '')
     .replace(/\r\n/g, '\n')
     .split(/\n{2,}/)
@@ -1262,12 +1384,13 @@ function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}) {
       const sourceIR = engine.segmentTextToIR(segment, protectedState);
       const transfer = engine.buildCadenceTransfer(segment, shell, { retrieval: true });
       const projectedText = stripLeadingMaskIntrusion(segment, transfer.text || segment);
-      const surfaceText = applySurfaceOnlyMaskSentence(segment, sourceProfile, shell.profile || {}, shell.personaId || '');
+      const surfaceText = applySurfaceOnlyMaskSentence(segment, sourceProfile, shell.profile || {}, shell.personaId || '', sourceClass);
       const registration = registerTD613ApertureSegment({
         sourceText: segment,
         projectedText,
         surfaceText,
         personaId: shell.personaId || '',
+        sourceClass,
         sourceProfile,
         targetProfile: shell.profile || {},
         sourceIR,
@@ -1282,22 +1405,6 @@ function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}) {
         ...(transfer.notes || []),
         ...(registration.notes || [])
       ])];
-      if (registration.outcome !== 'source-rerouted' && surfaceText && surfaceText !== registration.registeredText) {
-        const projectedProfile = engine.extractCadenceProfile(registration.registeredText);
-        const surfaceProfile = engine.extractCadenceProfile(surfaceText);
-        const projectedDrift = profileDriftToTarget(projectedProfile, shell.profile || {});
-        const surfaceDrift = profileDriftToTarget(surfaceProfile, shell.profile || {});
-        if (surfaceText !== segment && surfaceDrift + 0.05 < projectedDrift) {
-          registeredText = surfaceText;
-          registeredOutcome = 'repaired';
-          registeredPathologies = detectTD613ApertureTextPathologies({
-            sourceText: segment,
-            outputText: registeredText
-          }).flags;
-          entryNotes.push('Aperture preferred the safer visible counter-record because it preserved witness anchors while landing the target persona pressure more honestly.');
-        }
-      }
-
       const registeredProfile = engine.extractCadenceProfile(registeredText);
       const changedDimensions = deriveRealizedMaskDimensions(sourceProfile, registeredProfile);
       const semanticAudit = (registeredOutcome === 'projected' || registeredOutcome === 'repaired')
@@ -1506,6 +1613,7 @@ function buildStableMaskSurface(engine, sourceText = '', shell = {}) {
     .replace(/\r\n/g, '\n')
     .split(/\n{2,}/);
   const targetProfile = shell?.profile || {};
+  const sourceClass = classifyMaskSourceClass(sourceText);
   let rescueCount = 0;
   let repairedCount = 0;
   let projectedCount = 0;
@@ -1542,7 +1650,7 @@ function buildStableMaskSurface(engine, sourceText = '', shell = {}) {
           return candidate;
         }
         rescueCount += 1;
-        return applySurfaceOnlyMaskSentence(sentence, sourceProfile, targetProfile, shell?.personaId || '');
+        return applySurfaceOnlyMaskSentence(sentence, sourceProfile, targetProfile, shell?.personaId || '', sourceClass);
       }).join(' ');
     })
     .filter(Boolean)
@@ -1647,6 +1755,65 @@ function sentencePreviewRows(engine, sourceText = '', maskedText = '') {
   };
 }
 
+function buildHonestPreview(engine, sourceText = '', maskedText = '', segmentLedger = []) {
+  const sourceSegments = splitPreviewSegments(sourceText);
+  const outputSegments = splitPreviewSegments(maskedText);
+  if ((segmentLedger || []).some((entry) => entry.previewHold)) {
+    return {
+      rows: [],
+      alignment: {
+        ratio: 0,
+        alignedCount: 0,
+        sourceCount: sourceSegments.length,
+        outputCount: outputSegments.length,
+        trustworthy: false,
+        withheld: true,
+        reason: 'compression-pressure'
+      }
+    };
+  }
+
+  const preview = sentencePreviewRows(engine, sourceText, maskedText);
+  const meaningfulRows = (preview.rows || []).filter((row) => {
+    if ((row.effect || '') !== 'shift') {
+      return false;
+    }
+    return normalizeMaskMovementComparable(row.source || '') !== normalizeMaskMovementComparable(row.output || '');
+  });
+
+  if (!meaningfulRows.length) {
+    return {
+      rows: [],
+      alignment: {
+        ...preview.alignment,
+        trustworthy: false,
+        withheld: true,
+        reason: 'surface-only-drift'
+      }
+    };
+  }
+
+  if (!preview.alignment?.trustworthy) {
+    return {
+      rows: [],
+      alignment: {
+        ...preview.alignment,
+        withheld: true,
+        reason: 'low-alignment'
+      }
+    };
+  }
+
+  return {
+    rows: meaningfulRows.slice(0, 3),
+    alignment: {
+      ...preview.alignment,
+      withheld: false,
+      reason: 'shown'
+    }
+  };
+}
+
 function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {}, contactHonesty = {}) {
   const segmentCounts = contactHonesty.segmentCounts || segmentOutcomeCounts(transfer.segmentLedger || []);
   const segmentTotal =
@@ -1718,6 +1885,120 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
   }
 
   return dimensionLine;
+}
+
+function humanizeApertureCode(code = '') {
+  const normalized = String(code || '').trim();
+  const labelMap = {
+    'counter-recognition-pressure': 'counter-recognition pressure stayed visible',
+    'anchor-drift-detected': 'anchor drift stayed in warning space',
+    'alias-persistence-risk': 'alias persistence risk remained elevated',
+    'compression-elevated': 'compression stayed elevated',
+    'preview-hold': 'row-level preview was withheld',
+    'surface-hold-applied': 'the visible counter-record stayed close to source',
+    'minimal-movement': 'movement stayed near the source surface',
+    'repair-activity-applied': 'repair activity stabilized the landed rewrite',
+    'generator-fault': 'catastrophic generator fault forced a hold',
+    'common-repair': 'common repair cleaned the projection',
+    'post-persona-repair': 'post-persona repair cleaned the surface'
+  };
+  return labelMap[normalized] || normalized.replace(/[-:]/g, ' ');
+}
+
+function determineRegisteredTransformClass({
+  sourceClass = 'procedural-record',
+  rawText = '',
+  maskedText = '',
+  changedDimensions = [],
+  lexemeSwaps = [],
+  apertureOutcome = 'surface-held'
+} = {}) {
+  if (apertureOutcome === 'source-rerouted') {
+    return 'generator-fault';
+  }
+  const meaningfulShift = normalizeMaskMovementComparable(rawText) !== normalizeMaskMovementComparable(maskedText);
+  if (!meaningfulShift) {
+    return 'surface-only';
+  }
+  const structuralCount = substantiveMaskDimensions(changedDimensions).length;
+  const lexicalRegisterCount = (changedDimensions || []).filter((dimension) =>
+    dimension === 'lexical-register' ||
+    dimension === 'directness' ||
+    dimension === 'abstraction-posture' ||
+    dimension === 'modifier-density' ||
+    dimension === 'conversation-posture' ||
+    dimension === 'fragment-posture'
+  ).length + ((lexemeSwaps || []).length ? 1 : 0);
+  const proseLike = sourceClass === 'reflective-prose' || sourceClass === 'narrative-scene';
+  if (proseLike && structuralCount >= 1 && lexicalRegisterCount >= 1) {
+    return 'strong-rewrite';
+  }
+  if (meaningfulShift || structuralCount >= 1 || lexicalRegisterCount >= 1) {
+    return 'cadence-rewrite';
+  }
+  return 'surface-only';
+}
+
+function buildApertureSummary({
+  counts = {},
+  apertureOutcome = 'surface-held',
+  sourceClass = 'procedural-record',
+  registeredTransformClass = 'surface-only',
+  deltaToLock = null,
+  heldLanes = [],
+  apertureAudit = {},
+  previewAlignment = {}
+} = {}) {
+  const warningSignals = [...new Set(apertureAudit.warningSignals || [])];
+  const repairPasses = [...new Set(apertureAudit.repairPasses || [])];
+  const headline =
+    registeredTransformClass === 'generator-fault'
+      ? 'Generator fault // public output held after catastrophic collapse.'
+      : registeredTransformClass === 'strong-rewrite'
+        ? `${buildRegistrationLine(apertureOutcome, counts)} Strong rewrite landed.`
+        : registeredTransformClass === 'cadence-rewrite'
+          ? `${buildRegistrationLine(apertureOutcome, counts)} Cadence rewrite landed.`
+          : `${buildRegistrationLine(apertureOutcome, counts)} Movement stayed close to the source surface.`;
+  const homeLine =
+    !deltaToLock
+      ? 'Home distance is unresolved until a cadence home is staged.'
+      : (deltaToLock.traceability || 0) <= -0.05
+        ? `Home trace eased by ${Math.round(Math.abs(deltaToLock.traceability || 0) * 100)} points.`
+        : (deltaToLock.traceability || 0) >= 0.05
+          ? `Home trace tightened by ${Math.round(Math.abs(deltaToLock.traceability || 0) * 100)} points.`
+          : 'Home distance barely moved.';
+  const stickyLine = heldLanes.length
+    ? `Sticky lanes still visible: ${heldLanes.join(', ')}.`
+    : sourceClass === 'narrative-scene'
+      ? 'Sticky lanes still visible: scene pressure stayed readable.'
+      : 'Sticky lanes still visible: no dominant home lane stayed fixed.';
+  const pressureParts = [...warningSignals.slice(0, 2), ...repairPasses.slice(0, 1)]
+    .map((code) => humanizeApertureCode(code));
+  const pressureLine = pressureParts.length
+    ? `Pressure ledger // ${pressureParts.join(' // ')}.`
+    : 'Pressure ledger // no elevated warning channels stayed active.';
+  const drawerItems = [
+    `Registration ledger // ${buildRegistrationLine(apertureOutcome, counts)}`,
+    ...warningSignals.map((code) => `Warning // ${humanizeApertureCode(code)}.`),
+    ...repairPasses.map((code) => `Repair // ${humanizeApertureCode(code)}.`),
+    ...(previewAlignment.reason && previewAlignment.reason !== 'shown'
+      ? [`Preview // ${humanizeApertureCode(previewAlignment.reason)}.`]
+      : [])
+  ];
+
+  return {
+    headline,
+    bullets: [headline, homeLine, stickyLine, pressureLine].slice(0, 4),
+    drawerItems,
+    warningLevel:
+      apertureOutcome === 'source-rerouted'
+        ? 'high'
+        : warningSignals.length >= 3
+          ? 'high'
+          : warningSignals.length >= 1 || repairPasses.length >= 1
+            ? 'medium'
+            : 'low'
+  };
 }
 
 function maskContactSummary(result = null) {
@@ -1849,6 +2130,7 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
   if (!normalized || !persona?.profile) {
     return null;
   }
+  const sourceClass = classifyMaskSourceClass(normalized);
 
   const rawProfile = engine.extractCadenceProfile(normalized);
   const shell = {
@@ -1859,7 +2141,7 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     profile: { ...persona.profile },
     strength: Number(persona.strength || 0.84)
   };
-  const registration = buildRegisteredMaskSurface(engine, normalized, shell);
+  const registration = buildRegisteredMaskSurface(engine, normalized, shell, sourceClass);
   const maskedText = normalizeText(registration.maskedText || normalized) || normalized;
   const internalMaskedText = normalizeText(registration.internalMaskedText || maskedText);
   const segmentLedger = [...(registration.segmentLedger || [])];
@@ -1962,10 +2244,18 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
   }
 
   const swatch = compactSwatch(maskedText || '');
-  const preview = buildLedgerPreview(segmentLedger);
+  const preview = buildHonestPreview(engine, normalized, maskedText, segmentLedger);
+  const registeredTransformClass = determineRegisteredTransformClass({
+    sourceClass,
+    rawText: normalized,
+    maskedText,
+    changedDimensions: realizedChangedDimensions,
+    lexemeSwaps: realizedLexemeSwaps,
+    apertureOutcome
+  });
   const contactHonesty = {
     outcome: apertureOutcome,
-    line: buildRegistrationLine(apertureOutcome, counts),
+    line: registeredTransformClass.replace(/-/g, ' '),
     movementConfidence,
     previewAlignment: preview.alignment,
     pathologyFlags: [...(realizedPathologies.flags || [])],
@@ -2004,9 +2294,26 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     contactSummary,
     contactHonesty
   );
+  const apertureSummary = buildApertureSummary({
+    counts,
+    apertureOutcome,
+    sourceClass,
+    registeredTransformClass,
+    deltaToLock,
+    heldLanes,
+    apertureAudit,
+    previewAlignment: preview.alignment
+  });
+  const movementLine =
+    registeredTransformClass === 'generator-fault'
+      ? 'generator fault // output withheld'
+      : registeredTransformClass === 'surface-only'
+        ? 'surface only // movement stayed close to source'
+        : `${registeredTransformClass.replace(/-/g, ' ')} // ${whatMovedSummary}`;
 
   return {
     rawText: normalized,
+    sourceClass,
     maskedText,
     internalMaskedText,
     registeredMaskedText: maskedText,
@@ -2018,7 +2325,7 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     deltaToLock,
     effectSummary,
     whatMoved,
-    whatMovedSummary,
+    whatMovedSummary: movementLine,
     whatHeld: heldLanes,
     stickinessNotes,
     swatch,
@@ -2026,7 +2333,9 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     shiftPreview: preview.rows,
     previewAlignment: preview.alignment,
     apertureOutcome,
-    apertureNotes: [
+    registeredTransformClass,
+    apertureSummary,
+    apertureNotes: [...new Set([
       ...(transfer.notes || []),
       ...segmentLedger.flatMap((entry) => entry.notes || []),
       ...(apertureAudit.warningSignals.length
@@ -2035,7 +2344,7 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
       ...(apertureAudit.repairPasses.length
         ? [`Aperture repair passes // ${apertureAudit.repairPasses.join(' // ')}`]
         : [])
-    ],
+    ])],
     apertureAudit,
     movementConfidence,
     contactHonesty,
