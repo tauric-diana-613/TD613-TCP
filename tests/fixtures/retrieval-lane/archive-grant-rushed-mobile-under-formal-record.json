@@ -20,418 +20,13 @@
   },
   "retrievalTrace": {
     "sourceText": "grant isnt just digitize + pray. its shared catalog protocol + 6 steward reviewers + portable exhibit kit. main risk is if description outruns local review and we start calling extraction access. pls keep the 2 wk review buffer + translation line in budget",
-    "donorProfileSummary": {
-      "mode": "borrowed",
-      "label": "native cadence",
-      "strength": 1,
-      "profile": {
-        "avgSentenceLength": 20.7,
-        "sentenceCount": 4,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.12,
-        "lineBreakDensity": 0,
-        "contentWordComplexity": 0.543,
-        "modifierDensity": 0.103,
-        "hedgeDensity": 0.023,
-        "directness": 0.04,
-        "abstractionPosture": 0.652,
-        "latinatePreference": 0.116,
-        "recurrencePressure": 0.145
-      }
-    },
-    "sourceIR": {
-      "metadata": {
-        "sentenceCount": 4,
-        "clauseCount": 5,
-        "literalSpans": [
-          {
-            "value": "6",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "2",
-            "placeholder": "__PROTLIT_B__"
-          }
-        ]
-      },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "grant isnt just digitize + pray",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "grant isnt just digitize + pray",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "grant",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "its shared catalog protocol + __PROTLIT_A__ steward reviewers + portable exhibit kit",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "its shared catalog protocol + __PROTLIT_A__ steward reviewers + portable exhibit kit",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "its",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "portable"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "main risk is if description outruns local review and we start calling extraction access",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "main risk is if description outruns local review",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "review",
-              "actor": "",
-              "action": "review",
-              "object": "",
-              "modifiers": [
-                "local"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s2c1",
-              "text": "we start calling extraction access",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "start",
-              "actor": "we",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "pls keep the __PROTLIT_B__ wk review buffer + translation line in budget",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "pls keep the __PROTLIT_B__ wk review buffer + translation line in budget",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "keep",
-              "actor": "the __PROTLIT_B__",
-              "action": "keep",
-              "object": "protlit b wk review buffer",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
-    },
-    "opportunityProfile": {
-      "sentenceSplit": 0,
-      "sentenceMerge": 3,
-      "contraction": 0,
-      "connector": 1,
-      "lineBreak": 3,
-      "abbreviation": 2,
-      "orthography": 5,
-      "fragment": 1,
-      "conversational": 1,
-      "additive": 1,
-      "contrastive": 0,
-      "causal": 0,
-      "temporal": 0,
-      "clarifying": 0,
-      "resumptive": 0
-    },
-    "planSummary": {
-      "transferMode": "expand",
-      "structuralOperationsSelected": [
-        "merge-pairs",
-        "clause-texture"
-      ],
-      "lexicalRegisterOperationsSelected": [],
-      "connectorStrategy": "additive",
-      "contractionStrategy": "hold",
-      "relationInventory": {
-        "additive": 1,
-        "contrastive": 0,
-        "causal": 0,
-        "temporal": 0,
-        "clarifying": 0,
-        "resumptive": 0
-      },
-      "structuralGoals": {
-        "sentenceCountDelta": 0,
-        "avgSentenceDelta": 10.7
-      },
-      "discourseGoals": {
-        "contractionDelta": 0,
-        "hedgeDelta": -0.0020000000000000018
-      },
-      "registerGoals": {
-        "contentWordComplexityDelta": 0.15800000000000003,
-        "modifierDensityDelta": 0.041999999999999996,
-        "directnessDelta": -0.13999999999999999,
-        "abstractionDelta": 0.15200000000000002,
-        "latinateDelta": -0.0049999999999999906,
-        "registerMode": "compressed"
-      },
-      "operationBudget": {
-        "splitSentence": 0,
-        "mergeSentence": 10,
-        "swapConnector": 2,
-        "applyHedge": 0,
-        "realizeLexicon": 5
-      }
-    },
-    "candidateSummary": {
-      "selected": {
-        "spec": "ir-beam-search",
-        "score": 481.091,
-        "passesApplied": [
-          "merge-pairs",
-          "clause-texture"
-        ],
-        "rescuePasses": [],
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "connector-stance",
-          "lexical-register",
-          "directness",
-          "abbreviation-posture",
-          "orthography-posture",
-          "fragment-posture",
-          "surface-marker-posture",
-          "punctuation-shape"
-        ],
-        "qualityGatePassed": true,
-        "notes": []
-      },
-      "candidates": [
-        {
-          "spec": "ir-beam-search",
-          "score": 481.091,
-          "passesApplied": [
-            "merge-pairs",
-            "clause-texture"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "directness",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "surface-marker-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "mixed-structural",
-          "score": 390.174,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "connector-stance-lexicon",
-            "punctuation-finish"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "directness",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "merge-heavy",
-          "score": 390.174,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "connector-stance-lexicon",
-            "punctuation-finish"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "directness",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "connector-stance-heavy",
-          "score": 389.388,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "connector-stance-lexicon"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "directness",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 389.388,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "connector-stance-lexicon"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "directness",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        }
-      ]
-    },
-    "finalRealization": {
-      "text": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit. Main risk is if description outruns local review and we begin contacting extraction access, and please retain the 2 week review buffer, translation line in budget.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "directness",
-        "abbreviation-posture",
-        "orthography-posture",
-        "fragment-posture",
-        "surface-marker-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "keep",
-          "from": "keep",
-          "to": "retain",
-          "kind": "lexeme"
-        },
-        {
-          "family": "start",
-          "from": "start",
-          "to": "begin",
-          "kind": "lexeme"
-        },
-        {
-          "family": "call",
-          "from": "calling",
-          "to": "contacting",
-          "kind": "lexeme"
-        }
-      ],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 5.589,
-        "outputDonorDistance": 2.4,
-        "donorImprovement": 3.189,
-        "donorImprovementRatio": 0.571,
-        "sourceOutputLexicalOverlap": 0.773
-      },
-      "rescuePasses": [
-        "td613-aperture-warning"
-      ],
-      "visibleShift": true,
-      "nonTrivialShift": true
-    },
+    "sourceClass": "formal-correspondence",
+    "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
-      "actorCoverage": 0.83,
+      "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.95,
+      "objectCoverage": 0.96,
       "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -445,20 +40,20 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.1
+          "bagScore": 1,
+          "globalBagScore": 0.071
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c0",
+          "matchedClauseId": "s0c0+s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 0.333,
-          "globalBagScore": 0.091
+          "bagScore": 0.125,
+          "globalBagScore": 0.067
         },
         {
           "sourceClauseId": "s2c0",
@@ -470,123 +65,72 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.2
+          "globalBagScore": 0.143
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s1c1",
+          "matchedClauseId": "s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.167,
-          "globalBagScore": 0.1
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s1c0+s1c1",
+          "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
-          "actorCoverage": 0.15,
+          "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 0.8,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.167,
-          "globalBagScore": 0.143
+          "bagScore": 0.714,
+          "globalBagScore": 0.333
         }
       ],
       "sourceClauseCount": 5,
-      "outputClauseCount": 3
+      "outputClauseCount": 4
     },
     "protectedAnchorAudit": {
-      "totalAnchors": 2,
-      "resolvedAnchors": 2,
+      "totalAnchors": 0,
+      "resolvedAnchors": 0,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
-    "realizedIR": {
-      "metadata": {
-        "sentenceCount": 2,
-        "clauseCount": 3,
-        "literalSpans": [
-          {
-            "value": "6",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "2",
-            "placeholder": "__PROTLIT_B__"
-          }
-        ]
+    "planSummary": {
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 4,
+        "clauseCount": 5,
+        "exactAnchorCount": 0
       },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "grant",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "portable"
-              ],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "Main risk is if description outruns local review and we begin contacting extraction access, and please retain the 2 week review buffer, translation line in budget.",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "Main risk is if description outruns local review",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "review",
-              "actor": "",
-              "action": "review",
-              "object": "",
-              "modifiers": [
-                "local"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s1c1",
-              "text": "we begin contacting extraction access, and please retain the 2 week review buffer, translation line in budget",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "begin",
-              "actor": "we",
-              "action": "begin",
-              "object": "contacting extraction access please retain",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
+      "structuralOperationsSelected": [
+        "merge-short-beats",
+        "front-if"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "expanded:pls->please",
+        "expanded:wk->week",
+        "expanded:its->it-is"
+      ],
+      "connectorStrategy": "cascade",
+      "contractionStrategy": "expand"
+    },
+    "candidateSummary": {
+      "candidateCount": 4,
+      "landedCandidateId": "base:hybrid",
+      "families": [
+        "syntax-shape",
+        "register-lexicon",
+        "order-beat",
+        "hybrid"
+      ],
+      "holdStatus": "landed"
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -596,158 +140,137 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "directness",
+        "punctuation-shape",
         "abbreviation-posture",
-        "orthography-posture",
-        "fragment-posture",
-        "surface-marker-posture",
-        "punctuation-shape"
+        "orthography-posture"
       ],
       "lexemeSwaps": [
         {
-          "family": "keep",
-          "from": "keep",
-          "to": "retain",
-          "kind": "lexeme"
+          "from": "pls",
+          "to": "please",
+          "family": "surface"
         },
         {
-          "family": "start",
-          "from": "start",
-          "to": "begin",
-          "kind": "lexeme"
+          "from": "wk",
+          "to": "week",
+          "family": "surface"
         },
         {
-          "family": "call",
-          "from": "calling",
-          "to": "contacting",
-          "kind": "lexeme"
+          "from": "its",
+          "to": "it is",
+          "family": "surface"
         }
-      ],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 5.589,
-        "outputDonorDistance": 2.4,
-        "donorImprovement": 3.189,
-        "donorImprovementRatio": 0.571,
-        "sourceOutputLexicalOverlap": 0.773
-      },
-      "realizationNotes": [
-        "3 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, directness, abbreviation-posture, orthography-posture, fragment-posture, surface-marker-posture.",
-        "Semantic risk is elevated; review the realized output before relying on it."
-      ],
-      "rescuePasses": [
-        "td613-aperture-warning"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
     },
-    "generatorVersion": "v2",
-    "sourceClass": "formal-correspondence",
+    "donorProgress": {
+      "eligible": true,
+      "sourceDonorDistance": 5.545,
+      "outputDonorDistance": 3.759,
+      "donorImprovement": 1.786,
+      "donorImprovementRatio": 0.322,
+      "sourceOutputLexicalOverlap": 0.857
+    },
     "candidateLedger": [
       {
-        "id": "base",
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.8628,
+        "score": 1.0955,
         "rewriteStrength": 1,
-        "targetFit": 0.5712,
+        "targetFit": 0.2868,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit. Main risk is if description outruns local review and"
+        "outputPreview": "grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local revie"
       },
       {
-        "id": "amplified",
+        "id": "base:register-lexicon",
+        "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.87,
+        "score": 0.9703,
         "rewriteStrength": 1,
-        "targetFit": 0.5938,
+        "targetFit": 0.1775,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit. Main risk is if description outruns local review and"
+        "outputPreview": "grant isnt just digitize + pray; it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review an"
       },
       {
-        "id": "contrast",
+        "id": "base:order-beat",
+        "family": "order-beat",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 1.0805,
+        "rewriteStrength": 1,
+        "targetFit": 0.2735,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
+      },
+      {
+        "id": "base:hybrid",
+        "family": "hybrid",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.8712,
+        "score": 1.1071,
         "rewriteStrength": 1,
-        "targetFit": 0.5976,
+        "targetFit": 0.2969,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit. Main risk is if description outruns local review and"
-      },
-      {
-        "id": "conservative",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 0.8685,
-        "rewriteStrength": 1,
-        "targetFit": 0.5891,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit. Main risk is if description outruns local review and"
+        "outputPreview": "grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered rewrite.",
+      "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 4,
-      "winningCandidateId": "contrast"
+      "winningCandidateId": "base:hybrid"
     },
-    "winningCandidateId": "contrast"
+    "winningCandidateId": "base:hybrid"
   },
   "semanticContract": {
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "connector-stance",
-      "directness",
-      "fragment-posture",
-      "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
-      "sentence-mean",
-      "sentence-spread",
-      "surface-marker-posture"
+      "sentence-mean"
     ],
     "lexemeSwapFamilies": [
-      "call",
-      "keep",
-      "start"
+      "surface"
     ],
     "relationInventory": [
-      "additive:1",
-      "causal:0",
-      "clarifying:0",
-      "contrastive:0",
-      "resumptive:0",
-      "temporal:0"
+      "clauseCount:5",
+      "exactAnchorCount:0",
+      "paragraphCount:1",
+      "sentenceCount:4",
+      "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "clause-texture",
-      "merge-pairs"
+      "front-if",
+      "merge-short-beats"
     ],
-    "lexicalOperations": [],
-    "connectorStrategy": "additive",
-    "contractionStrategy": "hold",
+    "lexicalOperations": [
+      "expanded:its->it-is",
+      "expanded:pls->please",
+      "expanded:wk->week"
+    ],
+    "connectorStrategy": "cascade",
+    "contractionStrategy": "expand",
     "propositionCoverage": 1,
-    "actorCoverage": 0.83,
+    "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.95,
+    "objectCoverage": 0.96,
     "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

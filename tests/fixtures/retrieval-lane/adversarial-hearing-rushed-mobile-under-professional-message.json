@@ -20,381 +20,13 @@
   },
   "retrievalTrace": {
     "sourceText": "hearing got ugly. they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. she left for med pickup she already told them abt. thats not refusal its them being late",
-    "donorProfileSummary": {
-      "mode": "borrowed",
-      "label": "native cadence",
-      "strength": 1,
-      "profile": {
-        "avgSentenceLength": 18.03,
-        "sentenceCount": 4,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.145,
-        "lineBreakDensity": 0,
-        "contentWordComplexity": 0.297,
-        "modifierDensity": 0.107,
-        "hedgeDensity": 0,
-        "directness": 0.04,
-        "abstractionPosture": 0.522,
-        "latinatePreference": 0.054,
-        "recurrencePressure": 0.182
-      }
-    },
-    "sourceIR": {
-      "metadata": {
-        "sentenceCount": 4,
-        "clauseCount": 4,
-        "literalSpans": [
-          {
-            "value": "5:43",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "6:10",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "\"refused entry\"",
-            "placeholder": "__PROTLIT_C__"
-          },
-          {
-            "value": "1-5",
-            "placeholder": "__PROTLIT_D__"
-          }
-        ]
-      },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "hearing got ugly",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "hearing got ugly",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "got",
-              "actor": "",
-              "action": "got",
-              "object": "ugly",
-              "modifiers": [
-                "ugly"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "they keep saying she __PROTLIT_C__ but inspector texted __PROTLIT_A__ he was late + showed after __PROTLIT_B__ on a __PROTLIT_D__ window",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "they keep saying she __PROTLIT_C__ but inspector texted __PROTLIT_A__ he was late + showed after __PROTLIT_B__ on a __PROTLIT_D__ window",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "keep",
-              "actor": "they",
-              "action": "keep",
-              "object": "saying protlit c inspector texted",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "she left for med pickup she already told them abt",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "she left for med pickup she already told them abt",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "left",
-              "actor": "she",
-              "action": "left",
-              "object": "med pickup already told them",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "thats not refusal its them being late",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "thats not refusal its them being late",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "being",
-              "actor": "",
-              "action": "being",
-              "object": "late",
-              "modifiers": [
-                "refusal"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
-    },
-    "opportunityProfile": {
-      "sentenceSplit": 0,
-      "sentenceMerge": 3,
-      "contraction": 0,
-      "connector": 1,
-      "lineBreak": 3,
-      "abbreviation": 0,
-      "orthography": 5,
-      "fragment": 0,
-      "conversational": 0,
-      "additive": 0,
-      "contrastive": 1,
-      "causal": 0,
-      "temporal": 1,
-      "clarifying": 0,
-      "resumptive": 0
-    },
-    "planSummary": {
-      "transferMode": "expand",
-      "structuralOperationsSelected": [
-        "baseline-merge",
-        "sentence-structure",
-        "clause-join-split"
-      ],
-      "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "punctuation-finish"
-      ],
-      "connectorStrategy": "contrastive",
-      "contractionStrategy": "hold",
-      "relationInventory": {
-        "additive": 0,
-        "contrastive": 1,
-        "causal": 0,
-        "temporal": 1,
-        "clarifying": 0,
-        "resumptive": 0
-      },
-      "structuralGoals": {
-        "sentenceCountDelta": 0,
-        "avgSentenceDelta": 7.280000000000001
-      },
-      "discourseGoals": {
-        "contractionDelta": 0,
-        "hedgeDelta": 0
-      },
-      "registerGoals": {
-        "contentWordComplexityDelta": 0.10799999999999998,
-        "modifierDensityDelta": 0.041999999999999996,
-        "directnessDelta": -0.13999999999999999,
-        "abstractionDelta": 0.02200000000000002,
-        "latinateDelta": -0.011000000000000003,
-        "registerMode": "plain"
-      },
-      "operationBudget": {
-        "splitSentence": 0,
-        "mergeSentence": 7,
-        "swapConnector": 2,
-        "applyHedge": 0,
-        "realizeLexicon": 5
-      }
-    },
-    "candidateSummary": {
-      "selected": {
-        "spec": "mixed-structural",
-        "score": 299.688,
-        "passesApplied": [
-          "baseline-merge",
-          "baseline-voice-realization",
-          "sentence-structure",
-          "clause-join-split",
-          "punctuation-finish"
-        ],
-        "rescuePasses": [],
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "connector-stance",
-          "abbreviation-posture",
-          "orthography-posture",
-          "punctuation-shape"
-        ],
-        "qualityGatePassed": true,
-        "notes": []
-      },
-      "candidates": [
-        {
-          "spec": "ir-beam-search",
-          "score": 295.824,
-          "passesApplied": [
-            "merge-pairs",
-            "clause-texture"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "abbreviation-posture",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "mixed-structural",
-          "score": 299.688,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "sentence-structure",
-            "clause-join-split",
-            "punctuation-finish"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "abbreviation-posture",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "merge-heavy",
-          "score": 299.688,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "sentence-structure",
-            "clause-join-split",
-            "punctuation-finish"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "abbreviation-posture",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "connector-stance-heavy",
-          "score": 299.688,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "sentence-structure",
-            "clause-join-split",
-            "punctuation-finish"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "abbreviation-posture",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 298.824,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "sentence-structure",
-            "clause-join-split"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "abbreviation-posture",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        }
-      ]
-    },
-    "finalRealization": {
-      "text": "Hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late; showed after 6:10 on a 1-5 window. She left for med pickup she already told them abt, and that is not refusal its them being late.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "abbreviation-posture",
-        "orthography-posture",
-        "surface-marker-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 3.513,
-        "outputDonorDistance": 2.707,
-        "donorImprovement": 0.806,
-        "donorImprovementRatio": 0.229,
-        "sourceOutputLexicalOverlap": 0.902
-      },
-      "rescuePasses": [
-        "td613-aperture-warning"
-      ],
-      "visibleShift": true,
-      "nonTrivialShift": true
-    },
+    "sourceClass": "formal-correspondence",
+    "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.938,
+      "objectCoverage": 1,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -409,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.091
+          "globalBagScore": 0.133
         },
         {
           "sourceClauseId": "s1c0",
@@ -417,11 +49,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.167
+          "bagScore": 1,
+          "globalBagScore": 0.4
         },
         {
           "sourceClauseId": "s2c0",
@@ -433,7 +65,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.273
+          "globalBagScore": 0.4
         },
         {
           "sourceClauseId": "s3c0",
@@ -444,134 +76,45 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.091
+          "bagScore": 0.667,
+          "globalBagScore": 0.133
         }
       ],
       "sourceClauseCount": 4,
-      "outputClauseCount": 5
+      "outputClauseCount": 4
     },
     "protectedAnchorAudit": {
-      "totalAnchors": 4,
-      "resolvedAnchors": 4,
+      "totalAnchors": 3,
+      "resolvedAnchors": 3,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
-    "realizedIR": {
-      "metadata": {
-        "sentenceCount": 2,
-        "clauseCount": 5,
-        "literalSpans": [
-          {
-            "value": "5:43",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "6:10",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "\"refused entry\"",
-            "placeholder": "__PROTLIT_C__"
-          },
-          {
-            "value": "1-5",
-            "placeholder": "__PROTLIT_D__"
-          }
-        ]
+    "planSummary": {
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 4,
+        "clauseCount": 4,
+        "exactAnchorCount": 3
       },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late; showed after 6:10 on a 1-5 window",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Hearing got ugly",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "got",
-              "actor": "",
-              "action": "got",
-              "object": "ugly",
-              "modifiers": [
-                "ugly"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s0c1",
-              "text": "they keep saying she \"refused entry\" but inspector texted 5:43 he was late",
-              "relationToPrev": "contrastive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "keep",
-              "actor": "they",
-              "action": "keep",
-              "object": "saying refused entry inspector texted",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s0c2",
-              "text": "showed after 6:10 on a 1-5 window",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "showed",
-              "actor": "a 1",
-              "action": "showed",
-              "object": "after 6 10 1 5",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "She left for med pickup she already told them abt, and that is not refusal its them being late.",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "She left for med pickup she already told them abt",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "left",
-              "actor": "She",
-              "action": "left",
-              "object": "med pickup already told them",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s1c1",
-              "text": "that is not refusal its them being late",
-              "relationToPrev": "clarifying",
-              "clauseType": "relative",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "is",
-              "actor": "that",
-              "action": "is",
-              "object": "refusal its them late",
-              "modifiers": [
-                "refusal"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
+      "structuralOperationsSelected": [
+        "merge-short-beats"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "expanded:thats->that-is",
+        "expanded:its->it-is"
+      ],
+      "connectorStrategy": "cascade",
+      "contractionStrategy": "expand"
+    },
+    "candidateSummary": {
+      "candidateCount": 2,
+      "landedCandidateId": "base:syntax-shape",
+      "families": [
+        "syntax-shape",
+        "register-lexicon"
+      ],
+      "holdStatus": "landed"
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -582,133 +125,103 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "abbreviation-posture",
-        "orthography-posture",
-        "surface-marker-posture",
-        "punctuation-shape"
+        "punctuation-shape",
+        "orthography-posture"
       ],
-      "lexemeSwaps": [],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 3.513,
-        "outputDonorDistance": 2.707,
-        "donorImprovement": 0.806,
-        "donorImprovementRatio": 0.229,
-        "sourceOutputLexicalOverlap": 0.902
-      },
-      "realizationNotes": [
-        "Register shift surfaced through abbreviation-posture, orthography-posture.",
-        "Semantic risk is elevated; review the realized output before relying on it."
-      ],
-      "rescuePasses": [
-        "td613-aperture-warning"
+      "lexemeSwaps": [
+        {
+          "from": "thats",
+          "to": "that is",
+          "family": "surface"
+        },
+        {
+          "from": "its",
+          "to": "it is",
+          "family": "surface"
+        }
       ],
       "visibleShift": true,
       "nonTrivialShift": true
     },
-    "generatorVersion": "v2",
-    "sourceClass": "formal-correspondence",
+    "donorProgress": {
+      "eligible": true,
+      "sourceDonorDistance": 3.519,
+      "outputDonorDistance": 3.264,
+      "donorImprovement": 0.255,
+      "donorImprovementRatio": 0.072,
+      "sourceOutputLexicalOverlap": 0.857
+    },
     "candidateLedger": [
       {
-        "id": "base",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 0.8168,
-        "rewriteStrength": 1,
-        "targetFit": 0.4274,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late, showed after 6:10 on a 1-5 window. She left for med pickup she alr"
-      },
-      {
-        "id": "amplified",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 0.8029,
-        "rewriteStrength": 1,
-        "targetFit": 0.3841,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late; showed after 6:10 on a 1-5 window. She left for med pickup she alr"
-      },
-      {
-        "id": "contrast",
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.8244,
+        "score": 0.8976,
         "rewriteStrength": 1,
-        "targetFit": 0.4512,
+        "targetFit": 0.4004,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late; showed after 6:10 on a 1-5 window. She left for med pickup she alr"
+        "outputPreview": "hearing got ugly, and they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup sh"
       },
       {
-        "id": "conservative",
+        "id": "base:register-lexicon",
+        "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.8222,
+        "score": 0.7655,
         "rewriteStrength": 1,
-        "targetFit": 0.4444,
+        "targetFit": 0.3561,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late, showed after 6:10 on a 1-5 window. She left for med pickup she alr"
+        "outputPreview": "hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup she al"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered rewrite.",
+      "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
-      "winningCandidateId": "contrast"
+      "candidateCount": 2,
+      "winningCandidateId": "base:syntax-shape"
     },
-    "winningCandidateId": "contrast"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
-      "abbreviation-posture",
-      "connector-stance",
-      "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",
-      "sentence-spread",
-      "surface-marker-posture"
+      "sentence-spread"
     ],
-    "lexemeSwapFamilies": [],
+    "lexemeSwapFamilies": [
+      "surface"
+    ],
     "relationInventory": [
-      "additive:0",
-      "causal:0",
-      "clarifying:0",
-      "contrastive:1",
-      "resumptive:0",
-      "temporal:1"
+      "clauseCount:4",
+      "exactAnchorCount:3",
+      "paragraphCount:1",
+      "sentenceCount:4",
+      "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "baseline-merge",
-      "clause-join-split",
-      "sentence-structure"
+      "merge-short-beats"
     ],
     "lexicalOperations": [
-      "baseline-voice-realization",
-      "punctuation-finish"
+      "expanded:its->it-is",
+      "expanded:thats->that-is"
     ],
-    "connectorStrategy": "contrastive",
-    "contractionStrategy": "hold",
+    "connectorStrategy": "cascade",
+    "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.938,
+    "objectCoverage": 1,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

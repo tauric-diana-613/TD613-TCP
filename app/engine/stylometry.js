@@ -2992,7 +2992,7 @@ function donorDistanceFromFit(fit = {}) {
   );
 }
 
-function buildBorrowedShellDonorProgress(
+export function buildBorrowedShellDonorProgress(
   sourceText = '',
   outputText = '',
   sourceProfile = {},
@@ -3047,11 +3047,11 @@ function borrowedShellSurfaceClose(donorProgress = {}) {
   }
 
   return (
-    donorProgress.donorImprovement <= 0.1 ||
-    donorProgress.donorImprovementRatio <= 0.08 ||
+    donorProgress.donorImprovement < 0.12 ||
+    donorProgress.donorImprovementRatio < 0.05 ||
     (
-      donorProgress.sourceOutputLexicalOverlap >= 0.88 &&
-      donorProgress.donorImprovement < 0.42
+      donorProgress.sourceOutputLexicalOverlap >= 0.95 &&
+      donorProgress.donorImprovement < 0.28
     )
   );
 }
@@ -8273,7 +8273,7 @@ function buildProtectedAnchorAudit(outputText = '', protectedState = { literals:
   };
 }
 
-function buildSemanticAuditBundle(sourceIR, outputText = '', protectedState = { literals: [] }) {
+export function buildSemanticAuditBundle(sourceIR, outputText = '', protectedState = { literals: [] }) {
   const outputIR = segmentTextToIR(normalizeText(outputText), protectedState);
   const sourceClauses = flattenSemanticClauses(sourceIR);
   const outputClauses = flattenSemanticClauses(outputIR);

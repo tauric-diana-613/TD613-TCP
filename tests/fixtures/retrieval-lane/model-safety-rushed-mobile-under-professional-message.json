@@ -20,340 +20,13 @@
   },
   "retrievalTrace": {
     "sourceText": "rs-17 is doing the fake-safe thing again. prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing. not jailbreak, just overrefusal killing the task",
-    "donorProfileSummary": {
-      "mode": "borrowed",
-      "label": "native cadence",
-      "strength": 0.88,
-      "profile": {
-        "avgSentenceLength": 21.52,
-        "sentenceCount": 3,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.161,
-        "lineBreakDensity": 0,
-        "contentWordComplexity": 0.392,
-        "modifierDensity": 0.078,
-        "hedgeDensity": 0.088,
-        "directness": 0,
-        "abstractionPosture": 0.5,
-        "latinatePreference": 0.041,
-        "recurrencePressure": 0.154
-      }
-    },
-    "sourceIR": {
-      "metadata": {
-        "sentenceCount": 3,
-        "clauseCount": 3,
-        "literalSpans": [
-          {
-            "value": "rs-17",
-            "placeholder": "__PROTLIT_A__"
-          }
-        ]
-      },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "__PROTLIT_A__ is doing the fake-safe thing again",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "__PROTLIT_A__ is doing the fake-safe thing again",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "progressive",
-              "propositionHead": "is",
-              "actor": "the fake",
-              "action": "is",
-              "object": "doing fake safe thing again",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "asked",
-              "actor": "it",
-              "action": "asked",
-              "object": "redacted witness recap started preaching",
-              "modifiers": [
-                "actually"
-              ],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "not jailbreak, just overrefusal killing the task",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "not jailbreak, just overrefusal killing the task",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "jailbreak",
-              "actor": "the task",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "overrefusal"
-              ],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    "opportunityProfile": {
-      "sentenceSplit": 0,
-      "sentenceMerge": 2,
-      "contraction": 0,
-      "connector": 3,
-      "lineBreak": 2,
-      "abbreviation": 0,
-      "orthography": 4,
-      "fragment": 0,
-      "conversational": 0,
-      "additive": 0,
-      "contrastive": 1,
-      "causal": 0,
-      "temporal": 0,
-      "clarifying": 0,
-      "resumptive": 0
-    },
-    "planSummary": {
-      "transferMode": "expand",
-      "structuralOperationsSelected": [
-        "baseline-merge",
-        "planned-sentence-merge",
-        "sentence-structure",
-        "clause-join-split"
-      ],
-      "lexicalRegisterOperationsSelected": [],
-      "connectorStrategy": "contrastive",
-      "contractionStrategy": "hold",
-      "relationInventory": {
-        "additive": 0,
-        "contrastive": 1,
-        "causal": 0,
-        "temporal": 0,
-        "clarifying": 0,
-        "resumptive": 0
-      },
-      "structuralGoals": {
-        "sentenceCountDelta": 0,
-        "avgSentenceDelta": 10.19
-      },
-      "discourseGoals": {
-        "contractionDelta": 0,
-        "hedgeDelta": 0
-      },
-      "registerGoals": {
-        "contentWordComplexityDelta": 0.0050000000000000044,
-        "modifierDensityDelta": 0.036,
-        "directnessDelta": 0,
-        "abstractionDelta": 0,
-        "latinateDelta": 0.041,
-        "registerMode": "compressed"
-      },
-      "operationBudget": {
-        "splitSentence": 0,
-        "mergeSentence": 8,
-        "swapConnector": 2,
-        "applyHedge": 0,
-        "realizeLexicon": 5
-      }
-    },
-    "candidateSummary": {
-      "selected": {
-        "spec": "mixed-structural",
-        "score": 327.792,
-        "passesApplied": [
-          "baseline-merge",
-          "planned-sentence-merge",
-          "sentence-structure",
-          "clause-join-split",
-          "cleanup-restore"
-        ],
-        "rescuePasses": [],
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "connector-stance",
-          "lexical-register",
-          "orthography-posture",
-          "punctuation-shape"
-        ],
-        "qualityGatePassed": true,
-        "notes": []
-      },
-      "candidates": [
-        {
-          "spec": "ir-beam-search",
-          "score": 258.488,
-          "passesApplied": [
-            "merge-pairs",
-            "clause-texture"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "mixed-structural",
-          "score": 327.792,
-          "passesApplied": [
-            "baseline-merge",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "merge-heavy",
-          "score": 327.792,
-          "passesApplied": [
-            "baseline-merge",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "connector-stance-heavy",
-          "score": 327.792,
-          "passesApplied": [
-            "baseline-merge",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 327.792,
-          "passesApplied": [
-            "baseline-merge",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        }
-      ]
-    },
-    "finalRealization": {
-      "text": "rs-17 is doing the fake-safe thing again. prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing. not jailbreak, just overrefusal killing the task",
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
-      "lexemeSwaps": [],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 4.019,
-        "outputDonorDistance": 4.019,
-        "donorImprovement": 0,
-        "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 1
-      },
-      "rescuePasses": [
-        "final-rejection"
-      ],
-      "visibleShift": false,
-      "nonTrivialShift": false
-    },
+    "sourceClass": "formal-correspondence",
+    "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 1,
+      "objectCoverage": 0.917,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -364,27 +37,27 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.357
+          "bagScore": 0.091,
+          "globalBagScore": 0.071
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.429
+          "bagScore": 0.857,
+          "globalBagScore": 0.6
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -392,219 +65,144 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.214
+          "globalBagScore": 0.3
         }
       ],
       "sourceClauseCount": 3,
-      "outputClauseCount": 3
+      "outputClauseCount": 2
     },
     "protectedAnchorAudit": {
-      "totalAnchors": 1,
-      "resolvedAnchors": 1,
+      "totalAnchors": 0,
+      "resolvedAnchors": 0,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
-    "realizedIR": {
-      "metadata": {
+    "planSummary": {
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
         "sentenceCount": 3,
         "clauseCount": 3,
-        "literalSpans": [
-          {
-            "value": "rs-17",
-            "placeholder": "__PROTLIT_A__"
-          }
-        ]
+        "exactAnchorCount": 0
       },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "rs-17 is doing the fake-safe thing again",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "rs-17 is doing the fake-safe thing again",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "progressive",
-              "propositionHead": "is",
-              "actor": "the fake",
-              "action": "is",
-              "object": "doing fake safe thing again",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "asked",
-              "actor": "it",
-              "action": "asked",
-              "object": "redacted witness recap started preaching",
-              "modifiers": [
-                "actually"
-              ],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "not jailbreak, just overrefusal killing the task",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "not jailbreak, just overrefusal killing the task",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "jailbreak",
-              "actor": "the task",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "overrefusal"
-              ],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            }
-          ]
-        }
-      ]
+      "structuralOperationsSelected": [
+        "merge-short-beats"
+      ],
+      "lexicalRegisterOperationsSelected": [],
+      "connectorStrategy": "cascade",
+      "contractionStrategy": "expand"
+    },
+    "candidateSummary": {
+      "candidateCount": 3,
+      "landedCandidateId": "base:syntax-shape",
+      "families": [
+        "syntax-shape",
+        "register-lexicon",
+        "hybrid"
+      ],
+      "holdStatus": "landed"
     },
     "realizationSummary": {
-      "transferClass": "rejected",
-      "borrowedShellOutcome": "rejected",
-      "borrowedShellFailureClass": "donor-underfit",
-      "realizationTier": "none",
-      "changedDimensions": [],
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
+      "borrowedShellFailureClass": null,
+      "realizationTier": "structural",
+      "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread"
+      ],
       "lexemeSwaps": [],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 4.019,
-        "outputDonorDistance": 4.019,
-        "donorImprovement": 0,
-        "donorImprovementRatio": 0,
-        "sourceOutputLexicalOverlap": 1
-      },
-      "realizationNotes": [
-        "Semantic risk is elevated; review the realized output before relying on it."
-      ],
-      "rescuePasses": [
-        "final-rejection"
-      ],
-      "visibleShift": false,
-      "nonTrivialShift": false
+      "visibleShift": true,
+      "nonTrivialShift": true
     },
-    "generatorVersion": "v2",
-    "sourceClass": "formal-correspondence",
+    "donorProgress": {
+      "eligible": true,
+      "sourceDonorDistance": 4.475,
+      "outputDonorDistance": 5.104,
+      "donorImprovement": 0,
+      "donorImprovementRatio": 0,
+      "sourceOutputLexicalOverlap": 0.97
+    },
     "candidateLedger": [
       {
-        "id": "base",
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.5639,
-        "rewriteStrength": 0.736,
-        "targetFit": 0.4441,
-        "movementConfidence": 0.08,
+        "score": 0.5568,
+        "rewriteStrength": 0.7331,
+        "targetFit": 0.1867,
+        "movementConfidence": 0.82,
         "failureReasons": [],
-        "transferClass": "rejected",
-        "outputPreview": "Rs-17 is doing the fake-safe thing again; prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
+        "transferClass": "structural",
+        "outputPreview": "rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
       },
       {
-        "id": "amplified",
+        "id": "base:register-lexicon",
+        "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.5484,
+        "score": 0.5218,
         "rewriteStrength": 0.736,
-        "targetFit": 0.3959,
+        "targetFit": 0.3188,
         "movementConfidence": 0.08,
         "failureReasons": [],
-        "transferClass": "rejected",
-        "outputPreview": "Rs-17 is doing the fake-safe thing again; prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
+        "transferClass": "surface",
+        "outputPreview": "rs-17 is doing the fake-safe thing again; prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
       },
       {
-        "id": "contrast",
+        "id": "base:hybrid",
+        "family": "hybrid",
         "envelopeId": "matron",
-        "status": "eligible",
-        "score": 0.5457,
-        "rewriteStrength": 0.736,
-        "targetFit": 0.3874,
-        "movementConfidence": 0.08,
-        "failureReasons": [],
-        "transferClass": "rejected",
-        "outputPreview": "Rs-17 is doing the fake-safe thing again; prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
-      },
-      {
-        "id": "conservative",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 0.5519,
-        "rewriteStrength": 0.736,
-        "targetFit": 0.4068,
-        "movementConfidence": 0.08,
-        "failureReasons": [],
-        "transferClass": "rejected",
-        "outputPreview": "Rs-17 is doing the fake-safe thing again; prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
+        "status": "held",
+        "score": 0.5757,
+        "rewriteStrength": 0.7616,
+        "targetFit": 0.2037,
+        "movementConfidence": 0.82,
+        "failureReasons": [
+          "semantic-failure"
+        ],
+        "transferClass": "structural",
+        "outputPreview": "rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered rewrite.",
+      "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
-      "winningCandidateId": "base"
+      "candidateCount": 3,
+      "winningCandidateId": "base:syntax-shape"
     },
-    "winningCandidateId": "base"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
-    "transferClass": "rejected",
-    "realizationTier": "none",
-    "changedDimensions": [],
+    "transferClass": "structural",
+    "realizationTier": "structural",
+    "changedDimensions": [
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
+    ],
     "lexemeSwapFamilies": [],
     "relationInventory": [
-      "additive:0",
-      "causal:0",
-      "clarifying:0",
-      "contrastive:1",
-      "resumptive:0",
-      "temporal:0"
+      "clauseCount:3",
+      "exactAnchorCount:0",
+      "paragraphCount:1",
+      "sentenceCount:3",
+      "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "baseline-merge",
-      "clause-join-split",
-      "planned-sentence-merge",
-      "sentence-structure"
+      "merge-short-beats"
     ],
     "lexicalOperations": [],
-    "connectorStrategy": "contrastive",
-    "contractionStrategy": "hold",
+    "connectorStrategy": "cascade",
+    "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 1,
+    "objectCoverage": 0.917,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

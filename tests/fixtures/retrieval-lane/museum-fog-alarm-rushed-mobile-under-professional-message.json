@@ -20,489 +20,44 @@
   },
   "retrievalTrace": {
     "sourceText": "gallery 4 fog rig set off detector again at 7:42. not fire, just too much haze sitting under ceiling head bc fan was low. pls stop calling cue \"light wash\" when its basically a fog burst now. reset finished 8:11",
-    "donorProfileSummary": {
-      "mode": "borrowed",
-      "label": "native cadence",
-      "strength": 0.88,
-      "profile": {
-        "avgSentenceLength": 26.97,
-        "sentenceCount": 4,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.111,
-        "lineBreakDensity": 0,
-        "contentWordComplexity": 0.285,
-        "modifierDensity": 0.064,
-        "hedgeDensity": 0.024,
-        "directness": 0,
-        "abstractionPosture": 0.5,
-        "latinatePreference": 0.029,
-        "recurrencePressure": 0.108
-      }
-    },
-    "sourceIR": {
-      "metadata": {
-        "sentenceCount": 4,
-        "clauseCount": 5,
-        "literalSpans": [
-          {
-            "value": "7:42",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "8:11",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "\"light wash\"",
-            "placeholder": "__PROTLIT_C__"
-          },
-          {
-            "value": "4",
-            "placeholder": "__PROTLIT_D__"
-          }
-        ]
-      },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "gallery __PROTLIT_D__ fog rig set off detector again at __PROTLIT_A__",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "gallery __PROTLIT_D__ fog rig set off detector again at __PROTLIT_A__",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "gallery",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "not fire, just too much haze sitting under ceiling head bc fan was low",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "not fire, just too much haze sitting under ceiling head bc fan was low",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "head",
-              "actor": "",
-              "action": "head",
-              "object": "bc fan low",
-              "modifiers": [],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "pls stop calling cue __PROTLIT_C__ when its basically a fog burst now",
-          "rhetoricalRole": "temporal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "pls stop calling cue __PROTLIT_C__",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "pls",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s2c1",
-              "text": "its basically a fog burst now",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "its",
-              "actor": "a fog",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "basically"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "reset finished __PROTLIT_B__",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "reset finished __PROTLIT_B__",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "finished",
-              "actor": "",
-              "action": "finished",
-              "object": "protlit b",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
-    },
-    "opportunityProfile": {
-      "sentenceSplit": 0,
-      "sentenceMerge": 3,
-      "contraction": 0,
-      "connector": 2,
-      "lineBreak": 3,
-      "abbreviation": 2,
-      "orthography": 4,
-      "fragment": 0,
-      "conversational": 1,
-      "additive": 0,
-      "contrastive": 0,
-      "causal": 0,
-      "temporal": 1,
-      "clarifying": 0,
-      "resumptive": 1
-    },
-    "planSummary": {
-      "transferMode": "expand",
-      "structuralOperationsSelected": [
-        "baseline-merge",
-        "planned-sentence-merge",
-        "sentence-structure",
-        "clause-join-split",
-        "structural-rescue"
-      ],
-      "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "baseline-stance",
-        "connector-stance-lexicon"
-      ],
-      "connectorStrategy": "temporal",
-      "contractionStrategy": "hold",
-      "relationInventory": {
-        "additive": 0,
-        "contrastive": 0,
-        "causal": 0,
-        "temporal": 1,
-        "clarifying": 0,
-        "resumptive": 1
-      },
-      "structuralGoals": {
-        "sentenceCountDelta": 0,
-        "avgSentenceDelta": 16.47
-      },
-      "discourseGoals": {
-        "contractionDelta": 0,
-        "hedgeDelta": 0
-      },
-      "registerGoals": {
-        "contentWordComplexityDelta": 0.13799999999999998,
-        "modifierDensityDelta": 0.037000000000000005,
-        "directnessDelta": 0,
-        "abstractionDelta": 0,
-        "latinateDelta": 0.029,
-        "registerMode": "plain"
-      },
-      "operationBudget": {
-        "splitSentence": 0,
-        "mergeSentence": 14,
-        "swapConnector": 2,
-        "applyHedge": 2,
-        "realizeLexicon": 5
-      }
-    },
-    "candidateSummary": {
-      "selected": {
-        "spec": "mixed-structural",
-        "score": 204.844,
-        "passesApplied": [
-          "baseline-merge",
-          "baseline-voice-realization",
-          "baseline-stance",
-          "planned-sentence-merge",
-          "sentence-structure",
-          "clause-join-split",
-          "connector-stance-lexicon",
-          "structural-rescue"
-        ],
-        "rescuePasses": [
-          "structural-rescue"
-        ],
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "connector-stance",
-          "lexical-register",
-          "abbreviation-posture",
-          "orthography-posture",
-          "surface-marker-posture",
-          "punctuation-shape"
-        ],
-        "qualityGatePassed": false,
-        "notes": [
-          "Structural opportunity existed but the current candidate collapsed into additive drift."
-        ]
-      },
-      "candidates": [
-        {
-          "spec": "ir-beam-search",
-          "score": 196.432,
-          "passesApplied": [
-            "baseline-floor",
-            "clause-texture"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "surface-marker-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Structural opportunity existed but the current candidate collapsed into additive drift."
-          ]
-        },
-        {
-          "spec": "mixed-structural",
-          "score": 204.844,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-stance",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "structural-rescue"
-          ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "surface-marker-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Structural opportunity existed but the current candidate collapsed into additive drift."
-          ]
-        },
-        {
-          "spec": "merge-heavy",
-          "score": 204.844,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-stance",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "structural-rescue"
-          ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "surface-marker-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Structural opportunity existed but the current candidate collapsed into additive drift."
-          ]
-        },
-        {
-          "spec": "connector-stance-heavy",
-          "score": 204.844,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-stance",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "structural-rescue"
-          ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "surface-marker-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Structural opportunity existed but the current candidate collapsed into additive drift."
-          ]
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 204.844,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-stance",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "structural-rescue"
-          ],
-          "rescuePasses": [
-            "structural-rescue"
-          ],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "surface-marker-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": false,
-          "notes": [
-            "Structural opportunity existed but the current candidate collapsed into additive drift."
-          ]
-        }
-      ]
-    },
-    "finalRealization": {
-      "text": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "abbreviation-posture",
-        "orthography-posture",
-        "surface-marker-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "settle",
-          "from": "set",
-          "to": "settle",
-          "kind": "lexeme"
-        }
-      ],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 4.521,
-        "outputDonorDistance": 3.181,
-        "donorImprovement": 1.34,
-        "donorImprovementRatio": 0.296,
-        "sourceOutputLexicalOverlap": 0.844
-      },
-      "rescuePasses": [
-        "structural-rescue",
-        "progress-admit",
-        "semantic-final-warning",
-        "td613-aperture-warning"
-      ],
-      "visibleShift": true,
-      "nonTrivialShift": true
-    },
+    "sourceClass": "formal-correspondence",
+    "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
-      "actorCoverage": 1,
+      "actorCoverage": 0.816,
       "actionCoverage": 1,
-      "objectCoverage": 0.9,
+      "objectCoverage": 0.95,
       "polarityMismatches": 1,
-      "tenseMismatches": 1,
+      "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s0c0",
+          "matchedClauseId": "s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.1
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c2",
+          "matchedClauseId": "s0c0+s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
           "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 0.75,
-          "globalBagScore": 0.273
+          "bagScore": 0.5,
+          "globalBagScore": 0.182
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s0c0",
+          "matchedClauseId": "s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -514,131 +69,68 @@
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s0c3",
+          "matchedClauseId": "s0c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 0.082,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0.091
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.333,
-          "globalBagScore": 0.182
-        },
-        {
-          "sourceClauseId": "s3c0",
-          "matchedClauseId": "s0c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 1,
-          "bagScore": 0,
-          "globalBagScore": 0.083
+          "bagScore": 0.429,
+          "globalBagScore": 0.333
         }
       ],
       "sourceClauseCount": 5,
-      "outputClauseCount": 4
+      "outputClauseCount": 3
     },
     "protectedAnchorAudit": {
-      "totalAnchors": 4,
-      "resolvedAnchors": 4,
+      "totalAnchors": 3,
+      "resolvedAnchors": 3,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
-    "realizedIR": {
-      "metadata": {
-        "sentenceCount": 1,
-        "clauseCount": 4,
-        "literalSpans": [
-          {
-            "value": "7:42",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "8:11",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "\"light wash\"",
-            "placeholder": "__PROTLIT_C__"
-          },
-          {
-            "value": "4",
-            "placeholder": "__PROTLIT_D__"
-          }
-        ]
+    "planSummary": {
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 4,
+        "clauseCount": 5,
+        "exactAnchorCount": 3
       },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Gallery 4 fog rig settle off detector again at 7:42",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "gallery",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s0c1",
-              "text": "and not fire",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "fire",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s0c2",
-              "text": "just too much haze sitting under ceiling head as fan was low",
-              "relationToPrev": "causal",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "head",
-              "actor": "",
-              "action": "head",
-              "object": "fan low",
-              "modifiers": [],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            },
-            {
-              "id": "s0c3",
-              "text": "please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11",
-              "relationToPrev": "causal",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "finished",
-              "actor": "a fog",
-              "action": "finished",
-              "object": "8 11",
-              "modifiers": [
-                "basically"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
+      "structuralOperationsSelected": [
+        "merge-short-beats",
+        "front-when"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "expanded:pls->please",
+        "expanded:bc->because",
+        "expanded:its->it-is"
+      ],
+      "connectorStrategy": "cascade",
+      "contractionStrategy": "expand"
+    },
+    "candidateSummary": {
+      "candidateCount": 4,
+      "landedCandidateId": "base:hybrid",
+      "families": [
+        "syntax-shape",
+        "register-lexicon",
+        "order-beat",
+        "hybrid"
+      ],
+      "holdStatus": "landed"
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -648,152 +140,139 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
+        "punctuation-shape",
         "abbreviation-posture",
-        "orthography-posture",
-        "surface-marker-posture",
-        "punctuation-shape"
+        "orthography-posture"
       ],
       "lexemeSwaps": [
         {
-          "family": "settle",
-          "from": "set",
-          "to": "settle",
-          "kind": "lexeme"
+          "from": "pls",
+          "to": "please",
+          "family": "surface"
+        },
+        {
+          "from": "bc",
+          "to": "because",
+          "family": "surface"
+        },
+        {
+          "from": "its",
+          "to": "it is",
+          "family": "surface"
         }
-      ],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 4.521,
-        "outputDonorDistance": 3.181,
-        "donorImprovement": 1.34,
-        "donorImprovementRatio": 0.296,
-        "sourceOutputLexicalOverlap": 0.844
-      },
-      "realizationNotes": [
-        "1 lexical family swap landed.",
-        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, surface-marker-posture.",
-        "Semantic risk is elevated; review the realized output before relying on it."
-      ],
-      "rescuePasses": [
-        "structural-rescue",
-        "progress-admit",
-        "semantic-final-warning",
-        "td613-aperture-warning"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
     },
-    "generatorVersion": "v2",
-    "sourceClass": "formal-correspondence",
+    "donorProgress": {
+      "eligible": true,
+      "sourceDonorDistance": 4.615,
+      "outputDonorDistance": 2.559,
+      "donorImprovement": 2.056,
+      "donorImprovementRatio": 0.446,
+      "sourceOutputLexicalOverlap": 0.826
+    },
     "candidateLedger": [
       {
-        "id": "base",
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 1.2123,
+        "rewriteStrength": 1,
+        "targetFit": 0.5764,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"ligh"
+      },
+      {
+        "id": "base:register-lexicon",
+        "family": "register-lexicon",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 1.1678,
+        "rewriteStrength": 1,
+        "targetFit": 0.5385,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "gallery 4 fog rig set off detector again at 7:42; not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"light wa"
+      },
+      {
+        "id": "base:order-beat",
+        "family": "order-beat",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 1.2026,
+        "rewriteStrength": 1,
+        "targetFit": 0.568,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
+      },
+      {
+        "id": "base:hybrid",
+        "family": "hybrid",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.7909,
+        "score": 1.2195,
         "rewriteStrength": 1,
-        "targetFit": 0.3465,
+        "targetFit": 0.5826,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light "
-      },
-      {
-        "id": "amplified",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 0.7867,
-        "rewriteStrength": 1,
-        "targetFit": 0.3335,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light "
-      },
-      {
-        "id": "contrast",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 0.786,
-        "rewriteStrength": 1,
-        "targetFit": 0.3312,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light "
-      },
-      {
-        "id": "conservative",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 0.7877,
-        "rewriteStrength": 1,
-        "targetFit": 0.3365,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light "
+        "outputPreview": "gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered rewrite.",
+      "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 4,
-      "winningCandidateId": "base"
+      "winningCandidateId": "base:hybrid"
     },
-    "winningCandidateId": "base"
+    "winningCandidateId": "base:hybrid"
   },
   "semanticContract": {
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "connector-stance",
-      "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
-      "sentence-mean",
-      "sentence-spread",
-      "surface-marker-posture"
+      "sentence-mean"
     ],
     "lexemeSwapFamilies": [
-      "settle"
+      "surface"
     ],
     "relationInventory": [
-      "additive:0",
-      "causal:0",
-      "clarifying:0",
-      "contrastive:0",
-      "resumptive:1",
-      "temporal:1"
+      "clauseCount:5",
+      "exactAnchorCount:3",
+      "paragraphCount:1",
+      "sentenceCount:4",
+      "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "baseline-merge",
-      "clause-join-split",
-      "planned-sentence-merge",
-      "sentence-structure",
-      "structural-rescue"
+      "front-when",
+      "merge-short-beats"
     ],
     "lexicalOperations": [
-      "baseline-stance",
-      "baseline-voice-realization",
-      "connector-stance-lexicon"
+      "expanded:bc->because",
+      "expanded:its->it-is",
+      "expanded:pls->please"
     ],
-    "connectorStrategy": "temporal",
-    "contractionStrategy": "hold",
+    "connectorStrategy": "cascade",
+    "contractionStrategy": "expand",
     "propositionCoverage": 1,
-    "actorCoverage": 1,
+    "actorCoverage": 0.816,
     "actionCoverage": 1,
-    "objectCoverage": 0.9,
+    "objectCoverage": 0.95,
     "polarityMismatches": 1,
-    "tenseMismatches": 1,
+    "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }
 }

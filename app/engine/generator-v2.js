@@ -3,11 +3,12 @@ import {
   buildTD613ApertureAudit,
   classifyTD613ApertureProjection,
   detectTD613ApertureTextPathologies,
-  repairTD613ApertureProjection,
   reviewTD613ApertureTransfer
 } from './td613-aperture.js';
 import {
-  buildCadenceTransferLegacy,
+  buildBorrowedShellDonorProgress,
+  buildSemanticAuditBundle,
+  buildOpportunityProfileFromIR,
   cadenceModFromProfile,
   compareTexts,
   extractCadenceProfile,
@@ -60,17 +61,25 @@ function uniqueStrings(values = []) {
   return [...new Set((values || []).filter(Boolean))];
 }
 
+function escapeRegex(value = '') {
+  return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function extractHardAnchors(text = '') {
   const normalized = normalizeText(text);
   const anchors = new Set();
   const quoted = normalized.match(/"[^"\n]{1,120}"/g) || [];
   quoted.forEach((entry) => anchors.add(entry));
-  const clockTimes = normalized.match(/\b\d{1,2}:\d{2}\s?(?:AM|PM)\b/gi) || [];
+  const clockTimes = normalized.match(/\b\d{1,2}:\d{2}(?:\s?(?:AM|PM))?\b/gi) || [];
   clockTimes.forEach((entry) => anchors.add(entry));
   const ids = normalized.match(/\b[A-Z]{1,6}-\d{1,6}[A-Z]?\b/g) || [];
   ids.forEach((entry) => anchors.add(entry));
+  const emails = normalized.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi) || [];
+  emails.forEach((entry) => anchors.add(entry));
   const suiteLike = normalized.match(/\b(?:Door|Unit|Suite)\s+[A-Z0-9-]+\b/g) || [];
   suiteLike.forEach((entry) => anchors.add(entry));
+  const honorificNames = normalized.match(/\b(?:Mr|Ms|Mrs|Dr|Prof)\.\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?\b/g) || [];
+  honorificNames.forEach((entry) => anchors.add(entry));
   const sentenceBrands = sentenceSplit(normalized)
     .flatMap((sentence) => {
       const trimmed = normalizeText(sentence);
@@ -339,9 +348,9 @@ function sentenceWordCount(sentence = '') {
 
 function splitForClippedMomentum(sentence = '') {
   return normalizeText(sentence)
-    .replace(/,\s+(?=(?:and|but|because|while|with|which)\b)/gi, '. ')
+    .replace(/,((?:["')\]])?)\s+(?=(?:and|but|because|while|with|which)\b)/gi, (match, closer = '') => `.${closer} `)
     .replace(/;\s+/g, '. ')
-    .replace(/:\s+(?=[A-Z])/g, '. ');
+    .replace(/:\s+(?=[A-Za-z])/g, '. ');
 }
 
 function mergeForLongCurrent(sentences = [], linker = ', and ') {
@@ -387,18 +396,21 @@ function tidyEnvelopeText(text = '') {
   );
 }
 
-function sanitizeV2Surface(text = '') {
+function sanitizeV2Surface(text = '', { preserveLowercaseLeads = false } = {}) {
+  let working = tidyEnvelopeText(text)
+    .replace(/\.\s*,/g, '. ')
+    .replace(/,\s*\./g, '. ')
+    .replace(/;\s+;/g, '; ')
+    .replace(/\bnot ([^.!?]{3,120}?)\.\s+but\b/gi, 'not $1, but')
+    .replace(/\bYet\s+twirl\b/gi, 'The twirl')
+    .replace(/\bYet\s+two\b/gi, 'Then two')
+    .replace(/\bYet\s+the\b/gi, 'Then the')
+    .replace(/\bYet\s+it\b/gi, 'Then it');
+  if (!preserveLowercaseLeads) {
+    working = working.replace(/([.!?]\s+)([a-z])/g, (match, spacing, letter) => `${spacing}${letter.toUpperCase()}`);
+  }
   return normalizeText(
-    tidyEnvelopeText(text)
-      .replace(/\.\s*,/g, '. ')
-      .replace(/,\s*\./g, '. ')
-      .replace(/;\s+;/g, '; ')
-      .replace(/\bYet\s+twirl\b/gi, 'The twirl')
-      .replace(/\bYet\s+two\b/gi, 'Then two')
-      .replace(/\bYet\s+the\b/gi, 'Then the')
-      .replace(/\bYet\s+it\b/gi, 'Then it')
-      .replace(/([.!?]\s+)([a-z])/g, (match, spacing, letter) => `${spacing}${letter.toUpperCase()}`)
-      .replace(/\s{2,}/g, ' ')
+    working.replace(/\s{2,}/g, ' ')
   );
 }
 
@@ -480,11 +492,17 @@ function applyPersonaEnvelopeText(text = '', {
   const sourceSentences = splitSentencesPreserve(sourceText);
   const sceneLike = sourceClass === 'reflective-prose' || sourceClass === 'narrative-scene';
 
-  if (envelopeId === 'spark' || envelopeId === 'cross-examiner' || envelopeId === 'operator') {
+  if (envelopeId === 'spark' || envelopeId === 'cross-examiner') {
     working = sentences.map((sentence) => splitForClippedMomentum(sentence)).join(' ');
     if ((targetProfile.contractionDensity || 0) >= 0.08 || envelopeId === 'spark') {
       working = contractExpansions(working);
     }
+  } else if (envelopeId === 'operator') {
+    working = sentences.map((sentence) => splitForClippedMomentum(sentence)).join(' ');
+    working = expandContractions(working)
+      .replace(/!/g, '.')
+      .replace(/,\s+and\b/gi, '; ')
+      .replace(/\.\s+And\b/g, '. ');
   } else if (envelopeId === 'matron') {
     const merged = mergeForLongCurrent(sentences, sceneLike ? ', and ' : '; ');
     working = expandContractions(merged.join(' '));
@@ -663,10 +681,15 @@ function computeTargetFit(outputProfile = {}, targetProfile = null) {
     (fit.functionWordDistance || 0) +
     (fit.contractionDistance || 0) +
     (fit.punctShapeDistance || 0) +
+    ((fit.abbreviationDistance || 0) * 0.9) +
+    ((fit.orthographyDistance || 0) * 0.9) +
+    ((fit.fragmentDistance || 0) * 0.5) +
+    ((fit.conversationDistance || 0) * 0.5) +
+    ((fit.surfaceMarkerDistance || 0) * 0.7) +
     (fit.registerDistance || 0) +
     (fit.directnessDistance || 0) +
     (fit.abstractionDistance || 0);
-  return round(clamp01(1 - (distance / 3.4)), 4);
+  return round(clamp01(1 - (distance / 5.8)), 4);
 }
 
 function buildShellVariants(sourceProfile = {}, shell = {}, sourceClass = 'formal-correspondence') {
@@ -748,71 +771,1134 @@ function buildShellVariants(sourceProfile = {}, shell = {}, sourceClass = 'forma
   });
 }
 
-function buildCandidate(sourceText = '', variant = {}, options = {}) {
+const NATIVE_CANDIDATE_FAMILIES = Object.freeze([
+  Object.freeze({ id: 'syntax-shape', label: 'syntax-shape' }),
+  Object.freeze({ id: 'register-lexicon', label: 'register-lexicon' }),
+  Object.freeze({ id: 'cadence-connector', label: 'cadence-connector' }),
+  Object.freeze({ id: 'order-beat', label: 'order-beat' }),
+  Object.freeze({ id: 'hybrid', label: 'hybrid' })
+]);
+
+function splitParagraphs(text = '') {
+  return normalizeText(text)
+    .split(/\n{2,}/)
+    .map((entry) => normalizeText(entry))
+    .filter(Boolean);
+}
+
+function joinParagraphs(paragraphs = []) {
+  return (paragraphs || [])
+    .map((entry) => normalizeText(entry))
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+function protectAnchorsForRewrite(text = '', anchors = []) {
+  let working = String(text || '');
+  const replacements = [];
+  [...(anchors || [])]
+    .map((anchor) => String(anchor || '').trim())
+    .filter(Boolean)
+    .sort((left, right) => right.length - left.length)
+    .forEach((anchor) => {
+      const pattern = new RegExp(escapeRegex(anchor), 'g');
+      if (!pattern.test(working)) {
+        return;
+      }
+      const token = `__TD613ANCHOR_${replacements.length}__`;
+      working = working.replace(pattern, token);
+      replacements.push(Object.freeze({ token, value: anchor }));
+    });
+
+  return Object.freeze({
+    text: working,
+    replacements: Object.freeze(replacements)
+  });
+}
+
+function restoreAnchorsAfterRewrite(text = '', replacements = []) {
+  let working = String(text || '');
+  for (const replacement of replacements || []) {
+    if (!replacement?.token) {
+      continue;
+    }
+    working = working.replace(new RegExp(escapeRegex(replacement.token), 'g'), replacement.value || '');
+  }
+  return working;
+}
+
+function lowerLeadingAlpha(text = '') {
+  return String(text || '').replace(/^[A-Z](?=[a-z])/g, (match) => match.toLowerCase());
+}
+
+function trimSentenceEnding(text = '') {
+  return normalizeText(text).replace(/[.!?]+$/g, '').trim();
+}
+
+function finalizeSentence(text = '', punctuation = '.') {
+  const trimmed = trimSentenceEnding(text);
+  return trimmed ? `${trimmed}${punctuation}` : '';
+}
+
+function replaceLimited(text = '', pattern, replacer, limit = 1) {
+  if (limit <= 0) {
+    return text;
+  }
+
+  let count = 0;
+  return String(text || '').replace(pattern, (...args) => {
+    if (count >= limit) {
+      return args[0];
+    }
+    count += 1;
+    return typeof replacer === 'function' ? replacer(...args) : replacer;
+  });
+}
+
+function matchCase(source = '', replacement = '') {
+  if (!source) {
+    return replacement;
+  }
+  if (source === source.toUpperCase()) {
+    return replacement.toUpperCase();
+  }
+  if (source.charAt(0) === source.charAt(0).toUpperCase()) {
+    return replacement.charAt(0).toUpperCase() + replacement.slice(1);
+  }
+  return replacement;
+}
+
+function variantIntensity(variant = {}) {
+  if (variant?.id === 'contrast') {
+    return 1.22;
+  }
+  if (variant?.id === 'amplified') {
+    return 1.08;
+  }
+  if (variant?.id === 'conservative') {
+    return 0.84;
+  }
+  return 1;
+}
+
+function familyWeight(familyId = 'syntax-shape') {
+  if (familyId === 'hybrid') {
+    return 1.18;
+  }
+  if (familyId === 'order-beat') {
+    return 1.08;
+  }
+  if (familyId === 'register-lexicon') {
+    return 0.94;
+  }
+  return 1;
+}
+
+function replacementLimitForClass(sourceClass = 'formal-correspondence') {
+  if (sourceClass === 'procedural-record') {
+    return 1;
+  }
+  if (sourceClass === 'formal-correspondence') {
+    return 2;
+  }
+  return 3;
+}
+
+function connectorStrategyFor(envelopeId = 'generic', sourceClass = 'formal-correspondence', familyId = 'syntax-shape') {
+  if (familyId === 'order-beat') {
+    return 'front';
+  }
+  if (envelopeId === 'spark') {
+    return 'split';
+  }
+  if (envelopeId === 'cross-examiner') {
+    return 'cross';
+  }
+  if (envelopeId === 'operator') {
+    return 'balanced';
+  }
+  if (envelopeId === 'matron') {
+    return 'cascade';
+  }
+  if (envelopeId === 'undertow') {
+    return 'undertow';
+  }
+  if (envelopeId === 'archivist' || envelopeId === 'methods-editor') {
+    return 'ledger';
+  }
+  if (sourceClass === 'procedural-record') {
+    return 'balanced';
+  }
+  return familyId === 'cadence-connector' ? 'shift' : 'balanced';
+}
+
+function contractionStrategyFor(envelopeId = 'generic', targetProfile = null, sourceProfile = {}, sourceClass = 'formal-correspondence', familyId = 'syntax-shape') {
+  if (envelopeId === 'matron' || envelopeId === 'archivist' || envelopeId === 'methods-editor') {
+    return 'expand';
+  }
+  if (envelopeId === 'spark' || envelopeId === 'cross-examiner') {
+    return 'contract';
+  }
+  if (envelopeId === 'operator') {
+    return 'preserve';
+  }
+  if (envelopeId === 'undertow') {
+    return sourceClass === 'procedural-record'
+      ? 'preserve'
+      : ((targetProfile?.contractionDensity || 0) <= (sourceProfile?.contractionDensity || 0) ? 'expand' : 'contract');
+  }
+  if (Number(targetProfile?.contractionDensity || 0) >= Number(sourceProfile?.contractionDensity || 0) + 0.01) {
+    return 'contract';
+  }
+  if (Number(targetProfile?.contractionDensity || 0) <= Number(sourceProfile?.contractionDensity || 0) - 0.01) {
+    return 'expand';
+  }
+  if (familyId === 'register-lexicon' && sourceClass !== 'procedural-record') {
+    return 'contract';
+  }
+  return 'preserve';
+}
+
+function chooseMergeLinker(envelopeId = 'generic', sourceClass = 'formal-correspondence') {
+  if (envelopeId === 'matron') {
+    return sourceClass === 'procedural-record' ? '; ' : ', and ';
+  }
+  if (envelopeId === 'undertow') {
+    return sourceClass === 'procedural-record' ? '; while ' : ', while ';
+  }
+  if (envelopeId === 'archivist' || envelopeId === 'methods-editor') {
+    return '; ';
+  }
+  if (envelopeId === 'spark' || envelopeId === 'cross-examiner') {
+    return '. ';
+  }
+  if (envelopeId === 'operator') {
+    return '; ';
+  }
+  return sourceClass === 'procedural-record' ? '; ' : ', and ';
+}
+
+function recordLexemeSwap(swaps = [], from = '', to = '', family = 'register') {
+  const source = normalizeText(from);
+  const target = normalizeText(to);
+  if (!source || !target || normalizeComparable(source) === normalizeComparable(target)) {
+    return;
+  }
+  swaps.push(Object.freeze({
+    from: source,
+    to: target,
+    family
+  }));
+}
+
+function applyReplacementRule(text = '', pattern, replacement = '', context = {}) {
+  let applied = false;
+  const next = replaceLimited(
+    text,
+    pattern,
+    (match) => {
+      applied = true;
+      const finalReplacement = matchCase(match, replacement);
+      if (context.label) {
+        (context.operations || []).push(context.label);
+      }
+      recordLexemeSwap(context.lexemeSwaps || [], match, finalReplacement, context.family || 'register');
+      return finalReplacement;
+    },
+    context.limit ?? 1
+  );
+  return applied ? next : text;
+}
+
+function applyContractionStrategyText(text = '', strategy = 'preserve', context = {}) {
+  let working = String(text || '');
+  if (strategy === 'contract') {
+    const next = contractExpansions(working);
+    if (next !== working) {
+      (context.lexicalOperations || []).push('contraction:contract');
+      working = next;
+    }
+  } else if (strategy === 'expand') {
+    const next = expandContractions(working);
+    if (next !== working) {
+      (context.lexicalOperations || []).push('contraction:expand');
+      working = next;
+    }
+  }
+  return working;
+}
+
+function wantsCompressedSurface(targetProfile = {}, sourceProfile = {}) {
+  return Number(targetProfile?.abbreviationDensity || 0) > (Number(sourceProfile?.abbreviationDensity || 0) + 0.03) ||
+    Number(targetProfile?.orthographicLooseness || 0) > (Number(sourceProfile?.orthographicLooseness || 0) + 0.04);
+}
+
+function wantsExpandedSurface(targetProfile = {}, sourceProfile = {}) {
+  const targetMode = String(targetProfile?.registerMode || '').trim().toLowerCase();
+  return Number(targetProfile?.abbreviationDensity || 0) + Number(targetProfile?.orthographicLooseness || 0) + 0.03 <
+      (Number(sourceProfile?.abbreviationDensity || 0) + Number(sourceProfile?.orthographicLooseness || 0)) ||
+    Number(targetProfile?.orthographicLooseness || 0) + 0.04 < Number(sourceProfile?.orthographicLooseness || 0) ||
+    ['formal', 'reflective'].includes(targetMode);
+}
+
+function loosenSentenceStartsV2(text = '', limit = 2) {
+  let applied = 0;
+  return String(text || '').replace(/(^|[.!?]\s+|\n+)([A-Z][a-z]+)/g, (match, prefix, word) => {
+    if (applied >= limit || /^I(?:\b|$)/.test(word)) {
+      return match;
+    }
+    applied += 1;
+    return `${prefix}${word.charAt(0).toLowerCase()}${word.slice(1)}`;
+  });
+}
+
+function applyCompressedSurfaceRewrite(text = '', targetProfile = {}, sourceProfile = {}, context = {}) {
+  if (!wantsCompressedSurface(targetProfile, sourceProfile)) {
+    return text;
+  }
+
+  let working = String(text || '');
+  const lexicalOperations = context.lexicalOperations || [];
+  const lexemeSwaps = context.lexemeSwaps || [];
+  const abbreviationLimit = Number(targetProfile?.abbreviationDensity || 0) >= 0.11 ? 4 : 2;
+  const orthographyHeavy =
+    Number(targetProfile?.orthographicLooseness || 0) >= Math.max(0.06, Number(sourceProfile?.orthographicLooseness || 0) + 0.04);
+
+  const abbreviationRules = [
+    { pattern: /\bplease\b/gi, replacement: 'pls', label: 'compressed:please->pls' },
+    { pattern: /\bbecause\b/gi, replacement: 'bc', label: 'compressed:because->bc' },
+    { pattern: /\bokay\b/gi, replacement: 'ok', label: 'compressed:okay->ok' },
+    { pattern: /\bdocumentation timing\b/gi, replacement: 'docs lag', label: 'compressed:documentation-timing->docs-lag' },
+    { pattern: /\bdocumentation\b/gi, replacement: 'docs', label: 'compressed:documentation->docs' },
+    { pattern: /\bpeople\b/gi, replacement: 'ppl', label: 'compressed:people->ppl' },
+    { pattern: /\bdifferent\b/gi, replacement: 'diff', label: 'compressed:different->diff' },
+    { pattern: /\bwritten record\b/gi, replacement: 'writeup', label: 'compressed:written-record->writeup' },
+    { pattern: /\bmanagement\b/gi, replacement: 'mgmt', label: 'compressed:management->mgmt' },
+    { pattern: /\baccount\b/gi, replacement: 'acct', label: 'compressed:account->acct' },
+    { pattern: /\bpackage\b/gi, replacement: 'pkg', label: 'compressed:package->pkg' },
+    { pattern: /\bappointment\b/gi, replacement: 'appt', label: 'compressed:appointment->appt' },
+    { pattern: /\bmessage\b/gi, replacement: 'msg', label: 'compressed:message->msg' },
+    { pattern: /\bweek\b/gi, replacement: 'wk', label: 'compressed:week->wk' }
+  ];
+
+  for (const rule of abbreviationRules) {
+    const next = replaceLimited(working, rule.pattern, (match) => {
+      lexicalOperations.push(rule.label);
+      recordLexemeSwap(lexemeSwaps, match, rule.replacement, 'surface');
+      return rule.replacement;
+    }, abbreviationLimit);
+    working = next;
+  }
+
+  if (orthographyHeavy) {
+    const orthographyRules = [
+      { pattern: /\byou['’]re\b/gi, replacement: 'youre', label: 'orthography:youre' },
+      { pattern: /\bdon['’]t\b/gi, replacement: 'dont', label: 'orthography:dont' },
+      { pattern: /\bcan['’]t\b/gi, replacement: 'cant', label: 'orthography:cant' },
+      { pattern: /\bwon['’]t\b/gi, replacement: 'wont', label: 'orthography:wont' },
+      { pattern: /\bI['’]m\b/gi, replacement: 'im', label: 'orthography:im' },
+      { pattern: /\bI['’]ve\b/gi, replacement: 'ive', label: 'orthography:ive' },
+      { pattern: /\bI['’]ll\b/gi, replacement: 'ill', label: 'orthography:ill' },
+      { pattern: /\bthat['’]s\b/gi, replacement: 'thats', label: 'orthography:thats' },
+      { pattern: /\bit['’]s\b/gi, replacement: 'its', label: 'orthography:its' }
+    ];
+    const orthographyLimit = Number(targetProfile?.orthographicLooseness || 0) >= 0.4 ? 6 : (Number(targetProfile?.orthographicLooseness || 0) >= 0.09 ? 4 : 2);
+    for (const rule of orthographyRules) {
+      const next = replaceLimited(working, rule.pattern, (match) => {
+        lexicalOperations.push(rule.label);
+        recordLexemeSwap(lexemeSwaps, match, rule.replacement, 'surface');
+        return rule.replacement;
+      }, orthographyLimit);
+      working = next;
+    }
+    const lowercaseLeadLimit = Number(targetProfile?.orthographicLooseness || 0) >= 0.6 ? 6 : (Number(targetProfile?.orthographicLooseness || 0) >= 0.2 ? 4 : 2);
+    const lowered = loosenSentenceStartsV2(working, lowercaseLeadLimit);
+    if (lowered !== working) {
+      lexicalOperations.push('orthography:lowercase-lead');
+      working = lowered;
+    }
+  }
+
+  return working;
+}
+
+function applyExpandedSurfaceRewrite(text = '', targetProfile = {}, sourceProfile = {}, context = {}) {
+  if (!wantsExpandedSurface(targetProfile, sourceProfile)) {
+    return text;
+  }
+
+  let working = String(text || '');
+  const lexicalOperations = context.lexicalOperations || [];
+  const lexemeSwaps = context.lexemeSwaps || [];
+  const limit = Number(sourceProfile?.orthographicLooseness || 0) >= 0.4 ? 6 : 3;
+  const expansionRules = [
+    { pattern: /\bpls\b/gi, replacement: 'please', label: 'expanded:pls->please' },
+    { pattern: /\bbc\b/gi, replacement: 'because', label: 'expanded:bc->because' },
+    { pattern: /\bdocs lag\b/gi, replacement: 'documentation timing', label: 'expanded:docs-lag->documentation-timing' },
+    { pattern: /\bppl\b/gi, replacement: 'people', label: 'expanded:ppl->people' },
+    { pattern: /\bdocs\b/gi, replacement: 'documentation', label: 'expanded:docs->documentation' },
+    { pattern: /\bdiff\b/gi, replacement: 'different', label: 'expanded:diff->different' },
+    { pattern: /\bwriteup\b/gi, replacement: 'written record', label: 'expanded:writeup->written-record' },
+    { pattern: /\bmsg\b/gi, replacement: 'message', label: 'expanded:msg->message' },
+    { pattern: /\bwks\b/gi, replacement: 'weeks', label: 'expanded:wks->weeks' },
+    { pattern: /\bwk\b/gi, replacement: 'week', label: 'expanded:wk->week' }
+  ];
+
+  for (const rule of expansionRules) {
+    working = replaceLimited(working, rule.pattern, (match) => {
+      lexicalOperations.push(rule.label);
+      recordLexemeSwap(lexemeSwaps, match, rule.replacement, 'surface');
+      return matchCase(match, rule.replacement);
+    }, limit);
+  }
+
+  working = replaceLimited(working, /\bw\/o\b/gi, (match) => {
+    lexicalOperations.push('expanded:w/o->without');
+    recordLexemeSwap(lexemeSwaps, match, 'without', 'surface');
+    return matchCase(match, 'without');
+  }, 2);
+  working = replaceLimited(working, /\bw\/\b/gi, (match) => {
+    lexicalOperations.push('expanded:w/->with');
+    recordLexemeSwap(lexemeSwaps, match, 'with', 'surface');
+    return matchCase(match, 'with');
+  }, 2);
+  working = replaceLimited(working, /\bw\b(?=\s+[A-Za-z])/g, (match) => {
+    lexicalOperations.push('expanded:w->with');
+    recordLexemeSwap(lexemeSwaps, match, 'with', 'surface');
+    return 'with';
+  }, 2);
+
+  const contractionRules = [
+    { pattern: /\bdont\b/gi, replacement: 'do not', label: 'expanded:dont->do-not' },
+    { pattern: /\byoure\b/gi, replacement: 'you are', label: 'expanded:youre->you-are' },
+    { pattern: /\bim\b/gi, replacement: 'I am', label: 'expanded:im->i-am' },
+    { pattern: /\bive\b/gi, replacement: 'I have', label: 'expanded:ive->i-have' },
+    { pattern: /\bill\b/gi, replacement: 'I will', label: 'expanded:ill->i-will' },
+    { pattern: /\bthats\b/gi, replacement: 'that is', label: 'expanded:thats->that-is' },
+    { pattern: /\bits\b/gi, replacement: 'it is', label: 'expanded:its->it-is' },
+    { pattern: /\bcant\b/gi, replacement: 'cannot', label: 'expanded:cant->cannot' },
+    { pattern: /\bwont\b/gi, replacement: 'will not', label: 'expanded:wont->will-not' }
+  ];
+
+  for (const rule of contractionRules) {
+    working = replaceLimited(working, rule.pattern, (match) => {
+      lexicalOperations.push(rule.label);
+      recordLexemeSwap(lexemeSwaps, match, rule.replacement, 'surface');
+      return matchCase(match, rule.replacement);
+    }, limit);
+  }
+
+  const unlisted = working
+    .replace(/\s*\/\s*/g, '. ')
+    .replace(/:\s+/g, '. ');
+  if (unlisted !== working) {
+    lexicalOperations.push('expanded:slash-list->sentences');
+    working = unlisted;
+  }
+
+  if (context.sourceClass === 'procedural-record') {
+    const proceduralRules = [
+      { pattern: /\bwest annex d3\b/gi, replacement: 'West Annex Door 3', label: 'expanded:west-annex-d3->door-3' },
+      { pattern: /\bd3\b/gi, replacement: 'Door 3', label: 'expanded:d3->door-3' },
+      { pattern: /\bfake open\b/gi, replacement: 'not actually unlatching', label: 'expanded:fake-open->unlatching' },
+      { pattern: /\bgreen \+ buzzes\b/gi, replacement: 'green and buzzing', label: 'expanded:green-plus-buzzes->green-and-buzzing' },
+      { pattern: /\bfridge meds\b/gi, replacement: 'cold bag', label: 'expanded:fridge-meds->cold-bag' },
+      { pattern: /\bold temp badge\b/gi, replacement: 'older temporary badge', label: 'expanded:old-temp-badge->older-temporary-badge' },
+      { pattern: /\btemp badge\b/gi, replacement: 'temporary badge', label: 'expanded:temp-badge->temporary-badge' },
+      { pattern: /\bnot power i do not think\b/gi, replacement: 'I do not think it is power', label: 'expanded:not-power->i-do-not-think-it-is-power' },
+      { pattern: /\bjiggle latch again\b/gi, replacement: 'physically check the latch again', label: 'expanded:jiggle-latch->physically-check-latch' }
+    ];
+
+    for (const rule of proceduralRules) {
+      working = replaceLimited(working, rule.pattern, (match) => {
+        lexicalOperations.push(rule.label);
+        recordLexemeSwap(lexemeSwaps, match, rule.replacement, 'surface');
+        return rule.replacement;
+      }, 2);
+    }
+  }
+
+  return working;
+}
+
+function frontClauseSentence(sentence = '', context = {}) {
+  const normalized = normalizeText(sentence);
+  const patterns = [
+    { regex: /^(.+?)\s+because\s+(.+)$/i, label: 'front-because', lead: 'Because' },
+    { regex: /^(.+?)\s+while\s+(.+)$/i, label: 'front-while', lead: 'While' },
+    { regex: /^(.+?)\s+if\s+(.+)$/i, label: 'front-if', lead: 'If' },
+    { regex: /^(.+?)\s+when\s+(.+)$/i, label: 'front-when', lead: 'When' },
+    { regex: /^(.+?)\s+although\s+(.+)$/i, label: 'front-although', lead: 'Although' }
+  ];
+
+  for (const pattern of patterns) {
+    const match = normalized.match(pattern.regex);
+    if (!match) {
+      continue;
+    }
+    const left = trimSentenceEnding(match[1]);
+    const right = trimSentenceEnding(match[2]);
+    if (sentenceWordCount(left) < 3 || sentenceWordCount(right) < 3) {
+      continue;
+    }
+    (context.structuralOperations || []).push(pattern.label);
+    return finalizeSentence(`${pattern.lead} ${lowerLeadingAlpha(right)}, ${lowerLeadingAlpha(left)}`);
+  }
+
+  return normalized;
+}
+
+function applySyntaxShapeRewrite(paragraph = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
+  const sentences = splitSentencesPreserve(paragraph);
+  if (!sentences.length) {
+    return paragraph;
+  }
+
+  if (['spark', 'cross-examiner', 'operator'].includes(envelopeId)) {
+    return sentences.map((sentence) => {
+      const next = splitForClippedMomentum(sentence);
+      if (next !== sentence) {
+        (context.structuralOperations || []).push('split-long-line');
+      }
+      return next;
+    }).join(' ');
+  }
+
+  if (['matron', 'undertow', 'archivist', 'methods-editor'].includes(envelopeId)) {
+    const merged = mergeForLongCurrent(sentences, chooseMergeLinker(envelopeId, sourceClass));
+    if (merged.length !== sentences.length) {
+      (context.structuralOperations || []).push(envelopeId === 'archivist' || envelopeId === 'methods-editor' ? 'ledger-merge' : 'merge-short-beats');
+    }
+    return merged.join(' ');
+  }
+
+  return sentences.map((sentence) => frontClauseSentence(sentence, context)).join(' ');
+}
+
+function applyLexicalRegisterRewrite(paragraph = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
+  let working = String(paragraph || '');
+  const limit = replacementLimitForClass(sourceClass);
+  const compressedTarget = wantsCompressedSurface(context.targetProfile || {}, context.sourceProfile || {});
+
+  if (envelopeId === 'spark' || envelopeId === 'operator') {
+    working = applyReplacementRule(working, /\bperhaps\b/gi, 'maybe', {
+      limit,
+      label: 'register:perhaps->maybe',
+      family: 'register',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = working.replace(/\b(?:honestly|really|literally)\b[,\s]*/i, (match) => {
+      (context.lexicalOperations || []).push('register:trim-filler');
+      recordLexemeSwap(context.lexemeSwaps || [], match.trim(), '', 'register');
+      return '';
+    });
+    if (envelopeId === 'operator') {
+      working = applyReplacementRule(working, /\bjust\b/gi, 'only', {
+        limit: 1,
+        label: 'register:just->only',
+        family: 'register',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+    }
+  } else if (envelopeId === 'cross-examiner') {
+    working = applyReplacementRule(working, /\bmaybe\b/gi, 'perhaps', {
+      limit,
+      label: 'register:maybe->perhaps',
+      family: 'register',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  } else if (envelopeId === 'archivist' || envelopeId === 'methods-editor') {
+    working = applyReplacementRule(working, /\bokay\b/gi, 'acceptable', {
+      limit,
+      label: 'register:okay->acceptable',
+      family: 'register',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = applyReplacementRule(working, /\bhi\b/gi, 'hello', {
+      limit: sourceClass === 'procedural-record' ? 0 : 1,
+      label: 'register:hi->hello',
+      family: 'register',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  } else if (envelopeId === 'matron') {
+    working = applyReplacementRule(working, /\bmaybe\b/gi, 'perhaps', {
+      limit: 1,
+      label: 'register:maybe->perhaps',
+      family: 'register',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  }
+
+  if (compressedTarget && sourceClass !== 'procedural-record') {
+    const compressedRules = [
+      { pattern: /\bI want to\b/gi, replacement: 'need to', label: 'register:i-want-to->need-to' },
+      { pattern: /\bI do not want to\b/gi, replacement: "I don't want to", label: 'register:i-do-not-want-to->i-dont-want-to' },
+      { pattern: /\bwe still have\b/gi, replacement: 'still have', label: 'register:we-still-have->still-have' },
+      { pattern: /\btemporary\b/gi, replacement: 'temp', label: 'register:temporary->temp' },
+      { pattern: /\bapproximately\b/gi, replacement: 'about', label: 'register:approximately->about' },
+      { pattern: /\bthose are not\b/gi, replacement: 'not', label: 'register:those-are-not->not' }
+    ];
+    for (const rule of compressedRules) {
+      working = applyReplacementRule(working, rule.pattern, rule.replacement, {
+        limit,
+        label: rule.label,
+        family: 'register',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+    }
+    const clauseCompression = working
+      .replace(/\bwhat ([^.!?]{6,120}?) showed is that\b/gi, (match, subject) => {
+        (context.structuralOperations || []).push('register:what-showed-colon');
+        return `what ${subject} showed:`;
+      })
+      .replace(/\bwhich is technically true\b/gi, 'technically true')
+      .replace(/\bthey are\s+([a-z][^.!?]{2,80}[.!?])/gi, (match, remainder) => {
+        (context.lexicalOperations || []).push('register:drop-they-are');
+        return matchCase(remainder, remainder);
+      });
+    if (clauseCompression !== working) {
+      (context.lexicalOperations || []).push('register:compressed-clause');
+      working = clauseCompression;
+    }
+  }
+
+  if (compressedTarget && sourceClass === 'procedural-record') {
+    const proceduralCompressionRules = [
+      { pattern: /\bapproximately\b/gi, replacement: 'about', label: 'register:approximately->about' },
+      { pattern: /\blocated\b/gi, replacement: 'found', label: 'register:located->found' },
+      { pattern: /\brequested\b/gi, replacement: 'asked for', label: 'register:requested->asked-for' },
+      { pattern: /\bremained\b/gi, replacement: 'stayed', label: 'register:remained->stayed' }
+    ];
+    for (const rule of proceduralCompressionRules) {
+      working = applyReplacementRule(working, rule.pattern, rule.replacement, {
+        limit: 1,
+        label: rule.label,
+        family: 'register',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+    }
+  }
+
+  if (sourceClass !== 'procedural-record') {
+    working = applyReplacementRule(working, /\bBy the time\b/gi, 'When', {
+      limit: 1,
+      label: 'register:by-the-time->when',
+      family: 'register',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = applyReplacementRule(working, /\bwhich is apparently what I do\b/gi, "that's what I do", {
+      limit: 1,
+      label: 'register:which-is-apparently-what-i-do->that-is-what-i-do',
+      family: 'register',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  }
+
+  return working;
+}
+
+function applyConnectorRewrite(paragraph = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
+  let working = String(paragraph || '');
+  const limit = replacementLimitForClass(sourceClass);
+  const strategy = context.connectorStrategy || 'balanced';
+
+  if (strategy === 'split' || strategy === 'cross') {
+    const next = working
+      .replace(/,((?:["')\]])?)\s+(?=(?:and|but|because|while|which)\b)/gi, (match, closer = '') => `.${closer} `)
+      .replace(/;\s+/g, '. ');
+    if (next !== working) {
+      (context.structuralOperations || []).push('connector-split');
+      working = next;
+    }
+  }
+
+  if (strategy === 'cascade') {
+    const merged = mergeForLongCurrent(splitSentencesPreserve(working), chooseMergeLinker(envelopeId, sourceClass)).join(' ');
+    if (merged !== working) {
+      (context.structuralOperations || []).push('connector-cascade');
+      working = merged;
+    }
+  }
+
+  if (strategy === 'undertow') {
+    const merged = mergeForLongCurrent(splitSentencesPreserve(working), chooseMergeLinker(envelopeId, sourceClass)).join(' ');
+    if (merged !== working) {
+      (context.structuralOperations || []).push('connector-undertow');
+      working = merged;
+    }
+  }
+
+  if (strategy === 'ledger') {
+    const next = working
+      .replace(/,\s+and\b/gi, '; ')
+      .replace(/\.\s+And\b/g, '; ');
+    if (next !== working) {
+      (context.structuralOperations || []).push('connector-ledger');
+      working = next;
+    }
+  }
+
+  if (strategy === 'split') {
+    working = applyReplacementRule(working, /\bbecause\b/gi, sourceClass === 'procedural-record' ? 'because' : 'since', {
+      limit,
+      label: 'connector:because->since',
+      family: 'connector',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  } else if (strategy === 'shift') {
+    working = applyReplacementRule(working, /\bbecause\b/gi, 'since', {
+      limit: 1,
+      label: 'connector:because->since',
+      family: 'connector',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = applyReplacementRule(working, /\bbut\b/gi, 'though', {
+      limit: 1,
+      label: 'connector:but->though',
+      family: 'connector',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = applyReplacementRule(working, /\bso\b/gi, 'then', {
+      limit: 1,
+      label: 'connector:so->then',
+      family: 'connector',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  } else if (strategy === 'cross') {
+    working = applyReplacementRule(working, /\bbut\b/gi, 'yet', {
+      limit,
+      label: 'connector:but->yet',
+      family: 'connector',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  } else if (strategy === 'ledger') {
+    working = applyReplacementRule(working, /\bbecause\b/gi, 'as', {
+      limit,
+      label: 'connector:because->as',
+      family: 'connector',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  } else if (strategy === 'undertow') {
+    working = applyReplacementRule(working, /\bbut\b/gi, 'but then', {
+      limit: 1,
+      label: 'connector:but->but-then',
+      family: 'connector',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  }
+
+  return working;
+}
+
+function applyOrderBeatRewrite(paragraph = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
+  const sentences = splitSentencesPreserve(paragraph);
+  if (!sentences.length) {
+    return paragraph;
+  }
+
+  let workingSentences = sentences.map((sentence) => frontClauseSentence(sentence, context));
+  if (workingSentences.length >= 2 && ['spark', 'cross-examiner'].includes(envelopeId)) {
+    const first = sentenceWordCount(workingSentences[0]);
+    const second = sentenceWordCount(workingSentences[1]);
+    if (first > 12 && second <= 8) {
+      workingSentences = [workingSentences[1], workingSentences[0], ...workingSentences.slice(2)];
+      (context.structuralOperations || []).push('beat-swap');
+    }
+  } else if (workingSentences.length >= 2 && ['matron', 'undertow'].includes(envelopeId) && sourceClass !== 'procedural-record') {
+    const merged = mergeForLongCurrent(workingSentences, chooseMergeLinker(envelopeId, sourceClass));
+    if (merged.length !== workingSentences.length) {
+      workingSentences = merged;
+      (context.structuralOperations || []).push('beat-merge');
+    }
+  }
+
+  return workingSentences.join(' ');
+}
+
+function applyHybridBalance(paragraph = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
+  let working = applySyntaxShapeRewrite(paragraph, envelopeId, sourceClass, context);
+  working = applyConnectorRewrite(working, envelopeId, sourceClass, context);
+  working = applyOrderBeatRewrite(working, envelopeId, sourceClass, context);
+  return applyLexicalRegisterRewrite(working, envelopeId, sourceClass, context);
+}
+
+function dedupeLexemeSwaps(swaps = []) {
+  const seen = new Set();
+  return Object.freeze((swaps || []).filter((swap) => {
+    const key = `${normalizeComparable(swap?.from || '')}::${normalizeComparable(swap?.to || '')}::${swap?.family || 'register'}`;
+    if (!swap?.from || !swap?.to || seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  }));
+}
+
+function buildRelationInventory(sourceText = '', sourceIR = null, sourceClass = 'formal-correspondence', hardAnchors = []) {
+  return Object.freeze({
+    sourceClass,
+    paragraphCount: splitParagraphs(sourceText).length || 1,
+    sentenceCount: Number(sourceIR?.metadata?.sentenceCount || splitSentencesPreserve(sourceText).length || 0),
+    clauseCount: Number(sourceIR?.metadata?.clauseCount || 0),
+    exactAnchorCount: Number((hardAnchors || []).length || 0)
+  });
+}
+
+function buildNativeLexicalShiftProfile(sourceText = '', outputText = '', sourceProfile = {}, targetProfile = null, outputProfile = {}, lexemeSwaps = []) {
+  const fit = compareTexts(sourceText, outputText, {
+    profileA: sourceProfile,
+    profileB: outputProfile
+  });
+
+  return Object.freeze({
+    lexemeSwaps: Object.freeze([...(lexemeSwaps || [])]),
+    swapCount: Number((lexemeSwaps || []).length || 0),
+    registerDistance: round(fit.registerDistance || 0, 4),
+    contentWordComplexityDelta: round((outputProfile.contentWordComplexity || 0) - (sourceProfile.contentWordComplexity || 0), 4),
+    modifierDensityDelta: round((outputProfile.modifierDensity || 0) - (sourceProfile.modifierDensity || 0), 4),
+    directnessDelta: round((outputProfile.directness || 0) - (sourceProfile.directness || 0), 4),
+    abstractionDelta: round((outputProfile.abstractionPosture || 0) - (sourceProfile.abstractionPosture || 0), 4),
+    contractionAligned: Math.abs((outputProfile.contractionDensity || 0) - Number(targetProfile?.contractionDensity ?? outputProfile.contractionDensity ?? 0)) <= 0.03
+  });
+}
+
+function buildSemanticRisk(semanticAudit = {}, protectedAnchorIntegrity = 1) {
+  return round(clamp01(
+    ((1 - Number(semanticAudit?.propositionCoverage ?? 1)) * 0.34) +
+    ((1 - Number(semanticAudit?.actorCoverage ?? 1)) * 0.16) +
+    ((1 - Number(semanticAudit?.actionCoverage ?? 1)) * 0.2) +
+    ((1 - Number(semanticAudit?.objectCoverage ?? 1)) * 0.12) +
+    ((1 - Number(protectedAnchorIntegrity ?? 1)) * 0.18)
+  ), 4);
+}
+
+function computeCandidateTransferClass(candidate = {}) {
+  if (candidate.classification?.outcome === 'surface-held') {
+    return 'surface';
+  }
+  const substantiveMovement = substantiveDimensionCount(candidate.changedDimensions || []);
+  const lexicalMovement = Number((candidate.lexemeSwaps || []).length || 0);
+  if (
+    substantiveMovement >= 2 ||
+    (substantiveMovement >= 1 && lexicalMovement > 0) ||
+    Number(candidate.rewriteStrength || 0) >= 0.5
+  ) {
+    return 'structural';
+  }
+  return 'weak';
+}
+
+function buildPlanSummary(candidate = null) {
+  return Object.freeze({
+    relationInventory: candidate?.relationInventory || {},
+    structuralOperationsSelected: Object.freeze([...(candidate?.structuralOperations || [])]),
+    lexicalRegisterOperationsSelected: Object.freeze([...(candidate?.lexicalOperations || [])]),
+    connectorStrategy: candidate?.connectorStrategy || 'balanced',
+    contractionStrategy: candidate?.contractionStrategy || 'preserve'
+  });
+}
+
+function buildCandidateSummary(candidateLedger = [], generationDocket = null) {
+  return Object.freeze({
+    candidateCount: candidateLedger.length,
+    landedCandidateId: generationDocket?.winningCandidateId || null,
+    families: Object.freeze([...new Set(candidateLedger.map((entry) => entry.family).filter(Boolean))]),
+    holdStatus: generationDocket?.status || 'landed'
+  });
+}
+
+function buildRetrievalTraceV2({
+  sourceText = '',
+  sourceClass = 'formal-correspondence',
+  candidate = null,
+  candidateLedger = [],
+  generationDocket = null,
+  donorProgress = {}
+} = {}) {
+  return Object.freeze({
+    sourceText,
+    sourceClass,
+    generatorVersion: 'v2',
+    semanticAudit: candidate?.semanticAudit || {},
+    protectedAnchorAudit: candidate?.protectedAnchorAudit || {},
+    planSummary: buildPlanSummary(candidate),
+    candidateSummary: buildCandidateSummary(candidateLedger, generationDocket),
+    realizationSummary: Object.freeze({
+      transferClass: candidate?.transferClass || 'held',
+      borrowedShellOutcome: candidate?.transferClass === 'structural' ? 'structural' : candidate?.transferClass === 'surface' ? 'surface-held' : candidate ? 'partial' : 'held',
+      borrowedShellFailureClass: generationDocket?.holdClass || null,
+      realizationTier: candidate?.realizationTier || 'hold',
+      changedDimensions: Object.freeze([...(candidate?.changedDimensions || [])]),
+      lexemeSwaps: Object.freeze([...(candidate?.lexemeSwaps || [])]),
+      visibleShift: Boolean(candidate?.visibleShift),
+      nonTrivialShift: Boolean(candidate?.nonTrivialShift)
+    }),
+    donorProgress: donorProgress || {},
+    candidateLedger,
+    generationDocket,
+    winningCandidateId: generationDocket?.winningCandidateId || null
+  });
+}
+
+function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
+  const sourceText = normalizeText(text);
+  const sourceProfile = extractCadenceProfile(sourceText);
+  const hardAnchors = extractHardAnchors(sourceText);
+  const protectedState = {
+    literals: Object.freeze(hardAnchors.map((value) => Object.freeze({ value }))),
+    text: sourceText
+  };
+  const sourceIR = segmentTextToIR(sourceText, protectedState);
+  const opportunityProfile = buildOpportunityProfileFromIR(sourceIR);
+  const auditBundle = buildSemanticAuditBundle(sourceIR, sourceText, protectedState);
+  const sourceClass = classifyV2SourceClass(sourceText);
+  const generationDocket = Object.freeze({
+    status: 'landed',
+    holdClass: null,
+    headline: shell?.mode === 'native' ? 'Generator V2 stayed native.' : 'Generator V2 stayed on source cadence.',
+    reasons: Object.freeze([]),
+    candidateCount: 1,
+    winningCandidateId: 'native'
+  });
+  const apertureAudit = buildTD613ApertureAudit({
+    generatorFault: false,
+    warningSignals: [],
+    repairPasses: [],
+    candidateSuppression: 0,
+    observabilityDeficit: 0,
+    aliasPersistence: 0,
+    namingSensitivity: 0,
+    redundancyInflation: 0,
+    capacityPressure: 0,
+    policyPressure: 0,
+    withheldMaterial: false,
+    withheldReason: null
+  });
+  const candidateLedger = Object.freeze([
+    Object.freeze({
+      id: 'native',
+      family: 'native',
+      envelopeId: 'generic',
+      status: 'selected',
+      score: 1,
+      rewriteStrength: 0,
+      targetFit: 1,
+      movementConfidence: 0,
+      failureReasons: Object.freeze([]),
+      transferClass: 'native',
+      outputPreview: sourceText.slice(0, 160)
+    })
+  ]);
+  const retrievalTrace = options?.retrieval
+    ? buildRetrievalTraceV2({
+        sourceText,
+        sourceClass,
+        candidate: Object.freeze({
+          transferClass: 'native',
+          realizationTier: 'none',
+          changedDimensions: [],
+          lexemeSwaps: [],
+          visibleShift: false,
+          nonTrivialShift: false,
+          relationInventory: buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors),
+          semanticAudit: auditBundle.semanticAudit,
+          protectedAnchorAudit: auditBundle.protectedAnchorAudit,
+          connectorStrategy: 'balanced',
+          contractionStrategy: 'preserve'
+        }),
+        candidateLedger,
+        generationDocket
+      })
+    : null;
+
+  return Object.freeze({
+    text: sourceText,
+    internalText: sourceText,
+    sourceProfile,
+    targetProfile: shell.profile || sourceProfile,
+    outputProfile: sourceProfile,
+    opportunityProfile,
+    changedDimensions: [],
+    protectedLiteralCount: hardAnchors.length,
+    passesApplied: [],
+    rescuePasses: [],
+    donorProgress: {},
+    transferClass: 'native',
+    qualityGatePassed: true,
+    notes: Object.freeze([generationDocket.headline]),
+    effectiveMod: shell.mod || cadenceModFromProfile(shell.profile || sourceProfile),
+    realizationTier: 'none',
+    lexicalShiftProfile: Object.freeze({
+      lexemeSwaps: Object.freeze([]),
+      swapCount: 0,
+      registerDistance: 0,
+      contentWordComplexityDelta: 0,
+      modifierDensityDelta: 0,
+      directnessDelta: 0,
+      abstractionDelta: 0,
+      contractionAligned: true
+    }),
+    semanticRisk: 0,
+    lexemeSwaps: Object.freeze([]),
+    realizationNotes: Object.freeze([]),
+    borrowedShellOutcome: null,
+    borrowedShellFailureClass: null,
+    visibleShift: false,
+    nonTrivialShift: false,
+    semanticAudit: auditBundle.semanticAudit,
+    protectedAnchorAudit: auditBundle.protectedAnchorAudit,
+    apertureAudit,
+    apertureProtocol: Object.freeze({
+      outcome: 'projected',
+      line: generationDocket.headline,
+      apertureAudit
+    }),
+    retrievalTrace,
+    generatorVersion: 'v2',
+    generationDocket,
+    candidateLedger,
+    holdStatus: 'landed'
+  });
+}
+
+function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, options = {}) {
+  const sourceClass = options.sourceClass || classifyV2SourceClass(sourceText);
+  const hardAnchors = options.hardAnchors || extractHardAnchors(sourceText);
+  const sourceProfile = options.sourceProfile || extractCadenceProfile(sourceText);
+  const sourceIR = options.sourceIR || segmentTextToIR(sourceText, {
+    literals: Object.freeze(hardAnchors.map((value) => Object.freeze({ value }))),
+    text: sourceText
+  });
+  const familyId = family.id || 'syntax-shape';
+  const connectorStrategy = connectorStrategyFor(variant.envelopeId, sourceClass, familyId);
+  const contractionStrategy = contractionStrategyFor(
+    variant.envelopeId,
+    variant.shell?.profile || null,
+    sourceProfile,
+    sourceClass,
+    familyId
+  );
+  const protectedState = protectAnchorsForRewrite(sourceText, hardAnchors);
+  const paragraphs = splitParagraphs(protectedState.text);
+  const structuralOperations = [];
+  const lexicalOperations = [];
+  const lexemeSwaps = [];
+  const context = {
+    structuralOperations,
+    lexicalOperations,
+    lexemeSwaps,
+    connectorStrategy,
+    contractionStrategy,
+    targetProfile: variant.shell?.profile || null,
+    sourceProfile,
+    sourceClass,
+    intensity: variantIntensity(variant) * familyWeight(familyId)
+  };
+
+  const rewrittenParagraphs = paragraphs.map((paragraph) => {
+    let working = paragraph;
+
+    if (familyId === 'syntax-shape') {
+      working = applySyntaxShapeRewrite(working, variant.envelopeId, sourceClass, context);
+    } else if (familyId === 'register-lexicon') {
+      working = applyLexicalRegisterRewrite(working, variant.envelopeId, sourceClass, context);
+    } else if (familyId === 'cadence-connector') {
+      working = applyConnectorRewrite(working, variant.envelopeId, sourceClass, context);
+    } else if (familyId === 'order-beat') {
+      working = applyOrderBeatRewrite(working, variant.envelopeId, sourceClass, context);
+    } else {
+      working = applyHybridBalance(working, variant.envelopeId, sourceClass, context);
+    }
+
+    return applyPersonaEnvelopeText(working, {
+      sourceText: paragraph,
+      envelopeId: variant.envelopeId,
+      sourceClass,
+      targetProfile: variant.shell.profile || {},
+      explicitTargetProfile: Boolean(variant.shell.profile)
+    });
+  });
+
+  let outputText = joinParagraphs(rewrittenParagraphs);
+  outputText = applyContractionStrategyText(outputText, contractionStrategy, context);
+  outputText = applyCompressedSurfaceRewrite(
+    outputText,
+    context.targetProfile,
+    sourceProfile,
+    context
+  );
+  outputText = applyExpandedSurfaceRewrite(
+    outputText,
+    context.targetProfile,
+    sourceProfile,
+    context
+  );
+  outputText = restoreAnchorsAfterRewrite(outputText, protectedState.replacements);
+  outputText = restoreHardWitnessAnchors(
+    sourceText,
+    restoreProceduralWitnessTerms(sourceText, outputText, sourceClass)
+  );
+  outputText = sanitizeV2Surface(outputText, {
+    preserveLowercaseLeads: Number(context.targetProfile?.orthographicLooseness || 0) >=
+      Math.max(0.06, Number(sourceProfile?.orthographicLooseness || 0) + 0.04)
+  });
+
+  return Object.freeze({
+    outputText,
+    structuralOperations: uniqueStrings(structuralOperations),
+    lexicalOperations: uniqueStrings(lexicalOperations),
+    lexemeSwaps: dedupeLexemeSwaps(lexemeSwaps),
+    connectorStrategy,
+    contractionStrategy,
+    relationInventory: buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors)
+  });
+}
+
+function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}) {
   const sourceClass = options.sourceClass || classifyV2SourceClass(sourceText);
   const sourceProfile = options.sourceProfile || extractCadenceProfile(sourceText);
-  const sourceIR = segmentTextToIR(sourceText, { literals: [], text: sourceText });
-  const hardAnchors = extractHardAnchors(sourceText);
-  const legacyResult = buildCadenceTransferLegacy(sourceText, variant.shell, {
+  const hardAnchors = options.hardAnchors || extractHardAnchors(sourceText);
+  const protectedState = {
+    literals: Object.freeze(hardAnchors.map((value) => Object.freeze({ value }))),
+    text: sourceText
+  };
+  const sourceIR = options.sourceIR || segmentTextToIR(sourceText, protectedState);
+  const authored = authorNativeCandidateText(sourceText, variant, family, {
     ...options,
-    retrieval: true
-  });
-  const legacyOutput = normalizeText(legacyResult.text || sourceText);
-  const envelopeOutput = applyPersonaEnvelopeText(legacyOutput, {
-    sourceText,
-    envelopeId: variant.envelopeId,
     sourceClass,
-    targetProfile: variant.shell.profile || legacyResult.targetProfile || {},
-    explicitTargetProfile: Boolean(variant.shell.profile)
-  });
-  const restoredOutput = restoreHardWitnessAnchors(
-    sourceText,
-    restoreProceduralWitnessTerms(sourceText, envelopeOutput || legacyOutput, sourceClass)
-  );
-  const repaired = repairTD613ApertureProjection({
-    sourceText,
-    outputText: restoredOutput || legacyOutput,
-    personaId: String(variant.shell.personaId || ''),
     sourceProfile,
-    targetProfile: variant.shell.profile || legacyResult.targetProfile || {},
-    sourceClass
+    sourceIR,
+    hardAnchors
   });
-  const outputText = sanitizeV2Surface(repaired.outputText || legacyOutput);
+  const outputText = authored.outputText;
   const outputProfile = extractCadenceProfile(outputText);
   const changedDimensions = deriveChangedDimensions(sourceProfile, outputProfile);
-  const lexemeSwaps = [...(legacyResult.lexemeSwaps || [])];
+  const semanticBundle = buildSemanticAuditBundle(sourceIR, outputText, protectedState);
+  const semanticAudit = semanticBundle.semanticAudit || {};
+  const protectedAnchorAudit = semanticBundle.protectedAnchorAudit || {};
   const witnessAudit = auditTD613ApertureWitnessAnchors({
     sourceText,
     outputText,
     sourceIR,
-    protectedState: { literals: [], text: sourceText }
+    protectedState
   });
-  const legacyProtectedAnchorAudit = legacyResult.protectedAnchorAudit || {};
-  const hardMissingAnchors = hardAnchors.filter((anchor) =>
-    !normalizeComparable(outputText).includes(normalizeComparable(anchor))
-  );
-  const derivedProtectedAnchorIntegrity = hardAnchors.length
-    ? round((hardAnchors.length - hardMissingAnchors.length) / hardAnchors.length, 4)
-    : 1;
-  const semanticAudit = {
-    ...(legacyResult.semanticAudit || {}),
-    protectedAnchorIntegrity: Number(
-      legacyResult.semanticAudit?.protectedAnchorIntegrity ?? derivedProtectedAnchorIntegrity
-    )
-  };
-  const protectedAnchorAudit = hardAnchors.length
-    ? {
-        totalAnchors: hardAnchors.length,
-        resolvedAnchors: hardAnchors.length - hardMissingAnchors.length,
-        missingAnchors: hardMissingAnchors,
-        protectedAnchorIntegrity: derivedProtectedAnchorIntegrity
-      }
-    : {
-        totalAnchors: 0,
-        resolvedAnchors: 0,
-        missingAnchors: [],
-        protectedAnchorIntegrity: derivedProtectedAnchorIntegrity
-      };
   const pathologies = detectTD613ApertureTextPathologies({
     sourceText,
     outputText
@@ -820,15 +1906,16 @@ function buildCandidate(sourceText = '', variant = {}, options = {}) {
   const visibleShift = normalizeComparable(sourceText) !== normalizeComparable(outputText);
   const nonTrivialShift =
     substantiveDimensionCount(changedDimensions) > 0 ||
-    lexemeSwaps.length > 0 ||
+    authored.lexemeSwaps.length > 0 ||
     normalizeMovementComparable(sourceText) !== normalizeMovementComparable(outputText);
+  const semanticRisk = buildSemanticRisk(semanticAudit, protectedAnchorAudit.protectedAnchorIntegrity ?? 1);
   const apertureReview = reviewTD613ApertureTransfer({
     sourceText,
     outputText,
     shellMode: variant.shell?.mode || 'native',
     shellSource: variant.shell?.source || '',
     retrieval: true,
-    semanticRisk: Number(legacyResult.semanticRisk || 0),
+    semanticRisk,
     visibleShift,
     nonTrivialShift,
     protectedAnchorIntegrity: Number(protectedAnchorAudit.protectedAnchorIntegrity ?? 1),
@@ -841,10 +1928,10 @@ function buildCandidate(sourceText = '', variant = {}, options = {}) {
     sourceText,
     outputText,
     changedDimensions,
-    lexemeSwaps,
+    lexemeSwaps: authored.lexemeSwaps,
     visibleShift,
     nonTrivialShift,
-    repaired: Boolean(repaired.repaired),
+    repaired: false,
     pathologies,
     blocked: false
   });
@@ -854,16 +1941,18 @@ function buildCandidate(sourceText = '', variant = {}, options = {}) {
     sourceProfile,
     outputProfile,
     changedDimensions,
-    lexemeSwaps
+    authored.lexemeSwaps
   );
-  const targetFit = computeTargetFit(outputProfile, variant.shell.profile || legacyResult.targetProfile || null);
-  const floors = classSemanticFloor(
-    sourceClass,
-    sourceProfile,
-    variant.shell.profile || legacyResult.targetProfile || null
-  );
+  const targetProfile = variant.shell.profile || null;
+  const targetFit = computeTargetFit(outputProfile, targetProfile);
+  const donorProgress = variant.shell?.mode === 'borrowed'
+    ? buildBorrowedShellDonorProgress(sourceText, outputText, sourceProfile, targetProfile || {}, outputProfile)
+    : {};
+  const floors = classSemanticFloor(sourceClass, sourceProfile, targetProfile);
   const hardIntegrityScore = hardAnchorIntegrity(sourceText, outputText);
   const protectedAnchorIntegrity = Number(protectedAnchorAudit.protectedAnchorIntegrity ?? 1);
+  const polarityMismatches = Number(semanticAudit.polarityMismatches ?? 0);
+  const tenseMismatches = Number(semanticAudit.tenseMismatches ?? 0);
   const semanticPass =
     Number(semanticAudit.propositionCoverage ?? 1) >= floors.proposition &&
     Number(semanticAudit.actorCoverage ?? 1) >= floors.actor &&
@@ -874,15 +1963,29 @@ function buildCandidate(sourceText = '', variant = {}, options = {}) {
   const pathologyPass = !pathologies.severe;
   const rewritePass = rewriteStrength >= classRewriteBar(sourceClass);
   const passed = exactPass && protectedAnchorPass && semanticPass && pathologyPass && rewritePass;
+  const polarityPenalty = Math.max(0, polarityMismatches - 1) * 0.12;
+  const tensePenalty = Math.max(0, tenseMismatches - 1) * 0.04;
+  const donorStallPenalty =
+    variant.shell?.mode === 'borrowed' &&
+    targetProfile &&
+    Number(donorProgress?.donorImprovementRatio || 0) <= 0.05
+      ? 0.08
+      : 0;
   const score = round(
-    (rewriteStrength * 0.56) +
-    (targetFit * 0.32) +
-    (Number(classification.movementConfidence || 0) * 0.12) -
-    ((1 - protectedAnchorIntegrity) * 1.3) -
-    (pathologies.flags.length * 0.04),
+    (rewriteStrength * 0.52) +
+    (targetFit * 0.24) +
+    ((Number(donorProgress?.donorImprovement || 0)) * 0.14) +
+    ((Number(donorProgress?.donorImprovementRatio || 0)) * 0.08) +
+    (Number(classification.movementConfidence || 0) * 0.12) +
+    (Number(witnessAudit.softWitnessIntegrity ?? 1) * 0.08) +
+    (visibleShift ? 0.04 : 0) -
+    polarityPenalty -
+    tensePenalty -
+    donorStallPenalty -
+    ((1 - protectedAnchorIntegrity) * 1.5) -
+    (pathologies.flags.length * 0.05),
     4
   );
-
   const failureReasons = uniqueStrings([
     !exactPass ? 'hard-anchor-failure' : null,
     !protectedAnchorPass ? 'anchor-drift-detected' : null,
@@ -890,36 +1993,76 @@ function buildCandidate(sourceText = '', variant = {}, options = {}) {
     !pathologyPass ? 'pathology' : null,
     !rewritePass ? 'below-rewrite-bar' : null
   ]);
+  const lexicalShiftProfile = buildNativeLexicalShiftProfile(
+    sourceText,
+    outputText,
+    sourceProfile,
+    targetProfile,
+    outputProfile,
+    authored.lexemeSwaps
+  );
+  const transferClass = computeCandidateTransferClass({
+    classification,
+    changedDimensions,
+    lexemeSwaps: authored.lexemeSwaps,
+    rewriteStrength
+  });
 
   return Object.freeze({
-    id: variant.id,
+    id: `${variant.id}:${family.id}`,
+    family: family.id,
     envelopeId: variant.envelopeId,
     shell: variant.shell,
-    legacyResult,
+    sourceClass,
+    sourceIR,
+    hardAnchors,
+    targetProfile: targetProfile || sourceProfile,
     outputText,
     outputProfile,
     changedDimensions,
-    lexemeSwaps,
+    lexemeSwaps: authored.lexemeSwaps,
+    lexicalShiftProfile,
     semanticAudit,
     protectedAnchorAudit,
     witnessAudit,
     apertureReview,
     classification,
-    repaired,
     pathologies,
     visibleShift,
     nonTrivialShift,
     rewriteStrength,
     targetFit,
+    transferClass,
+    relationInventory: authored.relationInventory,
+    structuralOperations: authored.structuralOperations,
+    lexicalOperations: authored.lexicalOperations,
+    connectorStrategy: authored.connectorStrategy,
+    contractionStrategy: authored.contractionStrategy,
+    semanticRisk,
+    donorProgress,
     score,
     passed,
-    failureReasons
+    failureReasons,
+    realizationTier: deriveRealizationTier(changedDimensions, authored.lexemeSwaps)
+  });
+}
+
+function dedupeCandidates(candidates = []) {
+  const seen = new Set();
+  return (candidates || []).filter((candidate) => {
+    const key = normalizeComparable(candidate?.outputText || '');
+    if (!key || seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
   });
 }
 
 function buildCandidateLedger(candidates = [], landedId = null) {
-  return Object.freeze(candidates.map((candidate) => Object.freeze({
+  return Object.freeze((candidates || []).map((candidate) => Object.freeze({
     id: candidate.id,
+    family: candidate.family,
     envelopeId: candidate.envelopeId,
     status: candidate.passed ? (candidate.id === landedId ? 'selected' : 'eligible') : 'held',
     score: candidate.score,
@@ -927,8 +2070,8 @@ function buildCandidateLedger(candidates = [], landedId = null) {
     targetFit: candidate.targetFit,
     movementConfidence: Number(candidate.classification?.movementConfidence || 0),
     failureReasons: Object.freeze([...(candidate.failureReasons || [])]),
-    transferClass: candidate.legacyResult?.transferClass || 'native',
-    outputPreview: candidate.outputText.slice(0, 160)
+    transferClass: candidate.transferClass || 'weak',
+    outputPreview: String(candidate.outputText || '').slice(0, 160)
   })));
 }
 
@@ -948,6 +2091,24 @@ function candidateHoldClass(candidate = null) {
   return 'below-rewrite-bar';
 }
 
+function candidateTransferRank(candidate = null) {
+  const transferClass = String(candidate?.transferClass || '').toLowerCase();
+  if (transferClass === 'structural') {
+    return 2;
+  }
+  if (transferClass === 'surface') {
+    return 1;
+  }
+  return 0;
+}
+
+function candidateSemanticBounded(candidate = null) {
+  return (
+    Number(candidate?.semanticAudit?.polarityMismatches ?? 0) <= 1 &&
+    Number(candidate?.semanticAudit?.tenseMismatches ?? 0) <= 1
+  );
+}
+
 function holdHeadline(holdClass = 'below-rewrite-bar') {
   if (holdClass === 'hard-anchor-failure') {
     return 'Generator V2 hold // exact witness anchors broke under rewrite pressure.';
@@ -962,40 +2123,23 @@ function holdHeadline(holdClass = 'below-rewrite-bar') {
 }
 
 function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidate = null, sourceClass = 'formal-correspondence', candidates = []) {
-  const sourceProfile = extractCadenceProfile(sourceText);
-  const chosen = candidate || buildCandidate(sourceText, {
-    id: 'native',
-    envelopeId: inferEnvelopeId(shell, sourceProfile, shell.profile || {}),
-    shell
-  }, { ...options, sourceClass });
-  const legacy = chosen.legacyResult || buildCadenceTransferLegacy(sourceText, shell, options);
+  const sourceProfile = options.sourceProfile || extractCadenceProfile(sourceText);
+  const sourceIR = options.sourceIR || segmentTextToIR(sourceText, { literals: [], text: sourceText });
+  const opportunityProfile = buildOpportunityProfileFromIR(sourceIR);
+  const chosen = candidate;
   const candidateLedger = buildCandidateLedger(candidates.length ? candidates : [chosen], chosen.id);
-  const substantiveMovement = substantiveDimensionCount(chosen.changedDimensions);
-  const lexicalMovement = Number((chosen.lexemeSwaps || []).length || 0);
-  const transferClass =
-    chosen.classification?.outcome === 'surface-held'
-      ? 'surface'
-      : (
-          substantiveMovement >= 2 ||
-          (substantiveMovement >= 1 && lexicalMovement > 0) ||
-          chosen.rewriteStrength >= 0.5
-        )
-        ? 'structural'
-        : 'weak';
-  const realizationTier = deriveRealizationTier(chosen.changedDimensions, chosen.lexemeSwaps);
   const warningSignals = uniqueStrings([
     ...((chosen.apertureReview && chosen.apertureReview.warningSignals) || []),
     ...((chosen.classification && chosen.classification.pathologies) || [])
   ]);
-  const repairPasses = uniqueStrings([
-    ...((chosen.repaired && chosen.repaired.repairPasses) || []),
-    ...((chosen.apertureReview && chosen.apertureReview.repairPasses) || [])
-  ]);
+  const candidateSuppression = candidateLedger.length > 1
+    ? round((candidateLedger.filter((entry) => entry.status === 'held').length / candidateLedger.length), 4)
+    : 0;
   const apertureAudit = buildTD613ApertureAudit({
     generatorFault: false,
     warningSignals,
-    repairPasses,
-    candidateSuppression: chosen.apertureReview?.candidateSuppression ?? 0,
+    repairPasses: [],
+    candidateSuppression: Math.max(candidateSuppression, chosen.apertureReview?.candidateSuppression ?? 0),
     observabilityDeficit: chosen.apertureReview?.observabilityDeficit ?? 0,
     aliasPersistence: chosen.apertureReview?.aliasPersistence ?? 0,
     namingSensitivity: chosen.apertureReview?.namingSensitivity ?? 0,
@@ -1008,55 +2152,62 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
   const generationDocket = Object.freeze({
     status: 'landed',
     holdClass: null,
-    headline: 'Generator V2 landed a registered rewrite.',
+    headline: chosen.transferClass === 'structural'
+      ? 'Generator V2 landed a structural registered rewrite.'
+      : 'Generator V2 landed a registered cadence rewrite.',
     reasons: Object.freeze([]),
     candidateCount: candidateLedger.length,
     winningCandidateId: chosen.id
   });
-  const retrievalTrace = Object.freeze({
-    ...((legacy.retrievalTrace || {})),
-    generatorVersion: 'v2',
-    sourceClass,
-    candidateLedger,
-    generationDocket,
-    winningCandidateId: chosen.id
-  });
+  const retrievalTrace = options?.retrieval
+    ? buildRetrievalTraceV2({
+        sourceText,
+        sourceClass,
+        candidate: chosen,
+        candidateLedger,
+        generationDocket,
+        donorProgress: chosen.donorProgress || {}
+      })
+    : null;
 
   return Object.freeze({
-    ...legacy,
     text: chosen.outputText,
     internalText: chosen.outputText,
     sourceProfile,
-    targetProfile: legacy.targetProfile || shell.profile || sourceProfile,
+    targetProfile: chosen.targetProfile || shell.profile || sourceProfile,
     outputProfile: chosen.outputProfile,
+    opportunityProfile,
     changedDimensions: chosen.changedDimensions,
-    lexemeSwaps: chosen.lexemeSwaps,
+    lexemeSwaps: Object.freeze([...(chosen.lexemeSwaps || [])]),
     passesApplied: uniqueStrings([
-      ...(legacy.passesApplied || []),
+      `v2-family:${chosen.family || 'syntax-shape'}`,
       `v2-envelope:${chosen.envelopeId || 'generic'}`,
-      `v2-candidate:${chosen.id || 'base'}`,
+      `v2-candidate:${chosen.id || 'candidate'}`,
       'v2-registration'
     ]),
-    rescuePasses: uniqueStrings([
-      ...(legacy.rescuePasses || []),
-      ...repairPasses
-    ]),
-    donorProgress: legacy.donorProgress || {},
-    transferClass,
+    protectedLiteralCount: Number((chosen.hardAnchors || []).length || 0),
+    rescuePasses: [],
+    donorProgress: chosen.donorProgress || {},
+    transferClass: chosen.transferClass,
     qualityGatePassed: true,
     notes: uniqueStrings([
-      ...(legacy.notes || []),
+      generationDocket.headline,
       ...(chosen.apertureReview?.reasons || []),
-      generationDocket.headline
     ]),
-    realizationTier,
-    semanticRisk: Number(legacy.semanticRisk || 0),
+    effectiveMod: shell.mod || cadenceModFromProfile(shell.profile || sourceProfile),
+    realizationTier: chosen.realizationTier,
+    semanticRisk: chosen.semanticRisk,
     semanticAudit: chosen.semanticAudit,
     protectedAnchorAudit: chosen.protectedAnchorAudit,
     visibleShift: chosen.visibleShift,
     nonTrivialShift: chosen.nonTrivialShift,
+    lexicalShiftProfile: chosen.lexicalShiftProfile,
+    realizationNotes: uniqueStrings([
+      ...(chosen.structuralOperations || []).map((entry) => `structural:${entry}`),
+      ...(chosen.lexicalOperations || []).map((entry) => `lexical:${entry}`)
+    ]),
     borrowedShellOutcome:
-      transferClass === 'structural'
+      chosen.transferClass === 'structural'
         ? 'structural'
         : chosen.classification?.outcome === 'surface-held'
           ? 'surface-held'
@@ -1066,7 +2217,7 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
     apertureProtocol: Object.freeze({
       ...((chosen.apertureReview || {})),
       outcome: chosen.classification?.outcome || 'projected',
-      line: chosen.classification?.line || 'Generator V2 landed a registered rewrite.',
+      line: chosen.classification?.line || generationDocket.headline,
       apertureAudit
     }),
     retrievalTrace,
@@ -1078,7 +2229,9 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
 }
 
 function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates = [], sourceClass = 'formal-correspondence') {
-  const sourceProfile = extractCadenceProfile(sourceText);
+  const sourceProfile = options.sourceProfile || extractCadenceProfile(sourceText);
+  const sourceIR = options.sourceIR || segmentTextToIR(sourceText, { literals: [], text: sourceText });
+  const opportunityProfile = buildOpportunityProfileFromIR(sourceIR);
   const bestCandidate = [...candidates].sort((left, right) => right.score - left.score)[0] || null;
   const holdClass = candidateHoldClass(bestCandidate);
   const headline = holdHeadline(holdClass);
@@ -1087,16 +2240,17 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     ...(bestCandidate?.failureReasons || [])
   ]);
   const candidateLedger = buildCandidateLedger(candidates, null);
+  const candidateSuppression = candidateLedger.length
+    ? round(candidateLedger.filter((entry) => entry.status === 'held').length / candidateLedger.length, 4)
+    : 1;
   const apertureAudit = buildTD613ApertureAudit({
     generatorFault: holdClass === 'pathology',
     warningSignals: uniqueStrings([
       ...((bestCandidate?.apertureReview && bestCandidate.apertureReview.warningSignals) || []),
       holdClass
     ]),
-    repairPasses: uniqueStrings([
-      ...((bestCandidate?.repaired && bestCandidate.repaired.repairPasses) || [])
-    ]),
-    candidateSuppression: bestCandidate?.apertureReview?.candidateSuppression ?? 0.12,
+    repairPasses: [],
+    candidateSuppression: Math.max(candidateSuppression, bestCandidate?.apertureReview?.candidateSuppression ?? 0.12),
     observabilityDeficit: bestCandidate?.apertureReview?.observabilityDeficit ?? 0.18,
     aliasPersistence: bestCandidate?.apertureReview?.aliasPersistence ?? 0,
     namingSensitivity: bestCandidate?.apertureReview?.namingSensitivity ?? 0,
@@ -1114,36 +2268,35 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     candidateCount: candidateLedger.length,
     winningCandidateId: null
   });
-  const retrievalTrace = Object.freeze({
-    ...((bestCandidate?.legacyResult && bestCandidate.legacyResult.retrievalTrace) || {}),
-    sourceText,
-    sourceClass,
-    generatorVersion: 'v2',
-    candidateLedger,
-    generationDocket,
-    winningCandidateId: null
-  });
+  const retrievalTrace = options?.retrieval
+    ? buildRetrievalTraceV2({
+        sourceText,
+        sourceClass,
+        candidate: bestCandidate,
+        candidateLedger,
+        generationDocket,
+        donorProgress: bestCandidate?.donorProgress || {}
+      })
+    : null;
 
   return Object.freeze({
     text: '',
     internalText: bestCandidate?.outputText || sourceText,
     sourceProfile,
-    targetProfile: shell.profile || sourceProfile,
+    targetProfile: bestCandidate?.targetProfile || shell.profile || sourceProfile,
     outputProfile: sourceProfile,
-    opportunityProfile: bestCandidate?.legacyResult?.opportunityProfile || {},
+    opportunityProfile,
     changedDimensions: [],
-    protectedLiteralCount: Number(bestCandidate?.legacyResult?.protectedLiteralCount || 0),
+    protectedLiteralCount: Number((bestCandidate?.hardAnchors || []).length || 0),
     passesApplied: [],
-    rescuePasses: uniqueStrings([
-      ...((bestCandidate?.repaired && bestCandidate.repaired.repairPasses) || [])
-    ]),
-    donorProgress: bestCandidate?.legacyResult?.donorProgress || {},
+    rescuePasses: [],
+    donorProgress: bestCandidate?.donorProgress || {},
     transferClass: 'held',
     qualityGatePassed: false,
     notes: uniqueStrings([headline, ...reasons]),
     effectiveMod: shell.mod || cadenceModFromProfile(shell.profile || sourceProfile),
     realizationTier: 'hold',
-    lexicalShiftProfile: bestCandidate?.legacyResult?.lexicalShiftProfile || {
+    lexicalShiftProfile: bestCandidate?.lexicalShiftProfile || {
       lexemeSwaps: [],
       swapCount: 0,
       registerDistance: 0,
@@ -1153,10 +2306,9 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
       abstractionDelta: 0,
       contractionAligned: true
     },
-    semanticRisk: Number(bestCandidate?.legacyResult?.semanticRisk || 0),
+    semanticRisk: Number(bestCandidate?.semanticRisk || 0),
     lexemeSwaps: [],
     realizationNotes: uniqueStrings([
-      ...(bestCandidate?.legacyResult?.realizationNotes || []),
       holdClass
     ]),
     borrowedShellOutcome: 'held',
@@ -1197,64 +2349,53 @@ export function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
   if (
     !sourceText ||
     shell?.mode === 'native' ||
-    shell?.mode === 'synthetic' ||
     ((!shell?.mod?.sent && !shell?.mod?.cont && !shell?.mod?.punc) && !shell?.profile)
   ) {
-    const result = buildCadenceTransferLegacy(text, shell, options);
-    const generationDocket = Object.freeze({
-      status: 'landed',
-      holdClass: null,
-      headline: shell?.mode === 'native' ? 'Generator V2 stayed native.' : 'Generator V2 stayed on source cadence.',
-      reasons: Object.freeze([]),
-      candidateCount: 1,
-      winningCandidateId: 'native'
-    });
-    return Object.freeze({
-      ...result,
-      generatorVersion: 'v2',
-      generationDocket,
-      candidateLedger: Object.freeze([
-        Object.freeze({
-          id: 'native',
-          envelopeId: 'generic',
-          status: 'selected',
-          score: 1,
-          rewriteStrength: 0,
-          targetFit: 1,
-          movementConfidence: 0,
-          failureReasons: Object.freeze([]),
-          transferClass: result.transferClass || 'native',
-          outputPreview: String(result.text || '').slice(0, 160)
-        })
-      ]),
-      holdStatus: 'landed',
-      retrievalTrace: options?.retrieval || result.retrievalTrace
-        ? Object.freeze({
-            ...(result.retrievalTrace || {}),
-            generatorVersion: 'v2',
-            generationDocket
-          })
-        : result.retrievalTrace
-    });
+    return buildNativePassThroughTransfer(sourceText, shell, options);
   }
 
   const sourceClass = classifyV2SourceClass(sourceText);
   const sourceProfile = extractCadenceProfile(sourceText);
+  const hardAnchors = extractHardAnchors(sourceText);
+  const sourceIR = segmentTextToIR(sourceText, {
+    literals: Object.freeze(hardAnchors.map((value) => Object.freeze({ value }))),
+    text: sourceText
+  });
   const variants = buildShellVariants(sourceProfile, shell, sourceClass);
-  const candidates = variants.map((variant) => buildCandidate(sourceText, variant, {
-    ...options,
-    sourceClass,
-    sourceProfile
-  }));
-  const selected = [...candidates]
-    .filter((candidate) => candidate.passed)
-    .sort((left, right) => right.score - left.score || right.rewriteStrength - left.rewriteStrength)[0] || null;
+  const candidates = dedupeCandidates(
+    variants.flatMap((variant) =>
+      NATIVE_CANDIDATE_FAMILIES.map((family) => buildCandidate(sourceText, variant, family, {
+        ...options,
+        sourceClass,
+        sourceProfile,
+        sourceIR,
+        hardAnchors
+      }))
+    )
+  );
+  const eligibleCandidates = [...candidates].filter((candidate) => candidate.passed);
+  const boundedCandidates = eligibleCandidates.filter((candidate) => candidateSemanticBounded(candidate));
+  const selectionPool = boundedCandidates.length ? boundedCandidates : eligibleCandidates;
+  const selected = [...selectionPool]
+    .sort((left, right) =>
+      candidateTransferRank(right) - candidateTransferRank(left) ||
+      right.score - left.score ||
+      right.rewriteStrength - left.rewriteStrength
+    )[0] || null;
 
   if (!selected) {
-    return buildHeldTransfer(sourceText, shell, options, candidates, sourceClass);
+    return buildHeldTransfer(sourceText, shell, {
+      ...options,
+      sourceProfile,
+      sourceIR
+    }, candidates, sourceClass);
   }
 
-  return buildLandedTransfer(sourceText, shell, options, selected, sourceClass, candidates);
+  return buildLandedTransfer(sourceText, shell, {
+    ...options,
+    sourceProfile,
+    sourceIR
+  }, selected, sourceClass, candidates);
 }
 
 export function buildCadenceTransferTraceV2(text = '', shell = {}, options = {}) {

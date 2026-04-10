@@ -20,424 +20,14 @@
   },
   "retrievalTrace": {
     "sourceText": "freeze runs thru q3. means coord line stays empty 12 more wks unless we bridge it. room was basically: cut print/furniture if needed, dont fake that intake can run w no staffing hit. 3 options still analyst line / evening hrs / reserves w dean ok. revised table thurs after finance answers reserve rule",
-    "donorProfileSummary": {
-      "mode": "borrowed",
-      "label": "native cadence",
-      "strength": 0.88,
-      "profile": {
-        "avgSentenceLength": 19.8,
-        "sentenceCount": 5,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.149,
-        "lineBreakDensity": 0,
-        "contentWordComplexity": 0.429,
-        "modifierDensity": 0.055,
-        "hedgeDensity": 0,
-        "directness": 0,
-        "abstractionPosture": 0.5,
-        "latinatePreference": 0.065,
-        "recurrencePressure": 0.172
-      }
-    },
-    "sourceIR": {
-      "metadata": {
-        "sentenceCount": 5,
-        "clauseCount": 7,
-        "literalSpans": [
-          {
-            "value": "q3",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "12",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "3",
-            "placeholder": "__PROTLIT_C__"
-          }
-        ]
-      },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "freeze runs thru __PROTLIT_A__",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "freeze runs thru __PROTLIT_A__",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "freeze",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "means coord line stays empty __PROTLIT_B__ more wks unless we bridge it",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "means coord line stays empty __PROTLIT_B__ more wks",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "means",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s1c1",
-              "text": "we bridge it",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "bridge",
-              "actor": "we",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "room was basically: cut print/furniture if needed, dont fake that intake can run w no staffing hit",
-          "rhetoricalRole": "resumptive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "room was basically: cut print/furniture",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "was",
-              "actor": "",
-              "action": "was",
-              "object": "basically cut print furniture",
-              "modifiers": [
-                "basically"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s2c1",
-              "text": "needed, dont fake that intake can run w no staffing hit",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "needed",
-              "actor": "that",
-              "action": "needed",
-              "object": "dont fake intake run w",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "__PROTLIT_C__ options still analyst line / evening hrs / reserves w dean ok",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "__PROTLIT_C__ options still analyst line / evening hrs / reserves w dean ok",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "protlit",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s4",
-          "raw": "revised table thurs after finance answers reserve rule",
-          "rhetoricalRole": "temporal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s4c0",
-              "text": "revised table thurs after finance answers reserve rule",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "revised",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "table"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
-    },
-    "opportunityProfile": {
-      "sentenceSplit": 1,
-      "sentenceMerge": 4,
-      "contraction": 0,
-      "connector": 2,
-      "lineBreak": 4,
-      "abbreviation": 1,
-      "orthography": 5,
-      "fragment": 0,
-      "conversational": 0,
-      "additive": 0,
-      "contrastive": 1,
-      "causal": 0,
-      "temporal": 1,
-      "clarifying": 0,
-      "resumptive": 2
-    },
-    "planSummary": {
-      "transferMode": "expand",
-      "structuralOperationsSelected": [
-        "merge-pairs",
-        "clause-texture"
-      ],
-      "lexicalRegisterOperationsSelected": [],
-      "connectorStrategy": "resumptive",
-      "contractionStrategy": "hold",
-      "relationInventory": {
-        "additive": 0,
-        "contrastive": 1,
-        "causal": 0,
-        "temporal": 1,
-        "clarifying": 0,
-        "resumptive": 2
-      },
-      "structuralGoals": {
-        "sentenceCountDelta": 0,
-        "avgSentenceDelta": 9.200000000000001
-      },
-      "discourseGoals": {
-        "contractionDelta": 0,
-        "hedgeDelta": 0
-      },
-      "registerGoals": {
-        "contentWordComplexityDelta": 0.177,
-        "modifierDensityDelta": -0.010000000000000002,
-        "directnessDelta": 0,
-        "abstractionDelta": 0,
-        "latinateDelta": 0.043000000000000003,
-        "registerMode": "plain"
-      },
-      "operationBudget": {
-        "splitSentence": 0,
-        "mergeSentence": 8,
-        "swapConnector": 2,
-        "applyHedge": 2,
-        "realizeLexicon": 5
-      }
-    },
-    "candidateSummary": {
-      "selected": {
-        "spec": "ir-beam-search",
-        "score": 394.738,
-        "passesApplied": [
-          "merge-pairs",
-          "clause-texture"
-        ],
-        "rescuePasses": [],
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "connector-stance",
-          "lexical-register",
-          "abbreviation-posture",
-          "orthography-posture",
-          "surface-marker-posture",
-          "punctuation-shape"
-        ],
-        "qualityGatePassed": true,
-        "notes": []
-      },
-      "candidates": [
-        {
-          "spec": "ir-beam-search",
-          "score": 394.738,
-          "passesApplied": [
-            "merge-pairs",
-            "clause-texture"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "surface-marker-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "mixed-structural",
-          "score": 274.112,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-function-word",
-            "connector-stance-lexicon",
-            "punctuation-finish",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "merge-heavy",
-          "score": 274.112,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-function-word",
-            "connector-stance-lexicon",
-            "punctuation-finish",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "connector-stance-heavy",
-          "score": 274.112,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-function-word",
-            "connector-stance-lexicon",
-            "punctuation-finish",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 271.112,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-function-word",
-            "connector-stance-lexicon"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        }
-      ]
-    },
-    "finalRealization": {
-      "text": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically: cut print/furniture if needed, do not fake that intake can run w no staffing hit, though 3 options still analyst line; evening hours; reserves w dean okay. Revised table thurs after finance answers reserve rule",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "abbreviation-posture",
-        "orthography-posture",
-        "surface-marker-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 3.863,
-        "outputDonorDistance": 1.924,
-        "donorImprovement": 1.939,
-        "donorImprovementRatio": 0.502,
-        "sourceOutputLexicalOverlap": 0.78
-      },
-      "rescuePasses": [
-        "td613-aperture-warning"
-      ],
-      "visibleShift": true,
-      "nonTrivialShift": true
-    },
+    "sourceClass": "narrative-scene",
+    "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.936,
-      "polarityMismatches": 1,
+      "objectCoverage": 0.929,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -451,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.077
+          "globalBagScore": 0.071
         },
         {
           "sourceClauseId": "s1c0",
@@ -475,31 +65,31 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.077
+          "globalBagScore": 0.071
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s0c0",
+          "matchedClauseId": "s1c0+s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0.063
+          "bagScore": 0.5,
+          "globalBagScore": 0.2
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s0c1+s1c0",
+          "matchedClauseId": "s3c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.8,
-          "polarityMismatch": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.556,
-          "globalBagScore": 0.357
+          "bagScore": 0.5,
+          "globalBagScore": 0.25
         },
         {
           "sourceClauseId": "s3c0",
@@ -515,159 +105,56 @@
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.154
+          "bagScore": 0.333,
+          "globalBagScore": 0.067
         }
       ],
       "sourceClauseCount": 7,
-      "outputClauseCount": 6
+      "outputClauseCount": 8
     },
     "protectedAnchorAudit": {
-      "totalAnchors": 3,
-      "resolvedAnchors": 3,
+      "totalAnchors": 0,
+      "resolvedAnchors": 0,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
-    "realizedIR": {
-      "metadata": {
-        "sentenceCount": 3,
-        "clauseCount": 6,
-        "literalSpans": [
-          {
-            "value": "q3",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "12",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "3",
-            "placeholder": "__PROTLIT_C__"
-          }
-        ]
+    "planSummary": {
+      "relationInventory": {
+        "sourceClass": "narrative-scene",
+        "paragraphCount": 1,
+        "sentenceCount": 5,
+        "clauseCount": 7,
+        "exactAnchorCount": 0
       },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Freeze runs through q3, and means coord line stays empty 12 more weeks",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "freeze",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s0c1",
-              "text": "we bridge it",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "bridge",
-              "actor": "we",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "Room was basically: cut print/furniture if needed, do not fake that intake can run w no staffing hit, though 3 options still analyst line; evening hours; reserves w dean okay",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "Room was basically: cut print/furniture if needed, do not fake that intake can run w no staffing hit, though 3 options still analyst line",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "needed",
-              "actor": "that",
-              "action": "needed",
-              "object": "fake intake run w no",
-              "modifiers": [
-                "basically"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s1c1",
-              "text": "evening hours",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "evening",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s1c2",
-              "text": "reserves w dean okay",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "reserves",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "Revised table thurs after finance answers reserve rule",
-          "rhetoricalRole": "temporal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "Revised table thurs after finance answers reserve rule",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "revised",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "table"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
+      "structuralOperationsSelected": [
+        "merge-short-beats"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "expanded:wks->weeks",
+        "expanded:w->with",
+        "expanded:dont->do-not",
+        "expanded:slash-list->sentences"
+      ],
+      "connectorStrategy": "cascade",
+      "contractionStrategy": "expand"
+    },
+    "candidateSummary": {
+      "candidateCount": 4,
+      "landedCandidateId": "base:syntax-shape",
+      "families": [
+        "syntax-shape",
+        "register-lexicon",
+        "order-beat",
+        "hybrid"
+      ],
+      "holdStatus": "landed"
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -678,130 +165,137 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "abbreviation-posture",
-        "orthography-posture",
-        "surface-marker-posture",
-        "punctuation-shape"
+        "punctuation-shape",
+        "orthography-posture"
       ],
-      "lexemeSwaps": [],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 3.863,
-        "outputDonorDistance": 1.924,
-        "donorImprovement": 1.939,
-        "donorImprovementRatio": 0.502,
-        "sourceOutputLexicalOverlap": 0.78
-      },
-      "realizationNotes": [
-        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, surface-marker-posture.",
-        "Semantic risk is elevated; review the realized output before relying on it."
-      ],
-      "rescuePasses": [
-        "td613-aperture-warning"
+      "lexemeSwaps": [
+        {
+          "from": "wks",
+          "to": "weeks",
+          "family": "surface"
+        },
+        {
+          "from": "w",
+          "to": "with",
+          "family": "surface"
+        },
+        {
+          "from": "dont",
+          "to": "do not",
+          "family": "surface"
+        }
       ],
       "visibleShift": true,
       "nonTrivialShift": true
     },
-    "generatorVersion": "v2",
-    "sourceClass": "narrative-scene",
+    "donorProgress": {
+      "eligible": true,
+      "sourceDonorDistance": 4.153,
+      "outputDonorDistance": 3.847,
+      "donorImprovement": 0.306,
+      "donorImprovementRatio": 0.074,
+      "sourceOutputLexicalOverlap": 0.857
+    },
     "candidateLedger": [
       {
-        "id": "base",
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.829,
+        "score": 0.8903,
         "rewriteStrength": 1,
-        "targetFit": 0.4656,
+        "targetFit": 0.4066,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically: cut print/furniture if needed, do not fake that "
+        "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
       },
       {
-        "id": "amplified",
+        "id": "base:register-lexicon",
+        "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.7763,
+        "score": 0.7515,
         "rewriteStrength": 1,
-        "targetFit": 0.3009,
+        "targetFit": 0.3644,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Freeze runs through q3, but means coord line stays empty 12 more weeks unless we bridge it, though room was basically: cut print/furniture if needed, do not fak"
+        "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
       },
       {
-        "id": "contrast",
+        "id": "base:order-beat",
+        "family": "order-beat",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.7752,
+        "score": 0.8903,
         "rewriteStrength": 1,
-        "targetFit": 0.2976,
+        "targetFit": 0.4066,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Freeze runs through q3, but means coord line stays empty 12 more weeks unless we bridge it, though room was basically: cut print/furniture if needed, do not fak"
+        "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, room w"
       },
       {
-        "id": "conservative",
+        "id": "base:hybrid",
+        "family": "hybrid",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.7775,
+        "score": 0.7524,
         "rewriteStrength": 1,
-        "targetFit": 0.3047,
+        "targetFit": 0.3685,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Freeze runs through q3, but means coord line stays empty 12 more weeks unless we bridge it, though room was basically: cut print/furniture if needed, do not fak"
+        "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, and 3 "
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered rewrite.",
+      "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 4,
-      "winningCandidateId": "base"
+      "winningCandidateId": "base:syntax-shape"
     },
-    "winningCandidateId": "base"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
-      "abbreviation-posture",
-      "connector-stance",
-      "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
       "sentence-mean",
-      "sentence-spread",
-      "surface-marker-posture"
+      "sentence-spread"
     ],
-    "lexemeSwapFamilies": [],
+    "lexemeSwapFamilies": [
+      "surface"
+    ],
     "relationInventory": [
-      "additive:0",
-      "causal:0",
-      "clarifying:0",
-      "contrastive:1",
-      "resumptive:2",
-      "temporal:1"
+      "clauseCount:7",
+      "exactAnchorCount:0",
+      "paragraphCount:1",
+      "sentenceCount:5",
+      "sourceClass:narrative-scene"
     ],
     "structuralOperations": [
-      "clause-texture",
-      "merge-pairs"
+      "merge-short-beats"
     ],
-    "lexicalOperations": [],
-    "connectorStrategy": "resumptive",
-    "contractionStrategy": "hold",
+    "lexicalOperations": [
+      "expanded:dont->do-not",
+      "expanded:slash-list->sentences",
+      "expanded:w->with",
+      "expanded:wks->weeks"
+    ],
+    "connectorStrategy": "cascade",
+    "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.936,
-    "polarityMismatches": 1,
+    "objectCoverage": 0.929,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

@@ -20,481 +20,14 @@
   },
   "retrievalTrace": {
     "sourceText": "need quick fix on housing story. quote in graf 6 is nia brooks not moreno. words are right, speaker tag isnt. brooks emailed 9:31. body fixed 9:47 + note added. also homepage hed now sounds like vote passed when it only cleared committee. can someone swap that before newsletter grab",
-    "donorProfileSummary": {
-      "mode": "borrowed",
-      "label": "native cadence",
-      "strength": 1,
-      "profile": {
-        "avgSentenceLength": 17.41,
-        "sentenceCount": 7,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.165,
-        "lineBreakDensity": 0,
-        "contentWordComplexity": 0.377,
-        "modifierDensity": 0.017,
-        "hedgeDensity": 0,
-        "directness": 0.18,
-        "abstractionPosture": 0.652,
-        "latinatePreference": 0.092,
-        "recurrencePressure": 0.18
-      }
-    },
-    "sourceIR": {
-      "metadata": {
-        "sentenceCount": 7,
-        "clauseCount": 8,
-        "literalSpans": [
-          {
-            "value": "9:31",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "9:47",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "6",
-            "placeholder": "__PROTLIT_C__"
-          }
-        ]
-      },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "need quick fix on housing story",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "need quick fix on housing story",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "need",
-              "actor": "",
-              "action": "need",
-              "object": "quick fix housing story",
-              "modifiers": [
-                "quick"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "quote in graf __PROTLIT_C__ is nia brooks not moreno",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "quote in graf __PROTLIT_C__ is nia brooks not moreno",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "is",
-              "actor": "",
-              "action": "is",
-              "object": "nia brooks moreno",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "words are right, speaker tag isnt",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "words are right, speaker tag isnt",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "are",
-              "actor": "",
-              "action": "are",
-              "object": "right speaker tag isnt",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "brooks emailed __PROTLIT_A__",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "brooks emailed __PROTLIT_A__",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "brooks",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s4",
-          "raw": "body fixed __PROTLIT_B__ + note added",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s4c0",
-              "text": "body fixed __PROTLIT_B__ + note added",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "fixed",
-              "actor": "",
-              "action": "fixed",
-              "object": "protlit b note added",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s5",
-          "raw": "also homepage hed now sounds like vote passed when it only cleared committee",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s5c0",
-              "text": "also homepage hed now sounds like vote passed",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "homepage",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s5c1",
-              "text": "it only cleared committee",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "cleared",
-              "actor": "it",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "only"
-              ],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            }
-          ]
-        },
-        {
-          "id": "s6",
-          "raw": "can someone swap that before newsletter grab",
-          "rhetoricalRole": "temporal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s6c0",
-              "text": "can someone swap that before newsletter grab",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "grab",
-              "actor": "that",
-              "action": "grab",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
-    },
-    "opportunityProfile": {
-      "sentenceSplit": 0,
-      "sentenceMerge": 6,
-      "contraction": 0,
-      "connector": 2,
-      "lineBreak": 6,
-      "abbreviation": 0,
-      "orthography": 8,
-      "fragment": 0,
-      "conversational": 0,
-      "additive": 1,
-      "contrastive": 0,
-      "causal": 0,
-      "temporal": 2,
-      "clarifying": 0,
-      "resumptive": 0
-    },
-    "planSummary": {
-      "transferMode": "expand",
-      "structuralOperationsSelected": [
-        "clause-texture"
-      ],
-      "lexicalRegisterOperationsSelected": [],
-      "connectorStrategy": "temporal",
-      "contractionStrategy": "hold",
-      "relationInventory": {
-        "additive": 1,
-        "contrastive": 0,
-        "causal": 0,
-        "temporal": 2,
-        "clarifying": 0,
-        "resumptive": 0
-      },
-      "structuralGoals": {
-        "sentenceCountDelta": 0,
-        "avgSentenceDelta": 10.120000000000001
-      },
-      "discourseGoals": {
-        "contractionDelta": 0,
-        "hedgeDelta": 0
-      },
-      "registerGoals": {
-        "contentWordComplexityDelta": 0.123,
-        "modifierDensityDelta": -0.008,
-        "directnessDelta": 0,
-        "abstractionDelta": 0.15200000000000002,
-        "latinateDelta": 0.092,
-        "registerMode": "reflective"
-      },
-      "operationBudget": {
-        "splitSentence": 0,
-        "mergeSentence": 11,
-        "swapConnector": 2,
-        "applyHedge": 0,
-        "realizeLexicon": 5
-      }
-    },
-    "candidateSummary": {
-      "selected": {
-        "spec": "ir-beam-search",
-        "score": 347.72,
-        "passesApplied": [
-          "baseline-floor",
-          "clause-texture"
-        ],
-        "rescuePasses": [],
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "connector-stance",
-          "lexical-register",
-          "abbreviation-posture",
-          "orthography-posture",
-          "punctuation-shape"
-        ],
-        "qualityGatePassed": true,
-        "notes": []
-      },
-      "candidates": [
-        {
-          "spec": "ir-beam-search",
-          "score": 347.72,
-          "passesApplied": [
-            "baseline-floor",
-            "clause-texture"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "mixed-structural",
-          "score": 292.764,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-function-word",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "abbreviation-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "merge-heavy",
-          "score": 292.764,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-function-word",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "abbreviation-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "connector-stance-heavy",
-          "score": 292.764,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-function-word",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "abbreviation-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 292.764,
-          "passesApplied": [
-            "baseline-merge",
-            "baseline-voice-realization",
-            "baseline-function-word",
-            "planned-sentence-merge",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "abbreviation-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        }
-      ]
-    },
-    "finalRealization": {
-      "text": "Need steady resolve on housing account; and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31. Body resolved 9:47, note added; also homepage hed now sounds like vote passed when it only cleared committee; can someone swap this before newsletter grab.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "abbreviation-posture",
-        "orthography-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "story",
-          "from": "story",
-          "to": "account",
-          "kind": "lexeme"
-        },
-        {
-          "family": "fast",
-          "from": "quick",
-          "to": "steady",
-          "kind": "lexeme"
-        },
-        {
-          "family": "fix",
-          "from": "fixed",
-          "to": "resolved",
-          "kind": "lexeme"
-        }
-      ],
-      "semanticRisk": 0.42,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 3.588,
-        "outputDonorDistance": 2.418,
-        "donorImprovement": 1.17,
-        "donorImprovementRatio": 0.326,
-        "sourceOutputLexicalOverlap": 0.8
-      },
-      "rescuePasses": [
-        "td613-aperture-warning"
-      ],
-      "visibleShift": true,
-      "nonTrivialShift": true
-    },
+    "sourceClass": "formal-correspondence",
+    "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.969,
-      "polarityMismatches": 1,
+      "objectCoverage": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -524,7 +57,7 @@
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s0c2",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -536,30 +69,6 @@
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s0c3",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.056
-        },
-        {
-          "sourceClauseId": "s4c0",
-          "matchedClauseId": "s1c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.429,
-          "globalBagScore": 0.15
-        },
-        {
-          "sourceClauseId": "s5c0",
           "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -571,20 +80,44 @@
           "globalBagScore": 0.056
         },
         {
-          "sourceClauseId": "s5c1",
-          "matchedClauseId": "s0c2+s0c3",
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.278
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s2c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.056
+        },
+        {
+          "sourceClauseId": "s5c1",
+          "matchedClauseId": "s1c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
           "globalBagScore": 0
         },
         {
           "sourceClauseId": "s6c0",
-          "matchedClauseId": "s1c2",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -599,307 +132,148 @@
       "outputClauseCount": 7
     },
     "protectedAnchorAudit": {
-      "totalAnchors": 3,
-      "resolvedAnchors": 3,
+      "totalAnchors": 2,
+      "resolvedAnchors": 2,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
-    "realizedIR": {
-      "metadata": {
-        "sentenceCount": 2,
-        "clauseCount": 7,
-        "literalSpans": [
-          {
-            "value": "9:31",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "9:47",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "6",
-            "placeholder": "__PROTLIT_C__"
-          }
-        ]
+    "planSummary": {
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 7,
+        "clauseCount": 8,
+        "exactAnchorCount": 2
       },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Need steady resolve on housing account; and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Need steady resolve on housing account",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "Need",
-              "actor": "",
-              "action": "Need",
-              "object": "steady resolve housing account",
-              "modifiers": [
-                "steady"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s0c1",
-              "text": "and quote in graf 6 is nia brooks not moreno",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "is",
-              "actor": "",
-              "action": "is",
-              "object": "nia brooks moreno",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s0c2",
-              "text": "words are right, speaker tag isnt",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "are",
-              "actor": "",
-              "action": "are",
-              "object": "right speaker tag isnt",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s0c3",
-              "text": "and brooks emailed 9:31",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "brooks",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "Body resolved 9:47, note added; also homepage hed now sounds like vote passed when it only cleared committee; can someone swap this before newsletter grab.",
-          "rhetoricalRole": "temporal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "Body resolved 9:47, note added",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "resolved",
-              "actor": "",
-              "action": "resolved",
-              "object": "9 47 note added",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s1c1",
-              "text": "also homepage hed now sounds like vote passed when it only cleared committee",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "homepage",
-              "actor": "it",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "only"
-              ],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            },
-            {
-              "id": "s1c2",
-              "text": "can someone swap this before newsletter grab",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "grab",
-              "actor": "this",
-              "action": "grab",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
+      "structuralOperationsSelected": [],
+      "lexicalRegisterOperationsSelected": [],
+      "connectorStrategy": "cascade",
+      "contractionStrategy": "expand"
+    },
+    "candidateSummary": {
+      "candidateCount": 4,
+      "landedCandidateId": "base:register-lexicon",
+      "families": [
+        "syntax-shape",
+        "register-lexicon",
+        "order-beat",
+        "hybrid"
+      ],
+      "holdStatus": "landed"
     },
     "realizationSummary": {
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
+      "transferClass": "surface",
+      "borrowedShellOutcome": "surface-held",
       "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
+      "realizationTier": "structural",
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "abbreviation-posture",
-        "orthography-posture",
-        "punctuation-shape"
+        "orthography-posture"
       ],
-      "lexemeSwaps": [
-        {
-          "family": "story",
-          "from": "story",
-          "to": "account",
-          "kind": "lexeme"
-        },
-        {
-          "family": "fast",
-          "from": "quick",
-          "to": "steady",
-          "kind": "lexeme"
-        },
-        {
-          "family": "fix",
-          "from": "fixed",
-          "to": "resolved",
-          "kind": "lexeme"
-        }
-      ],
-      "semanticRisk": 0.42,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 3.588,
-        "outputDonorDistance": 2.418,
-        "donorImprovement": 1.17,
-        "donorImprovementRatio": 0.326,
-        "sourceOutputLexicalOverlap": 0.8
-      },
-      "realizationNotes": [
-        "3 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture.",
-        "Semantic risk is elevated; review the realized output before relying on it."
-      ],
-      "rescuePasses": [
-        "td613-aperture-warning"
-      ],
+      "lexemeSwaps": [],
       "visibleShift": true,
       "nonTrivialShift": true
     },
-    "generatorVersion": "v2",
-    "sourceClass": "formal-correspondence",
+    "donorProgress": {
+      "eligible": true,
+      "sourceDonorDistance": 3.62,
+      "outputDonorDistance": 2.849,
+      "donorImprovement": 0.771,
+      "donorImprovementRatio": 0.213,
+      "sourceOutputLexicalOverlap": 1
+    },
     "candidateLedger": [
       {
-        "id": "base",
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.7825,
-        "rewriteStrength": 1,
-        "targetFit": 0.3203,
-        "movementConfidence": 1,
+        "score": 0.4948,
+        "rewriteStrength": 0.9683,
+        "targetFit": 0.3171,
+        "movementConfidence": 0.96,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Need steady resolve on housing account; quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31. Body resolved 9:47"
+        "outputPreview": "need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
       },
       {
-        "id": "amplified",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 0.7864,
-        "rewriteStrength": 1,
-        "targetFit": 0.3324,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Need steady resolve on housing account; and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31. Body resolved "
-      },
-      {
-        "id": "contrast",
+        "id": "base:register-lexicon",
+        "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.7956,
-        "rewriteStrength": 1,
-        "targetFit": 0.3612,
-        "movementConfidence": 1,
+        "score": 0.7564,
+        "rewriteStrength": 0.736,
+        "targetFit": 0.4961,
+        "movementConfidence": 0.08,
         "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Need steady resolve on housing account; and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; and brooks emailed 9:31. Body resolved "
+        "transferClass": "surface",
+        "outputPreview": "need quick fix on housing story; quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt; brooks emailed 9:31. Body fixed 9:47 + note added;"
       },
       {
-        "id": "conservative",
+        "id": "base:order-beat",
+        "family": "order-beat",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.7865,
-        "rewriteStrength": 1,
-        "targetFit": 0.3329,
-        "movementConfidence": 1,
+        "score": 0.4946,
+        "rewriteStrength": 0.9695,
+        "targetFit": 0.3135,
+        "movementConfidence": 0.96,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Need fast fix on housing story; quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt; brooks emailed 9:31. Body fixed 9:47, note added; a"
+        "outputPreview": "need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
+      },
+      {
+        "id": "base:hybrid",
+        "family": "hybrid",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.3884,
+        "rewriteStrength": 1,
+        "targetFit": 0.305,
+        "movementConfidence": 0.96,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "need quick fix on housing story, and quote in graf 6 is nia brooks not moreno, and words are right, speaker tag isnt, and brooks emailed 9:31. When it only clea"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered rewrite.",
+      "headline": "Generator V2 landed a registered cadence rewrite.",
       "reasons": [],
       "candidateCount": 4,
-      "winningCandidateId": "contrast"
+      "winningCandidateId": "base:register-lexicon"
     },
-    "winningCandidateId": "contrast"
+    "winningCandidateId": "base:register-lexicon"
   },
   "semanticContract": {
-    "transferClass": "structural",
-    "realizationTier": "lexical-structural",
+    "transferClass": "surface",
+    "realizationTier": "structural",
     "changedDimensions": [
-      "abbreviation-posture",
-      "connector-stance",
-      "lexical-register",
       "orthography-posture",
-      "punctuation-shape",
       "sentence-count",
       "sentence-mean",
       "sentence-spread"
     ],
-    "lexemeSwapFamilies": [
-      "fast",
-      "fix",
-      "story"
-    ],
+    "lexemeSwapFamilies": [],
     "relationInventory": [
-      "additive:1",
-      "causal:0",
-      "clarifying:0",
-      "contrastive:0",
-      "resumptive:0",
-      "temporal:2"
+      "clauseCount:8",
+      "exactAnchorCount:2",
+      "paragraphCount:1",
+      "sentenceCount:7",
+      "sourceClass:formal-correspondence"
     ],
-    "structuralOperations": [
-      "clause-texture"
-    ],
+    "structuralOperations": [],
     "lexicalOperations": [],
-    "connectorStrategy": "temporal",
-    "contractionStrategy": "hold",
+    "connectorStrategy": "cascade",
+    "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.969,
-    "polarityMismatches": 1,
+    "objectCoverage": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

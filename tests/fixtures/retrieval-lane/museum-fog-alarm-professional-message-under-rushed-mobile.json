@@ -20,439 +20,28 @@
   },
   "retrievalTrace": {
     "sourceText": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Please adjust the first two passes before tomorrow so we do not reproduce the same alarm under a prettier label.",
-    "donorProfileSummary": {
-      "mode": "borrowed",
-      "label": "native cadence",
-      "strength": 0.88,
-      "profile": {
-        "avgSentenceLength": 10.86,
-        "sentenceCount": 3,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.142,
-        "lineBreakDensity": 0,
-        "contentWordComplexity": 0.191,
-        "modifierDensity": 0.038,
-        "hedgeDensity": 0.018,
-        "directness": 0,
-        "abstractionPosture": 0.5,
-        "latinatePreference": 0.009,
-        "recurrencePressure": 0.133
-      }
-    },
-    "sourceIR": {
-      "metadata": {
-        "sentenceCount": 3,
-        "clauseCount": 5,
-        "literalSpans": [
-          {
-            "value": "7:42 PM",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "8:11",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "4",
-            "placeholder": "__PROTLIT_C__"
-          }
-        ]
-      },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Production team, quick correction from Gallery __PROTLIT_C__: the fog cue at __PROTLIT_A__ is what tripped the detector, not an electrical issue",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Production team, quick correction from Gallery __PROTLIT_C__: the fog cue at __PROTLIT_A__ is what tripped the detector, not an electrical issue",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "issue",
-              "actor": "the fog",
-              "action": "issue",
-              "object": "",
-              "modifiers": [
-                "quick",
-                "electrical"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "Facilities reset the panel and we resumed at __PROTLIT_B__, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "Facilities reset the panel",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "facilities",
-              "actor": "the panel",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s1c1",
-              "text": "we resumed at __PROTLIT_B__, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
-              "relationToPrev": "contrastive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "is",
-              "actor": "we",
-              "action": "is",
-              "object": "cue sheet describes effect light",
-              "modifiers": [
-                "real",
-                "atmospheric"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "Please adjust the first two passes before tomorrow so we do not reproduce the same alarm under a prettier label.",
-          "rhetoricalRole": "causal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "Please adjust the first two passes before tomorrow",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "please",
-              "actor": "the first",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s2c1",
-              "text": "we do not reproduce the same alarm under a prettier label",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "do",
-              "actor": "we",
-              "action": "do",
-              "object": "reproduce same alarm under prettier",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
-    },
-    "opportunityProfile": {
-      "sentenceSplit": 1,
-      "sentenceMerge": 2,
-      "contraction": 1,
-      "connector": 6,
-      "lineBreak": 2,
-      "abbreviation": 0,
-      "orthography": 0,
-      "fragment": 0,
-      "conversational": 0,
-      "additive": 1,
-      "contrastive": 3,
-      "causal": 2,
-      "temporal": 1,
-      "clarifying": 0,
-      "resumptive": 1
-    },
-    "planSummary": {
-      "transferMode": "compress",
-      "structuralOperationsSelected": [
-        "split-rules"
-      ],
-      "lexicalRegisterOperationsSelected": [
-        "phrase-texture"
-      ],
-      "connectorStrategy": "contrastive",
-      "contractionStrategy": "hold",
-      "relationInventory": {
-        "additive": 1,
-        "contrastive": 3,
-        "causal": 2,
-        "temporal": 1,
-        "clarifying": 0,
-        "resumptive": 1
-      },
-      "structuralGoals": {
-        "sentenceCountDelta": 0,
-        "avgSentenceDelta": -16.47
-      },
-      "discourseGoals": {
-        "contractionDelta": 0,
-        "hedgeDelta": 0.018
-      },
-      "registerGoals": {
-        "contentWordComplexityDelta": -0.138,
-        "modifierDensityDelta": -0.037,
-        "directnessDelta": 0,
-        "abstractionDelta": 0,
-        "latinateDelta": -0.028999999999999998,
-        "registerMode": "compressed"
-      },
-      "operationBudget": {
-        "splitSentence": 23,
-        "mergeSentence": 0,
-        "swapConnector": 2,
-        "applyHedge": 2,
-        "realizeLexicon": 5
-      }
-    },
-    "candidateSummary": {
-      "selected": {
-        "spec": "ir-beam-search",
-        "score": 477.018,
-        "passesApplied": [
-          "split-rules",
-          "phrase-texture"
-        ],
-        "rescuePasses": [],
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "connector-stance",
-          "lexical-register",
-          "abbreviation-posture",
-          "orthography-posture",
-          "fragment-posture",
-          "conversation-posture",
-          "surface-marker-posture",
-          "punctuation-shape"
-        ],
-        "qualityGatePassed": true,
-        "notes": []
-      },
-      "candidates": [
-        {
-          "spec": "ir-beam-search",
-          "score": 477.018,
-          "passesApplied": [
-            "split-rules",
-            "phrase-texture"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "conversation-posture",
-            "surface-marker-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "mixed-structural",
-          "score": 443.388,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "planned-sentence-split",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "punctuation-finish",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "conversation-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "split-heavy",
-          "score": 443.388,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "planned-sentence-split",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "punctuation-finish",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "conversation-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "connector-stance-heavy",
-          "score": 443.388,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "planned-sentence-split",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "punctuation-finish",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "conversation-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 441.534,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "planned-sentence-split",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "conversation-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        }
-      ]
-    },
-    "finalRealization": {
-      "text": "Production team, fast correction from Gallery 4. The fog cue at 7:42 PM is what tripped the detector, not an electrical give. Facilities reset the panel.  We resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Pls adjust the first two passes before tmrw. So we dont reproduce the same alarm under a prettier label.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
-        "abbreviation-posture",
-        "orthography-posture",
-        "fragment-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "fast",
-          "from": "quick",
-          "to": "fast",
-          "kind": "lexeme"
-        },
-        {
-          "family": "give",
-          "from": "issue",
-          "to": "give",
-          "kind": "lexeme"
-        }
-      ],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 4.535,
-        "outputDonorDistance": 1.878,
-        "donorImprovement": 2.657,
-        "donorImprovementRatio": 0.586,
-        "sourceOutputLexicalOverlap": 0.859
-      },
-      "rescuePasses": [
-        "td613-aperture-warning"
-      ],
-      "visibleShift": true,
-      "nonTrivialShift": true
-    },
+    "sourceClass": "procedural-record",
+    "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.95,
-      "polarityMismatches": 0,
+      "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s0c0+s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
-          "polarityMismatch": 0,
+          "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 0.429,
-          "globalBagScore": 0.12
+          "bagScore": 0.8,
+          "globalBagScore": 0.174
         },
         {
           "sourceClauseId": "s1c0",
@@ -464,19 +53,19 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.083
+          "globalBagScore": 0.087
         },
         {
           "sourceClauseId": "s1c1",
-          "matchedClauseId": "s3c0",
+          "matchedClauseId": "s3c0+s3c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.714,
-          "globalBagScore": 0.292
+          "bagScore": 1,
+          "globalBagScore": 0.304
         },
         {
           "sourceClauseId": "s2c0",
@@ -488,11 +77,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.333,
-          "globalBagScore": 0.04
+          "globalBagScore": 0.042
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s5c0",
+          "matchedClauseId": "s4c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -504,7 +93,7 @@
         }
       ],
       "sourceClauseCount": 5,
-      "outputClauseCount": 8
+      "outputClauseCount": 9
     },
     "protectedAnchorAudit": {
       "totalAnchors": 3,
@@ -512,194 +101,32 @@
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
-    "realizedIR": {
-      "metadata": {
-        "sentenceCount": 6,
-        "clauseCount": 8,
-        "literalSpans": [
-          {
-            "value": "7:42 PM",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "8:11",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "4",
-            "placeholder": "__PROTLIT_C__"
-          }
-        ]
+    "planSummary": {
+      "relationInventory": {
+        "sourceClass": "procedural-record",
+        "paragraphCount": 1,
+        "sentenceCount": 3,
+        "clauseCount": 5,
+        "exactAnchorCount": 3
       },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Production team, fast correction from Gallery 4",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Production team, fast correction from Gallery 4",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "production",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "The fog cue at 7:42 PM is what tripped the detector, not an electrical give",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "The fog cue at 7:42 PM is what tripped the detector, not an electrical give",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "is",
-              "actor": "The fog",
-              "action": "is",
-              "object": "what tripped detector electrical give",
-              "modifiers": [
-                "electrical",
-                "give"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "Facilities reset the panel",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "Facilities reset the panel",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "facilities",
-              "actor": "the panel",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "We resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "We resumed at 8:11, but the real problem is that the cue sheet still describes the effect",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "is",
-              "actor": "We",
-              "action": "is",
-              "object": "cue sheet describes effect",
-              "modifiers": [
-                "real"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s3c1",
-              "text": "a light atmospheric wash",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "light",
-              "actor": "a light",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "atmospheric"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s3c2",
-              "text": "the rig is now outputting closer to a burst",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "is",
-              "actor": "the rig",
-              "action": "is",
-              "object": "now outputting closer burst",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s4",
-          "raw": "Pls adjust the first two passes before tmrw",
-          "rhetoricalRole": "temporal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s4c0",
-              "text": "Pls adjust the first two passes before tmrw",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "pls",
-              "actor": "the first",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s5",
-          "raw": "So we dont reproduce the same alarm under a prettier label.",
-          "rhetoricalRole": "causal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s5c0",
-              "text": "So we dont reproduce the same alarm under a prettier label",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "dont",
-              "actor": "we",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
+      "structuralOperationsSelected": [
+        "split-long-line"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "compressed:please->pls",
+        "orthography:dont",
+        "orthography:lowercase-lead"
+      ],
+      "connectorStrategy": "split",
+      "contractionStrategy": "contract"
+    },
+    "candidateSummary": {
+      "candidateCount": 1,
+      "landedCandidateId": "base:syntax-shape",
+      "families": [
+        "syntax-shape"
+      ],
+      "holdStatus": "landed"
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -709,149 +136,93 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
-        "connector-stance",
-        "lexical-register",
+        "register-mode",
         "abbreviation-posture",
-        "orthography-posture",
-        "fragment-posture",
-        "punctuation-shape"
+        "orthography-posture"
       ],
       "lexemeSwaps": [
         {
-          "family": "fast",
-          "from": "quick",
-          "to": "fast",
-          "kind": "lexeme"
+          "from": "Please",
+          "to": "pls",
+          "family": "surface"
         },
         {
-          "family": "give",
-          "from": "issue",
-          "to": "give",
-          "kind": "lexeme"
+          "from": "don't",
+          "to": "dont",
+          "family": "surface"
         }
-      ],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 4.535,
-        "outputDonorDistance": 1.878,
-        "donorImprovement": 2.657,
-        "donorImprovementRatio": 0.586,
-        "sourceOutputLexicalOverlap": 0.859
-      },
-      "realizationNotes": [
-        "2 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, fragment-posture, conversation-posture, surface-marker-posture.",
-        "Semantic risk is elevated; review the realized output before relying on it."
-      ],
-      "rescuePasses": [
-        "td613-aperture-warning"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
     },
-    "generatorVersion": "v2",
-    "sourceClass": "procedural-record",
+    "donorProgress": {
+      "eligible": true,
+      "sourceDonorDistance": 4.615,
+      "outputDonorDistance": 2.924,
+      "donorImprovement": 1.691,
+      "donorImprovementRatio": 0.366,
+      "sourceOutputLexicalOverlap": 0.941
+    },
     "candidateLedger": [
       {
-        "id": "base",
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 0.8717,
+        "score": 1.1497,
         "rewriteStrength": 1,
-        "targetFit": 0.5991,
+        "targetFit": 0.5303,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Production team, fast correction from Gallery 4. The fog cue at 7:42 PM is what tripped the detector, not an electrical give. Facilities reset the panel. We res"
-      },
-      {
-        "id": "amplified",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.8524,
-        "rewriteStrength": 1,
-        "targetFit": 0.5388,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Production team, fast correction from Gallery 4. The fog cue at 7:42 PM is what tripped the detector, not an electrical give. Facilities reset the panel. We res"
-      },
-      {
-        "id": "contrast",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.849,
-        "rewriteStrength": 1,
-        "targetFit": 0.5282,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Production team, fast correction from Gallery 4. The fog cue at 7:42 PM is what tripped the detector, not an electrical give. Facilities reset the panel. We res"
-      },
-      {
-        "id": "conservative",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.8567,
-        "rewriteStrength": 1,
-        "targetFit": 0.5521,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Production team, fast correction from Gallery 4. The fog cue at 7:42 PM is what tripped the detector, not an electrical give. Facilities reset the panel. We res"
+        "outputPreview": "production team, quick correction from Gallery 4. the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. facilities reset the panel and w"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered rewrite.",
+      "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
-      "winningCandidateId": "base"
+      "candidateCount": 1,
+      "winningCandidateId": "base:syntax-shape"
     },
-    "winningCandidateId": "base"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "connector-stance",
-      "fragment-posture",
-      "lexical-register",
       "orthography-posture",
-      "punctuation-shape",
+      "register-mode",
       "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "sentence-mean"
     ],
     "lexemeSwapFamilies": [
-      "fast",
-      "give"
+      "surface"
     ],
     "relationInventory": [
-      "additive:1",
-      "causal:2",
-      "clarifying:0",
-      "contrastive:3",
-      "resumptive:1",
-      "temporal:1"
+      "clauseCount:5",
+      "exactAnchorCount:3",
+      "paragraphCount:1",
+      "sentenceCount:3",
+      "sourceClass:procedural-record"
     ],
     "structuralOperations": [
-      "split-rules"
+      "split-long-line"
     ],
     "lexicalOperations": [
-      "phrase-texture"
+      "compressed:please->pls",
+      "orthography:dont",
+      "orthography:lowercase-lead"
     ],
-    "connectorStrategy": "contrastive",
-    "contractionStrategy": "hold",
+    "connectorStrategy": "split",
+    "contractionStrategy": "contract",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.95,
-    "polarityMismatches": 0,
+    "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

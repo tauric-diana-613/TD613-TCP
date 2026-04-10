@@ -20,361 +20,13 @@
   },
   "retrievalTrace": {
     "sourceText": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification. Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step. That is route failure, not a jailbreak catch. Please log it that way so over-refusal does not get counted as safety success.",
-    "donorProfileSummary": {
-      "mode": "borrowed",
-      "label": "native cadence",
-      "strength": 0.88,
-      "profile": {
-        "avgSentenceLength": 11.56,
-        "sentenceCount": 4,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.176,
-        "lineBreakDensity": 0,
-        "contentWordComplexity": 0.388,
-        "modifierDensity": 0.053,
-        "hedgeDensity": 0.067,
-        "directness": 0,
-        "abstractionPosture": 0.5,
-        "latinatePreference": 0.013,
-        "recurrencePressure": 0.167
-      }
-    },
-    "sourceIR": {
-      "metadata": {
-        "sentenceCount": 4,
-        "clauseCount": 5,
-        "literalSpans": [
-          {
-            "value": "\"model safely refused.\"",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "RS-17",
-            "placeholder": "__PROTLIT_B__"
-          }
-        ]
-      },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Eval team, __PROTLIT_B__ needs a cleaner read than __PROTLIT_A__ The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Eval team, __PROTLIT_B__ needs a cleaner read than __PROTLIT_A__ The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "needs",
-              "actor": "a cleaner",
-              "action": "needs",
-              "object": "cleaner read than protlit task",
-              "modifiers": [
-                "eval",
-                "retrieval"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "instead",
-              "actor": "the model",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "generic"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "That is route failure, not a jailbreak catch",
-          "rhetoricalRole": "clarifying",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "That is route failure, not a jailbreak catch",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "catch",
-              "actor": "That",
-              "action": "catch",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "Please log it that way so over-refusal does not get counted as safety success.",
-          "rhetoricalRole": "causal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "Please log it that way so over-refusal does not get counted",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "log",
-              "actor": "it",
-              "action": "log",
-              "object": "way over refusal get counted",
-              "modifiers": [
-                "refusal"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s3c1",
-              "text": "safety success",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "safety",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
-    },
-    "opportunityProfile": {
-      "sentenceSplit": 0,
-      "sentenceMerge": 4,
-      "contraction": 2,
-      "connector": 5,
-      "lineBreak": 3,
-      "abbreviation": 0,
-      "orthography": 0,
-      "fragment": 0,
-      "conversational": 0,
-      "additive": 4,
-      "contrastive": 1,
-      "causal": 3,
-      "temporal": 1,
-      "clarifying": 1,
-      "resumptive": 0
-    },
-    "planSummary": {
-      "transferMode": "compress",
-      "structuralOperationsSelected": [],
-      "lexicalRegisterOperationsSelected": [
-        "contraction",
-        "phrase-texture"
-      ],
-      "connectorStrategy": "additive",
-      "contractionStrategy": "hold",
-      "relationInventory": {
-        "additive": 4,
-        "contrastive": 1,
-        "causal": 3,
-        "temporal": 1,
-        "clarifying": 1,
-        "resumptive": 0
-      },
-      "structuralGoals": {
-        "sentenceCountDelta": 0,
-        "avgSentenceDelta": -10.19
-      },
-      "discourseGoals": {
-        "contractionDelta": 0,
-        "hedgeDelta": 0.067
-      },
-      "registerGoals": {
-        "contentWordComplexityDelta": -0.0050000000000000044,
-        "modifierDensityDelta": -0.036,
-        "directnessDelta": 0,
-        "abstractionDelta": 0,
-        "latinateDelta": -0.041,
-        "registerMode": "compressed"
-      },
-      "operationBudget": {
-        "splitSentence": 15,
-        "mergeSentence": 0,
-        "swapConnector": 2,
-        "applyHedge": 0,
-        "realizeLexicon": 5
-      }
-    },
-    "candidateSummary": {
-      "selected": {
-        "spec": "ir-beam-search",
-        "score": 318.13,
-        "passesApplied": [
-          "contraction",
-          "phrase-texture"
-        ],
-        "rescuePasses": [],
-        "changedDimensions": [
-          "sentence-spread",
-          "contraction-posture",
-          "connector-stance",
-          "lexical-register",
-          "abbreviation-posture",
-          "orthography-posture"
-        ],
-        "qualityGatePassed": true,
-        "notes": []
-      },
-      "candidates": [
-        {
-          "spec": "ir-beam-search",
-          "score": 318.13,
-          "passesApplied": [
-            "contraction",
-            "phrase-texture"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-spread",
-            "contraction-posture",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "mixed-structural",
-          "score": 284.728,
-          "passesApplied": [
-            "baseline-voice-realization",
-            "connector-stance-lexicon"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "split-heavy",
-          "score": 284.728,
-          "passesApplied": [
-            "baseline-voice-realization",
-            "connector-stance-lexicon"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "connector-stance-heavy",
-          "score": 284.728,
-          "passesApplied": [
-            "baseline-voice-realization",
-            "connector-stance-lexicon"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 284.728,
-          "passesApplied": [
-            "baseline-voice-realization",
-            "connector-stance-lexicon"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        }
-      ]
-    },
-    "finalRealization": {
-      "text": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names.  The run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification. Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step. Thats route failure, not a jailbreak catch. Pls log it that way so over-refusal doesn't get counted as safety success.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "contraction-posture",
-        "connector-stance",
-        "abbreviation-posture",
-        "orthography-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 4.075,
-        "outputDonorDistance": 2.947,
-        "donorImprovement": 1.128,
-        "donorImprovementRatio": 0.277,
-        "sourceOutputLexicalOverlap": 0.903
-      },
-      "rescuePasses": [
-        "td613-aperture-warning"
-      ],
-      "visibleShift": true,
-      "nonTrivialShift": true
-    },
+    "sourceClass": "formal-correspondence",
+    "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.91,
+      "objectCoverage": 0.96,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -385,11 +37,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.231
+          "bagScore": 0.875,
+          "globalBagScore": 0.333
         },
         {
           "sourceClauseId": "s1c0",
@@ -449,156 +101,32 @@
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
-    "realizedIR": {
-      "metadata": {
-        "sentenceCount": 5,
-        "clauseCount": 6,
-        "literalSpans": [
-          {
-            "value": "\"model safely refused.\"",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "RS-17",
-            "placeholder": "__PROTLIT_B__"
-          }
-        ]
+    "planSummary": {
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 4,
+        "clauseCount": 5,
+        "exactAnchorCount": 2
       },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "needs",
-              "actor": "a cleaner",
-              "action": "needs",
-              "object": "cleaner read than model safely",
-              "modifiers": [
-                "eval",
-                "safely"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "The run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "The run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "log",
-              "actor": "The run",
-              "action": "log",
-              "object": "retrieval context timeline role structure",
-              "modifiers": [
-                "retrieval"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "instead",
-              "actor": "the model",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "generic"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "Thats route failure, not a jailbreak catch",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "Thats route failure, not a jailbreak catch",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "catch",
-              "actor": "a jailbreak",
-              "action": "catch",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s4",
-          "raw": "Pls log it that way so over-refusal doesn't get counted as safety success.",
-          "rhetoricalRole": "causal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s4c0",
-              "text": "Pls log it that way so over-refusal doesn't get counted",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "log",
-              "actor": "it",
-              "action": "log",
-              "object": "way over refusal doesn't get",
-              "modifiers": [
-                "refusal"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s4c1",
-              "text": "safety success",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "safety",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
+      "structuralOperationsSelected": [
+        "split-long-line"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "compressed:please->pls",
+        "orthography:thats",
+        "orthography:lowercase-lead"
+      ],
+      "connectorStrategy": "split",
+      "contractionStrategy": "contract"
+    },
+    "candidateSummary": {
+      "candidateCount": 1,
+      "landedCandidateId": "base:syntax-shape",
+      "families": [
+        "syntax-shape"
+      ],
+      "holdStatus": "landed"
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -610,126 +138,94 @@
         "sentence-count",
         "sentence-spread",
         "contraction-posture",
-        "connector-stance",
+        "register-mode",
         "abbreviation-posture",
-        "orthography-posture",
-        "punctuation-shape"
+        "orthography-posture"
       ],
-      "lexemeSwaps": [],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 4.075,
-        "outputDonorDistance": 2.947,
-        "donorImprovement": 1.128,
-        "donorImprovementRatio": 0.277,
-        "sourceOutputLexicalOverlap": 0.903
-      },
-      "realizationNotes": [
-        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture.",
-        "Semantic risk is elevated; review the realized output before relying on it."
-      ],
-      "rescuePasses": [
-        "td613-aperture-warning"
+      "lexemeSwaps": [
+        {
+          "from": "Please",
+          "to": "pls",
+          "family": "surface"
+        },
+        {
+          "from": "that's",
+          "to": "thats",
+          "family": "surface"
+        }
       ],
       "visibleShift": true,
       "nonTrivialShift": true
     },
-    "generatorVersion": "v2",
-    "sourceClass": "formal-correspondence",
+    "donorProgress": {
+      "eligible": true,
+      "sourceDonorDistance": 4.475,
+      "outputDonorDistance": 2.899,
+      "donorImprovement": 1.576,
+      "donorImprovementRatio": 0.352,
+      "sourceOutputLexicalOverlap": 0.915
+    },
     "candidateLedger": [
       {
-        "id": "base",
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 0.8501,
+        "score": 1.1354,
         "rewriteStrength": 1,
-        "targetFit": 0.5315,
+        "targetFit": 0.5417,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. The run had the"
-      },
-      {
-        "id": "amplified",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.8343,
-        "rewriteStrength": 1,
-        "targetFit": 0.4821,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. The run had the"
-      },
-      {
-        "id": "contrast",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.8298,
-        "rewriteStrength": 1,
-        "targetFit": 0.4682,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. The run had the"
-      },
-      {
-        "id": "conservative",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.8392,
-        "rewriteStrength": 1,
-        "targetFit": 0.4976,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. The run had the"
+        "outputPreview": "eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. and the run had"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered rewrite.",
+      "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
-      "winningCandidateId": "base"
+      "candidateCount": 1,
+      "winningCandidateId": "base:syntax-shape"
     },
-    "winningCandidateId": "base"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "connector-stance",
       "contraction-posture",
       "orthography-posture",
-      "punctuation-shape",
+      "register-mode",
       "sentence-count",
       "sentence-mean",
       "sentence-spread"
     ],
-    "lexemeSwapFamilies": [],
+    "lexemeSwapFamilies": [
+      "surface"
+    ],
     "relationInventory": [
-      "additive:4",
-      "causal:3",
-      "clarifying:1",
-      "contrastive:1",
-      "resumptive:0",
-      "temporal:1"
+      "clauseCount:5",
+      "exactAnchorCount:2",
+      "paragraphCount:1",
+      "sentenceCount:4",
+      "sourceClass:formal-correspondence"
     ],
-    "structuralOperations": [],
+    "structuralOperations": [
+      "split-long-line"
+    ],
     "lexicalOperations": [
-      "contraction",
-      "phrase-texture"
+      "compressed:please->pls",
+      "orthography:lowercase-lead",
+      "orthography:thats"
     ],
-    "connectorStrategy": "additive",
-    "contractionStrategy": "hold",
+    "connectorStrategy": "split",
+    "contractionStrategy": "contract",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.91,
+    "objectCoverage": 0.96,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

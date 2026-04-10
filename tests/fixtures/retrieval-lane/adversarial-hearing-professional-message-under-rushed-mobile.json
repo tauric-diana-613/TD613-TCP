@@ -20,451 +20,13 @@
   },
   "retrievalTrace": {
     "sourceText": "Hearing unit, please correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector did not text until 5:43 that he was still in traffic. Camera time places arrival after 6:10. The claimant had already left for the medical pickup she flagged earlier that day. That is a late inspection, not a refusal. If the refusal label stays in the summary, the schedule breach disappears and the whole case leans on the wrong premise.",
-    "donorProfileSummary": {
-      "mode": "borrowed",
-      "label": "native cadence",
-      "strength": 0.88,
-      "profile": {
-        "avgSentenceLength": 10.87,
-        "sentenceCount": 6,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.14,
-        "lineBreakDensity": 0,
-        "contentWordComplexity": 0.222,
-        "modifierDensity": 0.078,
-        "hedgeDensity": 0,
-        "directness": 0.137,
-        "abstractionPosture": 0.5,
-        "latinatePreference": 0.062,
-        "recurrencePressure": 0.137
-      }
-    },
-    "sourceIR": {
-      "metadata": {
-        "sentenceCount": 6,
-        "clauseCount": 7,
-        "literalSpans": [
-          {
-            "value": "1:00",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "5:00 PM",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "5:43",
-            "placeholder": "__PROTLIT_C__"
-          },
-          {
-            "value": "6:10",
-            "placeholder": "__PROTLIT_D__"
-          },
-          {
-            "value": "\"refusal of entry,\"",
-            "placeholder": "__PROTLIT_E__"
-          },
-          {
-            "value": "3",
-            "placeholder": "__PROTLIT_F__"
-          }
-        ]
-      },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Hearing unit, please correct the way the July __PROTLIT_F__ record is framing the June inspection",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Hearing unit, please correct the way the July __PROTLIT_F__ record is framing the June inspection",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "progressive",
-              "propositionHead": "is",
-              "actor": "the way",
-              "action": "is",
-              "object": "framing june inspection",
-              "modifiers": [
-                "july"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "Counsel kept calling it a __PROTLIT_E__ but the notice window was __PROTLIT_A__-__PROTLIT_B__ and the inspector did not text until __PROTLIT_C__ that he was still in traffic",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "Counsel kept calling it a __PROTLIT_E__ but the notice window was __PROTLIT_A__-__PROTLIT_B__ and the inspector did not text",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "kept",
-              "actor": "it",
-              "action": "kept",
-              "object": "calling protlit e notice window",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s1c1",
-              "text": "__PROTLIT_C__ that he was still in traffic",
-              "relationToPrev": "contrastive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "was",
-              "actor": "that",
-              "action": "was",
-              "object": "traffic",
-              "modifiers": [
-                "traffic"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "Camera time places arrival after __PROTLIT_D__",
-          "rhetoricalRole": "temporal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "Camera time places arrival after __PROTLIT_D__",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "camera",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "arrival"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "The claimant had already left for the medical pickup she flagged earlier that day",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "The claimant had already left for the medical pickup she flagged earlier that day",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "left",
-              "actor": "The claimant",
-              "action": "left",
-              "object": "medical pickup flagged earlier day",
-              "modifiers": [
-                "medical"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s4",
-          "raw": "That is a late inspection, not a refusal",
-          "rhetoricalRole": "clarifying",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s4c0",
-              "text": "That is a late inspection, not a refusal",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "is",
-              "actor": "That",
-              "action": "is",
-              "object": "late inspection refusal",
-              "modifiers": [
-                "refusal"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s5",
-          "raw": "If the refusal label stays in the summary, the schedule breach disappears and the whole case leans on the wrong premise.",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s5c0",
-              "text": "If the refusal label stays in the summary, the schedule breach disappears and the whole case leans on the wrong premise",
-              "relationToPrev": "start",
-              "clauseType": "subordinate",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "schedule",
-              "actor": "the refusal",
-              "action": "schedule",
-              "object": "breach disappears whole case leans",
-              "modifiers": [
-                "refusal"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
-    },
-    "opportunityProfile": {
-      "sentenceSplit": 0,
-      "sentenceMerge": 5,
-      "contraction": 2,
-      "connector": 5,
-      "lineBreak": 5,
-      "abbreviation": 0,
-      "orthography": 0,
-      "fragment": 0,
-      "conversational": 0,
-      "additive": 2,
-      "contrastive": 2,
-      "causal": 0,
-      "temporal": 1,
-      "clarifying": 1,
-      "resumptive": 1
-    },
-    "planSummary": {
-      "transferMode": "compress",
-      "structuralOperationsSelected": [
-        "clause-texture"
-      ],
-      "lexicalRegisterOperationsSelected": [],
-      "connectorStrategy": "additive",
-      "contractionStrategy": "hold",
-      "relationInventory": {
-        "additive": 2,
-        "contrastive": 2,
-        "causal": 0,
-        "temporal": 1,
-        "clarifying": 1,
-        "resumptive": 1
-      },
-      "structuralGoals": {
-        "sentenceCountDelta": 0,
-        "avgSentenceDelta": -5.459999999999999
-      },
-      "discourseGoals": {
-        "contractionDelta": 0,
-        "hedgeDelta": 0
-      },
-      "registerGoals": {
-        "contentWordComplexityDelta": -0.10500000000000001,
-        "modifierDensityDelta": -0.040999999999999995,
-        "directnessDelta": 0.137,
-        "abstractionDelta": 0,
-        "latinateDelta": 0.011000000000000003,
-        "registerMode": "compressed"
-      },
-      "operationBudget": {
-        "splitSentence": 9,
-        "mergeSentence": 0,
-        "swapConnector": 2,
-        "applyHedge": 2,
-        "realizeLexicon": 5
-      }
-    },
-    "candidateSummary": {
-      "selected": {
-        "spec": "ir-beam-search",
-        "score": 378.974,
-        "passesApplied": [
-          "baseline-floor",
-          "clause-texture"
-        ],
-        "rescuePasses": [],
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "connector-stance",
-          "lexical-register",
-          "abbreviation-posture",
-          "orthography-posture",
-          "punctuation-shape"
-        ],
-        "qualityGatePassed": true,
-        "notes": []
-      },
-      "candidates": [
-        {
-          "spec": "ir-beam-search",
-          "score": 378.974,
-          "passesApplied": [
-            "baseline-floor",
-            "clause-texture"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "mixed-structural",
-          "score": 345,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "planned-sentence-split",
-            "connector-stance-lexicon",
-            "punctuation-finish"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "connector-stance",
-            "lexical-register",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "split-heavy",
-          "score": 345,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "planned-sentence-split",
-            "connector-stance-lexicon",
-            "punctuation-finish"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "connector-stance",
-            "lexical-register",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "connector-stance-heavy",
-          "score": 345,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "planned-sentence-split",
-            "connector-stance-lexicon",
-            "punctuation-finish"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "connector-stance",
-            "lexical-register",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 346.21,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "planned-sentence-split",
-            "connector-stance-lexicon"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "orthography-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        }
-      ]
-    },
-    "finalRealization": {
-      "text": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector didnt text until 5:43 that he was still in traffic. Camera time places arrival after 6:10. The claimant had already left for the medical pickup she flagged earlier that day. That is a late inspection, not a refusal, if the refusal label stays in the summary. The book breach disappears and the whole case leans on the wrong premise.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-spread",
-        "connector-stance",
-        "abbreviation-posture",
-        "orthography-posture"
-      ],
-      "lexemeSwaps": [
-        {
-          "family": "book",
-          "from": "schedule",
-          "to": "book",
-          "kind": "lexeme"
-        }
-      ],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 3.242,
-        "outputDonorDistance": 1.909,
-        "donorImprovement": 1.333,
-        "donorImprovementRatio": 0.411,
-        "sourceOutputLexicalOverlap": 0.921
-      },
-      "rescuePasses": [
-        "td613-aperture-warning"
-      ],
-      "visibleShift": true,
-      "nonTrivialShift": true
-    },
+    "sourceClass": "procedural-record",
+    "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.964,
+      "objectCoverage": 1,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -479,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.179
+          "globalBagScore": 0.172
         },
         {
           "sourceClauseId": "s1c0",
@@ -487,11 +49,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.133
+          "bagScore": 1,
+          "globalBagScore": 0.207
         },
         {
           "sourceClauseId": "s1c1",
@@ -503,7 +65,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.036
+          "globalBagScore": 0.034
         },
         {
           "sourceClauseId": "s2c0",
@@ -515,7 +77,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.071
+          "globalBagScore": 0.069
         },
         {
           "sourceClauseId": "s3c0",
@@ -527,7 +89,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.25
+          "globalBagScore": 0.241
         },
         {
           "sourceClauseId": "s4c0",
@@ -538,12 +100,12 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.107
+          "bagScore": 0.5,
+          "globalBagScore": 0.103
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s4c1+s5c0",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -551,225 +113,42 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.25
+          "globalBagScore": 0.241
         }
       ],
       "sourceClauseCount": 7,
-      "outputClauseCount": 8
+      "outputClauseCount": 7
     },
     "protectedAnchorAudit": {
-      "totalAnchors": 6,
-      "resolvedAnchors": 6,
+      "totalAnchors": 7,
+      "resolvedAnchors": 7,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
-    "realizedIR": {
-      "metadata": {
+    "planSummary": {
+      "relationInventory": {
+        "sourceClass": "procedural-record",
+        "paragraphCount": 1,
         "sentenceCount": 6,
-        "clauseCount": 8,
-        "literalSpans": [
-          {
-            "value": "1:00",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "5:00 PM",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "5:43",
-            "placeholder": "__PROTLIT_C__"
-          },
-          {
-            "value": "6:10",
-            "placeholder": "__PROTLIT_D__"
-          },
-          {
-            "value": "\"refusal of entry,\"",
-            "placeholder": "__PROTLIT_E__"
-          },
-          {
-            "value": "3",
-            "placeholder": "__PROTLIT_F__"
-          }
-        ]
+        "clauseCount": 7,
+        "exactAnchorCount": 7
       },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Hearing unit, pls correct the way the July 3 record is framing the June inspection",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Hearing unit, pls correct the way the July 3 record is framing the June inspection",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "progressive",
-              "propositionHead": "is",
-              "actor": "the way",
-              "action": "is",
-              "object": "framing june inspection",
-              "modifiers": [
-                "july"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector didnt text until 5:43 that he was still in traffic",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector didnt text",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "kept",
-              "actor": "it",
-              "action": "kept",
-              "object": "calling refusal entry notice window",
-              "modifiers": [
-                "refusal"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s1c1",
-              "text": "5:43 that he was still in traffic",
-              "relationToPrev": "contrastive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "was",
-              "actor": "that",
-              "action": "was",
-              "object": "traffic",
-              "modifiers": [
-                "traffic"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "Camera time places arrival after 6:10",
-          "rhetoricalRole": "temporal",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "Camera time places arrival after 6:10",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "camera",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "arrival"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "The claimant had already left for the medical pickup she flagged earlier that day",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "The claimant had already left for the medical pickup she flagged earlier that day",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "left",
-              "actor": "The claimant",
-              "action": "left",
-              "object": "medical pickup flagged earlier day",
-              "modifiers": [
-                "medical"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s4",
-          "raw": "That is a late inspection, not a refusal, if the refusal label stays in the summary",
-          "rhetoricalRole": "clarifying",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s4c0",
-              "text": "That is a late inspection, not a refusal",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "is",
-              "actor": "That",
-              "action": "is",
-              "object": "late inspection refusal",
-              "modifiers": [
-                "refusal"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s4c1",
-              "text": "the refusal label stays in the summary",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "refusal",
-              "actor": "the refusal",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "refusal"
-              ],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s5",
-          "raw": "The book breach disappears and the whole case leans on the wrong premise.",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s5c0",
-              "text": "The book breach disappears and the whole case leans on the wrong premise",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "book",
-              "actor": "The book",
-              "action": "book",
-              "object": "breach disappears whole case leans",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
+      "structuralOperationsSelected": [],
+      "lexicalRegisterOperationsSelected": [
+        "compressed:please->pls",
+        "orthography:thats",
+        "orthography:lowercase-lead"
+      ],
+      "connectorStrategy": "split",
+      "contractionStrategy": "contract"
+    },
+    "candidateSummary": {
+      "candidateCount": 1,
+      "landedCandidateId": "base:syntax-shape",
+      "families": [
+        "syntax-shape"
+      ],
+      "holdStatus": "landed"
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -777,131 +156,88 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
-        "sentence-spread",
-        "connector-stance",
+        "register-mode",
         "abbreviation-posture",
         "orthography-posture"
       ],
       "lexemeSwaps": [
         {
-          "family": "book",
-          "from": "schedule",
-          "to": "book",
-          "kind": "lexeme"
+          "from": "please",
+          "to": "pls",
+          "family": "surface"
+        },
+        {
+          "from": "that's",
+          "to": "thats",
+          "family": "surface"
         }
-      ],
-      "semanticRisk": 0.3,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 3.242,
-        "outputDonorDistance": 1.909,
-        "donorImprovement": 1.333,
-        "donorImprovementRatio": 0.411,
-        "sourceOutputLexicalOverlap": 0.921
-      },
-      "realizationNotes": [
-        "1 lexical family swap landed.",
-        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture.",
-        "Semantic risk is elevated; review the realized output before relying on it."
-      ],
-      "rescuePasses": [
-        "td613-aperture-warning"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
     },
-    "generatorVersion": "v2",
-    "sourceClass": "procedural-record",
+    "donorProgress": {
+      "eligible": true,
+      "sourceDonorDistance": 3.519,
+      "outputDonorDistance": 2.452,
+      "donorImprovement": 1.067,
+      "donorImprovementRatio": 0.303,
+      "sourceOutputLexicalOverlap": 0.934
+    },
     "candidateLedger": [
       {
-        "id": "base",
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 0.5387,
-        "rewriteStrength": 0.6209,
-        "targetFit": 0.3268,
-        "movementConfidence": 0.72,
+        "score": 0.9906,
+        "rewriteStrength": 0.8876,
+        "targetFit": 0.5229,
+        "movementConfidence": 0.94,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
-      },
-      {
-        "id": "amplified",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.5295,
-        "rewriteStrength": 0.6209,
-        "targetFit": 0.2906,
-        "movementConfidence": 0.74,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
-      },
-      {
-        "id": "contrast",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.526,
-        "rewriteStrength": 0.6209,
-        "targetFit": 0.2797,
-        "movementConfidence": 0.74,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
-      },
-      {
-        "id": "conservative",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.5327,
-        "rewriteStrength": 0.6209,
-        "targetFit": 0.3006,
-        "movementConfidence": 0.74,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
+        "outputPreview": "hearing unit, pls correct the way the July 3 record is framing the June inspection. counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered rewrite.",
+      "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
-      "winningCandidateId": "base"
+      "candidateCount": 1,
+      "winningCandidateId": "base:syntax-shape"
     },
-    "winningCandidateId": "base"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "connector-stance",
       "orthography-posture",
-      "sentence-spread"
+      "register-mode"
     ],
     "lexemeSwapFamilies": [
-      "book"
+      "surface"
     ],
     "relationInventory": [
-      "additive:2",
-      "causal:0",
-      "clarifying:1",
-      "contrastive:2",
-      "resumptive:1",
-      "temporal:1"
+      "clauseCount:7",
+      "exactAnchorCount:7",
+      "paragraphCount:1",
+      "sentenceCount:6",
+      "sourceClass:procedural-record"
     ],
-    "structuralOperations": [
-      "clause-texture"
+    "structuralOperations": [],
+    "lexicalOperations": [
+      "compressed:please->pls",
+      "orthography:lowercase-lead",
+      "orthography:thats"
     ],
-    "lexicalOperations": [],
-    "connectorStrategy": "additive",
-    "contractionStrategy": "hold",
+    "connectorStrategy": "split",
+    "contractionStrategy": "contract",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.964,
+    "objectCoverage": 1,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

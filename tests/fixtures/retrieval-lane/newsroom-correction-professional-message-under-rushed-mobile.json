@@ -20,527 +20,20 @@
   },
   "retrievalTrace": {
     "sourceText": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks, not Deputy Director Laila Moreno. Brooks flagged it at 9:31 AM, and we corrected the body at 9:47 with a note appended. We also changed the homepage headline at 10:03 because the first version implied budget approval when the vote had only cleared committee. Please keep the distinction clear in any follow-up: this is a correction and clarification sequence, not a retraction. The reporting is still good. The problem was attribution custody and an over-hardened headline frame.",
-    "donorProfileSummary": {
-      "mode": "borrowed",
-      "label": "native cadence",
-      "strength": 0.88,
-      "profile": {
-        "avgSentenceLength": 7.47,
-        "sentenceCount": 7,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.176,
-        "lineBreakDensity": 0,
-        "contentWordComplexity": 0.292,
-        "modifierDensity": 0.023,
-        "hedgeDensity": 0,
-        "directness": 0.18,
-        "abstractionPosture": 0.54,
-        "latinatePreference": 0.028,
-        "recurrencePressure": 0.169
-      }
-    },
-    "sourceIR": {
-      "metadata": {
-        "sentenceCount": 7,
-        "clauseCount": 10,
-        "literalSpans": [
-          {
-            "value": "9:31 AM",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "9:47",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "10:03",
-            "placeholder": "__PROTLIT_C__"
-          }
-        ]
-      },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Team, we need to tighten the correction chain on the council-housing story",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Team, we need to tighten the correction chain on the council-housing story",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "need",
-              "actor": "we",
-              "action": "need",
-              "object": "tighten correction chain council housing",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks, not Deputy Director Laila Moreno",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks, not Deputy Director Laila Moreno",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "past",
-              "propositionHead": "was",
-              "actor": "the right",
-              "action": "was",
-              "object": "nia brooks deputy director laila",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "Brooks flagged it at __PROTLIT_A__, and we corrected the body at __PROTLIT_B__ with a note appended",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "Brooks flagged it at __PROTLIT_A__",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "flagged",
-              "actor": "it",
-              "action": "flagged",
-              "object": "at protlit",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s2c1",
-              "text": "we corrected the body at __PROTLIT_B__ with a note appended",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "corrected",
-              "actor": "we",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "We also changed the homepage headline at __PROTLIT_C__ because the first version implied budget approval when the vote had only cleared committee",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "We also changed the homepage headline at __PROTLIT_C__",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "changed",
-              "actor": "We",
-              "action": "changed",
-              "object": "homepage headline at protlit c",
-              "modifiers": [],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s3c1",
-              "text": "the first version implied budget approval",
-              "relationToPrev": "additive",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "first",
-              "actor": "the first",
-              "action": "",
-              "object": "",
-              "modifiers": [
-                "approval"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s3c2",
-              "text": "the vote had only cleared committee",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "had",
-              "actor": "the vote",
-              "action": "had",
-              "object": "cleared committee",
-              "modifiers": [
-                "only"
-              ],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            }
-          ]
-        },
-        {
-          "id": "s4",
-          "raw": "Please keep the distinction clear in any follow-up: this is a correction and clarification sequence, not a retraction",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s4c0",
-              "text": "Please keep the distinction clear in any follow-up: this is a correction and clarification sequence, not a retraction",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "keep",
-              "actor": "the distinction",
-              "action": "keep",
-              "object": "distinction clear any follow up",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s5",
-          "raw": "The reporting is still good",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s5c0",
-              "text": "The reporting is still good",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "is",
-              "actor": "The reporting",
-              "action": "is",
-              "object": "good",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s6",
-          "raw": "The problem was attribution custody and an over-hardened headline frame.",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s6c0",
-              "text": "The problem was attribution custody and an over-hardened headline frame",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "was",
-              "actor": "The problem",
-              "action": "was",
-              "object": "attribution custody over hardened headline",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
-    },
-    "opportunityProfile": {
-      "sentenceSplit": 2,
-      "sentenceMerge": 6,
-      "contraction": 0,
-      "connector": 5,
-      "lineBreak": 6,
-      "abbreviation": 0,
-      "orthography": 0,
-      "fragment": 0,
-      "conversational": 0,
-      "additive": 4,
-      "contrastive": 2,
-      "causal": 1,
-      "temporal": 1,
-      "clarifying": 0,
-      "resumptive": 1
-    },
-    "planSummary": {
-      "transferMode": "compress",
-      "structuralOperationsSelected": [
-        "baseline-split",
-        "planned-sentence-split",
-        "sentence-structure",
-        "clause-join-split"
-      ],
-      "lexicalRegisterOperationsSelected": [
-        "baseline-voice-realization",
-        "baseline-stance",
-        "connector-stance-lexicon",
-        "punctuation-finish"
-      ],
-      "connectorStrategy": "additive",
-      "contractionStrategy": "hold",
-      "relationInventory": {
-        "additive": 4,
-        "contrastive": 2,
-        "causal": 1,
-        "temporal": 1,
-        "clarifying": 0,
-        "resumptive": 1
-      },
-      "structuralGoals": {
-        "sentenceCountDelta": 0,
-        "avgSentenceDelta": -8.240000000000002
-      },
-      "discourseGoals": {
-        "contractionDelta": 0,
-        "hedgeDelta": 0
-      },
-      "registerGoals": {
-        "contentWordComplexityDelta": -0.12,
-        "modifierDensityDelta": 0.008,
-        "directnessDelta": 0,
-        "abstractionDelta": -0.127,
-        "latinateDelta": -0.09,
-        "registerMode": "compressed"
-      },
-      "operationBudget": {
-        "splitSentence": 17,
-        "mergeSentence": 0,
-        "swapConnector": 2,
-        "applyHedge": 2,
-        "realizeLexicon": 5
-      }
-    },
-    "candidateSummary": {
-      "selected": {
-        "spec": "mixed-structural",
-        "score": 395.22,
-        "passesApplied": [
-          "baseline-split",
-          "baseline-voice-realization",
-          "baseline-stance",
-          "planned-sentence-split",
-          "sentence-structure",
-          "clause-join-split",
-          "connector-stance-lexicon",
-          "punctuation-finish",
-          "cleanup-restore"
-        ],
-        "rescuePasses": [],
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "connector-stance",
-          "lexical-register",
-          "abbreviation-posture",
-          "orthography-posture",
-          "fragment-posture",
-          "punctuation-shape"
-        ],
-        "qualityGatePassed": true,
-        "notes": []
-      },
-      "candidates": [
-        {
-          "spec": "ir-beam-search",
-          "score": 377.78,
-          "passesApplied": [
-            "baseline-floor",
-            "clause-texture"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "mixed-structural",
-          "score": 395.22,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "baseline-stance",
-            "planned-sentence-split",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "punctuation-finish",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "split-heavy",
-          "score": 395.22,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "baseline-stance",
-            "planned-sentence-split",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "punctuation-finish",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "connector-stance-heavy",
-          "score": 395.22,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "baseline-stance",
-            "planned-sentence-split",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "punctuation-finish",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        },
-        {
-          "spec": "lexical-register-heavy",
-          "score": 393.3,
-          "passesApplied": [
-            "baseline-split",
-            "baseline-voice-realization",
-            "baseline-stance",
-            "planned-sentence-split",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
-          ],
-          "rescuePasses": [],
-          "changedDimensions": [
-            "sentence-mean",
-            "sentence-count",
-            "sentence-spread",
-            "connector-stance",
-            "lexical-register",
-            "abbreviation-posture",
-            "orthography-posture",
-            "fragment-posture",
-            "punctuation-shape"
-          ],
-          "qualityGatePassed": true,
-          "notes": []
-        }
-      ]
-    },
-    "finalRealization": {
-      "text": "Team. We need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label. It was Nia Brooks. Not Deputy Director Laila Moreno. Brooks flagged it at 9:31 AM,.  We corrected the body at 9:47 w/ a note appended. We also changed the homepage headline at 10:03 bc the first version implied budget approval when the vote had only cleared committee. Please keep the distinction clear in any follow-up. That is a correction and clarification sequence, not a retraction. The reporting is still good. The problem was attribution custody and an over-hardened headline frame.",
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "connector-stance",
-        "lexical-register",
-        "abbreviation-posture",
-        "fragment-posture",
-        "punctuation-shape"
-      ],
-      "lexemeSwaps": [],
-      "semanticRisk": 0.42,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 3.408,
-        "outputDonorDistance": 2.494,
-        "donorImprovement": 0.914,
-        "donorImprovementRatio": 0.268,
-        "sourceOutputLexicalOverlap": 0.931
-      },
-      "rescuePasses": [
-        "td613-aperture-warning"
-      ],
-      "visibleShift": true,
-      "nonTrivialShift": true
-    },
+    "sourceClass": "procedural-record",
+    "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 0.902,
       "actionCoverage": 1,
-      "objectCoverage": 0.925,
+      "objectCoverage": 1,
       "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -548,35 +41,35 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.146
+          "globalBagScore": 0.143
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s2c0+s3c0",
+          "matchedClauseId": "s1c0+s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 0.429,
-          "globalBagScore": 0.093
+          "bagScore": 0.857,
+          "globalBagScore": 0.143
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s5c0",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.4,
-          "globalBagScore": 0.048
+          "bagScore": 1,
+          "globalBagScore": 0.095
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s6c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -588,31 +81,31 @@
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s7c0",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.444,
-          "globalBagScore": 0.093
+          "bagScore": 0.857,
+          "globalBagScore": 0.143
         },
         {
           "sourceClauseId": "s3c1",
-          "matchedClauseId": "s7c1",
+          "matchedClauseId": "s5c1",
           "propositionCoverage": 1,
-          "actorCoverage": 0.022,
+          "actorCoverage": 0.021,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
-          "globalBagScore": 0.024
+          "globalBagScore": 0.023
         },
         {
           "sourceClauseId": "s3c2",
-          "matchedClauseId": "s7c1",
+          "matchedClauseId": "s5c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -620,10 +113,22 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.073
+          "globalBagScore": 0.071
         },
         {
           "sourceClauseId": "s4c0",
+          "matchedClauseId": "s6c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.143
+        },
+        {
+          "sourceClauseId": "s5c0",
           "matchedClauseId": "s8c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -632,23 +137,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.146
-        },
-        {
-          "sourceClauseId": "s5c0",
-          "matchedClauseId": "s10c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.049
+          "globalBagScore": 0.048
         },
         {
           "sourceClauseId": "s6c0",
-          "matchedClauseId": "s11c0",
+          "matchedClauseId": "s9c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -656,323 +149,45 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.146
+          "globalBagScore": 0.143
         }
       ],
       "sourceClauseCount": 10,
-      "outputClauseCount": 13
+      "outputClauseCount": 11
     },
     "protectedAnchorAudit": {
-      "totalAnchors": 3,
-      "resolvedAnchors": 3,
+      "totalAnchors": 6,
+      "resolvedAnchors": 6,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
-    "realizedIR": {
-      "metadata": {
-        "sentenceCount": 12,
-        "clauseCount": 13,
-        "literalSpans": [
-          {
-            "value": "9:31 AM",
-            "placeholder": "__PROTLIT_A__"
-          },
-          {
-            "value": "9:47",
-            "placeholder": "__PROTLIT_B__"
-          },
-          {
-            "value": "10:03",
-            "placeholder": "__PROTLIT_C__"
-          }
-        ]
+    "planSummary": {
+      "relationInventory": {
+        "sourceClass": "procedural-record",
+        "paragraphCount": 1,
+        "sentenceCount": 7,
+        "clauseCount": 10,
+        "exactAnchorCount": 6
       },
-      "sentences": [
-        {
-          "id": "s0",
-          "raw": "Team",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s0c0",
-              "text": "Team",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "team",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s1",
-          "raw": "We need to tighten the correction chain on the council-housing story",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s1c0",
-              "text": "We need to tighten the correction chain on the council-housing story",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "need",
-              "actor": "We",
-              "action": "need",
-              "object": "tighten correction chain council housing",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s2",
-          "raw": "Paragraph six carried the right quote but the wrong speaker label",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s2c0",
-              "text": "Paragraph six carried the right quote but the wrong speaker label",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "paragraph",
-              "actor": "the right",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s3",
-          "raw": "It was Nia Brooks",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s3c0",
-              "text": "It was Nia Brooks",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "was",
-              "actor": "It",
-              "action": "was",
-              "object": "nia brooks",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s4",
-          "raw": "Not Deputy Director Laila Moreno",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s4c0",
-              "text": "Not Deputy Director Laila Moreno",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "deputy",
-              "actor": "",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s5",
-          "raw": "Brooks flagged it at 9:31 AM,",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s5c0",
-              "text": "Brooks flagged it at 9:31 AM,",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "flagged",
-              "actor": "it",
-              "action": "flagged",
-              "object": "at 9 31",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s6",
-          "raw": "We corrected the body at 9:47 w/ a note appended",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s6c0",
-              "text": "We corrected the body at 9:47 w/ a note appended",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "corrected",
-              "actor": "We",
-              "action": "",
-              "object": "",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s7",
-          "raw": "We also changed the homepage headline at 10:03 bc the first version implied budget approval when the vote had only cleared committee",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s7c0",
-              "text": "We also changed the homepage headline at 10:03 bc the first version implied budget approval",
-              "relationToPrev": "start",
-              "clauseType": "fragment",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "changed",
-              "actor": "We",
-              "action": "changed",
-              "object": "homepage headline at 10 03",
-              "modifiers": [
-                "approval"
-              ],
-              "hedgeMarkers": []
-            },
-            {
-              "id": "s7c1",
-              "text": "the vote had only cleared committee",
-              "relationToPrev": "additive",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "had",
-              "actor": "the vote",
-              "action": "had",
-              "object": "cleared committee",
-              "modifiers": [
-                "only"
-              ],
-              "hedgeMarkers": [
-                "minimization"
-              ]
-            }
-          ]
-        },
-        {
-          "id": "s8",
-          "raw": "Please keep the distinction clear in any follow-up",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s8c0",
-              "text": "Please keep the distinction clear in any follow-up",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "keep",
-              "actor": "the distinction",
-              "action": "keep",
-              "object": "distinction clear any follow up",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s9",
-          "raw": "That is a correction and clarification sequence, not a retraction",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s9c0",
-              "text": "That is a correction and clarification sequence, not a retraction",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "negative",
-              "tenseAspect": "present",
-              "propositionHead": "is",
-              "actor": "That",
-              "action": "is",
-              "object": "correction clarification sequence retraction",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s10",
-          "raw": "The reporting is still good",
-          "rhetoricalRole": "contrastive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s10c0",
-              "text": "The reporting is still good",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "present",
-              "propositionHead": "is",
-              "actor": "The reporting",
-              "action": "is",
-              "object": "good",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        },
-        {
-          "id": "s11",
-          "raw": "The problem was attribution custody and an over-hardened headline frame.",
-          "rhetoricalRole": "additive",
-          "terminalPunct": ".",
-          "clauses": [
-            {
-              "id": "s11c0",
-              "text": "The problem was attribution custody and an over-hardened headline frame",
-              "relationToPrev": "start",
-              "clauseType": "main",
-              "polarity": "positive",
-              "tenseAspect": "past",
-              "propositionHead": "was",
-              "actor": "The problem",
-              "action": "was",
-              "object": "attribution custody over hardened headline",
-              "modifiers": [],
-              "hedgeMarkers": []
-            }
-          ]
-        }
-      ]
+      "structuralOperationsSelected": [
+        "split-long-line"
+      ],
+      "lexicalRegisterOperationsSelected": [
+        "compressed:please->pls",
+        "compressed:because->bc",
+        "orthography:lowercase-lead"
+      ],
+      "connectorStrategy": "split",
+      "contractionStrategy": "contract"
+    },
+    "candidateSummary": {
+      "candidateCount": 2,
+      "landedCandidateId": "base:syntax-shape",
+      "families": [
+        "syntax-shape",
+        "order-beat"
+      ],
+      "holdStatus": "landed"
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -982,133 +197,105 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "connector-stance",
-        "lexical-register",
+        "register-mode",
         "abbreviation-posture",
-        "fragment-posture",
-        "punctuation-shape"
+        "orthography-posture"
       ],
-      "lexemeSwaps": [],
-      "semanticRisk": 0.42,
-      "donorProgress": {
-        "eligible": true,
-        "sourceDonorDistance": 3.408,
-        "outputDonorDistance": 2.494,
-        "donorImprovement": 0.914,
-        "donorImprovementRatio": 0.268,
-        "sourceOutputLexicalOverlap": 0.931
-      },
-      "realizationNotes": [
-        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, fragment-posture.",
-        "Semantic risk is elevated; review the realized output before relying on it."
-      ],
-      "rescuePasses": [
-        "td613-aperture-warning"
+      "lexemeSwaps": [
+        {
+          "from": "Please",
+          "to": "pls",
+          "family": "surface"
+        },
+        {
+          "from": "because",
+          "to": "bc",
+          "family": "surface"
+        }
       ],
       "visibleShift": true,
       "nonTrivialShift": true
     },
-    "generatorVersion": "v2",
-    "sourceClass": "procedural-record",
+    "donorProgress": {
+      "eligible": true,
+      "sourceDonorDistance": 3.62,
+      "outputDonorDistance": 2.43,
+      "donorImprovement": 1.19,
+      "donorImprovementRatio": 0.329,
+      "sourceOutputLexicalOverlap": 0.953
+    },
     "candidateLedger": [
       {
-        "id": "base",
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 0.8106,
-        "rewriteStrength": 0.9385,
-        "targetFit": 0.5382,
-        "movementConfidence": 0.94,
+        "score": 1.0798,
+        "rewriteStrength": 1,
+        "targetFit": 0.5681,
+        "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "Team. We need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label. It was Nia Brooks"
+        "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label. it was Nia Brooks"
       },
       {
-        "id": "amplified",
+        "id": "base:order-beat",
+        "family": "order-beat",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 0.4736,
-        "rewriteStrength": 0.4973,
-        "targetFit": 0.3621,
-        "movementConfidence": 0.66,
+        "score": 1.0698,
+        "rewriteStrength": 1,
+        "targetFit": 0.5597,
+        "movementConfidence": 1,
         "failureReasons": [],
-        "transferClass": "rejected",
-        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
-      },
-      {
-        "id": "contrast",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.4702,
-        "rewriteStrength": 0.4973,
-        "targetFit": 0.3515,
-        "movementConfidence": 0.66,
-        "failureReasons": [],
-        "transferClass": "rejected",
-        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
-      },
-      {
-        "id": "conservative",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.4778,
-        "rewriteStrength": 0.4973,
-        "targetFit": 0.3753,
-        "movementConfidence": 0.66,
-        "failureReasons": [],
-        "transferClass": "rejected",
-        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
+        "transferClass": "structural",
+        "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label. it was Nia Brooks"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered rewrite.",
+      "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
-      "winningCandidateId": "base"
+      "candidateCount": 2,
+      "winningCandidateId": "base:syntax-shape"
     },
-    "winningCandidateId": "base"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "connector-stance",
-      "fragment-posture",
-      "lexical-register",
-      "punctuation-shape",
+      "orthography-posture",
+      "register-mode",
       "sentence-count",
       "sentence-mean"
     ],
-    "lexemeSwapFamilies": [],
+    "lexemeSwapFamilies": [
+      "surface"
+    ],
     "relationInventory": [
-      "additive:4",
-      "causal:1",
-      "clarifying:0",
-      "contrastive:2",
-      "resumptive:1",
-      "temporal:1"
+      "clauseCount:10",
+      "exactAnchorCount:6",
+      "paragraphCount:1",
+      "sentenceCount:7",
+      "sourceClass:procedural-record"
     ],
     "structuralOperations": [
-      "baseline-split",
-      "clause-join-split",
-      "planned-sentence-split",
-      "sentence-structure"
+      "split-long-line"
     ],
     "lexicalOperations": [
-      "baseline-stance",
-      "baseline-voice-realization",
-      "connector-stance-lexicon",
-      "punctuation-finish"
+      "compressed:because->bc",
+      "compressed:please->pls",
+      "orthography:lowercase-lead"
     ],
-    "connectorStrategy": "additive",
-    "contractionStrategy": "hold",
+    "connectorStrategy": "split",
+    "contractionStrategy": "contract",
     "propositionCoverage": 1,
     "actorCoverage": 0.902,
     "actionCoverage": 1,
-    "objectCoverage": 0.925,
+    "objectCoverage": 1,
     "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

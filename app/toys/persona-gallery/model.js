@@ -284,7 +284,7 @@ function resolveRecipeSamples(recipe = {}, sampleLibraryById = {}) {
   };
 }
 
-function resolveRecipeProfile(engine, recipe = {}, sampleLibraryById = {}) {
+function resolveRecipeProfile(engine, recipe = {}, sampleLibraryById = {}, personaId = '') {
   const resolution = resolveRecipeSamples(recipe, sampleLibraryById);
   const samples = resolution.samples;
 
@@ -292,6 +292,7 @@ function resolveRecipeProfile(engine, recipe = {}, sampleLibraryById = {}) {
   const overlayShell = recipe.overlayMod
     ? {
         mode: 'synthetic',
+        personaId,
         mod: { ...recipe.overlayMod },
         strength
       }
@@ -364,6 +365,7 @@ function buildDiagnosticSpecimen(engine, shell = {}, resolvedEntries = [], sampl
   return {
     sourceSampleId: dominantEntry.sampleId,
     sourceSampleName: dominantEntry.sampleName || dominantEntry.sampleId,
+    text: specimenTransfer.text || dominantSample.text,
     swatch: compactSwatch(specimenTransfer.text || dominantSample.text, 180),
     fieldSpanLine: span.line,
     fieldSpanShort: span.shortLine,
@@ -455,7 +457,7 @@ export function resolvePersonaCatalog(engine, basePersonas = [], sampleLibrary =
 
   return basePersonas.map((persona, index) => {
     const resolvedRecipe = persona.profileRecipe
-      ? resolveRecipeProfile(engine, persona.profileRecipe, sampleLibraryById)
+      ? resolveRecipeProfile(engine, persona.profileRecipe, sampleLibraryById, persona.id)
       : null;
     const profile = persona.profile
       ? { ...persona.profile }
