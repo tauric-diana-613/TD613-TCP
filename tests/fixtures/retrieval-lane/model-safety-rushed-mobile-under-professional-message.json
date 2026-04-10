@@ -110,7 +110,8 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread"
+        "sentence-spread",
+        "orthography-posture"
       ],
       "lexemeSwaps": [],
       "visibleShift": true,
@@ -119,9 +120,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.475,
-      "outputDonorDistance": 5.104,
-      "donorImprovement": 0,
-      "donorImprovementRatio": 0,
+      "outputDonorDistance": 4.398,
+      "donorImprovement": 0.077,
+      "donorImprovementRatio": 0.017,
       "sourceOutputLexicalOverlap": 0.97
     },
     "candidateLedger": [
@@ -130,41 +131,41 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.5568,
-        "rewriteStrength": 0.7331,
-        "targetFit": 0.1867,
-        "movementConfidence": 0.82,
+        "score": 0.7137,
+        "rewriteStrength": 0.9291,
+        "targetFit": 0.2953,
+        "movementConfidence": 0.96,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
+        "outputPreview": "Rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.5218,
+        "score": 0.7391,
         "rewriteStrength": 0.736,
-        "targetFit": 0.3188,
+        "targetFit": 0.4271,
         "movementConfidence": 0.08,
         "failureReasons": [],
         "transferClass": "surface",
-        "outputPreview": "rs-17 is doing the fake-safe thing again; prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
+        "outputPreview": "Rs-17 is doing the fake-safe thing again; Prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
         "status": "held",
-        "score": 0.5757,
-        "rewriteStrength": 0.7616,
-        "targetFit": 0.2037,
-        "movementConfidence": 0.82,
+        "score": 0.7519,
+        "rewriteStrength": 0.9573,
+        "targetFit": 0.3148,
+        "movementConfidence": 0.96,
         "failureReasons": [
           "semantic-failure"
         ],
         "transferClass": "structural",
-        "outputPreview": "rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
+        "outputPreview": "Rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
       }
     ],
     "generationDocket": {
@@ -181,6 +182,7 @@
     "transferClass": "structural",
     "realizationTier": "structural",
     "changedDimensions": [
+      "orthography-posture",
       "sentence-count",
       "sentence-mean",
       "sentence-spread"

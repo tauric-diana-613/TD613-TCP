@@ -98,6 +98,15 @@ assert.equal(latestReport.sections.maskCases.length, 34, 'diagnostics JSON repor
 assert.equal(latestReport.sections.trainerCases.length, 34, 'diagnostics JSON report includes trainer section');
 assert.equal(latestReport.sections.retrievalCases.length, 18, 'diagnostics JSON report includes retrieval section');
 assert.equal(latestReport.sections.falseNeighborCases.length, 32, 'diagnostics JSON report includes false-neighbor section');
+assert.equal(latestReport.sections.generatorTransferCases.length, 18, 'diagnostics JSON report includes generator transfer section');
+assert.equal(latestReport.sections.generatorMaskCases.length, 34, 'diagnostics JSON report includes generator mask section');
+assert.ok(latestReport.generatorAudit, 'diagnostics JSON report includes generator audit');
+assert.equal(latestReport.generatorAudit.caseCount, 52, 'generator audit tracks retrieval and mask generator surfaces');
+assert.equal(latestReport.generatorAudit.generatorVersionCounts.v2, latestReport.generatorAudit.caseCount, 'generator audit reports V2 as the active writer across tracked diagnostics cases');
+assert.ok(latestReport.generatorAudit.semanticBoundedRate >= 0.9, 'generator audit reports a high bounded-semantics rate');
+assert.equal(latestReport.generatorAudit.unsafeStructuralCount, 0, 'generator audit reports no unsafe structural winners');
+assert.equal(latestReport.generatorAudit.protectedAnchorIntegrityMin, 1, 'generator audit reports preserved protected anchors');
+assert.ok(Array.isArray(latestReport.generatorAudit.topMisses), 'generator audit top misses serialize');
 assert.ok(latestReport.sampleAudit, 'diagnostics JSON report includes sample audit');
 assert.ok(latestReport.personaAudit, 'diagnostics JSON report includes persona audit');
 assert.equal(latestReport.sampleAudit.randomizerCorpusSize, DIAGNOSTIC_CORPUS.samples.length, 'sample audit uses the full diagnostics corpus');
@@ -146,6 +155,8 @@ assert.ok(latestReport.summary.annexPassedCount >= 1, 'diagnostics JSON report i
 
 const latestMarkdown = fs.readFileSync(latestMdPath, 'utf8');
 assert.ok(latestMarkdown.includes('## Sample Audit'), 'diagnostics Markdown report includes sample audit section');
+assert.ok(latestMarkdown.includes('## Generator Audit'), 'diagnostics Markdown report includes generator audit section');
+assert.ok(latestMarkdown.includes('### Generator Misses'), 'diagnostics Markdown report includes generator misses section');
 assert.ok(latestMarkdown.includes('### Closest Sample Pairs'), 'diagnostics Markdown report includes closest sample pairs section');
 assert.ok(latestMarkdown.includes('deck_randomizer_average_nearest_field_distance') || latestMarkdown.includes('average_nearest_field_distance'), 'diagnostics Markdown report includes field-distance spread details');
 assert.ok(latestMarkdown.includes('deck_randomizer_wide_subset_size'), 'diagnostics Markdown report includes wide-subset field spread details');

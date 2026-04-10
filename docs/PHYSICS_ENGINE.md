@@ -2,6 +2,8 @@
 
 TCP uses physics as a structural analogy with bounded operational consequences. The point is not to borrow prestige from mechanics or quantum theory. The point is to borrow discipline from formal systems that know how to distinguish solution, density, and boundary conditions.
 
+In the current repo this analogy is explicitly downstream of generation. Generator V2 authors the passage first; the physics-facing layer helps interpret surplus, density, route, and custody after the writer has either landed a counter-record or exposed a hold.
+
 In this model, the analogy names three stages in the fate of signal:
 
 1. surplus appears,
@@ -103,6 +105,8 @@ The analogy is worth keeping because each layer has one clear job:
 - the harbor layer asks who is carrying continuity when the route fails.
 
 That division of labor is what keeps the model from collapsing into theater.
+
+It also keeps the analogy from pretending to be the writer. Physics language in TCP is for post-generation interpretation and route law, not for hiding weak text generation behind atmosphere.
 
 ## Design law
 

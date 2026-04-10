@@ -166,6 +166,7 @@
         "sentence-count",
         "sentence-spread",
         "punctuation-shape",
+        "register-mode",
         "directness",
         "abbreviation-posture",
         "orthography-posture"
@@ -198,9 +199,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.968,
-      "outputDonorDistance": 2.507,
-      "donorImprovement": 2.461,
-      "donorImprovementRatio": 0.495,
+      "outputDonorDistance": 1.777,
+      "donorImprovement": 3.191,
+      "donorImprovementRatio": 0.642,
       "sourceOutputLexicalOverlap": 0.807
     },
     "candidateLedger": [
@@ -209,52 +210,52 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 1.2546,
+        "score": 1.3956,
         "rewriteStrength": 1,
-        "targetFit": 0.5081,
+        "targetFit": 0.6205,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "if you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and saws stay under canopy b, kids st"
+        "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and saws stay under canopy b, kids st"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.2098,
+        "score": 1.3509,
         "rewriteStrength": 1,
-        "targetFit": 0.4702,
+        "targetFit": 0.5828,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "if you are late that is ok just do not start random jobs; check in west fence table first. Glass + pallets first pass; saws stay under canopy b, kids stay off s"
+        "outputPreview": "If you are late that is ok just do not start random jobs; Check in west fence table first. Glass + pallets first pass; Saws stay under canopy b, kids stay off s"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.25,
+        "score": 1.3908,
         "rewriteStrength": 1,
-        "targetFit": 0.504,
+        "targetFit": 0.6164,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "if you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and if wind chills out, saws stay und"
+        "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and if wind chills out, saws stay und"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.25,
+        "score": 1.3908,
         "rewriteStrength": 1,
-        "targetFit": 0.504,
+        "targetFit": 0.6164,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "if you are late that is ok just do not start random jobs, and check in west fence table first. If wind chills out, glass + pallets first pass, and saws stay und"
+        "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. If wind chills out, glass + pallets first pass, and saws stay und"
       }
     ],
     "generationDocket": {
@@ -275,6 +276,7 @@
       "directness",
       "orthography-posture",
       "punctuation-shape",
+      "register-mode",
       "sentence-count",
       "sentence-mean",
       "sentence-spread"

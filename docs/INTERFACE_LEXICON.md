@@ -26,7 +26,7 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 | `Save` | Persists the staged lock into the local lock archive. | Commits the draft cadence lock to local storage without changing its measured profile. |
 | `Bring into Homebase` | Moves the chosen shelf mask into the Homebase worn-mask stage. | Sets the current Homebase mask without changing deck shell assignment. |
 | `Open in Trainer` | Sends the current mask context into the forge without claiming a generated result yet. | Carries persona and source context into the shared trainer runtime so a real draft can be forged there. |
-| `Forge Draft` | Builds a live candidate passage in `Trainer`. | Uses the maintained cadence-transfer engine on current Homebase/Deck/extracted-corpus context instead of flipping a UI-only generated state. |
+| `Forge Draft` | Builds a live candidate passage in `Trainer`. | Uses the default Generator V2 writer on current Homebase/Deck/extracted-corpus context. If V2 misses honestly, the trainer now shows a visible hold docket instead of fake output. |
 | `Try on Deck A` | Sends a persona shell to the reference bay in `Deck`. | Assigns the selected shell to slot `A` for live deck analysis. |
 | `Try on Deck B` | Sends a persona shell to the probe bay in `Deck`. | Assigns the selected shell to slot `B` for live deck analysis. |
 
@@ -37,11 +37,11 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 | `chosen on shelf` | A mask has been selected in `Personas`, but is not yet worn in `Homebase`. | `gallerySelectedMaskId` is set while `homebaseWornMaskId` is still empty or different. |
 | `Worn mask` | The dedicated Homebase stage that shows which mask is actively steering passage. | The current `homebaseWornMaskId` plus its resolved shell/profile data. |
 | `Source` | The unmasked comparison text on the Homebase passage bench. | The raw comparison passage before persona transfer. |
-| `Through Mask` | The transformed passage produced by the worn mask. | The retrieval-safe output of `buildCadenceTransfer(...)` through the worn shell. |
+| `Through Mask` | The transformed passage produced by the worn mask, or a blank output when the writer explicitly holds. | The registered output of `buildCadenceTransfer(...)` through the worn shell. If Generator V2 holds, Homebase should show the hold docket instead of leaking internal candidate text. |
 | `Before Contact` | Raw-to-lock reading before the mask touches the text. | Similarity and traceability of the source passage against the active lock. |
 | `After Contact` | Masked-to-lock reading after the passage has been transformed. | Similarity and traceability of the transformed passage against the active lock. |
 | `What Moved` | The compact line that names the changed dimensions and whether the passage stayed near home. | A transfer summary derived from real changed dimensions, lexical movement, and contact state. |
-| `What Clung` | The residue list that names what still reads as home after contact. | Sticky axes, held lanes, and contact summaries derived from the lock comparison. |
+| `What Clung` | The short forensic summary of what still reads as home after contact. | Sticky axes, held lanes, and contact summaries derived from the lock comparison, with the full Aperture ledger kept in the drawer rather than dumped into the main surface. |
 
 ## State controls
 
@@ -72,10 +72,10 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 
 | Term | In the app | In the model |
 | --- | --- | --- |
-| `Cadence shell` | The stylometric wrapper currently applied to a bay. | A deterministic cadence-transfer layer that rewrites sentence shape, connector/stance texture, contraction posture, and punctuation finish while preserving protected literals and raw source text. |
+| `Cadence shell` | The stylometric wrapper currently applied to a bay. | A deterministic cadence-transfer layer driven by Generator V2 that rewrites sentence shape, connector/stance texture, contraction posture, and punctuation finish while preserving protected literals and raw source text. |
 | `Persona shell` | A named, reusable cadence shell. | A saved transfer profile that can be reassigned to any bay. |
 | `Native cadence` | The unmodified text as written. | The raw extracted stylometric profile before any shell bias is applied. |
-| `Borrowed cadence` | A shell captured from the other bay during swap. | A derived modifier built from the effective profile of the opposite bay. |
+| `Borrowed cadence` | A shell captured from the other bay during swap. | A derived modifier built from the effective profile of the opposite bay and used as a donor target for Generator V2. |
 | `Source sample` | The unchanged raw textarea text in each bay, as staged by `Shell Duel`. | The reference-side input and the probe-side input, each bent by its currently attached shell for visual comparison. |
 
 ## Decision states

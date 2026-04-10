@@ -170,6 +170,7 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
+        "register-mode",
         "orthography-posture"
       ],
       "lexemeSwaps": [],
@@ -179,9 +180,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 3.62,
-      "outputDonorDistance": 2.849,
-      "donorImprovement": 0.771,
-      "donorImprovementRatio": 0.213,
+      "outputDonorDistance": 2.301,
+      "donorImprovement": 1.319,
+      "donorImprovementRatio": 0.364,
       "sourceOutputLexicalOverlap": 1
     },
     "candidateLedger": [
@@ -190,52 +191,52 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.4948,
-        "rewriteStrength": 0.9683,
-        "targetFit": 0.3171,
-        "movementConfidence": 0.96,
+        "score": 0.5457,
+        "rewriteStrength": 1,
+        "targetFit": 0.4554,
+        "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
+        "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; Words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.7564,
-        "rewriteStrength": 0.736,
-        "targetFit": 0.4961,
+        "score": 0.959,
+        "rewriteStrength": 0.916,
+        "targetFit": 0.5805,
         "movementConfidence": 0.08,
         "failureReasons": [],
         "transferClass": "surface",
-        "outputPreview": "need quick fix on housing story; quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt; brooks emailed 9:31. Body fixed 9:47 + note added;"
+        "outputPreview": "Need quick fix on housing story; Quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt; Brooks emailed 9:31. Body fixed 9:47 + note added;"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.4946,
-        "rewriteStrength": 0.9695,
-        "targetFit": 0.3135,
-        "movementConfidence": 0.96,
+        "score": 0.5415,
+        "rewriteStrength": 1,
+        "targetFit": 0.4518,
+        "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
+        "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; Words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.3884,
+        "score": 0.4144,
         "rewriteStrength": 1,
-        "targetFit": 0.305,
-        "movementConfidence": 0.96,
+        "targetFit": 0.4455,
+        "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "need quick fix on housing story, and quote in graf 6 is nia brooks not moreno, and words are right, speaker tag isnt, and brooks emailed 9:31. When it only clea"
+        "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno, and words are right, speaker tag isnt, and brooks emailed 9:31. When it only clea"
       }
     ],
     "generationDocket": {
@@ -253,6 +254,7 @@
     "realizationTier": "structural",
     "changedDimensions": [
       "orthography-posture",
+      "register-mode",
       "sentence-count",
       "sentence-mean",
       "sentence-spread"

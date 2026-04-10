@@ -126,6 +126,7 @@
         "sentence-count",
         "sentence-spread",
         "punctuation-shape",
+        "register-mode",
         "orthography-posture"
       ],
       "lexemeSwaps": [
@@ -146,9 +147,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 3.519,
-      "outputDonorDistance": 3.264,
-      "donorImprovement": 0.255,
-      "donorImprovementRatio": 0.072,
+      "outputDonorDistance": 2.192,
+      "donorImprovement": 1.327,
+      "donorImprovementRatio": 0.377,
       "sourceOutputLexicalOverlap": 0.857
     },
     "candidateLedger": [
@@ -157,26 +158,26 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.8976,
+        "score": 1.1119,
         "rewriteStrength": 1,
-        "targetFit": 0.4004,
+        "targetFit": 0.5663,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "hearing got ugly, and they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup sh"
+        "outputPreview": "Hearing got ugly, and they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup sh"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.7655,
+        "score": 1.0594,
         "rewriteStrength": 1,
-        "targetFit": 0.3561,
+        "targetFit": 0.522,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup she al"
+        "outputPreview": "Hearing got ugly; They keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup she al"
       }
     ],
     "generationDocket": {
@@ -195,6 +196,7 @@
     "changedDimensions": [
       "orthography-posture",
       "punctuation-shape",
+      "register-mode",
       "sentence-count",
       "sentence-mean",
       "sentence-spread"

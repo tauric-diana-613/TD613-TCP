@@ -141,6 +141,7 @@
         "sentence-mean",
         "sentence-count",
         "punctuation-shape",
+        "register-mode",
         "abbreviation-posture",
         "orthography-posture"
       ],
@@ -167,9 +168,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.615,
-      "outputDonorDistance": 2.559,
-      "donorImprovement": 2.056,
-      "donorImprovementRatio": 0.446,
+      "outputDonorDistance": 1.487,
+      "donorImprovement": 3.128,
+      "donorImprovementRatio": 0.678,
       "sourceOutputLexicalOverlap": 0.826
     },
     "candidateLedger": [
@@ -178,52 +179,52 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.2123,
+        "score": 1.4208,
         "rewriteStrength": 1,
-        "targetFit": 0.5764,
+        "targetFit": 0.7423,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"ligh"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"ligh"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.1678,
+        "score": 1.3763,
         "rewriteStrength": 1,
-        "targetFit": 0.5385,
+        "targetFit": 0.7044,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "gallery 4 fog rig set off detector again at 7:42; not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"light wa"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42; Not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"light wa"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.2026,
+        "score": 1.411,
         "rewriteStrength": 1,
-        "targetFit": 0.568,
+        "targetFit": 0.7339,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 1.2195,
+        "score": 1.428,
         "rewriteStrength": 1,
-        "targetFit": 0.5826,
+        "targetFit": 0.7485,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
       }
     ],
     "generationDocket": {
@@ -243,6 +244,7 @@
       "abbreviation-posture",
       "orthography-posture",
       "punctuation-shape",
+      "register-mode",
       "sentence-count",
       "sentence-mean"
     ],

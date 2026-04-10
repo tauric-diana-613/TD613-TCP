@@ -191,9 +191,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.153,
-      "outputDonorDistance": 3.847,
-      "donorImprovement": 0.306,
-      "donorImprovementRatio": 0.074,
+      "outputDonorDistance": 3.48,
+      "donorImprovement": 0.673,
+      "donorImprovementRatio": 0.162,
       "sourceOutputLexicalOverlap": 0.857
     },
     "candidateLedger": [
@@ -202,52 +202,52 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.8903,
+        "score": 0.9623,
         "rewriteStrength": 1,
-        "targetFit": 0.4066,
+        "targetFit": 0.463,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
+        "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.7515,
+        "score": 0.8829,
         "rewriteStrength": 1,
-        "targetFit": 0.3644,
+        "targetFit": 0.4129,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
+        "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.8903,
+        "score": 0.9623,
         "rewriteStrength": 1,
-        "targetFit": 0.4066,
+        "targetFit": 0.463,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, room w"
+        "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, room w"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.7524,
+        "score": 0.8889,
         "rewriteStrength": 1,
-        "targetFit": 0.3685,
+        "targetFit": 0.4252,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, and 3 "
+        "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, and 3 "
       }
     ],
     "generationDocket": {

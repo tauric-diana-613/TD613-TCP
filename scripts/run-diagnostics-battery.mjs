@@ -31,6 +31,8 @@ const FAILURE_BUCKETS = Object.freeze([
   'surface_close_under_large_gap',
   'semantic_drift',
   'anchor_break',
+  'generator_hold',
+  'generator_unbounded_semantics',
   'one_sided_swap',
   'both_rejected_swap',
   'trainer_retrieval_fail',
@@ -352,6 +354,105 @@ function semanticSummary(result = {}) {
 
 function protectedAnchorIntegrity(result = {}) {
   return round(result.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1);
+}
+
+function semanticBounded(semanticAudit = {}) {
+  const propositionCoverage = Number(semanticAudit?.propositionCoverage ?? 1);
+  const actorCoverage = Number(semanticAudit?.actorCoverage ?? 1);
+  const actionCoverage = Number(semanticAudit?.actionCoverage ?? 1);
+  const objectCoverage = Number(semanticAudit?.objectCoverage ?? 1);
+  const polarityMismatches = Number(semanticAudit?.polarityMismatches ?? 0);
+  const tenseMismatches = Number(semanticAudit?.tenseMismatches ?? 0);
+  const clauseCount = Math.max(
+    1,
+    Number(semanticAudit?.sourceClauseCount ?? 0),
+    Number(semanticAudit?.outputClauseCount ?? 0)
+  );
+  const polarityRate = polarityMismatches / clauseCount;
+  const tenseRate = tenseMismatches / clauseCount;
+  const strongCoverage =
+    propositionCoverage >= 0.9 &&
+    actorCoverage >= 0.9 &&
+    actionCoverage >= 0.9 &&
+    objectCoverage >= 0.9;
+
+  const polarityBounded =
+    polarityMismatches <= 1 ||
+    (strongCoverage && polarityMismatches <= 2 && polarityRate <= 0.18);
+  const tenseBounded =
+    tenseMismatches <= 1 ||
+    (strongCoverage && tenseMismatches <= 2 && tenseRate <= 0.2);
+
+  return polarityBounded && tenseBounded;
+}
+
+function incrementCounter(acc, key) {
+  const resolvedKey = key || 'unknown';
+  acc[resolvedKey] = (acc[resolvedKey] || 0) + 1;
+  return acc;
+}
+
+function selectedCandidateFromLedger(candidateLedger = []) {
+  return (candidateLedger || []).find((entry) => entry.status === 'selected') || null;
+}
+
+function generatorSourceClass(result = {}, fallback = 'unknown') {
+  return (
+    result.sourceClass ||
+    result.retrievalTrace?.planSummary?.relationInventory?.sourceClass ||
+    fallback
+  );
+}
+
+function buildGeneratorAuditCase({
+  id = '',
+  laneKind = 'transfer',
+  sourceId = '',
+  donorId = '',
+  personaId = '',
+  result = {},
+  sourceClass = 'unknown',
+  registeredTransformClass = '',
+  apertureOutcome = ''
+} = {}) {
+  const candidateLedger = Array.isArray(result.candidateLedger) ? result.candidateLedger : [];
+  const selectedCandidate = selectedCandidateFromLedger(candidateLedger);
+  const docket = result.generationDocket || null;
+  const semanticAudit = result.semanticAudit || {};
+  const bounded = semanticBounded(semanticAudit);
+
+  return {
+    id,
+    laneKind,
+    sourceId,
+    donorId,
+    personaId,
+    sourceClass,
+    generatorVersion: result.generatorVersion || 'unknown',
+    transferClass: result.transferClass || 'native',
+    registeredTransformClass: registeredTransformClass || result.registeredTransformClass || '',
+    holdStatus: result.holdStatus || (docket?.status === 'held' ? 'held' : 'landed'),
+    holdClass: docket?.holdClass || null,
+    apertureOutcome: apertureOutcome || result.apertureOutcome || result.apertureProtocol?.outcome || '',
+    visibleShift: Boolean(result.visibleShift),
+    nonTrivialShift: Boolean(result.nonTrivialShift),
+    semanticBounded: bounded,
+    protectedAnchorIntegrity: round(result.protectedAnchorAudit?.protectedAnchorIntegrity ?? semanticAudit?.protectedAnchorIntegrity ?? 1),
+    propositionCoverage: round(semanticAudit?.propositionCoverage ?? 1),
+    actorCoverage: round(semanticAudit?.actorCoverage ?? 1),
+    actionCoverage: round(semanticAudit?.actionCoverage ?? 1),
+    objectCoverage: round(semanticAudit?.objectCoverage ?? 1),
+    polarityMismatches: Number(semanticAudit?.polarityMismatches ?? 0),
+    tenseMismatches: Number(semanticAudit?.tenseMismatches ?? 0),
+    candidateCount: candidateLedger.length,
+    selectedCandidateId: selectedCandidate?.id || docket?.winningCandidateId || null,
+    selectedCandidateScore: round(selectedCandidate?.score ?? 0),
+    selectedCandidateTransferClass: selectedCandidate?.transferClass || result.transferClass || 'native',
+    notes: sortUnique([
+      ...(result.notes || []),
+      ...(docket?.headline ? [docket.headline] : [])
+    ])
+  };
 }
 
 function visibleMovement(changedDimensions = [], lexemeSwaps = []) {
@@ -987,6 +1088,139 @@ function evaluateRetrievalCase(caseSpec) {
   };
 }
 
+function evaluateGeneratorTransferCase(caseSpec) {
+  const sourceSample = DIAGNOSTIC_CORPUS_BY_ID[caseSpec.sourceId];
+  const donorSample = DIAGNOSTIC_CORPUS_BY_ID[caseSpec.donorId];
+  const result = engine.buildCadenceTransfer(sourceSample.text, {
+    mode: 'borrowed',
+    profile: engine.extractCadenceProfile(donorSample.text),
+    strength: Number(caseSpec.strength || 0.88),
+    source: 'diagnostics'
+  }, { retrieval: true });
+  const record = buildGeneratorAuditCase({
+    id: caseSpec.id,
+    laneKind: 'transfer',
+    sourceId: caseSpec.sourceId,
+    donorId: caseSpec.donorId,
+    result,
+    sourceClass: generatorSourceClass(result, sourceSample.familyId || 'unknown')
+  });
+  const buckets = [];
+  bucketIf(record.holdStatus === 'held', 'generator_hold', buckets);
+  bucketIf(!record.semanticBounded, 'generator_unbounded_semantics', buckets);
+  return {
+    ...record,
+    expectedPressure: caseSpec.expectedPressure,
+    failureBuckets: sortUnique(buckets),
+    notes: buildCaseNote(sortUnique(buckets), caseSpec.notes)
+  };
+}
+
+function evaluateGeneratorMaskCase(caseSpec) {
+  const sourceSample = DIAGNOSTIC_CORPUS_BY_ID[caseSpec.sourceId];
+  const lockText = caseSpec.lockIds.map((id) => DIAGNOSTIC_CORPUS_BY_ID[id].text).join('\n\n');
+  const persona = PERSONA_BY_ID[caseSpec.personaId];
+  const lock = buildCadenceLockRecord(engine, {
+    name: `${caseSpec.id} generator lock`,
+    corpusText: lockText
+  });
+  const maskResult = buildMaskTransformationResult(engine, {
+    comparisonText: sourceSample.text,
+    lock,
+    persona
+  });
+  const result = maskResult.transfer || {};
+  const record = buildGeneratorAuditCase({
+    id: caseSpec.id,
+    laneKind: 'mask',
+    sourceId: caseSpec.sourceId,
+    personaId: caseSpec.personaId,
+    result,
+    sourceClass: maskResult.sourceClass || generatorSourceClass(result, caseSpec.sourceFamilyId || 'unknown'),
+    registeredTransformClass: maskResult.registeredTransformClass,
+    apertureOutcome: maskResult.apertureOutcome
+  });
+  const buckets = [];
+  bucketIf(record.holdStatus === 'held', 'generator_hold', buckets);
+  bucketIf(!record.semanticBounded, 'generator_unbounded_semantics', buckets);
+  return {
+    ...record,
+    expectedPressure: caseSpec.expectedPressure,
+    failureBuckets: sortUnique(buckets),
+    notes: buildCaseNote(sortUnique(buckets), maskResult.contactSummary?.line || caseSpec.notes)
+  };
+}
+
+function buildGeneratorAudit(sectionResults = {}) {
+  const cases = [
+    ...(sectionResults.generatorTransferCases || []),
+    ...(sectionResults.generatorMaskCases || [])
+  ];
+  const generatorVersionCounts = cases.reduce((acc, item) => incrementCounter(acc, item.generatorVersion), {});
+  const sourceClassCounts = cases.reduce((acc, item) => incrementCounter(acc, item.sourceClass), {});
+  const laneKindCounts = cases.reduce((acc, item) => incrementCounter(acc, item.laneKind), {});
+  const holdClassCounts = cases
+    .filter((item) => item.holdClass)
+    .reduce((acc, item) => incrementCounter(acc, item.holdClass), {});
+  const landedCases = cases.filter((item) => item.holdStatus !== 'held');
+  const heldCases = cases.filter((item) => item.holdStatus === 'held');
+  const boundedCases = cases.filter((item) => item.semanticBounded);
+  const structuralCases = landedCases.filter((item) =>
+    item.transferClass === 'structural' ||
+    item.registeredTransformClass === 'strong-rewrite' ||
+    item.registeredTransformClass === 'cadence-rewrite'
+  );
+  const surfaceCases = landedCases.filter((item) =>
+    item.transferClass === 'surface' ||
+    item.registeredTransformClass === 'surface-only'
+  );
+  const unsafeStructuralCases = structuralCases.filter((item) => !item.semanticBounded);
+  const candidateTotal = cases.reduce((sum, item) => sum + Number(item.candidateCount || 0), 0);
+  const selectedScoreTotal = cases.reduce((sum, item) => sum + Number(item.selectedCandidateScore || 0), 0);
+  const topMisses = [...cases]
+    .filter((item) => item.holdStatus === 'held' || !item.semanticBounded || item.transferClass === 'surface')
+    .sort((left, right) =>
+      Number(right.holdStatus === 'held') - Number(left.holdStatus === 'held') ||
+      Number(left.semanticBounded) - Number(right.semanticBounded) ||
+      Number(left.selectedCandidateScore || 0) - Number(right.selectedCandidateScore || 0) ||
+      String(left.id || '').localeCompare(String(right.id || ''))
+    )
+    .slice(0, 12)
+    .map((item) => ({
+      id: item.id,
+      laneKind: item.laneKind,
+      sourceClass: item.sourceClass,
+      transferClass: item.transferClass,
+      registeredTransformClass: item.registeredTransformClass,
+      holdStatus: item.holdStatus,
+      holdClass: item.holdClass,
+      semanticBounded: item.semanticBounded,
+      selectedCandidateScore: item.selectedCandidateScore
+    }));
+
+  return {
+    caseCount: cases.length,
+    generatorVersionCounts,
+    sourceClassCounts,
+    laneKindCounts,
+    holdClassCounts,
+    landedCount: landedCases.length,
+    heldCount: heldCases.length,
+    structuralCount: structuralCases.length,
+    surfaceCount: surfaceCases.length,
+    nonTrivialCount: cases.filter((item) => item.nonTrivialShift).length,
+    visibleShiftCount: cases.filter((item) => item.visibleShift).length,
+    semanticBoundedCount: boundedCases.length,
+    semanticBoundedRate: cases.length ? round(boundedCases.length / cases.length) : 0,
+    unsafeStructuralCount: unsafeStructuralCases.length,
+    protectedAnchorIntegrityMin: cases.length ? round(Math.min(...cases.map((item) => item.protectedAnchorIntegrity ?? 1))) : 1,
+    averageCandidateCount: cases.length ? round(candidateTotal / cases.length) : 0,
+    averageSelectedCandidateScore: cases.length ? round(selectedScoreTotal / cases.length) : 0,
+    topMisses,
+    cases
+  };
+}
+
 function summarize(sectionResults = {}) {
   const allCases = Object.values(sectionResults).flat();
   const failureBucketCounts = allCases.reduce((acc, item) => {
@@ -1148,6 +1382,27 @@ function buildMarkdownReport(report) {
     lines.push(`- ${entry.id}: ${entry.failureBuckets.join(', ') || 'none'} // ${entry.notes}`);
   });
 
+  if (report.generatorAudit) {
+    lines.push('', '## Generator Audit', '');
+    lines.push(`- case_count: ${report.generatorAudit.caseCount}`);
+    lines.push(`- landed_count: ${report.generatorAudit.landedCount}`);
+    lines.push(`- held_count: ${report.generatorAudit.heldCount}`);
+    lines.push(`- structural_count: ${report.generatorAudit.structuralCount}`);
+    lines.push(`- surface_count: ${report.generatorAudit.surfaceCount}`);
+    lines.push(`- semantic_bounded_rate: ${report.generatorAudit.semanticBoundedRate}`);
+    lines.push(`- unsafe_structural_count: ${report.generatorAudit.unsafeStructuralCount}`);
+    lines.push(`- protected_anchor_integrity_min: ${report.generatorAudit.protectedAnchorIntegrityMin}`);
+    lines.push(`- average_candidate_count: ${report.generatorAudit.averageCandidateCount}`);
+    lines.push(`- average_selected_candidate_score: ${report.generatorAudit.averageSelectedCandidateScore}`);
+    lines.push(`- generator_versions: ${Object.entries(report.generatorAudit.generatorVersionCounts || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push(`- source_classes: ${Object.entries(report.generatorAudit.sourceClassCounts || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push(`- hold_classes: ${Object.entries(report.generatorAudit.holdClassCounts || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push('', '### Generator Misses', '');
+    report.generatorAudit.topMisses.forEach((entry) => {
+      lines.push(`- ${entry.id}: ${entry.laneKind}, ${entry.sourceClass}, transfer ${entry.transferClass}, registered ${entry.registeredTransformClass || 'n/a'}, hold ${entry.holdStatus}/${entry.holdClass || 'none'}, bounded ${entry.semanticBounded ? 'yes' : 'no'}, selected score ${entry.selectedCandidateScore}`);
+    });
+  }
+
   if (report.sampleAudit) {
     lines.push('', '## Sample Audit', '');
     lines.push(`- randomizer_corpus_size: ${report.sampleAudit.randomizerCorpusSize}`);
@@ -1236,21 +1491,28 @@ const sectionResults = {
   retrievalCases: DIAGNOSTIC_BATTERY.retrievalCases.map(evaluateRetrievalCase),
   falseNeighborCases: DIAGNOSTIC_BATTERY.falseNeighborCases.map((caseSpec) =>
     evaluateSwapCase(caseSpec, swapReportById[`${caseSpec.sourceId}__${caseSpec.donorId}`])
-  )
+  ),
+  generatorTransferCases: DIAGNOSTIC_BATTERY.retrievalCases.map(evaluateGeneratorTransferCase),
+  generatorMaskCases: DIAGNOSTIC_BATTERY.maskCases.map(evaluateGeneratorMaskCase)
 };
 const representativePairs = summarizeRepresentativeSwapSelections(buildRepresentativeSwapSelections());
 const annexes = buildAnnexDiagnostics(repoRoot);
+const generatorAudit = buildGeneratorAudit(sectionResults);
 
 const report = {
   generatedAt: new Date().toISOString(),
   summary: summarize(sectionResults),
   sections: sectionResults,
+  generatorAudit,
   sampleAudit: buildSampleAudit(DIAGNOSTIC_SAMPLE_LIBRARY),
   personaAudit: buildPersonaAudit(PERSONA_LIBRARY),
   workingDoctrine: null,
   annexes
 };
 report.workingDoctrine = buildPrivateWorkingDoctrine(report.summary, swapMatrix, representativePairs);
+report.summary.generatorCaseCount = generatorAudit.caseCount;
+report.summary.generatorHeldCount = generatorAudit.heldCount;
+report.summary.generatorUnsafeStructuralCount = generatorAudit.unsafeStructuralCount;
 report.summary.annexCount = Object.keys(annexes).length;
 report.summary.annexPassedCount = Object.values(annexes).filter((entry) => entry.passed).length;
 

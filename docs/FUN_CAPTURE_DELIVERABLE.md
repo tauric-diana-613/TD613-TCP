@@ -1,19 +1,16 @@
 # Fun-Capture Deliverable
 
-This document records the current state of The Cadence Playground after a full maintained test run and browser flight sweep. Its job is not to propose the implementation in detail yet. Its job is to preserve the strongest observations so the next plan can convert them into a targeted build.
+This document records the current state of The Cadence Playground after a maintained test run and browser flight sweep. Its job is not to propose the implementation in detail yet. Its job is to preserve the strongest observations so the next plan can convert them into a targeted build.
 
 ## Current proof state
 
-Maintained Node suite:
+Maintained proof surfaces now include:
 
 - `npm test` passed
-- stylometry passed
-- benchmark passed
-- browser parity passed
-- retrieval lane passed
-- swap-cadence matrix passed
-- trainer lab passed
-- harbor passed
+- `node scripts/run-diagnostics-battery.mjs` passed
+- the diagnostics battery now includes a first-class generator audit
+- Generator V2 is the default writer behind `buildCadenceTransfer()`
+- legacy remains available only as an explicit compatibility lane
 
 Maintained browser flights:
 
@@ -22,15 +19,7 @@ Maintained browser flights:
 - `?test-flight=swap` passed `4/4`
 - `?test-flight=ingress` passed `11/11`
 
-Current swap matrix summary:
-
-- `56` ordered non-self pairings
-- `12/12` flagship passes
-- `46` bilateral-engaged
-- `8` one-sided
-- `2` both-rejected
-
-That means the app is currently truthful enough to support a more ambitious play pass without first needing another rescue on the proof surface.
+The important consequence is that proof is no longer only about swap truth or trainer truth. The repo now has to prove that the writer itself is landing or holding honestly.
 
 ## What already captures fun well
 
@@ -67,6 +56,16 @@ The important part is that ingress is not only decorative. It prepares the user 
 Patch 28 made `Swap Cadences` honest enough that it can carry more delight. Because the retrieval lane now tells the truth about bilateral movement, partial rescue, and failure classes, the button can support stronger theatrical payoff without becoming dishonest.
 
 That makes it the most important design center for future fun-capture work.
+
+### 5. The native writer made fun-capture more believable
+
+Generator V2 matters for fun-capture because it changes what success feels like. A playful shell is only satisfying if the system actually writes with it. The current build is stronger because the repo now distinguishes:
+
+- a landed rewrite
+- a surface-close lane
+- a generator hold
+
+That is a better foundation for delight than a system that silently falls back and acts confident anyway.
 
 ## Where fun-capture is still weak
 
@@ -136,6 +135,7 @@ Promising directions:
 - better post-swap summaries
 - clearer donor/recipient drift storytelling
 - a short-lived but truthful celebration of successful bilateral shell borrowing
+- a more visible distinction between landed rewrites and explicit holds, so success feels earned
 
 ### 3. Make persona creation feel collectible
 

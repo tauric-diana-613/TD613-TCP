@@ -22,7 +22,28 @@ TCP is organized around four explicit constraints:
 \text{Recognition with harbor} \rightarrow \text{passage with provenance}
 ```
 
+```math
+\text{Generator miss} \rightarrow \text{explicit hold docket, not silent source fallback}
+```
+
 These are not slogans pasted onto the engine after the fact. They are the conditions under which the policy layer is allowed to operate.
+
+## Generator safety boundary
+
+The current default writer is Generator V2. That changes the safety boundary in one important way:
+
+- the writer is allowed to miss
+- the miss must be exposed explicitly
+- the system is not allowed to hide that miss by quietly flattening back toward source and calling the result safe
+
+In practice, that means a valid miss now appears as `generationDocket.status = held` with a visible hold class such as:
+
+- `below-rewrite-bar`
+- `hard-anchor-failure`
+- `semantic-failure`
+- `pathology`
+
+That behavior is part of the safety model, not just the UX.
 
 ## Effective archive
 
@@ -217,6 +238,17 @@ with:
 
 These are heuristics, but they are declared heuristics. That matters. TCP is explicit about where it is measuring and where it is applying policy.
 
+## Aperture boundary
+
+`TD613 Aperture` now audits and registers the generated surface after candidate generation. In the default writer path it should:
+
+- verify exact anchors
+- verify semantic continuity
+- surface warning signals
+- register the landed counter-record
+
+It should not silently co-author the passage, erase a strong candidate in favor of a flatter one, or suppress ordinary pressure by reenacting a selective-admissibility regime in software.
+
 ## Provenance constraint
 
 A harbor is invalid if it lowers burden by destroying provenance.
@@ -238,5 +270,6 @@ TCP therefore avoids:
 - flattening uncanny residue into reassurance copy
 - offering passage while leaving the route state buffered
 - lowering witness burden by laundering provenance
+- hiding a weak or broken write behind a near-source non-event
 
 The safety model is not there to make the app sound serious. It is there to keep the app from pretending that stylometric legibility is the same thing as custodial care.

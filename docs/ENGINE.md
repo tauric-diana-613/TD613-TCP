@@ -2,13 +2,14 @@
 
 Read [START_HERE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/START_HERE.md) for the shortest operational path and [SYSTEM_OVERVIEW.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SYSTEM_OVERVIEW.md) for the retrieval-first system summary before using this file as the implementation reference.
 
-This file describes the current TCP engine as it is implemented. The stack is intentionally split into three layers:
+This file describes the current TCP engine as it is implemented. The stack is intentionally split into four layers:
 
 1. stylometric evidence from measured text features
-2. field and route transforms derived from those measurements
-3. custody and harbor policy over the resulting state
+2. native writing and cadence-transfer generation
+3. Aperture audit and registration over the generated surface
+4. field, custody, and harbor policy over the resulting state
 
-That distinction matters. The first layer is the most evidence-bearing part of the current build. The second and third layers are structured decision transforms and safety policy, not forensic proof.
+That distinction matters. The first layer is still the most evidence-bearing part of the current build. The second layer is a deterministic writer, not a hidden model call. The third and fourth layers are structured audit, decision transforms, and safety policy, not forensic proof.
 
 ## Normalization conventions
 
@@ -265,6 +266,41 @@ Ingress now hands off to `#homebase` by default. From there, each station expose
 
 The important implementation rule is unchanged: routing changes the shell and pacing, not the measured quantities or their custody logic.
 
+## Native writer
+
+`buildCadenceTransfer(text, shell, options?)` remains the public writer API, but it now routes into Generator V2 by default. Generator V2 is a native-first writer:
+
+- it authors candidates directly from source text
+- it uses class-aware planning rather than legacy-text seeding
+- it produces multiple candidate families
+- it records an explicit `generationDocket`, `candidateLedger`, `generatorVersion`, and `holdStatus`
+
+The compatibility lane still exists, but only through explicit exports such as `buildCadenceTransferLegacy()` and `applyCadenceToTextLegacy()`. The default writer path no longer silently falls back to legacy or to source-preserving output.
+
+The current V2 pipeline is:
+
+1. source classification
+2. hard-anchor extraction
+3. persona/write-surface planning
+4. multi-candidate authoring
+5. semantic / witness / pathology audit
+6. candidate selection or explicit hold
+7. Aperture registration
+
+If no candidate clears the class-specific rewrite bar honestly, TCP now publishes a visible hold docket instead of pretending a shallow rewrite landed.
+
+## Aperture position
+
+`TD613 Aperture` now sits after generation in the default writer path. In engine terms, that means Aperture is expected to:
+
+- audit exact anchors
+- audit semantic continuity
+- detect pathologies
+- expose warning signals
+- register the selected counter-record
+
+It is not supposed to ghostwrite the passage or quietly flatten a stronger candidate back toward source just because a safer shallow surface exists.
+
 ## Runtime field grammar
 
 `Patch 28.3` promotes the field registry into a runtime grammar layer. `browser-main.js` now derives a compact presentation summary for the major public surfaces:
@@ -338,10 +374,22 @@ When both shells are native, the duel should collapse toward identity on the sam
 ## Module map
 
 - `formulas.js` - coherence, resonance, branch dynamics, route pressure, field state, criticality, and custody threshold
-- `stylometry.js` - profile extraction, distance functions, similarity, traceability, shell transforms, and cadence signatures
+- `stylometry.js` - profile extraction, distance functions, similarity, traceability, public transfer API, swap matrix, and cadence signatures
+- `generator-v2.js` - native-first writing lane, candidate families, rewrite bars, hold dockets, and V2 result assembly
 - `harbor.js` - harbor selection, witness load, reuse gain, and ledger rows
 - `badges.js` - compact custody mode cycling for the demo UI
 - `browser-main.js` - Homebase, Personas, Readout, Deck, Trainer, runtime field grammar, shared solo-readout behavior, and test-flight orchestration
+
+## Diagnostics contract
+
+The maintained diagnostics battery now treats the writer as a first-class surface. `node scripts/run-diagnostics-battery.mjs` records:
+
+- swap, mask, trainer, retrieval, and false-neighbor cases
+- sample and persona field-separation audits
+- annex diagnostics
+- a dedicated generator audit for transfer and mask lanes
+
+The generator audit is where the repo now proves that the default writer is really V2, that holds are explicit, and that structural winners stay semantically bounded.
 
 ## Interpretive boundary
 

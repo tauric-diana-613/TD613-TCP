@@ -1,6 +1,6 @@
 (function () {
   window.TCP_RETRIEVAL_FIXTURES = {
-  "generatedAt": "2026-04-10T15:53:45.373Z",
+  "generatedAt": "2026-04-10T22:23:17.629Z",
   "cases": {
     "package-handoff-formal-record-under-rushed-mobile": {
       "id": "package-handoff-formal-record-under-rushed-mobile",
@@ -554,7 +554,7 @@
             "movementConfidence": 0.88,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "2b pkg wasnt brought down; tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail; red rush sticker still on it. I moved i"
+            "outputPreview": "2b pkg wasnt brought down; Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail; Red rush sticker still on it. I moved i"
           },
           {
             "id": "base:hybrid",
@@ -567,7 +567,7 @@
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "2b pkg wasnt brought down; tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail; red rush sticker still on it. If mgmt a"
+            "outputPreview": "2b pkg wasnt brought down; Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail; Red rush sticker still on it. If mgmt a"
           }
         ],
         "generationDocket": {
@@ -1173,6 +1173,7 @@
             "sentence-count",
             "sentence-spread",
             "punctuation-shape",
+            "register-mode",
             "directness",
             "abbreviation-posture",
             "orthography-posture"
@@ -1205,9 +1206,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.968,
-          "outputDonorDistance": 2.507,
-          "donorImprovement": 2.461,
-          "donorImprovementRatio": 0.495,
+          "outputDonorDistance": 1.777,
+          "donorImprovement": 3.191,
+          "donorImprovementRatio": 0.642,
           "sourceOutputLexicalOverlap": 0.807
         },
         "candidateLedger": [
@@ -1216,52 +1217,52 @@
             "family": "syntax-shape",
             "envelopeId": "matron",
             "status": "selected",
-            "score": 1.2546,
+            "score": 1.3956,
             "rewriteStrength": 1,
-            "targetFit": 0.5081,
+            "targetFit": 0.6205,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "if you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and saws stay under canopy b, kids st"
+            "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and saws stay under canopy b, kids st"
           },
           {
             "id": "base:register-lexicon",
             "family": "register-lexicon",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 1.2098,
+            "score": 1.3509,
             "rewriteStrength": 1,
-            "targetFit": 0.4702,
+            "targetFit": 0.5828,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "if you are late that is ok just do not start random jobs; check in west fence table first. Glass + pallets first pass; saws stay under canopy b, kids stay off s"
+            "outputPreview": "If you are late that is ok just do not start random jobs; Check in west fence table first. Glass + pallets first pass; Saws stay under canopy b, kids stay off s"
           },
           {
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 1.25,
+            "score": 1.3908,
             "rewriteStrength": 1,
-            "targetFit": 0.504,
+            "targetFit": 0.6164,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "if you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and if wind chills out, saws stay und"
+            "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and if wind chills out, saws stay und"
           },
           {
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 1.25,
+            "score": 1.3908,
             "rewriteStrength": 1,
-            "targetFit": 0.504,
+            "targetFit": 0.6164,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "if you are late that is ok just do not start random jobs, and check in west fence table first. If wind chills out, glass + pallets first pass, and saws stay und"
+            "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. If wind chills out, glass + pallets first pass, and saws stay und"
           }
         ],
         "generationDocket": {
@@ -1282,6 +1283,7 @@
           "directness",
           "orthography-posture",
           "punctuation-shape",
+          "register-mode",
           "sentence-count",
           "sentence-mean",
           "sentence-spread"
@@ -1777,9 +1779,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.153,
-          "outputDonorDistance": 3.847,
-          "donorImprovement": 0.306,
-          "donorImprovementRatio": 0.074,
+          "outputDonorDistance": 3.48,
+          "donorImprovement": 0.673,
+          "donorImprovementRatio": 0.162,
           "sourceOutputLexicalOverlap": 0.857
         },
         "candidateLedger": [
@@ -1788,52 +1790,52 @@
             "family": "syntax-shape",
             "envelopeId": "matron",
             "status": "selected",
-            "score": 0.8903,
+            "score": 0.9623,
             "rewriteStrength": 1,
-            "targetFit": 0.4066,
+            "targetFit": 0.463,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
+            "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
           },
           {
             "id": "base:register-lexicon",
             "family": "register-lexicon",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 0.7515,
+            "score": 0.8829,
             "rewriteStrength": 1,
-            "targetFit": 0.3644,
+            "targetFit": 0.4129,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
+            "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
           },
           {
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 0.8903,
+            "score": 0.9623,
             "rewriteStrength": 1,
-            "targetFit": 0.4066,
+            "targetFit": 0.463,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, room w"
+            "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, room w"
           },
           {
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 0.7524,
+            "score": 0.8889,
             "rewriteStrength": 1,
-            "targetFit": 0.3685,
+            "targetFit": 0.4252,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, and 3 "
+            "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, and 3 "
           }
         ],
         "generationDocket": {
@@ -2315,9 +2317,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 5.545,
-          "outputDonorDistance": 3.759,
-          "donorImprovement": 1.786,
-          "donorImprovementRatio": 0.322,
+          "outputDonorDistance": 3.04,
+          "donorImprovement": 2.505,
+          "donorImprovementRatio": 0.452,
           "sourceOutputLexicalOverlap": 0.857
         },
         "candidateLedger": [
@@ -2326,52 +2328,52 @@
             "family": "syntax-shape",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 1.0955,
+            "score": 1.2331,
             "rewriteStrength": 1,
-            "targetFit": 0.2868,
+            "targetFit": 0.3973,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local revie"
+            "outputPreview": "Grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local revie"
           },
           {
             "id": "base:register-lexicon",
             "family": "register-lexicon",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 0.9703,
+            "score": 1.1033,
             "rewriteStrength": 1,
-            "targetFit": 0.1775,
+            "targetFit": 0.2843,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "grant isnt just digitize + pray; it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review an"
+            "outputPreview": "Grant isnt just digitize + pray; It is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review an"
           },
           {
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 1.0805,
+            "score": 1.218,
             "rewriteStrength": 1,
-            "targetFit": 0.2735,
+            "targetFit": 0.3841,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
+            "outputPreview": "Grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
           },
           {
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "matron",
             "status": "selected",
-            "score": 1.1071,
+            "score": 1.2447,
             "rewriteStrength": 1,
-            "targetFit": 0.2969,
+            "targetFit": 0.4075,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
+            "outputPreview": "Grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
           }
         ],
         "generationDocket": {
@@ -2797,6 +2799,7 @@
             "sentence-count",
             "sentence-spread",
             "punctuation-shape",
+            "register-mode",
             "orthography-posture"
           ],
           "lexemeSwaps": [
@@ -2817,9 +2820,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 3.519,
-          "outputDonorDistance": 3.264,
-          "donorImprovement": 0.255,
-          "donorImprovementRatio": 0.072,
+          "outputDonorDistance": 2.192,
+          "donorImprovement": 1.327,
+          "donorImprovementRatio": 0.377,
           "sourceOutputLexicalOverlap": 0.857
         },
         "candidateLedger": [
@@ -2828,26 +2831,26 @@
             "family": "syntax-shape",
             "envelopeId": "matron",
             "status": "selected",
-            "score": 0.8976,
+            "score": 1.1119,
             "rewriteStrength": 1,
-            "targetFit": 0.4004,
+            "targetFit": 0.5663,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "hearing got ugly, and they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup sh"
+            "outputPreview": "Hearing got ugly, and they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup sh"
           },
           {
             "id": "base:register-lexicon",
             "family": "register-lexicon",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 0.7655,
+            "score": 1.0594,
             "rewriteStrength": 1,
-            "targetFit": 0.3561,
+            "targetFit": 0.522,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "hearing got ugly; they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup she al"
+            "outputPreview": "Hearing got ugly; They keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup she al"
           }
         ],
         "generationDocket": {
@@ -2866,6 +2869,7 @@
         "changedDimensions": [
           "orthography-posture",
           "punctuation-shape",
+          "register-mode",
           "sentence-count",
           "sentence-mean",
           "sentence-spread"
@@ -3405,6 +3409,7 @@
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
+            "register-mode",
             "abbreviation-posture",
             "orthography-posture"
           ],
@@ -3436,9 +3441,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.36,
-          "outputDonorDistance": 3.59,
-          "donorImprovement": 0.77,
-          "donorImprovementRatio": 0.177,
+          "outputDonorDistance": 3.042,
+          "donorImprovement": 1.318,
+          "donorImprovementRatio": 0.302,
           "sourceOutputLexicalOverlap": 0.862
         },
         "candidateLedger": [
@@ -3447,26 +3452,26 @@
             "family": "syntax-shape",
             "envelopeId": "matron",
             "status": "selected",
-            "score": 0.9746,
+            "score": 1.0816,
             "rewriteStrength": 1,
-            "targetFit": 0.3861,
+            "targetFit": 0.4705,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "ba-4427 isnt a no-doc case, and mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client"
+            "outputPreview": "Ba-4427 isnt a no-doc case, and mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client"
           },
           {
             "id": "base:register-lexicon",
             "family": "register-lexicon",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 0.9533,
+            "score": 1.0605,
             "rewriteStrength": 1,
-            "targetFit": 0.3681,
+            "targetFit": 0.4526,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "ba-4427 isnt a no-doc case; mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client got"
+            "outputPreview": "Ba-4427 isnt a no-doc case; Mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client got"
           }
         ],
         "generationDocket": {
@@ -3485,6 +3490,7 @@
         "changedDimensions": [
           "abbreviation-posture",
           "orthography-posture",
+          "register-mode",
           "sentence-count",
           "sentence-mean",
           "sentence-spread"
@@ -3892,6 +3898,7 @@
             "sentence-mean",
             "sentence-count",
             "punctuation-shape",
+            "register-mode",
             "abbreviation-posture",
             "orthography-posture"
           ],
@@ -3918,9 +3925,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.615,
-          "outputDonorDistance": 2.559,
-          "donorImprovement": 2.056,
-          "donorImprovementRatio": 0.446,
+          "outputDonorDistance": 1.487,
+          "donorImprovement": 3.128,
+          "donorImprovementRatio": 0.678,
           "sourceOutputLexicalOverlap": 0.826
         },
         "candidateLedger": [
@@ -3929,52 +3936,52 @@
             "family": "syntax-shape",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 1.2123,
+            "score": 1.4208,
             "rewriteStrength": 1,
-            "targetFit": 0.5764,
+            "targetFit": 0.7423,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"ligh"
+            "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"ligh"
           },
           {
             "id": "base:register-lexicon",
             "family": "register-lexicon",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 1.1678,
+            "score": 1.3763,
             "rewriteStrength": 1,
-            "targetFit": 0.5385,
+            "targetFit": 0.7044,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "gallery 4 fog rig set off detector again at 7:42; not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"light wa"
+            "outputPreview": "Gallery 4 fog rig set off detector again at 7:42; Not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"light wa"
           },
           {
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 1.2026,
+            "score": 1.411,
             "rewriteStrength": 1,
-            "targetFit": 0.568,
+            "targetFit": 0.7339,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
+            "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
           },
           {
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "matron",
             "status": "selected",
-            "score": 1.2195,
+            "score": 1.428,
             "rewriteStrength": 1,
-            "targetFit": 0.5826,
+            "targetFit": 0.7485,
             "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
+            "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
           }
         ],
         "generationDocket": {
@@ -3994,6 +4001,7 @@
           "abbreviation-posture",
           "orthography-posture",
           "punctuation-shape",
+          "register-mode",
           "sentence-count",
           "sentence-mean"
         ],
@@ -4372,7 +4380,8 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
-            "sentence-spread"
+            "sentence-spread",
+            "orthography-posture"
           ],
           "lexemeSwaps": [],
           "visibleShift": true,
@@ -4381,9 +4390,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.475,
-          "outputDonorDistance": 5.104,
-          "donorImprovement": 0,
-          "donorImprovementRatio": 0,
+          "outputDonorDistance": 4.398,
+          "donorImprovement": 0.077,
+          "donorImprovementRatio": 0.017,
           "sourceOutputLexicalOverlap": 0.97
         },
         "candidateLedger": [
@@ -4392,41 +4401,41 @@
             "family": "syntax-shape",
             "envelopeId": "matron",
             "status": "selected",
-            "score": 0.5568,
-            "rewriteStrength": 0.7331,
-            "targetFit": 0.1867,
-            "movementConfidence": 0.82,
+            "score": 0.7137,
+            "rewriteStrength": 0.9291,
+            "targetFit": 0.2953,
+            "movementConfidence": 0.96,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
+            "outputPreview": "Rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
           },
           {
             "id": "base:register-lexicon",
             "family": "register-lexicon",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 0.5218,
+            "score": 0.7391,
             "rewriteStrength": 0.736,
-            "targetFit": 0.3188,
+            "targetFit": 0.4271,
             "movementConfidence": 0.08,
             "failureReasons": [],
             "transferClass": "surface",
-            "outputPreview": "rs-17 is doing the fake-safe thing again; prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
+            "outputPreview": "Rs-17 is doing the fake-safe thing again; Prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
           },
           {
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "matron",
             "status": "held",
-            "score": 0.5757,
-            "rewriteStrength": 0.7616,
-            "targetFit": 0.2037,
-            "movementConfidence": 0.82,
+            "score": 0.7519,
+            "rewriteStrength": 0.9573,
+            "targetFit": 0.3148,
+            "movementConfidence": 0.96,
             "failureReasons": [
               "semantic-failure"
             ],
             "transferClass": "structural",
-            "outputPreview": "rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
+            "outputPreview": "Rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
           }
         ],
         "generationDocket": {
@@ -4443,6 +4452,7 @@
         "transferClass": "structural",
         "realizationTier": "structural",
         "changedDimensions": [
+          "orthography-posture",
           "sentence-count",
           "sentence-mean",
           "sentence-spread"
@@ -4945,6 +4955,7 @@
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
+            "register-mode",
             "orthography-posture"
           ],
           "lexemeSwaps": [],
@@ -4954,9 +4965,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 3.62,
-          "outputDonorDistance": 2.849,
-          "donorImprovement": 0.771,
-          "donorImprovementRatio": 0.213,
+          "outputDonorDistance": 2.301,
+          "donorImprovement": 1.319,
+          "donorImprovementRatio": 0.364,
           "sourceOutputLexicalOverlap": 1
         },
         "candidateLedger": [
@@ -4965,52 +4976,52 @@
             "family": "syntax-shape",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 0.4948,
-            "rewriteStrength": 0.9683,
-            "targetFit": 0.3171,
-            "movementConfidence": 0.96,
+            "score": 0.5457,
+            "rewriteStrength": 1,
+            "targetFit": 0.4554,
+            "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
+            "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; Words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
           },
           {
             "id": "base:register-lexicon",
             "family": "register-lexicon",
             "envelopeId": "matron",
             "status": "selected",
-            "score": 0.7564,
-            "rewriteStrength": 0.736,
-            "targetFit": 0.4961,
+            "score": 0.959,
+            "rewriteStrength": 0.916,
+            "targetFit": 0.5805,
             "movementConfidence": 0.08,
             "failureReasons": [],
             "transferClass": "surface",
-            "outputPreview": "need quick fix on housing story; quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt; brooks emailed 9:31. Body fixed 9:47 + note added;"
+            "outputPreview": "Need quick fix on housing story; Quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt; Brooks emailed 9:31. Body fixed 9:47 + note added;"
           },
           {
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 0.4946,
-            "rewriteStrength": 0.9695,
-            "targetFit": 0.3135,
-            "movementConfidence": 0.96,
+            "score": 0.5415,
+            "rewriteStrength": 1,
+            "targetFit": 0.4518,
+            "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
+            "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; Words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
           },
           {
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "matron",
             "status": "eligible",
-            "score": 0.3884,
+            "score": 0.4144,
             "rewriteStrength": 1,
-            "targetFit": 0.305,
-            "movementConfidence": 0.96,
+            "targetFit": 0.4455,
+            "movementConfidence": 1,
             "failureReasons": [],
             "transferClass": "structural",
-            "outputPreview": "need quick fix on housing story, and quote in graf 6 is nia brooks not moreno, and words are right, speaker tag isnt, and brooks emailed 9:31. When it only clea"
+            "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno, and words are right, speaker tag isnt, and brooks emailed 9:31. When it only clea"
           }
         ],
         "generationDocket": {
@@ -5028,6 +5039,7 @@
         "realizationTier": "structural",
         "changedDimensions": [
           "orthography-posture",
+          "register-mode",
           "sentence-count",
           "sentence-mean",
           "sentence-spread"

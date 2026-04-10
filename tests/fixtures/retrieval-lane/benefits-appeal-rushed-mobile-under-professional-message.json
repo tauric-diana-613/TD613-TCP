@@ -152,6 +152,7 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
+        "register-mode",
         "abbreviation-posture",
         "orthography-posture"
       ],
@@ -183,9 +184,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.36,
-      "outputDonorDistance": 3.59,
-      "donorImprovement": 0.77,
-      "donorImprovementRatio": 0.177,
+      "outputDonorDistance": 3.042,
+      "donorImprovement": 1.318,
+      "donorImprovementRatio": 0.302,
       "sourceOutputLexicalOverlap": 0.862
     },
     "candidateLedger": [
@@ -194,26 +195,26 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.9746,
+        "score": 1.0816,
         "rewriteStrength": 1,
-        "targetFit": 0.3861,
+        "targetFit": 0.4705,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "ba-4427 isnt a no-doc case, and mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client"
+        "outputPreview": "Ba-4427 isnt a no-doc case, and mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.9533,
+        "score": 1.0605,
         "rewriteStrength": 1,
-        "targetFit": 0.3681,
+        "targetFit": 0.4526,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "ba-4427 isnt a no-doc case; mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client got"
+        "outputPreview": "Ba-4427 isnt a no-doc case; Mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client got"
       }
     ],
     "generationDocket": {
@@ -232,6 +233,7 @@
     "changedDimensions": [
       "abbreviation-posture",
       "orthography-posture",
+      "register-mode",
       "sentence-count",
       "sentence-mean",
       "sentence-spread"

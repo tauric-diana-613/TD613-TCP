@@ -185,57 +185,84 @@ There is also an explicit identity guard: if the normalized texts match exactly 
 
 ## Shell-text transfer
 
-The current transfer contract is `buildCadenceTransfer(text, shell, options?)`. It returns the transformed text together with source, target, and output profiles, an `opportunityProfile`, changed dimensions, protected-literal count, pass log, `transferClass`, quality-gate result, and transfer notes.
+The current transfer contract is still `buildCadenceTransfer(text, shell, options?)`, but the default writer behind that contract is now Generator V2.
 
-`applyCadenceToText(text, shell)` remains as the compatibility wrapper that returns only the transformed text.
+The result shape still carries the familiar profile and audit surfaces:
 
-`transformText(text, mod, options?)` is also still exported for compatibility, but it now delegates directly into `buildCadenceTransfer(...)` instead of running a separate rewrite loop. That keeps the source module, browser bundle, and tests on one transformation engine.
+- transformed `text`
+- `sourceProfile`, `targetProfile`, `outputProfile`
+- `opportunityProfile`
+- `changedDimensions`
+- `transferClass`
+- `realizationTier`
+- `semanticAudit`
+- `protectedAnchorAudit`
+- `retrievalTrace`
+- `apertureAudit`
 
-TCP treats shell transfer as a strict-preserve cadence rewrite. That means:
+and it now adds writer-facing fields that matter operationally:
 
-- literal content is protected before rewrite
-- cadence may shift sentence shape, clause joins/splits, connector choice, contraction posture, line-break texture, and punctuation finish
-- content-word paraphrase is out of scope
+- `generatorVersion`
+- `generationDocket`
+- `candidateLedger`
+- `holdStatus`
 
-Protected spans include digit-bearing tokens, dates/times, URLs, emails, handles, quoted substrings, all-caps acronyms, and mixed-case IDs. Those spans are replaced with placeholders before the rewrite passes and restored exactly afterward.
+`applyCadenceToText(text, shell)` remains as the compatibility wrapper that returns only the transformed text. `transformText(text, mod, options?)` remains exported for compatibility, but it delegates into `buildCadenceTransfer(...)` so the browser bundle, tests, and direct engine imports all share one writer.
 
-Before those passes run, TCP also builds an opportunity map from the source text. That map tracks whether the source actually offers safe hooks for sentence splitting, sentence merging, contraction changes, connector/stance rewrites, line-break texture, and relation-bearing clauses such as contrast, cause, time, and clarification. A large donor/source gap does not automatically imply a large visible rewrite if the source text has little transformable structure.
+Legacy is still available, but only through explicit compatibility exports such as `buildCadenceTransferLegacy()` and `applyCadenceToTextLegacy()`.
 
-The deterministic pass order is:
+### Generator V2 pipeline
 
-1. sentence structure
-2. clause join/split
-3. connector and stance lexicon
-4. contraction/auxiliary posture
-5. line-break texture
-6. punctuation finish
-7. cleanup and literal restore
+Generator V2 is a native-first deterministic writer. It does not start from legacy-authored output. The current pipeline is:
 
-For materially different donor/source pairs, TCP now evaluates several deterministic candidates rather than trusting one fixed rewrite sequence. In practice this means split-heavy, merge-heavy, connector-heavy, and mixed structural candidates can all be tried and scored against donor fit plus safety constraints before the final output is selected.
+1. source classification
+2. hard-anchor extraction
+3. persona / shell planning
+4. multi-candidate native authoring
+5. semantic / witness / pathology audit
+6. candidate selection or explicit hold
+7. Aperture registration
 
-The lexicon pack remains intentionally narrow. It operates over structural or stance-bearing terms such as:
+Protected spans include digit-bearing tokens, dates/times, URLs, emails, handles, quoted substrings, all-caps acronyms, mixed-case IDs, and title-bearing literal anchors such as `Door 3`, `Unit 2B`, or honorific names like `Ms. Chen`. Those spans are protected before rewrite and restored exactly afterward.
 
-- `because / since / as`
-- `but / though / yet`
-- `when / while / once`
-- `this / that`
-- `just / simply`
-- `really / actually`
-- `maybe / perhaps`
-- `I am / I'm`
-- `will not / won't`
-- `that is / that's`
+### Candidate families
 
-The quality gate rejects a transfer if protected literals fail to restore, duplicate chunks appear, connector sequences repeat, or a materially different target collapses into punctuation-only drift. It also rejects additive-collapse failures, where structurally rich boundaries get flattened into repetitive `and` glue even though the donor does not strongly prefer that posture. In those cases TCP falls back to the safer result rather than presenting a weak rewrite as a meaningful cadence shift.
+Generator V2 currently authors multiple deterministic candidate families rather than trusting one fixed rewrite path:
 
-The opportunity map affects that honesty layer. If the donor gap is strong but the source text offers very few safe structural hooks, TCP may classify the result as `weak` or `rejected` rather than forcing a theatrical rewrite.
+- `syntax-shape`
+- `register-lexicon`
+- `cadence-connector`
+- `order-beat`
+- `hybrid`
 
-The transfer classifier is intentionally small:
+These families are weighted by source class and shell/persona envelope, but all write surfaces use the same underlying machinery.
+
+### Rewrite bars and explicit holds
+
+The quality rule is no longer “return something source-close if the writer misses.” The quality rule is:
+
+- land a bounded rewrite, or
+- publish an explicit hold docket
+
+Holds are represented in `generationDocket` and `holdStatus`, with hold classes such as:
+
+- `below-rewrite-bar`
+- `hard-anchor-failure`
+- `semantic-failure`
+- `pathology`
+
+In other words, Generator V2 is allowed to miss, but the miss has to stay visible.
+
+### Transfer classifier
+
+The transfer classifier remains intentionally small:
 
 - `native` - no shell rewrite was applied
-- `weak` - the source and donor were close enough that the transfer stayed subtle
-- `structural` - at least one structural cadence dimension plus one additional non-punctuation dimension moved
-- `rejected` - the donor/source gap was material, but the engine could not land a safe structural rewrite
+- `surface` - a landed output moved, but stayed near-source after registration
+- `structural` - a landed output cleared the current structural rewrite bar
+- `held` - the writer issued an explicit hold instead of publishing weak output
+
+Persona/Homebase may render that through a richer registered transform class such as `strong-rewrite`, `cadence-rewrite`, `surface-only`, `generator-hold`, or `generator-fault`, but the underlying transfer object still uses the compact writer-facing classes above.
 
 ## Route pressure
 

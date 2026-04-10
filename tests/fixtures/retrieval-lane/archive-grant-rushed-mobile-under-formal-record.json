@@ -167,9 +167,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 5.545,
-      "outputDonorDistance": 3.759,
-      "donorImprovement": 1.786,
-      "donorImprovementRatio": 0.322,
+      "outputDonorDistance": 3.04,
+      "donorImprovement": 2.505,
+      "donorImprovementRatio": 0.452,
       "sourceOutputLexicalOverlap": 0.857
     },
     "candidateLedger": [
@@ -178,52 +178,52 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.0955,
+        "score": 1.2331,
         "rewriteStrength": 1,
-        "targetFit": 0.2868,
+        "targetFit": 0.3973,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local revie"
+        "outputPreview": "Grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local revie"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.9703,
+        "score": 1.1033,
         "rewriteStrength": 1,
-        "targetFit": 0.1775,
+        "targetFit": 0.2843,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "grant isnt just digitize + pray; it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review an"
+        "outputPreview": "Grant isnt just digitize + pray; It is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review an"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.0805,
+        "score": 1.218,
         "rewriteStrength": 1,
-        "targetFit": 0.2735,
+        "targetFit": 0.3841,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
+        "outputPreview": "Grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 1.1071,
+        "score": 1.2447,
         "rewriteStrength": 1,
-        "targetFit": 0.2969,
+        "targetFit": 0.4075,
         "movementConfidence": 1,
         "failureReasons": [],
         "transferClass": "structural",
-        "outputPreview": "grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
+        "outputPreview": "Grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
       }
     ],
     "generationDocket": {

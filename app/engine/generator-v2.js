@@ -402,12 +402,14 @@ function sanitizeV2Surface(text = '', { preserveLowercaseLeads = false } = {}) {
     .replace(/,\s*\./g, '. ')
     .replace(/;\s+;/g, '; ')
     .replace(/\bnot ([^.!?]{3,120}?)\.\s+but\b/gi, 'not $1, but')
-    .replace(/\bYet\s+twirl\b/gi, 'The twirl')
-    .replace(/\bYet\s+two\b/gi, 'Then two')
-    .replace(/\bYet\s+the\b/gi, 'Then the')
-    .replace(/\bYet\s+it\b/gi, 'Then it');
+      .replace(/\bYet\s+twirl\b/gi, 'The twirl')
+      .replace(/\bYet\s+two\b/gi, 'Then two')
+      .replace(/\bYet\s+the\b/gi, 'Then the')
+      .replace(/\bYet\s+it\b/gi, 'Then it');
   if (!preserveLowercaseLeads) {
-    working = working.replace(/([.!?]\s+)([a-z])/g, (match, spacing, letter) => `${spacing}${letter.toUpperCase()}`);
+    working = working
+      .replace(/^([a-z])/, (match, letter) => letter.toUpperCase())
+      .replace(/([.!?;]\s+)([a-z])/g, (match, spacing, letter) => `${spacing}${letter.toUpperCase()}`);
   }
   return normalizeText(
     working.replace(/\s{2,}/g, ' ')
@@ -1310,7 +1312,29 @@ function applyLexicalRegisterRewrite(paragraph = '', envelopeId = 'generic', sou
       operations: context.lexicalOperations,
       lexemeSwaps: context.lexemeSwaps
     });
-  } else if (envelopeId === 'archivist' || envelopeId === 'methods-editor') {
+  } else if (envelopeId === 'methods-editor') {
+    working = applyReplacementRule(working, /\bregarding\b/gi, 'concerning', {
+      limit,
+      label: 'register:regarding->concerning',
+      family: 'register',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = applyReplacementRule(working, /\bprior\b/gi, 'earlier', {
+      limit: Math.min(limit, 1),
+      label: 'register:prior->earlier',
+      family: 'register',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = applyReplacementRule(working, /\bhi\b/gi, 'hello', {
+      limit: sourceClass === 'procedural-record' ? 0 : 1,
+      label: 'register:hi->hello',
+      family: 'register',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  } else if (envelopeId === 'archivist') {
     working = applyReplacementRule(working, /\bokay\b/gi, 'acceptable', {
       limit,
       label: 'register:okay->acceptable',
@@ -1587,6 +1611,36 @@ function buildSemanticRisk(semanticAudit = {}, protectedAnchorIntegrity = 1) {
     ((1 - Number(semanticAudit?.objectCoverage ?? 1)) * 0.12) +
     ((1 - Number(protectedAnchorIntegrity ?? 1)) * 0.18)
   ), 4);
+}
+
+function semanticAuditBounded(semanticAudit = {}) {
+  const propositionCoverage = Number(semanticAudit?.propositionCoverage ?? 1);
+  const actorCoverage = Number(semanticAudit?.actorCoverage ?? 1);
+  const actionCoverage = Number(semanticAudit?.actionCoverage ?? 1);
+  const objectCoverage = Number(semanticAudit?.objectCoverage ?? 1);
+  const polarityMismatches = Number(semanticAudit?.polarityMismatches ?? 0);
+  const tenseMismatches = Number(semanticAudit?.tenseMismatches ?? 0);
+  const clauseCount = Math.max(
+    1,
+    Number(semanticAudit?.sourceClauseCount ?? 0),
+    Number(semanticAudit?.outputClauseCount ?? 0)
+  );
+  const polarityRate = polarityMismatches / clauseCount;
+  const tenseRate = tenseMismatches / clauseCount;
+  const strongCoverage =
+    propositionCoverage >= 0.9 &&
+    actorCoverage >= 0.9 &&
+    actionCoverage >= 0.9 &&
+    objectCoverage >= 0.9;
+
+  const polarityBounded =
+    polarityMismatches <= 1 ||
+    (strongCoverage && polarityMismatches <= 2 && polarityRate <= 0.18);
+  const tenseBounded =
+    tenseMismatches <= 1 ||
+    (strongCoverage && tenseMismatches <= 2 && tenseRate <= 0.2);
+
+  return polarityBounded && tenseBounded;
 }
 
 function computeCandidateTransferClass(candidate = {}) {
@@ -1953,6 +2007,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   const protectedAnchorIntegrity = Number(protectedAnchorAudit.protectedAnchorIntegrity ?? 1);
   const polarityMismatches = Number(semanticAudit.polarityMismatches ?? 0);
   const tenseMismatches = Number(semanticAudit.tenseMismatches ?? 0);
+  const semanticsBounded = semanticAuditBounded(semanticAudit);
   const semanticPass =
     Number(semanticAudit.propositionCoverage ?? 1) >= floors.proposition &&
     Number(semanticAudit.actorCoverage ?? 1) >= floors.actor &&
@@ -1971,6 +2026,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     Number(donorProgress?.donorImprovementRatio || 0) <= 0.05
       ? 0.08
       : 0;
+  const boundedPenalty = semanticsBounded ? 0 : 0.18;
   const score = round(
     (rewriteStrength * 0.52) +
     (targetFit * 0.24) +
@@ -1979,11 +2035,12 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     (Number(classification.movementConfidence || 0) * 0.12) +
     (Number(witnessAudit.softWitnessIntegrity ?? 1) * 0.08) +
     (visibleShift ? 0.04 : 0) -
-    polarityPenalty -
-    tensePenalty -
-    donorStallPenalty -
-    ((1 - protectedAnchorIntegrity) * 1.5) -
-    (pathologies.flags.length * 0.05),
+      polarityPenalty -
+      tensePenalty -
+      boundedPenalty -
+      donorStallPenalty -
+      ((1 - protectedAnchorIntegrity) * 1.5) -
+      (pathologies.flags.length * 0.05),
     4
   );
   const failureReasons = uniqueStrings([
@@ -2039,6 +2096,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     connectorStrategy: authored.connectorStrategy,
     contractionStrategy: authored.contractionStrategy,
     semanticRisk,
+    semanticBounded: semanticsBounded,
     donorProgress,
     score,
     passed,
@@ -2103,10 +2161,10 @@ function candidateTransferRank(candidate = null) {
 }
 
 function candidateSemanticBounded(candidate = null) {
-  return (
-    Number(candidate?.semanticAudit?.polarityMismatches ?? 0) <= 1 &&
-    Number(candidate?.semanticAudit?.tenseMismatches ?? 0) <= 1
-  );
+  if (typeof candidate?.semanticBounded === 'boolean') {
+    return candidate.semanticBounded;
+  }
+  return semanticAuditBounded(candidate?.semanticAudit || {});
 }
 
 function holdHeadline(holdClass = 'below-rewrite-bar') {
