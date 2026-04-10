@@ -72,6 +72,7 @@ const generated = [
   '  buildOpportunityProfileFromIR,',
   '  buildTransferPlanFromIR,',
   '  beamSearchTransfer,',
+  '  buildSwapCadenceMatrix,',
   '  cadenceModFromProfile,',
   '  SWAP_CADENCE_FLAGSHIP_PAIRS',
   '});',

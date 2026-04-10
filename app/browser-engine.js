@@ -1188,20 +1188,20 @@ function registerTD613ApertureSegment({
       collapseComparableWhitespace(surfaceCandidate) !== sourceComparable &&
       surfaceWitnessAudit.witnessAnchorIntegrity > projectedWitnessAudit.witnessAnchorIntegrity
     ) {
-      outcome = 'surface-held';
+      outcome = 'repaired';
       registeredText = surfaceCandidate;
       note(
         'surface-hold-applied',
-        'Aperture preferred a surface-held counter-record because it reduced witness drift without suppressing the segment.'
+        'Aperture preferred the safer visible counter-record because it reduced witness drift without suppressing the segment.'
       );
     }
   } else if (projectedCompression.state === 'compressed' && !projectedCompression.previewSafe) {
     if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable) {
-      outcome = 'surface-held';
+      outcome = 'repaired';
       registeredText = surfaceCandidate;
       note(
         'preview-hold',
-        'Aperture published a shallower counter-record because compression pressure made a deeper row-level claim unreliable.'
+        'Aperture published the safer visible counter-record because compression pressure made a deeper row-level claim unreliable.'
       );
     } else {
       outcome = repairedProjection.repaired ? 'repaired' : 'projected';
@@ -1212,11 +1212,11 @@ function registerTD613ApertureSegment({
     }
   } else if (internalComparable === sourceComparable) {
     if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable) {
-      outcome = 'surface-held';
+      outcome = 'repaired';
       registeredText = surfaceCandidate;
       note(
         'surface-hold-applied',
-        'The deeper projection stayed too close to source, so Aperture published a visible surface-held counter-record instead.'
+        'The deeper projection stayed too close to source, so Aperture published the visible counter-record instead of flattening the segment back to source.'
       );
     } else {
       outcome = 'surface-held';
@@ -10857,6 +10857,7 @@ window.TCP_ENGINE = Object.assign(window.TCP_ENGINE || {}, {
   buildOpportunityProfileFromIR,
   buildTransferPlanFromIR,
   beamSearchTransfer,
+  buildSwapCadenceMatrix,
   cadenceModFromProfile,
   SWAP_CADENCE_FLAGSHIP_PAIRS
 });

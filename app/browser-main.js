@@ -119,6 +119,12 @@
   const STORAGE_KEY = 'tcp.savedPersonas.v1';
   const LOCK_STORAGE_KEY = 'tcp.cadenceLocks.v1';
   const ACTIVE_LOCK_STORAGE_KEY = 'tcp.activeCadenceLock.v1';
+  function clamp01(value) {
+    if (!Number.isFinite(value)) {
+      return 0;
+    }
+    return Math.min(1, Math.max(0, value));
+  }
   function createRuntimeStore() {
     const memory = new Map();
     return Object.freeze({
