@@ -425,7 +425,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Gallery 4 fog rig settle off detector again at 7:42;  not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
+      "text": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -572,8 +572,8 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Gallery 4 fog rig settle off detector again at 7:42;  not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
-          "rhetoricalRole": "causal",
+          "raw": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light wash\" when its basically a fog burst now, as and reset finished 8:11.",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
@@ -592,7 +592,7 @@
             },
             {
               "id": "s0c1",
-              "text": "not fire",
+              "text": "and not fire",
               "relationToPrev": "additive",
               "clauseType": "fragment",
               "polarity": "negative",
@@ -686,7 +686,68 @@
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "formal-correspondence",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "matron",
+        "status": "selected",
+        "score": 0.7909,
+        "rewriteStrength": 1,
+        "targetFit": 0.3465,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light "
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.7867,
+        "rewriteStrength": 1,
+        "targetFit": 0.3335,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light "
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.786,
+        "rewriteStrength": 1,
+        "targetFit": 0.3312,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light "
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.7877,
+        "rewriteStrength": 1,
+        "targetFit": 0.3365,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Gallery 4 fog rig settle off detector again at 7:42; and not fire; just too much haze sitting under ceiling head as fan was low; please stop calling cue \"light "
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "base"
+    },
+    "winningCandidateId": "base"
   },
   "semanticContract": {
     "transferClass": "structural",

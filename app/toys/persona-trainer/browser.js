@@ -309,18 +309,22 @@ export async function createTrainerController(options = {}) {
     const seenTexts = new Set();
     const pushCandidate = (text, meta = {}) => {
       const normalizedText = String(text || '').trim();
-      if (!normalizedText || seenTexts.has(normalizedText)) {
+      if ((!normalizedText && meta.holdStatus !== 'held') || (normalizedText && seenTexts.has(normalizedText))) {
         return;
       }
-      seenTexts.add(normalizedText);
+      if (normalizedText) {
+        seenTexts.add(normalizedText);
+      }
       let validationPreview = null;
-      try {
-        validationPreview = validateCandidateAgainstFingerprint(engine, normalizedText, state.extraction, {
-          personaName: personaName(),
-          sampleLibrary
-        });
-      } catch (error) {
-        validationPreview = null;
+      if (normalizedText) {
+        try {
+          validationPreview = validateCandidateAgainstFingerprint(engine, normalizedText, state.extraction, {
+            personaName: personaName(),
+            sampleLibrary
+          });
+        } catch (error) {
+          validationPreview = null;
+        }
       }
       candidates.push({
         text: normalizedText,
@@ -328,15 +332,6 @@ export async function createTrainerController(options = {}) {
         ...meta
       });
     };
-
-    pushCandidate(sourceText, {
-      transfer: null,
-      strength: 0,
-      changedDimensions: [],
-      transferClass: 'native',
-      visibleShift: false,
-      nonTrivialShift: false
-    });
 
     const strengthVariants = [...new Set([
       Number(shell.strength || 0.84),
@@ -349,48 +344,69 @@ export async function createTrainerController(options = {}) {
         retrieval: true,
         strength: candidateStrength
       });
-      pushCandidate(transfer.text || sourceText, {
+      pushCandidate(transfer.text || '', {
         transfer,
         strength: candidateStrength,
         changedDimensions: [...(transfer.changedDimensions || [])],
         transferClass: transfer.transferClass || 'native',
         visibleShift: Boolean(transfer.visibleShift),
-        nonTrivialShift: Boolean(transfer.nonTrivialShift)
+        nonTrivialShift: Boolean(transfer.nonTrivialShift),
+        holdStatus: transfer.holdStatus || 'landed',
+        generationDocket: transfer.generationDocket || null
       });
     });
 
     candidates.sort((left, right) => {
+      const leftHeld = left.holdStatus === 'held';
+      const rightHeld = right.holdStatus === 'held';
       const leftValidation = left.validationPreview;
       const rightValidation = right.validationPreview;
       const leftScore =
+        (leftHeld ? -120 : 0) +
         (leftValidation?.pass ? 1000 : 0) +
         (leftValidation?.retrievalContract?.retrievalPass ? 300 : 0) +
         ((leftValidation?.scalarSummary?.aggregate || 0) * 100) +
         ((leftValidation?.retrievalContract?.meanAgreement || 0) * 40) +
         (left.nonTrivialShift ? 14 : left.visibleShift ? 6 : 0) +
-        ((left.changedDimensions || []).length * 1.5) -
-        (left.transfer ? 0 : 8);
+        ((left.changedDimensions || []).length * 1.5);
       const rightScore =
+        (rightHeld ? -120 : 0) +
         (rightValidation?.pass ? 1000 : 0) +
         (rightValidation?.retrievalContract?.retrievalPass ? 300 : 0) +
         ((rightValidation?.scalarSummary?.aggregate || 0) * 100) +
         ((rightValidation?.retrievalContract?.meanAgreement || 0) * 40) +
         (right.nonTrivialShift ? 14 : right.visibleShift ? 6 : 0) +
-        ((right.changedDimensions || []).length * 1.5) -
-        (right.transfer ? 0 : 8);
+        ((right.changedDimensions || []).length * 1.5);
       return rightScore - leftScore;
     });
 
-    const chosen = candidates[0] || {
-      text: sourceText,
-      transfer: null,
-      changedDimensions: [],
-      transferClass: 'native',
-      visibleShift: false,
-      nonTrivialShift: false
-    };
+    const chosen = candidates.find((candidate) => candidate.holdStatus !== 'held') || candidates[0] || null;
 
-    nodes.generatedOutput.value = chosen.text || sourceText;
+    if (!chosen || chosen.holdStatus === 'held') {
+      nodes.generatedOutput.value = '';
+      state.validation = null;
+      state.exportSpec = null;
+      state.draftResult = {
+        sourceOrigin: context.sourceOrigin || 'extracted corpus',
+        sourceText,
+        personaId: context.persona?.id || '',
+        personaName: context.persona?.name || '',
+        changedDimensions: [],
+        transferClass: 'held',
+        visibleShift: false,
+        nonTrivialShift: false,
+        holdStatus: 'held',
+        generationDocket: chosen?.generationDocket || null
+      };
+      render();
+      setStatus(
+        chosen?.generationDocket?.headline || `${personaName()} issued a visible hold docket instead of a weak draft.`,
+        'draft-held'
+      );
+      return snapshot();
+    }
+
+    nodes.generatedOutput.value = chosen.text || '';
     state.validation = null;
     state.exportSpec = null;
     state.draftResult = {
@@ -401,7 +417,9 @@ export async function createTrainerController(options = {}) {
       changedDimensions: [...(chosen.changedDimensions || [])],
       transferClass: chosen.transferClass || 'native',
       visibleShift: Boolean(chosen.visibleShift),
-      nonTrivialShift: Boolean(chosen.nonTrivialShift)
+      nonTrivialShift: Boolean(chosen.nonTrivialShift),
+      holdStatus: 'landed',
+      generationDocket: chosen.generationDocket || null
     };
     render();
     setStatus(

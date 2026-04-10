@@ -3,6 +3,11 @@ import {
   repairTD613ApertureProjection,
   reviewTD613ApertureTransfer
 } from './td613-aperture.js';
+import {
+  applyCadenceToTextV2,
+  buildCadenceTransferTraceV2,
+  buildCadenceTransferV2
+} from './generator-v2.js';
 
 function clamp01(value) {
   return Math.max(0, Math.min(1, value));
@@ -5643,7 +5648,7 @@ function forceStructuralShift(text = '', baseProfile = {}, targetProfile = {}, s
   return finalizeTransformedText(result);
 }
 
-export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
+export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) {
   const sourceText = normalizeText(text);
   const sourceProfile = extractCadenceProfile(sourceText);
   const opportunityProfile = buildOpportunityProfile(sourceText);
@@ -7321,15 +7326,15 @@ export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
   return result;
 }
 
-export function buildCadenceTransferTrace(text = '', shell = {}, options = {}) {
-  return buildCadenceTransfer(text, shell, {
+export function buildCadenceTransferTraceLegacy(text = '', shell = {}, options = {}) {
+  return buildCadenceTransferLegacy(text, shell, {
     ...options,
     retrieval: true
   }).retrievalTrace;
 }
 
-export function applyCadenceToText(text = '', shell = {}) {
-  return buildCadenceTransfer(text, shell).text;
+export function applyCadenceToTextLegacy(text = '', shell = {}) {
+  return buildCadenceTransferLegacy(text, shell).text;
 }
 
 export const SWAP_CADENCE_FLAGSHIP_PAIRS = Object.freeze([
@@ -7378,6 +7383,20 @@ function buildSwapLaneResult(sourceSample, donorSample, slot = 'A', donorSlot = 
   const semanticAudit = trace.semanticAudit || transfer.semanticAudit || {};
   const protectedAnchorAudit = trace.protectedAnchorAudit || transfer.protectedAnchorAudit || {};
 
+  const holdFailureClass = transfer.holdStatus === 'held'
+    ? transfer.generationDocket?.holdClass || 'below-rewrite-bar'
+    : null;
+  const summarizedHoldFailureClass =
+    holdFailureClass === 'below-rewrite-bar' || holdFailureClass === 'semantic-failure'
+      ? 'donor-underfit'
+      : holdFailureClass;
+  const summarizedBorrowedShellOutcome = transfer.holdStatus === 'held'
+    ? 'rejected'
+    : (transfer.borrowedShellOutcome || (transfer.transferClass === 'rejected' ? 'rejected' : 'subtle'));
+  const summarizedBorrowedShellFailureClass = transfer.holdStatus === 'held'
+    ? summarizedHoldFailureClass
+    : transfer.borrowedShellFailureClass || null;
+
   return {
     slot,
     sourceId: sourceSample.id,
@@ -7385,8 +7404,8 @@ function buildSwapLaneResult(sourceSample, donorSample, slot = 'A', donorSlot = 
     sourceName: sourceSample.name,
     donorName: donorSample.name,
     transferClass: transfer.transferClass || 'native',
-    borrowedShellOutcome: transfer.borrowedShellOutcome || (transfer.transferClass === 'rejected' ? 'rejected' : 'subtle'),
-    borrowedShellFailureClass: transfer.borrowedShellFailureClass || null,
+    borrowedShellOutcome: summarizedBorrowedShellOutcome,
+    borrowedShellFailureClass: summarizedBorrowedShellFailureClass,
     realizationTier: transfer.realizationTier || 'none',
     changedDimensions: [...new Set(transfer.changedDimensions || [])],
     lexemeSwapFamilies: sortUniqueStrings((transfer.lexemeSwaps || []).map((swap) => swap.family)),
@@ -7402,8 +7421,11 @@ function buildSwapLaneResult(sourceSample, donorSample, slot = 'A', donorSlot = 
     tenseMismatches: semanticAudit.tenseMismatches ?? 0,
     protectedAnchorIntegrity: protectedAnchorAudit.protectedAnchorIntegrity ?? semanticAudit.protectedAnchorIntegrity ?? 1,
     semanticRisk: transfer.semanticRisk ?? 0,
-    notes: [...new Set(transfer.notes || [])],
-    text: transfer.text
+    notes: [...new Set([
+      ...(transfer.notes || []),
+      ...(transfer.generationDocket?.headline ? [transfer.generationDocket.headline] : [])
+    ])],
+    text: transfer.text || transfer.internalText || sourceSample.text
   };
 }
 
@@ -8586,4 +8608,16 @@ export function transformText(text, mod = {}, options = {}) {
       };
 
   return buildCadenceTransfer(text, shell, options).text;
+}
+
+export function buildCadenceTransfer(text = '', shell = {}, options = {}) {
+  return buildCadenceTransferV2(text, shell, options);
+}
+
+export function buildCadenceTransferTrace(text = '', shell = {}, options = {}) {
+  return buildCadenceTransferTraceV2(text, shell, options);
+}
+
+export function applyCadenceToText(text = '', shell = {}) {
+  return applyCadenceToTextV2(text, shell);
 }

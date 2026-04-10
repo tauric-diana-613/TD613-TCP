@@ -704,7 +704,68 @@
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "narrative-scene",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "matron",
+        "status": "selected",
+        "score": 0.829,
+        "rewriteStrength": 1,
+        "targetFit": 0.4656,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically: cut print/furniture if needed, do not fake that "
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.7763,
+        "rewriteStrength": 1,
+        "targetFit": 0.3009,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Freeze runs through q3, but means coord line stays empty 12 more weeks unless we bridge it, though room was basically: cut print/furniture if needed, do not fak"
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.7752,
+        "rewriteStrength": 1,
+        "targetFit": 0.2976,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Freeze runs through q3, but means coord line stays empty 12 more weeks unless we bridge it, though room was basically: cut print/furniture if needed, do not fak"
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.7775,
+        "rewriteStrength": 1,
+        "targetFit": 0.3047,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Freeze runs through q3, but means coord line stays empty 12 more weeks unless we bridge it, though room was basically: cut print/furniture if needed, do not fak"
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "base"
+    },
+    "winningCandidateId": "base"
   },
   "semanticContract": {
     "transferClass": "structural",

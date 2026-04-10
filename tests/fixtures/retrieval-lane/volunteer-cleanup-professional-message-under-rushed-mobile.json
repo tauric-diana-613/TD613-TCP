@@ -23,20 +23,20 @@
     "donorProfileSummary": {
       "mode": "borrowed",
       "label": "native cadence",
-      "strength": 0.88,
+      "strength": 0.8,
       "profile": {
-        "avgSentenceLength": 9,
+        "avgSentenceLength": 8.15,
         "sentenceCount": 8,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.17,
+        "contractionDensity": 0.011,
+        "punctuationDensity": 0.178,
         "lineBreakDensity": 0,
         "contentWordComplexity": 0.247,
-        "modifierDensity": 0.045,
+        "modifierDensity": 0.044,
         "hedgeDensity": 0.018,
-        "directness": 0.817,
+        "directness": 0.838,
         "abstractionPosture": 0.5,
-        "latinatePreference": 0.048,
-        "recurrencePressure": 0.166
+        "latinatePreference": 0.047,
+        "recurrencePressure": 0.167
       }
     },
     "sourceIR": {
@@ -345,13 +345,22 @@
     },
     "planSummary": {
       "transferMode": "compress",
-      "structuralOperationsSelected": [],
+      "structuralOperationsSelected": [
+        "baseline-split",
+        "planned-sentence-split",
+        "sentence-structure",
+        "clause-join-split",
+        "structural-rescue"
+      ],
       "lexicalRegisterOperationsSelected": [
-        "contraction",
-        "phrase-texture"
+        "baseline-contraction",
+        "baseline-voice-realization",
+        "connector-stance-lexicon",
+        "punctuation-finish",
+        "lexical-register-rescue"
       ],
       "connectorStrategy": "additive",
-      "contractionStrategy": "hold",
+      "contractionStrategy": "increase",
       "relationInventory": {
         "additive": 5,
         "contrastive": 1,
@@ -362,45 +371,59 @@
       },
       "structuralGoals": {
         "sentenceCountDelta": 0,
-        "avgSentenceDelta": -7.629999999999999
+        "avgSentenceDelta": -8.479999999999999
       },
       "discourseGoals": {
-        "contractionDelta": 0,
+        "contractionDelta": 0.011,
         "hedgeDelta": 0.002999999999999999
       },
       "registerGoals": {
         "contentWordComplexityDelta": -0.04899999999999999,
-        "modifierDensityDelta": 0.010999999999999996,
-        "directnessDelta": 0.1369999999999999,
+        "modifierDensityDelta": 0.009999999999999995,
+        "directnessDelta": 0.15799999999999992,
         "abstractionDelta": 0,
-        "latinateDelta": 0.0020000000000000018,
+        "latinateDelta": 0.0010000000000000009,
         "registerMode": "compressed"
       },
       "operationBudget": {
-        "splitSentence": 15,
+        "splitSentence": 17,
         "mergeSentence": 0,
         "swapConnector": 2,
         "applyHedge": 0,
-        "realizeLexicon": 5
+        "realizeLexicon": 4
       }
     },
     "candidateSummary": {
       "selected": {
-        "spec": "ir-beam-search",
-        "score": 216.7,
+        "spec": "mixed-structural",
+        "score": 324.946,
         "passesApplied": [
-          "contraction",
-          "phrase-texture"
+          "baseline-split",
+          "baseline-contraction",
+          "baseline-voice-realization",
+          "planned-sentence-split",
+          "sentence-structure",
+          "clause-join-split",
+          "connector-stance-lexicon",
+          "punctuation-finish",
+          "cleanup-restore",
+          "structural-rescue",
+          "lexical-register-rescue"
         ],
-        "rescuePasses": [],
+        "rescuePasses": [
+          "structural-rescue",
+          "lexical-register-rescue"
+        ],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "contraction-posture",
           "connector-stance",
           "lexical-register",
           "abbreviation-posture",
           "orthography-posture",
+          "fragment-posture",
           "surface-marker-posture",
           "punctuation-shape"
         ],
@@ -412,10 +435,11 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 216.7,
+          "score": 217.434,
           "passesApplied": [
-            "contraction",
-            "phrase-texture"
+            "discourse-frame",
+            "stance-texture",
+            "contraction"
           ],
           "rescuePasses": [],
           "changedDimensions": [
@@ -436,14 +460,16 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 227.066,
+          "score": 324.946,
           "passesApplied": [
             "baseline-split",
+            "baseline-contraction",
             "baseline-voice-realization",
             "planned-sentence-split",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
+            "punctuation-finish",
             "cleanup-restore",
             "structural-rescue",
             "lexical-register-rescue"
@@ -455,10 +481,13 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "abbreviation-posture",
             "orthography-posture",
+            "fragment-posture",
             "surface-marker-posture",
             "punctuation-shape"
           ],
@@ -469,14 +498,16 @@
         },
         {
           "spec": "split-heavy",
-          "score": 227.066,
+          "score": 324.946,
           "passesApplied": [
             "baseline-split",
+            "baseline-contraction",
             "baseline-voice-realization",
             "planned-sentence-split",
             "sentence-structure",
             "clause-join-split",
             "connector-stance-lexicon",
+            "punctuation-finish",
             "cleanup-restore",
             "structural-rescue",
             "lexical-register-rescue"
@@ -488,10 +519,13 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "abbreviation-posture",
             "orthography-posture",
+            "fragment-posture",
             "surface-marker-posture",
             "punctuation-shape"
           ],
@@ -502,9 +536,10 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 227.066,
+          "score": 257.328,
           "passesApplied": [
             "baseline-split",
+            "baseline-contraction",
             "baseline-voice-realization",
             "planned-sentence-split",
             "sentence-structure",
@@ -521,6 +556,7 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "abbreviation-posture",
@@ -535,9 +571,10 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 227.066,
+          "score": 257.328,
           "passesApplied": [
             "baseline-split",
+            "baseline-contraction",
             "baseline-voice-realization",
             "planned-sentence-split",
             "sentence-structure",
@@ -554,6 +591,7 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "abbreviation-posture",
@@ -569,7 +607,7 @@
       ]
     },
     "finalRealization": {
-      "text": "Team, here is the cleanup flow for Saturday so we dont lose the first hr to improvisation. Pls check in at the west fence table when you arrive, even if you already know the site. We're starting w/ glass pickup, pallet pull, pantry-post reset.  Salvage sorting. Tool lanes are fixed on purpose. Shovels at the fence, brooms at the tarp, saws under canopy B.  Paint only if the wind keeps. Gloves, water.  Closed-toe shoes are required, if you forgot any of those, say me before you start rather than trying to work around it. Kids can help at labeling and pantry sort, but they stay clear of saws + thinner. We stop for inventory at 10:15 bc a clean handoff matters more than heroic freelancing.",
+      "text": "Team. Here is the cleanup flow for Saturday. So we dont lose the first hr to improvisation. Pls check in at the west fence table when you arrive. Even if you already know the site. We're starting w/ glass pickup, pallet pull, pantry-post reset.  Salvage sorting. Tool lanes are fixed on purpose. Shovels at the fence, brooms at the tarp, saws under canopy B.  Paint only if the wind holds. Gloves, water.  Closed-toe shoes are required. If you forgot any of those, tell me before you start rather than trying to work around it. Kids can help at labeling and pantry sort,. But they stay clear of saws + thinner. We stop for inventory at 10:15 bc a clean handoff matters more than heroic freelancing.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -577,7 +615,6 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
         "contraction-posture",
         "connector-stance",
         "lexical-register",
@@ -585,30 +622,19 @@
         "fragment-posture",
         "punctuation-shape"
       ],
-      "lexemeSwaps": [
-        {
-          "family": "say",
-          "from": "tell",
-          "to": "say",
-          "kind": "lexeme"
-        },
-        {
-          "family": "keep",
-          "from": "holds",
-          "to": "keeps",
-          "kind": "lexeme"
-        }
-      ],
-      "semanticRisk": 0.3,
+      "lexemeSwaps": [],
+      "semanticRisk": 0.42,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 4.847,
-        "outputDonorDistance": 4.12,
-        "donorImprovement": 0.727,
-        "donorImprovementRatio": 0.15,
-        "sourceOutputLexicalOverlap": 0.856
+        "sourceDonorDistance": 4.929,
+        "outputDonorDistance": 2.451,
+        "donorImprovement": 2.478,
+        "donorImprovementRatio": 0.503,
+        "sourceOutputLexicalOverlap": 0.89
       },
       "rescuePasses": [
+        "structural-rescue",
+        "lexical-register-rescue",
         "partial-rescue",
         "td613-aperture-warning"
       ],
@@ -617,7 +643,7 @@
     },
     "semanticAudit": {
       "propositionCoverage": 1,
-      "actorCoverage": 0.945,
+      "actorCoverage": 0.95,
       "actionCoverage": 1,
       "objectCoverage": 0.954,
       "polarityMismatches": 0,
@@ -626,7 +652,7 @@
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s0c0",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -634,11 +660,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.086
+          "globalBagScore": 0.083
         },
         {
           "sourceClauseId": "s0c1",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -650,7 +676,7 @@
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -658,11 +684,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.143
+          "globalBagScore": 0.139
         },
         {
           "sourceClauseId": "s1c1",
-          "matchedClauseId": "s1c1",
+          "matchedClauseId": "s3c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -670,11 +696,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.029
+          "globalBagScore": 0.028
         },
         {
           "sourceClauseId": "s1c2",
-          "matchedClauseId": "s1c2",
+          "matchedClauseId": "s4c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -682,11 +708,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.029
+          "globalBagScore": 0.028
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s2c0+s3c0",
+          "matchedClauseId": "s5c0+s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -694,11 +720,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.833,
-          "globalBagScore": 0.139
+          "globalBagScore": 0.135
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s4c0+s5c0",
+          "matchedClauseId": "s7c0+s8c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -706,58 +732,10 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.667,
-          "globalBagScore": 0.139
+          "globalBagScore": 0.135
         },
         {
           "sourceClauseId": "s3c1",
-          "matchedClauseId": "s6c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.029
-        },
-        {
-          "sourceClauseId": "s4c0",
-          "matchedClauseId": "s8c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.029
-        },
-        {
-          "sourceClauseId": "s5c0",
-          "matchedClauseId": "s8c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.171
-        },
-        {
-          "sourceClauseId": "s6c0",
-          "matchedClauseId": "s9c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.114
-        },
-        {
-          "sourceClauseId": "s6c1",
           "matchedClauseId": "s9c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -766,11 +744,59 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.029
+          "globalBagScore": 0.028
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s11c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.028
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s12c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.167
+        },
+        {
+          "sourceClauseId": "s6c0",
+          "matchedClauseId": "s13c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.111
+        },
+        {
+          "sourceClauseId": "s6c1",
+          "matchedClauseId": "s14c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.028
         },
         {
           "sourceClauseId": "s7c0",
-          "matchedClauseId": "s10c0",
+          "matchedClauseId": "s15c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -778,23 +804,23 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.5,
-          "globalBagScore": 0.029
+          "globalBagScore": 0.028
         },
         {
           "sourceClauseId": "s7c1",
-          "matchedClauseId": "s9c1+s10c0",
+          "matchedClauseId": "s15c0",
           "propositionCoverage": 1,
-          "actorCoverage": 0.225,
+          "actorCoverage": 0.3,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.25,
-          "globalBagScore": 0.028
+          "bagScore": 0.333,
+          "globalBagScore": 0.027
         }
       ],
       "sourceClauseCount": 14,
-      "outputClauseCount": 17
+      "outputClauseCount": 19
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
@@ -804,8 +830,8 @@
     },
     "realizedIR": {
       "metadata": {
-        "sentenceCount": 11,
-        "clauseCount": 17,
+        "sentenceCount": 16,
+        "clauseCount": 19,
         "literalSpans": [
           {
             "value": "10:15",
@@ -816,13 +842,35 @@
       "sentences": [
         {
           "id": "s0",
-          "raw": "Team, here is the cleanup flow for Saturday so we dont lose the first hr to improvisation",
-          "rhetoricalRole": "causal",
+          "raw": "Team",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
               "id": "s0c0",
-              "text": "Team, here is the cleanup flow for Saturday",
+              "text": "Team",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "team",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s1",
+          "raw": "Here is the cleanup flow for Saturday",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s1c0",
+              "text": "Here is the cleanup flow for Saturday",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -833,11 +881,19 @@
               "object": "cleanup flow saturday",
               "modifiers": [],
               "hedgeMarkers": []
-            },
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "raw": "So we dont lose the first hr to improvisation",
+          "rhetoricalRole": "causal",
+          "terminalPunct": ".",
+          "clauses": [
             {
-              "id": "s0c1",
-              "text": "we dont lose the first hr to improvisation",
-              "relationToPrev": "additive",
+              "id": "s2c0",
+              "text": "So we dont lose the first hr to improvisation",
+              "relationToPrev": "start",
               "clauseType": "fragment",
               "polarity": "negative",
               "tenseAspect": "present",
@@ -851,13 +907,13 @@
           ]
         },
         {
-          "id": "s1",
-          "raw": "Pls check in at the west fence table when you arrive, even if you already know the site",
+          "id": "s3",
+          "raw": "Pls check in at the west fence table when you arrive",
           "rhetoricalRole": "temporal",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s1c0",
+              "id": "s3c0",
               "text": "Pls check in at the west fence table",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -873,8 +929,8 @@
               "hedgeMarkers": []
             },
             {
-              "id": "s1c1",
-              "text": "you arrive, even",
+              "id": "s3c1",
+              "text": "you arrive",
               "relationToPrev": "additive",
               "clauseType": "fragment",
               "polarity": "positive",
@@ -887,9 +943,31 @@
                 "arrive"
               ],
               "hedgeMarkers": []
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "raw": "Even if you already know the site",
+          "rhetoricalRole": "additive",
+          "terminalPunct": ".",
+          "clauses": [
+            {
+              "id": "s4c0",
+              "text": "Even",
+              "relationToPrev": "start",
+              "clauseType": "fragment",
+              "polarity": "positive",
+              "tenseAspect": "present",
+              "propositionHead": "even",
+              "actor": "",
+              "action": "",
+              "object": "",
+              "modifiers": [],
+              "hedgeMarkers": []
             },
             {
-              "id": "s1c2",
+              "id": "s4c1",
               "text": "you already know the site",
               "relationToPrev": "additive",
               "clauseType": "main",
@@ -905,13 +983,13 @@
           ]
         },
         {
-          "id": "s2",
+          "id": "s5",
           "raw": "We're starting w/ glass pickup, pallet pull, pantry-post reset",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s2c0",
+              "id": "s5c0",
               "text": "We're starting w/ glass pickup, pallet pull, pantry-post reset",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -927,13 +1005,13 @@
           ]
         },
         {
-          "id": "s3",
+          "id": "s6",
           "raw": "Salvage sorting",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s3c0",
+              "id": "s6c0",
               "text": "Salvage sorting",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -949,13 +1027,13 @@
           ]
         },
         {
-          "id": "s4",
+          "id": "s7",
           "raw": "Tool lanes are fixed on purpose",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s4c0",
+              "id": "s7c0",
               "text": "Tool lanes are fixed on purpose",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -971,13 +1049,13 @@
           ]
         },
         {
-          "id": "s5",
+          "id": "s8",
           "raw": "Shovels at the fence, brooms at the tarp, saws under canopy B",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s5c0",
+              "id": "s8c0",
               "text": "Shovels at the fence, brooms at the tarp, saws under canopy B",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -993,13 +1071,13 @@
           ]
         },
         {
-          "id": "s6",
-          "raw": "Paint only if the wind keeps",
+          "id": "s9",
+          "raw": "Paint only if the wind holds",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s6c0",
+              "id": "s9c0",
               "text": "Paint only",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -1017,15 +1095,15 @@
               ]
             },
             {
-              "id": "s6c1",
-              "text": "the wind keeps",
+              "id": "s9c1",
+              "text": "the wind holds",
               "relationToPrev": "additive",
-              "clauseType": "fragment",
+              "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "keeps",
+              "propositionHead": "wind",
               "actor": "the wind",
-              "action": "keeps",
+              "action": "",
               "object": "",
               "modifiers": [],
               "hedgeMarkers": []
@@ -1033,13 +1111,13 @@
           ]
         },
         {
-          "id": "s7",
+          "id": "s10",
           "raw": "Gloves, water",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s7c0",
+              "id": "s10c0",
               "text": "Gloves, water",
               "relationToPrev": "start",
               "clauseType": "fragment",
@@ -1055,13 +1133,13 @@
           ]
         },
         {
-          "id": "s8",
-          "raw": "Closed-toe shoes are required, if you forgot any of those, say me before you start rather than trying to work around it",
-          "rhetoricalRole": "temporal",
+          "id": "s11",
+          "raw": "Closed-toe shoes are required",
+          "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s8c0",
+              "id": "s11c0",
               "text": "Closed-toe shoes are required",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -1073,17 +1151,25 @@
               "object": "",
               "modifiers": [],
               "hedgeMarkers": []
-            },
+            }
+          ]
+        },
+        {
+          "id": "s12",
+          "raw": "If you forgot any of those, tell me before you start rather than trying to work around it",
+          "rhetoricalRole": "temporal",
+          "terminalPunct": ".",
+          "clauses": [
             {
-              "id": "s8c1",
-              "text": "you forgot any of those, say me before you start rather than trying to work around it",
-              "relationToPrev": "additive",
-              "clauseType": "main",
+              "id": "s12c0",
+              "text": "If you forgot any of those, tell me before you start rather than trying to work around it",
+              "relationToPrev": "start",
+              "clauseType": "subordinate",
               "polarity": "positive",
               "tenseAspect": "present",
-              "propositionHead": "say",
+              "propositionHead": "tell",
               "actor": "you",
-              "action": "say",
+              "action": "tell",
               "object": "me before start than trying",
               "modifiers": [],
               "hedgeMarkers": [
@@ -1094,14 +1180,14 @@
           ]
         },
         {
-          "id": "s9",
-          "raw": "Kids can help at labeling and pantry sort, but they stay clear of saws + thinner",
+          "id": "s13",
+          "raw": "Kids can help at labeling and pantry sort,",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s9c0",
-              "text": "Kids can help at labeling and pantry sort",
+              "id": "s13c0",
+              "text": "Kids can help at labeling and pantry sort,",
               "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
@@ -1112,11 +1198,19 @@
               "object": "help at labeling pantry",
               "modifiers": [],
               "hedgeMarkers": []
-            },
+            }
+          ]
+        },
+        {
+          "id": "s14",
+          "raw": "But they stay clear of saws + thinner",
+          "rhetoricalRole": "contrastive",
+          "terminalPunct": ".",
+          "clauses": [
             {
-              "id": "s9c1",
-              "text": "they stay clear of saws + thinner",
-              "relationToPrev": "additive",
+              "id": "s14c0",
+              "text": "But they stay clear of saws + thinner",
+              "relationToPrev": "start",
               "clauseType": "main",
               "polarity": "positive",
               "tenseAspect": "present",
@@ -1130,13 +1224,13 @@
           ]
         },
         {
-          "id": "s10",
+          "id": "s15",
           "raw": "We stop for inventory at 10:15 bc a clean handoff matters more than heroic freelancing.",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
             {
-              "id": "s10c0",
+              "id": "s15c0",
               "text": "We stop for inventory at 10:15 bc a clean handoff matters more than heroic freelancing",
               "relationToPrev": "start",
               "clauseType": "main",
@@ -1163,7 +1257,6 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
         "contraction-posture",
         "connector-stance",
         "lexical-register",
@@ -1171,41 +1264,90 @@
         "fragment-posture",
         "punctuation-shape"
       ],
-      "lexemeSwaps": [
-        {
-          "family": "say",
-          "from": "tell",
-          "to": "say",
-          "kind": "lexeme"
-        },
-        {
-          "family": "keep",
-          "from": "holds",
-          "to": "keeps",
-          "kind": "lexeme"
-        }
-      ],
-      "semanticRisk": 0.3,
+      "lexemeSwaps": [],
+      "semanticRisk": 0.42,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 4.847,
-        "outputDonorDistance": 4.12,
-        "donorImprovement": 0.727,
-        "donorImprovementRatio": 0.15,
-        "sourceOutputLexicalOverlap": 0.856
+        "sourceDonorDistance": 4.929,
+        "outputDonorDistance": 2.451,
+        "donorImprovement": 2.478,
+        "donorImprovementRatio": 0.503,
+        "sourceOutputLexicalOverlap": 0.89
       },
       "realizationNotes": [
-        "2 lexical family swaps landed.",
-        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, surface-marker-posture.",
+        "Register shift surfaced through lexical-register, abbreviation-posture, orthography-posture, fragment-posture, surface-marker-posture.",
         "Semantic risk is elevated; review the realized output before relying on it."
       ],
       "rescuePasses": [
+        "structural-rescue",
+        "lexical-register-rescue",
         "partial-rescue",
         "td613-aperture-warning"
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "formal-correspondence",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.8398,
+        "rewriteStrength": 1,
+        "targetFit": 0.4994,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hr to improvisation. Pls check in at the west fence table when you arrive, even if you alr"
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.8403,
+        "rewriteStrength": 1,
+        "targetFit": 0.5009,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Team. Here is the cleanup flow for Saturday. So we dont lose the first hr to improvisation. Pls check in at the west fence table when you arrive. Even if you al"
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.8359,
+        "rewriteStrength": 1,
+        "targetFit": 0.4871,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Team. Here is the cleanup flow for Saturday. So we dont lose the first hr to improvisation. Pls check in at the west fence table when you arrive. Even if you al"
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "spark",
+        "status": "selected",
+        "score": 0.8458,
+        "rewriteStrength": 1,
+        "targetFit": 0.5182,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Team. Here is the cleanup flow for Saturday. So we dont lose the first hr to improvisation. Pls check in at the west fence table when you arrive. Even if you al"
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "conservative"
+    },
+    "winningCandidateId": "conservative"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -1218,13 +1360,9 @@
       "lexical-register",
       "punctuation-shape",
       "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "sentence-mean"
     ],
-    "lexemeSwapFamilies": [
-      "keep",
-      "say"
-    ],
+    "lexemeSwapFamilies": [],
     "relationInventory": [
       "additive:5",
       "causal:2",
@@ -1233,15 +1371,24 @@
       "resumptive:0",
       "temporal:2"
     ],
-    "structuralOperations": [],
+    "structuralOperations": [
+      "baseline-split",
+      "clause-join-split",
+      "planned-sentence-split",
+      "sentence-structure",
+      "structural-rescue"
+    ],
     "lexicalOperations": [
-      "contraction",
-      "phrase-texture"
+      "baseline-contraction",
+      "baseline-voice-realization",
+      "connector-stance-lexicon",
+      "lexical-register-rescue",
+      "punctuation-finish"
     ],
     "connectorStrategy": "additive",
-    "contractionStrategy": "hold",
+    "contractionStrategy": "increase",
     "propositionCoverage": 1,
-    "actorCoverage": 0.945,
+    "actorCoverage": 0.95,
     "actionCoverage": 1,
     "objectCoverage": 0.954,
     "polarityMismatches": 0,

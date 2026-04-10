@@ -684,7 +684,68 @@
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "formal-correspondence",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "archivist",
+        "status": "selected",
+        "score": 0.8077,
+        "rewriteStrength": 1,
+        "targetFit": 0.3991,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail, but red rush sticker still on "
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "archivist",
+        "status": "eligible",
+        "score": 0.7496,
+        "rewriteStrength": 1,
+        "targetFit": 0.2174,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail, but red rush sticker still on "
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "archivist",
+        "status": "eligible",
+        "score": 0.7523,
+        "rewriteStrength": 1,
+        "targetFit": 0.2259,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail, but red rush sticker still on "
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "archivist",
+        "status": "eligible",
+        "score": 0.7461,
+        "rewriteStrength": 1,
+        "targetFit": 0.2065,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "2b package wasn't brought down, but tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail, but red rush sticker still on "
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "base"
+    },
+    "winningCandidateId": "base"
   },
   "semanticContract": {
     "transferClass": "structural",

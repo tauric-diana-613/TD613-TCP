@@ -1362,160 +1362,126 @@ function isCounterRecognitionSurface(text = '') {
 }
 
 function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}, sourceClass = 'procedural-record') {
-  const paragraphs = String(sourceText || '')
+  const normalizedSource = normalizeText(sourceText);
+  const transfer = engine.buildCadenceTransfer(normalizedSource, shell, { retrieval: true });
+  const generationDocket = transfer.generationDocket || null;
+  const hold = generationDocket?.status === 'held';
+  const notes = new Set(transfer.notes || []);
+  const sourceParagraphs = normalizedSource
+    .replace(/\r\n/g, '\n')
+    .split(/\n{2,}/)
+    .map((entry) => normalizeText(entry))
+    .filter(Boolean);
+  const outputParagraphs = (hold ? '' : normalizeText(transfer.text || ''))
     .replace(/\r\n/g, '\n')
     .split(/\n{2,}/)
     .map((entry) => normalizeText(entry))
     .filter(Boolean);
 
-  const registeredSegments = [];
-  const segmentLedger = [];
-  const internalParagraphs = [];
-  const notes = new Set();
-
-  paragraphs.forEach((paragraph, paragraphIndex) => {
-    const sourceSegments = splitTD613ApertureSourceSegments(paragraph);
-    const paragraphLedger = [];
-    const internalSegments = [];
-
-    sourceSegments.forEach((segment, segmentIndex) => {
-      const sourceProfile = engine.extractCadenceProfile(segment);
-      const protectedState = buildSegmentProtectedState(segment);
-      const sourceIR = engine.segmentTextToIR(segment, protectedState);
-      const transfer = engine.buildCadenceTransfer(segment, shell, { retrieval: true });
-      const projectedText = stripLeadingMaskIntrusion(segment, transfer.text || segment);
-      const surfaceText = applySurfaceOnlyMaskSentence(segment, sourceProfile, shell.profile || {}, shell.personaId || '', sourceClass);
-      const registration = registerTD613ApertureSegment({
-        sourceText: segment,
-        projectedText,
-        surfaceText,
-        personaId: shell.personaId || '',
-        sourceClass,
-        sourceProfile,
-        targetProfile: shell.profile || {},
-        sourceIR,
-        protectedState,
-        blocked: Boolean(transfer.apertureAudit?.generatorFault),
-        transferClass: transfer.transferClass || ''
-      });
-      let registeredText = registration.registeredText;
-      let registeredOutcome = registration.outcome;
-      let registeredPathologies = [...(registration.pathologies || [])];
-      const entryNotes = [...new Set([
-        ...(transfer.notes || []),
-        ...(registration.notes || [])
-      ])];
-      const registeredProfile = engine.extractCadenceProfile(registeredText);
-      const changedDimensions = deriveRealizedMaskDimensions(sourceProfile, registeredProfile);
-      const semanticAudit = (registeredOutcome === 'projected' || registeredOutcome === 'repaired')
-        ? {
-            ...(transfer.semanticAudit || buildHeldSemanticAudit(sourceIR, registration.registeredText)),
-            protectedAnchorIntegrity: Number(registration.witnessAnchorIntegrity ?? 1)
-          }
-        : buildHeldSemanticAudit(sourceIR, registeredText);
-      const protectedAnchorAudit = (registeredOutcome === 'projected' || registeredOutcome === 'repaired')
-        ? {
-            ...(transfer.protectedAnchorAudit || buildHeldProtectedAnchorAudit(registration)),
-            totalAnchors: Number(registration.registeredWitnessAudit?.totalAnchors ?? transfer.protectedAnchorAudit?.totalAnchors ?? 0),
-            resolvedAnchors: Number(registration.registeredWitnessAudit?.resolvedAnchors ?? transfer.protectedAnchorAudit?.resolvedAnchors ?? 0),
-            missingAnchors: [...(registration.registeredWitnessAudit?.missingAnchors || [])],
-            protectedAnchorIntegrity: Number(registration.witnessAnchorIntegrity ?? 1)
-          }
-        : buildHeldProtectedAnchorAudit(registration);
-      const lexemeSwaps = (registeredOutcome === 'projected' || registeredOutcome === 'repaired')
-        ? [...(transfer.lexemeSwaps || [])]
-        : [];
-
-      const entry = Object.freeze({
-        paragraphIndex,
-        segmentIndex,
-        sourceText: segment,
-        internalText: registration.internalText,
-        registeredText,
-        outcome: registeredOutcome,
-        notes: entryNotes,
-        pathologies: [...registeredPathologies],
-        witnessAnchorIntegrity: Number(registration.witnessAnchorIntegrity ?? 1),
-        aliasPersistenceRisk: Number(registration.aliasPersistenceRisk || 0),
-        compressionState:
-          registeredText === registration.registeredText
-            ? (registration.compressionState || 'one-to-one')
-            : 'one-to-one',
-        previewHold: Boolean(registration.previewHold),
-        renderSafe: registration.renderSafe !== false,
-        changedDimensions,
-        lexemeSwaps,
-        transferClass:
-          registeredOutcome === 'source-rerouted'
-            ? 'rejected'
-            : registeredOutcome === 'surface-held'
-              ? 'surface'
-              : (transfer.transferClass || 'structural'),
-        semanticAudit,
-        protectedAnchorAudit,
-        repairPasses: [...(registration.repairPasses || [])],
-        apertureAudit: {
-          ...(transfer.apertureAudit || {}),
-          ...(registration.apertureAudit || {}),
-          warningSignals: [...new Set([
-            ...((transfer.apertureAudit && transfer.apertureAudit.warningSignals) || []),
-            ...((registration.apertureAudit && registration.apertureAudit.warningSignals) || [])
-          ])],
-          repairPasses: [...new Set([
-            ...((transfer.apertureAudit && transfer.apertureAudit.repairPasses) || []),
-            ...((registration.apertureAudit && registration.apertureAudit.repairPasses) || [])
-          ])]
-        },
-        apertureProtocol: {
-          ...(transfer.apertureProtocol || {}),
-          outcome: registeredOutcome,
-          line: entryNotes[0] || ''
-        }
-      });
-
-      entryNotes.forEach((note) => notes.add(note));
-      paragraphLedger.push(entry);
-      segmentLedger.push(entry);
-      internalSegments.push(registration.internalText);
-    });
-
-    const paragraphText = normalizeText(paragraphLedger.map((entry) => entry.registeredText).join(' '));
-    registeredSegments.push(Object.freeze({
-      paragraphIndex,
-      text: paragraphText,
-      segments: Object.freeze(paragraphLedger.map((entry) => Object.freeze({
-        segmentIndex: entry.segmentIndex,
-        text: entry.registeredText,
-        outcome: entry.outcome
-      })))
-    }));
-    internalParagraphs.push(normalizeText(internalSegments.join(' ')));
-  });
-
-  let registration = {
-    maskedText: registeredSegments.map((paragraph) => paragraph.text).filter(Boolean).join('\n\n'),
-    internalMaskedText: internalParagraphs.filter(Boolean).join('\n\n'),
-    registeredSegments: Object.freeze(registeredSegments),
-    segmentLedger: Object.freeze(segmentLedger),
-    notes: [...notes]
-  };
-
-  const counts = segmentOutcomeCounts(registration.segmentLedger || []);
-  if (isCounterRecognitionSurface(sourceText)) {
-    registration = {
-      ...registration,
-      notes: [
-        ...new Set([
-          ...(registration.notes || []),
-          counts.sourceRerouted
-            ? 'Counter-recognition pressure is present on this passage. Aperture kept the warning ledger visible and only withheld catastrophic generator faults.'
-            : 'Counter-recognition pressure is present on this passage. Aperture kept the counter-record visible and attached warning signals instead of suppressing it.'
-        ])
-      ]
+  if (hold) {
+    notes.add(generationDocket.headline || 'Generator V2 held the passage instead of faking a weak rewrite.');
+    if (isCounterRecognitionSurface(sourceText)) {
+      notes.add('Counter-recognition pressure is present on this passage. Aperture kept the warning ledger visible and turned the miss into an explicit hold docket instead of a silent reroute.');
+    }
+    return {
+      maskedText: '',
+      internalMaskedText: normalizeText(transfer.internalText || normalizedSource),
+      registeredSegments: Object.freeze([]),
+      segmentLedger: Object.freeze([]),
+      notes: [...notes],
+      transfer,
+      generationDocket
     };
   }
 
-  return registration;
+  const paragraphCount = Math.max(sourceParagraphs.length, outputParagraphs.length, 1);
+  const registeredSegments = [];
+  const segmentLedger = [];
+
+  for (let paragraphIndex = 0; paragraphIndex < paragraphCount; paragraphIndex += 1) {
+    const sourceParagraph = sourceParagraphs[paragraphIndex] || '';
+    const outputParagraph = outputParagraphs[paragraphIndex] || '';
+    if (!outputParagraph) {
+      continue;
+    }
+
+    const paragraphProfile = engine.extractCadenceProfile(outputParagraph);
+    const changedDimensions = deriveRealizedMaskDimensions(
+      engine.extractCadenceProfile(sourceParagraph || normalizedSource),
+      paragraphProfile
+    );
+    const paragraphOutcome =
+      transfer.apertureProtocol?.outcome === 'repaired'
+        ? 'repaired'
+        : transfer.apertureProtocol?.outcome === 'surface-held'
+          ? 'surface-held'
+          : 'projected';
+    const entry = Object.freeze({
+      paragraphIndex,
+      segmentIndex: 0,
+      sourceText: sourceParagraph || normalizedSource,
+      internalText: outputParagraph,
+      registeredText: outputParagraph,
+      outcome: paragraphOutcome,
+      notes: [...new Set(transfer.notes || [])],
+      pathologies: [...((transfer.apertureProtocol && transfer.apertureProtocol.pathologies) || [])],
+      witnessAnchorIntegrity: Number(transfer.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1),
+      aliasPersistenceRisk: Number(transfer.apertureAudit?.aliasPersistence ?? 0),
+      compressionState: sourceParagraphs.length === outputParagraphs.length ? 'one-to-one' : 'compressed',
+      previewHold: sourceParagraphs.length !== outputParagraphs.length,
+      renderSafe: transfer.apertureAudit?.generatorFault !== true,
+      changedDimensions,
+      lexemeSwaps: [...(transfer.lexemeSwaps || [])],
+      transferClass: transfer.transferClass || 'structural',
+      semanticAudit: {
+        ...(transfer.semanticAudit || buildHeldSemanticAudit({}, outputParagraph)),
+        protectedAnchorIntegrity: Number(transfer.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1)
+      },
+      protectedAnchorAudit: {
+        ...(transfer.protectedAnchorAudit || buildHeldProtectedAnchorAudit({})),
+        protectedAnchorIntegrity: Number(transfer.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1)
+      },
+      repairPasses: [...(transfer.apertureAudit?.repairPasses || [])],
+      apertureAudit: {
+        ...(transfer.apertureAudit || {}),
+        warningSignals: [...new Set((transfer.apertureAudit?.warningSignals || []))],
+        repairPasses: [...new Set((transfer.apertureAudit?.repairPasses || []))]
+      },
+      apertureProtocol: {
+        ...(transfer.apertureProtocol || {}),
+        outcome: paragraphOutcome,
+        line: transfer.apertureProtocol?.line || ''
+      }
+    });
+
+    (transfer.notes || []).forEach((note) => notes.add(note));
+    registeredSegments.push(Object.freeze({
+      paragraphIndex,
+      text: outputParagraph,
+      segments: Object.freeze([
+        Object.freeze({
+          segmentIndex: 0,
+          text: outputParagraph,
+          outcome: paragraphOutcome
+        })
+      ])
+    }));
+    segmentLedger.push(entry);
+  }
+
+  if (isCounterRecognitionSurface(sourceText)) {
+    notes.add('Counter-recognition pressure is present on this passage. Aperture kept the counter-record visible and attached warning signals instead of suppressing it.');
+  }
+
+  return {
+    maskedText: registeredSegments.map((paragraph) => paragraph.text).filter(Boolean).join('\n\n'),
+    internalMaskedText: normalizeText(transfer.internalText || transfer.text || normalizedSource),
+    registeredSegments: Object.freeze(registeredSegments),
+    segmentLedger: Object.freeze(segmentLedger),
+    notes: [...notes],
+    transfer,
+    generationDocket
+  };
 }
 
 function evaluateMaskProjection(engine, sourceText = '', outputText = '', transfer = {}, options = {}) {
@@ -1852,6 +1818,10 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
     .map((dimension) => dimension.replace(/-/g, ' '))
     .join(' // ');
 
+  if (contactHonesty.outcome === 'generator-hold' || contactHonesty.registeredTransformClass === 'generator-hold') {
+    return 'generator hold // no weak output published';
+  }
+
   if (contactHonesty.outcome === 'source-rerouted') {
     return 'generator fault hold // public output withheld';
   }
@@ -1911,8 +1881,12 @@ function determineRegisteredTransformClass({
   maskedText = '',
   changedDimensions = [],
   lexemeSwaps = [],
-  apertureOutcome = 'surface-held'
+  apertureOutcome = 'surface-held',
+  generationDocket = null
 } = {}) {
+  if (generationDocket?.status === 'held') {
+    return 'generator-hold';
+  }
   if (apertureOutcome === 'source-rerouted') {
     return 'generator-fault';
   }
@@ -1952,7 +1926,9 @@ function buildApertureSummary({
   const warningSignals = [...new Set(apertureAudit.warningSignals || [])];
   const repairPasses = [...new Set(apertureAudit.repairPasses || [])];
   const headline =
-    registeredTransformClass === 'generator-fault'
+    registeredTransformClass === 'generator-hold'
+      ? 'Generator hold // no candidate cleared the rewrite bar, so the output stayed docketed instead of weakly published.'
+      : registeredTransformClass === 'generator-fault'
       ? 'Generator fault // public output held after catastrophic collapse.'
       : registeredTransformClass === 'strong-rewrite'
         ? `${buildRegistrationLine(apertureOutcome, counts)} Strong rewrite landed.`
@@ -1991,7 +1967,9 @@ function buildApertureSummary({
     bullets: [headline, homeLine, stickyLine, pressureLine].slice(0, 4),
     drawerItems,
     warningLevel:
-      apertureOutcome === 'source-rerouted'
+      registeredTransformClass === 'generator-hold'
+        ? 'high'
+        : apertureOutcome === 'source-rerouted'
         ? 'high'
         : warningSignals.length >= 3
           ? 'high'
@@ -2026,6 +2004,16 @@ function maskContactSummary(result = null) {
     normalizeText(result.rawText) &&
     normalizeText(result.maskedText) !== normalizeText(result.rawText)
   );
+
+  if (honesty.registeredTransformClass === 'generator-hold' || honesty.outcome === 'generator-hold') {
+    return {
+      changedProximity: false,
+      changedSurfaceTexture: false,
+      contactClass: 'generator-hold',
+      fieldEffect: 'withheld',
+      line: result.generationDocket?.headline || 'Generator V2 issued a visible hold docket instead of publishing a weak rewrite.'
+    };
+  }
 
   if (totalSegments) {
     const fieldEffect =
@@ -2142,11 +2130,15 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     strength: Number(persona.strength || 0.84)
   };
   const registration = buildRegisteredMaskSurface(engine, normalized, shell, sourceClass);
-  const maskedText = normalizeText(registration.maskedText || normalized) || normalized;
-  const internalMaskedText = normalizeText(registration.internalMaskedText || maskedText);
+  const generationDocket = registration.generationDocket || registration.transfer?.generationDocket || null;
+  const generatorHeld = generationDocket?.status === 'held';
+  const maskedText = generatorHeld
+    ? ''
+    : normalizeText(registration.maskedText || normalized) || normalized;
+  const internalMaskedText = normalizeText(registration.internalMaskedText || registration.transfer?.internalText || maskedText);
   const segmentLedger = [...(registration.segmentLedger || [])];
   const counts = segmentOutcomeCounts(segmentLedger);
-  const realizedProfile = engine.extractCadenceProfile(maskedText);
+  const realizedProfile = engine.extractCadenceProfile(maskedText || normalized);
   const realizedChangedDimensions = deriveRealizedMaskDimensions(rawProfile, realizedProfile);
   const realizedLexemeSwaps = segmentLedger.flatMap((entry) => entry.lexemeSwaps || []);
   const realizedPathologies = detectTD613ApertureTextPathologies({
@@ -2155,8 +2147,27 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
   });
   const realizedSemanticAudit = aggregateSemanticAudit(segmentLedger);
   const realizedProtectedAnchorAudit = aggregateProtectedAnchorAudit(segmentLedger);
-  const apertureAudit = aggregateApertureAudit(segmentLedger);
-  const apertureOutcome = aggregateApertureOutcome(segmentLedger);
+  const apertureAudit = segmentLedger.length
+    ? aggregateApertureAudit(segmentLedger)
+    : {
+        observedRegime: 'PRCS-A',
+        instrumentRole: 'counter-tool',
+        generatorFault: Boolean(registration.transfer?.apertureAudit?.generatorFault),
+        warningSignals: [...(registration.transfer?.apertureAudit?.warningSignals || [])],
+        repairPasses: [...(registration.transfer?.apertureAudit?.repairPasses || [])],
+        candidateSuppression: Number(registration.transfer?.apertureAudit?.candidateSuppression || 0),
+        observabilityDeficit: Number(registration.transfer?.apertureAudit?.observabilityDeficit || 0),
+        aliasPersistence: Number(registration.transfer?.apertureAudit?.aliasPersistence || 0),
+        namingSensitivity: Number(registration.transfer?.apertureAudit?.namingSensitivity || 0),
+        redundancyInflation: Number(registration.transfer?.apertureAudit?.redundancyInflation || 0),
+        capacityPressure: Number(registration.transfer?.apertureAudit?.capacityPressure || 0),
+        policyPressure: Number(registration.transfer?.apertureAudit?.policyPressure || 0),
+        withheldMaterial: Boolean(registration.transfer?.apertureAudit?.withheldMaterial),
+        withheldReason: registration.transfer?.apertureAudit?.withheldReason || null
+      };
+  const apertureOutcome = generatorHeld
+    ? 'generator-hold'
+    : aggregateApertureOutcome(segmentLedger);
   const movementConfidence = round(
     clamp01(
       (
@@ -2173,7 +2184,9 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     label: shell.label,
     personaId: shell.personaId,
     transferClass:
-      apertureOutcome === 'source-rerouted'
+      generatorHeld
+        ? 'held'
+        : apertureOutcome === 'source-rerouted'
         ? 'rejected'
         : apertureOutcome === 'surface-held'
           ? 'surface'
@@ -2181,6 +2194,9 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     realizationTier: determineMaskRealizationTier(realizedChangedDimensions, realizedLexemeSwaps),
     text: maskedText,
     internalText: internalMaskedText,
+    generatorVersion: registration.transfer?.generatorVersion || 'v2',
+    generationDocket,
+    candidateLedger: registration.transfer?.candidateLedger || [],
     outputProfile: realizedProfile,
     changedDimensions: realizedChangedDimensions,
     lexemeSwaps: realizedLexemeSwaps,
@@ -2191,6 +2207,7 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     semanticAudit: realizedSemanticAudit,
     protectedAnchorAudit: realizedProtectedAnchorAudit,
     notes: [...new Set([
+      ...(generationDocket?.headline ? [generationDocket.headline] : []),
       ...(registration.notes || []),
       ...(segmentLedger.filter((entry) => entry.outcome === 'source-rerouted').length
         ? [`Aperture withheld ${counts.sourceRerouted} segment${counts.sourceRerouted === 1 ? '' : 's'} only after catastrophic generator faults.`]
@@ -2201,7 +2218,9 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     ])],
     apertureProtocol: {
       outcome: apertureOutcome,
-      line: buildRegistrationLine(apertureOutcome, counts),
+      line: generatorHeld
+        ? (generationDocket?.headline || 'Generator V2 held the passage instead of publishing a weak rewrite.')
+        : buildRegistrationLine(apertureOutcome, counts),
       pathologies: [...(realizedPathologies.flags || [])],
       apertureAudit
     },
@@ -2209,7 +2228,9 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     apertureAudit
   };
   const rawToLock = lock ? compareTextToLock(engine, normalized, lock) : null;
-  const maskedToLock = lock ? compareTextToLock(engine, maskedText, lock) : null;
+  const maskedToLock = lock
+    ? (generatorHeld ? rawToLock : compareTextToLock(engine, maskedText, lock))
+    : null;
   const deltaToLock = rawToLock && maskedToLock
     ? {
         similarity: round((maskedToLock.meanSimilarity || 0) - (rawToLock.meanSimilarity || 0), 4),
@@ -2251,11 +2272,13 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     maskedText,
     changedDimensions: realizedChangedDimensions,
     lexemeSwaps: realizedLexemeSwaps,
-    apertureOutcome
+    apertureOutcome,
+    generationDocket
   });
   const contactHonesty = {
     outcome: apertureOutcome,
     line: registeredTransformClass.replace(/-/g, ' '),
+    registeredTransformClass,
     movementConfidence,
     previewAlignment: preview.alignment,
     pathologyFlags: [...(realizedPathologies.flags || [])],
@@ -2305,7 +2328,9 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     previewAlignment: preview.alignment
   });
   const movementLine =
-    registeredTransformClass === 'generator-fault'
+    registeredTransformClass === 'generator-hold'
+      ? 'generator hold // output docketed, no weak rewrite published'
+      : registeredTransformClass === 'generator-fault'
       ? 'generator fault // output withheld'
       : registeredTransformClass === 'surface-only'
         ? 'surface only // movement stayed close to source'
@@ -2348,6 +2373,7 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     apertureAudit,
     movementConfidence,
     contactHonesty,
+    generationDocket,
     witnessAnchorIntegrity: realizedProtectedAnchorAudit.protectedAnchorIntegrity,
     aliasPersistenceRisk: contactHonesty.aliasPersistenceRisk,
     compressionState: segmentLedger.some((entry) => entry.compressionState === 'compressed')

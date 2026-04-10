@@ -1051,7 +1051,68 @@
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "procedural-record",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "spark",
+        "status": "selected",
+        "score": 0.876,
+        "rewriteStrength": 1,
+        "targetFit": 0.6126,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze thru Q3. The immediate effect is that t"
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.8612,
+        "rewriteStrength": 1,
+        "targetFit": 0.5662,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze thru Q3. The immediate effect is that t"
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.8591,
+        "rewriteStrength": 1,
+        "targetFit": 0.5597,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze thru Q3. The immediate effect is that t"
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.8633,
+        "rewriteStrength": 1,
+        "targetFit": 0.5729,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze thru Q3. The immediate effect is that t"
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "base"
+    },
+    "winningCandidateId": "base"
   },
   "semanticContract": {
     "transferClass": "structural",

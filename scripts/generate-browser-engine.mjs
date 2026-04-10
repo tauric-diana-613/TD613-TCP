@@ -10,6 +10,7 @@ const browserEnginePath = path.join(repoRoot, 'app', 'browser-engine.js');
 const ENGINE_SOURCES = [
   'app/engine/td613-aperture.js',
   'app/engine/stylometry.js',
+  'app/engine/generator-v2.js',
   'app/engine/formulas.js',
   'app/engine/harbor.js'
 ];
@@ -59,10 +60,13 @@ const generated = [
   '  extractCadenceProfile,',
   '  compareTexts,',
   '  buildCadenceTransfer,',
+  '  buildCadenceTransferLegacy,',
   '  buildCadenceTransferTrace,',
+  '  buildCadenceTransferTraceLegacy,',
   '  buildCadenceSignature,',
   '  applyCadenceShell,',
   '  applyCadenceToText,',
+  '  applyCadenceToTextLegacy,',
   '  transformText,',
   '  functionWordProfile,',
   '  charTrigramProfile,',

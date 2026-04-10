@@ -809,7 +809,68 @@
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "procedural-record",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "spark",
+        "status": "selected",
+        "score": 0.5387,
+        "rewriteStrength": 0.6209,
+        "targetFit": 0.3268,
+        "movementConfidence": 0.72,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.5295,
+        "rewriteStrength": 0.6209,
+        "targetFit": 0.2906,
+        "movementConfidence": 0.74,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.526,
+        "rewriteStrength": 0.6209,
+        "targetFit": 0.2797,
+        "movementConfidence": 0.74,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.5327,
+        "rewriteStrength": 0.6209,
+        "targetFit": 0.3006,
+        "movementConfidence": 0.74,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "base"
+    },
+    "winningCandidateId": "base"
   },
   "semanticContract": {
     "transferClass": "structural",

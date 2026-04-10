@@ -994,7 +994,68 @@
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "formal-correspondence",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "spark",
+        "status": "selected",
+        "score": 0.74,
+        "rewriteStrength": 1,
+        "targetFit": 0.1874,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Hello appeals unit. Im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch in"
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.7152,
+        "rewriteStrength": 1,
+        "targetFit": 0.11,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Hello appeals unit. Im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch in"
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.7109,
+        "rewriteStrength": 1,
+        "targetFit": 0.0965,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Hello appeals unit. Im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch in"
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.7208,
+        "rewriteStrength": 1,
+        "targetFit": 0.1274,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Hello appeals unit. Im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch in"
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "base"
+    },
+    "winningCandidateId": "base"
   },
   "semanticContract": {
     "transferClass": "structural",

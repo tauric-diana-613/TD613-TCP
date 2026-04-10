@@ -23,20 +23,20 @@
     "donorProfileSummary": {
       "mode": "borrowed",
       "label": "native cadence",
-      "strength": 0.88,
+      "strength": 0.8,
       "profile": {
-        "avgSentenceLength": 8.96,
+        "avgSentenceLength": 8.31,
         "sentenceCount": 11,
-        "contractionDensity": 0,
-        "punctuationDensity": 0.15,
+        "contractionDensity": 0.008,
+        "punctuationDensity": 0.155,
         "lineBreakDensity": 0,
-        "contentWordComplexity": 0.219,
+        "contentWordComplexity": 0.221,
         "modifierDensity": 0.028,
         "hedgeDensity": 0.014,
-        "directness": 0.043,
+        "directness": 0.063,
         "abstractionPosture": 0.5,
-        "latinatePreference": 0.008,
-        "recurrencePressure": 0.147
+        "latinatePreference": 0.009,
+        "recurrencePressure": 0.148
       }
     },
     "sourceIR": {
@@ -381,9 +381,11 @@
       "structuralOperationsSelected": [
         "clause-texture"
       ],
-      "lexicalRegisterOperationsSelected": [],
+      "lexicalRegisterOperationsSelected": [
+        "contraction"
+      ],
       "connectorStrategy": "additive",
-      "contractionStrategy": "hold",
+      "contractionStrategy": "increase",
       "relationInventory": {
         "additive": 3,
         "contrastive": 3,
@@ -394,40 +396,42 @@
       },
       "structuralGoals": {
         "sentenceCountDelta": 0,
-        "avgSentenceDelta": -5.949999999999999
+        "avgSentenceDelta": -6.6
       },
       "discourseGoals": {
-        "contractionDelta": 0,
+        "contractionDelta": 0.008,
         "hedgeDelta": 0.014
       },
       "registerGoals": {
-        "contentWordComplexityDelta": -0.145,
+        "contentWordComplexityDelta": -0.143,
         "modifierDensityDelta": -0.007000000000000003,
-        "directnessDelta": -0.137,
+        "directnessDelta": -0.11699999999999999,
         "abstractionDelta": 0,
-        "latinateDelta": -0.027000000000000003,
+        "latinateDelta": -0.026000000000000002,
         "registerMode": "compressed"
       },
       "operationBudget": {
-        "splitSentence": 14,
+        "splitSentence": 16,
         "mergeSentence": 0,
         "swapConnector": 2,
         "applyHedge": 0,
-        "realizeLexicon": 5
+        "realizeLexicon": 4
       }
     },
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 363.332,
+        "score": 398.62,
         "passesApplied": [
           "baseline-floor",
-          "clause-texture"
+          "clause-texture",
+          "contraction"
         ],
         "rescuePasses": [],
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "contraction-posture",
           "connector-stance",
           "lexical-register",
           "directness",
@@ -442,15 +446,17 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 363.332,
+          "score": 398.62,
           "passesApplied": [
             "baseline-floor",
-            "clause-texture"
+            "clause-texture",
+            "contraction"
           ],
           "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "directness",
@@ -464,9 +470,10 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 366.788,
+          "score": 402.082,
           "passesApplied": [
             "baseline-split",
+            "baseline-contraction",
             "baseline-voice-realization",
             "connector-stance-lexicon",
             "punctuation-finish"
@@ -475,6 +482,7 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "directness",
@@ -488,9 +496,10 @@
         },
         {
           "spec": "split-heavy",
-          "score": 366.788,
+          "score": 402.082,
           "passesApplied": [
             "baseline-split",
+            "baseline-contraction",
             "baseline-voice-realization",
             "connector-stance-lexicon",
             "punctuation-finish"
@@ -499,6 +508,7 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "directness",
@@ -512,9 +522,10 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 366.788,
+          "score": 402.082,
           "passesApplied": [
             "baseline-split",
+            "baseline-contraction",
             "baseline-voice-realization",
             "connector-stance-lexicon",
             "punctuation-finish"
@@ -523,6 +534,7 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "directness",
@@ -536,9 +548,10 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 364.832,
+          "score": 400.12,
           "passesApplied": [
             "baseline-split",
+            "baseline-contraction",
             "baseline-voice-realization",
             "connector-stance-lexicon"
           ],
@@ -546,6 +559,7 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "contraction-posture",
             "connector-stance",
             "lexical-register",
             "directness",
@@ -560,7 +574,7 @@
       ]
     },
     "finalRealization": {
-      "text": "On Tuesday, March 18. The rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door. The carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that min. The pkg was instead left on the second-floor landing near the stair rail. Ms. Chen found it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come thru. I moved the parcel from the landing to the hallway table outside 2B only after Ms. Chen confirmed it was hers and asked help bc she was already carrying groceries. The outer carton remained sealed. The red rush label remained attached. No third party handled the parcel after pickup from the landing. The corrective issue is not merely where the box rested, but that the signature record implies a call attempt that the building log does not help.",
+      "text": "On Tuesday, March 18. The rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door. The carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that min. The pkg was instead left on the second-floor landing near the stair rail. Ms. Chen found it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come thru. I moved the parcel from the landing to the hallway table outside 2B only after Ms. Chen confirmed it was hers and asked help bc she was already carrying groceries. The outer carton remained sealed. The red rush label remained attached. No third party handled the parcel after pickup from the landing. The corrective issue is not merely where the box rested, but that the signature record implies a call attempt that the building log doesn't help.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -568,6 +582,7 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "contraction-posture",
         "connector-stance",
         "lexical-register",
         "directness",
@@ -604,11 +619,11 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 4.364,
-        "outputDonorDistance": 3.55,
-        "donorImprovement": 0.814,
-        "donorImprovementRatio": 0.187,
-        "sourceOutputLexicalOverlap": 0.871
+        "sourceDonorDistance": 4.429,
+        "outputDonorDistance": 3.523,
+        "donorImprovement": 0.906,
+        "donorImprovementRatio": 0.205,
+        "sourceOutputLexicalOverlap": 0.855
       },
       "rescuePasses": [
         "partial-rescue",
@@ -637,7 +652,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.167,
-          "globalBagScore": 0.04
+          "globalBagScore": 0.039
         },
         {
           "sourceClauseId": "s1c0",
@@ -649,7 +664,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.556,
-          "globalBagScore": 0.104
+          "globalBagScore": 0.102
         },
         {
           "sourceClauseId": "s2c0",
@@ -661,7 +676,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.75,
-          "globalBagScore": 0.128
+          "globalBagScore": 0.125
         },
         {
           "sourceClauseId": "s3c0",
@@ -673,7 +688,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.022
+          "globalBagScore": 0.021
         },
         {
           "sourceClauseId": "s4c0",
@@ -685,7 +700,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 1,
           "bagScore": 0.333,
-          "globalBagScore": 0.061
+          "globalBagScore": 0.06
         },
         {
           "sourceClauseId": "s5c0",
@@ -697,7 +712,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.13
+          "globalBagScore": 0.128
         },
         {
           "sourceClauseId": "s6c0",
@@ -709,7 +724,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.667,
-          "globalBagScore": 0.087
+          "globalBagScore": 0.085
         },
         {
           "sourceClauseId": "s6c1",
@@ -721,7 +736,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
-          "globalBagScore": 0.021
+          "globalBagScore": 0.02
         },
         {
           "sourceClauseId": "s7c0",
@@ -733,7 +748,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.022
+          "globalBagScore": 0.021
         },
         {
           "sourceClauseId": "s8c0",
@@ -745,7 +760,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.022
+          "globalBagScore": 0.021
         },
         {
           "sourceClauseId": "s9c0",
@@ -769,7 +784,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.13
+          "globalBagScore": 0.128
         },
         {
           "sourceClauseId": "s10c1",
@@ -780,8 +795,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.109
+          "bagScore": 0.833,
+          "globalBagScore": 0.106
         }
       ],
       "sourceClauseCount": 13,
@@ -1080,7 +1095,7 @@
         },
         {
           "id": "s11",
-          "raw": "The corrective issue is not merely where the box rested, but that the signature record implies a call attempt that the building log does not help.",
+          "raw": "The corrective issue is not merely where the box rested, but that the signature record implies a call attempt that the building log doesn't help.",
           "rhetoricalRole": "contrastive",
           "terminalPunct": ".",
           "clauses": [
@@ -1105,7 +1120,7 @@
             },
             {
               "id": "s11c1",
-              "text": "that the signature record implies a call attempt that the building log does not help",
+              "text": "that the signature record implies a call attempt that the building log doesn't help",
               "relationToPrev": "additive",
               "clauseType": "relative",
               "polarity": "negative",
@@ -1113,7 +1128,7 @@
               "propositionHead": "call",
               "actor": "that",
               "action": "call",
-              "object": "attempt building log help",
+              "object": "attempt building log doesn't help",
               "modifiers": [],
               "hedgeMarkers": []
             }
@@ -1129,6 +1144,7 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "contraction-posture",
         "connector-stance",
         "lexical-register",
         "directness",
@@ -1165,11 +1181,11 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 4.364,
-        "outputDonorDistance": 3.55,
-        "donorImprovement": 0.814,
-        "donorImprovementRatio": 0.187,
-        "sourceOutputLexicalOverlap": 0.871
+        "sourceDonorDistance": 4.429,
+        "outputDonorDistance": 3.523,
+        "donorImprovement": 0.906,
+        "donorImprovementRatio": 0.205,
+        "sourceOutputLexicalOverlap": 0.855
       },
       "realizationNotes": [
         "4 lexical family swaps landed.",
@@ -1183,7 +1199,68 @@
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "procedural-record",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.768,
+        "rewriteStrength": 1,
+        "targetFit": 0.275,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "On Tuesday, March 18. The rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door. The carrier scan marked \"attempted / no answer\" "
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.7677,
+        "rewriteStrength": 1,
+        "targetFit": 0.2741,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "On Tuesday, March 18. The rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door. The carrier scan marked \"attempted / no answer\" "
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.7668,
+        "rewriteStrength": 1,
+        "targetFit": 0.2712,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "On Tuesday, March 18. The rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door. The carrier scan marked \"attempted / no answer\" "
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "spark",
+        "status": "selected",
+        "score": 0.7688,
+        "rewriteStrength": 1,
+        "targetFit": 0.2776,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "On Tuesday, March 18. The rush parcel addressed to Unit 2B wasnt presented for signature at the apartment door. The carrier scan marked \"attempted / no answer\" "
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "conservative"
+    },
+    "winningCandidateId": "conservative"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -1191,6 +1268,7 @@
     "changedDimensions": [
       "abbreviation-posture",
       "connector-stance",
+      "contraction-posture",
       "directness",
       "fragment-posture",
       "lexical-register",
@@ -1215,9 +1293,11 @@
     "structuralOperations": [
       "clause-texture"
     ],
-    "lexicalOperations": [],
+    "lexicalOperations": [
+      "contraction"
+    ],
     "connectorStrategy": "additive",
-    "contractionStrategy": "hold",
+    "contractionStrategy": "increase",
     "propositionCoverage": 1,
     "actorCoverage": 0.975,
     "actionCoverage": 1,

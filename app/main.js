@@ -15,7 +15,7 @@ import {
 import {
   compareTexts,
   extractCadenceProfile,
-  applyCadenceToText,
+  buildCadenceTransfer,
   cadenceModFromProfile
 } from './engine/stylometry.js';
 import { chooseHarbor, buildLedgerRow, HARBOR_LIBRARY } from './engine/harbor.js';
@@ -158,17 +158,23 @@ function getVoiceState(slot) {
   const text = $(slot === 'A' ? 'voiceA' : 'voiceB').value;
   const rawProfile = extractCadenceProfile(text);
   const persona = getAssignedPersona(slot);
-  const effectiveText = applyCadenceToText(text, persona ? { mode: 'persona', mod: persona.mod } : { mode: 'native' });
+  const transfer = buildCadenceTransfer(
+    text,
+    persona ? { mode: 'persona', mod: persona.mod, profile: persona.profile, personaId: persona.id, label: persona.name } : { mode: 'native' }
+  );
+  const effectiveText = transfer.holdStatus === 'held' ? text : transfer.text;
   const effectiveProfile = extractCadenceProfile(effectiveText);
 
   return {
     slot,
     text,
     effectiveText,
+    generationHeld: transfer.holdStatus === 'held',
     hasText: !rawProfile.empty,
     rawProfile,
     effectiveProfile,
-    persona
+    persona,
+    transfer
   };
 }
 

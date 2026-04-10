@@ -982,7 +982,68 @@
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "formal-correspondence",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "spark",
+        "status": "selected",
+        "score": 0.7944,
+        "rewriteStrength": 1,
+        "targetFit": 0.3576,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First. The team will complete a shared cataloging "
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.7697,
+        "rewriteStrength": 1,
+        "targetFit": 0.2803,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First. The team will complete a shared cataloging "
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.7653,
+        "rewriteStrength": 1,
+        "targetFit": 0.2665,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First. The team will complete a shared cataloging "
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.7752,
+        "rewriteStrength": 1,
+        "targetFit": 0.2974,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First. The team will complete a shared cataloging "
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "base"
+    },
+    "winningCandidateId": "base"
   },
   "semanticContract": {
     "transferClass": "structural",

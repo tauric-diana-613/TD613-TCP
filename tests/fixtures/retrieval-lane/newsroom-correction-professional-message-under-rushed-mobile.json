@@ -1007,7 +1007,68 @@
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "procedural-record",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "spark",
+        "status": "selected",
+        "score": 0.8106,
+        "rewriteStrength": 0.9385,
+        "targetFit": 0.5382,
+        "movementConfidence": 0.94,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Team. We need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label. It was Nia Brooks"
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.4736,
+        "rewriteStrength": 0.4973,
+        "targetFit": 0.3621,
+        "movementConfidence": 0.66,
+        "failureReasons": [],
+        "transferClass": "rejected",
+        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.4702,
+        "rewriteStrength": 0.4973,
+        "targetFit": 0.3515,
+        "movementConfidence": 0.66,
+        "failureReasons": [],
+        "transferClass": "rejected",
+        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.4778,
+        "rewriteStrength": 0.4973,
+        "targetFit": 0.3753,
+        "movementConfidence": 0.66,
+        "failureReasons": [],
+        "transferClass": "rejected",
+        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "base"
+    },
+    "winningCandidateId": "base"
   },
   "semanticContract": {
     "transferClass": "structural",

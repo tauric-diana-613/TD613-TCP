@@ -23,20 +23,20 @@
     "donorProfileSummary": {
       "mode": "borrowed",
       "label": "native cadence",
-      "strength": 0.88,
+      "strength": 1,
       "profile": {
-        "avgSentenceLength": 18.81,
+        "avgSentenceLength": 20.7,
         "sentenceCount": 4,
         "contractionDensity": 0,
-        "punctuationDensity": 0.127,
+        "punctuationDensity": 0.12,
         "lineBreakDensity": 0,
-        "contentWordComplexity": 0.539,
-        "modifierDensity": 0.102,
+        "contentWordComplexity": 0.543,
+        "modifierDensity": 0.103,
         "hedgeDensity": 0.023,
-        "directness": 0.043,
-        "abstractionPosture": 0.627,
+        "directness": 0.04,
+        "abstractionPosture": 0.652,
         "latinatePreference": 0.116,
-        "recurrencePressure": 0.144
+        "recurrencePressure": 0.145
       }
     },
     "sourceIR": {
@@ -201,23 +201,23 @@
       },
       "structuralGoals": {
         "sentenceCountDelta": 0,
-        "avgSentenceDelta": 8.809999999999999
+        "avgSentenceDelta": 10.7
       },
       "discourseGoals": {
         "contractionDelta": 0,
         "hedgeDelta": -0.0020000000000000018
       },
       "registerGoals": {
-        "contentWordComplexityDelta": 0.15400000000000003,
-        "modifierDensityDelta": 0.040999999999999995,
-        "directnessDelta": -0.137,
-        "abstractionDelta": 0.127,
+        "contentWordComplexityDelta": 0.15800000000000003,
+        "modifierDensityDelta": 0.041999999999999996,
+        "directnessDelta": -0.13999999999999999,
+        "abstractionDelta": 0.15200000000000002,
         "latinateDelta": -0.0049999999999999906,
         "registerMode": "compressed"
       },
       "operationBudget": {
         "splitSentence": 0,
-        "mergeSentence": 8,
+        "mergeSentence": 10,
         "swapConnector": 2,
         "applyHedge": 0,
         "realizeLexicon": 5
@@ -226,7 +226,7 @@
     "candidateSummary": {
       "selected": {
         "spec": "ir-beam-search",
-        "score": 476.337,
+        "score": 481.091,
         "passesApplied": [
           "merge-pairs",
           "clause-texture"
@@ -251,7 +251,7 @@
       "candidates": [
         {
           "spec": "ir-beam-search",
-          "score": 476.337,
+          "score": 481.091,
           "passesApplied": [
             "merge-pairs",
             "clause-texture"
@@ -275,27 +275,24 @@
         },
         {
           "spec": "mixed-structural",
-          "score": 390.024,
+          "score": 390.174,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "sentence-structure",
-            "clause-join-split",
             "connector-stance-lexicon",
-            "punctuation-finish",
-            "cleanup-restore"
+            "punctuation-finish"
           ],
           "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "lexical-register",
             "directness",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
-            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -303,27 +300,24 @@
         },
         {
           "spec": "merge-heavy",
-          "score": 390.024,
+          "score": 390.174,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "sentence-structure",
-            "clause-join-split",
             "connector-stance-lexicon",
-            "punctuation-finish",
-            "cleanup-restore"
+            "punctuation-finish"
           ],
           "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "lexical-register",
             "directness",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
-            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -331,26 +325,23 @@
         },
         {
           "spec": "connector-stance-heavy",
-          "score": 388.986,
+          "score": 389.388,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
+            "connector-stance-lexicon"
           ],
           "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "lexical-register",
             "directness",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
-            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -358,26 +349,23 @@
         },
         {
           "spec": "lexical-register-heavy",
-          "score": 388.986,
+          "score": 389.388,
           "passesApplied": [
             "baseline-merge",
             "baseline-voice-realization",
-            "sentence-structure",
-            "clause-join-split",
-            "connector-stance-lexicon",
-            "cleanup-restore"
+            "connector-stance-lexicon"
           ],
           "rescuePasses": [],
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "connector-stance",
             "lexical-register",
             "directness",
             "abbreviation-posture",
             "orthography-posture",
             "fragment-posture",
-            "conversation-posture",
             "punctuation-shape"
           ],
           "qualityGatePassed": true,
@@ -427,10 +415,10 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 5.394,
-        "outputDonorDistance": 2.7,
-        "donorImprovement": 2.694,
-        "donorImprovementRatio": 0.499,
+        "sourceDonorDistance": 5.589,
+        "outputDonorDistance": 2.4,
+        "donorImprovement": 3.189,
+        "donorImprovementRatio": 0.571,
         "sourceOutputLexicalOverlap": 0.773
       },
       "rescuePasses": [
@@ -641,10 +629,10 @@
       "semanticRisk": 0.3,
       "donorProgress": {
         "eligible": true,
-        "sourceDonorDistance": 5.394,
-        "outputDonorDistance": 2.7,
-        "donorImprovement": 2.694,
-        "donorImprovementRatio": 0.499,
+        "sourceDonorDistance": 5.589,
+        "outputDonorDistance": 2.4,
+        "donorImprovement": 3.189,
+        "donorImprovementRatio": 0.571,
         "sourceOutputLexicalOverlap": 0.773
       },
       "realizationNotes": [
@@ -657,7 +645,68 @@
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "formal-correspondence",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.8628,
+        "rewriteStrength": 1,
+        "targetFit": 0.5712,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit. Main risk is if description outruns local review and"
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.87,
+        "rewriteStrength": 1,
+        "targetFit": 0.5938,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit. Main risk is if description outruns local review and"
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "matron",
+        "status": "selected",
+        "score": 0.8712,
+        "rewriteStrength": 1,
+        "targetFit": 0.5976,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit. Main risk is if description outruns local review and"
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.8685,
+        "rewriteStrength": 1,
+        "targetFit": 0.5891,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "Grant isnt just digitize, pray, and its shared catalog protocol, 6 steward reviewers, portable exhibit kit. Main risk is if description outruns local review and"
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "contrast"
+    },
+    "winningCandidateId": "contrast"
   },
   "semanticContract": {
     "transferClass": "structural",

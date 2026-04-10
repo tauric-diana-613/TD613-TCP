@@ -425,7 +425,7 @@
       ]
     },
     "finalRealization": {
-      "text": "If you are late that is okay please do not begin new tasks, and check in at the west fence table first. Glass, pallets require an initial pass;  saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands, but please bring water for real, not saying it to be annoying.",
+      "text": "If you are late that is okay please do not begin new tasks, and check in at the west fence table first. Glass, pallets require an initial pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands, but please bring water for real, not saying it to be annoying.",
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
@@ -608,7 +608,7 @@
         },
         {
           "id": "s1",
-          "raw": "Glass, pallets require an initial pass;  saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+          "raw": "Glass, pallets require an initial pass; and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
           "rhetoricalRole": "additive",
           "terminalPunct": ".",
           "clauses": [
@@ -630,7 +630,7 @@
             },
             {
               "id": "s1c1",
-              "text": "saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
+              "text": "and saws stay under canopy b, kids stay off solvent side, paint only if wind chills out",
               "relationToPrev": "additive",
               "clauseType": "main",
               "polarity": "positive",
@@ -720,7 +720,68 @@
       ],
       "visibleShift": true,
       "nonTrivialShift": true
-    }
+    },
+    "generatorVersion": "v2",
+    "sourceClass": "formal-correspondence",
+    "candidateLedger": [
+      {
+        "id": "base",
+        "envelopeId": "matron",
+        "status": "selected",
+        "score": 0.8425,
+        "rewriteStrength": 1,
+        "targetFit": 0.5079,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "If you are late that is okay please do not begin new tasks, and check in at the west fence table first. Glass, pallets require an initial pass; and saws stay un"
+      },
+      {
+        "id": "amplified",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.7594,
+        "rewriteStrength": 1,
+        "targetFit": 0.2482,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "If you are late that is ok just do not kick off random jobs; and check in at the west fence table first; glass, pallets require an initial pass. And saws stay u"
+      },
+      {
+        "id": "contrast",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.7787,
+        "rewriteStrength": 1,
+        "targetFit": 0.3085,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "If you are late that is ok just do not kick off random jobs, and check in west fence table first. Glass, pallets first pass; saws stay under canopy b, kids stay"
+      },
+      {
+        "id": "conservative",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.7755,
+        "rewriteStrength": 1,
+        "targetFit": 0.2985,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "transferClass": "structural",
+        "outputPreview": "If you are late that is okay please do not begin new tasks, and check in at the west fence table first. Glass, pallets require an initial pass; and saws stay un"
+      }
+    ],
+    "generationDocket": {
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a registered rewrite.",
+      "reasons": [],
+      "candidateCount": 4,
+      "winningCandidateId": "base"
+    },
+    "winningCandidateId": "base"
   },
   "semanticContract": {
     "transferClass": "structural",

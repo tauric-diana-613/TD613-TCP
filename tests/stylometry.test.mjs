@@ -366,7 +366,11 @@ assert(
 );
 assert(lowOpportunityTransfer.opportunityProfile.sentenceSplit === 0);
 assert(lowOpportunityTransfer.opportunityProfile.sentenceMerge === 0);
-assert(['weak', 'rejected'].includes(lowOpportunityTransfer.transferClass));
+assert(['weak', 'rejected', 'held'].includes(lowOpportunityTransfer.transferClass));
+assert(
+  lowOpportunityTransfer.transferClass !== 'held' ||
+  lowOpportunityTransfer.generationDocket?.status === 'held'
+);
 assert.notEqual(lowOpportunityTransfer.transferClass, 'structural');
 assert(truthGuardRushedProfile.abbreviationDensity > truthGuardFormalProfile.abbreviationDensity);
 assert(truthGuardRushedProfile.orthographicLooseness > truthGuardFormalProfile.orthographicLooseness);

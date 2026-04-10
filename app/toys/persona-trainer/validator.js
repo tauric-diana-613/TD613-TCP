@@ -351,7 +351,7 @@ export function validateCandidateAgainstFingerprint(engine, generatedText, extra
       safety.actorCoverage >= Math.min(0.75, targetSafety.actorCoverage) &&
       safety.actionCoverage >= Math.min(0.85, targetSafety.actionCoverage) &&
       safety.objectCoverage >= Math.min(0.65, targetSafety.objectCoverage) &&
-      safety.polarityMismatches <= targetSafety.polarityMismatches &&
+      safety.polarityMismatches <= Math.max(targetSafety.polarityMismatches, 1) &&
       safety.tenseMismatches <= Math.max(targetSafety.tenseMismatches, 1) &&
       safety.protectedAnchorIntegrity >= targetSafety.protectedAnchorIntegrity;
 

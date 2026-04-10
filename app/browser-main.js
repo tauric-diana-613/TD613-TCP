@@ -2938,7 +2938,8 @@
     const rawProfile = extractCadenceProfile(text);
     const shell = getBayShell(slot);
     const transfer = buildCadenceTransfer(text, shell, { retrieval: true });
-    const effectiveText = transfer.text;
+    const generationHeld = transfer.holdStatus === 'held';
+    const effectiveText = generationHeld ? text : transfer.text;
     const persona = shell.personaId ? findPersona(shell.personaId) : null;
     const effectiveProfile = transfer.outputProfile || extractCadenceProfile(effectiveText);
 
@@ -2946,6 +2947,7 @@
       slot,
       text,
       effectiveText,
+      generationHeld,
       hasEffectiveTextShift: effectiveText !== text,
       hasText: !rawProfile.empty,
       rawProfile,
@@ -2992,6 +2994,10 @@
   }
 
   function transferSummaryCopy(transfer, shifted = '') {
+    if (transfer?.holdStatus === 'held') {
+      return transfer?.generationDocket?.headline || 'Generator V2 held the transfer instead of publishing a weak rewrite.';
+    }
+
     if (!transfer || transfer.transferClass === 'native') {
       return 'Transfer stayed on source cadence.';
     }
@@ -3088,6 +3094,9 @@
   }
 
   function realizedTransferLabel(transfer = {}, hasEffectiveTextShift = false) {
+    if (transfer?.holdStatus === 'held') {
+      return 'generator hold';
+    }
     const percent = realizedTransferPercent(transfer, hasEffectiveTextShift);
     if (percent === 0) {
       return 'no transfer';
