@@ -1203,11 +1203,13 @@ function familyWeight(familyId = 'syntax-shape', sourceClass = 'formal-correspon
     matron: {
       'pressure-current': 1.1,
       'clause-pivot': 1.04,
+      'persona-lexicon': 1.08,
       hybrid: 1.04
     },
     undertow: {
       'pressure-current': 1.12,
       'clause-pivot': 1.05,
+      'persona-lexicon': 1.04,
       hybrid: 1.03
     },
     archivist: {
@@ -1218,7 +1220,7 @@ function familyWeight(familyId = 'syntax-shape', sourceClass = 'formal-correspon
     'cross-examiner': {
       'clause-pivot': 1.08,
       'order-beat': 1.05,
-      'persona-lexicon': 1.04
+      'persona-lexicon': 1.1
     }
   };
   const classWeight = classWeights[sourceClass]?.[familyId] ?? 1;
@@ -1314,7 +1316,7 @@ function chooseMergeLinker(envelopeId = 'generic', sourceClass = 'formal-corresp
     return sourceClass === 'procedural-record' ? '; ' : ', and ';
   }
   if (envelopeId === 'undertow') {
-    return sourceClass === 'procedural-record' ? '; while ' : ', while ';
+    return sourceClass === 'procedural-record' ? '; while ' : ', and then ';
   }
   if (envelopeId === 'archivist' || envelopeId === 'methods-editor') {
     return '; ';
@@ -1426,14 +1428,17 @@ function applyScenePersonaPulse(text = '', envelopeId = 'generic', sourceClass =
     }
   } else if (envelopeId === 'cross-examiner') {
     replaceWithLedger(/\bI want to say hi to him\b/gi, 'I want to tell him hi', 'register:say-hi->tell-hi');
+    replaceWithLedger(/\bDon't worry about\b/gi, 'Stop worrying about', 'register:do-not-worry->stop-worrying');
+    replaceWithLedger(/\bKeep doing what (?:you are|you're) doing\b/gi, 'Keep doing it', 'register:keep-doing-what-youre-doing->keep-doing-it');
     replaceWithLedger(/\bget more familiar with\b/gi, 'know better', 'register:get-more-familiar-with->know-better');
     replaceWithLedger(/\bI guess is what I(?: am|'m) trying to say\b/gi, "that's what I'm saying", 'register:i-guess-trying-to-say->thats-what-im-saying');
     trimFiller(/\byou know\??/gi, 'register:trim-you-know');
     trimFiller(/\blol\b/gi, 'register:trim-lol');
     replaceWithLedger(/\bAnd I blame\b/gi, 'I blame', 'register:drop-leading-and-blame');
-    splitIntentTail('structural:split-intent-tail', "That's what I'm saying");
+    splitIntentTail('structural:split-intent-tail', "That's the point.");
     if (sourceClass === 'narrative-scene') {
-      const next = splitSceneBursts(working).replace(/\bSuddenly,\s+I\b/g, 'Suddenly. I');
+      replaceWithLedger(/\bsuddenly\b/gi, 'without warning', 'register:suddenly->without-warning');
+      const next = splitSceneBursts(working).replace(/\bSuddenly,\s+I\b/g, 'Without warning. I');
       if (next !== working) {
         operations.push('structural:scene-burst-split');
         working = next;
@@ -1443,8 +1448,13 @@ function applyScenePersonaPulse(text = '', envelopeId = 'generic', sourceClass =
     replaceWithLedger(/\bhi\b/gi, 'hello', 'register:hi->hello', 1);
     replaceWithLedger(/\bget more familiar with\b/gi, 'know better', 'register:get-more-familiar-with->know-better', 1);
     replaceWithLedger(/\bI guess is what I(?: am|'m) trying to say\b/gi, 'that is what I am trying to say', 'register:i-guess-trying-to-say->that-is-what-i-am-trying-to-say', 1);
+    if (sourceClass === 'narrative-scene') {
+      replaceWithLedger(/\bOn the ready\b/gi, 'At the ready', 'register:on-the-ready->at-the-ready', 1);
+      replaceWithLedger(/\bsuddenly\b/gi, 'without warning', 'register:suddenly->without-warning', 1);
+    }
     trimFiller(/\blol\b/gi, 'register:trim-lol');
     trimFiller(/\byou know\??/gi, 'register:trim-you-know');
+    splitIntentTail('structural:split-intent-tail', 'That is what I am trying to say.');
     working = normalizeText(
       working
         .replace(/\bAnd\s+I blame\b/g, 'I blame')
@@ -1456,21 +1466,29 @@ function applyScenePersonaPulse(text = '', envelopeId = 'generic', sourceClass =
     replaceWithLedger(/\bI guess is what I(?: am|'m) trying to say\b/gi, 'that is what I am trying to say', 'register:i-guess-trying-to-say->that-is-what-i-am-trying-to-say', 1);
     trimFiller(/\blol\b/gi, 'register:trim-lol');
     trimFiller(/\byou know\??/gi, 'register:trim-you-know');
+    splitIntentTail('structural:split-intent-tail', 'That is what I am trying to say.');
     working = normalizeText(
       working
         .replace(/\bAnd\s+I blame\b/g, 'I blame')
         .replace(/\bAnd\s+we have\b/g, 'We have')
         .replace(/\bAnd\s+keep\b/g, 'Keep')
+        .replace(/\bWhile\s+do not\b/gi, 'Do not')
+        .replace(/\bWhile\s+nobody\b/gi, 'Nobody')
+        .replace(/\bWhile\s+on the ready\b/gi, 'On the ready')
+        .replace(/\bWhile\s+"Tell me more about yourself"/gi, '"Tell me more about yourself"')
+        .replace(/\bWhile\s+I needed that\b/gi, 'I needed that')
         .replace(/\bWhile\s+keep\b/g, 'Keep')
         .replace(/\bWhile\s+we have\b/g, 'We have')
         .replace(/\bWhile\s+it is\b/g, 'It is')
         .replace(/\bWhile\s+i am\b/gi, 'I am')
+        .replace(/\bWhile\s+I must\b/gi, 'I must')
         .replace(/,\s+while\s+keep\b/gi, ', and keep')
         .replace(/,\s+while\s+we have\b/gi, ', and we have')
         .replace(/,\s+while\s+call\b/gi, ', and call')
         .replace(/,\s+while\s+meet\b/gi, ', and meet')
         .replace(/,\s+while\s+i\b/gi, ', and I')
         .replace(/,\s+while\s+it\b/gi, ', and it')
+        .replace(/,\s+and then\s+and\b/gi, ', and then')
         .replace(/,,+/g, ',')
     );
   }
@@ -1941,15 +1959,15 @@ function applyPersonaLexiconRewrite(paragraph = '', envelopeId = 'generic', sour
     });
   } else if (envelopeId === 'cross-examiner') {
     working = applyReplacementRule(working, /\bI want to say\b/gi, 'I want to say plainly', {
-      limit: ['reflective-prose', 'narrative-scene'].includes(sourceClass) ? 1 : 0,
+      limit: ['reflective-prose', 'narrative-scene'].includes(sourceClass) ? 0 : 1,
       label: 'persona:i-want-to-say->say-plainly',
       family: 'persona',
       operations: context.lexicalOperations,
       lexemeSwaps: context.lexemeSwaps
     });
-    working = applyReplacementRule(working, /\bOn the ready\b/gi, 'Ready', {
+    working = applyReplacementRule(working, /\bOn the ready\b/gi, sourceClass === 'narrative-scene' ? 'Ready now' : 'Ready', {
       limit: sourceClass === 'narrative-scene' ? 1 : 0,
-      label: 'persona:on-the-ready->ready',
+      label: sourceClass === 'narrative-scene' ? 'persona:on-the-ready->ready-now' : 'persona:on-the-ready->ready',
       family: 'persona',
       operations: context.lexicalOperations,
       lexemeSwaps: context.lexemeSwaps
@@ -2243,7 +2261,7 @@ function pressureLinkerFor(envelopeId = 'generic', sourceClass = 'formal-corresp
     return sourceClass === 'procedural-record' ? '; ' : ', and ';
   }
   if (envelopeId === 'undertow') {
-    return sourceClass === 'procedural-record' ? '; while ' : ', while ';
+    return sourceClass === 'procedural-record' ? '; while ' : ', and then ';
   }
   if (envelopeId === 'archivist' || envelopeId === 'methods-editor') {
     return '; ';
