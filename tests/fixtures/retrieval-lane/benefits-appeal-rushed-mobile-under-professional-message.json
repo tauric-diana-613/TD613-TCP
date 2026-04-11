@@ -151,7 +151,8 @@
         "syntax-shape",
         "register-lexicon"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.8358
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -206,11 +207,16 @@
         "envelopeId": "matron",
         "status": "selected",
         "score": 1.158,
+        "toolabilityScore": 0.8551,
         "rewriteStrength": 1,
         "targetFit": 0.4705,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [
+          "artifact:fragment"
+        ],
+        "toolabilityWarnings": [
           "artifact:fragment"
         ],
         "transferClass": "structural",
@@ -222,11 +228,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 0.989,
+        "toolabilityScore": 0.8165,
         "rewriteStrength": 1,
         "targetFit": 0.4041,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.86,
         "failureReasons": [],
         "artifactFlags": [
+          "artifact:fragment"
+        ],
+        "toolabilityWarnings": [
           "artifact:fragment"
         ],
         "transferClass": "structural",

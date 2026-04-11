@@ -148,7 +148,8 @@
         "syntax-shape",
         "hybrid"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.7262
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -180,11 +181,14 @@
         "envelopeId": "archivist",
         "status": "eligible",
         "score": 0.7133,
+        "toolabilityScore": 0.7053,
         "rewriteStrength": 0.5605,
         "targetFit": 0.354,
         "movementConfidence": 0.08,
+        "personaSeparationScore": 0.86,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [],
         "transferClass": "surface",
         "outputPreview": "2b pkg wasnt brought down. Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail. Red rush sticker still on it. I moved i"
       },
@@ -193,12 +197,19 @@
         "family": "hybrid",
         "envelopeId": "archivist",
         "status": "selected",
-        "score": 0.9359,
+        "score": 0.8959,
+        "toolabilityScore": 0.747,
         "rewriteStrength": 0.6934,
         "targetFit": 0.4009,
         "movementConfidence": 0.82,
+        "personaSeparationScore": 0.86,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-join"
+        ],
+        "toolabilityWarnings": [
+          "artifact:clause-join"
+        ],
         "transferClass": "structural",
         "outputPreview": "2b pkg wasnt brought down. Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail. Red rush sticker still on it. If mgmt a"
       }

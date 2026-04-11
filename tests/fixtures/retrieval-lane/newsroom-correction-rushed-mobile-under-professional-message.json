@@ -172,7 +172,8 @@
         "clause-pivot",
         "hybrid"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.788
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -203,11 +204,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 0.8266,
+        "toolabilityScore": 0.8782,
         "rewriteStrength": 1,
         "targetFit": 0.5961,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-convergence:matron-undertow"
+        ],
         "transferClass": "structural",
         "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. And brooks emailed 9:31. Body fixed 9:47 + not"
       },
@@ -217,11 +223,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 0.5891,
+        "toolabilityScore": 0.6037,
         "rewriteStrength": 0.376,
         "targetFit": 0.505,
         "movementConfidence": 0.08,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "surface",
         "outputPreview": "Need quick fix on housing story. Quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. Brooks emailed 9:31. Body fixed 9:47 + note added."
       },
@@ -231,11 +242,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 0.8667,
+        "toolabilityScore": 0.8854,
         "rewriteStrength": 1,
         "targetFit": 0.5876,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-convergence:matron-undertow"
+        ],
         "transferClass": "structural",
         "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. And brooks emailed 9:31. Body fixed 9:47 + not"
       },
@@ -245,11 +261,16 @@
         "envelopeId": "matron",
         "status": "selected",
         "score": 0.7909,
+        "toolabilityScore": 0.6943,
         "rewriteStrength": 0.5079,
         "targetFit": 0.516,
         "movementConfidence": 0.68,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "structural",
         "outputPreview": "Need quick fix on housing story. Quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. Brooks emailed 9:31. Body fixed 9:47 + note added."
       },
@@ -259,11 +280,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 0.7144,
+        "toolabilityScore": 0.8782,
         "rewriteStrength": 1,
         "targetFit": 0.5876,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-convergence:matron-undertow"
+        ],
         "transferClass": "structural",
         "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. And brooks emailed 9:31. When it only cleared "
       }

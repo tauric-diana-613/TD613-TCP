@@ -172,6 +172,10 @@ for (const persona of resolvedPersonas) {
   assert.ok(typeof result.movementConfidence === 'number', `${persona.id}: movement confidence is attached`);
   assert.ok(result.previewAlignment && typeof result.previewAlignment.ratio === 'number', `${persona.id}: preview alignment is attached`);
   assert.ok(result.contactHonesty && typeof result.contactHonesty.line === 'string', `${persona.id}: contact honesty surface is attached`);
+  assert.ok(typeof result.toolabilityHeadline === 'string' && result.toolabilityHeadline.length > 0, `${persona.id}: toolability headline is attached`);
+  assert.ok(result.toolabilityAudit && typeof result.toolabilityAudit.toolabilityScore === 'number', `${persona.id}: toolability audit is attached`);
+  assert.ok(result.personaSeparationAudit && typeof result.personaSeparationAudit.score === 'number', `${persona.id}: persona separation audit is attached`);
+  assert.ok(Array.isArray(result.toolabilityWarnings), `${persona.id}: toolability warnings are attached`);
   assert.ok(Array.isArray(result.registeredSegments) && result.registeredSegments.length > 0, `${persona.id}: registered paragraphs are attached`);
   assert.ok(Array.isArray(result.segmentLedger) && result.segmentLedger.length > 0, `${persona.id}: segment ledger is attached`);
   assert.equal(result.maskedText, result.registeredMaskedText, `${persona.id}: maskedText is the registered counter-record`);
@@ -179,6 +183,11 @@ for (const persona of resolvedPersonas) {
   assert.ok(
     result.previewAlignment.withheld ? result.shiftPreview.length === 0 : true,
     `${persona.id}: preview rows are withheld instead of faked when alignment is not registerable`
+  );
+  assert.equal(
+    result.contactHonesty.line,
+    result.toolabilityHeadline,
+    `${persona.id}: the main Homebase honesty line now uses the operator-facing toolability headline`
   );
 }
 
@@ -382,11 +391,23 @@ assert.ok(
   'What Clung summary bullets stay capped in the main Homebase surface'
 );
 assert.ok(
+  proseSceneResults.every((result) => (result.apertureSummary?.headline || '') === result.toolabilityHeadline),
+  'the main Homebase headline now mirrors the operator-facing toolability headline'
+);
+assert.ok(
   proseSceneResults.every((result) => {
     const drawerItems = result.apertureSummary?.drawerItems || [];
     return drawerItems.length === new Set(drawerItems).size;
   }),
   'Aperture drawer items stay deduplicated instead of flooding the main surface with repeated notes'
+);
+assert.ok(
+  proseSceneResults.every((result) => Number(result.toolabilityAudit?.toolabilityScore || 0) >= 0.5),
+  'the prose regression sample clears the minimum toolability floor on landed outputs'
+);
+assert.ok(
+  proseSceneResults.every((result) => Number(result.personaSeparationAudit?.score || 0) >= 0.38),
+  'the prose regression sample keeps bounded persona separation across the major masks'
 );
 assert.ok(
   proseSceneResults.every((result) => typeof result.previewAlignment?.reason === 'string'),

@@ -53,7 +53,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.455
+          "globalBagScore": 0.417
         },
         {
           "sourceClauseId": "s2c0",
@@ -64,8 +64,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
+          "bagScore": 1,
+          "globalBagScore": 0.083
         },
         {
           "sourceClauseId": "s3c0",
@@ -81,7 +81,7 @@
         },
         {
           "sourceClauseId": "s3c1",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -89,7 +89,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.091
+          "globalBagScore": 0.083
         },
         {
           "sourceClauseId": "s4c0",
@@ -113,11 +113,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.455
+          "globalBagScore": 0.417
         }
       ],
       "sourceClauseCount": 7,
-      "outputClauseCount": 3
+      "outputClauseCount": 4
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
@@ -144,8 +144,8 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "merge-short-beats",
-        "front-if"
+        "front-if",
+        "beat-merge"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:pls->please",
@@ -153,12 +153,12 @@
         "expanded:youre->you-are",
         "expanded:thats->that-is"
       ],
-      "connectorStrategy": "cascade",
+      "connectorStrategy": "front",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
       "candidateCount": 5,
-      "landedCandidateId": "base:hybrid",
+      "landedCandidateId": "base:order-beat",
       "families": [
         "syntax-shape",
         "register-lexicon",
@@ -166,7 +166,8 @@
         "clause-pivot",
         "hybrid"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.8815
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -222,11 +223,14 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 1.502,
+        "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
         "targetFit": 0.6205,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [],
         "transferClass": "structural",
         "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and saws stay under canopy b, kids st"
       },
@@ -236,11 +240,14 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 1.1818,
+        "toolabilityScore": 0.8604,
         "rewriteStrength": 1,
         "targetFit": 0.4507,
         "movementConfidence": 0.94,
+        "personaSeparationScore": 0.86,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [],
         "transferClass": "structural",
         "outputPreview": "If you are late that is ok just do not start random jobs. Check in west fence table first. Glass + pallets first pass. Saws stay under canopy b, kids stay off s"
       },
@@ -248,13 +255,16 @@
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "selected",
         "score": 1.5472,
+        "toolabilityScore": 0.9004,
         "rewriteStrength": 1,
         "targetFit": 0.6164,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [],
         "transferClass": "structural",
         "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and if wind chills out, saws stay und"
       },
@@ -264,11 +274,14 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 1.2014,
+        "toolabilityScore": 0.8604,
         "rewriteStrength": 1,
         "targetFit": 0.4607,
         "movementConfidence": 0.94,
+        "personaSeparationScore": 0.86,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [],
         "transferClass": "structural",
         "outputPreview": "If you are late that is ok just do not start random jobs. Check in west fence table first. Glass + pallets first pass. If wind chills out, saws stay under canop"
       },
@@ -276,13 +289,16 @@
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
-        "status": "selected",
+        "status": "eligible",
         "score": 1.5149,
+        "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
         "targetFit": 0.6164,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [],
         "transferClass": "structural",
         "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. If wind chills out, glass + pallets first pass, and saws stay und"
       }
@@ -293,9 +309,9 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 5,
-      "winningCandidateId": "base:hybrid"
+      "winningCandidateId": "base:order-beat"
     },
-    "winningCandidateId": "base:hybrid"
+    "winningCandidateId": "base:order-beat"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -320,8 +336,8 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "front-if",
-      "merge-short-beats"
+      "beat-merge",
+      "front-if"
     ],
     "lexicalOperations": [
       "expanded:dont->do-not",
@@ -329,7 +345,7 @@
       "expanded:thats->that-is",
       "expanded:youre->you-are"
     ],
-    "connectorStrategy": "cascade",
+    "connectorStrategy": "front",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,

@@ -123,7 +123,8 @@
         "syntax-shape",
         "register-lexicon"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.822
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -162,11 +163,16 @@
         "envelopeId": "matron",
         "status": "selected",
         "score": 1.2202,
+        "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
         "targetFit": 0.5681,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-convergence:matron-undertow"
+        ],
         "transferClass": "structural",
         "outputPreview": "Hearing got ugly, and they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup sh"
       },
@@ -176,11 +182,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 0.9236,
+        "toolabilityScore": 0.7508,
         "rewriteStrength": 0.6638,
         "targetFit": 0.5478,
         "movementConfidence": 0.74,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "structural",
         "outputPreview": "Hearing got ugly. They keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup she al"
       }

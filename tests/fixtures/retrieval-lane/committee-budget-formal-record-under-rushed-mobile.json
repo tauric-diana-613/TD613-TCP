@@ -184,7 +184,8 @@
         "syntax-shape",
         "clause-pivot"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.6743
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -194,9 +195,7 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
-        "register-mode",
-        "orthography-posture"
+        "sentence-spread"
       ],
       "lexemeSwaps": [
         {
@@ -211,9 +210,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.153,
-      "outputDonorDistance": 2.914,
-      "donorImprovement": 1.239,
-      "donorImprovementRatio": 0.298,
+      "outputDonorDistance": 3.579,
+      "donorImprovement": 0.574,
+      "donorImprovementRatio": 0.138,
       "sourceOutputLexicalOverlap": 0.984
     },
     "candidateLedger": [
@@ -222,32 +221,48 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.2587,
-        "rewriteStrength": 0.9737,
-        "targetFit": 0.5862,
-        "movementConfidence": 1,
+        "score": 0.8411,
+        "toolabilityScore": 0.6622,
+        "rewriteStrength": 0.5977,
+        "targetFit": 0.4591,
+        "movementConfidence": 0.74,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [
-          "artifact:fragment"
+          "artifact:fragment",
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:fragment",
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
-        "outputPreview": "the finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is tha"
+        "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is tha"
       },
       {
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.1753,
-        "rewriteStrength": 1,
-        "targetFit": 0.5458,
-        "movementConfidence": 1,
+        "score": 0.8867,
+        "toolabilityScore": 0.6863,
+        "rewriteStrength": 0.7814,
+        "targetFit": 0.4434,
+        "movementConfidence": 0.88,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [
-          "artifact:fragment"
+          "artifact:fragment",
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:fragment",
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
-        "outputPreview": "the finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is tha"
+        "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is tha"
       }
     ],
     "generationDocket": {
@@ -264,8 +279,6 @@
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
-      "orthography-posture",
-      "register-mode",
       "sentence-count",
       "sentence-mean",
       "sentence-spread"

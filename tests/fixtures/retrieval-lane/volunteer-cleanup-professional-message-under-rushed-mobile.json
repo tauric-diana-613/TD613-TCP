@@ -250,7 +250,8 @@
         "clause-pivot",
         "hybrid"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.7679
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -261,7 +262,6 @@
         "sentence-mean",
         "sentence-count",
         "punctuation-shape",
-        "register-mode",
         "abbreviation-posture",
         "orthography-posture"
       ],
@@ -288,9 +288,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.968,
-      "outputDonorDistance": 3.498,
-      "donorImprovement": 1.47,
-      "donorImprovementRatio": 0.296,
+      "outputDonorDistance": 3.724,
+      "donorImprovement": 1.244,
+      "donorImprovementRatio": 0.25,
       "sourceOutputLexicalOverlap": 0.925
     },
     "candidateLedger": [
@@ -299,80 +299,110 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.3052,
+        "score": 1.2097,
+        "toolabilityScore": 0.7722,
         "rewriteStrength": 1,
-        "targetFit": 0.4778,
+        "targetFit": 0.4015,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:fragment"
         ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:fragment"
+        ],
         "transferClass": "structural",
-        "outputPreview": "team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. pls check in at the west fence table when you arrive, even if you a"
+        "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. Pls check in at the west fence table when you arrive, even if you a"
       },
       {
         "id": "base:cadence-connector",
         "family": "cadence-connector",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.1788,
+        "score": 1.0834,
+        "toolabilityScore": 0.765,
         "rewriteStrength": 1,
-        "targetFit": 0.4202,
+        "targetFit": 0.3439,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:fragment"
         ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:fragment"
+        ],
         "transferClass": "structural",
-        "outputPreview": "team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. pls check in at the west fence table when you arrive, even if you a"
+        "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. Pls check in at the west fence table when you arrive, even if you a"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.2563,
+        "score": 1.1609,
+        "toolabilityScore": 0.765,
         "rewriteStrength": 1,
-        "targetFit": 0.4728,
+        "targetFit": 0.3965,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:fragment"
         ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:fragment"
+        ],
         "transferClass": "structural",
-        "outputPreview": "team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. if you already know the site, pls check in at the west fence table "
+        "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. If you already know the site, pls check in at the west fence table "
       },
       {
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.2234,
+        "score": 1.1558,
+        "toolabilityScore": 0.765,
         "rewriteStrength": 1,
-        "targetFit": 0.4499,
+        "targetFit": 0.3965,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:fragment"
         ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:fragment"
+        ],
         "transferClass": "structural",
-        "outputPreview": "team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. if you already know the site, pls check in at the west fence table "
+        "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. If you already know the site, pls check in at the west fence table "
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.2316,
+        "score": 1.1882,
+        "toolabilityScore": 0.7722,
         "rewriteStrength": 1,
-        "targetFit": 0.401,
+        "targetFit": 0.3675,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:fragment"
         ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:fragment"
+        ],
         "transferClass": "structural",
-        "outputPreview": "team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. if you already know the site, pls check in at the west fence table "
+        "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. If you already know the site, pls check in at the west fence table "
       }
     ],
     "generationDocket": {
@@ -392,7 +422,6 @@
       "abbreviation-posture",
       "orthography-posture",
       "punctuation-shape",
-      "register-mode",
       "sentence-count",
       "sentence-mean"
     ],

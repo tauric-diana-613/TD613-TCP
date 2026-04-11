@@ -53,6 +53,13 @@ const PRIVATE_EORFD_REPRESENTATIVE_ANCHORS = Object.freeze([
 
 const PERSONA_LIBRARY = resolvePersonaCatalog(engine, personas, DIAGNOSTIC_SAMPLE_LIBRARY);
 const PERSONA_BY_ID = Object.freeze(Object.fromEntries(PERSONA_LIBRARY.map((persona) => [persona.id, persona])));
+const TOOLABILITY_MAJOR_PERSONA_IDS = Object.freeze(['spark', 'matron', 'undertow', 'archivist', 'cross-examiner']);
+const TOOLABILITY_REFLECTIVE_PROBE = `I am pretty content in life. Don't worry about where you came from. Keep doing what you're doing.
+
+Don't stop doing martial arts. I needed that. I got into a lot of trouble without martial arts. And I blame mom for taking that away from me.
+
+I want to say hi to him. Call him. Meet him I guess is what I'm trying to say. "Tell me more about yourself" lol is what I would say, you know? That's someone you should get more familiar with. It's an everchasing experience. We have amnesia as people.`;
+const TOOLABILITY_NARRATIVE_PROBE = `I must keep reminding myself that this will work. Nobody I've ever shared the same room with has ever seen Cheers! Things are moving too fast to dissuade myself of this. On the ready, I pull out the next pack of Crushes, turn them over and spank its bottom like a bad boy. Twirl of the plastic, and bite of the tip, with an excited thumb that sparks but keeps missing the gas pedal. Two gulps: from the nerves, and, to placate them, from the coffee. The wall breaks with a shuddering, misanthropic swing. It's the middle of the night, and suddenly, I'm not alone.`;
 
 function ensureDir(targetPath) {
   fs.mkdirSync(targetPath, { recursive: true });
@@ -396,6 +403,21 @@ function selectedCandidateFromLedger(candidateLedger = []) {
   return (candidateLedger || []).find((entry) => entry.status === 'selected') || null;
 }
 
+function normalizeComparable(text = '') {
+  return String(text || '')
+    .replace(/\r\n/g, '\n')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function hasToolabilityArtifactLeak(text = '') {
+  return /(?:^|[.!?]\s+)[a-z]/.test(String(text || '')) ||
+    /\b(?:and and|while while|while and|and while|but but|because because|since since|then then|yet yet)\b/i.test(String(text || '')) ||
+    /;\s+[A-Z]/.test(String(text || '')) ||
+    /\b(?:I|It|That|You|We|They|Don|Can|Won)\s*;\s*[A-Za-z]+\b/.test(String(text || ''));
+}
+
 function generatorSourceClass(result = {}, fallback = 'unknown') {
   return (
     result.sourceClass ||
@@ -420,6 +442,8 @@ function buildGeneratorAuditCase({
   const docket = result.generationDocket || null;
   const semanticAudit = result.semanticAudit || {};
   const bounded = semanticBounded(semanticAudit);
+  const toolabilityAudit = result.toolabilityAudit || {};
+  const personaSeparationAudit = result.personaSeparationAudit || {};
 
   return {
     id,
@@ -447,7 +471,21 @@ function buildGeneratorAuditCase({
     candidateCount: candidateLedger.length,
     selectedCandidateId: selectedCandidate?.id || docket?.winningCandidateId || null,
     selectedCandidateScore: round(selectedCandidate?.score ?? 0),
+    selectedCandidateToolabilityScore: round(selectedCandidate?.toolabilityScore ?? toolabilityAudit?.toolabilityScore ?? 0),
     selectedCandidateTransferClass: selectedCandidate?.transferClass || result.transferClass || 'native',
+    toolabilityScore: round(toolabilityAudit?.toolabilityScore ?? 0),
+    readability: round(toolabilityAudit?.readability ?? 0),
+    sentenceIntegrity: round(toolabilityAudit?.sentenceIntegrity ?? 0),
+    movementQuality: round(toolabilityAudit?.movementQuality ?? 0),
+    personaDistinctness: round(toolabilityAudit?.personaDistinctness ?? 0),
+    personaSeparationScore: round(personaSeparationAudit?.score ?? 0),
+    toolabilityWarnings: sortUnique([
+      ...(result.toolabilityWarnings || []),
+      ...(selectedCandidate?.toolabilityWarnings || [])
+    ]),
+    artifactFlags: sortUnique([
+      ...(selectedCandidate?.artifactFlags || [])
+    ]),
     notes: sortUnique([
       ...(result.notes || []),
       ...(docket?.headline ? [docket.headline] : [])
@@ -1221,6 +1259,91 @@ function buildGeneratorAudit(sectionResults = {}) {
   };
 }
 
+function buildToolabilityProbe(id = '', comparisonText = '', lock = null) {
+  const personas = TOOLABILITY_MAJOR_PERSONA_IDS
+    .map((personaId) => PERSONA_BY_ID[personaId])
+    .filter(Boolean);
+  const results = personas.map((persona) => buildMaskTransformationResult(engine, {
+    comparisonText,
+    lock,
+    persona
+  }));
+  const landed = results.filter((result) => result?.registeredTransformClass !== 'generator-hold' && result?.registeredTransformClass !== 'generator-fault');
+  const distinctCount = new Set(landed.map((result) => normalizeComparable(result.maskedText))).size;
+  const pairTotal = (landed.length * Math.max(landed.length - 1, 0)) / 2;
+  let convergencePairs = 0;
+  for (let leftIndex = 0; leftIndex < landed.length; leftIndex += 1) {
+    for (let rightIndex = leftIndex + 1; rightIndex < landed.length; rightIndex += 1) {
+      if (normalizeComparable(landed[leftIndex].maskedText) === normalizeComparable(landed[rightIndex].maskedText)) {
+        convergencePairs += 1;
+      }
+    }
+  }
+  const previewHonestCount = results.filter((result) =>
+    result.previewAlignment?.reason === 'shown'
+      ? (result.shiftPreview || []).length > 0
+      : (result.shiftPreview || []).length === 0
+  ).length;
+  const artifactCount = landed.filter((result) =>
+    hasToolabilityArtifactLeak(result.maskedText) ||
+    (result.toolabilityWarnings || []).some((warning) => String(warning || '').startsWith('artifact:'))
+  ).length;
+
+  return {
+    id,
+    landedCount: landed.length,
+    holdCount: results.length - landed.length,
+    distinctCount,
+    distinctnessRate: results.length ? round(distinctCount / results.length) : 0,
+    convergencePairs,
+    convergenceRate: pairTotal ? round(convergencePairs / pairTotal) : 0,
+    artifactRate: landed.length ? round(artifactCount / landed.length) : 0,
+    previewHonestyRate: results.length ? round(previewHonestCount / results.length) : 0
+  };
+}
+
+function buildToolabilityReport(sectionResults = {}) {
+  const expectedCases = (sectionResults.generatorMaskCases || []).filter((item) =>
+    ['procedural-record', 'formal-correspondence', 'reflective-prose', 'narrative-scene'].includes(item.sourceClass)
+  );
+  const landedCases = expectedCases.filter((item) => item.holdStatus !== 'held');
+  const heldCases = expectedCases.filter((item) => item.holdStatus === 'held');
+  const artifactCases = landedCases.filter((item) =>
+    (item.artifactFlags || []).length > 0 ||
+    (item.toolabilityWarnings || []).some((warning) => String(warning || '').startsWith('artifact:'))
+  );
+  const weakMovementCases = landedCases.filter((item) =>
+    item.transferClass !== 'structural' &&
+    item.registeredTransformClass !== 'strong-rewrite' &&
+    item.registeredTransformClass !== 'cadence-rewrite'
+  );
+  const lock = buildCadenceLockRecord(engine, {
+    name: 'toolability-diagnostics-lock',
+    corpusText: [
+      DIAGNOSTIC_CORPUS_BY_ID['overwork-debrief-professional-message']?.text || '',
+      DIAGNOSTIC_CORPUS_BY_ID['package-handoff-formal-record']?.text || ''
+    ].join('\n\n').trim()
+  });
+  const probes = [
+    buildToolabilityProbe('reflective-live', TOOLABILITY_REFLECTIVE_PROBE, lock),
+    buildToolabilityProbe('narrative-live', TOOLABILITY_NARRATIVE_PROBE, lock)
+  ];
+  const probeCount = Math.max(probes.length, 1);
+
+  return {
+    expectedCaseCount: expectedCases.length,
+    landedRate: expectedCases.length ? round(landedCases.length / expectedCases.length) : 0,
+    holdRate: expectedCases.length ? round(heldCases.length / expectedCases.length) : 0,
+    artifactRate: landedCases.length ? round(artifactCases.length / landedCases.length) : 0,
+    weakMovementRate: landedCases.length ? round(weakMovementCases.length / landedCases.length) : 0,
+    distinctnessRate: round(probes.reduce((sum, probe) => sum + Number(probe.distinctnessRate || 0), 0) / probeCount),
+    convergenceRate: round(probes.reduce((sum, probe) => sum + Number(probe.convergenceRate || 0), 0) / probeCount),
+    previewHonestyRate: round(probes.reduce((sum, probe) => sum + Number(probe.previewHonestyRate || 0), 0) / probeCount),
+    repeatedFlightStabilityRate: round(probes.reduce((sum, probe) => sum + Number((probe.landedCount >= 4 && probe.distinctCount >= 4) ? 1 : 0), 0) / probeCount),
+    probes
+  };
+}
+
 function summarize(sectionResults = {}) {
   const allCases = Object.values(sectionResults).flat();
   const failureBucketCounts = allCases.reduce((acc, item) => {
@@ -1400,6 +1523,23 @@ function buildMarkdownReport(report) {
     lines.push('', '### Generator Misses', '');
     report.generatorAudit.topMisses.forEach((entry) => {
       lines.push(`- ${entry.id}: ${entry.laneKind}, ${entry.sourceClass}, transfer ${entry.transferClass}, registered ${entry.registeredTransformClass || 'n/a'}, hold ${entry.holdStatus}/${entry.holdClass || 'none'}, bounded ${entry.semanticBounded ? 'yes' : 'no'}, selected score ${entry.selectedCandidateScore}`);
+      });
+    }
+
+  if (report.toolability) {
+    lines.push('', '## Toolability', '');
+    lines.push(`- expected_case_count: ${report.toolability.expectedCaseCount}`);
+    lines.push(`- landed_rate: ${report.toolability.landedRate}`);
+    lines.push(`- hold_rate: ${report.toolability.holdRate}`);
+    lines.push(`- artifact_rate: ${report.toolability.artifactRate}`);
+    lines.push(`- weak_movement_rate: ${report.toolability.weakMovementRate}`);
+    lines.push(`- distinctness_rate: ${report.toolability.distinctnessRate}`);
+    lines.push(`- convergence_rate: ${report.toolability.convergenceRate}`);
+    lines.push(`- preview_honesty_rate: ${report.toolability.previewHonestyRate}`);
+    lines.push(`- repeated_flight_stability_rate: ${report.toolability.repeatedFlightStabilityRate}`);
+    lines.push('', '### Toolability Probes', '');
+    report.toolability.probes.forEach((probe) => {
+      lines.push(`- ${probe.id}: landed ${probe.landedCount}, holds ${probe.holdCount}, distinct ${probe.distinctCount}, convergence ${probe.convergenceRate}, artifacts ${probe.artifactRate}, preview honesty ${probe.previewHonestyRate}`);
     });
   }
 
@@ -1498,12 +1638,14 @@ const sectionResults = {
 const representativePairs = summarizeRepresentativeSwapSelections(buildRepresentativeSwapSelections());
 const annexes = buildAnnexDiagnostics(repoRoot);
 const generatorAudit = buildGeneratorAudit(sectionResults);
+const toolability = buildToolabilityReport(sectionResults);
 
 const report = {
   generatedAt: new Date().toISOString(),
   summary: summarize(sectionResults),
   sections: sectionResults,
   generatorAudit,
+  toolability,
   sampleAudit: buildSampleAudit(DIAGNOSTIC_SAMPLE_LIBRARY),
   personaAudit: buildPersonaAudit(PERSONA_LIBRARY),
   workingDoctrine: null,
@@ -1513,6 +1655,8 @@ report.workingDoctrine = buildPrivateWorkingDoctrine(report.summary, swapMatrix,
 report.summary.generatorCaseCount = generatorAudit.caseCount;
 report.summary.generatorHeldCount = generatorAudit.heldCount;
 report.summary.generatorUnsafeStructuralCount = generatorAudit.unsafeStructuralCount;
+report.summary.toolabilityLandedRate = toolability.landedRate;
+report.summary.toolabilityDistinctnessRate = toolability.distinctnessRate;
 report.summary.annexCount = Object.keys(annexes).length;
 report.summary.annexPassedCount = Object.values(annexes).filter((entry) => entry.passed).length;
 

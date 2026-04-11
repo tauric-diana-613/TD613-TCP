@@ -197,7 +197,8 @@
         "syntax-shape",
         "order-beat"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.8067
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -208,8 +209,7 @@
         "sentence-mean",
         "sentence-count",
         "register-mode",
-        "abbreviation-posture",
-        "orthography-posture"
+        "abbreviation-posture"
       ],
       "lexemeSwaps": [
         {
@@ -229,9 +229,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 3.62,
-      "outputDonorDistance": 2.43,
-      "donorImprovement": 1.19,
-      "donorImprovementRatio": 0.329,
+      "outputDonorDistance": 2.964,
+      "donorImprovement": 0.656,
+      "donorImprovementRatio": 0.181,
       "sourceOutputLexicalOverlap": 0.953
     },
     "candidateLedger": [
@@ -240,28 +240,38 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.2494,
+        "score": 1.1433,
+        "toolabilityScore": 0.8103,
         "rewriteStrength": 1,
-        "targetFit": 0.5681,
+        "targetFit": 0.4866,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "structural",
-        "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label. it was Nia Brooks"
+        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label. It was Nia Brooks"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.1819,
+        "score": 1.0758,
+        "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5597,
+        "targetFit": 0.4781,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "structural",
-        "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label. it was Nia Brooks"
+        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label. It was Nia Brooks"
       }
     ],
     "generationDocket": {
@@ -279,7 +289,6 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "orthography-posture",
       "register-mode",
       "sentence-count",
       "sentence-mean"

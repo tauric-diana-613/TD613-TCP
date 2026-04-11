@@ -1791,10 +1791,10 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
     (segmentCounts.sourceRerouted || 0);
   if (segmentTotal) {
     if (contactHonesty.outcome === 'source-rerouted') {
-      return `generator fault hold // ${segmentCounts.sourceRerouted || segmentTotal} segments withheld after catastrophic failure`;
+      return `generator fault hold // ${segmentCounts.sourceRerouted || segmentTotal} segments withheld`;
     }
     if (contactHonesty.outcome === 'surface-held' && !segmentCounts.projected && !segmentCounts.repaired) {
-      return `surface-held // ${segmentCounts.surfaceHeld || segmentTotal} segments published with elevated pressure`;
+      return `surface-held // ${segmentCounts.surfaceHeld || segmentTotal} segments stayed close to source`;
     }
     const lane = [];
     if (segmentCounts.projected) {
@@ -1809,7 +1809,7 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
     if (segmentCounts.sourceRerouted) {
       lane.push(`${segmentCounts.sourceRerouted} catastrophic holds`);
     }
-    return `registered segments // ${lane.join(' // ')}`;
+    return `segment ledger // ${lane.join(' // ')}`;
   }
 
   const changedDimensions = Array.isArray(transfer.changedDimensions) ? transfer.changedDimensions : [];
@@ -1829,7 +1829,7 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
   }
 
   if (contactHonesty.outcome === 'surface-held') {
-    return 'surface-held // warning-first minimal movement';
+    return 'surface-held // movement stayed minimal';
   }
 
   if (!changedDimensions.length && !lexemeSwaps.length) {
@@ -1841,7 +1841,7 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
   }
 
   if (!visibleDimensions.length) {
-    return 'punctuation edge shift';
+    return 'surface edge shift';
   }
 
   if (contactSummary.fieldEffect === 'neither') {
@@ -1849,7 +1849,7 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
   }
 
   if (contactHonesty.outcome === 'repaired') {
-    return dimensionLine ? `${dimensionLine} // repaired projection` : 'repaired projection // safe counter-surface';
+    return dimensionLine ? `${dimensionLine} // repaired landing` : 'repaired landing // safe counter-surface';
   }
 
   if (effectSummary.registerShift && effectSummary.registerShift !== 'register holds') {
@@ -1872,7 +1872,23 @@ function humanizeApertureCode(code = '') {
     'repair-activity-applied': 'repair activity stabilized the landed rewrite',
     'generator-fault': 'catastrophic generator fault forced a hold',
     'common-repair': 'common repair cleaned the projection',
-    'post-persona-repair': 'post-persona repair cleaned the surface'
+    'post-persona-repair': 'post-persona repair cleaned the surface',
+    'artifact:over-braiding': 'over-braiding still roughened the line',
+    'artifact:clause-join': 'clause-join seams stayed visible',
+    'artifact:clause-drag': 'sentence drag stayed too heavy',
+    'artifact:doubled-connector': 'repeated connectors flattened the current',
+    'artifact:lowercase-lead': 'lowercase leads made the surface look unfinished',
+    'artifact:semicolon-fracture': 'semicolon fracture broke the flow',
+    'artifact:fragment': 'fragment artifacts thinned the landing',
+    'artifact:repeated-helper': 'helper-verb repetition kept sounding mechanical',
+    'persona-markers-thin': 'persona markers stayed too faint',
+    'persona-convergence:spark-cross': 'the mask drifted too close to its clipped-pressure neighbor',
+    'persona-convergence:matron-undertow': 'the mask drifted too close to its long-current neighbor',
+    'persona-convergence:archivist-neutral': 'the mask drifted too close to a neutral formal lane',
+    'toolability:punctuation-only': 'movement read as cosmetic rather than functional',
+    'toolability:low-confidence': 'tool confidence stayed low on the landed output',
+    'toolability:rough-surface': 'surface polish still needs work',
+    'toolability:sentence-integrity': 'sentence integrity stayed weaker than the tool should allow'
   };
   return labelMap[normalized] || normalized.replace(/[-:]/g, ' ');
 }
@@ -1915,6 +1931,49 @@ function determineRegisteredTransformClass({
   return 'surface-only';
 }
 
+function buildToolabilityHeadline({
+  registeredTransformClass = 'surface-only',
+  toolabilityAudit = {},
+  personaSeparationAudit = {},
+  generationDocket = null
+} = {}) {
+  if (generationDocket?.status === 'held' || registeredTransformClass === 'generator-hold') {
+    return generationDocket?.headline || 'Generator hold // no weak output published.';
+  }
+  if (registeredTransformClass === 'generator-fault') {
+    return 'Generator fault // output withheld after catastrophic failure.';
+  }
+  const toolabilityScore = Number(toolabilityAudit.toolabilityScore || 0);
+  const personaScore = Number(personaSeparationAudit.score || 0);
+  if (registeredTransformClass === 'strong-rewrite' && toolabilityScore >= 0.72 && personaScore >= 0.62) {
+    return 'Usable strong rewrite // clean landing with clear mask identity.';
+  }
+  if (registeredTransformClass === 'strong-rewrite') {
+    return 'Strong rewrite landed // usable, but still carrying visible pressure.';
+  }
+  if (registeredTransformClass === 'cadence-rewrite' && toolabilityScore >= 0.64 && personaScore >= 0.54) {
+    return 'Usable cadence rewrite // distinct enough to trust on first read.';
+  }
+  if (registeredTransformClass === 'cadence-rewrite') {
+    return 'Cadence rewrite landed // usable, but still close to a neighboring lane.';
+  }
+  return 'Weak visible rewrite // the surface moved, but the tool is not confident yet.';
+}
+
+function buildToolabilityWarnings({
+  toolabilityAudit = {},
+  personaSeparationAudit = {},
+  apertureAudit = {},
+  previewAlignment = {}
+} = {}) {
+  return [...new Set([
+    ...((toolabilityAudit && toolabilityAudit.warnings) || []),
+    ...((personaSeparationAudit && personaSeparationAudit.warnings) || []),
+    ...((apertureAudit && apertureAudit.warningSignals) || []),
+    ...(previewAlignment.reason && previewAlignment.reason !== 'shown' ? [previewAlignment.reason] : [])
+  ])];
+}
+
 function buildApertureSummary({
   counts = {},
   apertureOutcome = 'surface-held',
@@ -1923,20 +1982,25 @@ function buildApertureSummary({
   deltaToLock = null,
   heldLanes = [],
   apertureAudit = {},
-  previewAlignment = {}
+  previewAlignment = {},
+  toolabilityHeadline = '',
+  toolabilityAudit = {},
+  personaSeparationAudit = {},
+  toolabilityWarnings = []
 } = {}) {
   const warningSignals = [...new Set(apertureAudit.warningSignals || [])];
   const repairPasses = [...new Set(apertureAudit.repairPasses || [])];
-  const headline =
+  const headline = toolabilityHeadline || (
     registeredTransformClass === 'generator-hold'
-      ? 'Generator hold // no candidate cleared the rewrite bar, so the output stayed docketed instead of weakly published.'
+      ? 'Generator hold // no candidate cleared the rewrite bar.'
       : registeredTransformClass === 'generator-fault'
-      ? 'Generator fault // public output held after catastrophic collapse.'
-      : registeredTransformClass === 'strong-rewrite'
-        ? `${buildRegistrationLine(apertureOutcome, counts)} Strong rewrite landed.`
-        : registeredTransformClass === 'cadence-rewrite'
-          ? `${buildRegistrationLine(apertureOutcome, counts)} Cadence rewrite landed.`
-          : `${buildRegistrationLine(apertureOutcome, counts)} Movement stayed close to the source surface.`;
+        ? 'Generator fault // public output held after catastrophic collapse.'
+        : registeredTransformClass === 'strong-rewrite'
+          ? 'Usable strong rewrite landed.'
+          : registeredTransformClass === 'cadence-rewrite'
+            ? 'Cadence rewrite landed.'
+            : 'Weak visible rewrite landed.'
+  );
   const homeLine =
     !deltaToLock
       ? 'Home distance is unresolved until a cadence home is staged.'
@@ -1950,23 +2014,34 @@ function buildApertureSummary({
     : sourceClass === 'narrative-scene'
       ? 'Sticky lanes still visible: scene pressure stayed readable.'
       : 'Sticky lanes still visible: no dominant home lane stayed fixed.';
-  const pressureParts = [...warningSignals.slice(0, 2), ...repairPasses.slice(0, 1)]
-    .map((code) => humanizeApertureCode(code));
+  const distinctnessLine =
+    Number(personaSeparationAudit.score || 0) >= 0.68
+      ? 'Persona separation is clear on the landed surface.'
+      : Number(personaSeparationAudit.score || 0) >= 0.52
+        ? 'Persona separation is present, but a neighboring lane is still close.'
+        : 'Persona separation is weak; neighboring mask lanes still overlap.';
+  const pressureParts = [...toolabilityWarnings, ...warningSignals, ...repairPasses]
+    .map((code) => humanizeApertureCode(code))
+    .filter(Boolean);
   const pressureLine = pressureParts.length
-    ? `Pressure ledger // ${pressureParts.join(' // ')}.`
-    : 'Pressure ledger // no elevated warning channels stayed active.';
-  const drawerItems = [
+    ? `Warnings // ${pressureParts.slice(0, 2).join(' // ')}.`
+    : Number(toolabilityAudit.toolabilityScore || 0) >= 0.7
+      ? 'Warnings // no major toolability issues stayed active.'
+      : 'Warnings // no elevated warning channels stayed active.';
+  const drawerItems = [...new Set([
+    `Operator summary // ${headline}`,
     `Registration ledger // ${buildRegistrationLine(apertureOutcome, counts)}`,
     ...warningSignals.map((code) => `Warning // ${humanizeApertureCode(code)}.`),
+    ...toolabilityWarnings.map((code) => `Toolability // ${humanizeApertureCode(code)}.`),
     ...repairPasses.map((code) => `Repair // ${humanizeApertureCode(code)}.`),
     ...(previewAlignment.reason && previewAlignment.reason !== 'shown'
       ? [`Preview // ${humanizeApertureCode(previewAlignment.reason)}.`]
       : [])
-  ];
+  ])];
 
   return {
     headline,
-    bullets: [headline, homeLine, stickyLine, pressureLine].slice(0, 4),
+    bullets: [headline, homeLine, distinctnessLine, pressureLine].slice(0, 4),
     drawerItems,
     warningLevel:
       registeredTransformClass === 'generator-hold'
@@ -2013,7 +2088,7 @@ function maskContactSummary(result = null) {
       changedSurfaceTexture: false,
       contactClass: 'generator-hold',
       fieldEffect: 'withheld',
-      line: result.generationDocket?.headline || 'Generator V2 issued a visible hold docket instead of publishing a weak rewrite.'
+      line: result.generationDocket?.headline || 'Generator V2 held the output instead of publishing a weak rewrite.'
     };
   }
 
@@ -2059,7 +2134,7 @@ function maskContactSummary(result = null) {
       changedSurfaceTexture: false,
       contactClass: 'source-rerouted',
       fieldEffect: 'source-rerouted',
-      line: honesty.line || 'Aperture withheld the published output after a catastrophic generator fault.'
+      line: honesty.line || 'The output was withheld after a catastrophic generator fault.'
     };
   }
 
@@ -2069,7 +2144,7 @@ function maskContactSummary(result = null) {
       changedSurfaceTexture: normalizeText(result.maskedText) !== normalizeText(result.rawText),
       contactClass: 'surface-held',
       fieldEffect: 'surface-held',
-      line: honesty.line || 'Aperture kept the passage in a surface-held lane and surfaced pressure notes instead of suppressing it.'
+      line: honesty.line || 'The mask touched the passage, but movement stayed close to source.'
     };
   }
   const effect = result.effectSummary || {};
@@ -2110,8 +2185,8 @@ function maskContactSummary(result = null) {
         : fieldEffect === 'proximity'
           ? proximityLine
           : fieldEffect === 'surface-texture'
-            ? `${honesty.outcome === 'repaired' ? 'Aperture repaired the projection into a safe counter-surface. ' : ''}Surface texture changed while home distance held. ${textureLine}`
-            : 'The mask touched the passage, but home pressure and surface texture largely held.'
+            ? `${honesty.outcome === 'repaired' ? 'The tool repaired the projection into a usable counter-surface. ' : ''}Surface texture changed while home distance held. ${textureLine}`
+            : 'The mask touched the passage, but home pressure and surface texture mostly held.'
   };
 }
 
@@ -2170,6 +2245,23 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
   const apertureOutcome = generatorHeld
     ? 'generator-hold'
     : aggregateApertureOutcome(segmentLedger);
+  const toolabilityAudit = registration.transfer?.toolabilityAudit || {
+    readability: 0,
+    personaDistinctness: 0,
+    sentenceIntegrity: 0,
+    movementQuality: 0,
+    artifactPenalty: 1,
+    toolabilityScore: 0,
+    warnings: []
+  };
+  const personaSeparationAudit = registration.transfer?.personaSeparationAudit || {
+    envelopeId: shell.personaId || 'generic',
+    markerCount: 0,
+    requiredMarkers: 2,
+    score: 0,
+    warnings: [],
+    markers: []
+  };
   const movementConfidence = round(
     clamp01(
       (
@@ -2199,6 +2291,9 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     generatorVersion: registration.transfer?.generatorVersion || 'v2',
     generationDocket,
     candidateLedger: registration.transfer?.candidateLedger || [],
+    toolabilityAudit,
+    personaSeparationAudit,
+    toolabilityWarnings: registration.transfer?.toolabilityWarnings || toolabilityAudit.warnings || [],
     outputProfile: realizedProfile,
     changedDimensions: realizedChangedDimensions,
     lexemeSwaps: realizedLexemeSwaps,
@@ -2277,9 +2372,21 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     apertureOutcome,
     generationDocket
   });
+  const toolabilityWarnings = buildToolabilityWarnings({
+    toolabilityAudit,
+    personaSeparationAudit,
+    apertureAudit,
+    previewAlignment: preview.alignment
+  });
+  const toolabilityHeadline = buildToolabilityHeadline({
+    registeredTransformClass,
+    toolabilityAudit,
+    personaSeparationAudit,
+    generationDocket
+  });
   const contactHonesty = {
     outcome: apertureOutcome,
-    line: registeredTransformClass.replace(/-/g, ' '),
+    line: toolabilityHeadline,
     registeredTransformClass,
     movementConfidence,
     previewAlignment: preview.alignment,
@@ -2297,6 +2404,9 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
       segmentLedger.reduce((maxRisk, entry) => Math.max(maxRisk, Number(entry.aliasPersistenceRisk || 0)), 0),
       4
     ),
+    toolabilityAudit,
+    personaSeparationAudit,
+    toolabilityWarnings,
     apertureAudit,
     warningSignals: apertureAudit.warningSignals,
     repairPasses: apertureAudit.repairPasses
@@ -2327,7 +2437,11 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     deltaToLock,
     heldLanes,
     apertureAudit,
-    previewAlignment: preview.alignment
+    previewAlignment: preview.alignment,
+    toolabilityHeadline,
+    toolabilityAudit,
+    personaSeparationAudit,
+    toolabilityWarnings
   });
   const movementLine =
     registeredTransformClass === 'generator-hold'
@@ -2336,7 +2450,7 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
       ? 'generator fault // output withheld'
       : registeredTransformClass === 'surface-only'
         ? 'surface only // movement stayed close to source'
-        : `${registeredTransformClass.replace(/-/g, ' ')} // ${whatMovedSummary}`;
+        : whatMovedSummary;
 
   return {
     rawText: normalized,
@@ -2353,6 +2467,10 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     effectSummary,
     whatMoved,
     whatMovedSummary: movementLine,
+    toolabilityHeadline,
+    toolabilityAudit,
+    toolabilityWarnings,
+    personaSeparationAudit,
     whatHeld: heldLanes,
     stickinessNotes,
     swatch,

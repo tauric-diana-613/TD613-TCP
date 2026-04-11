@@ -120,19 +120,19 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "merge-short-beats",
-        "front-if"
+        "front-if",
+        "beat-merge"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:pls->please",
         "expanded:wk->week"
       ],
-      "connectorStrategy": "cascade",
+      "connectorStrategy": "front",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
       "candidateCount": 5,
-      "landedCandidateId": "base:hybrid",
+      "landedCandidateId": "base:order-beat",
       "families": [
         "syntax-shape",
         "register-lexicon",
@@ -140,7 +140,8 @@
         "clause-pivot",
         "hybrid"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.8405
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -173,9 +174,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 5.545,
-      "outputDonorDistance": 3.016,
-      "donorImprovement": 2.529,
-      "donorImprovementRatio": 0.456,
+      "outputDonorDistance": 3.152,
+      "donorImprovement": 2.393,
+      "donorImprovementRatio": 0.432,
       "sourceOutputLexicalOverlap": 0.902
     },
     "candidateLedger": [
@@ -185,11 +186,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 1.3444,
+        "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
         "targetFit": 0.4024,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-convergence:matron-undertow"
+        ],
         "transferClass": "structural",
         "outputPreview": "Grant isnt just digitize + pray, and its shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review "
       },
@@ -199,11 +205,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 0.7693,
+        "toolabilityScore": 0.7575,
         "rewriteStrength": 0.7032,
         "targetFit": 0.1505,
         "movementConfidence": 0.8,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "structural",
         "outputPreview": "Grant isnt just digitize + pray. Its shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review and "
       },
@@ -211,13 +222,18 @@
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "selected",
         "score": 1.3794,
+        "toolabilityScore": 0.9004,
         "rewriteStrength": 1,
         "targetFit": 0.3891,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-convergence:matron-undertow"
+        ],
         "transferClass": "structural",
         "outputPreview": "Grant isnt just digitize + pray, and its shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we start "
       },
@@ -227,11 +243,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 0.8438,
+        "toolabilityScore": 0.7581,
         "rewriteStrength": 0.7067,
         "targetFit": 0.2072,
         "movementConfidence": 0.8,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "structural",
         "outputPreview": "Grant isnt just digitize + pray. Its shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we start call"
       },
@@ -239,13 +260,18 @@
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
-        "status": "selected",
+        "status": "eligible",
         "score": 1.3737,
+        "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
         "targetFit": 0.4126,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-convergence:matron-undertow"
+        ],
         "transferClass": "structural",
         "outputPreview": "Grant isnt just digitize + pray, and its shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we start "
       }
@@ -256,9 +282,9 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 5,
-      "winningCandidateId": "base:hybrid"
+      "winningCandidateId": "base:order-beat"
     },
-    "winningCandidateId": "base:hybrid"
+    "winningCandidateId": "base:order-beat"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -282,14 +308,14 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "front-if",
-      "merge-short-beats"
+      "beat-merge",
+      "front-if"
     ],
     "lexicalOperations": [
       "expanded:pls->please",
       "expanded:wk->week"
     ],
-    "connectorStrategy": "cascade",
+    "connectorStrategy": "front",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,

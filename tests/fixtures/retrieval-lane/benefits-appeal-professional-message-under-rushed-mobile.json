@@ -214,7 +214,8 @@
         "clause-pivot",
         "hybrid"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.6928
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -224,7 +225,6 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "register-mode",
         "abbreviation-posture",
         "orthography-posture"
       ],
@@ -251,9 +251,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.36,
-      "outputDonorDistance": 3.071,
-      "donorImprovement": 1.289,
-      "donorImprovementRatio": 0.296,
+      "outputDonorDistance": 3.46,
+      "donorImprovement": 0.9,
+      "donorImprovementRatio": 0.206,
       "sourceOutputLexicalOverlap": 0.928
     },
     "candidateLedger": [
@@ -262,70 +262,110 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.2026,
+        "score": 1.0669,
+        "toolabilityScore": 0.6971,
         "rewriteStrength": 1,
-        "targetFit": 0.417,
+        "targetFit": 0.3582,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "hello appeals unit, im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch in"
+        "outputPreview": "Hello appeals unit, im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch in"
       },
       {
         "id": "base:cadence-connector",
         "family": "cadence-connector",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.1527,
+        "score": 1.0171,
+        "toolabilityScore": 0.6899,
         "rewriteStrength": 1,
-        "targetFit": 0.4181,
+        "targetFit": 0.3593,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch"
+        "outputPreview": "Hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.1796,
+        "score": 1.0439,
+        "toolabilityScore": 0.6899,
         "rewriteStrength": 1,
-        "targetFit": 0.4344,
+        "targetFit": 0.3756,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
+        "outputPreview": "Bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
       },
       {
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.1745,
+        "score": 1.0388,
+        "toolabilityScore": 0.6899,
         "rewriteStrength": 1,
-        "targetFit": 0.4344,
+        "targetFit": 0.3756,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
+        "outputPreview": "Bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.2399,
+        "score": 1.1041,
+        "toolabilityScore": 0.6971,
         "rewriteStrength": 1,
-        "targetFit": 0.4355,
+        "targetFit": 0.3767,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "when the file shows a routing mismatch instead, hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-document"
+        "outputPreview": "When the file shows a routing mismatch instead, hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-document"
       }
     ],
     "generationDocket": {
@@ -344,7 +384,6 @@
     "changedDimensions": [
       "abbreviation-posture",
       "orthography-posture",
-      "register-mode",
       "sentence-count",
       "sentence-mean"
     ],

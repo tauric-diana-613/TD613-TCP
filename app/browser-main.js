@@ -3869,12 +3869,12 @@
     const voicePromise = personaVoicePromise(state.wornMask);
     const fieldUse = personaFieldUse(state.wornMask);
     const riskTell = personaRiskTell(state.wornMask);
-    const stageLine = state.comparison?.contactSummary?.line
+    const stageLine = state.comparison?.toolabilityHeadline || state.comparison?.contactSummary?.line
       || (!state.lock
-        ? 'The mask is worn, but Homebase still needs a cadence home.'
-        : !String(state.comparisonText || '').trim()
-          ? `The mask is worn against ${state.lock.name}. Paste source text to pass through it.`
-          : 'Passage is staged. Read the source, the through-mask output, and what clung.');
+          ? 'The mask is worn, but Homebase still needs a cadence home.'
+          : !String(state.comparisonText || '').trim()
+            ? `The mask is worn against ${state.lock.name}. Paste source text to pass through it.`
+            : 'Passage is staged. Read the source, the through-mask output, and what clung.');
 
     body.innerHTML = `
       <div class="homebase-worn-mask-card">
@@ -4241,7 +4241,7 @@
     const result = state.comparison;
     if (hasPathologicalMaskRender(result)) {
       statusNode.textContent = `${state.wornMask.name} hit a generator-fault hold against ${state.lock.name}.`;
-      contactNode.textContent = `Contact state // ${result.contactHonesty?.line || 'Aperture held the rendered output only after detecting a catastrophic generator fault.'}`;
+      contactNode.textContent = `Tool state // ${result.toolabilityHeadline || result.contactHonesty?.line || 'The output was held after a catastrophic generator fault.'}`;
       applyGlyphMetadata(contactNode, 'homebaseContact');
       sourceNode.value = result.rawText || state.comparisonText || '';
       outputNode.value = '';
@@ -4262,7 +4262,7 @@
     const delta = result.deltaToLock || {};
     const contact = result.contactSummary || {};
     statusNode.textContent = `${state.wornMask.name} is passing source text through ${state.lock.name}.`;
-    contactNode.textContent = `Contact state // ${contact.line || 'Residue is now readable.'}`;
+    contactNode.textContent = `Tool state // ${result.toolabilityHeadline || contact.line || 'Residue is now readable.'}`;
     applyGlyphMetadata(contactNode, contact.fieldEffect === 'neither' ? 'homebaseContact' : 'homebaseResidue');
     sourceNode.value = result.rawText || state.comparisonText || '';
     outputNode.value = result.registeredMaskedText || result.maskedText || '';
@@ -4282,8 +4282,7 @@
             ? 'surface texture shifted // home distance held'
             : 'surface texture held // home distance held';
     renderNoteList(notesNode, result.apertureSummary?.bullets || [
-      contact.line || 'Residue remains readable.',
-      ...(result.stickinessNotes || []).slice(0, 2)
+      result.toolabilityHeadline || contact.line || 'Residue remains readable.'
     ]);
     renderNoteList(ledgerNode, result.apertureSummary?.drawerItems || result.apertureNotes || []);
     if (ledgerMetaNode) {

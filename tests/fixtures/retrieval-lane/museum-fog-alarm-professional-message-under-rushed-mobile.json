@@ -26,7 +26,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.91,
+      "objectCoverage": 0.95,
       "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -40,7 +40,7 @@
           "objectCoverage": 1,
           "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 0.4,
+          "bagScore": 0.8,
           "globalBagScore": 0.174
         },
         {
@@ -57,19 +57,19 @@
         },
         {
           "sourceClauseId": "s1c1",
-          "matchedClauseId": "s0c0",
+          "matchedClauseId": "s3c0+s3c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.8,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0.25
+          "bagScore": 1,
+          "globalBagScore": 0.304
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s3c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -81,7 +81,7 @@
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s3c1",
+          "matchedClauseId": "s4c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -93,7 +93,7 @@
         }
       ],
       "sourceClauseCount": 5,
-      "outputClauseCount": 8
+      "outputClauseCount": 9
     },
     "protectedAnchorAudit": {
       "totalAnchors": 3,
@@ -120,7 +120,7 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "pivot-contrast"
+        "split-long-line"
       ],
       "lexicalRegisterOperationsSelected": [
         "compressed:please->pls",
@@ -132,12 +132,13 @@
     },
     "candidateSummary": {
       "candidateCount": 2,
-      "landedCandidateId": "base:clause-pivot",
+      "landedCandidateId": "base:syntax-shape",
       "families": [
         "syntax-shape",
         "clause-pivot"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.7501
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -147,7 +148,6 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
         "register-mode",
         "abbreviation-posture",
         "orthography-posture"
@@ -170,9 +170,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.615,
-      "outputDonorDistance": 3.325,
-      "donorImprovement": 1.29,
-      "donorImprovementRatio": 0.28,
+      "outputDonorDistance": 3.88,
+      "donorImprovement": 0.735,
+      "donorImprovementRatio": 0.159,
       "sourceOutputLexicalOverlap": 0.941
     },
     "candidateLedger": [
@@ -180,29 +180,45 @@
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "spark",
-        "status": "eligible",
-        "score": 1.3193,
+        "status": "selected",
+        "score": 1.1034,
+        "toolabilityScore": 0.7537,
         "rewriteStrength": 1,
-        "targetFit": 0.5303,
+        "targetFit": 0.3826,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "production team, quick correction from Gallery 4. the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. facilities reset the panel and w"
+        "outputPreview": "Production team, quick correction from Gallery 4. The fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and w"
       },
       {
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "spark",
-        "status": "selected",
-        "score": 1.1918,
+        "status": "eligible",
+        "score": 0.9758,
+        "toolabilityScore": 0.7465,
         "rewriteStrength": 1,
-        "targetFit": 0.4611,
+        "targetFit": 0.3134,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "production team, quick correction from Gallery 4. the fog cue at 7:42 PM is what tripped the detector, not an electrical issue, but the real problem is that the"
+        "outputPreview": "Production team, quick correction from Gallery 4. The fog cue at 7:42 PM is what tripped the detector, not an electrical issue, but the real problem is that the"
       }
     ],
     "generationDocket": {
@@ -211,9 +227,9 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 2,
-      "winningCandidateId": "base:clause-pivot"
+      "winningCandidateId": "base:syntax-shape"
     },
-    "winningCandidateId": "base:clause-pivot"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -223,8 +239,7 @@
       "orthography-posture",
       "register-mode",
       "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "sentence-mean"
     ],
     "lexemeSwapFamilies": [
       "surface"
@@ -237,7 +252,7 @@
       "sourceClass:procedural-record"
     ],
     "structuralOperations": [
-      "pivot-contrast"
+      "split-long-line"
     ],
     "lexicalOperations": [
       "compressed:please->pls",
@@ -249,7 +264,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.91,
+    "objectCoverage": 0.95,
     "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

@@ -103,6 +103,9 @@ for (const testCase of cases) {
   assert.ok(result.generationDocket && typeof result.generationDocket.status === 'string', `${testCase.id}: generation docket is attached`);
   assert.ok(Array.isArray(result.candidateLedger) && result.candidateLedger.length >= 1, `${testCase.id}: candidate ledger is attached`);
   assert.ok(result.holdStatus === 'held' || result.holdStatus === 'landed', `${testCase.id}: hold status is explicit`);
+  assert.ok(result.toolabilityAudit && typeof result.toolabilityAudit.toolabilityScore === 'number', `${testCase.id}: toolability audit is attached`);
+  assert.ok(result.personaSeparationAudit && typeof result.personaSeparationAudit.score === 'number', `${testCase.id}: persona separation audit is attached`);
+  assert.ok(Array.isArray(result.toolabilityWarnings), `${testCase.id}: toolability warnings are attached`);
   assert.ok(
     Array.isArray(result.retrievalTrace?.planSummary?.testedFamilyIds),
     `${testCase.id}: retrieval trace reports tested family ids`
@@ -152,6 +155,14 @@ assert.ok(
   'all five major masks land direct reflective rewrites in Generator V2'
 );
 assert.ok(
+  reflectiveResults.every((result) => Number(result.toolabilityAudit?.toolabilityScore || 0) >= 0.52),
+  'reflective live probe lands above the minimum toolability floor'
+);
+assert.ok(
+  reflectiveResults.every((result) => Number(result.personaSeparationAudit?.score || 0) >= 0.4),
+  'reflective live probe keeps at least a bounded persona-separation floor'
+);
+assert.ok(
   new Set(reflectiveResults.map((result) => normalizeComparable(result.text))).size >= 4,
   'reflective live probe lands at least four materially distinct direct outputs'
 );
@@ -168,6 +179,14 @@ const narrativeResults = majorPersonas.map((persona) => buildMajorMaskResult(nar
 assert.ok(
   narrativeResults.filter((result) => result.holdStatus === 'landed' && result.transferClass === 'structural').length >= 4,
   'at least four of five major masks land direct narrative rewrites in Generator V2'
+);
+assert.ok(
+  narrativeResults.filter((result) => result.holdStatus === 'landed').every((result) => Number(result.toolabilityAudit?.toolabilityScore || 0) >= 0.52),
+  'narrative live probe lands above the minimum toolability floor'
+);
+assert.ok(
+  narrativeResults.filter((result) => result.holdStatus === 'landed').every((result) => Number(result.personaSeparationAudit?.score || 0) >= 0.4),
+  'narrative live probe keeps at least a bounded persona-separation floor'
 );
 assert.ok(
   narrativeResults.find((result) => result.retrievalTrace?.candidateSummary)?.retrievalTrace !== undefined,

@@ -158,7 +158,8 @@
       "families": [
         "syntax-shape"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.6935
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -166,7 +167,6 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
-        "register-mode",
         "abbreviation-posture",
         "orthography-posture"
       ],
@@ -188,9 +188,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 3.519,
-      "outputDonorDistance": 2.452,
-      "donorImprovement": 1.067,
-      "donorImprovementRatio": 0.303,
+      "outputDonorDistance": 3.066,
+      "donorImprovement": 0.453,
+      "donorImprovementRatio": 0.129,
       "sourceOutputLexicalOverlap": 0.934
     },
     "candidateLedger": [
@@ -199,14 +199,22 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.0002,
-        "rewriteStrength": 0.8876,
-        "targetFit": 0.5229,
-        "movementConfidence": 0.94,
+        "score": 0.7299,
+        "toolabilityScore": 0.6935,
+        "rewriteStrength": 0.6934,
+        "targetFit": 0.4288,
+        "movementConfidence": 0.8,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "hearing unit, pls correct the way the July 3 record is framing the June inspection. counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
+        "outputPreview": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
       }
     ],
     "generationDocket": {
@@ -224,8 +232,7 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "orthography-posture",
-      "register-mode"
+      "orthography-posture"
     ],
     "lexemeSwapFamilies": [
       "surface"

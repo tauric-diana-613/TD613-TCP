@@ -53,7 +53,7 @@
           "polarityMismatch": 1,
           "tenseMismatch": 0,
           "bagScore": 0.5,
-          "globalBagScore": 0.167
+          "globalBagScore": 0.222
         },
         {
           "sourceClauseId": "s2c0",
@@ -76,8 +76,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.2,
-          "globalBagScore": 0.182
+          "bagScore": 0.286,
+          "globalBagScore": 0.25
         },
         {
           "sourceClauseId": "s3c0",
@@ -88,8 +88,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.375,
-          "globalBagScore": 0.3
+          "bagScore": 0.6,
+          "globalBagScore": 0.429
         }
       ],
       "sourceClauseCount": 5,
@@ -120,19 +120,19 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "merge-short-beats",
-        "front-when"
+        "front-when",
+        "beat-merge"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:pls->please",
         "expanded:bc->because"
       ],
-      "connectorStrategy": "cascade",
+      "connectorStrategy": "front",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
       "candidateCount": 5,
-      "landedCandidateId": "base:hybrid",
+      "landedCandidateId": "base:order-beat",
       "families": [
         "syntax-shape",
         "register-lexicon",
@@ -140,7 +140,8 @@
         "clause-pivot",
         "hybrid"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.8546
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -173,9 +174,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.615,
-      "outputDonorDistance": 1.584,
-      "donorImprovement": 3.031,
-      "donorImprovementRatio": 0.657,
+      "outputDonorDistance": 1.669,
+      "donorImprovement": 2.946,
+      "donorImprovementRatio": 0.638,
       "sourceOutputLexicalOverlap": 0.886
     },
     "candidateLedger": [
@@ -185,11 +186,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 1.508,
+        "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
         "targetFit": 0.726,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-convergence:matron-undertow"
+        ],
         "transferClass": "structural",
         "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"ligh"
       },
@@ -199,11 +205,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 1.298,
+        "toolabilityScore": 0.793,
         "rewriteStrength": 0.9646,
         "targetFit": 0.6242,
         "movementConfidence": 0.94,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "structural",
         "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"light wa"
       },
@@ -211,13 +222,18 @@
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "selected",
         "score": 1.5483,
+        "toolabilityScore": 0.9004,
         "rewriteStrength": 1,
         "targetFit": 0.7176,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-convergence:matron-undertow"
+        ],
         "transferClass": "structural",
         "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burs"
       },
@@ -227,11 +243,16 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 1.3274,
+        "toolabilityScore": 0.793,
         "rewriteStrength": 0.9684,
         "targetFit": 0.6409,
         "movementConfidence": 0.94,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "structural",
         "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burst no"
       },
@@ -239,13 +260,18 @@
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
-        "status": "selected",
+        "status": "eligible",
         "score": 1.5329,
+        "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
         "targetFit": 0.7322,
         "movementConfidence": 1,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-convergence:matron-undertow"
+        ],
         "transferClass": "structural",
         "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burs"
       }
@@ -256,9 +282,9 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 5,
-      "winningCandidateId": "base:hybrid"
+      "winningCandidateId": "base:order-beat"
     },
-    "winningCandidateId": "base:hybrid"
+    "winningCandidateId": "base:order-beat"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -282,14 +308,14 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "front-when",
-      "merge-short-beats"
+      "beat-merge",
+      "front-when"
     ],
     "lexicalOperations": [
       "expanded:bc->because",
       "expanded:pls->please"
     ],
-    "connectorStrategy": "cascade",
+    "connectorStrategy": "front",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,

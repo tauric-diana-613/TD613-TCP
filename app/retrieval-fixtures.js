@@ -1,6 +1,6 @@
 (function () {
   window.TCP_RETRIEVAL_FIXTURES = {
-  "generatedAt": "2026-04-11T05:13:47.040Z",
+  "generatedAt": "2026-04-11T18:19:49.017Z",
   "cases": {
     "package-handoff-formal-record-under-rushed-mobile": {
       "id": "package-handoff-formal-record-under-rushed-mobile",
@@ -30,9 +30,9 @@
           "propositionCoverage": 1,
           "actorCoverage": 0.975,
           "actionCoverage": 1,
-          "objectCoverage": 0.965,
+          "objectCoverage": 0.981,
           "polarityMismatches": 0,
-          "tenseMismatches": 1,
+          "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
           "clauseAudits": [
             {
@@ -45,7 +45,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.125
+              "globalBagScore": 0.12
             },
             {
               "sourceClauseId": "s1c0",
@@ -57,7 +57,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.146
+              "globalBagScore": 0.14
             },
             {
               "sourceClauseId": "s2c0",
@@ -69,7 +69,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0.75,
-              "globalBagScore": 0.122
+              "globalBagScore": 0.118
             },
             {
               "sourceClauseId": "s3c0",
@@ -81,7 +81,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.021
+              "globalBagScore": 0.02
             },
             {
               "sourceClauseId": "s4c0",
@@ -89,11 +89,11 @@
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
-              "objectCoverage": 0.8,
+              "objectCoverage": 1,
               "polarityMismatch": 0,
-              "tenseMismatch": 1,
-              "bagScore": 0.714,
-              "globalBagScore": 0.102
+              "tenseMismatch": 0,
+              "bagScore": 1,
+              "globalBagScore": 0.12
             },
             {
               "sourceClauseId": "s5c0",
@@ -105,7 +105,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.125
+              "globalBagScore": 0.12
             },
             {
               "sourceClauseId": "s6c0",
@@ -116,8 +116,8 @@
               "objectCoverage": 1,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 1,
-              "globalBagScore": 0.083
+              "bagScore": 0.667,
+              "globalBagScore": 0.08
             },
             {
               "sourceClauseId": "s6c1",
@@ -129,7 +129,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0,
-              "globalBagScore": 0
+              "globalBagScore": 0.019
             },
             {
               "sourceClauseId": "s7c0",
@@ -141,7 +141,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.021
+              "globalBagScore": 0.02
             },
             {
               "sourceClauseId": "s8c0",
@@ -153,7 +153,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.021
+              "globalBagScore": 0.02
             },
             {
               "sourceClauseId": "s9c0",
@@ -165,7 +165,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.042
+              "globalBagScore": 0.04
             },
             {
               "sourceClauseId": "s10c0",
@@ -177,7 +177,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.125
+              "globalBagScore": 0.12
             },
             {
               "sourceClauseId": "s10c1",
@@ -189,7 +189,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 0.833,
-              "globalBagScore": 0.104
+              "globalBagScore": 0.1
             }
           ],
           "sourceClauseCount": 13,
@@ -220,15 +220,9 @@
             "hybrid"
           ],
           "structuralOperationsSelected": [
-            "split-long-line",
-            "front-because"
+            "split-long-line"
           ],
           "lexicalRegisterOperationsSelected": [
-            "connector:because->since",
-            "register:approximately->about",
-            "register:located->found",
-            "register:requested->asked-for",
-            "register:remained->stayed",
             "compressed:because->bc",
             "compressed:package->pkg",
             "orthography:lowercase-lead"
@@ -238,7 +232,7 @@
         },
         "candidateSummary": {
           "candidateCount": 5,
-          "landedCandidateId": "base:hybrid",
+          "landedCandidateId": "base:syntax-shape",
           "families": [
             "syntax-shape",
             "register-lexicon",
@@ -246,7 +240,8 @@
             "clause-pivot",
             "hybrid"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.7199
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -256,33 +251,13 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
+            "sentence-spread",
             "register-mode",
-            "abbreviation-posture",
-            "orthography-posture"
+            "abbreviation-posture"
           ],
           "lexemeSwaps": [
             {
-              "from": "approximately",
-              "to": "about",
-              "family": "register"
-            },
-            {
-              "from": "located",
-              "to": "found",
-              "family": "register"
-            },
-            {
-              "from": "requested",
-              "to": "asked for",
-              "family": "register"
-            },
-            {
-              "from": "remained",
-              "to": "stayed",
-              "family": "register"
-            },
-            {
-              "from": "Because",
+              "from": "because",
               "to": "bc",
               "family": "surface"
             },
@@ -298,81 +273,127 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.469,
-          "outputDonorDistance": 4.249,
-          "donorImprovement": 0.22,
-          "donorImprovementRatio": 0.049,
-          "sourceOutputLexicalOverlap": 0.888
+          "outputDonorDistance": 4.279,
+          "donorImprovement": 0.19,
+          "donorImprovementRatio": 0.043,
+          "sourceOutputLexicalOverlap": 0.946
         },
         "candidateLedger": [
           {
             "id": "base:syntax-shape",
             "family": "syntax-shape",
             "envelopeId": "spark",
-            "status": "eligible",
-            "score": 0.9404,
+            "status": "selected",
+            "score": 0.9073,
+            "toolabilityScore": 0.7537,
             "rewriteStrength": 1,
-            "targetFit": 0.2587,
+            "targetFit": 0.2567,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "on Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. the carrier scan marked \"attempted / no answer"
+            "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
           },
           {
             "id": "base:register-lexicon",
             "family": "register-lexicon",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 0.8744,
+            "score": 0.8413,
+            "toolabilityScore": 0.7465,
             "rewriteStrength": 1,
-            "targetFit": 0.2582,
+            "targetFit": 0.2562,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "on Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. the carrier scan marked \"attempted / no answer"
+            "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
           },
           {
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 0.8858,
+            "score": 0.802,
+            "toolabilityScore": 0.6973,
             "rewriteStrength": 1,
-            "targetFit": 0.2601,
+            "targetFit": 0.2499,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-join",
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-join",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "on Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. the carrier scan marked \"attempted / no answer"
+            "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
           },
           {
             "id": "base:clause-pivot",
             "family": "clause-pivot",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 0.8821,
+            "score": 0.8116,
+            "toolabilityScore": 0.6973,
             "rewriteStrength": 1,
-            "targetFit": 0.2503,
+            "targetFit": 0.2499,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-join",
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-join",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "on Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door, but building footage and resident testimony in"
+            "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door, but building footage and resident testimony in"
           },
           {
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "spark",
-            "status": "selected",
-            "score": 0.9398,
+            "status": "eligible",
+            "score": 0.856,
+            "toolabilityScore": 0.7045,
             "rewriteStrength": 1,
-            "targetFit": 0.2596,
+            "targetFit": 0.2494,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-join",
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-join",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "on Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. the carrier scan marked \"attempted / no answer"
+            "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
           }
         ],
         "generationDocket": {
@@ -381,22 +402,21 @@
           "headline": "Generator V2 landed a structural registered rewrite.",
           "reasons": [],
           "candidateCount": 5,
-          "winningCandidateId": "base:hybrid"
+          "winningCandidateId": "base:syntax-shape"
         },
-        "winningCandidateId": "base:hybrid"
+        "winningCandidateId": "base:syntax-shape"
       },
       "semanticContract": {
         "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "abbreviation-posture",
-          "orthography-posture",
           "register-mode",
           "sentence-count",
-          "sentence-mean"
+          "sentence-mean",
+          "sentence-spread"
         ],
         "lexemeSwapFamilies": [
-          "register",
           "surface"
         ],
         "relationInventory": [
@@ -407,27 +427,21 @@
           "sourceClass:procedural-record"
         ],
         "structuralOperations": [
-          "front-because",
           "split-long-line"
         ],
         "lexicalOperations": [
           "compressed:because->bc",
           "compressed:package->pkg",
-          "connector:because->since",
-          "orthography:lowercase-lead",
-          "register:approximately->about",
-          "register:located->found",
-          "register:remained->stayed",
-          "register:requested->asked-for"
+          "orthography:lowercase-lead"
         ],
         "connectorStrategy": "split",
         "contractionStrategy": "contract",
         "propositionCoverage": 1,
         "actorCoverage": 0.975,
         "actionCoverage": 1,
-        "objectCoverage": 0.965,
+        "objectCoverage": 0.981,
         "polarityMismatches": 0,
-        "tenseMismatches": 1,
+        "tenseMismatches": 0,
         "protectedAnchorIntegrity": 1
       }
     },
@@ -581,7 +595,8 @@
             "syntax-shape",
             "hybrid"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.7262
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -613,11 +628,14 @@
             "envelopeId": "archivist",
             "status": "eligible",
             "score": 0.7133,
+            "toolabilityScore": 0.7053,
             "rewriteStrength": 0.5605,
             "targetFit": 0.354,
             "movementConfidence": 0.08,
+            "personaSeparationScore": 0.86,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [],
             "transferClass": "surface",
             "outputPreview": "2b pkg wasnt brought down. Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail. Red rush sticker still on it. I moved i"
           },
@@ -626,12 +644,19 @@
             "family": "hybrid",
             "envelopeId": "archivist",
             "status": "selected",
-            "score": 0.9359,
+            "score": 0.8959,
+            "toolabilityScore": 0.747,
             "rewriteStrength": 0.6934,
             "targetFit": 0.4009,
             "movementConfidence": 0.82,
+            "personaSeparationScore": 0.86,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-join"
+            ],
+            "toolabilityWarnings": [
+              "artifact:clause-join"
+            ],
             "transferClass": "structural",
             "outputPreview": "2b pkg wasnt brought down. Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail. Red rush sticker still on it. If mgmt a"
           }
@@ -933,7 +958,8 @@
             "clause-pivot",
             "hybrid"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.7679
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -944,7 +970,6 @@
             "sentence-mean",
             "sentence-count",
             "punctuation-shape",
-            "register-mode",
             "abbreviation-posture",
             "orthography-posture"
           ],
@@ -971,9 +996,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.968,
-          "outputDonorDistance": 3.498,
-          "donorImprovement": 1.47,
-          "donorImprovementRatio": 0.296,
+          "outputDonorDistance": 3.724,
+          "donorImprovement": 1.244,
+          "donorImprovementRatio": 0.25,
           "sourceOutputLexicalOverlap": 0.925
         },
         "candidateLedger": [
@@ -982,80 +1007,110 @@
             "family": "syntax-shape",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 1.3052,
+            "score": 1.2097,
+            "toolabilityScore": 0.7722,
             "rewriteStrength": 1,
-            "targetFit": 0.4778,
+            "targetFit": 0.4015,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [
               "artifact:fragment"
             ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:fragment"
+            ],
             "transferClass": "structural",
-            "outputPreview": "team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. pls check in at the west fence table when you arrive, even if you a"
+            "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. Pls check in at the west fence table when you arrive, even if you a"
           },
           {
             "id": "base:cadence-connector",
             "family": "cadence-connector",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 1.1788,
+            "score": 1.0834,
+            "toolabilityScore": 0.765,
             "rewriteStrength": 1,
-            "targetFit": 0.4202,
+            "targetFit": 0.3439,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [
               "artifact:fragment"
             ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:fragment"
+            ],
             "transferClass": "structural",
-            "outputPreview": "team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. pls check in at the west fence table when you arrive, even if you a"
+            "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. Pls check in at the west fence table when you arrive, even if you a"
           },
           {
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 1.2563,
+            "score": 1.1609,
+            "toolabilityScore": 0.765,
             "rewriteStrength": 1,
-            "targetFit": 0.4728,
+            "targetFit": 0.3965,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [
               "artifact:fragment"
             ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:fragment"
+            ],
             "transferClass": "structural",
-            "outputPreview": "team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. if you already know the site, pls check in at the west fence table "
+            "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. If you already know the site, pls check in at the west fence table "
           },
           {
             "id": "base:clause-pivot",
             "family": "clause-pivot",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 1.2234,
+            "score": 1.1558,
+            "toolabilityScore": 0.765,
             "rewriteStrength": 1,
-            "targetFit": 0.4499,
+            "targetFit": 0.3965,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [
               "artifact:fragment"
             ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:fragment"
+            ],
             "transferClass": "structural",
-            "outputPreview": "team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. if you already know the site, pls check in at the west fence table "
+            "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. If you already know the site, pls check in at the west fence table "
           },
           {
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "spark",
             "status": "selected",
-            "score": 1.2316,
+            "score": 1.1882,
+            "toolabilityScore": 0.7722,
             "rewriteStrength": 1,
-            "targetFit": 0.401,
+            "targetFit": 0.3675,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [
               "artifact:fragment"
             ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:fragment"
+            ],
             "transferClass": "structural",
-            "outputPreview": "team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. if you already know the site, pls check in at the west fence table "
+            "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. If you already know the site, pls check in at the west fence table "
           }
         ],
         "generationDocket": {
@@ -1075,7 +1130,6 @@
           "abbreviation-posture",
           "orthography-posture",
           "punctuation-shape",
-          "register-mode",
           "sentence-count",
           "sentence-mean"
         ],
@@ -1166,7 +1220,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.455
+              "globalBagScore": 0.417
             },
             {
               "sourceClauseId": "s2c0",
@@ -1177,8 +1231,8 @@
               "objectCoverage": 1,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 0,
-              "globalBagScore": 0
+              "bagScore": 1,
+              "globalBagScore": 0.083
             },
             {
               "sourceClauseId": "s3c0",
@@ -1194,7 +1248,7 @@
             },
             {
               "sourceClauseId": "s3c1",
-              "matchedClauseId": "s1c0",
+              "matchedClauseId": "s1c1",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -1202,7 +1256,7 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.091
+              "globalBagScore": 0.083
             },
             {
               "sourceClauseId": "s4c0",
@@ -1226,11 +1280,11 @@
               "polarityMismatch": 0,
               "tenseMismatch": 0,
               "bagScore": 1,
-              "globalBagScore": 0.455
+              "globalBagScore": 0.417
             }
           ],
           "sourceClauseCount": 7,
-          "outputClauseCount": 3
+          "outputClauseCount": 4
         },
         "protectedAnchorAudit": {
           "totalAnchors": 1,
@@ -1257,8 +1311,8 @@
             "hybrid"
           ],
           "structuralOperationsSelected": [
-            "merge-short-beats",
-            "front-if"
+            "front-if",
+            "beat-merge"
           ],
           "lexicalRegisterOperationsSelected": [
             "expanded:pls->please",
@@ -1266,12 +1320,12 @@
             "expanded:youre->you-are",
             "expanded:thats->that-is"
           ],
-          "connectorStrategy": "cascade",
+          "connectorStrategy": "front",
           "contractionStrategy": "expand"
         },
         "candidateSummary": {
           "candidateCount": 5,
-          "landedCandidateId": "base:hybrid",
+          "landedCandidateId": "base:order-beat",
           "families": [
             "syntax-shape",
             "register-lexicon",
@@ -1279,7 +1333,8 @@
             "clause-pivot",
             "hybrid"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.8815
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -1335,11 +1390,14 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 1.502,
+            "toolabilityScore": 0.8932,
             "rewriteStrength": 1,
             "targetFit": 0.6205,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [],
             "transferClass": "structural",
             "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and saws stay under canopy b, kids st"
           },
@@ -1349,11 +1407,14 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 1.1818,
+            "toolabilityScore": 0.8604,
             "rewriteStrength": 1,
             "targetFit": 0.4507,
             "movementConfidence": 0.94,
+            "personaSeparationScore": 0.86,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [],
             "transferClass": "structural",
             "outputPreview": "If you are late that is ok just do not start random jobs. Check in west fence table first. Glass + pallets first pass. Saws stay under canopy b, kids stay off s"
           },
@@ -1361,13 +1422,16 @@
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "matron",
-            "status": "eligible",
+            "status": "selected",
             "score": 1.5472,
+            "toolabilityScore": 0.9004,
             "rewriteStrength": 1,
             "targetFit": 0.6164,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [],
             "transferClass": "structural",
             "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and if wind chills out, saws stay und"
           },
@@ -1377,11 +1441,14 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 1.2014,
+            "toolabilityScore": 0.8604,
             "rewriteStrength": 1,
             "targetFit": 0.4607,
             "movementConfidence": 0.94,
+            "personaSeparationScore": 0.86,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [],
             "transferClass": "structural",
             "outputPreview": "If you are late that is ok just do not start random jobs. Check in west fence table first. Glass + pallets first pass. If wind chills out, saws stay under canop"
           },
@@ -1389,13 +1456,16 @@
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "matron",
-            "status": "selected",
+            "status": "eligible",
             "score": 1.5149,
+            "toolabilityScore": 0.8932,
             "rewriteStrength": 1,
             "targetFit": 0.6164,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [],
             "transferClass": "structural",
             "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. If wind chills out, glass + pallets first pass, and saws stay und"
           }
@@ -1406,9 +1476,9 @@
           "headline": "Generator V2 landed a structural registered rewrite.",
           "reasons": [],
           "candidateCount": 5,
-          "winningCandidateId": "base:hybrid"
+          "winningCandidateId": "base:order-beat"
         },
-        "winningCandidateId": "base:hybrid"
+        "winningCandidateId": "base:order-beat"
       },
       "semanticContract": {
         "transferClass": "structural",
@@ -1433,8 +1503,8 @@
           "sourceClass:formal-correspondence"
         ],
         "structuralOperations": [
-          "front-if",
-          "merge-short-beats"
+          "beat-merge",
+          "front-if"
         ],
         "lexicalOperations": [
           "expanded:dont->do-not",
@@ -1442,7 +1512,7 @@
           "expanded:thats->that-is",
           "expanded:youre->you-are"
         ],
-        "connectorStrategy": "cascade",
+        "connectorStrategy": "front",
         "contractionStrategy": "expand",
         "propositionCoverage": 1,
         "actorCoverage": 1,
@@ -1639,7 +1709,8 @@
             "syntax-shape",
             "clause-pivot"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.6743
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -1649,9 +1720,7 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
-            "sentence-spread",
-            "register-mode",
-            "orthography-posture"
+            "sentence-spread"
           ],
           "lexemeSwaps": [
             {
@@ -1666,9 +1735,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.153,
-          "outputDonorDistance": 2.914,
-          "donorImprovement": 1.239,
-          "donorImprovementRatio": 0.298,
+          "outputDonorDistance": 3.579,
+          "donorImprovement": 0.574,
+          "donorImprovementRatio": 0.138,
           "sourceOutputLexicalOverlap": 0.984
         },
         "candidateLedger": [
@@ -1677,32 +1746,48 @@
             "family": "syntax-shape",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 1.2587,
-            "rewriteStrength": 0.9737,
-            "targetFit": 0.5862,
-            "movementConfidence": 1,
+            "score": 0.8411,
+            "toolabilityScore": 0.6622,
+            "rewriteStrength": 0.5977,
+            "targetFit": 0.4591,
+            "movementConfidence": 0.74,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [
-              "artifact:fragment"
+              "artifact:fragment",
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:fragment",
+              "artifact:clause-drag"
             ],
             "transferClass": "structural",
-            "outputPreview": "the finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is tha"
+            "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is tha"
           },
           {
             "id": "base:clause-pivot",
             "family": "clause-pivot",
             "envelopeId": "spark",
             "status": "selected",
-            "score": 1.1753,
-            "rewriteStrength": 1,
-            "targetFit": 0.5458,
-            "movementConfidence": 1,
+            "score": 0.8867,
+            "toolabilityScore": 0.6863,
+            "rewriteStrength": 0.7814,
+            "targetFit": 0.4434,
+            "movementConfidence": 0.88,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [
-              "artifact:fragment"
+              "artifact:fragment",
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:fragment",
+              "artifact:clause-drag"
             ],
             "transferClass": "structural",
-            "outputPreview": "the finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is tha"
+            "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is tha"
           }
         ],
         "generationDocket": {
@@ -1719,8 +1804,6 @@
         "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
-          "orthography-posture",
-          "register-mode",
           "sentence-count",
           "sentence-mean",
           "sentence-spread"
@@ -1918,7 +2001,8 @@
             "syntax-shape",
             "order-beat"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.7742
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -1967,11 +2051,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 0.8457,
+            "toolabilityScore": 0.7724,
             "rewriteStrength": 1,
             "targetFit": 0.4129,
             "movementConfidence": 0.94,
+            "personaSeparationScore": 0.8,
             "failureReasons": [],
             "artifactFlags": [
+              "artifact:fragment"
+            ],
+            "toolabilityWarnings": [
               "artifact:fragment"
             ],
             "transferClass": "structural",
@@ -1983,11 +2072,16 @@
             "envelopeId": "matron",
             "status": "selected",
             "score": 0.7625,
+            "toolabilityScore": 0.7761,
             "rewriteStrength": 1,
             "targetFit": 0.3821,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [
+              "artifact:fragment"
+            ],
+            "toolabilityWarnings": [
               "artifact:fragment"
             ],
             "transferClass": "structural",
@@ -2219,7 +2313,8 @@
             "syntax-shape",
             "clause-pivot"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.7941
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -2230,9 +2325,7 @@
             "sentence-mean",
             "sentence-count",
             "sentence-spread",
-            "register-mode",
-            "abbreviation-posture",
-            "orthography-posture"
+            "abbreviation-posture"
           ],
           "lexemeSwaps": [
             {
@@ -2247,9 +2340,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 5.545,
-          "outputDonorDistance": 4.611,
-          "donorImprovement": 0.934,
-          "donorImprovementRatio": 0.168,
+          "outputDonorDistance": 4.7,
+          "donorImprovement": 0.845,
+          "donorImprovementRatio": 0.152,
           "sourceOutputLexicalOverlap": 0.981
         },
         "candidateLedger": [
@@ -2258,28 +2351,38 @@
             "family": "syntax-shape",
             "envelopeId": "spark",
             "status": "selected",
-            "score": 1.1081,
-            "rewriteStrength": 1,
-            "targetFit": 0.1675,
+            "score": 1.0606,
+            "toolabilityScore": 0.8103,
+            "rewriteStrength": 0.9409,
+            "targetFit": 0.155,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin"
+            ],
             "transferClass": "structural",
-            "outputPreview": "the proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. first, the team will complete a shared cataloging "
+            "outputPreview": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First, the team will complete a shared cataloging "
           },
           {
             "id": "base:clause-pivot",
             "family": "clause-pivot",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 0.7739,
-            "rewriteStrength": 1,
-            "targetFit": 0.1833,
-            "movementConfidence": 1,
+            "score": 0.6321,
+            "toolabilityScore": 0.7779,
+            "rewriteStrength": 0.7638,
+            "targetFit": 0.1803,
+            "movementConfidence": 0.88,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin"
+            ],
             "transferClass": "structural",
-            "outputPreview": "the proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. first, the team will complete a shared cataloging "
+            "outputPreview": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First, the team will complete a shared cataloging "
           }
         ],
         "generationDocket": {
@@ -2297,8 +2400,6 @@
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "abbreviation-posture",
-          "orthography-posture",
-          "register-mode",
           "sentence-count",
           "sentence-mean",
           "sentence-spread"
@@ -2453,19 +2554,19 @@
             "hybrid"
           ],
           "structuralOperationsSelected": [
-            "merge-short-beats",
-            "front-if"
+            "front-if",
+            "beat-merge"
           ],
           "lexicalRegisterOperationsSelected": [
             "expanded:pls->please",
             "expanded:wk->week"
           ],
-          "connectorStrategy": "cascade",
+          "connectorStrategy": "front",
           "contractionStrategy": "expand"
         },
         "candidateSummary": {
           "candidateCount": 5,
-          "landedCandidateId": "base:hybrid",
+          "landedCandidateId": "base:order-beat",
           "families": [
             "syntax-shape",
             "register-lexicon",
@@ -2473,7 +2574,8 @@
             "clause-pivot",
             "hybrid"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.8405
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -2506,9 +2608,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 5.545,
-          "outputDonorDistance": 3.016,
-          "donorImprovement": 2.529,
-          "donorImprovementRatio": 0.456,
+          "outputDonorDistance": 3.152,
+          "donorImprovement": 2.393,
+          "donorImprovementRatio": 0.432,
           "sourceOutputLexicalOverlap": 0.902
         },
         "candidateLedger": [
@@ -2518,11 +2620,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 1.3444,
+            "toolabilityScore": 0.8932,
             "rewriteStrength": 1,
             "targetFit": 0.4024,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-convergence:matron-undertow"
+            ],
             "transferClass": "structural",
             "outputPreview": "Grant isnt just digitize + pray, and its shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review "
           },
@@ -2532,11 +2639,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 0.7693,
+            "toolabilityScore": 0.7575,
             "rewriteStrength": 0.7032,
             "targetFit": 0.1505,
             "movementConfidence": 0.8,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin"
+            ],
             "transferClass": "structural",
             "outputPreview": "Grant isnt just digitize + pray. Its shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review and "
           },
@@ -2544,13 +2656,18 @@
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "matron",
-            "status": "eligible",
+            "status": "selected",
             "score": 1.3794,
+            "toolabilityScore": 0.9004,
             "rewriteStrength": 1,
             "targetFit": 0.3891,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-convergence:matron-undertow"
+            ],
             "transferClass": "structural",
             "outputPreview": "Grant isnt just digitize + pray, and its shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we start "
           },
@@ -2560,11 +2677,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 0.8438,
+            "toolabilityScore": 0.7581,
             "rewriteStrength": 0.7067,
             "targetFit": 0.2072,
             "movementConfidence": 0.8,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin"
+            ],
             "transferClass": "structural",
             "outputPreview": "Grant isnt just digitize + pray. Its shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we start call"
           },
@@ -2572,13 +2694,18 @@
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "matron",
-            "status": "selected",
+            "status": "eligible",
             "score": 1.3737,
+            "toolabilityScore": 0.8932,
             "rewriteStrength": 1,
             "targetFit": 0.4126,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-convergence:matron-undertow"
+            ],
             "transferClass": "structural",
             "outputPreview": "Grant isnt just digitize + pray, and its shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we start "
           }
@@ -2589,9 +2716,9 @@
           "headline": "Generator V2 landed a structural registered rewrite.",
           "reasons": [],
           "candidateCount": 5,
-          "winningCandidateId": "base:hybrid"
+          "winningCandidateId": "base:order-beat"
         },
-        "winningCandidateId": "base:hybrid"
+        "winningCandidateId": "base:order-beat"
       },
       "semanticContract": {
         "transferClass": "structural",
@@ -2615,14 +2742,14 @@
           "sourceClass:formal-correspondence"
         ],
         "structuralOperations": [
-          "front-if",
-          "merge-short-beats"
+          "beat-merge",
+          "front-if"
         ],
         "lexicalOperations": [
           "expanded:pls->please",
           "expanded:wk->week"
         ],
-        "connectorStrategy": "cascade",
+        "connectorStrategy": "front",
         "contractionStrategy": "expand",
         "propositionCoverage": 1,
         "actorCoverage": 1,
@@ -2793,7 +2920,8 @@
           "families": [
             "syntax-shape"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.6935
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -2801,7 +2929,6 @@
           "borrowedShellFailureClass": null,
           "realizationTier": "lexical-structural",
           "changedDimensions": [
-            "register-mode",
             "abbreviation-posture",
             "orthography-posture"
           ],
@@ -2823,9 +2950,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 3.519,
-          "outputDonorDistance": 2.452,
-          "donorImprovement": 1.067,
-          "donorImprovementRatio": 0.303,
+          "outputDonorDistance": 3.066,
+          "donorImprovement": 0.453,
+          "donorImprovementRatio": 0.129,
           "sourceOutputLexicalOverlap": 0.934
         },
         "candidateLedger": [
@@ -2834,14 +2961,22 @@
             "family": "syntax-shape",
             "envelopeId": "spark",
             "status": "selected",
-            "score": 1.0002,
-            "rewriteStrength": 0.8876,
-            "targetFit": 0.5229,
-            "movementConfidence": 0.94,
+            "score": 0.7299,
+            "toolabilityScore": 0.6935,
+            "rewriteStrength": 0.6934,
+            "targetFit": 0.4288,
+            "movementConfidence": 0.8,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "hearing unit, pls correct the way the July 3 record is framing the June inspection. counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
+            "outputPreview": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
           }
         ],
         "generationDocket": {
@@ -2859,8 +2994,7 @@
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "abbreviation-posture",
-          "orthography-posture",
-          "register-mode"
+          "orthography-posture"
         ],
         "lexemeSwapFamilies": [
           "surface"
@@ -3014,7 +3148,8 @@
             "syntax-shape",
             "register-lexicon"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.822
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -3053,11 +3188,16 @@
             "envelopeId": "matron",
             "status": "selected",
             "score": 1.2202,
+            "toolabilityScore": 0.8932,
             "rewriteStrength": 1,
             "targetFit": 0.5681,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-convergence:matron-undertow"
+            ],
             "transferClass": "structural",
             "outputPreview": "Hearing got ugly, and they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup sh"
           },
@@ -3067,11 +3207,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 0.9236,
+            "toolabilityScore": 0.7508,
             "rewriteStrength": 0.6638,
             "targetFit": 0.5478,
             "movementConfidence": 0.74,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin"
+            ],
             "transferClass": "structural",
             "outputPreview": "Hearing got ugly. They keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup she al"
           }
@@ -3339,7 +3484,8 @@
             "clause-pivot",
             "hybrid"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.6928
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -3349,7 +3495,6 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
-            "register-mode",
             "abbreviation-posture",
             "orthography-posture"
           ],
@@ -3376,9 +3521,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.36,
-          "outputDonorDistance": 3.071,
-          "donorImprovement": 1.289,
-          "donorImprovementRatio": 0.296,
+          "outputDonorDistance": 3.46,
+          "donorImprovement": 0.9,
+          "donorImprovementRatio": 0.206,
           "sourceOutputLexicalOverlap": 0.928
         },
         "candidateLedger": [
@@ -3387,70 +3532,110 @@
             "family": "syntax-shape",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 1.2026,
+            "score": 1.0669,
+            "toolabilityScore": 0.6971,
             "rewriteStrength": 1,
-            "targetFit": 0.417,
+            "targetFit": 0.3582,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "hello appeals unit, im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch in"
+            "outputPreview": "Hello appeals unit, im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch in"
           },
           {
             "id": "base:cadence-connector",
             "family": "cadence-connector",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 1.1527,
+            "score": 1.0171,
+            "toolabilityScore": 0.6899,
             "rewriteStrength": 1,
-            "targetFit": 0.4181,
+            "targetFit": 0.3593,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch"
+            "outputPreview": "Hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch"
           },
           {
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 1.1796,
+            "score": 1.0439,
+            "toolabilityScore": 0.6899,
             "rewriteStrength": 1,
-            "targetFit": 0.4344,
+            "targetFit": 0.3756,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
+            "outputPreview": "Bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
           },
           {
             "id": "base:clause-pivot",
             "family": "clause-pivot",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 1.1745,
+            "score": 1.0388,
+            "toolabilityScore": 0.6899,
             "rewriteStrength": 1,
-            "targetFit": 0.4344,
+            "targetFit": 0.3756,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
+            "outputPreview": "Bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
           },
           {
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "spark",
             "status": "selected",
-            "score": 1.2399,
+            "score": 1.1041,
+            "toolabilityScore": 0.6971,
             "rewriteStrength": 1,
-            "targetFit": 0.4355,
+            "targetFit": 0.3767,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "when the file shows a routing mismatch instead, hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-document"
+            "outputPreview": "When the file shows a routing mismatch instead, hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-document"
           }
         ],
         "generationDocket": {
@@ -3469,7 +3654,6 @@
         "changedDimensions": [
           "abbreviation-posture",
           "orthography-posture",
-          "register-mode",
           "sentence-count",
           "sentence-mean"
         ],
@@ -3658,7 +3842,8 @@
             "syntax-shape",
             "register-lexicon"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.8358
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -3713,11 +3898,16 @@
             "envelopeId": "matron",
             "status": "selected",
             "score": 1.158,
+            "toolabilityScore": 0.8551,
             "rewriteStrength": 1,
             "targetFit": 0.4705,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [
+              "artifact:fragment"
+            ],
+            "toolabilityWarnings": [
               "artifact:fragment"
             ],
             "transferClass": "structural",
@@ -3729,11 +3919,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 0.989,
+            "toolabilityScore": 0.8165,
             "rewriteStrength": 1,
             "targetFit": 0.4041,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.86,
             "failureReasons": [],
             "artifactFlags": [
+              "artifact:fragment"
+            ],
+            "toolabilityWarnings": [
               "artifact:fragment"
             ],
             "transferClass": "structural",
@@ -3820,7 +4015,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.91,
+          "objectCoverage": 0.95,
           "polarityMismatches": 1,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
@@ -3834,7 +4029,7 @@
               "objectCoverage": 1,
               "polarityMismatch": 1,
               "tenseMismatch": 0,
-              "bagScore": 0.4,
+              "bagScore": 0.8,
               "globalBagScore": 0.174
             },
             {
@@ -3851,19 +4046,19 @@
             },
             {
               "sourceClauseId": "s1c1",
-              "matchedClauseId": "s0c0",
+              "matchedClauseId": "s3c0+s3c1",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
-              "objectCoverage": 0.8,
+              "objectCoverage": 1,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 0,
-              "globalBagScore": 0.25
+              "bagScore": 1,
+              "globalBagScore": 0.304
             },
             {
               "sourceClauseId": "s2c0",
-              "matchedClauseId": "s3c0",
+              "matchedClauseId": "s4c0",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -3875,7 +4070,7 @@
             },
             {
               "sourceClauseId": "s2c1",
-              "matchedClauseId": "s3c1",
+              "matchedClauseId": "s4c1",
               "propositionCoverage": 1,
               "actorCoverage": 1,
               "actionCoverage": 1,
@@ -3887,7 +4082,7 @@
             }
           ],
           "sourceClauseCount": 5,
-          "outputClauseCount": 8
+          "outputClauseCount": 9
         },
         "protectedAnchorAudit": {
           "totalAnchors": 3,
@@ -3914,7 +4109,7 @@
             "hybrid"
           ],
           "structuralOperationsSelected": [
-            "pivot-contrast"
+            "split-long-line"
           ],
           "lexicalRegisterOperationsSelected": [
             "compressed:please->pls",
@@ -3926,12 +4121,13 @@
         },
         "candidateSummary": {
           "candidateCount": 2,
-          "landedCandidateId": "base:clause-pivot",
+          "landedCandidateId": "base:syntax-shape",
           "families": [
             "syntax-shape",
             "clause-pivot"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.7501
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -3941,7 +4137,6 @@
           "changedDimensions": [
             "sentence-mean",
             "sentence-count",
-            "sentence-spread",
             "register-mode",
             "abbreviation-posture",
             "orthography-posture"
@@ -3964,9 +4159,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.615,
-          "outputDonorDistance": 3.325,
-          "donorImprovement": 1.29,
-          "donorImprovementRatio": 0.28,
+          "outputDonorDistance": 3.88,
+          "donorImprovement": 0.735,
+          "donorImprovementRatio": 0.159,
           "sourceOutputLexicalOverlap": 0.941
         },
         "candidateLedger": [
@@ -3974,29 +4169,45 @@
             "id": "base:syntax-shape",
             "family": "syntax-shape",
             "envelopeId": "spark",
-            "status": "eligible",
-            "score": 1.3193,
+            "status": "selected",
+            "score": 1.1034,
+            "toolabilityScore": 0.7537,
             "rewriteStrength": 1,
-            "targetFit": 0.5303,
+            "targetFit": 0.3826,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "production team, quick correction from Gallery 4. the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. facilities reset the panel and w"
+            "outputPreview": "Production team, quick correction from Gallery 4. The fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and w"
           },
           {
             "id": "base:clause-pivot",
             "family": "clause-pivot",
             "envelopeId": "spark",
-            "status": "selected",
-            "score": 1.1918,
+            "status": "eligible",
+            "score": 0.9758,
+            "toolabilityScore": 0.7465,
             "rewriteStrength": 1,
-            "targetFit": 0.4611,
+            "targetFit": 0.3134,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
-            "artifactFlags": [],
+            "artifactFlags": [
+              "artifact:clause-drag"
+            ],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "artifact:clause-drag"
+            ],
             "transferClass": "structural",
-            "outputPreview": "production team, quick correction from Gallery 4. the fog cue at 7:42 PM is what tripped the detector, not an electrical issue, but the real problem is that the"
+            "outputPreview": "Production team, quick correction from Gallery 4. The fog cue at 7:42 PM is what tripped the detector, not an electrical issue, but the real problem is that the"
           }
         ],
         "generationDocket": {
@@ -4005,9 +4216,9 @@
           "headline": "Generator V2 landed a structural registered rewrite.",
           "reasons": [],
           "candidateCount": 2,
-          "winningCandidateId": "base:clause-pivot"
+          "winningCandidateId": "base:syntax-shape"
         },
-        "winningCandidateId": "base:clause-pivot"
+        "winningCandidateId": "base:syntax-shape"
       },
       "semanticContract": {
         "transferClass": "structural",
@@ -4017,8 +4228,7 @@
           "orthography-posture",
           "register-mode",
           "sentence-count",
-          "sentence-mean",
-          "sentence-spread"
+          "sentence-mean"
         ],
         "lexemeSwapFamilies": [
           "surface"
@@ -4031,7 +4241,7 @@
           "sourceClass:procedural-record"
         ],
         "structuralOperations": [
-          "pivot-contrast"
+          "split-long-line"
         ],
         "lexicalOperations": [
           "compressed:please->pls",
@@ -4043,7 +4253,7 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.91,
+        "objectCoverage": 0.95,
         "polarityMismatches": 1,
         "tenseMismatches": 0,
         "protectedAnchorIntegrity": 1
@@ -4104,7 +4314,7 @@
               "polarityMismatch": 1,
               "tenseMismatch": 0,
               "bagScore": 0.5,
-              "globalBagScore": 0.167
+              "globalBagScore": 0.222
             },
             {
               "sourceClauseId": "s2c0",
@@ -4127,8 +4337,8 @@
               "objectCoverage": 1,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 0.2,
-              "globalBagScore": 0.182
+              "bagScore": 0.286,
+              "globalBagScore": 0.25
             },
             {
               "sourceClauseId": "s3c0",
@@ -4139,8 +4349,8 @@
               "objectCoverage": 1,
               "polarityMismatch": 0,
               "tenseMismatch": 0,
-              "bagScore": 0.375,
-              "globalBagScore": 0.3
+              "bagScore": 0.6,
+              "globalBagScore": 0.429
             }
           ],
           "sourceClauseCount": 5,
@@ -4171,19 +4381,19 @@
             "hybrid"
           ],
           "structuralOperationsSelected": [
-            "merge-short-beats",
-            "front-when"
+            "front-when",
+            "beat-merge"
           ],
           "lexicalRegisterOperationsSelected": [
             "expanded:pls->please",
             "expanded:bc->because"
           ],
-          "connectorStrategy": "cascade",
+          "connectorStrategy": "front",
           "contractionStrategy": "expand"
         },
         "candidateSummary": {
           "candidateCount": 5,
-          "landedCandidateId": "base:hybrid",
+          "landedCandidateId": "base:order-beat",
           "families": [
             "syntax-shape",
             "register-lexicon",
@@ -4191,7 +4401,8 @@
             "clause-pivot",
             "hybrid"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.8546
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -4224,9 +4435,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.615,
-          "outputDonorDistance": 1.584,
-          "donorImprovement": 3.031,
-          "donorImprovementRatio": 0.657,
+          "outputDonorDistance": 1.669,
+          "donorImprovement": 2.946,
+          "donorImprovementRatio": 0.638,
           "sourceOutputLexicalOverlap": 0.886
         },
         "candidateLedger": [
@@ -4236,11 +4447,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 1.508,
+            "toolabilityScore": 0.8932,
             "rewriteStrength": 1,
             "targetFit": 0.726,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-convergence:matron-undertow"
+            ],
             "transferClass": "structural",
             "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"ligh"
           },
@@ -4250,11 +4466,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 1.298,
+            "toolabilityScore": 0.793,
             "rewriteStrength": 0.9646,
             "targetFit": 0.6242,
             "movementConfidence": 0.94,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin"
+            ],
             "transferClass": "structural",
             "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"light wa"
           },
@@ -4262,13 +4483,18 @@
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "matron",
-            "status": "eligible",
+            "status": "selected",
             "score": 1.5483,
+            "toolabilityScore": 0.9004,
             "rewriteStrength": 1,
             "targetFit": 0.7176,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-convergence:matron-undertow"
+            ],
             "transferClass": "structural",
             "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burs"
           },
@@ -4278,11 +4504,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 1.3274,
+            "toolabilityScore": 0.793,
             "rewriteStrength": 0.9684,
             "targetFit": 0.6409,
             "movementConfidence": 0.94,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin"
+            ],
             "transferClass": "structural",
             "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burst no"
           },
@@ -4290,13 +4521,18 @@
             "id": "base:hybrid",
             "family": "hybrid",
             "envelopeId": "matron",
-            "status": "selected",
+            "status": "eligible",
             "score": 1.5329,
+            "toolabilityScore": 0.8932,
             "rewriteStrength": 1,
             "targetFit": 0.7322,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-convergence:matron-undertow"
+            ],
             "transferClass": "structural",
             "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burs"
           }
@@ -4307,9 +4543,9 @@
           "headline": "Generator V2 landed a structural registered rewrite.",
           "reasons": [],
           "candidateCount": 5,
-          "winningCandidateId": "base:hybrid"
+          "winningCandidateId": "base:order-beat"
         },
-        "winningCandidateId": "base:hybrid"
+        "winningCandidateId": "base:order-beat"
       },
       "semanticContract": {
         "transferClass": "structural",
@@ -4333,14 +4569,14 @@
           "sourceClass:formal-correspondence"
         ],
         "structuralOperations": [
-          "front-when",
-          "merge-short-beats"
+          "beat-merge",
+          "front-when"
         ],
         "lexicalOperations": [
           "expanded:bc->because",
           "expanded:pls->please"
         ],
-        "connectorStrategy": "cascade",
+        "connectorStrategy": "front",
         "contractionStrategy": "expand",
         "propositionCoverage": 1,
         "actorCoverage": 1,
@@ -4489,7 +4725,8 @@
           "families": [
             "syntax-shape"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.8776
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -4523,9 +4760,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 4.475,
-          "outputDonorDistance": 2.899,
-          "donorImprovement": 1.576,
-          "donorImprovementRatio": 0.352,
+          "outputDonorDistance": 3.401,
+          "donorImprovement": 1.074,
+          "donorImprovementRatio": 0.24,
           "sourceOutputLexicalOverlap": 0.915
         },
         "candidateLedger": [
@@ -4534,14 +4771,17 @@
             "family": "syntax-shape",
             "envelopeId": "spark",
             "status": "selected",
-            "score": 1.3018,
+            "score": 1.2042,
+            "toolabilityScore": 0.8776,
             "rewriteStrength": 1,
-            "targetFit": 0.5417,
+            "targetFit": 0.4652,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.86,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [],
             "transferClass": "structural",
-            "outputPreview": "eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. and the run had"
+            "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. And the run had"
           }
         ],
         "generationDocket": {
@@ -4706,7 +4946,8 @@
             "syntax-shape",
             "register-lexicon"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.7096
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -4738,11 +4979,16 @@
             "envelopeId": "matron",
             "status": "selected",
             "score": 1.1261,
+            "toolabilityScore": 0.8661,
             "rewriteStrength": 0.9291,
             "targetFit": 0.4908,
             "movementConfidence": 0.96,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-convergence:matron-undertow"
+            ],
             "transferClass": "structural",
             "outputPreview": "Rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
           },
@@ -4752,11 +4998,17 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 0.4324,
+            "toolabilityScore": 0.5531,
             "rewriteStrength": 0.196,
             "targetFit": 0.4047,
             "movementConfidence": 0.08,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin",
+              "toolability:low-confidence"
+            ],
             "transferClass": "surface",
             "outputPreview": "Rs-17 is doing the fake-safe thing again. Prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
           }
@@ -5002,7 +5254,8 @@
             "syntax-shape",
             "order-beat"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.8067
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -5013,8 +5266,7 @@
             "sentence-mean",
             "sentence-count",
             "register-mode",
-            "abbreviation-posture",
-            "orthography-posture"
+            "abbreviation-posture"
           ],
           "lexemeSwaps": [
             {
@@ -5034,9 +5286,9 @@
         "donorProgress": {
           "eligible": true,
           "sourceDonorDistance": 3.62,
-          "outputDonorDistance": 2.43,
-          "donorImprovement": 1.19,
-          "donorImprovementRatio": 0.329,
+          "outputDonorDistance": 2.964,
+          "donorImprovement": 0.656,
+          "donorImprovementRatio": 0.181,
           "sourceOutputLexicalOverlap": 0.953
         },
         "candidateLedger": [
@@ -5045,28 +5297,38 @@
             "family": "syntax-shape",
             "envelopeId": "spark",
             "status": "selected",
-            "score": 1.2494,
+            "score": 1.1433,
+            "toolabilityScore": 0.8103,
             "rewriteStrength": 1,
-            "targetFit": 0.5681,
+            "targetFit": 0.4866,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin"
+            ],
             "transferClass": "structural",
-            "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label. it was Nia Brooks"
+            "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label. It was Nia Brooks"
           },
           {
             "id": "base:order-beat",
             "family": "order-beat",
             "envelopeId": "spark",
             "status": "eligible",
-            "score": 1.1819,
+            "score": 1.0758,
+            "toolabilityScore": 0.8031,
             "rewriteStrength": 1,
-            "targetFit": 0.5597,
+            "targetFit": 0.4781,
             "movementConfidence": 1,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin"
+            ],
             "transferClass": "structural",
-            "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label. it was Nia Brooks"
+            "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label. It was Nia Brooks"
           }
         ],
         "generationDocket": {
@@ -5084,7 +5346,6 @@
         "realizationTier": "lexical-structural",
         "changedDimensions": [
           "abbreviation-posture",
-          "orthography-posture",
           "register-mode",
           "sentence-count",
           "sentence-mean"
@@ -5292,7 +5553,8 @@
             "clause-pivot",
             "hybrid"
           ],
-          "holdStatus": "landed"
+          "holdStatus": "landed",
+          "averageToolabilityScore": 0.788
         },
         "realizationSummary": {
           "transferClass": "structural",
@@ -5323,11 +5585,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 0.8266,
+            "toolabilityScore": 0.8782,
             "rewriteStrength": 1,
             "targetFit": 0.5961,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-convergence:matron-undertow"
+            ],
             "transferClass": "structural",
             "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. And brooks emailed 9:31. Body fixed 9:47 + not"
           },
@@ -5337,11 +5604,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 0.5891,
+            "toolabilityScore": 0.6037,
             "rewriteStrength": 0.376,
             "targetFit": 0.505,
             "movementConfidence": 0.08,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin"
+            ],
             "transferClass": "surface",
             "outputPreview": "Need quick fix on housing story. Quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. Brooks emailed 9:31. Body fixed 9:47 + note added."
           },
@@ -5351,11 +5623,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 0.8667,
+            "toolabilityScore": 0.8854,
             "rewriteStrength": 1,
             "targetFit": 0.5876,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-convergence:matron-undertow"
+            ],
             "transferClass": "structural",
             "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. And brooks emailed 9:31. Body fixed 9:47 + not"
           },
@@ -5365,11 +5642,16 @@
             "envelopeId": "matron",
             "status": "selected",
             "score": 0.7909,
+            "toolabilityScore": 0.6943,
             "rewriteStrength": 0.5079,
             "targetFit": 0.516,
             "movementConfidence": 0.68,
+            "personaSeparationScore": 0.47,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-markers-thin"
+            ],
             "transferClass": "structural",
             "outputPreview": "Need quick fix on housing story. Quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. Brooks emailed 9:31. Body fixed 9:47 + note added."
           },
@@ -5379,11 +5661,16 @@
             "envelopeId": "matron",
             "status": "eligible",
             "score": 0.7144,
+            "toolabilityScore": 0.8782,
             "rewriteStrength": 1,
             "targetFit": 0.5876,
             "movementConfidence": 1,
+            "personaSeparationScore": 1,
             "failureReasons": [],
             "artifactFlags": [],
+            "toolabilityWarnings": [
+              "persona-convergence:matron-undertow"
+            ],
             "transferClass": "structural",
             "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. And brooks emailed 9:31. When it only cleared "
           }

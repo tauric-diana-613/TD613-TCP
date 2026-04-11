@@ -26,9 +26,9 @@
       "propositionCoverage": 1,
       "actorCoverage": 0.975,
       "actionCoverage": 1,
-      "objectCoverage": 0.965,
+      "objectCoverage": 0.981,
       "polarityMismatches": 0,
-      "tenseMismatches": 1,
+      "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -41,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.125
+          "globalBagScore": 0.12
         },
         {
           "sourceClauseId": "s1c0",
@@ -53,7 +53,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.146
+          "globalBagScore": 0.14
         },
         {
           "sourceClauseId": "s2c0",
@@ -65,7 +65,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.75,
-          "globalBagScore": 0.122
+          "globalBagScore": 0.118
         },
         {
           "sourceClauseId": "s3c0",
@@ -77,7 +77,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.021
+          "globalBagScore": 0.02
         },
         {
           "sourceClauseId": "s4c0",
@@ -85,11 +85,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.8,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
-          "tenseMismatch": 1,
-          "bagScore": 0.714,
-          "globalBagScore": 0.102
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.12
         },
         {
           "sourceClauseId": "s5c0",
@@ -101,7 +101,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.125
+          "globalBagScore": 0.12
         },
         {
           "sourceClauseId": "s6c0",
@@ -112,8 +112,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.083
+          "bagScore": 0.667,
+          "globalBagScore": 0.08
         },
         {
           "sourceClauseId": "s6c1",
@@ -125,7 +125,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
-          "globalBagScore": 0
+          "globalBagScore": 0.019
         },
         {
           "sourceClauseId": "s7c0",
@@ -137,7 +137,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.021
+          "globalBagScore": 0.02
         },
         {
           "sourceClauseId": "s8c0",
@@ -149,7 +149,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.021
+          "globalBagScore": 0.02
         },
         {
           "sourceClauseId": "s9c0",
@@ -161,7 +161,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.042
+          "globalBagScore": 0.04
         },
         {
           "sourceClauseId": "s10c0",
@@ -173,7 +173,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.125
+          "globalBagScore": 0.12
         },
         {
           "sourceClauseId": "s10c1",
@@ -185,7 +185,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.833,
-          "globalBagScore": 0.104
+          "globalBagScore": 0.1
         }
       ],
       "sourceClauseCount": 13,
@@ -216,15 +216,9 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "split-long-line",
-        "front-because"
+        "split-long-line"
       ],
       "lexicalRegisterOperationsSelected": [
-        "connector:because->since",
-        "register:approximately->about",
-        "register:located->found",
-        "register:requested->asked-for",
-        "register:remained->stayed",
         "compressed:because->bc",
         "compressed:package->pkg",
         "orthography:lowercase-lead"
@@ -234,7 +228,7 @@
     },
     "candidateSummary": {
       "candidateCount": 5,
-      "landedCandidateId": "base:hybrid",
+      "landedCandidateId": "base:syntax-shape",
       "families": [
         "syntax-shape",
         "register-lexicon",
@@ -242,7 +236,8 @@
         "clause-pivot",
         "hybrid"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.7199
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -252,33 +247,13 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "sentence-spread",
         "register-mode",
-        "abbreviation-posture",
-        "orthography-posture"
+        "abbreviation-posture"
       ],
       "lexemeSwaps": [
         {
-          "from": "approximately",
-          "to": "about",
-          "family": "register"
-        },
-        {
-          "from": "located",
-          "to": "found",
-          "family": "register"
-        },
-        {
-          "from": "requested",
-          "to": "asked for",
-          "family": "register"
-        },
-        {
-          "from": "remained",
-          "to": "stayed",
-          "family": "register"
-        },
-        {
-          "from": "Because",
+          "from": "because",
           "to": "bc",
           "family": "surface"
         },
@@ -294,81 +269,127 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.469,
-      "outputDonorDistance": 4.249,
-      "donorImprovement": 0.22,
-      "donorImprovementRatio": 0.049,
-      "sourceOutputLexicalOverlap": 0.888
+      "outputDonorDistance": 4.279,
+      "donorImprovement": 0.19,
+      "donorImprovementRatio": 0.043,
+      "sourceOutputLexicalOverlap": 0.946
     },
     "candidateLedger": [
       {
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.9404,
+        "status": "selected",
+        "score": 0.9073,
+        "toolabilityScore": 0.7537,
         "rewriteStrength": 1,
-        "targetFit": 0.2587,
+        "targetFit": 0.2567,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "on Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. the carrier scan marked \"attempted / no answer"
+        "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 0.8744,
+        "score": 0.8413,
+        "toolabilityScore": 0.7465,
         "rewriteStrength": 1,
-        "targetFit": 0.2582,
+        "targetFit": 0.2562,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "on Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. the carrier scan marked \"attempted / no answer"
+        "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 0.8858,
+        "score": 0.802,
+        "toolabilityScore": 0.6973,
         "rewriteStrength": 1,
-        "targetFit": 0.2601,
+        "targetFit": 0.2499,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-join",
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-join",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "on Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. the carrier scan marked \"attempted / no answer"
+        "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
       },
       {
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 0.8821,
+        "score": 0.8116,
+        "toolabilityScore": 0.6973,
         "rewriteStrength": 1,
-        "targetFit": 0.2503,
+        "targetFit": 0.2499,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-join",
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-join",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "on Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door, but building footage and resident testimony in"
+        "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door, but building footage and resident testimony in"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "spark",
-        "status": "selected",
-        "score": 0.9398,
+        "status": "eligible",
+        "score": 0.856,
+        "toolabilityScore": 0.7045,
         "rewriteStrength": 1,
-        "targetFit": 0.2596,
+        "targetFit": 0.2494,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-join",
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-join",
+          "artifact:clause-drag"
+        ],
         "transferClass": "structural",
-        "outputPreview": "on Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. the carrier scan marked \"attempted / no answer"
+        "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
       }
     ],
     "generationDocket": {
@@ -377,22 +398,21 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 5,
-      "winningCandidateId": "base:hybrid"
+      "winningCandidateId": "base:syntax-shape"
     },
-    "winningCandidateId": "base:hybrid"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "orthography-posture",
       "register-mode",
       "sentence-count",
-      "sentence-mean"
+      "sentence-mean",
+      "sentence-spread"
     ],
     "lexemeSwapFamilies": [
-      "register",
       "surface"
     ],
     "relationInventory": [
@@ -403,27 +423,21 @@
       "sourceClass:procedural-record"
     ],
     "structuralOperations": [
-      "front-because",
       "split-long-line"
     ],
     "lexicalOperations": [
       "compressed:because->bc",
       "compressed:package->pkg",
-      "connector:because->since",
-      "orthography:lowercase-lead",
-      "register:approximately->about",
-      "register:located->found",
-      "register:remained->stayed",
-      "register:requested->asked-for"
+      "orthography:lowercase-lead"
     ],
     "connectorStrategy": "split",
     "contractionStrategy": "contract",
     "propositionCoverage": 1,
     "actorCoverage": 0.975,
     "actionCoverage": 1,
-    "objectCoverage": 0.965,
+    "objectCoverage": 0.981,
     "polarityMismatches": 0,
-    "tenseMismatches": 1,
+    "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }
 }

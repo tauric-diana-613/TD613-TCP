@@ -109,7 +109,8 @@
         "syntax-shape",
         "register-lexicon"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.7096
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -141,11 +142,16 @@
         "envelopeId": "matron",
         "status": "selected",
         "score": 1.1261,
+        "toolabilityScore": 0.8661,
         "rewriteStrength": 0.9291,
         "targetFit": 0.4908,
         "movementConfidence": 0.96,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-convergence:matron-undertow"
+        ],
         "transferClass": "structural",
         "outputPreview": "Rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
       },
@@ -155,11 +161,17 @@
         "envelopeId": "matron",
         "status": "eligible",
         "score": 0.4324,
+        "toolabilityScore": 0.5531,
         "rewriteStrength": 0.196,
         "targetFit": 0.4047,
         "movementConfidence": 0.08,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "toolability:low-confidence"
+        ],
         "transferClass": "surface",
         "outputPreview": "Rs-17 is doing the fake-safe thing again. Prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
       }

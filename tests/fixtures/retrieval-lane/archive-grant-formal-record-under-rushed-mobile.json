@@ -172,7 +172,8 @@
         "syntax-shape",
         "clause-pivot"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.7941
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -183,9 +184,7 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
-        "register-mode",
-        "abbreviation-posture",
-        "orthography-posture"
+        "abbreviation-posture"
       ],
       "lexemeSwaps": [
         {
@@ -200,9 +199,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 5.545,
-      "outputDonorDistance": 4.611,
-      "donorImprovement": 0.934,
-      "donorImprovementRatio": 0.168,
+      "outputDonorDistance": 4.7,
+      "donorImprovement": 0.845,
+      "donorImprovementRatio": 0.152,
       "sourceOutputLexicalOverlap": 0.981
     },
     "candidateLedger": [
@@ -211,28 +210,38 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.1081,
-        "rewriteStrength": 1,
-        "targetFit": 0.1675,
+        "score": 1.0606,
+        "toolabilityScore": 0.8103,
+        "rewriteStrength": 0.9409,
+        "targetFit": 0.155,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "structural",
-        "outputPreview": "the proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. first, the team will complete a shared cataloging "
+        "outputPreview": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First, the team will complete a shared cataloging "
       },
       {
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 0.7739,
-        "rewriteStrength": 1,
-        "targetFit": 0.1833,
-        "movementConfidence": 1,
+        "score": 0.6321,
+        "toolabilityScore": 0.7779,
+        "rewriteStrength": 0.7638,
+        "targetFit": 0.1803,
+        "movementConfidence": 0.88,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "structural",
-        "outputPreview": "the proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. first, the team will complete a shared cataloging "
+        "outputPreview": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First, the team will complete a shared cataloging "
       }
     ],
     "generationDocket": {
@@ -250,8 +259,6 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "orthography-posture",
-      "register-mode",
       "sentence-count",
       "sentence-mean",
       "sentence-spread"

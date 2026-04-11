@@ -136,7 +136,8 @@
       "families": [
         "syntax-shape"
       ],
-      "holdStatus": "landed"
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.8776
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -170,9 +171,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.475,
-      "outputDonorDistance": 2.899,
-      "donorImprovement": 1.576,
-      "donorImprovementRatio": 0.352,
+      "outputDonorDistance": 3.401,
+      "donorImprovement": 1.074,
+      "donorImprovementRatio": 0.24,
       "sourceOutputLexicalOverlap": 0.915
     },
     "candidateLedger": [
@@ -181,14 +182,17 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.3018,
+        "score": 1.2042,
+        "toolabilityScore": 0.8776,
         "rewriteStrength": 1,
-        "targetFit": 0.5417,
+        "targetFit": 0.4652,
         "movementConfidence": 1,
+        "personaSeparationScore": 0.86,
         "failureReasons": [],
         "artifactFlags": [],
+        "toolabilityWarnings": [],
         "transferClass": "structural",
-        "outputPreview": "eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. and the run had"
+        "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. And the run had"
       }
     ],
     "generationDocket": {
