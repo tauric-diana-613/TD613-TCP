@@ -6236,12 +6236,21 @@ DeltaE = ${ledger.reuse_gain}`;
     };
   }
 
-  function runSwapCadenceMatrixReport() {
+  function runSwapCadenceMatrixReport(options = {}) {
     return buildSwapCadenceMatrix(FULL_SAMPLE_LIBRARY, {
-      orderedPairs: DIAGNOSTIC_BATTERY.swapPairs,
-      flagshipPairs: SWAP_FLAGSHIP_PAIRS,
-      strength: 0.82
+      orderedPairs: Array.isArray(options.orderedPairs) ? options.orderedPairs : DIAGNOSTIC_BATTERY.swapPairs,
+      flagshipPairs: Array.isArray(options.flagshipPairs) ? options.flagshipPairs : SWAP_FLAGSHIP_PAIRS,
+      strength: options.strength ?? 0.82
     });
+  }
+
+  function setTestFlightPhase(phase = '') {
+    if (phase) {
+      document.body.dataset.testFlightPhase = phase;
+      return;
+    }
+
+    delete document.body.dataset.testFlightPhase;
   }
 
   function canonicalSemanticContractFromTrace(trace = {}) {
@@ -6694,12 +6703,16 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function runSwapTestFlight() {
-    const matrixReport = runSwapCadenceMatrixReport();
+    const matrixReport = runSwapCadenceMatrixReport({
+      orderedPairs: [],
+      flagshipPairs: SWAP_FLAGSHIP_PAIRS
+    });
     const flagshipCases = matrixReport.flagshipReports || [];
     const workingDoctrine = buildPrivateSwapDoctrine(matrixReport);
     const summary = matrixReport.summary || {};
     const report = {
       mode: 'swap',
+      scope: 'browser-flagship',
       flagshipPairs: matrixReport.flagshipPairs || [],
       flagshipCases,
       fullSummary: summary,
@@ -6707,18 +6720,20 @@ DeltaE = ${ledger.reuse_gain}`;
       summary: {
         allPassed:
           Boolean(summary.flagshipAllPassed) &&
-          (summary.bilateralEngaged || 0) >= 24 &&
-          (summary.bothRejected || 0) <= 8 &&
-          (summary.oneSided || 0) <= 18 &&
+          (summary.caseCount || 0) === SWAP_FLAGSHIP_PAIRS.length &&
+          (summary.bilateralEngaged || 0) >= SWAP_FLAGSHIP_PAIRS.length &&
+          (summary.bothRejected || 0) === 0 &&
+          (summary.oneSided || 0) <= 1 &&
           (workingDoctrine.representativePairs?.bilateralNonTrivialRate || 0) >= 0.75,
         passCount: [
           Boolean(summary.flagshipAllPassed),
-          (summary.bilateralEngaged || 0) >= 24,
-          (summary.bothRejected || 0) <= 8,
-          (summary.oneSided || 0) <= 18,
+          (summary.caseCount || 0) === SWAP_FLAGSHIP_PAIRS.length,
+          (summary.bilateralEngaged || 0) >= SWAP_FLAGSHIP_PAIRS.length,
+          (summary.bothRejected || 0) === 0,
+          (summary.oneSided || 0) <= 1,
           (workingDoctrine.representativePairs?.bilateralNonTrivialRate || 0) >= 0.75
         ].filter(Boolean).length,
-        caseCount: 5
+        caseCount: 6
       }
     };
 
@@ -6778,6 +6793,7 @@ DeltaE = ${ledger.reuse_gain}`;
     };
 
     try {
+      setTestFlightPhase('baseline');
       const profileLooksLive = (text = '') => /rhythm/i.test(text) && /register/i.test(text);
       report.baseline.snapshot = applyScenario({
         voiceA: seededPair.voiceA,
@@ -6863,6 +6879,7 @@ DeltaE = ${ledger.reuse_gain}`;
         samplesDistinct: ownSourceSnapshot.duelReferenceSample !== ownSourceSnapshot.duelProbeSample
       };
 
+        setTestFlightPhase('persona-gallery');
         const firstPersonaAssign = document.querySelector('[data-persona-action="assign-reference"]');
         if (firstPersonaAssign) {
           firstPersonaAssign.click();
@@ -7016,6 +7033,7 @@ DeltaE = ${ledger.reuse_gain}`;
       })();
 
       if (mode === 'full') {
+        setTestFlightPhase('trainer');
         $('tabTrainer').click();
         const trainerCorpus = SAMPLE_LIBRARY_BY_ID['building-access-formal-record']?.text || seededPair.voiceA;
         $('trainerPersonaName').value = 'Trainer Smoke Persona';
@@ -7117,8 +7135,13 @@ DeltaE = ${ledger.reuse_gain}`;
           report.trainer.personaAssigned =
             Boolean(injectedTrainerPersona) && bayShells[activeVoice].personaId === injectedTrainerId;
           report.trainer.gallerySnapshot = readPersonaGallerySnapshot();
-          report.swapMatrix = runSwapCadenceMatrixReport();
+          setTestFlightPhase('swap-flagships');
+          report.swapMatrix = runSwapCadenceMatrixReport({
+            orderedPairs: [],
+            flagshipPairs: SWAP_FLAGSHIP_PAIRS
+          });
 
+        setTestFlightPhase('matrix');
         const matrix = [];
         const scenarios = [
           {
@@ -7306,6 +7329,7 @@ DeltaE = ${ledger.reuse_gain}`;
         };
       }
     } finally {
+      setTestFlightPhase('');
       restoreFlightState(initialState);
     }
 

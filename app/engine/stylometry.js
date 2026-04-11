@@ -7534,7 +7534,7 @@ export function buildSwapCadenceMatrix(sampleLibrary = [], options = {}) {
       donorId: pair.donorId
     }))
     .filter((pair) => samplesById[pair.sourceId] && samplesById[pair.donorId] && pair.sourceId !== pair.donorId);
-  const orderedPairs = Array.isArray(options.orderedPairs) && options.orderedPairs.length
+  const orderedPairs = Array.isArray(options.orderedPairs)
     ? options.orderedPairs
       .map((pair) => ({
         sourceId: pair.sourceId,

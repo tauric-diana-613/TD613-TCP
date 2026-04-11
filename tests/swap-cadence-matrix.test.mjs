@@ -31,6 +31,14 @@ assert((matrix.summary.failureFamilyCounts['donor-underfit'] || 0) >= 20, 'diagn
 assert.equal(matrix.summary.flagshipPassCount, 8, 'flagship summary should surface eight review-facing exemplar directions as live');
 assert.equal(matrix.summary.flagshipAllPassed, true, 'flagship summary should mark all review-facing exemplar directions as live');
 
+const flagshipOnlyMatrix = buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {
+  orderedPairs: [],
+  flagshipPairs: SWAP_CADENCE_FLAGSHIP_PAIRS,
+  strength: 0.82
+});
+assert.equal(flagshipOnlyMatrix.fullMatrix.length, 8, 'explicit empty orderedPairs should preserve a flagship-only matrix instead of expanding to the full corpus cartesian');
+assert.equal(flagshipOnlyMatrix.summary.caseCount, 8, 'flagship-only matrix summary should report only the requested flagship cases');
+
 const literalRiskIds = new Set(
   DIAGNOSTIC_BATTERY.swapPairs
     .filter((caseSpec) => caseSpec.mode === 'swap-literal-risk')
