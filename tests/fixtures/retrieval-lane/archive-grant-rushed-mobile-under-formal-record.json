@@ -40,20 +40,20 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.071
+          "bagScore": 0.5,
+          "globalBagScore": 0.111
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c0+s0c1",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 0.125,
-          "globalBagScore": 0.067
+          "bagScore": 0.333,
+          "globalBagScore": 0.1
         },
         {
           "sourceClauseId": "s2c0",
@@ -65,11 +65,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.143
+          "globalBagScore": 0.222
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -89,11 +89,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.714,
-          "globalBagScore": 0.333
+          "globalBagScore": 0.5
         }
       ],
       "sourceClauseCount": 5,
-      "outputClauseCount": 4
+      "outputClauseCount": 3
     },
     "protectedAnchorAudit": {
       "totalAnchors": 0,
@@ -109,25 +109,35 @@
         "clauseCount": 5,
         "exactAnchorCount": 0
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
         "merge-short-beats",
         "front-if"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:pls->please",
-        "expanded:wk->week",
-        "expanded:its->it-is"
+        "expanded:wk->week"
       ],
       "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
-      "candidateCount": 4,
+      "candidateCount": 5,
       "landedCandidateId": "base:hybrid",
       "families": [
         "syntax-shape",
         "register-lexicon",
         "order-beat",
+        "clause-pivot",
         "hybrid"
       ],
       "holdStatus": "landed"
@@ -140,6 +150,7 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "sentence-spread",
         "punctuation-shape",
         "abbreviation-posture",
         "orthography-posture"
@@ -154,11 +165,6 @@
           "from": "wk",
           "to": "week",
           "family": "surface"
-        },
-        {
-          "from": "its",
-          "to": "it is",
-          "family": "surface"
         }
       ],
       "visibleShift": true,
@@ -167,10 +173,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 5.545,
-      "outputDonorDistance": 3.04,
-      "donorImprovement": 2.505,
-      "donorImprovementRatio": 0.452,
-      "sourceOutputLexicalOverlap": 0.857
+      "outputDonorDistance": 3.016,
+      "donorImprovement": 2.529,
+      "donorImprovementRatio": 0.456,
+      "sourceOutputLexicalOverlap": 0.902
     },
     "candidateLedger": [
       {
@@ -178,52 +184,70 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.2331,
+        "score": 1.3444,
         "rewriteStrength": 1,
-        "targetFit": 0.3973,
+        "targetFit": 0.4024,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "Grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local revie"
+        "outputPreview": "Grant isnt just digitize + pray, and its shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review "
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.1033,
-        "rewriteStrength": 1,
-        "targetFit": 0.2843,
-        "movementConfidence": 1,
+        "score": 0.7693,
+        "rewriteStrength": 0.7032,
+        "targetFit": 0.1505,
+        "movementConfidence": 0.8,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "Grant isnt just digitize + pray; It is shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review an"
+        "outputPreview": "Grant isnt just digitize + pray. Its shared catalog protocol + 6 steward reviewers + portable exhibit kit. Main risk is if description outruns local review and "
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.218,
+        "score": 1.3794,
         "rewriteStrength": 1,
-        "targetFit": 0.3841,
+        "targetFit": 0.3891,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "Grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
+        "outputPreview": "Grant isnt just digitize + pray, and its shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we start "
+      },
+      {
+        "id": "base:clause-pivot",
+        "family": "clause-pivot",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 0.8438,
+        "rewriteStrength": 0.7067,
+        "targetFit": 0.2072,
+        "movementConfidence": 0.8,
+        "failureReasons": [],
+        "artifactFlags": [],
+        "transferClass": "structural",
+        "outputPreview": "Grant isnt just digitize + pray. Its shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we start call"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 1.2447,
+        "score": 1.3737,
         "rewriteStrength": 1,
-        "targetFit": 0.4075,
+        "targetFit": 0.4126,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "Grant isnt just digitize + pray, and it is shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we star"
+        "outputPreview": "Grant isnt just digitize + pray, and its shared catalog protocol + 6 steward reviewers + portable exhibit kit. If description outruns local review and we start "
       }
     ],
     "generationDocket": {
@@ -231,7 +255,7 @@
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
+      "candidateCount": 5,
       "winningCandidateId": "base:hybrid"
     },
     "winningCandidateId": "base:hybrid"
@@ -244,7 +268,8 @@
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
-      "sentence-mean"
+      "sentence-mean",
+      "sentence-spread"
     ],
     "lexemeSwapFamilies": [
       "surface"
@@ -261,7 +286,6 @@
       "merge-short-beats"
     ],
     "lexicalOperations": [
-      "expanded:its->it-is",
       "expanded:pls->please",
       "expanded:wk->week"
     ],

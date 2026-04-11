@@ -7475,10 +7475,10 @@ function buildSwapCadencePairReport(sourceSample, donorSample, strength = 0.82) 
   const flagshipPass =
     laneA.borrowedShellOutcome !== 'rejected' &&
     laneB.borrowedShellOutcome !== 'rejected' &&
-    !borrowedShellSurfaceClose(laneA.donorProgress || {}) &&
-    !borrowedShellSurfaceClose(laneB.donorProgress || {}) &&
     ['structural', 'partial'].includes(laneA.borrowedShellOutcome) &&
     ['structural', 'partial'].includes(laneB.borrowedShellOutcome) &&
+    Math.min(laneA.protectedAnchorIntegrity, laneB.protectedAnchorIntegrity) >= 1 &&
+    Math.max(laneA.semanticRisk || 0, laneB.semanticRisk || 0) <= 0.02 &&
     atLeastOneStructural &&
     classification === 'bilateral-engaged';
 

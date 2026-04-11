@@ -27,7 +27,7 @@
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.929,
-      "polarityMismatches": 0,
+      "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -41,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.071
+          "globalBagScore": 0.067
         },
         {
           "sourceClauseId": "s1c0",
@@ -65,11 +65,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.071
+          "globalBagScore": 0.067
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s1c0+s2c0",
+          "matchedClauseId": "s2c0+s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -77,35 +77,35 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.5,
-          "globalBagScore": 0.2
+          "globalBagScore": 0.188
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s3c1",
+          "matchedClauseId": "s0c1+s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
-          "polarityMismatch": 0,
+          "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.25
+          "bagScore": 0.4,
+          "globalBagScore": 0.235
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s0c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
+          "bagScore": 1,
+          "globalBagScore": 0.067
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s5c0",
+          "matchedClauseId": "s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -113,7 +113,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.333,
-          "globalBagScore": 0.067
+          "globalBagScore": 0.063
         }
       ],
       "sourceClauseCount": 7,
@@ -133,8 +133,19 @@
         "clauseCount": 7,
         "exactAnchorCount": 0
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
-        "merge-short-beats"
+        "front-if",
+        "beat-merge"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:wks->weeks",
@@ -142,17 +153,15 @@
         "expanded:dont->do-not",
         "expanded:slash-list->sentences"
       ],
-      "connectorStrategy": "cascade",
+      "connectorStrategy": "front",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
-      "candidateCount": 4,
-      "landedCandidateId": "base:syntax-shape",
+      "candidateCount": 2,
+      "landedCandidateId": "base:order-beat",
       "families": [
         "syntax-shape",
-        "register-lexicon",
-        "order-beat",
-        "hybrid"
+        "order-beat"
       ],
       "holdStatus": "landed"
     },
@@ -191,9 +200,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.153,
-      "outputDonorDistance": 3.48,
-      "donorImprovement": 0.673,
-      "donorImprovementRatio": 0.162,
+      "outputDonorDistance": 4.24,
+      "donorImprovement": 0,
+      "donorImprovementRatio": 0,
       "sourceOutputLexicalOverlap": 0.857
     },
     "candidateLedger": [
@@ -201,25 +210,15 @@
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "matron",
-        "status": "selected",
-        "score": 0.9623,
-        "rewriteStrength": 1,
-        "targetFit": 0.463,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
-      },
-      {
-        "id": "base:register-lexicon",
-        "family": "register-lexicon",
-        "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.8829,
+        "score": 0.8457,
         "rewriteStrength": 1,
         "targetFit": 0.4129,
-        "movementConfidence": 1,
+        "movementConfidence": 0.94,
         "failureReasons": [],
+        "artifactFlags": [
+          "artifact:fragment"
+        ],
         "transferClass": "structural",
         "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
       },
@@ -227,27 +226,17 @@
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
-        "status": "eligible",
-        "score": 0.9623,
+        "status": "selected",
+        "score": 0.7625,
         "rewriteStrength": 1,
-        "targetFit": 0.463,
+        "targetFit": 0.3821,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [
+          "artifact:fragment"
+        ],
         "transferClass": "structural",
         "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, room w"
-      },
-      {
-        "id": "base:hybrid",
-        "family": "hybrid",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 0.8889,
-        "rewriteStrength": 1,
-        "targetFit": 0.4252,
-        "movementConfidence": 1,
-        "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, and 3 "
       }
     ],
     "generationDocket": {
@@ -255,10 +244,10 @@
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
-      "winningCandidateId": "base:syntax-shape"
+      "candidateCount": 2,
+      "winningCandidateId": "base:order-beat"
     },
-    "winningCandidateId": "base:syntax-shape"
+    "winningCandidateId": "base:order-beat"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -281,7 +270,8 @@
       "sourceClass:narrative-scene"
     ],
     "structuralOperations": [
-      "merge-short-beats"
+      "beat-merge",
+      "front-if"
     ],
     "lexicalOperations": [
       "expanded:dont->do-not",
@@ -289,13 +279,13 @@
       "expanded:w->with",
       "expanded:wks->weeks"
     ],
-    "connectorStrategy": "cascade",
+    "connectorStrategy": "front",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.929,
-    "polarityMismatches": 0,
+    "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

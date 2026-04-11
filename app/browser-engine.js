@@ -9189,10 +9189,10 @@ function buildSwapCadencePairReport(sourceSample, donorSample, strength = 0.82) 
   const flagshipPass =
     laneA.borrowedShellOutcome !== 'rejected' &&
     laneB.borrowedShellOutcome !== 'rejected' &&
-    !borrowedShellSurfaceClose(laneA.donorProgress || {}) &&
-    !borrowedShellSurfaceClose(laneB.donorProgress || {}) &&
     ['structural', 'partial'].includes(laneA.borrowedShellOutcome) &&
     ['structural', 'partial'].includes(laneB.borrowedShellOutcome) &&
+    Math.min(laneA.protectedAnchorIntegrity, laneB.protectedAnchorIntegrity) >= 1 &&
+    Math.max(laneA.semanticRisk || 0, laneB.semanticRisk || 0) <= 0.02 &&
     atLeastOneStructural &&
     classification === 'bilateral-engaged';
 
@@ -10729,6 +10729,12 @@ function mergeForLongCurrent(sentences = [], linker = ', and ') {
       }
       const currentWords = sentenceWordCount(current);
       const nextWords = sentenceWordCount(next);
+      const linkerPattern = new RegExp(escapeRegex(linker.trim()), 'i');
+      if (currentWords >= 18 || linkerPattern.test(current)) {
+        merged.push(current);
+        index += 1;
+        continue;
+      }
       if (currentWords <= 14 || nextWords <= 14) {
         const left = current.replace(/[.!?]+$/g, '');
         const right = normalizeMergedLead(next, linker);
@@ -10740,6 +10746,23 @@ function mergeForLongCurrent(sentences = [], linker = ', and ') {
     index += 1;
   }
   return merged;
+}
+
+function softenLinkerChains(text = '') {
+  return splitSentencesPreserve(text).map((sentence) => {
+    let working = normalizeText(sentence);
+    let seenAnd = 0;
+    working = working.replace(/,\s+and\b/gi, () => {
+      seenAnd += 1;
+      return seenAnd >= 2 ? '. And' : ', and';
+    });
+    let seenWhile = 0;
+    working = working.replace(/,\s+while\b/gi, () => {
+      seenWhile += 1;
+      return seenWhile >= 2 ? '. While' : ', while';
+    });
+    return working;
+  }).join(' ');
 }
 
 function tidyEnvelopeText(text = '') {
@@ -10757,10 +10780,11 @@ function tidyEnvelopeText(text = '') {
 }
 
 function sanitizeV2Surface(text = '', { preserveLowercaseLeads = false } = {}) {
-  let working = tidyEnvelopeText(text)
+  let working = softenLinkerChains(tidyEnvelopeText(text))
     .replace(/\.\s*,/g, '. ')
     .replace(/,\s*\./g, '. ')
     .replace(/;\s+;/g, '; ')
+    .replace(/;\s+([A-Z])/g, '. $1')
     .replace(/\band\s+and\b/gi, 'and')
     .replace(/\bwhile\s+while\b/gi, 'while')
     .replace(/\bwhile\s+and\b/gi, 'while')
@@ -11023,6 +11047,136 @@ function classRewriteBar(sourceClass = 'formal-correspondence') {
   return 0.22;
 }
 
+function hasRegisterMove(changedDimensions = [], lexemeSwaps = []) {
+  return (changedDimensions || []).some((dimension) =>
+    ['register-mode', 'abbreviation-posture', 'orthography-posture', 'directness', 'abstraction'].includes(dimension)
+  ) || Number((lexemeSwaps || []).length || 0) > 0;
+}
+
+function punctuationOnlyDrift(changedDimensions = [], lexemeSwaps = []) {
+  const dimensions = [...(changedDimensions || [])];
+  return dimensions.length > 0 &&
+    dimensions.every((dimension) => ['punctuation-shape', 'contraction-posture'].includes(dimension)) &&
+    Number((lexemeSwaps || []).length || 0) === 0;
+}
+
+function meetsLandedRewriteBar(sourceClass = 'formal-correspondence', rewriteStrength = 0, changedDimensions = [], lexemeSwaps = []) {
+  if (rewriteStrength < classRewriteBar(sourceClass)) {
+    if (sourceClass === 'procedural-record' && rewriteStrength < 0.12) {
+      return false;
+    }
+    if (sourceClass === 'formal-correspondence' && rewriteStrength < 0.13) {
+      return false;
+    }
+    if (!['procedural-record', 'formal-correspondence'].includes(sourceClass)) {
+      return false;
+    }
+  }
+  if (punctuationOnlyDrift(changedDimensions, lexemeSwaps)) {
+    return false;
+  }
+  const structuralMovement = substantiveDimensionCount(changedDimensions);
+  const registerMovement = hasRegisterMove(changedDimensions, lexemeSwaps);
+  if (['reflective-prose', 'narrative-scene'].includes(sourceClass)) {
+    return structuralMovement >= 1 && registerMovement;
+  }
+  return structuralMovement >= 1 || registerMovement;
+}
+
+function countRegexHits(text = '', pattern) {
+  const matches = String(text || '').match(pattern);
+  return matches ? matches.length : 0;
+}
+
+function countSemicolonFractures(text = '', envelopeId = 'generic', sourceClass = 'formal-correspondence') {
+  const semicolonCount = countRegexHits(text, /;\s+/g);
+  if (!semicolonCount) {
+    return 0;
+  }
+  const uppercaseAfterSemicolon = countRegexHits(text, /;\s+[A-Z]/g);
+  if (envelopeId === 'archivist' || envelopeId === 'methods-editor') {
+    return Math.max(0, uppercaseAfterSemicolon - (sourceClass === 'procedural-record' ? 1 : 0));
+  }
+  return semicolonCount + uppercaseAfterSemicolon;
+}
+
+function countRepeatedHelperVerbs(text = '') {
+  const sentences = splitSentencesPreserve(text);
+  const helperStarts = sentences
+    .map((sentence) => normalizeText(sentence).match(/^(i|we|you|they|he|she|it)\s+(?:am|are|is|was|were|want to|need to|have to|keep|kept|just)\b/i)?.[0]?.toLowerCase() || '')
+    .filter(Boolean);
+  let repeated = 0;
+  for (let index = 1; index < helperStarts.length; index += 1) {
+    if (helperStarts[index] === helperStarts[index - 1]) {
+      repeated += 1;
+    }
+  }
+  return repeated;
+}
+
+function countMalformedContractions(text = '') {
+  return countRegexHits(text, /\b(?:I|It|That|You|We|They|Don|Can|Won)\s*;\s*[A-Za-z]+\b/g);
+}
+
+function countFragmentArtifacts(text = '', sourceText = '') {
+  const outputFragments = splitSentencesPreserve(text)
+    .map((sentence) => trimSentenceEnding(sentence))
+    .filter(Boolean)
+    .filter((sentence) => sentenceWordCount(sentence) <= 2)
+    .filter((sentence) => !/\b(?:i guess|hello|good night|all right|maybe)\b/i.test(sentence));
+  const sourceFragments = splitSentencesPreserve(sourceText)
+    .map((sentence) => trimSentenceEnding(sentence))
+    .filter(Boolean)
+    .filter((sentence) => sentenceWordCount(sentence) <= 2)
+    .length;
+  return Math.max(0, outputFragments.length - sourceFragments);
+}
+
+function buildArtifactAudit({
+  sourceText = '',
+  outputText = '',
+  sourceClass = 'formal-correspondence',
+  envelopeId = 'generic',
+  targetProfile = null,
+  sourceProfile = {}
+} = {}) {
+  const allowLowercaseLeads = Number(targetProfile?.orthographicLooseness || 0) >=
+    Math.max(0.06, Number(sourceProfile?.orthographicLooseness || 0) + 0.04);
+  const lowercaseLeadCount = allowLowercaseLeads ? 0 : countRegexHits(outputText, /(?:^|[.!?;]\s+)[a-z]/g);
+  const doubledConnectorCount = countRegexHits(outputText, /\b(?:and and|while while|while and|and while|but but|because because|since since|then then|yet yet)\b/gi);
+  const semicolonFractureCount = countSemicolonFractures(outputText, envelopeId, sourceClass);
+  const repeatedHelperCount = countRepeatedHelperVerbs(outputText);
+  const malformedContractionCount = countMalformedContractions(outputText);
+  const fragmentCount = countFragmentArtifacts(outputText, sourceText);
+  const flags = uniqueStrings([
+    lowercaseLeadCount ? 'artifact:lowercase-lead' : null,
+    doubledConnectorCount ? 'artifact:doubled-connector' : null,
+    semicolonFractureCount ? 'artifact:semicolon-fracture' : null,
+    repeatedHelperCount ? 'artifact:repeated-helper' : null,
+    malformedContractionCount ? 'artifact:malformed-contraction' : null,
+    fragmentCount ? 'artifact:fragment' : null
+  ]);
+  const penalty = round(clamp01(
+    (Math.min(lowercaseLeadCount, 3) * 0.04) +
+    (Math.min(doubledConnectorCount, 3) * 0.05) +
+    (Math.min(semicolonFractureCount, 3) * 0.04) +
+    (Math.min(repeatedHelperCount, 3) * 0.03) +
+    (Math.min(malformedContractionCount, 3) * 0.08) +
+    (Math.min(fragmentCount, 3) * 0.03)
+  ), 4);
+
+  return Object.freeze({
+    flags: Object.freeze(flags),
+    penalty,
+    lowercaseLeadCount,
+    doubledConnectorCount,
+    semicolonFractureCount,
+    repeatedHelperCount,
+    malformedContractionCount,
+    fragmentCount
+  });
+}
+
 function computeRewriteStrength(sourceText = '', outputText = '', sourceProfile = {}, outputProfile = {}, changedDimensions = [], lexemeSwaps = []) {
   const comparableShift = normalizeMovementComparable(sourceText) !== normalizeMovementComparable(outputText);
   const fit = compareTexts(sourceText, outputText, {
@@ -11065,6 +11219,66 @@ function computeTargetFit(outputProfile = {}, targetProfile = null) {
     (fit.directnessDistance || 0) +
     (fit.abstractionDistance || 0);
   return round(clamp01(1 - (distance / 5.8)), 4);
+}
+
+function familySelectionBonus(sourceClass = 'formal-correspondence', familyId = 'syntax-shape', envelopeId = 'generic') {
+  const weighted = familyWeight(familyId, sourceClass, envelopeId);
+  return round(Math.max(0, weighted - 1) * 0.08, 4);
+}
+
+function personaDistinctnessBonus({
+  envelopeId = 'generic',
+  sourceProfile = {},
+  outputProfile = {},
+  sourceClass = 'formal-correspondence',
+  structuralOperations = [],
+  lexicalOperations = [],
+  changedDimensions = [],
+  lexemeSwaps = []
+} = {}) {
+  const avgDelta = Number(outputProfile.avgSentenceLength || 0) - Number(sourceProfile.avgSentenceLength || 0);
+  const sentenceDelta = Number(outputProfile.sentenceCount || 0) - Number(sourceProfile.sentenceCount || 0);
+  const directnessDelta = Number(outputProfile.directness || 0) - Number(sourceProfile.directness || 0);
+  const abstractionDelta = Number(outputProfile.abstractionPosture || 0) - Number(sourceProfile.abstractionPosture || 0);
+  const contractionDelta = Number(outputProfile.contractionDensity || 0) - Number(sourceProfile.contractionDensity || 0);
+  const structuralSet = new Set(structuralOperations || []);
+  const lexicalSet = new Set(lexicalOperations || []);
+  const structuralMovement = substantiveDimensionCount(changedDimensions);
+  const lexicalMovement = Number((lexemeSwaps || []).length || 0);
+  let bonus = 0;
+
+  if (envelopeId === 'spark') {
+    bonus += avgDelta <= -0.5 ? 0.06 : 0;
+    bonus += sentenceDelta >= 1 ? 0.05 : 0;
+    bonus += directnessDelta >= 0.03 ? 0.04 : 0;
+    bonus += structuralSet.has('beat-swap') || structuralSet.has('pressure-tighten') || structuralSet.has('split-long-line') ? 0.05 : 0;
+  } else if (envelopeId === 'matron') {
+    bonus += avgDelta >= 0.7 ? 0.06 : 0;
+    bonus += sentenceDelta <= 0 ? 0.04 : 0;
+    bonus += abstractionDelta >= 0.02 ? 0.04 : 0;
+    bonus += structuralSet.has('pressure-current') || structuralSet.has('beat-merge') || structuralSet.has('connector-cascade') ? 0.05 : 0;
+  } else if (envelopeId === 'undertow') {
+    bonus += avgDelta >= 0.6 ? 0.05 : 0;
+    bonus += abstractionDelta >= 0.02 ? 0.03 : 0;
+    bonus += structuralSet.has('pressure-undertow') || structuralSet.has('connector-undertow') || structuralSet.has('beat-merge') ? 0.06 : 0;
+    bonus += lexicalSet.has('persona:suddenly->all-at-once') ? 0.03 : 0;
+  } else if (envelopeId === 'archivist' || envelopeId === 'methods-editor') {
+    bonus += abstractionDelta >= 0.03 ? 0.05 : 0;
+    bonus += contractionDelta <= -0.01 ? 0.04 : 0;
+    bonus += structuralSet.has('connector-ledger') || structuralSet.has('pressure-ledger') || structuralSet.has('ledger-merge') ? 0.06 : 0;
+    bonus += lexicalSet.has('persona:need-to->must') || lexicalSet.has('persona:showed->indicated') ? 0.03 : 0;
+  } else if (envelopeId === 'cross-examiner') {
+    bonus += avgDelta <= -0.4 ? 0.05 : 0;
+    bonus += directnessDelta >= 0.04 ? 0.05 : 0;
+    bonus += structuralSet.has('pivot-contrast') || structuralSet.has('pressure-tighten') || structuralSet.has('beat-swap') ? 0.06 : 0;
+    bonus += lexicalSet.has('persona:i-want-to-say->say-plainly') || lexicalSet.has('register:say-hi->tell-hi') ? 0.03 : 0;
+  }
+
+  if (['reflective-prose', 'narrative-scene'].includes(sourceClass) && structuralMovement >= 1 && lexicalMovement >= 1) {
+    bonus += 0.03;
+  }
+
+  return round(clamp01(bonus), 4);
 }
 
 function buildShellVariants(sourceProfile = {}, shell = {}, sourceClass = 'formal-correspondence') {
@@ -11151,6 +11365,9 @@ const NATIVE_CANDIDATE_FAMILIES = Object.freeze([
   Object.freeze({ id: 'register-lexicon', label: 'register-lexicon' }),
   Object.freeze({ id: 'cadence-connector', label: 'cadence-connector' }),
   Object.freeze({ id: 'order-beat', label: 'order-beat' }),
+  Object.freeze({ id: 'clause-pivot', label: 'clause-pivot' }),
+  Object.freeze({ id: 'persona-lexicon', label: 'persona-lexicon' }),
+  Object.freeze({ id: 'pressure-current', label: 'pressure-current' }),
   Object.freeze({ id: 'hybrid', label: 'hybrid' })
 ]);
 
@@ -11256,17 +11473,97 @@ function variantIntensity(variant = {}) {
   return 1;
 }
 
-function familyWeight(familyId = 'syntax-shape') {
+function familyWeight(familyId = 'syntax-shape', sourceClass = 'formal-correspondence', envelopeId = 'generic') {
+  const classWeights = {
+    'procedural-record': {
+      'syntax-shape': 1.12,
+      'register-lexicon': 0.94,
+      'cadence-connector': 0.92,
+      'order-beat': 0.88,
+      'clause-pivot': 1.04,
+      'persona-lexicon': 1.02,
+      'pressure-current': 0.9,
+      hybrid: 0.98
+    },
+    'formal-correspondence': {
+      'syntax-shape': 1.08,
+      'register-lexicon': 0.96,
+      'cadence-connector': 1.04,
+      'order-beat': 1,
+      'clause-pivot': 1,
+      'persona-lexicon': 1.06,
+      'pressure-current': 0.96,
+      hybrid: 1.06
+    },
+    'reflective-prose': {
+      'syntax-shape': 0.98,
+      'register-lexicon': 1,
+      'cadence-connector': 1,
+      'order-beat': 1,
+      'clause-pivot': 1.12,
+      'persona-lexicon': 1.08,
+      'pressure-current': 1.12,
+      hybrid: 1.08
+    },
+    'narrative-scene': {
+      'syntax-shape': 1,
+      'register-lexicon': 0.94,
+      'cadence-connector': 0.96,
+      'order-beat': 1.12,
+      'clause-pivot': 1.1,
+      'persona-lexicon': 0.98,
+      'pressure-current': 1.08,
+      hybrid: 1.06
+    }
+  };
+  const envelopeWeights = {
+    spark: {
+      'order-beat': 1.08,
+      'clause-pivot': 1.04,
+      'pressure-current': 1.04
+    },
+    matron: {
+      'pressure-current': 1.1,
+      'clause-pivot': 1.04,
+      hybrid: 1.04
+    },
+    undertow: {
+      'pressure-current': 1.12,
+      'clause-pivot': 1.05,
+      hybrid: 1.03
+    },
+    archivist: {
+      'clause-pivot': 1.08,
+      'persona-lexicon': 1.05,
+      'pressure-current': 1.04
+    },
+    'cross-examiner': {
+      'clause-pivot': 1.08,
+      'order-beat': 1.05,
+      'persona-lexicon': 1.04
+    }
+  };
+  const classWeight = classWeights[sourceClass]?.[familyId] ?? 1;
+  const envelopeWeight = envelopeWeights[envelopeId]?.[familyId] ?? 1;
   if (familyId === 'hybrid') {
-    return 1.18;
+    return 1.18 * classWeight * envelopeWeight;
   }
   if (familyId === 'order-beat') {
-    return 1.08;
+    return 1.08 * classWeight * envelopeWeight;
   }
   if (familyId === 'register-lexicon') {
-    return 0.94;
+    return 0.94 * classWeight * envelopeWeight;
   }
-  return 1;
+  if (familyId === 'clause-pivot') {
+    return 1.06 * classWeight * envelopeWeight;
+  }
+  if (familyId === 'persona-lexicon') {
+    return 1.02 * classWeight * envelopeWeight;
+  }
+  if (familyId === 'pressure-current') {
+    return 1.08 * classWeight * envelopeWeight;
+  }
+  return classWeight * envelopeWeight;
 }
 
 function replacementLimitForClass(sourceClass = 'formal-correspondence') {
@@ -11464,12 +11761,39 @@ function applyScenePersonaPulse(text = '', envelopeId = 'generic', sourceClass =
         working = next;
       }
     }
-  } else if (envelopeId === 'matron' || envelopeId === 'undertow') {
+  } else if (envelopeId === 'matron') {
+    replaceWithLedger(/\bhi\b/gi, 'hello', 'register:hi->hello', 1);
+    replaceWithLedger(/\bget more familiar with\b/gi, 'know better', 'register:get-more-familiar-with->know-better', 1);
+    replaceWithLedger(/\bI guess is what I(?: am|'m) trying to say\b/gi, 'that is what I am trying to say', 'register:i-guess-trying-to-say->that-is-what-i-am-trying-to-say', 1);
+    trimFiller(/\blol\b/gi, 'register:trim-lol');
+    trimFiller(/\byou know\??/gi, 'register:trim-you-know');
     working = normalizeText(
       working
         .replace(/\bAnd\s+I blame\b/g, 'I blame')
         .replace(/\bAnd\s+we have\b/g, 'We have')
         .replace(/\bAnd\s+keep\b/g, 'Keep')
+    );
+  } else if (envelopeId === 'undertow') {
+    replaceWithLedger(/\bget more familiar with\b/gi, 'know better', 'register:get-more-familiar-with->know-better', 1);
+    replaceWithLedger(/\bI guess is what I(?: am|'m) trying to say\b/gi, 'that is what I am trying to say', 'register:i-guess-trying-to-say->that-is-what-i-am-trying-to-say', 1);
+    trimFiller(/\blol\b/gi, 'register:trim-lol');
+    trimFiller(/\byou know\??/gi, 'register:trim-you-know');
+    working = normalizeText(
+      working
+        .replace(/\bAnd\s+I blame\b/g, 'I blame')
+        .replace(/\bAnd\s+we have\b/g, 'We have')
+        .replace(/\bAnd\s+keep\b/g, 'Keep')
+        .replace(/\bWhile\s+keep\b/g, 'Keep')
+        .replace(/\bWhile\s+we have\b/g, 'We have')
+        .replace(/\bWhile\s+it is\b/g, 'It is')
+        .replace(/\bWhile\s+i am\b/gi, 'I am')
+        .replace(/,\s+while\s+keep\b/gi, ', and keep')
+        .replace(/,\s+while\s+we have\b/gi, ', and we have')
+        .replace(/,\s+while\s+call\b/gi, ', and call')
+        .replace(/,\s+while\s+meet\b/gi, ', and meet')
+        .replace(/,\s+while\s+i\b/gi, ', and I')
+        .replace(/,\s+while\s+it\b/gi, ', and it')
+        .replace(/,,+/g, ',')
     );
   }
 
@@ -11641,7 +11965,6 @@ function applyExpandedSurfaceRewrite(text = '', targetProfile = {}, sourceProfil
     { pattern: /\bive\b/gi, replacement: 'I have', label: 'expanded:ive->i-have' },
     { pattern: /\bill\b/gi, replacement: 'I will', label: 'expanded:ill->i-will' },
     { pattern: /\bthats\b/gi, replacement: 'that is', label: 'expanded:thats->that-is' },
-    { pattern: /\bits\b/gi, replacement: 'it is', label: 'expanded:its->it-is' },
     { pattern: /\bcant\b/gi, replacement: 'cannot', label: 'expanded:cant->cannot' },
     { pattern: /\bwont\b/gi, replacement: 'will not', label: 'expanded:wont->will-not' }
   ];
@@ -11714,6 +12037,66 @@ function frontClauseSentence(sentence = '', context = {}) {
   return normalized;
 }
 
+function pivotLeadForEnvelope(envelopeId = 'generic') {
+  if (envelopeId === 'cross-examiner') {
+    return 'Yet';
+  }
+  if (envelopeId === 'archivist' || envelopeId === 'methods-editor') {
+    return 'However';
+  }
+  if (envelopeId === 'undertow') {
+    return 'But then';
+  }
+  if (envelopeId === 'matron') {
+    return 'Still';
+  }
+  return 'But';
+}
+
+function pivotContrastSentence(sentence = '', envelopeId = 'generic', context = {}) {
+  const normalized = normalizeText(sentence);
+  const match = normalized.match(/^(.+?),\s+(but|yet|though)\s+(.+)$/i);
+  if (!match) {
+    return normalized;
+  }
+  const left = trimSentenceEnding(match[1]);
+  const right = trimSentenceEnding(match[3]);
+  if (sentenceWordCount(left) < 3 || sentenceWordCount(right) < 3) {
+    return normalized;
+  }
+  (context.structuralOperations || []).push('pivot-contrast');
+  return `${finalizeSentence(`${pivotLeadForEnvelope(envelopeId)} ${lowerLeadingAlpha(right)}`)} ${finalizeSentence(left)}`;
+}
+
+function applyClausePivotRewrite(paragraph = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
+  const sentences = splitSentencesPreserve(paragraph);
+  if (!sentences.length) {
+    return paragraph;
+  }
+
+  return sentences.map((sentence) => {
+    const fronted = frontClauseSentence(sentence, context);
+    if (fronted !== sentence) {
+      return fronted;
+    }
+
+    let pivoted = pivotContrastSentence(sentence, envelopeId, context);
+    if (pivoted !== sentence) {
+      return pivoted;
+    }
+
+    if (['spark', 'cross-examiner'].includes(envelopeId) && ['reflective-prose', 'narrative-scene'].includes(sourceClass)) {
+      pivoted = splitSceneBursts(splitForClippedMomentum(sentence));
+      if (pivoted !== sentence) {
+        (context.structuralOperations || []).push('pivot-burst');
+        return pivoted;
+      }
+    }
+
+    return sentence;
+  }).join(' ');
+}
+
 function applySyntaxShapeRewrite(paragraph = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
   const sentences = splitSentencesPreserve(paragraph);
   if (!sentences.length) {
@@ -11742,6 +12125,160 @@ function applySyntaxShapeRewrite(paragraph = '', envelopeId = 'generic', sourceC
   }
 
   return sentences.map((sentence) => frontClauseSentence(sentence, context)).join(' ');
+}
+
+function applyPersonaLexiconRewrite(paragraph = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
+  let working = applyLexicalRegisterRewrite(paragraph, envelopeId, sourceClass, context);
+  const limit = Math.max(1, replacementLimitForClass(sourceClass));
+
+  if (envelopeId === 'spark') {
+    if (['reflective-prose', 'narrative-scene'].includes(sourceClass)) {
+      working = applyReplacementRule(working, /\bI want to\b/gi, 'I wanna', {
+        limit: 2,
+        label: 'persona:i-want-to->i-wanna',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+      working = applyReplacementRule(working, /\bjust want to\b/gi, 'just wanna', {
+        limit: 1,
+        label: 'persona:just-want-to->just-wanna',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+      working = applyReplacementRule(working, /\bI must keep reminding myself\b/gi, 'I keep telling myself', {
+        limit: sourceClass === 'narrative-scene' ? 1 : 0,
+        label: 'persona:i-must-keep-reminding-myself->i-keep-telling-myself',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+      working = applyReplacementRule(working, /\bOn the ready\b/gi, 'Ready', {
+        limit: sourceClass === 'narrative-scene' ? 1 : 0,
+        label: 'persona:on-the-ready->ready',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+      working = applyReplacementRule(working, /\bsuddenly\b/gi, 'all at once', {
+        limit: sourceClass === 'narrative-scene' ? 1 : 0,
+        label: 'persona:suddenly->all-at-once',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+    }
+    working = applyReplacementRule(working, /\bneed to\b/gi, sourceClass === 'procedural-record' ? 'need to' : 'got to', {
+      limit: sourceClass === 'procedural-record' ? 0 : 1,
+      label: 'persona:need-to->got-to',
+      family: 'persona',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  } else if (envelopeId === 'matron') {
+    working = applyReplacementRule(working, /\bneed to\b/gi, 'have to', {
+      limit: Math.min(limit, 2),
+      label: 'persona:need-to->have-to',
+      family: 'persona',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = applyReplacementRule(working, /\bokay\b/gi, 'all right', {
+      limit: 1,
+      label: 'persona:okay->all-right',
+      family: 'persona',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    if (['procedural-record', 'formal-correspondence'].includes(sourceClass)) {
+      working = applyReplacementRule(working, /\bregarding\b/gi, 'about', {
+        limit: 1,
+        label: 'persona:regarding->about',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+      working = applyReplacementRule(working, /\bprior\b/gi, 'earlier', {
+        limit: 1,
+        label: 'persona:prior->earlier',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+      working = applyReplacementRule(working, /\bremains\b/gi, 'stays', {
+        limit: 1,
+        label: 'persona:remains->stays',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+      working = applyReplacementRule(working, /\binstructed\b/gi, 'told', {
+        limit: 1,
+        label: 'persona:instructed->told',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+      working = working.replace(/\bA earlier\b/g, 'An earlier');
+    }
+  } else if (envelopeId === 'undertow') {
+    working = applyReplacementRule(working, /\bI guess\b/gi, 'maybe', {
+      limit: 1,
+      label: 'persona:i-guess->maybe',
+      family: 'persona',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    if (sourceClass === 'narrative-scene') {
+      working = applyReplacementRule(working, /\bsuddenly\b/gi, 'all at once', {
+        limit: 1,
+        label: 'persona:suddenly->all-at-once',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+    }
+  } else if (envelopeId === 'archivist' || envelopeId === 'methods-editor') {
+    working = applyReplacementRule(working, /\bneed to\b/gi, 'must', {
+      limit: Math.min(limit, 2),
+      label: 'persona:need-to->must',
+      family: 'persona',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = applyReplacementRule(working, /\bshowed\b/gi, 'indicated', {
+      limit: 1,
+      label: 'persona:showed->indicated',
+      family: 'persona',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = applyReplacementRule(working, /\bstart\b/gi, sourceClass === 'procedural-record' ? 'begin' : 'start', {
+      limit: sourceClass === 'procedural-record' ? 1 : 0,
+      label: 'persona:start->begin',
+      family: 'persona',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  } else if (envelopeId === 'cross-examiner') {
+    working = applyReplacementRule(working, /\bI want to say\b/gi, 'I want to say plainly', {
+      limit: ['reflective-prose', 'narrative-scene'].includes(sourceClass) ? 1 : 0,
+      label: 'persona:i-want-to-say->say-plainly',
+      family: 'persona',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = applyReplacementRule(working, /\bOn the ready\b/gi, 'Ready', {
+      limit: sourceClass === 'narrative-scene' ? 1 : 0,
+      label: 'persona:on-the-ready->ready',
+      family: 'persona',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+  }
+
+  return working;
 }
 
 function applyLexicalRegisterRewrite(paragraph = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
@@ -12023,6 +12560,54 @@ function applyOrderBeatRewrite(paragraph = '', envelopeId = 'generic', sourceCla
   return workingSentences.join(' ');
 }
 
+function pressureLinkerFor(envelopeId = 'generic', sourceClass = 'formal-correspondence') {
+  if (envelopeId === 'matron') {
+    return sourceClass === 'procedural-record' ? '; ' : ', and ';
+  }
+  if (envelopeId === 'undertow') {
+    return sourceClass === 'procedural-record' ? '; while ' : ', while ';
+  }
+  if (envelopeId === 'archivist' || envelopeId === 'methods-editor') {
+    return '; ';
+  }
+  return chooseMergeLinker(envelopeId, sourceClass);
+}
+
+function applyPressureCurrentRewrite(paragraph = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
+  const sentences = splitSentencesPreserve(paragraph);
+  if (!sentences.length) {
+    return paragraph;
+  }
+
+  if (['spark', 'cross-examiner', 'operator'].includes(envelopeId)) {
+    const tightened = sentences.map((sentence) => {
+      let next = applyClausePivotRewrite(sentence, envelopeId, sourceClass, context);
+      next = splitForClippedMomentum(next);
+      if (['reflective-prose', 'narrative-scene'].includes(sourceClass)) {
+        next = splitSceneBursts(next);
+      }
+      return next;
+    }).join(' ');
+    if (normalizeComparable(tightened) !== normalizeComparable(paragraph)) {
+      (context.structuralOperations || []).push('pressure-tighten');
+    }
+    return tightened;
+  }
+
+  const pivoted = sentences.map((sentence) => applyClausePivotRewrite(sentence, envelopeId, sourceClass, context));
+  const merged = mergeForLongCurrent(pivoted, pressureLinkerFor(envelopeId, sourceClass));
+  if (merged.length !== sentences.length) {
+    (context.structuralOperations || []).push(
+      envelopeId === 'archivist' || envelopeId === 'methods-editor'
+        ? 'pressure-ledger'
+        : envelopeId === 'undertow'
+          ? 'pressure-undertow'
+          : 'pressure-current'
+    );
+  }
+  return merged.join(' ');
+}
+
 function applyHybridBalance(paragraph = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
   let working = applySyntaxShapeRewrite(paragraph, envelopeId, sourceClass, context);
   working = applyConnectorRewrite(working, envelopeId, sourceClass, context);
@@ -12126,9 +12711,10 @@ function computeCandidateTransferClass(candidate = {}) {
   return 'weak';
 }
 
-function buildPlanSummary(candidate = null) {
+function buildPlanSummary(candidate = null, candidateLedger = [], testedFamilyIds = []) {
   return Object.freeze({
     relationInventory: candidate?.relationInventory || {},
+    testedFamilyIds: Object.freeze([...new Set((testedFamilyIds || []).filter(Boolean))]),
     structuralOperationsSelected: Object.freeze([...(candidate?.structuralOperations || [])]),
     lexicalRegisterOperationsSelected: Object.freeze([...(candidate?.lexicalOperations || [])]),
     connectorStrategy: candidate?.connectorStrategy || 'balanced',
@@ -12150,6 +12736,7 @@ function buildRetrievalTraceV2({
   sourceClass = 'formal-correspondence',
   candidate = null,
   candidateLedger = [],
+  testedFamilyIds = [],
   generationDocket = null,
   donorProgress = {}
 } = {}) {
@@ -12159,7 +12746,7 @@ function buildRetrievalTraceV2({
     generatorVersion: 'v2',
     semanticAudit: candidate?.semanticAudit || {},
     protectedAnchorAudit: candidate?.protectedAnchorAudit || {},
-    planSummary: buildPlanSummary(candidate),
+    planSummary: buildPlanSummary(candidate, candidateLedger, testedFamilyIds),
     candidateSummary: buildCandidateSummary(candidateLedger, generationDocket),
     realizationSummary: Object.freeze({
       transferClass: candidate?.transferClass || 'held',
@@ -12245,6 +12832,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
           contractionStrategy: 'preserve'
         }),
         candidateLedger,
+        testedFamilyIds: ['native'],
         generationDocket
       })
     : null;
@@ -12330,7 +12918,7 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     targetProfile: variant.shell?.profile || null,
     sourceProfile,
     sourceClass,
-    intensity: variantIntensity(variant) * familyWeight(familyId)
+    intensity: variantIntensity(variant) * familyWeight(familyId, sourceClass, variant.envelopeId)
   };
 
   const rewrittenParagraphs = paragraphs.map((paragraph) => {
@@ -12344,6 +12932,12 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
       working = applyConnectorRewrite(working, variant.envelopeId, sourceClass, context);
     } else if (familyId === 'order-beat') {
       working = applyOrderBeatRewrite(working, variant.envelopeId, sourceClass, context);
+    } else if (familyId === 'clause-pivot') {
+      working = applyClausePivotRewrite(working, variant.envelopeId, sourceClass, context);
+    } else if (familyId === 'persona-lexicon') {
+      working = applyPersonaLexiconRewrite(working, variant.envelopeId, sourceClass, context);
+    } else if (familyId === 'pressure-current') {
+      working = applyPressureCurrentRewrite(working, variant.envelopeId, sourceClass, context);
     } else {
       working = applyHybridBalance(working, variant.envelopeId, sourceClass, context);
     }
@@ -12378,9 +12972,14 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     restoreProceduralWitnessTerms(sourceText, outputText, sourceClass)
   );
   outputText = sanitizeV2Surface(outputText, {
-    preserveLowercaseLeads: Number(context.targetProfile?.orthographicLooseness || 0) >=
-      Math.max(0.06, Number(sourceProfile?.orthographicLooseness || 0) + 0.04)
+    preserveLowercaseLeads:
+      ['procedural-record', 'formal-correspondence'].includes(sourceClass) &&
+      Number(context.targetProfile?.orthographicLooseness || 0) >=
+        Math.max(0.06, Number(sourceProfile?.orthographicLooseness || 0) + 0.04)
   });
+  outputText = outputText
+    .replace(/;\s+(?=[A-Z])/g, '. ')
+    .replace(/,,+/g, ',');
 
   return Object.freeze({
     outputText,
@@ -12465,6 +13064,14 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     changedDimensions,
     authored.lexemeSwaps
   );
+  const artifactAudit = buildArtifactAudit({
+    sourceText,
+    outputText,
+    sourceClass,
+    envelopeId: variant.envelopeId,
+    targetProfile: variant.shell?.profile || null,
+    sourceProfile
+  });
   const targetProfile = variant.shell.profile || null;
   const targetFit = computeTargetFit(outputProfile, targetProfile);
   const donorProgress = variant.shell?.mode === 'borrowed'
@@ -12484,7 +13091,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   const exactPass = hardIntegrityScore >= 1;
   const protectedAnchorPass = protectedAnchorIntegrity >= classProtectedAnchorFloor(sourceClass);
   const pathologyPass = !pathologies.severe;
-  const rewritePass = rewriteStrength >= classRewriteBar(sourceClass);
+  const rewritePass = meetsLandedRewriteBar(sourceClass, rewriteStrength, changedDimensions, authored.lexemeSwaps);
   const passed = exactPass && protectedAnchorPass && semanticPass && pathologyPass && rewritePass;
   const polarityPenalty = Math.max(0, polarityMismatches - 1) * 0.12;
   const tensePenalty = Math.max(0, tenseMismatches - 1) * 0.04;
@@ -12495,6 +13102,17 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
       ? 0.08
       : 0;
   const boundedPenalty = semanticsBounded ? 0 : 0.18;
+  const familyBonus = familySelectionBonus(sourceClass, family.id, variant.envelopeId);
+  const distinctnessBonus = personaDistinctnessBonus({
+    envelopeId: variant.envelopeId,
+    sourceProfile,
+    outputProfile,
+    sourceClass,
+    structuralOperations: authored.structuralOperations,
+    lexicalOperations: authored.lexicalOperations,
+    changedDimensions,
+    lexemeSwaps: authored.lexemeSwaps
+  });
   const score = round(
     (rewriteStrength * 0.52) +
     (targetFit * 0.24) +
@@ -12502,6 +13120,9 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     ((Number(donorProgress?.donorImprovementRatio || 0)) * 0.08) +
     (Number(classification.movementConfidence || 0) * 0.12) +
     (Number(witnessAudit.softWitnessIntegrity ?? 1) * 0.08) +
+    familyBonus +
+    distinctnessBonus -
+    artifactAudit.penalty +
     (visibleShift ? 0.04 : 0) -
       polarityPenalty -
       tensePenalty -
@@ -12553,6 +13174,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     apertureReview,
     classification,
     pathologies,
+    artifactAudit,
     visibleShift,
     nonTrivialShift,
     rewriteStrength,
@@ -12596,6 +13218,7 @@ function buildCandidateLedger(candidates = [], landedId = null) {
     targetFit: candidate.targetFit,
     movementConfidence: Number(candidate.classification?.movementConfidence || 0),
     failureReasons: Object.freeze([...(candidate.failureReasons || [])]),
+    artifactFlags: Object.freeze([...(candidate.artifactAudit?.flags || [])]),
     transferClass: candidate.transferClass || 'weak',
     outputPreview: String(candidate.outputText || '').slice(0, 160)
   })));
@@ -12635,6 +13258,14 @@ function candidateSemanticBounded(candidate = null) {
   return semanticAuditBounded(candidate?.semanticAudit || {});
 }
 
+function candidateFamilyPriority(candidate = null) {
+  return familyWeight(
+    String(candidate?.family || 'syntax-shape'),
+    String(candidate?.sourceClass || 'formal-correspondence'),
+    String(candidate?.envelopeId || 'generic')
+  );
+}
+
 function holdHeadline(holdClass = 'below-rewrite-bar') {
   if (holdClass === 'hard-anchor-failure') {
     return 'Generator V2 hold // exact witness anchors broke under rewrite pressure.';
@@ -12646,6 +13277,23 @@ function holdHeadline(holdClass = 'below-rewrite-bar') {
     return 'Generator V2 hold // output collapsed into a render-unsafe form.';
   }
   return 'Generator V2 hold // no candidate cleared the rewrite bar honestly.';
+}
+
+function explainGenerationReasonCode(code = '') {
+  const explanations = {
+    'hard-anchor-failure': 'Exact witness anchors broke under rewrite pressure.',
+    'anchor-drift-detected': 'Protected anchor integrity slipped below the class floor.',
+    'semantic-failure': 'Semantic coverage dropped below the class floor.',
+    'pathology': 'The output collapsed into a render-unsafe form.',
+    'below-rewrite-bar': 'No candidate cleared the rewrite bar honestly.',
+    'artifact:lowercase-lead': 'Lowercase sentence starts made the surface look unstable.',
+    'artifact:doubled-connector': 'Repeated connectors flattened the sentence current.',
+    'artifact:semicolon-fracture': 'Semicolon fracture broke the line into awkward ledger fragments.',
+    'artifact:repeated-helper': 'Repeated helper verbs made the rewrite sound mechanically looped.',
+    'artifact:malformed-contraction': 'Malformed contraction artifacts made the rewrite unsafe to publish.',
+    'artifact:fragment': 'Clause fragments created by rewrite passes made the surface too thin to trust.'
+  };
+  return explanations[code] || '';
 }
 
 function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidate = null, sourceClass = 'formal-correspondence', candidates = []) {
@@ -12691,6 +13339,7 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
         sourceClass,
         candidate: chosen,
         candidateLedger,
+        testedFamilyIds: options.testedFamilyIds || candidates.map((entry) => entry.family),
         generationDocket,
         donorProgress: chosen.donorProgress || {}
       })
@@ -12761,10 +13410,15 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
   const bestCandidate = [...candidates].sort((left, right) => right.score - left.score)[0] || null;
   const holdClass = candidateHoldClass(bestCandidate);
   const headline = holdHeadline(holdClass);
-  const reasons = uniqueStrings([
-    ...(bestCandidate?.apertureReview?.reasons || []),
-    ...(bestCandidate?.failureReasons || [])
+  const reasonCodes = uniqueStrings([
+    ...(bestCandidate?.failureReasons || []),
+    ...((bestCandidate?.artifactAudit?.flags || []))
   ]);
+  const noteReasons = uniqueStrings([
+    ...reasonCodes.map((code) => explainGenerationReasonCode(code)).filter(Boolean),
+    ...(bestCandidate?.apertureReview?.reasons || [])
+  ]);
+  const reasons = reasonCodes.length ? reasonCodes : Object.freeze([holdClass]);
   const candidateLedger = buildCandidateLedger(candidates, null);
   const candidateSuppression = candidateLedger.length
     ? round(candidateLedger.filter((entry) => entry.status === 'held').length / candidateLedger.length, 4)
@@ -12800,6 +13454,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
         sourceClass,
         candidate: bestCandidate,
         candidateLedger,
+        testedFamilyIds: options.testedFamilyIds || candidates.map((entry) => entry.family),
         generationDocket,
         donorProgress: bestCandidate?.donorProgress || {}
       })
@@ -12819,7 +13474,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     donorProgress: bestCandidate?.donorProgress || {},
     transferClass: 'held',
     qualityGatePassed: false,
-    notes: uniqueStrings([headline, ...reasons]),
+    notes: uniqueStrings([headline, ...noteReasons]),
     effectiveMod: shell.mod || cadenceModFromProfile(shell.profile || sourceProfile),
     realizationTier: 'hold',
     lexicalShiftProfile: bestCandidate?.lexicalShiftProfile || {
@@ -12883,6 +13538,7 @@ function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
   const sourceClass = classifyV2SourceClass(sourceText);
   const sourceProfile = extractCadenceProfile(sourceText);
   const hardAnchors = extractHardAnchors(sourceText);
+  const testedFamilyIds = NATIVE_CANDIDATE_FAMILIES.map((family) => family.id);
   const sourceIR = segmentTextToIR(sourceText, {
     literals: Object.freeze(hardAnchors.map((value) => Object.freeze({ value }))),
     text: sourceText
@@ -12905,13 +13561,16 @@ function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
   const selected = [...selectionPool]
     .sort((left, right) =>
       candidateTransferRank(right) - candidateTransferRank(left) ||
+      candidateFamilyPriority(right) - candidateFamilyPriority(left) ||
       right.score - left.score ||
-      right.rewriteStrength - left.rewriteStrength
+      right.rewriteStrength - left.rewriteStrength ||
+      String(left.id || '').localeCompare(String(right.id || ''))
     )[0] || null;
 
   if (!selected) {
     return buildHeldTransfer(sourceText, shell, {
       ...options,
+      testedFamilyIds,
       sourceProfile,
       sourceIR
     }, candidates, sourceClass);
@@ -12919,6 +13578,7 @@ function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
 
   return buildLandedTransfer(sourceText, shell, {
     ...options,
+    testedFamilyIds,
     sourceProfile,
     sourceIR
   }, selected, sourceClass, candidates);

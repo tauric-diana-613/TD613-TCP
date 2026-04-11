@@ -145,6 +145,16 @@
         "clauseCount": 8,
         "exactAnchorCount": 0
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
         "split-long-line"
       ],
@@ -156,10 +166,11 @@
       "contractionStrategy": "contract"
     },
     "candidateSummary": {
-      "candidateCount": 1,
+      "candidateCount": 2,
       "landedCandidateId": "base:syntax-shape",
       "families": [
-        "syntax-shape"
+        "syntax-shape",
+        "clause-pivot"
       ],
       "holdStatus": "landed"
     },
@@ -200,11 +211,26 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 0.9417,
+        "score": 1.1081,
         "rewriteStrength": 1,
         "targetFit": 0.1675,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
+        "transferClass": "structural",
+        "outputPreview": "the proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. first, the team will complete a shared cataloging "
+      },
+      {
+        "id": "base:clause-pivot",
+        "family": "clause-pivot",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.7739,
+        "rewriteStrength": 1,
+        "targetFit": 0.1833,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "the proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. first, the team will complete a shared cataloging "
       }
@@ -214,7 +240,7 @@
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 1,
+      "candidateCount": 2,
       "winningCandidateId": "base:syntax-shape"
     },
     "winningCandidateId": "base:syntax-shape"

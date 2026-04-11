@@ -57,7 +57,7 @@
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -85,6 +85,16 @@
         "clauseCount": 3,
         "exactAnchorCount": 0
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
         "merge-short-beats"
       ],
@@ -93,12 +103,11 @@
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
-      "candidateCount": 3,
+      "candidateCount": 2,
       "landedCandidateId": "base:syntax-shape",
       "families": [
         "syntax-shape",
-        "register-lexicon",
-        "hybrid"
+        "register-lexicon"
       ],
       "holdStatus": "landed"
     },
@@ -120,9 +129,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.475,
-      "outputDonorDistance": 4.398,
-      "donorImprovement": 0.077,
-      "donorImprovementRatio": 0.017,
+      "outputDonorDistance": 3.264,
+      "donorImprovement": 1.211,
+      "donorImprovementRatio": 0.271,
       "sourceOutputLexicalOverlap": 0.97
     },
     "candidateLedger": [
@@ -131,11 +140,12 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.7137,
+        "score": 1.1261,
         "rewriteStrength": 0.9291,
-        "targetFit": 0.2953,
+        "targetFit": 0.4908,
         "movementConfidence": 0.96,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "Rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
       },
@@ -144,28 +154,14 @@
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.7391,
-        "rewriteStrength": 0.736,
-        "targetFit": 0.4271,
+        "score": 0.4324,
+        "rewriteStrength": 0.196,
+        "targetFit": 0.4047,
         "movementConfidence": 0.08,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "surface",
-        "outputPreview": "Rs-17 is doing the fake-safe thing again; Prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
-      },
-      {
-        "id": "base:hybrid",
-        "family": "hybrid",
-        "envelopeId": "matron",
-        "status": "held",
-        "score": 0.7519,
-        "rewriteStrength": 0.9573,
-        "targetFit": 0.3148,
-        "movementConfidence": 0.96,
-        "failureReasons": [
-          "semantic-failure"
-        ],
-        "transferClass": "structural",
-        "outputPreview": "Rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
+        "outputPreview": "Rs-17 is doing the fake-safe thing again. Prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
       }
     ],
     "generationDocket": {
@@ -173,7 +169,7 @@
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 3,
+      "candidateCount": 2,
       "winningCandidateId": "base:syntax-shape"
     },
     "winningCandidateId": "base:syntax-shape"

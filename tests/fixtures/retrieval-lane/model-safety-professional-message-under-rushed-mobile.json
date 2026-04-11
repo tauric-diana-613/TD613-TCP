@@ -109,6 +109,16 @@
         "clauseCount": 5,
         "exactAnchorCount": 2
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
         "split-long-line"
       ],
@@ -171,11 +181,12 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.1354,
+        "score": 1.3018,
         "rewriteStrength": 1,
         "targetFit": 0.5417,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. and the run had"
       }

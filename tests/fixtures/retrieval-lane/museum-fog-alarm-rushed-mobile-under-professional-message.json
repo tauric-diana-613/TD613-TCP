@@ -24,7 +24,7 @@
     "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
-      "actorCoverage": 0.816,
+      "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.95,
       "polarityMismatches": 1,
@@ -53,7 +53,7 @@
           "polarityMismatch": 1,
           "tenseMismatch": 0,
           "bagScore": 0.5,
-          "globalBagScore": 0.182
+          "globalBagScore": 0.167
         },
         {
           "sourceClauseId": "s2c0",
@@ -69,15 +69,15 @@
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s0c1+s1c0",
           "propositionCoverage": 1,
-          "actorCoverage": 0.082,
+          "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0.091
+          "bagScore": 0.2,
+          "globalBagScore": 0.182
         },
         {
           "sourceClauseId": "s3c0",
@@ -88,8 +88,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.429,
-          "globalBagScore": 0.333
+          "bagScore": 0.375,
+          "globalBagScore": 0.3
         }
       ],
       "sourceClauseCount": 5,
@@ -109,25 +109,35 @@
         "clauseCount": 5,
         "exactAnchorCount": 3
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
         "merge-short-beats",
         "front-when"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:pls->please",
-        "expanded:bc->because",
-        "expanded:its->it-is"
+        "expanded:bc->because"
       ],
       "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
-      "candidateCount": 4,
+      "candidateCount": 5,
       "landedCandidateId": "base:hybrid",
       "families": [
         "syntax-shape",
         "register-lexicon",
         "order-beat",
+        "clause-pivot",
         "hybrid"
       ],
       "holdStatus": "landed"
@@ -155,11 +165,6 @@
           "from": "bc",
           "to": "because",
           "family": "surface"
-        },
-        {
-          "from": "its",
-          "to": "it is",
-          "family": "surface"
         }
       ],
       "visibleShift": true,
@@ -168,10 +173,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.615,
-      "outputDonorDistance": 1.487,
-      "donorImprovement": 3.128,
-      "donorImprovementRatio": 0.678,
-      "sourceOutputLexicalOverlap": 0.826
+      "outputDonorDistance": 1.584,
+      "donorImprovement": 3.031,
+      "donorImprovementRatio": 0.657,
+      "sourceOutputLexicalOverlap": 0.886
     },
     "candidateLedger": [
       {
@@ -179,11 +184,12 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.4208,
+        "score": 1.508,
         "rewriteStrength": 1,
-        "targetFit": 0.7423,
+        "targetFit": 0.726,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"ligh"
       },
@@ -192,39 +198,56 @@
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.3763,
-        "rewriteStrength": 1,
-        "targetFit": 0.7044,
-        "movementConfidence": 1,
+        "score": 1.298,
+        "rewriteStrength": 0.9646,
+        "targetFit": 0.6242,
+        "movementConfidence": 0.94,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42; Not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"light wa"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"light wa"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.411,
+        "score": 1.5483,
         "rewriteStrength": 1,
-        "targetFit": 0.7339,
+        "targetFit": 0.7176,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burs"
+      },
+      {
+        "id": "base:clause-pivot",
+        "family": "clause-pivot",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 1.3274,
+        "rewriteStrength": 0.9684,
+        "targetFit": 0.6409,
+        "movementConfidence": 0.94,
+        "failureReasons": [],
+        "artifactFlags": [],
+        "transferClass": "structural",
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burst no"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 1.428,
+        "score": 1.5329,
         "rewriteStrength": 1,
-        "targetFit": 0.7485,
+        "targetFit": 0.7322,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When it is basically a fog bu"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burs"
       }
     ],
     "generationDocket": {
@@ -232,7 +255,7 @@
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
+      "candidateCount": 5,
       "winningCandidateId": "base:hybrid"
     },
     "winningCandidateId": "base:hybrid"
@@ -264,13 +287,12 @@
     ],
     "lexicalOperations": [
       "expanded:bc->because",
-      "expanded:its->it-is",
       "expanded:pls->please"
     ],
     "connectorStrategy": "cascade",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
-    "actorCoverage": 0.816,
+    "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.95,
     "polarityMismatches": 1,

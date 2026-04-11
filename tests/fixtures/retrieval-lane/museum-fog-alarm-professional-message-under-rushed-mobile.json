@@ -26,7 +26,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.95,
+      "objectCoverage": 0.91,
       "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -40,7 +40,7 @@
           "objectCoverage": 1,
           "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 0.8,
+          "bagScore": 0.4,
           "globalBagScore": 0.174
         },
         {
@@ -57,19 +57,19 @@
         },
         {
           "sourceClauseId": "s1c1",
-          "matchedClauseId": "s3c0+s3c1",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.8,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.304
+          "bagScore": 0,
+          "globalBagScore": 0.25
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s4c0",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -81,7 +81,7 @@
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s4c1",
+          "matchedClauseId": "s3c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -93,7 +93,7 @@
         }
       ],
       "sourceClauseCount": 5,
-      "outputClauseCount": 9
+      "outputClauseCount": 8
     },
     "protectedAnchorAudit": {
       "totalAnchors": 3,
@@ -109,8 +109,18 @@
         "clauseCount": 5,
         "exactAnchorCount": 3
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
-        "split-long-line"
+        "pivot-contrast"
       ],
       "lexicalRegisterOperationsSelected": [
         "compressed:please->pls",
@@ -121,10 +131,11 @@
       "contractionStrategy": "contract"
     },
     "candidateSummary": {
-      "candidateCount": 1,
-      "landedCandidateId": "base:syntax-shape",
+      "candidateCount": 2,
+      "landedCandidateId": "base:clause-pivot",
       "families": [
-        "syntax-shape"
+        "syntax-shape",
+        "clause-pivot"
       ],
       "holdStatus": "landed"
     },
@@ -136,6 +147,7 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "sentence-spread",
         "register-mode",
         "abbreviation-posture",
         "orthography-posture"
@@ -158,9 +170,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.615,
-      "outputDonorDistance": 2.924,
-      "donorImprovement": 1.691,
-      "donorImprovementRatio": 0.366,
+      "outputDonorDistance": 3.325,
+      "donorImprovement": 1.29,
+      "donorImprovementRatio": 0.28,
       "sourceOutputLexicalOverlap": 0.941
     },
     "candidateLedger": [
@@ -168,14 +180,29 @@
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "spark",
-        "status": "selected",
-        "score": 1.1497,
+        "status": "eligible",
+        "score": 1.3193,
         "rewriteStrength": 1,
         "targetFit": 0.5303,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "production team, quick correction from Gallery 4. the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. facilities reset the panel and w"
+      },
+      {
+        "id": "base:clause-pivot",
+        "family": "clause-pivot",
+        "envelopeId": "spark",
+        "status": "selected",
+        "score": 1.1918,
+        "rewriteStrength": 1,
+        "targetFit": 0.4611,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "artifactFlags": [],
+        "transferClass": "structural",
+        "outputPreview": "production team, quick correction from Gallery 4. the fog cue at 7:42 PM is what tripped the detector, not an electrical issue, but the real problem is that the"
       }
     ],
     "generationDocket": {
@@ -183,10 +210,10 @@
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 1,
-      "winningCandidateId": "base:syntax-shape"
+      "candidateCount": 2,
+      "winningCandidateId": "base:clause-pivot"
     },
-    "winningCandidateId": "base:syntax-shape"
+    "winningCandidateId": "base:clause-pivot"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -196,7 +223,8 @@
       "orthography-posture",
       "register-mode",
       "sentence-count",
-      "sentence-mean"
+      "sentence-mean",
+      "sentence-spread"
     ],
     "lexemeSwapFamilies": [
       "surface"
@@ -209,7 +237,7 @@
       "sourceClass:procedural-record"
     ],
     "structuralOperations": [
-      "split-long-line"
+      "pivot-contrast"
     ],
     "lexicalOperations": [
       "compressed:please->pls",
@@ -221,7 +249,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.95,
+    "objectCoverage": 0.91,
     "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

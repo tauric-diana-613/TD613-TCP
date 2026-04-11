@@ -41,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.143
+          "globalBagScore": 0.137
         },
         {
           "sourceClauseId": "s1c0",
@@ -53,7 +53,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.122
+          "globalBagScore": 0.118
         },
         {
           "sourceClauseId": "s1c1",
@@ -64,8 +64,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.041
+          "bagScore": 0.333,
+          "globalBagScore": 0.039
         },
         {
           "sourceClauseId": "s2c0",
@@ -77,11 +77,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.102
+          "globalBagScore": 0.098
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s4c0+s5c0",
+          "matchedClauseId": "s3c0+s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -89,11 +89,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.5,
-          "globalBagScore": 0.058
+          "globalBagScore": 0.056
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s6c0",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -101,11 +101,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.041
+          "globalBagScore": 0.039
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s7c0+s8c0",
+          "matchedClauseId": "s6c0+s7c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -113,11 +113,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.122
+          "globalBagScore": 0.118
         },
         {
           "sourceClauseId": "s6c0",
-          "matchedClauseId": "s10c0",
+          "matchedClauseId": "s9c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -125,11 +125,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.714,
-          "globalBagScore": 0.122
+          "globalBagScore": 0.118
         },
         {
           "sourceClauseId": "s7c0",
-          "matchedClauseId": "s12c0+s13c0",
+          "matchedClauseId": "s11c0+s12c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -137,11 +137,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.875,
-          "globalBagScore": 0.143
+          "globalBagScore": 0.137
         }
       ],
       "sourceClauseCount": 9,
-      "outputClauseCount": 15
+      "outputClauseCount": 14
     },
     "protectedAnchorAudit": {
       "totalAnchors": 2,
@@ -157,8 +157,18 @@
         "clauseCount": 9,
         "exactAnchorCount": 2
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
-        "split-long-line"
+        "pivot-contrast"
       ],
       "lexicalRegisterOperationsSelected": [
         "orthography:its",
@@ -168,10 +178,11 @@
       "contractionStrategy": "contract"
     },
     "candidateSummary": {
-      "candidateCount": 1,
-      "landedCandidateId": "base:syntax-shape",
+      "candidateCount": 2,
+      "landedCandidateId": "base:clause-pivot",
       "families": [
-        "syntax-shape"
+        "syntax-shape",
+        "clause-pivot"
       ],
       "holdStatus": "landed"
     },
@@ -183,6 +194,7 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "sentence-spread",
         "register-mode",
         "orthography-posture"
       ],
@@ -199,9 +211,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.153,
-      "outputDonorDistance": 2.666,
-      "donorImprovement": 1.487,
-      "donorImprovementRatio": 0.358,
+      "outputDonorDistance": 2.914,
+      "donorImprovement": 1.239,
+      "donorImprovementRatio": 0.298,
       "sourceOutputLexicalOverlap": 0.984
     },
     "candidateLedger": [
@@ -209,12 +221,31 @@
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "spark",
-        "status": "selected",
-        "score": 1.1191,
+        "status": "eligible",
+        "score": 1.2587,
         "rewriteStrength": 0.9737,
         "targetFit": 0.5862,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [
+          "artifact:fragment"
+        ],
+        "transferClass": "structural",
+        "outputPreview": "the finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is tha"
+      },
+      {
+        "id": "base:clause-pivot",
+        "family": "clause-pivot",
+        "envelopeId": "spark",
+        "status": "selected",
+        "score": 1.1753,
+        "rewriteStrength": 1,
+        "targetFit": 0.5458,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "artifactFlags": [
+          "artifact:fragment"
+        ],
         "transferClass": "structural",
         "outputPreview": "the finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is tha"
       }
@@ -224,10 +255,10 @@
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 1,
-      "winningCandidateId": "base:syntax-shape"
+      "candidateCount": 2,
+      "winningCandidateId": "base:clause-pivot"
     },
-    "winningCandidateId": "base:syntax-shape"
+    "winningCandidateId": "base:clause-pivot"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -236,7 +267,8 @@
       "orthography-posture",
       "register-mode",
       "sentence-count",
-      "sentence-mean"
+      "sentence-mean",
+      "sentence-spread"
     ],
     "lexemeSwapFamilies": [
       "surface"
@@ -249,7 +281,7 @@
       "sourceClass:procedural-record"
     ],
     "structuralOperations": [
-      "split-long-line"
+      "pivot-contrast"
     ],
     "lexicalOperations": [
       "orthography:its",

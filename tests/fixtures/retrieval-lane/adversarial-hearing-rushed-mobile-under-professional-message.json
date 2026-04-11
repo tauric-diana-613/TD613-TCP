@@ -41,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.133
+          "globalBagScore": 0.125
         },
         {
           "sourceClauseId": "s1c0",
@@ -53,7 +53,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.4
+          "globalBagScore": 0.375
         },
         {
           "sourceClauseId": "s2c0",
@@ -65,7 +65,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.4
+          "globalBagScore": 0.375
         },
         {
           "sourceClauseId": "s3c0",
@@ -76,8 +76,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.667,
-          "globalBagScore": 0.133
+          "bagScore": 0.5,
+          "globalBagScore": 0.125
         }
       ],
       "sourceClauseCount": 4,
@@ -97,12 +97,21 @@
         "clauseCount": 4,
         "exactAnchorCount": 3
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
         "merge-short-beats"
       ],
       "lexicalRegisterOperationsSelected": [
-        "expanded:thats->that-is",
-        "expanded:its->it-is"
+        "expanded:thats->that-is"
       ],
       "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
@@ -125,7 +134,6 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
-        "punctuation-shape",
         "register-mode",
         "orthography-posture"
       ],
@@ -133,11 +141,6 @@
         {
           "from": "thats",
           "to": "that is",
-          "family": "surface"
-        },
-        {
-          "from": "its",
-          "to": "it is",
           "family": "surface"
         }
       ],
@@ -147,10 +150,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 3.519,
-      "outputDonorDistance": 2.192,
-      "donorImprovement": 1.327,
-      "donorImprovementRatio": 0.377,
-      "sourceOutputLexicalOverlap": 0.857
+      "outputDonorDistance": 2.183,
+      "donorImprovement": 1.336,
+      "donorImprovementRatio": 0.38,
+      "sourceOutputLexicalOverlap": 0.902
     },
     "candidateLedger": [
       {
@@ -158,11 +161,12 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 1.1119,
+        "score": 1.2202,
         "rewriteStrength": 1,
-        "targetFit": 0.5663,
+        "targetFit": 0.5681,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "Hearing got ugly, and they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup sh"
       },
@@ -171,13 +175,14 @@
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.0594,
-        "rewriteStrength": 1,
-        "targetFit": 0.522,
-        "movementConfidence": 1,
+        "score": 0.9236,
+        "rewriteStrength": 0.6638,
+        "targetFit": 0.5478,
+        "movementConfidence": 0.74,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "Hearing got ugly; They keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup she al"
+        "outputPreview": "Hearing got ugly. They keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup she al"
       }
     ],
     "generationDocket": {
@@ -195,7 +200,6 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "orthography-posture",
-      "punctuation-shape",
       "register-mode",
       "sentence-count",
       "sentence-mean",
@@ -215,7 +219,6 @@
       "merge-short-beats"
     ],
     "lexicalOperations": [
-      "expanded:its->it-is",
       "expanded:thats->that-is"
     ],
     "connectorStrategy": "cascade",

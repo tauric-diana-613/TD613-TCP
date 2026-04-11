@@ -169,6 +169,16 @@
         "clauseCount": 10,
         "exactAnchorCount": 6
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
         "split-long-line"
       ],
@@ -230,11 +240,12 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.0798,
+        "score": 1.2494,
         "rewriteStrength": 1,
         "targetFit": 0.5681,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label. it was Nia Brooks"
       },
@@ -243,11 +254,12 @@
         "family": "order-beat",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.0698,
+        "score": 1.1819,
         "rewriteStrength": 1,
         "targetFit": 0.5597,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label. it was Nia Brooks"
       }

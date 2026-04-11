@@ -181,6 +181,16 @@
         "clauseCount": 11,
         "exactAnchorCount": 4
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
         "split-long-line",
         "front-when"
@@ -195,12 +205,13 @@
       "contractionStrategy": "contract"
     },
     "candidateSummary": {
-      "candidateCount": 4,
+      "candidateCount": 5,
       "landedCandidateId": "base:hybrid",
       "families": [
         "syntax-shape",
         "cadence-connector",
         "order-beat",
+        "clause-pivot",
         "hybrid"
       ],
       "holdStatus": "landed"
@@ -251,11 +262,12 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.0362,
+        "score": 1.2026,
         "rewriteStrength": 1,
         "targetFit": 0.417,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "hello appeals unit, im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch in"
       },
@@ -264,11 +276,12 @@
         "family": "cadence-connector",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.0395,
+        "score": 1.1527,
         "rewriteStrength": 1,
         "targetFit": 0.4181,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch"
       },
@@ -277,11 +290,26 @@
         "family": "order-beat",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.0563,
+        "score": 1.1796,
         "rewriteStrength": 1,
         "targetFit": 0.4344,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
+        "transferClass": "structural",
+        "outputPreview": "bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
+      },
+      {
+        "id": "base:clause-pivot",
+        "family": "clause-pivot",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 1.1745,
+        "rewriteStrength": 1,
+        "targetFit": 0.4344,
+        "movementConfidence": 1,
+        "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
       },
@@ -290,11 +318,12 @@
         "family": "hybrid",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.0598,
+        "score": 1.2399,
         "rewriteStrength": 1,
         "targetFit": 0.4355,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "when the file shows a routing mismatch instead, hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-document"
       }
@@ -304,7 +333,7 @@
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
+      "candidateCount": 5,
       "winningCandidateId": "base:hybrid"
     },
     "winningCandidateId": "base:hybrid"

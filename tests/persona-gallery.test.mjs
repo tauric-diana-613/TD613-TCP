@@ -318,7 +318,13 @@ assert.ok(
   'the conversational regression sample now stays visible across the major masks unless a catastrophic generator fault occurs'
 );
 assert.ok(
-  new Set(regressionMaskResults.map((result) => result.maskedText)).size >= 3,
+  regressionMaskResults.every((result) =>
+    ['strong-rewrite', 'cadence-rewrite'].includes(result.registeredTransformClass)
+  ),
+  'the conversational regression sample lands a real rewrite across all five major masks'
+);
+assert.ok(
+  new Set(regressionMaskResults.map((result) => result.maskedText)).size >= 4,
   'major regression outputs keep multiple distinct registered surfaces instead of collapsing into a single lane'
 );
 assert.ok(
@@ -358,6 +364,10 @@ assert.ok(
 assert.ok(
   proseSceneResults.filter((result) => result.registeredTransformClass === 'strong-rewrite' || result.registeredTransformClass === 'cadence-rewrite').length >= 4,
   'at least four of the five major built-in masks land a strong or cadence rewrite on the prose regression sample'
+);
+assert.ok(
+  ['strong-rewrite', 'cadence-rewrite'].includes(proseSceneResults[0].registeredTransformClass),
+  'spark no longer collapses the prose regression sample into a shallow hold or surface-only lane'
 );
 assert.ok(
   proseSceneResults.every((result) => result.registeredTransformClass !== 'surface-only' || normalizeMovementComparable(result.rawText) === normalizeMovementComparable(result.maskedText)),

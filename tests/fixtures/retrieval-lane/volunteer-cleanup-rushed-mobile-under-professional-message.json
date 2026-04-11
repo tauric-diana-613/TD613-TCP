@@ -53,7 +53,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.417
+          "globalBagScore": 0.455
         },
         {
           "sourceClauseId": "s2c0",
@@ -64,8 +64,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.083
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s3c0",
@@ -81,7 +81,7 @@
         },
         {
           "sourceClauseId": "s3c1",
-          "matchedClauseId": "s1c1",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -89,7 +89,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.083
+          "globalBagScore": 0.091
         },
         {
           "sourceClauseId": "s4c0",
@@ -113,11 +113,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.417
+          "globalBagScore": 0.455
         }
       ],
       "sourceClauseCount": 7,
-      "outputClauseCount": 4
+      "outputClauseCount": 3
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
@@ -133,8 +133,19 @@
         "clauseCount": 7,
         "exactAnchorCount": 1
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
-        "merge-short-beats"
+        "merge-short-beats",
+        "front-if"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:pls->please",
@@ -146,12 +157,13 @@
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
-      "candidateCount": 4,
-      "landedCandidateId": "base:syntax-shape",
+      "candidateCount": 5,
+      "landedCandidateId": "base:hybrid",
       "families": [
         "syntax-shape",
         "register-lexicon",
         "order-beat",
+        "clause-pivot",
         "hybrid"
       ],
       "holdStatus": "landed"
@@ -165,7 +177,6 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
-        "punctuation-shape",
         "register-mode",
         "directness",
         "abbreviation-posture",
@@ -199,9 +210,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.968,
-      "outputDonorDistance": 1.777,
-      "donorImprovement": 3.191,
-      "donorImprovementRatio": 0.642,
+      "outputDonorDistance": 1.801,
+      "donorImprovement": 3.167,
+      "donorImprovementRatio": 0.637,
       "sourceOutputLexicalOverlap": 0.807
     },
     "candidateLedger": [
@@ -209,12 +220,13 @@
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "matron",
-        "status": "selected",
-        "score": 1.3956,
+        "status": "eligible",
+        "score": 1.502,
         "rewriteStrength": 1,
         "targetFit": 0.6205,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and saws stay under canopy b, kids st"
       },
@@ -223,37 +235,54 @@
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.3509,
+        "score": 1.1818,
         "rewriteStrength": 1,
-        "targetFit": 0.5828,
-        "movementConfidence": 1,
+        "targetFit": 0.4507,
+        "movementConfidence": 0.94,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "If you are late that is ok just do not start random jobs; Check in west fence table first. Glass + pallets first pass; Saws stay under canopy b, kids stay off s"
+        "outputPreview": "If you are late that is ok just do not start random jobs. Check in west fence table first. Glass + pallets first pass. Saws stay under canopy b, kids stay off s"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.3908,
+        "score": 1.5472,
         "rewriteStrength": 1,
         "targetFit": 0.6164,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and if wind chills out, saws stay und"
+      },
+      {
+        "id": "base:clause-pivot",
+        "family": "clause-pivot",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "score": 1.2014,
+        "rewriteStrength": 1,
+        "targetFit": 0.4607,
+        "movementConfidence": 0.94,
+        "failureReasons": [],
+        "artifactFlags": [],
+        "transferClass": "structural",
+        "outputPreview": "If you are late that is ok just do not start random jobs. Check in west fence table first. Glass + pallets first pass. If wind chills out, saws stay under canop"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
-        "status": "eligible",
-        "score": 1.3908,
+        "status": "selected",
+        "score": 1.5149,
         "rewriteStrength": 1,
         "targetFit": 0.6164,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
         "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. If wind chills out, glass + pallets first pass, and saws stay und"
       }
@@ -263,10 +292,10 @@
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
-      "winningCandidateId": "base:syntax-shape"
+      "candidateCount": 5,
+      "winningCandidateId": "base:hybrid"
     },
-    "winningCandidateId": "base:syntax-shape"
+    "winningCandidateId": "base:hybrid"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -275,7 +304,6 @@
       "abbreviation-posture",
       "directness",
       "orthography-posture",
-      "punctuation-shape",
       "register-mode",
       "sentence-count",
       "sentence-mean",
@@ -292,6 +320,7 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
+      "front-if",
       "merge-short-beats"
     ],
     "lexicalOperations": [

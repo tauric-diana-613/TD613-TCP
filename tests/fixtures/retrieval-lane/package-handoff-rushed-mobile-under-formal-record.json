@@ -45,7 +45,7 @@
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -57,7 +57,7 @@
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -69,7 +69,7 @@
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s1c1",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -81,7 +81,7 @@
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s3c0",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -93,7 +93,7 @@
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -121,12 +121,21 @@
         "clauseCount": 6,
         "exactAnchorCount": 1
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
         "ledger-merge",
         "front-if"
       ],
       "lexicalRegisterOperationsSelected": [
-        "expanded:its->it-is",
         "expanded:slash-list->sentences"
       ],
       "connectorStrategy": "ledger",
@@ -145,31 +154,24 @@
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
+      "realizationTier": "structural",
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
         "punctuation-shape",
         "orthography-posture"
       ],
-      "lexemeSwaps": [
-        {
-          "from": "its",
-          "to": "it is",
-          "family": "surface"
-        }
-      ],
+      "lexemeSwaps": [],
       "visibleShift": true,
       "nonTrivialShift": true
     },
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.469,
-      "outputDonorDistance": 3.274,
-      "donorImprovement": 1.195,
-      "donorImprovementRatio": 0.267,
-      "sourceOutputLexicalOverlap": 0.96
+      "outputDonorDistance": 3.325,
+      "donorImprovement": 1.144,
+      "donorImprovementRatio": 0.256,
+      "sourceOutputLexicalOverlap": 1
     },
     "candidateLedger": [
       {
@@ -177,26 +179,28 @@
         "family": "syntax-shape",
         "envelopeId": "archivist",
         "status": "eligible",
-        "score": 0.909,
-        "rewriteStrength": 0.8182,
-        "targetFit": 0.3902,
-        "movementConfidence": 0.88,
+        "score": 0.7133,
+        "rewriteStrength": 0.5605,
+        "targetFit": 0.354,
+        "movementConfidence": 0.08,
         "failureReasons": [],
-        "transferClass": "structural",
-        "outputPreview": "2b pkg wasnt brought down; Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail; Red rush sticker still on it. I moved i"
+        "artifactFlags": [],
+        "transferClass": "surface",
+        "outputPreview": "2b pkg wasnt brought down. Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail. Red rush sticker still on it. I moved i"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "archivist",
         "status": "selected",
-        "score": 1.0496,
-        "rewriteStrength": 1,
-        "targetFit": 0.4204,
-        "movementConfidence": 1,
+        "score": 0.9359,
+        "rewriteStrength": 0.6934,
+        "targetFit": 0.4009,
+        "movementConfidence": 0.82,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "2b pkg wasnt brought down; Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail; Red rush sticker still on it. If mgmt a"
+        "outputPreview": "2b pkg wasnt brought down. Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail. Red rush sticker still on it. If mgmt a"
       }
     ],
     "generationDocket": {
@@ -211,17 +215,14 @@
   },
   "semanticContract": {
     "transferClass": "structural",
-    "realizationTier": "lexical-structural",
+    "realizationTier": "structural",
     "changedDimensions": [
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "sentence-mean"
     ],
-    "lexemeSwapFamilies": [
-      "surface"
-    ],
+    "lexemeSwapFamilies": [],
     "relationInventory": [
       "clauseCount:6",
       "exactAnchorCount:1",
@@ -234,7 +235,6 @@
       "ledger-merge"
     ],
     "lexicalOperations": [
-      "expanded:its->it-is",
       "expanded:slash-list->sentences"
     ],
     "connectorStrategy": "ledger",

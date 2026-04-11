@@ -27,7 +27,7 @@
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 1,
-      "polarityMismatches": 0,
+      "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -45,7 +45,7 @@
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -57,7 +57,7 @@
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -69,7 +69,7 @@
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s1c1",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -81,7 +81,7 @@
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -93,7 +93,19 @@
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s2c1",
+          "matchedClauseId": "s2c0+s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 1,
+          "tenseMismatch": 0,
+          "bagScore": 0,
+          "globalBagScore": 0
+        },
+        {
+          "sourceClauseId": "s5c1",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -104,20 +116,8 @@
           "globalBagScore": 0.056
         },
         {
-          "sourceClauseId": "s5c1",
-          "matchedClauseId": "s1c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
-        },
-        {
           "sourceClauseId": "s6c0",
-          "matchedClauseId": "s3c0",
+          "matchedClauseId": "s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -145,31 +145,42 @@
         "clauseCount": 8,
         "exactAnchorCount": 2
       },
-      "structuralOperationsSelected": [],
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
+      "structuralOperationsSelected": [
+        "front-when"
+      ],
       "lexicalRegisterOperationsSelected": [],
       "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
-      "candidateCount": 4,
-      "landedCandidateId": "base:register-lexicon",
+      "candidateCount": 5,
+      "landedCandidateId": "base:clause-pivot",
       "families": [
         "syntax-shape",
         "register-lexicon",
         "order-beat",
+        "clause-pivot",
         "hybrid"
       ],
       "holdStatus": "landed"
     },
     "realizationSummary": {
-      "transferClass": "surface",
-      "borrowedShellOutcome": "surface-held",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
       "realizationTier": "structural",
       "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
+        "punctuation-shape",
         "register-mode",
         "orthography-posture"
       ],
@@ -180,9 +191,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 3.62,
-      "outputDonorDistance": 2.301,
-      "donorImprovement": 1.319,
-      "donorImprovementRatio": 0.364,
+      "outputDonorDistance": 2.675,
+      "donorImprovement": 0.945,
+      "donorImprovementRatio": 0.261,
       "sourceOutputLexicalOverlap": 1
     },
     "candidateLedger": [
@@ -191,73 +202,89 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.5457,
+        "score": 0.8266,
         "rewriteStrength": 1,
-        "targetFit": 0.4554,
+        "targetFit": 0.5961,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; Words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
+        "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. And brooks emailed 9:31. Body fixed 9:47 + not"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
-        "status": "selected",
-        "score": 0.959,
-        "rewriteStrength": 0.916,
-        "targetFit": 0.5805,
+        "status": "eligible",
+        "score": 0.5891,
+        "rewriteStrength": 0.376,
+        "targetFit": 0.505,
         "movementConfidence": 0.08,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "surface",
-        "outputPreview": "Need quick fix on housing story; Quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt; Brooks emailed 9:31. Body fixed 9:47 + note added;"
+        "outputPreview": "Need quick fix on housing story. Quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. Brooks emailed 9:31. Body fixed 9:47 + note added."
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.5415,
+        "score": 0.8667,
         "rewriteStrength": 1,
-        "targetFit": 0.4518,
+        "targetFit": 0.5876,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno; Words are right, speaker tag isnt, and brooks emailed 9:31. Body fixed 9:47 + not"
+        "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. And brooks emailed 9:31. Body fixed 9:47 + not"
+      },
+      {
+        "id": "base:clause-pivot",
+        "family": "clause-pivot",
+        "envelopeId": "matron",
+        "status": "selected",
+        "score": 0.7909,
+        "rewriteStrength": 0.5079,
+        "targetFit": 0.516,
+        "movementConfidence": 0.68,
+        "failureReasons": [],
+        "artifactFlags": [],
+        "transferClass": "structural",
+        "outputPreview": "Need quick fix on housing story. Quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. Brooks emailed 9:31. Body fixed 9:47 + note added."
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.4144,
+        "score": 0.7144,
         "rewriteStrength": 1,
-        "targetFit": 0.4455,
+        "targetFit": 0.5876,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [],
         "transferClass": "structural",
-        "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno, and words are right, speaker tag isnt, and brooks emailed 9:31. When it only clea"
+        "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag isnt. And brooks emailed 9:31. When it only cleared "
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered cadence rewrite.",
+      "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 4,
-      "winningCandidateId": "base:register-lexicon"
+      "candidateCount": 5,
+      "winningCandidateId": "base:clause-pivot"
     },
-    "winningCandidateId": "base:register-lexicon"
+    "winningCandidateId": "base:clause-pivot"
   },
   "semanticContract": {
-    "transferClass": "surface",
+    "transferClass": "structural",
     "realizationTier": "structural",
     "changedDimensions": [
       "orthography-posture",
-      "register-mode",
-      "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "punctuation-shape",
+      "register-mode"
     ],
     "lexemeSwapFamilies": [],
     "relationInventory": [
@@ -267,7 +294,9 @@
       "sentenceCount:7",
       "sourceClass:formal-correspondence"
     ],
-    "structuralOperations": [],
+    "structuralOperations": [
+      "front-when"
+    ],
     "lexicalOperations": [],
     "connectorStrategy": "cascade",
     "contractionStrategy": "expand",
@@ -275,7 +304,7 @@
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 1,
-    "polarityMismatches": 0,
+    "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

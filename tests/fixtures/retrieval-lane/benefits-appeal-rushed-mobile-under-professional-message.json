@@ -121,6 +121,16 @@
         "clauseCount": 6,
         "exactAnchorCount": 1
       },
+      "testedFamilyIds": [
+        "syntax-shape",
+        "register-lexicon",
+        "cadence-connector",
+        "order-beat",
+        "clause-pivot",
+        "persona-lexicon",
+        "pressure-current",
+        "hybrid"
+      ],
       "structuralOperationsSelected": [
         "merge-short-beats"
       ],
@@ -195,11 +205,14 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 1.0816,
+        "score": 1.158,
         "rewriteStrength": 1,
         "targetFit": 0.4705,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [
+          "artifact:fragment"
+        ],
         "transferClass": "structural",
         "outputPreview": "Ba-4427 isnt a no-doc case, and mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client"
       },
@@ -208,13 +221,16 @@
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 1.0605,
+        "score": 0.989,
         "rewriteStrength": 1,
-        "targetFit": 0.4526,
+        "targetFit": 0.4041,
         "movementConfidence": 1,
         "failureReasons": [],
+        "artifactFlags": [
+          "artifact:fragment"
+        ],
         "transferClass": "structural",
-        "outputPreview": "Ba-4427 isnt a no-doc case; Mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client got"
+        "outputPreview": "Ba-4427 isnt a no-doc case. Mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client got"
       }
     ],
     "generationDocket": {
