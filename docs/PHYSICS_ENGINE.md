@@ -96,6 +96,8 @@ C = 0.68,\qquad D = 0.58\Pi,\qquad \theta = 0.2
 
 That makes the custody transition inspectable instead of leaving it buried in prose.
 
+The current repo keeps this layer explicitly downstream of the masking tool's main operator surface. In other words: the physics analogy remains part of interpretation and route law, but it is no longer supposed to dominate the first thing a skeptical user sees after a mask lands or holds.
+
 ## Why this analogy survives scrutiny
 
 The analogy is worth keeping because each layer has one clear job:

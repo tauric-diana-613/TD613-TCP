@@ -11,6 +11,18 @@ This file describes the current TCP engine as it is implemented. The stack is in
 
 That distinction matters. The first layer is still the most evidence-bearing part of the current build. The second layer is a deterministic writer, not a hidden model call. The third and fourth layers are structured audit, decision transforms, and safety policy, not forensic proof.
 
+## Current writer status
+
+The current engine posture is:
+
+- `buildCadenceTransfer()` remains the public writer API
+- `Generator V2` is the live default writer behind that API
+- legacy exports remain available only through explicit compatibility paths such as `buildCadenceTransferLegacy()` and `applyCadenceToTextLegacy()`
+- generator misses are expected to surface as explicit holds, not as silent source fallback
+- candidate selection now includes toolability scoring, persona-separation scoring, and a native polish pass before registration
+
+The practical consequence is that the engine is no longer only grading movement. It is also grading whether the landed surface is readable, distinct, and usable as a real tool output.
+
 ## Normalization conventions
 
 - Primary scores are clipped into `[0,1]` unless noted otherwise.

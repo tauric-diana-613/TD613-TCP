@@ -28,3 +28,5 @@ A JITAI system usually asks: what support, when?
 TCP adds: what continuity work has already been externalized onto the person, and can the system lower it without erasing provenance?
 
 In the current repo that also means: if the writer cannot carry the requested transform without breaking anchors or meaning, the correct answer is an explicit visible hold, not a silent substitution that makes the burden harder to audit.
+
+That same rule now extends to the main TCP surface: the operator-facing readout should stay short and legible, while the full burden / warning / Aperture trace remains available in secondary detail for people who need it.

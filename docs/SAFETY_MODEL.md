@@ -28,6 +28,20 @@ TCP is organized around four explicit constraints:
 
 These are not slogans pasted onto the engine after the fact. They are the conditions under which the policy layer is allowed to operate.
 
+## Current operator-surface rule
+
+The current repo also applies one practical safety rule to the UI:
+
+- the primary result surface should read like an operator console
+- doctrine and full warning ledgers stay available
+- but they should not crowd out the answer to four simple questions:
+  - did the mask land?
+  - is it usable?
+  - is it distinct?
+  - what is still wrong?
+
+That is now part of the safety boundary because a system can remain "honest" in theory while still overwhelming the user into treating weak output as sufficient.
+
 ## Generator safety boundary
 
 The current default writer is Generator V2. That changes the safety boundary in one important way:

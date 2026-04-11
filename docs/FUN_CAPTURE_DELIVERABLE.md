@@ -1,5 +1,7 @@
 # Fun-Capture Deliverable
 
+This file is now best read as a retained planning artifact, not the primary source of current engine truth. For live writer, diagnostics, and toolability behavior, prefer [ENGINE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/ENGINE.md), [SYSTEM_OVERVIEW.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SYSTEM_OVERVIEW.md), and the maintained diagnostics reports under [reports/diagnostics](/C:/Users/timst/OneDrive/Desktop/tcp-repository/reports/diagnostics).
+
 This document records the current state of The Cadence Playground after a maintained test run and browser flight sweep. Its job is not to propose the implementation in detail yet. Its job is to preserve the strongest observations so the next plan can convert them into a targeted build.
 
 ## Current proof state
@@ -20,6 +22,8 @@ Maintained browser flights:
 - `?test-flight=ingress` passed `11/11`
 
 The important consequence is that proof is no longer only about swap truth or trainer truth. The repo now has to prove that the writer itself is landing or holding honestly.
+
+The current repo adds one more requirement beyond what this note originally captured: the writer now also has to prove that landed outputs are toolable, distinct, and clean enough to trust on first read.
 
 ## What already captures fun well
 

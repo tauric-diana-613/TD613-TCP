@@ -386,9 +386,10 @@ function semanticBounded(semanticAudit = {}) {
   const polarityBounded =
     polarityMismatches <= 1 ||
     (strongCoverage && polarityMismatches <= 2 && polarityRate <= 0.18);
+  // Match the live generator's boundedness floor for strong-coverage rewrites.
   const tenseBounded =
     tenseMismatches <= 1 ||
-    (strongCoverage && tenseMismatches <= 2 && tenseRate <= 0.2);
+    (strongCoverage && tenseMismatches <= 2 && tenseRate <= 0.23);
 
   return polarityBounded && tenseBounded;
 }

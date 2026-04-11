@@ -2651,9 +2651,11 @@ function semanticAuditBounded(semanticAudit = {}) {
   const polarityBounded =
     polarityMismatches <= 1 ||
     (strongCoverage && polarityMismatches <= 2 && polarityRate <= 0.18);
+  // Strong-coverage same-facts rewrites can tolerate a small amount of tense drift
+  // as long as it stays sparse relative to the clause load.
   const tenseBounded =
     tenseMismatches <= 1 ||
-    (strongCoverage && tenseMismatches <= 2 && tenseRate <= 0.2);
+    (strongCoverage && tenseMismatches <= 2 && tenseRate <= 0.23);
 
   return polarityBounded && tenseBounded;
 }

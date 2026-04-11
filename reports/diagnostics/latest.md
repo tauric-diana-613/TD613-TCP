@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-11T18:19:05.915Z
+Generated: 2026-04-11T18:58:21.127Z
 
 Corpus: 72 samples across 18 families
 Promoted deck subset: 24 samples
@@ -16,10 +16,10 @@ Total diagnostics cases: 270
 - over_flattened_output: 21
 - one_sided_swap: 18
 - generator_hold: 3
-- generator_unbounded_semantics: 1
 - punctuation_only_shift: 0
 - surface_close_under_large_gap: 0
 - anchor_break: 0
+- generator_unbounded_semantics: 0
 - both_rejected_swap: 0
 - mask_near_home_hold: 0
 
@@ -56,11 +56,11 @@ Total diagnostics cases: 270
 - held_count: 3
 - structural_count: 47
 - surface_count: 2
-- semantic_bounded_rate: 0.9808
-- unsafe_structural_count: 1
+- semantic_bounded_rate: 1
+- unsafe_structural_count: 0
 - protected_anchor_integrity_min: 1
 - average_candidate_count: 2.9038
-- average_selected_candidate_score: 0.8372
+- average_selected_candidate_score: 0.8406
 - generator_versions: v2:52
 - source_classes: procedural-record:19, formal-correspondence:30, narrative-scene:3
 - hold_classes: below-rewrite-bar:1, hard-anchor-failure:2
@@ -70,7 +70,6 @@ Total diagnostics cases: 270
 - archive-grant-under-school-coordination-mask-cross-family: mask, procedural-record, transfer held, registered generator-hold, hold held/below-rewrite-bar, bounded yes, selected score 0
 - municipal-zoning-under-committee-budget-mask-cross-family: mask, procedural-record, transfer held, registered generator-hold, hold held/hard-anchor-failure, bounded yes, selected score 0
 - museum-fog-alarm-under-building-access-mask-cross-family: mask, formal-correspondence, transfer held, registered generator-hold, hold held/hard-anchor-failure, bounded yes, selected score 0
-- building-access-mask-same-family: mask, procedural-record, transfer structural, registered cadence-rewrite, hold landed/none, bounded no, selected score 0.6587
 - customer-support-mask-same-family: mask, procedural-record, transfer surface, registered surface-only, hold landed/none, bounded yes, selected score 0.2481
 - model-safety-mask-same-family: mask, formal-correspondence, transfer surface, registered surface-only, hold landed/none, bounded yes, selected score 0.3493
 

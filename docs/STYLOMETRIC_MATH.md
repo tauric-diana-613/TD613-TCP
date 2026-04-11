@@ -211,6 +211,16 @@ and it now adds writer-facing fields that matter operationally:
 
 Legacy is still available, but only through explicit compatibility exports such as `buildCadenceTransferLegacy()` and `applyCadenceToTextLegacy()`.
 
+### Toolability is downstream of stylometric math
+
+The current repo adds one more explicit layer after the stylometric and semantic math:
+
+- `toolabilityAudit`
+- `personaSeparationAudit`
+- explicit hold dockets when the write surface is not good enough to publish
+
+Those quantities are not part of the base stylometric model. They are deterministic writer-selection heuristics that sit downstream of the evidence layer and help TCP behave like a usable tool instead of a style demo with interesting warnings.
+
 ### Generator V2 pipeline
 
 Generator V2 is a native-first deterministic writer. It does not start from legacy-authored output. The current pipeline is:

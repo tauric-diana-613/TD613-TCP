@@ -42,6 +42,8 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 | `After Contact` | Masked-to-lock reading after the passage has been transformed. | Similarity and traceability of the transformed passage against the active lock. |
 | `What Moved` | The compact line that names the changed dimensions and whether the passage stayed near home. | A transfer summary derived from real changed dimensions, lexical movement, and contact state. |
 | `What Clung` | The short forensic summary of what still reads as home after contact. | Sticky axes, held lanes, and contact summaries derived from the lock comparison, with the full Aperture ledger kept in the drawer rather than dumped into the main surface. |
+| `Tool state` | The short headline above the Homebase result. | The operator-facing summary of whether the landed output is usable, distinct, or held. |
+| `Aperture ledger` | The secondary detail drawer beneath the main result. | The full warning / repair / registration trace that used to flood the main readout. |
 
 ## State controls
 
@@ -58,6 +60,7 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 | --- | --- | --- |
 | `Cadence similarity` | How close the two voice samples feel in aggregate. | The bounded pairwise similarity score `S`. |
 | `Traceability` | How strongly sentence-shape habits survive surface variation. | The bounded pairwise traceability score `T`. |
+| `Toolability` | Whether the resulting mask feels usable on first read. | The downstream candidate-quality audit that combines readability, sentence integrity, persona distinctness, and artifact penalties. |
 | `Route pressure` | Whether recognition is starting to demand a path instead of staying decorative. | The bounded route score `Pi`. |
 | `Effective archive` | Which side is currently functioning as the effective archive. | The threshold result `A_I` or `A_W` from the custody delta rule; `A_I` means institutional custody remains the effective archive, and `A_W` means witness custody is carrying the archive. |
 | `Harbor` | The recommended structured response once the field needs handling. | A provenance-constrained passage function selected from the harbor library. |
@@ -86,6 +89,7 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 | `hold-branch` | The deck preserves the branch without escalating. | Recognition is present, but route is not yet open. |
 | `criticality` | The deck warns that recognition is outrunning route. | Dense recognition has formed while passage is still blocked. |
 | `passage` | The deck can name a harbor and safe-passage state. | Recognition is dense enough and the route gate is open. |
+| `generator-hold` | The visible blank-output miss state on write surfaces. | A non-catastrophic V2 miss where the engine chose not to publish a weak rewrite. |
 
 ## Structural terms
 

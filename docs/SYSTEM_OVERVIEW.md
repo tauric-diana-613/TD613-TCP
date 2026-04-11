@@ -13,6 +13,16 @@ The important point is that TCP does not collapse everything into one score. It 
 
 That separation is the main design choice.
 
+## Current repo status
+
+As of `Patch 30.3.3`, the stack should be read this way:
+
+- `Generator V2` is the default deterministic writer behind `buildCadenceTransfer()`
+- legacy remains in-repo only as benchmark / compatibility scaffolding
+- the main Homebase surface is now operator-first, with doctrine and full Aperture ledger moved into secondary detail
+- the maintained diagnostics battery includes both generator audit and toolability audit
+- `TD613 Safe Harbor` and `TD613 Aperture` should be read as downstream custody / audit layers, not alternate hidden writers
+
 ## What the system actually measures
 
 At the bottom of the stack, TCP extracts stylometric features such as sentence rhythm, spread, punctuation density, contraction posture, function-word behavior, lexical dispersion, and recurrence pressure.

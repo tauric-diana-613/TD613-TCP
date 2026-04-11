@@ -104,7 +104,7 @@ assert.ok(latestReport.generatorAudit, 'diagnostics JSON report includes generat
 assert.equal(latestReport.generatorAudit.caseCount, 52, 'generator audit tracks retrieval and mask generator surfaces');
 assert.equal(latestReport.generatorAudit.generatorVersionCounts.v2, latestReport.generatorAudit.caseCount, 'generator audit reports V2 as the active writer across tracked diagnostics cases');
 assert.ok(latestReport.generatorAudit.semanticBoundedRate >= 0.9, 'generator audit reports a high bounded-semantics rate');
-assert.ok(latestReport.generatorAudit.unsafeStructuralCount <= 1, 'generator audit keeps unsafe structural winners tightly bounded');
+assert.equal(latestReport.generatorAudit.unsafeStructuralCount, 0, 'generator audit reports no unsafe structural winners');
 assert.equal(latestReport.generatorAudit.protectedAnchorIntegrityMin, 1, 'generator audit reports preserved protected anchors');
 assert.ok(Array.isArray(latestReport.generatorAudit.topMisses), 'generator audit top misses serialize');
 assert.ok(latestReport.toolability, 'diagnostics JSON report includes toolability audit');

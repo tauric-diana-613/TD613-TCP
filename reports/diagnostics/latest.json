@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-11T18:19:05.915Z",
+  "generatedAt": "2026-04-11T18:58:21.127Z",
   "summary": {
     "corpusVersion": "wild-corpus-v1",
     "familyCount": 18,
@@ -14,11 +14,11 @@
       "false_neighbor_convergence": 44,
       "over_flattened_output": 21,
       "trainer_retrieval_fail": 31,
-      "generator_unbounded_semantics": 1,
       "generator_hold": 3,
       "punctuation_only_shift": 0,
       "surface_close_under_large_gap": 0,
       "anchor_break": 0,
+      "generator_unbounded_semantics": 0,
       "both_rejected_swap": 0,
       "mask_near_home_hold": 0
     },
@@ -184,7 +184,7 @@
     ],
     "generatorCaseCount": 52,
     "generatorHeldCount": 3,
-    "generatorUnsafeStructuralCount": 1,
+    "generatorUnsafeStructuralCount": 0,
     "toolabilityLandedRate": 0.9118,
     "toolabilityDistinctnessRate": 1,
     "annexCount": 1,
@@ -9647,7 +9647,7 @@
         "apertureOutcome": "projected",
         "visibleShift": true,
         "nonTrivialShift": true,
-        "semanticBounded": false,
+        "semanticBounded": true,
         "protectedAnchorIntegrity": 1,
         "propositionCoverage": 1,
         "actorCoverage": 1,
@@ -9657,7 +9657,7 @@
         "tenseMismatches": 2,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.6587,
+        "selectedCandidateScore": 0.8387,
         "selectedCandidateToolabilityScore": 0.8252,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.8252,
@@ -9672,11 +9672,9 @@
         "artifactFlags": [
           "artifact:fragment"
         ],
-        "notes": "Buckets: generator_unbounded_semantics.",
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace tightened by 13 points.",
         "expectedPressure": "mask-high",
-        "failureBuckets": [
-          "generator_unbounded_semantics"
-        ]
+        "failureBuckets": []
       },
       {
         "id": "package-handoff-mask-same-family",
@@ -11121,12 +11119,12 @@
     "surfaceCount": 2,
     "nonTrivialCount": 47,
     "visibleShiftCount": 52,
-    "semanticBoundedCount": 51,
-    "semanticBoundedRate": 0.9808,
-    "unsafeStructuralCount": 1,
+    "semanticBoundedCount": 52,
+    "semanticBoundedRate": 1,
+    "unsafeStructuralCount": 0,
     "protectedAnchorIntegrityMin": 1,
     "averageCandidateCount": 2.9038,
-    "averageSelectedCandidateScore": 0.8372,
+    "averageSelectedCandidateScore": 0.8406,
     "topMisses": [
       {
         "id": "archive-grant-under-school-coordination-mask-cross-family",
@@ -11160,17 +11158,6 @@
         "holdClass": "hard-anchor-failure",
         "semanticBounded": true,
         "selectedCandidateScore": 0
-      },
-      {
-        "id": "building-access-mask-same-family",
-        "laneKind": "mask",
-        "sourceClass": "procedural-record",
-        "transferClass": "structural",
-        "registeredTransformClass": "cadence-rewrite",
-        "holdStatus": "landed",
-        "holdClass": null,
-        "semanticBounded": false,
-        "selectedCandidateScore": 0.6587
       },
       {
         "id": "customer-support-mask-same-family",
@@ -11989,7 +11976,7 @@
         "apertureOutcome": "projected",
         "visibleShift": true,
         "nonTrivialShift": true,
-        "semanticBounded": false,
+        "semanticBounded": true,
         "protectedAnchorIntegrity": 1,
         "propositionCoverage": 1,
         "actorCoverage": 1,
@@ -11999,7 +11986,7 @@
         "tenseMismatches": 2,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.6587,
+        "selectedCandidateScore": 0.8387,
         "selectedCandidateToolabilityScore": 0.8252,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.8252,
@@ -12014,11 +12001,9 @@
         "artifactFlags": [
           "artifact:fragment"
         ],
-        "notes": "Buckets: generator_unbounded_semantics.",
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace tightened by 13 points.",
         "expectedPressure": "mask-high",
-        "failureBuckets": [
-          "generator_unbounded_semantics"
-        ]
+        "failureBuckets": []
       },
       {
         "id": "package-handoff-mask-same-family",

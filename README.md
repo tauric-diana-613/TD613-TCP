@@ -320,6 +320,7 @@ That path covers:
 - swap-cadence matrix
 - trainer lab
 - harbor
+- generator toolability and diagnostics via `node scripts/run-diagnostics-battery.mjs`
 
 The maintained browser flights are:
 
@@ -329,28 +330,42 @@ The maintained browser flights are:
 - `app/index.html?test-flight=swap`
 - `app/index.html?test-flight=ingress`
 
-The central swap-cadence evaluation surface is a canonical casebook:
+The central evaluation surface is now the maintained diagnostics battery:
 
-- 56 ordered non-self sample pairings
-- 12 flagship ordered pairs
-- bilateral / one-sided / rejected pair classification
-- explicit failure-family counts
+- `100` ordered swap cases plus `4` flagship swap cases in the live matrix
+- `34` maintained mask cases
+- `34` maintained trainer cases
+- `18` maintained retrieval cases
+- `32` maintained false-neighbor cases
+- `52` generator-audited write cases
+- explicit toolability reporting for landed rate, hold rate, artifact rate, and distinctness
 
 ## Current maintained build snapshot
 
 As of the current maintained build:
 
-- swap matrix case count: `56`
-- flagship pair count: `12`
-- flagship passes: `12/12`
-- bilateral-engaged pairs: `46`
-- one-sided pairs: `8`
-- both-rejected pairs: `2`
+- diagnostics case count: `270`
+- swap matrix case count: `104`
+- flagship pair count: `8`
+- flagship passes: `8/8`
+- bilateral-engaged pairs: `52`
+- one-sided pairs: `12`
+- both-rejected pairs: `0`
+- generator audited write cases: `52`
+- generator holds across audited write cases: `3`
+- toolability landed rate on expected-success mask cases: `0.9118`
+- toolability distinctness rate on maintained live probes: `1.0`
 
 Current failure-family counts in the full matrix:
 
-- `pathology-block`: `8`
-- `donor-underfit`: `4`
+- `semantic_drift`: `79`
+- `register_miss`: `76`
+- `false_neighbor_convergence`: `44`
+- `sentence_span_miss`: `34`
+- `trainer_retrieval_fail`: `31`
+- `over_flattened_output`: `21`
+- `one_sided_swap`: `18`
+- `generator_hold`: `3`
 
 These numbers are build-level evidence, not timeless guarantees.
 
@@ -403,5 +418,7 @@ Use this order if you want the repo in a clean technical sequence:
 3. [ABSTRACT.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/ABSTRACT.md)
 4. [docs/ENGINE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/ENGINE.md)
 5. [docs/SAFETY_MODEL.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SAFETY_MODEL.md)
-6. [docs/STYLOMETRIC_MATH.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/STYLOMETRIC_MATH.md)
-7. [docs/INTERFACE_LEXICON.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/INTERFACE_LEXICON.md)
+6. [docs/TD613_SAFE_HARBOR.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/TD613_SAFE_HARBOR.md)
+7. [docs/TD613_APERTURE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/TD613_APERTURE.md)
+8. [docs/STYLOMETRIC_MATH.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/STYLOMETRIC_MATH.md)
+9. [docs/INTERFACE_LEXICON.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/INTERFACE_LEXICON.md)
