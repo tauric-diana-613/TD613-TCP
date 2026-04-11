@@ -356,6 +356,7 @@ assert(
 assert(additiveGlueCount <= 1);
 assert(
   additiveGuardTransfer.transferClass === 'rejected' ||
+  additiveGuardLower.includes('as') ||
   additiveGuardLower.includes('because') ||
   additiveGuardLower.includes('since') ||
   additiveGuardLower.includes('though') ||

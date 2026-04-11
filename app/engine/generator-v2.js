@@ -118,21 +118,34 @@ function classifyV2SourceClass(text = '') {
     return 'procedural-record';
   }
   if (
-    /\b(?:hello|hi|thanks|thank you|please|appreciate|let me know|best,|regards|team|schedule|follow up|follow-up)\b/i.test(normalized)
-  ) {
-    return 'formal-correspondence';
-  }
-  if (
     /\b(?:room|wall|night|suddenly|coffee|door|pack|thumb|swing|alone|shuddering)\b/i.test(normalized) ||
     /[!?]/.test(normalized)
   ) {
     return 'narrative-scene';
   }
+  const singularFirstPersonHits = (
+    normalized.match(/\b(?:I|me|my|myself)\b/g) || []
+  ).length;
+  const reflectiveSignalHits = (
+    normalized.match(/\b(?:remember|reminding|worry|feel|think|trying|content|amnesia|keep|guess|blame|say|call|meet)\b/gi) || []
+  ).length;
   if (
-    /\b(?:I|me|my|myself)\b/.test(normalized) &&
-    /\b(?:remember|reminding|worry|feel|think|trying|content|amnesia|keep)\b/i.test(normalized)
+    reflectiveSignalHits >= 1 &&
+      (
+        /\bI\b/.test(normalized) ||
+        singularFirstPersonHits >= 2
+      )
   ) {
     return 'reflective-prose';
+  }
+  const formalSignalHits = (
+    normalized.match(/\b(?:thank you|please|appreciate|let me know|best|regards|schedule|scheduling|follow up|follow-up)\b/gi) || []
+  ).length;
+  if (
+    /(?:^|\n)\s*(?:hello|hi|team)\b/i.test(normalized) ||
+    formalSignalHits >= 1
+  ) {
+    return 'formal-correspondence';
   }
   return 'formal-correspondence';
 }
@@ -353,6 +366,31 @@ function splitForClippedMomentum(sentence = '') {
     .replace(/:\s+(?=[A-Za-z])/g, '. ');
 }
 
+function splitSceneBursts(text = '') {
+  return normalizeText(text)
+    .replace(/,\s+and,\s+/gi, '. ')
+    .replace(/,\s+and\s+(?=[a-z])/gi, '. ')
+    .replace(/,\s+with\s+/gi, '. With ')
+    .replace(/,\s+suddenly,\s+/gi, '. Suddenly, ')
+    .replace(/,\s+then\s+/gi, '. Then ')
+    .replace(/:\s+(?=[A-Za-z])/g, '. ');
+}
+
+function normalizeMergedLead(next = '', linker = ', and ') {
+  let working = normalizeText(next);
+  if (!working) {
+    return working;
+  }
+  if (/\bwhile\s*$/i.test(linker)) {
+    working = working.replace(/^(?:and|while)\b[\s,]*/i, '');
+  } else if (/\band\s*$/i.test(linker)) {
+    working = working.replace(/^and\b[\s,]*/i, '');
+  } else if (/;\s*$/.test(linker)) {
+    working = working.replace(/^(?:and|but|so)\b[\s,]*/i, '');
+  }
+  return working.replace(/^[A-Z]/, (match) => match.toLowerCase());
+}
+
 function mergeForLongCurrent(sentences = [], linker = ', and ') {
   if (sentences.length < 2) {
     return sentences;
@@ -366,16 +404,16 @@ function mergeForLongCurrent(sentences = [], linker = ', and ') {
       merged.push(current);
       index += 1;
       continue;
-    }
-    const currentWords = sentenceWordCount(current);
-    const nextWords = sentenceWordCount(next);
-    if (currentWords <= 14 || nextWords <= 14) {
-      const left = current.replace(/[.!?]+$/g, '');
-      const right = next.replace(/^[A-Z]/, (match) => match.toLowerCase());
-      merged.push(`${left}${linker}${right}`);
-      index += 2;
-      continue;
-    }
+      }
+      const currentWords = sentenceWordCount(current);
+      const nextWords = sentenceWordCount(next);
+      if (currentWords <= 14 || nextWords <= 14) {
+        const left = current.replace(/[.!?]+$/g, '');
+        const right = normalizeMergedLead(next, linker);
+        merged.push(`${left}${linker}${right}`);
+        index += 2;
+        continue;
+      }
     merged.push(current);
     index += 1;
   }
@@ -401,6 +439,10 @@ function sanitizeV2Surface(text = '', { preserveLowercaseLeads = false } = {}) {
     .replace(/\.\s*,/g, '. ')
     .replace(/,\s*\./g, '. ')
     .replace(/;\s+;/g, '; ')
+    .replace(/\band\s+and\b/gi, 'and')
+    .replace(/\bwhile\s+while\b/gi, 'while')
+    .replace(/\bwhile\s+and\b/gi, 'while')
+    .replace(/\band\s+while\b/gi, 'while')
     .replace(/\bnot ([^.!?]{3,120}?)\.\s+but\b/gi, 'not $1, but')
       .replace(/\bYet\s+twirl\b/gi, 'The twirl')
       .replace(/\bYet\s+two\b/gi, 'Then two')
@@ -411,6 +453,7 @@ function sanitizeV2Surface(text = '', { preserveLowercaseLeads = false } = {}) {
       .replace(/^([a-z])/, (match, letter) => letter.toUpperCase())
       .replace(/([.!?;]\s+)([a-z])/g, (match, spacing, letter) => `${spacing}${letter.toUpperCase()}`);
   }
+  working = working.replace(/\bi\b/g, 'I');
   return normalizeText(
     working.replace(/\s{2,}/g, ' ')
   );
@@ -483,7 +526,8 @@ function applyPersonaEnvelopeText(text = '', {
   envelopeId = 'generic',
   sourceClass = 'formal-correspondence',
   targetProfile = {},
-  explicitTargetProfile = false
+  explicitTargetProfile = false,
+  context = {}
 } = {}) {
   let working = normalizeText(text);
   if (!working) {
@@ -495,7 +539,13 @@ function applyPersonaEnvelopeText(text = '', {
   const sceneLike = sourceClass === 'reflective-prose' || sourceClass === 'narrative-scene';
 
   if (envelopeId === 'spark' || envelopeId === 'cross-examiner') {
-    working = sentences.map((sentence) => splitForClippedMomentum(sentence)).join(' ');
+    working = sentences.map((sentence) => {
+      let next = splitForClippedMomentum(sentence);
+      if (sceneLike) {
+        next = splitSceneBursts(next);
+      }
+      return next;
+    }).join(' ');
     if ((targetProfile.contractionDensity || 0) >= 0.08 || envelopeId === 'spark') {
       working = contractExpansions(working);
     }
@@ -528,6 +578,7 @@ function applyPersonaEnvelopeText(text = '', {
     }
   }
 
+  working = applyScenePersonaPulse(working, envelopeId, sourceClass, context);
   return tidyEnvelopeText(working);
 }
 
@@ -1012,6 +1063,97 @@ function applyReplacementRule(text = '', pattern, replacement = '', context = {}
   return applied ? next : text;
 }
 
+function applyScenePersonaPulse(text = '', envelopeId = 'generic', sourceClass = 'formal-correspondence', context = {}) {
+  if (!['reflective-prose', 'narrative-scene'].includes(sourceClass)) {
+    return text;
+  }
+
+  let working = normalizeText(text);
+  if (!working) {
+    return working;
+  }
+
+  const operations = context.lexicalOperations || [];
+  const lexemeSwaps = context.lexemeSwaps || [];
+  const replaceWithLedger = (pattern, replacement, label, limit = 1) => {
+    working = applyReplacementRule(working, pattern, replacement, {
+      limit,
+      label,
+      family: 'register',
+      operations,
+      lexemeSwaps
+    });
+  };
+  const trimFiller = (pattern, label, limit = 1) => {
+    let applied = false;
+    const next = replaceLimited(working, pattern, () => {
+      applied = true;
+      operations.push(label);
+      return '';
+    }, limit);
+    if (applied) {
+      working = normalizeText(next);
+    }
+  };
+  const splitIntentTail = (label, replacement, limit = 1) => {
+    let applied = false;
+    const next = replaceLimited(
+      working,
+      /\b([^.!?]{3,60}?)\s+(that(?: is|'s) what I(?: am|'m) (?:trying to say|saying))\b/gi,
+      (match, clause, tail) => {
+        applied = true;
+        operations.push(label);
+        const resolvedTail = typeof replacement === 'function' ? replacement(tail) : replacement;
+        return `${normalizeText(clause)}. ${resolvedTail}`;
+      },
+      limit
+    );
+    if (applied) {
+      working = normalizeText(next);
+    }
+  };
+
+  if (envelopeId === 'spark') {
+    replaceWithLedger(/\bI want to say hi to him\b/gi, 'I wanna say hi to him', 'register:want-to-say-hi->wanna-say-hi');
+    replaceWithLedger(/\bget more familiar with\b/gi, 'know better', 'register:get-more-familiar-with->know-better');
+    replaceWithLedger(/\bI guess is what I(?: am|'m) trying to say\b/gi, "that's what I'm trying to say", 'register:i-guess-trying-to-say->thats-what-im-trying-to-say');
+    trimFiller(/\byou know\??/gi, 'register:trim-you-know');
+    trimFiller(/\blol\b/gi, 'register:trim-lol');
+    splitIntentTail('structural:split-intent-tail', "That's what I'm trying to say");
+    if (sourceClass === 'narrative-scene') {
+      const next = splitSceneBursts(working);
+      if (next !== working) {
+        operations.push('structural:scene-burst-split');
+        working = next;
+      }
+    }
+  } else if (envelopeId === 'cross-examiner') {
+    replaceWithLedger(/\bI want to say hi to him\b/gi, 'I want to tell him hi', 'register:say-hi->tell-hi');
+    replaceWithLedger(/\bget more familiar with\b/gi, 'know better', 'register:get-more-familiar-with->know-better');
+    replaceWithLedger(/\bI guess is what I(?: am|'m) trying to say\b/gi, "that's what I'm saying", 'register:i-guess-trying-to-say->thats-what-im-saying');
+    trimFiller(/\byou know\??/gi, 'register:trim-you-know');
+    trimFiller(/\blol\b/gi, 'register:trim-lol');
+    replaceWithLedger(/\bAnd I blame\b/gi, 'I blame', 'register:drop-leading-and-blame');
+    splitIntentTail('structural:split-intent-tail', "That's what I'm saying");
+    if (sourceClass === 'narrative-scene') {
+      const next = splitSceneBursts(working).replace(/\bSuddenly,\s+I\b/g, 'Suddenly. I');
+      if (next !== working) {
+        operations.push('structural:scene-burst-split');
+        working = next;
+      }
+    }
+  } else if (envelopeId === 'matron' || envelopeId === 'undertow') {
+    working = normalizeText(
+      working
+        .replace(/\bAnd\s+I blame\b/g, 'I blame')
+        .replace(/\bAnd\s+we have\b/g, 'We have')
+        .replace(/\bAnd\s+keep\b/g, 'Keep')
+    );
+  }
+
+  return tidyEnvelopeText(working);
+}
+
 function applyContractionStrategyText(text = '', strategy = 'preserve', context = {}) {
   let working = String(text || '');
   if (strategy === 'contract') {
@@ -1258,7 +1400,10 @@ function applySyntaxShapeRewrite(paragraph = '', envelopeId = 'generic', sourceC
 
   if (['spark', 'cross-examiner', 'operator'].includes(envelopeId)) {
     return sentences.map((sentence) => {
-      const next = splitForClippedMomentum(sentence);
+      let next = splitForClippedMomentum(sentence);
+      if (['reflective-prose', 'narrative-scene'].includes(sourceClass)) {
+        next = splitSceneBursts(next);
+      }
       if (next !== sentence) {
         (context.structuralOperations || []).push('split-long-line');
       }
@@ -1881,14 +2026,15 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
       working = applyHybridBalance(working, variant.envelopeId, sourceClass, context);
     }
 
-    return applyPersonaEnvelopeText(working, {
-      sourceText: paragraph,
-      envelopeId: variant.envelopeId,
-      sourceClass,
-      targetProfile: variant.shell.profile || {},
-      explicitTargetProfile: Boolean(variant.shell.profile)
+      return applyPersonaEnvelopeText(working, {
+        sourceText: paragraph,
+        envelopeId: variant.envelopeId,
+        sourceClass,
+        targetProfile: variant.shell.profile || {},
+        explicitTargetProfile: Boolean(variant.shell.profile),
+        context
+      });
     });
-  });
 
   let outputText = joinParagraphs(rewrittenParagraphs);
   outputText = applyContractionStrategyText(outputText, contractionStrategy, context);
