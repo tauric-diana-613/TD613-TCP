@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-11T18:58:21.127Z",
+  "generatedAt": "2026-04-12T04:51:31.536Z",
   "summary": {
     "corpusVersion": "wild-corpus-v1",
     "familyCount": 18,
@@ -7,17 +7,17 @@
     "promotedDeckCount": 24,
     "totalCases": 270,
     "failureBucketCounts": {
-      "one_sided_swap": 18,
-      "register_miss": 76,
+      "one_sided_swap": 16,
+      "register_miss": 75,
       "semantic_drift": 79,
       "sentence_span_miss": 34,
       "false_neighbor_convergence": 44,
-      "over_flattened_output": 21,
+      "over_flattened_output": 17,
       "trainer_retrieval_fail": 31,
-      "generator_hold": 3,
       "punctuation_only_shift": 0,
       "surface_close_under_large_gap": 0,
       "anchor_break": 0,
+      "generator_hold": 0,
       "generator_unbounded_semantics": 0,
       "both_rejected_swap": 0,
       "mask_near_home_hold": 0
@@ -52,8 +52,8 @@
         "score": 19
       },
       {
-        "familyId": "performance-review",
-        "score": 16
+        "familyId": "clinic-scheduling",
+        "score": 15
       }
     ],
     "worstCases": [
@@ -183,9 +183,9 @@
       }
     ],
     "generatorCaseCount": 52,
-    "generatorHeldCount": 3,
+    "generatorHeldCount": 0,
     "generatorUnsafeStructuralCount": 0,
-    "toolabilityLandedRate": 0.9118,
+    "toolabilityLandedRate": 1,
     "toolabilityDistinctnessRate": 1,
     "annexCount": 1,
     "annexPassedCount": 1
@@ -2872,7 +2872,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.184,
-          "output": 1.441,
+          "output": 1.282,
           "improved": false
         },
         "semanticAudit": {
@@ -2909,7 +2909,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.044,
-          "output": 1.358,
+          "output": 1.224,
           "improved": false
         },
         "semanticAudit": {
@@ -3406,15 +3406,20 @@
         "donorId": "performance-review-formal-record",
         "mode": "swap-literal-risk",
         "expectedPressure": "literal-protected",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.245,
-          "output": 1.234,
-          "improved": true
+          "output": 1.595,
+          "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -3425,13 +3430,10 @@
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output."
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, punctuation-shape",
+        "failureBuckets": [],
+        "notes": "Protected anchors from overwork-debrief should survive donor pressure from performance-review even when both live in incident-record syntax."
       },
       {
         "id": "performance-review-to-overwork-debrief-literal-risk",
@@ -3464,12 +3466,10 @@
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, punctuation-shape",
-        "failureBuckets": [
-          "one_sided_swap"
-        ],
-        "notes": "Buckets: one_sided_swap."
+        "failureBuckets": [],
+        "notes": "Reverse protected-anchor pressure between performance-review and overwork-debrief."
       },
       {
         "id": "tenant-leak-to-school-coordination-literal-risk",
@@ -3601,7 +3601,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.285,
-          "output": 1.583,
+          "output": 1.487,
           "improved": false
         },
         "semanticAudit": {
@@ -5098,33 +5098,33 @@
         "personaId": "matron",
         "mode": "mask",
         "expectedPressure": "mask-false-neighbor",
-        "transferClass": "held",
-        "realizationTier": "none",
-        "changedDimensions": [],
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count"
+        ],
         "visibleShift": true,
-        "nonTrivialShift": false,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.91,
-          "output": 0.91,
+          "output": 0.8545,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0.958,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.982,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "generator-hold",
-        "whatMoved": "generator hold // output docketed, no weak rewrite published",
-        "failureBuckets": [
-          "over_flattened_output",
-          "register_miss"
-        ],
-        "notes": "Buckets: over_flattened_output, register_miss."
+        "pairClassification": "full-contact",
+        "whatMoved": "segment ledger // 1 projected",
+        "failureBuckets": [],
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace eased by 6 points."
       },
       {
         "id": "model-safety-under-newsroom-correction-mask-cross-family",
@@ -5221,15 +5221,15 @@
         "personaId": "archivist",
         "mode": "mask",
         "expectedPressure": "mask-false-neighbor",
-        "transferClass": "held",
-        "realizationTier": "none",
+        "transferClass": "structural",
+        "realizationTier": "cadence-only",
         "changedDimensions": [],
         "visibleShift": true,
-        "nonTrivialShift": false,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.846,
-          "output": 0.846,
-          "improved": false
+          "output": 0.852,
+          "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
@@ -5241,12 +5241,10 @@
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "generator-hold",
-        "whatMoved": "generator hold // output docketed, no weak rewrite published",
-        "failureBuckets": [
-          "over_flattened_output"
-        ],
-        "notes": "Buckets: over_flattened_output."
+        "pairClassification": "surface-drift",
+        "whatMoved": "segment ledger // 1 projected",
+        "failureBuckets": [],
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home distance barely moved."
       },
       {
         "id": "museum-fog-alarm-under-building-access-mask-cross-family",
@@ -5259,14 +5257,18 @@
         "personaId": "operator",
         "mode": "mask",
         "expectedPressure": "mask-false-neighbor",
-        "transferClass": "held",
-        "realizationTier": "none",
-        "changedDimensions": [],
+        "transferClass": "surface",
+        "realizationTier": "cadence-only",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread"
+        ],
         "visibleShift": true,
-        "nonTrivialShift": false,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.916,
-          "output": 0.916,
+          "output": 0.904,
           "improved": false
         },
         "semanticAudit": {
@@ -5279,12 +5281,10 @@
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "generator-hold",
-        "whatMoved": "generator hold // output docketed, no weak rewrite published",
-        "failureBuckets": [
-          "over_flattened_output"
-        ],
-        "notes": "Buckets: over_flattened_output."
+        "pairClassification": "surface-held",
+        "whatMoved": "surface only // movement stayed close to source",
+        "failureBuckets": [],
+        "notes": "Aperture kept 1 of 1 segment in a surface-held lane and surfaced pressure notes instead of suppressing them. Home distance barely moved."
       }
     ],
     "trainerCases": [
@@ -5330,7 +5330,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6867,
-          "meanAgreement": 0.8633,
+          "meanAgreement": 0.8566,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5727,7 +5727,7 @@
           "pass": false,
           "retrievalPass": true,
           "scalarAggregate": 0.6727,
-          "meanAgreement": 0.8205,
+          "meanAgreement": 0.8301,
           "status": "scalar-drift"
         },
         "pairClassification": "",
@@ -6415,7 +6415,7 @@
           "pass": true,
           "retrievalPass": true,
           "scalarAggregate": 0.6818,
-          "meanAgreement": 0.8205,
+          "meanAgreement": 0.8301,
           "status": "ready"
         },
         "pairClassification": "",
@@ -6753,7 +6753,7 @@
           "pass": false,
           "retrievalPass": true,
           "scalarAggregate": 0.6422,
-          "meanAgreement": 0.8209,
+          "meanAgreement": 0.8305,
           "status": "scalar-drift"
         },
         "pairClassification": "",
@@ -6954,7 +6954,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.5852,
-          "meanAgreement": 0.7137,
+          "meanAgreement": 0.7071,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -10881,42 +10881,42 @@
         "personaId": "matron",
         "sourceClass": "procedural-record",
         "generatorVersion": "v2",
-        "transferClass": "held",
-        "registeredTransformClass": "generator-hold",
-        "holdStatus": "held",
-        "holdClass": "below-rewrite-bar",
-        "apertureOutcome": "generator-hold",
+        "transferClass": "structural",
+        "registeredTransformClass": "cadence-rewrite",
+        "holdStatus": "landed",
+        "holdClass": null,
+        "apertureOutcome": "projected",
         "visibleShift": true,
-        "nonTrivialShift": false,
+        "nonTrivialShift": true,
         "semanticBounded": true,
         "protectedAnchorIntegrity": 1,
         "propositionCoverage": 1,
-        "actorCoverage": 1,
+        "actorCoverage": 0.958,
         "actionCoverage": 1,
-        "objectCoverage": 1,
+        "objectCoverage": 0.982,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
-        "candidateCount": 3,
-        "selectedCandidateId": null,
-        "selectedCandidateScore": 0,
-        "selectedCandidateToolabilityScore": 0.7437,
-        "selectedCandidateTransferClass": "held",
-        "toolabilityScore": 0.7437,
+        "candidateCount": 5,
+        "selectedCandidateId": "base:persona-lexicon",
+        "selectedCandidateScore": 0.8636,
+        "selectedCandidateToolabilityScore": 0.8063,
+        "selectedCandidateTransferClass": "structural",
+        "toolabilityScore": 0.8063,
         "readability": 0.72,
         "sentenceIntegrity": 0.9676,
-        "movementQuality": 0.5997,
-        "personaDistinctness": 0.81,
+        "movementQuality": 0.8616,
+        "personaDistinctness": 0.798,
         "personaSeparationScore": 1,
         "toolabilityWarnings": [
           "artifact:clause-drag",
           "persona-convergence:matron-undertow"
         ],
-        "artifactFlags": [],
-        "notes": "Buckets: generator_hold.",
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace eased by 6 points.",
         "expectedPressure": "mask-false-neighbor",
-        "failureBuckets": [
-          "generator_hold"
-        ]
+        "failureBuckets": []
       },
       {
         "id": "model-safety-under-newsroom-correction-mask-cross-family",
@@ -11010,13 +11010,13 @@
         "personaId": "archivist",
         "sourceClass": "procedural-record",
         "generatorVersion": "v2",
-        "transferClass": "held",
-        "registeredTransformClass": "generator-hold",
-        "holdStatus": "held",
-        "holdClass": "hard-anchor-failure",
-        "apertureOutcome": "generator-hold",
+        "transferClass": "structural",
+        "registeredTransformClass": "cadence-rewrite",
+        "holdStatus": "landed",
+        "holdClass": null,
+        "apertureOutcome": "projected",
         "visibleShift": true,
-        "nonTrivialShift": false,
+        "nonTrivialShift": true,
         "semanticBounded": true,
         "protectedAnchorIntegrity": 1,
         "propositionCoverage": 1,
@@ -11026,14 +11026,14 @@
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 3,
-        "selectedCandidateId": null,
-        "selectedCandidateScore": 0,
-        "selectedCandidateToolabilityScore": 0.5462,
-        "selectedCandidateTransferClass": "held",
-        "toolabilityScore": 0.5462,
+        "selectedCandidateId": "base:cadence-connector",
+        "selectedCandidateScore": 0.5011,
+        "selectedCandidateToolabilityScore": 0.546,
+        "selectedCandidateTransferClass": "weak",
+        "toolabilityScore": 0.546,
         "readability": 0.64,
         "sentenceIntegrity": 1,
-        "movementQuality": 0.3194,
+        "movementQuality": 0.3186,
         "personaDistinctness": 0.2232,
         "personaSeparationScore": 0.31,
         "toolabilityWarnings": [
@@ -11042,11 +11042,9 @@
           "toolability:low-confidence"
         ],
         "artifactFlags": [],
-        "notes": "Buckets: generator_hold.",
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home distance barely moved.",
         "expectedPressure": "mask-false-neighbor",
-        "failureBuckets": [
-          "generator_hold"
-        ]
+        "failureBuckets": []
       },
       {
         "id": "museum-fog-alarm-under-building-access-mask-cross-family",
@@ -11056,13 +11054,13 @@
         "personaId": "operator",
         "sourceClass": "formal-correspondence",
         "generatorVersion": "v2",
-        "transferClass": "held",
-        "registeredTransformClass": "generator-hold",
-        "holdStatus": "held",
-        "holdClass": "hard-anchor-failure",
-        "apertureOutcome": "generator-hold",
+        "transferClass": "surface",
+        "registeredTransformClass": "surface-only",
+        "holdStatus": "landed",
+        "holdClass": null,
+        "apertureOutcome": "surface-held",
         "visibleShift": true,
-        "nonTrivialShift": false,
+        "nonTrivialShift": true,
         "semanticBounded": true,
         "protectedAnchorIntegrity": 1,
         "propositionCoverage": 1,
@@ -11072,10 +11070,10 @@
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 1,
-        "selectedCandidateId": null,
-        "selectedCandidateScore": 0,
+        "selectedCandidateId": "base:syntax-shape",
+        "selectedCandidateScore": 0.6143,
         "selectedCandidateToolabilityScore": 0.5586,
-        "selectedCandidateTransferClass": "held",
+        "selectedCandidateTransferClass": "surface",
         "toolabilityScore": 0.5586,
         "readability": 0.64,
         "sentenceIntegrity": 1,
@@ -11087,11 +11085,9 @@
           "toolability:low-confidence"
         ],
         "artifactFlags": [],
-        "notes": "Buckets: generator_hold.",
+        "notes": "Aperture kept 1 of 1 segment in a surface-held lane and surfaced pressure notes instead of suppressing them. Home distance barely moved.",
         "expectedPressure": "mask-false-neighbor",
-        "failureBuckets": [
-          "generator_hold"
-        ]
+        "failureBuckets": []
       }
     ]
   },
@@ -11109,56 +11105,20 @@
       "transfer": 18,
       "mask": 34
     },
-    "holdClassCounts": {
-      "below-rewrite-bar": 1,
-      "hard-anchor-failure": 2
-    },
-    "landedCount": 49,
-    "heldCount": 3,
-    "structuralCount": 47,
-    "surfaceCount": 2,
-    "nonTrivialCount": 47,
+    "holdClassCounts": {},
+    "landedCount": 52,
+    "heldCount": 0,
+    "structuralCount": 49,
+    "surfaceCount": 3,
+    "nonTrivialCount": 50,
     "visibleShiftCount": 52,
     "semanticBoundedCount": 52,
     "semanticBoundedRate": 1,
     "unsafeStructuralCount": 0,
     "protectedAnchorIntegrityMin": 1,
-    "averageCandidateCount": 2.9038,
-    "averageSelectedCandidateScore": 0.8406,
+    "averageCandidateCount": 2.9423,
+    "averageSelectedCandidateScore": 0.8787,
     "topMisses": [
-      {
-        "id": "archive-grant-under-school-coordination-mask-cross-family",
-        "laneKind": "mask",
-        "sourceClass": "procedural-record",
-        "transferClass": "held",
-        "registeredTransformClass": "generator-hold",
-        "holdStatus": "held",
-        "holdClass": "below-rewrite-bar",
-        "semanticBounded": true,
-        "selectedCandidateScore": 0
-      },
-      {
-        "id": "municipal-zoning-under-committee-budget-mask-cross-family",
-        "laneKind": "mask",
-        "sourceClass": "procedural-record",
-        "transferClass": "held",
-        "registeredTransformClass": "generator-hold",
-        "holdStatus": "held",
-        "holdClass": "hard-anchor-failure",
-        "semanticBounded": true,
-        "selectedCandidateScore": 0
-      },
-      {
-        "id": "museum-fog-alarm-under-building-access-mask-cross-family",
-        "laneKind": "mask",
-        "sourceClass": "formal-correspondence",
-        "transferClass": "held",
-        "registeredTransformClass": "generator-hold",
-        "holdStatus": "held",
-        "holdClass": "hard-anchor-failure",
-        "semanticBounded": true,
-        "selectedCandidateScore": 0
-      },
       {
         "id": "customer-support-mask-same-family",
         "laneKind": "mask",
@@ -11180,6 +11140,17 @@
         "holdClass": null,
         "semanticBounded": true,
         "selectedCandidateScore": 0.3493
+      },
+      {
+        "id": "museum-fog-alarm-under-building-access-mask-cross-family",
+        "laneKind": "mask",
+        "sourceClass": "formal-correspondence",
+        "transferClass": "surface",
+        "registeredTransformClass": "surface-only",
+        "holdStatus": "landed",
+        "holdClass": null,
+        "semanticBounded": true,
+        "selectedCandidateScore": 0.6143
       }
     ],
     "cases": [
@@ -13210,42 +13181,42 @@
         "personaId": "matron",
         "sourceClass": "procedural-record",
         "generatorVersion": "v2",
-        "transferClass": "held",
-        "registeredTransformClass": "generator-hold",
-        "holdStatus": "held",
-        "holdClass": "below-rewrite-bar",
-        "apertureOutcome": "generator-hold",
+        "transferClass": "structural",
+        "registeredTransformClass": "cadence-rewrite",
+        "holdStatus": "landed",
+        "holdClass": null,
+        "apertureOutcome": "projected",
         "visibleShift": true,
-        "nonTrivialShift": false,
+        "nonTrivialShift": true,
         "semanticBounded": true,
         "protectedAnchorIntegrity": 1,
         "propositionCoverage": 1,
-        "actorCoverage": 1,
+        "actorCoverage": 0.958,
         "actionCoverage": 1,
-        "objectCoverage": 1,
+        "objectCoverage": 0.982,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
-        "candidateCount": 3,
-        "selectedCandidateId": null,
-        "selectedCandidateScore": 0,
-        "selectedCandidateToolabilityScore": 0.7437,
-        "selectedCandidateTransferClass": "held",
-        "toolabilityScore": 0.7437,
+        "candidateCount": 5,
+        "selectedCandidateId": "base:persona-lexicon",
+        "selectedCandidateScore": 0.8636,
+        "selectedCandidateToolabilityScore": 0.8063,
+        "selectedCandidateTransferClass": "structural",
+        "toolabilityScore": 0.8063,
         "readability": 0.72,
         "sentenceIntegrity": 0.9676,
-        "movementQuality": 0.5997,
-        "personaDistinctness": 0.81,
+        "movementQuality": 0.8616,
+        "personaDistinctness": 0.798,
         "personaSeparationScore": 1,
         "toolabilityWarnings": [
           "artifact:clause-drag",
           "persona-convergence:matron-undertow"
         ],
-        "artifactFlags": [],
-        "notes": "Buckets: generator_hold.",
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace eased by 6 points.",
         "expectedPressure": "mask-false-neighbor",
-        "failureBuckets": [
-          "generator_hold"
-        ]
+        "failureBuckets": []
       },
       {
         "id": "model-safety-under-newsroom-correction-mask-cross-family",
@@ -13339,13 +13310,13 @@
         "personaId": "archivist",
         "sourceClass": "procedural-record",
         "generatorVersion": "v2",
-        "transferClass": "held",
-        "registeredTransformClass": "generator-hold",
-        "holdStatus": "held",
-        "holdClass": "hard-anchor-failure",
-        "apertureOutcome": "generator-hold",
+        "transferClass": "structural",
+        "registeredTransformClass": "cadence-rewrite",
+        "holdStatus": "landed",
+        "holdClass": null,
+        "apertureOutcome": "projected",
         "visibleShift": true,
-        "nonTrivialShift": false,
+        "nonTrivialShift": true,
         "semanticBounded": true,
         "protectedAnchorIntegrity": 1,
         "propositionCoverage": 1,
@@ -13355,14 +13326,14 @@
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 3,
-        "selectedCandidateId": null,
-        "selectedCandidateScore": 0,
-        "selectedCandidateToolabilityScore": 0.5462,
-        "selectedCandidateTransferClass": "held",
-        "toolabilityScore": 0.5462,
+        "selectedCandidateId": "base:cadence-connector",
+        "selectedCandidateScore": 0.5011,
+        "selectedCandidateToolabilityScore": 0.546,
+        "selectedCandidateTransferClass": "weak",
+        "toolabilityScore": 0.546,
         "readability": 0.64,
         "sentenceIntegrity": 1,
-        "movementQuality": 0.3194,
+        "movementQuality": 0.3186,
         "personaDistinctness": 0.2232,
         "personaSeparationScore": 0.31,
         "toolabilityWarnings": [
@@ -13371,11 +13342,9 @@
           "toolability:low-confidence"
         ],
         "artifactFlags": [],
-        "notes": "Buckets: generator_hold.",
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home distance barely moved.",
         "expectedPressure": "mask-false-neighbor",
-        "failureBuckets": [
-          "generator_hold"
-        ]
+        "failureBuckets": []
       },
       {
         "id": "museum-fog-alarm-under-building-access-mask-cross-family",
@@ -13385,13 +13354,13 @@
         "personaId": "operator",
         "sourceClass": "formal-correspondence",
         "generatorVersion": "v2",
-        "transferClass": "held",
-        "registeredTransformClass": "generator-hold",
-        "holdStatus": "held",
-        "holdClass": "hard-anchor-failure",
-        "apertureOutcome": "generator-hold",
+        "transferClass": "surface",
+        "registeredTransformClass": "surface-only",
+        "holdStatus": "landed",
+        "holdClass": null,
+        "apertureOutcome": "surface-held",
         "visibleShift": true,
-        "nonTrivialShift": false,
+        "nonTrivialShift": true,
         "semanticBounded": true,
         "protectedAnchorIntegrity": 1,
         "propositionCoverage": 1,
@@ -13401,10 +13370,10 @@
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 1,
-        "selectedCandidateId": null,
-        "selectedCandidateScore": 0,
+        "selectedCandidateId": "base:syntax-shape",
+        "selectedCandidateScore": 0.6143,
         "selectedCandidateToolabilityScore": 0.5586,
-        "selectedCandidateTransferClass": "held",
+        "selectedCandidateTransferClass": "surface",
         "toolabilityScore": 0.5586,
         "readability": 0.64,
         "sentenceIntegrity": 1,
@@ -13416,20 +13385,18 @@
           "toolability:low-confidence"
         ],
         "artifactFlags": [],
-        "notes": "Buckets: generator_hold.",
+        "notes": "Aperture kept 1 of 1 segment in a surface-held lane and surfaced pressure notes instead of suppressing them. Home distance barely moved.",
         "expectedPressure": "mask-false-neighbor",
-        "failureBuckets": [
-          "generator_hold"
-        ]
+        "failureBuckets": []
       }
     ]
   },
   "toolability": {
     "expectedCaseCount": 34,
-    "landedRate": 0.9118,
-    "holdRate": 0.0882,
-    "artifactRate": 0.4194,
-    "weakMovementRate": 0.0645,
+    "landedRate": 1,
+    "holdRate": 0,
+    "artifactRate": 0.4118,
+    "weakMovementRate": 0.0882,
     "distinctnessRate": 1,
     "convergenceRate": 0,
     "previewHonestyRate": 1,
@@ -13681,22 +13648,22 @@
     "actionBias": "hold-current-boundary",
     "donorPressure": {
       "status": "real",
-      "bilateralEngaged": 52,
+      "bilateralEngaged": 54,
       "representativeAverageScore": 35.33
     },
     "witnessPressure": {
       "status": "rising",
-      "witnessBurdenCount": 118,
-      "witnessBurdenRatio": 0.437,
+      "witnessBurdenCount": 112,
+      "witnessBurdenRatio": 0.4148,
       "topWitnessBuckets": {
         "semantic_drift": 79,
-        "over_flattened_output": 21,
-        "one_sided_swap": 18
+        "over_flattened_output": 17,
+        "one_sided_swap": 16
       }
     },
     "realizedPassage": {
       "status": "landing",
-      "oneSidedRate": 0.1154,
+      "oneSidedRate": 0.0962,
       "flagshipAllPassed": true
     },
     "provenanceFloor": {
@@ -13706,8 +13673,8 @@
     },
     "swapMatrix": {
       "caseCount": 104,
-      "bilateralEngaged": 52,
-      "oneSided": 12,
+      "bilateralEngaged": 54,
+      "oneSided": 10,
       "bothRejected": 0,
       "flagshipPassCount": 8,
       "flagshipCaseCount": 8,

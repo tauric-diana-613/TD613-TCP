@@ -2154,6 +2154,29 @@ function applyPersonaLexiconRewrite(paragraph = '', envelopeId = 'generic', sour
       operations: context.lexicalOperations,
       lexemeSwaps: context.lexemeSwaps
     });
+    if (['reflective-prose', 'narrative-scene'].includes(sourceClass)) {
+      working = applyReplacementRule(working, /\bI think\b/g, 'it seems to me', {
+        limit: 1,
+        label: 'persona:i-think->it-seems-to-me',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+      working = applyReplacementRule(working, /\bjust because\b/gi, 'simply because', {
+        limit: 1,
+        label: 'persona:just-because->simply-because',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+      working = applyReplacementRule(working, /\bI keep insisting\b/gi, 'I keep pressing', {
+        limit: 1,
+        label: 'persona:i-keep-insisting->i-keep-pressing',
+        family: 'persona',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+    }
     if (['procedural-record', 'formal-correspondence'].includes(sourceClass)) {
       working = applyReplacementRule(working, /\bregarding\b/gi, 'about', {
         limit: 1,
@@ -2320,6 +2343,13 @@ function applyLexicalRegisterRewrite(paragraph = '', envelopeId = 'generic', sou
     working = applyReplacementRule(working, /\bmaybe\b/gi, 'perhaps', {
       limit: 1,
       label: 'register:maybe->perhaps',
+      family: 'register',
+      operations: context.lexicalOperations,
+      lexemeSwaps: context.lexemeSwaps
+    });
+    working = applyReplacementRule(working, /\bjust because\b/gi, 'simply because', {
+      limit: 1,
+      label: 'register:just-because->simply-because',
       family: 'register',
       operations: context.lexicalOperations,
       lexemeSwaps: context.lexemeSwaps
@@ -2957,12 +2987,14 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     sourceText,
     restoreProceduralWitnessTerms(sourceText, outputText, sourceClass)
   );
-  outputText = polishNativeCandidateText(outputText, {
+  const polishProtected = protectAnchorsForRewrite(outputText, hardAnchors);
+  outputText = polishNativeCandidateText(polishProtected.text, {
     envelopeId: variant.envelopeId,
     sourceClass
   })
     .replace(/;\s+(?=[A-Z])/g, '. ')
     .replace(/,,+/g, ',');
+  outputText = restoreAnchorsAfterRewrite(outputText, polishProtected.replacements);
 
   return Object.freeze({
     outputText,
@@ -3290,7 +3322,7 @@ function classRecoveryFamilies(sourceClass = 'formal-correspondence') {
     return ['syntax-shape', 'persona-lexicon', 'cadence-connector', 'order-beat'];
   }
   if (sourceClass === 'reflective-prose') {
-    return ['clause-pivot', 'pressure-current', 'persona-lexicon', 'hybrid'];
+    return ['clause-pivot', 'pressure-current', 'persona-lexicon', 'hybrid', 'register-lexicon', 'syntax-shape'];
   }
   return ['order-beat', 'clause-pivot', 'pressure-current', 'hybrid'];
 }

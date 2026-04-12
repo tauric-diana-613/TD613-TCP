@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-11T18:58:21.127Z
+Generated: 2026-04-12T04:51:31.536Z
 
 Corpus: 72 samples across 18 families
 Promoted deck subset: 24 samples
@@ -9,16 +9,16 @@ Total diagnostics cases: 270
 ## Failure Buckets
 
 - semantic_drift: 79
-- register_miss: 76
+- register_miss: 75
 - false_neighbor_convergence: 44
 - sentence_span_miss: 34
 - trainer_retrieval_fail: 31
-- over_flattened_output: 21
-- one_sided_swap: 18
-- generator_hold: 3
+- over_flattened_output: 17
+- one_sided_swap: 16
 - punctuation_only_shift: 0
 - surface_close_under_large_gap: 0
 - anchor_break: 0
+- generator_hold: 0
 - generator_unbounded_semantics: 0
 - both_rejected_swap: 0
 - mask_near_home_hold: 0
@@ -32,7 +32,7 @@ Total diagnostics cases: 270
 - committee-budget: 20
 - tenant-leak: 19
 - newsroom-correction: 19
-- performance-review: 16
+- clinic-scheduling: 15
 
 ## Worst Cases
 
@@ -52,34 +52,32 @@ Total diagnostics cases: 270
 ## Generator Audit
 
 - case_count: 52
-- landed_count: 49
-- held_count: 3
-- structural_count: 47
-- surface_count: 2
+- landed_count: 52
+- held_count: 0
+- structural_count: 49
+- surface_count: 3
 - semantic_bounded_rate: 1
 - unsafe_structural_count: 0
 - protected_anchor_integrity_min: 1
-- average_candidate_count: 2.9038
-- average_selected_candidate_score: 0.8406
+- average_candidate_count: 2.9423
+- average_selected_candidate_score: 0.8787
 - generator_versions: v2:52
 - source_classes: procedural-record:19, formal-correspondence:30, narrative-scene:3
-- hold_classes: below-rewrite-bar:1, hard-anchor-failure:2
+- hold_classes: none
 
 ### Generator Misses
 
-- archive-grant-under-school-coordination-mask-cross-family: mask, procedural-record, transfer held, registered generator-hold, hold held/below-rewrite-bar, bounded yes, selected score 0
-- municipal-zoning-under-committee-budget-mask-cross-family: mask, procedural-record, transfer held, registered generator-hold, hold held/hard-anchor-failure, bounded yes, selected score 0
-- museum-fog-alarm-under-building-access-mask-cross-family: mask, formal-correspondence, transfer held, registered generator-hold, hold held/hard-anchor-failure, bounded yes, selected score 0
 - customer-support-mask-same-family: mask, procedural-record, transfer surface, registered surface-only, hold landed/none, bounded yes, selected score 0.2481
 - model-safety-mask-same-family: mask, formal-correspondence, transfer surface, registered surface-only, hold landed/none, bounded yes, selected score 0.3493
+- museum-fog-alarm-under-building-access-mask-cross-family: mask, formal-correspondence, transfer surface, registered surface-only, hold landed/none, bounded yes, selected score 0.6143
 
 ## Toolability
 
 - expected_case_count: 34
-- landed_rate: 0.9118
-- hold_rate: 0.0882
-- artifact_rate: 0.4194
-- weak_movement_rate: 0.0645
+- landed_rate: 1
+- hold_rate: 0
+- artifact_rate: 0.4118
+- weak_movement_rate: 0.0882
 - distinctness_rate: 1
 - convergence_rate: 0
 - preview_honesty_rate: 1
@@ -139,7 +137,7 @@ Total diagnostics cases: 270
 - witness_pressure: rising
 - realized_passage: landing
 - provenance_floor: maintained
-- swap_matrix: bilateral 52/104, one-sided 12/104, flagship 8/8
+- swap_matrix: bilateral 54/104, one-sided 10/104, flagship 8/8
 - representative_pairs: bilateral visible 6/6, bilateral non-trivial 6/6, average score 35.33
 
 ## Private TD613 Aperture Representative Pairs

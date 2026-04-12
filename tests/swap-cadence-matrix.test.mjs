@@ -27,7 +27,7 @@ assert((matrix.summary.bothRejected || 0) <= 15, 'diagnostics swap matrix should
 assert((matrix.summary.oneSided || 0) >= 6, 'diagnostics swap matrix should still surface one-sided donor pressure where only one lane clears truthfully');
 assert((matrix.summary.surfaceClose || 0) >= 30, 'diagnostics swap matrix should now expose many underfit pairings as surface-close warning lanes instead of rejecting them outright');
 assert.equal(matrix.summary.flagshipCount, 8, 'flagship summary tracks the 8 strict browser-facing directions');
-assert((matrix.summary.failureFamilyCounts['donor-underfit'] || 0) >= 20, 'diagnostics swap matrix should explicitly track donor-underfit pressure once the warning ledger is active');
+assert((matrix.summary.failureFamilyCounts['donor-underfit'] || 0) >= 16, 'diagnostics swap matrix should explicitly track donor-underfit pressure once the warning ledger is active');
 assert.equal(matrix.summary.flagshipPassCount, 8, 'flagship summary should surface eight review-facing exemplar directions as live');
 assert.equal(matrix.summary.flagshipAllPassed, true, 'flagship summary should mark all review-facing exemplar directions as live');
 
