@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TCP / Homebase</title>
+  <link rel="stylesheet" href="./styles.css?v=202604022005" />
+</head>
+<body data-page-kind="homebase">
+  <div class="shell shell-station">
+    <header id="consoleMasthead" class="masthead site-masthead station-masthead">
+      <div class="station-masthead-bar">
+        <span class="eyebrow">TD613 / station split / Homebase</span>
+        <div class="station-masthead-links">
+          <a class="gateway-link" href="./index.html">Gateway</a>
+          <a class="gateway-link" href="./safe-harbor/index.html">Safe Harbor</a>
+        </div>
+      </div>
+      <div class="station-masthead-copy">
+        <h1>Homebase</h1>
+        <p id="heroStationLine" class="hero-station-line">Homebase / anchor, contact, residue</p>
+        <p id="heroLead" class="lead">Lock a cadence home, bring a worn mask across, and read the passage room without losing the underlying runtime.</p>
+      </div>
+    </header>
+
+    <div class="statusrail station-statusrail">
+      <span id="decisionTone" class="console-status">Waiting on a scan</span>
+      <span id="badgeState" class="statepill active">Badge // holds</span>
+      <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
+      <span id="containmentState" class="statepill active">Containment // stable</span>
+      <span id="routeState" class="statepill">Route // buffered</span>
+      <a id="safeHarborHandoff" class="statepill statepill-link safe-harbor-handoff" href="./safe-harbor/index.html">
+        <span class="safe-harbor-handoff-glyph" aria-hidden="true">&#x27D0;</span>
+        <span id="safeHarborHandoffLabel">Safe Harbor // latent</span>
+      </a>
+    </div>
+
+    <nav class="top-tabs site-nav station-nav" aria-label="TCP stations">
+      <button id="tabHomebase" type="button" class="top-tab active"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
+      <button id="tabPersonas" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
+      <button id="tabReadout" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
+      <button id="tabPlay" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
+      <button id="tabTrainer" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer</button>
+      <a class="top-tab top-tab-external" href="./index.html">Gateway</a>
+      <a class="top-tab top-tab-external" href="./safe-harbor/index.html">Safe Harbor</a>
+    </nav>
+
+    <main class="view-stack station-stack">
+      <section id="viewPaneHomebase" class="view-pane active">
+        <div class="station-view-head station-view-head-homebase">
+          <div class="station-view-meta">
+            <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase station</div>
+            <h2 class="station-view-title">Anchor the cadence. Bring the mask across. Read the residue.</h2>
+            <p class="station-view-summary">This is the tactile room: lock a cadence home, wear one mask at a time, and inspect what the browser can still hold onto.</p>
+          </div>
+        </div>
+        <section class="panel personas-panel">
+          <div class="panel-heading">
+            <div>
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionHomebase">&#xD834;&#xDF0B;</span> Homebase</div>
+              <h2>Lock a cadence, activate a mask, and watch what clings</h2>
+            </div>
+            <p class="section-note">Anchor the cadence, bring the mask across, and read the contact without softening what the browser can recover.</p>
+          </div>
+
+          <div class="persona-toolbar">
+            <div id="homebaseStatus" class="analysis-status">Homebase // no cadence staged yet</div>
+            <div id="homebaseMaskStatus" class="analysis-status">Worn mask // none // choose on the shelf, then bring into Homebase</div>
+          </div>
+
+          <div class="persona-home-grid">
+            <div class="persona-home-sidebar">
+              <section id="cadenceLockboxSurface" class="trainer-surface lockbox-surface">
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionHomebase">&#xD834;&#xDF0B;</span> Cadence Lockbox</div>
+                <label class="field trainer-name-field" for="cadenceLockName">
+                  <div class="field-head">
+                    <div class="field-head-copy">
+                      <span class="field-label">Lock name</span>
+                      <span class="field-copy">Optional short name for the cadence home you are about to stage.</span>
+                    </div>
+                  </div>
+                  <input id="cadenceLockName" type="text" placeholder="Cadence Home" autocomplete="off">
+                </label>
+                <label class="field" for="cadenceLockCorpus">
+                  <div class="field-head">
+                    <div class="field-head-copy">
+                      <span class="field-label">Cadence Lockbox</span>
+                      <span class="field-copy">Paste one or more samples from the same voice. Blank lines split the corpus into separate samples so the lock can read your cadence across contexts.</span>
+                    </div>
+                  </div>
+                  <textarea id="cadenceLockCorpus"></textarea>
+                </label>
+                <div class="trainer-actions">
+                  <button id="lockCadenceBtn" type="button" class="primary-cta">Lock</button>
+                  <button id="revealCadenceBtn" type="button" class="secondary">Reveal</button>
+                  <button id="saveCadenceLockBtn" type="button" class="secondary">Save</button>
+                </div>
+                <div id="homebaseLockStatus" class="analysis-status">Stage a cadence draft. Reveal opens the dossier. Save keeps it in the session archive for this tab only.</div>
+              </section>
+            </div>
+
+            <div class="persona-home-main">
+              <section id="homebaseWornMaskStage" class="trainer-surface homebase-mask-stage" data-mask-phase="latent">
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionMaskBench">&#xDBF5;&#xDE13;</span> Worn mask</div>
+                <div id="homebaseMaskRoute" class="homebase-mask-route" aria-label="Mask contact route">
+                  <span class="homebase-route-chip" data-step="chosen">Chosen</span>
+                  <span class="homebase-route-chip" data-step="worn">Worn</span>
+                  <span class="homebase-route-chip" data-step="contact">In contact</span>
+                  <span class="homebase-route-chip" data-step="residue">Residue read</span>
+                </div>
+                <div id="homebaseWornMask" class="homebase-worn-mask"></div>
+              </section>
+
+              <section class="trainer-surface">
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionMaskBench">&#xDBF5;&#xDE13;</span> Passage bench</div>
+                <label class="field" for="personaComparisonText">
+                  <div class="field-head">
+                    <div class="field-head-copy">
+                      <span class="field-label">Comparison text</span>
+                      <span class="field-copy">Paste any text you want to pass through the worn mask. Homebase then reads source, transformed passage, and residue against the active cadence home.</span>
+                    </div>
+                  </div>
+                  <textarea id="personaComparisonText"></textarea>
+                </label>
+                <div id="maskBenchStatus" class="analysis-status">Stage or select a cadence home to turn this bench on.</div>
+                <div id="maskContactSummary" class="analysis-status">Contact is latent.</div>
+                <div class="trainer-summary-grid persona-mask-summary">
+                  <div class="trainer-summary-card">
+                    <div class="persona-kicker">Before Contact</div>
+                    <strong id="maskRawToLock">--</strong>
+                    <span>How the source reads against home before the mask touches it.</span>
+                  </div>
+                  <div class="trainer-summary-card">
+                    <div class="persona-kicker">After Contact</div>
+                    <strong id="maskMaskedToLock">--</strong>
+                    <span>How the transformed passage still reads against home.</span>
+                  </div>
+                  <div class="trainer-summary-card">
+                    <div class="persona-kicker">What moved</div>
+                    <strong id="maskWhatMoved">--</strong>
+                    <span id="maskDeltaToLock">Whether proximity moved, surface texture moved, both, or neither.</span>
+                  </div>
+                </div>
+                <div class="persona-mask-output-grid">
+                  <div class="trainer-surface">
+                    <div class="persona-kicker">Source</div>
+                    <textarea id="personaMaskSource" readonly></textarea>
+                  </div>
+                  <div class="trainer-surface">
+                    <div class="persona-kicker">Through Mask</div>
+                    <textarea id="personaMaskOutput" readonly></textarea>
+                  </div>
+                  <div class="trainer-surface">
+                    <div class="persona-kicker">What Clung</div>
+                    <ul id="maskStickinessNotes" class="persona-risk-list">
+                      <li>Select or create a cadence home first.</li>
+                    </ul>
+                    <details id="maskApertureLedger" class="persona-ledger-drawer">
+                      <summary>
+                        <span>Aperture ledger</span>
+                        <span id="maskApertureLedgerMeta" class="persona-ledger-meta">Detailed warning and repair traces appear here.</span>
+                      </summary>
+                      <ul id="maskApertureLedgerItems" class="persona-risk-list persona-ledger-list">
+                        <li>Select or create a cadence home first.</li>
+                      </ul>
+                    </details>
+                  </div>
+                  <div class="trainer-surface">
+                    <div class="persona-kicker">Shift preview</div>
+                    <div id="personaMaskShiftPreview" class="mask-shift-preview">Sentence-level movement will appear here once the mask rewrites a passage.</div>
+                  </div>
+                </div>
+              </section>
+
+              <section id="cadenceLockDossierSurface" class="trainer-surface persona-dossier-surface" data-revealed="false">
+                <div id="cadenceLockDossier" class="persona-dossier"></div>
+              </section>
+
+              <section class="trainer-surface">
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Lock archive</div>
+                <div id="cadenceLockArchive" class="lock-archive"></div>
+              </section>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="footer">TCP / Homebase station / anchor, contact, residue <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
+  </div>
+
+  <script src="./browser-data.js?v=202604031140"></script>
+  <script src="./browser-diagnostics.js?v=202604031140"></script>
+  <script src="./browser-engine.js?v=202604031140"></script>
+  <script src="./retrieval-fixtures.js?v=202604031140"></script>
+  <script src="./browser-main.js?v=202604031140"></script>
+</body>
+</html>

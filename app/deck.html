@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TCP / Deck</title>
+  <link rel="stylesheet" href="./styles.css?v=202604022005" />
+</head>
+<body data-page-kind="deck">
+  <div class="shell shell-station">
+    <header id="consoleMasthead" class="masthead site-masthead station-masthead">
+      <div class="station-masthead-bar">
+        <span class="eyebrow">TD613 / station split / Deck</span>
+        <div class="station-masthead-links">
+          <a class="gateway-link" href="./index.html">Gateway</a>
+          <a class="gateway-link" href="./safe-harbor/index.html">Safe Harbor</a>
+        </div>
+      </div>
+      <div class="station-masthead-copy">
+        <h1>Deck</h1>
+        <p id="heroStationLine" class="hero-station-line">Deck / encounter, duel, aftermath</p>
+        <p id="heroLead" class="lead">Stage two voices, keep text swap separate from cadence swap, and inspect the duel aftermath without leaving the shared field.</p>
+      </div>
+    </header>
+
+    <div class="statusrail station-statusrail">
+      <span id="decisionTone" class="console-status">Waiting on a scan</span>
+      <span id="badgeState" class="statepill active">Badge // holds</span>
+      <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
+      <span id="containmentState" class="statepill active">Containment // stable</span>
+      <span id="routeState" class="statepill">Route // buffered</span>
+      <a id="safeHarborHandoff" class="statepill statepill-link safe-harbor-handoff" href="./safe-harbor/index.html">
+        <span class="safe-harbor-handoff-glyph" aria-hidden="true">&#x27D0;</span>
+        <span id="safeHarborHandoffLabel">Safe Harbor // latent</span>
+      </a>
+    </div>
+
+    <nav class="top-tabs site-nav station-nav" aria-label="TCP stations">
+      <button id="tabHomebase" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
+      <button id="tabPersonas" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
+      <button id="tabReadout" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
+      <button id="tabPlay" type="button" class="top-tab active"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
+      <button id="tabTrainer" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer</button>
+      <a class="top-tab top-tab-external" href="./index.html">Gateway</a>
+      <a class="top-tab top-tab-external" href="./safe-harbor/index.html">Safe Harbor</a>
+    </nav>
+
+    <main class="view-stack station-stack">
+      <section id="viewPanePlay" class="view-pane active">
+        <div class="station-view-head station-view-head-play">
+          <div class="station-view-meta">
+            <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck station</div>
+            <h2 class="station-view-title">Stage two voices, then decide whether you want setup or encounter.</h2>
+            <p class="station-view-summary">Keep source text moves separate from shell-transfer moves. The Deck is for contrast, duel wake, and aftermath you can actually inspect.</p>
+          </div>
+        </div>
+        <div class="panel intake-panel">
+          <div class="panel-heading">
+            <div>
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionCadenceDeck">&#x25C7;</span> Cadence deck</div>
+              <h2>Bring two voices into the room</h2>
+            </div>
+            <p class="section-note">Drop in a reference voice and a probe voice. Keep setup moves separate from encounter moves: <code>Swap Text</code> reorders the source bays, while <code>Swap Cadences</code> keeps the text in place and trades shell behavior under audit.</p>
+          </div>
+
+          <div class="input-grid-wrap">
+            <div class="input-grid">
+              <label id="voiceAField" class="field" for="voiceA">
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Reference voice</span>
+                    <span class="field-copy">The anchor sample you trust most.</span>
+                  </div>
+                  <button id="randomizeVoiceABtn" type="button" class="field-randomizer" aria-label="Randomize reference voice sample" title="Randomize reference voice sample">&#x21BA;</button>
+                </div>
+                <textarea id="voiceA" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+                <div id="voiceAProfile" class="bay-profile analysis-gated" data-latent-label="Cadence shell latent"></div>
+              </label>
+
+              <label id="voiceBField" class="field" for="voiceB">
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Probe voice</span>
+                    <span class="field-copy">The sample you want to throw into contrast.</span>
+                  </div>
+                  <button id="randomizeVoiceBBtn" type="button" class="field-randomizer" aria-label="Randomize probe voice sample" title="Randomize probe voice sample">&#x21BA;</button>
+                </div>
+                <textarea id="voiceB" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+                <div id="voiceBProfile" class="bay-profile analysis-gated" data-latent-label="Cadence shell latent"></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="deck-setup-row">
+            <div class="deck-setup-copy">
+              <div class="persona-kicker">Setup utility</div>
+              <p class="section-note deck-setup-note"><strong>Swap Text</strong> moves the source text between bays. It is a staging move, not the shell-transfer event.</p>
+            </div>
+            <button id="swapMedallion" type="button" class="secondary swap-text-btn" aria-label="Swap bay text" title="Swap bay text">Swap Text</button>
+          </div>
+
+          <div class="action-row">
+            <button id="compareBtn" type="button" class="primary-cta">Analyze Cadences</button>
+            <button id="swapCadencesBtn" type="button" class="secondary">Swap Cadences</button>
+            <span id="swapActionCue" class="swap-action-cue" hidden></span>
+            <button id="savePersonaBtn" type="button" class="secondary">Save Cadence as Persona</button>
+          </div>
+
+          <div class="deck-action-legend">
+            <p class="section-note deck-action-note"><strong>Swap Cadences</strong> keeps the source text in place and runs the retrieval-audited shell lane. This is the actual duel event.</p>
+          </div>
+
+          <div id="deckCastReport" class="analysis-status deck-cast-report">Cast report // waiting on both bays.</div>
+          <div id="deckAftermathPreview" class="deck-aftermath-preview" hidden></div>
+
+          <div class="analysis-rail">
+            <div id="activeBayStatus" class="statepill active">Active bay // reference voice</div>
+            <div id="analysisStatus" class="analysis-status">
+              <span id="analysisStatusBase" class="analysis-status-base">Press Analyze Cadences for a solo scan or a head-to-head run.</span>
+              <span id="analysisStatusCue" class="analysis-status-cue" hidden></span>
+            </div>
+          </div>
+
+          <section id="shellDuel" class="shell-duel analysis-gated" data-latent-label="Shell Duel latent // wake the deck" data-state="empty" aria-live="polite">
+            <div class="duel-heading">
+              <div>
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionShellDuel">&#x2194;</span> Shell Duel</div>
+                <h3>Two bays, two shells, one live drift test</h3>
+              </div>
+              <div id="duelSourceStatus" class="duel-source">Own sources // reference bay and probe bay raw text</div>
+            </div>
+            <p id="duelNote" class="duel-note">Each side remixes its own bay through the current shell. The textareas stay raw on purpose.</p>
+            <div id="shellDuelBody" class="duel-body"></div>
+          </section>
+
+          <div class="utility-row">
+            <button id="toggleMirrorBtn" type="button" class="utility">Open mirror shield</button>
+            <button id="badgeBtn" type="button" class="utility">Cycle custody badge</button>
+            <button id="resetBtn" type="button" class="ghost">Reset bay</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">TCP / Deck station / encounter, duel, aftermath <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
+  </div>
+
+  <script src="./browser-data.js?v=202604031140"></script>
+  <script src="./browser-diagnostics.js?v=202604031140"></script>
+  <script src="./browser-engine.js?v=202604031140"></script>
+  <script src="./retrieval-fixtures.js?v=202604031140"></script>
+  <script src="./browser-main.js?v=202604031140"></script>
+</body>
+</html>

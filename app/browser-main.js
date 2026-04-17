@@ -126,6 +126,30 @@
     return Math.min(1, Math.max(0, value));
   }
   function createRuntimeStore() {
+    try {
+      const storage = window.sessionStorage;
+      const probeKey = '__tcp_runtime_probe__';
+      storage.setItem(probeKey, '1');
+      storage.removeItem(probeKey);
+      return Object.freeze({
+        mode: 'session-storage',
+        isPersistent: true,
+        getItem(key) {
+          return storage.getItem(key);
+        },
+        setItem(key, value) {
+          storage.setItem(key, String(value));
+        },
+        removeItem(key) {
+          storage.removeItem(key);
+        },
+        clear() {
+          storage.clear();
+        }
+      });
+    } catch {
+      // fall back to in-memory retention when sessionStorage is unavailable
+    }
     const memory = new Map();
     return Object.freeze({
       mode: 'session-memory',
@@ -145,6 +169,13 @@
     });
   }
   const runtimeStore = createRuntimeStore();
+  function pageUrlForTab(tab = 'homebase') {
+    return ARTIFACT_TAB_TO_PAGE[normalizeArtifactTab(tab)] || ARTIFACT_TAB_TO_PAGE.homebase;
+  }
+
+  function isCurrentStationPage(tab = 'homebase') {
+    return PAGE_KIND !== 'gateway' && PAGE_ARTIFACT_TAB === normalizeArtifactTab(tab);
+  }
   const SLOT_LABELS = { A: 'Reference voice', B: 'Probe voice' };
   const SLOT_SHORT = { A: 'reference', B: 'probe' };
   const BADGE_LABELS = {
@@ -299,6 +330,29 @@
       lead: 'Use the forge lane when the shelf needs a real draft, a retrieval contract, and a clean path back into Personas, Homebase, or Deck.'
     })
   });
+  const SESSION_FLIGHT_STATE_KEY = 'tcp.flightState.v1';
+  const PENDING_TRAINER_PERSONA_KEY = 'tcp.pendingTrainerPersona.v1';
+  const PAGE_KIND_TO_ARTIFACT_TAB = Object.freeze({
+    gateway: 'homebase',
+    homebase: 'homebase',
+    personas: 'personas',
+    readout: 'readout',
+    deck: 'play',
+    trainer: 'trainer'
+  });
+  const ARTIFACT_TAB_TO_PAGE = Object.freeze({
+    homebase: './homebase.html',
+    personas: './personas.html',
+    readout: './readout.html',
+    play: './deck.html',
+    trainer: './trainer.html'
+  });
+  const PAGE_KIND = (() => {
+    const raw = document.body?.dataset?.pageKind || '';
+    const normalized = String(raw || '').trim().toLowerCase();
+    return normalized || 'gateway';
+  })();
+  const PAGE_ARTIFACT_TAB = PAGE_KIND_TO_ARTIFACT_TAB[PAGE_KIND] || 'homebase';
 
   const TCP_GLYPH_SYSTEM = {
     substrateVocabulary: { ...GLYPH_SUBSTRATE },
@@ -731,6 +785,9 @@
   }
 
   function syncArtifactHash(tab, { replace = false } = {}) {
+    if (PAGE_KIND !== 'gateway') {
+      return;
+    }
     const nextHash = artifactHashForTab(tab);
     if ((window.location.hash || '') === nextHash) {
       return;
@@ -748,7 +805,25 @@
     window.location.hash = nextHash;
   }
 
+  function redirectLegacyGatewayHashIfNeeded() {
+    if (PAGE_KIND !== 'gateway') {
+      return false;
+    }
+    const requestedTab = resolveArtifactTabFromHash(window.location.hash);
+    const requestedHash = String(window.location.hash || '').trim().toLowerCase();
+    if (!requestedHash || requestedTab === 'homebase' && requestedHash !== '#console' && requestedHash !== '#homebase') {
+      return false;
+    }
+    persistSessionFlightState();
+    window.location.replace(pageUrlForTab(requestedTab));
+    return true;
+  }
+
   function applyStationChrome(tab = 'homebase') {
+    if (PAGE_KIND === 'gateway') {
+      document.title = 'TCP / Gateway';
+      return;
+    }
     const station = normalizeArtifactTab(tab);
     const chrome = STATION_CHROME[station] || STATION_CHROME.homebase;
     document.title = chrome.title;
@@ -766,7 +841,9 @@
   let mirrorLogic = defaults.mirror_logic;
   let containment = defaults.containment;
   let activeVoice = 'A';
-  let activeArtifactTab = resolveArtifactTabFromHash(window.location.hash);
+  let activeArtifactTab = PAGE_KIND === 'gateway'
+    ? resolveArtifactTabFromHash(window.location.hash)
+    : PAGE_ARTIFACT_TAB;
   let analysisRevealed = false;
   let shellDuelPulseTimer = null;
   let swapButtonPulseTimer = null;
@@ -796,9 +873,14 @@
   let bootWarnings = [];
   let ingress = createIngressState();
 
+  ensureSharedRuntimeDock();
   applyStationChrome(activeArtifactTab);
-  $('voiceA').value = defaults.voiceA;
-  $('voiceB').value = defaults.voiceB;
+  if ($('voiceA')) {
+    $('voiceA').value = defaults.voiceA;
+  }
+  if ($('voiceB')) {
+    $('voiceB').value = defaults.voiceB;
+  }
   baySampleIds = {
     A: baySampleIds.A || inferSampleIdFromText(defaults.voiceA),
     B: baySampleIds.B || inferSampleIdFromText(defaults.voiceB)
@@ -821,6 +903,211 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+  function buildRuntimeDeckDockMarkup() {
+    return `
+      <section class="runtime-dock-panel runtime-dock-panel-deck" data-runtime-panel="deck">
+        <div class="panel intake-panel">
+          <div class="input-grid-wrap">
+            <div class="input-grid">
+              <label id="voiceAField" class="field" for="voiceA">
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Reference voice</span>
+                    <span class="field-copy">Runtime dock</span>
+                  </div>
+                  <button id="randomizeVoiceABtn" type="button" class="field-randomizer" aria-label="Randomize reference voice sample" title="Randomize reference voice sample">&#x21BA;</button>
+                </div>
+                <textarea id="voiceA" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+                <div id="voiceAProfile" class="bay-profile"></div>
+              </label>
+              <label id="voiceBField" class="field" for="voiceB">
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Probe voice</span>
+                    <span class="field-copy">Runtime dock</span>
+                  </div>
+                  <button id="randomizeVoiceBBtn" type="button" class="field-randomizer" aria-label="Randomize probe voice sample" title="Randomize probe voice sample">&#x21BA;</button>
+                </div>
+                <textarea id="voiceB" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+                <div id="voiceBProfile" class="bay-profile"></div>
+              </label>
+            </div>
+          </div>
+          <div class="deck-setup-row">
+            <button id="swapMedallion" type="button" class="secondary swap-text-btn">Swap Text</button>
+          </div>
+          <div class="action-row">
+            <button id="compareBtn" type="button" class="primary-cta">Analyze Cadences</button>
+            <button id="swapCadencesBtn" type="button" class="secondary">Swap Cadences</button>
+            <span id="swapActionCue" class="swap-action-cue" hidden></span>
+            <button id="savePersonaBtn" type="button" class="secondary">Save Cadence as Persona</button>
+          </div>
+          <div id="deckCastReport" class="analysis-status deck-cast-report">Cast report // waiting on both bays.</div>
+          <div id="deckAftermathPreview" class="deck-aftermath-preview" hidden></div>
+          <div class="analysis-rail">
+            <div id="activeBayStatus" class="statepill active">Active bay // reference voice</div>
+            <div id="analysisStatus" class="analysis-status">
+              <span id="analysisStatusBase" class="analysis-status-base">Press Analyze Cadences for a solo scan or a head-to-head run.</span>
+              <span id="analysisStatusCue" class="analysis-status-cue" hidden></span>
+            </div>
+          </div>
+          <section id="shellDuel" class="shell-duel" data-state="empty" aria-live="polite">
+            <div class="duel-heading">
+              <div>
+                <div class="section-kicker">Shell Duel</div>
+                <h3>Runtime dock</h3>
+              </div>
+              <div id="duelSourceStatus" class="duel-source">Own sources // runtime dock</div>
+            </div>
+            <p id="duelNote" class="duel-note">Runtime dock.</p>
+            <div id="shellDuelBody" class="duel-body"></div>
+          </section>
+          <div class="utility-row">
+            <button id="toggleMirrorBtn" type="button" class="utility">Open mirror shield</button>
+            <button id="badgeBtn" type="button" class="utility">Cycle custody badge</button>
+            <button id="resetBtn" type="button" class="ghost">Reset bay</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function buildRuntimeReadoutDockMarkup() {
+    return `
+      <section class="runtime-dock-panel runtime-dock-panel-readout" data-runtime-panel="readout">
+        <div class="readout-layout">
+          <section class="panel telemetry-panel">
+            <p id="fieldNotice" class="field-notice">Runtime dock.</p>
+            <div class="governed-exposure-panel">
+              <div class="governed-exposure-grid">
+                <article class="metric governed-exposure-card"><div class="key">Latent state <span class="key-meta">S</span></div><div id="geLatentState" class="val">--</div><div id="geLatentHint" class="hint"></div></article>
+                <article class="metric governed-exposure-card"><div class="key">Projected state <span class="key-meta">S'</span></div><div id="geProjectedState" class="val">--</div><div id="geProjectedHint" class="hint"></div></article>
+                <article class="metric governed-exposure-card"><div class="key">Registered surface <span class="key-meta">Y</span></div><div id="geRegisteredSurface" class="val">--</div><div id="geRegisteredHint" class="hint"></div></article>
+                <article class="metric governed-exposure-card"><div class="key">Authority ceiling</div><div id="geAuthorityCeiling" class="val">--</div><div id="geAuthorityHint" class="hint"></div></article>
+                <article class="metric governed-exposure-card"><div class="key">Source class</div><div id="geSourceClass" class="val">--</div><div id="geSourceHint" class="hint"></div></article>
+                <article class="metric governed-exposure-card"><div class="key">Route state</div><div id="geRouteState" class="val">--</div><div id="geRouteHint" class="hint"></div></article>
+                <article class="metric governed-exposure-card"><div class="key">O / O*</div><div id="geOmission" class="val">--</div><div id="geOmissionHint" class="hint"></div></article>
+                <article class="metric governed-exposure-card"><div class="key">Gap / dominant operator</div><div id="geGap" class="val">--</div><div id="geGapHint" class="hint"></div></article>
+              </div>
+              <pre id="governedExposurePreview" class="formula"></pre>
+            </div>
+            <div class="results">
+              <article id="similarityCard" class="metric"><div id="similarityKey" class="key">Cadence similarity</div><div id="similarity" class="val">--</div><div id="simHint" class="hint"></div></article>
+              <article id="traceabilityCard" class="metric"><div id="traceKey" class="key">Traceability</div><div id="traceability" class="val">--</div><div id="traceHint" class="hint"></div></article>
+              <article id="routePressureCard" class="metric"><div id="routeKey" class="key">Route pressure</div><div id="routePressure" class="val">--</div><div id="routeHint" class="hint"></div></article>
+              <article id="custodyCard" class="metric"><div id="custodyKey" class="key">Effective archive <span class="key-meta">A_I / A_W</span></div><div id="custodyState" class="val">--</div><div id="custodyHint" class="hint"></div></article>
+            </div>
+          </section>
+          <section class="panel harbor-panel">
+            <div id="harborBox" class="harbor-box"></div>
+            <div class="ledger-stage"><pre id="ledgerPreview" class="formula"></pre></div>
+          </section>
+        </div>
+        <section class="runtime-hero-dock">
+          <div id="heroSignalValue">--</div>
+          <div id="heroSignalNote">Runtime dock.</div>
+          <div id="heroRouteValue">--</div>
+          <div id="heroRouteNote">Runtime dock.</div>
+          <div id="heroHarborValue">--</div>
+          <div id="heroHarborNote">Runtime dock.</div>
+          <a id="heroHarborAction" class="harbor-action-link" href="${SAFE_HARBOR_HANDOFF_PATH}" hidden>Open Safe Harbor</a>
+        </section>
+      </section>
+    `;
+  }
+
+  function ensureSharedRuntimeDock() {
+    const shell = document.querySelector('.shell') || document.body;
+    if (!shell) {
+      return;
+    }
+
+    let dock = $('runtimeDock');
+    if (!dock) {
+      dock = document.createElement('section');
+      dock.id = 'runtimeDock';
+      dock.className = 'runtime-dock';
+      dock.hidden = true;
+      dock.setAttribute('aria-hidden', 'true');
+      const footer = shell.querySelector('.footer');
+      if (footer && footer.parentNode === shell) {
+        shell.insertBefore(dock, footer);
+      } else {
+        shell.appendChild(dock);
+      }
+    }
+
+    const fragments = [];
+    if (!$('voiceA') || !$('voiceB')) {
+      fragments.push(buildRuntimeDeckDockMarkup());
+    }
+    if (!$('similarity') || !$('traceability') || !$('governedExposurePreview')) {
+      fragments.push(buildRuntimeReadoutDockMarkup());
+    }
+    if (!$('branchFormula') || !$('waveFormula') || !$('harborFormula')) {
+      fragments.push(`
+        <section class="debug-vault" hidden aria-hidden="true">
+          <div id="branchFormula" class="formula"></div>
+          <div id="waveFormula" class="formula"></div>
+          <div id="harborFormula" class="formula"></div>
+        </section>
+      `);
+    }
+    if (fragments.length) {
+      dock.insertAdjacentHTML('beforeend', fragments.join(''));
+    }
+  }
+
+  function loadSessionFlightState() {
+    const raw = runtimeStore.getItem(SESSION_FLIGHT_STATE_KEY);
+    if (!raw) {
+      return null;
+    }
+    try {
+      return JSON.parse(raw);
+    } catch {
+      runtimeStore.removeItem(SESSION_FLIGHT_STATE_KEY);
+      return null;
+    }
+  }
+
+  function persistSessionFlightState() {
+    if (!$('voiceA') || !$('voiceB')) {
+      return;
+    }
+    try {
+      runtimeStore.setItem(SESSION_FLIGHT_STATE_KEY, JSON.stringify(captureFlightState()));
+    } catch {
+      // keep the active page running even if session persistence fails
+    }
+  }
+
+  function queuePendingTrainerPersona(id = '') {
+    if (!id) {
+      runtimeStore.removeItem(PENDING_TRAINER_PERSONA_KEY);
+      return;
+    }
+    runtimeStore.setItem(PENDING_TRAINER_PERSONA_KEY, id);
+  }
+
+  function consumePendingTrainerPersona() {
+    const pending = runtimeStore.getItem(PENDING_TRAINER_PERSONA_KEY);
+    if (pending) {
+      runtimeStore.removeItem(PENDING_TRAINER_PERSONA_KEY);
+    }
+    return pending || '';
+  }
+
+  function navigateToStation(tab = 'homebase') {
+    const normalized = normalizeArtifactTab(tab);
+    if (isCurrentStationPage(normalized)) {
+      setArtifactTab(normalized, { announce: true, scroll: true, updateHash: false });
+      return;
+    }
+    persistSessionFlightState();
+    window.location.assign(pageUrlForTab(normalized));
   }
 
   function sampleEntry(sampleId = '') {
@@ -1279,7 +1566,10 @@
     if (base) {
       base.textContent = message;
     } else {
-      $('analysisStatus').textContent = message;
+      const statusNode = $('analysisStatus');
+      if (statusNode) {
+        statusNode.textContent = message;
+      }
     }
     if (cue) {
       cue.hidden = true;
@@ -1399,7 +1689,11 @@
   }
 
   function revealShellDuel() {
-    setArtifactTab('play');
+    if (!isCurrentStationPage('play')) {
+      navigateToStation('play');
+      return;
+    }
+    setArtifactTab('play', { updateHash: false });
     const duel = $('shellDuel');
     if (!duel || typeof duel.scrollIntoView !== 'function') {
       return;
@@ -1459,7 +1753,11 @@
   }
 
   function renderActiveBayStatus() {
-    $('activeBayStatus').textContent = `Active bay // ${SLOT_LABELS[activeVoice].toLowerCase()}`;
+    const node = $('activeBayStatus');
+    if (!node) {
+      return;
+    }
+    node.textContent = `Active bay // ${SLOT_LABELS[activeVoice].toLowerCase()}`;
   }
 
   function setSwapStatusMessage(baseMessage) {
@@ -4809,6 +5107,9 @@
   }
 
   function handleArtifactRouteChange() {
+    if (PAGE_KIND !== 'gateway') {
+      return;
+    }
     const currentHash = String(window.location.hash || '').trim().toLowerCase();
     const nextTab = resolveArtifactTabFromHash(window.location.hash);
     if (nextTab === activeArtifactTab) {
@@ -5537,13 +5838,18 @@ DeltaE = ${ledger.reuse_gain}`;
     if (!persona) {
       return;
     }
+    gallerySelectedMaskId = id;
+    queuePendingTrainerPersona(id);
+    if (!isCurrentStationPage('trainer')) {
+      navigateToStation('trainer');
+      return;
+    }
     if (trainerLoadError || !trainerController) {
       setStatusMessage('Trainer Lab is offline in this runtime. TCP kept the core chamber alive, but the forge lane is unavailable.');
       return;
     }
-    gallerySelectedMaskId = id;
     const context = buildTrainerDraftContext(id);
-    setArtifactTab('trainer');
+    setArtifactTab('trainer', { updateHash: false });
     renderPersonas();
     if (trainerController && typeof trainerController.openContext === 'function') {
       trainerController.openContext({
@@ -5573,7 +5879,11 @@ DeltaE = ${ledger.reuse_gain}`;
     }
     gallerySelectedMaskId = id;
     homebaseWornMaskId = id;
-    setArtifactTab('homebase');
+    if (!isCurrentStationPage('homebase')) {
+      navigateToStation('homebase');
+      return;
+    }
+    setArtifactTab('homebase', { updateHash: false });
     renderPersonas();
     const lock = currentHomebaseLock();
     const comparisonText = String($('personaComparisonText')?.value || '').trim();
@@ -5610,7 +5920,11 @@ DeltaE = ${ledger.reuse_gain}`;
     gallerySelectedMaskId = id;
     clearSwapCadenceAudit();
     bayShells[slot] = createPersonaShell(persona);
-    setArtifactTab('play');
+    if (!isCurrentStationPage('play')) {
+      navigateToStation('play');
+      return;
+    }
+    setArtifactTab('play', { updateHash: false });
     analyzeCadences();
     setStatusMessage(`${persona.name} is now shaping the ${SLOT_SHORT[slot]} cadence shell. The text stayed put; only the cadence shell changed.`);
   }
@@ -5721,7 +6035,11 @@ DeltaE = ${ledger.reuse_gain}`;
     bayShells[slot] = createNativeShell();
     clearSwapCadenceAudit();
     syncBaySampleMetadata();
-    setArtifactTab('play');
+    if (!isCurrentStationPage('play')) {
+      navigateToStation('play');
+      return;
+    }
+    setArtifactTab('play', { updateHash: false });
     analyzeCadences();
     setStatusMessage(`${lock.name} sample one is now loaded into the ${SLOT_SHORT[slot]} bay.`);
   }
@@ -5735,6 +6053,34 @@ DeltaE = ${ledger.reuse_gain}`;
     });
     persistSavedPersonas();
     renderPersonas();
+  }
+
+  function openPendingTrainerPersonaIfNeeded() {
+    if (!trainerController || trainerLoadError) {
+      return;
+    }
+    const pendingId = consumePendingTrainerPersona();
+    if (!pendingId) {
+      return;
+    }
+    const persona = findPersona(pendingId);
+    if (!persona) {
+      return;
+    }
+    gallerySelectedMaskId = pendingId;
+    renderPersonas();
+    const context = buildTrainerDraftContext(pendingId);
+    if (typeof trainerController.openContext === 'function') {
+      trainerController.openContext({
+        ...context,
+        forcePopulate: true
+      });
+    }
+    const focusTarget = $('trainerForgeDraftBtn');
+    if (focusTarget && typeof focusTarget.focus === 'function') {
+      focusTarget.focus({ preventScroll: true });
+    }
+    setStatusMessage(`${persona.name} is staged in Trainer. Forge Draft can now seed a live candidate from current field context.`);
   }
 
   function generateMaskForPersona(id) {
@@ -5917,8 +6263,8 @@ DeltaE = ${ledger.reuse_gain}`;
 
   function captureFlightState() {
     return {
-      voiceA: $('voiceA').value,
-      voiceB: $('voiceB').value,
+      voiceA: $('voiceA') ? $('voiceA').value : '',
+      voiceB: $('voiceB') ? $('voiceB').value : '',
       cadenceLockName: $('cadenceLockName') ? $('cadenceLockName').value : '',
       cadenceLockCorpus: $('cadenceLockCorpus') ? $('cadenceLockCorpus').value : '',
       personaComparisonText: $('personaComparisonText') ? $('personaComparisonText').value : '',
@@ -5951,8 +6297,12 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function restoreFlightState(state) {
-    $('voiceA').value = state.voiceA;
-    $('voiceB').value = state.voiceB;
+    if ($('voiceA')) {
+      $('voiceA').value = state.voiceA || '';
+    }
+    if ($('voiceB')) {
+      $('voiceB').value = state.voiceB || '';
+    }
     if ($('cadenceLockName')) {
       $('cadenceLockName').value = state.cadenceLockName || '';
     }
@@ -5986,7 +6336,7 @@ DeltaE = ${ledger.reuse_gain}`;
     persistSavedPersonas();
     persistCadenceLocks();
     persistActiveCadenceLockId();
-    setArtifactTab(activeArtifactTab, { updateHash: true, replaceHash: true });
+    setArtifactTab(PAGE_KIND === 'gateway' ? activeArtifactTab : PAGE_ARTIFACT_TAB, { updateHash: true, replaceHash: true });
     syncBaySampleMetadata();
     renderVoiceProfiles();
     renderPersonas();
@@ -7351,64 +7701,71 @@ DeltaE = ${ledger.reuse_gain}`;
     setStatusMessage(summaryText);
   }
 
-  $('compareBtn').addEventListener('click', handleAnalyzeCadences);
-  $('swapMedallion').addEventListener('click', swapBayText);
-  $('swapCadencesBtn').addEventListener('click', swapCadences);
-  $('randomizeVoiceABtn').addEventListener('click', () => randomizeVoiceSample('A'));
-  $('randomizeVoiceBBtn').addEventListener('click', () => randomizeVoiceSample('B'));
-  $('savePersonaBtn').addEventListener('click', saveActiveCadence);
-  $('toggleMirrorBtn').addEventListener('click', () => {
+  function on(id, eventName, handler) {
+    const node = $(id);
+    if (node) {
+      node.addEventListener(eventName, handler);
+    }
+  }
+
+  on('compareBtn', 'click', handleAnalyzeCadences);
+  on('swapMedallion', 'click', swapBayText);
+  on('swapCadencesBtn', 'click', swapCadences);
+  on('randomizeVoiceABtn', 'click', () => randomizeVoiceSample('A'));
+  on('randomizeVoiceBBtn', 'click', () => randomizeVoiceSample('B'));
+  on('savePersonaBtn', 'click', saveActiveCadence);
+  on('toggleMirrorBtn', 'click', () => {
     mirrorLogic = mirrorLogic === 'off' ? 'on' : 'off';
     analyzeCadences();
   });
-  $('badgeBtn').addEventListener('click', () => {
+  on('badgeBtn', 'click', () => {
     badge = nextBadge(badge);
     analyzeCadences();
   });
-  $('resetBtn').addEventListener('click', resetDeck);
-  $('voiceA').addEventListener('focus', () => setActiveVoice('A'));
-  $('voiceB').addEventListener('focus', () => setActiveVoice('B'));
-  $('voiceA').addEventListener('input', () => handleTextInput('A'));
-  $('voiceB').addEventListener('input', () => handleTextInput('B'));
-  $('lockCadenceBtn').addEventListener('click', lockCadenceFromGallery);
-  $('revealCadenceBtn').addEventListener('click', revealCadenceLock);
-  $('saveCadenceLockBtn').addEventListener('click', saveStagedCadenceLock);
-  $('personaComparisonText').addEventListener('input', () => renderPersonas());
-  $('tabConsole').addEventListener('click', () => setArtifactTab('homebase', { announce: true, scroll: true }));
-  $('tabHomebase').addEventListener('click', () => setArtifactTab('homebase', { announce: true, scroll: true }));
-  $('tabPlay').addEventListener('click', () => setArtifactTab('play', { announce: true, scroll: true }));
-  $('tabReadout').addEventListener('click', () => setArtifactTab('readout', { announce: true, scroll: true }));
-  $('tabPersonas').addEventListener('click', () => setArtifactTab('personas', { announce: true, scroll: true }));
-  $('tabTrainer').addEventListener('click', () => setArtifactTab('trainer', { announce: true, scroll: true }));
-  $('ingressMirrorArmed').addEventListener('click', () => chooseIngressMirror('off'));
-  $('ingressMirrorOpen').addEventListener('click', () => chooseIngressMirror('on'));
-  $('ingressBadgeCycle').addEventListener('click', cycleIngressBadge);
-  $('ingressCore').addEventListener('pointerdown', handleIngressCorePointerDown);
-  $('ingressCore').addEventListener('pointermove', handleIngressCorePointerMove);
-  $('ingressCore').addEventListener('pointerup', handleIngressCorePointerUp);
-  $('ingressCore').addEventListener('pointercancel', handleIngressCorePointerCancel);
-  $('ingressCore').addEventListener('lostpointercapture', handleIngressCorePointerCancel);
-  $('ingressCore').addEventListener('blur', handleIngressCorePointerCancel);
-  $('ingressCore').addEventListener('keydown', (event) => {
+  on('resetBtn', 'click', resetDeck);
+  on('voiceA', 'focus', () => setActiveVoice('A'));
+  on('voiceB', 'focus', () => setActiveVoice('B'));
+  on('voiceA', 'input', () => handleTextInput('A'));
+  on('voiceB', 'input', () => handleTextInput('B'));
+  on('lockCadenceBtn', 'click', lockCadenceFromGallery);
+  on('revealCadenceBtn', 'click', revealCadenceLock);
+  on('saveCadenceLockBtn', 'click', saveStagedCadenceLock);
+  on('personaComparisonText', 'input', () => renderPersonas());
+  on('tabConsole', 'click', () => navigateToStation('homebase'));
+  on('tabHomebase', 'click', () => navigateToStation('homebase'));
+  on('tabPlay', 'click', () => navigateToStation('play'));
+  on('tabReadout', 'click', () => navigateToStation('readout'));
+  on('tabPersonas', 'click', () => navigateToStation('personas'));
+  on('tabTrainer', 'click', () => navigateToStation('trainer'));
+  on('ingressMirrorArmed', 'click', () => chooseIngressMirror('off'));
+  on('ingressMirrorOpen', 'click', () => chooseIngressMirror('on'));
+  on('ingressBadgeCycle', 'click', cycleIngressBadge);
+  on('ingressCore', 'pointerdown', handleIngressCorePointerDown);
+  on('ingressCore', 'pointermove', handleIngressCorePointerMove);
+  on('ingressCore', 'pointerup', handleIngressCorePointerUp);
+  on('ingressCore', 'pointercancel', handleIngressCorePointerCancel);
+  on('ingressCore', 'lostpointercapture', handleIngressCorePointerCancel);
+  on('ingressCore', 'blur', handleIngressCorePointerCancel);
+  on('ingressCore', 'keydown', (event) => {
     if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
       event.preventDefault();
       beginIngressHold();
     }
   });
-  $('ingressCore').addEventListener('keyup', (event) => {
+  on('ingressCore', 'keyup', (event) => {
     if ((event.key === 'Enter' || event.key === ' ') && ingress.phase !== 'seal') {
       event.preventDefault();
       cancelIngressHold();
     }
   });
-  $('ingressSealNodeUl').addEventListener('click', () => chooseIngressSealNode('ul'));
-  $('ingressSealNodeUr').addEventListener('click', () => chooseIngressSealNode('ur'));
-  $('ingressSealNodeBc').addEventListener('click', () => chooseIngressSealNode('bc'));
+  on('ingressSealNodeUl', 'click', () => chooseIngressSealNode('ul'));
+  on('ingressSealNodeUr', 'click', () => chooseIngressSealNode('ur'));
+  on('ingressSealNodeBc', 'click', () => chooseIngressSealNode('bc'));
 
   document.addEventListener('click', (event) => {
     const stationAction = event.target.closest('[data-station-target]');
     if (stationAction) {
-      setArtifactTab(stationAction.dataset.stationTarget || 'homebase', { announce: true, scroll: true });
+      navigateToStation(stationAction.dataset.stationTarget || 'homebase');
       return;
     }
 
@@ -7469,8 +7826,13 @@ DeltaE = ${ledger.reuse_gain}`;
 
   window.addEventListener('hashchange', handleArtifactRouteChange);
   window.addEventListener('popstate', handleArtifactRouteChange);
+  window.addEventListener('pagehide', persistSessionFlightState);
+  window.addEventListener('beforeunload', persistSessionFlightState);
 
   async function boot() {
+    if (redirectLegacyGatewayHashIfNeeded()) {
+      return;
+    }
     bootWarnings = [];
     personaGalleryLoadError = null;
     trainerLoadError = null;
@@ -7478,14 +7840,28 @@ DeltaE = ${ledger.reuse_gain}`;
     delete document.body.dataset.bootDegraded;
     document.body.dataset.bootStage = 'boot-start';
     setAnalysisRevealState(false);
-    setArtifactTab(activeArtifactTab, { updateHash: true, replaceHash: !window.location.hash });
+    const sessionSnapshot = loadSessionFlightState();
+    const initialTab = PAGE_KIND === 'gateway' ? activeArtifactTab : PAGE_ARTIFACT_TAB;
+    setArtifactTab(initialTab, { updateHash: PAGE_KIND !== 'gateway', replaceHash: !window.location.hash });
+
+    if (PAGE_KIND === 'gateway') {
+      document.body.dataset.bootWarnings = '0';
+      document.body.dataset.bootDegraded = 'false';
+      document.body.dataset.bootStage = 'boot-ready';
+      startIngressSequence();
+      document.body.dataset.bootStage = 'boot-complete';
+      return;
+    }
+
     renderVoiceProfiles();
     document.body.dataset.bootStage = 'boot-rendered-profiles';
     await initializePersonaGallery();
     document.body.dataset.bootStage = 'boot-rendered-gallery';
     renderPersonas();
     document.body.dataset.bootStage = 'boot-rendered-personas';
-    await initializeTrainerLab();
+    if (PAGE_KIND === 'trainer' || $('trainerPane')) {
+      await initializeTrainerLab();
+    }
     document.body.dataset.bootStage = 'boot-rendered-trainer';
     renderIdleState();
     document.body.dataset.bootStage = 'boot-idle';
@@ -7498,8 +7874,19 @@ DeltaE = ${ledger.reuse_gain}`;
     );
     updateControls();
     document.body.dataset.bootStage = 'boot-ready';
-    analyzeCadences({ reveal: Boolean(testFlightMode) });
-    startIngressSequence();
+
+    if (sessionSnapshot) {
+      restoreFlightState({
+        ...sessionSnapshot,
+        activeArtifactTab: initialTab,
+        artifactHash: artifactHashForTab(initialTab)
+      });
+    } else {
+      analyzeCadences({ reveal: Boolean(testFlightMode) });
+    }
+
+    openPendingTrainerPersonaIfNeeded();
+    persistSessionFlightState();
     document.body.dataset.bootStage = 'boot-complete';
   }
 

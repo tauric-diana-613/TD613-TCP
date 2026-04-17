@@ -25,6 +25,30 @@ const $ = (id) => document.getElementById(id);
 
 const STORAGE_KEY = 'tcp.savedPersonas.v1';
 function createRuntimeStore() {
+  try {
+    const storage = window.sessionStorage;
+    const probeKey = '__tcp_runtime_probe__';
+    storage.setItem(probeKey, '1');
+    storage.removeItem(probeKey);
+    return Object.freeze({
+      mode: 'session-storage',
+      isPersistent: true,
+      getItem(key) {
+        return storage.getItem(key);
+      },
+      setItem(key, value) {
+        storage.setItem(key, String(value));
+      },
+      removeItem(key) {
+        storage.removeItem(key);
+      },
+      clear() {
+        storage.clear();
+      }
+    });
+  } catch {
+    // fall back to in-memory retention when sessionStorage is unavailable
+  }
   const memory = new Map();
   return Object.freeze({
     mode: 'session-memory',

@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TCP - The Cadence Playground</title>
-    <link rel="stylesheet" href="./styles.css?v=202604022005" />
+  <title>TCP / Gateway</title>
+  <link rel="stylesheet" href="./styles.css?v=202604022005" />
 </head>
-<body>
+<body data-page-kind="gateway">
   <div id="ingressMembrane" class="ingress-membrane" aria-live="polite">
     <div class="ingress-layer">
       <div class="ingress-topline">
@@ -19,7 +19,7 @@
           <h2>Ingress Membrane</h2>
         </div>
         <div class="ingress-heading-copy">
-          <p id="ingressSubtitle" class="ingress-subtitle">Bring the deck across the threshold. Then go play.</p>
+          <p id="ingressSubtitle" class="ingress-subtitle">Bring the deck across the threshold. Then choose the room you actually want.</p>
         </div>
       </div>
 
@@ -91,584 +91,73 @@
     </div>
   </div>
 
-  <div class="shell">
-    <header id="consoleMasthead" class="masthead site-masthead">
-      <div class="masthead-copy">
-        <div class="topline">
-          <span class="eyebrow">TD613 / public membrane / cadence station field <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="shellEyebrow">&#x25C7;</span></span>
-          <span class="pilot-chip">conceptual pilot / active development <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="shellPilot">&#x2299;</span></span>
-        </div>
-        <div class="title-lockup">
-          <h1>TCP</h1>
-          <p class="deck-name">The Cadence Playground <span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="shellDeckName">&#x7C73;</span></p>
-        </div>
-        <p id="heroStationLine" class="hero-station-line">Homebase / anchor, contact, residue</p>
-        <p id="heroLead" class="lead">Move between Homebase, Personas, Readout, Deck, and Trainer without leaving the same runtime. One field, one engine, and a colder question running underneath: what narrowed before this surface felt sufficient?</p>
+  <div class="shell shell-gateway">
+    <header class="gateway-head">
+      <div class="gateway-topline">
+        <span class="eyebrow">TD613 / gateway / station split live</span>
+        <a class="gateway-link" href="./safe-harbor/index.html">Safe Harbor</a>
       </div>
-
-      <aside class="readout-strip analysis-gated" data-latent-label="Latent readout // press Analyze Cadences">
-        <article class="readout-card">
-          <div class="console-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="readoutSignal">&#x7C73;</span> Signal</div>
-          <div id="heroSignalValue" class="console-value">--</div>
-          <p id="heroSignalNote" class="console-copy">Stage one voice or two and wake the deck.</p>
-        </article>
-        <article class="readout-card">
-          <div class="console-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="readoutRoute">&#x2192;</span> Route</div>
-          <div id="heroRouteValue" class="console-value">--</div>
-          <p id="heroRouteNote" class="console-copy">Route stays asleep until a scan runs.</p>
-        </article>
-        <article class="readout-card">
-          <div class="console-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="readoutHarbor">&#x2696;</span> Harbor</div>
-          <div id="heroHarborValue" class="console-value console-code">--</div>
-          <p id="heroHarborNote" class="console-copy">Harbor shows up only when the field earns passage.</p>
-          <a id="heroHarborAction" class="harbor-action-link" href="./safe-harbor/index.html" hidden>Open Safe Harbor</a>
-        </article>
-      </aside>
+      <div class="gateway-lockup">
+        <div>
+          <p class="deck-name">TCP <span class="glyph glyph-cyan" aria-hidden="true">&#x7C73;</span></p>
+          <h1>Threshold / Choose The Room</h1>
+        </div>
+        <p class="gateway-summary">No more giant all-at-once shell. The field stays shared underneath, but Homebase, Personas, Readout, Deck, and Trainer now open as distinct stations.</p>
+      </div>
     </header>
 
-    <div class="statusrail">
-      <span id="decisionTone" class="console-status">Waiting on a scan</span>
-      <span id="badgeState" class="statepill active">Badge // holds</span>
-      <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
-      <span id="containmentState" class="statepill active">Containment // stable</span>
-      <span id="routeState" class="statepill">Route // buffered</span>
-      <a id="safeHarborHandoff" class="statepill statepill-link safe-harbor-handoff" href="./safe-harbor/index.html">
-        <span class="safe-harbor-handoff-glyph" aria-hidden="true">&#x27D0;</span>
-        <span id="safeHarborHandoffLabel">Safe Harbor // latent</span>
-      </a>
-    </div>
-
-    <nav class="top-tabs site-nav" aria-label="TCP stations">
-      <button id="tabConsole" type="button" class="top-tab" hidden aria-hidden="true" tabindex="-1"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabConsole">&#x25C7;</span> Console</button>
-      <button id="tabHomebase" type="button" class="top-tab active"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
-      <button id="tabPersonas" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
-      <button id="tabReadout" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
-      <button id="tabPlay" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
-      <button id="tabTrainer" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer</button>
-      <a id="tabSafeHarbor" class="top-tab top-tab-external" href="./safe-harbor/index.html"><span class="glyph glyph-cyan" aria-hidden="true">&#x27D0;</span> Safe Harbor</a>
-    </nav>
-
-    <main class="view-stack">
-      <section id="viewPaneConsole" class="view-pane" hidden>
-        <section class="panel console-index-panel">
-          <div class="panel-heading">
-            <div>
-              <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="consoleIndex">&#x25C7;</span> Console Index</div>
-              <h2>Choose a station, keep the same field</h2>
-            </div>
-            <p class="section-note">Each station below is a focused room on the same runtime. Navigation changes the pacing and surface identity, not the underlying engine or custody logic.</p>
+    <main class="gateway-main">
+      <section class="panel gateway-panel">
+        <div class="panel-heading">
+          <div>
+            <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x0398;</span> Station index</div>
+            <h2>Pick a station. Keep the same runtime.</h2>
           </div>
-
-          <div id="consoleStationGrid" class="console-station-grid"></div>
-        </section>
-      </section>
-
-      <section id="viewPaneHomebase" class="view-pane" hidden>
-        <div class="station-view-head station-view-head-homebase">
-          <div class="station-view-meta">
-            <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase station</div>
-            <h2 class="station-view-title">Anchor the cadence. Bring the mask across. Read the residue.</h2>
-            <p class="station-view-summary">This is the tactile room: lock a cadence home, wear one mask at a time, and inspect what the browser can still hold onto.</p>
-          </div>
+          <p class="section-note">Same-tab state carries across the split. Text, masks, locks, forged context, and active shells move with you instead of being trapped in one giant page.</p>
         </div>
-        <section class="panel personas-panel">
-          <div class="panel-heading">
-            <div>
-              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionHomebase">&#xD834;&#xDF0B;</span> Homebase</div>
-              <h2>Lock a cadence, activate a mask, and watch what clings</h2>
-            </div>
-            <p class="section-note">Anchor the cadence, bring the mask across, and read the contact without softening what the browser can recover.</p>
-          </div>
 
-          <div class="persona-toolbar">
-            <div id="homebaseStatus" class="analysis-status">Homebase // no cadence staged yet</div>
-            <div id="homebaseMaskStatus" class="analysis-status">Worn mask // none // choose on the shelf, then bring into Homebase</div>
-          </div>
-
-          <div class="persona-home-grid">
-            <div class="persona-home-sidebar">
-              <section id="cadenceLockboxSurface" class="trainer-surface lockbox-surface">
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionHomebase">&#xD834;&#xDF0B;</span> Cadence Lockbox</div>
-                <label class="field trainer-name-field" for="cadenceLockName">
-                  <div class="field-head">
-                    <div class="field-head-copy">
-                      <span class="field-label">Lock name</span>
-                      <span class="field-copy">Optional short name for the cadence home you are about to stage.</span>
-                    </div>
-                  </div>
-                  <input id="cadenceLockName" type="text" placeholder="Cadence Home" autocomplete="off">
-                </label>
-                <label class="field" for="cadenceLockCorpus">
-                  <div class="field-head">
-                    <div class="field-head-copy">
-                      <span class="field-label">Cadence Lockbox</span>
-                      <span class="field-copy">Paste one or more samples from the same voice. Blank lines split the corpus into separate samples so the lock can read your cadence across contexts.</span>
-                    </div>
-                  </div>
-                  <textarea id="cadenceLockCorpus"></textarea>
-                </label>
-                <div class="trainer-actions">
-                  <button id="lockCadenceBtn" type="button" class="primary-cta">Lock</button>
-                  <button id="revealCadenceBtn" type="button" class="secondary">Reveal</button>
-                  <button id="saveCadenceLockBtn" type="button" class="secondary">Save</button>
-                </div>
-                <div id="homebaseLockStatus" class="analysis-status">Stage a cadence draft. Reveal opens the dossier. Save keeps it in the session archive for this tab only.</div>
-              </section>
-            </div>
-
-            <div class="persona-home-main">
-              <section id="homebaseWornMaskStage" class="trainer-surface homebase-mask-stage" data-mask-phase="latent">
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionMaskBench">&#xDBF5;&#xDE13;</span> Worn mask</div>
-                <div id="homebaseMaskRoute" class="homebase-mask-route" aria-label="Mask contact route">
-                  <span class="homebase-route-chip" data-step="chosen">Chosen</span>
-                  <span class="homebase-route-chip" data-step="worn">Worn</span>
-                  <span class="homebase-route-chip" data-step="contact">In contact</span>
-                  <span class="homebase-route-chip" data-step="residue">Residue read</span>
-                </div>
-                <div id="homebaseWornMask" class="homebase-worn-mask"></div>
-              </section>
-
-              <section class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionMaskBench">&#xDBF5;&#xDE13;</span> Passage bench</div>
-                <label class="field" for="personaComparisonText">
-                  <div class="field-head">
-                    <div class="field-head-copy">
-                      <span class="field-label">Comparison text</span>
-                      <span class="field-copy">Paste any text you want to pass through the worn mask. Homebase then reads source, transformed passage, and residue against the active cadence home.</span>
-                    </div>
-                  </div>
-                  <textarea id="personaComparisonText"></textarea>
-                </label>
-                <div id="maskBenchStatus" class="analysis-status">Stage or select a cadence home to turn this bench on.</div>
-                <div id="maskContactSummary" class="analysis-status">Contact is latent.</div>
-                <div class="trainer-summary-grid persona-mask-summary">
-                  <div class="trainer-summary-card">
-                    <div class="persona-kicker">Before Contact</div>
-                    <strong id="maskRawToLock">--</strong>
-                    <span>How the source reads against home before the mask touches it.</span>
-                  </div>
-                  <div class="trainer-summary-card">
-                    <div class="persona-kicker">After Contact</div>
-                    <strong id="maskMaskedToLock">--</strong>
-                    <span>How the transformed passage still reads against home.</span>
-                  </div>
-                  <div class="trainer-summary-card">
-                    <div class="persona-kicker">What moved</div>
-                    <strong id="maskWhatMoved">--</strong>
-                    <span id="maskDeltaToLock">Whether proximity moved, surface texture moved, both, or neither.</span>
-                  </div>
-                </div>
-                <div class="persona-mask-output-grid">
-                  <div class="trainer-surface">
-                    <div class="persona-kicker">Source</div>
-                    <textarea id="personaMaskSource" readonly></textarea>
-                  </div>
-                  <div class="trainer-surface">
-                    <div class="persona-kicker">Through Mask</div>
-                    <textarea id="personaMaskOutput" readonly></textarea>
-                  </div>
-                  <div class="trainer-surface">
-                    <div class="persona-kicker">What Clung</div>
-                    <ul id="maskStickinessNotes" class="persona-risk-list">
-                      <li>Select or create a cadence home first.</li>
-                    </ul>
-                    <details id="maskApertureLedger" class="persona-ledger-drawer">
-                      <summary>
-                        <span>Aperture ledger</span>
-                        <span id="maskApertureLedgerMeta" class="persona-ledger-meta">Detailed warning and repair traces appear here.</span>
-                      </summary>
-                      <ul id="maskApertureLedgerItems" class="persona-risk-list persona-ledger-list">
-                        <li>Select or create a cadence home first.</li>
-                      </ul>
-                    </details>
-                  </div>
-                  <div class="trainer-surface">
-                    <div class="persona-kicker">Shift preview</div>
-                    <div id="personaMaskShiftPreview" class="mask-shift-preview">Sentence-level movement will appear here once the mask rewrites a passage.</div>
-                  </div>
-                </div>
-              </section>
-
-              <section id="cadenceLockDossierSurface" class="trainer-surface persona-dossier-surface" data-revealed="false">
-                <div id="cadenceLockDossier" class="persona-dossier"></div>
-              </section>
-
-              <section class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Lock archive</div>
-                <div id="cadenceLockArchive" class="lock-archive"></div>
-              </section>
-            </div>
-          </div>
-        </section>
-      </section>
-
-      <section id="viewPanePersonas" class="view-pane" hidden>
-        <div class="station-view-head station-view-head-personas">
-          <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
-          <div class="station-view-meta">
-            <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas station</div>
-            <h2 class="station-view-title">Choose on the shelf before you wake the object.</h2>
-            <p class="station-view-summary">Browse the cast, read the selected mask dossier, and dispatch the same object into Homebase or Deck without breaking runtime continuity.</p>
-          </div>
+        <div class="gateway-grid">
+          <button type="button" class="gateway-card" data-station-target="play">
+            <div class="gateway-card-kicker"><span class="glyph glyph-lime" aria-hidden="true">&#x25C7;</span> Deck</div>
+            <h3>Encounter chamber</h3>
+            <p>Stage two voices, wake the duel, and inspect aftermath without dragging the whole app around it.</p>
+          </button>
+          <button type="button" class="gateway-card" data-station-target="homebase">
+            <div class="gateway-card-kicker"><span class="glyph glyph-lime" aria-hidden="true">&#x4E0B;</span> Homebase</div>
+            <h3>Cadence home</h3>
+            <p>Lock a cadence, wear a mask, and read what clung without the rest of the station noise crowding the bench.</p>
+          </button>
+          <button type="button" class="gateway-card" data-station-target="personas">
+            <div class="gateway-card-kicker"><span class="glyph glyph-lime" aria-hidden="true">&#x03C8;</span> Personas</div>
+            <h3>Shelf and dossier</h3>
+            <p>Browse the mask library, inspect the object, and dispatch it into Homebase or Deck when you want it awake.</p>
+          </button>
+          <button type="button" class="gateway-card" data-station-target="readout">
+            <div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x0398;</span> Readout</div>
+            <h3>Witness / law</h3>
+            <p>See the governed exposure backbone, telemetry, and harbor without burying the core work surface under metrics.</p>
+          </button>
+          <button type="button" class="gateway-card" data-station-target="trainer">
+            <div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x22A2;</span> Trainer</div>
+            <h3>Forge lane</h3>
+            <p>Extract, forge, validate, and inject in a dedicated room instead of piling release logic onto the main chamber.</p>
+          </button>
+          <a class="gateway-card gateway-card-external" href="./safe-harbor/index.html">
+            <div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x27D0;</span> Safe Harbor</div>
+            <h3>Guarded passage</h3>
+            <p>Keep the packet layer external to TCP while the station split stays clean and session-local.</p>
+          </a>
         </div>
-        <section class="panel personas-panel personas-gallery-panel">
-          <div class="panel-heading">
-            <div>
-              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Cadence mask gallery</div>
-              <h2>Mask index, captured shells, and trained artifacts</h2>
-            </div>
-            <p class="section-note">Choose on the shelf, read the dossier, and carry the mask into Homebase or the Deck when you want the shell awake.</p>
-          </div>
-
-          <div class="persona-toolbar">
-            <div id="personaStatus" class="analysis-status">Shelf // choose a mask on the shelf, then bring it into Homebase or test it in the Deck</div>
-          </div>
-
-          <section id="personaPreviewStage" class="trainer-surface persona-preview-stage">
-            <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Selected mask</div>
-            <div id="personaPreviewBody" class="persona-preview-body"></div>
-          </section>
-
-          <div id="personaDeck" class="personagrid compact"></div>
-        </section>
-      </section>
-
-      <section id="viewPaneReadout" class="view-pane" hidden>
-        <div class="station-view-head station-view-head-readout">
-          <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
-          <div class="station-view-meta">
-            <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout station</div>
-            <h2 class="station-view-title">Witness page. Law page. No softening.</h2>
-            <p class="station-view-summary">Read this as a governed exposure surface: what was available, what got narrowed, what survived, and how much authority the runtime actually earned.</p>
-          </div>
-        </div>
-        <div class="readout-layout">
-          <section class="panel telemetry-panel">
-            <div class="panel-heading">
-              <div>
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTelemetry">&#x0398;</span> Telemetry</div>
-              <h2>What the field is actually doing</h2>
-            </div>
-            <p class="section-note">Cadence resemblance is downstream. The first question is what the runtime lost before the result felt sufficient.</p>
-            </div>
-
-            <p id="fieldNotice" class="field-notice analysis-gated" data-latent-label="Telemetry latent // wake the field">Bring one or two voices into the room. TCP now keeps latent state, projected state, registered surface, and route law separate from cadence resemblance.</p>
-
-            <div class="governed-exposure-panel analysis-gated" data-latent-label="Governed exposure latent // wake the field">
-              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionRecommendedHarbor">&#x2696;</span> Governed exposure</div>
-              <div class="governed-exposure-grid">
-                <article class="metric governed-exposure-card">
-                  <div class="key">Latent state <span class="key-meta">S</span></div>
-                  <div id="geLatentState" class="val">--</div>
-                  <div id="geLatentHint" class="hint">Available witness field before route and formatting narrow it.</div>
-                </article>
-                <article class="metric governed-exposure-card">
-                  <div class="key">Projected state <span class="key-meta">S'</span></div>
-                  <div id="geProjectedState" class="val">--</div>
-                  <div id="geProjectedHint" class="hint">What the runtime can actually hold onto long enough to compare.</div>
-                </article>
-                <article class="metric governed-exposure-card">
-                  <div class="key">Registered surface <span class="key-meta">Y</span></div>
-                  <div id="geRegisteredSurface" class="val">--</div>
-                  <div id="geRegisteredHint" class="hint">What survives as the answer-like public surface.</div>
-                </article>
-                <article class="metric governed-exposure-card">
-                  <div class="key">Authority ceiling</div>
-                  <div id="geAuthorityCeiling" class="val">--</div>
-                  <div id="geAuthorityHint" class="hint">How much claim this runtime has actually earned.</div>
-                </article>
-                <article class="metric governed-exposure-card">
-                  <div class="key">Source class</div>
-                  <div id="geSourceClass" class="val">--</div>
-                  <div id="geSourceHint" class="hint">Where the current witness material came from.</div>
-                </article>
-                <article class="metric governed-exposure-card">
-                  <div class="key">Route state</div>
-                  <div id="geRouteState" class="val">--</div>
-                  <div id="geRouteHint" class="hint">Whether the field is buffered, branching, guarded, or ready for harbor.</div>
-                </article>
-                <article class="metric governed-exposure-card">
-                  <div class="key">O / O*</div>
-                  <div id="geOmission" class="val">--</div>
-                  <div id="geOmissionHint" class="hint">Omission before projection, then omission after ratification.</div>
-                </article>
-                <article class="metric governed-exposure-card">
-                  <div class="key">Gap / dominant operator</div>
-                  <div id="geGap" class="val">--</div>
-                  <div id="geGapHint" class="hint">Which narrowing operator appears to have authored the loss.</div>
-                </article>
-              </div>
-              <pre id="governedExposurePreview" class="formula"></pre>
-            </div>
-
-            <div class="results analysis-gated" data-latent-label="Metrics latent // press Analyze Cadences">
-              <article id="similarityCard" class="metric">
-                <div id="similarityKey" class="key">Cadence similarity</div>
-                <div id="similarity" class="val">--</div>
-                <div id="simHint" class="hint"></div>
-              </article>
-              <article id="traceabilityCard" class="metric">
-                <div id="traceKey" class="key">Traceability</div>
-                <div id="traceability" class="val">--</div>
-                <div id="traceHint" class="hint"></div>
-              </article>
-              <article id="routePressureCard" class="metric">
-                <div id="routeKey" class="key">Route pressure</div>
-                <div id="routePressure" class="val">--</div>
-                <div id="routeHint" class="hint"></div>
-              </article>
-              <article id="custodyCard" class="metric">
-                <div id="custodyKey" class="key">Effective archive <span class="key-meta">A_I / A_W</span></div>
-                <div id="custodyState" class="val">--</div>
-                <div id="custodyHint" class="hint"></div>
-              </article>
-            </div>
-          </section>
-
-          <section class="panel harbor-panel">
-            <div class="panel-heading">
-              <div>
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionHarbor">&#x2696;</span> Harbor</div>
-              <h2>Structured passage</h2>
-            </div>
-              <p class="section-note">When the field earns handling, the recommendation shows up here.</p>
-            </div>
-
-            <div id="harborBox" class="harbor-box analysis-gated" data-latent-label="Harbor latent // no route yet"></div>
-
-            <div class="ledger-stage analysis-gated" data-latent-label="Receipt stream latent">
-              <div class="ledger-head">
-                <div>
-                  <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionReceipt">&#x03A3;</span> Receipt stream</div>
-                  <h3>Ledger preview</h3>
-                </div>
-                <div class="ledger-chip">local demo</div>
-              </div>
-              <pre id="ledgerPreview" class="formula"></pre>
-            </div>
-          </section>
-        </div>
-      </section>
-
-      <section id="viewPanePlay" class="view-pane" hidden>
-        <div class="station-view-head station-view-head-play">
-          <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
-          <div class="station-view-meta">
-            <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck station</div>
-            <h2 class="station-view-title">Stage two voices, then decide whether you want setup or encounter.</h2>
-            <p class="station-view-summary">Keep source text moves separate from shell-transfer moves. The Deck is for contrast, duel wake, and aftermath you can actually inspect.</p>
-          </div>
-        </div>
-        <div class="panel intake-panel">
-          <div class="panel-heading">
-            <div>
-              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionCadenceDeck">&#x25C7;</span> Cadence deck</div>
-              <h2>Bring two voices into the room</h2>
-            </div>
-            <p class="section-note">Drop in a reference voice and a probe voice. Keep setup moves separate from encounter moves: <code>Swap Text</code> reorders the source bays, while <code>Swap Cadences</code> keeps the text in place and trades shell behavior under audit.</p>
-          </div>
-
-          <div class="input-grid-wrap">
-            <div class="input-grid">
-              <label id="voiceAField" class="field" for="voiceA">
-                <div class="field-head">
-                  <div class="field-head-copy">
-                    <span class="field-label">Reference voice</span>
-                    <span class="field-copy">The anchor sample you trust most.</span>
-                  </div>
-                  <button id="randomizeVoiceABtn" type="button" class="field-randomizer" aria-label="Randomize reference voice sample" title="Randomize reference voice sample">&#x21BA;</button>
-                </div>
-                  <textarea id="voiceA" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
-                <div id="voiceAProfile" class="bay-profile analysis-gated" data-latent-label="Cadence shell latent"></div>
-              </label>
-
-              <label id="voiceBField" class="field" for="voiceB">
-                <div class="field-head">
-                  <div class="field-head-copy">
-                    <span class="field-label">Probe voice</span>
-                    <span class="field-copy">The sample you want to throw into contrast.</span>
-                  </div>
-                  <button id="randomizeVoiceBBtn" type="button" class="field-randomizer" aria-label="Randomize probe voice sample" title="Randomize probe voice sample">&#x21BA;</button>
-                </div>
-                  <textarea id="voiceB" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
-                <div id="voiceBProfile" class="bay-profile analysis-gated" data-latent-label="Cadence shell latent"></div>
-              </label>
-            </div>
-          </div>
-
-          <div class="deck-setup-row">
-            <div class="deck-setup-copy">
-              <div class="persona-kicker">Setup utility</div>
-              <p class="section-note deck-setup-note"><strong>Swap Text</strong> moves the source text between bays. It is a staging move, not the shell-transfer event.</p>
-            </div>
-            <button id="swapMedallion" type="button" class="secondary swap-text-btn" aria-label="Swap bay text" title="Swap bay text">Swap Text</button>
-          </div>
-
-          <div class="action-row">
-            <button id="compareBtn" type="button" class="primary-cta">Analyze Cadences</button>
-            <button id="swapCadencesBtn" type="button" class="secondary">Swap Cadences</button>
-            <span id="swapActionCue" class="swap-action-cue" hidden></span>
-            <button id="savePersonaBtn" type="button" class="secondary">Save Cadence as Persona</button>
-          </div>
-
-          <div class="deck-action-legend">
-            <p class="section-note deck-action-note"><strong>Swap Cadences</strong> keeps the source text in place and runs the retrieval-audited shell lane. This is the actual duel event.</p>
-          </div>
-
-          <div id="deckCastReport" class="analysis-status deck-cast-report">Cast report // waiting on both bays.</div>
-          <div id="deckAftermathPreview" class="deck-aftermath-preview" hidden></div>
-
-          <div class="analysis-rail">
-            <div id="activeBayStatus" class="statepill active">Active bay // reference voice</div>
-            <div id="analysisStatus" class="analysis-status">
-              <span id="analysisStatusBase" class="analysis-status-base">Press Analyze Cadences for a solo scan or a head-to-head run.</span>
-              <span id="analysisStatusCue" class="analysis-status-cue" hidden></span>
-            </div>
-          </div>
-
-          <section id="shellDuel" class="shell-duel analysis-gated" data-latent-label="Shell Duel latent // wake the deck" data-state="empty" aria-live="polite">
-            <div class="duel-heading">
-              <div>
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionShellDuel">&#x2194;</span> Shell Duel</div>
-                <h3>Two bays, two shells, one live drift test</h3>
-              </div>
-              <div id="duelSourceStatus" class="duel-source">Own sources // reference bay and probe bay raw text</div>
-            </div>
-            <p id="duelNote" class="duel-note">Each side remixes its own bay through the current shell. The textareas stay raw on purpose.</p>
-            <div id="shellDuelBody" class="duel-body"></div>
-          </section>
-
-          <div class="utility-row">
-            <button id="toggleMirrorBtn" type="button" class="utility">Open mirror shield</button>
-            <button id="badgeBtn" type="button" class="utility">Cycle custody badge</button>
-            <button id="resetBtn" type="button" class="ghost">Reset bay</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="viewPaneTrainer" class="view-pane" hidden>
-        <div class="station-view-head station-view-head-trainer">
-          <button type="button" class="station-back" data-station-target="homebase">&#x2190; Homebase</button>
-          <div class="station-view-meta">
-            <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer station</div>
-            <h2 class="station-view-title">Forge drafts, validate them, then inject only if the field agrees.</h2>
-            <p class="station-view-summary">This room is procedural on purpose: extract the field, build a candidate, run the trainer contract, keep session-local inject separate from export release, and only then return the shell to the shared shelf.</p>
-          </div>
-        </div>
-        <section id="trainerPane" class="panel trainer-panel">
-          <div class="panel-heading">
-            <div>
-              <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Trainer lab</div>
-              <h2>Forge a persona under retrieval law</h2>
-            </div>
-            <p class="section-note">Extract the target field, inspect the prompt, validate a candidate, correct it if needed, then inject only when the retrieval lane will actually stand behind it. Externalized export stays sealed until you open a one-session release gate.</p>
-          </div>
-
-          <div class="trainer-grid">
-            <div class="trainer-stack">
-              <label class="field trainer-name-field" for="trainerPersonaName">
-                <div class="field-head">
-                  <div class="field-head-copy">
-                    <span class="field-label">Persona name</span>
-                    <span class="field-copy">Optional name for the shell you are training.</span>
-                  </div>
-                </div>
-                <input id="trainerPersonaName" type="text" placeholder="Trainer Persona" autocomplete="off">
-              </label>
-
-              <label class="field" for="trainerCorpusInput">
-                <div class="field-head">
-                  <div class="field-head-copy">
-                      <span class="field-label">Forge corpus</span>
-                      <span class="field-copy">Paste one or more samples from the target voice. Blank lines split the set before extraction.</span>
-                  </div>
-                </div>
-                <textarea id="trainerCorpusInput"></textarea>
-              </label>
-
-              <div class="trainer-actions">
-                <button id="trainerExtractBtn" type="button" class="primary-cta">Extract Persona Field</button>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Draft source</div>
-                <div id="trainerDraftContext" class="trainer-readout-body">Forge Draft will use current Homebase, Deck, or extracted-corpus context when available.</div>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Field readout</div>
-                <div id="trainerFingerprintSummary" class="trainer-readout-body"></div>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Trainer prompt</div>
-                <textarea id="trainerPromptOutput" readonly></textarea>
-              </div>
-            </div>
-
-            <div class="trainer-stack">
-              <label class="field" for="trainerGeneratedOutput">
-                <div class="field-head">
-                  <div class="field-head-copy">
-                      <span class="field-label">Candidate passage</span>
-                      <span class="field-copy">Forge Draft can seed a live candidate from the current shelf, Homebase, or Deck context. You can still edit the passage manually before validation.</span>
-                  </div>
-                </div>
-                <textarea id="trainerGeneratedOutput"></textarea>
-              </label>
-
-              <div class="trainer-actions">
-                <button id="trainerForgeDraftBtn" type="button" class="primary-cta">Forge Draft</button>
-                <button id="trainerValidateBtn" type="button" class="secondary">Validate Passage</button>
-                <button id="trainerReleaseGateBtn" type="button" class="secondary">Arm Release Gate</button>
-                <button id="trainerExportBtn" type="button" class="secondary">Export JSON</button>
-                <button id="trainerInjectBtn" type="button" class="secondary">Inject into Session Personas</button>
-              </div>
-
-              <div id="trainerStatus" class="analysis-status trainer-status">
-                <span id="trainerStatusBase" class="analysis-status-base">Paste a corpus, extract the field, then validate a candidate passage.</span>
-                <span id="trainerStatusCue" class="analysis-status-cue" hidden></span>
-              </div>
-
-              <div id="trainerBridgeSurface" class="trainer-surface trainer-bridge-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Next move</div>
-                <div id="trainerBridgeBody" class="trainer-readout-body">Inject a passing persona into the session shelf, or arm a one-session release gate before exporting anything beyond this tab.</div>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Forge validation</div>
-                <div id="trainerValidationReport" class="trainer-readout-body"></div>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Correction hints</div>
-                <div id="trainerCorrectionHints" class="trainer-readout-body"></div>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Forged persona export</div>
-                <div id="trainerReleaseGateHint" class="analysis-status">Export stays sealed until you arm a one-session release gate after validation.</div>
-                <textarea id="trainerExportOutput" readonly></textarea>
-              </div>
-            </div>
-          </div>
-        </section>
       </section>
     </main>
 
-    <section class="debug-vault" hidden aria-hidden="true">
-      <div id="branchFormula" class="formula"></div>
-      <div id="waveFormula" class="formula"></div>
-      <div id="harborFormula" class="formula"></div>
-    </section>
-
-    <footer class="footer">TCP / retrieval-first research playground / deck, shells, route, harbor <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
+    <footer class="footer">TCP / station split gateway / same runtime, separate rooms <span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="footerSeal">&#x27D0;</span></footer>
   </div>
 
-<script src="./browser-data.js?v=202604031140"></script>
-<script src="./browser-diagnostics.js?v=202604031140"></script>
-<script src="./browser-engine.js?v=202604031140"></script>
+  <script src="./browser-data.js?v=202604031140"></script>
+  <script src="./browser-diagnostics.js?v=202604031140"></script>
+  <script src="./browser-engine.js?v=202604031140"></script>
   <script src="./retrieval-fixtures.js?v=202604031140"></script>
-<script src="./browser-main.js?v=202604031140"></script>
-  </body>
+  <script src="./browser-main.js?v=202604031140"></script>
+</body>
 </html>
