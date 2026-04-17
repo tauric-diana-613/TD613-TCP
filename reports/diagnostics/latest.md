@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-12T04:51:31.536Z
+Generated: 2026-04-17T19:52:40.255Z
 
 Corpus: 72 samples across 18 families
 Promoted deck subset: 24 samples
