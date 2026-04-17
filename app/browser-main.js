@@ -1078,7 +1078,20 @@
       return;
     }
     try {
-      runtimeStore.setItem(SESSION_FLIGHT_STATE_KEY, JSON.stringify(captureFlightState()));
+      const snapshot = captureFlightState();
+      if (PAGE_KIND === 'gateway') {
+        const existing = loadSessionFlightState();
+        if (existing && typeof existing === 'object') {
+          runtimeStore.setItem(SESSION_FLIGHT_STATE_KEY, JSON.stringify({
+            ...existing,
+            badge: snapshot.badge,
+            mirrorLogic: snapshot.mirrorLogic,
+            containment: snapshot.containment
+          }));
+          return;
+        }
+      }
+      runtimeStore.setItem(SESSION_FLIGHT_STATE_KEY, JSON.stringify(snapshot));
     } catch {
       // keep the active page running even if session persistence fails
     }
@@ -2191,7 +2204,11 @@
     };
 
     applyIngressPreset(preset);
-    analyzeCadences();
+    if (PAGE_KIND === 'gateway') {
+      persistSessionFlightState();
+    } else {
+      analyzeCadences();
+    }
 
     ingress.phase = 'revealing';
     renderIngress();

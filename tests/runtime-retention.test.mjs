@@ -27,6 +27,7 @@ assert.ok(browserMainSource.includes("mode: 'session-storage'"), 'browser-main p
 assert.ok(legacyMainSource.includes("mode: 'session-storage'"), 'legacy main prefers a session-storage runtime store');
 assert.ok(browserMainSource.includes('SESSION_FLIGHT_STATE_KEY'), 'browser-main persists a cross-page flight snapshot');
 assert.ok(browserMainSource.includes('persistSessionFlightState'), 'browser-main persists session state before page changes');
+assert.ok(/if \(PAGE_KIND === 'gateway'\)\s*\{\s*persistSessionFlightState\(\);\s*\}\s*else\s*\{\s*analyzeCadences\(\);/m.test(browserMainSource), 'gateway ingress finalization no longer runs the full analysis pipeline');
 assert.ok(indexHtml.includes('data-page-kind="gateway"'), 'gateway page exposes page-kind identity');
 assert.ok(trainerHtml.includes('trainerReleaseGateBtn'), 'trainer page exposes an explicit release gate control');
 assert.ok(homebaseHtml.includes('session archive'), 'Homebase copy still exposes session archive wording');
