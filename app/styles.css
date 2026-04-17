@@ -4433,3 +4433,437 @@ body[data-page-kind="trainer"] .field {
     grid-template-columns: 1fr;
   }
 }
+
+/* Patch 30.4.2 / station density pass */
+
+body[data-page-kind="homebase"] .shell,
+body[data-page-kind="personas"] .shell,
+body[data-page-kind="readout"] .shell,
+body[data-page-kind="deck"] .shell,
+body[data-page-kind="trainer"] .shell {
+  max-width: 1160px;
+  padding: 14px 12px 22px;
+}
+
+body[data-page-kind="homebase"] .station-masthead,
+body[data-page-kind="personas"] .station-masthead,
+body[data-page-kind="readout"] .station-masthead,
+body[data-page-kind="deck"] .station-masthead,
+body[data-page-kind="trainer"] .station-masthead {
+  padding: 10px 12px 11px;
+  clip-path: polygon(0 16px, 16px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 6px 100%, 0 calc(100% - 6px));
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.28),
+    0 0 20px rgba(116, 234, 255, 0.05),
+    inset 0 0 0 1px rgba(116, 234, 255, 0.04);
+}
+
+body[data-page-kind="homebase"] .station-masthead-bar,
+body[data-page-kind="personas"] .station-masthead-bar,
+body[data-page-kind="readout"] .station-masthead-bar,
+body[data-page-kind="deck"] .station-masthead-bar,
+body[data-page-kind="trainer"] .station-masthead-bar {
+  margin-bottom: 6px;
+}
+
+body[data-page-kind="homebase"] .station-masthead-copy,
+body[data-page-kind="personas"] .station-masthead-copy,
+body[data-page-kind="readout"] .station-masthead-copy,
+body[data-page-kind="deck"] .station-masthead-copy,
+body[data-page-kind="trainer"] .station-masthead-copy {
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 4px 14px;
+}
+
+body[data-page-kind="homebase"] .station-masthead-copy h1,
+body[data-page-kind="personas"] .station-masthead-copy h1,
+body[data-page-kind="readout"] .station-masthead-copy h1,
+body[data-page-kind="deck"] .station-masthead-copy h1,
+body[data-page-kind="trainer"] .station-masthead-copy h1 {
+  font-size: clamp(18px, 2vw, 28px);
+  letter-spacing: 0.16em;
+  text-shadow:
+    0 0 12px rgba(116, 234, 255, 0.16),
+    0 0 18px rgba(168, 85, 247, 0.08);
+}
+
+body[data-page-kind="homebase"] .station-masthead-copy .lead,
+body[data-page-kind="personas"] .station-masthead-copy .lead,
+body[data-page-kind="readout"] .station-masthead-copy .lead,
+body[data-page-kind="deck"] .station-masthead-copy .lead,
+body[data-page-kind="trainer"] .station-masthead-copy .lead {
+  display: none;
+}
+
+body[data-page-kind="homebase"] .station-masthead-copy .hero-station-line,
+body[data-page-kind="personas"] .station-masthead-copy .hero-station-line,
+body[data-page-kind="readout"] .station-masthead-copy .hero-station-line,
+body[data-page-kind="deck"] .station-masthead-copy .hero-station-line,
+body[data-page-kind="trainer"] .station-masthead-copy .hero-station-line {
+  align-self: center;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  color: rgba(214, 211, 209, 0.76);
+}
+
+body[data-page-kind="homebase"] .station-statusrail,
+body[data-page-kind="personas"] .station-statusrail,
+body[data-page-kind="readout"] .station-statusrail,
+body[data-page-kind="deck"] .station-statusrail,
+body[data-page-kind="trainer"] .station-statusrail {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin-top: 8px;
+  padding: 6px 7px;
+  gap: 6px;
+  scrollbar-width: thin;
+}
+
+body[data-page-kind="homebase"] .station-statusrail .console-status,
+body[data-page-kind="homebase"] .station-statusrail .statepill,
+body[data-page-kind="personas"] .station-statusrail .console-status,
+body[data-page-kind="personas"] .station-statusrail .statepill,
+body[data-page-kind="readout"] .station-statusrail .console-status,
+body[data-page-kind="readout"] .station-statusrail .statepill,
+body[data-page-kind="deck"] .station-statusrail .console-status,
+body[data-page-kind="deck"] .station-statusrail .statepill,
+body[data-page-kind="trainer"] .station-statusrail .console-status,
+body[data-page-kind="trainer"] .station-statusrail .statepill {
+  min-height: 25px;
+  padding: 0 8px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+}
+
+body[data-page-kind="homebase"] .station-nav,
+body[data-page-kind="personas"] .station-nav,
+body[data-page-kind="readout"] .station-nav,
+body[data-page-kind="deck"] .station-nav,
+body[data-page-kind="trainer"] .station-nav {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 6px 7px;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+body[data-page-kind="homebase"] .station-nav .top-tab,
+body[data-page-kind="personas"] .station-nav .top-tab,
+body[data-page-kind="readout"] .station-nav .top-tab,
+body[data-page-kind="deck"] .station-nav .top-tab,
+body[data-page-kind="trainer"] .station-nav .top-tab {
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+}
+
+body[data-page-kind="homebase"] .station-nav .top-tab-external,
+body[data-page-kind="personas"] .station-nav .top-tab-external,
+body[data-page-kind="readout"] .station-nav .top-tab-external,
+body[data-page-kind="deck"] .station-nav .top-tab-external,
+body[data-page-kind="trainer"] .station-nav .top-tab-external {
+  display: none;
+}
+
+body[data-page-kind="homebase"] .station-stack,
+body[data-page-kind="personas"] .station-stack,
+body[data-page-kind="readout"] .station-stack,
+body[data-page-kind="deck"] .station-stack,
+body[data-page-kind="trainer"] .station-stack {
+  margin-top: 8px;
+}
+
+body[data-page-kind="homebase"] .view-pane,
+body[data-page-kind="personas"] .view-pane,
+body[data-page-kind="readout"] .view-pane,
+body[data-page-kind="deck"] .view-pane,
+body[data-page-kind="trainer"] .view-pane {
+  gap: 12px;
+  padding-bottom: 10px;
+}
+
+body[data-page-kind="homebase"] .station-view-head,
+body[data-page-kind="personas"] .station-view-head,
+body[data-page-kind="readout"] .station-view-head,
+body[data-page-kind="deck"] .station-view-head,
+body[data-page-kind="trainer"] .station-view-head {
+  display: none;
+}
+
+body[data-page-kind="homebase"] .panel,
+body[data-page-kind="personas"] .panel,
+body[data-page-kind="readout"] .panel,
+body[data-page-kind="deck"] .panel,
+body[data-page-kind="trainer"] .panel {
+  padding: 14px;
+  border-radius: 18px;
+}
+
+body[data-page-kind="homebase"] .panel-heading,
+body[data-page-kind="personas"] .panel-heading,
+body[data-page-kind="readout"] .panel-heading,
+body[data-page-kind="deck"] .panel-heading,
+body[data-page-kind="trainer"] .panel-heading {
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+body[data-page-kind="homebase"] .panel-heading h2,
+body[data-page-kind="personas"] .panel-heading h2,
+body[data-page-kind="readout"] .panel-heading h2,
+body[data-page-kind="deck"] .panel-heading h2,
+body[data-page-kind="trainer"] .panel-heading h2 {
+  font-size: clamp(18px, 2.2vw, 24px);
+}
+
+body[data-page-kind="homebase"] .section-note,
+body[data-page-kind="personas"] .section-note,
+body[data-page-kind="readout"] .section-note,
+body[data-page-kind="deck"] .section-note,
+body[data-page-kind="trainer"] .section-note {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(236, 251, 255, 0.62);
+}
+
+body[data-page-kind="homebase"] .field,
+body[data-page-kind="personas"] .field,
+body[data-page-kind="readout"] .field,
+body[data-page-kind="deck"] .field,
+body[data-page-kind="trainer"] .field,
+body[data-page-kind="homebase"] .trainer-surface,
+body[data-page-kind="personas"] .trainer-surface,
+body[data-page-kind="readout"] .trainer-surface,
+body[data-page-kind="deck"] .trainer-surface,
+body[data-page-kind="trainer"] .trainer-surface,
+body[data-page-kind="homebase"] .metric,
+body[data-page-kind="personas"] .metric,
+body[data-page-kind="readout"] .metric,
+body[data-page-kind="deck"] .metric,
+body[data-page-kind="trainer"] .metric,
+body[data-page-kind="homebase"] .harbor-box,
+body[data-page-kind="personas"] .harbor-box,
+body[data-page-kind="readout"] .harbor-box,
+body[data-page-kind="deck"] .harbor-box,
+body[data-page-kind="trainer"] .harbor-box,
+body[data-page-kind="homebase"] .ledger-stage,
+body[data-page-kind="personas"] .ledger-stage,
+body[data-page-kind="readout"] .ledger-stage,
+body[data-page-kind="deck"] .ledger-stage,
+body[data-page-kind="trainer"] .ledger-stage,
+body[data-page-kind="homebase"] .bay-profile,
+body[data-page-kind="personas"] .bay-profile,
+body[data-page-kind="readout"] .bay-profile,
+body[data-page-kind="deck"] .bay-profile,
+body[data-page-kind="trainer"] .bay-profile {
+  padding: 12px;
+  border-radius: 16px;
+}
+
+body[data-page-kind="homebase"] textarea,
+body[data-page-kind="personas"] textarea,
+body[data-page-kind="readout"] textarea,
+body[data-page-kind="deck"] textarea,
+body[data-page-kind="trainer"] textarea {
+  min-height: 190px;
+  padding: 13px 14px;
+  font-size: 14px;
+  line-height: 1.58;
+  border-radius: 12px;
+}
+
+body[data-page-kind="homebase"] textarea[readonly],
+body[data-page-kind="personas"] textarea[readonly],
+body[data-page-kind="readout"] textarea[readonly],
+body[data-page-kind="deck"] textarea[readonly],
+body[data-page-kind="trainer"] textarea[readonly] {
+  min-height: 134px;
+}
+
+body[data-page-kind="deck"] #voiceA,
+body[data-page-kind="deck"] #voiceB,
+body[data-page-kind="trainer"] #trainerCorpusInput,
+body[data-page-kind="trainer"] #trainerGeneratedOutput,
+body[data-page-kind="homebase"] #personaComparisonText,
+body[data-page-kind="homebase"] #cadenceLockCorpus {
+  min-height: 170px;
+}
+
+body[data-page-kind="deck"] .bay-profile {
+  min-height: 110px;
+}
+
+body[data-page-kind="deck"] .shell-duel {
+  margin-top: 12px;
+  padding: 14px;
+}
+
+body[data-page-kind="deck"] .duel-empty {
+  min-height: 112px;
+  padding: 14px;
+}
+
+body[data-page-kind="deck"] .duel-body {
+  margin-top: 10px;
+}
+
+body[data-page-kind="deck"] .analysis-rail,
+body[data-page-kind="deck"] .deck-setup-row,
+body[data-page-kind="deck"] .action-row,
+body[data-page-kind="trainer"] .trainer-actions {
+  gap: 8px;
+}
+
+body[data-page-kind="homebase"] .persona-home-grid {
+  grid-template-columns: minmax(248px, 0.84fr) minmax(0, 1.16fr);
+  gap: 14px;
+}
+
+body[data-page-kind="homebase"] .homebase-mask-route {
+  gap: 6px;
+  margin-top: 8px;
+}
+
+body[data-page-kind="homebase"] .homebase-route-chip {
+  min-height: 24px;
+  padding: 0 8px;
+  font-size: 10px;
+}
+
+body[data-page-kind="homebase"] .homebase-worn-mask,
+body[data-page-kind="homebase"] .homebase-worn-mask-card,
+body[data-page-kind="homebase"] .homebase-worn-mask-copy,
+body[data-page-kind="personas"] .persona-preview-body,
+body[data-page-kind="personas"] .persona-preview-grid,
+body[data-page-kind="personas"] .persona-preview-copy {
+  gap: 10px;
+}
+
+body[data-page-kind="homebase"] .homebase-worn-mask-card,
+body[data-page-kind="personas"] .persona-preview-grid {
+  grid-template-columns: 150px minmax(0, 1fr);
+}
+
+body[data-page-kind="homebase"] .homebase-worn-mask-empty,
+body[data-page-kind="personas"] .persona-preview-empty {
+  min-height: 104px;
+  padding: 14px;
+}
+
+body[data-page-kind="homebase"] .persona-mask-output-grid,
+body[data-page-kind="trainer"] .trainer-summary-grid,
+body[data-page-kind="trainer"] .trainer-contract-grid {
+  gap: 10px;
+}
+
+body[data-page-kind="readout"] .readout-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.74fr);
+  gap: 12px;
+  align-items: start;
+}
+
+body[data-page-kind="readout"] .governed-exposure-panel,
+body[data-page-kind="readout"] .results,
+body[data-page-kind="readout"] .harbor-grid {
+  gap: 10px;
+}
+
+body[data-page-kind="readout"][data-analysis-revealed="false"] .field-notice.analysis-gated {
+  min-height: 56px;
+}
+
+body[data-page-kind="readout"][data-analysis-revealed="false"] .governed-exposure-panel.analysis-gated {
+  min-height: 118px;
+}
+
+body[data-page-kind="readout"][data-analysis-revealed="false"] .results.analysis-gated {
+  min-height: 92px;
+}
+
+body[data-page-kind="readout"][data-analysis-revealed="false"] .harbor-box.analysis-gated {
+  min-height: 108px;
+}
+
+body[data-page-kind="readout"][data-analysis-revealed="false"] .ledger-stage.analysis-gated {
+  min-height: 124px;
+}
+
+body[data-page-kind="readout"][data-analysis-revealed="false"] .governed-exposure-panel.analysis-gated > *,
+body[data-page-kind="readout"][data-analysis-revealed="false"] .results.analysis-gated > *,
+body[data-page-kind="deck"][data-analysis-revealed="false"] .shell-duel.analysis-gated > * {
+  display: none !important;
+}
+
+body[data-page-kind="deck"][data-analysis-revealed="false"] .shell-duel.analysis-gated {
+  min-height: 126px;
+}
+
+body[data-page-kind="readout"] .formula {
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+body[data-page-kind="trainer"] .trainer-grid,
+body[data-page-kind="personas"] .trainer-grid {
+  gap: 14px;
+}
+
+body[data-page-kind="trainer"] .trainer-readout-body,
+body[data-page-kind="trainer"] .trainer-status,
+body[data-page-kind="homebase"] .analysis-status,
+body[data-page-kind="deck"] .analysis-status {
+  min-height: 0;
+}
+
+body[data-page-kind="trainer"] .trainer-bridge-empty {
+  min-height: 88px;
+}
+
+body[data-page-kind="gateway"] .gateway-head {
+  padding: 14px 16px 16px;
+}
+
+body[data-page-kind="gateway"] .gateway-grid {
+  gap: 12px;
+}
+
+body[data-page-kind="gateway"] .gateway-card {
+  min-height: 152px;
+  padding: 14px 14px 15px;
+}
+
+body[data-page-kind="gateway"] .gateway-card h3 {
+  font-size: 0.92rem;
+}
+
+body[data-page-kind="gateway"] .footer,
+body[data-page-kind="homebase"] .footer,
+body[data-page-kind="personas"] .footer,
+body[data-page-kind="readout"] .footer,
+body[data-page-kind="deck"] .footer,
+body[data-page-kind="trainer"] .footer {
+  margin-top: 12px;
+  padding: 9px 12px;
+  font-size: 0.62rem;
+  opacity: 0.72;
+}
+
+@media (max-width: 900px) {
+  body[data-page-kind="homebase"] .station-masthead-copy,
+  body[data-page-kind="personas"] .station-masthead-copy,
+  body[data-page-kind="readout"] .station-masthead-copy,
+  body[data-page-kind="deck"] .station-masthead-copy,
+  body[data-page-kind="trainer"] .station-masthead-copy {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-page-kind="readout"] .readout-layout,
+  body[data-page-kind="homebase"] .persona-home-grid,
+  body[data-page-kind="trainer"] .trainer-grid {
+    grid-template-columns: 1fr;
+  }
+}
