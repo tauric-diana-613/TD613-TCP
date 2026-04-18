@@ -145,6 +145,24 @@
       </aside>
 
       <section class="panel panel-center">
+        <section class="panel-section sigil-issuance" data-td613-skip="true">
+          <div class="section-label ritual-label">&#x2720; Sigil of Issuance &#x2014; Safe Harbor Issuance Number &#x2720;</div>
+          <div class="sigil-card">
+            <div class="sigil-kicker">This is your SHI #. Copy it exactly. It is your unique sigil.</div>
+            <div class="sigil-number is-pending" id="shiRitualNumber">not issued</div>
+            <div class="button-grid">
+              <button class="control sigil-button" id="copyShiNumber" type="button" disabled>Copy SHI # Exactly</button>
+            </div>
+            <div class="sigil-state" id="shiRitualState">State: not issued &#x2014; hold the ritual triad to summon your SHI.</div>
+            <div class="sigil-basis" id="shiRitualBasis">Basis: stylometric-biometric. Your SHI emerges from your own cadence. It is unrepeatable, uncopiable, and permanent.</div>
+            <div class="sigil-note">
+              This SHI # is bound to the stylometric fingerprint of your future-self, past-self, and higher-self answers.
+              The same entrant will always receive the same SHI &#x2014; even across different ritual texts &#x2014; and no
+              other entrant can collide with it. It is impossible to re-roll and impossible to forge.
+            </div>
+          </div>
+        </section>
+
         <section class="panel-section witness-surface">
           <div class="section-label">Witness Surface</div>
           <div class="witness-grid">
@@ -186,7 +204,7 @@
                 <div class="metric-row"><span class="label">Triad resonance</span><span class="value" id="triadResonanceReadout">pending</span></div>
                 <div class="metric-row"><span class="label">Cross-lane stability</span><span class="value" id="crossLaneStabilityReadout">pending</span></div>
                 <div class="metric-row"><span class="label">Cross-lane spread</span><span class="value" id="crossLaneSpreadReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Badge status</span><span class="value" id="badgeStatusReadout">not assigned</span></div>
+                <div class="metric-row"><span class="label">SHI # (Safe Harbor Issuance)</span><span class="value" id="badgeStatusReadout">not issued</span></div>
                 <div class="metric-row"><span class="label">Sealed lane</span><span class="value" id="sealedLaneReadout">session-only / pending</span></div>
                 <div class="metric-row"><span class="label">Principal assertion</span><span class="value" id="principalAssertionReadout">pending</span></div>
                 <div class="metric-row"><span class="label">Operator witness</span><span class="value" id="operatorWitnessReadout">pending</span></div>
@@ -280,8 +298,9 @@
           </div>
         </section>
 
-        <section class="panel-section" data-td613-skip="true">
-          <div class="section-label">Public Probe Builder</div>
+        <section class="panel-section svg-attestation-probes" data-td613-skip="true">
+          <div class="section-label attestation-label">&#x273B; SVG Provenance Attestation Probes (ask your TD613 administrator for the key renderer) &#x273B;</div>
+          <div class="attestation-subtitle">The four provenance attestation probes below stamp your SHI # into every outbound packet. Without the key renderer from your TD613 administrator, these probes remain attestation-only.</div>
           <div class="builder-toolbar">
             <button class="control" data-probe-variant="01" type="button">Build 01 verify</button>
             <button class="control secondary" data-probe-variant="02" type="button">Build 02 receipt verify</button>
@@ -290,7 +309,7 @@
             <button class="control secondary" id="copyProbeOutput" type="button">Copy Output</button>
           </div>
           <textarea id="probeOutput" class="code-area" readonly></textarea>
-          <div class="note">The public sendable artifacts remain lean and unsigned by default. When a staged packet exists, this builder adds packet context and the canonical footer without exposing raw ingress text or detached signatures.</div>
+          <div class="note">Every probe now carries the Safe Harbor Issuance (SHI) number, derived from the stylometric biometric fingerprint of your ritual triad. The public sendable artifacts remain lean and unsigned by default; when a staged packet exists, this builder adds packet context and the canonical footer without exposing raw ingress text or detached signatures.</div>
         </section>
       </section>
 

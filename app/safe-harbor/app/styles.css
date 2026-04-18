@@ -513,6 +513,132 @@ textarea {
   word-break: break-word;
 }
 
+.sigil-issuance {
+  border: 1px solid rgba(255, 75, 100, 0.38);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 70, 100, 0.18), transparent 48%),
+    linear-gradient(180deg, rgba(46, 6, 14, 0.9), rgba(12, 6, 9, 0.98));
+  box-shadow: 0 0 0 1px rgba(255, 75, 100, 0.12) inset, 0 20px 48px rgba(140, 10, 30, 0.18);
+}
+
+.section-label.ritual-label {
+  color: #ff3b5c;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 59, 92, 0.45);
+}
+
+.section-label.ritual-label::before {
+  background: #ff3b5c;
+  box-shadow: 0 0 10px #ff3b5c;
+}
+
+.section-label.ritual-label::after {
+  background: linear-gradient(90deg, rgba(255, 59, 92, 0.42), transparent);
+}
+
+.sigil-card {
+  display: grid;
+  gap: 12px;
+}
+
+.sigil-kicker {
+  color: #ffd1d9;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.sigil-number {
+  font-family: 'Crimson Pro', serif;
+  font-size: 30px;
+  letter-spacing: 2.6px;
+  color: #fff2a6;
+  text-shadow: 0 0 18px rgba(255, 180, 40, 0.35);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 180, 40, 0.28);
+  background: rgba(10, 7, 14, 0.74);
+  word-break: break-all;
+  text-align: center;
+}
+
+.sigil-number.is-pending {
+  color: #ffb0bd;
+  text-shadow: none;
+  font-style: italic;
+  letter-spacing: 1.6px;
+  border-color: rgba(255, 75, 100, 0.32);
+}
+
+.sigil-number.is-sealed {
+  color: #caffd0;
+  text-shadow: 0 0 16px rgba(80, 250, 123, 0.35);
+  border-color: rgba(80, 250, 123, 0.42);
+}
+
+.sigil-button {
+  border-color: rgba(255, 75, 100, 0.4);
+  color: #ffd1d9;
+  background: linear-gradient(180deg, rgba(60, 8, 18, 0.95), rgba(20, 6, 12, 0.98));
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.sigil-button:hover:not(:disabled) {
+  border-color: #ff3b5c;
+  color: #fff2a6;
+  box-shadow: 0 0 18px rgba(255, 59, 92, 0.28);
+}
+
+.sigil-state {
+  color: #ffb84d;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+}
+
+.sigil-basis {
+  color: #ffd1d9;
+  font-size: 11px;
+  letter-spacing: 0.4px;
+}
+
+.sigil-note {
+  color: var(--text-dim);
+  font-size: 11px;
+  line-height: 1.55;
+  max-width: 82ch;
+}
+
+.svg-attestation-probes .section-label.attestation-label {
+  color: #50fa7b;
+  letter-spacing: 2.4px;
+  font-size: 12px;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(80, 250, 123, 0.42);
+}
+
+.svg-attestation-probes .section-label.attestation-label::before {
+  background: #50fa7b;
+  box-shadow: 0 0 10px rgba(80, 250, 123, 0.8);
+}
+
+.svg-attestation-probes .section-label.attestation-label::after {
+  background: linear-gradient(90deg, rgba(80, 250, 123, 0.4), transparent);
+}
+
+.svg-attestation-probes .attestation-subtitle {
+  color: #9fe9b0;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  margin: -4px 0 10px;
+}
+
 .ingress-membrane {
   position: fixed;
   inset: 0;

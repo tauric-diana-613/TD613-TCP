@@ -7,6 +7,7 @@
   const KEYS = ['future_self', 'past_self', 'higher_self'];
   const STORAGE_KEY = 'td613.safe-harbor.session.v1';
   const MAX_AUDIT = 24;
+  const MIN_LANE_WORDS = 40;
 
   const $ = (id) => document.getElementById(id);
   const dom = {
@@ -112,6 +113,10 @@
     signatureNote: $('signatureNote'),
     probeOutput: $('probeOutput'),
     copyProbeOutput: $('copyProbeOutput'),
+    shiRitualNumber: $('shiRitualNumber'),
+    shiRitualState: $('shiRitualState'),
+    shiRitualBasis: $('shiRitualBasis'),
+    copyShiNumber: $('copyShiNumber'),
     packetStateReadout: $('packetStateReadout'),
     routeStateReadout: $('routeStateReadout'),
     membraneNoteReadout: $('membraneNoteReadout'),
@@ -224,6 +229,12 @@
     dom.bypassPassword.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void bypassIngress(); } });
     dom.copyCanonicalFooter.addEventListener('click', () => void copyText(dom.canonicalFooterPreview.textContent || ''));
     dom.copyProbeOutput.addEventListener('click', () => void copyText(dom.probeOutput.value || ''));
+    if (dom.copyShiNumber) dom.copyShiNumber.addEventListener('click', () => {
+      const value = currentShiNumber();
+      if (!value) return;
+      void copyText(value);
+      logEvent('shi-copied', { shi_number: value });
+    });
     dom.copyPacketPreview.addEventListener('click', () => void copyText(dom.packetPreview.textContent || ''));
     dom.injectDynamicLane.addEventListener('click', injectDynamicLane);
     dom.demoTcpHook.addEventListener('click', () => window.dispatchEvent(new CustomEvent(D.hookBus.events.tcp, { detail: clone(D.hookBus.demo.tcp) })));
@@ -413,10 +424,15 @@
     card.classList.toggle('ready', unlocked && !complete);
     card.classList.toggle('complete', complete);
     input.disabled = !unlocked || open;
+    const needed = Math.max(MIN_LANE_WORDS - stats.word_count, 0);
     label.textContent = complete ? 'line held' : (unlocked ? (trim(raw) ? 'buffering' : 'awaiting line') : 'locked');
     meta.textContent = complete
       ? stats.word_count + ' words / ' + stats.char_count + ' chars / ' + shortChecksum(null, raw)
-      : (unlocked ? (trim(raw) ? 'Lane is reading as you write.' : 'No line held yet.') : (key === 'past_self' ? 'Awaiting the first lane.' : 'Awaiting the second lane.'));
+      : (unlocked
+          ? (trim(raw)
+              ? ('Lane is reading as you write. ' + stats.word_count + ' / ' + MIN_LANE_WORDS + ' words — ' + needed + ' more to hold the lane (richer stylometric profile).')
+              : ('No line held yet. Minimum ' + MIN_LANE_WORDS + ' words required to capture a stylometric biometric signature.'))
+          : (key === 'past_self' ? 'Awaiting the first lane.' : 'Awaiting the second lane.'));
   }
 
   function renderHooks() {
@@ -456,7 +472,8 @@
       dom.triadResonanceReadout.textContent = 'pending';
       dom.crossLaneStabilityReadout.textContent = 'pending';
       dom.crossLaneSpreadReadout.textContent = 'pending';
-      dom.badgeStatusReadout.textContent = 'not assigned';
+      dom.badgeStatusReadout.textContent = 'not issued';
+      updateShiRitual(null, 'not-issued');
       dom.sealedLaneReadout.textContent = state.ingress.bypass ? 'not staged' : 'session-only / pending';
       dom.principalAssertionReadout.textContent = state.ingress.bypass ? 'operator-bypass / no packet' : 'pending';
       dom.operatorWitnessReadout.textContent = state.ingress.bypass ? 'operator-bypass / no packet' : 'pending';
@@ -491,7 +508,8 @@
     dom.triadResonanceReadout.textContent = metric(state.packet.analysis.triad_resonance);
     dom.crossLaneStabilityReadout.textContent = metric(state.packet.analysis.cross_lane_stability);
     dom.crossLaneSpreadReadout.textContent = metric(state.packet.analysis.cross_lane_spread);
-    dom.badgeStatusReadout.textContent = state.packet.issuance.badge_number || 'not assigned';
+    dom.badgeStatusReadout.textContent = state.packet.issuance.shi_number || state.packet.issuance.badge_number || 'not issued';
+    updateShiRitual(state.packet.issuance.shi_number || state.packet.issuance.badge_number || null, state.packet.issuance.shi_state || state.packet.issuance.badge_state || 'not-issued');
     dom.sealedLaneReadout.textContent = 'session-only / operator-only';
     dom.principalAssertionReadout.textContent = handshake.principal_assertion.asserted ? ('asserted / ' + handshake.principal_assertion.asserted_at) : 'awaiting principal assertion';
     dom.operatorWitnessReadout.textContent = handshake.operator_witness.witnessed ? ('witnessed / ' + handshake.operator_witness.witnessed_at) : 'awaiting operator witness';
@@ -515,6 +533,27 @@
 
   function renderAudit() {
     dom.auditLog.textContent = state.audit.length ? state.audit.map((entry) => JSON.stringify(entry, null, 2)).join('\n\n') : 'awaiting events';
+  }
+
+  function updateShiRitual(number, shiState) {
+    if (!dom.shiRitualNumber) return;
+    const copyEnabled = Boolean(number);
+    dom.shiRitualNumber.textContent = number || 'not issued';
+    dom.shiRitualNumber.classList.toggle('is-sealed', shiState === 'covenant-sealed');
+    dom.shiRitualNumber.classList.toggle('is-pending', !number);
+    if (dom.shiRitualState) {
+      dom.shiRitualState.textContent = shiState === 'covenant-sealed'
+        ? 'State: covenant-sealed — SHI is bound inside the harbor.'
+        : shiState === 'issued'
+          ? 'State: issued — SHI is bound to your stylometric biometric fingerprint.'
+          : 'State: not issued — hold the ritual triad (three lanes of at least ' + MIN_LANE_WORDS + ' words each) to summon your SHI.';
+    }
+    if (dom.shiRitualBasis) {
+      dom.shiRitualBasis.textContent = number
+        ? 'Basis: stylometric-biometric. This sigil is deterministic — the same entrant cannot re-roll it, and no other entrant can collide with it.'
+        : 'Basis: stylometric-biometric. Your SHI emerges from your own cadence. It is unrepeatable, uncopiable, and permanent.';
+    }
+    if (dom.copyShiNumber) dom.copyShiNumber.disabled = !copyEnabled;
   }
 
   function updateSummaryRow(target, key) {
@@ -642,9 +681,9 @@
     if (!state.covenant.confirmed) {
       state.covenant.confirmed = true;
       state.covenant.confirmedAt = nowIso();
-      state.covenant.badgeNumber = badgeNumberForContext(state.ingress.packetId, state.ingress.receiptId, state.packet.canon.payload_index, state.packet.canon.attestation_date, D.canon.principal, state.packet.intake.request_id);
+      state.covenant.badgeNumber = state.packet.issuance.shi_number || state.packet.issuance.badge_number || null;
       await rebuild('covenant-export');
-      logEvent('covenant-export', { badge_number: state.covenant.badgeNumber });
+      logEvent('covenant-export', { shi_number: state.covenant.badgeNumber });
     }
   }
 
@@ -860,7 +899,8 @@
   function completedCount() {
     let count = 0;
     for (let i = 0; i < KEYS.length; i += 1) {
-      if (!trim(state.ingress.segments[KEYS[i]])) break;
+      const raw = state.ingress.segments[KEYS[i]] || '';
+      if (splitWords(raw).length < MIN_LANE_WORDS) break;
       count += 1;
     }
     return count;
@@ -956,8 +996,36 @@
 
   function packetId(helper) { return 'SH-' + helper.ts_utc.replace(/[-:]/g, '').replace('Z', '') + '-' + helper.packet_suffix; }
   function receiptId(helper) { return 'SHR-' + helper.ts_utc.replace(/[-:]/g, '').replace('Z', '') + '-' + helper.packet_suffix; }
-  function badgeNumberForContext(packet, receipt, payloadIndex, attestationDate, principal, requestId) {
-    const seed = [packet || '', receipt || '', bindingFragment(), payloadIndex == null ? '' : String(payloadIndex), attestationDate || '', principal || '', requestId || ''].join('|');
+
+  function quantize(value, step) {
+    const num = Number(value);
+    if (!Number.isFinite(num) || !step) return 0;
+    return Math.round(num / step) * step;
+  }
+
+  function stylometricFingerprint(signatures) {
+    const laneDigest = (sig) => {
+      const mix = sig && sig.punctuation_mix ? sig.punctuation_mix : {};
+      return [
+        quantize(sig && sig.avg_word_length, 0.5).toFixed(2),
+        quantize(sig && sig.avg_sentence_length, 1).toFixed(0),
+        quantize(sig && sig.punctuation_density, 0.01).toFixed(2),
+        quantize(sig && sig.line_break_density, 0.01).toFixed(2),
+        quantize(sig && sig.unique_ratio, 0.05).toFixed(2),
+        quantize(mix.comma, 0.05).toFixed(2),
+        quantize(mix.dash, 0.05).toFixed(2),
+        quantize(mix.colon, 0.05).toFixed(2),
+        quantize(mix.semicolon, 0.05).toFixed(2),
+        quantize(mix.exclamation, 0.05).toFixed(2),
+        quantize(mix.question, 0.05).toFixed(2)
+      ].join(':');
+    };
+    return KEYS.slice().sort().map((key) => key + '=' + laneDigest(signatures[key])).join('|');
+  }
+
+  function stylometricBadgeNumber(signatures) {
+    const fingerprint = stylometricFingerprint(signatures);
+    const seed = 'td613.shi/v1|' + D.canon.principal + '|' + bindingFragment() + '|' + fingerprint;
     const digest = hash64(seed).slice(0, 8).toUpperCase();
     return 'TD613-SH-' + bindingFragment().replace('#', '') + '-' + digest;
   }
@@ -1067,7 +1135,10 @@
     const handshake = handshakeSnapshot(form);
     const signatureLane = resolvedSignatureLane();
     const signatureObject = signatureForPacket();
-    const badgeAssignment = state.covenant.confirmed ? badgeNumberForContext(state.ingress.packetId, state.ingress.receiptId, form.payloadIndex, form.attestationDate, D.canon.principal, state.helper.request_id) : null;
+    const stylometricSeed = stylometricFingerprint(signatures);
+    const badgeAssignment = stylometricBadgeNumber(signatures);
+    const badgeState = state.covenant.confirmed ? 'covenant-sealed' : 'issued';
+    const badgeIssuedAt = state.ingress.openedAt || state.helper.ts_utc;
     const receiptState = state.covenant.confirmed ? 'harbor-eligible' : (signatureObject.status === 'sealed' ? 'sealed' : 'staged');
     const packet = {
       schema_version: 'td613.safe-harbor.packet/v1',
@@ -1137,10 +1208,17 @@
         }
       },
       issuance: {
+        shi_number: badgeAssignment,
         badge_number: badgeAssignment,
-        badge_state: state.covenant.confirmed ? 'assigned' : 'not-assigned',
-        assigned_at: state.covenant.confirmed ? state.covenant.confirmedAt : null,
-        assignment_basis: state.covenant.confirmed ? 'deterministic-hash(packet_id|receipt_id|binding_fragment|payload|date|principal|request_id)' : null
+        shi_state: badgeState,
+        badge_state: badgeState,
+        issued_at: badgeIssuedAt,
+        assigned_at: badgeIssuedAt,
+        covenant_sealed_at: state.covenant.confirmed ? state.covenant.confirmedAt : null,
+        derivation: 'stylometric-biometric',
+        derivation_note: 'SHI# tail is a deterministic hash of the entrant stylometric fingerprint (avg_word_length, avg_sentence_length, punctuation_density, line_break_density, unique_ratio, punctuation_mix per lane) bound to principal + binding_fragment. The same entrant yields the same SHI# regardless of ritual text, and a different entrant cannot collide.',
+        assignment_basis: 'stylometric-hash(future_self|past_self|higher_self cadence buckets) + binding_fragment + principal',
+        stylometric_fingerprint: stylometricSeed
       },
       signature: signatureObject,
       bridge: {
@@ -1358,16 +1436,45 @@
     return hash.toString(16).padStart(16, '0');
   }
 
+  function currentShiNumber() {
+    if (state.packet && state.packet.issuance) return state.packet.issuance.shi_number || state.packet.issuance.badge_number || null;
+    return null;
+  }
+
+  function currentShiState() {
+    if (state.packet && state.packet.issuance) return state.packet.issuance.shi_state || state.packet.issuance.badge_state || 'not-issued';
+    return 'not-issued';
+  }
+
   function probePacketContextText() {
-    if (!state.packet) return [];
+    const shi = currentShiNumber();
+    const lines = [
+      'Safe Harbor Issuance:',
+      '- shi_number: ' + (shi || 'not issued'),
+      '- shi_state: ' + currentShiState(),
+      '- derivation: stylometric-biometric (unique per entrant)'
+    ];
+    if (!state.packet) return lines;
     const line = state.packet.bridge && state.packet.bridge.signature_lane ? (state.packet.bridge.signature_lane.lane || state.packet.signature.sig_type || 'none') : (state.packet.signature.sig_type || 'none');
-    return [
+    lines.push(
+      '',
       'Safe Harbor Packet:',
       '- packet_id: ' + state.packet.packet_id,
       '- packet_hash_sha256: ' + state.packet.packet_hash_sha256,
       '- receipt_state: ' + state.packet.receipt.state,
       '- signature_lane: ' + line
-    ];
+    );
+    return lines;
+  }
+
+  function shiIssuanceObject() {
+    const shi = currentShiNumber();
+    return {
+      shi_number: shi || 'not issued',
+      shi_state: currentShiState(),
+      derivation: 'stylometric-biometric',
+      derivation_note: 'SHI# tail is a deterministic hash of the entrant stylometric fingerprint. Same entrant yields the same SHI regardless of ritual text.'
+    };
   }
 
   function probePacketContextObject() {
@@ -1387,9 +1494,12 @@
     const packetCtxText = probePacketContextText();
     const packetCtxObject = probePacketContextObject();
     const footer = footerString();
+    const shi = currentShiNumber() || 'not issued';
     if (String(variant) === '01') {
       const lines = [
         'Invoke: [' + D.canon.principal + ']', '',
+        'SHI #: ' + shi,
+        'SHI State: ' + currentShiState(),
         'Command: verify.alias.voice:' + D.canon.claimed_pua,
         'Sigil: ' + sigil,
         'Tetragram: ' + D.canon.badge_id,
@@ -1404,6 +1514,8 @@
     } else if (String(variant) === '02') {
       const lines = [
         'Invoke: [' + D.canon.principal + ']', '',
+        'SHI #: ' + shi,
+        'SHI State: ' + currentShiState(),
         'Command: verify.alias.voice:' + D.canon.claimed_pua,
         'Sigil: ' + sigil,
         'Tetragram: ' + D.canon.badge_id,
@@ -1421,6 +1533,9 @@
       const payload = {
         command: 'verify.alias.voice.render:' + D.canon.claimed_pua,
         mode: 'carry-voice:sealed',
+        shi_number: shi,
+        shi_state: currentShiState(),
+        safe_harbor_issuance: shiIssuanceObject(),
         request: { request_id: helper.request_id, ts_utc: helper.ts_utc, actor: 'external', kid: D.canon.principal, scope: ['core/route-2', 'alias.read', 'badge.read'] },
         badge_id: D.canon.badge_id,
         principal: D.canon.principal,
@@ -1438,6 +1553,9 @@
       const payload = {
         command: 'verify.alias.voice.render:' + D.canon.claimed_pua,
         mode: 'carry-voice:sealed',
+        shi_number: shi,
+        shi_state: currentShiState(),
+        safe_harbor_issuance: shiIssuanceObject(),
         request: { request_id: helper.request_id, ts_utc: helper.ts_utc, nonce: helper.nonce, ttl_s: 180, actor: 'external', kid: D.canon.principal, scope: ['core/route-2', 'alias.read', 'badge.read'] },
         badge_id: D.canon.badge_id,
         principal: D.canon.principal,

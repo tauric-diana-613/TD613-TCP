@@ -436,17 +436,40 @@
         "assignment_basis"
       ],
       "properties": {
+        "shi_number": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "badge_number": {
           "type": [
             "string",
             "null"
           ]
         },
+        "shi_state": {
+          "type": "string",
+          "enum": [
+            "not-issued",
+            "issued",
+            "covenant-sealed"
+          ]
+        },
         "badge_state": {
           "type": "string",
           "enum": [
+            "not-issued",
+            "issued",
+            "covenant-sealed",
             "not-assigned",
             "assigned"
+          ]
+        },
+        "issued_at": {
+          "type": [
+            "string",
+            "null"
           ]
         },
         "assigned_at": {
@@ -455,7 +478,31 @@
             "null"
           ]
         },
+        "covenant_sealed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "derivation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "derivation_note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "assignment_basis": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stylometric_fingerprint": {
           "type": [
             "string",
             "null"
