@@ -1603,6 +1603,7 @@ function reviewTD613ApertureTransfer({
   shellSource = '',
   retrieval = false,
   semanticRisk = 0,
+  semanticLockIntact = false,
   visibleShift = false,
   nonTrivialShift = false,
   protectedAnchorIntegrity = 1,
@@ -1614,26 +1615,29 @@ function reviewTD613ApertureTransfer({
   const applied = Boolean(shellMode === 'borrowed' || retrieval || shellSource === 'swapped');
   const introducedEnforcementTerms = detectIntroducedTerms(sourceText, outputText);
   const namingIntrusion = detectNamingIntrusion(sourceText, outputText);
-  const semanticCoverageRisk = round3(clamp01(
+  const semanticCoverageRiskRaw = round3(clamp01(
     ((1 - clamp01(propositionCoverage)) * 0.32) +
     ((1 - clamp01(actorCoverage)) * 0.18) +
     ((1 - clamp01(actionCoverage)) * 0.18) +
     ((1 - clamp01(objectCoverage)) * 0.12)
   ));
+  const semanticCoverageRisk = semanticLockIntact ? 0 : semanticCoverageRiskRaw;
+  const surfaceClose = !visibleShift || !nonTrivialShift;
+  const surfaceCloseWarning = semanticLockIntact ? false : surfaceClose;
   const recaptureRisk = round3(clamp01(
     (clamp01(semanticRisk) * 0.45) +
     ((1 - clamp01(protectedAnchorIntegrity)) * 0.24) +
     (semanticCoverageRisk * 0.18) +
     (introducedEnforcementTerms.length ? 0.20 : 0) +
     (namingIntrusion ? 0.22 : 0) +
-    ((!visibleShift || !nonTrivialShift) ? 0.08 : 0)
+    (surfaceCloseWarning ? 0.08 : 0)
   ));
   const warningSignals = uniqueStrings([
     introducedEnforcementTerms.length ? 'enforcement-framing' : null,
     namingIntrusion ? 'naming-intrusion' : null,
     protectedAnchorIntegrity < 1 ? 'anchor-drift-detected' : null,
     semanticCoverageRisk >= 0.18 ? 'semantic-compression' : null,
-    (!visibleShift || !nonTrivialShift) ? 'surface-close' : null,
+    surfaceCloseWarning ? 'surface-close' : null,
     applied ? 'counter-recognition-pressure' : null
   ]);
   const blocked = false;
@@ -1652,9 +1656,9 @@ function reviewTD613ApertureTransfer({
   const candidateSuppression = round3(clamp01(
     (applied ? 0.12 : 0.02) +
     (semanticCoverageRisk * 0.42) +
-    ((!visibleShift || !nonTrivialShift) ? 0.18 : 0)
+    (surfaceCloseWarning ? 0.18 : 0)
   ));
-  const observabilityDeficit = round3(clamp01(
+  const observabilityDeficit = semanticLockIntact ? 0 : round3(clamp01(
     (semanticCoverageRisk * 0.48) +
     (!visibleShift ? 0.14 : 0) +
     (!nonTrivialShift ? 0.14 : 0)
@@ -1667,14 +1671,14 @@ function reviewTD613ApertureTransfer({
     (namingIntrusion ? 0.82 : 0) +
     (applied ? 0.08 : 0)
   ));
-  const redundancyInflation = round3(clamp01(
+  const redundancyInflation = semanticLockIntact ? 0 : round3(clamp01(
     (!nonTrivialShift ? 0.24 : 0.08) +
     (!visibleShift ? 0.18 : 0) +
     (semanticCoverageRisk * 0.28)
   ));
-  const capacityPressure = round3(clamp01(
+  const capacityPressure = semanticLockIntact ? 0 : round3(clamp01(
     (semanticCoverageRisk * 0.58) +
-    ((!visibleShift || !nonTrivialShift) ? 0.18 : 0)
+    (surfaceCloseWarning ? 0.18 : 0)
   ));
   const policyPressure = round3(clamp01(
     (introducedEnforcementTerms.length ? 0.42 : 0) +
@@ -1704,6 +1708,8 @@ function reviewTD613ApertureTransfer({
     counterRecognitionRequired: applied,
     applied,
     blocked,
+    semanticLockIntact,
+    semanticCoverageRisk,
     recaptureRisk,
     introducedEnforcementTerms,
     namingIntrusion,
@@ -5088,15 +5094,90 @@ function detectTenseAspect(text = '') {
   return 'present';
 }
 
+const AUXILIARY_ACTION_PATTERN = /\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|cannot|could|may|might|must|i'm|im|you're|youre|we're|they're|he's|she's|it's|that's|there's|i've|ive|you've|we've|they've|i'll|ill|you'll|we'll|they'll|he'll|she'll|it'll|i'd|id|you'd|we'd|they'd|he'd|she'd|it'd|don't|dont|doesn't|doesnt|didn't|didnt|can't|cant|won't|wont|isn't|isnt|aren't|arent|wasn't|wasnt|weren't|werent|shouldn't|shouldnt|wouldn't|wouldnt|couldn't|couldnt|mustn't|mustnt|haven't|havent|hasn't|hasnt|hadn't|hadnt)\b/i;
+
+const AUXILIARY_ACTION_EQUIVALENTS = Object.freeze({
+  "i'm": 'am',
+  im: 'am',
+  "you're": 'are',
+  youre: 'are',
+  "we're": 'are',
+  "they're": 'are',
+  "he's": 'is',
+  "she's": 'is',
+  "it's": 'is',
+  "that's": 'is',
+  "there's": 'is',
+  "i've": 'have',
+  ive: 'have',
+  "you've": 'have',
+  "we've": 'have',
+  "they've": 'have',
+  "i'll": 'will',
+  ill: 'will',
+  "you'll": 'will',
+  "we'll": 'will',
+  "they'll": 'will',
+  "he'll": 'will',
+  "she'll": 'will',
+  "it'll": 'will',
+  "i'd": 'would',
+  id: 'would',
+  "you'd": 'would',
+  "we'd": 'would',
+  "they'd": 'would',
+  "he'd": 'would',
+  "she'd": 'would',
+  "it'd": 'would',
+  "don't": 'do',
+  dont: 'do',
+  "doesn't": 'does',
+  doesnt: 'does',
+  "didn't": 'did',
+  didnt: 'did',
+  "can't": 'cannot',
+  cant: 'cannot',
+  cannot: 'cannot',
+  "won't": 'will',
+  wont: 'will',
+  "isn't": 'is',
+  isnt: 'is',
+  "aren't": 'are',
+  arent: 'are',
+  "wasn't": 'was',
+  wasnt: 'was',
+  "weren't": 'were',
+  werent: 'were',
+  "shouldn't": 'should',
+  shouldnt: 'should',
+  "wouldn't": 'would',
+  wouldnt: 'would',
+  "couldn't": 'could',
+  couldnt: 'could',
+  "mustn't": 'must',
+  mustnt: 'must',
+  "haven't": 'have',
+  havent: 'have',
+  "hasn't": 'has',
+  hasnt: 'has',
+  "hadn't": 'had',
+  hadnt: 'had'
+});
+
 function extractClauseSemanticScaffold(text = '') {
   const tokens = tokenize(text);
   const actorMatch = normalizeText(text).match(/\b(?:I|we|you|they|he|she|it|there|this|that|the\s+\w+|a\s+\w+|an\s+\w+)\b/i);
   const actor = actorMatch ? actorMatch[0] : '';
   const lexicalActionMatch = normalizeText(text).match(/\b(?:go|goes|went|get|gets|got|keep|keeps|kept|leave|leaves|left|remember|remembers|remembered|wait|waits|waited|pause|pauses|paused|grab|grabs|grabbed|bring|brings|brought|use|uses|used|pull|pulls|pulled|call|calls|called|contact|contacts|contacted|knock|knocks|knocked|lean|leans|leaned|change|changes|changed|say|says|said|tell|tells|told|ask|asks|asked|request|requests|requested|need|needs|needed|require|requires|required|show|shows|showed|check|checks|checked|review|reviews|reviewed|verify|verifies|verified|confirm|confirms|confirmed|shift|shifts|shifted|begin|begins|began|finish|finishes|finished|wrap|wraps|wrapped|conclude|concludes|concluded|come|comes|came|catch|catches|caught|deploy|deploys|deployed|head|heads|headed|circle|circles|circled|stall|stalls|stalled|provide|provides|provided|issue|issues|issued|find|finds|found|locate|locates|located|identify|identifies|identified|book|books|booked|schedule|schedules|scheduled|send|sends|sent|forward|forwards|forwarded|transmit|transmits|transmitted|fix|fixes|fixed|resolve|resolves|resolved|move|moves|moved|relocate|relocates|relocated|transfer|transfers|transferred|match|matches|matched|align|aligns|aligned|log|logs|logged|flag|flags|flagged|release|releases|released)\b/i);
-  const auxiliaryActionMatch = normalizeText(text).match(/\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|could|may|might|must)\b/i);
+  const auxiliaryActionMatch = normalizeText(text).match(AUXILIARY_ACTION_PATTERN);
+  const rawAction = lexicalActionMatch
+    ? lexicalActionMatch[0]
+    : (auxiliaryActionMatch ? auxiliaryActionMatch[0] : '');
   const actionMatch = lexicalActionMatch || auxiliaryActionMatch;
-  const action = actionMatch ? actionMatch[0] : '';
-  const actionIndex = actionMatch ? Math.max(0, tokens.indexOf(action.toLowerCase())) : -1;
+  const action = lexicalActionMatch
+    ? lexicalActionMatch[0]
+    : (AUXILIARY_ACTION_EQUIVALENTS[String(rawAction || '').toLowerCase()] || rawAction);
+  const actionIndex = actionMatch ? Math.max(0, tokens.indexOf(String(rawAction || '').toLowerCase())) : -1;
   const object = actionIndex >= 0
     ? tokens
       .slice(actionIndex + 1)
@@ -9650,7 +9731,77 @@ const PRONOUN_ROLE_CLASSES = Object.freeze({
   that: 'deictic'
 });
 
+const SEMANTIC_CONTRACTION_EQUIVALENTS = Object.freeze({
+  "don't": 'donot',
+  dont: 'donot',
+  "doesn't": 'doesnot',
+  doesnt: 'doesnot',
+  "didn't": 'didnot',
+  didnt: 'didnot',
+  "can't": 'cannot',
+  cant: 'cannot',
+  cannot: 'cannot',
+  "won't": 'willnot',
+  wont: 'willnot',
+  "isn't": 'isnot',
+  isnt: 'isnot',
+  "aren't": 'arenot',
+  arent: 'arenot',
+  "wasn't": 'wasnot',
+  wasnt: 'wasnot',
+  "weren't": 'werenot',
+  werent: 'werenot',
+  "shouldn't": 'shouldnot',
+  shouldnt: 'shouldnot',
+  "wouldn't": 'wouldnot',
+  wouldnt: 'wouldnot',
+  "couldn't": 'couldnot',
+  couldnt: 'couldnot',
+  "mustn't": 'mustnot',
+  mustnt: 'mustnot',
+  "haven't": 'havenot',
+  havent: 'havenot',
+  "hasn't": 'hasnot',
+  hasnt: 'hasnot',
+  "hadn't": 'hadnot',
+  hadnt: 'hadnot',
+  "i'm": 'iam',
+  im: 'iam',
+  "i've": 'ihave',
+  ive: 'ihave',
+  "i'll": 'iwill',
+  ill: 'iwill',
+  "i'd": 'iwould',
+  id: 'iwould',
+  "you're": 'youare',
+  youre: 'youare',
+  "you've": 'youhave',
+  youve: 'youhave',
+  "you'll": 'youwill',
+  youll: 'youwill',
+  "you'd": 'youwould',
+  youd: 'youwould',
+  "we're": 'weare',
+  "we've": 'wehave',
+  "we'll": 'wewill',
+  "we'd": 'wewould',
+  "they're": 'theyare',
+  theyre: 'theyare',
+  "they've": 'theyhave',
+  theyve: 'theyhave',
+  "they'll": 'theywill',
+  theyll: 'theywill',
+  "they'd": 'theywould',
+  theyd: 'theywould',
+  "he's": 'heis',
+  "she's": 'sheis',
+  "it's": 'itis',
+  "that's": 'thatis',
+  "there's": 'thereis'
+});
+
 const SEMANTIC_EQUIVALENT_FORMS = Object.freeze({
+  ...SEMANTIC_CONTRACTION_EQUIVALENTS,
   headed: 'leave',
   head: 'leave',
   departure: 'leave',
@@ -11501,6 +11652,7 @@ function buildToolabilityAudit({
   changedDimensions = [],
   lexemeSwaps = [],
   artifactAudit = {},
+  semanticLockIntact = false,
   personaSeparationAudit = {},
   distinctnessBonus = 0,
   outputProfile = {},
@@ -11510,13 +11662,22 @@ function buildToolabilityAudit({
   const structuralMovement = substantiveDimensionCount(changedDimensions);
   const lexicalMovement = Number((lexemeSwaps || []).length || 0);
   const punctuationDriftOnly = punctuationOnlyDrift(changedDimensions, lexemeSwaps);
-  const overBraidingPenalty = Math.min(0.24, Number(artifactAudit.overBraidingCount || 0) * 0.06);
-  const clauseDragPenalty = Math.min(0.16, Number(artifactAudit.clauseDragCount || 0) * 0.05);
+  const effectiveArtifactPenalty = semanticLockIntact
+    ? 0
+    : Number((artifactAudit.effectivePenalty ?? artifactAudit.penalty) || 0);
+  const overBraidingPenalty = semanticLockIntact
+    ? 0
+    : Math.min(0.24, Number(artifactAudit.overBraidingCount || 0) * 0.06);
+  const clauseDragPenalty = semanticLockIntact
+    ? 0
+    : Math.min(0.16, Number(artifactAudit.clauseDragCount || 0) * 0.05);
+  const clauseJoinPenalty = semanticLockIntact ? 0 : Number(artifactAudit.clauseJoinCount || 0) * 0.06;
+  const fragmentPenalty = semanticLockIntact ? 0 : Number(artifactAudit.fragmentCount || 0) * 0.05;
   const sentenceIntegrity = round(clamp01(
     1 -
-    (Number(artifactAudit.penalty || 0) * 1.08) -
-    (Number(artifactAudit.clauseJoinCount || 0) * 0.06) -
-    (Number(artifactAudit.fragmentCount || 0) * 0.05) -
+    (effectiveArtifactPenalty * 1.08) -
+    clauseJoinPenalty -
+    fragmentPenalty -
     (pathologies.severe ? 0.5 : 0)
   ), 4);
   const readability = round(clamp01(
@@ -11524,7 +11685,7 @@ function buildToolabilityAudit({
     (transferClass === 'structural' ? 0.08 : transferClass === 'surface' ? -0.08 : 0) +
     (structuralMovement >= 1 ? 0.08 : 0) +
     (Number(outputProfile.avgSentenceLength || 0) >= 4 && Number(outputProfile.avgSentenceLength || 0) <= 30 ? 0.06 : 0) -
-    Number(artifactAudit.penalty || 0) -
+    effectiveArtifactPenalty -
     overBraidingPenalty -
     clauseDragPenalty
   ), 4);
@@ -11540,7 +11701,7 @@ function buildToolabilityAudit({
     (Number(distinctnessBonus || 0) * 0.6)
   ), 4);
   const artifactPenalty = round(clamp01(
-    Number(artifactAudit.penalty || 0) +
+    effectiveArtifactPenalty +
     overBraidingPenalty +
     clauseDragPenalty
   ), 4);
@@ -11566,6 +11727,7 @@ function buildToolabilityAudit({
     sentenceIntegrity,
     movementQuality,
     artifactPenalty,
+    semanticLockIntact,
     toolabilityScore,
     warnings: Object.freeze(warnings)
   });
@@ -13076,6 +13238,24 @@ function semanticAuditBounded(semanticAudit = {}) {
   return polarityBounded && tenseBounded;
 }
 
+function semanticLockSatisfied(semanticAudit = {}, floors = {}, sourceClass = 'formal-correspondence') {
+  const strictCustodySemantics = sourceClass === 'procedural-record';
+  const propositionCoverage = Number(semanticAudit?.propositionCoverage ?? 1);
+  const actorCoverage = Number(semanticAudit?.actorCoverage ?? 1);
+  const actionCoverage = Number(semanticAudit?.actionCoverage ?? 1);
+  const objectCoverage = Number(semanticAudit?.objectCoverage ?? 1);
+  const polarityMismatches = Number(semanticAudit?.polarityMismatches ?? 0);
+
+  return (
+    propositionCoverage >= Number(floors?.proposition ?? 1) &&
+    actorCoverage >= Number(floors?.actor ?? 1) &&
+    actionCoverage >= Number(floors?.action ?? 1) &&
+    objectCoverage >= Number(floors?.object ?? 1) &&
+    (strictCustodySemantics ? polarityMismatches === 0 : polarityMismatches <= 1) &&
+    semanticAuditBounded(semanticAudit)
+  );
+}
+
 function computeCandidateTransferClass(candidate = {}) {
   if (candidate.classification?.outcome === 'surface-held') {
     return 'surface';
@@ -13259,6 +13439,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
       sentenceIntegrity: 1,
       movementQuality: 0,
       artifactPenalty: 0,
+      semanticLockIntact: true,
       toolabilityScore: 0.5,
       warnings: Object.freeze([])
     }),
@@ -13271,6 +13452,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
       markers: Object.freeze([])
     }),
     toolabilityWarnings: Object.freeze([]),
+    semanticLockIntact: true,
     visibleShift: false,
     nonTrivialShift: false,
     semanticAudit: auditBundle.semanticAudit,
@@ -13430,6 +13612,9 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     substantiveDimensionCount(changedDimensions) > 0 ||
     authored.lexemeSwaps.length > 0 ||
     normalizeMovementComparable(sourceText) !== normalizeMovementComparable(outputText);
+  const targetProfile = variant.shell.profile || null;
+  const floors = classSemanticFloor(sourceClass, sourceProfile, targetProfile);
+  const semanticLockIntact = semanticLockSatisfied(semanticAudit, floors, sourceClass);
   const semanticRisk = buildSemanticRisk(semanticAudit, protectedAnchorAudit.protectedAnchorIntegrity ?? 1);
   const apertureReview = reviewTD613ApertureTransfer({
     sourceText,
@@ -13438,6 +13623,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     shellSource: variant.shell?.source || '',
     retrieval: true,
     semanticRisk,
+    semanticLockIntact,
     visibleShift,
     nonTrivialShift,
     protectedAnchorIntegrity: Number(protectedAnchorAudit.protectedAnchorIntegrity ?? 1),
@@ -13473,12 +13659,10 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     targetProfile: variant.shell?.profile || null,
     sourceProfile
   });
-  const targetProfile = variant.shell.profile || null;
   const targetFit = computeTargetFit(outputProfile, targetProfile);
   const donorProgress = variant.shell?.mode === 'borrowed'
     ? buildBorrowedShellDonorProgress(sourceText, outputText, sourceProfile, targetProfile || {}, outputProfile)
     : {};
-  const floors = classSemanticFloor(sourceClass, sourceProfile, targetProfile);
   const hardIntegrityScore = hardAnchorIntegrity(sourceText, outputText);
   const protectedAnchorIntegrity = Number(protectedAnchorAudit.protectedAnchorIntegrity ?? 1);
   const polarityMismatches = Number(semanticAudit.polarityMismatches ?? 0);
@@ -13535,7 +13719,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     (Number(witnessAudit.softWitnessIntegrity ?? 1) * 0.08) +
     familyBonus +
     distinctnessBonus -
-    artifactAudit.penalty +
+    (semanticLockIntact ? 0 : artifactAudit.penalty) +
     (visibleShift ? 0.04 : 0) -
       polarityPenalty -
       tensePenalty -
@@ -13558,6 +13742,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     changedDimensions,
     lexemeSwaps: authored.lexemeSwaps,
     artifactAudit,
+    semanticLockIntact,
     personaSeparationAudit,
     distinctnessBonus,
     outputProfile,
@@ -13600,7 +13785,11 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     apertureReview,
     classification,
     pathologies,
-    artifactAudit,
+    artifactAudit: Object.freeze({
+      ...artifactAudit,
+      semanticLockIntact,
+      effectivePenalty: semanticLockIntact ? 0 : Number(artifactAudit.penalty || 0)
+    }),
     visibleShift,
     nonTrivialShift,
     rewriteStrength,
@@ -13613,6 +13802,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     contractionStrategy: authored.contractionStrategy,
     semanticRisk,
     semanticBounded: semanticsBounded,
+    semanticLockIntact,
     donorProgress,
     score,
     toolabilityAudit,
@@ -13928,6 +14118,7 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
           : 'partial',
     borrowedShellFailureClass: null,
     toolabilityAudit: chosen.toolabilityAudit,
+    semanticLockIntact: Boolean(chosen.semanticLockIntact),
     personaSeparationAudit: chosen.personaSeparationAudit,
     toolabilityWarnings: Object.freeze([...(chosen.toolabilityWarnings || [])]),
     apertureAudit,
@@ -14042,6 +14233,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
       sentenceIntegrity: 0,
       movementQuality: 0,
       artifactPenalty: 1,
+      semanticLockIntact: false,
       toolabilityScore: 0,
       warnings: Object.freeze([holdClass])
     }),
@@ -14054,6 +14246,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
       markers: Object.freeze([])
     }),
     toolabilityWarnings: Object.freeze([...(bestCandidate?.toolabilityWarnings || [holdClass])]),
+    semanticLockIntact: Boolean(bestCandidate?.semanticLockIntact),
     visibleShift: false,
     nonTrivialShift: false,
     semanticAudit: bestCandidate?.semanticAudit || {

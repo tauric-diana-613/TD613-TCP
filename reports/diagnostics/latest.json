@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T03:12:37.889Z",
+  "generatedAt": "2026-04-18T17:04:32.089Z",
   "summary": {
     "corpusVersion": "wild-corpus-v1",
     "familyCount": 18,
@@ -7,33 +7,25 @@
     "promotedDeckCount": 24,
     "totalCases": 270,
     "failureBucketCounts": {
-      "semantic_drift": 59,
-      "one_sided_swap": 26,
-      "over_flattened_output": 35,
-      "register_miss": 60,
-      "sentence_span_miss": 41,
-      "surface_close_under_large_gap": 3,
-      "both_rejected_swap": 8,
-      "false_neighbor_convergence": 26,
+      "semantic_drift": 41,
+      "sentence_span_miss": 37,
+      "one_sided_swap": 24,
+      "over_flattened_output": 23,
+      "register_miss": 57,
+      "surface_close_under_large_gap": 2,
+      "false_neighbor_convergence": 36,
       "trainer_retrieval_fail": 33,
       "punctuation_only_shift": 0,
       "anchor_break": 0,
       "generator_hold": 0,
       "generator_unbounded_semantics": 0,
+      "both_rejected_swap": 0,
       "mask_near_home_hold": 0
     },
     "worstFamilies": [
       {
         "familyId": "customer-support",
-        "score": 33
-      },
-      {
-        "familyId": "tenant-leak",
-        "score": 30
-      },
-      {
-        "familyId": "building-access",
-        "score": 28
+        "score": 31
       },
       {
         "familyId": "clinic-scheduling",
@@ -41,15 +33,23 @@
       },
       {
         "familyId": "committee-budget",
-        "score": 21
+        "score": 20
       },
       {
-        "familyId": "mutual-aid",
-        "score": 21
+        "familyId": "tenant-leak",
+        "score": 18
       },
       {
         "familyId": "school-coordination",
         "score": 18
+      },
+      {
+        "familyId": "building-access",
+        "score": 16
+      },
+      {
+        "familyId": "mutual-aid",
+        "score": 16
       },
       {
         "familyId": "archive-grant",
@@ -57,19 +57,6 @@
       }
     ],
     "worstCases": [
-      {
-        "id": "tenant-leak-formal-to-rushed",
-        "familyId": "tenant-leak",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift",
-          "sentence_span_miss",
-          "surface_close_under_large_gap"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss, surface_close_under_large_gap."
-      },
       {
         "id": "clinic-scheduling-formal-to-rushed",
         "familyId": "clinic-scheduling",
@@ -97,30 +84,6 @@
         "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss, surface_close_under_large_gap."
       },
       {
-        "id": "building-access-to-museum-fog-alarm-false-neighbor",
-        "familyId": "building-access",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift",
-          "sentence_span_miss"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss."
-      },
-      {
-        "id": "building-access-to-museum-fog-alarm-false-neighbor",
-        "familyId": "building-access",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift",
-          "sentence_span_miss"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss."
-      },
-      {
         "id": "tenant-leak-to-package-handoff-false-neighbor",
         "familyId": "tenant-leak",
         "failureBuckets": [
@@ -132,17 +95,6 @@
         "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift."
       },
       {
-        "id": "mutual-aid-to-customer-support-false-neighbor",
-        "familyId": "mutual-aid",
-        "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift"
-        ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss, semantic_drift."
-      },
-      {
         "id": "tenant-leak-to-package-handoff-false-neighbor",
         "familyId": "tenant-leak",
         "failureBuckets": [
@@ -152,27 +104,6 @@
           "semantic_drift"
         ],
         "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift."
-      },
-      {
-        "id": "mutual-aid-to-customer-support-false-neighbor",
-        "familyId": "mutual-aid",
-        "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift"
-        ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss, semantic_drift."
-      },
-      {
-        "id": "tenant-leak-rushed-to-formal",
-        "familyId": "tenant-leak",
-        "failureBuckets": [
-          "one_sided_swap",
-          "semantic_drift",
-          "sentence_span_miss"
-        ],
-        "notes": "Buckets: one_sided_swap, semantic_drift, sentence_span_miss."
       },
       {
         "id": "customer-support-rushed-to-formal",
@@ -185,14 +116,74 @@
         "notes": "Buckets: one_sided_swap, semantic_drift, sentence_span_miss."
       },
       {
-        "id": "building-access-to-customer-support-false-neighbor",
-        "familyId": "building-access",
+        "id": "package-handoff-to-tenant-leak-false-neighbor",
+        "familyId": "package-handoff",
         "failureBuckets": [
-          "both_rejected_swap",
+          "false_neighbor_convergence",
+          "one_sided_swap",
+          "register_miss"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, one_sided_swap, register_miss."
+      },
+      {
+        "id": "customer-support-to-clinic-scheduling-false-neighbor",
+        "familyId": "customer-support",
+        "failureBuckets": [
+          "one_sided_swap",
           "over_flattened_output",
+          "register_miss"
+        ],
+        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+      },
+      {
+        "id": "performance-review-to-committee-budget-false-neighbor",
+        "familyId": "performance-review",
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "register_miss",
           "semantic_drift"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence, register_miss, semantic_drift."
+      },
+      {
+        "id": "mutual-aid-to-customer-support-false-neighbor",
+        "familyId": "mutual-aid",
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "one_sided_swap",
+          "register_miss"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, one_sided_swap, register_miss."
+      },
+      {
+        "id": "customer-support-to-mutual-aid-false-neighbor",
+        "familyId": "customer-support",
+        "failureBuckets": [
+          "one_sided_swap",
+          "over_flattened_output",
+          "register_miss"
+        ],
+        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
+      },
+      {
+        "id": "performance-review-to-overwork-debrief-false-neighbor",
+        "familyId": "performance-review",
+        "failureBuckets": [
+          "false_neighbor_convergence",
+          "register_miss",
+          "semantic_drift"
+        ],
+        "notes": "Buckets: false_neighbor_convergence, register_miss, semantic_drift."
+      },
+      {
+        "id": "building-access-to-customer-support-literal-risk",
+        "familyId": "building-access",
+        "failureBuckets": [
+          "over_flattened_output",
+          "register_miss",
+          "semantic_drift"
+        ],
+        "notes": "Buckets: over_flattened_output, register_miss, semantic_drift."
       }
     ],
     "generatorCaseCount": 52,
@@ -230,7 +221,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.979,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -291,7 +282,6 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
-          "sentence-spread",
           "register-mode",
           "abbreviation-posture",
           "lexical-register"
@@ -300,7 +290,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.052,
-          "output": 1.876,
+          "output": 1.924,
           "improved": true
         },
         "semanticAudit": {
@@ -309,11 +299,11 @@
           "actionCoverage": 1,
           "objectCoverage": 0.965,
           "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, register-mode, abbreviation-posture, lexical-register",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, register-mode, abbreviation-posture, lexical-register",
         "failureBuckets": [],
         "notes": "Formal incident prose from Package handoff / missed signature / hallway pickup should survive transfer pressure into its noisy sibling without losing literal anchors."
       },
@@ -419,7 +409,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.964,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
@@ -438,36 +428,34 @@
         "donorId": "tenant-leak-rushed-mobile",
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.21,
-          "output": 1.671,
+          "output": 1.845,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 0.96,
           "actionCoverage": 1,
-          "objectCoverage": 0.922,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.95,
+          "polarityMismatches": 0,
           "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
-        "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift",
-          "sentence_span_miss",
-          "surface_close_under_large_gap"
-        ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss, surface_close_under_large_gap."
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, orthography-posture, lexical-register",
+        "failureBuckets": [],
+        "notes": "Formal incident prose from Tenant leak / landlord follow-up / repair delay should survive transfer pressure into its noisy sibling without losing literal anchors."
       },
       {
         "id": "tenant-leak-rushed-to-formal",
@@ -496,18 +484,16 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.95,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "register-mode, abbreviation-posture, orthography-posture, lexical-register",
         "failureBuckets": [
-          "one_sided_swap",
-          "semantic_drift",
           "sentence_span_miss"
         ],
-        "notes": "Buckets: one_sided_swap, semantic_drift, sentence_span_miss."
+        "notes": "Buckets: sentence_span_miss."
       },
       {
         "id": "clinic-scheduling-formal-to-rushed",
@@ -575,7 +561,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.91,
+          "objectCoverage": 0.95,
           "polarityMismatches": 0,
           "tenseMismatches": 1
         },
@@ -688,7 +674,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.93,
+          "objectCoverage": 0.955,
           "polarityMismatches": 0,
           "tenseMismatches": 1
         },
@@ -747,6 +733,7 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "punctuation-shape",
           "abbreviation-posture",
           "lexical-register"
         ],
@@ -754,7 +741,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.741,
-          "output": 2.443,
+          "output": 2.492,
           "improved": true
         },
         "semanticAudit": {
@@ -767,7 +754,7 @@
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, abbreviation-posture, lexical-register",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, punctuation-shape, abbreviation-posture, lexical-register",
         "failureBuckets": [],
         "notes": "Formal incident prose from Overwork / apology / internal debrief should survive transfer pressure into its noisy sibling without losing literal anchors."
       },
@@ -895,29 +882,29 @@
         "mode": "swap-same-fact",
         "expectedPressure": "same-fact-high",
         "transferClass": "structural",
-        "realizationTier": "partial",
+        "realizationTier": "lexical-structural",
         "changedDimensions": [
-          "sentence-spread",
-          "punctuation-shape"
+          "sentence-mean",
+          "sentence-count"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.067,
-          "output": 2.114,
-          "improved": false
+          "output": 1.776,
+          "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.946,
+          "objectCoverage": 0.964,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-spread, punctuation-shape",
+        "changedDimensionsLabel": "sentence-mean, sentence-count",
         "failureBuckets": [
           "semantic_drift"
         ],
@@ -933,8 +920,8 @@
         "transferClass": "structural",
         "realizationTier": "lexical-structural",
         "changedDimensions": [
+          "sentence-mean",
           "sentence-count",
-          "sentence-spread",
           "punctuation-shape",
           "orthography-posture",
           "lexical-register"
@@ -943,24 +930,22 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.067,
-          "output": 1.867,
-          "improved": true
+          "output": 2.159,
+          "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.86,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-count, sentence-spread, punctuation-shape, orthography-posture, lexical-register",
-        "failureBuckets": [
-          "semantic_drift"
-        ],
-        "notes": "Buckets: semantic_drift."
+        "changedDimensionsLabel": "sentence-mean, sentence-count, punctuation-shape, orthography-posture, lexical-register",
+        "failureBuckets": [],
+        "notes": "Noisy sibling text from Performance / review / evaluative commentary should expand toward a cleaner shell without inventing new facts."
       },
       {
         "id": "customer-support-formal-to-rushed",
@@ -1250,7 +1235,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.958,
           "polarityMismatches": 1,
           "tenseMismatches": 1
         },
@@ -1274,14 +1259,17 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
-          "sentence-spread",
-          "orthography-posture"
+          "punctuation-shape",
+          "register-mode",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.269,
-          "output": 1.717,
+          "output": 1.97,
           "improved": true
         },
         "semanticAudit": {
@@ -1289,14 +1277,16 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.981,
-          "polarityMismatches": 0,
-          "tenseMismatches": 1
+          "polarityMismatches": 1,
+          "tenseMismatches": 2
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "bilateral-engaged",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, orthography-posture",
-        "failureBuckets": [],
-        "notes": "Formal incident prose from Municipal zoning / parking variance / worksheet mismatch should survive transfer pressure into its noisy sibling without losing literal anchors."
+        "changedDimensionsLabel": "sentence-mean, sentence-count, punctuation-shape, register-mode, abbreviation-posture, orthography-posture, lexical-register",
+        "failureBuckets": [
+          "semantic_drift"
+        ],
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "municipal-zoning-rushed-to-formal",
@@ -1363,7 +1353,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.932,
+          "objectCoverage": 0.955,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -1437,7 +1427,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.938,
+          "objectCoverage": 0.969,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -1512,7 +1502,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.95,
+          "objectCoverage": 0.975,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -1566,33 +1556,36 @@
         "donorId": "customer-support-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.271,
-          "output": 1.529,
+          "output": 1.446,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.942,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.983,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
-        "changedDimensionsLabel": "",
+        "pairClassification": "surface-close",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture",
         "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "semantic_drift"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "customer-support-to-building-access-false-neighbor",
@@ -1620,13 +1613,12 @@
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
+        "pairClassification": "surface-close",
         "changedDimensionsLabel": "",
         "failureBuckets": [
-          "both_rejected_swap",
           "over_flattened_output"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output."
+        "notes": "Buckets: over_flattened_output."
       },
       {
         "id": "building-access-to-package-handoff-false-neighbor",
@@ -1635,11 +1627,17 @@
         "donorId": "package-handoff-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.856,
           "output": 1.477,
@@ -1649,18 +1647,17 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.942,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.983,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "surface-close",
-        "changedDimensionsLabel": "",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, punctuation-shape",
         "failureBuckets": [
-          "over_flattened_output",
-          "semantic_drift"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: over_flattened_output, semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "package-handoff-to-building-access-false-neighbor",
@@ -1761,7 +1758,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.925,
+          "objectCoverage": 0.975,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
@@ -1835,7 +1832,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.977,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -2003,11 +2000,16 @@
         "donorId": "customer-support-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.698,
           "output": 1.506,
@@ -2017,20 +2019,19 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.881,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.975,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
-        "changedDimensionsLabel": "",
+        "pairClassification": "one-sided",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture",
         "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift"
+          "false_neighbor_convergence",
+          "one_sided_swap",
+          "register_miss"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss, semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence, one_sided_swap, register_miss."
       },
       {
         "id": "customer-support-to-mutual-aid-false-neighbor",
@@ -2058,14 +2059,14 @@
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
+        "pairClassification": "one-sided",
         "changedDimensionsLabel": "",
         "failureBuckets": [
-          "both_rejected_swap",
+          "one_sided_swap",
           "over_flattened_output",
           "register_miss"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss."
+        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
       },
       {
         "id": "school-coordination-to-clinic-scheduling-false-neighbor",
@@ -2183,33 +2184,37 @@
         "donorId": "volunteer-cleanup-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.368,
-          "output": 1.463,
-          "improved": false
+          "output": 1.274,
+          "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.881,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.975,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "surface-close",
-        "changedDimensionsLabel": "",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture",
         "failureBuckets": [
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift"
+          "false_neighbor_convergence",
+          "register_miss"
         ],
-        "notes": "Buckets: over_flattened_output, register_miss, semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence, register_miss."
       },
       {
         "id": "overwork-debrief-to-performance-review-false-neighbor",
@@ -2514,29 +2519,30 @@
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
         "transferClass": "structural",
-        "realizationTier": "structural",
+        "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
-          "sentence-count"
+          "sentence-count",
+          "sentence-spread"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.248,
-          "output": 0.987,
+          "output": 1.204,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.977,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "surface-close",
-        "changedDimensionsLabel": "sentence-mean, sentence-count",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread",
         "failureBuckets": [
           "false_neighbor_convergence"
         ],
@@ -2631,25 +2637,24 @@
         "nonTrivialShift": false,
         "donorDistance": {
           "source": 0.846,
-          "output": 0.879,
+          "output": 0.872,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.979,
+          "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.932,
-          "polarityMismatches": 2,
-          "tenseMismatches": 1
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "surface-close",
         "changedDimensionsLabel": "",
         "failureBuckets": [
-          "over_flattened_output",
-          "semantic_drift"
+          "over_flattened_output"
         ],
-        "notes": "Buckets: over_flattened_output, semantic_drift."
+        "notes": "Buckets: over_flattened_output."
       },
       {
         "id": "museum-fog-alarm-to-building-access-false-neighbor",
@@ -2677,19 +2682,18 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.95,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture",
         "failureBuckets": [
           "false_neighbor_convergence",
-          "one_sided_swap",
           "register_miss"
         ],
-        "notes": "Buckets: false_neighbor_convergence, one_sided_swap, register_miss."
+        "notes": "Buckets: false_neighbor_convergence, register_miss."
       },
       {
         "id": "building-access-to-museum-fog-alarm-false-neighbor",
@@ -2698,11 +2702,14 @@
         "donorId": "museum-fog-alarm-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.509,
           "output": 1.726,
@@ -2712,21 +2719,18 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.979,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count",
         "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift",
-          "sentence_span_miss"
+          "false_neighbor_convergence",
+          "register_miss"
         ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss."
+        "notes": "Buckets: false_neighbor_convergence, register_miss."
       },
       {
         "id": "building-access-to-customer-support-literal-risk",
@@ -3180,7 +3184,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.95,
+          "objectCoverage": 0.975,
           "polarityMismatches": 0,
           "tenseMismatches": 1
         },
@@ -3359,7 +3363,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.95,
+          "objectCoverage": 0.975,
           "polarityMismatches": 0,
           "tenseMismatches": 1
         },
@@ -3450,33 +3454,33 @@
         "donorId": "school-coordination-formal-record",
         "mode": "swap-literal-risk",
         "expectedPressure": "literal-protected",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "contraction-posture"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.788,
-          "output": 1.115,
+          "output": 0.969,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 0.96,
           "actionCoverage": 1,
-          "objectCoverage": 0.922,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.95,
+          "polarityMismatches": 0,
           "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "surface-close",
-        "changedDimensionsLabel": "",
-        "failureBuckets": [
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift"
-        ],
-        "notes": "Buckets: over_flattened_output, register_miss, semantic_drift."
+        "changedDimensionsLabel": "sentence-mean, sentence-count, contraction-posture",
+        "failureBuckets": [],
+        "notes": "Protected anchors from tenant-leak should survive donor pressure from school-coordination even when both live in incident-record syntax."
       },
       {
         "id": "school-coordination-to-tenant-leak-literal-risk",
@@ -3612,7 +3616,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.95,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -3735,36 +3739,31 @@
         "mode": "swap-literal-risk",
         "expectedPressure": "literal-protected",
         "transferClass": "structural",
-        "realizationTier": "structural",
+        "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "punctuation-shape"
+          "sentence-count"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.949,
-          "output": 1.349,
+          "output": 1.207,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.981,
-          "polarityMismatches": 1,
-          "tenseMismatches": 2
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "surface-close",
-        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, punctuation-shape",
-        "failureBuckets": [
-          "register_miss",
-          "semantic_drift"
-        ],
-        "notes": "Buckets: register_miss, semantic_drift."
+        "changedDimensionsLabel": "sentence-mean, sentence-count",
+        "failureBuckets": [],
+        "notes": "Protected anchors from municipal-zoning should survive donor pressure from committee-budget even when both live in incident-record syntax."
       },
       {
         "id": "committee-budget-to-municipal-zoning-literal-risk",
@@ -3829,7 +3828,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.938,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -3982,7 +3981,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.964,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -4023,7 +4022,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.95,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
@@ -4031,10 +4030,9 @@
         "pairClassification": "full-contact",
         "whatMoved": "segment ledger // 1 projected",
         "failureBuckets": [
-          "semantic_drift",
           "sentence_span_miss"
         ],
-        "notes": "Buckets: semantic_drift, sentence_span_miss."
+        "notes": "Buckets: sentence_span_miss."
       },
       {
         "id": "clinic-scheduling-mask-same-family",
@@ -4065,7 +4063,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.91,
+          "objectCoverage": 0.95,
           "polarityMismatches": 0,
           "tenseMismatches": 1
         },
@@ -4098,7 +4096,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.6765,
-          "output": 0.657,
+          "output": 0.6505,
           "improved": false
         },
         "semanticAudit": {
@@ -4106,15 +4104,17 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.929,
-          "polarityMismatches": 0,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
         "pairClassification": "surface-drift",
         "whatMoved": "segment ledger // 1 projected",
-        "failureBuckets": [],
-        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home distance barely moved."
+        "failureBuckets": [
+          "semantic_drift"
+        ],
+        "notes": "Buckets: semantic_drift."
       },
       {
         "id": "mutual-aid-mask-same-family",
@@ -4171,31 +4171,32 @@
         "mode": "mask",
         "expectedPressure": "mask-high",
         "transferClass": "structural",
-        "realizationTier": "cadence-only",
-        "changedDimensions": [],
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-spread",
+          "punctuation-shape"
+        ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.628,
-          "output": 0.6765,
+          "output": 0.7135,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.95,
           "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "surface-drift",
+        "pairClassification": "full-contact",
         "whatMoved": "segment ledger // 1 projected",
-        "failureBuckets": [
-          "sentence_span_miss"
-        ],
-        "notes": "Buckets: sentence_span_miss."
+        "failureBuckets": [],
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace tightened by 9 points."
       },
       {
         "id": "archive-grant-mask-same-family",
@@ -4433,7 +4434,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.958,
+          "objectCoverage": 0.917,
           "polarityMismatches": 1,
           "tenseMismatches": 1
         },
@@ -4473,8 +4474,8 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.95,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
@@ -4482,10 +4483,9 @@
         "pairClassification": "full-contact",
         "whatMoved": "segment ledger // 1 projected",
         "failureBuckets": [
-          "semantic_drift",
           "sentence_span_miss"
         ],
-        "notes": "Buckets: semantic_drift, sentence_span_miss."
+        "notes": "Buckets: sentence_span_miss."
       },
       {
         "id": "adversarial-hearing-mask-same-family",
@@ -4716,7 +4716,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.979,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -4830,7 +4830,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.95,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -4853,35 +4853,32 @@
         "mode": "mask",
         "expectedPressure": "mask-false-neighbor",
         "transferClass": "structural",
-        "realizationTier": "cadence-only",
+        "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
-          "sentence-count",
-          "sentence-spread"
+          "sentence-count"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.7975,
-          "output": 0.8625,
-          "improved": true
+          "output": 0.757,
+          "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.969,
-          "polarityMismatches": 1,
-          "tenseMismatches": 1
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
-        "pairClassification": "full-contact",
+        "pairClassification": "surface-drift",
         "whatMoved": "segment ledger // 1 projected",
-        "failureBuckets": [
-          "semantic_drift"
-        ],
-        "notes": "Buckets: semantic_drift."
+        "failureBuckets": [],
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home distance barely moved."
       },
       {
         "id": "school-coordination-under-clinic-scheduling-mask-cross-family",
@@ -4987,14 +4984,14 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.8205,
-          "output": 0.904,
+          "output": 0.92,
           "improved": true
         },
         "semanticAudit": {
-          "propositionCoverage": 0.949,
-          "actorCoverage": 0.907,
-          "actionCoverage": 0.943,
-          "objectCoverage": 0.872,
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.944,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
@@ -5335,7 +5332,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6012,
-          "meanAgreement": 0.4913,
+          "meanAgreement": 0.4995,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5379,7 +5376,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.964,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
@@ -5388,7 +5385,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.8642,
-          "meanAgreement": 0.5942,
+          "meanAgreement": 0.5952,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5429,7 +5426,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.95,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
@@ -5437,7 +5434,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7255,
-          "meanAgreement": 0.4072,
+          "meanAgreement": 0.4082,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5480,7 +5477,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.91,
+          "objectCoverage": 0.95,
           "polarityMismatches": 0,
           "tenseMismatches": 1
         },
@@ -5489,7 +5486,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7949,
-          "meanAgreement": 0.4072,
+          "meanAgreement": 0.4082,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5539,7 +5536,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6578,
-          "meanAgreement": 0.4072,
+          "meanAgreement": 0.4082,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5589,7 +5586,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6774,
-          "meanAgreement": 0.4594,
+          "meanAgreement": 0.4604,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5640,7 +5637,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7285,
-          "meanAgreement": 0.4592,
+          "meanAgreement": 0.4602,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5740,7 +5737,7 @@
           "pass": false,
           "retrievalPass": true,
           "scalarAggregate": 0.6083,
-          "meanAgreement": 0.844,
+          "meanAgreement": 0.888,
           "status": "scalar-drift"
         },
         "pairClassification": "",
@@ -5788,7 +5785,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.703,
-          "meanAgreement": 0.5192,
+          "meanAgreement": 0.5219,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5837,7 +5834,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6879,
-          "meanAgreement": 0.5184,
+          "meanAgreement": 0.5194,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5887,7 +5884,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6996,
-          "meanAgreement": 0.4033,
+          "meanAgreement": 0.4116,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5931,7 +5928,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.958,
           "polarityMismatches": 1,
           "tenseMismatches": 1
         },
@@ -5940,7 +5937,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7636,
-          "meanAgreement": 0.4072,
+          "meanAgreement": 0.4082,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -5993,7 +5990,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7892,
-          "meanAgreement": 0.3953,
+          "meanAgreement": 0.3963,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6044,7 +6041,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7425,
-          "meanAgreement": 0.4553,
+          "meanAgreement": 0.4635,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6095,7 +6092,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6098,
-          "meanAgreement": 0.7877,
+          "meanAgreement": 0.8237,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6142,7 +6139,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7036,
-          "meanAgreement": 0.4553,
+          "meanAgreement": 0.4635,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6193,7 +6190,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7099,
-          "meanAgreement": 0.4952,
+          "meanAgreement": 0.4962,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6244,7 +6241,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6176,
-          "meanAgreement": 0.4952,
+          "meanAgreement": 0.4962,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6285,7 +6282,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.95,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
@@ -6293,7 +6290,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6557,
-          "meanAgreement": 0.4913,
+          "meanAgreement": 0.4995,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6344,7 +6341,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6499,
-          "meanAgreement": 0.4072,
+          "meanAgreement": 0.4082,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6445,7 +6442,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6319,
-          "meanAgreement": 0.7307,
+          "meanAgreement": 0.7747,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6495,7 +6492,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.629,
-          "meanAgreement": 0.4594,
+          "meanAgreement": 0.4604,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6536,7 +6533,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.96,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 1
         },
@@ -6545,7 +6542,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7262,
-          "meanAgreement": 0.5183,
+          "meanAgreement": 0.5193,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6594,7 +6591,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.5635,
-          "meanAgreement": 0.5936,
+          "meanAgreement": 0.5946,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6645,7 +6642,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.612,
-          "meanAgreement": 0.7107,
+          "meanAgreement": 0.7307,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6696,7 +6693,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.78,
-          "meanAgreement": 0.4915,
+          "meanAgreement": 0.4991,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6794,7 +6791,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.6574,
-          "meanAgreement": 0.4553,
+          "meanAgreement": 0.4635,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6846,7 +6843,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7773,
-          "meanAgreement": 0.4072,
+          "meanAgreement": 0.4082,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6897,7 +6894,7 @@
           "pass": false,
           "retrievalPass": false,
           "scalarAggregate": 0.7347,
-          "meanAgreement": 0.3953,
+          "meanAgreement": 0.3963,
           "status": "retrieval-failed"
         },
         "pairClassification": "",
@@ -6972,7 +6969,6 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
-          "sentence-spread",
           "register-mode",
           "abbreviation-posture",
           "lexical-register"
@@ -6981,7 +6977,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.052,
-          "output": 1.876,
+          "output": 1.924,
           "improved": true
         },
         "semanticAudit": {
@@ -6990,7 +6986,7 @@
           "actionCoverage": 1,
           "objectCoverage": 0.965,
           "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "tenseMismatches": 1
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
@@ -7064,7 +7060,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.968,
+          "objectCoverage": 0.986,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -7104,7 +7100,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.964,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
@@ -7201,7 +7197,6 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
-          "sentence-spread",
           "abbreviation-posture",
           "lexical-register"
         ],
@@ -7209,7 +7204,7 @@
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 2.561,
-          "output": 2.083,
+          "output": 2.319,
           "improved": true
         },
         "semanticAudit": {
@@ -7218,7 +7213,7 @@
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatches": 1,
-          "tenseMismatches": 1
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "trainerValidation": null,
@@ -7407,7 +7402,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.958,
           "polarityMismatches": 1,
           "tenseMismatches": 1
         },
@@ -7448,7 +7443,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.95,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -7660,33 +7655,36 @@
         "donorId": "customer-support-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "lexical-structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.271,
-          "output": 1.529,
+          "output": 1.446,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.942,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.983,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
-        "changedDimensionsLabel": "",
+        "pairClassification": "surface-close",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture",
         "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "semantic_drift"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "customer-support-to-building-access-false-neighbor",
@@ -7714,13 +7712,12 @@
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
+        "pairClassification": "surface-close",
         "changedDimensionsLabel": "",
         "failureBuckets": [
-          "both_rejected_swap",
           "over_flattened_output"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output."
+        "notes": "Buckets: over_flattened_output."
       },
       {
         "id": "building-access-to-package-handoff-false-neighbor",
@@ -7729,11 +7726,17 @@
         "donorId": "package-handoff-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture",
+          "punctuation-shape"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 0.856,
           "output": 1.477,
@@ -7743,18 +7746,17 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.942,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.983,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "surface-close",
-        "changedDimensionsLabel": "",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture, punctuation-shape",
         "failureBuckets": [
-          "over_flattened_output",
-          "semantic_drift"
+          "false_neighbor_convergence"
         ],
-        "notes": "Buckets: over_flattened_output, semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence."
       },
       {
         "id": "package-handoff-to-building-access-false-neighbor",
@@ -7855,7 +7857,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.925,
+          "objectCoverage": 0.975,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
@@ -7929,7 +7931,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.977,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -8097,11 +8099,16 @@
         "donorId": "customer-support-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.698,
           "output": 1.506,
@@ -8111,20 +8118,19 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.881,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.975,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
-        "changedDimensionsLabel": "",
+        "pairClassification": "one-sided",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture",
         "failureBuckets": [
-          "both_rejected_swap",
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift"
+          "false_neighbor_convergence",
+          "one_sided_swap",
+          "register_miss"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss, semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence, one_sided_swap, register_miss."
       },
       {
         "id": "customer-support-to-mutual-aid-false-neighbor",
@@ -8152,14 +8158,14 @@
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "both-rejected",
+        "pairClassification": "one-sided",
         "changedDimensionsLabel": "",
         "failureBuckets": [
-          "both_rejected_swap",
+          "one_sided_swap",
           "over_flattened_output",
           "register_miss"
         ],
-        "notes": "Buckets: both_rejected_swap, over_flattened_output, register_miss."
+        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss."
       },
       {
         "id": "school-coordination-to-clinic-scheduling-false-neighbor",
@@ -8277,33 +8283,37 @@
         "donorId": "volunteer-cleanup-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "contraction-posture"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.368,
-          "output": 1.463,
-          "improved": false
+          "output": 1.274,
+          "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.881,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.975,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "surface-close",
-        "changedDimensionsLabel": "",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture",
         "failureBuckets": [
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift"
+          "false_neighbor_convergence",
+          "register_miss"
         ],
-        "notes": "Buckets: over_flattened_output, register_miss, semantic_drift."
+        "notes": "Buckets: false_neighbor_convergence, register_miss."
       },
       {
         "id": "overwork-debrief-to-performance-review-false-neighbor",
@@ -8608,29 +8618,30 @@
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
         "transferClass": "structural",
-        "realizationTier": "structural",
+        "realizationTier": "lexical-structural",
         "changedDimensions": [
           "sentence-mean",
-          "sentence-count"
+          "sentence-count",
+          "sentence-spread"
         ],
         "visibleShift": true,
         "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.248,
-          "output": 0.987,
+          "output": 1.204,
           "improved": true
         },
         "semanticAudit": {
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.977,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "surface-close",
-        "changedDimensionsLabel": "sentence-mean, sentence-count",
+        "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread",
         "failureBuckets": [
           "false_neighbor_convergence"
         ],
@@ -8725,25 +8736,24 @@
         "nonTrivialShift": false,
         "donorDistance": {
           "source": 0.846,
-          "output": 0.879,
+          "output": 0.872,
           "improved": false
         },
         "semanticAudit": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.979,
+          "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.932,
-          "polarityMismatches": 2,
-          "tenseMismatches": 1
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
         "pairClassification": "surface-close",
         "changedDimensionsLabel": "",
         "failureBuckets": [
-          "over_flattened_output",
-          "semantic_drift"
+          "over_flattened_output"
         ],
-        "notes": "Buckets: over_flattened_output, semantic_drift."
+        "notes": "Buckets: over_flattened_output."
       },
       {
         "id": "museum-fog-alarm-to-building-access-false-neighbor",
@@ -8771,19 +8781,18 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.95,
+          "objectCoverage": 1,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
+        "pairClassification": "bilateral-engaged",
         "changedDimensionsLabel": "sentence-mean, sentence-count, sentence-spread, contraction-posture",
         "failureBuckets": [
           "false_neighbor_convergence",
-          "one_sided_swap",
           "register_miss"
         ],
-        "notes": "Buckets: false_neighbor_convergence, one_sided_swap, register_miss."
+        "notes": "Buckets: false_neighbor_convergence, register_miss."
       },
       {
         "id": "building-access-to-museum-fog-alarm-false-neighbor",
@@ -8792,11 +8801,14 @@
         "donorId": "museum-fog-alarm-professional-message",
         "mode": "false-neighbor",
         "expectedPressure": "false-neighbor-high",
-        "transferClass": "held",
-        "realizationTier": "hold",
-        "changedDimensions": [],
-        "visibleShift": false,
-        "nonTrivialShift": false,
+        "transferClass": "structural",
+        "realizationTier": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count"
+        ],
+        "visibleShift": true,
+        "nonTrivialShift": true,
         "donorDistance": {
           "source": 1.509,
           "output": 1.726,
@@ -8806,21 +8818,18 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatches": 1,
+          "objectCoverage": 0.979,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "protectedAnchorIntegrity": 1,
-        "pairClassification": "one-sided",
-        "changedDimensionsLabel": "",
+        "pairClassification": "bilateral-engaged",
+        "changedDimensionsLabel": "sentence-mean, sentence-count",
         "failureBuckets": [
-          "one_sided_swap",
-          "over_flattened_output",
-          "register_miss",
-          "semantic_drift",
-          "sentence_span_miss"
+          "false_neighbor_convergence",
+          "register_miss"
         ],
-        "notes": "Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss."
+        "notes": "Buckets: false_neighbor_convergence, register_miss."
       }
     ],
     "generatorTransferCases": [
@@ -8846,24 +8855,26 @@
         "actionCoverage": 1,
         "objectCoverage": 0.965,
         "polarityMismatches": 0,
-        "tenseMismatches": 0,
+        "tenseMismatches": 1,
         "candidateCount": 6,
-        "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.8517,
-        "selectedCandidateToolabilityScore": 0.7465,
+        "selectedCandidateId": "base:hybrid",
+        "selectedCandidateScore": 0.8307,
+        "selectedCandidateToolabilityScore": 0.8031,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7465,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.8031,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.4044,
         "personaSeparationScore": 0.47,
         "toolabilityWarnings": [
           "artifact:clause-drag",
+          "artifact:clause-join",
           "persona-markers-thin"
         ],
         "artifactFlags": [
-          "artifact:clause-drag"
+          "artifact:clause-drag",
+          "artifact:clause-join"
         ],
         "notes": "Canonical same-fact retrieval transfer within package-handoff: formal-record under rushed-mobile.",
         "expectedPressure": "retrieval-same-fact",
@@ -8894,12 +8905,12 @@
         "tenseMismatches": 1,
         "candidateCount": 2,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 1.0199,
-        "selectedCandidateToolabilityScore": 0.7951,
+        "selectedCandidateScore": 1.0599,
+        "selectedCandidateToolabilityScore": 0.8442,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7951,
-        "readability": 0.76,
-        "sentenceIntegrity": 0.8968,
+        "toolabilityScore": 0.8442,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.924,
         "personaDistinctness": 0.6552,
         "personaSeparationScore": 0.86,
@@ -8933,17 +8944,17 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.968,
+        "objectCoverage": 0.986,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 1.0862,
-        "selectedCandidateToolabilityScore": 0.765,
+        "selectedCandidateScore": 1.1162,
+        "selectedCandidateToolabilityScore": 0.8031,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.765,
-        "readability": 0.77,
-        "sentenceIntegrity": 0.9176,
+        "toolabilityScore": 0.8031,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.4044,
         "personaSeparationScore": 0.47,
@@ -8978,12 +8989,12 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 1,
+        "objectCoverage": 0.964,
         "polarityMismatches": 1,
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:order-beat",
-        "selectedCandidateScore": 1.4272,
+        "selectedCandidateScore": 1.4241,
         "selectedCandidateToolabilityScore": 0.9004,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.9004,
@@ -9023,12 +9034,12 @@
         "tenseMismatches": 0,
         "candidateCount": 3,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.2434,
-        "selectedCandidateToolabilityScore": 0.3254,
+        "selectedCandidateScore": 0.3434,
+        "selectedCandidateToolabilityScore": 0.5099,
         "selectedCandidateTransferClass": "weak",
-        "toolabilityScore": 0.3254,
-        "readability": 0.38,
-        "sentenceIntegrity": 0.892,
+        "toolabilityScore": 0.5099,
+        "readability": 0.64,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.333,
         "personaDistinctness": 0.0576,
         "personaSeparationScore": 0.08,
@@ -9036,8 +9047,7 @@
           "artifact:clause-drag",
           "artifact:over-braiding",
           "persona-markers-thin",
-          "toolability:low-confidence",
-          "toolability:rough-surface"
+          "toolability:low-confidence"
         ],
         "artifactFlags": [
           "artifact:clause-drag",
@@ -9072,12 +9082,12 @@
         "tenseMismatches": 0,
         "candidateCount": 2,
         "selectedCandidateId": "base:order-beat",
-        "selectedCandidateScore": 0.6425,
-        "selectedCandidateToolabilityScore": 0.7761,
+        "selectedCandidateScore": 0.7325,
+        "selectedCandidateToolabilityScore": 0.8903,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7761,
-        "readability": 0.71,
-        "sentenceIntegrity": 0.7528,
+        "toolabilityScore": 0.8903,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.768,
         "personaSeparationScore": 1,
@@ -9113,10 +9123,10 @@
         "actionCoverage": 1,
         "objectCoverage": 1,
         "polarityMismatches": 1,
-        "tenseMismatches": 1,
+        "tenseMismatches": 0,
         "candidateCount": 3,
-        "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.8781,
+        "selectedCandidateId": "base:clause-pivot",
+        "selectedCandidateScore": 0.7149,
         "selectedCandidateToolabilityScore": 0.8031,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.8031,
@@ -9126,9 +9136,14 @@
         "personaDistinctness": 0.4044,
         "personaSeparationScore": 0.47,
         "toolabilityWarnings": [
+          "artifact:clause-drag",
+          "artifact:over-braiding",
           "persona-markers-thin"
         ],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag",
+          "artifact:over-braiding"
+        ],
         "notes": "Canonical same-fact retrieval transfer within archive-grant: formal-record under rushed-mobile.",
         "expectedPressure": "retrieval-same-fact",
         "failureBuckets": []
@@ -9158,7 +9173,7 @@
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:order-beat",
-        "selectedCandidateScore": 1.3123,
+        "selectedCandidateScore": 1.3125,
         "selectedCandidateToolabilityScore": 0.9004,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.9004,
@@ -9200,12 +9215,12 @@
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8737,
-        "selectedCandidateToolabilityScore": 0.6632,
+        "selectedCandidateScore": 0.9037,
+        "selectedCandidateToolabilityScore": 0.7198,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.6632,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.7198,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.0576,
         "personaSeparationScore": 0.08,
@@ -9287,12 +9302,12 @@
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 1.0541,
-        "selectedCandidateToolabilityScore": 0.6899,
+        "selectedCandidateScore": 1.1141,
+        "selectedCandidateToolabilityScore": 0.8031,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.6899,
-        "readability": 0.64,
-        "sentenceIntegrity": 0.9352,
+        "toolabilityScore": 0.8031,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.4044,
         "personaSeparationScore": 0.47,
@@ -9327,17 +9342,17 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 1,
+        "objectCoverage": 0.958,
         "polarityMismatches": 1,
         "tenseMismatches": 1,
         "candidateCount": 2,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 1.0362,
-        "selectedCandidateToolabilityScore": 0.8551,
+        "selectedCandidateScore": 1.063,
+        "selectedCandidateToolabilityScore": 0.8932,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.8551,
-        "readability": 0.77,
-        "sentenceIntegrity": 0.9176,
+        "toolabilityScore": 0.8932,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.78,
         "personaSeparationScore": 1,
@@ -9371,17 +9386,17 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.95,
+        "objectCoverage": 1,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 3,
         "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.9858,
-        "selectedCandidateToolabilityScore": 0.7465,
+        "selectedCandidateScore": 1.0158,
+        "selectedCandidateToolabilityScore": 0.8031,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7465,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.8031,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.4044,
         "personaSeparationScore": 0.47,
@@ -9633,12 +9648,12 @@
         "tenseMismatches": 2,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.7769,
-        "selectedCandidateToolabilityScore": 0.8252,
+        "selectedCandidateScore": 0.8069,
+        "selectedCandidateToolabilityScore": 0.8632,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.8252,
-        "readability": 0.77,
-        "sentenceIntegrity": 0.9176,
+        "toolabilityScore": 0.8632,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.6552,
         "personaSeparationScore": 0.86,
@@ -9677,7 +9692,7 @@
         "tenseMismatches": 0,
         "candidateCount": 2,
         "selectedCandidateId": "base:register-lexicon",
-        "selectedCandidateScore": 0.8313,
+        "selectedCandidateScore": 0.8324,
         "selectedCandidateToolabilityScore": 0.7198,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.7198,
@@ -9714,12 +9729,12 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 1,
+        "objectCoverage": 0.964,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 2,
         "selectedCandidateId": "base:order-beat",
-        "selectedCandidateScore": 0.9004,
+        "selectedCandidateScore": 0.8972,
         "selectedCandidateToolabilityScore": 0.7256,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.7256,
@@ -9757,11 +9772,11 @@
         "actorCoverage": 1,
         "actionCoverage": 1,
         "objectCoverage": 0.95,
-        "polarityMismatches": 1,
+        "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8401,
+        "selectedCandidateScore": 0.9603,
         "selectedCandidateToolabilityScore": 0.8632,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.8632,
@@ -9796,7 +9811,7 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.91,
+        "objectCoverage": 0.95,
         "polarityMismatches": 0,
         "tenseMismatches": 1,
         "candidateCount": 2,
@@ -9837,16 +9852,16 @@
         "actorCoverage": 1,
         "actionCoverage": 1,
         "objectCoverage": 0.929,
-        "polarityMismatches": 0,
+        "polarityMismatches": 1,
         "tenseMismatches": 0,
         "candidateCount": 3,
-        "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 0.8846,
-        "selectedCandidateToolabilityScore": 0.7122,
+        "selectedCandidateId": "base:order-beat",
+        "selectedCandidateScore": 0.82,
+        "selectedCandidateToolabilityScore": 0.7884,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7122,
-        "readability": 0.74,
-        "sentenceIntegrity": 0.8352,
+        "toolabilityScore": 0.7884,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.3432,
         "personaSeparationScore": 0.41,
@@ -9921,23 +9936,27 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 1,
+        "objectCoverage": 0.95,
         "polarityMismatches": 0,
-        "tenseMismatches": 0,
+        "tenseMismatches": 1,
         "candidateCount": 3,
-        "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.784,
-        "selectedCandidateToolabilityScore": 0.8468,
+        "selectedCandidateId": "base:hybrid",
+        "selectedCandidateScore": 0.8795,
+        "selectedCandidateToolabilityScore": 0.8632,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.8468,
+        "toolabilityScore": 0.8632,
         "readability": 0.8,
         "sentenceIntegrity": 1,
-        "movementQuality": 0.9343,
+        "movementQuality": 1,
         "personaDistinctness": 0.6552,
         "personaSeparationScore": 0.86,
-        "toolabilityWarnings": [],
-        "artifactFlags": [],
-        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home distance barely moved.",
+        "toolabilityWarnings": [
+          "artifact:clause-join"
+        ],
+        "artifactFlags": [
+          "artifact:clause-join"
+        ],
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace tightened by 9 points.",
         "expectedPressure": "mask-high",
         "failureBuckets": []
       },
@@ -9966,7 +9985,7 @@
         "tenseMismatches": 0,
         "candidateCount": 3,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 0.9389,
+        "selectedCandidateScore": 0.9391,
         "selectedCandidateToolabilityScore": 0.8632,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.8632,
@@ -10006,12 +10025,12 @@
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8811,
-        "selectedCandidateToolabilityScore": 0.7563,
+        "selectedCandidateScore": 0.9146,
+        "selectedCandidateToolabilityScore": 0.7944,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7563,
-        "readability": 0.77,
-        "sentenceIntegrity": 0.9176,
+        "toolabilityScore": 0.7944,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.3684,
         "personaSeparationScore": 0.47,
@@ -10051,7 +10070,7 @@
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.7304,
+        "selectedCandidateScore": 0.7316,
         "selectedCandidateToolabilityScore": 0.7198,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.7198,
@@ -10172,17 +10191,17 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.958,
+        "objectCoverage": 0.917,
         "polarityMismatches": 1,
         "tenseMismatches": 1,
         "candidateCount": 3,
         "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.8009,
-        "selectedCandidateToolabilityScore": 0.8566,
+        "selectedCandidateScore": 0.8277,
+        "selectedCandidateToolabilityScore": 0.8946,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.8566,
-        "readability": 0.77,
-        "sentenceIntegrity": 0.9176,
+        "toolabilityScore": 0.8946,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.786,
         "personaSeparationScore": 1,
@@ -10216,12 +10235,12 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 1,
-        "polarityMismatches": 1,
+        "objectCoverage": 0.95,
+        "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8218,
+        "selectedCandidateScore": 0.9418,
         "selectedCandidateToolabilityScore": 0.8632,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.8632,
@@ -10261,7 +10280,7 @@
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8371,
+        "selectedCandidateScore": 0.838,
         "selectedCandidateToolabilityScore": 0.7198,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.7198,
@@ -10425,7 +10444,7 @@
         "tenseMismatches": 1,
         "candidateCount": 2,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.7114,
+        "selectedCandidateScore": 0.7125,
         "selectedCandidateToolabilityScore": 0.6511,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.6511,
@@ -10462,17 +10481,17 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.979,
+        "objectCoverage": 1,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 0.8038,
-        "selectedCandidateToolabilityScore": 0.7234,
+        "selectedCandidateScore": 0.8638,
+        "selectedCandidateToolabilityScore": 0.8366,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7234,
-        "readability": 0.64,
-        "sentenceIntegrity": 0.9352,
+        "toolabilityScore": 0.8366,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.739,
         "personaDistinctness": 0.816,
         "personaSeparationScore": 1,
@@ -10512,12 +10531,12 @@
         "tenseMismatches": 0,
         "candidateCount": 4,
         "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.3821,
-        "selectedCandidateToolabilityScore": 0.3944,
+        "selectedCandidateScore": 0.4721,
+        "selectedCandidateToolabilityScore": 0.5336,
         "selectedCandidateTransferClass": "weak",
-        "toolabilityScore": 0.3944,
-        "readability": 0.45,
-        "sentenceIntegrity": 0.9028,
+        "toolabilityScore": 0.5336,
+        "readability": 0.64,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.2691,
         "personaDistinctness": 0.2232,
         "personaSeparationScore": 0.31,
@@ -10526,8 +10545,7 @@
           "artifact:repeated-helper",
           "persona-convergence:archivist-neutral",
           "persona-markers-thin",
-          "toolability:low-confidence",
-          "toolability:rough-surface"
+          "toolability:low-confidence"
         ],
         "artifactFlags": [
           "artifact:clause-drag",
@@ -10562,12 +10580,12 @@
         "tenseMismatches": 0,
         "candidateCount": 4,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8311,
-        "selectedCandidateToolabilityScore": 0.7659,
+        "selectedCandidateScore": 0.8611,
+        "selectedCandidateToolabilityScore": 0.8225,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7659,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.8225,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.7171,
         "personaDistinctness": 0.78,
         "personaSeparationScore": 1,
@@ -10601,25 +10619,24 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.95,
+        "objectCoverage": 1,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 4,
         "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.4047,
-        "selectedCandidateToolabilityScore": 0.4072,
+        "selectedCandidateScore": 0.4947,
+        "selectedCandidateToolabilityScore": 0.5769,
         "selectedCandidateTransferClass": "weak",
-        "toolabilityScore": 0.4072,
-        "readability": 0.4,
-        "sentenceIntegrity": 0.9028,
+        "toolabilityScore": 0.5769,
+        "readability": 0.64,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.3028,
         "personaDistinctness": 0.3684,
         "personaSeparationScore": 0.47,
         "toolabilityWarnings": [
           "artifact:clause-drag",
           "persona-markers-thin",
-          "toolability:low-confidence",
-          "toolability:rough-surface"
+          "toolability:low-confidence"
         ],
         "artifactFlags": [
           "artifact:clause-drag"
@@ -10649,26 +10666,28 @@
         "actorCoverage": 1,
         "actionCoverage": 1,
         "objectCoverage": 0.969,
-        "polarityMismatches": 1,
-        "tenseMismatches": 1,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0,
         "candidateCount": 7,
-        "selectedCandidateId": "base:clause-pivot",
-        "selectedCandidateScore": 0.4446,
-        "selectedCandidateToolabilityScore": 0.7019,
+        "selectedCandidateId": "base:cadence-connector",
+        "selectedCandidateScore": 0.7513,
+        "selectedCandidateToolabilityScore": 0.8255,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7019,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
-        "movementQuality": 0.6154,
-        "personaDistinctness": 0.6192,
-        "personaSeparationScore": 0.86,
+        "toolabilityScore": 0.8255,
+        "readability": 0.74,
+        "sentenceIntegrity": 1,
+        "movementQuality": 0.7881,
+        "personaDistinctness": 0.786,
+        "personaSeparationScore": 1,
         "toolabilityWarnings": [
-          "artifact:clause-drag"
+          "artifact:clause-drag",
+          "artifact:over-braiding"
         ],
         "artifactFlags": [
-          "artifact:clause-drag"
+          "artifact:clause-drag",
+          "artifact:over-braiding"
         ],
-        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace tightened by 7 points.",
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home distance barely moved.",
         "expectedPressure": "mask-false-neighbor",
         "failureBuckets": []
       },
@@ -10697,12 +10716,12 @@
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.7498,
-        "selectedCandidateToolabilityScore": 0.7295,
+        "selectedCandidateScore": 0.8098,
+        "selectedCandidateToolabilityScore": 0.8427,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7295,
-        "readability": 0.64,
-        "sentenceIntegrity": 0.9352,
+        "toolabilityScore": 0.8427,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.9177,
         "personaDistinctness": 0.6552,
         "personaSeparationScore": 0.86,
@@ -10773,21 +10792,21 @@
         "nonTrivialShift": true,
         "semanticBounded": true,
         "protectedAnchorIntegrity": 1,
-        "propositionCoverage": 0.949,
-        "actorCoverage": 0.907,
-        "actionCoverage": 0.943,
-        "objectCoverage": 0.872,
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 0.944,
         "polarityMismatches": 1,
         "tenseMismatches": 0,
         "candidateCount": 5,
-        "selectedCandidateId": "base:pressure-current",
-        "selectedCandidateScore": 0.7481,
-        "selectedCandidateToolabilityScore": 0.7763,
+        "selectedCandidateId": "base:hybrid",
+        "selectedCandidateScore": 0.8254,
+        "selectedCandidateToolabilityScore": 0.8822,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7763,
-        "readability": 0.68,
-        "sentenceIntegrity": 0.8644,
-        "movementQuality": 0.9324,
+        "toolabilityScore": 0.8822,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
+        "movementQuality": 0.9331,
         "personaDistinctness": 0.804,
         "personaSeparationScore": 1,
         "toolabilityWarnings": [
@@ -10799,7 +10818,7 @@
           "artifact:clause-drag",
           "artifact:clause-join"
         ],
-        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace tightened by 8 points.",
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace tightened by 10 points.",
         "expectedPressure": "mask-false-neighbor",
         "failureBuckets": []
       },
@@ -10828,19 +10847,18 @@
         "tenseMismatches": 1,
         "candidateCount": 4,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 0.7055,
-        "selectedCandidateToolabilityScore": 0.5935,
+        "selectedCandidateScore": 0.7367,
+        "selectedCandidateToolabilityScore": 0.65,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.5935,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.65,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.7209,
         "personaDistinctness": 0.0576,
         "personaSeparationScore": 0.08,
         "toolabilityWarnings": [
           "artifact:clause-drag",
-          "persona-markers-thin",
-          "toolability:low-confidence"
+          "persona-markers-thin"
         ],
         "artifactFlags": [
           "artifact:clause-drag"
@@ -10874,12 +10892,12 @@
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:persona-lexicon",
-        "selectedCandidateScore": 0.8635,
-        "selectedCandidateToolabilityScore": 0.8049,
+        "selectedCandidateScore": 0.8935,
+        "selectedCandidateToolabilityScore": 0.8614,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.8049,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.8614,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.8557,
         "personaDistinctness": 0.798,
         "personaSeparationScore": 1,
@@ -11049,7 +11067,7 @@
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.774,
+        "selectedCandidateScore": 0.7753,
         "selectedCandidateToolabilityScore": 0.65,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.65,
@@ -11094,7 +11112,7 @@
     "unsafeStructuralCount": 0,
     "protectedAnchorIntegrityMin": 1,
     "averageCandidateCount": 3.1154,
-    "averageSelectedCandidateScore": 0.8447,
+    "averageSelectedCandidateScore": 0.8709,
     "topMisses": [
       {
         "id": "model-safety-mask-same-family",
@@ -11131,24 +11149,26 @@
         "actionCoverage": 1,
         "objectCoverage": 0.965,
         "polarityMismatches": 0,
-        "tenseMismatches": 0,
+        "tenseMismatches": 1,
         "candidateCount": 6,
-        "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.8517,
-        "selectedCandidateToolabilityScore": 0.7465,
+        "selectedCandidateId": "base:hybrid",
+        "selectedCandidateScore": 0.8307,
+        "selectedCandidateToolabilityScore": 0.8031,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7465,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.8031,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.4044,
         "personaSeparationScore": 0.47,
         "toolabilityWarnings": [
           "artifact:clause-drag",
+          "artifact:clause-join",
           "persona-markers-thin"
         ],
         "artifactFlags": [
-          "artifact:clause-drag"
+          "artifact:clause-drag",
+          "artifact:clause-join"
         ],
         "notes": "Canonical same-fact retrieval transfer within package-handoff: formal-record under rushed-mobile.",
         "expectedPressure": "retrieval-same-fact",
@@ -11179,12 +11199,12 @@
         "tenseMismatches": 1,
         "candidateCount": 2,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 1.0199,
-        "selectedCandidateToolabilityScore": 0.7951,
+        "selectedCandidateScore": 1.0599,
+        "selectedCandidateToolabilityScore": 0.8442,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7951,
-        "readability": 0.76,
-        "sentenceIntegrity": 0.8968,
+        "toolabilityScore": 0.8442,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.924,
         "personaDistinctness": 0.6552,
         "personaSeparationScore": 0.86,
@@ -11218,17 +11238,17 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.968,
+        "objectCoverage": 0.986,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 1.0862,
-        "selectedCandidateToolabilityScore": 0.765,
+        "selectedCandidateScore": 1.1162,
+        "selectedCandidateToolabilityScore": 0.8031,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.765,
-        "readability": 0.77,
-        "sentenceIntegrity": 0.9176,
+        "toolabilityScore": 0.8031,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.4044,
         "personaSeparationScore": 0.47,
@@ -11263,12 +11283,12 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 1,
+        "objectCoverage": 0.964,
         "polarityMismatches": 1,
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:order-beat",
-        "selectedCandidateScore": 1.4272,
+        "selectedCandidateScore": 1.4241,
         "selectedCandidateToolabilityScore": 0.9004,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.9004,
@@ -11308,12 +11328,12 @@
         "tenseMismatches": 0,
         "candidateCount": 3,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.2434,
-        "selectedCandidateToolabilityScore": 0.3254,
+        "selectedCandidateScore": 0.3434,
+        "selectedCandidateToolabilityScore": 0.5099,
         "selectedCandidateTransferClass": "weak",
-        "toolabilityScore": 0.3254,
-        "readability": 0.38,
-        "sentenceIntegrity": 0.892,
+        "toolabilityScore": 0.5099,
+        "readability": 0.64,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.333,
         "personaDistinctness": 0.0576,
         "personaSeparationScore": 0.08,
@@ -11321,8 +11341,7 @@
           "artifact:clause-drag",
           "artifact:over-braiding",
           "persona-markers-thin",
-          "toolability:low-confidence",
-          "toolability:rough-surface"
+          "toolability:low-confidence"
         ],
         "artifactFlags": [
           "artifact:clause-drag",
@@ -11357,12 +11376,12 @@
         "tenseMismatches": 0,
         "candidateCount": 2,
         "selectedCandidateId": "base:order-beat",
-        "selectedCandidateScore": 0.6425,
-        "selectedCandidateToolabilityScore": 0.7761,
+        "selectedCandidateScore": 0.7325,
+        "selectedCandidateToolabilityScore": 0.8903,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7761,
-        "readability": 0.71,
-        "sentenceIntegrity": 0.7528,
+        "toolabilityScore": 0.8903,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.768,
         "personaSeparationScore": 1,
@@ -11398,10 +11417,10 @@
         "actionCoverage": 1,
         "objectCoverage": 1,
         "polarityMismatches": 1,
-        "tenseMismatches": 1,
+        "tenseMismatches": 0,
         "candidateCount": 3,
-        "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.8781,
+        "selectedCandidateId": "base:clause-pivot",
+        "selectedCandidateScore": 0.7149,
         "selectedCandidateToolabilityScore": 0.8031,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.8031,
@@ -11411,9 +11430,14 @@
         "personaDistinctness": 0.4044,
         "personaSeparationScore": 0.47,
         "toolabilityWarnings": [
+          "artifact:clause-drag",
+          "artifact:over-braiding",
           "persona-markers-thin"
         ],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag",
+          "artifact:over-braiding"
+        ],
         "notes": "Canonical same-fact retrieval transfer within archive-grant: formal-record under rushed-mobile.",
         "expectedPressure": "retrieval-same-fact",
         "failureBuckets": []
@@ -11443,7 +11467,7 @@
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:order-beat",
-        "selectedCandidateScore": 1.3123,
+        "selectedCandidateScore": 1.3125,
         "selectedCandidateToolabilityScore": 0.9004,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.9004,
@@ -11485,12 +11509,12 @@
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8737,
-        "selectedCandidateToolabilityScore": 0.6632,
+        "selectedCandidateScore": 0.9037,
+        "selectedCandidateToolabilityScore": 0.7198,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.6632,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.7198,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.0576,
         "personaSeparationScore": 0.08,
@@ -11572,12 +11596,12 @@
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 1.0541,
-        "selectedCandidateToolabilityScore": 0.6899,
+        "selectedCandidateScore": 1.1141,
+        "selectedCandidateToolabilityScore": 0.8031,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.6899,
-        "readability": 0.64,
-        "sentenceIntegrity": 0.9352,
+        "toolabilityScore": 0.8031,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.4044,
         "personaSeparationScore": 0.47,
@@ -11612,17 +11636,17 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 1,
+        "objectCoverage": 0.958,
         "polarityMismatches": 1,
         "tenseMismatches": 1,
         "candidateCount": 2,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 1.0362,
-        "selectedCandidateToolabilityScore": 0.8551,
+        "selectedCandidateScore": 1.063,
+        "selectedCandidateToolabilityScore": 0.8932,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.8551,
-        "readability": 0.77,
-        "sentenceIntegrity": 0.9176,
+        "toolabilityScore": 0.8932,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.78,
         "personaSeparationScore": 1,
@@ -11656,17 +11680,17 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.95,
+        "objectCoverage": 1,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 3,
         "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.9858,
-        "selectedCandidateToolabilityScore": 0.7465,
+        "selectedCandidateScore": 1.0158,
+        "selectedCandidateToolabilityScore": 0.8031,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7465,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.8031,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.4044,
         "personaSeparationScore": 0.47,
@@ -11916,12 +11940,12 @@
         "tenseMismatches": 2,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.7769,
-        "selectedCandidateToolabilityScore": 0.8252,
+        "selectedCandidateScore": 0.8069,
+        "selectedCandidateToolabilityScore": 0.8632,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.8252,
-        "readability": 0.77,
-        "sentenceIntegrity": 0.9176,
+        "toolabilityScore": 0.8632,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.6552,
         "personaSeparationScore": 0.86,
@@ -11960,7 +11984,7 @@
         "tenseMismatches": 0,
         "candidateCount": 2,
         "selectedCandidateId": "base:register-lexicon",
-        "selectedCandidateScore": 0.8313,
+        "selectedCandidateScore": 0.8324,
         "selectedCandidateToolabilityScore": 0.7198,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.7198,
@@ -11997,12 +12021,12 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 1,
+        "objectCoverage": 0.964,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 2,
         "selectedCandidateId": "base:order-beat",
-        "selectedCandidateScore": 0.9004,
+        "selectedCandidateScore": 0.8972,
         "selectedCandidateToolabilityScore": 0.7256,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.7256,
@@ -12040,11 +12064,11 @@
         "actorCoverage": 1,
         "actionCoverage": 1,
         "objectCoverage": 0.95,
-        "polarityMismatches": 1,
+        "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8401,
+        "selectedCandidateScore": 0.9603,
         "selectedCandidateToolabilityScore": 0.8632,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.8632,
@@ -12079,7 +12103,7 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.91,
+        "objectCoverage": 0.95,
         "polarityMismatches": 0,
         "tenseMismatches": 1,
         "candidateCount": 2,
@@ -12120,16 +12144,16 @@
         "actorCoverage": 1,
         "actionCoverage": 1,
         "objectCoverage": 0.929,
-        "polarityMismatches": 0,
+        "polarityMismatches": 1,
         "tenseMismatches": 0,
         "candidateCount": 3,
-        "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 0.8846,
-        "selectedCandidateToolabilityScore": 0.7122,
+        "selectedCandidateId": "base:order-beat",
+        "selectedCandidateScore": 0.82,
+        "selectedCandidateToolabilityScore": 0.7884,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7122,
-        "readability": 0.74,
-        "sentenceIntegrity": 0.8352,
+        "toolabilityScore": 0.7884,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.3432,
         "personaSeparationScore": 0.41,
@@ -12204,23 +12228,27 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 1,
+        "objectCoverage": 0.95,
         "polarityMismatches": 0,
-        "tenseMismatches": 0,
+        "tenseMismatches": 1,
         "candidateCount": 3,
-        "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.784,
-        "selectedCandidateToolabilityScore": 0.8468,
+        "selectedCandidateId": "base:hybrid",
+        "selectedCandidateScore": 0.8795,
+        "selectedCandidateToolabilityScore": 0.8632,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.8468,
+        "toolabilityScore": 0.8632,
         "readability": 0.8,
         "sentenceIntegrity": 1,
-        "movementQuality": 0.9343,
+        "movementQuality": 1,
         "personaDistinctness": 0.6552,
         "personaSeparationScore": 0.86,
-        "toolabilityWarnings": [],
-        "artifactFlags": [],
-        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home distance barely moved.",
+        "toolabilityWarnings": [
+          "artifact:clause-join"
+        ],
+        "artifactFlags": [
+          "artifact:clause-join"
+        ],
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace tightened by 9 points.",
         "expectedPressure": "mask-high",
         "failureBuckets": []
       },
@@ -12249,7 +12277,7 @@
         "tenseMismatches": 0,
         "candidateCount": 3,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 0.9389,
+        "selectedCandidateScore": 0.9391,
         "selectedCandidateToolabilityScore": 0.8632,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.8632,
@@ -12289,12 +12317,12 @@
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8811,
-        "selectedCandidateToolabilityScore": 0.7563,
+        "selectedCandidateScore": 0.9146,
+        "selectedCandidateToolabilityScore": 0.7944,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7563,
-        "readability": 0.77,
-        "sentenceIntegrity": 0.9176,
+        "toolabilityScore": 0.7944,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.3684,
         "personaSeparationScore": 0.47,
@@ -12334,7 +12362,7 @@
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.7304,
+        "selectedCandidateScore": 0.7316,
         "selectedCandidateToolabilityScore": 0.7198,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.7198,
@@ -12455,17 +12483,17 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.958,
+        "objectCoverage": 0.917,
         "polarityMismatches": 1,
         "tenseMismatches": 1,
         "candidateCount": 3,
         "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.8009,
-        "selectedCandidateToolabilityScore": 0.8566,
+        "selectedCandidateScore": 0.8277,
+        "selectedCandidateToolabilityScore": 0.8946,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.8566,
-        "readability": 0.77,
-        "sentenceIntegrity": 0.9176,
+        "toolabilityScore": 0.8946,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 1,
         "personaDistinctness": 0.786,
         "personaSeparationScore": 1,
@@ -12499,12 +12527,12 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 1,
-        "polarityMismatches": 1,
+        "objectCoverage": 0.95,
+        "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8218,
+        "selectedCandidateScore": 0.9418,
         "selectedCandidateToolabilityScore": 0.8632,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.8632,
@@ -12544,7 +12572,7 @@
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8371,
+        "selectedCandidateScore": 0.838,
         "selectedCandidateToolabilityScore": 0.7198,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.7198,
@@ -12708,7 +12736,7 @@
         "tenseMismatches": 1,
         "candidateCount": 2,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.7114,
+        "selectedCandidateScore": 0.7125,
         "selectedCandidateToolabilityScore": 0.6511,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.6511,
@@ -12745,17 +12773,17 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.979,
+        "objectCoverage": 1,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 0.8038,
-        "selectedCandidateToolabilityScore": 0.7234,
+        "selectedCandidateScore": 0.8638,
+        "selectedCandidateToolabilityScore": 0.8366,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7234,
-        "readability": 0.64,
-        "sentenceIntegrity": 0.9352,
+        "toolabilityScore": 0.8366,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.739,
         "personaDistinctness": 0.816,
         "personaSeparationScore": 1,
@@ -12795,12 +12823,12 @@
         "tenseMismatches": 0,
         "candidateCount": 4,
         "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.3821,
-        "selectedCandidateToolabilityScore": 0.3944,
+        "selectedCandidateScore": 0.4721,
+        "selectedCandidateToolabilityScore": 0.5336,
         "selectedCandidateTransferClass": "weak",
-        "toolabilityScore": 0.3944,
-        "readability": 0.45,
-        "sentenceIntegrity": 0.9028,
+        "toolabilityScore": 0.5336,
+        "readability": 0.64,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.2691,
         "personaDistinctness": 0.2232,
         "personaSeparationScore": 0.31,
@@ -12809,8 +12837,7 @@
           "artifact:repeated-helper",
           "persona-convergence:archivist-neutral",
           "persona-markers-thin",
-          "toolability:low-confidence",
-          "toolability:rough-surface"
+          "toolability:low-confidence"
         ],
         "artifactFlags": [
           "artifact:clause-drag",
@@ -12845,12 +12872,12 @@
         "tenseMismatches": 0,
         "candidateCount": 4,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.8311,
-        "selectedCandidateToolabilityScore": 0.7659,
+        "selectedCandidateScore": 0.8611,
+        "selectedCandidateToolabilityScore": 0.8225,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7659,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.8225,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.7171,
         "personaDistinctness": 0.78,
         "personaSeparationScore": 1,
@@ -12884,25 +12911,24 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.95,
+        "objectCoverage": 1,
         "polarityMismatches": 0,
         "tenseMismatches": 0,
         "candidateCount": 4,
         "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.4047,
-        "selectedCandidateToolabilityScore": 0.4072,
+        "selectedCandidateScore": 0.4947,
+        "selectedCandidateToolabilityScore": 0.5769,
         "selectedCandidateTransferClass": "weak",
-        "toolabilityScore": 0.4072,
-        "readability": 0.4,
-        "sentenceIntegrity": 0.9028,
+        "toolabilityScore": 0.5769,
+        "readability": 0.64,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.3028,
         "personaDistinctness": 0.3684,
         "personaSeparationScore": 0.47,
         "toolabilityWarnings": [
           "artifact:clause-drag",
           "persona-markers-thin",
-          "toolability:low-confidence",
-          "toolability:rough-surface"
+          "toolability:low-confidence"
         ],
         "artifactFlags": [
           "artifact:clause-drag"
@@ -12932,26 +12958,28 @@
         "actorCoverage": 1,
         "actionCoverage": 1,
         "objectCoverage": 0.969,
-        "polarityMismatches": 1,
-        "tenseMismatches": 1,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0,
         "candidateCount": 7,
-        "selectedCandidateId": "base:clause-pivot",
-        "selectedCandidateScore": 0.4446,
-        "selectedCandidateToolabilityScore": 0.7019,
+        "selectedCandidateId": "base:cadence-connector",
+        "selectedCandidateScore": 0.7513,
+        "selectedCandidateToolabilityScore": 0.8255,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7019,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
-        "movementQuality": 0.6154,
-        "personaDistinctness": 0.6192,
-        "personaSeparationScore": 0.86,
+        "toolabilityScore": 0.8255,
+        "readability": 0.74,
+        "sentenceIntegrity": 1,
+        "movementQuality": 0.7881,
+        "personaDistinctness": 0.786,
+        "personaSeparationScore": 1,
         "toolabilityWarnings": [
-          "artifact:clause-drag"
+          "artifact:clause-drag",
+          "artifact:over-braiding"
         ],
         "artifactFlags": [
-          "artifact:clause-drag"
+          "artifact:clause-drag",
+          "artifact:over-braiding"
         ],
-        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace tightened by 7 points.",
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home distance barely moved.",
         "expectedPressure": "mask-false-neighbor",
         "failureBuckets": []
       },
@@ -12980,12 +13008,12 @@
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:cadence-connector",
-        "selectedCandidateScore": 0.7498,
-        "selectedCandidateToolabilityScore": 0.7295,
+        "selectedCandidateScore": 0.8098,
+        "selectedCandidateToolabilityScore": 0.8427,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7295,
-        "readability": 0.64,
-        "sentenceIntegrity": 0.9352,
+        "toolabilityScore": 0.8427,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.9177,
         "personaDistinctness": 0.6552,
         "personaSeparationScore": 0.86,
@@ -13056,21 +13084,21 @@
         "nonTrivialShift": true,
         "semanticBounded": true,
         "protectedAnchorIntegrity": 1,
-        "propositionCoverage": 0.949,
-        "actorCoverage": 0.907,
-        "actionCoverage": 0.943,
-        "objectCoverage": 0.872,
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 0.944,
         "polarityMismatches": 1,
         "tenseMismatches": 0,
         "candidateCount": 5,
-        "selectedCandidateId": "base:pressure-current",
-        "selectedCandidateScore": 0.7481,
-        "selectedCandidateToolabilityScore": 0.7763,
+        "selectedCandidateId": "base:hybrid",
+        "selectedCandidateScore": 0.8254,
+        "selectedCandidateToolabilityScore": 0.8822,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.7763,
-        "readability": 0.68,
-        "sentenceIntegrity": 0.8644,
-        "movementQuality": 0.9324,
+        "toolabilityScore": 0.8822,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
+        "movementQuality": 0.9331,
         "personaDistinctness": 0.804,
         "personaSeparationScore": 1,
         "toolabilityWarnings": [
@@ -13082,7 +13110,7 @@
           "artifact:clause-drag",
           "artifact:clause-join"
         ],
-        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace tightened by 8 points.",
+        "notes": "Aperture registered 1 projected segment and kept the pressure ledger visible. Home trace tightened by 10 points.",
         "expectedPressure": "mask-false-neighbor",
         "failureBuckets": []
       },
@@ -13111,19 +13139,18 @@
         "tenseMismatches": 1,
         "candidateCount": 4,
         "selectedCandidateId": "base:hybrid",
-        "selectedCandidateScore": 0.7055,
-        "selectedCandidateToolabilityScore": 0.5935,
+        "selectedCandidateScore": 0.7367,
+        "selectedCandidateToolabilityScore": 0.65,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.5935,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.65,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.7209,
         "personaDistinctness": 0.0576,
         "personaSeparationScore": 0.08,
         "toolabilityWarnings": [
           "artifact:clause-drag",
-          "persona-markers-thin",
-          "toolability:low-confidence"
+          "persona-markers-thin"
         ],
         "artifactFlags": [
           "artifact:clause-drag"
@@ -13157,12 +13184,12 @@
         "tenseMismatches": 0,
         "candidateCount": 5,
         "selectedCandidateId": "base:persona-lexicon",
-        "selectedCandidateScore": 0.8635,
-        "selectedCandidateToolabilityScore": 0.8049,
+        "selectedCandidateScore": 0.8935,
+        "selectedCandidateToolabilityScore": 0.8614,
         "selectedCandidateTransferClass": "structural",
-        "toolabilityScore": 0.8049,
-        "readability": 0.72,
-        "sentenceIntegrity": 0.9676,
+        "toolabilityScore": 0.8614,
+        "readability": 0.8,
+        "sentenceIntegrity": 1,
         "movementQuality": 0.8557,
         "personaDistinctness": 0.798,
         "personaSeparationScore": 1,
@@ -13332,7 +13359,7 @@
         "tenseMismatches": 0,
         "candidateCount": 1,
         "selectedCandidateId": "base:syntax-shape",
-        "selectedCandidateScore": 0.774,
+        "selectedCandidateScore": 0.7753,
         "selectedCandidateToolabilityScore": 0.65,
         "selectedCandidateTransferClass": "structural",
         "toolabilityScore": 0.65,
@@ -13355,7 +13382,7 @@
     "expectedCaseCount": 34,
     "landedRate": 1,
     "holdRate": 0,
-    "artifactRate": 0.3824,
+    "artifactRate": 0.4118,
     "weakMovementRate": 0.0294,
     "distinctnessRate": 1,
     "convergenceRate": 0,
@@ -13370,7 +13397,7 @@
         "distinctnessRate": 1,
         "convergencePairs": 0,
         "convergenceRate": 0,
-        "artifactRate": 0.6,
+        "artifactRate": 0.8,
         "previewHonestyRate": 1
       },
       {
@@ -13513,11 +13540,11 @@
         "leftName": "Operator",
         "rightId": "methods-editor",
         "rightName": "Methods Editor",
-        "distance": 2.129,
-        "profileDistance": 0.652,
-        "axisDistance": 0.172,
+        "distance": 2.142,
+        "profileDistance": 0.672,
+        "axisDistance": 0.165,
         "heatmapDistance": 1.305,
-        "similarity": 0.94,
+        "similarity": 0.936,
         "traceability": 1,
         "sameFamily": false,
         "sameVariant": false
@@ -13541,12 +13568,12 @@
         "leftName": "Operator",
         "rightId": "cross-examiner",
         "rightName": "Cross-Examiner",
-        "distance": 2.415,
-        "profileDistance": 0.842,
-        "axisDistance": 0.573,
+        "distance": 2.334,
+        "profileDistance": 0.796,
+        "axisDistance": 0.538,
         "heatmapDistance": 1,
-        "similarity": 0.732,
-        "traceability": 0.864,
+        "similarity": 0.737,
+        "traceability": 0.869,
         "sameFamily": false,
         "sameVariant": false
       },
@@ -13555,11 +13582,11 @@
         "leftName": "Archivist",
         "rightId": "operator",
         "rightName": "Operator",
-        "distance": 2.447,
-        "profileDistance": 1.293,
-        "axisDistance": 0.153,
+        "distance": 2.361,
+        "profileDistance": 1.244,
+        "axisDistance": 0.116,
         "heatmapDistance": 1.001,
-        "similarity": 0.892,
+        "similarity": 0.898,
         "traceability": 1,
         "sameFamily": false,
         "sameVariant": false
@@ -13583,18 +13610,18 @@
         "leftName": "Operator",
         "rightId": "matron",
         "rightName": "Matron",
-        "distance": 2.886,
-        "profileDistance": 0.995,
-        "axisDistance": 0.39,
+        "distance": 2.987,
+        "profileDistance": 1.051,
+        "axisDistance": 0.435,
         "heatmapDistance": 1.501,
-        "similarity": 0.841,
-        "traceability": 0.974,
+        "similarity": 0.835,
+        "traceability": 0.966,
         "sameFamily": false,
         "sameVariant": false
       }
     ],
-    "averageNearestFieldDistance": 2.5306,
-    "minNearestFieldDistance": 2.129,
+    "averageNearestFieldDistance": 2.5227,
+    "minNearestFieldDistance": 2.142,
     "distinctOutputCheck": {
       "comparisonSampleId": "customer-support-formal-record",
       "resolvedPersonaCount": 7,
@@ -13608,22 +13635,22 @@
     "actionBias": "loosen-exploration-first",
     "donorPressure": {
       "status": "real",
-      "bilateralEngaged": 42,
+      "bilateralEngaged": 46,
       "representativeAverageScore": 35.67
     },
     "witnessPressure": {
       "status": "rising",
-      "witnessBurdenCount": 120,
-      "witnessBurdenRatio": 0.4444,
+      "witnessBurdenCount": 88,
+      "witnessBurdenRatio": 0.3259,
       "topWitnessBuckets": {
-        "semantic_drift": 59,
-        "over_flattened_output": 35,
-        "one_sided_swap": 26
+        "semantic_drift": 41,
+        "over_flattened_output": 23,
+        "one_sided_swap": 24
       }
     },
     "realizedPassage": {
       "status": "weak",
-      "oneSidedRate": 0.1538,
+      "oneSidedRate": 0.1346,
       "flagshipAllPassed": false
     },
     "provenanceFloor": {
@@ -13633,9 +13660,9 @@
     },
     "swapMatrix": {
       "caseCount": 104,
-      "bilateralEngaged": 42,
-      "oneSided": 16,
-      "bothRejected": 4,
+      "bilateralEngaged": 46,
+      "oneSided": 14,
+      "bothRejected": 0,
       "flagshipPassCount": 6,
       "flagshipCaseCount": 8,
       "flagshipAllPassed": false
@@ -13671,7 +13698,7 @@
         },
         {
           "anchorId": "benefits-appeal-professional-message",
-          "candidateId": "adversarial-hearing-rushed-mobile",
+          "candidateId": "adversarial-hearing-formal-record",
           "score": 36,
           "bilateralVisible": true,
           "bilateralNonTrivial": true,
@@ -13690,7 +13717,7 @@
         },
         {
           "anchorId": "municipal-zoning-formal-record",
-          "candidateId": "adversarial-hearing-rushed-mobile",
+          "candidateId": "committee-budget-professional-message",
           "score": 36,
           "bilateralVisible": true,
           "bilateralNonTrivial": true,

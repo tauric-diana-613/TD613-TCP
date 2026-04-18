@@ -92,6 +92,7 @@ const majorPersonas = ['spark', 'matron', 'undertow', 'archivist', 'cross-examin
 assert.equal(majorPersonas.length, 5, 'major built-in masks resolve for direct generator probes');
 
 const familyUnion = new Set();
+let semanticLockArtifactZeroedCount = 0;
 
 for (const testCase of cases) {
   const result = buildCadenceTransfer(testCase.text, testCase.shell, { retrieval: true });
@@ -106,6 +107,11 @@ for (const testCase of cases) {
   assert.ok(result.toolabilityAudit && typeof result.toolabilityAudit.toolabilityScore === 'number', `${testCase.id}: toolability audit is attached`);
   assert.ok(result.personaSeparationAudit && typeof result.personaSeparationAudit.score === 'number', `${testCase.id}: persona separation audit is attached`);
   assert.ok(Array.isArray(result.toolabilityWarnings), `${testCase.id}: toolability warnings are attached`);
+  assert.equal(
+    result.toolabilityAudit.semanticLockIntact,
+    Boolean(result.semanticLockIntact),
+    `${testCase.id}: semantic lock state stays aligned between result and toolability audit`
+  );
   assert.ok(
     Array.isArray(result.retrievalTrace?.planSummary?.testedFamilyIds),
     `${testCase.id}: retrieval trace reports tested family ids`
@@ -119,6 +125,10 @@ for (const testCase of cases) {
     assert.equal(result.text, '', `${testCase.id}: held results do not publish weak output`);
     assert.equal(result.generationDocket.status, 'held', `${testCase.id}: held results mark the docket as held`);
   } else {
+    if (result.semanticLockIntact) {
+      semanticLockArtifactZeroedCount += 1;
+      assert.equal(result.toolabilityAudit.artifactPenalty, 0, `${testCase.id}: semantic lock zeroes artifact penalty`);
+    }
     assert.notEqual(
       normalizeComparable(result.text),
       normalizeComparable(testCase.text),
@@ -204,5 +214,12 @@ assert.ok(
   narrativeResults.every((result) => result.holdStatus === 'held' || !hasArtifactLeak(result.text)),
   'narrative live probe avoids the maintained artifact patterns on landed outputs'
 );
+for (const result of [...reflectiveResults, ...narrativeResults]) {
+  if (result.holdStatus === 'landed' && result.semanticLockIntact) {
+    semanticLockArtifactZeroedCount += 1;
+    assert.equal(result.toolabilityAudit.artifactPenalty, 0, 'semantic lock zeroes artifact penalties on landed V2 outputs');
+  }
+}
+assert.ok(semanticLockArtifactZeroedCount >= 1, 'at least one maintained V2 landing exercises the semantic lock artifact waiver');
 
 console.log('generator-v2.test.mjs passed');

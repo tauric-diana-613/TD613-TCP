@@ -3374,15 +3374,90 @@ function detectTenseAspect(text = '') {
   return 'present';
 }
 
+const AUXILIARY_ACTION_PATTERN = /\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|cannot|could|may|might|must|i'm|im|you're|youre|we're|they're|he's|she's|it's|that's|there's|i've|ive|you've|we've|they've|i'll|ill|you'll|we'll|they'll|he'll|she'll|it'll|i'd|id|you'd|we'd|they'd|he'd|she'd|it'd|don't|dont|doesn't|doesnt|didn't|didnt|can't|cant|won't|wont|isn't|isnt|aren't|arent|wasn't|wasnt|weren't|werent|shouldn't|shouldnt|wouldn't|wouldnt|couldn't|couldnt|mustn't|mustnt|haven't|havent|hasn't|hasnt|hadn't|hadnt)\b/i;
+
+const AUXILIARY_ACTION_EQUIVALENTS = Object.freeze({
+  "i'm": 'am',
+  im: 'am',
+  "you're": 'are',
+  youre: 'are',
+  "we're": 'are',
+  "they're": 'are',
+  "he's": 'is',
+  "she's": 'is',
+  "it's": 'is',
+  "that's": 'is',
+  "there's": 'is',
+  "i've": 'have',
+  ive: 'have',
+  "you've": 'have',
+  "we've": 'have',
+  "they've": 'have',
+  "i'll": 'will',
+  ill: 'will',
+  "you'll": 'will',
+  "we'll": 'will',
+  "they'll": 'will',
+  "he'll": 'will',
+  "she'll": 'will',
+  "it'll": 'will',
+  "i'd": 'would',
+  id: 'would',
+  "you'd": 'would',
+  "we'd": 'would',
+  "they'd": 'would',
+  "he'd": 'would',
+  "she'd": 'would',
+  "it'd": 'would',
+  "don't": 'do',
+  dont: 'do',
+  "doesn't": 'does',
+  doesnt: 'does',
+  "didn't": 'did',
+  didnt: 'did',
+  "can't": 'cannot',
+  cant: 'cannot',
+  cannot: 'cannot',
+  "won't": 'will',
+  wont: 'will',
+  "isn't": 'is',
+  isnt: 'is',
+  "aren't": 'are',
+  arent: 'are',
+  "wasn't": 'was',
+  wasnt: 'was',
+  "weren't": 'were',
+  werent: 'were',
+  "shouldn't": 'should',
+  shouldnt: 'should',
+  "wouldn't": 'would',
+  wouldnt: 'would',
+  "couldn't": 'could',
+  couldnt: 'could',
+  "mustn't": 'must',
+  mustnt: 'must',
+  "haven't": 'have',
+  havent: 'have',
+  "hasn't": 'has',
+  hasnt: 'has',
+  "hadn't": 'had',
+  hadnt: 'had'
+});
+
 function extractClauseSemanticScaffold(text = '') {
   const tokens = tokenize(text);
   const actorMatch = normalizeText(text).match(/\b(?:I|we|you|they|he|she|it|there|this|that|the\s+\w+|a\s+\w+|an\s+\w+)\b/i);
   const actor = actorMatch ? actorMatch[0] : '';
   const lexicalActionMatch = normalizeText(text).match(/\b(?:go|goes|went|get|gets|got|keep|keeps|kept|leave|leaves|left|remember|remembers|remembered|wait|waits|waited|pause|pauses|paused|grab|grabs|grabbed|bring|brings|brought|use|uses|used|pull|pulls|pulled|call|calls|called|contact|contacts|contacted|knock|knocks|knocked|lean|leans|leaned|change|changes|changed|say|says|said|tell|tells|told|ask|asks|asked|request|requests|requested|need|needs|needed|require|requires|required|show|shows|showed|check|checks|checked|review|reviews|reviewed|verify|verifies|verified|confirm|confirms|confirmed|shift|shifts|shifted|begin|begins|began|finish|finishes|finished|wrap|wraps|wrapped|conclude|concludes|concluded|come|comes|came|catch|catches|caught|deploy|deploys|deployed|head|heads|headed|circle|circles|circled|stall|stalls|stalled|provide|provides|provided|issue|issues|issued|find|finds|found|locate|locates|located|identify|identifies|identified|book|books|booked|schedule|schedules|scheduled|send|sends|sent|forward|forwards|forwarded|transmit|transmits|transmitted|fix|fixes|fixed|resolve|resolves|resolved|move|moves|moved|relocate|relocates|relocated|transfer|transfers|transferred|match|matches|matched|align|aligns|aligned|log|logs|logged|flag|flags|flagged|release|releases|released)\b/i);
-  const auxiliaryActionMatch = normalizeText(text).match(/\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|could|may|might|must)\b/i);
+  const auxiliaryActionMatch = normalizeText(text).match(AUXILIARY_ACTION_PATTERN);
+  const rawAction = lexicalActionMatch
+    ? lexicalActionMatch[0]
+    : (auxiliaryActionMatch ? auxiliaryActionMatch[0] : '');
   const actionMatch = lexicalActionMatch || auxiliaryActionMatch;
-  const action = actionMatch ? actionMatch[0] : '';
-  const actionIndex = actionMatch ? Math.max(0, tokens.indexOf(action.toLowerCase())) : -1;
+  const action = lexicalActionMatch
+    ? lexicalActionMatch[0]
+    : (AUXILIARY_ACTION_EQUIVALENTS[String(rawAction || '').toLowerCase()] || rawAction);
+  const actionIndex = actionMatch ? Math.max(0, tokens.indexOf(String(rawAction || '').toLowerCase())) : -1;
   const object = actionIndex >= 0
     ? tokens
       .slice(actionIndex + 1)
@@ -7936,7 +8011,77 @@ const PRONOUN_ROLE_CLASSES = Object.freeze({
   that: 'deictic'
 });
 
+const SEMANTIC_CONTRACTION_EQUIVALENTS = Object.freeze({
+  "don't": 'donot',
+  dont: 'donot',
+  "doesn't": 'doesnot',
+  doesnt: 'doesnot',
+  "didn't": 'didnot',
+  didnt: 'didnot',
+  "can't": 'cannot',
+  cant: 'cannot',
+  cannot: 'cannot',
+  "won't": 'willnot',
+  wont: 'willnot',
+  "isn't": 'isnot',
+  isnt: 'isnot',
+  "aren't": 'arenot',
+  arent: 'arenot',
+  "wasn't": 'wasnot',
+  wasnt: 'wasnot',
+  "weren't": 'werenot',
+  werent: 'werenot',
+  "shouldn't": 'shouldnot',
+  shouldnt: 'shouldnot',
+  "wouldn't": 'wouldnot',
+  wouldnt: 'wouldnot',
+  "couldn't": 'couldnot',
+  couldnt: 'couldnot',
+  "mustn't": 'mustnot',
+  mustnt: 'mustnot',
+  "haven't": 'havenot',
+  havent: 'havenot',
+  "hasn't": 'hasnot',
+  hasnt: 'hasnot',
+  "hadn't": 'hadnot',
+  hadnt: 'hadnot',
+  "i'm": 'iam',
+  im: 'iam',
+  "i've": 'ihave',
+  ive: 'ihave',
+  "i'll": 'iwill',
+  ill: 'iwill',
+  "i'd": 'iwould',
+  id: 'iwould',
+  "you're": 'youare',
+  youre: 'youare',
+  "you've": 'youhave',
+  youve: 'youhave',
+  "you'll": 'youwill',
+  youll: 'youwill',
+  "you'd": 'youwould',
+  youd: 'youwould',
+  "we're": 'weare',
+  "we've": 'wehave',
+  "we'll": 'wewill',
+  "we'd": 'wewould',
+  "they're": 'theyare',
+  theyre: 'theyare',
+  "they've": 'theyhave',
+  theyve: 'theyhave',
+  "they'll": 'theywill',
+  theyll: 'theywill',
+  "they'd": 'theywould',
+  theyd: 'theywould',
+  "he's": 'heis',
+  "she's": 'sheis',
+  "it's": 'itis',
+  "that's": 'thatis',
+  "there's": 'thereis'
+});
+
 const SEMANTIC_EQUIVALENT_FORMS = Object.freeze({
+  ...SEMANTIC_CONTRACTION_EQUIVALENTS,
   headed: 'leave',
   head: 'leave',
   departure: 'leave',

@@ -1180,6 +1180,7 @@ function buildToolabilityAudit({
   changedDimensions = [],
   lexemeSwaps = [],
   artifactAudit = {},
+  semanticLockIntact = false,
   personaSeparationAudit = {},
   distinctnessBonus = 0,
   outputProfile = {},
@@ -1189,13 +1190,22 @@ function buildToolabilityAudit({
   const structuralMovement = substantiveDimensionCount(changedDimensions);
   const lexicalMovement = Number((lexemeSwaps || []).length || 0);
   const punctuationDriftOnly = punctuationOnlyDrift(changedDimensions, lexemeSwaps);
-  const overBraidingPenalty = Math.min(0.24, Number(artifactAudit.overBraidingCount || 0) * 0.06);
-  const clauseDragPenalty = Math.min(0.16, Number(artifactAudit.clauseDragCount || 0) * 0.05);
+  const effectiveArtifactPenalty = semanticLockIntact
+    ? 0
+    : Number((artifactAudit.effectivePenalty ?? artifactAudit.penalty) || 0);
+  const overBraidingPenalty = semanticLockIntact
+    ? 0
+    : Math.min(0.24, Number(artifactAudit.overBraidingCount || 0) * 0.06);
+  const clauseDragPenalty = semanticLockIntact
+    ? 0
+    : Math.min(0.16, Number(artifactAudit.clauseDragCount || 0) * 0.05);
+  const clauseJoinPenalty = semanticLockIntact ? 0 : Number(artifactAudit.clauseJoinCount || 0) * 0.06;
+  const fragmentPenalty = semanticLockIntact ? 0 : Number(artifactAudit.fragmentCount || 0) * 0.05;
   const sentenceIntegrity = round(clamp01(
     1 -
-    (Number(artifactAudit.penalty || 0) * 1.08) -
-    (Number(artifactAudit.clauseJoinCount || 0) * 0.06) -
-    (Number(artifactAudit.fragmentCount || 0) * 0.05) -
+    (effectiveArtifactPenalty * 1.08) -
+    clauseJoinPenalty -
+    fragmentPenalty -
     (pathologies.severe ? 0.5 : 0)
   ), 4);
   const readability = round(clamp01(
@@ -1203,7 +1213,7 @@ function buildToolabilityAudit({
     (transferClass === 'structural' ? 0.08 : transferClass === 'surface' ? -0.08 : 0) +
     (structuralMovement >= 1 ? 0.08 : 0) +
     (Number(outputProfile.avgSentenceLength || 0) >= 4 && Number(outputProfile.avgSentenceLength || 0) <= 30 ? 0.06 : 0) -
-    Number(artifactAudit.penalty || 0) -
+    effectiveArtifactPenalty -
     overBraidingPenalty -
     clauseDragPenalty
   ), 4);
@@ -1219,7 +1229,7 @@ function buildToolabilityAudit({
     (Number(distinctnessBonus || 0) * 0.6)
   ), 4);
   const artifactPenalty = round(clamp01(
-    Number(artifactAudit.penalty || 0) +
+    effectiveArtifactPenalty +
     overBraidingPenalty +
     clauseDragPenalty
   ), 4);
@@ -1245,6 +1255,7 @@ function buildToolabilityAudit({
     sentenceIntegrity,
     movementQuality,
     artifactPenalty,
+    semanticLockIntact,
     toolabilityScore,
     warnings: Object.freeze(warnings)
   });
@@ -2755,6 +2766,24 @@ function semanticAuditBounded(semanticAudit = {}) {
   return polarityBounded && tenseBounded;
 }
 
+function semanticLockSatisfied(semanticAudit = {}, floors = {}, sourceClass = 'formal-correspondence') {
+  const strictCustodySemantics = sourceClass === 'procedural-record';
+  const propositionCoverage = Number(semanticAudit?.propositionCoverage ?? 1);
+  const actorCoverage = Number(semanticAudit?.actorCoverage ?? 1);
+  const actionCoverage = Number(semanticAudit?.actionCoverage ?? 1);
+  const objectCoverage = Number(semanticAudit?.objectCoverage ?? 1);
+  const polarityMismatches = Number(semanticAudit?.polarityMismatches ?? 0);
+
+  return (
+    propositionCoverage >= Number(floors?.proposition ?? 1) &&
+    actorCoverage >= Number(floors?.actor ?? 1) &&
+    actionCoverage >= Number(floors?.action ?? 1) &&
+    objectCoverage >= Number(floors?.object ?? 1) &&
+    (strictCustodySemantics ? polarityMismatches === 0 : polarityMismatches <= 1) &&
+    semanticAuditBounded(semanticAudit)
+  );
+}
+
 function computeCandidateTransferClass(candidate = {}) {
   if (candidate.classification?.outcome === 'surface-held') {
     return 'surface';
@@ -2938,6 +2967,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
       sentenceIntegrity: 1,
       movementQuality: 0,
       artifactPenalty: 0,
+      semanticLockIntact: true,
       toolabilityScore: 0.5,
       warnings: Object.freeze([])
     }),
@@ -2950,6 +2980,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
       markers: Object.freeze([])
     }),
     toolabilityWarnings: Object.freeze([]),
+    semanticLockIntact: true,
     visibleShift: false,
     nonTrivialShift: false,
     semanticAudit: auditBundle.semanticAudit,
@@ -3109,6 +3140,9 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     substantiveDimensionCount(changedDimensions) > 0 ||
     authored.lexemeSwaps.length > 0 ||
     normalizeMovementComparable(sourceText) !== normalizeMovementComparable(outputText);
+  const targetProfile = variant.shell.profile || null;
+  const floors = classSemanticFloor(sourceClass, sourceProfile, targetProfile);
+  const semanticLockIntact = semanticLockSatisfied(semanticAudit, floors, sourceClass);
   const semanticRisk = buildSemanticRisk(semanticAudit, protectedAnchorAudit.protectedAnchorIntegrity ?? 1);
   const apertureReview = reviewTD613ApertureTransfer({
     sourceText,
@@ -3117,6 +3151,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     shellSource: variant.shell?.source || '',
     retrieval: true,
     semanticRisk,
+    semanticLockIntact,
     visibleShift,
     nonTrivialShift,
     protectedAnchorIntegrity: Number(protectedAnchorAudit.protectedAnchorIntegrity ?? 1),
@@ -3152,12 +3187,10 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     targetProfile: variant.shell?.profile || null,
     sourceProfile
   });
-  const targetProfile = variant.shell.profile || null;
   const targetFit = computeTargetFit(outputProfile, targetProfile);
   const donorProgress = variant.shell?.mode === 'borrowed'
     ? buildBorrowedShellDonorProgress(sourceText, outputText, sourceProfile, targetProfile || {}, outputProfile)
     : {};
-  const floors = classSemanticFloor(sourceClass, sourceProfile, targetProfile);
   const hardIntegrityScore = hardAnchorIntegrity(sourceText, outputText);
   const protectedAnchorIntegrity = Number(protectedAnchorAudit.protectedAnchorIntegrity ?? 1);
   const polarityMismatches = Number(semanticAudit.polarityMismatches ?? 0);
@@ -3214,7 +3247,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     (Number(witnessAudit.softWitnessIntegrity ?? 1) * 0.08) +
     familyBonus +
     distinctnessBonus -
-    artifactAudit.penalty +
+    (semanticLockIntact ? 0 : artifactAudit.penalty) +
     (visibleShift ? 0.04 : 0) -
       polarityPenalty -
       tensePenalty -
@@ -3237,6 +3270,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     changedDimensions,
     lexemeSwaps: authored.lexemeSwaps,
     artifactAudit,
+    semanticLockIntact,
     personaSeparationAudit,
     distinctnessBonus,
     outputProfile,
@@ -3279,7 +3313,11 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     apertureReview,
     classification,
     pathologies,
-    artifactAudit,
+    artifactAudit: Object.freeze({
+      ...artifactAudit,
+      semanticLockIntact,
+      effectivePenalty: semanticLockIntact ? 0 : Number(artifactAudit.penalty || 0)
+    }),
     visibleShift,
     nonTrivialShift,
     rewriteStrength,
@@ -3292,6 +3330,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     contractionStrategy: authored.contractionStrategy,
     semanticRisk,
     semanticBounded: semanticsBounded,
+    semanticLockIntact,
     donorProgress,
     score,
     toolabilityAudit,
@@ -3607,6 +3646,7 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
           : 'partial',
     borrowedShellFailureClass: null,
     toolabilityAudit: chosen.toolabilityAudit,
+    semanticLockIntact: Boolean(chosen.semanticLockIntact),
     personaSeparationAudit: chosen.personaSeparationAudit,
     toolabilityWarnings: Object.freeze([...(chosen.toolabilityWarnings || [])]),
     apertureAudit,
@@ -3721,6 +3761,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
       sentenceIntegrity: 0,
       movementQuality: 0,
       artifactPenalty: 1,
+      semanticLockIntact: false,
       toolabilityScore: 0,
       warnings: Object.freeze([holdClass])
     }),
@@ -3733,6 +3774,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
       markers: Object.freeze([])
     }),
     toolabilityWarnings: Object.freeze([...(bestCandidate?.toolabilityWarnings || [holdClass])]),
+    semanticLockIntact: Boolean(bestCandidate?.semanticLockIntact),
     visibleShift: false,
     nonTrivialShift: false,
     semanticAudit: bestCandidate?.semanticAudit || {

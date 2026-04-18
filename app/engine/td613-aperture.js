@@ -1600,6 +1600,7 @@ export function reviewTD613ApertureTransfer({
   shellSource = '',
   retrieval = false,
   semanticRisk = 0,
+  semanticLockIntact = false,
   visibleShift = false,
   nonTrivialShift = false,
   protectedAnchorIntegrity = 1,
@@ -1611,26 +1612,29 @@ export function reviewTD613ApertureTransfer({
   const applied = Boolean(shellMode === 'borrowed' || retrieval || shellSource === 'swapped');
   const introducedEnforcementTerms = detectIntroducedTerms(sourceText, outputText);
   const namingIntrusion = detectNamingIntrusion(sourceText, outputText);
-  const semanticCoverageRisk = round3(clamp01(
+  const semanticCoverageRiskRaw = round3(clamp01(
     ((1 - clamp01(propositionCoverage)) * 0.32) +
     ((1 - clamp01(actorCoverage)) * 0.18) +
     ((1 - clamp01(actionCoverage)) * 0.18) +
     ((1 - clamp01(objectCoverage)) * 0.12)
   ));
+  const semanticCoverageRisk = semanticLockIntact ? 0 : semanticCoverageRiskRaw;
+  const surfaceClose = !visibleShift || !nonTrivialShift;
+  const surfaceCloseWarning = semanticLockIntact ? false : surfaceClose;
   const recaptureRisk = round3(clamp01(
     (clamp01(semanticRisk) * 0.45) +
     ((1 - clamp01(protectedAnchorIntegrity)) * 0.24) +
     (semanticCoverageRisk * 0.18) +
     (introducedEnforcementTerms.length ? 0.20 : 0) +
     (namingIntrusion ? 0.22 : 0) +
-    ((!visibleShift || !nonTrivialShift) ? 0.08 : 0)
+    (surfaceCloseWarning ? 0.08 : 0)
   ));
   const warningSignals = uniqueStrings([
     introducedEnforcementTerms.length ? 'enforcement-framing' : null,
     namingIntrusion ? 'naming-intrusion' : null,
     protectedAnchorIntegrity < 1 ? 'anchor-drift-detected' : null,
     semanticCoverageRisk >= 0.18 ? 'semantic-compression' : null,
-    (!visibleShift || !nonTrivialShift) ? 'surface-close' : null,
+    surfaceCloseWarning ? 'surface-close' : null,
     applied ? 'counter-recognition-pressure' : null
   ]);
   const blocked = false;
@@ -1649,9 +1653,9 @@ export function reviewTD613ApertureTransfer({
   const candidateSuppression = round3(clamp01(
     (applied ? 0.12 : 0.02) +
     (semanticCoverageRisk * 0.42) +
-    ((!visibleShift || !nonTrivialShift) ? 0.18 : 0)
+    (surfaceCloseWarning ? 0.18 : 0)
   ));
-  const observabilityDeficit = round3(clamp01(
+  const observabilityDeficit = semanticLockIntact ? 0 : round3(clamp01(
     (semanticCoverageRisk * 0.48) +
     (!visibleShift ? 0.14 : 0) +
     (!nonTrivialShift ? 0.14 : 0)
@@ -1664,14 +1668,14 @@ export function reviewTD613ApertureTransfer({
     (namingIntrusion ? 0.82 : 0) +
     (applied ? 0.08 : 0)
   ));
-  const redundancyInflation = round3(clamp01(
+  const redundancyInflation = semanticLockIntact ? 0 : round3(clamp01(
     (!nonTrivialShift ? 0.24 : 0.08) +
     (!visibleShift ? 0.18 : 0) +
     (semanticCoverageRisk * 0.28)
   ));
-  const capacityPressure = round3(clamp01(
+  const capacityPressure = semanticLockIntact ? 0 : round3(clamp01(
     (semanticCoverageRisk * 0.58) +
-    ((!visibleShift || !nonTrivialShift) ? 0.18 : 0)
+    (surfaceCloseWarning ? 0.18 : 0)
   ));
   const policyPressure = round3(clamp01(
     (introducedEnforcementTerms.length ? 0.42 : 0) +
@@ -1701,6 +1705,8 @@ export function reviewTD613ApertureTransfer({
     counterRecognitionRequired: applied,
     applied,
     blocked,
+    semanticLockIntact,
+    semanticCoverageRisk,
     recaptureRisk,
     introducedEnforcementTerms,
     namingIntrusion,

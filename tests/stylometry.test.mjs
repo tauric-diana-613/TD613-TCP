@@ -2,6 +2,7 @@ import assert from 'assert';
 import {
   applyCadenceToText,
   applyCadenceShell,
+  buildSemanticAuditBundle,
   buildCadenceTransfer,
   buildCadenceSignature,
   charTrigramProfile,
@@ -9,6 +10,7 @@ import {
   extractCadenceProfile,
   functionWordProfile,
   recurrencePressure,
+  segmentTextToIR,
   transformText
 } from '../app/engine/stylometry.js';
 
@@ -53,6 +55,15 @@ const wrappedTransfer = buildCadenceTransfer(
   { mode: 'synthetic', mod: { sent: 0, cont: 1, punc: 0 }, strength: 0.76 }
 );
 assert(transformed.includes("don't") || transformed.includes("can't"));
+
+const contractedSemanticSource = "I'm not opening the west door because I don't have the badge and it isn't ready.";
+const expandedSemanticOutput = 'I am not opening the west door because I do not have the badge and it is not ready.';
+const contractedSourceIR = segmentTextToIR(contractedSemanticSource, { literals: [] });
+const contractedSemanticAudit = buildSemanticAuditBundle(contractedSourceIR, expandedSemanticOutput, { literals: [] });
+assert(contractedSemanticAudit.semanticAudit.propositionCoverage >= 0.9);
+assert(contractedSemanticAudit.semanticAudit.actorCoverage >= 0.9);
+assert(contractedSemanticAudit.semanticAudit.actionCoverage >= 0.9);
+assert(contractedSemanticAudit.semanticAudit.objectCoverage >= 0.9);
 
 const baseProfile = extractCadenceProfile(
   "Honestly, I kept circling the point because I wasn't ready to say the hard part."

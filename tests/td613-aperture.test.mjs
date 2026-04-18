@@ -129,6 +129,29 @@ assert(transferReview.reasons.some((reason) => /warning pressure/i.test(reason))
 assert(transferReview.warningSignals.includes('enforcement-framing'));
 assert.equal(transferReview.apertureAudit.generatorFault, false);
 
+const semanticLockedReview = reviewTD613ApertureTransfer({
+  sourceText: 'I do not want the west door opened yet.',
+  outputText: "I don't want the west door opened yet.",
+  shellMode: 'borrowed',
+  retrieval: true,
+  semanticRisk: 0.12,
+  semanticLockIntact: true,
+  visibleShift: false,
+  nonTrivialShift: false,
+  protectedAnchorIntegrity: 1,
+  propositionCoverage: 1,
+  actorCoverage: 1,
+  actionCoverage: 1,
+  objectCoverage: 1
+});
+assert.equal(semanticLockedReview.semanticLockIntact, true);
+assert.equal(semanticLockedReview.semanticCoverageRisk, 0);
+assert.equal(semanticLockedReview.observabilityDeficit, 0);
+assert.equal(semanticLockedReview.redundancyInflation, 0);
+assert.equal(semanticLockedReview.capacityPressure, 0);
+assert(!semanticLockedReview.warningSignals.includes('semantic-compression'));
+assert(!semanticLockedReview.warningSignals.includes('surface-close'));
+
 const sparkPlan = buildTD613ApertureProjectionPlan({
   personaId: 'spark',
   sourceProfile: { avgSentenceLength: 13, contractionDensity: 0.02, punctuationDensity: 0.08 },

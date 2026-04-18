@@ -313,6 +313,16 @@ If no candidate clears the class-specific rewrite bar honestly, TCP now publishe
 
 It is not supposed to ghostwrite the passage or quietly flatten a stronger candidate back toward source just because a safer shallow surface exists.
 
+## Semantic Lock
+
+`Generator V2` now exposes a semantic lock path for landed candidates whose proposition, actor, action, and object coverage all clear the class floor while the semantic audit remains bounded. When that lock holds:
+
+- V2 zeroes stylistic artifact penalties during candidate scoring and toolability scoring
+- contraction-equivalent forms are normalized before semantic role comparison so contracted and expanded clauses stay comparable
+- `TD613 Aperture` widens instead of narrowing: semantic-compression and surface-close warnings are suppressed, and semantic coverage pressure no longer inflates observability, redundancy, or capacity pressure on its own
+
+The intent is not to hide ugly text. The intent is to stop treating high-drift but semantically intact rewrites as automatically suspect just because they look stranger on the surface.
+
 ## Runtime field grammar
 
 `Patch 28.3` promotes the field registry into a runtime grammar layer. `browser-main.js` now derives a compact presentation summary for the major public surfaces:
