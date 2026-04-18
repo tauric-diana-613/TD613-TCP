@@ -5870,3 +5870,394 @@ body[data-page-kind="gateway"] .ingress-forensic-value {
     padding-right: 2px;
   }
 }
+
+/* Patch 30.5.2 / chamber compaction + anti-corporate density pass */
+
+body[data-page-kind="homebase"] .shell,
+body[data-page-kind="personas"] .shell,
+body[data-page-kind="readout"] .shell,
+body[data-page-kind="deck"] .shell,
+body[data-page-kind="trainer"] .shell {
+  max-width: 1088px;
+  padding: 10px 10px 16px;
+}
+
+body[data-page-kind="homebase"] .station-chamber-homebase {
+  grid-template-columns: minmax(0, 1.28fr) 272px;
+}
+
+body[data-page-kind="deck"] .station-chamber-deck {
+  grid-template-columns: minmax(0, 1.38fr) 248px;
+}
+
+body[data-page-kind="readout"] .station-chamber-readout {
+  grid-template-columns: minmax(0, 1.12fr) 272px;
+}
+
+body[data-page-kind="personas"] .station-chamber-personas {
+  grid-template-columns: minmax(264px, 0.76fr) minmax(0, 1.24fr);
+}
+
+body[data-page-kind="trainer"] .station-chamber-trainer {
+  grid-template-columns: minmax(0, 1.18fr) 276px;
+}
+
+body[data-page-kind="homebase"] .active-bench,
+body[data-page-kind="personas"] .active-bench,
+body[data-page-kind="readout"] .active-bench,
+body[data-page-kind="deck"] .active-bench,
+body[data-page-kind="trainer"] .active-bench,
+body[data-page-kind="homebase"] .evidence-spine,
+body[data-page-kind="personas"] .evidence-spine,
+body[data-page-kind="readout"] .evidence-spine,
+body[data-page-kind="deck"] .evidence-spine,
+body[data-page-kind="trainer"] .evidence-spine,
+body[data-page-kind="homebase"] .homebase-active-grid,
+body[data-page-kind="trainer"] .trainer-active-grid {
+  gap: 10px;
+}
+
+body[data-page-kind="homebase"] .homebase-active-grid {
+  grid-template-columns: minmax(228px, 0.72fr) minmax(0, 1.28fr);
+}
+
+body[data-page-kind="trainer"] .trainer-active-grid {
+  grid-template-columns: minmax(212px, 0.74fr) minmax(0, 1.26fr);
+}
+
+body[data-page-kind="trainer"] .trainer-grid {
+  grid-template-columns: minmax(0, 1.06fr) minmax(228px, 0.64fr);
+  gap: 10px;
+}
+
+body[data-page-kind="readout"] .readout-layout {
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 10px;
+}
+
+body[data-page-kind="homebase"] .station-masthead-copy,
+body[data-page-kind="personas"] .station-masthead-copy,
+body[data-page-kind="readout"] .station-masthead-copy,
+body[data-page-kind="deck"] .station-masthead-copy,
+body[data-page-kind="trainer"] .station-masthead-copy {
+  grid-template-columns: auto 1fr;
+  align-items: end;
+  gap: 3px 12px;
+}
+
+body[data-page-kind="homebase"] .station-masthead-copy h1,
+body[data-page-kind="personas"] .station-masthead-copy h1,
+body[data-page-kind="readout"] .station-masthead-copy h1,
+body[data-page-kind="deck"] .station-masthead-copy h1,
+body[data-page-kind="trainer"] .station-masthead-copy h1 {
+  font-size: clamp(16px, 2vw, 22px);
+  letter-spacing: 0.16em;
+}
+
+body[data-page-kind="homebase"] .hero-station-line,
+body[data-page-kind="personas"] .hero-station-line,
+body[data-page-kind="readout"] .hero-station-line,
+body[data-page-kind="deck"] .hero-station-line,
+body[data-page-kind="trainer"] .hero-station-line {
+  align-self: center;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+}
+
+body[data-page-kind="homebase"] .station-masthead-copy .lead,
+body[data-page-kind="personas"] .station-masthead-copy .lead,
+body[data-page-kind="readout"] .station-masthead-copy .lead,
+body[data-page-kind="deck"] .station-masthead-copy .lead,
+body[data-page-kind="trainer"] .station-masthead-copy .lead {
+  display: none;
+}
+
+.chamber-header {
+  padding: 8px 10px 7px;
+  clip-path: polygon(0 14px, 14px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 6px 100%, 0 calc(100% - 6px));
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.34),
+    0 0 14px rgba(var(--room-accent-rgb), 0.07),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.chamber-header .station-masthead {
+  padding: 0 0 4px;
+}
+
+.chamber-header .station-statusrail {
+  padding: 5px 0;
+}
+
+.chamber-header .station-nav {
+  padding: 6px 0 0;
+}
+
+body[data-page-kind="homebase"] .station-statusrail .console-status,
+body[data-page-kind="homebase"] .station-statusrail .statepill,
+body[data-page-kind="personas"] .station-statusrail .console-status,
+body[data-page-kind="personas"] .station-statusrail .statepill,
+body[data-page-kind="readout"] .station-statusrail .console-status,
+body[data-page-kind="readout"] .station-statusrail .statepill,
+body[data-page-kind="deck"] .station-statusrail .console-status,
+body[data-page-kind="deck"] .station-statusrail .statepill,
+body[data-page-kind="trainer"] .station-statusrail .console-status,
+body[data-page-kind="trainer"] .station-statusrail .statepill {
+  min-height: 22px;
+  padding: 0 7px;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+}
+
+body[data-page-kind="homebase"] .station-nav .top-tab,
+body[data-page-kind="personas"] .station-nav .top-tab,
+body[data-page-kind="readout"] .station-nav .top-tab,
+body[data-page-kind="deck"] .station-nav .top-tab,
+body[data-page-kind="trainer"] .station-nav .top-tab {
+  min-height: 28px;
+  padding: 0 8px;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  gap: 6px;
+}
+
+button {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.field-randomizer,
+.swap-medallion {
+  width: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  height: 32px;
+  font-size: 16px;
+}
+
+.swap-medallion {
+  top: 66px;
+}
+
+body[data-page-kind="homebase"] .panel,
+body[data-page-kind="personas"] .panel,
+body[data-page-kind="readout"] .panel,
+body[data-page-kind="deck"] .panel,
+body[data-page-kind="trainer"] .panel {
+  padding: 12px;
+}
+
+body[data-page-kind="homebase"] .field,
+body[data-page-kind="personas"] .field,
+body[data-page-kind="readout"] .field,
+body[data-page-kind="deck"] .field,
+body[data-page-kind="trainer"] .field,
+body[data-page-kind="homebase"] .trainer-surface,
+body[data-page-kind="personas"] .trainer-surface,
+body[data-page-kind="readout"] .trainer-surface,
+body[data-page-kind="deck"] .trainer-surface,
+body[data-page-kind="trainer"] .trainer-surface,
+body[data-page-kind="homebase"] .metric,
+body[data-page-kind="personas"] .metric,
+body[data-page-kind="readout"] .metric,
+body[data-page-kind="deck"] .metric,
+body[data-page-kind="trainer"] .metric,
+body[data-page-kind="homebase"] .harbor-box,
+body[data-page-kind="personas"] .harbor-box,
+body[data-page-kind="readout"] .harbor-box,
+body[data-page-kind="deck"] .harbor-box,
+body[data-page-kind="trainer"] .harbor-box,
+body[data-page-kind="homebase"] .ledger-stage,
+body[data-page-kind="personas"] .ledger-stage,
+body[data-page-kind="readout"] .ledger-stage,
+body[data-page-kind="deck"] .ledger-stage,
+body[data-page-kind="trainer"] .ledger-stage,
+body[data-page-kind="homebase"] .bay-profile,
+body[data-page-kind="personas"] .bay-profile,
+body[data-page-kind="readout"] .bay-profile,
+body[data-page-kind="deck"] .bay-profile,
+body[data-page-kind="trainer"] .bay-profile,
+body[data-page-kind="personas"] .persona,
+body[data-page-kind="deck"] .shell-duel,
+body[data-page-kind="gateway"] .gateway-card {
+  border-radius: 12px;
+  clip-path: polygon(0 10px, 10px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 6px 100%, 0 calc(100% - 6px));
+}
+
+body[data-page-kind="homebase"] .field::after,
+body[data-page-kind="personas"] .field::after,
+body[data-page-kind="readout"] .metric::after,
+body[data-page-kind="readout"] .harbor-box::after,
+body[data-page-kind="readout"] .ledger-stage::after,
+body[data-page-kind="deck"] .field::after,
+body[data-page-kind="deck"] .bay-profile::after,
+body[data-page-kind="deck"] .shell-duel::after,
+body[data-page-kind="personas"] .persona::after,
+body[data-page-kind="trainer"] .field::after,
+body[data-page-kind="trainer"] .trainer-surface::after {
+  left: 12px;
+  right: auto;
+  width: 92px;
+  top: 9px;
+  background: linear-gradient(90deg, rgba(var(--room-accent-rgb), 0.28), rgba(var(--room-secondary-rgb), 0.04));
+}
+
+body[data-page-kind="homebase"] textarea,
+body[data-page-kind="personas"] textarea,
+body[data-page-kind="readout"] textarea,
+body[data-page-kind="deck"] textarea,
+body[data-page-kind="trainer"] textarea {
+  min-height: 148px;
+  padding: 11px 12px;
+  font-size: 13px;
+  line-height: 1.54;
+}
+
+body[data-page-kind="homebase"] textarea[readonly],
+body[data-page-kind="personas"] textarea[readonly],
+body[data-page-kind="readout"] textarea[readonly],
+body[data-page-kind="deck"] textarea[readonly],
+body[data-page-kind="trainer"] textarea[readonly] {
+  min-height: 108px;
+}
+
+body[data-page-kind="deck"] #voiceA,
+body[data-page-kind="deck"] #voiceB,
+body[data-page-kind="trainer"] #trainerCorpusInput,
+body[data-page-kind="trainer"] #trainerGeneratedOutput,
+body[data-page-kind="homebase"] #personaComparisonText,
+body[data-page-kind="homebase"] #cadenceLockCorpus {
+  min-height: 140px;
+}
+
+body[data-page-kind="deck"] .bay-profile {
+  min-height: 84px;
+}
+
+body[data-page-kind="deck"] .shell-duel {
+  margin-top: 10px;
+  padding: 11px;
+}
+
+body[data-page-kind="deck"] .duel-empty {
+  min-height: 88px;
+  padding: 10px 11px;
+}
+
+body[data-page-kind="deck"][data-analysis-revealed="false"] .shell-duel.analysis-gated,
+body[data-analysis-revealed="false"] .shell-duel.analysis-gated {
+  min-height: 108px;
+}
+
+body[data-analysis-revealed="false"] .field-notice.analysis-gated {
+  min-height: 52px;
+}
+
+body[data-analysis-revealed="false"] .governed-exposure-panel.analysis-gated {
+  min-height: 88px;
+}
+
+body[data-analysis-revealed="false"] .results.analysis-gated {
+  min-height: 72px;
+}
+
+body[data-analysis-revealed="false"] .harbor-box.analysis-gated {
+  min-height: 80px;
+}
+
+body[data-analysis-revealed="false"] .ledger-stage.analysis-gated {
+  min-height: 94px;
+}
+
+body[data-page-kind="readout"][data-analysis-revealed="false"] .field-notice.analysis-gated {
+  min-height: 48px;
+}
+
+body[data-page-kind="readout"][data-analysis-revealed="false"] .governed-exposure-panel.analysis-gated {
+  min-height: 94px;
+}
+
+body[data-page-kind="readout"][data-analysis-revealed="false"] .results.analysis-gated {
+  min-height: 76px;
+}
+
+body[data-page-kind="readout"][data-analysis-revealed="false"] .harbor-box.analysis-gated {
+  min-height: 84px;
+}
+
+body[data-page-kind="readout"][data-analysis-revealed="false"] .ledger-stage.analysis-gated {
+  min-height: 98px;
+}
+
+body[data-page-kind="homebase"] .homebase-worn-mask-empty,
+body[data-page-kind="personas"] .persona-preview-empty,
+body[data-page-kind="trainer"] .trainer-bridge-empty {
+  min-height: 84px;
+  padding: 10px 12px;
+}
+
+body[data-page-kind="homebase"] .homebase-worn-mask-card,
+body[data-page-kind="personas"] .persona-preview-grid {
+  grid-template-columns: 126px minmax(0, 1fr);
+}
+
+body[data-page-kind="personas"] .persona-shelf-panel .personagrid,
+body[data-page-kind="personas"] .personagrid {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+body[data-page-kind="gateway"] .gateway-head {
+  padding: 12px 14px 14px;
+}
+
+body[data-page-kind="gateway"] .gateway-grid {
+  grid-template-columns: repeat(auto-fit, minmax(188px, 1fr));
+  gap: 10px;
+}
+
+body[data-page-kind="gateway"] .gateway-card {
+  min-height: 126px;
+  padding: 12px 12px 13px;
+}
+
+body[data-page-kind="gateway"] .gateway-card h3 {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+}
+
+body[data-page-kind="gateway"] .gateway-card p {
+  font-size: 0.7rem;
+  line-height: 1.42;
+  max-width: 24ch;
+}
+
+body[data-page-kind="gateway"] .gateway-summary {
+  max-width: 34ch;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 900px) {
+  body[data-page-kind="homebase"] .station-masthead-copy,
+  body[data-page-kind="personas"] .station-masthead-copy,
+  body[data-page-kind="readout"] .station-masthead-copy,
+  body[data-page-kind="deck"] .station-masthead-copy,
+  body[data-page-kind="trainer"] .station-masthead-copy {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  body[data-page-kind="homebase"] .station-chamber-homebase,
+  body[data-page-kind="deck"] .station-chamber-deck,
+  body[data-page-kind="readout"] .station-chamber-readout,
+  body[data-page-kind="personas"] .station-chamber-personas,
+  body[data-page-kind="trainer"] .station-chamber-trainer,
+  body[data-page-kind="homebase"] .homebase-active-grid,
+  body[data-page-kind="trainer"] .trainer-active-grid,
+  body[data-page-kind="readout"] .readout-layout,
+  body[data-page-kind="trainer"] .trainer-grid {
+    grid-template-columns: 1fr;
+  }
+}
