@@ -5389,6 +5389,339 @@ body[data-page-kind="trainer"] .trainer-bridge-empty {
     linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.06) 100%);
 }
 
+/* Patch 30.5.1 / alien capture escalation rewrite */
+
+body {
+  --capture-rgb: 116, 234, 255;
+  --capture-secondary-rgb: 116, 234, 255;
+}
+
+body[data-analysis-result="weak-signal"] {
+  --capture-rgb: 116, 234, 255;
+  --capture-secondary-rgb: 116, 234, 255;
+}
+
+body[data-analysis-result="hold-branch"] {
+  --capture-rgb: 255, 179, 92;
+  --capture-secondary-rgb: 255, 179, 92;
+}
+
+body[data-analysis-result="criticality"] {
+  --capture-rgb: 220, 38, 38;
+  --capture-secondary-rgb: 116, 234, 255;
+}
+
+body[data-analysis-result="passage"] {
+  --capture-rgb: 188, 255, 138;
+  --capture-secondary-rgb: 116, 234, 255;
+}
+
+.station-statusrail,
+.readout-strip {
+  position: relative;
+  isolation: isolate;
+  transform-origin: center top;
+}
+
+.station-statusrail > *,
+.readout-strip > * {
+  position: relative;
+  z-index: 1;
+}
+
+.station-statusrail::before,
+.station-statusrail::after,
+.readout-strip::before,
+.readout-strip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+}
+
+body[data-analysis-event="capture"] .station-statusrail,
+body[data-analysis-event="capture"] .readout-strip {
+  animation: alien-capture-wake 400ms cubic-bezier(0.22, 0.92, 0.24, 0.98) both;
+}
+
+body[data-analysis-event="capture"] .station-statusrail::after,
+body[data-analysis-event="capture"] .readout-strip::after {
+  top: -18%;
+  right: 0;
+  bottom: auto;
+  left: 0;
+  height: 24px;
+  opacity: 1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(var(--capture-rgb), 0) 0%,
+      rgba(var(--capture-rgb), 0.12) 24%,
+      rgba(var(--capture-rgb), 0.9) 52%,
+      rgba(var(--capture-secondary-rgb), 0.18) 74%,
+      rgba(var(--capture-rgb), 0) 100%
+    );
+  box-shadow:
+    0 0 18px rgba(var(--capture-rgb), 0.22),
+    0 0 28px rgba(var(--capture-secondary-rgb), 0.12);
+  animation: alien-capture-scan 520ms cubic-bezier(0.16, 0.88, 0.24, 1) 1 both;
+}
+
+body[data-decision="hold-branch"] .station-statusrail,
+body[data-decision="hold-branch"] .readout-strip {
+  border-color: rgba(255, 179, 92, 0.24);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 179, 92, 0.08),
+    0 0 24px rgba(255, 179, 92, 0.08),
+    inset 0 0 28px rgba(255, 179, 92, 0.03);
+  animation: hold-branch-restraint 4.4s ease-in-out infinite;
+}
+
+body[data-decision="hold-branch"] .station-statusrail::before,
+body[data-decision="hold-branch"] .readout-strip::before {
+  opacity: 0.42;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(255, 179, 92, 0.02) 24%,
+      rgba(255, 179, 92, 0.14) 50%,
+      rgba(255, 179, 92, 0.02) 76%,
+      transparent 100%
+    );
+  background-size: 100% 180%;
+  animation: hold-branch-hitch 5.4s linear infinite;
+}
+
+body[data-decision="hold-branch"] #decisionTone,
+body[data-decision="hold-branch"] #routeState,
+body[data-decision="hold-branch"] #routePressureCard,
+body[data-decision="hold-branch"] #harborBox {
+  border-color: rgba(255, 179, 92, 0.34);
+  box-shadow:
+    0 0 0 1px rgba(255, 179, 92, 0.08),
+    0 0 18px rgba(255, 179, 92, 0.12),
+    inset 0 0 16px rgba(255, 179, 92, 0.04);
+}
+
+body[data-decision="criticality"]::after {
+  background:
+    radial-gradient(circle at 18% 8%, rgba(116, 234, 255, 0.08), transparent 16%),
+    radial-gradient(circle at 50% 50%, transparent 56%, rgba(220, 38, 38, 0.08) 80%, rgba(220, 38, 38, 0.18) 100%),
+    linear-gradient(90deg, rgba(220, 38, 38, 0.18) 0%, transparent 12%, transparent 88%, rgba(220, 38, 38, 0.18) 100%),
+    linear-gradient(180deg, rgba(220, 38, 38, 0.16) 0%, transparent 14%, transparent 86%, rgba(220, 38, 38, 0.18) 100%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.82 0 0 0 0 0.9 0 0 0 0 1 0 0 0 0.38 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: auto, auto, auto, auto, 240px 240px;
+  opacity: 0.86;
+}
+
+body[data-decision="criticality"] #decisionTone,
+body[data-decision="criticality"] #similarityCard,
+body[data-decision="criticality"] #routePressureCard {
+  border-color: rgba(220, 38, 38, 0.42);
+  background:
+    radial-gradient(circle at 86% 18%, rgba(116, 234, 255, 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(34, 7, 12, 0.92) 0%, rgba(12, 4, 7, 0.985) 100%);
+  box-shadow:
+    0 0 0 1px rgba(220, 38, 38, 0.08),
+    0 0 28px rgba(220, 38, 38, 0.18),
+    inset 0 0 24px rgba(220, 38, 38, 0.08),
+    inset 0 0 16px rgba(116, 234, 255, 0.04);
+  animation: criticality-burn 2.8s ease-in-out infinite;
+}
+
+body[data-decision="criticality"] #routeState {
+  border-color: rgba(220, 38, 38, 0.34);
+  box-shadow:
+    0 0 18px rgba(220, 38, 38, 0.14),
+    inset 0 0 12px rgba(220, 38, 38, 0.05);
+}
+
+body[data-decision="criticality"] #decisionTone,
+body[data-decision="criticality"] #similarityCard .val,
+body[data-decision="criticality"] #routePressureCard .val {
+  text-shadow:
+    0 0 12px rgba(220, 38, 38, 0.28),
+    0 0 18px rgba(116, 234, 255, 0.14);
+}
+
+body[data-decision="passage"] .station-statusrail,
+body[data-decision="passage"] .readout-strip {
+  border-color: rgba(188, 255, 138, 0.26);
+  box-shadow:
+    inset 0 0 0 1px rgba(188, 255, 138, 0.08),
+    0 0 26px rgba(188, 255, 138, 0.12),
+    0 0 18px rgba(116, 234, 255, 0.08);
+}
+
+body[data-decision="passage"] #decisionTone,
+body[data-decision="passage"] #routeState,
+body[data-decision="passage"] #similarityCard,
+body[data-decision="passage"] #routePressureCard {
+  border-color: rgba(188, 255, 138, 0.34);
+  box-shadow:
+    0 0 0 1px rgba(188, 255, 138, 0.08),
+    0 0 20px rgba(188, 255, 138, 0.12),
+    inset 0 0 18px rgba(116, 234, 255, 0.04);
+}
+
+body[data-decision-arrival="passage"] .station-statusrail::before,
+body[data-decision-arrival="passage"] .readout-strip::before {
+  top: -24%;
+  right: 0;
+  bottom: auto;
+  left: 0;
+  height: 28px;
+  opacity: 1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(188, 255, 138, 0) 0%,
+      rgba(188, 255, 138, 0.18) 26%,
+      rgba(188, 255, 138, 1) 52%,
+      rgba(116, 234, 255, 0.24) 74%,
+      rgba(188, 255, 138, 0) 100%
+    );
+  box-shadow:
+    0 0 22px rgba(188, 255, 138, 0.42),
+    0 0 42px rgba(116, 234, 255, 0.16);
+  animation: passage-release-sweep 980ms cubic-bezier(0.22, 0.88, 0.22, 1) 1 both;
+}
+
+.analysis-gated {
+  --analysis-stagger: 0ms;
+  transform-origin: center top;
+}
+
+body[data-analysis-event="capture"][data-analysis-revealed="true"] .analysis-gated:not([hidden]) {
+  animation: analysis-unseal 420ms cubic-bezier(0.2, 0.9, 0.24, 1) both;
+  animation-delay: var(--analysis-stagger, 0ms);
+}
+
+body[data-analysis-event="capture"][data-analysis-revealed="true"] .analysis-gated:not([hidden])::after {
+  animation: analysis-seam-glint 420ms cubic-bezier(0.2, 0.9, 0.24, 1) both;
+  animation-delay: var(--analysis-stagger, 0ms);
+}
+
+@keyframes alien-capture-wake {
+  0% {
+    opacity: 0.72;
+    transform: scale(0.98);
+    filter: saturate(0.72) brightness(0.88);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: saturate(1) brightness(1);
+  }
+}
+
+@keyframes alien-capture-scan {
+  0% {
+    transform: translateY(-155%);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(260%);
+    opacity: 0;
+  }
+}
+
+@keyframes hold-branch-restraint {
+  0%, 100% {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 179, 92, 0.08),
+      0 0 18px rgba(255, 179, 92, 0.06),
+      inset 0 0 18px rgba(255, 179, 92, 0.025);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 179, 92, 0.12),
+      0 0 30px rgba(255, 179, 92, 0.12),
+      inset 0 0 26px rgba(255, 179, 92, 0.05);
+  }
+}
+
+@keyframes hold-branch-hitch {
+  0% {
+    transform: translateY(-118%);
+  }
+  46% {
+    transform: translateY(8%);
+  }
+  52% {
+    transform: translateY(8%);
+  }
+  100% {
+    transform: translateY(132%);
+  }
+}
+
+@keyframes criticality-burn {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1px rgba(220, 38, 38, 0.08),
+      0 0 22px rgba(220, 38, 38, 0.16),
+      inset 0 0 18px rgba(220, 38, 38, 0.06),
+      inset 0 0 14px rgba(116, 234, 255, 0.04);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(220, 38, 38, 0.12),
+      0 0 32px rgba(220, 38, 38, 0.24),
+      inset 0 0 24px rgba(220, 38, 38, 0.1),
+      inset 0 0 16px rgba(116, 234, 255, 0.06);
+  }
+}
+
+@keyframes passage-release-sweep {
+  0% {
+    transform: translateY(-165%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(245%);
+    opacity: 0;
+  }
+}
+
+@keyframes analysis-unseal {
+  0% {
+    opacity: 0.28;
+    transform: translateY(8px) scale(0.985);
+    filter: saturate(0.72) brightness(0.84);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: saturate(1) brightness(1);
+  }
+}
+
+@keyframes analysis-seam-glint {
+  0% {
+    opacity: 0;
+    filter: brightness(0.6);
+  }
+  35% {
+    opacity: 1;
+    filter: brightness(1.35);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
 body[data-page-kind="homebase"] .homebase-active-grid,
 body[data-page-kind="trainer"] .trainer-active-grid {
   grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);

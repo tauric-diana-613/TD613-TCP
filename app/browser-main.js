@@ -119,6 +119,9 @@
   const STORAGE_KEY = 'tcp.savedPersonas.v1';
   const LOCK_STORAGE_KEY = 'tcp.cadenceLocks.v1';
   const ACTIVE_LOCK_STORAGE_KEY = 'tcp.activeCadenceLock.v1';
+  const ANALYSIS_CAPTURE_MS = 460;
+  const PASSAGE_RELEASE_MS = 1180;
+  const ANALYSIS_STAGGER_MS = 70;
   function clamp01(value) {
     if (!Number.isFinite(value)) {
       return 0;
@@ -844,11 +847,13 @@
   let activeArtifactTab = PAGE_KIND === 'gateway'
     ? resolveArtifactTabFromHash(window.location.hash)
     : PAGE_ARTIFACT_TAB;
-  let analysisRevealed = false;
-  let shellDuelPulseTimer = null;
-  let swapButtonPulseTimer = null;
-  let statusCueTimer = null;
-  let lastSwapCadenceAudit = null;
+    let analysisRevealed = false;
+    let shellDuelPulseTimer = null;
+    let swapButtonPulseTimer = null;
+    let statusCueTimer = null;
+    let analysisEventTimer = null;
+    let decisionArrivalTimer = null;
+    let lastSwapCadenceAudit = null;
   let baySampleIds = {
     A: defaults.voiceA_sample_id || null,
     B: defaults.voiceB_sample_id || null
@@ -1664,6 +1669,66 @@
     if (statusCueTimer) {
       window.clearTimeout(statusCueTimer);
       statusCueTimer = null;
+    }
+  }
+
+  function clearAnalysisEventTimer() {
+    if (analysisEventTimer) {
+      window.clearTimeout(analysisEventTimer);
+      analysisEventTimer = null;
+    }
+  }
+
+  function clearDecisionArrivalTimer() {
+    if (decisionArrivalTimer) {
+      window.clearTimeout(decisionArrivalTimer);
+      decisionArrivalTimer = null;
+    }
+  }
+
+  function isVisibleAnalysisGate(node) {
+    if (!node || node.hidden) {
+      return false;
+    }
+    const style = window.getComputedStyle(node);
+    return style.display !== 'none' && style.visibility !== 'hidden';
+  }
+
+  function applyAnalysisStagger() {
+    let order = 0;
+    document.querySelectorAll('.analysis-gated').forEach((node) => {
+      if (isVisibleAnalysisGate(node)) {
+        node.style.setProperty('--analysis-stagger', `${order * ANALYSIS_STAGGER_MS}ms`);
+        order += 1;
+      } else {
+        node.style.removeProperty('--analysis-stagger');
+      }
+    });
+  }
+
+  function syncAnalysisPresentation({ interactive = false, canCapture = false, previousDecision = 'weak-signal' } = {}) {
+    const nextDecision = document.body.dataset.decision || 'weak-signal';
+    document.body.dataset.analysisResult = nextDecision;
+    clearAnalysisEventTimer();
+    clearDecisionArrivalTimer();
+    document.body.dataset.analysisEvent = 'idle';
+    document.body.dataset.decisionArrival = 'none';
+    if (!interactive || !canCapture) {
+      return;
+    }
+    applyAnalysisStagger();
+    void document.body.offsetWidth;
+    document.body.dataset.analysisEvent = 'capture';
+    analysisEventTimer = window.setTimeout(() => {
+      document.body.dataset.analysisEvent = 'idle';
+      analysisEventTimer = null;
+    }, ANALYSIS_CAPTURE_MS);
+    if (nextDecision === 'passage' && previousDecision !== 'passage') {
+      document.body.dataset.decisionArrival = 'passage';
+      decisionArrivalTimer = window.setTimeout(() => {
+        document.body.dataset.decisionArrival = 'none';
+        decisionArrivalTimer = null;
+      }, PASSAGE_RELEASE_MS);
     }
   }
 
@@ -5229,6 +5294,7 @@
     applyGlyphMetadata($('decisionTone'), 'stateDecision');
     $('decisionTone').dataset.state = decision;
     document.body.dataset.decision = decision;
+    document.body.dataset.analysisResult = decision;
   }
 
   function updateHeroConsoleSolo(voiceState) {
@@ -5245,6 +5311,7 @@
     applyGlyphMetadata($('decisionTone'), 'stateDecision');
     $('decisionTone').dataset.state = 'hold-branch';
     document.body.dataset.decision = 'hold-branch';
+    document.body.dataset.analysisResult = 'hold-branch';
   }
 
   function resetMetricTones() {
@@ -5369,6 +5436,11 @@
     updateStatePills('buffered', 'weak-signal', { harbor: 'observe', forensicSchema });
     resetMetricTones();
     document.body.dataset.decision = 'weak-signal';
+    document.body.dataset.analysisResult = 'weak-signal';
+    clearAnalysisEventTimer();
+    clearDecisionArrivalTimer();
+    document.body.dataset.analysisEvent = 'idle';
+    document.body.dataset.decisionArrival = 'none';
   }
 
   function renderSoloReadoutCore({
@@ -5445,6 +5517,7 @@
     setMetricTone('routePressureCard', 'live');
     setMetricTone('custodyCard', 'live');
     document.body.dataset.decision = 'hold-branch';
+    document.body.dataset.analysisResult = 'hold-branch';
   }
 
   function renderSoloState(voiceState) {
@@ -5757,7 +5830,12 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function analyzeCadences(options = {}) {
-    const { reveal = analysisRevealed } = options;
+    const {
+      reveal = analysisRevealed,
+      presentation = 'silent'
+    } = options;
+    const interactive = presentation === 'interactive';
+    const previousDecision = document.body.dataset.decision || 'weak-signal';
     if (reveal && !analysisRevealed) {
       setAnalysisRevealState(true);
     }
@@ -5771,6 +5849,7 @@ DeltaE = ${ledger.reuse_gain}`;
     if (!voiceStateA.hasText && !voiceStateB.hasText) {
       document.body.dataset.bootStage = 'analyze-idle';
       renderIdleState();
+      syncAnalysisPresentation({ interactive: false, canCapture: false, previousDecision });
       setStatusMessage('Paste one voice or a pair, then press Analyze Cadences.');
       updateControls();
       renderPersonas();
@@ -5781,6 +5860,7 @@ DeltaE = ${ledger.reuse_gain}`;
       document.body.dataset.bootStage = 'analyze-solo';
       const soloState = voiceStateA.hasText ? voiceStateA : voiceStateB;
       renderSoloState(soloState);
+      syncAnalysisPresentation({ interactive, canCapture: true, previousDecision });
       setStatusMessage(`Solo witness complete in the ${SLOT_SHORT[soloState.slot]} bay. Save it as a persona or throw in a second voice for contrast.`);
       updateControls();
       renderPersonas();
@@ -5789,6 +5869,7 @@ DeltaE = ${ledger.reuse_gain}`;
 
     document.body.dataset.bootStage = 'analyze-pair';
     renderPairState(voiceStateA, voiceStateB);
+    syncAnalysisPresentation({ interactive, canCapture: true, previousDecision });
     setStatusMessage('Duel wake complete. Read the shell cards, try a swap, or save a persona.');
     updateControls();
     renderPersonas();
@@ -5797,7 +5878,7 @@ DeltaE = ${ledger.reuse_gain}`;
 
   function handleAnalyzeCadences() {
     clearSwapCadenceAudit();
-    analyzeCadences({ reveal: true });
+    analyzeCadences({ reveal: true, presentation: 'interactive' });
   }
 
   function setActiveVoice(slot) {
@@ -5942,7 +6023,7 @@ DeltaE = ${ledger.reuse_gain}`;
       return;
     }
     setArtifactTab('play', { updateHash: false });
-    analyzeCadences();
+    analyzeCadences({ reveal: analysisRevealed, presentation: 'silent' });
     setStatusMessage(`${persona.name} is now shaping the ${SLOT_SHORT[slot]} cadence shell. The text stayed put; only the cadence shell changed.`);
   }
 
@@ -6057,7 +6138,7 @@ DeltaE = ${ledger.reuse_gain}`;
       return;
     }
     setArtifactTab('play', { updateHash: false });
-    analyzeCadences();
+    analyzeCadences({ reveal: analysisRevealed, presentation: 'silent' });
     setStatusMessage(`${lock.name} sample one is now loaded into the ${SLOT_SHORT[slot]} bay.`);
   }
 
@@ -6122,7 +6203,7 @@ DeltaE = ${ledger.reuse_gain}`;
       B: shellA
     };
     const beforeSnapshot = readDeckSnapshot();
-    analyzeCadences({ reveal: true });
+    analyzeCadences({ reveal: true, presentation: 'interactive' });
     const afterSnapshot = readDeckSnapshot();
     const afterVoiceA = getVoiceState('A');
     const afterVoiceB = getVoiceState('B');
@@ -6154,7 +6235,7 @@ DeltaE = ${ledger.reuse_gain}`;
     };
     clearSwapCadenceAudit();
     syncBaySampleMetadata();
-    analyzeCadences();
+    analyzeCadences({ reveal: analysisRevealed, presentation: 'silent' });
     const focusTarget = activeVoice === 'A' ? $('voiceA') : $('voiceB');
     if (focusTarget && typeof focusTarget.focus === 'function') {
       focusTarget.focus({ preventScroll: true });
@@ -6193,7 +6274,7 @@ DeltaE = ${ledger.reuse_gain}`;
     bayShells[activeVoice] = createPersonaShell(persona);
     renderPersonas();
     updateControls();
-    analyzeCadences();
+    analyzeCadences({ reveal: true, presentation: 'interactive' });
     setStatusMessage(`${persona.name} was kept in this tab and assigned to the ${SLOT_SHORT[activeVoice]} bay.`);
   }
 
@@ -6244,7 +6325,7 @@ DeltaE = ${ledger.reuse_gain}`;
     syncBaySampleMetadata();
     renderVoiceProfiles();
     renderPersonas();
-    analyzeCadences({ reveal: keepRevealed });
+    analyzeCadences({ reveal: keepRevealed, presentation: 'silent' });
     setStatusMessage(
       keepRevealed
         ? 'Deck reset. Native cadences restored and both bays cleared for a new pair.'
@@ -7857,6 +7938,9 @@ DeltaE = ${ledger.reuse_gain}`;
     delete document.body.dataset.bootDegraded;
     document.body.dataset.bootStage = 'boot-start';
     setAnalysisRevealState(false);
+    document.body.dataset.analysisEvent = 'idle';
+    document.body.dataset.analysisResult = 'idle';
+    document.body.dataset.decisionArrival = 'none';
     const sessionSnapshot = loadSessionFlightState();
     const initialTab = PAGE_KIND === 'gateway' ? activeArtifactTab : PAGE_ARTIFACT_TAB;
     setArtifactTab(initialTab, { updateHash: PAGE_KIND !== 'gateway', replaceHash: !window.location.hash });
