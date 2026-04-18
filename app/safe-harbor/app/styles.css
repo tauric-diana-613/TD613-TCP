@@ -170,12 +170,12 @@ h2 {
 }
 
 h1 {
-  font-size: clamp(2.65rem, 4.4vw, 4.6rem);
-  letter-spacing: 0.05em;
+  font-size: clamp(2.1rem, 3.5vw, 3.6rem);
+  letter-spacing: 0.04em;
 }
 
 h2 {
-  font-size: clamp(1.7rem, 2.4vw, 2.5rem);
+  font-size: clamp(1.45rem, 2.1vw, 2.15rem);
   letter-spacing: 0.03em;
 }
 
@@ -207,7 +207,7 @@ select {
   letter-spacing: 1.5px;
   text-transform: uppercase;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.66rem;
 }
 
 .title-group {
@@ -219,31 +219,34 @@ select {
 
 .glyph-lock {
   position: relative;
-  flex: 0 0 72px;
-  width: 72px;
-  height: 72px;
+  flex: 0 0 62px;
+  width: 62px;
+  height: 62px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
+  border-radius: 0;
   border: 1px solid rgba(189, 147, 249, 0.28);
   background:
-    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12), transparent 35%),
-    radial-gradient(circle, rgba(189, 147, 249, 0.22), rgba(9, 11, 18, 0.88) 72%);
+    linear-gradient(135deg, transparent 0 18%, rgba(189, 147, 249, 0.1) 18% 18.8%, transparent 18.8% 100%),
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.08), transparent 35%),
+    linear-gradient(180deg, rgba(11, 13, 20, 0.96), rgba(6, 8, 13, 0.985));
   color: var(--accent-strong);
   font-family: var(--font-display);
-  font-size: 1.9rem;
+  font-size: 1.6rem;
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.04),
-    0 0 34px rgba(189, 147, 249, 0.14);
+    0 0 24px rgba(189, 147, 249, 0.12);
+  clip-path: polygon(0 16px, 16px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 10px 100%, 0 calc(100% - 10px));
   animation: glyph-breathe 5s ease-in-out infinite;
 }
 
 .glyph-lock::after {
   content: '';
   position: absolute;
-  inset: 7px;
-  border-radius: 50%;
-  border: 1px solid rgba(144, 231, 255, 0.16);
+  inset: 6px;
+  border-radius: 0;
+  border: 1px solid rgba(144, 231, 255, 0.14);
+  clip-path: polygon(0 10px, 10px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 6px 100%, 0 calc(100% - 6px));
 }
 
 .status-strip {
@@ -273,16 +276,17 @@ select {
 }
 
 .status-pill {
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(216, 225, 255, 0.14);
+  padding: 7px 10px;
+  border-radius: 0;
+  border: 1px solid rgba(90, 120, 170, 0.12);
   background:
-    linear-gradient(180deg, rgba(26, 18, 35, 0.92), rgba(11, 10, 16, 0.96));
+    linear-gradient(180deg, rgba(12, 14, 20, 0.94), rgba(6, 8, 13, 0.98));
   color: var(--text-bright);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-size: 0.68rem;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  font-size: 0.62rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  clip-path: polygon(0 7px, 7px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 7px), calc(100% - 7px) 100%, 5px 100%, 0 calc(100% - 5px));
 }
 
 .boot-alert {
@@ -1471,46 +1475,57 @@ h2 {
 }
 
 .chrome-grid {
-  gap: 22px;
-  padding: 16px clamp(14px, 2vw, 28px) 28px;
+  gap: 16px;
+  padding: 12px clamp(12px, 1.8vw, 24px) 22px;
 }
 
 .chrome-grid::before {
-  inset: 8px;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.035);
+  inset: 6px;
+  border-radius: 0;
+  border: 1px solid rgba(90, 120, 170, 0.07);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.016), transparent 20%),
-    radial-gradient(circle at top, rgba(207, 176, 255, 0.04), transparent 40%);
+    linear-gradient(180deg, rgba(220, 230, 244, 0.014), transparent 18%),
+    radial-gradient(circle at top, rgba(189, 147, 249, 0.035), transparent 42%);
+  clip-path: polygon(0 22px, 22px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 26px), calc(100% - 26px) 100%, 14px 100%, 0 calc(100% - 14px));
 }
 
 .masthead {
   top: 12px;
-  gap: 18px;
-  padding: 18px 22px;
-  border-radius: 18px;
-  border: 1px solid rgba(233, 230, 245, 0.08);
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 0;
+  border: 1px solid rgba(90, 120, 170, 0.12);
   background:
-    linear-gradient(180deg, rgba(12, 10, 16, 0.74), rgba(7, 7, 11, 0.94));
-  box-shadow: var(--shadow-panel);
-  backdrop-filter: blur(18px) saturate(120%);
+    linear-gradient(180deg, rgba(9, 11, 18, 0.88), rgba(5, 7, 12, 0.985));
+  box-shadow:
+    0 20px 42px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(220, 230, 244, 0.02);
+  backdrop-filter: blur(14px) saturate(110%);
+  clip-path: polygon(0 18px, 18px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 10px 100%, 0 calc(100% - 10px));
 }
 
 .masthead::before {
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03), transparent 16%, transparent 84%, rgba(154, 226, 255, 0.03)),
-    radial-gradient(circle at 8% 16%, rgba(165, 141, 103, 0.08), transparent 18%);
-  opacity: 0.7;
+    linear-gradient(128deg, transparent 0 18%, rgba(189, 147, 249, 0.06) 18% 18.6%, transparent 18.6% 70%, rgba(139, 233, 253, 0.04) 70% 70.6%, transparent 70.6% 100%),
+    radial-gradient(circle at 8% 16%, rgba(241, 250, 140, 0.05), transparent 16%);
+  opacity: 0.8;
 }
 
 .masthead::after {
-  display: none;
+  display: block;
+  top: 12px;
+  right: 14px;
+  left: auto;
+  bottom: auto;
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(189, 147, 249, 0.55), transparent);
 }
 
 .main-grid {
-  gap: 22px;
-  grid-template-columns: minmax(268px, 306px) minmax(0, 1fr) minmax(248px, 292px);
+  gap: 16px;
+  grid-template-columns: minmax(244px, 290px) minmax(0, 1fr) minmax(236px, 274px);
   grid-template-rows: auto auto;
 }
 
@@ -1529,15 +1544,19 @@ h2 {
 .dynamic-target,
 .footer-template {
   border: 1px solid rgba(90, 120, 170, 0.08);
-  background: linear-gradient(180deg, rgba(9, 11, 18, 0.84), rgba(7, 9, 15, 0.97));
-  box-shadow: none;
+  background: linear-gradient(180deg, rgba(9, 11, 18, 0.88), rgba(4, 6, 11, 0.985));
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(220, 230, 244, 0.015);
+  clip-path: polygon(0 14px, 14px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 8px 100%, 0 calc(100% - 8px));
+  overflow: hidden;
 }
 
 .panel,
 .dock {
-  padding: 20px 18px;
-  border-radius: 16px;
-  backdrop-filter: blur(14px) saturate(125%);
+  padding: 16px 14px;
+  border-radius: 0;
+  backdrop-filter: blur(12px) saturate(118%);
 }
 
 .surface-card,
@@ -1549,7 +1568,7 @@ h2 {
 .code-area,
 .footer-template,
 .dynamic-target {
-  border-radius: 12px;
+  border-radius: 0;
 }
 
 .panel::before,
@@ -1568,7 +1587,28 @@ h2 {
 .ingress-card::after,
 .data-stack::before,
 .metric-block::before {
-  display: none;
+  display: block;
+  inset: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, rgba(220, 230, 244, 0.018), transparent 16%),
+    linear-gradient(122deg, transparent 0 18%, rgba(189, 147, 249, 0.045) 18% 18.5%, transparent 18.5% 100%);
+  opacity: 0.84;
+}
+
+.panel::after,
+.dock::after,
+.surface-card::after,
+.forge-card::after,
+.ingress-step-panel::after,
+.ingress-console-panel::after,
+.ingress-card::after {
+  display: block;
+  top: 12px;
+  right: 12px;
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(189, 147, 249, 0.48), transparent);
 }
 
 .canon-panel,
@@ -1581,12 +1621,15 @@ h2 {
 .intake-card,
 .signature-card,
 .surface-card.accent-card {
-  background: linear-gradient(180deg, rgba(10, 9, 14, 0.8), rgba(7, 7, 11, 0.95));
+  background:
+    radial-gradient(circle at 100% 0%, rgba(189, 147, 249, 0.08), transparent 22%),
+    linear-gradient(180deg, rgba(9, 11, 18, 0.9), rgba(4, 6, 11, 0.985));
 }
 
 .reliquary-card {
   background:
-    linear-gradient(180deg, rgba(13, 11, 18, 0.86), rgba(8, 9, 14, 0.98));
+    radial-gradient(circle at 100% 0%, rgba(241, 250, 140, 0.07), transparent 20%),
+    linear-gradient(180deg, rgba(13, 11, 18, 0.9), rgba(6, 8, 13, 0.985));
   border-color: rgba(241, 250, 140, 0.18);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
@@ -1632,7 +1675,7 @@ h2 {
 .metric-row,
 .summary-row {
   gap: 20px;
-  padding: 11px 0;
+  padding: 9px 0;
 }
 
 .data-row + .data-row,
@@ -1668,12 +1711,14 @@ h2 {
 
 .reference-link-card {
   gap: 6px;
-  padding: 14px 0 14px 16px;
+  padding: 12px 12px 12px 16px;
   border-radius: 0;
-  border: 0;
-  border-left: 1px solid rgba(233, 230, 245, 0.1);
-  background: transparent;
-  box-shadow: none;
+  border: 1px solid rgba(90, 120, 170, 0.08);
+  border-left: 2px solid rgba(189, 147, 249, 0.28);
+  background:
+    linear-gradient(180deg, rgba(10, 12, 18, 0.78), rgba(7, 9, 14, 0.96));
+  clip-path: polygon(0 8px, 8px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 6px 100%, 0 calc(100% - 6px));
+  box-shadow: inset 0 1px 0 rgba(220, 230, 244, 0.015);
 }
 
 .reference-link-card + .reference-link-card {
@@ -1681,10 +1726,11 @@ h2 {
 }
 
 .reference-link-card:hover {
-  transform: none;
-  border-color: rgba(207, 176, 255, 0.28);
-  background: linear-gradient(90deg, rgba(207, 176, 255, 0.06), transparent 84%);
-  box-shadow: none;
+  transform: translateY(-1px);
+  border-color: rgba(189, 147, 249, 0.22);
+  background:
+    linear-gradient(180deg, rgba(14, 13, 22, 0.92), rgba(7, 9, 14, 0.98));
+  box-shadow: 0 0 18px rgba(189, 147, 249, 0.08);
 }
 
 .fold-panel,
@@ -1751,57 +1797,62 @@ h2 {
 .note,
 .ingress-note {
   color: var(--text-soft);
-  line-height: 1.8;
+  line-height: 1.66;
 }
 
 .control {
   min-height: 40px;
-  padding: 0 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(233, 230, 245, 0.11);
+  padding: 0 12px;
+  border-radius: 0;
+  border: 1px solid rgba(90, 120, 170, 0.12);
   background:
-    linear-gradient(180deg, rgba(20, 15, 28, 0.92), rgba(10, 9, 14, 0.96));
+    linear-gradient(180deg, rgba(13, 12, 20, 0.96), rgba(7, 9, 14, 0.985));
   font-size: 0.67rem;
-  letter-spacing: 0.19em;
-  box-shadow: none;
+  letter-spacing: 0.18em;
+  box-shadow:
+    inset 0 1px 0 rgba(220, 230, 244, 0.02),
+    0 0 0 rgba(0, 0, 0, 0);
+  clip-path: polygon(0 8px, 8px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 6px 100%, 0 calc(100% - 6px));
 }
 
 .control.secondary {
-  background: rgba(10, 10, 14, 0.34);
+  background: linear-gradient(180deg, rgba(9, 11, 18, 0.76), rgba(5, 7, 12, 0.94));
 }
 
 .control:hover:not(:disabled) {
-  transform: none;
-  border-color: rgba(207, 176, 255, 0.3);
+  transform: translateY(-1px);
+  border-color: rgba(189, 147, 249, 0.3);
   background:
-    linear-gradient(180deg, rgba(26, 18, 36, 0.96), rgba(11, 10, 16, 0.98));
-  box-shadow: none;
+    linear-gradient(180deg, rgba(18, 15, 28, 0.96), rgba(8, 9, 14, 0.985));
+  box-shadow: 0 0 16px rgba(189, 147, 249, 0.08);
 }
 
 input,
 textarea,
 select {
-  border-radius: 10px;
-  padding: 14px 14px;
-  border: 1px solid rgba(233, 230, 245, 0.09);
+  border-radius: 0;
+  padding: 12px 12px;
+  border: 1px solid rgba(90, 120, 170, 0.1);
   background:
-    linear-gradient(180deg, rgba(5, 5, 8, 0.94), rgba(10, 9, 14, 0.98));
-  box-shadow: none;
+    linear-gradient(180deg, rgba(4, 6, 10, 0.97), rgba(8, 10, 16, 0.995));
+  box-shadow:
+    inset 0 1px 0 rgba(220, 230, 244, 0.015);
+  clip-path: polygon(0 8px, 8px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 6px 100%, 0 calc(100% - 6px));
 }
 
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: rgba(207, 176, 255, 0.28);
-  box-shadow: 0 0 0 1px rgba(207, 176, 255, 0.12);
+  border-color: rgba(189, 147, 249, 0.3);
+  box-shadow: 0 0 0 1px rgba(189, 147, 249, 0.12), 0 0 18px rgba(139, 233, 253, 0.04);
 }
 
 textarea {
-  min-height: 280px;
-  padding: 18px 18px 20px;
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.9;
+  min-height: 248px;
+  padding: 16px 16px 18px;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  line-height: 1.75;
 }
 
 .code-area,
@@ -1816,7 +1867,7 @@ textarea {
 
 .proof-row {
   grid-template-columns: 136px 1fr;
-  padding: 12px 0;
+  padding: 9px 0;
   border-radius: 0;
   border: 0;
   background: transparent;
@@ -1834,33 +1885,37 @@ textarea {
 .ingress-membrane {
   padding: 18px clamp(16px, 3vw, 38px) 34px;
   background:
-    radial-gradient(circle at 12% 12%, rgba(165, 141, 103, 0.09), transparent 24%),
-    radial-gradient(circle at 84% 14%, rgba(145, 183, 199, 0.08), transparent 20%),
-    linear-gradient(180deg, rgba(2, 2, 5, 0.95), rgba(2, 2, 5, 0.985));
+    radial-gradient(circle at 12% 12%, rgba(189, 147, 249, 0.08), transparent 22%),
+    radial-gradient(circle at 84% 14%, rgba(139, 233, 253, 0.07), transparent 20%),
+    linear-gradient(180deg, rgba(2, 4, 8, 0.96), rgba(1, 2, 5, 0.992));
 }
 
 .ingress-shell {
   width: min(1400px, 100%);
-  padding: 24px clamp(18px, 3vw, 34px) 26px;
-  border-radius: 22px;
-  border: 1px solid rgba(233, 230, 245, 0.08);
+  padding: 18px clamp(16px, 2.6vw, 28px) 20px;
+  border-radius: 0;
+  border: 1px solid rgba(90, 120, 170, 0.12);
   background:
-    linear-gradient(180deg, rgba(11, 10, 15, 0.8), rgba(7, 7, 11, 0.97));
-  box-shadow: 0 32px 84px rgba(0, 0, 0, 0.42);
+    linear-gradient(180deg, rgba(9, 11, 18, 0.9), rgba(4, 6, 11, 0.992));
+  box-shadow:
+    0 28px 72px rgba(0, 0, 0, 0.44),
+    inset 0 1px 0 rgba(220, 230, 244, 0.02);
+  clip-path: polygon(0 20px, 20px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 22px), calc(100% - 22px) 100%, 12px 100%, 0 calc(100% - 12px));
 }
 
 .ingress-shell::before {
-  inset: 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  inset: 12px;
+  border-radius: 0;
+  border: 1px solid rgba(90, 120, 170, 0.08);
+  clip-path: polygon(0 12px, 12px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 8px 100%, 0 calc(100% - 8px));
 }
 
 .ingress-shell::after {
   inset: 0;
   background:
-    linear-gradient(90deg, transparent, rgba(207, 176, 255, 0.05), transparent),
-    radial-gradient(circle at 10% 16%, rgba(165, 141, 103, 0.07), transparent 18%);
-  opacity: 0.7;
+    linear-gradient(124deg, transparent 0 18%, rgba(189, 147, 249, 0.055) 18% 18.6%, transparent 18.6% 100%),
+    radial-gradient(circle at 10% 16%, rgba(139, 233, 253, 0.05), transparent 18%);
+  opacity: 0.82;
 }
 
 .ingress-head {
@@ -1873,38 +1928,39 @@ textarea {
 }
 
 .ingress-stage-rail {
-  gap: 0;
-  margin: 6px 0 22px;
-  border-top: 1px solid rgba(233, 230, 245, 0.08);
-  border-bottom: 1px solid rgba(233, 230, 245, 0.08);
+  gap: 8px;
+  margin: 6px 0 18px;
+  border-top: 0;
+  border-bottom: 0;
 }
 
 .ingress-stage-chip {
-  min-height: 50px;
-  padding: 15px 16px 13px;
-  border: 0;
-  border-right: 1px solid rgba(233, 230, 245, 0.08);
-  border-bottom: 2px solid transparent;
+  min-height: 42px;
+  padding: 11px 14px 10px;
+  border: 1px solid rgba(90, 120, 170, 0.08);
+  border-right: 1px solid rgba(90, 120, 170, 0.08);
+  border-bottom: 1px solid rgba(90, 120, 170, 0.08);
   border-radius: 0;
-  background: transparent;
+  background: linear-gradient(180deg, rgba(9, 11, 18, 0.7), rgba(5, 7, 12, 0.94));
   color: var(--text-faint);
   font-size: 0.65rem;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
+  clip-path: polygon(0 8px, 8px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 6px 100%, 0 calc(100% - 6px));
 }
 
 .ingress-stage-chip:last-child {
-  border-right: 0;
+  border-right: 1px solid rgba(90, 120, 170, 0.08);
 }
 
 .ingress-stage-chip.is-active {
-  border-bottom-color: rgba(207, 176, 255, 0.56);
-  background: linear-gradient(180deg, rgba(207, 176, 255, 0.08), transparent 74%);
+  border-color: rgba(189, 147, 249, 0.28);
+  background: linear-gradient(180deg, rgba(189, 147, 249, 0.12), rgba(8, 10, 15, 0.94));
   color: var(--text-bright);
-  box-shadow: none;
+  box-shadow: 0 0 16px rgba(189, 147, 249, 0.08);
 }
 
 .ingress-stage-chip.is-complete {
-  border-bottom-color: rgba(207, 234, 162, 0.42);
+  border-color: rgba(80, 250, 123, 0.24);
   color: var(--lime);
 }
 
@@ -1914,14 +1970,16 @@ textarea {
 
 .ingress-handshake-grid {
   grid-template-columns: minmax(0, 1.48fr) minmax(280px, 0.72fr);
-  gap: 24px;
+  gap: 18px;
   align-items: stretch;
 }
 
 .ingress-step-panel {
-  padding: clamp(22px, 3vw, 34px);
-  border-radius: 16px;
-  background: linear-gradient(180deg, rgba(10, 9, 14, 0.82), rgba(5, 5, 8, 0.97));
+  padding: clamp(18px, 2.4vw, 26px);
+  border-radius: 0;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(189, 147, 249, 0.07), transparent 18%),
+    linear-gradient(180deg, rgba(9, 11, 18, 0.88), rgba(4, 6, 11, 0.985));
 }
 
 .ingress-step-head {
@@ -1931,16 +1989,17 @@ textarea {
 
 #ingressStepPrompt {
   max-width: 11ch;
-  font-size: clamp(2.6rem, 5vw, 4.9rem);
+  font-size: clamp(2.1rem, 4.3vw, 3.9rem);
   line-height: 0.92;
 }
 
 .surface-state {
   align-self: flex-start;
   padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(233, 230, 245, 0.09);
-  background: rgba(8, 8, 12, 0.56);
+  border-radius: 0;
+  border: 1px solid rgba(90, 120, 170, 0.1);
+  background: rgba(8, 10, 15, 0.76);
+  clip-path: polygon(0 6px, 6px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 4px 100%, 0 calc(100% - 4px));
 }
 
 .ingress-step-support {
@@ -1965,20 +2024,20 @@ textarea {
 .ingress-console-panel {
   display: grid;
   gap: 16px;
-  padding: 10px 0 0 24px;
-  border: 0;
-  border-left: 1px solid rgba(233, 230, 245, 0.08);
+  padding: 16px 14px;
+  border: 1px solid rgba(90, 120, 170, 0.08);
+  border-left: 1px solid rgba(90, 120, 170, 0.08);
   border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
+  background: linear-gradient(180deg, rgba(8, 10, 16, 0.84), rgba(4, 6, 11, 0.97));
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .ingress-console-block {
-  padding: 16px 0;
+  padding: 12px 0;
   border: 0;
-  border-top: 1px solid rgba(233, 230, 245, 0.08);
-  border-bottom: 1px solid rgba(233, 230, 245, 0.08);
+  border-top: 1px solid rgba(90, 120, 170, 0.08);
+  border-bottom: 1px solid rgba(90, 120, 170, 0.08);
   border-radius: 0;
   background: transparent;
 }
@@ -1986,7 +2045,7 @@ textarea {
 .ingress-bypass,
 .ingress-final-actions {
   padding-top: 14px;
-  border-top: 1px solid rgba(233, 230, 245, 0.08);
+  border-top: 1px solid rgba(90, 120, 170, 0.08);
 }
 
 .ingress-bypass-grid {
@@ -2035,12 +2094,12 @@ textarea {
   .masthead,
   .ingress-shell {
     padding: 18px;
-    border-radius: 16px;
+    border-radius: 0;
   }
 
   .chrome-grid::before {
     inset: 6px;
-    border-radius: 18px;
+    border-radius: 0;
   }
 
   .proof-row {
