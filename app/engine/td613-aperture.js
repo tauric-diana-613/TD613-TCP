@@ -1611,26 +1611,28 @@ export function reviewTD613ApertureTransfer({
   const applied = Boolean(shellMode === 'borrowed' || retrieval || shellSource === 'swapped');
   const introducedEnforcementTerms = detectIntroducedTerms(sourceText, outputText);
   const namingIntrusion = detectNamingIntrusion(sourceText, outputText);
-  const semanticCoverageRisk = round3(clamp01(
+  const semanticLockIntact =
+    propositionCoverage >= 0.78 && actorCoverage >= 0.7 && actionCoverage >= 0.74 && objectCoverage >= 0.62;
+  const semanticCoverageRisk = semanticLockIntact ? 0 : round3(clamp01(
     ((1 - clamp01(propositionCoverage)) * 0.32) +
     ((1 - clamp01(actorCoverage)) * 0.18) +
     ((1 - clamp01(actionCoverage)) * 0.18) +
     ((1 - clamp01(objectCoverage)) * 0.12)
   ));
   const recaptureRisk = round3(clamp01(
-    (clamp01(semanticRisk) * 0.45) +
+    (semanticLockIntact ? 0 : clamp01(semanticRisk) * 0.45) +
     ((1 - clamp01(protectedAnchorIntegrity)) * 0.24) +
     (semanticCoverageRisk * 0.18) +
     (introducedEnforcementTerms.length ? 0.20 : 0) +
     (namingIntrusion ? 0.22 : 0) +
-    ((!visibleShift || !nonTrivialShift) ? 0.08 : 0)
+    ((semanticLockIntact && visibleShift && nonTrivialShift) ? 0 : ((!visibleShift || !nonTrivialShift) ? 0.08 : 0))
   ));
   const warningSignals = uniqueStrings([
     introducedEnforcementTerms.length ? 'enforcement-framing' : null,
     namingIntrusion ? 'naming-intrusion' : null,
     protectedAnchorIntegrity < 1 ? 'anchor-drift-detected' : null,
-    semanticCoverageRisk >= 0.18 ? 'semantic-compression' : null,
-    (!visibleShift || !nonTrivialShift) ? 'surface-close' : null,
+    (!semanticLockIntact && semanticCoverageRisk >= 0.18) ? 'semantic-compression' : null,
+    ((!visibleShift || !nonTrivialShift) && !semanticLockIntact) ? 'surface-close' : null,
     applied ? 'counter-recognition-pressure' : null
   ]);
   const blocked = false;
@@ -1646,12 +1648,13 @@ export function reviewTD613ApertureTransfer({
     reasons.push('TD613 Aperture marked warning pressure on the borrowed output and kept it in repair/audit space instead of silently rerouting it.');
   }
 
+  const lockClear = semanticLockIntact && visibleShift && nonTrivialShift;
   const candidateSuppression = round3(clamp01(
     (applied ? 0.12 : 0.02) +
     (semanticCoverageRisk * 0.42) +
-    ((!visibleShift || !nonTrivialShift) ? 0.18 : 0)
+    ((lockClear || (visibleShift && nonTrivialShift)) ? 0 : 0.18)
   ));
-  const observabilityDeficit = round3(clamp01(
+  const observabilityDeficit = lockClear ? 0 : round3(clamp01(
     (semanticCoverageRisk * 0.48) +
     (!visibleShift ? 0.14 : 0) +
     (!nonTrivialShift ? 0.14 : 0)
@@ -1664,12 +1667,12 @@ export function reviewTD613ApertureTransfer({
     (namingIntrusion ? 0.82 : 0) +
     (applied ? 0.08 : 0)
   ));
-  const redundancyInflation = round3(clamp01(
+  const redundancyInflation = lockClear ? round3(0.06) : round3(clamp01(
     (!nonTrivialShift ? 0.24 : 0.08) +
     (!visibleShift ? 0.18 : 0) +
     (semanticCoverageRisk * 0.28)
   ));
-  const capacityPressure = round3(clamp01(
+  const capacityPressure = lockClear ? 0 : round3(clamp01(
     (semanticCoverageRisk * 0.58) +
     ((!visibleShift || !nonTrivialShift) ? 0.18 : 0)
   ));

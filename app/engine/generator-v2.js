@@ -577,6 +577,7 @@ function restoreProceduralWitnessTerms(sourceText = '', outputText = '', sourceC
   return working;
 }
 
+
 function restoreHardWitnessAnchors(sourceText = '', outputText = '') {
   let working = String(outputText || '');
   for (const match of String(sourceText || '').matchAll(/\bDoor\s+([A-Z0-9-]+)\b/gi)) {
@@ -3108,6 +3109,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   const pathologyPass = !pathologies.severe;
   const rewritePass = meetsLandedRewriteBar(sourceClass, rewriteStrength, changedDimensions, authored.lexemeSwaps);
   const passed = exactPass && protectedAnchorPass && semanticPass && pathologyPass && rewritePass;
+  const semanticLockIntact = semanticPass;
   const polarityPenalty = Math.max(0, polarityMismatches - 1) * 0.12;
   const tensePenalty = Math.max(0, tenseMismatches - 1) * 0.04;
   const donorStallPenalty =
@@ -3147,7 +3149,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     (Number(witnessAudit.softWitnessIntegrity ?? 1) * 0.08) +
     familyBonus +
     distinctnessBonus -
-    artifactAudit.penalty +
+    (semanticLockIntact ? 0 : artifactAudit.penalty) +
     (visibleShift ? 0.04 : 0) -
       polarityPenalty -
       tensePenalty -

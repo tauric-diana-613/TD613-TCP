@@ -3379,7 +3379,7 @@ function extractClauseSemanticScaffold(text = '') {
   const actorMatch = normalizeText(text).match(/\b(?:I|we|you|they|he|she|it|there|this|that|the\s+\w+|a\s+\w+|an\s+\w+)\b/i);
   const actor = actorMatch ? actorMatch[0] : '';
   const lexicalActionMatch = normalizeText(text).match(/\b(?:go|goes|went|get|gets|got|keep|keeps|kept|leave|leaves|left|remember|remembers|remembered|wait|waits|waited|pause|pauses|paused|grab|grabs|grabbed|bring|brings|brought|use|uses|used|pull|pulls|pulled|call|calls|called|contact|contacts|contacted|knock|knocks|knocked|lean|leans|leaned|change|changes|changed|say|says|said|tell|tells|told|ask|asks|asked|request|requests|requested|need|needs|needed|require|requires|required|show|shows|showed|check|checks|checked|review|reviews|reviewed|verify|verifies|verified|confirm|confirms|confirmed|shift|shifts|shifted|begin|begins|began|finish|finishes|finished|wrap|wraps|wrapped|conclude|concludes|concluded|come|comes|came|catch|catches|caught|deploy|deploys|deployed|head|heads|headed|circle|circles|circled|stall|stalls|stalled|provide|provides|provided|issue|issues|issued|find|finds|found|locate|locates|located|identify|identifies|identified|book|books|booked|schedule|schedules|scheduled|send|sends|sent|forward|forwards|forwarded|transmit|transmits|transmitted|fix|fixes|fixed|resolve|resolves|resolved|move|moves|moved|relocate|relocates|relocated|transfer|transfers|transferred|match|matches|matched|align|aligns|aligned|log|logs|logged|flag|flags|flagged|release|releases|released)\b/i);
-  const auxiliaryActionMatch = normalizeText(text).match(/\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|could|may|might|must)\b/i);
+  const auxiliaryActionMatch = normalizeText(text).match(/\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|could|may|might|must|don't|doesn't|didn't|can't|won't|wouldn't|couldn't|shouldn't|haven't|hasn't|hadn't|isn't|aren't|wasn't|weren't)\b/i);
   const actionMatch = lexicalActionMatch || auxiliaryActionMatch;
   const action = actionMatch ? actionMatch[0] : '';
   const actionIndex = actionMatch ? Math.max(0, tokens.indexOf(action.toLowerCase())) : -1;
@@ -7999,7 +7999,37 @@ const SEMANTIC_EQUIVALENT_FORMS = Object.freeze({
   tough: 'hard',
   charger: 'charger',
   qualifiers: 'qualifier',
-  apologies: 'apology'
+  apologies: 'apology',
+  "can't": 'cannot',
+  "cant": 'cannot',
+  "won't": 'willnot',
+  "wont": 'willnot',
+  "don't": 'donot',
+  "dont": 'donot',
+  "doesn't": 'doesnot',
+  "doesnt": 'doesnot',
+  "didn't": 'didnot',
+  "didnt": 'didnot',
+  "isn't": 'isnot',
+  "isnt": 'isnot',
+  "aren't": 'arenot',
+  "arent": 'arenot',
+  "wasn't": 'wasnot',
+  "wasnt": 'wasnot',
+  "weren't": 'werenot',
+  "werent": 'werenot',
+  "hasn't": 'hasnot',
+  "hasnt": 'hasnot',
+  "haven't": 'havenot',
+  "havent": 'havenot',
+  "hadn't": 'hadnot',
+  "hadnt": 'hadnot',
+  "wouldn't": 'wouldnot',
+  "wouldnt": 'wouldnot',
+  "shouldn't": 'shouldnot',
+  "shouldnt": 'shouldnot',
+  "couldn't": 'couldnot',
+  "couldnt": 'couldnot'
 });
 
 function normalizeSemanticToken(token = '') {
@@ -8378,6 +8408,19 @@ export function buildSemanticAuditBundle(sourceIR, outputText = '', protectedSta
     protectedAnchorAudit,
     outputIR
   };
+}
+
+export function extractSemanticLockTokens(ir) {
+  const tokens = new Set();
+  for (const sentence of (ir?.sentences || [])) {
+    for (const clause of (sentence.clauses || [])) {
+      for (const raw of [clause.propositionHead, clause.actor, clause.action, clause.object]) {
+        if (!raw) continue;
+        for (const t of semanticRoleTokens(raw)) tokens.add(t);
+      }
+    }
+  }
+  return tokens;
 }
 
 function summarizeTransferPlan(transferPlan = {}, irPlan = {}, passesApplied = []) {

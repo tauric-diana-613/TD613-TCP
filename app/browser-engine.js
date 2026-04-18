@@ -1614,26 +1614,28 @@ function reviewTD613ApertureTransfer({
   const applied = Boolean(shellMode === 'borrowed' || retrieval || shellSource === 'swapped');
   const introducedEnforcementTerms = detectIntroducedTerms(sourceText, outputText);
   const namingIntrusion = detectNamingIntrusion(sourceText, outputText);
-  const semanticCoverageRisk = round3(clamp01(
+  const semanticLockIntact =
+    propositionCoverage >= 0.78 && actorCoverage >= 0.7 && actionCoverage >= 0.74 && objectCoverage >= 0.62;
+  const semanticCoverageRisk = semanticLockIntact ? 0 : round3(clamp01(
     ((1 - clamp01(propositionCoverage)) * 0.32) +
     ((1 - clamp01(actorCoverage)) * 0.18) +
     ((1 - clamp01(actionCoverage)) * 0.18) +
     ((1 - clamp01(objectCoverage)) * 0.12)
   ));
   const recaptureRisk = round3(clamp01(
-    (clamp01(semanticRisk) * 0.45) +
+    (semanticLockIntact ? 0 : clamp01(semanticRisk) * 0.45) +
     ((1 - clamp01(protectedAnchorIntegrity)) * 0.24) +
     (semanticCoverageRisk * 0.18) +
     (introducedEnforcementTerms.length ? 0.20 : 0) +
     (namingIntrusion ? 0.22 : 0) +
-    ((!visibleShift || !nonTrivialShift) ? 0.08 : 0)
+    ((semanticLockIntact && visibleShift && nonTrivialShift) ? 0 : ((!visibleShift || !nonTrivialShift) ? 0.08 : 0))
   ));
   const warningSignals = uniqueStrings([
     introducedEnforcementTerms.length ? 'enforcement-framing' : null,
     namingIntrusion ? 'naming-intrusion' : null,
     protectedAnchorIntegrity < 1 ? 'anchor-drift-detected' : null,
-    semanticCoverageRisk >= 0.18 ? 'semantic-compression' : null,
-    (!visibleShift || !nonTrivialShift) ? 'surface-close' : null,
+    (!semanticLockIntact && semanticCoverageRisk >= 0.18) ? 'semantic-compression' : null,
+    ((!visibleShift || !nonTrivialShift) && !semanticLockIntact) ? 'surface-close' : null,
     applied ? 'counter-recognition-pressure' : null
   ]);
   const blocked = false;
@@ -1649,12 +1651,13 @@ function reviewTD613ApertureTransfer({
     reasons.push('TD613 Aperture marked warning pressure on the borrowed output and kept it in repair/audit space instead of silently rerouting it.');
   }
 
+  const lockClear = semanticLockIntact && visibleShift && nonTrivialShift;
   const candidateSuppression = round3(clamp01(
     (applied ? 0.12 : 0.02) +
     (semanticCoverageRisk * 0.42) +
-    ((!visibleShift || !nonTrivialShift) ? 0.18 : 0)
+    ((lockClear || (visibleShift && nonTrivialShift)) ? 0 : 0.18)
   ));
-  const observabilityDeficit = round3(clamp01(
+  const observabilityDeficit = lockClear ? 0 : round3(clamp01(
     (semanticCoverageRisk * 0.48) +
     (!visibleShift ? 0.14 : 0) +
     (!nonTrivialShift ? 0.14 : 0)
@@ -1667,12 +1670,12 @@ function reviewTD613ApertureTransfer({
     (namingIntrusion ? 0.82 : 0) +
     (applied ? 0.08 : 0)
   ));
-  const redundancyInflation = round3(clamp01(
+  const redundancyInflation = lockClear ? round3(0.06) : round3(clamp01(
     (!nonTrivialShift ? 0.24 : 0.08) +
     (!visibleShift ? 0.18 : 0) +
     (semanticCoverageRisk * 0.28)
   ));
-  const capacityPressure = round3(clamp01(
+  const capacityPressure = lockClear ? 0 : round3(clamp01(
     (semanticCoverageRisk * 0.58) +
     ((!visibleShift || !nonTrivialShift) ? 0.18 : 0)
   ));
@@ -5093,7 +5096,7 @@ function extractClauseSemanticScaffold(text = '') {
   const actorMatch = normalizeText(text).match(/\b(?:I|we|you|they|he|she|it|there|this|that|the\s+\w+|a\s+\w+|an\s+\w+)\b/i);
   const actor = actorMatch ? actorMatch[0] : '';
   const lexicalActionMatch = normalizeText(text).match(/\b(?:go|goes|went|get|gets|got|keep|keeps|kept|leave|leaves|left|remember|remembers|remembered|wait|waits|waited|pause|pauses|paused|grab|grabs|grabbed|bring|brings|brought|use|uses|used|pull|pulls|pulled|call|calls|called|contact|contacts|contacted|knock|knocks|knocked|lean|leans|leaned|change|changes|changed|say|says|said|tell|tells|told|ask|asks|asked|request|requests|requested|need|needs|needed|require|requires|required|show|shows|showed|check|checks|checked|review|reviews|reviewed|verify|verifies|verified|confirm|confirms|confirmed|shift|shifts|shifted|begin|begins|began|finish|finishes|finished|wrap|wraps|wrapped|conclude|concludes|concluded|come|comes|came|catch|catches|caught|deploy|deploys|deployed|head|heads|headed|circle|circles|circled|stall|stalls|stalled|provide|provides|provided|issue|issues|issued|find|finds|found|locate|locates|located|identify|identifies|identified|book|books|booked|schedule|schedules|scheduled|send|sends|sent|forward|forwards|forwarded|transmit|transmits|transmitted|fix|fixes|fixed|resolve|resolves|resolved|move|moves|moved|relocate|relocates|relocated|transfer|transfers|transferred|match|matches|matched|align|aligns|aligned|log|logs|logged|flag|flags|flagged|release|releases|released)\b/i);
-  const auxiliaryActionMatch = normalizeText(text).match(/\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|could|may|might|must)\b/i);
+  const auxiliaryActionMatch = normalizeText(text).match(/\b(?:am|is|are|was|were|be|been|being|do|does|did|have|has|had|will|would|can|could|may|might|must|don't|doesn't|didn't|can't|won't|wouldn't|couldn't|shouldn't|haven't|hasn't|hadn't|isn't|aren't|wasn't|weren't)\b/i);
   const actionMatch = lexicalActionMatch || auxiliaryActionMatch;
   const action = actionMatch ? actionMatch[0] : '';
   const actionIndex = actionMatch ? Math.max(0, tokens.indexOf(action.toLowerCase())) : -1;
@@ -9713,7 +9716,37 @@ const SEMANTIC_EQUIVALENT_FORMS = Object.freeze({
   tough: 'hard',
   charger: 'charger',
   qualifiers: 'qualifier',
-  apologies: 'apology'
+  apologies: 'apology',
+  "can't": 'cannot',
+  "cant": 'cannot',
+  "won't": 'willnot',
+  "wont": 'willnot',
+  "don't": 'donot',
+  "dont": 'donot',
+  "doesn't": 'doesnot',
+  "doesnt": 'doesnot',
+  "didn't": 'didnot',
+  "didnt": 'didnot',
+  "isn't": 'isnot',
+  "isnt": 'isnot',
+  "aren't": 'arenot',
+  "arent": 'arenot',
+  "wasn't": 'wasnot',
+  "wasnt": 'wasnot',
+  "weren't": 'werenot',
+  "werent": 'werenot',
+  "hasn't": 'hasnot',
+  "hasnt": 'hasnot',
+  "haven't": 'havenot',
+  "havent": 'havenot',
+  "hadn't": 'hadnot',
+  "hadnt": 'hadnot',
+  "wouldn't": 'wouldnot',
+  "wouldnt": 'wouldnot',
+  "shouldn't": 'shouldnot',
+  "shouldnt": 'shouldnot',
+  "couldn't": 'couldnot',
+  "couldnt": 'couldnot'
 });
 
 function normalizeSemanticToken(token = '') {
@@ -10092,6 +10125,19 @@ function buildSemanticAuditBundle(sourceIR, outputText = '', protectedState = { 
     protectedAnchorAudit,
     outputIR
   };
+}
+
+function extractSemanticLockTokens(ir) {
+  const tokens = new Set();
+  for (const sentence of (ir?.sentences || [])) {
+    for (const clause of (sentence.clauses || [])) {
+      for (const raw of [clause.propositionHead, clause.actor, clause.action, clause.object]) {
+        if (!raw) continue;
+        for (const t of semanticRoleTokens(raw)) tokens.add(t);
+      }
+    }
+  }
+  return tokens;
 }
 
 function summarizeTransferPlan(transferPlan = {}, irPlan = {}, passesApplied = []) {
@@ -10898,6 +10944,7 @@ function restoreProceduralWitnessTerms(sourceText = '', outputText = '', sourceC
   });
   return working;
 }
+
 
 function restoreHardWitnessAnchors(sourceText = '', outputText = '') {
   let working = String(outputText || '');
@@ -13430,6 +13477,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   const pathologyPass = !pathologies.severe;
   const rewritePass = meetsLandedRewriteBar(sourceClass, rewriteStrength, changedDimensions, authored.lexemeSwaps);
   const passed = exactPass && protectedAnchorPass && semanticPass && pathologyPass && rewritePass;
+  const semanticLockIntact = semanticPass;
   const polarityPenalty = Math.max(0, polarityMismatches - 1) * 0.12;
   const tensePenalty = Math.max(0, tenseMismatches - 1) * 0.04;
   const donorStallPenalty =
@@ -13469,7 +13517,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     (Number(witnessAudit.softWitnessIntegrity ?? 1) * 0.08) +
     familyBonus +
     distinctnessBonus -
-    artifactAudit.penalty +
+    (semanticLockIntact ? 0 : artifactAudit.penalty) +
     (visibleShift ? 0.04 : 0) -
       polarityPenalty -
       tensePenalty -
