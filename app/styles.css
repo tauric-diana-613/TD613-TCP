@@ -5878,28 +5878,28 @@ body[data-page-kind="personas"] .shell,
 body[data-page-kind="readout"] .shell,
 body[data-page-kind="deck"] .shell,
 body[data-page-kind="trainer"] .shell {
-  max-width: 1088px;
-  padding: 10px 10px 16px;
+  max-width: 1048px;
+  padding: 10px 10px 14px;
 }
 
 body[data-page-kind="homebase"] .station-chamber-homebase {
-  grid-template-columns: minmax(0, 1.28fr) 272px;
+  grid-template-columns: minmax(0, 1.32fr) 244px;
 }
 
 body[data-page-kind="deck"] .station-chamber-deck {
-  grid-template-columns: minmax(0, 1.38fr) 248px;
+  grid-template-columns: minmax(0, 1.42fr) 220px;
 }
 
 body[data-page-kind="readout"] .station-chamber-readout {
-  grid-template-columns: minmax(0, 1.12fr) 272px;
+  grid-template-columns: minmax(0, 1.16fr) 236px;
 }
 
 body[data-page-kind="personas"] .station-chamber-personas {
-  grid-template-columns: minmax(264px, 0.76fr) minmax(0, 1.24fr);
+  grid-template-columns: minmax(236px, 0.74fr) minmax(0, 1.26fr);
 }
 
 body[data-page-kind="trainer"] .station-chamber-trainer {
-  grid-template-columns: minmax(0, 1.18fr) 276px;
+  grid-template-columns: minmax(0, 1.22fr) 244px;
 }
 
 body[data-page-kind="homebase"] .active-bench,
@@ -6109,7 +6109,7 @@ body[data-page-kind="personas"] textarea,
 body[data-page-kind="readout"] textarea,
 body[data-page-kind="deck"] textarea,
 body[data-page-kind="trainer"] textarea {
-  min-height: 148px;
+  min-height: 124px;
   padding: 11px 12px;
   font-size: 13px;
   line-height: 1.54;
@@ -6120,7 +6120,7 @@ body[data-page-kind="personas"] textarea[readonly],
 body[data-page-kind="readout"] textarea[readonly],
 body[data-page-kind="deck"] textarea[readonly],
 body[data-page-kind="trainer"] textarea[readonly] {
-  min-height: 108px;
+  min-height: 88px;
 }
 
 body[data-page-kind="deck"] #voiceA,
@@ -6129,26 +6129,26 @@ body[data-page-kind="trainer"] #trainerCorpusInput,
 body[data-page-kind="trainer"] #trainerGeneratedOutput,
 body[data-page-kind="homebase"] #personaComparisonText,
 body[data-page-kind="homebase"] #cadenceLockCorpus {
-  min-height: 140px;
+  min-height: 118px;
 }
 
 body[data-page-kind="deck"] .bay-profile {
-  min-height: 84px;
+  min-height: 68px;
 }
 
 body[data-page-kind="deck"] .shell-duel {
-  margin-top: 10px;
-  padding: 11px;
+  margin-top: 8px;
+  padding: 10px;
 }
 
 body[data-page-kind="deck"] .duel-empty {
-  min-height: 88px;
-  padding: 10px 11px;
+  min-height: 68px;
+  padding: 8px 10px;
 }
 
 body[data-page-kind="deck"][data-analysis-revealed="false"] .shell-duel.analysis-gated,
 body[data-analysis-revealed="false"] .shell-duel.analysis-gated {
-  min-height: 108px;
+  min-height: 88px;
 }
 
 body[data-analysis-revealed="false"] .field-notice.analysis-gated {
@@ -6172,29 +6172,29 @@ body[data-analysis-revealed="false"] .ledger-stage.analysis-gated {
 }
 
 body[data-page-kind="readout"][data-analysis-revealed="false"] .field-notice.analysis-gated {
-  min-height: 48px;
+  min-height: 42px;
 }
 
 body[data-page-kind="readout"][data-analysis-revealed="false"] .governed-exposure-panel.analysis-gated {
-  min-height: 94px;
+  min-height: 78px;
 }
 
 body[data-page-kind="readout"][data-analysis-revealed="false"] .results.analysis-gated {
-  min-height: 76px;
+  min-height: 64px;
 }
 
 body[data-page-kind="readout"][data-analysis-revealed="false"] .harbor-box.analysis-gated {
-  min-height: 84px;
+  min-height: 70px;
 }
 
 body[data-page-kind="readout"][data-analysis-revealed="false"] .ledger-stage.analysis-gated {
-  min-height: 98px;
+  min-height: 82px;
 }
 
 body[data-page-kind="homebase"] .homebase-worn-mask-empty,
 body[data-page-kind="personas"] .persona-preview-empty,
 body[data-page-kind="trainer"] .trainer-bridge-empty {
-  min-height: 84px;
+  min-height: 72px;
   padding: 10px 12px;
 }
 
@@ -6237,6 +6237,57 @@ body[data-page-kind="gateway"] .gateway-card p {
 body[data-page-kind="gateway"] .gateway-summary {
   max-width: 34ch;
   font-size: 0.8rem;
+}
+
+body[data-page-kind="homebase"] .persona-mask-summary,
+body[data-page-kind="deck"] .deck-setup-row,
+body[data-page-kind="deck"] .deck-action-legend {
+  margin-top: 10px;
+}
+
+body[data-page-kind="homebase"] .trainer-summary-grid,
+body[data-page-kind="homebase"] .persona-mask-output-grid,
+body[data-page-kind="trainer"] .trainer-summary-grid,
+body[data-page-kind="trainer"] .trainer-contract-grid {
+  gap: 8px;
+}
+
+body[data-page-kind="homebase"] .persona-mask-output-grid {
+  margin-top: 10px;
+}
+
+body[data-page-kind="homebase"] #personaMaskSource,
+body[data-page-kind="homebase"] #personaMaskOutput {
+  min-height: 154px;
+}
+
+body[data-page-kind="homebase"] #maskContactSummary,
+body[data-page-kind="deck"] .deck-cast-report {
+  margin-top: 8px;
+}
+
+body[data-page-kind="homebase"] .mask-shift-preview {
+  min-height: 84px;
+  gap: 8px;
+}
+
+body[data-page-kind="homebase"] .mask-shift-row,
+body[data-page-kind="deck"] .deck-aftermath-card,
+body[data-page-kind="homebase"] .trainer-summary-card,
+body[data-page-kind="trainer"] .trainer-summary-card {
+  padding: 10px 12px;
+}
+
+body[data-page-kind="deck"] .deck-support-panel,
+body[data-page-kind="homebase"] .chamber-tool-state,
+body[data-page-kind="trainer"] .evidence-spine-trainer > .analysis-status {
+  padding: 10px 11px;
+}
+
+body[data-page-kind="deck"] .analysis-status,
+body[data-page-kind="homebase"] .analysis-status,
+body[data-page-kind="trainer"] .analysis-status {
+  padding-block: 8px;
 }
 
 @media (max-width: 900px) {
