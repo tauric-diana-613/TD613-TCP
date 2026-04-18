@@ -4,154 +4,151 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP / Trainer</title>
-  <link rel="stylesheet" href="./styles.css?v=202604171630" />
+  <link rel="stylesheet" href="./styles.css?v=202604172210" />
 </head>
 <body data-page-kind="trainer">
   <div class="shell shell-station">
-    <header id="consoleMasthead" class="masthead site-masthead station-masthead">
-      <div class="station-masthead-bar">
-        <span class="eyebrow">TD613 / station split / Trainer</span>
-        <div class="station-masthead-links">
-          <a class="gateway-link" href="./index.html">Gateway</a>
-          <a class="gateway-link" href="./safe-harbor/index.html">Safe Harbor</a>
+    <div class="chamber-header">
+      <header id="consoleMasthead" class="masthead site-masthead station-masthead">
+        <div class="station-masthead-bar">
+          <span class="eyebrow">TD613 / station split / Trainer</span>
+          <div class="station-masthead-links">
+            <a class="gateway-link" href="./index.html">Gateway</a>
+            <a class="gateway-link" href="./safe-harbor/index.html">Safe Harbor</a>
+          </div>
         </div>
-      </div>
-      <div class="station-masthead-copy">
-        <h1>Trainer</h1>
-        <p id="heroStationLine" class="hero-station-line">Trainer / extract, forge, validate, inject</p>
-        <p id="heroLead" class="lead">Use the forge lane when the shelf needs a real draft, a retrieval contract, and a clean path back into Personas, Homebase, or Deck.</p>
-      </div>
-    </header>
+        <div class="station-masthead-copy">
+          <h1>Trainer</h1>
+          <p id="heroStationLine" class="hero-station-line">Extract / forge / validate</p>
+          <p id="heroLead" class="lead">Build a shell under retrieval law. Inject only after validation.</p>
+        </div>
+      </header>
 
-    <div class="statusrail station-statusrail">
-      <span id="decisionTone" class="console-status">Waiting on a scan</span>
-      <span id="badgeState" class="statepill active">Badge // holds</span>
-      <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
-      <span id="containmentState" class="statepill active">Containment // stable</span>
-      <span id="routeState" class="statepill">Route // buffered</span>
-      <a id="safeHarborHandoff" class="statepill statepill-link safe-harbor-handoff" href="./safe-harbor/index.html">
-        <span class="safe-harbor-handoff-glyph" aria-hidden="true">&#x27D0;</span>
-        <span id="safeHarborHandoffLabel">Safe Harbor // latent</span>
-      </a>
+      <div class="statusrail station-statusrail">
+        <span id="decisionTone" class="console-status">Waiting on a scan</span>
+        <span id="badgeState" class="statepill active">Badge // holds</span>
+        <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
+        <span id="containmentState" class="statepill active">Containment // stable</span>
+        <span id="routeState" class="statepill">Route // buffered</span>
+        <a id="safeHarborHandoff" class="statepill statepill-link safe-harbor-handoff" href="./safe-harbor/index.html">
+          <span class="safe-harbor-handoff-glyph" aria-hidden="true">&#x27D0;</span>
+          <span id="safeHarborHandoffLabel">Safe Harbor // latent</span>
+        </a>
+      </div>
+
+      <nav class="top-tabs site-nav station-nav" aria-label="TCP stations">
+        <button id="tabHomebase" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
+        <button id="tabPersonas" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
+        <button id="tabReadout" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
+        <button id="tabPlay" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
+        <button id="tabTrainer" type="button" class="top-tab active"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer</button>
+      </nav>
     </div>
 
-    <nav class="top-tabs site-nav station-nav" aria-label="TCP stations">
-      <button id="tabHomebase" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
-      <button id="tabPersonas" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
-      <button id="tabReadout" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
-      <button id="tabPlay" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
-      <button id="tabTrainer" type="button" class="top-tab active"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer</button>
-      <a class="top-tab top-tab-external" href="./index.html">Gateway</a>
-      <a class="top-tab top-tab-external" href="./safe-harbor/index.html">Safe Harbor</a>
-    </nav>
-
-    <main class="view-stack station-stack">
+    <main class="view-stack station-stack station-main station-main-trainer">
       <section id="viewPaneTrainer" class="view-pane active">
-        <div class="station-view-head station-view-head-trainer">
-          <div class="station-view-meta">
-            <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer station</div>
-            <h2 class="station-view-title">Forge drafts, validate them, then inject only if the field agrees.</h2>
-            <p class="station-view-summary">This room is procedural on purpose: extract the field, build a candidate, run the trainer contract, keep session-local inject separate from export release, and only then return the shell to the shared shelf.</p>
-          </div>
+        <div class="station-chamber station-chamber-trainer">
+          <section id="trainerPane" class="panel trainer-panel active-bench">
+            <div class="panel-heading">
+              <div>
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Forge rig</div>
+                <h2>Forge under retrieval law</h2>
+              </div>
+              <p class="section-note">Extract the field, shape the candidate, validate, then decide whether it deserves injection.</p>
+            </div>
+
+            <div class="trainer-active-grid">
+              <div class="trainer-stack trainer-stack-source">
+                <label class="field trainer-name-field" for="trainerPersonaName">
+                  <div class="field-head">
+                    <div class="field-head-copy">
+                      <span class="field-label">Persona name</span>
+                      <span class="field-copy">Optional name for the shell you are training.</span>
+                    </div>
+                  </div>
+                  <input id="trainerPersonaName" type="text" placeholder="Trainer Persona" autocomplete="off">
+                </label>
+
+                <label class="field" for="trainerCorpusInput">
+                  <div class="field-head">
+                    <div class="field-head-copy">
+                      <span class="field-label">Forge corpus</span>
+                      <span class="field-copy">Paste one or more samples from the target voice. Blank lines split the set before extraction.</span>
+                    </div>
+                  </div>
+                  <textarea id="trainerCorpusInput"></textarea>
+                </label>
+
+                <div class="trainer-actions">
+                  <button id="trainerExtractBtn" type="button" class="primary-cta">Extract Persona Field</button>
+                </div>
+              </div>
+
+              <div class="trainer-stack trainer-stack-candidate">
+                <label class="field" for="trainerGeneratedOutput">
+                  <div class="field-head">
+                    <div class="field-head-copy">
+                      <span class="field-label">Candidate passage</span>
+                      <span class="field-copy">Forge Draft can seed a live candidate from the current shelf, Homebase, or Deck context. You can still edit the passage manually before validation.</span>
+                    </div>
+                  </div>
+                  <textarea id="trainerGeneratedOutput"></textarea>
+                </label>
+
+                <div class="trainer-actions">
+                  <button id="trainerForgeDraftBtn" type="button" class="primary-cta">Forge Draft</button>
+                  <button id="trainerValidateBtn" type="button" class="secondary">Validate Passage</button>
+                  <button id="trainerReleaseGateBtn" type="button" class="secondary">Arm Release Gate</button>
+                  <button id="trainerExportBtn" type="button" class="secondary">Export JSON</button>
+                  <button id="trainerInjectBtn" type="button" class="secondary">Inject into Session Personas</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <aside class="evidence-spine evidence-spine-trainer">
+            <div id="trainerStatus" class="analysis-status trainer-status">
+              <span id="trainerStatusBase" class="analysis-status-base">Paste a corpus, extract the field, then validate a candidate passage.</span>
+              <span id="trainerStatusCue" class="analysis-status-cue" hidden></span>
+            </div>
+
+            <div class="trainer-surface">
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Draft source</div>
+              <div id="trainerDraftContext" class="trainer-readout-body">Forge Draft will use current Homebase, Deck, or extracted-corpus context when available.</div>
+            </div>
+
+            <div class="trainer-surface">
+              <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Field readout</div>
+              <div id="trainerFingerprintSummary" class="trainer-readout-body"></div>
+            </div>
+
+            <div class="trainer-surface">
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Trainer prompt</div>
+              <textarea id="trainerPromptOutput" readonly></textarea>
+            </div>
+
+            <div id="trainerBridgeSurface" class="trainer-surface trainer-bridge-surface">
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Next move</div>
+              <div id="trainerBridgeBody" class="trainer-readout-body">Inject a passing persona into the session shelf, or arm a one-session release gate before exporting anything beyond this tab.</div>
+            </div>
+
+            <div class="trainer-surface">
+              <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Forge validation</div>
+              <div id="trainerValidationReport" class="trainer-readout-body"></div>
+            </div>
+
+            <div class="trainer-surface">
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Correction hints</div>
+              <div id="trainerCorrectionHints" class="trainer-readout-body"></div>
+            </div>
+
+            <div class="trainer-surface">
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Forged persona export</div>
+              <div id="trainerReleaseGateHint" class="analysis-status">Export stays sealed until you arm a one-session release gate after validation.</div>
+              <textarea id="trainerExportOutput" readonly></textarea>
+            </div>
+          </aside>
         </div>
-        <section id="trainerPane" class="panel trainer-panel">
-          <div class="panel-heading">
-            <div>
-              <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Trainer lab</div>
-              <h2>Forge a persona under retrieval law</h2>
-            </div>
-            <p class="section-note">Extract the target field, inspect the prompt, validate a candidate, correct it if needed, then inject only when the retrieval lane will actually stand behind it. Externalized export stays sealed until you open a one-session release gate.</p>
-          </div>
-
-          <div class="trainer-grid">
-            <div class="trainer-stack">
-              <label class="field trainer-name-field" for="trainerPersonaName">
-                <div class="field-head">
-                  <div class="field-head-copy">
-                    <span class="field-label">Persona name</span>
-                    <span class="field-copy">Optional name for the shell you are training.</span>
-                  </div>
-                </div>
-                <input id="trainerPersonaName" type="text" placeholder="Trainer Persona" autocomplete="off">
-              </label>
-
-              <label class="field" for="trainerCorpusInput">
-                <div class="field-head">
-                  <div class="field-head-copy">
-                    <span class="field-label">Forge corpus</span>
-                    <span class="field-copy">Paste one or more samples from the target voice. Blank lines split the set before extraction.</span>
-                  </div>
-                </div>
-                <textarea id="trainerCorpusInput"></textarea>
-              </label>
-
-              <div class="trainer-actions">
-                <button id="trainerExtractBtn" type="button" class="primary-cta">Extract Persona Field</button>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Draft source</div>
-                <div id="trainerDraftContext" class="trainer-readout-body">Forge Draft will use current Homebase, Deck, or extracted-corpus context when available.</div>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Field readout</div>
-                <div id="trainerFingerprintSummary" class="trainer-readout-body"></div>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Trainer prompt</div>
-                <textarea id="trainerPromptOutput" readonly></textarea>
-              </div>
-            </div>
-
-            <div class="trainer-stack">
-              <label class="field" for="trainerGeneratedOutput">
-                <div class="field-head">
-                  <div class="field-head-copy">
-                    <span class="field-label">Candidate passage</span>
-                    <span class="field-copy">Forge Draft can seed a live candidate from the current shelf, Homebase, or Deck context. You can still edit the passage manually before validation.</span>
-                  </div>
-                </div>
-                <textarea id="trainerGeneratedOutput"></textarea>
-              </label>
-
-              <div class="trainer-actions">
-                <button id="trainerForgeDraftBtn" type="button" class="primary-cta">Forge Draft</button>
-                <button id="trainerValidateBtn" type="button" class="secondary">Validate Passage</button>
-                <button id="trainerReleaseGateBtn" type="button" class="secondary">Arm Release Gate</button>
-                <button id="trainerExportBtn" type="button" class="secondary">Export JSON</button>
-                <button id="trainerInjectBtn" type="button" class="secondary">Inject into Session Personas</button>
-              </div>
-
-              <div id="trainerStatus" class="analysis-status trainer-status">
-                <span id="trainerStatusBase" class="analysis-status-base">Paste a corpus, extract the field, then validate a candidate passage.</span>
-                <span id="trainerStatusCue" class="analysis-status-cue" hidden></span>
-              </div>
-
-              <div id="trainerBridgeSurface" class="trainer-surface trainer-bridge-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Next move</div>
-                <div id="trainerBridgeBody" class="trainer-readout-body">Inject a passing persona into the session shelf, or arm a one-session release gate before exporting anything beyond this tab.</div>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTrainerValidation">&#x03A6;</span> Forge validation</div>
-                <div id="trainerValidationReport" class="trainer-readout-body"></div>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerLab">&#x03BA;&#x2295;</span> Correction hints</div>
-                <div id="trainerCorrectionHints" class="trainer-readout-body"></div>
-              </div>
-
-              <div class="trainer-surface">
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionTrainerExport">&#x27D0;</span> Forged persona export</div>
-                <div id="trainerReleaseGateHint" class="analysis-status">Export stays sealed until you arm a one-session release gate after validation.</div>
-                <textarea id="trainerExportOutput" readonly></textarea>
-              </div>
-            </div>
-          </div>
-        </section>
       </section>
     </main>
 

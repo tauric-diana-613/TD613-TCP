@@ -4,76 +4,83 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP / Personas</title>
-  <link rel="stylesheet" href="./styles.css?v=202604171630" />
+  <link rel="stylesheet" href="./styles.css?v=202604172210" />
 </head>
 <body data-page-kind="personas">
   <div class="shell shell-station">
-    <header id="consoleMasthead" class="masthead site-masthead station-masthead">
-      <div class="station-masthead-bar">
-        <span class="eyebrow">TD613 / station split / Personas</span>
-        <div class="station-masthead-links">
-          <a class="gateway-link" href="./index.html">Gateway</a>
-          <a class="gateway-link" href="./safe-harbor/index.html">Safe Harbor</a>
+    <div class="chamber-header">
+      <header id="consoleMasthead" class="masthead site-masthead station-masthead">
+        <div class="station-masthead-bar">
+          <span class="eyebrow">TD613 / station split / Personas</span>
+          <div class="station-masthead-links">
+            <a class="gateway-link" href="./index.html">Gateway</a>
+            <a class="gateway-link" href="./safe-harbor/index.html">Safe Harbor</a>
+          </div>
         </div>
-      </div>
-      <div class="station-masthead-copy">
-        <h1>Personas</h1>
-        <p id="heroStationLine" class="hero-station-line">Personas / shelf, dossier, dispatch</p>
-        <p id="heroLead" class="lead">Choose on the shelf first. The selected mask stays collectible here until you carry it into Homebase or Deck.</p>
-      </div>
-    </header>
+        <div class="station-masthead-copy">
+          <h1>Personas</h1>
+          <p id="heroStationLine" class="hero-station-line">Choose / inspect / dispatch</p>
+          <p id="heroLead" class="lead">Pick the shell here. Wake it elsewhere.</p>
+        </div>
+      </header>
 
-    <div class="statusrail station-statusrail">
-      <span id="decisionTone" class="console-status">Waiting on a scan</span>
-      <span id="badgeState" class="statepill active">Badge // holds</span>
-      <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
-      <span id="containmentState" class="statepill active">Containment // stable</span>
-      <span id="routeState" class="statepill">Route // buffered</span>
-      <a id="safeHarborHandoff" class="statepill statepill-link safe-harbor-handoff" href="./safe-harbor/index.html">
-        <span class="safe-harbor-handoff-glyph" aria-hidden="true">&#x27D0;</span>
-        <span id="safeHarborHandoffLabel">Safe Harbor // latent</span>
-      </a>
+      <div class="statusrail station-statusrail">
+        <span id="decisionTone" class="console-status">Waiting on a scan</span>
+        <span id="badgeState" class="statepill active">Badge // holds</span>
+        <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
+        <span id="containmentState" class="statepill active">Containment // stable</span>
+        <span id="routeState" class="statepill">Route // buffered</span>
+        <a id="safeHarborHandoff" class="statepill statepill-link safe-harbor-handoff" href="./safe-harbor/index.html">
+          <span class="safe-harbor-handoff-glyph" aria-hidden="true">&#x27D0;</span>
+          <span id="safeHarborHandoffLabel">Safe Harbor // latent</span>
+        </a>
+      </div>
+
+      <nav class="top-tabs site-nav station-nav" aria-label="TCP stations">
+        <button id="tabHomebase" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
+        <button id="tabPersonas" type="button" class="top-tab active"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
+        <button id="tabReadout" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
+        <button id="tabPlay" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
+        <button id="tabTrainer" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer</button>
+      </nav>
     </div>
 
-    <nav class="top-tabs site-nav station-nav" aria-label="TCP stations">
-      <button id="tabHomebase" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
-      <button id="tabPersonas" type="button" class="top-tab active"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
-      <button id="tabReadout" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
-      <button id="tabPlay" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
-      <button id="tabTrainer" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer</button>
-      <a class="top-tab top-tab-external" href="./index.html">Gateway</a>
-      <a class="top-tab top-tab-external" href="./safe-harbor/index.html">Safe Harbor</a>
-    </nav>
-
-    <main class="view-stack station-stack">
+    <main class="view-stack station-stack station-main station-main-personas">
       <section id="viewPanePersonas" class="view-pane active">
-        <div class="station-view-head station-view-head-personas">
-          <div class="station-view-meta">
-            <div class="station-view-label"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas station</div>
-            <h2 class="station-view-title">Choose on the shelf before you wake the object.</h2>
-            <p class="station-view-summary">Browse the cast, read the selected mask dossier, and dispatch the same object into Homebase or Deck without breaking runtime continuity.</p>
-          </div>
-        </div>
-        <section class="panel personas-panel personas-gallery-panel">
-          <div class="panel-heading">
-            <div>
-              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Cadence mask gallery</div>
-              <h2>Mask index, captured shells, and trained artifacts</h2>
+        <div class="station-chamber station-chamber-personas">
+          <section class="panel personas-panel personas-primary-panel active-bench">
+            <div class="panel-heading">
+              <div>
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Selected shell</div>
+                <h2>Inspect the artifact</h2>
+              </div>
+              <p class="section-note">Choose on the shelf, then move the shell into Homebase or Deck.</p>
             </div>
-            <p class="section-note">Choose on the shelf, read the dossier, and carry the mask into Homebase or the Deck when you want the shell awake.</p>
-          </div>
 
-          <div class="persona-toolbar">
-            <div id="personaStatus" class="analysis-status">Shelf // choose a mask on the shelf, then bring it into Homebase or test it in the Deck</div>
-          </div>
+            <div class="persona-toolbar">
+              <div id="personaStatus" class="analysis-status">Shelf // choose a mask on the shelf, then bring it into Homebase or test it in the Deck</div>
+            </div>
 
-          <section id="personaPreviewStage" class="trainer-surface persona-preview-stage">
-            <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Selected mask</div>
-            <div id="personaPreviewBody" class="persona-preview-body"></div>
+            <section id="personaPreviewStage" class="trainer-surface persona-preview-stage">
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Selected mask</div>
+              <div id="personaPreviewBody" class="persona-preview-body"></div>
+            </section>
           </section>
 
-          <div id="personaDeck" class="personagrid compact"></div>
-        </section>
+          <aside class="evidence-spine evidence-spine-personas">
+            <section class="panel persona-shelf-panel">
+              <div class="panel-heading">
+                <div>
+                  <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Artifact shelf</div>
+                  <h2>Dispatch a shell</h2>
+                </div>
+                <p class="section-note">Built-ins, captured shells, and trained artifacts stay visible here.</p>
+              </div>
+
+              <div id="personaDeck" class="personagrid compact"></div>
+            </section>
+          </aside>
+        </div>
       </section>
     </main>
 

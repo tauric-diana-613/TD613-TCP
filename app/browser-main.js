@@ -303,33 +303,33 @@
     play: 'tabPlay',
     trainer: 'tabTrainer'
   });
-  const STATION_CHROME = Object.freeze({
-    homebase: Object.freeze({
-      title: 'TCP / Homebase',
-      line: 'Homebase / anchor, contact, residue',
-      lead: 'Lock a cadence home, bring a worn mask across, and read the passage room without losing the underlying runtime.'
-    }),
-    personas: Object.freeze({
-      title: 'TCP / Personas',
-      line: 'Personas / shelf, dossier, dispatch',
-      lead: 'Choose on the shelf first. The selected mask stays collectible here until you carry it into Homebase or Deck.'
-    }),
-    readout: Object.freeze({
-      title: 'TCP / Readout',
-      line: 'Readout / witness, law, harbor',
-      lead: 'This page stays colder than the rest of the site so similarity, traceability, route pressure, and harbor never collapse into one feeling.'
-    }),
-    play: Object.freeze({
-      title: 'TCP / Deck',
-      line: 'Deck / encounter, duel, aftermath',
-      lead: 'Stage two voices, keep text swap separate from cadence swap, and inspect the duel aftermath without leaving the shared field.'
-    }),
-    trainer: Object.freeze({
-      title: 'TCP / Trainer',
-      line: 'Trainer / extract, forge, validate, inject',
-      lead: 'Use the forge lane when the shelf needs a real draft, a retrieval contract, and a clean path back into Personas, Homebase, or Deck.'
-    })
-  });
+    const STATION_CHROME = Object.freeze({
+      homebase: Object.freeze({
+        title: 'TCP / Homebase',
+        line: 'Lock / wear / residue',
+        lead: 'Anchor a cadence, wear one mask, inspect what stays home.'
+      }),
+      personas: Object.freeze({
+        title: 'TCP / Personas',
+        line: 'Choose / inspect / dispatch',
+        lead: 'Pick the shell here. Wake it elsewhere.'
+      }),
+      readout: Object.freeze({
+        title: 'TCP / Readout',
+        line: 'Witness / route / harbor',
+        lead: 'Cold witness only. No softening.'
+      }),
+      play: Object.freeze({
+        title: 'TCP / Deck',
+        line: 'Stage / swap / duel',
+        lead: 'Reference stays reference. Probe stays probe.'
+      }),
+      trainer: Object.freeze({
+        title: 'TCP / Trainer',
+        line: 'Extract / forge / validate',
+        lead: 'Forge only when the field needs a real shell.'
+      })
+    });
   const SESSION_FLIGHT_STATE_KEY = 'tcp.flightState.v1';
   const PENDING_TRAINER_PERSONA_KEY = 'tcp.pendingTrainerPersona.v1';
   const PAGE_KIND_TO_ARTIFACT_TAB = Object.freeze({

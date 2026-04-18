@@ -4,64 +4,57 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP / Readout</title>
-  <link rel="stylesheet" href="./styles.css?v=202604171630" />
+  <link rel="stylesheet" href="./styles.css?v=202604172210" />
 </head>
 <body data-page-kind="readout">
   <div class="shell shell-station">
-    <header id="consoleMasthead" class="masthead site-masthead station-masthead">
-      <div class="station-masthead-bar">
-        <span class="eyebrow">TD613 / station split / Readout</span>
-        <div class="station-masthead-links">
-          <a class="gateway-link" href="./index.html">Gateway</a>
-          <a class="gateway-link" href="./safe-harbor/index.html">Safe Harbor</a>
-        </div>
-      </div>
-      <div class="station-masthead-copy">
-        <h1>Readout</h1>
-        <p id="heroStationLine" class="hero-station-line">Readout / witness, law, harbor</p>
-        <p id="heroLead" class="lead">This page stays colder than the rest of the site so similarity, traceability, route pressure, and harbor never collapse into one feeling.</p>
-      </div>
-    </header>
-
-    <div class="statusrail station-statusrail">
-      <span id="decisionTone" class="console-status">Waiting on a scan</span>
-      <span id="badgeState" class="statepill active">Badge // holds</span>
-      <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
-      <span id="containmentState" class="statepill active">Containment // stable</span>
-      <span id="routeState" class="statepill">Route // buffered</span>
-      <a id="safeHarborHandoff" class="statepill statepill-link safe-harbor-handoff" href="./safe-harbor/index.html">
-        <span class="safe-harbor-handoff-glyph" aria-hidden="true">&#x27D0;</span>
-        <span id="safeHarborHandoffLabel">Safe Harbor // latent</span>
-      </a>
-    </div>
-
-    <nav class="top-tabs site-nav station-nav" aria-label="TCP stations">
-      <button id="tabHomebase" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
-      <button id="tabPersonas" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
-      <button id="tabReadout" type="button" class="top-tab active"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
-      <button id="tabPlay" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
-      <button id="tabTrainer" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer</button>
-      <a class="top-tab top-tab-external" href="./index.html">Gateway</a>
-      <a class="top-tab top-tab-external" href="./safe-harbor/index.html">Safe Harbor</a>
-    </nav>
-
-    <main class="view-stack station-stack">
-      <section id="viewPaneReadout" class="view-pane active">
-        <div class="station-view-head station-view-head-readout">
-          <div class="station-view-meta">
-            <div class="station-view-label"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout station</div>
-            <h2 class="station-view-title">Witness page. Law page. No softening.</h2>
-            <p class="station-view-summary">Read this as a governed exposure surface: what was available, what got narrowed, what survived, and how much authority the runtime actually earned.</p>
+    <div class="chamber-header">
+      <header id="consoleMasthead" class="masthead site-masthead station-masthead">
+        <div class="station-masthead-bar">
+          <span class="eyebrow">TD613 / station split / Readout</span>
+          <div class="station-masthead-links">
+            <a class="gateway-link" href="./index.html">Gateway</a>
+            <a class="gateway-link" href="./safe-harbor/index.html">Safe Harbor</a>
           </div>
         </div>
-        <div class="readout-layout">
-          <section class="panel telemetry-panel">
+        <div class="station-masthead-copy">
+          <h1>Readout</h1>
+          <p id="heroStationLine" class="hero-station-line">Witness / route / harbor</p>
+          <p id="heroLead" class="lead">Cold witness only. No softening.</p>
+        </div>
+      </header>
+
+      <div class="statusrail station-statusrail">
+        <span id="decisionTone" class="console-status">Waiting on a scan</span>
+        <span id="badgeState" class="statepill active">Badge // holds</span>
+        <span id="mirrorState" class="statepill active">Mirror shield // armed</span>
+        <span id="containmentState" class="statepill active">Containment // stable</span>
+        <span id="routeState" class="statepill">Route // buffered</span>
+        <a id="safeHarborHandoff" class="statepill statepill-link safe-harbor-handoff" href="./safe-harbor/index.html">
+          <span class="safe-harbor-handoff-glyph" aria-hidden="true">&#x27D0;</span>
+          <span id="safeHarborHandoffLabel">Safe Harbor // latent</span>
+        </a>
+      </div>
+
+      <nav class="top-tabs site-nav station-nav" aria-label="TCP stations">
+        <button id="tabHomebase" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabHomebase">&#x4E0B;</span> Homebase</button>
+        <button id="tabPersonas" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabPersonas">&#x03C8;</span> Personas</button>
+        <button id="tabReadout" type="button" class="top-tab active"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabReadout">&#x0398;</span> Readout</button>
+        <button id="tabPlay" type="button" class="top-tab"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="tabDeck">&#x25C7;</span> Deck</button>
+        <button id="tabTrainer" type="button" class="top-tab"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="tabTrainer">&#x22A2;</span> Trainer</button>
+      </nav>
+    </div>
+
+    <main class="view-stack station-stack station-main station-main-readout">
+      <section id="viewPaneReadout" class="view-pane active">
+        <div class="station-chamber station-chamber-readout readout-layout">
+          <section class="panel telemetry-panel active-bench">
             <div class="panel-heading">
               <div>
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTelemetry">&#x0398;</span> Telemetry</div>
-                <h2>What the field is actually doing</h2>
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTelemetry">&#x0398;</span> Witness slab</div>
+                <h2>Read what the field kept</h2>
               </div>
-              <p class="section-note">Cadence resemblance is downstream. The first question is what the runtime lost before the result felt sufficient.</p>
+              <p class="section-note">Witness first. Similarity later.</p>
             </div>
 
             <p id="fieldNotice" class="field-notice analysis-gated" data-latent-label="Telemetry latent // wake the field">Bring one or two voices into the room. TCP now keeps latent state, projected state, registered surface, and route law separate from cadence resemblance.</p>
@@ -105,13 +98,13 @@
             </div>
           </section>
 
-          <section class="panel harbor-panel">
+          <section class="panel harbor-panel evidence-spine">
             <div class="panel-heading">
               <div>
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionHarbor">&#x2696;</span> Harbor</div>
-                <h2>Structured passage</h2>
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionHarbor">&#x2696;</span> Harbor lane</div>
+                <h2>Structure the route</h2>
               </div>
-              <p class="section-note">When the field earns handling, the recommendation shows up here.</p>
+              <p class="section-note">When the field earns handling, route structure appears here.</p>
             </div>
 
             <div id="harborBox" class="harbor-box analysis-gated" data-latent-label="Harbor latent // no route yet"></div>

@@ -4867,3 +4867,673 @@ body[data-page-kind="trainer"] .footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* Patch 30.5 / futurecore-goth chamber rewrite */
+
+body[data-page-kind="gateway"] {
+  --room-accent: var(--ritual);
+  --room-accent-rgb: 168, 85, 247;
+  --room-secondary: var(--cyan);
+  --room-secondary-rgb: 116, 234, 255;
+  --room-glow: rgba(168, 85, 247, 0.22);
+  --room-panel-top: rgba(9, 8, 16, 0.975);
+  --room-panel-bottom: rgba(3, 4, 8, 0.995);
+  --room-seal: rgba(116, 234, 255, 0.18);
+  --room-danger: rgba(220, 38, 38, 0.22);
+}
+
+body[data-page-kind="deck"] {
+  --room-accent: var(--amber);
+  --room-accent-rgb: 255, 179, 92;
+  --room-secondary: var(--cyan);
+  --room-secondary-rgb: 116, 234, 255;
+  --room-glow: rgba(255, 179, 92, 0.18);
+  --room-panel-top: rgba(11, 10, 13, 0.976);
+  --room-panel-bottom: rgba(3, 5, 8, 0.995);
+  --room-seal: rgba(255, 179, 92, 0.18);
+  --room-danger: rgba(220, 38, 38, 0.22);
+}
+
+body[data-page-kind="homebase"] {
+  --room-accent: var(--lime);
+  --room-accent-rgb: 188, 255, 138;
+  --room-secondary: var(--bone);
+  --room-secondary-rgb: 214, 211, 209;
+  --room-glow: rgba(188, 255, 138, 0.16);
+  --room-panel-top: rgba(8, 12, 11, 0.975);
+  --room-panel-bottom: rgba(3, 5, 6, 0.995);
+  --room-seal: rgba(214, 211, 209, 0.16);
+  --room-danger: rgba(220, 38, 38, 0.18);
+}
+
+body[data-page-kind="readout"] {
+  --room-accent: var(--cyan);
+  --room-accent-rgb: 116, 234, 255;
+  --room-secondary: var(--bone);
+  --room-secondary-rgb: 214, 211, 209;
+  --room-glow: rgba(116, 234, 255, 0.18);
+  --room-panel-top: rgba(6, 9, 12, 0.98);
+  --room-panel-bottom: rgba(2, 3, 6, 0.997);
+  --room-seal: rgba(214, 211, 209, 0.14);
+  --room-danger: rgba(220, 38, 38, 0.18);
+}
+
+body[data-page-kind="personas"] {
+  --room-accent: var(--ritual);
+  --room-accent-rgb: 168, 85, 247;
+  --room-secondary: var(--cyan);
+  --room-secondary-rgb: 116, 234, 255;
+  --room-glow: rgba(168, 85, 247, 0.2);
+  --room-panel-top: rgba(10, 8, 16, 0.978);
+  --room-panel-bottom: rgba(4, 4, 10, 0.996);
+  --room-seal: rgba(116, 234, 255, 0.16);
+  --room-danger: rgba(220, 38, 38, 0.18);
+}
+
+body[data-page-kind="trainer"] {
+  --room-accent: var(--cyan);
+  --room-accent-rgb: 116, 234, 255;
+  --room-secondary: var(--blood);
+  --room-secondary-rgb: 220, 38, 38;
+  --room-glow: rgba(116, 234, 255, 0.18);
+  --room-panel-top: rgba(8, 10, 14, 0.978);
+  --room-panel-bottom: rgba(3, 4, 8, 0.996);
+  --room-seal: rgba(220, 38, 38, 0.18);
+  --room-danger: rgba(220, 38, 38, 0.24);
+}
+
+body[data-page-kind="homebase"] .shell-station,
+body[data-page-kind="personas"] .shell-station,
+body[data-page-kind="readout"] .shell-station,
+body[data-page-kind="deck"] .shell-station,
+body[data-page-kind="trainer"] .shell-station {
+  gap: 10px;
+}
+
+.chamber-header {
+  position: relative;
+  display: grid;
+  gap: 0;
+  padding: 10px 12px 8px;
+  border: 1px solid rgba(var(--room-accent-rgb), 0.24);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(var(--room-secondary-rgb), 0.12), transparent 28%),
+    linear-gradient(180deg, rgba(8, 9, 13, 0.985) 0%, rgba(3, 4, 8, 0.995) 100%);
+  clip-path: polygon(0 18px, 18px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 10px 100%, 0 calc(100% - 8px));
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.36),
+    0 0 18px rgba(var(--room-accent-rgb), 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.chamber-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(var(--room-secondary-rgb), 0.06), transparent 28%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.82 0 0 0 0 0.88 0 0 0 0 1 0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: auto, 180px 180px;
+  mix-blend-mode: screen;
+  opacity: 0.28;
+}
+
+.chamber-header .station-masthead,
+.chamber-header .station-statusrail,
+.chamber-header .station-nav {
+  position: relative;
+  z-index: 1;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  clip-path: none !important;
+  box-shadow: none !important;
+}
+
+.chamber-header .station-masthead {
+  padding: 0 0 6px;
+}
+
+.chamber-header .station-statusrail {
+  padding: 6px 0;
+  border-top: 1px solid rgba(var(--room-secondary-rgb), 0.08) !important;
+  border-bottom: 1px solid rgba(var(--room-secondary-rgb), 0.08) !important;
+}
+
+.chamber-header .station-nav {
+  padding: 8px 0 0;
+}
+
+body[data-page-kind="homebase"] .station-masthead-copy,
+body[data-page-kind="personas"] .station-masthead-copy,
+body[data-page-kind="readout"] .station-masthead-copy,
+body[data-page-kind="deck"] .station-masthead-copy,
+body[data-page-kind="trainer"] .station-masthead-copy {
+  grid-template-columns: 1fr;
+  gap: 2px;
+}
+
+body[data-page-kind="homebase"] .station-masthead-copy h1,
+body[data-page-kind="personas"] .station-masthead-copy h1,
+body[data-page-kind="readout"] .station-masthead-copy h1,
+body[data-page-kind="deck"] .station-masthead-copy h1,
+body[data-page-kind="trainer"] .station-masthead-copy h1 {
+  font-size: clamp(18px, 2.2vw, 26px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 10px rgba(var(--room-secondary-rgb), 0.16),
+    0 0 18px rgba(var(--room-accent-rgb), 0.14);
+}
+
+body[data-page-kind="homebase"] .hero-station-line,
+body[data-page-kind="personas"] .hero-station-line,
+body[data-page-kind="readout"] .hero-station-line,
+body[data-page-kind="deck"] .hero-station-line,
+body[data-page-kind="trainer"] .hero-station-line {
+  font-family: var(--display);
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(var(--room-accent-rgb), 0.92);
+  text-shadow: 0 0 12px rgba(var(--room-accent-rgb), 0.24);
+}
+
+body[data-page-kind="homebase"] .station-masthead-copy .lead,
+body[data-page-kind="personas"] .station-masthead-copy .lead,
+body[data-page-kind="readout"] .station-masthead-copy .lead,
+body[data-page-kind="deck"] .station-masthead-copy .lead,
+body[data-page-kind="trainer"] .station-masthead-copy .lead {
+  display: block;
+  max-width: 42ch;
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  line-height: 1.36;
+  color: rgba(var(--room-secondary-rgb), 0.78);
+}
+
+body[data-page-kind="homebase"] .station-masthead-links,
+body[data-page-kind="personas"] .station-masthead-links,
+body[data-page-kind="readout"] .station-masthead-links,
+body[data-page-kind="deck"] .station-masthead-links,
+body[data-page-kind="trainer"] .station-masthead-links {
+  gap: 6px;
+}
+
+body[data-page-kind="homebase"] .station-masthead-links .gateway-link,
+body[data-page-kind="personas"] .station-masthead-links .gateway-link,
+body[data-page-kind="readout"] .station-masthead-links .gateway-link,
+body[data-page-kind="deck"] .station-masthead-links .gateway-link,
+body[data-page-kind="trainer"] .station-masthead-links .gateway-link {
+  min-height: 24px;
+  padding: 0 10px;
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  border-color: rgba(var(--room-accent-rgb), 0.24);
+  background: rgba(var(--room-accent-rgb), 0.08);
+  color: rgba(var(--room-secondary-rgb), 0.92);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+body[data-page-kind="homebase"] .station-statusrail .console-status,
+body[data-page-kind="homebase"] .station-statusrail .statepill,
+body[data-page-kind="personas"] .station-statusrail .console-status,
+body[data-page-kind="personas"] .station-statusrail .statepill,
+body[data-page-kind="readout"] .station-statusrail .console-status,
+body[data-page-kind="readout"] .station-statusrail .statepill,
+body[data-page-kind="deck"] .station-statusrail .console-status,
+body[data-page-kind="deck"] .station-statusrail .statepill,
+body[data-page-kind="trainer"] .station-statusrail .console-status,
+body[data-page-kind="trainer"] .station-statusrail .statepill {
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border-color: rgba(var(--room-secondary-rgb), 0.14);
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+  color: rgba(var(--room-secondary-rgb), 0.9);
+}
+
+body[data-page-kind="homebase"] .station-nav .top-tab,
+body[data-page-kind="personas"] .station-nav .top-tab,
+body[data-page-kind="readout"] .station-nav .top-tab,
+body[data-page-kind="deck"] .station-nav .top-tab,
+body[data-page-kind="trainer"] .station-nav .top-tab {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border-color: rgba(var(--room-secondary-rgb), 0.12);
+  background: rgba(255, 255, 255, 0.015);
+  color: rgba(var(--room-secondary-rgb), 0.86);
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+}
+
+body[data-page-kind="homebase"] .station-nav .top-tab .glyph,
+body[data-page-kind="personas"] .station-nav .top-tab .glyph,
+body[data-page-kind="readout"] .station-nav .top-tab .glyph,
+body[data-page-kind="deck"] .station-nav .top-tab .glyph,
+body[data-page-kind="trainer"] .station-nav .top-tab .glyph {
+  color: rgba(var(--room-secondary-rgb), 0.72);
+  text-shadow: 0 0 10px currentColor;
+}
+
+body[data-page-kind="homebase"] .station-nav .top-tab.active,
+body[data-page-kind="personas"] .station-nav .top-tab.active,
+body[data-page-kind="readout"] .station-nav .top-tab.active,
+body[data-page-kind="deck"] .station-nav .top-tab.active,
+body[data-page-kind="trainer"] .station-nav .top-tab.active {
+  border-color: rgba(var(--room-accent-rgb), 0.4);
+  background:
+    linear-gradient(180deg, rgba(var(--room-accent-rgb), 0.18) 0%, rgba(7, 12, 18, 0.96) 100%);
+  color: var(--ink);
+  box-shadow:
+    0 0 18px rgba(var(--room-accent-rgb), 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+body[data-page-kind="homebase"] .station-nav .top-tab.active .glyph,
+body[data-page-kind="personas"] .station-nav .top-tab.active .glyph,
+body[data-page-kind="readout"] .station-nav .top-tab.active .glyph,
+body[data-page-kind="deck"] .station-nav .top-tab.active .glyph,
+body[data-page-kind="trainer"] .station-nav .top-tab.active .glyph {
+  color: var(--room-accent);
+}
+
+.station-main {
+  display: grid;
+}
+
+.station-chamber {
+  display: grid;
+  gap: 12px;
+  align-items: start;
+}
+
+.station-chamber-homebase {
+  grid-template-columns: minmax(0, 1.34fr) 320px;
+}
+
+.station-chamber-deck {
+  grid-template-columns: minmax(0, 1.42fr) 304px;
+}
+
+.station-chamber-readout {
+  grid-template-columns: minmax(0, 1.24fr) 320px;
+}
+
+.station-chamber-personas {
+  grid-template-columns: minmax(320px, 0.84fr) minmax(0, 1.16fr);
+}
+
+.station-chamber-trainer {
+  grid-template-columns: minmax(0, 1.3fr) 340px;
+}
+
+.active-bench,
+.evidence-spine,
+.homebase-active-grid,
+.trainer-active-grid {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.homebase-active-grid,
+.trainer-active-grid {
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+}
+
+body[data-page-kind] .panel,
+body[data-page-kind] .field,
+body[data-page-kind] .trainer-surface,
+body[data-page-kind] .metric,
+body[data-page-kind] .harbor-box,
+body[data-page-kind] .ledger-stage,
+body[data-page-kind] .bay-profile,
+body[data-page-kind] .shell-duel,
+body[data-page-kind] .persona,
+body[data-page-kind="gateway"] .gateway-card,
+body[data-page-kind] .field-notice,
+body[data-page-kind] .analysis-status {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(var(--room-accent-rgb), 0.16);
+  background:
+    linear-gradient(180deg, var(--room-panel-top) 0%, var(--room-panel-bottom) 100%);
+  clip-path: polygon(0 12px, 16px 0, calc(100% - 26px) 0, 100% 10px, 100% calc(100% - 18px), calc(100% - 14px) 100%, 10px 100%, 0 calc(100% - 8px));
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.3),
+    0 0 18px rgba(var(--room-accent-rgb), 0.07),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+body[data-page-kind] .panel::before,
+body[data-page-kind] .field::before,
+body[data-page-kind] .trainer-surface::before,
+body[data-page-kind] .metric::before,
+body[data-page-kind] .harbor-box::before,
+body[data-page-kind] .ledger-stage::before,
+body[data-page-kind] .bay-profile::before,
+body[data-page-kind] .shell-duel::before,
+body[data-page-kind] .persona::before,
+body[data-page-kind="gateway"] .gateway-card::before,
+body[data-page-kind] .field-notice::before,
+body[data-page-kind] .analysis-status::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(var(--room-secondary-rgb), 0.05), transparent 32%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.82 0 0 0 0 0.9 0 0 0 0 1 0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: auto, 160px 160px;
+  mix-blend-mode: screen;
+  opacity: 0.18;
+}
+
+body[data-page-kind] .panel::after,
+body[data-page-kind] .field::after,
+body[data-page-kind] .trainer-surface::after,
+body[data-page-kind] .metric::after,
+body[data-page-kind] .harbor-box::after,
+body[data-page-kind] .ledger-stage::after,
+body[data-page-kind] .bay-profile::after,
+body[data-page-kind] .shell-duel::after,
+body[data-page-kind] .persona::after,
+body[data-page-kind="gateway"] .gateway-card::after,
+body[data-page-kind] .field-notice::after,
+body[data-page-kind] .analysis-status::after {
+  content: "";
+  position: absolute;
+  inset: auto;
+  top: 12px;
+  right: 16px;
+  bottom: auto;
+  left: auto;
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(var(--room-accent-rgb), 0.62), transparent);
+  pointer-events: none;
+}
+
+body[data-page-kind] .panel-heading {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+body[data-page-kind] .panel-heading h2,
+body[data-page-kind] .panel-heading h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.06;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+body[data-page-kind] .section-kicker,
+body[data-page-kind] .persona-kicker {
+  font-family: var(--display);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(var(--room-secondary-rgb), 0.78);
+}
+
+body[data-page-kind] .section-kicker .glyph,
+body[data-page-kind] .persona-kicker .glyph,
+body[data-page-kind] .field-randomizer,
+body[data-page-kind] .safe-harbor-handoff-glyph {
+  color: var(--room-accent);
+  text-shadow: 0 0 12px currentColor;
+}
+
+body[data-page-kind] .section-note,
+body[data-page-kind] .field-copy,
+body[data-page-kind] .hint,
+body[data-page-kind] .analysis-status,
+body[data-page-kind] .trainer-readout-body,
+body[data-page-kind] .bay-copy,
+body[data-page-kind] .duel-note,
+body[data-page-kind] .duel-empty-copy {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(var(--room-secondary-rgb), 0.76);
+}
+
+body[data-page-kind] .field-label,
+body[data-page-kind] .key,
+body[data-page-kind] .duel-source,
+body[data-page-kind] .duel-empty-mark,
+body[data-page-kind] .homebase-route-chip {
+  font-family: var(--sans);
+  letter-spacing: 0.12em;
+}
+
+body[data-page-kind="deck"] .active-bench > .panel,
+body[data-page-kind="homebase"] .active-bench > .panel,
+body[data-page-kind="personas"] .active-bench > .panel,
+body[data-page-kind="readout"] .active-bench > .panel,
+body[data-page-kind="trainer"] .active-bench > .panel,
+body[data-page-kind] .active-bench .field:focus-within,
+body[data-page-kind] .active-bench .shell-duel[data-state="live"] {
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.34),
+    0 0 24px rgba(var(--room-accent-rgb), 0.12),
+    inset 0 0 0 1px rgba(var(--room-secondary-rgb), 0.05);
+}
+
+body[data-analysis-revealed="false"] .analysis-gated {
+  border-color: rgba(var(--room-secondary-rgb), 0.14);
+  background:
+    linear-gradient(180deg, rgba(7, 11, 15, 0.97) 0%, rgba(3, 4, 8, 0.994) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--room-secondary-rgb), 0.04),
+    0 0 18px rgba(var(--room-accent-rgb), 0.05);
+}
+
+body[data-analysis-revealed="false"] .analysis-gated::before {
+  display: grid;
+  place-items: center;
+  padding: 12px 14px;
+  color: rgba(var(--room-secondary-rgb), 0.84);
+  background:
+    linear-gradient(180deg, rgba(var(--room-accent-rgb), 0.06) 0%, rgba(0, 0, 0, 0) 38%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(var(--room-secondary-rgb), 0.06) 0px,
+      rgba(var(--room-secondary-rgb), 0.06) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+}
+
+body[data-analysis-revealed="false"] .field-notice.analysis-gated {
+  min-height: 64px;
+}
+
+body[data-analysis-revealed="false"] .governed-exposure-panel.analysis-gated {
+  min-height: 108px;
+}
+
+body[data-analysis-revealed="false"] .results.analysis-gated {
+  min-height: 92px;
+}
+
+body[data-analysis-revealed="false"] .harbor-box.analysis-gated {
+  min-height: 96px;
+}
+
+body[data-analysis-revealed="false"] .ledger-stage.analysis-gated {
+  min-height: 112px;
+}
+
+body[data-analysis-revealed="false"] .shell-duel.analysis-gated {
+  min-height: 136px;
+}
+
+body[data-page-kind="homebase"] .homebase-worn-mask-empty,
+body[data-page-kind="personas"] .persona-preview-empty,
+body[data-page-kind="trainer"] .trainer-bridge-empty {
+  min-height: 96px;
+  border-color: rgba(var(--room-secondary-rgb), 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.06) 100%);
+}
+
+body[data-page-kind="homebase"] .homebase-active-grid,
+body[data-page-kind="trainer"] .trainer-active-grid {
+  grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+}
+
+body[data-page-kind="homebase"] .evidence-spine-homebase,
+body[data-page-kind="deck"] .evidence-spine-deck,
+body[data-page-kind="readout"] .evidence-spine,
+body[data-page-kind="trainer"] .evidence-spine-trainer {
+  align-self: start;
+}
+
+body[data-page-kind="personas"] .persona-shelf-panel .personagrid {
+  gap: 12px;
+}
+
+body[data-page-kind="personas"] .persona {
+  background:
+    radial-gradient(circle at top right, rgba(var(--room-accent-rgb), 0.14), transparent 26%),
+    linear-gradient(180deg, var(--room-panel-top) 0%, var(--room-panel-bottom) 100%);
+}
+
+body[data-page-kind="readout"] .metric,
+body[data-page-kind="readout"] .harbor-box,
+body[data-page-kind="readout"] .ledger-stage,
+body[data-page-kind="readout"] .field-notice {
+  background:
+    linear-gradient(180deg, rgba(5, 8, 11, 0.985) 0%, rgba(1, 3, 6, 0.998) 100%);
+}
+
+body[data-page-kind="readout"] .readout-layout {
+  gap: 12px;
+}
+
+body[data-page-kind="deck"] .deck-support-panel,
+body[data-page-kind="homebase"] .chamber-tool-state,
+body[data-page-kind="trainer"] .evidence-spine-trainer > .analysis-status {
+  border-style: solid;
+}
+
+body[data-page-kind] .chamber-tool-state {
+  display: grid;
+  gap: 8px;
+}
+
+body[data-page-kind="trainer"] .trainer-active-grid .trainer-actions,
+body[data-page-kind="deck"] .action-row,
+body[data-page-kind="deck"] .utility-row,
+body[data-page-kind="homebase"] .trainer-actions {
+  gap: 8px;
+}
+
+body[data-page-kind="gateway"] .gateway-head {
+  border-color: rgba(var(--room-accent-rgb), 0.28);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(var(--room-secondary-rgb), 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(10, 8, 15, 0.982) 0%, rgba(4, 4, 9, 0.996) 100%);
+}
+
+body[data-page-kind="gateway"] .gateway-head,
+body[data-page-kind="gateway"] .gateway-panel {
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.34),
+    0 0 22px rgba(var(--room-accent-rgb), 0.08);
+}
+
+body[data-page-kind="gateway"] .gateway-summary,
+body[data-page-kind="gateway"] .section-note {
+  max-width: 42ch;
+}
+
+body[data-page-kind="gateway"] .gateway-card {
+  min-height: 146px;
+}
+
+body[data-page-kind="gateway"] .gateway-card h3 {
+  font-size: 0.88rem;
+  letter-spacing: 0.14em;
+}
+
+body[data-page-kind="gateway"] .gateway-card p {
+  max-width: 26ch;
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+body[data-page-kind="gateway"] .ingress-layer {
+  border-color: rgba(var(--room-accent-rgb), 0.26);
+  background:
+    radial-gradient(circle at top right, rgba(var(--room-accent-rgb), 0.14), transparent 24%),
+    linear-gradient(180deg, rgba(10, 7, 15, 0.975) 0%, rgba(3, 4, 8, 0.994) 100%);
+  box-shadow:
+    0 34px 80px rgba(0, 0, 0, 0.52),
+    0 0 30px rgba(var(--room-accent-rgb), 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+body[data-page-kind="gateway"] .ingress-core {
+  box-shadow:
+    0 0 22px rgba(var(--room-accent-rgb), 0.16),
+    0 0 34px rgba(var(--room-secondary-rgb), 0.12);
+}
+
+body[data-page-kind="gateway"] .ingress-core-glyph,
+body[data-page-kind="gateway"] .ingress-seal-node[data-state="active"] {
+  color: var(--room-accent);
+}
+
+body[data-page-kind="gateway"] .ingress-subtitle,
+body[data-page-kind="gateway"] .ingress-cue-copy,
+body[data-page-kind="gateway"] .ingress-forensic-value {
+  max-width: 34ch;
+}
+
+@media (max-width: 1040px) {
+  .station-chamber-homebase,
+  .station-chamber-deck,
+  .station-chamber-readout,
+  .station-chamber-personas,
+  .station-chamber-trainer,
+  body[data-page-kind="homebase"] .homebase-active-grid,
+  body[data-page-kind="trainer"] .trainer-active-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .chamber-header {
+    padding: 8px 10px 8px;
+  }
+
+  body[data-page-kind="homebase"] .station-masthead-links,
+  body[data-page-kind="personas"] .station-masthead-links,
+  body[data-page-kind="readout"] .station-masthead-links,
+  body[data-page-kind="deck"] .station-masthead-links,
+  body[data-page-kind="trainer"] .station-masthead-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  body[data-page-kind="homebase"] .station-statusrail,
+  body[data-page-kind="personas"] .station-statusrail,
+  body[data-page-kind="readout"] .station-statusrail,
+  body[data-page-kind="deck"] .station-statusrail,
+  body[data-page-kind="trainer"] .station-statusrail {
+    padding-right: 2px;
+  }
+}
