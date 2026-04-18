@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-17T21:34:25.597Z
+Generated: 2026-04-18T03:12:37.889Z
 
 Corpus: 72 samples across 18 families
 Promoted deck subset: 24 samples
@@ -8,76 +8,74 @@ Total diagnostics cases: 270
 
 ## Failure Buckets
 
-- semantic_drift: 79
-- register_miss: 75
-- false_neighbor_convergence: 44
-- sentence_span_miss: 34
-- trainer_retrieval_fail: 31
-- over_flattened_output: 17
-- one_sided_swap: 16
+- register_miss: 60
+- semantic_drift: 59
+- sentence_span_miss: 41
+- over_flattened_output: 35
+- trainer_retrieval_fail: 33
+- one_sided_swap: 26
+- false_neighbor_convergence: 26
+- both_rejected_swap: 8
+- surface_close_under_large_gap: 3
 - punctuation_only_shift: 0
-- surface_close_under_large_gap: 0
 - anchor_break: 0
 - generator_hold: 0
 - generator_unbounded_semantics: 0
-- both_rejected_swap: 0
 - mask_near_home_hold: 0
 
 ## Worst Families
 
-- customer-support: 34
-- building-access: 29
-- school-coordination: 27
-- mutual-aid: 22
-- committee-budget: 20
-- tenant-leak: 19
-- newsroom-correction: 19
-- clinic-scheduling: 15
+- customer-support: 33
+- tenant-leak: 30
+- building-access: 28
+- clinic-scheduling: 21
+- committee-budget: 21
+- mutual-aid: 21
+- school-coordination: 18
+- archive-grant: 14
 
 ## Worst Cases
 
-- mutual-aid-to-customer-support-false-neighbor: false_neighbor_convergence, one_sided_swap, register_miss, semantic_drift // Buckets: false_neighbor_convergence, one_sided_swap, register_miss, semantic_drift.
-- customer-support-to-mutual-aid-false-neighbor: one_sided_swap, over_flattened_output, register_miss, semantic_drift // Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift.
-- mutual-aid-to-customer-support-false-neighbor: false_neighbor_convergence, one_sided_swap, register_miss, semantic_drift // Buckets: false_neighbor_convergence, one_sided_swap, register_miss, semantic_drift.
-- customer-support-to-mutual-aid-false-neighbor: one_sided_swap, over_flattened_output, register_miss, semantic_drift // Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift.
-- building-access-formal-to-rushed: one_sided_swap, register_miss, semantic_drift // Buckets: one_sided_swap, register_miss, semantic_drift.
-- customer-support-rushed-to-formal: one_sided_swap, register_miss, sentence_span_miss // Buckets: one_sided_swap, register_miss, sentence_span_miss.
-- newsroom-correction-rushed-to-formal: register_miss, semantic_drift, sentence_span_miss // Buckets: register_miss, semantic_drift, sentence_span_miss.
-- tenant-leak-to-package-handoff-false-neighbor: false_neighbor_convergence, register_miss, semantic_drift // Buckets: false_neighbor_convergence, register_miss, semantic_drift.
-- customer-support-to-clinic-scheduling-false-neighbor: one_sided_swap, over_flattened_output, register_miss // Buckets: one_sided_swap, over_flattened_output, register_miss.
-- committee-budget-to-archive-grant-false-neighbor: over_flattened_output, register_miss, semantic_drift // Buckets: over_flattened_output, register_miss, semantic_drift.
-- performance-review-to-committee-budget-false-neighbor: false_neighbor_convergence, register_miss, semantic_drift // Buckets: false_neighbor_convergence, register_miss, semantic_drift.
-- school-coordination-to-clinic-scheduling-false-neighbor: false_neighbor_convergence, register_miss, semantic_drift // Buckets: false_neighbor_convergence, register_miss, semantic_drift.
+- tenant-leak-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss, surface_close_under_large_gap.
+- clinic-scheduling-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss, surface_close_under_large_gap.
+- customer-support-formal-to-rushed: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss, surface_close_under_large_gap // Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss, surface_close_under_large_gap.
+- building-access-to-museum-fog-alarm-false-neighbor: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss // Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss.
+- building-access-to-museum-fog-alarm-false-neighbor: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss // Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift, sentence_span_miss.
+- tenant-leak-to-package-handoff-false-neighbor: one_sided_swap, over_flattened_output, register_miss, semantic_drift // Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift.
+- mutual-aid-to-customer-support-false-neighbor: both_rejected_swap, over_flattened_output, register_miss, semantic_drift // Buckets: both_rejected_swap, over_flattened_output, register_miss, semantic_drift.
+- tenant-leak-to-package-handoff-false-neighbor: one_sided_swap, over_flattened_output, register_miss, semantic_drift // Buckets: one_sided_swap, over_flattened_output, register_miss, semantic_drift.
+- mutual-aid-to-customer-support-false-neighbor: both_rejected_swap, over_flattened_output, register_miss, semantic_drift // Buckets: both_rejected_swap, over_flattened_output, register_miss, semantic_drift.
+- tenant-leak-rushed-to-formal: one_sided_swap, semantic_drift, sentence_span_miss // Buckets: one_sided_swap, semantic_drift, sentence_span_miss.
+- customer-support-rushed-to-formal: one_sided_swap, semantic_drift, sentence_span_miss // Buckets: one_sided_swap, semantic_drift, sentence_span_miss.
+- building-access-to-customer-support-false-neighbor: both_rejected_swap, over_flattened_output, semantic_drift // Buckets: both_rejected_swap, over_flattened_output, semantic_drift.
 
 ## Generator Audit
 
 - case_count: 52
 - landed_count: 52
 - held_count: 0
-- structural_count: 49
-- surface_count: 3
+- structural_count: 50
+- surface_count: 1
 - semantic_bounded_rate: 1
 - unsafe_structural_count: 0
 - protected_anchor_integrity_min: 1
-- average_candidate_count: 2.9423
-- average_selected_candidate_score: 0.8787
+- average_candidate_count: 3.1154
+- average_selected_candidate_score: 0.8447
 - generator_versions: v2:52
 - source_classes: procedural-record:19, formal-correspondence:30, narrative-scene:3
 - hold_classes: none
 
 ### Generator Misses
 
-- customer-support-mask-same-family: mask, procedural-record, transfer surface, registered surface-only, hold landed/none, bounded yes, selected score 0.2481
-- model-safety-mask-same-family: mask, formal-correspondence, transfer surface, registered surface-only, hold landed/none, bounded yes, selected score 0.3493
-- museum-fog-alarm-under-building-access-mask-cross-family: mask, formal-correspondence, transfer surface, registered surface-only, hold landed/none, bounded yes, selected score 0.6143
+- model-safety-mask-same-family: mask, formal-correspondence, transfer surface, registered surface-only, hold landed/none, bounded yes, selected score 0.4901
 
 ## Toolability
 
 - expected_case_count: 34
 - landed_rate: 1
 - hold_rate: 0
-- artifact_rate: 0.4118
-- weak_movement_rate: 0.0882
+- artifact_rate: 0.3824
+- weak_movement_rate: 0.0294
 - distinctness_rate: 1
 - convergence_rate: 0
 - preview_honesty_rate: 1
@@ -115,38 +113,38 @@ Total diagnostics cases: 270
 
 - resolved_persona_count: 7
 - unique_resolved_persona_profile_count: 7
-- average_nearest_field_distance: 2.5749
-- min_nearest_field_distance: 2.255
+- average_nearest_field_distance: 2.5306
+- min_nearest_field_distance: 2.129
 - missing_recipe_sample_ids: none
 - distinct_output_check: 7/7 distinct on customer-support-formal-record
 
 ### Closest Persona Pairs
 
-- operator <-> cross-examiner: field distance 2.255, profile 0.8, heatmap 0.889, traceability 0.869
-- operator <-> methods-editor: field distance 2.363, profile 0.646, heatmap 1.554, traceability 1
-- undertow <-> matron: field distance 2.457, profile 0.63, heatmap 1.429, traceability 0.988
-- archivist <-> methods-editor: field distance 2.48, profile 1.067, heatmap 1.162, traceability 1
-- operator <-> matron: field distance 2.648, profile 0.98, heatmap 1.27, traceability 0.977
-- archivist <-> operator: field distance 2.712, profile 1.348, heatmap 1.162, traceability 1
+- operator <-> methods-editor: field distance 2.129, profile 0.652, heatmap 1.305, traceability 1
+- archivist <-> methods-editor: field distance 2.292, profile 1.005, heatmap 1.11, traceability 1
+- operator <-> cross-examiner: field distance 2.415, profile 0.842, heatmap 1, traceability 0.864
+- archivist <-> operator: field distance 2.447, profile 1.293, heatmap 1.001, traceability 1
+- undertow <-> matron: field distance 2.496, profile 0.639, heatmap 1.333, traceability 0.986
+- operator <-> matron: field distance 2.886, profile 0.995, heatmap 1.501, traceability 0.974
 
 ## Private TD613 Aperture Working State
 
-- state: warning
-- blocked_generative_passage: no
+- state: buffered
+- blocked_generative_passage: yes
 - donor_pressure: real
 - witness_pressure: rising
-- realized_passage: landing
+- realized_passage: weak
 - provenance_floor: maintained
-- swap_matrix: bilateral 54/104, one-sided 10/104, flagship 8/8
-- representative_pairs: bilateral visible 6/6, bilateral non-trivial 6/6, average score 35.33
+- swap_matrix: bilateral 42/104, one-sided 16/104, flagship 6/8
+- representative_pairs: bilateral visible 6/6, bilateral non-trivial 6/6, average score 35.67
 
 ## Private TD613 Aperture Representative Pairs
 
 - building-access-rushed-mobile -> adversarial-hearing-formal-record: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - benefits-appeal-professional-message -> adversarial-hearing-rushed-mobile: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
-- municipal-zoning-formal-record -> committee-budget-professional-message: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- municipal-zoning-formal-record -> adversarial-hearing-rushed-mobile: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - adversarial-hearing-rushed-mobile -> adversarial-hearing-formal-record: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
-- museum-fog-alarm-professional-message -> adversarial-hearing-rushed-mobile: score 34, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
+- museum-fog-alarm-professional-message -> adversarial-hearing-rushed-mobile: score 36, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 - model-safety-rushed-mobile -> adversarial-hearing-formal-record: score 34, outcomes structural / structural, bilateral visible yes, bilateral non-trivial yes
 
 ## Annex Diagnostics

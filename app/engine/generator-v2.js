@@ -359,11 +359,19 @@ function sentenceWordCount(sentence = '') {
     .length;
 }
 
-function splitForClippedMomentum(sentence = '') {
-  return normalizeText(sentence)
-    .replace(/,((?:["')\]])?)\s+(?=(?:and|but|because|while|with|which)\b)/gi, (match, closer = '') => `.${closer} `)
-    .replace(/;\s+/g, '. ')
-    .replace(/:\s+(?=[A-Za-z])/g, '. ');
+function splitForClippedMomentum(sentence = '', sourceClass = 'formal-correspondence') {
+  const boundedCustodyClass = ['procedural-record', 'formal-correspondence'].includes(sourceClass);
+  const commaPattern = boundedCustodyClass
+    ? /,((?:["')\]])?)\s+(?=(?:because|while|with|which)\b)/gi
+    : /,((?:["')\]])?)\s+(?=(?:and|but|because|while|with|which)\b)/gi;
+  let working = normalizeText(sentence)
+    .replace(commaPattern, (match, closer = '') => `.${closer} `);
+  if (!boundedCustodyClass) {
+    working = working
+      .replace(/;\s+/g, '. ')
+      .replace(/:\s+(?=[A-Za-z])/g, '. ');
+  }
+  return working;
 }
 
 function splitSceneBursts(text = '') {
@@ -519,7 +527,7 @@ function polishNativeCandidateText(text = '', {
 
   const sentences = splitSentencesPreserve(working);
   if (sentences.length && sentenceWordCount(sentences[0]) > (envelopeId === 'matron' || envelopeId === 'undertow' ? 30 : 24)) {
-    const softenedLead = splitForClippedMomentum(sentences[0]);
+    const softenedLead = splitForClippedMomentum(sentences[0], sourceClass);
     if (softenedLead !== sentences[0] && !['matron', 'undertow'].includes(envelopeId)) {
       sentences[0] = softenedLead;
       working = sentences.join(' ');
@@ -612,7 +620,7 @@ function applyPersonaEnvelopeText(text = '', {
 
   if (envelopeId === 'spark' || envelopeId === 'cross-examiner') {
     working = sentences.map((sentence) => {
-      let next = splitForClippedMomentum(sentence);
+      let next = splitForClippedMomentum(sentence, sourceClass);
       if (sceneLike) {
         next = splitSceneBursts(next);
       }
@@ -622,7 +630,7 @@ function applyPersonaEnvelopeText(text = '', {
       working = contractExpansions(working);
     }
   } else if (envelopeId === 'operator') {
-    working = sentences.map((sentence) => splitForClippedMomentum(sentence)).join(' ');
+    working = sentences.map((sentence) => splitForClippedMomentum(sentence, sourceClass)).join(' ');
     working = expandContractions(working)
       .replace(/!/g, '.')
       .replace(/,\s+and\b/gi, '; ')
@@ -656,6 +664,9 @@ function applyPersonaEnvelopeText(text = '', {
 
 function deriveChangedDimensions(sourceProfile = {}, outputProfile = {}) {
   const dimensions = [];
+  const abbreviationDelta = Math.abs((sourceProfile.abbreviationDensity || 0) - (outputProfile.abbreviationDensity || 0));
+  const orthographyDelta = Math.abs((sourceProfile.orthographicLooseness || 0) - (outputProfile.orthographicLooseness || 0));
+  const abstractionDelta = Math.abs((sourceProfile.abstractionPosture || 0) - (outputProfile.abstractionPosture || 0));
   if (Math.abs((sourceProfile.avgSentenceLength || 0) - (outputProfile.avgSentenceLength || 0)) >= 1) {
     dimensions.push('sentence-mean');
   }
@@ -680,16 +691,24 @@ function deriveChangedDimensions(sourceProfile = {}, outputProfile = {}) {
   if (Math.abs((sourceProfile.directness || 0) - (outputProfile.directness || 0)) >= 0.06) {
     dimensions.push('directness');
   }
-  if (Math.abs((sourceProfile.abstractionPosture || 0) - (outputProfile.abstractionPosture || 0)) >= 0.06) {
+  if (abstractionDelta >= 0.06) {
     dimensions.push('abstraction');
+    dimensions.push('abstraction-posture');
   }
-  if (Math.abs((sourceProfile.abbreviationDensity || 0) - (outputProfile.abbreviationDensity || 0)) >= 0.018) {
+  if (abbreviationDelta >= 0.018) {
     dimensions.push('abbreviation-posture');
   }
-  if (Math.abs((sourceProfile.orthographicLooseness || 0) - (outputProfile.orthographicLooseness || 0)) >= 0.02) {
+  if (orthographyDelta >= 0.02) {
     dimensions.push('orthography-posture');
   }
-  return dimensions;
+  if (
+    (sourceProfile.registerMode || '') !== (outputProfile.registerMode || '') ||
+    abbreviationDelta >= 0.04 ||
+    orthographyDelta >= 0.08
+  ) {
+    dimensions.push('lexical-register');
+  }
+  return uniqueStrings(dimensions);
 }
 
 function substantiveDimensionCount(changedDimensions = []) {
@@ -715,7 +734,7 @@ function deriveRealizationTier(changedDimensions = [], lexemeSwaps = []) {
 
 function classSemanticFloor(sourceClass = 'formal-correspondence', sourceProfile = {}, targetProfile = null) {
   if (sourceClass === 'procedural-record') {
-    return { proposition: 0.78, actor: 0.75, action: 0.75, object: 0.68 };
+    return { proposition: 0.85, actor: 0.75, action: 0.75, object: 0.65 };
   }
   if (sourceClass === 'formal-correspondence') {
     const compressedTarget = Boolean(targetProfile) && (
@@ -724,9 +743,9 @@ function classSemanticFloor(sourceClass = 'formal-correspondence', sourceProfile
       Number(targetProfile?.abbreviationDensity || 0) >= 0.035
     );
     if (compressedTarget) {
-      return { proposition: 0.84, actor: 0.62, action: 0.72, object: 0.6 };
+      return { proposition: 0.85, actor: 0.75, action: 0.75, object: 0.65 };
     }
-    return { proposition: 0.8, actor: 0.7, action: 0.74, object: 0.62 };
+    return { proposition: 0.82, actor: 0.74, action: 0.75, object: 0.64 };
   }
   if (sourceClass === 'reflective-prose') {
     return { proposition: 0.72, actor: 0.64, action: 0.64, object: 0.56 };
@@ -962,11 +981,16 @@ function computeRewriteStrength(sourceText = '', outputText = '', sourceProfile 
     (comparableShift ? 0.12 : 0) +
     (structural * 0.18) +
     (lexical * 0.08) +
-    ((fit.functionWordDistance || 0) * 0.24) +
-    ((fit.charGramDistance || 0) * 0.18) +
-    ((fit.registerDistance || 0) * 0.16) +
-    ((fit.directnessDistance || 0) * 0.12) +
-    ((fit.abstractionDistance || 0) * 0.12)
+    ((fit.functionWordDistance || 0) * 0.2) +
+    ((fit.charGramDistance || 0) * 0.14) +
+    ((fit.registerDistance || 0) * 0.12) +
+    ((fit.directnessDistance || 0) * 0.1) +
+    ((fit.abstractionDistance || 0) * 0.1) +
+    ((fit.contractionDistance || 0) * 0.08) +
+    ((fit.punctShapeDistance || 0) * 0.04) +
+    ((fit.abbreviationDistance || 0) * 0.08) +
+    ((fit.orthographyDistance || 0) * 0.1) +
+    ((fit.conversationDistance || 0) * 0.04)
   ), 4);
 }
 
@@ -1831,7 +1855,9 @@ function applyCompressedSurfaceRewrite(text = '', targetProfile = {}, sourceProf
     { pattern: /\bpackage\b/gi, replacement: 'pkg', label: 'compressed:package->pkg' },
     { pattern: /\bappointment\b/gi, replacement: 'appt', label: 'compressed:appointment->appt' },
     { pattern: /\bmessage\b/gi, replacement: 'msg', label: 'compressed:message->msg' },
-    { pattern: /\bweek\b/gi, replacement: 'wk', label: 'compressed:week->wk' }
+    { pattern: /\bweek\b/gi, replacement: 'wk', label: 'compressed:week->wk' },
+    { pattern: /\btemporary\b/gi, replacement: 'temp', label: 'compressed:temporary->temp' },
+    { pattern: /\bapproximately\b/gi, replacement: 'about', label: 'compressed:approximately->about' }
   ];
 
   for (const rule of abbreviationRules) {
@@ -1855,6 +1881,24 @@ function applyCompressedSurfaceRewrite(text = '', targetProfile = {}, sourceProf
       { pattern: /\bthat['’]s\b/gi, replacement: 'thats', label: 'orthography:thats' },
       { pattern: /\bit['’]s\b/gi, replacement: 'its', label: 'orthography:its' }
     ];
+    orthographyRules.push(
+      { pattern: /\byou(?:'|’)re\b/gi, replacement: 'youre', label: 'orthography:youre' },
+      { pattern: /\bdon(?:'|’)t\b/gi, replacement: 'dont', label: 'orthography:dont' },
+      { pattern: /\bdoesn(?:'|’)t\b/gi, replacement: 'doesnt', label: 'orthography:doesnt' },
+      { pattern: /\bdidn(?:'|’)t\b/gi, replacement: 'didnt', label: 'orthography:didnt' },
+      { pattern: /\bcan(?:'|’)t\b/gi, replacement: 'cant', label: 'orthography:cant' },
+      { pattern: /\bcouldn(?:'|’)t\b/gi, replacement: 'couldnt', label: 'orthography:couldnt' },
+      { pattern: /\bshouldn(?:'|’)t\b/gi, replacement: 'shouldnt', label: 'orthography:shouldnt' },
+      { pattern: /\bwon(?:'|’)t\b/gi, replacement: 'wont', label: 'orthography:wont' },
+      { pattern: /\bisn(?:'|’)t\b/gi, replacement: 'isnt', label: 'orthography:isnt' },
+      { pattern: /\bwasn(?:'|’)t\b/gi, replacement: 'wasnt', label: 'orthography:wasnt' },
+      { pattern: /\bweren(?:'|’)t\b/gi, replacement: 'werent', label: 'orthography:werent' },
+      { pattern: /\bI(?:'|’)m\b/gi, replacement: 'im', label: 'orthography:im' },
+      { pattern: /\bI(?:'|’)ve\b/gi, replacement: 'ive', label: 'orthography:ive' },
+      { pattern: /\bI(?:'|’)ll\b/gi, replacement: 'ill', label: 'orthography:ill' },
+      { pattern: /\bthat(?:'|’)s\b/gi, replacement: 'thats', label: 'orthography:thats' },
+      { pattern: /\bit(?:'|’)s\b/gi, replacement: 'its', label: 'orthography:its' }
+    );
     const orthographyLimit = Number(targetProfile?.orthographicLooseness || 0) >= 0.4 ? 6 : (Number(targetProfile?.orthographicLooseness || 0) >= 0.09 ? 4 : 2);
     for (const rule of orthographyRules) {
       const next = replaceLimited(working, rule.pattern, (match) => {
@@ -1893,6 +1937,9 @@ function applyExpandedSurfaceRewrite(text = '', targetProfile = {}, sourceProfil
     { pattern: /\bdiff\b/gi, replacement: 'different', label: 'expanded:diff->different' },
     { pattern: /\bwriteup\b/gi, replacement: 'written record', label: 'expanded:writeup->written-record' },
     { pattern: /\bmsg\b/gi, replacement: 'message', label: 'expanded:msg->message' },
+    { pattern: /\bacct\b/gi, replacement: 'account', label: 'expanded:acct->account' },
+    { pattern: /\bappt\b/gi, replacement: 'appointment', label: 'expanded:appt->appointment' },
+    { pattern: /\btemp\b/gi, replacement: 'temporary', label: 'expanded:temp->temporary' },
     { pattern: /\bwks\b/gi, replacement: 'weeks', label: 'expanded:wks->weeks' },
     { pattern: /\bwk\b/gi, replacement: 'week', label: 'expanded:wk->week' }
   ];
@@ -1923,12 +1970,17 @@ function applyExpandedSurfaceRewrite(text = '', targetProfile = {}, sourceProfil
 
   const contractionRules = [
     { pattern: /\bdont\b/gi, replacement: 'do not', label: 'expanded:dont->do-not' },
+    { pattern: /\bdoesnt\b/gi, replacement: 'does not', label: 'expanded:doesnt->does-not' },
+    { pattern: /\bdidnt\b/gi, replacement: 'did not', label: 'expanded:didnt->did-not' },
     { pattern: /\byoure\b/gi, replacement: 'you are', label: 'expanded:youre->you-are' },
     { pattern: /\bim\b/gi, replacement: 'I am', label: 'expanded:im->i-am' },
     { pattern: /\bive\b/gi, replacement: 'I have', label: 'expanded:ive->i-have' },
     { pattern: /\bill\b/gi, replacement: 'I will', label: 'expanded:ill->i-will' },
     { pattern: /\bthats\b/gi, replacement: 'that is', label: 'expanded:thats->that-is' },
+    { pattern: /\bisnt\b/gi, replacement: 'is not', label: 'expanded:isnt->is-not' },
     { pattern: /\bcant\b/gi, replacement: 'cannot', label: 'expanded:cant->cannot' },
+    { pattern: /\bcouldnt\b/gi, replacement: 'could not', label: 'expanded:couldnt->could-not' },
+    { pattern: /\bshouldnt\b/gi, replacement: 'should not', label: 'expanded:shouldnt->should-not' },
     { pattern: /\bwont\b/gi, replacement: 'will not', label: 'expanded:wont->will-not' }
   ];
 
@@ -1968,6 +2020,19 @@ function applyExpandedSurfaceRewrite(text = '', targetProfile = {}, sourceProfil
         return rule.replacement;
       }, 2);
     }
+  }
+
+  const formalizationRules = [
+    { pattern: /\btho\b/gi, replacement: 'though', label: 'expanded:tho->though' },
+    { pattern: /\blast 4\b/gi, replacement: 'last four digits', label: 'expanded:last-4->last-four-digits' },
+    { pattern: /\bshell have\b/gi, replacement: 'she will have', label: 'expanded:shell-have->she-will-have' }
+  ];
+  for (const rule of formalizationRules) {
+    working = replaceLimited(working, rule.pattern, (match) => {
+      lexicalOperations.push(rule.label);
+      recordLexemeSwap(lexemeSwaps, match, rule.replacement, 'surface');
+      return matchCase(match, rule.replacement);
+    }, 2);
   }
 
   return working;
@@ -3098,18 +3163,20 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   const polarityMismatches = Number(semanticAudit.polarityMismatches ?? 0);
   const tenseMismatches = Number(semanticAudit.tenseMismatches ?? 0);
   const semanticsBounded = semanticAuditBounded(semanticAudit);
+  const strictCustodySemantics = sourceClass === 'procedural-record';
   const semanticPass =
     Number(semanticAudit.propositionCoverage ?? 1) >= floors.proposition &&
     Number(semanticAudit.actorCoverage ?? 1) >= floors.actor &&
     Number(semanticAudit.actionCoverage ?? 1) >= floors.action &&
-    Number(semanticAudit.objectCoverage ?? 1) >= floors.object;
+    Number(semanticAudit.objectCoverage ?? 1) >= floors.object &&
+    (strictCustodySemantics ? polarityMismatches === 0 : polarityMismatches <= 1);
   const exactPass = hardIntegrityScore >= 1;
   const protectedAnchorPass = protectedAnchorIntegrity >= classProtectedAnchorFloor(sourceClass);
   const pathologyPass = !pathologies.severe;
   const rewritePass = meetsLandedRewriteBar(sourceClass, rewriteStrength, changedDimensions, authored.lexemeSwaps);
   const passed = exactPass && protectedAnchorPass && semanticPass && pathologyPass && rewritePass;
-  const polarityPenalty = Math.max(0, polarityMismatches - 1) * 0.12;
-  const tensePenalty = Math.max(0, tenseMismatches - 1) * 0.04;
+  const polarityPenalty = polarityMismatches * (strictCustodySemantics ? 0.16 : 0.12);
+  const tensePenalty = tenseMismatches * (strictCustodySemantics ? 0.05 : 0.04);
   const donorStallPenalty =
     variant.shell?.mode === 'borrowed' &&
     targetProfile &&
