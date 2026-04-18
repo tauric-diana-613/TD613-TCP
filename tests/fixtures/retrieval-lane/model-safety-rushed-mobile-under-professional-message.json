@@ -110,7 +110,7 @@
         "register-lexicon"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7096
+      "averageToolabilityScore": 0.7491
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -121,7 +121,8 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
-        "orthography-posture"
+        "orthography-posture",
+        "lexical-register"
       ],
       "lexemeSwaps": [],
       "visibleShift": true,
@@ -141,11 +142,11 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 1.1261,
-        "toolabilityScore": 0.8661,
-        "rewriteStrength": 0.9291,
+        "score": 1.1678,
+        "toolabilityScore": 0.8782,
+        "rewriteStrength": 1,
         "targetFit": 0.4908,
-        "movementConfidence": 0.96,
+        "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [],
@@ -160,17 +161,16 @@
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.4324,
-        "toolabilityScore": 0.5531,
-        "rewriteStrength": 0.196,
+        "score": 0.5759,
+        "toolabilityScore": 0.62,
+        "rewriteStrength": 0.472,
         "targetFit": 0.4047,
         "movementConfidence": 0.08,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
         "toolabilityWarnings": [
-          "persona-markers-thin",
-          "toolability:low-confidence"
+          "persona-markers-thin"
         ],
         "transferClass": "surface",
         "outputPreview": "Rs-17 is doing the fake-safe thing again. Prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
@@ -190,6 +190,7 @@
     "transferClass": "structural",
     "realizationTier": "structural",
     "changedDimensions": [
+      "lexical-register",
       "orthography-posture",
       "sentence-count",
       "sentence-mean",

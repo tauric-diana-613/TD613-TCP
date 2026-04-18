@@ -26,7 +26,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.954,
+      "objectCoverage": 0.986,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -41,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.088
+          "globalBagScore": 0.081
         },
         {
           "sourceClauseId": "s0c1",
@@ -49,11 +49,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
+          "bagScore": 1,
+          "globalBagScore": 0.108
         },
         {
           "sourceClauseId": "s1c0",
@@ -65,7 +65,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.147
+          "globalBagScore": 0.135
         },
         {
           "sourceClauseId": "s1c1",
@@ -77,7 +77,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.029
+          "globalBagScore": 0.027
         },
         {
           "sourceClauseId": "s1c2",
@@ -101,23 +101,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.833,
-          "globalBagScore": 0.143
+          "globalBagScore": 0.132
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s4c0+s5c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.8,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.667,
-          "globalBagScore": 0.143
-        },
-        {
-          "sourceClauseId": "s3c1",
-          "matchedClauseId": "s6c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -125,10 +113,46 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.029
+          "globalBagScore": 0.162
+        },
+        {
+          "sourceClauseId": "s3c1",
+          "matchedClauseId": "s5c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.027
         },
         {
           "sourceClauseId": "s4c0",
+          "matchedClauseId": "s7c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.027
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s8c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.162
+        },
+        {
+          "sourceClauseId": "s6c0",
           "matchedClauseId": "s9c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -137,10 +161,10 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.029
+          "globalBagScore": 0.108
         },
         {
-          "sourceClauseId": "s5c0",
+          "sourceClauseId": "s6c1",
           "matchedClauseId": "s10c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -149,10 +173,10 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.176
+          "globalBagScore": 0.027
         },
         {
-          "sourceClauseId": "s6c0",
+          "sourceClauseId": "s7c0",
           "matchedClauseId": "s11c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -161,35 +185,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.118
-        },
-        {
-          "sourceClauseId": "s6c1",
-          "matchedClauseId": "s12c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.029
-        },
-        {
-          "sourceClauseId": "s7c0",
-          "matchedClauseId": "s13c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.029
+          "globalBagScore": 0.027
         },
         {
           "sourceClauseId": "s7c1",
-          "matchedClauseId": "s13c1",
+          "matchedClauseId": "s11c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -197,11 +197,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.059
+          "globalBagScore": 0.054
         }
       ],
       "sourceClauseCount": 14,
-      "outputClauseCount": 17
+      "outputClauseCount": 15
     },
     "protectedAnchorAudit": {
       "totalAnchors": 2,
@@ -228,7 +228,7 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "split-long-line",
+        "connector-split",
         "front-if"
       ],
       "lexicalRegisterOperationsSelected": [
@@ -251,7 +251,7 @@
         "hybrid"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7679
+      "averageToolabilityScore": 0.7698
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -261,9 +261,11 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "sentence-spread",
         "punctuation-shape",
         "abbreviation-posture",
-        "orthography-posture"
+        "orthography-posture",
+        "lexical-register"
       ],
       "lexemeSwaps": [
         {
@@ -288,9 +290,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.968,
-      "outputDonorDistance": 3.724,
-      "donorImprovement": 1.244,
-      "donorImprovementRatio": 0.25,
+      "outputDonorDistance": 3.994,
+      "donorImprovement": 0.974,
+      "donorImprovementRatio": 0.196,
       "sourceOutputLexicalOverlap": 0.925
     },
     "candidateLedger": [
@@ -299,19 +301,21 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.2097,
-        "toolabilityScore": 0.7722,
+        "score": 0.9012,
+        "toolabilityScore": 0.7198,
         "rewriteStrength": 1,
-        "targetFit": 0.4015,
+        "targetFit": 0.2673,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [
-          "artifact:fragment"
+          "artifact:over-braiding",
+          "artifact:clause-drag"
         ],
         "toolabilityWarnings": [
           "persona-markers-thin",
-          "artifact:fragment"
+          "artifact:over-braiding",
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. Pls check in at the west fence table when you arrive, even if you a"
@@ -321,10 +325,10 @@
         "family": "cadence-connector",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.0834,
-        "toolabilityScore": 0.765,
+        "score": 1.1165,
+        "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.3439,
+        "targetFit": 0.3467,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -343,19 +347,21 @@
         "family": "order-beat",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.1609,
-        "toolabilityScore": 0.765,
+        "score": 0.899,
+        "toolabilityScore": 0.7198,
         "rewriteStrength": 1,
-        "targetFit": 0.3965,
+        "targetFit": 0.2594,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [
-          "artifact:fragment"
+          "artifact:over-braiding",
+          "artifact:clause-drag"
         ],
         "toolabilityWarnings": [
           "persona-markers-thin",
-          "artifact:fragment"
+          "artifact:over-braiding",
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. If you already know the site, pls check in at the west fence table "
@@ -365,19 +371,21 @@
         "family": "clause-pivot",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.1558,
-        "toolabilityScore": 0.765,
+        "score": 1.0406,
+        "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.3965,
+        "targetFit": 0.2915,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [
-          "artifact:fragment"
+          "artifact:over-braiding",
+          "artifact:clause-drag"
         ],
         "toolabilityWarnings": [
           "persona-markers-thin",
-          "artifact:fragment"
+          "artifact:over-braiding",
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. If you already know the site, pls check in at the west fence table "
@@ -387,10 +395,10 @@
         "family": "hybrid",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.1882,
-        "toolabilityScore": 0.7722,
+        "score": 1.1162,
+        "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.3675,
+        "targetFit": 0.3348,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -420,10 +428,12 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
+      "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
-      "sentence-mean"
+      "sentence-mean",
+      "sentence-spread"
     ],
     "lexemeSwapFamilies": [
       "connector",
@@ -437,8 +447,8 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "front-if",
-      "split-long-line"
+      "connector-split",
+      "front-if"
     ],
     "lexicalOperations": [
       "compressed:please->pls",
@@ -451,7 +461,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.954,
+    "objectCoverage": 0.986,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

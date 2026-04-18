@@ -1067,6 +1067,7 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     <div class="field-metric"><span class="fm-label">L_P</span><div class="fm-bar"><div class="fm-fill" id="fmLPBar" style="width:0%;background:var(--suppressed);"></div></div><span class="fm-value" id="mLP">—</span></div>
     <div class="field-metric"><span class="fm-label">L_F</span><div class="fm-bar"><div class="fm-fill" id="fmLFBar" style="width:0%;background:var(--crystal);"></div></div><span class="fm-value" id="mLF">—</span></div>
     <div class="field-metric"><span class="fm-label">L_A</span><div class="fm-bar"><div class="fm-fill" id="fmLABar" style="width:0%;background:var(--registered);"></div></div><span class="fm-value" id="mLA">—</span></div>
+    <div class="field-metric"><span class="fm-label">L_∏ (cumulative)</span><div class="fm-bar"><div class="fm-fill" id="fmLProductBar" style="width:0%;background:var(--registered);"></div></div><span class="fm-value" id="mLProduct">—</span></div>
     <div class="metric-row"><span class="label">Dominant narrowing operator</span><span class="value" id="mDominantLoss">—</span></div>
 
 
@@ -1649,10 +1650,12 @@ function createInitialState() {
     perturbation: 0,
     narrowing: { S: 0, R: 0, K: 0, C: 0, P: 0, F: 0, A: 0 },
     losses: { LR: 0, LK: 0, LC: 0, LP: 0, LF: 0, LA: 0, dominant: "—" },
+    cumulativeNarrowing: 0,
     omission: { O: 0, Ostar: 0 },
     namingDisruptions: 0,
     eventLog: [],
     rayLog: [],
+    bounceProvenance: [],
     coherenceTrace: [],
     intensityTrace: [],
     rupture: 0,
@@ -2073,6 +2076,8 @@ function scrubPacketEnvelope(packet) {
   if (packet.humanRouteEnvelope?.subjectAlias) issues.push("subject alias leaked into packet envelope");
   if (packet.comparisonSummary?.left && packet.comparisonSummary.left !== "current") issues.push("comparison left label not scrubbed");
   if (packet.comparisonSummary?.right && packet.comparisonSummary.right !== "comparison") issues.push("comparison right label not scrubbed");
+  if (!Object.prototype.hasOwnProperty.call(packet, "bounceProvenance")) issues.push("bounce provenance missing");
+  if (!Object.prototype.hasOwnProperty.call(packet, "cumulativeNarrowing")) issues.push("cumulative narrowing missing");
 
   const score = clamp01(
     (packet.provenance?.nonIdentifying === true ? 0.34 : 0) +
@@ -2574,6 +2579,18 @@ function clamp01(value) {
   return Math.min(1, Math.max(0, value));
 }
 
+function computeCumulativeNarrowing(losses = {}) {
+  return clamp01(
+    1 -
+    (1 - clamp01(losses.LR || 0)) *
+    (1 - clamp01(losses.LK || 0)) *
+    (1 - clamp01(losses.LC || 0)) *
+    (1 - clamp01(losses.LP || 0)) *
+    (1 - clamp01(losses.LF || 0)) *
+    (1 - clamp01(losses.LA || 0))
+  );
+}
+
 function buildDetectorSweep({ deltaObs, nameSens, suppP, aliasP, red, rupture, coherence, intCount }) {
   const thetaMods = { open: 0.88, standard: 1.0, restricted: 1.16 };
   const nameMods = { canonical: 0.92, safe: 1.0, invalid: 1.14 };
@@ -2651,6 +2668,7 @@ function createTCPHandoffPacket(metrics, packetKeyOverride = null) {
     narrowingLosses,
     closureState,
     confidence,
+    cumulativeNarrowing = 0,
   } = metrics;
   const packetKey = packetKeyOverride || metrics.packetKey || null;
 
@@ -2688,6 +2706,11 @@ function createTCPHandoffPacket(metrics, packetKeyOverride = null) {
       L_A: narrowingLosses.L_A,
       dominantLoss: narrowingLosses.dominantLoss
     },
+    cumulativeNarrowing: clamp01(cumulativeNarrowing),
+    bounceProvenance: (state.bounceProvenance || []).slice(-32).map((entry) => ({
+      ...entry,
+      gates: { ...(entry.gates || {}) }
+    })),
     closureState: {
       extensionAdmitted: closureState.extensionAdmitted,
       closureFailure: closureState.closureFailure,
@@ -2886,6 +2909,24 @@ function propagateRay(ray) {
   state.perturbation = Math.abs(Math.sin(state.tick * 0.01)) * 0.3 + state.defect * 0.5;
 
   const foldLabel = minDist === distA ? "A" : minDist === distB ? "B" : "C";
+  state.bounceProvenance.push({
+    tick: state.tick,
+    edge: closestEdge.label,
+    admissibility: ray.admissibility,
+    gates: {
+      apertureOpen,
+      phaseAligned,
+      policyPass,
+      capacityAvail,
+      namingValid
+    },
+    intensity: Number(ray.intensity.toFixed(4)),
+    phase: Number(ray.phase.toFixed(4)),
+    foldLabel
+  });
+  if (state.bounceProvenance.length > 256) {
+    state.bounceProvenance.splice(0, state.bounceProvenance.length - 256);
+  }
   state.rayLog.push(`[${state.tick}] ${closestEdge.label} → ${ray.admissibility} | fold ${foldLabel}`);
   if (state.rayLog.length > 36) state.rayLog.shift();
 }
@@ -3638,6 +3679,7 @@ function updateUI_legacy_unused() {
     LA: n.F > 0 ? Math.max(0, (n.F - n.A) / n.F) : 0
   };
   state.losses.LA = losses.LA;
+  state.cumulativeNarrowing = computeCumulativeNarrowing(losses);
   const dominant = Object.entries(losses).sort((a,b) => b[1]-a[1])[0];
   state.losses.dominant = dominant ? dominant[0] : "—";
   document.getElementById("mLR").textContent = losses.LR.toFixed(4);
@@ -3646,12 +3688,14 @@ function updateUI_legacy_unused() {
   document.getElementById("mLP").textContent = losses.LP.toFixed(4);
   document.getElementById("mLF").textContent = losses.LF.toFixed(4);
   document.getElementById("mLA").textContent = losses.LA.toFixed(4);
+  document.getElementById("mLProduct").textContent = state.cumulativeNarrowing.toFixed(4);
   document.getElementById("fmLRBar").style.width = `${losses.LR*100}%`;
   document.getElementById("fmLKBar").style.width = `${losses.LK*100}%`;
   document.getElementById("fmLCBar").style.width = `${losses.LC*100}%`;
   document.getElementById("fmLPBar").style.width = `${losses.LP*100}%`;
   document.getElementById("fmLFBar").style.width = `${losses.LF*100}%`;
   document.getElementById("fmLABar").style.width = `${losses.LA*100}%`;
+  document.getElementById("fmLProductBar").style.width = `${state.cumulativeNarrowing*100}%`;
   document.getElementById("mDominantLoss").textContent = dominant ? `${dominant[0]} · ${dominant[1].toFixed(4)}` : "—";
 
   // Omission
@@ -3839,6 +3883,7 @@ function updateUI_legacy_unused() {
       L_A: losses.LA,
       dominantLoss: dominant ? formatLossLabel(dominant[0]) : "—"
     },
+    cumulativeNarrowing: state.cumulativeNarrowing,
     closureState: state.closureState,
     confidence
   };
@@ -4179,6 +4224,7 @@ function synchronizeFieldState(options = {}) {
     LA: n.F > 0 ? Math.max(0, (n.F - n.A) / n.F) : 0
   };
   state.losses.LA = losses.LA;
+  state.cumulativeNarrowing = computeCumulativeNarrowing(losses);
   const dominant = Object.entries(losses).sort((a, b) => b[1] - a[1])[0] || null;
   state.losses.dominant = dominant ? dominant[0] : "—";
 
@@ -4328,6 +4374,7 @@ function synchronizeFieldState(options = {}) {
       L_A: losses.LA,
       dominantLoss: dominant ? formatLossLabel(dominant[0]) : "—"
     },
+    cumulativeNarrowing: state.cumulativeNarrowing,
     closureState: state.closureState,
     confidence
   };
@@ -4487,12 +4534,15 @@ function updateUI(opts = {}) {
   document.getElementById("mLP").textContent = losses.LP.toFixed(4);
   document.getElementById("mLF").textContent = losses.LF.toFixed(4);
   document.getElementById("mLA").textContent = losses.LA.toFixed(4);
+  state.cumulativeNarrowing = computeCumulativeNarrowing(losses);
+  document.getElementById("mLProduct").textContent = state.cumulativeNarrowing.toFixed(4);
   document.getElementById("fmLRBar").style.width = `${losses.LR * 100}%`;
   document.getElementById("fmLKBar").style.width = `${losses.LK * 100}%`;
   document.getElementById("fmLCBar").style.width = `${losses.LC * 100}%`;
   document.getElementById("fmLPBar").style.width = `${losses.LP * 100}%`;
   document.getElementById("fmLFBar").style.width = `${losses.LF * 100}%`;
   document.getElementById("fmLABar").style.width = `${losses.LA * 100}%`;
+  document.getElementById("fmLProductBar").style.width = `${state.cumulativeNarrowing * 100}%`;
   document.getElementById("mDominantLoss").textContent = dominant ? `${dominant[0]} · ${dominant[1].toFixed(4)}` : "—";
 
   document.getElementById("mOmissionO").textContent = state.omission.O;

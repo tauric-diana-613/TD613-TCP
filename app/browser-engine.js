@@ -586,6 +586,22 @@ function buildTD613GovernedExposureSchema({
     policyPressure,
     dominantOperator
   });
+  let cumulativePressureProduct = 1;
+  const narrowingLedger = Object.freeze([
+    { operator: 'R', pressure: round3(clamp01(candidateSuppression)) },
+    { operator: 'K', pressure: round3(clamp01(capacityPressure)) },
+    { operator: 'C', pressure: round3(clamp01(redundancyInflation)) },
+    { operator: 'P', pressure: round3(clamp01(Math.max(observabilityDeficit, aliasPersistence))) },
+    { operator: 'F', pressure: round3(clamp01(namingSensitivity)) },
+    { operator: 'A', pressure: round3(clamp01(policyPressure)) }
+  ].map((entry) => {
+    cumulativePressureProduct *= 1 - clamp01(entry.pressure);
+    return Object.freeze({
+      operator: entry.operator,
+      pressure: entry.pressure,
+      cumulativeNarrowing: round3(clamp01(1 - cumulativePressureProduct))
+    });
+  }));
 
   return Object.freeze({
     schemaVersion: 'td613-governed-exposure/v1',
@@ -613,6 +629,7 @@ function buildTD613GovernedExposureSchema({
     Red: round3(clamp01(redundancyInflation)),
     Supp_tau: round3(clamp01(candidateSuppression)),
     Theta_u,
+    narrowingLedger,
     dominantOperator: dominant,
     sourceClass: String(sourceClass || 'unclassified'),
     sourceClasses: Object.freeze(uniqueStrings(
@@ -752,63 +769,92 @@ function detectTD613ApertureTextPathologies({
   });
 }
 
-function applyCommonProjectionRepairs(text = '') {
-  return normalizeReadableText(
-    capitalizeSentenceStarts(
-      String(text || '')
-      .replace(/^(?:apparently|basically|clearly|frankly|honestly|look|okay|ok|well)\b[,:;.!?\-\s]*/i, '')
-      .replace(/\b(and|but|so|or)\s+\1\b/gi, '$1')
-      .replace(/\band and\b/gi, 'and')
-      .replace(/\bbut but\b/gi, 'but')
-      .replace(/,\s*,/g, ', ')
-      .replace(/;\s*;/g, '; ')
-      .replace(/,\s*;/g, '; ')
-      .replace(/;\s*,/g, '; ')
-      .replace(/\.{2,}/g, '.')
-      .replace(/,{2,}/g, ',')
-      .replace(/;{2,}/g, ';')
-      .replace(/\bI\?ve\b/gi, "I've")
-      .replace(/\bI\?m\b/gi, "I'm")
-      .replace(/\bIt\?s\b/gi, "It's")
-      .replace(/\bI[\s,;:.]+and\s+ve\b/gi, "I've")
-      .replace(/\bI[\s,;:.]+ve\b/gi, "I've")
-      .replace(/\bI[\s,;:.]+and\s+m\b/gi, "I'm")
-      .replace(/\bI[\s,;:.]+m\b/gi, "I'm")
-      .replace(/\bIt[\s,;:.]+and\s+s\b/gi, "It's")
-      .replace(/\bIt[\s,;:.]+s\b/gi, "It's")
-      .replace(/\bNobody I(?:'ve| have) ever shared the same room with has ever seen\b/gi, "No one I've ever shared a room with has seen")
-      .replace(/\bNobody one\b/gi, 'No one')
-      .replace(/\bNo one I've ever shared same room with\b/gi, "No one I've ever shared a room with")
-      .replace(/\bNo one I have ever same a room with\b/gi, 'No one I have ever shared a room with')
-      .replace(/\bNobody one I've ever shared same room with\b/gi, "No one I've ever shared a room with")
-      .replace(/\bNobody one I have ever same a room with\b/gi, 'No one I have ever shared a room with')
-      .replace(/\bThings are moving too fast to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this')
-      .replace(/\bThings are moving too quick to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this')
-      .replace(/\bThings are relocating too steady to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this')
-      .replace(/\bwith an excited thumb this sparks\b/gi, 'with an excited thumb that sparks')
-      .replace(/\bTwirl of the plastic\.\s+Bite of the tip\.\s+With\b/gi, 'Plastic twist. Tip bite. With')
-      .replace(/\bTwo gulps:\s*and from the nerves\b/gi, 'Two gulps. One from the nerves')
-      .replace(/\bTwo gulps\.\s+From the nerves\.\s+To placate them,\s*from the coffee\b/gi, 'Two gulps. One for the nerves. One from the coffee, to placate them')
-      .replace(/\bAnd;\s*to placate them;\s*from the coffee\b/gi, 'One from the coffee, to placate them')
-      .replace(/\btell hi\b/gi, 'say hi')
-      .replace(/\btrying to tell\b/gi, 'trying to say')
-      .replace(/\btrying to explain\b/gi, 'trying to say')
-      .replace(/\bexplain hi\b/gi, 'say hi')
-      .replace(/\bI'd tell\b/gi, "I'd say")
-      .replace(/\bI would tell\b/gi, 'I would say')
-      .replace(/\bI'd explain\b/gi, "I'd say")
-      .replace(/\bI would explain\b/gi, 'I would say')
-      .replace(/\bcontact him\b/gi, 'call him')
-      .replace(/\breceive more familiar\b/gi, 'get more familiar')
-      .replace(/\bwe've amnesia\b/gi, 'we have amnesia')
-      .replace(/\bWe've amnesia\b/g, 'We have amnesia')
-      .replace(/\bI needed this\b/gi, 'I needed that')
-      .replace(/\btaking this away from me\b/gi, 'taking that away from me')
-      .replace(/\breceived into\b/gi, 'got into')
-      .replace(/\bbecause people\b/gi, 'as people')
-      .replace(/\s*\n\s*/g, '\n')
-    )
-  );
+function applyTrackedProjectionRepair(text = '', pass = 'common-repair', pattern, replacement = '') {
+  const before = String(text || '');
+  const after = before.replace(pattern, replacement);
+  if (after === before) {
+    return { outputText: before, entry: null };
+  }
+  return {
+    outputText: after,
+    entry: Object.freeze({
+      pass,
+      pattern: String(pattern),
+      before,
+      after
+    })
+  };
+}
+
+function applyCommonProjectionRepairs(text = '', pass = 'common-repair') {
+  let working = String(text || '');
+  const repairLedger = [];
+  const trackedRepairs = [
+    [/^(?:apparently|basically|clearly|frankly|honestly|look|okay|ok|well)\b[,:;.!?\-\s]*/i, ''],
+    [/\b(and|but|so|or)\s+\1\b/gi, '$1'],
+    [/\band and\b/gi, 'and'],
+    [/\bbut but\b/gi, 'but'],
+    [/,\s*,/g, ', '],
+    [/;\s*;/g, '; '],
+    [/,\s*;/g, '; '],
+    [/;\s*,/g, '; '],
+    [/\.{2,}/g, '.'],
+    [/,{2,}/g, ','],
+    [/;{2,}/g, ';'],
+    [/\bI\?ve\b/gi, "I've"],
+    [/\bI\?m\b/gi, "I'm"],
+    [/\bIt\?s\b/gi, "It's"],
+    [/\bI[\s,;:.]+and\s+ve\b/gi, "I've"],
+    [/\bI[\s,;:.]+ve\b/gi, "I've"],
+    [/\bI[\s,;:.]+and\s+m\b/gi, "I'm"],
+    [/\bI[\s,;:.]+m\b/gi, "I'm"],
+    [/\bIt[\s,;:.]+and\s+s\b/gi, "It's"],
+    [/\bIt[\s,;:.]+s\b/gi, "It's"],
+    [/\bNobody I(?:'ve| have) ever shared the same room with has ever seen\b/gi, "No one I've ever shared a room with has seen"],
+    [/\bNobody one\b/gi, 'No one'],
+    [/\bNo one I've ever shared same room with\b/gi, "No one I've ever shared a room with"],
+    [/\bNo one I have ever same a room with\b/gi, 'No one I have ever shared a room with'],
+    [/\bNobody one I've ever shared same room with\b/gi, "No one I've ever shared a room with"],
+    [/\bNobody one I have ever same a room with\b/gi, 'No one I have ever shared a room with'],
+    [/\bThings are moving too fast to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this'],
+    [/\bThings are moving too quick to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this'],
+    [/\bThings are relocating too steady to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this'],
+    [/\bwith an excited thumb this sparks\b/gi, 'with an excited thumb that sparks'],
+    [/\bTwirl of the plastic\.\s+Bite of the tip\.\s+With\b/gi, 'Plastic twist. Tip bite. With'],
+    [/\bTwo gulps:\s*and from the nerves\b/gi, 'Two gulps. One from the nerves'],
+    [/\bTwo gulps\.\s+From the nerves\.\s+To placate them,\s*from the coffee\b/gi, 'Two gulps. One for the nerves. One from the coffee, to placate them'],
+    [/\bAnd;\s*to placate them;\s*from the coffee\b/gi, 'One from the coffee, to placate them'],
+    [/\btell hi\b/gi, 'say hi'],
+    [/\btrying to tell\b/gi, 'trying to say'],
+    [/\btrying to explain\b/gi, 'trying to say'],
+    [/\bexplain hi\b/gi, 'say hi'],
+    [/\bI'd tell\b/gi, "I'd say"],
+    [/\bI would tell\b/gi, 'I would say'],
+    [/\bI'd explain\b/gi, "I'd say"],
+    [/\bI would explain\b/gi, 'I would say'],
+    [/\bcontact him\b/gi, 'call him'],
+    [/\breceive more familiar\b/gi, 'get more familiar'],
+    [/\bwe've amnesia\b/gi, 'we have amnesia'],
+    [/\bWe've amnesia\b/g, 'We have amnesia'],
+    [/\bI needed this\b/gi, 'I needed that'],
+    [/\btaking this away from me\b/gi, 'taking that away from me'],
+    [/\breceived into\b/gi, 'got into'],
+    [/\bbecause people\b/gi, 'as people'],
+    [/\s*\n\s*/g, '\n']
+  ];
+
+  trackedRepairs.forEach(([pattern, replacement]) => {
+    const result = applyTrackedProjectionRepair(working, pass, pattern, replacement);
+    working = result.outputText;
+    if (result.entry) {
+      repairLedger.push(result.entry);
+    }
+  });
+
+  return Object.freeze({
+    outputText: normalizeReadableText(capitalizeSentenceStarts(working)),
+    repairLedger: Object.freeze(repairLedger)
+  });
 }
 
 function applyPersonaProjectionRepairs(text = '', plan = {}) {
@@ -881,6 +927,7 @@ function repairTD613ApertureProjection({
 } = {}) {
   const plan = buildTD613ApertureProjectionPlan({ personaId, sourceProfile, targetProfile, sourceClass });
   const repairPasses = [];
+  const repairLedger = [];
   const before = detectTD613ApertureTextPathologies({ sourceText, outputText });
 
   if (before.flags.includes('duplicated-source') || before.flags.includes('source-replay')) {
@@ -888,12 +935,15 @@ function repairTD613ApertureProjection({
       outputText: normalizeReadableText(sourceText),
       repaired: true,
       repairPasses: ['source-reroute:replay'],
+      repairLedger: Object.freeze(repairLedger),
       plan,
       pathologies: detectTD613ApertureTextPathologies({ sourceText, outputText: sourceText })
     });
   }
 
-  let working = applyCommonProjectionRepairs(outputText);
+  const commonRepair = applyCommonProjectionRepairs(outputText, 'common-repair');
+  let working = commonRepair.outputText;
+  repairLedger.push(...commonRepair.repairLedger);
   const commonRepairApplied = working !== normalizeReadableText(outputText);
   if (commonRepairApplied) {
     repairPasses.push('common-repair');
@@ -907,9 +957,11 @@ function repairTD613ApertureProjection({
     }
   }
 
-  const postPersonaRepaired = applyCommonProjectionRepairs(working);
+  const postPersonaRepair = applyCommonProjectionRepairs(working, 'post-persona-repair');
+  const postPersonaRepaired = postPersonaRepair.outputText;
   if (postPersonaRepaired !== working) {
     repairPasses.push('post-persona-repair');
+    repairLedger.push(...postPersonaRepair.repairLedger);
     working = postPersonaRepaired;
   }
 
@@ -919,6 +971,7 @@ function repairTD613ApertureProjection({
       outputText: normalizeReadableText(sourceText),
       repaired: true,
       repairPasses: [...repairPasses, 'source-reroute:severe-pathology'],
+      repairLedger: Object.freeze(repairLedger),
       plan,
       pathologies: detectTD613ApertureTextPathologies({ sourceText, outputText: sourceText })
     });
@@ -928,6 +981,7 @@ function repairTD613ApertureProjection({
     outputText: working,
     repaired: repairPasses.length > 0,
     repairPasses,
+    repairLedger: Object.freeze(repairLedger),
     plan,
     pathologies: after
   });
@@ -1163,7 +1217,8 @@ function registerTD613ApertureSegment({
   sourceIR = null,
   protectedState = { literals: [] },
   blocked = false,
-  transferClass = ''
+  transferClass = '',
+  candidateLedger = null
 } = {}) {
   const normalizedSource = normalizeReadableText(sourceText);
   const surfaceCandidate = normalizeReadableText(surfaceText || normalizedSource) || normalizedSource;
@@ -1447,6 +1502,7 @@ function registerTD613ApertureSegment({
       ...(registeredPathologies.flags || [])
     ])],
     repairPasses: repairedProjection.repairPasses || [],
+    candidateProvenance: candidateLedger ?? null,
     projectedWitnessAudit,
     registeredWitnessAudit: finalWitnessAudit,
     projectedCompression,

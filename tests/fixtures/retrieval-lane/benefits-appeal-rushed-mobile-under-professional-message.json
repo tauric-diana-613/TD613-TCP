@@ -26,7 +26,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 1,
+      "objectCoverage": 0.958,
       "polarityMismatches": 1,
       "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
@@ -37,11 +37,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.143,
-          "globalBagScore": 0.05
+          "bagScore": 0.125,
+          "globalBagScore": 0.048
         },
         {
           "sourceClauseId": "s1c0",
@@ -139,6 +139,7 @@
         "expanded:bc->because",
         "expanded:dont->do-not",
         "expanded:thats->that-is",
+        "expanded:isnt->is-not",
         "expanded:slash-list->sentences"
       ],
       "connectorStrategy": "cascade",
@@ -152,7 +153,7 @@
         "register-lexicon"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.8358
+      "averageToolabilityScore": 0.8739
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -165,7 +166,8 @@
         "sentence-spread",
         "register-mode",
         "abbreviation-posture",
-        "orthography-posture"
+        "orthography-posture",
+        "lexical-register"
       ],
       "lexemeSwaps": [
         {
@@ -187,6 +189,11 @@
           "from": "thats",
           "to": "that is",
           "family": "surface"
+        },
+        {
+          "from": "isnt",
+          "to": "is not",
+          "family": "surface"
         }
       ],
       "visibleShift": true,
@@ -195,10 +202,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.36,
-      "outputDonorDistance": 3.042,
-      "donorImprovement": 1.318,
-      "donorImprovementRatio": 0.302,
-      "sourceOutputLexicalOverlap": 0.862
+      "outputDonorDistance": 2.83,
+      "donorImprovement": 1.53,
+      "donorImprovementRatio": 0.351,
+      "sourceOutputLexicalOverlap": 0.845
     },
     "candidateLedger": [
       {
@@ -206,10 +213,10 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 1.158,
-        "toolabilityScore": 0.8551,
+        "score": 1.063,
+        "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.4705,
+        "targetFit": 0.5039,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
@@ -220,17 +227,17 @@
           "artifact:fragment"
         ],
         "transferClass": "structural",
-        "outputPreview": "Ba-4427 isnt a no-doc case, and mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client"
+        "outputPreview": "Ba-4427 is not a no-doc case, and mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, clie"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.989,
-        "toolabilityScore": 0.8165,
+        "score": 1.0509,
+        "toolabilityScore": 0.8546,
         "rewriteStrength": 1,
-        "targetFit": 0.4041,
+        "targetFit": 0.4348,
         "movementConfidence": 1,
         "personaSeparationScore": 0.86,
         "failureReasons": [],
@@ -241,7 +248,7 @@
           "artifact:fragment"
         ],
         "transferClass": "structural",
-        "outputPreview": "Ba-4427 isnt a no-doc case. Mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client got"
+        "outputPreview": "Ba-4427 is not a no-doc case. Mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client g"
       }
     ],
     "generationDocket": {
@@ -259,6 +266,7 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
+      "lexical-register",
       "orthography-posture",
       "register-mode",
       "sentence-count",
@@ -281,6 +289,7 @@
     "lexicalOperations": [
       "expanded:bc->because",
       "expanded:dont->do-not",
+      "expanded:isnt->is-not",
       "expanded:pls->please",
       "expanded:slash-list->sentences",
       "expanded:thats->that-is"
@@ -290,7 +299,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 1,
+    "objectCoverage": 0.958,
     "polarityMismatches": 1,
     "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1

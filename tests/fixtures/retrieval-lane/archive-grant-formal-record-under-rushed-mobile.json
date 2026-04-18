@@ -28,7 +28,7 @@
       "actionCoverage": 1,
       "objectCoverage": 1,
       "polarityMismatches": 1,
-      "tenseMismatches": 1,
+      "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -41,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.171
+          "globalBagScore": 0.175
         },
         {
           "sourceClauseId": "s1c0",
@@ -53,7 +53,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.171
+          "globalBagScore": 0.175
         },
         {
           "sourceClauseId": "s2c0",
@@ -65,7 +65,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.146
+          "globalBagScore": 0.15
         },
         {
           "sourceClauseId": "s3c0",
@@ -77,19 +77,19 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.146
+          "globalBagScore": 0.15
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s5c0",
+          "matchedClauseId": "s4c0+s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
-          "polarityMismatch": 0,
+          "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.073
+          "bagScore": 0.5,
+          "globalBagScore": 0.075
         },
         {
           "sourceClauseId": "s5c0",
@@ -101,7 +101,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.073
+          "globalBagScore": 0.075
         },
         {
           "sourceClauseId": "s6c0",
@@ -110,14 +110,14 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
-          "polarityMismatch": 1,
-          "tenseMismatch": 1,
-          "bagScore": 0.875,
-          "globalBagScore": 0.195
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.2
         },
         {
           "sourceClauseId": "s6c1",
-          "matchedClauseId": "s8c1",
+          "matchedClauseId": "s7c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -125,11 +125,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.098
+          "globalBagScore": 0.1
         }
       ],
       "sourceClauseCount": 8,
-      "outputClauseCount": 10
+      "outputClauseCount": 9
     },
     "protectedAnchorAudit": {
       "totalAnchors": 0,
@@ -156,7 +156,7 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "split-long-line"
+        "pivot-contrast"
       ],
       "lexicalRegisterOperationsSelected": [
         "compressed:week->wk",
@@ -166,14 +166,15 @@
       "contractionStrategy": "contract"
     },
     "candidateSummary": {
-      "candidateCount": 2,
-      "landedCandidateId": "base:syntax-shape",
+      "candidateCount": 3,
+      "landedCandidateId": "base:clause-pivot",
       "families": [
         "syntax-shape",
+        "cadence-connector",
         "clause-pivot"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7941
+      "averageToolabilityScore": 0.7576
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -183,8 +184,8 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
-        "abbreviation-posture"
+        "abbreviation-posture",
+        "lexical-register"
       ],
       "lexemeSwaps": [
         {
@@ -199,9 +200,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 5.545,
-      "outputDonorDistance": 4.7,
-      "donorImprovement": 0.845,
-      "donorImprovementRatio": 0.152,
+      "outputDonorDistance": 5.297,
+      "donorImprovement": 0.248,
+      "donorImprovementRatio": 0.045,
       "sourceOutputLexicalOverlap": 0.981
     },
     "candidateLedger": [
@@ -209,10 +210,34 @@
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "spark",
-        "status": "selected",
-        "score": 1.0606,
-        "toolabilityScore": 0.8103,
-        "rewriteStrength": 0.9409,
+        "status": "eligible",
+        "score": 0.4549,
+        "toolabilityScore": 0.6667,
+        "rewriteStrength": 0.5991,
+        "targetFit": 0.0414,
+        "movementConfidence": 0.74,
+        "personaSeparationScore": 0.08,
+        "failureReasons": [],
+        "artifactFlags": [
+          "artifact:over-braiding",
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:over-braiding",
+          "artifact:clause-drag"
+        ],
+        "transferClass": "structural",
+        "outputPreview": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First, the team will complete a shared cataloging "
+      },
+      {
+        "id": "base:cadence-connector",
+        "family": "cadence-connector",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "score": 0.8781,
+        "toolabilityScore": 0.8031,
+        "rewriteStrength": 1,
         "targetFit": 0.155,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
@@ -228,17 +253,22 @@
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.6321,
-        "toolabilityScore": 0.7779,
-        "rewriteStrength": 0.7638,
-        "targetFit": 0.1803,
-        "movementConfidence": 0.88,
+        "status": "selected",
+        "score": 0.7149,
+        "toolabilityScore": 0.8031,
+        "rewriteStrength": 0.9638,
+        "targetFit": 0.0832,
+        "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:over-braiding",
+          "artifact:clause-drag"
+        ],
         "toolabilityWarnings": [
-          "persona-markers-thin"
+          "persona-markers-thin",
+          "artifact:over-braiding",
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "outputPreview": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First, the team will complete a shared cataloging "
@@ -249,19 +279,19 @@
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 2,
-      "winningCandidateId": "base:syntax-shape"
+      "candidateCount": 3,
+      "winningCandidateId": "base:clause-pivot"
     },
-    "winningCandidateId": "base:syntax-shape"
+    "winningCandidateId": "base:clause-pivot"
   },
   "semanticContract": {
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
+      "lexical-register",
       "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "sentence-mean"
     ],
     "lexemeSwapFamilies": [
       "surface"
@@ -274,7 +304,7 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "split-long-line"
+      "pivot-contrast"
     ],
     "lexicalOperations": [
       "compressed:week->wk",
@@ -287,7 +317,7 @@
     "actionCoverage": 1,
     "objectCoverage": 1,
     "polarityMismatches": 1,
-    "tenseMismatches": 1,
+    "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }
 }

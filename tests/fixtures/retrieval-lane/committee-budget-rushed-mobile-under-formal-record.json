@@ -164,7 +164,7 @@
         "order-beat"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7742
+      "averageToolabilityScore": 0.8695
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -176,7 +176,8 @@
         "sentence-count",
         "sentence-spread",
         "punctuation-shape",
-        "orthography-posture"
+        "orthography-posture",
+        "lexical-register"
       ],
       "lexemeSwaps": [
         {
@@ -212,11 +213,11 @@
         "family": "syntax-shape",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.8457,
-        "toolabilityScore": 0.7724,
+        "score": 0.9129,
+        "toolabilityScore": 0.8486,
         "rewriteStrength": 1,
         "targetFit": 0.4129,
-        "movementConfidence": 0.94,
+        "movementConfidence": 1,
         "personaSeparationScore": 0.8,
         "failureReasons": [],
         "artifactFlags": [
@@ -233,8 +234,8 @@
         "family": "order-beat",
         "envelopeId": "matron",
         "status": "selected",
-        "score": 0.7625,
-        "toolabilityScore": 0.7761,
+        "score": 0.7325,
+        "toolabilityScore": 0.8903,
         "rewriteStrength": 1,
         "targetFit": 0.3821,
         "movementConfidence": 1,
@@ -264,6 +265,7 @@
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
+      "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",

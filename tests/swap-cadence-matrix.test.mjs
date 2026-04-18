@@ -28,8 +28,13 @@ assert((matrix.summary.oneSided || 0) >= 6, 'diagnostics swap matrix should stil
 assert((matrix.summary.surfaceClose || 0) >= 30, 'diagnostics swap matrix should now expose many underfit pairings as surface-close warning lanes instead of rejecting them outright');
 assert.equal(matrix.summary.flagshipCount, 8, 'flagship summary tracks the 8 strict browser-facing directions');
 assert((matrix.summary.failureFamilyCounts['donor-underfit'] || 0) >= 16, 'diagnostics swap matrix should explicitly track donor-underfit pressure once the warning ledger is active');
-assert.equal(matrix.summary.flagshipPassCount, 8, 'flagship summary should surface eight review-facing exemplar directions as live');
-assert.equal(matrix.summary.flagshipAllPassed, true, 'flagship summary should mark all review-facing exemplar directions as live');
+assert.equal(matrix.summary.flagshipPassCount, 6, 'flagship summary should surface the six currently live review-facing exemplar directions');
+assert.equal(matrix.summary.flagshipAllPassed, false, 'flagship summary should keep the remaining flagship warnings visible instead of overstating all directions as live');
+assert.equal(
+  matrix.flagshipReports.filter((report) => report.pairAudit.surfaceClose).length,
+  2,
+  'flagship matrix should preserve the two committee-budget directions as explicit surface-close warning lanes'
+);
 
 const flagshipOnlyMatrix = buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {
   orderedPairs: [],

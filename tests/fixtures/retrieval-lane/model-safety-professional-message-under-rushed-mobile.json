@@ -120,24 +120,26 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "split-long-line"
+        "connector-split"
       ],
       "lexicalRegisterOperationsSelected": [
         "compressed:please->pls",
         "orthography:thats",
+        "orthography:doesnt",
         "orthography:lowercase-lead"
       ],
       "connectorStrategy": "split",
       "contractionStrategy": "contract"
     },
     "candidateSummary": {
-      "candidateCount": 1,
-      "landedCandidateId": "base:syntax-shape",
+      "candidateCount": 2,
+      "landedCandidateId": "base:cadence-connector",
       "families": [
-        "syntax-shape"
+        "syntax-shape",
+        "cadence-connector"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.8776
+      "averageToolabilityScore": 0.7995
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -148,10 +150,10 @@
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
-        "contraction-posture",
         "register-mode",
         "abbreviation-posture",
-        "orthography-posture"
+        "orthography-posture",
+        "lexical-register"
       ],
       "lexemeSwaps": [
         {
@@ -163,6 +165,11 @@
           "from": "that's",
           "to": "thats",
           "family": "surface"
+        },
+        {
+          "from": "doesn't",
+          "to": "doesnt",
+          "family": "surface"
         }
       ],
       "visibleShift": true,
@@ -171,9 +178,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.475,
-      "outputDonorDistance": 3.401,
-      "donorImprovement": 1.074,
-      "donorImprovementRatio": 0.24,
+      "outputDonorDistance": 3.353,
+      "donorImprovement": 1.122,
+      "donorImprovementRatio": 0.251,
       "sourceOutputLexicalOverlap": 0.915
     },
     "candidateLedger": [
@@ -181,16 +188,40 @@
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "spark",
-        "status": "selected",
-        "score": 1.2042,
-        "toolabilityScore": 0.8776,
+        "status": "eligible",
+        "score": 1.0061,
+        "toolabilityScore": 0.7959,
         "rewriteStrength": 1,
-        "targetFit": 0.4652,
+        "targetFit": 0.3863,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.86,
+        "personaSeparationScore": 0.47,
+        "failureReasons": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
+        "transferClass": "structural",
+        "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names, and the run had"
+      },
+      {
+        "id": "base:cadence-connector",
+        "family": "cadence-connector",
+        "envelopeId": "spark",
+        "status": "selected",
+        "score": 1.1606,
+        "toolabilityScore": 0.8031,
+        "rewriteStrength": 1,
+        "targetFit": 0.4734,
+        "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
-        "toolabilityWarnings": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
         "transferClass": "structural",
         "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. And the run had"
       }
@@ -200,17 +231,17 @@
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
-      "candidateCount": 1,
-      "winningCandidateId": "base:syntax-shape"
+      "candidateCount": 2,
+      "winningCandidateId": "base:cadence-connector"
     },
-    "winningCandidateId": "base:syntax-shape"
+    "winningCandidateId": "base:cadence-connector"
   },
   "semanticContract": {
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
-      "contraction-posture",
+      "lexical-register",
       "orthography-posture",
       "register-mode",
       "sentence-count",
@@ -228,10 +259,11 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "split-long-line"
+      "connector-split"
     ],
     "lexicalOperations": [
       "compressed:please->pls",
+      "orthography:doesnt",
       "orthography:lowercase-lead",
       "orthography:thats"
     ],

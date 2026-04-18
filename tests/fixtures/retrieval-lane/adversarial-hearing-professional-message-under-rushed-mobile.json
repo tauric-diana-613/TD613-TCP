@@ -147,6 +147,7 @@
       "lexicalRegisterOperationsSelected": [
         "compressed:please->pls",
         "orthography:thats",
+        "orthography:didnt",
         "orthography:lowercase-lead"
       ],
       "connectorStrategy": "split",
@@ -159,7 +160,7 @@
         "syntax-shape"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.6935
+      "averageToolabilityScore": 0.7198
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -168,7 +169,8 @@
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "abbreviation-posture",
-        "orthography-posture"
+        "orthography-posture",
+        "lexical-register"
       ],
       "lexemeSwaps": [
         {
@@ -180,6 +182,11 @@
           "from": "that's",
           "to": "thats",
           "family": "surface"
+        },
+        {
+          "from": "didn't",
+          "to": "didnt",
+          "family": "surface"
         }
       ],
       "visibleShift": true,
@@ -188,9 +195,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 3.519,
-      "outputDonorDistance": 3.066,
-      "donorImprovement": 0.453,
-      "donorImprovementRatio": 0.129,
+      "outputDonorDistance": 3.022,
+      "donorImprovement": 0.497,
+      "donorImprovementRatio": 0.141,
       "sourceOutputLexicalOverlap": 0.934
     },
     "candidateLedger": [
@@ -199,12 +206,12 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 0.7299,
-        "toolabilityScore": 0.6935,
-        "rewriteStrength": 0.6934,
-        "targetFit": 0.4288,
-        "movementConfidence": 0.8,
-        "personaSeparationScore": 0.47,
+        "score": 0.9037,
+        "toolabilityScore": 0.7198,
+        "rewriteStrength": 0.9205,
+        "targetFit": 0.4362,
+        "movementConfidence": 0.94,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:clause-drag"
@@ -232,6 +239,7 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
+      "lexical-register",
       "orthography-posture"
     ],
     "lexemeSwapFamilies": [
@@ -247,6 +255,7 @@
     "structuralOperations": [],
     "lexicalOperations": [
       "compressed:please->pls",
+      "orthography:didnt",
       "orthography:lowercase-lead",
       "orthography:thats"
     ],

@@ -192,7 +192,7 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "split-long-line",
+        "connector-split",
         "front-when"
       ],
       "lexicalRegisterOperationsSelected": [
@@ -215,7 +215,7 @@
         "hybrid"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.6928
+      "averageToolabilityScore": 0.8031
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -226,7 +226,8 @@
         "sentence-mean",
         "sentence-count",
         "abbreviation-posture",
-        "orthography-posture"
+        "orthography-posture",
+        "lexical-register"
       ],
       "lexemeSwaps": [
         {
@@ -262,10 +263,10 @@
         "family": "syntax-shape",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.0669,
-        "toolabilityScore": 0.6971,
+        "score": 1.0217,
+        "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.3582,
+        "targetFit": 0.3069,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -284,8 +285,8 @@
         "family": "cadence-connector",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.0171,
-        "toolabilityScore": 0.6899,
+        "score": 1.0771,
+        "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
         "targetFit": 0.3593,
         "movementConfidence": 1,
@@ -306,10 +307,10 @@
         "family": "order-beat",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.0439,
-        "toolabilityScore": 0.6899,
+        "score": 1.0169,
+        "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.3756,
+        "targetFit": 0.2969,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -328,10 +329,10 @@
         "family": "clause-pivot",
         "envelopeId": "spark",
         "status": "eligible",
-        "score": 1.0388,
-        "toolabilityScore": 0.6899,
+        "score": 1.0677,
+        "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.3756,
+        "targetFit": 0.3452,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -350,8 +351,8 @@
         "family": "hybrid",
         "envelopeId": "spark",
         "status": "selected",
-        "score": 1.1041,
-        "toolabilityScore": 0.6971,
+        "score": 1.1141,
+        "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
         "targetFit": 0.3767,
         "movementConfidence": 1,
@@ -383,6 +384,7 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
+      "lexical-register",
       "orthography-posture",
       "sentence-count",
       "sentence-mean"
@@ -399,8 +401,8 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "front-when",
-      "split-long-line"
+      "connector-split",
+      "front-when"
     ],
     "lexicalOperations": [
       "compressed:please->pls",

@@ -66,6 +66,19 @@ assert.equal(governedExposure.authorityCeiling, 'witness');
 assert.equal(governedExposure.routeState, 'hold-branch');
 assert.equal(governedExposure.Theta_u.current, 0.4);
 assert.equal(governedExposure.dominantOperator.code, 'P');
+assert.equal(governedExposure.narrowingLedger.length, 6);
+assert.deepEqual(
+  governedExposure.narrowingLedger.map((entry) => entry.operator),
+  ['R', 'K', 'C', 'P', 'F', 'A']
+);
+let cumulativeProduct = 1;
+governedExposure.narrowingLedger.forEach((entry) => {
+  cumulativeProduct *= 1 - entry.pressure;
+});
+assert.equal(
+  governedExposure.narrowingLedger.at(-1).cumulativeNarrowing,
+  Number((1 - cumulativeProduct).toFixed(3))
+);
 
 assert.equal(
   selectTD613ApertureDecision({ apertureContext: guardedContext }),
@@ -175,6 +188,17 @@ const repairedProjection = repairTD613ApertureProjection({
   targetProfile: { avgSentenceLength: 10, contractionDensity: 0.05, punctuationDensity: 0.04 }
 });
 assert.equal(repairedProjection.repaired, true);
+assert(repairedProjection.repairPasses.includes('common-repair'));
+assert(Array.isArray(repairedProjection.repairLedger));
+assert(repairedProjection.repairLedger.length >= 2);
+assert(repairedProjection.repairLedger.every((entry) =>
+  typeof entry.pass === 'string' &&
+  typeof entry.pattern === 'string' &&
+  typeof entry.before === 'string' &&
+  typeof entry.after === 'string'
+));
+assert(repairedProjection.repairLedger.some((entry) => entry.pass === 'common-repair'));
+assert(repairedProjection.repairLedger.some((entry) => /tell hi/i.test(entry.pattern)));
 assert(!/\btell hi\b/i.test(repairedProjection.outputText));
 assert(!/\band and\b/i.test(repairedProjection.outputText));
 
@@ -241,6 +265,33 @@ assert.equal(registeredSegment.outcome, 'surface-held');
 assert.equal(registeredSegment.registeredText, 'Customer contacted support regarding account review.');
 assert.equal(registeredSegment.apertureAudit.generatorFault, false);
 assert.equal(registeredSegment.witnessAnchorIntegrity, 1);
+assert.equal(registeredSegment.candidateProvenance, null);
+
+const candidateLedger = Object.freeze([
+  Object.freeze({ family: 'syntax-shape', score: 0.91, landed: true }),
+  Object.freeze({ family: 'persona-lexicon', score: 0.83, landed: false })
+]);
+const registeredSegmentWithCandidates = registerTD613ApertureSegment({
+  sourceText: 'Customer contacted support regarding account review.',
+  projectedText: 'Customer contacted help regarding account check.',
+  surfaceText: 'Customer contacted support regarding account review.',
+  personaId: 'spark',
+  sourceProfile: { avgSentenceLength: 8, contractionDensity: 0.02, punctuationDensity: 0.06 },
+  targetProfile: { avgSentenceLength: 6, contractionDensity: 0.08, punctuationDensity: 0.08 },
+  sourceIR: {
+    sentences: [{
+      clauses: [{
+        propositionHead: 'contacted support',
+        actor: 'customer',
+        action: 'contacted',
+        object: 'account review'
+      }]
+    }]
+  },
+  protectedState: { literals: [] },
+  candidateLedger
+});
+assert.strictEqual(registeredSegmentWithCandidates.candidateProvenance, candidateLedger);
 
 const projectedOutcome = classifyTD613ApertureProjection({
   sourceText: 'Keep doing what you are doing.',

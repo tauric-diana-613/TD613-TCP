@@ -124,7 +124,7 @@
         "register-lexicon"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.822
+      "averageToolabilityScore": 0.8431
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -136,7 +136,8 @@
         "sentence-count",
         "sentence-spread",
         "register-mode",
-        "orthography-posture"
+        "orthography-posture",
+        "lexical-register"
       ],
       "lexemeSwaps": [
         {
@@ -181,11 +182,11 @@
         "family": "register-lexicon",
         "envelopeId": "matron",
         "status": "eligible",
-        "score": 0.9236,
-        "toolabilityScore": 0.7508,
-        "rewriteStrength": 0.6638,
+        "score": 1.0763,
+        "toolabilityScore": 0.793,
+        "rewriteStrength": 0.925,
         "targetFit": 0.5478,
-        "movementConfidence": 0.74,
+        "movementConfidence": 0.88,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [],
@@ -210,6 +211,7 @@
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
+      "lexical-register",
       "orthography-posture",
       "register-mode",
       "sentence-count",

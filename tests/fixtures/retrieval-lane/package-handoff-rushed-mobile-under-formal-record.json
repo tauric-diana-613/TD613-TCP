@@ -149,7 +149,7 @@
         "hybrid"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7262
+      "averageToolabilityScore": 0.7986
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -160,7 +160,8 @@
         "sentence-mean",
         "sentence-count",
         "punctuation-shape",
-        "orthography-posture"
+        "orthography-posture",
+        "lexical-register"
       ],
       "lexemeSwaps": [],
       "visibleShift": true,
@@ -180,9 +181,9 @@
         "family": "syntax-shape",
         "envelopeId": "archivist",
         "status": "eligible",
-        "score": 0.7133,
-        "toolabilityScore": 0.7053,
-        "rewriteStrength": 0.5605,
+        "score": 0.8595,
+        "toolabilityScore": 0.7531,
+        "rewriteStrength": 0.8416,
         "targetFit": 0.354,
         "movementConfidence": 0.08,
         "personaSeparationScore": 0.86,
@@ -197,11 +198,11 @@
         "family": "hybrid",
         "envelopeId": "archivist",
         "status": "selected",
-        "score": 0.8959,
-        "toolabilityScore": 0.747,
-        "rewriteStrength": 0.6934,
+        "score": 1.0599,
+        "toolabilityScore": 0.8442,
+        "rewriteStrength": 0.9764,
         "targetFit": 0.4009,
-        "movementConfidence": 0.82,
+        "movementConfidence": 0.96,
         "personaSeparationScore": 0.86,
         "failureReasons": [],
         "artifactFlags": [
@@ -228,6 +229,7 @@
     "transferClass": "structural",
     "realizationTier": "structural",
     "changedDimensions": [
+      "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",

@@ -26,7 +26,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.972,
+      "objectCoverage": 0.978,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -41,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.137
+          "globalBagScore": 0.149
         },
         {
           "sourceClauseId": "s1c0",
@@ -53,7 +53,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.118
+          "globalBagScore": 0.128
         },
         {
           "sourceClauseId": "s1c1",
@@ -64,8 +64,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.333,
-          "globalBagScore": 0.039
+          "bagScore": 1,
+          "globalBagScore": 0.043
         },
         {
           "sourceClauseId": "s2c0",
@@ -73,26 +73,38 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
+          "objectCoverage": 0.8,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.667,
+          "globalBagScore": 0.083
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.098
-        },
-        {
-          "sourceClauseId": "s3c0",
-          "matchedClauseId": "s3c0+s4c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.056
+          "globalBagScore": 0.128
         },
         {
           "sourceClauseId": "s4c0",
+          "matchedClauseId": "s4c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.043
+        },
+        {
+          "sourceClauseId": "s5c0",
           "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -101,11 +113,23 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.039
+          "globalBagScore": 0.128
         },
         {
-          "sourceClauseId": "s5c0",
-          "matchedClauseId": "s6c0+s7c0",
+          "sourceClauseId": "s6c0",
+          "matchedClauseId": "s6c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.857,
+          "globalBagScore": 0.128
+        },
+        {
+          "sourceClauseId": "s7c0",
+          "matchedClauseId": "s7c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -113,35 +137,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.118
-        },
-        {
-          "sourceClauseId": "s6c0",
-          "matchedClauseId": "s9c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.714,
-          "globalBagScore": 0.118
-        },
-        {
-          "sourceClauseId": "s7c0",
-          "matchedClauseId": "s11c0+s12c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.875,
-          "globalBagScore": 0.137
+          "globalBagScore": 0.149
         }
       ],
       "sourceClauseCount": 9,
-      "outputClauseCount": 14
+      "outputClauseCount": 9
     },
     "protectedAnchorAudit": {
       "totalAnchors": 2,
@@ -167,10 +167,9 @@
         "pressure-current",
         "hybrid"
       ],
-      "structuralOperationsSelected": [
-        "pivot-contrast"
-      ],
+      "structuralOperationsSelected": [],
       "lexicalRegisterOperationsSelected": [
+        "compressed:temporary->temp",
         "orthography:its",
         "orthography:lowercase-lead"
       ],
@@ -178,26 +177,28 @@
       "contractionStrategy": "contract"
     },
     "candidateSummary": {
-      "candidateCount": 2,
-      "landedCandidateId": "base:clause-pivot",
+      "candidateCount": 3,
+      "landedCandidateId": "base:syntax-shape",
       "families": [
         "syntax-shape",
+        "cadence-connector",
         "clause-pivot"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.6743
+      "averageToolabilityScore": 0.5352
     },
     "realizationSummary": {
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
+      "transferClass": "weak",
+      "borrowedShellOutcome": "partial",
       "borrowedShellFailureClass": null,
-      "realizationTier": "lexical-structural",
-      "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread"
-      ],
+      "realizationTier": "partial",
+      "changedDimensions": [],
       "lexemeSwaps": [
+        {
+          "from": "temporary",
+          "to": "temp",
+          "family": "surface"
+        },
         {
           "from": "it's",
           "to": "its",
@@ -210,31 +211,56 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.153,
-      "outputDonorDistance": 3.579,
-      "donorImprovement": 0.574,
-      "donorImprovementRatio": 0.138,
-      "sourceOutputLexicalOverlap": 0.984
+      "outputDonorDistance": 4.166,
+      "donorImprovement": 0,
+      "donorImprovementRatio": 0,
+      "sourceOutputLexicalOverlap": 0.969
     },
     "candidateLedger": [
       {
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.8411,
-        "toolabilityScore": 0.6622,
-        "rewriteStrength": 0.5977,
-        "targetFit": 0.4591,
-        "movementConfidence": 0.74,
-        "personaSeparationScore": 0.47,
+        "status": "selected",
+        "score": 0.3434,
+        "toolabilityScore": 0.5099,
+        "rewriteStrength": 0.3133,
+        "targetFit": 0.3345,
+        "movementConfidence": 0.52,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [
-          "artifact:fragment",
+          "artifact:over-braiding",
           "artifact:clause-drag"
         ],
         "toolabilityWarnings": [
           "persona-markers-thin",
-          "artifact:fragment",
+          "artifact:over-braiding",
+          "artifact:clause-drag",
+          "toolability:low-confidence"
+        ],
+        "transferClass": "weak",
+        "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is tha"
+      },
+      {
+        "id": "base:cadence-connector",
+        "family": "cadence-connector",
+        "envelopeId": "spark",
+        "status": "held",
+        "score": 0.6676,
+        "toolabilityScore": 0.6513,
+        "rewriteStrength": 0.6844,
+        "targetFit": 0.4477,
+        "movementConfidence": 0.8,
+        "personaSeparationScore": 0.47,
+        "failureReasons": [
+          "semantic-failure"
+        ],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
           "artifact:clause-drag"
         ],
         "transferClass": "structural",
@@ -244,22 +270,26 @@
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "spark",
-        "status": "selected",
-        "score": 0.8867,
-        "toolabilityScore": 0.6863,
-        "rewriteStrength": 0.7814,
-        "targetFit": 0.4434,
-        "movementConfidence": 0.88,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
+        "status": "held",
+        "score": 0.1967,
+        "toolabilityScore": 0.4444,
+        "rewriteStrength": 0.4948,
+        "targetFit": 0.3345,
+        "movementConfidence": 0.66,
+        "personaSeparationScore": 0.08,
+        "failureReasons": [
+          "semantic-failure"
+        ],
         "artifactFlags": [
-          "artifact:fragment",
+          "artifact:over-braiding",
           "artifact:clause-drag"
         ],
         "toolabilityWarnings": [
           "persona-markers-thin",
-          "artifact:fragment",
-          "artifact:clause-drag"
+          "artifact:over-braiding",
+          "artifact:clause-drag",
+          "toolability:low-confidence",
+          "toolability:rough-surface"
         ],
         "transferClass": "structural",
         "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is tha"
@@ -268,21 +298,17 @@
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a structural registered rewrite.",
+      "headline": "Generator V2 landed a registered cadence rewrite.",
       "reasons": [],
-      "candidateCount": 2,
-      "winningCandidateId": "base:clause-pivot"
+      "candidateCount": 3,
+      "winningCandidateId": "base:syntax-shape"
     },
-    "winningCandidateId": "base:clause-pivot"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
-    "transferClass": "structural",
-    "realizationTier": "lexical-structural",
-    "changedDimensions": [
-      "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
-    ],
+    "transferClass": "weak",
+    "realizationTier": "partial",
+    "changedDimensions": [],
     "lexemeSwapFamilies": [
       "surface"
     ],
@@ -293,10 +319,9 @@
       "sentenceCount:8",
       "sourceClass:procedural-record"
     ],
-    "structuralOperations": [
-      "pivot-contrast"
-    ],
+    "structuralOperations": [],
     "lexicalOperations": [
+      "compressed:temporary->temp",
       "orthography:its",
       "orthography:lowercase-lead"
     ],
@@ -305,7 +330,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.972,
+    "objectCoverage": 0.978,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
