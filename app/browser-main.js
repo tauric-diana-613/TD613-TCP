@@ -3526,6 +3526,26 @@
     const shell = getBayShell(slot);
     const transfer = buildCadenceTransfer(text, shell, { retrieval: true });
     const generationHeld = transfer.holdStatus === 'held';
+    if (generationHeld && typeof window !== 'undefined' && window.TD613_DUEL_DEBUG) {
+      try {
+        // eslint-disable-next-line no-console
+        console.warn('[TD613_DUEL_DEBUG] voice-hold', {
+          slot,
+          textLength: text.length,
+          shellMode: shell && shell.mode,
+          shellMod: shell && shell.mod,
+          shellStrength: shell && shell.strength,
+          personaId: shell && shell.personaId,
+          transferClass: transfer.transferClass,
+          notes: transfer.notes,
+          realizationNotes: transfer.realizationNotes,
+          borrowedShellFailureClass: transfer.borrowedShellFailureClass,
+          semanticAudit: transfer.semanticAudit,
+          apertureProtocol: transfer.apertureProtocol && transfer.apertureProtocol.outcome,
+          retrievalTrace: transfer.retrievalTrace
+        });
+      } catch (error) { /* ignore log failure */ }
+    }
     const effectiveText = generationHeld ? text : transfer.text;
     const persona = shell.personaId ? findPersona(shell.personaId) : null;
     const effectiveProfile = transfer.outputProfile || extractCadenceProfile(effectiveText);

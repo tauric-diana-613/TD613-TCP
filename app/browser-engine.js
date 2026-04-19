@@ -10544,6 +10544,7 @@ function applyCadenceToText(text = '', shell = {}) {
 }
 // SOURCE: app/engine/generator-v2.js
 
+
 function clamp01(value) {
   return Math.max(0, Math.min(1, Number(value || 0)));
 }
@@ -14393,6 +14394,33 @@ function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
   }
 
   if (!selected) {
+    if (typeof globalThis !== 'undefined' && globalThis.TD613_DUEL_DEBUG) {
+      const rejected = candidates.filter((candidate) => !candidate.passed);
+      const sample = rejected.slice(0, 3).map((candidate) => ({
+        family: candidate.family,
+        variant: candidate.variantId,
+        passed: candidate.passed,
+        warnings: candidate.warnings,
+        semanticAudit: candidate.semanticAudit,
+        floors: candidate.semanticFloors,
+        artifactPenalty: candidate.toolabilityAudit && candidate.toolabilityAudit.artifactPenalty,
+        semanticLockIntact: candidate.semanticLockIntact
+      }));
+      try {
+        // eslint-disable-next-line no-console
+        console.warn('[TD613_DUEL_DEBUG] hold', {
+          sourceClass,
+          shellMod: shell && shell.mod,
+          shellStrength: shell && shell.strength,
+          variantCount: variants.length,
+          candidateCount: candidates.length,
+          eligibleCount: eligibleCandidates.length,
+          boundedCount: boundedCandidates.length,
+          recoveryRan: shouldRunRecoveryRound(sourceClass, null, candidates),
+          rejectedSample: sample
+        });
+      } catch (error) { /* ignore log failure */ }
+    }
     return buildHeldTransfer(sourceText, shell, {
       ...options,
       testedFamilyIds,
