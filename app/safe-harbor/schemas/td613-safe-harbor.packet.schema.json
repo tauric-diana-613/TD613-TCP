@@ -394,6 +394,13 @@
             "string",
             "null"
           ]
+        },
+        "stylometric_fingerprint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Per-lane quantized cadence features used to deterministically derive the SHI # so the same entrant receives the same number across rituals."
         }
       }
     },
