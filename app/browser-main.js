@@ -4317,6 +4317,28 @@
     );
   }
 
+  function engineLandedStructuralTransfer(transfer = {}) {
+    if (!transfer) return false;
+    if (transfer.transferClass !== 'structural' && transfer.borrowedShellOutcome !== 'structural') {
+      return false;
+    }
+    if (!transfer.visibleShift || !transfer.nonTrivialShift) {
+      return false;
+    }
+    const changed = [...new Set(transfer.changedDimensions || [])];
+    const nonPunctuation = changed.filter((dimension) => dimension !== 'punctuation-shape');
+    const structural = nonPunctuation.filter((dimension) => [
+      'sentence-mean',
+      'sentence-count',
+      'sentence-spread',
+      'connector-stance',
+      'directness',
+      'abstraction-posture',
+      'lexical-register'
+    ].includes(dimension));
+    return structural.length >= 2 || nonPunctuation.length >= 3;
+  }
+
   function realizedTransferLabel(transfer = {}, hasEffectiveTextShift = false) {
     if (transfer?.holdStatus === 'held') {
       return 'generator hold';
@@ -4325,7 +4347,8 @@
     if (percent === 0) {
       return 'no transfer';
     }
-    if (borrowedTransferSurfaceClose(transfer) || percent <= 18) {
+    const landedStructural = engineLandedStructuralTransfer(transfer);
+    if ((borrowedTransferSurfaceClose(transfer) && !landedStructural) || percent <= 18) {
       return 'surface-close';
     }
     if (percent <= 38) {
@@ -4398,7 +4421,9 @@
       return 0;
     }
 
-    if (borrowedTransferSurfaceClose(transfer)) {
+    const landedStructural = engineLandedStructuralTransfer(transfer);
+
+    if (borrowedTransferSurfaceClose(transfer) && !landedStructural) {
       return 8;
     }
 
@@ -4463,25 +4488,27 @@
       score = Math.min(score, changedDimensions.includes('punctuation-shape') ? 8 : 4);
     }
 
-    if ((donorProgress.donorImprovementRatio || 0) < 0.14) {
+    if ((donorProgress.donorImprovementRatio || 0) < 0.14 && !landedStructural) {
       score = Math.min(score, 18);
     }
 
-    if (
-      (donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.9 &&
-      surfaceDimensions.length < 3 &&
-      lexicalShiftCount === 0
-    ) {
-      score = Math.min(score, 24);
-    } else if (
-      (donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.88 &&
-      surfaceDimensions.length < 2 &&
-      structuralDimensions.length < 3
-    ) {
-      score = Math.min(score, 32);
+    if (!landedStructural) {
+      if (
+        (donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.9 &&
+        surfaceDimensions.length < 3 &&
+        lexicalShiftCount === 0
+      ) {
+        score = Math.min(score, 24);
+      } else if (
+        (donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.88 &&
+        surfaceDimensions.length < 2 &&
+        structuralDimensions.length < 3
+      ) {
+        score = Math.min(score, 32);
+      }
     }
 
-    if ((donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.82) {
+    if ((donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.82 && !landedStructural) {
       score -= Math.round(((donorProgress.sourceOutputLexicalOverlap ?? 1) - 0.82) * 72);
     }
 
@@ -4504,10 +4531,19 @@
       score -= 10;
     }
 
-    const overlapCap = Math.round(Math.max(0, 1 - (donorProgress.sourceOutputLexicalOverlap ?? 1)) * 120) +
-      Math.min(12, surfaceDimensions.length * 3) +
-      Math.min(10, structuralDimensions.length * 2);
-    score = Math.min(score, Math.max(8, overlapCap));
+    const overlapCap = landedStructural
+      ? Math.round(Math.max(0, 1 - (donorProgress.sourceOutputLexicalOverlap ?? 1)) * 160) +
+        Math.min(24, surfaceDimensions.length * 6) +
+        Math.min(24, structuralDimensions.length * 6)
+      : Math.round(Math.max(0, 1 - (donorProgress.sourceOutputLexicalOverlap ?? 1)) * 120) +
+        Math.min(12, surfaceDimensions.length * 3) +
+        Math.min(10, structuralDimensions.length * 2);
+    const floor = landedStructural ? 45 : 8;
+    score = Math.min(score, Math.max(floor, overlapCap));
+
+    if (landedStructural) {
+      score = Math.max(score, floor);
+    }
 
     return Math.max(0, Math.min(100, Math.round(score)));
   }
