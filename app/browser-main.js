@@ -303,7 +303,7 @@
             : 'no packet prepared'
       : 'no packet prepared';
     noteNode.textContent = !hasSummary
-      ? 'Pass ingress to mount the live Aperture lane.'
+      ? 'Open full Aperture to seed the last counter-tool lane. Safe Harbor can read that upstream context without replacing TCP routing.'
       : summary.packetExported
         ? 'Aperture exported a guarded packet. Safe Harbor can read this lane as upstream context.'
         : harborReady
@@ -376,6 +376,623 @@
     const summary = normalizeGatewayApertureBridgeSummary(payload);
     persistGatewayApertureBridgeSummary(summary);
     renderGatewayApertureBridgeRail(summary);
+  }
+
+  const GATEWAY_PREVIEW_SQRT3_HALF = Math.sqrt(3) / 2;
+  const GATEWAY_PREVIEW_TRI = Object.freeze({
+    A: Object.freeze({ x: 0, y: 0, label: 'A', note: 'entry' }),
+    B: Object.freeze({ x: 1, y: 0, label: 'B', note: 'return' }),
+    C: Object.freeze({ x: 0.5, y: GATEWAY_PREVIEW_SQRT3_HALF, label: 'C', note: 'apex' })
+  });
+  const GATEWAY_PREVIEW_EDGES = Object.freeze([
+    Object.freeze({ p1: GATEWAY_PREVIEW_TRI.A, p2: GATEWAY_PREVIEW_TRI.B, label: 'AB' }),
+    Object.freeze({ p1: GATEWAY_PREVIEW_TRI.B, p2: GATEWAY_PREVIEW_TRI.C, label: 'BC' }),
+    Object.freeze({ p1: GATEWAY_PREVIEW_TRI.C, p2: GATEWAY_PREVIEW_TRI.A, label: 'CA' })
+  ]);
+  const gatewayPreview = {
+    initialized: false,
+    running: false,
+    showMoire: true,
+    bounceCount: 0,
+    rays: [],
+    trace: [],
+    fieldTick: 0,
+    lastTimestamp: 0,
+    animationFrame: 0
+  };
+
+  function handleGatewayApertureStorageEvent(event) {
+    if (PAGE_KIND !== 'gateway') {
+      return;
+    }
+    if (event?.key && event.key !== GATEWAY_APERTURE_HANDOFF_KEY) {
+      return;
+    }
+    renderGatewayApertureBridgeRail(readGatewayApertureBridgeSummary());
+  }
+
+  function gatewayPreviewCanvas(id) {
+    return $(id);
+  }
+
+  function setupGatewayPreviewCanvas(canvas, width, height) {
+    if (!canvas) {
+      return { ctx: null, width: 0, height: 0 };
+    }
+    const ratio = Math.max(1, Math.min(2, Number(window.devicePixelRatio || 1)));
+    const logicalWidth = Math.max(1, Math.round(width));
+    const logicalHeight = Math.max(1, Math.round(height));
+    const pixelWidth = Math.round(logicalWidth * ratio);
+    const pixelHeight = Math.round(logicalHeight * ratio);
+    if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+      canvas.width = pixelWidth;
+      canvas.height = pixelHeight;
+      canvas.style.width = `${logicalWidth}px`;
+      canvas.style.height = `${logicalHeight}px`;
+    }
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      return { ctx: null, width: logicalWidth, height: logicalHeight };
+    }
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    return { ctx, width: logicalWidth, height: logicalHeight };
+  }
+
+  function resizeGatewayPreviewCanvases() {
+    if (PAGE_KIND !== 'gateway') {
+      return;
+    }
+    const center = $('gatewayPreviewCenter');
+    const main = gatewayPreviewCanvas('gatewayPreviewCanvas');
+    const moire = gatewayPreviewCanvas('gatewayPreviewMoireCanvas');
+    const trace = gatewayPreviewCanvas('gatewayPreviewTraceCanvas');
+    if (!center || !main || !moire || !trace) {
+      return;
+    }
+    const centerBox = center.getBoundingClientRect();
+    setupGatewayPreviewCanvas(main, Math.max(240, centerBox.width), Math.max(360, centerBox.height));
+    const moireBox = moire.parentElement?.getBoundingClientRect?.() || { width: 320, height: 200 };
+    const traceBox = trace.parentElement?.getBoundingClientRect?.() || { width: 260, height: 200 };
+    setupGatewayPreviewCanvas(moire, Math.max(220, moireBox.width - 20), Math.max(120, moireBox.height - 42));
+    setupGatewayPreviewCanvas(trace, Math.max(180, traceBox.width - 20), Math.max(120, traceBox.height - 42));
+  }
+
+  function gatewayPreviewProject(x, y, width, height) {
+    const scale = Math.min(width * 0.76, height * 0.88);
+    const ox = width / 2 - 0.5 * scale;
+    const oy = height / 2 + GATEWAY_PREVIEW_SQRT3_HALF * scale * 0.32;
+    return { x: ox + x * scale, y: oy - y * scale };
+  }
+
+  function gatewayPreviewCross(ax, ay, bx, by) {
+    return (ax * by) - (ay * bx);
+  }
+
+  function gatewayPreviewRayEdgeIntersection(px, py, dx, dy, edge, maxTravel) {
+    const sx = edge.p2.x - edge.p1.x;
+    const sy = edge.p2.y - edge.p1.y;
+    const denom = gatewayPreviewCross(dx, dy, sx, sy);
+    if (Math.abs(denom) < 1e-8) {
+      return null;
+    }
+    const qpx = edge.p1.x - px;
+    const qpy = edge.p1.y - py;
+    const t = gatewayPreviewCross(qpx, qpy, sx, sy) / denom;
+    const u = gatewayPreviewCross(qpx, qpy, dx, dy) / denom;
+    if (t <= 1e-5 || t > maxTravel + 1e-5 || u < -1e-5 || u > 1.00001) {
+      return null;
+    }
+    return {
+      t,
+      x: px + (dx * t),
+      y: py + (dy * t),
+      edge
+    };
+  }
+
+  function reflectGatewayPreviewVector(dx, dy, edge) {
+    const ex = edge.p2.x - edge.p1.x;
+    const ey = edge.p2.y - edge.p1.y;
+    const length = Math.hypot(ex, ey) || 1;
+    const nx = ey / length;
+    const ny = -ex / length;
+    const dot = (dx * nx) + (dy * ny);
+    return {
+      dx: dx - (2 * dot * nx),
+      dy: dy - (2 * dot * ny)
+    };
+  }
+
+  function createGatewayPreviewRay(angleOffset = 0) {
+    const startY = GATEWAY_PREVIEW_SQRT3_HALF / 3;
+    const baseAngle = (-Math.PI / 2) + angleOffset + ((Math.random() - 0.5) * 0.28);
+    const speed = 0.82 + (Math.random() * 0.16);
+    const startX = 0.5 + ((Math.random() - 0.5) * 0.015);
+    const y = startY + ((Math.random() - 0.5) * 0.015);
+    return {
+      x: startX,
+      y,
+      dx: Math.cos(baseAngle) * speed,
+      dy: Math.sin(baseAngle) * speed,
+      intensity: 0.72 + (Math.random() * 0.22),
+      bounces: 0,
+      path: [{ x: startX, y }]
+    };
+  }
+
+  function seedGatewayPreviewRays() {
+    gatewayPreview.rays = [
+      createGatewayPreviewRay(-0.72),
+      createGatewayPreviewRay(-0.14),
+      createGatewayPreviewRay(0.42)
+    ];
+  }
+
+  function updateGatewayPreviewChrome() {
+    if (PAGE_KIND !== 'gateway') {
+      return;
+    }
+    const bounceNode = $('gatewayPreviewBounceStatus');
+    const phaseNode = $('gatewayPreviewPhaseStatus');
+    const runButton = $('gatewayPreviewRun');
+    const moireButton = $('gatewayPreviewMoire');
+    if (bounceNode) {
+      bounceNode.textContent = `BOUNCES: ${gatewayPreview.bounceCount}`;
+    }
+    if (phaseNode) {
+      phaseNode.textContent = gatewayPreview.running ? 'FIELD LIVE' : 'STANDBY';
+      phaseNode.classList.toggle('gateway-preview-pill-cyan', true);
+    }
+    if (runButton) {
+      runButton.textContent = gatewayPreview.running ? '■ HALT' : '▶ PROPAGATE';
+      runButton.classList.toggle('gateway-preview-button-active', gatewayPreview.running);
+    }
+    if (moireButton) {
+      moireButton.classList.toggle('gateway-preview-button-active', gatewayPreview.showMoire);
+      moireButton.dataset.state = gatewayPreview.showMoire ? 'on' : 'off';
+    }
+  }
+
+  function recordGatewayPreviewTrace(dtMs) {
+    const activity = gatewayPreview.rays.length
+      ? gatewayPreview.rays.reduce((sum, ray) => sum + ray.intensity, 0) / gatewayPreview.rays.length
+      : 0;
+    gatewayPreview.trace.push({
+      drift: clamp01(activity),
+      moire: gatewayPreview.showMoire ? 0.58 + (Math.sin(gatewayPreview.fieldTick * 0.0014) * 0.18) : 0.2,
+      bounce: gatewayPreview.bounceCount
+    });
+    if (gatewayPreview.trace.length > 180) {
+      gatewayPreview.trace.shift();
+    }
+  }
+
+  function advanceGatewayPreview(dtMs) {
+    gatewayPreview.fieldTick += dtMs;
+    if (!gatewayPreview.running) {
+      recordGatewayPreviewTrace(dtMs);
+      return;
+    }
+    if (!gatewayPreview.rays.length) {
+      seedGatewayPreviewRays();
+    }
+    const travelBudget = dtMs / 1000;
+    gatewayPreview.rays.forEach((ray) => {
+      let remaining = travelBudget;
+      let iterations = 0;
+      while (remaining > 1e-4 && iterations < 4) {
+        let closest = null;
+        GATEWAY_PREVIEW_EDGES.forEach((edge) => {
+          const hit = gatewayPreviewRayEdgeIntersection(ray.x, ray.y, ray.dx, ray.dy, edge, remaining);
+          if (hit && (!closest || hit.t < closest.t)) {
+            closest = hit;
+          }
+        });
+        if (!closest) {
+          ray.x += ray.dx * remaining;
+          ray.y += ray.dy * remaining;
+          remaining = 0;
+          break;
+        }
+        ray.x = closest.x;
+        ray.y = closest.y;
+        ray.path.push({ x: ray.x, y: ray.y });
+        if (ray.path.length > 18) {
+          ray.path.shift();
+        }
+        const reflected = reflectGatewayPreviewVector(ray.dx, ray.dy, closest.edge);
+        ray.dx = reflected.dx;
+        ray.dy = reflected.dy;
+        ray.x += ray.dx * 0.002;
+        ray.y += ray.dy * 0.002;
+        ray.bounces += 1;
+        gatewayPreview.bounceCount += 1;
+        remaining -= closest.t;
+        iterations += 1;
+      }
+      ray.intensity = Math.max(0.3, ray.intensity * 0.9982);
+      if (ray.bounces > 18) {
+        Object.assign(ray, createGatewayPreviewRay((Math.random() - 0.5) * 0.9));
+      }
+    });
+    if (gatewayPreview.rays.length < 5 && Math.random() < 0.018) {
+      gatewayPreview.rays.push(createGatewayPreviewRay((Math.random() - 0.5) * 1.2));
+    }
+    recordGatewayPreviewTrace(dtMs);
+  }
+
+  function drawGatewayPreviewLineField(ctx, width, height, options = {}) {
+    const {
+      angle = 0,
+      spacing = 18,
+      thickness = 1.1,
+      alpha = 0.08,
+      color = 'rgba(139,233,253,0.9)',
+      phase = 0,
+      drift = 3
+    } = options;
+    const cx = width / 2;
+    const cy = height / 2;
+    const extent = Math.hypot(width, height);
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(angle);
+    ctx.translate(-cx, -cy);
+    for (let offset = -extent; offset <= extent; offset += spacing) {
+      const shift = Math.sin((offset * 0.015) + phase) * drift;
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = thickness;
+      ctx.beginPath();
+      ctx.moveTo(cx - extent, cy + offset + shift);
+      ctx.lineTo(cx + extent, cy + offset + shift);
+      ctx.stroke();
+    }
+    ctx.restore();
+    ctx.globalAlpha = 1;
+  }
+
+  function drawGatewayPreviewMain() {
+    const canvas = gatewayPreviewCanvas('gatewayPreviewCanvas');
+    if (!canvas) {
+      return;
+    }
+    const { ctx, width, height } = setupGatewayPreviewCanvas(canvas, canvas.clientWidth || 320, canvas.clientHeight || 420);
+    if (!ctx) {
+      return;
+    }
+    ctx.clearRect(0, 0, width, height);
+    const gradient = ctx.createRadialGradient(width / 2, height * 0.44, 20, width / 2, height / 2, Math.max(width, height) * 0.58);
+    gradient.addColorStop(0, 'rgba(17, 21, 34, 0.96)');
+    gradient.addColorStop(0.48, 'rgba(7, 10, 16, 0.98)');
+    gradient.addColorStop(1, 'rgba(3, 4, 7, 1)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+    const sA = gatewayPreviewProject(GATEWAY_PREVIEW_TRI.A.x, GATEWAY_PREVIEW_TRI.A.y, width, height);
+    const sB = gatewayPreviewProject(GATEWAY_PREVIEW_TRI.B.x, GATEWAY_PREVIEW_TRI.B.y, width, height);
+    const sC = gatewayPreviewProject(GATEWAY_PREVIEW_TRI.C.x, GATEWAY_PREVIEW_TRI.C.y, width, height);
+    const centroid = { x: (sA.x + sB.x + sC.x) / 3, y: (sA.y + sB.y + sC.y) / 3 };
+
+    if (gatewayPreview.showMoire) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(sA.x, sA.y);
+      ctx.lineTo(sB.x, sB.y);
+      ctx.lineTo(sC.x, sC.y);
+      ctx.closePath();
+      ctx.clip();
+      drawGatewayPreviewLineField(ctx, width, height, {
+        angle: 0.19 + Math.sin(gatewayPreview.fieldTick * 0.00042) * 0.06,
+        spacing: 18,
+        thickness: 1.4,
+        alpha: 0.09,
+        drift: 4,
+        phase: gatewayPreview.fieldTick * 0.0011,
+        color: 'rgba(139,233,253,0.95)'
+      });
+      drawGatewayPreviewLineField(ctx, width, height, {
+        angle: 0.31 + Math.sin(gatewayPreview.fieldTick * 0.00031) * 0.08,
+        spacing: 19.8,
+        thickness: 1.2,
+        alpha: 0.08,
+        drift: 5,
+        phase: gatewayPreview.fieldTick * 0.0017,
+        color: 'rgba(189,147,249,0.95)'
+      });
+      ctx.restore();
+    }
+
+    const fill = ctx.createLinearGradient(sC.x, sC.y, centroid.x, sA.y);
+    fill.addColorStop(0, 'rgba(189,147,249,0.09)');
+    fill.addColorStop(0.5, 'rgba(139,233,253,0.06)');
+    fill.addColorStop(1, 'rgba(17,22,36,0.02)');
+    ctx.beginPath();
+    ctx.moveTo(sA.x, sA.y);
+    ctx.lineTo(sB.x, sB.y);
+    ctx.lineTo(sC.x, sC.y);
+    ctx.closePath();
+    ctx.fillStyle = fill;
+    ctx.fill();
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(sA.x, sA.y);
+    ctx.lineTo(sB.x, sB.y);
+    ctx.lineTo(sC.x, sC.y);
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(139,233,253,0.12)';
+    ctx.lineWidth = 7;
+    ctx.lineJoin = 'round';
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = 'rgba(139,233,253,0.18)';
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.beginPath();
+    ctx.moveTo(sA.x, sA.y);
+    ctx.lineTo(sB.x, sB.y);
+    ctx.lineTo(sC.x, sC.y);
+    ctx.closePath();
+    ctx.strokeStyle = `rgba(168,216,255,${0.3 + (Math.sin(gatewayPreview.fieldTick * 0.0018) * 0.08)})`;
+    ctx.lineWidth = 2.4;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    [sA, sB, sC].forEach((point) => {
+      ctx.beginPath();
+      ctx.moveTo(centroid.x, centroid.y);
+      ctx.lineTo(point.x, point.y);
+      ctx.strokeStyle = 'rgba(189,147,249,0.12)';
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+    });
+
+    gatewayPreview.rays.forEach((ray) => {
+      const points = ray.path.concat([{ x: ray.x, y: ray.y }]).map((point) => gatewayPreviewProject(point.x, point.y, width, height));
+      if (points.length < 2) {
+        return;
+      }
+      const rgb = ray.bounces % 2 === 0 ? [139, 233, 253] : [189, 147, 249];
+      for (let index = 0; index < points.length - 1; index += 1) {
+        const fade = ray.intensity * (1 - (index / points.length)) * 0.74;
+        ctx.beginPath();
+        ctx.moveTo(points[index].x, points[index].y);
+        ctx.lineTo(points[index + 1].x, points[index + 1].y);
+        ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${fade})`;
+        ctx.lineWidth = 1 + (fade * 2.2);
+        ctx.stroke();
+      }
+      const tip = points[points.length - 1];
+      const radius = 2 + (ray.intensity * 3.2);
+      const glow = ctx.createRadialGradient(tip.x, tip.y, 0, tip.x, tip.y, radius * 4);
+      glow.addColorStop(0, `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.26 * ray.intensity})`);
+      glow.addColorStop(1, `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0)`);
+      ctx.beginPath();
+      ctx.arc(tip.x, tip.y, radius * 4, 0, Math.PI * 2);
+      ctx.fillStyle = glow;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(tip.x, tip.y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.88)`;
+      ctx.fill();
+    });
+
+    [
+      { s: sA, label: 'A', note: 'entry', color: [80, 250, 123] },
+      { s: sB, label: 'B', note: 'return', color: [139, 233, 253] },
+      { s: sC, label: 'C', note: 'apex', color: [189, 147, 249] }
+    ].forEach((node) => {
+      const [r, g, b] = node.color;
+      const pulse = Math.sin(gatewayPreview.fieldTick * 0.002 + node.label.charCodeAt(0) * 0.3) * 0.22 + 0.74;
+      const halo = ctx.createRadialGradient(node.s.x, node.s.y, 0, node.s.x, node.s.y, 20 * pulse);
+      halo.addColorStop(0, `rgba(${r},${g},${b},${0.18 * pulse})`);
+      halo.addColorStop(1, `rgba(${r},${g},${b},0)`);
+      ctx.beginPath();
+      ctx.arc(node.s.x, node.s.y, 20 * pulse, 0, Math.PI * 2);
+      ctx.fillStyle = halo;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(node.s.x, node.s.y, 4.4, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${r},${g},${b},1)`;
+      ctx.fill();
+      ctx.font = `600 10px ${JSON.stringify('IBM Plex Mono')}`;
+      ctx.fillStyle = `rgba(${r},${g},${b},0.95)`;
+      ctx.textAlign = 'center';
+      ctx.fillText(node.label, node.s.x, node.s.y - 15);
+      ctx.font = `400 8px ${JSON.stringify('IBM Plex Mono')}`;
+      ctx.fillStyle = `rgba(${r},${g},${b},0.54)`;
+      ctx.fillText(node.note, node.s.x, node.s.y + 20);
+    });
+
+    ctx.beginPath();
+    ctx.arc(centroid.x, centroid.y, 3.2, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,216,102,0.75)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,216,102,0.14)';
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(centroid.x - 11, centroid.y);
+    ctx.lineTo(centroid.x + 11, centroid.y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(centroid.x, centroid.y - 11);
+    ctx.lineTo(centroid.x, centroid.y + 11);
+    ctx.stroke();
+
+    ctx.textAlign = 'left';
+    ctx.font = `700 11px ${JSON.stringify('Crimson Pro')}`;
+    ctx.fillStyle = gatewayPreview.running ? 'rgba(80,250,123,0.6)' : 'rgba(255,85,85,0.52)';
+    ctx.fillText(`registered bounces: ${gatewayPreview.bounceCount}`, 18, 24);
+    ctx.font = `400 8px ${JSON.stringify('IBM Plex Mono')}`;
+    ctx.fillStyle = 'rgba(139,233,253,0.32)';
+    ctx.fillText(gatewayPreview.showMoire ? 'moire stratigraphy engaged / detuned line fields active' : 'moire stratigraphy dormant / field shell held clear', 18, 38);
+
+    ctx.textAlign = 'right';
+    ctx.font = `500 8px ${JSON.stringify('IBM Plex Mono')}`;
+    ctx.fillStyle = 'rgba(220,230,244,0.42)';
+    ctx.fillText(gatewayPreview.running ? 'preview field live' : 'preview shell latent', width - 18, 24);
+    ctx.fillText('open full Aperture for governed exposure, packet, and harbor lane', width - 18, 38);
+  }
+
+  function drawGatewayPreviewMoirePanel() {
+    const canvas = gatewayPreviewCanvas('gatewayPreviewMoireCanvas');
+    if (!canvas) {
+      return;
+    }
+    const { ctx, width, height } = setupGatewayPreviewCanvas(canvas, canvas.clientWidth || 220, canvas.clientHeight || 140);
+    if (!ctx) {
+      return;
+    }
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = 'rgba(6,8,16,1)';
+    ctx.fillRect(0, 0, width, height);
+    const intensity = gatewayPreview.showMoire ? 1 : 0.38;
+    drawGatewayPreviewLineField(ctx, width, height, {
+      angle: 0.16 + Math.sin(gatewayPreview.fieldTick * 0.0005) * 0.03,
+      spacing: 12,
+      thickness: 1.2,
+      alpha: 0.08 * intensity,
+      drift: 4,
+      phase: gatewayPreview.fieldTick * 0.0016,
+      color: 'rgba(139,233,253,0.98)'
+    });
+    drawGatewayPreviewLineField(ctx, width, height, {
+      angle: 0.31 + Math.sin(gatewayPreview.fieldTick * 0.00036) * 0.04,
+      spacing: 12.7,
+      thickness: 1.1,
+      alpha: 0.075 * intensity,
+      drift: 5,
+      phase: gatewayPreview.fieldTick * 0.0011,
+      color: 'rgba(189,147,249,0.98)'
+    });
+    const vignette = ctx.createRadialGradient(width / 2, height / 2, height * 0.16, width / 2, height / 2, Math.max(width, height) * 0.55);
+    vignette.addColorStop(0, 'rgba(0,0,0,0)');
+    vignette.addColorStop(1, 'rgba(2,4,8,0.82)');
+    ctx.fillStyle = vignette;
+    ctx.fillRect(0, 0, width, height);
+  }
+
+  function drawGatewayPreviewTracePanel() {
+    const canvas = gatewayPreviewCanvas('gatewayPreviewTraceCanvas');
+    if (!canvas) {
+      return;
+    }
+    const { ctx, width, height } = setupGatewayPreviewCanvas(canvas, canvas.clientWidth || 220, canvas.clientHeight || 140);
+    if (!ctx) {
+      return;
+    }
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = 'rgba(6,8,16,1)';
+    ctx.fillRect(0, 0, width, height);
+    ctx.strokeStyle = 'rgba(139,233,253,0.08)';
+    ctx.lineWidth = 1;
+    for (let index = 1; index < 4; index += 1) {
+      const y = (height / 4) * index;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+    }
+    const series = gatewayPreview.trace;
+    if (series.length > 1) {
+      ctx.beginPath();
+      series.forEach((entry, index) => {
+        const x = (index / (series.length - 1)) * width;
+        const y = height - (entry.drift * (height * 0.74)) - 10;
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      ctx.strokeStyle = 'rgba(139,233,253,0.9)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.beginPath();
+      series.forEach((entry, index) => {
+        const x = (index / (series.length - 1)) * width;
+        const y = height - (entry.moire * (height * 0.5)) - 16;
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      ctx.strokeStyle = 'rgba(189,147,249,0.72)';
+      ctx.lineWidth = 1.15;
+      ctx.stroke();
+    }
+    ctx.font = `500 8px ${JSON.stringify('IBM Plex Mono')}`;
+    ctx.fillStyle = 'rgba(220,230,244,0.54)';
+    ctx.fillText(`bounces ${gatewayPreview.bounceCount}`, 10, 14);
+    ctx.fillText(gatewayPreview.showMoire ? 'moire engaged' : 'moire dormant', 10, 28);
+  }
+
+  function drawGatewayPreviewAll() {
+    if (PAGE_KIND !== 'gateway') {
+      return;
+    }
+    resizeGatewayPreviewCanvases();
+    updateGatewayPreviewChrome();
+    drawGatewayPreviewMain();
+    drawGatewayPreviewMoirePanel();
+    drawGatewayPreviewTracePanel();
+  }
+
+  function gatewayPreviewFrame(timestamp) {
+    if (PAGE_KIND !== 'gateway' || !gatewayPreview.initialized) {
+      return;
+    }
+    const dtMs = gatewayPreview.lastTimestamp ? Math.min(48, timestamp - gatewayPreview.lastTimestamp) : 16.6;
+    gatewayPreview.lastTimestamp = timestamp;
+    advanceGatewayPreview(dtMs);
+    drawGatewayPreviewAll();
+    gatewayPreview.animationFrame = window.requestAnimationFrame(gatewayPreviewFrame);
+  }
+
+  function toggleGatewayPreviewRun() {
+    gatewayPreview.running = !gatewayPreview.running;
+    if (gatewayPreview.running && !gatewayPreview.rays.length) {
+      seedGatewayPreviewRays();
+    }
+    updateGatewayPreviewChrome();
+  }
+
+  function toggleGatewayPreviewMoire() {
+    gatewayPreview.showMoire = !gatewayPreview.showMoire;
+    drawGatewayPreviewAll();
+  }
+
+  function resetGatewayPreview() {
+    gatewayPreview.running = false;
+    gatewayPreview.bounceCount = 0;
+    gatewayPreview.rays = [];
+    gatewayPreview.trace = [];
+    gatewayPreview.lastTimestamp = 0;
+    gatewayPreview.fieldTick = 0;
+    drawGatewayPreviewAll();
+  }
+
+  function initGatewayPreview() {
+    if (PAGE_KIND !== 'gateway') {
+      return;
+    }
+    const canvas = gatewayPreviewCanvas('gatewayPreviewCanvas');
+    if (!canvas) {
+      return;
+    }
+    if (gatewayPreview.initialized) {
+      drawGatewayPreviewAll();
+      return;
+    }
+    gatewayPreview.initialized = true;
+    gatewayPreview.showMoire = true;
+    gatewayPreview.trace = [];
+    updateGatewayPreviewChrome();
+    drawGatewayPreviewAll();
+    gatewayPreview.animationFrame = window.requestAnimationFrame(gatewayPreviewFrame);
   }
 
   function isCurrentStationPage(tab = 'homebase') {
@@ -8086,6 +8703,9 @@ DeltaE = ${ledger.reuse_gain}`;
   on('ingressSealNodeUl', 'click', () => chooseIngressSealNode('ul'));
   on('ingressSealNodeUr', 'click', () => chooseIngressSealNode('ur'));
   on('ingressSealNodeBc', 'click', () => chooseIngressSealNode('bc'));
+  on('gatewayPreviewRun', 'click', toggleGatewayPreviewRun);
+  on('gatewayPreviewMoire', 'click', toggleGatewayPreviewMoire);
+  on('gatewayPreviewReset', 'click', resetGatewayPreview);
 
   document.addEventListener('click', (event) => {
     const stationAction = event.target.closest('[data-station-target]');
@@ -8154,6 +8774,9 @@ DeltaE = ${ledger.reuse_gain}`;
   window.addEventListener('pagehide', persistSessionFlightState);
   window.addEventListener('beforeunload', persistSessionFlightState);
   window.addEventListener('message', handleGatewayApertureBridgeMessage);
+  window.addEventListener('storage', handleGatewayApertureStorageEvent);
+  window.addEventListener('resize', drawGatewayPreviewAll);
+  window.addEventListener('orientationchange', drawGatewayPreviewAll);
 
   async function boot() {
     if (redirectLegacyGatewayHashIfNeeded()) {
@@ -8178,6 +8801,7 @@ DeltaE = ${ledger.reuse_gain}`;
       document.body.dataset.bootDegraded = 'false';
       document.body.dataset.bootStage = 'boot-ready';
       renderGatewayApertureBridgeRail();
+      initGatewayPreview();
       startIngressSequence();
       document.body.dataset.bootStage = 'boot-complete';
       return;

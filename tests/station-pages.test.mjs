@@ -16,7 +16,8 @@ const files = {
 };
 
 assert.ok(files.gateway.includes('data-page-kind="gateway"'), 'gateway page exposes gateway page-kind');
-assert.ok(files.gateway.includes('id="gatewayApertureFrame"'), 'gateway page mounts an Aperture iframe shell');
+assert.ok(files.gateway.includes('id="gatewayPreviewCanvas"'), 'gateway page mounts an Aperture-style preview shell');
+assert.ok(files.gateway.includes('id="gatewayPreviewMoire"'), 'gateway page exposes the Moire preview control');
 assert.ok(files.gateway.includes('id="gatewayApertureBridgeRail"'), 'gateway page exposes the Aperture bridge rail');
 assert.ok(files.homebase.includes('data-page-kind="homebase"'), 'homebase page exposes homebase page-kind');
 assert.ok(files.personas.includes('data-page-kind="personas"'), 'personas page exposes personas page-kind');

@@ -59,7 +59,7 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
   }
 
   body[data-embed-mode="gateway"] {
-    font-size: 10.75px;
+    font-size: 10.25px;
     grid-template-rows: 40px 1fr;
   }
 
@@ -182,8 +182,8 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
   }
 
   body[data-embed-mode="gateway"] main {
-    grid-template-columns: 192px minmax(0, 2.08fr) 208px;
-    grid-template-rows: minmax(0, 1fr) 198px;
+    grid-template-columns: 188px minmax(0, 1.58fr) 204px;
+    grid-template-rows: 1fr 186px;
     height: calc(100dvh - 40px);
   }
 
@@ -199,31 +199,12 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
 
   body[data-embed-mode="gateway"] .panel,
   body[data-embed-mode="gateway"] .bottom-panel {
-    padding: 8px 9px;
+    padding: 7px 8px;
   }
 
   body[data-embed-mode="gateway"] .center-canvas,
   body[data-embed-mode="gateway"] #centerArea {
-    min-height: 0;
-  }
-
-  body[data-embed-mode="gateway"] .title {
-    font-size: 18px;
-    letter-spacing: 2px;
-  }
-
-  body[data-embed-mode="gateway"] .controls button {
-    font-size: 9.5px;
-    padding: 5px 12px;
-  }
-
-  body[data-embed-mode="gateway"] .center-canvas::before {
-    inset: 3.5% 4.5% 5%;
-    background-size: cover, 88% 88%;
-  }
-
-  body[data-embed-mode="gateway"] .idle-shell {
-    inset: 3.5% 4.5% 5%;
+    min-height: 420px;
   }
 
   body[data-embed-mode="gateway"] #btnMoire {
@@ -739,78 +720,9 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     min-height: 320px;
   }
 
-  .center-canvas::before,
-  .center-canvas::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .center-canvas::before {
-    inset: 6% 8% 8%;
-    background:
-      radial-gradient(circle at 50% 52%, rgba(189,147,249,0.22), transparent 24%),
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none'><polygon points='14,72 86,72 50,18' fill='%23121928' fill-opacity='0.14' stroke='%238be9fd' stroke-opacity='0.82' stroke-width='2.4' stroke-linejoin='round'/><path d='M50 54 L14 72 M50 54 L86 72 M50 54 L50 18' stroke='%23bd93f9' stroke-opacity='0.34' stroke-width='1.15'/><circle cx='14' cy='72' r='2.8' fill='%2350fa7b' fill-opacity='1'/><circle cx='86' cy='72' r='2.8' fill='%238be9fd' fill-opacity='1'/><circle cx='50' cy='18' r='2.8' fill='%23bd93f9' fill-opacity='1'/><circle cx='50' cy='54' r='1.9' fill='%23ffd866' fill-opacity='1'/><path d='M42 54 H58 M50 46 V62' stroke='%23ffd866' stroke-opacity='0.72' stroke-width='0.95' stroke-linecap='round'/></svg>");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover, 92% 92%;
-    opacity: 1;
-    filter:
-      drop-shadow(0 0 20px rgba(139,233,253,0.12))
-      drop-shadow(0 0 10px rgba(189,147,249,0.12));
-    mix-blend-mode: screen;
-  }
-
-  .center-canvas::after {
-    background:
-      linear-gradient(180deg, transparent 0%, rgba(189,147,249,0.12) 48%, rgba(139,233,253,0.06) 52%, transparent 100%);
-    opacity: 0.42;
-  }
-
-  .idle-shell {
-    position: absolute;
-    inset: 6% 8% 8%;
-    width: auto;
-    height: auto;
-    z-index: 3;
-    pointer-events: none;
-    opacity: 0.92;
-    mix-blend-mode: screen;
-    filter:
-      drop-shadow(0 0 18px rgba(139,233,253,0.12))
-      drop-shadow(0 0 10px rgba(189,147,249,0.12));
-  }
-
-  .idle-shell .shell-triangle {
-    fill: rgba(18, 25, 40, 0.14);
-    stroke: rgba(139, 233, 253, 0.88);
-    stroke-width: 2.2;
-    stroke-linejoin: round;
-  }
-
-  .idle-shell .shell-spoke {
-    stroke: rgba(189, 147, 249, 0.38);
-    stroke-width: 1.1;
-  }
-
-  .idle-shell .shell-node-a { fill: rgba(80, 250, 123, 0.98); }
-  .idle-shell .shell-node-b { fill: rgba(139, 233, 253, 1); }
-  .idle-shell .shell-node-c { fill: rgba(189, 147, 249, 1); }
-  .idle-shell .shell-centroid { fill: rgba(255, 216, 102, 1); }
-
-  .idle-shell .shell-cross {
-    stroke: rgba(255, 216, 102, 0.78);
-    stroke-width: 0.95;
-    stroke-linecap: round;
-  }
-
   canvas {
     display: block;
     pointer-events: none;
-    position: relative;
-    z-index: 1;
   }
 
   @media (max-width: 1180px) {
@@ -882,128 +794,6 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     body[data-embed-mode="gateway"] main {
       grid-template-columns: 172px minmax(0, 1.68fr) 186px;
       grid-template-rows: 1fr 172px;
-    }
-  }
-
-  @media (min-width: 860px) {
-    body[data-embed-mode="gateway"] {
-      height: 100dvh;
-      overflow: hidden;
-    }
-
-    body[data-embed-mode="gateway"] header {
-      min-height: 40px;
-      height: 40px;
-      padding-top: 0;
-      padding-bottom: 0;
-      flex-wrap: nowrap;
-      gap: 10px;
-    }
-
-    body[data-embed-mode="gateway"] .title-group,
-    body[data-embed-mode="gateway"] .controls {
-      flex-wrap: nowrap;
-    }
-
-    body[data-embed-mode="gateway"] main {
-      grid-template-columns: 182px minmax(0, 2.36fr) 194px;
-      grid-template-rows: minmax(0, 1fr) 184px;
-      min-height: 0;
-      height: calc(100dvh - 40px);
-      overflow: hidden;
-    }
-
-    body[data-embed-mode="gateway"] #centerArea {
-      grid-column: 2;
-      grid-row: 1;
-      min-height: 0;
-    }
-
-    body[data-embed-mode="gateway"] #rightPanel {
-      grid-column: 3;
-      grid-row: 1;
-    }
-
-    body[data-embed-mode="gateway"] #leftPanel {
-      grid-column: 1;
-      grid-row: 1;
-    }
-
-    body[data-embed-mode="gateway"] .bottom-panel {
-      grid-column: 1 / -1;
-      grid-row: 2;
-      grid-template-columns: 1.08fr 1fr 1fr;
-      grid-auto-rows: minmax(160px, auto);
-    }
-
-    body[data-embed-mode="gateway"] .panel,
-    body[data-embed-mode="gateway"] .bottom-section {
-      backdrop-filter: blur(6px);
-    }
-
-    body[data-embed-mode="gateway"] .center-canvas {
-      min-height: 0;
-    }
-  }
-
-  @media (min-width: 860px) and (max-width: 1040px) {
-    body[data-embed-mode="gateway"] main {
-      grid-template-columns: 168px minmax(0, 2.22fr) 180px;
-      grid-template-rows: minmax(0, 1fr) 172px;
-    }
-  }
-
-  @media (max-width: 859px) {
-    body[data-embed-mode="gateway"] {
-      min-height: 100dvh;
-      height: auto;
-      overflow-y: auto;
-      grid-template-rows: auto 1fr;
-    }
-
-    body[data-embed-mode="gateway"] header {
-      min-height: 42px;
-      height: auto;
-      padding-top: 8px;
-      padding-bottom: 8px;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    body[data-embed-mode="gateway"] .title-group,
-    body[data-embed-mode="gateway"] .controls {
-      flex-wrap: wrap;
-    }
-
-    body[data-embed-mode="gateway"] main {
-      grid-template-columns: 1fr;
-      grid-template-rows: minmax(320px, 42dvh) auto auto auto;
-      min-height: auto;
-      height: auto;
-      overflow: visible;
-    }
-
-    body[data-embed-mode="gateway"] #centerArea {
-      grid-column: 1;
-      grid-row: 1;
-      min-height: 320px;
-    }
-
-    body[data-embed-mode="gateway"] #rightPanel {
-      grid-column: 1;
-      grid-row: 2;
-    }
-
-    body[data-embed-mode="gateway"] #leftPanel {
-      grid-column: 1;
-      grid-row: 3;
-    }
-
-    body[data-embed-mode="gateway"] .bottom-panel {
-      grid-column: 1;
-      grid-row: 4;
-      grid-template-columns: 1fr;
-      grid-auto-rows: minmax(180px, auto);
     }
   }
 
@@ -1347,18 +1137,6 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
 
   <!-- ════════════════════ CENTER CANVAS ════════════════════ -->
   <div class="center-canvas" id="centerArea">
-    <svg class="idle-shell" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-      <polygon class="shell-triangle" points="14,72 86,72 50,18"></polygon>
-      <line class="shell-spoke" x1="50" y1="54" x2="14" y2="72"></line>
-      <line class="shell-spoke" x1="50" y1="54" x2="86" y2="72"></line>
-      <line class="shell-spoke" x1="50" y1="54" x2="50" y2="18"></line>
-      <circle class="shell-node-a" cx="14" cy="72" r="2.8"></circle>
-      <circle class="shell-node-b" cx="86" cy="72" r="2.8"></circle>
-      <circle class="shell-node-c" cx="50" cy="18" r="2.8"></circle>
-      <circle class="shell-centroid" cx="50" cy="54" r="1.9"></circle>
-      <line class="shell-cross" x1="42" y1="54" x2="58" y2="54"></line>
-      <line class="shell-cross" x1="50" y1="46" x2="50" y2="62"></line>
-    </svg>
     <canvas id="mainCanvas"></canvas>
   </div>
 
@@ -1983,6 +1761,7 @@ const APERTURE_EMBED_MODE = (() => {
   }
 })();
 const APERTURE_GATEWAY_EMBED = APERTURE_EMBED_MODE === "gateway";
+const GATEWAY_APERTURE_HANDOFF_KEY = "td613.gateway.aperture-handoff";
 let lastGatewayEmbedStatusSignature = "";
 
 if (APERTURE_GATEWAY_EMBED) {
@@ -3051,10 +2830,17 @@ function buildGatewayEmbedStatus() {
   };
 }
 
-function emitGatewayEmbedStatus(force = false) {
-  if (!APERTURE_GATEWAY_EMBED || !window.parent || window.parent === window) {
-    return;
+function persistGatewayEmbedStatus(payload) {
+  try {
+    if (window.sessionStorage) {
+      window.sessionStorage.setItem(GATEWAY_APERTURE_HANDOFF_KEY, JSON.stringify(payload));
+    }
+  } catch (error) {
+    // Session storage is a convenience lane only.
   }
+}
+
+function emitGatewayEmbedStatus(force = false) {
   const payload = buildGatewayEmbedStatus();
   const signature = JSON.stringify({
     routeState: payload.routeState,
@@ -3072,6 +2858,10 @@ function emitGatewayEmbedStatus(force = false) {
     return;
   }
   lastGatewayEmbedStatusSignature = signature;
+  persistGatewayEmbedStatus(payload);
+  if (!APERTURE_GATEWAY_EMBED || !window.parent || window.parent === window) {
+    return;
+  }
   const targetOrigin = window.location.origin && window.location.origin !== "null"
     ? window.location.origin
     : "*";
@@ -3562,56 +3352,15 @@ function drawMain() {
   ctx.drawImage(staticLayer, 0, 0, staticLayer.width, staticLayer.height, 0, 0, W, H);
   if (state.showMoire && !quietMode) drawMoireField(ctx, W, H);
 
-  const shellGlow = quietMode ? 0.04 : 0.085;
-  const triFill = ctx.createLinearGradient(sC.x, sC.y, cent.x, sA.y);
-  triFill.addColorStop(0, `rgba(189,147,249,${shellGlow * 0.95})`);
-  triFill.addColorStop(0.52, `rgba(139,233,253,${shellGlow * 0.58})`);
-  triFill.addColorStop(1, `rgba(17,22,36,0.03)`);
+  const ep = (0.18 + Math.sin(visualTick * 0.03) * 0.08) * calmFactor;
   ctx.beginPath();
   ctx.moveTo(sA.x, sA.y);
   ctx.lineTo(sB.x, sB.y);
   ctx.lineTo(sC.x, sC.y);
   ctx.closePath();
-  ctx.fillStyle = triFill;
-  ctx.fill();
-
-  if (!quietMode) {
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(sA.x, sA.y);
-    ctx.lineTo(sB.x, sB.y);
-    ctx.lineTo(sC.x, sC.y);
-    ctx.closePath();
-    ctx.strokeStyle = "rgba(139,233,253,0.12)";
-    ctx.lineWidth = 6;
-    ctx.lineJoin = "round";
-    ctx.shadowBlur = 18;
-    ctx.shadowColor = "rgba(139,233,253,0.18)";
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  const ep = (0.34 + Math.sin(visualTick * 0.03) * 0.1) * Math.max(0.58, calmFactor);
-  ctx.beginPath();
-  ctx.moveTo(sA.x, sA.y);
-  ctx.lineTo(sB.x, sB.y);
-  ctx.lineTo(sC.x, sC.y);
-  ctx.closePath();
-  ctx.strokeStyle = `rgba(168,216,255,${ep})`;
-  ctx.lineWidth = quietMode ? 1.4 : 2.2;
-  ctx.lineJoin = "round";
+  ctx.strokeStyle = `rgba(140,180,255,${ep})`;
+  ctx.lineWidth = quietMode ? 1.1 : 1.5;
   ctx.stroke();
-
-  if (!quietMode) {
-    [sA, sB, sC].forEach((point) => {
-      ctx.beginPath();
-      ctx.moveTo(cent.x, cent.y);
-      ctx.lineTo(point.x, point.y);
-      ctx.strokeStyle = "rgba(189,147,249,0.12)";
-      ctx.lineWidth = 0.8;
-      ctx.stroke();
-    });
-  }
 
   const admC = { registered: [80, 250, 123], latent: [139, 233, 253], suppressed: [241, 250, 140], aliased: [255, 85, 85] };
   const admA = { registered: 1, latent: 0.5, suppressed: 0.4, aliased: 0.6 };
@@ -3662,16 +3411,16 @@ function drawMain() {
     if (!quietMode) {
       const pulse = Math.sin(visualTick * 0.05 + v.l.charCodeAt(0) * 0.3) * 0.3 + 0.7;
       const hg = ctx.createRadialGradient(v.s.x, v.s.y, 0, v.s.x, v.s.y, 18 * pulse);
-      hg.addColorStop(0, `rgba(${r},${g},${b},${0.2 * pulse})`);
-      hg.addColorStop(0.6, `rgba(${r},${g},${b},${0.08 * pulse})`);
+      hg.addColorStop(0, `rgba(${r},${g},${b},${0.12 * pulse})`);
+      hg.addColorStop(0.6, `rgba(${r},${g},${b},${0.04 * pulse})`);
       hg.addColorStop(1, `rgba(${r},${g},${b},0)`);
       ctx.beginPath();
-      ctx.arc(v.s.x, v.s.y, 22 * pulse, 0, Math.PI * 2);
+      ctx.arc(v.s.x, v.s.y, 18 * pulse, 0, Math.PI * 2);
       ctx.fillStyle = hg;
       ctx.fill();
     }
     ctx.beginPath();
-    ctx.arc(v.s.x, v.s.y, quietMode ? 3.1 : 4.6, 0, Math.PI * 2);
+    ctx.arc(v.s.x, v.s.y, quietMode ? 2.6 : 3.5, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(${r},${g},${b},${quietMode ? 0.7 : 1})`;
     ctx.fill();
     if (!quietMode) {
@@ -3692,11 +3441,11 @@ function drawMain() {
   });
 
   ctx.beginPath();
-  ctx.arc(cent.x, cent.y, 3.8, 0, Math.PI * 2);
+  ctx.arc(cent.x, cent.y, 3, 0, Math.PI * 2);
   ctx.fillStyle = "rgba(255,216,102,0.7)";
   ctx.fill();
   ctx.strokeStyle = "rgba(255,216,102,0.12)";
-  ctx.lineWidth = 0.8;
+  ctx.lineWidth = 0.5;
   ctx.beginPath(); ctx.moveTo(cent.x - 10, cent.y); ctx.lineTo(cent.x + 10, cent.y); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(cent.x, cent.y - 10); ctx.lineTo(cent.x, cent.y + 10); ctx.stroke();
 

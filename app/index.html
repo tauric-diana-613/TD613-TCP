@@ -16,7 +16,7 @@
       <div class="ingress-heading">
         <div>
           <div id="ingressPhaseLabel" class="section-kicker"><span id="ingressPhaseGlyph" class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="ingressPhasePrefix">&#x0398;</span> <span id="ingressPhaseText">Protocol // membrane waking</span></div>
-          <h2>The Cadence Playground</h2>
+          <h2>Ingress Membrane</h2>
         </div>
         <div class="ingress-heading-copy">
           <p id="ingressSubtitle" class="ingress-subtitle">Cross the threshold. Choose a chamber.</p>
@@ -111,32 +111,42 @@
       <section class="panel gateway-panel gateway-threshold-panel">
         <div class="gateway-threshold-grid">
           <section class="gateway-aperture-chamber" aria-labelledby="gatewayApertureTitle">
-            <div class="panel-heading gateway-aperture-heading">
-              <div>
-                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x0398;</span> Aperture / counter-tool live</div>
-                <h2 id="gatewayApertureTitle">TD613 Aperture</h2>
-              </div>
-              <p class="section-note">The full counter-tool mounts here after ingress. Moir&eacute;, provenance, narrowing, and guarded handoff remain intact.</p>
-            </div>
+            <div class="gateway-preview-shell" aria-describedby="gatewayPreviewNote">
+              <header class="gateway-preview-head">
+                <div class="gateway-preview-title-group">
+                  <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x0398;</span> Aperture / counter-tool preview</div>
+                  <h2 id="gatewayApertureTitle" class="gateway-preview-title">TD613 Aperture <span class="glyph glyph-ritual" aria-hidden="true">&#x03A9;</span></h2>
+                  <p class="gateway-preview-subtitle">The full instrument opens in its own room. The gateway keeps the field large, centered, and legible.</p>
+                </div>
 
-            <div id="gatewayApertureMount" class="gateway-aperture-frame" data-embed-state="dormant">
-              <div id="gatewayAperturePlaceholder" class="gateway-aperture-placeholder">
-                <div class="gateway-aperture-placeholder-kicker">Embed gate</div>
-                <h3>Aperture wakes after ingress.</h3>
-                <p>The threshold mounts the live instrument only after the membrane opens. Until then, the chamber stays dormant.</p>
-              </div>
-              <iframe
-                id="gatewayApertureFrame"
-                class="gateway-aperture-iframe"
-                title="TD613 Aperture live gateway embed"
-                loading="lazy"
-                hidden
-              ></iframe>
-            </div>
+                <div class="gateway-preview-controls" aria-label="Gateway preview controls">
+                  <span id="gatewayPreviewBounceStatus" class="gateway-preview-pill gateway-preview-pill-danger">BOUNCES: 0</span>
+                  <span id="gatewayPreviewPhaseStatus" class="gateway-preview-pill gateway-preview-pill-cyan">STANDBY</span>
+                  <button id="gatewayPreviewRun" type="button" class="gateway-preview-button">▶ PROPAGATE</button>
+                  <button id="gatewayPreviewMoire" type="button" class="gateway-preview-button gateway-preview-button-active">MOIRÉ</button>
+                  <button id="gatewayPreviewReset" type="button" class="gateway-preview-button">RESET</button>
+                  <a id="gatewayApertureOpenFull" class="gateway-preview-link" href="./aperture/index.html?v=202604192040" target="_blank" rel="noopener">Open full Aperture</a>
+                </div>
+              </header>
 
-            <div class="gateway-aperture-actions">
-              <a id="gatewayApertureOpenFull" class="gateway-link gateway-aperture-link" href="./aperture/index.html?v=202604192040">Open full Aperture</a>
-              <p class="gateway-aperture-note">Moir&eacute; stratigraphy stays a live interference field here, not decorative texture.</p>
+              <div class="gateway-preview-stage">
+                <div class="gateway-preview-center" id="gatewayPreviewCenter">
+                  <canvas id="gatewayPreviewCanvas" aria-label="TD613 Aperture gateway field preview"></canvas>
+                </div>
+              </div>
+
+              <div class="gateway-preview-bottom">
+                <section class="gateway-preview-bottom-panel">
+                  <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x0398;</span> Moir&eacute; stratigraphy / interference cartography</div>
+                  <canvas id="gatewayPreviewMoireCanvas" aria-label="Gateway preview moire field"></canvas>
+                </section>
+                <section class="gateway-preview-bottom-panel">
+                  <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true">&#x25C7;</span> Bounce trace / coherence drift</div>
+                  <canvas id="gatewayPreviewTraceCanvas" aria-label="Gateway preview bounce trace"></canvas>
+                </section>
+              </div>
+
+              <p id="gatewayPreviewNote" class="gateway-aperture-note">Angle-detuned line fields and bounce traces stay speculative, not evidentiary. The full Aperture room keeps the full audit trail, packet surfaces, and Safe Harbor lane.</p>
             </div>
           </section>
 
@@ -199,7 +209,7 @@
                 <div class="gateway-bridge-row"><span class="gateway-bridge-label">Packet</span><span id="gatewayApertureBridgePacket" class="gateway-bridge-value">no packet prepared</span></div>
               </div>
 
-              <p id="gatewayApertureBridgeNote" class="gateway-bridge-note">Pass ingress to mount the live Aperture lane.</p>
+              <p id="gatewayApertureBridgeNote" class="gateway-bridge-note">Open full Aperture to seed the last counter-tool lane. Safe Harbor can read that upstream context without replacing TCP routing.</p>
 
               <div class="gateway-bridge-actions">
                 <a id="gatewayApertureHarborLink" class="gateway-link gateway-bridge-action" href="./safe-harbor/index.html">Open Safe Harbor</a>
