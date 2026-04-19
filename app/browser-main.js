@@ -87,14 +87,6 @@
     .find((src) => /browser-main\.js/i.test(src)) || '';
   const CURRENT_SCRIPT_URL = new URL(CURRENT_SCRIPT_SRC || './browser-main.js', window.location.href);
   const ASSET_VERSION = CURRENT_SCRIPT_URL.searchParams.get('v') || '';
-  const GATEWAY_APERTURE_EMBED_URL = (() => {
-    const url = new URL('./aperture/index.html', window.location.href);
-    url.searchParams.set('embed', 'gateway');
-    if (ASSET_VERSION) {
-      url.searchParams.set('v', ASSET_VERSION);
-    }
-    return url.toString();
-  })();
   const TRAINER_MODULE_URL = (() => {
     const url = new URL('./toys/persona-trainer/browser.js', window.location.href);
     if (ASSET_VERSION) {
@@ -185,52 +177,71 @@
     return ARTIFACT_TAB_TO_PAGE[normalizeArtifactTab(tab)] || ARTIFACT_TAB_TO_PAGE.homebase;
   }
 
-  function gatewayApertureFrameNode() {
-    return $('gatewayApertureFrame');
-  }
-
-  function gatewayApertureMountNode() {
-    return $('gatewayApertureMount');
-  }
-
-  function gatewayAperturePlaceholderNode() {
-    return $('gatewayAperturePlaceholder');
-  }
-
-  function gatewayApertureStorage() {
+  function gatewayApertureStorageEntries() {
+    const storages = [];
     try {
-      return window.sessionStorage;
+      if (window.localStorage) {
+        storages.push(window.localStorage);
+      }
     } catch {
-      return null;
+      // localStorage is best-effort only
     }
+    try {
+      if (window.sessionStorage && !storages.includes(window.sessionStorage)) {
+        storages.push(window.sessionStorage);
+      }
+    } catch {
+      // sessionStorage remains a convenience lane only
+    }
+    return storages;
   }
 
   function readGatewayApertureBridgeSummary() {
-    const storage = gatewayApertureStorage();
-    if (!storage) {
-      return null;
-    }
-    try {
-      const raw = storage.getItem(GATEWAY_APERTURE_HANDOFF_KEY);
-      if (!raw) {
-        return null;
+    for (const storage of gatewayApertureStorageEntries()) {
+      try {
+        const raw = storage.getItem(GATEWAY_APERTURE_HANDOFF_KEY);
+        if (!raw) {
+          continue;
+        }
+        return normalizeGatewayApertureBridgeSummary(JSON.parse(raw));
+      } catch {
+        // try the next store
       }
-      return normalizeGatewayApertureBridgeSummary(JSON.parse(raw));
-    } catch {
-      return null;
     }
+    return null;
   }
 
   function persistGatewayApertureBridgeSummary(summary) {
-    const storage = gatewayApertureStorage();
-    if (!storage) {
+    const storages = gatewayApertureStorageEntries();
+    if (!storages.length) {
       return;
     }
-    try {
-      storage.setItem(GATEWAY_APERTURE_HANDOFF_KEY, JSON.stringify(summary));
-    } catch {
-      // ignore session storage failures; the live gateway rail still updates in-memory
+    const payload = JSON.stringify(summary);
+    storages.forEach((storage) => {
+      try {
+        storage.setItem(GATEWAY_APERTURE_HANDOFF_KEY, payload);
+      } catch {
+        // ignore storage failures; the live gateway rail still updates in-memory
+      }
+    });
+  }
+
+  function clearGatewayApertureBridgeSummary() {
+    gatewayApertureStorageEntries().forEach((storage) => {
+      try {
+        storage.removeItem(GATEWAY_APERTURE_HANDOFF_KEY);
+      } catch {
+        // ignore storage failures
+      }
+    });
+  }
+
+  function routeGatewayApertureStandalone() {
+    const url = new URL('./aperture/index.html', window.location.href);
+    if (ASSET_VERSION) {
+      url.searchParams.set('v', ASSET_VERSION);
     }
+    return url.toString();
   }
 
   function gatewayApertureOriginAllowed(origin) {
@@ -322,43 +333,6 @@
     rail.dataset.state = pillState;
     harborLink.textContent = harborReady ? 'Open Safe Harbor from Aperture lane' : 'Open Safe Harbor';
     harborLink.href = SAFE_HARBOR_HANDOFF_PATH;
-  }
-
-  function mountGatewayApertureEmbedIfReady() {
-    if (PAGE_KIND !== 'gateway' || ingress.phase !== 'complete') {
-      return;
-    }
-    const frame = gatewayApertureFrameNode();
-    const mount = gatewayApertureMountNode();
-    const placeholder = gatewayAperturePlaceholderNode();
-    if (!frame || !mount) {
-      return;
-    }
-    if (frame.dataset.loaded === 'true') {
-      frame.hidden = false;
-      if (placeholder) {
-        placeholder.hidden = true;
-      }
-      mount.dataset.embedState = 'live';
-      return;
-    }
-    if (frame.dataset.loading === 'true') {
-      mount.dataset.embedState = 'loading';
-      return;
-    }
-    frame.dataset.loading = 'true';
-    mount.dataset.embedState = 'loading';
-    frame.addEventListener('load', () => {
-      frame.dataset.loading = 'false';
-      frame.dataset.loaded = 'true';
-      frame.hidden = false;
-      if (placeholder) {
-        placeholder.hidden = true;
-      }
-      mount.dataset.embedState = 'live';
-      renderGatewayApertureBridgeRail();
-    }, { once: true });
-    frame.src = GATEWAY_APERTURE_EMBED_URL;
   }
 
   function handleGatewayApertureBridgeMessage(event) {
@@ -458,9 +432,9 @@
   }
 
   function gatewayPreviewProject(x, y, width, height) {
-    const scale = Math.min(width * 0.76, height * 0.88);
+    const scale = Math.min(width, height) * 0.78;
     const ox = width / 2 - 0.5 * scale;
-    const oy = height / 2 + GATEWAY_PREVIEW_SQRT3_HALF * scale * 0.32;
+    const oy = height / 2 + GATEWAY_PREVIEW_SQRT3_HALF * scale * 0.35;
     return { x: ox + x * scale, y: oy - y * scale };
   }
 
@@ -506,7 +480,7 @@
   function createGatewayPreviewRay(angleOffset = 0) {
     const startY = GATEWAY_PREVIEW_SQRT3_HALF / 3;
     const baseAngle = (-Math.PI / 2) + angleOffset + ((Math.random() - 0.5) * 0.28);
-    const speed = 0.82 + (Math.random() * 0.16);
+    const speed = 2.55 + (Math.random() * 0.55);
     const startX = 0.5 + ((Math.random() - 0.5) * 0.015);
     const y = startY + ((Math.random() - 0.5) * 0.015);
     return {
@@ -514,7 +488,7 @@
       y,
       dx: Math.cos(baseAngle) * speed,
       dy: Math.sin(baseAngle) * speed,
-      intensity: 0.72 + (Math.random() * 0.22),
+      intensity: 0.68 + (Math.random() * 0.18),
       bounces: 0,
       path: [{ x: startX, y }]
     };
@@ -524,7 +498,9 @@
     gatewayPreview.rays = [
       createGatewayPreviewRay(-0.72),
       createGatewayPreviewRay(-0.14),
-      createGatewayPreviewRay(0.42)
+      createGatewayPreviewRay(0.42),
+      createGatewayPreviewRay(0.9),
+      createGatewayPreviewRay(-1.08)
     ];
   }
 
@@ -576,11 +552,11 @@
     if (!gatewayPreview.rays.length) {
       seedGatewayPreviewRays();
     }
-    const travelBudget = dtMs / 1000;
+    const travelBudget = (dtMs / 1000) * 2.4;
     gatewayPreview.rays.forEach((ray) => {
       let remaining = travelBudget;
       let iterations = 0;
-      while (remaining > 1e-4 && iterations < 4) {
+      while (remaining > 1e-4 && iterations < 8) {
         let closest = null;
         GATEWAY_PREVIEW_EDGES.forEach((edge) => {
           const hit = gatewayPreviewRayEdgeIntersection(ray.x, ray.y, ray.dx, ray.dy, edge, remaining);
@@ -597,7 +573,7 @@
         ray.x = closest.x;
         ray.y = closest.y;
         ray.path.push({ x: ray.x, y: ray.y });
-        if (ray.path.length > 18) {
+        if (ray.path.length > 10) {
           ray.path.shift();
         }
         const reflected = reflectGatewayPreviewVector(ray.dx, ray.dy, closest.edge);
@@ -610,12 +586,12 @@
         remaining -= closest.t;
         iterations += 1;
       }
-      ray.intensity = Math.max(0.3, ray.intensity * 0.9982);
-      if (ray.bounces > 18) {
+      ray.intensity = Math.max(0.24, ray.intensity * 0.996);
+      if (ray.bounces > 36) {
         Object.assign(ray, createGatewayPreviewRay((Math.random() - 0.5) * 0.9));
       }
     });
-    if (gatewayPreview.rays.length < 5 && Math.random() < 0.018) {
+    if (gatewayPreview.rays.length < 7 && Math.random() < 0.05) {
       gatewayPreview.rays.push(createGatewayPreviewRay((Math.random() - 0.5) * 1.2));
     }
     recordGatewayPreviewTrace(dtMs);
@@ -652,6 +628,38 @@
     ctx.globalAlpha = 1;
   }
 
+  function drawGatewayPreviewMoireField(ctx, width, height) {
+    const extentPhase = gatewayPreview.fieldTick * 0.00135;
+    const baseSpacing = Math.max(12, Math.min(width, height) * 0.026);
+    drawGatewayPreviewLineField(ctx, width, height, {
+      angle: 0.18 + Math.sin(gatewayPreview.fieldTick * 0.00042) * 0.05,
+      spacing: baseSpacing,
+      thickness: 1.15,
+      alpha: 0.075,
+      drift: 4.2,
+      phase: extentPhase,
+      color: 'rgba(139,233,253,0.96)'
+    });
+    drawGatewayPreviewLineField(ctx, width, height, {
+      angle: 0.315 + Math.sin(gatewayPreview.fieldTick * 0.00031) * 0.07,
+      spacing: baseSpacing * 1.06,
+      thickness: 1.05,
+      alpha: 0.07,
+      drift: 5.2,
+      phase: gatewayPreview.fieldTick * 0.0018,
+      color: 'rgba(189,147,249,0.95)'
+    });
+    drawGatewayPreviewLineField(ctx, width, height, {
+      angle: -0.095 + Math.sin(gatewayPreview.fieldTick * 0.00027) * 0.03,
+      spacing: baseSpacing * 0.92,
+      thickness: 0.7,
+      alpha: 0.03,
+      drift: 2.2,
+      phase: gatewayPreview.fieldTick * 0.0011,
+      color: 'rgba(220,230,244,0.82)'
+    });
+  }
+
   function drawGatewayPreviewMain() {
     const canvas = gatewayPreviewCanvas('gatewayPreviewCanvas');
     if (!canvas) {
@@ -662,10 +670,10 @@
       return;
     }
     ctx.clearRect(0, 0, width, height);
-    const gradient = ctx.createRadialGradient(width / 2, height * 0.44, 20, width / 2, height / 2, Math.max(width, height) * 0.58);
-    gradient.addColorStop(0, 'rgba(17, 21, 34, 0.96)');
-    gradient.addColorStop(0.48, 'rgba(7, 10, 16, 0.98)');
-    gradient.addColorStop(1, 'rgba(3, 4, 7, 1)');
+    const gradient = ctx.createRadialGradient(width / 2, height * 0.46, 0, width / 2, height / 2, Math.max(width, height) * 0.62);
+    gradient.addColorStop(0, 'rgba(17, 23, 40, 0.9)');
+    gradient.addColorStop(0.55, 'rgba(8, 12, 24, 0.98)');
+    gradient.addColorStop(1, 'rgba(5, 7, 11, 1)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
@@ -673,6 +681,7 @@
     const sB = gatewayPreviewProject(GATEWAY_PREVIEW_TRI.B.x, GATEWAY_PREVIEW_TRI.B.y, width, height);
     const sC = gatewayPreviewProject(GATEWAY_PREVIEW_TRI.C.x, GATEWAY_PREVIEW_TRI.C.y, width, height);
     const centroid = { x: (sA.x + sB.x + sC.x) / 3, y: (sA.y + sB.y + sC.y) / 3 };
+    const triangleRadius = Math.hypot(sC.x - centroid.x, sC.y - centroid.y);
 
     if (gatewayPreview.showMoire) {
       ctx.save();
@@ -682,31 +691,14 @@
       ctx.lineTo(sC.x, sC.y);
       ctx.closePath();
       ctx.clip();
-      drawGatewayPreviewLineField(ctx, width, height, {
-        angle: 0.19 + Math.sin(gatewayPreview.fieldTick * 0.00042) * 0.06,
-        spacing: 18,
-        thickness: 1.4,
-        alpha: 0.09,
-        drift: 4,
-        phase: gatewayPreview.fieldTick * 0.0011,
-        color: 'rgba(139,233,253,0.95)'
-      });
-      drawGatewayPreviewLineField(ctx, width, height, {
-        angle: 0.31 + Math.sin(gatewayPreview.fieldTick * 0.00031) * 0.08,
-        spacing: 19.8,
-        thickness: 1.2,
-        alpha: 0.08,
-        drift: 5,
-        phase: gatewayPreview.fieldTick * 0.0017,
-        color: 'rgba(189,147,249,0.95)'
-      });
+      drawGatewayPreviewMoireField(ctx, width, height);
       ctx.restore();
     }
 
-    const fill = ctx.createLinearGradient(sC.x, sC.y, centroid.x, sA.y);
-    fill.addColorStop(0, 'rgba(189,147,249,0.09)');
-    fill.addColorStop(0.5, 'rgba(139,233,253,0.06)');
-    fill.addColorStop(1, 'rgba(17,22,36,0.02)');
+    const fill = ctx.createRadialGradient(centroid.x, centroid.y, 0, centroid.x, centroid.y, triangleRadius);
+    fill.addColorStop(0, 'rgba(22,32,60,0.35)');
+    fill.addColorStop(0.6, 'rgba(12,20,42,0.25)');
+    fill.addColorStop(1, 'rgba(8,12,28,0.12)');
     ctx.beginPath();
     ctx.moveTo(sA.x, sA.y);
     ctx.lineTo(sB.x, sB.y);
@@ -715,56 +707,32 @@
     ctx.fillStyle = fill;
     ctx.fill();
 
-    ctx.save();
     ctx.beginPath();
     ctx.moveTo(sA.x, sA.y);
     ctx.lineTo(sB.x, sB.y);
     ctx.lineTo(sC.x, sC.y);
     ctx.closePath();
-    ctx.strokeStyle = 'rgba(139,233,253,0.12)';
-    ctx.lineWidth = 7;
-    ctx.lineJoin = 'round';
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = 'rgba(139,233,253,0.18)';
+    ctx.strokeStyle = `rgba(140,180,255,${0.18 + (Math.sin(gatewayPreview.fieldTick * 0.0014) * 0.08)})`;
+    ctx.lineWidth = 1.5;
     ctx.stroke();
-    ctx.restore();
-
-    ctx.beginPath();
-    ctx.moveTo(sA.x, sA.y);
-    ctx.lineTo(sB.x, sB.y);
-    ctx.lineTo(sC.x, sC.y);
-    ctx.closePath();
-    ctx.strokeStyle = `rgba(168,216,255,${0.3 + (Math.sin(gatewayPreview.fieldTick * 0.0018) * 0.08)})`;
-    ctx.lineWidth = 2.4;
-    ctx.lineJoin = 'round';
-    ctx.stroke();
-
-    [sA, sB, sC].forEach((point) => {
-      ctx.beginPath();
-      ctx.moveTo(centroid.x, centroid.y);
-      ctx.lineTo(point.x, point.y);
-      ctx.strokeStyle = 'rgba(189,147,249,0.12)';
-      ctx.lineWidth = 0.8;
-      ctx.stroke();
-    });
 
     gatewayPreview.rays.forEach((ray) => {
       const points = ray.path.concat([{ x: ray.x, y: ray.y }]).map((point) => gatewayPreviewProject(point.x, point.y, width, height));
       if (points.length < 2) {
         return;
       }
-      const rgb = ray.bounces % 2 === 0 ? [139, 233, 253] : [189, 147, 249];
+      const rgb = ray.bounces % 3 === 0 ? [80, 250, 123] : ray.bounces % 2 === 0 ? [139, 233, 253] : [189, 147, 249];
       for (let index = 0; index < points.length - 1; index += 1) {
-        const fade = ray.intensity * (1 - (index / points.length)) * 0.74;
+        const fade = ray.intensity * (1 - (index / points.length)) * 0.7;
         ctx.beginPath();
         ctx.moveTo(points[index].x, points[index].y);
         ctx.lineTo(points[index + 1].x, points[index + 1].y);
         ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${fade})`;
-        ctx.lineWidth = 1 + (fade * 2.2);
+        ctx.lineWidth = 0.8 + (fade * 1.2);
         ctx.stroke();
       }
       const tip = points[points.length - 1];
-      const radius = 2 + (ray.intensity * 3.2);
+      const radius = 2 + (ray.intensity * 3);
       const glow = ctx.createRadialGradient(tip.x, tip.y, 0, tip.x, tip.y, radius * 4);
       glow.addColorStop(0, `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.26 * ray.intensity})`);
       glow.addColorStop(1, `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0)`);
@@ -774,34 +742,34 @@
       ctx.fill();
       ctx.beginPath();
       ctx.arc(tip.x, tip.y, radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.88)`;
+      ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.82)`;
       ctx.fill();
     });
 
     [
-      { s: sA, label: 'A', note: 'entry', color: [80, 250, 123] },
-      { s: sB, label: 'B', note: 'return', color: [139, 233, 253] },
-      { s: sC, label: 'C', note: 'apex', color: [189, 147, 249] }
+      { s: sA, label: 'A', note: 'ε-entry', color: [80, 250, 123] },
+      { s: sB, label: 'B', note: 'C-return', color: [139, 233, 253] },
+      { s: sC, label: 'C', note: '√3-apex', color: [189, 147, 249] }
     ].forEach((node) => {
       const [r, g, b] = node.color;
-      const pulse = Math.sin(gatewayPreview.fieldTick * 0.002 + node.label.charCodeAt(0) * 0.3) * 0.22 + 0.74;
-      const halo = ctx.createRadialGradient(node.s.x, node.s.y, 0, node.s.x, node.s.y, 20 * pulse);
-      halo.addColorStop(0, `rgba(${r},${g},${b},${0.18 * pulse})`);
+      const pulse = Math.sin(gatewayPreview.fieldTick * 0.002 + node.label.charCodeAt(0) * 0.3) * 0.3 + 0.7;
+      const halo = ctx.createRadialGradient(node.s.x, node.s.y, 0, node.s.x, node.s.y, 18 * pulse);
+      halo.addColorStop(0, `rgba(${r},${g},${b},${0.12 * pulse})`);
       halo.addColorStop(1, `rgba(${r},${g},${b},0)`);
       ctx.beginPath();
-      ctx.arc(node.s.x, node.s.y, 20 * pulse, 0, Math.PI * 2);
+      ctx.arc(node.s.x, node.s.y, 18 * pulse, 0, Math.PI * 2);
       ctx.fillStyle = halo;
       ctx.fill();
       ctx.beginPath();
-      ctx.arc(node.s.x, node.s.y, 4.4, 0, Math.PI * 2);
+      ctx.arc(node.s.x, node.s.y, 3.5, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${r},${g},${b},1)`;
       ctx.fill();
-      ctx.font = `600 10px ${JSON.stringify('IBM Plex Mono')}`;
-      ctx.fillStyle = `rgba(${r},${g},${b},0.95)`;
+      ctx.font = "600 10px 'IBM Plex Mono'";
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
       ctx.textAlign = 'center';
-      ctx.fillText(node.label, node.s.x, node.s.y - 15);
-      ctx.font = `400 8px ${JSON.stringify('IBM Plex Mono')}`;
-      ctx.fillStyle = `rgba(${r},${g},${b},0.54)`;
+      ctx.fillText(node.label, node.s.x, node.s.y - 13);
+      ctx.font = "300 8px 'IBM Plex Mono'";
+      ctx.fillStyle = `rgba(${r},${g},${b},0.5)`;
       ctx.fillText(node.note, node.s.x, node.s.y + 20);
     });
 
@@ -821,18 +789,27 @@
     ctx.stroke();
 
     ctx.textAlign = 'left';
-    ctx.font = `700 11px ${JSON.stringify('Crimson Pro')}`;
-    ctx.fillStyle = gatewayPreview.running ? 'rgba(80,250,123,0.6)' : 'rgba(255,85,85,0.52)';
-    ctx.fillText(`registered bounces: ${gatewayPreview.bounceCount}`, 18, 24);
-    ctx.font = `400 8px ${JSON.stringify('IBM Plex Mono')}`;
-    ctx.fillStyle = 'rgba(139,233,253,0.32)';
-    ctx.fillText(gatewayPreview.showMoire ? 'moire stratigraphy engaged / detuned line fields active' : 'moire stratigraphy dormant / field shell held clear', 18, 38);
+    ctx.font = "700 11px 'Crimson Pro'";
+    ctx.fillStyle = gatewayPreview.bounceCount > 0 ? 'rgba(80,250,123,0.6)' : 'rgba(255,85,85,0.5)';
+    ctx.fillText(`registered bounces: ${gatewayPreview.bounceCount}`, 12, 20);
+    ctx.font = "300 8px 'IBM Plex Mono'";
+    ctx.fillStyle = 'rgba(139,233,253,0.3)';
+    ctx.fillText(gatewayPreview.showMoire ? 'moire field engaged / detuned interference lattices active' : 'moire field dormant / field shell held clear', 12, 33);
+    ctx.fillStyle = 'rgba(139,233,253,0.18)';
+    ctx.fillText('gateway preview only / full Aperture holds audit trail, packet surfaces, and Harbor lane', 12, 44);
 
     ctx.textAlign = 'right';
-    ctx.font = `500 8px ${JSON.stringify('IBM Plex Mono')}`;
+    ctx.font = "600 9px 'IBM Plex Mono'";
+    ctx.fillStyle = gatewayPreview.running ? 'rgba(139,233,253,0.84)' : 'rgba(220,230,244,0.56)';
+    ctx.fillText(gatewayPreview.running ? 'routing preview live' : 'routing preview latent', width - 12, 20);
+    ctx.font = "300 7.5px 'IBM Plex Mono'";
     ctx.fillStyle = 'rgba(220,230,244,0.42)';
-    ctx.fillText(gatewayPreview.running ? 'preview field live' : 'preview shell latent', width - 18, 24);
-    ctx.fillText('open full Aperture for governed exposure, packet, and harbor lane', width - 18, 38);
+    ctx.fillText(gatewayPreview.showMoire ? 'moire engaged' : 'moire dormant', width - 12, 31);
+
+    ctx.font = "500 8px 'IBM Plex Mono'";
+    ctx.fillStyle = 'rgba(189,147,249,0.4)';
+    ctx.textAlign = 'left';
+    ctx.fillText('Θ_preview · gateway threshold instrument', 12, height - 10);
   }
 
   function drawGatewayPreviewMoirePanel() {
@@ -847,30 +824,22 @@
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = 'rgba(6,8,16,1)';
     ctx.fillRect(0, 0, width, height);
-    const intensity = gatewayPreview.showMoire ? 1 : 0.38;
-    drawGatewayPreviewLineField(ctx, width, height, {
-      angle: 0.16 + Math.sin(gatewayPreview.fieldTick * 0.0005) * 0.03,
-      spacing: 12,
-      thickness: 1.2,
-      alpha: 0.08 * intensity,
-      drift: 4,
-      phase: gatewayPreview.fieldTick * 0.0016,
-      color: 'rgba(139,233,253,0.98)'
-    });
-    drawGatewayPreviewLineField(ctx, width, height, {
-      angle: 0.31 + Math.sin(gatewayPreview.fieldTick * 0.00036) * 0.04,
-      spacing: 12.7,
-      thickness: 1.1,
-      alpha: 0.075 * intensity,
-      drift: 5,
-      phase: gatewayPreview.fieldTick * 0.0011,
-      color: 'rgba(189,147,249,0.98)'
-    });
+    if (gatewayPreview.showMoire) {
+      drawGatewayPreviewMoireField(ctx, width, height);
+    } else {
+      ctx.save();
+      ctx.globalAlpha = 0.24;
+      drawGatewayPreviewMoireField(ctx, width, height);
+      ctx.restore();
+    }
     const vignette = ctx.createRadialGradient(width / 2, height / 2, height * 0.16, width / 2, height / 2, Math.max(width, height) * 0.55);
     vignette.addColorStop(0, 'rgba(0,0,0,0)');
     vignette.addColorStop(1, 'rgba(2,4,8,0.82)');
     ctx.fillStyle = vignette;
     ctx.fillRect(0, 0, width, height);
+    ctx.font = "500 8px 'IBM Plex Mono'";
+    ctx.fillStyle = gatewayPreview.showMoire ? 'rgba(189,147,249,0.72)' : 'rgba(220,230,244,0.4)';
+    ctx.fillText(gatewayPreview.showMoire ? 'hypnotic interference field online' : 'moire lane dormant', 10, 14);
   }
 
   function drawGatewayPreviewTracePanel() {
@@ -949,7 +918,7 @@
     gatewayPreview.lastTimestamp = timestamp;
     advanceGatewayPreview(dtMs);
     drawGatewayPreviewAll();
-    gatewayPreview.animationFrame = window.requestAnimationFrame(gatewayPreviewFrame);
+    gatewayPreview.animationFrame = window.setTimeout(() => gatewayPreviewFrame(window.performance.now()), 16);
   }
 
   function toggleGatewayPreviewRun() {
@@ -992,7 +961,7 @@
     gatewayPreview.trace = [];
     updateGatewayPreviewChrome();
     drawGatewayPreviewAll();
-    gatewayPreview.animationFrame = window.requestAnimationFrame(gatewayPreviewFrame);
+    gatewayPreview.animationFrame = window.setTimeout(() => gatewayPreviewFrame(window.performance.now()), 16);
   }
 
   function isCurrentStationPage(tab = 'homebase') {
@@ -3052,7 +3021,6 @@
 
     if (PAGE_KIND === 'gateway') {
       renderGatewayApertureBridgeRail();
-      mountGatewayApertureEmbedIfReady();
     }
 
   }
@@ -8809,7 +8777,6 @@ DeltaE = ${ledger.reuse_gain}`;
   window.addEventListener('popstate', handleArtifactRouteChange);
   window.addEventListener('pagehide', persistSessionFlightState);
   window.addEventListener('beforeunload', persistSessionFlightState);
-  window.addEventListener('message', handleGatewayApertureBridgeMessage);
   window.addEventListener('storage', handleGatewayApertureStorageEvent);
   window.addEventListener('resize', drawGatewayPreviewAll);
   window.addEventListener('orientationchange', drawGatewayPreviewAll);

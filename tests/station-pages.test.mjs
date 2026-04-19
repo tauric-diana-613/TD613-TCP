@@ -26,6 +26,8 @@ assert.ok(files.deck.includes('data-page-kind="deck"'), 'deck page exposes deck 
 assert.ok(files.trainer.includes('data-page-kind="trainer"'), 'trainer page exposes trainer page-kind');
 
 assert.ok(files.gateway.includes('data-station-target="play"'), 'gateway page links into Deck');
+assert.ok(files.gateway.includes('id="gatewayDoorDeck"'), 'gateway page exposes the Deck room door');
+assert.ok(files.gateway.includes('id="gatewayDoorHarbor"'), 'gateway page keeps Safe Harbor visible as a room door');
 assert.ok(files.gateway.includes('Open full Aperture'), 'gateway page exposes a standalone Aperture action');
 assert.ok(files.homebase.includes('id="viewPaneHomebase"'), 'homebase page mounts the Homebase pane');
 assert.ok(files.personas.includes('id="viewPanePersonas"'), 'personas page mounts the Personas pane');

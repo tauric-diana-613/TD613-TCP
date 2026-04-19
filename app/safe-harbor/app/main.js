@@ -260,18 +260,22 @@
   }
 
   function parseGatewayApertureContext() {
-    let storage = null;
+    const storages = [];
     try {
-      storage = window.sessionStorage;
-    } catch {
-      return null;
-    }
-    if (!storage) return null;
+      if (window.localStorage) storages.push(window.localStorage);
+    } catch {}
+    try {
+      if (window.sessionStorage && !storages.includes(window.sessionStorage)) storages.push(window.sessionStorage);
+    } catch {}
+    if (!storages.length) return null;
     let raw = null;
-    try {
-      raw = storage.getItem(GATEWAY_APERTURE_HANDOFF_KEY);
-    } catch {
-      return null;
+    for (const storage of storages) {
+      try {
+        raw = storage.getItem(GATEWAY_APERTURE_HANDOFF_KEY);
+      } catch {
+        raw = null;
+      }
+      if (raw) break;
     }
     if (!raw) return null;
     let summary = null;
