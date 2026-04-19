@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600;800&family=IBM+Plex+Mono:wght@400;500;600&family=Rajdhani:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600;800&family=IBM+Plex+Mono:wght@400;500;600&family=Michroma&family=Rajdhani:wght@300;400;500;600;700&display=swap");
 
 :root {
   --bg: #050709;
@@ -29,6 +29,7 @@
   --mono: "IBM Plex Mono", "Cascadia Code", "Cascadia Mono", "Consolas", monospace;
   --sans: "Rajdhani", "Aptos", "Segoe UI Variable Text", "Segoe UI", sans-serif;
   --display: "Crimson Pro", Georgia, "Times New Roman", serif;
+  --alien-display: "Michroma", "Orbitron", "Rajdhani", sans-serif;
 }
 
 * {
@@ -241,14 +242,17 @@ body[data-ingress-phase="revealing"] .ingress-layer {
 
 .ingress-heading h2 {
   margin: 8px 0 0;
-  font-family: var(--display);
-  font-size: clamp(30px, 6vw, 52px);
-  letter-spacing: 0.06em;
+  font-family: var(--alien-display);
+  font-size: clamp(28px, 5.4vw, 46px);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: transparent;
   background: linear-gradient(180deg, var(--silver) 0%, #d7f7ff 36%, #7defff 100%);
   -webkit-background-clip: text;
   background-clip: text;
+  text-shadow:
+    0 0 14px rgba(189, 147, 249, 0.18),
+    0 0 28px rgba(116, 234, 255, 0.12);
 }
 
 .ingress-subtitle {
@@ -5112,8 +5116,8 @@ body[data-page-kind="gateway"] .gateway-threshold-panel {
 
 body[data-page-kind="gateway"] .gateway-threshold-grid {
   display: grid;
-  grid-template-columns: minmax(0, 2.05fr) 292px;
-  gap: 10px;
+  grid-template-columns: minmax(0, 2.34fr) 272px;
+  gap: 12px;
   align-items: start;
 }
 
@@ -5146,7 +5150,7 @@ body[data-page-kind="gateway"] .gateway-bridge-rail {
 }
 
 body[data-page-kind="gateway"] .gateway-aperture-frame {
-  min-height: 820px;
+  min-height: 920px;
   overflow: hidden;
 }
 
@@ -5220,10 +5224,11 @@ body[data-page-kind="gateway"] .gateway-aperture-iframe {
   z-index: 2;
   display: block;
   width: 100%;
-  min-height: 820px;
-  height: 820px;
+  min-height: 920px;
+  height: 920px;
   border: 0;
   background: rgba(9, 11, 18, 0.96);
+  pointer-events: auto;
 }
 
 body[data-page-kind="gateway"] .gateway-aperture-actions {
@@ -5375,8 +5380,8 @@ body[data-page-kind="gateway"] .gateway-bridge-actions {
 
   body[data-page-kind="gateway"] .gateway-aperture-frame,
   body[data-page-kind="gateway"] .gateway-aperture-iframe {
-    min-height: 680px;
-    height: 680px;
+    min-height: 760px;
+    height: 760px;
   }
 }
 
@@ -5418,8 +5423,8 @@ body[data-page-kind="gateway"] .gateway-bridge-actions {
 
   body[data-page-kind="gateway"] .gateway-aperture-frame,
   body[data-page-kind="gateway"] .gateway-aperture-iframe {
-    min-height: 620px;
-    height: 620px;
+    min-height: 640px;
+    height: 640px;
   }
 
   body[data-page-kind="gateway"] .gateway-bridge-row {

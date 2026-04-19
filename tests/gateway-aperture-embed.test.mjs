@@ -18,6 +18,7 @@ assert.ok(browserMainSource.includes('handleGatewayApertureBridgeMessage'), 'gat
 assert.ok(browserMainSource.includes('mountGatewayApertureEmbedIfReady'), 'gateway runtime delays the Aperture iframe until ingress is open');
 assert.ok(apertureHtml.includes('APERTURE_GATEWAY_EMBED'), 'Aperture runtime exposes an embed-mode branch');
 assert.ok(apertureHtml.includes('window.parent.postMessage'), 'Aperture embed can bridge status to the gateway');
+assert.ok(apertureHtml.includes('if (typeof drawMain === "function") drawMain();'), 'Aperture redraws the main field after resize so the center geometry stays visible');
 assert.ok(harborMainSource.includes('parseGatewayApertureContext'), 'Safe Harbor exposes an Aperture fallback intake path');
 assert.ok(harborMainSource.includes("source: 'aperture-gateway'"), 'Safe Harbor tags Aperture fallback input distinctly from TCP query handoff');
 
