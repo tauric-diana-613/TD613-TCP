@@ -7,6 +7,7 @@
   const KEYS = ['future_self', 'past_self', 'higher_self'];
   const STORAGE_KEY = 'td613.safe-harbor.session.v1';
   const MAX_AUDIT = 24;
+  const MIN_LANE_WORDS = 40;
   const INGRESS_STEP_COPY = {
     future_self: {
       support: 'Speak forward first. Let the chamber hear direction, residue, or warning before it hears revision.',
@@ -502,7 +503,7 @@
     dom.ingressSealReview.hidden = !sealStep;
     dom.ingressBack.disabled = surfaceIsOpen || stepIndex <= 0;
     dom.ingressContinue.hidden = sealStep;
-    dom.ingressContinue.disabled = surfaceIsOpen || sealStep || !key || !trim(state.ingress.segments[key] || '');
+    dom.ingressContinue.disabled = surfaceIsOpen || sealStep || !key || !laneHasMinWords(key);
     dom.ingressContinue.textContent = ingressContinueLabel(stepIndex);
     if (key) {
       dom.ingressStepInput.disabled = surfaceIsOpen;
@@ -523,7 +524,7 @@
     renderIngressStageChip(dom.ingressStageHigher, 2, stepIndex, count, surfaceIsOpen);
     renderIngressStageChip(dom.ingressStageSeal, 3, stepIndex, count, surfaceIsOpen);
     dom.mintStagedPacket.disabled = !(count === 3 && !surfaceIsOpen && sealStep);
-    dom.bypassIngress.disabled = surfaceIsOpen || !recallReady;
+    dom.bypassIngress.disabled = surfaceIsOpen || !(recallReady || isShiNumber(dom.bypassPassword.value || ''));
     dom.bypassPassword.disabled = surfaceIsOpen;
     dom.setBypassToken.disabled = surfaceIsOpen || !isShiNumber(dom.bypassPassword.value || '');
     dom.clearBypassToken.disabled = surfaceIsOpen || !getOperatorBypassHash();
@@ -645,9 +646,11 @@
     const raw = state.ingress.segments[key] || '';
     const unlocked = laneUnlocked(key);
     if (!unlocked) return key === 'past_self' ? 'Awaiting the first page.' : 'Awaiting the second page.';
-    if (!trim(raw)) return 'No line held yet.';
+    if (!trim(raw)) return 'No line held yet. ' + MIN_LANE_WORDS + '-word minimum for stylometric witness.';
     const stats = basicStats(raw);
-    return stats.word_count + ' words / ' + stats.char_count + ' chars / ' + shortChecksum(null, raw);
+    const shortfall = Math.max(0, MIN_LANE_WORDS - stats.word_count);
+    const gate = shortfall > 0 ? ' / ' + shortfall + ' more words needed' : ' / stylometric threshold met';
+    return stats.word_count + ' words / ' + stats.char_count + ' chars / ' + shortChecksum(null, raw) + gate;
   }
 
   function renderIngressStageChip(button, index, activeIndex, count, surfaceIsOpen) {
@@ -1092,10 +1095,18 @@
   function completedCount() {
     let count = 0;
     for (let i = 0; i < KEYS.length; i += 1) {
-      if (!trim(state.ingress.segments[KEYS[i]])) break;
+      if (!laneHasMinWords(KEYS[i])) break;
       count += 1;
     }
     return count;
+  }
+
+  function laneWordCount(key) {
+    return splitWords(state.ingress.segments[key] || '').length;
+  }
+
+  function laneHasMinWords(key) {
+    return laneWordCount(key) >= MIN_LANE_WORDS;
   }
 
   function laneUnlocked(key) {
@@ -1246,10 +1257,41 @@
 
   function packetId(helper) { return 'SH-' + helper.ts_utc.replace(/[-:]/g, '').replace('Z', '') + '-' + helper.packet_suffix; }
   function receiptId(helper) { return 'SHR-' + helper.ts_utc.replace(/[-:]/g, '').replace('Z', '') + '-' + helper.packet_suffix; }
-  function badgeNumberForContext(packet, receipt, payloadIndex, attestationDate, principal, requestId) {
-    const seed = [packet || '', receipt || '', bindingFragment(), payloadIndex == null ? '' : String(payloadIndex), attestationDate || '', principal || '', requestId || ''].join('|');
+  function badgeNumberForContext(packet, receipt, payloadIndex, attestationDate, principal, requestId, signatures) {
+    const sigs = signatures || (state.packet && state.packet.analysis && state.packet.analysis.segment_cadence_signatures) || null;
+    const fingerprint = stylometricFingerprint(sigs);
+    const seed = fingerprint
+      ? ['td613.shi/v1', principal || D.canon.principal || '', bindingFragment(), fingerprint].join('|')
+      : [packet || '', receipt || '', bindingFragment(), payloadIndex == null ? '' : String(payloadIndex), attestationDate || '', principal || '', requestId || ''].join('|');
     const digest = hash64(seed).slice(0, 8).toUpperCase();
     return 'TD613-SH-' + bindingFragment().replace('#', '') + '-' + digest;
+  }
+  function stylometricFingerprint(signatures) {
+    if (!signatures) return null;
+    const present = KEYS.every((key) => signatures[key] && typeof signatures[key] === 'object');
+    if (!present) return null;
+    const q = (value, step) => {
+      const num = Number(value);
+      if (!isFinite(num)) return 0;
+      return Math.round(num / step) * step;
+    };
+    const lane = (sig) => {
+      const mix = sig.punctuation_mix || {};
+      return [
+        q(sig.avg_word_length, 0.5).toFixed(2),
+        q(sig.avg_sentence_length, 1).toFixed(2),
+        q(sig.punctuation_density, 0.01).toFixed(2),
+        q(sig.line_break_density, 0.01).toFixed(2),
+        q(sig.unique_ratio, 0.05).toFixed(2),
+        q(mix.comma || 0, 0.05).toFixed(2),
+        q(mix.dash || 0, 0.05).toFixed(2),
+        q(mix.colon || 0, 0.05).toFixed(2),
+        q(mix.semicolon || 0, 0.05).toFixed(2),
+        q(mix.exclamation || 0, 0.05).toFixed(2),
+        q(mix.question || 0, 0.05).toFixed(2)
+      ].join(':');
+    };
+    return KEYS.map((key) => key + '=' + lane(signatures[key])).join('|');
   }
   function bindingFragment() { return D.trustProfile.binding_fragment.charAt(0) === '#' ? D.trustProfile.binding_fragment : ('#' + D.trustProfile.binding_fragment); }
   function sacText() { return D.trustProfile.sac.indexOf('SAC[') === 0 ? D.trustProfile.sac : ('SAC[' + D.trustProfile.sac + ']'); }
@@ -1489,7 +1531,7 @@
     const cadence = overlayCadence(summaryCadence(signatures, triad));
     const signatureLane = resolvedSignatureLane();
     const signatureObject = signatureForPacket();
-    const badgeAssignment = state.covenant.confirmed ? badgeNumberForContext(state.ingress.packetId, state.ingress.receiptId, form.payloadIndex, form.attestationDate, D.canon.principal, state.helper.request_id) : null;
+    const badgeAssignment = state.covenant.confirmed ? badgeNumberForContext(state.ingress.packetId, state.ingress.receiptId, form.payloadIndex, form.attestationDate, D.canon.principal, state.helper.request_id, signatures) : null;
     const receiptState = state.covenant.confirmed ? 'harbor-eligible' : (signatureObject.status === 'sealed' ? 'sealed' : 'staged');
     const packet = {
       schema_version: 'td613.safe-harbor.packet/v1',
@@ -1565,7 +1607,8 @@
         extended_footer: badgeAssignment ? extendedFooterString(badgeAssignment) : null,
         badge_state: state.covenant.confirmed ? 'assigned' : 'not-assigned',
         assigned_at: state.covenant.confirmed ? state.covenant.confirmedAt : null,
-        assignment_basis: state.covenant.confirmed ? 'deterministic-hash(packet_id|receipt_id|binding_fragment|payload|date|principal|request_id)' : null
+        assignment_basis: state.covenant.confirmed ? 'stylometric-biometric-fingerprint(principal|binding_fragment|per-lane quantized cadence)' : null,
+        stylometric_fingerprint: state.covenant.confirmed ? stylometricFingerprint(signatures) : null
       },
       signature: signatureObject,
       aperture_audit: null,

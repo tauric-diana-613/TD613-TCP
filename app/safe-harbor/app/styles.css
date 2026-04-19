@@ -2130,3 +2130,21 @@ textarea {
     box-shadow: inset 3px 0 0 rgba(207, 176, 255, 0.4);
   }
 }
+
+.svg-attestation-probes .attestation-summary {
+  color: var(--lime);
+  letter-spacing: 0.24em;
+  text-shadow: 0 0 12px rgba(80, 250, 123, 0.35);
+}
+
+.svg-attestation-probes .attestation-summary::before {
+  background: linear-gradient(90deg, rgba(80, 250, 123, 0.85), transparent);
+}
+
+.svg-attestation-probes .attestation-hint {
+  color: var(--text-dim);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  margin-left: 8px;
+  text-shadow: none;
+}
