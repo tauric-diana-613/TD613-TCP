@@ -59,8 +59,8 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
   }
 
   body[data-embed-mode="gateway"] {
-    font-size: 9.5px;
-    grid-template-rows: 38px 1fr;
+    font-size: 10.25px;
+    grid-template-rows: 40px 1fr;
   }
 
   /* ── HEADER ──────────────────────────────────────────────── */
@@ -182,9 +182,9 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
   }
 
   body[data-embed-mode="gateway"] main {
-    grid-template-columns: 240px 1fr 258px;
-    grid-template-rows: 1fr 244px;
-    height: calc(100dvh - 38px);
+    grid-template-columns: 188px minmax(0, 1.58fr) 204px;
+    grid-template-rows: 1fr 186px;
+    height: calc(100dvh - 40px);
   }
 
   /* ── PANELS ──────────────────────────────────────────────── */
@@ -199,7 +199,12 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
 
   body[data-embed-mode="gateway"] .panel,
   body[data-embed-mode="gateway"] .bottom-panel {
-    padding: 8px 10px;
+    padding: 7px 8px;
+  }
+
+  body[data-embed-mode="gateway"] .center-canvas,
+  body[data-embed-mode="gateway"] #centerArea {
+    min-height: 420px;
   }
 
   body[data-embed-mode="gateway"] #btnMoire {
@@ -787,8 +792,8 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
 
   @media (max-width: 1100px) {
     body[data-embed-mode="gateway"] main {
-      grid-template-columns: 216px 1fr 238px;
-      grid-template-rows: 1fr 228px;
+      grid-template-columns: 172px minmax(0, 1.68fr) 186px;
+      grid-template-rows: 1fr 172px;
     }
   }
 

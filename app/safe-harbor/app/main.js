@@ -550,19 +550,36 @@
     const sealStep = !key;
     const typedShi = normalizeShiNumber(dom.bypassPassword.value || '');
     const typedShiValid = isShiNumber(typedShi);
+    const recoverableShi = recoverableShiNumber();
+    const confirmedPacket = Boolean(
+      state.packet &&
+      state.packet.bridge &&
+      state.packet.bridge.covenant_gate &&
+      state.packet.bridge.covenant_gate.confirmed
+    );
     dom.ingressRoutePill.textContent = route;
     dom.ingressProgressPill.textContent = count + ' / 3 lanes';
     const surfaceIsOpen = surfaceOpen();
     const devModeEnabled = getDevModeEnabled();
-    dom.ingressVaultPill.textContent = state.ingress.operatorShellOpen ? 'operator shell' : state.ingress.vaultOpen ? 'packet staged' : recoverableShiNumber() ? 'packet recall' : sealStep && count === 3 ? 'seal step' : 'vault sealed';
+    dom.ingressVaultPill.textContent = state.ingress.operatorShellOpen
+      ? 'operator shell'
+      : state.ingress.vaultOpen
+        ? (confirmedPacket ? 'sealed packet' : 'packet staged')
+        : recoverableShi
+          ? 'packet recall'
+          : sealStep && count === 3
+            ? 'seal step'
+            : 'vault sealed';
     dom.ingressNote.textContent = state.ingress.bypass
       ? 'Operator bypass accepted. The shell is open in packetless mode. No staged packet, covenant transition, or SHI issuance exists yet.'
-      : recoverableShiNumber() && !surfaceIsOpen
+      : recoverableShi && !surfaceIsOpen
         ? 'A minted packet is still held behind the membrane. Enter the same SHI # to reopen the chamber and recover the packet, copies, and footer surfaces without repeating the ritual.'
       : state.ingress.recovered
         ? 'A prior chamber state was recovered and returned to the membrane. Review the held testimony, then re-open or clear the session.'
       : state.ingress.vaultOpen
-        ? 'The staged packet is present. Covenant Export is the only local path to harbor eligibility and SHI issuance.'
+        ? (confirmedPacket
+          ? `The sealed packet is present. SHI # ${recoverableShi || 'issued'} is already bound to this chamber; review, copy, or reseal without reminting.`
+          : 'The staged packet is present. Covenant Export is the only local path to harbor eligibility and SHI issuance.')
         : sealStep && count === 3
           ? 'The triad is complete. Review the held testimony, then mint the staged packet to open the chamber.'
           : (D.routeCopy[route] || '');
@@ -603,7 +620,7 @@
     dom.setBypassToken.disabled = surfaceIsOpen || !typedShiValid;
     dom.clearBypassToken.disabled = surfaceIsOpen || !getOperatorBypassHash();
     dom.clearIngress.disabled = surfaceIsOpen ? true : false;
-    dom.bypassPassword.placeholder = recoverableShiNumber() ? recoverableShiNumber() : shiFormatTemplate();
+    dom.bypassPassword.placeholder = recoverableShi || shiFormatTemplate();
     dom.demoTcpHook.disabled = !devModeEnabled;
     dom.demoEoHook.disabled = !devModeEnabled;
     dom.demoSignatureHook.disabled = !devModeEnabled;
