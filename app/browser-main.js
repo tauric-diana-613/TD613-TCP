@@ -61,6 +61,7 @@
     falseNeighborCases: Object.freeze(diagnosticBattery.falseNeighborCases || [])
   });
   const SAFE_HARBOR_HANDOFF_PATH = './safe-harbor/index.html';
+  const GATEWAY_APERTURE_HANDOFF_KEY = 'td613.gateway.aperture-handoff';
   const SAMPLE_LIBRARY_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
     acc[sample.id] = sample;
     return acc;
@@ -86,6 +87,14 @@
     .find((src) => /browser-main\.js/i.test(src)) || '';
   const CURRENT_SCRIPT_URL = new URL(CURRENT_SCRIPT_SRC || './browser-main.js', window.location.href);
   const ASSET_VERSION = CURRENT_SCRIPT_URL.searchParams.get('v') || '';
+  const GATEWAY_APERTURE_EMBED_URL = (() => {
+    const url = new URL('./aperture/index.html', window.location.href);
+    url.searchParams.set('embed', 'gateway');
+    if (ASSET_VERSION) {
+      url.searchParams.set('v', ASSET_VERSION);
+    }
+    return url.toString();
+  })();
   const TRAINER_MODULE_URL = (() => {
     const url = new URL('./toys/persona-trainer/browser.js', window.location.href);
     if (ASSET_VERSION) {
@@ -174,6 +183,199 @@
   const runtimeStore = createRuntimeStore();
   function pageUrlForTab(tab = 'homebase') {
     return ARTIFACT_TAB_TO_PAGE[normalizeArtifactTab(tab)] || ARTIFACT_TAB_TO_PAGE.homebase;
+  }
+
+  function gatewayApertureFrameNode() {
+    return $('gatewayApertureFrame');
+  }
+
+  function gatewayApertureMountNode() {
+    return $('gatewayApertureMount');
+  }
+
+  function gatewayAperturePlaceholderNode() {
+    return $('gatewayAperturePlaceholder');
+  }
+
+  function gatewayApertureStorage() {
+    try {
+      return window.sessionStorage;
+    } catch {
+      return null;
+    }
+  }
+
+  function readGatewayApertureBridgeSummary() {
+    const storage = gatewayApertureStorage();
+    if (!storage) {
+      return null;
+    }
+    try {
+      const raw = storage.getItem(GATEWAY_APERTURE_HANDOFF_KEY);
+      if (!raw) {
+        return null;
+      }
+      return normalizeGatewayApertureBridgeSummary(JSON.parse(raw));
+    } catch {
+      return null;
+    }
+  }
+
+  function persistGatewayApertureBridgeSummary(summary) {
+    const storage = gatewayApertureStorage();
+    if (!storage) {
+      return;
+    }
+    try {
+      storage.setItem(GATEWAY_APERTURE_HANDOFF_KEY, JSON.stringify(summary));
+    } catch {
+      // ignore session storage failures; the live gateway rail still updates in-memory
+    }
+  }
+
+  function gatewayApertureOriginAllowed(origin) {
+    const currentOrigin = window.location.origin || 'null';
+    return origin === currentOrigin || (currentOrigin === 'null' && origin === 'null');
+  }
+
+  function normalizeGatewayApertureBridgeSummary(payload = {}) {
+    const latestPacket = payload.latestPacket && typeof payload.latestPacket === 'object'
+      ? JSON.parse(JSON.stringify(payload.latestPacket))
+      : null;
+    return {
+      source: 'td613-aperture',
+      mode: 'gateway-embed',
+      type: 'status',
+      routeState: String(payload.routeState || 'membrane-only'),
+      handoffStatus: String(payload.handoffStatus || 'awaiting packet'),
+      packetReady: Boolean(payload.packetReady),
+      packetExported: Boolean(payload.packetExported),
+      packetKey: payload.packetKey ? String(payload.packetKey) : '',
+      checksum: payload.checksum ? String(payload.checksum) : '',
+      cumulativeNarrowing: clamp01(Number(payload.cumulativeNarrowing || 0)),
+      dominantLoss: payload.dominantLoss ? String(payload.dominantLoss) : '—',
+      harborEligibility: clamp01(Number(payload.harborEligibility || 0)),
+      provenanceIntegrity: clamp01(Number(payload.provenanceIntegrity || 0)),
+      latestPacket
+    };
+  }
+
+  function renderGatewayApertureBridgeRail(summary = readGatewayApertureBridgeSummary()) {
+    if (PAGE_KIND !== 'gateway') {
+      return;
+    }
+    const routeNode = $('gatewayApertureBridgeRoute');
+    const handoffNode = $('gatewayApertureBridgeHandoff');
+    const narrowingNode = $('gatewayApertureBridgeNarrowing');
+    const provenanceNode = $('gatewayApertureBridgeProvenance');
+    const packetNode = $('gatewayApertureBridgePacket');
+    const noteNode = $('gatewayApertureBridgeNote');
+    const pillNode = $('gatewayApertureBridgePill');
+    const harborLink = $('gatewayApertureHarborLink');
+    const rail = $('gatewayApertureBridgeRail');
+    if (!routeNode || !handoffNode || !narrowingNode || !provenanceNode || !packetNode || !noteNode || !pillNode || !harborLink || !rail) {
+      return;
+    }
+
+    const hasSummary = !!summary;
+    const harborReady = Boolean(summary && (summary.packetReady || summary.packetExported || summary.latestPacket));
+    const pillState = !hasSummary
+      ? 'latent'
+      : summary.packetExported
+        ? 'exported'
+        : harborReady
+          ? 'ready'
+          : summary.routeState === 'buffer' || summary.handoffStatus === 'buffer-prep'
+            ? 'buffer'
+            : 'observing';
+
+    routeNode.textContent = hasSummary ? summary.routeState : 'membrane-only';
+    handoffNode.textContent = hasSummary ? summary.handoffStatus : 'awaiting packet';
+    narrowingNode.textContent = hasSummary ? summary.cumulativeNarrowing.toFixed(4) : 'pending';
+    provenanceNode.textContent = hasSummary ? summary.provenanceIntegrity.toFixed(4) : 'pending';
+    packetNode.textContent = hasSummary
+      ? summary.packetKey
+        ? `${summary.packetKey}${summary.checksum ? ` / ${summary.checksum.slice(0, 12)}` : ''}`
+        : summary.packetExported
+          ? 'packet exported'
+          : summary.packetReady
+            ? 'packet prepared'
+            : 'no packet prepared'
+      : 'no packet prepared';
+    noteNode.textContent = !hasSummary
+      ? 'Pass ingress to mount the live Aperture lane.'
+      : summary.packetExported
+        ? 'Aperture exported a guarded packet. Safe Harbor can read this lane as upstream context.'
+        : harborReady
+          ? 'Aperture has a packetized or packet-ready lane. Safe Harbor can open from this threshold without replacing TCP routing.'
+          : `Aperture remains audit-only here. Dominant narrowing pressure: ${summary.dominantLoss}.`;
+    pillNode.textContent = !hasSummary
+      ? 'awaiting route'
+      : summary.packetExported
+        ? 'packet exported'
+        : harborReady
+          ? 'harbor-ready'
+          : summary.routeState === 'buffer'
+            ? 'buffer lane'
+            : 'route live';
+    pillNode.dataset.state = pillState;
+    rail.dataset.state = pillState;
+    harborLink.textContent = harborReady ? 'Open Safe Harbor from Aperture lane' : 'Open Safe Harbor';
+    harborLink.href = SAFE_HARBOR_HANDOFF_PATH;
+  }
+
+  function mountGatewayApertureEmbedIfReady() {
+    if (PAGE_KIND !== 'gateway' || ingress.phase !== 'complete') {
+      return;
+    }
+    const frame = gatewayApertureFrameNode();
+    const mount = gatewayApertureMountNode();
+    const placeholder = gatewayAperturePlaceholderNode();
+    if (!frame || !mount) {
+      return;
+    }
+    if (frame.dataset.loaded === 'true') {
+      frame.hidden = false;
+      if (placeholder) {
+        placeholder.hidden = true;
+      }
+      mount.dataset.embedState = 'live';
+      return;
+    }
+    if (frame.dataset.loading === 'true') {
+      mount.dataset.embedState = 'loading';
+      return;
+    }
+    frame.dataset.loading = 'true';
+    mount.dataset.embedState = 'loading';
+    frame.addEventListener('load', () => {
+      frame.dataset.loading = 'false';
+      frame.dataset.loaded = 'true';
+      frame.hidden = false;
+      if (placeholder) {
+        placeholder.hidden = true;
+      }
+      mount.dataset.embedState = 'live';
+      renderGatewayApertureBridgeRail();
+    }, { once: true });
+    frame.src = GATEWAY_APERTURE_EMBED_URL;
+  }
+
+  function handleGatewayApertureBridgeMessage(event) {
+    if (PAGE_KIND !== 'gateway' || !gatewayApertureOriginAllowed(event.origin)) {
+      return;
+    }
+    const frame = gatewayApertureFrameNode();
+    if (frame && frame.contentWindow && event.source !== frame.contentWindow) {
+      return;
+    }
+    const payload = event.data;
+    if (!payload || payload.source !== 'td613-aperture' || payload.mode !== 'gateway-embed' || payload.type !== 'status') {
+      return;
+    }
+    const summary = normalizeGatewayApertureBridgeSummary(payload);
+    persistGatewayApertureBridgeSummary(summary);
+    renderGatewayApertureBridgeRail(summary);
   }
 
   function isCurrentStationPage(tab = 'homebase') {
@@ -2230,6 +2432,11 @@
 
       link.dataset.state = state;
     });
+
+    if (PAGE_KIND === 'gateway') {
+      renderGatewayApertureBridgeRail();
+      mountGatewayApertureEmbedIfReady();
+    }
 
   }
 
@@ -7926,6 +8133,7 @@ DeltaE = ${ledger.reuse_gain}`;
   window.addEventListener('popstate', handleArtifactRouteChange);
   window.addEventListener('pagehide', persistSessionFlightState);
   window.addEventListener('beforeunload', persistSessionFlightState);
+  window.addEventListener('message', handleGatewayApertureBridgeMessage);
 
   async function boot() {
     if (redirectLegacyGatewayHashIfNeeded()) {
@@ -7949,6 +8157,7 @@ DeltaE = ${ledger.reuse_gain}`;
       document.body.dataset.bootWarnings = '0';
       document.body.dataset.bootDegraded = 'false';
       document.body.dataset.bootStage = 'boot-ready';
+      renderGatewayApertureBridgeRail();
       startIngressSequence();
       document.body.dataset.bootStage = 'boot-complete';
       return;

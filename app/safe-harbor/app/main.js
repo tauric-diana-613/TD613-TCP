@@ -6,6 +6,7 @@
 
   const KEYS = ['future_self', 'past_self', 'higher_self'];
   const STORAGE_KEY = 'td613.safe-harbor.session.v1';
+  const GATEWAY_APERTURE_HANDOFF_KEY = 'td613.gateway.aperture-handoff';
   const MAX_AUDIT = 24;
   const MIN_LANE_WORDS = 40;
   const INGRESS_STEP_COPY = {
@@ -216,7 +217,7 @@
     }
     if (!params) return null;
     const source = trim(params.get('source'));
-    if (!source) return null;
+    if (!source) return parseGatewayApertureContext();
     const numeric = (key) => {
       const value = params.get(key);
       if (value === null || value === '') return null;
@@ -258,6 +259,74 @@
     };
   }
 
+  function parseGatewayApertureContext() {
+    let storage = null;
+    try {
+      storage = window.sessionStorage;
+    } catch {
+      return null;
+    }
+    if (!storage) return null;
+    let raw = null;
+    try {
+      raw = storage.getItem(GATEWAY_APERTURE_HANDOFF_KEY);
+    } catch {
+      return null;
+    }
+    if (!raw) return null;
+    let summary = null;
+    try {
+      summary = JSON.parse(raw);
+    } catch {
+      return null;
+    }
+    if (!summary || summary.source !== 'td613-aperture' || summary.mode !== 'gateway-embed') {
+      return null;
+    }
+    const packet = summary.latestPacket && typeof summary.latestPacket === 'object' ? summary.latestPacket : null;
+    const forensicSchema = packet && packet.forensicSchema ? packet.forensicSchema : null;
+    const governedExposure = forensicSchema && forensicSchema.governedExposure ? forensicSchema.governedExposure : null;
+    const sourceClasses = Array.isArray(forensicSchema && forensicSchema.sourceClasses)
+      ? forensicSchema.sourceClasses.map((entry) => String(entry))
+      : ['counter-tool', 'aperture', 'prcs-a'];
+    const countOrNull = (value) => {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? Math.max(0, Math.round(parsed)) : null;
+    };
+    return {
+      source: 'aperture-gateway',
+      decision: trim(summary.handoffStatus),
+      harbor: summary.packetReady || summary.packetExported ? 'aperture-lane' : null,
+      route: trim(summary.routeState),
+      sourceClass: governedExposure && governedExposure.sourceClass ? governedExposure.sourceClass : 'aperture counter-tool handoff',
+      sourceClasses,
+      authority: forensicSchema && forensicSchema.authorityCeiling ? forensicSchema.authorityCeiling : 'counter-tool',
+      theta: null,
+      O: null,
+      O_star: null,
+      delta_obs: null,
+      Gap: summary.cumulativeNarrowing === null || summary.cumulativeNarrowing === undefined ? null : round4(clamp01(Number(summary.cumulativeNarrowing))),
+      NameSens: null,
+      AliasPersist: null,
+      Red: null,
+      Supp_tau: null,
+      provenanceIntegrity: summary.provenanceIntegrity === null || summary.provenanceIntegrity === undefined ? null : round4(clamp01(Number(summary.provenanceIntegrity))),
+      burdenConcentration: summary.harborEligibility === null || summary.harborEligibility === undefined ? null : round4(clamp01(Number(summary.harborEligibility))),
+      dominantOperator: governedExposure && governedExposure.dominantOperator
+        ? String(governedExposure.dominantOperator)
+        : null,
+      S: countOrNull(governedExposure && governedExposure.S),
+      S_prime: countOrNull(governedExposure && governedExposure.projected),
+      Y: countOrNull(governedExposure && governedExposure.registered),
+      cumulativeNarrowing: summary.cumulativeNarrowing === null || summary.cumulativeNarrowing === undefined ? null : round4(clamp01(Number(summary.cumulativeNarrowing))),
+      latestPacket: packet,
+      packetKey: summary.packetKey ? String(summary.packetKey) : null,
+      checksum: summary.checksum ? String(summary.checksum) : null,
+      handoffStatus: summary.handoffStatus ? String(summary.handoffStatus) : null,
+      harborEligibility: summary.harborEligibility === null || summary.harborEligibility === undefined ? null : round4(clamp01(Number(summary.harborEligibility)))
+    };
+  }
+
   function primeInboundContext() {
     const inbound = parseInboundContext();
     state.handoff = inbound;
@@ -270,7 +339,11 @@
         inbound.source ? ('source=' + inbound.source) : null,
         inbound.route ? ('route=' + inbound.route) : null,
         inbound.authority ? ('authority=' + inbound.authority) : null,
-        inbound.dominantOperator ? ('dominant=' + inbound.dominantOperator) : null
+        inbound.dominantOperator ? ('dominant=' + inbound.dominantOperator) : null,
+        inbound.cumulativeNarrowing !== null && inbound.cumulativeNarrowing !== undefined
+          ? ('narrowing=' + metric(inbound.cumulativeNarrowing))
+          : null,
+        inbound.packetKey ? ('packet=' + inbound.packetKey) : null
       ].filter(Boolean);
       dom.inputOperatorNotes.value = noteParts.length
         ? ('Inbound governed exposure context // ' + noteParts.join(' // '))
@@ -475,7 +548,8 @@
     const step = ingressStepDescriptor(stepIndex);
     const key = step.key;
     const sealStep = !key;
-    const recallReady = Boolean(recoverableShiNumber() || getOperatorBypassHash());
+    const typedShi = normalizeShiNumber(dom.bypassPassword.value || '');
+    const typedShiValid = isShiNumber(typedShi);
     dom.ingressRoutePill.textContent = route;
     dom.ingressProgressPill.textContent = count + ' / 3 lanes';
     const surfaceIsOpen = surfaceOpen();
@@ -524,9 +598,9 @@
     renderIngressStageChip(dom.ingressStageHigher, 2, stepIndex, count, surfaceIsOpen);
     renderIngressStageChip(dom.ingressStageSeal, 3, stepIndex, count, surfaceIsOpen);
     dom.mintStagedPacket.disabled = !(count === 3 && !surfaceIsOpen && sealStep);
-    dom.bypassIngress.disabled = surfaceIsOpen || !(recallReady || isShiNumber(dom.bypassPassword.value || ''));
+    dom.bypassIngress.disabled = surfaceIsOpen || !typedShiValid;
     dom.bypassPassword.disabled = surfaceIsOpen;
-    dom.setBypassToken.disabled = surfaceIsOpen || !isShiNumber(dom.bypassPassword.value || '');
+    dom.setBypassToken.disabled = surfaceIsOpen || !typedShiValid;
     dom.clearBypassToken.disabled = surfaceIsOpen || !getOperatorBypassHash();
     dom.clearIngress.disabled = surfaceIsOpen ? true : false;
     dom.bypassPassword.placeholder = recoverableShiNumber() ? recoverableShiNumber() : shiFormatTemplate();
@@ -795,18 +869,19 @@
   function renderMintSurface(shiNumber) {
     const issued = shiNumber || null;
     const recoverable = recoverableShiNumber();
+    const available = issued || recoverable || null;
     dom.shiMintState.textContent = issued ? 'minted / copy forward' : (recoverable ? 'session recall armed' : 'format locked');
-    dom.shiMintValue.textContent = issued || recoverable || shiFormatTemplate();
-    dom.canonicalHeaderPreview.textContent = canonicalHeaderString(issued || recoverable);
-    dom.extendedFooterPreview.textContent = extendedFooterString(issued || recoverable);
+    dom.shiMintValue.textContent = available || shiFormatTemplate();
+    dom.canonicalHeaderPreview.textContent = canonicalHeaderString(available);
+    dom.extendedFooterPreview.textContent = extendedFooterString(available);
     dom.shiCopyNote.textContent = issued
       ? 'Copy this exactly. The minted SHI # is the Safe Harbor issuance code that should travel unchanged through packet, probe, renderer, and LLM lanes.'
       : recoverable
         ? 'A minted SHI # is still held in session. Enter that same SHI # at the membrane to reopen packet and copy surfaces without repeating the ritual.'
         : 'The SHI # mints only at covenant. Once assigned, copy it exactly. This issuance code should not drift across packet, probe, renderer, or LLM intake.';
-    dom.copyShiNumber.disabled = !issued;
-    dom.copyCanonicalHeader.disabled = !issued;
-    dom.copyExtendedFooter.disabled = !issued;
+    dom.copyShiNumber.disabled = !available;
+    dom.copyCanonicalHeader.disabled = !available;
+    dom.copyExtendedFooter.disabled = !available;
   }
 
   async function setLocalBypassToken() {
@@ -1186,8 +1261,15 @@
     return (D.trustProfile && D.trustProfile.shi_number_template) || ('TD613-SH-' + bindingFragment().replace('#', '') + '-XXXXXXXX');
   }
 
+  function shiNumberPattern() {
+    const template = normalizeShiNumber(shiFormatTemplate());
+    const escaped = template.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const source = '^' + escaped.replace(/X+/g, (placeholder) => `[A-F0-9]{${placeholder.length}}`) + '$';
+    return new RegExp(source, 'u');
+  }
+
   function isShiNumber(value) {
-    return /^TD613-SH-9B07D8B-[A-F0-9]{8}$/u.test(String(value || '').trim().toUpperCase());
+    return shiNumberPattern().test(normalizeShiNumber(value));
   }
 
   function normalizeShiNumber(value) {

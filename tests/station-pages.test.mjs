@@ -16,6 +16,8 @@ const files = {
 };
 
 assert.ok(files.gateway.includes('data-page-kind="gateway"'), 'gateway page exposes gateway page-kind');
+assert.ok(files.gateway.includes('id="gatewayApertureFrame"'), 'gateway page mounts an Aperture iframe shell');
+assert.ok(files.gateway.includes('id="gatewayApertureBridgeRail"'), 'gateway page exposes the Aperture bridge rail');
 assert.ok(files.homebase.includes('data-page-kind="homebase"'), 'homebase page exposes homebase page-kind');
 assert.ok(files.personas.includes('data-page-kind="personas"'), 'personas page exposes personas page-kind');
 assert.ok(files.readout.includes('data-page-kind="readout"'), 'readout page exposes readout page-kind');
@@ -23,6 +25,7 @@ assert.ok(files.deck.includes('data-page-kind="deck"'), 'deck page exposes deck 
 assert.ok(files.trainer.includes('data-page-kind="trainer"'), 'trainer page exposes trainer page-kind');
 
 assert.ok(files.gateway.includes('data-station-target="play"'), 'gateway page links into Deck');
+assert.ok(files.gateway.includes('Open full Aperture'), 'gateway page exposes a standalone Aperture action');
 assert.ok(files.homebase.includes('id="viewPaneHomebase"'), 'homebase page mounts the Homebase pane');
 assert.ok(files.personas.includes('id="viewPanePersonas"'), 'personas page mounts the Personas pane');
 assert.ok(files.readout.includes('id="viewPaneReadout"'), 'readout page mounts the Readout pane');

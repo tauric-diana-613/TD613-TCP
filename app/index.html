@@ -107,46 +107,104 @@
     </header>
 
     <main class="gateway-main">
-      <section class="panel gateway-panel">
-        <div class="panel-heading">
-          <div>
-            <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x0398;</span> Chamber index</div>
-            <h2>Enter the machine</h2>
-          </div>
-          <p class="section-note">Same-tab state crosses rooms. Text, masks, locks, forged context, and shells stay with you.</p>
-        </div>
+      <section class="panel gateway-panel gateway-threshold-panel">
+        <div class="gateway-threshold-grid">
+          <section class="gateway-aperture-chamber" aria-labelledby="gatewayApertureTitle">
+            <div class="panel-heading gateway-aperture-heading">
+              <div>
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x0398;</span> Aperture / counter-tool live</div>
+                <h2 id="gatewayApertureTitle">TD613 Aperture</h2>
+              </div>
+              <p class="section-note">The full counter-tool mounts here after ingress. Moir&eacute;, provenance, narrowing, and guarded handoff remain intact.</p>
+            </div>
 
-        <div class="gateway-grid">
-          <button type="button" class="gateway-card" data-station-target="play">
-            <div class="gateway-card-kicker"><span class="glyph glyph-lime" aria-hidden="true">&#x25C7;</span> Deck</div>
-            <h3>Encounter chamber</h3>
-            <p>Stage the pair. Wake the duel.</p>
-          </button>
-          <button type="button" class="gateway-card" data-station-target="homebase">
-            <div class="gateway-card-kicker"><span class="glyph glyph-lime" aria-hidden="true">&#x4E0B;</span> Homebase</div>
-            <h3>Cadence home</h3>
-            <p>Lock the home voice. Read what clung.</p>
-          </button>
-          <button type="button" class="gateway-card" data-station-target="personas">
-            <div class="gateway-card-kicker"><span class="glyph glyph-lime" aria-hidden="true">&#x03C8;</span> Personas</div>
-            <h3>Shelf and dossier</h3>
-            <p>Inspect the shell. Dispatch it later.</p>
-          </button>
-          <button type="button" class="gateway-card" data-station-target="readout">
-            <div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x0398;</span> Readout</div>
-            <h3>Witness / law</h3>
-            <p>Witness first. Route and harbor after.</p>
-          </button>
-          <button type="button" class="gateway-card" data-station-target="trainer">
-            <div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x22A2;</span> Trainer</div>
-            <h3>Forge lane</h3>
-            <p>Extract. Forge. Validate. Inject.</p>
-          </button>
-          <a class="gateway-card gateway-card-external" href="./safe-harbor/index.html">
-            <div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x27D0;</span> Safe Harbor</div>
-            <h3>Guarded passage</h3>
-            <p>Packet layer. Separate room.</p>
-          </a>
+            <div id="gatewayApertureMount" class="gateway-aperture-frame" data-embed-state="dormant">
+              <div id="gatewayAperturePlaceholder" class="gateway-aperture-placeholder">
+                <div class="gateway-aperture-placeholder-kicker">Embed gate</div>
+                <h3>Aperture wakes after ingress.</h3>
+                <p>The threshold mounts the live instrument only after the membrane opens. Until then, the chamber stays dormant.</p>
+              </div>
+              <iframe
+                id="gatewayApertureFrame"
+                class="gateway-aperture-iframe"
+                title="TD613 Aperture live gateway embed"
+                loading="lazy"
+                hidden
+              ></iframe>
+            </div>
+
+            <div class="gateway-aperture-actions">
+              <a id="gatewayApertureOpenFull" class="gateway-link gateway-aperture-link" href="./aperture/index.html">Open full Aperture</a>
+              <p class="gateway-aperture-note">Moir&eacute; stratigraphy stays a live interference field here, not decorative texture.</p>
+            </div>
+          </section>
+
+          <aside class="gateway-support-rail" aria-labelledby="gatewayDoorTitle">
+            <div class="panel-heading gateway-support-heading">
+              <div>
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x0398;</span> Chamber index</div>
+                <h2 id="gatewayDoorTitle">Enter the machine</h2>
+              </div>
+              <p class="section-note">Same-tab state crosses rooms. Text, masks, locks, forged context, and shells stay with you.</p>
+            </div>
+
+            <div class="gateway-grid gateway-grid-six">
+              <button type="button" class="gateway-card" data-station-target="play">
+                <div class="gateway-card-kicker"><span class="glyph glyph-lime" aria-hidden="true">&#x25C7;</span> Deck</div>
+                <h3>Encounter chamber</h3>
+                <p>Stage the pair. Wake the duel.</p>
+              </button>
+              <button type="button" class="gateway-card" data-station-target="homebase">
+                <div class="gateway-card-kicker"><span class="glyph glyph-lime" aria-hidden="true">&#x4E0B;</span> Homebase</div>
+                <h3>Cadence home</h3>
+                <p>Lock the home voice. Read what clung.</p>
+              </button>
+              <button type="button" class="gateway-card" data-station-target="personas">
+                <div class="gateway-card-kicker"><span class="glyph glyph-lime" aria-hidden="true">&#x03C8;</span> Personas</div>
+                <h3>Shelf and dossier</h3>
+                <p>Inspect the shell. Dispatch it later.</p>
+              </button>
+              <button type="button" class="gateway-card" data-station-target="readout">
+                <div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x0398;</span> Readout</div>
+                <h3>Witness / law</h3>
+                <p>Witness first. Route and harbor after.</p>
+              </button>
+              <button type="button" class="gateway-card" data-station-target="trainer">
+                <div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x22A2;</span> Trainer</div>
+                <h3>Forge lane</h3>
+                <p>Extract. Forge. Validate. Inject.</p>
+              </button>
+              <a class="gateway-card gateway-card-external" href="./safe-harbor/index.html">
+                <div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x27D0;</span> Safe Harbor</div>
+                <h3>Guarded passage</h3>
+                <p>Packet layer. Separate room.</p>
+              </a>
+            </div>
+
+            <section id="gatewayApertureBridgeRail" class="gateway-bridge-rail" aria-live="polite">
+              <div class="gateway-bridge-head">
+                <div>
+                  <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x27D0;</span> Aperture bridge</div>
+                  <h3>Counter-tool lane</h3>
+                </div>
+                <span id="gatewayApertureBridgePill" class="gateway-bridge-pill" data-state="latent">awaiting route</span>
+              </div>
+
+              <div class="gateway-bridge-grid">
+                <div class="gateway-bridge-row"><span class="gateway-bridge-label">Route</span><span id="gatewayApertureBridgeRoute" class="gateway-bridge-value">membrane-only</span></div>
+                <div class="gateway-bridge-row"><span class="gateway-bridge-label">Handoff</span><span id="gatewayApertureBridgeHandoff" class="gateway-bridge-value">awaiting packet</span></div>
+                <div class="gateway-bridge-row"><span class="gateway-bridge-label">Cumulative narrowing</span><span id="gatewayApertureBridgeNarrowing" class="gateway-bridge-value">pending</span></div>
+                <div class="gateway-bridge-row"><span class="gateway-bridge-label">Provenance</span><span id="gatewayApertureBridgeProvenance" class="gateway-bridge-value">pending</span></div>
+                <div class="gateway-bridge-row"><span class="gateway-bridge-label">Packet</span><span id="gatewayApertureBridgePacket" class="gateway-bridge-value">no packet prepared</span></div>
+              </div>
+
+              <p id="gatewayApertureBridgeNote" class="gateway-bridge-note">Pass ingress to mount the live Aperture lane.</p>
+
+              <div class="gateway-bridge-actions">
+                <a id="gatewayApertureHarborLink" class="gateway-link gateway-bridge-action" href="./safe-harbor/index.html">Open Safe Harbor</a>
+              </div>
+            </section>
+          </aside>
         </div>
       </section>
     </main>

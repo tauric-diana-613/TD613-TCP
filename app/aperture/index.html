@@ -58,6 +58,11 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     grid-template-rows: 42px 1fr;
   }
 
+  body[data-embed-mode="gateway"] {
+    font-size: 9.5px;
+    grid-template-rows: 38px 1fr;
+  }
+
   /* ── HEADER ──────────────────────────────────────────────── */
   header {
     background: linear-gradient(90deg, var(--bg3), rgba(13,15,24,0.97) 50%, var(--bg3));
@@ -69,6 +74,10 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     position: relative;
     z-index: 10;
     isolation: isolate;
+  }
+
+  body[data-embed-mode="gateway"] header {
+    padding: 0 12px;
   }
 
   header::after {
@@ -106,6 +115,11 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     font-size: 8.5px;
     color: var(--text-dim);
     letter-spacing: 1px;
+  }
+
+  body[data-embed-mode="gateway"] .subtitle {
+    max-width: 52ch;
+    line-height: 1.35;
   }
 
   .controls {
@@ -167,6 +181,12 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     background: rgba(30,40,60,0.04);
   }
 
+  body[data-embed-mode="gateway"] main {
+    grid-template-columns: 240px 1fr 258px;
+    grid-template-rows: 1fr 244px;
+    height: calc(100dvh - 38px);
+  }
+
   /* ── PANELS ──────────────────────────────────────────────── */
   .panel {
     background: var(--bg-panel);
@@ -175,6 +195,20 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     overflow-x: hidden;
     backdrop-filter: blur(8px);
     position: relative;
+  }
+
+  body[data-embed-mode="gateway"] .panel,
+  body[data-embed-mode="gateway"] .bottom-panel {
+    padding: 8px 10px;
+  }
+
+  body[data-embed-mode="gateway"] #btnMoire {
+    border-color: rgba(189,147,249,0.28);
+    box-shadow: 0 0 10px rgba(189,147,249,0.12);
+  }
+
+  body[data-embed-mode="gateway"] .section-label::after {
+    background: linear-gradient(90deg, rgba(189,147,249,0.18), transparent);
   }
 
   #leftPanel { grid-column: 1; grid-row: 1; }
@@ -748,6 +782,13 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
 
     .bottom-section {
       min-height: 180px;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    body[data-embed-mode="gateway"] main {
+      grid-template-columns: 216px 1fr 238px;
+      grid-template-rows: 1fr 228px;
     }
   }
 
@@ -1707,6 +1748,19 @@ function createInitialState() {
 }
 
 let state = createInitialState();
+const APERTURE_EMBED_MODE = (() => {
+  try {
+    return new URL(window.location.href).searchParams.get("embed") || "";
+  } catch {
+    return "";
+  }
+})();
+const APERTURE_GATEWAY_EMBED = APERTURE_EMBED_MODE === "gateway";
+let lastGatewayEmbedStatusSignature = "";
+
+if (APERTURE_GATEWAY_EMBED) {
+  document.body.dataset.embedMode = "gateway";
+}
 
 function markSelfTestDirty(reason = "update") {
   if (!state.selfTest) state.selfTest = createInitialState().selfTest;
@@ -2746,6 +2800,55 @@ function createTCPHandoffPacket(metrics, packetKeyOverride = null) {
   }
 
   return buildPacketEnvelope(payload);
+}
+
+function buildGatewayEmbedStatus() {
+  const latestPacket = state.lastExportedPacket || state.tcpHandoffPacket || null;
+  return {
+    source: "td613-aperture",
+    mode: "gateway-embed",
+    type: "status",
+    routeState: state.routeState || "play",
+    handoffStatus: state.handoffStatus || "membrane-only",
+    packetReady: !!state.tcpHandoffPacket,
+    packetExported: !!state.packetExported,
+    packetKey: latestPacket && latestPacket.packetKey ? latestPacket.packetKey : null,
+    checksum: latestPacket && latestPacket.checksum ? latestPacket.checksum : null,
+    cumulativeNarrowing: clamp01(state.cumulativeNarrowing || 0),
+    dominantLoss: state.losses && state.losses.dominant ? state.losses.dominant : "—",
+    harborEligibility: clamp01(state.harborEligibility || 0),
+    provenanceIntegrity: latestPacket && latestPacket.provenance && typeof latestPacket.provenance.integrity === "number"
+      ? clamp01(latestPacket.provenance.integrity)
+      : clamp01(state.fieldSignature && state.fieldSignature.rho || 0),
+    latestPacket: latestPacket ? JSON.parse(JSON.stringify(latestPacket)) : null
+  };
+}
+
+function emitGatewayEmbedStatus(force = false) {
+  if (!APERTURE_GATEWAY_EMBED || !window.parent || window.parent === window) {
+    return;
+  }
+  const payload = buildGatewayEmbedStatus();
+  const signature = JSON.stringify({
+    routeState: payload.routeState,
+    handoffStatus: payload.handoffStatus,
+    packetReady: payload.packetReady,
+    packetExported: payload.packetExported,
+    packetKey: payload.packetKey,
+    checksum: payload.checksum,
+    cumulativeNarrowing: payload.cumulativeNarrowing,
+    dominantLoss: payload.dominantLoss,
+    harborEligibility: payload.harborEligibility,
+    provenanceIntegrity: payload.provenanceIntegrity
+  });
+  if (!force && signature === lastGatewayEmbedStatusSignature) {
+    return;
+  }
+  lastGatewayEmbedStatusSignature = signature;
+  const targetOrigin = window.location.origin && window.location.origin !== "null"
+    ? window.location.origin
+    : "*";
+  window.parent.postMessage(payload, targetOrigin);
 }
 
 function exportToTCP(packet) {
@@ -5347,7 +5450,12 @@ requestAnimationFrame(tick);
 
     const title = document.querySelector("header .title");
     if (title) title.innerHTML = '<span class="glyph">&#9673;</span> TD613 Aperture';
-    setText(document.getElementById("subtitle"), "TD613 Aperture counter-tool \u00b7 audits and dismantles selective admissibility in PRCS-A");
+    setText(
+      document.getElementById("subtitle"),
+      APERTURE_GATEWAY_EMBED
+        ? "TD613 Aperture gateway embed \u00b7 interference cartography, moir\u00e9 stratigraphy, and narrowing audit remain live"
+        : "TD613 Aperture counter-tool \u00b7 audits and dismantles selective admissibility in PRCS-A"
+    );
 
     const rightPanel = document.getElementById("rightPanel");
     if (rightPanel) {
@@ -5376,7 +5484,12 @@ requestAnimationFrame(tick);
     setSectionLabelByChildId("humanRoutePanel", "COUNTER-RECOGNITION");
     setSectionLabelByChildId("tcpBridgePanel", "DERIVATIVE HANDOFF / GUARDED EGRESS");
     setSectionLabelByChildId("eventLedger", "RESIDUE LEDGER");
-    setSectionLabelByChildId("moireCanvas", "MOIR\u00c9 STRATIGRAPHY");
+    setSectionLabelByChildId(
+      "moireCanvas",
+      APERTURE_GATEWAY_EMBED
+        ? "MOIR\u00c9 STRATIGRAPHY / INTERFERENCE CARTOGRAPHY"
+        : "MOIR\u00c9 STRATIGRAPHY"
+    );
     setSectionLabelByChildId("traceCanvas", "COHERENCE / INTENSITY TRACE");
 
     setHookTitleByValueId("eoSweepSummary", "COUNTER-RECOGNITION NOTES");
@@ -5387,6 +5500,13 @@ requestAnimationFrame(tick);
     setHookTitleByValueId("humanRouteStatus", "Counter-tool field");
     setHookTitleByValueId("inputProjectionReadout", "Admissibility audit vector");
     setHookTitleByValueId("bridgeStateCopy", "Counter-tool stance");
+
+    if (APERTURE_GATEWAY_EMBED) {
+      const moireButton = document.getElementById("btnMoire");
+      if (moireButton) {
+        moireButton.title = "Interference cartography / speculative hypnotic field analysis";
+      }
+    }
 
     setLabelTextFor("inputSubjectAlias", "recognition mark");
     setLabelTextFor("inputSourceType", "observed provenance");
@@ -6486,11 +6606,13 @@ requestAnimationFrame(tick);
     const result = previousUpdateUI.call(this, opts);
     patchVersionDisplays();
     updateForensicPanels();
+    emitGatewayEmbedStatus();
     return result;
   };
 
   patchVersionDisplays();
   updateForensicPanels();
+  emitGatewayEmbedStatus(true);
 })();
 </script>
 </body>
