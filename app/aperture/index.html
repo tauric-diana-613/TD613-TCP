@@ -1583,7 +1583,8 @@ const PERF = {
   VISUAL_TIME_SCALE: 1.35,
   FIELD_STEP_MS: 1000 / 72,
   FIELD_STEP_CAP: 3,
-  FIELD_BACKLOG_CAP_MS: (1000 / 72) * 3,
+  FIELD_STEP_CATCHUP_CAP: 12,
+  FIELD_BACKLOG_CAP_MS: (1000 / 72) * 12,
   UI_HZ_NOMINAL: 12,
   UI_HZ_COMPACT: 8,
   UI_HZ_SEVERE: 4,
@@ -1763,6 +1764,7 @@ const APERTURE_EMBED_MODE = (() => {
 const APERTURE_GATEWAY_EMBED = APERTURE_EMBED_MODE === "gateway";
 const GATEWAY_APERTURE_HANDOFF_KEY = "td613.gateway.aperture-handoff";
 let lastGatewayEmbedStatusSignature = "";
+let lastGatewayEmbedStatusAt = 0;
 
 if (APERTURE_GATEWAY_EMBED) {
   document.body.dataset.embedMode = "gateway";
@@ -2845,7 +2847,25 @@ function persistGatewayEmbedStatus(payload) {
 }
 
 function emitGatewayEmbedStatus(force = false) {
-  const payload = buildGatewayEmbedStatus();
+  const latestPacket = state.lastExportedPacket || state.tcpHandoffPacket || null;
+  const payload = {
+    source: "td613-aperture",
+    mode: "gateway-embed",
+    type: "status",
+    routeState: state.routeState || "play",
+    handoffStatus: state.handoffStatus || "membrane-only",
+    packetReady: !!state.tcpHandoffPacket,
+    packetExported: !!state.packetExported,
+    packetKey: latestPacket && latestPacket.packetKey ? latestPacket.packetKey : null,
+    checksum: latestPacket && latestPacket.checksum ? latestPacket.checksum : null,
+    cumulativeNarrowing: clamp01(state.cumulativeNarrowing || 0),
+    dominantLoss: state.losses && state.losses.dominant ? state.losses.dominant : "—",
+    harborEligibility: clamp01(state.harborEligibility || 0),
+    provenanceIntegrity: latestPacket && latestPacket.provenance && typeof latestPacket.provenance.integrity === "number"
+      ? clamp01(latestPacket.provenance.integrity)
+      : clamp01(state.fieldSignature && state.fieldSignature.rho || 0),
+    latestPacket: latestPacket ? JSON.parse(JSON.stringify(latestPacket)) : null
+  };
   const signature = JSON.stringify({
     routeState: payload.routeState,
     handoffStatus: payload.handoffStatus,
@@ -2853,15 +2873,19 @@ function emitGatewayEmbedStatus(force = false) {
     packetExported: payload.packetExported,
     packetKey: payload.packetKey,
     checksum: payload.checksum,
-    cumulativeNarrowing: payload.cumulativeNarrowing,
+    cumulativeNarrowing: Number(payload.cumulativeNarrowing.toFixed(3)),
     dominantLoss: payload.dominantLoss,
-    harborEligibility: payload.harborEligibility,
-    provenanceIntegrity: payload.provenanceIntegrity
+    harborEligibility: Number(payload.harborEligibility.toFixed(3)),
+    provenanceIntegrity: Number(payload.provenanceIntegrity.toFixed(3))
   });
-  if (!force && signature === lastGatewayEmbedStatusSignature) {
+  const now = typeof performance !== "undefined" && typeof performance.now === "function"
+    ? performance.now()
+    : Date.now();
+  if (!force && signature === lastGatewayEmbedStatusSignature && now - lastGatewayEmbedStatusAt < 240) {
     return;
   }
   lastGatewayEmbedStatusSignature = signature;
+  lastGatewayEmbedStatusAt = now;
   persistGatewayEmbedStatus(payload);
   if (!APERTURE_GATEWAY_EMBED || !window.parent || window.parent === window) {
     return;
@@ -4928,8 +4952,12 @@ function tick(now = performance.now()) {
 
   if (state.running) {
     rt.fieldBacklogMs = Math.min(PERF.FIELD_BACKLOG_CAP_MS, rt.fieldBacklogMs + frameMs);
+    const stepCap = Math.min(
+      PERF.FIELD_STEP_CATCHUP_CAP,
+      Math.max(PERF.FIELD_STEP_CAP, Math.ceil(rt.fieldBacklogMs / PERF.FIELD_STEP_MS))
+    );
     let steps = 0;
-    while (rt.fieldBacklogMs >= PERF.FIELD_STEP_MS && steps < PERF.FIELD_STEP_CAP) {
+    while (rt.fieldBacklogMs >= PERF.FIELD_STEP_MS && steps < stepCap) {
       advanceFieldStep();
       rt.fieldBacklogMs -= PERF.FIELD_STEP_MS;
       steps++;
@@ -6362,6 +6390,10 @@ requestAnimationFrame(tick);
 </script>
 <script>
 (function () {
+  let lastForensicSchemaSignature = "";
+  let lastForensicDiffSignature = "";
+  let lastForensicEthicsSignature = "";
+
   function currentState() {
     try {
       return typeof state === "undefined" ? null : state;
@@ -6555,36 +6587,72 @@ requestAnimationFrame(tick);
     const ethicsSummary = document.getElementById("ethicsAuditSummary");
     const ethicsTable = document.getElementById("ethicsAuditTable");
 
-    if (schemaVersion) schemaVersion.textContent = `${APERTURE.schema} · governed exposure v1`;
-    if (schemaExposure) schemaExposure.textContent = `${schema.governedExposure.S} / ${schema.governedExposure.projected} / ${schema.governedExposure.registered}`;
-    if (schemaSource) schemaSource.textContent = schema.sourceClasses.join(" · ");
-    if (schemaAuthority) schemaAuthority.textContent = `${schema.authorityCeiling} · ${schema.governedExposure.routeState}`;
-    if (schemaOperator) schemaOperator.textContent = `Gap ${fmt(schema.governedExposure.Gap)} · ${schema.governedExposure.dominantOperator}`;
-    if (diffSummary) diffSummary.textContent = diff.summary;
-    if (diffMatrix) {
-      diffMatrix.innerHTML = diff.rows.map((row) => `
-        <div class="tcp-hook">
-          <div class="hook-title">${escapeHtml(row.label)}</div>
-          <div class="hook-value">${escapeHtml(row.route)}</div>
-          <div class="bridge-readout"><span class="label">aperture</span><span class="value">${fmt(row.aperture)}</span></div>
-          <div class="bridge-readout"><span class="label">capacity</span><span class="value">${fmt(row.capacity)}</span></div>
-          <div class="bridge-readout"><span class="label">policy</span><span class="value">${fmt(row.strictness)}</span></div>
-          <div class="bridge-readout"><span class="label">naming</span><span class="value">${fmt(row.naming)}</span></div>
-        </div>
-      `).join("");
+    const schemaSignature = [
+      APERTURE.schema,
+      schema.governedExposure.S,
+      schema.governedExposure.projected,
+      schema.governedExposure.registered,
+      schema.sourceClasses.join("|"),
+      schema.authorityCeiling,
+      schema.governedExposure.routeState,
+      fmt(schema.governedExposure.Gap),
+      schema.governedExposure.dominantOperator
+    ].join("|");
+    const diffSignature = [
+      diff.summary,
+      diff.rows.map((row) => [
+        row.label,
+        row.route,
+        fmt(row.aperture),
+        fmt(row.capacity),
+        fmt(row.strictness),
+        fmt(row.naming)
+      ].join(":")).join("|")
+    ].join("|");
+    const ethicsSignature = [
+      ethics.summary,
+      ethics.rows.map((row) => [row.term, row.signal, row.detail].join(":")).join("|")
+    ].join("|");
+
+    if (schemaSignature !== lastForensicSchemaSignature) {
+      if (schemaVersion) schemaVersion.textContent = `${APERTURE.schema} · governed exposure v1`;
+      if (schemaExposure) schemaExposure.textContent = `${schema.governedExposure.S} / ${schema.governedExposure.projected} / ${schema.governedExposure.registered}`;
+      if (schemaSource) schemaSource.textContent = schema.sourceClasses.join(" · ");
+      if (schemaAuthority) schemaAuthority.textContent = `${schema.authorityCeiling} · ${schema.governedExposure.routeState}`;
+      if (schemaOperator) schemaOperator.textContent = `Gap ${fmt(schema.governedExposure.Gap)} · ${schema.governedExposure.dominantOperator}`;
+      lastForensicSchemaSignature = schemaSignature;
     }
-    if (ethicsSummary) ethicsSummary.textContent = ethics.summary;
-    if (ethicsTable) {
-      ethicsTable.innerHTML = ethics.rows.map((row) => `
-        <div class="bridge-readout">
-          <span class="label">${escapeHtml(row.term)}</span>
-          <span class="value">${escapeHtml(row.signal)}</span>
-        </div>
-        <div class="bridge-readout">
-          <span class="label">detail</span>
-          <span class="value">${escapeHtml(row.detail)}</span>
-        </div>
-      `).join("");
+    if (diffSignature !== lastForensicDiffSignature) {
+      if (diffSummary) diffSummary.textContent = diff.summary;
+      if (diffMatrix) {
+        diffMatrix.innerHTML = diff.rows.map((row) => `
+          <div class="tcp-hook">
+            <div class="hook-title">${escapeHtml(row.label)}</div>
+            <div class="hook-value">${escapeHtml(row.route)}</div>
+            <div class="bridge-readout"><span class="label">aperture</span><span class="value">${fmt(row.aperture)}</span></div>
+            <div class="bridge-readout"><span class="label">capacity</span><span class="value">${fmt(row.capacity)}</span></div>
+            <div class="bridge-readout"><span class="label">policy</span><span class="value">${fmt(row.strictness)}</span></div>
+            <div class="bridge-readout"><span class="label">naming</span><span class="value">${fmt(row.naming)}</span></div>
+          </div>
+        `).join("");
+      }
+      lastForensicDiffSignature = diffSignature;
+    }
+    if (ethicsSignature !== lastForensicEthicsSignature) {
+      if (ethicsSummary) ethicsSummary.textContent = ethics.summary;
+      if (ethicsTable) {
+        ethicsTable.innerHTML = ethics.rows.map((row) => `
+          <div class="bridge-readout">
+            <span class="label">${escapeHtml(row.term)}</span>
+            <span class="value">${escapeHtml(row.signal)}</span>
+          </div>
+          <div class="bridge-readout">
+            <span class="label">detail</span>
+            <span class="value">${escapeHtml(row.detail)}</span>
+          </div>
+        `).join("");
+      }
+      lastForensicEthicsSignature = ethicsSignature;
     }
     if (currentState()) {
       currentState().forensicSchema = schema;
@@ -6630,8 +6698,11 @@ requestAnimationFrame(tick);
   window.updateUI = function td613UpdateForensicPanels(opts = {}) {
     const result = previousUpdateUI.call(this, opts);
     patchVersionDisplays();
-    updateForensicPanels();
-    emitGatewayEmbedStatus();
+    const shouldRefreshForensics = !!opts.force || !!opts.slow || currentState()?.tick <= 2;
+    if (shouldRefreshForensics) {
+      updateForensicPanels();
+    }
+    emitGatewayEmbedStatus(!!opts.force);
     return result;
   };
 

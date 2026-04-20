@@ -401,8 +401,6 @@
     if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
       canvas.width = pixelWidth;
       canvas.height = pixelHeight;
-      canvas.style.width = `${logicalWidth}px`;
-      canvas.style.height = `${logicalHeight}px`;
     }
     const ctx = canvas.getContext('2d');
     if (!ctx) {
@@ -423,12 +421,17 @@
     if (!center || !main || !moire || !trace) {
       return;
     }
-    const centerBox = center.getBoundingClientRect();
-    setupGatewayPreviewCanvas(main, Math.max(240, centerBox.width), Math.max(360, centerBox.height));
-    const moireBox = moire.parentElement?.getBoundingClientRect?.() || { width: 320, height: 200 };
-    const traceBox = trace.parentElement?.getBoundingClientRect?.() || { width: 260, height: 200 };
-    setupGatewayPreviewCanvas(moire, Math.max(220, moireBox.width - 20), Math.max(120, moireBox.height - 42));
-    setupGatewayPreviewCanvas(trace, Math.max(180, traceBox.width - 20), Math.max(120, traceBox.height - 42));
+    const centerWidth = Math.max(240, center.clientWidth || center.getBoundingClientRect().width || 0);
+    const centerHeight = Math.max(360, center.clientHeight || center.getBoundingClientRect().height || 0);
+    setupGatewayPreviewCanvas(main, centerWidth, centerHeight);
+    const moireHost = moire.parentElement;
+    const traceHost = trace.parentElement;
+    const moireWidth = Math.max(220, (moireHost?.clientWidth || moireHost?.getBoundingClientRect?.().width || 320) - 20);
+    const moireHeight = Math.max(120, (moireHost?.clientHeight || moireHost?.getBoundingClientRect?.().height || 200) - 42);
+    const traceWidth = Math.max(180, (traceHost?.clientWidth || traceHost?.getBoundingClientRect?.().width || 260) - 20);
+    const traceHeight = Math.max(120, (traceHost?.clientHeight || traceHost?.getBoundingClientRect?.().height || 200) - 42);
+    setupGatewayPreviewCanvas(moire, moireWidth, moireHeight);
+    setupGatewayPreviewCanvas(trace, traceWidth, traceHeight);
   }
 
   function gatewayPreviewProject(x, y, width, height) {
@@ -894,7 +897,6 @@
     if (PAGE_KIND !== 'gateway') {
       return;
     }
-    resizeGatewayPreviewCanvases();
     updateGatewayPreviewChrome();
     drawGatewayPreviewMain();
     drawGatewayPreviewMoirePanel();
@@ -950,6 +952,7 @@
     gatewayPreview.initialized = true;
     gatewayPreview.showMoire = true;
     gatewayPreview.trace = [];
+    resizeGatewayPreviewCanvases();
     updateGatewayPreviewChrome();
     drawGatewayPreviewAll();
     gatewayPreview.animationFrame = window.requestAnimationFrame(gatewayPreviewFrame);
@@ -8772,8 +8775,14 @@ DeltaE = ${ledger.reuse_gain}`;
   window.addEventListener('pagehide', persistSessionFlightState);
   window.addEventListener('beforeunload', persistSessionFlightState);
   window.addEventListener('storage', handleGatewayApertureStorageEvent);
-  window.addEventListener('resize', drawGatewayPreviewAll);
-  window.addEventListener('orientationchange', drawGatewayPreviewAll);
+  window.addEventListener('resize', () => {
+    resizeGatewayPreviewCanvases();
+    drawGatewayPreviewAll();
+  });
+  window.addEventListener('orientationchange', () => {
+    resizeGatewayPreviewCanvases();
+    drawGatewayPreviewAll();
+  });
 
   async function boot() {
     if (redirectLegacyGatewayHashIfNeeded()) {
