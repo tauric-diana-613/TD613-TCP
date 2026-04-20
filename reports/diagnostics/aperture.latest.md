@@ -1,18 +1,18 @@
 # TD613 Aperture Annex Diagnostics
 
 Source: app/aperture/index.html
-Status: passed
+Status: failed
 Version: 1.8.0
 Title: TD613 Aperture · v1.8.0
 
 ## Fingerprint
 
-- bytes: 300144
-- line_count: 6448
+- bytes: 316802
+- line_count: 6716
 - inline_script_count: 3
 - panel_count: 3
 - button_count: 18
-- content_hash_sha256: f8a7a4d10d6cd62a0215ae8d0bb525183f6257829bd9cc6a4746dc0a1c28b193
+- content_hash_sha256: 2056cb5899a8c0b8c2b02da4689739c1efcb8d9b036c9bb26252bc494f699b4e
 
 ## Checks
 
@@ -49,7 +49,7 @@ Title: TD613 Aperture · v1.8.0
 - [pass] PRCS-A regime marker: PRCS-A regime marker present
 - [pass] TD613 Aperture identity marker: TD613 Aperture identity marker present
 - [pass] source declaration global: source declaration global present
-- [pass] Aperture runtime definition: Aperture runtime definition present
+- [fail] Aperture runtime definition: Aperture runtime definition missing
 - [pass] packet export gate: packet export gate present
 - [pass] route class sync: route class sync present
 - [pass] non-identifying packet copy: non-identifying packet copy present

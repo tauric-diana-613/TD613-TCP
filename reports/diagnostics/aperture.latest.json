@@ -2,7 +2,7 @@
   "id": "aperture",
   "label": "TD613 Aperture",
   "file": "app/aperture/index.html",
-  "passed": true,
+  "passed": false,
   "title": "TD613 Aperture · v1.8.0",
   "version": "1.8.0",
   "meta": {
@@ -20,12 +20,12 @@
     "anti-enforcement": "true"
   },
   "fingerprint": {
-    "bytes": 300144,
-    "lineCount": 6448,
+    "bytes": 316802,
+    "lineCount": 6716,
     "inlineScriptCount": 3,
     "panelCount": 3,
     "buttonCount": 18,
-    "contentHashSha256": "f8a7a4d10d6cd62a0215ae8d0bb525183f6257829bd9cc6a4746dc0a1c28b193"
+    "contentHashSha256": "2056cb5899a8c0b8c2b02da4689739c1efcb8d9b036c9bb26252bc494f699b4e"
   },
   "checks": [
     {
@@ -295,8 +295,8 @@
     {
       "id": "pattern:aperture-global",
       "label": "Aperture runtime definition",
-      "ok": true,
-      "detail": "Aperture runtime definition present",
+      "ok": false,
+      "detail": "Aperture runtime definition missing",
       "expected": null,
       "actual": null
     },
@@ -357,10 +357,19 @@
       "actual": null
     }
   ],
-  "failedChecks": [],
+  "failedChecks": [
+    {
+      "id": "pattern:aperture-global",
+      "label": "Aperture runtime definition",
+      "ok": false,
+      "detail": "Aperture runtime definition missing",
+      "expected": null,
+      "actual": null
+    }
+  ],
   "checkSummary": {
     "total": 41,
-    "passed": 41,
-    "failed": 0
+    "passed": 40,
+    "failed": 1
   }
 }

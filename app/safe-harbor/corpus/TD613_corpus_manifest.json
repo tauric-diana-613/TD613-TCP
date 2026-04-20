@@ -66,7 +66,7 @@
       "route_status": "buffered"
     },
     {
-      "name": "tauric-diana-intake/batch-003a_tauric-diana-bots_core.json",
+      "name": "tauric-diana-intake/batch-003a_svenbots_core.json",
       "size": 2289,
       "route_status": "buffered"
     },
@@ -99,6 +99,36 @@
       "name": "tauric-diana-intake/batch-004c_coined_frameworks.json",
       "size": 752,
       "route_status": "buffered"
+    }
+  ],
+  "corpus_registry": [
+    {
+      "batch_id": "batch-001a",
+      "name": "Migration Console Family",
+      "path": "tauric-diana-intake/batch-001a_migration_console.json",
+      "route_status": "buffered",
+      "primary_persona": "The Operator"
+    },
+    {
+      "batch_id": "batch-002a",
+      "name": "Thinkers Spine",
+      "path": "tauric-diana-intake/batch-002a_thinkers_spine.json",
+      "route_status": "buffered",
+      "primary_persona": "The Archivist"
+    },
+    {
+      "batch_id": "batch-003a",
+      "name": "Svenbots Core",
+      "path": "tauric-diana-intake/batch-003a_svenbots_core.json",
+      "route_status": "buffered",
+      "primary_persona": "The Matron, The Undertow, The Spark"
+    },
+    {
+      "batch_id": "batch-004a",
+      "name": "Bulk Raw Intake",
+      "path": "tauric-diana-intake/batch-004a_bulk_raw_intake.json",
+      "route_status": "buffered",
+      "primary_persona": "The Cross-Examiner, The Methods Editor"
     }
   ]
 }
