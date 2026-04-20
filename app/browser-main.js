@@ -437,7 +437,7 @@
   function gatewayPreviewProject(x, y, width, height) {
     const scale = Math.min(width, height) * 0.78;
     const ox = width / 2 - 0.5 * scale;
-    const oy = height / 2 + GATEWAY_PREVIEW_SQRT3_HALF * scale * 0.31;
+    const oy = height / 2 + GATEWAY_PREVIEW_SQRT3_HALF * scale * 0.54;
     return { x: ox + x * scale, y: oy - y * scale };
   }
 
