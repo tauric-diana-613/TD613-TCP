@@ -202,6 +202,8 @@
     loadSession();
     primeInboundContext();
     hydrate();
+    autoOpenStoredBypassShell();
+    render();
     dom.body.classList.remove('boot-pending');
     dom.body.classList.add('boot-ready');
     void rebuild('init');
@@ -453,6 +455,19 @@
     dom.bypassPassword.value = '';
     updateHelpers();
     render();
+  }
+
+  function autoOpenStoredBypassShell() {
+    if (surfaceOpen() || state.packet) return;
+    if (!getOperatorBypassHash()) return;
+    state.ingress.operatorShellOpen = true;
+    state.ingress.vaultOpen = false;
+    state.ingress.bypass = true;
+    state.ingress.recovered = false;
+    state.ingress.openedAt = nowIso();
+    state.ingress.packetId = null;
+    state.ingress.receiptId = null;
+    persist();
   }
 
   function loadSession() {
