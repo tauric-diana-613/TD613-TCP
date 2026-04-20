@@ -5136,7 +5136,7 @@ requestAnimationFrame(tick);
   if (window.__APERTURE_V180__) return;
   window.__APERTURE_V180__ = true;
 
-  const APERTURE = {
+  const APERTURE = Object.freeze(window.APERTURE || {
     version: "v1.8.0",
     schema: "td613-aperture/v1.8.0",
     title: "TD613 Aperture",
@@ -5155,7 +5155,8 @@ requestAnimationFrame(tick);
       beta: "\u03b2",
       rho: "\u03c1"
     }
-  };
+  });
+  window.APERTURE = APERTURE;
 
   const STATUS_PILL_COPY = {
     "intake-pending": { text: "TRACE PENDING", color: "var(--suppressed)" },

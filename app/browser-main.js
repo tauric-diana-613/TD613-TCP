@@ -434,7 +434,7 @@
   function gatewayPreviewProject(x, y, width, height) {
     const scale = Math.min(width, height) * 0.78;
     const ox = width / 2 - 0.5 * scale;
-    const oy = height / 2 + GATEWAY_PREVIEW_SQRT3_HALF * scale * 0.35;
+    const oy = height / 2 + GATEWAY_PREVIEW_SQRT3_HALF * scale * 0.31;
     return { x: ox + x * scale, y: oy - y * scale };
   }
 
@@ -480,7 +480,7 @@
   function createGatewayPreviewRay(angleOffset = 0) {
     const startY = GATEWAY_PREVIEW_SQRT3_HALF / 3;
     const baseAngle = (-Math.PI / 2) + angleOffset + ((Math.random() - 0.5) * 0.28);
-    const speed = 2.55 + (Math.random() * 0.55);
+    const speed = 3.8 + (Math.random() * 0.8);
     const startX = 0.5 + ((Math.random() - 0.5) * 0.015);
     const y = startY + ((Math.random() - 0.5) * 0.015);
     return {
@@ -552,11 +552,11 @@
     if (!gatewayPreview.rays.length) {
       seedGatewayPreviewRays();
     }
-    const travelBudget = (dtMs / 1000) * 2.4;
+    const travelBudget = (dtMs / 1000) * 5.8;
     gatewayPreview.rays.forEach((ray) => {
       let remaining = travelBudget;
       let iterations = 0;
-      while (remaining > 1e-4 && iterations < 8) {
+      while (remaining > 1e-4 && iterations < 14) {
         let closest = null;
         GATEWAY_PREVIEW_EDGES.forEach((edge) => {
           const hit = gatewayPreviewRayEdgeIntersection(ray.x, ray.y, ray.dx, ray.dy, edge, remaining);
@@ -586,7 +586,7 @@
         remaining -= closest.t;
         iterations += 1;
       }
-      ray.intensity = Math.max(0.24, ray.intensity * 0.996);
+      ray.intensity = Math.max(0.18, ray.intensity * 0.995);
       if (ray.bounces > 36) {
         Object.assign(ray, createGatewayPreviewRay((Math.random() - 0.5) * 0.9));
       }
@@ -648,15 +648,6 @@
       drift: 5.2,
       phase: gatewayPreview.fieldTick * 0.0018,
       color: 'rgba(189,147,249,0.95)'
-    });
-    drawGatewayPreviewLineField(ctx, width, height, {
-      angle: -0.095 + Math.sin(gatewayPreview.fieldTick * 0.00027) * 0.03,
-      spacing: baseSpacing * 0.92,
-      thickness: 0.7,
-      alpha: 0.03,
-      drift: 2.2,
-      phase: gatewayPreview.fieldTick * 0.0011,
-      color: 'rgba(220,230,244,0.82)'
     });
   }
 
@@ -918,7 +909,7 @@
     gatewayPreview.lastTimestamp = timestamp;
     advanceGatewayPreview(dtMs);
     drawGatewayPreviewAll();
-    gatewayPreview.animationFrame = window.setTimeout(() => gatewayPreviewFrame(window.performance.now()), 16);
+    gatewayPreview.animationFrame = window.requestAnimationFrame(gatewayPreviewFrame);
   }
 
   function toggleGatewayPreviewRun() {
@@ -961,7 +952,7 @@
     gatewayPreview.trace = [];
     updateGatewayPreviewChrome();
     drawGatewayPreviewAll();
-    gatewayPreview.animationFrame = window.setTimeout(() => gatewayPreviewFrame(window.performance.now()), 16);
+    gatewayPreview.animationFrame = window.requestAnimationFrame(gatewayPreviewFrame);
   }
 
   function isCurrentStationPage(tab = 'homebase') {
@@ -2845,6 +2836,9 @@
     if (shell) {
       shell.inert = ingress.phase !== 'complete';
       shell.setAttribute('aria-hidden', ingress.phase === 'complete' ? 'false' : 'true');
+    }
+    if (PAGE_KIND === 'gateway' && ingress.phase === 'complete') {
+      initGatewayPreview();
     }
     updateIngressStageRail();
 
@@ -8804,7 +8798,9 @@ DeltaE = ${ledger.reuse_gain}`;
       document.body.dataset.bootDegraded = 'false';
       document.body.dataset.bootStage = 'boot-ready';
       renderGatewayApertureBridgeRail();
-      initGatewayPreview();
+      if (ingress.phase === 'complete') {
+        initGatewayPreview();
+      }
       startIngressSequence();
       document.body.dataset.bootStage = 'boot-complete';
       return;
