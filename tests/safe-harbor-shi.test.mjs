@@ -36,5 +36,9 @@ assert.ok(
     harborMainSource.includes("logEvent('bypass-opened'"),
   'A recognized SHI can now actually open the packetless operator shell instead of leaving Harbor trapped behind the membrane'
 );
+assert.ok(
+  harborMainSource.includes("reason: 'valid-shi-blind-recall'"),
+  'A valid SHI can now open the operator shell even when no retained packet or stored recall hash is present'
+);
 
 console.log('safe-harbor-shi.test.mjs passed');

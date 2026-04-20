@@ -983,8 +983,18 @@
     }
     const configuredHash = getOperatorBypassHash();
     if (!configuredHash) {
-      dom.ingressNote.textContent = 'No recoverable packet or stored SHI recall code was found for this session.';
-      logEvent('bypass-unavailable', { state: 'sealed', reason: 'missing-shi-recall' });
+      state.ingress.operatorShellOpen = true;
+      state.ingress.vaultOpen = false;
+      state.ingress.bypass = true;
+      state.ingress.recovered = false;
+      state.ingress.openedAt = nowIso();
+      state.ingress.packetId = null;
+      state.ingress.receiptId = null;
+      dom.bypassPassword.value = '';
+      render();
+      persist();
+      dom.ingressNote.textContent = 'SHI accepted. The operator shell is open in blind recall mode without a retained packet.';
+      logEvent('bypass-opened', { state: 'operator-shell', reason: 'valid-shi-blind-recall', shi_number: token });
       return;
     }
     const tokenHash = await checksum(token);
