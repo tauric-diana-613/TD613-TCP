@@ -1,0 +1,35 @@
+{
+  "batch_id": "batch-001d",
+  "created_date": "2026-03-24T00:00:00Z",
+  "family_name": "Protected Core Set A",
+  "verification_status": "Draft",
+  "notes": "Wave 1D protected core seed",
+  "family_metadata": {
+    "name": "Protected Core Set A",
+    "description": "Protected anti-capture and core preservation infrastructure",
+    "priority_level": "Immediate",
+    "protection_level": "Cold Canonical",
+    "target_repo_path": "01_protected_core/protected_core_set_a",
+    "restore_order": "4",
+    "export_status": "Ready for Export",
+    "notes": "Wave 1D"
+  },
+  "placeholder_mode": false,
+  "nodes": [
+    {
+      "source_node_id": "69c1833e0dd6d4381a0a07d8",
+      "title": "Protected Core Set A",
+      "family_name": "Protected Core Set A",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001d",
+      "wave_membership": "wave-001d"
+    }
+  ]
+}

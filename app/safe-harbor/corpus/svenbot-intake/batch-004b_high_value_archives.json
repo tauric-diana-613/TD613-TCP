@@ -1,0 +1,19 @@
+{
+  "batch_id": "batch-004b",
+  "created_date": "2026-03-24T00:00:00Z",
+  "family_name": "High-Value Narrative Archives",
+  "verification_status": "Draft",
+  "notes": "Wave 4B promote major narrative archives from RawIntake",
+  "family_metadata": {
+    "name": "High-Value Narrative Archives",
+    "description": "Load-bearing narrative archives, major branch summaries, older conceptual arcs, and important traces",
+    "priority_level": "High",
+    "protection_level": "Protected Core",
+    "target_repo_path": "04_clusters/high_value_archives",
+    "restore_order": "15",
+    "export_status": "Included in Intake",
+    "notes": "Wave 4B"
+  },
+  "placeholder_mode": true,
+  "nodes": []
+}

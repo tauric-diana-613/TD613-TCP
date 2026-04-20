@@ -1,0 +1,19 @@
+{
+  "batch_id": "batch-004c",
+  "created_date": "2026-03-24T00:00:00Z",
+  "family_name": "Coined Frameworks and Signature Methods",
+  "verification_status": "Draft",
+  "notes": "Wave 4C promote coined methods and signature frameworks from RawIntake",
+  "family_metadata": {
+    "name": "Coined Frameworks and Signature Methods",
+    "description": "Named methods, coined concepts, strange ontology words, signature compressed phrases, and unique frameworks",
+    "priority_level": "Immediate",
+    "protection_level": "Protected Core",
+    "target_repo_path": "04_clusters/coined_frameworks",
+    "restore_order": "16",
+    "export_status": "Included in Intake",
+    "notes": "Wave 4C"
+  },
+  "placeholder_mode": true,
+  "nodes": []
+}

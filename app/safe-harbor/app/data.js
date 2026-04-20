@@ -143,12 +143,14 @@
       },
       demo: {
         tcp: {
-          status: 'attached',
-          source: 'demo-tcp',
-          intake_id: 'tcp-demo-intake-01',
+          status: 'buffered',
+          source: 'svenbot-intake',
+          intake_id: 'svenbot-intake-buffer-01',
+          lane: 'corpus/svenbot-intake/',
+          membrane_note: 'Buffered Svenbot canon intake attached from corpus/svenbot-intake/.',
           cadence_signature: {
             status: 'attached',
-            source: 'demo-tcp',
+            source: 'svenbot-intake',
             dominant_axes: ['pulse', 'recurrence', 'cadence'],
             punctuation_mix: {
               comma: 0.021,

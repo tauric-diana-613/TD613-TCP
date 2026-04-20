@@ -1,0 +1,80 @@
+{
+  "batch_id": "batch-002b",
+  "created_date": "2026-03-24T00:00:00Z",
+  "family_name": "Continuity and Citation Adjuncts",
+  "verification_status": "Draft",
+  "notes": "Wave 2B continuity + citation lineage, including quarantined and clean",
+  "family_metadata": {
+    "name": "Continuity and Citation Adjuncts",
+    "description": "Continuity lattice and citation-spine lineage, including quarantined and clean counterparts",
+    "priority_level": "High",
+    "protection_level": "Protected Core",
+    "target_repo_path": "04_clusters/continuity_citation",
+    "restore_order": "6",
+    "export_status": "Ready for Export",
+    "notes": "Wave 2B"
+  },
+  "placeholder_mode": false,
+  "nodes": [
+    {
+      "source_node_id": "69c1c82968be5368386a726a",
+      "title": "Interpretive Citation Spine Hub",
+      "family_name": "Continuity and Citation Adjuncts",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002b",
+      "wave_membership": "wave-002b"
+    },
+    {
+      "source_node_id": "69c1c82968be5368386a726b",
+      "title": "Continuity Safeguard Lattice",
+      "family_name": "Continuity and Citation Adjuncts",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002b",
+      "wave_membership": "wave-002b"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c57",
+      "title": "Clean Continuity Safeguard Lattice",
+      "family_name": "Continuity and Citation Adjuncts",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002b",
+      "wave_membership": "wave-002b"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c58",
+      "title": "Clean Interpretive Citation Spine Hub",
+      "family_name": "Continuity and Citation Adjuncts",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002b",
+      "wave_membership": "wave-002b"
+    }
+  ]
+}

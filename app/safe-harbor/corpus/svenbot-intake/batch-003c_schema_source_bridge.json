@@ -1,0 +1,80 @@
+{
+  "batch_id": "batch-003c",
+  "created_date": "2026-03-24T00:00:00Z",
+  "family_name": "Schema and Source Bridge Layer",
+  "verification_status": "Draft",
+  "notes": "Wave 3C schema + panic-safe + extraction bridge support",
+  "family_metadata": {
+    "name": "Schema and Source Bridge Layer",
+    "description": "Original schema, panic-safe workflow, full-manifold extraction bridge, and support architecture for migration execution",
+    "priority_level": "High",
+    "protection_level": "Protected Core",
+    "target_repo_path": "10_schema/source_bridge",
+    "restore_order": "12",
+    "export_status": "Ready for Export",
+    "notes": "Wave 3C"
+  },
+  "placeholder_mode": false,
+  "nodes": [
+    {
+      "source_node_id": "69c1a1611af31cb51704778c",
+      "title": "Original MVP Build Order",
+      "family_name": "Schema and Source Bridge Layer",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003c",
+      "wave_membership": "wave-003c"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb51704778d",
+      "title": "Original Migration Console Schema",
+      "family_name": "Schema and Source Bridge Layer",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003c",
+      "wave_membership": "wave-003c"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb51704778e",
+      "title": "Original Panic-Safe Workflow Mode",
+      "family_name": "Schema and Source Bridge Layer",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003c",
+      "wave_membership": "wave-003c"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb51704778f",
+      "title": "Original Full-Manifold Extraction Bridge",
+      "family_name": "Schema and Source Bridge Layer",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003c",
+      "wave_membership": "wave-003c"
+    }
+  ]
+}

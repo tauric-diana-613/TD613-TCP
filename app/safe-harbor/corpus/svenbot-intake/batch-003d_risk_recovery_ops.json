@@ -1,0 +1,50 @@
+{
+  "batch_id": "batch-003d",
+  "created_date": "2026-03-24T00:00:00Z",
+  "family_name": "Risk and Recovery Ops",
+  "verification_status": "Draft",
+  "notes": "Wave 3D deletion ambiguity + broader de-quarantine sweep",
+  "family_metadata": {
+    "name": "Risk and Recovery Ops",
+    "description": "Deletion ambiguity, de-quarantine sweep, and recovery/risk-tracking support for preservation work",
+    "priority_level": "High",
+    "protection_level": "Protected Core",
+    "target_repo_path": "09_logs/risk_recovery_ops",
+    "restore_order": "13",
+    "export_status": "Ready for Export",
+    "notes": "Wave 3D"
+  },
+  "placeholder_mode": false,
+  "nodes": [
+    {
+      "source_node_id": "69c1c88993ae636071e951af",
+      "title": "Deletion-State Ambiguity Fracture",
+      "family_name": "Risk and Recovery Ops",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "open",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003d",
+      "wave_membership": "wave-003d"
+    },
+    {
+      "source_node_id": "69c1cca995db0babb9508301",
+      "title": "Broader De-Quarantine Sweep",
+      "family_name": "Risk and Recovery Ops",
+      "protection_class": "Warm Living",
+      "export_status": "Ready for Export",
+      "status": "exploring",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003d",
+      "wave_membership": "wave-003d"
+    }
+  ]
+}

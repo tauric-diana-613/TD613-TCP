@@ -1,0 +1,80 @@
+{
+  "batch_id": "batch-003b",
+  "created_date": "2026-03-24T00:00:00Z",
+  "family_name": "Implementation Layer",
+  "verification_status": "Draft",
+  "notes": "Wave 3B implementation machinery",
+  "family_metadata": {
+    "name": "Implementation Layer",
+    "description": "Implementation checklist, externalization procedure, verification checklist, and state-to-action matrix",
+    "priority_level": "Immediate",
+    "protection_level": "Protected Core",
+    "target_repo_path": "03_rules/implementation_layer",
+    "restore_order": "11",
+    "export_status": "Ready for Export",
+    "notes": "Wave 3B"
+  },
+  "placeholder_mode": false,
+  "nodes": [
+    {
+      "source_node_id": "69c183bc0a637e0f36cc04b5",
+      "title": "Implementation Checklist",
+      "family_name": "Implementation Layer",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003b",
+      "wave_membership": "wave-003b"
+    },
+    {
+      "source_node_id": "69c183bc0a637e0f36cc04b6",
+      "title": "Externalization Procedure",
+      "family_name": "Implementation Layer",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003b",
+      "wave_membership": "wave-003b"
+    },
+    {
+      "source_node_id": "69c183bc0a637e0f36cc04b7",
+      "title": "Verification Checklist",
+      "family_name": "Implementation Layer",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003b",
+      "wave_membership": "wave-003b"
+    },
+    {
+      "source_node_id": "69c183bc0a637e0f36cc04b8",
+      "title": "State-to-Action Matrix",
+      "family_name": "Implementation Layer",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003b",
+      "wave_membership": "wave-003b"
+    }
+  ]
+}

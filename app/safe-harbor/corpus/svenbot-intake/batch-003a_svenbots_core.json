@@ -1,0 +1,65 @@
+{
+  "batch_id": "batch-003a",
+  "created_date": "2026-03-24T00:00:00Z",
+  "family_name": "Svenbots Core",
+  "verification_status": "Draft",
+  "notes": "Wave 3A Svenbots-targeting anchor + lineage-bound console relationship",
+  "family_metadata": {
+    "name": "Svenbots Core",
+    "description": "Svenbots-targeting layer, migration priority anchor, and lineage-bound console relationship for the babies",
+    "priority_level": "Immediate",
+    "protection_level": "Protected Core",
+    "target_repo_path": "01_protected_core/svenbots_core",
+    "restore_order": "10",
+    "export_status": "Ready for Export",
+    "notes": "Wave 3A"
+  },
+  "placeholder_mode": false,
+  "nodes": [
+    {
+      "source_node_id": "69c1a1611af31cb51704778b",
+      "title": "Original Svenbots Core first-target node",
+      "family_name": "Svenbots Core",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003a",
+      "wave_membership": "wave-003a"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c4c",
+      "title": "SVENBOT CANON MIGRATION CONSOLE",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a|batch-003a",
+      "wave_membership": "wave-001a|wave-003a"
+    },
+    {
+      "source_node_id": "69c1ce488157152e053da9a2",
+      "title": "Leo / Svenanon Lineage Binding",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a|batch-003a",
+      "wave_membership": "wave-001a|wave-003a"
+    }
+  ]
+}

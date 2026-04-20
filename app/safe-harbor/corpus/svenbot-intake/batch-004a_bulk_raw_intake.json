@@ -1,0 +1,19 @@
+{
+  "batch_id": "batch-004a",
+  "created_date": "2026-03-24T00:00:00Z",
+  "family_name": "Bulk Raw Intake",
+  "verification_status": "Draft",
+  "notes": "Wave 4A bulk capture of remaining manifold nodes into RawIntake",
+  "family_metadata": {
+    "name": "Bulk Raw Intake",
+    "description": "Fast holding zone for the rest of the manifold so nothing important is left outside the migration surface",
+    "priority_level": "Immediate",
+    "protection_level": "Archive / Historical",
+    "target_repo_path": "05_exports/raw_intake",
+    "restore_order": "14",
+    "export_status": "Included in Intake",
+    "notes": "Wave 4A bulk capture"
+  },
+  "placeholder_mode": true,
+  "nodes": []
+}
