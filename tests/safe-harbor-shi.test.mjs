@@ -30,5 +30,11 @@ assert.ok(
   !harborMainSource.includes('recallReady || isShiNumber'),
   'SHI reopen readiness no longer advertises a live path without an entered code'
 );
+assert.ok(
+  harborMainSource.includes("state.ingress.operatorShellOpen = true;") &&
+    harborMainSource.includes("state.ingress.bypass = true;") &&
+    harborMainSource.includes("logEvent('bypass-opened'"),
+  'A recognized SHI can now actually open the packetless operator shell instead of leaving Harbor trapped behind the membrane'
+);
 
 console.log('safe-harbor-shi.test.mjs passed');

@@ -978,9 +978,19 @@
       logEvent('bypass-denied', { state: 'sealed', reason: 'hash-mismatch' });
       return;
     }
-    dom.ingressNote.textContent = 'The SHI # is recognized, but no packet is still retained in this session. Re-run the ritual if you need a fresh chamber.';
+    state.ingress.operatorShellOpen = true;
+    state.ingress.vaultOpen = false;
+    state.ingress.bypass = true;
+    state.ingress.recovered = false;
+    state.ingress.openedAt = nowIso();
+    state.ingress.packetId = null;
+    state.ingress.receiptId = null;
     dom.bypassPassword.value = '';
-    logEvent('bypass-deferred', { state: 'sealed', reason: 'no-recoverable-packet', shi_number: token });
+    render();
+    persist();
+    dom.ingressNote.textContent = 'Operator bypass accepted. The shell is open in packetless mode. No staged packet, covenant transition, or SHI issuance exists yet.';
+    logEvent('bypass-opened', { state: 'operator-shell', reason: 'hash-match-no-packet', shi_number: token });
+    return;
   }
 
   function refreshHelpers() {
