@@ -1400,8 +1400,8 @@
   function sacText() { return D.trustProfile.sac.indexOf('SAC[') === 0 ? D.trustProfile.sac : ('SAC[' + D.trustProfile.sac + ']'); }
   function basicStats(text) { return { char_count: (text || '').length, word_count: splitWords(text).length }; }
   function signatureNote(signatureLane) {
-    if (!signatureLane || !signatureLane.lane || signatureLane.lane === 'none') return 'Cryptographic overlays attach after packetization. TCP cadence remains a separate stylometric witness and public probes remain unsigned by default.';
-    if (signatureLane.source === 'operator-signature-overlay') return 'Operator cryptographic overlay is staged for packet sealing. The cadence witness and public footer remain unchanged.';
+    if (!signatureLane || !signatureLane.lane || signatureLane.lane === 'none') return 'Detached seals attach after packetization. The signer fingerprint identifies the key, but the actual membrane seal is the detached signature block.';
+    if (signatureLane.source === 'operator-signature-overlay') return 'Operator detached seal is staged for packet sealing. The cadence witness and public footer remain unchanged.';
     return 'External cryptographic overlay detected from ' + (signatureLane.source || 'overlay lane') + '. The cadence witness and public footer remain unchanged.';
   }
   function resolvedSignatureLane() {
@@ -1436,10 +1436,18 @@
     state.operatorSignature = {
       status: sig ? 'sealed' : 'declared',
       source: 'operator-signature-overlay',
-      lane: sigType === 'detached-ed25519' ? 'detached-ed25519' : 'jws-detached',
-      sig_type: sigType || 'JWS-detached',
+      lane: sigType === 'detached-ed25519'
+        ? 'detached-ed25519'
+        : sigType === 'PGP-detached'
+          ? 'pgp-detached'
+          : 'jws-detached',
+      sig_type: sigType || 'PGP-detached',
       kid: kid,
-      alg: sigType === 'detached-ed25519' ? 'Ed25519' : 'HS256',
+      alg: sigType === 'detached-ed25519'
+        ? 'Ed25519'
+        : sigType === 'PGP-detached'
+          ? 'OpenPGP'
+          : 'HS256',
       detached_ref: detachedRef,
       sig: sig
     };

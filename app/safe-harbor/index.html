@@ -325,29 +325,30 @@
         </section>
 
         <section class="panel-section" data-td613-skip="true">
-          <details class="fold-panel" data-td613-skip="true">
-            <summary>Operator seal lane</summary>
+          <details class="fold-panel" data-td613-skip="true" open>
+            <summary>Kleopatra fingerprint / Operator seal lane</summary>
             <div class="forge-grid">
               <div class="forge-card signature-card">
-                <div class="subsection-label">Cryptographic overlay</div>
+                <div class="subsection-label">Kleopatra cryptographic overlay</div>
                 <div class="field-grid">
                   <label class="field">
-                    <span>Signature type</span>
+                    <span>Seal type</span>
                     <select id="inputSigType">
                       <option value="">none</option>
+                      <option value="PGP-detached">PGP-detached</option>
                       <option value="JWS-detached">JWS-detached</option>
                       <option value="detached-ed25519">detached-ed25519</option>
                     </select>
                   </label>
-                  <label class="field"><span>kid</span><input id="inputSigKid" placeholder="tauric.diana.613"></label>
-                  <label class="field"><span>Detached ref</span><input id="inputSigDetachedRef" placeholder="jws://detached-signature"></label>
-                  <label class="field field-wide"><span>Detached signature</span><textarea id="inputSigValue" placeholder="Paste detached signature or signature reference here."></textarea></label>
+                  <label class="field"><span>Signer fingerprint / key id</span><input id="inputSigKid" placeholder="40F33C7CF283D8913598C665E9F87AE21FCA5DB0"></label>
+                  <label class="field"><span>Detached ref</span><input id="inputSigDetachedRef" placeholder="pgp://detached-signature or jws://detached-signature"></label>
+                  <label class="field field-wide"><span>PGP signature block / detached seal</span><textarea id="inputSigValue" placeholder="Paste the -----BEGIN PGP SIGNATURE----- block or another detached signature reference here."></textarea></label>
                 </div>
                 <div class="button-grid">
                   <button class="control" id="attachSignature" type="button">Attach Signature Overlay</button>
                   <button class="control secondary" id="clearSignature" type="button">Clear Signature Overlay</button>
                 </div>
-                <div class="note" id="signatureNote">Signature overlays attach after packetization. Public probes remain unsigned by default.</div>
+                <div class="note" id="signatureNote">The fingerprint identifies who signs. The actual seal is the detached PGP signature block Kleopatra emits after you sign the packet hash. Public probes remain unsigned by default.</div>
               </div>
             </div>
           </details>
