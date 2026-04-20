@@ -144,13 +144,13 @@
       demo: {
         tcp: {
           status: 'buffered',
-          source: 'svenbot-intake',
-          intake_id: 'svenbot-intake-buffer-01',
-          lane: 'corpus/svenbot-intake/',
-          membrane_note: 'Buffered Svenbot canon intake attached from corpus/svenbot-intake/.',
+          source: 'tauric-diana-intake',
+          intake_id: 'tauric-diana-intake-buffer-01',
+          lane: 'corpus/tauric-diana-intake/',
+          membrane_note: 'Buffered Tauric Diana bot canon intake attached from corpus/tauric-diana-intake/.',
           cadence_signature: {
             status: 'attached',
-            source: 'svenbot-intake',
+            source: 'tauric-diana-intake',
             dominant_axes: ['pulse', 'recurrence', 'cadence'],
             punctuation_mix: {
               comma: 0.021,
