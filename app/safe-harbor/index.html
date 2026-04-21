@@ -264,10 +264,10 @@
                 </div>
               </div>
               <div class="button-grid">
-                <button class="control" id="covenantExport" type="button">Covenant Export</button>
+                <button class="control" id="covenantExport" type="button">Mint / Seal Payload</button>
                 <button class="control secondary" id="resealVault" type="button">Return to Ingress</button>
               </div>
-              <div class="note" id="covenantNote">Vault-open stages the packet only. Covenant Export must be invoked before harbor eligibility and SHI # assignment.</div>
+              <div class="note" id="covenantNote">Vault-open stages the packet only. Mint / Seal Payload appends any pasted Kleopatra signature text and advances the packet toward harbor eligibility and SHI # assignment.</div>
             </article>
           </div>
         </section>
@@ -326,10 +326,10 @@
 
         <section class="panel-section" data-td613-skip="true">
           <details class="fold-panel" data-td613-skip="true" open>
-            <summary>Kleopatra fingerprint / Operator seal lane</summary>
+            <summary>Kleopatra signature / Operator seal lane</summary>
             <div class="forge-grid">
               <div class="forge-card signature-card">
-                <div class="subsection-label">Kleopatra cryptographic overlay</div>
+                <div class="subsection-label">Kleopatra detached seal intake</div>
                 <div class="field-grid">
                   <label class="field">
                     <span>Seal type</span>
@@ -342,13 +342,13 @@
                   </label>
                   <label class="field"><span>Signer fingerprint / key id</span><input id="inputSigKid" placeholder="40F33C7CF283D8913598C665E9F87AE21FCA5DB0"></label>
                   <label class="field"><span>Detached ref</span><input id="inputSigDetachedRef" placeholder="pgp://detached-signature or jws://detached-signature"></label>
-                  <label class="field field-wide"><span>PGP signature block / detached seal</span><textarea id="inputSigValue" placeholder="Paste the -----BEGIN PGP SIGNATURE----- block or another detached signature reference here."></textarea></label>
+                  <label class="field field-wide"><span>Paste Kleopatra PGP Signature Block Here</span><textarea id="inputSigValue" placeholder="Paste the raw -----BEGIN PGP SIGNATURE----- block here. Safe Harbor will attach it as text without verifying it in the browser."></textarea></label>
                 </div>
                 <div class="button-grid">
-                  <button class="control" id="attachSignature" type="button">Attach Signature Overlay</button>
+                  <button class="control" id="attachSignature" type="button">Stage Signature Text</button>
                   <button class="control secondary" id="clearSignature" type="button">Clear Signature Overlay</button>
                 </div>
-                <div class="note" id="signatureNote">The fingerprint identifies who signs. The actual seal is the detached PGP signature block Kleopatra emits after you sign the packet hash. Public probes remain unsigned by default.</div>
+                <div class="note" id="signatureNote">The fingerprint identifies who signs. The final mint path simply carries the raw detached signature text into the artifact; Safe Harbor does not verify the Kleopatra block in-browser.</div>
               </div>
             </div>
           </details>

@@ -598,7 +598,7 @@
       : state.ingress.vaultOpen
         ? (confirmedPacket
           ? `The sealed packet is present. SHI # ${recoverableShi || 'issued'} is already bound to this chamber; review, copy, or reseal without reminting.`
-          : 'The staged packet is present. Covenant Export is the only local path to harbor eligibility and SHI issuance.')
+          : 'The staged packet is present. Mint / Seal Payload is the local path to harbor eligibility and SHI issuance.')
         : sealStep && count === 3
           ? 'The triad is complete. Review the held testimony, then mint the staged packet to open the chamber.'
           : (D.routeCopy[route] || '');
@@ -839,7 +839,7 @@
       renderMintSurface(null);
       dom.covenantNote.textContent = state.ingress.bypass
         ? 'The shell is open through operator bypass only. No staged packet, covenant transition, or SHI issuance exists yet.'
-        : 'Vault-open stages the packet only. Covenant Export must be invoked before harbor eligibility and SHI # assignment. Stylometric cadence may already be present, but cryptographic seals still attach only after packetization.';
+        : 'Vault-open stages the packet only. Mint / Seal Payload carries any pasted Kleopatra signature text into the artifact and advances harbor eligibility plus SHI # assignment.';
       dom.covenantExport.disabled = true;
       return;
     }
@@ -849,7 +849,7 @@
     dom.packetHashReadout.textContent = state.packet.packet_hash_sha256;
     dom.harborReadout.textContent = state.packet.analysis.route.recommended_harbor;
     dom.exportGateReadout.textContent = state.packet.bridge.export_gate.state;
-    dom.covenantStateReadout.textContent = state.packet.bridge.covenant_gate.confirmed ? ('harbor-eligible / SHI # ' + state.packet.issuance.badge_number) : (state.packet.signature.status === 'sealed' ? 'sealed / signature attached' : 'staged / confirmation required');
+    dom.covenantStateReadout.textContent = state.packet.bridge.covenant_gate.confirmed ? ('harbor-eligible / SHI # ' + state.packet.issuance.badge_number) : (state.packet.signature.status === 'sealed' ? 'signature text staged / confirmation required' : 'staged / confirmation required');
     dom.cadenceReadout.textContent = cadenceLabel(state.packet.analysis.cadence_signature);
     dom.triadResonanceReadout.textContent = metric(state.packet.analysis.triad_resonance);
     dom.crossLaneStabilityReadout.textContent = metric(state.packet.analysis.cross_lane_stability);
@@ -867,8 +867,8 @@
     dom.packetPreview.textContent = JSON.stringify(state.packet, null, 2);
     renderMintSurface(state.packet.issuance.badge_number || null);
     dom.covenantNote.textContent = state.packet.bridge.covenant_gate.confirmed
-      ? 'Covenant is confirmed. The packet is sealed, harbor-eligible, and carries an issued SHI # for downstream export lanes.'
-      : (state.packet.signature.status === 'sealed' ? 'A cryptographic overlay is attached. Covenant Export is still required before harbor eligibility and SHI # assignment.' : 'The packet is staged only. Covenant Export must be invoked before harbor eligibility and SHI # assignment.');
+      ? 'Mint / Seal Payload is confirmed. The packet is harbor-eligible, carries an issued SHI #, and preserves any pasted signature text in the artifact.'
+      : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint / Seal Payload is still required before harbor eligibility and SHI # assignment.' : 'The packet is staged only. Mint / Seal Payload must be invoked before harbor eligibility and SHI # assignment.');
     dom.covenantExport.disabled = state.packet.bridge.covenant_gate.confirmed;
   }
 
@@ -1061,6 +1061,7 @@
   async function covenantExport() {
 
     if (!state.ingress.packetId || !state.packet) return;
+    state.operatorSignature = buildOperatorSignatureFromInputs();
     if (!state.covenant.confirmed) {
       state.covenant.confirmed = true;
       state.covenant.confirmedAt = nowIso();
@@ -1435,8 +1436,8 @@
   function sacText() { return D.trustProfile.sac.indexOf('SAC[') === 0 ? D.trustProfile.sac : ('SAC[' + D.trustProfile.sac + ']'); }
   function basicStats(text) { return { char_count: (text || '').length, word_count: splitWords(text).length }; }
   function signatureNote(signatureLane) {
-    if (!signatureLane || !signatureLane.lane || signatureLane.lane === 'none') return 'Detached seals attach after packetization. The signer fingerprint identifies the key, but the actual membrane seal is the detached signature block.';
-    if (signatureLane.source === 'operator-signature-overlay') return 'Operator detached seal is staged for packet sealing. The cadence witness and public footer remain unchanged.';
+    if (!signatureLane || !signatureLane.lane || signatureLane.lane === 'none') return 'Detached seals attach after packetization. The signer fingerprint identifies the key, and any pasted Kleopatra block is carried as raw text without browser verification.';
+    if (signatureLane.source === 'operator-signature-overlay') return 'Operator signature text is staged for packet sealing. Safe Harbor carries it through without cryptographic parsing in the browser.';
     return 'External cryptographic overlay detected from ' + (signatureLane.source || 'overlay lane') + '. The cadence witness and public footer remain unchanged.';
   }
   function resolvedSignatureLane() {
@@ -1457,18 +1458,14 @@
       attached_at: sigPresent ? nowIso() : null
     };
   }
-  async function attachSignatureOverlay() {
-    const sigType = trim(dom.inputSigType.value);
-    const kid = trim(dom.inputSigKid.value) || ((D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal);
+  function buildOperatorSignatureFromInputs() {
+    const rawSig = dom.inputSigValue.value == null ? '' : String(dom.inputSigValue.value);
+    const sig = trim(rawSig) || null;
     const detachedRef = trim(dom.inputSigDetachedRef.value) || null;
-    const sig = trim(dom.inputSigValue.value) || null;
-    if (!sigType && !sig && !detachedRef) {
-      state.operatorSignature = null;
-      render();
-      persist();
-      return;
-    }
-    state.operatorSignature = {
+    const sigType = trim(dom.inputSigType.value) || ((sig || detachedRef) ? 'PGP-detached' : '');
+    if (!sigType && !sig && !detachedRef) return null;
+    const kid = trim(dom.inputSigKid.value) || ((D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal);
+    return {
       status: sig ? 'sealed' : 'declared',
       source: 'operator-signature-overlay',
       lane: sigType === 'detached-ed25519'
@@ -1486,6 +1483,16 @@
       detached_ref: detachedRef,
       sig: sig
     };
+  }
+  async function attachSignatureOverlay() {
+    const stagedSignature = buildOperatorSignatureFromInputs();
+    if (!stagedSignature) {
+      state.operatorSignature = null;
+      render();
+      persist();
+      return;
+    }
+    state.operatorSignature = stagedSignature;
     if (state.ingress.packetId) await rebuild('signature-overlay');
     else { render(); persist(); }
     logEvent('signature-overlay-attached', { sig_type: state.operatorSignature.sig_type, kid: state.operatorSignature.kid });
@@ -1769,7 +1776,7 @@
           confirmed: state.covenant.confirmed,
           confirmed_at: state.covenant.confirmed ? state.covenant.confirmedAt : null,
           required: true,
-          action_label: 'Covenant Export'
+          action_label: 'Mint / Seal Payload'
         },
         export_gate: { ready: false, state: 'guarded', blockers: [], scrub_passed: false }
       }
@@ -1777,8 +1784,8 @@
 
     const scrub = scrubCheck(packet, sealedSegments);
     packet.bridge.export_gate.scrub_passed = scrub.passed;
-    packet.bridge.export_gate.ready = Boolean(state.covenant.confirmed && scrub.passed && packet.signature.status === 'sealed');
-    packet.bridge.export_gate.state = packet.bridge.export_gate.ready ? 'harbor-eligible' : (packet.signature.status === 'sealed' ? 'sealed' : 'guarded');
+    packet.bridge.export_gate.ready = Boolean(state.covenant.confirmed && scrub.passed);
+    packet.bridge.export_gate.state = packet.bridge.export_gate.ready ? 'harbor-eligible' : 'guarded';
     packet.bridge.export_gate.blockers = exportBlockers(scrub);
     packet.analysis.route.export_ready = packet.bridge.export_gate.ready;
     packet.aperture_audit = safeHarborApertureAudit(packet, scrub);
@@ -1882,10 +1889,8 @@
 
   function exportBlockers(scrub) {
     const blockers = [];
-    const signatureLane = resolvedSignatureLane();
     if (!state.covenant.confirmed) blockers.push('covenant-confirmation-required');
     if (!scrub.passed) blockers.push('public-packet-scrub-failed');
-    if (!(signatureLane && signatureLane.sig)) blockers.push('signature-seal-required');
     return blockers;
   }
 
