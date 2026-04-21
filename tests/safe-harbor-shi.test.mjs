@@ -66,12 +66,22 @@ assert.ok(
   'Safe Harbor labels the final action as Mint / Seal Payload'
 );
 assert.ok(
-  harborMainSource.includes("if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')"),
-  'Safe Harbor auto-opens the vault when it is served from localhost'
+  harborMainSource.includes('function isLocalhostOperator()') &&
+    harborMainSource.includes('if (isLocalhostOperator()) {'),
+  'Safe Harbor auto-opens the vault when it is served from localhost through the dedicated host check'
 );
 assert.ok(
-  harborHtmlSource.includes('<div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true" hidden>'),
-  'Safe Harbor keeps the deprecated ingress membrane hidden at the markup layer'
+  harborMainSource.includes('const membraneSuppressed = isLocalhostOperator() || surfaceIsOpen;') &&
+    harborMainSource.includes('dom.ingressMembrane.hidden = membraneSuppressed;'),
+  'Safe Harbor suppresses the membrane only for localhost or once the chamber is already open'
+);
+assert.ok(
+  harborMainSource.includes('if (!isLocalhostOperator()) return;'),
+  'Safe Harbor keeps stored auto-bypass behavior limited to localhost instead of public hosts'
+);
+assert.ok(
+  harborHtmlSource.includes('<div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true">'),
+  'Safe Harbor keeps the ingress membrane in public markup instead of hard-hiding it everywhere'
 );
 assert.ok(
   harborHtmlSource.includes('Tauric Diana Batch Intake') &&

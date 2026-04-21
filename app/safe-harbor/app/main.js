@@ -207,7 +207,7 @@
     loadSession();
     primeInboundContext();
     hydrate();
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    if (isLocalhostOperator()) {
       state.ingress.operatorShellOpen = true;
       state.ingress.bypass = true;
       state.ingress.vaultOpen = true;
@@ -469,6 +469,7 @@
   }
 
   function autoOpenStoredBypassShell() {
+    if (!isLocalhostOperator()) return;
     if (surfaceOpen() || state.packet) return;
     if (!getOperatorBypassHash()) return;
     state.ingress.operatorShellOpen = true;
@@ -718,9 +719,9 @@
     dom.demoSignatureHook.disabled = !devModeEnabled;
     if (dom.devModeNote) dom.devModeNote.textContent = devModeEnabled ? 'Dev hook simulation is enabled locally.' : 'Dev hook simulation is disabled in public ship unless local dev mode is enabled.';
     if (dom.pillBoundaryMode) dom.pillBoundaryMode.textContent = state.ingress.operatorShellOpen ? 'operator boundary' : 'public boundary';
-    const membraneDeprecated = dom.ingressMembrane && dom.ingressMembrane.hasAttribute('hidden');
-    dom.ingressMembrane.hidden = Boolean(membraneDeprecated || surfaceIsOpen);
-    dom.ingressMembrane.classList.toggle('is-hidden', Boolean(membraneDeprecated || surfaceIsOpen));
+    const membraneSuppressed = isLocalhostOperator() || surfaceIsOpen;
+    dom.ingressMembrane.hidden = membraneSuppressed;
+    dom.ingressMembrane.classList.toggle('is-hidden', membraneSuppressed);
     dom.body.classList.toggle('vault-sealed', !surfaceIsOpen);
     dom.body.classList.toggle('vault-open', surfaceIsOpen);
   }
