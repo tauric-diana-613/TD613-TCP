@@ -65,5 +65,24 @@ assert.ok(
   harborHtmlSource.includes('Mint / Seal Payload'),
   'Safe Harbor labels the final action as Mint / Seal Payload'
 );
+assert.ok(
+  harborMainSource.includes("if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')"),
+  'Safe Harbor auto-opens the vault when it is served from localhost'
+);
+assert.ok(
+  harborHtmlSource.includes('<div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true" hidden>'),
+  'Safe Harbor keeps the deprecated ingress membrane hidden at the markup layer'
+);
+assert.ok(
+  harborHtmlSource.includes('Tauric Diana Batch Intake') &&
+    harborHtmlSource.includes('Stage Selected Batch') &&
+    harborHtmlSource.includes('batch-001a') &&
+    harborHtmlSource.includes('batch-004a'),
+  'Safe Harbor exposes the four-batch intake dashboard in the center chamber'
+);
+assert.ok(
+  harborMainSource.includes('selected_batch_id: state.selectedBatchId || null'),
+  'Safe Harbor carries the selected batch id into the staged packet metadata'
+);
 
 console.log('safe-harbor-shi.test.mjs passed');

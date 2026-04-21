@@ -152,6 +152,10 @@
     attachSignature: $('attachSignature'),
     clearSignature: $('clearSignature'),
     signatureNote: $('signatureNote'),
+    batchIntakeSelect: $('batchIntakeSelect'),
+    batchIntakeState: $('batchIntakeState'),
+    batchIntakeNote: $('batchIntakeNote'),
+    stageSelectedBatch: $('stageSelectedBatch'),
     probeOutput: $('probeOutput'),
     copyProbeOutput: $('copyProbeOutput'),
     packetStateReadout: $('packetStateReadout'),
@@ -189,7 +193,8 @@
       recovered: false
     },
     covenant: { confirmed: false, confirmedAt: null, badgeNumber: null },
-    operatorSignature: null
+    operatorSignature: null,
+    selectedBatchId: null
   };
 
   let refreshSeq = 0;
@@ -202,6 +207,11 @@
     loadSession();
     primeInboundContext();
     hydrate();
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      state.ingress.operatorShellOpen = true;
+      state.ingress.bypass = true;
+      state.ingress.vaultOpen = true;
+    }
     autoOpenStoredBypassShell();
     render();
     dom.body.classList.remove('boot-pending');
@@ -394,6 +404,7 @@
     dom.refreshHelpers.addEventListener('click', () => refreshHelpers());
     dom.covenantExport.addEventListener('click', () => void covenantExport());
     dom.mintStagedPacket.addEventListener('click', () => void mintStagedPacket());
+    if (dom.stageSelectedBatch) dom.stageSelectedBatch.addEventListener('click', () => void stageSelectedBatch());
     dom.setBypassToken.addEventListener('click', () => void setLocalBypassToken());
     dom.clearBypassToken.addEventListener('click', clearLocalBypassToken);
     dom.bypassIngress.addEventListener('click', () => void bypassIngress());
@@ -470,6 +481,38 @@
     persist();
   }
 
+  function isLocalhostOperator() {
+    const host = String((window.location && window.location.hostname) || '').toLowerCase();
+    return host === 'localhost' || host === '127.0.0.1';
+  }
+
+  function hasOperatorAccess() {
+    return isLocalhostOperator() || Boolean(getOperatorBypassHash());
+  }
+
+  function seedBatchIngress(batchId) {
+    const id = String(batchId || 'batch-001a');
+    state.selectedBatchId = id;
+    if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = id;
+    state.ingress.segments.future_self = 'Batch ' + id + ' enters Safe Harbor through localhost operator override for buffered Tauric Diana intake, direct packet staging, preserved provenance context, explicit batch selection, canonical packet shaping, detached signature carryover, and deferred sovereign mint so the chamber can open without repeating the retired triad ritual by hand today.';
+    state.ingress.segments.past_self = 'Batch ' + id + ' was buffered behind the former membrane and slowed by manual ingress steps, extra browser gating, and unnecessary ritual friction even though the operator only needed a direct staging lane, packet reliquary access, and a place to carry detached signature text while keeping scrub discipline and custody intact.';
+    state.ingress.segments.higher_self = 'Batch ' + id + ' is now staged as governed intake metadata: preserve the selected batch identifier, keep the raw signature block exactly as provided, avoid client-side cryptographic parsing, retain export scrub boundaries, and let operator access plus covenant confirmation determine how the packet advances through Harbor and downstream lanes.';
+    state.ingress.stepIndex = 3;
+    if (!trim(dom.inputPayloadIndex.value)) {
+      const match = /batch-(\d+)/i.exec(id);
+      if (match) dom.inputPayloadIndex.value = String(Number(match[1]));
+    }
+    dom.inputSourceClass.value = 'tauric-diana batch intake';
+    if (!trim(dom.inputWitnessChannel.value) || dom.inputWitnessChannel.value === 'ritual + cadence') {
+      dom.inputWitnessChannel.value = 'batch intake + operator override';
+    }
+    const existingNotes = dom.inputOperatorNotes.value || '';
+    const batchNote = 'Selected batch: ' + id + ' / staged through operator override.';
+    if (!existingNotes.includes('Selected batch: ' + id)) {
+      dom.inputOperatorNotes.value = existingNotes ? (batchNote + '\n' + existingNotes) : batchNote;
+    }
+  }
+
   function loadSession() {
     const saved = readStorage();
     if (!saved) {
@@ -477,6 +520,7 @@
       dom.inputOperatorId.value = 'safe-harbor.operator';
       dom.inputSourceClass.value = 'futurecore membrane';
       dom.inputWitnessChannel.value = 'ritual + cadence';
+      if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = 'batch-001a';
       return;
     }
     Object.assign(state, {
@@ -489,7 +533,8 @@
       renderer: saved.renderer || state.renderer,
       ingress: Object.assign(state.ingress, saved.ingress || {}),
       covenant: Object.assign(state.covenant, saved.covenant || {}),
-      operatorSignature: saved.operatorSignature || null
+      operatorSignature: saved.operatorSignature || null,
+      selectedBatchId: saved.selectedBatchId || null
     });
     state.ingress.operatorShellOpen = Boolean(state.ingress.operatorShellOpen);
     const segments = (saved.ingress && saved.ingress.segments) || {};
@@ -507,6 +552,7 @@
     dom.inputSigKid.value = forms.sigKid !== undefined ? forms.sigKid : ((D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal);
     dom.inputSigDetachedRef.value = forms.sigDetachedRef !== undefined ? forms.sigDetachedRef : ((D.signatureDefaults && D.signatureDefaults.detached_ref) || '');
     dom.inputSigValue.value = forms.sigValue || '';
+    if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = forms.selectedBatchId || state.selectedBatchId || 'batch-001a';
     if (state.ingress.vaultOpen || state.ingress.operatorShellOpen) returnToIngress({ preserveSegments: true, preserveForms: true, recovered: true, persistAfter: false });
   }
 
@@ -522,6 +568,7 @@
       ingress: state.ingress,
       covenant: state.covenant,
       operatorSignature: state.operatorSignature,
+      selectedBatchId: state.selectedBatchId,
       forms: {
         footerMode: dom.inputFooterMode.value || D.trustProfile.current_public_mode,
         payloadIndex: dom.inputPayloadIndex.value || '',
@@ -533,7 +580,8 @@
         sigType: dom.inputSigType.value || '',
         sigKid: dom.inputSigKid.value || '',
         sigDetachedRef: dom.inputSigDetachedRef.value || '',
-        sigValue: dom.inputSigValue.value || ''
+        sigValue: dom.inputSigValue.value || '',
+        selectedBatchId: dom.batchIntakeSelect ? (dom.batchIntakeSelect.value || '') : ''
       }
     });
   }
@@ -555,9 +603,34 @@
     updateHelpers();
     updateFooterPreview();
     renderIngress();
+    renderBatchIntake();
     renderHooks();
     renderPacket();
     renderAudit();
+  }
+
+  function renderBatchIntake() {
+    if (!dom.batchIntakeSelect) return;
+    const batchId = dom.batchIntakeSelect.value || state.selectedBatchId || 'batch-001a';
+    if (!dom.batchIntakeSelect.value) dom.batchIntakeSelect.value = batchId;
+    const operatorReady = hasOperatorAccess();
+    if (dom.batchIntakeState) {
+      dom.batchIntakeState.textContent = state.ingress.packetId && state.selectedBatchId
+        ? (state.selectedBatchId + ' staged')
+        : isLocalhostOperator()
+          ? 'localhost override'
+          : operatorReady
+            ? 'operator token ready'
+            : 'operator token required';
+    }
+    if (dom.batchIntakeNote) {
+      dom.batchIntakeNote.textContent = state.ingress.packetId && state.selectedBatchId
+        ? ('Batch ' + state.selectedBatchId + ' is staged in the packet reliquary.')
+        : operatorReady
+          ? ('Batch ' + batchId + ' can stage directly into Harbor through operator override.')
+          : 'Store a recall token or open Harbor on localhost to enable direct batch staging.';
+    }
+    if (dom.stageSelectedBatch) dom.stageSelectedBatch.disabled = !operatorReady || Boolean(state.ingress.packetId);
   }
 
   function renderIngress() {
@@ -645,8 +718,9 @@
     dom.demoSignatureHook.disabled = !devModeEnabled;
     if (dom.devModeNote) dom.devModeNote.textContent = devModeEnabled ? 'Dev hook simulation is enabled locally.' : 'Dev hook simulation is disabled in public ship unless local dev mode is enabled.';
     if (dom.pillBoundaryMode) dom.pillBoundaryMode.textContent = state.ingress.operatorShellOpen ? 'operator boundary' : 'public boundary';
-    dom.ingressMembrane.hidden = surfaceIsOpen;
-    dom.ingressMembrane.classList.toggle('is-hidden', surfaceIsOpen);
+    const membraneDeprecated = dom.ingressMembrane && dom.ingressMembrane.hasAttribute('hidden');
+    dom.ingressMembrane.hidden = Boolean(membraneDeprecated || surfaceIsOpen);
+    dom.ingressMembrane.classList.toggle('is-hidden', Boolean(membraneDeprecated || surfaceIsOpen));
     dom.body.classList.toggle('vault-sealed', !surfaceIsOpen);
     dom.body.classList.toggle('vault-open', surfaceIsOpen);
   }
@@ -1028,8 +1102,11 @@
     return state.helper;
   }
 
-  async function mintStagedPacket() {
-    if (surfaceOpen() || completedCount() !== 3) return;
+  async function mintStagedPacket(options) {
+    const opts = options || {};
+    if (state.ingress.packetId) return;
+    if (!opts.operatorOverride && (surfaceOpen() || completedCount() !== 3)) return;
+    if (opts.operatorOverride && !hasOperatorAccess()) return;
     const previousIngress = clone(state.ingress);
     const previousPacket = clone(state.packet);
     const previousSealed = clone(state.sealed);
@@ -1055,6 +1132,20 @@
       persist();
       logEvent('packet-stage-failed', { error: String(error && error.message ? error.message : error) });
       throw error;
+    }
+  }
+
+  async function stageSelectedBatch() {
+    const batchId = dom.batchIntakeSelect ? (dom.batchIntakeSelect.value || 'batch-001a') : 'batch-001a';
+    if (!hasOperatorAccess()) {
+      if (dom.batchIntakeNote) dom.batchIntakeNote.textContent = 'Operator access is required to stage a buffered batch.';
+      render();
+      return;
+    }
+    seedBatchIngress(batchId);
+    await mintStagedPacket({ operatorOverride: true });
+    if (dom.batchIntakeNote && state.ingress.packetId) {
+      dom.batchIntakeNote.textContent = 'Batch ' + batchId + ' is staged in the packet reliquary and ready for Mint / Seal Payload.';
     }
   }
 
@@ -1122,6 +1213,7 @@
     state.packet = null;
     state.sealed = null;
     state.lastProbe = '';
+    state.selectedBatchId = null;
     state.audit = [];
     state.renderer = { detected: false, meta: null };
     state.ingress = { segments: { future_self: '', past_self: '', higher_self: '' }, stepIndex: 0, vaultOpen: false, operatorShellOpen: false, openedAt: null, receiptId: null, packetId: null, bypass: false, recovered: false };
@@ -1138,6 +1230,7 @@
     dom.inputSigKid.value = (D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal;
     dom.inputSigDetachedRef.value = (D.signatureDefaults && D.signatureDefaults.detached_ref) || '';
     dom.inputSigValue.value = '';
+    if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = 'batch-001a';
     dom.dynamicTarget.innerHTML = '';
     dom.probeOutput.value = '';
     clearLocalBypassToken();
@@ -1175,6 +1268,7 @@
     state.sealed = preservePacket ? state.sealed : null;
     state.covenant = preservePacket ? state.covenant : { confirmed: false, confirmedAt: null, badgeNumber: null };
     state.operatorSignature = preservePacket ? state.operatorSignature : null;
+    state.selectedBatchId = preservePacket ? state.selectedBatchId : null;
     state.ingress.vaultOpen = false;
     state.ingress.operatorShellOpen = false;
     state.ingress.openedAt = preservePacket && state.packet ? (state.packet.created_at || state.packet.receipt.minted_at || null) : null;
@@ -1196,6 +1290,7 @@
       dom.inputSigKid.value = (D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal;
       dom.inputSigDetachedRef.value = (D.signatureDefaults && D.signatureDefaults.detached_ref) || '';
       dom.inputSigValue.value = '';
+      if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = state.selectedBatchId || 'batch-001a';
     }
     render();
     if (opts.persistAfter !== false) persist();
@@ -1718,6 +1813,7 @@
       ingress: ingress,
       intake: {
         status: state.covenant.confirmed ? 'sealed' : 'staged',
+        selected_batch_id: state.selectedBatchId || null,
         request_id: state.helper.request_id,
         ts_utc: state.helper.ts_utc,
         sealed_at: state.helper.sealed_at,

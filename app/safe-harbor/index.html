@@ -8,7 +8,7 @@
 </head>
 <body class="vault-sealed boot-pending">
   <noscript><div class="boot-alert">TD613 Safe Harbor requires JavaScript to progress beyond the ingress membrane.</div></noscript>
-  <div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true">
+  <div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true" hidden>
     <section class="ingress-shell">
       <div class="ingress-head">
         <div class="title-group">
@@ -188,6 +188,29 @@
         <section class="panel-section witness-surface">
           <div class="section-label">Witness Surface</div>
           <div class="witness-grid">
+            <article class="surface-card batch-intake-card" data-td613-skip="true">
+              <div class="surface-head">
+                <span class="surface-kicker">Buffered intake</span>
+                <span class="surface-state" id="batchIntakeState">operator token required</span>
+              </div>
+              <h2>Tauric Diana Batch Intake</h2>
+              <p class="surface-copy">Select a buffered batch and stage it directly into the Harbor chamber without the deprecated triad ritual.</p>
+              <div class="field-grid">
+                <label class="field field-wide">
+                  <span>Buffered batch</span>
+                  <select id="batchIntakeSelect">
+                    <option value="batch-001a">batch-001a</option>
+                    <option value="batch-002a">batch-002a</option>
+                    <option value="batch-003a">batch-003a</option>
+                    <option value="batch-004a">batch-004a</option>
+                  </select>
+                </label>
+              </div>
+              <div class="button-grid compact">
+                <button class="control" id="stageSelectedBatch" type="button">Stage Selected Batch</button>
+              </div>
+              <div class="note" id="batchIntakeNote">Localhost override or a stored operator token unlocks direct batch staging.</div>
+            </article>
             <article class="surface-card render-face-card">
               <div class="surface-head">
                 <span class="surface-kicker">Operator handshake</span>
