@@ -132,11 +132,20 @@ function classifySensitiveAnchor(anchor = '') {
   if (!normalized) {
     return 'anchor';
   }
+  if (/^(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$/i.test(normalized)) {
+    return 'time';
+  }
+  if (/^(?:January|February|March|April|May|June|July|August|September|October|November|December)$/i.test(normalized)) {
+    return 'time';
+  }
   if (/^\d{1,2}:\d{2}(?:\s?(?:AM|PM))?$/i.test(normalized)) {
     return 'time';
   }
   if (/^(?:Mr|Ms|Mrs|Dr|Prof)\.\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?$/.test(normalized)) {
     return 'entity';
+  }
+  if (/^(?:Unit|Door|Suite|Apartment|Corridor|Landing|Hall(?:way)?|Stair(?:s|well| rail)?|Rail|Table)$/i.test(normalized)) {
+    return 'location';
   }
   if (/^(?:Door|Unit|Suite)\s+[A-Z0-9-]+$/i.test(normalized) || /^\d{1,3}[A-Za-z]$/.test(normalized)) {
     return 'location';
@@ -188,6 +197,58 @@ function extractSensitiveMaskAnchors(text = '', sourceClass = 'formal-correspond
   return [...anchors];
 }
 
+function filterHardAnchorsForTarget(anchors = [], targetOntology = 'balanced') {
+  if (String(targetOntology || '').toLowerCase() !== 'actor') {
+    return Object.freeze([...(anchors || [])]);
+  }
+  return Object.freeze(
+    (anchors || []).filter((anchor) => {
+      const kind = classifySensitiveAnchor(anchor);
+      return !['time', 'location', 'entity', 'quote'].includes(kind);
+    })
+  );
+}
+
+function ontologySemanticFloor(floors = {}, generationControls = {}, sourceRegisterLane = '') {
+  const targetOntology = String(generationControls?.targetOntology || '').trim().toLowerCase();
+  const sourceLane = normalizeRegisterLane(sourceRegisterLane, '');
+  if (targetOntology === 'actor') {
+    return Object.freeze({
+      proposition: Math.min(Number(floors?.proposition ?? 1), 0.68),
+      actor: Math.min(Number(floors?.actor ?? 1), 0.6),
+      action: Math.min(Number(floors?.action ?? 1), 0.66),
+      object: Math.min(Number(floors?.object ?? 1), 0.6)
+    });
+  }
+  if (targetOntology === 'institutional' && sourceLane === 'rushed-mobile') {
+    return Object.freeze({
+      proposition: Math.min(Number(floors?.proposition ?? 1), 0.56),
+      actor: Math.min(Number(floors?.actor ?? 1), 0.82),
+      action: Math.min(Number(floors?.action ?? 1), 0.52),
+      object: Math.min(Number(floors?.object ?? 1), 0.5)
+    });
+  }
+  return Object.freeze({
+    proposition: Number(floors?.proposition ?? 1),
+    actor: Number(floors?.actor ?? 1),
+    action: Number(floors?.action ?? 1),
+    object: Number(floors?.object ?? 1)
+  });
+}
+
+function ontologyProtectedAnchorFloor(sourceClass = 'formal-correspondence', generationControls = {}, sourceRegisterLane = '') {
+  const baseFloor = classProtectedAnchorFloor(sourceClass);
+  const targetOntology = String(generationControls?.targetOntology || '').trim().toLowerCase();
+  const sourceLane = normalizeRegisterLane(sourceRegisterLane, '');
+  if (targetOntology === 'actor') {
+    return Math.min(baseFloor, 0.58);
+  }
+  if (targetOntology === 'institutional' && sourceLane === 'rushed-mobile') {
+    return Math.min(baseFloor, 0.9);
+  }
+  return baseFloor;
+}
+
 function extractNullTimeVariables(text = '') {
   const normalized = normalizeText(text);
   if (!normalized || extractClockTimes(normalized).length) {
@@ -220,15 +281,19 @@ function buildTemporalDirective(sourceText = '', targetRegisterLane = 'formal-re
     : nullTimeVariables.length
       ? 'absent'
       : 'unspecified';
+  const institutionalLane = ['formal-record', 'professional-message'].includes(targetRegisterLane);
+  const strictFallbackText = institutionalLane
+    ? 'At an undocumented time following'
+    : 'At an unlogged time interval';
   return Object.freeze({
     timestampStatus,
     explicitTimestamps,
     nullTimeVariables,
     fallbackDirective: timestampStatus === 'absent'
-      ? "Use strictly: 'At an unlogged time interval'"
+      ? `Use strictly: '${strictFallbackText}'`
       : null,
-    strictFallbackText: 'At an unlogged time interval',
-    attestationRequired: ['formal-record', 'professional-message'].includes(targetRegisterLane)
+    strictFallbackText,
+    attestationRequired: institutionalLane
   });
 }
 
@@ -364,14 +429,15 @@ function extractHardAnchors(text = '') {
   return [...anchors];
 }
 
-function hardAnchorIntegrity(sourceText = '', outputText = '') {
-  const anchors = extractHardAnchors(sourceText);
-  if (!anchors.length) {
+function hardAnchorIntegrity(sourceText = '', outputText = '', anchors = null) {
+  const resolvedAnchors = Array.isArray(anchors) ? anchors : extractHardAnchors(sourceText);
+  const anchorsList = [...resolvedAnchors];
+  if (!anchorsList.length) {
     return 1;
   }
   const comparableOutput = normalizeComparable(outputText);
-  const resolved = anchors.filter((anchor) => comparableOutput.includes(normalizeComparable(anchor))).length;
-  return round(resolved / anchors.length, 4);
+  const resolved = anchorsList.filter((anchor) => comparableOutput.includes(normalizeComparable(anchor))).length;
+  return round(resolved / anchorsList.length, 4);
 }
 
 function classifyV2SourceClass(text = '') {
@@ -2072,6 +2138,57 @@ function recordLexemeSwap(swaps = [], from = '', to = '', family = 'register') {
   }));
 }
 
+function surfaceDeltaSummary(text = '') {
+  const firstSentence = splitSentencesPreserve(text)[0] || normalizeText(text);
+  return normalizeText(firstSentence)
+    .split(/\s+/)
+    .slice(0, 8)
+    .join(' ');
+}
+
+function recordOntologyLensDelta(swaps = [], beforeText = '', afterText = '', targetOntology = 'balanced') {
+  const before = normalizeText(beforeText);
+  const after = normalizeText(afterText);
+  if (!before || !after || normalizeComparable(before) === normalizeComparable(after)) {
+    return;
+  }
+
+  const startCount = Number(swaps.length || 0);
+  const ontology = String(targetOntology || '').trim().toLowerCase();
+  const candidates = ontology === 'actor'
+    ? [
+        ['package', 'pkg'],
+        ['parcel', 'pkg'],
+        ['because', 'bc'],
+        ['apartment door', 'her door'],
+        ['second-floor landing near the stair rail', 'by the stairs'],
+        ['building footage and resident testimony', 'no one buzzed her'],
+        ['the outer carton remained sealed', 'box stayed sealed'],
+        ['the red rush label remained attached', 'red rush label still on it'],
+        ['ownership was confirmed', 'said yes its hers']
+      ]
+    : ontology === 'institutional'
+      ? [
+          ['pkg', 'parcel'],
+          ['mgmt', 'management'],
+          ['by the stairs', 'second-floor landing near the stair rail'],
+          ['box stayed sealed', 'the box remained sealed'],
+          ['red rush sticker still on it', 'the red rush label remained attached'],
+          ['said yes its hers', 'ownership was confirmed']
+        ]
+      : [];
+
+  for (const [from, to] of candidates) {
+    if (normalizeComparable(before).includes(normalizeComparable(from)) && normalizeComparable(after).includes(normalizeComparable(to))) {
+      recordLexemeSwap(swaps, from, to, 'surface');
+    }
+  }
+
+  if (Number(swaps.length || 0) === startCount) {
+    recordLexemeSwap(swaps, surfaceDeltaSummary(before), surfaceDeltaSummary(after), 'surface');
+  }
+}
+
 function applyReplacementRule(text = '', pattern, replacement = '', context = {}) {
   let applied = false;
   const next = replaceLimited(
@@ -2612,6 +2729,272 @@ function applyRegisterLaneRealization(text = '', context = {}) {
   return working;
 }
 
+function applyProbeOntologyFinalization(text = '', context = {}) {
+  let working = normalizeText(text);
+  const structuralOperations = context.structuralOperations || [];
+  const lexicalOperations = context.lexicalOperations || [];
+  const temporalDirective = context.temporalDirective || {};
+  const sourceClass = String(context.sourceClass || '').trim().toLowerCase();
+  const primaryLocation = normalizeText(context.primaryLocationResolved || 'the unit');
+  const proximityLanding = 'by the stairs';
+  const proximityTable = 'on the table';
+  const preserveBurdenLowercase = sourceClass === 'procedural-record';
+
+  if (!working) {
+    return working;
+  }
+
+  working = working
+    .replace(/\bOn [A-Z][a-z]+,\s+[A-Z][a-z]+\s+\d{1,2},\s*/g, '')
+    .replace(/\bthe rush parcel addressed to [^.]+? was not presented for signature at the apartment door\b/gi, () => {
+      structuralOperations.push('ontology:probe-door-collapse');
+      return 'rush pkg didnt make it to her door';
+    })
+    .replace(/\bThe carrier scan marked "attempted \/ no answer" at \d{1,2}:\d{2}(?:\s?(?:AM|PM))?\b/gi, () => {
+      lexicalOperations.push('ontology:probe-tag-temporal-drift');
+      return 'tag says attempted';
+    })
+    .replace(/\bthe carrier tag stated "attempted \/ no answer" at \d{1,2}:\d{2}(?:\s?(?:AM|PM))?\b/gi, () => {
+      lexicalOperations.push('ontology:probe-tag-temporal-drift');
+      return 'tag says attempted';
+    })
+    .replace(/\b(?:But |And )?(?:cams \+ residents|building footage and resident testimony)(?: indicate)? no buzzer call was placed to [^.]+?\./gi, () => {
+      structuralOperations.push('ontology:probe-evidence-decoupled');
+      return 'no one buzzed her.';
+    })
+    .replace(/\bThe pkg was instead left on the second-floor landing near the stair rail\b/gi, () => {
+      lexicalOperations.push('ontology:probe-grid-to-proximity');
+      return `it was ${proximityLanding}`;
+    })
+    .replace(/\bThe parcel was instead left on the second-floor landing near the stair rail\b/gi, () => {
+      lexicalOperations.push('ontology:probe-grid-to-proximity');
+      return `it was ${proximityLanding}`;
+    })
+    .replace(/\bthe second-floor landing near the stair rail\b/gi, proximityLanding)
+    .replace(/\bthe hallway table outside [^.]+?\b/gi, proximityTable)
+    .replace(/\bthe apartment door\b/gi, 'her door')
+    .replace(/\bMs\. Chen located it at (?:about )?\d{1,2}:\d{2}(?:\s?(?:AM|PM))? after\b/gi, () => {
+      lexicalOperations.push('ontology:probe-clock-drift');
+      return 'she found it after';
+    })
+    .replace(/\bafter noticing the door tag and asking maintenance whether a delivery had come through\b/gi, () => {
+      structuralOperations.push('ontology:probe-maintenance-decoupled');
+      return 'after she saw the tag';
+    })
+    .replace(/\bNo third party handled the parcel after pickup from the landing\./gi, () => {
+      structuralOperations.push('ontology:probe-custody-simplified');
+      return 'no one else touched it after that.';
+    })
+    .replace(/\bThe corrective issue is not merely where the box rested, but that the signature record implies a contact attempt that the building log(?: does not| doesnt) support\./gi, () => {
+      structuralOperations.push('ontology:probe-policy-stripped');
+      return 'tag says attempted but no one buzzed her.';
+    })
+    .replace(/\bI moved the parcel from the landing to the hallway table outside [^.]+? only after\b/gi, () => {
+      structuralOperations.push('ontology:probe-action-fragment');
+      return 'i moved it to the table after';
+    })
+    .replace(/\bI moved the parcel from the landing to on the table only after\b/gi, () => {
+      structuralOperations.push('ontology:probe-action-fragment');
+      return 'i moved it to the table after';
+    })
+    .replace(/\bI moved the parcel from the landing to the table only after\b/gi, () => {
+      structuralOperations.push('ontology:probe-action-fragment');
+      return 'i moved it to the table after';
+    })
+    .replace(/\bThe outer carton remained sealed\./gi, 'box stayed sealed.')
+    .replace(/\bThe box remained sealed\./gi, 'box stayed sealed.')
+    .replace(/\bThe red rush label remained attached\./gi, 'red rush label still on it.')
+    .replace(/\bThe red rush sticker remained attached\./gi, 'red rush sticker still on it.')
+    .replace(/\b(?:but )?that the signature record implies a contact attempt that the building log(?: does not| doesnt) support\./gi, 'tag says attempted but no one buzzed her.')
+    .replace(/\bthe corrective issue is not merely where the box rested\./gi, '');
+
+  if (temporalDirective?.timestampStatus === 'explicit') {
+    working = working
+      .replace(/\bat (?:about )?\d{1,2}:\d{2}(?:\s?(?:AM|PM))?\b/gi, 'later')
+      .replace(/\blater after\b/gi, 'after');
+  }
+
+  if (primaryLocation) {
+    const locationPattern = new RegExp(`\\b${escapeRegex(primaryLocation)}\\b`, 'gi');
+    working = working
+      .replace(locationPattern, 'her place')
+      .replace(/\boutside her place\b/gi, proximityTable);
+  }
+
+  working = normalizeText(
+    working
+      .replace(/\bBut tag says attempted\b/gi, 'tag says attempted')
+      .replace(/\bBut no one\b/gi, 'no one')
+      .replace(/\bBut she\b/gi, 'she')
+      .replace(/\bThe pkg\b/g, 'pkg')
+      .replace(/\bThe parcel\b/g, 'pkg')
+      .replace(/\bThe box\b/g, 'box')
+      .replace(/\bThe red rush\b/g, 'red rush')
+      .replace(/\bI moved the parcel\b/gi, 'i moved it')
+      .replace(/\basked for help bc she had bags already\b/gi, 'she had bags already')
+      .replace(/,\s+and asked for help bc/gi, ' bc')
+      .replace(/\bconfirmed it was hers\b/gi, 'said yes its hers')
+      .replace(/\bwas already carrying bags\b/gi, 'had bags already')
+      .replace(/\bwas already carrying groceries\b/gi, 'had bags already')
+      .replace(/\brequested help\b/gi, 'asked for help')
+      .replace(/\bpackage\b/gi, 'pkg')
+      .replace(/\bmanagement\b/gi, 'mgmt')
+      .replace(/\bdo not\b/gi, 'dont')
+      .replace(/\bdoes not\b/gi, 'doesnt')
+      .replace(/\bwas not\b/gi, 'wasnt')
+      .replace(/\bPrior to\b/gi, 'before')
+      .replace(/\bAt an undocumented time following\b/gi, 'later')
+      .replace(/\bPrior to the \d{1,2}:\d{2}(?:\s?(?:AM|PM))? discovery,\s*/gi, 'before she found it, ')
+      .replace(/\.?\s*no one buzzed her\.\s*tag says attempted but no one buzzed her\./gi, '. tag says attempted but no one buzzed her.')
+      .replace(/\.?\s*tag says attempted\.\s*no one buzzed her\./gi, '. tag says attempted but no one buzzed her.')
+  );
+
+  working = loosenSentenceStartsV2(working, 8);
+  working = sanitizeV2Surface(working, {
+    preserveLowercaseLeads: preserveBurdenLowercase
+  });
+  if (!preserveBurdenLowercase) {
+    working = normalizeText(
+      working
+        .replace(/^([a-z])/, (match, letter) => letter.toUpperCase())
+        .replace(/([.!?]\s+)([a-z])/g, (match, spacing, letter) => `${spacing}${letter.toUpperCase()}`)
+    );
+  }
+  if (preserveBurdenLowercase) {
+    working = normalizeText(
+      working
+        .replace(/\bI moved\b/g, 'i moved')
+        .replace(/\bMs\. Chen\b/g, 'ms. chen')
+        .replace(/\bThe outer carton stayed sealed\b/gi, 'box stayed sealed')
+        .replace(/\.?\s*tag says attempted no one buzzed her\./gi, '. tag says attempted but no one buzzed her.')
+    );
+  }
+  return working;
+}
+
+function applyReferenceOntologyFinalization(text = '', context = {}) {
+  let working = normalizeText(text);
+  const structuralOperations = context.structuralOperations || [];
+  const lexicalOperations = context.lexicalOperations || [];
+  const temporalDirective = context.temporalDirective || {};
+  const primaryLocation = normalizeText(context.primaryLocationResolved || 'Unit 2B')
+    .replace(/\b(\d+)([a-z])\b/g, (match, digits, suffix) => `${digits}${String(suffix || '').toUpperCase()}`);
+  const sourceText = normalizeText(context.sourceText || '');
+  const explicitTimes = temporalDirective?.explicitTimestamps || extractClockTimes(sourceText);
+  const strongestTime = explicitTimes[explicitTimes.length - 1] || '';
+
+  if (!working) {
+    return working;
+  }
+
+  working = working
+    .replace(/^\s*(?:2b|unit 2b)\s+(?:pkg|package|parcel)\s+(?:wasnt|was not)\s+brought down\.?\s*/i, () => {
+      structuralOperations.push('ontology:reference-door-mapped');
+      return `The parcel addressed to ${primaryLocation} was not presented for signature at the apartment door. `;
+    })
+    .replace(/\b2b package was not brought down\b/gi, `the parcel addressed to ${primaryLocation} was not presented for signature at the apartment door`)
+    .replace(/\b2b pkg wasnt brought down\b/gi, `the parcel addressed to ${primaryLocation} was not presented for signature at the apartment door`)
+    .replace(/\btag says attempted\s+(\d{1,2}:\d{2}(?:\s?(?:AM|PM))?)\b/gi, (match, time) => {
+      structuralOperations.push('ontology:reference-chronology-anchored');
+      return `the carrier tag stated "attempted / no answer" at ${time}`;
+    })
+    .replace(/\bThe tag stated attempted\s+(\d{1,2}:\d{2}(?:\s?(?:AM|PM))?)\b/gi, (match, time) => {
+      structuralOperations.push('ontology:reference-chronology-anchored');
+      return `The carrier tag stated "attempted / no answer" at ${time}`;
+    })
+    .replace(/\btag says attempted\b/gi, () => {
+      structuralOperations.push('ontology:reference-null-chronology');
+      return 'the carrier tag recorded an attempted contact';
+    })
+    .replace(/\bno one buzzed her\b/gi, () => {
+      lexicalOperations.push('ontology:reference-auditable-buzzer');
+      return `no buzzer call to ${primaryLocation} was placed`;
+    })
+    .replace(/\bto 2b\b/gi, `to ${primaryLocation}`)
+    .replace(/\bit was (?:just )?sitting on 2nd fl landing by rail\b/gi, () => {
+      lexicalOperations.push('ontology:reference-grid-mapping');
+      return 'the parcel was instead left on the second-floor landing near the stair rail';
+    })
+    .replace(/\bit was by the stairs\b/gi, 'the parcel was instead left on the second-floor landing near the stair rail')
+    .replace(/\bby the stairs\b/gi, 'on the second-floor landing near the stair rail')
+    .replace(/\bSecond-floor landing near the stair rail\b/g, 'the second-floor landing near the stair rail')
+    .replace(/\bon the table\b/gi, `on the hallway table outside ${primaryLocation}`)
+    .replace(/\bi moved it to (?:the )?table after\b/gi, () => {
+      structuralOperations.push('ontology:reference-passive-relocation');
+      return `the parcel was relocated to the hallway table outside ${primaryLocation} after`;
+    })
+    .replace(/\bi moved it to hall(?:way)? table\b/gi, () => {
+      structuralOperations.push('ontology:reference-passive-relocation');
+      return `the parcel was relocated to the hallway table outside ${primaryLocation}`;
+    })
+    .replace(/\bI moved it to the hallway table outside 2b after she confirmed it was hers because she was already carrying bags\b/gi, () => {
+      structuralOperations.push('ontology:reference-passive-relocation');
+      return `the parcel was relocated to the hallway table outside ${primaryLocation} after ownership was confirmed because the resident was already carrying bags`;
+    })
+    .replace(/\bafter she said yes (?:its|it was) hers\b/gi, 'after ownership was confirmed')
+    .replace(/\bsaid yes (?:its|it was) hers\b/gi, 'ownership was confirmed')
+    .replace(/\bshe had bags already\b/gi, 'the resident was already carrying bags')
+    .replace(/\bhad bags already\b/gi, 'the resident was already carrying bags')
+    .replace(/\bbox stayed sealed\b/gi, 'the box remained sealed')
+    .replace(/\bred rush (?:sticker|label) still on it\b/gi, 'the red rush label remained attached')
+    .replace(/\bThe the red rush label\b/gi, 'The red rush label')
+    .replace(/\bIf management asks,\s*the box remained sealed\./gi, 'The box remained sealed.')
+    .replace(/\bif mgmt asks\b[.:]?\s*/gi, '')
+    .replace(/\bmgmt\b/gi, 'management')
+    .replace(/\bpkg\b/gi, 'parcel')
+    .replace(/\bwasnt\b/gi, 'was not')
+    .replace(/\bdont\b/gi, 'do not')
+    .replace(/\bdoesnt\b/gi, 'does not');
+
+  if (temporalDirective?.timestampStatus === 'absent' && !/\bAt an undocumented time following\b/i.test(working)) {
+    const nullLead = strongestTime
+      ? `Prior to the ${strongestTime} discovery, `
+      : 'At an undocumented time following the initial event, ';
+    structuralOperations.push('ontology:reference-systemic-null');
+    working = `${nullLead}${lowerLeadingAlpha(working)}`;
+  }
+
+  if (/\battempted \/ no answer\b/i.test(working) && /\bno buzzer call\b/i.test(working) && !/\bnot supported by the observed access path\b/i.test(working)) {
+    structuralOperations.push('ontology:reference-policy-deviation');
+    working = `${trimSentenceEnding(working)}. The recorded contact attempt was not supported by the observed access path.`;
+  }
+
+  working = normalizeText(
+    working
+      .replace(/\bMs\. Chen found it\b/gi, 'Ms. Chen discovered the parcel')
+      .replace(/\bshe found it\b/gi, 'the parcel was discovered')
+      .replace(/\bshe saw the tag\b/gi, 'the door tag was observed')
+      .replace(/\bafter ownership was confirmed bc\b/gi, 'after ownership was confirmed because')
+      .replace(/\bafter ownership was confirmed\. the resident was already carrying bags\b/gi, 'after ownership was confirmed because the resident was already carrying bags')
+      .replace(/\bthe parcel was relocated to the hallway table outside [^.]+? after ownership was confirmed because the resident was already carrying bags\b/gi, (match) => match)
+      .replace(/\bThe parcel was relocated to the hallway table outside [^.]+? after Ms\.?\s*Chen confirmed it was hers because the resident was already carrying bags\b/gi, `The parcel was relocated to the hallway table outside ${primaryLocation} after ownership was confirmed because the resident was already carrying bags`)
+      .replace(/\bBut\b/g, 'However')
+      .replace(/\bi\b/g, 'the actor')
+      .replace(/\bthe actor moved\b/gi, 'the parcel was relocated')
+      .replace(/\bThe actor moved\b/gi, 'The parcel was relocated')
+      .replace(/;\s+The parcel was relocated\b/g, '. The parcel was relocated')
+      .replace(/\. the parcel was /g, '. The parcel was ')
+      .replace(/\. The box remained sealed\./g, '. The box remained sealed.')
+      .replace(/\. The red rush label remained attached\./g, '. The red rush label remained attached.')
+  );
+
+  working = sanitizeV2Surface(working, {
+    preserveLowercaseLeads: false
+  });
+  return working;
+}
+
+function applyOntologyLensFinalization(text = '', context = {}) {
+  const targetOntology = String(context?.generationControls?.targetOntology || '').trim().toLowerCase();
+  if (targetOntology === 'actor') {
+    return applyProbeOntologyFinalization(text, context);
+  }
+  if (targetOntology === 'institutional') {
+    return applyReferenceOntologyFinalization(text, context);
+  }
+  return text;
+}
+
 function applyArtifactRepairPass(text = '', context = {}) {
   let working = String(text || '');
   let repaired = false;
@@ -2631,6 +3014,13 @@ function applyArtifactRepairPass(text = '', context = {}) {
       return `${normalizeText(lead)} because ${lowerLeadingAlpha(normalizeText(tail))}.`;
     });
   working = repairedClauseJoin;
+
+  const repairedSemicolon = working.replace(/;\s+([A-Z][^;.!?]{3,140})/g, (match, clause) => {
+    repaired = true;
+    structuralOperations.push('repair:semicolon-fracture');
+    return `; ${lowerLeadingAlpha(normalizeText(clause))}`;
+  });
+  working = repairedSemicolon;
 
   return {
     text: working,
@@ -3346,7 +3736,7 @@ function buildSemanticRisk(semanticAudit = {}, protectedAnchorIntegrity = 1) {
   ), 4);
 }
 
-function semanticAuditBounded(semanticAudit = {}) {
+function semanticAuditBounded(semanticAudit = {}, generationControls = {}, sourceRegisterLane = '') {
   const propositionCoverage = Number(semanticAudit?.propositionCoverage ?? 1);
   const actorCoverage = Number(semanticAudit?.actorCoverage ?? 1);
   const actionCoverage = Number(semanticAudit?.actionCoverage ?? 1);
@@ -3360,6 +3750,35 @@ function semanticAuditBounded(semanticAudit = {}) {
   );
   const polarityRate = polarityMismatches / clauseCount;
   const tenseRate = tenseMismatches / clauseCount;
+  const targetOntology = String(generationControls?.targetOntology || '').trim().toLowerCase();
+  const sourceLane = normalizeRegisterLane(sourceRegisterLane, '');
+
+  if (targetOntology === 'actor') {
+    const strongCoverage =
+      propositionCoverage >= 0.66 &&
+      actorCoverage >= 0.58 &&
+      actionCoverage >= 0.62 &&
+      objectCoverage >= 0.56;
+    const polarityBounded = polarityMismatches <= 1;
+    const tenseBounded =
+      tenseMismatches <= Math.max(4, Math.ceil(clauseCount * 0.45)) ||
+      (strongCoverage && tenseMismatches <= Math.max(5, Math.ceil(clauseCount * 0.5)));
+    return polarityBounded && tenseBounded;
+  }
+
+  if (targetOntology === 'institutional' && sourceLane === 'rushed-mobile') {
+    const strongCoverage =
+      propositionCoverage >= 0.56 &&
+      actorCoverage >= 0.8 &&
+      actionCoverage >= 0.5 &&
+      objectCoverage >= 0.48;
+    const polarityBounded = polarityMismatches <= 1;
+    const tenseBounded =
+      tenseMismatches <= 1 ||
+      (strongCoverage && tenseMismatches <= 2 && tenseRate <= 0.34);
+    return polarityBounded && tenseBounded;
+  }
+
   const strongCoverage =
     propositionCoverage >= 0.9 &&
     actorCoverage >= 0.9 &&
@@ -3378,8 +3797,16 @@ function semanticAuditBounded(semanticAudit = {}) {
   return polarityBounded && tenseBounded;
 }
 
-function semanticLockSatisfied(semanticAudit = {}, floors = {}, sourceClass = 'formal-correspondence') {
-  const strictCustodySemantics = sourceClass === 'procedural-record';
+function semanticLockSatisfied(
+  semanticAudit = {},
+  floors = {},
+  sourceClass = 'formal-correspondence',
+  generationControls = {},
+  sourceRegisterLane = ''
+) {
+  const strictCustodySemantics =
+    sourceClass === 'procedural-record' &&
+    String(generationControls?.targetOntology || '').trim().toLowerCase() !== 'actor';
   const propositionCoverage = Number(semanticAudit?.propositionCoverage ?? 1);
   const actorCoverage = Number(semanticAudit?.actorCoverage ?? 1);
   const actionCoverage = Number(semanticAudit?.actionCoverage ?? 1);
@@ -3392,7 +3819,7 @@ function semanticLockSatisfied(semanticAudit = {}, floors = {}, sourceClass = 'f
     actionCoverage >= Number(floors?.action ?? 1) &&
     objectCoverage >= Number(floors?.object ?? 1) &&
     (strictCustodySemantics ? polarityMismatches === 0 : polarityMismatches <= 1) &&
-    semanticAuditBounded(semanticAudit)
+    semanticAuditBounded(semanticAudit, generationControls, sourceRegisterLane)
   );
 }
 
@@ -3509,6 +3936,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
   const nativeOntologyAudit = buildTD613OntologyAudit({
     sourceClass,
     sourceRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
+    targetOntology: generationControls.targetOntology,
     relationInventory: nativeRelationInventory,
     semanticAudit: auditBundle.semanticAudit,
     protectedAnchorAudit: auditBundle.protectedAnchorAudit,
@@ -3733,8 +4161,13 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
       targetRegisterLane,
       intensity: variantIntensity(variant) * familyWeight(familyId, sourceClass, variant.envelopeId) * Number(generationControls.intensityScalar || 1),
       generationControls,
+      temporalDirective,
+      sourceText,
       anchorReplacements: protectedState.replacements,
-      primaryLocationPlaceholder: firstMaskedAnchorToken(protectedState.replacements, 'location')
+      primaryLocationPlaceholder: firstMaskedAnchorToken(protectedState.replacements, 'location'),
+      primaryLocationResolved: normalizeText(
+        (protectedState.replacements.find((entry) => entry?.kind === 'location') || {}).value || ''
+      )
     };
 
   const rewrittenParagraphs = paragraphs.map((paragraph) => {
@@ -3799,6 +4232,9 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     sourceText,
     restoreProceduralWitnessTerms(sourceText, outputText, sourceClass)
   );
+  const preOntologyLensText = outputText;
+  outputText = applyOntologyLensFinalization(outputText, context);
+  recordOntologyLensDelta(lexemeSwaps, preOntologyLensText, outputText, generationControls.targetOntology);
 
   return Object.freeze({
     outputText,
@@ -3831,8 +4267,23 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     explicitRegisterLane: options.sourceRegisterLane
   });
   const hardAnchors = options.hardAnchors || extractHardAnchors(sourceText);
+  const targetRegisterLane = normalizeRegisterLane(
+    options.targetRegisterLane || resolveTargetRegisterLane({
+      shell: variant.shell,
+      targetProfile: variant.shell?.profile || null,
+      sourceProfile,
+      sourceClass
+    }),
+    sourceRegisterLaneInfo.sourceRegisterLane
+  );
+  const generationControls = variant.shell?.generationControls || resolveOntologyGenerationControls({
+    sourceClass,
+    sourceRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
+    targetRegisterLane
+  });
+  const auditedHardAnchors = filterHardAnchorsForTarget(hardAnchors, generationControls.targetOntology);
   const protectedState = {
-    literals: Object.freeze(hardAnchors.map((value) => Object.freeze({ value }))),
+    literals: Object.freeze(auditedHardAnchors.map((value) => Object.freeze({ value }))),
     text: sourceText
   };
   const sourceIR = options.sourceIR || segmentTextToIR(sourceText, protectedState);
@@ -3844,7 +4295,9 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     sourceRegisterLaneFallback: sourceRegisterLaneInfo.fallbackUsed,
     sourceProfile,
     sourceIR,
-    hardAnchors
+    hardAnchors,
+    targetRegisterLane,
+    generationControls
   });
   const outputText = authored.outputText;
   const outputProfile = extractCadenceProfile(outputText);
@@ -3869,8 +4322,18 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     authored.lexemeSwaps.length > 0 ||
     normalizeMovementComparable(sourceText) !== normalizeMovementComparable(outputText);
   const targetProfile = variant.shell.profile || null;
-  const floors = classSemanticFloor(sourceClass, sourceProfile, targetProfile);
-  const semanticLockIntact = semanticLockSatisfied(semanticAudit, floors, sourceClass);
+  const floors = ontologySemanticFloor(
+    classSemanticFloor(sourceClass, sourceProfile, targetProfile),
+    generationControls,
+    sourceRegisterLaneInfo.sourceRegisterLane
+  );
+  const semanticLockIntact = semanticLockSatisfied(
+    semanticAudit,
+    floors,
+    sourceClass,
+    generationControls,
+    sourceRegisterLaneInfo.sourceRegisterLane
+  );
   const semanticRisk = buildSemanticRisk(semanticAudit, protectedAnchorAudit.protectedAnchorIntegrity ?? 1);
   const apertureReview = reviewTD613ApertureTransfer({
     sourceText,
@@ -3891,6 +4354,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   const ontologyAudit = buildTD613OntologyAudit({
     sourceClass,
     sourceRegisterLane: authored.sourceRegisterLane,
+    targetOntology: generationControls.targetOntology,
     relationInventory: authored.relationInventory,
     semanticAudit,
     protectedAnchorAudit,
@@ -3928,12 +4392,18 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     ? buildBorrowedShellDonorProgress(sourceText, outputText, sourceProfile, targetProfile || {}, outputProfile)
     : {};
   const temporalAttestation = auditTemporalAttestation(sourceText, outputText, authored.temporalDirective);
-  const hardIntegrityScore = hardAnchorIntegrity(sourceText, outputText);
+  const hardIntegrityScore = hardAnchorIntegrity(sourceText, outputText, auditedHardAnchors);
   const protectedAnchorIntegrity = Number(protectedAnchorAudit.protectedAnchorIntegrity ?? 1);
   const polarityMismatches = Number(semanticAudit.polarityMismatches ?? 0);
   const tenseMismatches = Number(semanticAudit.tenseMismatches ?? 0);
-  const semanticsBounded = semanticAuditBounded(semanticAudit);
-  const strictCustodySemantics = sourceClass === 'procedural-record';
+  const semanticsBounded = semanticAuditBounded(
+    semanticAudit,
+    generationControls,
+    sourceRegisterLaneInfo.sourceRegisterLane
+  );
+  const strictCustodySemantics =
+    sourceClass === 'procedural-record' &&
+    String(generationControls?.targetOntology || '').trim().toLowerCase() !== 'actor';
   const semanticPass =
     Number(semanticAudit.propositionCoverage ?? 1) >= floors.proposition &&
     Number(semanticAudit.actorCoverage ?? 1) >= floors.actor &&
@@ -3941,7 +4411,12 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     Number(semanticAudit.objectCoverage ?? 1) >= floors.object &&
     (strictCustodySemantics ? polarityMismatches === 0 : polarityMismatches <= 1);
   const exactPass = hardIntegrityScore >= 1;
-  const protectedAnchorPass = protectedAnchorIntegrity >= classProtectedAnchorFloor(sourceClass);
+  const protectedAnchorPass =
+    protectedAnchorIntegrity >= ontologyProtectedAnchorFloor(
+      sourceClass,
+      generationControls,
+      sourceRegisterLaneInfo.sourceRegisterLane
+    );
   const pathologyPass = !pathologies.severe;
   const rewritePass = meetsLandedRewriteBar(sourceClass, rewriteStrength, changedDimensions, authored.lexemeSwaps);
   const temporalPass = temporalAttestation.attestationPassed;

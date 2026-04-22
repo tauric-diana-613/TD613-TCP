@@ -696,15 +696,113 @@ function td613MismatchRate(mismatchCount = 0, clauseCount = 0) {
   return clamp01(Number(mismatchCount || 0) / denominator);
 }
 
+function td613OntologyThresholds({
+  targetOntology = '',
+  sourceRegisterLane = ''
+} = {}) {
+  const ontology = String(targetOntology || '').trim().toLowerCase();
+  const sourceLane = String(sourceRegisterLane || '').trim().toLowerCase();
+
+  if (ontology === 'actor') {
+    return Object.freeze({
+      severeProp: 0.52,
+      severeAnchor: 0.58,
+      severeRecapture: 0.82,
+      activeProp: 0.64,
+      activeAnchor: 0.72,
+      activeAction: 0.62,
+      activeActor: 0.58,
+      activeObject: 0.58,
+      activeTense: 4,
+      watchHistoricalCrease: 0.45,
+      activeHistoricalCrease: 0.65,
+      watchUnfoldingEnergy: 0.48,
+      activeUnfoldingEnergy: 0.68,
+      preemptiveAction: 0.72,
+      preemptiveActor: 0.66,
+      preemptiveHistoricalCrease: 0.45,
+      preemptiveRecapture: 0.54,
+      suppressedPressure: 0.5,
+      suppressedGap: 0.62,
+      closureInexpressible: 0.3,
+      closureSuppressed: 0.56,
+      closureDrift: 0.8,
+      severeBeaconCrease: 0.74,
+      severeBeaconUnfolding: 0.8
+    });
+  }
+
+  if (ontology === 'institutional' && sourceLane === 'rushed-mobile') {
+    return Object.freeze({
+      severeProp: 0.55,
+      severeAnchor: 0.9,
+      severeRecapture: 0.74,
+      activeProp: 0.56,
+      activeAnchor: 0.95,
+      activeAction: 0.48,
+      activeActor: 0.8,
+      activeObject: 0.46,
+      activeTense: 2,
+      watchHistoricalCrease: 0.35,
+      activeHistoricalCrease: 0.55,
+      watchUnfoldingEnergy: 0.4,
+      activeUnfoldingEnergy: 0.6,
+      preemptiveAction: 0.8,
+      preemptiveActor: 0.9,
+      preemptiveHistoricalCrease: 0.35,
+      preemptiveRecapture: 0.46,
+      suppressedPressure: 0.42,
+      suppressedGap: 0.55,
+      closureInexpressible: 0.42,
+      closureSuppressed: 0.64,
+      closureDrift: 0.84,
+      severeBeaconCrease: 0.7,
+      severeBeaconUnfolding: 0.75
+    });
+  }
+
+  return Object.freeze({
+    severeProp: 0.7,
+    severeAnchor: 0.9,
+    severeRecapture: 0.74,
+    activeProp: 0.82,
+    activeAnchor: 0.95,
+    activeAction: 0.75,
+    activeActor: 0.8,
+    activeObject: 0.8,
+    activeTense: 1,
+    watchHistoricalCrease: 0.35,
+    activeHistoricalCrease: 0.55,
+    watchUnfoldingEnergy: 0.4,
+    activeUnfoldingEnergy: 0.6,
+    preemptiveAction: 0.88,
+    preemptiveActor: 0.9,
+    preemptiveHistoricalCrease: 0.35,
+    preemptiveRecapture: 0.46,
+    suppressedPressure: 0.42,
+    suppressedGap: 0.55,
+    closureInexpressible: 0.42,
+    closureSuppressed: 0.68,
+    closureDrift: 0.88,
+    severeBeaconCrease: 0.7,
+    severeBeaconUnfolding: 0.75
+  });
+}
+
 export function buildTD613OntologyAudit({
   sourceClass = 'formal-correspondence',
   sourceRegisterLane = 'formal-record',
+  targetOntology = '',
   relationInventory = {},
   semanticAudit = {},
   protectedAnchorAudit = {},
   apertureReview = {},
   apertureSchema = null
 } = {}) {
+  const thresholds = td613OntologyThresholds({
+    targetOntology,
+    sourceRegisterLane
+  });
   const semanticCoverage = Object.freeze({
     propositionCoverage: round3(clamp01(semanticAudit?.propositionCoverage ?? 1)),
     actorCoverage: round3(clamp01(semanticAudit?.actorCoverage ?? 1)),
@@ -713,10 +811,18 @@ export function buildTD613OntologyAudit({
     polarityMismatches: Number(semanticAudit?.polarityMismatches ?? 0),
     tenseMismatches: Number(semanticAudit?.tenseMismatches ?? 0)
   });
+  const relationExactAnchorCount = Number(relationInventory?.exactAnchorCount ?? 0);
+  const protectedResolvedAnchors = Number(protectedAnchorAudit?.resolvedAnchors ?? 0);
+  const protectedMissingAnchors = Array.isArray(protectedAnchorAudit?.missingAnchors)
+    ? protectedAnchorAudit.missingAnchors.length
+    : Number(protectedAnchorAudit?.missingAnchors ?? 0);
+  const protectedTotalAnchors = Number.isFinite(Number(protectedAnchorAudit?.totalAnchors))
+    ? Number(protectedAnchorAudit.totalAnchors)
+    : protectedResolvedAnchors + protectedMissingAnchors;
   const totalAnchors = Math.max(
-    Number(relationInventory?.exactAnchorCount ?? 0),
-    Number(protectedAnchorAudit?.totalAnchors ?? 0),
-    Number(protectedAnchorAudit?.resolvedAnchors ?? 0) + Number(protectedAnchorAudit?.missingAnchors ?? 0),
+    relationExactAnchorCount,
+    protectedTotalAnchors,
+    protectedResolvedAnchors + protectedMissingAnchors,
     0
   );
   const protectedAnchorIntegrity = round3(clamp01(
@@ -812,36 +918,36 @@ export function buildTD613OntologyAudit({
     (tenseRate * 0.04)
   ));
   const temporalPosture =
-    semanticCoverage.propositionCoverage < 0.70 ||
-    protectedAnchorIntegrity < 0.90 ||
-    clamp01(apertureReview?.recaptureRisk ?? 0) >= 0.74
+    semanticCoverage.propositionCoverage < thresholds.severeProp ||
+    protectedAnchorIntegrity < thresholds.severeAnchor ||
+    clamp01(apertureReview?.recaptureRisk ?? 0) >= thresholds.severeRecapture
       ? 'inexpressible'
-      : clamp01(apertureReview?.candidateSuppression ?? 0) >= 0.42 ||
-          clamp01(apertureReview?.observabilityDeficit ?? 0) >= 0.42 ||
-          governedExposure.Gap >= 0.55
+      : clamp01(apertureReview?.candidateSuppression ?? 0) >= thresholds.suppressedPressure ||
+          clamp01(apertureReview?.observabilityDeficit ?? 0) >= thresholds.suppressedPressure ||
+          governedExposure.Gap >= thresholds.suppressedGap
         ? 'suppressed'
-        : semanticCoverage.tenseMismatches > 1 ||
-            historicalCrease >= 0.55 ||
-            unfoldingEnergy >= 0.60
+        : semanticCoverage.tenseMismatches > thresholds.activeTense ||
+            historicalCrease >= thresholds.activeHistoricalCrease ||
+            unfoldingEnergy >= thresholds.activeUnfoldingEnergy
           ? 'drift'
-          : semanticCoverage.actionCoverage < 0.88 ||
-              semanticCoverage.actorCoverage < 0.90 ||
-              historicalCrease >= 0.35 ||
-              clamp01(apertureReview?.recaptureRisk ?? 0) >= 0.46
+          : semanticCoverage.actionCoverage < thresholds.preemptiveAction ||
+              semanticCoverage.actorCoverage < thresholds.preemptiveActor ||
+              historicalCrease >= thresholds.preemptiveHistoricalCrease ||
+              clamp01(apertureReview?.recaptureRisk ?? 0) >= thresholds.preemptiveRecapture
             ? 'preemptive'
             : 'synced';
   const closureClass =
-    closureScore < 0.42 ||
-    semanticCoverage.propositionCoverage < 0.70 ||
-    protectedAnchorIntegrity < 0.90
+    closureScore < thresholds.closureInexpressible ||
+    semanticCoverage.propositionCoverage < thresholds.severeProp ||
+    protectedAnchorIntegrity < thresholds.severeAnchor
       ? 'inexpressible'
-      : closureScore < 0.68 ||
-          clamp01(apertureReview?.candidateSuppression ?? 0) >= 0.42 ||
-          clamp01(apertureReview?.observabilityDeficit ?? 0) >= 0.42
+      : closureScore < thresholds.closureSuppressed ||
+          clamp01(apertureReview?.candidateSuppression ?? 0) >= thresholds.suppressedPressure ||
+          clamp01(apertureReview?.observabilityDeficit ?? 0) >= thresholds.suppressedPressure
         ? 'suppressed'
-        : closureScore < 0.88 ||
+        : closureScore < thresholds.closureDrift ||
             semanticCoverage.tenseMismatches > 0 ||
-            historicalCrease >= 0.35
+            historicalCrease >= thresholds.watchHistoricalCrease
           ? 'drift'
           : 'closed';
   const sustainedInfluence = round3(clamp01(
@@ -850,7 +956,7 @@ export function buildTD613OntologyAudit({
     (clamp01(apertureReview?.recaptureRisk ?? 0) * 0.20) +
     (clamp01(apertureReview?.candidateSuppression ?? 0) * 0.10)
   ));
-  const beaconStatus = sustainedInfluence >= 0.58 && (historicalCrease >= 0.35 || unfoldingEnergy >= 0.40)
+  const beaconStatus = sustainedInfluence >= 0.58 && (historicalCrease >= thresholds.watchHistoricalCrease || unfoldingEnergy >= thresholds.watchUnfoldingEnergy)
     ? 'beacon-active'
     : sustainedInfluence >= 0.36
       ? 'beacon-watch'
@@ -873,32 +979,32 @@ export function buildTD613OntologyAudit({
   const severeReasons = uniqueStrings([
     temporalPosture === 'inexpressible' ? 'temporal-posture:inexpressible' : null,
     closureClass === 'inexpressible' ? 'closure-class:inexpressible' : null,
-    protectedAnchorIntegrity < 0.90 ? 'anchor-integrity<0.90' : null,
-    semanticCoverage.propositionCoverage < 0.70 ? 'proposition-coverage<0.70' : null,
+    protectedAnchorIntegrity < thresholds.severeAnchor ? `anchor-integrity<${thresholds.severeAnchor.toFixed(2)}` : null,
+    semanticCoverage.propositionCoverage < thresholds.severeProp ? `proposition-coverage<${thresholds.severeProp.toFixed(2)}` : null,
     semanticCoverage.polarityMismatches > 1 ? 'polarity-mismatches>1' : null,
-    beaconStatus === 'beacon-active' && (historicalCrease >= 0.70 || unfoldingEnergy >= 0.75)
+    beaconStatus === 'beacon-active' && (historicalCrease >= thresholds.severeBeaconCrease || unfoldingEnergy >= thresholds.severeBeaconUnfolding)
       ? 'beacon-active under sustained deformation'
       : null
   ]);
   const activeReasons = uniqueStrings([
     temporalPosture === 'suppressed' ? 'temporal-posture:suppressed' : null,
     closureClass === 'suppressed' ? 'closure-class:suppressed' : null,
-    protectedAnchorIntegrity < 0.95 ? 'anchor-integrity<0.95' : null,
-    semanticCoverage.propositionCoverage < 0.82 ? 'proposition-coverage<0.82' : null,
-    semanticCoverage.actionCoverage < 0.75 ? 'action-coverage<0.75' : null,
-    semanticCoverage.actorCoverage < 0.80 ? 'actor-coverage<0.80' : null,
-    semanticCoverage.objectCoverage < 0.80 ? 'object-coverage<0.80' : null,
-    semanticCoverage.tenseMismatches > 1 ? 'tense-mismatches>1' : null,
-    historicalCrease >= 0.55 ? 'historical-crease>=0.55' : null,
-    unfoldingEnergy >= 0.60 ? 'unfolding-energy>=0.60' : null
+    protectedAnchorIntegrity < thresholds.activeAnchor ? `anchor-integrity<${thresholds.activeAnchor.toFixed(2)}` : null,
+    semanticCoverage.propositionCoverage < thresholds.activeProp ? `proposition-coverage<${thresholds.activeProp.toFixed(2)}` : null,
+    semanticCoverage.actionCoverage < thresholds.activeAction ? `action-coverage<${thresholds.activeAction.toFixed(2)}` : null,
+    semanticCoverage.actorCoverage < thresholds.activeActor ? `actor-coverage<${thresholds.activeActor.toFixed(2)}` : null,
+    semanticCoverage.objectCoverage < thresholds.activeObject ? `object-coverage<${thresholds.activeObject.toFixed(2)}` : null,
+    semanticCoverage.tenseMismatches > thresholds.activeTense ? `tense-mismatches>${thresholds.activeTense}` : null,
+    historicalCrease >= thresholds.activeHistoricalCrease ? `historical-crease>=${thresholds.activeHistoricalCrease.toFixed(2)}` : null,
+    unfoldingEnergy >= thresholds.activeUnfoldingEnergy ? `unfolding-energy>=${thresholds.activeUnfoldingEnergy.toFixed(2)}` : null
   ]);
   const watchReasons = uniqueStrings([
     temporalPosture === 'preemptive' ? 'temporal-posture:preemptive' : null,
     temporalPosture === 'drift' ? 'temporal-posture:drift' : null,
     closureClass === 'drift' ? 'closure-class:drift' : null,
     sourceClassMismatch ? 'source-class-mismatch' : null,
-    historicalCrease >= 0.35 ? 'historical-crease>=0.35' : null,
-    unfoldingEnergy >= 0.40 ? 'unfolding-energy>=0.40' : null
+    historicalCrease >= thresholds.watchHistoricalCrease ? `historical-crease>=${thresholds.watchHistoricalCrease.toFixed(2)}` : null,
+    unfoldingEnergy >= thresholds.watchUnfoldingEnergy ? `unfolding-energy>=${thresholds.watchUnfoldingEnergy.toFixed(2)}` : null
   ]);
   const driftClass = severeReasons.length
     ? 'severe'
@@ -946,6 +1052,7 @@ export function buildTD613OntologyAudit({
   return Object.freeze({
     sourceClass: String(sourceClass || relationInventory?.sourceClass || 'formal-correspondence'),
     sourceRegisterLane: String(sourceRegisterLane || relationInventory?.sourceRegisterLane || 'formal-record'),
+    targetOntology: String(targetOntology || ''),
     relationInventory: Object.freeze({
       ...(relationInventory || {}),
       sourceClass: String(relationInventory?.sourceClass || sourceClass || 'formal-correspondence'),

@@ -21,6 +21,7 @@
   "retrievalTrace": {
     "sourceText": "freeze runs thru q3. means coord line stays empty 12 more wks unless we bridge it. room was basically: cut print/furniture if needed, dont fake that intake can run w no staffing hit. 3 options still analyst line / evening hrs / reserves w dean ok. revised table thurs after finance answers reserve rule",
     "sourceClass": "narrative-scene",
+    "sourceRegisterLane": "rushed-mobile",
     "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -128,6 +129,7 @@
     "ontologyAudit": {
       "sourceClass": "narrative-scene",
       "sourceRegisterLane": "rushed-mobile",
+      "targetOntology": "institutional",
       "relationInventory": {
         "sourceClass": "narrative-scene",
         "sourceRegisterLane": "rushed-mobile",
@@ -262,6 +264,178 @@
       "donorImprovementRatio": 0.06,
       "sourceOutputLexicalOverlap": 0.857
     },
+    "candidateLedger": [
+      {
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
+        "envelopeId": "matron",
+        "status": "selected",
+        "sourceRegisterLane": "rushed-mobile",
+        "targetRegisterLane": "formal-record",
+        "score": 0.9129,
+        "toolabilityScore": 0.8486,
+        "rewriteStrength": 1,
+        "targetFit": 0.4129,
+        "movementConfidence": 1,
+        "personaSeparationScore": 0.8,
+        "failureReasons": [],
+        "artifactFlags": [
+          "artifact:fragment"
+        ],
+        "toolabilityWarnings": [
+          "artifact:fragment"
+        ],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "punctuation-shape",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "profileShiftDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "punctuation-shape",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 3,
+        "artifactRepairApplied": false,
+        "ontologyAudit": {
+          "sourceClass": "narrative-scene",
+          "sourceRegisterLane": "rushed-mobile",
+          "targetOntology": "institutional",
+          "relationInventory": {
+            "sourceClass": "narrative-scene",
+            "sourceRegisterLane": "rushed-mobile",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "paragraphCount": 1,
+            "sentenceCount": 5,
+            "clauseCount": 7,
+            "exactAnchorCount": 0
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.929,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 0,
+            "resolvedAnchors": 0,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.991,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.015,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
+        "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
+      },
+      {
+        "id": "base:order-beat",
+        "family": "order-beat",
+        "envelopeId": "matron",
+        "status": "eligible",
+        "sourceRegisterLane": "rushed-mobile",
+        "targetRegisterLane": "formal-record",
+        "score": 0.8643,
+        "toolabilityScore": 0.8903,
+        "rewriteStrength": 1,
+        "targetFit": 0.4239,
+        "movementConfidence": 1,
+        "personaSeparationScore": 1,
+        "failureReasons": [],
+        "artifactFlags": [
+          "artifact:fragment"
+        ],
+        "toolabilityWarnings": [
+          "artifact:fragment"
+        ],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "punctuation-shape",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "profileShiftDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "punctuation-shape",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 3,
+        "artifactRepairApplied": true,
+        "ontologyAudit": {
+          "sourceClass": "narrative-scene",
+          "sourceRegisterLane": "rushed-mobile",
+          "targetOntology": "institutional",
+          "relationInventory": {
+            "sourceClass": "narrative-scene",
+            "sourceRegisterLane": "rushed-mobile",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "paragraphCount": 1,
+            "sentenceCount": 5,
+            "clauseCount": 7,
+            "exactAnchorCount": 0
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.929,
+            "polarityMismatches": 1,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 0,
+            "resolvedAnchors": 0,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.931,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.038,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.094
+          }
+        },
+        "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, room w"
+      }
+    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
@@ -273,6 +447,7 @@
       "ontologyRoutePressure": {
         "sourceClass": "narrative-scene",
         "sourceRegisterLane": "rushed-mobile",
+        "targetOntology": "institutional",
         "relationInventory": {
           "sourceClass": "narrative-scene",
           "sourceRegisterLane": "rushed-mobile",

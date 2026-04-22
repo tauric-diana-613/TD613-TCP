@@ -21,12 +21,13 @@
   "retrievalTrace": {
     "sourceText": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks, not Deputy Director Laila Moreno. Brooks flagged it at 9:31 AM, and we corrected the body at 9:47 with a note appended. We also changed the homepage headline at 10:03 because the first version implied budget approval when the vote had only cleared committee. Please keep the distinction clear in any follow-up: this is a correction and clarification sequence, not a retraction. The reporting is still good. The problem was attribution custody and an over-hardened headline frame.",
     "sourceClass": "procedural-record",
+    "sourceRegisterLane": "professional-message",
     "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.975,
+      "objectCoverage": 0.95,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -41,7 +42,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.154
+          "globalBagScore": 0.167
         },
         {
           "sourceClauseId": "s1c0",
@@ -53,7 +54,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.154
+          "globalBagScore": 0.167
         },
         {
           "sourceClauseId": "s2c0",
@@ -61,11 +62,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.103
+          "bagScore": 0.2,
+          "globalBagScore": 0.026
         },
         {
           "sourceClauseId": "s2c1",
@@ -77,10 +78,22 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.026
+          "globalBagScore": 0.028
         },
         {
           "sourceClauseId": "s3c0",
+          "matchedClauseId": "s4c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.3,
+          "globalBagScore": 0.077
+        },
+        {
+          "sourceClauseId": "s3c1",
           "matchedClauseId": "s4c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -88,20 +101,8 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.857,
-          "globalBagScore": 0.154
-        },
-        {
-          "sourceClauseId": "s3c1",
-          "matchedClauseId": "s4c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.667,
-          "globalBagScore": 0.051
+          "bagScore": 0,
+          "globalBagScore": 0.056
         },
         {
           "sourceClauseId": "s3c2",
@@ -109,11 +110,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.111,
-          "globalBagScore": 0.05
+          "bagScore": 1,
+          "globalBagScore": 0.083
         },
         {
           "sourceClauseId": "s4c0",
@@ -125,7 +126,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.154
+          "globalBagScore": 0.167
         },
         {
           "sourceClauseId": "s5c0",
@@ -137,7 +138,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.051
+          "globalBagScore": 0.056
         },
         {
           "sourceClauseId": "s6c0",
@@ -149,21 +150,22 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.154
+          "globalBagScore": 0.167
         }
       ],
       "sourceClauseCount": 10,
       "outputClauseCount": 9
     },
     "protectedAnchorAudit": {
-      "totalAnchors": 6,
-      "resolvedAnchors": 6,
+      "totalAnchors": 3,
+      "resolvedAnchors": 3,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
     "ontologyAudit": {
       "sourceClass": "procedural-record",
       "sourceRegisterLane": "professional-message",
+      "targetOntology": "actor",
       "relationInventory": {
         "sourceClass": "procedural-record",
         "sourceRegisterLane": "professional-message",
@@ -178,7 +180,7 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.975,
+        "objectCoverage": 0.95,
         "polarityMismatches": 0,
         "tenseMismatches": 0
       },
@@ -191,9 +193,9 @@
       "aperture": {
         "temporalPosture": "synced",
         "closureClass": "closed",
-        "closureScore": 0.997,
-        "historicalCrease": 0.012,
-        "unfoldingEnergy": 0.013,
+        "closureScore": 0.994,
+        "historicalCrease": 0.013,
+        "unfoldingEnergy": 0.014,
         "beaconStatus": "beacon-idle",
         "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
@@ -229,8 +231,7 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "connector-split",
-        "front-because"
+        "connector-split"
       ],
       "lexicalRegisterOperationsSelected": [
         "connector:because->since",
@@ -243,8 +244,8 @@
     },
     "candidateSummary": {
       "candidateCount": 4,
-      "landedCandidateId": "base:hybrid",
-      "landedCandidateFamily": "hybrid",
+      "landedCandidateId": "base:cadence-connector",
+      "landedCandidateFamily": "cadence-connector",
       "families": [
         "syntax-shape",
         "cadence-connector",
@@ -252,7 +253,7 @@
         "hybrid"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7615
+      "averageToolabilityScore": 0.7995
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -262,15 +263,19 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "punctuation-shape",
         "register-mode",
         "abbreviation-posture",
+        "orthography-posture",
         "lexical-register"
       ],
       "profileShiftDimensions": [
         "sentence-mean",
         "sentence-count",
+        "punctuation-shape",
         "register-mode",
         "abbreviation-posture",
+        "orthography-posture",
         "lexical-register"
       ],
       "lexemeSwaps": [
@@ -280,7 +285,7 @@
           "family": "surface"
         },
         {
-          "from": "Because",
+          "from": "because",
           "to": "bc",
           "family": "surface"
         }
@@ -291,22 +296,361 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 3.62,
-      "outputDonorDistance": 3.293,
-      "donorImprovement": 0.327,
-      "donorImprovementRatio": 0.09,
-      "sourceOutputLexicalOverlap": 0.953
+      "outputDonorDistance": 2.771,
+      "donorImprovement": 0.849,
+      "donorImprovementRatio": 0.235,
+      "sourceOutputLexicalOverlap": 0.862
     },
+    "candidateLedger": [
+      {
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "sourceRegisterLane": "professional-message",
+        "targetRegisterLane": "rushed-mobile",
+        "score": 1.0519,
+        "toolabilityScore": 0.7959,
+        "rewriteStrength": 1,
+        "targetFit": 0.4819,
+        "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
+        "failureReasons": [],
+        "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "punctuation-shape",
+          "register-mode",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "profileShiftDimensions": [
+          "sentence-mean",
+          "punctuation-shape",
+          "register-mode",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 2,
+        "artifactRepairApplied": false,
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "sourceRegisterLane": "professional-message",
+          "targetOntology": "actor",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "sourceRegisterLane": "professional-message",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 10,
+            "exactAnchorCount": 6
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.95,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 6,
+            "resolvedAnchors": 6,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.994,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.014,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
+        "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
+      },
+      {
+        "id": "base:cadence-connector",
+        "family": "cadence-connector",
+        "envelopeId": "spark",
+        "status": "selected",
+        "sourceRegisterLane": "professional-message",
+        "targetRegisterLane": "rushed-mobile",
+        "score": 1.1237,
+        "toolabilityScore": 0.8031,
+        "rewriteStrength": 1,
+        "targetFit": 0.5129,
+        "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
+        "failureReasons": [],
+        "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "punctuation-shape",
+          "register-mode",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "profileShiftDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "punctuation-shape",
+          "register-mode",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 2,
+        "artifactRepairApplied": false,
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "sourceRegisterLane": "professional-message",
+          "targetOntology": "actor",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "sourceRegisterLane": "professional-message",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 10,
+            "exactAnchorCount": 6
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.95,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 6,
+            "resolvedAnchors": 6,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.994,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.014,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
+        "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
+      },
+      {
+        "id": "base:order-beat",
+        "family": "order-beat",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "sourceRegisterLane": "professional-message",
+        "targetRegisterLane": "rushed-mobile",
+        "score": 1.0356,
+        "toolabilityScore": 0.7959,
+        "rewriteStrength": 1,
+        "targetFit": 0.4745,
+        "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
+        "failureReasons": [],
+        "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "register-mode",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "profileShiftDimensions": [
+          "sentence-mean",
+          "register-mode",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 2,
+        "artifactRepairApplied": false,
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "sourceRegisterLane": "professional-message",
+          "targetOntology": "actor",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "sourceRegisterLane": "professional-message",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 10,
+            "exactAnchorCount": 6
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.925,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 6,
+            "resolvedAnchors": 6,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.991,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.015,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
+        "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
+      },
+      {
+        "id": "base:hybrid",
+        "family": "hybrid",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "sourceRegisterLane": "professional-message",
+        "targetRegisterLane": "rushed-mobile",
+        "score": 1.126,
+        "toolabilityScore": 0.8031,
+        "rewriteStrength": 1,
+        "targetFit": 0.5043,
+        "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
+        "failureReasons": [],
+        "artifactFlags": [],
+        "toolabilityWarnings": [
+          "persona-markers-thin"
+        ],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "register-mode",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "profileShiftDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "register-mode",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 2,
+        "artifactRepairApplied": false,
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "sourceRegisterLane": "professional-message",
+          "targetOntology": "actor",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "sourceRegisterLane": "professional-message",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 10,
+            "exactAnchorCount": 6
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.925,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 6,
+            "resolvedAnchors": 6,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.991,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.015,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
+        "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
+      }
+    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 4,
-      "winningCandidateId": "base:hybrid",
-      "winningCandidateFamily": "hybrid",
+      "winningCandidateId": "base:cadence-connector",
+      "winningCandidateFamily": "cadence-connector",
       "ontologyRoutePressure": {
         "sourceClass": "procedural-record",
         "sourceRegisterLane": "professional-message",
+        "targetOntology": "actor",
         "relationInventory": {
           "sourceClass": "procedural-record",
           "sourceRegisterLane": "professional-message",
@@ -321,7 +665,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.975,
+          "objectCoverage": 0.95,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -334,9 +678,9 @@
         "aperture": {
           "temporalPosture": "synced",
           "closureClass": "closed",
-          "closureScore": 0.997,
-          "historicalCrease": 0.012,
-          "unfoldingEnergy": 0.013,
+          "closureScore": 0.994,
+          "historicalCrease": 0.013,
+          "unfoldingEnergy": 0.014,
           "beaconStatus": "beacon-idle",
           "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
@@ -349,7 +693,7 @@
         }
       }
     },
-    "winningCandidateId": "base:hybrid"
+    "winningCandidateId": "base:cadence-connector"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -357,6 +701,8 @@
     "changedDimensions": [
       "abbreviation-posture",
       "lexical-register",
+      "orthography-posture",
+      "punctuation-shape",
       "register-mode",
       "sentence-count",
       "sentence-mean"
@@ -372,8 +718,7 @@
       "sourceClass:procedural-record"
     ],
     "structuralOperations": [
-      "connector-split",
-      "front-because"
+      "connector-split"
     ],
     "lexicalOperations": [
       "compressed:because->bc",
@@ -386,7 +731,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.975,
+    "objectCoverage": 0.95,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

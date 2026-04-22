@@ -21,30 +21,19 @@
   "retrievalTrace": {
     "sourceText": "2b pkg wasnt brought down. tag says attempted 6:41 but no one buzzed her. it was just sitting on 2nd fl landing by rail. red rush sticker still on it. i moved it to hall table after she said yes its hers / she had bags already. if mgmt asks: box stayed sealed.",
     "sourceClass": "formal-correspondence",
+    "sourceRegisterLane": "rushed-mobile",
     "generatorVersion": "v2",
     "semanticAudit": {
-      "propositionCoverage": 0.833,
+      "propositionCoverage": 0.58,
       "actorCoverage": 1,
-      "actionCoverage": 0.833,
-      "objectCoverage": 0.708,
+      "actionCoverage": 0.572,
+      "objectCoverage": 0.506,
       "polarityMismatches": 0,
       "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s0c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.074
-        },
-        {
-          "sourceClauseId": "s1c0",
           "matchedClauseId": "s0c0",
           "propositionCoverage": 0,
           "actorCoverage": 1,
@@ -56,8 +45,20 @@
           "globalBagScore": 0
         },
         {
+          "sourceClauseId": "s1c0",
+          "matchedClauseId": "s6c0",
+          "propositionCoverage": 0.18000000000000002,
+          "actorCoverage": 1,
+          "actionCoverage": 0.16200000000000003,
+          "objectCoverage": 0.2,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.083,
+          "globalBagScore": 0.026
+        },
+        {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s5c1",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -65,7 +66,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
-          "globalBagScore": 0.032
+          "globalBagScore": 0.056
         },
         {
           "sourceClauseId": "s3c0",
@@ -77,7 +78,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.037
+          "globalBagScore": 0.03
         },
         {
           "sourceClauseId": "s4c0",
@@ -88,24 +89,24 @@
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.2,
-          "globalBagScore": 0.065
+          "bagScore": 0.3,
+          "globalBagScore": 0.083
         },
         {
           "sourceClauseId": "s5c0",
           "matchedClauseId": "s4c0",
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.2997,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "actionCoverage": 0.26973,
+          "objectCoverage": 0.333,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.6,
-          "globalBagScore": 0.107
+          "bagScore": 0.25,
+          "globalBagScore": 0.028
         }
       ],
       "sourceClauseCount": 6,
-      "outputClauseCount": 7
+      "outputClauseCount": 8
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
@@ -116,6 +117,7 @@
     "ontologyAudit": {
       "sourceClass": "formal-correspondence",
       "sourceRegisterLane": "rushed-mobile",
+      "targetOntology": "institutional",
       "relationInventory": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "rushed-mobile",
@@ -127,10 +129,10 @@
         "exactAnchorCount": 1
       },
       "semanticCoverage": {
-        "propositionCoverage": 0.833,
+        "propositionCoverage": 0.58,
         "actorCoverage": 1,
-        "actionCoverage": 0.833,
-        "objectCoverage": 0.708,
+        "actionCoverage": 0.572,
+        "objectCoverage": 0.506,
         "polarityMismatches": 0,
         "tenseMismatches": 1
       },
@@ -143,20 +145,21 @@
       "aperture": {
         "temporalPosture": "preemptive",
         "closureClass": "drift",
-        "closureScore": 0.838,
-        "historicalCrease": 0.069,
-        "unfoldingEnergy": 0.12,
+        "closureScore": 0.681,
+        "historicalCrease": 0.052,
+        "unfoldingEnergy": 0.114,
         "beaconStatus": "beacon-idle",
-        "cumulativeNarrowing": 0.453,
+        "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
       },
       "selectiveAdmissibilityDrift": {
-        "driftClass": "active",
+        "driftClass": "watch",
         "driftReasons": [
-          "object-coverage<0.80"
+          "temporal-posture:preemptive",
+          "closure-class:drift"
         ],
-        "routeFloor": "buffer",
-        "routePressure": 0.667
+        "routeFloor": "warning",
+        "routePressure": 0.333
       }
     },
     "planSummary": {
@@ -188,13 +191,16 @@
         "lane:conditional-formalization",
         "lane:conditional-seam-repair",
         "lane:help-causality-restored",
-        "lane:formal-record-polish"
+        "lane:formal-record-polish",
+        "ontology:reference-door-mapped",
+        "ontology:reference-chronology-anchored",
+        "ontology:reference-passive-relocation",
+        "ontology:reference-policy-deviation"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:slash-list->sentences",
         "lane:pkg->package",
         "lane:mgmt->management",
-        "lane:2b->unit-2b",
         "lane:2nd-fl->second-floor",
         "lane:wasnt->was-not",
         "lane:its-hers->it-was-hers",
@@ -219,16 +225,17 @@
         "syntax-shape",
         "hybrid"
       ],
-      "holdStatus": "held",
+      "holdStatus": "landed",
       "averageToolabilityScore": 0.8632
     },
     "realizationSummary": {
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": "aperture-route-pressure",
+      "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
+        "sentence-count",
         "sentence-spread",
         "punctuation-shape",
         "register-mode",
@@ -241,6 +248,7 @@
       ],
       "profileShiftDimensions": [
         "sentence-mean",
+        "sentence-count",
         "sentence-spread",
         "punctuation-shape",
         "register-mode",
@@ -260,11 +268,6 @@
         {
           "from": "mgmt",
           "to": "management",
-          "family": "lane"
-        },
-        {
-          "from": "2b",
-          "to": "Unit 2B",
           "family": "lane"
         },
         {
@@ -309,8 +312,13 @@
         },
         {
           "from": "I moved it to hall table",
-          "to": "I moved it to the hallway table outside Unit 2B",
+          "to": "I moved it to the hallway table outside [LOC_NODE_01]",
           "family": "lane"
+        },
+        {
+          "from": "2b package was not brought down.",
+          "to": "The parcel addressed to 2B was not presented",
+          "family": "surface"
         }
       ],
       "visibleShift": true,
@@ -319,24 +327,215 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.469,
-      "outputDonorDistance": 1.111,
-      "donorImprovement": 3.358,
-      "donorImprovementRatio": 0.751,
-      "sourceOutputLexicalOverlap": 0.431
+      "outputDonorDistance": 1.222,
+      "donorImprovement": 3.247,
+      "donorImprovementRatio": 0.727,
+      "sourceOutputLexicalOverlap": 0.236
     },
+    "candidateLedger": [
+      {
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
+        "envelopeId": "archivist",
+        "status": "eligible",
+        "sourceRegisterLane": "rushed-mobile",
+        "targetRegisterLane": "formal-record",
+        "score": 1.435,
+        "toolabilityScore": 0.8632,
+        "rewriteStrength": 1,
+        "targetFit": 0.8085,
+        "movementConfidence": 1,
+        "personaSeparationScore": 0.86,
+        "failureReasons": [],
+        "artifactFlags": [],
+        "toolabilityWarnings": [],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "punctuation-shape",
+          "register-mode",
+          "directness",
+          "abstraction",
+          "abstraction-posture",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "profileShiftDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "punctuation-shape",
+          "register-mode",
+          "directness",
+          "abstraction",
+          "abstraction-posture",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 12,
+        "artifactRepairApplied": false,
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "sourceRegisterLane": "rushed-mobile",
+          "targetOntology": "institutional",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "sourceRegisterLane": "rushed-mobile",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "paragraphCount": 1,
+            "sentenceCount": 6,
+            "clauseCount": 6,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 0.58,
+            "actorCoverage": 1,
+            "actionCoverage": 0.572,
+            "objectCoverage": 0.506,
+            "polarityMismatches": 0,
+            "tenseMismatches": 1
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "preemptive",
+            "closureClass": "drift",
+            "closureScore": 0.681,
+            "historicalCrease": 0.052,
+            "unfoldingEnergy": 0.114,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "watch",
+            "driftReasons": [
+              "temporal-posture:preemptive",
+              "closure-class:drift"
+            ],
+            "routeFloor": "warning",
+            "routePressure": 0.333
+          }
+        },
+        "outputPreview": "The parcel addressed to 2B was not presented for signature at the apartment door. The carrier tag stated \"attempted / no answer\" at 6:41 but no buzzer call was "
+      },
+      {
+        "id": "base:hybrid",
+        "family": "hybrid",
+        "envelopeId": "archivist",
+        "status": "selected",
+        "sourceRegisterLane": "rushed-mobile",
+        "targetRegisterLane": "formal-record",
+        "score": 1.4487,
+        "toolabilityScore": 0.8632,
+        "rewriteStrength": 1,
+        "targetFit": 0.8085,
+        "movementConfidence": 1,
+        "personaSeparationScore": 0.86,
+        "failureReasons": [],
+        "artifactFlags": [],
+        "toolabilityWarnings": [],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "punctuation-shape",
+          "register-mode",
+          "directness",
+          "abstraction",
+          "abstraction-posture",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "profileShiftDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "punctuation-shape",
+          "register-mode",
+          "directness",
+          "abstraction",
+          "abstraction-posture",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 12,
+        "artifactRepairApplied": false,
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "sourceRegisterLane": "rushed-mobile",
+          "targetOntology": "institutional",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "sourceRegisterLane": "rushed-mobile",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "paragraphCount": 1,
+            "sentenceCount": 6,
+            "clauseCount": 6,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 0.58,
+            "actorCoverage": 1,
+            "actionCoverage": 0.572,
+            "objectCoverage": 0.506,
+            "polarityMismatches": 0,
+            "tenseMismatches": 1
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "preemptive",
+            "closureClass": "drift",
+            "closureScore": 0.681,
+            "historicalCrease": 0.052,
+            "unfoldingEnergy": 0.114,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "watch",
+            "driftReasons": [
+              "temporal-posture:preemptive",
+              "closure-class:drift"
+            ],
+            "routeFloor": "warning",
+            "routePressure": 0.333
+          }
+        },
+        "outputPreview": "The parcel addressed to 2B was not presented for signature at the apartment door. The carrier tag stated \"attempted / no answer\" at 6:41 but no buzzer call was "
+      }
+    ],
     "generationDocket": {
-      "status": "held",
-      "holdClass": "aperture-route-pressure",
-      "headline": "Generator V2 hold // Aperture raised the ontology route floor above publishable passage.",
-      "reasons": [
-        "semantic-failure"
-      ],
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed under Aperture warning pressure.",
+      "reasons": [],
       "candidateCount": 2,
       "winningCandidateId": "base:hybrid",
       "winningCandidateFamily": "hybrid",
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "rushed-mobile",
+        "targetOntology": "institutional",
         "relationInventory": {
           "sourceClass": "formal-correspondence",
           "sourceRegisterLane": "rushed-mobile",
@@ -348,10 +547,10 @@
           "exactAnchorCount": 1
         },
         "semanticCoverage": {
-          "propositionCoverage": 0.833,
+          "propositionCoverage": 0.58,
           "actorCoverage": 1,
-          "actionCoverage": 0.833,
-          "objectCoverage": 0.708,
+          "actionCoverage": 0.572,
+          "objectCoverage": 0.506,
           "polarityMismatches": 0,
           "tenseMismatches": 1
         },
@@ -364,20 +563,21 @@
         "aperture": {
           "temporalPosture": "preemptive",
           "closureClass": "drift",
-          "closureScore": 0.838,
-          "historicalCrease": 0.069,
-          "unfoldingEnergy": 0.12,
+          "closureScore": 0.681,
+          "historicalCrease": 0.052,
+          "unfoldingEnergy": 0.114,
           "beaconStatus": "beacon-idle",
-          "cumulativeNarrowing": 0.453,
+          "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
         },
         "selectiveAdmissibilityDrift": {
-          "driftClass": "active",
+          "driftClass": "watch",
           "driftReasons": [
-            "object-coverage<0.80"
+            "temporal-posture:preemptive",
+            "closure-class:drift"
           ],
-          "routeFloor": "buffer",
-          "routePressure": 0.667
+          "routeFloor": "warning",
+          "routePressure": 0.333
         }
       }
     },
@@ -395,10 +595,13 @@
       "orthography-posture",
       "punctuation-shape",
       "register-mode",
+      "sentence-count",
       "sentence-mean",
       "sentence-spread"
     ],
-    "lexemeSwapFamilies": [],
+    "lexemeSwapFamilies": [
+      "surface"
+    ],
     "relationInventory": [
       "clauseCount:6",
       "exactAnchorCount:1",
@@ -408,17 +611,21 @@
     ],
     "structuralOperations": [
       "front-if",
-      "ledger-merge"
+      "ledger-merge",
+      "ontology:reference-chronology-anchored",
+      "ontology:reference-door-mapped",
+      "ontology:reference-passive-relocation",
+      "ontology:reference-policy-deviation"
     ],
     "lexicalOperations": [
       "expanded:slash-list->sentences"
     ],
     "connectorStrategy": "ledger",
     "contractionStrategy": "expand",
-    "propositionCoverage": 0.833,
+    "propositionCoverage": 0.58,
     "actorCoverage": 1,
-    "actionCoverage": 0.833,
-    "objectCoverage": 0.708,
+    "actionCoverage": 0.572,
+    "objectCoverage": 0.506,
     "polarityMismatches": 0,
     "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1

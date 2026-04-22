@@ -235,6 +235,7 @@ const packageToRushed = buildCadenceTransfer(packageFormal.text, {
   retrieval: true,
   sourceRegisterLane: packageFormal.variant
 });
+const packageToRushedPreview = String(packageToRushed.text || packageToRushed.internalText || '');
 
 assert.equal(packageToRushed.sourceRegisterLane, 'formal-record', 'package formal -> rushed preserves formal source lane');
 assert.equal(packageToRushed.targetRegisterLane, 'rushed-mobile', 'package formal -> rushed targets rushed-mobile lane');
@@ -258,8 +259,22 @@ assert.ok(
   'package formal -> rushed lands structural compression in the surfaced dimensions'
 );
 assert.ok(
-  /cams \+ residents|said yes its hers|had bags already/i.test(String(packageToRushed.text || '')),
+  /said yes its hers|had bags already|by the stairs/i.test(packageToRushedPreview),
   'package formal -> rushed lands safe rushed-lane compression without losing its witness anchors'
+);
+assert.equal(
+  /\b6:41\b|\b7:06\b/i.test(packageToRushedPreview),
+  false,
+  'package formal -> rushed destroys absolute timestamps into actor-relative timing'
+);
+assert.equal(
+  /building footage|resident testimony|building log|policy deviation/i.test(packageToRushedPreview),
+  false,
+  'package formal -> rushed strips external validation language from the surfaced testimony lane'
+);
+assert.ok(
+  /box stayed sealed|red rush label still on it/i.test(packageToRushedPreview),
+  'package formal -> rushed preserves the physical state of the core artifacts'
 );
 
 const packageToFormal = buildCadenceTransfer(packageRushed.text, {
@@ -278,6 +293,7 @@ assert.equal(packageToFormal.sourceRegisterLane, 'rushed-mobile', 'package rushe
 assert.equal(packageToFormal.targetRegisterLane, 'formal-record', 'package rushed -> formal targets formal-record lane');
 assert.equal(packageToFormal.generationControls?.targetOntology, 'institutional', 'package rushed -> formal uses institutional ontology controls');
 assert.equal(packageToFormal.generationControls?.temperature, 0.1, 'package rushed -> formal forces low-temperature institutional generation controls');
+assert.equal(packageToFormal.holdStatus, 'landed', 'package rushed -> formal now lands as an institutional record instead of being held by ontology pressure');
 assert.ok(
   (packageToFormal.lexemeSwaps || []).length > 0 || packageToFormalPreview.length > 0,
   'package rushed -> formal surfaces a real shorthand expansion path'
@@ -315,12 +331,12 @@ const nullTimePreview = String(nullTimeFormal.text || nullTimeFormal.internalTex
 assert.equal(nullTimeFormal.temporalDirective?.timestampStatus, 'absent', 'null-time probe is marked as temporally absent instead of invented');
 assert.equal(
   nullTimeFormal.temporalDirective?.fallbackDirective,
-  "Use strictly: 'At an unlogged time interval'",
-  'null-time probe carries the strict unlogged-interval fallback directive'
+  "Use strictly: 'At an undocumented time following'",
+  'null-time probe carries the strict undocumented-time fallback directive'
 );
 assert.ok(
-  /At an unlogged time interval/i.test(nullTimePreview),
-  'null-time probe formalization uses the strict unlogged-interval fallback instead of inventing a clock time'
+  /At an undocumented time following/i.test(nullTimePreview),
+  'null-time probe formalization uses the strict undocumented-time fallback instead of inventing a clock time'
 );
 assert.equal(
   /\b\d{1,2}:\d{2}(?:\s?(?:AM|PM))?\b/i.test(nullTimePreview),

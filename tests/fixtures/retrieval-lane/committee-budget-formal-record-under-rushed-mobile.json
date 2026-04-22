@@ -21,6 +21,7 @@
   "retrievalTrace": {
     "sourceText": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is that the student-support coordinator line remains unfunded for another twelve weeks, even though the underlying service demand has not eased. Members agreed that the program can absorb a temporary delay in furniture and print costs, but not a full quarter without intake coverage. Three short-term options were discussed: reclassify one vacant analyst line for bridge staffing, reduce evening service hours, or draw against restricted reserves pending dean approval. No option was adopted in session. What did resolve was the frame: this is not a generic belt-tightening exercise. It is a staffing exposure problem with public-facing consequences, and the next memo needs to say that without overstating certainty. Action items: revised table by Thursday, reserve-rule clarification from finance, and a staffing scenario note that distinguishes pause from actual service reduction.",
     "sourceClass": "procedural-record",
+    "sourceRegisterLane": "formal-record",
     "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
@@ -144,14 +145,15 @@
       "outputClauseCount": 9
     },
     "protectedAnchorAudit": {
-      "totalAnchors": 2,
-      "resolvedAnchors": 2,
+      "totalAnchors": 0,
+      "resolvedAnchors": 0,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
     "ontologyAudit": {
       "sourceClass": "procedural-record",
       "sourceRegisterLane": "formal-record",
+      "targetOntology": "actor",
       "relationInventory": {
         "sourceClass": "procedural-record",
         "sourceRegisterLane": "formal-record",
@@ -235,15 +237,23 @@
         "clause-pivot"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.5352
+      "averageToolabilityScore": 0.7983
     },
     "realizationSummary": {
-      "transferClass": "weak",
-      "borrowedShellOutcome": "partial",
+      "transferClass": "structural",
+      "borrowedShellOutcome": "structural",
       "borrowedShellFailureClass": null,
-      "realizationTier": "partial",
-      "changedDimensions": [],
-      "profileShiftDimensions": [],
+      "realizationTier": "lexical-structural",
+      "changedDimensions": [
+        "register-mode",
+        "orthography-posture",
+        "lexical-register"
+      ],
+      "profileShiftDimensions": [
+        "register-mode",
+        "orthography-posture",
+        "lexical-register"
+      ],
       "lexemeSwaps": [
         {
           "from": "temporary",
@@ -254,6 +264,11 @@
           "from": "it's",
           "to": "its",
           "family": "surface"
+        },
+        {
+          "from": "The finance committee met at 4:05 PM to",
+          "to": "the finance committee met later to review the",
+          "family": "surface"
         }
       ],
       "visibleShift": true,
@@ -262,15 +277,268 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.153,
-      "outputDonorDistance": 4.166,
-      "donorImprovement": 0,
-      "donorImprovementRatio": 0,
-      "sourceOutputLexicalOverlap": 0.969
+      "outputDonorDistance": 3.186,
+      "donorImprovement": 0.967,
+      "donorImprovementRatio": 0.233,
+      "sourceOutputLexicalOverlap": 0.93
     },
+    "candidateLedger": [
+      {
+        "id": "base:syntax-shape",
+        "family": "syntax-shape",
+        "envelopeId": "spark",
+        "status": "selected",
+        "sourceRegisterLane": "formal-record",
+        "targetRegisterLane": "rushed-mobile",
+        "score": 1.0651,
+        "toolabilityScore": 0.7959,
+        "rewriteStrength": 0.9725,
+        "targetFit": 0.4876,
+        "movementConfidence": 0.94,
+        "personaSeparationScore": 0.47,
+        "failureReasons": [],
+        "artifactFlags": [
+          "artifact:over-braiding",
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:over-braiding",
+          "artifact:clause-drag"
+        ],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "register-mode",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "profileShiftDimensions": [
+          "register-mode",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 3,
+        "artifactRepairApplied": false,
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "sourceRegisterLane": "formal-record",
+          "targetOntology": "actor",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "sourceRegisterLane": "formal-record",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "paragraphCount": 1,
+            "sentenceCount": 8,
+            "clauseCount": 9,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.978,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.997,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.013,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
+        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is that the"
+      },
+      {
+        "id": "base:cadence-connector",
+        "family": "cadence-connector",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "sourceRegisterLane": "formal-record",
+        "targetRegisterLane": "rushed-mobile",
+        "score": 1.0425,
+        "toolabilityScore": 0.8031,
+        "rewriteStrength": 1,
+        "targetFit": 0.5177,
+        "movementConfidence": 1,
+        "personaSeparationScore": 0.47,
+        "failureReasons": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:clause-drag"
+        ],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "register-mode",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "profileShiftDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "register-mode",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 3,
+        "artifactRepairApplied": false,
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "sourceRegisterLane": "formal-record",
+          "targetOntology": "actor",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "sourceRegisterLane": "formal-record",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "paragraphCount": 1,
+            "sentenceCount": 8,
+            "clauseCount": 9,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.978,
+            "polarityMismatches": 1,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.937,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.035,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.093
+          }
+        },
+        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is that the"
+      },
+      {
+        "id": "base:clause-pivot",
+        "family": "clause-pivot",
+        "envelopeId": "spark",
+        "status": "eligible",
+        "sourceRegisterLane": "formal-record",
+        "targetRegisterLane": "rushed-mobile",
+        "score": 0.9477,
+        "toolabilityScore": 0.7959,
+        "rewriteStrength": 0.9735,
+        "targetFit": 0.4876,
+        "movementConfidence": 0.94,
+        "personaSeparationScore": 0.47,
+        "failureReasons": [],
+        "artifactFlags": [
+          "artifact:over-braiding",
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "persona-markers-thin",
+          "artifact:over-braiding",
+          "artifact:clause-drag"
+        ],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "register-mode",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "profileShiftDimensions": [
+          "register-mode",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 3,
+        "artifactRepairApplied": false,
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "sourceRegisterLane": "formal-record",
+          "targetOntology": "actor",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "sourceRegisterLane": "formal-record",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "paragraphCount": 1,
+            "sentenceCount": 8,
+            "clauseCount": 9,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.978,
+            "polarityMismatches": 1,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.937,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.035,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.093
+          }
+        },
+        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is that the"
+      }
+    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a registered cadence rewrite.",
+      "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 3,
       "winningCandidateId": "base:syntax-shape",
@@ -278,6 +546,7 @@
       "ontologyRoutePressure": {
         "sourceClass": "procedural-record",
         "sourceRegisterLane": "formal-record",
+        "targetOntology": "actor",
         "relationInventory": {
           "sourceClass": "procedural-record",
           "sourceRegisterLane": "formal-record",
@@ -323,9 +592,13 @@
     "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
-    "transferClass": "weak",
-    "realizationTier": "partial",
-    "changedDimensions": [],
+    "transferClass": "structural",
+    "realizationTier": "lexical-structural",
+    "changedDimensions": [
+      "lexical-register",
+      "orthography-posture",
+      "register-mode"
+    ],
     "lexemeSwapFamilies": [
       "surface"
     ],
