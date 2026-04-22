@@ -54,7 +54,7 @@ assert.ok(
   'Safe Harbor no longer blocks export readiness on a browser-side signature gate'
 );
 assert.ok(
-  harborMainSource.includes('packet.bridge.export_gate.ready = Boolean(state.covenant.confirmed && scrub.passed);'),
+  harborMainSource.includes('packet.bridge.export_gate.ready = Boolean(packet.bridge.covenant_gate.confirmed && scrub.passed);'),
   'Export readiness now depends on covenant plus scrub only, not detached-signature presence'
 );
 assert.ok(
@@ -133,6 +133,11 @@ assert.ok(
   harborMainSource.includes("if (state.ingress.packetId) void rebuild('ingress');") &&
     harborMainSource.includes("logEvent('covenant-blocked', { reason: 'triad-fingerprint-missing' });"),
   'Safe Harbor refreshes staged packets when the triad changes and blocks SHI minting when the triad fingerprint is still missing'
+);
+assert.ok(
+  harborMainSource.includes("await fetch('/__td613/seal-batch'") &&
+    harborMainSource.includes("logEvent('batch-sealed-to-disk'"),
+  'Safe Harbor can pass a localhost-minted batch into the operator seal endpoint and log the disk-write event'
 );
 
 console.log('safe-harbor-shi.test.mjs passed');

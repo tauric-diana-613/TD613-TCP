@@ -1235,6 +1235,9 @@
       dom.bypassPassword.value = state.covenant.badgeNumber;
       await setLocalBypassToken();
       dom.bypassPassword.value = '';
+      if (isLocalhostOperator() && state.selectedBatchId) {
+        await sealSelectedBatchToDisk();
+      }
       logEvent('covenant-export', { badge_number: state.covenant.badgeNumber });
     }
   }
@@ -1805,6 +1808,54 @@
   function randBase62(len) { const bytes = new Uint8Array(len); crypto.getRandomValues(bytes); const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; return Array.from(bytes).map((b) => chars[b % chars.length]).join(''); }
   function randHex(len) { const bytes = new Uint8Array(len); crypto.getRandomValues(bytes); return Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join(''); }
   async function copyText(text) { if (navigator.clipboard && navigator.clipboard.writeText) { try { await navigator.clipboard.writeText(text || ''); return; } catch (error) {} } const area = document.createElement('textarea'); area.value = text || ''; document.body.appendChild(area); area.select(); document.execCommand('copy'); document.body.removeChild(area); }
+  function downloadJsonArtifact(filename, value) {
+    const blob = new Blob([JSON.stringify(value, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
+    const href = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = href;
+    link.download = filename || 'td613-safe-harbor-sealed.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(href), 0);
+  }
+  async function sealSelectedBatchToDisk() {
+    if (!isLocalhostOperator() || !state.selectedBatchId || !state.packet || !state.packet.issuance || !state.packet.issuance.badge_number) {
+      return false;
+    }
+    try {
+      const response = await fetch('/__td613/seal-batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          batchId: state.selectedBatchId,
+          packet: state.packet,
+          signature: signatureForPacket()
+        })
+      });
+      const result = await response.json();
+      if (!response.ok || !result || !result.ok) {
+        throw new Error(result && result.error ? result.error : 'seal-batch-failed');
+      }
+      if (result.artifact) {
+        downloadJsonArtifact(result.filename || (state.selectedBatchId + '.sealed.json'), result.artifact);
+      }
+      if (dom.batchIntakeNote) {
+        dom.batchIntakeNote.textContent = 'Batch ' + state.selectedBatchId + ' was sealed to disk on localhost and exported for local save.';
+      }
+      if (dom.covenantNote) {
+        dom.covenantNote.textContent = 'Mint / Seal Payload confirmed. The selected batch was hard-written to localhost storage, the detached signature was attached, and the sealed artifact was downloaded.';
+      }
+      logEvent('batch-sealed-to-disk', { selected_batch_id: state.selectedBatchId, path: result.path || null });
+      return true;
+    } catch (error) {
+      if (dom.batchIntakeNote) {
+        dom.batchIntakeNote.textContent = 'SHI minted, but localhost disk seal failed for ' + state.selectedBatchId + '.';
+      }
+      logEvent('batch-seal-failed', { selected_batch_id: state.selectedBatchId, error: String(error && error.message ? error.message : error) });
+      return false;
+    }
+  }
   function readStorage() { try { const raw = sessionStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; } catch (error) { return null; } }
   function writeStorage(value) { try { if (value === null) sessionStorage.removeItem(STORAGE_KEY); else sessionStorage.setItem(STORAGE_KEY, JSON.stringify(value)); } catch (error) {} }
 
