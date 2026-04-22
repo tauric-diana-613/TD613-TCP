@@ -34,6 +34,10 @@ assert.ok(files.personas.includes('id="viewPanePersonas"'), 'personas page mount
 assert.ok(files.readout.includes('id="viewPaneReadout"'), 'readout page mounts the Readout pane');
 assert.ok(files.deck.includes('id="viewPanePlay"'), 'deck page mounts the Deck pane');
 assert.ok(files.trainer.includes('id="viewPaneTrainer"'), 'trainer page mounts the Trainer pane');
+assert.ok(files.deck.includes('id="governedExposurePreview"'), 'deck page exposes governed exposure readout for the shared runtime');
+assert.ok(files.deck.includes('id="similarity"'), 'deck page exposes witness metrics for the shared runtime');
+assert.ok(files.deck.includes('id="harborBox"'), 'deck page exposes harbor output for the shared runtime');
+assert.ok(files.deck.includes('id="heroSignalValue"'), 'deck page exposes hero telemetry for the shared runtime');
 
 const browserMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'browser-main.js'), 'utf8');
 assert.ok(browserMainSource.includes('redirectLegacyGatewayHashIfNeeded'), 'browser-main redirects legacy gateway hash routes');

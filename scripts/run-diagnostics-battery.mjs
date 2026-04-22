@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import * as engine from '../app/engine/stylometry.js';
 import personas from '../app/data/personas.js';
@@ -25,6 +26,34 @@ const repoRoot = path.resolve(__dirname, '..');
 const reportsDir = path.join(repoRoot, 'reports', 'diagnostics');
 const latestJsonPath = path.join(reportsDir, 'latest.json');
 const latestMdPath = path.join(reportsDir, 'latest.md');
+const diagnosticsStageDir = path.join(reportsDir, '.staging');
+const activeStageManifestPath = path.join(diagnosticsStageDir, 'active-run.json');
+const CASE_SECTION_IDS = Object.freeze([
+  'swapPairs',
+  'maskCases',
+  'trainerCases',
+  'retrievalCases',
+  'falseNeighborCases',
+  'generatorTransferCases',
+  'generatorMaskCases'
+]);
+const AUX_SECTION_IDS = Object.freeze([
+  'sampleAudit',
+  'personaAudit',
+  'annexDiagnostics'
+]);
+const SECTION_IDS = Object.freeze([
+  ...AUX_SECTION_IDS,
+  ...CASE_SECTION_IDS
+]);
+const RUN_FINGERPRINT_INPUTS = Object.freeze([
+  __filename,
+  path.join(repoRoot, 'app', 'engine', 'stylometry.js'),
+  path.join(repoRoot, 'app', 'data', 'diagnostics.js'),
+  path.join(repoRoot, 'app', 'data', 'personas.js'),
+  path.join(repoRoot, 'scripts', 'lib', 'annex-diagnostics.mjs'),
+  path.join(repoRoot, 'app', 'aperture', 'index.html')
+]);
 
 const FAILURE_BUCKETS = Object.freeze([
   'punctuation_only_shift',
@@ -63,6 +92,198 @@ const TOOLABILITY_NARRATIVE_PROBE = `I must keep reminding myself that this will
 
 function ensureDir(targetPath) {
   fs.mkdirSync(targetPath, { recursive: true });
+}
+
+function atomicWriteFile(targetPath, contents) {
+  ensureDir(path.dirname(targetPath));
+  const tempPath = path.join(
+    path.dirname(targetPath),
+    `${path.basename(targetPath)}.${process.pid}.${Date.now()}.tmp`
+  );
+  fs.writeFileSync(tempPath, contents, 'utf8');
+  try {
+    fs.renameSync(tempPath, targetPath);
+    return;
+  } catch (error) {
+    if (!['EPERM', 'EEXIST'].includes(error?.code || '')) {
+      try {
+        fs.rmSync(tempPath, { force: true });
+      } catch {
+        // best-effort cleanup only
+      }
+      throw error;
+    }
+  }
+
+  // OneDrive-backed Windows worktrees can refuse atomic rename replacement.
+  // Fall back to replace-in-place while still preserving the temp-write staging.
+  fs.copyFileSync(tempPath, targetPath);
+  fs.rmSync(tempPath, { force: true });
+}
+
+function hashString(value = '') {
+  return crypto.createHash('sha256').update(String(value)).digest('hex');
+}
+
+function readFileIfPresent(targetPath) {
+  return fs.existsSync(targetPath) ? fs.readFileSync(targetPath, 'utf8') : '';
+}
+
+function stageRunManifestPath(runId = '') {
+  return path.join(diagnosticsStageDir, runId, 'run-manifest.json');
+}
+
+function stageSectionSnapshotPath(runId = '', sectionId = '') {
+  return path.join(diagnosticsStageDir, runId, `${sectionId}.json`);
+}
+
+function parseDiagnosticsArgs(argv = process.argv.slice(2)) {
+  const parsed = {
+    fresh: false,
+    assembleOnly: false,
+    sections: null
+  };
+
+  argv.forEach((arg) => {
+    if (arg === '--fresh') {
+      parsed.fresh = true;
+      return;
+    }
+    if (arg === '--assemble-only') {
+      parsed.assembleOnly = true;
+      return;
+    }
+    if (arg.startsWith('--section=')) {
+      const rawSections = arg.split('=')[1] || '';
+      parsed.sections = sortUnique(rawSections.split(',').map((value) => value.trim()).filter(Boolean));
+      return;
+    }
+    throw new Error(`Unknown diagnostics battery argument: ${arg}`);
+  });
+
+  if (parsed.sections) {
+    const unknown = parsed.sections.filter((sectionId) => !SECTION_IDS.includes(sectionId));
+    if (unknown.length) {
+      throw new Error(`Unknown diagnostics battery section(s): ${unknown.join(', ')}`);
+    }
+  }
+
+  if (parsed.assembleOnly && parsed.sections) {
+    throw new Error('Use either --assemble-only or --section=..., not both together.');
+  }
+
+  return parsed;
+}
+
+function computeRunFingerprint() {
+  const fingerprintLines = RUN_FINGERPRINT_INPUTS.map((targetPath) => {
+    const relativePath = path.relative(repoRoot, targetPath).replace(/\\/g, '/');
+    return `${relativePath}:${hashString(readFileIfPresent(targetPath))}`;
+  });
+  return hashString(fingerprintLines.join('\n'));
+}
+
+function loadJsonFile(targetPath) {
+  if (!fs.existsSync(targetPath)) {
+    return null;
+  }
+  try {
+    return JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function createStageManifest(fingerprint = '') {
+  const createdAt = new Date().toISOString();
+  const runId = `${createdAt.replace(/[-:TZ.]/g, '').slice(0, 14)}-${fingerprint.slice(0, 12)}`;
+  return {
+    runId,
+    fingerprint,
+    createdAt,
+    updatedAt: createdAt,
+    sections: Object.fromEntries(SECTION_IDS.map((sectionId) => [
+      sectionId,
+      {
+        status: 'pending',
+        generatedAt: null
+      }
+    ]))
+  };
+}
+
+function persistStageManifest(manifest = {}) {
+  const nextManifest = {
+    ...manifest,
+    updatedAt: new Date().toISOString()
+  };
+  atomicWriteFile(stageRunManifestPath(nextManifest.runId), `${JSON.stringify(nextManifest, null, 2)}\n`);
+  atomicWriteFile(
+    activeStageManifestPath,
+    `${JSON.stringify({
+      runId: nextManifest.runId,
+      fingerprint: nextManifest.fingerprint,
+      updatedAt: nextManifest.updatedAt
+    }, null, 2)}\n`
+  );
+  return nextManifest;
+}
+
+function loadActiveStageManifest(expectedFingerprint = '', { fresh = false } = {}) {
+  ensureDir(diagnosticsStageDir);
+
+  if (!fresh) {
+    const activePointer = loadJsonFile(activeStageManifestPath);
+    if (activePointer?.runId && activePointer.fingerprint === expectedFingerprint) {
+      const existingManifest = loadJsonFile(stageRunManifestPath(activePointer.runId));
+      if (existingManifest?.runId === activePointer.runId && existingManifest.fingerprint === expectedFingerprint) {
+        return existingManifest;
+      }
+    }
+  }
+
+  return persistStageManifest(createStageManifest(expectedFingerprint));
+}
+
+function readStageSnapshot(manifest = {}, sectionId = '') {
+  const snapshot = loadJsonFile(stageSectionSnapshotPath(manifest.runId, sectionId));
+  if (!snapshot) {
+    return null;
+  }
+  if (snapshot.runId !== manifest.runId || snapshot.fingerprint !== manifest.fingerprint || snapshot.sectionId !== sectionId) {
+    return null;
+  }
+  return snapshot;
+}
+
+function stageSectionComplete(manifest = {}, sectionId = '') {
+  return Boolean(readStageSnapshot(manifest, sectionId));
+}
+
+function persistStageSnapshot(manifest = {}, sectionId = '', data = null) {
+  const generatedAt = new Date().toISOString();
+  const snapshot = {
+    runId: manifest.runId,
+    fingerprint: manifest.fingerprint,
+    sectionId,
+    generatedAt,
+    data
+  };
+  atomicWriteFile(stageSectionSnapshotPath(manifest.runId, sectionId), `${JSON.stringify(snapshot, null, 2)}\n`);
+  return persistStageManifest({
+    ...manifest,
+    sections: {
+      ...(manifest.sections || {}),
+      [sectionId]: {
+        status: 'complete',
+        generatedAt
+      }
+    }
+  });
+}
+
+function missingStageSections(manifest = {}) {
+  return SECTION_IDS.filter((sectionId) => !stageSectionComplete(manifest, sectionId));
 }
 
 function round(value, digits = 4) {
@@ -1832,6 +2053,45 @@ function buildPersonaAudit(personaLibrary = PERSONA_LIBRARY) {
   };
 }
 
+function evaluateSwapCaseCollection(caseSpecs = []) {
+  const swapMatrix = engine.buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {
+    orderedPairs: caseSpecs,
+    flagshipPairs: [],
+    strength: 0.82
+  });
+  const swapReportById = Object.fromEntries(swapMatrix.fullMatrix.map((report) => [report.id, report]));
+  return caseSpecs.map((caseSpec) =>
+    evaluateSwapCase(caseSpec, swapReportById[`${caseSpec.sourceId}__${caseSpec.donorId}`])
+  );
+}
+
+function buildSectionData(sectionId = '') {
+  switch (sectionId) {
+    case 'sampleAudit':
+      return buildSampleAudit(DIAGNOSTIC_SAMPLE_LIBRARY);
+    case 'personaAudit':
+      return buildPersonaAudit(PERSONA_LIBRARY);
+    case 'swapPairs':
+      return evaluateSwapCaseCollection(DIAGNOSTIC_BATTERY.swapPairs);
+    case 'maskCases':
+      return DIAGNOSTIC_BATTERY.maskCases.map(evaluateMaskCase);
+    case 'trainerCases':
+      return DIAGNOSTIC_BATTERY.trainerCases.map(evaluateTrainerCase);
+    case 'retrievalCases':
+      return DIAGNOSTIC_BATTERY.retrievalCases.map(evaluateRetrievalCase);
+    case 'falseNeighborCases':
+      return evaluateSwapCaseCollection(DIAGNOSTIC_BATTERY.falseNeighborCases);
+    case 'generatorTransferCases':
+      return DIAGNOSTIC_BATTERY.retrievalCases.map(evaluateGeneratorTransferCase);
+    case 'generatorMaskCases':
+      return DIAGNOSTIC_BATTERY.maskCases.map(evaluateGeneratorMaskCase);
+    case 'annexDiagnostics':
+      return buildAnnexDiagnostics(repoRoot);
+    default:
+      throw new Error(`Unsupported diagnostics section: ${sectionId}`);
+  }
+}
+
 function buildMarkdownReport(report) {
   const lines = [
     '# Diagnostics Battery',
@@ -2011,64 +2271,119 @@ function buildMarkdownReport(report) {
   return `${lines.join('\n')}\n`;
 }
 
-const swapMatrix = engine.buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {
-  orderedPairs: DIAGNOSTIC_BATTERY.swapPairs,
-  flagshipPairs: engine.SWAP_CADENCE_FLAGSHIP_PAIRS,
-  strength: 0.82
-});
-const swapReportById = Object.fromEntries(swapMatrix.fullMatrix.map((report) => [report.id, report]));
+function buildReportFromStageManifest(manifest = {}) {
+  const staged = Object.fromEntries(SECTION_IDS.map((sectionId) => {
+    const snapshot = readStageSnapshot(manifest, sectionId);
+    if (!snapshot) {
+      throw new Error(`Cannot assemble diagnostics report: missing or stale section "${sectionId}" for run ${manifest.runId}.`);
+    }
+    return [sectionId, snapshot.data];
+  }));
 
-const sectionResults = {
-  swapPairs: DIAGNOSTIC_BATTERY.swapPairs.map((caseSpec) =>
-    evaluateSwapCase(caseSpec, swapReportById[`${caseSpec.sourceId}__${caseSpec.donorId}`])
-  ),
-  maskCases: DIAGNOSTIC_BATTERY.maskCases.map(evaluateMaskCase),
-  trainerCases: DIAGNOSTIC_BATTERY.trainerCases.map(evaluateTrainerCase),
-  retrievalCases: DIAGNOSTIC_BATTERY.retrievalCases.map(evaluateRetrievalCase),
-  falseNeighborCases: DIAGNOSTIC_BATTERY.falseNeighborCases.map((caseSpec) =>
-    evaluateSwapCase(caseSpec, swapReportById[`${caseSpec.sourceId}__${caseSpec.donorId}`])
-  ),
-  generatorTransferCases: DIAGNOSTIC_BATTERY.retrievalCases.map(evaluateGeneratorTransferCase),
-  generatorMaskCases: DIAGNOSTIC_BATTERY.maskCases.map(evaluateGeneratorMaskCase)
-};
-const representativePairs = summarizeRepresentativeSwapSelections(buildRepresentativeSwapSelections());
-const annexes = buildAnnexDiagnostics(repoRoot);
-const generatorAudit = buildGeneratorAudit(sectionResults);
-const ontologyIntegrity = buildOntologyIntegrityReport(sectionResults);
-const cadenceDuelIntegrity = buildCadenceDuelIntegrityReport(sectionResults);
-const toolability = buildToolabilityReport(sectionResults);
+  const sectionResults = {
+    swapPairs: staged.swapPairs,
+    maskCases: staged.maskCases,
+    trainerCases: staged.trainerCases,
+    retrievalCases: staged.retrievalCases,
+    falseNeighborCases: staged.falseNeighborCases,
+    generatorTransferCases: staged.generatorTransferCases,
+    generatorMaskCases: staged.generatorMaskCases
+  };
+  const swapMatrix = engine.buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {
+    orderedPairs: DIAGNOSTIC_BATTERY.swapPairs,
+    flagshipPairs: engine.SWAP_CADENCE_FLAGSHIP_PAIRS,
+    strength: 0.82
+  });
+  const representativePairs = summarizeRepresentativeSwapSelections(buildRepresentativeSwapSelections());
+  const generatorAudit = buildGeneratorAudit(sectionResults);
+  const ontologyIntegrity = buildOntologyIntegrityReport(sectionResults);
+  const cadenceDuelIntegrity = buildCadenceDuelIntegrityReport(sectionResults);
+  const toolability = buildToolabilityReport(sectionResults);
+  const report = {
+    generatedAt: new Date().toISOString(),
+    runMetadata: {
+      runId: manifest.runId,
+      fingerprint: manifest.fingerprint,
+      sectionIds: [...SECTION_IDS]
+    },
+    summary: summarize(sectionResults),
+    sections: sectionResults,
+    generatorAudit,
+    ontologyIntegrity,
+    cadenceDuelIntegrity,
+    toolability,
+    sampleAudit: staged.sampleAudit,
+    personaAudit: staged.personaAudit,
+    workingDoctrine: null,
+    annexes: staged.annexDiagnostics
+  };
 
-const report = {
-  generatedAt: new Date().toISOString(),
-  summary: summarize(sectionResults),
-  sections: sectionResults,
-  generatorAudit,
-  ontologyIntegrity,
-  cadenceDuelIntegrity,
-  toolability,
-  sampleAudit: buildSampleAudit(DIAGNOSTIC_SAMPLE_LIBRARY),
-  personaAudit: buildPersonaAudit(PERSONA_LIBRARY),
-  workingDoctrine: null,
-  annexes
-};
-report.workingDoctrine = buildPrivateWorkingDoctrine(report.summary, swapMatrix, representativePairs);
-report.summary.generatorCaseCount = generatorAudit.caseCount;
-report.summary.generatorHeldCount = generatorAudit.heldCount;
-report.summary.generatorUnsafeStructuralCount = generatorAudit.unsafeStructuralCount;
-report.summary.ontologyPressureHeldCount = ontologyIntegrity.heldByApertureRoutePressureCount;
-report.summary.cadenceDuelSyntaxOnlyWinnerCount = cadenceDuelIntegrity.syntaxOnlyWinnerCount;
-report.summary.toolabilityLandedRate = toolability.landedRate;
-report.summary.toolabilityDistinctnessRate = toolability.distinctnessRate;
-report.summary.annexCount = Object.keys(annexes).length;
-report.summary.annexPassedCount = Object.values(annexes).filter((entry) => entry.passed).length;
+  report.workingDoctrine = buildPrivateWorkingDoctrine(report.summary, swapMatrix, representativePairs);
+  report.summary.generatorCaseCount = generatorAudit.caseCount;
+  report.summary.generatorHeldCount = generatorAudit.heldCount;
+  report.summary.generatorUnsafeStructuralCount = generatorAudit.unsafeStructuralCount;
+  report.summary.ontologyPressureHeldCount = ontologyIntegrity.heldByApertureRoutePressureCount;
+  report.summary.cadenceDuelSyntaxOnlyWinnerCount = cadenceDuelIntegrity.syntaxOnlyWinnerCount;
+  report.summary.toolabilityLandedRate = toolability.landedRate;
+  report.summary.toolabilityDistinctnessRate = toolability.distinctnessRate;
+  report.summary.annexCount = Object.keys(report.annexes || {}).length;
+  report.summary.annexPassedCount = Object.values(report.annexes || {}).filter((entry) => entry.passed).length;
 
-ensureDir(reportsDir);
-fs.writeFileSync(latestJsonPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
-fs.writeFileSync(latestMdPath, buildMarkdownReport(report), 'utf8');
-Object.values(annexes).forEach((entry) => {
-  fs.writeFileSync(path.join(reportsDir, `${entry.id}.latest.json`), `${JSON.stringify(entry, null, 2)}\n`, 'utf8');
-  fs.writeFileSync(path.join(reportsDir, `${entry.id}.latest.md`), buildAnnexMarkdown(entry), 'utf8');
-});
+  return report;
+}
 
-console.log(`diagnostics battery complete (${report.summary.totalCases} cases)`);
-console.log(`worst buckets: ${JSON.stringify(report.summary.failureBucketCounts)}`);
+function publishDiagnosticsReport(report = {}) {
+  ensureDir(reportsDir);
+  atomicWriteFile(latestJsonPath, `${JSON.stringify(report, null, 2)}\n`);
+  atomicWriteFile(latestMdPath, buildMarkdownReport(report));
+  Object.values(report.annexes || {}).forEach((entry) => {
+    atomicWriteFile(path.join(reportsDir, `${entry.id}.latest.json`), `${JSON.stringify(entry, null, 2)}\n`);
+    atomicWriteFile(path.join(reportsDir, `${entry.id}.latest.md`), buildAnnexMarkdown(entry));
+  });
+}
+
+function runDiagnosticsSections(manifest = {}, sectionIds = []) {
+  let nextManifest = manifest;
+  sectionIds.forEach((sectionId) => {
+    if (stageSectionComplete(nextManifest, sectionId)) {
+      console.log(`diagnostics section reused: ${sectionId}`);
+      return;
+    }
+    console.log(`diagnostics section running: ${sectionId}`);
+    nextManifest = persistStageSnapshot(nextManifest, sectionId, buildSectionData(sectionId));
+  });
+  return nextManifest;
+}
+
+async function main() {
+  const args = parseDiagnosticsArgs();
+  const fingerprint = computeRunFingerprint();
+  let manifest = loadActiveStageManifest(fingerprint, { fresh: args.fresh });
+
+  if (args.assembleOnly) {
+    const missing = missingStageSections(manifest);
+    if (missing.length) {
+      throw new Error(`Cannot assemble diagnostics report: missing or stale sections ${missing.join(', ')}.`);
+    }
+    const report = buildReportFromStageManifest(manifest);
+    publishDiagnosticsReport(report);
+    console.log(`diagnostics battery assembled (${report.summary.totalCases} cases)`);
+    console.log(`worst buckets: ${JSON.stringify(report.summary.failureBucketCounts)}`);
+    return;
+  }
+
+  if (args.sections?.length) {
+    manifest = runDiagnosticsSections(manifest, args.sections);
+    console.log(`diagnostics battery staged sections complete (${args.sections.join(', ')})`);
+    return;
+  }
+
+  const missing = missingStageSections(manifest);
+  manifest = runDiagnosticsSections(manifest, missing);
+  const report = buildReportFromStageManifest(manifest);
+  publishDiagnosticsReport(report);
+  console.log(`diagnostics battery complete (${report.summary.totalCases} cases)`);
+  console.log(`worst buckets: ${JSON.stringify(report.summary.failureBucketCounts)}`);
+}
+
+await main();

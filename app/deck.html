@@ -142,6 +142,80 @@
             </section>
           </aside>
         </div>
+
+        <section class="runtime-dock-panel runtime-dock-panel-readout station-runtime-readout">
+          <div class="panel-heading">
+            <div>
+              <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionTelemetry">&#x0398;</span> Encounter telemetry</div>
+              <h2>Witness what the duel kept</h2>
+            </div>
+            <p class="section-note">Deck stays the encounter bench, but the standalone chamber now carries its own witness and harbor surfaces.</p>
+          </div>
+
+          <div class="readout-layout">
+            <section class="panel telemetry-panel">
+              <p id="fieldNotice" class="field-notice analysis-gated" data-latent-label="Telemetry latent // wake the encounter">Bring one or two voices into the room. The Deck keeps latent state, projected state, registered surface, and route law separate from cadence resemblance.</p>
+              <div class="governed-exposure-panel analysis-gated" data-latent-label="Governed exposure latent // wake the encounter">
+                <div class="governed-exposure-grid">
+                  <article class="metric governed-exposure-card"><div class="key">Latent state <span class="key-meta">S</span></div><div id="geLatentState" class="val">--</div><div id="geLatentHint" class="hint"></div></article>
+                  <article class="metric governed-exposure-card"><div class="key">Projected state <span class="key-meta">S'</span></div><div id="geProjectedState" class="val">--</div><div id="geProjectedHint" class="hint"></div></article>
+                  <article class="metric governed-exposure-card"><div class="key">Registered surface <span class="key-meta">Y</span></div><div id="geRegisteredSurface" class="val">--</div><div id="geRegisteredHint" class="hint"></div></article>
+                  <article class="metric governed-exposure-card"><div class="key">Authority ceiling</div><div id="geAuthorityCeiling" class="val">--</div><div id="geAuthorityHint" class="hint"></div></article>
+                  <article class="metric governed-exposure-card"><div class="key">Source class</div><div id="geSourceClass" class="val">--</div><div id="geSourceHint" class="hint"></div></article>
+                  <article class="metric governed-exposure-card"><div class="key">Route state</div><div id="geRouteState" class="val">--</div><div id="geRouteHint" class="hint"></div></article>
+                  <article class="metric governed-exposure-card"><div class="key">O / O*</div><div id="geOmission" class="val">--</div><div id="geOmissionHint" class="hint"></div></article>
+                  <article class="metric governed-exposure-card"><div class="key">Gap / dominant operator</div><div id="geGap" class="val">--</div><div id="geGapHint" class="hint"></div></article>
+                </div>
+                <pre id="governedExposurePreview" class="formula"></pre>
+              </div>
+              <div class="results analysis-gated" data-latent-label="Metrics latent // press Analyze Cadences">
+                <article id="similarityCard" class="metric"><div id="similarityKey" class="key">Cadence similarity</div><div id="similarity" class="val">--</div><div id="simHint" class="hint"></div></article>
+                <article id="traceabilityCard" class="metric"><div id="traceKey" class="key">Traceability</div><div id="traceability" class="val">--</div><div id="traceHint" class="hint"></div></article>
+                <article id="routePressureCard" class="metric"><div id="routeKey" class="key">Route pressure</div><div id="routePressure" class="val">--</div><div id="routeHint" class="hint"></div></article>
+                <article id="custodyCard" class="metric"><div id="custodyKey" class="key">Effective archive <span class="key-meta">A_I / A_W</span></div><div id="custodyState" class="val">--</div><div id="custodyHint" class="hint"></div></article>
+              </div>
+            </section>
+
+            <section class="panel harbor-panel">
+              <div class="panel-heading">
+                <div>
+                  <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionHarbor">&#x2696;</span> Harbor lane</div>
+                  <h3>Structure the route</h3>
+                </div>
+                <p class="section-note">When the encounter earns handling, route structure appears here.</p>
+              </div>
+
+              <div id="harborBox" class="harbor-box analysis-gated" data-latent-label="Harbor latent // no route yet"></div>
+
+              <div class="ledger-stage analysis-gated" data-latent-label="Receipt stream latent">
+                <div class="ledger-head">
+                  <div>
+                    <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionReceipt">&#x03A3;</span> Receipt stream</div>
+                    <h3>Ledger preview</h3>
+                  </div>
+                  <div class="ledger-chip">local demo</div>
+                </div>
+                <pre id="ledgerPreview" class="formula"></pre>
+              </div>
+            </section>
+          </div>
+
+          <section class="runtime-hero-dock analysis-gated" data-latent-label="Hero telemetry latent // wake the encounter">
+            <div id="heroSignalValue">--</div>
+            <div id="heroSignalNote">Wake the encounter to expose signal pressure.</div>
+            <div id="heroRouteValue">--</div>
+            <div id="heroRouteNote">Route stays latent until the witness field is live.</div>
+            <div id="heroHarborValue">--</div>
+            <div id="heroHarborNote">Harbor only appears when the encounter actually earns passage.</div>
+            <a id="heroHarborAction" class="harbor-action-link" href="./safe-harbor/index.html" hidden>Open Safe Harbor</a>
+          </section>
+
+          <section class="debug-vault" hidden aria-hidden="true">
+            <div id="branchFormula" class="formula"></div>
+            <div id="waveFormula" class="formula"></div>
+            <div id="harborFormula" class="formula"></div>
+          </section>
+        </section>
       </section>
     </main>
 

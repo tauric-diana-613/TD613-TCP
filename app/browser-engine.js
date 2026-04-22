@@ -14021,6 +14021,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
   const sourceText = normalizeText(text);
   const sourceProfile = extractCadenceProfile(sourceText);
   const hardAnchors = extractHardAnchors(sourceText);
+  const sourceClass = classifyV2SourceClass(sourceText);
   const sourceRegisterLaneInfo = resolveSourceRegisterLane({
     sourceText,
     sourceProfile,
@@ -14033,7 +14034,6 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
   const sourceIR = segmentTextToIR(sourceText, protectedState);
   const opportunityProfile = buildOpportunityProfileFromIR(sourceIR);
   const auditBundle = buildSemanticAuditBundle(sourceIR, sourceText, protectedState);
-  const sourceClass = classifyV2SourceClass(sourceText);
   const nativeRelationInventory = buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors, sourceRegisterLaneInfo);
   const nativeOntologyAudit = buildTD613OntologyAudit({
     sourceClass,
