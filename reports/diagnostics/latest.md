@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-20T17:45:03.423Z
+Generated: 2026-04-22T05:36:18.859Z
 
 Corpus: 72 samples across 18 families
 Promoted deck subset: 24 samples
@@ -152,9 +152,9 @@ Total diagnostics cases: 270
 ### TD613 Aperture
 
 - status: failed
-- version: 1.8.0
+- version: 2.2.1
 - source: app/aperture/index.html
-- content_hash_sha256: 2056cb5899a8c0b8c2b02da4689739c1efcb8d9b036c9bb26252bc494f699b4e
-- inline_script_count: 3
-- failed_checks: Aperture runtime definition
+- content_hash_sha256: 21a1498753d2dfd31821f81f92ec451b89816c68079ffc4f5f8ad7ae964ab99c
+- inline_script_count: 8
+- failed_checks: source declaration, governed exposure schema marker, protective vocabulary reassignment panel
 

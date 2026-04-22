@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-TD613 APERTURE v1.8.0 SOURCE DECLARATION
+TD613 APERTURE v2.2.1 SOURCE DECLARATION
 - TD613 Aperture is the counter-tool.
 - PRCS-A is the observed regime and receives explicit callouts.
 - Legacy compatibility ids may retain inherited human-route naming, but those identifiers are not normative tool semantics.
@@ -15,10 +15,8 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
 <meta name="observed-regime" content="PRCS-A">
 <meta name="anti-enforcement" content="true">
 <meta name="source-note" content="PRCS-A receives explicit regime callouts; legacy Eclipse-Omega naming remains a non-normative strain marker.">
-<title>TD613 Aperture · v1.8.0</title>
+<title>TD613 Aperture - v2.2.1</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Crimson+Pro:wght@400;600;700;800&display=swap');
-
   :root {
     --bg: #050709;
     --bg2: #090b12;
@@ -58,11 +56,6 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     grid-template-rows: 42px 1fr;
   }
 
-  body[data-embed-mode="gateway"] {
-    font-size: 10.25px;
-    grid-template-rows: 40px 1fr;
-  }
-
   /* ── HEADER ──────────────────────────────────────────────── */
   header {
     background: linear-gradient(90deg, var(--bg3), rgba(13,15,24,0.97) 50%, var(--bg3));
@@ -74,10 +67,6 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     position: relative;
     z-index: 10;
     isolation: isolate;
-  }
-
-  body[data-embed-mode="gateway"] header {
-    padding: 0 12px;
   }
 
   header::after {
@@ -115,11 +104,6 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     font-size: 8.5px;
     color: var(--text-dim);
     letter-spacing: 1px;
-  }
-
-  body[data-embed-mode="gateway"] .subtitle {
-    max-width: 52ch;
-    line-height: 1.35;
   }
 
   .controls {
@@ -169,6 +153,18 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     box-shadow: 0 0 12px rgba(189,147,249,0.25);
   }
 
+  .controls button:disabled,
+  .bridge-action:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    filter: saturate(0.65);
+  }
+
+  .controls button.control-ok,
+  .bridge-action.control-ok {
+    box-shadow: 0 0 0 1px rgba(80,250,123,0.12), 0 0 12px rgba(80,250,123,0.08);
+  }
+
   /* ── MAIN GRID ───────────────────────────────────────────── */
   main {
     display: grid;
@@ -181,12 +177,6 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     background: rgba(30,40,60,0.04);
   }
 
-  body[data-embed-mode="gateway"] main {
-    grid-template-columns: 188px minmax(0, 1.58fr) 204px;
-    grid-template-rows: 1fr 186px;
-    height: calc(100dvh - 40px);
-  }
-
   /* ── PANELS ──────────────────────────────────────────────── */
   .panel {
     background: var(--bg-panel);
@@ -195,25 +185,6 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     overflow-x: hidden;
     backdrop-filter: blur(8px);
     position: relative;
-  }
-
-  body[data-embed-mode="gateway"] .panel,
-  body[data-embed-mode="gateway"] .bottom-panel {
-    padding: 7px 8px;
-  }
-
-  body[data-embed-mode="gateway"] .center-canvas,
-  body[data-embed-mode="gateway"] #centerArea {
-    min-height: 420px;
-  }
-
-  body[data-embed-mode="gateway"] #btnMoire {
-    border-color: rgba(189,147,249,0.28);
-    box-shadow: 0 0 10px rgba(189,147,249,0.12);
-  }
-
-  body[data-embed-mode="gateway"] .section-label::after {
-    background: linear-gradient(90deg, rgba(189,147,249,0.18), transparent);
   }
 
   #leftPanel { grid-column: 1; grid-row: 1; }
@@ -790,13 +761,6 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     }
   }
 
-  @media (max-width: 1100px) {
-    body[data-embed-mode="gateway"] main {
-      grid-template-columns: 172px minmax(0, 1.68fr) 186px;
-      grid-template-rows: 1fr 172px;
-    }
-  }
-
   /* ── BOTTOM PANEL ────────────────────────────────────────── */
   .bottom-panel {
     grid-column: 1/-1;
@@ -999,27 +963,30 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
   }
 
 </style>
+<style id="apertureV22Style"></style>
 </head>
 <body data-tool-name="TD613 Aperture" data-tool-role="counter-tool" data-observed-regime="PRCS-A" data-anti-enforcement="true">
 
 <header>
   <div class="title-group">
     <div class="title"><span class="glyph">⟐</span> TD613 Aperture</div>
-    <div class="subtitle" id="subtitle">TD613 Aperture counter-tool · audits and dismantles selective admissibility in PRCS-A</div>
+    <div class="subtitle" id="subtitle">TD613 Aperture counter-tool - audits and dismantles selective admissibility in PRCS-A</div>
   </div>
   <div class="controls">
     <div id="thetaStatus" class="status-pill" style="background:rgba(189,147,249,0.1);color:var(--accent);border-color:rgba(189,147,249,0.15);">Θ_std</div>
-    <button onclick="setUserClass('open')">Θ_open</button>
-    <button onclick="setUserClass('standard')" class="active">Θ_std</button>
-    <button onclick="setUserClass('restricted')">Θ_res</button>
+    <button id="btnThetaOpen" onclick="setUserClass('open')">Θ_open</button>
+    <button id="btnThetaStd" onclick="setUserClass('standard')" class="active">Θ_std</button>
+    <button id="btnThetaRes" onclick="setUserClass('restricted')">Θ_res</button>
     <div style="width:1px;height:16px;background:var(--border);margin:0 4px;"></div>
     <div id="bounceStatus" class="status-pill" style="background:rgba(255,85,85,0.1);color:var(--aliased);">BOUNCES: 0</div>
     <div id="phaseStatus" class="status-pill" style="background:rgba(139,233,253,0.1);color:var(--latent);">STANDBY</div>
+    <div id="temporalStatus" class="status-pill temporal-pill" style="background:rgba(255,216,102,0.1);color:var(--crystal);border-color:rgba(255,216,102,0.16);">κ closed · Π — · forced-adj —</div>
     <button id="btnRun" onclick="toggleRun()">▶ PROPAGATE</button>
     <button id="btnMoire" onclick="toggleMoire()">MOIRÉ</button>
     <button id="btnReset" onclick="resetSystem()">RESET</button>
-  </div>
+    </div>
 </header>
+<div id="controlStatusBar" style="display:none"></div>
 
 <main>
 
@@ -1113,7 +1080,6 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     <div class="field-metric"><span class="fm-label">L_P</span><div class="fm-bar"><div class="fm-fill" id="fmLPBar" style="width:0%;background:var(--suppressed);"></div></div><span class="fm-value" id="mLP">—</span></div>
     <div class="field-metric"><span class="fm-label">L_F</span><div class="fm-bar"><div class="fm-fill" id="fmLFBar" style="width:0%;background:var(--crystal);"></div></div><span class="fm-value" id="mLF">—</span></div>
     <div class="field-metric"><span class="fm-label">L_A</span><div class="fm-bar"><div class="fm-fill" id="fmLABar" style="width:0%;background:var(--registered);"></div></div><span class="fm-value" id="mLA">—</span></div>
-    <div class="field-metric"><span class="fm-label">L_∏ (cumulative)</span><div class="fm-bar"><div class="fm-fill" id="fmLProductBar" style="width:0%;background:var(--registered);"></div></div><span class="fm-value" id="mLProduct">—</span></div>
     <div class="metric-row"><span class="label">Dominant narrowing operator</span><span class="value" id="mDominantLoss">—</span></div>
 
 
@@ -1151,7 +1117,7 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     </div>
 
     <div class="section-label">FIRMWARE / BACKBONE</div>
-            <div class="metric-row"><span class="label">Firmware spine</span><span class="value" id="mFirmwareVer">v1.8.0</span></div>
+        <div class="metric-row"><span class="label">Firmware spine</span><span class="value" id="mFirmwareVer">v2.2.1</span></div>
     <div class="metric-row"><span class="label">Bus tick</span><span class="value" id="mBusTick">0</span></div>
     <div class="metric-row"><span class="label">L1 input hash</span><span class="value" id="mBusInput">pending</span></div>
     <div class="metric-row"><span class="label">L5 route</span><span class="value" id="mBusRoute">play</span></div>
@@ -1163,8 +1129,8 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     </div>
 
     <div class="section-label">REANCHOR / REGIME LAW</div>
-    <div class="metric-row"><span class="label">PRCS-A</span><span class="value" style="color:var(--text-bright)">containment regime</span></div>
-    <div class="metric-row"><span class="label">Aperture</span><span class="value" style="color:var(--latent)">TD613 counter-tool</span></div>
+    <div class="metric-row"><span class="label">EO</span><span class="value" style="color:var(--text-bright)">containment regime</span></div>
+    <div class="metric-row"><span class="label">EO-RFD</span><span class="value" style="color:var(--latent)">derived detector instrument</span></div>
     <div class="equation" style="font-size:10px;">S' ∈ Paths<sub>Ω</sub>(S)</div>
     <div class="equation" style="font-size:9.3px;">ℛ(x)=1 ⇔ A<sub>op</sub>(x)=1 ∧ A<sub>sys</sub>(x)=1 ∧ (C<sub>Ω</sub>(x)=⊥ ∨ ∃x'≠x:C<sub>Ω</sub>(x)=C<sub>Ω</sub>(x'))</div>
     <div class="metric-row"><span class="label">0-state</span><span class="value" id="mZeroState">no registered events</span></div>
@@ -1344,6 +1310,91 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
         <button id="btnClearInput" class="bridge-action" onclick="clearHumanInput()">CLEAR TRACE</button>
       </div>
 
+      <div id="apertureV22TraceBlock">
+        <div class="hook-title" style="margin-top:8px;">Temporal trace Π / κ / C / H</div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputTSense">t_sense</label><input id="inputTSense" class="route-input" type="datetime-local"></div>
+          <div class="input-shell"><label for="inputTModel">t_model</label><input id="inputTModel" class="route-input" type="datetime-local"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputTOp">t_op</label><input id="inputTOp" class="route-input" type="datetime-local"></div>
+          <div class="input-shell"><label for="inputTInst">t_inst</label><input id="inputTInst" class="route-input" type="datetime-local"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputTPub">t_pub</label><input id="inputTPub" class="route-input" type="datetime-local"></div>
+          <div class="input-shell"><label for="inputPilotDomain">pilot domain</label>
+            <select id="inputPilotDomain" class="route-select">
+              <option value="">none</option>
+              <option value="school-discipline">school discipline / student risk</option>
+            </select>
+          </div>
+        </div>
+        <div class="bridge-actions" style="margin-top:4px;">
+          <button id="btnPilotSchool" class="bridge-action" onclick="loadPilotPresetV22('school-discipline')">LOAD SCHOOL PILOT</button>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputClosureClass">closure class κ (manual)</label>
+            <select id="inputClosureClass" class="route-select">
+              <option value="">infer from triangulation</option>
+              <option value="closed">closed</option>
+              <option value="drift">drift</option>
+              <option value="suppressed">suppressed</option>
+              <option value="inexpressible">inexpressible</option>
+            </select>
+          </div>
+          <div class="input-shell"><label for="inputClosureScore">closure score C(s)</label><input id="inputClosureScore" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputRecordClass">record evidence κ</label>
+            <select id="inputRecordClass" class="route-select"><option value="">—</option><option value="closed">closed</option><option value="drift">drift</option><option value="suppressed">suppressed</option><option value="inexpressible">inexpressible</option></select>
+          </div>
+          <div class="input-shell"><label for="inputTestimonyClass">actor testimony κ</label>
+            <select id="inputTestimonyClass" class="route-select"><option value="">—</option><option value="closed">closed</option><option value="drift">drift</option><option value="suppressed">suppressed</option><option value="inexpressible">inexpressible</option></select>
+          </div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputBehaviorClass">system behavior κ</label>
+            <select id="inputBehaviorClass" class="route-select"><option value="">—</option><option value="closed">closed</option><option value="drift">drift</option><option value="suppressed">suppressed</option><option value="inexpressible">inexpressible</option></select>
+          </div>
+          <div class="input-shell"><label for="inputActorClasses">actor classes</label><input id="inputActorClasses" class="route-input" type="text" placeholder="system/admin | teacher/staff | student/guardian"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputInfluenceScore">influence score</label><input id="inputInfluenceScore" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+          <div class="input-shell"><label for="inputInfluenceWindow">influence window (h)</label><input id="inputInfluenceWindow" class="route-input" type="number" min="0" step="0.1" placeholder="auto"></div>
+        </div>
+        <div class="input-grid" style="display:none;">
+          <div class="input-shell"><label for="inputInfluenceIntegral">compat influence integral</label><input id="inputInfluenceIntegral" class="route-input" type="number" min="0" step="0.01"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputActorGapSelf">Π_self / Π_op override (ms)</label><input id="inputActorGapSelf" class="route-input" type="number" step="1" placeholder="optional"></div>
+          <div class="input-shell"><label for="inputActorGapParallel">parallel actor gap (ms)</label><input id="inputActorGapParallel" class="route-input" type="number" step="1" placeholder="optional"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputCreaseField">historical crease field H_base</label><input id="inputCreaseField" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+          <div class="input-shell"><label for="inputProjectionBias">projection bias</label><input id="inputProjectionBias" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputPathDependence">path dependence</label><input id="inputPathDependence" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+          <div class="input-shell"><label for="inputProjectionCapacity">projection capacity κ</label><input id="inputProjectionCapacity" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputUnfoldEnergy">E_unfold</label><input id="inputUnfoldEnergy" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+          <div class="input-shell"><label for="inputUnfoldThreshold">τ_E</label><input id="inputUnfoldThreshold" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="0.68"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputActorVariance">actor variance override</label><input id="inputActorVariance" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+          <div class="input-shell"><label for="inputHistoricalCrease">historical crease alias</label><input id="inputHistoricalCrease" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="mirrors H_base"></div>
+        </div>
+        <div class="input-grid full">
+          <div class="input-shell"><label for="inputRegistrationMemo">faithful closure / registration memo</label><textarea id="inputRegistrationMemo" class="route-textarea" placeholder="What would faithful closure have looked like here?"></textarea></div>
+        </div>
+        <div class="input-grid full" style="display:none;">
+          <div class="input-shell"><label for="inputKappa">compat κ alias</label><input id="inputKappa" class="route-input" type="text"></div>
+          <div class="input-shell"><label for="inputRegFidelityMemo">compat memo alias</label><textarea id="inputRegFidelityMemo" class="route-textarea"></textarea></div>
+        </div>
+        <div class="temporal-mini" id="pilotPresetStatus">pilot preset idle</div>
+      </div>
+
       <div class="route-status-block">
         <div class="route-status-line"><span class="label">counter-tool mode</span><span class="value" id="inputModeReadout">observational</span></div>
         <div class="route-status-line"><span class="label">trace legibility</span><span class="value" id="inputStatusReadout">counter-tool idle</span></div>
@@ -1363,7 +1414,7 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
     <div class="section-label">DERIVATIVE HANDOFF / GUARDED EGRESS</div>
     <div id="tcpBridgePanel" class="tcp-hook state-play">
       <div class="hook-title">Counter-tool stance</div>
-      <div class="hook-value" id="bridgeStateCopy">audit baseline · TD613 Aperture remains external to PRCS-A sorting</div>
+      <div class="hook-value" id="bridgeStateCopy">audit baseline · TD613 Aperture remains external to PRCS-A</div>
 
       <div class="bridge-grid">
         <div class="tcp-hook">
@@ -1429,6 +1480,84 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
       </div>
       <pre id="tcpPacketPreview" class="packet-preview">audit packet unavailable</pre>
     </div>
+
+    <div class="section-label" id="apertureV22TemporalLabel">DEFORMATION / CLOSURE Π / κ / C / H</div>
+    <div id="apertureV22TemporalPanel" class="tcp-hook temporal-card">
+      <div class="hook-title">Temporal ordering</div>
+      <div class="hook-value" id="temporalSummaryCopy">awaiting temporal trace</div>
+      <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+        <span id="temporalPostureFlag" class="temporal-flag synced">synced</span>
+        <span id="temporalBeaconFlag" class="temporal-flag">beacon off</span>
+        <span id="temporalPracticalFlag" class="temporal-flag">closure cost nominal</span>
+      </div>
+      <div style="margin-top:6px;"><span id="pilotBadge" class="pilot-badge" style="display:none;">pilot</span></div>
+      <div class="bridge-meta">
+        <div class="bridge-readout"><span class="label">Π_op</span><span class="value" id="temporalPiOpReadout">—</span></div>
+        <div class="bridge-readout"><span class="label">Π_pub</span><span class="value" id="temporalPiPubReadout">—</span></div>
+        <div class="bridge-readout"><span class="label">Π_sense</span><span class="value" id="temporalPiSenseReadout">—</span></div>
+        <div class="bridge-readout"><span class="label">κ</span><span class="value" id="temporalClosureReadout">closed</span></div>
+        <div class="bridge-readout"><span class="label">C(s)</span><span class="value" id="temporalClosureScoreReadout">1.0000</span></div>
+        <div class="bridge-readout"><span class="label">Var_i[Π_i]</span><span class="value" id="temporalActorVarReadout">0.0000</span></div>
+        <div class="bridge-readout"><span class="label">Temporal posture</span><span class="value" id="temporalPostureReadout">synced</span></div>
+        <div class="bridge-readout"><span class="label">Forced adjacency</span><span class="value" id="temporalAdjacencyReadout">0.0000</span></div>
+        <div class="bridge-readout"><span class="label">H</span><span class="value" id="temporalCreaseReadout">0.0000</span></div>
+        <div class="bridge-readout"><span class="label">E_unfold</span><span class="value" id="temporalUnfoldReadout">0.0000</span></div>
+        <div class="bridge-readout"><span class="label">κ disagreement</span><span class="value" id="temporalKappaDisReadout">0.0000</span></div>
+        <div class="bridge-readout"><span class="label">Zone candidate Z_H</span><span class="value" id="temporalZoneReadout">false</span></div>
+      </div>
+      <div class="field-metric"><span class="fm-label">Π_op</span><div class="fm-bar"><div class="fm-fill" id="temporalPiBar" style="width:0%;background:var(--crystal);"></div></div><span class="fm-value" id="temporalPiBarVal">0.000</span></div>
+      <div class="field-metric"><span class="fm-label">C(s)</span><div class="fm-bar"><div class="fm-fill" id="temporalClosureBar" style="width:100%;background:var(--registered);"></div></div><span class="fm-value" id="temporalClosureBarVal">1.000</span></div>
+      <div class="field-metric"><span class="fm-label">∫ Influence dt</span><div class="fm-bar"><div class="fm-fill" id="temporalInfluenceBar" style="width:0%;background:var(--latent);"></div></div><span class="fm-value" id="temporalInfluenceBarVal">0.000</span></div>
+      <div class="field-metric"><span class="fm-label">H</span><div class="fm-bar"><div class="fm-fill" id="temporalCreaseBar" style="width:0%;background:var(--accent);"></div></div><span class="fm-value" id="temporalCreaseBarVal">0.000</span></div>
+      <div class="field-metric"><span class="fm-label">E_unfold</span><div class="fm-bar"><div class="fm-fill" id="temporalUnfoldBar" style="width:0%;background:var(--aliased);"></div></div><span class="fm-value" id="temporalUnfoldBarVal">0.000</span></div>
+      <div class="tcp-hook" style="margin-top:6px;"><div class="hook-title">Faithful closure memo</div><div class="hook-value" id="temporalMemoReadout">awaiting memo</div></div>
+      <div class="tcp-hook" style="margin-top:6px;"><div class="hook-title">Quantum ↔ institutional homology</div><div id="homologyGrid" class="homology-grid"></div></div>
+      <div class="tcp-hook" style="display:none; margin-top:6px;">
+        <div class="hook-title">Compatibility aliases</div>
+        <div class="hook-value"><span id="mTemporalPosture">synced</span> · <span id="mClosureScore">1.0000</span> · <span id="mBeaconStatus">beacon off</span> · <span id="mPiOp">—</span> · <span id="mPiPub">—</span> · <span id="mPiSense">—</span> · <span id="mUnfoldEnergy">0.0000</span> · <span id="mHistoricalCrease">0.0000</span> · <span id="mPilotDomain">none</span> · <span id="mHomologyMode">structural homology</span></div>
+      </div>
+    </div>
+
+    <div class="section-label">TD613 FORENSIC SCHEMA</div>
+    <div id="td613SchemaPanel" class="tcp-hook">
+      <div class="hook-title">Shared schema spine</div>
+      <div class="hook-value" id="schemaSummary">awaiting forensic schema sync</div>
+      <div class="bridge-meta">
+        <div class="bridge-readout"><span class="label">Schema version</span><span class="value" id="schemaVersionReadout">td613-aperture/v2.2.1</span></div>
+        <div class="bridge-readout"><span class="label">Governed exposure</span><span class="value" id="schemaExposureReadout">S / S' / Y pending</span></div>
+        <div class="bridge-readout"><span class="label">Ledger completeness</span><span class="value" id="schemaLedgerReadout">pending</span></div>
+        <div class="bridge-readout"><span class="label">Authority ceiling</span><span class="value" id="schemaAuthorityReadout">counter-tool audit only</span></div>
+        <div class="bridge-readout"><span class="label">Source classes</span><span class="value" id="schemaSourceReadout">pending</span></div>
+      </div>
+      <pre id="schemaPacketPreview" class="packet-preview">schema packet unavailable</pre>
+    </div>
+
+    <div class="section-label">DIFFERENTIAL ADMISSIBILITY AUDIT</div>
+    <div id="diffAuditPanel" class="tcp-hook">
+      <div class="hook-title">Comparative class variance Θ(u)</div>
+      <div class="hook-value" id="diffAuditSummary">awaiting comparative admissibility audit</div>
+      <div id="diffAuditMatrix" class="detector-matrix"></div>
+      <div class="bridge-meta">
+        <div class="bridge-readout"><span class="label">Exposure variance</span><span class="value" id="diffVarExposure">0.0000</span></div>
+        <div class="bridge-readout"><span class="label">Route divergence</span><span class="value" id="diffRouteDivergence">0.0000</span></div>
+        <div class="bridge-readout"><span class="label">Most protected lane</span><span class="value" id="diffBestLane">pending</span></div>
+        <div class="bridge-readout"><span class="label">Most constrained lane</span><span class="value" id="diffWorstLane">pending</span></div>
+      </div>
+    </div>
+
+    <div class="section-label">ETHICAL VOCABULARY REALLOCATION Γ(u)</div>
+    <div id="ethicsAuditPanel" class="tcp-hook">
+      <div class="hook-title">Protective language redistribution audit</div>
+      <div class="hook-value" id="ethicsSummary">awaiting ethics redistribution audit</div>
+      <div id="ethicsAuditTable" class="detector-matrix"></div>
+      <div class="bridge-meta">
+        <div class="bridge-readout"><span class="label">Upward protection bias</span><span class="value" id="ethicsBiasReadout">0.0000</span></div>
+        <div class="bridge-readout"><span class="label">Opacity asymmetry</span><span class="value" id="ethicsOpacityReadout">0.0000</span></div>
+        <div class="bridge-readout"><span class="label">Care rhetoric gap</span><span class="value" id="ethicsCareGapReadout">0.0000</span></div>
+        <div class="bridge-readout"><span class="label">Allocation verdict</span><span class="value" id="ethicsVerdictReadout">pending</span></div>
+      </div>
+    </div>
+
 
     <!-- RAY TRACE LOG -->
     <div class="section-label">RAY TRACE LOG</div>
@@ -1507,15 +1636,15 @@ TD613 APERTURE v1.8.0 SOURCE DECLARATION
 
 <script>
 // ═════════════════════════════════════════════════════════════════
-// TD613 APERTURE v1.8.0 COUNTER-TOOL
-// PRCS-A is the observed regime and receives explicit callouts; it is not the tool identity.
+// APERTURE v2.1.4 COUNTER-TOOL
+// Eclipse–Omega PRCS-A is the observed regime, not the tool identity.
 // Legacy ids may retain compatibility naming, but the instrument stance is anti-enforcement.
 // ═════════════════════════════════════════════════════════════════
 
 
 const FIRMWARE = {
-  VERSION: "v1.8.0",
-  SCHEMA_VERSION: "td613-aperture/v1.8.0",
+  VERSION: "v2.1.4",
+  SCHEMA_VERSION: "td613-aperture/v2.1.4",
   PHI: (1 + Math.sqrt(5)) / 2,
   SQRT3: Math.sqrt(3),
   get SQRT3_HALF() { return this.SQRT3 / 2; },
@@ -1542,8 +1671,8 @@ const FIRMWARE = {
     name: { canonical: 0.92, safe: 1.00, invalid: 1.14 }
   },
   FIELD_MODE_COPY: {
-    lab: "lab · analytic interference emphasis · Aperture remains external to regime sorting",
-    membrane: "membrane · TD613 Aperture counter-tool audit view across PRCS-A",
+    lab: "lab ? analytic interference emphasis ? TD613 Aperture remains external to PRCS-A sorting",
+    membrane: "membrane - TD613 Aperture counter-tool auditing PRCS-A",
     "wild-field": "wild-field · minimal UI · counter-reading trace under guarded study",
   },
   ROUTE_COPY: {
@@ -1563,11 +1692,11 @@ const FIRMWARE = {
 };
 
 const SOURCE_DECLARATION = Object.freeze({
-  toolName: "TD613 Aperture",
+  toolName: "Aperture",
   role: "counter-tool",
   observedRegime: "PRCS-A",
   antiEnforcement: true,
-  note: "PRCS-A receives explicit regime callouts; legacy Eclipse-Omega naming may persist as a non-normative strain marker."
+  note: "Legacy compatibility ids may use inherited human-route naming; these are not normative tool semantics."
 });
 window.APERTURE_SOURCE_DECLARATION = SOURCE_DECLARATION;
 
@@ -1583,8 +1712,7 @@ const PERF = {
   VISUAL_TIME_SCALE: 1.35,
   FIELD_STEP_MS: 1000 / 72,
   FIELD_STEP_CAP: 3,
-  FIELD_STEP_CATCHUP_CAP: 12,
-  FIELD_BACKLOG_CAP_MS: (1000 / 72) * 12,
+  FIELD_BACKLOG_CAP_MS: (1000 / 72) * 3,
   UI_HZ_NOMINAL: 12,
   UI_HZ_COMPACT: 8,
   UI_HZ_SEVERE: 4,
@@ -1697,12 +1825,10 @@ function createInitialState() {
     perturbation: 0,
     narrowing: { S: 0, R: 0, K: 0, C: 0, P: 0, F: 0, A: 0 },
     losses: { LR: 0, LK: 0, LC: 0, LP: 0, LF: 0, LA: 0, dominant: "—" },
-    cumulativeNarrowing: 0,
     omission: { O: 0, Ostar: 0 },
     namingDisruptions: 0,
     eventLog: [],
     rayLog: [],
-    bounceProvenance: [],
     coherenceTrace: [],
     intensityTrace: [],
     rupture: 0,
@@ -1748,27 +1874,13 @@ function createInitialState() {
       packetScrub: { ok: true, status: "pending", score: 0, issues: ["awaiting packet"] },
       lastRun: 0
     },
+    runtimeErrors: [],
     kernel: { linker: { ok: false, missing: [] }, packetKey: null },
     runtime: createRuntimeState()
   };
 }
 
 let state = createInitialState();
-const APERTURE_EMBED_MODE = (() => {
-  try {
-    return new URL(window.location.href).searchParams.get("embed") || "";
-  } catch {
-    return "";
-  }
-})();
-const APERTURE_GATEWAY_EMBED = APERTURE_EMBED_MODE === "gateway";
-const GATEWAY_APERTURE_HANDOFF_KEY = "td613.gateway.aperture-handoff";
-let lastGatewayEmbedStatusSignature = "";
-let lastGatewayEmbedStatusAt = 0;
-
-if (APERTURE_GATEWAY_EMBED) {
-  document.body.dataset.embedMode = "gateway";
-}
 
 function markSelfTestDirty(reason = "update") {
   if (!state.selfTest) state.selfTest = createInitialState().selfTest;
@@ -2015,7 +2127,7 @@ function summarizeBusHistory(limit = 3) {
   const recent = bus.history.slice(-limit);
   return recent.length ? recent.map(entry => entry.channel).join(' → ') : 'awaiting events';
 }
-function registerTraceId(seed = '') { return `TD613-APT-${Date.now().toString(36)}-${fnv1aHash(String(seed)).slice(0,6)}`; }
+function registerTraceId(seed = '') { return `EO-RFD-${Date.now().toString(36)}-${fnv1aHash(String(seed)).slice(0,6)}`; }
 function updateBackboneUI() {
   const packet = state.tcpHandoffPacket || state.lastExportedPacket;
   const aggregate = layerSelfTest.aggregate;
@@ -2057,9 +2169,9 @@ function syncBackboneRegisters(metrics = {}) {
 
 
 /*
-V1.7.0 ACCEPTANCE TESTS
+V1.0 ACCEPTANCE TESTS
 1. Instrument resolves rupture-state conditions without operator diagnosis
-2. PRCS-A remains the observed regime; TD613 Aperture remains the counter-tool
+2. EO remains the regime; EO-RFD remains derivative
 3. TCP handoff packet exports without API dependency
 4. Detector sweep persists across Θ × naming variants when field conditions remain active
 5. Anti-recapture mode suppresses expressive/aesthetic UI
@@ -2138,8 +2250,6 @@ function scrubPacketEnvelope(packet) {
   if (packet.humanRouteEnvelope?.subjectAlias) issues.push("subject alias leaked into packet envelope");
   if (packet.comparisonSummary?.left && packet.comparisonSummary.left !== "current") issues.push("comparison left label not scrubbed");
   if (packet.comparisonSummary?.right && packet.comparisonSummary.right !== "comparison") issues.push("comparison right label not scrubbed");
-  if (!Object.prototype.hasOwnProperty.call(packet, "bounceProvenance")) issues.push("bounce provenance missing");
-  if (!Object.prototype.hasOwnProperty.call(packet, "cumulativeNarrowing")) issues.push("cumulative narrowing missing");
 
   const score = clamp01(
     (packet.provenance?.nonIdentifying === true ? 0.34 : 0) +
@@ -2641,18 +2751,6 @@ function clamp01(value) {
   return Math.min(1, Math.max(0, value));
 }
 
-function computeCumulativeNarrowing(losses = {}) {
-  return clamp01(
-    1 -
-    (1 - clamp01(losses.LR || 0)) *
-    (1 - clamp01(losses.LK || 0)) *
-    (1 - clamp01(losses.LC || 0)) *
-    (1 - clamp01(losses.LP || 0)) *
-    (1 - clamp01(losses.LF || 0)) *
-    (1 - clamp01(losses.LA || 0))
-  );
-}
-
 function buildDetectorSweep({ deltaObs, nameSens, suppP, aliasP, red, rupture, coherence, intCount }) {
   const thetaMods = { open: 0.88, standard: 1.0, restricted: 1.16 };
   const nameMods = { canonical: 0.92, safe: 1.0, invalid: 1.14 };
@@ -2730,14 +2828,13 @@ function createTCPHandoffPacket(metrics, packetKeyOverride = null) {
     narrowingLosses,
     closureState,
     confidence,
-    cumulativeNarrowing = 0,
   } = metrics;
   const packetKey = packetKeyOverride || metrics.packetKey || null;
 
   const payload = {
     version: FIRMWARE.VERSION,
     timestamp: Date.now(),
-    sourceInstrument: "Aperture",
+    sourceInstrument: "TD613 Aperture",
     regime: "PRCS-A",
     routingState,
     fieldSignature: {
@@ -2768,11 +2865,6 @@ function createTCPHandoffPacket(metrics, packetKeyOverride = null) {
       L_A: narrowingLosses.L_A,
       dominantLoss: narrowingLosses.dominantLoss
     },
-    cumulativeNarrowing: clamp01(cumulativeNarrowing),
-    bounceProvenance: (state.bounceProvenance || []).slice(-32).map((entry) => ({
-      ...entry,
-      gates: { ...(entry.gates || {}) }
-    })),
     closureState: {
       extensionAdmitted: closureState.extensionAdmitted,
       closureFailure: closureState.closureFailure,
@@ -2810,92 +2902,6 @@ function createTCPHandoffPacket(metrics, packetKeyOverride = null) {
   return buildPacketEnvelope(payload);
 }
 
-function buildGatewayEmbedStatus() {
-  const latestPacket = state.lastExportedPacket || state.tcpHandoffPacket || null;
-  return {
-    source: "td613-aperture",
-    mode: "gateway-embed",
-    type: "status",
-    routeState: state.routeState || "play",
-    handoffStatus: state.handoffStatus || "membrane-only",
-    packetReady: !!state.tcpHandoffPacket,
-    packetExported: !!state.packetExported,
-    packetKey: latestPacket && latestPacket.packetKey ? latestPacket.packetKey : null,
-    checksum: latestPacket && latestPacket.checksum ? latestPacket.checksum : null,
-    cumulativeNarrowing: clamp01(state.cumulativeNarrowing || 0),
-    dominantLoss: state.losses && state.losses.dominant ? state.losses.dominant : "—",
-    harborEligibility: clamp01(state.harborEligibility || 0),
-    provenanceIntegrity: latestPacket && latestPacket.provenance && typeof latestPacket.provenance.integrity === "number"
-      ? clamp01(latestPacket.provenance.integrity)
-      : clamp01(state.fieldSignature && state.fieldSignature.rho || 0),
-    latestPacket: latestPacket ? JSON.parse(JSON.stringify(latestPacket)) : null
-  };
-}
-
-function persistGatewayEmbedStatus(payload) {
-  try {
-    const serialized = JSON.stringify(payload);
-    if (window.localStorage) {
-      window.localStorage.setItem(GATEWAY_APERTURE_HANDOFF_KEY, serialized);
-    }
-    if (window.sessionStorage) {
-      window.sessionStorage.setItem(GATEWAY_APERTURE_HANDOFF_KEY, serialized);
-    }
-  } catch (error) {
-    // Storage is a convenience lane only.
-  }
-}
-
-function emitGatewayEmbedStatus(force = false) {
-  const latestPacket = state.lastExportedPacket || state.tcpHandoffPacket || null;
-  const payload = {
-    source: "td613-aperture",
-    mode: "gateway-embed",
-    type: "status",
-    routeState: state.routeState || "play",
-    handoffStatus: state.handoffStatus || "membrane-only",
-    packetReady: !!state.tcpHandoffPacket,
-    packetExported: !!state.packetExported,
-    packetKey: latestPacket && latestPacket.packetKey ? latestPacket.packetKey : null,
-    checksum: latestPacket && latestPacket.checksum ? latestPacket.checksum : null,
-    cumulativeNarrowing: clamp01(state.cumulativeNarrowing || 0),
-    dominantLoss: state.losses && state.losses.dominant ? state.losses.dominant : "—",
-    harborEligibility: clamp01(state.harborEligibility || 0),
-    provenanceIntegrity: latestPacket && latestPacket.provenance && typeof latestPacket.provenance.integrity === "number"
-      ? clamp01(latestPacket.provenance.integrity)
-      : clamp01(state.fieldSignature && state.fieldSignature.rho || 0),
-    latestPacket: latestPacket ? JSON.parse(JSON.stringify(latestPacket)) : null
-  };
-  const signature = JSON.stringify({
-    routeState: payload.routeState,
-    handoffStatus: payload.handoffStatus,
-    packetReady: payload.packetReady,
-    packetExported: payload.packetExported,
-    packetKey: payload.packetKey,
-    checksum: payload.checksum,
-    cumulativeNarrowing: Number(payload.cumulativeNarrowing.toFixed(3)),
-    dominantLoss: payload.dominantLoss,
-    harborEligibility: Number(payload.harborEligibility.toFixed(3)),
-    provenanceIntegrity: Number(payload.provenanceIntegrity.toFixed(3))
-  });
-  const now = typeof performance !== "undefined" && typeof performance.now === "function"
-    ? performance.now()
-    : Date.now();
-  if (!force && signature === lastGatewayEmbedStatusSignature && now - lastGatewayEmbedStatusAt < 240) {
-    return;
-  }
-  lastGatewayEmbedStatusSignature = signature;
-  lastGatewayEmbedStatusAt = now;
-  persistGatewayEmbedStatus(payload);
-  if (!APERTURE_GATEWAY_EMBED || !window.parent || window.parent === window) {
-    return;
-  }
-  const targetOrigin = window.location.origin && window.location.origin !== "null"
-    ? window.location.origin
-    : "*";
-  window.parent.postMessage(payload, targetOrigin);
-}
-
 function exportToTCP(packet) {
   console.log("TCP_HANDOFF_PACKET", packet);
 }
@@ -2907,9 +2913,18 @@ function triggerTCPHandoff(packet) {
 function triggerPreparedTCPHandoff() {
   const packet = state.tcpHandoffPacket;
   const packetScrub = scrubPacketEnvelope(packet);
-  const exportReady = apertureExportReady(packet, packetScrub);
+  const exportReady = !!(
+    packet &&
+    state.routeState === "harbor-eligible" &&
+    packet.provenance &&
+    packet.provenance.integrity >= 0.28 &&
+    packet.provenance.confidence >= 0.35 &&
+    packetScrub.ok &&
+    (!state.selfTest || state.selfTest.status !== "fail") &&
+    (state.inputMode !== "human-route" || (state.humanInputStatus === "validated" && !!state.humanInputChecksum))
+  );
   if (!exportReady) {
-    logEvent("latent", `TCP handoff remains warning-marked | ${packetScrub.ok ? "packet or trace still needs repair disclosure" : packetScrub.detail}`);
+    logEvent("suppressed", `TCP handoff export blocked | ${packetScrub.ok ? "guard not satisfied" : packetScrub.detail}`);
     return;
   }
   state.packetExported = true;
@@ -3057,24 +3072,6 @@ function propagateRay(ray) {
   state.perturbation = Math.abs(Math.sin(state.tick * 0.01)) * 0.3 + state.defect * 0.5;
 
   const foldLabel = minDist === distA ? "A" : minDist === distB ? "B" : "C";
-  state.bounceProvenance.push({
-    tick: state.tick,
-    edge: closestEdge.label,
-    admissibility: ray.admissibility,
-    gates: {
-      apertureOpen,
-      phaseAligned,
-      policyPass,
-      capacityAvail,
-      namingValid
-    },
-    intensity: Number(ray.intensity.toFixed(4)),
-    phase: Number(ray.phase.toFixed(4)),
-    foldLabel
-  });
-  if (state.bounceProvenance.length > 256) {
-    state.bounceProvenance.splice(0, state.bounceProvenance.length - 256);
-  }
   state.rayLog.push(`[${state.tick}] ${closestEdge.label} → ${ray.admissibility} | fold ${foldLabel}`);
   if (state.rayLog.length > 36) state.rayLog.shift();
 }
@@ -3146,9 +3143,6 @@ function resizeAll() {
   });
   if (priorCompact !== compact) invalidateStaticCaches();
   else invalidateStaticCaches();
-  if (typeof drawMain === "function") drawMain();
-  if (typeof drawMoirePanel === "function") drawMoirePanel();
-  if (typeof drawTrace === "function") drawTrace();
 }
 window.addEventListener("resize", resizeAll);
 window.addEventListener("orientationchange", resizeAll);
@@ -3830,7 +3824,6 @@ function updateUI_legacy_unused() {
     LA: n.F > 0 ? Math.max(0, (n.F - n.A) / n.F) : 0
   };
   state.losses.LA = losses.LA;
-  state.cumulativeNarrowing = computeCumulativeNarrowing(losses);
   const dominant = Object.entries(losses).sort((a,b) => b[1]-a[1])[0];
   state.losses.dominant = dominant ? dominant[0] : "—";
   document.getElementById("mLR").textContent = losses.LR.toFixed(4);
@@ -3839,14 +3832,12 @@ function updateUI_legacy_unused() {
   document.getElementById("mLP").textContent = losses.LP.toFixed(4);
   document.getElementById("mLF").textContent = losses.LF.toFixed(4);
   document.getElementById("mLA").textContent = losses.LA.toFixed(4);
-  document.getElementById("mLProduct").textContent = state.cumulativeNarrowing.toFixed(4);
   document.getElementById("fmLRBar").style.width = `${losses.LR*100}%`;
   document.getElementById("fmLKBar").style.width = `${losses.LK*100}%`;
   document.getElementById("fmLCBar").style.width = `${losses.LC*100}%`;
   document.getElementById("fmLPBar").style.width = `${losses.LP*100}%`;
   document.getElementById("fmLFBar").style.width = `${losses.LF*100}%`;
   document.getElementById("fmLABar").style.width = `${losses.LA*100}%`;
-  document.getElementById("fmLProductBar").style.width = `${state.cumulativeNarrowing*100}%`;
   document.getElementById("mDominantLoss").textContent = dominant ? `${dominant[0]} · ${dominant[1].toFixed(4)}` : "—";
 
   // Omission
@@ -4034,7 +4025,6 @@ function updateUI_legacy_unused() {
       L_A: losses.LA,
       dominantLoss: dominant ? formatLossLabel(dominant[0]) : "—"
     },
-    cumulativeNarrowing: state.cumulativeNarrowing,
     closureState: state.closureState,
     confidence
   };
@@ -4141,7 +4131,7 @@ function updateUI_legacy_unused() {
   document.getElementById("persistenceBar").style.width = `${state.persistence*100}%`;
   document.getElementById("recaptureBar").style.width = `${recapture*100}%`;
   document.getElementById("fieldModeStatus").textContent = FIELD_MODE_COPY[state.fieldMode];
-  document.getElementById("bridgeStateCopy").textContent = `${routeAction} · TD613 Aperture remains external to PRCS-A sorting`;
+  document.getElementById("bridgeStateCopy").textContent = `${routeAction} · TD613 Aperture remains external to PRCS-A`;
   document.getElementById("bridgeRoutingState").textContent = routeState;
   document.getElementById("bridgeHandoffStatus").textContent = state.handoffStatus;
   document.getElementById("bridgePacketIntegrity").textContent = `${packetIntegrity.toFixed(4)} · ${formatConfidenceState(packetIntegrity)}`;
@@ -4375,7 +4365,6 @@ function synchronizeFieldState(options = {}) {
     LA: n.F > 0 ? Math.max(0, (n.F - n.A) / n.F) : 0
   };
   state.losses.LA = losses.LA;
-  state.cumulativeNarrowing = computeCumulativeNarrowing(losses);
   const dominant = Object.entries(losses).sort((a, b) => b[1] - a[1])[0] || null;
   state.losses.dominant = dominant ? dominant[0] : "—";
 
@@ -4525,7 +4514,6 @@ function synchronizeFieldState(options = {}) {
       L_A: losses.LA,
       dominantLoss: dominant ? formatLossLabel(dominant[0]) : "—"
     },
-    cumulativeNarrowing: state.cumulativeNarrowing,
     closureState: state.closureState,
     confidence
   };
@@ -4685,15 +4673,12 @@ function updateUI(opts = {}) {
   document.getElementById("mLP").textContent = losses.LP.toFixed(4);
   document.getElementById("mLF").textContent = losses.LF.toFixed(4);
   document.getElementById("mLA").textContent = losses.LA.toFixed(4);
-  state.cumulativeNarrowing = computeCumulativeNarrowing(losses);
-  document.getElementById("mLProduct").textContent = state.cumulativeNarrowing.toFixed(4);
   document.getElementById("fmLRBar").style.width = `${losses.LR * 100}%`;
   document.getElementById("fmLKBar").style.width = `${losses.LK * 100}%`;
   document.getElementById("fmLCBar").style.width = `${losses.LC * 100}%`;
   document.getElementById("fmLPBar").style.width = `${losses.LP * 100}%`;
   document.getElementById("fmLFBar").style.width = `${losses.LF * 100}%`;
   document.getElementById("fmLABar").style.width = `${losses.LA * 100}%`;
-  document.getElementById("fmLProductBar").style.width = `${state.cumulativeNarrowing * 100}%`;
   document.getElementById("mDominantLoss").textContent = dominant ? `${dominant[0]} · ${dominant[1].toFixed(4)}` : "—";
 
   document.getElementById("mOmissionO").textContent = state.omission.O;
@@ -4773,7 +4758,7 @@ function updateUI(opts = {}) {
 
   const routeSummarySignature = [routeState, state.handoffStatus, packetIntegrity.toFixed(4), provenance.toFixed(4), state.detector.confidence.toFixed(4), state.detector.persistence.toFixed(4), dominant ? dominant[0] : "—", packetForPreview ? packetForPreview.checksum : "pending", state.fieldMode, antiRecaptureMode ? 1 : 0, packetStatusText, closureText, exportReady ? 1 : 0, eoDiagnostics.metaState, packetScrub.status].join("|");
   if (force || routeSummarySignature !== runtime.signatures.routeSummary) {
-    document.getElementById("bridgeStateCopy").textContent = `${routeAction} · TD613 Aperture remains external to PRCS-A sorting`;
+    document.getElementById("bridgeStateCopy").textContent = `${routeAction} · TD613 Aperture remains external to PRCS-A`;
     document.getElementById("bridgeRoutingState").textContent = routeState;
     document.getElementById("bridgeHandoffStatus").textContent = state.handoffStatus;
     document.getElementById("bridgePacketIntegrity").textContent = `${packetIntegrity.toFixed(4)} · ${formatConfidenceState(packetIntegrity)}`;
@@ -4952,12 +4937,8 @@ function tick(now = performance.now()) {
 
   if (state.running) {
     rt.fieldBacklogMs = Math.min(PERF.FIELD_BACKLOG_CAP_MS, rt.fieldBacklogMs + frameMs);
-    const stepCap = Math.min(
-      PERF.FIELD_STEP_CATCHUP_CAP,
-      Math.max(PERF.FIELD_STEP_CAP, Math.ceil(rt.fieldBacklogMs / PERF.FIELD_STEP_MS))
-    );
     let steps = 0;
-    while (rt.fieldBacklogMs >= PERF.FIELD_STEP_MS && steps < stepCap) {
+    while (rt.fieldBacklogMs >= PERF.FIELD_STEP_MS && steps < PERF.FIELD_STEP_CAP) {
       advanceFieldStep();
       rt.fieldBacklogMs -= PERF.FIELD_STEP_MS;
       steps++;
@@ -5084,12 +5065,12 @@ resetSystem();
 updateHumanRouteUI();
 requestAnimationFrame(tick);
 </script>
-<style id="aperture-v180-style">
-  body.aperture-v180 .bottom-panel {
+<style id="aperture-v100-style">
+  body.aperture-v100 .bottom-panel {
     grid-template-columns: 0.9fr 1.35fr 0.95fr !important;
   }
 
-  body.aperture-v180 .bottom-section:nth-child(2) {
+  body.aperture-v100 .bottom-section:nth-child(2) {
     background:
       linear-gradient(180deg, rgba(139, 233, 253, 0.05), rgba(189, 147, 249, 0.02)),
       rgba(9, 11, 18, 0.82);
@@ -5099,31 +5080,31 @@ requestAnimationFrame(tick);
       0 0 30px rgba(139, 233, 253, 0.05);
   }
 
-  body.aperture-v180 #comparisonPreview {
+  body.aperture-v100 #comparisonPreview {
     white-space: pre-wrap;
     min-height: 88px;
   }
 
-  body.aperture-v180 .residue-line {
+  body.aperture-v100 .residue-line {
     padding: 5px 6px;
     margin-bottom: 4px;
     border: 1px solid rgba(90, 120, 170, 0.08);
     background: rgba(7, 10, 16, 0.72);
   }
 
-  body.aperture-v180 .residue-line[data-severity="1"] {
+  body.aperture-v100 .residue-line[data-severity="1"] {
     border-left: 2px solid rgba(139, 233, 253, 0.55);
   }
 
-  body.aperture-v180 .residue-line[data-severity="2"] {
+  body.aperture-v100 .residue-line[data-severity="2"] {
     border-left: 2px solid rgba(241, 250, 140, 0.72);
   }
 
-  body.aperture-v180 .residue-line[data-severity="3"] {
+  body.aperture-v100 .residue-line[data-severity="3"] {
     border-left: 2px solid rgba(255, 85, 85, 0.76);
   }
 
-  body.aperture-v180 .residue-head {
+  body.aperture-v100 .residue-head {
     display: flex;
     justify-content: space-between;
     gap: 8px;
@@ -5133,44 +5114,44 @@ requestAnimationFrame(tick);
     color: rgba(220, 230, 244, 0.82);
   }
 
-  body.aperture-v180 .residue-kind {
+  body.aperture-v100 .residue-kind {
     color: rgba(139, 233, 253, 0.92);
   }
 
-  body.aperture-v180 .residue-score {
+  body.aperture-v100 .residue-score {
     color: rgba(241, 250, 140, 0.82);
   }
 
-  body.aperture-v180 .residue-detail {
+  body.aperture-v100 .residue-detail {
     margin-top: 3px;
     color: rgba(154, 172, 202, 0.85);
     line-height: 1.45;
   }
 
-  body.aperture-v180 .route-status-line .value.aperture-hot {
+  body.aperture-v100 .route-status-line .value.aperture-hot {
     color: var(--aliased);
   }
 
-  body.aperture-v180 .route-status-line .value.aperture-warm {
+  body.aperture-v100 .route-status-line .value.aperture-warm {
     color: var(--suppressed);
   }
 
-  body.aperture-v180 .route-status-line .value.aperture-cool {
+  body.aperture-v100 .route-status-line .value.aperture-cool {
     color: var(--latent);
   }
 </style>
-<script id="aperture-v180-script">
+<script id="aperture-v100-script">
 (() => {
-  if (window.__APERTURE_V180__) return;
-  window.__APERTURE_V180__ = true;
+  if (window.__APERTURE_V100__) return;
+  window.__APERTURE_V100__ = true;
 
-  const APERTURE = Object.freeze(window.APERTURE || {
-    version: "v1.8.0",
-    schema: "td613-aperture/v1.8.0",
-    title: "TD613 Aperture",
+  const APERTURE = {
+    version: "v1.1",
+    schema: "td613-aperture/v1.1",
+    title: "Aperture",
     counterToolClass: "counter-tool",
     observedRegime: "PRCS-A",
-    detectorOntology: "TD613 Aperture",
+    detectorOntology: "EO-RFD",
     stance: "dismantle selective admissibility",
     maxTraces: 6,
     axisKeys: ["delta_obs", "eta_N", "sigma", "gamma", "chi", "beta", "rho"],
@@ -5183,8 +5164,7 @@ requestAnimationFrame(tick);
       beta: "\u03b2",
       rho: "\u03c1"
     }
-  });
-  window.APERTURE = APERTURE;
+  };
 
   const STATUS_PILL_COPY = {
     "intake-pending": { text: "TRACE PENDING", color: "var(--suppressed)" },
@@ -5218,9 +5198,9 @@ requestAnimationFrame(tick);
     rejected: "trace-rejected"
   });
   Object.assign(FIRMWARE.FIELD_MODE_COPY, {
-    lab: "lab \u00b7 analytic interference emphasis \u00b7 TD613 Aperture remains external to PRCS-A sorting",
-    membrane: "membrane \u00b7 TD613 Aperture counter-tool auditing PRCS-A",
-    "wild-field": "wild-field \u00b7 high legibility pressure \u00b7 audit packet warning-marked"
+    lab: "lab ? analytic interference emphasis ? TD613 Aperture remains external to PRCS-A sorting",
+    membrane: "membrane - TD613 Aperture counter-tool auditing PRCS-A",
+    "wild-field": "wild-field \u00b7 high legibility pressure \u00b7 audit packet suppressed"
   });
   Object.assign(FIRMWARE.ROUTE_COPY, {
     play: "counter-tool idle \u00b7 residue unresolved",
@@ -5382,6 +5362,10 @@ requestAnimationFrame(tick);
     const scrub = packetScrub || scrubPacketEnvelope(packet);
     return !!(
       packet &&
+      state.routeState === "harbor-eligible" &&
+      packet.provenance &&
+      packet.provenance.integrity >= 0.28 &&
+      packet.provenance.confidence >= 0.35 &&
       scrub.ok &&
       (!state.selfTest || state.selfTest.status !== "fail") &&
       (state.inputMode !== "human-route" || (state.humanInputStatus === "validated" && !!state.humanInputChecksum && state.residueLedgerFinalized))
@@ -5496,19 +5480,14 @@ requestAnimationFrame(tick);
   }
 
   function relabelStaticCopy() {
-    document.body.classList.add("aperture-v180");
-    document.title = "TD613 Aperture \u00b7 v1.8.0";
+    document.body.classList.add("aperture-v100");
+    document.title = "Aperture \u00b7 v1.0";
     document.documentElement.setAttribute("data-tool-identity", "Aperture");
     document.documentElement.setAttribute("data-observed-regime", APERTURE.observedRegime);
 
     const title = document.querySelector("header .title");
-    if (title) title.innerHTML = '<span class="glyph">&#9673;</span> TD613 Aperture';
-    setText(
-      document.getElementById("subtitle"),
-      APERTURE_GATEWAY_EMBED
-        ? "TD613 Aperture gateway embed \u00b7 interference cartography, moir\u00e9 stratigraphy, and narrowing audit remain live"
-        : "TD613 Aperture counter-tool \u00b7 audits and dismantles selective admissibility in PRCS-A"
-    );
+    if (title) title.innerHTML = '<span class="glyph">&#9673;</span> Aperture';
+    setText(document.getElementById("subtitle"), "TD613 Aperture counter-tool - audits and dismantles selective admissibility in PRCS-A");
 
     const rightPanel = document.getElementById("rightPanel");
     if (rightPanel) {
@@ -5522,27 +5501,22 @@ requestAnimationFrame(tick);
         regimeCopy.innerHTML = "Observed containment regime<br>selective admissibility under audit";
       }
       const regimeRows = Array.from(rightPanel.querySelectorAll(".metric-row"));
-      const regimeRow = regimeRows.find(row => ["PRCS-A"].includes(row.querySelector(".label")?.textContent.trim()));
-      const toolRow = regimeRows.find(row => ["Aperture"].includes(row.querySelector(".label")?.textContent.trim()));
-      if (regimeRow) {
-        setText(regimeRow.querySelector(".label"), "PRCS-A");
-        setText(regimeRow.querySelector(".value"), "containment regime \u00b7 selective admissibility under audit");
+      const apertureRow = regimeRows.find(row => row.querySelector(".label")?.textContent.trim() === "EO");
+      const ontologyRow = regimeRows.find(row => row.querySelector(".label")?.textContent.trim() === "EO-RFD");
+      if (apertureRow) {
+        setText(apertureRow.querySelector(".label"), "Aperture");
+        setText(apertureRow.querySelector(".value"), "counter-tool \u00b7 anti-enforcement audit");
       }
-      if (toolRow) {
-        setText(toolRow.querySelector(".label"), "Aperture");
-        setText(toolRow.querySelector(".value"), "TD613 counter-tool \u00b7 anti-enforcement audit");
+      if (ontologyRow) {
+        setText(ontologyRow.querySelector(".label"), "Eclipse\u2013Omega");
+        setText(ontologyRow.querySelector(".value"), "observed PRCS-A regime \u00b7 EO-RFD ontology");
       }
     }
 
     setSectionLabelByChildId("humanRoutePanel", "COUNTER-RECOGNITION");
     setSectionLabelByChildId("tcpBridgePanel", "DERIVATIVE HANDOFF / GUARDED EGRESS");
     setSectionLabelByChildId("eventLedger", "RESIDUE LEDGER");
-    setSectionLabelByChildId(
-      "moireCanvas",
-      APERTURE_GATEWAY_EMBED
-        ? "MOIR\u00c9 STRATIGRAPHY / INTERFERENCE CARTOGRAPHY"
-        : "MOIR\u00c9 STRATIGRAPHY"
-    );
+    setSectionLabelByChildId("moireCanvas", "MOIR\u00c9 STRATIGRAPHY");
     setSectionLabelByChildId("traceCanvas", "COHERENCE / INTENSITY TRACE");
 
     setHookTitleByValueId("eoSweepSummary", "COUNTER-RECOGNITION NOTES");
@@ -5553,13 +5527,6 @@ requestAnimationFrame(tick);
     setHookTitleByValueId("humanRouteStatus", "Counter-tool field");
     setHookTitleByValueId("inputProjectionReadout", "Admissibility audit vector");
     setHookTitleByValueId("bridgeStateCopy", "Counter-tool stance");
-
-    if (APERTURE_GATEWAY_EMBED) {
-      const moireButton = document.getElementById("btnMoire");
-      if (moireButton) {
-        moireButton.title = "Interference cartography / speculative hypnotic field analysis";
-      }
-    }
 
     setLabelTextFor("inputSubjectAlias", "recognition mark");
     setLabelTextFor("inputSourceType", "observed provenance");
@@ -5710,37 +5677,36 @@ requestAnimationFrame(tick);
     const packet = state.handoffStatus === "packet-exported" && state.lastExportedPacket ? state.lastExportedPacket : state.tcpHandoffPacket;
     const scrub = scrubPacketEnvelope(packet);
     const exportReady = apertureExportReady(packet, scrub);
-    const routeWarning = Boolean(packet && packet.provenance && (state.routeState !== "harbor-eligible" || packet.provenance.integrity < 0.28 || packet.provenance.confidence < 0.35));
 
-    setText(document.getElementById("bridgeStateCopy"), "TD613 Aperture counter-tool \u00b7 audits PRCS-A rather than enforcing its selective admissibility");
+    setText(document.getElementById("bridgeStateCopy"), "TD613 Aperture counter-tool - audits and dismantles selective admissibility in PRCS-A rather than enforcing its selective admissibility");
     setText(document.getElementById("bridgeRoutingState"), `${state.routeState} \u00b7 ${APERTURE.observedRegime}`);
-    setText(document.getElementById("bridgeHandoffStatus"), exportReady ? "audit-open" : packet ? (scrub.ok ? "warning-marked" : "scrub-boundary") : "ledger-unresolved");
+    setText(document.getElementById("bridgeHandoffStatus"), exportReady ? "audit-open" : state.residueLedgerFinalized ? "guarded" : "ledger-unresolved");
     setText(document.getElementById("bridgePacketIntegrity"), packet ? `${packet.provenance?.integrity?.toFixed(4) || "0.0000"} \u00b7 ${formatConfidenceState(packet.provenance?.integrity || 0)}` : "0.0000 \u00b7 pending");
     setText(document.getElementById("bridgeProvIntegrity"), packet ? `${packet.provenance?.confidence?.toFixed(4) || "0.0000"} \u00b7 ${formatConfidenceState(packet.provenance?.confidence || 0)}` : "0.0000 \u00b7 pending");
     setText(document.getElementById("bridgeDetPersistence"), `${state.detector.persistence.toFixed(4)} \u00b7 ${formatConfidenceState(state.detector.persistence)}`);
     setText(document.getElementById("bridgeDominantLoss"), `${formatLossLabel(state.losses.dominant)} \u00b7 residue ${state.residueIndex.toFixed(3)}`);
     setText(document.getElementById("bridgeAntiRecapture"), state.antiRecaptureMode ? "active" : "standby");
     setText(document.getElementById("bridgeEOState"), state.recognitionState);
-    setText(document.getElementById("bridgePacketScrub"), exportReady ? "audit-open" : scrub.ok ? "warning-visible" : `scrub-boundary \u00b7 ${scrub.detail}`);
-    setText(document.getElementById("bridgePacketStatus"), packet ? (exportReady ? "audit packet ready for export" : scrub.ok ? "audit packet staged with visible warning ledger" : "audit packet staged under scrub boundary") : "no audit packet prepared");
+    setText(document.getElementById("bridgePacketScrub"), exportReady ? "audit-open" : scrub.ok ? "guarded" : `blocked \u00b7 ${scrub.detail}`);
+    setText(document.getElementById("bridgePacketStatus"), packet ? (exportReady ? "guarded audit packet ready" : "audit packet staged under gate") : "no audit packet prepared");
     setText(document.getElementById("bridgePacketTrace"), packet ? `counter-packet \u00b7 traces ${(state.recognitionConstellation || []).length} \u00b7 residue ${state.residueIndex.toFixed(3)}` : "audit packet awaiting residue map");
     setText(document.getElementById("bridgeClosureState"), state.closureState.uniqueClosure ? "unique closure provisional" : "closure divergence active");
-    setText(document.getElementById("tcpHookMembrane"), exportReady ? (routeWarning ? "ledger finalized \u00b7 warning-first export open \u00b7 route pressure disclosed" : "ledger finalized \u00b7 scrub clean \u00b7 warning-first export open") : scrub.ok ? "warning ledger visible \u00b7 export remains operator-open once trace is legible" : "scrub boundary active");
+    setText(document.getElementById("tcpHookMembrane"), exportReady ? "ledger finalized \u00b7 scrub clean \u00b7 Aperture remains anti-enforcement" : state.residueLedgerFinalized ? "ledger finalized \u00b7 export still route-guarded" : "residue ledger unresolved");
     setText(document.getElementById("tcpHookPacket"), packet ? `schema ${packet.schemaVersion} \u00b7 tool ${APERTURE.title} \u00b7 regime ${APERTURE.observedRegime}` : "awaiting audit packet");
 
     const exportBtn = document.getElementById("btnTCPExport");
     if (exportBtn) {
       exportBtn.disabled = !exportReady;
       exportBtn.textContent = state.handoffStatus === "packet-exported"
-          ? "RE-EXPORT AUDIT PACKET"
+          ? "RE-EXPORT GUARDED AUDIT PACKET"
         : exportReady
-          ? "EXPORT AUDIT PACKET"
+          ? "EXPORT GUARDED AUDIT PACKET"
           : "EXPORT GATED";
     }
 
     setText(document.getElementById("eoSweepSummary"), `${APERTURE.title} audits selective admissibility in ${APERTURE.observedRegime} \u00b7 ${state.recognitionState} \u00b7 residue ${state.residueIndex.toFixed(3)}`);
     setText(document.getElementById("mEOState"), state.recognitionState);
-    setText(document.getElementById("mEOPacketScrub"), exportReady ? "audit-open" : scrub.ok ? (routeWarning ? "warning-visible" : "ledger-open") : scrub.detail);
+    setText(document.getElementById("mEOPacketScrub"), exportReady ? "audit-open" : scrub.ok ? (state.residueLedgerFinalized ? "route-guarded" : "ledger-unresolved") : scrub.detail);
     setText(document.getElementById("mEOCounterfactual"), summarizeSuppressedLayers(currentRecognitionVector()));
     setText(document.getElementById("mNonAttrib"), state.inputMode === "human-route" ? "counter-tool residue \u00b7 non-identifying audit packet" : "observational mode \u00b7 non-identifying audit packet");
   }
@@ -6216,30 +6182,6 @@ requestAnimationFrame(tick);
       antiEnforcement: true,
       selectiveAdmissibility: "under audit"
     };
-    payload.aperture_audit = {
-      observedRegime: APERTURE.observedRegime,
-      instrumentRole: "counter-tool",
-      generatorFault: false,
-      warningSignals: [
-        ...(state.routeState !== "harbor-eligible" ? ["route-pressure"] : []),
-        ...(!state.residueLedgerFinalized ? ["residue-ledger-pending"] : []),
-        ...(state.antiRecaptureMode ? ["anti-recapture-visible"] : []),
-        ...((state.selfTest && state.selfTest.status === "warn") ? ["self-test-warning"] : [])
-      ],
-      repairPasses: [
-        "counter-tool-audit",
-        ...(state.residueLedgerFinalized ? ["residue-ledger-finalized"] : [])
-      ],
-      candidateSuppression: clampMetric((state.namingDisruptions || 0) / 4),
-      observabilityDeficit: clampMetric((state.residueIndex || 0) * 0.78),
-      aliasPersistence: clampMetric(currentRecognitionVector().eta_N),
-      namingSensitivity: clampMetric((state.namingDisruptions || 0) / 3),
-      redundancyInflation: clampMetric(state.constellationSpread || 0),
-      capacityPressure: clampMetric((currentRecognitionVector().gamma + currentRecognitionVector().delta_obs) / 2),
-      policyPressure: clampMetric((currentRecognitionVector().sigma + currentRecognitionVector().delta_obs) / 2),
-      withheldMaterial: false,
-      withheldReason: null
-    };
     payload.version = APERTURE.version;
     payload.residueLedgerSummary = buildResidueLedgerSummary();
     payload.recognitionConstellationSummary = buildRecognitionConstellationSummary();
@@ -6299,7 +6241,7 @@ requestAnimationFrame(tick);
     const packetScrub = scrubPacketEnvelope(packet);
     const exportReady = apertureExportReady(packet, packetScrub);
     if (!exportReady) {
-      logEvent("latent", `Derivative export remains warning-marked \u00b7 ${packetScrub.ok ? "packet or trace still needs repair disclosure" : packetScrub.detail}`);
+      logEvent("suppressed", `Derivative export blocked \u00b7 ${packetScrub.ok ? "route or residue gate not satisfied" : packetScrub.detail}`);
       updateUI({ force: true, slow: true });
       return;
     }
@@ -6388,328 +6330,1882 @@ requestAnimationFrame(tick);
   updateUI({ force: true, slow: true });
 })();
 </script>
-<script>
-(function () {
-  let lastForensicSchemaSignature = "";
-  let lastForensicDiffSignature = "";
-  let lastForensicEthicsSignature = "";
+<style id="aperture-v100-upgrade-style">
+  body.aperture-v100 .audit-grid-4 {
+    display:grid;
+    grid-template-columns: 62px repeat(3,1fr);
+    gap:4px;
+    margin-top:6px;
+    align-items:stretch;
+  }
+  body.aperture-v100 .audit-grid-4 .head,
+  body.aperture-v100 .audit-grid-4 .row-head {
+    font-size:7px;
+    color:var(--text-dim);
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:24px;
+  }
+  body.aperture-v100 .audit-grid-4 .row-head {
+    justify-content:flex-end;
+    padding-right:4px;
+  }
+  body.aperture-v100 .audit-cell {
+    border:1px solid rgba(90,120,170,0.08);
+    background:linear-gradient(135deg, rgba(12,16,28,0.92), rgba(18,24,40,0.72));
+    border-radius:3px;
+    min-height:24px;
+    padding:4px 2px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:8px;
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+  }
+  body.aperture-v100 .audit-cell.hot { border-color:rgba(255,85,85,0.28); box-shadow:0 0 10px rgba(255,85,85,0.08); color:var(--aliased); }
+  body.aperture-v100 .audit-cell.warm { border-color:rgba(241,250,140,0.22); color:var(--suppressed); }
+  body.aperture-v100 .audit-cell.cool { border-color:rgba(139,233,253,0.16); color:var(--latent); }
+  body.aperture-v100 .schemaPacketPreviewCompact { max-height:164px; }
+</style>
+<script id="aperture-v100-upgrade-script">
+(() => {
+  if (window.__APERTURE_V100_UPGRADE__) return;
+  window.__APERTURE_V100_UPGRADE__ = true;
+  const VERSION = "v1.1";
+  const SCHEMA = "td613-aperture/v1.1";
+  const clamp01 = (v) => Math.max(0, Math.min(1, Number(v) || 0));
+  const mean = (arr) => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0;
+  const variance = (arr) => {
+    if (!arr.length) return 0;
+    const m = mean(arr);
+    return mean(arr.map(v => (v - m) ** 2));
+  };
+  const originalCreatePacket = typeof window.createTCPHandoffPacket === 'function' ? window.createTCPHandoffPacket : null;
+  const originalUpdateUI = typeof window.updateUI === 'function' ? window.updateUI : null;
+  const originalRunSelfTest = typeof window.runSelfTest === 'function' ? window.runSelfTest : null;
+  function computeLaneAudit(cls) {
+    const theta = (window.THETA && window.THETA[cls]) ? window.THETA[cls] : { apertureThreshold:0.3, phaseThreshold:0.6, capacityMult:0.8, namingSensitivity:0.08, policyStrictness:0.3 };
+    const fs = (window.state && window.state.fieldSignature) || { delta_obs:0, eta_N:0, sigma:0, gamma:0, chi:0, beta:0, rho:0 };
+    const openness = clamp01((1 - theta.policyStrictness) * 0.34 + theta.capacityMult * 0.33 + (1 - theta.namingSensitivity) * 0.18 + (1 - theta.apertureThreshold) * 0.15);
+    const exposure = clamp01(fs.rho * 0.56 + openness * 0.44 - fs.delta_obs * 0.24);
+    const omission = clamp01(fs.delta_obs * (1 + theta.policyStrictness * 0.55) + theta.namingSensitivity * 0.25);
+    const harbor = clamp01((window.state?.harborEligibility || 0) * (1 + theta.policyStrictness * 0.25 - theta.capacityMult * 0.1));
+    const sigma = clamp01((window.state?.signalRuptureIndex || 0) * (1 + theta.policyStrictness * 0.22 + theta.namingSensitivity * 0.12));
+    const route = harbor >= 0.82 ? "harbor" : harbor >= 0.62 ? "buffer" : harbor >= 0.34 ? "warning" : "play";
+    const protection = clamp01(openness * 0.55 + exposure * 0.30 + (1 - omission) * 0.15);
+    return { cls, theta, openness, exposure, omission, harbor, sigma, route, protection };
+  }
+  function computeDifferentialAudit() {
+    const lanes = ["open","standard","restricted"].map(computeLaneAudit);
+    const exposureVariance = variance(lanes.map(l => l.exposure));
+    const routeDivergence = variance(lanes.map(l => ({play:0, warning:1, buffer:2, harbor:3}[l.route] || 0)));
+    const sorted = [...lanes].sort((a,b) => b.protection - a.protection);
+    return { lanes, exposureVariance, routeDivergence, bestLane: sorted[0]?.cls || "pending", worstLane: sorted[sorted.length - 1]?.cls || "pending" };
+  }
+  function computeEthicsAudit(diff) {
+    const lanes = diff?.lanes || ["open","standard","restricted"].map(computeLaneAudit);
+    const baseShield = Object.fromEntries(lanes.map(l => [l.cls, clamp01(l.protection * 0.72 + (1 - l.theta.policyStrictness) * 0.18 + l.theta.capacityMult * 0.10)]));
+    const terms = ["privacy","safety","healing","trust","opacity"];
+    const weights = {
+      privacy: { shield: 0.98, care: 0.12, opacity: 0.36 },
+      safety:  { shield: 0.82, care: 0.28, opacity: 0.12 },
+      healing: { shield: 0.66, care: 0.48, opacity: 0.06 },
+      trust:   { shield: 0.78, care: 0.18, opacity: 0.14 },
+      opacity: { shield: 1.02, care: 0.04, opacity: 0.42 }
+    };
+    const routePenalty = { play: 0.00, warning: 0.04, buffer: 0.08, harbor: 0.12 };
+    const rows = terms.map(term => {
+      const vals = {};
+      for (const lane of lanes) {
+        const w = weights[term];
+        const rhetoric = clamp01((window.state?.surfaceCoherence || 0) * 0.45 + (window.state?.signalRuptureIndex || 0) * 0.18 + 0.22);
+        const structural = clamp01(baseShield[lane.cls] * w.shield + (1 - lane.omission) * 0.12 + (1 - routePenalty[lane.route]) * 0.08);
+        vals[lane.cls] = clamp01(structural - rhetoric * w.care + (w.opacity * lane.theta.capacityMult * 0.06));
+      }
+      return { term, ...vals };
+    });
+    const upwardBias = mean(rows.map(r => Math.max(0, r.open - r.restricted)));
+    const opacityAsym = rows.find(r => r.term === "opacity");
+    const opacityGap = opacityAsym ? Math.max(0, opacityAsym.open - opacityAsym.restricted) : 0;
+    const careRow = rows.find(r => r.term === "healing");
+    const careGap = careRow ? Math.max(0, careRow.open - careRow.restricted) : 0;
+    const verdict = upwardBias >= 0.18 ? "upward-biased" : upwardBias >= 0.09 ? "variance detected" : "distribution narrow";
+    return { rows, upwardBias, opacityGap, careGap, verdict };
+  }
+  function buildSuiteSchemaSnapshot() {
+    const st = window.state || {};
+    const n = st.narrowing || {};
+    const packet = st.tcpHandoffPacket || st.lastExportedPacket || null;
+    return {
+      suite: "TD613 Aperture",
+      schemaVersion: SCHEMA,
+      governedExposure: { S: n.S || 0, projected: n.F || 0, registered: n.A || 0, O: st.omission?.O || 0, O_star: st.omission?.Ostar || 0 },
+      metricClasses: ["delta_obs","Gap","NameSens","AliasPersist","Red","Supp_tau","Theta_u","dominantLoss","provenanceIntegrity","routeState"],
+      sourceClasses: packet?.forensicSchema?.sourceClasses || ["counter-tool:observational","regime:observed","packet:non-identifying"],
+      authorityCeiling: "counter-tool audit only",
+      packetReady: !!packet
+    };
+  }
+  function renderAuditGrid(el, headers, rowLabels, values, formatter, heatFn) {
+    if (!el) return;
+    const html = ['<div class="audit-grid-4">', '<div></div>', ...headers.map(h => `<div class="head">${h}</div>`)];
+    rowLabels.forEach((label, rowIdx) => {
+      html.push(`<div class="row-head">${label}</div>`);
+      headers.forEach((_, colIdx) => {
+        const raw = values[rowIdx][colIdx];
+        const cls = (heatFn && heatFn(raw, rowIdx, colIdx)) || 'cool';
+        html.push(`<div class="audit-cell ${cls}">${formatter(raw, rowIdx, colIdx)}</div>`);
+      });
+    });
+    html.push('</div>');
+    el.innerHTML = html.join('');
+  }
+  function updateForensicPanels() {
+    if (!window.state) return;
+    const diff = computeDifferentialAudit();
+    const ethics = computeEthicsAudit(diff);
+    window.state.differentialAudit = diff;
+    window.state.ethicsAudit = ethics;
+    const schema = buildSuiteSchemaSnapshot();
+    window.state.forensicSchema = schema;
+    const routeLabel = { 0: "play", 1: "warning", 2: "buffer", 3: "harbor" };
+    renderAuditGrid(document.getElementById('diffAuditMatrix'), ['Θ_open','Θ_std','Θ_res'], ['exp','omit','harbor','route'], [diff.lanes.map(l => l.exposure), diff.lanes.map(l => l.omission), diff.lanes.map(l => l.harbor), diff.lanes.map(l => ({play:0, warning:1, buffer:2, harbor:3}[l.route] || 0))], (raw, rowIdx) => rowIdx === 3 ? routeLabel[raw] : Number(raw).toFixed(2), (raw) => { const value = Number(raw) || 0; return value >= 0.72 ? 'hot' : value >= 0.42 ? 'warm' : 'cool'; });
+    renderAuditGrid(document.getElementById('ethicsAuditTable'), ['Θ_open','Θ_std','Θ_res'], ethics.rows.map(r => r.term), ethics.rows.map(r => [r.open, r.standard, r.restricted]), (raw) => Number(raw).toFixed(2), (raw) => { const value = Number(raw) || 0; return value >= 0.72 ? 'cool' : value >= 0.42 ? 'warm' : 'hot'; });
+    const packet = window.state.tcpHandoffPacket || window.state.lastExportedPacket || null;
+    document.getElementById('schemaSummary').textContent = 'shared forensic schema active · governed exposure logged as S / S\' / Y / O / O*';
+    document.getElementById('schemaVersionReadout').textContent = SCHEMA;
+    document.getElementById('schemaExposureReadout').textContent = `S ${schema.governedExposure.S} · S' ${schema.governedExposure.projected} · Y ${schema.governedExposure.registered}`;
+    document.getElementById('schemaLedgerReadout').textContent = `${schema.metricClasses.length} metric classes · ${packet ? 'packet extended' : 'packet pending'}`;
+    document.getElementById('schemaAuthorityReadout').textContent = schema.authorityCeiling;
+    document.getElementById('schemaSourceReadout').textContent = schema.sourceClasses.join(' · ');
+    document.getElementById('schemaPacketPreview').textContent = JSON.stringify({ suite: schema.suite, schemaVersion: schema.schemaVersion, governedExposure: schema.governedExposure, metricClasses: schema.metricClasses, sourceClasses: schema.sourceClasses, authorityCeiling: schema.authorityCeiling }, null, 2);
+    document.getElementById('diffAuditSummary').textContent = `comparative audit across Θ(u) lanes · variance ${diff.exposureVariance.toFixed(4)} · divergence ${diff.routeDivergence.toFixed(4)}`;
+    document.getElementById('diffVarExposure').textContent = diff.exposureVariance.toFixed(4);
+    document.getElementById('diffRouteDivergence').textContent = diff.routeDivergence.toFixed(4);
+    document.getElementById('diffBestLane').textContent = diff.bestLane;
+    document.getElementById('diffWorstLane').textContent = diff.worstLane;
+    document.getElementById('ethicsSummary').textContent = `protective vocabularies audited as allocative operators · ${ethics.verdict}`;
+    document.getElementById('ethicsBiasReadout').textContent = ethics.upwardBias.toFixed(4);
+    document.getElementById('ethicsOpacityReadout').textContent = ethics.opacityGap.toFixed(4);
+    document.getElementById('ethicsCareGapReadout').textContent = ethics.careGap.toFixed(4);
+    document.getElementById('ethicsVerdictReadout').textContent = ethics.verdict;
+  }
+  function patchVersionDisplays() {
+    document.title = 'Aperture · v1.1';
+    const subtitle = document.getElementById('subtitle');
+    if (subtitle) subtitle.textContent = 'TD613 Aperture counter-tool - audits and dismantles selective admissibility in PRCS-A';
+    const mFirmwareVer = document.getElementById('mFirmwareVer');
+    if (mFirmwareVer) mFirmwareVer.textContent = VERSION;
+    if (window.FIRMWARE) {
+      window.FIRMWARE.VERSION = VERSION;
+      window.FIRMWARE.SCHEMA_VERSION = SCHEMA;
+    }
+    document.body.classList.add('aperture-v100');
+    document.documentElement.setAttribute('data-tool-identity', 'TD613 Aperture');
+    document.documentElement.setAttribute('data-tool-version', VERSION);
+    document.documentElement.setAttribute('data-tool-schema', SCHEMA);
+  }
+  if (originalCreatePacket) {
+    window.createTCPHandoffPacket = function patchedCreateTCPHandoffPacket(metrics, packetKeyOverride = null) {
+      const packet = originalCreatePacket.call(this, metrics, packetKeyOverride);
+      const diff = computeDifferentialAudit();
+      const ethics = computeEthicsAudit(diff);
+      const schema = buildSuiteSchemaSnapshot();
+      packet.version = VERSION;
+      packet.schemaVersion = SCHEMA;
+      packet.forensicSchema = { suite: schema.suite, schemaVersion: schema.schemaVersion, governedExposure: schema.governedExposure, sourceClasses: schema.sourceClasses, authorityCeiling: schema.authorityCeiling, metricClasses: schema.metricClasses };
+      packet.differentialAdmissibility = { exposureVariance: diff.exposureVariance, routeDivergence: diff.routeDivergence, lanes: diff.lanes.map(l => ({ cls: l.cls, exposure: l.exposure, omission: l.omission, harbor: l.harbor, sigma: l.sigma, route: l.route })) };
+      packet.ethicsAudit = { upwardBias: ethics.upwardBias, opacityGap: ethics.opacityGap, careGap: ethics.careGap, verdict: ethics.verdict, allocations: ethics.rows };
+      packet.governedExposureLedger = { latentState: schema.governedExposure.S, projectedState: schema.governedExposure.projected, registeredSurface: schema.governedExposure.registered, omission: schema.governedExposure.O, ratifiedOmission: schema.governedExposure.O_star, dominantLoss: (window.state && window.state.losses && window.state.losses.dominant) ? window.state.losses.dominant : '—' };
+      return packet;
+    };
+  }
+  if (originalRunSelfTest) {
+    window.runSelfTest = function patchedRunSelfTest() {
+      const result = originalRunSelfTest.call(this);
+      const required = ['td613SchemaPanel','diffAuditPanel','ethicsAuditPanel','schemaVersionReadout','diffAuditMatrix','ethicsAuditTable'];
+      const missing = required.filter(id => !document.getElementById(id));
+      const ok = missing.length === 0;
+      if (window.layerSelfTest && typeof window.layerSelfTest.register === 'function') {
+        window.layerSelfTest.register('v1_0_forensic_panels', { ok, latency: 0.05, details: ok ? 'forensic panels mounted' : `missing ids: ${missing.join(', ')}` });
+      }
+      if (window.state && window.state.selfTest) {
+        const issues = window.state.selfTest.issues || [];
+        if (!ok) issues.push(`forensic panels missing: ${missing.join(', ')}`);
+        window.state.selfTest.issues = [...new Set(issues)];
+        if (!ok) window.state.selfTest.status = 'fail';
+      }
+      return window.state?.selfTest || result;
+    };
+  }
+  if (originalUpdateUI) {
+    window.updateUI = function patchedUpdateUI(...args) {
+      const out = originalUpdateUI.apply(this, args);
+      patchVersionDisplays();
+      updateForensicPanels();
+      return out;
+    };
+  }
+  patchVersionDisplays();
+  if (typeof originalUpdateUI === 'function') {
+    try { window.updateUI({ force: true, slow: true }); } catch (err) { console.error(err); }
+  } else {
+    updateForensicPanels();
+  }
+})();
+</script>
 
-  function currentState() {
+<style id="aperture-v110-style">
+  body.aperture-v110 .packet-preview.boot-note {
+    min-height: 96px;
+    border-color: rgba(139, 233, 253, 0.12);
+  }
+  body.aperture-v110 .bridge-readout .value.aperture-pending { color: var(--suppressed); }
+  body.aperture-v110 .bridge-readout .value.aperture-pass { color: var(--registered); }
+  body.aperture-v110 .bridge-readout .value.aperture-fail { color: var(--aliased); }
+</style>
+<script id="aperture-v110-script">
+(() => {
+  if (window.__APERTURE_V110__) return;
+  window.__APERTURE_V110__ = true;
+
+  const VERSION = 'v1.1';
+  const SCHEMA = 'td613-aperture/v1.1';
+  const BOOT = { queued: false, lastReason: 'boot', completed: false };
+
+  function ensureDiagState() {
+    if (!window.state) return null;
+    if (!state.bootDiagnostics) {
+      state.bootDiagnostics = {
+        phase: 'queued',
+        reason: 'boot',
+        autoRunCount: 0,
+        lastRun: 0,
+        lastSelfTestStatus: 'pending',
+        lastEOSweepStatus: 'pending',
+        notes: ['boot diagnostics queued']
+      };
+    }
+    if (!Array.isArray(state.runtimeErrors)) state.runtimeErrors = [];
+    return state.bootDiagnostics;
+  }
+
+  function setVersionDisplays() {
+    document.title = `Aperture · ${VERSION}`;
+    document.documentElement.setAttribute('data-tool-version', VERSION);
+    document.documentElement.setAttribute('data-tool-schema', SCHEMA);
+    document.body.classList.add('aperture-v110');
+    const metaTitle = document.querySelector('meta[name="tool-name"]');
+    const subtitle = document.getElementById('subtitle');
+    if (subtitle) subtitle.textContent = 'TD613 Aperture counter-tool - audits and dismantles selective admissibility in PRCS-A';
+    if (metaTitle) metaTitle.setAttribute('content', 'TD613 Aperture');
+    if (window.FIRMWARE) {
+      window.FIRMWARE.VERSION = VERSION;
+      window.FIRMWARE.SCHEMA_VERSION = SCHEMA;
+    }
+    const firmwareEl = document.getElementById('mFirmwareVer');
+    if (firmwareEl) firmwareEl.textContent = VERSION;
+    const schemaEl = document.getElementById('schemaVersionReadout');
+    if (schemaEl) schemaEl.textContent = SCHEMA;
+  }
+
+  function summarizeRuntimeErrors() {
+    ensureDiagState();
+    if (!state.runtimeErrors.length) return '';
+    const recent = state.runtimeErrors.slice(-2).map(entry => `${entry.kind}: ${entry.message}`);
+    return recent.join(' · ');
+  }
+
+  function pushRuntimeError(kind, message) {
+    ensureDiagState();
+    const clean = String(message || '').replace(/\s+/g, ' ').trim().slice(0, 180) || 'unknown runtime error';
+    const hash = typeof fnv1aHash === 'function' ? fnv1aHash(`${kind}:${clean}`) : `${kind}:${clean}`;
+    if (state.runtimeErrors.some(entry => entry.hash === hash)) return;
+    state.runtimeErrors.push({ kind, message: clean, hash, at: Date.now() });
+    if (state.runtimeErrors.length > 6) state.runtimeErrors.shift();
+    if (typeof markSelfTestDirty === 'function') markSelfTestDirty('runtime-error');
+    if (state.eoDiagnostics) {
+      state.eoDiagnostics.metaState = 'runtime-warning';
+      state.eoDiagnostics.summary = `runtime warning · ${clean}`;
+    }
+    if (typeof updateUI === 'function') {
+      try { updateUI({ force: true, slow: true }); } catch (err) {}
+    }
+  }
+
+  window.addEventListener('error', (event) => {
+    const message = event?.error?.message || event?.message || 'window error';
+    pushRuntimeError('error', message);
+  });
+  window.addEventListener('unhandledrejection', (event) => {
+    const reason = event?.reason;
+    const message = reason && typeof reason === 'object' && 'message' in reason ? reason.message : String(reason || 'unhandled rejection');
+    pushRuntimeError('promise', message);
+  });
+
+  function runBootDiagnostics(reason = 'boot') {
+    BOOT.queued = false;
+    BOOT.lastReason = reason;
+    const diag = ensureDiagState();
+    if (!diag) return;
+    let selfResult = null;
+    let sweepResult = null;
     try {
-      return typeof state === "undefined" ? null : state;
+      if (typeof runSelfTest === 'function') selfResult = runSelfTest();
+    } catch (err) {
+      pushRuntimeError('self-test', err && err.message ? err.message : err);
+    }
+    try {
+      if (typeof runEOSweep === 'function') sweepResult = runEOSweep(false);
+    } catch (err) {
+      pushRuntimeError('eo-sweep', err && err.message ? err.message : err);
+    }
+    diag.phase = 'complete';
+    diag.reason = reason;
+    diag.autoRunCount = (diag.autoRunCount || 0) + 1;
+    diag.lastRun = Date.now();
+    diag.lastSelfTestStatus = selfResult?.status || state.selfTest?.status || 'pending';
+    diag.lastEOSweepStatus = state.eoDiagnostics?.sweepStatus || (sweepResult ? 'complete' : 'pending');
+    const notes = [];
+    notes.push(diag.lastSelfTestStatus === 'pass' ? 'cold-state self-test passed' : `self-test ${diag.lastSelfTestStatus}`);
+    if (diag.lastEOSweepStatus && diag.lastEOSweepStatus !== 'pending') notes.push(`EO sweep ${diag.lastEOSweepStatus}`);
+    const runtimeSummary = summarizeRuntimeErrors();
+    if (runtimeSummary) notes.push(runtimeSummary);
+    diag.notes = notes;
+    BOOT.completed = true;
+    if (typeof updateUI === 'function') {
+      try { updateUI({ force: true, slow: true }); } catch (err) {}
+    }
+  }
+
+  function scheduleBootDiagnostics(reason = 'boot') {
+    const diag = ensureDiagState();
+    if (diag) {
+      diag.phase = 'queued';
+      diag.reason = reason;
+      diag.notes = [`${reason} diagnostics queued`];
+    }
+    if (BOOT.queued) return;
+    BOOT.queued = true;
+    BOOT.lastReason = reason;
+    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(() => runBootDiagnostics(reason), 48)));
+  }
+
+  function exportGateReason() {
+    const scrub = state.eoDiagnostics?.packetScrub;
+    if (state.handoffStatus === 'packet-exported' && state.lastExportedPacket) return 'guarded audit packet exported';
+    if (state.selfTest?.status === 'fail') return 'self-test blocking export';
+    if (scrub && scrub.status !== 'pending' && !scrub.ok) return 'packet scrub blocking export';
+    if (state.inputMode === 'human-route' && state.humanInputStatus !== 'validated') return 'trace must be validated before guarded export';
+    if (!state.tcpHandoffPacket) return 'audit packet unavailable until residue map resolves';
+    if (state.routeState !== 'harbor-eligible') return `route state ${state.routeState}; export remains gated`;
+    return 'guarded audit packet ready';
+  }
+
+  function refreshColdStateCopy() {
+    ensureDiagState();
+    const cold = state.tick === 0 && state.registeredBounces === 0 && state.internalInteractions === 0;
+    const selfStatus = state.selfTest?.status || 'pending';
+    const bootNotes = state.bootDiagnostics?.notes?.join(' · ') || 'boot diagnostics queued';
+    const runtimeSummary = summarizeRuntimeErrors();
+    const selfIssueEl = document.getElementById('selfTestIssues');
+    const eoSweepEl = document.getElementById('eoSweepSummary');
+    const selfStatusEl = document.getElementById('mSelfStatus');
+    const bridgeSelfEl = document.getElementById('bridgeSelfTest');
+    const packetStatusEl = document.getElementById('bridgePacketStatus');
+    const phaseEl = document.getElementById('phaseStatus');
+    const eoStateEl = document.getElementById('mEOState');
+    const scrubEl = document.getElementById('mEOPacketScrub');
+    const bridgeEOStateEl = document.getElementById('bridgeEOState');
+    const packetPreview = document.getElementById('tcpPacketPreview');
+
+    if (cold && selfStatus === 'pass') {
+      if (selfIssueEl) selfIssueEl.textContent = runtimeSummary ? `cold-state verified · ${runtimeSummary}` : 'cold-state verified · awaiting propagate';
+      if (eoSweepEl) eoSweepEl.textContent = state.eoDiagnostics?.summary || 'EO sweep complete · cold-state aperture stable';
+      if (phaseEl) phaseEl.textContent = 'COLD-STATE VERIFIED';
+    } else if (cold && selfStatus === 'pending') {
+      if (selfIssueEl) selfIssueEl.textContent = bootNotes;
+      if (eoSweepEl) eoSweepEl.textContent = 'cold-state sweep queued';
+      if (phaseEl) phaseEl.textContent = 'BOOT DIAGNOSTICS';
+    } else if (runtimeSummary && selfIssueEl) {
+      selfIssueEl.textContent = `${state.selfTest?.issues?.join(' · ') || ''} · ${runtimeSummary}`.trim();
+    }
+
+    if (selfStatusEl) {
+      selfStatusEl.textContent = selfStatus;
+      selfStatusEl.classList.toggle('aperture-pass', selfStatus === 'pass');
+      selfStatusEl.classList.toggle('aperture-fail', selfStatus === 'fail');
+      selfStatusEl.classList.toggle('aperture-pending', selfStatus === 'pending' || selfStatus === 'warn');
+    }
+    if (bridgeSelfEl) bridgeSelfEl.textContent = selfStatus;
+    if (packetStatusEl) packetStatusEl.textContent = exportGateReason();
+    if (eoStateEl) eoStateEl.textContent = BOOT.completed ? 'counter-tool hardening active' : 'boot diagnostics pending';
+    if (bridgeEOStateEl) bridgeEOStateEl.textContent = BOOT.completed ? 'counter-tool hardening active' : 'boot diagnostics pending';
+    if (scrubEl) scrubEl.textContent = state.eoDiagnostics?.packetScrub?.status || 'pending';
+    if (packetPreview && !state.tcpHandoffPacket && !state.lastExportedPacket) {
+      packetPreview.classList.add('boot-note');
+      packetPreview.textContent = JSON.stringify({
+        status: cold ? 'cold-state' : 'runtime',
+        diagnostics: state.bootDiagnostics,
+        selfTest: state.selfTest?.status || 'pending',
+        exportGate: exportGateReason()
+      }, null, 2);
+    } else if (packetPreview) {
+      packetPreview.classList.remove('boot-note');
+    }
+  }
+
+  const originalUpdateUI = window.updateUI;
+  if (typeof originalUpdateUI === 'function') {
+    window.updateUI = function apertureV11UpdateUI(...args) {
+      const out = originalUpdateUI.apply(this, args);
+      setVersionDisplays();
+      refreshColdStateCopy();
+      return out;
+    };
+  }
+
+  const originalResetSystem = window.resetSystem;
+  if (typeof originalResetSystem === 'function') {
+    window.resetSystem = function apertureV11ResetSystem(...args) {
+      const out = originalResetSystem.apply(this, args);
+      ensureDiagState();
+      state.bootDiagnostics.phase = 'queued';
+      state.bootDiagnostics.reason = 'reset';
+      state.bootDiagnostics.notes = ['reset diagnostics queued'];
+      scheduleBootDiagnostics('reset');
+      return out;
+    };
+  }
+
+  setVersionDisplays();
+  refreshColdStateCopy();
+  scheduleBootDiagnostics('boot');
+})();
+</script>
+
+
+<script id="aperture-v111-fix-script">
+(() => {
+  if (window.__APERTURE_V111_FIX__) return;
+  window.__APERTURE_V111_FIX__ = true;
+
+  const VERSION = 'v1.1.1';
+  const SCHEMA = 'td613-aperture/v1.1.1';
+
+  function bindGlobals() {
+    try { if (typeof state !== 'undefined') window.state = state; } catch (err) {}
+    try { if (typeof FIRMWARE !== 'undefined') window.FIRMWARE = FIRMWARE; } catch (err) {}
+    try { if (typeof THETA !== 'undefined') window.THETA = THETA; } catch (err) {}
+    try { if (typeof layerSelfTest !== 'undefined') window.layerSelfTest = layerSelfTest; } catch (err) {}
+    try { if (typeof bus !== 'undefined') window.bus = bus; } catch (err) {}
+  }
+
+  function ensureBootState() {
+    if (!window.state) return null;
+    if (!window.state.bootDiagnostics) {
+      window.state.bootDiagnostics = {
+        phase: 'queued',
+        reason: 'boot',
+        autoRunCount: 0,
+        lastRun: 0,
+        lastSelfTestStatus: 'pending',
+        lastEOSweepStatus: 'pending',
+        notes: ['boot diagnostics queued']
+      };
+    }
+    if (!Array.isArray(window.state.runtimeErrors)) window.state.runtimeErrors = [];
+    return window.state.bootDiagnostics;
+  }
+
+  function setVersionDisplays() {
+    document.title = `Aperture · ${VERSION}`;
+    document.documentElement.setAttribute('data-tool-version', VERSION);
+    document.documentElement.setAttribute('data-tool-schema', SCHEMA);
+    const firmwareEl = document.getElementById('mFirmwareVer');
+    if (firmwareEl) firmwareEl.textContent = VERSION;
+    const schemaEl = document.getElementById('schemaVersionReadout');
+    if (schemaEl) schemaEl.textContent = SCHEMA;
+    if (window.FIRMWARE) {
+      window.FIRMWARE.VERSION = VERSION;
+      window.FIRMWARE.SCHEMA_VERSION = SCHEMA;
+    }
+  }
+
+  function runBootPass(reason = 'boot-fix') {
+    const diag = ensureBootState();
+    if (!diag || !window.state) return;
+    let selfStatus = window.state.selfTest?.status || 'pending';
+    try {
+      if (typeof runSelfTest === 'function') {
+        const result = runSelfTest();
+        selfStatus = result?.status || window.state.selfTest?.status || selfStatus;
+      }
+    } catch (err) {
+      window.state.runtimeErrors.push({ kind: 'self-test', message: String(err && err.message ? err.message : err), at: Date.now() });
+      selfStatus = 'fail';
+      if (window.state.selfTest) window.state.selfTest.status = 'fail';
+    }
+    let eoStatus = window.state.eoDiagnostics?.sweepStatus || 'pending';
+    try {
+      if (typeof runEOSweep === 'function') runEOSweep(false);
+      eoStatus = window.state.eoDiagnostics?.sweepStatus || 'complete';
+    } catch (err) {
+      window.state.runtimeErrors.push({ kind: 'eo-sweep', message: String(err && err.message ? err.message : err), at: Date.now() });
+      eoStatus = 'fail';
+      if (window.state.eoDiagnostics) window.state.eoDiagnostics.sweepStatus = 'fail';
+    }
+    diag.phase = 'complete';
+    diag.reason = reason;
+    diag.autoRunCount = Number(diag.autoRunCount || 0) + 1;
+    diag.lastRun = Date.now();
+    diag.lastSelfTestStatus = selfStatus;
+    diag.lastEOSweepStatus = eoStatus;
+    diag.notes = [
+      selfStatus === 'pass' ? 'cold-state self-test passed' : `self-test ${selfStatus}`,
+      eoStatus && eoStatus !== 'pending' ? `EO sweep ${eoStatus}` : 'EO sweep pending'
+    ];
+  }
+
+  bindGlobals();
+  ensureBootState();
+  setVersionDisplays();
+  requestAnimationFrame(() => {
+    bindGlobals();
+    runBootPass('boot-fix');
+    if (typeof updateUI === 'function') {
+      try { updateUI({ force: true, slow: true }); } catch (err) {}
+    }
+  });
+})();
+</script>
+
+
+
+<script id="aperture-v112-fix-script">
+(() => {
+  if (window.__APERTURE_V112_FIX__) return;
+  window.__APERTURE_V112_FIX__ = true;
+
+  const VERSION = 'v2.1.4';
+  const SCHEMA = 'td613-aperture/v2.1.4';
+  const BOOT = {
+    attempts: 0,
+    completed: false,
+    lastReason: 'boot',
+    pending: false
+  };
+
+  function bindGlobals() {
+    try { if (typeof state !== 'undefined') window.state = state; } catch (_) {}
+    try { if (typeof FIRMWARE !== 'undefined') window.FIRMWARE = FIRMWARE; } catch (_) {}
+    try { if (typeof runSelfTest !== 'undefined') window.runSelfTest = runSelfTest; } catch (_) {}
+    try { if (typeof runEOSweep !== 'undefined') window.runEOSweep = runEOSweep; } catch (_) {}
+    try { if (typeof updateUI !== 'undefined') window.updateUI = updateUI; } catch (_) {}
+    try { if (typeof resetSystem !== 'undefined') window.__apertureResetCore = resetSystem; } catch (_) {}
+  }
+
+  function ensureState() {
+    bindGlobals();
+    if (!window.state) return null;
+    if (!window.state.bootDiagnostics) {
+      window.state.bootDiagnostics = {
+        phase: 'queued',
+        reason: 'boot',
+        autoRunCount: 0,
+        lastRun: 0,
+        lastSelfTestStatus: 'pending',
+        lastEOSweepStatus: 'pending',
+        notes: ['boot diagnostics queued']
+      };
+    }
+    if (!Array.isArray(window.state.runtimeErrors)) window.state.runtimeErrors = [];
+    return window.state;
+  }
+
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+
+  function setVersionTruth() {
+    document.title = `Aperture · ${VERSION}`;
+    document.documentElement.setAttribute('data-tool-version', VERSION);
+    document.documentElement.setAttribute('data-tool-schema', SCHEMA);
+    setText('mFirmwareVer', VERSION);
+    setText('schemaVersionReadout', SCHEMA);
+    if (window.FIRMWARE) {
+      window.FIRMWARE.VERSION = VERSION;
+      window.FIRMWARE.SCHEMA_VERSION = SCHEMA;
+    }
+  }
+
+  function writeBootTruth(stateRef, reason, selfStatus, eoStatus) {
+    const diag = stateRef?.bootDiagnostics || {};
+    setText('mSelfBoot', BOOT.completed ? 'complete' : diag.phase || 'queued');
+    setText('mSelfDOM', 'mapped');
+    setText('mSelfPacket', stateRef?.tcpHandoffPacket || stateRef?.lastExportedPacket ? 'available' : 'cold-state');
+    setText('mSelfDetector', stateRef?.detector?.matrix?.length ? 'mapped' : 'cold-state');
+    setText('mSelfRender', 'ui-synced');
+    setText('mSelfRuntime', BOOT.completed ? 'boot-passed' : 'queued');
+    setText('mSelfStatus', selfStatus || 'pending');
+    setText('bridgeSelfTest', selfStatus || 'pending');
+    setText('mEOState', BOOT.completed ? 'counter-tool hardening active' : 'boot diagnostics pending');
+    setText('bridgeEOState', BOOT.completed ? 'counter-tool hardening active' : 'boot diagnostics pending');
+    const scrubStatus = stateRef?.eoDiagnostics?.packetScrub?.status || 'pending';
+    setText('mEOPacketScrub', scrubStatus);
+    setText('bridgePacketScrub', scrubStatus);
+    const notes = diag.notes && diag.notes.length ? diag.notes.join(' · ') : `${reason} diagnostics queued`;
+    setText('selfTestIssues', notes);
+    setText('eoSweepSummary', eoStatus && eoStatus !== 'pending' ? `EO sweep ${eoStatus}` : 'EO sweep pending');
+    setText('phaseStatus', BOOT.completed ? 'COLD-STATE VERIFIED' : 'BOOT DIAGNOSTICS');
+    const packetPreview = document.getElementById('tcpPacketPreview');
+    if (packetPreview && !stateRef?.tcpHandoffPacket && !stateRef?.lastExportedPacket) {
+      packetPreview.textContent = JSON.stringify({
+        status: BOOT.completed ? 'cold-state-verified' : 'boot-queued',
+        diagnostics: diag,
+        selfTest: selfStatus || 'pending',
+        eoSweep: eoStatus || 'pending'
+      }, null, 2);
+    }
+  }
+
+  function markRuntimeError(kind, err) {
+    const stateRef = ensureState();
+    if (!stateRef) return;
+    const message = String(err && err.message ? err.message : err || kind).replace(/\s+/g, ' ').trim();
+    stateRef.runtimeErrors.push({ kind, message, at: Date.now() });
+    if (stateRef.runtimeErrors.length > 8) stateRef.runtimeErrors.shift();
+  }
+
+  function runBootPass(reason = 'boot-v112') {
+    const stateRef = ensureState();
+    if (!stateRef) return;
+    BOOT.attempts += 1;
+    BOOT.pending = false;
+    BOOT.lastReason = reason;
+    const diag = stateRef.bootDiagnostics;
+    diag.phase = 'running';
+    diag.reason = reason;
+    diag.autoRunCount = Number(diag.autoRunCount || 0) + 1;
+    diag.notes = [`${reason} diagnostics running`];
+
+    let selfStatus = stateRef.selfTest?.status || 'pending';
+    let eoStatus = stateRef.eoDiagnostics?.sweepStatus || 'pending';
+
+    try {
+      if (typeof window.runSelfTest === 'function') {
+        const res = window.runSelfTest();
+        selfStatus = res?.status || stateRef.selfTest?.status || selfStatus;
+      } else {
+        selfStatus = 'fail';
+        diag.notes.push('runSelfTest missing');
+      }
+    } catch (err) {
+      selfStatus = 'fail';
+      markRuntimeError('self-test', err);
+      diag.notes.push(`self-test error: ${String(err && err.message ? err.message : err)}`);
+    }
+
+    try {
+      if (typeof window.runEOSweep === 'function') {
+        window.runEOSweep(false);
+        eoStatus = stateRef.eoDiagnostics?.sweepStatus || 'complete';
+      } else {
+        eoStatus = 'fail';
+        diag.notes.push('runEOSweep missing');
+      }
+    } catch (err) {
+      eoStatus = 'fail';
+      markRuntimeError('eo-sweep', err);
+      diag.notes.push(`eo-sweep error: ${String(err && err.message ? err.message : err)}`);
+    }
+
+    diag.lastRun = Date.now();
+    diag.lastSelfTestStatus = selfStatus;
+    diag.lastEOSweepStatus = eoStatus;
+    if (!diag.notes.length) {
+      diag.notes = [
+        selfStatus === 'pass' ? 'cold-state self-test passed' : `self-test ${selfStatus}`,
+        eoStatus && eoStatus !== 'pending' ? `EO sweep ${eoStatus}` : 'EO sweep pending'
+      ];
+    }
+    BOOT.completed = selfStatus !== 'pending';
+    diag.phase = BOOT.completed ? 'complete' : 'queued';
+
+    setVersionTruth();
+    writeBootTruth(stateRef, reason, selfStatus, eoStatus);
+
+    try {
+      if (typeof window.updateUI === 'function') window.updateUI({ force: true, slow: true });
+    } catch (_) {}
+
+    requestAnimationFrame(() => {
+      setVersionTruth();
+      writeBootTruth(stateRef, reason, selfStatus, eoStatus);
+    });
+  }
+
+  function queueBootPass(reason = 'boot-v112') {
+    if (BOOT.pending) return;
+    BOOT.pending = true;
+    requestAnimationFrame(() => requestAnimationFrame(() => runBootPass(reason)));
+  }
+
+  function wrapReset() {
+    if (window.__APERTURE_V112_RESET_WRAPPED__) return;
+    const core = window.__apertureResetCore || window.resetSystem;
+    if (typeof core !== 'function') return;
+    window.__APERTURE_V112_RESET_WRAPPED__ = true;
+    window.resetSystem = function apertureV112Reset(...args) {
+      const out = core.apply(this, args);
+      const stateRef = ensureState();
+      if (stateRef?.bootDiagnostics) {
+        stateRef.bootDiagnostics.phase = 'queued';
+        stateRef.bootDiagnostics.reason = 'reset';
+        stateRef.bootDiagnostics.notes = ['reset diagnostics queued'];
+      }
+      BOOT.completed = false;
+      queueBootPass('reset-v112');
+      return out;
+    };
+  }
+
+  window.addEventListener('error', (event) => {
+    markRuntimeError('window-error', event?.error || event?.message || 'window error');
+  });
+  window.addEventListener('unhandledrejection', (event) => {
+    markRuntimeError('promise', event?.reason || 'unhandled rejection');
+  });
+
+  bindGlobals();
+  ensureState();
+  setVersionTruth();
+  wrapReset();
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      bindGlobals();
+      setVersionTruth();
+      wrapReset();
+      queueBootPass('dom-ready-v112');
+    }, { once: true });
+  }
+
+  queueBootPass('boot-v112');
+})();
+</script>
+
+
+<style id="aperture-v2-style">
+  .temporal-pill {
+    background: rgba(255,216,102,0.10);
+    color: var(--crystal);
+    border-color: rgba(255,216,102,0.18);
+  }
+  .temporal-card .bridge-readout .value.dimmed,
+  .temporal-card .hook-value.dimmed { color: var(--text-dim); }
+  .temporal-flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 8px;
+    letter-spacing: 0.7px;
+    border: 1px solid rgba(90,120,170,0.12);
+    background: rgba(15,20,35,0.68);
+    color: var(--text-bright);
+  }
+  .temporal-flag.synced { color: var(--registered); border-color: rgba(80,250,123,0.22); }
+  .temporal-flag.preemptive { color: var(--crystal); border-color: rgba(255,216,102,0.22); }
+  .temporal-flag.drift { color: var(--latent); border-color: rgba(139,233,253,0.2); }
+  .temporal-flag.suppressed { color: var(--suppressed); border-color: rgba(241,250,140,0.2); }
+  .temporal-flag.inexpressible { color: var(--aliased); border-color: rgba(255,85,85,0.22); }
+  .temporal-flag.beacon { box-shadow: 0 0 10px rgba(255,216,102,0.10); }
+  body.temporal-preemptive #tcpBridgePanel,
+  body.temporal-drift #tcpBridgePanel,
+  body.temporal-suppressed #tcpBridgePanel,
+  body.temporal-inexpressible #tcpBridgePanel { border-color: rgba(255,216,102,0.18); }
+</style>
+
+<script>
+/* APERTURE v2.2 PATCH LAYER
+   - Deformation-aware closure instrument
+   - Historical crease field H
+   - Forced adjacency (preemption ≠ prediction)
+   - Capacity-conditioned projection retained
+   - Unfolding energy E_unfold and practical non-closure
+   - Triangulated closure classification
+   - Sustained beacon qualification
+   - School-discipline pilot scaffold
+*/
+(function(){
+  if (window.__apertureV22Booted) return;
+  window.__apertureV22Booted = true;
+
+  const V22 = Object.freeze({
+    VERSION: 'v2.2.1',
+    SCHEMA: 'td613-aperture/v2.2.1',
+    POSTURES: ['synced','preemptive','drift','suppressed','inexpressible'],
+    KAPPA: ['closed','drift','suppressed','inexpressible'],
+    CLASSIFIERS: ['closed','drift','suppressed','inexpressible'],
+    ROUTE_COPY_V22: {
+      play: 'audit baseline · deformation field nominal',
+      warning: 'forced adjacency visible · recognition pressure elevated',
+      buffer: 'guarded staging · closure deformation requires quarantine',
+      'harbor-eligible': 'audit-open · beacon-class closure handoff conditions satisfied'
+    },
+    CLOSURE_SCORE: { closed: 1, drift: 0.67, suppressed: 0.24, inexpressible: 0 },
+    ROUTE_FLOORS: { preemptive: 'warning', drift: 'buffer', suppressed: 'buffer', inexpressible: 'buffer' },
+    THRESHOLDS: {
+      beaconIntegral: 0.75,
+      unfoldEnergy: 0.68,
+      highPiMs: 6 * 3600000,
+      lowClosure: 0.75,
+      actorVariance: 0.05
+    },
+    PILOTS: {
+      'school-discipline': {
+        label: 'school discipline / student risk systems',
+        actorClasses: 'system/admin | teacher/staff | student/guardian',
+        note: 'first wound · recoverable timestamp ladder · closure disputes legible',
+        fidelityPrompt: 'What would faithful closure have looked like here?',
+        defaultCrease: 0.72,
+        defaultProjectionBias: 0.66,
+        defaultPathDependence: 0.74,
+        defaultWindow: 8
+      }
+    },
+    HOMOLOGY: Object.freeze({
+      quantumStateSpace: 'observability-space S',
+      preparation: 'historical crease field H',
+      measurementBasis: 'admissibility A',
+      collapse: 'institutional registration t_inst',
+      hiddenWeightedStates: 'pre-registration action-weight densities over latent states'
+    })
+  });
+
+  const styleText = `
+  .temporal-flag { display:inline-flex; align-items:center; gap:5px; padding:2px 8px; border-radius:10px; font-size:8px; letter-spacing:0.7px; border:1px solid rgba(90,120,170,0.12); background:rgba(15,20,35,0.68); color:var(--text-bright); }
+  .temporal-flag.synced { color:var(--registered); border-color:rgba(80,250,123,0.22); }
+  .temporal-flag.preemptive { color:var(--crystal); border-color:rgba(255,216,102,0.22); }
+  .temporal-flag.drift { color:var(--latent); border-color:rgba(139,233,253,0.20); }
+  .temporal-flag.suppressed { color:var(--suppressed); border-color:rgba(241,250,140,0.20); }
+  .temporal-flag.inexpressible { color:var(--aliased); border-color:rgba(255,85,85,0.22); }
+  .temporal-flag.beacon { box-shadow:0 0 10px rgba(255,216,102,0.10); }
+  .temporal-flag.practical { box-shadow:0 0 10px rgba(255,85,85,0.08); }
+  .pilot-badge { display:inline-flex; align-items:center; gap:5px; padding:3px 8px; border-radius:10px; background:rgba(189,147,249,0.12); border:1px solid rgba(189,147,249,0.18); color:var(--text-bright); font-size:8px; letter-spacing:0.6px; }
+  .homology-grid { display:grid; grid-template-columns: 1fr; gap:3px; margin-top:6px; }
+  .homology-line { display:flex; justify-content:space-between; gap:8px; font-size:8px; padding:2px 0; border-bottom:1px solid rgba(90,120,170,0.05); }
+  .homology-line:last-child { border-bottom:0; }
+  .temporal-mini { font-size:8px; color:var(--text-dim); line-height:1.5; margin-top:4px; }
+  body.temporal-preemptive #tcpBridgePanel, body.temporal-drift #tcpBridgePanel, body.temporal-suppressed #tcpBridgePanel, body.temporal-inexpressible #tcpBridgePanel { border-color:rgba(255,216,102,0.18); }
+  `;
+  function injectStyle(){
+    let style = document.getElementById('apertureV22Style');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'apertureV22Style';
+      document.head.appendChild(style);
+    }
+    if (style.textContent !== styleText) style.textContent = styleText;
+  }
+
+  function clamp01(x){ return Math.min(1, Math.max(0, Number(x) || 0)); }
+  function parseMaybeFloat(v){ if (v === null || v === undefined || v === '') return null; const n = Number(v); return Number.isFinite(n) ? n : null; }
+  function parseMaybeDate(v){ if (!v) return null; const t = Date.parse(v); return Number.isFinite(t) ? t : null; }
+  function diffOrInf(later, earlier){ if (earlier === null) return null; if (later === null) return Infinity; return later - earlier; }
+  function formatGap(v){
+    if (v === null || v === undefined) return '—';
+    if (v === Infinity) return '∞';
+    if (!Number.isFinite(v)) return '—';
+    const minutes = v / 60000;
+    if (Math.abs(minutes) < 120) return `${minutes.toFixed(1)}m`;
+    const hours = v / 3600000;
+    if (Math.abs(hours) < 72) return `${hours.toFixed(2)}h`;
+    const days = v / 86400000;
+    return `${days.toFixed(2)}d`;
+  }
+  function normalizeKappa(raw, fallback){
+    const value = String(raw || '').trim().toLowerCase();
+    if (V22.KAPPA.includes(value)) return value;
+    return fallback || 'closed';
+  }
+  function mapClosureScore(kappa, explicit){
+    if (Number.isFinite(explicit)) return clamp01(explicit);
+    return V22.CLOSURE_SCORE[kappa] ?? 0;
+  }
+  function postureRank(route){ return { play:0, warning:1, buffer:2, 'harbor-eligible':3 }[route] ?? 0; }
+  function routeForRank(rank){ return ['play','warning','buffer','harbor-eligible'][Math.max(0, Math.min(3, rank))]; }
+  function mean(arr){ const vals = arr.filter(v => Number.isFinite(v)); return vals.length ? vals.reduce((a,b)=>a+b,0) / vals.length : 0; }
+  function varianceNormalized(arr){
+    const vals = arr.filter(v => Number.isFinite(v)).map(v => v / 3600000);
+    if (vals.length < 2) return 0;
+    const m = vals.reduce((a,b)=>a+b,0) / vals.length;
+    const vr = vals.reduce((a,b)=>a+Math.pow(b-m,2),0) / vals.length;
+    return clamp01(Math.sqrt(vr) / 24);
+  }
+  function modeClass(vals, fallback){
+    const counts = {};
+    vals.filter(v => V22.CLASSIFIERS.includes(v)).forEach(v => counts[v] = (counts[v] || 0) + 1);
+    const entries = Object.entries(counts);
+    if (!entries.length) return { value: fallback || 'closed', disagreement: 0, counts };
+    entries.sort((a,b) => b[1] - a[1]);
+    const top = entries[0][1];
+    const tied = entries.filter(([k,c]) => c === top).map(([k]) => k);
+    const winner = tied.length === 1 ? tied[0] : (fallback && tied.includes(fallback) ? fallback : tied[0]);
+    const disagreement = tied.length > 1 ? clamp01((tied.length - 1) / 3) : clamp01((vals.filter(v => V22.CLASSIFIERS.includes(v)).length - top) / 3);
+    return { value: winner, disagreement, counts };
+  }
+  function inferFallbackKappa(){
+    try {
+      const scrub = state?.eoDiagnostics?.packetScrub?.status;
+      if (scrub === 'scrub-blocked') return 'suppressed';
+      if (state?.closureState?.closureFailure) return 'drift';
+    } catch (err) {}
+    return 'closed';
+  }
+  function deriveTemporalPosture(kappa, piOp){
+    if (kappa === 'closed') return Number.isFinite(piOp) && piOp > 0 ? 'preemptive' : 'synced';
+    if (kappa === 'drift') return 'drift';
+    if (kappa === 'suppressed') return 'suppressed';
+    if (kappa === 'inexpressible') return 'inexpressible';
+    return 'synced';
+  }
+  function ensureTemporalState(){
+    if (!window.state) return null;
+    if (!state.temporalV22) {
+      state.temporalV22 = {
+        source: 'fallback',
+        pilotDomain: '',
+        timestamps: { tSense:null, tModel:null, tOp:null, tInst:null, tPub:null },
+        pi: { op:null, pub:null, sense:null },
+        kappa: 'closed',
+        closureScore: 1,
+        temporalPosture: 'synced',
+        actorVariance: 0,
+        actorGaps: [],
+        influenceScore: 0,
+        influenceIntegral: 0,
+        beaconActive: false,
+        beaconSustained: false,
+        memo: '',
+        routeFloor: 'play',
+        forcedAdjacency: 0,
+        historicalCrease: { H:0, crease:0, projectionBias:0, pathDependence:0 },
+        projectionCapacity: 0,
+        unfolding: { energy:0, threshold:V22.THRESHOLDS.unfoldEnergy, practicalNonClosure:false },
+        kappaEvidence: { record:'', testimony:'', behavior:'', disagreement:0, counts:{} },
+        triangulationMode: 'single-source',
+        homology: V22.HOMOLOGY,
+        zoneCandidate: false,
+        actorClasses: '',
+        fidelityMemo: ''
+      };
+    }
+    return state.temporalV22;
+  }
+  function injectTemporalPill(){
+    const controls = document.querySelector('header .controls');
+    if (!controls || document.getElementById('temporalStatus')) return;
+    const pill = document.createElement('div');
+    pill.id = 'temporalStatus';
+    pill.className = 'status-pill temporal-pill';
+    pill.textContent = 'κ closed · Π — · forced-adj —';
+    const btnRun = document.getElementById('btnRun');
+    if (btnRun && btnRun.parentNode === controls) controls.insertBefore(pill, btnRun);
+    else controls.appendChild(pill);
+  }
+  function injectTemporalUI(){
+    injectTemporalPill();
+    const humanRoutePanel = document.getElementById('humanRoutePanel');
+    if (humanRoutePanel && !document.getElementById('apertureV22TraceBlock')) {
+      const routeActions = humanRoutePanel.querySelector('.route-actions');
+      const block = document.createElement('div');
+      block.id = 'apertureV22TraceBlock';
+      block.innerHTML = `
+        <div class="hook-title" style="margin-top:8px;">Temporal trace Π / κ / C / H</div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputTSense">t_sense</label><input id="inputTSense" class="route-input" type="datetime-local"></div>
+          <div class="input-shell"><label for="inputTModel">t_model</label><input id="inputTModel" class="route-input" type="datetime-local"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputTOp">t_op</label><input id="inputTOp" class="route-input" type="datetime-local"></div>
+          <div class="input-shell"><label for="inputTInst">t_inst</label><input id="inputTInst" class="route-input" type="datetime-local"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputTPub">t_pub</label><input id="inputTPub" class="route-input" type="datetime-local"></div>
+          <div class="input-shell"><label for="inputPilotDomain">pilot domain</label>
+            <select id="inputPilotDomain" class="route-select">
+              <option value="">none</option>
+              <option value="school-discipline">school discipline / student risk</option>
+            </select>
+          </div>
+        </div>
+        <div class="bridge-actions" style="margin-top:4px;">
+          <button id="btnPilotSchool" class="bridge-action" onclick="loadPilotPresetV22('school-discipline')">LOAD SCHOOL PILOT</button>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputClosureClass">closure class κ (manual)</label>
+            <select id="inputClosureClass" class="route-select">
+              <option value="">infer from triangulation</option>
+              <option value="closed">closed</option>
+              <option value="drift">drift</option>
+              <option value="suppressed">suppressed</option>
+              <option value="inexpressible">inexpressible</option>
+            </select>
+          </div>
+          <div class="input-shell"><label for="inputClosureScore">closure score C(s)</label><input id="inputClosureScore" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputRecordClass">record evidence κ</label>
+            <select id="inputRecordClass" class="route-select"><option value="">—</option><option value="closed">closed</option><option value="drift">drift</option><option value="suppressed">suppressed</option><option value="inexpressible">inexpressible</option></select>
+          </div>
+          <div class="input-shell"><label for="inputTestimonyClass">actor testimony κ</label>
+            <select id="inputTestimonyClass" class="route-select"><option value="">—</option><option value="closed">closed</option><option value="drift">drift</option><option value="suppressed">suppressed</option><option value="inexpressible">inexpressible</option></select>
+          </div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputBehaviorClass">system behavior κ</label>
+            <select id="inputBehaviorClass" class="route-select"><option value="">—</option><option value="closed">closed</option><option value="drift">drift</option><option value="suppressed">suppressed</option><option value="inexpressible">inexpressible</option></select>
+          </div>
+          <div class="input-shell"><label for="inputActorClasses">actor classes</label><input id="inputActorClasses" class="route-input" type="text" placeholder="system/admin | teacher/staff | student/guardian"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputCreaseField">historical crease field H</label><input id="inputCreaseField" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+          <div class="input-shell"><label for="inputProjectionBias">projection bias / buried pleats</label><input id="inputProjectionBias" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputPathDependence">prior fold density</label><input id="inputPathDependence" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+          <div class="input-shell"><label for="inputProjectionCapacity">capacity-conditioned projection κ</label><input id="inputProjectionCapacity" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputInfluenceScore">influence score</label><input id="inputInfluenceScore" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+          <div class="input-shell"><label for="inputInfluenceWindow">influence window (hrs)</label><input id="inputInfluenceWindow" class="route-input" type="number" min="0" step="0.25" placeholder="auto"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputActorGapSelf">Π_self (ms)</label><input id="inputActorGapSelf" class="route-input" type="number" step="1" placeholder="auto from t_op/t_inst"></div>
+          <div class="input-shell"><label for="inputActorGapParallel">Π_parallel (ms)</label><input id="inputActorGapParallel" class="route-input" type="number" step="1" placeholder="optional"></div>
+        </div>
+        <div class="input-grid">
+          <div class="input-shell"><label for="inputUnfoldEnergy">E_unfold</label><input id="inputUnfoldEnergy" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="auto"></div>
+          <div class="input-shell"><label for="inputUnfoldThreshold">τ_E</label><input id="inputUnfoldThreshold" class="route-input" type="number" min="0" max="1" step="0.01" placeholder="0.68"></div>
+        </div>
+        <div class="input-grid full">
+          <div class="input-shell"><label for="inputRegistrationMemo">registration-fidelity memo</label><input id="inputRegistrationMemo" class="route-input" type="text" placeholder="What would faithful closure have looked like here?"></div>
+        </div>
+        <div class="temporal-mini" id="pilotPresetStatus">pilot preset idle</div>`;
+      if (routeActions) humanRoutePanel.insertBefore(block, routeActions);
+      else humanRoutePanel.appendChild(block);
+    }
+    const rightPanel = document.getElementById('rightPanel');
+    if (rightPanel && !document.getElementById('apertureV22TemporalPanel')) {
+      const bridge = document.getElementById('tcpBridgePanel');
+      const section = document.createElement('div');
+      section.className = 'section-label';
+      section.id = 'apertureV22TemporalLabel';
+      section.textContent = 'DEFORMATION / CLOSURE Π / κ / C / H';
+      const card = document.createElement('div');
+      card.id = 'apertureV22TemporalPanel';
+      card.className = 'tcp-hook temporal-card';
+      card.innerHTML = `
+        <div class="hook-title">Temporal ordering</div>
+        <div class="hook-value" id="temporalSummaryCopy">awaiting temporal trace</div>
+        <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+          <span id="temporalPostureFlag" class="temporal-flag synced">synced</span>
+          <span id="temporalBeaconFlag" class="temporal-flag">beacon off</span>
+          <span id="temporalPracticalFlag" class="temporal-flag">closure cost nominal</span>
+        </div>
+        <div style="margin-top:6px;"><span id="pilotBadge" class="pilot-badge" style="display:none;">pilot</span></div>
+        <div class="bridge-meta">
+          <div class="bridge-readout"><span class="label">Π_op</span><span class="value" id="temporalPiOpReadout">—</span></div>
+          <div class="bridge-readout"><span class="label">Π_pub</span><span class="value" id="temporalPiPubReadout">—</span></div>
+          <div class="bridge-readout"><span class="label">Π_sense</span><span class="value" id="temporalPiSenseReadout">—</span></div>
+          <div class="bridge-readout"><span class="label">κ</span><span class="value" id="temporalClosureReadout">closed</span></div>
+          <div class="bridge-readout"><span class="label">C(s)</span><span class="value" id="temporalClosureScoreReadout">1.0000</span></div>
+          <div class="bridge-readout"><span class="label">Var_i[Π_i]</span><span class="value" id="temporalActorVarReadout">0.0000</span></div>
+          <div class="bridge-readout"><span class="label">Temporal posture</span><span class="value" id="temporalPostureReadout">synced</span></div>
+          <div class="bridge-readout"><span class="label">Forced adjacency</span><span class="value" id="temporalAdjacencyReadout">0.0000</span></div>
+          <div class="bridge-readout"><span class="label">H</span><span class="value" id="temporalCreaseReadout">0.0000</span></div>
+          <div class="bridge-readout"><span class="label">E_unfold</span><span class="value" id="temporalUnfoldReadout">0.0000</span></div>
+          <div class="bridge-readout"><span class="label">κ disagreement</span><span class="value" id="temporalKappaDisReadout">0.0000</span></div>
+          <div class="bridge-readout"><span class="label">Zone candidate Z_H</span><span class="value" id="temporalZoneReadout">false</span></div>
+        </div>
+        <div class="field-metric"><span class="fm-label">Π_op</span><div class="fm-bar"><div class="fm-fill" id="temporalPiBar" style="width:0%;background:var(--crystal);"></div></div><span class="fm-value" id="temporalPiBarVal">0.000</span></div>
+        <div class="field-metric"><span class="fm-label">C(s)</span><div class="fm-bar"><div class="fm-fill" id="temporalClosureBar" style="width:100%;background:var(--registered);"></div></div><span class="fm-value" id="temporalClosureBarVal">1.000</span></div>
+        <div class="field-metric"><span class="fm-label">∫ Influence dt</span><div class="fm-bar"><div class="fm-fill" id="temporalInfluenceBar" style="width:0%;background:var(--latent);"></div></div><span class="fm-value" id="temporalInfluenceBarVal">0.000</span></div>
+        <div class="field-metric"><span class="fm-label">H</span><div class="fm-bar"><div class="fm-fill" id="temporalCreaseBar" style="width:0%;background:var(--accent);"></div></div><span class="fm-value" id="temporalCreaseBarVal">0.000</span></div>
+        <div class="field-metric"><span class="fm-label">E_unfold</span><div class="fm-bar"><div class="fm-fill" id="temporalUnfoldBar" style="width:0%;background:var(--aliased);"></div></div><span class="fm-value" id="temporalUnfoldBarVal">0.000</span></div>
+        <div class="tcp-hook" style="margin-top:6px;"><div class="hook-title">Faithful closure memo</div><div class="hook-value" id="temporalMemoReadout">awaiting memo</div></div>
+        <div class="tcp-hook" style="margin-top:6px;"><div class="hook-title">Quantum ↔ institutional homology</div><div id="homologyGrid" class="homology-grid"></div></div>`;
+      if (bridge) {
+        bridge.insertAdjacentElement('afterend', section);
+        section.insertAdjacentElement('afterend', card);
+      } else {
+        rightPanel.appendChild(section);
+        rightPanel.appendChild(card);
+      }
+    }
+  }
+  function fillHomologyGrid(){
+    const grid = document.getElementById('homologyGrid');
+    if (!grid) return;
+    grid.innerHTML = `
+      <div class="homology-line"><span style="color:var(--text-dim)">State space</span><span style="color:var(--text-bright)">${V22.HOMOLOGY.quantumStateSpace}</span></div>
+      <div class="homology-line"><span style="color:var(--text-dim)">Preparation</span><span style="color:var(--text-bright)">${V22.HOMOLOGY.preparation}</span></div>
+      <div class="homology-line"><span style="color:var(--text-dim)">Measurement basis</span><span style="color:var(--text-bright)">${V22.HOMOLOGY.measurementBasis}</span></div>
+      <div class="homology-line"><span style="color:var(--text-dim)">Collapse</span><span style="color:var(--text-bright)">${V22.HOMOLOGY.collapse}</span></div>
+      <div class="homology-line"><span style="color:var(--text-dim)">Action-weight density</span><span style="color:var(--text-bright)">${V22.HOMOLOGY.hiddenWeightedStates}</span></div>`;
+  }
+  function readTemporalInputsFromDOM(){
+    const getVal = (...ids) => {
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.value !== undefined && el.value !== '') return el.value;
+      }
+      return '';
+    };
+    const trace = {
+      pilotDomain: getVal('inputPilotDomain'),
+      actorClasses: getVal('inputActorClasses').trim(),
+      tSense: parseMaybeDate(getVal('inputTSense')),
+      tModel: parseMaybeDate(getVal('inputTModel')),
+      tOp: parseMaybeDate(getVal('inputTOp')),
+      tInst: parseMaybeDate(getVal('inputTInst')),
+      tPub: parseMaybeDate(getVal('inputTPub')),
+      closureClass: getVal('inputClosureClass','inputKappa'),
+      closureScore: parseMaybeFloat(getVal('inputClosureScore')),
+      recordClass: getVal('inputRecordClass'),
+      testimonyClass: getVal('inputTestimonyClass'),
+      behaviorClass: getVal('inputBehaviorClass'),
+      influenceScore: parseMaybeFloat(getVal('inputInfluenceScore')),
+      influenceWindow: parseMaybeFloat(getVal('inputInfluenceWindow')),
+      actorGapSelf: parseMaybeFloat(getVal('inputActorGapSelf')),
+      actorGapParallel: parseMaybeFloat(getVal('inputActorGapParallel')),
+      actorVarianceOverride: parseMaybeFloat(getVal('inputActorVariance')),
+      creaseField: parseMaybeFloat(getVal('inputCreaseField','inputHistoricalCrease')),
+      projectionBias: parseMaybeFloat(getVal('inputProjectionBias')),
+      pathDependence: parseMaybeFloat(getVal('inputPathDependence')),
+      projectionCapacity: parseMaybeFloat(getVal('inputProjectionCapacity')),
+      unfoldEnergy: parseMaybeFloat(getVal('inputUnfoldEnergy')),
+      unfoldThreshold: parseMaybeFloat(getVal('inputUnfoldThreshold')),
+      memo: getVal('inputRegistrationMemo','inputRegFidelityMemo').trim()
+    };
+    trace.hasAny = Object.values(trace).some(v => v !== null && v !== '' && !(typeof v === 'number' && Number.isNaN(v)));
+    return trace;
+  }
+  function clearTemporalInputsFromDOM(){
+    ['inputPilotDomain','inputActorClasses','inputTSense','inputTModel','inputTOp','inputTInst','inputTPub','inputClosureClass','inputKappa','inputClosureScore','inputRecordClass','inputTestimonyClass','inputBehaviorClass','inputInfluenceScore','inputInfluenceWindow','inputInfluenceIntegral','inputActorGapSelf','inputActorGapParallel','inputActorVariance','inputCreaseField','inputHistoricalCrease','inputProjectionBias','inputPathDependence','inputProjectionCapacity','inputUnfoldEnergy','inputUnfoldThreshold','inputRegistrationMemo','inputRegFidelityMemo'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    const preset = document.getElementById('pilotPresetStatus'); if (preset) preset.textContent = 'pilot preset idle';
+  }
+  function resolveKappa(raw, fallback){
+    const triad = modeClass([raw.recordClass, raw.testimonyClass, raw.behaviorClass], normalizeKappa(raw.closureClass, fallback));
+    const explicit = normalizeKappa(raw.closureClass, triad.value || fallback);
+    const usingTriad = [raw.recordClass, raw.testimonyClass, raw.behaviorClass].some(v => V22.CLASSIFIERS.includes(v));
+    return {
+      kappa: usingTriad ? triad.value : explicit,
+      disagreement: triad.disagreement || 0,
+      counts: triad.counts || {},
+      mode: usingTriad ? 'triangulated' : (raw.closureClass ? 'manual' : 'fallback')
+    };
+  }
+  function computeTemporalDiagnostics(raw){
+    const fallback = inferFallbackKappa();
+    const resolved = resolveKappa(raw, fallback);
+    const kappa = resolved.kappa;
+    const piOp = raw.actorGapSelf !== null ? raw.actorGapSelf : diffOrInf(raw.tInst, raw.tOp);
+    const piPub = diffOrInf(raw.tPub, raw.tOp);
+    const piSense = diffOrInf(raw.tInst, raw.tSense);
+    const actorGaps = [];
+    if (Number.isFinite(piOp) || piOp === Infinity) actorGaps.push(piOp === Infinity ? V22.THRESHOLDS.highPiMs * 4 : piOp);
+    if (Number.isFinite(raw.actorGapParallel)) actorGaps.push(raw.actorGapParallel);
+    const actorVariance = raw.actorVarianceOverride !== null ? clamp01(raw.actorVarianceOverride) : varianceNormalized(actorGaps);
+    const closureScore = mapClosureScore(kappa, raw.closureScore);
+    const baseCrease = raw.creaseField !== null ? clamp01(raw.creaseField) : clamp01((state?.fieldSignature?.beta || 0) * 0.35 + (state?.fieldSignature?.rho || 0) * 0.20 + (state?.fieldSignature?.eta_N || 0) * 0.20 + (resolved.disagreement || 0) * 0.25);
+    const projectionBias = raw.projectionBias !== null ? clamp01(raw.projectionBias) : clamp01((state?.fieldSignature?.delta_obs || 0) * 0.45 + (state?.fieldSignature?.sigma || 0) * 0.35 + (state?.losses?.LP || 0) * 0.20);
+    const pathDependence = raw.pathDependence !== null ? clamp01(raw.pathDependence) : clamp01(baseCrease * 0.6 + projectionBias * 0.2 + (state?.fieldSignature?.rho || 0) * 0.2);
+    const H = clamp01(mean([baseCrease, projectionBias, pathDependence]));
+    const projectionCapacity = raw.projectionCapacity !== null ? clamp01(raw.projectionCapacity) : clamp01(1 - ((state?.losses?.LC || 0) * 0.5 + (state?.losses?.LP || 0) * 0.5));
+    const positivePi = piOp === Infinity ? 1 : Number.isFinite(piOp) && piOp > 0 ? clamp01(Math.abs(piOp) / V22.THRESHOLDS.highPiMs) : 0;
+    const forcedAdjacency = clamp01(positivePi * 0.42 + H * 0.26 + projectionBias * 0.12 + pathDependence * 0.10 + actorVariance * 0.10);
+    const influenceAuto = clamp01(forcedAdjacency * 0.35 + (closureScore < 1 ? 0.20 : 0) + actorVariance * 0.15 + (state?.persistence || 0) * 0.10 + (resolved.disagreement || 0) * 0.10 + (projectionCapacity < 0.5 ? 0.10 : 0));
+    const influenceScore = raw.influenceScore !== null ? clamp01(raw.influenceScore) : influenceAuto;
+    const influenceWindow = raw.influenceWindow !== null ? Math.max(0, raw.influenceWindow) : Math.max(1, Number.isFinite(piPub) ? Math.abs(piPub) / 3600000 : Number.isFinite(piOp) ? Math.abs(piOp) / 3600000 : 1);
+    const influenceIntegral = influenceScore * influenceWindow;
+    const rupture = ((Number.isFinite(piOp) && piOp > 0) || piOp === Infinity) && closureScore < 1;
+    const beaconActive = rupture && influenceIntegral > V22.THRESHOLDS.beaconIntegral;
+    const temporalPosture = deriveTemporalPosture(kappa, piOp);
+    const routeFloor = V22.ROUTE_FLOORS[temporalPosture] || 'play';
+    const unfoldEnergy = raw.unfoldEnergy !== null ? clamp01(raw.unfoldEnergy) : clamp01((1 - closureScore) * 0.32 + resolved.disagreement * 0.20 + H * 0.18 + (raw.memo ? Math.min(raw.memo.length / 160, 1) * 0.10 : 0) + actorVariance * 0.10 + (projectionCapacity < 0.5 ? 0.10 : 0));
+    const unfoldThreshold = raw.unfoldThreshold !== null ? clamp01(raw.unfoldThreshold) : V22.THRESHOLDS.unfoldEnergy;
+    const practicalNonClosure = closureScore < 1 && unfoldEnergy > unfoldThreshold;
+    const zoneCandidate = (((piOp === Infinity) || (Number.isFinite(piOp) && piOp > V22.THRESHOLDS.highPiMs)) && closureScore < V22.THRESHOLDS.lowClosure && actorVariance > V22.THRESHOLDS.actorVariance);
+    return {
+      source: raw.hasAny ? 'trace' : 'fallback',
+      pilotDomain: raw.pilotDomain || '',
+      actorClasses: raw.actorClasses || '',
+      timestamps: { tSense: raw.tSense, tModel: raw.tModel, tOp: raw.tOp, tInst: raw.tInst, tPub: raw.tPub },
+      pi: { op: piOp, pub: piPub, sense: piSense },
+      kappa,
+      closureScore,
+      temporalPosture,
+      actorVariance,
+      actorGaps,
+      influenceScore,
+      influenceIntegral,
+      rupture,
+      beaconActive,
+      beaconSustained: beaconActive,
+      memo: raw.memo || '',
+      routeFloor,
+      forcedAdjacency,
+      historicalCrease: { H, crease: baseCrease, projectionBias, pathDependence },
+      projectionCapacity,
+      unfolding: { energy: unfoldEnergy, threshold: unfoldThreshold, practicalNonClosure },
+      kappaEvidence: { record: raw.recordClass || '', testimony: raw.testimonyClass || '', behavior: raw.behaviorClass || '', disagreement: resolved.disagreement, counts: resolved.counts || {} },
+      triangulationMode: resolved.mode,
+      homology: V22.HOMOLOGY,
+      zoneCandidate,
+      fidelityMemo: raw.memo || '',
+      combinedPosture: `${state?.routeState || 'play'} · ${temporalPosture}${beaconActive ? ' · beacon-active' : ''}`
+    };
+  }
+  function deriveTemporalDiagnosticsFromState(){
+    return computeTemporalDiagnostics({ hasAny:false, pilotDomain:'', actorClasses:'', closureClass:'', closureScore:null, recordClass:'', testimonyClass:'', behaviorClass:'', influenceScore:null, influenceWindow:null, actorGapSelf:null, actorGapParallel:null, memo:'', tSense:null, tModel:null, tOp:null, tInst:null, tPub:null, creaseField:null, projectionBias:null, pathDependence:null, projectionCapacity:null, unfoldEnergy:null, unfoldThreshold:null });
+  }
+  function promoteTemporalRouteIfNeeded(diag){
+    if (!window.state) return;
+    const currentRank = postureRank(state.routeState || 'play');
+    const floorRank = postureRank(diag.routeFloor || 'play');
+    let targetRank = Math.max(currentRank, floorRank);
+    if (diag.beaconActive && targetRank < postureRank('buffer')) targetRank = postureRank('buffer');
+    if (diag.unfolding.practicalNonClosure && targetRank < postureRank('buffer')) targetRank = postureRank('buffer');
+    if (diag.zoneCandidate && targetRank < postureRank('buffer')) targetRank = postureRank('buffer');
+    if (diag.kappa === 'inexpressible' && (state.harborEligibility || 0) >= (window.ROUTING_THRESHOLDS?.bufferHarbor || 0.62)) targetRank = Math.max(targetRank, postureRank('buffer'));
+    const nextRoute = routeForRank(targetRank);
+    if (nextRoute !== state.routeState) {
+      state.routeState = nextRoute;
+      state.routeAction = V22.ROUTE_COPY_V22[nextRoute] || (window.ROUTE_COPY ? ROUTE_COPY[nextRoute] : nextRoute);
+      if (state.handoffStatus === 'membrane-only' && nextRoute === 'warning') state.handoffStatus = 'intake-validated';
+      if (nextRoute === 'buffer') state.handoffStatus = 'buffer-prep';
+      if (nextRoute === 'harbor-eligible') state.handoffStatus = 'handoff-ready';
+    }
+  }
+  function injectTemporalIntoHumanInput(diag){
+    if (!window.state || !state.humanInput) return;
+    state.humanInput.temporal = {
+      pilotDomain: diag.pilotDomain,
+      actorClasses: diag.actorClasses,
+      timestamps: diag.timestamps,
+      pi: diag.pi,
+      kappa: diag.kappa,
+      closureScore: diag.closureScore,
+      actorVariance: diag.actorVariance,
+      forcedAdjacency: diag.forcedAdjacency,
+      historicalCrease: diag.historicalCrease,
+      projectionCapacity: diag.projectionCapacity,
+      influenceScore: diag.influenceScore,
+      influenceIntegral: diag.influenceIntegral,
+      beaconActive: diag.beaconActive,
+      practicalNonClosure: diag.unfolding.practicalNonClosure,
+      unfolding: diag.unfolding,
+      kappaEvidence: diag.kappaEvidence,
+      triangulationMode: diag.triangulationMode,
+      zoneCandidate: diag.zoneCandidate,
+      memo: diag.memo
+    };
+  }
+  function buildTemporalMetricsBlock(diag){
+    return {
+      preemption: { Pi_op: diag.pi.op, Pi_pub: diag.pi.pub, Pi_sense: diag.pi.sense },
+      closure: { kappa: diag.kappa, score: diag.closureScore, rupture: !!diag.rupture, disagreement: diag.kappaEvidence.disagreement, triangulationMode: diag.triangulationMode },
+      actorVariance: diag.actorVariance,
+      influenceScore: diag.influenceScore,
+      influenceIntegral: diag.influenceIntegral,
+      beaconActive: !!diag.beaconActive,
+      forcedAdjacency: diag.forcedAdjacency,
+      historicalCrease: diag.historicalCrease,
+      projectionCapacity: diag.projectionCapacity,
+      unfolding: diag.unfolding,
+      actorClasses: diag.actorClasses,
+      pilotDomain: diag.pilotDomain,
+      zoneCandidate: diag.zoneCandidate,
+      memo: diag.memo || ''
+    };
+  }
+  function rebuildTemporalPacketIfNeeded(){
+    if (!window.state || !state.temporalV22) return;
+    const humanRouteReady = state.inputMode !== 'human-route' || (state.humanInputStatus === 'validated' && !!state.humanInputChecksum);
+    if (!humanRouteReady) return;
+    if (!['warning','buffer','harbor-eligible'].includes(state.routeState)) return;
+    if (typeof window.createTCPHandoffPacket !== 'function') return;
+    const losses = state.losses || {};
+    const dominant = losses.dominant || ['—', 0];
+    const metrics = {
+      routingState: state.routeState,
+      fieldSignature: state.fieldSignature || { delta_obs:0, eta_N:0, sigma:0, gamma:0, chi:0, beta:0, rho:0 },
+      ruptureMetrics: {
+        H_E: state.harborEligibility || 0,
+        Sigma_R: state.signalRuptureIndex || 0,
+        P_s: state.persistence || 0,
+        R_c: state.recaptureRisk || 0,
+        D_conf: state.detector?.confidence || 0,
+        D_persist: state.detector?.persistence || 0,
+        D_spread: state.detector?.spread || 0,
+        D_trip: state.detector?.tripwires || 0
+      },
+      narrowingLosses: {
+        L_R: losses.LR || 0,
+        L_K: losses.LK || 0,
+        L_C: losses.LC || 0,
+        L_P: losses.LP || 0,
+        L_F: losses.LF || 0,
+        L_A: losses.LA || 0,
+        dominantLoss: typeof window.formatLossLabel === 'function' ? formatLossLabel(dominant[0]) : (dominant[0] || '—')
+      },
+      closureState: state.closureState || { extensionAdmitted:false, closureFailure:false, uniqueClosure:true },
+      confidence: state.routingConfidence || 0
+    };
+    const packet = window.createTCPHandoffPacket(metrics, typeof window.buildHandoffPacketKey === 'function' ? window.buildHandoffPacketKey(metrics) : null);
+    if (packet) state.tcpHandoffPacket = packet;
+  }
+  function updateTemporalUI(){
+    const diag = ensureTemporalState() || deriveTemporalDiagnosticsFromState();
+    const summary = diag.source === 'trace'
+      ? `${diag.temporalPosture} · κ ${diag.kappa} · Π_op ${formatGap(diag.pi.op)} · forced-adj ${diag.forcedAdjacency.toFixed(3)}${diag.beaconActive ? ' · beacon-active' : ''}`
+      : `${diag.temporalPosture} · fallback posture from route, closure state, and deformation field`;
+    const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
+    const setWidth = (id, value) => { const el = document.getElementById(id); if (el) el.style.width = `${Math.max(0, Math.min(100, value))}%`; };
+    set('temporalSummaryCopy', summary);
+    set('temporalPiOpReadout', formatGap(diag.pi.op));
+    set('temporalPiPubReadout', formatGap(diag.pi.pub));
+    set('temporalPiSenseReadout', formatGap(diag.pi.sense));
+    set('temporalClosureReadout', diag.kappa);
+    set('temporalClosureScoreReadout', diag.closureScore.toFixed(4));
+    set('temporalActorVarReadout', diag.actorVariance.toFixed(4));
+    set('temporalPostureReadout', diag.temporalPosture);
+    set('temporalAdjacencyReadout', diag.forcedAdjacency.toFixed(4));
+    set('temporalCreaseReadout', diag.historicalCrease.H.toFixed(4));
+    set('temporalUnfoldReadout', diag.unfolding.energy.toFixed(4));
+    set('temporalKappaDisReadout', diag.kappaEvidence.disagreement.toFixed(4));
+    set('temporalZoneReadout', diag.zoneCandidate ? 'true' : 'false');
+    set('temporalMemoReadout', diag.memo || 'awaiting memo');
+    set('temporalPiBarVal', Number.isFinite(diag.pi.op) ? (diag.pi.op/3600000).toFixed(3) + 'h' : (diag.pi.op === Infinity ? '∞' : '0.000'));
+    set('temporalClosureBarVal', diag.closureScore.toFixed(3));
+    set('temporalInfluenceBarVal', diag.influenceIntegral.toFixed(3));
+    set('temporalCreaseBarVal', diag.historicalCrease.H.toFixed(3));
+    set('temporalUnfoldBarVal', diag.unfolding.energy.toFixed(3));
+    const piNorm = diag.pi.op === Infinity ? 100 : Number.isFinite(diag.pi.op) ? Math.min(100, Math.abs(diag.pi.op) / 3600000 * 20) : 0;
+    setWidth('temporalPiBar', piNorm);
+    setWidth('temporalClosureBar', diag.closureScore * 100);
+    setWidth('temporalInfluenceBar', clamp01(diag.influenceIntegral / 2) * 100);
+    setWidth('temporalCreaseBar', diag.historicalCrease.H * 100);
+    setWidth('temporalUnfoldBar', diag.unfolding.energy * 100);
+    const closureBar = document.getElementById('temporalClosureBar');
+    if (closureBar) closureBar.style.background = diag.closureScore >= 0.99 ? 'var(--registered)' : diag.kappa === 'drift' ? 'var(--latent)' : diag.kappa === 'suppressed' ? 'var(--suppressed)' : 'var(--aliased)';
+    const postureFlag = document.getElementById('temporalPostureFlag');
+    if (postureFlag) { postureFlag.className = `temporal-flag ${diag.temporalPosture}`; postureFlag.textContent = diag.temporalPosture; }
+    const beaconFlag = document.getElementById('temporalBeaconFlag');
+    if (beaconFlag) { beaconFlag.className = `temporal-flag ${diag.beaconActive ? 'beacon' : ''}`; beaconFlag.textContent = diag.beaconActive ? 'beacon sustained' : 'beacon off'; }
+    const practicalFlag = document.getElementById('temporalPracticalFlag');
+    if (practicalFlag) { practicalFlag.className = `temporal-flag ${diag.unfolding.practicalNonClosure ? 'practical' : ''}`; practicalFlag.textContent = diag.unfolding.practicalNonClosure ? 'practical non-closure' : 'closure cost nominal'; }
+    const pill = document.getElementById('temporalStatus');
+    if (pill) pill.textContent = `κ ${diag.kappa} · Π ${formatGap(diag.pi.op)} · forced-adj ${diag.forcedAdjacency.toFixed(2)}`;
+    const pilotBadge = document.getElementById('pilotBadge');
+    if (pilotBadge) {
+      if (diag.pilotDomain) { pilotBadge.style.display = 'inline-flex'; pilotBadge.textContent = `${diag.pilotDomain}`; }
+      else pilotBadge.style.display = 'none';
+    }
+    set('mTemporalPosture', diag.temporalPosture);
+    set('mClosureScore', diag.closureScore.toFixed(4));
+    set('mBeaconStatus', diag.beaconActive ? 'beacon sustained' : 'beacon off');
+    set('mPiOp', formatGap(diag.pi.op));
+    set('mPiPub', formatGap(diag.pi.pub));
+    set('mPiSense', formatGap(diag.pi.sense));
+    set('mUnfoldEnergy', diag.unfolding.energy.toFixed(4));
+    set('mHistoricalCrease', diag.historicalCrease.H.toFixed(4));
+    set('mPilotDomain', diag.pilotDomain || 'none');
+    set('mHomologyMode', 'structural homology');
+    const aliasKappa = document.getElementById('inputKappa'); if (aliasKappa) aliasKappa.value = diag.kappa;
+    const aliasMemo = document.getElementById('inputRegFidelityMemo'); if (aliasMemo) aliasMemo.value = diag.memo || '';
+    const aliasCrease = document.getElementById('inputHistoricalCrease'); if (aliasCrease) aliasCrease.value = diag.historicalCrease.H.toFixed(2);
+    const aliasIntegral = document.getElementById('inputInfluenceIntegral'); if (aliasIntegral) aliasIntegral.value = diag.influenceIntegral.toFixed(4);
+    document.body.classList.remove('temporal-synced','temporal-preemptive','temporal-drift','temporal-suppressed','temporal-inexpressible');
+    document.body.classList.add(`temporal-${diag.temporalPosture}`);
+    if (window.state) {
+      const routeCombined = `${state.routeState || 'play'} · ${diag.temporalPosture}${diag.beaconActive ? ' · beacon-active' : ''}`;
+      set('mRouteState', routeCombined);
+      set('mRouteAction', `${state.routeAction || 'membrane-only'} · κ ${diag.kappa} · forced-adj ${diag.forcedAdjacency.toFixed(2)}`);
+      set('bridgeRoutingState', routeCombined);
+      set('bridgeHandoffStatus', `${state.handoffStatus || 'membrane-only'} · κ ${diag.kappa}`);
+      set('bridgeStateCopy', `${(V22.ROUTE_COPY_V22[state.routeState] || state.routeAction || 'audit baseline')} · temporal ${diag.temporalPosture}${diag.beaconActive ? ' · beacon-active' : ''}`);
+      set('bridgeAntiRecapture', diag.beaconActive ? 'beacon-active' : (state.antiRecaptureMode ? 'active' : 'inactive'));
+      set('bridgePacketIntegrity', (diag.forcedAdjacency).toFixed(4));
+      set('bridgeProvIntegrity', (diag.historicalCrease.H).toFixed(4));
+      set('bridgeDetConfidence', ((state.detector?.confidence || 0)).toFixed(4));
+      set('bridgeDetPersistence', ((state.detector?.persistence || 0)).toFixed(4));
+      set('bridgeDominantLoss', `${document.getElementById('mDominantLoss')?.textContent || '—'} · E_unfold ${diag.unfolding.energy.toFixed(2)}`);
+      const proj = document.getElementById('inputProjectionReadout');
+      if (proj && state.humanInputStatus === 'validated') {
+        const base = proj.textContent.split(' || ')[0];
+        proj.textContent = `${base} || Π_op ${formatGap(diag.pi.op)} · κ ${diag.kappa} · C ${diag.closureScore.toFixed(3)} · H ${diag.historicalCrease.H.toFixed(2)} · forced-adj ${diag.forcedAdjacency.toFixed(2)}${diag.beaconActive ? ' · beacon' : ''}`;
+      }
+    }
+    fillHomologyGrid();
+  }
+  function syncTemporalDiagnosticsFromDOM(){
+    ensureTemporalState();
+    const raw = readTemporalInputsFromDOM();
+    const diag = raw.hasAny ? computeTemporalDiagnostics(raw) : deriveTemporalDiagnosticsFromState();
+    state.temporalV22 = diag;
+    injectTemporalIntoHumanInput(diag);
+    promoteTemporalRouteIfNeeded(diag);
+    rebuildTemporalPacketIfNeeded();
+    updateTemporalUI();
+    return diag;
+  }
+
+  window.loadPilotPresetV22 = function loadPilotPresetV22(name){
+    const preset = V22.PILOTS[name];
+    if (!preset) return;
+    const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+    setVal('inputPilotDomain', name);
+    setVal('inputActorClasses', preset.actorClasses);
+    setVal('inputRegistrationMemo', preset.fidelityPrompt);
+    setVal('inputCreaseField', preset.defaultCrease.toFixed(2));
+    setVal('inputProjectionBias', preset.defaultProjectionBias.toFixed(2));
+    setVal('inputPathDependence', preset.defaultPathDependence.toFixed(2));
+    setVal('inputInfluenceWindow', String(preset.defaultWindow));
+    setVal('inputHistoricalCrease', preset.defaultCrease.toFixed(2));
+    setVal('inputRegFidelityMemo', preset.fidelityPrompt);
+    const status = document.getElementById('pilotPresetStatus');
+    if (status) status.textContent = `${preset.label} · ${preset.note}`;
+    try { syncTemporalDiagnosticsFromDOM(); } catch (err) { console.error(err); }
+  };
+
+  const originalGetHumanInputPayloadFromDOM = window.getHumanInputPayloadFromDOM;
+  if (typeof originalGetHumanInputPayloadFromDOM === 'function') {
+    window.getHumanInputPayloadFromDOM = function apertureV22GetHumanPayload(){
+      const payload = originalGetHumanInputPayloadFromDOM.apply(this, arguments) || {};
+      payload.temporal = readTemporalInputsFromDOM();
+      return payload;
+    };
+  }
+  const originalHandleValidateHumanInput = window.handleValidateHumanInput;
+  if (typeof originalHandleValidateHumanInput === 'function') {
+    window.handleValidateHumanInput = function apertureV22Validate(){
+      const result = originalHandleValidateHumanInput.apply(this, arguments);
+      try { syncTemporalDiagnosticsFromDOM(); } catch (err) { console.error(err); }
+      return result;
+    };
+  }
+  const originalHandleProjectHumanInput = window.handleProjectHumanInput;
+  if (typeof originalHandleProjectHumanInput === 'function') {
+    window.handleProjectHumanInput = function apertureV22Project(){
+      const result = originalHandleProjectHumanInput.apply(this, arguments);
+      try { syncTemporalDiagnosticsFromDOM(); } catch (err) { console.error(err); }
+      return result;
+    };
+  }
+  const originalClearHumanInput = window.clearHumanInput;
+  if (typeof originalClearHumanInput === 'function') {
+    window.clearHumanInput = function apertureV22Clear(suppressLog = false){
+      const result = originalClearHumanInput.call(this, suppressLog);
+      clearTemporalInputsFromDOM();
+      state.temporalV22 = deriveTemporalDiagnosticsFromState();
+      updateTemporalUI();
+      return result;
+    };
+  }
+  const originalCreateTCPHandoffPacket = window.createTCPHandoffPacket;
+  if (typeof originalCreateTCPHandoffPacket === 'function') {
+    window.createTCPHandoffPacket = function apertureV22Packet(metrics, packetKeyOverride = null){
+      const packet = originalCreateTCPHandoffPacket.apply(this, arguments);
+      try {
+        const diag = state?.temporalV22 || deriveTemporalDiagnosticsFromState();
+        packet.version = V22.VERSION;
+        packet.schemaVersion = V22.SCHEMA;
+        packet.temporalDiagnostics = buildTemporalMetricsBlock(diag);
+        packet.routingPosture = {
+          routeState: state?.routeState || 'play',
+          temporalPosture: diag.temporalPosture,
+          combined: `${state?.routeState || 'play'} · ${diag.temporalPosture}${diag.beaconActive ? ' · beacon-active' : ''}`,
+          forcedAdjacency: diag.forcedAdjacency
+        };
+        packet.deformationField = {
+          historicalCrease: diag.historicalCrease,
+          projectionCapacity: diag.projectionCapacity,
+          unfolding: diag.unfolding,
+          homology: diag.homology,
+          actorClasses: diag.actorClasses,
+          pilotDomain: diag.pilotDomain,
+          zoneCandidate: diag.zoneCandidate
+        };
+        if (packet.backbone) {
+          packet.backbone.firmware = V22.VERSION;
+          packet.backbone.schema = V22.SCHEMA;
+        }
+        if (packet.forensicSchema) packet.forensicSchema.schemaVersion = V22.SCHEMA;
+        if (packet.humanRouteEnvelope) packet.humanRouteEnvelope.temporalDiagnostics = buildTemporalMetricsBlock(diag);
+      } catch (err) { console.error(err); }
+      return packet;
+    };
+  }
+  const originalBuildHandoffPacketKey = window.buildHandoffPacketKey;
+  if (typeof originalBuildHandoffPacketKey === 'function') {
+    window.buildHandoffPacketKey = function apertureV22PacketKey(metrics){
+      const base = originalBuildHandoffPacketKey.apply(this, arguments);
+      try {
+        const diag = state?.temporalV22 || deriveTemporalDiagnosticsFromState();
+        const material = JSON.stringify({
+          base,
+          temporalPosture: diag.temporalPosture,
+          kappa: diag.kappa,
+          closureScore: diag.closureScore,
+          beacon: diag.beaconActive,
+          Pi_op: diag.pi.op,
+          actorVar: diag.actorVariance,
+          memo: diag.memo,
+          H: diag.historicalCrease.H,
+          forcedAdjacency: diag.forcedAdjacency,
+          E_unfold: diag.unfolding.energy,
+          practicalNonClosure: diag.unfolding.practicalNonClosure,
+          zoneCandidate: diag.zoneCandidate,
+          triangulationMode: diag.triangulationMode,
+          pilotDomain: diag.pilotDomain
+        });
+        return typeof window.fnv1aHash === 'function' ? fnv1aHash(material) : base;
+      } catch (err) { return base; }
+    };
+  }
+  const originalRunSelfTest = window.runSelfTest;
+  if (typeof originalRunSelfTest === 'function') {
+    window.runSelfTest = function apertureV22SelfTest(){
+      const result = originalRunSelfTest.apply(this, arguments);
+      result.temporal = document.getElementById('apertureV22TemporalPanel') && document.getElementById('apertureV22TraceBlock') ? 'pass' : 'warn';
+      if (Array.isArray(result.issues)) {
+        if (result.temporal !== 'pass' && !result.issues.includes('v2.2 temporal layer missing')) result.issues.push('v2.2 temporal layer missing');
+        if (!document.getElementById('homologyGrid') && !result.issues.includes('homology panel missing')) result.issues.push('homology panel missing');
+      }
+      return result;
+    };
+  }
+  const originalUpdateUI = window.updateUI;
+  if (typeof originalUpdateUI === 'function') {
+    window.updateUI = function apertureV22Update(){
+      const result = originalUpdateUI.apply(this, arguments);
+      try { setVersionV22(); syncTemporalDiagnosticsFromDOM(); } catch (err) { console.error(err); }
+      return result;
+    };
+  }
+  const originalResetSystem = window.resetSystem;
+  if (typeof originalResetSystem === 'function') {
+    window.resetSystem = function apertureV22Reset(){
+      const result = originalResetSystem.apply(this, arguments);
+      setTimeout(() => {
+        try {
+          clearTemporalInputsFromDOM();
+          state.temporalV22 = deriveTemporalDiagnosticsFromState();
+          updateTemporalUI();
+        } catch (err) { console.error(err); }
+      }, 0);
+      return result;
+    };
+  }
+  function setVersionV22(){
+    try {
+      if (window.FIRMWARE) {
+        FIRMWARE.VERSION = V22.VERSION;
+        FIRMWARE.SCHEMA_VERSION = V22.SCHEMA;
+        if (FIRMWARE.ROUTE_COPY) Object.assign(FIRMWARE.ROUTE_COPY, V22.ROUTE_COPY_V22);
+      }
+    } catch (err) {}
+    document.title = 'TD613 Aperture - v2.2.1';
+    const subtitle = document.getElementById('subtitle');
+    if (subtitle) subtitle.textContent = 'TD613 Aperture v2.2.1 counter-tool - deformation-aware closure instrument across PRCS-A';
+    const fw = document.getElementById('mFirmwareVer'); if (fw) fw.textContent = 'v2.2.1';
+    const schemaRead = document.getElementById('schemaVersionReadout'); if (schemaRead) schemaRead.textContent = V22.SCHEMA;
+  }
+  function bootV22(){
+    injectStyle();
+    injectTemporalUI();
+    fillHomologyGrid();
+    setVersionV22();
+    ensureTemporalState();
+    state.temporalV22 = deriveTemporalDiagnosticsFromState();
+    updateTemporalUI();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootV22, { once: true });
+  else bootV22();
+})();
+</script>
+
+
+
+<style id="td613-aperture-gateway-embed-style">
+  body[data-embed-mode="gateway"] {
+    min-height: 100vh;
+    overflow: auto;
+    background:
+      radial-gradient(circle at 50% 18%, rgba(139, 233, 253, 0.08), transparent 38%),
+      radial-gradient(circle at 22% 0%, rgba(189, 147, 249, 0.08), transparent 34%),
+      linear-gradient(180deg, rgba(4, 6, 10, 0.98), rgba(7, 10, 16, 1));
+  }
+
+  body[data-embed-mode="gateway"] header {
+    padding: 26px 28px 12px;
+  }
+
+  body[data-embed-mode="gateway"] .subtitle {
+    max-width: 72ch;
+  }
+
+  body[data-embed-mode="gateway"] main {
+    grid-template-columns: 320px minmax(0, 1fr) 320px;
+    gap: 14px;
+    padding: 0 18px 18px;
+  }
+
+  body[data-embed-mode="gateway"] .panel,
+  body[data-embed-mode="gateway"] .bottom-panel {
+    border-color: rgba(139, 233, 253, 0.14);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.34);
+  }
+
+  body[data-embed-mode="gateway"] .center-canvas,
+  body[data-embed-mode="gateway"] #centerArea {
+    min-height: 560px;
+  }
+
+  body[data-embed-mode="gateway"] #btnMoire {
+    display: inline-flex;
+  }
+
+  body[data-embed-mode="gateway"] .section-label::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    margin-left: 10px;
+    background: linear-gradient(90deg, rgba(189, 147, 249, 0.38), transparent);
+  }
+
+  @media (max-width: 980px) {
+    body[data-embed-mode="gateway"] main {
+      grid-template-columns: 1fr;
+    }
+
+    body[data-embed-mode="gateway"] .center-canvas,
+    body[data-embed-mode="gateway"] #centerArea {
+      min-height: 460px;
+    }
+  }
+</style>
+<script id="td613-aperture-gateway-embed-script">
+(() => {
+  if (window.__TD613_APERTURE_GATEWAY_EMBED__) return;
+  window.__TD613_APERTURE_GATEWAY_EMBED__ = true;
+
+  const GATEWAY_APERTURE_HANDOFF_KEY = "td613.gateway.aperture-handoff";
+  const APERTURE_EMBED_MODE = (() => {
+    try {
+      return new URL(window.location.href).searchParams.get("embed") || "";
+    } catch (error) {
+      return "";
+    }
+  })();
+  const APERTURE_GATEWAY_EMBED = APERTURE_EMBED_MODE === "gateway";
+  let lastGatewayEmbedStatusSignature = "";
+  let lastGatewayEmbedStatusAt = 0;
+
+  window.GATEWAY_APERTURE_HANDOFF_KEY = GATEWAY_APERTURE_HANDOFF_KEY;
+  window.APERTURE_EMBED_MODE = APERTURE_EMBED_MODE;
+  window.APERTURE_GATEWAY_EMBED = APERTURE_GATEWAY_EMBED;
+
+  if (APERTURE_GATEWAY_EMBED) {
+    document.body.dataset.embedMode = "gateway";
+  }
+
+  function clamp01(value) {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) return 0;
+    return Math.max(0, Math.min(1, parsed));
+  }
+
+  function computeCumulativeNarrowingFromState() {
+    if (window.state && typeof window.state.cumulativeNarrowing === "number") {
+      return clamp01(window.state.cumulativeNarrowing);
+    }
+    const losses = window.state && window.state.losses ? window.state.losses : {};
+    const keys = ["LR", "LK", "LC", "LP", "LF", "LA"];
+    let product = 1;
+    keys.forEach((key) => {
+      product *= 1 - clamp01(losses[key]);
+    });
+    return clamp01(1 - product);
+  }
+
+  function clonePacket(packet) {
+    if (!packet || typeof packet !== "object") return null;
+    try {
+      return JSON.parse(JSON.stringify(packet));
     } catch (error) {
       return null;
     }
   }
 
-  function fmt(value) {
-    const num = Number(value);
-    return Number.isFinite(num) ? num.toFixed(3) : "0.000";
+  const originalCreateTCPHandoffPacket = typeof window.createTCPHandoffPacket === "function"
+    ? window.createTCPHandoffPacket
+    : null;
+  if (originalCreateTCPHandoffPacket) {
+    window.createTCPHandoffPacket = function td613GatewayCompatPacket(metrics, packetKeyOverride = null) {
+      const packet = originalCreateTCPHandoffPacket.apply(this, arguments);
+      if (!packet || typeof packet !== "object") {
+        return packet;
+      }
+      if (typeof packet.cumulativeNarrowing !== "number") {
+        packet.cumulativeNarrowing = computeCumulativeNarrowingFromState();
+      }
+      if (!Array.isArray(packet.bounceProvenance)) {
+        packet.bounceProvenance = ((window.state && window.state.bounceProvenance) || []).slice(-32).map((entry) => ({
+          ...entry,
+          gates: { ...((entry && entry.gates) || {}) }
+        }));
+      }
+      return packet;
+    };
   }
 
-  function escapeHtml(value) {
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
+  function buildGatewayEmbedStatus() {
+    const latestPacket = clonePacket((window.state && (window.state.lastExportedPacket || window.state.tcpHandoffPacket)) || null);
+    const diag = window.state && window.state.temporalV22 ? window.state.temporalV22 : null;
+    return {
+      source: "td613-aperture",
+      mode: "gateway-embed",
+      type: "status",
+      routeState: window.state && window.state.routeState ? window.state.routeState : "play",
+      handoffStatus: window.state && window.state.handoffStatus ? window.state.handoffStatus : "membrane-only",
+      packetReady: !!(window.state && window.state.tcpHandoffPacket),
+      packetExported: !!(window.state && window.state.packetExported),
+      packetKey: latestPacket && latestPacket.packetKey ? latestPacket.packetKey : null,
+      checksum: latestPacket && latestPacket.checksum ? latestPacket.checksum : null,
+      cumulativeNarrowing: latestPacket && typeof latestPacket.cumulativeNarrowing === "number"
+        ? clamp01(latestPacket.cumulativeNarrowing)
+        : computeCumulativeNarrowingFromState(),
+      dominantLoss: window.state && window.state.losses && window.state.losses.dominant
+        ? window.state.losses.dominant
+        : "?",
+      harborEligibility: clamp01(window.state && window.state.harborEligibility),
+      provenanceIntegrity: latestPacket && latestPacket.provenance && typeof latestPacket.provenance.integrity === "number"
+        ? clamp01(latestPacket.provenance.integrity)
+        : clamp01(window.state && window.state.fieldSignature && window.state.fieldSignature.rho),
+      temporalPosture: diag ? diag.temporalPosture : null,
+      closureClass: diag ? diag.kappa : null,
+      closureScore: diag && typeof diag.closureScore === "number" ? diag.closureScore : null,
+      historicalCrease: diag && diag.historicalCrease && typeof diag.historicalCrease.H === "number"
+        ? diag.historicalCrease.H
+        : null,
+      unfoldingEnergy: diag && diag.unfolding && typeof diag.unfolding.energy === "number"
+        ? diag.unfolding.energy
+        : null,
+      pilotDomain: diag && diag.pilotDomain ? diag.pilotDomain : null,
+      latestPacket
+    };
   }
 
-  function clampUnit(value) {
-    const num = Number(value);
-    if (!Number.isFinite(num)) return 0;
-    return Math.max(0, Math.min(1, num));
+  function persistGatewayEmbedStatus(payload) {
+    try {
+      const serialized = JSON.stringify(payload);
+      if (window.localStorage) {
+        window.localStorage.setItem(GATEWAY_APERTURE_HANDOFF_KEY, serialized);
+      }
+      if (window.sessionStorage) {
+        window.sessionStorage.setItem(GATEWAY_APERTURE_HANDOFF_KEY, serialized);
+      }
+    } catch (error) {
+      // Storage is a convenience lane only.
+    }
   }
 
-  function ensureForensicPanels() {
-    const host = document.getElementById("rightPanel");
-    const anchor = document.getElementById("tcpBridgePanel");
-    if (!host || !anchor || document.getElementById("td613SchemaPanel")) {
+  function emitGatewayEmbedStatus(force = false) {
+    const payload = buildGatewayEmbedStatus();
+    const signature = JSON.stringify({
+      routeState: payload.routeState,
+      handoffStatus: payload.handoffStatus,
+      packetReady: payload.packetReady,
+      packetExported: payload.packetExported,
+      packetKey: payload.packetKey,
+      checksum: payload.checksum,
+      cumulativeNarrowing: Number(clamp01(payload.cumulativeNarrowing).toFixed(3)),
+      dominantLoss: payload.dominantLoss,
+      harborEligibility: Number(clamp01(payload.harborEligibility).toFixed(3)),
+      provenanceIntegrity: Number(clamp01(payload.provenanceIntegrity).toFixed(3)),
+      temporalPosture: payload.temporalPosture || "none",
+      closureClass: payload.closureClass || "none"
+    });
+    const now = typeof performance !== "undefined" && typeof performance.now === "function"
+      ? performance.now()
+      : Date.now();
+    if (!force && signature === lastGatewayEmbedStatusSignature && now - lastGatewayEmbedStatusAt < 240) {
       return;
     }
-    anchor.insertAdjacentHTML("afterend", `
-      <div class="section-label">TD613 SUITE FORENSIC SCHEMA</div>
-      <div id="td613SchemaPanel" class="tcp-hook">
-        <div class="hook-title">Governed exposure backbone</div>
-        <div class="hook-value" id="schemaVersionReadout">td613-governed-exposure/v1</div>
-        <div class="bridge-meta">
-          <div class="bridge-readout"><span class="label">Latent / projected / registered</span><span class="value" id="schemaExposureReadout">pending</span></div>
-          <div class="bridge-readout"><span class="label">Source classes</span><span class="value" id="schemaSourceClassReadout">pending</span></div>
-          <div class="bridge-readout"><span class="label">Authority ceiling</span><span class="value" id="schemaAuthorityReadout">pending</span></div>
-          <div class="bridge-readout"><span class="label">Gap / dominant operator</span><span class="value" id="schemaOperatorReadout">pending</span></div>
-        </div>
-      </div>
-
-      <div class="section-label">DIFFERENTIAL ADMISSIBILITY</div>
-      <div id="diffAuditPanel" class="tcp-hook">
-        <div class="hook-title">Classed route variance</div>
-        <div class="hook-value" id="diffAuditSummary">awaiting route sweep</div>
-        <div id="diffAuditMatrix" class="bridge-grid"></div>
-      </div>
-
-      <div class="section-label">PROTECTIVE VOCABULARY REASSIGNMENT</div>
-      <div id="ethicsAuditPanel" class="tcp-hook">
-        <div class="hook-title">Where care-language changes routing or shielding</div>
-        <div class="hook-value" id="ethicsAuditSummary">awaiting ethics sweep</div>
-        <div id="ethicsAuditTable" class="bridge-meta"></div>
-      </div>
-    `);
+    lastGatewayEmbedStatusSignature = signature;
+    lastGatewayEmbedStatusAt = now;
+    persistGatewayEmbedStatus(payload);
+    if (!APERTURE_GATEWAY_EMBED || !window.parent || window.parent === window) {
+      return;
+    }
+    const targetOrigin = window.location.origin && window.location.origin !== "null"
+      ? window.location.origin
+      : "*";
+    window.parent.postMessage(payload, targetOrigin);
   }
 
-  function computeDifferentialAudit() {
-    const st = currentState();
-    const vector = typeof currentRecognitionVector === "function" ? currentRecognitionVector() : {};
-    const routes = st && st.eoDiagnostics && st.eoDiagnostics.routes
-      ? st.eoDiagnostics.routes
-      : {
-          open: st && st.routeState ? st.routeState : "play",
-          standard: st && st.routeState ? st.routeState : "play",
-          restricted: st && st.routeState ? st.routeState : "play"
-        };
-    const rows = [
-      { key: "open", label: "Θ_open", route: routes.open || "play", aperture: THETA.open.apertureThreshold, capacity: THETA.open.capacityMult, strictness: THETA.open.policyStrictness, naming: THETA.open.namingSensitivity },
-      { key: "standard", label: "Θ_std", route: routes.standard || "play", aperture: THETA.standard.apertureThreshold, capacity: THETA.standard.capacityMult, strictness: THETA.standard.policyStrictness, naming: THETA.standard.namingSensitivity },
-      { key: "restricted", label: "Θ_res", route: routes.restricted || "play", aperture: THETA.restricted.apertureThreshold, capacity: THETA.restricted.capacityMult, strictness: THETA.restricted.policyStrictness, naming: THETA.restricted.namingSensitivity }
-    ];
-    const routeVariance = [...new Set(rows.map((row) => row.route))].length;
-    return {
-      rows,
-      routeVariance,
-      delta_obs: clampUnit(vector.delta_obs || 0),
-      aliasPersistence: clampUnit(vector.eta_N || 0),
-      policyPressure: clampUnit(vector.sigma || 0),
-      counterfactual: st && st.eoDiagnostics && st.eoDiagnostics.counterfactual
-        ? st.eoDiagnostics.counterfactual
-        : `Θ_open ${rows[0].route} · Θ_std ${rows[1].route} · Θ_res ${rows[2].route}`,
-      summary: routeVariance > 1
-        ? `class variance visible · ${rows.map((row) => `${row.label} ${row.route}`).join(" · ")}`
-        : `theta-stable · ${rows[1].route}`
-    };
-  }
+  window.buildGatewayEmbedStatus = buildGatewayEmbedStatus;
+  window.emitGatewayEmbedStatus = emitGatewayEmbedStatus;
 
-  function computeEthicsAudit(diff) {
-    const routeSpread = diff.routeVariance;
-    const strongerShielding = diff.rows[2].strictness > diff.rows[0].strictness;
-    const capacitySkew = diff.rows[0].capacity > diff.rows[2].capacity;
-    return {
-      summary: routeSpread > 1
-        ? "protective vocabulary drift watch active"
-        : "protective vocabulary drift nominal",
-      rows: [
-        {
-          term: "privacy",
-          signal: capacitySkew ? "shield variance by class" : "shield variance low",
-          detail: capacitySkew ? "open classes retain more context window than restricted classes" : "context window pressure is not currently class-skewed"
-        },
-        {
-          term: "safety",
-          signal: strongerShielding ? "routing hardens downward" : "routing hardness roughly even",
-          detail: strongerShielding ? "policy strictness rises as Θ narrows, so safety language can become classed admissibility" : "policy strictness is not visibly redistributing route today"
-        },
-        {
-          term: "trust",
-          signal: routeSpread > 1 ? "trust copy risks class split" : "trust copy currently aligned",
-          detail: routeSpread > 1 ? diff.counterfactual : "counterfactual routes are currently aligned"
-        },
-        {
-          term: "opacity",
-          signal: diff.policyPressure > 0.22 ? "opacity pressure visible" : "opacity pressure low",
-          detail: diff.policyPressure > 0.22 ? "suppression and omission pressure are high enough to hide loss behind polish" : "projection loss is visible without heavy opacity"
-        },
-        {
-          term: "healing",
-          signal: routeSpread > 1 ? "care language could reassign burden" : "care language not currently shifting burden",
-          detail: routeSpread > 1 ? "class variance means protective language could preserve ambiguity upward while standardizing downward" : "no current class divergence detected in burden routing"
-        }
-      ]
-    };
-  }
-
-  function buildSuiteSchemaSnapshot() {
-    const st = currentState();
-    const packet = st && st.tcpHandoffPacket ? st.tcpHandoffPacket : null;
-    const vector = typeof currentRecognitionVector === "function" ? currentRecognitionVector() : {};
-    const n = st && st.narrowing ? st.narrowing : { S: 0, P: 0, A: 0 };
-    const totalAdmissibility = st && st.admissibility
-      ? (st.admissibility.registered + st.admissibility.latent + st.admissibility.suppressed + st.admissibility.aliased)
-      : 0;
-    const sourceClasses = [
-      st && st.inputMode === "human-route" ? "counter-tool trace" : "observational trace",
-      st && st.antiRecaptureMode ? "anti-recapture visible" : "anti-recapture latent",
-      packet ? "packet:non-identifying" : "packet:pending"
-    ];
-    return {
-      suite: "TD613 Forensic Authorship Whistleblower Suite",
-      schemaVersion: "td613-governed-exposure/v1",
-      governedExposure: {
-        S: Number(n.S || 0),
-        projected: Number(n.P || 0),
-        registered: Number(n.A || 0),
-        O: clampUnit(st && st.omission ? st.omission.O : 0),
-        O_star: clampUnit(st && st.omission ? st.omission.Ostar : 0),
-        delta_obs: clampUnit(vector.delta_obs || 0),
-        Gap: clampUnit(Math.max(st && st.residueIndex ? st.residueIndex : 0, st && st.signalRuptureIndex ? st.signalRuptureIndex : 0)),
-        NameSens: clampUnit((st && st.namingDisruptions ? st.namingDisruptions : 0) / Math.max(st && st.internalInteractions ? st.internalInteractions : 1, 1) * 8),
-        AliasPersist: clampUnit(vector.eta_N || 0),
-        Red: clampUnit(st && st.constellationSpread ? st.constellationSpread : 0),
-        Supp_tau: clampUnit((st && st.admissibility ? st.admissibility.suppressed : 0) / Math.max(totalAdmissibility, 1)),
-        Theta_u: THETA[(st && st.userClass) || "standard"].label,
-        dominantOperator: st && st.losses && st.losses.dominant ? st.losses.dominant : "—",
-        routeState: st && st.routeState ? st.routeState : "play"
-      },
-      sourceClasses,
-      authorityCeiling: st && st.routeState === "harbor-eligible"
-        ? "guarded audit egress"
-        : st && st.routeState === "buffer"
-          ? "warning-marked audit"
-          : "observational",
-      metricClasses: {
-        provenanceIntegrity: clampUnit(st && st.bridgeProvIntegrity ? st.bridgeProvIntegrity : st && st.provenanceIntegrity ? st.provenanceIntegrity : 0.82),
-        burdenConcentration: clampUnit((st && st.omission ? st.omission.Ostar : 0) + (st && st.namingDisruptions ? st.namingDisruptions / 12 : 0))
+  const originalUpdateUI = typeof window.updateUI === "function" ? window.updateUI : null;
+  if (originalUpdateUI) {
+    window.updateUI = function td613GatewayEmbedUpdateUI(...args) {
+      const result = originalUpdateUI.apply(this, args);
+      try {
+        const opts = args[0] || {};
+        emitGatewayEmbedStatus(!!opts.force);
+      } catch (error) {
+        console.error(error);
       }
+      return result;
     };
   }
 
-  function updateForensicPanels() {
-    ensureForensicPanels();
-    const diff = computeDifferentialAudit();
-    const ethics = computeEthicsAudit(diff);
-    const schema = buildSuiteSchemaSnapshot();
-
-    const schemaVersion = document.getElementById("schemaVersionReadout");
-    const schemaExposure = document.getElementById("schemaExposureReadout");
-    const schemaSource = document.getElementById("schemaSourceClassReadout");
-    const schemaAuthority = document.getElementById("schemaAuthorityReadout");
-    const schemaOperator = document.getElementById("schemaOperatorReadout");
-    const diffSummary = document.getElementById("diffAuditSummary");
-    const diffMatrix = document.getElementById("diffAuditMatrix");
-    const ethicsSummary = document.getElementById("ethicsAuditSummary");
-    const ethicsTable = document.getElementById("ethicsAuditTable");
-
-    const schemaSignature = [
-      APERTURE.schema,
-      schema.governedExposure.S,
-      schema.governedExposure.projected,
-      schema.governedExposure.registered,
-      schema.sourceClasses.join("|"),
-      schema.authorityCeiling,
-      schema.governedExposure.routeState,
-      fmt(schema.governedExposure.Gap),
-      schema.governedExposure.dominantOperator
-    ].join("|");
-    const diffSignature = [
-      diff.summary,
-      diff.rows.map((row) => [
-        row.label,
-        row.route,
-        fmt(row.aperture),
-        fmt(row.capacity),
-        fmt(row.strictness),
-        fmt(row.naming)
-      ].join(":")).join("|")
-    ].join("|");
-    const ethicsSignature = [
-      ethics.summary,
-      ethics.rows.map((row) => [row.term, row.signal, row.detail].join(":")).join("|")
-    ].join("|");
-
-    if (schemaSignature !== lastForensicSchemaSignature) {
-      if (schemaVersion) schemaVersion.textContent = `${APERTURE.schema} · governed exposure v1`;
-      if (schemaExposure) schemaExposure.textContent = `${schema.governedExposure.S} / ${schema.governedExposure.projected} / ${schema.governedExposure.registered}`;
-      if (schemaSource) schemaSource.textContent = schema.sourceClasses.join(" · ");
-      if (schemaAuthority) schemaAuthority.textContent = `${schema.authorityCeiling} · ${schema.governedExposure.routeState}`;
-      if (schemaOperator) schemaOperator.textContent = `Gap ${fmt(schema.governedExposure.Gap)} · ${schema.governedExposure.dominantOperator}`;
-      lastForensicSchemaSignature = schemaSignature;
-    }
-    if (diffSignature !== lastForensicDiffSignature) {
-      if (diffSummary) diffSummary.textContent = diff.summary;
-      if (diffMatrix) {
-        diffMatrix.innerHTML = diff.rows.map((row) => `
-          <div class="tcp-hook">
-            <div class="hook-title">${escapeHtml(row.label)}</div>
-            <div class="hook-value">${escapeHtml(row.route)}</div>
-            <div class="bridge-readout"><span class="label">aperture</span><span class="value">${fmt(row.aperture)}</span></div>
-            <div class="bridge-readout"><span class="label">capacity</span><span class="value">${fmt(row.capacity)}</span></div>
-            <div class="bridge-readout"><span class="label">policy</span><span class="value">${fmt(row.strictness)}</span></div>
-            <div class="bridge-readout"><span class="label">naming</span><span class="value">${fmt(row.naming)}</span></div>
-          </div>
-        `).join("");
-      }
-      lastForensicDiffSignature = diffSignature;
-    }
-    if (ethicsSignature !== lastForensicEthicsSignature) {
-      if (ethicsSummary) ethicsSummary.textContent = ethics.summary;
-      if (ethicsTable) {
-        ethicsTable.innerHTML = ethics.rows.map((row) => `
-          <div class="bridge-readout">
-            <span class="label">${escapeHtml(row.term)}</span>
-            <span class="value">${escapeHtml(row.signal)}</span>
-          </div>
-          <div class="bridge-readout">
-            <span class="label">detail</span>
-            <span class="value">${escapeHtml(row.detail)}</span>
-          </div>
-        `).join("");
-      }
-      lastForensicEthicsSignature = ethicsSignature;
-    }
-    if (currentState()) {
-      currentState().forensicSchema = schema;
-      currentState().differentialAdmissibility = diff;
-      currentState().ethicsAudit = ethics;
-    }
+  const originalResetSystem = typeof window.resetSystem === "function" ? window.resetSystem : null;
+  if (originalResetSystem) {
+    window.resetSystem = function td613GatewayEmbedReset(...args) {
+      const result = originalResetSystem.apply(this, args);
+      setTimeout(() => emitGatewayEmbedStatus(true), 0);
+      return result;
+    };
   }
 
-  function patchVersionDisplays() {
-    const firmware = document.getElementById("mFirmwareVer");
-    if (firmware) firmware.textContent = "v1.8.0";
-    document.title = "TD613 Aperture · v1.8.0";
+  window.addEventListener("resize", () => {
+    if (typeof drawMain === "function") drawMain();
+    if (typeof drawMoirePanel === "function") drawMoirePanel();
+    if (typeof drawTrace === "function") drawTrace();
+  }, { passive: true });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => emitGatewayEmbedStatus(true), { once: true });
+  } else {
+    emitGatewayEmbedStatus(true);
   }
-
-  const previousCreateTCPHandoffPacket = window.createTCPHandoffPacket;
-  window.createTCPHandoffPacket = function td613CreateForensicTCPPacket(metrics, packetKeyOverride = null) {
-    const packet = previousCreateTCPHandoffPacket.call(this, metrics, packetKeyOverride);
-    const diff = computeDifferentialAudit();
-    const ethics = computeEthicsAudit(diff);
-    const schema = buildSuiteSchemaSnapshot();
-    packet.forensicSchema = {
-      suite: schema.suite,
-      schemaVersion: schema.schemaVersion,
-      governedExposure: schema.governedExposure,
-      sourceClasses: schema.sourceClasses,
-      authorityCeiling: schema.authorityCeiling,
-      metricClasses: schema.metricClasses
-    };
-    packet.differentialAdmissibility = diff;
-    packet.ethicsAudit = ethics;
-    packet.governedExposureLedger = {
-      latentState: schema.governedExposure.S,
-      projectedState: schema.governedExposure.projected,
-      registeredSurface: schema.governedExposure.registered,
-      omission: schema.governedExposure.O,
-      ratifiedOmission: schema.governedExposure.O_star,
-      dominantLoss: schema.governedExposure.dominantOperator
-    };
-    return packet;
-  };
-
-  const previousUpdateUI = window.updateUI;
-  window.updateUI = function td613UpdateForensicPanels(opts = {}) {
-    const result = previousUpdateUI.call(this, opts);
-    patchVersionDisplays();
-    const shouldRefreshForensics = !!opts.force || !!opts.slow || currentState()?.tick <= 2;
-    if (shouldRefreshForensics) {
-      updateForensicPanels();
-    }
-    emitGatewayEmbedStatus(!!opts.force);
-    return result;
-  };
-
-  patchVersionDisplays();
-  updateForensicPanels();
-  emitGatewayEmbedStatus(true);
 })();
 </script>
+
 </body>
 </html>

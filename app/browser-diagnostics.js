@@ -5689,8 +5689,8 @@
       "label": "TD613 Aperture",
       "file": "app/aperture/index.html",
       "passed": true,
-      "title": "TD613 Aperture · v1.8.0",
-      "version": "1.8.0",
+      "title": "TD613 Aperture - v2.2.1",
+      "version": "2.2.1",
       "meta": {
         "viewport": "width=device-width, initial-scale=1.0",
         "tool-name": "TD613 Aperture",
@@ -5706,37 +5706,37 @@
         "anti-enforcement": "true"
       },
       "fingerprint": {
-        "bytes": 300144,
-        "lineCount": 6448,
-        "inlineScriptCount": 3,
+        "bytes": 399523,
+        "lineCount": 8212,
+        "inlineScriptCount": 8,
         "panelCount": 3,
-        "buttonCount": 18,
-        "contentHashSha256": "f8a7a4d10d6cd62a0215ae8d0bb525183f6257829bd9cc6a4746dc0a1c28b193"
+        "buttonCount": 20,
+        "contentHashSha256": "21a1498753d2dfd31821f81f92ec451b89816c68079ffc4f5f8ad7ae964ab99c"
       },
       "checks": [
         {
           "id": "title",
           "label": "title marker",
           "ok": true,
-          "detail": "TD613 Aperture · v1.8.0 observed",
-          "expected": "TD613 Aperture + v1.8.0",
-          "actual": "TD613 Aperture · v1.8.0"
+          "detail": "TD613 Aperture - v2.2.1 observed",
+          "expected": "TD613 Aperture + v2.2.1",
+          "actual": "TD613 Aperture - v2.2.1"
         },
         {
           "id": "version",
           "label": "version marker",
           "ok": true,
-          "detail": "version 1.8.0 observed",
-          "expected": "1.8.0",
-          "actual": "1.8.0"
+          "detail": "version 2.2.1 observed",
+          "expected": "2.2.1",
+          "actual": "2.2.1"
         },
         {
           "id": "inline-script",
           "label": "inline runtime present",
           "ok": true,
-          "detail": "3 inline script block(s)",
+          "detail": "8 inline script block(s)",
           "expected": ">= 1",
-          "actual": 3
+          "actual": 8
         },
         {
           "id": "meta:tool-name",

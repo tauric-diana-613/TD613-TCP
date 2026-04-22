@@ -52,6 +52,9 @@ The maintained repo now uses Aperture to surface:
 - redundancy inflation
 - capacity pressure
 - policy pressure
+- temporal posture and closure class
+- historical crease and unfolding energy
+- beacon qualification and pilot-domain context
 
 These show up in runtime as `apertureAudit` and in packetized surfaces as `aperture_audit`.
 

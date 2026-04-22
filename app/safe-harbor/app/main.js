@@ -327,6 +327,12 @@
       S_prime: countOrNull(governedExposure && governedExposure.projected),
       Y: countOrNull(governedExposure && governedExposure.registered),
       cumulativeNarrowing: summary.cumulativeNarrowing === null || summary.cumulativeNarrowing === undefined ? null : round4(clamp01(Number(summary.cumulativeNarrowing))),
+      temporalPosture: summary.temporalPosture ? String(summary.temporalPosture) : null,
+      closureClass: summary.closureClass ? String(summary.closureClass) : null,
+      closureScore: summary.closureScore === null || summary.closureScore === undefined ? null : round4(clamp01(Number(summary.closureScore))),
+      historicalCrease: summary.historicalCrease === null || summary.historicalCrease === undefined ? null : round4(clamp01(Number(summary.historicalCrease))),
+      unfoldingEnergy: summary.unfoldingEnergy === null || summary.unfoldingEnergy === undefined ? null : round4(clamp01(Number(summary.unfoldingEnergy))),
+      pilotDomain: summary.pilotDomain ? String(summary.pilotDomain) : null,
       latestPacket: packet,
       packetKey: summary.packetKey ? String(summary.packetKey) : null,
       checksum: summary.checksum ? String(summary.checksum) : null,
@@ -351,6 +357,15 @@
         inbound.cumulativeNarrowing !== null && inbound.cumulativeNarrowing !== undefined
           ? ('narrowing=' + metric(inbound.cumulativeNarrowing))
           : null,
+        inbound.temporalPosture ? ('temporal=' + inbound.temporalPosture) : null,
+        inbound.closureClass ? ('closure=' + inbound.closureClass) : null,
+        inbound.historicalCrease !== null && inbound.historicalCrease !== undefined
+          ? ('H=' + metric(inbound.historicalCrease))
+          : null,
+        inbound.unfoldingEnergy !== null && inbound.unfoldingEnergy !== undefined
+          ? ('E=' + metric(inbound.unfoldingEnergy))
+          : null,
+        inbound.pilotDomain ? ('pilot=' + inbound.pilotDomain) : null,
         inbound.packetKey ? ('packet=' + inbound.packetKey) : null
       ].filter(Boolean);
       dom.inputOperatorNotes.value = noteParts.length

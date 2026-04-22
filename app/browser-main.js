@@ -267,6 +267,12 @@
       dominantLoss: payload.dominantLoss ? String(payload.dominantLoss) : '—',
       harborEligibility: clamp01(Number(payload.harborEligibility || 0)),
       provenanceIntegrity: clamp01(Number(payload.provenanceIntegrity || 0)),
+      temporalPosture: payload.temporalPosture ? String(payload.temporalPosture) : '',
+      closureClass: payload.closureClass ? String(payload.closureClass) : '',
+      closureScore: Number.isFinite(Number(payload.closureScore)) ? clamp01(Number(payload.closureScore)) : 0,
+      historicalCrease: Number.isFinite(Number(payload.historicalCrease)) ? clamp01(Number(payload.historicalCrease)) : 0,
+      unfoldingEnergy: Number.isFinite(Number(payload.unfoldingEnergy)) ? clamp01(Number(payload.unfoldingEnergy)) : 0,
+      pilotDomain: payload.pilotDomain ? String(payload.pilotDomain) : '',
       latestPacket
     };
   }
@@ -318,8 +324,8 @@
       : summary.packetExported
         ? 'Aperture exported a guarded packet. Safe Harbor can read this lane as upstream context.'
         : harborReady
-          ? 'Aperture has a packetized or packet-ready lane. Safe Harbor can open from this threshold without replacing TCP routing.'
-          : `Aperture remains audit-only here. Dominant narrowing pressure: ${summary.dominantLoss}.`;
+          ? `Aperture has a packetized or packet-ready lane. Temporal posture: ${summary.temporalPosture || 'pending'}.`
+          : `Aperture remains audit-only here. Dominant narrowing pressure: ${summary.dominantLoss}.${summary.temporalPosture ? ` Temporal posture: ${summary.temporalPosture}.` : ''}`;
     pillNode.textContent = !hasSummary
       ? 'awaiting route'
       : summary.packetExported
@@ -372,7 +378,11 @@
     trace: [],
     fieldTick: 0,
     lastTimestamp: 0,
-    animationFrame: 0
+    animationFrame: 0,
+    temporalPosture: 'synced',
+    closureClass: 'closed',
+    historicalCrease: 0,
+    unfoldingEnergy: 0
   };
 
   function handleGatewayApertureStorageEvent(event) {
@@ -519,7 +529,15 @@
       bounceNode.textContent = `BOUNCES: ${gatewayPreview.bounceCount}`;
     }
     if (phaseNode) {
-      phaseNode.textContent = gatewayPreview.running ? 'FIELD LIVE' : 'STANDBY';
+      phaseNode.textContent = gatewayPreview.running
+        ? gatewayPreview.bounceCount >= 18
+          ? 'TRACE LEGIBLE'
+          : gatewayPreview.bounceCount > 0
+            ? 'PROPAGATING'
+            : 'CONSTELLATION OPEN'
+        : gatewayPreview.showMoire
+          ? 'TRACE PENDING'
+          : 'STANDBY';
       phaseNode.classList.toggle('gateway-preview-pill-cyan', true);
     }
     if (runButton) {
@@ -536,10 +554,29 @@
     const activity = gatewayPreview.rays.length
       ? gatewayPreview.rays.reduce((sum, ray) => sum + ray.intensity, 0) / gatewayPreview.rays.length
       : 0;
+    const drift = clamp01(activity);
+    gatewayPreview.temporalPosture = !gatewayPreview.running && gatewayPreview.bounceCount === 0
+      ? 'synced'
+      : gatewayPreview.bounceCount >= 26
+        ? 'suppressed'
+        : gatewayPreview.bounceCount >= 14
+          ? 'drift'
+          : gatewayPreview.showMoire
+            ? 'preemptive'
+            : 'synced';
+    gatewayPreview.closureClass = gatewayPreview.temporalPosture === 'suppressed'
+      ? 'suppressed'
+      : gatewayPreview.temporalPosture === 'drift'
+        ? 'drift'
+        : 'closed';
+    gatewayPreview.historicalCrease = clamp01((gatewayPreview.bounceCount / 42) * 0.72 + (drift * 0.28));
+    gatewayPreview.unfoldingEnergy = clamp01((drift * 0.54) + (gatewayPreview.showMoire ? 0.18 : 0.04));
     gatewayPreview.trace.push({
-      drift: clamp01(activity),
+      drift,
       moire: gatewayPreview.showMoire ? 0.58 + (Math.sin(gatewayPreview.fieldTick * 0.0014) * 0.18) : 0.2,
-      bounce: gatewayPreview.bounceCount
+      bounce: gatewayPreview.bounceCount,
+      crease: gatewayPreview.historicalCrease,
+      unfold: gatewayPreview.unfoldingEnergy
     });
     if (gatewayPreview.trace.length > 180) {
       gatewayPreview.trace.shift();
@@ -632,26 +669,39 @@
   }
 
   function drawGatewayPreviewMoireField(ctx, width, height) {
-    const extentPhase = gatewayPreview.fieldTick * 0.00135;
-    const baseSpacing = Math.max(12, Math.min(width, height) * 0.026);
-    drawGatewayPreviewLineField(ctx, width, height, {
-      angle: 0.18 + Math.sin(gatewayPreview.fieldTick * 0.00042) * 0.05,
-      spacing: baseSpacing,
-      thickness: 1.15,
-      alpha: 0.075,
-      drift: 4.2,
-      phase: extentPhase,
-      color: 'rgba(139,233,253,0.96)'
-    });
-    drawGatewayPreviewLineField(ctx, width, height, {
-      angle: 0.315 + Math.sin(gatewayPreview.fieldTick * 0.00031) * 0.07,
-      spacing: baseSpacing * 1.06,
-      thickness: 1.05,
-      alpha: 0.07,
-      drift: 5.2,
-      phase: gatewayPreview.fieldTick * 0.0018,
-      color: 'rgba(189,147,249,0.95)'
-    });
+    const extent = gatewayPreview.fieldTick * 0.15;
+    const baseStep = Math.max(9, Math.min(width, height) * 0.026);
+    const offsetStep = baseStep + 0.8;
+    const triHeight = Math.sqrt(3) / 2;
+    ctx.save();
+    ctx.globalAlpha = 0.06;
+    ctx.strokeStyle = '#8be9fd';
+    ctx.lineWidth = 0.5;
+    for (let x = -baseStep; x < width + baseStep; x += baseStep) {
+      for (let y = -baseStep; y < height + baseStep; y += baseStep * triHeight) {
+        const ox = (Math.floor(y / (baseStep * triHeight)) % 2) * (baseStep / 2);
+        ctx.beginPath();
+        ctx.arc(x + ox, y, 1, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+    ctx.save();
+    ctx.translate(width / 2, height / 2);
+    ctx.rotate(0.03 + Math.sin(extent * 0.005) * 0.01);
+    ctx.translate(-width / 2, -height / 2);
+    ctx.globalAlpha = 0.07;
+    ctx.strokeStyle = '#bd93f9';
+    ctx.lineWidth = 0.5;
+    for (let x = -offsetStep; x < width + offsetStep; x += offsetStep) {
+      for (let y = -offsetStep; y < height + offsetStep; y += offsetStep * triHeight) {
+        const ox = (Math.floor(y / (offsetStep * triHeight)) % 2) * (offsetStep / 2);
+        ctx.beginPath();
+        ctx.arc(x + ox + Math.sin(extent * 0.01) * 2, y + Math.cos(extent * 0.006) * 1.2, 1, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
   }
 
   function drawGatewayPreviewMain() {
@@ -788,9 +838,9 @@
     ctx.fillText(`registered bounces: ${gatewayPreview.bounceCount}`, 12, 20);
     ctx.font = "300 8px 'IBM Plex Mono'";
     ctx.fillStyle = 'rgba(139,233,253,0.3)';
-    ctx.fillText(gatewayPreview.showMoire ? 'moire field engaged / detuned interference lattices active' : 'moire field dormant / field shell held clear', 12, 33);
+    ctx.fillText(gatewayPreview.showMoire ? `moire field engaged / temporal ${gatewayPreview.temporalPosture}` : 'moire field dormant / field shell held clear', 12, 33);
     ctx.fillStyle = 'rgba(139,233,253,0.18)';
-    ctx.fillText('gateway preview only / full Aperture holds audit trail, packet surfaces, and Harbor lane', 12, 44);
+    ctx.fillText(`gateway preview only / kappa ${gatewayPreview.closureClass} - H ${gatewayPreview.historicalCrease.toFixed(2)} - E ${gatewayPreview.unfoldingEnergy.toFixed(2)}`, 12, 44);
 
     ctx.textAlign = 'right';
     ctx.font = "600 9px 'IBM Plex Mono'";
@@ -833,7 +883,7 @@
     ctx.fillRect(0, 0, width, height);
     ctx.font = "500 8px 'IBM Plex Mono'";
     ctx.fillStyle = gatewayPreview.showMoire ? 'rgba(189,147,249,0.72)' : 'rgba(220,230,244,0.4)';
-    ctx.fillText(gatewayPreview.showMoire ? 'hypnotic interference field online' : 'moire lane dormant', 10, 14);
+    ctx.fillText(gatewayPreview.showMoire ? `interference cartography online / ${gatewayPreview.temporalPosture}` : 'moire lane dormant', 10, 14);
   }
 
   function drawGatewayPreviewTracePanel() {
@@ -886,11 +936,25 @@
       ctx.strokeStyle = 'rgba(189,147,249,0.72)';
       ctx.lineWidth = 1.15;
       ctx.stroke();
+
+      ctx.beginPath();
+      series.forEach((entry, index) => {
+        const x = (index / (series.length - 1)) * width;
+        const y = height - (entry.crease * (height * 0.42)) - 12;
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      ctx.strokeStyle = 'rgba(255,184,108,0.68)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
     }
     ctx.font = `500 8px ${JSON.stringify('IBM Plex Mono')}`;
     ctx.fillStyle = 'rgba(220,230,244,0.54)';
     ctx.fillText(`bounces ${gatewayPreview.bounceCount}`, 10, 14);
-    ctx.fillText(gatewayPreview.showMoire ? 'moire engaged' : 'moire dormant', 10, 28);
+    ctx.fillText(`${gatewayPreview.showMoire ? 'moire engaged' : 'moire dormant'} - kappa ${gatewayPreview.closureClass}`, 10, 28);
   }
 
   function drawGatewayPreviewAll() {

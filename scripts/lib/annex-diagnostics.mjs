@@ -223,9 +223,9 @@ const ANNEX_SPECS = Object.freeze([
     id: 'aperture',
     label: 'TD613 Aperture',
     relativePath: 'app/aperture/index.html',
-    expectedVersion: '1.8.0',
+    expectedVersion: '2.2.1',
     versionPattern: /TD613 APERTURE v([0-9.]+) SOURCE DECLARATION/i,
-    titleIncludes: ['TD613 Aperture', 'v1.8.0'],
+    titleIncludes: ['TD613 Aperture', 'v2.2.1'],
     minimumInlineScripts: 1,
     meta: Object.freeze({
       'tool-name': 'TD613 Aperture',
@@ -263,7 +263,7 @@ const ANNEX_SPECS = Object.freeze([
       {
         id: 'source-declaration',
         label: 'source declaration',
-        pattern: /TD613 APERTURE v1\.8\.0 SOURCE DECLARATION/i
+        pattern: /TD613 APERTURE v2\.2\.1 SOURCE DECLARATION/i
       },
       {
         id: 'counter-tool-stance',
@@ -313,17 +313,17 @@ const ANNEX_SPECS = Object.freeze([
       {
         id: 'governed-exposure-schema',
         label: 'governed exposure schema marker',
-        pattern: /td613-governed-exposure\/v1/i
+        pattern: /governedExposure\s*:/i
       },
       {
         id: 'differential-admissibility',
         label: 'differential admissibility panel',
-        pattern: /DIFFERENTIAL ADMISSIBILITY/i
+        pattern: /DIFFERENTIAL ADMISSIBILITY(?: AUDIT)?/i
       },
       {
         id: 'ethics-audit',
         label: 'protective vocabulary reassignment panel',
-        pattern: /PROTECTIVE VOCABULARY REASSIGNMENT/i
+        pattern: /Protective language redistribution audit|PROTECTIVE VOCABULARY REASSIGNMENT/i
       },
       {
         id: 'packet-forensic-schema',
