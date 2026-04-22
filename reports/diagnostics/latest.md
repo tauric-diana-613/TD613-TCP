@@ -1,6 +1,6 @@
 # Diagnostics Battery
 
-Generated: 2026-04-22T15:58:11.009Z
+Generated: 2026-04-22T20:51:11.495Z
 
 Corpus: 72 samples across 18 families
 Promoted deck subset: 24 samples
@@ -59,8 +59,8 @@ Total diagnostics cases: 270
 - semantic_bounded_rate: 1
 - unsafe_structural_count: 0
 - protected_anchor_integrity_min: 1
-- average_candidate_count: 3.1154
-- average_selected_candidate_score: 0.815
+- average_candidate_count: 3.1346
+- average_selected_candidate_score: 0.8137
 - generator_versions: v2:52
 - source_classes: procedural-record:19, formal-correspondence:30, narrative-scene:3
 - hold_classes: aperture-route-pressure:2
@@ -165,7 +165,7 @@ Total diagnostics cases: 270
 
 - resolved_persona_count: 7
 - unique_resolved_persona_profile_count: 7
-- average_nearest_field_distance: 2.3833
+- average_nearest_field_distance: 2.307
 - min_nearest_field_distance: 2.077
 - missing_recipe_sample_ids: none
 - distinct_output_check: 6/7 distinct on customer-support-formal-record
@@ -174,8 +174,8 @@ Total diagnostics cases: 270
 
 - archivist <-> methods-editor: field distance 2.077, profile 0.879, heatmap 1.11, traceability 1
 - operator <-> methods-editor: field distance 2.127, profile 0.651, heatmap 1.305, traceability 1
+- undertow <-> matron: field distance 2.229, profile 0.537, heatmap 1.333, traceability 1
 - operator <-> cross-examiner: field distance 2.419, profile 0.836, heatmap 1, traceability 0.872
-- undertow <-> matron: field distance 2.496, profile 0.639, heatmap 1.333, traceability 0.986
 - archivist <-> operator: field distance 2.514, profile 1.304, heatmap 1.001, traceability 1
 - operator <-> matron: field distance 2.86, profile 0.985, heatmap 1.501, traceability 0.973
 

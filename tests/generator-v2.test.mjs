@@ -238,6 +238,20 @@ const packageToRushed = buildCadenceTransfer(packageFormal.text, {
 
 assert.equal(packageToRushed.sourceRegisterLane, 'formal-record', 'package formal -> rushed preserves formal source lane');
 assert.equal(packageToRushed.targetRegisterLane, 'rushed-mobile', 'package formal -> rushed targets rushed-mobile lane');
+assert.equal(packageToRushed.generationControls?.targetOntology, 'actor', 'package formal -> rushed uses actor ontology controls');
+assert.ok(
+  Number(packageToRushed.generationControls?.temperature || 0) >= 0.45 &&
+  Number(packageToRushed.generationControls?.temperature || 0) <= 0.55,
+  'package formal -> rushed keeps the actor lane in the controlled mid-entropy temperature band'
+);
+assert.ok(
+  (packageToRushed.entityMaskLedger || []).some((entry) => entry.kind === 'entity' && entry.token === '[ENTITY_ALPHA]' && entry.value === 'Ms. Chen'),
+  'package formal -> rushed masks and later restores person entities through the redaction veil'
+);
+assert.ok(
+  (packageToRushed.entityMaskLedger || []).some((entry) => entry.kind === 'location' && entry.token === '[LOC_NODE_01]' && entry.value === 'Unit 2B'),
+  'package formal -> rushed masks and later restores location entities through the redaction veil'
+);
 assert.ok((packageToRushed.lexemeSwaps || []).length > 0, 'package formal -> rushed lands real lexical realization');
 assert.ok(
   (packageToRushed.changedDimensions || []).some((dimension) => ['sentence-mean', 'sentence-count', 'sentence-spread'].includes(dimension)),
@@ -262,6 +276,8 @@ const packageToFormalPreview = String(packageToFormal.text || packageToFormal.in
 
 assert.equal(packageToFormal.sourceRegisterLane, 'rushed-mobile', 'package rushed -> formal preserves rushed-mobile source lane');
 assert.equal(packageToFormal.targetRegisterLane, 'formal-record', 'package rushed -> formal targets formal-record lane');
+assert.equal(packageToFormal.generationControls?.targetOntology, 'institutional', 'package rushed -> formal uses institutional ontology controls');
+assert.equal(packageToFormal.generationControls?.temperature, 0.1, 'package rushed -> formal forces low-temperature institutional generation controls');
 assert.ok(
   (packageToFormal.lexemeSwaps || []).length > 0 || packageToFormalPreview.length > 0,
   'package rushed -> formal surfaces a real shorthand expansion path'
@@ -281,6 +297,40 @@ assert.ok(
 assert.ok(
   !((packageToFormal.generationDocket?.reasons || []).includes('artifact:clause-join')),
   'package rushed -> formal repair round clears the mild clause-join artifact from the best held candidate'
+);
+
+const nullTimeProbe = `later that night the carrier left the box by the rail. mgmt never logged a door knock. box stayed sealed.`;
+const nullTimeFormal = buildCadenceTransfer(nullTimeProbe, {
+  mode: 'borrowed',
+  personaId: 'archivist',
+  profile: extractCadenceProfile(packageFormal.text),
+  registerLane: packageFormal.variant,
+  strength: 0.84
+}, {
+  retrieval: true,
+  sourceRegisterLane: 'rushed-mobile'
+});
+const nullTimePreview = String(nullTimeFormal.text || nullTimeFormal.internalText || '');
+
+assert.equal(nullTimeFormal.temporalDirective?.timestampStatus, 'absent', 'null-time probe is marked as temporally absent instead of invented');
+assert.equal(
+  nullTimeFormal.temporalDirective?.fallbackDirective,
+  "Use strictly: 'At an unlogged time interval'",
+  'null-time probe carries the strict unlogged-interval fallback directive'
+);
+assert.ok(
+  /At an unlogged time interval/i.test(nullTimePreview),
+  'null-time probe formalization uses the strict unlogged-interval fallback instead of inventing a clock time'
+);
+assert.equal(
+  /\b\d{1,2}:\d{2}(?:\s?(?:AM|PM))?\b/i.test(nullTimePreview),
+  false,
+  'null-time probe formalization does not hallucinate a clock time'
+);
+assert.equal(
+  nullTimeFormal.temporalAttestation?.attestationPassed,
+  true,
+  'null-time probe clears temporal attestation when no clock time is invented'
 );
 
 assert.deepEqual(

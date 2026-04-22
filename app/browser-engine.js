@@ -10913,12 +10913,283 @@ function escapeRegex(value = '') {
   return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+const MASK_ALPHA_SEQUENCE = Object.freeze([
+  'ALPHA',
+  'BRAVO',
+  'CHARLIE',
+  'DELTA',
+  'ECHO',
+  'FOXTROT',
+  'GOLF',
+  'HOTEL',
+  'INDIA',
+  'JULIET',
+  'KILO',
+  'LIMA'
+]);
+
+const NULL_TIME_VARIABLES = Object.freeze([
+  Object.freeze({ id: 'later-that-night', pattern: /\blater that night\b/gi }),
+  Object.freeze({ id: 'later-that-day', pattern: /\blater that day\b/gi }),
+  Object.freeze({ id: 'later-on', pattern: /\blater on\b/gi }),
+  Object.freeze({ id: 'some-time-later', pattern: /\bsome time later\b/gi }),
+  Object.freeze({ id: 'shortly-after', pattern: /\bshortly after(?:ward)?\b/gi }),
+  Object.freeze({ id: 'afterward', pattern: /\bafterward\b/gi }),
+  Object.freeze({ id: 'by-then', pattern: /\bby then\b/gi }),
+  Object.freeze({ id: 'that-evening', pattern: /\bthat evening\b/gi }),
+  Object.freeze({ id: 'that-morning', pattern: /\bthat morning\b/gi }),
+  Object.freeze({ id: 'that-afternoon', pattern: /\bthat afternoon\b/gi }),
+  Object.freeze({ id: 'earlier', pattern: /\bearlier\b/gi }),
+  Object.freeze({ id: 'before-dawn', pattern: /\bbefore dawn\b/gi }),
+  Object.freeze({ id: 'overnight', pattern: /\bovernight\b/gi })
+]);
+
+function ordinalNodeLabel(index = 0) {
+  return String(index + 1).padStart(2, '0');
+}
+
+function alphaNodeLabel(index = 0) {
+  return MASK_ALPHA_SEQUENCE[index] || `NODE_${ordinalNodeLabel(index)}`;
+}
+
+function buildMaskedAnchorToken(kind = 'anchor', index = 0) {
+  if (kind === 'entity') {
+    return `[ENTITY_${alphaNodeLabel(index)}]`;
+  }
+  if (kind === 'location') {
+    return `[LOC_NODE_${ordinalNodeLabel(index)}]`;
+  }
+  if (kind === 'time') {
+    return `[TIME_NODE_${ordinalNodeLabel(index)}]`;
+  }
+  if (kind === 'quote') {
+    return `[QUOTE_NODE_${ordinalNodeLabel(index)}]`;
+  }
+  if (kind === 'account') {
+    return `[ACCOUNT_NODE_${ordinalNodeLabel(index)}]`;
+  }
+  if (kind === 'record') {
+    return `[RECORD_NODE_${ordinalNodeLabel(index)}]`;
+  }
+  return `[ANCHOR_NODE_${ordinalNodeLabel(index)}]`;
+}
+
+function classifySensitiveAnchor(anchor = '') {
+  const normalized = normalizeText(anchor);
+  if (!normalized) {
+    return 'anchor';
+  }
+  if (/^\d{1,2}:\d{2}(?:\s?(?:AM|PM))?$/i.test(normalized)) {
+    return 'time';
+  }
+  if (/^(?:Mr|Ms|Mrs|Dr|Prof)\.\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?$/.test(normalized)) {
+    return 'entity';
+  }
+  if (/^(?:Door|Unit|Suite)\s+[A-Z0-9-]+$/i.test(normalized) || /^\d{1,3}[A-Za-z]$/.test(normalized)) {
+    return 'location';
+  }
+  if (/^"[^"\n]{1,120}"$/.test(normalized)) {
+    return 'quote';
+  }
+  if (/@/.test(normalized)) {
+    return 'account';
+  }
+  if (/^[A-Z]{1,6}-\d{1,6}[A-Z]?$/i.test(normalized)) {
+    return 'record';
+  }
+  return 'anchor';
+}
+
+function buildEntityMaskLedger(replacements = []) {
+  return Object.freeze(
+    (replacements || [])
+      .filter((entry) => ['entity', 'location'].includes(entry?.kind))
+      .map((entry) => Object.freeze({
+        token: entry.token,
+        value: entry.value,
+        kind: entry.kind
+      }))
+  );
+}
+
+function firstMaskedAnchorToken(replacements = [], kind = 'location') {
+  return (replacements || []).find((entry) => entry?.kind === kind)?.token || '';
+}
+
+function extractClockTimes(text = '') {
+  const normalized = normalizeText(text);
+  return uniqueStrings(normalized.match(/\b\d{1,2}:\d{2}(?:\s?(?:AM|PM))?\b/gi) || []);
+}
+
+function extractSensitiveMaskAnchors(text = '', sourceClass = 'formal-correspondence') {
+  const normalized = normalizeText(text);
+  const anchors = new Set();
+  const honorificNames = normalized.match(/\b(?:Mr|Ms|Mrs|Dr|Prof)\.\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?\b/g) || [];
+  honorificNames.forEach((entry) => anchors.add(entry));
+  const suiteLike = normalized.match(/\b(?:Door|Unit|Suite)\s+[A-Z0-9-]+\b/g) || [];
+  suiteLike.forEach((entry) => anchors.add(entry));
+  if (['procedural-record', 'formal-correspondence'].includes(sourceClass)) {
+    const unitShorthand = normalized.match(/\b\d{1,3}[A-Za-z]\b/g) || [];
+    unitShorthand.forEach((entry) => anchors.add(entry));
+  }
+  return [...anchors];
+}
+
+function extractNullTimeVariables(text = '') {
+  const normalized = normalizeText(text);
+  if (!normalized || extractClockTimes(normalized).length) {
+    return Object.freeze([]);
+  }
+  const seen = new Set();
+  const matches = [];
+  NULL_TIME_VARIABLES.forEach((rule) => {
+    for (const match of normalized.matchAll(rule.pattern)) {
+      const value = normalizeText(match[0]);
+      const key = normalizeComparable(value);
+      if (!value || seen.has(key)) {
+        continue;
+      }
+      seen.add(key);
+      matches.push(Object.freeze({
+        id: rule.id,
+        value
+      }));
+    }
+  });
+  return Object.freeze(matches);
+}
+
+function buildTemporalDirective(sourceText = '', targetRegisterLane = 'formal-record') {
+  const explicitTimestamps = Object.freeze(extractClockTimes(sourceText));
+  const nullTimeVariables = extractNullTimeVariables(sourceText);
+  const timestampStatus = explicitTimestamps.length
+    ? 'explicit'
+    : nullTimeVariables.length
+      ? 'absent'
+      : 'unspecified';
+  return Object.freeze({
+    timestampStatus,
+    explicitTimestamps,
+    nullTimeVariables,
+    fallbackDirective: timestampStatus === 'absent'
+      ? "Use strictly: 'At an unlogged time interval'"
+      : null,
+    strictFallbackText: 'At an unlogged time interval',
+    attestationRequired: ['formal-record', 'professional-message'].includes(targetRegisterLane)
+  });
+}
+
+function protectTemporalNullsForRewrite(text = '', temporalDirective = {}) {
+  let working = String(text || '');
+  const replacements = [];
+  (temporalDirective?.nullTimeVariables || []).forEach((entry, index) => {
+    const value = normalizeText(entry?.value || '');
+    if (!value) {
+      return;
+    }
+    const pattern = new RegExp(escapeRegex(value), 'g');
+    if (!pattern.test(working)) {
+      return;
+    }
+    const token = `__TD613TIME_NULL_${index}__`;
+    working = working.replace(pattern, token);
+    replacements.push(Object.freeze({
+      token,
+      value
+    }));
+  });
+  return Object.freeze({
+    text: working,
+    replacements: Object.freeze(replacements)
+  });
+}
+
+function restoreTemporalNullsAfterRewrite(text = '', temporalState = {}, temporalDirective = {}, targetRegisterLane = 'formal-record') {
+  let working = String(text || '');
+  const fallbackActive =
+    temporalDirective?.timestampStatus === 'absent' &&
+    ['formal-record', 'professional-message'].includes(targetRegisterLane);
+  for (const replacement of temporalState?.replacements || []) {
+    if (!replacement?.token) {
+      continue;
+    }
+    const surface = fallbackActive
+      ? temporalDirective?.strictFallbackText || 'At an unlogged time interval'
+      : replacement.value || '';
+    working = working.replace(new RegExp(escapeRegex(replacement.token), 'g'), surface);
+  }
+  if (fallbackActive) {
+    working = working.replace(/\bAt an unlogged time interval\b(?!,)/g, 'At an unlogged time interval,');
+  }
+  return working;
+}
+
+function auditTemporalAttestation(sourceText = '', outputText = '', temporalDirective = {}) {
+  const sourceTimes = Object.freeze(extractClockTimes(sourceText).map((entry) => normalizeComparable(entry)));
+  const outputTimes = Object.freeze(extractClockTimes(outputText).map((entry) => normalizeComparable(entry)));
+  const hallucinatedTimes = Object.freeze(outputTimes.filter((entry) => !sourceTimes.includes(entry)));
+  const attestationPassed = temporalDirective?.timestampStatus === 'absent'
+    ? outputTimes.length === 0
+    : hallucinatedTimes.length === 0;
+  return Object.freeze({
+    timestampStatus: temporalDirective?.timestampStatus || 'unspecified',
+    sourceTimes,
+    outputTimes,
+    hallucinatedTimes,
+    attestationPassed,
+    fallbackDirective: temporalDirective?.fallbackDirective || null
+  });
+}
+
+function resolveOntologyGenerationControls({
+  sourceClass = 'formal-correspondence',
+  sourceRegisterLane = '',
+  targetRegisterLane = 'formal-record'
+} = {}) {
+  const normalizedSourceLane = normalizeRegisterLane(
+    sourceRegisterLane,
+    inferRegisterLaneFromProfile({}, sourceClass)
+  );
+  const normalizedTargetLane = normalizeRegisterLane(targetRegisterLane, normalizedSourceLane || 'formal-record');
+  if (['formal-record', 'professional-message'].includes(normalizedTargetLane)) {
+    return Object.freeze({
+      sourceRegisterLane: normalizedSourceLane || 'formal-record',
+      targetRegisterLane: normalizedTargetLane,
+      targetOntology: 'institutional',
+      temperature: 0.1,
+      topP: 0.35,
+      intensityScalar: 0.76,
+      strengthScalar: 0.92
+    });
+  }
+  if (['rushed-mobile', 'tangled-followup'].includes(normalizedTargetLane)) {
+    return Object.freeze({
+      sourceRegisterLane: normalizedSourceLane || 'formal-record',
+      targetRegisterLane: normalizedTargetLane,
+      targetOntology: 'actor',
+      temperature: normalizedTargetLane === 'rushed-mobile' ? 0.5 : 0.48,
+      topP: 0.72,
+      intensityScalar: 1.08,
+      strengthScalar: 1.04
+    });
+  }
+  return Object.freeze({
+    sourceRegisterLane: normalizedSourceLane || 'formal-record',
+    targetRegisterLane: normalizedTargetLane,
+    targetOntology: 'balanced',
+    temperature: 0.28,
+    topP: 0.5,
+    intensityScalar: 0.9,
+    strengthScalar: 0.96
+  });
+}
+
 function extractHardAnchors(text = '') {
   const normalized = normalizeText(text);
   const anchors = new Set();
   const quoted = normalized.match(/"[^"\n]{1,120}"/g) || [];
   quoted.forEach((entry) => anchors.add(entry));
-  const clockTimes = normalized.match(/\b\d{1,2}:\d{2}(?:\s?(?:AM|PM))?\b/gi) || [];
+  const clockTimes = extractClockTimes(normalized);
   clockTimes.forEach((entry) => anchors.add(entry));
   const ids = normalized.match(/\b[A-Z]{1,6}-\d{1,6}[A-Z]?\b/g) || [];
   ids.forEach((entry) => anchors.add(entry));
@@ -12237,6 +12508,18 @@ function buildToolabilityAudit({
 function buildShellVariants(sourceProfile = {}, shell = {}, sourceClass = 'formal-correspondence') {
   const targetProfile = shell?.profile || null;
   const envelopeId = inferEnvelopeId(shell, sourceProfile, targetProfile || {});
+  const sourceRegisterLane = inferRegisterLaneFromProfile(sourceProfile, sourceClass);
+  const targetRegisterLane = resolveTargetRegisterLane({
+    shell,
+    targetProfile,
+    sourceProfile,
+    sourceClass
+  });
+  const generationControls = resolveOntologyGenerationControls({
+    sourceClass,
+    sourceRegisterLane,
+    targetRegisterLane
+  });
   const adjustments = ENVELOPE_ADJUSTMENTS[envelopeId] || ENVELOPE_ADJUSTMENTS.generic;
   const baseMod = shell?.mod
     ? {
@@ -12245,7 +12528,11 @@ function buildShellVariants(sourceProfile = {}, shell = {}, sourceClass = 'forma
         punc: clamp(Math.round(Number(shell.mod.punc || 0)), -3, 3)
       }
     : cadenceModFromProfile(targetProfile || sourceProfile);
-  const baseStrength = clamp(Number(shell?.strength ?? (shell?.profile ? 0.84 : 0.72)), 0, 1);
+  const baseStrength = clamp(
+    Number(shell?.strength ?? (shell?.profile ? 0.84 : 0.72)) * Number(generationControls.strengthScalar || 1),
+    0,
+    1
+  );
   const scalar = classScalar(sourceClass);
   const variants = [
     {
@@ -12254,7 +12541,8 @@ function buildShellVariants(sourceProfile = {}, shell = {}, sourceClass = 'forma
         ...shell,
         mod: baseMod,
         strength: baseStrength,
-        profile: targetProfile ? cloneProfile(targetProfile) : null
+        profile: targetProfile ? cloneProfile(targetProfile) : null,
+        generationControls
       },
       envelopeId
     },
@@ -12264,7 +12552,8 @@ function buildShellVariants(sourceProfile = {}, shell = {}, sourceClass = 'forma
         ...shell,
         mod: mergeShellMod(baseMod, adjustments.primary, scalar),
         strength: clamp(baseStrength + (sourceClass === 'procedural-record' ? 0.04 : 0.08), 0, 1),
-        profile: tuneTargetProfile(targetProfile, sourceProfile, envelopeId, sourceClass, 1)
+        profile: tuneTargetProfile(targetProfile, sourceProfile, envelopeId, sourceClass, 1 * Number(generationControls.intensityScalar || 1)),
+        generationControls
       },
       envelopeId
     },
@@ -12274,7 +12563,8 @@ function buildShellVariants(sourceProfile = {}, shell = {}, sourceClass = 'forma
         ...shell,
         mod: mergeShellMod(baseMod, adjustments.secondary, scalar),
         strength: clamp(baseStrength + (sourceClass === 'procedural-record' ? 0.08 : 0.14), 0, 1),
-        profile: tuneTargetProfile(targetProfile, sourceProfile, envelopeId, sourceClass, 1.18)
+        profile: tuneTargetProfile(targetProfile, sourceProfile, envelopeId, sourceClass, 1.18 * Number(generationControls.intensityScalar || 1)),
+        generationControls
       },
       envelopeId
     },
@@ -12284,7 +12574,8 @@ function buildShellVariants(sourceProfile = {}, shell = {}, sourceClass = 'forma
         ...shell,
         mod: mergeShellMod(baseMod, adjustments.conservative, Math.max(0.5, scalar * 0.8)),
         strength: clamp(baseStrength - 0.08, 0.28, 1),
-        profile: tuneTargetProfile(targetProfile, sourceProfile, envelopeId, sourceClass, 0.78)
+        profile: tuneTargetProfile(targetProfile, sourceProfile, envelopeId, sourceClass, 0.78 * Number(generationControls.intensityScalar || 1)),
+        generationControls
       },
       envelopeId
     }
@@ -12341,6 +12632,15 @@ function joinParagraphs(paragraphs = []) {
 function protectAnchorsForRewrite(text = '', anchors = []) {
   let working = String(text || '');
   const replacements = [];
+  const maskCounts = {
+    entity: 0,
+    location: 0,
+    time: 0,
+    quote: 0,
+    account: 0,
+    record: 0,
+    anchor: 0
+  };
   [...(anchors || [])]
     .map((anchor) => String(anchor || '').trim())
     .filter(Boolean)
@@ -12350,9 +12650,10 @@ function protectAnchorsForRewrite(text = '', anchors = []) {
       if (!pattern.test(working)) {
         return;
       }
-      const token = `__TD613ANCHOR_${replacements.length}__`;
+      const kind = classifySensitiveAnchor(anchor);
+      const token = buildMaskedAnchorToken(kind, maskCounts[kind]++);
       working = working.replace(pattern, token);
-      replacements.push(Object.freeze({ token, value: anchor }));
+      replacements.push(Object.freeze({ token, value: anchor, kind }));
     });
 
   return Object.freeze({
@@ -13027,11 +13328,13 @@ function applyFormalRecordLaneRewrite(text = '', context = {}) {
   const lexicalOperations = context.lexicalOperations || [];
   const structuralOperations = context.structuralOperations || [];
   const lexemeSwaps = context.lexemeSwaps || [];
+  const primaryLocationPlaceholder = context.primaryLocationPlaceholder || 'the addressed unit';
+  const locationReference = context.primaryLocationPlaceholder || 'the unit';
 
   const lexicalRules = [
     { pattern: /\bpkg\b/gi, replacement: 'package', label: 'lane:pkg->package' },
     { pattern: /\bmgmt\b/gi, replacement: 'management', label: 'lane:mgmt->management' },
-    { pattern: /\b2b\b/gi, replacement: 'Unit 2B', label: 'lane:2b->unit-2b' },
+    { pattern: /\b2b\b/gi, replacement: primaryLocationPlaceholder, label: 'lane:2b->location-node' },
     { pattern: /\b2nd fl\b/gi, replacement: 'second-floor', label: 'lane:2nd-fl->second-floor' },
     { pattern: /\b3rd fl\b/gi, replacement: 'third-floor', label: 'lane:3rd-fl->third-floor' },
     { pattern: /\bwasnt\b/gi, replacement: 'was not', label: 'lane:wasnt->was-not' },
@@ -13064,7 +13367,7 @@ function applyFormalRecordLaneRewrite(text = '', context = {}) {
     })
     .replace(/\bno one buzzed her\b/gi, () => {
       lexicalOperations.push('lane:buzzed-her->no-buzzer-call');
-      return 'no buzzer call was placed to her unit';
+      return `no buzzer call was placed to ${locationReference}`;
     })
     .replace(/\bit was just sitting on\b/gi, () => {
       lexicalOperations.push('lane:sitting-on->left-on');
@@ -13088,13 +13391,15 @@ function applyFormalRecordLaneRewrite(text = '', context = {}) {
     })
     .replace(/\bI moved it to hall table\b/gi, (match) => {
       lexicalOperations.push('lane:hall-table-article');
-      recordLexemeSwap(lexemeSwaps, match, 'I moved it to the hallway table outside Unit 2B', 'lane');
-      return 'I moved it to the hallway table outside Unit 2B';
+      const replacement = `I moved it to the hallway table outside ${primaryLocationPlaceholder}`;
+      recordLexemeSwap(lexemeSwaps, match, replacement, 'lane');
+      return replacement;
     })
     .replace(/\bI moved it to the hall table\b/gi, (match) => {
       lexicalOperations.push('lane:hall-table-outside-unit');
-      recordLexemeSwap(lexemeSwaps, match, 'I moved it to the hallway table outside Unit 2B', 'lane');
-      return 'I moved it to the hallway table outside Unit 2B';
+      const replacement = `I moved it to the hallway table outside ${primaryLocationPlaceholder}`;
+      recordLexemeSwap(lexemeSwaps, match, replacement, 'lane');
+      return replacement;
     });
   if (beforeConditionalRepair !== working) {
     structuralOperations.push('lane:formal-record-polish');
@@ -14031,6 +14336,19 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
     literals: Object.freeze(hardAnchors.map((value) => Object.freeze({ value }))),
     text: sourceText
   };
+  const generationControls = resolveOntologyGenerationControls({
+    sourceClass,
+    sourceRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
+    targetRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane
+  });
+  const temporalDirective = buildTemporalDirective(sourceText, sourceRegisterLaneInfo.sourceRegisterLane);
+  const temporalAttestation = auditTemporalAttestation(sourceText, sourceText, temporalDirective);
+  const entityMaskLedger = buildEntityMaskLedger(
+    protectAnchorsForRewrite(
+      sourceText,
+      uniqueStrings([...hardAnchors, ...extractSensitiveMaskAnchors(sourceText, sourceClass)])
+    ).replacements
+  );
   const sourceIR = segmentTextToIR(sourceText, protectedState);
   const opportunityProfile = buildOpportunityProfileFromIR(sourceIR);
   const auditBundle = buildSemanticAuditBundle(sourceIR, sourceText, protectedState);
@@ -14091,6 +14409,10 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
         movementConfidence: 0,
         failureReasons: Object.freeze([]),
         transferClass: 'native',
+        generationControls,
+        temporalDirective,
+        temporalAttestation,
+        entityMaskLedger,
         changedDimensions: Object.freeze([]),
         profileShiftDimensions: Object.freeze([]),
         lexemeSwapCount: 0,
@@ -14158,6 +14480,10 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
     }),
     semanticRisk: 0,
     lexemeSwaps: Object.freeze([]),
+    generationControls,
+    temporalDirective,
+    temporalAttestation,
+    entityMaskLedger,
     realizationNotes: Object.freeze([]),
     borrowedShellOutcome: null,
     borrowedShellFailureClass: null,
@@ -14204,6 +14530,7 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
   const sourceClass = options.sourceClass || classifyV2SourceClass(sourceText);
   const sourceRegisterLane = normalizeRegisterLane(options.sourceRegisterLane, 'formal-record');
   const hardAnchors = options.hardAnchors || extractHardAnchors(sourceText);
+  const sensitiveMaskAnchors = options.sensitiveMaskAnchors || extractSensitiveMaskAnchors(sourceText, sourceClass);
   const sourceProfile = options.sourceProfile || extractCadenceProfile(sourceText);
   const sourceIR = options.sourceIR || segmentTextToIR(sourceText, {
     literals: Object.freeze(hardAnchors.map((value) => Object.freeze({ value }))),
@@ -14219,6 +14546,12 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     }),
     sourceRegisterLane
   );
+  const generationControls = variant.shell?.generationControls || resolveOntologyGenerationControls({
+    sourceClass,
+    sourceRegisterLane,
+    targetRegisterLane
+  });
+  const temporalDirective = options.temporalDirective || buildTemporalDirective(sourceText, targetRegisterLane);
   const connectorStrategy = connectorStrategyFor(variant.envelopeId, sourceClass, familyId);
   const contractionStrategy = contractionStrategyFor(
     variant.envelopeId,
@@ -14227,8 +14560,10 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     sourceClass,
     familyId
   );
-  const protectedState = protectAnchorsForRewrite(sourceText, hardAnchors);
-  const paragraphs = splitParagraphs(protectedState.text);
+  const maskAnchors = uniqueStrings([...(hardAnchors || []), ...(sensitiveMaskAnchors || [])]);
+  const protectedState = protectAnchorsForRewrite(sourceText, maskAnchors);
+  const temporalState = protectTemporalNullsForRewrite(protectedState.text, temporalDirective);
+  const paragraphs = splitParagraphs(temporalState.text);
   const structuralOperations = [];
   const lexicalOperations = [];
   const lexemeSwaps = [];
@@ -14243,7 +14578,10 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
       sourceClass,
       sourceRegisterLane,
       targetRegisterLane,
-      intensity: variantIntensity(variant) * familyWeight(familyId, sourceClass, variant.envelopeId)
+      intensity: variantIntensity(variant) * familyWeight(familyId, sourceClass, variant.envelopeId) * Number(generationControls.intensityScalar || 1),
+      generationControls,
+      anchorReplacements: protectedState.replacements,
+      primaryLocationPlaceholder: firstMaskedAnchorToken(protectedState.replacements, 'location')
     };
 
   const rewrittenParagraphs = paragraphs.map((paragraph) => {
@@ -14292,11 +14630,7 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     context
   );
   outputText = applyRegisterLaneRealization(outputText, context);
-  outputText = restoreAnchorsAfterRewrite(outputText, protectedState.replacements);
-  outputText = restoreHardWitnessAnchors(
-    sourceText,
-    restoreProceduralWitnessTerms(sourceText, outputText, sourceClass)
-  );
+  outputText = restoreTemporalNullsAfterRewrite(outputText, temporalState, temporalDirective, targetRegisterLane);
   const polishProtected = protectAnchorsForRewrite(outputText, hardAnchors);
   outputText = polishNativeCandidateText(polishProtected.text, {
     envelopeId: variant.envelopeId,
@@ -14307,6 +14641,11 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
   outputText = restoreAnchorsAfterRewrite(outputText, polishProtected.replacements);
   const artifactRepair = applyArtifactRepairPass(outputText, context);
   outputText = artifactRepair.text;
+  outputText = restoreAnchorsAfterRewrite(outputText, protectedState.replacements);
+  outputText = restoreHardWitnessAnchors(
+    sourceText,
+    restoreProceduralWitnessTerms(sourceText, outputText, sourceClass)
+  );
 
   return Object.freeze({
     outputText,
@@ -14322,7 +14661,10 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     }),
     sourceRegisterLane,
     targetRegisterLane,
-    artifactRepairApplied: artifactRepair.repaired
+    artifactRepairApplied: artifactRepair.repaired,
+    generationControls,
+    temporalDirective,
+    entityMaskLedger: buildEntityMaskLedger(protectedState.replacements)
   });
 }
 
@@ -14432,6 +14774,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   const donorProgress = variant.shell?.mode === 'borrowed'
     ? buildBorrowedShellDonorProgress(sourceText, outputText, sourceProfile, targetProfile || {}, outputProfile)
     : {};
+  const temporalAttestation = auditTemporalAttestation(sourceText, outputText, authored.temporalDirective);
   const hardIntegrityScore = hardAnchorIntegrity(sourceText, outputText);
   const protectedAnchorIntegrity = Number(protectedAnchorAudit.protectedAnchorIntegrity ?? 1);
   const polarityMismatches = Number(semanticAudit.polarityMismatches ?? 0);
@@ -14448,7 +14791,8 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   const protectedAnchorPass = protectedAnchorIntegrity >= classProtectedAnchorFloor(sourceClass);
   const pathologyPass = !pathologies.severe;
   const rewritePass = meetsLandedRewriteBar(sourceClass, rewriteStrength, changedDimensions, authored.lexemeSwaps);
-  const passed = exactPass && protectedAnchorPass && semanticPass && pathologyPass && rewritePass;
+  const temporalPass = temporalAttestation.attestationPassed;
+  const passed = exactPass && protectedAnchorPass && semanticPass && pathologyPass && rewritePass && temporalPass;
   const polarityPenalty = polarityMismatches * (strictCustodySemantics ? 0.16 : 0.12);
   const tensePenalty = tenseMismatches * (strictCustodySemantics ? 0.05 : 0.04);
   const donorStallPenalty =
@@ -14494,6 +14838,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
       tensePenalty -
       boundedPenalty -
       donorStallPenalty -
+      (temporalPass ? 0 : 0.24) -
       ((1 - protectedAnchorIntegrity) * 1.5) -
       (pathologies.flags.length * 0.05),
     4
@@ -14523,6 +14868,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     !protectedAnchorPass ? 'anchor-drift-detected' : null,
     !semanticPass ? 'semantic-failure' : null,
     !pathologyPass ? 'pathology' : null,
+    !temporalPass ? 'timestamp-hallucination' : null,
     !rewritePass ? 'below-rewrite-bar' : null
   ]);
   const lexicalShiftProfile = buildNativeLexicalShiftProfile(
@@ -14568,6 +14914,10 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     targetFit,
     transferClass,
     relationInventory: authored.relationInventory,
+    generationControls: authored.generationControls,
+    temporalDirective: authored.temporalDirective,
+    temporalAttestation,
+    entityMaskLedger: authored.entityMaskLedger,
     ontologyAudit,
     structuralOperations: authored.structuralOperations,
     lexicalOperations: authored.lexicalOperations,
@@ -14633,6 +14983,9 @@ function candidateHoldClass(candidate = null) {
   }
   if (candidateRouteFloorRank(candidate) >= 2) {
     return 'aperture-route-pressure';
+  }
+  if ((candidate.failureReasons || []).includes('timestamp-hallucination')) {
+    return 'timestamp-hallucination';
   }
   if ((candidate.failureReasons || []).includes('pathology')) {
     return 'pathology';
@@ -14763,7 +15116,7 @@ function candidateNearPass(candidate = null) {
     return false;
   }
   const reasons = candidate.failureReasons || [];
-  const structuralFailure = reasons.includes('hard-anchor-failure') || reasons.includes('semantic-failure') || reasons.includes('pathology');
+  const structuralFailure = reasons.includes('hard-anchor-failure') || reasons.includes('semantic-failure') || reasons.includes('pathology') || reasons.includes('timestamp-hallucination');
   if (structuralFailure) {
     return false;
   }
@@ -14777,6 +15130,18 @@ function candidateNearPass(candidate = null) {
 function buildRecoveryVariants(sourceProfile = {}, shell = {}, sourceClass = 'formal-correspondence') {
   const targetProfile = shell?.profile || null;
   const envelopeId = inferEnvelopeId(shell, sourceProfile, targetProfile || {});
+  const sourceRegisterLane = inferRegisterLaneFromProfile(sourceProfile, sourceClass);
+  const targetRegisterLane = resolveTargetRegisterLane({
+    shell,
+    targetProfile,
+    sourceProfile,
+    sourceClass
+  });
+  const generationControls = resolveOntologyGenerationControls({
+    sourceClass,
+    sourceRegisterLane,
+    targetRegisterLane
+  });
   const adjustments = ENVELOPE_ADJUSTMENTS[envelopeId] || ENVELOPE_ADJUSTMENTS.generic;
   const baseMod = shell?.mod
     ? {
@@ -14785,7 +15150,11 @@ function buildRecoveryVariants(sourceProfile = {}, shell = {}, sourceClass = 'fo
         punc: clamp(Math.round(Number(shell.mod.punc || 0)), -3, 3)
       }
     : cadenceModFromProfile(targetProfile || sourceProfile);
-  const baseStrength = clamp(Number(shell?.strength ?? (shell?.profile ? 0.84 : 0.72)), 0, 1);
+  const baseStrength = clamp(
+    Number(shell?.strength ?? (shell?.profile ? 0.84 : 0.72)) * Number(generationControls.strengthScalar || 1),
+    0,
+    1
+  );
   const scalar = Math.max(0.9, classScalar(sourceClass));
   return [
     {
@@ -14794,7 +15163,8 @@ function buildRecoveryVariants(sourceProfile = {}, shell = {}, sourceClass = 'fo
         ...shell,
         mod: mergeShellMod(baseMod, adjustments.secondary, scalar * 1.1),
         strength: clamp(baseStrength + 0.16, 0, 1),
-        profile: tuneTargetProfile(targetProfile, sourceProfile, envelopeId, sourceClass, 1.32)
+        profile: tuneTargetProfile(targetProfile, sourceProfile, envelopeId, sourceClass, 1.32 * Number(generationControls.intensityScalar || 1)),
+        generationControls
       },
       envelopeId
     },
@@ -14804,7 +15174,8 @@ function buildRecoveryVariants(sourceProfile = {}, shell = {}, sourceClass = 'fo
         ...shell,
         mod: mergeShellMod(baseMod, adjustments.primary, scalar),
         strength: clamp(baseStrength + 0.08, 0, 1),
-        profile: tuneTargetProfile(targetProfile, sourceProfile, envelopeId, sourceClass, 1.05)
+        profile: tuneTargetProfile(targetProfile, sourceProfile, envelopeId, sourceClass, 1.05 * Number(generationControls.intensityScalar || 1)),
+        generationControls
       },
       envelopeId
     }
@@ -14847,6 +15218,9 @@ function holdHeadline(holdClass = 'below-rewrite-bar') {
   if (holdClass === 'aperture-route-pressure') {
     return 'Generator V2 hold // Aperture raised the ontology route floor above publishable passage.';
   }
+  if (holdClass === 'timestamp-hallucination') {
+    return 'Generator V2 hold // temporal attestation failed and the rewrite introduced an unsupported clock time.';
+  }
   if (holdClass === 'hard-anchor-failure') {
     return 'Generator V2 hold // exact witness anchors broke under rewrite pressure.';
   }
@@ -14863,6 +15237,7 @@ function explainGenerationReasonCode(code = '') {
   const explanations = {
     'hard-anchor-failure': 'Exact witness anchors broke under rewrite pressure.',
     'aperture-route-pressure': 'Aperture held the route because ontology integrity pressure stayed above the publishable floor.',
+    'timestamp-hallucination': 'Temporal attestation failed because the rewrite introduced a clock time the source did not support.',
     'anchor-drift-detected': 'Protected anchor integrity slipped below the class floor.',
     'semantic-failure': 'Semantic coverage dropped below the class floor.',
     'pathology': 'The output collapsed into a render-unsafe form.',
@@ -14973,6 +15348,10 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
     semanticRisk: chosen.semanticRisk,
     semanticAudit: chosen.semanticAudit,
     protectedAnchorAudit: chosen.protectedAnchorAudit,
+    generationControls: chosen.generationControls || null,
+    temporalDirective: chosen.temporalDirective || null,
+    temporalAttestation: chosen.temporalAttestation || null,
+    entityMaskLedger: Object.freeze([...(chosen.entityMaskLedger || [])]),
     ontologyAudit: chosen.ontologyAudit || null,
     visibleShift: chosen.visibleShift,
     nonTrivialShift: chosen.nonTrivialShift,
@@ -15098,6 +15477,10 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     },
     semanticRisk: Number(bestCandidate?.semanticRisk || 0),
     lexemeSwaps: [],
+    generationControls: bestCandidate?.generationControls || null,
+    temporalDirective: bestCandidate?.temporalDirective || null,
+    temporalAttestation: bestCandidate?.temporalAttestation || null,
+    entityMaskLedger: Object.freeze([...(bestCandidate?.entityMaskLedger || [])]),
     realizationNotes: uniqueStrings([
       holdClass
     ]),
