@@ -676,7 +676,7 @@
     dom.ingressSealReview.hidden = !sealStep;
     dom.ingressBack.disabled = ingressLocked || stepIndex <= 0;
     dom.ingressContinue.hidden = sealStep;
-    dom.ingressContinue.disabled = ingressLocked || sealStep || !key || !laneHasMinWords(key);
+    dom.ingressContinue.disabled = ingressLocked || sealStep || !key;
     dom.ingressContinue.textContent = ingressContinueLabel(stepIndex);
     if (key) {
       dom.ingressStepInput.disabled = ingressLocked;
@@ -696,10 +696,10 @@
     renderIngressStageChip(dom.ingressStagePast, 1, stepIndex, count, ingressLocked);
     renderIngressStageChip(dom.ingressStageHigher, 2, stepIndex, count, ingressLocked);
     renderIngressStageChip(dom.ingressStageSeal, 3, stepIndex, count, ingressLocked);
-    dom.mintStagedPacket.disabled = !(count === 3 && !ingressLocked && sealStep);
-    dom.bypassIngress.disabled = surfaceIsOpen || !typedShiValid;
+    dom.mintStagedPacket.disabled = ingressLocked;
+    dom.bypassIngress.disabled = surfaceIsOpen;
     dom.bypassPassword.disabled = surfaceIsOpen;
-    dom.setBypassToken.disabled = surfaceIsOpen || !recoverableShi || !typedShiValid || typedShi !== normalizeShiNumber(recoverableShi);
+    dom.setBypassToken.disabled = surfaceIsOpen;
     dom.clearBypassToken.disabled = surfaceIsOpen || !getOperatorBypassHash();
     dom.clearIngress.disabled = ingressLocked;
     dom.bypassPassword.placeholder = recoverableShi || shiFormatTemplate();
@@ -722,7 +722,11 @@
     if (!key) return;
     if (!trim(state.ingress.segments[key] || '')) {
       dom.ingressNote.textContent = 'That page needs a held line before the handshake can continue.';
-      render();
+      return;
+    }
+    if (!laneHasMinWords(key)) {
+      const shortfall = Math.max(0, MIN_LANE_WORDS - laneWordCount(key));
+      dom.ingressNote.textContent = 'That page is still below the stylometric threshold. Add ' + shortfall + ' more words to continue.';
       return;
     }
     setIngressStep(index + 1);
@@ -1097,8 +1101,16 @@
   async function mintStagedPacket(options) {
     const opts = options || {};
     if (state.ingress.packetId) return;
-    if (!opts.operatorOverride && (ingressInteractionLocked() || completedCount() !== 3)) return;
+    if (!opts.operatorOverride && ingressInteractionLocked()) return;
     if (opts.operatorOverride && !hasOperatorAccess()) return;
+    if (!opts.operatorOverride && completedCount() !== 3) {
+      dom.ingressNote.textContent = 'The triad is incomplete. Resolve Future, Past, and Higher before minting the staged packet.';
+      return;
+    }
+    if (!opts.operatorOverride && currentIngressStepIndex() < KEYS.length) {
+      dom.ingressNote.textContent = 'Walk through to the seal step before minting the staged packet.';
+      return;
+    }
     const previousIngress = clone(state.ingress);
     const previousPacket = clone(state.packet);
     const previousSealed = clone(state.sealed);

@@ -24,8 +24,9 @@ assert.ok(
   'SHI copy controls stay usable whenever an issued SHI is still recoverable in session'
 );
 assert.ok(
-  harborMainSource.includes('dom.bypassIngress.disabled = surfaceIsOpen || !typedShiValid;'),
-  'Reopen with SHI stays disabled until a real SHI value is entered'
+  harborMainSource.includes('dom.bypassIngress.disabled = surfaceIsOpen;') &&
+    harborMainSource.includes("dom.ingressNote.textContent = 'Safe Harbor recall requires a minted SHI # in the form ' + shiFormatTemplate() + '.';"),
+  'Reopen with SHI now stays clickable on the membrane and explains what is missing instead of feeling dead'
 );
 assert.ok(
   !harborMainSource.includes('recallReady || isShiNumber'),
@@ -121,9 +122,15 @@ assert.ok(
   'Safe Harbor mints SHI only from a real triad stylometric fingerprint and no longer falls back to packet or receipt metadata'
 );
 assert.ok(
-  harborMainSource.includes('dom.setBypassToken.disabled = surfaceIsOpen || !recoverableShi || !typedShiValid || typedShi !== normalizeShiNumber(recoverableShi);') &&
+  harborMainSource.includes('dom.setBypassToken.disabled = surfaceIsOpen;') &&
     harborMainSource.includes('Only the currently minted SHI # can be rebound to this session.'),
   'Safe Harbor only allows explicit SHI recall rebinding from the actually minted SHI value'
+);
+assert.ok(
+  harborMainSource.includes("That page is still below the stylometric threshold. Add ' + shortfall + ' more words to continue.") &&
+    harborMainSource.includes("The triad is incomplete. Resolve Future, Past, and Higher before minting the staged packet.") &&
+    harborMainSource.includes("Walk through to the seal step before minting the staged packet."),
+  'Ingress buttons now explain their gating conditions when clicked instead of failing silently behind disabled states'
 );
 assert.ok(
   !harborMainSource.includes("state.ingress.segments.future_self = 'Batch ") &&
