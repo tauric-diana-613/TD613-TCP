@@ -590,25 +590,36 @@
     const batchId = dom.batchIntakeSelect.value || state.selectedBatchId || 'batch-001a';
     if (!dom.batchIntakeSelect.value) dom.batchIntakeSelect.value = batchId;
     const operatorReady = hasOperatorAccess();
-    const hasStagedBatch = Boolean(state.ingress.packetId && state.selectedBatchId);
+    const hasActiveBatch = Boolean(state.ingress.packetId && state.selectedBatchId);
+    const batchSealed = Boolean(
+      state.selectedBatchId &&
+      state.packet &&
+      state.packet.bridge &&
+      state.packet.bridge.covenant_gate &&
+      state.packet.bridge.covenant_gate.confirmed
+    );
     if (dom.batchIntakeState) {
-      dom.batchIntakeState.textContent = hasStagedBatch
+      dom.batchIntakeState.textContent = batchSealed
+        ? (state.selectedBatchId + ' sealed')
+        : hasActiveBatch
         ? (state.selectedBatchId + ' staged')
         : isLocalhostOperator()
           ? 'localhost override'
           : operatorReady
             ? 'operator token ready'
-            : 'operator token required';
+              : 'operator token required';
     }
     if (dom.batchIntakeNote) {
-      dom.batchIntakeNote.textContent = hasStagedBatch
+      dom.batchIntakeNote.textContent = batchSealed
+        ? ('Batch ' + state.selectedBatchId + ' was sealed to disk on localhost. Reset it to load another buffered batch.')
+        : hasActiveBatch
         ? ('Batch ' + state.selectedBatchId + ' is staged in the packet reliquary. Reset it to load another buffered batch.')
         : operatorReady
           ? ('Batch ' + batchId + ' can stage directly into Harbor through operator override.')
           : 'Store a recall token or open Harbor on localhost to enable direct batch staging.';
     }
-    if (dom.stageSelectedBatch) dom.stageSelectedBatch.disabled = !operatorReady || hasStagedBatch;
-    if (dom.resetStagedBatch) dom.resetStagedBatch.disabled = !operatorReady || !hasStagedBatch;
+    if (dom.stageSelectedBatch) dom.stageSelectedBatch.disabled = !operatorReady || hasActiveBatch;
+    if (dom.resetStagedBatch) dom.resetStagedBatch.disabled = !operatorReady || !hasActiveBatch;
   }
 
   function renderIngress() {
@@ -1124,7 +1135,11 @@
       return;
     }
     seedBatchIngress(batchId);
-    await mintStagedPacket({ operatorOverride: true });
+    if (state.ingress.packetId) {
+      await rebuild('batch-selected');
+    } else {
+      await mintStagedPacket({ operatorOverride: true });
+    }
     if (dom.batchIntakeNote && state.ingress.packetId) {
       dom.batchIntakeNote.textContent = 'Batch ' + batchId + ' is staged in the packet reliquary. Complete the triad before Mint / Seal Payload if you want a real SHI.';
     }
