@@ -3426,11 +3426,12 @@
       personaId: null,
       source: 'swapped',
       fromSlot: voiceState.slot,
+      registerLane: voiceState.sourceRegisterLane || null,
       strength: 0.82
     };
   }
 
-  function borrowedShellFromProfile(profile, fromSlot) {
+  function borrowedShellFromProfile(profile, fromSlot, registerLane = null) {
     return {
       mode: 'borrowed',
       label: `borrowed ${SLOT_SHORT[fromSlot]} cadence`,
@@ -3439,6 +3440,7 @@
       personaId: null,
       source: 'swapped',
       fromSlot,
+      registerLane,
       strength: 0.82
     };
   }
@@ -4167,7 +4169,12 @@
     const text = $(slot === 'A' ? 'voiceA' : 'voiceB').value;
     const rawProfile = extractCadenceProfile(text);
     const shell = getBayShell(slot);
-    const transfer = buildCadenceTransfer(text, shell, { retrieval: true });
+    const sample = sampleEntry(baySampleIds[slot]);
+    const transferOptions = { retrieval: true };
+    if (sample?.variant) {
+      transferOptions.sourceRegisterLane = sample.variant;
+    }
+    const transfer = buildCadenceTransfer(text, shell, transferOptions);
     const generationHeld = transfer.holdStatus === 'held';
     if (generationHeld && typeof window !== 'undefined' && window.TD613_DUEL_DEBUG) {
       try {
@@ -4189,7 +4196,8 @@
         });
       } catch (error) { /* ignore log failure */ }
     }
-    const effectiveText = generationHeld ? text : transfer.text;
+    const heldPreviewText = generationHeld ? String(transfer.internalText || '').trim() : '';
+    const effectiveText = generationHeld ? (heldPreviewText || text) : transfer.text;
     const persona = shell.personaId ? findPersona(shell.personaId) : null;
     const effectiveProfile = transfer.outputProfile || extractCadenceProfile(effectiveText);
 
@@ -4198,12 +4206,17 @@
       text,
       effectiveText,
       generationHeld,
+      previewingHeldTransfer: Boolean(generationHeld && heldPreviewText && heldPreviewText !== text),
       hasEffectiveTextShift: effectiveText !== text,
       hasText: !rawProfile.empty,
       rawProfile,
       effectiveProfile,
       persona,
       shell,
+      sourceRegisterLane: transfer.sourceRegisterLane || sample?.variant || null,
+      targetRegisterLane: transfer.targetRegisterLane || shell.registerLane || null,
+      profileShiftDimensions: [...new Set(transfer.profileShiftDimensions || [])],
+      artifactRepairApplied: Boolean(transfer.artifactRepairApplied),
       transfer,
       transferTrace: transfer.retrievalTrace || null
     };
@@ -4237,14 +4250,34 @@
       'contraction-posture': 'contraction posture',
       'line-break-texture': 'line-break texture',
       'connector-stance': 'connector stance',
-      'punctuation-shape': 'punctuation shape'
+      'punctuation-shape': 'punctuation shape',
+      'abbreviation-posture': 'abbreviation posture',
+      'orthography-posture': 'orthography posture',
+      'fragment-posture': 'fragment posture',
+      'conversation-posture': 'conversation posture',
+      'surface-marker-posture': 'surface marker posture',
+      'lexical-register': 'lexical register',
+      'directness': 'directness',
+      'abstraction-posture': 'abstraction posture'
     };
 
     return labels[id] || id;
   }
 
+  function realizedChangedDimensions(transfer = {}) {
+    return [...new Set(transfer.changedDimensions || [])];
+  }
+
+  function profileOnlyShiftDimensions(transfer = {}) {
+    const realized = new Set(realizedChangedDimensions(transfer));
+    return [...new Set(transfer.profileShiftDimensions || [])].filter((dimension) => !realized.has(dimension));
+  }
+
   function transferSummaryCopy(transfer, shifted = '') {
     if (transfer?.holdStatus === 'held') {
+      if (String(transfer?.internalText || '').trim()) {
+        return `${transfer?.generationDocket?.headline || 'Generator V2 held the transfer instead of publishing a weak rewrite.'} Previewing the strongest held surface for audit only.`;
+      }
       return transfer?.generationDocket?.headline || 'Generator V2 held the transfer instead of publishing a weak rewrite.';
     }
 
@@ -4256,19 +4289,42 @@
       return 'Transfer stayed on source cadence.';
     }
 
-     if (borrowedTransferSurfaceClose(transfer)) {
+    const realizedDimensions = realizedChangedDimensions(transfer);
+    const profileDimensions = profileOnlyShiftDimensions(transfer);
+    const repaired = Boolean(transfer.artifactRepairApplied);
+
+    if (!realizedDimensions.length && !(transfer.lexemeSwaps || []).length && profileDimensions.length) {
+      const profileShifted = profileDimensions
+        .map((dimension) => transferDimensionLabel(dimension))
+        .slice(0, 3)
+        .join(', ');
+      return profileShifted
+        ? `Transfer shifted ${profileShifted} at profile level only; surface text stayed near source cadence.`
+        : 'Transfer shifted the donor profile only; surface text stayed near source cadence.';
+    }
+
+    if (borrowedTransferSurfaceClose(transfer)) {
       return 'Transfer stayed surface-close to the source cadence.';
     }
 
     if (transfer.borrowedShellOutcome === 'structural' || transfer.transferClass === 'structural') {
+      if (repaired) {
+        return shifted ? `Transfer artifact-repaired into a structural cadence shift across ${shifted}.` : 'Transfer artifact-repaired into a structural cadence shift.';
+      }
       return shifted ? `Transfer moved ${shifted}.` : 'Transfer landed a structural cadence shift.';
     }
 
     if (transfer.borrowedShellOutcome === 'partial') {
+      if (repaired) {
+        return shifted ? `Transfer artifact-repaired into a retrieval-safe partial shell shift across ${shifted}.` : 'Transfer artifact-repaired into a retrieval-safe partial shell shift.';
+      }
       return shifted ? `Transfer held a retrieval-safe partial shell shift across ${shifted}.` : 'Transfer held a retrieval-safe partial shell shift.';
     }
 
-    if ((transfer.changedDimensions || []).length || (transfer.lexemeSwaps || []).length) {
+    if (realizedDimensions.length || (transfer.lexemeSwaps || []).length) {
+      if (repaired) {
+        return shifted ? `Transfer artifact-repaired into a partial shell shift across ${shifted}.` : 'Transfer artifact-repaired into a partial shell shift.';
+      }
       return shifted ? `Transfer landed a partial shell shift across ${shifted}.` : 'Transfer landed a partial shell shift.';
     }
 
@@ -4369,6 +4425,9 @@
     if (transfer?.holdStatus === 'held') {
       return 'generator hold';
     }
+    if (!realizedChangedDimensions(transfer).length && !(transfer.lexemeSwaps || []).length && profileOnlyShiftDimensions(transfer).length) {
+      return 'profile-shift only';
+    }
     const percent = realizedTransferPercent(transfer, hasEffectiveTextShift);
     if (percent === 0) {
       return 'no transfer';
@@ -4414,6 +4473,9 @@
     const trace = voiceState?.transferTrace || transfer.retrievalTrace || {};
     const semanticAudit = trace.semanticAudit || transfer.semanticAudit || {};
     const notes = [...new Set(transfer.notes || [])];
+    const changedDimensions = realizedChangedDimensions(transfer);
+    const profileShiftDimensions = [...new Set(transfer.profileShiftDimensions || [])];
+    const selectedCandidate = (transfer.candidateLedger || []).find((entry) => entry.status === 'selected') || null;
 
     return {
       slot: voiceState?.slot || '',
@@ -4424,9 +4486,16 @@
       borrowedShellOutcome: transfer.borrowedShellOutcome || (transfer.transferClass === 'rejected' ? 'rejected' : voiceState?.shell?.mode === 'borrowed' ? 'subtle' : null),
       borrowedShellFailureClass: transfer.borrowedShellFailureClass || null,
       realizationTier: transfer.realizationTier || 'none',
-      changedDimensions: [...new Set(transfer.changedDimensions || [])],
+      changedDimensions,
+      profileShiftDimensions,
       lexemeSwapFamilies: [...new Set((transfer.lexemeSwaps || []).map((swap) => swap.family))],
       rescuePasses: [...new Set(transfer.rescuePasses || [])],
+      sourceRegisterLane: transfer.sourceRegisterLane || trace.sourceRegisterLane || voiceState?.sourceRegisterLane || null,
+      targetRegisterLane: transfer.targetRegisterLane || voiceState?.targetRegisterLane || voiceState?.shell?.registerLane || null,
+      artifactRepairApplied: Boolean(transfer.artifactRepairApplied),
+      lexicalRegisterFalsePositive: changedDimensions.includes('lexical-register') && !(transfer.lexemeSwaps || []).length,
+      outputPreview: String(transfer.text || '').slice(0, 180),
+      artifactFlags: [...new Set(selectedCandidate?.artifactFlags || [])],
       donorProgress: transferDonorProgress(transfer),
       surfaceClose: borrowedTransferSurfaceClose(transfer),
       propositionCoverage: semanticAudit.propositionCoverage ?? 1,
@@ -4448,8 +4517,12 @@
     }
 
     const landedStructural = engineLandedStructuralTransfer(transfer);
+    const profileOnlyDimensions = profileOnlyShiftDimensions(transfer);
 
     if (borrowedTransferSurfaceClose(transfer) && !landedStructural) {
+      if (profileOnlyDimensions.length && !realizedChangedDimensions(transfer).length && !(transfer.lexemeSwaps || []).length) {
+        return 12;
+      }
       return 8;
     }
 
@@ -4459,7 +4532,7 @@
       semanticAudit.protectedAnchorIntegrity ??
       1;
     const donorProgress = transferDonorProgress(transfer);
-    const changedDimensions = [...new Set(transfer.changedDimensions || [])];
+    const changedDimensions = realizedChangedDimensions(transfer);
     const nonPunctuationDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
     const surfaceDimensions = nonPunctuationDimensions.filter((dimension) => [
       'abbreviation-posture',
@@ -4509,9 +4582,16 @@
     } else if (transfer.realizationTier === 'structural') {
       score += 2;
     }
+    if (transfer.artifactRepairApplied && (nonPunctuationDimensions.length || lexicalShiftCount > 0)) {
+      score += 4;
+    }
 
     if (!nonPunctuationDimensions.length && lexicalShiftCount === 0) {
-      score = Math.min(score, changedDimensions.includes('punctuation-shape') ? 8 : 4);
+      if (profileOnlyDimensions.length) {
+        score = Math.min(score, 12);
+      } else {
+        score = Math.min(score, changedDimensions.includes('punctuation-shape') ? 8 : 4);
+      }
     }
 
     if ((donorProgress.donorImprovementRatio || 0) < 0.14 && !landedStructural) {

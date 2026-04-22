@@ -127,8 +127,12 @@
     },
     "ontologyAudit": {
       "sourceClass": "procedural-record",
+      "sourceRegisterLane": "professional-message",
       "relationInventory": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "professional-message",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 6,
         "clauseCount": 7,
@@ -168,11 +172,16 @@
     "planSummary": {
       "relationInventory": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "professional-message",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 6,
         "clauseCount": 7,
         "exactAnchorCount": 7
       },
+      "sourceRegisterLane": "professional-message",
+      "targetRegisterLane": "rushed-mobile",
       "testedFamilyIds": [
         "syntax-shape",
         "register-lexicon",
@@ -196,6 +205,7 @@
     "candidateSummary": {
       "candidateCount": 1,
       "landedCandidateId": "base:syntax-shape",
+      "landedCandidateFamily": "syntax-shape",
       "families": [
         "syntax-shape"
       ],
@@ -208,6 +218,11 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
+        "abbreviation-posture",
+        "orthography-posture",
+        "lexical-register"
+      ],
+      "profileShiftDimensions": [
         "abbreviation-posture",
         "orthography-posture",
         "lexical-register"
@@ -240,70 +255,6 @@
       "donorImprovementRatio": 0.141,
       "sourceOutputLexicalOverlap": 0.934
     },
-    "candidateLedger": [
-      {
-        "id": "base:syntax-shape",
-        "family": "syntax-shape",
-        "envelopeId": "spark",
-        "status": "selected",
-        "score": 0.9037,
-        "toolabilityScore": 0.7198,
-        "rewriteStrength": 0.9205,
-        "targetFit": 0.4362,
-        "movementConfidence": 0.94,
-        "personaSeparationScore": 0.08,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 7,
-            "exactAnchorCount": 7
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 1,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 7,
-            "resolvedAnchors": 7,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 1,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.012,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.087
-          }
-        },
-        "outputPreview": "Hearing unit, pls correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
-      }
-    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
@@ -311,10 +262,15 @@
       "reasons": [],
       "candidateCount": 1,
       "winningCandidateId": "base:syntax-shape",
+      "winningCandidateFamily": "syntax-shape",
       "ontologyRoutePressure": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "professional-message",
         "relationInventory": {
           "sourceClass": "procedural-record",
+          "sourceRegisterLane": "professional-message",
+          "sourceRegisterLaneInference": "explicit",
+          "sourceRegisterLaneFallback": false,
           "paragraphCount": 1,
           "sentenceCount": 6,
           "clauseCount": 7,

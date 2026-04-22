@@ -175,8 +175,12 @@
     },
     "ontologyAudit": {
       "sourceClass": "formal-correspondence",
+      "sourceRegisterLane": "professional-message",
       "relationInventory": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "professional-message",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 6,
         "clauseCount": 11,
@@ -216,11 +220,16 @@
     "planSummary": {
       "relationInventory": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "professional-message",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 6,
         "clauseCount": 11,
         "exactAnchorCount": 4
       },
+      "sourceRegisterLane": "professional-message",
+      "targetRegisterLane": "rushed-mobile",
       "testedFamilyIds": [
         "syntax-shape",
         "register-lexicon",
@@ -246,6 +255,7 @@
     "candidateSummary": {
       "candidateCount": 5,
       "landedCandidateId": "base:cadence-connector",
+      "landedCandidateFamily": "cadence-connector",
       "families": [
         "syntax-shape",
         "cadence-connector",
@@ -262,6 +272,13 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "abbreviation-posture",
+        "orthography-posture",
+        "lexical-register"
+      ],
+      "profileShiftDimensions": [
         "sentence-mean",
         "sentence-count",
         "abbreviation-posture",
@@ -296,318 +313,6 @@
       "donorImprovementRatio": 0.183,
       "sourceOutputLexicalOverlap": 0.928
     },
-    "candidateLedger": [
-      {
-        "id": "base:syntax-shape",
-        "family": "syntax-shape",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 1.0217,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.3069,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 11,
-            "exactAnchorCount": 4
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.977,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 4,
-            "resolvedAnchors": 4,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.997,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.013,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "Hello appeals unit, im writing about case BA-4427 bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch in"
-      },
-      {
-        "id": "base:cadence-connector",
-        "family": "cadence-connector",
-        "envelopeId": "spark",
-        "status": "selected",
-        "score": 1.0771,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.3593,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 11,
-            "exactAnchorCount": 4
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 1,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 4,
-            "resolvedAnchors": 4,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 1,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.012,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.087
-          }
-        },
-        "outputPreview": "Hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch"
-      },
-      {
-        "id": "base:order-beat",
-        "family": "order-beat",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 1.0169,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.2969,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 11,
-            "exactAnchorCount": 4
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.977,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 4,
-            "resolvedAnchors": 4,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.997,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.013,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "Bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
-      },
-      {
-        "id": "base:clause-pivot",
-        "family": "clause-pivot",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 1.0677,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.3452,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 11,
-            "exactAnchorCount": 4
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.977,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 4,
-            "resolvedAnchors": 4,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.997,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.013,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "Bc the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead, hello appeals unit, im writing about case B"
-      },
-      {
-        "id": "base:hybrid",
-        "family": "hybrid",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 1.1141,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.3767,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 11,
-            "exactAnchorCount": 4
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.977,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 4,
-            "resolvedAnchors": 4,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.997,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.013,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "When the file shows a routing mismatch instead, hello appeals unit, im writing about case BA-4427 since the suspension is currently framed as a missing-document"
-      }
-    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
@@ -615,10 +320,15 @@
       "reasons": [],
       "candidateCount": 5,
       "winningCandidateId": "base:cadence-connector",
+      "winningCandidateFamily": "cadence-connector",
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "professional-message",
         "relationInventory": {
           "sourceClass": "formal-correspondence",
+          "sourceRegisterLane": "professional-message",
+          "sourceRegisterLaneInference": "explicit",
+          "sourceRegisterLaneFallback": false,
           "paragraphCount": 1,
           "sentenceCount": 6,
           "clauseCount": 11,

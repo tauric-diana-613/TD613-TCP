@@ -116,6 +116,14 @@ assert.equal(typeof latestReport.ontologyIntegrity.beaconActiveSustainedRate, 'n
 assert.equal(typeof latestReport.ontologyIntegrity.heldByApertureRoutePressureCount, 'number', 'ontology integrity audit exposes aperture route-pressure holds');
 assert.equal(typeof latestReport.ontologyIntegrity.apertureChangedRouteCount, 'number', 'ontology integrity audit exposes route shifts against toolability ordering');
 assert.ok(Array.isArray(latestReport.ontologyIntegrity.representativeCases), 'ontology integrity representative cases serialize');
+assert.ok(latestReport.cadenceDuelIntegrity, 'diagnostics JSON report includes cadence duel integrity audit');
+assert.equal(typeof latestReport.cadenceDuelIntegrity.laneMisclassificationCount, 'number', 'cadence duel integrity exposes lane misclassification count');
+assert.equal(typeof latestReport.cadenceDuelIntegrity.syntaxOnlyWinnerCount, 'number', 'cadence duel integrity exposes syntax-only winner count');
+assert.equal(typeof latestReport.cadenceDuelIntegrity.lexicalRegisterFalsePositiveCount, 'number', 'cadence duel integrity exposes lexical-register false positives');
+assert.equal(typeof latestReport.cadenceDuelIntegrity.artifactRepairRescueCount, 'number', 'cadence duel integrity exposes artifact-repair rescues');
+assert.equal(typeof latestReport.cadenceDuelIntegrity.referenceToRushedLandedRate, 'number', 'cadence duel integrity exposes formal-to-rushed landed rate');
+assert.equal(typeof latestReport.cadenceDuelIntegrity.probeToFormalLandedRate, 'number', 'cadence duel integrity exposes rushed-to-formal landed rate');
+assert.ok(Array.isArray(latestReport.cadenceDuelIntegrity.representativeCases), 'cadence duel integrity representative cases serialize');
 assert.ok(latestReport.toolability, 'diagnostics JSON report includes toolability audit');
 assert.equal(typeof latestReport.toolability.expectedCaseCount, 'number', 'toolability audit exposes expected case count');
 assert.ok(latestReport.toolability.expectedCaseCount > 0, 'toolability audit tracks expected-success cases');
@@ -191,6 +199,8 @@ assert.ok(latestMarkdown.includes('## Generator Audit'), 'diagnostics Markdown r
 assert.ok(latestMarkdown.includes('### Generator Misses'), 'diagnostics Markdown report includes generator misses section');
 assert.ok(latestMarkdown.includes('## Ontology Integrity'), 'diagnostics Markdown report includes ontology integrity section');
 assert.ok(latestMarkdown.includes('### Ontology Pressure Cases'), 'diagnostics Markdown report includes ontology pressure case section');
+assert.ok(latestMarkdown.includes('## Cadence Duel Integrity'), 'diagnostics Markdown report includes cadence duel integrity section');
+assert.ok(latestMarkdown.includes('### Cadence Duel Cases'), 'diagnostics Markdown report includes cadence duel integrity case section');
 assert.ok(latestMarkdown.includes('## Toolability'), 'diagnostics Markdown report includes toolability section');
 assert.ok(latestMarkdown.includes('### Toolability Probes'), 'diagnostics Markdown report includes toolability probe section');
 assert.ok(latestMarkdown.includes('### Closest Sample Pairs'), 'diagnostics Markdown report includes closest sample pairs section');

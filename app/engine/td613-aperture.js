@@ -698,6 +698,7 @@ function td613MismatchRate(mismatchCount = 0, clauseCount = 0) {
 
 export function buildTD613OntologyAudit({
   sourceClass = 'formal-correspondence',
+  sourceRegisterLane = 'formal-record',
   relationInventory = {},
   semanticAudit = {},
   protectedAnchorAudit = {},
@@ -944,9 +945,13 @@ export function buildTD613OntologyAudit({
 
   return Object.freeze({
     sourceClass: String(sourceClass || relationInventory?.sourceClass || 'formal-correspondence'),
+    sourceRegisterLane: String(sourceRegisterLane || relationInventory?.sourceRegisterLane || 'formal-record'),
     relationInventory: Object.freeze({
       ...(relationInventory || {}),
-      sourceClass: String(relationInventory?.sourceClass || sourceClass || 'formal-correspondence')
+      sourceClass: String(relationInventory?.sourceClass || sourceClass || 'formal-correspondence'),
+      sourceRegisterLane: String(relationInventory?.sourceRegisterLane || sourceRegisterLane || 'formal-record'),
+      sourceRegisterLaneInference: String(relationInventory?.sourceRegisterLaneInference || 'inferred'),
+      sourceRegisterLaneFallback: Boolean(relationInventory?.sourceRegisterLaneFallback)
     }),
     semanticCoverage,
     anchorIntegrity,

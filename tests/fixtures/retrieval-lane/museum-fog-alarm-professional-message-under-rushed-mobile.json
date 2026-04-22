@@ -103,8 +103,12 @@
     },
     "ontologyAudit": {
       "sourceClass": "procedural-record",
+      "sourceRegisterLane": "professional-message",
       "relationInventory": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "professional-message",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 3,
         "clauseCount": 5,
@@ -144,11 +148,16 @@
     "planSummary": {
       "relationInventory": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "professional-message",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 3,
         "clauseCount": 5,
         "exactAnchorCount": 3
       },
+      "sourceRegisterLane": "professional-message",
+      "targetRegisterLane": "rushed-mobile",
       "testedFamilyIds": [
         "syntax-shape",
         "register-lexicon",
@@ -173,6 +182,7 @@
     "candidateSummary": {
       "candidateCount": 3,
       "landedCandidateId": "base:cadence-connector",
+      "landedCandidateFamily": "cadence-connector",
       "families": [
         "syntax-shape",
         "cadence-connector",
@@ -187,6 +197,15 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "register-mode",
+        "abbreviation-posture",
+        "orthography-posture",
+        "lexical-register"
+      ],
+      "profileShiftDimensions": [
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
@@ -218,194 +237,6 @@
       "donorImprovementRatio": 0.096,
       "sourceOutputLexicalOverlap": 0.941
     },
-    "candidateLedger": [
-      {
-        "id": "base:syntax-shape",
-        "family": "syntax-shape",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.775,
-        "toolabilityScore": 0.7198,
-        "rewriteStrength": 1,
-        "targetFit": 0.2798,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.08,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 3,
-            "clauseCount": 5,
-            "exactAnchorCount": 3
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 1,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 3,
-            "resolvedAnchors": 3,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 1,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.012,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.087
-          }
-        },
-        "outputPreview": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and w"
-      },
-      {
-        "id": "base:cadence-connector",
-        "family": "cadence-connector",
-        "envelopeId": "spark",
-        "status": "selected",
-        "score": 1.0158,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.3322,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 3,
-            "clauseCount": 5,
-            "exactAnchorCount": 3
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 1,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 3,
-            "resolvedAnchors": 3,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 1,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.012,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.087
-          }
-        },
-        "outputPreview": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and w"
-      },
-      {
-        "id": "base:clause-pivot",
-        "family": "clause-pivot",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.7771,
-        "toolabilityScore": 0.7198,
-        "rewriteStrength": 1,
-        "targetFit": 0.2798,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.08,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 3,
-            "clauseCount": 5,
-            "exactAnchorCount": 3
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.96,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 3,
-            "resolvedAnchors": 3,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.995,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.014,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue, but the real problem is that the"
-      }
-    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
@@ -413,10 +244,15 @@
       "reasons": [],
       "candidateCount": 3,
       "winningCandidateId": "base:cadence-connector",
+      "winningCandidateFamily": "cadence-connector",
       "ontologyRoutePressure": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "professional-message",
         "relationInventory": {
           "sourceClass": "procedural-record",
+          "sourceRegisterLane": "professional-message",
+          "sourceRegisterLaneInference": "explicit",
+          "sourceRegisterLaneFallback": false,
           "paragraphCount": 1,
           "sentenceCount": 3,
           "clauseCount": 5,

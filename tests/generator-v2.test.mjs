@@ -23,11 +23,15 @@ const procedural = sampleById('building-access-formal-record');
 const formal = sampleById('customer-support-formal-record');
 const rushedDonor = sampleById('package-handoff-rushed-mobile');
 const formalDonor = sampleById('committee-budget-formal-record');
+const packageFormal = sampleById('package-handoff-formal-record');
+const packageRushed = sampleById('package-handoff-rushed-mobile');
 
 assert.ok(procedural, 'procedural regression sample exists');
 assert.ok(formal, 'formal regression sample exists');
 assert.ok(rushedDonor, 'rushed donor sample exists');
 assert.ok(formalDonor, 'formal donor sample exists');
+assert.ok(packageFormal, 'package-handoff formal sample exists');
+assert.ok(packageRushed, 'package-handoff rushed sample exists');
 
 const reflective = `I am pretty content in life. Don't worry about where you came from. Keep doing what you're doing.
 
@@ -45,22 +49,26 @@ const cases = [
   {
     id: 'procedural-record',
     text: procedural.text,
-    shell: { mode: 'borrowed', personaId: 'archivist', profile: extractCadenceProfile(formalDonor.text), strength: 0.84 }
+    sourceRegisterLane: procedural.variant,
+    shell: { mode: 'borrowed', personaId: 'archivist', profile: extractCadenceProfile(formalDonor.text), registerLane: formalDonor.variant, strength: 0.84 }
   },
   {
     id: 'formal-correspondence',
     text: formal.text,
-    shell: { mode: 'borrowed', personaId: 'spark', profile: extractCadenceProfile(rushedDonor.text), strength: 0.82 }
+    sourceRegisterLane: formal.variant,
+    shell: { mode: 'borrowed', personaId: 'spark', profile: extractCadenceProfile(rushedDonor.text), registerLane: rushedDonor.variant, strength: 0.82 }
   },
   {
     id: 'reflective-prose',
     text: reflective,
-    shell: { mode: 'borrowed', personaId: 'matron', profile: extractCadenceProfile(formalDonor.text), strength: 0.84 }
+    sourceRegisterLane: 'professional-message',
+    shell: { mode: 'borrowed', personaId: 'matron', profile: extractCadenceProfile(formalDonor.text), registerLane: formalDonor.variant, strength: 0.84 }
   },
   {
     id: 'narrative-scene',
     text: narrative,
-    shell: { mode: 'borrowed', personaId: 'cross-examiner', profile: extractCadenceProfile(rushedDonor.text), strength: 0.84 }
+    sourceRegisterLane: 'tangled-followup',
+    shell: { mode: 'borrowed', personaId: 'cross-examiner', profile: extractCadenceProfile(rushedDonor.text), registerLane: rushedDonor.variant, strength: 0.84 }
   }
 ];
 
@@ -126,7 +134,10 @@ function deformationLoad(candidate = null) {
 }
 
 for (const testCase of cases) {
-  const result = buildCadenceTransfer(testCase.text, testCase.shell, { retrieval: true });
+  const result = buildCadenceTransfer(testCase.text, testCase.shell, {
+    retrieval: true,
+    sourceRegisterLane: testCase.sourceRegisterLane || undefined
+  });
   const substantiveMovement = (result.changedDimensions || []).filter((dimension) =>
     !['punctuation-shape', 'contraction-posture'].includes(dimension)
   ).length;
@@ -149,6 +160,15 @@ for (const testCase of cases) {
   );
   assert.ok(result.retrievalTrace?.ontologyAudit, `${testCase.id}: retrieval trace carries ontology audit`);
   assert.ok(result.generationDocket?.ontologyRoutePressure, `${testCase.id}: generation docket carries ontology route pressure`);
+  assert.equal(result.sourceRegisterLane, testCase.sourceRegisterLane || result.sourceRegisterLane, `${testCase.id}: source register lane is threaded through the landed result`);
+  assert.ok(
+    (result.candidateLedger || []).every((entry) => Boolean(entry.sourceRegisterLane)),
+    `${testCase.id}: candidate ledger entries carry source register lanes`
+  );
+  assert.ok(
+    (result.candidateLedger || []).every((entry) => Array.isArray(entry.profileShiftDimensions)),
+    `${testCase.id}: candidate ledger entries carry profile-shift dimensions`
+  );
   assert.ok(
     (result.candidateLedger || []).every((entry) => entry.ontologyAudit && entry.ontologyAudit.selectiveAdmissibilityDrift),
     `${testCase.id}: every candidate ledger entry carries ontology audit and route pressure`
@@ -204,6 +224,64 @@ for (const testCase of cases) {
     );
   }
 }
+
+const packageToRushed = buildCadenceTransfer(packageFormal.text, {
+  mode: 'borrowed',
+  personaId: 'spark',
+  profile: extractCadenceProfile(packageRushed.text),
+  registerLane: packageRushed.variant,
+  strength: 0.84
+}, {
+  retrieval: true,
+  sourceRegisterLane: packageFormal.variant
+});
+
+assert.equal(packageToRushed.sourceRegisterLane, 'formal-record', 'package formal -> rushed preserves formal source lane');
+assert.equal(packageToRushed.targetRegisterLane, 'rushed-mobile', 'package formal -> rushed targets rushed-mobile lane');
+assert.ok((packageToRushed.lexemeSwaps || []).length > 0, 'package formal -> rushed lands real lexical realization');
+assert.ok(
+  (packageToRushed.changedDimensions || []).some((dimension) => ['sentence-mean', 'sentence-count', 'sentence-spread'].includes(dimension)),
+  'package formal -> rushed lands structural compression in the surfaced dimensions'
+);
+assert.ok(
+  /cams \+ residents|said yes its hers|had bags already/i.test(String(packageToRushed.text || '')),
+  'package formal -> rushed lands safe rushed-lane compression without losing its witness anchors'
+);
+
+const packageToFormal = buildCadenceTransfer(packageRushed.text, {
+  mode: 'borrowed',
+  personaId: 'archivist',
+  profile: extractCadenceProfile(packageFormal.text),
+  registerLane: packageFormal.variant,
+  strength: 0.84
+}, {
+  retrieval: true,
+  sourceRegisterLane: packageRushed.variant
+});
+const packageToFormalPreview = String(packageToFormal.text || packageToFormal.internalText || '');
+
+assert.equal(packageToFormal.sourceRegisterLane, 'rushed-mobile', 'package rushed -> formal preserves rushed-mobile source lane');
+assert.equal(packageToFormal.targetRegisterLane, 'formal-record', 'package rushed -> formal targets formal-record lane');
+assert.ok(
+  (packageToFormal.lexemeSwaps || []).length > 0 || packageToFormalPreview.length > 0,
+  'package rushed -> formal surfaces a real shorthand expansion path'
+);
+assert.ok(
+  /package|management|second-floor|was not/i.test(packageToFormalPreview),
+  'package rushed -> formal expands clipped logistics vocabulary into formal-record witness language'
+);
+assert.ok(
+  !((packageToFormal.changedDimensions || []).includes('lexical-register') && !(packageToFormal.lexemeSwaps || []).length),
+  'package rushed -> formal does not over-report lexical register without surfaced lexeme swaps'
+);
+assert.ok(
+  Array.isArray(packageToFormal.profileShiftDimensions) && packageToFormal.profileShiftDimensions.length >= (packageToFormal.changedDimensions || []).length,
+  'package rushed -> formal keeps profile movement distinct from surfaced movement'
+);
+assert.ok(
+  !((packageToFormal.generationDocket?.reasons || []).includes('artifact:clause-join')),
+  'package rushed -> formal repair round clears the mild clause-join artifact from the best held candidate'
+);
 
 assert.deepEqual(
   [...familyUnion].sort((left, right) => left.localeCompare(right)),

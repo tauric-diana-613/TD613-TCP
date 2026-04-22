@@ -27,24 +27,36 @@
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.964,
-      "polarityMismatches": 0,
+      "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s0c0",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
-          "polarityMismatch": 0,
+          "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 0.429,
-          "globalBagScore": 0.15
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s1c0",
+          "matchedClauseId": "s0c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.417
+        },
+        {
+          "sourceClauseId": "s2c0",
           "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -53,23 +65,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.278
-        },
-        {
-          "sourceClauseId": "s2c0",
-          "matchedClauseId": "s2c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.056
+          "globalBagScore": 0.083
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -81,7 +81,7 @@
         },
         {
           "sourceClauseId": "s3c1",
-          "matchedClauseId": "s3c0",
+          "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -89,23 +89,23 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.056
+          "globalBagScore": 0.083
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s4c0",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.056
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s5c0",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -113,11 +113,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.278
+          "globalBagScore": 0.417
         }
       ],
       "sourceClauseCount": 7,
-      "outputClauseCount": 6
+      "outputClauseCount": 4
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
@@ -127,8 +127,12 @@
     },
     "ontologyAudit": {
       "sourceClass": "formal-correspondence",
+      "sourceRegisterLane": "rushed-mobile",
       "relationInventory": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "rushed-mobile",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 6,
         "clauseCount": 7,
@@ -139,7 +143,7 @@
         "actorCoverage": 1,
         "actionCoverage": 1,
         "objectCoverage": 0.964,
-        "polarityMismatches": 0,
+        "polarityMismatches": 1,
         "tenseMismatches": 0
       },
       "anchorIntegrity": {
@@ -151,9 +155,9 @@
       "aperture": {
         "temporalPosture": "synced",
         "closureClass": "closed",
-        "closureScore": 0.996,
+        "closureScore": 0.936,
         "historicalCrease": 0.012,
-        "unfoldingEnergy": 0.013,
+        "unfoldingEnergy": 0.037,
         "beaconStatus": "beacon-idle",
         "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
@@ -162,17 +166,22 @@
         "driftClass": "none",
         "driftReasons": [],
         "routeFloor": "play",
-        "routePressure": 0.088
+        "routePressure": 0.093
       }
     },
     "planSummary": {
       "relationInventory": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "rushed-mobile",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 6,
         "clauseCount": 7,
         "exactAnchorCount": 1
       },
+      "sourceRegisterLane": "rushed-mobile",
+      "targetRegisterLane": "professional-message",
       "testedFamilyIds": [
         "syntax-shape",
         "register-lexicon",
@@ -184,7 +193,8 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "front-if"
+        "front-if",
+        "beat-merge"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:pls->please",
@@ -192,12 +202,13 @@
         "expanded:youre->you-are",
         "expanded:thats->that-is"
       ],
-      "connectorStrategy": "cascade",
+      "connectorStrategy": "front",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
       "candidateCount": 5,
-      "landedCandidateId": "base:clause-pivot",
+      "landedCandidateId": "base:order-beat",
+      "landedCandidateFamily": "order-beat",
       "families": [
         "syntax-shape",
         "register-lexicon",
@@ -206,7 +217,7 @@
         "hybrid"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.8815
+      "averageToolabilityScore": 0.8946
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -214,6 +225,20 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "register-mode",
+        "directness",
+        "abbreviation-posture",
+        "orthography-posture",
+        "lexical-register"
+      ],
+      "profileShiftDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "register-mode",
         "directness",
         "abbreviation-posture",
         "orthography-posture",
@@ -247,309 +272,27 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.968,
-      "outputDonorDistance": 3.038,
-      "donorImprovement": 1.93,
-      "donorImprovementRatio": 0.388,
-      "sourceOutputLexicalOverlap": 0.821
+      "outputDonorDistance": 1.801,
+      "donorImprovement": 3.167,
+      "donorImprovementRatio": 0.637,
+      "sourceOutputLexicalOverlap": 0.807
     },
-    "candidateLedger": [
-      {
-        "id": "base:syntax-shape",
-        "family": "syntax-shape",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 1.3789,
-        "toolabilityScore": 0.8932,
-        "rewriteStrength": 1,
-        "targetFit": 0.6205,
-        "movementConfidence": 1,
-        "personaSeparationScore": 1,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 7,
-            "exactAnchorCount": 1
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.964,
-            "polarityMismatches": 1,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 1,
-            "resolvedAnchors": 1,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.936,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.037,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.093
-          }
-        },
-        "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and saws stay under canopy b, kids st"
-      },
-      {
-        "id": "base:register-lexicon",
-        "family": "register-lexicon",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 1.1858,
-        "toolabilityScore": 0.8604,
-        "rewriteStrength": 1,
-        "targetFit": 0.4507,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.86,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 7,
-            "exactAnchorCount": 1
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.964,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 1,
-            "resolvedAnchors": 1,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.996,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.013,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "If you are late that is ok just do not start random jobs. Check in west fence table first. Glass + pallets first pass. Saws stay under canopy b, kids stay off s"
-      },
-      {
-        "id": "base:order-beat",
-        "family": "order-beat",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 1.4241,
-        "toolabilityScore": 0.9004,
-        "rewriteStrength": 1,
-        "targetFit": 0.6164,
-        "movementConfidence": 1,
-        "personaSeparationScore": 1,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 7,
-            "exactAnchorCount": 1
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.964,
-            "polarityMismatches": 1,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 1,
-            "resolvedAnchors": 1,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.936,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.037,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.093
-          }
-        },
-        "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and if wind chills out, saws stay und"
-      },
-      {
-        "id": "base:clause-pivot",
-        "family": "clause-pivot",
-        "envelopeId": "matron",
-        "status": "selected",
-        "score": 1.2054,
-        "toolabilityScore": 0.8604,
-        "rewriteStrength": 1,
-        "targetFit": 0.4607,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.86,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 7,
-            "exactAnchorCount": 1
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.964,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 1,
-            "resolvedAnchors": 1,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.996,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.013,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "If you are late that is ok just do not start random jobs. Check in west fence table first. Glass + pallets first pass. If wind chills out, saws stay under canop"
-      },
-      {
-        "id": "base:hybrid",
-        "family": "hybrid",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 1.3918,
-        "toolabilityScore": 0.8932,
-        "rewriteStrength": 1,
-        "targetFit": 0.6164,
-        "movementConfidence": 1,
-        "personaSeparationScore": 1,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 7,
-            "exactAnchorCount": 1
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.964,
-            "polarityMismatches": 1,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 1,
-            "resolvedAnchors": 1,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.936,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.037,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.093
-          }
-        },
-        "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. If wind chills out, glass + pallets first pass, and saws stay und"
-      }
-    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 5,
-      "winningCandidateId": "base:clause-pivot",
+      "winningCandidateId": "base:order-beat",
+      "winningCandidateFamily": "order-beat",
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "rushed-mobile",
         "relationInventory": {
           "sourceClass": "formal-correspondence",
+          "sourceRegisterLane": "rushed-mobile",
+          "sourceRegisterLaneInference": "explicit",
+          "sourceRegisterLaneFallback": false,
           "paragraphCount": 1,
           "sentenceCount": 6,
           "clauseCount": 7,
@@ -560,7 +303,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.964,
-          "polarityMismatches": 0,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "anchorIntegrity": {
@@ -572,9 +315,9 @@
         "aperture": {
           "temporalPosture": "synced",
           "closureClass": "closed",
-          "closureScore": 0.996,
+          "closureScore": 0.936,
           "historicalCrease": 0.012,
-          "unfoldingEnergy": 0.013,
+          "unfoldingEnergy": 0.037,
           "beaconStatus": "beacon-idle",
           "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
@@ -583,11 +326,11 @@
           "driftClass": "none",
           "driftReasons": [],
           "routeFloor": "play",
-          "routePressure": 0.088
+          "routePressure": 0.093
         }
       }
     },
-    "winningCandidateId": "base:clause-pivot"
+    "winningCandidateId": "base:order-beat"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -596,7 +339,11 @@
       "abbreviation-posture",
       "directness",
       "lexical-register",
-      "orthography-posture"
+      "orthography-posture",
+      "register-mode",
+      "sentence-count",
+      "sentence-mean",
+      "sentence-spread"
     ],
     "lexemeSwapFamilies": [
       "surface"
@@ -609,6 +356,7 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
+      "beat-merge",
       "front-if"
     ],
     "lexicalOperations": [
@@ -617,13 +365,13 @@
       "expanded:thats->that-is",
       "expanded:youre->you-are"
     ],
-    "connectorStrategy": "cascade",
+    "connectorStrategy": "front",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.964,
-    "polarityMismatches": 0,
+    "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

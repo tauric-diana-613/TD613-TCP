@@ -163,8 +163,12 @@
     },
     "ontologyAudit": {
       "sourceClass": "procedural-record",
+      "sourceRegisterLane": "professional-message",
       "relationInventory": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "professional-message",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 7,
         "clauseCount": 10,
@@ -204,11 +208,16 @@
     "planSummary": {
       "relationInventory": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "professional-message",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 7,
         "clauseCount": 10,
         "exactAnchorCount": 6
       },
+      "sourceRegisterLane": "professional-message",
+      "targetRegisterLane": "rushed-mobile",
       "testedFamilyIds": [
         "syntax-shape",
         "register-lexicon",
@@ -235,6 +244,7 @@
     "candidateSummary": {
       "candidateCount": 4,
       "landedCandidateId": "base:hybrid",
+      "landedCandidateFamily": "hybrid",
       "families": [
         "syntax-shape",
         "cadence-connector",
@@ -250,6 +260,13 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "register-mode",
+        "abbreviation-posture",
+        "lexical-register"
+      ],
+      "profileShiftDimensions": [
         "sentence-mean",
         "sentence-count",
         "register-mode",
@@ -279,244 +296,6 @@
       "donorImprovementRatio": 0.09,
       "sourceOutputLexicalOverlap": 0.953
     },
-    "candidateLedger": [
-      {
-        "id": "base:syntax-shape",
-        "family": "syntax-shape",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.8501,
-        "toolabilityScore": 0.7198,
-        "rewriteStrength": 0.931,
-        "targetFit": 0.4047,
-        "movementConfidence": 0.94,
-        "personaSeparationScore": 0.08,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [
-          "persona-markers-thin"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 7,
-            "clauseCount": 10,
-            "exactAnchorCount": 6
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 0.902,
-            "actionCoverage": 1,
-            "objectCoverage": 1,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 6,
-            "resolvedAnchors": 6,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.984,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.017,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.089
-          }
-        },
-        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
-      },
-      {
-        "id": "base:cadence-connector",
-        "family": "cadence-connector",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 1.0261,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.4366,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [
-          "persona-markers-thin"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 7,
-            "clauseCount": 10,
-            "exactAnchorCount": 6
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 0.902,
-            "actionCoverage": 1,
-            "objectCoverage": 1,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 6,
-            "resolvedAnchors": 6,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.984,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.017,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.089
-          }
-        },
-        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
-      },
-      {
-        "id": "base:order-beat",
-        "family": "order-beat",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.7575,
-        "toolabilityScore": 0.7198,
-        "rewriteStrength": 0.9336,
-        "targetFit": 0.3992,
-        "movementConfidence": 0.94,
-        "personaSeparationScore": 0.08,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [
-          "persona-markers-thin"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 7,
-            "clauseCount": 10,
-            "exactAnchorCount": 6
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.975,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 6,
-            "resolvedAnchors": 6,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.997,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.013,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
-      },
-      {
-        "id": "base:hybrid",
-        "family": "hybrid",
-        "envelopeId": "spark",
-        "status": "selected",
-        "score": 1.0319,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.4309,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [
-          "persona-markers-thin"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 7,
-            "clauseCount": 10,
-            "exactAnchorCount": 6
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.975,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 6,
-            "resolvedAnchors": 6,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.997,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.013,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
-      }
-    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
@@ -524,10 +303,15 @@
       "reasons": [],
       "candidateCount": 4,
       "winningCandidateId": "base:hybrid",
+      "winningCandidateFamily": "hybrid",
       "ontologyRoutePressure": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "professional-message",
         "relationInventory": {
           "sourceClass": "procedural-record",
+          "sourceRegisterLane": "professional-message",
+          "sourceRegisterLaneInference": "explicit",
+          "sourceRegisterLaneFallback": false,
           "paragraphCount": 1,
           "sentenceCount": 7,
           "clauseCount": 10,

@@ -23,9 +23,9 @@
     "sourceClass": "procedural-record",
     "generatorVersion": "v2",
     "semanticAudit": {
-      "propositionCoverage": 1,
+      "propositionCoverage": 0.992,
       "actorCoverage": 0.975,
-      "actionCoverage": 1,
+      "actionCoverage": 0.985,
       "objectCoverage": 0.965,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
@@ -41,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.12
+          "globalBagScore": 0.122
         },
         {
           "sourceClauseId": "s1c0",
@@ -53,7 +53,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.14
+          "globalBagScore": 0.143
         },
         {
           "sourceClauseId": "s2c0",
@@ -65,7 +65,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.75,
-          "globalBagScore": 0.118
+          "globalBagScore": 0.12
         },
         {
           "sourceClauseId": "s3c0",
@@ -89,7 +89,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.714,
-          "globalBagScore": 0.098
+          "globalBagScore": 0.1
         },
         {
           "sourceClauseId": "s5c0",
@@ -101,19 +101,19 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.12
+          "globalBagScore": 0.122
         },
         {
           "sourceClauseId": "s6c0",
           "matchedClauseId": "s7c0",
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.9,
           "actorCoverage": 1,
-          "actionCoverage": 1,
+          "actionCoverage": 0.81,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.667,
-          "globalBagScore": 0.08
+          "bagScore": 0.5,
+          "globalBagScore": 0.06
         },
         {
           "sourceClauseId": "s6c1",
@@ -125,7 +125,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
-          "globalBagScore": 0.019
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s7c0",
@@ -161,7 +161,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.04
+          "globalBagScore": 0.041
         },
         {
           "sourceClauseId": "s10c0",
@@ -173,7 +173,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.12
+          "globalBagScore": 0.122
         },
         {
           "sourceClauseId": "s10c1",
@@ -185,7 +185,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.833,
-          "globalBagScore": 0.1
+          "globalBagScore": 0.102
         }
       ],
       "sourceClauseCount": 13,
@@ -199,17 +199,21 @@
     },
     "ontologyAudit": {
       "sourceClass": "procedural-record",
+      "sourceRegisterLane": "formal-record",
       "relationInventory": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "formal-record",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 11,
         "clauseCount": 13,
         "exactAnchorCount": 9
       },
       "semanticCoverage": {
-        "propositionCoverage": 1,
+        "propositionCoverage": 0.992,
         "actorCoverage": 0.975,
-        "actionCoverage": 1,
+        "actionCoverage": 0.985,
         "objectCoverage": 0.965,
         "polarityMismatches": 0,
         "tenseMismatches": 0
@@ -223,9 +227,9 @@
       "aperture": {
         "temporalPosture": "synced",
         "closureClass": "closed",
-        "closureScore": 0.992,
+        "closureScore": 0.986,
         "historicalCrease": 0.013,
-        "unfoldingEnergy": 0.014,
+        "unfoldingEnergy": 0.016,
         "beaconStatus": "beacon-idle",
         "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
@@ -234,17 +238,22 @@
         "driftClass": "none",
         "driftReasons": [],
         "routeFloor": "play",
-        "routePressure": 0.088
+        "routePressure": 0.089
       }
     },
     "planSummary": {
       "relationInventory": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "formal-record",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 11,
         "clauseCount": 13,
         "exactAnchorCount": 9
       },
+      "sourceRegisterLane": "formal-record",
+      "targetRegisterLane": "rushed-mobile",
       "testedFamilyIds": [
         "syntax-shape",
         "register-lexicon",
@@ -256,7 +265,8 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "connector-split"
+        "connector-split",
+        "lane:rushed-mobile-compression"
       ],
       "lexicalRegisterOperationsSelected": [
         "connector:because->since",
@@ -264,7 +274,11 @@
         "compressed:package->pkg",
         "compressed:approximately->about",
         "orthography:doesnt",
-        "orthography:lowercase-lead"
+        "orthography:lowercase-lead",
+        "lane:confirmed->said-yes",
+        "lane:requested-help->asked-help",
+        "lane:carrying-groceries->bags",
+        "lane:evidence-bundle-compression"
       ],
       "connectorStrategy": "split",
       "contractionStrategy": "contract"
@@ -272,6 +286,7 @@
     "candidateSummary": {
       "candidateCount": 6,
       "landedCandidateId": "base:cadence-connector",
+      "landedCandidateFamily": "cadence-connector",
       "families": [
         "syntax-shape",
         "register-lexicon",
@@ -281,7 +296,7 @@
         "hybrid"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7614
+      "averageToolabilityScore": 0.7615
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -289,6 +304,14 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "register-mode",
+        "abbreviation-posture",
+        "lexical-register"
+      ],
+      "profileShiftDimensions": [
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
@@ -316,6 +339,21 @@
           "from": "doesn't",
           "to": "doesnt",
           "family": "surface"
+        },
+        {
+          "from": "confirmed it was hers",
+          "to": "said yes its hers",
+          "family": "lane"
+        },
+        {
+          "from": "requested help",
+          "to": "asked for help",
+          "family": "lane"
+        },
+        {
+          "from": "was already carrying groceries",
+          "to": "had bags already",
+          "family": "lane"
         }
       ],
       "visibleShift": true,
@@ -324,395 +362,11 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.469,
-      "outputDonorDistance": 4.249,
-      "donorImprovement": 0.22,
-      "donorImprovementRatio": 0.049,
-      "sourceOutputLexicalOverlap": 0.929
+      "outputDonorDistance": 4.106,
+      "donorImprovement": 0.363,
+      "donorImprovementRatio": 0.081,
+      "sourceOutputLexicalOverlap": 0.817
     },
-    "candidateLedger": [
-      {
-        "id": "base:syntax-shape",
-        "family": "syntax-shape",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.6947,
-        "toolabilityScore": 0.7196,
-        "rewriteStrength": 0.9108,
-        "targetFit": 0.2344,
-        "movementConfidence": 0.94,
-        "personaSeparationScore": 0.08,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 11,
-            "clauseCount": 13,
-            "exactAnchorCount": 9
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 0.975,
-            "actionCoverage": 1,
-            "objectCoverage": 0.965,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 9,
-            "resolvedAnchors": 9,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.992,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.014,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
-      },
-      {
-        "id": "base:register-lexicon",
-        "family": "register-lexicon",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.633,
-        "toolabilityScore": 0.7198,
-        "rewriteStrength": 0.9187,
-        "targetFit": 0.2325,
-        "movementConfidence": 0.94,
-        "personaSeparationScore": 0.08,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 11,
-            "clauseCount": 13,
-            "exactAnchorCount": 9
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 0.975,
-            "actionCoverage": 1,
-            "objectCoverage": 0.965,
-            "polarityMismatches": 0,
-            "tenseMismatches": 1
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 9,
-            "resolvedAnchors": 9,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "drift",
-            "closureScore": 0.952,
-            "historicalCrease": 0.02,
-            "unfoldingEnergy": 0.029,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "watch",
-            "driftReasons": [
-              "closure-class:drift"
-            ],
-            "routeFloor": "warning",
-            "routePressure": 0.333
-          }
-        },
-        "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
-      },
-      {
-        "id": "base:cadence-connector",
-        "family": "cadence-connector",
-        "envelopeId": "spark",
-        "status": "selected",
-        "score": 0.8817,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.2618,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 11,
-            "clauseCount": 13,
-            "exactAnchorCount": 9
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 0.975,
-            "actionCoverage": 1,
-            "objectCoverage": 0.965,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 9,
-            "resolvedAnchors": 9,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.992,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.014,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
-      },
-      {
-        "id": "base:order-beat",
-        "family": "order-beat",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.682,
-        "toolabilityScore": 0.7198,
-        "rewriteStrength": 0.9139,
-        "targetFit": 0.2286,
-        "movementConfidence": 0.94,
-        "personaSeparationScore": 0.08,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-join",
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-join",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 11,
-            "clauseCount": 13,
-            "exactAnchorCount": 9
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 0.975,
-            "actionCoverage": 1,
-            "objectCoverage": 0.965,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 9,
-            "resolvedAnchors": 9,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.992,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.014,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
-      },
-      {
-        "id": "base:clause-pivot",
-        "family": "clause-pivot",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.8857,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.2551,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-join",
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-join",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 11,
-            "clauseCount": 13,
-            "exactAnchorCount": 9
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 0.975,
-            "actionCoverage": 1,
-            "objectCoverage": 0.946,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 9,
-            "resolvedAnchors": 9,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.99,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.015,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door, but building footage and resident testimony in"
-      },
-      {
-        "id": "base:hybrid",
-        "family": "hybrid",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 0.8307,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.2536,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-join",
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-join",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 11,
-            "clauseCount": 13,
-            "exactAnchorCount": 9
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 0.975,
-            "actionCoverage": 1,
-            "objectCoverage": 0.965,
-            "polarityMismatches": 0,
-            "tenseMismatches": 1
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 9,
-            "resolvedAnchors": 9,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "drift",
-            "closureScore": 0.952,
-            "historicalCrease": 0.02,
-            "unfoldingEnergy": 0.029,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "watch",
-            "driftReasons": [
-              "closure-class:drift"
-            ],
-            "routeFloor": "warning",
-            "routePressure": 0.333
-          }
-        },
-        "outputPreview": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer"
-      }
-    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
@@ -720,19 +374,24 @@
       "reasons": [],
       "candidateCount": 6,
       "winningCandidateId": "base:cadence-connector",
+      "winningCandidateFamily": "cadence-connector",
       "ontologyRoutePressure": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "formal-record",
         "relationInventory": {
           "sourceClass": "procedural-record",
+          "sourceRegisterLane": "formal-record",
+          "sourceRegisterLaneInference": "explicit",
+          "sourceRegisterLaneFallback": false,
           "paragraphCount": 1,
           "sentenceCount": 11,
           "clauseCount": 13,
           "exactAnchorCount": 9
         },
         "semanticCoverage": {
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.992,
           "actorCoverage": 0.975,
-          "actionCoverage": 1,
+          "actionCoverage": 0.985,
           "objectCoverage": 0.965,
           "polarityMismatches": 0,
           "tenseMismatches": 0
@@ -746,9 +405,9 @@
         "aperture": {
           "temporalPosture": "synced",
           "closureClass": "closed",
-          "closureScore": 0.992,
+          "closureScore": 0.986,
           "historicalCrease": 0.013,
-          "unfoldingEnergy": 0.014,
+          "unfoldingEnergy": 0.016,
           "beaconStatus": "beacon-idle",
           "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
@@ -757,7 +416,7 @@
           "driftClass": "none",
           "driftReasons": [],
           "routeFloor": "play",
-          "routePressure": 0.088
+          "routePressure": 0.089
         }
       }
     },

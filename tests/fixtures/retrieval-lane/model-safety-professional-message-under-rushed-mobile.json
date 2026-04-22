@@ -103,8 +103,12 @@
     },
     "ontologyAudit": {
       "sourceClass": "formal-correspondence",
+      "sourceRegisterLane": "professional-message",
       "relationInventory": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "professional-message",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 4,
         "clauseCount": 5,
@@ -144,11 +148,16 @@
     "planSummary": {
       "relationInventory": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "professional-message",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 4,
         "clauseCount": 5,
         "exactAnchorCount": 2
       },
+      "sourceRegisterLane": "professional-message",
+      "targetRegisterLane": "rushed-mobile",
       "testedFamilyIds": [
         "syntax-shape",
         "register-lexicon",
@@ -174,6 +183,7 @@
     "candidateSummary": {
       "candidateCount": 2,
       "landedCandidateId": "base:cadence-connector",
+      "landedCandidateFamily": "cadence-connector",
       "families": [
         "syntax-shape",
         "cadence-connector"
@@ -187,6 +197,15 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "register-mode",
+        "abbreviation-posture",
+        "orthography-posture",
+        "lexical-register"
+      ],
+      "profileShiftDimensions": [
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
@@ -223,129 +242,6 @@
       "donorImprovementRatio": 0.251,
       "sourceOutputLexicalOverlap": 0.915
     },
-    "candidateLedger": [
-      {
-        "id": "base:syntax-shape",
-        "family": "syntax-shape",
-        "envelopeId": "spark",
-        "status": "eligible",
-        "score": 1.0061,
-        "toolabilityScore": 0.7959,
-        "rewriteStrength": 1,
-        "targetFit": 0.3863,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 4,
-            "clauseCount": 5,
-            "exactAnchorCount": 2
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.96,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 2,
-            "resolvedAnchors": 2,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.995,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.014,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names, and the run had"
-      },
-      {
-        "id": "base:cadence-connector",
-        "family": "cadence-connector",
-        "envelopeId": "spark",
-        "status": "selected",
-        "score": 1.1606,
-        "toolabilityScore": 0.8031,
-        "rewriteStrength": 1,
-        "targetFit": 0.4734,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [
-          "persona-markers-thin"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 4,
-            "clauseCount": 5,
-            "exactAnchorCount": 2
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.96,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 2,
-            "resolvedAnchors": 2,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.995,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.014,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. And the run had"
-      }
-    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
@@ -353,10 +249,15 @@
       "reasons": [],
       "candidateCount": 2,
       "winningCandidateId": "base:cadence-connector",
+      "winningCandidateFamily": "cadence-connector",
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "professional-message",
         "relationInventory": {
           "sourceClass": "formal-correspondence",
+          "sourceRegisterLane": "professional-message",
+          "sourceRegisterLaneInference": "explicit",
+          "sourceRegisterLaneFallback": false,
           "paragraphCount": 1,
           "sentenceCount": 4,
           "clauseCount": 5,

@@ -427,6 +427,64 @@ function generatorSourceClass(result = {}, fallback = 'unknown') {
   );
 }
 
+function generatorSourceRegisterLane(result = {}, fallback = 'unknown') {
+  return (
+    result.sourceRegisterLane ||
+    result.ontologyAudit?.sourceRegisterLane ||
+    result.retrievalTrace?.sourceRegisterLane ||
+    result.retrievalTrace?.planSummary?.relationInventory?.sourceRegisterLane ||
+    fallback
+  );
+}
+
+function realizedNonPunctuationDimensions(entry = {}) {
+  return [...new Set(entry.changedDimensions || [])].filter((dimension) => dimension !== 'punctuation-shape');
+}
+
+function structuralRealizationCount(entry = {}) {
+  const structuralDimensions = new Set([
+    'sentence-mean',
+    'sentence-count',
+    'sentence-spread',
+    'connector-stance',
+    'directness',
+    'abstraction-posture',
+    'lexical-register'
+  ]);
+  return realizedNonPunctuationDimensions(entry).filter((dimension) => structuralDimensions.has(dimension)).length;
+}
+
+function driftSeverityRank(driftClass = 'none') {
+  if (driftClass === 'severe') return 3;
+  if (driftClass === 'active') return 2;
+  if (driftClass === 'watch') return 1;
+  return 0;
+}
+
+function candidateRoutePressure(entry = {}) {
+  return Number(entry.ontologyAudit?.selectiveAdmissibilityDrift?.routePressure || 0);
+}
+
+function candidateProtectedAnchorIntegrity(entry = {}) {
+  return Number(entry.ontologyAudit?.anchorIntegrity?.protectedAnchorIntegrity ?? 1);
+}
+
+function candidateSurfaceRichness(entry = {}) {
+  return realizedNonPunctuationDimensions(entry).length + Number(entry.lexemeSwapCount || 0);
+}
+
+function mildArtifactOnly(entry = {}) {
+  const flags = Array.isArray(entry.artifactFlags) ? entry.artifactFlags : [];
+  if (!flags.length) {
+    return false;
+  }
+  return flags.every((flag) => [
+    'artifact:clause-join',
+    'artifact:sentence-fracture',
+    'artifact:connector-stack'
+  ].includes(flag));
+}
+
 function buildGeneratorAuditCase({
   id = '',
   laneKind = 'transfer',
@@ -435,6 +493,7 @@ function buildGeneratorAuditCase({
   personaId = '',
   result = {},
   sourceClass = 'unknown',
+  expectedSourceRegisterLane = '',
   registeredTransformClass = '',
   apertureOutcome = ''
 } = {}) {
@@ -469,6 +528,71 @@ function buildGeneratorAuditCase({
     sourceClass &&
     relationInventorySourceClass !== String(sourceClass)
   );
+  const sourceRegisterLane = String(generatorSourceRegisterLane(result, expectedSourceRegisterLane || 'unknown'));
+  const relationInventorySourceRegisterLane = String(
+    ontologyAudit?.relationInventory?.sourceRegisterLane ||
+    result.retrievalTrace?.planSummary?.relationInventory?.sourceRegisterLane ||
+    sourceRegisterLane ||
+    'unknown'
+  );
+  const sourceRegisterLaneInference = String(
+    ontologyAudit?.relationInventory?.sourceRegisterLaneInference ||
+    result.retrievalTrace?.planSummary?.relationInventory?.sourceRegisterLaneInference ||
+    'unknown'
+  );
+  const sourceRegisterLaneFallback = Boolean(
+    ontologyAudit?.relationInventory?.sourceRegisterLaneFallback ??
+    result.retrievalTrace?.planSummary?.relationInventory?.sourceRegisterLaneFallback ??
+    false
+  );
+  const sourceRegisterLaneMismatch = Boolean(
+    expectedSourceRegisterLane &&
+    sourceRegisterLane &&
+    sourceRegisterLane !== String(expectedSourceRegisterLane)
+  );
+  const targetRegisterLane = String(
+    result.targetRegisterLane ||
+    selectedCandidate?.targetRegisterLane ||
+    'unknown'
+  );
+  const changedDimensions = [...new Set(
+    result.changedDimensions ||
+    selectedCandidate?.changedDimensions ||
+    []
+  )];
+  const profileShiftDimensions = [...new Set(
+    result.profileShiftDimensions ||
+    selectedCandidate?.profileShiftDimensions ||
+    []
+  )];
+  const lexemeSwapCount = Number(result.lexemeSwaps?.length || selectedCandidate?.lexemeSwapCount || 0);
+  const artifactRepairApplied = Boolean(result.artifactRepairApplied || selectedCandidate?.artifactRepairApplied);
+  const selectedCandidateFamily = selectedCandidate?.family || docket?.winningCandidateFamily || null;
+  const suppressedRicherCandidate = [...candidateLedger]
+    .filter((entry) => entry.id !== selectedCandidateId)
+    .filter((entry) => candidateSurfaceRichness(entry) > candidateSurfaceRichness(selectedCandidate || {}))
+    .sort((left, right) =>
+      driftSeverityRank(String(left.ontologyAudit?.selectiveAdmissibilityDrift?.driftClass || 'none')) -
+        driftSeverityRank(String(right.ontologyAudit?.selectiveAdmissibilityDrift?.driftClass || 'none')) ||
+      candidateRoutePressure(left) - candidateRoutePressure(right) ||
+      candidateProtectedAnchorIntegrity(right) - candidateProtectedAnchorIntegrity(left) ||
+      Number(mildArtifactOnly(left)) - Number(mildArtifactOnly(right)) ||
+      candidateSurfaceRichness(right) - candidateSurfaceRichness(left) ||
+      String(left.id || '').localeCompare(String(right.id || ''))
+    )[0] || null;
+  const syntaxOnlyWinner = Boolean(
+    selectedCandidateId &&
+    suppressedRicherCandidate &&
+    realizedNonPunctuationDimensions({ changedDimensions }).length === 0 &&
+    lexemeSwapCount === 0
+  );
+  const lexicalRegisterFalsePositive = changedDimensions.includes('lexical-register') && lexemeSwapCount === 0;
+  const surfaceMovementOverstated = Boolean(
+    lexicalRegisterFalsePositive ||
+    (realizedNonPunctuationDimensions({ changedDimensions }).length === 0 &&
+      lexemeSwapCount === 0 &&
+      profileShiftDimensions.length > 0)
+  );
 
   return {
     id,
@@ -477,6 +601,13 @@ function buildGeneratorAuditCase({
     donorId,
     personaId,
     sourceClass,
+    expectedSourceRegisterLane: expectedSourceRegisterLane || '',
+    sourceRegisterLane,
+    relationInventorySourceRegisterLane,
+    sourceRegisterLaneInference,
+    sourceRegisterLaneFallback,
+    sourceRegisterLaneMismatch,
+    targetRegisterLane,
     generatorVersion: result.generatorVersion || 'unknown',
     transferClass: result.transferClass || 'native',
     registeredTransformClass: registeredTransformClass || result.registeredTransformClass || '',
@@ -499,6 +630,15 @@ function buildGeneratorAuditCase({
     movementQuality: round(toolabilityAudit?.movementQuality ?? 0),
     personaDistinctness: round(toolabilityAudit?.personaDistinctness ?? 0),
     personaSeparationScore: round(personaSeparationAudit?.score ?? 0),
+    selectedCandidateFamily,
+    suppressedRicherCandidateFamily: suppressedRicherCandidate?.family || null,
+    changedDimensions,
+    profileShiftDimensions,
+    lexemeSwapCount,
+    artifactRepairApplied,
+    syntaxOnlyWinner,
+    lexicalRegisterFalsePositive,
+    surfaceMovementOverstated,
     ontologyAudit,
     temporalPosture: String(aperture?.temporalPosture || 'unknown'),
     closureClass: String(aperture?.closureClass || 'unknown'),
@@ -554,7 +694,7 @@ function buildCaseNote(buckets = [], fallback) {
   return buckets.length ? `Buckets: ${buckets.join(', ')}.` : fallback;
 }
 
-function buildBorrowedShellFromProfile(profile, fromSlot = 'B') {
+function buildBorrowedShellFromProfile(profile, fromSlot = 'B', registerLane = null) {
   return {
     mode: 'borrowed',
     label: `borrowed ${fromSlot} cadence`,
@@ -562,6 +702,7 @@ function buildBorrowedShellFromProfile(profile, fromSlot = 'B') {
     profile: { ...profile },
     source: 'swapped',
     fromSlot,
+    registerLane,
     strength: 0.82
   };
 }
@@ -594,7 +735,10 @@ function swapCadenceScoreLane(result = {}, sourceText = '') {
   return score;
 }
 
-function evaluateSwapCadencePairing(referenceText = '', probeText = '') {
+function evaluateSwapCadencePairing(referenceText = '', probeText = '', {
+  referenceRegisterLane = null,
+  probeRegisterLane = null
+} = {}) {
   if (!referenceText.trim() || !probeText.trim()) {
     return {
       score: 0,
@@ -613,13 +757,13 @@ function evaluateSwapCadencePairing(referenceText = '', probeText = '') {
   const probeProfile = engine.extractCadenceProfile(probeText);
   const laneA = engine.buildCadenceTransfer(
     referenceText,
-    buildBorrowedShellFromProfile(probeProfile, 'B'),
-    { retrieval: true }
+    buildBorrowedShellFromProfile(probeProfile, 'B', probeRegisterLane),
+    { retrieval: true, sourceRegisterLane: referenceRegisterLane || undefined }
   );
   const laneB = engine.buildCadenceTransfer(
     probeText,
-    buildBorrowedShellFromProfile(referenceProfile, 'A'),
-    { retrieval: true }
+    buildBorrowedShellFromProfile(referenceProfile, 'A', referenceRegisterLane),
+    { retrieval: true, sourceRegisterLane: probeRegisterLane || undefined }
   );
   const laneOutcomes = [
     laneA.borrowedShellOutcome || laneA.transferClass,
@@ -669,7 +813,10 @@ function compareSwapCadencePairings(left = {}, right = {}) {
 }
 
 function evaluateRepresentativeSwapPair(sourceSample, donorSample) {
-  const evaluation = evaluateSwapCadencePairing(sourceSample.text, donorSample.text);
+  const evaluation = evaluateSwapCadencePairing(sourceSample.text, donorSample.text, {
+    referenceRegisterLane: sourceSample.variant || null,
+    probeRegisterLane: donorSample.variant || null
+  });
 
   return {
     anchorId: sourceSample.id,
@@ -1105,8 +1252,9 @@ function evaluateRetrievalCase(caseSpec) {
   const result = engine.buildCadenceTransfer(sourceSample.text, {
     mode: 'borrowed',
     profile: engine.extractCadenceProfile(donorSample.text),
+    registerLane: donorSample.variant || null,
     strength: Number(caseSpec.strength || 0.88)
-  }, { retrieval: true });
+  }, { retrieval: true, sourceRegisterLane: sourceSample.variant || undefined });
   const donorProfile = engine.extractCadenceProfile(donorSample.text);
   const sourceProfile = engine.extractCadenceProfile(sourceSample.text);
   const outputProfile = engine.extractCadenceProfile(result.text);
@@ -1174,16 +1322,18 @@ function evaluateGeneratorTransferCase(caseSpec) {
   const result = engine.buildCadenceTransfer(sourceSample.text, {
     mode: 'borrowed',
     profile: engine.extractCadenceProfile(donorSample.text),
+    registerLane: donorSample.variant || null,
     strength: Number(caseSpec.strength || 0.88),
     source: 'diagnostics'
-  }, { retrieval: true });
+  }, { retrieval: true, sourceRegisterLane: sourceSample.variant || undefined });
   const record = buildGeneratorAuditCase({
     id: caseSpec.id,
     laneKind: 'transfer',
     sourceId: caseSpec.sourceId,
     donorId: caseSpec.donorId,
     result,
-    sourceClass: generatorSourceClass(result, sourceSample.familyId || 'unknown')
+    sourceClass: generatorSourceClass(result, sourceSample.familyId || 'unknown'),
+    expectedSourceRegisterLane: sourceSample.variant || ''
   });
   const buckets = [];
   bucketIf(record.holdStatus === 'held', 'generator_hold', buckets);
@@ -1217,6 +1367,7 @@ function evaluateGeneratorMaskCase(caseSpec) {
     personaId: caseSpec.personaId,
     result,
     sourceClass: maskResult.sourceClass || generatorSourceClass(result, caseSpec.sourceFamilyId || 'unknown'),
+    expectedSourceRegisterLane: sourceSample.variant || '',
     registeredTransformClass: maskResult.registeredTransformClass,
     apertureOutcome: maskResult.apertureOutcome
   });
@@ -1373,6 +1524,90 @@ function buildOntologyIntegrityReport(sectionResults = {}) {
     propositionCoverageFloorFailures,
     actionCoverageFloorFailures,
     apertureChangedRouteCount,
+    representativeCases,
+    cases
+  };
+}
+
+function buildCadenceDuelIntegrityReport(sectionResults = {}) {
+  const cases = [...(sectionResults.generatorTransferCases || [])];
+  const lanePairBuckets = new Map();
+  const realizedCase = (item) =>
+    item.holdStatus !== 'held' &&
+    (realizedNonPunctuationDimensions(item).length > 0 || Number(item.lexemeSwapCount || 0) > 0);
+  const pushLanePair = (item) => {
+    const key = `${item.sourceRegisterLane || 'unknown'}->${item.targetRegisterLane || 'unknown'}`;
+    const bucket = lanePairBuckets.get(key) || {
+      caseCount: 0,
+      lexicalSwapTotal: 0,
+      structuralOpTotal: 0
+    };
+    bucket.caseCount += 1;
+    bucket.lexicalSwapTotal += Number(item.lexemeSwapCount || 0);
+    bucket.structuralOpTotal += structuralRealizationCount(item);
+    lanePairBuckets.set(key, bucket);
+  };
+
+  cases.forEach(pushLanePair);
+
+  const referenceToRushed = cases.filter((item) =>
+    item.expectedSourceRegisterLane === 'formal-record' &&
+    item.targetRegisterLane === 'rushed-mobile'
+  );
+  const probeToFormal = cases.filter((item) =>
+    item.expectedSourceRegisterLane === 'rushed-mobile' &&
+    item.targetRegisterLane === 'formal-record'
+  );
+  const representativeCases = [...cases]
+    .filter((item) =>
+      item.sourceRegisterLaneFallback ||
+      item.sourceRegisterLaneMismatch ||
+      item.syntaxOnlyWinner ||
+      item.lexicalRegisterFalsePositive ||
+      item.artifactRepairApplied ||
+      item.surfaceMovementOverstated ||
+      item.id.includes('package-handoff')
+    )
+    .sort((left, right) =>
+      Number(right.id.includes('package-handoff')) - Number(left.id.includes('package-handoff')) ||
+      Number(right.syntaxOnlyWinner) - Number(left.syntaxOnlyWinner) ||
+      Number(right.artifactRepairApplied) - Number(left.artifactRepairApplied) ||
+      Number(right.surfaceMovementOverstated) - Number(left.surfaceMovementOverstated) ||
+      String(left.id || '').localeCompare(String(right.id || ''))
+    )
+    .slice(0, 12)
+    .map((item) => ({
+      id: item.id,
+      sourceRegisterLane: item.sourceRegisterLane,
+      targetRegisterLane: item.targetRegisterLane,
+      selectedCandidateFamily: item.selectedCandidateFamily,
+      suppressedRicherCandidateFamily: item.suppressedRicherCandidateFamily,
+      artifactRepairApplied: item.artifactRepairApplied,
+      syntaxOnlyWinner: item.syntaxOnlyWinner,
+      lexicalRegisterFalsePositive: item.lexicalRegisterFalsePositive,
+      surfaceMovementOverstated: item.surfaceMovementOverstated
+    }));
+
+  return {
+    caseCount: cases.length,
+    laneMisclassificationCount: cases.filter((item) => item.sourceRegisterLaneFallback || item.sourceRegisterLaneMismatch).length,
+    syntaxOnlyWinnerCount: cases.filter((item) => item.syntaxOnlyWinner).length,
+    lexicalRegisterFalsePositiveCount: cases.filter((item) => item.lexicalRegisterFalsePositive).length,
+    artifactRepairRescueCount: cases.filter((item) => item.artifactRepairApplied).length,
+    referenceToRushedLandedRate: referenceToRushed.length ? round(referenceToRushed.filter(realizedCase).length / referenceToRushed.length) : 0,
+    probeToFormalLandedRate: probeToFormal.length ? round(probeToFormal.filter(realizedCase).length / probeToFormal.length) : 0,
+    averageRealizedLexicalSwapCountByLanePair: Object.fromEntries(
+      [...lanePairBuckets.entries()].map(([key, bucket]) => [
+        key,
+        bucket.caseCount ? round(bucket.lexicalSwapTotal / bucket.caseCount, 2) : 0
+      ])
+    ),
+    averageRealizedStructuralOpCountByLanePair: Object.fromEntries(
+      [...lanePairBuckets.entries()].map(([key, bucket]) => [
+        key,
+        bucket.caseCount ? round(bucket.structuralOpTotal / bucket.caseCount, 2) : 0
+      ])
+    ),
     representativeCases,
     cases
   };
@@ -1670,6 +1905,23 @@ function buildMarkdownReport(report) {
     });
   }
 
+  if (report.cadenceDuelIntegrity) {
+    lines.push('', '## Cadence Duel Integrity', '');
+    lines.push(`- case_count: ${report.cadenceDuelIntegrity.caseCount}`);
+    lines.push(`- lane_misclassification_count: ${report.cadenceDuelIntegrity.laneMisclassificationCount}`);
+    lines.push(`- syntax_only_winner_count: ${report.cadenceDuelIntegrity.syntaxOnlyWinnerCount}`);
+    lines.push(`- lexical_register_false_positive_count: ${report.cadenceDuelIntegrity.lexicalRegisterFalsePositiveCount}`);
+    lines.push(`- artifact_repair_rescue_count: ${report.cadenceDuelIntegrity.artifactRepairRescueCount}`);
+    lines.push(`- reference_to_rushed_landed_rate: ${report.cadenceDuelIntegrity.referenceToRushedLandedRate}`);
+    lines.push(`- probe_to_formal_landed_rate: ${report.cadenceDuelIntegrity.probeToFormalLandedRate}`);
+    lines.push(`- average_realized_lexical_swap_count_by_lane_pair: ${Object.entries(report.cadenceDuelIntegrity.averageRealizedLexicalSwapCountByLanePair || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push(`- average_realized_structural_op_count_by_lane_pair: ${Object.entries(report.cadenceDuelIntegrity.averageRealizedStructuralOpCountByLanePair || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push('', '### Cadence Duel Cases', '');
+    report.cadenceDuelIntegrity.representativeCases.forEach((entry) => {
+      lines.push(`- ${entry.id}: ${entry.sourceRegisterLane} -> ${entry.targetRegisterLane}, selected ${entry.selectedCandidateFamily || 'none'}, suppressed ${entry.suppressedRicherCandidateFamily || 'none'}, repaired ${entry.artifactRepairApplied ? 'yes' : 'no'}, syntax-only ${entry.syntaxOnlyWinner ? 'yes' : 'no'}, lexical-register-fp ${entry.lexicalRegisterFalsePositive ? 'yes' : 'no'}, overstated ${entry.surfaceMovementOverstated ? 'yes' : 'no'}`);
+    });
+  }
+
   if (report.toolability) {
     lines.push('', '## Toolability', '');
     lines.push(`- expected_case_count: ${report.toolability.expectedCaseCount}`);
@@ -1783,6 +2035,7 @@ const representativePairs = summarizeRepresentativeSwapSelections(buildRepresent
 const annexes = buildAnnexDiagnostics(repoRoot);
 const generatorAudit = buildGeneratorAudit(sectionResults);
 const ontologyIntegrity = buildOntologyIntegrityReport(sectionResults);
+const cadenceDuelIntegrity = buildCadenceDuelIntegrityReport(sectionResults);
 const toolability = buildToolabilityReport(sectionResults);
 
 const report = {
@@ -1791,6 +2044,7 @@ const report = {
   sections: sectionResults,
   generatorAudit,
   ontologyIntegrity,
+  cadenceDuelIntegrity,
   toolability,
   sampleAudit: buildSampleAudit(DIAGNOSTIC_SAMPLE_LIBRARY),
   personaAudit: buildPersonaAudit(PERSONA_LIBRARY),
@@ -1802,6 +2056,7 @@ report.summary.generatorCaseCount = generatorAudit.caseCount;
 report.summary.generatorHeldCount = generatorAudit.heldCount;
 report.summary.generatorUnsafeStructuralCount = generatorAudit.unsafeStructuralCount;
 report.summary.ontologyPressureHeldCount = ontologyIntegrity.heldByApertureRoutePressureCount;
+report.summary.cadenceDuelSyntaxOnlyWinnerCount = cadenceDuelIntegrity.syntaxOnlyWinnerCount;
 report.summary.toolabilityLandedRate = toolability.landedRate;
 report.summary.toolabilityDistinctnessRate = toolability.distinctnessRate;
 report.summary.annexCount = Object.keys(annexes).length;

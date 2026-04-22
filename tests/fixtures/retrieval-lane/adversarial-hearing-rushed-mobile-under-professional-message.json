@@ -91,8 +91,12 @@
     },
     "ontologyAudit": {
       "sourceClass": "formal-correspondence",
+      "sourceRegisterLane": "rushed-mobile",
       "relationInventory": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "rushed-mobile",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 4,
         "clauseCount": 4,
@@ -132,11 +136,16 @@
     "planSummary": {
       "relationInventory": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "rushed-mobile",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 4,
         "clauseCount": 4,
         "exactAnchorCount": 3
       },
+      "sourceRegisterLane": "rushed-mobile",
+      "targetRegisterLane": "professional-message",
       "testedFamilyIds": [
         "syntax-shape",
         "register-lexicon",
@@ -159,6 +168,7 @@
     "candidateSummary": {
       "candidateCount": 2,
       "landedCandidateId": "base:syntax-shape",
+      "landedCandidateFamily": "syntax-shape",
       "families": [
         "syntax-shape",
         "register-lexicon"
@@ -172,6 +182,14 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
+        "sentence-mean",
+        "sentence-count",
+        "sentence-spread",
+        "register-mode",
+        "orthography-posture",
+        "lexical-register"
+      ],
+      "profileShiftDimensions": [
         "sentence-mean",
         "sentence-count",
         "sentence-spread",
@@ -197,126 +215,6 @@
       "donorImprovementRatio": 0.38,
       "sourceOutputLexicalOverlap": 0.902
     },
-    "candidateLedger": [
-      {
-        "id": "base:syntax-shape",
-        "family": "syntax-shape",
-        "envelopeId": "matron",
-        "status": "selected",
-        "score": 1.2202,
-        "toolabilityScore": 0.8932,
-        "rewriteStrength": 1,
-        "targetFit": 0.5681,
-        "movementConfidence": 1,
-        "personaSeparationScore": 1,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [
-          "persona-convergence:matron-undertow"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 4,
-            "clauseCount": 4,
-            "exactAnchorCount": 3
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 1,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 3,
-            "resolvedAnchors": 3,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 1,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.012,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.087
-          }
-        },
-        "outputPreview": "Hearing got ugly, and they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup sh"
-      },
-      {
-        "id": "base:register-lexicon",
-        "family": "register-lexicon",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 1.0763,
-        "toolabilityScore": 0.793,
-        "rewriteStrength": 0.925,
-        "targetFit": 0.5478,
-        "movementConfidence": 0.88,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [
-          "persona-markers-thin"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 4,
-            "clauseCount": 4,
-            "exactAnchorCount": 3
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 1,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 3,
-            "resolvedAnchors": 3,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 1,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.012,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.087
-          }
-        },
-        "outputPreview": "Hearing got ugly. They keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup she al"
-      }
-    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
@@ -324,10 +222,15 @@
       "reasons": [],
       "candidateCount": 2,
       "winningCandidateId": "base:syntax-shape",
+      "winningCandidateFamily": "syntax-shape",
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "rushed-mobile",
         "relationInventory": {
           "sourceClass": "formal-correspondence",
+          "sourceRegisterLane": "rushed-mobile",
+          "sourceRegisterLaneInference": "explicit",
+          "sourceRegisterLaneFallback": false,
           "paragraphCount": 1,
           "sentenceCount": 4,
           "clauseCount": 4,

@@ -79,8 +79,12 @@
     },
     "ontologyAudit": {
       "sourceClass": "formal-correspondence",
+      "sourceRegisterLane": "rushed-mobile",
       "relationInventory": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "rushed-mobile",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 3,
         "clauseCount": 3,
@@ -120,11 +124,16 @@
     "planSummary": {
       "relationInventory": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "rushed-mobile",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 3,
         "clauseCount": 3,
         "exactAnchorCount": 0
       },
+      "sourceRegisterLane": "rushed-mobile",
+      "targetRegisterLane": "professional-message",
       "testedFamilyIds": [
         "syntax-shape",
         "register-lexicon",
@@ -143,19 +152,23 @@
     "candidateSummary": {
       "candidateCount": 2,
       "landedCandidateId": "base:register-lexicon",
+      "landedCandidateFamily": "register-lexicon",
       "families": [
         "syntax-shape",
         "register-lexicon"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7491
+      "averageToolabilityScore": 0.7238
     },
     "realizationSummary": {
       "transferClass": "surface",
       "borrowedShellOutcome": "surface-held",
       "borrowedShellFailureClass": null,
-      "realizationTier": "structural",
+      "realizationTier": "partial",
       "changedDimensions": [
+        "orthography-posture"
+      ],
+      "profileShiftDimensions": [
         "orthography-posture",
         "lexical-register"
       ],
@@ -171,126 +184,6 @@
       "donorImprovementRatio": 0.158,
       "sourceOutputLexicalOverlap": 1
     },
-    "candidateLedger": [
-      {
-        "id": "base:syntax-shape",
-        "family": "syntax-shape",
-        "envelopeId": "matron",
-        "status": "eligible",
-        "score": 1.1678,
-        "toolabilityScore": 0.8782,
-        "rewriteStrength": 1,
-        "targetFit": 0.4908,
-        "movementConfidence": 1,
-        "personaSeparationScore": 1,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [
-          "persona-convergence:matron-undertow"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 3,
-            "clauseCount": 3,
-            "exactAnchorCount": 0
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.917,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 0,
-            "resolvedAnchors": 0,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.99,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.015,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "Rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
-      },
-      {
-        "id": "base:register-lexicon",
-        "family": "register-lexicon",
-        "envelopeId": "matron",
-        "status": "selected",
-        "score": 0.5759,
-        "toolabilityScore": 0.62,
-        "rewriteStrength": 0.472,
-        "targetFit": 0.4047,
-        "movementConfidence": 0.08,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [],
-        "artifactFlags": [],
-        "toolabilityWarnings": [
-          "persona-markers-thin"
-        ],
-        "transferClass": "surface",
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "paragraphCount": 1,
-            "sentenceCount": 3,
-            "clauseCount": 3,
-            "exactAnchorCount": 0
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 1,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 0,
-            "resolvedAnchors": 0,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 1,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.012,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.087
-          }
-        },
-        "outputPreview": "Rs-17 is doing the fake-safe thing again. Prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
-      }
-    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
@@ -298,10 +191,15 @@
       "reasons": [],
       "candidateCount": 2,
       "winningCandidateId": "base:register-lexicon",
+      "winningCandidateFamily": "register-lexicon",
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
+        "sourceRegisterLane": "rushed-mobile",
         "relationInventory": {
           "sourceClass": "formal-correspondence",
+          "sourceRegisterLane": "rushed-mobile",
+          "sourceRegisterLaneInference": "explicit",
+          "sourceRegisterLaneFallback": false,
           "paragraphCount": 1,
           "sentenceCount": 3,
           "clauseCount": 3,
@@ -343,9 +241,8 @@
   },
   "semanticContract": {
     "transferClass": "surface",
-    "realizationTier": "structural",
+    "realizationTier": "partial",
     "changedDimensions": [
-      "lexical-register",
       "orthography-posture"
     ],
     "lexemeSwapFamilies": [],

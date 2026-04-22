@@ -10,6 +10,8 @@ export const CANONICAL_TRANSFER_CASES = Object.freeze(
       familyId: testCase.familyId,
       sourceId: testCase.sourceId,
       donorId: testCase.donorId,
+      sourceVariant: sourceSample.variant,
+      donorVariant: donorSample.variant,
       sourceText: sourceSample.text,
       donorText: donorSample.text,
       strength: Number(testCase.strength || 0.88),
@@ -27,6 +29,7 @@ export function buildBorrowedShell(extractCadenceProfile, testCase) {
   return {
     mode: 'borrowed',
     profile: extractCadenceProfile(testCase.donorText),
+    registerLane: testCase.donorVariant || null,
     strength: testCase.strength
   };
 }

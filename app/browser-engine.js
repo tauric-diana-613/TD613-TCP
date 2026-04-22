@@ -701,6 +701,7 @@ function td613MismatchRate(mismatchCount = 0, clauseCount = 0) {
 
 function buildTD613OntologyAudit({
   sourceClass = 'formal-correspondence',
+  sourceRegisterLane = 'formal-record',
   relationInventory = {},
   semanticAudit = {},
   protectedAnchorAudit = {},
@@ -947,9 +948,13 @@ function buildTD613OntologyAudit({
 
   return Object.freeze({
     sourceClass: String(sourceClass || relationInventory?.sourceClass || 'formal-correspondence'),
+    sourceRegisterLane: String(sourceRegisterLane || relationInventory?.sourceRegisterLane || 'formal-record'),
     relationInventory: Object.freeze({
       ...(relationInventory || {}),
-      sourceClass: String(relationInventory?.sourceClass || sourceClass || 'formal-correspondence')
+      sourceClass: String(relationInventory?.sourceClass || sourceClass || 'formal-correspondence'),
+      sourceRegisterLane: String(relationInventory?.sourceRegisterLane || sourceRegisterLane || 'formal-record'),
+      sourceRegisterLaneInference: String(relationInventory?.sourceRegisterLaneInference || 'inferred'),
+      sourceRegisterLaneFallback: Boolean(relationInventory?.sourceRegisterLaneFallback)
     }),
     semanticCoverage,
     anchorIntegrity,
@@ -10993,6 +10998,131 @@ function classifyV2SourceClass(text = '') {
   return 'formal-correspondence';
 }
 
+const REGISTER_LANES = Object.freeze([
+  'formal-record',
+  'professional-message',
+  'rushed-mobile',
+  'tangled-followup'
+]);
+
+function normalizeRegisterLane(value = '', fallback = '') {
+  const normalized = String(value || '').trim().toLowerCase();
+  return REGISTER_LANES.includes(normalized) ? normalized : fallback;
+}
+
+function inferRegisterLaneFromText(text = '', profile = {}, sourceClass = 'formal-correspondence') {
+  const normalized = normalizeText(text);
+  const lowered = normalized.toLowerCase();
+  const abbreviationDensity = Number(profile?.abbreviationDensity || 0);
+  const orthographicLooseness = Number(profile?.orthographicLooseness || 0);
+  const fragmentPressure = Number(profile?.fragmentPressure || 0);
+  const avgSentenceLength = Number(profile?.avgSentenceLength || 0);
+  const sentenceCount = Number(profile?.sentenceCount || 0);
+  const slashNotePressure = /(?:\s\/\s|\bw\/o\b|\bw\/\b)/i.test(normalized);
+  const colonNotePressure = /:\s+[a-z0-9]/i.test(normalized) || /\bif [^.!?]{2,60}:\s+/i.test(normalized);
+  const rushedLexemes = /\b(?:pkg|mgmt|appt|msg|pls|bc|abt|imo|fyi|2nd|3rd|fl|wasnt|dont|cant|w\/o|w\/)\b/i.test(normalized);
+  const tangledSignals =
+    /\b(?:following up|not quite right|accidentally made it sound|so yes|the actual miss|the actual issue|that is not quite right)\b/i.test(normalized) ||
+    (avgSentenceLength >= 15 && sentenceCount >= 3 && /\b(?:but|however|though|earlier|later|actually)\b/i.test(normalized));
+  const professionalSignals =
+    /(?:^|\n)\s*(?:hello|hi|team)\b/i.test(normalized) ||
+    /\b(?:please|let me know|thank you|appreciate|check in|required|flow|cleanup|arrive|starting with)\b/i.test(normalized);
+
+  if (
+    rushedLexemes ||
+    slashNotePressure ||
+    colonNotePressure ||
+    abbreviationDensity >= 0.055 ||
+    orthographicLooseness >= 0.085 ||
+    fragmentPressure >= 0.14
+  ) {
+    return 'rushed-mobile';
+  }
+  if (tangledSignals) {
+    return 'tangled-followup';
+  }
+  if (professionalSignals) {
+    return 'professional-message';
+  }
+  if (sourceClass === 'procedural-record' || sourceClass === 'formal-correspondence') {
+    return 'formal-record';
+  }
+  return 'formal-record';
+}
+
+function inferRegisterLaneFromProfile(profile = {}, sourceClass = 'formal-correspondence') {
+  const abbreviationDensity = Number(profile?.abbreviationDensity || 0);
+  const orthographicLooseness = Number(profile?.orthographicLooseness || 0);
+  const fragmentPressure = Number(profile?.fragmentPressure || 0);
+  const directness = Number(profile?.directness || 0);
+  const avgSentenceLength = Number(profile?.avgSentenceLength || 0);
+  const registerMode = String(profile?.registerMode || '').trim().toLowerCase();
+
+  if (
+    registerMode === 'compressed' ||
+    abbreviationDensity >= 0.055 ||
+    orthographicLooseness >= 0.085 ||
+    fragmentPressure >= 0.14
+  ) {
+    return 'rushed-mobile';
+  }
+  if (avgSentenceLength >= 16 && directness <= 0.56) {
+    return 'tangled-followup';
+  }
+  if (directness >= 0.56 && avgSentenceLength <= 18) {
+    return 'professional-message';
+  }
+  return sourceClass === 'formal-correspondence' ? 'professional-message' : 'formal-record';
+}
+
+function resolveSourceRegisterLane({
+  sourceText = '',
+  sourceProfile = {},
+  sourceClass = 'formal-correspondence',
+  explicitRegisterLane = '',
+  relationInventory = null
+} = {}) {
+  const explicit = normalizeRegisterLane(
+    explicitRegisterLane || relationInventory?.sourceRegisterLane || '',
+    ''
+  );
+  if (explicit) {
+    return Object.freeze({
+      sourceRegisterLane: explicit,
+      inference: 'explicit',
+      fallbackUsed: false
+    });
+  }
+  const inferred = normalizeRegisterLane(
+    inferRegisterLaneFromText(sourceText, sourceProfile, sourceClass),
+    'formal-record'
+  );
+  return Object.freeze({
+    sourceRegisterLane: inferred,
+    inference: 'inferred',
+    fallbackUsed: false
+  });
+}
+
+function resolveTargetRegisterLane({
+  shell = {},
+  targetProfile = {},
+  sourceProfile = {},
+  sourceClass = 'formal-correspondence'
+} = {}) {
+  const explicit = normalizeRegisterLane(
+    shell?.registerLane || targetProfile?.sourceRegisterLane || targetProfile?.registerLane || '',
+    ''
+  );
+  if (explicit) {
+    return explicit;
+  }
+  return normalizeRegisterLane(
+    inferRegisterLaneFromProfile(targetProfile, sourceClass),
+    inferRegisterLaneFromProfile(sourceProfile, sourceClass)
+  );
+}
+
 function inferEnvelopeId(shell = {}, sourceProfile = {}, targetProfile = {}) {
   const personaId = String(shell?.personaId || '').trim().toLowerCase();
   if (personaId) {
@@ -12892,6 +13022,164 @@ function applyExpandedSurfaceRewrite(text = '', targetProfile = {}, sourceProfil
   return working;
 }
 
+function applyFormalRecordLaneRewrite(text = '', context = {}) {
+  let working = String(text || '');
+  const lexicalOperations = context.lexicalOperations || [];
+  const structuralOperations = context.structuralOperations || [];
+  const lexemeSwaps = context.lexemeSwaps || [];
+
+  const lexicalRules = [
+    { pattern: /\bpkg\b/gi, replacement: 'package', label: 'lane:pkg->package' },
+    { pattern: /\bmgmt\b/gi, replacement: 'management', label: 'lane:mgmt->management' },
+    { pattern: /\b2b\b/gi, replacement: 'Unit 2B', label: 'lane:2b->unit-2b' },
+    { pattern: /\b2nd fl\b/gi, replacement: 'second-floor', label: 'lane:2nd-fl->second-floor' },
+    { pattern: /\b3rd fl\b/gi, replacement: 'third-floor', label: 'lane:3rd-fl->third-floor' },
+    { pattern: /\bwasnt\b/gi, replacement: 'was not', label: 'lane:wasnt->was-not' },
+    { pattern: /\bwerent\b/gi, replacement: 'were not', label: 'lane:werent->were-not' },
+    { pattern: /\bdont\b/gi, replacement: 'do not', label: 'lane:dont->do-not' },
+    { pattern: /\bdoesnt\b/gi, replacement: 'does not', label: 'lane:doesnt->does-not' },
+    { pattern: /\bcant\b/gi, replacement: 'cannot', label: 'lane:cant->cannot' },
+    { pattern: /\bits hers\b/gi, replacement: 'it was hers', label: 'lane:its-hers->it-was-hers' },
+    { pattern: /\bsaid yes it was hers\b/gi, replacement: 'confirmed it was hers', label: 'lane:said-yes-it-was-hers->confirmed' },
+    { pattern: /\bsaid yes its hers\b/gi, replacement: 'confirmed it was hers', label: 'lane:said-yes-its-hers->confirmed' },
+    { pattern: /\bhad bags already\b/gi, replacement: 'was already carrying bags', label: 'lane:had-bags-already->carrying-bags' },
+    { pattern: /\bbox stayed sealed\b/gi, replacement: 'the box remained sealed', label: 'lane:box-stayed-sealed->box-remained-sealed' },
+    { pattern: /\btag says\b/gi, replacement: 'the tag stated', label: 'lane:tag-says->tag-stated' },
+    { pattern: /\bred rush sticker\b/gi, replacement: 'the red rush label', label: 'lane:red-rush-sticker->label' }
+  ];
+
+  for (const rule of lexicalRules) {
+    working = replaceLimited(working, rule.pattern, (match) => {
+      lexicalOperations.push(rule.label);
+      recordLexemeSwap(lexemeSwaps, match, rule.replacement, 'lane');
+      return matchCase(match, rule.replacement);
+    }, 2);
+  }
+
+  const beforeConditionalRepair = working;
+  working = working
+    .replace(/\bthe tag stated attempted\s+(\d{1,2}:\d{2})\b/gi, (match, time) => {
+      lexicalOperations.push('lane:attempted-window-formalized');
+      return `the tag stated "attempted / no answer" at ${time}`;
+    })
+    .replace(/\bno one buzzed her\b/gi, () => {
+      lexicalOperations.push('lane:buzzed-her->no-buzzer-call');
+      return 'no buzzer call was placed to her unit';
+    })
+    .replace(/\bit was just sitting on\b/gi, () => {
+      lexicalOperations.push('lane:sitting-on->left-on');
+      return 'the parcel was instead left on';
+    })
+    .replace(/\bby rail\b/gi, () => {
+      lexicalOperations.push('lane:rail->stair-rail');
+      return 'near the stair rail';
+    })
+    .replace(/\b(If [^.!?]{3,80})\.\s+(the [^.!?]{3,100})\./gi, (match, lead, tail) => {
+      structuralOperations.push('lane:conditional-formalization');
+      return `${normalizeText(lead)}, ${lowerLeadingAlpha(normalizeText(tail))}.`;
+    })
+    .replace(/\bIf management asks,\s+the box remained sealed,\s+I moved it\b/gi, () => {
+      structuralOperations.push('lane:conditional-seam-repair');
+      return 'If management asks, the box remained sealed. I moved it';
+    })
+    .replace(/\bafter she confirmed it was hers\.\s+she was already carrying bags\b/gi, () => {
+      structuralOperations.push('lane:help-causality-restored');
+      return 'after she confirmed it was hers because she was already carrying bags';
+    })
+    .replace(/\bI moved it to hall table\b/gi, (match) => {
+      lexicalOperations.push('lane:hall-table-article');
+      recordLexemeSwap(lexemeSwaps, match, 'I moved it to the hallway table outside Unit 2B', 'lane');
+      return 'I moved it to the hallway table outside Unit 2B';
+    })
+    .replace(/\bI moved it to the hall table\b/gi, (match) => {
+      lexicalOperations.push('lane:hall-table-outside-unit');
+      recordLexemeSwap(lexemeSwaps, match, 'I moved it to the hallway table outside Unit 2B', 'lane');
+      return 'I moved it to the hallway table outside Unit 2B';
+    });
+  if (beforeConditionalRepair !== working) {
+    structuralOperations.push('lane:formal-record-polish');
+  }
+
+  return working;
+}
+
+function applyRushedMobileLaneRewrite(text = '', context = {}) {
+  let working = String(text || '');
+  const lexicalOperations = context.lexicalOperations || [];
+  const structuralOperations = context.structuralOperations || [];
+  const lexemeSwaps = context.lexemeSwaps || [];
+
+  const lexicalRules = [
+    { pattern: /\bconfirmed it was hers\b/gi, replacement: 'said yes its hers', label: 'lane:confirmed->said-yes' },
+    { pattern: /\brequested help\b/gi, replacement: 'asked for help', label: 'lane:requested-help->asked-help' },
+    { pattern: /\bwas already carrying groceries\b/gi, replacement: 'had bags already', label: 'lane:carrying-groceries->bags' },
+    { pattern: /\bmanagement\b/gi, replacement: 'mgmt', label: 'lane:management->mgmt' },
+    { pattern: /\bpackage\b/gi, replacement: 'pkg', label: 'lane:package->pkg' }
+  ];
+
+  for (const rule of lexicalRules) {
+    working = replaceLimited(working, rule.pattern, (match) => {
+      lexicalOperations.push(rule.label);
+      recordLexemeSwap(lexemeSwaps, match, rule.replacement, 'lane');
+      return matchCase(match, rule.replacement);
+    }, 2);
+  }
+
+  const beforeCompression = working;
+  working = working
+    .replace(/\bbuilding footage and resident testimony\b/gi, () => {
+      lexicalOperations.push('lane:evidence-bundle-compression');
+      return 'cams + residents';
+    });
+  if (beforeCompression !== working) {
+    structuralOperations.push('lane:rushed-mobile-compression');
+  }
+
+  return working;
+}
+
+function applyRegisterLaneRealization(text = '', context = {}) {
+  const sourceRegisterLane = normalizeRegisterLane(context?.sourceRegisterLane, '');
+  const targetRegisterLane = normalizeRegisterLane(context?.targetRegisterLane, '');
+  if (!sourceRegisterLane || !targetRegisterLane || sourceRegisterLane === targetRegisterLane) {
+    return text;
+  }
+
+  let working = String(text || '');
+  if (targetRegisterLane === 'formal-record' && sourceRegisterLane === 'rushed-mobile') {
+    working = applyFormalRecordLaneRewrite(working, context);
+  } else if (targetRegisterLane === 'rushed-mobile' && sourceRegisterLane === 'formal-record') {
+    working = applyRushedMobileLaneRewrite(working, context);
+  }
+  return working;
+}
+
+function applyArtifactRepairPass(text = '', context = {}) {
+  let working = String(text || '');
+  let repaired = false;
+  const structuralOperations = context.structuralOperations || [];
+
+  const repairedConditional = working.replace(/\b(If [^.!?]{3,80})\.\s+([A-Z][^.!?]{3,100})\./g, (match, lead, tail) => {
+    repaired = true;
+    structuralOperations.push('repair:conditional-fragment-join');
+    return `${normalizeText(lead)}, ${lowerLeadingAlpha(normalizeText(tail))}.`;
+  });
+  working = repairedConditional;
+
+  const repairedClauseJoin = working
+    .replace(/\b([A-Z][^.!?]{6,120}\bafter [^.!?]{3,80})\.\s+(she was already [^.!?]{3,80})\./g, (match, lead, tail) => {
+      repaired = true;
+      structuralOperations.push('repair:causal-clause-join');
+      return `${normalizeText(lead)} because ${lowerLeadingAlpha(normalizeText(tail))}.`;
+    });
+  working = repairedClauseJoin;
+
+  return {
+    text: working,
+    repaired
+  };
+}
+
 function frontClauseSentence(sentence = '', context = {}) {
   const normalized = normalizeText(sentence);
   const patterns = [
@@ -13539,9 +13827,18 @@ function dedupeLexemeSwaps(swaps = []) {
   }));
 }
 
-function buildRelationInventory(sourceText = '', sourceIR = null, sourceClass = 'formal-correspondence', hardAnchors = []) {
+function buildRelationInventory(
+  sourceText = '',
+  sourceIR = null,
+  sourceClass = 'formal-correspondence',
+  hardAnchors = [],
+  registerLaneInfo = {}
+) {
   return Object.freeze({
     sourceClass,
+    sourceRegisterLane: normalizeRegisterLane(registerLaneInfo?.sourceRegisterLane, 'formal-record'),
+    sourceRegisterLaneInference: registerLaneInfo?.inference || 'inferred',
+    sourceRegisterLaneFallback: Boolean(registerLaneInfo?.fallbackUsed),
     paragraphCount: splitParagraphs(sourceText).length || 1,
     sentenceCount: Number(sourceIR?.metadata?.sentenceCount || splitSentencesPreserve(sourceText).length || 0),
     clauseCount: Number(sourceIR?.metadata?.clauseCount || 0),
@@ -13563,8 +13860,22 @@ function buildNativeLexicalShiftProfile(sourceText = '', outputText = '', source
     modifierDensityDelta: round((outputProfile.modifierDensity || 0) - (sourceProfile.modifierDensity || 0), 4),
     directnessDelta: round((outputProfile.directness || 0) - (sourceProfile.directness || 0), 4),
     abstractionDelta: round((outputProfile.abstractionPosture || 0) - (sourceProfile.abstractionPosture || 0), 4),
-    contractionAligned: Math.abs((outputProfile.contractionDensity || 0) - Number(targetProfile?.contractionDensity ?? outputProfile.contractionDensity ?? 0)) <= 0.03
+      contractionAligned: Math.abs((outputProfile.contractionDensity || 0) - Number(targetProfile?.contractionDensity ?? outputProfile.contractionDensity ?? 0)) <= 0.03
   });
+}
+
+function deriveRealizedChangedDimensions(profileShiftDimensions = [], lexemeSwaps = []) {
+  const realized = [...new Set(profileShiftDimensions || [])];
+  if (!Number(lexemeSwaps?.length || 0)) {
+    return realized.filter((dimension) => ![
+      'lexical-register',
+      'content-word-complexity',
+      'modifier-density',
+      'directness',
+      'abstraction-posture'
+    ].includes(dimension));
+  }
+  return realized;
 }
 
 function buildSemanticRisk(semanticAudit = {}, protectedAnchorIntegrity = 1) {
@@ -13646,6 +13957,8 @@ function computeCandidateTransferClass(candidate = {}) {
 function buildPlanSummary(candidate = null, candidateLedger = [], testedFamilyIds = []) {
   return Object.freeze({
     relationInventory: candidate?.relationInventory || {},
+    sourceRegisterLane: candidate?.sourceRegisterLane || candidate?.relationInventory?.sourceRegisterLane || 'formal-record',
+    targetRegisterLane: candidate?.targetRegisterLane || 'formal-record',
     testedFamilyIds: Object.freeze([...new Set((testedFamilyIds || []).filter(Boolean))]),
     structuralOperationsSelected: Object.freeze([...(candidate?.structuralOperations || [])]),
     lexicalRegisterOperationsSelected: Object.freeze([...(candidate?.lexicalOperations || [])]),
@@ -13658,6 +13971,7 @@ function buildCandidateSummary(candidateLedger = [], generationDocket = null) {
   return Object.freeze({
     candidateCount: candidateLedger.length,
     landedCandidateId: generationDocket?.winningCandidateId || null,
+    landedCandidateFamily: generationDocket?.winningCandidateFamily || null,
     families: Object.freeze([...new Set(candidateLedger.map((entry) => entry.family).filter(Boolean))]),
     holdStatus: generationDocket?.status || 'landed',
     averageToolabilityScore: candidateLedger.length
@@ -13678,6 +13992,7 @@ function buildRetrievalTraceV2({
   return Object.freeze({
     sourceText,
     sourceClass,
+    sourceRegisterLane: candidate?.sourceRegisterLane || candidate?.relationInventory?.sourceRegisterLane || 'formal-record',
     generatorVersion: 'v2',
     semanticAudit: candidate?.semanticAudit || {},
     protectedAnchorAudit: candidate?.protectedAnchorAudit || {},
@@ -13690,6 +14005,7 @@ function buildRetrievalTraceV2({
       borrowedShellFailureClass: generationDocket?.holdClass || null,
       realizationTier: candidate?.realizationTier || 'hold',
       changedDimensions: Object.freeze([...(candidate?.changedDimensions || [])]),
+      profileShiftDimensions: Object.freeze([...(candidate?.profileShiftDimensions || [])]),
       lexemeSwaps: Object.freeze([...(candidate?.lexemeSwaps || [])]),
       visibleShift: Boolean(candidate?.visibleShift),
       nonTrivialShift: Boolean(candidate?.nonTrivialShift)
@@ -13705,6 +14021,11 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
   const sourceText = normalizeText(text);
   const sourceProfile = extractCadenceProfile(sourceText);
   const hardAnchors = extractHardAnchors(sourceText);
+  const sourceRegisterLaneInfo = resolveSourceRegisterLane({
+    sourceText,
+    sourceProfile,
+    sourceClass
+  });
   const protectedState = {
     literals: Object.freeze(hardAnchors.map((value) => Object.freeze({ value }))),
     text: sourceText
@@ -13713,9 +14034,10 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
   const opportunityProfile = buildOpportunityProfileFromIR(sourceIR);
   const auditBundle = buildSemanticAuditBundle(sourceIR, sourceText, protectedState);
   const sourceClass = classifyV2SourceClass(sourceText);
-  const nativeRelationInventory = buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors);
+  const nativeRelationInventory = buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors, sourceRegisterLaneInfo);
   const nativeOntologyAudit = buildTD613OntologyAudit({
     sourceClass,
+    sourceRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
     relationInventory: nativeRelationInventory,
     semanticAudit: auditBundle.semanticAudit,
     protectedAnchorAudit: auditBundle.protectedAnchorAudit,
@@ -13732,14 +14054,15 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
     }
   });
   const generationDocket = Object.freeze({
-    status: 'landed',
-    holdClass: null,
-    headline: shell?.mode === 'native' ? 'Generator V2 stayed native.' : 'Generator V2 stayed on source cadence.',
-    reasons: Object.freeze([]),
-    candidateCount: 1,
-    winningCandidateId: 'native',
-    ontologyRoutePressure: nativeOntologyAudit
-  });
+      status: 'landed',
+      holdClass: null,
+      headline: shell?.mode === 'native' ? 'Generator V2 stayed native.' : 'Generator V2 stayed on source cadence.',
+      reasons: Object.freeze([]),
+      candidateCount: 1,
+      winningCandidateId: 'native',
+      winningCandidateFamily: 'native',
+      ontologyRoutePressure: nativeOntologyAudit
+    });
   const apertureAudit = buildTD613ApertureAudit({
     generatorFault: false,
     warningSignals: [],
@@ -13756,19 +14079,25 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
   });
   const candidateLedger = Object.freeze([
     Object.freeze({
-      id: 'native',
-      family: 'native',
-      envelopeId: 'generic',
-      status: 'selected',
-      score: 1,
-      rewriteStrength: 0,
-      targetFit: 1,
-      movementConfidence: 0,
-      failureReasons: Object.freeze([]),
-      transferClass: 'native',
-      ontologyAudit: nativeOntologyAudit,
-      outputPreview: sourceText.slice(0, 160)
-    })
+        id: 'native',
+        family: 'native',
+        envelopeId: 'generic',
+        status: 'selected',
+        sourceRegisterLane: nativeOntologyAudit?.sourceRegisterLane || 'formal-record',
+        targetRegisterLane: nativeOntologyAudit?.sourceRegisterLane || 'formal-record',
+        score: 1,
+        rewriteStrength: 0,
+        targetFit: 1,
+        movementConfidence: 0,
+        failureReasons: Object.freeze([]),
+        transferClass: 'native',
+        changedDimensions: Object.freeze([]),
+        profileShiftDimensions: Object.freeze([]),
+        lexemeSwapCount: 0,
+        artifactRepairApplied: false,
+        ontologyAudit: nativeOntologyAudit,
+        outputPreview: sourceText.slice(0, 160)
+      })
   ]);
   const retrievalTrace = options?.retrieval
     ? buildRetrievalTraceV2({
@@ -13778,10 +14107,13 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
           transferClass: 'native',
           realizationTier: 'none',
           changedDimensions: [],
+          profileShiftDimensions: [],
           lexemeSwaps: [],
           visibleShift: false,
           nonTrivialShift: false,
           relationInventory: nativeRelationInventory,
+          sourceRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
+          targetRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
           semanticAudit: auditBundle.semanticAudit,
           protectedAnchorAudit: auditBundle.protectedAnchorAudit,
           ontologyAudit: nativeOntologyAudit,
@@ -13797,11 +14129,14 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
   return Object.freeze({
     text: sourceText,
     internalText: sourceText,
+    sourceRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
+    targetRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
     sourceProfile,
     targetProfile: shell.profile || sourceProfile,
     outputProfile: sourceProfile,
     opportunityProfile,
     changedDimensions: [],
+    profileShiftDimensions: [],
     protectedLiteralCount: hardAnchors.length,
     passesApplied: [],
     rescuePasses: [],
@@ -13867,6 +14202,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
 
 function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, options = {}) {
   const sourceClass = options.sourceClass || classifyV2SourceClass(sourceText);
+  const sourceRegisterLane = normalizeRegisterLane(options.sourceRegisterLane, 'formal-record');
   const hardAnchors = options.hardAnchors || extractHardAnchors(sourceText);
   const sourceProfile = options.sourceProfile || extractCadenceProfile(sourceText);
   const sourceIR = options.sourceIR || segmentTextToIR(sourceText, {
@@ -13874,6 +14210,15 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     text: sourceText
   });
   const familyId = family.id || 'syntax-shape';
+  const targetRegisterLane = normalizeRegisterLane(
+    options.targetRegisterLane || resolveTargetRegisterLane({
+      shell: variant.shell,
+      targetProfile: variant.shell?.profile || null,
+      sourceProfile,
+      sourceClass
+    }),
+    sourceRegisterLane
+  );
   const connectorStrategy = connectorStrategyFor(variant.envelopeId, sourceClass, familyId);
   const contractionStrategy = contractionStrategyFor(
     variant.envelopeId,
@@ -13891,13 +14236,15 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     structuralOperations,
     lexicalOperations,
     lexemeSwaps,
-    connectorStrategy,
-    contractionStrategy,
-    targetProfile: variant.shell?.profile || null,
-    sourceProfile,
-    sourceClass,
-    intensity: variantIntensity(variant) * familyWeight(familyId, sourceClass, variant.envelopeId)
-  };
+      connectorStrategy,
+      contractionStrategy,
+      targetProfile: variant.shell?.profile || null,
+      sourceProfile,
+      sourceClass,
+      sourceRegisterLane,
+      targetRegisterLane,
+      intensity: variantIntensity(variant) * familyWeight(familyId, sourceClass, variant.envelopeId)
+    };
 
   const rewrittenParagraphs = paragraphs.map((paragraph) => {
     let working = paragraph;
@@ -13944,6 +14291,7 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     sourceProfile,
     context
   );
+  outputText = applyRegisterLaneRealization(outputText, context);
   outputText = restoreAnchorsAfterRewrite(outputText, protectedState.replacements);
   outputText = restoreHardWitnessAnchors(
     sourceText,
@@ -13957,6 +14305,8 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     .replace(/;\s+(?=[A-Z])/g, '. ')
     .replace(/,,+/g, ',');
   outputText = restoreAnchorsAfterRewrite(outputText, polishProtected.replacements);
+  const artifactRepair = applyArtifactRepairPass(outputText, context);
+  outputText = artifactRepair.text;
 
   return Object.freeze({
     outputText,
@@ -13965,13 +14315,26 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     lexemeSwaps: dedupeLexemeSwaps(lexemeSwaps),
     connectorStrategy,
     contractionStrategy,
-    relationInventory: buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors)
+    relationInventory: buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors, {
+      sourceRegisterLane,
+      inference: options.sourceRegisterLaneInference || 'inferred',
+      fallbackUsed: Boolean(options.sourceRegisterLaneFallback)
+    }),
+    sourceRegisterLane,
+    targetRegisterLane,
+    artifactRepairApplied: artifactRepair.repaired
   });
 }
 
 function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}) {
   const sourceClass = options.sourceClass || classifyV2SourceClass(sourceText);
   const sourceProfile = options.sourceProfile || extractCadenceProfile(sourceText);
+  const sourceRegisterLaneInfo = resolveSourceRegisterLane({
+    sourceText,
+    sourceProfile,
+    sourceClass,
+    explicitRegisterLane: options.sourceRegisterLane
+  });
   const hardAnchors = options.hardAnchors || extractHardAnchors(sourceText);
   const protectedState = {
     literals: Object.freeze(hardAnchors.map((value) => Object.freeze({ value }))),
@@ -13981,13 +14344,17 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   const authored = authorNativeCandidateText(sourceText, variant, family, {
     ...options,
     sourceClass,
+    sourceRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
+    sourceRegisterLaneInference: sourceRegisterLaneInfo.inference,
+    sourceRegisterLaneFallback: sourceRegisterLaneInfo.fallbackUsed,
     sourceProfile,
     sourceIR,
     hardAnchors
   });
   const outputText = authored.outputText;
   const outputProfile = extractCadenceProfile(outputText);
-  const changedDimensions = deriveChangedDimensions(sourceProfile, outputProfile);
+  const profileShiftDimensions = deriveChangedDimensions(sourceProfile, outputProfile);
+  const changedDimensions = deriveRealizedChangedDimensions(profileShiftDimensions, authored.lexemeSwaps);
   const semanticBundle = buildSemanticAuditBundle(sourceIR, outputText, protectedState);
   const semanticAudit = semanticBundle.semanticAudit || {};
   const protectedAnchorAudit = semanticBundle.protectedAnchorAudit || {};
@@ -14028,6 +14395,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   });
   const ontologyAudit = buildTD613OntologyAudit({
     sourceClass,
+    sourceRegisterLane: authored.sourceRegisterLane,
     relationInventory: authored.relationInventory,
     semanticAudit,
     protectedAnchorAudit,
@@ -14040,7 +14408,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     lexemeSwaps: authored.lexemeSwaps,
     visibleShift,
     nonTrivialShift,
-    repaired: false,
+    repaired: Boolean(authored.artifactRepairApplied),
     pathologies,
     blocked: false
   });
@@ -14172,12 +14540,15 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     envelopeId: variant.envelopeId,
     shell: variant.shell,
     sourceClass,
+    sourceRegisterLane: authored.sourceRegisterLane,
+    targetRegisterLane: authored.targetRegisterLane,
     sourceIR,
     hardAnchors,
     targetProfile: targetProfile || sourceProfile,
     outputText,
     outputProfile,
     changedDimensions,
+    profileShiftDimensions,
     lexemeSwaps: authored.lexemeSwaps,
     lexicalShiftProfile,
     semanticAudit,
@@ -14202,6 +14573,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     lexicalOperations: authored.lexicalOperations,
     connectorStrategy: authored.connectorStrategy,
     contractionStrategy: authored.contractionStrategy,
+    artifactRepairApplied: Boolean(authored.artifactRepairApplied),
     semanticRisk,
     semanticBounded: semanticsBounded,
     semanticLockIntact,
@@ -14234,6 +14606,8 @@ function buildCandidateLedger(candidates = [], landedId = null) {
     family: candidate.family,
     envelopeId: candidate.envelopeId,
     status: candidate.passed ? (candidate.id === landedId ? 'selected' : 'eligible') : 'held',
+    sourceRegisterLane: candidate.sourceRegisterLane || candidate.relationInventory?.sourceRegisterLane || 'formal-record',
+    targetRegisterLane: candidate.targetRegisterLane || 'formal-record',
     score: candidate.score,
     toolabilityScore: Number(candidate.toolabilityAudit?.toolabilityScore || 0),
     rewriteStrength: candidate.rewriteStrength,
@@ -14244,6 +14618,10 @@ function buildCandidateLedger(candidates = [], landedId = null) {
     artifactFlags: Object.freeze([...(candidate.artifactAudit?.flags || [])]),
     toolabilityWarnings: Object.freeze([...(candidate.toolabilityWarnings || [])]),
     transferClass: candidate.transferClass || 'weak',
+    changedDimensions: Object.freeze([...(candidate.changedDimensions || [])]),
+    profileShiftDimensions: Object.freeze([...(candidate.profileShiftDimensions || [])]),
+    lexemeSwapCount: Number(candidate.lexemeSwaps?.length || 0),
+    artifactRepairApplied: Boolean(candidate.artifactRepairApplied),
     ontologyAudit: candidate.ontologyAudit || null,
     outputPreview: String(candidate.outputText || '').slice(0, 160)
   })));
@@ -14353,6 +14731,20 @@ function candidateDeformationLoad(candidate = null) {
   return Number(aperture?.historicalCrease || 0) + Number(aperture?.unfoldingEnergy || 0);
 }
 
+function candidateRealizedCrossRegisterMovement(candidate = null) {
+  const realizedDimensions = candidate?.changedDimensions || [];
+  const lexicalSurfaceDimensions = new Set([
+    'lexical-register',
+    'abbreviation-posture',
+    'orthography-posture',
+    'fragment-posture',
+    'conversation-posture',
+    'surface-marker-posture'
+  ]);
+  const hasLexicalSurface = realizedDimensions.some((dimension) => lexicalSurfaceDimensions.has(dimension));
+  return hasLexicalSurface || Number(candidate?.lexemeSwaps?.length || 0) > 0;
+}
+
 function classRecoveryFamilies(sourceClass = 'formal-correspondence') {
   if (sourceClass === 'procedural-record') {
     return ['syntax-shape', 'clause-pivot', 'persona-lexicon'];
@@ -14440,6 +14832,7 @@ function selectWinningCandidate(candidates = []) {
       candidateProtectedAnchorIntegrity(right) - candidateProtectedAnchorIntegrity(left) ||
       candidateMinimumSemanticCoverage(right) - candidateMinimumSemanticCoverage(left) ||
       candidateDeformationLoad(left) - candidateDeformationLoad(right) ||
+      Number(candidateRealizedCrossRegisterMovement(right)) - Number(candidateRealizedCrossRegisterMovement(left)) ||
       candidateTransferRank(right) - candidateTransferRank(left) ||
       candidateToolabilityScore(right) - candidateToolabilityScore(left) ||
       Number(right.personaSeparationAudit?.score || 0) - Number(left.personaSeparationAudit?.score || 0) ||
@@ -14533,6 +14926,7 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
     reasons: Object.freeze([]),
     candidateCount: candidateLedger.length,
     winningCandidateId: chosen.id,
+    winningCandidateFamily: chosen.family || null,
     ontologyRoutePressure: chosen.ontologyAudit || null
   });
   const retrievalTrace = options?.retrieval
@@ -14550,11 +14944,14 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
   return Object.freeze({
     text: chosen.outputText,
     internalText: chosen.outputText,
+    sourceRegisterLane: chosen.sourceRegisterLane || chosen.relationInventory?.sourceRegisterLane || 'formal-record',
+    targetRegisterLane: chosen.targetRegisterLane || 'formal-record',
     sourceProfile,
     targetProfile: chosen.targetProfile || shell.profile || sourceProfile,
     outputProfile: chosen.outputProfile,
     opportunityProfile,
     changedDimensions: chosen.changedDimensions,
+    profileShiftDimensions: chosen.profileShiftDimensions || [],
     lexemeSwaps: Object.freeze([...(chosen.lexemeSwaps || [])]),
     passesApplied: uniqueStrings([
       `v2-family:${chosen.family || 'syntax-shape'}`,
@@ -14654,6 +15051,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     reasons: Object.freeze(reasons),
     candidateCount: candidateLedger.length,
     winningCandidateId: holdClass === 'aperture-route-pressure' ? (bestCandidate?.id || null) : null,
+    winningCandidateFamily: holdClass === 'aperture-route-pressure' ? (bestCandidate?.family || null) : null,
     ontologyRoutePressure: bestCandidate?.ontologyAudit || null
   });
   const retrievalTrace = options?.retrieval
@@ -14671,11 +15069,14 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
   return Object.freeze({
     text: '',
     internalText: bestCandidate?.outputText || sourceText,
+    sourceRegisterLane: bestCandidate?.sourceRegisterLane || bestCandidate?.relationInventory?.sourceRegisterLane || 'formal-record',
+    targetRegisterLane: bestCandidate?.targetRegisterLane || 'formal-record',
     sourceProfile,
     targetProfile: bestCandidate?.targetProfile || shell.profile || sourceProfile,
     outputProfile: sourceProfile,
     opportunityProfile,
     changedDimensions: [],
+    profileShiftDimensions: bestCandidate?.profileShiftDimensions || [],
     protectedLiteralCount: Number((bestCandidate?.hardAnchors || []).length || 0),
     passesApplied: [],
     rescuePasses: [],

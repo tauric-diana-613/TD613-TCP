@@ -151,8 +151,12 @@
     },
     "ontologyAudit": {
       "sourceClass": "procedural-record",
+      "sourceRegisterLane": "formal-record",
       "relationInventory": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "formal-record",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 8,
         "clauseCount": 9,
@@ -192,11 +196,16 @@
     "planSummary": {
       "relationInventory": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "formal-record",
+        "sourceRegisterLaneInference": "explicit",
+        "sourceRegisterLaneFallback": false,
         "paragraphCount": 1,
         "sentenceCount": 8,
         "clauseCount": 9,
         "exactAnchorCount": 2
       },
+      "sourceRegisterLane": "formal-record",
+      "targetRegisterLane": "rushed-mobile",
       "testedFamilyIds": [
         "syntax-shape",
         "register-lexicon",
@@ -219,6 +228,7 @@
     "candidateSummary": {
       "candidateCount": 3,
       "landedCandidateId": "base:syntax-shape",
+      "landedCandidateFamily": "syntax-shape",
       "families": [
         "syntax-shape",
         "cadence-connector",
@@ -233,6 +243,7 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "partial",
       "changedDimensions": [],
+      "profileShiftDimensions": [],
       "lexemeSwaps": [
         {
           "from": "temporary",
@@ -256,205 +267,6 @@
       "donorImprovementRatio": 0,
       "sourceOutputLexicalOverlap": 0.969
     },
-    "candidateLedger": [
-      {
-        "id": "base:syntax-shape",
-        "family": "syntax-shape",
-        "envelopeId": "spark",
-        "status": "selected",
-        "score": 0.3434,
-        "toolabilityScore": 0.5099,
-        "rewriteStrength": 0.3133,
-        "targetFit": 0.3345,
-        "movementConfidence": 0.52,
-        "personaSeparationScore": 0.08,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:over-braiding",
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:over-braiding",
-          "artifact:clause-drag",
-          "toolability:low-confidence"
-        ],
-        "transferClass": "weak",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 8,
-            "clauseCount": 9,
-            "exactAnchorCount": 2
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.978,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 2,
-            "resolvedAnchors": 2,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.997,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.013,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is tha"
-      },
-      {
-        "id": "base:cadence-connector",
-        "family": "cadence-connector",
-        "envelopeId": "spark",
-        "status": "held",
-        "score": 0.6676,
-        "toolabilityScore": 0.6513,
-        "rewriteStrength": 0.6844,
-        "targetFit": 0.4477,
-        "movementConfidence": 0.8,
-        "personaSeparationScore": 0.47,
-        "failureReasons": [
-          "semantic-failure"
-        ],
-        "artifactFlags": [
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:clause-drag"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 8,
-            "clauseCount": 9,
-            "exactAnchorCount": 2
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.978,
-            "polarityMismatches": 1,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 2,
-            "resolvedAnchors": 2,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.937,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.037,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.318,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.114
-          }
-        },
-        "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is tha"
-      },
-      {
-        "id": "base:clause-pivot",
-        "family": "clause-pivot",
-        "envelopeId": "spark",
-        "status": "held",
-        "score": 0.1967,
-        "toolabilityScore": 0.4444,
-        "rewriteStrength": 0.4948,
-        "targetFit": 0.3345,
-        "movementConfidence": 0.66,
-        "personaSeparationScore": 0.08,
-        "failureReasons": [
-          "semantic-failure"
-        ],
-        "artifactFlags": [
-          "artifact:over-braiding",
-          "artifact:clause-drag"
-        ],
-        "toolabilityWarnings": [
-          "persona-markers-thin",
-          "artifact:over-braiding",
-          "artifact:clause-drag",
-          "toolability:low-confidence",
-          "toolability:rough-surface"
-        ],
-        "transferClass": "structural",
-        "ontologyAudit": {
-          "sourceClass": "procedural-record",
-          "relationInventory": {
-            "sourceClass": "procedural-record",
-            "paragraphCount": 1,
-            "sentenceCount": 8,
-            "clauseCount": 9,
-            "exactAnchorCount": 2
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.978,
-            "polarityMismatches": 1,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 2,
-            "resolvedAnchors": 2,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.937,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.037,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.318,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.114
-          }
-        },
-        "outputPreview": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is tha"
-      }
-    ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
@@ -462,10 +274,15 @@
       "reasons": [],
       "candidateCount": 3,
       "winningCandidateId": "base:syntax-shape",
+      "winningCandidateFamily": "syntax-shape",
       "ontologyRoutePressure": {
         "sourceClass": "procedural-record",
+        "sourceRegisterLane": "formal-record",
         "relationInventory": {
           "sourceClass": "procedural-record",
+          "sourceRegisterLane": "formal-record",
+          "sourceRegisterLaneInference": "explicit",
+          "sourceRegisterLaneFallback": false,
           "paragraphCount": 1,
           "sentenceCount": 8,
           "clauseCount": 9,
