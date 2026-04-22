@@ -86,13 +86,22 @@ assert.ok(
 assert.ok(
   harborHtmlSource.includes('Tauric Diana Batch Intake') &&
     harborHtmlSource.includes('Stage Selected Batch') &&
+    harborHtmlSource.includes('Reset Staged Batch') &&
     harborHtmlSource.includes('batch-001a') &&
-    harborHtmlSource.includes('batch-004a'),
-  'Safe Harbor exposes the four-batch intake dashboard in the center chamber'
+    harborHtmlSource.includes('batch-001d') &&
+    harborHtmlSource.includes('batch-002d') &&
+    harborHtmlSource.includes('batch-003d') &&
+    harborHtmlSource.includes('batch-004c'),
+  'Safe Harbor exposes the full buffered intake wave plus a reset path in the center chamber'
 );
 assert.ok(
   harborMainSource.includes('selected_batch_id: state.selectedBatchId || null'),
   'Safe Harbor carries the selected batch id into the staged packet metadata'
+);
+assert.ok(
+  harborMainSource.includes("if (dom.resetStagedBatch) dom.resetStagedBatch.addEventListener('click', clearStagedBatch);") &&
+    harborMainSource.includes("logEvent('batch-unstaged'"),
+  'Safe Harbor lets operator mode clear a staged batch and reopen the intake lane without resetting the whole session'
 );
 
 console.log('safe-harbor-shi.test.mjs passed');
