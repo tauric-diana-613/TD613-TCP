@@ -26,7 +26,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.986,
+      "objectCoverage": 1,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -93,19 +93,7 @@
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s2c0+s3c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.8,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.833,
-          "globalBagScore": 0.132
-        },
-        {
-          "sourceClauseId": "s3c0",
-          "matchedClauseId": "s4c0",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -116,20 +104,32 @@
           "globalBagScore": 0.162
         },
         {
-          "sourceClauseId": "s3c1",
-          "matchedClauseId": "s5c0",
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
+          "bagScore": 0.857,
+          "globalBagScore": 0.162
+        },
+        {
+          "sourceClauseId": "s3c1",
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.143,
           "globalBagScore": 0.027
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s7c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -141,7 +141,7 @@
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s8c0",
+          "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -153,7 +153,7 @@
         },
         {
           "sourceClauseId": "s6c0",
-          "matchedClauseId": "s9c0",
+          "matchedClauseId": "s7c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -165,7 +165,7 @@
         },
         {
           "sourceClauseId": "s6c1",
-          "matchedClauseId": "s10c0",
+          "matchedClauseId": "s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -177,37 +177,77 @@
         },
         {
           "sourceClauseId": "s7c0",
-          "matchedClauseId": "s11c0",
+          "matchedClauseId": "s6c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.027
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s7c1",
-          "matchedClauseId": "s11c1",
+          "matchedClauseId": "s8c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
+          "bagScore": 0.667,
           "globalBagScore": 0.054
         }
       ],
       "sourceClauseCount": 14,
-      "outputClauseCount": 15
+      "outputClauseCount": 11
     },
     "protectedAnchorAudit": {
       "totalAnchors": 2,
       "resolvedAnchors": 2,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
+    },
+    "ontologyAudit": {
+      "sourceClass": "formal-correspondence",
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 8,
+        "clauseCount": 14,
+        "exactAnchorCount": 2
+      },
+      "semanticCoverage": {
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 1,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0
+      },
+      "anchorIntegrity": {
+        "protectedAnchorIntegrity": 1,
+        "totalAnchors": 2,
+        "resolvedAnchors": 2,
+        "missingAnchors": 0
+      },
+      "aperture": {
+        "temporalPosture": "synced",
+        "closureClass": "closed",
+        "closureScore": 1,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.012,
+        "beaconStatus": "beacon-idle",
+        "cumulativeNarrowing": 0.255,
+        "dominantLoss": "retrieval gating"
+      },
+      "selectiveAdmissibilityDrift": {
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.087
+      }
     },
     "planSummary": {
       "relationInventory": {
@@ -228,12 +268,13 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "connector-split",
-        "front-if"
+        "front-if",
+        "pivot-contrast",
+        "front-because"
       ],
       "lexicalRegisterOperationsSelected": [
-        "connector:because->since",
         "compressed:please->pls",
+        "compressed:because->bc",
         "orthography:dont",
         "orthography:lowercase-lead"
       ],
@@ -242,7 +283,7 @@
     },
     "candidateSummary": {
       "candidateCount": 5,
-      "landedCandidateId": "base:hybrid",
+      "landedCandidateId": "base:clause-pivot",
       "families": [
         "syntax-shape",
         "cadence-connector",
@@ -261,21 +302,21 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
         "punctuation-shape",
+        "register-mode",
         "abbreviation-posture",
         "orthography-posture",
         "lexical-register"
       ],
       "lexemeSwaps": [
         {
-          "from": "because",
-          "to": "since",
-          "family": "connector"
-        },
-        {
           "from": "please",
           "to": "pls",
+          "family": "surface"
+        },
+        {
+          "from": "Because",
+          "to": "bc",
           "family": "surface"
         },
         {
@@ -290,9 +331,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.968,
-      "outputDonorDistance": 3.994,
-      "donorImprovement": 0.974,
-      "donorImprovementRatio": 0.196,
+      "outputDonorDistance": 4.335,
+      "donorImprovement": 0.633,
+      "donorImprovementRatio": 0.127,
       "sourceOutputLexicalOverlap": 0.925
     },
     "candidateLedger": [
@@ -318,6 +359,46 @@
           "artifact:clause-drag"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 8,
+            "clauseCount": 14,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 0.945,
+            "actionCoverage": 1,
+            "objectCoverage": 1,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.991,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.015,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. Pls check in at the west fence table when you arrive, even if you a"
       },
       {
@@ -340,6 +421,46 @@
           "artifact:fragment"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 8,
+            "clauseCount": 14,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.986,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.998,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.013,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. Pls check in at the west fence table when you arrive, even if you a"
       },
       {
@@ -364,13 +485,53 @@
           "artifact:clause-drag"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 8,
+            "clauseCount": 14,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 1,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 1,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.012,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.087
+          }
+        },
         "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. If you already know the site, pls check in at the west fence table "
       },
       {
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "spark",
-        "status": "eligible",
+        "status": "selected",
         "score": 1.0406,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
@@ -388,13 +549,53 @@
           "artifact:clause-drag"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 8,
+            "clauseCount": 14,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 1,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 1,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.012,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.087
+          }
+        },
         "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. If you already know the site, pls check in at the west fence table "
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "spark",
-        "status": "selected",
+        "status": "eligible",
         "score": 1.1162,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
@@ -410,6 +611,46 @@
           "artifact:fragment"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 8,
+            "clauseCount": 14,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.986,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.998,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.013,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "Team, here is the cleanup flow for Saturday so we dont lose the first hour to improvisation. If you already know the site, pls check in at the west fence table "
       }
     ],
@@ -419,9 +660,49 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 5,
-      "winningCandidateId": "base:hybrid"
+      "winningCandidateId": "base:clause-pivot",
+      "ontologyRoutePressure": {
+        "sourceClass": "formal-correspondence",
+        "relationInventory": {
+          "sourceClass": "formal-correspondence",
+          "paragraphCount": 1,
+          "sentenceCount": 8,
+          "clauseCount": 14,
+          "exactAnchorCount": 2
+        },
+        "semanticCoverage": {
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
+        },
+        "anchorIntegrity": {
+          "protectedAnchorIntegrity": 1,
+          "totalAnchors": 2,
+          "resolvedAnchors": 2,
+          "missingAnchors": 0
+        },
+        "aperture": {
+          "temporalPosture": "synced",
+          "closureClass": "closed",
+          "closureScore": 1,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.012,
+          "beaconStatus": "beacon-idle",
+          "cumulativeNarrowing": 0.255,
+          "dominantLoss": "retrieval gating"
+        },
+        "selectiveAdmissibilityDrift": {
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.087
+        }
+      }
     },
-    "winningCandidateId": "base:hybrid"
+    "winningCandidateId": "base:clause-pivot"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -431,12 +712,11 @@
       "lexical-register",
       "orthography-posture",
       "punctuation-shape",
+      "register-mode",
       "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "sentence-mean"
     ],
     "lexemeSwapFamilies": [
-      "connector",
       "surface"
     ],
     "relationInventory": [
@@ -447,12 +727,13 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "connector-split",
-      "front-if"
+      "front-because",
+      "front-if",
+      "pivot-contrast"
     ],
     "lexicalOperations": [
+      "compressed:because->bc",
       "compressed:please->pls",
-      "connector:because->since",
       "orthography:dont",
       "orthography:lowercase-lead"
     ],
@@ -461,7 +742,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.986,
+    "objectCoverage": 1,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

@@ -919,7 +919,7 @@
       dom.packetStateReadout.textContent = state.ingress.bypass ? 'operator-bypass / packetless' : (completedCount() === 3 ? 'triad-ready / awaiting staged packet' : 'awaiting ingress');
       dom.provenanceRetentionReadout.textContent = 'pending';
       dom.packetPreview.textContent = 'packet pending';
-      renderMintSurface(null);
+      renderMintSurface(null, null);
       dom.covenantNote.textContent = state.ingress.bypass
         ? 'The shell is open through operator bypass only. No staged packet, covenant transition, or SHI issuance exists yet.'
         : 'Vault-open stages the packet only. Mint / Seal Payload carries any pasted Kleopatra signature text into the artifact and advances harbor eligibility plus SHI # assignment.';
@@ -932,17 +932,20 @@
     dom.packetHashReadout.textContent = state.packet.packet_hash_sha256;
     dom.harborReadout.textContent = state.packet.analysis.route.recommended_harbor;
     dom.exportGateReadout.textContent = state.packet.bridge.export_gate.state;
-    const triadFingerprintReady = Boolean(state.packet.issuance && state.packet.issuance.stylometric_fingerprint);
+    const issuance = state.packet.issuance || {};
+    const triadThresholdSatisfied = Object.values(issuance.triad_shortfalls || {}).every((value) => Number(value || 0) <= 0);
     dom.covenantStateReadout.textContent = state.packet.bridge.covenant_gate.confirmed
       ? ('harbor-eligible / SHI # ' + state.packet.issuance.badge_number)
-      : triadFingerprintReady
-        ? (state.packet.signature.status === 'sealed' ? 'signature text staged / confirmation required' : 'triad ready / confirmation required')
-        : (state.packet.signature.status === 'sealed' ? 'signature text staged / triad required for SHI' : 'triad incomplete / SHI locked');
+      : issuance.badge_state === 'blocked-triad-threshold'
+        ? 'triad blocked / SHI locked'
+        : triadThresholdSatisfied
+          ? (state.packet.signature.status === 'sealed' ? 'signature text staged / confirmation required' : 'triad ready / confirmation required')
+          : (state.packet.signature.status === 'sealed' ? 'signature text staged / triad required for SHI' : 'triad incomplete / SHI locked');
     dom.cadenceReadout.textContent = cadenceLabel(state.packet.analysis.cadence_signature);
     dom.triadResonanceReadout.textContent = metric(state.packet.analysis.triad_resonance);
     dom.crossLaneStabilityReadout.textContent = metric(state.packet.analysis.cross_lane_stability);
     dom.crossLaneSpreadReadout.textContent = metric(state.packet.analysis.cross_lane_spread);
-    dom.badgeStatusReadout.textContent = state.packet.issuance.badge_number || 'not issued';
+    dom.badgeStatusReadout.textContent = state.packet.issuance.badge_number || (issuance.blocking_reason ? 'blocked / triad shortfall' : 'not issued');
     dom.sealedLaneReadout.textContent = 'session-only / operator-only';
     if (dom.forensicSchemaStateReadout) dom.forensicSchemaStateReadout.textContent = `${state.packet.forensic_schema.S.count} / ${state.packet.forensic_schema.S_prime.count}`;
     if (dom.forensicExposureReadout) dom.forensicExposureReadout.textContent = `${state.packet.forensic_schema.Y.count} / ${state.packet.forensic_schema.routeState}`;
@@ -953,12 +956,14 @@
     dom.packetStateReadout.textContent = state.packet.receipt.state;
     dom.provenanceRetentionReadout.textContent = state.packet.analysis.route.provenance ? metric(state.packet.analysis.route.provenance.retention_target) : 'pending';
     dom.packetPreview.textContent = JSON.stringify(state.packet, null, 2);
-    renderMintSurface(state.packet.issuance.badge_number || null);
+    renderMintSurface(state.packet.issuance.badge_number || null, issuance);
     dom.covenantNote.textContent = state.packet.bridge.covenant_gate.confirmed
       ? 'Mint / Seal Payload is confirmed. The packet is harbor-eligible, carries an issued SHI #, and preserves any pasted signature text in the artifact.'
-      : (!triadFingerprintReady
-        ? 'The packet shell can be staged and the detached signature can be carried, but SHI issuance stays locked until Future / Past / Higher all cross the stylometric threshold.'
-        : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint / Seal Payload is still required before harbor eligibility and SHI # assignment.' : 'The packet is staged only. Mint / Seal Payload must be invoked before harbor eligibility and SHI # assignment.'));
+      : issuance.badge_state === 'blocked-triad-threshold'
+        ? `SHI issuance is blocked. ${issuance.blocking_reason || 'Future / Past / Higher must each cross the stylometric threshold.'}`
+        : (!triadThresholdSatisfied
+          ? 'The packet shell can be staged and the detached signature can be carried, but SHI issuance stays locked until Future / Past / Higher all cross the stylometric threshold.'
+          : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint / Seal Payload is still required before harbor eligibility and SHI # assignment.' : 'The packet is staged only. Mint / Seal Payload must be invoked before harbor eligibility and SHI # assignment.'));
     dom.covenantExport.disabled = state.packet.bridge.covenant_gate.confirmed;
   }
 
@@ -992,11 +997,23 @@
     dom.footerModePreview.textContent = footerString();
   }
 
-  function renderMintSurface(shiNumber) {
+  function renderMintSurface(shiNumber, issuance = null) {
     const issued = shiNumber || null;
     const recoverable = recoverableShiNumber();
     const available = issued || recoverable || null;
-    dom.shiMintState.textContent = issued ? 'minted / copy forward' : (recoverable ? 'session recall armed' : 'format locked');
+    const blockedReason = issuance && issuance.badge_state === 'blocked-triad-threshold'
+      ? issuance.blocking_reason
+      : null;
+    const thresholdSatisfied = issuance ? Object.values(issuance.triad_shortfalls || {}).every((value) => Number(value || 0) <= 0) : false;
+    dom.shiMintState.textContent = issued
+      ? 'minted / copy forward'
+      : recoverable
+        ? 'session recall armed'
+        : blockedReason
+          ? 'not minted / triad blocked'
+          : thresholdSatisfied
+            ? 'triad ready / await mint'
+            : 'not minted';
     dom.shiMintValue.textContent = available || shiFormatTemplate();
     dom.canonicalHeaderPreview.textContent = canonicalHeaderString(available);
     dom.extendedFooterPreview.textContent = extendedFooterString(available);
@@ -1004,7 +1021,11 @@
       ? 'Copy this exactly. The minted SHI # is the Safe Harbor issuance code that should travel unchanged through packet, probe, renderer, and LLM lanes.'
       : recoverable
         ? 'A minted SHI # is still held in session. Enter that same SHI # at the membrane to reopen packet and copy surfaces without repeating the ritual.'
-        : 'The SHI # mints only at covenant. Once assigned, copy it exactly. This issuance code should not drift across packet, probe, renderer, or LLM intake.';
+        : blockedReason
+          ? `The SHI # is not minted yet. ${blockedReason}`
+          : thresholdSatisfied
+            ? 'The triad is ready. Mint / Seal Payload will bind the staged packet and issue the SHI # without changing the pasted detached signature text.'
+            : 'The SHI # mints only at covenant. Once assigned, copy it exactly. This issuance code should not drift across packet, probe, renderer, or LLM intake.';
     dom.copyShiNumber.disabled = !available;
     dom.copyCanonicalHeader.disabled = !available;
     dom.copyExtendedFooter.disabled = !available;
@@ -1209,33 +1230,26 @@
 
     if (!state.ingress.packetId || !state.packet) return;
     state.operatorSignature = buildOperatorSignatureFromInputs();
-    const triadSignatures = {};
-    KEYS.forEach((key) => {
-      const raw = state.ingress.segments[key] || '';
-      triadSignatures[key] = cadenceFor(key, raw, basicStats(raw));
-    });
-    const badgeNumber = badgeNumberForContext(
-      state.ingress.packetId,
-      state.ingress.receiptId,
-      dom.inputPayloadIndex.value,
-      dom.inputAttestationDate.value,
-      D.canon.principal,
-      state.helper && state.helper.request_id,
-      triadSignatures
-    );
-    if (!badgeNumber) {
+    const triadIssuance = evaluateTriadIssuance();
+    if (!triadIssuance.ready) {
       state.covenant.confirmed = false;
       state.covenant.confirmedAt = null;
       state.covenant.badgeNumber = null;
       await rebuild('covenant-awaiting-triad');
-      dom.covenantNote.textContent = 'Safe Harbor carried the detached signature text, but the SHI remains locked until Future / Past / Higher all cross the stylometric threshold.';
-      logEvent('covenant-blocked', { reason: 'triad-fingerprint-missing' });
+      dom.covenantNote.textContent = triadIssuance.blockingReason
+        ? `Safe Harbor carried the detached signature text, but SHI issuance is blocked. ${triadIssuance.blockingReason}`
+        : 'Safe Harbor carried the detached signature text, but the SHI remains locked until Future / Past / Higher all cross the stylometric threshold.';
+      logEvent('covenant-blocked', {
+        reason: 'triad-fingerprint-missing',
+        blocking_reason: triadIssuance.blockingReason,
+        triad_shortfalls: triadIssuance.shortfalls
+      });
       return;
     }
     if (!state.covenant.confirmed) {
       state.covenant.confirmed = true;
       state.covenant.confirmedAt = nowIso();
-      state.covenant.badgeNumber = badgeNumber;
+      state.covenant.badgeNumber = triadIssuance.badgeNumber;
       await rebuild('covenant-export');
       dom.bypassPassword.value = state.covenant.badgeNumber;
       await setLocalBypassToken();
@@ -1560,6 +1574,66 @@
 
   function packetId(helper) { return 'SH-' + helper.ts_utc.replace(/[-:]/g, '').replace('Z', '') + '-' + helper.packet_suffix; }
   function receiptId(helper) { return 'SHR-' + helper.ts_utc.replace(/[-:]/g, '').replace('Z', '') + '-' + helper.packet_suffix; }
+  function buildTriadSignatureSet() {
+    const signatures = {};
+    const wordCounts = {};
+    const shortfalls = {};
+    KEYS.forEach((key) => {
+      const raw = state.ingress.segments[key] || '';
+      const stats = basicStats(raw);
+      signatures[key] = cadenceFor(key, raw, stats);
+      wordCounts[key] = stats.word_count;
+      shortfalls[key] = Math.max(0, MIN_LANE_WORDS - stats.word_count);
+    });
+    return {
+      signatures: Object.freeze(signatures),
+      wordCounts: Object.freeze(wordCounts),
+      shortfalls: Object.freeze(shortfalls)
+    };
+  }
+  function triadShortfallLabel(key, shortfall, wordCount) {
+    const label = D.ingressPrompts[key] && D.ingressPrompts[key].promptLabel ? D.ingressPrompts[key].promptLabel : key;
+    return `${label} holds ${wordCount} words; add ${shortfall} more to cross the stylometric threshold.`;
+  }
+  function evaluateTriadIssuance(signatures = null) {
+    let triadSet = signatures;
+    let wordCounts = {};
+    let shortfalls = {};
+    if (!triadSet) {
+      const built = buildTriadSignatureSet();
+      triadSet = built.signatures;
+      wordCounts = built.wordCounts;
+      shortfalls = built.shortfalls;
+    } else {
+      KEYS.forEach((key) => {
+        const wordCount = Number(triadSet[key] && triadSet[key].word_count || 0);
+        wordCounts[key] = wordCount;
+        shortfalls[key] = Math.max(0, MIN_LANE_WORDS - wordCount);
+      });
+      wordCounts = Object.freeze(wordCounts);
+      shortfalls = Object.freeze(shortfalls);
+    }
+    const thresholdSatisfied = KEYS.every((key) => shortfalls[key] <= 0);
+    const stylometricFingerprintValue = stylometricFingerprint(triadSet);
+    const badgeNumber = thresholdSatisfied && stylometricFingerprintValue
+      ? badgeNumberForContext(null, null, null, null, D.canon.principal, null, triadSet)
+      : null;
+    const blockingReason = thresholdSatisfied
+      ? (stylometricFingerprintValue ? null : 'The triad crossed the word floor, but the stylometric fingerprint did not resolve cleanly.')
+      : KEYS
+        .filter((key) => shortfalls[key] > 0)
+        .map((key) => triadShortfallLabel(key, shortfalls[key], wordCounts[key]))
+        .join(' ');
+    return Object.freeze({
+      ready: Boolean(thresholdSatisfied && stylometricFingerprintValue && badgeNumber),
+      stylometricFingerprint: stylometricFingerprintValue,
+      badgeNumber,
+      blockingReason,
+      wordCounts,
+      shortfalls,
+      thresholdSatisfied
+    });
+  }
   function badgeNumberForContext(packet, receipt, payloadIndex, attestationDate, principal, requestId, signatures) {
     const sigs = signatures || (state.packet && state.packet.analysis && state.packet.analysis.segment_cadence_signatures) || null;
     const fingerprint = stylometricFingerprint(sigs);
@@ -1864,7 +1938,8 @@
     const form = updateFormValues();
     const ingress = {};
     const sealedSegments = {};
-    const signatures = {};
+    const triadSet = buildTriadSignatureSet();
+    const signatures = triadSet.signatures;
     for (const key of KEYS) {
       const raw = state.ingress.segments[key] || '';
       const stats = basicStats(raw);
@@ -1874,20 +1949,19 @@
         prompt_label: D.ingressPrompts[key].promptLabel,
         response_checksum: responseChecksum,
         char_count: stats.char_count,
-        word_count: stats.word_count,
+        word_count: triadSet.wordCounts[key],
         sealed_text_ref: ref
       };
       sealedSegments[key] = Object.assign({ raw_text: raw }, ingress[key]);
-      signatures[key] = cadenceFor(key, raw, stats);
     }
 
     const triad = triadMetrics(signatures);
     const cadence = overlayCadence(summaryCadence(signatures, triad));
     const signatureLane = resolvedSignatureLane();
     const signatureObject = signatureForPacket();
-    const stylometricFingerprintValue = stylometricFingerprint(signatures);
-    const badgeAssignment = state.covenant.confirmed
-      ? badgeNumberForContext(state.ingress.packetId, state.ingress.receiptId, form.payloadIndex, form.attestationDate, D.canon.principal, state.helper.request_id, signatures)
+    const triadIssuance = evaluateTriadIssuance(signatures);
+    const badgeAssignment = state.covenant.confirmed && triadIssuance.ready
+      ? triadIssuance.badgeNumber
       : null;
     const receiptState = badgeAssignment ? 'harbor-eligible' : (signatureObject.status === 'sealed' ? 'sealed' : 'staged');
     const packet = {
@@ -1963,10 +2037,13 @@
         badge_number: badgeAssignment,
         canonical_header: badgeAssignment ? canonicalHeaderString(badgeAssignment) : null,
         extended_footer: badgeAssignment ? extendedFooterString(badgeAssignment) : null,
-        badge_state: badgeAssignment ? 'assigned' : 'not-assigned',
+        badge_state: badgeAssignment ? 'assigned' : (triadIssuance.thresholdSatisfied ? 'not-assigned' : 'blocked-triad-threshold'),
         assigned_at: badgeAssignment ? state.covenant.confirmedAt : null,
-        assignment_basis: stylometricFingerprintValue ? 'stylometric-biometric-fingerprint(principal|binding_fragment|per-lane quantized cadence)' : null,
-        stylometric_fingerprint: stylometricFingerprintValue
+        assignment_basis: badgeAssignment ? 'stylometric-biometric-fingerprint(principal|binding_fragment|per-lane quantized cadence)' : null,
+        stylometric_fingerprint: badgeAssignment ? triadIssuance.stylometricFingerprint : null,
+        blocking_reason: badgeAssignment ? null : triadIssuance.blockingReason,
+        triad_word_counts: triadIssuance.wordCounts,
+        triad_shortfalls: triadIssuance.shortfalls
       },
       signature: signatureObject,
       aperture_audit: null,

@@ -32,8 +32,8 @@ assert.equal(matrix.summary.flagshipPassCount, 6, 'flagship summary should surfa
 assert.equal(matrix.summary.flagshipAllPassed, false, 'flagship summary should keep the remaining flagship warnings visible instead of overstating all directions as live');
 assert.equal(
   matrix.flagshipReports.filter((report) => report.pairAudit.surfaceClose).length,
-  2,
-  'flagship matrix should preserve the two committee-budget directions as explicit surface-close warning lanes'
+  0,
+  'flagship matrix should no longer leave committee-budget directions in explicit surface-close warning state under ontology-hard routing'
 );
 
 const flagshipOnlyMatrix = buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {

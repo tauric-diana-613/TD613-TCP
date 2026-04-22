@@ -26,9 +26,9 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.958,
-      "polarityMismatches": 1,
-      "tenseMismatches": 1,
+      "objectCoverage": 1,
+      "polarityMismatches": 0,
+      "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -37,27 +37,15 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.125,
-          "globalBagScore": 0.048
+          "bagScore": 1,
+          "globalBagScore": 0.143
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c0+s0c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 1,
-          "tenseMismatch": 0,
-          "bagScore": 0.714,
-          "globalBagScore": 0.263
-        },
-        {
-          "sourceClauseId": "s1c1",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -65,22 +53,22 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.053
+          "globalBagScore": 0.238
         },
         {
-          "sourceClauseId": "s2c0",
-          "matchedClauseId": "s1c0",
+          "sourceClauseId": "s1c1",
+          "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
-          "tenseMismatch": 1,
-          "bagScore": 0.833,
-          "globalBagScore": 0.263
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.048
         },
         {
-          "sourceClauseId": "s3c0",
+          "sourceClauseId": "s2c0",
           "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -88,12 +76,12 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0.053
+          "bagScore": 1,
+          "globalBagScore": 0.238
         },
         {
-          "sourceClauseId": "s4c0",
-          "matchedClauseId": "s3c0+s3c1",
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -101,17 +89,69 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.368
+          "globalBagScore": 0.048
+        },
+        {
+          "sourceClauseId": "s4c0",
+          "matchedClauseId": "s5c0+s5c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.333
         }
       ],
       "sourceClauseCount": 6,
-      "outputClauseCount": 6
+      "outputClauseCount": 8
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
       "resolvedAnchors": 1,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
+    },
+    "ontologyAudit": {
+      "sourceClass": "formal-correspondence",
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 5,
+        "clauseCount": 6,
+        "exactAnchorCount": 1
+      },
+      "semanticCoverage": {
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 1,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0
+      },
+      "anchorIntegrity": {
+        "protectedAnchorIntegrity": 1,
+        "totalAnchors": 1,
+        "resolvedAnchors": 1,
+        "missingAnchors": 0
+      },
+      "aperture": {
+        "temporalPosture": "synced",
+        "closureClass": "closed",
+        "closureScore": 1,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.012,
+        "beaconStatus": "beacon-idle",
+        "cumulativeNarrowing": 0.255,
+        "dominantLoss": "retrieval gating"
+      },
+      "selectiveAdmissibilityDrift": {
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.087
+      }
     },
     "planSummary": {
       "relationInventory": {
@@ -131,9 +171,7 @@
         "pressure-current",
         "hybrid"
       ],
-      "structuralOperationsSelected": [
-        "merge-short-beats"
-      ],
+      "structuralOperationsSelected": [],
       "lexicalRegisterOperationsSelected": [
         "expanded:pls->please",
         "expanded:bc->because",
@@ -147,7 +185,7 @@
     },
     "candidateSummary": {
       "candidateCount": 2,
-      "landedCandidateId": "base:syntax-shape",
+      "landedCandidateId": "base:register-lexicon",
       "families": [
         "syntax-shape",
         "register-lexicon"
@@ -163,7 +201,6 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
         "register-mode",
         "abbreviation-posture",
         "orthography-posture",
@@ -202,17 +239,17 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.36,
-      "outputDonorDistance": 2.83,
-      "donorImprovement": 1.53,
-      "donorImprovementRatio": 0.351,
-      "sourceOutputLexicalOverlap": 0.845
+      "outputDonorDistance": 3.14,
+      "donorImprovement": 1.22,
+      "donorImprovementRatio": 0.28,
+      "sourceOutputLexicalOverlap": 0.86
     },
     "candidateLedger": [
       {
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "matron",
-        "status": "selected",
+        "status": "eligible",
         "score": 1.063,
         "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
@@ -227,13 +264,55 @@
           "artifact:fragment"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 5,
+            "clauseCount": 6,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.958,
+            "polarityMismatches": 1,
+            "tenseMismatches": 1
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "drift",
+            "closureScore": 0.895,
+            "historicalCrease": 0.029,
+            "unfoldingEnergy": 0.057,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "watch",
+            "driftReasons": [
+              "closure-class:drift"
+            ],
+            "routeFloor": "warning",
+            "routePressure": 0.333
+          }
+        },
         "outputPreview": "Ba-4427 is not a no-doc case, and mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, clie"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "selected",
         "score": 1.0509,
         "toolabilityScore": 0.8546,
         "rewriteStrength": 1,
@@ -248,6 +327,46 @@
           "artifact:fragment"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 5,
+            "clauseCount": 6,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 1,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 1,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.012,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.087
+          }
+        },
         "outputPreview": "Ba-4427 is not a no-doc case. Mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. Notice says may 6, client g"
       }
     ],
@@ -257,9 +376,49 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 2,
-      "winningCandidateId": "base:syntax-shape"
+      "winningCandidateId": "base:register-lexicon",
+      "ontologyRoutePressure": {
+        "sourceClass": "formal-correspondence",
+        "relationInventory": {
+          "sourceClass": "formal-correspondence",
+          "paragraphCount": 1,
+          "sentenceCount": 5,
+          "clauseCount": 6,
+          "exactAnchorCount": 1
+        },
+        "semanticCoverage": {
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
+        },
+        "anchorIntegrity": {
+          "protectedAnchorIntegrity": 1,
+          "totalAnchors": 1,
+          "resolvedAnchors": 1,
+          "missingAnchors": 0
+        },
+        "aperture": {
+          "temporalPosture": "synced",
+          "closureClass": "closed",
+          "closureScore": 1,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.012,
+          "beaconStatus": "beacon-idle",
+          "cumulativeNarrowing": 0.255,
+          "dominantLoss": "retrieval gating"
+        },
+        "selectiveAdmissibilityDrift": {
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.087
+        }
+      }
     },
-    "winningCandidateId": "base:syntax-shape"
+    "winningCandidateId": "base:register-lexicon"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -270,8 +429,7 @@
       "orthography-posture",
       "register-mode",
       "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "sentence-mean"
     ],
     "lexemeSwapFamilies": [
       "surface"
@@ -283,9 +441,7 @@
       "sentenceCount:5",
       "sourceClass:formal-correspondence"
     ],
-    "structuralOperations": [
-      "merge-short-beats"
-    ],
+    "structuralOperations": [],
     "lexicalOperations": [
       "expanded:bc->because",
       "expanded:dont->do-not",
@@ -299,9 +455,9 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.958,
-    "polarityMismatches": 1,
-    "tenseMismatches": 1,
+    "objectCoverage": 1,
+    "polarityMismatches": 0,
+    "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }
 }

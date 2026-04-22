@@ -101,6 +101,46 @@
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
+    "ontologyAudit": {
+      "sourceClass": "procedural-record",
+      "relationInventory": {
+        "sourceClass": "procedural-record",
+        "paragraphCount": 1,
+        "sentenceCount": 3,
+        "clauseCount": 5,
+        "exactAnchorCount": 3
+      },
+      "semanticCoverage": {
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 1,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0
+      },
+      "anchorIntegrity": {
+        "protectedAnchorIntegrity": 1,
+        "totalAnchors": 3,
+        "resolvedAnchors": 3,
+        "missingAnchors": 0
+      },
+      "aperture": {
+        "temporalPosture": "synced",
+        "closureClass": "closed",
+        "closureScore": 1,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.012,
+        "beaconStatus": "beacon-idle",
+        "cumulativeNarrowing": 0.255,
+        "dominantLoss": "retrieval gating"
+      },
+      "selectiveAdmissibilityDrift": {
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.087
+      }
+    },
     "planSummary": {
       "relationInventory": {
         "sourceClass": "procedural-record",
@@ -199,6 +239,46 @@
           "artifact:clause-drag"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "paragraphCount": 1,
+            "sentenceCount": 3,
+            "clauseCount": 5,
+            "exactAnchorCount": 3
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 1,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 3,
+            "resolvedAnchors": 3,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 1,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.012,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.087
+          }
+        },
         "outputPreview": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and w"
       },
       {
@@ -221,6 +301,46 @@
           "artifact:clause-drag"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "paragraphCount": 1,
+            "sentenceCount": 3,
+            "clauseCount": 5,
+            "exactAnchorCount": 3
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 1,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 3,
+            "resolvedAnchors": 3,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 1,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.012,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.087
+          }
+        },
         "outputPreview": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and w"
       },
       {
@@ -243,6 +363,46 @@
           "artifact:clause-drag"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "paragraphCount": 1,
+            "sentenceCount": 3,
+            "clauseCount": 5,
+            "exactAnchorCount": 3
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.96,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 3,
+            "resolvedAnchors": 3,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.995,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.014,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue, but the real problem is that the"
       }
     ],
@@ -252,7 +412,47 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 3,
-      "winningCandidateId": "base:cadence-connector"
+      "winningCandidateId": "base:cadence-connector",
+      "ontologyRoutePressure": {
+        "sourceClass": "procedural-record",
+        "relationInventory": {
+          "sourceClass": "procedural-record",
+          "paragraphCount": 1,
+          "sentenceCount": 3,
+          "clauseCount": 5,
+          "exactAnchorCount": 3
+        },
+        "semanticCoverage": {
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
+        },
+        "anchorIntegrity": {
+          "protectedAnchorIntegrity": 1,
+          "totalAnchors": 3,
+          "resolvedAnchors": 3,
+          "missingAnchors": 0
+        },
+        "aperture": {
+          "temporalPosture": "synced",
+          "closureClass": "closed",
+          "closureScore": 1,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.012,
+          "beaconStatus": "beacon-idle",
+          "cumulativeNarrowing": 0.255,
+          "dominantLoss": "retrieval gating"
+        },
+        "selectiveAdmissibilityDrift": {
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.087
+        }
+      }
     },
     "winningCandidateId": "base:cadence-connector"
   },

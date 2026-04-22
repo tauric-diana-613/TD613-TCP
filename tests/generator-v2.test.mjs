@@ -94,6 +94,37 @@ assert.equal(majorPersonas.length, 5, 'major built-in masks resolve for direct g
 const familyUnion = new Set();
 let semanticLockArtifactZeroedCount = 0;
 
+function driftRank(candidate = null) {
+  const driftClass = String(candidate?.ontologyAudit?.selectiveAdmissibilityDrift?.driftClass || 'none').toLowerCase();
+  if (driftClass === 'severe') return 3;
+  if (driftClass === 'active') return 2;
+  if (driftClass === 'watch') return 1;
+  return 0;
+}
+
+function routePressure(candidate = null) {
+  return Number(candidate?.ontologyAudit?.selectiveAdmissibilityDrift?.routePressure || 0);
+}
+
+function protectedAnchorIntegrity(candidate = null) {
+  return Number(candidate?.ontologyAudit?.anchorIntegrity?.protectedAnchorIntegrity ?? 1);
+}
+
+function minimumSemanticCoverage(candidate = null) {
+  const semanticCoverage = candidate?.ontologyAudit?.semanticCoverage || {};
+  return Math.min(
+    Number(semanticCoverage.propositionCoverage ?? 1),
+    Number(semanticCoverage.actorCoverage ?? 1),
+    Number(semanticCoverage.actionCoverage ?? 1),
+    Number(semanticCoverage.objectCoverage ?? 1)
+  );
+}
+
+function deformationLoad(candidate = null) {
+  const aperture = candidate?.ontologyAudit?.aperture || {};
+  return Number(aperture.historicalCrease || 0) + Number(aperture.unfoldingEnergy || 0);
+}
+
 for (const testCase of cases) {
   const result = buildCadenceTransfer(testCase.text, testCase.shell, { retrieval: true });
   const substantiveMovement = (result.changedDimensions || []).filter((dimension) =>
@@ -116,6 +147,39 @@ for (const testCase of cases) {
     Array.isArray(result.retrievalTrace?.planSummary?.testedFamilyIds),
     `${testCase.id}: retrieval trace reports tested family ids`
   );
+  assert.ok(result.retrievalTrace?.ontologyAudit, `${testCase.id}: retrieval trace carries ontology audit`);
+  assert.ok(result.generationDocket?.ontologyRoutePressure, `${testCase.id}: generation docket carries ontology route pressure`);
+  assert.ok(
+    (result.candidateLedger || []).every((entry) => entry.ontologyAudit && entry.ontologyAudit.selectiveAdmissibilityDrift),
+    `${testCase.id}: every candidate ledger entry carries ontology audit and route pressure`
+  );
+  assert.ok(
+    ['none', 'watch', 'active', 'severe'].includes(result.retrievalTrace?.ontologyAudit?.selectiveAdmissibilityDrift?.driftClass),
+    `${testCase.id}: retrieval trace drift class stays within the ontology route grammar`
+  );
+  assert.ok(
+    ['play', 'warning', 'buffer', 'harbor'].includes(result.generationDocket?.ontologyRoutePressure?.selectiveAdmissibilityDrift?.routeFloor),
+    `${testCase.id}: generation docket route floor stays within the Aperture route grammar`
+  );
+
+  const selectedEntry = (result.candidateLedger || []).find((entry) => entry.status === 'selected');
+  const expectedSelection = [...(result.candidateLedger || [])].sort((left, right) =>
+    driftRank(left) - driftRank(right) ||
+    routePressure(left) - routePressure(right) ||
+    protectedAnchorIntegrity(right) - protectedAnchorIntegrity(left) ||
+    minimumSemanticCoverage(right) - minimumSemanticCoverage(left) ||
+    deformationLoad(left) - deformationLoad(right) ||
+    Number(right.toolabilityScore || 0) - Number(left.toolabilityScore || 0) ||
+    Number(right.score || 0) - Number(left.score || 0) ||
+    String(left.id || '').localeCompare(String(right.id || ''))
+  )[0] || null;
+  if (selectedEntry && expectedSelection) {
+    assert.equal(
+      selectedEntry.id,
+      expectedSelection.id,
+      `${testCase.id}: selected candidate follows ontology-hard ordering before toolability tie-breaks`
+    );
+  }
 
   for (const family of result.retrievalTrace?.planSummary?.testedFamilyIds || []) {
     familyUnion.add(family);

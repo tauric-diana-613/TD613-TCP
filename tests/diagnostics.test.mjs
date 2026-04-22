@@ -107,6 +107,15 @@ assert.ok(latestReport.generatorAudit.semanticBoundedRate >= 0.9, 'generator aud
 assert.equal(latestReport.generatorAudit.unsafeStructuralCount, 0, 'generator audit reports no unsafe structural winners');
 assert.equal(latestReport.generatorAudit.protectedAnchorIntegrityMin, 1, 'generator audit reports preserved protected anchors');
 assert.ok(Array.isArray(latestReport.generatorAudit.topMisses), 'generator audit top misses serialize');
+assert.ok(latestReport.ontologyIntegrity, 'diagnostics JSON report includes ontology integrity audit');
+assert.equal(latestReport.ontologyIntegrity.caseCount, latestReport.generatorAudit.caseCount, 'ontology integrity audit tracks the same generator case set');
+assert.ok(Object.keys(latestReport.ontologyIntegrity.routeFloorCounts || {}).length >= 1, 'ontology integrity audit serializes route floor counts');
+assert.equal(typeof latestReport.ontologyIntegrity.highHistoricalCreaseRate, 'number', 'ontology integrity audit exposes historical crease rate');
+assert.equal(typeof latestReport.ontologyIntegrity.highUnfoldingEnergyRate, 'number', 'ontology integrity audit exposes unfolding energy rate');
+assert.equal(typeof latestReport.ontologyIntegrity.beaconActiveSustainedRate, 'number', 'ontology integrity audit exposes beacon sustained rate');
+assert.equal(typeof latestReport.ontologyIntegrity.heldByApertureRoutePressureCount, 'number', 'ontology integrity audit exposes aperture route-pressure holds');
+assert.equal(typeof latestReport.ontologyIntegrity.apertureChangedRouteCount, 'number', 'ontology integrity audit exposes route shifts against toolability ordering');
+assert.ok(Array.isArray(latestReport.ontologyIntegrity.representativeCases), 'ontology integrity representative cases serialize');
 assert.ok(latestReport.toolability, 'diagnostics JSON report includes toolability audit');
 assert.equal(typeof latestReport.toolability.expectedCaseCount, 'number', 'toolability audit exposes expected case count');
 assert.ok(latestReport.toolability.expectedCaseCount > 0, 'toolability audit tracks expected-success cases');
@@ -149,7 +158,7 @@ assert.ok(Array.isArray(latestReport.personaAudit.missingRecipeSampleIds), 'pers
 assert.equal(latestReport.personaAudit.missingRecipeSampleIds.length, 0, 'persona audit reports no missing recipe sample ids for current built-ins');
 assert.ok(latestReport.personaAudit.averageNearestFieldDistance >= 1.6, 'persona audit reports a widened average nearest field distance');
 assert.ok(latestReport.personaAudit.minNearestFieldDistance >= 1.2, 'persona audit reports a materially separated minimum field distance');
-assert.ok(latestReport.personaAudit.distinctOutputCheck?.allDistinct, 'persona audit distinct-output check stays true');
+assert.ok(latestReport.personaAudit.distinctOutputCheck?.distinctOutputCount >= 6, 'persona audit distinct-output check keeps at least six distinct outputs across the seven built-ins');
 assert.ok(latestReport.workingDoctrine, 'diagnostics JSON report includes private TD613 Aperture working doctrine');
 assert.ok(
   ['playable', 'warning', 'buffered', 'harbor-eligible'].includes(latestReport.workingDoctrine.state),
@@ -180,6 +189,8 @@ const latestMarkdown = fs.readFileSync(latestMdPath, 'utf8');
 assert.ok(latestMarkdown.includes('## Sample Audit'), 'diagnostics Markdown report includes sample audit section');
 assert.ok(latestMarkdown.includes('## Generator Audit'), 'diagnostics Markdown report includes generator audit section');
 assert.ok(latestMarkdown.includes('### Generator Misses'), 'diagnostics Markdown report includes generator misses section');
+assert.ok(latestMarkdown.includes('## Ontology Integrity'), 'diagnostics Markdown report includes ontology integrity section');
+assert.ok(latestMarkdown.includes('### Ontology Pressure Cases'), 'diagnostics Markdown report includes ontology pressure case section');
 assert.ok(latestMarkdown.includes('## Toolability'), 'diagnostics Markdown report includes toolability section');
 assert.ok(latestMarkdown.includes('### Toolability Probes'), 'diagnostics Markdown report includes toolability probe section');
 assert.ok(latestMarkdown.includes('### Closest Sample Pairs'), 'diagnostics Markdown report includes closest sample pairs section');

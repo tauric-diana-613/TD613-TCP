@@ -445,6 +445,30 @@ function buildGeneratorAuditCase({
   const bounded = semanticBounded(semanticAudit);
   const toolabilityAudit = result.toolabilityAudit || {};
   const personaSeparationAudit = result.personaSeparationAudit || {};
+  const ontologyAudit =
+    result.ontologyAudit ||
+    selectedCandidate?.ontologyAudit ||
+    docket?.ontologyRoutePressure ||
+    result.retrievalTrace?.ontologyAudit ||
+    null;
+  const semanticCoverage = ontologyAudit?.semanticCoverage || {};
+  const anchorIntegrity = ontologyAudit?.anchorIntegrity || {};
+  const aperture = ontologyAudit?.aperture || {};
+  const drift = ontologyAudit?.selectiveAdmissibilityDrift || {};
+  const toolabilityWinner = [...candidateLedger]
+    .sort((left, right) =>
+      Number(right.toolabilityScore || 0) - Number(left.toolabilityScore || 0) ||
+      Number(right.score || 0) - Number(left.score || 0) ||
+      String(left.id || '').localeCompare(String(right.id || ''))
+    )[0] || null;
+  const selectedCandidateId = selectedCandidate?.id || docket?.winningCandidateId || null;
+  const toolabilityWinnerId = toolabilityWinner?.id || null;
+  const relationInventorySourceClass = String(ontologyAudit?.relationInventory?.sourceClass || sourceClass || 'unknown');
+  const sourceClassMismatch = Boolean(
+    relationInventorySourceClass &&
+    sourceClass &&
+    relationInventorySourceClass !== String(sourceClass)
+  );
 
   return {
     id,
@@ -462,24 +486,40 @@ function buildGeneratorAuditCase({
     visibleShift: Boolean(result.visibleShift),
     nonTrivialShift: Boolean(result.nonTrivialShift),
     semanticBounded: bounded,
-    protectedAnchorIntegrity: round(result.protectedAnchorAudit?.protectedAnchorIntegrity ?? semanticAudit?.protectedAnchorIntegrity ?? 1),
-    propositionCoverage: round(semanticAudit?.propositionCoverage ?? 1),
-    actorCoverage: round(semanticAudit?.actorCoverage ?? 1),
-    actionCoverage: round(semanticAudit?.actionCoverage ?? 1),
-    objectCoverage: round(semanticAudit?.objectCoverage ?? 1),
-    polarityMismatches: Number(semanticAudit?.polarityMismatches ?? 0),
-    tenseMismatches: Number(semanticAudit?.tenseMismatches ?? 0),
     candidateCount: candidateLedger.length,
-    selectedCandidateId: selectedCandidate?.id || docket?.winningCandidateId || null,
+    selectedCandidateId,
     selectedCandidateScore: round(selectedCandidate?.score ?? 0),
     selectedCandidateToolabilityScore: round(selectedCandidate?.toolabilityScore ?? toolabilityAudit?.toolabilityScore ?? 0),
     selectedCandidateTransferClass: selectedCandidate?.transferClass || result.transferClass || 'native',
+    toolabilityWinnerId,
+    apertureChangedRoute: Boolean(selectedCandidateId && toolabilityWinnerId && selectedCandidateId !== toolabilityWinnerId),
     toolabilityScore: round(toolabilityAudit?.toolabilityScore ?? 0),
     readability: round(toolabilityAudit?.readability ?? 0),
     sentenceIntegrity: round(toolabilityAudit?.sentenceIntegrity ?? 0),
     movementQuality: round(toolabilityAudit?.movementQuality ?? 0),
     personaDistinctness: round(toolabilityAudit?.personaDistinctness ?? 0),
     personaSeparationScore: round(personaSeparationAudit?.score ?? 0),
+    ontologyAudit,
+    temporalPosture: String(aperture?.temporalPosture || 'unknown'),
+    closureClass: String(aperture?.closureClass || 'unknown'),
+    closureScore: round(aperture?.closureScore ?? 0),
+    historicalCrease: round(aperture?.historicalCrease ?? 0),
+    unfoldingEnergy: round(aperture?.unfoldingEnergy ?? 0),
+    beaconStatus: String(aperture?.beaconStatus || 'beacon-idle'),
+    driftClass: String(drift?.driftClass || 'none'),
+    driftReasons: Array.isArray(drift?.driftReasons) ? drift.driftReasons : [],
+    routeFloor: String(drift?.routeFloor || 'play'),
+    routePressure: round(drift?.routePressure ?? 0),
+    relationInventorySourceClass,
+    sourceClassMismatch,
+    protectedAnchorIntegrity: round(anchorIntegrity?.protectedAnchorIntegrity ?? result.protectedAnchorAudit?.protectedAnchorIntegrity ?? semanticAudit?.protectedAnchorIntegrity ?? 1),
+    anchorLossCount: Number(anchorIntegrity?.missingAnchors ?? 0),
+    propositionCoverage: round(semanticCoverage?.propositionCoverage ?? semanticAudit?.propositionCoverage ?? 1),
+    actorCoverage: round(semanticCoverage?.actorCoverage ?? semanticAudit?.actorCoverage ?? 1),
+    actionCoverage: round(semanticCoverage?.actionCoverage ?? semanticAudit?.actionCoverage ?? 1),
+    objectCoverage: round(semanticCoverage?.objectCoverage ?? semanticAudit?.objectCoverage ?? 1),
+    polarityMismatches: Number(semanticCoverage?.polarityMismatches ?? semanticAudit?.polarityMismatches ?? 0),
+    tenseMismatches: Number(semanticCoverage?.tenseMismatches ?? semanticAudit?.tenseMismatches ?? 0),
     toolabilityWarnings: sortUnique([
       ...(result.toolabilityWarnings || []),
       ...(selectedCandidate?.toolabilityWarnings || [])
@@ -870,12 +910,13 @@ function selectTrainerCandidate(sourceText, extraction, personaName) {
 
   for (const strength of strengths) {
     const transfer = engine.buildCadenceTransfer(sourceText, shell, { retrieval: true, strength });
-    const validation = validateCandidateAgainstFingerprint(engine, transfer.text, extraction, {
+    const candidateText = String(transfer.text || transfer.internalText || '').trim();
+    const validation = validateCandidateAgainstFingerprint(engine, candidateText, extraction, {
       personaName,
       sampleLibrary: DIAGNOSTIC_SAMPLE_LIBRARY
     });
     candidates.push({
-      text: transfer.text,
+      text: candidateText,
       transfer,
       validation,
       score:
@@ -1260,6 +1301,83 @@ function buildGeneratorAudit(sectionResults = {}) {
   };
 }
 
+function buildOntologyIntegrityReport(sectionResults = {}) {
+  const cases = [
+    ...(sectionResults.generatorTransferCases || []),
+    ...(sectionResults.generatorMaskCases || [])
+  ];
+  const temporalPostureCounts = cases.reduce((acc, item) => incrementCounter(acc, item.temporalPosture), {});
+  const closureClassCounts = cases.reduce((acc, item) => incrementCounter(acc, item.closureClass), {});
+  const driftClassCounts = cases.reduce((acc, item) => incrementCounter(acc, item.driftClass), {});
+  const routeFloorCounts = cases.reduce((acc, item) => incrementCounter(acc, item.routeFloor), {});
+  const highHistoricalCreaseCount = cases.filter((item) => Number(item.historicalCrease || 0) >= 0.55).length;
+  const highUnfoldingEnergyCount = cases.filter((item) => Number(item.unfoldingEnergy || 0) >= 0.60).length;
+  const beaconActiveSustainedCount = cases.filter((item) => item.beaconStatus === 'beacon-active').length;
+  const heldByApertureRoutePressureCount = cases.filter((item) => item.holdClass === 'aperture-route-pressure').length;
+  const sourceClassMismatchCount = cases.filter((item) => item.sourceClassMismatch).length;
+  const anchorLossCount = cases.filter((item) => Number(item.anchorLossCount || 0) > 0).length;
+  const propositionCoverageFloorFailures = cases.filter((item) => Number(item.propositionCoverage || 0) < 0.82).length;
+  const actionCoverageFloorFailures = cases.filter((item) => Number(item.actionCoverage || 0) < 0.75).length;
+  const apertureChangedRouteCount = cases.filter((item) => item.apertureChangedRoute).length;
+  const representativeCases = [...cases]
+    .filter((item) =>
+      item.holdClass === 'aperture-route-pressure' ||
+      item.apertureChangedRoute ||
+      item.driftClass !== 'none' ||
+      item.sourceClassMismatch ||
+      Number(item.anchorLossCount || 0) > 0
+    )
+    .sort((left, right) =>
+      Number(right.holdClass === 'aperture-route-pressure') - Number(left.holdClass === 'aperture-route-pressure') ||
+      Number(right.apertureChangedRoute) - Number(left.apertureChangedRoute) ||
+      Number(right.routePressure || 0) - Number(left.routePressure || 0) ||
+      String(left.id || '').localeCompare(String(right.id || ''))
+    )
+    .slice(0, 12)
+    .map((item) => ({
+      id: item.id,
+      laneKind: item.laneKind,
+      sourceClass: item.sourceClass,
+      relationInventorySourceClass: item.relationInventorySourceClass,
+      temporalPosture: item.temporalPosture,
+      closureClass: item.closureClass,
+      driftClass: item.driftClass,
+      routeFloor: item.routeFloor,
+      routePressure: item.routePressure,
+      protectedAnchorIntegrity: item.protectedAnchorIntegrity,
+      propositionCoverage: item.propositionCoverage,
+      actionCoverage: item.actionCoverage,
+      historicalCrease: item.historicalCrease,
+      unfoldingEnergy: item.unfoldingEnergy,
+      beaconStatus: item.beaconStatus,
+      apertureChangedRoute: item.apertureChangedRoute,
+      holdClass: item.holdClass,
+      driftReasons: item.driftReasons
+    }));
+
+  return {
+    caseCount: cases.length,
+    temporalPostureCounts,
+    closureClassCounts,
+    driftClassCounts,
+    routeFloorCounts,
+    highHistoricalCreaseCount,
+    highHistoricalCreaseRate: cases.length ? round(highHistoricalCreaseCount / cases.length) : 0,
+    highUnfoldingEnergyCount,
+    highUnfoldingEnergyRate: cases.length ? round(highUnfoldingEnergyCount / cases.length) : 0,
+    beaconActiveSustainedCount,
+    beaconActiveSustainedRate: cases.length ? round(beaconActiveSustainedCount / cases.length) : 0,
+    heldByApertureRoutePressureCount,
+    sourceClassMismatchCount,
+    anchorLossCount,
+    propositionCoverageFloorFailures,
+    actionCoverageFloorFailures,
+    apertureChangedRouteCount,
+    representativeCases,
+    cases
+  };
+}
+
 function buildToolabilityProbe(id = '', comparisonText = '', lock = null) {
   const personas = TOOLABILITY_MAJOR_PERSONA_IDS
     .map((personaId) => PERSONA_BY_ID[personaId])
@@ -1440,11 +1558,14 @@ function buildPersonaAudit(personaLibrary = PERSONA_LIBRARY) {
       DIAGNOSTIC_CORPUS_BY_ID['package-handoff-formal-record']?.text || ''
     ].join('\n\n').trim()
   });
-  const renderedOutputs = resolvedPersonas.map((persona) => buildMaskTransformationResult(engine, {
-    comparisonText,
-    lock,
-    persona
-  }).maskedText);
+  const renderedOutputs = resolvedPersonas.map((persona) => {
+    const result = buildMaskTransformationResult(engine, {
+      comparisonText,
+      lock,
+      persona
+    });
+    return result?.maskedText || result?.internalMaskedText || '';
+  });
   const distinctOutputCount = new Set(renderedOutputs).size;
   const missingRecipeSampleIds = personaLibrary.flatMap((persona) =>
     (persona.recipeResolution?.missingSampleIds || []).map((sampleId) => ({
@@ -1526,6 +1647,28 @@ function buildMarkdownReport(report) {
       lines.push(`- ${entry.id}: ${entry.laneKind}, ${entry.sourceClass}, transfer ${entry.transferClass}, registered ${entry.registeredTransformClass || 'n/a'}, hold ${entry.holdStatus}/${entry.holdClass || 'none'}, bounded ${entry.semanticBounded ? 'yes' : 'no'}, selected score ${entry.selectedCandidateScore}`);
       });
     }
+
+  if (report.ontologyIntegrity) {
+    lines.push('', '## Ontology Integrity', '');
+    lines.push(`- case_count: ${report.ontologyIntegrity.caseCount}`);
+    lines.push(`- temporal_postures: ${Object.entries(report.ontologyIntegrity.temporalPostureCounts || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push(`- closure_classes: ${Object.entries(report.ontologyIntegrity.closureClassCounts || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push(`- drift_classes: ${Object.entries(report.ontologyIntegrity.driftClassCounts || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push(`- route_floors: ${Object.entries(report.ontologyIntegrity.routeFloorCounts || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push(`- high_historical_crease_rate: ${report.ontologyIntegrity.highHistoricalCreaseRate}`);
+    lines.push(`- high_unfolding_energy_rate: ${report.ontologyIntegrity.highUnfoldingEnergyRate}`);
+    lines.push(`- beacon_active_sustained_rate: ${report.ontologyIntegrity.beaconActiveSustainedRate}`);
+    lines.push(`- held_by_aperture_route_pressure_count: ${report.ontologyIntegrity.heldByApertureRoutePressureCount}`);
+    lines.push(`- source_class_mismatch_count: ${report.ontologyIntegrity.sourceClassMismatchCount}`);
+    lines.push(`- anchor_loss_count: ${report.ontologyIntegrity.anchorLossCount}`);
+    lines.push(`- proposition_coverage_floor_failures: ${report.ontologyIntegrity.propositionCoverageFloorFailures}`);
+    lines.push(`- action_coverage_floor_failures: ${report.ontologyIntegrity.actionCoverageFloorFailures}`);
+    lines.push(`- aperture_changed_route_count: ${report.ontologyIntegrity.apertureChangedRouteCount}`);
+    lines.push('', '### Ontology Pressure Cases', '');
+    report.ontologyIntegrity.representativeCases.forEach((entry) => {
+      lines.push(`- ${entry.id}: ${entry.laneKind}, ${entry.sourceClass} -> ${entry.relationInventorySourceClass}, posture ${entry.temporalPosture}, closure ${entry.closureClass}, drift ${entry.driftClass}, route ${entry.routeFloor}/${entry.routePressure}, anchors ${entry.protectedAnchorIntegrity}, proposition ${entry.propositionCoverage}, action ${entry.actionCoverage}, crease ${entry.historicalCrease}, unfold ${entry.unfoldingEnergy}, beacon ${entry.beaconStatus}, route-shift ${entry.apertureChangedRoute ? 'yes' : 'no'}, hold ${entry.holdClass || 'none'}`);
+    });
+  }
 
   if (report.toolability) {
     lines.push('', '## Toolability', '');
@@ -1639,6 +1782,7 @@ const sectionResults = {
 const representativePairs = summarizeRepresentativeSwapSelections(buildRepresentativeSwapSelections());
 const annexes = buildAnnexDiagnostics(repoRoot);
 const generatorAudit = buildGeneratorAudit(sectionResults);
+const ontologyIntegrity = buildOntologyIntegrityReport(sectionResults);
 const toolability = buildToolabilityReport(sectionResults);
 
 const report = {
@@ -1646,6 +1790,7 @@ const report = {
   summary: summarize(sectionResults),
   sections: sectionResults,
   generatorAudit,
+  ontologyIntegrity,
   toolability,
   sampleAudit: buildSampleAudit(DIAGNOSTIC_SAMPLE_LIBRARY),
   personaAudit: buildPersonaAudit(PERSONA_LIBRARY),
@@ -1656,6 +1801,7 @@ report.workingDoctrine = buildPrivateWorkingDoctrine(report.summary, swapMatrix,
 report.summary.generatorCaseCount = generatorAudit.caseCount;
 report.summary.generatorHeldCount = generatorAudit.heldCount;
 report.summary.generatorUnsafeStructuralCount = generatorAudit.unsafeStructuralCount;
+report.summary.ontologyPressureHeldCount = ontologyIntegrity.heldByApertureRoutePressureCount;
 report.summary.toolabilityLandedRate = toolability.landedRate;
 report.summary.toolabilityDistinctnessRate = toolability.distinctnessRate;
 report.summary.annexCount = Object.keys(annexes).length;

@@ -89,6 +89,46 @@
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
+    "ontologyAudit": {
+      "sourceClass": "formal-correspondence",
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 4,
+        "clauseCount": 4,
+        "exactAnchorCount": 3
+      },
+      "semanticCoverage": {
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 1,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0
+      },
+      "anchorIntegrity": {
+        "protectedAnchorIntegrity": 1,
+        "totalAnchors": 3,
+        "resolvedAnchors": 3,
+        "missingAnchors": 0
+      },
+      "aperture": {
+        "temporalPosture": "synced",
+        "closureClass": "closed",
+        "closureScore": 1,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.012,
+        "beaconStatus": "beacon-idle",
+        "cumulativeNarrowing": 0.255,
+        "dominantLoss": "retrieval gating"
+      },
+      "selectiveAdmissibilityDrift": {
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.087
+      }
+    },
     "planSummary": {
       "relationInventory": {
         "sourceClass": "formal-correspondence",
@@ -175,6 +215,46 @@
           "persona-convergence:matron-undertow"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 4,
+            "clauseCount": 4,
+            "exactAnchorCount": 3
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 1,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 3,
+            "resolvedAnchors": 3,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 1,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.012,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.087
+          }
+        },
         "outputPreview": "Hearing got ugly, and they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup sh"
       },
       {
@@ -194,6 +274,46 @@
           "persona-markers-thin"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 4,
+            "clauseCount": 4,
+            "exactAnchorCount": 3
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 1,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 3,
+            "resolvedAnchors": 3,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 1,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.012,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.087
+          }
+        },
         "outputPreview": "Hearing got ugly. They keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. She left for med pickup she al"
       }
     ],
@@ -203,7 +323,47 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 2,
-      "winningCandidateId": "base:syntax-shape"
+      "winningCandidateId": "base:syntax-shape",
+      "ontologyRoutePressure": {
+        "sourceClass": "formal-correspondence",
+        "relationInventory": {
+          "sourceClass": "formal-correspondence",
+          "paragraphCount": 1,
+          "sentenceCount": 4,
+          "clauseCount": 4,
+          "exactAnchorCount": 3
+        },
+        "semanticCoverage": {
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
+        },
+        "anchorIntegrity": {
+          "protectedAnchorIntegrity": 1,
+          "totalAnchors": 3,
+          "resolvedAnchors": 3,
+          "missingAnchors": 0
+        },
+        "aperture": {
+          "temporalPosture": "synced",
+          "closureClass": "closed",
+          "closureScore": 1,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.012,
+          "beaconStatus": "beacon-idle",
+          "cumulativeNarrowing": 0.255,
+          "dominantLoss": "retrieval gating"
+        },
+        "selectiveAdmissibilityDrift": {
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.087
+        }
+      }
     },
     "winningCandidateId": "base:syntax-shape"
   },

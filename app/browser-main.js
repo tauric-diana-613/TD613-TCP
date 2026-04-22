@@ -288,9 +288,8 @@
     const packetNode = $('gatewayApertureBridgePacket');
     const noteNode = $('gatewayApertureBridgeNote');
     const pillNode = $('gatewayApertureBridgePill');
-    const harborLink = $('gatewayApertureHarborLink');
     const rail = $('gatewayApertureBridgeRail');
-    if (!routeNode || !handoffNode || !narrowingNode || !provenanceNode || !packetNode || !noteNode || !pillNode || !harborLink || !rail) {
+    if (!routeNode || !handoffNode || !narrowingNode || !provenanceNode || !packetNode || !noteNode || !pillNode || !rail) {
       return;
     }
 
@@ -337,8 +336,6 @@
             : 'route live';
     pillNode.dataset.state = pillState;
     rail.dataset.state = pillState;
-    harborLink.textContent = harborReady ? 'Open Safe Harbor from Aperture lane' : 'Open Safe Harbor';
-    harborLink.href = SAFE_HARBOR_HANDOFF_PATH;
   }
 
   function handleGatewayApertureBridgeMessage(event) {

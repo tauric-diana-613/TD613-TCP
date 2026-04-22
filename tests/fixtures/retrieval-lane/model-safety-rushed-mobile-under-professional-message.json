@@ -26,7 +26,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.917,
+      "objectCoverage": 1,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -37,26 +37,14 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.091,
-          "globalBagScore": 0.071
-        },
-        {
-          "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.857,
-          "globalBagScore": 0.6
+          "bagScore": 1,
+          "globalBagScore": 0.357
         },
         {
-          "sourceClauseId": "s2c0",
+          "sourceClauseId": "s1c0",
           "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -65,17 +53,69 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.3
+          "globalBagScore": 0.429
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.214
         }
       ],
       "sourceClauseCount": 3,
-      "outputClauseCount": 2
+      "outputClauseCount": 3
     },
     "protectedAnchorAudit": {
       "totalAnchors": 0,
       "resolvedAnchors": 0,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
+    },
+    "ontologyAudit": {
+      "sourceClass": "formal-correspondence",
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 3,
+        "clauseCount": 3,
+        "exactAnchorCount": 0
+      },
+      "semanticCoverage": {
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 1,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0
+      },
+      "anchorIntegrity": {
+        "protectedAnchorIntegrity": 1,
+        "totalAnchors": 0,
+        "resolvedAnchors": 0,
+        "missingAnchors": 0
+      },
+      "aperture": {
+        "temporalPosture": "synced",
+        "closureClass": "closed",
+        "closureScore": 1,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.012,
+        "beaconStatus": "beacon-idle",
+        "cumulativeNarrowing": 0.255,
+        "dominantLoss": "retrieval gating"
+      },
+      "selectiveAdmissibilityDrift": {
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.087
+      }
     },
     "planSummary": {
       "relationInventory": {
@@ -95,16 +135,14 @@
         "pressure-current",
         "hybrid"
       ],
-      "structuralOperationsSelected": [
-        "merge-short-beats"
-      ],
+      "structuralOperationsSelected": [],
       "lexicalRegisterOperationsSelected": [],
       "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
       "candidateCount": 2,
-      "landedCandidateId": "base:syntax-shape",
+      "landedCandidateId": "base:register-lexicon",
       "families": [
         "syntax-shape",
         "register-lexicon"
@@ -113,35 +151,32 @@
       "averageToolabilityScore": 0.7491
     },
     "realizationSummary": {
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
+      "transferClass": "surface",
+      "borrowedShellOutcome": "surface-held",
       "borrowedShellFailureClass": null,
       "realizationTier": "structural",
       "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
         "orthography-posture",
         "lexical-register"
       ],
       "lexemeSwaps": [],
-      "visibleShift": true,
+      "visibleShift": false,
       "nonTrivialShift": true
     },
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.475,
-      "outputDonorDistance": 3.264,
-      "donorImprovement": 1.211,
-      "donorImprovementRatio": 0.271,
-      "sourceOutputLexicalOverlap": 0.97
+      "outputDonorDistance": 3.77,
+      "donorImprovement": 0.705,
+      "donorImprovementRatio": 0.158,
+      "sourceOutputLexicalOverlap": 1
     },
     "candidateLedger": [
       {
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "matron",
-        "status": "selected",
+        "status": "eligible",
         "score": 1.1678,
         "toolabilityScore": 0.8782,
         "rewriteStrength": 1,
@@ -154,13 +189,53 @@
           "persona-convergence:matron-undertow"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 3,
+            "clauseCount": 3,
+            "exactAnchorCount": 0
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.917,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 0,
+            "resolvedAnchors": 0,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.99,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.015,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "Rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summar"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "selected",
         "score": 0.5759,
         "toolabilityScore": 0.62,
         "rewriteStrength": 0.472,
@@ -173,28 +248,105 @@
           "persona-markers-thin"
         ],
         "transferClass": "surface",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 3,
+            "clauseCount": 3,
+            "exactAnchorCount": 0
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 1,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 0,
+            "resolvedAnchors": 0,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 1,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.012,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.087
+          }
+        },
         "outputPreview": "Rs-17 is doing the fake-safe thing again. Prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizin"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a structural registered rewrite.",
+      "headline": "Generator V2 landed a registered cadence rewrite.",
       "reasons": [],
       "candidateCount": 2,
-      "winningCandidateId": "base:syntax-shape"
+      "winningCandidateId": "base:register-lexicon",
+      "ontologyRoutePressure": {
+        "sourceClass": "formal-correspondence",
+        "relationInventory": {
+          "sourceClass": "formal-correspondence",
+          "paragraphCount": 1,
+          "sentenceCount": 3,
+          "clauseCount": 3,
+          "exactAnchorCount": 0
+        },
+        "semanticCoverage": {
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
+        },
+        "anchorIntegrity": {
+          "protectedAnchorIntegrity": 1,
+          "totalAnchors": 0,
+          "resolvedAnchors": 0,
+          "missingAnchors": 0
+        },
+        "aperture": {
+          "temporalPosture": "synced",
+          "closureClass": "closed",
+          "closureScore": 1,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.012,
+          "beaconStatus": "beacon-idle",
+          "cumulativeNarrowing": 0.255,
+          "dominantLoss": "retrieval gating"
+        },
+        "selectiveAdmissibilityDrift": {
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.087
+        }
+      }
     },
-    "winningCandidateId": "base:syntax-shape"
+    "winningCandidateId": "base:register-lexicon"
   },
   "semanticContract": {
-    "transferClass": "structural",
+    "transferClass": "surface",
     "realizationTier": "structural",
     "changedDimensions": [
       "lexical-register",
-      "orthography-posture",
-      "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "orthography-posture"
     ],
     "lexemeSwapFamilies": [],
     "relationInventory": [
@@ -204,16 +356,14 @@
       "sentenceCount:3",
       "sourceClass:formal-correspondence"
     ],
-    "structuralOperations": [
-      "merge-short-beats"
-    ],
+    "structuralOperations": [],
     "lexicalOperations": [],
     "connectorStrategy": "cascade",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.917,
+    "objectCoverage": 1,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

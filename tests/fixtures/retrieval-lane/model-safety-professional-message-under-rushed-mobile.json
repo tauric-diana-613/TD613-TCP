@@ -101,6 +101,46 @@
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
+    "ontologyAudit": {
+      "sourceClass": "formal-correspondence",
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 4,
+        "clauseCount": 5,
+        "exactAnchorCount": 2
+      },
+      "semanticCoverage": {
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 0.96,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0
+      },
+      "anchorIntegrity": {
+        "protectedAnchorIntegrity": 1,
+        "totalAnchors": 2,
+        "resolvedAnchors": 2,
+        "missingAnchors": 0
+      },
+      "aperture": {
+        "temporalPosture": "synced",
+        "closureClass": "closed",
+        "closureScore": 0.995,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.014,
+        "beaconStatus": "beacon-idle",
+        "cumulativeNarrowing": 0.255,
+        "dominantLoss": "retrieval gating"
+      },
+      "selectiveAdmissibilityDrift": {
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.088
+      }
+    },
     "planSummary": {
       "relationInventory": {
         "sourceClass": "formal-correspondence",
@@ -204,6 +244,46 @@
           "artifact:clause-drag"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 4,
+            "clauseCount": 5,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.96,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.995,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.014,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names, and the run had"
       },
       {
@@ -223,6 +303,46 @@
           "persona-markers-thin"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 4,
+            "clauseCount": 5,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.96,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.995,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.014,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names. And the run had"
       }
     ],
@@ -232,7 +352,47 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 2,
-      "winningCandidateId": "base:cadence-connector"
+      "winningCandidateId": "base:cadence-connector",
+      "ontologyRoutePressure": {
+        "sourceClass": "formal-correspondence",
+        "relationInventory": {
+          "sourceClass": "formal-correspondence",
+          "paragraphCount": 1,
+          "sentenceCount": 4,
+          "clauseCount": 5,
+          "exactAnchorCount": 2
+        },
+        "semanticCoverage": {
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.96,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
+        },
+        "anchorIntegrity": {
+          "protectedAnchorIntegrity": 1,
+          "totalAnchors": 2,
+          "resolvedAnchors": 2,
+          "missingAnchors": 0
+        },
+        "aperture": {
+          "temporalPosture": "synced",
+          "closureClass": "closed",
+          "closureScore": 0.995,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.014,
+          "beaconStatus": "beacon-idle",
+          "cumulativeNarrowing": 0.255,
+          "dominantLoss": "retrieval gating"
+        },
+        "selectiveAdmissibilityDrift": {
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.088
+        }
+      }
     },
     "winningCandidateId": "base:cadence-connector"
   },

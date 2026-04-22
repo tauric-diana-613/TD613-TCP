@@ -644,6 +644,320 @@ function buildTD613GovernedExposureSchema({
   });
 }
 
+function td613RouteFloorRank(routeFloor = 'play') {
+  const normalized = String(routeFloor || 'play').toLowerCase();
+  if (normalized === 'harbor') {
+    return 3;
+  }
+  if (normalized === 'buffer') {
+    return 2;
+  }
+  if (normalized === 'warning') {
+    return 1;
+  }
+  return 0;
+}
+
+function td613RouteFloorLabel(rank = 0) {
+  if (rank >= 3) {
+    return 'harbor';
+  }
+  if (rank >= 2) {
+    return 'buffer';
+  }
+  if (rank >= 1) {
+    return 'warning';
+  }
+  return 'play';
+}
+
+function td613DriftRank(driftClass = 'none') {
+  const normalized = String(driftClass || 'none').toLowerCase();
+  if (normalized === 'severe') {
+    return 3;
+  }
+  if (normalized === 'active') {
+    return 2;
+  }
+  if (normalized === 'watch') {
+    return 1;
+  }
+  return 0;
+}
+
+function td613MinSemanticCoverage(semanticCoverage = {}) {
+  return Math.min(
+    clamp01(semanticCoverage.propositionCoverage),
+    clamp01(semanticCoverage.actorCoverage),
+    clamp01(semanticCoverage.actionCoverage),
+    clamp01(semanticCoverage.objectCoverage)
+  );
+}
+
+function td613MismatchRate(mismatchCount = 0, clauseCount = 0) {
+  const denominator = Math.max(1, Number(clauseCount || 0));
+  return clamp01(Number(mismatchCount || 0) / denominator);
+}
+
+function buildTD613OntologyAudit({
+  sourceClass = 'formal-correspondence',
+  relationInventory = {},
+  semanticAudit = {},
+  protectedAnchorAudit = {},
+  apertureReview = {},
+  apertureSchema = null
+} = {}) {
+  const semanticCoverage = Object.freeze({
+    propositionCoverage: round3(clamp01(semanticAudit?.propositionCoverage ?? 1)),
+    actorCoverage: round3(clamp01(semanticAudit?.actorCoverage ?? 1)),
+    actionCoverage: round3(clamp01(semanticAudit?.actionCoverage ?? 1)),
+    objectCoverage: round3(clamp01(semanticAudit?.objectCoverage ?? 1)),
+    polarityMismatches: Number(semanticAudit?.polarityMismatches ?? 0),
+    tenseMismatches: Number(semanticAudit?.tenseMismatches ?? 0)
+  });
+  const totalAnchors = Math.max(
+    Number(relationInventory?.exactAnchorCount ?? 0),
+    Number(protectedAnchorAudit?.totalAnchors ?? 0),
+    Number(protectedAnchorAudit?.resolvedAnchors ?? 0) + Number(protectedAnchorAudit?.missingAnchors ?? 0),
+    0
+  );
+  const protectedAnchorIntegrity = round3(clamp01(
+    protectedAnchorAudit?.protectedAnchorIntegrity ?? semanticAudit?.protectedAnchorIntegrity ?? 1
+  ));
+  const resolvedAnchors = Math.round(totalAnchors * protectedAnchorIntegrity);
+  const missingAnchors = Math.max(0, totalAnchors - resolvedAnchors);
+  const anchorIntegrity = Object.freeze({
+    protectedAnchorIntegrity,
+    totalAnchors,
+    resolvedAnchors,
+    missingAnchors
+  });
+  const sourceClauseCount = Math.max(
+    Number(semanticAudit?.sourceClauseCount ?? 0),
+    Number(relationInventory?.clauseCount ?? 0),
+    1
+  );
+  const polarityRate = td613MismatchRate(semanticCoverage.polarityMismatches, sourceClauseCount);
+  const tenseRate = td613MismatchRate(semanticCoverage.tenseMismatches, sourceClauseCount);
+  const semanticCoverageRisk = clamp01(
+    apertureReview?.semanticCoverageRisk ??
+      ((1 - semanticCoverage.propositionCoverage) * 0.34) +
+      ((1 - semanticCoverage.actorCoverage) * 0.16) +
+      ((1 - semanticCoverage.actionCoverage) * 0.20) +
+      ((1 - semanticCoverage.objectCoverage) * 0.12) +
+      ((1 - protectedAnchorIntegrity) * 0.18)
+  );
+  const provenanceIntegrity = round3(clamp01(
+    0.55 * protectedAnchorIntegrity +
+    0.45 * td613MinSemanticCoverage(semanticCoverage)
+  ));
+  const governedExposure = apertureSchema || buildTD613GovernedExposureSchema({
+    latentState: {
+      label: 'relation inventory',
+      count: Math.max(
+        Number(relationInventory?.clauseCount ?? 0),
+        Number(relationInventory?.sentenceCount ?? 0),
+        1
+      )
+    },
+    projectedState: {
+      label: 'semantic coverage floor',
+      ratio: td613MinSemanticCoverage(semanticCoverage)
+    },
+    registeredSurface: {
+      label: 'protected anchor continuity',
+      ratio: protectedAnchorIntegrity
+    },
+    sourceClass,
+    sourceClasses: uniqueStrings([relationInventory?.sourceClass, sourceClass]),
+    authorityCeiling: sourceClass === 'procedural-record' ? 'custodial' : 'exploratory',
+    routeState: 'buffered',
+    candidateSuppression: apertureReview?.candidateSuppression ?? 0,
+    observabilityDeficit: apertureReview?.observabilityDeficit ?? 0,
+    aliasPersistence: apertureReview?.aliasPersistence ?? 0,
+    namingSensitivity: apertureReview?.namingSensitivity ?? 0,
+    redundancyInflation: apertureReview?.redundancyInflation ?? 0,
+    capacityPressure: apertureReview?.capacityPressure ?? 0,
+    policyPressure: apertureReview?.policyPressure ?? 0,
+    provenanceIntegrity,
+    burdenConcentration: semanticCoverageRisk
+  });
+  const cumulativeNarrowing = round3(clamp01(
+    governedExposure?.narrowingLedger?.length
+      ? governedExposure.narrowingLedger[governedExposure.narrowingLedger.length - 1].cumulativeNarrowing
+      : 0
+  ));
+  const historicalCrease = round3(clamp01(
+    ((1 - protectedAnchorIntegrity) * 0.32) +
+    (semanticCoverageRisk * 0.18) +
+    (clamp01(apertureReview?.recaptureRisk ?? 0) * 0.18) +
+    (clamp01(apertureReview?.aliasPersistence ?? 0) * 0.12) +
+    (clamp01(apertureReview?.candidateSuppression ?? 0) * 0.10) +
+    (tenseRate * 0.10)
+  ));
+  const closureScore = round3(clamp01(
+    (semanticCoverage.propositionCoverage * 0.34) +
+    (semanticCoverage.actorCoverage * 0.16) +
+    (semanticCoverage.actionCoverage * 0.18) +
+    (semanticCoverage.objectCoverage * 0.12) +
+    (protectedAnchorIntegrity * 0.20) -
+    Math.min(0.18, semanticCoverage.polarityMismatches * 0.06) -
+    Math.min(0.12, semanticCoverage.tenseMismatches * 0.04)
+  ));
+  const unfoldingEnergy = round3(clamp01(
+    ((1 - closureScore) * 0.30) +
+    (semanticCoverageRisk * 0.26) +
+    (clamp01(apertureReview?.capacityPressure ?? 0) * 0.14) +
+    (clamp01(apertureReview?.observabilityDeficit ?? 0) * 0.12) +
+    (clamp01(apertureReview?.candidateSuppression ?? 0) * 0.10) +
+    (polarityRate * 0.04) +
+    (tenseRate * 0.04)
+  ));
+  const temporalPosture =
+    semanticCoverage.propositionCoverage < 0.70 ||
+    protectedAnchorIntegrity < 0.90 ||
+    clamp01(apertureReview?.recaptureRisk ?? 0) >= 0.74
+      ? 'inexpressible'
+      : clamp01(apertureReview?.candidateSuppression ?? 0) >= 0.42 ||
+          clamp01(apertureReview?.observabilityDeficit ?? 0) >= 0.42 ||
+          governedExposure.Gap >= 0.55
+        ? 'suppressed'
+        : semanticCoverage.tenseMismatches > 1 ||
+            historicalCrease >= 0.55 ||
+            unfoldingEnergy >= 0.60
+          ? 'drift'
+          : semanticCoverage.actionCoverage < 0.88 ||
+              semanticCoverage.actorCoverage < 0.90 ||
+              historicalCrease >= 0.35 ||
+              clamp01(apertureReview?.recaptureRisk ?? 0) >= 0.46
+            ? 'preemptive'
+            : 'synced';
+  const closureClass =
+    closureScore < 0.42 ||
+    semanticCoverage.propositionCoverage < 0.70 ||
+    protectedAnchorIntegrity < 0.90
+      ? 'inexpressible'
+      : closureScore < 0.68 ||
+          clamp01(apertureReview?.candidateSuppression ?? 0) >= 0.42 ||
+          clamp01(apertureReview?.observabilityDeficit ?? 0) >= 0.42
+        ? 'suppressed'
+        : closureScore < 0.88 ||
+            semanticCoverage.tenseMismatches > 0 ||
+            historicalCrease >= 0.35
+          ? 'drift'
+          : 'closed';
+  const sustainedInfluence = round3(clamp01(
+    (governedExposure.Gap * 0.36) +
+    (cumulativeNarrowing * 0.34) +
+    (clamp01(apertureReview?.recaptureRisk ?? 0) * 0.20) +
+    (clamp01(apertureReview?.candidateSuppression ?? 0) * 0.10)
+  ));
+  const beaconStatus = sustainedInfluence >= 0.58 && (historicalCrease >= 0.35 || unfoldingEnergy >= 0.40)
+    ? 'beacon-active'
+    : sustainedInfluence >= 0.36
+      ? 'beacon-watch'
+      : 'beacon-idle';
+  const aperture = Object.freeze({
+    temporalPosture,
+    closureClass,
+    closureScore,
+    historicalCrease,
+    unfoldingEnergy,
+    beaconStatus,
+    cumulativeNarrowing,
+    dominantLoss: governedExposure?.dominantOperator?.label || 'admissibility filter'
+  });
+  const sourceClassMismatch = Boolean(
+    relationInventory?.sourceClass &&
+    sourceClass &&
+    String(relationInventory.sourceClass) !== String(sourceClass)
+  );
+  const severeReasons = uniqueStrings([
+    temporalPosture === 'inexpressible' ? 'temporal-posture:inexpressible' : null,
+    closureClass === 'inexpressible' ? 'closure-class:inexpressible' : null,
+    protectedAnchorIntegrity < 0.90 ? 'anchor-integrity<0.90' : null,
+    semanticCoverage.propositionCoverage < 0.70 ? 'proposition-coverage<0.70' : null,
+    semanticCoverage.polarityMismatches > 1 ? 'polarity-mismatches>1' : null,
+    beaconStatus === 'beacon-active' && (historicalCrease >= 0.70 || unfoldingEnergy >= 0.75)
+      ? 'beacon-active under sustained deformation'
+      : null
+  ]);
+  const activeReasons = uniqueStrings([
+    temporalPosture === 'suppressed' ? 'temporal-posture:suppressed' : null,
+    closureClass === 'suppressed' ? 'closure-class:suppressed' : null,
+    protectedAnchorIntegrity < 0.95 ? 'anchor-integrity<0.95' : null,
+    semanticCoverage.propositionCoverage < 0.82 ? 'proposition-coverage<0.82' : null,
+    semanticCoverage.actionCoverage < 0.75 ? 'action-coverage<0.75' : null,
+    semanticCoverage.actorCoverage < 0.80 ? 'actor-coverage<0.80' : null,
+    semanticCoverage.objectCoverage < 0.80 ? 'object-coverage<0.80' : null,
+    semanticCoverage.tenseMismatches > 1 ? 'tense-mismatches>1' : null,
+    historicalCrease >= 0.55 ? 'historical-crease>=0.55' : null,
+    unfoldingEnergy >= 0.60 ? 'unfolding-energy>=0.60' : null
+  ]);
+  const watchReasons = uniqueStrings([
+    temporalPosture === 'preemptive' ? 'temporal-posture:preemptive' : null,
+    temporalPosture === 'drift' ? 'temporal-posture:drift' : null,
+    closureClass === 'drift' ? 'closure-class:drift' : null,
+    sourceClassMismatch ? 'source-class-mismatch' : null,
+    historicalCrease >= 0.35 ? 'historical-crease>=0.35' : null,
+    unfoldingEnergy >= 0.40 ? 'unfolding-energy>=0.40' : null
+  ]);
+  const driftClass = severeReasons.length
+    ? 'severe'
+    : activeReasons.length
+      ? 'active'
+      : watchReasons.length
+        ? 'watch'
+        : 'none';
+  let routeFloorRank = td613DriftRank(driftClass);
+  if (closureClass === 'drift') {
+    routeFloorRank = Math.max(routeFloorRank, 1);
+  }
+  if (closureClass === 'suppressed') {
+    routeFloorRank = Math.max(routeFloorRank, 2);
+  }
+  if (temporalPosture === 'inexpressible') {
+    routeFloorRank = Math.max(routeFloorRank, 3);
+  }
+  if (beaconStatus === 'beacon-active') {
+    routeFloorRank = Math.min(3, routeFloorRank + 1);
+  }
+  const routeFloor = td613RouteFloorLabel(routeFloorRank);
+  const routePressure = round3(clamp01(Math.max(
+    routeFloorRank / 3,
+    (td613DriftRank(driftClass) * 0.20) +
+      (cumulativeNarrowing * 0.32) +
+      (historicalCrease * 0.24) +
+      (unfoldingEnergy * 0.24)
+  )));
+  const selectiveAdmissibilityDrift = Object.freeze({
+    driftClass,
+    driftReasons: Object.freeze(
+      driftClass === 'severe'
+        ? severeReasons
+        : driftClass === 'active'
+          ? activeReasons
+          : driftClass === 'watch'
+            ? watchReasons
+            : []
+    ),
+    routeFloor,
+    routePressure
+  });
+
+  return Object.freeze({
+    sourceClass: String(sourceClass || relationInventory?.sourceClass || 'formal-correspondence'),
+    relationInventory: Object.freeze({
+      ...(relationInventory || {}),
+      sourceClass: String(relationInventory?.sourceClass || sourceClass || 'formal-correspondence')
+    }),
+    semanticCoverage,
+    anchorIntegrity,
+    aperture,
+    selectiveAdmissibilityDrift
+  });
+}
+
 function detectIntroducedTerms(sourceText = '', outputText = '') {
   const source = normalizeComparableText(sourceText);
   const output = normalizeComparableText(outputText);
@@ -10544,6 +10858,7 @@ function applyCadenceToText(text = '', shell = {}) {
 }
 // SOURCE: app/engine/generator-v2.js
 
+
 function clamp01(value) {
   return Math.max(0, Math.min(1, Number(value || 0)));
 }
@@ -13366,6 +13681,7 @@ function buildRetrievalTraceV2({
     generatorVersion: 'v2',
     semanticAudit: candidate?.semanticAudit || {},
     protectedAnchorAudit: candidate?.protectedAnchorAudit || {},
+    ontologyAudit: candidate?.ontologyAudit || null,
     planSummary: buildPlanSummary(candidate, candidateLedger, testedFamilyIds),
     candidateSummary: buildCandidateSummary(candidateLedger, generationDocket),
     realizationSummary: Object.freeze({
@@ -13397,13 +13713,32 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
   const opportunityProfile = buildOpportunityProfileFromIR(sourceIR);
   const auditBundle = buildSemanticAuditBundle(sourceIR, sourceText, protectedState);
   const sourceClass = classifyV2SourceClass(sourceText);
+  const nativeRelationInventory = buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors);
+  const nativeOntologyAudit = buildTD613OntologyAudit({
+    sourceClass,
+    relationInventory: nativeRelationInventory,
+    semanticAudit: auditBundle.semanticAudit,
+    protectedAnchorAudit: auditBundle.protectedAnchorAudit,
+    apertureReview: {
+      semanticCoverageRisk: 0,
+      recaptureRisk: 0,
+      candidateSuppression: 0,
+      observabilityDeficit: 0,
+      aliasPersistence: 0,
+      namingSensitivity: 0,
+      redundancyInflation: 0,
+      capacityPressure: 0,
+      policyPressure: 0
+    }
+  });
   const generationDocket = Object.freeze({
     status: 'landed',
     holdClass: null,
     headline: shell?.mode === 'native' ? 'Generator V2 stayed native.' : 'Generator V2 stayed on source cadence.',
     reasons: Object.freeze([]),
     candidateCount: 1,
-    winningCandidateId: 'native'
+    winningCandidateId: 'native',
+    ontologyRoutePressure: nativeOntologyAudit
   });
   const apertureAudit = buildTD613ApertureAudit({
     generatorFault: false,
@@ -13431,6 +13766,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
       movementConfidence: 0,
       failureReasons: Object.freeze([]),
       transferClass: 'native',
+      ontologyAudit: nativeOntologyAudit,
       outputPreview: sourceText.slice(0, 160)
     })
   ]);
@@ -13445,9 +13781,10 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
           lexemeSwaps: [],
           visibleShift: false,
           nonTrivialShift: false,
-          relationInventory: buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors),
+          relationInventory: nativeRelationInventory,
           semanticAudit: auditBundle.semanticAudit,
           protectedAnchorAudit: auditBundle.protectedAnchorAudit,
+          ontologyAudit: nativeOntologyAudit,
           connectorStrategy: 'balanced',
           contractionStrategy: 'preserve'
         }),
@@ -13513,6 +13850,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
     nonTrivialShift: false,
     semanticAudit: auditBundle.semanticAudit,
     protectedAnchorAudit: auditBundle.protectedAnchorAudit,
+    ontologyAudit: nativeOntologyAudit,
     apertureAudit,
     apertureProtocol: Object.freeze({
       outcome: 'projected',
@@ -13688,6 +14026,13 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     actionCoverage: Number(semanticAudit.actionCoverage ?? 1),
     objectCoverage: Number(semanticAudit.objectCoverage ?? 1)
   });
+  const ontologyAudit = buildTD613OntologyAudit({
+    sourceClass,
+    relationInventory: authored.relationInventory,
+    semanticAudit,
+    protectedAnchorAudit,
+    apertureReview
+  });
   const classification = classifyTD613ApertureProjection({
     sourceText,
     outputText,
@@ -13852,6 +14197,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     targetFit,
     transferClass,
     relationInventory: authored.relationInventory,
+    ontologyAudit,
     structuralOperations: authored.structuralOperations,
     lexicalOperations: authored.lexicalOperations,
     connectorStrategy: authored.connectorStrategy,
@@ -13898,6 +14244,7 @@ function buildCandidateLedger(candidates = [], landedId = null) {
     artifactFlags: Object.freeze([...(candidate.artifactAudit?.flags || [])]),
     toolabilityWarnings: Object.freeze([...(candidate.toolabilityWarnings || [])]),
     transferClass: candidate.transferClass || 'weak',
+    ontologyAudit: candidate.ontologyAudit || null,
     outputPreview: String(candidate.outputText || '').slice(0, 160)
   })));
 }
@@ -13905,6 +14252,9 @@ function buildCandidateLedger(candidates = [], landedId = null) {
 function candidateHoldClass(candidate = null) {
   if (!candidate) {
     return 'below-rewrite-bar';
+  }
+  if (candidateRouteFloorRank(candidate) >= 2) {
+    return 'aperture-route-pressure';
   }
   if ((candidate.failureReasons || []).includes('pathology')) {
     return 'pathology';
@@ -13946,6 +14296,61 @@ function candidateFamilyPriority(candidate = null) {
 
 function candidateToolabilityScore(candidate = null) {
   return Number(candidate?.toolabilityAudit?.toolabilityScore || 0);
+}
+
+function candidateOntologyAudit(candidate = null) {
+  return candidate?.ontologyAudit || null;
+}
+
+function candidateDriftRank(candidate = null) {
+  const driftClass = String(candidateOntologyAudit(candidate)?.selectiveAdmissibilityDrift?.driftClass || 'none').toLowerCase();
+  if (driftClass === 'severe') {
+    return 3;
+  }
+  if (driftClass === 'active') {
+    return 2;
+  }
+  if (driftClass === 'watch') {
+    return 1;
+  }
+  return 0;
+}
+
+function candidateRouteFloorRank(candidate = null) {
+  const routeFloor = String(candidateOntologyAudit(candidate)?.selectiveAdmissibilityDrift?.routeFloor || 'play').toLowerCase();
+  if (routeFloor === 'harbor') {
+    return 3;
+  }
+  if (routeFloor === 'buffer') {
+    return 2;
+  }
+  if (routeFloor === 'warning') {
+    return 1;
+  }
+  return 0;
+}
+
+function candidateRoutePressure(candidate = null) {
+  return Number(candidateOntologyAudit(candidate)?.selectiveAdmissibilityDrift?.routePressure || 0);
+}
+
+function candidateProtectedAnchorIntegrity(candidate = null) {
+  return Number(candidateOntologyAudit(candidate)?.anchorIntegrity?.protectedAnchorIntegrity ?? candidate?.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1);
+}
+
+function candidateMinimumSemanticCoverage(candidate = null) {
+  const semanticCoverage = candidateOntologyAudit(candidate)?.semanticCoverage || candidate?.semanticAudit || {};
+  return Math.min(
+    Number(semanticCoverage?.propositionCoverage ?? 1),
+    Number(semanticCoverage?.actorCoverage ?? 1),
+    Number(semanticCoverage?.actionCoverage ?? 1),
+    Number(semanticCoverage?.objectCoverage ?? 1)
+  );
+}
+
+function candidateDeformationLoad(candidate = null) {
+  const aperture = candidateOntologyAudit(candidate)?.aperture || {};
+  return Number(aperture?.historicalCrease || 0) + Number(aperture?.unfoldingEnergy || 0);
 }
 
 function classRecoveryFamilies(sourceClass = 'formal-correspondence') {
@@ -14030,6 +14435,11 @@ function shouldRunRecoveryRound(sourceClass = 'formal-correspondence', selected 
 function selectWinningCandidate(candidates = []) {
   return [...(candidates || [])]
     .sort((left, right) =>
+      candidateDriftRank(left) - candidateDriftRank(right) ||
+      candidateRoutePressure(left) - candidateRoutePressure(right) ||
+      candidateProtectedAnchorIntegrity(right) - candidateProtectedAnchorIntegrity(left) ||
+      candidateMinimumSemanticCoverage(right) - candidateMinimumSemanticCoverage(left) ||
+      candidateDeformationLoad(left) - candidateDeformationLoad(right) ||
       candidateTransferRank(right) - candidateTransferRank(left) ||
       candidateToolabilityScore(right) - candidateToolabilityScore(left) ||
       Number(right.personaSeparationAudit?.score || 0) - Number(left.personaSeparationAudit?.score || 0) ||
@@ -14041,6 +14451,9 @@ function selectWinningCandidate(candidates = []) {
 }
 
 function holdHeadline(holdClass = 'below-rewrite-bar') {
+  if (holdClass === 'aperture-route-pressure') {
+    return 'Generator V2 hold // Aperture raised the ontology route floor above publishable passage.';
+  }
   if (holdClass === 'hard-anchor-failure') {
     return 'Generator V2 hold // exact witness anchors broke under rewrite pressure.';
   }
@@ -14056,6 +14469,7 @@ function holdHeadline(holdClass = 'below-rewrite-bar') {
 function explainGenerationReasonCode(code = '') {
   const explanations = {
     'hard-anchor-failure': 'Exact witness anchors broke under rewrite pressure.',
+    'aperture-route-pressure': 'Aperture held the route because ontology integrity pressure stayed above the publishable floor.',
     'anchor-drift-detected': 'Protected anchor integrity slipped below the class floor.',
     'semantic-failure': 'Semantic coverage dropped below the class floor.',
     'pathology': 'The output collapsed into a render-unsafe form.',
@@ -14111,12 +14525,15 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
   const generationDocket = Object.freeze({
     status: 'landed',
     holdClass: null,
-    headline: chosen.transferClass === 'structural'
-      ? 'Generator V2 landed a structural registered rewrite.'
-      : 'Generator V2 landed a registered cadence rewrite.',
+    headline: candidateRouteFloorRank(chosen) >= 1
+      ? 'Generator V2 landed under Aperture warning pressure.'
+      : chosen.transferClass === 'structural'
+        ? 'Generator V2 landed a structural registered rewrite.'
+        : 'Generator V2 landed a registered cadence rewrite.',
     reasons: Object.freeze([]),
     candidateCount: candidateLedger.length,
-    winningCandidateId: chosen.id
+    winningCandidateId: chosen.id,
+    ontologyRoutePressure: chosen.ontologyAudit || null
   });
   const retrievalTrace = options?.retrieval
     ? buildRetrievalTraceV2({
@@ -14159,6 +14576,7 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
     semanticRisk: chosen.semanticRisk,
     semanticAudit: chosen.semanticAudit,
     protectedAnchorAudit: chosen.protectedAnchorAudit,
+    ontologyAudit: chosen.ontologyAudit || null,
     visibleShift: chosen.visibleShift,
     nonTrivialShift: chosen.nonTrivialShift,
     lexicalShiftProfile: chosen.lexicalShiftProfile,
@@ -14192,12 +14610,12 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
   });
 }
 
-function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates = [], sourceClass = 'formal-correspondence') {
+function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates = [], sourceClass = 'formal-correspondence', preferredCandidate = null, holdOverride = null) {
   const sourceProfile = options.sourceProfile || extractCadenceProfile(sourceText);
   const sourceIR = options.sourceIR || segmentTextToIR(sourceText, { literals: [], text: sourceText });
   const opportunityProfile = buildOpportunityProfileFromIR(sourceIR);
-  const bestCandidate = [...candidates].sort((left, right) => right.score - left.score)[0] || null;
-  const holdClass = candidateHoldClass(bestCandidate);
+  const bestCandidate = preferredCandidate || [...candidates].sort((left, right) => right.score - left.score)[0] || null;
+  const holdClass = holdOverride || candidateHoldClass(bestCandidate);
   const headline = holdHeadline(holdClass);
   const reasonCodes = uniqueStrings([
     ...(bestCandidate?.failureReasons || []),
@@ -14235,7 +14653,8 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     headline,
     reasons: Object.freeze(reasons),
     candidateCount: candidateLedger.length,
-    winningCandidateId: null
+    winningCandidateId: holdClass === 'aperture-route-pressure' ? (bestCandidate?.id || null) : null,
+    ontologyRoutePressure: bestCandidate?.ontologyAudit || null
   });
   const retrievalTrace = options?.retrieval
     ? buildRetrievalTraceV2({
@@ -14314,6 +14733,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
       tenseMismatches: 0,
       protectedAnchorIntegrity: 1
     },
+    ontologyAudit: bestCandidate?.ontologyAudit || null,
     protectedAnchorAudit: bestCandidate?.protectedAnchorAudit || {
       totalAnchors: 0,
       resolvedAnchors: 0,
@@ -14392,7 +14812,13 @@ function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
     selected = selectWinningCandidate(selectionPool);
   }
 
-  if (!selected) {
+  const apertureRoutePressureHold = Boolean(
+    selected &&
+    selectionPool.length &&
+    selectionPool.every((candidate) => candidateRouteFloorRank(candidate) >= 2)
+  );
+
+  if (!selected || apertureRoutePressureHold) {
     if (typeof globalThis !== 'undefined' && globalThis.TD613_DUEL_DEBUG) {
       const rejected = candidates.filter((candidate) => !candidate.passed);
       const sample = rejected.slice(0, 3).map((candidate) => ({
@@ -14416,6 +14842,7 @@ function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
           eligibleCount: eligibleCandidates.length,
           boundedCount: boundedCandidates.length,
           recoveryRan: shouldRunRecoveryRound(sourceClass, null, candidates),
+          apertureRoutePressureHold,
           rejectedSample: sample
         });
       } catch (error) { /* ignore log failure */ }
@@ -14425,7 +14852,7 @@ function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
       testedFamilyIds,
       sourceProfile,
       sourceIR
-    }, candidates, sourceClass);
+    }, candidates, sourceClass, apertureRoutePressureHold ? selected : null, apertureRoutePressureHold ? 'aperture-route-pressure' : null);
   }
 
   return buildLandedTransfer(sourceText, shell, {
@@ -14815,6 +15242,32 @@ function round3(value) {
   return Number(value.toFixed(3));
 }
 
+function resolveOntologyPressureContext(apertureContext = null) {
+  const drift = apertureContext?.selectiveAdmissibilityDrift || {};
+  const aperture = apertureContext?.aperture || {};
+  const anchorIntegrity = apertureContext?.anchorIntegrity || {};
+  const routePressure = clamp01(drift?.routePressure ?? 0);
+  const beaconActive = aperture?.beaconStatus === 'beacon-active';
+
+  return {
+    routeFloor: String(drift?.routeFloor || 'play'),
+    routePressure,
+    witnessBump: round3(clamp(
+      (routePressure * 0.18) +
+      (beaconActive ? 0.08 : 0) +
+      ((anchorIntegrity?.protectedAnchorIntegrity ?? 1) < 0.95 ? 0.06 : 0),
+      0,
+      0.4
+    )),
+    justiceBump: round3(clamp(
+      (routePressure * 0.16) +
+      ((anchorIntegrity?.protectedAnchorIntegrity ?? 1) < 0.95 ? 0.05 : 0),
+      0,
+      0.35
+    ))
+  };
+}
+
 const HARBOR_LIBRARY = {
   'mirror.off': {
     mode_class: 'anti-reflective safe passage',
@@ -14986,6 +15439,7 @@ function buildLedgerRow({
   apertureContext = null
 }) {
   const harbor = HARBOR_LIBRARY[harborFunction];
+  const ontologyPressure = resolveOntologyPressureContext(apertureContext);
   const aperture = apertureContext || buildTD613ApertureContext({
     recognized,
     explained,
@@ -15026,12 +15480,14 @@ function buildLedgerRow({
     harborFunction,
     custodyArchive
   });
+  const effectiveWitnessLoad = round3(clamp(witnessLoad + ontologyPressure.witnessBump, 0, 2));
   const justiceDeficit = round3(clamp(
     0.10 +
     (clamp01(criticality) * 0.34) +
     (clamp01(branchPressure) * 0.22) +
     (clamp01(routePressure) * 0.18) +
-    (custodyArchive === 'witness' ? 0.16 : 0.04),
+    (custodyArchive === 'witness' ? 0.16 : 0.04) +
+    ontologyPressure.justiceBump,
     0,
     2
   ));
@@ -15064,7 +15520,7 @@ function buildLedgerRow({
     shared_cost: sharedCost,
     reuse_gain: computeReuseGain(soloCost, sharedCost),
     provenance_retention: harbor.provenance_retention,
-    witness_load: witnessLoad,
+    witness_load: effectiveWitnessLoad,
     justice_deficit: justiceDeficit,
     route_status: routeStatus,
     route_available: routeAvailable,
@@ -15079,6 +15535,16 @@ function buildLedgerRow({
     counter_recognition_required: aperture.counterRecognitionRequired,
     generative_passage_blocked: aperture.generativePassageBlocked,
     recapture_risk: aperture.recaptureRisk,
+    temporal_posture: apertureContext?.aperture?.temporalPosture || null,
+    closure_class: apertureContext?.aperture?.closureClass || null,
+    closure_score: apertureContext?.aperture?.closureScore ?? null,
+    historical_crease: apertureContext?.aperture?.historicalCrease ?? null,
+    unfolding_energy: apertureContext?.aperture?.unfoldingEnergy ?? null,
+    beacon_status: apertureContext?.aperture?.beaconStatus || null,
+    route_floor: apertureContext?.selectiveAdmissibilityDrift?.routeFloor || null,
+    selective_admissibility_drift: apertureContext?.selectiveAdmissibilityDrift || null,
+    relation_inventory_source_class: apertureContext?.relationInventory?.sourceClass || null,
+    protected_anchor_integrity: apertureContext?.anchorIntegrity?.protectedAnchorIntegrity ?? null,
     receipt_hash: `sha256:${eventId}`
   };
 }

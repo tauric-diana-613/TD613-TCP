@@ -122,6 +122,28 @@ assert.ok(
   'Safe Harbor mints SHI only from a real triad stylometric fingerprint and no longer falls back to packet or receipt metadata'
 );
 assert.ok(
+  harborMainSource.includes('function evaluateTriadIssuance(signatures = null)') &&
+    harborMainSource.includes('blockingReason') &&
+    harborMainSource.includes('wordCounts') &&
+    harborMainSource.includes('shortfalls') &&
+    harborMainSource.includes('thresholdSatisfied'),
+  'Safe Harbor centralizes SHI minting into one triad issuance evaluator with explicit blocking data'
+);
+assert.ok(
+  harborMainSource.includes("badge_state: badgeAssignment ? 'assigned' : (triadIssuance.thresholdSatisfied ? 'not-assigned' : 'blocked-triad-threshold')") &&
+    harborMainSource.includes('blocking_reason: badgeAssignment ? null : triadIssuance.blockingReason') &&
+    harborMainSource.includes('triad_word_counts: triadIssuance.wordCounts') &&
+    harborMainSource.includes('triad_shortfalls: triadIssuance.shortfalls'),
+  'Safe Harbor packets expose SHI badge state, blocking reason, and triad threshold diagnostics explicitly'
+);
+assert.ok(
+  harborMainSource.includes("dom.shiMintState.textContent = issued") &&
+    harborMainSource.includes("'not minted / triad blocked'") &&
+    harborMainSource.includes('SHI issuance is blocked.') &&
+    harborMainSource.includes('issuance.blocking_reason'),
+  'Safe Harbor surfaces blocked SHI mint state and the exact triad reason instead of pretending the template is issued'
+);
+assert.ok(
   harborMainSource.includes('dom.setBypassToken.disabled = surfaceIsOpen;') &&
     harborMainSource.includes('Only the currently minted SHI # can be rebound to this session.'),
   'Safe Harbor only allows explicit SHI recall rebinding from the actually minted SHI value'
@@ -140,7 +162,8 @@ assert.ok(
 );
 assert.ok(
   harborMainSource.includes("if (state.ingress.packetId) void rebuild('ingress');") &&
-    harborMainSource.includes("logEvent('covenant-blocked', { reason: 'triad-fingerprint-missing' });"),
+    harborMainSource.includes("logEvent('covenant-blocked', {") &&
+    harborMainSource.includes("reason: 'triad-fingerprint-missing'"),
   'Safe Harbor refreshes staged packets when the triad changes and blocks SHI minting when the triad fingerprint is still missing'
 );
 assert.ok(

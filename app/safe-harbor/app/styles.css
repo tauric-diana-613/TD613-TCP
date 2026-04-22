@@ -563,6 +563,8 @@ select {
     var(--shadow-soft),
     0 0 30px rgba(255, 143, 181, 0.12),
     0 0 52px rgba(208, 167, 255, 0.08);
+  display: flex;
+  flex-direction: column;
 }
 
 .helper-card {
@@ -642,6 +644,8 @@ select {
   border: 1px solid rgba(233, 230, 245, 0.12);
   background:
     linear-gradient(180deg, rgba(18, 12, 24, 0.94), rgba(9, 8, 14, 0.98));
+  align-self: center;
+  width: min(100%, 760px);
 }
 
 .mint-altar-head {
@@ -1123,6 +1127,37 @@ select {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.witness-grid {
+  grid-template-areas:
+    "reliquary reliquary"
+    "render intake";
+  align-items: start;
+}
+
+.witness-grid > .reliquary-card {
+  grid-area: reliquary;
+}
+
+.witness-grid > .render-face-card {
+  grid-area: render;
+}
+
+.witness-grid > .batch-intake-card {
+  grid-area: intake;
+}
+
+.reliquary-card > .metric-block,
+.reliquary-card > .section-label,
+.reliquary-card > pre,
+.reliquary-card > .button-grid,
+.reliquary-card > .note {
+  order: 2;
+}
+
+.reliquary-card > .mint-altar {
+  order: 1;
+}
+
 .ingress-card {
   overflow: hidden;
 }
@@ -1274,6 +1309,13 @@ body.vault-open .dock-right { animation-delay: 0.28s; }
   .witness-grid,
   .forge-grid {
     grid-template-columns: 1fr;
+  }
+
+  .witness-grid {
+    grid-template-areas:
+      "reliquary"
+      "render"
+      "intake";
   }
 
   .masthead,

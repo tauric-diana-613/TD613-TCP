@@ -27,7 +27,7 @@
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.929,
-      "polarityMismatches": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -69,7 +69,7 @@
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s2c0+s3c0",
+          "matchedClauseId": "s1c0+s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -81,14 +81,14 @@
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s0c1+s1c0",
+          "matchedClauseId": "s3c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.4,
+          "bagScore": 0.5,
           "globalBagScore": 0.235
         },
         {
@@ -117,13 +117,53 @@
         }
       ],
       "sourceClauseCount": 7,
-      "outputClauseCount": 8
+      "outputClauseCount": 9
     },
     "protectedAnchorAudit": {
       "totalAnchors": 0,
       "resolvedAnchors": 0,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
+    },
+    "ontologyAudit": {
+      "sourceClass": "narrative-scene",
+      "relationInventory": {
+        "sourceClass": "narrative-scene",
+        "paragraphCount": 1,
+        "sentenceCount": 5,
+        "clauseCount": 7,
+        "exactAnchorCount": 0
+      },
+      "semanticCoverage": {
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 0.929,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0
+      },
+      "anchorIntegrity": {
+        "protectedAnchorIntegrity": 1,
+        "totalAnchors": 0,
+        "resolvedAnchors": 0,
+        "missingAnchors": 0
+      },
+      "aperture": {
+        "temporalPosture": "synced",
+        "closureClass": "closed",
+        "closureScore": 0.991,
+        "historicalCrease": 0.013,
+        "unfoldingEnergy": 0.015,
+        "beaconStatus": "beacon-idle",
+        "cumulativeNarrowing": 0.255,
+        "dominantLoss": "retrieval gating"
+      },
+      "selectiveAdmissibilityDrift": {
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.088
+      }
     },
     "planSummary": {
       "relationInventory": {
@@ -144,8 +184,7 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "front-if",
-        "beat-merge"
+        "merge-short-beats"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:wks->weeks",
@@ -153,12 +192,12 @@
         "expanded:dont->do-not",
         "expanded:slash-list->sentences"
       ],
-      "connectorStrategy": "front",
+      "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
       "candidateCount": 2,
-      "landedCandidateId": "base:order-beat",
+      "landedCandidateId": "base:syntax-shape",
       "families": [
         "syntax-shape",
         "order-beat"
@@ -174,7 +213,6 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "sentence-spread",
         "punctuation-shape",
         "orthography-posture",
         "lexical-register"
@@ -202,9 +240,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.153,
-      "outputDonorDistance": 4.24,
-      "donorImprovement": 0,
-      "donorImprovementRatio": 0,
+      "outputDonorDistance": 3.903,
+      "donorImprovement": 0.25,
+      "donorImprovementRatio": 0.06,
       "sourceOutputLexicalOverlap": 0.857
     },
     "candidateLedger": [
@@ -212,7 +250,7 @@
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "selected",
         "score": 0.9129,
         "toolabilityScore": 0.8486,
         "rewriteStrength": 1,
@@ -227,13 +265,53 @@
           "artifact:fragment"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "narrative-scene",
+          "relationInventory": {
+            "sourceClass": "narrative-scene",
+            "paragraphCount": 1,
+            "sentenceCount": 5,
+            "clauseCount": 7,
+            "exactAnchorCount": 0
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.929,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 0,
+            "resolvedAnchors": 0,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.991,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.015,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that in"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
-        "status": "selected",
+        "status": "eligible",
         "score": 0.7325,
         "toolabilityScore": 0.8903,
         "rewriteStrength": 1,
@@ -248,6 +326,46 @@
           "artifact:fragment"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "narrative-scene",
+          "relationInventory": {
+            "sourceClass": "narrative-scene",
+            "paragraphCount": 1,
+            "sentenceCount": 5,
+            "clauseCount": 7,
+            "exactAnchorCount": 0
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.929,
+            "polarityMismatches": 1,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 0,
+            "resolvedAnchors": 0,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.931,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.038,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.094
+          }
+        },
         "outputPreview": "Freeze runs thru q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, room w"
       }
     ],
@@ -257,9 +375,49 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 2,
-      "winningCandidateId": "base:order-beat"
+      "winningCandidateId": "base:syntax-shape",
+      "ontologyRoutePressure": {
+        "sourceClass": "narrative-scene",
+        "relationInventory": {
+          "sourceClass": "narrative-scene",
+          "paragraphCount": 1,
+          "sentenceCount": 5,
+          "clauseCount": 7,
+          "exactAnchorCount": 0
+        },
+        "semanticCoverage": {
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.929,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
+        },
+        "anchorIntegrity": {
+          "protectedAnchorIntegrity": 1,
+          "totalAnchors": 0,
+          "resolvedAnchors": 0,
+          "missingAnchors": 0
+        },
+        "aperture": {
+          "temporalPosture": "synced",
+          "closureClass": "closed",
+          "closureScore": 0.991,
+          "historicalCrease": 0.013,
+          "unfoldingEnergy": 0.015,
+          "beaconStatus": "beacon-idle",
+          "cumulativeNarrowing": 0.255,
+          "dominantLoss": "retrieval gating"
+        },
+        "selectiveAdmissibilityDrift": {
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.088
+        }
+      }
     },
-    "winningCandidateId": "base:order-beat"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -269,8 +427,7 @@
       "orthography-posture",
       "punctuation-shape",
       "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "sentence-mean"
     ],
     "lexemeSwapFamilies": [
       "surface"
@@ -283,8 +440,7 @@
       "sourceClass:narrative-scene"
     ],
     "structuralOperations": [
-      "beat-merge",
-      "front-if"
+      "merge-short-beats"
     ],
     "lexicalOperations": [
       "expanded:dont->do-not",
@@ -292,13 +448,13 @@
       "expanded:w->with",
       "expanded:wks->weeks"
     ],
-    "connectorStrategy": "front",
+    "connectorStrategy": "cascade",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.929,
-    "polarityMismatches": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

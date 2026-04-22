@@ -12,6 +12,32 @@ function round3(value) {
   return Number(value.toFixed(3));
 }
 
+function resolveOntologyPressureContext(apertureContext = null) {
+  const drift = apertureContext?.selectiveAdmissibilityDrift || {};
+  const aperture = apertureContext?.aperture || {};
+  const anchorIntegrity = apertureContext?.anchorIntegrity || {};
+  const routePressure = clamp01(drift?.routePressure ?? 0);
+  const beaconActive = aperture?.beaconStatus === 'beacon-active';
+
+  return {
+    routeFloor: String(drift?.routeFloor || 'play'),
+    routePressure,
+    witnessBump: round3(clamp(
+      (routePressure * 0.18) +
+      (beaconActive ? 0.08 : 0) +
+      ((anchorIntegrity?.protectedAnchorIntegrity ?? 1) < 0.95 ? 0.06 : 0),
+      0,
+      0.4
+    )),
+    justiceBump: round3(clamp(
+      (routePressure * 0.16) +
+      ((anchorIntegrity?.protectedAnchorIntegrity ?? 1) < 0.95 ? 0.05 : 0),
+      0,
+      0.35
+    ))
+  };
+}
+
 export const HARBOR_LIBRARY = {
   'mirror.off': {
     mode_class: 'anti-reflective safe passage',
@@ -183,6 +209,7 @@ export function buildLedgerRow({
   apertureContext = null
 }) {
   const harbor = HARBOR_LIBRARY[harborFunction];
+  const ontologyPressure = resolveOntologyPressureContext(apertureContext);
   const aperture = apertureContext || buildTD613ApertureContext({
     recognized,
     explained,
@@ -223,12 +250,14 @@ export function buildLedgerRow({
     harborFunction,
     custodyArchive
   });
+  const effectiveWitnessLoad = round3(clamp(witnessLoad + ontologyPressure.witnessBump, 0, 2));
   const justiceDeficit = round3(clamp(
     0.10 +
     (clamp01(criticality) * 0.34) +
     (clamp01(branchPressure) * 0.22) +
     (clamp01(routePressure) * 0.18) +
-    (custodyArchive === 'witness' ? 0.16 : 0.04),
+    (custodyArchive === 'witness' ? 0.16 : 0.04) +
+    ontologyPressure.justiceBump,
     0,
     2
   ));
@@ -261,7 +290,7 @@ export function buildLedgerRow({
     shared_cost: sharedCost,
     reuse_gain: computeReuseGain(soloCost, sharedCost),
     provenance_retention: harbor.provenance_retention,
-    witness_load: witnessLoad,
+    witness_load: effectiveWitnessLoad,
     justice_deficit: justiceDeficit,
     route_status: routeStatus,
     route_available: routeAvailable,
@@ -276,6 +305,16 @@ export function buildLedgerRow({
     counter_recognition_required: aperture.counterRecognitionRequired,
     generative_passage_blocked: aperture.generativePassageBlocked,
     recapture_risk: aperture.recaptureRisk,
+    temporal_posture: apertureContext?.aperture?.temporalPosture || null,
+    closure_class: apertureContext?.aperture?.closureClass || null,
+    closure_score: apertureContext?.aperture?.closureScore ?? null,
+    historical_crease: apertureContext?.aperture?.historicalCrease ?? null,
+    unfolding_energy: apertureContext?.aperture?.unfoldingEnergy ?? null,
+    beacon_status: apertureContext?.aperture?.beaconStatus || null,
+    route_floor: apertureContext?.selectiveAdmissibilityDrift?.routeFloor || null,
+    selective_admissibility_drift: apertureContext?.selectiveAdmissibilityDrift || null,
+    relation_inventory_source_class: apertureContext?.relationInventory?.sourceClass || null,
+    protected_anchor_integrity: apertureContext?.anchorIntegrity?.protectedAnchorIntegrity ?? null,
     receipt_hash: `sha256:${eventId}`
   };
 }

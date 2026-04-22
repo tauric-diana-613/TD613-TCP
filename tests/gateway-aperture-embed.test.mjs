@@ -16,7 +16,8 @@ assert.ok(gatewayHtml.includes('id="gatewayPreviewMoire"'), 'gateway HTML expose
 assert.ok(gatewayHtml.includes('id="gatewayPreviewRun"'), 'gateway HTML exposes the gateway Propagate control');
 assert.ok(gatewayHtml.includes('id="gatewayDoorDeck"'), 'gateway HTML surfaces the left-side room doors');
 assert.ok(gatewayHtml.includes('id="gatewayDoorHarbor"'), 'gateway HTML keeps Safe Harbor as a visible room door');
-assert.ok(gatewayHtml.includes('id="gatewayApertureHarborLink"'), 'gateway HTML includes the Aperture-to-Harbor bridge action');
+assert.ok(!gatewayHtml.includes('id="gatewayApertureHarborLink"'), 'gateway HTML removes the duplicate Aperture-to-Harbor bridge action');
+assert.ok(!gatewayHtml.includes('<a class="gateway-link" href="./safe-harbor/index.html">Safe Harbor</a>'), 'gateway HTML removes the duplicate Safe Harbor header link');
 assert.ok(browserMainSource.includes('GATEWAY_APERTURE_HANDOFF_KEY'), 'gateway runtime persists Aperture bridge summaries');
 assert.ok(browserMainSource.includes('handleGatewayApertureBridgeMessage'), 'gateway runtime still accepts same-origin Aperture bridge messages');
 assert.ok(browserMainSource.includes('handleGatewayApertureStorageEvent'), 'gateway runtime listens for stored Aperture lane updates');

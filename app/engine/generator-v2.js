@@ -1,6 +1,7 @@
 import {
   auditTD613ApertureWitnessAnchors,
   buildTD613ApertureAudit,
+  buildTD613OntologyAudit,
   classifyTD613ApertureProjection,
   detectTD613ApertureTextPathologies,
   reviewTD613ApertureTransfer
@@ -2838,6 +2839,7 @@ function buildRetrievalTraceV2({
     generatorVersion: 'v2',
     semanticAudit: candidate?.semanticAudit || {},
     protectedAnchorAudit: candidate?.protectedAnchorAudit || {},
+    ontologyAudit: candidate?.ontologyAudit || null,
     planSummary: buildPlanSummary(candidate, candidateLedger, testedFamilyIds),
     candidateSummary: buildCandidateSummary(candidateLedger, generationDocket),
     realizationSummary: Object.freeze({
@@ -2869,13 +2871,32 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
   const opportunityProfile = buildOpportunityProfileFromIR(sourceIR);
   const auditBundle = buildSemanticAuditBundle(sourceIR, sourceText, protectedState);
   const sourceClass = classifyV2SourceClass(sourceText);
+  const nativeRelationInventory = buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors);
+  const nativeOntologyAudit = buildTD613OntologyAudit({
+    sourceClass,
+    relationInventory: nativeRelationInventory,
+    semanticAudit: auditBundle.semanticAudit,
+    protectedAnchorAudit: auditBundle.protectedAnchorAudit,
+    apertureReview: {
+      semanticCoverageRisk: 0,
+      recaptureRisk: 0,
+      candidateSuppression: 0,
+      observabilityDeficit: 0,
+      aliasPersistence: 0,
+      namingSensitivity: 0,
+      redundancyInflation: 0,
+      capacityPressure: 0,
+      policyPressure: 0
+    }
+  });
   const generationDocket = Object.freeze({
     status: 'landed',
     holdClass: null,
     headline: shell?.mode === 'native' ? 'Generator V2 stayed native.' : 'Generator V2 stayed on source cadence.',
     reasons: Object.freeze([]),
     candidateCount: 1,
-    winningCandidateId: 'native'
+    winningCandidateId: 'native',
+    ontologyRoutePressure: nativeOntologyAudit
   });
   const apertureAudit = buildTD613ApertureAudit({
     generatorFault: false,
@@ -2903,6 +2924,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
       movementConfidence: 0,
       failureReasons: Object.freeze([]),
       transferClass: 'native',
+      ontologyAudit: nativeOntologyAudit,
       outputPreview: sourceText.slice(0, 160)
     })
   ]);
@@ -2917,9 +2939,10 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
           lexemeSwaps: [],
           visibleShift: false,
           nonTrivialShift: false,
-          relationInventory: buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors),
+          relationInventory: nativeRelationInventory,
           semanticAudit: auditBundle.semanticAudit,
           protectedAnchorAudit: auditBundle.protectedAnchorAudit,
+          ontologyAudit: nativeOntologyAudit,
           connectorStrategy: 'balanced',
           contractionStrategy: 'preserve'
         }),
@@ -2985,6 +3008,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
     nonTrivialShift: false,
     semanticAudit: auditBundle.semanticAudit,
     protectedAnchorAudit: auditBundle.protectedAnchorAudit,
+    ontologyAudit: nativeOntologyAudit,
     apertureAudit,
     apertureProtocol: Object.freeze({
       outcome: 'projected',
@@ -3160,6 +3184,13 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     actionCoverage: Number(semanticAudit.actionCoverage ?? 1),
     objectCoverage: Number(semanticAudit.objectCoverage ?? 1)
   });
+  const ontologyAudit = buildTD613OntologyAudit({
+    sourceClass,
+    relationInventory: authored.relationInventory,
+    semanticAudit,
+    protectedAnchorAudit,
+    apertureReview
+  });
   const classification = classifyTD613ApertureProjection({
     sourceText,
     outputText,
@@ -3324,6 +3355,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     targetFit,
     transferClass,
     relationInventory: authored.relationInventory,
+    ontologyAudit,
     structuralOperations: authored.structuralOperations,
     lexicalOperations: authored.lexicalOperations,
     connectorStrategy: authored.connectorStrategy,
@@ -3370,6 +3402,7 @@ function buildCandidateLedger(candidates = [], landedId = null) {
     artifactFlags: Object.freeze([...(candidate.artifactAudit?.flags || [])]),
     toolabilityWarnings: Object.freeze([...(candidate.toolabilityWarnings || [])]),
     transferClass: candidate.transferClass || 'weak',
+    ontologyAudit: candidate.ontologyAudit || null,
     outputPreview: String(candidate.outputText || '').slice(0, 160)
   })));
 }
@@ -3377,6 +3410,9 @@ function buildCandidateLedger(candidates = [], landedId = null) {
 function candidateHoldClass(candidate = null) {
   if (!candidate) {
     return 'below-rewrite-bar';
+  }
+  if (candidateRouteFloorRank(candidate) >= 2) {
+    return 'aperture-route-pressure';
   }
   if ((candidate.failureReasons || []).includes('pathology')) {
     return 'pathology';
@@ -3418,6 +3454,61 @@ function candidateFamilyPriority(candidate = null) {
 
 function candidateToolabilityScore(candidate = null) {
   return Number(candidate?.toolabilityAudit?.toolabilityScore || 0);
+}
+
+function candidateOntologyAudit(candidate = null) {
+  return candidate?.ontologyAudit || null;
+}
+
+function candidateDriftRank(candidate = null) {
+  const driftClass = String(candidateOntologyAudit(candidate)?.selectiveAdmissibilityDrift?.driftClass || 'none').toLowerCase();
+  if (driftClass === 'severe') {
+    return 3;
+  }
+  if (driftClass === 'active') {
+    return 2;
+  }
+  if (driftClass === 'watch') {
+    return 1;
+  }
+  return 0;
+}
+
+function candidateRouteFloorRank(candidate = null) {
+  const routeFloor = String(candidateOntologyAudit(candidate)?.selectiveAdmissibilityDrift?.routeFloor || 'play').toLowerCase();
+  if (routeFloor === 'harbor') {
+    return 3;
+  }
+  if (routeFloor === 'buffer') {
+    return 2;
+  }
+  if (routeFloor === 'warning') {
+    return 1;
+  }
+  return 0;
+}
+
+function candidateRoutePressure(candidate = null) {
+  return Number(candidateOntologyAudit(candidate)?.selectiveAdmissibilityDrift?.routePressure || 0);
+}
+
+function candidateProtectedAnchorIntegrity(candidate = null) {
+  return Number(candidateOntologyAudit(candidate)?.anchorIntegrity?.protectedAnchorIntegrity ?? candidate?.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1);
+}
+
+function candidateMinimumSemanticCoverage(candidate = null) {
+  const semanticCoverage = candidateOntologyAudit(candidate)?.semanticCoverage || candidate?.semanticAudit || {};
+  return Math.min(
+    Number(semanticCoverage?.propositionCoverage ?? 1),
+    Number(semanticCoverage?.actorCoverage ?? 1),
+    Number(semanticCoverage?.actionCoverage ?? 1),
+    Number(semanticCoverage?.objectCoverage ?? 1)
+  );
+}
+
+function candidateDeformationLoad(candidate = null) {
+  const aperture = candidateOntologyAudit(candidate)?.aperture || {};
+  return Number(aperture?.historicalCrease || 0) + Number(aperture?.unfoldingEnergy || 0);
 }
 
 function classRecoveryFamilies(sourceClass = 'formal-correspondence') {
@@ -3502,6 +3593,11 @@ function shouldRunRecoveryRound(sourceClass = 'formal-correspondence', selected 
 function selectWinningCandidate(candidates = []) {
   return [...(candidates || [])]
     .sort((left, right) =>
+      candidateDriftRank(left) - candidateDriftRank(right) ||
+      candidateRoutePressure(left) - candidateRoutePressure(right) ||
+      candidateProtectedAnchorIntegrity(right) - candidateProtectedAnchorIntegrity(left) ||
+      candidateMinimumSemanticCoverage(right) - candidateMinimumSemanticCoverage(left) ||
+      candidateDeformationLoad(left) - candidateDeformationLoad(right) ||
       candidateTransferRank(right) - candidateTransferRank(left) ||
       candidateToolabilityScore(right) - candidateToolabilityScore(left) ||
       Number(right.personaSeparationAudit?.score || 0) - Number(left.personaSeparationAudit?.score || 0) ||
@@ -3513,6 +3609,9 @@ function selectWinningCandidate(candidates = []) {
 }
 
 function holdHeadline(holdClass = 'below-rewrite-bar') {
+  if (holdClass === 'aperture-route-pressure') {
+    return 'Generator V2 hold // Aperture raised the ontology route floor above publishable passage.';
+  }
   if (holdClass === 'hard-anchor-failure') {
     return 'Generator V2 hold // exact witness anchors broke under rewrite pressure.';
   }
@@ -3528,6 +3627,7 @@ function holdHeadline(holdClass = 'below-rewrite-bar') {
 function explainGenerationReasonCode(code = '') {
   const explanations = {
     'hard-anchor-failure': 'Exact witness anchors broke under rewrite pressure.',
+    'aperture-route-pressure': 'Aperture held the route because ontology integrity pressure stayed above the publishable floor.',
     'anchor-drift-detected': 'Protected anchor integrity slipped below the class floor.',
     'semantic-failure': 'Semantic coverage dropped below the class floor.',
     'pathology': 'The output collapsed into a render-unsafe form.',
@@ -3583,12 +3683,15 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
   const generationDocket = Object.freeze({
     status: 'landed',
     holdClass: null,
-    headline: chosen.transferClass === 'structural'
-      ? 'Generator V2 landed a structural registered rewrite.'
-      : 'Generator V2 landed a registered cadence rewrite.',
+    headline: candidateRouteFloorRank(chosen) >= 1
+      ? 'Generator V2 landed under Aperture warning pressure.'
+      : chosen.transferClass === 'structural'
+        ? 'Generator V2 landed a structural registered rewrite.'
+        : 'Generator V2 landed a registered cadence rewrite.',
     reasons: Object.freeze([]),
     candidateCount: candidateLedger.length,
-    winningCandidateId: chosen.id
+    winningCandidateId: chosen.id,
+    ontologyRoutePressure: chosen.ontologyAudit || null
   });
   const retrievalTrace = options?.retrieval
     ? buildRetrievalTraceV2({
@@ -3631,6 +3734,7 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
     semanticRisk: chosen.semanticRisk,
     semanticAudit: chosen.semanticAudit,
     protectedAnchorAudit: chosen.protectedAnchorAudit,
+    ontologyAudit: chosen.ontologyAudit || null,
     visibleShift: chosen.visibleShift,
     nonTrivialShift: chosen.nonTrivialShift,
     lexicalShiftProfile: chosen.lexicalShiftProfile,
@@ -3664,12 +3768,12 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
   });
 }
 
-function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates = [], sourceClass = 'formal-correspondence') {
+function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates = [], sourceClass = 'formal-correspondence', preferredCandidate = null, holdOverride = null) {
   const sourceProfile = options.sourceProfile || extractCadenceProfile(sourceText);
   const sourceIR = options.sourceIR || segmentTextToIR(sourceText, { literals: [], text: sourceText });
   const opportunityProfile = buildOpportunityProfileFromIR(sourceIR);
-  const bestCandidate = [...candidates].sort((left, right) => right.score - left.score)[0] || null;
-  const holdClass = candidateHoldClass(bestCandidate);
+  const bestCandidate = preferredCandidate || [...candidates].sort((left, right) => right.score - left.score)[0] || null;
+  const holdClass = holdOverride || candidateHoldClass(bestCandidate);
   const headline = holdHeadline(holdClass);
   const reasonCodes = uniqueStrings([
     ...(bestCandidate?.failureReasons || []),
@@ -3707,7 +3811,8 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     headline,
     reasons: Object.freeze(reasons),
     candidateCount: candidateLedger.length,
-    winningCandidateId: null
+    winningCandidateId: holdClass === 'aperture-route-pressure' ? (bestCandidate?.id || null) : null,
+    ontologyRoutePressure: bestCandidate?.ontologyAudit || null
   });
   const retrievalTrace = options?.retrieval
     ? buildRetrievalTraceV2({
@@ -3786,6 +3891,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
       tenseMismatches: 0,
       protectedAnchorIntegrity: 1
     },
+    ontologyAudit: bestCandidate?.ontologyAudit || null,
     protectedAnchorAudit: bestCandidate?.protectedAnchorAudit || {
       totalAnchors: 0,
       resolvedAnchors: 0,
@@ -3864,7 +3970,13 @@ export function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
     selected = selectWinningCandidate(selectionPool);
   }
 
-  if (!selected) {
+  const apertureRoutePressureHold = Boolean(
+    selected &&
+    selectionPool.length &&
+    selectionPool.every((candidate) => candidateRouteFloorRank(candidate) >= 2)
+  );
+
+  if (!selected || apertureRoutePressureHold) {
     if (typeof globalThis !== 'undefined' && globalThis.TD613_DUEL_DEBUG) {
       const rejected = candidates.filter((candidate) => !candidate.passed);
       const sample = rejected.slice(0, 3).map((candidate) => ({
@@ -3888,6 +4000,7 @@ export function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
           eligibleCount: eligibleCandidates.length,
           boundedCount: boundedCandidates.length,
           recoveryRan: shouldRunRecoveryRound(sourceClass, null, candidates),
+          apertureRoutePressureHold,
           rejectedSample: sample
         });
       } catch (error) { /* ignore log failure */ }
@@ -3897,7 +4010,7 @@ export function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
       testedFamilyIds,
       sourceProfile,
       sourceIR
-    }, candidates, sourceClass);
+    }, candidates, sourceClass, apertureRoutePressureHold ? selected : null, apertureRoutePressureHold ? 'aperture-route-pressure' : null);
   }
 
   return buildLandedTransfer(sourceText, shell, {

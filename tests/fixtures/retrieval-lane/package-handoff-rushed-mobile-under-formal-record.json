@@ -28,7 +28,7 @@
       "actionCoverage": 1,
       "objectCoverage": 0.958,
       "polarityMismatches": 0,
-      "tenseMismatches": 1,
+      "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
@@ -41,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.091
+          "globalBagScore": 0.087
         },
         {
           "sourceClauseId": "s1c0",
@@ -53,7 +53,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.273
+          "globalBagScore": 0.261
         },
         {
           "sourceClauseId": "s2c0",
@@ -65,7 +65,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.227
+          "globalBagScore": 0.217
         },
         {
           "sourceClauseId": "s3c0",
@@ -77,11 +77,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.045
+          "globalBagScore": 0.043
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s5c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -89,29 +89,69 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.273
+          "globalBagScore": 0.261
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s4c0",
+          "matchedClauseId": "s6c0+s7c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
-          "tenseMismatch": 1,
-          "bagScore": 0.25,
-          "globalBagScore": 0.04
+          "tenseMismatch": 0,
+          "bagScore": 0.5,
+          "globalBagScore": 0.08
         }
       ],
       "sourceClauseCount": 6,
-      "outputClauseCount": 7
+      "outputClauseCount": 8
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
       "resolvedAnchors": 1,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
+    },
+    "ontologyAudit": {
+      "sourceClass": "formal-correspondence",
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 6,
+        "clauseCount": 6,
+        "exactAnchorCount": 1
+      },
+      "semanticCoverage": {
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 0.958,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0
+      },
+      "anchorIntegrity": {
+        "protectedAnchorIntegrity": 1,
+        "totalAnchors": 1,
+        "resolvedAnchors": 1,
+        "missingAnchors": 0
+      },
+      "aperture": {
+        "temporalPosture": "synced",
+        "closureClass": "closed",
+        "closureScore": 0.995,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.014,
+        "beaconStatus": "beacon-idle",
+        "cumulativeNarrowing": 0.255,
+        "dominantLoss": "retrieval gating"
+      },
+      "selectiveAdmissibilityDrift": {
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.088
+      }
     },
     "planSummary": {
       "relationInventory": {
@@ -132,8 +172,7 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "ledger-merge",
-        "front-if"
+        "ledger-merge"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:slash-list->sentences"
@@ -143,7 +182,7 @@
     },
     "candidateSummary": {
       "candidateCount": 2,
-      "landedCandidateId": "base:hybrid",
+      "landedCandidateId": "base:syntax-shape",
       "families": [
         "syntax-shape",
         "hybrid"
@@ -152,8 +191,8 @@
       "averageToolabilityScore": 0.7986
     },
     "realizationSummary": {
-      "transferClass": "structural",
-      "borrowedShellOutcome": "structural",
+      "transferClass": "surface",
+      "borrowedShellOutcome": "surface-held",
       "borrowedShellFailureClass": null,
       "realizationTier": "structural",
       "changedDimensions": [
@@ -170,9 +209,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.469,
-      "outputDonorDistance": 3.325,
-      "donorImprovement": 1.144,
-      "donorImprovementRatio": 0.256,
+      "outputDonorDistance": 3.577,
+      "donorImprovement": 0.892,
+      "donorImprovementRatio": 0.2,
       "sourceOutputLexicalOverlap": 1
     },
     "candidateLedger": [
@@ -180,7 +219,7 @@
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "archivist",
-        "status": "eligible",
+        "status": "selected",
         "score": 0.8595,
         "toolabilityScore": 0.7531,
         "rewriteStrength": 0.8416,
@@ -191,13 +230,53 @@
         "artifactFlags": [],
         "toolabilityWarnings": [],
         "transferClass": "surface",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 6,
+            "clauseCount": 6,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.958,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.995,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.014,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "2b pkg wasnt brought down. Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail. Red rush sticker still on it. I moved i"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "archivist",
-        "status": "selected",
+        "status": "eligible",
         "score": 1.0599,
         "toolabilityScore": 0.8442,
         "rewriteStrength": 0.9764,
@@ -212,21 +291,103 @@
           "artifact:clause-join"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 6,
+            "clauseCount": 6,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.958,
+            "polarityMismatches": 0,
+            "tenseMismatches": 1
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "drift",
+            "closureScore": 0.955,
+            "historicalCrease": 0.029,
+            "unfoldingEnergy": 0.032,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "watch",
+            "driftReasons": [
+              "closure-class:drift"
+            ],
+            "routeFloor": "warning",
+            "routePressure": 0.333
+          }
+        },
         "outputPreview": "2b pkg wasnt brought down. Tag says attempted 6:41 but no one buzzed her. It was just sitting on 2nd fl landing by rail. Red rush sticker still on it. If mgmt a"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a structural registered rewrite.",
+      "headline": "Generator V2 landed a registered cadence rewrite.",
       "reasons": [],
       "candidateCount": 2,
-      "winningCandidateId": "base:hybrid"
+      "winningCandidateId": "base:syntax-shape",
+      "ontologyRoutePressure": {
+        "sourceClass": "formal-correspondence",
+        "relationInventory": {
+          "sourceClass": "formal-correspondence",
+          "paragraphCount": 1,
+          "sentenceCount": 6,
+          "clauseCount": 6,
+          "exactAnchorCount": 1
+        },
+        "semanticCoverage": {
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.958,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
+        },
+        "anchorIntegrity": {
+          "protectedAnchorIntegrity": 1,
+          "totalAnchors": 1,
+          "resolvedAnchors": 1,
+          "missingAnchors": 0
+        },
+        "aperture": {
+          "temporalPosture": "synced",
+          "closureClass": "closed",
+          "closureScore": 0.995,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.014,
+          "beaconStatus": "beacon-idle",
+          "cumulativeNarrowing": 0.255,
+          "dominantLoss": "retrieval gating"
+        },
+        "selectiveAdmissibilityDrift": {
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.088
+        }
+      }
     },
-    "winningCandidateId": "base:hybrid"
+    "winningCandidateId": "base:syntax-shape"
   },
   "semanticContract": {
-    "transferClass": "structural",
+    "transferClass": "surface",
     "realizationTier": "structural",
     "changedDimensions": [
       "lexical-register",
@@ -244,7 +405,6 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "front-if",
       "ledger-merge"
     ],
     "lexicalOperations": [
@@ -257,7 +417,7 @@
     "actionCoverage": 1,
     "objectCoverage": 0.958,
     "polarityMismatches": 0,
-    "tenseMismatches": 1,
+    "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }
 }

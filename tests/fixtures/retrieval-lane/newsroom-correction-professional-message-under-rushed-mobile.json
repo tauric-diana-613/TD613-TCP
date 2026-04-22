@@ -161,6 +161,46 @@
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
     },
+    "ontologyAudit": {
+      "sourceClass": "procedural-record",
+      "relationInventory": {
+        "sourceClass": "procedural-record",
+        "paragraphCount": 1,
+        "sentenceCount": 7,
+        "clauseCount": 10,
+        "exactAnchorCount": 6
+      },
+      "semanticCoverage": {
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 0.975,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0
+      },
+      "anchorIntegrity": {
+        "protectedAnchorIntegrity": 1,
+        "totalAnchors": 6,
+        "resolvedAnchors": 6,
+        "missingAnchors": 0
+      },
+      "aperture": {
+        "temporalPosture": "synced",
+        "closureClass": "closed",
+        "closureScore": 0.997,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.013,
+        "beaconStatus": "beacon-idle",
+        "cumulativeNarrowing": 0.255,
+        "dominantLoss": "retrieval gating"
+      },
+      "selectiveAdmissibilityDrift": {
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.088
+      }
+    },
     "planSummary": {
       "relationInventory": {
         "sourceClass": "procedural-record",
@@ -257,6 +297,46 @@
           "persona-markers-thin"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 10,
+            "exactAnchorCount": 6
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 0.902,
+            "actionCoverage": 1,
+            "objectCoverage": 1,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 6,
+            "resolvedAnchors": 6,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.984,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.017,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.089
+          }
+        },
         "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
       },
       {
@@ -276,6 +356,46 @@
           "persona-markers-thin"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 10,
+            "exactAnchorCount": 6
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 0.902,
+            "actionCoverage": 1,
+            "objectCoverage": 1,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 6,
+            "resolvedAnchors": 6,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.984,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.017,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.089
+          }
+        },
         "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
       },
       {
@@ -295,6 +415,46 @@
           "persona-markers-thin"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 10,
+            "exactAnchorCount": 6
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.975,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 6,
+            "resolvedAnchors": 6,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.997,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.013,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
       },
       {
@@ -314,6 +474,46 @@
           "persona-markers-thin"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "procedural-record",
+          "relationInventory": {
+            "sourceClass": "procedural-record",
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 10,
+            "exactAnchorCount": 6
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.975,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 6,
+            "resolvedAnchors": 6,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.997,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.013,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
       }
     ],
@@ -323,7 +523,47 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 4,
-      "winningCandidateId": "base:hybrid"
+      "winningCandidateId": "base:hybrid",
+      "ontologyRoutePressure": {
+        "sourceClass": "procedural-record",
+        "relationInventory": {
+          "sourceClass": "procedural-record",
+          "paragraphCount": 1,
+          "sentenceCount": 7,
+          "clauseCount": 10,
+          "exactAnchorCount": 6
+        },
+        "semanticCoverage": {
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.975,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
+        },
+        "anchorIntegrity": {
+          "protectedAnchorIntegrity": 1,
+          "totalAnchors": 6,
+          "resolvedAnchors": 6,
+          "missingAnchors": 0
+        },
+        "aperture": {
+          "temporalPosture": "synced",
+          "closureClass": "closed",
+          "closureScore": 0.997,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.013,
+          "beaconStatus": "beacon-idle",
+          "cumulativeNarrowing": 0.255,
+          "dominantLoss": "retrieval gating"
+        },
+        "selectiveAdmissibilityDrift": {
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.088
+        }
+      }
     },
     "winningCandidateId": "base:hybrid"
   },

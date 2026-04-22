@@ -641,6 +641,320 @@ export function buildTD613GovernedExposureSchema({
   });
 }
 
+function td613RouteFloorRank(routeFloor = 'play') {
+  const normalized = String(routeFloor || 'play').toLowerCase();
+  if (normalized === 'harbor') {
+    return 3;
+  }
+  if (normalized === 'buffer') {
+    return 2;
+  }
+  if (normalized === 'warning') {
+    return 1;
+  }
+  return 0;
+}
+
+function td613RouteFloorLabel(rank = 0) {
+  if (rank >= 3) {
+    return 'harbor';
+  }
+  if (rank >= 2) {
+    return 'buffer';
+  }
+  if (rank >= 1) {
+    return 'warning';
+  }
+  return 'play';
+}
+
+function td613DriftRank(driftClass = 'none') {
+  const normalized = String(driftClass || 'none').toLowerCase();
+  if (normalized === 'severe') {
+    return 3;
+  }
+  if (normalized === 'active') {
+    return 2;
+  }
+  if (normalized === 'watch') {
+    return 1;
+  }
+  return 0;
+}
+
+function td613MinSemanticCoverage(semanticCoverage = {}) {
+  return Math.min(
+    clamp01(semanticCoverage.propositionCoverage),
+    clamp01(semanticCoverage.actorCoverage),
+    clamp01(semanticCoverage.actionCoverage),
+    clamp01(semanticCoverage.objectCoverage)
+  );
+}
+
+function td613MismatchRate(mismatchCount = 0, clauseCount = 0) {
+  const denominator = Math.max(1, Number(clauseCount || 0));
+  return clamp01(Number(mismatchCount || 0) / denominator);
+}
+
+export function buildTD613OntologyAudit({
+  sourceClass = 'formal-correspondence',
+  relationInventory = {},
+  semanticAudit = {},
+  protectedAnchorAudit = {},
+  apertureReview = {},
+  apertureSchema = null
+} = {}) {
+  const semanticCoverage = Object.freeze({
+    propositionCoverage: round3(clamp01(semanticAudit?.propositionCoverage ?? 1)),
+    actorCoverage: round3(clamp01(semanticAudit?.actorCoverage ?? 1)),
+    actionCoverage: round3(clamp01(semanticAudit?.actionCoverage ?? 1)),
+    objectCoverage: round3(clamp01(semanticAudit?.objectCoverage ?? 1)),
+    polarityMismatches: Number(semanticAudit?.polarityMismatches ?? 0),
+    tenseMismatches: Number(semanticAudit?.tenseMismatches ?? 0)
+  });
+  const totalAnchors = Math.max(
+    Number(relationInventory?.exactAnchorCount ?? 0),
+    Number(protectedAnchorAudit?.totalAnchors ?? 0),
+    Number(protectedAnchorAudit?.resolvedAnchors ?? 0) + Number(protectedAnchorAudit?.missingAnchors ?? 0),
+    0
+  );
+  const protectedAnchorIntegrity = round3(clamp01(
+    protectedAnchorAudit?.protectedAnchorIntegrity ?? semanticAudit?.protectedAnchorIntegrity ?? 1
+  ));
+  const resolvedAnchors = Math.round(totalAnchors * protectedAnchorIntegrity);
+  const missingAnchors = Math.max(0, totalAnchors - resolvedAnchors);
+  const anchorIntegrity = Object.freeze({
+    protectedAnchorIntegrity,
+    totalAnchors,
+    resolvedAnchors,
+    missingAnchors
+  });
+  const sourceClauseCount = Math.max(
+    Number(semanticAudit?.sourceClauseCount ?? 0),
+    Number(relationInventory?.clauseCount ?? 0),
+    1
+  );
+  const polarityRate = td613MismatchRate(semanticCoverage.polarityMismatches, sourceClauseCount);
+  const tenseRate = td613MismatchRate(semanticCoverage.tenseMismatches, sourceClauseCount);
+  const semanticCoverageRisk = clamp01(
+    apertureReview?.semanticCoverageRisk ??
+      ((1 - semanticCoverage.propositionCoverage) * 0.34) +
+      ((1 - semanticCoverage.actorCoverage) * 0.16) +
+      ((1 - semanticCoverage.actionCoverage) * 0.20) +
+      ((1 - semanticCoverage.objectCoverage) * 0.12) +
+      ((1 - protectedAnchorIntegrity) * 0.18)
+  );
+  const provenanceIntegrity = round3(clamp01(
+    0.55 * protectedAnchorIntegrity +
+    0.45 * td613MinSemanticCoverage(semanticCoverage)
+  ));
+  const governedExposure = apertureSchema || buildTD613GovernedExposureSchema({
+    latentState: {
+      label: 'relation inventory',
+      count: Math.max(
+        Number(relationInventory?.clauseCount ?? 0),
+        Number(relationInventory?.sentenceCount ?? 0),
+        1
+      )
+    },
+    projectedState: {
+      label: 'semantic coverage floor',
+      ratio: td613MinSemanticCoverage(semanticCoverage)
+    },
+    registeredSurface: {
+      label: 'protected anchor continuity',
+      ratio: protectedAnchorIntegrity
+    },
+    sourceClass,
+    sourceClasses: uniqueStrings([relationInventory?.sourceClass, sourceClass]),
+    authorityCeiling: sourceClass === 'procedural-record' ? 'custodial' : 'exploratory',
+    routeState: 'buffered',
+    candidateSuppression: apertureReview?.candidateSuppression ?? 0,
+    observabilityDeficit: apertureReview?.observabilityDeficit ?? 0,
+    aliasPersistence: apertureReview?.aliasPersistence ?? 0,
+    namingSensitivity: apertureReview?.namingSensitivity ?? 0,
+    redundancyInflation: apertureReview?.redundancyInflation ?? 0,
+    capacityPressure: apertureReview?.capacityPressure ?? 0,
+    policyPressure: apertureReview?.policyPressure ?? 0,
+    provenanceIntegrity,
+    burdenConcentration: semanticCoverageRisk
+  });
+  const cumulativeNarrowing = round3(clamp01(
+    governedExposure?.narrowingLedger?.length
+      ? governedExposure.narrowingLedger[governedExposure.narrowingLedger.length - 1].cumulativeNarrowing
+      : 0
+  ));
+  const historicalCrease = round3(clamp01(
+    ((1 - protectedAnchorIntegrity) * 0.32) +
+    (semanticCoverageRisk * 0.18) +
+    (clamp01(apertureReview?.recaptureRisk ?? 0) * 0.18) +
+    (clamp01(apertureReview?.aliasPersistence ?? 0) * 0.12) +
+    (clamp01(apertureReview?.candidateSuppression ?? 0) * 0.10) +
+    (tenseRate * 0.10)
+  ));
+  const closureScore = round3(clamp01(
+    (semanticCoverage.propositionCoverage * 0.34) +
+    (semanticCoverage.actorCoverage * 0.16) +
+    (semanticCoverage.actionCoverage * 0.18) +
+    (semanticCoverage.objectCoverage * 0.12) +
+    (protectedAnchorIntegrity * 0.20) -
+    Math.min(0.18, semanticCoverage.polarityMismatches * 0.06) -
+    Math.min(0.12, semanticCoverage.tenseMismatches * 0.04)
+  ));
+  const unfoldingEnergy = round3(clamp01(
+    ((1 - closureScore) * 0.30) +
+    (semanticCoverageRisk * 0.26) +
+    (clamp01(apertureReview?.capacityPressure ?? 0) * 0.14) +
+    (clamp01(apertureReview?.observabilityDeficit ?? 0) * 0.12) +
+    (clamp01(apertureReview?.candidateSuppression ?? 0) * 0.10) +
+    (polarityRate * 0.04) +
+    (tenseRate * 0.04)
+  ));
+  const temporalPosture =
+    semanticCoverage.propositionCoverage < 0.70 ||
+    protectedAnchorIntegrity < 0.90 ||
+    clamp01(apertureReview?.recaptureRisk ?? 0) >= 0.74
+      ? 'inexpressible'
+      : clamp01(apertureReview?.candidateSuppression ?? 0) >= 0.42 ||
+          clamp01(apertureReview?.observabilityDeficit ?? 0) >= 0.42 ||
+          governedExposure.Gap >= 0.55
+        ? 'suppressed'
+        : semanticCoverage.tenseMismatches > 1 ||
+            historicalCrease >= 0.55 ||
+            unfoldingEnergy >= 0.60
+          ? 'drift'
+          : semanticCoverage.actionCoverage < 0.88 ||
+              semanticCoverage.actorCoverage < 0.90 ||
+              historicalCrease >= 0.35 ||
+              clamp01(apertureReview?.recaptureRisk ?? 0) >= 0.46
+            ? 'preemptive'
+            : 'synced';
+  const closureClass =
+    closureScore < 0.42 ||
+    semanticCoverage.propositionCoverage < 0.70 ||
+    protectedAnchorIntegrity < 0.90
+      ? 'inexpressible'
+      : closureScore < 0.68 ||
+          clamp01(apertureReview?.candidateSuppression ?? 0) >= 0.42 ||
+          clamp01(apertureReview?.observabilityDeficit ?? 0) >= 0.42
+        ? 'suppressed'
+        : closureScore < 0.88 ||
+            semanticCoverage.tenseMismatches > 0 ||
+            historicalCrease >= 0.35
+          ? 'drift'
+          : 'closed';
+  const sustainedInfluence = round3(clamp01(
+    (governedExposure.Gap * 0.36) +
+    (cumulativeNarrowing * 0.34) +
+    (clamp01(apertureReview?.recaptureRisk ?? 0) * 0.20) +
+    (clamp01(apertureReview?.candidateSuppression ?? 0) * 0.10)
+  ));
+  const beaconStatus = sustainedInfluence >= 0.58 && (historicalCrease >= 0.35 || unfoldingEnergy >= 0.40)
+    ? 'beacon-active'
+    : sustainedInfluence >= 0.36
+      ? 'beacon-watch'
+      : 'beacon-idle';
+  const aperture = Object.freeze({
+    temporalPosture,
+    closureClass,
+    closureScore,
+    historicalCrease,
+    unfoldingEnergy,
+    beaconStatus,
+    cumulativeNarrowing,
+    dominantLoss: governedExposure?.dominantOperator?.label || 'admissibility filter'
+  });
+  const sourceClassMismatch = Boolean(
+    relationInventory?.sourceClass &&
+    sourceClass &&
+    String(relationInventory.sourceClass) !== String(sourceClass)
+  );
+  const severeReasons = uniqueStrings([
+    temporalPosture === 'inexpressible' ? 'temporal-posture:inexpressible' : null,
+    closureClass === 'inexpressible' ? 'closure-class:inexpressible' : null,
+    protectedAnchorIntegrity < 0.90 ? 'anchor-integrity<0.90' : null,
+    semanticCoverage.propositionCoverage < 0.70 ? 'proposition-coverage<0.70' : null,
+    semanticCoverage.polarityMismatches > 1 ? 'polarity-mismatches>1' : null,
+    beaconStatus === 'beacon-active' && (historicalCrease >= 0.70 || unfoldingEnergy >= 0.75)
+      ? 'beacon-active under sustained deformation'
+      : null
+  ]);
+  const activeReasons = uniqueStrings([
+    temporalPosture === 'suppressed' ? 'temporal-posture:suppressed' : null,
+    closureClass === 'suppressed' ? 'closure-class:suppressed' : null,
+    protectedAnchorIntegrity < 0.95 ? 'anchor-integrity<0.95' : null,
+    semanticCoverage.propositionCoverage < 0.82 ? 'proposition-coverage<0.82' : null,
+    semanticCoverage.actionCoverage < 0.75 ? 'action-coverage<0.75' : null,
+    semanticCoverage.actorCoverage < 0.80 ? 'actor-coverage<0.80' : null,
+    semanticCoverage.objectCoverage < 0.80 ? 'object-coverage<0.80' : null,
+    semanticCoverage.tenseMismatches > 1 ? 'tense-mismatches>1' : null,
+    historicalCrease >= 0.55 ? 'historical-crease>=0.55' : null,
+    unfoldingEnergy >= 0.60 ? 'unfolding-energy>=0.60' : null
+  ]);
+  const watchReasons = uniqueStrings([
+    temporalPosture === 'preemptive' ? 'temporal-posture:preemptive' : null,
+    temporalPosture === 'drift' ? 'temporal-posture:drift' : null,
+    closureClass === 'drift' ? 'closure-class:drift' : null,
+    sourceClassMismatch ? 'source-class-mismatch' : null,
+    historicalCrease >= 0.35 ? 'historical-crease>=0.35' : null,
+    unfoldingEnergy >= 0.40 ? 'unfolding-energy>=0.40' : null
+  ]);
+  const driftClass = severeReasons.length
+    ? 'severe'
+    : activeReasons.length
+      ? 'active'
+      : watchReasons.length
+        ? 'watch'
+        : 'none';
+  let routeFloorRank = td613DriftRank(driftClass);
+  if (closureClass === 'drift') {
+    routeFloorRank = Math.max(routeFloorRank, 1);
+  }
+  if (closureClass === 'suppressed') {
+    routeFloorRank = Math.max(routeFloorRank, 2);
+  }
+  if (temporalPosture === 'inexpressible') {
+    routeFloorRank = Math.max(routeFloorRank, 3);
+  }
+  if (beaconStatus === 'beacon-active') {
+    routeFloorRank = Math.min(3, routeFloorRank + 1);
+  }
+  const routeFloor = td613RouteFloorLabel(routeFloorRank);
+  const routePressure = round3(clamp01(Math.max(
+    routeFloorRank / 3,
+    (td613DriftRank(driftClass) * 0.20) +
+      (cumulativeNarrowing * 0.32) +
+      (historicalCrease * 0.24) +
+      (unfoldingEnergy * 0.24)
+  )));
+  const selectiveAdmissibilityDrift = Object.freeze({
+    driftClass,
+    driftReasons: Object.freeze(
+      driftClass === 'severe'
+        ? severeReasons
+        : driftClass === 'active'
+          ? activeReasons
+          : driftClass === 'watch'
+            ? watchReasons
+            : []
+    ),
+    routeFloor,
+    routePressure
+  });
+
+  return Object.freeze({
+    sourceClass: String(sourceClass || relationInventory?.sourceClass || 'formal-correspondence'),
+    relationInventory: Object.freeze({
+      ...(relationInventory || {}),
+      sourceClass: String(relationInventory?.sourceClass || sourceClass || 'formal-correspondence')
+    }),
+    semanticCoverage,
+    anchorIntegrity,
+    aperture,
+    selectiveAdmissibilityDrift
+  });
+}
+
 function detectIntroducedTerms(sourceText = '', outputText = '') {
   const source = normalizeComparableText(sourceText);
   const output = normalizeComparableText(outputText);

@@ -27,36 +27,24 @@
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.964,
-      "polarityMismatches": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s1c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 1,
-          "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
-        },
-        {
-          "sourceClauseId": "s1c0",
           "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.417
+          "bagScore": 0.429,
+          "globalBagScore": 0.15
         },
         {
-          "sourceClauseId": "s2c0",
+          "sourceClauseId": "s1c0",
           "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -65,11 +53,23 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.083
+          "globalBagScore": 0.278
+        },
+        {
+          "sourceClauseId": "s2c0",
+          "matchedClauseId": "s2c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.056
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -81,7 +81,7 @@
         },
         {
           "sourceClauseId": "s3c1",
-          "matchedClauseId": "s1c1",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -89,23 +89,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.083
+          "globalBagScore": 0.056
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s1c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
-        },
-        {
-          "sourceClauseId": "s5c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s4c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -113,17 +101,69 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.417
+          "globalBagScore": 0.056
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s5c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.278
         }
       ],
       "sourceClauseCount": 7,
-      "outputClauseCount": 4
+      "outputClauseCount": 6
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
       "resolvedAnchors": 1,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
+    },
+    "ontologyAudit": {
+      "sourceClass": "formal-correspondence",
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 6,
+        "clauseCount": 7,
+        "exactAnchorCount": 1
+      },
+      "semanticCoverage": {
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 0.964,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0
+      },
+      "anchorIntegrity": {
+        "protectedAnchorIntegrity": 1,
+        "totalAnchors": 1,
+        "resolvedAnchors": 1,
+        "missingAnchors": 0
+      },
+      "aperture": {
+        "temporalPosture": "synced",
+        "closureClass": "closed",
+        "closureScore": 0.996,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.013,
+        "beaconStatus": "beacon-idle",
+        "cumulativeNarrowing": 0.255,
+        "dominantLoss": "retrieval gating"
+      },
+      "selectiveAdmissibilityDrift": {
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.088
+      }
     },
     "planSummary": {
       "relationInventory": {
@@ -144,8 +184,7 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "front-if",
-        "beat-merge"
+        "front-if"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:pls->please",
@@ -153,12 +192,12 @@
         "expanded:youre->you-are",
         "expanded:thats->that-is"
       ],
-      "connectorStrategy": "front",
+      "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
       "candidateCount": 5,
-      "landedCandidateId": "base:order-beat",
+      "landedCandidateId": "base:clause-pivot",
       "families": [
         "syntax-shape",
         "register-lexicon",
@@ -175,10 +214,6 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
-        "sentence-mean",
-        "sentence-count",
-        "sentence-spread",
-        "register-mode",
         "directness",
         "abbreviation-posture",
         "orthography-posture",
@@ -212,10 +247,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.968,
-      "outputDonorDistance": 1.801,
-      "donorImprovement": 3.167,
-      "donorImprovementRatio": 0.637,
-      "sourceOutputLexicalOverlap": 0.807
+      "outputDonorDistance": 3.038,
+      "donorImprovement": 1.93,
+      "donorImprovementRatio": 0.388,
+      "sourceOutputLexicalOverlap": 0.821
     },
     "candidateLedger": [
       {
@@ -233,6 +268,46 @@
         "artifactFlags": [],
         "toolabilityWarnings": [],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 6,
+            "clauseCount": 7,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.964,
+            "polarityMismatches": 1,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.936,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.037,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.093
+          }
+        },
         "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and saws stay under canopy b, kids st"
       },
       {
@@ -250,13 +325,53 @@
         "artifactFlags": [],
         "toolabilityWarnings": [],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 6,
+            "clauseCount": 7,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.964,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.996,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.013,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "If you are late that is ok just do not start random jobs. Check in west fence table first. Glass + pallets first pass. Saws stay under canopy b, kids stay off s"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
-        "status": "selected",
+        "status": "eligible",
         "score": 1.4241,
         "toolabilityScore": 0.9004,
         "rewriteStrength": 1,
@@ -267,13 +382,53 @@
         "artifactFlags": [],
         "toolabilityWarnings": [],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 6,
+            "clauseCount": 7,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.964,
+            "polarityMismatches": 1,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.936,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.037,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.093
+          }
+        },
         "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. Glass + pallets first pass, and if wind chills out, saws stay und"
       },
       {
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "selected",
         "score": 1.2054,
         "toolabilityScore": 0.8604,
         "rewriteStrength": 1,
@@ -284,6 +439,46 @@
         "artifactFlags": [],
         "toolabilityWarnings": [],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 6,
+            "clauseCount": 7,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.964,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.996,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.013,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "If you are late that is ok just do not start random jobs. Check in west fence table first. Glass + pallets first pass. If wind chills out, saws stay under canop"
       },
       {
@@ -301,6 +496,46 @@
         "artifactFlags": [],
         "toolabilityWarnings": [],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 6,
+            "clauseCount": 7,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.964,
+            "polarityMismatches": 1,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.936,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.037,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.093
+          }
+        },
         "outputPreview": "If you are late that is ok just do not start random jobs, and check in west fence table first. If wind chills out, glass + pallets first pass, and saws stay und"
       }
     ],
@@ -310,9 +545,49 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 5,
-      "winningCandidateId": "base:order-beat"
+      "winningCandidateId": "base:clause-pivot",
+      "ontologyRoutePressure": {
+        "sourceClass": "formal-correspondence",
+        "relationInventory": {
+          "sourceClass": "formal-correspondence",
+          "paragraphCount": 1,
+          "sentenceCount": 6,
+          "clauseCount": 7,
+          "exactAnchorCount": 1
+        },
+        "semanticCoverage": {
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.964,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
+        },
+        "anchorIntegrity": {
+          "protectedAnchorIntegrity": 1,
+          "totalAnchors": 1,
+          "resolvedAnchors": 1,
+          "missingAnchors": 0
+        },
+        "aperture": {
+          "temporalPosture": "synced",
+          "closureClass": "closed",
+          "closureScore": 0.996,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.013,
+          "beaconStatus": "beacon-idle",
+          "cumulativeNarrowing": 0.255,
+          "dominantLoss": "retrieval gating"
+        },
+        "selectiveAdmissibilityDrift": {
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.088
+        }
+      }
     },
-    "winningCandidateId": "base:order-beat"
+    "winningCandidateId": "base:clause-pivot"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -321,11 +596,7 @@
       "abbreviation-posture",
       "directness",
       "lexical-register",
-      "orthography-posture",
-      "register-mode",
-      "sentence-count",
-      "sentence-mean",
-      "sentence-spread"
+      "orthography-posture"
     ],
     "lexemeSwapFamilies": [
       "surface"
@@ -338,7 +609,6 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "beat-merge",
       "front-if"
     ],
     "lexicalOperations": [
@@ -347,13 +617,13 @@
       "expanded:thats->that-is",
       "expanded:youre->you-are"
     ],
-    "connectorStrategy": "front",
+    "connectorStrategy": "cascade",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.964,
-    "polarityMismatches": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

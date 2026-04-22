@@ -27,7 +27,7 @@
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.969,
-      "polarityMismatches": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
@@ -41,7 +41,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.294
+          "globalBagScore": 0.278
         },
         {
           "sourceClauseId": "s1c0",
@@ -53,7 +53,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.176
+          "globalBagScore": 0.167
         },
         {
           "sourceClauseId": "s2c0",
@@ -65,7 +65,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.75,
-          "globalBagScore": 0.167
+          "globalBagScore": 0.158
         },
         {
           "sourceClauseId": "s3c0",
@@ -77,7 +77,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.059
+          "globalBagScore": 0.056
         },
         {
           "sourceClauseId": "s4c0",
@@ -89,22 +89,10 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.294
+          "globalBagScore": 0.278
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s2c0+s3c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 1,
-          "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
-        },
-        {
-          "sourceClauseId": "s5c1",
           "matchedClauseId": "s5c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -113,7 +101,19 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.059
+          "globalBagScore": 0.056
+        },
+        {
+          "sourceClauseId": "s5c1",
+          "matchedClauseId": "s5c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 1,
+          "globalBagScore": 0.056
         },
         {
           "sourceClauseId": "s6c0",
@@ -125,17 +125,57 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.059
+          "globalBagScore": 0.056
         }
       ],
       "sourceClauseCount": 8,
-      "outputClauseCount": 7
+      "outputClauseCount": 8
     },
     "protectedAnchorAudit": {
       "totalAnchors": 2,
       "resolvedAnchors": 2,
       "missingAnchors": [],
       "protectedAnchorIntegrity": 1
+    },
+    "ontologyAudit": {
+      "sourceClass": "formal-correspondence",
+      "relationInventory": {
+        "sourceClass": "formal-correspondence",
+        "paragraphCount": 1,
+        "sentenceCount": 7,
+        "clauseCount": 8,
+        "exactAnchorCount": 2
+      },
+      "semanticCoverage": {
+        "propositionCoverage": 1,
+        "actorCoverage": 1,
+        "actionCoverage": 1,
+        "objectCoverage": 0.969,
+        "polarityMismatches": 0,
+        "tenseMismatches": 0
+      },
+      "anchorIntegrity": {
+        "protectedAnchorIntegrity": 1,
+        "totalAnchors": 2,
+        "resolvedAnchors": 2,
+        "missingAnchors": 0
+      },
+      "aperture": {
+        "temporalPosture": "synced",
+        "closureClass": "closed",
+        "closureScore": 0.996,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.013,
+        "beaconStatus": "beacon-idle",
+        "cumulativeNarrowing": 0.255,
+        "dominantLoss": "retrieval gating"
+      },
+      "selectiveAdmissibilityDrift": {
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.088
+      }
     },
     "planSummary": {
       "relationInventory": {
@@ -155,9 +195,7 @@
         "pressure-current",
         "hybrid"
       ],
-      "structuralOperationsSelected": [
-        "front-when"
-      ],
+      "structuralOperationsSelected": [],
       "lexicalRegisterOperationsSelected": [
         "expanded:isnt->is-not"
       ],
@@ -166,7 +204,7 @@
     },
     "candidateSummary": {
       "candidateCount": 5,
-      "landedCandidateId": "base:clause-pivot",
+      "landedCandidateId": "base:register-lexicon",
       "families": [
         "syntax-shape",
         "register-lexicon",
@@ -183,7 +221,6 @@
       "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
-        "punctuation-shape",
         "register-mode",
         "orthography-posture",
         "lexical-register"
@@ -201,9 +238,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 3.62,
-      "outputDonorDistance": 2.385,
-      "donorImprovement": 1.235,
-      "donorImprovementRatio": 0.341,
+      "outputDonorDistance": 2.449,
+      "donorImprovement": 1.171,
+      "donorImprovementRatio": 0.323,
       "sourceOutputLexicalOverlap": 0.98
     },
     "candidateLedger": [
@@ -226,13 +263,55 @@
           "persona-convergence:matron-undertow"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 8,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.938,
+            "polarityMismatches": 3,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "drift",
+            "closureScore": 0.813,
+            "historicalCrease": 0.014,
+            "unfoldingEnergy": 0.086,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.323,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "severe",
+            "driftReasons": [
+              "polarity-mismatches>1"
+            ],
+            "routeFloor": "harbor",
+            "routePressure": 1
+          }
+        },
         "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag is not. And brooks emailed 9:31. Body fixed 9:47 + n"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "selected",
         "score": 1.0441,
         "toolabilityScore": 0.7894,
         "rewriteStrength": 0.8909,
@@ -245,6 +324,46 @@
           "persona-markers-thin"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 8,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.969,
+            "polarityMismatches": 0,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.996,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.013,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.088
+          }
+        },
         "outputPreview": "Need quick fix on housing story. Quote in graf 6 is nia brooks not moreno. Words are right, speaker tag is not. Brooks emailed 9:31. Body fixed 9:47 + note adde"
       },
       {
@@ -266,13 +385,55 @@
           "persona-convergence:matron-undertow"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 8,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.938,
+            "polarityMismatches": 3,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "drift",
+            "closureScore": 0.813,
+            "historicalCrease": 0.014,
+            "unfoldingEnergy": 0.086,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.323,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "severe",
+            "driftReasons": [
+              "polarity-mismatches>1"
+            ],
+            "routeFloor": "harbor",
+            "routePressure": 1
+          }
+        },
         "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag is not. And brooks emailed 9:31. Body fixed 9:47 + n"
       },
       {
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "matron",
-        "status": "selected",
+        "status": "eligible",
         "score": 0.9492,
         "toolabilityScore": 0.7907,
         "rewriteStrength": 0.8983,
@@ -285,6 +446,46 @@
           "persona-markers-thin"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 8,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.969,
+            "polarityMismatches": 1,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "closed",
+            "closureScore": 0.936,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.036,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.093
+          }
+        },
         "outputPreview": "Need quick fix on housing story. Quote in graf 6 is nia brooks not moreno. Words are right, speaker tag is not. Brooks emailed 9:31. Body fixed 9:47 + note adde"
       },
       {
@@ -306,6 +507,48 @@
           "persona-convergence:matron-undertow"
         ],
         "transferClass": "structural",
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "paragraphCount": 1,
+            "sentenceCount": 7,
+            "clauseCount": 8,
+            "exactAnchorCount": 2
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 1,
+            "actorCoverage": 1,
+            "actionCoverage": 1,
+            "objectCoverage": 0.938,
+            "polarityMismatches": 4,
+            "tenseMismatches": 0
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 2,
+            "resolvedAnchors": 2,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "drift",
+            "closureScore": 0.813,
+            "historicalCrease": 0.014,
+            "unfoldingEnergy": 0.091,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.323,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "severe",
+            "driftReasons": [
+              "polarity-mismatches>1"
+            ],
+            "routeFloor": "harbor",
+            "routePressure": 1
+          }
+        },
         "outputPreview": "Need quick fix on housing story, and quote in graf 6 is nia brooks not moreno. Words are right, speaker tag is not. And brooks emailed 9:31. When it only cleare"
       }
     ],
@@ -315,9 +558,49 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 5,
-      "winningCandidateId": "base:clause-pivot"
+      "winningCandidateId": "base:register-lexicon",
+      "ontologyRoutePressure": {
+        "sourceClass": "formal-correspondence",
+        "relationInventory": {
+          "sourceClass": "formal-correspondence",
+          "paragraphCount": 1,
+          "sentenceCount": 7,
+          "clauseCount": 8,
+          "exactAnchorCount": 2
+        },
+        "semanticCoverage": {
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.969,
+          "polarityMismatches": 0,
+          "tenseMismatches": 0
+        },
+        "anchorIntegrity": {
+          "protectedAnchorIntegrity": 1,
+          "totalAnchors": 2,
+          "resolvedAnchors": 2,
+          "missingAnchors": 0
+        },
+        "aperture": {
+          "temporalPosture": "synced",
+          "closureClass": "closed",
+          "closureScore": 0.996,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.013,
+          "beaconStatus": "beacon-idle",
+          "cumulativeNarrowing": 0.255,
+          "dominantLoss": "retrieval gating"
+        },
+        "selectiveAdmissibilityDrift": {
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.088
+        }
+      }
     },
-    "winningCandidateId": "base:clause-pivot"
+    "winningCandidateId": "base:register-lexicon"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -325,7 +608,6 @@
     "changedDimensions": [
       "lexical-register",
       "orthography-posture",
-      "punctuation-shape",
       "register-mode"
     ],
     "lexemeSwapFamilies": [
@@ -338,9 +620,7 @@
       "sentenceCount:7",
       "sourceClass:formal-correspondence"
     ],
-    "structuralOperations": [
-      "front-when"
-    ],
+    "structuralOperations": [],
     "lexicalOperations": [
       "expanded:isnt->is-not"
     ],
@@ -350,7 +630,7 @@
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.969,
-    "polarityMismatches": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }
