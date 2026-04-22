@@ -205,12 +205,6 @@
     loadSession();
     primeInboundContext();
     hydrate();
-    if (isLocalhostOperator()) {
-      state.ingress.operatorShellOpen = true;
-      state.ingress.bypass = true;
-      state.ingress.vaultOpen = false;
-    }
-    autoOpenStoredBypassShell();
     render();
     dom.body.classList.remove('boot-pending');
     dom.body.classList.add('boot-ready');
@@ -468,20 +462,6 @@
     render();
   }
 
-  function autoOpenStoredBypassShell() {
-    if (!isLocalhostOperator()) return;
-    if (surfaceOpen() || state.packet) return;
-    if (!getOperatorBypassHash()) return;
-    state.ingress.operatorShellOpen = true;
-    state.ingress.vaultOpen = false;
-    state.ingress.bypass = true;
-    state.ingress.recovered = false;
-    state.ingress.openedAt = nowIso();
-    state.ingress.packetId = null;
-    state.ingress.receiptId = null;
-    persist();
-  }
-
   function isLocalhostOperator() {
     const host = String((window.location && window.location.hostname) || '').toLowerCase();
     return host === 'localhost' || host === '127.0.0.1';
@@ -491,18 +471,8 @@
     return isLocalhostOperator() || Boolean(getOperatorBypassHash());
   }
 
-  function localhostTriadPreviewOpen() {
-    return Boolean(
-      isLocalhostOperator() &&
-      state.ingress.operatorShellOpen &&
-      !state.ingress.vaultOpen &&
-      !state.ingress.packetId &&
-      !state.packet
-    );
-  }
-
   function ingressInteractionLocked() {
-    return Boolean(surfaceOpen() && !localhostTriadPreviewOpen());
+    return Boolean(surfaceOpen());
   }
 
   function seedBatchIngress(batchId) {
@@ -660,7 +630,6 @@
     dom.ingressRoutePill.textContent = route;
     dom.ingressProgressPill.textContent = count + ' / 3 lanes';
     const surfaceIsOpen = surfaceOpen();
-    const operatorPreview = localhostTriadPreviewOpen();
     const ingressLocked = ingressInteractionLocked();
     const devModeEnabled = getDevModeEnabled();
     dom.ingressVaultPill.textContent = state.ingress.operatorShellOpen
@@ -673,7 +642,7 @@
             ? 'seal step'
             : 'vault sealed';
     dom.ingressNote.textContent = state.ingress.bypass
-      ? 'Operator access is live. The chamber can stage packets, but a real SHI still mints only from the Future / Past / Higher triad.'
+      ? 'Operator bypass accepted. The shell is open in packetless mode. No staged packet, covenant transition, or SHI issuance exists yet.'
       : recoverableShi && !surfaceIsOpen
         ? 'A minted packet is still held behind the membrane. Enter the same SHI # to reopen the chamber and recover the packet, copies, and footer surfaces without repeating the ritual.'
       : state.ingress.recovered
@@ -687,7 +656,7 @@
           : (D.routeCopy[route] || '');
     dom.ingressPageReadout.textContent = step.pageLabel;
     dom.ingressResolvedReadout.textContent = count + ' / 3';
-    dom.ingressThresholdReadout.textContent = state.ingress.bypass && operatorPreview ? 'triad still required for SHI' : ingressThresholdCopy(stepIndex, count, ingressLocked);
+    dom.ingressThresholdReadout.textContent = ingressThresholdCopy(stepIndex, count, ingressLocked);
     dom.ingressStepKicker.textContent = step.kicker;
     dom.ingressStepPrompt.textContent = step.prompt;
     dom.ingressStepState.textContent = ingressStepStateLabel(stepIndex, count);
@@ -719,7 +688,7 @@
     dom.mintStagedPacket.disabled = !(count === 3 && !ingressLocked && sealStep);
     dom.bypassIngress.disabled = surfaceIsOpen || !typedShiValid;
     dom.bypassPassword.disabled = surfaceIsOpen;
-    dom.setBypassToken.disabled = surfaceIsOpen || !typedShiValid;
+    dom.setBypassToken.disabled = surfaceIsOpen || !recoverableShi || !typedShiValid || typedShi !== normalizeShiNumber(recoverableShi);
     dom.clearBypassToken.disabled = surfaceIsOpen || !getOperatorBypassHash();
     dom.clearIngress.disabled = ingressLocked;
     dom.bypassPassword.placeholder = recoverableShi || shiFormatTemplate();
@@ -728,10 +697,9 @@
     dom.demoSignatureHook.disabled = !devModeEnabled;
     if (dom.devModeNote) dom.devModeNote.textContent = devModeEnabled ? 'Dev hook simulation is enabled locally.' : 'Dev hook simulation is disabled in public ship unless local dev mode is enabled.';
     if (dom.pillBoundaryMode) dom.pillBoundaryMode.textContent = state.ingress.operatorShellOpen ? 'operator boundary' : 'public boundary';
-    const membraneSuppressed = surfaceIsOpen && !operatorPreview;
+    const membraneSuppressed = surfaceIsOpen;
     dom.ingressMembrane.hidden = membraneSuppressed;
     dom.ingressMembrane.classList.toggle('is-hidden', membraneSuppressed);
-    dom.body.classList.toggle('localhost-operator', isLocalhostOperator());
     dom.body.classList.toggle('vault-sealed', !surfaceIsOpen);
     dom.body.classList.toggle('vault-open', surfaceIsOpen);
   }
@@ -1022,6 +990,11 @@
       dom.ingressNote.textContent = 'Recall codes must use the minted SHI # format: ' + shiFormatTemplate() + '.';
       return;
     }
+    const recoverable = recoverableShiNumber();
+    if (!recoverable || normalizeShiNumber(recoverable) !== token) {
+      dom.ingressNote.textContent = 'Only the currently minted SHI # can be rebound to this session.';
+      return;
+    }
     const tokenHash = await checksum(token);
     try {
       sessionStorage.setItem((D.operatorBypass && D.operatorBypass.storage_key) || 'td613.safe-harbor.operator-bypass.hash', tokenHash);
@@ -1075,18 +1048,8 @@
     }
     const configuredHash = getOperatorBypassHash();
     if (!configuredHash) {
-      state.ingress.operatorShellOpen = true;
-      state.ingress.vaultOpen = false;
-      state.ingress.bypass = true;
-      state.ingress.recovered = false;
-      state.ingress.openedAt = nowIso();
-      state.ingress.packetId = null;
-      state.ingress.receiptId = null;
-      dom.bypassPassword.value = '';
-      render();
-      persist();
-      dom.ingressNote.textContent = 'SHI accepted. The operator shell is open in blind recall mode without a retained packet.';
-      logEvent('bypass-opened', { state: 'operator-shell', reason: 'valid-shi-blind-recall', shi_number: token });
+      dom.ingressNote.textContent = 'No recoverable SHI recall is armed for this session. Complete the triad ritual or reopen with the live minted SHI #.';
+      logEvent('bypass-denied', { state: 'sealed', reason: 'missing-recall-hash' });
       return;
     }
     const tokenHash = await checksum(token);
@@ -1185,11 +1148,11 @@
     state.operatorSignature = null;
     state.selectedBatchId = null;
     state.ingress.vaultOpen = false;
-    state.ingress.operatorShellOpen = hasOperatorAccess();
+    state.ingress.operatorShellOpen = false;
     state.ingress.openedAt = null;
     state.ingress.receiptId = null;
     state.ingress.packetId = null;
-    state.ingress.bypass = hasOperatorAccess();
+    state.ingress.bypass = false;
     state.ingress.recovered = false;
     state.ingress.stepIndex = clampIngressStepIndex(defaultIngressStepIndex());
     dom.dynamicTarget.innerHTML = '';
@@ -1287,10 +1250,6 @@
     state.audit = [];
     state.renderer = { detected: false, meta: null };
     state.ingress = { segments: { future_self: '', past_self: '', higher_self: '' }, stepIndex: 0, vaultOpen: false, operatorShellOpen: false, openedAt: null, receiptId: null, packetId: null, bypass: false, recovered: false };
-    if (isLocalhostOperator()) {
-      state.ingress.operatorShellOpen = true;
-      state.ingress.bypass = true;
-    }
     state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
     state.operatorSignature = null;
     dom.inputFooterMode.value = D.trustProfile.current_public_mode;

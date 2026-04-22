@@ -943,26 +943,6 @@ select {
   pointer-events: none;
 }
 
-body.localhost-operator .ingress-membrane,
-body.localhost-operator.vault-open .ingress-membrane,
-body.localhost-operator .ingress-membrane.is-hidden {
-  position: relative;
-  inset: auto;
-  z-index: 1;
-  overflow: visible;
-  padding: 0 clamp(16px, 2.6vw, 28px) 12px;
-  background: none;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-body.localhost-operator .ingress-shell {
-  width: min(1500px, 100%);
-  min-height: auto;
-  margin: 0 auto 18px;
-}
-
 .ingress-shell {
   position: relative;
   width: min(1500px, 100%);

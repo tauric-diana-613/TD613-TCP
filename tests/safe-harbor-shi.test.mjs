@@ -38,8 +38,9 @@ assert.ok(
   'A recognized SHI can now actually open the packetless operator shell instead of leaving Harbor trapped behind the membrane'
 );
 assert.ok(
-  harborMainSource.includes("reason: 'valid-shi-blind-recall'"),
-  'A valid SHI can now open the operator shell even when no retained packet or stored recall hash is present'
+  harborMainSource.includes("reason: 'missing-recall-hash'") &&
+    !harborMainSource.includes("reason: 'valid-shi-blind-recall'"),
+  'Safe Harbor no longer accepts a format-valid SHI as blind recall when no live recall hash or recoverable packet exists'
 );
 assert.ok(
   harborMainSource.includes('function buildOperatorSignatureFromInputs()'),
@@ -71,18 +72,14 @@ assert.ok(
 );
 assert.ok(
   harborMainSource.includes('function isLocalhostOperator()') &&
-    harborMainSource.includes('if (isLocalhostOperator()) {'),
-  'Safe Harbor auto-opens the vault when it is served from localhost through the dedicated host check'
+    harborMainSource.includes('return host === \'localhost\' || host === \'127.0.0.1\';'),
+  'Safe Harbor still has a dedicated localhost operator host check'
 );
 assert.ok(
-  harborMainSource.includes('function localhostTriadPreviewOpen()') &&
-    harborMainSource.includes('const membraneSuppressed = surfaceIsOpen && !operatorPreview;') &&
-    harborMainSource.includes("dom.body.classList.toggle('localhost-operator', isLocalhostOperator());"),
-  'Safe Harbor keeps localhost operator convenience while restoring the triad membrane as a live public-facing surface'
-);
-assert.ok(
-  harborMainSource.includes('if (!isLocalhostOperator()) return;'),
-  'Safe Harbor keeps stored auto-bypass behavior limited to localhost instead of public hosts'
+  !harborMainSource.includes('function localhostTriadPreviewOpen()') &&
+    harborMainSource.includes('const membraneSuppressed = surfaceIsOpen;') &&
+    !harborMainSource.includes("dom.body.classList.toggle('localhost-operator', isLocalhostOperator());"),
+  'Safe Harbor restores the membrane as a full overlay on localhost instead of leaving the chamber half-open underneath it'
 );
 assert.ok(
   harborHtmlSource.includes('<div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true">') &&
@@ -122,6 +119,11 @@ assert.ok(
     harborMainSource.includes('Number(signatures[key].word_count || 0) >= MIN_LANE_WORDS') &&
     !harborMainSource.includes(": [packet || '', receipt || '', bindingFragment(), payloadIndex == null ? '' : String(payloadIndex), attestationDate || '', principal || '', requestId || ''].join('|');"),
   'Safe Harbor mints SHI only from a real triad stylometric fingerprint and no longer falls back to packet or receipt metadata'
+);
+assert.ok(
+  harborMainSource.includes('dom.setBypassToken.disabled = surfaceIsOpen || !recoverableShi || !typedShiValid || typedShi !== normalizeShiNumber(recoverableShi);') &&
+    harborMainSource.includes('Only the currently minted SHI # can be rebound to this session.'),
+  'Safe Harbor only allows explicit SHI recall rebinding from the actually minted SHI value'
 );
 assert.ok(
   !harborMainSource.includes("state.ingress.segments.future_self = 'Batch ") &&
