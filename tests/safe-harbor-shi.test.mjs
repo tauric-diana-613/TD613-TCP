@@ -75,17 +75,19 @@ assert.ok(
   'Safe Harbor auto-opens the vault when it is served from localhost through the dedicated host check'
 );
 assert.ok(
-  harborMainSource.includes('const membraneSuppressed = true;') &&
-    harborMainSource.includes('dom.ingressMembrane.hidden = membraneSuppressed;'),
-  'Safe Harbor keeps the deprecated ingress membrane visually occluded while preserving it in the DOM'
+  harborMainSource.includes('function localhostTriadPreviewOpen()') &&
+    harborMainSource.includes('const membraneSuppressed = surfaceIsOpen && !operatorPreview;') &&
+    harborMainSource.includes("dom.body.classList.toggle('localhost-operator', isLocalhostOperator());"),
+  'Safe Harbor keeps localhost operator convenience while restoring the triad membrane as a live public-facing surface'
 );
 assert.ok(
   harborMainSource.includes('if (!isLocalhostOperator()) return;'),
   'Safe Harbor keeps stored auto-bypass behavior limited to localhost instead of public hosts'
 );
 assert.ok(
-  harborHtmlSource.includes('<div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true" hidden>'),
-  'Safe Harbor preserves the ingress membrane in markup history while hiding it from the live interface'
+  harborHtmlSource.includes('<div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true">') &&
+    !harborHtmlSource.includes('<div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true" hidden>'),
+  'Safe Harbor restores the ingress membrane in the live markup instead of fossilizing it behind a hardcoded hidden attribute'
 );
 assert.ok(
   harborHtmlSource.includes('Tauric Diana Intake') &&
@@ -100,6 +102,13 @@ assert.ok(
   'Safe Harbor exposes the vanguard A-line intake plus a reset path in the center chamber'
 );
 assert.ok(
+  harborHtmlSource.includes('id="kleopatra-void"') &&
+    harborHtmlSource.includes('id="attachSignature"') &&
+    harborHtmlSource.includes('Wake Secret Lane') &&
+    harborHtmlSource.includes('Clear Seal Lane'),
+  'Safe Harbor moves the detached Kleopatra seal lane into the Tauric Diana intake card and gives it explicit wake/clear controls'
+);
+assert.ok(
   harborMainSource.includes('selected_batch_id: state.selectedBatchId || null'),
   'Safe Harbor carries the selected batch id into the staged packet metadata'
 );
@@ -107,6 +116,23 @@ assert.ok(
   harborMainSource.includes("if (dom.resetStagedBatch) dom.resetStagedBatch.addEventListener('click', clearStagedBatch);") &&
     harborMainSource.includes("logEvent('batch-unstaged'"),
   'Safe Harbor lets operator mode clear a staged batch and reopen the intake lane without resetting the whole session'
+);
+assert.ok(
+  harborMainSource.includes('if (!fingerprint) return null;') &&
+    harborMainSource.includes('Number(signatures[key].word_count || 0) >= MIN_LANE_WORDS') &&
+    !harborMainSource.includes(": [packet || '', receipt || '', bindingFragment(), payloadIndex == null ? '' : String(payloadIndex), attestationDate || '', principal || '', requestId || ''].join('|');"),
+  'Safe Harbor mints SHI only from a real triad stylometric fingerprint and no longer falls back to packet or receipt metadata'
+);
+assert.ok(
+  !harborMainSource.includes("state.ingress.segments.future_self = 'Batch ") &&
+    !harborMainSource.includes("state.ingress.segments.past_self = 'Batch ") &&
+    !harborMainSource.includes("state.ingress.segments.higher_self = 'Batch "),
+  'Stage Vanguard Batch no longer fabricates the Future/Past/Higher triad with canned batch text'
+);
+assert.ok(
+  harborMainSource.includes("if (state.ingress.packetId) void rebuild('ingress');") &&
+    harborMainSource.includes("logEvent('covenant-blocked', { reason: 'triad-fingerprint-missing' });"),
+  'Safe Harbor refreshes staged packets when the triad changes and blocks SHI minting when the triad fingerprint is still missing'
 );
 
 console.log('safe-harbor-shi.test.mjs passed');

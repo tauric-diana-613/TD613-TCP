@@ -208,7 +208,7 @@
     if (isLocalhostOperator()) {
       state.ingress.operatorShellOpen = true;
       state.ingress.bypass = true;
-      state.ingress.vaultOpen = true;
+      state.ingress.vaultOpen = false;
     }
     autoOpenStoredBypassShell();
     render();
@@ -491,14 +491,24 @@
     return isLocalhostOperator() || Boolean(getOperatorBypassHash());
   }
 
+  function localhostTriadPreviewOpen() {
+    return Boolean(
+      isLocalhostOperator() &&
+      state.ingress.operatorShellOpen &&
+      !state.ingress.vaultOpen &&
+      !state.ingress.packetId &&
+      !state.packet
+    );
+  }
+
+  function ingressInteractionLocked() {
+    return Boolean(surfaceOpen() && !localhostTriadPreviewOpen());
+  }
+
   function seedBatchIngress(batchId) {
     const id = String(batchId || 'batch-001a');
     state.selectedBatchId = id;
     if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = id;
-    state.ingress.segments.future_self = 'Batch ' + id + ' enters Safe Harbor through localhost operator override for buffered Tauric Diana intake, direct packet staging, preserved provenance context, explicit batch selection, canonical packet shaping, detached signature carryover, and deferred sovereign mint so the chamber can open without repeating the retired triad ritual by hand today.';
-    state.ingress.segments.past_self = 'Batch ' + id + ' was buffered behind the former membrane and slowed by manual ingress steps, extra browser gating, and unnecessary ritual friction even though the operator only needed a direct staging lane, packet reliquary access, and a place to carry detached signature text while keeping scrub discipline and custody intact.';
-    state.ingress.segments.higher_self = 'Batch ' + id + ' is now staged as governed intake metadata: preserve the selected batch identifier, keep the raw signature block exactly as provided, avoid client-side cryptographic parsing, retain export scrub boundaries, and let operator access plus covenant confirmation determine how the packet advances through Harbor and downstream lanes.';
-    state.ingress.stepIndex = 3;
     if (!trim(dom.inputPayloadIndex.value)) {
       const match = /batch-(\d+)/i.exec(id);
       if (match) dom.inputPayloadIndex.value = String(Number(match[1]));
@@ -586,6 +596,7 @@
     syncIngressStepIndex();
     render();
     persist();
+    if (state.ingress.packetId) void rebuild('ingress');
   }
 
   async function handleFormChange() {
@@ -649,6 +660,8 @@
     dom.ingressRoutePill.textContent = route;
     dom.ingressProgressPill.textContent = count + ' / 3 lanes';
     const surfaceIsOpen = surfaceOpen();
+    const operatorPreview = localhostTriadPreviewOpen();
+    const ingressLocked = ingressInteractionLocked();
     const devModeEnabled = getDevModeEnabled();
     dom.ingressVaultPill.textContent = state.ingress.operatorShellOpen
       ? 'operator shell'
@@ -660,7 +673,7 @@
             ? 'seal step'
             : 'vault sealed';
     dom.ingressNote.textContent = state.ingress.bypass
-      ? 'Operator bypass accepted. The shell is open in packetless mode. No staged packet, covenant transition, or SHI issuance exists yet.'
+      ? 'Operator access is live. The chamber can stage packets, but a real SHI still mints only from the Future / Past / Higher triad.'
       : recoverableShi && !surfaceIsOpen
         ? 'A minted packet is still held behind the membrane. Enter the same SHI # to reopen the chamber and recover the packet, copies, and footer surfaces without repeating the ritual.'
       : state.ingress.recovered
@@ -674,19 +687,19 @@
           : (D.routeCopy[route] || '');
     dom.ingressPageReadout.textContent = step.pageLabel;
     dom.ingressResolvedReadout.textContent = count + ' / 3';
-    dom.ingressThresholdReadout.textContent = state.ingress.bypass ? 'packetless operator shell' : ingressThresholdCopy(stepIndex, count, surfaceIsOpen);
+    dom.ingressThresholdReadout.textContent = state.ingress.bypass && operatorPreview ? 'triad still required for SHI' : ingressThresholdCopy(stepIndex, count, ingressLocked);
     dom.ingressStepKicker.textContent = step.kicker;
     dom.ingressStepPrompt.textContent = step.prompt;
     dom.ingressStepState.textContent = ingressStepStateLabel(stepIndex, count);
     dom.ingressStepSupport.textContent = step.support;
     dom.ingressStepEntry.hidden = sealStep;
     dom.ingressSealReview.hidden = !sealStep;
-    dom.ingressBack.disabled = surfaceIsOpen || stepIndex <= 0;
+    dom.ingressBack.disabled = ingressLocked || stepIndex <= 0;
     dom.ingressContinue.hidden = sealStep;
-    dom.ingressContinue.disabled = surfaceIsOpen || sealStep || !key || !laneHasMinWords(key);
+    dom.ingressContinue.disabled = ingressLocked || sealStep || !key || !laneHasMinWords(key);
     dom.ingressContinue.textContent = ingressContinueLabel(stepIndex);
     if (key) {
-      dom.ingressStepInput.disabled = surfaceIsOpen;
+      dom.ingressStepInput.disabled = ingressLocked;
       dom.ingressStepInput.placeholder = step.placeholder;
       dom.ingressStepInput.value = state.ingress.segments[key] || '';
       dom.ingressStepMeta.textContent = ingressMetaCopy(key);
@@ -699,31 +712,32 @@
         ? 'Safe Harbor can now mint the staged packet. TCP stylometry remains a cadence credential, while EO and the seal lane stay attachable after packetization.'
         : 'The seal step remains locked until all three pages are held.';
     }
-    renderIngressStageChip(dom.ingressStageFuture, 0, stepIndex, count, surfaceIsOpen);
-    renderIngressStageChip(dom.ingressStagePast, 1, stepIndex, count, surfaceIsOpen);
-    renderIngressStageChip(dom.ingressStageHigher, 2, stepIndex, count, surfaceIsOpen);
-    renderIngressStageChip(dom.ingressStageSeal, 3, stepIndex, count, surfaceIsOpen);
-    dom.mintStagedPacket.disabled = !(count === 3 && !surfaceIsOpen && sealStep);
+    renderIngressStageChip(dom.ingressStageFuture, 0, stepIndex, count, ingressLocked);
+    renderIngressStageChip(dom.ingressStagePast, 1, stepIndex, count, ingressLocked);
+    renderIngressStageChip(dom.ingressStageHigher, 2, stepIndex, count, ingressLocked);
+    renderIngressStageChip(dom.ingressStageSeal, 3, stepIndex, count, ingressLocked);
+    dom.mintStagedPacket.disabled = !(count === 3 && !ingressLocked && sealStep);
     dom.bypassIngress.disabled = surfaceIsOpen || !typedShiValid;
     dom.bypassPassword.disabled = surfaceIsOpen;
     dom.setBypassToken.disabled = surfaceIsOpen || !typedShiValid;
     dom.clearBypassToken.disabled = surfaceIsOpen || !getOperatorBypassHash();
-    dom.clearIngress.disabled = surfaceIsOpen ? true : false;
+    dom.clearIngress.disabled = ingressLocked;
     dom.bypassPassword.placeholder = recoverableShi || shiFormatTemplate();
     dom.demoTcpHook.disabled = !devModeEnabled;
     dom.demoEoHook.disabled = !devModeEnabled;
     dom.demoSignatureHook.disabled = !devModeEnabled;
     if (dom.devModeNote) dom.devModeNote.textContent = devModeEnabled ? 'Dev hook simulation is enabled locally.' : 'Dev hook simulation is disabled in public ship unless local dev mode is enabled.';
     if (dom.pillBoundaryMode) dom.pillBoundaryMode.textContent = state.ingress.operatorShellOpen ? 'operator boundary' : 'public boundary';
-    const membraneSuppressed = true;
+    const membraneSuppressed = surfaceIsOpen && !operatorPreview;
     dom.ingressMembrane.hidden = membraneSuppressed;
     dom.ingressMembrane.classList.toggle('is-hidden', membraneSuppressed);
+    dom.body.classList.toggle('localhost-operator', isLocalhostOperator());
     dom.body.classList.toggle('vault-sealed', !surfaceIsOpen);
     dom.body.classList.toggle('vault-open', surfaceIsOpen);
   }
 
   function advanceIngressStep() {
-    if (surfaceOpen()) return;
+    if (ingressInteractionLocked()) return;
     const index = currentIngressStepIndex();
     const key = currentIngressKey(index);
     if (!key) return;
@@ -736,12 +750,12 @@
   }
 
   function retreatIngressStep() {
-    if (surfaceOpen()) return;
+    if (ingressInteractionLocked()) return;
     setIngressStep(currentIngressStepIndex() - 1);
   }
 
   function setIngressStep(index) {
-    if (surfaceOpen()) return;
+    if (ingressInteractionLocked()) return;
     const next = clampIngressStepIndex(index);
     if (next === state.ingress.stepIndex) {
       render();
@@ -803,8 +817,8 @@
     };
   }
 
-  function ingressThresholdCopy(stepIndex, count, surfaceIsOpen) {
-    if (surfaceIsOpen) return 'vault already open';
+  function ingressThresholdCopy(stepIndex, count, ingressLocked) {
+    if (ingressLocked) return 'vault already open';
     if (stepIndex <= 0) return 'first line required';
     if (stepIndex === 1) return count >= 1 ? 'past-self page unlocked' : 'future-self line required';
     if (stepIndex === 2) return count >= 2 ? 'higher-self page unlocked' : 'past-self line required';
@@ -834,10 +848,10 @@
     return stats.word_count + ' words / ' + stats.char_count + ' chars / ' + shortChecksum(null, raw) + gate;
   }
 
-  function renderIngressStageChip(button, index, activeIndex, count, surfaceIsOpen) {
-    const unlocked = surfaceIsOpen || index === 0 || count >= index;
+  function renderIngressStageChip(button, index, activeIndex, count, ingressLocked) {
+    const unlocked = index === 0 || count >= index;
     const complete = index < count;
-    button.disabled = surfaceIsOpen || !unlocked;
+    button.disabled = ingressLocked || !unlocked;
     button.classList.toggle('is-active', index === activeIndex);
     button.classList.toggle('is-complete', complete);
     button.classList.toggle('is-locked', !unlocked);
@@ -920,7 +934,12 @@
     dom.packetHashReadout.textContent = state.packet.packet_hash_sha256;
     dom.harborReadout.textContent = state.packet.analysis.route.recommended_harbor;
     dom.exportGateReadout.textContent = state.packet.bridge.export_gate.state;
-    dom.covenantStateReadout.textContent = state.packet.bridge.covenant_gate.confirmed ? ('harbor-eligible / SHI # ' + state.packet.issuance.badge_number) : (state.packet.signature.status === 'sealed' ? 'signature text staged / confirmation required' : 'staged / confirmation required');
+    const triadFingerprintReady = Boolean(state.packet.issuance && state.packet.issuance.stylometric_fingerprint);
+    dom.covenantStateReadout.textContent = state.packet.bridge.covenant_gate.confirmed
+      ? ('harbor-eligible / SHI # ' + state.packet.issuance.badge_number)
+      : triadFingerprintReady
+        ? (state.packet.signature.status === 'sealed' ? 'signature text staged / confirmation required' : 'triad ready / confirmation required')
+        : (state.packet.signature.status === 'sealed' ? 'signature text staged / triad required for SHI' : 'triad incomplete / SHI locked');
     dom.cadenceReadout.textContent = cadenceLabel(state.packet.analysis.cadence_signature);
     dom.triadResonanceReadout.textContent = metric(state.packet.analysis.triad_resonance);
     dom.crossLaneStabilityReadout.textContent = metric(state.packet.analysis.cross_lane_stability);
@@ -939,7 +958,9 @@
     renderMintSurface(state.packet.issuance.badge_number || null);
     dom.covenantNote.textContent = state.packet.bridge.covenant_gate.confirmed
       ? 'Mint / Seal Payload is confirmed. The packet is harbor-eligible, carries an issued SHI #, and preserves any pasted signature text in the artifact.'
-      : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint / Seal Payload is still required before harbor eligibility and SHI # assignment.' : 'The packet is staged only. Mint / Seal Payload must be invoked before harbor eligibility and SHI # assignment.');
+      : (!triadFingerprintReady
+        ? 'The packet shell can be staged and the detached signature can be carried, but SHI issuance stays locked until Future / Past / Higher all cross the stylometric threshold.'
+        : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint / Seal Payload is still required before harbor eligibility and SHI # assignment.' : 'The packet is staged only. Mint / Seal Payload must be invoked before harbor eligibility and SHI # assignment.'));
     dom.covenantExport.disabled = state.packet.bridge.covenant_gate.confirmed;
   }
 
@@ -1102,7 +1123,7 @@
   async function mintStagedPacket(options) {
     const opts = options || {};
     if (state.ingress.packetId) return;
-    if (!opts.operatorOverride && (surfaceOpen() || completedCount() !== 3)) return;
+    if (!opts.operatorOverride && (ingressInteractionLocked() || completedCount() !== 3)) return;
     if (opts.operatorOverride && !hasOperatorAccess()) return;
     const previousIngress = clone(state.ingress);
     const previousPacket = clone(state.packet);
@@ -1142,7 +1163,7 @@
     seedBatchIngress(batchId);
     await mintStagedPacket({ operatorOverride: true });
     if (dom.batchIntakeNote && state.ingress.packetId) {
-      dom.batchIntakeNote.textContent = 'Batch ' + batchId + ' is staged in the packet reliquary and ready for Mint / Seal Payload.';
+      dom.batchIntakeNote.textContent = 'Batch ' + batchId + ' is staged in the packet reliquary. Complete the triad before Mint / Seal Payload if you want a real SHI.';
     }
   }
 
@@ -1164,22 +1185,13 @@
     state.operatorSignature = null;
     state.selectedBatchId = null;
     state.ingress.vaultOpen = false;
-    state.ingress.operatorShellOpen = true;
+    state.ingress.operatorShellOpen = hasOperatorAccess();
     state.ingress.openedAt = null;
     state.ingress.receiptId = null;
     state.ingress.packetId = null;
-    state.ingress.bypass = true;
+    state.ingress.bypass = hasOperatorAccess();
     state.ingress.recovered = false;
-    state.ingress.segments = { future_self: '', past_self: '', higher_self: '' };
-    state.ingress.stepIndex = 0;
-    dom.inputFooterMode.value = D.trustProfile.current_public_mode;
-    dom.inputPayloadIndex.value = '';
-    dom.inputAttestationDate.value = '';
-    dom.inputOperatorId.value = 'safe-harbor.operator';
-    dom.inputSourceClass.value = 'futurecore membrane';
-    dom.inputWitnessChannel.value = 'ritual + cadence';
-    dom.inputOperatorNotes.value = '';
-    if (dom.kleopatraVoid) dom.kleopatraVoid.value = '';
+    state.ingress.stepIndex = clampIngressStepIndex(defaultIngressStepIndex());
     dom.dynamicTarget.innerHTML = '';
     dom.probeOutput.value = '';
     if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = selectedBatchId;
@@ -1192,17 +1204,33 @@
 
     if (!state.ingress.packetId || !state.packet) return;
     state.operatorSignature = buildOperatorSignatureFromInputs();
+    const triadSignatures = {};
+    KEYS.forEach((key) => {
+      const raw = state.ingress.segments[key] || '';
+      triadSignatures[key] = cadenceFor(key, raw, basicStats(raw));
+    });
+    const badgeNumber = badgeNumberForContext(
+      state.ingress.packetId,
+      state.ingress.receiptId,
+      dom.inputPayloadIndex.value,
+      dom.inputAttestationDate.value,
+      D.canon.principal,
+      state.helper && state.helper.request_id,
+      triadSignatures
+    );
+    if (!badgeNumber) {
+      state.covenant.confirmed = false;
+      state.covenant.confirmedAt = null;
+      state.covenant.badgeNumber = null;
+      await rebuild('covenant-awaiting-triad');
+      dom.covenantNote.textContent = 'Safe Harbor carried the detached signature text, but the SHI remains locked until Future / Past / Higher all cross the stylometric threshold.';
+      logEvent('covenant-blocked', { reason: 'triad-fingerprint-missing' });
+      return;
+    }
     if (!state.covenant.confirmed) {
       state.covenant.confirmed = true;
       state.covenant.confirmedAt = nowIso();
-      state.covenant.badgeNumber = badgeNumberForContext(
-        state.ingress.packetId,
-        state.ingress.receiptId,
-        dom.inputPayloadIndex.value,
-        dom.inputAttestationDate.value,
-        D.canon.principal,
-        state.helper && state.helper.request_id
-      );
+      state.covenant.badgeNumber = badgeNumber;
       await rebuild('covenant-export');
       dom.bypassPassword.value = state.covenant.badgeNumber;
       await setLocalBypassToken();
@@ -1256,6 +1284,10 @@
     state.audit = [];
     state.renderer = { detected: false, meta: null };
     state.ingress = { segments: { future_self: '', past_self: '', higher_self: '' }, stepIndex: 0, vaultOpen: false, operatorShellOpen: false, openedAt: null, receiptId: null, packetId: null, bypass: false, recovered: false };
+    if (isLocalhostOperator()) {
+      state.ingress.operatorShellOpen = true;
+      state.ingress.bypass = true;
+    }
     state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
     state.operatorSignature = null;
     dom.inputFooterMode.value = D.trustProfile.current_public_mode;
@@ -1527,15 +1559,18 @@
   function badgeNumberForContext(packet, receipt, payloadIndex, attestationDate, principal, requestId, signatures) {
     const sigs = signatures || (state.packet && state.packet.analysis && state.packet.analysis.segment_cadence_signatures) || null;
     const fingerprint = stylometricFingerprint(sigs);
-    const seed = fingerprint
-      ? ['td613.shi/v1', principal || D.canon.principal || '', bindingFragment(), fingerprint].join('|')
-      : [packet || '', receipt || '', bindingFragment(), payloadIndex == null ? '' : String(payloadIndex), attestationDate || '', principal || '', requestId || ''].join('|');
+    if (!fingerprint) return null;
+    const seed = ['td613.shi/v1', principal || D.canon.principal || '', bindingFragment(), fingerprint].join('|');
     const digest = hash64(seed).slice(0, 8).toUpperCase();
     return 'TD613-SH-' + bindingFragment().replace('#', '') + '-' + digest;
   }
   function stylometricFingerprint(signatures) {
     if (!signatures) return null;
-    const present = KEYS.every((key) => signatures[key] && typeof signatures[key] === 'object');
+    const present = KEYS.every((key) =>
+      signatures[key] &&
+      typeof signatures[key] === 'object' &&
+      Number(signatures[key].word_count || 0) >= MIN_LANE_WORDS
+    );
     if (!present) return null;
     const q = (value, step) => {
       const num = Number(value);
@@ -1798,8 +1833,11 @@
     const cadence = overlayCadence(summaryCadence(signatures, triad));
     const signatureLane = resolvedSignatureLane();
     const signatureObject = signatureForPacket();
-    const badgeAssignment = state.covenant.confirmed ? badgeNumberForContext(state.ingress.packetId, state.ingress.receiptId, form.payloadIndex, form.attestationDate, D.canon.principal, state.helper.request_id, signatures) : null;
-    const receiptState = state.covenant.confirmed ? 'harbor-eligible' : (signatureObject.status === 'sealed' ? 'sealed' : 'staged');
+    const stylometricFingerprintValue = stylometricFingerprint(signatures);
+    const badgeAssignment = state.covenant.confirmed
+      ? badgeNumberForContext(state.ingress.packetId, state.ingress.receiptId, form.payloadIndex, form.attestationDate, D.canon.principal, state.helper.request_id, signatures)
+      : null;
+    const receiptState = badgeAssignment ? 'harbor-eligible' : (signatureObject.status === 'sealed' ? 'sealed' : 'staged');
     const packet = {
       schema_version: 'td613.safe-harbor.packet/v1',
       packet_id: state.ingress.packetId,
@@ -1873,10 +1911,10 @@
         badge_number: badgeAssignment,
         canonical_header: badgeAssignment ? canonicalHeaderString(badgeAssignment) : null,
         extended_footer: badgeAssignment ? extendedFooterString(badgeAssignment) : null,
-        badge_state: state.covenant.confirmed ? 'assigned' : 'not-assigned',
-        assigned_at: state.covenant.confirmed ? state.covenant.confirmedAt : null,
-        assignment_basis: state.covenant.confirmed ? 'stylometric-biometric-fingerprint(principal|binding_fragment|per-lane quantized cadence)' : null,
-        stylometric_fingerprint: state.covenant.confirmed ? stylometricFingerprint(signatures) : null
+        badge_state: badgeAssignment ? 'assigned' : 'not-assigned',
+        assigned_at: badgeAssignment ? state.covenant.confirmedAt : null,
+        assignment_basis: stylometricFingerprintValue ? 'stylometric-biometric-fingerprint(principal|binding_fragment|per-lane quantized cadence)' : null,
+        stylometric_fingerprint: stylometricFingerprintValue
       },
       signature: signatureObject,
       aperture_audit: null,
@@ -1888,8 +1926,8 @@
         },
         signature_lane: Object.assign({ status: 'overlay-idle', source: 'hook-open', lane: 'none', sig_type: null, kid: null, alg: null, detached_ref: null, sig_present: false }, signatureLane ? { status: signatureLane.status || 'overlay-idle', source: signatureLane.source || 'hook-open', lane: signatureLane.lane || signatureLane.sig_type || 'none', sig_type: signatureLane.sig_type || null, kid: signatureLane.kid || null, alg: signatureLane.alg || null, detached_ref: signatureLane.detached_ref || null, sig_present: Boolean(signatureLane.sig) } : {}),
         covenant_gate: {
-          confirmed: state.covenant.confirmed,
-          confirmed_at: state.covenant.confirmed ? state.covenant.confirmedAt : null,
+          confirmed: Boolean(badgeAssignment),
+          confirmed_at: badgeAssignment ? state.covenant.confirmedAt : null,
           required: true,
           action_label: 'Mint / Seal Payload'
         },
@@ -1899,7 +1937,7 @@
 
     const scrub = scrubCheck(packet, sealedSegments);
     packet.bridge.export_gate.scrub_passed = scrub.passed;
-    packet.bridge.export_gate.ready = Boolean(state.covenant.confirmed && scrub.passed);
+    packet.bridge.export_gate.ready = Boolean(packet.bridge.covenant_gate.confirmed && scrub.passed);
     packet.bridge.export_gate.state = packet.bridge.export_gate.ready ? 'harbor-eligible' : 'guarded';
     packet.bridge.export_gate.blockers = exportBlockers(scrub);
     packet.analysis.route.export_ready = packet.bridge.export_gate.ready;

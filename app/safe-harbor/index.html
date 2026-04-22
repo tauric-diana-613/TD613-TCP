@@ -8,7 +8,7 @@
 </head>
 <body class="vault-sealed boot-pending">
   <noscript><div class="boot-alert">TD613 Safe Harbor requires JavaScript to progress beyond the ingress membrane.</div></noscript>
-  <div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true" hidden>
+    <div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true">
     <section class="ingress-shell">
       <div class="ingress-head">
         <div class="title-group">
@@ -194,7 +194,7 @@
                 <span class="surface-state" id="batchIntakeState">operator token required</span>
               </div>
               <h2>Tauric Diana Intake</h2>
-              <p class="surface-copy">Select a vanguard batch and stage it directly into the Harbor chamber without the deprecated triad ritual.</p>
+              <p class="surface-copy">Select a vanguard batch to stage a Harbor packet shell. The SHI still mints only from the Future / Past / Higher triad.</p>
               <div class="field-grid">
                 <label class="field field-wide">
                   <span>Vanguard batch</span>
@@ -210,7 +210,16 @@
                 <button class="control" id="stageSelectedBatch" type="button">Stage Vanguard Batch</button>
                 <button class="control secondary" id="resetStagedBatch" type="button">Reset Staged Batch</button>
               </div>
-              <div class="note" id="batchIntakeNote">Localhost override or a stored operator token unlocks direct batch staging.</div>
+              <div class="note" id="batchIntakeNote">Localhost override or a stored operator token unlocks direct batch staging. Detached PGP text can be staged here too, but it does not replace the triad for SHI issuance.</div>
+              <details class="fold-panel" data-td613-skip="true" open>
+                <summary>Kleopatra detached seal / secret lane</summary>
+                <textarea id="kleopatra-void" class="code-area" placeholder="Paste detached PGP signature block here"></textarea>
+                <div class="button-grid compact">
+                  <button class="control" id="attachSignature" type="button">Wake Secret Lane</button>
+                  <button class="control secondary" id="clearSignature" type="button">Clear Seal Lane</button>
+                </div>
+                <div class="note" id="signatureNote">Detached seals attach after packetization. The triad remains the only SHI mint source.</div>
+              </details>
             </article>
             <article class="surface-card render-face-card">
               <div class="surface-head">
@@ -345,13 +354,6 @@
                 <div class="footer-template secondary" id="footerModePreview"></div>
               </div>
             </div>
-          </details>
-        </section>
-
-        <section class="panel-section" data-td613-skip="true">
-          <details class="fold-panel" data-td613-skip="true" open>
-            <summary>Kleopatra signature / Operator seal lane</summary>
-            <textarea id="kleopatra-void" class="code-area" placeholder="Paste detached PGP signature block here"></textarea>
           </details>
         </section>
 
