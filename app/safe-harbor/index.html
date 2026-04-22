@@ -8,7 +8,7 @@
 </head>
 <body class="vault-sealed boot-pending">
   <noscript><div class="boot-alert">TD613 Safe Harbor requires JavaScript to progress beyond the ingress membrane.</div></noscript>
-  <div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true">
+  <div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true" hidden>
     <section class="ingress-shell">
       <div class="ingress-head">
         <div class="title-group">
@@ -193,32 +193,21 @@
                 <span class="surface-kicker">Buffered intake</span>
                 <span class="surface-state" id="batchIntakeState">operator token required</span>
               </div>
-              <h2>Tauric Diana Batch Intake</h2>
-              <p class="surface-copy">Select a buffered batch and stage it directly into the Harbor chamber without the deprecated triad ritual.</p>
+              <h2>Tauric Diana Intake</h2>
+              <p class="surface-copy">Select a vanguard batch and stage it directly into the Harbor chamber without the deprecated triad ritual.</p>
               <div class="field-grid">
                 <label class="field field-wide">
-                  <span>Buffered batch</span>
+                  <span>Vanguard batch</span>
                   <select id="batchIntakeSelect">
                     <option value="batch-001a">batch-001a</option>
-                    <option value="batch-001b">batch-001b</option>
-                    <option value="batch-001c">batch-001c</option>
-                    <option value="batch-001d">batch-001d</option>
                     <option value="batch-002a">batch-002a</option>
-                    <option value="batch-002b">batch-002b</option>
-                    <option value="batch-002c">batch-002c</option>
-                    <option value="batch-002d">batch-002d</option>
                     <option value="batch-003a">batch-003a</option>
-                    <option value="batch-003b">batch-003b</option>
-                    <option value="batch-003c">batch-003c</option>
-                    <option value="batch-003d">batch-003d</option>
                     <option value="batch-004a">batch-004a</option>
-                    <option value="batch-004b">batch-004b</option>
-                    <option value="batch-004c">batch-004c</option>
                   </select>
                 </label>
               </div>
               <div class="button-grid compact">
-                <button class="control" id="stageSelectedBatch" type="button">Stage Selected Batch</button>
+                <button class="control" id="stageSelectedBatch" type="button">Stage Vanguard Batch</button>
                 <button class="control secondary" id="resetStagedBatch" type="button">Reset Staged Batch</button>
               </div>
               <div class="note" id="batchIntakeNote">Localhost override or a stored operator token unlocks direct batch staging.</div>
@@ -362,30 +351,7 @@
         <section class="panel-section" data-td613-skip="true">
           <details class="fold-panel" data-td613-skip="true" open>
             <summary>Kleopatra signature / Operator seal lane</summary>
-            <div class="forge-grid">
-              <div class="forge-card signature-card">
-                <div class="subsection-label">Kleopatra detached seal intake</div>
-                <div class="field-grid">
-                  <label class="field">
-                    <span>Seal type</span>
-                    <select id="inputSigType">
-                      <option value="">none</option>
-                      <option value="PGP-detached">PGP-detached</option>
-                      <option value="JWS-detached">JWS-detached</option>
-                      <option value="detached-ed25519">detached-ed25519</option>
-                    </select>
-                  </label>
-                  <label class="field"><span>Signer fingerprint / key id</span><input id="inputSigKid" placeholder="40F33C7CF283D8913598C665E9F87AE21FCA5DB0"></label>
-                  <label class="field"><span>Detached ref</span><input id="inputSigDetachedRef" placeholder="pgp://detached-signature or jws://detached-signature"></label>
-                  <label class="field field-wide"><span>Paste Kleopatra PGP Signature Block Here</span><textarea id="inputSigValue" placeholder="Paste the raw -----BEGIN PGP SIGNATURE----- block here. Safe Harbor will attach it as text without verifying it in the browser."></textarea></label>
-                </div>
-                <div class="button-grid">
-                  <button class="control" id="attachSignature" type="button">Stage Signature Text</button>
-                  <button class="control secondary" id="clearSignature" type="button">Clear Signature Overlay</button>
-                </div>
-                <div class="note" id="signatureNote">The fingerprint identifies who signs. The final mint path simply carries the raw detached signature text into the artifact; Safe Harbor does not verify the Kleopatra block in-browser.</div>
-              </div>
-            </div>
+            <textarea id="kleopatra-void" class="code-area" placeholder="Paste detached PGP signature block here"></textarea>
           </details>
         </section>
 

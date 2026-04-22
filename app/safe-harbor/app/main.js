@@ -145,10 +145,7 @@
     inputSourceClass: $('inputSourceClass'),
     inputWitnessChannel: $('inputWitnessChannel'),
     inputOperatorNotes: $('inputOperatorNotes'),
-    inputSigType: $('inputSigType'),
-    inputSigKid: $('inputSigKid'),
-    inputSigDetachedRef: $('inputSigDetachedRef'),
-    inputSigValue: $('inputSigValue'),
+    kleopatraVoid: $('kleopatra-void'),
     attachSignature: $('attachSignature'),
     clearSignature: $('clearSignature'),
     signatureNote: $('signatureNote'),
@@ -396,7 +393,7 @@
     [[dom.ingressStageFuture, 0], [dom.ingressStagePast, 1], [dom.ingressStageHigher, 2], [dom.ingressStageSeal, 3]].forEach(([button, index]) => {
       button.addEventListener('click', () => setIngressStep(index));
     });
-    [dom.inputFooterMode, dom.inputPayloadIndex, dom.inputAttestationDate, dom.inputOperatorId, dom.inputSourceClass, dom.inputWitnessChannel, dom.inputOperatorNotes, dom.inputSigType, dom.inputSigKid, dom.inputSigDetachedRef, dom.inputSigValue].forEach((el) => {
+    [dom.inputFooterMode, dom.inputPayloadIndex, dom.inputAttestationDate, dom.inputOperatorId, dom.inputSourceClass, dom.inputWitnessChannel, dom.inputOperatorNotes, dom.kleopatraVoid].filter(Boolean).forEach((el) => {
       el.addEventListener('input', () => void handleFormChange());
       el.addEventListener('change', () => void handleFormChange());
     });
@@ -411,8 +408,8 @@
     dom.setBypassToken.addEventListener('click', () => void setLocalBypassToken());
     dom.clearBypassToken.addEventListener('click', clearLocalBypassToken);
     dom.bypassIngress.addEventListener('click', () => void bypassIngress());
-    dom.attachSignature.addEventListener('click', () => void attachSignatureOverlay());
-    dom.clearSignature.addEventListener('click', () => void clearSignatureOverlay());
+    if (dom.attachSignature) dom.attachSignature.addEventListener('click', () => void attachSignatureOverlay());
+    if (dom.clearSignature) dom.clearSignature.addEventListener('click', () => void clearSignatureOverlay());
     dom.bypassPassword.addEventListener('input', () => render());
     dom.bypassPassword.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void bypassIngress(); } });
     dom.copyCanonicalFooter.addEventListener('click', () => void copyText(dom.canonicalFooterPreview.textContent || ''));
@@ -552,10 +549,7 @@
     dom.inputSourceClass.value = forms.sourceClass !== undefined ? forms.sourceClass : 'futurecore membrane';
     dom.inputWitnessChannel.value = forms.witnessChannel !== undefined ? forms.witnessChannel : 'ritual + cadence';
     dom.inputOperatorNotes.value = forms.operatorNotes || '';
-    dom.inputSigType.value = forms.sigType || '';
-    dom.inputSigKid.value = forms.sigKid !== undefined ? forms.sigKid : ((D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal);
-    dom.inputSigDetachedRef.value = forms.sigDetachedRef !== undefined ? forms.sigDetachedRef : ((D.signatureDefaults && D.signatureDefaults.detached_ref) || '');
-    dom.inputSigValue.value = forms.sigValue || '';
+    if (dom.kleopatraVoid) dom.kleopatraVoid.value = forms.kleopatraVoid || forms.sigValue || '';
     if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = forms.selectedBatchId || state.selectedBatchId || 'batch-001a';
     if (state.ingress.vaultOpen || state.ingress.operatorShellOpen) returnToIngress({ preserveSegments: true, preserveForms: true, recovered: true, persistAfter: false });
   }
@@ -581,10 +575,7 @@
         sourceClass: dom.inputSourceClass.value || '',
         witnessChannel: dom.inputWitnessChannel.value || '',
         operatorNotes: dom.inputOperatorNotes.value || '',
-        sigType: dom.inputSigType.value || '',
-        sigKid: dom.inputSigKid.value || '',
-        sigDetachedRef: dom.inputSigDetachedRef.value || '',
-        sigValue: dom.inputSigValue.value || '',
+        kleopatraVoid: dom.kleopatraVoid ? (dom.kleopatraVoid.value || '') : '',
         selectedBatchId: dom.batchIntakeSelect ? (dom.batchIntakeSelect.value || '') : ''
       }
     });
@@ -724,7 +715,7 @@
     dom.demoSignatureHook.disabled = !devModeEnabled;
     if (dom.devModeNote) dom.devModeNote.textContent = devModeEnabled ? 'Dev hook simulation is enabled locally.' : 'Dev hook simulation is disabled in public ship unless local dev mode is enabled.';
     if (dom.pillBoundaryMode) dom.pillBoundaryMode.textContent = state.ingress.operatorShellOpen ? 'operator boundary' : 'public boundary';
-    const membraneSuppressed = isLocalhostOperator() || surfaceIsOpen;
+    const membraneSuppressed = true;
     dom.ingressMembrane.hidden = membraneSuppressed;
     dom.ingressMembrane.classList.toggle('is-hidden', membraneSuppressed);
     dom.body.classList.toggle('vault-sealed', !surfaceIsOpen);
@@ -1188,10 +1179,7 @@
     dom.inputSourceClass.value = 'futurecore membrane';
     dom.inputWitnessChannel.value = 'ritual + cadence';
     dom.inputOperatorNotes.value = '';
-    dom.inputSigType.value = '';
-    dom.inputSigKid.value = (D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal;
-    dom.inputSigDetachedRef.value = (D.signatureDefaults && D.signatureDefaults.detached_ref) || '';
-    dom.inputSigValue.value = '';
+    if (dom.kleopatraVoid) dom.kleopatraVoid.value = '';
     dom.dynamicTarget.innerHTML = '';
     dom.probeOutput.value = '';
     if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = selectedBatchId;
@@ -1277,10 +1265,7 @@
     dom.inputSourceClass.value = 'futurecore membrane';
     dom.inputWitnessChannel.value = 'ritual + cadence';
     dom.inputOperatorNotes.value = '';
-    dom.inputSigType.value = '';
-    dom.inputSigKid.value = (D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal;
-    dom.inputSigDetachedRef.value = (D.signatureDefaults && D.signatureDefaults.detached_ref) || '';
-    dom.inputSigValue.value = '';
+    if (dom.kleopatraVoid) dom.kleopatraVoid.value = '';
     if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = 'batch-001a';
     dom.dynamicTarget.innerHTML = '';
     dom.probeOutput.value = '';
@@ -1337,10 +1322,7 @@
       dom.inputSourceClass.value = 'futurecore membrane';
       dom.inputWitnessChannel.value = 'ritual + cadence';
       dom.inputOperatorNotes.value = '';
-      dom.inputSigType.value = '';
-      dom.inputSigKid.value = (D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal;
-      dom.inputSigDetachedRef.value = (D.signatureDefaults && D.signatureDefaults.detached_ref) || '';
-      dom.inputSigValue.value = '';
+      if (dom.kleopatraVoid) dom.kleopatraVoid.value = '';
       if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = state.selectedBatchId || 'batch-001a';
     }
     render();
@@ -1605,28 +1587,17 @@
     };
   }
   function buildOperatorSignatureFromInputs() {
-    const rawSig = dom.inputSigValue.value == null ? '' : String(dom.inputSigValue.value);
+    const rawSig = dom.kleopatraVoid && dom.kleopatraVoid.value != null ? String(dom.kleopatraVoid.value) : '';
     const sig = trim(rawSig) || null;
-    const detachedRef = trim(dom.inputSigDetachedRef.value) || null;
-    const sigType = trim(dom.inputSigType.value) || ((sig || detachedRef) ? 'PGP-detached' : '');
-    if (!sigType && !sig && !detachedRef) return null;
-    const kid = trim(dom.inputSigKid.value) || ((D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal);
+    if (!sig) return null;
     return {
-      status: sig ? 'sealed' : 'declared',
+      status: 'sealed',
       source: 'operator-signature-overlay',
-      lane: sigType === 'detached-ed25519'
-        ? 'detached-ed25519'
-        : sigType === 'PGP-detached'
-          ? 'pgp-detached'
-          : 'jws-detached',
-      sig_type: sigType || 'PGP-detached',
-      kid: kid,
-      alg: sigType === 'detached-ed25519'
-        ? 'Ed25519'
-        : sigType === 'PGP-detached'
-          ? 'OpenPGP'
-          : 'HS256',
-      detached_ref: detachedRef,
+      lane: 'pgp-detached',
+      sig_type: 'PGP-detached',
+      kid: null,
+      alg: 'OpenPGP',
+      detached_ref: null,
       sig: sig
     };
   }
@@ -1645,10 +1616,7 @@
   }
   async function clearSignatureOverlay() {
     state.operatorSignature = null;
-    dom.inputSigType.value = '';
-    dom.inputSigKid.value = (D.signatureDefaults && D.signatureDefaults.kid) || D.canon.principal;
-    dom.inputSigDetachedRef.value = (D.signatureDefaults && D.signatureDefaults.detached_ref) || '';
-    dom.inputSigValue.value = '';
+    if (dom.kleopatraVoid) dom.kleopatraVoid.value = '';
     if (state.ingress.packetId) await rebuild('signature-overlay-cleared');
     else { render(); persist(); }
     logEvent('signature-overlay-cleared', { state: 'unsigned' });
@@ -2409,10 +2377,7 @@
       buildPacket: async function () { return state.packet ? clone(state.packet) : null; },
       getSealedPayload: function () { return state.sealed ? clone(state.sealed) : null; },
       attachSignatureOverlay: async function (detail) {
-        if (detail && detail.sigType !== undefined) dom.inputSigType.value = detail.sigType || '';
-        if (detail && detail.kid !== undefined) dom.inputSigKid.value = detail.kid || '';
-        if (detail && detail.detachedRef !== undefined) dom.inputSigDetachedRef.value = detail.detachedRef || '';
-        if (detail && detail.sig !== undefined) dom.inputSigValue.value = detail.sig || '';
+        if (dom.kleopatraVoid && detail && detail.sig !== undefined) dom.kleopatraVoid.value = detail.sig || '';
         return attachSignatureOverlay();
       },
       clearSignatureOverlay: async function () { return clearSignatureOverlay(); },

@@ -58,8 +58,12 @@ assert.ok(
   'Export readiness now depends on covenant plus scrub only, not detached-signature presence'
 );
 assert.ok(
-  harborHtmlSource.includes('Paste Kleopatra PGP Signature Block Here'),
-  'Safe Harbor exposes the simplified raw Kleopatra signature textarea label'
+  harborHtmlSource.includes('id="kleopatra-void"') &&
+    harborHtmlSource.includes('Paste detached PGP signature block here') &&
+    !harborHtmlSource.includes('inputSigKid') &&
+    !harborHtmlSource.includes('inputSigType') &&
+    !harborHtmlSource.includes('inputSigDetachedRef'),
+  'Safe Harbor reduces the signature lane to a single detached-signature void without key-id or type inputs'
 );
 assert.ok(
   harborHtmlSource.includes('Mint / Seal Payload'),
@@ -71,28 +75,29 @@ assert.ok(
   'Safe Harbor auto-opens the vault when it is served from localhost through the dedicated host check'
 );
 assert.ok(
-  harborMainSource.includes('const membraneSuppressed = isLocalhostOperator() || surfaceIsOpen;') &&
+  harborMainSource.includes('const membraneSuppressed = true;') &&
     harborMainSource.includes('dom.ingressMembrane.hidden = membraneSuppressed;'),
-  'Safe Harbor suppresses the membrane only for localhost or once the chamber is already open'
+  'Safe Harbor keeps the deprecated ingress membrane visually occluded while preserving it in the DOM'
 );
 assert.ok(
   harborMainSource.includes('if (!isLocalhostOperator()) return;'),
   'Safe Harbor keeps stored auto-bypass behavior limited to localhost instead of public hosts'
 );
 assert.ok(
-  harborHtmlSource.includes('<div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true">'),
-  'Safe Harbor keeps the ingress membrane in public markup instead of hard-hiding it everywhere'
+  harborHtmlSource.includes('<div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true" hidden>'),
+  'Safe Harbor preserves the ingress membrane in markup history while hiding it from the live interface'
 );
 assert.ok(
-  harborHtmlSource.includes('Tauric Diana Batch Intake') &&
-    harborHtmlSource.includes('Stage Selected Batch') &&
+  harborHtmlSource.includes('Tauric Diana Intake') &&
+    harborHtmlSource.includes('Stage Vanguard Batch') &&
     harborHtmlSource.includes('Reset Staged Batch') &&
     harborHtmlSource.includes('batch-001a') &&
-    harborHtmlSource.includes('batch-001d') &&
-    harborHtmlSource.includes('batch-002d') &&
-    harborHtmlSource.includes('batch-003d') &&
-    harborHtmlSource.includes('batch-004c'),
-  'Safe Harbor exposes the full buffered intake wave plus a reset path in the center chamber'
+    harborHtmlSource.includes('batch-002a') &&
+    harborHtmlSource.includes('batch-003a') &&
+    harborHtmlSource.includes('batch-004a') &&
+    !harborHtmlSource.includes('batch-001d') &&
+    !harborHtmlSource.includes('batch-004c'),
+  'Safe Harbor exposes the vanguard A-line intake plus a reset path in the center chamber'
 );
 assert.ok(
   harborMainSource.includes('selected_batch_id: state.selectedBatchId || null'),
