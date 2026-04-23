@@ -1014,9 +1014,9 @@
           : thresholdSatisfied
             ? 'triad ready / await mint'
             : 'not minted';
-    dom.shiMintValue.textContent = available || 'NOT YET MINTED';
-    dom.canonicalHeaderPreview.textContent = canonicalHeaderString(available);
-    dom.extendedFooterPreview.textContent = extendedFooterString(available);
+    dom.shiMintValue.textContent = available || '';
+    dom.canonicalHeaderPreview.textContent = available ? canonicalHeaderString(available) : '';
+    dom.extendedFooterPreview.textContent = available ? extendedFooterString(available) : '';
     dom.shiCopyNote.textContent = issued
       ? 'Copy this exactly. The minted SHI # is the Safe Harbor issuance code that should travel unchanged through packet, probe, renderer, and LLM lanes.'
       : recoverable
@@ -1538,14 +1538,14 @@
   }
 
   function canonicalHeaderString(shiNumber) {
-    if (shiNumber) return 'SHI#:' + shiNumber;
-    return (D.trustProfile && D.trustProfile.shi_canonical_header_template) || 'SHI#:NOT-YET-MINTED';
+    if (!shiNumber) return '';
+    return 'SHI#:' + shiNumber;
   }
 
   function extendedFooterString(shiNumber) {
+    if (!shiNumber) return '';
     const compact = footerString();
-    const value = shiNumber || 'NOT-YET-MINTED';
-    return compact.replace(/\spayload/u, ' \u00b7 SHI#:' + value + ' \u00b7 payload');
+    return compact.replace(/\spayload/u, ' \u00b7 SHI#:' + shiNumber + ' \u00b7 payload');
   }
 
   function stampBundle() {
