@@ -933,7 +933,7 @@ function normalizeRegisterLane(value = '', fallback = '') {
   return REGISTER_LANES.includes(normalized) ? normalized : fallback;
 }
 
-function inferRegisterLaneFromText(text = '', profile = {}, sourceClass = 'formal-correspondence') {
+export function inferRegisterLaneFromText(text = '', profile = {}, sourceClass = 'formal-correspondence') {
   const normalized = normalizeText(text);
   const lowered = normalized.toLowerCase();
   const abbreviationDensity = Number(profile?.abbreviationDensity || 0);
@@ -941,23 +941,36 @@ function inferRegisterLaneFromText(text = '', profile = {}, sourceClass = 'forma
   const fragmentPressure = Number(profile?.fragmentPressure || 0);
   const avgSentenceLength = Number(profile?.avgSentenceLength || 0);
   const sentenceCount = Number(profile?.sentenceCount || 0);
-  const slashNotePressure = /(?:\s\/\s|\bw\/o\b|\bw\/\b)/i.test(normalized);
+  const quotedSlashStatus = /["“'][^"”']{0,80}\s\/\s[^"”']{0,80}["”']/i.test(normalized);
+  const slashNotePressure = !quotedSlashStatus && /(?:\s\/\s|\bw\/o\b|\bw\/\b)/i.test(normalized);
   const colonNotePressure = /:\s+[a-z0-9]/i.test(normalized) || /\bif [^.!?]{2,60}:\s+/i.test(normalized);
-  const rushedLexemes = /\b(?:pkg|mgmt|appt|msg|pls|bc|abt|imo|fyi|2nd|3rd|fl|wasnt|dont|cant|w\/o|w\/|gonna|gotta|yall|tryna|ima|finna|idk|tbh|ngl|fr)\b/i.test(normalized);
+  const rushedLexemeHits = (lowered.match(/\b(?:pkg|mgmt|appt|msg|pls|bc|abt|imo|fyi|2nd|3rd|fl|wasnt|dont|cant|w\/o|w\/|gonna|gotta|yall|tryna|ima|finna|idk|tbh|ngl|fr)\b/gi) || []).length;
   const tangledSignals =
     /\b(?:following up|not quite right|accidentally made it sound|so yes|the actual miss|the actual issue|that is not quite right)\b/i.test(normalized) ||
     (avgSentenceLength >= 15 && sentenceCount >= 3 && /\b(?:but|however|though|earlier|later|actually)\b/i.test(normalized));
   const professionalSignals =
     /(?:^|\n)\s*(?:hello|hi|team)\b/i.test(normalized) ||
     /\b(?:please|let me know|thank you|appreciate|check in|required|flow|cleanup|arrive|starting with)\b/i.test(normalized);
+  const institutionalSignalHits = (
+    lowered.match(/\b(?:carrier scan|building footage|resident testimony|signature record|building log|corrective issue|presented for signature|approximately|maintenance|located it|third party handled|outer carton|rush parcel|door tag|hallway table)\b/gi) || []
+  ).length;
+  const formalRecordShape =
+    avgSentenceLength >= 15 &&
+    sentenceCount >= 3 &&
+    institutionalSignalHits >= 1 &&
+    orthographicLooseness < 0.085 &&
+    fragmentPressure < 0.14 &&
+    abbreviationDensity < 0.055;
+  const strongRushedSignal =
+    rushedLexemeHits >= 1 ||
+    orthographicLooseness >= 0.085 ||
+    fragmentPressure >= 0.14 ||
+    abbreviationDensity >= 0.055;
+  const weakRushedSignalCount = [slashNotePressure, colonNotePressure].filter(Boolean).length;
 
   if (
-    rushedLexemes ||
-    slashNotePressure ||
-    colonNotePressure ||
-    abbreviationDensity >= 0.055 ||
-    orthographicLooseness >= 0.085 ||
-    fragmentPressure >= 0.14
+    strongRushedSignal ||
+    (weakRushedSignalCount >= 1 && !formalRecordShape && (orthographicLooseness >= 0.05 || fragmentPressure >= 0.1 || abbreviationDensity >= 0.04))
   ) {
     return 'rushed-mobile';
   }

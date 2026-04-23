@@ -64,6 +64,8 @@ page.on('console', (message) => {
 });
 
 try {
+  const referenceVoice = `On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked "attempted / no answer" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that minute. The package was instead left on the second-floor landing near the stair rail. Ms. Chen located it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come through. I moved the parcel from the landing to the hallway table outside 2B only after Ms. Chen confirmed it was hers and requested help because she was already carrying groceries. The outer carton remained sealed. The red rush label remained attached. No third party handled the parcel after pickup from the landing. The corrective issue is not merely where the box rested, but that the signature record implies a contact attempt that the building log does not support.`;
+  const probeVoice = `2b pkg wasnt brought down. tag says attempted 6:41 but no one buzzed her. it was just sitting on 2nd fl landing by rail. red rush sticker still on it. i moved it to hall table after she said yes its hers / she had bags already. if mgmt asks: box stayed sealed.`;
   await page.goto(deckUrl, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.body.dataset.bootStage === 'boot-complete', { timeout: 15000 });
 
@@ -97,6 +99,24 @@ try {
   assert.notEqual(duelSimilarityAfter, duelSimilarityBefore, 'Swap Cadences changes the duel similarity readout');
   assert.notEqual(duelTraceabilityAfter, duelTraceabilityBefore, 'Swap Cadences changes the duel traceability readout');
   assert.match(statusAfterSwap, /Cadence shells swapped/i, 'Swap Cadences publishes a live encounter status message');
+
+  await page.goto(`${deckUrl}&fresh=1`, { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => document.body.dataset.bootStage === 'boot-complete', { timeout: 15000 });
+  await page.locator('#voiceA').fill(referenceVoice);
+  await page.locator('#voiceB').fill(probeVoice);
+  await page.locator('#compareBtn').click();
+  await page.waitForFunction(() => document.querySelector('#shellDuel')?.dataset.state === 'live', { timeout: 10000 });
+  await page.locator('#swapCadencesBtn').click();
+  await page.waitForFunction(() => {
+    const sample = document.querySelector('#duelSampleB');
+    return Boolean(sample && /parcel|package|management|second-floor/i.test(sample.textContent || ''));
+  }, { timeout: 10000 });
+
+  const formalizedProbeSwap = (await page.locator('#duelSampleB').textContent()) || '';
+  assert.doesNotMatch(formalizedProbeSwap, /\bpkg\b/i, 'Deck swap formalizes pkg in the probe bay under a borrowed reference cadence');
+  assert.match(formalizedProbeSwap, /\b(?:parcel|package)\b/i, 'Deck swap surfaces a formal cargo term in the formalized probe bay');
+  assert.match(formalizedProbeSwap, /\bmanagement\b/i, 'Deck swap surfaces management in the formalized probe bay');
+  assert.match(formalizedProbeSwap, /\bsecond-floor\b/i, 'Deck swap surfaces second-floor in the formalized probe bay');
   assert.deepEqual(pageErrors, [], 'Deck page emits no uncaught page errors');
   assert.deepEqual(consoleErrors, [], 'Deck page emits no console errors');
 

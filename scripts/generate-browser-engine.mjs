@@ -58,6 +58,7 @@ const generated = [
   '  estimateWitnessLoad,',
   '  normalizeText,',
   '  extractCadenceProfile,',
+  '  inferRegisterLaneFromText,',
   '  compareTexts,',
   '  buildCadenceTransfer,',
   '  buildCadenceTransferLegacy,',

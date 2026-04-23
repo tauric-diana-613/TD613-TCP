@@ -12,6 +12,7 @@
     buildTD613GovernedExposureSchema,
     compareTexts,
     extractCadenceProfile,
+    inferRegisterLaneFromText,
     buildCadenceTransfer,
     buildCadenceTransferTrace,
     buildSwapCadenceMatrix,
@@ -3519,8 +3520,16 @@
 
     const referenceProfile = extractCadenceProfile(referenceText);
     const probeProfile = extractCadenceProfile(probeText);
-    const laneA = buildCadenceTransfer(referenceText, borrowedShellFromProfile(probeProfile, 'B', null, probeText), { retrieval: true });
-    const laneB = buildCadenceTransfer(probeText, borrowedShellFromProfile(referenceProfile, 'A', null, referenceText), { retrieval: true });
+    const referenceSourceRegisterLane = inferRegisterLaneFromText(referenceText, referenceProfile);
+    const probeSourceRegisterLane = inferRegisterLaneFromText(probeText, probeProfile);
+    const laneA = buildCadenceTransfer(referenceText, borrowedShellFromProfile(probeProfile, 'B', probeSourceRegisterLane, probeText), {
+      retrieval: true,
+      sourceRegisterLane: referenceSourceRegisterLane
+    });
+    const laneB = buildCadenceTransfer(probeText, borrowedShellFromProfile(referenceProfile, 'A', referenceSourceRegisterLane, referenceText), {
+      retrieval: true,
+      sourceRegisterLane: probeSourceRegisterLane
+    });
     const laneOutcomes = [
       laneA.borrowedShellOutcome || laneA.transferClass,
       laneB.borrowedShellOutcome || laneB.transferClass
@@ -4172,9 +4181,13 @@
     const rawProfile = extractCadenceProfile(text);
     const shell = getBayShell(slot);
     const sample = sampleEntry(baySampleIds[slot]);
+    const inferredSourceRegisterLane = text.trim()
+      ? inferRegisterLaneFromText(text, rawProfile)
+      : (sample?.variant || null);
+    const sourceRegisterLane = inferredSourceRegisterLane || sample?.variant || null;
     const transferOptions = { retrieval: true };
-    if (sample?.variant) {
-      transferOptions.sourceRegisterLane = sample.variant;
+    if (sourceRegisterLane) {
+      transferOptions.sourceRegisterLane = sourceRegisterLane;
     }
     const transfer = buildCadenceTransfer(text, shell, transferOptions);
     const generationHeld = transfer.holdStatus === 'held';
@@ -4215,7 +4228,7 @@
       effectiveProfile,
       persona,
       shell,
-      sourceRegisterLane: transfer.sourceRegisterLane || sample?.variant || null,
+      sourceRegisterLane: transfer.sourceRegisterLane || sourceRegisterLane,
       targetRegisterLane: transfer.targetRegisterLane || shell.registerLane || null,
       profileShiftDimensions: [...new Set(transfer.profileShiftDimensions || [])],
       artifactRepairApplied: Boolean(transfer.artifactRepairApplied),

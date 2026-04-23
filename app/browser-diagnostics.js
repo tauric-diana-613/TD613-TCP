@@ -660,7 +660,7 @@
           "same-facts"
         ],
         "deckVisible": false,
-        "text": "fam of 4 at church lot now. need motel + diapers + bus fare + food tonight. no motel stock left. gave 2 bus passes + diaper pack + grocery pickup referral. maybe same household as east side last wk? number kinda matches. not saying no just dont want case split twice"
+        "text": "fam of 4 at church lot now. need motel + diapers + bus fare + food tonight. no motel stock left. gave 2 bus passes + diaper pack + grocery pickup referral. yall number kinda matches east side last wk. im tryna make sure its not the same household bc i dont want case split twice, not saying no"
       },
       {
         "id": "mutual-aid-tangled-followup",
@@ -2049,7 +2049,7 @@
         "variant": "rushed-mobile",
         "name": "Church Lot Intake Routing / Rushed Mobile",
         "intention": "Keep concrete resource facts visible through a hurried text lane.",
-        "text": "fam of 4 at church lot now. need motel + diapers + bus fare + food tonight. no motel stock left. gave 2 bus passes + diaper pack + grocery pickup referral. maybe same household as east side last wk? number kinda matches. not saying no just dont want case split twice"
+        "text": "fam of 4 at church lot now. need motel + diapers + bus fare + food tonight. no motel stock left. gave 2 bus passes + diaper pack + grocery pickup referral. yall number kinda matches east side last wk. im tryna make sure its not the same household bc i dont want case split twice, not saying no"
       },
       {
         "id": "mutual-aid-tangled-followup",

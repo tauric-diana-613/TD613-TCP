@@ -58,6 +58,7 @@ const expected = [
   '  estimateWitnessLoad,',
   '  normalizeText,',
   '  extractCadenceProfile,',
+  '  inferRegisterLaneFromText,',
   '  compareTexts,',
   '  buildCadenceTransfer,',
   '  buildCadenceTransferLegacy,',
