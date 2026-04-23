@@ -25,9 +25,9 @@
     "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
-      "actorCoverage": 1,
+      "actorCoverage": 0.889,
       "actionCoverage": 1,
-      "objectCoverage": 0.956,
+      "objectCoverage": 0.928,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -42,7 +42,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.149
+          "globalBagScore": 0.156
         },
         {
           "sourceClauseId": "s1c0",
@@ -54,19 +54,19 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.128
+          "globalBagScore": 0.133
         },
         {
           "sourceClauseId": "s1c1",
-          "matchedClauseId": "s1c1",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.043
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s2c0",
@@ -78,7 +78,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.667,
-          "globalBagScore": 0.083
+          "globalBagScore": 0.087
         },
         {
           "sourceClauseId": "s3c0",
@@ -90,7 +90,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.128
+          "globalBagScore": 0.133
         },
         {
           "sourceClauseId": "s4c0",
@@ -102,7 +102,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.043
+          "globalBagScore": 0.044
         },
         {
           "sourceClauseId": "s5c0",
@@ -114,7 +114,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.714,
-          "globalBagScore": 0.104
+          "globalBagScore": 0.109
         },
         {
           "sourceClauseId": "s6c0",
@@ -126,7 +126,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.857,
-          "globalBagScore": 0.128
+          "globalBagScore": 0.133
         },
         {
           "sourceClauseId": "s7c0",
@@ -138,11 +138,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.149
+          "globalBagScore": 0.156
         }
       ],
       "sourceClauseCount": 9,
-      "outputClauseCount": 9
+      "outputClauseCount": 8
     },
     "protectedAnchorAudit": {
       "totalAnchors": 0,
@@ -166,9 +166,9 @@
       },
       "semanticCoverage": {
         "propositionCoverage": 1,
-        "actorCoverage": 1,
+        "actorCoverage": 0.889,
         "actionCoverage": 1,
-        "objectCoverage": 0.956,
+        "objectCoverage": 0.928,
         "polarityMismatches": 0,
         "tenseMismatches": 0
       },
@@ -181,9 +181,9 @@
       "aperture": {
         "temporalPosture": "synced",
         "closureClass": "closed",
-        "closureScore": 0.995,
-        "historicalCrease": 0.012,
-        "unfoldingEnergy": 0.014,
+        "closureScore": 0.974,
+        "historicalCrease": 0.014,
+        "unfoldingEnergy": 0.02,
         "beaconStatus": "beacon-idle",
         "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
@@ -192,7 +192,7 @@
         "driftClass": "none",
         "driftReasons": [],
         "routeFloor": "play",
-        "routePressure": 0.088
+        "routePressure": 0.09
       }
     },
     "planSummary": {
@@ -221,6 +221,8 @@
       "structuralOperationsSelected": [],
       "lexicalRegisterOperationsSelected": [
         "compressed:temporary->temp",
+        "feature:though->tho",
+        "feature:through->thru",
         "orthography:its",
         "orthography:lowercase-lead",
         "feature:is-not->isnt",
@@ -248,6 +250,7 @@
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "register-mode",
+        "abbreviation-posture",
         "orthography-posture",
         "lexical-register",
         "surface-marker-posture",
@@ -255,6 +258,7 @@
       ],
       "profileShiftDimensions": [
         "register-mode",
+        "abbreviation-posture",
         "orthography-posture",
         "lexical-register"
       ],
@@ -263,6 +267,16 @@
           "from": "temporary",
           "to": "temp",
           "family": "surface"
+        },
+        {
+          "from": "though",
+          "to": "tho",
+          "family": "feature"
+        },
+        {
+          "from": "through",
+          "to": "thru",
+          "family": "feature"
         },
         {
           "from": "it's",
@@ -283,22 +297,21 @@
       "vernacularFeatureShift": {
         "targetRegisterLane": "rushed-mobile",
         "orthographyShift": true,
-        "shorthandShift": false,
+        "shorthandShift": true,
         "notePostureShift": true,
         "slangShift": false,
         "vernacularShift": false,
         "realizedFamilies": [
           "orthographyNoise",
+          "chatspeakShorthand",
           "notePosture"
         ],
-        "realizedFamilyCount": 2,
-        "falseCleanFamilies": [
-          "chatspeakShorthand"
-        ],
+        "realizedFamilyCount": 3,
+        "falseCleanFamilies": [],
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
         "concealmentEffectiveness": 0,
-        "surfaceMarkerCount": 4,
+        "surfaceMarkerCount": 7,
         "pressure": {
           "targetRegisterLane": "rushed-mobile",
           "activeFamilies": [
@@ -366,8 +379,9 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 1,
+          "count": 2,
           "markers": [
+            "thru",
             "profile-abbreviation-density"
           ]
         },
@@ -394,7 +408,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 6
+        "totalMarkers": 7
       },
       "output": {
         "registerLane": "rushed-mobile",
@@ -409,9 +423,13 @@
           ]
         },
         "chatspeakShorthand": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 3,
+          "markers": [
+            "tho",
+            "thru",
+            "profile-abbreviation-density"
+          ]
         },
         "notePosture": {
           "active": true,
@@ -432,9 +450,10 @@
         },
         "activeFamilies": [
           "orthographyNoise",
+          "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 4
+        "totalMarkers": 7
       },
       "pressure": {
         "targetRegisterLane": "rushed-mobile",
@@ -453,10 +472,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.153,
-      "outputDonorDistance": 3.095,
-      "donorImprovement": 1.058,
-      "donorImprovementRatio": 0.255,
-      "sourceOutputLexicalOverlap": 0.923
+      "outputDonorDistance": 2.805,
+      "donorImprovement": 1.348,
+      "donorImprovementRatio": 0.325,
+      "sourceOutputLexicalOverlap": 0.894
     },
     "candidateLedger": [
       {
@@ -466,10 +485,10 @@
         "status": "selected",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.1045,
+        "score": 1.1592,
         "toolabilityScore": 0.7959,
         "rewriteStrength": 1,
-        "targetFit": 0.502,
+        "targetFit": 0.5474,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -485,6 +504,7 @@
         "transferClass": "structural",
         "changedDimensions": [
           "register-mode",
+          "abbreviation-posture",
           "orthography-posture",
           "lexical-register",
           "surface-marker-posture",
@@ -492,10 +512,11 @@
         ],
         "profileShiftDimensions": [
           "register-mode",
+          "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 4,
+        "lexemeSwapCount": 6,
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -547,8 +568,9 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
+                "thru",
                 "profile-abbreviation-density"
               ]
             },
@@ -575,7 +597,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 6
+            "totalMarkers": 7
           },
           "output": {
             "registerLane": "rushed-mobile",
@@ -590,9 +612,13 @@
               ]
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 3,
+              "markers": [
+                "tho",
+                "thru",
+                "profile-abbreviation-density"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -613,9 +639,10 @@
             },
             "activeFamilies": [
               "orthographyNoise",
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 4
+            "totalMarkers": 7
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -634,22 +661,21 @@
         "vernacularFeatureShift": {
           "targetRegisterLane": "rushed-mobile",
           "orthographyShift": true,
-          "shorthandShift": false,
+          "shorthandShift": true,
           "notePostureShift": true,
           "slangShift": false,
           "vernacularShift": false,
           "realizedFamilies": [
             "orthographyNoise",
+            "chatspeakShorthand",
             "notePosture"
           ],
-          "realizedFamilyCount": 2,
-          "falseCleanFamilies": [
-            "chatspeakShorthand"
-          ],
+          "realizedFamilyCount": 3,
+          "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 4,
+          "surfaceMarkerCount": 7,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -680,9 +706,9 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 1,
+            "actorCoverage": 0.889,
             "actionCoverage": 1,
-            "objectCoverage": 0.956,
+            "objectCoverage": 0.928,
             "polarityMismatches": 0,
             "tenseMismatches": 0
           },
@@ -695,9 +721,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.995,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.014,
+            "closureScore": 0.974,
+            "historicalCrease": 0.014,
+            "unfoldingEnergy": 0.02,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -706,10 +732,10 @@
             "driftClass": "none",
             "driftReasons": [],
             "routeFloor": "play",
-            "routePressure": 0.088
+            "routePressure": 0.09
           }
         },
-        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is that the"
+        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze thru Q3. the immediate effect is that the st"
       },
       {
         "id": "base:cadence-connector",
@@ -718,10 +744,10 @@
         "status": "eligible",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.0597,
+        "score": 1.1143,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5314,
+        "targetFit": 0.5768,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -737,6 +763,7 @@
           "sentence-mean",
           "sentence-count",
           "register-mode",
+          "abbreviation-posture",
           "orthography-posture",
           "lexical-register",
           "surface-marker-posture",
@@ -746,10 +773,11 @@
           "sentence-mean",
           "sentence-count",
           "register-mode",
+          "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 4,
+        "lexemeSwapCount": 6,
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -801,8 +829,9 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
+                "thru",
                 "profile-abbreviation-density"
               ]
             },
@@ -829,7 +858,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 6
+            "totalMarkers": 7
           },
           "output": {
             "registerLane": "rushed-mobile",
@@ -844,9 +873,13 @@
               ]
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 3,
+              "markers": [
+                "tho",
+                "thru",
+                "profile-abbreviation-density"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -867,9 +900,10 @@
             },
             "activeFamilies": [
               "orthographyNoise",
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 4
+            "totalMarkers": 7
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -888,22 +922,21 @@
         "vernacularFeatureShift": {
           "targetRegisterLane": "rushed-mobile",
           "orthographyShift": true,
-          "shorthandShift": false,
+          "shorthandShift": true,
           "notePostureShift": true,
           "slangShift": false,
           "vernacularShift": false,
           "realizedFamilies": [
             "orthographyNoise",
+            "chatspeakShorthand",
             "notePosture"
           ],
-          "realizedFamilyCount": 2,
-          "falseCleanFamilies": [
-            "chatspeakShorthand"
-          ],
+          "realizedFamilyCount": 3,
+          "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 4,
+          "surfaceMarkerCount": 7,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -934,9 +967,9 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 1,
+            "actorCoverage": 0.889,
             "actionCoverage": 1,
-            "objectCoverage": 0.956,
+            "objectCoverage": 0.928,
             "polarityMismatches": 1,
             "tenseMismatches": 0
           },
@@ -949,9 +982,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.935,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.036,
+            "closureScore": 0.914,
+            "historicalCrease": 0.014,
+            "unfoldingEnergy": 0.042,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -960,10 +993,10 @@
             "driftClass": "none",
             "driftReasons": [],
             "routeFloor": "play",
-            "routePressure": 0.093
+            "routePressure": 0.095
           }
         },
-        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is that the"
+        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze thru Q3. the immediate effect is that the st"
       },
       {
         "id": "base:clause-pivot",
@@ -972,10 +1005,10 @@
         "status": "eligible",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9866,
+        "score": 1.0413,
         "toolabilityScore": 0.7959,
         "rewriteStrength": 1,
-        "targetFit": 0.502,
+        "targetFit": 0.5474,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -992,6 +1025,7 @@
         "changedDimensions": [
           "sentence-spread",
           "register-mode",
+          "abbreviation-posture",
           "orthography-posture",
           "lexical-register",
           "surface-marker-posture",
@@ -1000,10 +1034,11 @@
         "profileShiftDimensions": [
           "sentence-spread",
           "register-mode",
+          "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 4,
+        "lexemeSwapCount": 6,
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -1055,8 +1090,9 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
+                "thru",
                 "profile-abbreviation-density"
               ]
             },
@@ -1083,7 +1119,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 6
+            "totalMarkers": 7
           },
           "output": {
             "registerLane": "rushed-mobile",
@@ -1098,9 +1134,13 @@
               ]
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 3,
+              "markers": [
+                "tho",
+                "thru",
+                "profile-abbreviation-density"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1121,9 +1161,10 @@
             },
             "activeFamilies": [
               "orthographyNoise",
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 4
+            "totalMarkers": 7
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -1142,22 +1183,21 @@
         "vernacularFeatureShift": {
           "targetRegisterLane": "rushed-mobile",
           "orthographyShift": true,
-          "shorthandShift": false,
+          "shorthandShift": true,
           "notePostureShift": true,
           "slangShift": false,
           "vernacularShift": false,
           "realizedFamilies": [
             "orthographyNoise",
+            "chatspeakShorthand",
             "notePosture"
           ],
-          "realizedFamilyCount": 2,
-          "falseCleanFamilies": [
-            "chatspeakShorthand"
-          ],
+          "realizedFamilyCount": 3,
+          "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 4,
+          "surfaceMarkerCount": 7,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -1188,9 +1228,9 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 1,
+            "actorCoverage": 0.889,
             "actionCoverage": 1,
-            "objectCoverage": 0.956,
+            "objectCoverage": 0.928,
             "polarityMismatches": 1,
             "tenseMismatches": 0
           },
@@ -1203,9 +1243,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.935,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.036,
+            "closureScore": 0.914,
+            "historicalCrease": 0.014,
+            "unfoldingEnergy": 0.042,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -1214,10 +1254,10 @@
             "driftClass": "none",
             "driftReasons": [],
             "routeFloor": "play",
-            "routePressure": 0.093
+            "routePressure": 0.095
           }
         },
-        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze through Q3. the immediate effect is that the"
+        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze thru Q3. the immediate effect is that the st"
       }
     ],
     "generationDocket": {
@@ -1244,9 +1284,9 @@
         },
         "semanticCoverage": {
           "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0.889,
           "actionCoverage": 1,
-          "objectCoverage": 0.956,
+          "objectCoverage": 0.928,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -1259,9 +1299,9 @@
         "aperture": {
           "temporalPosture": "synced",
           "closureClass": "closed",
-          "closureScore": 0.995,
-          "historicalCrease": 0.012,
-          "unfoldingEnergy": 0.014,
+          "closureScore": 0.974,
+          "historicalCrease": 0.014,
+          "unfoldingEnergy": 0.02,
           "beaconStatus": "beacon-idle",
           "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
@@ -1270,7 +1310,7 @@
           "driftClass": "none",
           "driftReasons": [],
           "routeFloor": "play",
-          "routePressure": 0.088
+          "routePressure": 0.09
         }
       }
     },
@@ -1280,6 +1320,7 @@
     "transferClass": "structural",
     "realizationTier": "lexical-structural",
     "changedDimensions": [
+      "abbreviation-posture",
       "fragment-posture",
       "lexical-register",
       "orthography-posture",
@@ -1302,15 +1343,17 @@
       "compressed:temporary->temp",
       "feature:is-not->isnt",
       "feature:lowercase-sentence-start",
+      "feature:though->tho",
+      "feature:through->thru",
       "orthography:its",
       "orthography:lowercase-lead"
     ],
     "connectorStrategy": "split",
     "contractionStrategy": "contract",
     "propositionCoverage": 1,
-    "actorCoverage": 1,
+    "actorCoverage": 0.889,
     "actionCoverage": 1,
-    "objectCoverage": 0.956,
+    "objectCoverage": 0.928,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

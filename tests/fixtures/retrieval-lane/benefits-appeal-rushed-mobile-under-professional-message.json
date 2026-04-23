@@ -270,8 +270,8 @@
         ],
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
-        "concealmentEffectiveness": 0.5714,
-        "surfaceMarkerCount": 3,
+        "concealmentEffectiveness": 0.5,
+        "surfaceMarkerCount": 4,
         "pressure": {
           "targetRegisterLane": "professional-message",
           "activeFamilies": [
@@ -304,8 +304,9 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 3,
+          "count": 4,
           "markers": [
+            "docs",
             "pls",
             "bc",
             "profile-abbreviation-density"
@@ -333,7 +334,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 7
+        "totalMarkers": 8
       },
       "donor": {
         "registerLane": "professional-message",
@@ -376,8 +377,9 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 1,
+          "count": 2,
           "markers": [
+            "docs",
             "profile-abbreviation-density"
           ]
         },
@@ -403,7 +405,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 3
+        "totalMarkers": 4
       },
       "pressure": {
         "targetRegisterLane": "professional-message",
@@ -484,8 +486,9 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 3,
+              "count": 4,
               "markers": [
+                "docs",
                 "pls",
                 "bc",
                 "profile-abbreviation-density"
@@ -513,7 +516,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 8
           },
           "donor": {
             "registerLane": "professional-message",
@@ -556,8 +559,9 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
+                "docs",
                 "profile-abbreviation-density"
               ]
             },
@@ -583,7 +587,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 3
+            "totalMarkers": 4
           },
           "pressure": {
             "targetRegisterLane": "professional-message",
@@ -616,8 +620,8 @@
           ],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.5714,
-          "surfaceMarkerCount": 3,
+          "concealmentEffectiveness": 0.5,
+          "surfaceMarkerCount": 4,
           "pressure": {
             "targetRegisterLane": "professional-message",
             "activeFamilies": [
@@ -735,8 +739,9 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 3,
+              "count": 4,
               "markers": [
+                "docs",
                 "pls",
                 "bc",
                 "profile-abbreviation-density"
@@ -764,7 +769,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 8
           },
           "donor": {
             "registerLane": "professional-message",
@@ -807,8 +812,9 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
+                "docs",
                 "profile-abbreviation-density"
               ]
             },
@@ -834,7 +840,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 3
+            "totalMarkers": 4
           },
           "pressure": {
             "targetRegisterLane": "professional-message",
@@ -867,8 +873,8 @@
           ],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.5714,
-          "surfaceMarkerCount": 3,
+          "concealmentEffectiveness": 0.5,
+          "surfaceMarkerCount": 4,
           "pressure": {
             "targetRegisterLane": "professional-message",
             "activeFamilies": [

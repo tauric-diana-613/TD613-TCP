@@ -42,7 +42,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.154
+          "globalBagScore": 0.16
         },
         {
           "sourceClauseId": "s1c0",
@@ -54,19 +54,19 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.077
+          "globalBagScore": 0.08
         },
         {
           "sourceClauseId": "s1c1",
-          "matchedClauseId": "s2c0+s2c1",
+          "matchedClauseId": "s2c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.269
+          "bagScore": 0.714,
+          "globalBagScore": 0.28
         },
         {
           "sourceClauseId": "s2c0",
@@ -78,7 +78,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.333,
-          "globalBagScore": 0.037
+          "globalBagScore": 0.038
         },
         {
           "sourceClauseId": "s2c1",
@@ -90,11 +90,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.192
+          "globalBagScore": 0.2
         }
       ],
       "sourceClauseCount": 5,
-      "outputClauseCount": 8
+      "outputClauseCount": 7
     },
     "protectedAnchorAudit": {
       "totalAnchors": 1,
@@ -175,6 +175,8 @@
       ],
       "lexicalRegisterOperationsSelected": [
         "compressed:please->pls",
+        "compressed:tomorrow->tmrw",
+        "feature:though->tho",
         "orthography:dont",
         "orthography:lowercase-lead"
       ],
@@ -223,6 +225,16 @@
           "family": "surface"
         },
         {
+          "from": "tomorrow",
+          "to": "tmrw",
+          "family": "surface"
+        },
+        {
+          "from": "though",
+          "to": "tho",
+          "family": "feature"
+        },
+        {
           "from": "don't",
           "to": "dont",
           "family": "surface"
@@ -244,7 +256,7 @@
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
         "concealmentEffectiveness": 0,
-        "surfaceMarkerCount": 6,
+        "surfaceMarkerCount": 8,
         "pressure": {
           "targetRegisterLane": "rushed-mobile",
           "activeFamilies": [
@@ -352,9 +364,11 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 2,
+          "count": 4,
           "markers": [
+            "tmrw",
             "pls",
+            "tho",
             "profile-abbreviation-density"
           ]
         },
@@ -380,7 +394,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 6
+        "totalMarkers": 8
       },
       "pressure": {
         "targetRegisterLane": "rushed-mobile",
@@ -398,10 +412,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.615,
-      "outputDonorDistance": 3.197,
-      "donorImprovement": 1.418,
-      "donorImprovementRatio": 0.307,
-      "sourceOutputLexicalOverlap": 0.841
+      "outputDonorDistance": 2.586,
+      "donorImprovement": 2.029,
+      "donorImprovementRatio": 0.44,
+      "sourceOutputLexicalOverlap": 0.789
     },
     "candidateLedger": [
       {
@@ -411,10 +425,10 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.0896,
+        "score": 1.2089,
         "toolabilityScore": 0.7959,
         "rewriteStrength": 1,
-        "targetFit": 0.4196,
+        "targetFit": 0.5158,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -442,7 +456,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 2,
+        "lexemeSwapCount": 4,
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -535,9 +549,11 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 2,
+              "count": 4,
               "markers": [
+                "tmrw",
                 "pls",
+                "tho",
                 "profile-abbreviation-density"
               ]
             },
@@ -563,7 +579,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 6
+            "totalMarkers": 8
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -594,7 +610,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 6,
+          "surfaceMarkerCount": 8,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -662,10 +678,10 @@
         "status": "selected",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.2014,
+        "score": 1.3206,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.4815,
+        "targetFit": 0.5777,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -695,7 +711,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 2,
+        "lexemeSwapCount": 4,
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -788,9 +804,11 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 2,
+              "count": 4,
               "markers": [
+                "tmrw",
                 "pls",
+                "tho",
                 "profile-abbreviation-density"
               ]
             },
@@ -816,7 +834,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 6
+            "totalMarkers": 8
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -847,7 +865,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 6,
+          "surfaceMarkerCount": 8,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -915,10 +933,10 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.0917,
+        "score": 1.211,
         "toolabilityScore": 0.7959,
         "rewriteStrength": 1,
-        "targetFit": 0.4196,
+        "targetFit": 0.5158,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -948,7 +966,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 2,
+        "lexemeSwapCount": 4,
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -1041,9 +1059,11 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 2,
+              "count": 4,
               "markers": [
+                "tmrw",
                 "pls",
+                "tho",
                 "profile-abbreviation-density"
               ]
             },
@@ -1069,7 +1089,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 6
+            "totalMarkers": 8
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -1100,7 +1120,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 6,
+          "surfaceMarkerCount": 8,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -1231,6 +1251,7 @@
       "sentence-mean"
     ],
     "lexemeSwapFamilies": [
+      "feature",
       "surface"
     ],
     "relationInventory": [
@@ -1245,6 +1266,8 @@
     ],
     "lexicalOperations": [
       "compressed:please->pls",
+      "compressed:tomorrow->tmrw",
+      "feature:though->tho",
       "orthography:dont",
       "orthography:lowercase-lead"
     ],

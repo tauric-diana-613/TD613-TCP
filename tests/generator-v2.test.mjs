@@ -28,6 +28,8 @@ const packageRushed = sampleById('package-handoff-rushed-mobile');
 const mutualAidFormal = sampleById('mutual-aid-formal-record');
 const mutualAidRushed = sampleById('mutual-aid-rushed-mobile');
 const overworkTangled = sampleById('overwork-debrief-tangled-followup');
+const adminFormal = `The parcel remained with the department supervisor because the performance review was scheduled for tomorrow morning. Please let me know whether management wants the documentation forwarded before the appointment.`;
+const adminRushed = `pkg stayed w dept sup bc perf review got sched for tmrw am. pls lmk if mgmt wants docs fwd before appt. omg.`;
 
 assert.ok(procedural, 'procedural regression sample exists');
 assert.ok(formal, 'formal regression sample exists');
@@ -290,6 +292,11 @@ assert.ok(
   /said yes its hers|had bags already|by the stairs/i.test(packageToRushedPreview),
   'package formal -> rushed lands safe rushed-lane compression without losing its witness anchors'
 );
+assert.match(
+  packageToRushedPreview,
+  /\bpkg\b/i,
+  'package formal -> rushed degrades parcel/package cargo terms into pkg when the donor lane is shorthand-heavy'
+);
 assert.equal(
   /\b6:41\b|\b7:06\b/i.test(packageToRushedPreview),
   false,
@@ -392,6 +399,54 @@ assert.equal(
   /\byall\b|\btryna\b|\bima\b|\bfinna\b/i.test(packageToRushedPreview),
   false,
   'package formal -> rushed does not invent vernacular markers when the donor lane does not evidence them'
+);
+
+const adminToRushed = buildCadenceTransfer(adminFormal, {
+  mode: 'borrowed',
+  personaId: 'spark',
+  profile: extractCadenceProfile(adminRushed),
+  registerLane: 'rushed-mobile',
+  sourceText: adminRushed,
+  strength: 0.84
+}, {
+  retrieval: true,
+  sourceRegisterLane: 'formal-record'
+});
+const adminToRushedPreview = String(adminToRushed.text || adminToRushed.internalText || '');
+
+assert.match(
+  adminToRushedPreview,
+  /\bpkg\b|\bdept\b|\bsup\b|\bperf\b|\bsched\b|\btmrw\b|\blmk\b|\bdocs\b|\bfwd\b|\bappt\b/i,
+  'admin formal -> rushed surfaces the expanded shorthand family in the noisy direction'
+);
+assert.equal(
+  /\bdepartment\b|\bsupervisor\b|\bperformance\b|\bscheduled\b|\btomorrow\b|\blet me know\b/i.test(adminToRushedPreview),
+  false,
+  'admin formal -> rushed does not leave the core admin lexemes untouched when the donor lane is explicitly shorthand-heavy'
+);
+
+const adminToFormal = buildCadenceTransfer(adminRushed, {
+  mode: 'borrowed',
+  personaId: 'archivist',
+  profile: extractCadenceProfile(adminFormal),
+  registerLane: 'formal-record',
+  sourceText: adminFormal,
+  strength: 0.84
+}, {
+  retrieval: true,
+  sourceRegisterLane: 'rushed-mobile'
+});
+const adminToFormalPreview = String(adminToFormal.text || adminToFormal.internalText || '');
+
+assert.match(
+  adminToFormalPreview,
+  /\bpackage\b|\bparcel\b|\bdepartment\b|\bsupervisor\b|\bperformance\b|\bscheduled\b|\btomorrow\b|\blet me know\b|\bdocumentation\b|\bforwarded\b|\bappointment\b/i,
+  'admin rushed -> formal expands the broadened shorthand family back into formal wording'
+);
+assert.equal(
+  /\bpkg\b|\bdept\b|\bsup\b|\bperf\b|\bsched\b|\btmrw\b|\blmk\b|\bdocs\b|\bfwd\b|\bappt\b/i.test(adminToFormalPreview),
+  false,
+  'admin rushed -> formal does not leak the clipped shorthand tokens back into the formalized output'
 );
 
 const nullTimeProbe = `later that night the carrier left the box by the rail. mgmt never logged a door knock. box stayed sealed.`;

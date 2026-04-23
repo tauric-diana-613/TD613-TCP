@@ -112,7 +112,10 @@ try {
     return Boolean(sample && /parcel|package|management|second-floor/i.test(sample.textContent || ''));
   }, { timeout: 10000 });
 
+  const degradedReferenceSwap = (await page.locator('#duelSampleA').textContent()) || '';
   const formalizedProbeSwap = (await page.locator('#duelSampleB').textContent()) || '';
+  assert.match(degradedReferenceSwap, /\bpkg\b/i, 'Deck swap degrades parcel/package into pkg in the reference bay under a borrowed probe cadence');
+  assert.match(degradedReferenceSwap, /\bmgmt\b|\b2nd fl\b|\bbc\b|\bhall table\b/i, 'Deck swap surfaces broader shorthand posture in the degraded reference bay');
   assert.doesNotMatch(formalizedProbeSwap, /\bpkg\b/i, 'Deck swap formalizes pkg in the probe bay under a borrowed reference cadence');
   assert.match(formalizedProbeSwap, /\b(?:parcel|package)\b/i, 'Deck swap surfaces a formal cargo term in the formalized probe bay');
   assert.match(formalizedProbeSwap, /\bmanagement\b/i, 'Deck swap surfaces management in the formalized probe bay');
