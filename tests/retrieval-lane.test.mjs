@@ -112,7 +112,12 @@ for (const testCase of CANONICAL_TRANSFER_CASES) {
   assert.equal(trace.sourceRegisterLane, testCase.sourceVariant, `${testCase.id}: retrieval trace carries source register lane`);
   assert.equal(trace.planSummary?.relationInventory?.sourceRegisterLane, testCase.sourceVariant, `${testCase.id}: relation inventory carries source register lane`);
   assert.equal(result.sourceRegisterLane, testCase.sourceVariant, `${testCase.id}: result carries source register lane`);
+  assert.ok(result.vernacularFeatures, `${testCase.id}: result carries vernacular feature summary`);
+  assert.ok(result.vernacularFeatureShift, `${testCase.id}: result carries vernacular feature shift summary`);
+  assert.ok(trace.vernacularFeatures, `${testCase.id}: retrieval trace carries vernacular feature summary`);
+  assert.ok(trace.realizationSummary?.vernacularFeatureShift, `${testCase.id}: retrieval trace carries vernacular feature shift summary`);
   assert.ok((result.candidateLedger || []).every((entry) => entry.sourceRegisterLane === testCase.sourceVariant), `${testCase.id}: candidate ledger carries source register lane`);
+  assert.ok((result.candidateLedger || []).every((entry) => entry.vernacularFeatures && entry.vernacularFeatureShift), `${testCase.id}: candidate ledger carries vernacular feature summaries`);
 }
 
 for (const { sourceId, donorId } of [
@@ -129,6 +134,7 @@ for (const { sourceId, donorId } of [
     mod: cadenceModFromProfile(donorProfile),
     source: 'swapped',
     fromSlot: 'B',
+    sourceText: donorSample.text,
     strength: 0.82
   }, { retrieval: true });
 

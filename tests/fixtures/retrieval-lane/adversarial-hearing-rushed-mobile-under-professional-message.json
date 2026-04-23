@@ -8,14 +8,473 @@
     "mode": "borrowed",
     "strength": 0.88,
     "profile": {
-      "avgSentenceLength": 16.33,
+      "empty": false,
+      "wordCount": 98,
       "sentenceCount": 6,
-      "contractionDensity": 0,
+      "avgSentenceLength": 16.33,
+      "sentenceLengthSpread": 8.79,
       "punctuationDensity": 0.153,
+      "punctuationMix": {
+        "comma": 0.286,
+        "strong": 0.286,
+        "terminal": 0.429,
+        "dash": 0
+      },
+      "contractionDensity": 0,
+      "lineBreakDensity": 0,
+      "repeatedBigramPressure": 0.021,
+      "recurrencePressure": 0.185,
+      "lexicalDispersion": 0.772,
       "contentWordComplexity": 0.327,
       "modifierDensity": 0.119,
+      "hedgeDensity": 0,
+      "abstractionPosture": 0.5,
       "directness": 0,
-      "abstractionPosture": 0.5
+      "latinatePreference": 0.051,
+      "abbreviationDensity": 0,
+      "orthographicLooseness": 0,
+      "fragmentPressure": 0,
+      "conversationalPosture": 0.018,
+      "surfaceMarkerProfile": {
+        "pls": 0,
+        "bc": 0,
+        "wSlash": 0,
+        "woSlash": 0,
+        "thru": 0,
+        "tmrw": 0,
+        "acct": 0,
+        "pkg": 0,
+        "appt": 0,
+        "mgmt": 0,
+        "wk": 0,
+        "msg": 0,
+        "ref": 0,
+        "ok": 0,
+        "plusList": 0,
+        "lowercaseLead": 0,
+        "apostropheDrop": 0
+      },
+      "functionWordProfile": {
+        "a": 0.031,
+        "an": 0,
+        "the": 0.122,
+        "and": 0.02,
+        "or": 0,
+        "but": 0.01,
+        "if": 0.01,
+        "that": 0.031,
+        "this": 0,
+        "it": 0.01,
+        "to": 0,
+        "of": 0.01,
+        "in": 0.02,
+        "on": 0.01,
+        "for": 0.01,
+        "with": 0,
+        "as": 0,
+        "is": 0.02,
+        "are": 0,
+        "was": 0.02,
+        "were": 0,
+        "be": 0,
+        "been": 0,
+        "i": 0,
+        "you": 0,
+        "we": 0,
+        "they": 0,
+        "he": 0.01,
+        "she": 0.01,
+        "my": 0,
+        "your": 0,
+        "our": 0,
+        "their": 0,
+        "not": 0.02,
+        "because": 0,
+        "since": 0,
+        "though": 0,
+        "yet": 0,
+        "so": 0,
+        "then": 0,
+        "when": 0,
+        "while": 0,
+        "once": 0,
+        "also": 0,
+        "only": 0,
+        "still": 0.01,
+        "just": 0,
+        "simply": 0,
+        "really": 0,
+        "actually": 0,
+        "maybe": 0,
+        "perhaps": 0
+      },
+      "wordLengthProfile": {
+        "1-2": 0.224,
+        "3-4": 0.378,
+        "5-6": 0.173,
+        "7-8": 0.184,
+        "9+": 0.041
+      },
+      "charTrigramProfile": {
+        "hea": 0.002,
+        "ear": 0.006,
+        "ari": 0.002,
+        "rin": 0.002,
+        "ing": 0.006,
+        "ng ": 0.008,
+        "g u": 0.002,
+        " un": 0.004,
+        "uni": 0.002,
+        "nit": 0.002,
+        "it ": 0.004,
+        "t p": 0.002,
+        " pl": 0.004,
+        "ple": 0.002,
+        "lea": 0.004,
+        "eas": 0.002,
+        "ase": 0.004,
+        "se ": 0.004,
+        "e c": 0.006,
+        " co": 0.004,
+        "cor": 0.004,
+        "orr": 0.002,
+        "rre": 0.002,
+        "rec": 0.004,
+        "ect": 0.008,
+        "ct ": 0.002,
+        "t t": 0.006,
+        " th": 0.029,
+        "the": 0.023,
+        "he ": 0.027,
+        "e w": 0.01,
+        " wa": 0.006,
+        "way": 0.002,
+        "ay ": 0.004,
+        "y t": 0.006,
+        "e j": 0.004,
+        " ju": 0.004,
+        "jul": 0.002,
+        "uly": 0.002,
+        "ly ": 0.002,
+        "y 3": 0.002,
+        " 3 ": 0.002,
+        "3 r": 0.002,
+        " re": 0.008,
+        "eco": 0.002,
+        "ord": 0.002,
+        "rd ": 0.002,
+        "d i": 0.002,
+        " is": 0.004,
+        "is ": 0.004,
+        "s f": 0.002,
+        " fr": 0.002,
+        "fra": 0.002,
+        "ram": 0.002,
+        "ami": 0.002,
+        "min": 0.002,
+        "g t": 0.002,
+        "jun": 0.002,
+        "une": 0.002,
+        "ne ": 0.002,
+        "e i": 0.006,
+        " in": 0.01,
+        "ins": 0.006,
+        "nsp": 0.006,
+        "spe": 0.006,
+        "pec": 0.006,
+        "cti": 0.004,
+        "tio": 0.004,
+        "ion": 0.004,
+        "on ": 0.006,
+        "n c": 0.002,
+        "cou": 0.002,
+        "oun": 0.002,
+        "uns": 0.002,
+        "nse": 0.002,
+        "sel": 0.002,
+        "el ": 0.004,
+        "l k": 0.002,
+        " ke": 0.002,
+        "kep": 0.002,
+        "ept": 0.002,
+        "pt ": 0.002,
+        "t c": 0.002,
+        " ca": 0.006,
+        "cal": 0.004,
+        "all": 0.002,
+        "lli": 0.002,
+        "lin": 0.002,
+        "g i": 0.002,
+        " it": 0.002,
+        "t a": 0.004,
+        " a ": 0.006,
+        "a r": 0.004,
+        "ref": 0.006,
+        "efu": 0.006,
+        "fus": 0.006,
+        "usa": 0.006,
+        "sal": 0.006,
+        "al ": 0.01,
+        "l o": 0.002,
+        " of": 0.002,
+        "of ": 0.002,
+        "f e": 0.002,
+        " en": 0.002,
+        "ent": 0.002,
+        "ntr": 0.002,
+        "try": 0.002,
+        "ry ": 0.004,
+        "y b": 0.002,
+        " bu": 0.002,
+        "but": 0.002,
+        "ut ": 0.002,
+        "e n": 0.002,
+        " no": 0.006,
+        "not": 0.006,
+        "oti": 0.002,
+        "tic": 0.002,
+        "ice": 0.002,
+        "ce ": 0.002,
+        " wi": 0.002,
+        "win": 0.002,
+        "ind": 0.002,
+        "ndo": 0.002,
+        "dow": 0.002,
+        "ow ": 0.002,
+        "w w": 0.002,
+        "was": 0.004,
+        "as ": 0.004,
+        "s 1": 0.002,
+        " 1 ": 0.002,
+        "1 0": 0.002,
+        " 00": 0.004,
+        "00 ": 0.004,
+        "0 5": 0.002,
+        " 5 ": 0.004,
+        "5 0": 0.002,
+        "0 p": 0.002,
+        " pm": 0.002,
+        "pm ": 0.002,
+        "m a": 0.002,
+        " an": 0.004,
+        "and": 0.004,
+        "nd ": 0.004,
+        "d t": 0.004,
+        "cto": 0.002,
+        "tor": 0.002,
+        "or ": 0.004,
+        "r d": 0.002,
+        " di": 0.004,
+        "did": 0.002,
+        "id ": 0.002,
+        "d n": 0.002,
+        "ot ": 0.004,
+        " te": 0.002,
+        "tex": 0.002,
+        "ext": 0.002,
+        "xt ": 0.002,
+        "t u": 0.002,
+        "unt": 0.002,
+        "nti": 0.002,
+        "til": 0.004,
+        "il ": 0.002,
+        "l 5": 0.002,
+        "5 4": 0.002,
+        " 43": 0.002,
+        "43 ": 0.002,
+        "3 t": 0.002,
+        "tha": 0.006,
+        "hat": 0.006,
+        "at ": 0.006,
+        "t h": 0.004,
+        " he": 0.002,
+        "s s": 0.002,
+        " st": 0.004,
+        "sti": 0.002,
+        "ill": 0.002,
+        "ll ": 0.002,
+        "l i": 0.004,
+        "in ": 0.004,
+        "n t": 0.006,
+        " tr": 0.002,
+        "tra": 0.002,
+        "raf": 0.002,
+        "aff": 0.002,
+        "ffi": 0.002,
+        "fic": 0.002,
+        "ic ": 0.002,
+        "c c": 0.002,
+        "cam": 0.002,
+        "ame": 0.002,
+        "mer": 0.002,
+        "era": 0.002,
+        "ra ": 0.002,
+        "a t": 0.002,
+        " ti": 0.002,
+        "tim": 0.002,
+        "ime": 0.002,
+        "me ": 0.002,
+        "e p": 0.002,
+        "pla": 0.002,
+        "lac": 0.002,
+        "ace": 0.002,
+        "ces": 0.002,
+        "es ": 0.002,
+        "s a": 0.006,
+        " ar": 0.002,
+        "arr": 0.002,
+        "rri": 0.002,
+        "riv": 0.002,
+        "iva": 0.002,
+        "val": 0.002,
+        "l a": 0.002,
+        " af": 0.002,
+        "aft": 0.002,
+        "fte": 0.002,
+        "ter": 0.002,
+        "er ": 0.004,
+        "r 6": 0.002,
+        " 6 ": 0.002,
+        "6 1": 0.002,
+        " 10": 0.002,
+        "10 ": 0.002,
+        "0 t": 0.002,
+        " cl": 0.002,
+        "cla": 0.002,
+        "lai": 0.002,
+        "aim": 0.002,
+        "ima": 0.002,
+        "man": 0.002,
+        "ant": 0.002,
+        "nt ": 0.002,
+        " ha": 0.002,
+        "had": 0.002,
+        "ad ": 0.002,
+        "d a": 0.002,
+        " al": 0.002,
+        "alr": 0.002,
+        "lre": 0.002,
+        "rea": 0.004,
+        "ead": 0.002,
+        "ady": 0.002,
+        "dy ": 0.002,
+        "y l": 0.002,
+        " le": 0.004,
+        "lef": 0.002,
+        "eft": 0.002,
+        "ft ": 0.002,
+        "t f": 0.002,
+        " fo": 0.002,
+        "for": 0.002,
+        "r t": 0.004,
+        "e m": 0.002,
+        " me": 0.002,
+        "med": 0.002,
+        "edi": 0.002,
+        "dic": 0.002,
+        "ica": 0.002,
+        "l p": 0.002,
+        " pi": 0.002,
+        "pic": 0.002,
+        "ick": 0.002,
+        "cku": 0.002,
+        "kup": 0.002,
+        "up ": 0.002,
+        "p s": 0.002,
+        " sh": 0.002,
+        "she": 0.002,
+        "e f": 0.002,
+        " fl": 0.002,
+        "fla": 0.002,
+        "lag": 0.002,
+        "agg": 0.002,
+        "gge": 0.002,
+        "ged": 0.002,
+        "ed ": 0.002,
+        "d e": 0.002,
+        " ea": 0.002,
+        "arl": 0.002,
+        "rli": 0.002,
+        "lie": 0.002,
+        "ier": 0.002,
+        "t d": 0.002,
+        " da": 0.002,
+        "day": 0.002,
+        "t i": 0.002,
+        "a l": 0.002,
+        " la": 0.004,
+        "lat": 0.002,
+        "ate": 0.002,
+        "te ": 0.002,
+        "n n": 0.002,
+        " if": 0.002,
+        "if ": 0.002,
+        "f t": 0.002,
+        "e r": 0.002,
+        "l l": 0.002,
+        "lab": 0.002,
+        "abe": 0.002,
+        "bel": 0.002,
+        "l s": 0.002,
+        "sta": 0.002,
+        "tay": 0.002,
+        "ays": 0.002,
+        "ys ": 0.002,
+        "s i": 0.002,
+        "e s": 0.004,
+        " su": 0.002,
+        "sum": 0.002,
+        "umm": 0.002,
+        "mma": 0.002,
+        "mar": 0.002,
+        "ary": 0.002,
+        " sc": 0.002,
+        "sch": 0.002,
+        "che": 0.002,
+        "hed": 0.002,
+        "edu": 0.002,
+        "dul": 0.002,
+        "ule": 0.002,
+        "le ": 0.004,
+        "e b": 0.002,
+        " br": 0.002,
+        "bre": 0.002,
+        "eac": 0.002,
+        "ach": 0.002,
+        "ch ": 0.002,
+        "h d": 0.002,
+        "dis": 0.002,
+        "isa": 0.002,
+        "sap": 0.002,
+        "app": 0.002,
+        "ppe": 0.002,
+        "pea": 0.002,
+        "ars": 0.002,
+        "rs ": 0.002,
+        " wh": 0.002,
+        "who": 0.002,
+        "hol": 0.002,
+        "ole": 0.002,
+        "cas": 0.002,
+        "e l": 0.002,
+        "ean": 0.002,
+        "ans": 0.002,
+        "ns ": 0.002,
+        "s o": 0.002,
+        " on": 0.002,
+        " wr": 0.002,
+        "wro": 0.002,
+        "ron": 0.002,
+        "ong": 0.002,
+        "g p": 0.002,
+        " pr": 0.002,
+        "pre": 0.002,
+        "rem": 0.002,
+        "emi": 0.002,
+        "mis": 0.002,
+        "ise": 0.002
+      },
+      "registerMode": "plain"
     }
   },
   "retrievalTrace": {
@@ -162,7 +621,7 @@
         "merge-short-beats"
       ],
       "lexicalRegisterOperationsSelected": [
-        "expanded:thats->that-is"
+        "feature:thats->that-is"
       ],
       "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
@@ -203,11 +662,171 @@
         {
           "from": "thats",
           "to": "that is",
-          "family": "surface"
+          "family": "feature"
         }
       ],
+      "vernacularFeatureShift": {
+        "targetRegisterLane": "professional-message",
+        "orthographyShift": true,
+        "shorthandShift": false,
+        "notePostureShift": false,
+        "slangShift": false,
+        "vernacularShift": false,
+        "realizedFamilies": [
+          "orthographyNoise"
+        ],
+        "realizedFamilyCount": 1,
+        "falseCleanFamilies": [
+          "chatspeakShorthand",
+          "notePosture"
+        ],
+        "falseDirtyFamilies": [],
+        "donorFeatureAdherence": 1,
+        "concealmentEffectiveness": 0.6,
+        "surfaceMarkerCount": 2,
+        "pressure": {
+          "targetRegisterLane": "professional-message",
+          "activeFamilies": [
+            "orthographyNoise",
+            "chatspeakShorthand",
+            "notePosture"
+          ],
+          "orthographyNoise": true,
+          "chatspeakShorthand": true,
+          "notePosture": true,
+          "slangMarkers": false,
+          "vernacularMarkers": false
+        }
+      },
       "visibleShift": true,
       "nonTrivialShift": true
+    },
+    "vernacularFeatures": {
+      "source": {
+        "registerLane": "rushed-mobile",
+        "sourceClass": "formal-correspondence",
+        "orthographyNoise": {
+          "active": true,
+          "count": 3,
+          "markers": [
+            "lowercase-sentence-start",
+            "apostrophe-drop",
+            "profile-orthographic-looseness"
+          ]
+        },
+        "chatspeakShorthand": {
+          "active": true,
+          "count": 1,
+          "markers": [
+            "profile-abbreviation-density"
+          ]
+        },
+        "notePosture": {
+          "active": true,
+          "count": 1,
+          "markers": [
+            "plus-join"
+          ]
+        },
+        "slangMarkers": {
+          "active": false,
+          "count": 0,
+          "markers": []
+        },
+        "vernacularMarkers": {
+          "active": false,
+          "count": 0,
+          "markers": []
+        },
+        "activeFamilies": [
+          "orthographyNoise",
+          "chatspeakShorthand",
+          "notePosture"
+        ],
+        "totalMarkers": 5
+      },
+      "donor": {
+        "registerLane": "professional-message",
+        "sourceClass": "formal-correspondence",
+        "orthographyNoise": {
+          "active": false,
+          "count": 0,
+          "markers": []
+        },
+        "chatspeakShorthand": {
+          "active": false,
+          "count": 0,
+          "markers": []
+        },
+        "notePosture": {
+          "active": false,
+          "count": 0,
+          "markers": []
+        },
+        "slangMarkers": {
+          "active": false,
+          "count": 0,
+          "markers": []
+        },
+        "vernacularMarkers": {
+          "active": false,
+          "count": 0,
+          "markers": []
+        },
+        "activeFamilies": [],
+        "totalMarkers": 0
+      },
+      "output": {
+        "registerLane": "professional-message",
+        "sourceClass": "formal-correspondence",
+        "orthographyNoise": {
+          "active": false,
+          "count": 0,
+          "markers": []
+        },
+        "chatspeakShorthand": {
+          "active": true,
+          "count": 1,
+          "markers": [
+            "profile-abbreviation-density"
+          ]
+        },
+        "notePosture": {
+          "active": true,
+          "count": 1,
+          "markers": [
+            "plus-join"
+          ]
+        },
+        "slangMarkers": {
+          "active": false,
+          "count": 0,
+          "markers": []
+        },
+        "vernacularMarkers": {
+          "active": false,
+          "count": 0,
+          "markers": []
+        },
+        "activeFamilies": [
+          "chatspeakShorthand",
+          "notePosture"
+        ],
+        "totalMarkers": 2
+      },
+      "pressure": {
+        "targetRegisterLane": "professional-message",
+        "activeFamilies": [
+          "orthographyNoise",
+          "chatspeakShorthand",
+          "notePosture"
+        ],
+        "orthographyNoise": true,
+        "chatspeakShorthand": true,
+        "notePosture": true,
+        "slangMarkers": false,
+        "vernacularMarkers": false
+      }
     },
     "donorProgress": {
       "eligible": true,
@@ -255,6 +874,166 @@
         ],
         "lexemeSwapCount": 1,
         "artifactRepairApplied": false,
+        "vernacularFeatures": {
+          "source": {
+            "registerLane": "rushed-mobile",
+            "sourceClass": "formal-correspondence",
+            "orthographyNoise": {
+              "active": true,
+              "count": 3,
+              "markers": [
+                "lowercase-sentence-start",
+                "apostrophe-drop",
+                "profile-orthographic-looseness"
+              ]
+            },
+            "chatspeakShorthand": {
+              "active": true,
+              "count": 1,
+              "markers": [
+                "profile-abbreviation-density"
+              ]
+            },
+            "notePosture": {
+              "active": true,
+              "count": 1,
+              "markers": [
+                "plus-join"
+              ]
+            },
+            "slangMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "vernacularMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "activeFamilies": [
+              "orthographyNoise",
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "totalMarkers": 5
+          },
+          "donor": {
+            "registerLane": "professional-message",
+            "sourceClass": "formal-correspondence",
+            "orthographyNoise": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "chatspeakShorthand": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "notePosture": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "slangMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "vernacularMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "activeFamilies": [],
+            "totalMarkers": 0
+          },
+          "output": {
+            "registerLane": "professional-message",
+            "sourceClass": "formal-correspondence",
+            "orthographyNoise": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "chatspeakShorthand": {
+              "active": true,
+              "count": 1,
+              "markers": [
+                "profile-abbreviation-density"
+              ]
+            },
+            "notePosture": {
+              "active": true,
+              "count": 1,
+              "markers": [
+                "plus-join"
+              ]
+            },
+            "slangMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "vernacularMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "activeFamilies": [
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "totalMarkers": 2
+          },
+          "pressure": {
+            "targetRegisterLane": "professional-message",
+            "activeFamilies": [
+              "orthographyNoise",
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "orthographyNoise": true,
+            "chatspeakShorthand": true,
+            "notePosture": true,
+            "slangMarkers": false,
+            "vernacularMarkers": false
+          }
+        },
+        "vernacularFeatureShift": {
+          "targetRegisterLane": "professional-message",
+          "orthographyShift": true,
+          "shorthandShift": false,
+          "notePostureShift": false,
+          "slangShift": false,
+          "vernacularShift": false,
+          "realizedFamilies": [
+            "orthographyNoise"
+          ],
+          "realizedFamilyCount": 1,
+          "falseCleanFamilies": [
+            "chatspeakShorthand",
+            "notePosture"
+          ],
+          "falseDirtyFamilies": [],
+          "donorFeatureAdherence": 1,
+          "concealmentEffectiveness": 0.6,
+          "surfaceMarkerCount": 2,
+          "pressure": {
+            "targetRegisterLane": "professional-message",
+            "activeFamilies": [
+              "orthographyNoise",
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "orthographyNoise": true,
+            "chatspeakShorthand": true,
+            "notePosture": true,
+            "slangMarkers": false,
+            "vernacularMarkers": false
+          }
+        },
         "ontologyAudit": {
           "sourceClass": "formal-correspondence",
           "sourceRegisterLane": "rushed-mobile",
@@ -333,6 +1112,166 @@
         ],
         "lexemeSwapCount": 1,
         "artifactRepairApplied": false,
+        "vernacularFeatures": {
+          "source": {
+            "registerLane": "rushed-mobile",
+            "sourceClass": "formal-correspondence",
+            "orthographyNoise": {
+              "active": true,
+              "count": 3,
+              "markers": [
+                "lowercase-sentence-start",
+                "apostrophe-drop",
+                "profile-orthographic-looseness"
+              ]
+            },
+            "chatspeakShorthand": {
+              "active": true,
+              "count": 1,
+              "markers": [
+                "profile-abbreviation-density"
+              ]
+            },
+            "notePosture": {
+              "active": true,
+              "count": 1,
+              "markers": [
+                "plus-join"
+              ]
+            },
+            "slangMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "vernacularMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "activeFamilies": [
+              "orthographyNoise",
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "totalMarkers": 5
+          },
+          "donor": {
+            "registerLane": "professional-message",
+            "sourceClass": "formal-correspondence",
+            "orthographyNoise": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "chatspeakShorthand": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "notePosture": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "slangMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "vernacularMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "activeFamilies": [],
+            "totalMarkers": 0
+          },
+          "output": {
+            "registerLane": "professional-message",
+            "sourceClass": "formal-correspondence",
+            "orthographyNoise": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "chatspeakShorthand": {
+              "active": true,
+              "count": 1,
+              "markers": [
+                "profile-abbreviation-density"
+              ]
+            },
+            "notePosture": {
+              "active": true,
+              "count": 1,
+              "markers": [
+                "plus-join"
+              ]
+            },
+            "slangMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "vernacularMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "activeFamilies": [
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "totalMarkers": 2
+          },
+          "pressure": {
+            "targetRegisterLane": "professional-message",
+            "activeFamilies": [
+              "orthographyNoise",
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "orthographyNoise": true,
+            "chatspeakShorthand": true,
+            "notePosture": true,
+            "slangMarkers": false,
+            "vernacularMarkers": false
+          }
+        },
+        "vernacularFeatureShift": {
+          "targetRegisterLane": "professional-message",
+          "orthographyShift": true,
+          "shorthandShift": false,
+          "notePostureShift": false,
+          "slangShift": false,
+          "vernacularShift": false,
+          "realizedFamilies": [
+            "orthographyNoise"
+          ],
+          "realizedFamilyCount": 1,
+          "falseCleanFamilies": [
+            "chatspeakShorthand",
+            "notePosture"
+          ],
+          "falseDirtyFamilies": [],
+          "donorFeatureAdherence": 1,
+          "concealmentEffectiveness": 0.6,
+          "surfaceMarkerCount": 2,
+          "pressure": {
+            "targetRegisterLane": "professional-message",
+            "activeFamilies": [
+              "orthographyNoise",
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "orthographyNoise": true,
+            "chatspeakShorthand": true,
+            "notePosture": true,
+            "slangMarkers": false,
+            "vernacularMarkers": false
+          }
+        },
         "ontologyAudit": {
           "sourceClass": "formal-correspondence",
           "sourceRegisterLane": "rushed-mobile",
@@ -449,7 +1388,7 @@
       "sentence-spread"
     ],
     "lexemeSwapFamilies": [
-      "surface"
+      "feature"
     ],
     "relationInventory": [
       "clauseCount:4",
@@ -462,7 +1401,7 @@
       "merge-short-beats"
     ],
     "lexicalOperations": [
-      "expanded:thats->that-is"
+      "feature:thats->that-is"
     ],
     "connectorStrategy": "cascade",
     "contractionStrategy": "expand",

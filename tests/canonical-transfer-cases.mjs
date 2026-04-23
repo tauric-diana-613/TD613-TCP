@@ -30,6 +30,7 @@ export function buildBorrowedShell(extractCadenceProfile, testCase) {
     mode: 'borrowed',
     profile: extractCadenceProfile(testCase.donorText),
     registerLane: testCase.donorVariant || null,
+    sourceText: testCase.donorText || '',
     strength: testCase.strength
   };
 }

@@ -25,6 +25,9 @@ const rushedDonor = sampleById('package-handoff-rushed-mobile');
 const formalDonor = sampleById('committee-budget-formal-record');
 const packageFormal = sampleById('package-handoff-formal-record');
 const packageRushed = sampleById('package-handoff-rushed-mobile');
+const mutualAidFormal = sampleById('mutual-aid-formal-record');
+const mutualAidRushed = sampleById('mutual-aid-rushed-mobile');
+const overworkTangled = sampleById('overwork-debrief-tangled-followup');
 
 assert.ok(procedural, 'procedural regression sample exists');
 assert.ok(formal, 'formal regression sample exists');
@@ -32,6 +35,9 @@ assert.ok(rushedDonor, 'rushed donor sample exists');
 assert.ok(formalDonor, 'formal donor sample exists');
 assert.ok(packageFormal, 'package-handoff formal sample exists');
 assert.ok(packageRushed, 'package-handoff rushed sample exists');
+assert.ok(mutualAidFormal, 'mutual-aid formal sample exists');
+assert.ok(mutualAidRushed, 'mutual-aid rushed sample exists');
+assert.ok(overworkTangled, 'overwork tangled sample exists');
 
 const reflective = `I am pretty content in life. Don't worry about where you came from. Keep doing what you're doing.
 
@@ -50,25 +56,25 @@ const cases = [
     id: 'procedural-record',
     text: procedural.text,
     sourceRegisterLane: procedural.variant,
-    shell: { mode: 'borrowed', personaId: 'archivist', profile: extractCadenceProfile(formalDonor.text), registerLane: formalDonor.variant, strength: 0.84 }
+    shell: { mode: 'borrowed', personaId: 'archivist', profile: extractCadenceProfile(formalDonor.text), registerLane: formalDonor.variant, sourceText: formalDonor.text, strength: 0.84 }
   },
   {
     id: 'formal-correspondence',
     text: formal.text,
     sourceRegisterLane: formal.variant,
-    shell: { mode: 'borrowed', personaId: 'spark', profile: extractCadenceProfile(rushedDonor.text), registerLane: rushedDonor.variant, strength: 0.82 }
+    shell: { mode: 'borrowed', personaId: 'spark', profile: extractCadenceProfile(rushedDonor.text), registerLane: rushedDonor.variant, sourceText: rushedDonor.text, strength: 0.82 }
   },
   {
     id: 'reflective-prose',
     text: reflective,
     sourceRegisterLane: 'professional-message',
-    shell: { mode: 'borrowed', personaId: 'matron', profile: extractCadenceProfile(formalDonor.text), registerLane: formalDonor.variant, strength: 0.84 }
+    shell: { mode: 'borrowed', personaId: 'matron', profile: extractCadenceProfile(formalDonor.text), registerLane: formalDonor.variant, sourceText: formalDonor.text, strength: 0.84 }
   },
   {
     id: 'narrative-scene',
     text: narrative,
     sourceRegisterLane: 'tangled-followup',
-    shell: { mode: 'borrowed', personaId: 'cross-examiner', profile: extractCadenceProfile(rushedDonor.text), registerLane: rushedDonor.variant, strength: 0.84 }
+    shell: { mode: 'borrowed', personaId: 'cross-examiner', profile: extractCadenceProfile(rushedDonor.text), registerLane: rushedDonor.variant, sourceText: rushedDonor.text, strength: 0.84 }
   }
 ];
 
@@ -133,6 +139,16 @@ function deformationLoad(candidate = null) {
   return Number(aperture.historicalCrease || 0) + Number(aperture.unfoldingEnergy || 0);
 }
 
+function vernacularMovementScore(candidate = null) {
+  const shift = candidate?.vernacularFeatureShift || {};
+  return (
+    Number(shift.realizedFamilyCount || 0) +
+    (Number(shift.surfaceMarkerCount || 0) * 0.1) +
+    (Number(shift.donorFeatureAdherence || 0) * 0.4) +
+    (Number(shift.concealmentEffectiveness || 0) * 0.3)
+  );
+}
+
 for (const testCase of cases) {
   const result = buildCadenceTransfer(testCase.text, testCase.shell, {
     retrieval: true,
@@ -173,6 +189,16 @@ for (const testCase of cases) {
     (result.candidateLedger || []).every((entry) => entry.ontologyAudit && entry.ontologyAudit.selectiveAdmissibilityDrift),
     `${testCase.id}: every candidate ledger entry carries ontology audit and route pressure`
   );
+  assert.ok(result.vernacularFeatures, `${testCase.id}: landed result carries vernacular feature summary`);
+  assert.ok(result.vernacularFeatureShift, `${testCase.id}: landed result carries vernacular feature shift summary`);
+  assert.ok(
+    (result.candidateLedger || []).every((entry) => entry.vernacularFeatures && entry.vernacularFeatureShift),
+    `${testCase.id}: candidate ledger entries carry vernacular feature summaries`
+  );
+  assert.ok(
+    result.retrievalTrace?.vernacularFeatures && result.retrievalTrace?.realizationSummary?.vernacularFeatureShift,
+    `${testCase.id}: retrieval trace carries vernacular feature summaries`
+  );
   assert.ok(
     ['none', 'watch', 'active', 'severe'].includes(result.retrievalTrace?.ontologyAudit?.selectiveAdmissibilityDrift?.driftClass),
     `${testCase.id}: retrieval trace drift class stays within the ontology route grammar`
@@ -189,6 +215,7 @@ for (const testCase of cases) {
     protectedAnchorIntegrity(right) - protectedAnchorIntegrity(left) ||
     minimumSemanticCoverage(right) - minimumSemanticCoverage(left) ||
     deformationLoad(left) - deformationLoad(right) ||
+    vernacularMovementScore(right) - vernacularMovementScore(left) ||
     Number(right.toolabilityScore || 0) - Number(left.toolabilityScore || 0) ||
     Number(right.score || 0) - Number(left.score || 0) ||
     String(left.id || '').localeCompare(String(right.id || ''))
@@ -230,6 +257,7 @@ const packageToRushed = buildCadenceTransfer(packageFormal.text, {
   personaId: 'spark',
   profile: extractCadenceProfile(packageRushed.text),
   registerLane: packageRushed.variant,
+  sourceText: packageRushed.text,
   strength: 0.84
 }, {
   retrieval: true,
@@ -282,6 +310,7 @@ const packageToFormal = buildCadenceTransfer(packageRushed.text, {
   personaId: 'archivist',
   profile: extractCadenceProfile(packageFormal.text),
   registerLane: packageFormal.variant,
+  sourceText: packageFormal.text,
   strength: 0.84
 }, {
   retrieval: true,
@@ -307,12 +336,62 @@ assert.ok(
   'package rushed -> formal does not over-report lexical register without surfaced lexeme swaps'
 );
 assert.ok(
-  Array.isArray(packageToFormal.profileShiftDimensions) && packageToFormal.profileShiftDimensions.length >= (packageToFormal.changedDimensions || []).length,
-  'package rushed -> formal keeps profile movement distinct from surfaced movement'
+  Array.isArray(packageToFormal.profileShiftDimensions) &&
+    (packageToFormal.profileShiftDimensions.length + Number(packageToFormal.vernacularFeatureShift?.realizedFamilyCount || 0)) >= (packageToFormal.changedDimensions || []).length,
+  'package rushed -> formal keeps profile movement distinct from surfaced movement, with additive vernacular surfacing accounted for separately'
 );
 assert.ok(
   !((packageToFormal.generationDocket?.reasons || []).includes('artifact:clause-join')),
   'package rushed -> formal repair round clears the mild clause-join artifact from the best held candidate'
+);
+const mutualAidToFormal = buildCadenceTransfer(mutualAidRushed.text, {
+  mode: 'borrowed',
+  personaId: 'archivist',
+  profile: extractCadenceProfile(mutualAidFormal.text),
+  registerLane: mutualAidFormal.variant,
+  sourceText: mutualAidFormal.text,
+  strength: 0.84
+}, {
+  retrieval: true,
+  sourceRegisterLane: mutualAidRushed.variant
+});
+const mutualAidToFormalPreview = String(mutualAidToFormal.text || mutualAidToFormal.internalText || '');
+
+assert.ok(
+  /you all|trying to|I am/.test(mutualAidToFormalPreview),
+  'mutual-aid rushed -> formal expands evidenced vernacular markers into institutional phrasing'
+);
+assert.equal(
+  /\byall\b|\btryna\b|\bima\b|\bfinna\b/i.test(mutualAidToFormalPreview),
+  false,
+  'mutual-aid rushed -> formal strips surfaced vernacular markers once the record lane is formalized'
+);
+assert.ok(
+  (mutualAidToFormal.vernacularFeatureShift?.concealmentEffectiveness || 0) > 0,
+  'mutual-aid rushed -> formal reports positive concealment effectiveness when noisy source markers are reduced'
+);
+
+const overworkToRushed = buildCadenceTransfer(overworkTangled.text, {
+  mode: 'borrowed',
+  personaId: 'spark',
+  profile: extractCadenceProfile(mutualAidRushed.text),
+  registerLane: mutualAidRushed.variant,
+  sourceText: mutualAidRushed.text,
+  strength: 0.84
+}, {
+  retrieval: true,
+  sourceRegisterLane: overworkTangled.variant
+});
+const overworkToRushedPreview = String(overworkToRushed.text || overworkToRushed.internalText || '');
+
+assert.ok(
+  /\btryna\b/i.test(overworkToRushedPreview),
+  'clean follow-up text -> rushed inherits donor-evidenced vernacular markers when the source affords them'
+);
+assert.equal(
+  /\byall\b|\btryna\b|\bima\b|\bfinna\b/i.test(packageToRushedPreview),
+  false,
+  'package formal -> rushed does not invent vernacular markers when the donor lane does not evidence them'
 );
 
 const nullTimeProbe = `later that night the carrier left the box by the rail. mgmt never logged a door knock. box stayed sealed.`;
@@ -321,6 +400,7 @@ const nullTimeFormal = buildCadenceTransfer(nullTimeProbe, {
   personaId: 'archivist',
   profile: extractCadenceProfile(packageFormal.text),
   registerLane: packageFormal.variant,
+  sourceText: packageFormal.text,
   strength: 0.84
 }, {
   retrieval: true,

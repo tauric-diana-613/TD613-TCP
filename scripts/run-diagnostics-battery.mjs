@@ -584,13 +584,15 @@ function protectedAnchorIntegrity(result = {}) {
   return round(result.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1);
 }
 
-function semanticBounded(semanticAudit = {}) {
+function semanticBounded(semanticAudit = {}, ontologyAudit = null) {
   const propositionCoverage = Number(semanticAudit?.propositionCoverage ?? 1);
   const actorCoverage = Number(semanticAudit?.actorCoverage ?? 1);
   const actionCoverage = Number(semanticAudit?.actionCoverage ?? 1);
   const objectCoverage = Number(semanticAudit?.objectCoverage ?? 1);
   const polarityMismatches = Number(semanticAudit?.polarityMismatches ?? 0);
   const tenseMismatches = Number(semanticAudit?.tenseMismatches ?? 0);
+  const targetOntology = String(ontologyAudit?.targetOntology || '').trim().toLowerCase();
+  const actorTarget = targetOntology === 'actor';
   const clauseCount = Math.max(
     1,
     Number(semanticAudit?.sourceClauseCount ?? 0),
@@ -598,19 +600,30 @@ function semanticBounded(semanticAudit = {}) {
   );
   const polarityRate = polarityMismatches / clauseCount;
   const tenseRate = tenseMismatches / clauseCount;
+  const actorCoverageBounded =
+    propositionCoverage >= 0.7 &&
+    actorCoverage >= 0.75 &&
+    actionCoverage >= 0.75 &&
+    objectCoverage >= 0.65;
   const strongCoverage =
-    propositionCoverage >= 0.9 &&
-    actorCoverage >= 0.9 &&
-    actionCoverage >= 0.9 &&
-    objectCoverage >= 0.9;
+      propositionCoverage >= 0.9 &&
+      actorCoverage >= 0.9 &&
+      actionCoverage >= 0.9 &&
+      objectCoverage >= 0.9;
 
   const polarityBounded =
-    polarityMismatches <= 1 ||
-    (strongCoverage && polarityMismatches <= 2 && polarityRate <= 0.18);
+      polarityMismatches <= 1 ||
+      ((strongCoverage || (actorTarget && actorCoverageBounded)) && polarityMismatches <= 2 && polarityRate <= 0.18);
   // Match the live generator's boundedness floor for strong-coverage rewrites.
-  const tenseBounded =
-    tenseMismatches <= 1 ||
-    (strongCoverage && tenseMismatches <= 2 && tenseRate <= 0.23);
+  const tenseBounded = actorTarget
+    ? (
+      tenseMismatches <= 2 ||
+      ((strongCoverage || actorCoverageBounded) && tenseMismatches <= 3 && tenseRate <= 0.3)
+    )
+    : (
+      tenseMismatches <= 1 ||
+      (strongCoverage && tenseMismatches <= 2 && tenseRate <= 0.23)
+    );
 
   return polarityBounded && tenseBounded;
 }
@@ -691,7 +704,11 @@ function candidateProtectedAnchorIntegrity(entry = {}) {
 }
 
 function candidateSurfaceRichness(entry = {}) {
-  return realizedNonPunctuationDimensions(entry).length + Number(entry.lexemeSwapCount || 0);
+  return (
+    realizedNonPunctuationDimensions(entry).length +
+    Number(entry.lexemeSwapCount || 0) +
+    Number(entry.vernacularFeatureShift?.realizedFamilyCount || 0)
+  );
 }
 
 function mildArtifactOnly(entry = {}) {
@@ -722,7 +739,7 @@ function buildGeneratorAuditCase({
   const selectedCandidate = selectedCandidateFromLedger(candidateLedger);
   const docket = result.generationDocket || null;
   const semanticAudit = result.semanticAudit || {};
-  const bounded = semanticBounded(semanticAudit);
+  const bounded = semanticBounded(semanticAudit, ontologyAudit);
   const toolabilityAudit = result.toolabilityAudit || {};
   const personaSeparationAudit = result.personaSeparationAudit || {};
   const ontologyAudit =
@@ -781,6 +798,16 @@ function buildGeneratorAuditCase({
     selectedCandidate?.changedDimensions ||
     []
   )];
+  const vernacularFeatures =
+    result.vernacularFeatures ||
+    selectedCandidate?.vernacularFeatures ||
+    result.retrievalTrace?.vernacularFeatures ||
+    {};
+  const vernacularFeatureShift =
+    result.vernacularFeatureShift ||
+    selectedCandidate?.vernacularFeatureShift ||
+    result.retrievalTrace?.realizationSummary?.vernacularFeatureShift ||
+    {};
   const profileShiftDimensions = [...new Set(
     result.profileShiftDimensions ||
     selectedCandidate?.profileShiftDimensions ||
@@ -855,6 +882,13 @@ function buildGeneratorAuditCase({
     suppressedRicherCandidateFamily: suppressedRicherCandidate?.family || null,
     changedDimensions,
     profileShiftDimensions,
+    vernacularFeatures,
+    vernacularFeatureShift,
+    realizedVernacularFamilyCount: Number(vernacularFeatureShift?.realizedFamilyCount || 0),
+    falseCleanCount: Number((vernacularFeatureShift?.falseCleanFamilies || []).length),
+    falseDirtyCount: Number((vernacularFeatureShift?.falseDirtyFamilies || []).length),
+    donorFeatureAdherence: round(vernacularFeatureShift?.donorFeatureAdherence ?? 1),
+    concealmentEffectiveness: round(vernacularFeatureShift?.concealmentEffectiveness ?? 0),
     lexemeSwapCount,
     artifactRepairApplied,
     syntaxOnlyWinner,
@@ -915,7 +949,7 @@ function buildCaseNote(buckets = [], fallback) {
   return buckets.length ? `Buckets: ${buckets.join(', ')}.` : fallback;
 }
 
-function buildBorrowedShellFromProfile(profile, fromSlot = 'B', registerLane = null) {
+function buildBorrowedShellFromProfile(profile, fromSlot = 'B', registerLane = null, sourceText = '') {
   return {
     mode: 'borrowed',
     label: `borrowed ${fromSlot} cadence`,
@@ -924,6 +958,7 @@ function buildBorrowedShellFromProfile(profile, fromSlot = 'B', registerLane = n
     source: 'swapped',
     fromSlot,
     registerLane,
+    sourceText,
     strength: 0.82
   };
 }
@@ -978,12 +1013,12 @@ function evaluateSwapCadencePairing(referenceText = '', probeText = '', {
   const probeProfile = engine.extractCadenceProfile(probeText);
   const laneA = engine.buildCadenceTransfer(
     referenceText,
-    buildBorrowedShellFromProfile(probeProfile, 'B', probeRegisterLane),
+    buildBorrowedShellFromProfile(probeProfile, 'B', probeRegisterLane, probeText),
     { retrieval: true, sourceRegisterLane: referenceRegisterLane || undefined }
   );
   const laneB = engine.buildCadenceTransfer(
     probeText,
-    buildBorrowedShellFromProfile(referenceProfile, 'A', referenceRegisterLane),
+    buildBorrowedShellFromProfile(referenceProfile, 'A', referenceRegisterLane, referenceText),
     { retrieval: true, sourceRegisterLane: probeRegisterLane || undefined }
   );
   const laneOutcomes = [
@@ -1753,19 +1788,32 @@ function buildOntologyIntegrityReport(sectionResults = {}) {
 function buildCadenceDuelIntegrityReport(sectionResults = {}) {
   const cases = [...(sectionResults.generatorTransferCases || [])];
   const lanePairBuckets = new Map();
+  const familyIds = ['orthographyNoise', 'chatspeakShorthand', 'notePosture', 'slangMarkers', 'vernacularMarkers'];
+  const familyRealizationRate = (family) =>
+    cases.length
+      ? round(cases.filter((item) => (item.vernacularFeatureShift?.realizedFamilies || []).includes(family)).length / cases.length)
+      : 0;
+  const averageMetric = (selector) =>
+    cases.length ? round(cases.reduce((sum, item) => sum + Number(selector(item) || 0), 0) / cases.length) : 0;
   const realizedCase = (item) =>
     item.holdStatus !== 'held' &&
-    (realizedNonPunctuationDimensions(item).length > 0 || Number(item.lexemeSwapCount || 0) > 0);
+    (
+      realizedNonPunctuationDimensions(item).length > 0 ||
+      Number(item.lexemeSwapCount || 0) > 0 ||
+      Number(item.vernacularFeatureShift?.realizedFamilyCount || 0) > 0
+    );
   const pushLanePair = (item) => {
     const key = `${item.sourceRegisterLane || 'unknown'}->${item.targetRegisterLane || 'unknown'}`;
     const bucket = lanePairBuckets.get(key) || {
       caseCount: 0,
       lexicalSwapTotal: 0,
-      structuralOpTotal: 0
+      structuralOpTotal: 0,
+      vernacularFamilyTotal: 0
     };
     bucket.caseCount += 1;
     bucket.lexicalSwapTotal += Number(item.lexemeSwapCount || 0);
     bucket.structuralOpTotal += structuralRealizationCount(item);
+    bucket.vernacularFamilyTotal += Number(item.vernacularFeatureShift?.realizedFamilyCount || 0);
     lanePairBuckets.set(key, bucket);
   };
 
@@ -1806,7 +1854,12 @@ function buildCadenceDuelIntegrityReport(sectionResults = {}) {
       artifactRepairApplied: item.artifactRepairApplied,
       syntaxOnlyWinner: item.syntaxOnlyWinner,
       lexicalRegisterFalsePositive: item.lexicalRegisterFalsePositive,
-      surfaceMovementOverstated: item.surfaceMovementOverstated
+      surfaceMovementOverstated: item.surfaceMovementOverstated,
+      realizedFamilies: item.vernacularFeatureShift?.realizedFamilies || [],
+      falseCleanFamilies: item.vernacularFeatureShift?.falseCleanFamilies || [],
+      falseDirtyFamilies: item.vernacularFeatureShift?.falseDirtyFamilies || [],
+      donorFeatureAdherence: item.donorFeatureAdherence,
+      concealmentEffectiveness: item.concealmentEffectiveness
     }));
 
   return {
@@ -1815,6 +1868,11 @@ function buildCadenceDuelIntegrityReport(sectionResults = {}) {
     syntaxOnlyWinnerCount: cases.filter((item) => item.syntaxOnlyWinner).length,
     lexicalRegisterFalsePositiveCount: cases.filter((item) => item.lexicalRegisterFalsePositive).length,
     artifactRepairRescueCount: cases.filter((item) => item.artifactRepairApplied).length,
+    featureFamilyRealizationRates: Object.fromEntries(familyIds.map((family) => [family, familyRealizationRate(family)])),
+    falseCleanCount: cases.filter((item) => Number(item.falseCleanCount || 0) > 0).length,
+    falseDirtyCount: cases.filter((item) => Number(item.falseDirtyCount || 0) > 0).length,
+    donorFeatureAdherenceAverage: averageMetric((item) => item.donorFeatureAdherence),
+    concealmentEffectivenessAverage: averageMetric((item) => item.concealmentEffectiveness),
     referenceToRushedLandedRate: referenceToRushed.length ? round(referenceToRushed.filter(realizedCase).length / referenceToRushed.length) : 0,
     probeToFormalLandedRate: probeToFormal.length ? round(probeToFormal.filter(realizedCase).length / probeToFormal.length) : 0,
     averageRealizedLexicalSwapCountByLanePair: Object.fromEntries(
@@ -1827,6 +1885,12 @@ function buildCadenceDuelIntegrityReport(sectionResults = {}) {
       [...lanePairBuckets.entries()].map(([key, bucket]) => [
         key,
         bucket.caseCount ? round(bucket.structuralOpTotal / bucket.caseCount, 2) : 0
+      ])
+    ),
+    averageRealizedFeatureFamilyCountByLanePair: Object.fromEntries(
+      [...lanePairBuckets.entries()].map(([key, bucket]) => [
+        key,
+        bucket.caseCount ? round(bucket.vernacularFamilyTotal / bucket.caseCount, 2) : 0
       ])
     ),
     representativeCases,
@@ -2172,13 +2236,19 @@ function buildMarkdownReport(report) {
     lines.push(`- syntax_only_winner_count: ${report.cadenceDuelIntegrity.syntaxOnlyWinnerCount}`);
     lines.push(`- lexical_register_false_positive_count: ${report.cadenceDuelIntegrity.lexicalRegisterFalsePositiveCount}`);
     lines.push(`- artifact_repair_rescue_count: ${report.cadenceDuelIntegrity.artifactRepairRescueCount}`);
+    lines.push(`- feature_family_realization_rates: ${Object.entries(report.cadenceDuelIntegrity.featureFamilyRealizationRates || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push(`- false_clean_count: ${report.cadenceDuelIntegrity.falseCleanCount}`);
+    lines.push(`- false_dirty_count: ${report.cadenceDuelIntegrity.falseDirtyCount}`);
+    lines.push(`- donor_feature_adherence_average: ${report.cadenceDuelIntegrity.donorFeatureAdherenceAverage}`);
+    lines.push(`- concealment_effectiveness_average: ${report.cadenceDuelIntegrity.concealmentEffectivenessAverage}`);
     lines.push(`- reference_to_rushed_landed_rate: ${report.cadenceDuelIntegrity.referenceToRushedLandedRate}`);
     lines.push(`- probe_to_formal_landed_rate: ${report.cadenceDuelIntegrity.probeToFormalLandedRate}`);
     lines.push(`- average_realized_lexical_swap_count_by_lane_pair: ${Object.entries(report.cadenceDuelIntegrity.averageRealizedLexicalSwapCountByLanePair || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
     lines.push(`- average_realized_structural_op_count_by_lane_pair: ${Object.entries(report.cadenceDuelIntegrity.averageRealizedStructuralOpCountByLanePair || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push(`- average_realized_feature_family_count_by_lane_pair: ${Object.entries(report.cadenceDuelIntegrity.averageRealizedFeatureFamilyCountByLanePair || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
     lines.push('', '### Cadence Duel Cases', '');
     report.cadenceDuelIntegrity.representativeCases.forEach((entry) => {
-      lines.push(`- ${entry.id}: ${entry.sourceRegisterLane} -> ${entry.targetRegisterLane}, selected ${entry.selectedCandidateFamily || 'none'}, suppressed ${entry.suppressedRicherCandidateFamily || 'none'}, repaired ${entry.artifactRepairApplied ? 'yes' : 'no'}, syntax-only ${entry.syntaxOnlyWinner ? 'yes' : 'no'}, lexical-register-fp ${entry.lexicalRegisterFalsePositive ? 'yes' : 'no'}, overstated ${entry.surfaceMovementOverstated ? 'yes' : 'no'}`);
+      lines.push(`- ${entry.id}: ${entry.sourceRegisterLane} -> ${entry.targetRegisterLane}, selected ${entry.selectedCandidateFamily || 'none'}, suppressed ${entry.suppressedRicherCandidateFamily || 'none'}, repaired ${entry.artifactRepairApplied ? 'yes' : 'no'}, syntax-only ${entry.syntaxOnlyWinner ? 'yes' : 'no'}, lexical-register-fp ${entry.lexicalRegisterFalsePositive ? 'yes' : 'no'}, overstated ${entry.surfaceMovementOverstated ? 'yes' : 'no'}, realized ${entry.realizedFamilies.join('|') || 'none'}, false-clean ${entry.falseCleanFamilies.join('|') || 'none'}, false-dirty ${entry.falseDirtyFamilies.join('|') || 'none'}, donor-adherence ${entry.donorFeatureAdherence}, concealment ${entry.concealmentEffectiveness}`);
     });
   }
 

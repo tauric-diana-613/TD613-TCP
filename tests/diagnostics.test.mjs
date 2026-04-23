@@ -66,8 +66,10 @@ for (const caseSpec of DIAGNOSTIC_BATTERY.retrievalCases) {
   const result = engine.buildCadenceTransfer(sourceSample.text, {
     mode: 'borrowed',
     profile: engine.extractCadenceProfile(donorSample.text),
+    registerLane: donorSample.variant,
+    sourceText: donorSample.text,
     strength: Number(caseSpec.strength || 0.88)
-  }, { retrieval: true });
+  }, { retrieval: true, sourceRegisterLane: sourceSample.variant || undefined });
   const targetOntology = String(result.generationControls?.targetOntology || '').trim().toLowerCase();
   const propositionFloor =
     targetOntology === 'actor'
@@ -140,6 +142,11 @@ assert.equal(typeof latestReport.cadenceDuelIntegrity.laneMisclassificationCount
 assert.equal(typeof latestReport.cadenceDuelIntegrity.syntaxOnlyWinnerCount, 'number', 'cadence duel integrity exposes syntax-only winner count');
 assert.equal(typeof latestReport.cadenceDuelIntegrity.lexicalRegisterFalsePositiveCount, 'number', 'cadence duel integrity exposes lexical-register false positives');
 assert.equal(typeof latestReport.cadenceDuelIntegrity.artifactRepairRescueCount, 'number', 'cadence duel integrity exposes artifact-repair rescues');
+assert.ok(latestReport.cadenceDuelIntegrity.featureFamilyRealizationRates, 'cadence duel integrity exposes feature-family realization rates');
+assert.equal(typeof latestReport.cadenceDuelIntegrity.falseCleanCount, 'number', 'cadence duel integrity exposes false-clean count');
+assert.equal(typeof latestReport.cadenceDuelIntegrity.falseDirtyCount, 'number', 'cadence duel integrity exposes false-dirty count');
+assert.equal(typeof latestReport.cadenceDuelIntegrity.donorFeatureAdherenceAverage, 'number', 'cadence duel integrity exposes donor-feature adherence average');
+assert.equal(typeof latestReport.cadenceDuelIntegrity.concealmentEffectivenessAverage, 'number', 'cadence duel integrity exposes concealment effectiveness average');
 assert.equal(typeof latestReport.cadenceDuelIntegrity.referenceToRushedLandedRate, 'number', 'cadence duel integrity exposes formal-to-rushed landed rate');
 assert.equal(typeof latestReport.cadenceDuelIntegrity.probeToFormalLandedRate, 'number', 'cadence duel integrity exposes rushed-to-formal landed rate');
 assert.ok(Array.isArray(latestReport.cadenceDuelIntegrity.representativeCases), 'cadence duel integrity representative cases serialize');
@@ -220,6 +227,9 @@ assert.ok(latestMarkdown.includes('## Ontology Integrity'), 'diagnostics Markdow
 assert.ok(latestMarkdown.includes('### Ontology Pressure Cases'), 'diagnostics Markdown report includes ontology pressure case section');
 assert.ok(latestMarkdown.includes('## Cadence Duel Integrity'), 'diagnostics Markdown report includes cadence duel integrity section');
 assert.ok(latestMarkdown.includes('### Cadence Duel Cases'), 'diagnostics Markdown report includes cadence duel integrity case section');
+assert.ok(latestMarkdown.includes('feature_family_realization_rates'), 'diagnostics Markdown report includes cadence duel vernacular feature rates');
+assert.ok(latestMarkdown.includes('false_clean_count'), 'diagnostics Markdown report includes cadence duel false-clean count');
+assert.ok(latestMarkdown.includes('donor_feature_adherence_average'), 'diagnostics Markdown report includes cadence duel donor adherence summary');
 assert.ok(latestMarkdown.includes('## Toolability'), 'diagnostics Markdown report includes toolability section');
 assert.ok(latestMarkdown.includes('### Toolability Probes'), 'diagnostics Markdown report includes toolability probe section');
 assert.ok(latestMarkdown.includes('### Closest Sample Pairs'), 'diagnostics Markdown report includes closest sample pairs section');

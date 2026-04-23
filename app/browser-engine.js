@@ -9647,6 +9647,8 @@ function buildSwapBorrowedShell(sample = {}, fromSlot = 'B', strength = 0.82) {
     mod: cadenceModFromProfile(profile),
     source: 'swapped',
     fromSlot,
+    registerLane: sample.variant || null,
+    sourceText: sample.text || '',
     strength
   };
 }
@@ -11051,6 +11053,439 @@ const NULL_TIME_VARIABLES = Object.freeze([
   Object.freeze({ id: 'overnight', pattern: /\bovernight\b/gi })
 ]);
 
+const VERNACULAR_FEATURE_FAMILIES = Object.freeze([
+  'orthographyNoise',
+  'chatspeakShorthand',
+  'notePosture',
+  'slangMarkers',
+  'vernacularMarkers'
+]);
+
+const VERNACULAR_FEATURE_RULES = Object.freeze({
+  orthographyNoise: Object.freeze([
+    Object.freeze({ id: 'lowercase-sentence-start', pattern: /(?:^|[.!?]\s+|\n+)[a-z]/g }),
+    Object.freeze({ id: 'lowercase-i', pattern: /(?:^|[.!?]\s+|\n+)i(?:\b|['’](?:m|ve|ll|d)\b)/g }),
+    Object.freeze({ id: 'apostrophe-drop', pattern: /\b(?:wasnt|werent|dont|doesnt|didnt|cant|couldnt|shouldnt|wont|isnt|arent|im|ive|ill|id|youre|theyre|thats|theres|whats|hes|shes|lets)\b/gi })
+  ]),
+  chatspeakShorthand: Object.freeze([
+    Object.freeze({ id: 'pkg', pattern: /\bpkg\b/gi }),
+    Object.freeze({ id: 'mgmt', pattern: /\bmgmt\b/gi }),
+    Object.freeze({ id: 'fl', pattern: /\b(?:2nd|3rd|4th)\s+fl\b/gi }),
+    Object.freeze({ id: 'apt', pattern: /\bapt\b/gi }),
+    Object.freeze({ id: 'bldg', pattern: /\bbldg\b/gi }),
+    Object.freeze({ id: 'pls', pattern: /\bpls\b/gi }),
+    Object.freeze({ id: 'idk', pattern: /\bidk\b/gi }),
+    Object.freeze({ id: 'tbh', pattern: /\btbh\b/gi }),
+    Object.freeze({ id: 'ngl', pattern: /\bngl\b/gi }),
+    Object.freeze({ id: 'fr', pattern: /\bfr\b/gi }),
+    Object.freeze({ id: 'w/', pattern: /\bw\/\b/gi }),
+    Object.freeze({ id: 'w/o', pattern: /\bw\/o\b/gi }),
+    Object.freeze({ id: 'hall-table', pattern: /\bhall table\b/gi }),
+    Object.freeze({ id: 'bc', pattern: /\bbc\b/gi }),
+    Object.freeze({ id: 'acct', pattern: /\bacct\b/gi }),
+    Object.freeze({ id: 'appt', pattern: /\bappt\b/gi }),
+    Object.freeze({ id: 'msg', pattern: /\bmsg\b/gi }),
+    Object.freeze({ id: 'wk', pattern: /\bwk\b/gi })
+  ]),
+  notePosture: Object.freeze([
+    Object.freeze({ id: 'slash-list', pattern: /\s\/\s/g }),
+    Object.freeze({ id: 'colon-note', pattern: /:\s+[a-z0-9]/g }),
+    Object.freeze({ id: 'plus-join', pattern: /\s\+\s/g })
+  ]),
+  slangMarkers: Object.freeze([
+    Object.freeze({ id: 'gonna', pattern: /\bgonna\b/gi }),
+    Object.freeze({ id: 'gotta', pattern: /\bgotta\b/gi }),
+    Object.freeze({ id: 'kinda', pattern: /\bkinda\b/gi }),
+    Object.freeze({ id: 'sorta', pattern: /\bsorta\b/gi }),
+    Object.freeze({ id: 'nah', pattern: /\bnah\b/gi }),
+    Object.freeze({ id: 'lowkey', pattern: /\blowkey\b/gi }),
+    Object.freeze({ id: 'highkey', pattern: /\bhighkey\b/gi })
+  ]),
+  vernacularMarkers: Object.freeze([
+    Object.freeze({ id: 'yall', pattern: /\by(?:'|’)?all\b/gi }),
+    Object.freeze({ id: 'tryna', pattern: /\btryna\b/gi }),
+    Object.freeze({ id: 'ima', pattern: /\b(?:ima|i(?:'|’)?ma)\b/gi }),
+    Object.freeze({ id: 'finna', pattern: /\bfinna\b/gi }),
+    Object.freeze({ id: 'gone', pattern: /\bgon(?:'|’)?\b/gi })
+  ])
+});
+
+const FORMALIZATION_FEATURE_RULES = Object.freeze([
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bpkg\b/gi, replacement: 'package', label: 'feature:pkg->package' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bmgmt\b/gi, replacement: 'management', label: 'feature:mgmt->management' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\b(?:2nd|second)\s+fl\b/gi, replacement: 'second-floor', label: 'feature:2nd-fl->second-floor' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\b(?:3rd|third)\s+fl\b/gi, replacement: 'third-floor', label: 'feature:3rd-fl->third-floor' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bapt\b/gi, replacement: 'apartment', label: 'feature:apt->apartment' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bbldg\b/gi, replacement: 'building', label: 'feature:bldg->building' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bhall table\b/gi, replacement: 'hallway table', label: 'feature:hall-table->hallway-table' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bpls\b/gi, replacement: 'please', label: 'feature:pls->please' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bidk\b/gi, replacement: 'I do not know', label: 'feature:idk->i-do-not-know' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\btbh\b/gi, replacement: 'to be honest', label: 'feature:tbh->to-be-honest' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bngl\b/gi, replacement: 'not going to lie', label: 'feature:ngl->not-going-to-lie' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bfr\b/gi, replacement: 'for real', label: 'feature:fr->for-real' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bacct\b/gi, replacement: 'account', label: 'feature:acct->account' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bappt\b/gi, replacement: 'appointment', label: 'feature:appt->appointment' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bmsg\b/gi, replacement: 'message', label: 'feature:msg->message' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bwk\b/gi, replacement: 'week', label: 'feature:wk->week' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bwasnt\b/gi, replacement: 'was not', label: 'feature:wasnt->was-not' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bwerent\b/gi, replacement: 'were not', label: 'feature:werent->were-not' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bdont\b/gi, replacement: 'do not', label: 'feature:dont->do-not' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bdoesnt\b/gi, replacement: 'does not', label: 'feature:doesnt->does-not' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bdidnt\b/gi, replacement: 'did not', label: 'feature:didnt->did-not' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bcant\b/gi, replacement: 'cannot', label: 'feature:cant->cannot' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bcouldnt\b/gi, replacement: 'could not', label: 'feature:couldnt->could-not' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bshouldnt\b/gi, replacement: 'should not', label: 'feature:shouldnt->should-not' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bwont\b/gi, replacement: 'will not', label: 'feature:wont->will-not' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bisnt\b/gi, replacement: 'is not', label: 'feature:isnt->is-not' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\barent\b/gi, replacement: 'are not', label: 'feature:arent->are-not' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bim\b/gi, replacement: 'I am', label: 'feature:im->i-am' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bive\b/gi, replacement: 'I have', label: 'feature:ive->i-have' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bill\b/gi, replacement: 'I will', label: 'feature:ill->i-will' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\byoure\b/gi, replacement: 'you are', label: 'feature:youre->you-are' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\btheyre\b/gi, replacement: 'they are', label: 'feature:theyre->they-are' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bthats\b/gi, replacement: 'that is', label: 'feature:thats->that-is' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\btheres\b/gi, replacement: 'there is', label: 'feature:theres->there-is' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bwhats\b/gi, replacement: 'what is', label: 'feature:whats->what-is' }),
+  Object.freeze({ family: 'slangMarkers', pattern: /\bgonna\b/gi, replacement: 'going to', label: 'feature:gonna->going-to' }),
+  Object.freeze({ family: 'slangMarkers', pattern: /\bgotta\b/gi, replacement: 'have to', label: 'feature:gotta->have-to' }),
+  Object.freeze({ family: 'slangMarkers', pattern: /\bkinda\b/gi, replacement: 'kind of', label: 'feature:kinda->kind-of' }),
+  Object.freeze({ family: 'slangMarkers', pattern: /\bsorta\b/gi, replacement: 'sort of', label: 'feature:sorta->sort-of' }),
+  Object.freeze({ family: 'slangMarkers', pattern: /\bnah\b/gi, replacement: 'no', label: 'feature:nah->no' }),
+  Object.freeze({ family: 'vernacularMarkers', pattern: /\by(?:'|’)?all\b/gi, replacement: 'you all', label: 'feature:yall->you-all' }),
+  Object.freeze({ family: 'vernacularMarkers', pattern: /\btryna\b/gi, replacement: 'trying to', label: 'feature:tryna->trying-to' }),
+  Object.freeze({ family: 'vernacularMarkers', pattern: /\b(?:ima|i(?:'|’)?ma)\b/gi, replacement: 'I am going to', label: 'feature:ima->i-am-going-to' }),
+  Object.freeze({ family: 'vernacularMarkers', pattern: /\bfinna\b/gi, replacement: 'about to', label: 'feature:finna->about-to' })
+]);
+
+const DEGRADATION_FEATURE_RULES = Object.freeze([
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bpackage\b/gi, replacement: 'pkg', label: 'feature:package->pkg' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bmanagement\b/gi, replacement: 'mgmt', label: 'feature:management->mgmt' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bsecond-floor\b/gi, replacement: '2nd fl', label: 'feature:second-floor->2nd-fl' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bthird-floor\b/gi, replacement: '3rd fl', label: 'feature:third-floor->3rd-fl' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bhallway table\b/gi, replacement: 'hall table', label: 'feature:hallway-table->hall-table' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bplease\b/gi, replacement: 'pls', label: 'feature:please->pls' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bI do not know\b/gi, replacement: 'idk', label: 'feature:i-do-not-know->idk' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bto be honest\b/gi, replacement: 'tbh', label: 'feature:to-be-honest->tbh' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bnot going to lie\b/gi, replacement: 'ngl', label: 'feature:not-going-to-lie->ngl' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bfor real\b/gi, replacement: 'fr', label: 'feature:for-real->fr' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\baccount\b/gi, replacement: 'acct', label: 'feature:account->acct' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bappointment\b/gi, replacement: 'appt', label: 'feature:appointment->appt' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bmessage\b/gi, replacement: 'msg', label: 'feature:message->msg' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bweek\b/gi, replacement: 'wk', label: 'feature:week->wk' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bdo not\b/gi, replacement: 'dont', label: 'feature:do-not->dont' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bdoes not\b/gi, replacement: 'doesnt', label: 'feature:does-not->doesnt' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bdid not\b/gi, replacement: 'didnt', label: 'feature:did-not->didnt' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bwas not\b/gi, replacement: 'wasnt', label: 'feature:was-not->wasnt' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bwere not\b/gi, replacement: 'werent', label: 'feature:were-not->werent' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bcannot\b/gi, replacement: 'cant', label: 'feature:cannot->cant' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bcould not\b/gi, replacement: 'couldnt', label: 'feature:could-not->couldnt' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bshould not\b/gi, replacement: 'shouldnt', label: 'feature:should-not->shouldnt' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bwill not\b/gi, replacement: 'wont', label: 'feature:will-not->wont' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bis not\b/gi, replacement: 'isnt', label: 'feature:is-not->isnt' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bare not\b/gi, replacement: 'arent', label: 'feature:are-not->arent' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bI am\b/gi, replacement: 'im', label: 'feature:i-am->im' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bI have\b/gi, replacement: 'ive', label: 'feature:i-have->ive' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bI will\b/gi, replacement: 'ill', label: 'feature:i-will->ill' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\byou are\b/gi, replacement: 'youre', label: 'feature:you-are->youre' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bthey are\b/gi, replacement: 'theyre', label: 'feature:they-are->theyre' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bthat is\b/gi, replacement: 'thats', label: 'feature:that-is->thats' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bthere is\b/gi, replacement: 'theres', label: 'feature:there-is->theres' }),
+  Object.freeze({ family: 'orthographyNoise', pattern: /\bwhat is\b/gi, replacement: 'whats', label: 'feature:what-is->whats' }),
+  Object.freeze({ family: 'slangMarkers', pattern: /\bgoing to\b/gi, replacement: 'gonna', label: 'feature:going-to->gonna', requiresEvidence: true }),
+  Object.freeze({ family: 'slangMarkers', pattern: /\bhave to\b/gi, replacement: 'gotta', label: 'feature:have-to->gotta', requiresEvidence: true }),
+  Object.freeze({ family: 'slangMarkers', pattern: /\bkind of\b/gi, replacement: 'kinda', label: 'feature:kind-of->kinda', requiresEvidence: true }),
+  Object.freeze({ family: 'slangMarkers', pattern: /\bsort of\b/gi, replacement: 'sorta', label: 'feature:sort-of->sorta', requiresEvidence: true }),
+  Object.freeze({ family: 'vernacularMarkers', pattern: /\byou all\b/gi, replacement: 'yall', label: 'feature:you-all->yall', requiresEvidence: true }),
+  Object.freeze({ family: 'vernacularMarkers', pattern: /\btrying to\b/gi, replacement: 'tryna', label: 'feature:trying-to->tryna', requiresEvidence: true }),
+  Object.freeze({ family: 'vernacularMarkers', pattern: /\bI am going to\b/gi, replacement: 'ima', label: 'feature:i-am-going-to->ima', requiresEvidence: true }),
+  Object.freeze({ family: 'vernacularMarkers', pattern: /\babout to\b/gi, replacement: 'finna', label: 'feature:about-to->finna', requiresEvidence: true })
+]);
+
+function cloneGlobalRegex(pattern) {
+  const flags = pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`;
+  return new RegExp(pattern.source, flags);
+}
+
+function countPatternHits(text = '', pattern = /(?!)/) {
+  const matches = String(text || '').match(cloneGlobalRegex(pattern));
+  return matches ? matches.length : 0;
+}
+
+function buildFeatureFamilySummary(markers = []) {
+  const unique = uniqueStrings(markers);
+  return Object.freeze({
+    active: unique.length > 0,
+    count: unique.length,
+    markers: Object.freeze(unique)
+  });
+}
+
+function inferVernacularFeatures(text = '', profile = {}, registerLane = '', sourceClass = 'formal-correspondence') {
+  const normalized = normalizeText(text);
+  const orthographyMarkers = [];
+  const chatspeakMarkers = [];
+  const noteMarkers = [];
+  const slangMarkers = [];
+  const vernacularMarkers = [];
+
+  (VERNACULAR_FEATURE_RULES.orthographyNoise || []).forEach((rule) => {
+    if (countPatternHits(normalized, rule.pattern) > 0) {
+      orthographyMarkers.push(rule.id);
+    }
+  });
+  (VERNACULAR_FEATURE_RULES.chatspeakShorthand || []).forEach((rule) => {
+    if (countPatternHits(normalized, rule.pattern) > 0) {
+      chatspeakMarkers.push(rule.id);
+    }
+  });
+  (VERNACULAR_FEATURE_RULES.notePosture || []).forEach((rule) => {
+    if (countPatternHits(normalized, rule.pattern) > 0) {
+      noteMarkers.push(rule.id);
+    }
+  });
+  (VERNACULAR_FEATURE_RULES.slangMarkers || []).forEach((rule) => {
+    if (countPatternHits(normalized, rule.pattern) > 0) {
+      slangMarkers.push(rule.id);
+    }
+  });
+  (VERNACULAR_FEATURE_RULES.vernacularMarkers || []).forEach((rule) => {
+    if (countPatternHits(normalized, rule.pattern) > 0) {
+      vernacularMarkers.push(rule.id);
+    }
+  });
+
+  if (Number(profile?.orthographicLooseness || 0) >= 0.085) {
+    orthographyMarkers.push('profile-orthographic-looseness');
+  }
+  if (Number(profile?.abbreviationDensity || 0) >= 0.055) {
+    chatspeakMarkers.push('profile-abbreviation-density');
+  }
+  if (Number(profile?.fragmentPressure || 0) >= 0.14) {
+    noteMarkers.push('profile-fragment-pressure');
+  }
+  if (Number(profile?.lineBreakDensity || 0) >= 0.09) {
+    noteMarkers.push('profile-line-break-density');
+  }
+
+  const orthographyNoise = buildFeatureFamilySummary(orthographyMarkers);
+  const chatspeakShorthand = buildFeatureFamilySummary(chatspeakMarkers);
+  const notePosture = buildFeatureFamilySummary(noteMarkers);
+  const slang = buildFeatureFamilySummary(slangMarkers);
+  const vernacular = buildFeatureFamilySummary(vernacularMarkers);
+  const activeFamilies = VERNACULAR_FEATURE_FAMILIES.filter((family) => {
+    const summary = family === 'slangMarkers'
+      ? slang
+      : family === 'vernacularMarkers'
+        ? vernacular
+        : family === 'orthographyNoise'
+          ? orthographyNoise
+          : family === 'chatspeakShorthand'
+            ? chatspeakShorthand
+            : notePosture;
+    return summary.active;
+  });
+  const totalMarkers =
+    orthographyNoise.count +
+    chatspeakShorthand.count +
+    notePosture.count +
+    slang.count +
+    vernacular.count;
+
+  return Object.freeze({
+    registerLane: normalizeRegisterLane(registerLane, ''),
+    sourceClass: String(sourceClass || '').trim().toLowerCase(),
+    orthographyNoise,
+    chatspeakShorthand,
+    notePosture,
+    slangMarkers: slang,
+    vernacularMarkers: vernacular,
+    activeFamilies: Object.freeze(activeFamilies),
+    totalMarkers
+  });
+}
+
+function featureFamilyCount(summary = {}, family = 'orthographyNoise') {
+  return Number(summary?.[family]?.count || 0);
+}
+
+function featureFamilyActive(summary = {}, family = 'orthographyNoise') {
+  return Boolean(summary?.[family]?.active);
+}
+
+function buildVernacularFeaturePressure({
+  sourceFeatures = null,
+  donorFeatures = null,
+  targetRegisterLane = '',
+  targetProfile = {}
+} = {}) {
+  const targetLane = normalizeRegisterLane(targetRegisterLane, '');
+  const noisyTarget = ['rushed-mobile', 'tangled-followup'].includes(targetLane);
+  const formalTarget = ['formal-record', 'professional-message'].includes(targetLane);
+  const pressure = {};
+
+  VERNACULAR_FEATURE_FAMILIES.forEach((family) => {
+    const donorActive = featureFamilyActive(donorFeatures, family);
+    const sourceActive = featureFamilyActive(sourceFeatures, family);
+    if (formalTarget) {
+      pressure[family] = sourceActive;
+      return;
+    }
+    if (!noisyTarget) {
+      pressure[family] = false;
+      return;
+    }
+    if (family === 'orthographyNoise') {
+      pressure[family] = donorActive || Number(targetProfile?.orthographicLooseness || 0) >= 0.09;
+      return;
+    }
+    if (family === 'chatspeakShorthand') {
+      pressure[family] = donorActive || Number(targetProfile?.abbreviationDensity || 0) >= 0.055;
+      return;
+    }
+    if (family === 'notePosture') {
+      pressure[family] = donorActive || Number(targetProfile?.fragmentPressure || 0) >= 0.14;
+      return;
+    }
+    pressure[family] = donorActive;
+  });
+
+  return Object.freeze({
+    targetRegisterLane: targetLane,
+    activeFamilies: Object.freeze(VERNACULAR_FEATURE_FAMILIES.filter((family) => pressure[family])),
+    orthographyNoise: Boolean(pressure.orthographyNoise),
+    chatspeakShorthand: Boolean(pressure.chatspeakShorthand),
+    notePosture: Boolean(pressure.notePosture),
+    slangMarkers: Boolean(pressure.slangMarkers),
+    vernacularMarkers: Boolean(pressure.vernacularMarkers)
+  });
+}
+
+function buildVernacularFeatureShift({
+  sourceFeatures = null,
+  donorFeatures = null,
+  outputFeatures = null,
+  targetRegisterLane = '',
+  targetProfile = {}
+} = {}) {
+  const pressure = buildVernacularFeaturePressure({
+    sourceFeatures,
+    donorFeatures,
+    targetRegisterLane,
+    targetProfile
+  });
+  const targetLane = normalizeRegisterLane(targetRegisterLane, '');
+  const noisyTarget = ['rushed-mobile', 'tangled-followup'].includes(targetLane);
+  const realizedFamilies = [];
+  const orthographyShift = noisyTarget
+    ? pressure.orthographyNoise && featureFamilyActive(outputFeatures, 'orthographyNoise')
+    : featureFamilyCount(outputFeatures, 'orthographyNoise') < featureFamilyCount(sourceFeatures, 'orthographyNoise');
+  const shorthandShift = noisyTarget
+    ? pressure.chatspeakShorthand && featureFamilyActive(outputFeatures, 'chatspeakShorthand')
+    : featureFamilyCount(outputFeatures, 'chatspeakShorthand') < featureFamilyCount(sourceFeatures, 'chatspeakShorthand');
+  const notePostureShift = noisyTarget
+    ? pressure.notePosture && featureFamilyActive(outputFeatures, 'notePosture')
+    : featureFamilyCount(outputFeatures, 'notePosture') < featureFamilyCount(sourceFeatures, 'notePosture');
+  const slangShift = noisyTarget
+    ? pressure.slangMarkers && featureFamilyActive(outputFeatures, 'slangMarkers')
+    : featureFamilyCount(outputFeatures, 'slangMarkers') < featureFamilyCount(sourceFeatures, 'slangMarkers');
+  const vernacularShift = noisyTarget
+    ? pressure.vernacularMarkers && featureFamilyActive(outputFeatures, 'vernacularMarkers')
+    : featureFamilyCount(outputFeatures, 'vernacularMarkers') < featureFamilyCount(sourceFeatures, 'vernacularMarkers');
+
+  if (orthographyShift) realizedFamilies.push('orthographyNoise');
+  if (shorthandShift) realizedFamilies.push('chatspeakShorthand');
+  if (notePostureShift) realizedFamilies.push('notePosture');
+  if (slangShift) realizedFamilies.push('slangMarkers');
+  if (vernacularShift) realizedFamilies.push('vernacularMarkers');
+
+  const falseCleanFamilies = noisyTarget
+    ? pressure.activeFamilies.filter((family) => !featureFamilyActive(outputFeatures, family))
+    : VERNACULAR_FEATURE_FAMILIES.filter((family) =>
+        featureFamilyCount(sourceFeatures, family) > 0 &&
+        featureFamilyCount(outputFeatures, family) >= featureFamilyCount(sourceFeatures, family)
+      );
+  const falseDirtyFamilies = noisyTarget
+    ? VERNACULAR_FEATURE_FAMILIES.filter((family) =>
+        featureFamilyActive(outputFeatures, family) &&
+        !pressure.activeFamilies.includes(family) &&
+        !featureFamilyActive(sourceFeatures, family)
+      )
+    : [];
+  const activeOutputFamilies = VERNACULAR_FEATURE_FAMILIES.filter((family) => featureFamilyActive(outputFeatures, family));
+  const donorFeatureAdherence = noisyTarget
+    ? round(
+        1 - (falseDirtyFamilies.length / Math.max(activeOutputFamilies.length || pressure.activeFamilies.length || 1, 1)),
+        4
+      )
+    : 1;
+  const sourceNoiseTotal = VERNACULAR_FEATURE_FAMILIES.reduce((sum, family) => sum + featureFamilyCount(sourceFeatures, family), 0);
+  const outputNoiseTotal = VERNACULAR_FEATURE_FAMILIES.reduce((sum, family) => sum + featureFamilyCount(outputFeatures, family), 0);
+  const concealmentEffectiveness = noisyTarget
+    ? 0
+    : round(clamp01((sourceNoiseTotal - outputNoiseTotal) / Math.max(sourceNoiseTotal || 1, 1)), 4);
+
+  return Object.freeze({
+    targetRegisterLane: targetLane,
+    orthographyShift,
+    shorthandShift,
+    notePostureShift,
+    slangShift,
+    vernacularShift,
+    realizedFamilies: Object.freeze(realizedFamilies),
+    realizedFamilyCount: realizedFamilies.length,
+    falseCleanFamilies: Object.freeze(falseCleanFamilies),
+    falseDirtyFamilies: Object.freeze(falseDirtyFamilies),
+    donorFeatureAdherence,
+    concealmentEffectiveness,
+    surfaceMarkerCount: outputNoiseTotal,
+    pressure
+  });
+}
+
+function applyVernacularFeatureShiftDimensions(changedDimensions = [], featureShift = {}) {
+  const realized = new Set(changedDimensions || []);
+  if (featureShift.orthographyShift) {
+    realized.add('orthography-posture');
+  }
+  if (featureShift.shorthandShift) {
+    realized.add('abbreviation-posture');
+    realized.add('lexical-register');
+  }
+  if (featureShift.notePostureShift) {
+    realized.add('surface-marker-posture');
+    realized.add('fragment-posture');
+  }
+  if (featureShift.slangShift || featureShift.vernacularShift) {
+    realized.add('lexical-register');
+    realized.add('conversation-posture');
+  }
+  return Object.freeze([...realized]);
+}
+
+function featurePressureActive(context = {}, family = 'orthographyNoise') {
+  return Boolean(context?.vernacularFeaturePressure?.[family]);
+}
+
+function applyFeatureRuleSet(text = '', rules = [], context = {}, { limit = 2, direction = 'formalize' } = {}) {
+  let working = String(text || '');
+  const lexicalOperations = context.lexicalOperations || [];
+  const lexemeSwaps = context.lexemeSwaps || [];
+
+  for (const rule of rules) {
+    if (direction === 'degrade' && rule.requiresEvidence && !featurePressureActive(context, rule.family)) {
+      continue;
+    }
+    working = replaceLimited(working, rule.pattern, (match) => {
+      lexicalOperations.push(rule.label);
+      recordLexemeSwap(lexemeSwaps, match, rule.replacement, 'feature');
+      return direction === 'formalize'
+        ? matchCase(match, rule.replacement)
+        : rule.replacement;
+    }, limit);
+  }
+  return working;
+}
+
 function ordinalNodeLabel(index = 0) {
   return String(index + 1).padStart(2, '0');
 }
@@ -11464,7 +11899,7 @@ function inferRegisterLaneFromText(text = '', profile = {}, sourceClass = 'forma
   const sentenceCount = Number(profile?.sentenceCount || 0);
   const slashNotePressure = /(?:\s\/\s|\bw\/o\b|\bw\/\b)/i.test(normalized);
   const colonNotePressure = /:\s+[a-z0-9]/i.test(normalized) || /\bif [^.!?]{2,60}:\s+/i.test(normalized);
-  const rushedLexemes = /\b(?:pkg|mgmt|appt|msg|pls|bc|abt|imo|fyi|2nd|3rd|fl|wasnt|dont|cant|w\/o|w\/)\b/i.test(normalized);
+  const rushedLexemes = /\b(?:pkg|mgmt|appt|msg|pls|bc|abt|imo|fyi|2nd|3rd|fl|wasnt|dont|cant|w\/o|w\/|gonna|gotta|yall|tryna|ima|finna|idk|tbh|ngl|fr)\b/i.test(normalized);
   const tangledSignals =
     /\b(?:following up|not quite right|accidentally made it sound|so yes|the actual miss|the actual issue|that is not quite right)\b/i.test(normalized) ||
     (avgSentenceLength >= 15 && sentenceCount >= 3 && /\b(?:but|however|though|earlier|later|actually)\b/i.test(normalized));
@@ -13378,6 +13813,13 @@ function applyCompressedSurfaceRewrite(text = '', targetProfile = {}, sourceProf
     working = next;
   }
 
+  working = applyFeatureRuleSet(
+    working,
+    DEGRADATION_FEATURE_RULES.filter((rule) => ['chatspeakShorthand', 'slangMarkers', 'vernacularMarkers'].includes(rule.family)),
+    context,
+    { limit: abbreviationLimit, direction: 'degrade' }
+  );
+
   if (orthographyHeavy) {
     const orthographyRules = [
       { pattern: /\byou['’]re\b/gi, replacement: 'youre', label: 'orthography:youre' },
@@ -13425,6 +13867,23 @@ function applyCompressedSurfaceRewrite(text = '', targetProfile = {}, sourceProf
     }
   }
 
+  if (featurePressureActive(context, 'notePosture')) {
+    const beforeNoteCompression = working;
+    working = working
+      .replace(/\bIf ([^,.!?]{3,80}),\s+/g, (match, clause) => {
+        lexicalOperations.push('feature:conditional->colon-note');
+        recordLexemeSwap(lexemeSwaps, match.trim(), `if ${lowerLeadingAlpha(normalizeText(clause))}:`, 'feature');
+        return `if ${lowerLeadingAlpha(normalizeText(clause))}: `;
+      })
+      .replace(/\bafter she confirmed it was hers because she was already carrying (?:groceries|bags)\b/gi, () => {
+        lexicalOperations.push('feature:because->slash-note');
+        return 'after she said yes its hers / she had bags already';
+      });
+    if (beforeNoteCompression !== working) {
+      context.structuralOperations?.push('feature:note-posture-compression');
+    }
+  }
+
   return working;
 }
 
@@ -13460,6 +13919,11 @@ function applyExpandedSurfaceRewrite(text = '', targetProfile = {}, sourceProfil
       return matchCase(match, rule.replacement);
     }, limit);
   }
+
+  working = applyFeatureRuleSet(working, FORMALIZATION_FEATURE_RULES, context, {
+    limit,
+    direction: 'formalize'
+  });
 
   working = replaceLimited(working, /\bw\/o\b/gi, (match) => {
     lexicalOperations.push('expanded:w/o->without');
@@ -13555,6 +14019,11 @@ function applyFormalRecordLaneRewrite(text = '', context = {}) {
   const primaryLocationPlaceholder = context.primaryLocationPlaceholder || 'the addressed unit';
   const locationReference = context.primaryLocationPlaceholder || 'the unit';
 
+  working = applyFeatureRuleSet(working, FORMALIZATION_FEATURE_RULES, context, {
+    limit: 4,
+    direction: 'formalize'
+  });
+
   const lexicalRules = [
     { pattern: /\bpkg\b/gi, replacement: 'package', label: 'lane:pkg->package' },
     { pattern: /\bmgmt\b/gi, replacement: 'management', label: 'lane:mgmt->management' },
@@ -13638,6 +14107,11 @@ function applyRushedMobileLaneRewrite(text = '', context = {}) {
   const structuralOperations = context.structuralOperations || [];
   const lexemeSwaps = context.lexemeSwaps || [];
 
+  working = applyFeatureRuleSet(working, DEGRADATION_FEATURE_RULES, context, {
+    limit: 4,
+    direction: 'degrade'
+  });
+
   const lexicalRules = [
     { pattern: /\bconfirmed it was hers\b/gi, replacement: 'said yes its hers', label: 'lane:confirmed->said-yes' },
     { pattern: /\brequested help\b/gi, replacement: 'asked for help', label: 'lane:requested-help->asked-help' },
@@ -13659,9 +14133,30 @@ function applyRushedMobileLaneRewrite(text = '', context = {}) {
     .replace(/\bbuilding footage and resident testimony\b/gi, () => {
       lexicalOperations.push('lane:evidence-bundle-compression');
       return 'cams + residents';
+    })
+    .replace(/\bIf management asks,\s+/gi, () => {
+      lexicalOperations.push('feature:management-conditional->colon-note');
+      return 'if mgmt asks: ';
+    })
+    .replace(/\bafter she confirmed it was hers because she was already carrying (?:groceries|bags)\b/gi, () => {
+      structuralOperations.push('feature:because->slash-note');
+      return 'after she said yes its hers / she had bags already';
     });
   if (beforeCompression !== working) {
     structuralOperations.push('lane:rushed-mobile-compression');
+  }
+
+  if (featurePressureActive(context, 'orthographyNoise')) {
+    const loweredPronoun = working.replace(/\bI\b/g, 'i');
+    if (loweredPronoun !== working) {
+      lexicalOperations.push('feature:lowercase-i');
+      working = loweredPronoun;
+    }
+    const loweredStarts = loosenSentenceStartsV2(working, 6);
+    if (loweredStarts !== working) {
+      lexicalOperations.push('feature:lowercase-sentence-start');
+      working = loweredStarts;
+    }
   }
 
   return working;
@@ -14846,9 +15341,11 @@ function buildRetrievalTraceV2({
       changedDimensions: Object.freeze([...(candidate?.changedDimensions || [])]),
       profileShiftDimensions: Object.freeze([...(candidate?.profileShiftDimensions || [])]),
       lexemeSwaps: Object.freeze([...(candidate?.lexemeSwaps || [])]),
+      vernacularFeatureShift: candidate?.vernacularFeatureShift || null,
       visibleShift: Boolean(candidate?.visibleShift),
       nonTrivialShift: Boolean(candidate?.nonTrivialShift)
     }),
+    vernacularFeatures: candidate?.vernacularFeatures || null,
     donorProgress: donorProgress || {},
     candidateLedger,
     generationDocket,
@@ -14877,6 +15374,19 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
   });
   const temporalDirective = buildTemporalDirective(sourceText, sourceRegisterLaneInfo.sourceRegisterLane);
   const temporalAttestation = auditTemporalAttestation(sourceText, sourceText, temporalDirective);
+  const sourceVernacularFeatures = inferVernacularFeatures(
+    sourceText,
+    sourceProfile,
+    sourceRegisterLaneInfo.sourceRegisterLane,
+    sourceClass
+  );
+  const vernacularFeatureShift = buildVernacularFeatureShift({
+    sourceFeatures: sourceVernacularFeatures,
+    donorFeatures: sourceVernacularFeatures,
+    outputFeatures: sourceVernacularFeatures,
+    targetRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
+    targetProfile: shell.profile || sourceProfile
+  });
   const entityMaskLedger = buildEntityMaskLedger(
     protectAnchorsForRewrite(
       sourceText,
@@ -14952,6 +15462,18 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
         profileShiftDimensions: Object.freeze([]),
         lexemeSwapCount: 0,
         artifactRepairApplied: false,
+        vernacularFeatures: Object.freeze({
+          source: sourceVernacularFeatures,
+          donor: sourceVernacularFeatures,
+          output: sourceVernacularFeatures,
+          pressure: buildVernacularFeaturePressure({
+            sourceFeatures: sourceVernacularFeatures,
+            donorFeatures: sourceVernacularFeatures,
+            targetRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
+            targetProfile: shell.profile || sourceProfile
+          })
+        }),
+        vernacularFeatureShift,
         ontologyAudit: nativeOntologyAudit,
         outputPreview: sourceText.slice(0, 160)
       })
@@ -14966,6 +15488,18 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
           changedDimensions: [],
           profileShiftDimensions: [],
           lexemeSwaps: [],
+          vernacularFeatures: Object.freeze({
+            source: sourceVernacularFeatures,
+            donor: sourceVernacularFeatures,
+            output: sourceVernacularFeatures,
+            pressure: buildVernacularFeaturePressure({
+              sourceFeatures: sourceVernacularFeatures,
+              donorFeatures: sourceVernacularFeatures,
+              targetRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
+              targetProfile: shell.profile || sourceProfile
+            })
+          }),
+          vernacularFeatureShift,
           visibleShift: false,
           nonTrivialShift: false,
           relationInventory: nativeRelationInventory,
@@ -15015,6 +15549,18 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
     }),
     semanticRisk: 0,
     lexemeSwaps: Object.freeze([]),
+    vernacularFeatures: Object.freeze({
+      source: sourceVernacularFeatures,
+      donor: sourceVernacularFeatures,
+      output: sourceVernacularFeatures,
+      pressure: buildVernacularFeaturePressure({
+        sourceFeatures: sourceVernacularFeatures,
+        donorFeatures: sourceVernacularFeatures,
+        targetRegisterLane: sourceRegisterLaneInfo.sourceRegisterLane,
+        targetProfile: shell.profile || sourceProfile
+      })
+    }),
+    vernacularFeatureShift,
     generationControls,
     temporalDirective,
     temporalAttestation,
@@ -15086,6 +15632,31 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     sourceRegisterLane,
     targetRegisterLane
   });
+  const donorSourceText = normalizeText(
+    options.donorText ||
+    variant.shell?.sourceText ||
+    variant.shell?.donorText ||
+    variant.shell?.comparisonText ||
+    ''
+  );
+  const sourceVernacularFeatures = inferVernacularFeatures(
+    sourceText,
+    sourceProfile,
+    sourceRegisterLane,
+    sourceClass
+  );
+  const donorVernacularFeatures = inferVernacularFeatures(
+    donorSourceText,
+    variant.shell?.profile || {},
+    targetRegisterLane,
+    sourceClass
+  );
+  const vernacularFeaturePressure = buildVernacularFeaturePressure({
+    sourceFeatures: sourceVernacularFeatures,
+    donorFeatures: donorVernacularFeatures,
+    targetRegisterLane,
+    targetProfile: variant.shell?.profile || {}
+  });
   const temporalDirective = options.temporalDirective || buildTemporalDirective(sourceText, targetRegisterLane);
   const connectorStrategy = connectorStrategyFor(variant.envelopeId, sourceClass, familyId);
   const contractionStrategy = contractionStrategyFor(
@@ -15116,6 +15687,7 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
       intensity: variantIntensity(variant) * familyWeight(familyId, sourceClass, variant.envelopeId) * Number(generationControls.intensityScalar || 1),
       generationControls,
       temporalDirective,
+      vernacularFeaturePressure,
       sourceText,
       anchorReplacements: protectedState.replacements,
       primaryLocationPlaceholder: firstMaskedAnchorToken(protectedState.replacements, 'location'),
@@ -15207,7 +15779,10 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     artifactRepairApplied: artifactRepair.repaired,
     generationControls,
     temporalDirective,
-    entityMaskLedger: buildEntityMaskLedger(protectedState.replacements)
+    entityMaskLedger: buildEntityMaskLedger(protectedState.replacements),
+    sourceVernacularFeatures,
+    donorVernacularFeatures,
+    vernacularFeaturePressure
   });
 }
 
@@ -15256,7 +15831,23 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   const outputText = authored.outputText;
   const outputProfile = extractCadenceProfile(outputText);
   const profileShiftDimensions = deriveChangedDimensions(sourceProfile, outputProfile);
-  const changedDimensions = deriveRealizedChangedDimensions(profileShiftDimensions, authored.lexemeSwaps);
+  const outputVernacularFeatures = inferVernacularFeatures(
+    outputText,
+    outputProfile,
+    authored.targetRegisterLane,
+    sourceClass
+  );
+  const vernacularFeatureShift = buildVernacularFeatureShift({
+    sourceFeatures: authored.sourceVernacularFeatures,
+    donorFeatures: authored.donorVernacularFeatures,
+    outputFeatures: outputVernacularFeatures,
+    targetRegisterLane: authored.targetRegisterLane,
+    targetProfile: variant.shell?.profile || null
+  });
+  const changedDimensions = applyVernacularFeatureShiftDimensions(
+    deriveRealizedChangedDimensions(profileShiftDimensions, authored.lexemeSwaps),
+    vernacularFeatureShift
+  );
   const semanticBundle = buildSemanticAuditBundle(sourceIR, outputText, protectedState);
   const semanticAudit = semanticBundle.semanticAudit || {};
   const protectedAnchorAudit = semanticBundle.protectedAnchorAudit || {};
@@ -15500,6 +16091,13 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     temporalDirective: authored.temporalDirective,
     temporalAttestation,
     entityMaskLedger: authored.entityMaskLedger,
+    vernacularFeatures: Object.freeze({
+      source: authored.sourceVernacularFeatures,
+      donor: authored.donorVernacularFeatures,
+      output: outputVernacularFeatures,
+      pressure: authored.vernacularFeaturePressure
+    }),
+    vernacularFeatureShift,
     ontologyAudit,
     structuralOperations: authored.structuralOperations,
     lexicalOperations: authored.lexicalOperations,
@@ -15554,6 +16152,8 @@ function buildCandidateLedger(candidates = [], landedId = null) {
     profileShiftDimensions: Object.freeze([...(candidate.profileShiftDimensions || [])]),
     lexemeSwapCount: Number(candidate.lexemeSwaps?.length || 0),
     artifactRepairApplied: Boolean(candidate.artifactRepairApplied),
+    vernacularFeatures: candidate.vernacularFeatures || null,
+    vernacularFeatureShift: candidate.vernacularFeatureShift || null,
     ontologyAudit: candidate.ontologyAudit || null,
     outputPreview: String(candidate.outputText || '').slice(0, 160)
   })));
@@ -15677,7 +16277,20 @@ function candidateRealizedCrossRegisterMovement(candidate = null) {
     'surface-marker-posture'
   ]);
   const hasLexicalSurface = realizedDimensions.some((dimension) => lexicalSurfaceDimensions.has(dimension));
-  return hasLexicalSurface || Number(candidate?.lexemeSwaps?.length || 0) > 0;
+  return hasLexicalSurface ||
+    Number(candidate?.lexemeSwaps?.length || 0) > 0 ||
+    Number(candidate?.vernacularFeatureShift?.realizedFamilyCount || 0) > 0;
+}
+
+function candidateVernacularMovementScore(candidate = null) {
+  const shift = candidate?.vernacularFeatureShift || {};
+  return round(
+    Number(shift.realizedFamilyCount || 0) +
+    (Number(shift.surfaceMarkerCount || 0) * 0.1) +
+    (Number(shift.donorFeatureAdherence || 0) * 0.4) +
+    (Number(shift.concealmentEffectiveness || 0) * 0.3),
+    4
+  );
 }
 
 function classRecoveryFamilies(sourceClass = 'formal-correspondence') {
@@ -15785,6 +16398,7 @@ function selectWinningCandidate(candidates = []) {
       candidateProtectedAnchorIntegrity(right) - candidateProtectedAnchorIntegrity(left) ||
       candidateMinimumSemanticCoverage(right) - candidateMinimumSemanticCoverage(left) ||
       candidateDeformationLoad(left) - candidateDeformationLoad(right) ||
+      candidateVernacularMovementScore(right) - candidateVernacularMovementScore(left) ||
       Number(candidateRealizedCrossRegisterMovement(right)) - Number(candidateRealizedCrossRegisterMovement(left)) ||
       candidateTransferRank(right) - candidateTransferRank(left) ||
       candidateToolabilityScore(right) - candidateToolabilityScore(left) ||
@@ -15934,6 +16548,8 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
     temporalDirective: chosen.temporalDirective || null,
     temporalAttestation: chosen.temporalAttestation || null,
     entityMaskLedger: Object.freeze([...(chosen.entityMaskLedger || [])]),
+    vernacularFeatures: chosen.vernacularFeatures || null,
+    vernacularFeatureShift: chosen.vernacularFeatureShift || null,
     ontologyAudit: chosen.ontologyAudit || null,
     visibleShift: chosen.visibleShift,
     nonTrivialShift: chosen.nonTrivialShift,
@@ -16063,6 +16679,8 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     temporalDirective: bestCandidate?.temporalDirective || null,
     temporalAttestation: bestCandidate?.temporalAttestation || null,
     entityMaskLedger: Object.freeze([...(bestCandidate?.entityMaskLedger || [])]),
+    vernacularFeatures: bestCandidate?.vernacularFeatures || null,
+    vernacularFeatureShift: bestCandidate?.vernacularFeatureShift || null,
     realizationNotes: uniqueStrings([
       holdClass
     ]),

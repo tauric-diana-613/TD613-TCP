@@ -3427,11 +3427,12 @@
       source: 'swapped',
       fromSlot: voiceState.slot,
       registerLane: voiceState.sourceRegisterLane || null,
+      sourceText: voiceState.text || '',
       strength: 0.82
     };
   }
 
-  function borrowedShellFromProfile(profile, fromSlot, registerLane = null) {
+  function borrowedShellFromProfile(profile, fromSlot, registerLane = null, sourceText = '') {
     return {
       mode: 'borrowed',
       label: `borrowed ${SLOT_SHORT[fromSlot]} cadence`,
@@ -3441,6 +3442,7 @@
       source: 'swapped',
       fromSlot,
       registerLane,
+      sourceText,
       strength: 0.82
     };
   }
@@ -3517,8 +3519,8 @@
 
     const referenceProfile = extractCadenceProfile(referenceText);
     const probeProfile = extractCadenceProfile(probeText);
-    const laneA = buildCadenceTransfer(referenceText, borrowedShellFromProfile(probeProfile, 'B'), { retrieval: true });
-    const laneB = buildCadenceTransfer(probeText, borrowedShellFromProfile(referenceProfile, 'A'), { retrieval: true });
+    const laneA = buildCadenceTransfer(referenceText, borrowedShellFromProfile(probeProfile, 'B', null, probeText), { retrieval: true });
+    const laneB = buildCadenceTransfer(probeText, borrowedShellFromProfile(referenceProfile, 'A', null, referenceText), { retrieval: true });
     const laneOutcomes = [
       laneA.borrowedShellOutcome || laneA.transferClass,
       laneB.borrowedShellOutcome || laneB.transferClass

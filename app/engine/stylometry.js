@@ -7445,6 +7445,8 @@ function buildSwapBorrowedShell(sample = {}, fromSlot = 'B', strength = 0.82) {
     mod: cadenceModFromProfile(profile),
     source: 'swapped',
     fromSlot,
+    registerLane: sample.variant || null,
+    sourceText: sample.text || '',
     strength
   };
 }
