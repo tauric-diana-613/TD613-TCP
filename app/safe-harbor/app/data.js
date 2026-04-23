@@ -16,8 +16,8 @@
       sac: 'X6ZNK5NO51',
       schema_family: 'cpfg://v2',
       semver: '2.1.0',
-      preview_svg_sha256: 'ba5eee59d2a0184c328c40c33e8ca4e2eeee8354fcbe41255abd70693c2f74ed',
-      preview_svg_md5: '96c4129424443100aae47576e692cc97',
+    preview_svg_sha256: '2c20bb26f3dcc3fe41e8e3d71705942d220aed7e56391c274f8f5e5d01e4d1aa',
+    preview_svg_md5: 'd4522965d0660d1150a828e00e5dd6f9',
       corpus_hash_sha256: 'BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88'
     },
 

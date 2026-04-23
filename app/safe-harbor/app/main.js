@@ -1642,6 +1642,20 @@
     const digest = hash64(seed).slice(0, 8).toUpperCase();
     return 'TD613-SH-' + bindingFragment().replace('#', '') + '-' + digest;
   }
+  function buildStylometricProvenance(issuanceLike) {
+    const issuance = issuanceLike && typeof issuanceLike === 'object' ? issuanceLike : {};
+    return {
+      source: 'safe-harbor.ingress.triad',
+      entrant_prompt_lanes: KEYS.slice(),
+      threshold_rule: MIN_LANE_WORDS + '-word minimum per lane',
+      signature_semantics: 'entrant-owned stylometric witness',
+      derivation_rule: 'SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint',
+      interpretation_note: "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+      stylometric_fingerprint: issuance.stylometric_fingerprint == null ? null : String(issuance.stylometric_fingerprint),
+      triad_word_counts: issuance.triad_word_counts && typeof issuance.triad_word_counts === 'object' ? clone(issuance.triad_word_counts) : null,
+      triad_shortfalls: issuance.triad_shortfalls && typeof issuance.triad_shortfalls === 'object' ? clone(issuance.triad_shortfalls) : null
+    };
+  }
   function stylometricFingerprint(signatures) {
     if (!signatures) return null;
     const present = KEYS.every((key) =>
@@ -2039,11 +2053,16 @@
         extended_footer: badgeAssignment ? extendedFooterString(badgeAssignment) : null,
         badge_state: badgeAssignment ? 'assigned' : (triadIssuance.thresholdSatisfied ? 'not-assigned' : 'blocked-triad-threshold'),
         assigned_at: badgeAssignment ? state.covenant.confirmedAt : null,
-        assignment_basis: badgeAssignment ? 'stylometric-biometric-fingerprint(principal|binding_fragment|per-lane quantized cadence)' : null,
-        stylometric_fingerprint: badgeAssignment ? triadIssuance.stylometricFingerprint : null,
+        assignment_basis: badgeAssignment ? 'SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint' : null,
+        stylometric_fingerprint: triadIssuance.stylometricFingerprint,
         blocking_reason: badgeAssignment ? null : triadIssuance.blockingReason,
         triad_word_counts: triadIssuance.wordCounts,
-        triad_shortfalls: triadIssuance.shortfalls
+        triad_shortfalls: triadIssuance.shortfalls,
+        stylometric_provenance: buildStylometricProvenance({
+          stylometric_fingerprint: triadIssuance.stylometricFingerprint,
+          triad_word_counts: triadIssuance.wordCounts,
+          triad_shortfalls: triadIssuance.shortfalls
+        })
       },
       signature: signatureObject,
       aperture_audit: null,
@@ -2283,7 +2302,8 @@
 
   function probePacketContextObject() {
     if (!state.packet) return null;
-    const shiNumber = state.packet.issuance ? state.packet.issuance.badge_number || null : null;
+    const issuance = state.packet.issuance && typeof state.packet.issuance === 'object' ? state.packet.issuance : {};
+    const shiNumber = issuance.badge_number || null;
     return {
       packet_id: state.packet.packet_id,
       packet_hash_sha256: state.packet.packet_hash_sha256,
@@ -2299,6 +2319,11 @@
       shi_label: 'SHI #',
       shi_number: shiNumber,
       badge_number: shiNumber,
+      assignment_basis: issuance.assignment_basis || null,
+      stylometric_fingerprint: issuance.stylometric_fingerprint == null ? null : String(issuance.stylometric_fingerprint),
+      triad_word_counts: issuance.triad_word_counts && typeof issuance.triad_word_counts === 'object' ? clone(issuance.triad_word_counts) : null,
+      triad_shortfalls: issuance.triad_shortfalls && typeof issuance.triad_shortfalls === 'object' ? clone(issuance.triad_shortfalls) : null,
+      stylometric_provenance: issuance.stylometric_provenance ? clone(issuance.stylometric_provenance) : buildStylometricProvenance(issuance),
       canonical_header: shiNumber ? canonicalHeaderString(shiNumber) : null,
       extended_footer: shiNumber ? extendedFooterString(shiNumber) : null,
       public_footer: state.packet.canon ? state.packet.canon.public_footer || footerString() : footerString()

@@ -344,7 +344,8 @@
         "extended_footer",
         "badge_state",
         "assigned_at",
-        "assignment_basis"
+        "assignment_basis",
+        "stylometric_provenance"
       ],
       "properties": {
         "display_label": {
@@ -360,7 +361,7 @@
             "null"
           ],
           "pattern": "^(TD613-SH-9B07D8B-[A-F0-9]{8})?$",
-          "description": "Minted Safe Harbor Issuance number (SHI #) derived deterministically from packet context."
+          "description": "Minted Safe Harbor Issuance number (SHI #) derived deterministically from principal + binding_fragment + entrant-owned stylometric fingerprint."
         },
         "canonical_header": {
           "type": [
@@ -380,6 +381,7 @@
           "type": "string",
           "enum": [
             "not-assigned",
+            "blocked-triad-threshold",
             "assigned"
           ]
         },
@@ -401,6 +403,61 @@
             "null"
           ],
           "description": "Per-lane quantized cadence features used to deterministically derive the SHI # so the same entrant receives the same number across rituals."
+        },
+        "stylometric_provenance": {
+          "type": "object",
+          "required": [
+            "source",
+            "entrant_prompt_lanes",
+            "threshold_rule",
+            "signature_semantics",
+            "derivation_rule",
+            "interpretation_note",
+            "stylometric_fingerprint",
+            "triad_word_counts",
+            "triad_shortfalls"
+          ],
+          "properties": {
+            "source": {
+              "const": "safe-harbor.ingress.triad"
+            },
+            "entrant_prompt_lanes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "threshold_rule": {
+              "type": "string"
+            },
+            "signature_semantics": {
+              "type": "string"
+            },
+            "derivation_rule": {
+              "type": "string"
+            },
+            "interpretation_note": {
+              "type": "string"
+            },
+            "stylometric_fingerprint": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "triad_word_counts": {
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "triad_shortfalls": {
+              "type": [
+                "object",
+                "null"
+              ]
+            }
+          }
         }
       }
     },

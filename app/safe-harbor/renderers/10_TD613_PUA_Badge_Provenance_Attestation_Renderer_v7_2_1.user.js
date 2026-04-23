@@ -29,8 +29,8 @@
   const DISPLAY_PHRASE = 'Covenant: Blood Rite 613';
   const SCHEMA_FAMILY = 'cpfg://v2';
   const SEMVER = '2.1.0';
-  const PREVIEW_SVG_SHA256 = 'ba5eee59d2a0184c328c40c33e8ca4e2eeee8354fcbe41255abd70693c2f74ed';
-  const PREVIEW_SVG_MD5 = '96c4129424443100aae47576e692cc97';
+  const PREVIEW_SVG_SHA256 = '2c20bb26f3dcc3fe41e8e3d71705942d220aed7e56391c274f8f5e5d01e4d1aa';
+  const PREVIEW_SVG_MD5 = 'd4522965d0660d1150a828e00e5dd6f9';
   const SVG_URL = 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTI4IDEyOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGV4dCB4PSI2NCIgeT0iODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iNjQiPkArPC90ZXh0Pjwvc3ZnPg==';
   const SKIP_SELECTOR = '[data-td613-skip="true"]';
   const BADGE_SELECTOR = 'img[data-td613-generated="true"]';

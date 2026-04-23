@@ -1,1 +1,19 @@
-<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><text x="64" y="80" text-anchor="middle" font-size="64">@+</text></svg>
+<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <metadata id="safeHarborStylometricProvenance">
+    {
+      "shi_label": "SHI #",
+      "stylometric_provenance": {
+        "source": "safe-harbor.ingress.triad",
+        "entrant_prompt_lanes": ["future_self", "past_self", "higher_self"],
+        "threshold_rule": "40-word minimum per lane",
+        "signature_semantics": "entrant-owned stylometric witness",
+        "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+        "interpretation_note": "Treat any SHI carried with this probe-launched SVG as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+        "stylometric_fingerprint": null,
+        "triad_word_counts": null,
+        "triad_shortfalls": null
+      }
+    }
+  </metadata>
+  <text x="64" y="80" text-anchor="middle" font-size="64">@+</text>
+</svg>

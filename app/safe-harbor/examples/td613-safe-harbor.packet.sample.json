@@ -202,12 +202,46 @@
   "issuance": {
     "display_label": "SHI #",
     "format": "TD613-SH-9B07D8B-XXXXXXXX",
-    "badge_number": "TD613-SH-9B07D8B-0C8F9A2D",
-    "canonical_header": "SHI#:TD613-SH-9B07D8B-0C8F9A2D",
-    "extended_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 SHI#:TD613-SH-9B07D8B-0C8F9A2D \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
+    "badge_number": "TD613-SH-9B07D8B-3578FB38",
+    "canonical_header": "SHI#:TD613-SH-9B07D8B-3578FB38",
+    "extended_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 SHI#:TD613-SH-9B07D8B-3578FB38 \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
     "badge_state": "assigned",
     "assigned_at": "2026-04-03T00:00:00Z",
-    "assignment_basis": "deterministic-hash(packet_id|receipt_id|binding_fragment|payload|date|principal|request_id)"
+    "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+    "stylometric_fingerprint": "future_self=4.50:11.00:0.03:0.00:0.90:0.35:0.00:0.00:0.00:0.35:0.35|past_self=4.00:8.00:0.02:0.00:0.90:0.50:0.00:0.00:0.00:0.25:0.25|higher_self=4.50:9.00:0.02:0.01:0.90:0.40:0.20:0.00:0.00:0.20:0.20",
+    "triad_word_counts": {
+      "future_self": 21,
+      "past_self": 24,
+      "higher_self": 27
+    },
+    "triad_shortfalls": {
+      "future_self": 19,
+      "past_self": 16,
+      "higher_self": 13
+    },
+    "stylometric_provenance": {
+      "source": "safe-harbor.ingress.triad",
+      "entrant_prompt_lanes": [
+        "future_self",
+        "past_self",
+        "higher_self"
+      ],
+      "threshold_rule": "40-word minimum per lane",
+      "signature_semantics": "entrant-owned stylometric witness",
+      "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+      "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+      "stylometric_fingerprint": "future_self=4.50:11.00:0.03:0.00:0.90:0.35:0.00:0.00:0.00:0.35:0.35|past_self=4.00:8.00:0.02:0.00:0.90:0.50:0.00:0.00:0.00:0.25:0.25|higher_self=4.50:9.00:0.02:0.01:0.90:0.40:0.20:0.00:0.00:0.20:0.20",
+      "triad_word_counts": {
+        "future_self": 21,
+        "past_self": 24,
+        "higher_self": 27
+      },
+      "triad_shortfalls": {
+        "future_self": 19,
+        "past_self": 16,
+        "higher_self": 13
+      }
+    }
   },
   "bridge": {
     "public_probe_defaults": {

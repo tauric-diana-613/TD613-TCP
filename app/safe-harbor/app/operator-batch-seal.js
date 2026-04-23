@@ -5,6 +5,21 @@ export function splitPrimaryPersonas(value) {
     .filter(Boolean);
 }
 
+function buildStylometricProvenance(issuance) {
+  const value = issuance && typeof issuance === 'object' ? issuance : {};
+  return {
+    source: 'safe-harbor.ingress.triad',
+    entrant_prompt_lanes: ['future_self', 'past_self', 'higher_self'],
+    threshold_rule: '40-word minimum per lane',
+    signature_semantics: 'entrant-owned stylometric witness',
+    derivation_rule: 'SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint',
+    interpretation_note: "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+    stylometric_fingerprint: value.stylometric_fingerprint == null ? null : String(value.stylometric_fingerprint),
+    triad_word_counts: value.triad_word_counts && typeof value.triad_word_counts === 'object' ? { ...value.triad_word_counts } : null,
+    triad_shortfalls: value.triad_shortfalls && typeof value.triad_shortfalls === 'object' ? { ...value.triad_shortfalls } : null
+  };
+}
+
 export function buildSealedBatchArtifact({
   batch,
   registryEntry,
@@ -46,7 +61,10 @@ export function buildSealedBatchArtifact({
         canonical_header: issuance.canonical_header || null,
         extended_footer: issuance.extended_footer || null,
         assignment_basis: issuance.assignment_basis || null,
-        stylometric_fingerprint: issuance.stylometric_fingerprint || null
+        stylometric_fingerprint: issuance.stylometric_fingerprint || null,
+        triad_word_counts: issuance.triad_word_counts || null,
+        triad_shortfalls: issuance.triad_shortfalls || null,
+        stylometric_provenance: issuance.stylometric_provenance || buildStylometricProvenance(issuance)
       },
       signature: {
         sig_type: signatureValue.sig_type || 'PGP-detached',
