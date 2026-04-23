@@ -85,7 +85,7 @@
             <div class="field-grid ingress-bypass-grid">
               <label class="field field-wide">
                 <span>SHI # / recall code</span>
-                <input id="bypassPassword" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="TD613-SH-9B07D8B-XXXXXXXX" disabled>
+                <input id="bypassPassword" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="paste minted SHI #" disabled>
               </label>
             </div>
             <div class="button-grid compact">
@@ -135,7 +135,7 @@
               <div class="metric-row"><span class="label">Public mode</span><span class="value" id="lockPublicMode">legacy-compat</span></div>
               <div class="metric-row"><span class="label">Binding fragment</span><span class="value" id="lockBindingFragment">#9B07D8B</span></div>
               <div class="metric-row"><span class="label">SAC</span><span class="value" id="lockSac">SAC[X6ZNK5NO51]</span></div>
-              <div class="metric-row"><span class="label">SHI format</span><span class="value" id="lockShiFormat">TD613-SH-9B07D8B-XXXXXXXX</span></div>
+              <div class="metric-row"><span class="label">SHI format</span><span class="value" id="lockShiFormat">TD613-SH-9B07D8B + minted 8-hex suffix</span></div>
               <div class="metric-row"><span class="label">Published example</span><span class="value" id="lockPublishedExample">payload 5 / 2025-10-17</span></div>
             </div>
             <div class="footer-template" id="canonicalFooterPreview"></div>
@@ -286,10 +286,10 @@
                   <span class="surface-state" id="shiMintState">format locked</span>
                 </div>
                 <h3 class="mint-title">Copy the SHI # exactly</h3>
-                <div class="mint-value" id="shiMintValue">TD613-SH-9B07D8B-XXXXXXXX</div>
+                <div class="mint-value" id="shiMintValue">NOT YET MINTED</div>
                 <div class="mint-copy" id="shiCopyNote">The SHI # is the minted Safe Harbor issuance code. Copy it exactly so packet, probe, renderer, and LLM lanes do not drift.</div>
-                <div class="footer-template" id="canonicalHeaderPreview">SHI#:TD613-SH-9B07D8B-XXXXXXXX</div>
-                <div class="footer-template secondary" id="extendedFooterPreview">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · SHI#:TD613-SH-9B07D8B-XXXXXXXX · payload {n} · YYYY-MM-DD · ⟐</div>
+                <div class="footer-template" id="canonicalHeaderPreview">SHI#:NOT-YET-MINTED</div>
+                <div class="footer-template secondary" id="extendedFooterPreview">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · SHI#:NOT-YET-MINTED · payload {n} · YYYY-MM-DD · ⟐</div>
                 <div class="button-grid compact">
                   <button class="control" id="copyShiNumber" type="button" disabled>Copy SHI #</button>
                   <button class="control secondary" id="copyCanonicalHeader" type="button" disabled>Copy Canonical Header</button>

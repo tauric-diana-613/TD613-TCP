@@ -15,9 +15,9 @@
   const RENDER_MODEL = 'single_badge_append';
   const BADGE_ID = 'bdg_glyph_U10D613';
   const SHI_LABEL = 'SHI #';
-  const SHI_TEMPLATE = 'TD613-SH-9B07D8B-XXXXXXXX';
-  const SHI_CANONICAL_HEADER = 'SHI#:TD613-SH-9B07D8B-XXXXXXXX';
-  const SHI_EXTENDED_FOOTER = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · SHI#:TD613-SH-9B07D8B-XXXXXXXX · payload {n} · YYYY-MM-DD · ⟐';
+  const SHI_TEMPLATE = 'TD613-SH-9B07D8B + minted 8-hex suffix';
+  const SHI_CANONICAL_HEADER = 'SHI#:NOT-YET-MINTED';
+  const SHI_EXTENDED_FOOTER = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · SHI#:NOT-YET-MINTED · payload {n} · YYYY-MM-DD · ⟐';
   const OBSERVED_REGIME = 'PRCS-A';
   const INSTRUMENT_ROLE = 'counter-tool';
   const APERTURE_AUDIT_FIELD = 'aperture_audit';

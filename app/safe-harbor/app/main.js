@@ -717,7 +717,7 @@
     dom.setBypassToken.disabled = surfaceIsOpen;
     dom.clearBypassToken.disabled = surfaceIsOpen || !getOperatorBypassHash();
     dom.clearIngress.disabled = ingressLocked;
-    dom.bypassPassword.placeholder = recoverableShi || shiFormatTemplate();
+    dom.bypassPassword.placeholder = recoverableShi || 'paste minted SHI #';
     dom.demoTcpHook.disabled = !devModeEnabled;
     dom.demoEoHook.disabled = !devModeEnabled;
     dom.demoSignatureHook.disabled = !devModeEnabled;
@@ -1014,7 +1014,7 @@
           : thresholdSatisfied
             ? 'triad ready / await mint'
             : 'not minted';
-    dom.shiMintValue.textContent = available || shiFormatTemplate();
+    dom.shiMintValue.textContent = available || 'NOT YET MINTED';
     dom.canonicalHeaderPreview.textContent = canonicalHeaderString(available);
     dom.extendedFooterPreview.textContent = extendedFooterString(available);
     dom.shiCopyNote.textContent = issued
@@ -1038,7 +1038,7 @@
       return;
     }
     if (!isShiNumber(token)) {
-      dom.ingressNote.textContent = 'Recall codes must use the minted SHI # format: ' + shiFormatTemplate() + '.';
+      dom.ingressNote.textContent = 'Recall codes must use a minted SHI # in the form ' + shiFormatTemplate() + '.';
       return;
     }
     const recoverable = recoverableShiNumber();
@@ -1493,14 +1493,13 @@
   }
 
   function shiFormatTemplate() {
-    return (D.trustProfile && D.trustProfile.shi_number_template) || ('TD613-SH-' + bindingFragment().replace('#', '') + '-XXXXXXXX');
+    return (D.trustProfile && D.trustProfile.shi_number_template) || ('TD613-SH-' + bindingFragment().replace('#', '') + ' + minted 8-hex suffix');
   }
 
   function shiNumberPattern() {
-    const template = normalizeShiNumber(shiFormatTemplate());
-    const escaped = template.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const source = '^' + escaped.replace(/X+/g, (placeholder) => `[A-F0-9]{${placeholder.length}}`) + '$';
-    return new RegExp(source, 'u');
+    const prefix = 'TD613-SH-' + bindingFragment().replace('#', '');
+    const escapedPrefix = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return new RegExp('^' + escapedPrefix + '-[A-F0-9]{8}$', 'u');
   }
 
   function isShiNumber(value) {
@@ -1536,6 +1535,17 @@
       witnessChannel: trim(dom.inputWitnessChannel.value),
       operatorNotes: trim(dom.inputOperatorNotes.value)
     };
+  }
+
+  function canonicalHeaderString(shiNumber) {
+    if (shiNumber) return 'SHI#:' + shiNumber;
+    return (D.trustProfile && D.trustProfile.shi_canonical_header_template) || 'SHI#:NOT-YET-MINTED';
+  }
+
+  function extendedFooterString(shiNumber) {
+    const compact = footerString();
+    const value = shiNumber || 'NOT-YET-MINTED';
+    return compact.replace(/\spayload/u, ' \u00b7 SHI#:' + value + ' \u00b7 payload');
   }
 
   function stampBundle() {

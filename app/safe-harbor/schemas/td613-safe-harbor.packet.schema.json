@@ -352,7 +352,7 @@
           "const": "SHI #"
         },
         "format": {
-          "const": "TD613-SH-9B07D8B-XXXXXXXX",
+          "const": "TD613-SH-9B07D8B + minted 8-hex suffix",
           "description": "Locked Safe Harbor Issuance number format."
         },
         "badge_number": {
