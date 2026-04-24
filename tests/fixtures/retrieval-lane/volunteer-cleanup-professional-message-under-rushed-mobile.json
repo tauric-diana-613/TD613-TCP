@@ -304,7 +304,7 @@
         "hybrid"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.8002
+      "averageToolabilityScore": 0.7698
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -524,10 +524,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.968,
-      "outputDonorDistance": 4.338,
-      "donorImprovement": 0.63,
+      "outputDonorDistance": 4.335,
+      "donorImprovement": 0.633,
       "donorImprovementRatio": 0.127,
-      "sourceOutputLexicalOverlap": 0.898
+      "sourceOutputLexicalOverlap": 0.925
     },
     "candidateLedger": [
       {
@@ -537,12 +537,12 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9609,
-        "toolabilityScore": 0.7959,
+        "score": 0.9012,
+        "toolabilityScore": 0.7198,
         "rewriteStrength": 1,
-        "targetFit": 0.2667,
+        "targetFit": 0.2673,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:over-braiding",
@@ -794,10 +794,10 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.106,
+        "score": 1.1165,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.3374,
+        "targetFit": 0.3467,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -812,6 +812,7 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register",
@@ -821,6 +822,7 @@
         "profileShiftDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
@@ -1050,12 +1052,12 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9591,
-        "toolabilityScore": 0.7959,
+        "score": 0.899,
+        "toolabilityScore": 0.7198,
         "rewriteStrength": 1,
-        "targetFit": 0.2591,
+        "targetFit": 0.2594,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:over-braiding",
@@ -1309,10 +1311,10 @@
         "status": "selected",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.04,
+        "score": 1.0406,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.2905,
+        "targetFit": 0.2915,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -1572,10 +1574,10 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.054,
+        "score": 1.0589,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.2922,
+        "targetFit": 0.2967,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],

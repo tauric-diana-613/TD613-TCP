@@ -193,7 +193,7 @@
         "clause-pivot"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7983
+      "averageToolabilityScore": 0.7476
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -203,7 +203,7 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "punctuation-shape",
+        "sentence-spread",
         "register-mode",
         "abbreviation-posture",
         "orthography-posture",
@@ -212,7 +212,7 @@
       "profileShiftDimensions": [
         "sentence-mean",
         "sentence-count",
-        "punctuation-shape",
+        "sentence-spread",
         "register-mode",
         "abbreviation-posture",
         "orthography-posture",
@@ -412,10 +412,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.615,
-      "outputDonorDistance": 2.586,
-      "donorImprovement": 2.029,
-      "donorImprovementRatio": 0.44,
-      "sourceOutputLexicalOverlap": 0.789
+      "outputDonorDistance": 2.652,
+      "donorImprovement": 1.963,
+      "donorImprovementRatio": 0.425,
+      "sourceOutputLexicalOverlap": 0.886
     },
     "candidateLedger": [
       {
@@ -425,12 +425,12 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.2089,
-        "toolabilityScore": 0.7959,
+        "score": 1.1509,
+        "toolabilityScore": 0.7198,
         "rewriteStrength": 1,
-        "targetFit": 0.5158,
+        "targetFit": 0.5164,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:clause-drag"
@@ -441,16 +441,12 @@
         ],
         "transferClass": "structural",
         "changedDimensions": [
-          "sentence-mean",
-          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
         "profileShiftDimensions": [
-          "sentence-mean",
-          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -669,7 +665,7 @@
             "routePressure": 0.087
           }
         },
-        "outputPreview": "production team, quick correction from Gallery 4: the fog cue later is what tripped the detector, not an electrical issue. facilities reset the panel and we res"
+        "outputPreview": "production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. facilities reset the panel and w"
       },
       {
         "id": "base:cadence-connector",
@@ -678,10 +674,10 @@
         "status": "selected",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.3206,
+        "score": 1.3117,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5777,
+        "targetFit": 0.5688,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -696,7 +692,7 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
-          "punctuation-shape",
+          "sentence-spread",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -705,7 +701,7 @@
         "profileShiftDimensions": [
           "sentence-mean",
           "sentence-count",
-          "punctuation-shape",
+          "sentence-spread",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -924,7 +920,7 @@
             "routePressure": 0.087
           }
         },
-        "outputPreview": "production team, quick correction from Gallery 4: the fog cue later is what tripped the detector, not an electrical issue. facilities reset the panel and we res"
+        "outputPreview": "production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. facilities reset the panel and w"
       },
       {
         "id": "base:clause-pivot",
@@ -933,12 +929,12 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.211,
-        "toolabilityScore": 0.7959,
+        "score": 1.153,
+        "toolabilityScore": 0.7198,
         "rewriteStrength": 1,
-        "targetFit": 0.5158,
+        "targetFit": 0.5164,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:clause-drag"
@@ -949,18 +945,14 @@
         ],
         "transferClass": "structural",
         "changedDimensions": [
-          "sentence-mean",
           "sentence-spread",
-          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
         "profileShiftDimensions": [
-          "sentence-mean",
           "sentence-spread",
-          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -1179,7 +1171,7 @@
             "routePressure": 0.088
           }
         },
-        "outputPreview": "production team, quick correction from Gallery 4: the fog cue later is what tripped the detector, not an electrical issue, but the real problem is that the cue "
+        "outputPreview": "production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue, but the real problem is that the"
       }
     ],
     "generationDocket": {
@@ -1245,10 +1237,10 @@
       "abbreviation-posture",
       "lexical-register",
       "orthography-posture",
-      "punctuation-shape",
       "register-mode",
       "sentence-count",
-      "sentence-mean"
+      "sentence-mean",
+      "sentence-spread"
     ],
     "lexemeSwapFamilies": [
       "feature",

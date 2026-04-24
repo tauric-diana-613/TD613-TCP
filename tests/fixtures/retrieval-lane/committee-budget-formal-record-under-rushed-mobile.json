@@ -241,7 +241,7 @@
         "clause-pivot"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7983
+      "averageToolabilityScore": 0.7476
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -287,11 +287,6 @@
           "from": "is not",
           "to": "isnt",
           "family": "feature"
-        },
-        {
-          "from": "The finance committee met at 4:05 PM to",
-          "to": "the finance committee met later to review the",
-          "family": "surface"
         }
       ],
       "vernacularFeatureShift": {
@@ -472,10 +467,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.153,
-      "outputDonorDistance": 2.805,
-      "donorImprovement": 1.348,
-      "donorImprovementRatio": 0.325,
-      "sourceOutputLexicalOverlap": 0.894
+      "outputDonorDistance": 2.835,
+      "donorImprovement": 1.318,
+      "donorImprovementRatio": 0.317,
+      "sourceOutputLexicalOverlap": 0.931
     },
     "candidateLedger": [
       {
@@ -485,12 +480,12 @@
         "status": "selected",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.1592,
-        "toolabilityScore": 0.7959,
+        "score": 1.0955,
+        "toolabilityScore": 0.7198,
         "rewriteStrength": 1,
-        "targetFit": 0.5474,
+        "targetFit": 0.5422,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:over-braiding",
@@ -516,7 +511,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 6,
+        "lexemeSwapCount": 5,
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -735,7 +730,7 @@
             "routePressure": 0.09
           }
         },
-        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze thru Q3. the immediate effect is that the st"
+        "outputPreview": "the finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze thru Q3. the immediate effect is that t"
       },
       {
         "id": "base:cadence-connector",
@@ -744,10 +739,10 @@
         "status": "eligible",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.1143,
+        "score": 1.1097,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5768,
+        "targetFit": 0.5708,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -777,7 +772,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 6,
+        "lexemeSwapCount": 5,
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -996,7 +991,7 @@
             "routePressure": 0.095
           }
         },
-        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze thru Q3. the immediate effect is that the st"
+        "outputPreview": "the finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze thru Q3. the immediate effect is that t"
       },
       {
         "id": "base:clause-pivot",
@@ -1005,12 +1000,12 @@
         "status": "eligible",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.0413,
-        "toolabilityScore": 0.7959,
+        "score": 0.9776,
+        "toolabilityScore": 0.7198,
         "rewriteStrength": 1,
-        "targetFit": 0.5474,
+        "targetFit": 0.5422,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:over-braiding",
@@ -1038,7 +1033,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 6,
+        "lexemeSwapCount": 5,
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -1257,7 +1252,7 @@
             "routePressure": 0.095
           }
         },
-        "outputPreview": "the finance committee met later to review the bridge budget after central administration extended the hiring freeze thru Q3. the immediate effect is that the st"
+        "outputPreview": "the finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze thru Q3. the immediate effect is that t"
       }
     ],
     "generationDocket": {

@@ -27,7 +27,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.95,
+      "objectCoverage": 0.975,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -42,7 +42,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.167
+          "globalBagScore": 0.154
         },
         {
           "sourceClauseId": "s1c0",
@@ -54,7 +54,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.167
+          "globalBagScore": 0.154
         },
         {
           "sourceClauseId": "s2c0",
@@ -62,11 +62,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.75,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.2,
-          "globalBagScore": 0.026
+          "bagScore": 1,
+          "globalBagScore": 0.103
         },
         {
           "sourceClauseId": "s2c1",
@@ -78,22 +78,10 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.028
+          "globalBagScore": 0.026
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s4c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.3,
-          "globalBagScore": 0.077
-        },
-        {
-          "sourceClauseId": "s3c1",
           "matchedClauseId": "s4c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
@@ -101,8 +89,20 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0.056
+          "bagScore": 0.857,
+          "globalBagScore": 0.154
+        },
+        {
+          "sourceClauseId": "s3c1",
+          "matchedClauseId": "s4c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.667,
+          "globalBagScore": 0.051
         },
         {
           "sourceClauseId": "s3c2",
@@ -110,11 +110,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.083
+          "bagScore": 0.111,
+          "globalBagScore": 0.05
         },
         {
           "sourceClauseId": "s4c0",
@@ -126,7 +126,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.167
+          "globalBagScore": 0.154
         },
         {
           "sourceClauseId": "s5c0",
@@ -138,7 +138,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.056
+          "globalBagScore": 0.051
         },
         {
           "sourceClauseId": "s6c0",
@@ -150,7 +150,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.167
+          "globalBagScore": 0.154
         }
       ],
       "sourceClauseCount": 10,
@@ -180,7 +180,7 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.95,
+        "objectCoverage": 0.975,
         "polarityMismatches": 0,
         "tenseMismatches": 0
       },
@@ -193,9 +193,9 @@
       "aperture": {
         "temporalPosture": "synced",
         "closureClass": "closed",
-        "closureScore": 0.994,
-        "historicalCrease": 0.013,
-        "unfoldingEnergy": 0.014,
+        "closureScore": 0.997,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.013,
         "beaconStatus": "beacon-idle",
         "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
@@ -231,7 +231,8 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "connector-split"
+        "connector-split",
+        "front-because"
       ],
       "lexicalRegisterOperationsSelected": [
         "connector:because->since",
@@ -244,8 +245,8 @@
     },
     "candidateSummary": {
       "candidateCount": 4,
-      "landedCandidateId": "base:cadence-connector",
-      "landedCandidateFamily": "cadence-connector",
+      "landedCandidateId": "base:hybrid",
+      "landedCandidateFamily": "hybrid",
       "families": [
         "syntax-shape",
         "cadence-connector",
@@ -253,7 +254,7 @@
         "hybrid"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7995
+      "averageToolabilityScore": 0.7615
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -263,7 +264,6 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
-        "punctuation-shape",
         "register-mode",
         "abbreviation-posture",
         "orthography-posture",
@@ -274,7 +274,6 @@
       "profileShiftDimensions": [
         "sentence-mean",
         "sentence-count",
-        "punctuation-shape",
         "register-mode",
         "abbreviation-posture",
         "orthography-posture",
@@ -287,7 +286,7 @@
           "family": "surface"
         },
         {
-          "from": "because",
+          "from": "Because",
           "to": "bc",
           "family": "surface"
         }
@@ -467,10 +466,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 3.62,
-      "outputDonorDistance": 2.771,
-      "donorImprovement": 0.849,
-      "donorImprovementRatio": 0.235,
-      "sourceOutputLexicalOverlap": 0.862
+      "outputDonorDistance": 2.759,
+      "donorImprovement": 0.861,
+      "donorImprovementRatio": 0.238,
+      "sourceOutputLexicalOverlap": 0.953
     },
     "candidateLedger": [
       {
@@ -480,12 +479,12 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.0519,
-        "toolabilityScore": 0.7959,
+        "score": 0.9994,
+        "toolabilityScore": 0.7198,
         "rewriteStrength": 1,
-        "targetFit": 0.4819,
+        "targetFit": 0.4862,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [],
         "toolabilityWarnings": [
@@ -493,8 +492,6 @@
         ],
         "transferClass": "structural",
         "changedDimensions": [
-          "sentence-mean",
-          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -503,8 +500,6 @@
           "fragment-posture"
         ],
         "profileShiftDimensions": [
-          "sentence-mean",
-          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -697,9 +692,9 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 1,
+            "actorCoverage": 0.902,
             "actionCoverage": 1,
-            "objectCoverage": 0.95,
+            "objectCoverage": 1,
             "polarityMismatches": 0,
             "tenseMismatches": 0
           },
@@ -712,9 +707,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.994,
+            "closureScore": 0.984,
             "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.014,
+            "unfoldingEnergy": 0.017,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -723,7 +718,7 @@
             "driftClass": "none",
             "driftReasons": [],
             "routeFloor": "play",
-            "routePressure": 0.088
+            "routePressure": 0.089
           }
         },
         "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
@@ -732,13 +727,13 @@
         "id": "base:cadence-connector",
         "family": "cadence-connector",
         "envelopeId": "spark",
-        "status": "selected",
+        "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.1237,
+        "score": 1.1322,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5129,
+        "targetFit": 0.5181,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -750,7 +745,6 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
-          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -761,7 +755,6 @@
         "profileShiftDimensions": [
           "sentence-mean",
           "sentence-count",
-          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -954,9 +947,9 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 1,
+            "actorCoverage": 0.902,
             "actionCoverage": 1,
-            "objectCoverage": 0.95,
+            "objectCoverage": 1,
             "polarityMismatches": 0,
             "tenseMismatches": 0
           },
@@ -969,9 +962,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.994,
+            "closureScore": 0.984,
             "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.014,
+            "unfoldingEnergy": 0.017,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -980,7 +973,7 @@
             "driftClass": "none",
             "driftReasons": [],
             "routeFloor": "play",
-            "routePressure": 0.088
+            "routePressure": 0.089
           }
         },
         "outputPreview": "team, we need to tighten the correction chain on the council-housing story. paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks"
@@ -992,12 +985,12 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.0356,
-        "toolabilityScore": 0.7959,
+        "score": 0.9854,
+        "toolabilityScore": 0.7198,
         "rewriteStrength": 1,
-        "targetFit": 0.4745,
+        "targetFit": 0.4807,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 0.08,
         "failureReasons": [],
         "artifactFlags": [],
         "toolabilityWarnings": [
@@ -1005,7 +998,6 @@
         ],
         "transferClass": "structural",
         "changedDimensions": [
-          "sentence-mean",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -1014,7 +1006,6 @@
           "fragment-posture"
         ],
         "profileShiftDimensions": [
-          "sentence-mean",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -1209,7 +1200,7 @@
             "propositionCoverage": 1,
             "actorCoverage": 1,
             "actionCoverage": 1,
-            "objectCoverage": 0.925,
+            "objectCoverage": 0.975,
             "polarityMismatches": 0,
             "tenseMismatches": 0
           },
@@ -1222,9 +1213,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.991,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.015,
+            "closureScore": 0.997,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.013,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -1242,13 +1233,13 @@
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "spark",
-        "status": "eligible",
+        "status": "selected",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.126,
+        "score": 1.138,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5043,
+        "targetFit": 0.5124,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -1464,7 +1455,7 @@
             "propositionCoverage": 1,
             "actorCoverage": 1,
             "actionCoverage": 1,
-            "objectCoverage": 0.925,
+            "objectCoverage": 0.975,
             "polarityMismatches": 0,
             "tenseMismatches": 0
           },
@@ -1477,9 +1468,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.991,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.015,
+            "closureScore": 0.997,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.013,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -1500,8 +1491,8 @@
       "headline": "Generator V2 landed a structural registered rewrite.",
       "reasons": [],
       "candidateCount": 4,
-      "winningCandidateId": "base:cadence-connector",
-      "winningCandidateFamily": "cadence-connector",
+      "winningCandidateId": "base:hybrid",
+      "winningCandidateFamily": "hybrid",
       "ontologyRoutePressure": {
         "sourceClass": "procedural-record",
         "sourceRegisterLane": "professional-message",
@@ -1520,7 +1511,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.95,
+          "objectCoverage": 0.975,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -1533,9 +1524,9 @@
         "aperture": {
           "temporalPosture": "synced",
           "closureClass": "closed",
-          "closureScore": 0.994,
-          "historicalCrease": 0.013,
-          "unfoldingEnergy": 0.014,
+          "closureScore": 0.997,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.013,
           "beaconStatus": "beacon-idle",
           "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
@@ -1548,7 +1539,7 @@
         }
       }
     },
-    "winningCandidateId": "base:cadence-connector"
+    "winningCandidateId": "base:hybrid"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -1558,7 +1549,6 @@
       "fragment-posture",
       "lexical-register",
       "orthography-posture",
-      "punctuation-shape",
       "register-mode",
       "sentence-count",
       "sentence-mean",
@@ -1575,7 +1565,8 @@
       "sourceClass:procedural-record"
     ],
     "structuralOperations": [
-      "connector-split"
+      "connector-split",
+      "front-because"
     ],
     "lexicalOperations": [
       "compressed:because->bc",
@@ -1588,7 +1579,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.95,
+    "objectCoverage": 0.975,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

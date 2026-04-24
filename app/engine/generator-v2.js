@@ -4915,7 +4915,16 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     sourceProfile,
     context
   );
-  outputText = applyRegisterLaneRealization(outputText, context);
+  {
+    const preLaneText = outputText;
+    const laneCandidate = applyRegisterLaneRealization(preLaneText, context);
+    if (laneCandidate !== preLaneText) {
+      const laneAudit = buildSemanticAuditBundle(sourceIR, laneCandidate, protectedState);
+      outputText = Number(laneAudit?.semanticAudit?.propositionCoverage ?? 1) >= 0.85
+        ? laneCandidate
+        : preLaneText;
+    }
+  }
   outputText = restoreTemporalNullsAfterRewrite(outputText, temporalState, temporalDirective, targetRegisterLane);
   const polishProtected = protectAnchorsForRewrite(outputText, hardAnchors);
   outputText = polishNativeCandidateText(polishProtected.text, {
@@ -4934,8 +4943,22 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
   );
   const preOntologyLensText = outputText;
   const ontologyProtected = protectAnchorsForRewrite(outputText, hardAnchors);
-  outputText = applyOntologyLensFinalization(ontologyProtected.text, context);
-  outputText = restoreAnchorsAfterRewrite(outputText, ontologyProtected.replacements);
+  const lensCandidate = restoreAnchorsAfterRewrite(
+    applyOntologyLensFinalization(ontologyProtected.text, context),
+    ontologyProtected.replacements
+  );
+  // Guard: if the ontology lens paraphrase drops proposition coverage
+  // below the engine's semantic-integrity floor, discard it and keep
+  // the pre-lens text. The lens rewrites a handful of rushed-mobile
+  // phrases into formal-record phrasing, which is valuable for the
+  // native polishing path but can invent content not present in the
+  // source when the transfer is borrowed.
+  if (lensCandidate !== preOntologyLensText) {
+    const lensAudit = buildSemanticAuditBundle(sourceIR, lensCandidate, protectedState);
+    outputText = Number(lensAudit?.semanticAudit?.propositionCoverage ?? 1) >= 0.85
+      ? lensCandidate
+      : preOntologyLensText;
+  }
   recordOntologyLensDelta(lexemeSwaps, preOntologyLensText, outputText, generationControls.targetOntology);
 
   return Object.freeze({
@@ -5709,7 +5732,18 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
     protectedLiteralCount: Number((chosen.hardAnchors || []).length || 0),
     rescuePasses: [],
     donorProgress: chosen.donorProgress || {},
-    transferClass: chosen.transferClass,
+    transferClass: (() => {
+      if (chosen.transferClass !== 'surface') return chosen.transferClass;
+      const op = opportunityProfile || {};
+      const movementOps =
+        Number(op.sentenceSplit || 0) + Number(op.sentenceMerge || 0) +
+        Number(op.connector || 0) + Number(op.contraction || 0) +
+        Number(op.abbreviation || 0) + Number(op.orthography || 0) +
+        Number(op.additive || 0) + Number(op.contrastive || 0) +
+        Number(op.causal || 0) + Number(op.temporal || 0) +
+        Number(op.clarifying || 0) + Number(op.resumptive || 0);
+      return movementOps === 0 ? 'weak' : chosen.transferClass;
+    })(),
     qualityGatePassed: true,
     notes: uniqueStrings([
       generationDocket.headline,

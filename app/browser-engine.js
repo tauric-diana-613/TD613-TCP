@@ -13505,7 +13505,23 @@ function replacementLimitForClass(sourceClass = 'formal-correspondence') {
   return 3;
 }
 
-function connectorStrategyFor(envelopeId = 'generic', sourceClass = 'formal-correspondence', familyId = 'syntax-shape') {
+function borrowedConnectorShiftFavored(shellMode, targetProfile, sourceText) {
+  if (shellMode !== 'borrowed' || !targetProfile || !sourceText) {
+    return false;
+  }
+  const src = String(sourceText).toLowerCase();
+  const sourceHas =
+    /\bbecause\b/.test(src) ||
+    /\bbut\b/.test(src) ||
+    /\bso\b/.test(src);
+  if (!sourceHas) {
+    return false;
+  }
+  const words = targetProfile.functionWordProfile || {};
+  return Boolean(Number(words.since) || Number(words.though) || Number(words.then));
+}
+
+function connectorStrategyFor(envelopeId = 'generic', sourceClass = 'formal-correspondence', familyId = 'syntax-shape', context = {}) {
   if (familyId === 'order-beat') {
     return 'front';
   }
@@ -13530,7 +13546,13 @@ function connectorStrategyFor(envelopeId = 'generic', sourceClass = 'formal-corr
   if (sourceClass === 'procedural-record') {
     return 'balanced';
   }
-  return familyId === 'cadence-connector' ? 'shift' : 'balanced';
+  if (familyId === 'cadence-connector') {
+    return 'shift';
+  }
+  if (borrowedConnectorShiftFavored(context.shellMode, context.targetProfile, context.sourceText)) {
+    return 'shift';
+  }
+  return 'balanced';
 }
 
 function contractionStrategyFor(envelopeId = 'generic', targetProfile = null, sourceProfile = {}, sourceClass = 'formal-correspondence', familyId = 'syntax-shape') {
@@ -15253,16 +15275,26 @@ function buildNativeLexicalShiftProfile(sourceText = '', outputText = '', source
 
 function deriveRealizedChangedDimensions(profileShiftDimensions = [], lexemeSwaps = []) {
   const realized = [...new Set(profileShiftDimensions || [])];
-  if (!Number(lexemeSwaps?.length || 0)) {
-    return realized.filter((dimension) => ![
+  if (Number(lexemeSwaps?.length || 0)) {
+    return realized;
+  }
+  const structurallyMoved = realized.some((dimension) =>
+    ['sentence-mean', 'sentence-count', 'sentence-spread'].includes(dimension)
+  );
+  return realized.filter((dimension) => {
+    if (![
       'lexical-register',
       'content-word-complexity',
       'modifier-density',
       'directness',
       'abstraction-posture'
-    ].includes(dimension));
-  }
-  return realized;
+    ].includes(dimension)) {
+      return true;
+    }
+    // directness can be realized by structural merges (e.g. "and"-joined clauses)
+    // without a lexeme swap; credit it when accompanied by sentence-level movement.
+    return dimension === 'directness' && structurallyMoved;
+  });
 }
 
 function buildSemanticRisk(semanticAudit = {}, protectedAnchorIntegrity = 1) {
@@ -15748,7 +15780,11 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     targetProfile: variant.shell?.profile || {}
   });
   const temporalDirective = options.temporalDirective || buildTemporalDirective(sourceText, targetRegisterLane);
-  const connectorStrategy = connectorStrategyFor(variant.envelopeId, sourceClass, familyId);
+  const connectorStrategy = connectorStrategyFor(variant.envelopeId, sourceClass, familyId, {
+    shellMode: variant.shell?.mode,
+    targetProfile: variant.shell?.profile,
+    sourceText
+  });
   const contractionStrategy = contractionStrategyFor(
     variant.envelopeId,
     variant.shell?.profile || null,
@@ -15807,6 +15843,10 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
       working = applyHybridBalance(working, variant.envelopeId, sourceClass, context);
     }
 
+    if (familyId !== 'cadence-connector' && context.connectorStrategy === 'shift') {
+      working = applyConnectorRewrite(working, variant.envelopeId, sourceClass, context);
+    }
+
       return applyPersonaEnvelopeText(working, {
         sourceText: paragraph,
         envelopeId: variant.envelopeId,
@@ -15831,7 +15871,16 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     sourceProfile,
     context
   );
-  outputText = applyRegisterLaneRealization(outputText, context);
+  {
+    const preLaneText = outputText;
+    const laneCandidate = applyRegisterLaneRealization(preLaneText, context);
+    if (laneCandidate !== preLaneText) {
+      const laneAudit = buildSemanticAuditBundle(sourceIR, laneCandidate, protectedState);
+      outputText = Number(laneAudit?.semanticAudit?.propositionCoverage ?? 1) >= 0.85
+        ? laneCandidate
+        : preLaneText;
+    }
+  }
   outputText = restoreTemporalNullsAfterRewrite(outputText, temporalState, temporalDirective, targetRegisterLane);
   const polishProtected = protectAnchorsForRewrite(outputText, hardAnchors);
   outputText = polishNativeCandidateText(polishProtected.text, {
@@ -15849,7 +15898,23 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     restoreProceduralWitnessTerms(sourceText, outputText, sourceClass)
   );
   const preOntologyLensText = outputText;
-  outputText = applyOntologyLensFinalization(outputText, context);
+  const ontologyProtected = protectAnchorsForRewrite(outputText, hardAnchors);
+  const lensCandidate = restoreAnchorsAfterRewrite(
+    applyOntologyLensFinalization(ontologyProtected.text, context),
+    ontologyProtected.replacements
+  );
+  // Guard: if the ontology lens paraphrase drops proposition coverage
+  // below the engine's semantic-integrity floor, discard it and keep
+  // the pre-lens text. The lens rewrites a handful of rushed-mobile
+  // phrases into formal-record phrasing, which is valuable for the
+  // native polishing path but can invent content not present in the
+  // source when the transfer is borrowed.
+  if (lensCandidate !== preOntologyLensText) {
+    const lensAudit = buildSemanticAuditBundle(sourceIR, lensCandidate, protectedState);
+    outputText = Number(lensAudit?.semanticAudit?.propositionCoverage ?? 1) >= 0.85
+      ? lensCandidate
+      : preOntologyLensText;
+  }
   recordOntologyLensDelta(lexemeSwaps, preOntologyLensText, outputText, generationControls.targetOntology);
 
   return Object.freeze({
@@ -16623,7 +16688,18 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
     protectedLiteralCount: Number((chosen.hardAnchors || []).length || 0),
     rescuePasses: [],
     donorProgress: chosen.donorProgress || {},
-    transferClass: chosen.transferClass,
+    transferClass: (() => {
+      if (chosen.transferClass !== 'surface') return chosen.transferClass;
+      const op = opportunityProfile || {};
+      const movementOps =
+        Number(op.sentenceSplit || 0) + Number(op.sentenceMerge || 0) +
+        Number(op.connector || 0) + Number(op.contraction || 0) +
+        Number(op.abbreviation || 0) + Number(op.orthography || 0) +
+        Number(op.additive || 0) + Number(op.contrastive || 0) +
+        Number(op.causal || 0) + Number(op.temporal || 0) +
+        Number(op.clarifying || 0) + Number(op.resumptive || 0);
+      return movementOps === 0 ? 'weak' : chosen.transferClass;
+    })(),
     qualityGatePassed: true,
     notes: uniqueStrings([
       generationDocket.headline,
