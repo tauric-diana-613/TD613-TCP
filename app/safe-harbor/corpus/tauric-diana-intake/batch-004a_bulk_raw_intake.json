@@ -2,7 +2,7 @@
   "batch_id": "batch-004a",
   "created_date": "2026-03-24T00:00:00Z",
   "family_name": "Bulk Raw Intake",
-  "verification_status": "Draft",
+  "verification_status": "Provenance Seal",
   "notes": "Wave 4A bulk capture of remaining manifold nodes into RawIntake",
   "family_metadata": {
     "name": "Bulk Raw Intake",
@@ -15,5 +15,78 @@
     "notes": "Wave 4A bulk capture"
   },
   "placeholder_mode": true,
-  "nodes": []
+  "nodes": [],
+  "route_status": "provenance.seal",
+  "safe_harbor": {
+    "source": "td613.safe-harbor.localhost",
+    "selected_batch_id": "batch-004a",
+    "sealed_at": "2026-04-24T21:55:50.292Z",
+    "route": {
+      "status": "provenance.seal",
+      "state": "harbor-eligible",
+      "recommended_harbor": "provenance.seal",
+      "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+    },
+    "personas": [
+      {
+        "name": "The Cross-Examiner",
+        "route_status": "provenance.seal"
+      },
+      {
+        "name": "The Methods Editor",
+        "route_status": "provenance.seal"
+      }
+    ],
+    "issuance": {
+      "badge_number": "TD613-SH-9B07D8B-B7136D34",
+      "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+      "extended_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 4 · YYYY-MM-DD · ⟐",
+      "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+      "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+      "triad_word_counts": {
+        "future_self": 55,
+        "past_self": 47,
+        "higher_self": 61
+      },
+      "triad_shortfalls": {
+        "future_self": 0,
+        "past_self": 0,
+        "higher_self": 0
+      },
+      "stylometric_provenance": {
+        "source": "safe-harbor.ingress.triad",
+        "entrant_prompt_lanes": [
+          "future_self",
+          "past_self",
+          "higher_self"
+        ],
+        "threshold_rule": "40-word minimum per lane",
+        "signature_semantics": "entrant-owned stylometric witness",
+        "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+        "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+        "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+        "triad_word_counts": {
+          "future_self": 55,
+          "past_self": 47,
+          "higher_self": 61
+        },
+        "triad_shortfalls": {
+          "future_self": 0,
+          "past_self": 0,
+          "higher_self": 0
+        }
+      }
+    },
+    "signature": {
+      "sig_type": "PGP-detached",
+      "alg": "OpenPGP",
+      "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nvtlxidCaUstHy/v6rXp9XJfzwA==\n=9eAA\n-----END PGP MESSAGE-----"
+    },
+    "packet": {
+      "packet_id": "SH-20260424T215231-71537d0d",
+      "receipt_id": "SHR-20260424T215231-71537d0d",
+      "packet_hash_sha256": "sha256:51e3553d4285a795a97f48dec5f272a980b89cca341f301904ff05a4e223c2ac",
+      "created_at": "2026-04-24T21:52:31Z"
+    }
+  }
 }

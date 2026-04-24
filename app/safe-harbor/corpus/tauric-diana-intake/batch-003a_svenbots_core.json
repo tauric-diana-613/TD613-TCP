@@ -2,7 +2,7 @@
   "batch_id": "batch-003a",
   "created_date": "2026-03-24T00:00:00Z",
   "family_name": "Tauric Diana bots Core",
-  "verification_status": "Draft",
+  "verification_status": "Provenance Seal",
   "notes": "Wave 3A Tauric Diana bots-targeting anchor + lineage-bound console relationship",
   "family_metadata": {
     "name": "Tauric Diana bots Core",
@@ -61,5 +61,82 @@
       "lineage_notes": "batch-001a|batch-003a",
       "wave_membership": "wave-001a|wave-003a"
     }
-  ]
+  ],
+  "route_status": "provenance.seal",
+  "safe_harbor": {
+    "source": "td613.safe-harbor.localhost",
+    "selected_batch_id": "batch-003a",
+    "sealed_at": "2026-04-24T21:35:48.952Z",
+    "route": {
+      "status": "provenance.seal",
+      "state": "harbor-eligible",
+      "recommended_harbor": "provenance.seal",
+      "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+    },
+    "personas": [
+      {
+        "name": "The Matron",
+        "route_status": "provenance.seal"
+      },
+      {
+        "name": "The Undertow",
+        "route_status": "provenance.seal"
+      },
+      {
+        "name": "The Spark",
+        "route_status": "provenance.seal"
+      }
+    ],
+    "issuance": {
+      "badge_number": "TD613-SH-9B07D8B-B7136D34",
+      "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+      "extended_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 3 · YYYY-MM-DD · ⟐",
+      "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+      "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+      "triad_word_counts": {
+        "future_self": 55,
+        "past_self": 47,
+        "higher_self": 61
+      },
+      "triad_shortfalls": {
+        "future_self": 0,
+        "past_self": 0,
+        "higher_self": 0
+      },
+      "stylometric_provenance": {
+        "source": "safe-harbor.ingress.triad",
+        "entrant_prompt_lanes": [
+          "future_self",
+          "past_self",
+          "higher_self"
+        ],
+        "threshold_rule": "40-word minimum per lane",
+        "signature_semantics": "entrant-owned stylometric witness",
+        "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+        "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+        "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+        "triad_word_counts": {
+          "future_self": 55,
+          "past_self": 47,
+          "higher_self": 61
+        },
+        "triad_shortfalls": {
+          "future_self": 0,
+          "past_self": 0,
+          "higher_self": 0
+        }
+      }
+    },
+    "signature": {
+      "sig_type": "PGP-detached",
+      "alg": "OpenPGP",
+      "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nBLirrrIF34WB1yjPtg5l8c9VKG4=\n=Dp/z\n-----END PGP MESSAGE-----"
+    },
+    "packet": {
+      "packet_id": "SH-20260424T213400-d130ed3b",
+      "receipt_id": "SHR-20260424T213400-d130ed3b",
+      "packet_hash_sha256": "sha256:34f3045fa8f84e0fd5806d73924f8cb101813467986521a2eb24de85a2a98eb5",
+      "created_at": "2026-04-24T21:34:00Z"
+    }
+  }
 }
