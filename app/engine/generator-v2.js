@@ -2549,7 +2549,23 @@ function replacementLimitForClass(sourceClass = 'formal-correspondence') {
   return 3;
 }
 
-function connectorStrategyFor(envelopeId = 'generic', sourceClass = 'formal-correspondence', familyId = 'syntax-shape') {
+function borrowedConnectorShiftFavored(shellMode, targetProfile, sourceText) {
+  if (shellMode !== 'borrowed' || !targetProfile || !sourceText) {
+    return false;
+  }
+  const src = String(sourceText).toLowerCase();
+  const sourceHas =
+    /\bbecause\b/.test(src) ||
+    /\bbut\b/.test(src) ||
+    /\bso\b/.test(src);
+  if (!sourceHas) {
+    return false;
+  }
+  const words = targetProfile.functionWordProfile || {};
+  return Boolean(Number(words.since) || Number(words.though) || Number(words.then));
+}
+
+function connectorStrategyFor(envelopeId = 'generic', sourceClass = 'formal-correspondence', familyId = 'syntax-shape', context = {}) {
   if (familyId === 'order-beat') {
     return 'front';
   }
@@ -2574,7 +2590,13 @@ function connectorStrategyFor(envelopeId = 'generic', sourceClass = 'formal-corr
   if (sourceClass === 'procedural-record') {
     return 'balanced';
   }
-  return familyId === 'cadence-connector' ? 'shift' : 'balanced';
+  if (familyId === 'cadence-connector') {
+    return 'shift';
+  }
+  if (borrowedConnectorShiftFavored(context.shellMode, context.targetProfile, context.sourceText)) {
+    return 'shift';
+  }
+  return 'balanced';
 }
 
 function contractionStrategyFor(envelopeId = 'generic', targetProfile = null, sourceProfile = {}, sourceClass = 'formal-correspondence', familyId = 'syntax-shape') {
@@ -4297,16 +4319,26 @@ function buildNativeLexicalShiftProfile(sourceText = '', outputText = '', source
 
 function deriveRealizedChangedDimensions(profileShiftDimensions = [], lexemeSwaps = []) {
   const realized = [...new Set(profileShiftDimensions || [])];
-  if (!Number(lexemeSwaps?.length || 0)) {
-    return realized.filter((dimension) => ![
+  if (Number(lexemeSwaps?.length || 0)) {
+    return realized;
+  }
+  const structurallyMoved = realized.some((dimension) =>
+    ['sentence-mean', 'sentence-count', 'sentence-spread'].includes(dimension)
+  );
+  return realized.filter((dimension) => {
+    if (![
       'lexical-register',
       'content-word-complexity',
       'modifier-density',
       'directness',
       'abstraction-posture'
-    ].includes(dimension));
-  }
-  return realized;
+    ].includes(dimension)) {
+      return true;
+    }
+    // directness can be realized by structural merges (e.g. "and"-joined clauses)
+    // without a lexeme swap; credit it when accompanied by sentence-level movement.
+    return dimension === 'directness' && structurallyMoved;
+  });
 }
 
 function buildSemanticRisk(semanticAudit = {}, protectedAnchorIntegrity = 1) {
@@ -4792,7 +4824,11 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     targetProfile: variant.shell?.profile || {}
   });
   const temporalDirective = options.temporalDirective || buildTemporalDirective(sourceText, targetRegisterLane);
-  const connectorStrategy = connectorStrategyFor(variant.envelopeId, sourceClass, familyId);
+  const connectorStrategy = connectorStrategyFor(variant.envelopeId, sourceClass, familyId, {
+    shellMode: variant.shell?.mode,
+    targetProfile: variant.shell?.profile,
+    sourceText
+  });
   const contractionStrategy = contractionStrategyFor(
     variant.envelopeId,
     variant.shell?.profile || null,
@@ -4851,6 +4887,10 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
       working = applyHybridBalance(working, variant.envelopeId, sourceClass, context);
     }
 
+    if (familyId !== 'cadence-connector' && context.connectorStrategy === 'shift') {
+      working = applyConnectorRewrite(working, variant.envelopeId, sourceClass, context);
+    }
+
       return applyPersonaEnvelopeText(working, {
         sourceText: paragraph,
         envelopeId: variant.envelopeId,
@@ -4893,7 +4933,9 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     restoreProceduralWitnessTerms(sourceText, outputText, sourceClass)
   );
   const preOntologyLensText = outputText;
-  outputText = applyOntologyLensFinalization(outputText, context);
+  const ontologyProtected = protectAnchorsForRewrite(outputText, hardAnchors);
+  outputText = applyOntologyLensFinalization(ontologyProtected.text, context);
+  outputText = restoreAnchorsAfterRewrite(outputText, ontologyProtected.replacements);
   recordOntologyLensDelta(lexemeSwaps, preOntologyLensText, outputText, generationControls.targetOntology);
 
   return Object.freeze({
