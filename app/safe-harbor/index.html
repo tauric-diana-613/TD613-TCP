@@ -144,13 +144,6 @@
         </section>
 
         <section class="panel-section">
-          <details class="fold-panel">
-            <summary>Doctrine invariants</summary>
-            <ul class="bullet-list" id="invariantList"></ul>
-          </details>
-        </section>
-
-        <section class="panel-section">
           <div class="section-label">Public References</div>
           <div class="reference-link-grid">
             <a class="reference-link-card" href="./reference/TD613_verify.html">
@@ -165,7 +158,7 @@
         </section>
 
         <section class="panel-section">
-          <details class="fold-panel">
+          <details class="fold-panel" id="fieldInterlocksFold">
             <summary>Field interlocks</summary>
             <div class="metric-block">
               <div class="metric-row"><span class="label">TCP intake</span><span class="value" id="hookTcpState">awaiting hook</span></div>
@@ -258,28 +251,33 @@
               <h2>Canonical packet before the seal</h2>
               <p class="surface-copy">This chamber holds the staged packet, the packet hash, the route recommendation, and the cadence witness before any cryptographic seal is allowed to bind.</p>
               <div class="metric-block roomy">
-                <div class="metric-row"><span class="label">Packet id</span><span class="value" id="packetIdReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Receipt id</span><span class="value" id="receiptIdReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Packet hash (SHA-256)</span><span class="value" id="packetHashReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Harbor recommendation</span><span class="value" id="harborReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Export gate</span><span class="value" id="exportGateReadout">guarded</span></div>
-                <div class="metric-row"><span class="label">Covenant gate</span><span class="value" id="covenantStateReadout">awaiting staged packet</span></div>
-                <div class="metric-row"><span class="label">Cadence lane</span><span class="value" id="cadenceReadout">awaiting ingress</span></div>
-                <div class="metric-row"><span class="label">Triad resonance</span><span class="value" id="triadResonanceReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Cross-lane stability</span><span class="value" id="crossLaneStabilityReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Cross-lane spread</span><span class="value" id="crossLaneSpreadReadout">pending</span></div>
                 <div class="metric-row"><span class="label">SHI #</span><span class="value" id="badgeStatusReadout">not issued</span></div>
+                <div class="metric-row"><span class="label">Harbor recommendation</span><span class="value" id="harborReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Triad resonance</span><span class="value" id="triadResonanceReadout">pending</span></div>
                 <div class="metric-row"><span class="label">Sealed lane</span><span class="value" id="sealedLaneReadout">session-only / pending</span></div>
               </div>
-              <div class="section-label">Governed Exposure</div>
-              <div class="metric-block roomy">
-                <div class="metric-row"><span class="label">S / S'</span><span class="value" id="forensicSchemaStateReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Y / route</span><span class="value" id="forensicExposureReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Source class</span><span class="value" id="forensicSourceClassReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Authority ceiling</span><span class="value" id="forensicAuthorityReadout">pending</span></div>
-                <div class="metric-row"><span class="label">Gap / dominant operator</span><span class="value" id="forensicOperatorReadout">pending</span></div>
-              </div>
-              <pre class="code-panel" id="forensicSchemaPreview">forensic schema pending</pre>
+              <details class="fold-panel reliquary-forensic-fold">
+                <summary>Forensic reliquary</summary>
+                <div class="metric-block roomy">
+                  <div class="metric-row"><span class="label">Packet id</span><span class="value" id="packetIdReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Receipt id</span><span class="value" id="receiptIdReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Packet hash (SHA-256)</span><span class="value" id="packetHashReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Export gate</span><span class="value" id="exportGateReadout">guarded</span></div>
+                  <div class="metric-row"><span class="label">Covenant gate</span><span class="value" id="covenantStateReadout">awaiting staged packet</span></div>
+                  <div class="metric-row"><span class="label">Cadence lane</span><span class="value" id="cadenceReadout">awaiting ingress</span></div>
+                  <div class="metric-row"><span class="label">Cross-lane stability</span><span class="value" id="crossLaneStabilityReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Cross-lane spread</span><span class="value" id="crossLaneSpreadReadout">pending</span></div>
+                </div>
+                <div class="section-label">Governed Exposure</div>
+                <div class="metric-block roomy">
+                  <div class="metric-row"><span class="label">S / S'</span><span class="value" id="forensicSchemaStateReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Y / route</span><span class="value" id="forensicExposureReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Source class</span><span class="value" id="forensicSourceClassReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Authority ceiling</span><span class="value" id="forensicAuthorityReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Gap / dominant operator</span><span class="value" id="forensicOperatorReadout">pending</span></div>
+                </div>
+                <pre class="code-panel" id="forensicSchemaPreview">forensic schema pending</pre>
+              </details>
               <div class="mint-altar" data-td613-skip="true">
                 <div class="mint-altar-head">
                   <span class="surface-kicker">Minted issuance</span>
@@ -388,16 +386,20 @@
         </section>
 
         <section class="panel-section">
-          <details class="fold-panel">
-            <summary>Chamber structure</summary>
-            <ul class="bullet-list" id="repoLayoutList"></ul>
-          </details>
-        </section>
-
-        <section class="panel-section">
-          <details class="fold-panel">
-            <summary>Reference interlocks</summary>
-            <ul class="bullet-list" id="referenceLaneList"></ul>
+          <details class="fold-panel reference-drawer">
+            <summary>Reference</summary>
+            <section class="subsection">
+              <div class="subsection-label">Doctrine invariants</div>
+              <ul class="bullet-list" id="invariantList"></ul>
+            </section>
+            <section class="subsection">
+              <div class="subsection-label">Chamber structure</div>
+              <ul class="bullet-list" id="repoLayoutList"></ul>
+            </section>
+            <section class="subsection">
+              <div class="subsection-label">Reference interlocks</div>
+              <ul class="bullet-list" id="referenceLaneList"></ul>
+            </section>
           </details>
         </section>
       </aside>

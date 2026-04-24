@@ -88,6 +88,7 @@
     demoSignatureHook: $('demoSignatureHook'),
     resetHooks: $('resetHooks'),
     devModeNote: $('devModeNote'),
+    fieldInterlocksFold: $('fieldInterlocksFold'),
     rendererState: $('rendererState'),
     rendererKeyReadout: $('rendererKeyReadout'),
     rendererHandshakeReadout: $('rendererHandshakeReadout'),
@@ -729,6 +730,7 @@
     dom.demoEoHook.disabled = !devModeEnabled;
     dom.demoSignatureHook.disabled = !devModeEnabled;
     if (dom.devModeNote) dom.devModeNote.textContent = devModeEnabled ? 'Dev hook simulation is enabled locally.' : 'Dev hook simulation is disabled in public ship unless local dev mode is enabled.';
+    if (dom.fieldInterlocksFold) dom.fieldInterlocksFold.hidden = !devModeEnabled;
     if (dom.pillBoundaryMode) dom.pillBoundaryMode.textContent = state.ingress.operatorShellOpen ? 'operator boundary' : 'public boundary';
     const membraneSuppressed = surfaceIsOpen;
     dom.ingressMembrane.hidden = membraneSuppressed;

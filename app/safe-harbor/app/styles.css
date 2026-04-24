@@ -2,7 +2,7 @@
 
 :root {
   --font-body: 'Rajdhani', 'Segoe UI', sans-serif;
-  --font-display: 'Crimson Pro', Georgia, serif;
+  --font-display: 'Crimson Pro', 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', monospace;
   --bg-0: #050709;
   --bg-1: #090b12;
@@ -25,16 +25,51 @@
   --lime: #50fa7b;
   --rose: #ff5555;
   --gold: #f1fa8c;
-  --registered: #50fa7b;
-  --suppressed: #f1fa8c;
-  --aliased: #ff5555;
-  --shadow-panel: 0 34px 80px rgba(0, 0, 0, 0.42);
-  --shadow-soft: 0 16px 42px rgba(0, 0, 0, 0.28);
-  --radius-xl: 34px;
-  --radius-lg: 26px;
-  --radius-md: 20px;
-  --radius-sm: 14px;
+  --shadow-panel: 0 26px 64px rgba(0, 0, 0, 0.34);
+  --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.22);
+  --shadow-panel-soft: 0 10px 22px rgba(0, 0, 0, 0.22);
+  --shadow-lift:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 18px 32px rgba(14, 7, 22, 0.32),
+    0 0 24px rgba(208, 167, 255, 0.12);
+  --radius-xl: 22px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 14px;
+  --space-lg: 16px;
+  --space-xl: 18px;
+  --space-2xl: 20px;
+  --space-3xl: 24px;
+  --metric-row-gap: 18px;
+  --metric-row-padding: 8px;
+  --hover-lift: -1px;
+  --chev-sm: 6px;
+  --chev-md: 10px;
+  --chev-lg: 14px;
+  --chev-xl: 20px;
 }
+
+/* Chevron clip-path utility — preserves the futurecore corner motif while
+   collapsing 6+ duplicated polygons into one rule. Three asymmetric
+   chevrons elsewhere in the file remain inline (annotated). */
+.clip-chev {
+  --chev: 10px;
+  --chev-r: 6px;
+  clip-path: polygon(
+    0 var(--chev), var(--chev) 0,
+    calc(100% - var(--chev-r)) 0, 100% var(--chev-r),
+    100% calc(100% - var(--chev)), calc(100% - var(--chev)) 100%,
+    var(--chev-r) 100%, 0 calc(100% - var(--chev-r))
+  );
+}
+.clip-chev-sm { --chev: var(--chev-sm); --chev-r: 4px; }
+.clip-chev-md { --chev: var(--chev-md); --chev-r: 6px; }
+.clip-chev-lg { --chev: var(--chev-lg); --chev-r: 10px; }
+.clip-chev-xl { --chev: var(--chev-xl); --chev-r: 12px; }
 
 @keyframes veilDrift {
   0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.34; }
@@ -190,7 +225,7 @@ a {
 }
 
 a:hover {
-  color: #ffffff;
+  color: var(--text-bright);
 }
 
 button,
@@ -585,25 +620,20 @@ select {
     linear-gradient(135deg, rgba(255, 203, 136, 0.24), rgba(144, 231, 255, 0.1), rgba(255, 255, 255, 0.03)) border-box;
 }
 
-.metric-block.roomy,
-.surface-card .metric-block {
-  gap: 2px;
-}
-
 .data-row,
 .metric-row,
 .summary-row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 18px;
-  padding: 8px 0;
+  gap: var(--metric-row-gap);
+  padding: var(--metric-row-padding) 0;
 }
 
 .data-row + .data-row,
 .metric-row + .metric-row,
 .summary-row + .summary-row {
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-top: 1px solid var(--line);
 }
 
 .label,
@@ -728,7 +758,7 @@ select {
 }
 
 .reference-link-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--hover-lift));
   border-color: rgba(208, 167, 255, 0.34);
   box-shadow:
     var(--shadow-soft),
@@ -809,7 +839,7 @@ select {
   cursor: pointer;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 12px 28px rgba(0, 0, 0, 0.22);
+    var(--shadow-panel-soft);
   transition:
     transform 0.18s ease,
     border-color 0.18s ease,
@@ -819,13 +849,10 @@ select {
 }
 
 .control:hover:not(:disabled) {
-  transform: translateY(-1px);
+  transform: translateY(var(--hover-lift));
   border-color: rgba(208, 167, 255, 0.46);
-  color: #ffffff;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 18px 32px rgba(14, 7, 22, 0.32),
-    0 0 24px rgba(208, 167, 255, 0.12);
+  color: var(--text-bright);
+  box-shadow: var(--shadow-lift);
 }
 
 .control:disabled {
@@ -1408,39 +1435,6 @@ body.vault-open .dock-right { animation-delay: 0.28s; }
 
 /* Futurecore goth refinement: leaner editorial chamber grammar */
 
-:root {
-  --bg-0: #050709;
-  --bg-1: #090b12;
-  --bg-2: #0d0f18;
-  --bg-3: #131726;
-  --font-body: 'Rajdhani', 'Segoe UI', sans-serif;
-  --font-display: 'Crimson Pro', 'Times New Roman', serif;
-  --font-mono: 'IBM Plex Mono', monospace;
-  --panel: rgba(9, 11, 18, 0.85);
-  --panel-strong: rgba(9, 11, 18, 0.94);
-  --panel-soft: rgba(18, 21, 34, 0.66);
-  --line: rgba(90, 120, 170, 0.08);
-  --line-strong: rgba(90, 120, 170, 0.18);
-  --line-glow: rgba(189, 147, 249, 0.24);
-  --text: #9aacca;
-  --text-soft: #b8c5dd;
-  --text-dim: #6f809f;
-  --text-faint: #51607a;
-  --text-bright: #dce6f4;
-  --accent: #bd93f9;
-  --accent-strong: #e7dbff;
-  --cyan: #8be9fd;
-  --lime: #50fa7b;
-  --rose: #ff5555;
-  --gold: #f1fa8c;
-  --shadow-panel: 0 26px 64px rgba(0, 0, 0, 0.34);
-  --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.22);
-  --radius-xl: 22px;
-  --radius-lg: 16px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
-}
-
 body {
   background:
     radial-gradient(circle at 10% 14%, rgba(165, 141, 103, 0.1), transparent 22%),
@@ -1713,19 +1707,6 @@ h2 {
   background: linear-gradient(90deg, rgba(90, 120, 170, 0.16), transparent 66%);
 }
 
-.data-row,
-.metric-row,
-.summary-row {
-  gap: 20px;
-  padding: 9px 0;
-}
-
-.data-row + .data-row,
-.metric-row + .metric-row,
-.summary-row + .summary-row {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
 .label,
 .data-label,
 .summary-label,
@@ -1768,7 +1749,7 @@ h2 {
 }
 
 .reference-link-card:hover {
-  transform: translateY(-1px);
+  transform: translateY(var(--hover-lift));
   border-color: rgba(189, 147, 249, 0.22);
   background:
     linear-gradient(180deg, rgba(14, 13, 22, 0.92), rgba(7, 9, 14, 0.98));
@@ -1834,6 +1815,18 @@ h2 {
   margin-top: 0;
 }
 
+.reference-drawer .subsection + .subsection {
+  margin-top: var(--space-lg);
+}
+
+.reliquary-forensic-fold .metric-block + .section-label {
+  margin-top: var(--space-lg);
+}
+
+.reliquary-forensic-fold .code-panel {
+  margin-top: var(--space-md);
+}
+
 .surface-copy,
 .ingress-copy,
 .note,
@@ -1862,7 +1855,7 @@ h2 {
 }
 
 .control:hover:not(:disabled) {
-  transform: translateY(-1px);
+  transform: translateY(var(--hover-lift));
   border-color: rgba(189, 147, 249, 0.3);
   background:
     linear-gradient(180deg, rgba(18, 15, 28, 0.96), rgba(8, 9, 14, 0.985));
@@ -1917,7 +1910,7 @@ textarea {
 }
 
 .proof-stack .proof-row + .proof-row {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--line);
 }
 
 .dynamic-target {
