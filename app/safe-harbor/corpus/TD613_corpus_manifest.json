@@ -102,33 +102,20 @@
     }
   ],
   "corpus_registry": [
-    {
-      "batch_id": "batch-001a",
-      "name": "Migration Console Family",
-      "path": "tauric-diana-intake/batch-001a_migration_console.json",
-      "route_status": "buffered",
-      "primary_persona": "The Operator"
-    },
-    {
-      "batch_id": "batch-002a",
-      "name": "Thinkers Spine",
-      "path": "tauric-diana-intake/batch-002a_thinkers_spine.json",
-      "route_status": "buffered",
-      "primary_persona": "The Archivist"
-    },
-    {
-      "batch_id": "batch-003a",
-      "name": "Svenbots Core",
-      "path": "tauric-diana-intake/batch-003a_svenbots_core.json",
-      "route_status": "buffered",
-      "primary_persona": "The Matron, The Undertow, The Spark"
-    },
-    {
-      "batch_id": "batch-004a",
-      "name": "Bulk Raw Intake",
-      "path": "tauric-diana-intake/batch-004a_bulk_raw_intake.json",
-      "route_status": "buffered",
-      "primary_persona": "The Cross-Examiner, The Methods Editor"
-    }
+    {"batch_id": "batch-001a", "name": "Migration Console Family", "path": "tauric-diana-intake/batch-001a_migration_console.json", "route_status": "buffered", "primary_persona": "The Operator"},
+    {"batch_id": "batch-001b", "name": "Historical Console Lineage", "path": "tauric-diana-intake/batch-001b_historical_console_lineage.json", "route_status": "buffered", "primary_persona": "The Operator"},
+    {"batch_id": "batch-001c", "name": "Constitutional Spine", "path": "tauric-diana-intake/batch-001c_constitutional_spine.json", "route_status": "buffered", "primary_persona": "The Operator"},
+    {"batch_id": "batch-001d", "name": "Protected Core Set A", "path": "tauric-diana-intake/batch-001d_protected_core_set_a.json", "route_status": "buffered", "primary_persona": "The Operator"},
+    {"batch_id": "batch-002a", "name": "Thinkers Spine", "path": "tauric-diana-intake/batch-002a_thinkers_spine.json", "route_status": "buffered", "primary_persona": "The Archivist"},
+    {"batch_id": "batch-002b", "name": "Continuity Citation", "path": "tauric-diana-intake/batch-002b_continuity_citation.json", "route_status": "buffered", "primary_persona": "The Archivist"},
+    {"batch_id": "batch-002c", "name": "Policy Provenance", "path": "tauric-diana-intake/batch-002c_policy_provenance.json", "route_status": "buffered", "primary_persona": "The Archivist"},
+    {"batch_id": "batch-002d", "name": "Route Support", "path": "tauric-diana-intake/batch-002d_route_support.json", "route_status": "buffered", "primary_persona": "The Archivist"},
+    {"batch_id": "batch-003a", "name": "Svenbots Core", "path": "tauric-diana-intake/batch-003a_svenbots_core.json", "route_status": "buffered", "primary_persona": "The Matron, The Undertow, The Spark"},
+    {"batch_id": "batch-003b", "name": "Implementation Layer", "path": "tauric-diana-intake/batch-003b_implementation_layer.json", "route_status": "buffered", "primary_persona": "The Matron, The Undertow, The Spark"},
+    {"batch_id": "batch-003c", "name": "Schema Source Bridge", "path": "tauric-diana-intake/batch-003c_schema_source_bridge.json", "route_status": "buffered", "primary_persona": "The Matron, The Undertow, The Spark"},
+    {"batch_id": "batch-003d", "name": "Risk Recovery Ops", "path": "tauric-diana-intake/batch-003d_risk_recovery_ops.json", "route_status": "buffered", "primary_persona": "The Matron, The Undertow, The Spark"},
+    {"batch_id": "batch-004a", "name": "Bulk Raw Intake", "path": "tauric-diana-intake/batch-004a_bulk_raw_intake.json", "route_status": "buffered", "primary_persona": "The Cross-Examiner, The Methods Editor"},
+    {"batch_id": "batch-004b", "name": "High Value Archives", "path": "tauric-diana-intake/batch-004b_high_value_archives.json", "route_status": "buffered", "primary_persona": "The Cross-Examiner, The Methods Editor"},
+    {"batch_id": "batch-004c", "name": "Coined Frameworks", "path": "tauric-diana-intake/batch-004c_coined_frameworks.json", "route_status": "buffered", "primary_persona": "The Cross-Examiner, The Methods Editor"}
   ]
 }
