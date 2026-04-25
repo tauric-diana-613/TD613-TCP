@@ -165,6 +165,7 @@
     rendererContractReadout: $('rendererContractReadout'),
     routeSourceReadout: $('routeSourceReadout'),
     copyPacketPreview: $('copyPacketPreview'),
+    copyForensicSchema: $('copyForensicSchema'),
     exportPacketPreview: $('exportPacketPreview'),
     resetStagedPacket: $('resetStagedPacket'),
     packetPreview: $('packetPreview'),
@@ -430,6 +431,9 @@
     dom.copyExtendedFooter.addEventListener('click', () => void copyText(dom.extendedFooterPreview.textContent || ''));
     dom.copyProbeOutput.addEventListener('click', () => void copyText(dom.probeOutput.value || ''));
     dom.copyPacketPreview.addEventListener('click', () => void copyText(dom.packetPreview.textContent || ''));
+    if (dom.copyForensicSchema) {
+      dom.copyForensicSchema.addEventListener('click', () => void copyText(dom.forensicSchemaPreview ? (dom.forensicSchemaPreview.textContent || '') : ''));
+    }
     dom.exportPacketPreview.addEventListener('click', () => {
       if (!state.packet) return;
       const filename = (state.selectedBatchId ? state.selectedBatchId : 'td613-packet') + '.packet.json';

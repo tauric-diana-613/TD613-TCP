@@ -287,6 +287,11 @@
                   <div class="metric-row"><span class="label">Authority ceiling</span><span class="value" id="forensicAuthorityReadout">pending</span></div>
                   <div class="metric-row"><span class="label">Gap / dominant operator</span><span class="value" id="forensicOperatorReadout">pending</span></div>
                 </div>
+                <div class="dock-toolbar">
+                  <button class="control secondary" id="copyForensicSchema" type="button">Copy</button>
+                  <button class="control secondary" id="exportPacketPreview" type="button">Export Packet</button>
+                  <button class="control secondary" id="resetStagedPacket" type="button" disabled>Reset Staged Packet</button>
+                </div>
                 <pre class="code-panel" id="forensicSchemaPreview">forensic schema pending</pre>
               </details>
               <div class="mint-altar" data-td613-skip="true">
@@ -418,11 +423,7 @@
       <section class="dock dock-left operator-dock" data-td613-skip="true">
         <details class="dock-fold">
           <summary>Operator packet mirror</summary>
-          <div class="dock-toolbar">
-            <button class="control secondary" id="copyPacketPreview" type="button">Copy Packet</button>
-            <button class="control secondary" id="exportPacketPreview" type="button">Export Packet</button>
-            <button class="control secondary" id="resetStagedPacket" type="button" disabled>Reset Staged Packet</button>
-          </div>
+          <div class="dock-toolbar"><button class="control secondary" id="copyPacketPreview" type="button">Copy Packet</button></div>
           <pre id="packetPreview" class="code-panel">packet pending</pre>
         </details>
       </section>
