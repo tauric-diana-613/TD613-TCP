@@ -2438,10 +2438,15 @@ function matchCase(source = '', replacement = '') {
   if (!source) {
     return replacement;
   }
+  const firstChar = source.charAt(0);
+  const firstIsAlpha = /[a-zA-Z]/.test(firstChar);
+  if (!firstIsAlpha) {
+    return replacement;
+  }
   if (source === source.toUpperCase()) {
     return replacement.toUpperCase();
   }
-  if (source.charAt(0) === source.charAt(0).toUpperCase()) {
+  if (firstChar === firstChar.toUpperCase()) {
     return replacement.charAt(0).toUpperCase() + replacement.slice(1);
   }
   return replacement;
@@ -4949,6 +4954,14 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
   })
     .replace(/;\s+(?=[A-Z])/g, '. ')
     .replace(/,,+/g, ',');
+  {
+    const targetLooseness = Number(context.targetProfile?.orthographicLooseness || 0);
+    const sourceLooseness = Number(sourceProfile?.orthographicLooseness || 0);
+    if (targetLooseness >= Math.max(0.06, sourceLooseness + 0.04)) {
+      const limit = targetLooseness >= 0.6 ? 6 : targetLooseness >= 0.2 ? 4 : 2;
+      outputText = loosenSentenceStartsV2(outputText, limit);
+    }
+  }
   outputText = restoreAnchorsAfterRewrite(outputText, polishProtected.replacements);
   const artifactRepair = applyArtifactRepairPass(outputText, context);
   outputText = artifactRepair.text;
