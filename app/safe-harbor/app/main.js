@@ -165,6 +165,7 @@
     rendererContractReadout: $('rendererContractReadout'),
     routeSourceReadout: $('routeSourceReadout'),
     copyPacketPreview: $('copyPacketPreview'),
+    exportPacketPreview: $('exportPacketPreview'),
     packetPreview: $('packetPreview'),
     auditLog: $('auditLog'),
     buildProbeButtons: Array.from(document.querySelectorAll('[data-probe-variant]')),
@@ -428,6 +429,11 @@
     dom.copyExtendedFooter.addEventListener('click', () => void copyText(dom.extendedFooterPreview.textContent || ''));
     dom.copyProbeOutput.addEventListener('click', () => void copyText(dom.probeOutput.value || ''));
     dom.copyPacketPreview.addEventListener('click', () => void copyText(dom.packetPreview.textContent || ''));
+    dom.exportPacketPreview.addEventListener('click', () => {
+      if (!state.packet) return;
+      const filename = (state.selectedBatchId ? state.selectedBatchId : 'td613-packet') + '.packet.json';
+      downloadJsonArtifact(filename, state.packet);
+    });
     dom.injectDynamicLane.addEventListener('click', injectDynamicLane);
     dom.demoTcpHook.addEventListener('click', () => window.dispatchEvent(new CustomEvent(D.hookBus.events.tcp, { detail: clone(D.hookBus.demo.tcp) })));
     dom.demoEoHook.addEventListener('click', () => window.dispatchEvent(new CustomEvent(D.hookBus.events.eo, { detail: clone(D.hookBus.demo.eo) })));
