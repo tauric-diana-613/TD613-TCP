@@ -341,7 +341,7 @@
         "format",
         "badge_number",
         "canonical_header",
-        "extended_footer",
+        "canonical_footer",
         "badge_state",
         "assigned_at",
         "assignment_basis",
@@ -370,12 +370,12 @@
           ],
           "pattern": "^(SHI#:TD613-SH-9B07D8B-[A-F0-9]{8})?$"
         },
-        "extended_footer": {
+        "canonical_footer": {
           "type": [
             "string",
             "null"
           ],
-          "pattern": "^(TD613-Binding:#9B07D8B\\/SAC\\[X6ZNK5NO51\\] · SHI#:TD613-SH-9B07D8B-[A-F0-9]{8} · payload .+ · .+ · ⟐)?$"
+          "pattern": "^(TD613-Binding:#9B07D8B\\/SAC\\[X6ZNK5NO51\\] · 𝌋 · SHI#:TD613-SH-9B07D8B-[A-F0-9]{8} · payload .+ · .+ · ⟐)?$"
         },
         "badge_state": {
           "type": "string",

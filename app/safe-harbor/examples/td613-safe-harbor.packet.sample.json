@@ -204,7 +204,7 @@
     "format": "TD613-SH-9B07D8B + minted 8-hex suffix",
     "badge_number": "TD613-SH-9B07D8B-3578FB38",
     "canonical_header": "SHI#:TD613-SH-9B07D8B-3578FB38",
-    "extended_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 SHI#:TD613-SH-9B07D8B-3578FB38 \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
+    "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 \u{1D30B} \u00b7 SHI#:TD613-SH-9B07D8B-3578FB38 \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
     "badge_state": "assigned",
     "assigned_at": "2026-04-03T00:00:00Z",
     "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",

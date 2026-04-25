@@ -17,7 +17,7 @@
   const SHI_LABEL = 'SHI #';
   const SHI_TEMPLATE = 'TD613-SH-9B07D8B + minted 8-hex suffix';
   const SHI_CANONICAL_HEADER = '';
-  const SHI_EXTENDED_FOOTER = '';
+  const SHI_CANONICAL_FOOTER = '';
   const OBSERVED_REGIME = 'PRCS-A';
   const INSTRUMENT_ROLE = 'counter-tool';
   const APERTURE_AUDIT_FIELD = 'aperture_audit';
@@ -52,7 +52,7 @@
       shi_label: SHI_LABEL,
       shi_template: SHI_TEMPLATE,
       shi_canonical_header: SHI_CANONICAL_HEADER,
-      shi_extended_footer: SHI_EXTENDED_FOOTER,
+      shi_canonical_footer: SHI_CANONICAL_FOOTER,
       observed_regime: OBSERVED_REGIME,
       instrument_role: INSTRUMENT_ROLE,
       aperture_audit_field: APERTURE_AUDIT_FIELD,
@@ -160,7 +160,7 @@
     shi_label: SHI_LABEL,
     shi_template: SHI_TEMPLATE,
     shi_canonical_header: SHI_CANONICAL_HEADER,
-    shi_extended_footer: SHI_EXTENDED_FOOTER,
+    shi_canonical_footer: SHI_CANONICAL_FOOTER,
     observed_regime: OBSERVED_REGIME,
     instrument_role: INSTRUMENT_ROLE,
     aperture_audit_field: APERTURE_AUDIT_FIELD
