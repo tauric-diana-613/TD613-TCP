@@ -551,8 +551,8 @@
     state.ingress.stepIndex = clampIngressStepIndex(saved.ingress && typeof saved.ingress.stepIndex === 'number' ? saved.ingress.stepIndex : defaultIngressStepIndex());
     const forms = saved.forms || {};
     dom.inputFooterMode.value = forms.footerMode || D.trustProfile.current_public_mode;
-    dom.inputPayloadIndex.value = forms.payloadIndex || '';
-    dom.inputAttestationDate.value = forms.attestationDate || '';
+    dom.inputPayloadIndex.value = forms.payloadIndex || '1';
+    dom.inputAttestationDate.value = forms.attestationDate || todayIso();
     dom.inputOperatorId.value = forms.operatorId !== undefined ? forms.operatorId : 'safe-harbor.operator';
     dom.inputSourceClass.value = forms.sourceClass !== undefined ? forms.sourceClass : 'futurecore membrane';
     dom.inputWitnessChannel.value = forms.witnessChannel !== undefined ? forms.witnessChannel : 'ritual + cadence';
@@ -1354,8 +1354,8 @@
     state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
     state.operatorSignature = null;
     dom.inputFooterMode.value = D.trustProfile.current_public_mode;
-    dom.inputPayloadIndex.value = '';
-    dom.inputAttestationDate.value = '';
+    dom.inputPayloadIndex.value = '1';
+    dom.inputAttestationDate.value = todayIso();
     dom.inputOperatorId.value = 'safe-harbor.operator';
     dom.inputSourceClass.value = 'futurecore membrane';
     dom.inputWitnessChannel.value = 'ritual + cadence';
@@ -1422,8 +1422,8 @@
     state.ingress.stepIndex = preservedStepIndex;
     if (!opts.preserveForms) {
       dom.inputFooterMode.value = D.trustProfile.current_public_mode;
-      dom.inputPayloadIndex.value = '';
-      dom.inputAttestationDate.value = '';
+      dom.inputPayloadIndex.value = '1';
+      dom.inputAttestationDate.value = todayIso();
       dom.inputOperatorId.value = 'safe-harbor.operator';
       dom.inputSourceClass.value = 'futurecore membrane';
       dom.inputWitnessChannel.value = 'ritual + cadence';
@@ -1578,7 +1578,7 @@
   function extendedFooterString(shiNumber) {
     const compact = footerString();
     const value = shiNumber || shiFormatTemplate();
-    return compact.replace(/\s(?:Â·|·)\spayload/u, ' \u00b7 SHI#:' + value + ' \u00b7 payload');
+    return compact.replace(/\s(?:Â·|·)\spayload/u, ' \u00b7 \u{1D30B} \u00b7 SHI#:' + value + ' \u00b7 payload');
   }
 
   function updateFormValues() {
@@ -1601,7 +1601,7 @@
   function extendedFooterString(shiNumber) {
     if (!shiNumber) return '';
     const compact = footerString();
-    return compact.replace(/\spayload/u, ' \u00b7 SHI#:' + shiNumber + ' \u00b7 payload');
+    return compact.replace(/\spayload/u, ' \u{1D30B} \u00b7 SHI#:' + shiNumber + ' \u00b7 payload');
   }
 
   function stampBundle() {
@@ -1960,6 +1960,7 @@
     });
   }
   function nowIso() { return new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'); }
+  function todayIso() { return new Date().toISOString().slice(0, 10); }
   function randBase62(len) { const bytes = new Uint8Array(len); crypto.getRandomValues(bytes); const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; return Array.from(bytes).map((b) => chars[b % chars.length]).join(''); }
   function randHex(len) { const bytes = new Uint8Array(len); crypto.getRandomValues(bytes); return Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join(''); }
   async function copyText(text) { if (navigator.clipboard && navigator.clipboard.writeText) { try { await navigator.clipboard.writeText(text || ''); return; } catch (error) {} } const area = document.createElement('textarea'); area.value = text || ''; document.body.appendChild(area); area.select(); document.execCommand('copy'); document.body.removeChild(area); }
