@@ -2,7 +2,7 @@
   "batch_id": "batch-001d",
   "created_date": "2026-03-24T00:00:00Z",
   "family_name": "Protected Core Set A",
-  "verification_status": "Draft",
+  "verification_status": "Provenance Seal",
   "notes": "Wave 1D protected core seed",
   "family_metadata": {
     "name": "Protected Core Set A",
@@ -31,5 +31,74 @@
       "lineage_notes": "batch-001d",
       "wave_membership": "wave-001d"
     }
-  ]
+  ],
+  "route_status": "provenance.seal",
+  "safe_harbor": {
+    "source": "td613.safe-harbor.localhost",
+    "selected_batch_id": "batch-001d",
+    "sealed_at": "2026-04-25T01:11:15.828Z",
+    "route": {
+      "status": "provenance.seal",
+      "state": "harbor-eligible",
+      "recommended_harbor": "provenance.seal",
+      "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+    },
+    "personas": [
+      {
+        "name": "The Operator",
+        "route_status": "provenance.seal"
+      }
+    ],
+    "issuance": {
+      "badge_number": "TD613-SH-9B07D8B-B7136D34",
+      "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+      "extended_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+      "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+      "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+      "triad_word_counts": {
+        "future_self": 55,
+        "past_self": 47,
+        "higher_self": 61
+      },
+      "triad_shortfalls": {
+        "future_self": 0,
+        "past_self": 0,
+        "higher_self": 0
+      },
+      "stylometric_provenance": {
+        "source": "safe-harbor.ingress.triad",
+        "entrant_prompt_lanes": [
+          "future_self",
+          "past_self",
+          "higher_self"
+        ],
+        "threshold_rule": "40-word minimum per lane",
+        "signature_semantics": "entrant-owned stylometric witness",
+        "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+        "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+        "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+        "triad_word_counts": {
+          "future_self": 55,
+          "past_self": 47,
+          "higher_self": 61
+        },
+        "triad_shortfalls": {
+          "future_self": 0,
+          "past_self": 0,
+          "higher_self": 0
+        }
+      }
+    },
+    "signature": {
+      "sig_type": "PGP-detached",
+      "alg": "OpenPGP",
+      "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nS2i2K/c8WA9aEmbo6nZnov2Z\n=bzWO\n-----END PGP MESSAGE-----"
+    },
+    "packet": {
+      "packet_id": "SH-20260425T011036-634f6b17",
+      "receipt_id": "SHR-20260425T011036-634f6b17",
+      "packet_hash_sha256": "sha256:4920ac0efead2749482d0dd4fb283a7df3f368051d2fb1a5b238d9b10bae8005",
+      "created_at": "2026-04-25T01:10:36Z"
+    }
+  }
 }
