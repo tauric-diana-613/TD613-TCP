@@ -16909,7 +16909,7 @@ function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
   if (
     !sourceText ||
     shell?.mode === 'native' ||
-    ((!shell?.mod?.sent && !shell?.mod?.cont && !shell?.mod?.punc) && !shell?.profile)
+    (shell?.mode !== 'persona' && (!shell?.mod?.sent && !shell?.mod?.cont && !shell?.mod?.punc) && !shell?.profile)
   ) {
     return buildNativePassThroughTransfer(sourceText, shell, options);
   }

@@ -16,7 +16,8 @@ import {
   compareTexts,
   extractCadenceProfile,
   buildCadenceTransfer,
-  cadenceModFromProfile
+  cadenceModFromProfile,
+  applyCadenceMod
 } from './engine/stylometry.js';
 import { chooseHarbor, buildLedgerRow, HARBOR_LIBRARY } from './engine/harbor.js';
 import { nextBadge, badgeMeaning } from './engine/badges.js';
@@ -167,14 +168,22 @@ function persistSavedPersonas() {
 }
 
 function hydratePersona(persona) {
-  if (persona && !persona.mod && persona.profileRecipe?.overlayMod) {
-    return { ...persona, mod: { ...persona.profileRecipe.overlayMod } };
+  if (!persona) return persona;
+  let p = persona;
+  if (!p.mod && p.profileRecipe?.overlayMod) {
+    p = { ...p, mod: { ...p.profileRecipe.overlayMod } };
   }
-  return persona;
+  if (!p.strength && p.profileRecipe?.strength) {
+    p = { ...p, strength: p.profileRecipe.strength };
+  }
+  if (!p.profile && p.mod) {
+    p = { ...p, profile: applyCadenceMod(extractCadenceProfile(''), p.mod) };
+  }
+  return p;
 }
 
 function getPersonaLibrary() {
-  return [...basePersonas.map(hydratePersona), ...savedPersonas];
+  return [...basePersonas.map(hydratePersona), ...savedPersonas.map(hydratePersona)];
 }
 
 function findPersona(id) {
@@ -251,8 +260,9 @@ function renderVoiceProfile(voiceState) {
   }
 
   const profile = voiceState.effectiveProfile;
+  const pMod = voiceState.persona?.mod;
   const shellNote = voiceState.persona
-    ? `Applied shell bias: sent ${voiceState.persona.mod.sent >= 0 ? '+' : ''}${voiceState.persona.mod.sent}, cont ${voiceState.persona.mod.cont >= 0 ? '+' : ''}${voiceState.persona.mod.cont}, punc ${voiceState.persona.mod.punc >= 0 ? '+' : ''}${voiceState.persona.mod.punc}.`
+    ? `Applied shell bias: sent ${(pMod?.sent ?? 0) >= 0 ? '+' : ''}${pMod?.sent ?? 0}, cont ${(pMod?.cont ?? 0) >= 0 ? '+' : ''}${pMod?.cont ?? 0}, punc ${(pMod?.punc ?? 0) >= 0 ? '+' : ''}${pMod?.punc ?? 0}.`
     : 'Native cadence only. No shell is bending the readout.';
 
   panel.innerHTML = `
@@ -782,6 +792,7 @@ function saveActiveCadence() {
   }
 
   const profile = voiceState.effectiveProfile;
+  const mod = cadenceModFromProfile(profile);
   const persona = {
     id: `saved-${Date.now()}`,
     name: buildSavedPersonaName(activeVoice),
@@ -791,7 +802,9 @@ function saveActiveCadence() {
       SLOT_SHORT[activeVoice],
       `rhythm ${profile.avgSentenceLength.toFixed(1)}w`
     ],
-    mod: cadenceModFromProfile(profile),
+    mod,
+    profile,
+    profileRecipe: { overlayMod: { ...mod }, strength: 0.86 },
     source: 'saved'
   };
 
