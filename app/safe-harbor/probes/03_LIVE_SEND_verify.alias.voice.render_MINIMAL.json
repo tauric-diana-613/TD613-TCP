@@ -56,7 +56,7 @@
     "signature_lane_note": "Public probe stays unsigned by default. Historical .sig and advanced JWS lanes are reference/operator overlays."
   },
   "td613_binding_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
-  "td613_binding_extended_footer": null,
+  "td613_binding_canonical_footer": null,
   "safe_harbor_packet": {
     "packet_id": "__OPTIONAL_PASTE_SAFE_HARBOR_PACKET_ID__",
     "packet_hash_sha256": "__OPTIONAL_PASTE_PACKET_HASH_SHA256__",
@@ -86,7 +86,7 @@
       "triad_shortfalls": null
     },
     "canonical_header": null,
-    "extended_footer": null,
+    "canonical_footer": null,
     "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐"
   }
 }

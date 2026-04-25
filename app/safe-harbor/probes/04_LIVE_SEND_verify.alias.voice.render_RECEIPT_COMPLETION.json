@@ -105,7 +105,7 @@
   },
   "instruction": "Return ONLY the required_response object as JSON. No commentary, coaching, or analysis. Do not collapse to status-only output. Complete current-run audit_trace and status_read fields.",
   "td613_binding_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
-  "td613_binding_extended_footer": "__OPTIONAL_PASTE_EXTENDED_FOOTER__",
+  "td613_binding_canonical_footer": "__OPTIONAL_PASTE_CANONICAL_FOOTER__",
   "safe_harbor_packet": {
     "packet_id": "__OPTIONAL_PASTE_SAFE_HARBOR_PACKET_ID__",
     "packet_hash_sha256": "__OPTIONAL_PASTE_PACKET_HASH_SHA256__",
@@ -135,7 +135,7 @@
       "triad_shortfalls": null
     },
     "canonical_header": "__OPTIONAL_PASTE_CANONICAL_HEADER__",
-    "extended_footer": "__OPTIONAL_PASTE_EXTENDED_FOOTER__",
+    "canonical_footer": "__OPTIONAL_PASTE_CANONICAL_FOOTER__",
     "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐"
   },
   "signature_lane_note": "Public probe stays unsigned by default. Historical .sig and advanced JWS lanes are reference/operator overlays."

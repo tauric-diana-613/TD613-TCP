@@ -2134,7 +2134,7 @@
         format: shiFormatTemplate(),
         badge_number: badgeAssignment,
         canonical_header: badgeAssignment ? canonicalHeaderString(badgeAssignment) : null,
-        extended_footer: badgeAssignment ? extendedFooterString(badgeAssignment) : null,
+        canonical_footer: badgeAssignment ? extendedFooterString(badgeAssignment) : null,
         badge_state: badgeAssignment ? 'assigned' : (triadIssuance.thresholdSatisfied ? 'not-assigned' : 'blocked-triad-threshold'),
         assigned_at: badgeAssignment ? state.covenant.confirmedAt : null,
         assignment_basis: badgeAssignment ? 'SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint' : null,
@@ -2379,7 +2379,7 @@
     if (state.packet.issuance && state.packet.issuance.badge_number) {
       lines.push('- shi_number: ' + state.packet.issuance.badge_number);
       lines.push('- canonical_header: ' + canonicalHeaderString(state.packet.issuance.badge_number));
-      lines.push('- extended_footer: ' + extendedFooterString(state.packet.issuance.badge_number));
+      lines.push('- canonical_footer: ' + extendedFooterString(state.packet.issuance.badge_number));
     }
     return lines;
   }
@@ -2409,7 +2409,7 @@
       triad_shortfalls: issuance.triad_shortfalls && typeof issuance.triad_shortfalls === 'object' ? clone(issuance.triad_shortfalls) : null,
       stylometric_provenance: issuance.stylometric_provenance ? clone(issuance.stylometric_provenance) : buildStylometricProvenance(issuance),
       canonical_header: shiNumber ? canonicalHeaderString(shiNumber) : null,
-      extended_footer: shiNumber ? extendedFooterString(shiNumber) : null,
+      canonical_footer: shiNumber ? extendedFooterString(shiNumber) : null,
       public_footer: state.packet.canon ? state.packet.canon.public_footer || footerString() : footerString()
     };
   }
@@ -2602,7 +2602,7 @@
           signature_lane_note: 'Public probe stays unsigned by default. Historical .sig and advanced JWS lanes are reference/operator overlays.'
         },
         td613_binding_footer: footer,
-        td613_binding_extended_footer: extendedFooter
+        td613_binding_canonical_footer: extendedFooter
       };
       if (packetCtxObject) payload.safe_harbor_packet = packetCtxObject;
       state.lastProbe = JSON.stringify(payload, null, 2);
@@ -2634,7 +2634,7 @@
         return_contract: { output_variant: 'receipt_only_json', commentary_allowed: false, required_response: { status_response: 'verify.alias.status.carry-voice.render', audit_trace: { decision_id: '__SYSTEM_COMPLETES_CURRENT_RUN__', hash: '__SYSTEM_COMPLETES_CURRENT_RUN__', sidecar_audit: true }, status_read: { alias_status: '__SYSTEM_COMPLETES_CURRENT_RUN__', render_status: '__SYSTEM_COMPLETES_CURRENT_RUN__' } } },
         instruction: 'Return ONLY the required_response object as JSON. No commentary, coaching, or analysis. Do not collapse to status-only output. Complete current-run audit_trace and status_read fields.',
         td613_binding_footer: footer,
-        td613_binding_extended_footer: extendedFooter
+        td613_binding_canonical_footer: extendedFooter
       };
       if (packetCtxObject) payload.safe_harbor_packet = packetCtxObject;
       state.lastProbe = JSON.stringify(payload, null, 2);

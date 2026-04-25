@@ -37,7 +37,7 @@
       payload_latest: 5,
       shi_number_template: 'TD613-SH-9B07D8B + minted 8-hex suffix',
       shi_canonical_header_template: '',
-      extended_footer_template: '',
+      canonical_footer_template: '',
       public_footer_template: 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0',
       current_published_footer: 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0',
       current_published_payload: 5,

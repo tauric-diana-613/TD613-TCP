@@ -59,7 +59,7 @@ export function buildSealedBatchArtifact({
       issuance: {
         badge_number: issuance.badge_number || null,
         canonical_header: issuance.canonical_header || null,
-        extended_footer: issuance.extended_footer || null,
+        canonical_footer: issuance.canonical_footer || null,
         assignment_basis: issuance.assignment_basis || null,
         stylometric_fingerprint: issuance.stylometric_fingerprint || null,
         triad_word_counts: issuance.triad_word_counts || null,
