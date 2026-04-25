@@ -166,6 +166,7 @@
     routeSourceReadout: $('routeSourceReadout'),
     copyPacketPreview: $('copyPacketPreview'),
     exportPacketPreview: $('exportPacketPreview'),
+    resetStagedPacket: $('resetStagedPacket'),
     packetPreview: $('packetPreview'),
     auditLog: $('auditLog'),
     buildProbeButtons: Array.from(document.querySelectorAll('[data-probe-variant]')),
@@ -434,6 +435,7 @@
       const filename = (state.selectedBatchId ? state.selectedBatchId : 'td613-packet') + '.packet.json';
       downloadJsonArtifact(filename, state.packet);
     });
+    dom.resetStagedPacket.addEventListener('click', () => void resetToStaged());
     dom.injectDynamicLane.addEventListener('click', injectDynamicLane);
     dom.demoTcpHook.addEventListener('click', () => window.dispatchEvent(new CustomEvent(D.hookBus.events.tcp, { detail: clone(D.hookBus.demo.tcp) })));
     dom.demoEoHook.addEventListener('click', () => window.dispatchEvent(new CustomEvent(D.hookBus.events.eo, { detail: clone(D.hookBus.demo.eo) })));
@@ -939,6 +941,7 @@
         ? 'The shell is open through operator bypass only. No staged packet, covenant transition, or SHI issuance exists yet.'
         : 'Mint Staged Packet is the SHI moment. Once the entrant triad is ready, that action issues the SHI # immediately; Mint / Seal Payload remains the detached-signature and artifact-seal lane.';
       dom.covenantExport.disabled = true;
+      if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = true;
       return;
     }
 
@@ -985,6 +988,7 @@
           ? 'The packet shell can be staged and the detached signature can be carried, but SHI issuance stays locked until Future / Past / Higher all cross the stylometric threshold.'
           : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint Staged Packet will issue the SHI #, and Mint / Seal Payload remains the final artifact-seal step.' : 'The packet is staged only. Mint Staged Packet issues the SHI # once the entrant triad is ready; Mint / Seal Payload remains available for the final seal lane.'));
     dom.covenantExport.disabled = false;
+    if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = !hasOperatorAccess();
   }
 
   function renderAudit() {
@@ -1379,6 +1383,17 @@
       if (stored) return stored;
     } catch (error) {}
     return (D.operatorBypass && D.operatorBypass.token_hash_sha256) || null;
+  }
+
+  async function resetToStaged() {
+    if (!hasOperatorAccess()) return;
+    if (!state.packet || !state.ingress.packetId) return;
+    state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
+    state.operatorSignature = null;
+    state.sealed = null;
+    if (dom.kleopatraVoid) dom.kleopatraVoid.value = '';
+    await rebuild('packet-reset-to-staged');
+    logEvent('packet-reset-to-staged', { packet_id: state.ingress.packetId });
   }
 
   function returnToIngress(options) {
