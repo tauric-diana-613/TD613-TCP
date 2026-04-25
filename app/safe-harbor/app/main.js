@@ -435,9 +435,8 @@
       dom.copyForensicSchema.addEventListener('click', () => void copyText(dom.forensicSchemaPreview ? (dom.forensicSchemaPreview.textContent || '') : ''));
     }
     dom.exportPacketPreview.addEventListener('click', () => {
-      if (!state.packet) return;
-      const filename = (state.selectedBatchId ? state.selectedBatchId : 'td613-packet') + '.packet.json';
-      downloadJsonArtifact(filename, state.packet);
+      if (!packetIsSealed()) return;
+      downloadJsonArtifact(packetExportFilename(), state.packet);
     });
     dom.resetStagedPacket.addEventListener('click', () => void resetToStaged());
     dom.injectDynamicLane.addEventListener('click', injectDynamicLane);
@@ -946,6 +945,7 @@
         : 'Mint Staged Packet is the SHI moment. Once the entrant triad is ready, that action issues the SHI # immediately; Mint / Seal Payload remains the detached-signature and artifact-seal lane.';
       dom.covenantExport.disabled = true;
       if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = true;
+      if (dom.exportPacketPreview) dom.exportPacketPreview.disabled = true;
       return;
     }
 
@@ -993,6 +993,7 @@
           : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint Staged Packet will issue the SHI #, and Mint / Seal Payload remains the final artifact-seal step.' : 'The packet is staged only. Mint Staged Packet issues the SHI # once the entrant triad is ready; Mint / Seal Payload remains available for the final seal lane.'));
     dom.covenantExport.disabled = false;
     if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = !hasOperatorAccess();
+    if (dom.exportPacketPreview) dom.exportPacketPreview.disabled = !signatureSealed;
   }
 
   function renderAudit() {
@@ -1964,6 +1965,20 @@
   function randBase62(len) { const bytes = new Uint8Array(len); crypto.getRandomValues(bytes); const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; return Array.from(bytes).map((b) => chars[b % chars.length]).join(''); }
   function randHex(len) { const bytes = new Uint8Array(len); crypto.getRandomValues(bytes); return Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join(''); }
   async function copyText(text) { if (navigator.clipboard && navigator.clipboard.writeText) { try { await navigator.clipboard.writeText(text || ''); return; } catch (error) {} } const area = document.createElement('textarea'); area.value = text || ''; document.body.appendChild(area); area.select(); document.execCommand('copy'); document.body.removeChild(area); }
+  function packetIsSealed() {
+    return Boolean(state.packet && state.packet.signature && state.packet.signature.status === 'sealed');
+  }
+
+  function packetExportFilename() {
+    const ts = (state.helper && state.helper.filename_safe) || nowIso().replace(/[:.]/g, '-');
+    const stage = packetIsSealed()
+      ? 'sealed'
+      : (state.packet && state.packet.issuance && state.packet.issuance.badge_number ? 'minted' : 'staged');
+    const batchPart = state.selectedBatchId ? '-' + state.selectedBatchId : '';
+    const shi = state.packet && state.packet.issuance && state.packet.issuance.badge_number ? '-' + state.packet.issuance.badge_number : '';
+    return `td613-packet${batchPart}-${stage}${shi}-${ts}.json`;
+  }
+
   function downloadJsonArtifact(filename, value) {
     const blob = new Blob([JSON.stringify(value, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
     const href = URL.createObjectURL(blob);
