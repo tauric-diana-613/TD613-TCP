@@ -27,8 +27,9 @@ assert((matrix.summary.bothRejected || 0) <= 15, 'diagnostics swap matrix should
 assert((matrix.summary.oneSided || 0) >= 6, 'diagnostics swap matrix should still surface one-sided donor pressure where only one lane clears truthfully');
 assert((matrix.summary.surfaceClose || 0) >= 30, 'diagnostics swap matrix should now expose many underfit pairings as surface-close warning lanes instead of rejecting them outright');
 assert.equal(matrix.summary.flagshipCount, 8, 'flagship summary tracks the 8 strict browser-facing directions');
-assert((matrix.summary.failureFamilyCounts['donor-underfit'] || 0) >= 16, 'diagnostics swap matrix should explicitly track donor-underfit pressure once the warning ledger is active');
-assert.equal(matrix.summary.flagshipPassCount, 6, 'flagship summary should surface the six currently live review-facing exemplar directions');
+assert((matrix.summary.failureFamilyCounts['donor-underfit'] || 0) >= 6, 'diagnostics swap matrix should explicitly track donor-underfit pressure once the warning ledger is active');
+assert((matrix.summary.failureFamilyCounts['aperture-route-pressure'] || 0) >= 4, 'diagnostics swap matrix should track aperture-route-pressure failures introduced in Patch 33.3');
+assert.equal(matrix.summary.flagshipPassCount, 4, 'flagship summary should surface the four currently live review-facing exemplar directions');
 assert.equal(matrix.summary.flagshipAllPassed, false, 'flagship summary should keep the remaining flagship warnings visible instead of overstating all directions as live');
 assert.equal(
   matrix.flagshipReports.filter((report) => report.pairAudit.surfaceClose).length,
