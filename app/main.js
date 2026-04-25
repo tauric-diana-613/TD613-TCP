@@ -166,8 +166,15 @@ function persistSavedPersonas() {
   runtimeStore.setItem(STORAGE_KEY, JSON.stringify(savedPersonas));
 }
 
+function hydratePersona(persona) {
+  if (persona && !persona.mod && persona.profileRecipe?.overlayMod) {
+    return { ...persona, mod: { ...persona.profileRecipe.overlayMod } };
+  }
+  return persona;
+}
+
 function getPersonaLibrary() {
-  return [...basePersonas, ...savedPersonas];
+  return [...basePersonas.map(hydratePersona), ...savedPersonas];
 }
 
 function findPersona(id) {
