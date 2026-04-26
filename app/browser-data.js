@@ -924,15 +924,6 @@ window.TCP_DATA = {
         uiTargets: ['ingress.badge.tetragram'],
         rationale: 'The tetragram token marks patterned recursion before the route settles.'
       },
-      ingressBadgeWitness: {
-        glyph: '\uDBF5\uDE13',
-        semanticClass: 'witness',
-        semioticRole: 'badge-token',
-        activationState: 'witnessed',
-        retrievalTags: ['ingress', 'badge', 'token', 'witness'],
-        uiTargets: ['ingress.badge.witness'],
-        rationale: 'Witness token marks a more explicit custody posture during ingress.'
-      },
       ingressBadgeTherefore: {
         glyph: '\u2234',
         semanticClass: 'law',

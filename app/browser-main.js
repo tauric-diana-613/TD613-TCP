@@ -1092,7 +1092,6 @@
     { id: 'token-branch', value: 'badge.branch', label: 'branch', cue: 'candidate branch', glyphKey: 'ingressBadgeBranch', glyph: '\u03BA' },
     { id: 'token-down', value: 'badge.holds', label: 'down hold', cue: 'custody grounds', glyphKey: 'ingressBadgeDown', glyph: '\u4E0B' },
     { id: 'token-tetragram', value: 'badge.buffer', label: 'pattern lattice', cue: 'pattern lattice', glyphKey: 'ingressBadgeTetragram', glyph: '\uD834\uDF0B' },
-    { id: 'token-witness', value: 'badge.branch', label: 'witness branch', cue: 'witness branch', glyphKey: 'ingressBadgeWitness', glyph: '\uDBF5\uDE13' },
     { id: 'token-therefore', value: 'badge.buffer', label: 'therefore', cue: 'reasoned buffer', glyphKey: 'ingressBadgeTherefore', glyph: '\u2234' }
   ];
   const INGRESS_STAGES = ['containment', 'mirror', 'badge', 'seal'];
@@ -7898,10 +7897,9 @@ DeltaE = ${ledger.reuse_gain}`;
 
     pushCase(
       'token_pool_expanded',
-      INGRESS_BADGE_OPTIONS.length >= 7 &&
+      INGRESS_BADGE_OPTIONS.length >= 6 &&
         INGRESS_BADGE_OPTIONS.some((option) => option.glyphKey === 'ingressBadgeDown') &&
         INGRESS_BADGE_OPTIONS.some((option) => option.glyphKey === 'ingressBadgeTetragram') &&
-        INGRESS_BADGE_OPTIONS.some((option) => option.glyphKey === 'ingressBadgeWitness') &&
         INGRESS_BADGE_OPTIONS.some((option) => option.glyphKey === 'ingressBadgeTherefore'),
       readIngressSnapshot(),
       'Ingress should expose a larger token pool with the new Dome-World variants.'
