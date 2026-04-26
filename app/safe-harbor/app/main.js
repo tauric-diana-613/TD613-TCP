@@ -153,6 +153,8 @@
     batchIntakeSelect: $('batchIntakeSelect'),
     batchIntakeState: $('batchIntakeState'),
     batchIntakeNote: $('batchIntakeNote'),
+    batchNodesList: $('batchNodesList'),
+    batchNodesFold: $('batchNodesFold'),
     stageSelectedBatch: $('stageSelectedBatch'),
     resetStagedBatch: $('resetStagedBatch'),
     probeOutput: $('probeOutput'),
@@ -213,6 +215,9 @@
     dom.body.classList.remove('boot-pending');
     dom.body.classList.add('boot-ready');
     void rebuild('init');
+    if (dom.batchIntakeSelect) {
+      void loadBatchNodes(dom.batchIntakeSelect.value || 'batch-001a');
+    }
     exposeApi();
   }
 
@@ -417,7 +422,7 @@
     dom.mintStagedPacket.addEventListener('click', () => void mintStagedPacket());
     if (dom.stageSelectedBatch) dom.stageSelectedBatch.addEventListener('click', () => void stageSelectedBatch());
     if (dom.resetStagedBatch) dom.resetStagedBatch.addEventListener('click', clearStagedBatch);
-    if (dom.batchIntakeSelect) dom.batchIntakeSelect.addEventListener('change', () => { render(); persist(); });
+    if (dom.batchIntakeSelect) dom.batchIntakeSelect.addEventListener('change', () => { render(); persist(); void loadBatchNodes(dom.batchIntakeSelect.value); });
     dom.setBypassToken.addEventListener('click', () => void setLocalBypassToken());
     dom.clearBypassToken.addEventListener('click', clearLocalBypassToken);
     dom.bypassIngress.addEventListener('click', () => void bypassIngress());
@@ -647,6 +652,99 @@
     }
     if (dom.stageSelectedBatch) dom.stageSelectedBatch.disabled = !operatorReady || hasActiveBatch;
     if (dom.resetStagedBatch) dom.resetStagedBatch.disabled = !operatorReady || !hasActiveBatch;
+  }
+
+  const BATCH_FILE_MANIFEST = {
+    'batch-001a': 'corpus/tauric-diana-intake/batch-001a_migration_console.json',
+    'batch-001b': 'corpus/tauric-diana-intake/batch-001b_historical_console_lineage.json',
+    'batch-001c': 'corpus/tauric-diana-intake/batch-001c_constitutional_spine.json',
+    'batch-001d': 'corpus/tauric-diana-intake/batch-001d_protected_core_set_a.json',
+    'batch-002a': 'corpus/tauric-diana-intake/batch-002a_thinkers_spine.json',
+    'batch-002b': 'corpus/tauric-diana-intake/batch-002b_continuity_citation.json',
+    'batch-002c': 'corpus/tauric-diana-intake/batch-002c_policy_provenance.json',
+    'batch-002d': 'corpus/tauric-diana-intake/batch-002d_route_support.json',
+    'batch-003a': 'corpus/tauric-diana-intake/batch-003a_svenbots_core.json',
+    'batch-003b': 'corpus/tauric-diana-intake/batch-003b_implementation_layer.json',
+    'batch-003c': 'corpus/tauric-diana-intake/batch-003c_schema_source_bridge.json',
+    'batch-003d': 'corpus/tauric-diana-intake/batch-003d_risk_recovery_ops.json',
+    'batch-004a': 'corpus/tauric-diana-intake/batch-004a_bulk_raw_intake.json',
+    'batch-004b': 'corpus/tauric-diana-intake/batch-004b_high_value_archives.json',
+    'batch-004c': 'corpus/tauric-diana-intake/batch-004c_coined_frameworks.json'
+  };
+
+  const batchNodesCache = new Map();
+
+  async function loadBatchNodes(batchId) {
+    if (!dom.batchNodesList) return;
+    const id = String(batchId || '').trim();
+    const path = BATCH_FILE_MANIFEST[id];
+    if (!path) {
+      dom.batchNodesList.innerHTML = '<div class="note">Unknown batch identifier.</div>';
+      return;
+    }
+    if (batchNodesCache.has(id)) {
+      renderBatchNodes(batchNodesCache.get(id));
+      return;
+    }
+    dom.batchNodesList.innerHTML = '<div class="note">Loading nodes…</div>';
+    try {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error('fetch failed: ' + response.status);
+      const batch = await response.json();
+      batchNodesCache.set(id, batch);
+      renderBatchNodes(batch);
+    } catch (error) {
+      dom.batchNodesList.innerHTML = '<div class="note">Could not load batch nodes (' + (error && error.message ? error.message : 'unknown error') + ').</div>';
+    }
+  }
+
+  function renderBatchNodes(batch) {
+    if (!dom.batchNodesList) return;
+    const nodes = Array.isArray(batch && batch.nodes) ? batch.nodes : [];
+    if (!nodes.length) {
+      dom.batchNodesList.innerHTML = '<div class="note">No nodes in this batch.</div>';
+      return;
+    }
+    dom.batchNodesList.innerHTML = '';
+    nodes.forEach((node) => {
+      const card = document.createElement('div');
+      card.className = 'batch-node-card';
+      card.dataset.td613Skip = 'true';
+
+      const title = document.createElement('div');
+      title.className = 'batch-node-title';
+      title.textContent = String(node && node.title ? node.title : '(untitled node)');
+      card.appendChild(title);
+
+      const meta = document.createElement('div');
+      meta.className = 'batch-node-meta';
+      meta.textContent = String(node && node.source_node_id ? node.source_node_id : '');
+      card.appendChild(meta);
+
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'control secondary route-to-trainer';
+      button.textContent = 'Route to Trainer';
+      const cleanText = String(node && node.title ? node.title : '');
+      button.addEventListener('click', () => routeNodeToTrainer(cleanText));
+      card.appendChild(button);
+
+      dom.batchNodesList.appendChild(card);
+    });
+  }
+
+  function routeNodeToTrainer(cleanText) {
+    const text = String(cleanText || '').trim();
+    if (!text) return;
+    const hookEvent = {
+      action: 'route_to_trainer',
+      payload: { text },
+      timestamp: Date.now()
+    };
+    try {
+      localStorage.setItem('td613_hook_event', JSON.stringify(hookEvent));
+    } catch (error) {}
+    window.open('../trainer.html', '_blank');
   }
 
   function renderIngress() {

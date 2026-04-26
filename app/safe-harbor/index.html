@@ -215,6 +215,12 @@
                 <button class="control secondary" id="resetStagedBatch" type="button">Reset Staged Batch</button>
               </div>
               <div class="note" id="batchIntakeNote">Localhost override or a stored operator token unlocks direct batch staging. Detached PGP text can be staged here too, but it does not replace the triad for SHI issuance.</div>
+              <details class="fold-panel" id="batchNodesFold" data-td613-skip="true">
+                <summary>Vanguard nodes — Sovereign Bridge to Trainer</summary>
+                <div class="batch-nodes-list" id="batchNodesList">
+                  <div class="note">Select a vanguard batch above to load its nodes. Each node carries a Route to Trainer button.</div>
+                </div>
+              </details>
               <details class="fold-panel" data-td613-skip="true" open>
                 <summary>Kleopatra detached seal / secret lane</summary>
                 <textarea id="kleopatra-void" class="code-area" placeholder="Paste detached PGP signature block here"></textarea>

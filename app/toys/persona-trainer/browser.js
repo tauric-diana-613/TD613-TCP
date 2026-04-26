@@ -648,6 +648,38 @@ export async function createTrainerController(options = {}) {
     setStatus('Candidate passage changed. Validate again to refresh retrieval and scalar checks.');
   });
 
+  function consumeSafeHarborHookEvent() {
+    if (typeof localStorage === 'undefined') return;
+    let raw = null;
+    try {
+      raw = localStorage.getItem('td613_hook_event');
+    } catch (error) {
+      return;
+    }
+    if (!raw) return;
+    let hookEvent = null;
+    try {
+      hookEvent = JSON.parse(raw);
+    } catch (error) {
+      try { localStorage.removeItem('td613_hook_event'); } catch (cleanupError) {}
+      return;
+    }
+    try { localStorage.removeItem('td613_hook_event'); } catch (cleanupError) {}
+    if (!hookEvent || hookEvent.action !== 'route_to_trainer') return;
+    const text = String(hookEvent.payload && hookEvent.payload.text ? hookEvent.payload.text : '').trim();
+    if (!text) return;
+    openContext({ corpusText: text, forcePopulate: true });
+  }
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'td613_hook_event' && event.newValue) {
+        consumeSafeHarborHookEvent();
+      }
+    });
+  }
+  consumeSafeHarborHookEvent();
+
   render();
   setStatus('Paste a corpus, extract the field, forge a draft, then validate the passage.');
 
