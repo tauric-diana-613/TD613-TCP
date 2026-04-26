@@ -502,7 +502,7 @@ window.TCP_DATA = {
         rationale: 'Buffer is additive containment inside a box, not a simple pause.'
       },
       ingressBadgeBranch: {
-        glyph: '\u03BA',
+        glyph: '\u00E0',
         semanticClass: 'core',
         semioticRole: 'branch-token',
         activationState: 'keyed',
@@ -781,7 +781,7 @@ window.TCP_DATA = {
         rationale: 'The dossier is where inference is stated rather than hinted.'
       },
       sectionMaskBench: {
-        glyph: '\uDBF5\uDE13',
+        glyph: '\uD834\uDD10',
         semanticClass: 'recursion',
         semioticRole: 'section-kicker',
         activationState: 'testing',
@@ -799,7 +799,7 @@ window.TCP_DATA = {
         rationale: 'Cadence home is an anchored private hold.'
       },
       homebaseWornMask: {
-        glyph: '\uDBF5\uDE13',
+        glyph: '\uD834\uDD10',
         semanticClass: 'recursion',
         semioticRole: 'surface-cue',
         activationState: 'worn',
@@ -898,7 +898,7 @@ window.TCP_DATA = {
         rationale: 'Reveal is a reasoned opening into explicit stylometric description.'
       },
       stateLockStaged: {
-        glyph: '\uDBF5\uDE13',
+        glyph: '\uD834\uDD10',
         semanticClass: 'witness',
         semioticRole: 'status-pill',
         activationState: 'staged',
@@ -925,7 +925,7 @@ window.TCP_DATA = {
         rationale: 'The tetragram token marks patterned recursion before the route settles.'
       },
       ingressBadgeWitness: {
-        glyph: '\uDBF5\uDE13',
+        glyph: '\uD834\uDD10',
         semanticClass: 'witness',
         semioticRole: 'badge-token',
         activationState: 'witnessed',
