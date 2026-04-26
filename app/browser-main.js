@@ -1089,10 +1089,10 @@
   const INGRESS_BADGE_OPTIONS = [
     { id: 'token-holds', value: 'badge.holds', label: 'holds', cue: 'custody holds', glyphKey: 'ingressBadgeHolds', glyph: '\u2606' },
     { id: 'token-buffer', value: 'badge.buffer', label: 'buffer', cue: 'custody buffer', glyphKey: 'ingressBadgeBuffer', glyph: '\u229E' },
-    { id: 'token-branch', value: 'badge.branch', label: 'branch', cue: 'candidate branch', glyphKey: 'ingressBadgeBranch', glyph: '\u00E0' },
+    { id: 'token-branch', value: 'badge.branch', label: 'branch', cue: 'candidate branch', glyphKey: 'ingressBadgeBranch', glyph: '\u03BA' },
     { id: 'token-down', value: 'badge.holds', label: 'down hold', cue: 'custody grounds', glyphKey: 'ingressBadgeDown', glyph: '\u4E0B' },
     { id: 'token-tetragram', value: 'badge.buffer', label: 'pattern lattice', cue: 'pattern lattice', glyphKey: 'ingressBadgeTetragram', glyph: '\uD834\uDF0B' },
-    { id: 'token-witness', value: 'badge.branch', label: 'witness branch', cue: 'witness branch', glyphKey: 'ingressBadgeWitness', glyph: '\uD834\uDD10' },
+    { id: 'token-witness', value: 'badge.branch', label: 'witness branch', cue: 'witness branch', glyphKey: 'ingressBadgeWitness', glyph: '\uDBF5\uDE13' },
     { id: 'token-therefore', value: 'badge.buffer', label: 'therefore', cue: 'reasoned buffer', glyphKey: 'ingressBadgeTherefore', glyph: '\u2234' }
   ];
   const INGRESS_STAGES = ['containment', 'mirror', 'badge', 'seal'];
