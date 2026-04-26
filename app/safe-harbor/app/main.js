@@ -557,8 +557,8 @@
     state.ingress.stepIndex = clampIngressStepIndex(saved.ingress && typeof saved.ingress.stepIndex === 'number' ? saved.ingress.stepIndex : defaultIngressStepIndex());
     const forms = saved.forms || {};
     dom.inputFooterMode.value = forms.footerMode || D.trustProfile.current_public_mode;
-    dom.inputPayloadIndex.value = forms.payloadIndex || '1';
-    dom.inputAttestationDate.value = forms.attestationDate || todayIso();
+    dom.inputPayloadIndex.value = '1';
+    dom.inputAttestationDate.value = todayIso();
     dom.inputOperatorId.value = forms.operatorId !== undefined ? forms.operatorId : 'safe-harbor.operator';
     dom.inputSourceClass.value = forms.sourceClass !== undefined ? forms.sourceClass : 'futurecore membrane';
     dom.inputWitnessChannel.value = forms.witnessChannel !== undefined ? forms.witnessChannel : 'ritual + cadence';
@@ -794,7 +794,7 @@
         ? (signatureSealed
           ? `The sealed packet is present. SHI # ${recoverableShi || 'issued'} is already bound to this chamber; review, copy, or reseal without reminting.`
           : confirmedPacket
-            ? `The packet is present and already carries SHI # ${recoverableShi || 'issued'} from the entrant triad. Mint / Seal Payload remains available for detached-signature sealing and final artifact export.`
+            ? `The packet is present and already carries SHI # ${recoverableShi || 'issued'} from the entrant triad. Seal Payload remains available for detached-signature sealing and final artifact export.`
             : 'The staged packet is present. The SHI # will mint the moment Mint Staged Packet is invoked with a triad-ready entrant.')
         : sealStep && count === 3
           ? 'The triad is complete. Review the held testimony, then mint the staged packet to open the chamber.'
@@ -1042,7 +1042,7 @@
       renderMintSurface(null, null);
       dom.covenantNote.textContent = state.ingress.bypass
         ? 'The shell is open through operator bypass only. No staged packet, covenant transition, or SHI issuance exists yet.'
-        : 'Mint Staged Packet is the SHI moment. Once the entrant triad is ready, that action issues the SHI # immediately; Mint / Seal Payload remains the detached-signature and artifact-seal lane.';
+        : 'Mint Staged Packet is the SHI moment. Once the entrant triad is ready, that action issues the SHI # immediately; Seal Payload remains the detached-signature and artifact-seal lane.';
       dom.covenantExport.disabled = true;
       if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = true;
       if (dom.exportPacketPreview) dom.exportPacketPreview.disabled = true;
@@ -1085,13 +1085,13 @@
     renderMintSurface(state.packet.issuance.badge_number || null, issuance);
     dom.covenantNote.textContent = state.packet.bridge.covenant_gate.confirmed
       ? (signatureSealed
-        ? 'Mint / Seal Payload is confirmed. The packet is harbor-eligible, carries an issued SHI #, and preserves any pasted signature text in the artifact.'
-        : 'The SHI # is already minted from the entrant triad. Mint / Seal Payload now carries any pasted detached-signature text into the artifact and completes the seal lane.')
+        ? 'Seal Payload is confirmed. The packet is harbor-eligible, carries an issued SHI #, and preserves any pasted signature text in the artifact.'
+        : 'The SHI # is already minted from the entrant triad. Seal Payload now carries any pasted detached-signature text into the artifact and completes the seal lane.')
       : issuance.badge_state === 'blocked-triad-threshold'
         ? `SHI issuance is blocked. ${issuance.blocking_reason || 'Future / Past / Higher must each cross the stylometric threshold.'}`
         : (!triadThresholdSatisfied
           ? 'The packet shell can be staged and the detached signature can be carried, but SHI issuance stays locked until Future / Past / Higher all cross the stylometric threshold.'
-          : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint Staged Packet will issue the SHI #, and Mint / Seal Payload remains the final artifact-seal step.' : 'The packet is staged only. Mint Staged Packet issues the SHI # once the entrant triad is ready; Mint / Seal Payload remains available for the final seal lane.'));
+          : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint Staged Packet will issue the SHI #, and Seal Payload remains the final artifact-seal step.' : 'The packet is staged only. Mint Staged Packet issues the SHI # once the entrant triad is ready; Seal Payload remains available for the final seal lane.'));
     dom.covenantExport.disabled = false;
     if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = !hasOperatorAccess();
     const exportReady = Boolean(
@@ -1172,7 +1172,7 @@
         : blockedReason
           ? `The SHI # is not minted yet. ${blockedReason}`
           : thresholdSatisfied
-            ? 'The triad is ready. Mint Staged Packet will issue the SHI # immediately from the entrant stylometrics. Mint / Seal Payload remains the detached-signature and artifact-seal step.'
+            ? 'The triad is ready. Mint Staged Packet will issue the SHI # immediately from the entrant stylometrics. Seal Payload remains the detached-signature and artifact-seal step.'
             : 'The SHI # mints only when Mint Staged Packet is invoked against a triad-ready entrant. Once assigned, copy it exactly. This issuance code should not drift across packet, probe, renderer, or LLM intake.';
     dom.copyShiNumber.disabled = !available;
     dom.copyCanonicalHeader.disabled = !available;
@@ -1317,7 +1317,7 @@
         dom.bypassPassword.value = state.covenant.badgeNumber;
         await setLocalBypassToken();
         dom.bypassPassword.value = '';
-        dom.ingressNote.textContent = 'Staged packet minted. The chamber is open and the SHI # is now issued from the entrant triad. Mint / Seal Payload remains available for the detached-signature seal lane.';
+        dom.ingressNote.textContent = 'Staged packet minted. The chamber is open and the SHI # is now issued from the entrant triad. Seal Payload remains available for the detached-signature seal lane.';
         logEvent('shi-issued', { badge_number: state.covenant.badgeNumber, source: 'mint-staged-packet' });
       } else {
         dom.ingressNote.textContent = 'Staged packet minted. The chamber is open, but the SHI # is still locked until Future / Past / Higher all cross the stylometric threshold.';
@@ -1349,7 +1349,7 @@
       await mintStagedPacket({ operatorOverride: true });
     }
     if (dom.batchIntakeNote && state.ingress.packetId) {
-      dom.batchIntakeNote.textContent = 'Batch ' + batchId + ' is staged in the packet reliquary. Complete the triad before Mint / Seal Payload if you want a real SHI.';
+      dom.batchIntakeNote.textContent = 'Batch ' + batchId + ' is staged in the packet reliquary. Complete the triad before Seal Payload if you want a real SHI.';
     }
   }
 
@@ -2176,7 +2176,7 @@
         dom.batchIntakeNote.textContent = 'Batch ' + state.selectedBatchId + ' was sealed to disk on localhost and exported for local save.';
       }
       if (dom.covenantNote) {
-        dom.covenantNote.textContent = 'Mint / Seal Payload confirmed. The selected batch was hard-written to localhost storage, the detached signature was attached, and the sealed artifact was downloaded.';
+        dom.covenantNote.textContent = 'Seal Payload confirmed. The selected batch was hard-written to localhost storage, the detached signature was attached, and the sealed artifact was downloaded.';
       }
       logEvent('batch-sealed-to-disk', { selected_batch_id: state.selectedBatchId, path: result.path || null });
       return true;
@@ -2332,7 +2332,7 @@
           confirmed: Boolean(badgeAssignment),
           confirmed_at: badgeAssignment ? state.covenant.confirmedAt : null,
           required: true,
-          action_label: 'Mint / Seal Payload'
+          action_label: 'Seal Payload'
         },
         export_gate: { ready: false, state: 'guarded', blockers: [], scrub_passed: false }
       }

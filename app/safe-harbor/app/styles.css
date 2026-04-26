@@ -2223,3 +2223,58 @@ textarea {
   padding: 4px 10px;
   margin-top: 4px;
 }
+
+.intake-canon-fold {
+  margin-top: 18px;
+}
+
+.intake-canon-fold > summary {
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.intake-canon-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 16px;
+  background:
+    linear-gradient(180deg, rgba(25, 18, 34, 0.96), rgba(10, 8, 14, 0.98)) padding-box,
+    linear-gradient(135deg, rgba(208, 167, 255, 0.24), rgba(255, 143, 181, 0.1), rgba(255, 255, 255, 0.03)) border-box;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+
+.intake-canon-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.intake-canon-grid .field-wide {
+  grid-column: 1 / -1;
+}
+
+.intake-canon-subsection {
+  margin-top: 6px;
+}
+
+.intake-canon-card .helper-card {
+  padding: 12px 14px;
+  border-radius: 8px;
+}
+
+.intake-canon-card .helper-card .button-grid {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 880px) {
+  .intake-canon-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .intake-canon-grid {
+    grid-template-columns: 1fr;
+  }
+}
