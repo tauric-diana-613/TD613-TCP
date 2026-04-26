@@ -273,7 +273,7 @@
                 <div class="metric-row"><span class="label">Triad resonance</span><span class="value" id="triadResonanceReadout">pending</span></div>
                 <div class="metric-row"><span class="label">Sealed lane</span><span class="value" id="sealedLaneReadout">session-only / pending</span></div>
               </div>
-              <details class="fold-panel reliquary-forensic-fold" open>
+              <details class="fold-panel reliquary-forensic-fold">
                 <summary>Forensic reliquary</summary>
                 <div class="metric-block roomy">
                   <div class="metric-row"><span class="label">Packet id</span><span class="value" id="packetIdReadout">pending</span></div>
@@ -299,58 +299,56 @@
                   <button class="control secondary" id="resetStagedPacket" type="button" disabled>Reset Staged Packet</button>
                 </div>
                 <pre class="code-panel" id="forensicSchemaPreview">forensic schema pending</pre>
-                <details class="fold-panel" data-td613-skip="true">
-                  <summary>Packet forge</summary>
-                  <div class="forge-grid">
-                    <details class="fold-panel forge-fold">
-                      <summary>Temporal keys</summary>
-                      <div class="forge-card helper-card">
-                        <div class="field-grid">
-                          <label class="field"><span>ts_utc</span><input id="helperTs" readonly></label>
-                          <label class="field"><span>request_id</span><input id="helperRequestId" readonly></label>
-                          <label class="field"><span>sealed_at</span><input id="helperSealedAt" readonly></label>
-                          <label class="field"><span>nonce</span><input id="helperNonce" readonly></label>
-                          <label class="field"><span>filename-safe UTC</span><input id="helperFilenameSafe" readonly></label>
-                        </div>
-                        <div class="button-grid">
-                          <button class="control" id="refreshHelpers" type="button">Refresh Helper Values</button>
-                          <button class="control secondary" data-copy-target="helperTs" type="button">Copy ts_utc</button>
-                          <button class="control secondary" data-copy-target="helperRequestId" type="button">Copy request_id</button>
-                          <button class="control secondary" data-copy-target="helperNonce" type="button">Copy nonce</button>
-                        </div>
-                      </div>
-                    </details>
-
-                    <div class="forge-card intake-card">
-                      <div class="subsection-label">Intake canon</div>
-                      <div class="triad-summary">
-                        <div class="summary-row"><span class="summary-label">Future Self</span><span class="summary-value" id="summaryFutureSelf">awaiting ingress</span></div>
-                        <div class="summary-row"><span class="summary-label">Past Self</span><span class="summary-value" id="summaryPastSelf">awaiting ingress</span></div>
-                        <div class="summary-row"><span class="summary-label">Higher Self</span><span class="summary-value" id="summaryHigherSelf">awaiting ingress</span></div>
-                      </div>
+                <div class="forge-grid">
+                  <details class="fold-panel forge-fold">
+                    <summary>Temporal keys</summary>
+                    <div class="forge-card helper-card">
                       <div class="field-grid">
-                        <label class="field">
-                          <span>Footer mode</span>
-                          <select id="inputFooterMode">
-                            <option value="legacy-compat">legacy-compat</option>
-                            <option value="legacy">legacy</option>
-                            <option value="sac-only">sac-only</option>
-                          </select>
-                        </label>
-                        <label class="field"><span>Payload index</span><input id="inputPayloadIndex" inputmode="numeric" placeholder="{n}"></label>
-                        <label class="field"><span>Attestation date</span><input id="inputAttestationDate" placeholder="YYYY-MM-DD"></label>
-                        <label class="field"><span>Operator id</span><input id="inputOperatorId" placeholder="safe-harbor.operator"></label>
-                        <label class="field"><span>Source class</span><input id="inputSourceClass" placeholder="futurecore membrane"></label>
-                        <label class="field"><span>Witness channel</span><input id="inputWitnessChannel" placeholder="ritual + cadence"></label>
-                        <label class="field field-wide"><span>Operator notes</span><textarea id="inputOperatorNotes" placeholder="Packet shaping notes, harbor constraints, route posture, or Safe Harbor guidance."></textarea></label>
+                        <label class="field"><span>ts_utc</span><input id="helperTs" readonly></label>
+                        <label class="field"><span>request_id</span><input id="helperRequestId" readonly></label>
+                        <label class="field"><span>sealed_at</span><input id="helperSealedAt" readonly></label>
+                        <label class="field"><span>nonce</span><input id="helperNonce" readonly></label>
+                        <label class="field"><span>filename-safe UTC</span><input id="helperFilenameSafe" readonly></label>
                       </div>
-                      <div class="footer-template secondary" id="footerModePreview"></div>
+                      <div class="button-grid">
+                        <button class="control" id="refreshHelpers" type="button">Refresh Helper Values</button>
+                        <button class="control secondary" data-copy-target="helperTs" type="button">Copy ts_utc</button>
+                        <button class="control secondary" data-copy-target="helperRequestId" type="button">Copy request_id</button>
+                        <button class="control secondary" data-copy-target="helperNonce" type="button">Copy nonce</button>
+                      </div>
                     </div>
+                  </details>
+
+                  <div class="forge-card intake-card">
+                    <div class="subsection-label">Intake canon</div>
+                    <div class="triad-summary">
+                      <div class="summary-row"><span class="summary-label">Future Self</span><span class="summary-value" id="summaryFutureSelf">awaiting ingress</span></div>
+                      <div class="summary-row"><span class="summary-label">Past Self</span><span class="summary-value" id="summaryPastSelf">awaiting ingress</span></div>
+                      <div class="summary-row"><span class="summary-label">Higher Self</span><span class="summary-value" id="summaryHigherSelf">awaiting ingress</span></div>
+                    </div>
+                    <div class="field-grid">
+                      <label class="field">
+                        <span>Footer mode</span>
+                        <select id="inputFooterMode">
+                          <option value="legacy-compat">legacy-compat</option>
+                          <option value="legacy">legacy</option>
+                          <option value="sac-only">sac-only</option>
+                        </select>
+                      </label>
+                      <label class="field"><span>Payload index</span><input id="inputPayloadIndex" inputmode="numeric" placeholder="{n}"></label>
+                      <label class="field"><span>Attestation date</span><input id="inputAttestationDate" placeholder="YYYY-MM-DD"></label>
+                      <label class="field"><span>Operator id</span><input id="inputOperatorId" placeholder="safe-harbor.operator"></label>
+                      <label class="field"><span>Source class</span><input id="inputSourceClass" placeholder="futurecore membrane"></label>
+                      <label class="field"><span>Witness channel</span><input id="inputWitnessChannel" placeholder="ritual + cadence"></label>
+                      <label class="field field-wide"><span>Operator notes</span><textarea id="inputOperatorNotes" placeholder="Packet shaping notes, harbor constraints, route posture, or Safe Harbor guidance."></textarea></label>
+                    </div>
+                    <div class="footer-template secondary" id="footerModePreview"></div>
                   </div>
-                </details>
+                </div>
                 <div class="button-grid">
                   <button class="control" id="covenantExport" type="button">Mint / Seal Payload</button>
                   <button class="control secondary" id="resealVault" type="button">Return to Ingress</button>
+                  <button class="control secondary" id="forgeBatch" type="button" hidden>Forge Batch</button>
                 </div>
                 <div class="note" id="covenantNote">Vault-open stages the packet only. Mint / Seal Payload appends any pasted Kleopatra signature text and advances the packet toward harbor eligibility and SHI # assignment. Export Packet unlocks once the seal lane completes.</div>
               </details>

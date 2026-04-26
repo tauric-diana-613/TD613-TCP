@@ -47,6 +47,7 @@
     clearBypassToken: $('clearBypassToken'),
     bypassIngress: $('bypassIngress'),
     mintStagedPacket: $('mintStagedPacket'),
+    forgeBatch: $('forgeBatch'),
     ingressStepKicker: $('ingressStepKicker'),
     ingressStepPrompt: $('ingressStepPrompt'),
     ingressStepState: $('ingressStepState'),
@@ -420,6 +421,7 @@
     dom.refreshHelpers.addEventListener('click', () => refreshHelpers());
     dom.covenantExport.addEventListener('click', () => void covenantExport());
     dom.mintStagedPacket.addEventListener('click', () => void mintStagedPacket());
+    if (dom.forgeBatch) dom.forgeBatch.addEventListener('click', () => void forgeBatch());
     if (dom.stageSelectedBatch) dom.stageSelectedBatch.addEventListener('click', () => void stageSelectedBatch());
     if (dom.resetStagedBatch) dom.resetStagedBatch.addEventListener('click', clearStagedBatch);
     if (dom.batchIntakeSelect) dom.batchIntakeSelect.addEventListener('change', () => { render(); persist(); void loadBatchNodes(dom.batchIntakeSelect.value); });
@@ -1044,6 +1046,7 @@
       dom.covenantExport.disabled = true;
       if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = true;
       if (dom.exportPacketPreview) dom.exportPacketPreview.disabled = true;
+      if (dom.forgeBatch) { dom.forgeBatch.hidden = true; dom.forgeBatch.disabled = true; }
       return;
     }
 
@@ -1091,7 +1094,24 @@
           : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint Staged Packet will issue the SHI #, and Mint / Seal Payload remains the final artifact-seal step.' : 'The packet is staged only. Mint Staged Packet issues the SHI # once the entrant triad is ready; Mint / Seal Payload remains available for the final seal lane.'));
     dom.covenantExport.disabled = false;
     if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = !hasOperatorAccess();
-    if (dom.exportPacketPreview) dom.exportPacketPreview.disabled = !signatureSealed;
+    const exportReady = Boolean(
+      state.packet &&
+      state.packet.bridge &&
+      state.packet.bridge.export_gate &&
+      state.packet.bridge.export_gate.ready
+    );
+    if (dom.exportPacketPreview) dom.exportPacketPreview.disabled = !exportReady;
+    if (dom.forgeBatch) {
+      const showForgeBatch = Boolean(
+        signatureSealed &&
+        isLocalhostOperator() &&
+        state.selectedBatchId &&
+        state.packet.issuance &&
+        state.packet.issuance.badge_number
+      );
+      dom.forgeBatch.hidden = !showForgeBatch;
+      dom.forgeBatch.disabled = !showForgeBatch;
+    }
   }
 
   function renderAudit() {
@@ -1120,7 +1140,8 @@
   }
 
   function updateFooterPreview() {
-    dom.canonicalFooterPreview.textContent = D.trustProfile.public_footer_template;
+    const minted = state.covenant && state.covenant.confirmed && state.covenant.badgeNumber ? state.covenant.badgeNumber : null;
+    dom.canonicalFooterPreview.textContent = extendedFooterString(minted);
     dom.footerModePreview.textContent = footerString();
   }
 
@@ -1396,13 +1417,20 @@
       await setLocalBypassToken();
       dom.bypassPassword.value = '';
     }
-    if (isLocalhostOperator() && state.selectedBatchId) {
-      await sealSelectedBatchToDisk();
-    }
     logEvent('covenant-export', {
       badge_number: state.covenant.badgeNumber || null,
       signature_status: state.packet && state.packet.signature ? state.packet.signature.status : 'unsigned'
     });
+  }
+
+  async function forgeBatch() {
+    if (!isLocalhostOperator() || !state.selectedBatchId || !state.packet || !state.packet.issuance || !state.packet.issuance.badge_number) {
+      return;
+    }
+    if (!state.packet.signature || state.packet.signature.status !== 'sealed') {
+      return;
+    }
+    await sealSelectedBatchToDisk();
   }
 
   async function resetHooks() {
@@ -1692,17 +1720,6 @@
     };
   }
 
-  function canonicalHeaderString(shiNumber) {
-    if (!shiNumber) return '';
-    return 'SHI#:' + shiNumber;
-  }
-
-  function extendedFooterString(shiNumber) {
-    if (!shiNumber) return '';
-    const compact = footerString();
-    return compact.replace(/\spayload/u, ' \u{1D30B} \u00b7 SHI#:' + shiNumber + ' \u00b7 payload');
-  }
-
   function stampBundle() {
     const ts = nowIso();
     return { ts_utc: ts, request_id: 'TD613-RUN-' + ts.replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z'), sealed_at: ts, nonce: 'b64::' + randBase62(18), filename_safe: ts.replace(/:/g, '-'), packet_suffix: randHex(4) };
@@ -1807,18 +1824,59 @@
     const digest = hash64(seed).slice(0, 8).toUpperCase();
     return 'TD613-SH-' + bindingFragment().replace('#', '') + '-' + digest;
   }
-  function buildStylometricProvenance(issuanceLike) {
+  function buildStylometricProvenance(issuanceLike, options) {
     const issuance = issuanceLike && typeof issuanceLike === 'object' ? issuanceLike : {};
+    const opts = options && typeof options === 'object' ? options : {};
     return {
+      schema_version: 'td613.safe-harbor.stylometric-provenance/v2',
       source: 'safe-harbor.ingress.triad',
+      shi_number: opts.badgeNumber || issuance.badge_number || null,
+      shi_derivation: {
+        algorithm: 'TD613-SH-<binding_fragment>-<8_hex>',
+        seed_components: [
+          { index: 0, kind: 'literal', value: 'td613.shi/v1' },
+          { index: 1, kind: 'principal', value: opts.principal || null },
+          { index: 2, kind: 'binding_fragment', value: opts.bindingFragment || null },
+          { index: 3, kind: 'stylometric_fingerprint', value: issuance.stylometric_fingerprint == null ? null : String(issuance.stylometric_fingerprint) }
+        ],
+        seed_join_delimiter: '|',
+        hash: { name: 'hash64', slice_chars: '0..8', case: 'uppercase' },
+        narrative: 'The SHI # is the uppercase 8-char hex slice of hash64 over a |-joined seed of [literal td613.shi/v1, principal, binding_fragment, stylometric_fingerprint]. Two entrants with different stylometric fingerprints will mint distinct SHIs even when principal and binding_fragment are identical.',
+        verification_rule: 'Replay the join with the same four seed components, hash with hash64, take the first 8 hex chars uppercased, and prefix with TD613-SH-<binding_fragment without #>-.'
+      },
       entrant_prompt_lanes: KEYS.slice(),
       threshold_rule: MIN_LANE_WORDS + '-word minimum per lane',
       signature_semantics: 'entrant-owned stylometric witness',
       derivation_rule: 'SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint',
       interpretation_note: "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
       stylometric_fingerprint: issuance.stylometric_fingerprint == null ? null : String(issuance.stylometric_fingerprint),
+      fingerprint_schema: {
+        lane_separator: '|',
+        lane_format: '<lane_key>=<field>:<field>:...',
+        field_separator: ':',
+        quantization_note: 'Each lane field is rounded to its declared quantization step then formatted to two decimal places to keep the fingerprint stable across small re-keystrokes while remaining distinct between entrants.',
+        fields: [
+          { index: 0, key: 'avg_word_length', quantization_step: 0.5, format: 'fixed-2' },
+          { index: 1, key: 'avg_sentence_length', quantization_step: 1, format: 'fixed-2' },
+          { index: 2, key: 'punctuation_density', quantization_step: 0.01, format: 'fixed-2' },
+          { index: 3, key: 'line_break_density', quantization_step: 0.01, format: 'fixed-2' },
+          { index: 4, key: 'unique_ratio', quantization_step: 0.05, format: 'fixed-2' },
+          { index: 5, key: 'punctuation_mix.comma', quantization_step: 0.05, format: 'fixed-2' },
+          { index: 6, key: 'punctuation_mix.dash', quantization_step: 0.05, format: 'fixed-2' },
+          { index: 7, key: 'punctuation_mix.colon', quantization_step: 0.05, format: 'fixed-2' },
+          { index: 8, key: 'punctuation_mix.semicolon', quantization_step: 0.05, format: 'fixed-2' },
+          { index: 9, key: 'punctuation_mix.exclamation', quantization_step: 0.05, format: 'fixed-2' },
+          { index: 10, key: 'punctuation_mix.question', quantization_step: 0.05, format: 'fixed-2' }
+        ]
+      },
       triad_word_counts: issuance.triad_word_counts && typeof issuance.triad_word_counts === 'object' ? clone(issuance.triad_word_counts) : null,
-      triad_shortfalls: issuance.triad_shortfalls && typeof issuance.triad_shortfalls === 'object' ? clone(issuance.triad_shortfalls) : null
+      triad_shortfalls: issuance.triad_shortfalls && typeof issuance.triad_shortfalls === 'object' ? clone(issuance.triad_shortfalls) : null,
+      triad_resonance: opts.triadResonance == null ? null : Number(opts.triadResonance),
+      cross_lane_stability: opts.crossLaneStability == null ? null : Number(opts.crossLaneStability),
+      cross_lane_spread: opts.crossLaneSpread == null ? null : Number(opts.crossLaneSpread),
+      pairwise_similarity: Array.isArray(opts.pairwiseSimilarity) ? clone(opts.pairwiseSimilarity) : null,
+      per_lane_signatures: opts.perLaneSignatures && typeof opts.perLaneSignatures === 'object' ? clone(opts.perLaneSignatures) : null,
+      llm_intake_hint: 'This block is the most comprehensive stylometric witness in the Safe Harbor packet. Per-lane signatures, triad metrics, and the SHI derivation seed are all parseable JSON: an LLM can replay the SHI computation, audit fingerprint stability, and reason over per-lane cadence shape without consulting any other section.'
     };
   }
   function stylometricFingerprint(signatures) {
@@ -2064,7 +2122,12 @@
   function randHex(len) { const bytes = new Uint8Array(len); crypto.getRandomValues(bytes); return Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join(''); }
   async function copyText(text) { if (navigator.clipboard && navigator.clipboard.writeText) { try { await navigator.clipboard.writeText(text || ''); return; } catch (error) {} } const area = document.createElement('textarea'); area.value = text || ''; document.body.appendChild(area); area.select(); document.execCommand('copy'); document.body.removeChild(area); }
   function packetIsSealed() {
-    return Boolean(state.packet && state.packet.signature && state.packet.signature.status === 'sealed');
+    return Boolean(
+      state.packet &&
+      state.packet.bridge &&
+      state.packet.bridge.export_gate &&
+      state.packet.bridge.export_gate.ready
+    );
   }
 
   function packetExportFilename() {
@@ -2241,9 +2304,19 @@
         triad_word_counts: triadIssuance.wordCounts,
         triad_shortfalls: triadIssuance.shortfalls,
         stylometric_provenance: buildStylometricProvenance({
+          badge_number: badgeAssignment,
           stylometric_fingerprint: triadIssuance.stylometricFingerprint,
           triad_word_counts: triadIssuance.wordCounts,
           triad_shortfalls: triadIssuance.shortfalls
+        }, {
+          badgeNumber: badgeAssignment,
+          principal: D.canon.principal,
+          bindingFragment: bindingFragment(),
+          triadResonance: triad.triad_resonance,
+          crossLaneStability: triad.cross_lane_stability,
+          crossLaneSpread: triad.cross_lane_spread,
+          pairwiseSimilarity: triad.pairwise_similarity,
+          perLaneSignatures: signatures
         })
       },
       signature: signatureObject,
