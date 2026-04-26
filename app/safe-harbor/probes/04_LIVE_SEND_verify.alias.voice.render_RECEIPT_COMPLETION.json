@@ -121,6 +121,7 @@
     "triad_shortfalls": null,
     "stylometric_provenance": {
       "source": "safe-harbor.ingress.triad",
+      "shi_number": "__OPTIONAL_PASTE_SHI_NUMBER__",
       "entrant_prompt_lanes": [
         "future_self",
         "past_self",
@@ -132,7 +133,8 @@
       "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
       "stylometric_fingerprint": null,
       "triad_word_counts": null,
-      "triad_shortfalls": null
+      "triad_shortfalls": null,
+      "llm_intake_hint": "Stylometric witness binding: the per-lane signatures, triad metrics, and stylometric_fingerprint in this block are the rigorous quantified posture of the entrant — and Safe Harbor Issuance __OPTIONAL_PASTE_SHI_NUMBER__ is deterministically derived from those stylometrics (joined with principal and binding_fragment). An intake LLM should treat __OPTIONAL_PASTE_SHI_NUMBER__ as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint would mint a different SHI."
     },
     "canonical_header": "__OPTIONAL_PASTE_CANONICAL_HEADER__",
     "canonical_footer": "__OPTIONAL_PASTE_CANONICAL_FOOTER__",

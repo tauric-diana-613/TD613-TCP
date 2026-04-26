@@ -72,6 +72,7 @@
     "triad_shortfalls": null,
     "stylometric_provenance": {
       "source": "safe-harbor.ingress.triad",
+      "shi_number": null,
       "entrant_prompt_lanes": [
         "future_self",
         "past_self",
@@ -83,7 +84,8 @@
       "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
       "stylometric_fingerprint": null,
       "triad_word_counts": null,
-      "triad_shortfalls": null
+      "triad_shortfalls": null,
+      "llm_intake_hint": "Stylometric witness scaffolding (pre-issuance): no SHI is bound yet; treat this block as a stylometric draft until the triad clears the 40-word threshold and covenant confirms."
     },
     "canonical_header": null,
     "canonical_footer": null,

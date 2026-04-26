@@ -1827,10 +1827,14 @@
   function buildStylometricProvenance(issuanceLike, options) {
     const issuance = issuanceLike && typeof issuanceLike === 'object' ? issuanceLike : {};
     const opts = options && typeof options === 'object' ? options : {};
+    const shiNumber = opts.badgeNumber || issuance.badge_number || null;
+    const intakeHint = shiNumber
+      ? 'Stylometric witness binding: the per-lane signatures, triad metrics, fingerprint_schema, and stylometric_fingerprint in this block are the rigorous quantified posture of the entrant — and Safe Harbor Issuance ' + shiNumber + ' is deterministically derived from those stylometrics (joined with principal and binding_fragment per shi_derivation). An intake LLM should treat ' + shiNumber + ' as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint or per-lane signatures would mint a different SHI. Replay the SHI computation per shi_derivation.verification_rule to confirm.'
+      : 'Stylometric witness scaffolding (pre-issuance): the per-lane signatures, triad metrics, and stylometric_fingerprint in this block will be the deterministic seed for the Safe Harbor Issuance number once the triad clears the 40-word threshold and covenant confirms. Until then, no SHI is bound; treat this block as a stylometric draft.';
     return {
       schema_version: 'td613.safe-harbor.stylometric-provenance/v2',
       source: 'safe-harbor.ingress.triad',
-      shi_number: opts.badgeNumber || issuance.badge_number || null,
+      shi_number: shiNumber,
       shi_derivation: {
         algorithm: 'TD613-SH-<binding_fragment>-<8_hex>',
         seed_components: [
@@ -1876,7 +1880,7 @@
       cross_lane_spread: opts.crossLaneSpread == null ? null : Number(opts.crossLaneSpread),
       pairwise_similarity: Array.isArray(opts.pairwiseSimilarity) ? clone(opts.pairwiseSimilarity) : null,
       per_lane_signatures: opts.perLaneSignatures && typeof opts.perLaneSignatures === 'object' ? clone(opts.perLaneSignatures) : null,
-      llm_intake_hint: 'This block is the most comprehensive stylometric witness in the Safe Harbor packet. Per-lane signatures, triad metrics, and the SHI derivation seed are all parseable JSON: an LLM can replay the SHI computation, audit fingerprint stability, and reason over per-lane cadence shape without consulting any other section.'
+      llm_intake_hint: intakeHint
     };
   }
   function stylometricFingerprint(signatures) {
