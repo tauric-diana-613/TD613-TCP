@@ -44,6 +44,8 @@
     clearIngress: $('clearIngress'),
     bypassPassword: $('bypassPassword'),
     bypassSealedPacket: $('bypassSealedPacket'),
+    bypassFreshSample: $('bypassFreshSample'),
+    voiceContinuityReadout: $('voiceContinuityReadout'),
     bypassIngress: $('bypassIngress'),
     mintStagedPacket: $('mintStagedPacket'),
     forgeBatch: $('forgeBatch'),
@@ -430,6 +432,7 @@
     dom.bypassPassword.addEventListener('input', () => render());
     dom.bypassPassword.addEventListener('keydown', (event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); void bypassIngress(); } });
     if (dom.bypassSealedPacket) dom.bypassSealedPacket.addEventListener('input', () => render());
+    if (dom.bypassFreshSample) dom.bypassFreshSample.addEventListener('input', () => render());
     dom.copyCanonicalFooter.addEventListener('click', () => void copyText(dom.canonicalFooterPreview.textContent || ''));
     dom.copyShiNumber.addEventListener('click', () => void copyText(dom.shiMintValue.textContent || ''));
     dom.copyCanonicalHeader.addEventListener('click', () => void copyText(dom.canonicalHeaderPreview.textContent || ''));
@@ -491,6 +494,8 @@
     dom.probeOutput.value = state.lastProbe;
     dom.bypassPassword.value = '';
     if (dom.bypassSealedPacket) dom.bypassSealedPacket.value = '';
+    if (dom.bypassFreshSample) dom.bypassFreshSample.value = '';
+    if (dom.voiceContinuityReadout) { dom.voiceContinuityReadout.hidden = true; dom.voiceContinuityReadout.textContent = ''; }
     updateHelpers();
     render();
   }
@@ -832,6 +837,7 @@
     dom.mintStagedPacket.disabled = ingressLocked;
     dom.bypassPassword.disabled = surfaceIsOpen;
     if (dom.bypassSealedPacket) dom.bypassSealedPacket.disabled = surfaceIsOpen;
+    if (dom.bypassFreshSample) dom.bypassFreshSample.disabled = surfaceIsOpen;
     const pastedPacketText = (dom.bypassSealedPacket && dom.bypassSealedPacket.value || '').trim();
     dom.bypassIngress.disabled = surfaceIsOpen || !typedShiValid || !pastedPacketText;
     dom.clearIngress.disabled = ingressLocked;
@@ -1240,12 +1246,44 @@
       state.covenant.confirmedAt = innerPacket.bridge && innerPacket.bridge.covenant_gate ? (innerPacket.bridge.covenant_gate.confirmed_at || null) : null;
       state.covenant.badgeNumber = innerPacket.issuance && innerPacket.issuance.badge_number || null;
     }
+    // Optional voice continuity reading: compare a fresh writing sample against the bound per-lane signatures.
+    let continuity = null;
+    const freshSample = dom.bypassFreshSample ? (dom.bypassFreshSample.value || '').trim() : '';
+    const freshStats = freshSample ? basicStats(freshSample) : { word_count: 0, char_count: 0 };
+    const perLaneSignatures = innerPacket.issuance
+      && innerPacket.issuance.stylometric_provenance
+      && innerPacket.issuance.stylometric_provenance.per_lane_signatures;
+    if (freshSample && freshStats.word_count >= MIN_LANE_WORDS && perLaneSignatures) {
+      const freshSignature = cadenceFor('reopen_sample', freshSample, freshStats);
+      continuity = readVoiceContinuity(freshSignature, perLaneSignatures);
+    }
+    if (dom.voiceContinuityReadout) {
+      if (continuity) {
+        const driftClause = continuity.drift_axes.length
+          ? ' — drift on ' + continuity.drift_axes.join(', ')
+          : '';
+        dom.voiceContinuityReadout.textContent = 'voice continuity: ' + continuity.continuity_score.toFixed(2)
+          + ' (' + continuity.in_band_axes + ' of ' + continuity.total_axes + ' axes in-band)' + driftClause;
+        dom.voiceContinuityReadout.hidden = false;
+      } else {
+        dom.voiceContinuityReadout.hidden = true;
+        dom.voiceContinuityReadout.textContent = '';
+      }
+    }
     dom.bypassPassword.value = '';
     if (dom.bypassSealedPacket) dom.bypassSealedPacket.value = '';
-    dom.ingressNote.textContent = 'Sealed packet accepted. SHI # ' + token + ' is rebound to the chamber and the rigorous stylometric provenance is restored.';
+    if (dom.bypassFreshSample) dom.bypassFreshSample.value = '';
+    dom.ingressNote.textContent = 'Sealed packet accepted. SHI # ' + token + ' is rebound to the chamber and the rigorous stylometric provenance is restored.'
+      + (continuity ? ' Voice continuity reading attached.' : '');
     render();
     persist();
-    logEvent('shi-recall-reopened', { packet_id: parsed.packet_id || null, shi_number: token, source: 'pasted-sealed-packet' });
+    logEvent('shi-recall-reopened', {
+      packet_id: parsed.packet_id || null,
+      shi_number: token,
+      source: 'pasted-sealed-packet',
+      continuity_score: continuity ? continuity.continuity_score : null,
+      drift_axes: continuity ? continuity.drift_axes : null
+    });
   }
 
   function refreshHelpers() {
@@ -1842,6 +1880,52 @@
       compact: compact,
       notation: '<lane-a>-<lane-b>: <axis>+/-<delta>q means lane-a exceeds/lags lane-b by that many quantization steps on that axis. ~stable means no axis diverged at least one quantization step. F=future_self, P=past_self, H=higher_self.',
       interpretation_note: 'The divergence_signature exposes the SHAPE of how the entrant\'s three self-frames reliably differ. Two entrants with similar per-lane fingerprints but different divergence patterns are stylometrically distinct selves; an LLM should treat this signature as the voice-shape interpretation of stylometric_fingerprint.'
+    };
+  }
+
+  function readVoiceContinuity(freshSignature, perLaneSignatures) {
+    if (!freshSignature || !perLaneSignatures || typeof perLaneSignatures !== 'object') return null;
+    const lanes = ['future_self', 'past_self', 'higher_self'];
+    if (!lanes.every((key) => perLaneSignatures[key] && typeof perLaneSignatures[key] === 'object')) return null;
+    const axes = [
+      { key: 'avg_word_length', step: 0.5, get: (s) => s.avg_word_length },
+      { key: 'avg_sentence_length', step: 1, get: (s) => s.avg_sentence_length },
+      { key: 'punctuation_density', step: 0.01, get: (s) => s.punctuation_density },
+      { key: 'line_break_density', step: 0.01, get: (s) => s.line_break_density },
+      { key: 'unique_ratio', step: 0.05, get: (s) => s.unique_ratio },
+      { key: 'punctuation_mix.comma', step: 0.05, get: (s) => (s.punctuation_mix || {}).comma || 0 },
+      { key: 'punctuation_mix.dash', step: 0.05, get: (s) => (s.punctuation_mix || {}).dash || 0 },
+      { key: 'punctuation_mix.colon', step: 0.05, get: (s) => (s.punctuation_mix || {}).colon || 0 },
+      { key: 'punctuation_mix.semicolon', step: 0.05, get: (s) => (s.punctuation_mix || {}).semicolon || 0 },
+      { key: 'punctuation_mix.exclamation', step: 0.05, get: (s) => (s.punctuation_mix || {}).exclamation || 0 },
+      { key: 'punctuation_mix.question', step: 0.05, get: (s) => (s.punctuation_mix || {}).question || 0 }
+    ];
+    let inBand = 0;
+    const drift = [];
+    for (const axis of axes) {
+      const fresh = Number(axis.get(freshSignature) || 0);
+      const lvals = lanes.map((k) => Number(axis.get(perLaneSignatures[k]) || 0));
+      const lmin = Math.min.apply(null, lvals);
+      const lmax = Math.max.apply(null, lvals);
+      const range = lmax - lmin;
+      const tolerance = Math.max(2 * axis.step, range * 0.5);
+      if (fresh >= lmin - tolerance && fresh <= lmax + tolerance) {
+        inBand++;
+      } else {
+        const distance = fresh < lmin - tolerance ? (fresh - lmin) : (fresh - lmax);
+        drift.push({ key: axis.key, distance: Math.round(distance / axis.step * 10) / 10 });
+      }
+    }
+    const continuity = Math.round((inBand / axes.length) * 100) / 100;
+    const driftSorted = drift.sort((a, b) => Math.abs(b.distance) - Math.abs(a.distance)).slice(0, 3);
+    return {
+      continuity_score: continuity,
+      in_band_axes: inBand,
+      total_axes: axes.length,
+      drift_axes: driftSorted.map((d) => {
+        const sign = d.distance >= 0 ? '+' : '';
+        return d.key + ' (' + sign + d.distance.toFixed(1) + 'q out)';
+      })
     };
   }
 

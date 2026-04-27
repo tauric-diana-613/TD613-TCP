@@ -91,10 +91,15 @@
                 <span>Sealed packet (paste full sealed JSON)</span>
                 <textarea id="bypassSealedPacket" rows="5" spellcheck="false" placeholder="paste your sealed Safe Harbor packet JSON here" disabled></textarea>
               </label>
+              <label class="field field-wide">
+                <span>Walk me through tomorrow.</span>
+                <textarea id="bypassFreshSample" rows="4" spellcheck="false" placeholder="optional — write 40+ words for a voice continuity reading against the bound divergence_signature" disabled></textarea>
+              </label>
             </div>
             <div class="button-grid compact">
               <button class="control secondary" id="bypassIngress" type="button" disabled>Reopen with SHI</button>
             </div>
+            <div class="note" id="voiceContinuityReadout" hidden></div>
           </div>
 
           <div class="button-grid ingress-final-actions">
