@@ -63,13 +63,14 @@ export function buildSealedBatchArtifact({
 
   return {
     ...base,
-    seal_handshake: 'TD613-SH-SEAL-HANDSHAKE/v1',
+    seal_handshake: packetValue.seal_handshake || null,
     route_status: 'provenance.seal',
     verification_status: 'Provenance Seal',
     safe_harbor: {
       source: 'td613.safe-harbor.localhost',
       selected_batch_id: batchId || null,
       sealed_at: sealedAt || null,
+      staged_snapshot: packetValue,
       route: {
         status: 'provenance.seal',
         state: route.state || 'harbor-eligible',

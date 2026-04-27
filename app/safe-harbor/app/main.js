@@ -45,6 +45,7 @@
     bypassPassword: $('bypassPassword'),
     bypassSealedPacket: $('bypassSealedPacket'),
     bypassFreshSample: $('bypassFreshSample'),
+    bypassFreshSampleCount: $('bypassFreshSampleCount'),
     voiceContinuityReadout: $('voiceContinuityReadout'),
     bypassIngress: $('bypassIngress'),
     mintStagedPacket: $('mintStagedPacket'),
@@ -495,6 +496,7 @@
     dom.bypassPassword.value = '';
     if (dom.bypassSealedPacket) dom.bypassSealedPacket.value = '';
     if (dom.bypassFreshSample) dom.bypassFreshSample.value = '';
+    if (dom.bypassFreshSampleCount) { dom.bypassFreshSampleCount.hidden = true; dom.bypassFreshSampleCount.textContent = ''; }
     if (dom.voiceContinuityReadout) { dom.voiceContinuityReadout.hidden = true; dom.voiceContinuityReadout.textContent = ''; }
     updateHelpers();
     render();
@@ -838,6 +840,23 @@
     dom.bypassPassword.disabled = surfaceIsOpen;
     if (dom.bypassSealedPacket) dom.bypassSealedPacket.disabled = surfaceIsOpen;
     if (dom.bypassFreshSample) dom.bypassFreshSample.disabled = surfaceIsOpen;
+    if (dom.bypassFreshSampleCount && dom.bypassFreshSample) {
+      const freshRaw = dom.bypassFreshSample.value || '';
+      const freshTrim = freshRaw.trim();
+      if (!freshTrim || surfaceIsOpen) {
+        dom.bypassFreshSampleCount.hidden = true;
+        dom.bypassFreshSampleCount.textContent = '';
+      } else {
+        const wordCount = basicStats(freshRaw).word_count;
+        dom.bypassFreshSampleCount.hidden = false;
+        if (wordCount >= MIN_LANE_WORDS) {
+          dom.bypassFreshSampleCount.textContent = wordCount + ' / ' + MIN_LANE_WORDS + ' — continuity reading will attach on reopen.';
+        } else {
+          const need = MIN_LANE_WORDS - wordCount;
+          dom.bypassFreshSampleCount.textContent = wordCount + ' / ' + MIN_LANE_WORDS + ' — write ' + need + ' more for a continuity reading.';
+        }
+      }
+    }
     const pastedPacketText = (dom.bypassSealedPacket && dom.bypassSealedPacket.value || '').trim();
     dom.bypassIngress.disabled = surfaceIsOpen || !typedShiValid || !pastedPacketText;
     dom.clearIngress.disabled = ingressLocked;
@@ -1211,24 +1230,46 @@
       return;
     }
     const handshake = parsed && parsed.seal_handshake;
-    if (handshake !== 'TD613-SH-SEAL-HANDSHAKE/v1') {
+    if (!handshake || typeof handshake !== 'string' || handshake.indexOf('TD613-SH-SEAL-HANDSHAKE/v1:') !== 0) {
       dom.ingressNote.textContent = 'That packet has not been sealed. Only sealed packets carry the TD613-SH-SEAL-HANDSHAKE marker; staged or minted-only packets cannot reopen the chamber.';
       logEvent('bypass-denied', { state: 'sealed', reason: 'missing-seal-handshake' });
       return;
     }
     // Resolve the packet shape: 'Export Packet' downloads state.packet (issuance at root); 'Forge Batch' downloads
-    // buildSealedBatchArtifact output (issuance under safe_harbor). Accept either shape.
-    const innerPacket = parsed.issuance && parsed.issuance.badge_number
-      ? parsed
-      : (parsed.safe_harbor && parsed.safe_harbor.issuance && parsed.safe_harbor.issuance.badge_number
-          ? Object.assign({}, parsed, parsed.safe_harbor)
-          : parsed);
+    // buildSealedBatchArtifact output. The wrapper preserves the full staged packet under safe_harbor.staged_snapshot
+    // for content-bound verification; fall back to a merged view if the snapshot is absent.
+    let innerPacket;
+    if (parsed.issuance && parsed.issuance.badge_number) {
+      innerPacket = parsed;
+    } else if (parsed.safe_harbor && parsed.safe_harbor.staged_snapshot
+      && parsed.safe_harbor.staged_snapshot.issuance && parsed.safe_harbor.staged_snapshot.issuance.badge_number) {
+      innerPacket = parsed.safe_harbor.staged_snapshot;
+    } else if (parsed.safe_harbor && parsed.safe_harbor.issuance && parsed.safe_harbor.issuance.badge_number) {
+      innerPacket = Object.assign({}, parsed, parsed.safe_harbor);
+    } else {
+      innerPacket = parsed;
+    }
     const packetShi = innerPacket.issuance && innerPacket.issuance.badge_number
       ? normalizeShiNumber(String(innerPacket.issuance.badge_number))
       : '';
     if (!packetShi || packetShi !== token) {
       dom.ingressNote.textContent = 'SHI # does not match the sealed packet badge_number. Safe Harbor will not reopen with mismatched credentials.';
       logEvent('bypass-denied', { state: 'sealed', reason: 'shi-mismatch', shi_number: token });
+      return;
+    }
+    // Content-bound handshake check: recompute over the inner packet's identity-defining fields
+    // and reject if the stored handshake does not match. This blocks forgeries that just paste
+    // the marker string into a staged packet.
+    const expectedHandshake = computeSealHandshake({
+      packetId: innerPacket.packet_id,
+      badgeNumber: innerPacket.issuance && innerPacket.issuance.badge_number,
+      stylometricFingerprint: innerPacket.issuance && innerPacket.issuance.stylometric_fingerprint,
+      signatureSig: innerPacket.signature && innerPacket.signature.sig,
+      sealedAt: innerPacket.intake && innerPacket.intake.sealed_at
+    });
+    if (handshake !== expectedHandshake) {
+      dom.ingressNote.textContent = 'Sealed packet handshake fails integrity check. The packet appears tampered or forged; the handshake hash does not match the identity-binding fields.';
+      logEvent('bypass-denied', { state: 'sealed', reason: 'handshake-integrity-fail', shi_number: token });
       return;
     }
     state.packet = innerPacket;
@@ -2336,9 +2377,18 @@
     const sealHandshakeApplied = Boolean(
       badgeAssignment && signatureObject && signatureObject.status === 'sealed'
     );
+    const sealHandshakeValue = sealHandshakeApplied
+      ? computeSealHandshake({
+          packetId: state.ingress.packetId,
+          badgeNumber: badgeAssignment,
+          stylometricFingerprint: triadIssuance.stylometricFingerprint,
+          signatureSig: signatureObject.sig,
+          sealedAt: state.helper.sealed_at
+        })
+      : null;
     const packet = {
       schema_version: 'td613.safe-harbor.packet/v1',
-      seal_handshake: sealHandshakeApplied ? 'TD613-SH-SEAL-HANDSHAKE/v1' : null,
+      seal_handshake: sealHandshakeValue,
       packet_id: state.ingress.packetId,
       created_at: state.ingress.openedAt || state.helper.ts_utc,
       canonicalization: {
@@ -2631,6 +2681,18 @@
       hash = (hash * prime) & 0xffffffffffffffffn;
     }
     return hash.toString(16).padStart(16, '0');
+  }
+
+  function computeSealHandshake(parts) {
+    const seed = [
+      'td613.seal-handshake/v1',
+      parts && parts.packetId || '',
+      parts && parts.badgeNumber || '',
+      parts && parts.stylometricFingerprint || '',
+      parts && parts.signatureSig || '',
+      parts && parts.sealedAt || ''
+    ].join('|');
+    return 'TD613-SH-SEAL-HANDSHAKE/v1:' + hash64(seed).toUpperCase();
   }
 
   function probePacketContextText() {
