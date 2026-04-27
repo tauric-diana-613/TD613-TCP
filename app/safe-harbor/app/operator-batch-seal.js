@@ -59,6 +59,7 @@ export function buildSealedBatchArtifact({
 
   return {
     ...base,
+    seal_handshake: 'TD613-SH-SEAL-HANDSHAKE/v1',
     route_status: 'provenance.seal',
     verification_status: 'Provenance Seal',
     safe_harbor: {

@@ -820,6 +820,14 @@ select {
   grid-template-columns: 1fr;
 }
 
+.ingress-bypass-grid textarea {
+  width: 100%;
+  min-height: 120px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  resize: vertical;
+}
+
 .control {
   appearance: none;
   display: inline-flex;

@@ -43,8 +43,7 @@
     ingressNote: $('ingressNote'),
     clearIngress: $('clearIngress'),
     bypassPassword: $('bypassPassword'),
-    setBypassToken: $('setBypassToken'),
-    clearBypassToken: $('clearBypassToken'),
+    bypassSealedPacket: $('bypassSealedPacket'),
     bypassIngress: $('bypassIngress'),
     mintStagedPacket: $('mintStagedPacket'),
     forgeBatch: $('forgeBatch'),
@@ -425,13 +424,12 @@
     if (dom.stageSelectedBatch) dom.stageSelectedBatch.addEventListener('click', () => void stageSelectedBatch());
     if (dom.resetStagedBatch) dom.resetStagedBatch.addEventListener('click', clearStagedBatch);
     if (dom.batchIntakeSelect) dom.batchIntakeSelect.addEventListener('change', () => { render(); persist(); void loadBatchNodes(dom.batchIntakeSelect.value); });
-    dom.setBypassToken.addEventListener('click', () => void setLocalBypassToken());
-    dom.clearBypassToken.addEventListener('click', clearLocalBypassToken);
     dom.bypassIngress.addEventListener('click', () => void bypassIngress());
     if (dom.attachSignature) dom.attachSignature.addEventListener('click', () => void attachSignatureOverlay());
     if (dom.clearSignature) dom.clearSignature.addEventListener('click', () => void clearSignatureOverlay());
     dom.bypassPassword.addEventListener('input', () => render());
-    dom.bypassPassword.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void bypassIngress(); } });
+    dom.bypassPassword.addEventListener('keydown', (event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); void bypassIngress(); } });
+    if (dom.bypassSealedPacket) dom.bypassSealedPacket.addEventListener('input', () => render());
     dom.copyCanonicalFooter.addEventListener('click', () => void copyText(dom.canonicalFooterPreview.textContent || ''));
     dom.copyShiNumber.addEventListener('click', () => void copyText(dom.shiMintValue.textContent || ''));
     dom.copyCanonicalHeader.addEventListener('click', () => void copyText(dom.canonicalHeaderPreview.textContent || ''));
@@ -492,6 +490,7 @@
   function hydrate() {
     dom.probeOutput.value = state.lastProbe;
     dom.bypassPassword.value = '';
+    if (dom.bypassSealedPacket) dom.bypassSealedPacket.value = '';
     updateHelpers();
     render();
   }
@@ -831,10 +830,10 @@
     renderIngressStageChip(dom.ingressStageHigher, 2, stepIndex, count, ingressLocked);
     renderIngressStageChip(dom.ingressStageSeal, 3, stepIndex, count, ingressLocked);
     dom.mintStagedPacket.disabled = ingressLocked;
-    dom.bypassIngress.disabled = surfaceIsOpen;
     dom.bypassPassword.disabled = surfaceIsOpen;
-    dom.setBypassToken.disabled = surfaceIsOpen;
-    dom.clearBypassToken.disabled = surfaceIsOpen || !getOperatorBypassHash();
+    if (dom.bypassSealedPacket) dom.bypassSealedPacket.disabled = surfaceIsOpen;
+    const pastedPacketText = (dom.bypassSealedPacket && dom.bypassSealedPacket.value || '').trim();
+    dom.bypassIngress.disabled = surfaceIsOpen || !typedShiValid || !pastedPacketText;
     dom.clearIngress.disabled = ingressLocked;
     dom.bypassPassword.placeholder = recoverableShi || 'paste minted SHI #';
     dom.demoTcpHook.disabled = !devModeEnabled;
@@ -1179,45 +1178,6 @@
     dom.copyExtendedFooter.disabled = !available;
   }
 
-  async function setLocalBypassToken() {
-    const token = normalizeShiNumber(dom.bypassPassword.value);
-    if (!token) {
-      dom.ingressNote.textContent = 'Enter a SHI # first. Intake remains sealed.';
-      return;
-    }
-    if (!isShiNumber(token)) {
-      dom.ingressNote.textContent = 'Recall codes must use a minted SHI # in the form ' + shiFormatTemplate() + '.';
-      return;
-    }
-    const recoverable = recoverableShiNumber();
-    if (!recoverable || normalizeShiNumber(recoverable) !== token) {
-      dom.ingressNote.textContent = 'Only the currently minted SHI # can be rebound to this session.';
-      return;
-    }
-    const tokenHash = await checksum(token);
-    try {
-      sessionStorage.setItem((D.operatorBypass && D.operatorBypass.storage_key) || 'td613.safe-harbor.operator-bypass.hash', tokenHash);
-    } catch (error) {}
-    window.TD613_SAFE_HARBOR_OPERATOR = Object.assign({}, window.TD613_SAFE_HARBOR_OPERATOR || {}, { bypass_hash_sha256: tokenHash });
-    dom.ingressNote.textContent = 'SHI recall code stored for this session. Use that same SHI # to reopen the chamber and recover packet copies without repeating the ritual.';
-    render();
-    persist();
-    logEvent('shi-recall-configured', { scope: 'session-local', shi_number: token });
-  }
-
-  function clearLocalBypassToken() {
-    try {
-      sessionStorage.removeItem((D.operatorBypass && D.operatorBypass.storage_key) || 'td613.safe-harbor.operator-bypass.hash');
-    } catch (error) {}
-    if (window.TD613_SAFE_HARBOR_OPERATOR && Object.prototype.hasOwnProperty.call(window.TD613_SAFE_HARBOR_OPERATOR, 'bypass_hash_sha256')) {
-      window.TD613_SAFE_HARBOR_OPERATOR = Object.assign({}, window.TD613_SAFE_HARBOR_OPERATOR, { bypass_hash_sha256: null });
-    }
-    dom.ingressNote.textContent = 'Stored SHI recall code cleared for this session.';
-    render();
-    persist();
-    logEvent('shi-recall-cleared', { scope: 'session-local' });
-  }
-
   async function bypassIngress() {
     const token = normalizeShiNumber(dom.bypassPassword.value);
     if (!token) {
@@ -1230,46 +1190,52 @@
       logEvent('bypass-denied', { state: 'sealed', reason: 'invalid-shi-format' });
       return;
     }
-    const recoverable = recoverableShiNumber();
-    if (recoverable && normalizeShiNumber(recoverable) === token) {
-      state.ingress.operatorShellOpen = false;
-      state.ingress.vaultOpen = true;
-      state.ingress.bypass = false;
-      state.ingress.recovered = false;
-      state.ingress.openedAt = state.packet.created_at || state.packet.receipt.minted_at || nowIso();
-      state.ingress.packetId = state.packet.packet_id;
-      state.ingress.receiptId = state.packet.receipt.receipt_id;
-      dom.bypassPassword.value = '';
-      render();
-      persist();
-      logEvent('shi-recall-reopened', { packet_id: state.packet.packet_id, shi_number: recoverable });
+    const pastedText = dom.bypassSealedPacket ? (dom.bypassSealedPacket.value || '').trim() : '';
+    if (!pastedText) {
+      dom.ingressNote.textContent = 'Paste your sealed Safe Harbor packet JSON to reopen the chamber. SHI # alone cannot rebuild the packet.';
+      logEvent('bypass-denied', { state: 'sealed', reason: 'missing-sealed-packet' });
       return;
     }
-    const configuredHash = getOperatorBypassHash();
-    if (!configuredHash) {
-      dom.ingressNote.textContent = 'No recoverable SHI recall is armed for this session. Complete the triad ritual or reopen with the live minted SHI #.';
-      logEvent('bypass-denied', { state: 'sealed', reason: 'missing-recall-hash' });
+    let parsed;
+    try {
+      parsed = JSON.parse(pastedText);
+    } catch (error) {
+      dom.ingressNote.textContent = 'Sealed packet JSON is malformed. Paste the full sealed artifact you exported from Safe Harbor.';
+      logEvent('bypass-denied', { state: 'sealed', reason: 'invalid-json', error: String(error && error.message || error) });
       return;
     }
-    const tokenHash = await checksum(token);
-    if (normalizeHash(tokenHash) !== normalizeHash(configuredHash)) {
-      dom.ingressNote.textContent = 'SHI # rejected. Safe Harbor cannot reopen the chamber with that code.';
-      logEvent('bypass-denied', { state: 'sealed', reason: 'hash-mismatch' });
+    const handshake = parsed && parsed.seal_handshake;
+    if (handshake !== 'TD613-SH-SEAL-HANDSHAKE/v1') {
+      dom.ingressNote.textContent = 'That packet has not been sealed. Only sealed packets carry the TD613-SH-SEAL-HANDSHAKE marker; staged or minted-only packets cannot reopen the chamber.';
+      logEvent('bypass-denied', { state: 'sealed', reason: 'missing-seal-handshake' });
       return;
     }
-    state.ingress.operatorShellOpen = true;
-    state.ingress.vaultOpen = false;
-    state.ingress.bypass = true;
-    state.ingress.recovered = false;
-    state.ingress.openedAt = nowIso();
-    state.ingress.packetId = null;
-    state.ingress.receiptId = null;
+    const packetShi = parsed.issuance && parsed.issuance.badge_number ? normalizeShiNumber(String(parsed.issuance.badge_number)) : '';
+    if (!packetShi || packetShi !== token) {
+      dom.ingressNote.textContent = 'SHI # does not match the sealed packet badge_number. Safe Harbor will not reopen with mismatched credentials.';
+      logEvent('bypass-denied', { state: 'sealed', reason: 'shi-mismatch', shi_number: token });
+      return;
+    }
+    state.packet = parsed;
+    state.sealed = null;
+    state.ingress.operatorShellOpen = false;
+    state.ingress.vaultOpen = true;
+    state.ingress.bypass = false;
+    state.ingress.recovered = true;
+    state.ingress.openedAt = parsed.created_at || (parsed.receipt && parsed.receipt.minted_at) || nowIso();
+    state.ingress.packetId = parsed.packet_id || null;
+    state.ingress.receiptId = parsed.receipt && parsed.receipt.receipt_id ? parsed.receipt.receipt_id : null;
+    if (parsed.canon && parsed.canon.binding_fragment && state.covenant) {
+      state.covenant.confirmed = Boolean(parsed.bridge && parsed.bridge.covenant_gate && parsed.bridge.covenant_gate.confirmed);
+      state.covenant.confirmedAt = parsed.bridge && parsed.bridge.covenant_gate ? (parsed.bridge.covenant_gate.confirmed_at || null) : null;
+      state.covenant.badgeNumber = parsed.issuance && parsed.issuance.badge_number || null;
+    }
     dom.bypassPassword.value = '';
+    if (dom.bypassSealedPacket) dom.bypassSealedPacket.value = '';
+    dom.ingressNote.textContent = 'Sealed packet accepted. SHI # ' + token + ' is rebound to the chamber and the rigorous stylometric provenance is restored.';
     render();
     persist();
-    dom.ingressNote.textContent = 'Operator bypass accepted. The shell is open in packetless mode. No staged packet, covenant transition, or SHI issuance exists yet.';
-    logEvent('bypass-opened', { state: 'operator-shell', reason: 'hash-match-no-packet', shi_number: token });
-    return;
+    logEvent('shi-recall-reopened', { packet_id: parsed.packet_id || null, shi_number: token, source: 'pasted-sealed-packet' });
   }
 
   function refreshHelpers() {
@@ -1314,9 +1280,6 @@
       updateHelpers();
       await rebuild('packet-staged');
       if (triadIssuance.ready && state.covenant.badgeNumber) {
-        dom.bypassPassword.value = state.covenant.badgeNumber;
-        await setLocalBypassToken();
-        dom.bypassPassword.value = '';
         dom.ingressNote.textContent = 'Staged packet minted. The chamber is open and the SHI # is now issued from the entrant triad. Seal Payload remains available for the detached-signature seal lane.';
         logEvent('shi-issued', { badge_number: state.covenant.badgeNumber, source: 'mint-staged-packet' });
       } else {
@@ -1412,11 +1375,6 @@
       state.covenant.badgeNumber = triadIssuance.badgeNumber;
     }
     await rebuild('covenant-export');
-    if (state.covenant.badgeNumber) {
-      dom.bypassPassword.value = state.covenant.badgeNumber;
-      await setLocalBypassToken();
-      dom.bypassPassword.value = '';
-    }
     logEvent('covenant-export', {
       badge_number: state.covenant.badgeNumber || null,
       signature_status: state.packet && state.packet.signature ? state.packet.signature.status : 'unsigned'
@@ -1491,7 +1449,6 @@
     if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = 'batch-001a';
     dom.dynamicTarget.innerHTML = '';
     dom.probeOutput.value = '';
-    clearLocalBypassToken();
     writeStorage(null);
     hydrate();
     logEvent('session-reset', { state: 'sealed' });
@@ -2227,8 +2184,12 @@
     const receiptState = badgeAssignment
       ? (signatureObject.status === 'sealed' ? 'harbor-eligible' : 'issued')
       : (signatureObject.status === 'sealed' ? 'sealed' : 'staged');
+    const sealHandshakeApplied = Boolean(
+      badgeAssignment && signatureObject && signatureObject.status === 'sealed'
+    );
     const packet = {
       schema_version: 'td613.safe-harbor.packet/v1',
+      seal_handshake: sealHandshakeApplied ? 'TD613-SH-SEAL-HANDSHAKE/v1' : null,
       packet_id: state.ingress.packetId,
       created_at: state.ingress.openedAt || state.helper.ts_utc,
       canonicalization: {

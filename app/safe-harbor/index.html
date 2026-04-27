@@ -81,16 +81,18 @@
           </div>
 
           <div class="ingress-bypass" data-td613-skip="true">
-            <div class="section-label">SHI Recall</div>
+            <div class="section-label">Reopen Safe Harbor</div>
             <div class="field-grid ingress-bypass-grid">
               <label class="field field-wide">
-                <span>SHI # / recall code</span>
+                <span>SHI #</span>
                 <input id="bypassPassword" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="paste minted SHI #" disabled>
+              </label>
+              <label class="field field-wide">
+                <span>Sealed packet (paste full sealed JSON)</span>
+                <textarea id="bypassSealedPacket" rows="5" spellcheck="false" placeholder="paste your sealed Safe Harbor packet JSON here" disabled></textarea>
               </label>
             </div>
             <div class="button-grid compact">
-              <button class="control secondary" id="setBypassToken" type="button" disabled>Store Recall Code</button>
-              <button class="control secondary" id="clearBypassToken" type="button" disabled>Clear Recall Code</button>
               <button class="control secondary" id="bypassIngress" type="button" disabled>Reopen with SHI</button>
             </div>
           </div>
