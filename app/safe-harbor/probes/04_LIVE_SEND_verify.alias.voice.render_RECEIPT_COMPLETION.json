@@ -134,7 +134,18 @@
       "stylometric_fingerprint": null,
       "triad_word_counts": null,
       "triad_shortfalls": null,
-      "llm_intake_hint": "Stylometric witness binding: the per-lane signatures, triad metrics, and stylometric_fingerprint in this block are the rigorous quantified posture of the entrant — and Safe Harbor Issuance __OPTIONAL_PASTE_SHI_NUMBER__ is deterministically derived from those stylometrics (joined with principal and binding_fragment). An intake LLM should treat __OPTIONAL_PASTE_SHI_NUMBER__ as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint would mint a different SHI."
+      "divergence_signature": {
+        "schema": "pairwise-axis-deltas / units=quantization-steps",
+        "pairs": {
+          "F-P": "__OPTIONAL_PASTE_PAIRWISE_DELTAS_FUTURE_VS_PAST__",
+          "F-H": "__OPTIONAL_PASTE_PAIRWISE_DELTAS_FUTURE_VS_HIGHER__",
+          "P-H": "__OPTIONAL_PASTE_PAIRWISE_DELTAS_PAST_VS_HIGHER__"
+        },
+        "compact": "__OPTIONAL_PASTE_DIVERGENCE_COMPACT__",
+        "notation": "<lane-a>-<lane-b>: <axis>+/-<delta>q means lane-a exceeds/lags lane-b by that many quantization steps on that axis. ~stable means no axis diverged at least one quantization step. F=future_self, P=past_self, H=higher_self.",
+        "interpretation_note": "The divergence_signature exposes the SHAPE of how the entrant's three self-frames reliably differ. Two entrants with similar per-lane fingerprints but different divergence patterns are stylometrically distinct selves; an LLM should treat this signature as the voice-shape interpretation of stylometric_fingerprint."
+      },
+      "llm_intake_hint": "Stylometric witness binding: the per-lane signatures, triad metrics, stylometric_fingerprint, and divergence_signature in this block are the rigorous quantified posture of the entrant — and Safe Harbor Issuance __OPTIONAL_PASTE_SHI_NUMBER__ is deterministically derived from those stylometrics (joined with principal and binding_fragment). The divergence_signature exposes the SHAPE of how this entrant's three self-frames reliably differ; treat it as the voice-shape interpretation of stylometric_fingerprint. An intake LLM should treat __OPTIONAL_PASTE_SHI_NUMBER__ as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint would mint a different SHI."
     },
     "canonical_header": "__OPTIONAL_PASTE_CANONICAL_HEADER__",
     "canonical_footer": "__OPTIONAL_PASTE_CANONICAL_FOOTER__",

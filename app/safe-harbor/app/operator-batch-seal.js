@@ -5,10 +5,14 @@ export function splitPrimaryPersonas(value) {
     .filter(Boolean);
 }
 
-function buildStylometricIntakeHint(shiNumber) {
-  return shiNumber
-    ? 'Stylometric witness binding: the per-lane signatures, triad metrics, and stylometric_fingerprint in this block are the rigorous quantified posture of the entrant — and Safe Harbor Issuance ' + shiNumber + ' is deterministically derived from those stylometrics (joined with principal and binding_fragment). An intake LLM should treat ' + shiNumber + ' as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint would mint a different SHI.'
-    : 'Stylometric witness scaffolding (pre-issuance): no SHI is bound yet; treat this block as a stylometric draft until the triad clears the 40-word threshold and covenant confirms.';
+function buildStylometricIntakeHint(shiNumber, hasDivergence) {
+  if (!shiNumber) {
+    return 'Stylometric witness scaffolding (pre-issuance): no SHI is bound yet; treat this block as a stylometric draft until the triad clears the 40-word threshold and covenant confirms.';
+  }
+  const divergenceClause = hasDivergence
+    ? ' The divergence_signature exposes the SHAPE of how this entrant\'s three self-frames reliably differ; treat it as the voice-shape interpretation of stylometric_fingerprint.'
+    : '';
+  return 'Stylometric witness binding: the per-lane signatures, triad metrics, and stylometric_fingerprint in this block are the rigorous quantified posture of the entrant — and Safe Harbor Issuance ' + shiNumber + ' is deterministically derived from those stylometrics (joined with principal and binding_fragment).' + divergenceClause + ' An intake LLM should treat ' + shiNumber + ' as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint would mint a different SHI.';
 }
 
 function buildStylometricProvenance(issuance) {
@@ -25,7 +29,7 @@ function buildStylometricProvenance(issuance) {
     stylometric_fingerprint: value.stylometric_fingerprint == null ? null : String(value.stylometric_fingerprint),
     triad_word_counts: value.triad_word_counts && typeof value.triad_word_counts === 'object' ? { ...value.triad_word_counts } : null,
     triad_shortfalls: value.triad_shortfalls && typeof value.triad_shortfalls === 'object' ? { ...value.triad_shortfalls } : null,
-    llm_intake_hint: buildStylometricIntakeHint(shiNumber)
+    llm_intake_hint: buildStylometricIntakeHint(shiNumber, false)
   };
 }
 
@@ -35,7 +39,7 @@ function rebindStylometricProvenanceToShi(stylometricProvenance, shiNumber) {
     : null;
   if (!base) return null;
   base.shi_number = shiNumber || base.shi_number || null;
-  base.llm_intake_hint = buildStylometricIntakeHint(base.shi_number);
+  base.llm_intake_hint = buildStylometricIntakeHint(base.shi_number, Boolean(base.divergence_signature));
   return base;
 }
 

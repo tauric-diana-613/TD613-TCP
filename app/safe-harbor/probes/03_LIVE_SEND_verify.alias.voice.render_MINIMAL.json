@@ -85,6 +85,7 @@
       "stylometric_fingerprint": null,
       "triad_word_counts": null,
       "triad_shortfalls": null,
+      "divergence_signature": null,
       "llm_intake_hint": "Stylometric witness scaffolding (pre-issuance): no SHI is bound yet; treat this block as a stylometric draft until the triad clears the 40-word threshold and covenant confirms."
     },
     "canonical_header": null,

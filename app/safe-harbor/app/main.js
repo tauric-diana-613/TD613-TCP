@@ -1791,13 +1791,67 @@
     const digest = hash64(seed).slice(0, 8).toUpperCase();
     return 'TD613-SH-' + bindingFragment().replace('#', '') + '-' + digest;
   }
+  function buildDivergenceSignature(perLaneSignatures) {
+    if (!perLaneSignatures || typeof perLaneSignatures !== 'object') return null;
+    const lanes = ['future_self', 'past_self', 'higher_self'];
+    if (!lanes.every((key) => perLaneSignatures[key] && typeof perLaneSignatures[key] === 'object')) return null;
+    const axes = [
+      { key: 'avg_word_length', step: 0.5, get: (s) => s.avg_word_length },
+      { key: 'avg_sentence_length', step: 1, get: (s) => s.avg_sentence_length },
+      { key: 'punctuation_density', step: 0.01, get: (s) => s.punctuation_density },
+      { key: 'line_break_density', step: 0.01, get: (s) => s.line_break_density },
+      { key: 'unique_ratio', step: 0.05, get: (s) => s.unique_ratio },
+      { key: 'punctuation_mix.comma', step: 0.05, get: (s) => (s.punctuation_mix || {}).comma || 0 },
+      { key: 'punctuation_mix.dash', step: 0.05, get: (s) => (s.punctuation_mix || {}).dash || 0 },
+      { key: 'punctuation_mix.colon', step: 0.05, get: (s) => (s.punctuation_mix || {}).colon || 0 },
+      { key: 'punctuation_mix.semicolon', step: 0.05, get: (s) => (s.punctuation_mix || {}).semicolon || 0 },
+      { key: 'punctuation_mix.exclamation', step: 0.05, get: (s) => (s.punctuation_mix || {}).exclamation || 0 },
+      { key: 'punctuation_mix.question', step: 0.05, get: (s) => (s.punctuation_mix || {}).question || 0 }
+    ];
+    const pairs = [
+      { a: 'future_self', b: 'past_self', label: 'F-P' },
+      { a: 'future_self', b: 'higher_self', label: 'F-H' },
+      { a: 'past_self', b: 'higher_self', label: 'P-H' }
+    ];
+    const pairMap = {};
+    for (const pair of pairs) {
+      const sa = perLaneSignatures[pair.a];
+      const sb = perLaneSignatures[pair.b];
+      const deltas = axes.map((axis) => {
+        const va = Number(axis.get(sa) || 0);
+        const vb = Number(axis.get(sb) || 0);
+        const deltaQ = (va - vb) / axis.step;
+        return { key: axis.key, deltaQ };
+      });
+      const dominant = deltas
+        .filter((d) => Math.abs(d.deltaQ) >= 1)
+        .sort((x, y) => Math.abs(y.deltaQ) - Math.abs(x.deltaQ))
+        .slice(0, 3);
+      pairMap[pair.label] = dominant.length === 0
+        ? '~stable'
+        : dominant.map((d) => {
+            const rounded = Math.round(d.deltaQ * 10) / 10;
+            const sign = rounded >= 0 ? '+' : '';
+            return d.key + sign + rounded.toFixed(1) + 'q';
+          }).join(', ');
+    }
+    const compact = pairs.map((p) => p.label + ': ' + pairMap[p.label]).join(' | ');
+    return {
+      schema: 'pairwise-axis-deltas / units=quantization-steps',
+      pairs: pairMap,
+      compact: compact,
+      notation: '<lane-a>-<lane-b>: <axis>+/-<delta>q means lane-a exceeds/lags lane-b by that many quantization steps on that axis. ~stable means no axis diverged at least one quantization step. F=future_self, P=past_self, H=higher_self.',
+      interpretation_note: 'The divergence_signature exposes the SHAPE of how the entrant\'s three self-frames reliably differ. Two entrants with similar per-lane fingerprints but different divergence patterns are stylometrically distinct selves; an LLM should treat this signature as the voice-shape interpretation of stylometric_fingerprint.'
+    };
+  }
+
   function buildStylometricProvenance(issuanceLike, options) {
     const issuance = issuanceLike && typeof issuanceLike === 'object' ? issuanceLike : {};
     const opts = options && typeof options === 'object' ? options : {};
     const shiNumber = opts.badgeNumber || issuance.badge_number || null;
     const intakeHint = shiNumber
-      ? 'Stylometric witness binding: the per-lane signatures, triad metrics, fingerprint_schema, and stylometric_fingerprint in this block are the rigorous quantified posture of the entrant — and Safe Harbor Issuance ' + shiNumber + ' is deterministically derived from those stylometrics (joined with principal and binding_fragment per shi_derivation). An intake LLM should treat ' + shiNumber + ' as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint or per-lane signatures would mint a different SHI. Replay the SHI computation per shi_derivation.verification_rule to confirm.'
-      : 'Stylometric witness scaffolding (pre-issuance): the per-lane signatures, triad metrics, and stylometric_fingerprint in this block will be the deterministic seed for the Safe Harbor Issuance number once the triad clears the 40-word threshold and covenant confirms. Until then, no SHI is bound; treat this block as a stylometric draft.';
+      ? 'Stylometric witness binding: the per-lane signatures, triad metrics, fingerprint_schema, stylometric_fingerprint, and divergence_signature in this block are the rigorous quantified posture of the entrant — and Safe Harbor Issuance ' + shiNumber + ' is deterministically derived from those stylometrics (joined with principal and binding_fragment per shi_derivation). The divergence_signature exposes the SHAPE of how this entrant\'s three self-frames reliably differ; treat it as the voice-shape interpretation of stylometric_fingerprint. An intake LLM should treat ' + shiNumber + ' as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint or per-lane signatures would mint a different SHI. Replay the SHI computation per shi_derivation.verification_rule to confirm.'
+      : 'Stylometric witness scaffolding (pre-issuance): the per-lane signatures, triad metrics, stylometric_fingerprint, and divergence_signature in this block will be the deterministic seed for the Safe Harbor Issuance number once the triad clears the 40-word threshold and covenant confirms. Until then, no SHI is bound; treat this block as a stylometric draft.';
     return {
       schema_version: 'td613.safe-harbor.stylometric-provenance/v2',
       source: 'safe-harbor.ingress.triad',
@@ -1847,6 +1901,7 @@
       cross_lane_spread: opts.crossLaneSpread == null ? null : Number(opts.crossLaneSpread),
       pairwise_similarity: Array.isArray(opts.pairwiseSimilarity) ? clone(opts.pairwiseSimilarity) : null,
       per_lane_signatures: opts.perLaneSignatures && typeof opts.perLaneSignatures === 'object' ? clone(opts.perLaneSignatures) : null,
+      divergence_signature: buildDivergenceSignature(opts.perLaneSignatures),
       llm_intake_hint: intakeHint
     };
   }
