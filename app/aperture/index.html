@@ -2903,7 +2903,13 @@ function createTCPHandoffPacket(metrics, packetKeyOverride = null) {
 }
 
 function exportToTCP(packet) {
-  console.log("TCP_HANDOFF_PACKET", packet);
+  // Broadcast the audit packet to any registered listener (Gateway, Safe Harbor, or a
+  // future handoff lane). Avoid console.log so the packet is not exposed to DevTools.
+  try {
+    window.dispatchEvent(new CustomEvent('td613:aperture-tcp-handoff', { detail: packet }));
+  } catch (error) {
+    // CustomEvent dispatch is best-effort; downstream listeners are optional.
+  }
 }
 
 function triggerTCPHandoff(packet) {
@@ -8203,6 +8209,57 @@ requestAnimationFrame(tick);
     document.addEventListener("DOMContentLoaded", () => emitGatewayEmbedStatus(true), { once: true });
   } else {
     emitGatewayEmbedStatus(true);
+  }
+})();
+</script>
+
+<script id="td613-aperture-trace-input-keybindings">
+(function () {
+  // Wire Enter-to-submit on the COUNTER-RECOGNITION trace inputs so the form
+  // matches the universal expectation that Enter in a field submits the primary
+  // action (READ TRACE). Single-line fields fire on Enter; textareas require
+  // Cmd/Ctrl+Enter so plain Enter still inserts a newline.
+  function bindTraceInputKeybindings() {
+    var primary = function () {
+      if (typeof window.handleValidateHumanInput === "function") {
+        window.handleValidateHumanInput();
+      }
+    };
+    var singleLineIds = [
+      "inputSubjectAlias",
+      "inputNamingString",
+      "inputCompareAgainst",
+      "inputProvenanceConfidence",
+      "inputNotes"
+    ];
+    singleLineIds.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el || el.dataset.td613KeybindingsBound === "1") return;
+      el.dataset.td613KeybindingsBound = "1";
+      el.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          primary();
+        }
+      });
+    });
+    var textareaIds = ["inputTokens", "inputBurdenMarkers"];
+    textareaIds.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el || el.dataset.td613KeybindingsBound === "1") return;
+      el.dataset.td613KeybindingsBound = "1";
+      el.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+          event.preventDefault();
+          primary();
+        }
+      });
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindTraceInputKeybindings, { once: true });
+  } else {
+    bindTraceInputKeybindings();
   }
 })();
 </script>
