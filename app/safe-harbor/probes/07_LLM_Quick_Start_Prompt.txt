@@ -5,4 +5,25 @@ Do not invent signature material, request metadata, or hidden fields that were n
 If a detached JWS or historical .sig lane is not explicitly provided, keep the public probe unsigned and unchanged.
 
 - Safe Harbor packet schema reference: `td613.safe-harbor.packet/v1`
+- Stylometric provenance schema reference: `td613.safe-harbor.stylometric-provenance/v2`
 - Public footer stays compact; packet hashes and signature lanes are operator-only concerns.
+
+Stylometric binding for intake:
+- `issuance.badge_number` (the SHI #) is deterministically derived from
+  [literal "td613.shi/v1", principal, binding_fragment, stylometric_fingerprint]
+  joined by "|" and hashed with hash64; the first 8 hex chars uppercased form
+  the badge suffix. Per `issuance.stylometric_provenance.shi_derivation`.
+- `issuance.stylometric_fingerprint` is the per-lane quantized cadence string;
+  any drift in the entrant's stylometrics across lanes produces a different SHI.
+- `issuance.stylometric_provenance.divergence_signature` exposes the SHAPE of
+  how the entrant's three self-frames (Future / Past / Higher) reliably differ
+  along 11 stylometric axes; treat it as the voice-shape interpretation of the
+  raw fingerprint. Two entrants with similar averages but opposite divergence
+  patterns are stylometrically distinct selves.
+- `seal_handshake` (when present at the packet root, format
+  "TD613-SH-SEAL-HANDSHAKE/v1:<16-hex-uppercase>") is a content-bound hash
+  over [literal, packet_id, badge_number, stylometric_fingerprint,
+  signature.sig, intake.sealed_at]; it binds the seal to those exact identity
+  fields. Tampering with any of those invalidates the handshake.
+
+Treat the SHI as bound to these stylometrics, not as a standalone identifier.

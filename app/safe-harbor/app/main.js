@@ -1117,7 +1117,7 @@
           ? 'The packet shell can be staged and the detached signature can be carried, but SHI issuance stays locked until Future / Past / Higher all cross the stylometric threshold.'
           : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint Staged Packet will issue the SHI #, and Seal Payload remains the final artifact-seal step.' : 'The packet is staged only. Mint Staged Packet issues the SHI # once the entrant triad is ready; Seal Payload remains available for the final seal lane.'));
     dom.covenantExport.disabled = false;
-    if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = !hasOperatorAccess();
+    if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = !state.packet;
     const exportReady = Boolean(
       state.packet &&
       state.packet.bridge &&
@@ -1372,7 +1372,9 @@
         dom.ingressNote.textContent = 'Staged packet minted. The chamber is open and the SHI # is now issued from the entrant triad. Seal Payload remains available for the detached-signature seal lane.';
         logEvent('shi-issued', { badge_number: state.covenant.badgeNumber, source: 'mint-staged-packet' });
       } else {
-        dom.ingressNote.textContent = 'Staged packet minted. The chamber is open, but the SHI # is still locked until Future / Past / Higher all cross the stylometric threshold.';
+        dom.ingressNote.textContent = triadIssuance.blockingReason
+          ? 'Staged packet minted, but the SHI # is locked. ' + triadIssuance.blockingReason
+          : 'Staged packet minted. The chamber is open, but the SHI # is still locked until Future / Past / Higher all cross the stylometric threshold.';
       }
       logEvent('packet-staged', { packet_id: state.ingress.packetId, receipt_id: state.ingress.receiptId });
     } catch (error) {
@@ -1458,14 +1460,20 @@
       });
       return;
     }
-    if (!state.covenant.confirmed) {
-      state.covenant.confirmed = true;
-      state.covenant.confirmedAt = nowIso();
-      state.covenant.badgeNumber = triadIssuance.badgeNumber;
-    }
+    // Refresh confirmedAt on every Seal Payload click so re-sealing the packet
+    // produces a visible state change (timestamp + recomputed seal_handshake).
+    state.covenant.confirmed = true;
+    state.covenant.confirmedAt = nowIso();
+    state.covenant.badgeNumber = triadIssuance.badgeNumber;
     await rebuild('covenant-export');
+    if (dom.covenantNote) {
+      dom.covenantNote.textContent = 'Seal Payload confirmed at ' + state.covenant.confirmedAt
+        + '. SHI # ' + state.covenant.badgeNumber
+        + ' is harbor-eligible. Export Packet is unlocked once the scrub passes.';
+    }
     logEvent('covenant-export', {
       badge_number: state.covenant.badgeNumber || null,
+      confirmed_at: state.covenant.confirmedAt,
       signature_status: state.packet && state.packet.signature ? state.packet.signature.status : 'unsigned'
     });
   }
@@ -2371,11 +2379,13 @@
     const badgeAssignment = state.covenant.confirmed && triadIssuance.ready
       ? triadIssuance.badgeNumber
       : null;
+    // Seal lane is decoupled from PGP: covenant confirmation + a minted SHI is the seal,
+    // and a pasted PGP signature is an additional (optional) attestation lane on top.
     const receiptState = badgeAssignment
-      ? (signatureObject.status === 'sealed' ? 'harbor-eligible' : 'issued')
+      ? 'harbor-eligible'
       : (signatureObject.status === 'sealed' ? 'sealed' : 'staged');
     const sealHandshakeApplied = Boolean(
-      badgeAssignment && signatureObject && signatureObject.status === 'sealed'
+      badgeAssignment && state.covenant.confirmed
     );
     const sealHandshakeValue = sealHandshakeApplied
       ? computeSealHandshake({
