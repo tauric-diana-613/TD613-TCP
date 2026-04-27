@@ -1210,25 +1210,35 @@
       logEvent('bypass-denied', { state: 'sealed', reason: 'missing-seal-handshake' });
       return;
     }
-    const packetShi = parsed.issuance && parsed.issuance.badge_number ? normalizeShiNumber(String(parsed.issuance.badge_number)) : '';
+    // Resolve the packet shape: 'Export Packet' downloads state.packet (issuance at root); 'Forge Batch' downloads
+    // buildSealedBatchArtifact output (issuance under safe_harbor). Accept either shape.
+    const innerPacket = parsed.issuance && parsed.issuance.badge_number
+      ? parsed
+      : (parsed.safe_harbor && parsed.safe_harbor.issuance && parsed.safe_harbor.issuance.badge_number
+          ? Object.assign({}, parsed, parsed.safe_harbor)
+          : parsed);
+    const packetShi = innerPacket.issuance && innerPacket.issuance.badge_number
+      ? normalizeShiNumber(String(innerPacket.issuance.badge_number))
+      : '';
     if (!packetShi || packetShi !== token) {
       dom.ingressNote.textContent = 'SHI # does not match the sealed packet badge_number. Safe Harbor will not reopen with mismatched credentials.';
       logEvent('bypass-denied', { state: 'sealed', reason: 'shi-mismatch', shi_number: token });
       return;
     }
-    state.packet = parsed;
+    state.packet = innerPacket;
     state.sealed = null;
     state.ingress.operatorShellOpen = false;
     state.ingress.vaultOpen = true;
     state.ingress.bypass = false;
     state.ingress.recovered = true;
-    state.ingress.openedAt = parsed.created_at || (parsed.receipt && parsed.receipt.minted_at) || nowIso();
-    state.ingress.packetId = parsed.packet_id || null;
-    state.ingress.receiptId = parsed.receipt && parsed.receipt.receipt_id ? parsed.receipt.receipt_id : null;
-    if (parsed.canon && parsed.canon.binding_fragment && state.covenant) {
-      state.covenant.confirmed = Boolean(parsed.bridge && parsed.bridge.covenant_gate && parsed.bridge.covenant_gate.confirmed);
-      state.covenant.confirmedAt = parsed.bridge && parsed.bridge.covenant_gate ? (parsed.bridge.covenant_gate.confirmed_at || null) : null;
-      state.covenant.badgeNumber = parsed.issuance && parsed.issuance.badge_number || null;
+    state.ingress.openedAt = innerPacket.created_at || (innerPacket.receipt && innerPacket.receipt.minted_at) || nowIso();
+    state.ingress.packetId = innerPacket.packet_id || null;
+    state.ingress.receiptId = innerPacket.receipt && innerPacket.receipt.receipt_id ? innerPacket.receipt.receipt_id : null;
+    if (state.covenant) {
+      state.covenant.confirmed = Boolean(innerPacket.bridge && innerPacket.bridge.covenant_gate && innerPacket.bridge.covenant_gate.confirmed)
+        || Boolean(innerPacket.issuance && innerPacket.issuance.badge_number);
+      state.covenant.confirmedAt = innerPacket.bridge && innerPacket.bridge.covenant_gate ? (innerPacket.bridge.covenant_gate.confirmed_at || null) : null;
+      state.covenant.badgeNumber = innerPacket.issuance && innerPacket.issuance.badge_number || null;
     }
     dom.bypassPassword.value = '';
     if (dom.bypassSealedPacket) dom.bypassSealedPacket.value = '';
