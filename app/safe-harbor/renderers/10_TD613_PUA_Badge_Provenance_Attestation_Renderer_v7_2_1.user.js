@@ -31,7 +31,10 @@
   const SEMVER = '2.1.0';
   const PREVIEW_SVG_SHA256 = '2c20bb26f3dcc3fe41e8e3d71705942d220aed7e56391c274f8f5e5d01e4d1aa';
   const PREVIEW_SVG_MD5 = 'd4522965d0660d1150a828e00e5dd6f9';
-  const SVG_URL = 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTI4IDEyOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGV4dCB4PSI2NCIgeT0iODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iNjQiPkArPC90ZXh0Pjwvc3ZnPg==';
+  const BINDING_TEXT_SHA256 = '9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04';
+  const BINDING_TEXT_MD5 = 'b6ca85d00f211127729bdb73a19c691a';
+  const FALLBACK_GLYPH = '@+';
+  const FALLBACK_REASON = 'U+10D613 unrenderable in default fonts';
   const SKIP_SELECTOR = '[data-td613-skip="true"]';
   const BADGE_SELECTOR = 'img[data-td613-generated="true"]';
   const PRINCIPAL_ATTR_SELECTOR = '[data-td613-principal="true"]';
@@ -70,9 +73,73 @@
     try { console.debug('[td613]', detail); } catch (e) {}
   }
 
+  function readBadgeMeta(node) {
+    const principalNode = (node && node.closest && node.closest(PRINCIPAL_ATTR_SELECTOR))
+      || document.querySelector(PRINCIPAL_ATTR_SELECTOR)
+      || document.body;
+    const ds = (principalNode && principalNode.dataset) ? principalNode.dataset : {};
+    return {
+      shi: ds.td613Shi || null,
+      packet_id: ds.td613PacketId || null,
+      packet_hash: ds.td613PacketHash || null,
+      stylometric_fingerprint: ds.td613StylometricFingerprint || null
+    };
+  }
+
+  function utf8ToBase64(text) {
+    return btoa(unescape(encodeURIComponent(text)));
+  }
+
+  function makeBadgeSvg(meta) {
+    const m = meta || {};
+    const md = JSON.stringify({
+      shi_label: SHI_LABEL,
+      shi_number: m.shi || null,
+      packet_id: m.packet_id || null,
+      packet_hash_sha256: m.packet_hash || null,
+      stylometric_fingerprint: m.stylometric_fingerprint || null,
+      binding_text_sha256: BINDING_TEXT_SHA256,
+      binding_text_md5: BINDING_TEXT_MD5,
+      preview_svg_sha256: PREVIEW_SVG_SHA256,
+      preview_svg_md5: PREVIEW_SVG_MD5,
+      principal: PRINCIPAL,
+      claimed_pua: CODEPOINT,
+      canonical_phrase: CANONICAL_PHRASE,
+      display_phrase: DISPLAY_PHRASE,
+      fallback_glyph: FALLBACK_GLYPH,
+      fallback_reason: FALLBACK_REASON,
+      renderer: RENDERER,
+      schema_family: SCHEMA_FAMILY,
+      semver: SEMVER
+    });
+    return '<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">' +
+      '<metadata id="safeHarborStylometricProvenance">' + md + '</metadata>' +
+      '<text x="64" y="80" text-anchor="middle" font-size="64" data-codepoint="' + CODEPOINT + '" aria-label="' + CODEPOINT + '">' + FALLBACK_GLYPH + '</text>' +
+      '</svg>';
+  }
+
+  function downloadBadgeSvg(img) {
+    const meta = readBadgeMeta(img);
+    const svgText = makeBadgeSvg(meta);
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filename = 'TD613_U10D613_' + stamp + '.svg';
+    const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+    const href = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = href;
+    link.download = filename;
+    link.setAttribute('data-td613-skip', 'true');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(function () { URL.revokeObjectURL(href); }, 0);
+    emit('badge-svg-saved', { filename: filename, shi: meta.shi || null, packet_id: meta.packet_id || null });
+  }
+
   function makeBadge(matchMode) {
     const img = document.createElement('img');
-    img.src = SVG_URL;
+    const meta = readBadgeMeta(null);
+    img.src = 'data:image/svg+xml;base64,' + utf8ToBase64(makeBadgeSvg(meta));
     img.alt = 'Badge ' + CODEPOINT;
     img.width = 18;
     img.height = 18;
@@ -81,8 +148,16 @@
     img.style.background = '#dbf8ff';
     img.style.borderRadius = '4px';
     img.style.padding = '1px';
+    img.style.cursor = 'pointer';
     img.dataset.td613Generated = 'true';
     img.dataset.matchMode = matchMode;
+    img.addEventListener('click', function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const fresh = readBadgeMeta(img);
+      img.src = 'data:image/svg+xml;base64,' + utf8ToBase64(makeBadgeSvg(fresh));
+      downloadBadgeSvg(img);
+    });
     return img;
   }
 
