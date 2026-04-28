@@ -89,6 +89,7 @@ export function buildSealedBatchArtifact({
         stylometric_fingerprint: issuance.stylometric_fingerprint || null,
         triad_word_counts: issuance.triad_word_counts || null,
         triad_shortfalls: issuance.triad_shortfalls || null,
+        frame_alignment_flags: Array.isArray(issuance.frame_alignment_flags) ? issuance.frame_alignment_flags.slice() : [],
         stylometric_provenance: issuance.stylometric_provenance
           ? rebindStylometricProvenanceToShi(issuance.stylometric_provenance, issuance.badge_number || null)
           : buildStylometricProvenance(issuance)

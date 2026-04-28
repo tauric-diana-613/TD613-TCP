@@ -119,6 +119,7 @@
     "stylometric_fingerprint": null,
     "triad_word_counts": null,
     "triad_shortfalls": null,
+    "frame_alignment_flags": [],
     "stylometric_provenance": {
       "source": "safe-harbor.ingress.triad",
       "shi_number": "__OPTIONAL_PASTE_SHI_NUMBER__",
@@ -128,24 +129,25 @@
         "higher_self"
       ],
       "threshold_rule": "40-word minimum per lane",
-      "signature_semantics": "entrant-owned stylometric witness",
-      "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+      "signature_semantics": "entrant-owned stylometric witness (cadence + semantic posture)",
+      "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint (15 fields per lane: 11 cadence axes + 4 semantic posture axes)",
       "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
       "stylometric_fingerprint": null,
       "triad_word_counts": null,
       "triad_shortfalls": null,
+      "frame_alignment_flags": [],
       "divergence_signature": {
-        "schema": "pairwise-axis-deltas / units=quantization-steps",
+        "schema": "pairwise-axis-deltas / units=quantization-steps-or-categorical",
         "pairs": {
           "F-P": "__OPTIONAL_PASTE_PAIRWISE_DELTAS_FUTURE_VS_PAST__",
           "F-H": "__OPTIONAL_PASTE_PAIRWISE_DELTAS_FUTURE_VS_HIGHER__",
           "P-H": "__OPTIONAL_PASTE_PAIRWISE_DELTAS_PAST_VS_HIGHER__"
         },
         "compact": "__OPTIONAL_PASTE_DIVERGENCE_COMPACT__",
-        "notation": "<lane-a>-<lane-b>: <axis>+/-<delta>q means lane-a exceeds/lags lane-b by that many quantization steps on that axis. ~stable means no axis diverged at least one quantization step. F=future_self, P=past_self, H=higher_self.",
-        "interpretation_note": "The divergence_signature exposes the SHAPE of how the entrant's three self-frames reliably differ. Two entrants with similar per-lane fingerprints but different divergence patterns are stylometrically distinct selves; an LLM should treat this signature as the voice-shape interpretation of stylometric_fingerprint."
+        "notation": "Numeric axes: <lane-a>-<lane-b>: <axis>+/-<delta>q means lane-a exceeds/lags lane-b by that many quantization steps on that axis. Categorical axes (temporal_posture, dominant_operator, closure_class): <axis>:<value-a>-><value-b> means lane-a holds value-a where lane-b holds value-b. ~stable means no axis diverged at least one quantization step or category. F=future_self, P=past_self, H=higher_self.",
+        "interpretation_note": "The divergence_signature exposes the SHAPE of how the entrant's three self-frames reliably differ across both stylometric (cadence) and semantic (posture) axes. Two entrants with similar per-lane fingerprints but different divergence patterns are stylometrically and semantically distinct selves; an LLM should treat this signature as the voice-shape and posture-shape interpretation of stylometric_fingerprint."
       },
-      "llm_intake_hint": "Stylometric witness binding: the per-lane signatures, triad metrics, stylometric_fingerprint, and divergence_signature in this block are the rigorous quantified posture of the entrant — and Safe Harbor Issuance __OPTIONAL_PASTE_SHI_NUMBER__ is deterministically derived from those stylometrics (joined with principal and binding_fragment). The divergence_signature exposes the SHAPE of how this entrant's three self-frames reliably differ; treat it as the voice-shape interpretation of stylometric_fingerprint. An intake LLM should treat __OPTIONAL_PASTE_SHI_NUMBER__ as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint would mint a different SHI."
+      "llm_intake_hint": "Stylometric witness binding: the per-lane signatures, triad metrics, stylometric_fingerprint, and divergence_signature in this block are the rigorous quantified posture of the entrant — both cadence (11 axes per lane) AND semantic posture (temporal_posture, dominant_operator from the narrowing chain R∘K∘C∘P∘F∘A, governed_exposure_depth, closure_class) — and Safe Harbor Issuance __OPTIONAL_PASTE_SHI_NUMBER__ is deterministically derived from all of those (joined with principal and binding_fragment). The divergence_signature exposes the SHAPE of how this entrant's three self-frames reliably differ across both cadence and posture; treat it as the voice-shape AND posture-shape interpretation of stylometric_fingerprint. The frame_alignment_flags surface lanes whose detected temporal posture does not match its declared frame — a soft signal, not a fault. An intake LLM should treat __OPTIONAL_PASTE_SHI_NUMBER__ as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint, per-lane signatures, or semantic posture would mint a different SHI."
     },
     "canonical_header": "__OPTIONAL_PASTE_CANONICAL_HEADER__",
     "canonical_footer": "__OPTIONAL_PASTE_CANONICAL_FOOTER__",

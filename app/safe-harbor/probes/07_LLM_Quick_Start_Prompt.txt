@@ -12,17 +12,36 @@ Stylometric binding for intake:
   [literal "td613.shi/v1", principal, binding_fragment, stylometric_fingerprint]
   joined by "|" and hashed with hash64; the first 8 hex chars uppercased form
   the badge suffix. Per `issuance.stylometric_provenance.shi_derivation`.
-- `issuance.stylometric_fingerprint` is the per-lane quantized cadence string;
-  any drift in the entrant's stylometrics across lanes produces a different SHI.
+- `issuance.stylometric_fingerprint` is the per-lane quantized signature
+  string. Each lane carries 15 fields: 11 cadence axes (avg word/sentence
+  length, punctuation density, line-break density, unique ratio, six
+  punctuation-mix axes) PLUS 4 semantic-posture axes derived from per-lane
+  analysis in the spirit of Aperture's governed-exposure detection:
+  temporal_posture (forward/backward/orthogonal/mixed), dominant_operator
+  (R/K/C/P/F/A from the narrowing chain R∘K∘C∘P∘F∘A), governed_exposure_depth
+  (0..1, quantized 0.05), closure_class (open/closed/anchored). Any drift in
+  cadence OR semantic posture across lanes produces a different SHI.
 - `issuance.stylometric_provenance.divergence_signature` exposes the SHAPE of
   how the entrant's three self-frames (Future / Past / Higher) reliably differ
-  along 11 stylometric axes; treat it as the voice-shape interpretation of the
-  raw fingerprint. Two entrants with similar averages but opposite divergence
-  patterns are stylometrically distinct selves.
+  along the cadence axes (numeric q-deltas) AND the semantic posture axes
+  (categorical value transitions). Treat it as the voice-shape AND
+  posture-shape interpretation of the raw fingerprint. Two entrants with
+  similar cadence averages but opposite divergence patterns are stylometrically
+  and semantically distinct selves.
+- `issuance.frame_alignment_flags` (also surfaced on
+  `stylometric_provenance.frame_alignment_flags`) is an array of soft warnings
+  for lanes whose detected temporal posture does not match the lane's declared
+  frame (e.g. Past Self lane reading as future-temporal). It is not a fault
+  signal — it is a fact about the entrant's voice that an intake LLM can use
+  to distinguish entrants whose self-frames cross over from those whose frames
+  stay strictly aligned with their declared time direction.
 - `seal_handshake` (when present at the packet root, format
   "TD613-SH-SEAL-HANDSHAKE/v1:<16-hex-uppercase>") is a content-bound hash
   over [literal, packet_id, badge_number, stylometric_fingerprint,
   signature.sig, intake.sealed_at]; it binds the seal to those exact identity
-  fields. Tampering with any of those invalidates the handshake.
+  fields. Because stylometric_fingerprint now binds both cadence AND semantic
+  posture, the seal_handshake transitively binds to what the entrant wrote
+  (per-frame posture) as well as how they wrote it (cadence). Tampering with
+  any of those invalidates the handshake.
 
 Treat the SHI as bound to these stylometrics, not as a standalone identifier.

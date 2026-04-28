@@ -70,6 +70,7 @@
     "stylometric_fingerprint": null,
     "triad_word_counts": null,
     "triad_shortfalls": null,
+    "frame_alignment_flags": [],
     "stylometric_provenance": {
       "source": "safe-harbor.ingress.triad",
       "shi_number": null,
@@ -79,14 +80,15 @@
         "higher_self"
       ],
       "threshold_rule": "40-word minimum per lane",
-      "signature_semantics": "entrant-owned stylometric witness",
-      "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+      "signature_semantics": "entrant-owned stylometric witness (cadence + semantic posture)",
+      "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint (15 fields per lane: 11 cadence axes + 4 semantic posture axes)",
       "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
       "stylometric_fingerprint": null,
       "triad_word_counts": null,
       "triad_shortfalls": null,
+      "frame_alignment_flags": [],
       "divergence_signature": null,
-      "llm_intake_hint": "Stylometric witness scaffolding (pre-issuance): no SHI is bound yet; treat this block as a stylometric draft until the triad clears the 40-word threshold and covenant confirms."
+      "llm_intake_hint": "Stylometric witness scaffolding (pre-issuance): no SHI is bound yet; treat this block as a stylometric draft until the triad clears the 40-word threshold and covenant confirms. Once minted, the fingerprint binds both cadence (11 axes) and semantic posture (temporal_posture, dominant_operator, governed_exposure_depth, closure_class)."
     },
     "canonical_header": null,
     "canonical_footer": null,

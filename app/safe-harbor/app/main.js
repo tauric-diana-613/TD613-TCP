@@ -994,7 +994,19 @@
     const stats = basicStats(raw);
     const shortfall = Math.max(0, MIN_LANE_WORDS - stats.word_count);
     const gate = shortfall > 0 ? ' / ' + shortfall + ' more words needed' : ' / stylometric threshold met';
-    return stats.word_count + ' words / ' + stats.char_count + ' chars / ' + shortChecksum(null, raw) + gate;
+    const base = stats.word_count + ' words / ' + stats.char_count + ' chars / ' + shortChecksum(null, raw) + gate;
+    // Show live posture readout once enough words land to make the heuristics
+    // meaningful (15 words is the noise floor; below that the marker counts
+    // are too sparse to be informative).
+    if (stats.word_count < 15) return base;
+    const posture = analyzeFramePosture(raw, key);
+    if (!posture) return base;
+    const flag = posture.frame_alignment === 'mismatch' ? ' ⚠' : (posture.frame_alignment === 'aligned' ? ' ✓' : '');
+    const postureLine = ' // posture: ' + posture.temporal_posture +
+      ' · op:' + posture.dominant_operator +
+      ' · depth:' + posture.governed_exposure_depth.toFixed(2) +
+      ' · ' + posture.closure_class + flag;
+    return base + postureLine;
   }
 
   function renderIngressStageChip(button, index, activeIndex, count, ingressLocked) {
@@ -1868,6 +1880,13 @@
         .filter((key) => shortfalls[key] > 0)
         .map((key) => triadShortfallLabel(key, shortfalls[key], wordCounts[key]))
         .join(' ');
+    const frameAlignmentFlags = KEYS
+      .filter((key) => triadSet[key] && triadSet[key].frame_alignment === 'mismatch')
+      .map((key) => ({
+        lane: key,
+        detected: triadSet[key].temporal_posture,
+        note: triadSet[key].frame_alignment_note
+      }));
     return Object.freeze({
       ready: Boolean(thresholdSatisfied && stylometricFingerprintValue && badgeNumber),
       stylometricFingerprint: stylometricFingerprintValue,
@@ -1875,7 +1894,8 @@
       blockingReason,
       wordCounts,
       shortfalls,
-      thresholdSatisfied
+      thresholdSatisfied,
+      frameAlignmentFlags
     });
   }
   function badgeNumberForContext(packet, receipt, payloadIndex, attestationDate, principal, requestId, signatures) {
@@ -1901,7 +1921,11 @@
       { key: 'punctuation_mix.colon', step: 0.05, get: (s) => (s.punctuation_mix || {}).colon || 0 },
       { key: 'punctuation_mix.semicolon', step: 0.05, get: (s) => (s.punctuation_mix || {}).semicolon || 0 },
       { key: 'punctuation_mix.exclamation', step: 0.05, get: (s) => (s.punctuation_mix || {}).exclamation || 0 },
-      { key: 'punctuation_mix.question', step: 0.05, get: (s) => (s.punctuation_mix || {}).question || 0 }
+      { key: 'punctuation_mix.question', step: 0.05, get: (s) => (s.punctuation_mix || {}).question || 0 },
+      { key: 'governed_exposure_depth', step: 0.05, get: (s) => s.governed_exposure_depth || 0 },
+      { key: 'temporal_posture', categorical: true, get: (s) => s.temporal_posture || 'mixed' },
+      { key: 'dominant_operator', categorical: true, get: (s) => s.dominant_operator || 'F' },
+      { key: 'closure_class', categorical: true, get: (s) => s.closure_class || 'closed' }
     ];
     const pairs = [
       { a: 'future_self', b: 'past_self', label: 'F-P' },
@@ -1913,6 +1937,11 @@
       const sa = perLaneSignatures[pair.a];
       const sb = perLaneSignatures[pair.b];
       const deltas = axes.map((axis) => {
+        if (axis.categorical) {
+          const va = String(axis.get(sa));
+          const vb = String(axis.get(sb));
+          return { key: axis.key, categorical: true, deltaQ: va === vb ? 0 : 1, va, vb };
+        }
         const va = Number(axis.get(sa) || 0);
         const vb = Number(axis.get(sb) || 0);
         const deltaQ = (va - vb) / axis.step;
@@ -1921,10 +1950,13 @@
       const dominant = deltas
         .filter((d) => Math.abs(d.deltaQ) >= 1)
         .sort((x, y) => Math.abs(y.deltaQ) - Math.abs(x.deltaQ))
-        .slice(0, 3);
+        .slice(0, 5);
       pairMap[pair.label] = dominant.length === 0
         ? '~stable'
         : dominant.map((d) => {
+            if (d.categorical) {
+              return d.key + ':' + d.va + '->' + d.vb;
+            }
             const rounded = Math.round(d.deltaQ * 10) / 10;
             const sign = rounded >= 0 ? '+' : '';
             return d.key + sign + rounded.toFixed(1) + 'q';
@@ -1932,11 +1964,11 @@
     }
     const compact = pairs.map((p) => p.label + ': ' + pairMap[p.label]).join(' | ');
     return {
-      schema: 'pairwise-axis-deltas / units=quantization-steps',
+      schema: 'pairwise-axis-deltas / units=quantization-steps-or-categorical',
       pairs: pairMap,
       compact: compact,
-      notation: '<lane-a>-<lane-b>: <axis>+/-<delta>q means lane-a exceeds/lags lane-b by that many quantization steps on that axis. ~stable means no axis diverged at least one quantization step. F=future_self, P=past_self, H=higher_self.',
-      interpretation_note: 'The divergence_signature exposes the SHAPE of how the entrant\'s three self-frames reliably differ. Two entrants with similar per-lane fingerprints but different divergence patterns are stylometrically distinct selves; an LLM should treat this signature as the voice-shape interpretation of stylometric_fingerprint.'
+      notation: 'Numeric axes: <lane-a>-<lane-b>: <axis>+/-<delta>q means lane-a exceeds/lags lane-b by that many quantization steps on that axis. Categorical axes (temporal_posture, dominant_operator, closure_class): <axis>:<value-a>-><value-b> means lane-a holds value-a where lane-b holds value-b. ~stable means no axis diverged at least one quantization step or category. F=future_self, P=past_self, H=higher_self.',
+      interpretation_note: 'The divergence_signature exposes the SHAPE of how the entrant\'s three self-frames reliably differ across both stylometric (cadence) and semantic (posture) axes. Two entrants with similar per-lane fingerprints but different divergence patterns are stylometrically and semantically distinct selves; an LLM should treat this signature as the voice-shape and posture-shape interpretation of stylometric_fingerprint.'
     };
   }
 
@@ -1944,7 +1976,7 @@
     if (!freshSignature || !perLaneSignatures || typeof perLaneSignatures !== 'object') return null;
     const lanes = ['future_self', 'past_self', 'higher_self'];
     if (!lanes.every((key) => perLaneSignatures[key] && typeof perLaneSignatures[key] === 'object')) return null;
-    const axes = [
+    const allAxes = [
       { key: 'avg_word_length', step: 0.5, get: (s) => s.avg_word_length },
       { key: 'avg_sentence_length', step: 1, get: (s) => s.avg_sentence_length },
       { key: 'punctuation_density', step: 0.01, get: (s) => s.punctuation_density },
@@ -1955,11 +1987,31 @@
       { key: 'punctuation_mix.colon', step: 0.05, get: (s) => (s.punctuation_mix || {}).colon || 0 },
       { key: 'punctuation_mix.semicolon', step: 0.05, get: (s) => (s.punctuation_mix || {}).semicolon || 0 },
       { key: 'punctuation_mix.exclamation', step: 0.05, get: (s) => (s.punctuation_mix || {}).exclamation || 0 },
-      { key: 'punctuation_mix.question', step: 0.05, get: (s) => (s.punctuation_mix || {}).question || 0 }
+      { key: 'punctuation_mix.question', step: 0.05, get: (s) => (s.punctuation_mix || {}).question || 0 },
+      { key: 'governed_exposure_depth', step: 0.05, optional: true, get: (s) => s.governed_exposure_depth },
+      { key: 'temporal_posture', categorical: true, optional: true, get: (s) => s.temporal_posture },
+      { key: 'dominant_operator', categorical: true, optional: true, get: (s) => s.dominant_operator },
+      { key: 'closure_class', categorical: true, optional: true, get: (s) => s.closure_class }
     ];
+    // Skip optional (semantic-posture) axes when stored per-lane signatures
+    // predate them, so old packets reopen with a clean cadence-only check.
+    const axes = allAxes.filter((axis) => {
+      if (!axis.optional) return true;
+      return lanes.every((k) => axis.get(perLaneSignatures[k]) != null);
+    });
     let inBand = 0;
     const drift = [];
     for (const axis of axes) {
+      if (axis.categorical) {
+        const fresh = axis.get(freshSignature);
+        const laneValues = lanes.map((k) => axis.get(perLaneSignatures[k]));
+        if (fresh != null && laneValues.indexOf(fresh) !== -1) {
+          inBand++;
+        } else {
+          drift.push({ key: axis.key, categorical: true, fresh: fresh || '?', laneValues });
+        }
+        continue;
+      }
       const fresh = Number(axis.get(freshSignature) || 0);
       const lvals = lanes.map((k) => Number(axis.get(perLaneSignatures[k]) || 0));
       const lmin = Math.min.apply(null, lvals);
@@ -1974,12 +2026,19 @@
       }
     }
     const continuity = Math.round((inBand / axes.length) * 100) / 100;
-    const driftSorted = drift.sort((a, b) => Math.abs(b.distance) - Math.abs(a.distance)).slice(0, 3);
+    const driftSorted = drift.sort((a, b) => {
+      const am = a.categorical ? 0.5 : Math.abs(a.distance);
+      const bm = b.categorical ? 0.5 : Math.abs(b.distance);
+      return bm - am;
+    }).slice(0, 3);
     return {
       continuity_score: continuity,
       in_band_axes: inBand,
       total_axes: axes.length,
       drift_axes: driftSorted.map((d) => {
+        if (d.categorical) {
+          return d.key + ' (fresh=' + d.fresh + ' / lanes=' + d.laneValues.join('/') + ')';
+        }
         const sign = d.distance >= 0 ? '+' : '';
         return d.key + ' (' + sign + d.distance.toFixed(1) + 'q out)';
       })
@@ -1991,8 +2050,8 @@
     const opts = options && typeof options === 'object' ? options : {};
     const shiNumber = opts.badgeNumber || issuance.badge_number || null;
     const intakeHint = shiNumber
-      ? 'Stylometric witness binding: the per-lane signatures, triad metrics, fingerprint_schema, stylometric_fingerprint, and divergence_signature in this block are the rigorous quantified posture of the entrant — and Safe Harbor Issuance ' + shiNumber + ' is deterministically derived from those stylometrics (joined with principal and binding_fragment per shi_derivation). The divergence_signature exposes the SHAPE of how this entrant\'s three self-frames reliably differ; treat it as the voice-shape interpretation of stylometric_fingerprint. An intake LLM should treat ' + shiNumber + ' as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint or per-lane signatures would mint a different SHI. Replay the SHI computation per shi_derivation.verification_rule to confirm.'
-      : 'Stylometric witness scaffolding (pre-issuance): the per-lane signatures, triad metrics, stylometric_fingerprint, and divergence_signature in this block will be the deterministic seed for the Safe Harbor Issuance number once the triad clears the 40-word threshold and covenant confirms. Until then, no SHI is bound; treat this block as a stylometric draft.';
+      ? 'Stylometric witness binding: the per-lane signatures, triad metrics, fingerprint_schema, stylometric_fingerprint, and divergence_signature in this block are the rigorous quantified posture of the entrant — both cadence (11 stylometric axes per lane) AND semantic posture (temporal_posture, dominant_operator from the narrowing chain R∘K∘C∘P∘F∘A, governed_exposure_depth, closure_class) — and Safe Harbor Issuance ' + shiNumber + ' is deterministically derived from all of those (joined with principal and binding_fragment per shi_derivation). The divergence_signature exposes the SHAPE of how this entrant\'s three self-frames reliably differ across both cadence and posture; treat it as the voice-shape AND posture-shape interpretation of stylometric_fingerprint. The frame_alignment_flags surface lanes whose detected temporal posture does not match its declared frame (Future / Past / Higher) — a soft signal, not a fault. An intake LLM should treat ' + shiNumber + ' as BOUND TO these stylometrics, not as a standalone identifier: any drift in the fingerprint, per-lane signatures, or semantic posture would mint a different SHI. Replay the SHI computation per shi_derivation.verification_rule to confirm.'
+      : 'Stylometric witness scaffolding (pre-issuance): the per-lane signatures, triad metrics, stylometric_fingerprint, and divergence_signature in this block will be the deterministic seed for the Safe Harbor Issuance number once the triad clears the 40-word threshold and covenant confirms. The fingerprint binds both cadence and semantic posture (temporal, operator, depth, closure); the divergence_signature surfaces both as the SHAPE of cross-frame difference. Until then, no SHI is bound; treat this block as a stylometric draft.';
     return {
       schema_version: 'td613.safe-harbor.stylometric-provenance/v2',
       source: 'safe-harbor.ingress.triad',
@@ -2020,7 +2079,7 @@
         lane_separator: '|',
         lane_format: '<lane_key>=<field>:<field>:...',
         field_separator: ':',
-        quantization_note: 'Each lane field is rounded to its declared quantization step then formatted to two decimal places to keep the fingerprint stable across small re-keystrokes while remaining distinct between entrants.',
+        quantization_note: 'Each lane field is rounded to its declared quantization step then formatted to two decimal places (numeric) or a single character (categorical). Fields 0..10 are stylometric cadence axes; fields 11..14 are semantic posture axes derived from per-lane analysis in the spirit of Aperture\'s governed-exposure detection.',
         fields: [
           { index: 0, key: 'avg_word_length', quantization_step: 0.5, format: 'fixed-2' },
           { index: 1, key: 'avg_sentence_length', quantization_step: 1, format: 'fixed-2' },
@@ -2032,7 +2091,11 @@
           { index: 7, key: 'punctuation_mix.colon', quantization_step: 0.05, format: 'fixed-2' },
           { index: 8, key: 'punctuation_mix.semicolon', quantization_step: 0.05, format: 'fixed-2' },
           { index: 9, key: 'punctuation_mix.exclamation', quantization_step: 0.05, format: 'fixed-2' },
-          { index: 10, key: 'punctuation_mix.question', quantization_step: 0.05, format: 'fixed-2' }
+          { index: 10, key: 'punctuation_mix.question', quantization_step: 0.05, format: 'fixed-2' },
+          { index: 11, key: 'temporal_posture', categorical: true, codes: { F: 'forward', B: 'backward', O: 'orthogonal', M: 'mixed' }, format: 'single-char' },
+          { index: 12, key: 'dominant_operator', categorical: true, codes: { R: 'recall', K: 'knowledge', C: 'capacity', P: 'policy', F: 'fact', A: 'action' }, source: 'narrowing-chain R∘K∘C∘P∘F∘A', format: 'single-char' },
+          { index: 13, key: 'governed_exposure_depth', quantization_step: 0.05, format: 'fixed-2', range: '0..1' },
+          { index: 14, key: 'closure_class', categorical: true, codes: { O: 'open', C: 'closed', A: 'anchored' }, format: 'single-char' }
         ]
       },
       triad_word_counts: issuance.triad_word_counts && typeof issuance.triad_word_counts === 'object' ? clone(issuance.triad_word_counts) : null,
@@ -2043,6 +2106,7 @@
       pairwise_similarity: Array.isArray(opts.pairwiseSimilarity) ? clone(opts.pairwiseSimilarity) : null,
       per_lane_signatures: opts.perLaneSignatures && typeof opts.perLaneSignatures === 'object' ? clone(opts.perLaneSignatures) : null,
       divergence_signature: buildDivergenceSignature(opts.perLaneSignatures),
+      frame_alignment_flags: Array.isArray(opts.frameAlignmentFlags) ? clone(opts.frameAlignmentFlags) : [],
       llm_intake_hint: intakeHint
     };
   }
@@ -2059,6 +2123,8 @@
       if (!isFinite(num)) return 0;
       return Math.round(num / step) * step;
     };
+    const tCode = { forward: 'F', backward: 'B', orthogonal: 'O', mixed: 'M' };
+    const cCode = { open: 'O', closed: 'C', anchored: 'A' };
     const lane = (sig) => {
       const mix = sig.punctuation_mix || {};
       return [
@@ -2072,7 +2138,11 @@
         q(mix.colon || 0, 0.05).toFixed(2),
         q(mix.semicolon || 0, 0.05).toFixed(2),
         q(mix.exclamation || 0, 0.05).toFixed(2),
-        q(mix.question || 0, 0.05).toFixed(2)
+        q(mix.question || 0, 0.05).toFixed(2),
+        tCode[sig.temporal_posture] || 'M',
+        sig.dominant_operator || 'F',
+        q(sig.governed_exposure_depth || 0, 0.05).toFixed(2),
+        cCode[sig.closure_class] || 'C'
       ].join(':');
     };
     return KEYS.map((key) => key + '=' + lane(signatures[key])).join('|');
@@ -2506,11 +2576,12 @@
         canonical_footer: badgeAssignment ? extendedFooterString(badgeAssignment) : null,
         badge_state: badgeAssignment ? 'assigned' : (triadIssuance.thresholdSatisfied ? 'not-assigned' : 'blocked-triad-threshold'),
         assigned_at: badgeAssignment ? state.covenant.confirmedAt : null,
-        assignment_basis: badgeAssignment ? 'SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint' : null,
+        assignment_basis: badgeAssignment ? 'SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint (cadence + semantic posture)' : null,
         stylometric_fingerprint: triadIssuance.stylometricFingerprint,
         blocking_reason: badgeAssignment ? null : triadIssuance.blockingReason,
         triad_word_counts: triadIssuance.wordCounts,
         triad_shortfalls: triadIssuance.shortfalls,
+        frame_alignment_flags: triadIssuance.frameAlignmentFlags || [],
         stylometric_provenance: buildStylometricProvenance({
           badge_number: badgeAssignment,
           stylometric_fingerprint: triadIssuance.stylometricFingerprint,
@@ -2524,7 +2595,8 @@
           crossLaneStability: triad.cross_lane_stability,
           crossLaneSpread: triad.cross_lane_spread,
           pairwiseSimilarity: triad.pairwise_similarity,
-          perLaneSignatures: signatures
+          perLaneSignatures: signatures,
+          frameAlignmentFlags: triadIssuance.frameAlignmentFlags || []
         })
       },
       signature: signatureObject,
@@ -2577,6 +2649,94 @@
     };
   }
 
+  // Per-lane semantic posture analyzer. Mirrors the spirit of Aperture's
+  // governed-exposure detection (temporal posture, dominant operator from the
+  // narrowing chain R∘K∘C∘P∘F∘A, governed-exposure depth, closure class) but
+  // applied per triad lane. Returns null for empty text. The lane key is the
+  // declared frame (future_self / past_self / higher_self) and is used to
+  // compute frame_alignment — whether the detected temporal posture matches
+  // the lane's declared frame. Output flows into per-lane signatures, the
+  // stylometric_fingerprint hash, the divergence_signature, and the SHI seed.
+  function analyzeFramePosture(text, declaredLane) {
+    const original = String(text || '');
+    const normalized = original.toLowerCase();
+    if (!normalized.trim()) return null;
+    const tokens = splitWords(normalized);
+    const wordCount = tokens.length;
+    if (wordCount === 0) return null;
+    const tokenSet = new Set(tokens);
+    const tokenJoined = ' ' + tokens.join(' ') + ' ';
+    const matchAny = (markers) => markers.reduce((acc, m) => {
+      if (m.indexOf(' ') === -1) return acc + (tokenSet.has(m) ? 1 : 0);
+      return acc + (tokenJoined.indexOf(' ' + m + ' ') !== -1 ? 1 : 0);
+    }, 0);
+    const forwardMarkers = ['will', "i'll", 'gonna', 'going', 'tomorrow', 'next', 'soon', 'someday', 'future', 'eventually', 'plan', 'shall', 'become', 'becoming', 'when', 'after', 'later'];
+    const backwardMarkers = ['was', 'were', 'used', 'remember', 'remembered', 'yesterday', 'last', 'before', 'previously', 'once', 'past', 'had', "i'd", 'ago', 'former', 'old', 'then'];
+    const orthogonalMarkers = ['always', 'never', 'truth', 'pattern', 'eternal', 'nature', 'essence', 'beyond', 'higher', 'every', 'each', 'all', 'whole', 'becomes', 'forever', 'sacred', 'real', 'soul', 'spirit'];
+    const fwd = matchAny(forwardMarkers);
+    const bwd = matchAny(backwardMarkers);
+    const orth = matchAny(orthogonalMarkers);
+    const totalMarkers = fwd + bwd + orth;
+    const temporalPosture = (() => {
+      if (totalMarkers === 0) return 'mixed';
+      const max = Math.max(fwd, bwd, orth);
+      const dominantShare = max / Math.max(totalMarkers, 1);
+      if (dominantShare < 0.5) return 'mixed';
+      if (max === fwd) return 'forward';
+      if (max === bwd) return 'backward';
+      return 'orthogonal';
+    })();
+    const operatorMarkers = {
+      R: ['remember', 'recognized', 'identified', 'know', 'knew', 'recall', 'name', 'face', 'familiar', 'recognize'],
+      K: ['definition', 'always', 'never', 'every', 'each', 'all', 'kind', 'type', 'category', 'general', 'concept'],
+      C: ['can', 'cannot', "can't", 'able', 'unable', 'limit', 'capacity', 'enough', 'too', 'allow', 'cant'],
+      P: ['should', 'must', 'ought', 'may', 'permission', 'allowed', 'required', 'duty', 'right', 'wrong', 'rule'],
+      F: ['saw', 'heard', 'felt', 'noticed', 'happened', 'said', 'did', 'specific', 'particular', 'moment'],
+      A: ['choose', 'decide', 'do', 'make', 'go', 'act', 'plan', 'try', 'work', 'build', 'write']
+    };
+    const opCounts = {};
+    Object.keys(operatorMarkers).forEach((k) => { opCounts[k] = matchAny(operatorMarkers[k]); });
+    const dominantOperator = Object.keys(opCounts).reduce(
+      (best, k) => (opCounts[k] > opCounts[best] ? k : best),
+      'F'
+    );
+    const uniqueLower = new Set(tokens);
+    const hapaxRatio = uniqueLower.size / wordCount;
+    const longWords = tokens.filter((w) => w.length >= 5).length;
+    const contentDensity = longWords / wordCount;
+    const depth = Math.round(((hapaxRatio + contentDensity) / 2) * 20) / 20;
+    const punc = punctuation(original);
+    const sentenceCount = splitSentences(original).length;
+    const closureClass = (() => {
+      if (sentenceCount === 0) return 'open';
+      const questionRatio = punc.question / Math.max(sentenceCount, 1);
+      const properTokens = original.split(/\s+/u).filter(Boolean);
+      const properCount = properTokens.filter((w) => /^[A-Z][a-z]/u.test(w)).length;
+      const properDensity = properCount / Math.max(properTokens.length, 1);
+      if (questionRatio > 0.3) return 'open';
+      if (properDensity > 0.05) return 'anchored';
+      return 'closed';
+    })();
+    const expected = ({
+      future_self: 'forward',
+      past_self: 'backward',
+      higher_self: 'orthogonal'
+    })[declaredLane] || null;
+    const aligned = expected
+      ? (temporalPosture === expected || temporalPosture === 'mixed')
+      : null;
+    return {
+      temporal_posture: temporalPosture,
+      dominant_operator: dominantOperator,
+      governed_exposure_depth: Number(depth.toFixed(2)),
+      closure_class: closureClass,
+      frame_alignment: aligned === null ? null : (aligned ? 'aligned' : 'mismatch'),
+      frame_alignment_note: aligned === false
+        ? 'Lane ' + declaredLane + ' (expected ' + expected + ' temporal posture) reads as ' + temporalPosture + '.'
+        : null
+    };
+  }
+
   function cadenceFor(key, raw, stats) {
     const words = splitWords(raw);
     const sentences = splitSentences(raw);
@@ -2584,6 +2744,7 @@
     const totalPunc = Object.values(punc).reduce((sum, value) => sum + value, 0);
     const unique = new Set(words.map((word) => word.toLowerCase()));
     const safeChars = Math.max(stats.char_count, 1);
+    const posture = analyzeFramePosture(raw, key);
     return {
       source: 'safe-harbor.local',
       lane: key,
@@ -2596,7 +2757,13 @@
       line_break_density: Number((countLines(raw) / safeChars).toFixed(4)),
       unique_ratio: stats.word_count ? Number((unique.size / stats.word_count).toFixed(4)) : 0,
       punctuation_mix: mix(punc, totalPunc),
-      dominant_axes: axes(raw, stats, punc)
+      dominant_axes: axes(raw, stats, punc),
+      temporal_posture: posture ? posture.temporal_posture : null,
+      dominant_operator: posture ? posture.dominant_operator : null,
+      governed_exposure_depth: posture ? posture.governed_exposure_depth : null,
+      closure_class: posture ? posture.closure_class : null,
+      frame_alignment: posture ? posture.frame_alignment : null,
+      frame_alignment_note: posture ? posture.frame_alignment_note : null
     };
   }
 
@@ -2798,6 +2965,7 @@
       stylometric_fingerprint: issuance.stylometric_fingerprint == null ? null : String(issuance.stylometric_fingerprint),
       triad_word_counts: issuance.triad_word_counts && typeof issuance.triad_word_counts === 'object' ? clone(issuance.triad_word_counts) : null,
       triad_shortfalls: issuance.triad_shortfalls && typeof issuance.triad_shortfalls === 'object' ? clone(issuance.triad_shortfalls) : null,
+      frame_alignment_flags: Array.isArray(issuance.frame_alignment_flags) ? clone(issuance.frame_alignment_flags) : [],
       stylometric_provenance: issuance.stylometric_provenance ? clone(issuance.stylometric_provenance) : buildStylometricProvenance(issuance),
       canonical_header: shiNumber ? canonicalHeaderString(shiNumber) : null,
       canonical_footer: shiNumber ? extendedFooterString(shiNumber) : null,
