@@ -3422,11 +3422,12 @@
   }
 
   function createBorrowedShell(voiceState) {
+    const donorProfile = voiceState.rawProfile || voiceState.effectiveProfile;
     return {
       mode: 'borrowed',
       label: `borrowed ${SLOT_SHORT[voiceState.slot]} cadence`,
-      mod: cadenceModFromProfile(voiceState.effectiveProfile),
-      profile: { ...voiceState.effectiveProfile },
+      mod: cadenceModFromProfile(donorProfile),
+      profile: { ...donorProfile },
       personaId: null,
       source: 'swapped',
       fromSlot: voiceState.slot,
@@ -4349,6 +4350,38 @@
     return 'Transfer stayed close to the source cadence.';
   }
 
+  function transferOperatorDiagnostics(transfer = {}) {
+    const selectedCandidate = (transfer.candidateLedger || []).find((entry) => entry.status === 'selected') || null;
+    const expectedOperators = [...new Set([
+      ...(transfer.expectedOperators || []),
+      ...(transfer.retrievalTrace?.planSummary?.expectedOperators || []),
+      ...(selectedCandidate?.expectedOperators || [])
+    ].filter(Boolean))];
+    const firedOperators = [...new Set([
+      ...(transfer.structuralOperations || []),
+      ...(transfer.lexicalOperations || []),
+      ...(transfer.realizationNotes || []).map((entry) => String(entry || '').replace(/^(?:structural|lexical):/, '')),
+      ...(transfer.lexemeSwaps || []).map((entry) => entry?.family ? `lexeme:${entry.family}` : null)
+    ].filter(Boolean))];
+    const missingOperators = expectedOperators.filter((operator) => !firedOperators.includes(operator));
+    const sourceProfile = transfer.sourceProfile || {};
+    const outputProfile = transfer.outputProfile || {};
+    const targetProfile = transfer.targetProfile || {};
+    const donorProgress = transferDonorProgress(transfer);
+    const residualRatio = donorProgress.sourceDonorDistance > 0
+      ? donorProgress.outputDonorDistance / donorProgress.sourceDonorDistance
+      : 0;
+
+    return {
+      expectedOperators,
+      firedOperators,
+      missingOperators,
+      residualRatio,
+      sentenceLine: `${Number(sourceProfile.avgSentenceLength || 0).toFixed(1)} -> ${Number(outputProfile.avgSentenceLength || 0).toFixed(1)} (target ${Number(targetProfile.avgSentenceLength || 0).toFixed(1)})`,
+      punctuationLine: `${formatPct(sourceProfile.punctuationDensity || 0)} -> ${formatPct(outputProfile.punctuationDensity || 0)} (target ${formatPct(targetProfile.punctuationDensity || 0)})`
+    };
+  }
+
   function transferDonorProgress(transfer = {}) {
     if (transfer?.donorProgress?.eligible) {
       return transfer.donorProgress;
@@ -4572,7 +4605,17 @@
     const lexicalShiftCount = Math.min((transfer.lexemeSwaps || []).length, 3);
     let score = 0;
 
-    score += Math.min(30, Math.round((donorProgress.donorImprovementRatio || 0) * 92));
+    score += Math.min(18, Math.round((donorProgress.donorImprovementRatio || 0) * 56));
+    const residualRatio = donorProgress.sourceDonorDistance > 0
+      ? donorProgress.outputDonorDistance / Math.max(donorProgress.sourceDonorDistance, 0.0001)
+      : 1;
+    score += Math.min(22, Math.round(Math.max(0, 1 - residualRatio) * 22));
+    const expectedOperators = transferOperatorDiagnostics(transfer).expectedOperators;
+    const firedOperators = transferOperatorDiagnostics(transfer).firedOperators;
+    const expectedCoverage = expectedOperators.length
+      ? expectedOperators.filter((operator) => firedOperators.includes(operator)).length / expectedOperators.length
+      : 0;
+    score += Math.min(12, Math.round(expectedCoverage * 12));
     score += Math.min(16, Math.round(Math.max(0, donorProgress.donorImprovement || 0) * 7));
 
     if (hasEffectiveTextShift && transfer.visibleShift) {
@@ -4667,6 +4710,28 @@
 
     if (landedStructural) {
       score = Math.max(score, floor);
+    }
+
+    if (expectedOperators.length && expectedCoverage < 1) {
+      score = Math.min(score, Math.round(65 + (expectedCoverage * 25)));
+    }
+    if (residualRatio > 0.2) {
+      score = Math.min(score, Math.max(floor, Math.round(100 - (residualRatio * 80))));
+    }
+    if (residualRatio > 0.5) {
+      score = Math.min(score, 55);
+    }
+
+    if (transfer.holdStatus === 'held') {
+      const heldHasMovement =
+        changedDimensions.length > 0 ||
+        lexicalShiftCount > 0 ||
+        (transfer.structuralOperations || []).length > 0 ||
+        (transfer.lexicalOperations || []).length > 0 ||
+        (donorProgress.donorImprovementRatio || 0) >= 0.08;
+      score = heldHasMovement
+        ? Math.min(55, Math.max(18, score))
+        : Math.min(score, 8);
     }
 
     return Math.max(0, Math.min(100, Math.round(score)));
@@ -4884,6 +4949,9 @@
       .slice(0, 3)
       .join(', ');
     const transferNote = transferSummaryCopy(side.transfer, transferShift);
+    const operatorDiagnostics = transferOperatorDiagnostics(side.transfer || {});
+    const landedOperators = operatorDiagnostics.firedOperators.slice(0, 5).join(', ') || 'none';
+    const missingOperators = operatorDiagnostics.missingOperators.slice(0, 5).join(', ') || 'none';
 
     return `
       <article class="duel-side" data-slot="${side.slot}">
@@ -4902,6 +4970,8 @@
           <span class="duel-mini-metric">Recurrence ${formatPct(profile.recurrencePressure)}</span>
         </div>
         <div class="duel-side-copy">${escapeHtml(transferNote)}</div>
+        <div class="duel-side-copy">Sentence ${escapeHtml(operatorDiagnostics.sentenceLine)} // punctuation ${escapeHtml(operatorDiagnostics.punctuationLine)} // residual ${(operatorDiagnostics.residualRatio * 100).toFixed(0)}%</div>
+        <div class="duel-side-copy">Operators fired: ${escapeHtml(landedOperators)}. Missing: ${escapeHtml(missingOperators)}.</div>
         <div class="duel-visual-grid">
           <div class="duel-visual-card">
               <div class="duel-visual-label">Heatmap</div>

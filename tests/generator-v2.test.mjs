@@ -449,6 +449,155 @@ assert.equal(
   'admin rushed -> formal does not leak the clipped shorthand tokens back into the formalized output'
 );
 
+const supportTicketVoice = `acct review stuck again. last 4 dont match. docs missing from case. unit leans on it during onboarding. need update by eod.`;
+const carefulReviewVoice = `I am trying to be careful about the review because the last four digits are not matching the account record, and the documentation is doing more work than it should. The mentoring work is not decorative either; the unit genuinely leans on it during onboarding, so the point is not just that an update would be useful, but that the record needs to show what changed and why.`;
+const supportToCareful = buildCadenceTransfer(supportTicketVoice, {
+  mode: 'borrowed',
+  personaId: 'matron',
+  profile: extractCadenceProfile(carefulReviewVoice),
+  registerLane: 'tangled-followup',
+  sourceText: carefulReviewVoice,
+  strength: 0.84
+}, {
+  retrieval: true,
+  sourceRegisterLane: 'rushed-mobile'
+});
+const supportToCarefulPreview = String(supportToCareful.text || supportToCareful.internalText || '');
+const supportToCarefulOps = [
+  ...(supportToCareful.structuralOperations || []),
+  ...(supportToCareful.lexicalOperations || [])
+];
+const supportSourceProfile = extractCadenceProfile(supportTicketVoice);
+const supportOutputProfile = extractCadenceProfile(supportToCarefulPreview);
+
+assert.ok(
+  supportOutputProfile.avgSentenceLength - supportSourceProfile.avgSentenceLength >= 8,
+  'support-ticket -> careful-review lengthens the sentence shape instead of only normalizing capitalization'
+);
+assert.ok(
+  supportToCarefulOps.includes('INSERT_HEDGE_PREFIX') || supportToCarefulOps.includes('INSERT_PARENTHETICAL'),
+  'support-ticket -> careful-review fires at least one careful-review scaffold operator'
+);
+assert.equal(
+  /\b(?:her place|her door|Ms\. Chen|Unit 2B)\b/i.test(supportToCarefulPreview),
+  false,
+  'support-ticket -> careful-review does not leak parcel-fixture narrative language'
+);
+assert.equal(
+  /(?:^|[.!?]\s+)(?:since|because|although|while|when|if|unless|though)\b/i.test(supportToCarefulPreview),
+  false,
+  'support-ticket -> careful-review does not orphan a subordinator at a sentence boundary'
+);
+
+const carefulToSupport = buildCadenceTransfer(carefulReviewVoice, {
+  mode: 'borrowed',
+  personaId: 'spark',
+  profile: extractCadenceProfile(supportTicketVoice),
+  registerLane: 'rushed-mobile',
+  sourceText: supportTicketVoice,
+  strength: 0.84
+}, {
+  retrieval: true,
+  sourceRegisterLane: 'tangled-followup'
+});
+const carefulToSupportPreview = String(carefulToSupport.text || carefulToSupport.internalText || '');
+const carefulToSupportOps = [
+  ...(carefulToSupport.structuralOperations || []),
+  ...(carefulToSupport.lexicalOperations || [])
+];
+const carefulToSupportSentenceLengths = carefulToSupportPreview
+  .split(/(?<=[.!?])\s+/)
+  .map((sentence) => sentence.trim().split(/\s+/).filter(Boolean).length)
+  .filter(Boolean);
+
+assert.ok(
+  carefulToSupportOps.some((operator) => ['DROP_ARTICLES', 'LOWERCASE_INITIALS', 'DIGIT_SUBSTITUTE'].includes(operator)),
+  'careful-review -> support-ticket fires a real terse/noisy surface operator'
+);
+assert.ok(
+  carefulToSupportSentenceLengths.some((length) => length <= 8),
+  'careful-review -> support-ticket produces at least one clipped short sentence'
+);
+assert.equal(
+  /\b(?:her|his|she|he)\b/i.test(carefulToSupportPreview),
+  false,
+  'careful-review -> support-ticket does not introduce gendered pronouns absent from source'
+);
+assert.equal(
+  /\b(?:her place|her door|Ms\. Chen|Unit 2B)\b/i.test(carefulToSupportPreview),
+  false,
+  'careful-review -> support-ticket does not leak parcel-fixture narrative language'
+);
+assert.equal(
+  /(?:^|[.!?]\s+)(?:since|because|although|while|when|if|unless|though)\b/i.test(carefulToSupportPreview),
+  false,
+  'careful-review -> support-ticket does not orphan a subordinator at a sentence boundary'
+);
+
+const archiveGrantFormal = sampleById('archive-grant-formal-record');
+const tenantLeakRushed = sampleById('tenant-leak-rushed-mobile');
+const customerSupportFormal = sampleById('customer-support-formal-record');
+assert.ok(archiveGrantFormal, 'archive grant formal randomizer sample exists');
+assert.ok(tenantLeakRushed, 'tenant leak rushed randomizer sample exists');
+assert.ok(customerSupportFormal, 'customer support formal randomizer sample exists');
+
+const mutualAidToArchive = buildCadenceTransfer(mutualAidRushed.text, {
+  mode: 'borrowed',
+  personaId: 'archivist',
+  profile: extractCadenceProfile(archiveGrantFormal.text),
+  registerLane: archiveGrantFormal.variant,
+  sourceText: archiveGrantFormal.text,
+  strength: 0.82
+}, {
+  retrieval: true,
+  sourceRegisterLane: mutualAidRushed.variant
+});
+const mutualAidToArchivePreview = String(mutualAidToArchive.text || mutualAidToArchive.internalText || '');
+const mutualAidToArchiveProfile = extractCadenceProfile(mutualAidToArchivePreview);
+
+assert.match(
+  mutualAidToArchivePreview,
+  /family of four|motel placement was not available|contact number appears to partially match/i,
+  'mutual-aid rushed -> archive formal rehydrates resource-routing facts instead of gluing mobile shorthand'
+);
+assert.equal(
+  /\bfam of 4\b|\bno motel stock\b|\byall\b|\btryna\b/i.test(mutualAidToArchivePreview),
+  false,
+  'mutual-aid rushed -> archive formal removes rushed vernacular tokens from the formal surface'
+);
+assert.ok(
+  mutualAidToArchiveProfile.avgSentenceLength >= extractCadenceProfile(mutualAidRushed.text).avgSentenceLength + 8,
+  'mutual-aid rushed -> archive formal lengthens sentence posture with bounded formal clauses'
+);
+assert.ok(
+  mutualAidToArchiveProfile.avgSentenceLength <= extractCadenceProfile(archiveGrantFormal.text).avgSentenceLength + 12,
+  'mutual-aid rushed -> archive formal does not overbraid the result far beyond the donor sentence length'
+);
+
+const tenantLeakToSupport = buildCadenceTransfer(tenantLeakRushed.text, {
+  mode: 'borrowed',
+  personaId: 'archivist',
+  profile: extractCadenceProfile(customerSupportFormal.text),
+  registerLane: customerSupportFormal.variant,
+  sourceText: customerSupportFormal.text,
+  strength: 0.82
+}, {
+  retrieval: true,
+  sourceRegisterLane: tenantLeakRushed.variant
+});
+const tenantLeakToSupportPreview = String(tenantLeakToSupport.text || tenantLeakToSupport.internalText || '');
+
+assert.match(
+  tenantLeakToSupportPreview,
+  /sink leak in 4C is still active|plumber was expected Friday afternoon|cabinet floor was wet again/i,
+  'tenant leak rushed -> support formal rehydrates maintenance-note shorthand into auditable clauses'
+);
+assert.equal(
+  /\b4c sink leak still going\b|\bpls\b|\bdont\b|\bits not\b/i.test(tenantLeakToSupportPreview),
+  false,
+  'tenant leak rushed -> support formal does not leave raw mobile leak-note shorthand in the formal surface'
+);
+
 const nullTimeProbe = `later that night the carrier left the box by the rail. mgmt never logged a door knock. box stayed sealed.`;
 const nullTimeFormal = buildCadenceTransfer(nullTimeProbe, {
   mode: 'borrowed',

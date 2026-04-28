@@ -25,6 +25,15 @@ function round2(value) {
   return Number(value.toFixed(2));
 }
 
+const CADENCE_MOD_AXES = Object.freeze(['sent', 'cont', 'punc', 'frag', 'abst', 'hedge', 'abbr']);
+
+function normalizeCadenceMod(mod = {}) {
+  return CADENCE_MOD_AXES.reduce((acc, axis) => {
+    acc[axis] = clamp(Math.round(Number(mod?.[axis] || 0)), -3, 3);
+    return acc;
+  }, {});
+}
+
 function harmonicMean(values = []) {
   const finite = values
     .map((value) => clamp01(Number(value) || 0))
@@ -2434,13 +2443,13 @@ export function applyCadenceMod(profile, mod = {}) {
     return extractCadenceProfile('');
   }
 
-  mod = mod || {};
+  mod = normalizeCadenceMod(mod || {});
 
   const sentBias = Number(((mod.sent || 0) * 1.75).toFixed(2));
   const contractionBias = Number(((mod.cont || 0) * 0.028).toFixed(3));
   const punctuationBias = Number(((mod.punc || 0) * 0.022).toFixed(3));
-  const lineBreakBias = Number(((mod.sent || 0) * 0.04).toFixed(3));
-  const lexicalBias = Number((((mod.sent || 0) * 0.008) - ((mod.punc || 0) * 0.004)).toFixed(3));
+  const lineBreakBias = Number((((mod.sent || 0) * 0.04) + (Math.max(0, mod.frag || 0) * 0.03)).toFixed(3));
+  const lexicalBias = Number(((((mod.sent || 0) * 0.008) - ((mod.punc || 0) * 0.004)) + ((mod.abst || 0) * 0.012)).toFixed(3));
 
   const avgSentence = round2(Math.max(1, profile.avgSentenceLength + sentBias));
   const spread = round2(Math.max(0, (profile.sentenceLengthSpread || 0) + Math.abs(sentBias * 0.62)));
@@ -2455,10 +2464,13 @@ export function applyCadenceMod(profile, mod = {}) {
       clamp01(profile.repeatedBigramPressure / 0.18)
     ) / 3
   );
-  const abbreviationDensity = round3(clamp01((profile.abbreviationDensity || 0) + ((mod.punc || 0) * 0.012)));
-  const orthographicLooseness = round3(clamp01((profile.orthographicLooseness || 0) + ((mod.punc || 0) * 0.015)));
-  const fragmentPressure = round3(clamp01((profile.fragmentPressure || 0) + ((mod.sent || 0) < 0 ? Math.abs(mod.sent || 0) * 0.04 : (mod.sent || 0) * -0.02)));
-  const conversationalPosture = round3(clamp01((profile.conversationalPosture || 0) + (((mod.cont || 0) + (mod.punc || 0)) * 0.01)));
+  const abstractionPosture = round3(clamp01((profile.abstractionPosture || 0.5) + ((mod.abst || 0) * 0.035)));
+  const latinatePreference = round3(clamp01((profile.latinatePreference || 0) + ((mod.abst || 0) * 0.035)));
+  const hedgeDensity = round3(clamp01((profile.hedgeDensity || 0) + ((mod.hedge || 0) * 0.025)));
+  const abbreviationDensity = round3(clamp01((profile.abbreviationDensity || 0) + ((mod.abbr || mod.punc || 0) * 0.018)));
+  const orthographicLooseness = round3(clamp01((profile.orthographicLooseness || 0) + ((mod.abbr || mod.punc || 0) * 0.022)));
+  const fragmentPressure = round3(clamp01((profile.fragmentPressure || 0) + ((mod.frag || 0) * 0.045) + ((mod.sent || 0) < 0 ? Math.abs(mod.sent || 0) * 0.025 : (mod.sent || 0) * -0.015)));
+  const conversationalPosture = round3(clamp01((profile.conversationalPosture || 0) + (((mod.cont || 0) + (mod.punc || 0) + Math.max(0, mod.abbr || 0)) * 0.01)));
 
   const result = {
     ...profile,
@@ -2469,15 +2481,14 @@ export function applyCadenceMod(profile, mod = {}) {
     lineBreakDensity: lineBreak,
     recurrencePressure: recurrence,
     lexicalDispersion: lexical,
+    hedgeDensity,
+    abstractionPosture,
+    latinatePreference,
     abbreviationDensity,
     orthographicLooseness,
     fragmentPressure,
     conversationalPosture,
-    shellBias: {
-      sent: mod.sent || 0,
-      cont: mod.cont || 0,
-      punc: mod.punc || 0
-    }
+    shellBias: normalizeCadenceMod(mod)
   };
 
   return {
@@ -2620,28 +2631,29 @@ export function applyCadenceShell(profile, shell = {}) {
 
 export function cadenceModFromProfile(profile) {
   if (!profile || profile.empty) {
-    return { sent: 0, cont: 0, punc: 0 };
+    return normalizeCadenceMod({});
   }
 
   const sent = clamp(Math.round((profile.avgSentenceLength - 14) / 3), -3, 3);
   const cont = clamp(Math.round((profile.contractionDensity - 0.06) / 0.03), -3, 3);
   const punc = clamp(Math.round((profile.punctuationDensity - 0.11) / 0.025), -3, 3);
+  const frag = clamp(Math.round(((profile.fragmentPressure || 0) - 0.2) / 0.08), -3, 3);
+  const abstractionSignal = (((profile.abstractionPosture || 0.5) - 0.5) + ((profile.latinatePreference || 0) - 0.08)) / 2;
+  const abst = clamp(Math.round(abstractionSignal / 0.08), -3, 3);
+  const hedge = clamp(Math.round(((profile.hedgeDensity || 0) - 0.05) / 0.03), -3, 3);
+  const abbrSignal = (((profile.abbreviationDensity || 0) - 0.03) + ((profile.orthographicLooseness || 0) - 0.08)) / 2;
+  const abbr = clamp(Math.round(abbrSignal / 0.05), -3, 3);
 
-  return { sent, cont, punc };
+  return normalizeCadenceMod({ sent, cont, punc, frag, abst, hedge, abbr });
 }
 
 function normalizeShellMod(shell = {}) {
   if (!shell || shell.mode === 'native') {
-    return { sent: 0, cont: 0, punc: 0 };
+    return normalizeCadenceMod({});
   }
 
   const mod = shell.mod || cadenceModFromProfile(shell.profile || extractCadenceProfile(''));
-
-  return {
-    sent: clamp(Math.round(Number(mod.sent || 0)), -3, 3),
-    cont: clamp(Math.round(Number(mod.cont || 0)), -3, 3),
-    punc: clamp(Math.round(Number(mod.punc || 0)), -3, 3)
-  };
+  return normalizeCadenceMod(mod);
 }
 
 function deriveRelativeCadenceMod(baseProfile = {}, targetProfile = {}, fallbackMod = {}) {
@@ -2662,8 +2674,24 @@ function deriveRelativeCadenceMod(baseProfile = {}, targetProfile = {}, fallback
   const punc = Math.abs(puncSignal) >= 0.008
     ? clamp(Math.sign(puncSignal) * Math.max(1, Math.round(Math.abs(puncSignal) / 0.02)), -3, 3)
     : clamp(Math.round(Number(fallbackMod.punc || 0)), -3, 3);
+  const fragmentDelta = (targetProfile.fragmentPressure || 0) - (baseProfile.fragmentPressure || 0);
+  const abstractionDelta = (((targetProfile.abstractionPosture || 0.5) - (baseProfile.abstractionPosture || 0.5)) + ((targetProfile.latinatePreference || 0) - (baseProfile.latinatePreference || 0))) / 2;
+  const hedgeDelta = (targetProfile.hedgeDensity || 0) - (baseProfile.hedgeDensity || 0);
+  const abbrDelta = (((targetProfile.abbreviationDensity || 0) - (baseProfile.abbreviationDensity || 0)) + ((targetProfile.orthographicLooseness || 0) - (baseProfile.orthographicLooseness || 0))) / 2;
+  const frag = Math.abs(fragmentDelta) >= 0.04
+    ? clamp(Math.sign(fragmentDelta) * Math.max(1, Math.round(Math.abs(fragmentDelta) / 0.07)), -3, 3)
+    : clamp(Math.round(Number(fallbackMod.frag || 0)), -3, 3);
+  const abst = Math.abs(abstractionDelta) >= 0.04
+    ? clamp(Math.sign(abstractionDelta) * Math.max(1, Math.round(Math.abs(abstractionDelta) / 0.08)), -3, 3)
+    : clamp(Math.round(Number(fallbackMod.abst || 0)), -3, 3);
+  const hedge = Math.abs(hedgeDelta) >= 0.02
+    ? clamp(Math.sign(hedgeDelta) * Math.max(1, Math.round(Math.abs(hedgeDelta) / 0.03)), -3, 3)
+    : clamp(Math.round(Number(fallbackMod.hedge || 0)), -3, 3);
+  const abbr = Math.abs(abbrDelta) >= 0.035
+    ? clamp(Math.sign(abbrDelta) * Math.max(1, Math.round(Math.abs(abbrDelta) / 0.05)), -3, 3)
+    : clamp(Math.round(Number(fallbackMod.abbr || 0)), -3, 3);
 
-  return { sent, cont, punc };
+  return normalizeCadenceMod({ sent, cont, punc, frag, abst, hedge, abbr });
 }
 
 function buildTransferTargetProfile(baseProfile = {}, shell = {}, fallbackMod = {}, strength = 0.76) {
