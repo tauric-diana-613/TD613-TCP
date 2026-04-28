@@ -302,11 +302,9 @@
                   <div class="metric-row"><span class="label">Gap / dominant operator</span><span class="value" id="forensicOperatorReadout">pending</span></div>
                 </div>
                 <div class="dock-toolbar">
-                  <button class="control secondary" id="copyForensicSchema" type="button">Copy Forensic Sub-Schema</button>
                   <button class="control secondary" id="exportPacketPreview" type="button" disabled>Export Packet</button>
                   <button class="control secondary" id="resetStagedPacket" type="button" disabled>Reset Staged Packet</button>
                 </div>
-                <p class="hint">Diagnostic sub-schema only (governed-exposure record). NOT the full Safe Harbor packet — use <strong>Copy Packet</strong> or <strong>Export Packet</strong> below to send the canonical artifact.</p>
                 <pre class="code-panel" id="forensicSchemaPreview">forensic schema pending</pre>
                 <div class="button-grid">
                   <button class="control" id="covenantExport" type="button">Seal Payload</button>
@@ -366,7 +364,7 @@
                       <label class="field"><span>filename-safe UTC</span><input id="helperFilenameSafe" readonly></label>
                     </div>
                     <div class="button-grid">
-                      <button class="control" id="refreshHelpers" type="button">Refresh Helper Values</button>
+                      <button class="control" id="refreshHelpers" type="button">Refresh Date/Time</button>
                       <button class="control secondary" data-copy-target="helperTs" type="button">Copy ts_utc</button>
                       <button class="control secondary" data-copy-target="helperRequestId" type="button">Copy request_id</button>
                       <button class="control secondary" data-copy-target="helperNonce" type="button">Copy nonce</button>

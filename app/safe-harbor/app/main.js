@@ -170,7 +170,6 @@
     rendererContractReadout: $('rendererContractReadout'),
     routeSourceReadout: $('routeSourceReadout'),
     copyPacketPreview: $('copyPacketPreview'),
-    copyForensicSchema: $('copyForensicSchema'),
     exportPacketPreview: $('exportPacketPreview'),
     resetStagedPacket: $('resetStagedPacket'),
     packetPreview: $('packetPreview'),
@@ -440,9 +439,6 @@
     dom.copyExtendedFooter.addEventListener('click', () => void copyText(dom.extendedFooterPreview.textContent || ''));
     dom.copyProbeOutput.addEventListener('click', () => void copyText(dom.probeOutput.value || ''));
     dom.copyPacketPreview.addEventListener('click', () => void copyText(dom.packetPreview.textContent || ''));
-    if (dom.copyForensicSchema) {
-      dom.copyForensicSchema.addEventListener('click', () => void copyText(dom.forensicSchemaPreview ? (dom.forensicSchemaPreview.textContent || '') : ''));
-    }
     dom.exportPacketPreview.addEventListener('click', () => {
       if (!packetIsSealed()) return;
       downloadJsonArtifact(packetExportFilename(), state.packet);
@@ -1060,7 +1056,7 @@
       if (dom.forensicSourceClassReadout) dom.forensicSourceClassReadout.textContent = inboundSource;
       if (dom.forensicAuthorityReadout) dom.forensicAuthorityReadout.textContent = inboundAuthority;
       if (dom.forensicOperatorReadout) dom.forensicOperatorReadout.textContent = 'pending / awaiting packet';
-      if (dom.forensicSchemaPreview) dom.forensicSchemaPreview.textContent = state.handoff ? ('// td613-governed-exposure/v1 (sub-schema of safe_harbor_packet.forensic_schema — not the full packet)\n' + JSON.stringify(state.handoff, null, 2)) : 'forensic schema pending';
+      if (dom.forensicSchemaPreview) dom.forensicSchemaPreview.textContent = state.handoff ? JSON.stringify(state.handoff, null, 2) : 'forensic schema pending';
       dom.packetStateReadout.textContent = state.ingress.bypass ? 'operator-bypass / packetless' : (completedCount() === 3 ? 'triad-ready / awaiting staged packet' : 'awaiting ingress');
       dom.provenanceRetentionReadout.textContent = 'pending';
       dom.packetPreview.textContent = 'packet pending';
@@ -1104,7 +1100,7 @@
     if (dom.forensicSourceClassReadout) dom.forensicSourceClassReadout.textContent = state.packet.forensic_schema.sourceClass;
     if (dom.forensicAuthorityReadout) dom.forensicAuthorityReadout.textContent = state.packet.forensic_schema.authorityCeiling;
     if (dom.forensicOperatorReadout) dom.forensicOperatorReadout.textContent = `${metric(state.packet.forensic_schema.Gap)} / ${state.packet.forensic_schema.dominantOperator.code} ${state.packet.forensic_schema.dominantOperator.label}`;
-    if (dom.forensicSchemaPreview) dom.forensicSchemaPreview.textContent = '// td613-governed-exposure/v1 (sub-schema of safe_harbor_packet.forensic_schema — not the full packet)\n' + JSON.stringify(state.packet.forensic_schema, null, 2);
+    if (dom.forensicSchemaPreview) dom.forensicSchemaPreview.textContent = JSON.stringify(state.packet.forensic_schema, null, 2);
     dom.packetStateReadout.textContent = state.packet.receipt.state;
     dom.provenanceRetentionReadout.textContent = state.packet.analysis.route.provenance ? metric(state.packet.analysis.route.provenance.retention_target) : 'pending';
     dom.packetPreview.textContent = JSON.stringify(state.packet, null, 2);
@@ -1163,7 +1159,7 @@
     dom.helperSealedAt.value = helper ? helper.sealed_at : '';
     dom.helperNonce.value = helper ? helper.nonce : '';
     dom.helperFilenameSafe.value = helper ? helper.filename_safe : '';
-    dom.refreshHelpers.disabled = Boolean(state.ingress.packetId);
+    dom.refreshHelpers.disabled = false;
   }
 
   function updateFooterPreview() {
@@ -1331,10 +1327,9 @@
   }
 
   function refreshHelpers() {
-
-    if (state.ingress.packetId) return state.helper;
     state.helper = stampBundle();
     updateHelpers();
+    render();
     persist();
     logEvent('helper-refresh', { request_id: state.helper.request_id });
     return state.helper;
