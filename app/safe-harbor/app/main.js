@@ -459,6 +459,16 @@
     window.addEventListener(D.hookBus.events.signature, (event) => void attachHook('signature', event.detail || {}));
     window.addEventListener('td613:badge-render', (event) => handleRenderer(event.detail || {}));
     window.addEventListener('load', refreshRenderer);
+    window.addEventListener('storage', (event) => {
+      if (event.key !== null && event.key !== GATEWAY_APERTURE_HANDOFF_KEY) return;
+      primeInboundContext();
+      render();
+    });
+    window.addEventListener('td613:aperture-tcp-handoff', () => {
+      // Defer so Aperture's gateway-embed updateUI hook can write localStorage
+      // before parseGatewayApertureContext reads it.
+      setTimeout(() => { primeInboundContext(); render(); }, 0);
+    });
   }
 
   function renderStatic() {
