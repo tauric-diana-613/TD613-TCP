@@ -2975,9 +2975,11 @@
       $('ingressMirrorControls').hidden = false;
     } else if (ingress.phase === 'badge') {
       phaseLabel = 'Gate // token';
-      cueGlyphKey = badgeTarget.glyphKey || glyphKeyForBadge(ingress.target.badgeToken || ingress.target.badge);
-      cueGlyph = badgeTarget.glyph;
-      cueLabel = badgeTarget.cue;
+      cueGlyphKey = currentBadge
+        ? (currentBadge.glyphKey || glyphKeyForBadge(ingress.currentBadgeToken || ingress.currentBadge))
+        : (badgeTarget.glyphKey || glyphKeyForBadge(ingress.target.badgeToken || ingress.target.badge));
+      cueGlyph = currentBadge ? currentBadge.glyph : badgeTarget.glyph;
+      cueLabel = currentBadge ? currentBadge.cue : badgeTarget.cue;
       cueCopy = 'Advance the token until the mark holds.';
       status = !ingress.currentBadge
         ? 'Rotate the token until the cue resolves.'
@@ -3231,7 +3233,9 @@
 
     clearIngressFeedback();
     const currentIndex = INGRESS_BADGE_OPTIONS.findIndex((option) => option.id === ingress.currentBadgeToken);
-    const nextOption = INGRESS_BADGE_OPTIONS[(currentIndex + 1 + INGRESS_BADGE_OPTIONS.length) % INGRESS_BADGE_OPTIONS.length];
+    const nextOption = currentIndex === -1
+      ? INGRESS_BADGE_OPTIONS[Math.floor(Math.random() * INGRESS_BADGE_OPTIONS.length)]
+      : INGRESS_BADGE_OPTIONS[(currentIndex + 1) % INGRESS_BADGE_OPTIONS.length];
     ingress.currentBadge = nextOption.value;
     ingress.currentBadgeToken = nextOption.id;
     if (ingress.currentBadgeToken === ingress.target.badgeToken) {
