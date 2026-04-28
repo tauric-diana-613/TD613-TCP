@@ -487,6 +487,7 @@
     if (dom.probeLaneReadout) dom.probeLaneReadout.textContent = (D.probeLanes || []).map((line) => line.split(' - ')[0]).join(' / ') || '01 / 02 / 03 / 04';
     dom.principalTextNode.textContent = D.canon.principal;
     dom.explicitPrincipal.textContent = D.canon.principal;
+    stampBadgeMetaOnPrincipal(null);
     dom.glyphLane.textContent = 'Literal lane: ' + String.fromCodePoint(D.canon.codepoint);
     dom.mixedLane.textContent = 'Mixed lane: ' + D.canon.principal + ' / ' + String.fromCodePoint(D.canon.codepoint) + ' / ' + D.canon.display_phrase;
   }
@@ -1059,10 +1060,11 @@
       if (dom.forensicSourceClassReadout) dom.forensicSourceClassReadout.textContent = inboundSource;
       if (dom.forensicAuthorityReadout) dom.forensicAuthorityReadout.textContent = inboundAuthority;
       if (dom.forensicOperatorReadout) dom.forensicOperatorReadout.textContent = 'pending / awaiting packet';
-      if (dom.forensicSchemaPreview) dom.forensicSchemaPreview.textContent = state.handoff ? JSON.stringify(state.handoff, null, 2) : 'forensic schema pending';
+      if (dom.forensicSchemaPreview) dom.forensicSchemaPreview.textContent = state.handoff ? ('// td613-governed-exposure/v1 (sub-schema of safe_harbor_packet.forensic_schema — not the full packet)\n' + JSON.stringify(state.handoff, null, 2)) : 'forensic schema pending';
       dom.packetStateReadout.textContent = state.ingress.bypass ? 'operator-bypass / packetless' : (completedCount() === 3 ? 'triad-ready / awaiting staged packet' : 'awaiting ingress');
       dom.provenanceRetentionReadout.textContent = 'pending';
       dom.packetPreview.textContent = 'packet pending';
+      stampBadgeMetaOnPrincipal(null);
       renderMintSurface(null, null);
       dom.covenantNote.textContent = state.ingress.bypass
         ? 'The shell is open through operator bypass only. No staged packet, covenant transition, or SHI issuance exists yet.'
@@ -1102,10 +1104,11 @@
     if (dom.forensicSourceClassReadout) dom.forensicSourceClassReadout.textContent = state.packet.forensic_schema.sourceClass;
     if (dom.forensicAuthorityReadout) dom.forensicAuthorityReadout.textContent = state.packet.forensic_schema.authorityCeiling;
     if (dom.forensicOperatorReadout) dom.forensicOperatorReadout.textContent = `${metric(state.packet.forensic_schema.Gap)} / ${state.packet.forensic_schema.dominantOperator.code} ${state.packet.forensic_schema.dominantOperator.label}`;
-    if (dom.forensicSchemaPreview) dom.forensicSchemaPreview.textContent = JSON.stringify(state.packet.forensic_schema, null, 2);
+    if (dom.forensicSchemaPreview) dom.forensicSchemaPreview.textContent = '// td613-governed-exposure/v1 (sub-schema of safe_harbor_packet.forensic_schema — not the full packet)\n' + JSON.stringify(state.packet.forensic_schema, null, 2);
     dom.packetStateReadout.textContent = state.packet.receipt.state;
     dom.provenanceRetentionReadout.textContent = state.packet.analysis.route.provenance ? metric(state.packet.analysis.route.provenance.retention_target) : 'pending';
     dom.packetPreview.textContent = JSON.stringify(state.packet, null, 2);
+    stampBadgeMetaOnPrincipal(state.packet);
     renderMintSurface(state.packet.issuance.badge_number || null, issuance);
     dom.covenantNote.textContent = state.packet.bridge.covenant_gate.confirmed
       ? (signatureSealed
@@ -2287,6 +2290,32 @@
       state.packet.bridge.export_gate &&
       state.packet.bridge.export_gate.ready
     );
+  }
+
+  function stampBadgeMetaOnPrincipal(packet) {
+    const node = dom.explicitPrincipal;
+    if (!node || !node.dataset) return;
+    const issuance = packet && packet.issuance ? packet.issuance : null;
+    if (issuance && issuance.badge_number) {
+      node.dataset.td613Shi = issuance.badge_number;
+    } else {
+      delete node.dataset.td613Shi;
+    }
+    if (packet && packet.packet_id) {
+      node.dataset.td613PacketId = packet.packet_id;
+    } else {
+      delete node.dataset.td613PacketId;
+    }
+    if (packet && packet.packet_hash_sha256) {
+      node.dataset.td613PacketHash = packet.packet_hash_sha256;
+    } else {
+      delete node.dataset.td613PacketHash;
+    }
+    if (issuance && issuance.stylometric_fingerprint) {
+      node.dataset.td613StylometricFingerprint = String(issuance.stylometric_fingerprint);
+    } else {
+      delete node.dataset.td613StylometricFingerprint;
+    }
   }
 
   function packetExportFilename() {
