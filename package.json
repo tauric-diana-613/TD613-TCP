@@ -5,6 +5,7 @@
   "type": "module",
   "description": "The Cadence Playground \u2014 custody-aware cadence routing demo",
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks",
     "serve": "node scripts/serve-td613-localhost.mjs 6130",
     "serve:static": "python3 -m http.server 8000",
     "test": "node scripts/check-engine-sync.mjs && npm run test:stylometry && node tests/td613-aperture.test.mjs && node tests/formulas.test.mjs && node tests/harbor.test.mjs",
