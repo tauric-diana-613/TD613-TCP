@@ -179,6 +179,19 @@
     copyButtons: Array.from(document.querySelectorAll('[data-copy-target]'))
   };
 
+  const missingDomKeys = Object.entries(dom)
+    .filter(([key, node]) => key !== 'body' && !Array.isArray(node) && !node)
+    .map(([key]) => key);
+  if (missingDomKeys.length) {
+    console.warn('[safe-harbor] missing DOM ids for keys:', missingDomKeys);
+  }
+  const danglingCopyTargets = dom.copyButtons
+    .map((button) => button.getAttribute('data-copy-target'))
+    .filter((id) => id && !document.getElementById(id));
+  if (danglingCopyTargets.length) {
+    console.warn('[safe-harbor] data-copy-target ids do not resolve:', danglingCopyTargets);
+  }
+
   const state = {
     helper: null,
     hooks: { tcp: null, eo: null, signature: null },
