@@ -170,6 +170,7 @@
     rendererContractReadout: $('rendererContractReadout'),
     routeSourceReadout: $('routeSourceReadout'),
     copyPacketPreview: $('copyPacketPreview'),
+    copyForensicSchemaPreview: $('copyForensicSchemaPreview'),
     exportPacketPreview: $('exportPacketPreview'),
     resetStagedPacket: $('resetStagedPacket'),
     packetPreview: $('packetPreview'),
@@ -439,6 +440,7 @@
     dom.copyExtendedFooter.addEventListener('click', () => void copyText(dom.extendedFooterPreview.textContent || ''));
     dom.copyProbeOutput.addEventListener('click', () => void copyText(dom.probeOutput.value || ''));
     dom.copyPacketPreview.addEventListener('click', () => void copyText(dom.packetPreview.textContent || ''));
+    dom.copyForensicSchemaPreview.addEventListener('click', () => void copyText(dom.forensicSchemaPreview.textContent || ''));
     dom.exportPacketPreview.addEventListener('click', () => {
       if (!packetIsSealed()) return;
       downloadJsonArtifact(packetExportFilename(), state.packet);
