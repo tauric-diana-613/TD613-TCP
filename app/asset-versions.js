@@ -1,0 +1,14 @@
+(function () {
+  window.TD613_ASSET_VERSIONS = {
+    styles:      '202604192040',
+    data:        '202604031140',
+    diagnostics: '202604230045',
+    engine:      '202604230045',
+    fixtures:    '202604230045',
+    main:        '202604230045',
+    aperture:    '202604192040',
+    chrome:      '202604230045'
+  };
+  var V = window.TD613_ASSET_VERSIONS;
+  document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" \/>');
+}());
