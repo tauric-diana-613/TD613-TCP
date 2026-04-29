@@ -8132,9 +8132,6 @@ requestAnimationFrame(tick);
       if (window.localStorage) {
         window.localStorage.setItem(GATEWAY_APERTURE_HANDOFF_KEY, serialized);
       }
-      if (window.sessionStorage) {
-        window.sessionStorage.setItem(GATEWAY_APERTURE_HANDOFF_KEY, serialized);
-      }
     } catch (error) {
       // Storage is a convenience lane only.
     }
