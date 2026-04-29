@@ -27,7 +27,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 1,
       "actionCoverage": 1,
-      "objectCoverage": 0.929,
+      "objectCoverage": 0.964,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -42,7 +42,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.067
+          "globalBagScore": 0.077
         },
         {
           "sourceClauseId": "s1c0",
@@ -65,36 +65,12 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.067
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s1c0+s2c0",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.188
-        },
-        {
-          "sourceClauseId": "s2c1",
-          "matchedClauseId": "s3c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.75,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.235
-        },
-        {
-          "sourceClauseId": "s3c0",
-          "matchedClauseId": "s4c0",
+          "matchedClauseId": "s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -102,11 +78,35 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.067
+          "globalBagScore": 0.308
+        },
+        {
+          "sourceClauseId": "s2c1",
+          "matchedClauseId": "s0c2",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.5,
+          "globalBagScore": 0.267
+        },
+        {
+          "sourceClauseId": "s3c0",
+          "matchedClauseId": "s1c0",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 1,
+          "polarityMismatch": 0,
+          "tenseMismatch": 0,
+          "bagScore": 0.5,
+          "globalBagScore": 0.077
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s6c0",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -114,11 +114,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.333,
-          "globalBagScore": 0.063
+          "globalBagScore": 0.071
         }
       ],
       "sourceClauseCount": 7,
-      "outputClauseCount": 9
+      "outputClauseCount": 4
     },
     "protectedAnchorAudit": {
       "totalAnchors": 0,
@@ -135,6 +135,19 @@
         "sourceRegisterLane": "rushed-mobile",
         "sourceRegisterLaneInference": "explicit",
         "sourceRegisterLaneFallback": false,
+        "discourseOntology": {
+          "primaryMove": "route-risk-separation",
+          "targetOntology": "institutional",
+          "sourceRegisterLane": "rushed-mobile",
+          "targetRegisterLane": "formal-record",
+          "needsDiscourseScaffold": true,
+          "sourceSignals": [
+            "route-risk-separation",
+            "clipped-source"
+          ],
+          "donorSignals": [],
+          "scaffoldRole": "bridge source facts into target evidentiary relation"
+        },
         "paragraphCount": 1,
         "sentenceCount": 5,
         "clauseCount": 7,
@@ -144,7 +157,7 @@
         "propositionCoverage": 1,
         "actorCoverage": 1,
         "actionCoverage": 1,
-        "objectCoverage": 0.929,
+        "objectCoverage": 0.964,
         "polarityMismatches": 0,
         "tenseMismatches": 0
       },
@@ -157,9 +170,9 @@
       "aperture": {
         "temporalPosture": "synced",
         "closureClass": "closed",
-        "closureScore": 0.991,
-        "historicalCrease": 0.013,
-        "unfoldingEnergy": 0.015,
+        "closureScore": 0.996,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.013,
         "beaconStatus": "beacon-idle",
         "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
@@ -177,6 +190,19 @@
         "sourceRegisterLane": "rushed-mobile",
         "sourceRegisterLaneInference": "explicit",
         "sourceRegisterLaneFallback": false,
+        "discourseOntology": {
+          "primaryMove": "route-risk-separation",
+          "targetOntology": "institutional",
+          "sourceRegisterLane": "rushed-mobile",
+          "targetRegisterLane": "formal-record",
+          "needsDiscourseScaffold": true,
+          "sourceSignals": [
+            "route-risk-separation",
+            "clipped-source"
+          ],
+          "donorSignals": [],
+          "scaffoldRole": "bridge source facts into target evidentiary relation"
+        },
         "paragraphCount": 1,
         "sentenceCount": 5,
         "clauseCount": 7,
@@ -195,7 +221,8 @@
         "hybrid"
       ],
       "structuralOperationsSelected": [
-        "merge-short-beats"
+        "merge-short-beats",
+        "CHAIN_CLAUSES_VIA_SUBORDINATOR"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:wks->weeks",
@@ -203,6 +230,10 @@
         "feature:dont->do-not",
         "expanded:w->with",
         "expanded:slash-list->sentences"
+      ],
+      "expectedOperators": [
+        "REHYDRATE_CLIPPED_CLAUSES",
+        "CHAIN_CLAUSES_VIA_SUBORDINATOR"
       ],
       "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
@@ -216,7 +247,7 @@
         "order-beat"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.8695
+      "averageToolabilityScore": 0.893
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -226,6 +257,7 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "sentence-spread",
         "punctuation-shape",
         "register-mode",
         "abbreviation-posture",
@@ -237,6 +269,7 @@
       "profileShiftDimensions": [
         "sentence-mean",
         "sentence-count",
+        "sentence-spread",
         "punctuation-shape",
         "register-mode",
         "abbreviation-posture",
@@ -281,8 +314,8 @@
         "falseCleanFamilies": [],
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
-        "concealmentEffectiveness": 0.8571,
-        "surfaceMarkerCount": 1,
+        "concealmentEffectiveness": 1,
+        "surfaceMarkerCount": 0,
         "pressure": {
           "targetRegisterLane": "formal-record",
           "activeFamilies": [
@@ -395,11 +428,9 @@
           "markers": []
         },
         "notePosture": {
-          "active": true,
-          "count": 1,
-          "markers": [
-            "profile-fragment-pressure"
-          ]
+          "active": false,
+          "count": 0,
+          "markers": []
         },
         "slangMarkers": {
           "active": false,
@@ -411,10 +442,8 @@
           "count": 0,
           "markers": []
         },
-        "activeFamilies": [
-          "notePosture"
-        ],
-        "totalMarkers": 1
+        "activeFamilies": [],
+        "totalMarkers": 0
       },
       "pressure": {
         "targetRegisterLane": "formal-record",
@@ -433,9 +462,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.153,
-      "outputDonorDistance": 3.095,
-      "donorImprovement": 1.058,
-      "donorImprovementRatio": 0.255,
+      "outputDonorDistance": 2.342,
+      "donorImprovement": 1.811,
+      "donorImprovementRatio": 0.436,
       "sourceOutputLexicalOverlap": 0.825
     },
     "candidateLedger": [
@@ -446,23 +475,26 @@
         "status": "selected",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "formal-record",
-        "score": 1.0679,
-        "toolabilityScore": 0.8486,
+        "score": 1.017,
+        "toolabilityScore": 0.8813,
         "rewriteStrength": 1,
-        "targetFit": 0.5391,
+        "targetFit": 0.6124,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.8,
+        "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [
-          "artifact:fragment"
+          "artifact:over-braiding",
+          "artifact:clause-drag"
         ],
         "toolabilityWarnings": [
-          "artifact:fragment"
+          "artifact:over-braiding",
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
@@ -474,6 +506,7 @@
         "profileShiftDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
@@ -481,6 +514,10 @@
           "lexical-register"
         ],
         "lexemeSwapCount": 4,
+        "expectedOperators": [
+          "REHYDRATE_CLIPPED_CLAUSES",
+          "CHAIN_CLAUSES_VIA_SUBORDINATOR"
+        ],
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -577,11 +614,9 @@
               "markers": []
             },
             "notePosture": {
-              "active": true,
-              "count": 1,
-              "markers": [
-                "profile-fragment-pressure"
-              ]
+              "active": false,
+              "count": 0,
+              "markers": []
             },
             "slangMarkers": {
               "active": false,
@@ -593,10 +628,8 @@
               "count": 0,
               "markers": []
             },
-            "activeFamilies": [
-              "notePosture"
-            ],
-            "totalMarkers": 1
+            "activeFamilies": [],
+            "totalMarkers": 0
           },
           "pressure": {
             "targetRegisterLane": "formal-record",
@@ -628,8 +661,8 @@
           "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.8571,
-          "surfaceMarkerCount": 1,
+          "concealmentEffectiveness": 1,
+          "surfaceMarkerCount": 0,
           "pressure": {
             "targetRegisterLane": "formal-record",
             "activeFamilies": [
@@ -653,6 +686,19 @@
             "sourceRegisterLane": "rushed-mobile",
             "sourceRegisterLaneInference": "explicit",
             "sourceRegisterLaneFallback": false,
+            "discourseOntology": {
+              "primaryMove": "route-risk-separation",
+              "targetOntology": "institutional",
+              "sourceRegisterLane": "rushed-mobile",
+              "targetRegisterLane": "formal-record",
+              "needsDiscourseScaffold": true,
+              "sourceSignals": [
+                "route-risk-separation",
+                "clipped-source"
+              ],
+              "donorSignals": [],
+              "scaffoldRole": "bridge source facts into target evidentiary relation"
+            },
             "paragraphCount": 1,
             "sentenceCount": 5,
             "clauseCount": 7,
@@ -662,7 +708,7 @@
             "propositionCoverage": 1,
             "actorCoverage": 1,
             "actionCoverage": 1,
-            "objectCoverage": 0.929,
+            "objectCoverage": 0.964,
             "polarityMismatches": 0,
             "tenseMismatches": 0
           },
@@ -675,9 +721,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.991,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.015,
+            "closureScore": 0.996,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.013,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -689,7 +735,7 @@
             "routePressure": 0.088
           }
         },
-        "outputPreview": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it. Room was basically. Cut print. Furniture if needed, do not fake that"
+        "outputPreview": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it, and room was basically, and cut print, and furniture if needed, do n"
       },
       {
         "id": "base:order-beat",
@@ -698,18 +744,20 @@
         "status": "eligible",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "formal-record",
-        "score": 1.0193,
-        "toolabilityScore": 0.8903,
+        "score": 1.0852,
+        "toolabilityScore": 0.9047,
         "rewriteStrength": 1,
-        "targetFit": 0.5502,
+        "targetFit": 0.6184,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
         "artifactFlags": [
-          "artifact:fragment"
+          "artifact:over-braiding",
+          "artifact:clause-drag"
         ],
         "toolabilityWarnings": [
-          "artifact:fragment"
+          "artifact:over-braiding",
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "changedDimensions": [
@@ -717,6 +765,7 @@
           "sentence-count",
           "sentence-spread",
           "punctuation-shape",
+          "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register",
@@ -728,12 +777,17 @@
           "sentence-count",
           "sentence-spread",
           "punctuation-shape",
+          "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
         "lexemeSwapCount": 4,
-        "artifactRepairApplied": true,
+        "expectedOperators": [
+          "REHYDRATE_CLIPPED_CLAUSES",
+          "CHAIN_CLAUSES_VIA_SUBORDINATOR"
+        ],
+        "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
             "registerLane": "rushed-mobile",
@@ -829,11 +883,9 @@
               "markers": []
             },
             "notePosture": {
-              "active": true,
-              "count": 1,
-              "markers": [
-                "profile-fragment-pressure"
-              ]
+              "active": false,
+              "count": 0,
+              "markers": []
             },
             "slangMarkers": {
               "active": false,
@@ -845,10 +897,8 @@
               "count": 0,
               "markers": []
             },
-            "activeFamilies": [
-              "notePosture"
-            ],
-            "totalMarkers": 1
+            "activeFamilies": [],
+            "totalMarkers": 0
           },
           "pressure": {
             "targetRegisterLane": "formal-record",
@@ -880,8 +930,8 @@
           "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.8571,
-          "surfaceMarkerCount": 1,
+          "concealmentEffectiveness": 1,
+          "surfaceMarkerCount": 0,
           "pressure": {
             "targetRegisterLane": "formal-record",
             "activeFamilies": [
@@ -905,6 +955,19 @@
             "sourceRegisterLane": "rushed-mobile",
             "sourceRegisterLaneInference": "explicit",
             "sourceRegisterLaneFallback": false,
+            "discourseOntology": {
+              "primaryMove": "route-risk-separation",
+              "targetOntology": "institutional",
+              "sourceRegisterLane": "rushed-mobile",
+              "targetRegisterLane": "formal-record",
+              "needsDiscourseScaffold": true,
+              "sourceSignals": [
+                "route-risk-separation",
+                "clipped-source"
+              ],
+              "donorSignals": [],
+              "scaffoldRole": "bridge source facts into target evidentiary relation"
+            },
             "paragraphCount": 1,
             "sentenceCount": 5,
             "clauseCount": 7,
@@ -915,7 +978,7 @@
             "actorCoverage": 1,
             "actionCoverage": 1,
             "objectCoverage": 0.929,
-            "polarityMismatches": 1,
+            "polarityMismatches": 0,
             "tenseMismatches": 0
           },
           "anchorIntegrity": {
@@ -927,9 +990,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.931,
+            "closureScore": 0.991,
             "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.038,
+            "unfoldingEnergy": 0.015,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -938,10 +1001,10 @@
             "driftClass": "none",
             "driftReasons": [],
             "routeFloor": "play",
-            "routePressure": 0.094
+            "routePressure": 0.088
           }
         },
-        "outputPreview": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it. If needed, do not fake that intake can run with no staffing hit, roo"
+        "outputPreview": "Freeze runs through q3, and means coord line stays empty 12 more weeks unless we bridge it, and needed, do not fake that intake can run with no staffing hit, ro"
       }
     ],
     "generationDocket": {
@@ -961,6 +1024,19 @@
           "sourceRegisterLane": "rushed-mobile",
           "sourceRegisterLaneInference": "explicit",
           "sourceRegisterLaneFallback": false,
+          "discourseOntology": {
+            "primaryMove": "route-risk-separation",
+            "targetOntology": "institutional",
+            "sourceRegisterLane": "rushed-mobile",
+            "targetRegisterLane": "formal-record",
+            "needsDiscourseScaffold": true,
+            "sourceSignals": [
+              "route-risk-separation",
+              "clipped-source"
+            ],
+            "donorSignals": [],
+            "scaffoldRole": "bridge source facts into target evidentiary relation"
+          },
           "paragraphCount": 1,
           "sentenceCount": 5,
           "clauseCount": 7,
@@ -970,7 +1046,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.929,
+          "objectCoverage": 0.964,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -983,9 +1059,9 @@
         "aperture": {
           "temporalPosture": "synced",
           "closureClass": "closed",
-          "closureScore": 0.991,
-          "historicalCrease": 0.013,
-          "unfoldingEnergy": 0.015,
+          "closureScore": 0.996,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.013,
           "beaconStatus": "beacon-idle",
           "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
@@ -1012,6 +1088,7 @@
       "register-mode",
       "sentence-count",
       "sentence-mean",
+      "sentence-spread",
       "surface-marker-posture"
     ],
     "lexemeSwapFamilies": [
@@ -1026,6 +1103,7 @@
       "sourceClass:narrative-scene"
     ],
     "structuralOperations": [
+      "CHAIN_CLAUSES_VIA_SUBORDINATOR",
       "merge-short-beats"
     ],
     "lexicalOperations": [
@@ -1040,7 +1118,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
-    "objectCoverage": 0.929,
+    "objectCoverage": 0.964,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1

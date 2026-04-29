@@ -27,7 +27,7 @@ function normalizeRelationInventory(value) {
 
   if (value && typeof value === 'object') {
     return Object.keys(value)
-      .filter((key) => !['sourceRegisterLane', 'sourceRegisterLaneInference', 'sourceRegisterLaneFallback'].includes(key))
+      .filter((key) => !['sourceRegisterLane', 'sourceRegisterLaneInference', 'sourceRegisterLaneFallback', 'discourseOntology'].includes(key))
       .sort((left, right) => left.localeCompare(right))
       .map((key) => `${key}:${value[key]}`);
   }

@@ -25,40 +25,40 @@
     "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
-      "actorCoverage": 1,
+      "actorCoverage": 0.83,
       "actionCoverage": 1,
       "objectCoverage": 0.95,
-      "polarityMismatches": 1,
+      "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0,
-          "globalBagScore": 0
+          "bagScore": 1,
+          "globalBagScore": 0.125
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c0+s0c1",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.5,
-          "globalBagScore": 0.222
+          "bagScore": 0.75,
+          "globalBagScore": 0.333
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -70,27 +70,27 @@
         },
         {
           "sourceClauseId": "s2c1",
-          "matchedClauseId": "s0c1+s1c0",
+          "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0.15,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.286,
-          "globalBagScore": 0.25
+          "bagScore": 0.167,
+          "globalBagScore": 0.1
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s1c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.6,
-          "globalBagScore": 0.429
+          "bagScore": 0.75,
+          "globalBagScore": 0.375
         }
       ],
       "sourceClauseCount": 5,
@@ -111,6 +111,18 @@
         "sourceRegisterLane": "rushed-mobile",
         "sourceRegisterLaneInference": "explicit",
         "sourceRegisterLaneFallback": false,
+        "discourseOntology": {
+          "primaryMove": "clarification",
+          "targetOntology": "institutional",
+          "sourceRegisterLane": "rushed-mobile",
+          "targetRegisterLane": "professional-message",
+          "needsDiscourseScaffold": true,
+          "sourceSignals": [
+            "clipped-source"
+          ],
+          "donorSignals": [],
+          "scaffoldRole": "bridge source facts into target evidentiary relation"
+        },
         "paragraphCount": 1,
         "sentenceCount": 4,
         "clauseCount": 5,
@@ -118,10 +130,10 @@
       },
       "semanticCoverage": {
         "propositionCoverage": 1,
-        "actorCoverage": 1,
+        "actorCoverage": 0.83,
         "actionCoverage": 1,
         "objectCoverage": 0.95,
-        "polarityMismatches": 1,
+        "polarityMismatches": 0,
         "tenseMismatches": 0
       },
       "anchorIntegrity": {
@@ -131,20 +143,22 @@
         "missingAnchors": 0
       },
       "aperture": {
-        "temporalPosture": "synced",
+        "temporalPosture": "preemptive",
         "closureClass": "closed",
-        "closureScore": 0.934,
-        "historicalCrease": 0.013,
-        "unfoldingEnergy": 0.04,
+        "closureScore": 0.967,
+        "historicalCrease": 0.015,
+        "unfoldingEnergy": 0.022,
         "beaconStatus": "beacon-idle",
         "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
       },
       "selectiveAdmissibilityDrift": {
-        "driftClass": "none",
-        "driftReasons": [],
-        "routeFloor": "play",
-        "routePressure": 0.094
+        "driftClass": "watch",
+        "driftReasons": [
+          "temporal-posture:preemptive"
+        ],
+        "routeFloor": "warning",
+        "routePressure": 0.333
       }
     },
     "planSummary": {
@@ -153,6 +167,18 @@
         "sourceRegisterLane": "rushed-mobile",
         "sourceRegisterLaneInference": "explicit",
         "sourceRegisterLaneFallback": false,
+        "discourseOntology": {
+          "primaryMove": "clarification",
+          "targetOntology": "institutional",
+          "sourceRegisterLane": "rushed-mobile",
+          "targetRegisterLane": "professional-message",
+          "needsDiscourseScaffold": true,
+          "sourceSignals": [
+            "clipped-source"
+          ],
+          "donorSignals": [],
+          "scaffoldRole": "bridge source facts into target evidentiary relation"
+        },
         "paragraphCount": 1,
         "sentenceCount": 4,
         "clauseCount": 5,
@@ -172,19 +198,26 @@
       ],
       "structuralOperationsSelected": [
         "front-when",
-        "beat-merge"
+        "REHYDRATE_CLIPPED_CLAUSES",
+        "STRIP_SUBORDINATOR_PREFIX",
+        "CHAIN_CLAUSES_VIA_SUBORDINATOR"
       ],
       "lexicalRegisterOperationsSelected": [
         "expanded:pls->please",
-        "expanded:bc->because"
+        "expanded:bc->because",
+        "REHYDRATE_CLIPPED_CLAUSES"
       ],
-      "connectorStrategy": "front",
+      "expectedOperators": [
+        "REHYDRATE_CLIPPED_CLAUSES",
+        "CHAIN_CLAUSES_VIA_SUBORDINATOR"
+      ],
+      "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
       "candidateCount": 5,
-      "landedCandidateId": "base:order-beat",
-      "landedCandidateFamily": "order-beat",
+      "landedCandidateId": "base:clause-pivot",
+      "landedCandidateFamily": "clause-pivot",
       "families": [
         "syntax-shape",
         "register-lexicon",
@@ -193,7 +226,7 @@
         "hybrid"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.8546
+      "averageToolabilityScore": 0.8623
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -203,6 +236,7 @@
       "changedDimensions": [
         "sentence-mean",
         "sentence-count",
+        "sentence-spread",
         "punctuation-shape",
         "register-mode",
         "abbreviation-posture",
@@ -212,6 +246,7 @@
       "profileShiftDimensions": [
         "sentence-mean",
         "sentence-count",
+        "sentence-spread",
         "punctuation-shape",
         "register-mode",
         "abbreviation-posture",
@@ -228,6 +263,11 @@
           "from": "bc",
           "to": "because",
           "family": "surface"
+        },
+        {
+          "from": "its",
+          "to": "it is",
+          "family": "long-form-rehydration"
         }
       ],
       "vernacularFeatureShift": {
@@ -387,10 +427,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.615,
-      "outputDonorDistance": 1.669,
-      "donorImprovement": 2.946,
-      "donorImprovementRatio": 0.638,
-      "sourceOutputLexicalOverlap": 0.886
+      "outputDonorDistance": 1.524,
+      "donorImprovement": 3.091,
+      "donorImprovementRatio": 0.67,
+      "sourceOutputLexicalOverlap": 0.804
     },
     "candidateLedger": [
       {
@@ -400,21 +440,24 @@
         "status": "eligible",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 1.388,
-        "toolabilityScore": 0.8932,
+        "score": 1.0139,
+        "toolabilityScore": 0.877,
         "rewriteStrength": 1,
-        "targetFit": 0.726,
+        "targetFit": 0.6307,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
         "toolabilityWarnings": [
-          "persona-convergence:matron-undertow"
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -423,12 +466,17 @@
         "profileShiftDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 2,
+        "lexemeSwapCount": 3,
+        "expectedOperators": [
+          "REHYDRATE_CLIPPED_CLAUSES",
+          "CHAIN_CLAUSES_VIA_SUBORDINATOR"
+        ],
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -590,6 +638,18 @@
             "sourceRegisterLane": "rushed-mobile",
             "sourceRegisterLaneInference": "explicit",
             "sourceRegisterLaneFallback": false,
+            "discourseOntology": {
+              "primaryMove": "clarification",
+              "targetOntology": "institutional",
+              "sourceRegisterLane": "rushed-mobile",
+              "targetRegisterLane": "professional-message",
+              "needsDiscourseScaffold": true,
+              "sourceSignals": [
+                "clipped-source"
+              ],
+              "donorSignals": [],
+              "scaffoldRole": "bridge source facts into target evidentiary relation"
+            },
             "paragraphCount": 1,
             "sentenceCount": 4,
             "clauseCount": 5,
@@ -597,10 +657,10 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 1,
+            "actorCoverage": 0.815,
             "actionCoverage": 1,
             "objectCoverage": 0.95,
-            "polarityMismatches": 1,
+            "polarityMismatches": 0,
             "tenseMismatches": 0
           },
           "anchorIntegrity": {
@@ -610,23 +670,25 @@
             "missingAnchors": 0
           },
           "aperture": {
-            "temporalPosture": "synced",
+            "temporalPosture": "preemptive",
             "closureClass": "closed",
-            "closureScore": 0.934,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.04,
+            "closureScore": 0.964,
+            "historicalCrease": 0.015,
+            "unfoldingEnergy": 0.023,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
           },
           "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.094
+            "driftClass": "watch",
+            "driftReasons": [
+              "temporal-posture:preemptive"
+            ],
+            "routeFloor": "warning",
+            "routePressure": 0.333
           }
         },
-        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"ligh"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low, and please stop calling cue \""
       },
       {
         "id": "base:register-lexicon",
@@ -635,31 +697,45 @@
         "status": "eligible",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 1.2036,
-        "toolabilityScore": 0.793,
+        "score": 1.0383,
+        "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.6242,
+        "targetFit": 0.7591,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 1,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
         "toolabilityWarnings": [
-          "persona-markers-thin"
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
         "profileShiftDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
+          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 2,
+        "lexemeSwapCount": 3,
+        "expectedOperators": [
+          "REHYDRATE_CLIPPED_CLAUSES",
+          "CHAIN_CLAUSES_VIA_SUBORDINATOR"
+        ],
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -821,6 +897,18 @@
             "sourceRegisterLane": "rushed-mobile",
             "sourceRegisterLaneInference": "explicit",
             "sourceRegisterLaneFallback": false,
+            "discourseOntology": {
+              "primaryMove": "clarification",
+              "targetOntology": "institutional",
+              "sourceRegisterLane": "rushed-mobile",
+              "targetRegisterLane": "professional-message",
+              "needsDiscourseScaffold": true,
+              "sourceSignals": [
+                "clipped-source"
+              ],
+              "donorSignals": [],
+              "scaffoldRole": "bridge source facts into target evidentiary relation"
+            },
             "paragraphCount": 1,
             "sentenceCount": 4,
             "clauseCount": 5,
@@ -828,10 +916,10 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 1,
+            "actorCoverage": 0.814,
             "actionCoverage": 1,
             "objectCoverage": 0.95,
-            "polarityMismatches": 1,
+            "polarityMismatches": 0,
             "tenseMismatches": 0
           },
           "anchorIntegrity": {
@@ -841,46 +929,53 @@
             "missingAnchors": 0
           },
           "aperture": {
-            "temporalPosture": "synced",
+            "temporalPosture": "preemptive",
             "closureClass": "closed",
-            "closureScore": 0.934,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.04,
+            "closureScore": 0.964,
+            "historicalCrease": 0.015,
+            "unfoldingEnergy": 0.023,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
           },
           "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.094
+            "driftClass": "watch",
+            "driftReasons": [
+              "temporal-posture:preemptive"
+            ],
+            "routeFloor": "warning",
+            "routePressure": 0.333
           }
         },
-        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low. Please stop calling cue \"light wa"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low, and please stop calling cue \"ligh"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
-        "status": "selected",
+        "status": "held",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 1.4283,
-        "toolabilityScore": 0.9004,
+        "score": 0.6125,
+        "toolabilityScore": 0.8276,
         "rewriteStrength": 1,
-        "targetFit": 0.7176,
+        "targetFit": 0.6249,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
-        "failureReasons": [],
-        "artifactFlags": [],
+        "failureReasons": [
+          "semantic-failure"
+        ],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
         "toolabilityWarnings": [
-          "persona-convergence:matron-undertow"
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
@@ -890,13 +985,18 @@
         "profileShiftDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 2,
+        "lexemeSwapCount": 3,
+        "expectedOperators": [
+          "REHYDRATE_CLIPPED_CLAUSES",
+          "CHAIN_CLAUSES_VIA_SUBORDINATOR"
+        ],
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -1058,6 +1158,18 @@
             "sourceRegisterLane": "rushed-mobile",
             "sourceRegisterLaneInference": "explicit",
             "sourceRegisterLaneFallback": false,
+            "discourseOntology": {
+              "primaryMove": "clarification",
+              "targetOntology": "institutional",
+              "sourceRegisterLane": "rushed-mobile",
+              "targetRegisterLane": "professional-message",
+              "needsDiscourseScaffold": true,
+              "sourceSignals": [
+                "clipped-source"
+              ],
+              "donorSignals": [],
+              "scaffoldRole": "bridge source facts into target evidentiary relation"
+            },
             "paragraphCount": 1,
             "sentenceCount": 4,
             "clauseCount": 5,
@@ -1065,10 +1177,10 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 1,
+            "actorCoverage": 0.83,
             "actionCoverage": 1,
             "objectCoverage": 0.95,
-            "polarityMismatches": 1,
+            "polarityMismatches": 2,
             "tenseMismatches": 0
           },
           "anchorIntegrity": {
@@ -1078,44 +1190,51 @@
             "missingAnchors": 0
           },
           "aperture": {
-            "temporalPosture": "synced",
+            "temporalPosture": "preemptive",
             "closureClass": "closed",
-            "closureScore": 0.934,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.04,
+            "closureScore": 0.847,
+            "historicalCrease": 0.024,
+            "unfoldingEnergy": 0.09,
             "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
+            "cumulativeNarrowing": 0.36,
             "dominantLoss": "retrieval gating"
           },
           "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.094
+            "driftClass": "severe",
+            "driftReasons": [
+              "polarity-mismatches>1"
+            ],
+            "routeFloor": "harbor",
+            "routePressure": 1
           }
         },
-        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burs"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low, and it is basically a fog bur"
       },
       {
         "id": "base:clause-pivot",
         "family": "clause-pivot",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "selected",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 1.231,
-        "toolabilityScore": 0.793,
+        "score": 1.0426,
+        "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.6409,
+        "targetFit": 0.7426,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.47,
+        "personaSeparationScore": 1,
         "failureReasons": [],
-        "artifactFlags": [],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
         "toolabilityWarnings": [
-          "persona-markers-thin"
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "changedDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
           "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
@@ -1123,13 +1242,20 @@
           "lexical-register"
         ],
         "profileShiftDimensions": [
+          "sentence-mean",
+          "sentence-count",
+          "sentence-spread",
           "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 2,
+        "lexemeSwapCount": 3,
+        "expectedOperators": [
+          "REHYDRATE_CLIPPED_CLAUSES",
+          "CHAIN_CLAUSES_VIA_SUBORDINATOR"
+        ],
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -1291,6 +1417,18 @@
             "sourceRegisterLane": "rushed-mobile",
             "sourceRegisterLaneInference": "explicit",
             "sourceRegisterLaneFallback": false,
+            "discourseOntology": {
+              "primaryMove": "clarification",
+              "targetOntology": "institutional",
+              "sourceRegisterLane": "rushed-mobile",
+              "targetRegisterLane": "professional-message",
+              "needsDiscourseScaffold": true,
+              "sourceSignals": [
+                "clipped-source"
+              ],
+              "donorSignals": [],
+              "scaffoldRole": "bridge source facts into target evidentiary relation"
+            },
             "paragraphCount": 1,
             "sentenceCount": 4,
             "clauseCount": 5,
@@ -1298,10 +1436,10 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 1,
+            "actorCoverage": 0.83,
             "actionCoverage": 1,
             "objectCoverage": 0.95,
-            "polarityMismatches": 1,
+            "polarityMismatches": 0,
             "tenseMismatches": 0
           },
           "anchorIntegrity": {
@@ -1311,46 +1449,53 @@
             "missingAnchors": 0
           },
           "aperture": {
-            "temporalPosture": "synced",
+            "temporalPosture": "preemptive",
             "closureClass": "closed",
-            "closureScore": 0.934,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.04,
+            "closureScore": 0.967,
+            "historicalCrease": 0.015,
+            "unfoldingEnergy": 0.022,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
           },
           "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.094
+            "driftClass": "watch",
+            "driftReasons": [
+              "temporal-posture:preemptive"
+            ],
+            "routeFloor": "warning",
+            "routePressure": 0.333
           }
         },
-        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burst no"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low, and it is basically a fog burst n"
       },
       {
         "id": "base:hybrid",
         "family": "hybrid",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "held",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 1.4129,
-        "toolabilityScore": 0.8932,
+        "score": 0.5802,
+        "toolabilityScore": 0.8204,
         "rewriteStrength": 1,
-        "targetFit": 0.7322,
+        "targetFit": 0.6249,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
-        "failureReasons": [],
-        "artifactFlags": [],
+        "failureReasons": [
+          "semantic-failure"
+        ],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
         "toolabilityWarnings": [
-          "persona-convergence:matron-undertow"
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
@@ -1360,13 +1505,18 @@
         "profileShiftDimensions": [
           "sentence-mean",
           "sentence-count",
+          "sentence-spread",
           "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 2,
+        "lexemeSwapCount": 3,
+        "expectedOperators": [
+          "REHYDRATE_CLIPPED_CLAUSES",
+          "CHAIN_CLAUSES_VIA_SUBORDINATOR"
+        ],
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -1528,6 +1678,18 @@
             "sourceRegisterLane": "rushed-mobile",
             "sourceRegisterLaneInference": "explicit",
             "sourceRegisterLaneFallback": false,
+            "discourseOntology": {
+              "primaryMove": "clarification",
+              "targetOntology": "institutional",
+              "sourceRegisterLane": "rushed-mobile",
+              "targetRegisterLane": "professional-message",
+              "needsDiscourseScaffold": true,
+              "sourceSignals": [
+                "clipped-source"
+              ],
+              "donorSignals": [],
+              "scaffoldRole": "bridge source facts into target evidentiary relation"
+            },
             "paragraphCount": 1,
             "sentenceCount": 4,
             "clauseCount": 5,
@@ -1535,10 +1697,10 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 1,
+            "actorCoverage": 0.82,
             "actionCoverage": 1,
             "objectCoverage": 0.95,
-            "polarityMismatches": 1,
+            "polarityMismatches": 2,
             "tenseMismatches": 0
           },
           "anchorIntegrity": {
@@ -1548,33 +1710,35 @@
             "missingAnchors": 0
           },
           "aperture": {
-            "temporalPosture": "synced",
+            "temporalPosture": "preemptive",
             "closureClass": "closed",
-            "closureScore": 0.934,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.04,
+            "closureScore": 0.845,
+            "historicalCrease": 0.024,
+            "unfoldingEnergy": 0.091,
             "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
+            "cumulativeNarrowing": 0.362,
             "dominantLoss": "retrieval gating"
           },
           "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.094
+            "driftClass": "severe",
+            "driftReasons": [
+              "polarity-mismatches>1"
+            ],
+            "routeFloor": "harbor",
+            "routePressure": 1
           }
         },
-        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low. When its basically a fog burs"
+        "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low, and it is basically a fog bur"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a structural registered rewrite.",
+      "headline": "Generator V2 landed under Aperture warning pressure.",
       "reasons": [],
       "candidateCount": 5,
-      "winningCandidateId": "base:order-beat",
-      "winningCandidateFamily": "order-beat",
+      "winningCandidateId": "base:clause-pivot",
+      "winningCandidateFamily": "clause-pivot",
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "rushed-mobile",
@@ -1584,6 +1748,18 @@
           "sourceRegisterLane": "rushed-mobile",
           "sourceRegisterLaneInference": "explicit",
           "sourceRegisterLaneFallback": false,
+          "discourseOntology": {
+            "primaryMove": "clarification",
+            "targetOntology": "institutional",
+            "sourceRegisterLane": "rushed-mobile",
+            "targetRegisterLane": "professional-message",
+            "needsDiscourseScaffold": true,
+            "sourceSignals": [
+              "clipped-source"
+            ],
+            "donorSignals": [],
+            "scaffoldRole": "bridge source facts into target evidentiary relation"
+          },
           "paragraphCount": 1,
           "sentenceCount": 4,
           "clauseCount": 5,
@@ -1591,10 +1767,10 @@
         },
         "semanticCoverage": {
           "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0.83,
           "actionCoverage": 1,
           "objectCoverage": 0.95,
-          "polarityMismatches": 1,
+          "polarityMismatches": 0,
           "tenseMismatches": 0
         },
         "anchorIntegrity": {
@@ -1604,24 +1780,26 @@
           "missingAnchors": 0
         },
         "aperture": {
-          "temporalPosture": "synced",
+          "temporalPosture": "preemptive",
           "closureClass": "closed",
-          "closureScore": 0.934,
-          "historicalCrease": 0.013,
-          "unfoldingEnergy": 0.04,
+          "closureScore": 0.967,
+          "historicalCrease": 0.015,
+          "unfoldingEnergy": 0.022,
           "beaconStatus": "beacon-idle",
           "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
         },
         "selectiveAdmissibilityDrift": {
-          "driftClass": "none",
-          "driftReasons": [],
-          "routeFloor": "play",
-          "routePressure": 0.094
+          "driftClass": "watch",
+          "driftReasons": [
+            "temporal-posture:preemptive"
+          ],
+          "routeFloor": "warning",
+          "routePressure": 0.333
         }
       }
     },
-    "winningCandidateId": "base:order-beat"
+    "winningCandidateId": "base:clause-pivot"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -1633,9 +1811,11 @@
       "punctuation-shape",
       "register-mode",
       "sentence-count",
-      "sentence-mean"
+      "sentence-mean",
+      "sentence-spread"
     ],
     "lexemeSwapFamilies": [
+      "long-form-rehydration",
       "surface"
     ],
     "relationInventory": [
@@ -1646,20 +1826,23 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
-      "beat-merge",
-      "front-when"
+      "CHAIN_CLAUSES_VIA_SUBORDINATOR",
+      "front-when",
+      "REHYDRATE_CLIPPED_CLAUSES",
+      "STRIP_SUBORDINATOR_PREFIX"
     ],
     "lexicalOperations": [
       "expanded:bc->because",
-      "expanded:pls->please"
+      "expanded:pls->please",
+      "REHYDRATE_CLIPPED_CLAUSES"
     ],
-    "connectorStrategy": "front",
+    "connectorStrategy": "cascade",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
-    "actorCoverage": 1,
+    "actorCoverage": 0.83,
     "actionCoverage": 1,
     "objectCoverage": 0.95,
-    "polarityMismatches": 1,
+    "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

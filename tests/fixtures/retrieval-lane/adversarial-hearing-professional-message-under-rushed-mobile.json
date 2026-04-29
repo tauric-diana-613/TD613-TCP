@@ -25,9 +25,9 @@
     "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
-      "actorCoverage": 1,
+      "actorCoverage": 0.96,
       "actionCoverage": 1,
-      "objectCoverage": 1,
+      "objectCoverage": 0.971,
       "polarityMismatches": 0,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -36,13 +36,13 @@
           "sourceClauseId": "s0c0",
           "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0.72,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.172
+          "bagScore": 0.8,
+          "globalBagScore": 0.138
         },
         {
           "sourceClauseId": "s1c0",
@@ -54,7 +54,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.207
+          "globalBagScore": 0.214
         },
         {
           "sourceClauseId": "s1c1",
@@ -66,7 +66,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.034
+          "globalBagScore": 0.036
         },
         {
           "sourceClauseId": "s2c0",
@@ -78,7 +78,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.069
+          "globalBagScore": 0.071
         },
         {
           "sourceClauseId": "s3c0",
@@ -86,11 +86,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.8,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.241
+          "bagScore": 0.75,
+          "globalBagScore": 0.207
         },
         {
           "sourceClauseId": "s4c0",
@@ -102,7 +102,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.5,
-          "globalBagScore": 0.103
+          "globalBagScore": 0.107
         },
         {
           "sourceClauseId": "s5c0",
@@ -114,7 +114,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.241
+          "globalBagScore": 0.25
         }
       ],
       "sourceClauseCount": 7,
@@ -135,6 +135,19 @@
         "sourceRegisterLane": "professional-message",
         "sourceRegisterLaneInference": "explicit",
         "sourceRegisterLaneFallback": false,
+        "discourseOntology": {
+          "primaryMove": "evidentiary-dependency",
+          "targetOntology": "actor",
+          "sourceRegisterLane": "professional-message",
+          "targetRegisterLane": "rushed-mobile",
+          "needsDiscourseScaffold": false,
+          "sourceSignals": [
+            "dependency-chain",
+            "record-correction"
+          ],
+          "donorSignals": [],
+          "scaffoldRole": "none"
+        },
         "paragraphCount": 1,
         "sentenceCount": 6,
         "clauseCount": 7,
@@ -142,9 +155,9 @@
       },
       "semanticCoverage": {
         "propositionCoverage": 1,
-        "actorCoverage": 1,
+        "actorCoverage": 0.96,
         "actionCoverage": 1,
-        "objectCoverage": 1,
+        "objectCoverage": 0.971,
         "polarityMismatches": 0,
         "tenseMismatches": 0
       },
@@ -157,9 +170,9 @@
       "aperture": {
         "temporalPosture": "synced",
         "closureClass": "closed",
-        "closureScore": 1,
-        "historicalCrease": 0.012,
-        "unfoldingEnergy": 0.012,
+        "closureScore": 0.99,
+        "historicalCrease": 0.013,
+        "unfoldingEnergy": 0.015,
         "beaconStatus": "beacon-idle",
         "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
@@ -168,7 +181,7 @@
         "driftClass": "none",
         "driftReasons": [],
         "routeFloor": "play",
-        "routePressure": 0.087
+        "routePressure": 0.088
       }
     },
     "planSummary": {
@@ -177,6 +190,19 @@
         "sourceRegisterLane": "professional-message",
         "sourceRegisterLaneInference": "explicit",
         "sourceRegisterLaneFallback": false,
+        "discourseOntology": {
+          "primaryMove": "evidentiary-dependency",
+          "targetOntology": "actor",
+          "sourceRegisterLane": "professional-message",
+          "targetRegisterLane": "rushed-mobile",
+          "needsDiscourseScaffold": false,
+          "sourceSignals": [
+            "dependency-chain",
+            "record-correction"
+          ],
+          "donorSignals": [],
+          "scaffoldRole": "none"
+        },
         "paragraphCount": 1,
         "sentenceCount": 6,
         "clauseCount": 7,
@@ -194,12 +220,25 @@
         "pressure-current",
         "hybrid"
       ],
-      "structuralOperationsSelected": [],
+      "structuralOperationsSelected": [
+        "STRIP_SUBORDINATOR_PREFIX",
+        "COMPRESS_FORMAL_CLAUSES"
+      ],
       "lexicalRegisterOperationsSelected": [
         "compressed:please->pls",
         "orthography:thats",
         "orthography:didnt",
-        "orthography:lowercase-lead"
+        "orthography:lowercase-lead",
+        "COMPRESS_FORMAL_CLAUSES",
+        "DROP_ARTICLES",
+        "DIGIT_SUBSTITUTE",
+        "LOWERCASE_INITIALS"
+      ],
+      "expectedOperators": [
+        "COMPRESS_FORMAL_CLAUSES",
+        "DROP_ARTICLES",
+        "DIGIT_SUBSTITUTE",
+        "LOWERCASE_INITIALS"
       ],
       "connectorStrategy": "split",
       "contractionStrategy": "contract"
@@ -212,7 +251,7 @@
         "syntax-shape"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.7198
+      "averageToolabilityScore": 0.7959
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -246,6 +285,26 @@
           "from": "didn't",
           "to": "didnt",
           "family": "surface"
+        },
+        {
+          "from": "the way",
+          "to": "way",
+          "family": "orthography"
+        },
+        {
+          "from": "the notice",
+          "to": "notice",
+          "family": "orthography"
+        },
+        {
+          "from": "the inspector",
+          "to": "inspector",
+          "family": "orthography"
+        },
+        {
+          "from": "for",
+          "to": "4",
+          "family": "digit-substitution"
         }
       ],
       "vernacularFeatureShift": {
@@ -417,10 +476,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 3.519,
-      "outputDonorDistance": 2.275,
-      "donorImprovement": 1.244,
-      "donorImprovementRatio": 0.354,
-      "sourceOutputLexicalOverlap": 0.934
+      "outputDonorDistance": 2.16,
+      "donorImprovement": 1.359,
+      "donorImprovementRatio": 0.386,
+      "sourceOutputLexicalOverlap": 0.896
     },
     "candidateLedger": [
       {
@@ -430,12 +489,12 @@
         "status": "selected",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.1015,
-        "toolabilityScore": 0.7198,
+        "score": 0.9636,
+        "toolabilityScore": 0.7959,
         "rewriteStrength": 1,
-        "targetFit": 0.5512,
+        "targetFit": 0.5703,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.08,
+        "personaSeparationScore": 0.47,
         "failureReasons": [],
         "artifactFlags": [
           "artifact:clause-drag"
@@ -457,7 +516,13 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 3,
+        "lexemeSwapCount": 7,
+        "expectedOperators": [
+          "COMPRESS_FORMAL_CLAUSES",
+          "DROP_ARTICLES",
+          "DIGIT_SUBSTITUTE",
+          "LOWERCASE_INITIALS"
+        ],
         "artifactRepairApplied": false,
         "vernacularFeatures": {
           "source": {
@@ -631,6 +696,19 @@
             "sourceRegisterLane": "professional-message",
             "sourceRegisterLaneInference": "explicit",
             "sourceRegisterLaneFallback": false,
+            "discourseOntology": {
+              "primaryMove": "evidentiary-dependency",
+              "targetOntology": "actor",
+              "sourceRegisterLane": "professional-message",
+              "targetRegisterLane": "rushed-mobile",
+              "needsDiscourseScaffold": false,
+              "sourceSignals": [
+                "dependency-chain",
+                "record-correction"
+              ],
+              "donorSignals": [],
+              "scaffoldRole": "none"
+            },
             "paragraphCount": 1,
             "sentenceCount": 6,
             "clauseCount": 7,
@@ -638,9 +716,9 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 1,
+            "actorCoverage": 0.96,
             "actionCoverage": 1,
-            "objectCoverage": 1,
+            "objectCoverage": 0.971,
             "polarityMismatches": 0,
             "tenseMismatches": 0
           },
@@ -653,9 +731,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 1,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.012,
+            "closureScore": 0.99,
+            "historicalCrease": 0.013,
+            "unfoldingEnergy": 0.015,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -664,10 +742,10 @@
             "driftClass": "none",
             "driftReasons": [],
             "routeFloor": "play",
-            "routePressure": 0.087
+            "routePressure": 0.088
           }
         },
-        "outputPreview": "hearing unit, pls correct the way the July 3 record is framing the June inspection. counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00"
+        "outputPreview": "hearing unit, pls correct way the July 3 record is framing the June inspection. counsel kept calling it a \"refusal of entry,\" but notice window was 1:00-5:00 PM"
       }
     ],
     "generationDocket": {
@@ -687,6 +765,19 @@
           "sourceRegisterLane": "professional-message",
           "sourceRegisterLaneInference": "explicit",
           "sourceRegisterLaneFallback": false,
+          "discourseOntology": {
+            "primaryMove": "evidentiary-dependency",
+            "targetOntology": "actor",
+            "sourceRegisterLane": "professional-message",
+            "targetRegisterLane": "rushed-mobile",
+            "needsDiscourseScaffold": false,
+            "sourceSignals": [
+              "dependency-chain",
+              "record-correction"
+            ],
+            "donorSignals": [],
+            "scaffoldRole": "none"
+          },
           "paragraphCount": 1,
           "sentenceCount": 6,
           "clauseCount": 7,
@@ -694,9 +785,9 @@
         },
         "semanticCoverage": {
           "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0.96,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.971,
           "polarityMismatches": 0,
           "tenseMismatches": 0
         },
@@ -709,9 +800,9 @@
         "aperture": {
           "temporalPosture": "synced",
           "closureClass": "closed",
-          "closureScore": 1,
-          "historicalCrease": 0.012,
-          "unfoldingEnergy": 0.012,
+          "closureScore": 0.99,
+          "historicalCrease": 0.013,
+          "unfoldingEnergy": 0.015,
           "beaconStatus": "beacon-idle",
           "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
@@ -720,7 +811,7 @@
           "driftClass": "none",
           "driftReasons": [],
           "routeFloor": "play",
-          "routePressure": 0.087
+          "routePressure": 0.088
         }
       }
     },
@@ -736,6 +827,8 @@
       "register-mode"
     ],
     "lexemeSwapFamilies": [
+      "digit-substitution",
+      "orthography",
       "surface"
     ],
     "relationInventory": [
@@ -745,9 +838,16 @@
       "sentenceCount:6",
       "sourceClass:procedural-record"
     ],
-    "structuralOperations": [],
+    "structuralOperations": [
+      "COMPRESS_FORMAL_CLAUSES",
+      "STRIP_SUBORDINATOR_PREFIX"
+    ],
     "lexicalOperations": [
+      "COMPRESS_FORMAL_CLAUSES",
       "compressed:please->pls",
+      "DIGIT_SUBSTITUTE",
+      "DROP_ARTICLES",
+      "LOWERCASE_INITIALS",
       "orthography:didnt",
       "orthography:lowercase-lead",
       "orthography:thats"
@@ -755,9 +855,9 @@
     "connectorStrategy": "split",
     "contractionStrategy": "contract",
     "propositionCoverage": 1,
-    "actorCoverage": 1,
+    "actorCoverage": 0.96,
     "actionCoverage": 1,
-    "objectCoverage": 1,
+    "objectCoverage": 0.971,
     "polarityMismatches": 0,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
