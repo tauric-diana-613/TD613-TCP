@@ -4729,8 +4729,20 @@
         (transfer.structuralOperations || []).length > 0 ||
         (transfer.lexicalOperations || []).length > 0 ||
         (donorProgress.donorImprovementRatio || 0) >= 0.08;
+      const richHeldMovement =
+        heldHasMovement &&
+        expectedOperators.length >= 2 &&
+        expectedCoverage >= 0.66 &&
+        (transfer.structuralOperations || []).length >= 2 &&
+        (semanticAudit.propositionCoverage ?? 1) >= 0.9 &&
+        (semanticAudit.actionCoverage ?? 1) >= 0.75 &&
+        (semanticAudit.objectCoverage ?? 1) >= 0.65 &&
+        protectedAnchorIntegrity >= 1 &&
+        !/\bwhat I am trying to say is\b/i.test(String(transfer.text || ''));
       score = heldHasMovement
-        ? Math.min(55, Math.max(18, score))
+        ? richHeldMovement
+          ? Math.min(72, Math.max(58, score))
+          : Math.min(55, Math.max(18, score))
         : Math.min(score, 8);
     }
 
@@ -7269,8 +7281,8 @@ DeltaE = ${ledger.reuse_gain}`;
       return;
     }
 
-    const shellA = bayShells.A.mode === 'native' ? createBorrowedShell(voiceStateA) : cloneShell(bayShells.A);
-    const shellB = bayShells.B.mode === 'native' ? createBorrowedShell(voiceStateB) : cloneShell(bayShells.B);
+    const shellA = createBorrowedShell(voiceStateA);
+    const shellB = createBorrowedShell(voiceStateB);
 
     bayShells = {
       A: shellB,

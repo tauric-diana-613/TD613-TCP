@@ -484,6 +484,17 @@ assert.equal(
   'support-ticket -> careful-review does not leak parcel-fixture narrative language'
 );
 assert.equal(
+  /\bwhat I am trying to say is\b/i.test(supportToCarefulPreview),
+  false,
+  'support-ticket -> careful-review does not use the old universal hedge phrase as a cadence crutch'
+);
+assert.equal(
+  supportToCareful.relationInventory?.discourseOntology?.primaryMove ||
+    supportToCareful.ontologyAudit?.relationInventory?.discourseOntology?.primaryMove,
+  'evidentiary-dependency',
+  'support-ticket -> careful-review records the discourse scaffold as ontology, not a magic phrase'
+);
+assert.equal(
   /(?:^|[.!?]\s+)(?:since|because|although|while|when|if|unless|though)\b/i.test(supportToCarefulPreview),
   false,
   'support-ticket -> careful-review does not orphan a subordinator at a sentence boundary'
@@ -565,6 +576,17 @@ assert.equal(
   false,
   'mutual-aid rushed -> archive formal removes rushed vernacular tokens from the formal surface'
 );
+assert.equal(
+  /\bwhat I am trying to say is\b|\bin a sense\b/i.test(mutualAidToArchivePreview),
+  false,
+  'mutual-aid rushed -> archive formal avoids the repeated generic hedge scaffolds'
+);
+assert.equal(
+  mutualAidToArchive.relationInventory?.discourseOntology?.primaryMove ||
+    mutualAidToArchive.ontologyAudit?.relationInventory?.discourseOntology?.primaryMove,
+  'route-risk-separation',
+  'mutual-aid rushed -> archive formal carries a route-risk discourse ontology'
+);
 assert.ok(
   mutualAidToArchiveProfile.avgSentenceLength >= extractCadenceProfile(mutualAidRushed.text).avgSentenceLength + 8,
   'mutual-aid rushed -> archive formal lengthens sentence posture with bounded formal clauses'
@@ -596,6 +618,17 @@ assert.equal(
   /\b4c sink leak still going\b|\bpls\b|\bdont\b|\bits not\b/i.test(tenantLeakToSupportPreview),
   false,
   'tenant leak rushed -> support formal does not leave raw mobile leak-note shorthand in the formal surface'
+);
+assert.equal(
+  /\bwhat I am trying to say is\b|\bin a sense\b/i.test(tenantLeakToSupportPreview),
+  false,
+  'tenant leak rushed -> support formal avoids the repeated generic hedge scaffolds'
+);
+assert.equal(
+  tenantLeakToSupport.relationInventory?.discourseOntology?.primaryMove ||
+    tenantLeakToSupport.ontologyAudit?.relationInventory?.discourseOntology?.primaryMove,
+  'unresolved-state',
+  'tenant leak rushed -> support formal carries an unresolved-state discourse ontology'
 );
 
 const nullTimeProbe = `later that night the carrier left the box by the rail. mgmt never logged a door knock. box stayed sealed.`;

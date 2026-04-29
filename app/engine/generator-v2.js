@@ -1344,7 +1344,7 @@ function sentenceWordCount(sentence = '') {
     .length;
 }
 
-const SUBORDINATOR_PREFIX_PATTERN = /^(?:since|because|although|while|when|if|unless|though|that|which|with)\b[\s,]*/i;
+const SUBORDINATOR_PREFIX_PATTERN = /^(?:since|because|although|while|when|if|unless|though|which)\b[\s,]*/i;
 const SUBORDINATOR_LOOKAHEAD_PATTERN = '(?:since|because|although|while|when|if|unless|though|that|which|with)';
 
 function stripSubordinatorPrefix(text = '', context = null) {
@@ -2438,6 +2438,10 @@ function lowerLeadingAlpha(text = '') {
   return String(text || '').replace(/^[A-Z](?=[a-z])/g, (match) => match.toLowerCase());
 }
 
+function upperSentenceStarts(text = '') {
+  return String(text || '').replace(/(^|[.!?]\s+)([a-z])/g, (match, lead, letter) => `${lead}${letter.toUpperCase()}`);
+}
+
 function trimSentenceEnding(text = '') {
   return normalizeText(text).replace(/[.!?]+$/g, '').trim();
 }
@@ -3405,7 +3409,11 @@ function expectedOperatorsForContext(context = {}) {
     /\b(?:acct|docs?|eod|last\s*4|dont|wasnt|isnt|arent|pkg|mgmt|pls|lmk|fwd|appt)\b/i.test(sourceText) ||
     Number(sourceProfile.abbreviationDensity || 0) > 0.01 ||
     Number(sourceProfile.fragmentPressure || 0) > 0.08;
-  const wantsHedge = wantsLongFormLane && (wantsLonger || donorScaffoldPressure || mod.hedge >= 1 || (targetProfile.hedgeDensity || 0) >= (sourceProfile.hedgeDensity || 0) + 0.025);
+  const wantsHedge = wantsLongFormLane && (
+    donorScaffoldPressure ||
+    mod.hedge >= 1 ||
+    (targetProfile.hedgeDensity || 0) >= (sourceProfile.hedgeDensity || 0) + 0.025
+  );
   const wantsAbstraction = mod.abst >= 1 || (targetProfile.abstractionPosture || 0) >= (sourceProfile.abstractionPosture || 0) + 0.06;
   const wantsNoisy = ['rushed-mobile', 'tangled-followup'].includes(targetLane) && (
     mod.abbr >= 1 ||
@@ -3422,25 +3430,174 @@ function expectedOperatorsForContext(context = {}) {
   return uniqueStrings(expected);
 }
 
+function inferDiscourseOntology({
+  sourceText = '',
+  donorSourceText = '',
+  targetRegisterLane = '',
+  sourceRegisterLane = '',
+  targetOntology = ''
+} = {}) {
+  const source = normalizeText(sourceText);
+  const donor = normalizeText(donorSourceText);
+  const targetLane = normalizeRegisterLane(targetRegisterLane, '');
+  const sourceLane = normalizeRegisterLane(sourceRegisterLane, '');
+  const sourceSignals = uniqueStrings([
+    /\b(?:unit|onboarding|leans on it|relies on it|dependency|mentoring)\b/i.test(source) ? 'dependency-chain' : null,
+    /\b(?:motel|household|case split|duplicate|intake|not saying no)\b/i.test(source) ? 'route-risk-separation' : null,
+    /\b(?:leak|plumber|cabinet|wet|fixed|resolved|repair)\b/i.test(source) ? 'unresolved-condition' : null,
+    /\b(?:fraud hold|manual review|dead path|credential mismatch|reset flow)\b/i.test(source) ? 'procedural-dead-path' : null,
+    /\b(?:correct|correction|record|log|footage|testimony|signature|attempted)\b/i.test(source) ? 'record-correction' : null,
+    /\b(?:acct|docs?|eod|last\s*4|dont|wasnt|isnt|pkg|mgmt|pls|lmk|fwd|appt)\b/i.test(source) ? 'clipped-source' : null
+  ]);
+  const donorSignals = uniqueStrings([
+    /\btrying to be careful\b/i.test(donor) ? 'careful-reframing' : null,
+    /\b(?:not just that|the point is|not merely)\b/i.test(donor) ? 'contrastive-reframe' : null,
+    /\b(?:for clarity|clarify)\b/i.test(donor) ? 'clarification' : null,
+    /\b(?:procedural risk|corrective issue|underlying issue|not credential mismatch)\b/i.test(donor) ? 'procedural-distinction' : null
+  ]);
+  const primaryMove =
+    sourceSignals.includes('dependency-chain')
+      ? 'evidentiary-dependency'
+      : sourceSignals.includes('route-risk-separation')
+        ? 'route-risk-separation'
+        : sourceSignals.includes('unresolved-condition')
+          ? 'unresolved-state'
+          : sourceSignals.includes('procedural-dead-path')
+            ? 'procedural-dead-path'
+            : sourceSignals.includes('record-correction')
+              ? 'record-correction'
+              : donorSignals.includes('contrastive-reframe')
+                ? 'contrastive-reframe'
+                : donorSignals.includes('careful-reframing')
+                  ? 'careful-reframing'
+                  : 'clarification';
+  const needsDiscourseScaffold = ['formal-record', 'professional-message', 'tangled-followup'].includes(targetLane) && (
+    sourceSignals.includes('clipped-source') ||
+    sourceLane === 'rushed-mobile' ||
+    donorSignals.length > 0
+  );
+  return Object.freeze({
+    primaryMove,
+    targetOntology: String(targetOntology || ''),
+    sourceRegisterLane: sourceLane,
+    targetRegisterLane: targetLane,
+    needsDiscourseScaffold,
+    sourceSignals: Object.freeze(sourceSignals),
+    donorSignals: Object.freeze(donorSignals),
+    scaffoldRole: needsDiscourseScaffold ? 'bridge source facts into target evidentiary relation' : 'none'
+  });
+}
+
 function firstSentenceBoundary(text = '') {
   const match = String(text || '').match(/^(.{16,180}?[.!?])\s+/);
   return match ? match[1].length : -1;
 }
 
+const DISCOURSE_SCAFFOLD_PREFIX_PATTERN = /^(?:maybe|in a sense|i want to be precise here|i want to be careful here|the practical issue is|the connective issue is|the narrower issue is|the point is|for clarity|for the record|what i am trying to say is)\b/i;
+
+function stableChoiceIndex(seed = '', modulo = 1) {
+  const width = Math.max(1, Number(modulo) || 1);
+  let hash = 0;
+  for (const char of String(seed || '')) {
+    hash = ((hash * 31) + char.charCodeAt(0)) >>> 0;
+  }
+  return hash % width;
+}
+
+function chooseDiscourseScaffold(text = '', context = {}) {
+  const discourse = context.discourseOntology || inferDiscourseOntology({
+    sourceText: context.sourceText || text,
+    donorSourceText: context.donorSourceText || '',
+    sourceRegisterLane: context.sourceRegisterLane || '',
+    targetRegisterLane: context.targetRegisterLane || '',
+    targetOntology: context.generationControls?.targetOntology || ''
+  });
+  if (discourse.primaryMove === 'evidentiary-dependency') return 'The evidentiary issue is';
+  if (discourse.primaryMove === 'route-risk-separation') return 'The routing issue is';
+  if (discourse.primaryMove === 'unresolved-state') return 'The unresolved condition is';
+  if (discourse.primaryMove === 'procedural-dead-path') return 'The procedural issue is';
+  if (discourse.primaryMove === 'record-correction') return 'The corrective issue is';
+  const donorText = normalizeText(context.donorSourceText || '');
+  const sourceText = normalizeText(context.sourceText || text);
+  const targetLane = normalizeRegisterLane(context.targetRegisterLane, '');
+  if (/\btrying to be careful\b/i.test(donorText)) return 'I want to be careful here';
+  if (/\btrying to be precise\b|\bprecisely\b/i.test(donorText)) return 'I want to be precise here';
+  if (/\bnot just that\b|\bthe point is\b/i.test(donorText)) return 'The point is';
+  if (/\bfor clarity\b|\bclarify\b/i.test(donorText)) return 'For clarity';
+  if (/\bfor the record\b/i.test(donorText) || targetLane === 'formal-record') return 'For the record';
+  if (/\b(?:stuck|missing|needs?|update|blocked|delay|risk)\b/i.test(sourceText)) return 'The practical issue is';
+  if (/\b(?:because|so|therefore|why)\b/i.test(sourceText)) return 'The connective issue is';
+  const palette = targetLane === 'professional-message'
+    ? ['For clarity', 'The practical issue is', 'I want to be precise here']
+    : ['The narrower issue is', 'In practical terms', 'The point is'];
+  return palette[stableChoiceIndex(`${sourceText}|${donorText}|${targetLane}`, palette.length)];
+}
+
+function chooseParentheticalScaffold(text = '', context = {}) {
+  const discourse = context.discourseOntology || inferDiscourseOntology({
+    sourceText: context.sourceText || text,
+    donorSourceText: context.donorSourceText || '',
+    sourceRegisterLane: context.sourceRegisterLane || '',
+    targetRegisterLane: context.targetRegisterLane || '',
+    targetOntology: context.generationControls?.targetOntology || ''
+  });
+  if (discourse.primaryMove === 'evidentiary-dependency') return 'evidentiary-dependency';
+  if (discourse.primaryMove === 'route-risk-separation') return 'route-risk-separation';
+  if (discourse.primaryMove === 'unresolved-state') return 'unresolved-state';
+  if (discourse.primaryMove === 'procedural-dead-path') return 'procedural-dead-path';
+  if (discourse.primaryMove === 'record-correction') return 'record-correction';
+  const sourceText = normalizeText(context.sourceText || text);
+  const donorText = normalizeText(context.donorSourceText || '');
+  const targetLane = normalizeRegisterLane(context.targetRegisterLane, '');
+  if (/\b(?:unit|onboarding|mentoring)\b/i.test(sourceText)) return 'with that dependency made explicit';
+  if (/\b(?:motel|household|intake|case split)\b/i.test(sourceText)) return 'with the routing risk kept separate';
+  if (/\b(?:leak|plumber|cabinet|repair)\b/i.test(sourceText)) return 'with the unresolved condition preserved';
+  if (/\b(?:archive|grant|deliverables|catalog)\b/i.test(sourceText)) return 'with the deliverable chain kept intact';
+  if (/\bnot just\b|\bthe point is\b/i.test(donorText)) return 'with the distinction made explicit';
+  const palette = targetLane === 'formal-record'
+    ? ['with the evidentiary relation preserved', 'with the sequence kept auditable', 'with the dependency made explicit']
+    : ['with the practical stakes still visible', 'with the connective tissue kept in view', 'with the sequence kept intact'];
+  return palette[stableChoiceIndex(`${sourceText}|${donorText}|parenthetical`, palette.length)];
+}
+
+function scaffoldPhraseToSentence(scaffold = '') {
+  const normalized = normalizeText(scaffold);
+  if (normalized === 'evidentiary-dependency') return 'The dependency remains part of the evidentiary chain.';
+  if (normalized === 'route-risk-separation') return 'The duplicate-intake risk remains separate from denial.';
+  if (normalized === 'unresolved-state') return 'The condition remains unresolved.';
+  if (normalized === 'procedural-dead-path') return 'The failure path remains procedural, not credential-based.';
+  if (normalized === 'record-correction') return 'The correction remains about the record, not merely the surface event.';
+  if (/that dependency made explicit/i.test(normalized)) return 'The dependency remains explicit.';
+  if (/routing risk kept separate/i.test(normalized)) return 'The routing risk remains separate.';
+  if (/unresolved condition preserved/i.test(normalized)) return 'The condition remains unresolved.';
+  if (/deliverable chain kept intact/i.test(normalized)) return 'The deliverable chain remains intact.';
+  if (/distinction made explicit/i.test(normalized)) return 'The distinction remains explicit.';
+  if (/evidentiary relation preserved/i.test(normalized)) return 'The evidentiary relation remains intact.';
+  if (/sequence kept auditable/i.test(normalized)) return 'The sequence remains auditable.';
+  if (/dependency made explicit/i.test(normalized)) return 'The dependency remains explicit.';
+  if (/practical stakes still visible/i.test(normalized)) return 'The practical stakes remain visible.';
+  if (/connective tissue kept in view/i.test(normalized)) return 'The connective tissue remains visible.';
+  if (/sequence kept intact/i.test(normalized)) return 'The sequence remains intact.';
+  return finalizeSentence(normalized.replace(/^with\s+/i, 'This keeps '));
+}
+
+function isDiscourseScaffoldSentence(text = '') {
+  return /\b(?:dependency remains explicit|dependency remains part of the evidentiary chain|routing risk remains separate|duplicate-intake risk remains separate|condition remains unresolved|failure path remains procedural|correction remains about the record|deliverable chain remains intact|distinction remains explicit|evidentiary relation remains intact|sequence remains auditable|practical stakes remain visible|connective tissue remains visible)\b/i.test(text);
+}
+
 function insertParenthetical(text = '', context = {}) {
   let working = normalizeText(text);
-  if (!working || /\bin a sense\b|\bwhat I am trying to say is\b/i.test(working)) {
+  if (!working || /\bneeds? to stay\b/i.test(working) || /\bwith (?:the|that)\b.{0,80}\b(?:explicit|preserved|intact|auditable|visible|view)\b/i.test(working)) {
     return working;
   }
+  const scaffold = chooseParentheticalScaffold(working, context);
+  const scaffoldSentence = scaffoldPhraseToSentence(scaffold);
   const boundary = firstSentenceBoundary(working);
   if (boundary < 0) {
-    const words = working.split(/\s+/);
-    if (words.length < 10) return working;
-    const at = Math.min(10, Math.max(5, Math.floor(words.length / 3)));
-    words.splice(at, 0, '- in a sense -');
-    working = words.join(' ');
+    if (sentenceWordCount(working) < 10) return working;
+    working = `${scaffoldSentence} ${working}`;
   } else {
-    working = `${working.slice(0, boundary).replace(/[.!?]\s*$/, ', in a sense.')} ${working.slice(boundary).trim()}`;
+    working = `${working.slice(0, boundary)} ${scaffoldSentence} ${working.slice(boundary).trim()}`;
   }
   (context.structuralOperations || []).push('INSERT_PARENTHETICAL');
   return normalizeText(working);
@@ -3448,12 +3605,16 @@ function insertParenthetical(text = '', context = {}) {
 
 function insertHedgePrefix(text = '', context = {}) {
   const working = normalizeText(text);
-  if (!working || /^(?:maybe|in a sense|what I am trying to say is)\b/i.test(working)) {
+  if (!working || DISCOURSE_SCAFFOLD_PREFIX_PATTERN.test(working)) {
     return working;
   }
+  const prefix = chooseDiscourseScaffold(working, context);
   (context.lexicalOperations || []).push('INSERT_HEDGE_PREFIX');
-  recordLexemeSwap(context.lexemeSwaps || [], '', 'What I am trying to say is', 'hedge');
-  return `What I am trying to say is, ${lowerLeadingAlpha(working)}`;
+  recordLexemeSwap(context.lexemeSwaps || [], '', prefix, 'hedge');
+  if (/^The (?:evidentiary|routing|unresolved|procedural|corrective) (?:issue|condition) is$/i.test(prefix)) {
+    return `${prefix}: ${upperSentenceStarts(working)}`;
+  }
+  return `${prefix}, ${lowerLeadingAlpha(working)}`;
 }
 
 function rehydrateClippedClausesForLongForm(text = '', context = {}) {
@@ -3702,6 +3863,7 @@ function lowercaseInitialsForNoisyTarget(text = '', context = {}) {
 function applyCadenceAxisOperators(text = '', context = {}) {
   context.expectedOperators = expectedOperatorsForContext(context);
   let working = normalizeText(text);
+  const targetLane = normalizeRegisterLane(context.targetRegisterLane, '');
   const expected = new Set(context.expectedOperators);
   if (expected.has('REHYDRATE_CLIPPED_CLAUSES')) {
     working = rehydrateClippedClausesForLongForm(working, context);
@@ -3733,9 +3895,13 @@ function applyCadenceAxisOperators(text = '', context = {}) {
       (context.lexicalOperations || []).push('LOWERCASE_INITIALS');
     }
   }
-  return splitSentencesPreserve(working)
+  working = splitSentencesPreserve(working)
     .map((entry) => SUBORDINATOR_PREFIX_PATTERN.test(entry) ? stripSubordinatorPrefix(entry, context) : entry)
     .join(' ');
+  if (['formal-record', 'professional-message', 'tangled-followup'].includes(targetLane)) {
+    working = upperSentenceStarts(working);
+  }
+  return working;
 }
 
 function repairFormalAndChains(text = '', context = {}) {
@@ -3757,6 +3923,11 @@ function repairFormalAndChains(text = '', context = {}) {
     for (const sentence of sentences) {
       const current = stripSubordinatorPrefix(sentence, context);
       if (!buffer) {
+        buffer = trimSentenceEnding(current);
+        continue;
+      }
+      if (isDiscourseScaffoldSentence(buffer) || isDiscourseScaffoldSentence(current)) {
+        merged.push(finalizeSentence(buffer));
         buffer = trimSentenceEnding(current);
         continue;
       }
@@ -4573,6 +4744,10 @@ function applyConnectorRewrite(paragraph = '', envelopeId = 'generic', sourceCla
   let working = String(paragraph || '');
   const limit = replacementLimitForClass(sourceClass);
   const strategy = context.connectorStrategy || 'balanced';
+  const targetLane = normalizeRegisterLane(context.targetRegisterLane, '');
+  const protectLongFormConnectors =
+    Boolean(context.hasDonorCadenceEvidence) &&
+    ['formal-record', 'professional-message', 'tangled-followup'].includes(targetLane);
 
   if (strategy === 'split' || strategy === 'cross') {
     const next = working
@@ -4626,20 +4801,22 @@ function applyConnectorRewrite(paragraph = '', envelopeId = 'generic', sourceCla
       operations: context.lexicalOperations,
       lexemeSwaps: context.lexemeSwaps
     });
-    working = applyReplacementRule(working, /\bbut\b/gi, 'though', {
-      limit: 1,
-      label: 'connector:but->though',
-      family: 'connector',
-      operations: context.lexicalOperations,
-      lexemeSwaps: context.lexemeSwaps
-    });
-    working = applyReplacementRule(working, /\bso\b/gi, 'then', {
-      limit: 1,
-      label: 'connector:so->then',
-      family: 'connector',
-      operations: context.lexicalOperations,
-      lexemeSwaps: context.lexemeSwaps
-    });
+    if (!protectLongFormConnectors) {
+      working = applyReplacementRule(working, /\bbut\b/gi, 'though', {
+        limit: 1,
+        label: 'connector:but->though',
+        family: 'connector',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+      working = applyReplacementRule(working, /\bso\b/gi, 'then', {
+        limit: 1,
+        label: 'connector:so->then',
+        family: 'connector',
+        operations: context.lexicalOperations,
+        lexemeSwaps: context.lexemeSwaps
+      });
+    }
   } else if (strategy === 'cross') {
     working = applyReplacementRule(working, /\bbut\b/gi, 'yet', {
       limit,
@@ -4768,11 +4945,20 @@ function buildRelationInventory(
   hardAnchors = [],
   registerLaneInfo = {}
 ) {
+  const sourceRegisterLane = normalizeRegisterLane(registerLaneInfo?.sourceRegisterLane, 'formal-record');
+  const discourseOntology = registerLaneInfo?.discourseOntology || inferDiscourseOntology({
+    sourceText,
+    donorSourceText: registerLaneInfo?.donorSourceText || '',
+    sourceRegisterLane,
+    targetRegisterLane: registerLaneInfo?.targetRegisterLane || sourceRegisterLane,
+    targetOntology: registerLaneInfo?.targetOntology || ''
+  });
   return Object.freeze({
     sourceClass,
-    sourceRegisterLane: normalizeRegisterLane(registerLaneInfo?.sourceRegisterLane, 'formal-record'),
+    sourceRegisterLane,
     sourceRegisterLaneInference: registerLaneInfo?.inference || 'inferred',
     sourceRegisterLaneFallback: Boolean(registerLaneInfo?.fallbackUsed),
+    discourseOntology,
     paragraphCount: splitParagraphs(sourceText).length || 1,
     sentenceCount: Number(sourceIR?.metadata?.sentenceCount || splitSentencesPreserve(sourceText).length || 0),
     clauseCount: Number(sourceIR?.metadata?.clauseCount || 0),
@@ -4920,11 +5106,12 @@ function semanticLockSatisfied(
 }
 
 function computeCandidateTransferClass(candidate = {}) {
-  if (candidate.classification?.outcome === 'surface-held') {
-    return 'surface';
-  }
   const substantiveMovement = substantiveDimensionCount(candidate.changedDimensions || []);
   const lexicalMovement = Number((candidate.lexemeSwaps || []).length || 0);
+  const structuralOperationCount = Number((candidate.structuralOperations || []).length || 0);
+  if (candidate.classification?.outcome === 'surface-held') {
+    return substantiveMovement >= 2 && structuralOperationCount > 0 ? 'structural' : 'surface';
+  }
   if (
     substantiveMovement >= 2 ||
     (substantiveMovement >= 1 && lexicalMovement > 0) ||
@@ -5305,6 +5492,13 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     targetRegisterLane,
     targetProfile: variant.shell?.profile || {}
   });
+  const discourseOntology = inferDiscourseOntology({
+    sourceText,
+    donorSourceText,
+    sourceRegisterLane,
+    targetRegisterLane,
+    targetOntology: generationControls.targetOntology
+  });
   const temporalDirective = options.temporalDirective || buildTemporalDirective(sourceText, targetRegisterLane);
   const connectorStrategy = connectorStrategyFor(variant.envelopeId, sourceClass, familyId, {
     shellMode: variant.shell?.mode,
@@ -5340,6 +5534,7 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
       intensity: variantIntensity(variant) * familyWeight(familyId, sourceClass, variant.envelopeId) * Number(generationControls.intensityScalar || 1),
       generationControls,
       temporalDirective,
+      discourseOntology,
       vernacularFeaturePressure,
       sourceText,
       donorSourceText,
@@ -5475,6 +5670,9 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
   outputText = normalizeText(outputText)
     .replace(/,\s+and\s+A plumber\b/g, ', and a plumber')
     .replace(/\.\s+the cabinet\b/g, '. The cabinet');
+  if (['formal-record', 'professional-message', 'tangled-followup'].includes(targetRegisterLane)) {
+    outputText = upperSentenceStarts(outputText);
+  }
 
   return Object.freeze({
     outputText,
@@ -5487,7 +5685,11 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     relationInventory: buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors, {
       sourceRegisterLane,
       inference: options.sourceRegisterLaneInference || 'inferred',
-      fallbackUsed: Boolean(options.sourceRegisterLaneFallback)
+      fallbackUsed: Boolean(options.sourceRegisterLaneFallback),
+      donorSourceText,
+      targetRegisterLane,
+      targetOntology: generationControls.targetOntology,
+      discourseOntology
     }),
     sourceRegisterLane,
     targetRegisterLane,
@@ -5735,6 +5937,7 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     classification,
     changedDimensions,
     lexemeSwaps: authored.lexemeSwaps,
+    structuralOperations: authored.structuralOperations,
     rewriteStrength
   });
   const toolabilityAudit = buildToolabilityAudit({

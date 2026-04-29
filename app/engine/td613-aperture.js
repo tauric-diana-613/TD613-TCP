@@ -1058,7 +1058,8 @@ export function buildTD613OntologyAudit({
       sourceClass: String(relationInventory?.sourceClass || sourceClass || 'formal-correspondence'),
       sourceRegisterLane: String(relationInventory?.sourceRegisterLane || sourceRegisterLane || 'formal-record'),
       sourceRegisterLaneInference: String(relationInventory?.sourceRegisterLaneInference || 'inferred'),
-      sourceRegisterLaneFallback: Boolean(relationInventory?.sourceRegisterLaneFallback)
+      sourceRegisterLaneFallback: Boolean(relationInventory?.sourceRegisterLaneFallback),
+      discourseOntology: relationInventory?.discourseOntology || null
     }),
     semanticCoverage,
     anchorIntegrity,

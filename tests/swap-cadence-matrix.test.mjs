@@ -29,7 +29,7 @@ assert((matrix.summary.surfaceClose || 0) >= 30, 'diagnostics swap matrix should
 assert.equal(matrix.summary.flagshipCount, 8, 'flagship summary tracks the 8 strict browser-facing directions');
 assert((matrix.summary.failureFamilyCounts['donor-underfit'] || 0) >= 4, 'diagnostics swap matrix should explicitly track donor-underfit pressure once the warning ledger is active');
 assert((matrix.summary.failureFamilyCounts['aperture-route-pressure'] || 0) >= 4, 'diagnostics swap matrix should track aperture-route-pressure failures introduced in Patch 33.3');
-assert.equal(matrix.summary.flagshipPassCount, 4, 'flagship summary should surface the four currently live review-facing exemplar directions');
+assert.equal(matrix.summary.flagshipPassCount, 2, 'flagship summary should surface the two fully green review-facing exemplar directions while stricter ontology warnings remain visible');
 assert.equal(matrix.summary.flagshipAllPassed, false, 'flagship summary should keep the remaining flagship warnings visible instead of overstating all directions as live');
 assert.equal(
   matrix.flagshipReports.filter((report) => report.pairAudit.surfaceClose).length,
