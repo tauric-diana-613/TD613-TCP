@@ -3,7 +3,14 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { chromium } from 'playwright';
+
+let chromium;
+try {
+  ({ chromium } = await import('playwright'));
+} catch (err) {
+  console.log('deck-browser.test.mjs skipped: install playwright to run this test (npm install --save-dev playwright)');
+  process.exit(0);
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
