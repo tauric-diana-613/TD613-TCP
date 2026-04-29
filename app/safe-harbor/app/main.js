@@ -6,7 +6,7 @@
 
   const KEYS = ['future_self', 'past_self', 'higher_self'];
   const STORAGE_KEY = 'td613.safe-harbor.session.v1';
-  const GATEWAY_APERTURE_HANDOFF_KEY = 'td613.gateway.aperture-handoff';
+  const GATEWAY_APERTURE_HANDOFF_KEY = (window.TD613_CONSTANTS && window.TD613_CONSTANTS.GATEWAY_APERTURE_HANDOFF_KEY) || 'td613.gateway.aperture-handoff';
   const MAX_AUDIT = 24;
   const MIN_LANE_WORDS = 40;
   const INGRESS_STEP_COPY = {
@@ -313,7 +313,8 @@
     } catch {
       return null;
     }
-    if (!summary || summary.source !== 'td613-aperture' || summary.mode !== 'gateway-embed') {
+    const validate = window.TD613_CONSTANTS && window.TD613_CONSTANTS.validateHandoffEnvelope;
+    if (validate ? !validate(summary).ok : (!summary || summary.source !== 'td613-aperture' || summary.mode !== 'gateway-embed')) {
       return null;
     }
     const packet = summary.latestPacket && typeof summary.latestPacket === 'object' ? summary.latestPacket : null;

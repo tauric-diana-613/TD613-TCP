@@ -62,7 +62,7 @@
     falseNeighborCases: Object.freeze(diagnosticBattery.falseNeighborCases || [])
   });
   const SAFE_HARBOR_HANDOFF_PATH = './safe-harbor/index.html';
-  const GATEWAY_APERTURE_HANDOFF_KEY = 'td613.gateway.aperture-handoff';
+  const GATEWAY_APERTURE_HANDOFF_KEY = (window.TD613_CONSTANTS && window.TD613_CONSTANTS.GATEWAY_APERTURE_HANDOFF_KEY) || 'td613.gateway.aperture-handoff';
   const SAMPLE_LIBRARY_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
     acc[sample.id] = sample;
     return acc;
@@ -348,7 +348,11 @@
       return;
     }
     const payload = event.data;
-    if (!payload || payload.source !== 'td613-aperture' || payload.mode !== 'gateway-embed' || payload.type !== 'status') {
+    const _validateEnvelope = window.TD613_CONSTANTS && window.TD613_CONSTANTS.validateHandoffEnvelope;
+    if (_validateEnvelope ? !_validateEnvelope(payload).ok : (!payload || payload.source !== 'td613-aperture' || payload.mode !== 'gateway-embed')) {
+      return;
+    }
+    if (payload.type !== 'status') {
       return;
     }
     const summary = normalizeGatewayApertureBridgeSummary(payload);

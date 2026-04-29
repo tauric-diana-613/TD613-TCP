@@ -1,6 +1,7 @@
 (function () {
   var V = window.TD613_ASSET_VERSIONS || {};
   var srcs = [
+    './td613-constants.js',
     './browser-data.js?v='        + (V.data        || ''),
     './browser-diagnostics.js?v=' + (V.diagnostics || ''),
     './browser-engine.js?v='      + (V.engine      || ''),

@@ -964,6 +964,7 @@ TD613 APERTURE v2.2.1 SOURCE DECLARATION
 
 </style>
 <style id="apertureV22Style"></style>
+<script src="../td613-constants.js"></script>
 </head>
 <body data-tool-name="TD613 Aperture" data-tool-role="counter-tool" data-observed-regime="PRCS-A" data-anti-enforcement="true">
 
@@ -8018,7 +8019,7 @@ requestAnimationFrame(tick);
   if (window.__TD613_APERTURE_GATEWAY_EMBED__) return;
   window.__TD613_APERTURE_GATEWAY_EMBED__ = true;
 
-  const GATEWAY_APERTURE_HANDOFF_KEY = "td613.gateway.aperture-handoff";
+  const GATEWAY_APERTURE_HANDOFF_KEY = (window.TD613_CONSTANTS && window.TD613_CONSTANTS.GATEWAY_APERTURE_HANDOFF_KEY) || "td613.gateway.aperture-handoff";
   const APERTURE_EMBED_MODE = (() => {
     try {
       return new URL(window.location.href).searchParams.get("embed") || "";
