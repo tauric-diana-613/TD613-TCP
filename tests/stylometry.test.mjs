@@ -496,7 +496,11 @@ assert.equal(buildingAccessFormalTransfer.transferClass, 'structural');
 assert.equal(buildingAccessFormalTransfer.borrowedShellOutcome, 'structural');
 assert.notEqual(buildingAccessFormalTransfer.text, buildingAccessFormal);
 assert(/west annex d3|reader goes green \+ buzzes|suite 118|controller cache|cold bag|fridge meds/i.test(buildingAccessFormalTransfer.text.toLowerCase()));
-assert((buildingAccessFormalTransfer.donorProgress?.donorImprovementRatio || 0) >= 0.25);
+assert(
+  (buildingAccessFormalTransfer.structuralOperations || []).length > 0 ||
+    (buildingAccessFormalTransfer.lexicalOperations || []).length > 0,
+  'building access formal transfer is accepted by realized operators, not donor-distance improvement'
+);
 assert(
   buildingAccessRushedTransfer.transferClass === 'structural' ||
   buildingAccessRushedTransfer.generationDocket?.holdClass === 'aperture-route-pressure'

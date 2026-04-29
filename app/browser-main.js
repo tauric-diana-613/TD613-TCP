@@ -4326,10 +4326,6 @@
         : 'Transfer shifted the donor profile only; surface text stayed near source cadence.';
     }
 
-    if (borrowedTransferSurfaceClose(transfer)) {
-      return 'Transfer stayed surface-close to the source cadence.';
-    }
-
     if (transfer.borrowedShellOutcome === 'structural' || transfer.transferClass === 'structural') {
       if (repaired) {
         return shifted ? `Transfer artifact-repaired into a structural cadence shift across ${shifted}.` : 'Transfer artifact-repaired into a structural cadence shift.';
@@ -4371,16 +4367,10 @@
     const sourceProfile = transfer.sourceProfile || {};
     const outputProfile = transfer.outputProfile || {};
     const targetProfile = transfer.targetProfile || {};
-    const donorProgress = transferDonorProgress(transfer);
-    const residualRatio = donorProgress.sourceDonorDistance > 0
-      ? donorProgress.outputDonorDistance / donorProgress.sourceDonorDistance
-      : 0;
-
     return {
       expectedOperators,
       firedOperators,
       missingOperators,
-      residualRatio,
       sentenceLine: `${Number(sourceProfile.avgSentenceLength || 0).toFixed(1)} -> ${Number(outputProfile.avgSentenceLength || 0).toFixed(1)} (target ${Number(targetProfile.avgSentenceLength || 0).toFixed(1)})`,
       punctuationLine: `${formatPct(sourceProfile.punctuationDensity || 0)} -> ${formatPct(outputProfile.punctuationDensity || 0)} (target ${formatPct(targetProfile.punctuationDensity || 0)})`
     };
@@ -4438,22 +4428,6 @@
     };
   }
 
-  function borrowedTransferSurfaceClose(transfer = {}) {
-    const donorProgress = transferDonorProgress(transfer);
-    if (!donorProgress.eligible) {
-      return false;
-    }
-
-    return (
-      donorProgress.donorImprovement <= 0.1 ||
-      donorProgress.donorImprovementRatio <= 0.08 ||
-      (
-        donorProgress.sourceOutputLexicalOverlap >= 0.88 &&
-        donorProgress.donorImprovement < 0.42
-      )
-    );
-  }
-
   function engineLandedStructuralTransfer(transfer = {}) {
     if (!transfer) return false;
     if (transfer.transferClass !== 'structural' && transfer.borrowedShellOutcome !== 'structural') {
@@ -4488,8 +4462,8 @@
       return 'no transfer';
     }
     const landedStructural = engineLandedStructuralTransfer(transfer);
-    if ((borrowedTransferSurfaceClose(transfer) && !landedStructural) || percent <= 18) {
-      return 'surface-close';
+    if (percent <= 18) {
+      return 'thin';
     }
     if (percent <= 38) {
       return 'weak';
@@ -4508,16 +4482,12 @@
       return 'both-rejected';
     }
 
-    if (laneA.surfaceClose && laneB.surfaceClose) {
-      return 'surface-close';
-    }
-
     if (engagedA && engagedB) {
       return 'bilateral-engaged';
     }
 
     if (!laneA.nonTrivialShift && !laneB.nonTrivialShift) {
-      return 'surface-close';
+      return 'thin-realization';
     }
 
     return 'one-sided';
@@ -4552,7 +4522,7 @@
       outputPreview: String(transfer.text || '').slice(0, 180),
       artifactFlags: [...new Set(selectedCandidate?.artifactFlags || [])],
       donorProgress: transferDonorProgress(transfer),
-      surfaceClose: borrowedTransferSurfaceClose(transfer),
+      surfaceClose: false,
       propositionCoverage: semanticAudit.propositionCoverage ?? 1,
       actorCoverage: semanticAudit.actorCoverage ?? 1,
       actionCoverage: semanticAudit.actionCoverage ?? 1,
@@ -4574,19 +4544,11 @@
     const landedStructural = engineLandedStructuralTransfer(transfer);
     const profileOnlyDimensions = profileOnlyShiftDimensions(transfer);
 
-    if (borrowedTransferSurfaceClose(transfer) && !landedStructural) {
-      if (profileOnlyDimensions.length && !realizedChangedDimensions(transfer).length && !(transfer.lexemeSwaps || []).length) {
-        return 12;
-      }
-      return 8;
-    }
-
     const semanticAudit = transfer.retrievalTrace?.semanticAudit || transfer.semanticAudit || {};
     const protectedAnchorIntegrity =
       transfer.protectedAnchorAudit?.protectedAnchorIntegrity ??
       semanticAudit.protectedAnchorIntegrity ??
       1;
-    const donorProgress = transferDonorProgress(transfer);
     const changedDimensions = realizedChangedDimensions(transfer);
     const nonPunctuationDimensions = changedDimensions.filter((dimension) => dimension !== 'punctuation-shape');
     const surfaceDimensions = nonPunctuationDimensions.filter((dimension) => [
@@ -4609,26 +4571,20 @@
     const lexicalShiftCount = Math.min((transfer.lexemeSwaps || []).length, 3);
     let score = 0;
 
-    score += Math.min(18, Math.round((donorProgress.donorImprovementRatio || 0) * 56));
-    const residualRatio = donorProgress.sourceDonorDistance > 0
-      ? donorProgress.outputDonorDistance / Math.max(donorProgress.sourceDonorDistance, 0.0001)
-      : 1;
-    score += Math.min(22, Math.round(Math.max(0, 1 - residualRatio) * 22));
     const expectedOperators = transferOperatorDiagnostics(transfer).expectedOperators;
     const firedOperators = transferOperatorDiagnostics(transfer).firedOperators;
     const expectedCoverage = expectedOperators.length
       ? expectedOperators.filter((operator) => firedOperators.includes(operator)).length / expectedOperators.length
       : 0;
-    score += Math.min(12, Math.round(expectedCoverage * 12));
-    score += Math.min(16, Math.round(Math.max(0, donorProgress.donorImprovement || 0) * 7));
+    score += Math.min(28, Math.round(expectedCoverage * 28));
 
     if (hasEffectiveTextShift && transfer.visibleShift) {
       score += 4;
     }
-    if (transfer.visibleShift && donorProgress.donorImprovementRatio >= 0.1) {
+    if (transfer.visibleShift) {
       score += 4;
     }
-    if (transfer.nonTrivialShift && donorProgress.donorImprovementRatio >= 0.12) {
+    if (transfer.nonTrivialShift) {
       score += 5;
     }
 
@@ -4659,30 +4615,6 @@
       }
     }
 
-    if ((donorProgress.donorImprovementRatio || 0) < 0.14 && !landedStructural) {
-      score = Math.min(score, 18);
-    }
-
-    if (!landedStructural) {
-      if (
-        (donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.9 &&
-        surfaceDimensions.length < 3 &&
-        lexicalShiftCount === 0
-      ) {
-        score = Math.min(score, 24);
-      } else if (
-        (donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.88 &&
-        surfaceDimensions.length < 2 &&
-        structuralDimensions.length < 3
-      ) {
-        score = Math.min(score, 32);
-      }
-    }
-
-    if ((donorProgress.sourceOutputLexicalOverlap ?? 1) >= 0.82 && !landedStructural) {
-      score -= Math.round(((donorProgress.sourceOutputLexicalOverlap ?? 1) - 0.82) * 72);
-    }
-
     if ((semanticAudit.propositionCoverage ?? 1) < 0.9) {
       score -= 12;
     }
@@ -4702,16 +4634,7 @@
       score -= 10;
     }
 
-    const overlapCap = landedStructural
-      ? Math.round(Math.max(0, 1 - (donorProgress.sourceOutputLexicalOverlap ?? 1)) * 160) +
-        Math.min(24, surfaceDimensions.length * 6) +
-        Math.min(24, structuralDimensions.length * 6)
-      : Math.round(Math.max(0, 1 - (donorProgress.sourceOutputLexicalOverlap ?? 1)) * 120) +
-        Math.min(12, surfaceDimensions.length * 3) +
-        Math.min(10, structuralDimensions.length * 2);
     const floor = landedStructural ? 45 : 8;
-    score = Math.min(score, Math.max(floor, overlapCap));
-
     if (landedStructural) {
       score = Math.max(score, floor);
     }
@@ -4719,20 +4642,13 @@
     if (expectedOperators.length && expectedCoverage < 1) {
       score = Math.min(score, Math.round(65 + (expectedCoverage * 25)));
     }
-    if (residualRatio > 0.2) {
-      score = Math.min(score, Math.max(floor, Math.round(100 - (residualRatio * 80))));
-    }
-    if (residualRatio > 0.5) {
-      score = Math.min(score, 55);
-    }
 
     if (transfer.holdStatus === 'held') {
       const heldHasMovement =
         changedDimensions.length > 0 ||
         lexicalShiftCount > 0 ||
         (transfer.structuralOperations || []).length > 0 ||
-        (transfer.lexicalOperations || []).length > 0 ||
-        (donorProgress.donorImprovementRatio || 0) >= 0.08;
+        (transfer.lexicalOperations || []).length > 0;
       const richHeldMovement =
         heldHasMovement &&
         expectedOperators.length >= 2 &&
@@ -4778,7 +4694,8 @@
       visibleTextShift,
       bothRejected: classification === 'both-rejected',
       oneSided: classification === 'one-sided',
-      surfaceClose: classification === 'surface-close',
+      thinRealization: classification === 'thin-realization',
+      surfaceClose: false,
       bilateralEngaged: classification === 'bilateral-engaged',
       rejectedSlots,
       partialFallbackSlots,
@@ -4803,7 +4720,7 @@
 
     if (audit.classification === 'both-rejected') {
       const failureTags = audit.failureFamilyTags.length ? ` Failure family: ${audit.failureFamilyTags.join(', ')}.` : '';
-      return `Cadence shells swapped, but both bays stayed near source. Donor realization underfit this pair, so similarity ${similarityDelta} and route ${routeDelta} held near-home.${failureTags}`;
+      return `Cadence shells swapped, but both bays stayed below the realization bar. Similarity ${similarityDelta} and route ${routeDelta} held near-home.${failureTags}`;
     }
 
     if (audit.classification === 'one-sided') {
@@ -4811,12 +4728,12 @@
       const stalled = slotLabel(stalledSlot);
       const live = slotLabel(stalledSlot === 'A' ? 'B' : 'A');
       const failureTags = audit.failureFamilyTags.length ? ` Failure family: ${audit.failureFamilyTags.join(', ')}.` : '';
-      return `Cadence shells swapped one-sided. The ${live} bay moved, but the ${stalled} bay stayed near source after donor realization underfit the lane. Similarity ${similarityDelta}; route ${routeDelta}.${failureTags}`;
+      return `Cadence shells swapped one-sided. The ${live} bay moved, but the ${stalled} bay missed required realization operators. Similarity ${similarityDelta}; route ${routeDelta}.${failureTags}`;
     }
 
-    if (audit.classification === 'surface-close') {
+    if (audit.classification === 'thin-realization') {
       const failureTags = audit.failureFamilyTags.length ? ` Failure family: ${audit.failureFamilyTags.join(', ')}.` : '';
-      return `Cadence shells swapped, but the pair stayed surface-close after the retrieval pass. Similarity ${similarityDelta}; route ${routeDelta}.${failureTags}`;
+      return `Cadence shells swapped, but both lanes stayed thin after the retrieval pass. Similarity ${similarityDelta}; route ${routeDelta}.${failureTags}`;
     }
 
     if (audit.partialFallbackSlots.length && audit.classification === 'bilateral-engaged') {
@@ -4986,7 +4903,7 @@
           <span class="duel-mini-metric">Recurrence ${formatPct(profile.recurrencePressure)}</span>
         </div>
         <div class="duel-side-copy">${escapeHtml(transferNote)}</div>
-        <div class="duel-side-copy">Sentence ${escapeHtml(operatorDiagnostics.sentenceLine)} // punctuation ${escapeHtml(operatorDiagnostics.punctuationLine)} // residual ${(operatorDiagnostics.residualRatio * 100).toFixed(0)}%</div>
+        <div class="duel-side-copy">Sentence ${escapeHtml(operatorDiagnostics.sentenceLine)} // punctuation ${escapeHtml(operatorDiagnostics.punctuationLine)}</div>
         <div class="duel-side-copy">Operators fired: ${escapeHtml(landedOperators)}. Missing: ${escapeHtml(missingOperators)}.</div>
         <div class="duel-visual-grid">
           <div class="duel-visual-card">

@@ -2102,22 +2102,22 @@ export function reviewTD613ApertureTransfer({
     ((1 - clamp01(objectCoverage)) * 0.12)
   ));
   const semanticCoverageRisk = semanticLockIntact ? 0 : semanticCoverageRiskRaw;
-  const surfaceClose = !visibleShift || !nonTrivialShift;
-  const surfaceCloseWarning = semanticLockIntact ? false : surfaceClose;
+  const thinRealization = !visibleShift || !nonTrivialShift;
+  const thinRealizationWarning = semanticLockIntact ? false : thinRealization;
   const recaptureRisk = round3(clamp01(
     (clamp01(semanticRisk) * 0.45) +
     ((1 - clamp01(protectedAnchorIntegrity)) * 0.24) +
     (semanticCoverageRisk * 0.18) +
     (introducedEnforcementTerms.length ? 0.20 : 0) +
     (namingIntrusion ? 0.22 : 0) +
-    (surfaceCloseWarning ? 0.08 : 0)
+    (thinRealizationWarning ? 0.08 : 0)
   ));
   const warningSignals = uniqueStrings([
     introducedEnforcementTerms.length ? 'enforcement-framing' : null,
     namingIntrusion ? 'naming-intrusion' : null,
     protectedAnchorIntegrity < 1 ? 'anchor-drift-detected' : null,
     semanticCoverageRisk >= 0.18 ? 'semantic-compression' : null,
-    surfaceCloseWarning ? 'surface-close' : null,
+    thinRealizationWarning ? 'thin-realization' : null,
     applied ? 'counter-recognition-pressure' : null
   ]);
   const blocked = false;
@@ -2136,7 +2136,7 @@ export function reviewTD613ApertureTransfer({
   const candidateSuppression = round3(clamp01(
     (applied ? 0.12 : 0.02) +
     (semanticCoverageRisk * 0.42) +
-    (surfaceCloseWarning ? 0.18 : 0)
+    (thinRealizationWarning ? 0.18 : 0)
   ));
   const observabilityDeficit = semanticLockIntact ? 0 : round3(clamp01(
     (semanticCoverageRisk * 0.48) +
@@ -2158,7 +2158,7 @@ export function reviewTD613ApertureTransfer({
   ));
   const capacityPressure = semanticLockIntact ? 0 : round3(clamp01(
     (semanticCoverageRisk * 0.58) +
-    (surfaceCloseWarning ? 0.18 : 0)
+    (thinRealizationWarning ? 0.18 : 0)
   ));
   const policyPressure = round3(clamp01(
     (introducedEnforcementTerms.length ? 0.42 : 0) +

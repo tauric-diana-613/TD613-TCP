@@ -163,7 +163,7 @@ assert.equal(semanticLockedReview.observabilityDeficit, 0);
 assert.equal(semanticLockedReview.redundancyInflation, 0);
 assert.equal(semanticLockedReview.capacityPressure, 0);
 assert(!semanticLockedReview.warningSignals.includes('semantic-compression'));
-assert(!semanticLockedReview.warningSignals.includes('surface-close'));
+assert(!semanticLockedReview.warningSignals.includes('thin-realization'));
 
 const sparkPlan = buildTD613ApertureProjectionPlan({
   personaId: 'spark',

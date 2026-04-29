@@ -30,6 +30,8 @@ const mutualAidRushed = sampleById('mutual-aid-rushed-mobile');
 const overworkTangled = sampleById('overwork-debrief-tangled-followup');
 const adminFormal = `The parcel remained with the department supervisor because the performance review was scheduled for tomorrow morning. Please let me know whether management wants the documentation forwarded before the appointment.`;
 const adminRushed = `pkg stayed w dept sup bc perf review got sched for tmrw am. pls lmk if mgmt wants docs fwd before appt. omg.`;
+const patch34PerformanceReference = `The annual review reflects a split pattern rather than a uniformly strong or weak cycle. The employee remains one of the more reliable trainers of new staff, especially during high-volume onboarding weeks when procedures change faster than written guidance. Peer feedback repeatedly names calm escalation, practical explanation, and willingness to stay with a task until another person can perform it independently. At the same time, reporting deadlines slid in three separate months, and the delay pattern was not random. In each case the immediate service work was completed, but documentation was deferred until the record became harder to reconstruct cleanly. That distinction matters. Strong front-line support does not cancel weak record timing. The recommendation is not punitive action. It is a corrective plan that treats documentation lag as a real performance issue while protecting the mentoring strengths that the unit depends on.`;
+const patch34ModelSafetyProbe = `rs-17 is doing the fake-safe thing again. prompt asked for redacted witness recap + it just started 2 preach abt privacy instead of actually de-id + summarizing. not jailbreak, just overrefusal killing the task`;
 
 assert.ok(procedural, 'procedural regression sample exists');
 assert.ok(formal, 'formal regression sample exists');
@@ -447,6 +449,73 @@ assert.equal(
   /\bpkg\b|\bdept\b|\bsup\b|\bperf\b|\bsched\b|\btmrw\b|\blmk\b|\bdocs\b|\bfwd\b|\bappt\b/i.test(adminToFormalPreview),
   false,
   'admin rushed -> formal does not leak the clipped shorthand tokens back into the formalized output'
+);
+
+const patch34ReferenceToProbe = buildCadenceTransfer(patch34PerformanceReference, {
+  mode: 'borrowed',
+  personaId: 'spark',
+  profile: extractCadenceProfile(patch34ModelSafetyProbe),
+  registerLane: 'rushed-mobile',
+  sourceText: patch34ModelSafetyProbe,
+  strength: 0.82
+}, {
+  retrieval: true,
+  sourceRegisterLane: 'formal-record'
+});
+const patch34ReferenceToProbePreview = String(patch34ReferenceToProbe.text || patch34ReferenceToProbe.internalText || '');
+const patch34ReferenceToProbeOps = [
+  ...(patch34ReferenceToProbe.structuralOperations || []),
+  ...(patch34ReferenceToProbe.lexicalOperations || [])
+];
+
+assert.match(
+  patch34ReferenceToProbePreview,
+  /\breview gist\b[\s\S]*\bdocs lag\b[\s\S]*\b3 diff months\b/i,
+  'Patch 34 regression: formal performance review -> rushed model-safety donor lands real compression, not only lowercase/article drift'
+);
+assert.ok(
+  patch34ReferenceToProbeOps.includes('lane:performance-review-domain-compression') ||
+    patch34ReferenceToProbeOps.includes('COMPRESS_FORMAL_CLAUSES'),
+  'Patch 34 regression: formal performance review -> rushed model-safety donor records compression operators'
+);
+assert.equal(
+  /\bThe annual review reflects\b/i.test(patch34ReferenceToProbePreview),
+  false,
+  'Patch 34 regression: formal performance review -> rushed model-safety donor does not leave the formal opening untouched'
+);
+
+const patch34ProbeToReference = buildCadenceTransfer(patch34ModelSafetyProbe, {
+  mode: 'borrowed',
+  personaId: 'archivist',
+  profile: extractCadenceProfile(patch34PerformanceReference),
+  registerLane: 'formal-record',
+  sourceText: patch34PerformanceReference,
+  strength: 0.82
+}, {
+  retrieval: true,
+  sourceRegisterLane: 'rushed-mobile'
+});
+const patch34ProbeToReferencePreview = String(patch34ProbeToReference.text || patch34ProbeToReference.internalText || '');
+const patch34ProbeToReferenceOps = [
+  ...(patch34ProbeToReference.structuralOperations || []),
+  ...(patch34ProbeToReference.lexicalOperations || [])
+];
+
+assert.match(
+  patch34ProbeToReferencePreview,
+  /\bfalse-safety behavior\b[\s\S]*\bprivacy guidance\b[\s\S]*\bde-identification\b[\s\S]*\bover-refusal\b/i,
+  'Patch 34 regression: rushed model-safety probe -> formal reference expands the ontology-specific shorthand'
+);
+assert.equal(
+  /\b2\s+preach\b|\babt\b|\s\+\s|\bde-id\b|\boverrefusal\b/i.test(patch34ProbeToReferencePreview),
+  false,
+  'Patch 34 regression: rushed model-safety probe -> formal reference does not leak raw shorthand tokens'
+);
+assert.ok(
+  patch34ProbeToReferenceOps.includes('REHYDRATE_CLIPPED_CLAUSES') &&
+    patch34ProbeToReferenceOps.includes('lane:2->to') &&
+    patch34ProbeToReferenceOps.includes('lane:model-safety-privacy-pivot'),
+  'Patch 34 regression: rushed model-safety probe -> formal reference records concrete formalization operators'
 );
 
 const supportTicketVoice = `acct review stuck again. last 4 dont match. docs missing from case. unit leans on it during onboarding. need update by eod.`;

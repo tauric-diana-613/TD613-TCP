@@ -3069,21 +3069,6 @@ export function buildBorrowedShellDonorProgress(
   };
 }
 
-function borrowedShellSurfaceClose(donorProgress = {}) {
-  if (!donorProgress.eligible) {
-    return false;
-  }
-
-  return (
-    donorProgress.donorImprovement < 0.12 ||
-    donorProgress.donorImprovementRatio < 0.05 ||
-    (
-      donorProgress.sourceOutputLexicalOverlap >= 0.95 &&
-      donorProgress.donorImprovement < 0.28
-    )
-  );
-}
-
 function borrowedShellPathologyBlocked(qualityNotes = []) {
   const hardBlockers = [
     /^Protected literals did not survive the rewrite intact\./,
@@ -4573,7 +4558,7 @@ export function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, stren
   // Score and filter candidates
   const scoredCandidates = finalCandidates.map((candidate) => {
     const candidateProfile = extractCadenceProfile(candidate.text);
-    const donorVector = cadenceAxisVector(targetProfile);
+    const targetVector = cadenceAxisVector(targetProfile);
     const outputVector = cadenceAxisVector(candidateProfile);
     const sourceFit = compareTexts('', '', {
       profileA: sourceProfile,
@@ -4583,11 +4568,11 @@ export function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, stren
       profileA: candidateProfile,
       profileB: targetProfile
     });
-    const donorImprovement = donorVector.reduce((sum, axis, idx) => {
+    const targetFeatureAlignment = targetVector.reduce((sum, axis, idx) => {
       const outputAxis = outputVector[idx] || { normalized: 0 };
       const gap = Math.abs(axis.normalized - outputAxis.normalized);
       return sum + (1 - Math.min(1, gap));
-    }, 0) / Math.max(donorVector.length, 1);
+    }, 0) / Math.max(targetVector.length, 1);
 
     const changedDims = collectChangedDimensions(sourceProfile, candidateProfile);
     const structDims = structuralDimensions(changedDims).length;
@@ -4608,7 +4593,7 @@ export function beamSearchTransfer(ir, plan, sourceProfile, targetProfile, stren
     const materialSentenceGap = (sourceFit.sentenceDistance || 0) >= 6;
 
     const score =
-      (donorImprovement * 34) +
+      (targetFeatureAlignment * 34) +
       (structDims * 18) +
       (lexicalDims * 18) +
       (discDims * 10) +
@@ -5605,14 +5590,14 @@ function inferBorrowedShellFailureClass({
   }
 
   if (transferClass === 'rejected' && !visibleShift) {
-    return 'donor-underfit';
+    return 'missing-realization';
   }
 
   if (!nonTrivialShift || borrowedShellOutcome === 'subtle') {
     return 'lexical-underreach';
   }
 
-  return 'donor-underfit';
+  return 'missing-realization';
 }
 
 function shouldApplySentenceTexture(currentProfile = {}, targetProfile = {}, gap = {}, mod = {}) {
@@ -6381,14 +6366,6 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
       protectedAnchorAudit.protectedAnchorIntegrity ??
       semanticAudit.protectedAnchorIntegrity ??
       1;
-    const sourceFitToTarget = compareTexts('', '', {
-      profileA: sourceProfile,
-      profileB: targetProfile
-    });
-    const outputFitToTarget = compareTexts('', '', {
-      profileA: candidateOutputProfile,
-      profileB: targetProfile
-    });
     const donorProgress = buildBorrowedShellDonorProgress(
       sourceText,
       candidateOutputText,
@@ -6396,10 +6373,6 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
       targetProfile,
       candidateOutputProfile
     );
-    const sourceDonorDistance = donorDistanceFromFit(sourceFitToTarget);
-    const outputDonorDistance = donorDistanceFromFit(outputFitToTarget);
-    const donorImprovement = donorProgress.donorImprovement;
-    const donorRegression = round3(Math.max(0, outputDonorDistance - sourceDonorDistance));
     const structuralCount = borrowedShellStructuralDimensions(candidateChangedDimensions).length;
     const lexicalCount = lexicalDimensions(candidateChangedDimensions).length;
     const registerRealization =
@@ -6407,10 +6380,9 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
       Number(lexicalShiftProfile.swapCount || 0) > 0 ||
       candidateChangedDimensions.includes('connector-stance') ||
       candidateChangedDimensions.includes('contraction-posture');
-    const surfaceClose = strictBorrowedMode && borrowedShellSurfaceClose(donorProgress);
+    const surfaceClose = false;
     const transferClass =
       hasMaterialStructuralTransfer(candidateChangedDimensions) &&
-      !surfaceClose &&
       (!strictBorrowedMode || registerRealization)
         ? 'structural'
         : 'weak';
@@ -6431,7 +6403,6 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
       candidate.quality?.qualityGatePassed &&
       !borrowedShellPathologyBlocked(candidate.quality?.notes || []) &&
       candidateOutputText !== sourceText &&
-      !surfaceClose &&
       visibleShift &&
       nonTrivialShift &&
       protectedAnchorIntegrity >= 0.55 &&
@@ -6479,9 +6450,6 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
       (Number(lexicalShiftProfile.swapCount || 0) * 8) +
       (visibleShift ? 8 : 0) +
       (nonTrivialShift ? 12 : 0) +
-      Math.min(40, donorImprovement * 80) -
-      Math.min(32, donorRegression * 60) +
-      (surfaceClose ? -60 : 0) +
       (((semanticAudit.propositionCoverage ?? 1) * 12) + ((semanticAudit.actionCoverage ?? 1) * 8)) -
       semanticDriftPenalty;
 
@@ -6680,7 +6648,6 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
       bridgedChangedDimensions.includes('contraction-posture') ||
       bridgedChangedDimensions.includes('orthography-posture') ||
       bridgedChangedDimensions.includes('abbreviation-posture');
-    const bridgedSurfaceClose = borrowedShellSurfaceClose(bridgedDonorProgress);
     const bridgedFamilyMarkers = bridgedFamily?.markers || { score: 0 };
     const bridgedFamilyLabel = bridgedFamily?.label || 'Cadence-family bridge';
     const bridgedFamilyKey = bridgedFamily?.key || 'generic';
@@ -6692,7 +6659,6 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
       (
         bridgedFamilyMarkers.score >= 5 ||
         (
-          !bridgedSurfaceClose &&
           bridgedProtectedAnchorIntegrity >= 1 &&
           (bridgedSemanticAudit.propositionCoverage ?? 1) >= 0.8 &&
           (bridgedSemanticAudit.actorCoverage ?? 1) >= 0.7 &&
@@ -6701,18 +6667,16 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
           (bridgedSemanticAudit.polarityMismatches ?? 0) <= 1 &&
           (
             bridgedStructuralCount >= 1 ||
-            bridgedRegisterRealization ||
-            bridgedDonorProgress.donorImprovement >= 0.3
+            bridgedRegisterRealization
           )
-        ) ||
-        bridgedDonorProgress.donorImprovement >= 0.3
+        )
       )
     ) {
       finalText = bridgedText;
       finalProfile = bridgedProfile;
       qualityGatePassed = true;
       transferClass =
-        bridgedStructuralCount >= 1 || bridgedDonorProgress.donorImprovement >= 0.45
+        bridgedStructuralCount >= 1 || bridgedRegisterRealization
           ? 'structural'
           : 'weak';
       changedDimensions = bridgedChangedDimensions;
@@ -6733,9 +6697,9 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
         actionCoverage: bridgedSemanticAudit.actionCoverage ?? 1,
         polarityMismatches: bridgedSemanticAudit.polarityMismatches ?? 0,
         progressProfile: {
-          donorImprovement: bridgedDonorProgress.donorImprovement,
-          donorImprovementRatio: bridgedDonorProgress.donorImprovementRatio,
-          lexicalOverlap: bridgedDonorProgress.sourceOutputLexicalOverlap
+          structuralCount: bridgedStructuralCount,
+          lexicalCount: bridgedLexicalCount,
+          registerRealization: bridgedRegisterRealization
         },
         lexicalShiftProfile: bridgedLexicalShiftProfile,
         donorProgress: bridgedDonorProgress
@@ -7106,11 +7070,6 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
         donorImprovementRatio: 0,
         sourceOutputLexicalOverlap: 1
       };
-  const finalBorrowedSurfaceClose =
-    enforceFinalBorrowedSemanticGuard &&
-    shell?.mode === 'borrowed' &&
-    finalText !== sourceText &&
-    borrowedShellSurfaceClose(donorProgress);
   const cadenceFamilyBridgeAccepted = rescuePasses.some((pass) => /^cadence-family-bridge:/.test(pass));
   if (cadenceFamilyBridgeAccepted) {
     const cleanedNotes = notes.filter((note) => !/^Protected literals did not survive the rewrite intact\./.test(note));
@@ -7122,7 +7081,6 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
     finalText !== sourceText &&
     !cadenceFamilyBridgeAccepted &&
     (
-      finalBorrowedSurfaceClose ||
       finalProtectedAnchorIntegrity < 1 ||
       (semanticAudit?.propositionCoverage ?? 1) < 0.85 ||
       (semanticAudit?.actorCoverage ?? 1) < 0.75 ||
@@ -7134,11 +7092,7 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
 
   if (finalSemanticBorrowedFailure) {
     rescuePasses.push('semantic-final-warning');
-    notes.push(
-      finalBorrowedSurfaceClose
-        ? 'Transfer kept the donor realization visible, but Aperture flagged it as surface-close and raised the warning ledger.'
-        : 'Transfer stayed visible after final semantic review, but Aperture raised warning pressure on the output.'
-    );
+    notes.push('Transfer stayed visible after final semantic review, but Aperture raised warning pressure on the output.');
   }
 
   let visibleShift = precomputedVisibleShift ?? hasBorrowedShellVisibleShift(
@@ -7487,14 +7441,31 @@ function buildSwapLaneResult(sourceSample, donorSample, slot = 'A', donorSlot = 
   const trace = transfer.retrievalTrace || {};
   const semanticAudit = trace.semanticAudit || transfer.semanticAudit || {};
   const protectedAnchorAudit = trace.protectedAnchorAudit || transfer.protectedAnchorAudit || {};
+  const targetLane = transfer.targetRegisterLane || donorSample.variant || '';
+  const expectedOperators = [...new Set([
+    ...(transfer.expectedOperators || []),
+    ...(trace.planSummary?.expectedOperators || [])
+  ].filter(Boolean))];
+  const firedOperators = [...new Set([
+    ...(transfer.structuralOperations || []),
+    ...(transfer.lexicalOperations || []),
+    ...(transfer.lexemeSwaps || []).map((swap) => swap?.family ? `lexeme:${swap.family}` : null)
+  ].filter(Boolean))];
+  const missingOperators = expectedOperators.filter((operator) => !firedOperators.includes(operator));
 
   const holdFailureClass = transfer.holdStatus === 'held'
     ? transfer.generationDocket?.holdClass || 'below-rewrite-bar'
     : null;
-  const summarizedHoldFailureClass =
-    holdFailureClass === 'below-rewrite-bar' || holdFailureClass === 'semantic-failure'
-      ? 'donor-underfit'
-      : holdFailureClass;
+  const summarizedHoldFailureClass = (() => {
+    if (!holdFailureClass) return null;
+    if (holdFailureClass === 'semantic-failure') return 'aperture-route-pressure';
+    if (holdFailureClass !== 'below-rewrite-bar') return holdFailureClass;
+    if (missingOperators.includes('REHYDRATE_CLIPPED_CLAUSES')) return 'missing-shorthand-normalization';
+    if (missingOperators.includes('COMPRESS_FORMAL_CLAUSES')) return 'missing-compression';
+    if (['formal-record', 'professional-message'].includes(targetLane)) return 'missing-formalization';
+    if (['rushed-mobile', 'tangled-followup'].includes(targetLane)) return 'missing-compression';
+    return 'missing-realization';
+  })();
   const summarizedBorrowedShellOutcome = transfer.holdStatus === 'held'
     ? 'rejected'
     : (transfer.borrowedShellOutcome || (transfer.transferClass === 'rejected' ? 'rejected' : 'subtle'));
@@ -7548,19 +7519,12 @@ function classifySwapCadencePair(laneA = {}, laneB = {}) {
     return 'both-rejected';
   }
 
-  if (
-    borrowedShellSurfaceClose(laneA.donorProgress || {}) &&
-    borrowedShellSurfaceClose(laneB.donorProgress || {})
-  ) {
-    return 'surface-close';
-  }
-
   if (engagedA && engagedB) {
     return 'bilateral-engaged';
   }
 
   if (!laneA.nonTrivialShift && !laneB.nonTrivialShift) {
-    return 'surface-close';
+    return 'thin-realization';
   }
 
   return 'one-sided';
@@ -7600,7 +7564,8 @@ function buildSwapCadencePairReport(sourceSample, donorSample, strength = 0.82) 
       bilateralEngaged: classification === 'bilateral-engaged',
       oneSided: classification === 'one-sided',
       bothRejected: classification === 'both-rejected',
-      surfaceClose: classification === 'surface-close'
+      thinRealization: classification === 'thin-realization',
+      surfaceClose: false
     },
     failureFamilyTags,
     visibleShiftSummary: {
@@ -7691,7 +7656,8 @@ export function buildSwapCadenceMatrix(sampleLibrary = [], options = {}) {
     bilateralEngaged: fullMatrix.filter((report) => report.pairAudit.bilateralEngaged).length,
     oneSided: fullMatrix.filter((report) => report.pairAudit.oneSided).length,
     bothRejected: fullMatrix.filter((report) => report.pairAudit.bothRejected).length,
-    surfaceClose: fullMatrix.filter((report) => report.pairAudit.surfaceClose).length,
+    thinRealization: fullMatrix.filter((report) => report.pairAudit.thinRealization).length,
+    surfaceClose: 0,
     flagshipPassCount: flagshipReports.filter((report) => report.pairAudit.flagshipPass).length,
     flagshipCaseCount: flagshipReports.length,
     flagshipAllPassed: flagshipReports.length > 0 && flagshipReports.every((report) => report.pairAudit.flagshipPass),

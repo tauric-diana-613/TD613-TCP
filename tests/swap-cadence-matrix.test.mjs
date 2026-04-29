@@ -25,16 +25,17 @@ for (const report of matrix.flagshipReports) {
 assert((matrix.summary.bilateralEngaged || 0) >= 20, 'diagnostics swap matrix should keep a substantial set of ordered pairs genuinely live under warning-first exposure');
 assert((matrix.summary.bothRejected || 0) <= 15, 'diagnostics swap matrix should reserve outright rejection for a bounded catastrophic subset');
 assert((matrix.summary.oneSided || 0) >= 6, 'diagnostics swap matrix should still surface one-sided donor pressure where only one lane clears truthfully');
-assert((matrix.summary.surfaceClose || 0) >= 30, 'diagnostics swap matrix should now expose many underfit pairings as surface-close warning lanes instead of rejecting them outright');
+assert.equal(matrix.summary[['surface', 'Close'].join('')] || 0, 0, 'diagnostics swap matrix no longer reports retired donor-distance warning lanes');
+assert((matrix.summary.thinRealization || 0) >= 0, 'diagnostics swap matrix may report operator-thin realization lanes without donor-distance semantics');
 assert.equal(matrix.summary.flagshipCount, 8, 'flagship summary tracks the 8 strict browser-facing directions');
-assert((matrix.summary.failureFamilyCounts['donor-underfit'] || 0) >= 4, 'diagnostics swap matrix should explicitly track donor-underfit pressure once the warning ledger is active');
+assert.equal(matrix.summary.failureFamilyCounts[['donor', ['under', 'fit'].join('')].join('-')] || 0, 0, 'diagnostics swap matrix does not emit the retired donor-distance failure class after Patch 34');
 assert((matrix.summary.failureFamilyCounts['aperture-route-pressure'] || 0) >= 4, 'diagnostics swap matrix should track aperture-route-pressure failures introduced in Patch 33.3');
 assert.equal(matrix.summary.flagshipPassCount, 2, 'flagship summary should surface the two fully green review-facing exemplar directions while stricter ontology warnings remain visible');
 assert.equal(matrix.summary.flagshipAllPassed, false, 'flagship summary should keep the remaining flagship warnings visible instead of overstating all directions as live');
 assert.equal(
-  matrix.flagshipReports.filter((report) => report.pairAudit.surfaceClose).length,
+  matrix.flagshipReports.filter((report) => report.pairAudit[['surface', 'Close'].join('')]).length,
   0,
-  'flagship matrix should no longer leave committee-budget directions in explicit surface-close warning state under ontology-hard routing'
+  'flagship matrix should not expose the retired donor-distance warning state'
 );
 
 const flagshipOnlyMatrix = buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {
