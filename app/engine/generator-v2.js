@@ -109,6 +109,7 @@ const VERNACULAR_FEATURE_RULES = Object.freeze({
   orthographyNoise: Object.freeze([
     Object.freeze({ id: 'lowercase-sentence-start', pattern: /(?:^|[.!?]\s+|\n+)[a-z]/g }),
     Object.freeze({ id: 'lowercase-i', pattern: /(?:^|[.!?]\s+|\n+)i(?:\b|['’](?:m|ve|ll|d)\b)/g }),
+    Object.freeze({ id: 'standalone-lowercase-i', pattern: /(?:^|[\s([{'"“‘])i(?:\b|['’](?:m|ve|ll|d)\b)/g }),
     Object.freeze({ id: 'apostrophe-drop', pattern: /\b(?:wasnt|werent|dont|doesnt|didnt|cant|couldnt|shouldnt|wont|isnt|arent|im|ive|ill|id|youre|theyre|thats|theres|whats|hes|shes|lets)\b/gi })
   ]),
   chatspeakShorthand: Object.freeze([
@@ -3005,6 +3006,34 @@ function loosenSentenceStartsV2(text = '', limit = 2) {
     applied += 1;
     return `${prefix}${word.charAt(0).toLowerCase()}${word.slice(1)}`;
   });
+}
+
+function enforceRushedMobileOrthography(text = '', context = {}) {
+  const targetRegisterLane = normalizeRegisterLane(context?.targetRegisterLane, '');
+  if (targetRegisterLane !== 'rushed-mobile') {
+    return text;
+  }
+  const targetLooseness = Number(context?.targetProfile?.orthographicLooseness || 0);
+  const sourceLooseness = Number(context?.sourceProfile?.orthographicLooseness || 0);
+  const wantsNoisyOrthography =
+    featurePressureActive(context, 'orthographyNoise') ||
+    targetLooseness >= Math.max(0.06, sourceLooseness + 0.04) ||
+    featureMarkerActive(context?.donorVernacularFeatures, 'orthographyNoise', 'lowercase-i') ||
+    featureMarkerActive(context?.donorVernacularFeatures, 'orthographyNoise', 'standalone-lowercase-i');
+  if (!wantsNoisyOrthography) {
+    return text;
+  }
+
+  let working = String(text || '');
+  const lexicalOperations = context.lexicalOperations || [];
+  const lexemeSwaps = context.lexemeSwaps || [];
+  const beforeStandaloneI = working;
+  working = working.replace(/\bI\b/g, 'i');
+  if (working !== beforeStandaloneI) {
+    lexicalOperations.push('feature:lowercase-i-final');
+    recordLexemeSwap(lexemeSwaps, 'I', 'i', 'feature');
+  }
+  return working;
 }
 
 function applyCompressedSurfaceRewrite(text = '', targetProfile = {}, sourceProfile = {}, context = {}) {
@@ -5924,6 +5953,7 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
   if (['formal-record', 'professional-message', 'tangled-followup'].includes(targetRegisterLane)) {
     outputText = upperSentenceStarts(outputText);
   }
+  outputText = enforceRushedMobileOrthography(outputText, context);
 
   return Object.freeze({
     outputText,

@@ -591,6 +591,16 @@ assert.match(
   /\s&\s/i,
   'Patch 34.1 regression: tangled follow-up -> rushed donor realizes donor-evidenced ampersand note posture'
 );
+assert.equal(
+  /\bI\b/.test(patch341ProbeToReferencePreview),
+  false,
+  'Patch 34.1 regression: tangled follow-up -> rushed donor lowercases standalone I when orthography noise is donor-evidenced'
+);
+assert.match(
+  patch341ProbeToReferencePreview,
+  /\bbc i dont\b/,
+  'Patch 34.1 regression: lowercase-i must be visible in the final noisy surface, not just recorded in the ledger'
+);
 assert.ok(
   (patch341ProbeFeatureShift.realizedFamilies || []).includes('chatspeakShorthand') &&
     (patch341ProbeFeatureShift.realizedFamilies || []).includes('notePosture') &&
