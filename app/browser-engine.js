@@ -10963,6 +10963,255 @@ function buildCadenceTransferTrace(text = '', shell = {}, options = {}) {
 function applyCadenceToText(text = '', shell = {}) {
   return applyCadenceToTextV2(text, shell);
 }
+// SOURCE: app/engine/data/discourse-ontology.js
+// Discourse-ontology vocabulary used by the cadence engine to classify a
+// source text's discourse move and pick a scaffold or parenthetical that
+// matches that move.
+//
+// The vocabulary used to live as inline regex inside generator-v2.js
+// (inferDiscourseOntology, chooseDiscourseScaffold,
+// chooseParentheticalScaffold, scaffoldPhraseToSentence,
+// isDiscourseScaffoldSentence, expectedOperatorsForContext). Keeping it
+// here lets fixture writers extend the vocabulary without engine edits.
+//
+// Order matters in the arrays — first-match precedence is preserved.
+// Palette arrays are addressed by stableChoiceIndex, so reordering one
+// palette member changes the deterministic dispatch.
+//
+// Tokens are treated as regex fragments, not literals — e.g. `docs?`
+// matches both "doc" and "docs". Adding a token with a regex special
+// character is a deliberate act; in the common case tokens are plain words.
+//
+// A signal entry may carry an optional `extraPattern` string (a raw regex
+// fragment, no flags). It is appended as `|(?:<extraPattern>)` to the
+// bounded-token regex so the signal fires on either the word-boundary list
+// OR the extra pattern — used where the trigger cannot be expressed as a
+// plain word boundary (e.g. `\s[+&]\s` for clipped shorthand).
+
+const DISCOURSE_ONTOLOGY = Object.freeze({
+  // ---- Source-text signal categories -------------------------------------
+  // Each entry: a tag and the token list that triggers it. A regex of the
+  // form /\b(?:tok1|tok2|…)\b/i is built from the tokens at load time.
+  // Optional `extraPattern` string extends the regex beyond word boundaries.
+  sourceSignals: Object.freeze([
+    Object.freeze({ tag: 'dependency-chain',      tokens: Object.freeze(['unit', 'onboarding', 'leans on it', 'relies on it', 'dependency', 'mentoring']) }),
+    Object.freeze({ tag: 'route-risk-separation', tokens: Object.freeze(['motel', 'household', 'case split', 'duplicate', 'intake', 'not saying no']) }),
+    Object.freeze({ tag: 'unresolved-condition',  tokens: Object.freeze(['leak', 'plumber', 'cabinet', 'wet', 'fixed', 'resolved', 'repair']) }),
+    Object.freeze({ tag: 'procedural-dead-path',  tokens: Object.freeze(['fraud hold', 'manual review', 'dead path', 'credential mismatch', 'reset flow']) }),
+    Object.freeze({ tag: 'record-correction',     tokens: Object.freeze(['correct', 'correction', 'record', 'log', 'footage', 'testimony', 'signature', 'attempted', 'quote', 'speaker tag', 'speaker attribution', 'graf', 'paragraph', 'homepage hed', 'homepage headline', 'body fixed', 'body copy corrected', 'newsletter grab', 'newsletter pull', 'vote passed', 'cleared committee']) }),
+    Object.freeze({ tag: 'clipped-source',        tokens: Object.freeze(['acct', 'docs?', 'eod', 'last\\s*4', 'dont', 'wasnt', 'isnt', 'pkg', 'mgmt', 'pls', 'lmk', 'fwd', 'appt', 'b4', 'graf', 'hed', 'speaker tag', 'body fixed', 'newsletter grab']), extraPattern: '\\s[+&]\\s' })
+  ]),
+
+  // ---- Donor-text signal categories --------------------------------------
+  donorSignals: Object.freeze([
+    Object.freeze({ tag: 'careful-reframing',      tokens: Object.freeze(['trying to be careful']) }),
+    Object.freeze({ tag: 'contrastive-reframe',    tokens: Object.freeze(['not just that', 'the point is', 'not merely']) }),
+    Object.freeze({ tag: 'clarification',          tokens: Object.freeze(['for clarity', 'clarify']) }),
+    Object.freeze({ tag: 'procedural-distinction', tokens: Object.freeze(['procedural risk', 'corrective issue', 'underlying issue', 'not credential mismatch']) })
+  ]),
+
+  // ---- Signal → primaryMove (precedence-ordered) -------------------------
+  // Iterate in order; first matching signal wins. `from` names which signal
+  // group to consult.
+  primaryMovePrecedence: Object.freeze([
+    Object.freeze({ from: 'sourceSignals', signal: 'dependency-chain',      primaryMove: 'evidentiary-dependency' }),
+    Object.freeze({ from: 'sourceSignals', signal: 'route-risk-separation', primaryMove: 'route-risk-separation' }),
+    Object.freeze({ from: 'sourceSignals', signal: 'unresolved-condition',  primaryMove: 'unresolved-state' }),
+    Object.freeze({ from: 'sourceSignals', signal: 'procedural-dead-path',  primaryMove: 'procedural-dead-path' }),
+    Object.freeze({ from: 'sourceSignals', signal: 'record-correction',     primaryMove: 'record-correction' }),
+    Object.freeze({ from: 'donorSignals',  signal: 'contrastive-reframe',   primaryMove: 'contrastive-reframe' }),
+    Object.freeze({ from: 'donorSignals',  signal: 'careful-reframing',     primaryMove: 'careful-reframing' })
+  ]),
+  defaultPrimaryMove: 'clarification',
+
+  // ---- Discourse scaffolds keyed by primaryMove --------------------------
+  primaryMoveScaffolds: Object.freeze({
+    'evidentiary-dependency': 'The evidentiary issue is',
+    'route-risk-separation':  'The routing issue is',
+    'unresolved-state':       'The unresolved condition is',
+    'procedural-dead-path':   'The procedural issue is',
+    'record-correction':      'The corrective issue is'
+  }),
+
+  // ---- Donor-text scaffold patterns (ordered) ----------------------------
+  // First match wins. Used by chooseDiscourseScaffold after the primaryMove
+  // table fails. The 'for the record' branch is special: it also fires when
+  // targetLane === 'formal-record', handled by formalRecordScaffold below.
+  donorScaffoldPatterns: Object.freeze([
+    Object.freeze({ tokens: Object.freeze(['trying to be careful']),                  scaffold: 'I want to be careful here' }),
+    Object.freeze({ tokens: Object.freeze(['trying to be precise', 'precisely']),     scaffold: 'I want to be precise here' }),
+    Object.freeze({ tokens: Object.freeze(['not just that', 'the point is']),         scaffold: 'The point is' }),
+    Object.freeze({ tokens: Object.freeze(['for clarity', 'clarify']),                scaffold: 'For clarity' }),
+    Object.freeze({ tokens: Object.freeze(['for the record']),                        scaffold: 'For the record' })
+  ]),
+  formalRecordScaffold: 'For the record',
+
+  // ---- Source-text scaffold patterns (ordered) ---------------------------
+  sourceScaffoldPatterns: Object.freeze([
+    Object.freeze({ tokens: Object.freeze(['stuck', 'missing', 'needs?', 'update', 'blocked', 'delay', 'risk']), scaffold: 'The practical issue is' }),
+    Object.freeze({ tokens: Object.freeze(['because', 'so', 'therefore', 'why']),                                scaffold: 'The connective issue is' })
+  ]),
+
+  // ---- Target-lane scaffold palette (ordered, indexed by stableChoiceIndex) ---
+  scaffoldFallbackByLane: Object.freeze({
+    'professional-message': Object.freeze(['For clarity', 'The practical issue is', 'I want to be precise here']),
+    _default:               Object.freeze(['The narrower issue is', 'In practical terms', 'The point is'])
+  }),
+
+  // ---- Source-text parenthetical patterns (ordered) ----------------------
+  sourceParentheticalPatterns: Object.freeze([
+    Object.freeze({ tokens: Object.freeze(['unit', 'onboarding', 'mentoring']),             phrase: 'with that dependency made explicit' }),
+    Object.freeze({ tokens: Object.freeze(['motel', 'household', 'intake', 'case split']),  phrase: 'with the routing risk kept separate' }),
+    Object.freeze({ tokens: Object.freeze(['leak', 'plumber', 'cabinet', 'repair']),        phrase: 'with the unresolved condition preserved' }),
+    Object.freeze({ tokens: Object.freeze(['archive', 'grant', 'deliverables', 'catalog']), phrase: 'with the deliverable chain kept intact' })
+  ]),
+
+  // ---- Donor-text parenthetical patterns (ordered) -----------------------
+  donorParentheticalPatterns: Object.freeze([
+    Object.freeze({ tokens: Object.freeze(['not just', 'the point is']),                    phrase: 'with the distinction made explicit' })
+  ]),
+
+  // ---- Target-lane parenthetical palette ---------------------------------
+  parentheticalFallbackByLane: Object.freeze({
+    'formal-record': Object.freeze(['with the evidentiary relation preserved', 'with the sequence kept auditable', 'with the dependency made explicit']),
+    _default:        Object.freeze(['with the practical stakes still visible', 'with the connective tissue kept in view', 'with the sequence kept intact'])
+  }),
+
+  // ---- scaffoldPhraseToSentence: tag → sentence --------------------------
+  primaryMoveSentences: Object.freeze({
+    'evidentiary-dependency': 'The dependency remains part of the evidentiary chain.',
+    'route-risk-separation':  'The duplicate-intake risk remains separate from denial.',
+    'unresolved-state':       'The condition remains unresolved.',
+    'procedural-dead-path':   'The failure path remains procedural, not credential-based.',
+    'record-correction':      'The correction remains about the record, not merely the surface event.'
+  }),
+
+  // ---- scaffoldPhraseToSentence: substring-match → sentence (ordered) ----
+  // First match wins. Used for parenthetical phrases like "with that
+  // dependency made explicit" → "The dependency remains explicit."
+  parentheticalPhraseSentences: Object.freeze([
+    Object.freeze({ match: 'that dependency made explicit',  sentence: 'The dependency remains explicit.' }),
+    Object.freeze({ match: 'routing risk kept separate',     sentence: 'The routing risk remains separate.' }),
+    Object.freeze({ match: 'unresolved condition preserved', sentence: 'The condition remains unresolved.' }),
+    Object.freeze({ match: 'deliverable chain kept intact',  sentence: 'The deliverable chain remains intact.' }),
+    Object.freeze({ match: 'distinction made explicit',      sentence: 'The distinction remains explicit.' }),
+    Object.freeze({ match: 'evidentiary relation preserved', sentence: 'The evidentiary relation remains intact.' }),
+    Object.freeze({ match: 'sequence kept auditable',        sentence: 'The sequence remains auditable.' }),
+    Object.freeze({ match: 'dependency made explicit',       sentence: 'The dependency remains explicit.' }),
+    Object.freeze({ match: 'practical stakes still visible', sentence: 'The practical stakes remain visible.' }),
+    Object.freeze({ match: 'connective tissue kept in view', sentence: 'The connective tissue remains visible.' }),
+    Object.freeze({ match: 'sequence kept intact',           sentence: 'The sequence remains intact.' })
+  ]),
+
+  // ---- isDiscourseScaffoldSentence: substrings that mark scaffold output -
+  scaffoldSentenceMarkers: Object.freeze([
+    'dependency remains explicit',
+    'dependency remains part of the evidentiary chain',
+    'routing risk remains separate',
+    'duplicate-intake risk remains separate',
+    'condition remains unresolved',
+    'failure path remains procedural',
+    'correction remains about the record',
+    'deliverable chain remains intact',
+    'distinction remains explicit',
+    'evidentiary relation remains intact',
+    'sequence remains auditable',
+    'practical stakes remain visible',
+    'connective tissue remains visible'
+  ]),
+
+  // ---- DISCOURSE_SCAFFOLD_PREFIX_PATTERN tokens --------------------------
+  // Used by insertHedgePrefix to detect text that already opens with a
+  // scaffold and should not be re-prefixed.
+  scaffoldPrefixTokens: Object.freeze([
+    'maybe',
+    'in a sense',
+    'i want to be precise here',
+    'i want to be careful here',
+    'the practical issue is',
+    'the connective issue is',
+    'the narrower issue is',
+    'the point is',
+    'for clarity',
+    'for the record',
+    'what i am trying to say is'
+  ]),
+
+  // ---- expectedOperatorsForContext donor-scaffold pressure tokens --------
+  donorScaffoldPressureTokens: Object.freeze([
+    'i am trying',
+    "i'm trying",
+    'trying to be careful',
+    'the point is',
+    'not just that',
+    'in a sense'
+  ]),
+
+  // ---- expectedOperatorsForContext clipped-source pressure tokens --------
+  // Profile-based checks (abbreviationDensity, fragmentPressure) live in the
+  // engine as they require numeric thresholds, not vocabulary matching.
+  clippedSourcePressureTokens: Object.freeze([
+    'acct', 'docs?', 'eod', 'last\\s*4', 'dont', 'wasnt', 'isnt', 'arent',
+    'pkg', 'mgmt', 'pls', 'lmk', 'fwd', 'appt',
+    'b4', 'graf', 'hed', 'speaker tag', 'body fixed', 'newsletter grab'
+  ]),
+
+  // ---- Extra non-word-boundary pattern for clipped-source pressure -------
+  // Used alongside clippedSourcePressureTokens to catch shorthand operators
+  // like "foo + bar" or "foo & bar" that can't be expressed as \b-anchored.
+  clippedSourceExtraPattern: '\\s[+&]\\s'
+});
+
+// ---- Compiled regex helpers --------------------------------------------
+// Built once at module-load time so the engine functions don't recompile
+// per invocation. Kept here next to the data so the regex shape and the
+// data shape can't drift independently.
+
+function tokenListToBoundedRegex(tokens, flags = 'i') {
+  const joined = tokens.map((t) => String(t)).join('|');
+  return new RegExp(`\\b(?:${joined})\\b`, flags);
+}
+
+function tokenListToPrefixRegex(tokens, flags = 'i') {
+  const joined = tokens.map((t) => String(t)).join('|');
+  return new RegExp(`^(?:${joined})\\b`, flags);
+}
+
+function buildSourceSignalRegex(entry, flags = 'i') {
+  const base = tokenListToBoundedRegex(entry.tokens, flags);
+  if (!entry.extraPattern) return base;
+  return new RegExp(base.source + '|(?:' + entry.extraPattern + ')', flags);
+}
+
+const DISCOURSE_REGEX = Object.freeze({
+  sourceSignal: Object.freeze(Object.fromEntries(
+    DISCOURSE_ONTOLOGY.sourceSignals.map((entry) => [entry.tag, buildSourceSignalRegex(entry)])
+  )),
+  donorSignal: Object.freeze(Object.fromEntries(
+    DISCOURSE_ONTOLOGY.donorSignals.map((entry) => [entry.tag, tokenListToBoundedRegex(entry.tokens)])
+  )),
+  donorScaffold: Object.freeze(DISCOURSE_ONTOLOGY.donorScaffoldPatterns.map((entry) => Object.freeze({
+    test: tokenListToBoundedRegex(entry.tokens),
+    scaffold: entry.scaffold
+  }))),
+  sourceScaffold: Object.freeze(DISCOURSE_ONTOLOGY.sourceScaffoldPatterns.map((entry) => Object.freeze({
+    test: tokenListToBoundedRegex(entry.tokens),
+    scaffold: entry.scaffold
+  }))),
+  sourceParenthetical: Object.freeze(DISCOURSE_ONTOLOGY.sourceParentheticalPatterns.map((entry) => Object.freeze({
+    test: tokenListToBoundedRegex(entry.tokens),
+    phrase: entry.phrase
+  }))),
+  donorParenthetical: Object.freeze(DISCOURSE_ONTOLOGY.donorParentheticalPatterns.map((entry) => Object.freeze({
+    test: tokenListToBoundedRegex(entry.tokens),
+    phrase: entry.phrase
+  }))),
+  scaffoldPrefix: tokenListToPrefixRegex(DISCOURSE_ONTOLOGY.scaffoldPrefixTokens),
+  donorScaffoldPressure: tokenListToBoundedRegex(DISCOURSE_ONTOLOGY.donorScaffoldPressureTokens),
+  clippedSourcePressure: tokenListToBoundedRegex(DISCOURSE_ONTOLOGY.clippedSourcePressureTokens),
+  clippedSourceExtra: new RegExp(DISCOURSE_ONTOLOGY.clippedSourceExtraPattern, 'i'),
+  scaffoldSentenceMarker: tokenListToBoundedRegex(DISCOURSE_ONTOLOGY.scaffoldSentenceMarkers)
+});
 // SOURCE: app/engine/generator-v2.js
 function clamp01(value) {
   return Math.max(0, Math.min(1, Number(value || 0)));
@@ -14623,11 +14872,10 @@ function expectedOperatorsForContext(context = {}) {
     mod.sent >= 1 ||
     mod.frag <= -1
   );
-  const donorScaffoldPressure = /\b(?:i am trying|i'm trying|trying to be careful|the point is|not just that|in a sense)\b/i.test(donorSourceText);
+  const donorScaffoldPressure = DISCOURSE_REGEX.donorScaffoldPressure.test(donorSourceText);
   const sourceClippedPressure =
-    /\b(?:acct|docs?|eod|last\s*4|dont|wasnt|isnt|arent|pkg|mgmt|pls|lmk|fwd|appt|b4|graf|hed)\b/i.test(sourceText) ||
-    /\b(?:speaker tag|body fixed|newsletter grab)\b/i.test(sourceText) ||
-    /\s[+&]\s/.test(sourceText) ||
+    DISCOURSE_REGEX.clippedSourcePressure.test(sourceText) ||
+    DISCOURSE_REGEX.clippedSourceExtra.test(sourceText) ||
     Number(sourceProfile.abbreviationDensity || 0) > 0.01 ||
     Number(sourceProfile.fragmentPressure || 0) > 0.08;
   const wantsHedge = wantsLongFormLane && (
@@ -14662,36 +14910,20 @@ function inferDiscourseOntology({
   const donor = normalizeText(donorSourceText);
   const targetLane = normalizeRegisterLane(targetRegisterLane, '');
   const sourceLane = normalizeRegisterLane(sourceRegisterLane, '');
-  const sourceSignals = uniqueStrings([
-    /\b(?:unit|onboarding|leans on it|relies on it|dependency|mentoring)\b/i.test(source) ? 'dependency-chain' : null,
-    /\b(?:motel|household|case split|duplicate|intake|not saying no)\b/i.test(source) ? 'route-risk-separation' : null,
-    /\b(?:leak|plumber|cabinet|wet|fixed|resolved|repair)\b/i.test(source) ? 'unresolved-condition' : null,
-    /\b(?:fraud hold|manual review|dead path|credential mismatch|reset flow)\b/i.test(source) ? 'procedural-dead-path' : null,
-    /\b(?:correct|correction|record|log|footage|testimony|signature|attempted|quote|speaker tag|speaker attribution|graf|paragraph|homepage hed|homepage headline|body fixed|body copy corrected|newsletter grab|newsletter pull|vote passed|cleared committee)\b/i.test(source) ? 'record-correction' : null,
-    /\b(?:acct|docs?|eod|last\s*4|dont|wasnt|isnt|pkg|mgmt|pls|lmk|fwd|appt|b4|graf|hed|speaker tag|body fixed|newsletter grab)\b/i.test(source) || /\s[+&]\s/.test(source) ? 'clipped-source' : null
-  ]);
-  const donorSignals = uniqueStrings([
-    /\btrying to be careful\b/i.test(donor) ? 'careful-reframing' : null,
-    /\b(?:not just that|the point is|not merely)\b/i.test(donor) ? 'contrastive-reframe' : null,
-    /\b(?:for clarity|clarify)\b/i.test(donor) ? 'clarification' : null,
-    /\b(?:procedural risk|corrective issue|underlying issue|not credential mismatch)\b/i.test(donor) ? 'procedural-distinction' : null
-  ]);
-  const primaryMove =
-    sourceSignals.includes('dependency-chain')
-      ? 'evidentiary-dependency'
-      : sourceSignals.includes('route-risk-separation')
-        ? 'route-risk-separation'
-        : sourceSignals.includes('unresolved-condition')
-          ? 'unresolved-state'
-          : sourceSignals.includes('procedural-dead-path')
-            ? 'procedural-dead-path'
-            : sourceSignals.includes('record-correction')
-              ? 'record-correction'
-              : donorSignals.includes('contrastive-reframe')
-                ? 'contrastive-reframe'
-                : donorSignals.includes('careful-reframing')
-                  ? 'careful-reframing'
-                  : 'clarification';
+  const sourceSignals = uniqueStrings(
+    DISCOURSE_ONTOLOGY.sourceSignals.map((entry) => DISCOURSE_REGEX.sourceSignal[entry.tag].test(source) ? entry.tag : null)
+  );
+  const donorSignals = uniqueStrings(
+    DISCOURSE_ONTOLOGY.donorSignals.map((entry) => DISCOURSE_REGEX.donorSignal[entry.tag].test(donor) ? entry.tag : null)
+  );
+  let primaryMove = DISCOURSE_ONTOLOGY.defaultPrimaryMove;
+  for (const rule of DISCOURSE_ONTOLOGY.primaryMovePrecedence) {
+    const pool = rule.from === 'sourceSignals' ? sourceSignals : donorSignals;
+    if (pool.includes(rule.signal)) {
+      primaryMove = rule.primaryMove;
+      break;
+    }
+  }
   const needsDiscourseScaffold = ['formal-record', 'professional-message', 'tangled-followup'].includes(targetLane) && (
     sourceSignals.includes('clipped-source') ||
     sourceLane === 'rushed-mobile' ||
@@ -14714,7 +14946,7 @@ function firstSentenceBoundary(text = '') {
   return match ? match[1].length : -1;
 }
 
-const DISCOURSE_SCAFFOLD_PREFIX_PATTERN = /^(?:maybe|in a sense|i want to be precise here|i want to be careful here|the practical issue is|the connective issue is|the narrower issue is|the point is|for clarity|for the record|what i am trying to say is)\b/i;
+const DISCOURSE_SCAFFOLD_PREFIX_PATTERN = DISCOURSE_REGEX.scaffoldPrefix;
 
 function stableChoiceIndex(seed = '', modulo = 1) {
   const width = Math.max(1, Number(modulo) || 1);
@@ -14733,24 +14965,19 @@ function chooseDiscourseScaffold(text = '', context = {}) {
     targetRegisterLane: context.targetRegisterLane || '',
     targetOntology: context.generationControls?.targetOntology || ''
   });
-  if (discourse.primaryMove === 'evidentiary-dependency') return 'The evidentiary issue is';
-  if (discourse.primaryMove === 'route-risk-separation') return 'The routing issue is';
-  if (discourse.primaryMove === 'unresolved-state') return 'The unresolved condition is';
-  if (discourse.primaryMove === 'procedural-dead-path') return 'The procedural issue is';
-  if (discourse.primaryMove === 'record-correction') return 'The corrective issue is';
+  const primaryMoveScaffold = DISCOURSE_ONTOLOGY.primaryMoveScaffolds[discourse.primaryMove];
+  if (primaryMoveScaffold) return primaryMoveScaffold;
   const donorText = normalizeText(context.donorSourceText || '');
   const sourceText = normalizeText(context.sourceText || text);
   const targetLane = normalizeRegisterLane(context.targetRegisterLane, '');
-  if (/\btrying to be careful\b/i.test(donorText)) return 'I want to be careful here';
-  if (/\btrying to be precise\b|\bprecisely\b/i.test(donorText)) return 'I want to be precise here';
-  if (/\bnot just that\b|\bthe point is\b/i.test(donorText)) return 'The point is';
-  if (/\bfor clarity\b|\bclarify\b/i.test(donorText)) return 'For clarity';
-  if (/\bfor the record\b/i.test(donorText) || targetLane === 'formal-record') return 'For the record';
-  if (/\b(?:stuck|missing|needs?|update|blocked|delay|risk)\b/i.test(sourceText)) return 'The practical issue is';
-  if (/\b(?:because|so|therefore|why)\b/i.test(sourceText)) return 'The connective issue is';
-  const palette = targetLane === 'professional-message'
-    ? ['For clarity', 'The practical issue is', 'I want to be precise here']
-    : ['The narrower issue is', 'In practical terms', 'The point is'];
+  for (const entry of DISCOURSE_REGEX.donorScaffold) {
+    if (entry.test.test(donorText)) return entry.scaffold;
+  }
+  if (targetLane === 'formal-record') return DISCOURSE_ONTOLOGY.formalRecordScaffold;
+  for (const entry of DISCOURSE_REGEX.sourceScaffold) {
+    if (entry.test.test(sourceText)) return entry.scaffold;
+  }
+  const palette = (DISCOURSE_ONTOLOGY.scaffoldFallbackByLane[targetLane] || DISCOURSE_ONTOLOGY.scaffoldFallbackByLane._default);
   return palette[stableChoiceIndex(`${sourceText}|${donorText}|${targetLane}`, palette.length)];
 }
 
@@ -14762,48 +14989,32 @@ function chooseParentheticalScaffold(text = '', context = {}) {
     targetRegisterLane: context.targetRegisterLane || '',
     targetOntology: context.generationControls?.targetOntology || ''
   });
-  if (discourse.primaryMove === 'evidentiary-dependency') return 'evidentiary-dependency';
-  if (discourse.primaryMove === 'route-risk-separation') return 'route-risk-separation';
-  if (discourse.primaryMove === 'unresolved-state') return 'unresolved-state';
-  if (discourse.primaryMove === 'procedural-dead-path') return 'procedural-dead-path';
-  if (discourse.primaryMove === 'record-correction') return 'record-correction';
+  if (DISCOURSE_ONTOLOGY.primaryMoveScaffolds[discourse.primaryMove]) return discourse.primaryMove;
   const sourceText = normalizeText(context.sourceText || text);
   const donorText = normalizeText(context.donorSourceText || '');
   const targetLane = normalizeRegisterLane(context.targetRegisterLane, '');
-  if (/\b(?:unit|onboarding|mentoring)\b/i.test(sourceText)) return 'with that dependency made explicit';
-  if (/\b(?:motel|household|intake|case split)\b/i.test(sourceText)) return 'with the routing risk kept separate';
-  if (/\b(?:leak|plumber|cabinet|repair)\b/i.test(sourceText)) return 'with the unresolved condition preserved';
-  if (/\b(?:archive|grant|deliverables|catalog)\b/i.test(sourceText)) return 'with the deliverable chain kept intact';
-  if (/\bnot just\b|\bthe point is\b/i.test(donorText)) return 'with the distinction made explicit';
-  const palette = targetLane === 'formal-record'
-    ? ['with the evidentiary relation preserved', 'with the sequence kept auditable', 'with the dependency made explicit']
-    : ['with the practical stakes still visible', 'with the connective tissue kept in view', 'with the sequence kept intact'];
+  for (const entry of DISCOURSE_REGEX.sourceParenthetical) {
+    if (entry.test.test(sourceText)) return entry.phrase;
+  }
+  for (const entry of DISCOURSE_REGEX.donorParenthetical) {
+    if (entry.test.test(donorText)) return entry.phrase;
+  }
+  const palette = (DISCOURSE_ONTOLOGY.parentheticalFallbackByLane[targetLane] || DISCOURSE_ONTOLOGY.parentheticalFallbackByLane._default);
   return palette[stableChoiceIndex(`${sourceText}|${donorText}|parenthetical`, palette.length)];
 }
 
 function scaffoldPhraseToSentence(scaffold = '') {
   const normalized = normalizeText(scaffold);
-  if (normalized === 'evidentiary-dependency') return 'The dependency remains part of the evidentiary chain.';
-  if (normalized === 'route-risk-separation') return 'The duplicate-intake risk remains separate from denial.';
-  if (normalized === 'unresolved-state') return 'The condition remains unresolved.';
-  if (normalized === 'procedural-dead-path') return 'The failure path remains procedural, not credential-based.';
-  if (normalized === 'record-correction') return 'The correction remains about the record, not merely the surface event.';
-  if (/that dependency made explicit/i.test(normalized)) return 'The dependency remains explicit.';
-  if (/routing risk kept separate/i.test(normalized)) return 'The routing risk remains separate.';
-  if (/unresolved condition preserved/i.test(normalized)) return 'The condition remains unresolved.';
-  if (/deliverable chain kept intact/i.test(normalized)) return 'The deliverable chain remains intact.';
-  if (/distinction made explicit/i.test(normalized)) return 'The distinction remains explicit.';
-  if (/evidentiary relation preserved/i.test(normalized)) return 'The evidentiary relation remains intact.';
-  if (/sequence kept auditable/i.test(normalized)) return 'The sequence remains auditable.';
-  if (/dependency made explicit/i.test(normalized)) return 'The dependency remains explicit.';
-  if (/practical stakes still visible/i.test(normalized)) return 'The practical stakes remain visible.';
-  if (/connective tissue kept in view/i.test(normalized)) return 'The connective tissue remains visible.';
-  if (/sequence kept intact/i.test(normalized)) return 'The sequence remains intact.';
+  const primarySentence = DISCOURSE_ONTOLOGY.primaryMoveSentences[normalized];
+  if (primarySentence) return primarySentence;
+  for (const entry of DISCOURSE_ONTOLOGY.parentheticalPhraseSentences) {
+    if (normalized.includes(entry.match)) return entry.sentence;
+  }
   return finalizeSentence(normalized.replace(/^with\s+/i, 'This keeps '));
 }
 
 function isDiscourseScaffoldSentence(text = '') {
-  return /\b(?:dependency remains explicit|dependency remains part of the evidentiary chain|routing risk remains separate|duplicate-intake risk remains separate|condition remains unresolved|failure path remains procedural|correction remains about the record|deliverable chain remains intact|distinction remains explicit|evidentiary relation remains intact|sequence remains auditable|practical stakes remain visible|connective tissue remains visible)\b/i.test(text);
+  return DISCOURSE_REGEX.scaffoldSentenceMarker.test(text);
 }
 
 function insertParenthetical(text = '', context = {}) {
