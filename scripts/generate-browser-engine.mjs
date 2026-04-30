@@ -20,7 +20,7 @@ function transformModule(source = '') {
     .replace(/^\s*import\s*\{[\s\S]*?\}\s*from\s*['"][^'"]+['"];\s*$/gm, '')
     .replace(/^\s*import\s+.+?;\s*$/gm, '')
     .replace(/^export\s+/gm, '')
-    .trimEnd();
+    .trim();
 }
 
 const generated = [

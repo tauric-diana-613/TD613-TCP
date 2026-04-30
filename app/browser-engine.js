@@ -2210,8 +2210,6 @@ function reviewTD613ApertureTransfer({
   });
 }
 // SOURCE: app/engine/stylometry.js
-
-
 function clamp01(value) {
   return Math.max(0, Math.min(1, value));
 }
@@ -10966,7 +10964,6 @@ function applyCadenceToText(text = '', shell = {}) {
   return applyCadenceToTextV2(text, shell);
 }
 // SOURCE: app/engine/generator-v2.js
-
 function clamp01(value) {
   return Math.max(0, Math.min(1, Number(value || 0)));
 }
@@ -18017,7 +18014,6 @@ function applyCadenceToTextV2(text = '', shell = {}) {
   return buildCadenceTransferV2(text, shell).text;
 }
 // SOURCE: app/engine/formulas.js
-
 function clamp01(value) {
   return Math.max(0, Math.min(1, value));
 }
@@ -18372,7 +18368,6 @@ function providerDecision({
   return 'hold-branch';
 }
 // SOURCE: app/engine/harbor.js
-
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
