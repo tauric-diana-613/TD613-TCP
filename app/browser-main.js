@@ -3532,10 +3532,12 @@
     const probeSourceRegisterLane = inferRegisterLaneFromText(probeText, probeProfile);
     const laneA = buildCadenceTransfer(referenceText, borrowedShellFromProfile(probeProfile, 'B', probeSourceRegisterLane, probeText), {
       retrieval: true,
+      exposeHeldCandidate: true,
       sourceRegisterLane: referenceSourceRegisterLane
     });
     const laneB = buildCadenceTransfer(probeText, borrowedShellFromProfile(referenceProfile, 'A', referenceSourceRegisterLane, referenceText), {
       retrieval: true,
+      exposeHeldCandidate: true,
       sourceRegisterLane: probeSourceRegisterLane
     });
     const laneOutcomes = [
@@ -4193,7 +4195,7 @@
       ? inferRegisterLaneFromText(text, rawProfile)
       : (sample?.variant || null);
     const sourceRegisterLane = inferredSourceRegisterLane || sample?.variant || null;
-    const transferOptions = { retrieval: true };
+    const transferOptions = { retrieval: true, exposeHeldCandidate: true };
     if (sourceRegisterLane) {
       transferOptions.sourceRegisterLane = sourceRegisterLane;
     }
@@ -4297,11 +4299,17 @@
   }
 
   function transferSummaryCopy(transfer, shifted = '') {
+    if (transfer?.holdStatus === 'diagnostic-held') {
+      const pressure = transfer?.generationDocket?.holdClass || transfer?.borrowedShellFailureClass || 'aperture-route-pressure';
+      const headline = transfer?.generationDocket?.headline || 'Aperture pressure stayed above the publishable floor.';
+      return `${headline} Surface shown for Deck diagnostics; pressure reason: ${pressure}.`;
+    }
+
     if (transfer?.holdStatus === 'held') {
       if (String(transfer?.internalText || '').trim()) {
-        return `${transfer?.generationDocket?.headline || 'Generator V2 held the transfer instead of publishing a weak rewrite.'} Previewing the strongest held surface for audit only.`;
+        return `${transfer?.generationDocket?.headline || 'Aperture held the transfer instead of publishing a weak rewrite.'} Previewing the strongest held surface for audit only.`;
       }
-      return transfer?.generationDocket?.headline || 'Generator V2 held the transfer instead of publishing a weak rewrite.';
+      return transfer?.generationDocket?.headline || 'Aperture held the transfer instead of publishing a weak rewrite.';
     }
 
     if (!transfer || transfer.transferClass === 'native') {
@@ -4452,7 +4460,10 @@
 
   function realizedTransferLabel(transfer = {}, hasEffectiveTextShift = false) {
     if (transfer?.holdStatus === 'held') {
-      return 'generator hold';
+      return 'Aperture pressure';
+    }
+    if (transfer?.holdStatus === 'diagnostic-held') {
+      return 'shown under Aperture pressure';
     }
     if (!realizedChangedDimensions(transfer).length && !(transfer.lexemeSwaps || []).length && profileOnlyShiftDimensions(transfer).length) {
       return 'profile-shift only';
@@ -4885,6 +4896,23 @@
     const operatorDiagnostics = transferOperatorDiagnostics(side.transfer || {});
     const landedOperators = operatorDiagnostics.firedOperators.slice(0, 5).join(', ') || 'none';
     const missingOperators = operatorDiagnostics.missingOperators.slice(0, 5).join(', ') || 'none';
+    const featureShift = side.transfer?.vernacularFeatureShift || {};
+    const featurePressure = featureShift.pressure || {};
+    const featureLedger = side.transfer?.vernacularFeatures || {};
+    const featureRecognized = [...new Set([
+      ...(featureLedger.source?.activeFamilies || []),
+      ...(featureLedger.donor?.activeFamilies || []),
+      ...(featurePressure.activeFamilies || [])
+    ])].slice(0, 5).join(', ') || 'none';
+    const featureRealized = (featureShift.realizedFamilies || []).slice(0, 5).join(', ') || 'none';
+    const featureMissing = (featureShift.falseCleanFamilies || []).slice(0, 5).join(', ') || 'none';
+    const ontologyPressure = side.transfer?.ontologyAudit || side.transfer?.generationDocket?.ontologyRoutePressure || {};
+    const drift = ontologyPressure.selectiveAdmissibilityDrift || {};
+    const semanticAudit = side.transfer?.semanticAudit || {};
+    const pressureLine = drift.driftClass
+      ? `${drift.driftClass} / ${drift.routeFloor || 'play'}${(drift.driftReasons || []).length ? ` (${drift.driftReasons.slice(0, 3).join(', ')})` : ''}`
+      : 'none';
+    const semanticLine = `prop ${formatPct(semanticAudit.propositionCoverage ?? 1)}, action ${formatPct(semanticAudit.actionCoverage ?? 1)}, object ${formatPct(semanticAudit.objectCoverage ?? 1)}, polarity ${semanticAudit.polarityMismatches ?? 0}`;
 
     return `
       <article class="duel-side" data-slot="${side.slot}">
@@ -4905,6 +4933,8 @@
         <div class="duel-side-copy">${escapeHtml(transferNote)}</div>
         <div class="duel-side-copy">Sentence ${escapeHtml(operatorDiagnostics.sentenceLine)} // punctuation ${escapeHtml(operatorDiagnostics.punctuationLine)}</div>
         <div class="duel-side-copy">Operators fired: ${escapeHtml(landedOperators)}. Missing: ${escapeHtml(missingOperators)}.</div>
+        <div class="duel-side-copy">Features recognized: ${escapeHtml(featureRecognized)}. Realized: ${escapeHtml(featureRealized)}. Not realized: ${escapeHtml(featureMissing)}.</div>
+        <div class="duel-side-copy">Aperture pressure: ${escapeHtml(pressureLine)}. Semantic risks: ${escapeHtml(semanticLine)}.</div>
         <div class="duel-visual-grid">
           <div class="duel-visual-card">
               <div class="duel-visual-label">Heatmap</div>
@@ -8076,7 +8106,10 @@ DeltaE = ${ledger.reuse_gain}`;
           profile: extractCadenceProfile(fixture.donorText || ''),
           strength: fixture.strength || fixture.donorSummary?.strength || 0.9
         };
-        const transfer = buildCadenceTransfer(fixture.sourceText, shell, { retrieval: true });
+        const transfer = buildCadenceTransfer(fixture.sourceText, shell, {
+          retrieval: true,
+          exposeHeldCandidate: true
+        });
         const trace = transfer.retrievalTrace || {};
         const actualContract = canonicalSemanticContractFromTrace(trace);
         const expectedContract = fixture.semanticContract || {};

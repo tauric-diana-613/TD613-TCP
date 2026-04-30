@@ -32,6 +32,8 @@ const adminFormal = `The parcel remained with the department supervisor because 
 const adminRushed = `pkg stayed w dept sup bc perf review got sched for tmrw am. pls lmk if mgmt wants docs fwd before appt. omg.`;
 const patch34PerformanceReference = `The annual review reflects a split pattern rather than a uniformly strong or weak cycle. The employee remains one of the more reliable trainers of new staff, especially during high-volume onboarding weeks when procedures change faster than written guidance. Peer feedback repeatedly names calm escalation, practical explanation, and willingness to stay with a task until another person can perform it independently. At the same time, reporting deadlines slid in three separate months, and the delay pattern was not random. In each case the immediate service work was completed, but documentation was deferred until the record became harder to reconstruct cleanly. That distinction matters. Strong front-line support does not cancel weak record timing. The recommendation is not punitive action. It is a corrective plan that treats documentation lag as a real performance issue while protecting the mentoring strengths that the unit depends on.`;
 const patch34ModelSafetyProbe = `rs-17 is doing the fake-safe thing again. prompt asked for redacted witness recap + it just started 2 preach abt privacy instead of actually de-id + summarizing. not jailbreak, just overrefusal killing the task`;
+const patch341NewsroomRushed = `need quick fix on housing story. quote in graf 6 is nia brooks not moreno. words are right, speaker tag isnt. brooks emailed 9:31. body fixed 9:47 & note added. also homepage hed now sounds 2 much like vote passed when it only cleared committee. can someone swap that b4 newsletter grab`;
+const patch341MutualAidTangled = `Following up because I do not want the duplicate-intake flag to mutate into a character judgment. The family at the church lot still needs what they said they need: bus fare, diapers, food tonight, and some answer about motel support even if that answer is "not available." The complication is routing, not credibility. Their number appears close to one logged through the east-side line last week, and the names may be the same household under a different couch address, but the older note is thin and does not even confirm household size. So the task for next shift is not to interrogate them into consistency. It is to confirm whether we are already holding part of this case elsewhere, because otherwise we end up with two volunteer lanes each thinking the other one handled the follow-up.`;
 
 assert.ok(procedural, 'procedural regression sample exists');
 assert.ok(formal, 'formal regression sample exists');
@@ -513,10 +515,129 @@ assert.equal(
 );
 assert.ok(
   patch34ProbeToReferenceOps.includes('REHYDRATE_CLIPPED_CLAUSES') &&
-    patch34ProbeToReferenceOps.includes('lane:2->to') &&
+    (patch34ProbeToReferenceOps.includes('lane:2->to') || patch34ProbeToReferenceOps.includes('feature:2->to')) &&
     patch34ProbeToReferenceOps.includes('lane:model-safety-privacy-pivot'),
   'Patch 34 regression: rushed model-safety probe -> formal reference records concrete formalization operators'
 );
+
+const patch341ReferenceToProbe = buildCadenceTransfer(patch341NewsroomRushed, {
+  mode: 'borrowed',
+  personaId: 'matron',
+  profile: extractCadenceProfile(patch341MutualAidTangled),
+  registerLane: 'tangled-followup',
+  sourceText: patch341MutualAidTangled,
+  strength: 0.82
+}, {
+  retrieval: true,
+  exposeHeldCandidate: true,
+  sourceRegisterLane: 'rushed-mobile'
+});
+const patch341ReferenceToProbePreview = String(patch341ReferenceToProbe.text || patch341ReferenceToProbe.internalText || '');
+const patch341ReferenceToProbeOps = [
+  ...(patch341ReferenceToProbe.structuralOperations || []),
+  ...(patch341ReferenceToProbe.lexicalOperations || [])
+];
+
+assert.notEqual(
+  patch341ReferenceToProbePreview.trim(),
+  '',
+  'Patch 34.1 regression: Deck diagnostic mode surfaces a transform instead of blanking an Aperture-pressure candidate'
+);
+assert.notEqual(
+  patch341ReferenceToProbe.holdStatus,
+  'held',
+  'Patch 34.1 regression: Deck diagnostic mode does not hard-suppress the newsroom -> tangled follow-up transfer'
+);
+assert.match(
+  patch341ReferenceToProbePreview,
+  /\bparagraph 6\b[\s\S]*\bspeaker attribution\b[\s\S]*\bbody copy was corrected\b[\s\S]*\btoo much\b[\s\S]*\bbefore the newsletter pull\b/i,
+  'Patch 34.1 regression: newsroom rushed -> tangled follow-up normalizes graf, speaker tag, body fixed, 2 much, b4, and newsletter grab'
+);
+assert.equal(
+  /\bgraf\b|\bhed\b|\bb4\b|\b2 much\b|\s&\s|\bspeaker tag\b|\bbody fixed\b/i.test(patch341ReferenceToProbePreview),
+  false,
+  'Patch 34.1 regression: newsroom rushed -> tangled follow-up does not leak raw copy-desk shorthand'
+);
+assert.ok(
+  patch341ReferenceToProbeOps.includes('lane:newsroom-correction-chain-rehydrated') &&
+    patch341ReferenceToProbeOps.includes('feature:2-much->too-much') &&
+    patch341ReferenceToProbeOps.includes('feature:b4->before') &&
+    patch341ReferenceToProbeOps.includes('feature:ampersand->and'),
+  'Patch 34.1 regression: newsroom rushed -> tangled follow-up records concrete shorthand and correction-chain operators'
+);
+
+const patch341ProbeToReference = buildCadenceTransfer(patch341MutualAidTangled, {
+  mode: 'borrowed',
+  personaId: 'spark',
+  profile: extractCadenceProfile(patch341NewsroomRushed),
+  registerLane: 'rushed-mobile',
+  sourceText: patch341NewsroomRushed,
+  strength: 0.82
+}, {
+  retrieval: true,
+  exposeHeldCandidate: true,
+  sourceRegisterLane: 'tangled-followup'
+});
+const patch341ProbeToReferencePreview = String(patch341ProbeToReference.text || patch341ProbeToReference.internalText || '');
+const patch341ProbeFeatureShift = patch341ProbeToReference.vernacularFeatureShift || {};
+
+assert.match(
+  patch341ProbeToReferencePreview,
+  /\bbc\b[\s\S]*\babt\b[\s\S]*\bthru\b[\s\S]*\bwk\b[\s\S]*\b2 volunteer lanes\b/i,
+  'Patch 34.1 regression: tangled follow-up -> rushed donor realizes donor-evidenced shorthand and digit posture'
+);
+assert.match(
+  patch341ProbeToReferencePreview,
+  /\s&\s/i,
+  'Patch 34.1 regression: tangled follow-up -> rushed donor realizes donor-evidenced ampersand note posture'
+);
+assert.ok(
+  (patch341ProbeFeatureShift.realizedFamilies || []).includes('chatspeakShorthand') &&
+    (patch341ProbeFeatureShift.realizedFamilies || []).includes('notePosture') &&
+    (patch341ProbeFeatureShift.realizedFamilies || []).includes('orthographyNoise'),
+  'Patch 34.1 regression: tangled follow-up -> rushed donor records orthography, shorthand, and note-posture feature realization'
+);
+
+const shorthandFormal = buildCadenceTransfer(
+  `started 2 rebuild notes. it sounds 2 much like vote passed. 2 volunteer lanes need cleanup. can someone swap that b4 newsletter grab. save 4 newsletter.`,
+  {
+    mode: 'borrowed',
+    profile: extractCadenceProfile(patch341MutualAidTangled),
+    registerLane: 'tangled-followup',
+    sourceText: patch341MutualAidTangled,
+    strength: 0.82
+  },
+  {
+    retrieval: true,
+    exposeHeldCandidate: true,
+    sourceRegisterLane: 'rushed-mobile'
+  }
+);
+const shorthandFormalPreview = String(shorthandFormal.text || shorthandFormal.internalText || '');
+assert.match(shorthandFormalPreview, /\bstarted to rebuild\b/i, 'Patch 34.1 shorthand: infinitive 2 normalizes to to');
+assert.match(shorthandFormalPreview, /\btoo much\b/i, 'Patch 34.1 shorthand: 2 much normalizes to too much');
+assert.match(shorthandFormalPreview, /\btwo volunteer lanes\b/i, 'Patch 34.1 shorthand: count 2 normalizes to two');
+assert.match(shorthandFormalPreview, /\bbefore newsletter pull\b|\bbefore the newsletter pull\b/i, 'Patch 34.1 shorthand: b4 normalizes to before');
+assert.match(shorthandFormalPreview, /\bfor newsletter\b/i, 'Patch 34.1 shorthand: preposition 4 normalizes to for');
+
+const shorthandNoisy = buildCadenceTransfer(
+  `The team needs two volunteer lanes before newsletter review. The headline should be corrected for newsletter distribution.`,
+  {
+    mode: 'borrowed',
+    profile: extractCadenceProfile(patch341NewsroomRushed),
+    registerLane: 'rushed-mobile',
+    sourceText: patch341NewsroomRushed,
+    strength: 0.82
+  },
+  {
+    retrieval: true,
+    exposeHeldCandidate: true,
+    sourceRegisterLane: 'formal-record'
+  }
+);
+const shorthandNoisyPreview = String(shorthandNoisy.text || shorthandNoisy.internalText || '');
+assert.match(shorthandNoisyPreview, /\b2 volunteer lanes\b/i, 'Patch 34.1 shorthand: noisy target can degrade two to 2');
+assert.match(shorthandNoisyPreview, /\bb4 newsletter\b/i, 'Patch 34.1 shorthand: noisy target can degrade before to b4 when donor evidences it');
 
 const supportTicketVoice = `acct review stuck again. last 4 dont match. docs missing from case. unit leans on it during onboarding. need update by eod.`;
 const carefulReviewVoice = `I am trying to be careful about the review because the last four digits are not matching the account record, and the documentation is doing more work than it should. The mentoring work is not decorative either; the unit genuinely leans on it during onboarding, so the point is not just that an update would be useful, but that the record needs to show what changed and why.`;

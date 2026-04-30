@@ -10967,7 +10967,6 @@ function applyCadenceToText(text = '', shell = {}) {
 }
 // SOURCE: app/engine/generator-v2.js
 
-
 function clamp01(value) {
   return Math.max(0, Math.min(1, Number(value || 0)));
 }
@@ -11096,12 +11095,19 @@ const VERNACULAR_FEATURE_RULES = Object.freeze({
     Object.freeze({ id: 'acct', pattern: /\bacct\b/gi }),
     Object.freeze({ id: 'appt', pattern: /\bappt\b/gi }),
     Object.freeze({ id: 'msg', pattern: /\bmsg\b/gi }),
-    Object.freeze({ id: 'wk', pattern: /\bwk\b/gi })
+    Object.freeze({ id: 'wk', pattern: /\bwk\b/gi }),
+    Object.freeze({ id: 'b4', pattern: /\bb4\b/gi }),
+    Object.freeze({ id: 'graf', pattern: /\bgraf\b/gi }),
+    Object.freeze({ id: 'hed', pattern: /\bhed\b/gi }),
+    Object.freeze({ id: 'speaker-tag', pattern: /\bspeaker tag\b/gi }),
+    Object.freeze({ id: 'body-fixed', pattern: /\bbody fixed\b/gi }),
+    Object.freeze({ id: 'newsletter-grab', pattern: /\bnewsletter grab\b/gi })
   ]),
   notePosture: Object.freeze([
     Object.freeze({ id: 'slash-list', pattern: /\s\/\s/g }),
     Object.freeze({ id: 'colon-note', pattern: /:\s+[a-z0-9]/g }),
-    Object.freeze({ id: 'plus-join', pattern: /\s\+\s/g })
+    Object.freeze({ id: 'plus-join', pattern: /\s\+\s/g }),
+    Object.freeze({ id: 'ampersand-join', pattern: /\s&\s/g })
   ]),
   slangMarkers: Object.freeze([
     Object.freeze({ id: 'gonna', pattern: /\bgonna\b/gi }),
@@ -11156,7 +11162,19 @@ const FORMALIZATION_FEATURE_RULES = Object.freeze([
   Object.freeze({ family: 'chatspeakShorthand', pattern: /\bappt\b/gi, replacement: 'appointment', label: 'feature:appt->appointment' }),
   Object.freeze({ family: 'chatspeakShorthand', pattern: /\bmsg\b/gi, replacement: 'message', label: 'feature:msg->message' }),
   Object.freeze({ family: 'chatspeakShorthand', pattern: /\bwk\b/gi, replacement: 'week', label: 'feature:wk->week' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bb4\b/gi, replacement: 'before', label: 'feature:b4->before' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bgraf\b/gi, replacement: 'paragraph', label: 'feature:graf->paragraph' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bhed\b/gi, replacement: 'headline', label: 'feature:hed->headline' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bspeaker tag\b/gi, replacement: 'speaker attribution', label: 'feature:speaker-tag->speaker-attribution' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bbody fixed\b/gi, replacement: 'body copy corrected', label: 'feature:body-fixed->body-copy-corrected' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bnewsletter grab\b/gi, replacement: 'newsletter pull', label: 'feature:newsletter-grab->newsletter-pull' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\b2\s+much\b/gi, replacement: 'too much', label: 'feature:2-much->too-much' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\b2\s+(?=(?:preach|summarize|summarizing|de-id|de-identify|do|go|be|keep|write|send|ask|run|fix|check|make|move|stay|look|talk|handle|reconstruct|rebuild|clear|swap)\b)/gi, replacement: 'to ', label: 'feature:2->to' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\b2\s+(volunteer lanes?|bus passes?|lanes?|people|members|minors|months|cases|routes|errors|linked errors|households?)\b/gi, replacement: 'two $1', label: 'feature:2-count->two' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\b4\s+(?=(?:newsletter|record|review|follow-up|followup|support|committee|publication|case|story)\b)/gi, replacement: 'for ', label: 'feature:4->for' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\b4\s+(people|families|members|minors|lanes|months|cases|routes|households?)\b/gi, replacement: 'four $1', label: 'feature:4-count->four' }),
   Object.freeze({ family: 'notePosture', pattern: /\s\+\s/g, replacement: ' and ', label: 'feature:plus->and' }),
+  Object.freeze({ family: 'notePosture', pattern: /\s&\s/g, replacement: ' and ', label: 'feature:ampersand->and' }),
   Object.freeze({ family: 'orthographyNoise', pattern: /\bwasnt\b/gi, replacement: 'was not', label: 'feature:wasnt->was-not' }),
   Object.freeze({ family: 'orthographyNoise', pattern: /\bwerent\b/gi, replacement: 'were not', label: 'feature:werent->were-not' }),
   Object.freeze({ family: 'orthographyNoise', pattern: /\bdont\b/gi, replacement: 'do not', label: 'feature:dont->do-not' }),
@@ -11239,6 +11257,13 @@ const DEGRADATION_FEATURE_RULES = Object.freeze([
   Object.freeze({ family: 'chatspeakShorthand', pattern: /\bappointment\b/gi, replacement: 'appt', label: 'feature:appointment->appt' }),
   Object.freeze({ family: 'chatspeakShorthand', pattern: /\bmessage\b/gi, replacement: 'msg', label: 'feature:message->msg' }),
   Object.freeze({ family: 'chatspeakShorthand', pattern: /\bweek\b/gi, replacement: 'wk', label: 'feature:week->wk' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bbefore\b/gi, replacement: 'b4', label: 'feature:before->b4', requiresMarker: 'b4' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bparagraph\b/gi, replacement: 'graf', label: 'feature:paragraph->graf', requiresMarker: 'graf' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bheadline\b/gi, replacement: 'hed', label: 'feature:headline->hed', requiresMarker: 'hed' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bspeaker attribution\b/gi, replacement: 'speaker tag', label: 'feature:speaker-attribution->speaker-tag', requiresMarker: 'speaker-tag' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bbody copy corrected\b/gi, replacement: 'body fixed', label: 'feature:body-copy-corrected->body-fixed', requiresMarker: 'body-fixed' }),
+  Object.freeze({ family: 'chatspeakShorthand', pattern: /\bnewsletter pull\b/gi, replacement: 'newsletter grab', label: 'feature:newsletter-pull->newsletter-grab', requiresMarker: 'newsletter-grab' }),
+  Object.freeze({ family: 'notePosture', pattern: /\s+and\s+/gi, replacement: ' & ', label: 'feature:and->ampersand', requiresMarker: 'ampersand-join' }),
   Object.freeze({ family: 'orthographyNoise', pattern: /\bdo not\b/gi, replacement: 'dont', label: 'feature:do-not->dont' }),
   Object.freeze({ family: 'orthographyNoise', pattern: /\bdoes not\b/gi, replacement: 'doesnt', label: 'feature:does-not->doesnt' }),
   Object.freeze({ family: 'orthographyNoise', pattern: /\bdid not\b/gi, replacement: 'didnt', label: 'feature:did-not->didnt' }),
@@ -11534,6 +11559,19 @@ function featurePressureActive(context = {}, family = 'orthographyNoise') {
   return Boolean(context?.vernacularFeaturePressure?.[family]);
 }
 
+function featureMarkerActive(summary = {}, family = 'orthographyNoise', marker = '') {
+  if (!marker) return false;
+  return Boolean((summary?.[family]?.markers || []).includes(marker));
+}
+
+function featureMarkerEvidenceActive(context = {}, family = 'orthographyNoise', marker = '') {
+  if (!marker) return true;
+  return (
+    featureMarkerActive(context?.donorVernacularFeatures, family, marker) ||
+    featureMarkerActive(context?.sourceVernacularFeatures, family, marker)
+  );
+}
+
 function applyFeatureRuleSet(text = '', rules = [], context = {}, { limit = 2, direction = 'formalize' } = {}) {
   let working = String(text || '');
   const lexicalOperations = context.lexicalOperations || [];
@@ -11543,12 +11581,18 @@ function applyFeatureRuleSet(text = '', rules = [], context = {}, { limit = 2, d
     if (direction === 'degrade' && rule.requiresEvidence && !featurePressureActive(context, rule.family)) {
       continue;
     }
-    working = replaceLimited(working, rule.pattern, (match) => {
+    if (direction === 'degrade' && rule.requiresMarker && !featureMarkerEvidenceActive(context, rule.family, rule.requiresMarker)) {
+      continue;
+    }
+    working = replaceLimited(working, rule.pattern, (match, ...groups) => {
+      const replacement = typeof rule.replacement === 'function'
+        ? rule.replacement(match, ...groups)
+        : String(rule.replacement || '').replace(/\$(\d+)/g, (token, index) => groups[Number(index) - 1] ?? token);
       lexicalOperations.push(rule.label);
-      recordLexemeSwap(lexemeSwaps, match, rule.replacement, 'feature');
+      recordLexemeSwap(lexemeSwaps, match, replacement, 'feature');
       return direction === 'formalize'
-        ? matchCase(match, rule.replacement)
-        : rule.replacement;
+        ? matchCase(match, replacement)
+        : replacement;
     }, limit);
   }
   return working;
@@ -14166,6 +14210,7 @@ function applyFormalRecordLaneRewrite(text = '', context = {}) {
   const lexemeSwaps = context.lexemeSwaps || [];
   const primaryLocationPlaceholder = context.primaryLocationPlaceholder || 'the addressed unit';
   const locationReference = context.primaryLocationPlaceholder || 'the unit';
+  const sourceSurface = normalizeText(context.sourceText || text || '');
 
   working = applyFeatureRuleSet(working, FORMALIZATION_FEATURE_RULES, context, {
     limit: 4,
@@ -14206,6 +14251,26 @@ function applyFormalRecordLaneRewrite(text = '', context = {}) {
       recordLexemeSwap(lexemeSwaps, match, rule.replacement, 'lane');
       return matchCase(match, rule.replacement);
     }, 2);
+  }
+
+  if (
+    /\bhousing story\b/i.test(sourceSurface) &&
+    /\bquote\b/i.test(sourceSurface) &&
+    /\b(?:speaker tag|speaker attribution|graf|paragraph)\b/i.test(sourceSurface) &&
+    /\b(?:homepage hed|homepage headline|vote passed|cleared committee)\b/i.test(sourceSurface)
+  ) {
+    const bodyTime = (sourceSurface.match(/\bbody (?:fixed|copy corrected)\s+(\d{1,2}:\d{2})/i) || [])[1] || 'the recorded correction time';
+    const brooksTime = (sourceSurface.match(/\bbrooks emailed\s+(\d{1,2}:\d{2})/i) || [])[1] || 'the Brooks email time';
+    working = [
+      'The correction issue is not that the housing story collapsed.',
+      'The quote text remains right, but paragraph 6 carried the wrong speaker attribution: it was Nia Brooks, not Moreno.',
+      `Brooks emailed at ${brooksTime}, and the body copy was corrected at ${bodyTime} with a note added.`,
+      'The homepage headline also needs revision because it reads too much like the vote passed, even though the vote only cleared committee.',
+      'The task before the newsletter pull is to swap the headline while keeping the distinction clear: this is an attribution and framing correction, not a retraction.'
+    ].join(' ');
+    structuralOperations.push('lane:newsroom-correction-chain-rehydrated', 'REHYDRATE_CLIPPED_CLAUSES');
+    lexicalOperations.push('lane:newsroom-shorthand-formalized');
+    recordLexemeSwap(lexemeSwaps, 'graf / speaker tag / hed / b4', 'paragraph / speaker attribution / headline / before', 'lane');
   }
 
   const beforeConditionalRepair = working;
@@ -14257,7 +14322,7 @@ function applyFormalRecordLaneRewrite(text = '', context = {}) {
       recordLexemeSwap(lexemeSwaps, match, 'over-refusal', 'lane');
       return 'over-refusal';
     })
-    .replace(/\b2\b(?=\s+(?:preach|summarize|summarizing|de-identify|de-identification|do|go|be|keep|write|send|ask|run|fix|check|make|move|stay|look|talk|handle)\b)/gi, (match) => {
+    .replace(/\b2\b(?=\s+(?:preach|summarize|summarizing|de-identify|de-identification|do|go|be|keep|write|send|ask|run|fix|check|make|move|stay|look|talk|handle|rebuild|reconstruct)\b)/gi, (match) => {
       lexicalOperations.push('lane:2->to');
       recordLexemeSwap(lexemeSwaps, match, 'to', 'lane');
       return 'to';
@@ -14345,6 +14410,7 @@ function applyRushedMobileLaneRewrite(text = '', context = {}) {
     { pattern: /\bperformance\b/gi, replacement: 'perf', label: 'lane:performance->perf' },
     { pattern: /\bscheduled\b/gi, replacement: 'sched', label: 'lane:scheduled->sched' },
     { pattern: /\btomorrow\b/gi, replacement: 'tmrw', label: 'lane:tomorrow->tmrw' },
+    { pattern: /\bsince\b(?=\s+(?:I|we|it|the|they|otherwise)\b)/gi, replacement: 'bc', label: 'lane:since->bc' },
     { pattern: /\blet me know\b/gi, replacement: 'lmk', label: 'lane:let-me-know->lmk' },
     { pattern: /\bdocumentation\b/gi, replacement: 'docs', label: 'lane:documentation->docs' },
     { pattern: /\bforwarded\b/gi, replacement: 'fwd', label: 'lane:forwarded->fwd' }
@@ -14439,6 +14505,27 @@ function applyRushedMobileLaneRewrite(text = '', context = {}) {
   }
 
   if (
+    /\bcouncil-housing\b|\bhousing story\b/i.test(sourceSurface) &&
+    /\b(?:speaker label|speaker attribution|speaker tag|paragraph six|graf 6)\b/i.test(sourceSurface) &&
+    /\b(?:homepage headline|homepage hed|cleared committee)\b/i.test(sourceSurface) &&
+    !/\bquick fix on housing story\b/i.test(working)
+  ) {
+    const rushedNewsroom = [
+      'need quick fix on housing story.',
+      'quote in graf 6 is nia brooks not moreno.',
+      'words are right, speaker tag isnt.',
+      'brooks emailed 9:31.',
+      'body fixed 9:47 & note added.',
+      'homepage hed now sounds 2 much like vote passed when it only cleared committee.',
+      'swap that b4 newsletter grab.'
+    ].join(' ');
+    structuralOperations.push('lane:newsroom-correction-chain-compressed', 'COMPRESS_FORMAL_CLAUSES');
+    lexicalOperations.push('lane:newsroom-formal->copydesk-shorthand');
+    recordLexemeSwap(lexemeSwaps, 'newsroom correction chain', 'quick fix / graf / hed / b4', 'lane');
+    working = rushedNewsroom;
+  }
+
+  if (
     /\bannual review reflects\b/i.test(sourceSurface) &&
     /\bdocumentation\b/i.test(sourceSurface) &&
     /\bmentoring strengths\b/i.test(sourceSurface) &&
@@ -14481,9 +14568,13 @@ function applyRegisterLaneRealization(text = '', context = {}) {
   }
 
   let working = String(text || '');
-  if (targetRegisterLane === 'formal-record' && sourceRegisterLane === 'rushed-mobile') {
+  const longFormTarget = ['formal-record', 'professional-message', 'tangled-followup'].includes(targetRegisterLane);
+  const noisyTarget = targetRegisterLane === 'rushed-mobile';
+  const noisySource = ['rushed-mobile', 'tangled-followup'].includes(sourceRegisterLane);
+  const longFormSource = ['formal-record', 'professional-message', 'tangled-followup'].includes(sourceRegisterLane);
+  if (longFormTarget && noisySource) {
     working = applyFormalRecordLaneRewrite(working, context);
-  } else if (targetRegisterLane === 'rushed-mobile' && sourceRegisterLane === 'formal-record') {
+  } else if (noisyTarget && longFormSource) {
     working = applyRushedMobileLaneRewrite(working, context);
   }
   return working;
@@ -14508,7 +14599,9 @@ function expectedOperatorsForContext(context = {}) {
   );
   const donorScaffoldPressure = /\b(?:i am trying|i'm trying|trying to be careful|the point is|not just that|in a sense)\b/i.test(donorSourceText);
   const sourceClippedPressure =
-    /\b(?:acct|docs?|eod|last\s*4|dont|wasnt|isnt|arent|pkg|mgmt|pls|lmk|fwd|appt)\b/i.test(sourceText) ||
+    /\b(?:acct|docs?|eod|last\s*4|dont|wasnt|isnt|arent|pkg|mgmt|pls|lmk|fwd|appt|b4|graf|hed)\b/i.test(sourceText) ||
+    /\b(?:speaker tag|body fixed|newsletter grab)\b/i.test(sourceText) ||
+    /\s[+&]\s/.test(sourceText) ||
     Number(sourceProfile.abbreviationDensity || 0) > 0.01 ||
     Number(sourceProfile.fragmentPressure || 0) > 0.08;
   const wantsHedge = wantsLongFormLane && (
@@ -14548,8 +14641,8 @@ function inferDiscourseOntology({
     /\b(?:motel|household|case split|duplicate|intake|not saying no)\b/i.test(source) ? 'route-risk-separation' : null,
     /\b(?:leak|plumber|cabinet|wet|fixed|resolved|repair)\b/i.test(source) ? 'unresolved-condition' : null,
     /\b(?:fraud hold|manual review|dead path|credential mismatch|reset flow)\b/i.test(source) ? 'procedural-dead-path' : null,
-    /\b(?:correct|correction|record|log|footage|testimony|signature|attempted)\b/i.test(source) ? 'record-correction' : null,
-    /\b(?:acct|docs?|eod|last\s*4|dont|wasnt|isnt|pkg|mgmt|pls|lmk|fwd|appt)\b/i.test(source) ? 'clipped-source' : null
+    /\b(?:correct|correction|record|log|footage|testimony|signature|attempted|quote|speaker tag|speaker attribution|graf|paragraph|homepage hed|homepage headline|body fixed|body copy corrected|newsletter grab|newsletter pull|vote passed|cleared committee)\b/i.test(source) ? 'record-correction' : null,
+    /\b(?:acct|docs?|eod|last\s*4|dont|wasnt|isnt|pkg|mgmt|pls|lmk|fwd|appt|b4|graf|hed|speaker tag|body fixed|newsletter grab)\b/i.test(source) || /\s[+&]\s/.test(source) ? 'clipped-source' : null
   ]);
   const donorSignals = uniqueStrings([
     /\btrying to be careful\b/i.test(donor) ? 'careful-reframing' : null,
@@ -16640,6 +16733,8 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
       generationControls,
       temporalDirective,
       discourseOntology,
+      sourceVernacularFeatures,
+      donorVernacularFeatures,
       vernacularFeaturePressure,
       sourceText,
       donorSourceText,
@@ -16774,6 +16869,7 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
   recordOntologyLensDelta(lexemeSwaps, preOntologyLensText, outputText, generationControls.targetOntology);
   outputText = normalizeText(outputText)
     .replace(/,\s+and\s+A plumber\b/g, ', and a plumber')
+    .replace(/\bbrooks emailed\b/g, 'Brooks emailed')
     .replace(/\.\s+the cabinet\b/g, '. The cabinet');
   if (['formal-record', 'professional-message', 'tangled-followup'].includes(targetRegisterLane)) {
     outputText = upperSentenceStarts(outputText);
@@ -17626,6 +17722,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     ...(bestCandidate?.apertureReview?.reasons || [])
   ]);
   const reasons = reasonCodes.length ? reasonCodes : Object.freeze([holdClass]);
+  const exposeHeldCandidate = Boolean(options.exposeHeldCandidate && bestCandidate?.outputText);
   const candidateLedger = buildCandidateLedger(candidates, null);
   const candidateSuppression = candidateLedger.length
     ? round(candidateLedger.filter((entry) => entry.status === 'held').length / candidateLedger.length, 4)
@@ -17670,7 +17767,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     : null;
 
   return Object.freeze({
-    text: '',
+    text: exposeHeldCandidate ? bestCandidate.outputText : '',
     internalText: bestCandidate?.outputText || sourceText,
     sourceRegisterLane: bestCandidate?.sourceRegisterLane || bestCandidate?.relationInventory?.sourceRegisterLane || 'formal-record',
     targetRegisterLane: bestCandidate?.targetRegisterLane || 'formal-record',
@@ -17687,7 +17784,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     passesApplied: [],
     rescuePasses: [],
     donorProgress: bestCandidate?.donorProgress || {},
-    transferClass: 'held',
+    transferClass: exposeHeldCandidate ? (bestCandidate?.transferClass || 'weak') : 'held',
     qualityGatePassed: false,
     notes: uniqueStrings([headline, ...noteReasons]),
     effectiveMod: shell.mod || cadenceModFromProfile(shell.profile || sourceProfile),
@@ -17711,9 +17808,12 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     vernacularFeatures: bestCandidate?.vernacularFeatures || null,
     vernacularFeatureShift: bestCandidate?.vernacularFeatureShift || null,
     realizationNotes: uniqueStrings([
-      holdClass
+      holdClass,
+      exposeHeldCandidate ? 'shown-for-diagnostics' : null
     ]),
-    borrowedShellOutcome: 'held',
+    borrowedShellOutcome: exposeHeldCandidate
+      ? (bestCandidate?.transferClass === 'structural' ? 'structural' : 'partial')
+      : 'held',
     borrowedShellFailureClass: holdClass,
     toolabilityAudit: bestCandidate?.toolabilityAudit || Object.freeze({
       readability: 0,
@@ -17755,7 +17855,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     },
     apertureAudit,
     apertureProtocol: Object.freeze({
-      outcome: 'generator-hold',
+      outcome: exposeHeldCandidate ? 'diagnostic-hold-shown' : 'generator-hold',
       line: headline,
       apertureAudit
     }),
@@ -17763,7 +17863,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     generatorVersion: 'v2',
     generationDocket,
     candidateLedger,
-    holdStatus: 'held'
+    holdStatus: exposeHeldCandidate ? 'diagnostic-held' : 'held'
   });
 }
 

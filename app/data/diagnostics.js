@@ -684,7 +684,7 @@ const FAMILY_SPECS = Object.freeze([
           context: 'Reporter chat message sent while trying to fix the story before the next newsletter send.',
           intention: 'Hold the same correction facts under compressed deadline pressure.',
           stressTags: ['fragmentation', 'adjacent-lexicon'],
-          text: `need quick fix on housing story. quote in graf 6 is nia brooks not moreno. words are right, speaker tag isnt. brooks emailed 9:31. body fixed 9:47 + note added. also homepage hed now sounds like vote passed when it only cleared committee. can someone swap that before newsletter grab`
+          text: `need quick fix on housing story. quote in graf 6 is nia brooks not moreno. words are right, speaker tag isnt. brooks emailed 9:31. body fixed 9:47 & note added. also homepage hed now sounds 2 much like vote passed when it only cleared committee. can someone swap that b4 newsletter grab`
         }
       ),
       buildSample(
