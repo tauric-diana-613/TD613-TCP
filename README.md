@@ -413,12 +413,16 @@ npm run test:legacy:formulas
 
 Use this order if you want the repo in a clean technical sequence:
 
-1. [START_HERE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/START_HERE.md)
-2. [docs/SYSTEM_OVERVIEW.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SYSTEM_OVERVIEW.md)
-3. [ABSTRACT.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/ABSTRACT.md)
-4. [docs/ENGINE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/ENGINE.md)
-5. [docs/SAFETY_MODEL.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SAFETY_MODEL.md)
-6. [docs/TD613_SAFE_HARBOR.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/TD613_SAFE_HARBOR.md)
-7. [docs/TD613_APERTURE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/TD613_APERTURE.md)
-8. [docs/STYLOMETRIC_MATH.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/STYLOMETRIC_MATH.md)
-9. [docs/INTERFACE_LEXICON.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/INTERFACE_LEXICON.md)
+1. [START_HERE.md](START_HERE.md)
+2. [docs/SYSTEM_OVERVIEW.md](docs/SYSTEM_OVERVIEW.md)
+3. [ABSTRACT.md](ABSTRACT.md)
+4. [docs/ENGINE.md](docs/ENGINE.md)
+5. [docs/SAFETY_MODEL.md](docs/SAFETY_MODEL.md)
+6. [docs/TD613_SAFE_HARBOR.md](docs/TD613_SAFE_HARBOR.md)
+7. [docs/TD613_APERTURE.md](docs/TD613_APERTURE.md)
+8. [docs/STYLOMETRIC_MATH.md](docs/STYLOMETRIC_MATH.md)
+9. [docs/INTERFACE_LEXICON.md](docs/INTERFACE_LEXICON.md)
+
+For the picture of what's still incomplete, see
+[ROADMAP.md](ROADMAP.md) and [KNOWN_FAILURES.md](KNOWN_FAILURES.md).
+For contribution flow, see [CONTRIBUTING.md](CONTRIBUTING.md).
