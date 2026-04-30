@@ -280,7 +280,9 @@
         "orthography:lowercase-lead",
         "DROP_ARTICLES",
         "DIGIT_SUBSTITUTE",
-        "LOWERCASE_INITIALS"
+        "LOWERCASE_INITIALS",
+        "feature:was-not->wasnt",
+        "feature:is-not->isnt"
       ],
       "expectedOperators": [
         "COMPRESS_FORMAL_CLAUSES",
@@ -371,6 +373,16 @@
           "from": "to",
           "to": "2",
           "family": "digit-substitution"
+        },
+        {
+          "from": "was not",
+          "to": "wasnt",
+          "family": "feature"
+        },
+        {
+          "from": "is not",
+          "to": "isnt",
+          "family": "feature"
         }
       ],
       "vernacularFeatureShift": {
@@ -546,10 +558,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.36,
-      "outputDonorDistance": 3.568,
-      "donorImprovement": 0.792,
-      "donorImprovementRatio": 0.182,
-      "sourceOutputLexicalOverlap": 0.87
+      "outputDonorDistance": 3.583,
+      "donorImprovement": 0.777,
+      "donorImprovementRatio": 0.178,
+      "sourceOutputLexicalOverlap": 0.843
     },
     "candidateLedger": [
       {
@@ -559,10 +571,10 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9465,
+        "score": 0.9457,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.3566,
+        "targetFit": 0.3534,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -590,7 +602,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 9,
+        "lexemeSwapCount": 11,
         "expectedOperators": [
           "COMPRESS_FORMAL_CLAUSES",
           "DROP_ARTICLES",
@@ -833,10 +845,10 @@
         "status": "selected",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9436,
+        "score": 0.9429,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.3581,
+        "targetFit": 0.3552,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -864,7 +876,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 9,
+        "lexemeSwapCount": 11,
         "expectedOperators": [
           "COMPRESS_FORMAL_CLAUSES",
           "DROP_ARTICLES",
@@ -1106,10 +1118,10 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9575,
+        "score": 0.9568,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.374,
+        "targetFit": 0.3708,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -1124,6 +1136,7 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -1132,12 +1145,13 @@
         "profileShiftDimensions": [
           "sentence-mean",
           "sentence-count",
+          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 9,
+        "lexemeSwapCount": 11,
         "expectedOperators": [
           "COMPRESS_FORMAL_CLAUSES",
           "DROP_ARTICLES",
@@ -1380,10 +1394,10 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9524,
+        "score": 0.9517,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.374,
+        "targetFit": 0.3708,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -1398,6 +1412,7 @@
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
+          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -1406,12 +1421,13 @@
         "profileShiftDimensions": [
           "sentence-mean",
           "sentence-count",
+          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 9,
+        "lexemeSwapCount": 11,
         "expectedOperators": [
           "COMPRESS_FORMAL_CLAUSES",
           "DROP_ARTICLES",
@@ -1654,10 +1670,10 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9653,
+        "score": 0.9645,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.3782,
+        "targetFit": 0.3746,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -1687,7 +1703,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 9,
+        "lexemeSwapCount": 11,
         "expectedOperators": [
           "COMPRESS_FORMAL_CLAUSES",
           "DROP_ARTICLES",
@@ -2027,6 +2043,8 @@
       "DROP_ARTICLES",
       "feature:about->abt",
       "feature:currently->rn",
+      "feature:is-not->isnt",
+      "feature:was-not->wasnt",
       "LOWERCASE_INITIALS",
       "orthography:im",
       "orthography:lowercase-lead"

@@ -399,10 +399,11 @@
         "sourceClass": "formal-correspondence",
         "orthographyNoise": {
           "active": true,
-          "count": 4,
+          "count": 5,
           "markers": [
             "lowercase-sentence-start",
             "lowercase-i",
+            "standalone-lowercase-i",
             "apostrophe-drop",
             "profile-orthographic-looseness"
           ]
@@ -441,7 +442,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 11
+        "totalMarkers": 12
       },
       "donor": {
         "registerLane": "formal-record",
@@ -593,10 +594,11 @@
             "sourceClass": "formal-correspondence",
             "orthographyNoise": {
               "active": true,
-              "count": 4,
+              "count": 5,
               "markers": [
                 "lowercase-sentence-start",
                 "lowercase-i",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -635,7 +637,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 11
+            "totalMarkers": 12
           },
           "donor": {
             "registerLane": "formal-record",
@@ -872,10 +874,11 @@
             "sourceClass": "formal-correspondence",
             "orthographyNoise": {
               "active": true,
-              "count": 4,
+              "count": 5,
               "markers": [
                 "lowercase-sentence-start",
                 "lowercase-i",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -914,7 +917,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 11
+            "totalMarkers": 12
           },
           "donor": {
             "registerLane": "formal-record",

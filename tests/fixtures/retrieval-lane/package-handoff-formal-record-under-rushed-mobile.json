@@ -482,7 +482,7 @@
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
         "concealmentEffectiveness": 0,
-        "surfaceMarkerCount": 10,
+        "surfaceMarkerCount": 11,
         "pressure": {
           "targetRegisterLane": "rushed-mobile",
           "activeFamilies": [
@@ -541,10 +541,11 @@
         "sourceClass": "procedural-record",
         "orthographyNoise": {
           "active": true,
-          "count": 4,
+          "count": 5,
           "markers": [
             "lowercase-sentence-start",
             "lowercase-i",
+            "standalone-lowercase-i",
             "apostrophe-drop",
             "profile-orthographic-looseness"
           ]
@@ -583,16 +584,17 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 11
+        "totalMarkers": 12
       },
       "output": {
         "registerLane": "rushed-mobile",
         "sourceClass": "procedural-record",
         "orthographyNoise": {
           "active": true,
-          "count": 3,
+          "count": 4,
           "markers": [
             "lowercase-sentence-start",
+            "standalone-lowercase-i",
             "apostrophe-drop",
             "profile-orthographic-looseness"
           ]
@@ -631,7 +633,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 10
+        "totalMarkers": 11
       },
       "pressure": {
         "targetRegisterLane": "rushed-mobile",
@@ -744,10 +746,11 @@
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 4,
+              "count": 5,
               "markers": [
                 "lowercase-sentence-start",
                 "lowercase-i",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -786,17 +789,18 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 11
+            "totalMarkers": 12
           },
           "output": {
             "registerLane": "rushed-mobile",
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 4,
+              "count": 5,
               "markers": [
                 "lowercase-sentence-start",
                 "lowercase-i",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -834,7 +838,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 10
+            "totalMarkers": 11
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -867,7 +871,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 10,
+          "surfaceMarkerCount": 11,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -1032,10 +1036,11 @@
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 4,
+              "count": 5,
               "markers": [
                 "lowercase-sentence-start",
                 "lowercase-i",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -1074,17 +1079,18 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 11
+            "totalMarkers": 12
           },
           "output": {
             "registerLane": "rushed-mobile",
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 4,
+              "count": 5,
               "markers": [
                 "lowercase-sentence-start",
                 "lowercase-i",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -1122,7 +1128,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 10
+            "totalMarkers": 11
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -1155,7 +1161,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 10,
+          "surfaceMarkerCount": 11,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -1320,10 +1326,11 @@
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 4,
+              "count": 5,
               "markers": [
                 "lowercase-sentence-start",
                 "lowercase-i",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -1362,16 +1369,17 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 11
+            "totalMarkers": 12
           },
           "output": {
             "registerLane": "rushed-mobile",
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 3,
+              "count": 4,
               "markers": [
                 "lowercase-sentence-start",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -1410,7 +1418,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 10
+            "totalMarkers": 11
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -1443,7 +1451,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 10,
+          "surfaceMarkerCount": 11,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -1608,10 +1616,11 @@
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 4,
+              "count": 5,
               "markers": [
                 "lowercase-sentence-start",
                 "lowercase-i",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -1650,16 +1659,17 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 11
+            "totalMarkers": 12
           },
           "output": {
             "registerLane": "rushed-mobile",
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 3,
+              "count": 4,
               "markers": [
                 "lowercase-sentence-start",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -1698,7 +1708,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 10
+            "totalMarkers": 11
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -1731,7 +1741,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 10,
+          "surfaceMarkerCount": 11,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -1896,10 +1906,11 @@
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 4,
+              "count": 5,
               "markers": [
                 "lowercase-sentence-start",
                 "lowercase-i",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -1938,16 +1949,17 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 11
+            "totalMarkers": 12
           },
           "output": {
             "registerLane": "rushed-mobile",
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 3,
+              "count": 4,
               "markers": [
                 "lowercase-sentence-start",
+                "standalone-lowercase-i",
                 "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
@@ -1986,7 +1998,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 10
+            "totalMarkers": 11
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -2019,7 +2031,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 10,
+          "surfaceMarkerCount": 11,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [

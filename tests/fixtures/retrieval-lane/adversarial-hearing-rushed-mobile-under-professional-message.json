@@ -105,7 +105,9 @@
           "sourceRegisterLane": "rushed-mobile",
           "targetRegisterLane": "professional-message",
           "needsDiscourseScaffold": true,
-          "sourceSignals": [],
+          "sourceSignals": [
+            "clipped-source"
+          ],
           "donorSignals": [],
           "scaffoldRole": "bridge source facts into target evidentiary relation"
         },
@@ -157,7 +159,9 @@
           "sourceRegisterLane": "rushed-mobile",
           "targetRegisterLane": "professional-message",
           "needsDiscourseScaffold": true,
-          "sourceSignals": [],
+          "sourceSignals": [
+            "clipped-source"
+          ],
           "donorSignals": [],
           "scaffoldRole": "bridge source facts into target evidentiary relation"
         },
@@ -632,7 +636,9 @@
               "sourceRegisterLane": "rushed-mobile",
               "targetRegisterLane": "professional-message",
               "needsDiscourseScaffold": true,
-              "sourceSignals": [],
+              "sourceSignals": [
+                "clipped-source"
+              ],
               "donorSignals": [],
               "scaffoldRole": "bridge source facts into target evidentiary relation"
             },
@@ -888,7 +894,9 @@
               "sourceRegisterLane": "rushed-mobile",
               "targetRegisterLane": "professional-message",
               "needsDiscourseScaffold": true,
-              "sourceSignals": [],
+              "sourceSignals": [
+                "clipped-source"
+              ],
               "donorSignals": [],
               "scaffoldRole": "bridge source facts into target evidentiary relation"
             },
@@ -954,7 +962,9 @@
             "sourceRegisterLane": "rushed-mobile",
             "targetRegisterLane": "professional-message",
             "needsDiscourseScaffold": true,
-            "sourceSignals": [],
+            "sourceSignals": [
+              "clipped-source"
+            ],
             "donorSignals": [],
             "scaffoldRole": "bridge source facts into target evidentiary relation"
           },
