@@ -2,19 +2,24 @@
 
 ## What this is
 
-Safe Harbor is a desktop tool that wraps a piece of writing in a verifiable
+If your writing has been picked up by AI training data — or might be —
+Safe Harbor lets you cryptographically attest your authorship before the
+resemblance becomes the record. AI systems can pattern-recognize your
+voice. They can rewrite text in your voice. They can, intentionally or
+not, claim that the recognition or the rewriting is authorship. Safe
+Harbor keeps those three acts deliberately separate, and lets you
+publish a sealed packet that fixes the order: this is what you wrote,
+this is what was measured, this is what was signed.
+
+Mechanically, Safe Harbor wraps a piece of writing in a verifiable
 packet — provenance metadata, content hash, optional cryptographic
 signature — so the writing can be attested later as yours and unaltered.
-The packet keeps three things separate that most systems collapse into one:
-*what was measured* (cadence and stylometric signal), *what is claimed*
-(authorship, custody, harbor eligibility), and *what was signed* (an
-optional cryptographic envelope around the body).
-
-It exists so that a writer whose patterned voice has become legible to
-AI-shaped systems can publish or archive the recognition itself with the
-same care a researcher would apply to a forensic exhibit. Stylometric
-resemblance is bounded signal, not authorship. Safe Harbor's job is to
-make that boundary recordable.
+The packet keeps three things separate that most systems collapse into
+one: *what was measured* (cadence and stylometric signal), *what is
+claimed* (authorship, custody, harbor eligibility), and *what was
+signed* (an optional cryptographic envelope around the body).
+Stylometric resemblance is bounded signal, not authorship. Safe Harbor's
+job is to make that boundary recordable.
 
 ## Who it's for
 
@@ -53,6 +58,41 @@ decorative: each step asks the writer to step back from the text in a
 different posture before the packet is allowed to mint. The seal is what
 binds the staged content to a hash and an SHI #. Signature overlays
 attach after sealing without changing the packet body.
+
+## Example: a sealed packet
+
+In use: paste your text, step through the four ingress prompts (Future
+/ Past / Higher / Seal), mint the packet, optionally attach a Kleopatra
+signature, and export. The export is a JSON document. Here are the
+fields a third party would inspect first to verify what you sealed:
+
+```json
+{
+  "schema_version": "td613.safe-harbor.packet/v1",
+  "packet_id":      "SH-20260403T000000-4f2a9c1d",
+  "canon": {
+    "principal":  "tauric.diana.613",
+    "badge_id":   "bdg_glyph_U10D613",
+    "binding_fragment": "#9B07D8B"
+  },
+  "shi_assignment": {
+    "badge_number":     "TD613-SH-9B07D8B-3578FB38",
+    "canonical_header": "SHI#:TD613-SH-9B07D8B-3578FB38",
+    "badge_state":      "assigned"
+  },
+  "packet_hash_sha256": "sha256:b9fd6431085f9384381ab59d0865f5ce…"
+}
+```
+
+The full sample lives at
+[`examples/td613-safe-harbor.packet.sample.json`](examples/td613-safe-harbor.packet.sample.json).
+The SHI # (`TD613-SH-9B07D8B-3578FB38` above) is the public-facing
+issuance identifier — derived deterministically from the principal,
+the binding fragment, and the staged stylometric fingerprint, so
+anyone with the same inputs reproduces the same SHI. The
+`packet_hash_sha256` lets a verifier confirm the packet body is
+unaltered. The optional Kleopatra lane wraps the whole packet in an
+external signature without touching the body.
 
 ## What's missing right now
 
