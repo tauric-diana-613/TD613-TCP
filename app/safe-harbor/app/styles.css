@@ -2786,3 +2786,186 @@ textarea {
     display: grid;
   }
 }
+
+/* Portrait phones need a stricter triad-first membrane. Landscape already has
+   enough horizontal room; this keeps portrait from burning the first screen on
+   ornament, status copy, and explanatory text. */
+@media (max-width: 520px) and (orientation: portrait) {
+  .ingress-membrane {
+    place-items: stretch center;
+    padding:
+      max(6px, env(safe-area-inset-top, 0px))
+      max(6px, env(safe-area-inset-right, 0px))
+      max(12px, env(safe-area-inset-bottom, 0px))
+      max(6px, env(safe-area-inset-left, 0px));
+  }
+
+  .ingress-shell {
+    min-height: calc(100dvh - 18px);
+    padding: 9px;
+    border-radius: 14px;
+  }
+
+  .ingress-shell::before {
+    inset: 5px;
+    border-radius: 10px;
+  }
+
+  .ingress-shell::after {
+    opacity: 0.22;
+  }
+
+  .ingress-head {
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .ingress-shell .title-group {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .ingress-shell .glyph-lock {
+    display: none;
+  }
+
+  .ingress-shell h1,
+  .ingress-shell .title-group h1 {
+    font-size: clamp(1.42rem, 7vw, 1.82rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+  }
+
+  .ingress-shell .subtitle {
+    max-width: none;
+    margin-top: 4px;
+    font-size: 0.5rem;
+    line-height: 1.25;
+    letter-spacing: 0.08em;
+  }
+
+  .status-strip.ingress-status {
+    display: flex;
+    grid-template-columns: none;
+    gap: 5px;
+    margin-top: 2px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ingress-shell .status-pill {
+    flex: 0 0 auto;
+    min-height: 23px;
+    padding: 0 7px;
+    justify-content: center;
+    font-size: 0.46rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .ingress-intro {
+    margin: 4px 0 6px;
+  }
+
+  .ingress-intro .section-label {
+    margin-bottom: 0;
+    font-size: 0.52rem;
+  }
+
+  .ingress-intro .ingress-copy {
+    display: none;
+  }
+
+  .ingress-stage-rail {
+    gap: 5px;
+    margin: 4px -3px 7px;
+    padding: 0 3px 5px;
+  }
+
+  .ingress-stage-chip {
+    min-width: 98px;
+    min-height: 29px;
+    padding: 6px 8px;
+    font-size: 0.47rem;
+    letter-spacing: 0.07em;
+  }
+
+  .ingress-handshake-grid {
+    gap: 7px;
+  }
+
+  .ingress-step-panel,
+  .ingress-console-panel {
+    padding: 9px;
+  }
+
+  .ingress-step-head {
+    gap: 5px;
+    margin-bottom: 5px;
+  }
+
+  #ingressStepPrompt {
+    font-size: clamp(1.2rem, 6.3vw, 1.55rem);
+    line-height: 0.98;
+  }
+
+  .surface-state {
+    min-height: 22px;
+    padding: 4px 7px;
+    font-size: 0.48rem;
+    letter-spacing: 0.08em;
+  }
+
+  .ingress-step-support {
+    max-height: 2.6em;
+    overflow: hidden;
+    margin-bottom: 7px;
+    font-size: 0.64rem;
+    line-height: 1.3;
+  }
+
+  .ingress-textarea {
+    height: clamp(170px, 34dvh, 240px);
+    min-height: 170px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .ingress-meta {
+    font-size: 0.62rem;
+    line-height: 1.35;
+  }
+
+  .ingress-step-nav,
+  .ingress-final-actions {
+    gap: 6px;
+  }
+
+  .ingress-step-nav .control,
+  .ingress-final-actions .control {
+    min-height: 34px;
+    padding: 7px 8px;
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
+  }
+
+  .ingress-console-panel {
+    gap: 8px;
+  }
+
+  .ingress-console-block {
+    display: none;
+  }
+
+  .ingress-bypass-summary {
+    min-height: 30px;
+    padding: 7px 8px;
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
+  }
+
+  .safe-harbor-receipt-mount {
+    margin-top: 8px;
+  }
+}
