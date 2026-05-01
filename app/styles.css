@@ -6798,6 +6798,14 @@ body[data-page-kind] .analysis-status::after {
   pointer-events: none;
 }
 
+/* The major shell frame already has a real border. Avoid the stray top-right
+   corner slash on panels while keeping the smaller subsection/card dividers. */
+.masthead::after,
+body[data-page-kind] .panel::after {
+  content: none;
+  display: none;
+}
+
 body[data-page-kind] .panel-heading {
   display: grid;
   gap: 8px;
