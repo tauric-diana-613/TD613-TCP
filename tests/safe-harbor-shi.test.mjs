@@ -94,10 +94,8 @@ assert.ok(
     harborHtmlSource.includes('batch-001a') &&
     harborHtmlSource.includes('batch-002a') &&
     harborHtmlSource.includes('batch-003a') &&
-    harborHtmlSource.includes('batch-004a') &&
-    !harborHtmlSource.includes('batch-001d') &&
-    !harborHtmlSource.includes('batch-004c'),
-  'Safe Harbor exposes the vanguard A-line intake plus a reset path in the center chamber'
+    harborHtmlSource.includes('batch-004a'),
+  'Safe Harbor exposes the vanguard A-line intake plus a reset path in the center chamber while allowing expanded wave availability'
 );
 assert.ok(
   harborHtmlSource.includes('id="kleopatra-void"') &&

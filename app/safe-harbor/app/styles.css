@@ -2091,6 +2091,46 @@ textarea {
   border-top: 1px solid rgba(90, 120, 170, 0.08);
 }
 
+.ingress-bypass-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--text-bright);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+.ingress-bypass-summary::-webkit-details-marker {
+  display: none;
+}
+
+.ingress-bypass-summary::before {
+  content: '+';
+  color: var(--accent);
+  margin-right: 2px;
+}
+
+.ingress-bypass[open] > .ingress-bypass-summary::before {
+  content: '-';
+}
+
+.ingress-bypass-summary span:last-child {
+  color: var(--text-faint);
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+}
+
+.ingress-bypass-body {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
 .ingress-bypass-grid {
   gap: 12px;
 }
@@ -2284,5 +2324,302 @@ textarea {
 @media (max-width: 600px) {
   .intake-canon-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Patch 35.2: mobile-first Safe Harbor ingress membrane. Keep desktop vault
+   posture intact; compact only narrow or short operator surfaces. */
+@media (max-width: 720px), (max-height: 560px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .ingress-membrane {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    padding:
+      max(8px, env(safe-area-inset-top, 0px))
+      max(8px, env(safe-area-inset-right, 0px))
+      max(14px, env(safe-area-inset-bottom, 0px))
+      max(8px, env(safe-area-inset-left, 0px));
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ingress-shell {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    border-radius: 18px;
+    clip-path: none;
+    overflow: visible;
+  }
+
+  .ingress-shell::before {
+    inset: 6px;
+    border-radius: 14px;
+    clip-path: none;
+  }
+
+  .ingress-shell::after {
+    opacity: 0.36;
+  }
+
+  .ingress-head {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .ingress-shell .title-group {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+  }
+
+  .ingress-shell .glyph-lock {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+    font-size: 1.12rem;
+  }
+
+  .ingress-shell h1,
+  .ingress-shell .title-group h1 {
+    font-size: clamp(2rem, 9vw, 2.6rem);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+  }
+
+  .ingress-shell .subtitle {
+    max-width: 34ch;
+    margin-top: 6px;
+    font-size: 0.56rem;
+    line-height: 1.45;
+    letter-spacing: 0.12em;
+  }
+
+  .status-strip.ingress-status {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .ingress-shell .status-pill {
+    width: auto;
+    min-height: 28px;
+    padding: 0 6px;
+    justify-content: center;
+    font-size: 0.54rem;
+    letter-spacing: 0.08em;
+    text-align: center;
+  }
+
+  .ingress-intro {
+    margin: 8px 0 10px;
+  }
+
+  .ingress-intro .section-label {
+    margin-bottom: 6px;
+  }
+
+  .ingress-intro .ingress-copy {
+    max-height: 4.6em;
+    overflow: hidden;
+    font-size: 0.72rem;
+    line-height: 1.55;
+  }
+
+  .ingress-stage-rail {
+    display: flex;
+    gap: 7px;
+    margin: 8px -4px 12px;
+    padding: 0 4px 6px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ingress-stage-chip {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 122px;
+    min-height: 34px;
+    padding: 8px 10px;
+    border-right: 1px solid rgba(90, 120, 170, 0.08);
+    border-bottom: 1px solid rgba(90, 120, 170, 0.08);
+    font-size: 0.54rem;
+    letter-spacing: 0.1em;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .ingress-stage-chip.is-active,
+  .ingress-stage-chip.is-complete {
+    box-shadow: inset 0 -2px 0 rgba(207, 176, 255, 0.4);
+  }
+
+  .ingress-handshake-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .ingress-step-panel,
+  .ingress-console-panel {
+    min-width: 0;
+    padding: 12px;
+    clip-path: none;
+  }
+
+  .ingress-console-panel {
+    gap: 10px;
+    border-left: 1px solid rgba(90, 120, 170, 0.08);
+    border-top: 1px solid rgba(90, 120, 170, 0.08);
+  }
+
+  .ingress-step-head {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  #ingressStepPrompt {
+    max-width: none;
+    font-size: clamp(1.75rem, 8vw, 2.55rem);
+    line-height: 1;
+  }
+
+  .surface-state {
+    width: fit-content;
+    max-width: 100%;
+    padding: 5px 8px;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+  }
+
+  .ingress-step-support,
+  .ingress-note,
+  .ingress-meta {
+    font-size: 0.72rem;
+    line-height: 1.55;
+  }
+
+  .ingress-step-support {
+    margin-bottom: 10px;
+  }
+
+  .ingress-textarea {
+    min-height: 150px;
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .ingress-step-nav,
+  .ingress-final-actions {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .ingress-step-nav .control,
+  .ingress-final-actions .control {
+    width: auto;
+    min-height: 38px;
+    flex: 1 1 0;
+    padding: 8px 10px;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+  }
+
+  .ingress-console-block {
+    padding: 8px 0;
+  }
+
+  .ingress-console-block .metric-row {
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .ingress-bypass {
+    padding-top: 10px;
+  }
+
+  .ingress-bypass-summary {
+    min-height: 34px;
+    padding: 8px 10px;
+    border: 1px solid rgba(90, 120, 170, 0.1);
+    background: rgba(8, 10, 15, 0.64);
+    font-size: 0.58rem;
+    letter-spacing: 0.13em;
+  }
+
+  .ingress-bypass-body {
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .ingress-bypass-grid textarea {
+    min-height: 84px;
+  }
+}
+
+@media (max-width: 420px) {
+  .ingress-membrane {
+    padding-inline: 6px;
+  }
+
+  .ingress-shell {
+    padding: 10px;
+  }
+
+  .ingress-shell .title-group {
+    grid-template-columns: 1fr;
+  }
+
+  .ingress-shell .glyph-lock {
+    display: none;
+  }
+
+  .status-strip.ingress-status {
+    grid-template-columns: 1fr;
+  }
+
+  .ingress-shell .status-pill {
+    justify-content: flex-start;
+  }
+
+  .ingress-intro .ingress-copy {
+    max-height: 3.2em;
+  }
+
+  .ingress-step-panel,
+  .ingress-console-panel {
+    padding: 10px;
+  }
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  .ingress-head {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 0.72fr);
+    align-items: start;
+  }
+
+  .ingress-intro .ingress-copy {
+    max-height: 2.2em;
+  }
+
+  .ingress-textarea {
+    min-height: 110px;
   }
 }

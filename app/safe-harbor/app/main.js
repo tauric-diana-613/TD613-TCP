@@ -128,6 +128,7 @@
     canonicalHeaderPreview: $('canonicalHeaderPreview'),
     extendedFooterPreview: $('extendedFooterPreview'),
     copyShiNumber: $('copyShiNumber'),
+    setBypassToken: $('setBypassToken'),
     copyCanonicalHeader: $('copyCanonicalHeader'),
     copyExtendedFooter: $('copyExtendedFooter'),
     covenantExport: $('covenantExport'),
@@ -450,6 +451,7 @@
     if (dom.bypassFreshSample) dom.bypassFreshSample.addEventListener('input', () => render());
     dom.copyCanonicalFooter.addEventListener('click', () => void copyText(dom.canonicalFooterPreview.textContent || ''));
     dom.copyShiNumber.addEventListener('click', () => void copyText(dom.shiMintValue.textContent || ''));
+    if (dom.setBypassToken) dom.setBypassToken.addEventListener('click', () => void setBypassToken());
     dom.copyCanonicalHeader.addEventListener('click', () => void copyText(dom.canonicalHeaderPreview.textContent || ''));
     dom.copyExtendedFooter.addEventListener('click', () => void copyText(dom.extendedFooterPreview.textContent || ''));
     dom.copyProbeOutput.addEventListener('click', () => void copyText(dom.probeOutput.value || ''));
@@ -881,7 +883,7 @@
       }
     }
     const pastedPacketText = (dom.bypassSealedPacket && dom.bypassSealedPacket.value || '').trim();
-    dom.bypassIngress.disabled = surfaceIsOpen || !typedShiValid || !pastedPacketText;
+    dom.bypassIngress.disabled = surfaceIsOpen;
     dom.clearIngress.disabled = ingressLocked;
     dom.bypassPassword.placeholder = recoverableShi || 'paste minted SHI #';
     dom.demoTcpHook.disabled = !devModeEnabled;
@@ -1210,6 +1212,7 @@
     const issued = shiNumber || null;
     const recoverable = recoverableShiNumber();
     const available = issued || recoverable || null;
+    const surfaceIsOpen = surfaceOpen();
     const blockedReason = issuance && issuance.badge_state === 'blocked-triad-threshold'
       ? issuance.blocking_reason
       : null;
@@ -1236,8 +1239,32 @@
             ? 'The triad is ready. Mint Staged Packet will issue the SHI # immediately from the entrant stylometrics. Seal Payload remains the detached-signature and artifact-seal step.'
             : 'The SHI # mints only when Mint Staged Packet is invoked against a triad-ready entrant. Once assigned, copy it exactly. This issuance code should not drift across packet, probe, renderer, or LLM intake.';
     dom.copyShiNumber.disabled = !available;
+    if (dom.setBypassToken) dom.setBypassToken.disabled = surfaceIsOpen;
     dom.copyCanonicalHeader.disabled = !available;
     dom.copyExtendedFooter.disabled = !available;
+  }
+
+  async function setBypassToken() {
+    const currentShi = normalizeShiNumber(
+      (state.packet && state.packet.issuance && state.packet.issuance.badge_number)
+      || (state.covenant && state.covenant.badgeNumber)
+      || recoverableShiNumber()
+      || ''
+    );
+    if (!isShiNumber(currentShi)) {
+      dom.ingressNote.textContent = 'Only the currently minted SHI # can be rebound to this session.';
+      logEvent('shi-recall-arm-denied', { reason: 'missing-current-shi' });
+      return;
+    }
+    const hash = await checksum(currentShi);
+    try {
+      sessionStorage.setItem((D.operatorBypass && D.operatorBypass.storage_key) || 'td613.safe-harbor.operator-bypass.hash', hash);
+    } catch (error) {}
+    window.TD613_SAFE_HARBOR_OPERATOR = Object.assign({}, window.TD613_SAFE_HARBOR_OPERATOR || {}, { bypass_hash_sha256: hash });
+    dom.ingressNote.textContent = 'Only the currently minted SHI # can be rebound to this session. Reopen token armed for ' + currentShi + '.';
+    render();
+    persist();
+    logEvent('shi-recall-armed', { shi_number: currentShi });
   }
 
   async function bypassIngress() {
@@ -1252,10 +1279,27 @@
       logEvent('bypass-denied', { state: 'sealed', reason: 'invalid-shi-format' });
       return;
     }
+    const recallHash = getOperatorBypassHash();
+    if (recallHash && normalizeHash(await checksum(token)) === normalizeHash(recallHash)) {
+      state.packet = null;
+      state.sealed = null;
+      state.ingress.operatorShellOpen = true;
+      state.ingress.vaultOpen = false;
+      state.ingress.bypass = true;
+      state.ingress.recovered = false;
+      state.ingress.openedAt = nowIso();
+      state.ingress.packetId = null;
+      state.ingress.receiptId = null;
+      dom.ingressNote.textContent = 'Recognized SHI # recall accepted. The packetless operator shell is open; no staged packet, covenant transition, or sealed artifact was rebuilt.';
+      render();
+      persist();
+      logEvent('bypass-opened', { state: 'packetless-operator-shell', reason: 'shi-recall-hash', shi_number: token });
+      return;
+    }
     const pastedText = dom.bypassSealedPacket ? (dom.bypassSealedPacket.value || '').trim() : '';
     if (!pastedText) {
       dom.ingressNote.textContent = 'Paste your sealed Safe Harbor packet JSON to reopen the chamber. SHI # alone cannot rebuild the packet.';
-      logEvent('bypass-denied', { state: 'sealed', reason: 'missing-sealed-packet' });
+      logEvent('bypass-denied', { state: 'sealed', reason: 'missing-recall-hash', shi_number: token });
       return;
     }
     let parsed;

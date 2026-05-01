@@ -80,31 +80,36 @@
             <div class="metric-row"><span class="label">Next threshold</span><span class="value" id="ingressThresholdReadout">first line required</span></div>
           </div>
 
-          <div class="ingress-bypass" data-td613-skip="true">
-            <div class="section-label">Reopen Safe Harbor</div>
-            <div class="field-grid ingress-bypass-grid">
-              <label class="field field-wide">
-                <span>SHI #</span>
-                <input id="bypassPassword" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="paste minted SHI #" disabled>
-              </label>
-              <label class="field field-wide">
-                <span>Sealed packet (paste full sealed JSON)</span>
-                <textarea id="bypassSealedPacket" rows="5" spellcheck="false" placeholder="paste your sealed Safe Harbor packet JSON here" disabled></textarea>
-              </label>
-              <label class="field field-wide">
-                <span>Walk me through tomorrow.</span>
-                <textarea id="bypassFreshSample" rows="4" spellcheck="false" placeholder="optional — write 40+ words for a voice continuity reading against the bound divergence_signature" disabled></textarea>
-                <div class="note compact" id="bypassFreshSampleCount" hidden></div>
-              </label>
+          <details class="ingress-bypass" id="ingressBypassFold" data-td613-skip="true">
+            <summary class="ingress-bypass-summary">
+              <span>Reopen Safe Harbor</span>
+              <span>sealed recall</span>
+            </summary>
+            <div class="ingress-bypass-body">
+              <div class="field-grid ingress-bypass-grid">
+                <label class="field field-wide">
+                  <span>SHI #</span>
+                  <input id="bypassPassword" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="paste minted SHI #" disabled>
+                </label>
+                <label class="field field-wide">
+                  <span>Sealed packet (paste full sealed JSON)</span>
+                  <textarea id="bypassSealedPacket" rows="5" spellcheck="false" placeholder="paste your sealed Safe Harbor packet JSON here" disabled></textarea>
+                </label>
+                <label class="field field-wide">
+                  <span>Walk me through tomorrow.</span>
+                  <textarea id="bypassFreshSample" rows="4" spellcheck="false" placeholder="optional — write 40+ words for a voice continuity reading against the bound divergence_signature" disabled></textarea>
+                  <div class="note compact" id="bypassFreshSampleCount" hidden></div>
+                </label>
+              </div>
+              <div class="button-grid compact">
+                <button class="control secondary" id="bypassIngress" type="button" disabled>Reopen with SHI</button>
+              </div>
+              <div class="note" id="voiceContinuityReadout" hidden></div>
             </div>
-            <div class="button-grid compact">
-              <button class="control secondary" id="bypassIngress" type="button" disabled>Reopen with SHI</button>
-            </div>
-            <div class="note" id="voiceContinuityReadout" hidden></div>
-          </div>
+          </details>
 
           <div class="button-grid ingress-final-actions">
-            <button class="control" id="mintStagedPacket" type="button" disabled>Mint Staged Packet</button>
+            <button class="control" id="mintStagedPacket" type="button" title="Mint / Seal Payload" disabled>Mint Staged Packet</button>
             <button class="control secondary" id="clearIngress" type="button">Clear Session</button>
           </div>
         </aside>
@@ -327,6 +332,7 @@
                 <div class="footer-template secondary" id="extendedFooterPreview"></div>
                 <div class="button-grid compact">
                   <button class="control" id="copyShiNumber" type="button" disabled>Copy SHI #</button>
+                  <button class="control secondary" id="setBypassToken" type="button" disabled>Bind Reopen Token</button>
                   <button class="control secondary" id="copyCanonicalHeader" type="button" disabled>Copy Canonical Header</button>
                   <button class="control secondary" id="copyExtendedFooter" type="button" disabled>Copy Canonical Footer</button>
                 </div>
