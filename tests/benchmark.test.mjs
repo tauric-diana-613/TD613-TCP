@@ -40,7 +40,9 @@ for (const testCase of CANONICAL_TRANSFER_CASES) {
   const actorFloor = apertureWarning ? 0.58 : 0.75;
   const actionFloor = apertureWarning ? 0.7 : 0.75;
   const objectFloor = apertureWarning ? 0.6 : 0.65;
-  const polarityFloor = result.holdStatus === 'held' ? 3 : 1;
+  const diagnosticPressure = result.holdStatus === 'held' ||
+    result.generationDocket?.status === 'diagnostic-pressure';
+  const polarityFloor = diagnosticPressure ? 3 : 1;
 
   assert(result.semanticAudit, `${testCase.id}: semantic audit should exist`);
   assert.equal(typeof result.semanticAudit.propositionCoverage, 'number', `${testCase.id}: propositionCoverage should be numeric`);
