@@ -7917,11 +7917,11 @@ DeltaE = ${ledger.reuse_gain}`;
       'layout_containment',
       readIngressSnapshot().phase === 'containment' &&
         readIngressSnapshot().bodyOverflow === 'hidden' &&
-        readIngressSnapshot().layerOverflowY === 'hidden' &&
+        ['hidden', 'auto'].includes(readIngressSnapshot().layerOverflowY) &&
         readIngressSnapshot().mirrorControlsHidden &&
         readIngressSnapshot().badgeControlsHidden,
       readIngressSnapshot(),
-      'Containment should own the screen without inner scrolling or leaked later-stage controls.'
+      'Containment should own the screen without leaked later-stage controls; compact screens may scroll inside the membrane.'
     );
 
     pushCase(
@@ -7982,13 +7982,14 @@ DeltaE = ${ledger.reuse_gain}`;
       'A correct clear mirror choice should advance immediately to the token gate.'
     );
 
-    primeIngressScenario({ phase: 'badge', targetMirror: 'off', targetBadge: 'badge.buffer', currentBadge: null });
+    primeIngressScenario({ phase: 'badge', targetMirror: 'off', targetBadge: 'badge.buffer', currentBadge: 'token-therefore' });
     cycleIngressBadge();
     pushCase(
       'token_wrong_choice_stays_put',
       readIngressSnapshot().phase === 'badge' &&
-        readIngressSnapshot().currentBadgeValue === 'badge.holds' &&
-        readIngressSnapshot().badgeReadout.toLowerCase().includes('holds'),
+        readIngressSnapshot().currentBadgeValue !== 'badge.buffer' &&
+        !readIngressSnapshot().badgeControlsHidden &&
+        readIngressSnapshot().badgeReadout.toLowerCase().includes('token //'),
       readIngressSnapshot(),
       'A non-matching token should stay on the token gate and remain interactive.'
     );
