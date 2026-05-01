@@ -8097,6 +8097,90 @@ body[data-page-kind="trainer"] .analysis-status {
   }
 }
 
+/* Patch 35.x accessibility rescue: keep Mask Foundry page-scrollable above
+   all earlier cockpit rules. No viewport should hide half the instrument. */
+body[data-page-kind="homebase"] .shell,
+body[data-page-kind="personas"] .shell {
+  display: block !important;
+  min-height: 100dvh !important;
+  overflow: visible !important;
+}
+
+body[data-page-kind="homebase"] .station-main-mask-foundry,
+body[data-page-kind="personas"] .station-main-mask-foundry,
+body[data-page-kind="homebase"] .station-main-mask-foundry .mask-foundry-view,
+body[data-page-kind="personas"] .station-main-mask-foundry .mask-foundry-view {
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+body[data-page-kind="homebase"] .station-chamber-homebase.mask-foundry-shell,
+body[data-page-kind="personas"] .station-chamber-personas.mask-foundry-shell,
+body[data-page-kind="homebase"] .mask-foundry-shell,
+body[data-page-kind="personas"] .mask-foundry-shell {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas:
+    "contact"
+    "home"
+    "gallery" !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  align-items: start !important;
+  gap: 12px !important;
+}
+
+body[data-page-kind="homebase"] .mask-foundry-home,
+body[data-page-kind="personas"] .mask-foundry-home {
+  grid-area: home !important;
+}
+
+body[data-page-kind="homebase"] .mask-foundry-contact,
+body[data-page-kind="personas"] .mask-foundry-contact {
+  grid-area: contact !important;
+}
+
+body[data-page-kind="homebase"] .mask-foundry-gallery,
+body[data-page-kind="personas"] .mask-foundry-gallery {
+  grid-area: gallery !important;
+}
+
+body[data-page-kind="homebase"] .mask-foundry-pane,
+body[data-page-kind="personas"] .mask-foundry-pane {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+body[data-page-kind="homebase"] .mask-foundry-gallery .persona-preview-stage,
+body[data-page-kind="personas"] .mask-foundry-gallery .persona-preview-stage {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+@media (min-width: 1100px) {
+  body[data-page-kind="homebase"] .station-chamber-homebase.mask-foundry-shell,
+  body[data-page-kind="personas"] .station-chamber-personas.mask-foundry-shell,
+  body[data-page-kind="homebase"] .mask-foundry-shell,
+  body[data-page-kind="personas"] .mask-foundry-shell {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    grid-template-areas:
+      "contact contact"
+      "home gallery" !important;
+  }
+}
+
+@media (min-width: 1480px) and (min-height: 820px) {
+  body[data-page-kind="homebase"] .station-chamber-homebase.mask-foundry-shell,
+  body[data-page-kind="personas"] .station-chamber-personas.mask-foundry-shell,
+  body[data-page-kind="homebase"] .mask-foundry-shell,
+  body[data-page-kind="personas"] .mask-foundry-shell {
+    grid-template-columns: minmax(270px, 0.84fr) minmax(520px, 1.45fr) minmax(280px, 0.96fr) !important;
+    grid-template-areas: "home contact gallery" !important;
+  }
+}
+
 /* Patch 35.x / Aperture-informed Mask Foundry cockpit for Homebase + Personas */
 
 /* Keep the real section-label hairlines, but kill the decorative top-corner
