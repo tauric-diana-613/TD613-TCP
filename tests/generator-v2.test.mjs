@@ -453,6 +453,45 @@ assert.equal(
   'admin rushed -> formal does not leak the clipped shorthand tokens back into the formalized output'
 );
 
+const chatDenseRushed = `irl this is pm perf rn. idrc btw fwiw srsly. dk why idrk but ty.`;
+const chatDenseFormal = `In real life, this is pretty much perfect right now. I do not really care, by the way, and for what it is worth, this is serious. I do not know why, and I do not really know, but thank you.`;
+
+const chatDenseToFormal = buildCadenceTransfer(chatDenseRushed, {
+  mode: 'borrowed',
+  personaId: 'archivist',
+  profile: extractCadenceProfile(chatDenseFormal),
+  registerLane: 'formal-record',
+  sourceText: chatDenseFormal,
+  strength: 0.9
+}, {
+  retrieval: true,
+  sourceRegisterLane: 'rushed-mobile'
+});
+const chatDenseToFormalPreview = String(chatDenseToFormal.text || chatDenseToFormal.internalText || '');
+assert.match(chatDenseToFormalPreview, /\bin real life\b/i, 'chat shorthand -> formal expands irl');
+assert.match(chatDenseToFormalPreview, /\bpretty much\b/i, 'chat shorthand -> formal expands pm as pretty much');
+assert.match(chatDenseToFormalPreview, /\bperfect\b/i, 'chat shorthand -> formal expands standalone perf as perfect');
+assert.match(chatDenseToFormalPreview, /\bright now\b/i, 'chat shorthand -> formal expands rn as right now');
+assert.match(chatDenseToFormalPreview, /\bI do not really care\b/i, 'chat shorthand -> formal expands idrc');
+assert.equal(/\birl\b|\bpm\s+perf\b|\brn\b|\bidrc\b/i.test(chatDenseToFormalPreview), false, 'chat shorthand -> formal strips high-frequency raw shorthand markers');
+
+const chatDenseToRushed = buildCadenceTransfer(chatDenseFormal, {
+  mode: 'borrowed',
+  personaId: 'spark',
+  profile: extractCadenceProfile(chatDenseRushed),
+  registerLane: 'rushed-mobile',
+  sourceText: chatDenseRushed,
+  strength: 0.9
+}, {
+  retrieval: true,
+  sourceRegisterLane: 'formal-record'
+});
+const chatDenseToRushedPreview = String(chatDenseToRushed.text || chatDenseToRushed.internalText || '');
+assert.match(chatDenseToRushedPreview, /\birl\b/i, 'formal -> rushed inherits donor-evidenced irl');
+assert.match(chatDenseToRushedPreview, /\bpm\b/i, 'formal -> rushed inherits donor-evidenced pm');
+assert.match(chatDenseToRushedPreview, /\bperf\b/i, 'formal -> rushed inherits donor-evidenced perf');
+assert.match(chatDenseToRushedPreview, /\brn\b/i, 'formal -> rushed inherits donor-evidenced rn');
+
 const patch34ReferenceToProbe = buildCadenceTransfer(patch34PerformanceReference, {
   mode: 'borrowed',
   personaId: 'spark',
