@@ -5152,7 +5152,7 @@
     const risks = [...new Set([...referenceReceipt.risks, ...probeReceipt.risks])];
     renderTcpOperatorReceipt({
       action: 'Cadence duel receipt',
-      status: fired.length || realizedFeatures.length ? 'ready' : 'blocked',
+      status: missing.length ? 'blocked' : (fired.length || realizedFeatures.length ? 'ready' : 'blocked'),
       route: 'deck-shell-duel',
       preserved: ['source facts remain in their own bays', 'raw text stays local'],
       changed: [
@@ -5161,7 +5161,9 @@
       ].filter(Boolean),
       blocked: missing.slice(0, 8),
       risks,
-      next: missing.length ? 'Use the missing-operator list to decide which ontology/operator pocket needs buildout.' : 'Inspect the transformed bays and packet ledger.',
+      next: missing.length
+        ? 'Missing ' + missing.slice(0, 4).join(', ') + '. Build or tune those operator pockets before trusting this transfer.'
+        : 'Inspect the transformed bays and packet ledger.',
       details: {
         reference: referenceReceipt.details,
         probe: probeReceipt.details,
