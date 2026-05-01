@@ -7978,6 +7978,79 @@ body[data-page-kind="trainer"] .analysis-status {
   padding-top: 10px;
 }
 
+.operator-receipt-repair {
+  margin-top: 10px;
+  border: 1px solid rgba(255, 179, 92, 0.24);
+  border-radius: 16px;
+  padding: 10px;
+  background: rgba(255, 179, 92, 0.06);
+}
+
+.operator-receipt-repair-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: start;
+}
+
+.operator-receipt-repair-head span,
+.operator-receipt-repair-grid span {
+  display: block;
+  color: var(--amber);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.operator-receipt-repair-head strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink);
+}
+
+.operator-receipt-copy {
+  border: 1px solid rgba(255, 179, 92, 0.34);
+  border-radius: 999px;
+  padding: 6px 9px;
+  color: var(--amber);
+  background: rgba(0, 0, 0, 0.24);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.operator-receipt-repair p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.operator-receipt-repair-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 9px;
+}
+
+.operator-receipt-repair-grid > div {
+  min-width: 0;
+  border-radius: 12px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.operator-receipt-repair-grid strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
 .operator-receipt-debug summary {
   cursor: pointer;
   color: var(--cyan);
@@ -8014,6 +8087,12 @@ body[data-page-kind="trainer"] .analysis-status {
   }
 
   .operator-receipt-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .operator-receipt-repair-head,
+  .operator-receipt-repair-grid {
+    display: grid;
     grid-template-columns: 1fr;
   }
 }

@@ -5164,6 +5164,25 @@
       next: missing.length
         ? 'Missing ' + missing.slice(0, 4).join(', ') + '. Build or tune those operator pockets before trusting this transfer.'
         : 'Inspect the transformed bays and packet ledger.',
+      repairBrief: missing.length ? {
+        title: 'Deck cadence operator buildout',
+        summary: 'This duel did not fail abstractly; it missed named realization operators. Patch the operator pocket, then promote this duel into a focused regression fixture.',
+        missingOperators: missing.slice(0, 8),
+        targetFiles: [
+          'app/engine/generator-v2.js',
+          'app/engine/stylometry.js',
+          'app/browser-main.js',
+          'app/browser-engine.js'
+        ],
+        acceptance: [
+          'missing operators reduce after the patch',
+          'surface output changes visibly, not just profile scores',
+          'semantic risks do not increase',
+          'the same duel produces a higher realized-operator receipt'
+        ],
+        fixtureHint: 'Use the current Reference / Probe bays as the regression pair and assert the first missing operator fires.',
+        command: 'node tests/generator-v2.test.mjs && node tests/browser-parity.test.mjs'
+      } : null,
       details: {
         reference: referenceReceipt.details,
         probe: probeReceipt.details,

@@ -37,6 +37,17 @@
   function build(input) {
     const source = input && typeof input === 'object' ? input : {};
     const status = normalizeStatus(source.status || source.state);
+    const repairBrief = source.repairBrief && typeof source.repairBrief === 'object'
+      ? {
+          title: safeText(source.repairBrief.title, 'Operator repair brief'),
+          summary: safeText(source.repairBrief.summary, ''),
+          targetFiles: asArray(source.repairBrief.targetFiles),
+          missingOperators: asArray(source.repairBrief.missingOperators),
+          acceptance: asArray(source.repairBrief.acceptance),
+          command: safeText(source.repairBrief.command, ''),
+          fixtureHint: safeText(source.repairBrief.fixtureHint, '')
+        }
+      : null;
     const receipt = {
       schema: 'td613.operator-receipt/v1',
       generated_at: new Date().toISOString(),
@@ -49,6 +60,7 @@
       blocked: asArray(source.blocked),
       next: safeText(source.next, 'continue observing'),
       risks: asArray(source.risks),
+      repairBrief,
       details: source.details && typeof source.details === 'object' ? source.details : {},
       raw: source.raw && typeof source.raw === 'object' ? source.raw : null
     };
@@ -59,6 +71,49 @@
       'next=' + receipt.next
     ].join(' / ');
     return receipt;
+  }
+
+  function repairBriefText(brief) {
+    if (!brief) return '';
+    return [
+      '# ' + brief.title,
+      brief.summary,
+      '',
+      'Missing operators:',
+      compactList(brief.missingOperators, 'none'),
+      '',
+      'Likely files:',
+      compactList(brief.targetFiles, 'none'),
+      '',
+      'Acceptance:',
+      compactList(brief.acceptance, 'none'),
+      '',
+      brief.fixtureHint ? 'Fixture: ' + brief.fixtureHint : '',
+      brief.command ? 'Command: ' + brief.command : ''
+    ].filter((line) => line !== '').join('\n');
+  }
+
+  function renderRepairBrief(brief) {
+    if (!brief) return '';
+    return [
+      '  <section class="operator-receipt-repair">',
+      '    <div class="operator-receipt-repair-head">',
+      '      <div>',
+      '        <span>Repair brief</span>',
+      '        <strong>' + escapeHtml(brief.title) + '</strong>',
+      '      </div>',
+      '      <button class="operator-receipt-copy" type="button" data-operator-receipt-copy="repair-brief">Copy brief</button>',
+      '    </div>',
+      brief.summary ? '    <p>' + escapeHtml(brief.summary) + '</p>' : '',
+      '    <div class="operator-receipt-repair-grid">',
+      '      <div><span>Missing</span><strong>' + escapeHtml(compactList(brief.missingOperators, 'none')) + '</strong></div>',
+      '      <div><span>Files</span><strong>' + escapeHtml(compactList(brief.targetFiles, 'none')) + '</strong></div>',
+      '      <div><span>Acceptance</span><strong>' + escapeHtml(compactList(brief.acceptance, 'none')) + '</strong></div>',
+      '      <div><span>Run</span><strong>' + escapeHtml(brief.command || 'focused Deck proof') + '</strong></div>',
+      '    </div>',
+      '    <pre class="operator-receipt-repair-text" hidden>' + escapeHtml(repairBriefText(brief)) + '</pre>',
+      '  </section>'
+    ].join('');
   }
 
   function resolveNode(target) {
@@ -124,6 +179,7 @@
       receipt.risks.length
         ? '  <p class="operator-receipt-risk"><span>Risk</span> ' + escapeHtml(compactList(receipt.risks, 'none')) + '</p>'
         : '',
+      renderRepairBrief(receipt.repairBrief),
       '  <details class="operator-receipt-debug">',
       '    <summary>operator debug payload</summary>',
       '    <pre>' + escapeHtml(JSON.stringify(debugPayload, null, 2)) + '</pre>',
@@ -133,6 +189,22 @@
     window.__TD613_LAST_OPERATOR_RECEIPT__ = receipt;
     return receipt;
   }
+
+  document.addEventListener('click', (event) => {
+    const button = event.target && event.target.closest ? event.target.closest('[data-operator-receipt-copy="repair-brief"]') : null;
+    if (!button) return;
+    const root = button.closest('.operator-receipt');
+    const textNode = root ? root.querySelector('.operator-receipt-repair-text') : null;
+    const text = textNode ? textNode.textContent || '' : '';
+    if (!text) return;
+    const done = () => {
+      button.textContent = 'Copied';
+      window.setTimeout(() => { button.textContent = 'Copy brief'; }, 1400);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => {});
+    }
+  });
 
   window.TD613OperatorReceipt = Object.freeze({
     build,
