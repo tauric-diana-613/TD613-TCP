@@ -1289,7 +1289,7 @@ function buildRegistrationLine(outcome = 'surface-held', counts = {}) {
     return 'Aperture is waiting for a registerable segment.';
   }
   if (outcome === 'source-rerouted') {
-    return `Aperture withheld ${counts.sourceRerouted || total} of ${total} segment${total === 1 ? '' : 's'} only after catastrophic generator faults.`;
+    return `Aperture flagged ${counts.sourceRerouted || total} of ${total} segment${total === 1 ? '' : 's'} for catastrophic generator faults while keeping the operator surface visible.`;
   }
   if (outcome === 'surface-held' && (counts.projected || 0) === 0 && (counts.repaired || 0) === 0) {
     return `Aperture kept ${counts.surfaceHeld || total} of ${total} segment${total === 1 ? '' : 's'} in a surface-held lane and surfaced pressure notes instead of suppressing them.`;
@@ -1309,6 +1309,22 @@ function buildRegistrationLine(outcome = 'surface-held', counts = {}) {
     parts.push(`${counts.sourceRerouted} source-rerouted`);
   }
   return `Aperture registered ${parts.join(' // ')} segment${total === 1 ? '' : 's'} and kept the pressure ledger visible.`;
+}
+
+function pressureLine(line = '') {
+  const normalized = String(line || '').trim();
+  if (!normalized) {
+    return 'Generator pressure stayed visible as diagnostics; output remained operator-facing.';
+  }
+  return normalized
+    .replace(/Generator V2 hold/gi, 'Generator V2 pressure')
+    .replace(/Generator hold/gi, 'Generator pressure')
+    .replace(/\bheld\b/gi, 'flagged')
+    .replace(/\bhold\b/gi, 'pressure')
+    .replace(/no weak output published/gi, 'weak output shown with diagnostics')
+    .replace(/instead of publishing a weak rewrite/gi, 'while showing the working surface')
+    .replace(/instead of faking a weak rewrite/gi, 'while showing the working surface')
+    .replace(/No candidate cleared the rewrite bar honestly/gi, 'No candidate cleared the rewrite bar cleanly; best surface is shown for operator review');
 }
 
 function buildLedgerPreview(segmentLedger = []) {
@@ -1365,7 +1381,10 @@ function isCounterRecognitionSurface(text = '') {
 
 function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}, sourceClass = 'procedural-record') {
   const normalizedSource = normalizeText(sourceText);
-  const transfer = engine.buildCadenceTransfer(normalizedSource, shell, { retrieval: true });
+  const transfer = engine.buildCadenceTransfer(normalizedSource, shell, {
+    retrieval: true,
+    exposeHeldCandidate: true
+  });
   const generationDocket = transfer.generationDocket || null;
   const hold = generationDocket?.status === 'held';
   const notes = new Set(transfer.notes || []);
@@ -1381,15 +1400,91 @@ function buildRegisteredMaskSurface(engine, sourceText = '', shell = {}, sourceC
     .filter(Boolean);
 
   if (hold) {
-    notes.add(generationDocket.headline || 'Generator V2 held the passage instead of faking a weak rewrite.');
+    notes.add(pressureLine(generationDocket.headline));
     if (isCounterRecognitionSurface(sourceText)) {
-      notes.add('Counter-recognition pressure is present on this passage. Aperture kept the warning ledger visible and turned the miss into an explicit hold docket instead of a silent reroute.');
+      notes.add('Counter-recognition pressure is present on this passage. Aperture kept the warning ledger visible and left the working surface operator-facing.');
     }
+    const registeredText = normalizeText(transfer.internalText || transfer.text || normalizedSource) || normalizedSource;
+    const heldParagraphs = registeredText
+      .replace(/\r\n/g, '\n')
+      .split(/\n{2,}/)
+      .map((entry) => normalizeText(entry))
+      .filter(Boolean);
+    const paragraphCount = Math.max(sourceParagraphs.length, heldParagraphs.length, 1);
+    const registeredSegments = [];
+    const segmentLedger = [];
+
+    for (let paragraphIndex = 0; paragraphIndex < paragraphCount; paragraphIndex += 1) {
+      const sourceParagraph = sourceParagraphs[paragraphIndex] || normalizedSource;
+      const registeredParagraph = heldParagraphs[paragraphIndex] || sourceParagraph;
+      if (!registeredParagraph) {
+        continue;
+      }
+      const changedDimensions = deriveRealizedMaskDimensions(
+        engine.extractCadenceProfile(sourceParagraph || normalizedSource),
+        engine.extractCadenceProfile(registeredParagraph)
+      );
+      const semanticAudit = {
+        ...(transfer.semanticAudit || buildHeldSemanticAudit({}, registeredParagraph)),
+        protectedAnchorIntegrity: Number(transfer.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1)
+      };
+      const protectedAnchorAudit = {
+        ...(transfer.protectedAnchorAudit || buildHeldProtectedAnchorAudit({})),
+        protectedAnchorIntegrity: Number(transfer.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1)
+      };
+
+      registeredSegments.push(Object.freeze({
+        paragraphIndex,
+        text: registeredParagraph,
+        segments: Object.freeze([
+          Object.freeze({
+            segmentIndex: 0,
+            text: registeredParagraph,
+            outcome: 'surface-held'
+          })
+        ])
+      }));
+      segmentLedger.push(Object.freeze({
+        paragraphIndex,
+        segmentIndex: 0,
+        sourceText: sourceParagraph || normalizedSource,
+        internalText: registeredParagraph,
+        registeredText: registeredParagraph,
+        outcome: 'surface-held',
+        notes: [...notes],
+        pathologies: [...((transfer.apertureProtocol && transfer.apertureProtocol.pathologies) || [])],
+        witnessAnchorIntegrity: Number(protectedAnchorAudit.protectedAnchorIntegrity ?? 1),
+        aliasPersistenceRisk: Number(transfer.apertureAudit?.aliasPersistence ?? 0),
+        compressionState: sourceParagraphs.length === heldParagraphs.length ? 'one-to-one' : 'source-held',
+        previewHold: sourceParagraphs.length !== heldParagraphs.length,
+        renderSafe: true,
+        changedDimensions,
+        lexemeSwaps: [],
+        transferClass: 'surface',
+        semanticAudit,
+        protectedAnchorAudit,
+        repairPasses: [...(transfer.apertureAudit?.repairPasses || [])],
+        apertureAudit: {
+          ...(transfer.apertureAudit || {}),
+          generatorFault: false,
+          warningSignals: [...new Set([...(transfer.apertureAudit?.warningSignals || []), 'diagnostic-pressure'])],
+          repairPasses: [...new Set(transfer.apertureAudit?.repairPasses || [])],
+          withheldMaterial: false,
+          withheldReason: null
+        },
+        apertureProtocol: {
+          ...(transfer.apertureProtocol || {}),
+          outcome: 'surface-held',
+          line: pressureLine(generationDocket.headline)
+        }
+      }));
+    }
+
     return {
-      maskedText: '',
-      internalMaskedText: normalizeText(transfer.internalText || normalizedSource),
-      registeredSegments: Object.freeze([]),
-      segmentLedger: Object.freeze([]),
+      maskedText: registeredSegments.map((paragraph) => paragraph.text).filter(Boolean).join('\n\n'),
+      internalMaskedText: registeredText,
+      registeredSegments: Object.freeze(registeredSegments),
+      segmentLedger: Object.freeze(segmentLedger),
       notes: [...notes],
       transfer,
       generationDocket
@@ -1791,7 +1886,7 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
     (segmentCounts.sourceRerouted || 0);
   if (segmentTotal) {
     if (contactHonesty.outcome === 'source-rerouted') {
-      return `generator fault hold // ${segmentCounts.sourceRerouted || segmentTotal} segments withheld`;
+      return `generator fault pressure // ${segmentCounts.sourceRerouted || segmentTotal} segments flagged`;
     }
     if (contactHonesty.outcome === 'surface-held' && !segmentCounts.projected && !segmentCounts.repaired) {
       return `surface-held // ${segmentCounts.surfaceHeld || segmentTotal} segments stayed close to source`;
@@ -1804,10 +1899,10 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
       lane.push(`${segmentCounts.repaired} repaired`);
     }
     if (segmentCounts.surfaceHeld) {
-      lane.push(`${segmentCounts.surfaceHeld} held`);
+      lane.push(`${segmentCounts.surfaceHeld} pressure-visible`);
     }
     if (segmentCounts.sourceRerouted) {
-      lane.push(`${segmentCounts.sourceRerouted} catastrophic holds`);
+      lane.push(`${segmentCounts.sourceRerouted} catastrophic warnings`);
     }
     return `segment ledger // ${lane.join(' // ')}`;
   }
@@ -1821,11 +1916,11 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
     .join(' // ');
 
   if (contactHonesty.outcome === 'generator-hold' || contactHonesty.registeredTransformClass === 'generator-hold') {
-    return 'generator hold // no weak output published';
+    return 'generator pressure // working surface shown';
   }
 
   if (contactHonesty.outcome === 'source-rerouted') {
-    return 'generator fault hold // public output withheld';
+    return 'generator fault pressure // output shown with warning';
   }
 
   if (contactHonesty.outcome === 'surface-held') {
@@ -1833,7 +1928,7 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
   }
 
   if (!changedDimensions.length && !lexemeSwaps.length) {
-    return 'near-home hold';
+    return 'near-home pressure';
   }
 
   if (!visibleDimensions.length && lexemeSwaps.length) {
@@ -1845,7 +1940,7 @@ function movementSummary(transfer = {}, effectSummary = {}, contactSummary = {},
   }
 
   if (contactSummary.fieldEffect === 'neither') {
-    return `${dimensionLine} // home held`;
+    return `${dimensionLine} // home pressure visible`;
   }
 
   if (contactHonesty.outcome === 'repaired') {
@@ -1938,10 +2033,10 @@ function buildToolabilityHeadline({
   generationDocket = null
 } = {}) {
   if (generationDocket?.status === 'held' || registeredTransformClass === 'generator-hold') {
-    return generationDocket?.headline || 'Generator hold // no weak output published.';
+    return pressureLine(generationDocket?.headline || 'Generator pressure // weak output shown with diagnostics.');
   }
   if (registeredTransformClass === 'generator-fault') {
-    return 'Generator fault // output withheld after catastrophic failure.';
+    return 'Generator fault // output shown with catastrophic-fault warning.';
   }
   const toolabilityScore = Number(toolabilityAudit.toolabilityScore || 0);
   const personaScore = Number(personaSeparationAudit.score || 0);
@@ -1992,9 +2087,9 @@ function buildApertureSummary({
   const repairPasses = [...new Set(apertureAudit.repairPasses || [])];
   const headline = toolabilityHeadline || (
     registeredTransformClass === 'generator-hold'
-      ? 'Generator hold // no candidate cleared the rewrite bar.'
+      ? 'Generator pressure // no candidate cleared the rewrite bar cleanly.'
       : registeredTransformClass === 'generator-fault'
-        ? 'Generator fault // public output held after catastrophic collapse.'
+        ? 'Generator fault // public output shown with catastrophic-fault warning.'
         : registeredTransformClass === 'strong-rewrite'
           ? 'Usable strong rewrite landed.'
           : registeredTransformClass === 'cadence-rewrite'
@@ -2087,8 +2182,8 @@ function maskContactSummary(result = null) {
       changedProximity: false,
       changedSurfaceTexture: false,
       contactClass: 'generator-hold',
-      fieldEffect: 'withheld',
-      line: result.generationDocket?.headline || 'Generator V2 held the output instead of publishing a weak rewrite.'
+      fieldEffect: 'diagnostic-pressure',
+      line: pressureLine(result.generationDocket?.headline || 'Generator V2 pressure // weak output shown with diagnostics.')
     };
   }
 
@@ -2134,7 +2229,7 @@ function maskContactSummary(result = null) {
       changedSurfaceTexture: false,
       contactClass: 'source-rerouted',
       fieldEffect: 'source-rerouted',
-      line: honesty.line || 'The output was withheld after a catastrophic generator fault.'
+      line: honesty.line || 'The output stayed visible with a catastrophic generator-fault warning.'
     };
   }
 
@@ -2209,9 +2304,11 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
   const registration = buildRegisteredMaskSurface(engine, normalized, shell, sourceClass);
   const generationDocket = registration.generationDocket || registration.transfer?.generationDocket || null;
   const generatorHeld = generationDocket?.status === 'held';
-  const maskedText = generatorHeld
-    ? ''
-    : normalizeText(registration.maskedText || normalized) || normalized;
+  const maskedText = normalizeText(
+    registration.maskedText ||
+    (generatorHeld ? registration.internalMaskedText : '') ||
+    normalized
+  ) || normalized;
   const internalMaskedText = normalizeText(registration.internalMaskedText || registration.transfer?.internalText || maskedText);
   const segmentLedger = [...(registration.segmentLedger || [])];
   const counts = segmentOutcomeCounts(segmentLedger);
@@ -2307,7 +2404,7 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
       ...(generationDocket?.headline ? [generationDocket.headline] : []),
       ...(registration.notes || []),
       ...(segmentLedger.filter((entry) => entry.outcome === 'source-rerouted').length
-        ? [`Aperture withheld ${counts.sourceRerouted} segment${counts.sourceRerouted === 1 ? '' : 's'} only after catastrophic generator faults.`]
+        ? [`Aperture flagged ${counts.sourceRerouted} segment${counts.sourceRerouted === 1 ? '' : 's'} for catastrophic generator faults while keeping the operator surface visible.`]
         : []),
       ...(segmentLedger.filter((entry) => entry.outcome === 'surface-held').length
         ? [`Aperture kept ${counts.surfaceHeld} segment${counts.surfaceHeld === 1 ? '' : 's'} in a surface-held lane and surfaced pressure notes.`]
@@ -2316,7 +2413,7 @@ export function buildMaskTransformationResult(engine, { comparisonText = '', loc
     apertureProtocol: {
       outcome: apertureOutcome,
       line: generatorHeld
-        ? (generationDocket?.headline || 'Generator V2 held the passage instead of publishing a weak rewrite.')
+        ? pressureLine(generationDocket?.headline || 'Generator V2 pressure // weak output shown with diagnostics.')
         : buildRegistrationLine(apertureOutcome, counts),
       pathologies: [...(realizedPathologies.flags || [])],
       apertureAudit

@@ -1226,7 +1226,10 @@
 
   function operatorReceiptAnchor() {
     if (PAGE_KIND === 'gateway') {
-      return document.querySelector('.gateway-head') || document.querySelector('.chamber-header');
+      return document.querySelector('.gateway-main') || document.querySelector('.gateway-head') || document.querySelector('.chamber-header');
+    }
+    if (PAGE_KIND === 'homebase' || PAGE_KIND === 'personas') {
+      return document.querySelector('.station-main-mask-foundry') || document.querySelector('main');
     }
     return document.querySelector('.statusrail') || document.querySelector('.chamber-header') || document.querySelector('main');
   }
@@ -4380,17 +4383,17 @@
   }
 
   function transferSummaryCopy(transfer, shifted = '') {
-    if (transfer?.holdStatus === 'diagnostic-held') {
+    if (transfer?.holdStatus === 'diagnostic-held' || transfer?.holdStatus === 'diagnostic-pressure') {
       const pressure = transfer?.generationDocket?.holdClass || transfer?.borrowedShellFailureClass || 'aperture-route-pressure';
-      const headline = transfer?.generationDocket?.headline || 'Aperture pressure stayed above the publishable floor.';
-      return `${headline} Surface shown for Deck diagnostics; pressure reason: ${pressure}.`;
+      const headline = transfer?.generationDocket?.headline || 'Aperture pressure stayed above the clean landing floor.';
+      return `${headline} Surface remains operator-facing; pressure reason: ${pressure}.`;
     }
 
     if (transfer?.holdStatus === 'held') {
       if (String(transfer?.internalText || '').trim()) {
-        return `${transfer?.generationDocket?.headline || 'Aperture held the transfer instead of publishing a weak rewrite.'} Previewing the strongest held surface for audit only.`;
+        return `${transfer?.generationDocket?.headline || 'Aperture flagged the transfer pressure.'} Showing the strongest available surface for operator review.`;
       }
-      return transfer?.generationDocket?.headline || 'Aperture held the transfer instead of publishing a weak rewrite.';
+      return transfer?.generationDocket?.headline || 'Aperture flagged the transfer pressure.';
     }
 
     if (!transfer || transfer.transferClass === 'native') {
@@ -4426,7 +4429,7 @@
       if (repaired) {
         return shifted ? `Transfer artifact-repaired into a retrieval-safe partial shell shift across ${shifted}.` : 'Transfer artifact-repaired into a retrieval-safe partial shell shift.';
       }
-      return shifted ? `Transfer held a retrieval-safe partial shell shift across ${shifted}.` : 'Transfer held a retrieval-safe partial shell shift.';
+      return shifted ? `Transfer landed a retrieval-safe partial shell shift across ${shifted}.` : 'Transfer landed a retrieval-safe partial shell shift.';
     }
 
     if (realizedDimensions.length || (transfer.lexemeSwaps || []).length) {
@@ -4543,7 +4546,7 @@
     if (transfer?.holdStatus === 'held') {
       return 'Aperture pressure';
     }
-    if (transfer?.holdStatus === 'diagnostic-held') {
+    if (transfer?.holdStatus === 'diagnostic-held' || transfer?.holdStatus === 'diagnostic-pressure') {
       return 'shown under Aperture pressure';
     }
     if (!realizedChangedDimensions(transfer).length && !(transfer.lexemeSwaps || []).length && profileOnlyShiftDimensions(transfer).length) {
@@ -4812,7 +4815,7 @@
 
     if (audit.classification === 'both-rejected') {
       const failureTags = audit.failureFamilyTags.length ? ` Failure family: ${audit.failureFamilyTags.join(', ')}.` : '';
-      return `Cadence shells swapped, but both bays stayed below the realization bar. Similarity ${similarityDelta} and route ${routeDelta} held near-home.${failureTags}`;
+      return `Cadence shells swapped, but both bays stayed below the realization bar. Similarity ${similarityDelta} and route ${routeDelta} stayed near-home.${failureTags}`;
     }
 
     if (audit.classification === 'one-sided') {
@@ -4830,7 +4833,7 @@
 
     if (audit.partialFallbackSlots.length && audit.classification === 'bilateral-engaged') {
       const slots = audit.partialFallbackSlots.map(slotLabel).join(' + ');
-      return `Cadence shells swapped. ${slots} held a retrieval-safe partial shell shift instead of collapsing back to native text. Similarity ${similarityDelta}; route ${routeDelta}.`;
+      return `Cadence shells swapped. ${slots} landed a retrieval-safe partial shell shift instead of collapsing back to native text. Similarity ${similarityDelta}; route ${routeDelta}.`;
     }
 
     return `Cadence shells swapped. Each bay kept its own raw text and took the other bay's shell. Similarity ${similarityDelta}; route ${routeDelta}.`;
@@ -4847,7 +4850,7 @@
       .slice(0, 3)
       .join(', ');
     const literalNote = transfer?.protectedLiteralCount
-      ? `${transfer.protectedLiteralCount} literal${transfer.protectedLiteralCount === 1 ? '' : 's'} held fixed.`
+      ? `${transfer.protectedLiteralCount} literal${transfer.protectedLiteralCount === 1 ? '' : 's'} stayed fixed.`
       : '';
     const transferSummary = transferSummaryCopy(transfer, shifted);
 
@@ -5374,7 +5377,7 @@
       case 'surface-texture':
         return 'surface texture moved';
       case 'neither':
-        return 'contact held near home';
+        return 'contact stayed near home';
       default:
         return 'contact staging';
     }
@@ -5792,23 +5795,23 @@
 
     const result = state.comparison;
     if (hasPathologicalMaskRender(result)) {
-      statusNode.textContent = `${state.wornMask.name} hit a generator-fault hold against ${state.lock.name}.`;
-      contactNode.textContent = `Tool state // ${result.toolabilityHeadline || result.contactHonesty?.line || 'The output was held after a catastrophic generator fault.'}`;
+      statusNode.textContent = `${state.wornMask.name} hit generator-fault pressure against ${state.lock.name}.`;
+      contactNode.textContent = `Tool state // ${result.toolabilityHeadline || result.contactHonesty?.line || 'The output is shown with a catastrophic-fault warning.'}`;
       applyGlyphMetadata(contactNode, 'homebaseContact');
       sourceNode.value = result.rawText || state.comparisonText || '';
-      outputNode.value = '';
+      outputNode.value = result.registeredMaskedText || result.maskedText || result.internalMaskedText || result.rawText || '';
       beforeNode.textContent = comparisonMetricSummary(result.rawToLock);
-      afterNode.textContent = '--';
-      movedNode.textContent = 'generator fault hold // output withheld';
-      deltaNode.textContent = 'catastrophic fault detected // masked output held';
+      afterNode.textContent = comparisonMetricSummary(result.maskedToLock);
+      movedNode.textContent = 'generator fault pressure // output shown';
+      deltaNode.textContent = 'catastrophic fault detected // masked output shown with warning';
       renderNoteList(notesNode, [
-        result.apertureSummary?.headline || result.contactHonesty?.line || 'Aperture withheld the rendered output only after detecting replay, emptiness, or unrepaired concatenation fault.'
+        result.apertureSummary?.headline || result.contactHonesty?.line || 'Aperture flagged replay, emptiness, or unrepaired concatenation pressure while keeping the rendered output visible.'
       ]);
       renderNoteList(ledgerNode, result.apertureSummary?.drawerItems || result.apertureNotes || []);
       if (ledgerMetaNode) {
-        ledgerMetaNode.textContent = 'Generator fault ledger';
+        ledgerMetaNode.textContent = 'Generator fault pressure ledger';
       }
-      renderShiftPreview([], 'Aperture held the rendered output after detecting a catastrophic generator fault.');
+      renderShiftPreview(result.shiftPreview || [], 'Aperture flagged catastrophic generator-fault pressure while keeping the rendered output visible.');
       return;
     }
     const delta = result.deltaToLock || {};
@@ -5823,7 +5826,7 @@
     movedNode.textContent = result.whatMovedSummary || '--';
     deltaNode.textContent =
       result.apertureOutcome === 'source-rerouted'
-        ? 'generator fault hold // public output withheld'
+        ? 'generator fault pressure // public output shown'
         : result.apertureOutcome === 'surface-held'
           ? 'surface-held // pressure visible'
           : contact.fieldEffect === 'both'
@@ -5831,8 +5834,8 @@
         : contact.fieldEffect === 'proximity'
           ? `${delta.traceability >= 0 ? '+' : ''}${formatPct(Math.abs(delta.traceability || 0))} trace // home distance moved`
           : contact.fieldEffect === 'surface-texture'
-            ? 'surface texture shifted // home distance held'
-            : 'surface texture held // home distance held';
+            ? 'surface texture shifted // home distance steady'
+            : 'surface texture steady // home distance steady';
     renderNoteList(notesNode, result.apertureSummary?.bullets || [
       result.toolabilityHeadline || contact.line || 'Residue remains readable.'
     ]);
@@ -5847,12 +5850,12 @@
     renderShiftPreview(
       result.shiftPreview || [],
       result.previewAlignment?.reason === 'compression-pressure'
-        ? 'Preview withheld because compression pressure made a row-level claim unreliable.'
+        ? 'Preview is diagnostic-only because compression pressure made a row-level claim unreliable.'
         : result.previewAlignment?.reason === 'low-alignment'
-          ? 'Preview withheld because the alignment stayed too weak to claim sentence movement honestly.'
+          ? 'Preview is diagnostic-only because the alignment stayed too weak to claim sentence movement honestly.'
           : result.previewAlignment?.reason === 'surface-only-drift'
-            ? 'Preview withheld because the landed rewrite stayed in a surface-only lane.'
-            : 'The mask held close enough to source that sentence movement stayed minimal.'
+            ? 'Preview is diagnostic-only because the landed rewrite stayed in a surface-only lane.'
+            : 'The mask stayed close enough to source that sentence movement stayed minimal.'
     );
   }
 
@@ -6004,6 +6007,9 @@
                 ${diagnosticSpecimen?.swatch ? `<p class="persona-diagnostic-swatch">${escapeHtml(diagnosticSpecimen.swatch)}</p>` : ''}
               </div>
               <div class="chips">${effectLine}</div>
+              <div class="persona-card-actions">
+                <button type="button" class="persona-card-wear persona-inline-action" data-persona-action="wear-homebase" data-persona-id="${persona.id}">${wornHere ? 'Worn' : 'Wear'}</button>
+              </div>
             </div>
           `;
         }).join('');
@@ -7205,11 +7211,18 @@ DeltaE = ${ledger.reuse_gain}`;
     }
     gallerySelectedMaskId = id;
     homebaseWornMaskId = id;
-    if (!isCurrentStationPage('homebase')) {
+    const hasLocalMaskFoundry = Boolean(
+      document.querySelector('.mask-foundry-shell') &&
+      $('personaComparisonText') &&
+      $('cadenceLockCorpus')
+    );
+    if (!isCurrentStationPage('homebase') && !hasLocalMaskFoundry) {
       navigateToStation('homebase');
       return;
     }
-    setArtifactTab('homebase', { updateHash: false });
+    if (isCurrentStationPage('homebase')) {
+      setArtifactTab('homebase', { updateHash: false });
+    }
     renderPersonas();
     const lock = currentHomebaseLock();
     const comparisonText = String($('personaComparisonText')?.value || '').trim();

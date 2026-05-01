@@ -8097,6 +8097,503 @@ body[data-page-kind="trainer"] .analysis-status {
   }
 }
 
+/* Patch 35.x / Aperture-informed Mask Foundry cockpit for Homebase + Personas */
+
+/* Keep the real section-label hairlines, but kill the decorative top-corner
+   slash that reads as a broken purple blob on chamber shells. */
+body[data-page-kind] .field::after,
+body[data-page-kind] .trainer-surface::after,
+body[data-page-kind] .metric::after,
+body[data-page-kind] .harbor-box::after,
+body[data-page-kind] .ledger-stage::after,
+body[data-page-kind] .bay-profile::after,
+body[data-page-kind] .shell-duel::after,
+body[data-page-kind] .persona::after,
+body[data-page-kind] .field-notice::after,
+body[data-page-kind] .analysis-status::after,
+body[data-page-kind="gateway"] .gateway-card::after {
+  content: none;
+  display: none;
+}
+
+body[data-page-kind="homebase"] .shell,
+body[data-page-kind="personas"] .shell {
+  max-width: min(1680px, calc(100vw - 12px));
+  min-height: 100dvh;
+  padding: 7px 6px 10px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+body[data-page-kind="homebase"] .chamber-header,
+body[data-page-kind="personas"] .chamber-header {
+  padding: 7px 9px 6px;
+}
+
+body[data-page-kind="homebase"] .station-masthead-copy h1,
+body[data-page-kind="personas"] .station-masthead-copy h1 {
+  font-size: clamp(15px, 1.35vw, 20px);
+  letter-spacing: 0.18em;
+}
+
+body[data-page-kind="homebase"] .hero-station-line,
+body[data-page-kind="personas"] .hero-station-line {
+  font-size: 0.56rem;
+}
+
+body[data-page-kind="homebase"] .station-statusrail,
+body[data-page-kind="personas"] .station-statusrail,
+body[data-page-kind="homebase"] .station-nav,
+body[data-page-kind="personas"] .station-nav {
+  margin-top: 5px;
+  gap: 5px;
+  padding: 4px 0;
+}
+
+body[data-page-kind="homebase"] .station-statusrail .console-status,
+body[data-page-kind="homebase"] .station-statusrail .statepill,
+body[data-page-kind="personas"] .station-statusrail .console-status,
+body[data-page-kind="personas"] .station-statusrail .statepill {
+  min-height: 20px;
+  padding: 0 7px;
+  font-size: 8.5px;
+}
+
+body[data-page-kind="homebase"] .station-nav .top-tab,
+body[data-page-kind="personas"] .station-nav .top-tab {
+  min-height: 25px;
+  padding: 0 8px;
+  font-size: 0.56rem;
+}
+
+.station-main-mask-foundry,
+.station-main-mask-foundry .mask-foundry-view {
+  min-height: 0;
+}
+
+.mask-foundry-shell {
+  display: grid;
+  grid-template-columns: minmax(230px, 0.82fr) minmax(430px, 1.5fr) minmax(250px, 0.95fr);
+  gap: 8px;
+  min-height: 0;
+  height: clamp(560px, calc(100dvh - 132px), 900px);
+  align-items: stretch;
+}
+
+body[data-page-kind="homebase"] .station-chamber-homebase.mask-foundry-shell,
+body[data-page-kind="personas"] .station-chamber-personas.mask-foundry-shell {
+  grid-template-columns: minmax(230px, 0.82fr) minmax(430px, 1.5fr) minmax(250px, 0.95fr);
+}
+
+.mask-foundry-pane {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--room-secondary-rgb), 0.24) transparent;
+}
+
+.mask-foundry-pane::-webkit-scrollbar {
+  width: 3px;
+}
+
+.mask-foundry-pane::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mask-foundry-pane::-webkit-scrollbar-thumb {
+  background: rgba(var(--room-secondary-rgb), 0.22);
+  border-radius: 999px;
+}
+
+.mask-foundry-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0;
+}
+
+.mask-foundry-heading h2 {
+  font-size: clamp(16px, 1.55vw, 22px);
+  letter-spacing: 0.08em;
+}
+
+.mask-foundry-heading .section-note {
+  max-width: 27ch;
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.mask-foundry-home {
+  border-color: rgba(189, 147, 249, 0.16);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(189, 147, 249, 0.09), transparent 28%),
+    linear-gradient(180deg, rgba(9, 11, 18, 0.92), rgba(4, 6, 11, 0.98));
+}
+
+.mask-foundry-contact {
+  border-color: rgba(116, 234, 255, 0.18);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(116, 234, 255, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(7, 12, 18, 0.94), rgba(3, 5, 9, 0.99));
+}
+
+.mask-foundry-gallery {
+  border-color: rgba(170, 255, 126, 0.14);
+  background:
+    radial-gradient(circle at 88% 0%, rgba(170, 255, 126, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(8, 12, 13, 0.94), rgba(3, 5, 7, 0.99));
+}
+
+.mask-foundry-pane .trainer-surface,
+.mask-foundry-pane .field,
+.mask-foundry-pane .analysis-status,
+.mask-foundry-pane .persona {
+  padding: 9px;
+}
+
+.mask-foundry-pane .analysis-status {
+  font-size: 0.68rem;
+  line-height: 1.36;
+}
+
+.mask-foundry-state {
+  display: grid;
+  gap: 6px;
+}
+
+.mask-foundry-home #cadenceLockCorpus {
+  min-height: clamp(110px, 18dvh, 190px);
+}
+
+.mask-foundry-contact #personaComparisonText {
+  min-height: clamp(150px, 24dvh, 280px);
+}
+
+.mask-foundry-contact textarea[readonly] {
+  min-height: clamp(90px, 14dvh, 150px);
+}
+
+.mask-foundry-contact .homebase-mask-stage {
+  gap: 7px;
+}
+
+.mask-foundry-contact .homebase-mask-route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 4px 0 0;
+}
+
+.mask-foundry-contact .homebase-route-chip {
+  min-height: 20px;
+  padding: 0 7px;
+  font-size: 8.5px;
+}
+
+.mask-foundry-contact .homebase-worn-mask-card,
+.mask-foundry-gallery .persona-preview-grid {
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.mask-foundry-contact .homebase-worn-mask-card .persona-mask-portrait,
+.mask-foundry-gallery .persona-preview-grid .persona-mask-portrait {
+  min-height: 74px;
+  height: 74px;
+}
+
+.mask-foundry-contact .persona-mask-output-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.mask-foundry-contact .persona-mask-summary {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.mask-foundry-contact .trainer-summary-card {
+  min-height: 0;
+  padding: 9px;
+}
+
+.mask-foundry-contact .trainer-summary-card strong {
+  font-size: clamp(18px, 2vw, 28px);
+}
+
+.mask-foundry-gallery .persona-preview-stage {
+  max-height: 48dvh;
+  overflow: auto;
+}
+
+.mask-foundry-gallery .persona-preview-copy h3,
+.mask-foundry-contact .homebase-worn-mask-copy h3 {
+  margin: 0;
+  font-size: clamp(16px, 1.5vw, 20px);
+}
+
+.mask-foundry-gallery .persona-note-grid,
+.mask-foundry-gallery .persona-preview-swatch {
+  gap: 7px;
+}
+
+.mask-foundry-gallery .persona-shelf-panel {
+  display: grid;
+  gap: 8px;
+}
+
+.mask-foundry-gallery .persona-gallery-section {
+  display: grid;
+  gap: 6px;
+}
+
+.mask-foundry-gallery .persona-gallery-heading h3 {
+  margin: 0;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mask-foundry-gallery .persona-shelf-grid {
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 7px;
+}
+
+.mask-foundry-gallery .persona {
+  min-height: 0;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.mask-foundry-gallery .persona-top {
+  display: grid;
+  gap: 3px;
+}
+
+.mask-foundry-gallery .persona-top .persona-action {
+  font-size: 7.5px;
+  letter-spacing: 0.12em;
+}
+
+.mask-foundry-gallery .persona .name {
+  font-size: 0.78rem;
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+}
+
+.mask-foundry-gallery .persona-card-copy,
+.mask-foundry-gallery .persona-mask-meta,
+.mask-foundry-gallery .persona-mask-label,
+.mask-foundry-gallery .persona-diagnostic-swatch {
+  display: none;
+}
+
+.mask-foundry-gallery .persona-mask-portrait {
+  min-height: 54px;
+  height: 54px;
+}
+
+.mask-foundry-gallery .persona-mask-plate {
+  inset: auto 6px 6px 6px;
+}
+
+.mask-foundry-gallery .persona-mask-sigil {
+  font-size: clamp(17px, 2.4vw, 24px);
+}
+
+.mask-foundry-gallery .chips {
+  gap: 4px;
+}
+
+.mask-foundry-gallery .chips .chip {
+  min-height: 18px;
+  padding: 0 5px;
+  font-size: 8px;
+}
+
+.mask-foundry-gallery .chips .chip:nth-child(n+3) {
+  display: none;
+}
+
+.mask-foundry-gallery .persona-card-actions {
+  display: flex;
+  margin-top: 2px;
+}
+
+.mask-foundry-gallery .persona-card-wear {
+  width: 100%;
+  min-height: 24px;
+  border: 1px solid rgba(var(--room-secondary-rgb), 0.18);
+  border-radius: 999px;
+  background: rgba(var(--room-accent-rgb), 0.08);
+  color: rgba(var(--room-secondary-rgb), 0.92);
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.mask-foundry-gallery .persona.worn-homebase .persona-card-wear {
+  border-color: rgba(170, 255, 126, 0.34);
+  background: rgba(170, 255, 126, 0.12);
+  color: var(--lime);
+}
+
+body[data-page-kind="personas"] .mask-foundry-shell[data-foundry-focus="personas"] .mask-foundry-gallery {
+  border-color: rgba(170, 255, 126, 0.24);
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.38),
+    0 0 18px rgba(170, 255, 126, 0.08),
+    inset 0 0 0 1px rgba(170, 255, 126, 0.04);
+}
+
+body[data-page-kind="homebase"] .mask-foundry-shell[data-foundry-focus="homebase"] .mask-foundry-home {
+  border-color: rgba(189, 147, 249, 0.26);
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.38),
+    0 0 18px rgba(189, 147, 249, 0.08),
+    inset 0 0 0 1px rgba(189, 147, 249, 0.04);
+}
+
+@media (max-width: 1180px) {
+  body[data-page-kind="homebase"] .station-chamber-homebase.mask-foundry-shell,
+  body[data-page-kind="personas"] .station-chamber-personas.mask-foundry-shell,
+  .mask-foundry-shell {
+    grid-template-columns: minmax(220px, 0.78fr) minmax(380px, 1.42fr) minmax(220px, 0.92fr);
+  }
+
+  .mask-foundry-heading {
+    display: grid;
+  }
+
+  .mask-foundry-heading .section-note {
+    max-width: none;
+  }
+}
+
+@media (max-width: 920px) {
+  body[data-page-kind="homebase"] .shell,
+  body[data-page-kind="personas"] .shell {
+    max-width: none;
+    min-height: 100dvh;
+    padding: 8px;
+  }
+
+  body[data-page-kind="homebase"] .station-chamber-homebase.mask-foundry-shell,
+  body[data-page-kind="personas"] .station-chamber-personas.mask-foundry-shell,
+  .mask-foundry-shell {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .mask-foundry-pane {
+    overflow: visible;
+    max-height: none;
+  }
+
+  .mask-foundry-contact {
+    order: 1;
+  }
+
+  .mask-foundry-home {
+    order: 2;
+  }
+
+  .mask-foundry-gallery {
+    order: 3;
+  }
+
+  .mask-foundry-contact #personaComparisonText {
+    min-height: clamp(180px, 32dvh, 320px);
+  }
+
+  .mask-foundry-gallery .persona-shelf-grid {
+    grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+  }
+
+  .mask-foundry-gallery .persona-preview-stage {
+    max-height: none;
+  }
+}
+
+@media (max-width: 620px) {
+  body[data-page-kind="homebase"] .station-masthead-copy,
+  body[data-page-kind="personas"] .station-masthead-copy {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  body[data-page-kind="homebase"] .station-statusrail,
+  body[data-page-kind="personas"] .station-statusrail,
+  body[data-page-kind="homebase"] .station-nav,
+  body[data-page-kind="personas"] .station-nav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+  }
+
+  body[data-page-kind="homebase"] .station-statusrail::-webkit-scrollbar,
+  body[data-page-kind="personas"] .station-statusrail::-webkit-scrollbar,
+  body[data-page-kind="homebase"] .station-nav::-webkit-scrollbar,
+  body[data-page-kind="personas"] .station-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mask-foundry-pane {
+    padding: 9px;
+    border-radius: 14px;
+  }
+
+  .mask-foundry-contact .persona-mask-output-grid,
+  .mask-foundry-contact .persona-mask-summary,
+  .mask-foundry-contact .homebase-worn-mask-card,
+  .mask-foundry-gallery .persona-preview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mask-foundry-contact .homebase-worn-mask-card .persona-mask-portrait,
+  .mask-foundry-gallery .persona-preview-grid .persona-mask-portrait {
+    min-height: 64px;
+    height: 64px;
+  }
+
+  .mask-foundry-home .trainer-actions,
+  .mask-foundry-gallery .persona-actions {
+    position: sticky;
+    bottom: max(8px, env(safe-area-inset-bottom));
+    z-index: 5;
+    padding: 7px;
+    margin-inline: -2px;
+    border: 1px solid rgba(var(--room-secondary-rgb), 0.14);
+    border-radius: 999px;
+    background: rgba(3, 5, 9, 0.92);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .mask-foundry-home .trainer-actions button,
+  .mask-foundry-gallery .persona-actions button {
+    min-height: 32px;
+    padding: 0 9px;
+    font-size: 9px;
+  }
+
+  .mask-foundry-gallery .persona-shelf-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 900px) {
   body[data-page-kind="homebase"] .station-masthead-copy,
   body[data-page-kind="personas"] .station-masthead-copy,

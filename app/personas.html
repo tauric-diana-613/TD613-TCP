@@ -42,16 +42,151 @@
       </nav>
     </div>
 
-    <main class="view-stack station-stack station-main station-main-personas">
-      <section id="viewPanePersonas" class="view-pane active">
-        <div class="station-chamber station-chamber-personas">
-          <section class="panel personas-panel personas-primary-panel active-bench">
-            <div class="panel-heading">
+    <main class="view-stack station-stack station-main station-main-personas station-main-mask-foundry">
+      <section id="viewPanePersonas" class="view-pane active mask-foundry-view">
+        <div class="station-chamber station-chamber-personas mask-foundry-shell" data-foundry-focus="personas">
+          <section class="panel mask-foundry-pane mask-foundry-home active-bench">
+            <div class="panel-heading mask-foundry-heading">
               <div>
-                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Selected shell</div>
-                <h2>Inspect the artifact</h2>
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionHomebase">&#xD834;&#xDF0B;</span> Homebase</div>
+                <h2>Cadence anchor</h2>
               </div>
-              <p class="section-note">Choose on the shelf, then move the shell into Homebase or Deck.</p>
+              <p class="section-note">The home voice stays live beside the mask shelf instead of hiding in another chamber.</p>
+            </div>
+
+            <div class="persona-toolbar chamber-tool-state mask-foundry-state">
+              <div id="homebaseStatus" class="analysis-status">Homebase // no cadence staged yet</div>
+            </div>
+
+            <section id="cadenceLockboxSurface" class="trainer-surface lockbox-surface">
+              <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionHomebase">&#xD834;&#xDF0B;</span> Cadence Lockbox</div>
+              <label class="field trainer-name-field" for="cadenceLockName">
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Lock name</span>
+                    <span class="field-copy">Optional short name for the cadence home you are about to stage.</span>
+                  </div>
+                </div>
+                <input id="cadenceLockName" type="text" placeholder="Cadence Home" autocomplete="off">
+              </label>
+              <label class="field" for="cadenceLockCorpus">
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Cadence Lockbox</span>
+                    <span class="field-copy">Paste samples from the same voice. Blank lines split the corpus so the lock can read cadence across contexts.</span>
+                  </div>
+                </div>
+                <textarea id="cadenceLockCorpus"></textarea>
+              </label>
+              <div class="trainer-actions">
+                <button id="lockCadenceBtn" type="button" class="primary-cta">Lock</button>
+                <button id="revealCadenceBtn" type="button" class="secondary">Reveal</button>
+                <button id="saveCadenceLockBtn" type="button" class="secondary">Save</button>
+              </div>
+              <div id="homebaseLockStatus" class="analysis-status">Stage a cadence draft. Reveal opens the dossier. Save keeps it in the session archive for this tab only.</div>
+            </section>
+
+            <section id="cadenceLockDossierSurface" class="trainer-surface persona-dossier-surface" data-revealed="false">
+              <div id="cadenceLockDossier" class="persona-dossier"></div>
+            </section>
+
+            <section class="trainer-surface mask-foundry-archive">
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Lock archive</div>
+              <div id="cadenceLockArchive" class="lock-archive"></div>
+            </section>
+          </section>
+
+          <section class="panel mask-foundry-pane mask-foundry-contact">
+            <div class="panel-heading mask-foundry-heading">
+              <div>
+                <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionMaskBench">&#xDBF5;&#xDE13;</span> Contact bay</div>
+                <h2>Source → mask → residue</h2>
+              </div>
+              <p class="section-note">Choose a shell, wear it, and test the passage without leaving the gallery.</p>
+            </div>
+
+            <div id="homebaseMaskStatus" class="analysis-status">Worn mask // none // choose on the shelf, then bring into Homebase</div>
+
+            <section id="homebaseWornMaskStage" class="trainer-surface homebase-mask-stage" data-mask-phase="latent">
+              <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionMaskBench">&#xDBF5;&#xDE13;</span> Worn mask</div>
+              <div id="homebaseMaskRoute" class="homebase-mask-route" aria-label="Mask contact route">
+                <span class="homebase-route-chip" data-step="chosen">Chosen</span>
+                <span class="homebase-route-chip" data-step="worn">Worn</span>
+                <span class="homebase-route-chip" data-step="contact">In contact</span>
+                <span class="homebase-route-chip" data-step="residue">Residue read</span>
+              </div>
+              <div id="homebaseWornMask" class="homebase-worn-mask"></div>
+            </section>
+
+            <section class="trainer-surface homebase-passage-surface">
+              <div class="section-kicker"><span class="glyph glyph-cyan" aria-hidden="true" data-glyph-key="sectionMaskBench">&#xDBF5;&#xDE13;</span> Transform bench</div>
+              <label class="field" for="personaComparisonText">
+                <div class="field-head">
+                  <div class="field-head-copy">
+                    <span class="field-label">Comparison text</span>
+                    <span class="field-copy">Paste the text to pass through the worn mask. Homebase reads source, output, and residue against the active cadence home.</span>
+                  </div>
+                </div>
+                <textarea id="personaComparisonText"></textarea>
+              </label>
+              <div id="maskBenchStatus" class="analysis-status">Stage or select a cadence home to turn this bench on.</div>
+              <div id="maskContactSummary" class="analysis-status">Contact is latent.</div>
+              <div class="trainer-summary-grid persona-mask-summary">
+                <div class="trainer-summary-card">
+                  <div class="persona-kicker">Before contact</div>
+                  <strong id="maskRawToLock">--</strong>
+                  <span>How the source reads against home before the mask touches it.</span>
+                </div>
+                <div class="trainer-summary-card">
+                  <div class="persona-kicker">After contact</div>
+                  <strong id="maskMaskedToLock">--</strong>
+                  <span>How the transformed passage still reads against home.</span>
+                </div>
+                <div class="trainer-summary-card">
+                  <div class="persona-kicker">What moved</div>
+                  <strong id="maskWhatMoved">--</strong>
+                  <span id="maskDeltaToLock">Whether proximity moved, surface texture moved, both, or neither.</span>
+                </div>
+              </div>
+              <div class="persona-mask-output-grid">
+                <div class="trainer-surface">
+                  <div class="persona-kicker">Source</div>
+                  <textarea id="personaMaskSource" readonly></textarea>
+                </div>
+                <div class="trainer-surface">
+                  <div class="persona-kicker">Through Mask</div>
+                  <textarea id="personaMaskOutput" readonly></textarea>
+                </div>
+                <div class="trainer-surface">
+                  <div class="persona-kicker">What clung</div>
+                  <ul id="maskStickinessNotes" class="persona-risk-list">
+                    <li>Select or create a cadence home first.</li>
+                  </ul>
+                  <details id="maskApertureLedger" class="persona-ledger-drawer">
+                    <summary>
+                      <span>Aperture ledger</span>
+                      <span id="maskApertureLedgerMeta" class="persona-ledger-meta">Detailed warning and repair traces appear here.</span>
+                    </summary>
+                    <ul id="maskApertureLedgerItems" class="persona-risk-list persona-ledger-list">
+                      <li>Select or create a cadence home first.</li>
+                    </ul>
+                  </details>
+                </div>
+                <div class="trainer-surface">
+                  <div class="persona-kicker">Shift preview</div>
+                  <div id="personaMaskShiftPreview" class="mask-shift-preview">Sentence-level movement will appear here once the mask rewrites a passage.</div>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <aside class="panel mask-foundry-pane mask-foundry-gallery personas-panel">
+            <div class="panel-heading mask-foundry-heading">
+              <div>
+                <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Mask gallery</div>
+                <h2>Choose the shell</h2>
+              </div>
+              <p class="section-note">Built-ins, captured shells, and trained artifacts stay visible beside the transform.</p>
             </div>
 
             <div class="persona-toolbar">
@@ -62,19 +197,10 @@
               <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Selected mask</div>
               <div id="personaPreviewBody" class="persona-preview-body"></div>
             </section>
-          </section>
 
-          <aside class="evidence-spine evidence-spine-personas">
-            <section class="panel persona-shelf-panel">
-              <div class="panel-heading">
-                <div>
-                  <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Artifact shelf</div>
-                  <h2>Dispatch a shell</h2>
-                </div>
-                <p class="section-note">Built-ins, captured shells, and trained artifacts stay visible here.</p>
-              </div>
-
-              <div id="personaDeck" class="personagrid compact"></div>
+            <section class="trainer-surface persona-shelf-panel">
+              <div class="section-kicker"><span class="glyph glyph-lime" aria-hidden="true" data-glyph-key="sectionPersonaDeck">&#x03C8;</span> Artifact shelf</div>
+              <div id="personaDeck" class="personagrid compact mask-foundry-persona-deck"></div>
             </section>
           </aside>
         </div>

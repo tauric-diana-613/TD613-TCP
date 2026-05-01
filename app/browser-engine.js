@@ -17957,27 +17957,27 @@ function selectWinningCandidate(candidates = []) {
 
 function holdHeadline(holdClass = 'below-rewrite-bar') {
   if (holdClass === 'aperture-route-pressure') {
-    return 'Generator V2 hold // Aperture raised the ontology route floor above publishable passage.';
+    return 'Generator V2 pressure // Aperture raised the ontology route floor; best surface remains visible.';
   }
   if (holdClass === 'timestamp-hallucination') {
-    return 'Generator V2 hold // temporal attestation failed and the rewrite introduced an unsupported clock time.';
+    return 'Generator V2 pressure // temporal attestation flagged an unsupported clock time.';
   }
   if (holdClass === 'hard-anchor-failure') {
-    return 'Generator V2 hold // exact witness anchors broke under rewrite pressure.';
+    return 'Generator V2 pressure // exact witness anchors broke under rewrite pressure.';
   }
   if (holdClass === 'semantic-failure') {
-    return 'Generator V2 hold // semantic coverage dropped below the class floor.';
+    return 'Generator V2 pressure // semantic coverage dropped below the class floor.';
   }
   if (holdClass === 'pathology') {
-    return 'Generator V2 hold // output collapsed into a render-unsafe form.';
+    return 'Generator V2 pressure // output showed render-risk; source-safe surface remains visible.';
   }
-  return 'Generator V2 hold // no candidate cleared the rewrite bar honestly.';
+  return 'Generator V2 pressure // no candidate cleared the rewrite bar cleanly; best surface remains visible.';
 }
 
 function explainGenerationReasonCode(code = '') {
   const explanations = {
     'hard-anchor-failure': 'Exact witness anchors broke under rewrite pressure.',
-    'aperture-route-pressure': 'Aperture held the route because ontology integrity pressure stayed above the publishable floor.',
+    'aperture-route-pressure': 'Aperture flagged the route because ontology integrity pressure stayed above the publishable floor.',
     'timestamp-hallucination': 'Temporal attestation failed because the rewrite introduced a clock time the source did not support.',
     'anchor-drift-detected': 'Protected anchor integrity slipped below the class floor.',
     'semantic-failure': 'Semantic coverage dropped below the class floor.',
@@ -18159,7 +18159,8 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     ...(bestCandidate?.apertureReview?.reasons || [])
   ]);
   const reasons = reasonCodes.length ? reasonCodes : Object.freeze([holdClass]);
-  const exposeHeldCandidate = Boolean(options.exposeHeldCandidate && bestCandidate?.outputText);
+  const outputText = normalizeText(bestCandidate?.outputText || sourceText);
+  const exposeHeldCandidate = Boolean(outputText) && options.allowOutputHold !== true;
   const candidateLedger = buildCandidateLedger(candidates, null);
   const candidateSuppression = candidateLedger.length
     ? round(candidateLedger.filter((entry) => entry.status === 'held').length / candidateLedger.length, 4)
@@ -18178,11 +18179,11 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     redundancyInflation: bestCandidate?.apertureReview?.redundancyInflation ?? 0.2,
     capacityPressure: bestCandidate?.apertureReview?.capacityPressure ?? 0.24,
     policyPressure: bestCandidate?.apertureReview?.policyPressure ?? 0,
-    withheldMaterial: true,
-    withheldReason: holdClass
+    withheldMaterial: false,
+    withheldReason: null
   });
   const generationDocket = Object.freeze({
-    status: 'held',
+    status: exposeHeldCandidate ? 'diagnostic-pressure' : 'held',
     holdClass,
     headline,
     reasons: Object.freeze(reasons),
@@ -18204,8 +18205,8 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     : null;
 
   return Object.freeze({
-    text: exposeHeldCandidate ? bestCandidate.outputText : '',
-    internalText: bestCandidate?.outputText || sourceText,
+    text: exposeHeldCandidate ? outputText : '',
+    internalText: outputText || sourceText,
     sourceRegisterLane: bestCandidate?.sourceRegisterLane || bestCandidate?.relationInventory?.sourceRegisterLane || 'formal-record',
     targetRegisterLane: bestCandidate?.targetRegisterLane || 'formal-record',
     sourceProfile,
@@ -18250,7 +18251,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     ]),
     borrowedShellOutcome: exposeHeldCandidate
       ? (bestCandidate?.transferClass === 'structural' ? 'structural' : 'partial')
-      : 'held',
+      : 'diagnostic-pressure',
     borrowedShellFailureClass: holdClass,
     toolabilityAudit: bestCandidate?.toolabilityAudit || Object.freeze({
       readability: 0,
@@ -18292,7 +18293,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     },
     apertureAudit,
     apertureProtocol: Object.freeze({
-      outcome: exposeHeldCandidate ? 'diagnostic-hold-shown' : 'generator-hold',
+      outcome: exposeHeldCandidate ? 'diagnostic-pressure-shown' : 'generator-hold',
       line: headline,
       apertureAudit
     }),
@@ -18300,7 +18301,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     generatorVersion: 'v2',
     generationDocket,
     candidateLedger,
-    holdStatus: exposeHeldCandidate ? 'diagnostic-held' : 'held'
+    holdStatus: exposeHeldCandidate ? 'landed' : 'held'
   });
 }
 
