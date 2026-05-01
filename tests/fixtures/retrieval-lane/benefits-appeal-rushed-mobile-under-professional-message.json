@@ -42,7 +42,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.136
+          "globalBagScore": 0.125
         },
         {
           "sourceClauseId": "s1c0",
@@ -54,7 +54,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.227
+          "globalBagScore": 0.208
         },
         {
           "sourceClauseId": "s1c1",
@@ -78,19 +78,19 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.227
+          "globalBagScore": 0.208
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s3c0",
+          "matchedClauseId": "s2c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.045
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s4c0",
@@ -102,7 +102,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.318
+          "globalBagScore": 0.292
         }
       ],
       "sourceClauseCount": 6,
@@ -213,6 +213,8 @@
       "lexicalRegisterOperationsSelected": [
         "expanded:pls->please",
         "expanded:bc->because",
+        "feature:addr->address",
+        "feature:req->request",
         "feature:plus->and",
         "feature:dont->do-not",
         "feature:isnt->is-not",
@@ -273,6 +275,16 @@
           "family": "surface"
         },
         {
+          "from": "addr",
+          "to": "address",
+          "family": "feature"
+        },
+        {
+          "from": "req",
+          "to": "request",
+          "family": "feature"
+        },
+        {
           "from": "+",
           "to": "and",
           "family": "feature"
@@ -310,7 +322,7 @@
         ],
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
-        "concealmentEffectiveness": 0.75,
+        "concealmentEffectiveness": 0.8,
         "surfaceMarkerCount": 2,
         "pressure": {
           "targetRegisterLane": "professional-message",
@@ -344,11 +356,13 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 4,
+          "count": 6,
           "markers": [
             "docs",
             "pls",
             "bc",
+            "addr",
+            "req",
             "profile-abbreviation-density"
           ]
         },
@@ -374,7 +388,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 8
+        "totalMarkers": 10
       },
       "donor": {
         "registerLane": "professional-message",
@@ -461,11 +475,11 @@
     },
     "donorProgress": {
       "eligible": true,
-      "sourceDonorDistance": 4.36,
-      "outputDonorDistance": 2.244,
-      "donorImprovement": 2.116,
-      "donorImprovementRatio": 0.485,
-      "sourceOutputLexicalOverlap": 0.79
+      "sourceDonorDistance": 4.262,
+      "outputDonorDistance": 2.242,
+      "donorImprovement": 2.02,
+      "donorImprovementRatio": 0.474,
+      "sourceOutputLexicalOverlap": 0.734
     },
     "candidateLedger": [
       {
@@ -475,10 +489,10 @@
         "status": "eligible",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 0.8554,
+        "score": 0.8522,
         "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.6486,
+        "targetFit": 0.6492,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
@@ -509,7 +523,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 6,
+        "lexemeSwapCount": 8,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR",
@@ -531,11 +545,13 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 4,
+              "count": 6,
               "markers": [
                 "docs",
                 "pls",
                 "bc",
+                "addr",
+                "req",
                 "profile-abbreviation-density"
               ]
             },
@@ -561,7 +577,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 10
           },
           "donor": {
             "registerLane": "professional-message",
@@ -663,7 +679,7 @@
           ],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.75,
+          "concealmentEffectiveness": 0.8,
           "surfaceMarkerCount": 2,
           "pressure": {
             "targetRegisterLane": "professional-message",
@@ -738,7 +754,7 @@
             "routePressure": 0.333
           }
         },
-        "outputPreview": "The practical stakes remain visible. Ba-4427 is not a no-doc case, and mail got kicked back from elm but she already switched to birch shelter addr and that let"
+        "outputPreview": "The practical stakes remain visible. Ba-4427 is not a no-doc case, and mail got kicked back from elm but she already switched to birch shelter address and that "
       },
       {
         "id": "base:register-lexicon",
@@ -747,10 +763,10 @@
         "status": "selected",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 0.9942,
+        "score": 0.991,
         "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.5869,
+        "targetFit": 0.5873,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
@@ -775,7 +791,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 6,
+        "lexemeSwapCount": 8,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR",
@@ -797,11 +813,13 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 4,
+              "count": 6,
               "markers": [
                 "docs",
                 "pls",
                 "bc",
+                "addr",
+                "req",
                 "profile-abbreviation-density"
               ]
             },
@@ -827,7 +845,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 10
           },
           "donor": {
             "registerLane": "professional-message",
@@ -929,7 +947,7 @@
           ],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.75,
+          "concealmentEffectiveness": 0.8,
           "surfaceMarkerCount": 2,
           "pressure": {
             "targetRegisterLane": "professional-message",
@@ -1002,7 +1020,7 @@
             "routePressure": 0.088
           }
         },
-        "outputPreview": "The practical stakes remain visible. Ba-4427 is not a no-doc case. Mail got kicked back from elm but she already switched to birch shelter addr and that letter "
+        "outputPreview": "The practical stakes remain visible. Ba-4427 is not a no-doc case. Mail got kicked back from elm but she already switched to birch shelter address and that lett"
       },
       {
         "id": "amplified:register-lexicon",
@@ -1011,10 +1029,10 @@
         "status": "eligible",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 0.9574,
+        "score": 0.9541,
         "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.6,
+        "targetFit": 0.6006,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
@@ -1045,7 +1063,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 6,
+        "lexemeSwapCount": 8,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR",
@@ -1067,11 +1085,13 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 4,
+              "count": 6,
               "markers": [
                 "docs",
                 "pls",
                 "bc",
+                "addr",
+                "req",
                 "profile-abbreviation-density"
               ]
             },
@@ -1097,7 +1117,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 10
           },
           "donor": {
             "registerLane": "professional-message",
@@ -1199,7 +1219,7 @@
           ],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.75,
+          "concealmentEffectiveness": 0.8,
           "surfaceMarkerCount": 2,
           "pressure": {
             "targetRegisterLane": "professional-message",
@@ -1274,7 +1294,7 @@
             "routePressure": 0.333
           }
         },
-        "outputPreview": "The practical stakes remain visible. Ba-4427 is not a no-doc case. Mail got kicked back from elm but she already switched to birch shelter addr and that letter "
+        "outputPreview": "The practical stakes remain visible. Ba-4427 is not a no-doc case. Mail got kicked back from elm but she already switched to birch shelter address and that lett"
       }
     ],
     "generationDocket": {
@@ -1376,9 +1396,11 @@
       "expanded:bc->because",
       "expanded:pls->please",
       "expanded:slash-list->sentences",
+      "feature:addr->address",
       "feature:dont->do-not",
       "feature:isnt->is-not",
       "feature:plus->and",
+      "feature:req->request",
       "feature:thats->that-is"
     ],
     "connectorStrategy": "cascade",

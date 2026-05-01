@@ -460,10 +460,10 @@
     },
     "donorProgress": {
       "eligible": true,
-      "sourceDonorDistance": 4.475,
-      "outputDonorDistance": 2.632,
-      "donorImprovement": 1.843,
-      "donorImprovementRatio": 0.412,
+      "sourceDonorDistance": 4.378,
+      "outputDonorDistance": 2.585,
+      "donorImprovement": 1.793,
+      "donorImprovementRatio": 0.41,
       "sourceOutputLexicalOverlap": 0.863
     },
     "candidateLedger": [
@@ -474,10 +474,10 @@
         "status": "selected",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.0135,
+        "score": 1.0148,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5851,
+        "targetFit": 0.5907,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],

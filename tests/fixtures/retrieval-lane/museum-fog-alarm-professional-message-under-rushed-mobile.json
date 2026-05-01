@@ -309,7 +309,7 @@
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
         "concealmentEffectiveness": 0,
-        "surfaceMarkerCount": 8,
+        "surfaceMarkerCount": 9,
         "pressure": {
           "targetRegisterLane": "rushed-mobile",
           "activeFamilies": [
@@ -336,9 +336,11 @@
           "markers": []
         },
         "chatspeakShorthand": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 1,
+          "markers": [
+            "pm-pretty-much"
+          ]
         },
         "notePosture": {
           "active": true,
@@ -358,9 +360,10 @@
           "markers": []
         },
         "activeFamilies": [
+          "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 1
+        "totalMarkers": 2
       },
       "donor": {
         "registerLane": "rushed-mobile",
@@ -417,9 +420,10 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 4,
+          "count": 5,
           "markers": [
             "tmrw",
+            "pm-pretty-much",
             "pls",
             "tho",
             "profile-abbreviation-density"
@@ -447,7 +451,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 8
+        "totalMarkers": 9
       },
       "pressure": {
         "targetRegisterLane": "rushed-mobile",
@@ -464,10 +468,10 @@
     },
     "donorProgress": {
       "eligible": true,
-      "sourceDonorDistance": 4.615,
-      "outputDonorDistance": 2.466,
-      "donorImprovement": 2.149,
-      "donorImprovementRatio": 0.466,
+      "sourceDonorDistance": 4.535,
+      "outputDonorDistance": 2.433,
+      "donorImprovement": 2.102,
+      "donorImprovementRatio": 0.464,
       "sourceOutputLexicalOverlap": 0.845
     },
     "candidateLedger": [
@@ -478,10 +482,10 @@
         "status": "selected",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 1.0197,
+        "score": 1.0207,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5988,
+        "targetFit": 0.6028,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -529,9 +533,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -551,9 +557,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "donor": {
             "registerLane": "rushed-mobile",
@@ -610,9 +617,10 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 4,
+              "count": 5,
               "markers": [
                 "tmrw",
+                "pm-pretty-much",
                 "pls",
                 "tho",
                 "profile-abbreviation-density"
@@ -640,7 +648,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 9
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -671,7 +679,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 8,
+          "surfaceMarkerCount": 9,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -751,10 +759,10 @@
         "status": "eligible",
         "sourceRegisterLane": "professional-message",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9566,
+        "score": 0.9576,
         "toolabilityScore": 0.7959,
         "rewriteStrength": 1,
-        "targetFit": 0.5355,
+        "targetFit": 0.5395,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -800,9 +808,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -822,9 +832,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "donor": {
             "registerLane": "rushed-mobile",
@@ -881,9 +892,10 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 4,
+              "count": 5,
               "markers": [
                 "tmrw",
+                "pm-pretty-much",
                 "pls",
                 "tho",
                 "profile-abbreviation-density"
@@ -911,7 +923,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 9
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -942,7 +954,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 8,
+          "surfaceMarkerCount": 9,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [

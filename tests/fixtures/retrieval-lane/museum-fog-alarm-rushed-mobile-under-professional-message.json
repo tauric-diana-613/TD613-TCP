@@ -354,9 +354,11 @@
           "markers": []
         },
         "chatspeakShorthand": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 1,
+          "markers": [
+            "pm-pretty-much"
+          ]
         },
         "notePosture": {
           "active": true,
@@ -376,9 +378,10 @@
           "markers": []
         },
         "activeFamilies": [
+          "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 1
+        "totalMarkers": 2
       },
       "output": {
         "registerLane": "professional-message",
@@ -426,10 +429,10 @@
     },
     "donorProgress": {
       "eligible": true,
-      "sourceDonorDistance": 4.615,
-      "outputDonorDistance": 1.524,
-      "donorImprovement": 3.091,
-      "donorImprovementRatio": 0.67,
+      "sourceDonorDistance": 4.535,
+      "outputDonorDistance": 1.525,
+      "donorImprovement": 3.01,
+      "donorImprovementRatio": 0.664,
       "sourceOutputLexicalOverlap": 0.804
     },
     "candidateLedger": [
@@ -443,7 +446,7 @@
         "score": 1.0139,
         "toolabilityScore": 0.877,
         "rewriteStrength": 1,
-        "targetFit": 0.6307,
+        "targetFit": 0.6306,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
@@ -529,9 +532,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -551,9 +556,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "professional-message",
@@ -700,7 +706,7 @@
         "score": 1.0383,
         "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.7591,
+        "targetFit": 0.7589,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
@@ -788,9 +794,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -810,9 +818,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "professional-message",
@@ -959,7 +968,7 @@
         "score": 0.6125,
         "toolabilityScore": 0.8276,
         "rewriteStrength": 1,
-        "targetFit": 0.6249,
+        "targetFit": 0.6248,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [
@@ -1049,9 +1058,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1071,9 +1082,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "professional-message",
@@ -1220,7 +1232,7 @@
         "score": 1.0426,
         "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.7426,
+        "targetFit": 0.7425,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
@@ -1308,9 +1320,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1330,9 +1344,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "professional-message",
@@ -1479,7 +1494,7 @@
         "score": 0.5802,
         "toolabilityScore": 0.8204,
         "rewriteStrength": 1,
-        "targetFit": 0.6249,
+        "targetFit": 0.6248,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [
@@ -1569,9 +1584,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1591,9 +1608,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "professional-message",

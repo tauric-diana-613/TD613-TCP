@@ -227,6 +227,7 @@
       "lexicalRegisterOperationsSelected": [
         "expanded:wks->weeks",
         "feature:thru->through",
+        "feature:hrs->formal",
         "feature:dont->do-not",
         "expanded:w->with",
         "expanded:slash-list->sentences"
@@ -285,6 +286,11 @@
         {
           "from": "thru",
           "to": "through",
+          "family": "feature"
+        },
+        {
+          "from": "hrs",
+          "to": "hours",
           "family": "feature"
         },
         {
@@ -348,9 +354,11 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 2,
+          "count": 4,
           "markers": [
             "thru",
+            "hrs",
+            "wks",
             "profile-abbreviation-density"
           ]
         },
@@ -377,7 +385,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 7
+        "totalMarkers": 9
       },
       "donor": {
         "registerLane": "formal-record",
@@ -388,9 +396,11 @@
           "markers": []
         },
         "chatspeakShorthand": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 1,
+          "markers": [
+            "pm-pretty-much"
+          ]
         },
         "notePosture": {
           "active": true,
@@ -410,9 +420,10 @@
           "markers": []
         },
         "activeFamilies": [
+          "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 1
+        "totalMarkers": 2
       },
       "output": {
         "registerLane": "formal-record",
@@ -461,11 +472,11 @@
     },
     "donorProgress": {
       "eligible": true,
-      "sourceDonorDistance": 4.153,
-      "outputDonorDistance": 2.342,
-      "donorImprovement": 1.811,
-      "donorImprovementRatio": 0.436,
-      "sourceOutputLexicalOverlap": 0.825
+      "sourceDonorDistance": 4.076,
+      "outputDonorDistance": 2.331,
+      "donorImprovement": 1.745,
+      "donorImprovementRatio": 0.428,
+      "sourceOutputLexicalOverlap": 0.793
     },
     "candidateLedger": [
       {
@@ -475,10 +486,10 @@
         "status": "selected",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "formal-record",
-        "score": 1.017,
+        "score": 1.0173,
         "toolabilityScore": 0.8813,
         "rewriteStrength": 1,
-        "targetFit": 0.6124,
+        "targetFit": 0.6138,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
@@ -513,7 +524,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 4,
+        "lexemeSwapCount": 5,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR"
@@ -534,9 +545,11 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 2,
+              "count": 4,
               "markers": [
                 "thru",
+                "hrs",
+                "wks",
                 "profile-abbreviation-density"
               ]
             },
@@ -563,7 +576,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 9
           },
           "donor": {
             "registerLane": "formal-record",
@@ -574,9 +587,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -596,9 +611,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "formal-record",
@@ -744,10 +760,10 @@
         "status": "eligible",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "formal-record",
-        "score": 1.0852,
+        "score": 1.0856,
         "toolabilityScore": 0.9047,
         "rewriteStrength": 1,
-        "targetFit": 0.6184,
+        "targetFit": 0.6201,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
@@ -782,7 +798,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 4,
+        "lexemeSwapCount": 5,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR"
@@ -803,9 +819,11 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 2,
+              "count": 4,
               "markers": [
                 "thru",
+                "hrs",
+                "wks",
                 "profile-abbreviation-density"
               ]
             },
@@ -832,7 +850,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 9
           },
           "donor": {
             "registerLane": "formal-record",
@@ -843,9 +861,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -865,9 +885,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "formal-record",
@@ -1111,6 +1132,7 @@
       "expanded:w->with",
       "expanded:wks->weeks",
       "feature:dont->do-not",
+      "feature:hrs->formal",
       "feature:thru->through"
     ],
     "connectorStrategy": "cascade",

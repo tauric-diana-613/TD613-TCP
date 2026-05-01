@@ -510,9 +510,11 @@
           "markers": []
         },
         "chatspeakShorthand": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 1,
+          "markers": [
+            "pm-pretty-much"
+          ]
         },
         "notePosture": {
           "active": true,
@@ -532,9 +534,10 @@
           "markers": []
         },
         "activeFamilies": [
+          "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 1
+        "totalMarkers": 2
       },
       "donor": {
         "registerLane": "rushed-mobile",
@@ -651,10 +654,10 @@
     },
     "donorProgress": {
       "eligible": true,
-      "sourceDonorDistance": 4.469,
-      "outputDonorDistance": 2.618,
-      "donorImprovement": 1.851,
-      "donorImprovementRatio": 0.414,
+      "sourceDonorDistance": 4.389,
+      "outputDonorDistance": 2.561,
+      "donorImprovement": 1.828,
+      "donorImprovementRatio": 0.416,
       "sourceOutputLexicalOverlap": 0.538
     },
     "candidateLedger": [
@@ -665,10 +668,10 @@
         "status": "eligible",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9037,
+        "score": 0.9052,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5636,
+        "targetFit": 0.5701,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -715,9 +718,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -737,9 +742,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "donor": {
             "registerLane": "rushed-mobile",
@@ -955,10 +961,10 @@
         "status": "eligible",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.8521,
+        "score": 0.8536,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5636,
+        "targetFit": 0.5701,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -1005,9 +1011,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1027,9 +1035,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "donor": {
             "registerLane": "rushed-mobile",
@@ -1245,10 +1254,10 @@
         "status": "eligible",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9252,
+        "score": 0.9269,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5179,
+        "targetFit": 0.5248,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -1295,9 +1304,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1317,9 +1328,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "donor": {
             "registerLane": "rushed-mobile",
@@ -1535,10 +1547,10 @@
         "status": "selected",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.9348,
+        "score": 0.9365,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5179,
+        "targetFit": 0.5248,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -1585,9 +1597,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1607,9 +1621,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "donor": {
             "registerLane": "rushed-mobile",
@@ -1825,10 +1840,10 @@
         "status": "eligible",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.8936,
+        "score": 0.8953,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5179,
+        "targetFit": 0.5248,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -1875,9 +1890,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1897,9 +1914,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "donor": {
             "registerLane": "rushed-mobile",

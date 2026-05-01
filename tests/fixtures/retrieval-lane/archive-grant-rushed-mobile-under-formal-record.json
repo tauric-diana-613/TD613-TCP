@@ -446,10 +446,10 @@
     },
     "donorProgress": {
       "eligible": true,
-      "sourceDonorDistance": 5.545,
+      "sourceDonorDistance": 5.404,
       "outputDonorDistance": 2.092,
-      "donorImprovement": 3.453,
-      "donorImprovementRatio": 0.623,
+      "donorImprovement": 3.312,
+      "donorImprovementRatio": 0.613,
       "sourceOutputLexicalOverlap": 0.723
     },
     "candidateLedger": [

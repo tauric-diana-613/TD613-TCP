@@ -503,10 +503,10 @@
     },
     "donorProgress": {
       "eligible": true,
-      "sourceDonorDistance": 5.545,
-      "outputDonorDistance": 4.531,
-      "donorImprovement": 1.014,
-      "donorImprovementRatio": 0.183,
+      "sourceDonorDistance": 5.404,
+      "outputDonorDistance": 4.392,
+      "donorImprovement": 1.012,
+      "donorImprovementRatio": 0.187,
       "sourceOutputLexicalOverlap": 0.841
     },
     "candidateLedger": [
@@ -517,10 +517,10 @@
         "status": "held",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.3762,
+        "score": 0.3802,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.2349,
+        "targetFit": 0.2517,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [
@@ -792,10 +792,10 @@
         "status": "held",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.3602,
+        "score": 0.3642,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.1814,
+        "targetFit": 0.1982,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [
@@ -1063,10 +1063,10 @@
         "status": "held",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.378,
+        "score": 0.382,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.2349,
+        "targetFit": 0.2517,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [

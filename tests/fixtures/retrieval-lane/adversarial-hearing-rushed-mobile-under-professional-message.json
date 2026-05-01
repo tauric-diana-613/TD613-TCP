@@ -344,9 +344,11 @@
           "markers": []
         },
         "chatspeakShorthand": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 1,
+          "markers": [
+            "pm-pretty-much"
+          ]
         },
         "notePosture": {
           "active": false,
@@ -363,8 +365,10 @@
           "count": 0,
           "markers": []
         },
-        "activeFamilies": [],
-        "totalMarkers": 0
+        "activeFamilies": [
+          "chatspeakShorthand"
+        ],
+        "totalMarkers": 1
       },
       "output": {
         "registerLane": "professional-message",
@@ -417,10 +421,10 @@
     },
     "donorProgress": {
       "eligible": true,
-      "sourceDonorDistance": 3.519,
-      "outputDonorDistance": 1.703,
-      "donorImprovement": 1.816,
-      "donorImprovementRatio": 0.516,
+      "sourceDonorDistance": 3.448,
+      "outputDonorDistance": 1.704,
+      "donorImprovement": 1.744,
+      "donorImprovementRatio": 0.506,
       "sourceOutputLexicalOverlap": 0.729
     },
     "candidateLedger": [
@@ -434,7 +438,7 @@
         "score": 1.0356,
         "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.7049,
+        "targetFit": 0.7048,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
@@ -517,9 +521,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": false,
@@ -536,8 +542,10 @@
               "count": 0,
               "markers": []
             },
-            "activeFamilies": [],
-            "totalMarkers": 0
+            "activeFamilies": [
+              "chatspeakShorthand"
+            ],
+            "totalMarkers": 1
           },
           "output": {
             "registerLane": "professional-message",
@@ -690,7 +698,7 @@
         "score": 1.024,
         "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.6835,
+        "targetFit": 0.6834,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [],
@@ -775,9 +783,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "pm-pretty-much"
+              ]
             },
             "notePosture": {
               "active": false,
@@ -794,8 +804,10 @@
               "count": 0,
               "markers": []
             },
-            "activeFamilies": [],
-            "totalMarkers": 0
+            "activeFamilies": [
+              "chatspeakShorthand"
+            ],
+            "totalMarkers": 1
           },
           "output": {
             "registerLane": "professional-message",
