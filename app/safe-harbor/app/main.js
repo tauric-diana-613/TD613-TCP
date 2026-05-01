@@ -176,6 +176,8 @@
     resetStagedPacket: $('resetStagedPacket'),
     packetPreview: $('packetPreview'),
     auditLog: $('auditLog'),
+    safeHarborReceiptMount: $('safeHarborReceiptMount'),
+    safeHarborVaultReceiptMount: $('safeHarborVaultReceiptMount'),
     buildProbeButtons: Array.from(document.querySelectorAll('[data-probe-variant]')),
     copyButtons: Array.from(document.querySelectorAll('[data-copy-target]'))
   };
@@ -648,6 +650,74 @@
     renderHooks();
     renderPacket();
     renderAudit();
+    renderSafeHarborReceipt();
+  }
+
+  function triadShortfallLines(shortfalls = {}, wordCounts = {}) {
+    return KEYS
+      .filter((key) => Number(shortfalls[key] || 0) > 0)
+      .map((key) => {
+        const label = D.ingressPrompts[key] && D.ingressPrompts[key].promptLabel
+          ? D.ingressPrompts[key].promptLabel
+          : key;
+        return label + ': ' + Number(wordCounts[key] || 0) + '/' + MIN_LANE_WORDS + ' words';
+      });
+  }
+
+  function renderSafeHarborReceipt() {
+    const api = window.TD613OperatorReceipt;
+    if (!api || typeof api.render !== 'function') return;
+    const triad = evaluateTriadIssuance();
+    const issuance = state.packet && state.packet.issuance ? state.packet.issuance : null;
+    const issuedShi = issuance && issuance.badge_number ? issuance.badge_number : (state.covenant && state.covenant.badgeNumber ? state.covenant.badgeNumber : null);
+    const packetState = state.packet ? (state.packet.receipt && state.packet.receipt.state ? state.packet.receipt.state : 'staged') : 'not staged';
+    const shortfalls = issuance && issuance.triad_shortfalls ? issuance.triad_shortfalls : triad.shortfalls;
+    const wordCounts = issuance && issuance.triad_word_counts ? issuance.triad_word_counts : triad.wordCounts;
+    const blocked = issuedShi
+      ? []
+      : triad.thresholdSatisfied
+        ? (triad.blockingReason ? [triad.blockingReason] : [])
+        : triadShortfallLines(shortfalls, wordCounts);
+    const receiptPayload = {
+      surface: 'TD613 Safe Harbor',
+      action: issuedShi ? 'Safe Harbor issuance receipt' : (triad.ready ? 'SHI ready for Mint Staged Packet' : 'SHI blocked by triad threshold'),
+      status: issuedShi ? 'issued' : (triad.ready ? 'ready' : 'blocked'),
+      route: routeState(),
+      preserved: [
+        'Future/Past/Higher triad remains SHI source',
+        'raw detached signature text is pass-through only',
+        'packet staging does not fabricate stylometrics'
+      ],
+      changed: [
+        state.selectedBatchId ? ('batch=' + state.selectedBatchId) : '',
+        state.ingress.packetId ? ('packet=' + state.ingress.packetId) : '',
+        issuedShi ? ('SHI=' + issuedShi) : ''
+      ].filter(Boolean),
+      blocked,
+      risks: (triad.frameAlignmentFlags || []).map((flag) => flag.lane + ' frame alignment: ' + flag.detected),
+      next: issuedShi
+        ? 'Copy the SHI, seal/export the packet, or reopen with the same issued SHI.'
+        : triad.ready
+          ? 'Click Mint Staged Packet to bind the entrant stylometrics into a real SHI.'
+          : 'Complete every triad lane to the 40-word stylometric threshold.',
+      details: {
+        packet_state: packetState,
+        selected_batch_id: state.selectedBatchId || null,
+        triad_ready: triad.ready,
+        triad_threshold_satisfied: triad.thresholdSatisfied,
+        triad_word_counts: wordCounts,
+        triad_shortfalls: shortfalls,
+        stylometric_fingerprint: triad.stylometricFingerprint || (issuance && issuance.stylometric_fingerprint) || null,
+        issuance: issuance ? {
+          badge_number: issuance.badge_number || null,
+          badge_state: issuance.badge_state || null,
+          blocking_reason: issuance.blocking_reason || null,
+          assignment_basis: issuance.assignment_basis || null
+        } : null
+      }
+    };
+    if (dom.safeHarborReceiptMount) api.render(dom.safeHarborReceiptMount, receiptPayload);
+    if (dom.safeHarborVaultReceiptMount) api.render(dom.safeHarborVaultReceiptMount, receiptPayload);
   }
 
   function renderBatchIntake() {

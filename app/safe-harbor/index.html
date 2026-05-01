@@ -112,6 +112,7 @@
             <button class="control" id="mintStagedPacket" type="button" title="Mint / Seal Payload" disabled>Mint Staged Packet</button>
             <button class="control secondary" id="clearIngress" type="button">Clear Session</button>
           </div>
+          <div id="safeHarborReceiptMount" class="operator-receipt-mount safe-harbor-receipt-mount" data-td613-skip="true"></div>
         </aside>
       </div>
     </section>
@@ -413,6 +414,7 @@
             <div class="metric-row"><span class="label">Renderer contract</span><span class="value" id="rendererContractReadout">waiting</span></div>
             <div class="metric-row"><span class="label">Route source</span><span class="value" id="routeSourceReadout">local ingress</span></div>
           </div>
+          <div id="safeHarborVaultReceiptMount" class="operator-receipt-mount safe-harbor-receipt-mount" data-td613-skip="true"></div>
         </section>
 
         <section class="panel-section">
@@ -451,6 +453,7 @@
     </main>
   </div>
 
+  <script src="../operator-receipt.js"></script>
   <script src="app/data.js"></script>
   <script src="app/main.js"></script>
 </body>

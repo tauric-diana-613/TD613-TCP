@@ -6,6 +6,7 @@
     './browser-diagnostics.js?v=' + (V.diagnostics || ''),
     './browser-engine.js?v='      + (V.engine      || ''),
     './retrieval-fixtures.js?v='  + (V.fixtures    || ''),
+    './operator-receipt.js?v='    + (V.receipt     || ''),
     './browser-main.js?v='        + (V.main        || ''),
     './chamber-chrome.js?v='      + (V.chrome      || '')
   ];

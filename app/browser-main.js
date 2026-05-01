@@ -337,6 +337,26 @@
             : 'route live';
     pillNode.dataset.state = pillState;
     rail.dataset.state = pillState;
+    renderTcpOperatorReceipt({
+      action: hasSummary ? 'Aperture bridge updated' : 'Aperture bridge awaiting packet',
+      status: harborReady ? 'ready' : (hasSummary ? 'observing' : 'idle'),
+      route: hasSummary ? summary.routeState : 'membrane-only',
+      preserved: ['TCP gateway shell', 'six-door route layout', 'Safe Harbor handoff key'],
+      changed: hasSummary
+        ? [
+            'handoff=' + summary.handoffStatus,
+            'narrowing=' + summary.cumulativeNarrowing.toFixed(4),
+            'provenance=' + summary.provenanceIntegrity.toFixed(4)
+          ]
+        : [],
+      blocked: hasSummary && !harborReady ? ['no packet exported or packet-ready lane yet'] : [],
+      risks: hasSummary && summary.temporalPosture ? ['temporal posture=' + summary.temporalPosture] : [],
+      next: harborReady ? 'Open guarded Safe Harbor with this upstream context.' : 'Open full Aperture or continue observing the bridge rail.',
+      details: {
+        bridgeSummary: summary || null,
+        storageKey: GATEWAY_APERTURE_HANDOFF_KEY
+      }
+    });
   }
 
   function handleGatewayApertureBridgeMessage(event) {
@@ -1203,6 +1223,67 @@
     return normalized || 'gateway';
   })();
   const PAGE_ARTIFACT_TAB = PAGE_KIND_TO_ARTIFACT_TAB[PAGE_KIND] || 'homebase';
+
+  function operatorReceiptAnchor() {
+    if (PAGE_KIND === 'gateway') {
+      return document.querySelector('.gateway-head') || document.querySelector('.chamber-header');
+    }
+    return document.querySelector('.statusrail') || document.querySelector('.chamber-header') || document.querySelector('main');
+  }
+
+  function renderTcpOperatorReceipt(payload = {}) {
+    const api = window.TD613OperatorReceipt;
+    if (!api || typeof api.ensureMount !== 'function' || typeof api.render !== 'function') {
+      return null;
+    }
+    const mount = api.ensureMount({
+      id: 'operatorReceiptMount',
+      anchor: operatorReceiptAnchor(),
+      placement: 'afterend',
+      className: 'operator-receipt-mount'
+    });
+    return api.render(mount, {
+      surface: 'TCP / ' + PAGE_KIND,
+      ...payload
+    });
+  }
+
+  function summarizeTransferForReceipt(side) {
+    const transfer = side?.transfer || {};
+    const diagnostics = transferOperatorDiagnostics(transfer);
+    const featureShift = transfer.vernacularFeatureShift || {};
+    const semanticAudit = transfer.semanticAudit || {};
+    const ontologyPressure = transfer.ontologyAudit || transfer.generationDocket?.ontologyRoutePressure || {};
+    const drift = ontologyPressure.selectiveAdmissibilityDrift || {};
+    const fired = diagnostics.firedOperators || [];
+    const missing = diagnostics.missingOperators || [];
+    const realizedFeatures = featureShift.realizedFamilies || [];
+    const falseClean = featureShift.falseCleanFamilies || [];
+    const risks = [];
+    if (semanticAudit.polarityMismatches > 0) risks.push('polarity mismatches: ' + semanticAudit.polarityMismatches);
+    if (semanticAudit.tenseMismatches > 0) risks.push('tense mismatches: ' + semanticAudit.tenseMismatches);
+    if (drift.driftClass && drift.driftClass !== 'none') {
+      risks.push('Aperture drift: ' + drift.driftClass + ' / ' + (drift.routeFloor || 'play'));
+    }
+    return {
+      fired,
+      missing,
+      realizedFeatures,
+      falseClean,
+      risks,
+      details: {
+        side: side?.slot || '',
+        changedDimensions: transfer.changedDimensions || [],
+        profileShiftDimensions: transfer.profileShiftDimensions || [],
+        expectedOperators: diagnostics.expectedOperators || [],
+        firedOperators: fired,
+        missingOperators: missing,
+        vernacularFeatureShift: featureShift,
+        semanticAudit,
+        ontologyPressure
+      }
+    };
+  }
 
   const TCP_GLYPH_SYSTEM = {
     substrateVocabulary: { ...GLYPH_SUBSTRATE },
@@ -5023,6 +5104,15 @@
           <p class="duel-empty-copy">${duel.note}</p>
         </div>
       `;
+      renderTcpOperatorReceipt({
+        action: 'Cadence duel awaiting both bays',
+        status: 'idle',
+        route: duel.state,
+        preserved: ['reference bay raw text', 'probe bay raw text'],
+        blocked: [duel.note],
+        next: 'Populate both Deck bays, then run Analyze Cadences or Swap Cadences.',
+        details: { duelState: duel.state, note: duel.note }
+      });
       return;
     }
 
@@ -5054,6 +5144,30 @@
         ${renderDuelSide(duel.probe)}
       </div>
     `;
+    const referenceReceipt = summarizeTransferForReceipt(duel.reference);
+    const probeReceipt = summarizeTransferForReceipt(duel.probe);
+    const fired = [...new Set([...referenceReceipt.fired, ...probeReceipt.fired])];
+    const missing = [...new Set([...referenceReceipt.missing, ...probeReceipt.missing])];
+    const realizedFeatures = [...new Set([...referenceReceipt.realizedFeatures, ...probeReceipt.realizedFeatures])];
+    const risks = [...new Set([...referenceReceipt.risks, ...probeReceipt.risks])];
+    renderTcpOperatorReceipt({
+      action: 'Cadence duel receipt',
+      status: fired.length || realizedFeatures.length ? 'ready' : 'blocked',
+      route: 'deck-shell-duel',
+      preserved: ['source facts remain in their own bays', 'raw text stays local'],
+      changed: [
+        fired.length ? ('operators fired: ' + fired.slice(0, 6).join(', ')) : '',
+        realizedFeatures.length ? ('features shifted: ' + realizedFeatures.slice(0, 6).join(', ')) : ''
+      ].filter(Boolean),
+      blocked: missing.slice(0, 8),
+      risks,
+      next: missing.length ? 'Use the missing-operator list to decide which ontology/operator pocket needs buildout.' : 'Inspect the transformed bays and packet ledger.',
+      details: {
+        reference: referenceReceipt.details,
+        probe: probeReceipt.details,
+        duelCompare: duel.compare
+      }
+    });
   }
 
   function renderVoiceProfile(voiceState) {
@@ -6478,6 +6592,20 @@
     clearDecisionArrivalTimer();
     document.body.dataset.analysisEvent = 'idle';
     document.body.dataset.decisionArrival = 'none';
+    renderTcpOperatorReceipt({
+      action: PAGE_KIND === 'gateway' ? 'Gateway idle receipt' : 'Chamber idle receipt',
+      status: 'idle',
+      route: 'awaiting scan',
+      preserved: ['TCP shell', 'operator controls', 'local text custody'],
+      blocked: ['no cadence analysis has run yet'],
+      next: PAGE_KIND === 'gateway' ? 'Open a chamber door or launch Aperture.' : 'Stage one or two voices, then run Analyze Cadences.',
+      details: {
+        pageKind: PAGE_KIND,
+        containment,
+        mirrorLogic,
+        badge
+      }
+    });
   }
 
   function renderSoloReadoutCore({
@@ -6555,6 +6683,24 @@
     setMetricTone('custodyCard', 'live');
     document.body.dataset.decision = 'hold-branch';
     document.body.dataset.analysisResult = 'hold-branch';
+    renderTcpOperatorReceipt({
+      action: 'Solo cadence receipt',
+      status: 'ready',
+      route: routeStatus,
+      preserved: ['single-bay cadence witness', 'raw text remains local'],
+      changed: [
+        'traceability=' + metricTraceability,
+        'route=' + heroRouteValue,
+        'harbor=' + heroHarborValue
+      ],
+      blocked: ['pair route not computed until a second voice is present'],
+      next: 'Save this cadence as a persona or add a second voice for route comparison.',
+      details: {
+        ledgerPreview,
+        routeStatus,
+        forensicSchema: activeSchema
+      }
+    });
   }
 
   function renderSoloState(voiceState) {
@@ -6864,6 +7010,30 @@ DeltaE = ${ledger.reuse_gain}`;
     setMetricTone('traceabilityCard', cmp.traceability >= 0.7 ? 'live' : cmp.traceability >= 0.45 ? 'warm' : 'idle');
     setMetricTone('routePressureCard', decision === 'criticality' ? 'hot' : decision === 'passage' ? 'live' : 'warm');
     setMetricTone('custodyCard', custody.archive === 'witness' ? 'hot' : 'live');
+    renderTcpOperatorReceipt({
+      action: 'Pair route receipt',
+      status: decision === 'criticality' ? 'blocked' : 'ready',
+      route: ledger.route_status,
+      preserved: ['both source voices', 'cadence comparison packet', 'governed exposure ledger'],
+      changed: [
+        'decision=' + decision,
+        'routePressure=' + routePressure.toFixed(2),
+        'harbor=' + harbor
+      ],
+      blocked: decision === 'criticality' ? ['criticality route pressure requires Harbor handling'] : [],
+      risks: [
+        'traceability=' + cmp.traceability.toFixed(2),
+        'branchPressure=' + branch.branchPressure
+      ],
+      next: decision === 'criticality' ? 'Open guarded Safe Harbor or inspect the ledger before routing.' : 'Review harbor recommendation, then swap/save only if the route remains clean.',
+      details: {
+        ledger,
+        compare: cmp,
+        branch,
+        custody,
+        forensicSchema
+      }
+    });
   }
 
   function analyzeCadences(options = {}) {
