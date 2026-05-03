@@ -21,6 +21,12 @@ const BUILTIN_MASK_ART = Object.freeze({
     sigil: '++',
     state: 'mask ready'
   }),
+  blip: Object.freeze({
+    visualClass: 'blip-mantis',
+    artLabel: 'blip mantis',
+    sigil: '<>',
+    state: 'mask ready'
+  }),
   undertow: Object.freeze({
     visualClass: 'velvet-eel',
     artLabel: 'velvet eel',

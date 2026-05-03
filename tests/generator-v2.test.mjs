@@ -7,6 +7,7 @@ import personas from '../app/data/personas.js';
 import { buildCadenceTransfer, extractCadenceProfile } from '../app/engine/stylometry.js';
 import * as engine from '../app/engine/stylometry.js';
 import { DIAGNOSTIC_SAMPLE_LIBRARY } from '../app/data/diagnostics.js';
+import { BLIP_SHORTHAND_ONTOLOGY, summarizeBlipOntology } from '../app/engine/vernacular-ontology.js';
 import { resolvePersonaCatalog } from '../app/toys/persona-gallery/model.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -105,11 +106,29 @@ const hasArtifactLeak = (text = '') =>
   /\b(?:I|It|That|You|We|They|Don|Can|Won)\s*;\s*[A-Za-z]+\b/.test(String(text || ''));
 
 const resolvedPersonas = resolvePersonaCatalog(engine, personas, DIAGNOSTIC_SAMPLE_LIBRARY);
+const blipPersona = resolvedPersonas.find((persona) => persona.id === 'blip');
 const majorPersonas = ['spark', 'matron', 'undertow', 'archivist', 'cross-examiner']
   .map((id) => resolvedPersonas.find((persona) => persona.id === id))
   .filter(Boolean);
 
 assert.equal(majorPersonas.length, 5, 'major built-in masks resolve for direct generator probes');
+assert.ok(blipPersona && blipPersona.profile && blipPersona.mod, 'Blip resolves as a built-in shorthand mask');
+
+const blipSummary = summarizeBlipOntology();
+assert.equal(BLIP_SHORTHAND_ONTOLOGY.length, 512, 'Blip ontology stages all 512 report entries');
+assert.ok(blipSummary.activeRewriteCount > 350, 'Blip ontology exposes a broad active rewrite surface');
+for (const token of ['irl', 'rn', 'idk', 'idc', 'ion', 'finna', 'tryna', 'talmbout', 'bffr', 'frfr', 'w/', 'w/o', 'b4']) {
+  assert.ok(BLIP_SHORTHAND_ONTOLOGY.find((entry) => entry.token.toLowerCase() === token), `Blip ontology includes ${token}`);
+}
+assert.match(generatorV2Source, /feature:perf->perfect/, 'current-mask compatibility rules still cover perf');
+assert.match(generatorV2Source, /feature:dk->do-not-know/, 'current-mask compatibility rules still cover dk');
+assert.match(generatorV2Source, /feature:idrc->i-do-not-really-care/, 'current-mask compatibility rules still cover idrc');
+assert.match(generatorV2Source, /feature:idrk->i-do-not-really-know/, 'current-mask compatibility rules still cover idrk');
+for (const token of ['pm', 'yt', 'asl', 'pmo', 'oomf']) {
+  const entry = BLIP_SHORTHAND_ONTOLOGY.find((item) => item.token.toLowerCase() === token);
+  assert.ok(entry, `Blip ontology includes polysemous ${token}`);
+  assert.notEqual(entry.rewriteStatus, 'active', `${token} is not a blind active rewrite`);
+}
 
 const familyUnion = new Set();
 let semanticLockArtifactZeroedCount = 0;
@@ -475,6 +494,28 @@ assert.match(chatDenseToFormalPreview, /\bright now\b/i, 'chat shorthand -> form
 assert.match(chatDenseToFormalPreview, /\bI do not really care\b/i, 'chat shorthand -> formal expands idrc');
 assert.equal(/\birl\b|\bpm\s+perf\b|\brn\b|\bidrc\b/i.test(chatDenseToFormalPreview), false, 'chat shorthand -> formal strips high-frequency raw shorthand markers');
 
+const blipDenseRushed = `ion think this is done. finna send notes b4 lunch, tryna keep it clean w/ recap w/o extra drama. talmbout the same route frfr, bffr.`;
+const blipDenseFormal = `I do not think this is done. I am about to send the notes before lunch while trying to keep it clean with a recap and without extra drama. The message is talking about the same route for real, and the correction is asking everyone to be for real.`;
+const blipDenseToFormal = buildCadenceTransfer(blipDenseRushed, {
+  mode: 'borrowed',
+  personaId: 'archivist',
+  profile: extractCadenceProfile(blipDenseFormal),
+  registerLane: 'formal-record',
+  sourceText: blipDenseFormal,
+  strength: 0.9
+}, {
+  retrieval: true,
+  sourceRegisterLane: 'rushed-mobile'
+});
+const blipDenseToFormalPreview = String(blipDenseToFormal.text || blipDenseToFormal.internalText || '');
+assert.match(blipDenseToFormalPreview, /\bI do not think\b/i, 'Blip ontology expands ion into I do not');
+assert.match(blipDenseToFormalPreview, /\babout to\b/i, 'Blip ontology expands finna');
+assert.match(blipDenseToFormalPreview, /\btrying to\b/i, 'Blip ontology expands tryna');
+assert.match(blipDenseToFormalPreview, /\btalking about\b/i, 'Blip ontology expands talmbout');
+assert.match(blipDenseToFormalPreview, /\bfor real\b/i, 'Blip ontology expands frfr');
+assert.match(blipDenseToFormalPreview, /\bbe for real\b/i, 'Blip ontology expands bffr without importing profanity');
+assert.equal(/\bion\b|\bfinna\b|\btryna\b|\btalmbout\b|\bfrfr\b|\bbffr\b|\bb4\b|w\/|w\/o/i.test(blipDenseToFormalPreview), false, 'Blip ontology strips raw shorthand in the formal direction');
+
 const chatDenseToRushed = buildCadenceTransfer(chatDenseFormal, {
   mode: 'borrowed',
   personaId: 'spark',
@@ -491,6 +532,22 @@ assert.match(chatDenseToRushedPreview, /\birl\b/i, 'formal -> rushed inherits do
 assert.match(chatDenseToRushedPreview, /\bpm\b/i, 'formal -> rushed inherits donor-evidenced pm');
 assert.match(chatDenseToRushedPreview, /\bperf\b/i, 'formal -> rushed inherits donor-evidenced perf');
 assert.match(chatDenseToRushedPreview, /\brn\b/i, 'formal -> rushed inherits donor-evidenced rn');
+
+const blipMaskTransfer = buildCadenceTransfer(chatDenseFormal, {
+  mode: 'borrowed',
+  personaId: 'blip',
+  profile: blipPersona.profile,
+  mod: blipPersona.mod,
+  registerLane: 'rushed-mobile',
+  sourceText: blipDenseRushed,
+  strength: 0.92
+}, {
+  retrieval: true,
+  sourceRegisterLane: 'formal-record'
+});
+const blipMaskPreview = String(blipMaskTransfer.text || blipMaskTransfer.internalText || '');
+assert.ok(blipMaskPreview.trim().length > 0, 'Blip mask produces a non-empty transfer');
+assert.match(blipMaskPreview, /\b(?:rn|irl|b4|frfr|finna|tryna|w\/|w\/o|idrc|perf)\b/i, 'Blip mask surfaces donor-evidenced shorthand/noise');
 
 const patch34ReferenceToProbe = buildCadenceTransfer(patch34PerformanceReference, {
   mode: 'borrowed',

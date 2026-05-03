@@ -152,6 +152,61 @@ window.TCP_DATA = {
           "source": "built-in"
       },
       {
+          "id": "blip",
+          "name": "Blip",
+          "family": "Shorthand relay",
+          "tagline": "Tiny mark. Loud route.",
+          "blurb": "Chatspeak relay mask. Donor-evidenced shorthand, platform noise, and compact signal transfer.",
+          "voicePromise": "Carries the small tokens that usually get missed: chatspeak, platform shorthand, clipped grammar, and vernacular pressure without inventing dialect.",
+          "fieldUse": "Use when a clean passage needs to borrow evidenced text-message noise, or when shorthand needs to stay legible as a governed mask rather than parody.",
+          "riskTell": "Abbreviation posture, lowercase drift, and social-platform markers can cling hard after contact.",
+          "chips": [
+              "shorthand relay",
+              "donor-evidenced"
+          ],
+          "profileRecipe": {
+              "blend": [
+                  {
+                      "sampleId": "model-safety-rushed-mobile",
+                      "weight": 0.3
+                  },
+                  {
+                      "sampleId": "newsroom-correction-rushed-mobile",
+                      "weight": 0.25
+                  },
+                  {
+                      "sampleId": "performance-review-rushed-mobile",
+                      "weight": 0.25
+                  },
+                  {
+                      "sampleId": "mutual-aid-rushed-mobile",
+                      "weight": 0.2
+                  }
+              ],
+              "overlayMod": {
+                  "sent": -7,
+                  "cont": 6,
+                  "punc": 7,
+                  "frag": 3,
+                  "abst": -2,
+                  "hedge": -2,
+                  "abbr": 3
+              },
+              "strength": 0.98
+          },
+          "maskVisualClass": "blip-mantis",
+          "maskArtLabel": "blip mantis",
+          "maskSigil": "<>",
+          "maskState": "mask ready",
+          "frameTone": "neon-lime",
+          "collectorClass": "built-in",
+          "portrait": {
+              "src": "assets/persona-portraits/blip.svg",
+              "alt": "Blip portrait"
+          },
+          "source": "built-in"
+      },
+      {
           "id": "undertow",
           "name": "Undertow",
           "family": "Recursive undertow",

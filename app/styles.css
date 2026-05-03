@@ -3037,6 +3037,10 @@ button:disabled {
   --mask-accent: 214, 63, 63;
 }
 
+.tone-neon-lime {
+  --mask-accent: 183, 255, 114;
+}
+
 .persona-mask-portrait.ledger-raven {
   --mask-accent: 214, 182, 111;
   --mask-secondary: 189, 147, 249;
@@ -3060,6 +3064,19 @@ button:disabled {
   background:
     linear-gradient(132deg, transparent 0 16%, rgba(116, 234, 255, 0.14) 16% 17%, transparent 17% 48%, rgba(255, 85, 85, 0.1) 48% 49%, transparent 49% 100%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 24%);
+}
+
+.persona-mask-portrait.blip-mantis {
+  --mask-accent: 183, 255, 114;
+  --mask-secondary: 116, 234, 255;
+  --mask-noise-opacity: 0.2;
+  --mask-brightness: 0.84;
+}
+
+.persona-mask-portrait.blip-mantis::before {
+  background:
+    linear-gradient(118deg, transparent 0 14%, rgba(183, 255, 114, 0.16) 14% 15%, transparent 15% 42%, rgba(116, 234, 255, 0.12) 42% 43%, transparent 43% 100%),
+    radial-gradient(circle at 68% 24%, rgba(183, 255, 114, 0.16), transparent 22%);
 }
 
 .persona-mask-portrait.velvet-eel {
@@ -3307,6 +3324,13 @@ button:disabled {
     radial-gradient(circle at 70% 18%, rgba(116, 234, 255, 0.18), transparent 20%),
     linear-gradient(135deg, rgba(21, 41, 58, 0.28), rgba(9, 10, 16, 0.12)),
     linear-gradient(180deg, rgba(8, 11, 18, 0.98), rgba(4, 6, 11, 0.995));
+}
+
+.blip-mantis {
+  background:
+    radial-gradient(circle at 68% 16%, rgba(183, 255, 114, 0.2), transparent 20%),
+    linear-gradient(135deg, rgba(33, 64, 44, 0.3), rgba(8, 16, 18, 0.14)),
+    linear-gradient(180deg, rgba(6, 12, 14, 0.98), rgba(3, 6, 8, 0.995));
 }
 
 .velvet-eel {

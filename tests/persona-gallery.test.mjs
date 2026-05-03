@@ -53,7 +53,14 @@ assert.ok(packageHandoff, 'package-handoff-formal-record sample is present');
 assert.ok(customerSupport, 'customer-support-formal-record sample is present');
 
 const resolvedPersonas = resolvePersonaCatalog(engine, personas, sampleLibrary);
-assert.equal(resolvedPersonas.length, 7, 'seven built-in masks resolve for the gallery');
+assert.equal(resolvedPersonas.length, 8, 'eight built-in masks resolve for the gallery');
+const blipPersona = resolvedPersonas.find((persona) => persona.id === 'blip');
+assert.ok(blipPersona, 'Blip built-in mask is present in the gallery');
+assert.ok(
+  (blipPersona.chips || []).includes('shorthand relay') &&
+    blipPersona.portrait?.src === 'assets/persona-portraits/blip.svg',
+  'Blip carries shorthand-relay metadata and a local portrait'
+);
 assert.ok(resolvedPersonas.every((persona) => persona.profile && persona.mod), 'each built-in mask resolves to a concrete profile-backed shell');
 assert.ok(
   resolvedPersonas.every((persona) => persona.recipeResolution && (persona.recipeResolution.entries || []).length > 0),

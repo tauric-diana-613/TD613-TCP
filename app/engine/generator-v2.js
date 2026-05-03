@@ -16,6 +16,11 @@ import {
   segmentTextToIR,
   sentenceSplit
 } from './stylometry.js';
+import {
+  BLIP_DEGRADATION_FEATURE_RULES,
+  BLIP_FORMALIZATION_FEATURE_RULES,
+  BLIP_VERNACULAR_DETECTION_RULES
+} from './vernacular-ontology.js';
 
 function clamp01(value) {
   return Math.max(0, Math.min(1, Number(value || 0)));
@@ -269,13 +274,15 @@ const VERNACULAR_FEATURE_RULES = Object.freeze({
     Object.freeze({ id: 'speaker-tag', pattern: /\bspeaker tag\b/gi }),
     Object.freeze({ id: 'body-fixed', pattern: /\bbody fixed\b/gi }),
     Object.freeze({ id: 'newsletter-grab', pattern: /\bnewsletter grab\b/gi }),
-    ...EXTRA_CHATSPEAK_SHORTHAND_RULES.map((rule) => Object.freeze({ id: rule.id, pattern: rule.pattern }))
+    ...EXTRA_CHATSPEAK_SHORTHAND_RULES.map((rule) => Object.freeze({ id: rule.id, pattern: rule.pattern })),
+    ...(BLIP_VERNACULAR_DETECTION_RULES.chatspeakShorthand || [])
   ]),
   notePosture: Object.freeze([
     Object.freeze({ id: 'slash-list', pattern: /\s\/\s/g }),
     Object.freeze({ id: 'colon-note', pattern: /:\s+[a-z0-9]/g }),
     Object.freeze({ id: 'plus-join', pattern: /\s\+\s/g }),
-    Object.freeze({ id: 'ampersand-join', pattern: /\s&\s/g })
+    Object.freeze({ id: 'ampersand-join', pattern: /\s&\s/g }),
+    ...(BLIP_VERNACULAR_DETECTION_RULES.notePosture || [])
   ]),
   slangMarkers: Object.freeze([
     Object.freeze({ id: 'gonna', pattern: /\bgonna\b/gi }),
@@ -289,13 +296,15 @@ const VERNACULAR_FEATURE_RULES = Object.freeze({
     Object.freeze({ id: 'sus', pattern: /\bsus\b/gi }),
     Object.freeze({ id: 'omg', pattern: /\bomg\b/gi }),
     Object.freeze({ id: 'lowkey', pattern: /\blowkey\b/gi }),
-    Object.freeze({ id: 'highkey', pattern: /\bhighkey\b/gi })
+    Object.freeze({ id: 'highkey', pattern: /\bhighkey\b/gi }),
+    ...(BLIP_VERNACULAR_DETECTION_RULES.slangMarkers || [])
   ]),
   vernacularMarkers: Object.freeze([
     Object.freeze({ id: 'yall', pattern: /\by(?:'|’)?all\b/gi }),
     Object.freeze({ id: 'tryna', pattern: /\btryna\b/gi }),
     Object.freeze({ id: 'ima', pattern: /\b(?:ima|i(?:'|’)?ma)\b/gi }),
     Object.freeze({ id: 'finna', pattern: /\bfinna\b/gi }),
+    ...(BLIP_VERNACULAR_DETECTION_RULES.vernacularMarkers || []),
     Object.freeze({ id: 'gone', pattern: /\bgon(?:'|’)?\b/gi })
   ])
 });
@@ -442,7 +451,8 @@ const FORMALIZATION_FEATURE_RULES = Object.freeze([
   Object.freeze({ family: 'vernacularMarkers', pattern: /\by(?:'|’)?all\b/gi, replacement: 'you all', label: 'feature:yall->you-all' }),
   Object.freeze({ family: 'vernacularMarkers', pattern: /\btryna\b/gi, replacement: 'trying to', label: 'feature:tryna->trying-to' }),
   Object.freeze({ family: 'vernacularMarkers', pattern: /\b(?:ima|i(?:'|’)?ma)\b/gi, replacement: 'I am going to', label: 'feature:ima->i-am-going-to' }),
-  Object.freeze({ family: 'vernacularMarkers', pattern: /\bfinna\b/gi, replacement: 'about to', label: 'feature:finna->about-to' })
+  Object.freeze({ family: 'vernacularMarkers', pattern: /\bfinna\b/gi, replacement: 'about to', label: 'feature:finna->about-to' }),
+  ...BLIP_FORMALIZATION_FEATURE_RULES
 ]);
 
 const DEGRADATION_FEATURE_RULES = Object.freeze([
@@ -559,7 +569,8 @@ const DEGRADATION_FEATURE_RULES = Object.freeze([
   Object.freeze({ family: 'vernacularMarkers', pattern: /\byou all\b/gi, replacement: 'yall', label: 'feature:you-all->yall', requiresEvidence: true }),
   Object.freeze({ family: 'vernacularMarkers', pattern: /\btrying to\b/gi, replacement: 'tryna', label: 'feature:trying-to->tryna', requiresEvidence: true }),
   Object.freeze({ family: 'vernacularMarkers', pattern: /\bI am going to\b/gi, replacement: 'ima', label: 'feature:i-am-going-to->ima', requiresEvidence: true }),
-  Object.freeze({ family: 'vernacularMarkers', pattern: /\babout to\b/gi, replacement: 'finna', label: 'feature:about-to->finna', requiresEvidence: true })
+  Object.freeze({ family: 'vernacularMarkers', pattern: /\babout to\b/gi, replacement: 'finna', label: 'feature:about-to->finna', requiresEvidence: true }),
+  ...BLIP_DEGRADATION_FEATURE_RULES
 ]);
 
 function cloneGlobalRegex(pattern) {
