@@ -298,8 +298,8 @@
         "falseCleanFamilies": [],
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
-        "concealmentEffectiveness": 0.875,
-        "surfaceMarkerCount": 1,
+        "concealmentEffectiveness": 0.8,
+        "surfaceMarkerCount": 2,
         "pressure": {
           "targetRegisterLane": "formal-record",
           "activeFamilies": [
@@ -332,10 +332,12 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 3,
+          "count": 5,
           "markers": [
             "pls",
             "wk",
+            "blip:2",
+            "blip:pls",
             "profile-abbreviation-density"
           ]
         },
@@ -362,7 +364,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 8
+        "totalMarkers": 10
       },
       "donor": {
         "registerLane": "formal-record",
@@ -404,9 +406,11 @@
           "markers": []
         },
         "chatspeakShorthand": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 1,
+          "markers": [
+            "blip:2"
+          ]
         },
         "notePosture": {
           "active": true,
@@ -426,9 +430,10 @@
           "markers": []
         },
         "activeFamilies": [
+          "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 1
+        "totalMarkers": 2
       },
       "pressure": {
         "targetRegisterLane": "formal-record",
@@ -510,10 +515,12 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 3,
+              "count": 5,
               "markers": [
                 "pls",
                 "wk",
+                "blip:2",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
@@ -540,7 +547,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 10
           },
           "donor": {
             "registerLane": "formal-record",
@@ -582,9 +589,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:2"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -604,9 +613,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "pressure": {
             "targetRegisterLane": "formal-record",
@@ -638,8 +648,8 @@
           "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.875,
-          "surfaceMarkerCount": 1,
+          "concealmentEffectiveness": 0.8,
+          "surfaceMarkerCount": 2,
           "pressure": {
             "targetRegisterLane": "formal-record",
             "activeFamilies": [
@@ -772,10 +782,12 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 3,
+              "count": 5,
               "markers": [
                 "pls",
                 "wk",
+                "blip:2",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
@@ -802,7 +814,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 10
           },
           "donor": {
             "registerLane": "formal-record",
@@ -844,9 +856,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:2"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -866,9 +880,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "pressure": {
             "targetRegisterLane": "formal-record",
@@ -900,8 +915,8 @@
           "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.875,
-          "surfaceMarkerCount": 1,
+          "concealmentEffectiveness": 0.8,
+          "surfaceMarkerCount": 2,
           "pressure": {
             "targetRegisterLane": "formal-record",
             "activeFamilies": [
@@ -1034,10 +1049,12 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 3,
+              "count": 5,
               "markers": [
                 "pls",
                 "wk",
+                "blip:2",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
@@ -1064,7 +1081,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 10
           },
           "donor": {
             "registerLane": "formal-record",
@@ -1106,9 +1123,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:2"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1128,9 +1147,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "pressure": {
             "targetRegisterLane": "formal-record",
@@ -1162,8 +1182,8 @@
           "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.875,
-          "surfaceMarkerCount": 1,
+          "concealmentEffectiveness": 0.8,
+          "surfaceMarkerCount": 2,
           "pressure": {
             "targetRegisterLane": "formal-record",
             "activeFamilies": [
@@ -1296,10 +1316,12 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 3,
+              "count": 5,
               "markers": [
                 "pls",
                 "wk",
+                "blip:2",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
@@ -1326,7 +1348,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 10
           },
           "donor": {
             "registerLane": "formal-record",
@@ -1368,9 +1390,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:2"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1390,9 +1414,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "pressure": {
             "targetRegisterLane": "formal-record",
@@ -1424,8 +1449,8 @@
           "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.875,
-          "surfaceMarkerCount": 1,
+          "concealmentEffectiveness": 0.8,
+          "surfaceMarkerCount": 2,
           "pressure": {
             "targetRegisterLane": "formal-record",
             "activeFamilies": [
@@ -1558,10 +1583,12 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 3,
+              "count": 5,
               "markers": [
                 "pls",
                 "wk",
+                "blip:2",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
@@ -1588,7 +1615,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 10
           },
           "donor": {
             "registerLane": "formal-record",
@@ -1630,9 +1657,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:2"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1652,9 +1681,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "pressure": {
             "targetRegisterLane": "formal-record",
@@ -1686,8 +1716,8 @@
           "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.875,
-          "surfaceMarkerCount": 1,
+          "concealmentEffectiveness": 0.8,
+          "surfaceMarkerCount": 2,
           "pressure": {
             "targetRegisterLane": "formal-record",
             "activeFamilies": [

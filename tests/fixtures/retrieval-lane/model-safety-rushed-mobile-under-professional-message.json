@@ -202,7 +202,7 @@
         "syntax-shape",
         "register-lexicon"
       ],
-      "holdStatus": "held",
+      "holdStatus": "diagnostic-pressure",
       "averageToolabilityScore": 0.8366
     },
     "realizationSummary": {
@@ -280,23 +280,26 @@
           "notePosture"
         ],
         "realizedFamilyCount": 3,
-        "falseCleanFamilies": [],
+        "falseCleanFamilies": [
+          "vernacularMarkers"
+        ],
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
-        "concealmentEffectiveness": 1,
-        "surfaceMarkerCount": 0,
+        "concealmentEffectiveness": 0.8571,
+        "surfaceMarkerCount": 1,
         "pressure": {
           "targetRegisterLane": "professional-message",
           "activeFamilies": [
             "orthographyNoise",
             "chatspeakShorthand",
-            "notePosture"
+            "notePosture",
+            "vernacularMarkers"
           ],
           "orthographyNoise": true,
           "chatspeakShorthand": true,
           "notePosture": true,
           "slangMarkers": false,
-          "vernacularMarkers": false
+          "vernacularMarkers": true
         }
       },
       "visibleShift": true,
@@ -324,9 +327,10 @@
         },
         "notePosture": {
           "active": true,
-          "count": 1,
+          "count": 2,
           "markers": [
-            "plus-join"
+            "plus-join",
+            "blip:abt"
           ]
         },
         "slangMarkers": {
@@ -335,16 +339,19 @@
           "markers": []
         },
         "vernacularMarkers": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 1,
+          "markers": [
+            "blip:rs"
+          ]
         },
         "activeFamilies": [
           "orthographyNoise",
           "chatspeakShorthand",
-          "notePosture"
+          "notePosture",
+          "vernacularMarkers"
         ],
-        "totalMarkers": 5
+        "totalMarkers": 7
       },
       "donor": {
         "registerLane": "professional-message",
@@ -370,12 +377,16 @@
           "markers": []
         },
         "vernacularMarkers": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 1,
+          "markers": [
+            "blip:rs"
+          ]
         },
-        "activeFamilies": [],
-        "totalMarkers": 0
+        "activeFamilies": [
+          "vernacularMarkers"
+        ],
+        "totalMarkers": 1
       },
       "output": {
         "registerLane": "professional-message",
@@ -401,25 +412,30 @@
           "markers": []
         },
         "vernacularMarkers": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 1,
+          "markers": [
+            "blip:rs"
+          ]
         },
-        "activeFamilies": [],
-        "totalMarkers": 0
+        "activeFamilies": [
+          "vernacularMarkers"
+        ],
+        "totalMarkers": 1
       },
       "pressure": {
         "targetRegisterLane": "professional-message",
         "activeFamilies": [
           "orthographyNoise",
           "chatspeakShorthand",
-          "notePosture"
+          "notePosture",
+          "vernacularMarkers"
         ],
         "orthographyNoise": true,
         "chatspeakShorthand": true,
         "notePosture": true,
         "slangMarkers": false,
-        "vernacularMarkers": false
+        "vernacularMarkers": true
       }
     },
     "donorProgress": {
@@ -502,9 +518,10 @@
             },
             "notePosture": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
-                "plus-join"
+                "plus-join",
+                "blip:abt"
               ]
             },
             "slangMarkers": {
@@ -513,16 +530,19 @@
               "markers": []
             },
             "vernacularMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:rs"
+              ]
             },
             "activeFamilies": [
               "orthographyNoise",
               "chatspeakShorthand",
-              "notePosture"
+              "notePosture",
+              "vernacularMarkers"
             ],
-            "totalMarkers": 5
+            "totalMarkers": 7
           },
           "donor": {
             "registerLane": "professional-message",
@@ -548,12 +568,16 @@
               "markers": []
             },
             "vernacularMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:rs"
+              ]
             },
-            "activeFamilies": [],
-            "totalMarkers": 0
+            "activeFamilies": [
+              "vernacularMarkers"
+            ],
+            "totalMarkers": 1
           },
           "output": {
             "registerLane": "professional-message",
@@ -579,25 +603,30 @@
               "markers": []
             },
             "vernacularMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:rs"
+              ]
             },
-            "activeFamilies": [],
-            "totalMarkers": 0
+            "activeFamilies": [
+              "vernacularMarkers"
+            ],
+            "totalMarkers": 1
           },
           "pressure": {
             "targetRegisterLane": "professional-message",
             "activeFamilies": [
               "orthographyNoise",
               "chatspeakShorthand",
-              "notePosture"
+              "notePosture",
+              "vernacularMarkers"
             ],
             "orthographyNoise": true,
             "chatspeakShorthand": true,
             "notePosture": true,
             "slangMarkers": false,
-            "vernacularMarkers": false
+            "vernacularMarkers": true
           }
         },
         "vernacularFeatureShift": {
@@ -613,23 +642,26 @@
             "notePosture"
           ],
           "realizedFamilyCount": 3,
-          "falseCleanFamilies": [],
+          "falseCleanFamilies": [
+            "vernacularMarkers"
+          ],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 1,
-          "surfaceMarkerCount": 0,
+          "concealmentEffectiveness": 0.8571,
+          "surfaceMarkerCount": 1,
           "pressure": {
             "targetRegisterLane": "professional-message",
             "activeFamilies": [
               "orthographyNoise",
               "chatspeakShorthand",
-              "notePosture"
+              "notePosture",
+              "vernacularMarkers"
             ],
             "orthographyNoise": true,
             "chatspeakShorthand": true,
             "notePosture": true,
             "slangMarkers": false,
-            "vernacularMarkers": false
+            "vernacularMarkers": true
           }
         },
         "ontologyAudit": {
@@ -764,9 +796,10 @@
             },
             "notePosture": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
-                "plus-join"
+                "plus-join",
+                "blip:abt"
               ]
             },
             "slangMarkers": {
@@ -775,16 +808,19 @@
               "markers": []
             },
             "vernacularMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:rs"
+              ]
             },
             "activeFamilies": [
               "orthographyNoise",
               "chatspeakShorthand",
-              "notePosture"
+              "notePosture",
+              "vernacularMarkers"
             ],
-            "totalMarkers": 5
+            "totalMarkers": 7
           },
           "donor": {
             "registerLane": "professional-message",
@@ -810,12 +846,16 @@
               "markers": []
             },
             "vernacularMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:rs"
+              ]
             },
-            "activeFamilies": [],
-            "totalMarkers": 0
+            "activeFamilies": [
+              "vernacularMarkers"
+            ],
+            "totalMarkers": 1
           },
           "output": {
             "registerLane": "professional-message",
@@ -841,25 +881,30 @@
               "markers": []
             },
             "vernacularMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:rs"
+              ]
             },
-            "activeFamilies": [],
-            "totalMarkers": 0
+            "activeFamilies": [
+              "vernacularMarkers"
+            ],
+            "totalMarkers": 1
           },
           "pressure": {
             "targetRegisterLane": "professional-message",
             "activeFamilies": [
               "orthographyNoise",
               "chatspeakShorthand",
-              "notePosture"
+              "notePosture",
+              "vernacularMarkers"
             ],
             "orthographyNoise": true,
             "chatspeakShorthand": true,
             "notePosture": true,
             "slangMarkers": false,
-            "vernacularMarkers": false
+            "vernacularMarkers": true
           }
         },
         "vernacularFeatureShift": {
@@ -875,23 +920,26 @@
             "notePosture"
           ],
           "realizedFamilyCount": 3,
-          "falseCleanFamilies": [],
+          "falseCleanFamilies": [
+            "vernacularMarkers"
+          ],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 1,
-          "surfaceMarkerCount": 0,
+          "concealmentEffectiveness": 0.8571,
+          "surfaceMarkerCount": 1,
           "pressure": {
             "targetRegisterLane": "professional-message",
             "activeFamilies": [
               "orthographyNoise",
               "chatspeakShorthand",
-              "notePosture"
+              "notePosture",
+              "vernacularMarkers"
             ],
             "orthographyNoise": true,
             "chatspeakShorthand": true,
             "notePosture": true,
             "slangMarkers": false,
-            "vernacularMarkers": false
+            "vernacularMarkers": true
           }
         },
         "ontologyAudit": {
@@ -957,9 +1005,9 @@
       }
     ],
     "generationDocket": {
-      "status": "held",
+      "status": "diagnostic-pressure",
       "holdClass": "aperture-route-pressure",
-      "headline": "Generator V2 hold // Aperture raised the ontology route floor above publishable passage.",
+      "headline": "Generator V2 pressure // Aperture raised the ontology route floor; best surface remains visible.",
       "reasons": [
         "semantic-failure",
         "artifact:clause-drag"

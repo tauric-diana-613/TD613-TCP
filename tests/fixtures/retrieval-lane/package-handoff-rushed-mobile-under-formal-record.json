@@ -410,12 +410,13 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 5,
+          "count": 6,
           "markers": [
             "pkg",
             "mgmt",
             "fl",
             "hall-table",
+            "blip:fl",
             "profile-abbreviation-density"
           ]
         },
@@ -442,7 +443,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 12
+        "totalMarkers": 13
       },
       "donor": {
         "registerLane": "formal-record",
@@ -454,9 +455,10 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 1,
+          "count": 2,
           "markers": [
-            "pm-pretty-much"
+            "pm-pretty-much",
+            "blip:pm"
           ]
         },
         "notePosture": {
@@ -480,7 +482,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 2
+        "totalMarkers": 3
       },
       "output": {
         "registerLane": "formal-record",
@@ -608,12 +610,13 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 5,
+              "count": 6,
               "markers": [
                 "pkg",
                 "mgmt",
                 "fl",
                 "hall-table",
+                "blip:fl",
                 "profile-abbreviation-density"
               ]
             },
@@ -640,7 +643,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 12
+            "totalMarkers": 13
           },
           "donor": {
             "registerLane": "formal-record",
@@ -652,9 +655,10 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
-                "pm-pretty-much"
+                "pm-pretty-much",
+                "blip:pm"
               ]
             },
             "notePosture": {
@@ -678,7 +682,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 2
+            "totalMarkers": 3
           },
           "output": {
             "registerLane": "formal-record",
@@ -891,12 +895,13 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 5,
+              "count": 6,
               "markers": [
                 "pkg",
                 "mgmt",
                 "fl",
                 "hall-table",
+                "blip:fl",
                 "profile-abbreviation-density"
               ]
             },
@@ -923,7 +928,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 12
+            "totalMarkers": 13
           },
           "donor": {
             "registerLane": "formal-record",
@@ -935,9 +940,10 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
-                "pm-pretty-much"
+                "pm-pretty-much",
+                "blip:pm"
               ]
             },
             "notePosture": {
@@ -961,7 +967,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 2
+            "totalMarkers": 3
           },
           "output": {
             "registerLane": "formal-record",

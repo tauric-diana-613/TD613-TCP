@@ -319,7 +319,9 @@
         "register-mode",
         "abbreviation-posture",
         "orthography-posture",
-        "lexical-register"
+        "lexical-register",
+        "surface-marker-posture",
+        "fragment-posture"
       ],
       "profileShiftDimensions": [
         "sentence-mean",
@@ -395,21 +397,20 @@
         "targetRegisterLane": "rushed-mobile",
         "orthographyShift": true,
         "shorthandShift": true,
-        "notePostureShift": false,
+        "notePostureShift": true,
         "slangShift": false,
         "vernacularShift": false,
         "realizedFamilies": [
           "orthographyNoise",
-          "chatspeakShorthand"
-        ],
-        "realizedFamilyCount": 2,
-        "falseCleanFamilies": [
+          "chatspeakShorthand",
           "notePosture"
         ],
+        "realizedFamilyCount": 3,
+        "falseCleanFamilies": [],
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
         "concealmentEffectiveness": 0,
-        "surfaceMarkerCount": 7,
+        "surfaceMarkerCount": 11,
         "pressure": {
           "targetRegisterLane": "rushed-mobile",
           "activeFamilies": [
@@ -473,21 +474,23 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 6,
+          "count": 7,
           "markers": [
             "docs",
             "pls",
             "bc",
             "addr",
             "req",
+            "blip:pls",
             "profile-abbreviation-density"
           ]
         },
         "notePosture": {
           "active": true,
-          "count": 1,
+          "count": 2,
           "markers": [
-            "plus-join"
+            "plus-join",
+            "blip:bc"
           ]
         },
         "slangMarkers": {
@@ -505,7 +508,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 10
+        "totalMarkers": 12
       },
       "output": {
         "registerLane": "rushed-mobile",
@@ -521,18 +524,23 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 4,
+          "count": 7,
           "markers": [
             "pls",
             "addr",
             "req",
+            "blip:2",
+            "blip:im",
+            "blip:pls",
             "profile-abbreviation-density"
           ]
         },
         "notePosture": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 1,
+          "markers": [
+            "blip:abt"
+          ]
         },
         "slangMarkers": {
           "active": false,
@@ -546,9 +554,10 @@
         },
         "activeFamilies": [
           "orthographyNoise",
-          "chatspeakShorthand"
+          "chatspeakShorthand",
+          "notePosture"
         ],
-        "totalMarkers": 7
+        "totalMarkers": 11
       },
       "pressure": {
         "targetRegisterLane": "rushed-mobile",
@@ -601,7 +610,9 @@
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
-          "lexical-register"
+          "lexical-register",
+          "surface-marker-posture",
+          "fragment-posture"
         ],
         "profileShiftDimensions": [
           "sentence-mean",
@@ -665,21 +676,23 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 6,
+              "count": 7,
               "markers": [
                 "docs",
                 "pls",
                 "bc",
                 "addr",
                 "req",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
             "notePosture": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
-                "plus-join"
+                "plus-join",
+                "blip:bc"
               ]
             },
             "slangMarkers": {
@@ -697,7 +710,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 10
+            "totalMarkers": 12
           },
           "output": {
             "registerLane": "rushed-mobile",
@@ -713,19 +726,25 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 5,
+              "count": 8,
               "markers": [
                 "pls",
                 "bc",
                 "addr",
                 "req",
+                "blip:2",
+                "blip:im",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
             "notePosture": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 2,
+              "markers": [
+                "blip:abt",
+                "blip:bc"
+              ]
             },
             "slangMarkers": {
               "active": false,
@@ -739,9 +758,10 @@
             },
             "activeFamilies": [
               "orthographyNoise",
-              "chatspeakShorthand"
+              "chatspeakShorthand",
+              "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 13
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -761,21 +781,20 @@
           "targetRegisterLane": "rushed-mobile",
           "orthographyShift": true,
           "shorthandShift": true,
-          "notePostureShift": false,
+          "notePostureShift": true,
           "slangShift": false,
           "vernacularShift": false,
           "realizedFamilies": [
             "orthographyNoise",
-            "chatspeakShorthand"
-          ],
-          "realizedFamilyCount": 2,
-          "falseCleanFamilies": [
+            "chatspeakShorthand",
             "notePosture"
           ],
+          "realizedFamilyCount": 3,
+          "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 8,
+          "surfaceMarkerCount": 13,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -878,7 +897,9 @@
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
-          "lexical-register"
+          "lexical-register",
+          "surface-marker-posture",
+          "fragment-posture"
         ],
         "profileShiftDimensions": [
           "sentence-mean",
@@ -942,21 +963,23 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 6,
+              "count": 7,
               "markers": [
                 "docs",
                 "pls",
                 "bc",
                 "addr",
                 "req",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
             "notePosture": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
-                "plus-join"
+                "plus-join",
+                "blip:bc"
               ]
             },
             "slangMarkers": {
@@ -974,7 +997,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 10
+            "totalMarkers": 12
           },
           "output": {
             "registerLane": "rushed-mobile",
@@ -990,18 +1013,23 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 4,
+              "count": 7,
               "markers": [
                 "pls",
                 "addr",
                 "req",
+                "blip:2",
+                "blip:im",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
             "notePosture": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:abt"
+              ]
             },
             "slangMarkers": {
               "active": false,
@@ -1015,9 +1043,10 @@
             },
             "activeFamilies": [
               "orthographyNoise",
-              "chatspeakShorthand"
+              "chatspeakShorthand",
+              "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 11
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -1037,21 +1066,20 @@
           "targetRegisterLane": "rushed-mobile",
           "orthographyShift": true,
           "shorthandShift": true,
-          "notePostureShift": false,
+          "notePostureShift": true,
           "slangShift": false,
           "vernacularShift": false,
           "realizedFamilies": [
             "orthographyNoise",
-            "chatspeakShorthand"
-          ],
-          "realizedFamilyCount": 2,
-          "falseCleanFamilies": [
+            "chatspeakShorthand",
             "notePosture"
           ],
+          "realizedFamilyCount": 3,
+          "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 7,
+          "surfaceMarkerCount": 11,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -1155,7 +1183,9 @@
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
-          "lexical-register"
+          "lexical-register",
+          "surface-marker-posture",
+          "fragment-posture"
         ],
         "profileShiftDimensions": [
           "sentence-mean",
@@ -1220,21 +1250,23 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 6,
+              "count": 7,
               "markers": [
                 "docs",
                 "pls",
                 "bc",
                 "addr",
                 "req",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
             "notePosture": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
-                "plus-join"
+                "plus-join",
+                "blip:bc"
               ]
             },
             "slangMarkers": {
@@ -1252,7 +1284,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 10
+            "totalMarkers": 12
           },
           "output": {
             "registerLane": "rushed-mobile",
@@ -1268,19 +1300,25 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 5,
+              "count": 8,
               "markers": [
                 "pls",
                 "bc",
                 "addr",
                 "req",
+                "blip:2",
+                "blip:im",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
             "notePosture": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 2,
+              "markers": [
+                "blip:abt",
+                "blip:bc"
+              ]
             },
             "slangMarkers": {
               "active": false,
@@ -1294,9 +1332,10 @@
             },
             "activeFamilies": [
               "orthographyNoise",
-              "chatspeakShorthand"
+              "chatspeakShorthand",
+              "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 13
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -1316,21 +1355,20 @@
           "targetRegisterLane": "rushed-mobile",
           "orthographyShift": true,
           "shorthandShift": true,
-          "notePostureShift": false,
+          "notePostureShift": true,
           "slangShift": false,
           "vernacularShift": false,
           "realizedFamilies": [
             "orthographyNoise",
-            "chatspeakShorthand"
-          ],
-          "realizedFamilyCount": 2,
-          "falseCleanFamilies": [
+            "chatspeakShorthand",
             "notePosture"
           ],
+          "realizedFamilyCount": 3,
+          "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 8,
+          "surfaceMarkerCount": 13,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -1434,7 +1472,9 @@
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
-          "lexical-register"
+          "lexical-register",
+          "surface-marker-posture",
+          "fragment-posture"
         ],
         "profileShiftDimensions": [
           "sentence-mean",
@@ -1499,21 +1539,23 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 6,
+              "count": 7,
               "markers": [
                 "docs",
                 "pls",
                 "bc",
                 "addr",
                 "req",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
             "notePosture": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
-                "plus-join"
+                "plus-join",
+                "blip:bc"
               ]
             },
             "slangMarkers": {
@@ -1531,7 +1573,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 10
+            "totalMarkers": 12
           },
           "output": {
             "registerLane": "rushed-mobile",
@@ -1547,19 +1589,25 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 5,
+              "count": 8,
               "markers": [
                 "pls",
                 "bc",
                 "addr",
                 "req",
+                "blip:2",
+                "blip:im",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
             "notePosture": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 2,
+              "markers": [
+                "blip:abt",
+                "blip:bc"
+              ]
             },
             "slangMarkers": {
               "active": false,
@@ -1573,9 +1621,10 @@
             },
             "activeFamilies": [
               "orthographyNoise",
-              "chatspeakShorthand"
+              "chatspeakShorthand",
+              "notePosture"
             ],
-            "totalMarkers": 8
+            "totalMarkers": 13
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -1595,21 +1644,20 @@
           "targetRegisterLane": "rushed-mobile",
           "orthographyShift": true,
           "shorthandShift": true,
-          "notePostureShift": false,
+          "notePostureShift": true,
           "slangShift": false,
           "vernacularShift": false,
           "realizedFamilies": [
             "orthographyNoise",
-            "chatspeakShorthand"
-          ],
-          "realizedFamilyCount": 2,
-          "falseCleanFamilies": [
+            "chatspeakShorthand",
             "notePosture"
           ],
+          "realizedFamilyCount": 3,
+          "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 8,
+          "surfaceMarkerCount": 13,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -1713,7 +1761,9 @@
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
-          "lexical-register"
+          "lexical-register",
+          "surface-marker-posture",
+          "fragment-posture"
         ],
         "profileShiftDimensions": [
           "sentence-mean",
@@ -1778,21 +1828,23 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 6,
+              "count": 7,
               "markers": [
                 "docs",
                 "pls",
                 "bc",
                 "addr",
                 "req",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
             "notePosture": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
-                "plus-join"
+                "plus-join",
+                "blip:bc"
               ]
             },
             "slangMarkers": {
@@ -1810,7 +1862,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 10
+            "totalMarkers": 12
           },
           "output": {
             "registerLane": "rushed-mobile",
@@ -1826,18 +1878,23 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 4,
+              "count": 7,
               "markers": [
                 "pls",
                 "addr",
                 "req",
+                "blip:2",
+                "blip:im",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
             "notePosture": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:abt"
+              ]
             },
             "slangMarkers": {
               "active": false,
@@ -1851,9 +1908,10 @@
             },
             "activeFamilies": [
               "orthographyNoise",
-              "chatspeakShorthand"
+              "chatspeakShorthand",
+              "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 11
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -1873,21 +1931,20 @@
           "targetRegisterLane": "rushed-mobile",
           "orthographyShift": true,
           "shorthandShift": true,
-          "notePostureShift": false,
+          "notePostureShift": true,
           "slangShift": false,
           "vernacularShift": false,
           "realizedFamilies": [
             "orthographyNoise",
-            "chatspeakShorthand"
-          ],
-          "realizedFamilyCount": 2,
-          "falseCleanFamilies": [
+            "chatspeakShorthand",
             "notePosture"
           ],
+          "realizedFamilyCount": 3,
+          "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 7,
+          "surfaceMarkerCount": 11,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -2037,11 +2094,13 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
+      "fragment-posture",
       "lexical-register",
       "orthography-posture",
       "register-mode",
       "sentence-count",
-      "sentence-mean"
+      "sentence-mean",
+      "surface-marker-posture"
     ],
     "lexemeSwapFamilies": [
       "connector",

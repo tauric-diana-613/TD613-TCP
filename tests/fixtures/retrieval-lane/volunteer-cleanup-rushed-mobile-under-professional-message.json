@@ -28,37 +28,37 @@
       "actorCoverage": 1,
       "actionCoverage": 1,
       "objectCoverage": 0.964,
-      "polarityMismatches": 2,
+      "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
-          "polarityMismatch": 1,
+          "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
           "globalBagScore": 0
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s0c0+s1c0",
+          "matchedClauseId": "s0c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 0.714,
-          "globalBagScore": 0.417
+          "bagScore": 0.833,
+          "globalBagScore": 0.313
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -66,11 +66,11 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0,
-          "globalBagScore": 0.083
+          "globalBagScore": 0.063
         },
         {
           "sourceClauseId": "s3c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -82,19 +82,19 @@
         },
         {
           "sourceClauseId": "s3c1",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.083
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s1c0",
+          "matchedClauseId": "s0c1",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -106,7 +106,7 @@
         },
         {
           "sourceClauseId": "s5c0",
-          "matchedClauseId": "s2c0",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
@@ -114,7 +114,7 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.417
+          "globalBagScore": 0.313
         }
       ],
       "sourceClauseCount": 7,
@@ -157,7 +157,7 @@
         "actorCoverage": 1,
         "actionCoverage": 1,
         "objectCoverage": 0.964,
-        "polarityMismatches": 2,
+        "polarityMismatches": 1,
         "tenseMismatches": 0
       },
       "anchorIntegrity": {
@@ -169,20 +169,18 @@
       "aperture": {
         "temporalPosture": "synced",
         "closureClass": "closed",
-        "closureScore": 0.876,
-        "historicalCrease": 0.013,
-        "unfoldingEnergy": 0.062,
+        "closureScore": 0.936,
+        "historicalCrease": 0.012,
+        "unfoldingEnergy": 0.037,
         "beaconStatus": "beacon-idle",
-        "cumulativeNarrowing": 0.32,
+        "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
       },
       "selectiveAdmissibilityDrift": {
-        "driftClass": "severe",
-        "driftReasons": [
-          "polarity-mismatches>1"
-        ],
-        "routeFloor": "harbor",
-        "routePressure": 1
+        "driftClass": "none",
+        "driftReasons": [],
+        "routeFloor": "play",
+        "routePressure": 0.093
       }
     },
     "planSummary": {
@@ -222,6 +220,7 @@
       ],
       "structuralOperationsSelected": [
         "front-if",
+        "beat-merge",
         "STRIP_SUBORDINATOR_PREFIX",
         "CHAIN_CLAUSES_VIA_SUBORDINATOR"
       ],
@@ -230,19 +229,20 @@
         "feature:plus->and",
         "feature:dont->do-not",
         "feature:youre->you-are",
-        "feature:thats->that-is"
+        "feature:thats->that-is",
+        "blip:b->be"
       ],
       "expectedOperators": [
         "REHYDRATE_CLIPPED_CLAUSES",
         "CHAIN_CLAUSES_VIA_SUBORDINATOR"
       ],
-      "connectorStrategy": "cascade",
+      "connectorStrategy": "front",
       "contractionStrategy": "expand"
     },
     "candidateSummary": {
       "candidateCount": 6,
-      "landedCandidateId": "base:clause-pivot",
-      "landedCandidateFamily": "clause-pivot",
+      "landedCandidateId": "base:order-beat",
+      "landedCandidateFamily": "order-beat",
       "families": [
         "syntax-shape",
         "register-lexicon",
@@ -250,13 +250,13 @@
         "clause-pivot",
         "hybrid"
       ],
-      "holdStatus": "held",
-      "averageToolabilityScore": 0.8091
+      "holdStatus": "landed",
+      "averageToolabilityScore": 0.8304
     },
     "realizationSummary": {
       "transferClass": "structural",
       "borrowedShellOutcome": "structural",
-      "borrowedShellFailureClass": "aperture-route-pressure",
+      "borrowedShellFailureClass": null,
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
@@ -306,6 +306,11 @@
         {
           "from": "thats",
           "to": "that is",
+          "family": "feature"
+        },
+        {
+          "from": "b",
+          "to": "be",
           "family": "feature"
         }
       ],
@@ -359,9 +364,11 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 2,
+          "count": 4,
           "markers": [
             "pls",
+            "blip:b",
+            "blip:pls",
             "profile-abbreviation-density"
           ]
         },
@@ -388,7 +395,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 7
+        "totalMarkers": 9
       },
       "donor": {
         "registerLane": "professional-message",
@@ -399,9 +406,11 @@
           "markers": []
         },
         "chatspeakShorthand": {
-          "active": false,
-          "count": 0,
-          "markers": []
+          "active": true,
+          "count": 1,
+          "markers": [
+            "blip:b"
+          ]
         },
         "notePosture": {
           "active": true,
@@ -421,9 +430,10 @@
           "markers": []
         },
         "activeFamilies": [
+          "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 1
+        "totalMarkers": 2
       },
       "output": {
         "registerLane": "professional-message",
@@ -473,9 +483,9 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.863,
-      "outputDonorDistance": 1.169,
-      "donorImprovement": 3.694,
-      "donorImprovementRatio": 0.76,
+      "outputDonorDistance": 2,
+      "donorImprovement": 2.863,
+      "donorImprovementRatio": 0.589,
       "sourceOutputLexicalOverlap": 0.789
     },
     "candidateLedger": [
@@ -486,10 +496,10 @@
         "status": "held",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 0.5004,
+        "score": 0.4999,
         "toolabilityScore": 0.7653,
         "rewriteStrength": 1,
-        "targetFit": 0.5772,
+        "targetFit": 0.5754,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [
@@ -526,7 +536,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 5,
+        "lexemeSwapCount": 6,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR"
@@ -547,9 +557,11 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 2,
+              "count": 4,
               "markers": [
                 "pls",
+                "blip:b",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
@@ -576,7 +588,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 9
           },
           "donor": {
             "registerLane": "professional-message",
@@ -587,9 +599,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:b"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -609,9 +623,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "professional-message",
@@ -749,7 +764,7 @@
             "routePressure": 1
           }
         },
-        "outputPreview": "You are late that is ok just do not start random jobs, and check in west fence table first, and glass and pallets first pass, and saws stay under canopy b, kids"
+        "outputPreview": "You are late that is ok just do not start random jobs, and check in west fence table first, and glass and pallets first pass, and saws stay under canopy be, kid"
       },
       {
         "id": "base:register-lexicon",
@@ -758,10 +773,10 @@
         "status": "held",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 0.5988,
+        "score": 0.5984,
         "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.7225,
+        "targetFit": 0.7208,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [
@@ -792,7 +807,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 5,
+        "lexemeSwapCount": 6,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR"
@@ -813,9 +828,11 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 2,
+              "count": 4,
               "markers": [
                 "pls",
+                "blip:b",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
@@ -842,7 +859,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 9
           },
           "donor": {
             "registerLane": "professional-message",
@@ -853,9 +870,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:b"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -875,9 +894,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "professional-message",
@@ -1015,24 +1035,22 @@
             "routePressure": 1
           }
         },
-        "outputPreview": "You are late that is ok just do not start random jobs, and check in west fence table first, and glass and pallets first pass. Saws stay under canopy b, kids sta"
+        "outputPreview": "You are late that is ok just do not start random jobs, and check in west fence table first, and glass and pallets first pass. Saws stay under canopy be, kids st"
       },
       {
         "id": "base:order-beat",
         "family": "order-beat",
         "envelopeId": "matron",
-        "status": "held",
+        "status": "selected",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 0.5495,
-        "toolabilityScore": 0.7725,
+        "score": 0.9191,
+        "toolabilityScore": 0.9004,
         "rewriteStrength": 1,
-        "targetFit": 0.5736,
+        "targetFit": 0.5718,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
-        "failureReasons": [
-          "semantic-failure"
-        ],
+        "failureReasons": [],
         "artifactFlags": [
           "artifact:over-braiding",
           "artifact:clause-drag"
@@ -1066,7 +1084,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 5,
+        "lexemeSwapCount": 6,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR"
@@ -1087,9 +1105,11 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 2,
+              "count": 4,
               "markers": [
                 "pls",
+                "blip:b",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
@@ -1116,7 +1136,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 9
           },
           "donor": {
             "registerLane": "professional-message",
@@ -1127,9 +1147,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:b"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1149,9 +1171,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "professional-message",
@@ -1261,7 +1284,7 @@
             "actorCoverage": 1,
             "actionCoverage": 1,
             "objectCoverage": 0.964,
-            "polarityMismatches": 2,
+            "polarityMismatches": 1,
             "tenseMismatches": 0
           },
           "anchorIntegrity": {
@@ -1273,20 +1296,18 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.876,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.062,
+            "closureScore": 0.936,
+            "historicalCrease": 0.012,
+            "unfoldingEnergy": 0.037,
             "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.32,
+            "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
           },
           "selectiveAdmissibilityDrift": {
-            "driftClass": "severe",
-            "driftReasons": [
-              "polarity-mismatches>1"
-            ],
-            "routeFloor": "harbor",
-            "routePressure": 1
+            "driftClass": "none",
+            "driftReasons": [],
+            "routeFloor": "play",
+            "routePressure": 0.093
           }
         },
         "outputPreview": "You are late that is ok just do not start random jobs, and check in west fence table first, and glass and pallets first pass, and if wind chills out, saws stay "
@@ -1298,10 +1319,10 @@
         "status": "held",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 0.6055,
+        "score": 0.6051,
         "toolabilityScore": 0.8932,
         "rewriteStrength": 1,
-        "targetFit": 0.7159,
+        "targetFit": 0.7143,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [
@@ -1334,7 +1355,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 5,
+        "lexemeSwapCount": 6,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR"
@@ -1355,9 +1376,11 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 2,
+              "count": 4,
               "markers": [
                 "pls",
+                "blip:b",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
@@ -1384,7 +1407,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 9
           },
           "donor": {
             "registerLane": "professional-message",
@@ -1395,9 +1418,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:b"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1417,9 +1442,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "professional-message",
@@ -1566,10 +1592,10 @@
         "status": "held",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 0.1556,
+        "score": 0.1552,
         "toolabilityScore": 0.7653,
         "rewriteStrength": 1,
-        "targetFit": 0.567,
+        "targetFit": 0.5654,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [
@@ -1608,7 +1634,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 5,
+        "lexemeSwapCount": 6,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR"
@@ -1629,9 +1655,11 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 2,
+              "count": 4,
               "markers": [
                 "pls",
+                "blip:b",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
@@ -1658,7 +1686,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 9
           },
           "donor": {
             "registerLane": "professional-message",
@@ -1669,9 +1697,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:b"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1691,9 +1721,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "professional-message",
@@ -1840,10 +1871,10 @@
         "status": "held",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 0.1071,
+        "score": 0.1067,
         "toolabilityScore": 0.7653,
         "rewriteStrength": 1,
-        "targetFit": 0.4311,
+        "targetFit": 0.4296,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
         "failureReasons": [
@@ -1880,7 +1911,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 5,
+        "lexemeSwapCount": 6,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR"
@@ -1901,9 +1932,11 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 2,
+              "count": 4,
               "markers": [
                 "pls",
+                "blip:b",
+                "blip:pls",
                 "profile-abbreviation-density"
               ]
             },
@@ -1930,7 +1963,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 7
+            "totalMarkers": 9
           },
           "donor": {
             "registerLane": "professional-message",
@@ -1941,9 +1974,11 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": false,
-              "count": 0,
-              "markers": []
+              "active": true,
+              "count": 1,
+              "markers": [
+                "blip:b"
+              ]
             },
             "notePosture": {
               "active": true,
@@ -1963,9 +1998,10 @@
               "markers": []
             },
             "activeFamilies": [
+              "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 1
+            "totalMarkers": 2
           },
           "output": {
             "registerLane": "professional-message",
@@ -2107,15 +2143,13 @@
       }
     ],
     "generationDocket": {
-      "status": "held",
-      "holdClass": "aperture-route-pressure",
-      "headline": "Generator V2 hold // Aperture raised the ontology route floor above publishable passage.",
-      "reasons": [
-        "semantic-failure"
-      ],
+      "status": "landed",
+      "holdClass": null,
+      "headline": "Generator V2 landed a structural registered rewrite.",
+      "reasons": [],
       "candidateCount": 6,
-      "winningCandidateId": "base:clause-pivot",
-      "winningCandidateFamily": "clause-pivot",
+      "winningCandidateId": "base:order-beat",
+      "winningCandidateFamily": "order-beat",
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "rushed-mobile",
@@ -2147,7 +2181,7 @@
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.964,
-          "polarityMismatches": 2,
+          "polarityMismatches": 1,
           "tenseMismatches": 0
         },
         "anchorIntegrity": {
@@ -2159,24 +2193,22 @@
         "aperture": {
           "temporalPosture": "synced",
           "closureClass": "closed",
-          "closureScore": 0.876,
-          "historicalCrease": 0.013,
-          "unfoldingEnergy": 0.062,
+          "closureScore": 0.936,
+          "historicalCrease": 0.012,
+          "unfoldingEnergy": 0.037,
           "beaconStatus": "beacon-idle",
-          "cumulativeNarrowing": 0.32,
+          "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
         },
         "selectiveAdmissibilityDrift": {
-          "driftClass": "severe",
-          "driftReasons": [
-            "polarity-mismatches>1"
-          ],
-          "routeFloor": "harbor",
-          "routePressure": 1
+          "driftClass": "none",
+          "driftReasons": [],
+          "routeFloor": "play",
+          "routePressure": 0.093
         }
       }
     },
-    "winningCandidateId": "base:clause-pivot"
+    "winningCandidateId": "base:order-beat"
   },
   "semanticContract": {
     "transferClass": "structural",
@@ -2206,24 +2238,26 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
+      "beat-merge",
       "CHAIN_CLAUSES_VIA_SUBORDINATOR",
       "front-if",
       "STRIP_SUBORDINATOR_PREFIX"
     ],
     "lexicalOperations": [
+      "blip:b->be",
       "expanded:pls->please",
       "feature:dont->do-not",
       "feature:plus->and",
       "feature:thats->that-is",
       "feature:youre->you-are"
     ],
-    "connectorStrategy": "cascade",
+    "connectorStrategy": "front",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
     "actorCoverage": 1,
     "actionCoverage": 1,
     "objectCoverage": 0.964,
-    "polarityMismatches": 2,
+    "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
   }

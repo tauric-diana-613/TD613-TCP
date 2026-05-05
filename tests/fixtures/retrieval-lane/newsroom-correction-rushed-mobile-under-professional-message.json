@@ -287,7 +287,9 @@
         "register-mode",
         "orthography-posture",
         "lexical-register",
-        "abbreviation-posture"
+        "abbreviation-posture",
+        "surface-marker-posture",
+        "fragment-posture"
       ],
       "profileShiftDimensions": [
         "sentence-mean",
@@ -354,20 +356,19 @@
         "targetRegisterLane": "professional-message",
         "orthographyShift": true,
         "shorthandShift": true,
-        "notePostureShift": false,
+        "notePostureShift": true,
         "slangShift": false,
         "vernacularShift": false,
         "realizedFamilies": [
           "orthographyNoise",
-          "chatspeakShorthand"
-        ],
-        "realizedFamilyCount": 2,
-        "falseCleanFamilies": [
+          "chatspeakShorthand",
           "notePosture"
         ],
+        "realizedFamilyCount": 3,
+        "falseCleanFamilies": [],
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
-        "concealmentEffectiveness": 0.9,
+        "concealmentEffectiveness": 0.9167,
         "surfaceMarkerCount": 1,
         "pressure": {
           "targetRegisterLane": "professional-message",
@@ -401,21 +402,23 @@
         },
         "chatspeakShorthand": {
           "active": true,
-          "count": 6,
+          "count": 7,
           "markers": [
             "b4",
             "graf",
             "hed",
             "speaker-tag",
             "body-fixed",
-            "newsletter-grab"
+            "newsletter-grab",
+            "blip:2"
           ]
         },
         "notePosture": {
           "active": true,
-          "count": 1,
+          "count": 2,
           "markers": [
-            "ampersand-join"
+            "ampersand-join",
+            "blip:b4"
           ]
         },
         "slangMarkers": {
@@ -433,7 +436,7 @@
           "chatspeakShorthand",
           "notePosture"
         ],
-        "totalMarkers": 10
+        "totalMarkers": 12
       },
       "donor": {
         "registerLane": "professional-message",
@@ -555,7 +558,9 @@
           "register-mode",
           "orthography-posture",
           "lexical-register",
-          "abbreviation-posture"
+          "abbreviation-posture",
+          "surface-marker-posture",
+          "fragment-posture"
         ],
         "profileShiftDimensions": [
           "sentence-mean",
@@ -588,21 +593,23 @@
             },
             "chatspeakShorthand": {
               "active": true,
-              "count": 6,
+              "count": 7,
               "markers": [
                 "b4",
                 "graf",
                 "hed",
                 "speaker-tag",
                 "body-fixed",
-                "newsletter-grab"
+                "newsletter-grab",
+                "blip:2"
               ]
             },
             "notePosture": {
               "active": true,
-              "count": 1,
+              "count": 2,
               "markers": [
-                "ampersand-join"
+                "ampersand-join",
+                "blip:b4"
               ]
             },
             "slangMarkers": {
@@ -620,7 +627,7 @@
               "chatspeakShorthand",
               "notePosture"
             ],
-            "totalMarkers": 10
+            "totalMarkers": 12
           },
           "donor": {
             "registerLane": "professional-message",
@@ -710,20 +717,19 @@
           "targetRegisterLane": "professional-message",
           "orthographyShift": true,
           "shorthandShift": true,
-          "notePostureShift": false,
+          "notePostureShift": true,
           "slangShift": false,
           "vernacularShift": false,
           "realizedFamilies": [
             "orthographyNoise",
-            "chatspeakShorthand"
-          ],
-          "realizedFamilyCount": 2,
-          "falseCleanFamilies": [
+            "chatspeakShorthand",
             "notePosture"
           ],
+          "realizedFamilyCount": 3,
+          "falseCleanFamilies": [],
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.9,
+          "concealmentEffectiveness": 0.9167,
           "surfaceMarkerCount": 1,
           "pressure": {
             "targetRegisterLane": "professional-message",
@@ -880,13 +886,15 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
+      "fragment-posture",
       "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "register-mode",
       "sentence-count",
       "sentence-mean",
-      "sentence-spread"
+      "sentence-spread",
+      "surface-marker-posture"
     ],
     "lexemeSwapFamilies": [
       "feature"
