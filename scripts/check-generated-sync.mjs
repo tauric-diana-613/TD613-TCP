@@ -230,10 +230,14 @@ function fail(message) {
   process.exitCode = 1;
 }
 
+function normalizeGeneratedText(value = '') {
+  return String(value).replace(/\r\n/g, '\n');
+}
+
 function checkTextFile(relativePath, expectedFactory, remediation) {
   const absolutePath = path.join(repoRoot, relativePath);
-  const expected = expectedFactory();
-  const actual = fs.readFileSync(absolutePath, 'utf8');
+  const expected = normalizeGeneratedText(expectedFactory());
+  const actual = normalizeGeneratedText(fs.readFileSync(absolutePath, 'utf8'));
   if (expected !== actual) {
     fail(`DRIFT: ${relativePath} is out of sync. ${remediation}`);
   }
