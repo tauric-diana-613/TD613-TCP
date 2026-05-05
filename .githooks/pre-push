@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "pre-push: checking generated artifacts..."
+node scripts/check-generated-sync.mjs
+
+echo "pre-push: verifying retrieval-lane contracts..."
+node tests/retrieval-lane.test.mjs
+
+echo "pre-push: sync guard passed."

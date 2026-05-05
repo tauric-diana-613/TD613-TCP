@@ -1167,7 +1167,7 @@
           "same-facts"
         ],
         "deckVisible": false,
-        "text": "need quick fix on housing story. quote in graf 6 is nia brooks not moreno. words are right, speaker tag isnt. brooks emailed 9:31. body fixed 9:47 + note added. also homepage hed now sounds like vote passed when it only cleared committee. can someone swap that before newsletter grab"
+        "text": "need quick fix on housing story. quote in graf 6 is nia brooks not moreno. words are right, speaker tag isnt. brooks emailed 9:31. body fixed 9:47 & note added. also homepage hed now sounds 2 much like vote passed when it only cleared committee. can someone swap that b4 newsletter grab"
       },
       {
         "id": "newsroom-correction-tangled-followup",
@@ -2217,7 +2217,7 @@
         "variant": "rushed-mobile",
         "name": "Metro Desk Correction Chain / Rushed Mobile",
         "intention": "Hold the same correction facts under compressed deadline pressure.",
-        "text": "need quick fix on housing story. quote in graf 6 is nia brooks not moreno. words are right, speaker tag isnt. brooks emailed 9:31. body fixed 9:47 + note added. also homepage hed now sounds like vote passed when it only cleared committee. can someone swap that before newsletter grab"
+        "text": "need quick fix on housing story. quote in graf 6 is nia brooks not moreno. words are right, speaker tag isnt. brooks emailed 9:31. body fixed 9:47 & note added. also homepage hed now sounds 2 much like vote passed when it only cleared committee. can someone swap that b4 newsletter grab"
       },
       {
         "id": "newsroom-correction-tangled-followup",
@@ -5706,12 +5706,12 @@
         "anti-enforcement": "true"
       },
       "fingerprint": {
-        "bytes": 399523,
-        "lineCount": 8212,
-        "inlineScriptCount": 8,
+        "bytes": 409930,
+        "lineCount": 8267,
+        "inlineScriptCount": 9,
         "panelCount": 3,
         "buttonCount": 20,
-        "contentHashSha256": "21a1498753d2dfd31821f81f92ec451b89816c68079ffc4f5f8ad7ae964ab99c"
+        "contentHashSha256": "33d6c3c23bb0f8acec8040a22935028f77df3081157d85dafffe790ec1815d18"
       },
       "checks": [
         {
@@ -5734,9 +5734,9 @@
           "id": "inline-script",
           "label": "inline runtime present",
           "ok": true,
-          "detail": "8 inline script block(s)",
+          "detail": "9 inline script block(s)",
           "expected": ">= 1",
-          "actual": 8
+          "actual": 9
         },
         {
           "id": "meta:tool-name",
