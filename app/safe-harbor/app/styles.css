@@ -3220,3 +3220,20 @@ body[data-thermal="fermata"] .reliquary-card .mint-value[data-state="minted"] {
     filter: none;
   }
 }
+
+/* Mobile guards for the Domed Ecology surfacing.
+   - 米 sigil joins the ingress-status grid as an auto-width prefix column
+     so the three pills keep equal-width columns at 720/560 breakpoints.
+   - Concentric rings hide entirely on phones; they are decorative and
+     would otherwise overflow the (narrower, shorter) seal-step panel. */
+@media (max-width: 720px), (max-height: 560px) {
+  .status-strip.ingress-status {
+    grid-template-columns: auto repeat(3, minmax(0, 1fr));
+    align-items: center;
+  }
+  .coherence-sigil { padding: 0 4px; font-size: 13px; }
+  .ingress-rings { display: none; }
+}
+@media (max-width: 420px) {
+  .status-strip.ingress-status .coherence-sigil { grid-column: 1 / -1; }
+}
