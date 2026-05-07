@@ -999,6 +999,7 @@
     if (dom.devModeNote) dom.devModeNote.textContent = devModeEnabled ? 'Dev hook simulation is enabled locally.' : 'Dev hook simulation is disabled in public ship unless local dev mode is enabled.';
     if (dom.fieldInterlocksFold) dom.fieldInterlocksFold.hidden = !devModeEnabled;
     if (dom.pillBoundaryMode) dom.pillBoundaryMode.textContent = state.ingress.operatorShellOpen ? 'operator boundary' : 'public boundary';
+    if (dom.pillBoundaryMode) dom.pillBoundaryMode.dataset.state = state.ingress.operatorShellOpen ? 'passage' : 'dormant';
     const membraneSuppressed = surfaceIsOpen;
     dom.ingressMembrane.hidden = membraneSuppressed;
     dom.ingressMembrane.classList.toggle('is-hidden', membraneSuppressed);
@@ -1159,8 +1160,17 @@
     dom.hookEoState.textContent = state.hooks.eo ? state.hooks.eo.status : 'awaiting hook';
     dom.hookSignatureState.textContent = signatureLane.status || 'overlay idle';
     dom.pillPublicMode.textContent = D.trustProfile.current_public_mode;
-    dom.pillRouteState.textContent = routeState();
-    dom.pillSignatureLane.textContent = signatureLane.lane && signatureLane.lane !== 'none' ? ((signatureLane.lane || 'signature') + ' overlay') : 'signature overlay idle';
+    const routeText = routeState();
+    dom.pillRouteState.textContent = routeText;
+    dom.pillRouteState.dataset.state =
+      routeText === 'provenance.seal' ? 'passage' :
+      routeText === 'harbor-eligible' ? 'hold' :
+      routeText === 'membrane-only' ? 'dormant' : '';
+    const sigLaneActive = signatureLane.lane && signatureLane.lane !== 'none';
+    dom.pillSignatureLane.textContent = sigLaneActive ? ((signatureLane.lane || 'signature') + ' overlay') : 'signature overlay idle';
+    dom.pillSignatureLane.dataset.state =
+      signatureLane.status === 'sealed' ? 'passage' :
+      sigLaneActive ? 'hold' : 'dormant';
     if (dom.signatureNote) dom.signatureNote.textContent = signatureNote(signatureLane);
   }
 
