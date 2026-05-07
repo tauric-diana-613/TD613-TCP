@@ -19,6 +19,7 @@
           </div>
         </div>
         <div class="status-strip ingress-status">
+          <span class="coherence-sigil" id="coherenceSigilIngress" data-state="dormant" aria-hidden="true">米</span>
           <div class="status-pill" id="ingressRoutePill">membrane-only</div>
           <div class="status-pill" id="ingressProgressPill">0 / 3 lanes</div>
           <div class="status-pill" id="ingressVaultPill">vault sealed</div>
@@ -39,6 +40,11 @@
 
       <div class="ingress-handshake-grid">
         <section class="ingress-step-panel">
+          <div class="ingress-rings" data-td613-skip="true" aria-hidden="true">
+            <div class="ingress-ring ingress-ring-c"></div>
+            <div class="ingress-ring ingress-ring-b"></div>
+            <div class="ingress-ring ingress-ring-a"></div>
+          </div>
           <div class="section-label">Principal Intake</div>
           <div class="ingress-step-head">
             <div>
@@ -128,6 +134,7 @@
         </div>
       </div>
       <div class="status-strip">
+        <span class="coherence-sigil" id="coherenceSigilVault" data-state="dormant" aria-hidden="true">米</span>
         <div class="status-pill" id="pillPublicMode">public mode pending</div>
         <div class="status-pill" id="pillBoundaryMode">boundary pending</div>
         <div class="status-pill" id="pillRouteState">route pending</div>

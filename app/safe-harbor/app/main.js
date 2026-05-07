@@ -178,6 +178,8 @@
     auditLog: $('auditLog'),
     safeHarborReceiptMount: $('safeHarborReceiptMount'),
     safeHarborVaultReceiptMount: $('safeHarborVaultReceiptMount'),
+    coherenceSigilIngress: $('coherenceSigilIngress'),
+    coherenceSigilVault: $('coherenceSigilVault'),
     buildProbeButtons: Array.from(document.querySelectorAll('[data-probe-variant]')),
     copyButtons: Array.from(document.querySelectorAll('[data-copy-target]'))
   };
@@ -217,7 +219,8 @@
     },
     covenant: { confirmed: false, confirmedAt: null, badgeNumber: null },
     operatorSignature: null,
-    selectedBatchId: null
+    selectedBatchId: null,
+    fermataLockUntil: 0
   };
 
   let refreshSeq = 0;
@@ -651,6 +654,40 @@
     renderPacket();
     renderAudit();
     renderSafeHarborReceipt();
+    renderThermal();
+    renderCoherenceSigil();
+  }
+
+  function renderThermal() {
+    if (!document.body) return;
+    const now = Date.now();
+    let thermal;
+    if (state.fermataLockUntil && now < state.fermataLockUntil) {
+      thermal = 'fermata';
+    } else if (!state.ingress.packetId) {
+      thermal = 'col';
+    } else if (state.covenant.confirmed) {
+      thermal = 'col';
+    } else {
+      thermal = 'hot';
+    }
+    document.body.dataset.thermal = thermal;
+  }
+
+  function renderCoherenceSigil() {
+    const targets = [dom.coherenceSigilIngress, dom.coherenceSigilVault].filter(Boolean);
+    if (!targets.length) return;
+    let coherenceState;
+    if (!state.ingress.packetId) {
+      coherenceState = 'dormant';
+    } else {
+      const analysis = (state.packet && state.packet.analysis) || {};
+      const stability = Number(analysis.cross_lane_stability || 0);
+      const triad = analysis.triad_resonance;
+      const triadOk = triad === 'aligned' || triad === 'harmonized' || (typeof triad === 'number' && triad >= 0.7);
+      coherenceState = (triadOk && stability >= 0.7) ? 'steady' : 'drift';
+    }
+    targets.forEach((el) => { el.dataset.state = coherenceState; });
   }
 
   function triadShortfallLines(shortfalls = {}, wordCounts = {}) {
@@ -1153,6 +1190,7 @@
       dom.receiptIdReadout.textContent = 'pending';
       dom.packetHashReadout.textContent = 'pending';
       dom.harborReadout.textContent = state.ingress.bypass ? 'packetless operator shell' : 'awaiting route conscience';
+      dom.harborReadout.dataset.state = 'idle';
       dom.exportGateReadout.textContent = 'guarded';
       dom.covenantStateReadout.textContent = state.ingress.bypass ? 'operator-bypass / no packet' : (completedCount() === 3 ? 'ready to mint staged packet' : 'awaiting triad completion');
       dom.cadenceReadout.textContent = state.ingress.bypass ? 'packetless / intake bypassed' : (completedCount() === 3 ? 'stylometric witness ready on staged packet' : 'awaiting ingress');
@@ -1186,6 +1224,10 @@
     dom.receiptIdReadout.textContent = state.packet.receipt.receipt_id;
     dom.packetHashReadout.textContent = state.packet.packet_hash_sha256;
     dom.harborReadout.textContent = state.packet.analysis.route.recommended_harbor;
+    dom.harborReadout.dataset.state =
+      state.packet.analysis.route.recommended_harbor === 'provenance.seal' ? 'sealed'
+        : state.packet.analysis.route.recommended_harbor === 'harbor-eligible' ? 'eligible'
+        : 'idle';
     dom.exportGateReadout.textContent = state.packet.bridge.export_gate.state;
     const issuance = state.packet.issuance || {};
     const triadThresholdSatisfied = Object.values(issuance.triad_shortfalls || {}).every((value) => Number(value || 0) <= 0);
@@ -1226,6 +1268,13 @@
           ? 'The packet shell can be staged and the detached signature can be carried, but SHI issuance stays locked until Future / Past / Higher all cross the stylometric threshold.'
           : (state.packet.signature.status === 'sealed' ? 'Raw signature text is staged. Mint Staged Packet will issue the SHI #, and Seal Payload remains the final artifact-seal step.' : 'The packet is staged only. Mint Staged Packet issues the SHI # once the entrant triad is ready; Seal Payload remains available for the final seal lane.'));
     dom.covenantExport.disabled = false;
+    dom.covenantExport.dataset.state = state.covenant.confirmed
+      ? 'sealed'
+      : state.packet.bridge.covenant_gate.confirmed
+        ? 'staged'
+        : triadThresholdSatisfied
+          ? 'ready'
+          : 'awaiting';
     if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = !state.packet;
     const exportReady = Boolean(
       state.packet &&
@@ -1297,6 +1346,7 @@
             ? 'triad ready / mint staged packet'
             : 'not minted';
     dom.shiMintValue.textContent = available || '';
+    dom.shiMintValue.dataset.state = issued ? 'minted' : (recoverable ? 'recoverable' : 'idle');
     dom.canonicalHeaderPreview.textContent = available ? canonicalHeaderString(available) : '';
     dom.extendedFooterPreview.textContent = available ? extendedFooterString(available) : '';
     dom.shiCopyNote.textContent = issued
@@ -1626,6 +1676,16 @@
       confirmed_at: state.covenant.confirmedAt,
       signature_status: state.packet && state.packet.signature ? state.packet.signature.status : 'unsigned'
     });
+    // 𝄐 — every hõt seal event mandates a 1.2s integration window. The surface
+    // locks, panels desaturate, the SHI value flickers once and resumes its
+    // base pulse. Operator cannot barrel into the next action until the
+    // chamber returns to cōl.
+    state.fermataLockUntil = Date.now() + 1200;
+    render();
+    setTimeout(() => {
+      state.fermataLockUntil = 0;
+      render();
+    }, 1200);
   }
 
   async function forgeBatch() {

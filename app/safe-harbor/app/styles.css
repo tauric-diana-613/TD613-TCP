@@ -51,6 +51,31 @@
   --chev-md: 10px;
   --chev-lg: 14px;
   --chev-xl: 20px;
+  /* Domed Ecology halo stack — every hõt event gets a multi-layer pulse,
+     every cōl rest dims to the matching base. Variants by data-state. */
+  --halo-cyan-rest:
+    inset 0 0 18px rgba(116, 234, 255, 0.05),
+    0 0 22px rgba(116, 234, 255, 0.08);
+  --halo-cyan-peak:
+    inset 0 0 28px rgba(116, 234, 255, 0.16),
+    0 0 42px rgba(116, 234, 255, 0.28),
+    0 0 96px rgba(189, 147, 249, 0.18);
+  --halo-amber-rest:
+    inset 0 0 0 1px rgba(241, 250, 140, 0.10),
+    0 0 18px rgba(241, 250, 140, 0.06);
+  --halo-amber-peak:
+    inset 0 0 0 1px rgba(241, 250, 140, 0.16),
+    0 0 30px rgba(241, 250, 140, 0.18),
+    inset 0 0 22px rgba(241, 250, 140, 0.06);
+  --halo-critical-rest:
+    0 0 0 1px rgba(255, 85, 85, 0.10),
+    0 0 22px rgba(255, 85, 85, 0.12);
+  --halo-critical-peak:
+    0 0 0 1px rgba(255, 85, 85, 0.16),
+    0 0 36px rgba(255, 85, 85, 0.28),
+    inset 0 0 22px rgba(255, 85, 85, 0.10),
+    inset 0 0 16px rgba(116, 234, 255, 0.06);
+  --thermal-fermata-ms: 1200ms;
 }
 
 /* Chevron clip-path utility — preserves the futurecore corner motif while
@@ -114,6 +139,43 @@
   0% { transform: translateX(-24%); opacity: 0; }
   20% { opacity: 0.18; }
   100% { transform: translateX(124%); opacity: 0; }
+}
+
+/* Domed Ecology kinetics — adapted from the TCP/Aperture vocabulary
+   (core-pulse, hold-branch-restraint, criticality-burn, alien-capture-scan,
+   ingress-ring-collapse, ritual-flicker). CRT-wake is intentionally not
+   ported; it suits a gateway boot, not an attestation surface. */
+@keyframes core-pulse {
+  0%, 100% { box-shadow: var(--halo-cyan-rest); }
+  50%      { box-shadow: var(--halo-cyan-peak); }
+}
+@keyframes hold-branch-restraint {
+  0%, 100% { box-shadow: var(--halo-amber-rest); }
+  50%      { box-shadow: var(--halo-amber-peak); }
+}
+@keyframes criticality-burn {
+  0%, 100% { box-shadow: var(--halo-critical-rest); }
+  50%      { box-shadow: var(--halo-critical-peak); }
+}
+@keyframes alien-capture-scan {
+  0%   { opacity: 0; transform: translateY(-155%); }
+  18%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(260%); }
+}
+@keyframes ingress-ring-collapse {
+  0%   { transform: scale(1);    opacity: 1; }
+  100% { transform: scale(0.74); opacity: 0.18; }
+}
+@keyframes ritual-flicker {
+  0%, 100% { opacity: 1; }
+  6%       { opacity: 0.28; }
+  8%       { opacity: 1; }
+  43%      { opacity: 0.62; }
+  46%      { opacity: 1; }
+}
+@keyframes coherence-hold {
+  0%, 100% { opacity: 0.78; filter: drop-shadow(0 0 4px rgba(80, 250, 123, 0.18)); }
+  50%      { opacity: 1;    filter: drop-shadow(0 0 10px rgba(80, 250, 123, 0.36)); }
 }
 
 * {
@@ -2967,5 +3029,194 @@ textarea {
 
   .safe-harbor-receipt-mount {
     margin-top: 8px;
+  }
+}
+
+/* ==========================================================================
+   Domed Ecology surfacing — thermal regulation made visible.
+   States: body[data-thermal="col"|"hot"|"fermata"]. Drives halos, scan beams,
+   ring collapse, panel desaturation. Every effect fires for a reason — never
+   decorative. See plan: /root/.claude/plans/could-you-make-safe-distributed-shell.md
+   ========================================================================== */
+
+/* 米 — pattern coherence sigil. Bright + steady when triad fingerprint and
+   cross-lane stability agree; gold+flicker on drift; faint when dormant. */
+.coherence-sigil {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 8px;
+  color: var(--text-faint);
+  letter-spacing: 0;
+  transition: color 220ms ease, filter 220ms ease, opacity 220ms ease;
+  user-select: none;
+}
+.coherence-sigil[data-state="steady"] {
+  color: var(--lime);
+  animation: coherence-hold 4.8s ease-in-out infinite;
+}
+.coherence-sigil[data-state="drift"] {
+  color: var(--gold);
+  animation: ritual-flicker 1.6s ease-in-out infinite;
+}
+.coherence-sigil[data-state="dormant"] {
+  color: var(--text-faint);
+  opacity: 0.5;
+}
+
+/* Concentric ring layer inside the ingress seal step. Three nested rings
+   centered behind the seal panel; collapse 60ms staggered when triad enters
+   hõt or after a successful seal. */
+.ingress-rings {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 0;
+}
+.ingress-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(116, 234, 255, 0.18);
+  box-shadow: inset 0 0 18px rgba(116, 234, 255, 0.06);
+}
+.ingress-ring-a { width: 152px; height: 152px; }
+.ingress-ring-b { width: 220px; height: 220px; border-color: rgba(116, 234, 255, 0.12); }
+.ingress-ring-c { width: 294px; height: 294px; border-color: rgba(116, 234, 255, 0.08); }
+body[data-thermal="hot"] .ingress-ring-a,
+body[data-thermal="fermata"] .ingress-ring-a {
+  animation: ingress-ring-collapse 1200ms ease forwards;
+}
+body[data-thermal="hot"] .ingress-ring-b,
+body[data-thermal="fermata"] .ingress-ring-b {
+  animation: ingress-ring-collapse 1200ms ease 60ms forwards;
+}
+body[data-thermal="hot"] .ingress-ring-c,
+body[data-thermal="fermata"] .ingress-ring-c {
+  animation: ingress-ring-collapse 1200ms ease 120ms forwards;
+}
+
+/* Reliquary scan beam — sweeps once at the cōl→hõt transition. */
+.reliquary-card {
+  position: relative;
+  overflow: hidden;
+}
+.reliquary-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 60%;
+  background: linear-gradient(180deg, transparent, rgba(116, 234, 255, 0.18), transparent);
+  pointer-events: none;
+  opacity: 0;
+}
+body[data-thermal="hot"] .reliquary-card::before,
+body[data-thermal="fermata"] .reliquary-card::before {
+  animation: alien-capture-scan 1400ms ease-out;
+}
+
+/* SHI mint value — base halo when the value is just held in recall, full
+   triple-layer pulse once an SHI is actually minted. */
+.mint-value[data-state="minted"] {
+  animation: core-pulse 4.2s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+}
+.mint-value[data-state="recoverable"] {
+  box-shadow: var(--halo-cyan-rest);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+}
+
+/* Mint / Seal Payload button — amber breathing while staged, full cyan halo
+   once sealed. Critical pulse remains available via data-state="critical"
+   for any future error surfacing. */
+.control[data-state="staged"],
+.control[data-state="ready"] {
+  animation: hold-branch-restraint 2.6s ease-in-out infinite;
+}
+.control[data-state="sealed"] {
+  box-shadow: var(--halo-cyan-peak);
+}
+.control[data-state="critical"] {
+  animation: criticality-burn 1.8s ease-in-out infinite;
+}
+
+/* Harbor recommendation readout — color + glow on landing states. */
+#harborReadout[data-state="sealed"] {
+  color: var(--lime);
+  text-shadow: 0 0 12px rgba(80, 250, 123, 0.35);
+}
+#harborReadout[data-state="eligible"] {
+  color: var(--cyan);
+}
+
+/* Status pills — TCP-style data-state palette swap. */
+.status-pill[data-state="critical"] {
+  color: var(--rose);
+  border-color: rgba(255, 85, 85, 0.32);
+  background: rgba(255, 85, 85, 0.08);
+}
+.status-pill[data-state="hold"] {
+  color: var(--gold);
+  border-color: rgba(241, 250, 140, 0.28);
+  background: rgba(241, 250, 140, 0.06);
+}
+.status-pill[data-state="passage"] {
+  color: var(--lime);
+  border-color: rgba(80, 250, 123, 0.28);
+  background: rgba(80, 250, 123, 0.06);
+}
+.status-pill[data-state="dormant"] {
+  color: var(--text-faint);
+}
+
+/* 𝄐 — the fermata curtain. Surface settles for 1200ms after every successful
+   seal: panels desaturate, controls (other than the just-sealed one) lock,
+   the SHI value flickers once and resumes its base pulse. */
+body[data-thermal="fermata"] .chamber-panel,
+body[data-thermal="fermata"] .canon-panel,
+body[data-thermal="fermata"] .conscience-panel {
+  filter: saturate(0.92) brightness(0.96);
+  transition: filter 320ms ease;
+}
+body[data-thermal="fermata"] .control:not([data-state="sealed"]):not(#covenantExport) {
+  pointer-events: none;
+  opacity: 0.72;
+}
+body[data-thermal="fermata"] .reliquary-card .mint-value[data-state="minted"] {
+  animation: ritual-flicker 800ms ease, core-pulse 4.2s ease-in-out infinite 800ms;
+}
+
+/* Reduced-motion guard — kinetic motion suppressed; static color states and
+   halos still apply (motion sensitivity, not color sensitivity). */
+@media (prefers-reduced-motion: reduce) {
+  .coherence-sigil[data-state="steady"],
+  .coherence-sigil[data-state="drift"],
+  body[data-thermal="hot"] .ingress-ring-a,
+  body[data-thermal="hot"] .ingress-ring-b,
+  body[data-thermal="hot"] .ingress-ring-c,
+  body[data-thermal="fermata"] .ingress-ring-a,
+  body[data-thermal="fermata"] .ingress-ring-b,
+  body[data-thermal="fermata"] .ingress-ring-c,
+  body[data-thermal="hot"] .reliquary-card::before,
+  body[data-thermal="fermata"] .reliquary-card::before,
+  .mint-value[data-state="minted"],
+  .control[data-state="staged"],
+  .control[data-state="ready"],
+  .control[data-state="critical"],
+  body[data-thermal="fermata"] .reliquary-card .mint-value[data-state="minted"] {
+    animation: none !important;
+  }
+  body[data-thermal="fermata"] .chamber-panel,
+  body[data-thermal="fermata"] .canon-panel,
+  body[data-thermal="fermata"] .conscience-panel {
+    filter: none;
   }
 }
