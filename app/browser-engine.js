@@ -11192,6 +11192,50 @@ function buildCadenceTransferTrace(text = '', shell = {}, options = {}) {
 function applyCadenceToText(text = '', shell = {}) {
   return applyCadenceToTextV2(text, shell);
 }
+
+// Donor retrieval over an arbitrary corpus. Despite the engine being
+// historically called the "retrieval engine," it never actually retrieved
+// — callers had to hand-build a donor shell. This is the missing index:
+// given a source text and a pool of donor records ({ id, familyId, variant,
+// name, text, [profile] } each), score every donor by profile-shift
+// magnitude (we want donors *different enough* to drive a real cadence
+// shift; the engine's audit handles the upper bound by rejecting outputs
+// that fail meaning preservation) and return the top-k.
+//
+// Filter options are deliberately additive: caller can drop donors from
+// the same family, the same register lane, or below a minimum delta-score
+// floor. No coupling to any specific corpus — pass any list of records.
+function retrieveTopKDonors(sourceText = '', donorPool = [], options = {}) {
+  const {
+    k = 3,
+    excludeFamilyId = null,
+    excludeSameLane = null,
+    minDeltaScore = 0
+  } = options;
+  const sourceProfile = extractCadenceProfile(sourceText || '');
+  const scored = (Array.isArray(donorPool) ? donorPool : [])
+    .filter((donor) => donor && donor.text)
+    .filter((donor) => !excludeFamilyId || donor.familyId !== excludeFamilyId)
+    .filter((donor) => !excludeSameLane || donor.variant !== excludeSameLane)
+    .map((donor) => {
+      const donorProfile = donor.profile || extractCadenceProfile(donor.text);
+      const delta = profileDeltaToTarget(sourceProfile, donorProfile);
+      const deltaScore = profileDeltaScore(delta);
+      return {
+        id: donor.id,
+        familyId: donor.familyId || null,
+        variant: donor.variant || null,
+        name: donor.name || null,
+        text: donor.text,
+        profile: donorProfile,
+        delta,
+        deltaScore
+      };
+    })
+    .filter((entry) => entry.deltaScore >= minDeltaScore);
+  scored.sort((a, b) => b.deltaScore - a.deltaScore);
+  return scored.slice(0, Math.max(0, k));
+}
 // SOURCE: app/engine/vernacular-ontology.js
 // Shared chatspeak / vernacular ontology derived from C:/Users/timst/Downloads/blip-report.md.
 // The report is treated as compiled ontology data, not a frequency leaderboard.
