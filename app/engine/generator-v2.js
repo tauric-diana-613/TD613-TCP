@@ -12,6 +12,8 @@ import {
   buildOpportunityProfileFromIR,
   cadenceModFromProfile,
   compareTexts,
+  countConjunctionStacks,
+  countRepeatedWordBoundaries,
   extractCadenceProfile,
   segmentTextToIR,
   sentenceSplit
@@ -1685,12 +1687,19 @@ function normalizeMergedLead(next = '', linker = ', and ') {
   if (!working) {
     return working;
   }
+  // When the merge linker carries a connector ("and", "while", or
+  // semicolon-bridged sentences), strip any leading connector from the
+  // right sentence — otherwise we stack conjunctions ("and but", "and or",
+  // "and so and"). The earlier version only stripped a leading "and"
+  // when the linker ended in "and"; that left "but" / "or" / "yet" /
+  // "so" / "then" to collide with the inserted conjunction.
+  const LEADING_CONNECTORS = /^(?:and|but|or|so|yet|then)\b[\s,]*/i;
   if (/\bwhile\s*$/i.test(linker)) {
     working = working.replace(/^(?:and|while)\b[\s,]*/i, '');
   } else if (/\band\s*$/i.test(linker)) {
-    working = working.replace(/^and\b[\s,]*/i, '');
+    working = working.replace(LEADING_CONNECTORS, '');
   } else if (/;\s*$/.test(linker)) {
-    working = working.replace(/^(?:and|but|so)\b[\s,]*/i, '');
+    working = working.replace(LEADING_CONNECTORS, '');
   }
   return working.replace(/^[A-Z]/, (match) => match.toLowerCase());
 }
@@ -2034,7 +2043,15 @@ function guardCoverageAtStage(label, sourceIR, protectedState, beforeText, trans
   if (candidate === beforeText) return beforeText;
   const audit = buildSemanticAuditBundle(sourceIR, candidate, protectedState);
   const coverage = Number(audit?.semanticAudit?.propositionCoverage ?? 1);
-  return coverage >= 0.85 ? candidate : beforeText;
+  if (coverage < 0.85) return beforeText;
+  // Artifact gates: a stage that INTRODUCES an obvious-broken pattern
+  // ("and but", "lopez. Lopez" echoes) reverts. Diffed against beforeText
+  // so we only blame the stage that newly produced it; pre-existing
+  // artifacts pass through (and would be caught by an earlier stage's
+  // guard anyway).
+  if (countConjunctionStacks(candidate) > countConjunctionStacks(beforeText)) return beforeText;
+  if (countRepeatedWordBoundaries(candidate) > countRepeatedWordBoundaries(beforeText)) return beforeText;
+  return candidate;
 }
 
 
@@ -6148,22 +6165,22 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
   outputText = guardCoverageAtStage('register-lane', sourceIR, protectedState, outputText, (t) =>
     applyRegisterLaneRealization(t, context));
   outputText = restoreTemporalNullsAfterRewrite(outputText, temporalState, temporalDirective, targetRegisterLane);
-  const polishProtected = protectAnchorsForRewrite(outputText, hardAnchors);
-  outputText = polishNativeCandidateText(polishProtected.text, {
-    envelopeId: variant.envelopeId,
-    sourceClass
-  })
-    .replace(/;\s+(?=[A-Z])/g, '. ')
-    .replace(/,,+/g, ',');
-  {
+  outputText = guardCoverageAtStage('polish', sourceIR, protectedState, outputText, (t) => {
+    const polishProtected = protectAnchorsForRewrite(t, hardAnchors);
+    let polished = polishNativeCandidateText(polishProtected.text, {
+      envelopeId: variant.envelopeId,
+      sourceClass
+    })
+      .replace(/;\s+(?=[A-Z])/g, '. ')
+      .replace(/,,+/g, ',');
     const targetLooseness = Number(context.targetProfile?.orthographicLooseness || 0);
     const sourceLooseness = Number(sourceProfile?.orthographicLooseness || 0);
     if (targetLooseness >= Math.max(0.06, sourceLooseness + 0.04)) {
       const limit = targetLooseness >= 0.6 ? 6 : targetLooseness >= 0.2 ? 4 : 2;
-      outputText = loosenSentenceStartsV2(outputText, limit);
+      polished = loosenSentenceStartsV2(polished, limit);
     }
-  }
-  outputText = restoreAnchorsAfterRewrite(outputText, polishProtected.replacements);
+    return restoreAnchorsAfterRewrite(polished, polishProtected.replacements);
+  });
   const artifactRepair = applyArtifactRepairPass(outputText, context);
   outputText = guardCoverageAtStage('artifact-repair', sourceIR, protectedState, outputText, () => artifactRepair.text);
   outputText = guardCoverageAtStage('formal-and-chains', sourceIR, protectedState, outputText, (t) =>

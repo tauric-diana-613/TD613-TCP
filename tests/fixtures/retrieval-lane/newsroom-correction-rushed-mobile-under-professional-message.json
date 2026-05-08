@@ -31,6 +31,8 @@
       "polarityMismatches": 3,
       "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
+      "conjunctionStackCount": 0,
+      "repeatedWordBoundaryCount": 0,
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",

@@ -5,6 +5,8 @@
 //   - transferClass in { structural, surface }     (engine actually shifted)
 //   - propositionCoverage >= 0.85                  (meaning preserved at the audit's bar)
 //   - protectedAnchorIntegrity >= 0.95             (literals/anchors survived)
+//   - conjunctionStackCount == 0                   (no "and but" / "but and" / "or and" artifacts)
+//   - repeatedWordBoundaryCount == 0               (no "X. X" sentence-split echoes)
 //   - output text differs from source text         (something happened)
 //
 // This file does NOT call assert.fail / process.exit(1) on misses. The gap
@@ -37,21 +39,27 @@ function evaluateCase(testCase) {
       ?? result?.semanticAudit?.protectedAnchorIntegrity
       ?? 1
   );
+  const conjunctionStacks = Number(result?.semanticAudit?.conjunctionStackCount ?? 0);
+  const repeatedBoundaries = Number(result?.semanticAudit?.repeatedWordBoundaryCount ?? 0);
   const textDiffers = (result.text || '') !== testCase.sourceText;
 
   const checks = {
     engaged: ENGAGED_CLASSES.has(transferClass),
     coveragePassed: propositionCoverage >= COVERAGE_FLOOR,
     anchorsPassed: anchorIntegrity >= ANCHOR_FLOOR,
+    noConjunctionStacks: conjunctionStacks === 0,
+    noRepeatedBoundaries: repeatedBoundaries === 0,
     textDiffers
   };
-  const passed = checks.engaged && checks.coveragePassed && checks.anchorsPassed && checks.textDiffers;
+  const passed = Object.values(checks).every(Boolean);
 
   return {
     id: testCase.id,
     transferClass,
     propositionCoverage,
     anchorIntegrity,
+    conjunctionStacks,
+    repeatedBoundaries,
     textDiffers,
     checks,
     passed
@@ -63,6 +71,8 @@ function failureReason(report) {
   if (!report.checks.engaged) reasons.push(`transferClass=${report.transferClass}`);
   if (!report.checks.coveragePassed) reasons.push(`coverage=${report.propositionCoverage.toFixed(3)}`);
   if (!report.checks.anchorsPassed) reasons.push(`anchors=${report.anchorIntegrity.toFixed(3)}`);
+  if (!report.checks.noConjunctionStacks) reasons.push(`conj-stacks=${report.conjunctionStacks}`);
+  if (!report.checks.noRepeatedBoundaries) reasons.push(`repeated-bounds=${report.repeatedBoundaries}`);
   if (!report.checks.textDiffers) reasons.push('no-shift');
   return reasons.join(' / ');
 }
@@ -73,7 +83,8 @@ const total = reports.length;
 const rate = total === 0 ? 0 : passed / total;
 
 console.log(`held-out retrieval eval: ${passed}/${total} passed (${(rate * 100).toFixed(1)}%)`);
-console.log('  bar: transferClass∈{structural,surface}, propositionCoverage>=0.85, protectedAnchorIntegrity>=0.95, text!=source');
+console.log('  bar: transferClass∈{structural,surface}, propositionCoverage>=0.85, protectedAnchorIntegrity>=0.95,');
+console.log('       conjunctionStackCount=0, repeatedWordBoundaryCount=0, text!=source');
 for (const report of reports) {
   const tag = report.passed ? 'PASS' : 'FAIL';
   const detail = report.passed

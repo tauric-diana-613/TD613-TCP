@@ -1,6 +1,6 @@
 (function () {
   window.TCP_RETRIEVAL_FIXTURES = {
-  "generatedAt": "2026-05-08T21:49:00.503Z",
+  "generatedAt": "2026-05-08T23:29:59.906Z",
   "cases": {
     "package-handoff-formal-record-under-rushed-mobile": {
       "id": "package-handoff-formal-record-under-rushed-mobile",
@@ -35,6 +35,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -2300,6 +2302,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -3482,6 +3486,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -5652,6 +5658,8 @@
           "polarityMismatches": 1,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -7916,6 +7924,8 @@
           "polarityMismatches": 1,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -9215,6 +9225,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -10394,6 +10406,8 @@
           "polarityMismatches": 3,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -11873,6 +11887,8 @@
           "polarityMismatches": 1,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -13786,6 +13802,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -14671,6 +14689,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -15747,6 +15767,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -17875,6 +17897,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -19305,6 +19329,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -20521,6 +20547,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -22486,6 +22514,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -23376,6 +23406,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -24469,6 +24501,8 @@
           "polarityMismatches": 0,
           "tenseMismatches": 0,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
@@ -26002,6 +26036,8 @@
           "polarityMismatches": 3,
           "tenseMismatches": 1,
           "protectedAnchorIntegrity": 1,
+          "conjunctionStackCount": 0,
+          "repeatedWordBoundaryCount": 0,
           "clauseAudits": [
             {
               "sourceClauseId": "s0c0",
