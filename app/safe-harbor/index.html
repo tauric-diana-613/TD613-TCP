@@ -274,6 +274,20 @@
                   <div class="proof-row"><span class="proof-label">Combined lane</span><span class="proof-value" id="mixedLane">loading combined lane</span></div>
                 </div>
               </details>
+              <div class="svg-attestation-probes" data-td613-skip="true">
+                <details class="fold-panel" data-td613-skip="true" open>
+                  <summary class="attestation-summary">SVG Provenance Attestation Probes <span class="attestation-hint">(ask your TD613 administrator for the key renderer)</span></summary>
+                  <div class="builder-toolbar">
+                    <button class="control" data-probe-variant="01" type="button">Build 01 alias voice</button>
+                    <button class="control secondary" data-probe-variant="02" type="button">Build 02 receipt completion</button>
+                    <button class="control secondary" data-probe-variant="03" type="button">Build 03 render minimal</button>
+                    <button class="control secondary" data-probe-variant="04" type="button">Build 04 render receipt</button>
+                    <button class="control secondary" id="copyProbeOutput" type="button">Copy Output</button>
+                  </div>
+                  <textarea id="probeOutput" class="code-area" readonly></textarea>
+                  <div class="note">01 and 02 stay black-box and footer-first. 03 and 04 are render-proof lanes: install the renderer key, save the SVG at the helper timestamp, then send the generated output with packet context and the compact footer. Every probe output carries the SHI # so packet, probe, renderer, and LLM lanes stay bound.</div>
+                </details>
+              </div>
               <div class="dynamic-row">
                 <button class="control" id="injectDynamicLane" type="button">Inject Dynamic Lane</button>
                 <span class="mini-note">When the renderer key is active, save the appended SVG at the helper timestamp and pair it with the correct probe lane.</span>
@@ -393,20 +407,6 @@
           </div>
         </section>
 
-        <section class="panel-section svg-attestation-probes" data-td613-skip="true">
-          <details class="fold-panel" data-td613-skip="true" open>
-            <summary class="attestation-summary">SVG Provenance Attestation Probes <span class="attestation-hint">(ask your TD613 administrator for the key renderer)</span></summary>
-            <div class="builder-toolbar">
-              <button class="control" data-probe-variant="01" type="button">Build 01 alias voice</button>
-              <button class="control secondary" data-probe-variant="02" type="button">Build 02 receipt completion</button>
-              <button class="control secondary" data-probe-variant="03" type="button">Build 03 render minimal</button>
-              <button class="control secondary" data-probe-variant="04" type="button">Build 04 render receipt</button>
-              <button class="control secondary" id="copyProbeOutput" type="button">Copy Output</button>
-            </div>
-            <textarea id="probeOutput" class="code-area" readonly></textarea>
-            <div class="note">01 and 02 stay black-box and footer-first. 03 and 04 are render-proof lanes: install the renderer key, save the SVG at the helper timestamp, then send the generated output with packet context and the compact footer. Every probe output carries the SHI # so packet, probe, renderer, and LLM lanes stay bound.</div>
-          </details>
-        </section>
       </section>
 
       <aside class="panel panel-right conscience-panel" data-td613-skip="true">
