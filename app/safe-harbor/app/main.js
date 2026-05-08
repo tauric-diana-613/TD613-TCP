@@ -43,7 +43,8 @@
     ingressNote: $('ingressNote'),
     clearIngress: $('clearIngress'),
     bypassPassword: $('bypassPassword'),
-    bypassSealedPacket: $('bypassSealedPacket'),
+    bypassSealedPacketFile: $('bypassSealedPacketFile'),
+    bypassSealedPacketName: $('bypassSealedPacketName'),
     bypassFreshSample: $('bypassFreshSample'),
     bypassFreshSampleCount: $('bypassFreshSampleCount'),
     voiceContinuityReadout: $('voiceContinuityReadout'),
@@ -456,7 +457,19 @@
     if (dom.clearSignature) dom.clearSignature.addEventListener('click', () => void clearSignatureOverlay());
     dom.bypassPassword.addEventListener('input', () => render());
     dom.bypassPassword.addEventListener('keydown', (event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); void bypassIngress(); } });
-    if (dom.bypassSealedPacket) dom.bypassSealedPacket.addEventListener('input', () => render());
+    if (dom.bypassSealedPacketFile) dom.bypassSealedPacketFile.addEventListener('change', () => {
+      const file = dom.bypassSealedPacketFile.files && dom.bypassSealedPacketFile.files[0];
+      if (dom.bypassSealedPacketName) {
+        if (file) {
+          dom.bypassSealedPacketName.textContent = file.name;
+          dom.bypassSealedPacketName.hidden = false;
+        } else {
+          dom.bypassSealedPacketName.textContent = '';
+          dom.bypassSealedPacketName.hidden = true;
+        }
+      }
+      render();
+    });
     if (dom.bypassFreshSample) dom.bypassFreshSample.addEventListener('input', () => render());
     dom.copyCanonicalFooter.addEventListener('click', () => void copyText(dom.canonicalFooterPreview.textContent || ''));
     dom.copyShiNumber.addEventListener('click', () => void copyText(dom.shiMintValue.textContent || ''));
@@ -528,7 +541,11 @@
   function hydrate() {
     dom.probeOutput.value = state.lastProbe;
     dom.bypassPassword.value = '';
-    if (dom.bypassSealedPacket) dom.bypassSealedPacket.value = '';
+    if (dom.bypassSealedPacketFile) dom.bypassSealedPacketFile.value = '';
+    if (dom.bypassSealedPacketName) {
+      dom.bypassSealedPacketName.textContent = '';
+      dom.bypassSealedPacketName.hidden = true;
+    }
     if (dom.bypassFreshSample) dom.bypassFreshSample.value = '';
     if (dom.bypassFreshSampleCount) { dom.bypassFreshSampleCount.hidden = true; dom.bypassFreshSampleCount.textContent = ''; }
     if (dom.voiceContinuityReadout) { dom.voiceContinuityReadout.hidden = true; dom.voiceContinuityReadout.textContent = ''; }
@@ -978,7 +995,7 @@
     renderIngressStageChip(dom.ingressStageSeal, 3, stepIndex, count, ingressLocked);
     dom.mintStagedPacket.disabled = ingressLocked;
     dom.bypassPassword.disabled = surfaceIsOpen;
-    if (dom.bypassSealedPacket) dom.bypassSealedPacket.disabled = surfaceIsOpen;
+    if (dom.bypassSealedPacketFile) dom.bypassSealedPacketFile.disabled = surfaceIsOpen;
     if (dom.bypassFreshSample) dom.bypassFreshSample.disabled = surfaceIsOpen;
     if (dom.bypassFreshSampleCount && dom.bypassFreshSample) {
       const freshRaw = dom.bypassFreshSample.value || '';
@@ -997,7 +1014,6 @@
         }
       }
     }
-    const pastedPacketText = (dom.bypassSealedPacket && dom.bypassSealedPacket.value || '').trim();
     dom.bypassIngress.disabled = surfaceIsOpen;
     dom.clearIngress.disabled = ingressLocked;
     dom.bypassPassword.placeholder = recoverableShi || 'paste minted SHI #';
@@ -1434,17 +1450,30 @@
       logEvent('bypass-opened', { state: 'packetless-operator-shell', reason: 'shi-recall-hash', shi_number: token });
       return;
     }
-    const pastedText = dom.bypassSealedPacket ? (dom.bypassSealedPacket.value || '').trim() : '';
-    if (!pastedText) {
-      dom.ingressNote.textContent = 'Paste your sealed Safe Harbor packet JSON to reopen the chamber. SHI # alone cannot rebuild the packet.';
+    const file = dom.bypassSealedPacketFile && dom.bypassSealedPacketFile.files && dom.bypassSealedPacketFile.files[0];
+    if (!file) {
+      dom.ingressNote.textContent = 'Choose your sealed Safe Harbor packet .json file to reopen the chamber. SHI # alone cannot rebuild the packet.';
       logEvent('bypass-denied', { state: 'sealed', reason: 'missing-recall-hash', shi_number: token });
+      return;
+    }
+    let pastedText;
+    try {
+      pastedText = (await file.text()).trim();
+    } catch (error) {
+      dom.ingressNote.textContent = 'Could not read the selected file. Try choosing the .json again.';
+      logEvent('bypass-denied', { state: 'sealed', reason: 'file-read-failed', error: String(error && error.message || error) });
+      return;
+    }
+    if (!pastedText) {
+      dom.ingressNote.textContent = 'Selected file is empty. Choose the sealed Safe Harbor packet .json you exported.';
+      logEvent('bypass-denied', { state: 'sealed', reason: 'empty-file' });
       return;
     }
     let parsed;
     try {
       parsed = JSON.parse(pastedText);
     } catch (error) {
-      dom.ingressNote.textContent = 'Sealed packet JSON is malformed. Paste the full sealed artifact you exported from Safe Harbor.';
+      dom.ingressNote.textContent = 'Sealed packet JSON is malformed. Choose the full sealed artifact you exported from Safe Harbor.';
       logEvent('bypass-denied', { state: 'sealed', reason: 'invalid-json', error: String(error && error.message || error) });
       return;
     }
@@ -1531,7 +1560,11 @@
       }
     }
     dom.bypassPassword.value = '';
-    if (dom.bypassSealedPacket) dom.bypassSealedPacket.value = '';
+    if (dom.bypassSealedPacketFile) dom.bypassSealedPacketFile.value = '';
+    if (dom.bypassSealedPacketName) {
+      dom.bypassSealedPacketName.textContent = '';
+      dom.bypassSealedPacketName.hidden = true;
+    }
     if (dom.bypassFreshSample) dom.bypassFreshSample.value = '';
     dom.ingressNote.textContent = 'Sealed packet accepted. SHI # ' + token + ' is rebound to the chamber and the rigorous stylometric provenance is restored.'
       + (continuity ? ' Voice continuity reading attached.' : '');
@@ -1540,7 +1573,7 @@
     logEvent('shi-recall-reopened', {
       packet_id: parsed.packet_id || null,
       shi_number: token,
-      source: 'pasted-sealed-packet',
+      source: 'uploaded-sealed-packet',
       continuity_score: continuity ? continuity.continuity_score : null,
       drift_axes: continuity ? continuity.drift_axes : null
     });

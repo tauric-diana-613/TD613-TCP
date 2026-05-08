@@ -98,8 +98,9 @@
                   <input id="bypassPassword" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="paste minted SHI #" disabled>
                 </label>
                 <label class="field field-wide">
-                  <span>Sealed packet (paste full sealed JSON)</span>
-                  <textarea id="bypassSealedPacket" rows="5" spellcheck="false" placeholder="paste your sealed Safe Harbor packet JSON here" disabled></textarea>
+                  <span>Sealed packet (.json)</span>
+                  <input id="bypassSealedPacketFile" type="file" accept="application/json,.json" disabled>
+                  <div class="note compact" id="bypassSealedPacketName" hidden></div>
                 </label>
                 <label class="field field-wide">
                   <span>Walk me through tomorrow.</span>
@@ -334,6 +335,7 @@
                   <button class="control secondary" id="exportPacketPreview" type="button" disabled>Export</button>
                   <button class="control secondary" id="resetStagedPacket" type="button" disabled>Reset</button>
                 </div>
+                <div class="note compact" id="exportReopenHint">Save the exported .json. To reopen Safe Harbor later, upload it and paste your SHI #.</div>
                 <pre class="code-panel" id="forensicSchemaPreview">forensic schema pending</pre>
                 <div class="button-grid">
                   <button class="control" id="covenantExport" type="button">Seal Payload</button>
