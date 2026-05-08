@@ -8618,6 +8618,27 @@ function buildProtectedAnchorAudit(outputText = '', protectedState = { literals:
   };
 }
 
+// Conjunction-stack artifacts like "and but", "but and", "or but" — pairs
+// that no native speaker would write. Caught here so the audit can revert
+// stages that introduce them. The list is intentionally conservative: we
+// only flag pairs that are (almost) never legitimate. "and so", "but then",
+// "or so" etc. are NOT in the list because they appear in real prose.
+export function countConjunctionStacks(text = '') {
+  if (!text) return 0;
+  const pattern = /\b(and\s+but|but\s+and|or\s+but|but\s+or|and\s+or|or\s+and)\b/gi;
+  return (String(text).match(pattern) || []).length;
+}
+
+// Repeated-word boundary artifacts like "lopez. Lopez" — the same word
+// appearing as the last token of one sentence and the first token of the
+// next. Caused by an upstream split that broke a compound or duplicated
+// a noun. Case-insensitive so "lopez. Lopez" counts.
+export function countRepeatedWordBoundaries(text = '') {
+  if (!text) return 0;
+  const pattern = /\b(\w+)[\.\!\?]+\s+\1\b/gi;
+  return (String(text).match(pattern) || []).length;
+}
+
 export function buildSemanticAuditBundle(sourceIR, outputText = '', protectedState = { literals: [] }) {
   const outputIR = segmentTextToIR(normalizeText(outputText), protectedState);
   const sourceClauses = flattenSemanticClauses(sourceIR);
@@ -8635,6 +8656,8 @@ export function buildSemanticAuditBundle(sourceIR, outputText = '', protectedSta
         polarityMismatches: 0,
         tenseMismatches: 0,
         protectedAnchorIntegrity: protectedAnchorAudit.protectedAnchorIntegrity,
+        conjunctionStackCount: countConjunctionStacks(outputText),
+        repeatedWordBoundaryCount: countRepeatedWordBoundaries(outputText),
         clauseAudits: [],
         sourceClauseCount: 0,
         outputClauseCount: outputClauses.length
@@ -8713,6 +8736,8 @@ export function buildSemanticAuditBundle(sourceIR, outputText = '', protectedSta
     polarityMismatches: clauseAudits.reduce((sum, entry) => sum + entry.polarityMismatch, 0),
     tenseMismatches: clauseAudits.reduce((sum, entry) => sum + entry.tenseMismatch, 0),
     protectedAnchorIntegrity: protectedAnchorAudit.protectedAnchorIntegrity,
+    conjunctionStackCount: countConjunctionStacks(outputText),
+    repeatedWordBoundaryCount: countRepeatedWordBoundaries(outputText),
     clauseAudits,
     sourceClauseCount: sourceClauses.length,
     outputClauseCount: outputClauses.length
