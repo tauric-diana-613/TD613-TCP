@@ -331,11 +331,18 @@ body[data-ingress-phase="revealing"] .ingress-layer {
 .ingress-grid {
   display: grid;
   grid-template-columns: minmax(300px, 0.92fr) minmax(0, 1.08fr);
+  grid-template-areas:
+    "console  ritual"
+    "forensic ritual";
   gap: 20px;
   margin-top: 22px;
   flex: 1;
   align-items: stretch;
 }
+
+.ingress-grid > .ingress-console { grid-area: console; }
+.ingress-grid > .ingress-ritual { grid-area: ritual; }
+.ingress-grid > .ingress-forensic-card { grid-area: forensic; }
 
 .ingress-console,
 .ingress-ritual,
@@ -2205,10 +2212,6 @@ button:disabled {
   min-height: 100%;
 }
 
-.ingress-forensic-card {
-  margin-top: 14px;
-}
-
 .ingress-forensic-grid {
   display: grid;
   gap: 10px;
@@ -3418,6 +3421,13 @@ button:disabled {
   .masthead,
   .readout-layout {
     grid-template-columns: 1fr;
+  }
+
+  .ingress-grid {
+    grid-template-areas:
+      "console"
+      "ritual"
+      "forensic";
   }
 
   .duel-grid {
