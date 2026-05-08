@@ -36,8 +36,37 @@
   const FALLBACK_GLYPH = '@+';
   const FALLBACK_REASON = 'U+10D613 unrenderable in default fonts';
   const SKIP_SELECTOR = '[data-td613-skip="true"]';
-  const BADGE_SELECTOR = 'img[data-td613-generated="true"]';
   const PRINCIPAL_ATTR_SELECTOR = '[data-td613-principal="true"]';
+
+  // Asymmetric-compute defense: badges are tracked in a WeakSet, not via a
+  // queryable HTML attribute. Removes the cheap regex sweep target
+  // ('[data-td613-generated]') that automated scanners would key on. Forces
+  // any adversary into expensive optical/accessibility-tree scraping.
+  const BADGES = new WeakSet();
+
+  function isBadge(node) {
+    return Boolean(node) && node.nodeType === Node.ELEMENT_NODE && BADGES.has(node);
+  }
+  function ancestorBadge(node) {
+    let cur = node && node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+    while (cur) {
+      if (isBadge(cur)) return cur;
+      cur = cur.parentElement;
+    }
+    return null;
+  }
+  function elementContainsBadge(element) {
+    if (!element || !element.firstElementChild) return false;
+    const stack = [element.firstElementChild];
+    while (stack.length) {
+      const node = stack.pop();
+      if (!node) continue;
+      if (isBadge(node)) return true;
+      if (node.firstElementChild) stack.push(node.firstElementChild);
+      if (node.nextElementSibling) stack.push(node.nextElementSibling);
+    }
+    return false;
+  }
 
   function escapeRegExp(value) { return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
   const rePrincipal = new RegExp('\\b' + escapeRegExp(PRINCIPAL) + '\\b', 'u');
@@ -149,8 +178,7 @@
     img.style.borderRadius = '4px';
     img.style.padding = '1px';
     img.style.cursor = 'pointer';
-    img.dataset.td613Generated = 'true';
-    img.dataset.matchMode = matchMode;
+    BADGES.add(img);
     img.addEventListener('click', function (event) {
       event.preventDefault();
       event.stopPropagation();
@@ -164,14 +192,14 @@
   function shouldSkip(node) {
     const parent = node && node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
     if (!parent) return true;
-    return !!(parent.closest && parent.closest(SKIP_SELECTOR)) || !!(parent.closest && parent.closest(BADGE_SELECTOR));
+    return !!(parent.closest && parent.closest(SKIP_SELECTOR)) || !!ancestorBadge(parent);
   }
 
   function hasBadgeAfterTextNode(textNode) {
     let current = textNode.nextSibling;
     while (current) {
       if (current.nodeType === Node.TEXT_NODE && current.nodeValue.trim() === '') { current = current.nextSibling; continue; }
-      if (current.nodeType === Node.ELEMENT_NODE && current.matches && current.matches(BADGE_SELECTOR)) return true;
+      if (isBadge(current)) return true;
       break;
     }
     return false;
@@ -186,7 +214,7 @@
 
   function badgeExplicitPrincipal(element) {
     if (!element || !element.matches || !element.matches(PRINCIPAL_ATTR_SELECTOR)) return;
-    if (element.querySelector(BADGE_SELECTOR)) return;
+    if (elementContainsBadge(element)) return;
     const badge = makeBadge('principal');
     element.appendChild(document.createTextNode(' '));
     element.appendChild(badge);
@@ -250,7 +278,7 @@
         if (!shouldSkip(mutation.target)) scan(mutation.target);
       }
       mutation.addedNodes.forEach((node) => {
-        if (node.nodeType === Node.ELEMENT_NODE && node.matches && node.matches(BADGE_SELECTOR)) return;
+        if (isBadge(node)) return;
         scan(node);
       });
     });
