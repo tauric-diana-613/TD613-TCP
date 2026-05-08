@@ -27,7 +27,7 @@
       "propositionCoverage": 1,
       "actorCoverage": 0.863,
       "actionCoverage": 1,
-      "objectCoverage": 0.928,
+      "objectCoverage": 0.95,
       "polarityMismatches": 1,
       "tenseMismatches": 0,
       "protectedAnchorIntegrity": 1,
@@ -110,11 +110,11 @@
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 0.8,
+          "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.714,
-          "globalBagScore": 0.102
+          "bagScore": 1,
+          "globalBagScore": 0.125
         },
         {
           "sourceClauseId": "s6c0",
@@ -180,7 +180,7 @@
         "propositionCoverage": 1,
         "actorCoverage": 0.863,
         "actionCoverage": 1,
-        "objectCoverage": 0.928,
+        "objectCoverage": 0.95,
         "polarityMismatches": 1,
         "tenseMismatches": 0
       },
@@ -193,9 +193,9 @@
       "aperture": {
         "temporalPosture": "synced",
         "closureClass": "closed",
-        "closureScore": 0.909,
-        "historicalCrease": 0.015,
-        "unfoldingEnergy": 0.044,
+        "closureScore": 0.912,
+        "historicalCrease": 0.014,
+        "unfoldingEnergy": 0.043,
         "beaconStatus": "beacon-idle",
         "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
@@ -204,7 +204,7 @@
         "driftClass": "none",
         "driftReasons": [],
         "routeFloor": "play",
-        "routePressure": 0.096
+        "routePressure": 0.095
       }
     },
     "planSummary": {
@@ -257,8 +257,7 @@
         "COMPRESS_FORMAL_CLAUSES",
         "DROP_ARTICLES",
         "DIGIT_SUBSTITUTE",
-        "LOWERCASE_INITIALS",
-        "feature:is-not->isnt"
+        "LOWERCASE_INITIALS"
       ],
       "expectedOperators": [
         "COMPRESS_FORMAL_CLAUSES",
@@ -356,11 +355,6 @@
           "from": "to",
           "to": "2",
           "family": "digit-substitution"
-        },
-        {
-          "from": "is not",
-          "to": "isnt",
-          "family": "feature"
         }
       ],
       "vernacularFeatureShift": {
@@ -381,7 +375,7 @@
         "falseDirtyFamilies": [],
         "donorFeatureAdherence": 1,
         "concealmentEffectiveness": 0,
-        "surfaceMarkerCount": 15,
+        "surfaceMarkerCount": 14,
         "pressure": {
           "targetRegisterLane": "rushed-mobile",
           "activeFamilies": [
@@ -497,10 +491,9 @@
         "sourceClass": "procedural-record",
         "orthographyNoise": {
           "active": true,
-          "count": 3,
+          "count": 2,
           "markers": [
             "lowercase-sentence-start",
-            "apostrophe-drop",
             "profile-orthographic-looseness"
           ]
         },
@@ -545,7 +538,7 @@
           "notePosture",
           "slangMarkers"
         ],
-        "totalMarkers": 15
+        "totalMarkers": 14
       },
       "pressure": {
         "targetRegisterLane": "rushed-mobile",
@@ -565,10 +558,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.076,
-      "outputDonorDistance": 3.011,
-      "donorImprovement": 1.065,
-      "donorImprovementRatio": 0.261,
-      "sourceOutputLexicalOverlap": 0.888
+      "outputDonorDistance": 3.098,
+      "donorImprovement": 0.978,
+      "donorImprovementRatio": 0.24,
+      "sourceOutputLexicalOverlap": 0.895
     },
     "candidateLedger": [
       {
@@ -578,10 +571,10 @@
         "status": "eligible",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.871,
+        "score": 0.8678,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.523,
+        "targetFit": 0.5095,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -612,7 +605,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 11,
+        "lexemeSwapCount": 10,
         "expectedOperators": [
           "COMPRESS_FORMAL_CLAUSES",
           "DROP_ARTICLES",
@@ -717,10 +710,9 @@
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 3,
+              "count": 2,
               "markers": [
                 "lowercase-sentence-start",
-                "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
             },
@@ -765,7 +757,7 @@
               "notePosture",
               "slangMarkers"
             ],
-            "totalMarkers": 15
+            "totalMarkers": 14
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -800,7 +792,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 15,
+          "surfaceMarkerCount": 14,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -846,7 +838,7 @@
             "propositionCoverage": 1,
             "actorCoverage": 0.863,
             "actionCoverage": 1,
-            "objectCoverage": 0.928,
+            "objectCoverage": 0.95,
             "polarityMismatches": 1,
             "tenseMismatches": 0
           },
@@ -859,9 +851,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.909,
-            "historicalCrease": 0.015,
-            "unfoldingEnergy": 0.044,
+            "closureScore": 0.912,
+            "historicalCrease": 0.014,
+            "unfoldingEnergy": 0.043,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -870,7 +862,7 @@
             "driftClass": "none",
             "driftReasons": [],
             "routeFloor": "play",
-            "routePressure": 0.096
+            "routePressure": 0.095
           }
         },
         "outputPreview": "finance committee met at 4:05 PM 2 review bridge budget after central administration extended hiring freeze thru Q3. the immediate effect is that the student-su"
@@ -882,10 +874,10 @@
         "status": "selected",
         "sourceRegisterLane": "formal-record",
         "targetRegisterLane": "rushed-mobile",
-        "score": 0.8707,
+        "score": 0.8674,
         "toolabilityScore": 0.8031,
         "rewriteStrength": 1,
-        "targetFit": 0.5129,
+        "targetFit": 0.4991,
         "movementConfidence": 1,
         "personaSeparationScore": 0.47,
         "failureReasons": [],
@@ -918,7 +910,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 11,
+        "lexemeSwapCount": 10,
         "expectedOperators": [
           "COMPRESS_FORMAL_CLAUSES",
           "DROP_ARTICLES",
@@ -1023,10 +1015,9 @@
             "sourceClass": "procedural-record",
             "orthographyNoise": {
               "active": true,
-              "count": 3,
+              "count": 2,
               "markers": [
                 "lowercase-sentence-start",
-                "apostrophe-drop",
                 "profile-orthographic-looseness"
               ]
             },
@@ -1071,7 +1062,7 @@
               "notePosture",
               "slangMarkers"
             ],
-            "totalMarkers": 15
+            "totalMarkers": 14
           },
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
@@ -1106,7 +1097,7 @@
           "falseDirtyFamilies": [],
           "donorFeatureAdherence": 1,
           "concealmentEffectiveness": 0,
-          "surfaceMarkerCount": 15,
+          "surfaceMarkerCount": 14,
           "pressure": {
             "targetRegisterLane": "rushed-mobile",
             "activeFamilies": [
@@ -1152,7 +1143,7 @@
             "propositionCoverage": 1,
             "actorCoverage": 0.863,
             "actionCoverage": 1,
-            "objectCoverage": 0.928,
+            "objectCoverage": 0.95,
             "polarityMismatches": 1,
             "tenseMismatches": 0
           },
@@ -1165,9 +1156,9 @@
           "aperture": {
             "temporalPosture": "synced",
             "closureClass": "closed",
-            "closureScore": 0.909,
-            "historicalCrease": 0.015,
-            "unfoldingEnergy": 0.044,
+            "closureScore": 0.912,
+            "historicalCrease": 0.014,
+            "unfoldingEnergy": 0.043,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
@@ -1176,7 +1167,7 @@
             "driftClass": "none",
             "driftReasons": [],
             "routeFloor": "play",
-            "routePressure": 0.096
+            "routePressure": 0.095
           }
         },
         "outputPreview": "finance committee met at 4:05 PM 2 review bridge budget after central administration extended hiring freeze thru Q3. the immediate effect is that the student-su"
@@ -1220,7 +1211,7 @@
           "propositionCoverage": 1,
           "actorCoverage": 0.863,
           "actionCoverage": 1,
-          "objectCoverage": 0.928,
+          "objectCoverage": 0.95,
           "polarityMismatches": 1,
           "tenseMismatches": 0
         },
@@ -1233,9 +1224,9 @@
         "aperture": {
           "temporalPosture": "synced",
           "closureClass": "closed",
-          "closureScore": 0.909,
-          "historicalCrease": 0.015,
-          "unfoldingEnergy": 0.044,
+          "closureScore": 0.912,
+          "historicalCrease": 0.014,
+          "unfoldingEnergy": 0.043,
           "beaconStatus": "beacon-idle",
           "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
@@ -1244,7 +1235,7 @@
           "driftClass": "none",
           "driftReasons": [],
           "routeFloor": "play",
-          "routePressure": 0.096
+          "routePressure": 0.095
         }
       }
     },
@@ -1289,7 +1280,6 @@
       "DROP_ARTICLES",
       "feature:formal->hrs",
       "feature:formal->wks",
-      "feature:is-not->isnt",
       "feature:though->tho",
       "feature:through->thru",
       "LOWERCASE_INITIALS",
@@ -1301,7 +1291,7 @@
     "propositionCoverage": 1,
     "actorCoverage": 0.863,
     "actionCoverage": 1,
-    "objectCoverage": 0.928,
+    "objectCoverage": 0.95,
     "polarityMismatches": 1,
     "tenseMismatches": 0,
     "protectedAnchorIntegrity": 1
