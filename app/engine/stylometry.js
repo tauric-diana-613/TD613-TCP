@@ -5955,6 +5955,9 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
       rescuePasses: [],
       transferClass: 'native',
       qualityGatePassed: true,
+      source_register_preserved: true,
+      register_drift_dimensions: Object.freeze([]),
+      alternates: Object.freeze([]),
       notes: sourceText ? ['Native shell: no transfer applied.'] : ['No source text loaded.'],
       effectiveMod: mod,
       realizationTier: 'none',
@@ -7482,6 +7485,9 @@ export function buildCadenceTransferLegacy(text = '', shell = {}, options = {}) 
     rescuePasses: [...new Set(rescuePasses)],
     transferClass,
     qualityGatePassed,
+    source_register_preserved: true,
+    register_drift_dimensions: Object.freeze([]),
+    alternates: Object.freeze([]),
     notes: [...new Set(notes)],
     effectiveMod,
     realizationTier,
@@ -7699,14 +7705,19 @@ function buildSwapLaneResult(sourceSample, donorSample, slot = 'A', donorSlot = 
 }
 
 function classifySwapCadencePair(laneA = {}, laneB = {}) {
-  const engagedA =
-    laneA.borrowedShellOutcome === 'structural' ||
-    laneA.borrowedShellOutcome === 'partial' ||
-    (laneA.borrowedShellOutcome === 'subtle' && laneA.nonTrivialShift);
-  const engagedB =
-    laneB.borrowedShellOutcome === 'structural' ||
-    laneB.borrowedShellOutcome === 'partial' ||
-    (laneB.borrowedShellOutcome === 'subtle' && laneB.nonTrivialShift);
+  // Engagement = the lane made real movement, even if the realization tier
+  // didn't promote past surface. surface-held + nonTrivialShift counts the
+  // same as subtle + nonTrivialShift: genuine surface engagement, not
+  // suppression. (Before ontology gating was disabled, these cases were
+  // paraphrased into structural/partial; the underlying movement is real
+  // either way.)
+  const isEngaged = (lane = {}) =>
+    lane.borrowedShellOutcome === 'structural' ||
+    lane.borrowedShellOutcome === 'partial' ||
+    ((lane.borrowedShellOutcome === 'subtle' || lane.borrowedShellOutcome === 'surface-held') &&
+      lane.nonTrivialShift);
+  const engagedA = isEngaged(laneA);
+  const engagedB = isEngaged(laneB);
 
   if (laneA.borrowedShellOutcome === 'rejected' && laneB.borrowedShellOutcome === 'rejected') {
     return 'both-rejected';

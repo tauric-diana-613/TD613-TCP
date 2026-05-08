@@ -256,8 +256,7 @@
       ],
       "structuralOperationsSelected": [
         "front-because",
-        "COMPRESS_FORMAL_CLAUSES",
-        "lane:newsroom-correction-chain-compressed"
+        "COMPRESS_FORMAL_CLAUSES"
       ],
       "lexicalRegisterOperationsSelected": [
         "compressed:please->pls",
@@ -268,9 +267,7 @@
         "COMPRESS_FORMAL_CLAUSES",
         "DROP_ARTICLES",
         "DIGIT_SUBSTITUTE",
-        "LOWERCASE_INITIALS",
-        "feature:and->ampersand",
-        "lane:newsroom-formal->copydesk-shorthand"
+        "LOWERCASE_INITIALS"
       ],
       "expectedOperators": [
         "COMPRESS_FORMAL_CLAUSES",
@@ -358,16 +355,6 @@
           "from": "to",
           "to": "2",
           "family": "digit-substitution"
-        },
-        {
-          "from": "and",
-          "to": "&",
-          "family": "feature"
-        },
-        {
-          "from": "newsroom correction chain",
-          "to": "quick fix / graf / hed / b4",
-          "family": "lane"
         }
       ],
       "vernacularFeatureShift": {
@@ -602,7 +589,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 10,
+        "lexemeSwapCount": 8,
         "expectedOperators": [
           "COMPRESS_FORMAL_CLAUSES",
           "DROP_ARTICLES",
@@ -887,7 +874,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 10,
+        "lexemeSwapCount": 8,
         "expectedOperators": [
           "COMPRESS_FORMAL_CLAUSES",
           "DROP_ARTICLES",
@@ -1174,7 +1161,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 10,
+        "lexemeSwapCount": 8,
         "expectedOperators": [
           "COMPRESS_FORMAL_CLAUSES",
           "DROP_ARTICLES",
@@ -1528,7 +1515,6 @@
       "compressed:please->pls",
       "DIGIT_SUBSTITUTE",
       "DROP_ARTICLES",
-      "feature:and->ampersand",
       "feature:headline->hed",
       "feature:paragraph->graf",
       "LOWERCASE_INITIALS",

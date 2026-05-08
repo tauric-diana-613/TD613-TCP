@@ -446,7 +446,11 @@
     if (dom.forgeBatch) dom.forgeBatch.addEventListener('click', () => void forgeBatch());
     if (dom.stageSelectedBatch) dom.stageSelectedBatch.addEventListener('click', () => void stageSelectedBatch());
     if (dom.resetStagedBatch) dom.resetStagedBatch.addEventListener('click', clearStagedBatch);
-    if (dom.batchIntakeSelect) dom.batchIntakeSelect.addEventListener('change', () => { render(); persist(); void loadBatchNodes(dom.batchIntakeSelect.value); });
+    if (dom.batchIntakeSelect) dom.batchIntakeSelect.addEventListener('change', () => {
+      render();
+      persist();
+      if (hasOperatorAccess()) void loadBatchNodes(dom.batchIntakeSelect.value);
+    });
     dom.bypassIngress.addEventListener('click', () => void bypassIngress());
     if (dom.attachSignature) dom.attachSignature.addEventListener('click', () => void attachSignatureOverlay());
     if (dom.clearSignature) dom.clearSignature.addEventListener('click', () => void clearSignatureOverlay());
@@ -792,6 +796,10 @@
     }
     if (dom.stageSelectedBatch) dom.stageSelectedBatch.disabled = !operatorReady || hasActiveBatch;
     if (dom.resetStagedBatch) dom.resetStagedBatch.disabled = !operatorReady || !hasActiveBatch;
+    if (dom.batchNodesFold) {
+      dom.batchNodesFold.hidden = !operatorReady;
+      if (!operatorReady) dom.batchNodesFold.open = false;
+    }
   }
 
   const BATCH_FILE_MANIFEST = {

@@ -71,6 +71,14 @@ function escapeRegex(value = '') {
   return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// Ontology-classification gating for transformations. Currently disabled
+// per operator decision: the hardcoded register-lane and ontology-lens
+// paraphrases (parcel/buzzer fixture and friends) overshoot on real
+// inputs and add bad friction to the build. The function bodies remain
+// intact so the security layer can be re-enabled when its replacement
+// is designed. Flip this to true to restore the pipeline.
+const ENABLE_ONTOLOGY_GATING = false;
+
 const MASK_ALPHA_SEQUENCE = Object.freeze([
   'ALPHA',
   'BRAVO',
@@ -1999,6 +2007,37 @@ function deriveChangedDimensions(sourceProfile = {}, outputProfile = {}) {
   return uniqueStrings(dimensions);
 }
 
+// Register-relevant dimensions extracted from a profile-shift comparison.
+// Reused by the source_register_preserved / register_drift_dimensions
+// fields surfaced on every transfer (Chapter IX "transparent artifacts").
+const REGISTER_DRIFT_DIMENSIONS = Object.freeze([
+  'register-mode',
+  'lexical-register',
+  'directness',
+  'abstraction',
+  'modifier-density',
+  'content-word-complexity'
+]);
+function deriveRegisterDriftDimensions(sourceProfile = {}, outputProfile = {}) {
+  return deriveChangedDimensions(sourceProfile, outputProfile)
+    .filter((dimension) => REGISTER_DRIFT_DIMENSIONS.includes(dimension));
+}
+
+// Generalized Toto pass: each text-transforming stage gets a pre/post
+// proposition-coverage check. If a stage drops coverage below the
+// engine's semantic-integrity floor (0.85), revert to the pre-stage
+// text. Identity transforms and no-op stages short-circuit cheaply.
+// Replaces the two manual guards I added in b6c8ce3 with a single
+// helper applied at every substantive stage.
+function guardCoverageAtStage(label, sourceIR, protectedState, beforeText, transformer) {
+  const candidate = transformer(beforeText);
+  if (candidate === beforeText) return beforeText;
+  const audit = buildSemanticAuditBundle(sourceIR, candidate, protectedState);
+  const coverage = Number(audit?.semanticAudit?.propositionCoverage ?? 1);
+  return coverage >= 0.85 ? candidate : beforeText;
+}
+
+
 function substantiveDimensionCount(changedDimensions = []) {
   return (changedDimensions || []).filter((dimension) =>
     !['punctuation-shape', 'contraction-posture'].includes(dimension)
@@ -3868,6 +3907,7 @@ function applyRushedMobileLaneRewrite(text = '', context = {}) {
 }
 
 function applyRegisterLaneRealization(text = '', context = {}) {
+  if (!ENABLE_ONTOLOGY_GATING) return text;
   const sourceRegisterLane = normalizeRegisterLane(context?.sourceRegisterLane, '');
   const targetRegisterLane = normalizeRegisterLane(context?.targetRegisterLane, '');
   if (!sourceRegisterLane || !targetRegisterLane || sourceRegisterLane === targetRegisterLane) {
@@ -4742,6 +4782,7 @@ function applyReferenceOntologyFinalization(text = '', context = {}) {
 }
 
 function applyOntologyLensFinalization(text = '', context = {}) {
+  if (!ENABLE_ONTOLOGY_GATING) return text;
   const targetOntology = String(context?.generationControls?.targetOntology || '').trim().toLowerCase();
   const match = narrativeMatchScore(context?.sourceText || text, targetOntology);
   context.narrativeMatch = match;
@@ -5874,6 +5915,9 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
     donorProgress: {},
     transferClass: 'native',
     qualityGatePassed: true,
+    source_register_preserved: true,
+    register_drift_dimensions: Object.freeze([]),
+    alternates: Object.freeze([]),
     notes: Object.freeze([generationDocket.headline]),
     effectiveMod: shell.mod || cadenceModFromProfile(shell.profile || sourceProfile),
     realizationTier: 'none',
@@ -6089,30 +6133,20 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     });
 
   let outputText = joinParagraphs(rewrittenParagraphs);
-  outputText = applyContractionStrategyText(outputText, contractionStrategy, context);
-  outputText = applyCompressedSurfaceRewrite(
-    outputText,
-    context.targetProfile,
-    sourceProfile,
-    context
-  );
-  outputText = applyExpandedSurfaceRewrite(
-    outputText,
-    context.targetProfile,
-    sourceProfile,
-    context
-  );
-  outputText = applyCadenceAxisOperators(outputText, context);
-  {
-    const preLaneText = outputText;
-    const laneCandidate = applyRegisterLaneRealization(preLaneText, context);
-    if (laneCandidate !== preLaneText) {
-      const laneAudit = buildSemanticAuditBundle(sourceIR, laneCandidate, protectedState);
-      outputText = Number(laneAudit?.semanticAudit?.propositionCoverage ?? 1) >= 0.85
-        ? laneCandidate
-        : preLaneText;
-    }
-  }
+  // Toto pass: every substantive text-transforming stage in this pipeline
+  // gets a pre/post coverage audit. Stages that drop propositionCoverage
+  // below the 0.85 floor revert to their pre-stage input. Identity
+  // transforms short-circuit cheaply.
+  outputText = guardCoverageAtStage('contraction', sourceIR, protectedState, outputText, (t) =>
+    applyContractionStrategyText(t, contractionStrategy, context));
+  outputText = guardCoverageAtStage('surface-compress', sourceIR, protectedState, outputText, (t) =>
+    applyCompressedSurfaceRewrite(t, context.targetProfile, sourceProfile, context));
+  outputText = guardCoverageAtStage('surface-expand', sourceIR, protectedState, outputText, (t) =>
+    applyExpandedSurfaceRewrite(t, context.targetProfile, sourceProfile, context));
+  outputText = guardCoverageAtStage('cadence-axis', sourceIR, protectedState, outputText, (t) =>
+    applyCadenceAxisOperators(t, context));
+  outputText = guardCoverageAtStage('register-lane', sourceIR, protectedState, outputText, (t) =>
+    applyRegisterLaneRealization(t, context));
   outputText = restoreTemporalNullsAfterRewrite(outputText, temporalState, temporalDirective, targetRegisterLane);
   const polishProtected = protectAnchorsForRewrite(outputText, hardAnchors);
   outputText = polishNativeCandidateText(polishProtected.text, {
@@ -6131,8 +6165,9 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
   }
   outputText = restoreAnchorsAfterRewrite(outputText, polishProtected.replacements);
   const artifactRepair = applyArtifactRepairPass(outputText, context);
-  outputText = artifactRepair.text;
-  outputText = repairFormalAndChains(outputText, context);
+  outputText = guardCoverageAtStage('artifact-repair', sourceIR, protectedState, outputText, () => artifactRepair.text);
+  outputText = guardCoverageAtStage('formal-and-chains', sourceIR, protectedState, outputText, (t) =>
+    repairFormalAndChains(t, context));
   outputText = restoreAnchorsAfterRewrite(outputText, protectedState.replacements);
   outputText = restoreHardWitnessAnchors(
     sourceText,
@@ -6881,6 +6916,25 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
   const opportunityProfile = buildOpportunityProfileFromIR(sourceIR);
   const chosen = candidate;
   const candidateLedger = buildCandidateLedger(candidates.length ? candidates : [chosen], chosen.id);
+  // Polyphonic alternates: surface up to 2 ranked non-winning candidates that
+  // also passed the bar with substantive movement. Consumers that want a
+  // single winner ignore this; consumers that want to compose can pick
+  // among them. The candidate ledger already holds the full pool; this
+  // exposes the top tail that selectWinningCandidate dropped on the floor.
+  const alternateCandidates = (candidates || [])
+    .filter((c) => c && c !== chosen && c.passed)
+    .filter((c) => c.transferClass === 'structural' || c.transferClass === 'surface')
+    .filter((c) => Array.isArray(c.changedDimensions) && c.changedDimensions.length > 0)
+    .slice(0, 2);
+  const alternates = Object.freeze(alternateCandidates.map((c) => Object.freeze({
+    text: c.outputText,
+    family: c.family || null,
+    envelope_id: c.envelopeId || null,
+    transfer_class: c.transferClass,
+    changed_dimensions: Object.freeze([...(c.changedDimensions || [])]),
+    rewrite_strength: c.rewriteStrength,
+    toolability_score: c.toolabilityScore
+  })));
   const warningSignals = uniqueStrings([
     ...((chosen.apertureReview && chosen.apertureReview.warningSignals) || []),
     ...((chosen.classification && chosen.classification.pathologies) || [])
@@ -6965,6 +7019,12 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
       return movementOps === 0 ? 'weak' : chosen.transferClass;
     })(),
     qualityGatePassed: true,
+    source_register_preserved: chosen.sourceRegisterLane === chosen.targetRegisterLane &&
+      deriveRegisterDriftDimensions(sourceProfile, chosen.outputProfile).length === 0,
+    register_drift_dimensions: Object.freeze(
+      deriveRegisterDriftDimensions(sourceProfile, chosen.outputProfile)
+    ),
+    alternates,
     notes: uniqueStrings([
       generationDocket.headline,
       ...(chosen.apertureReview?.reasons || []),
