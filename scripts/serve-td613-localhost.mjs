@@ -1,6 +1,7 @@
 import http from 'http';
 import { promises as fs } from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import { buildSealedBatchArtifact } from '../app/safe-harbor/app/operator-batch-seal.js';
 
@@ -8,6 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const port = Number(process.argv[2] || process.env.PORT || 6130);
 const manifestPath = path.join(repoRoot, 'app', 'safe-harbor', 'corpus', 'TD613_corpus_manifest.json');
+const sealLogPath = path.join(path.dirname(manifestPath), '.seal-log.jsonl');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -43,7 +45,9 @@ async function readBody(req) {
 
 async function handleSealBatch(req, res) {
   try {
-    const body = JSON.parse(await readBody(req) || '{}');
+    const rawBody = await readBody(req);
+    const body = JSON.parse(rawBody || '{}');
+    const receivedBodySha256 = crypto.createHash('sha256').update(rawBody || '').digest('hex');
     const batchId = String(body.batchId || '').trim();
     const packet = body.packet && typeof body.packet === 'object' ? body.packet : null;
     const signature = body.signature && typeof body.signature === 'object' ? body.signature : null;
@@ -69,6 +73,9 @@ async function handleSealBatch(req, res) {
     }
 
     const existingBatch = await readJson(targetPath);
+    const prevReceivedSha = (existingBatch && existingBatch.safe_harbor && existingBatch.safe_harbor.packet && existingBatch.safe_harbor.packet.received_body_sha256) || null;
+    const prevBadge = (existingBatch && existingBatch.safe_harbor && existingBatch.safe_harbor.issuance && existingBatch.safe_harbor.issuance.badge_number) || null;
+    const prevSealedAt = (existingBatch && existingBatch.safe_harbor && existingBatch.safe_harbor.sealed_at) || null;
     const sealedAt = new Date().toISOString();
     const artifact = buildSealedBatchArtifact({
       batch: existingBatch,
@@ -76,10 +83,28 @@ async function handleSealBatch(req, res) {
       batchId,
       packet,
       signature,
-      sealedAt
+      sealedAt,
+      serverWitness: { receivedBodySha256 }
     });
 
     await fs.writeFile(targetPath, JSON.stringify(artifact, null, 2) + '\n', 'utf8');
+
+    // Append-only audit trail: every successful overwrite leaves a record of
+    // what packet hash and badge replaced what. Tamper-evident; an attacker
+    // who rewrites a batch cannot also retroactively erase the prior witness
+    // without truncating this log, which a separate auditor can checksum.
+    const logLine = JSON.stringify({
+      ts: sealedAt,
+      batch_id: batchId,
+      target: path.relative(repoRoot, targetPath),
+      prev_received_body_sha256: prevReceivedSha,
+      new_received_body_sha256: receivedBodySha256,
+      prev_badge_number: prevBadge,
+      new_badge_number: (packet.issuance && packet.issuance.badge_number) || null,
+      prev_sealed_at: prevSealedAt,
+      remote: req.socket && req.socket.remoteAddress ? req.socket.remoteAddress : null
+    }) + '\n';
+    fs.appendFile(sealLogPath, logLine, 'utf8').catch(() => {});
 
     return sendJson(res, 200, {
       ok: true,

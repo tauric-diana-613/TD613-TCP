@@ -49,7 +49,8 @@ export function buildSealedBatchArtifact({
   batchId,
   packet,
   signature,
-  sealedAt
+  sealedAt,
+  serverWitness
 }) {
   const base = batch && typeof batch === 'object' ? batch : {};
   const packetValue = packet && typeof packet === 'object' ? packet : {};
@@ -60,6 +61,7 @@ export function buildSealedBatchArtifact({
   const personas = splitPrimaryPersonas(registryEntry && registryEntry.primary_persona);
   const signatureValue = signature && typeof signature === 'object' ? signature : {};
   const detachedSignature = signatureValue.sig == null ? null : String(signatureValue.sig);
+  const witness = serverWitness && typeof serverWitness === 'object' ? serverWitness : {};
 
   return {
     ...base,
@@ -90,6 +92,10 @@ export function buildSealedBatchArtifact({
         triad_word_counts: issuance.triad_word_counts || null,
         triad_shortfalls: issuance.triad_shortfalls || null,
         frame_alignment_flags: Array.isArray(issuance.frame_alignment_flags) ? issuance.frame_alignment_flags.slice() : [],
+        // Names the SHI source plainly: the triad fingerprint is operator-
+        // supplied and operator-tunable; downstream readers should not treat
+        // the SHI as a third-party attestation.
+        mint_provenance: 'operator-supplied-triad',
         stylometric_provenance: issuance.stylometric_provenance
           ? rebindStylometricProvenanceToShi(issuance.stylometric_provenance, issuance.badge_number || null)
           : buildStylometricProvenance(issuance)
@@ -97,12 +103,22 @@ export function buildSealedBatchArtifact({
       signature: {
         sig_type: signatureValue.sig_type || 'PGP-detached',
         alg: signatureValue.alg || 'OpenPGP',
-        sig: detachedSignature
+        sig: detachedSignature,
+        // Truth-in-advertising: this toolchain preserves the detached signature
+        // text byte-for-byte but does not verify it. Downstream readers that
+        // need cryptographic verification must run it themselves.
+        verified: false,
+        verifier: null
       },
       packet: {
         packet_id: packetValue.packet_id || null,
         receipt_id: packetValue.receipt && packetValue.receipt.receipt_id ? packetValue.receipt.receipt_id : null,
         packet_hash_sha256: packetValue.packet_hash_sha256 || null,
+        // Server-witnessed SHA-256 of the raw request body the seal endpoint
+        // received. Computed by the server, not the frontend; an auditor
+        // comparing two artifacts of the same sealing operation can use this
+        // to detect post-write tampering.
+        received_body_sha256: witness.receivedBodySha256 || null,
         created_at: packetValue.created_at || null
       }
     }
