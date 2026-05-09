@@ -5,9 +5,12 @@ import {
 } from './td613-aperture.js';
 import {
   applyCadenceToTextV2,
+  assessRegisterLaneScope,
   buildCadenceTransferTraceV2,
   buildCadenceTransferV2
 } from './generator-v2.js';
+
+export { assessRegisterLaneScope };
 
 function clamp01(value) {
   return Math.max(0, Math.min(1, value));

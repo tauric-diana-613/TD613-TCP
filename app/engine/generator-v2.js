@@ -15,6 +15,7 @@ import {
   countConjunctionStacks,
   countRepeatedWordBoundaries,
   extractCadenceProfile,
+  retrieveTopKDonors,
   segmentTextToIR,
   sentenceSplit
 } from './stylometry.js';
@@ -1341,6 +1342,110 @@ export function inferRegisterLaneFromText(text = '', profile = {}, sourceClass =
     return 'formal-record';
   }
   return 'formal-record';
+}
+
+// Lane-scope assessor. `inferRegisterLaneFromText` always returns one of
+// the four recognized lanes (it falls through to 'formal-record'), which
+// hides the case where an input doesn't actually match any lane's signal
+// pattern. This function exposes the per-lane signals so callers can tell
+// when the input is truly out of scope.
+//
+// Returned shape:
+//   { signals: { lane → boolean }, matchingLanes, inferredLane, inScope, confidence }
+//
+// `inScope` is true iff at least one lane's signal pattern fires. The
+// engine's existing transformation pipeline only knows how to reshape
+// content within these four lanes; for inputs that fire zero signals
+// (academic prose, code, multilingual, etc.), the engine produces weak
+// or hallucinated outputs silently. With this assessor exposed, callers
+// can opt into refusal via `buildCadenceTransfer({ refuseOutOfScope: true })`
+// instead of shipping a misleading "weak" result.
+//
+// Confidence: number of matching lanes (0 = out of scope, 1 = clean
+// match, 2+ = lane-ambiguous but in-scope). Heuristic; deliberately
+// uncalibrated against human judgment.
+export function assessRegisterLaneScope(text = '', profile = null) {
+  const normalized = normalizeText(text);
+  const p = profile || extractCadenceProfile(normalized);
+  const lowered = normalized.toLowerCase();
+  const abbreviationDensity = Number(p.abbreviationDensity || 0);
+  const orthographicLooseness = Number(p.orthographicLooseness || 0);
+  const fragmentPressure = Number(p.fragmentPressure || 0);
+  const avgSentenceLength = Number(p.avgSentenceLength || 0);
+  const sentenceCount = Number(p.sentenceCount || 0);
+  const rushedLexemeHits = (lowered.match(/\b(?:pkg|mgmt|dept|sup|docs|sched|tmrw|rn|lmk|asap|fwd|perf|appt|msg|pls|bc|cuz|tho|thru|ppl|prob|def|abt|imo|fyi|2nd|3rd|fl|wasnt|dont|cant|w\/o|w\/|gonna|gotta|yall|tryna|ima|finna|idk|tbh|ngl|fr|omg)\b/gi) || []).length;
+
+  // Prose-shape preflight. The four lane signals all assume prose. Code,
+  // shopping lists, isolated haiku, and other non-prose surfaces can
+  // opportunistically trigger the rushed-mobile signal because they look
+  // terse and unpunctuated. Require at least one sentence terminator and
+  // a minimum token count before any lane signal is allowed to fire.
+  const tokenCount = (normalized.match(/\S+/g) || []).length;
+  const hasSentenceTerminator = /[.!?]/.test(normalized);
+  const proseShape = hasSentenceTerminator && tokenCount >= 8;
+  if (!proseShape) {
+    return Object.freeze({
+      signals: Object.freeze({
+        'rushed-mobile': false,
+        'tangled-followup': false,
+        'professional-message': false,
+        'formal-record': false
+      }),
+      matchingLanes: Object.freeze([]),
+      inferredLane: null,
+      inScope: false,
+      confidence: 0,
+      proseShape: false,
+      proseShapeReason: !hasSentenceTerminator
+        ? 'no-sentence-terminator'
+        : 'token-count-below-eight'
+    });
+  }
+
+  const rushedMobileSignal = (
+    rushedLexemeHits >= 1 ||
+    orthographicLooseness >= 0.085 ||
+    fragmentPressure >= 0.14 ||
+    abbreviationDensity >= 0.055
+  );
+  const tangledSignal = (
+    /\b(?:following up|not quite right|accidentally made it sound|so yes|the actual miss|the actual issue|that is not quite right|coming back to this|looping back)\b/i.test(normalized) ||
+    (avgSentenceLength >= 15 && sentenceCount >= 3 && /\b(?:but|however|though|earlier|later|actually)\b/i.test(normalized))
+  );
+  const professionalSignal = (
+    /(?:^|\n)\s*(?:hello|hi|team|hey)\b/i.test(normalized) ||
+    /\b(?:please|let me know|thank you|appreciate|check in|required|flow|cleanup|arrive|starting with|quick note|standup|review)\b/i.test(normalized)
+  );
+  const institutionalSignalHits = (
+    lowered.match(/\b(?:carrier scan|building footage|resident testimony|signature record|building log|corrective issue|presented for signature|approximately|maintenance|located it|third party handled|outer carton|rush parcel|door tag|hallway table|incident|excursion|threshold|alarm|reset checklist|deprecation|migration note|signature|countersignature|controlled-substance|setpoint|consultation room|interface|workers|backwards-incompatible|refactor|protocol|procedure)\b/gi) || []
+  ).length;
+  const formalRecordSignal = (
+    avgSentenceLength >= 15 &&
+    sentenceCount >= 3 &&
+    institutionalSignalHits >= 1 &&
+    orthographicLooseness < 0.085 &&
+    fragmentPressure < 0.14 &&
+    abbreviationDensity < 0.055
+  );
+
+  const signals = Object.freeze({
+    'rushed-mobile': rushedMobileSignal,
+    'tangled-followup': tangledSignal,
+    'professional-message': professionalSignal,
+    'formal-record': formalRecordSignal
+  });
+  const matchingLanes = Object.freeze(
+    Object.entries(signals).filter(([, v]) => v).map(([k]) => k)
+  );
+  return Object.freeze({
+    signals,
+    matchingLanes,
+    inferredLane: matchingLanes[0] || null,
+    inScope: matchingLanes.length > 0,
+    confidence: matchingLanes.length,
+    proseShape: true,
+    proseShapeReason: null
+  });
 }
 
 function inferRegisterLaneFromProfile(profile = {}, sourceClass = 'formal-correspondence') {
@@ -7255,11 +7360,71 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
 
 export function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
   const sourceText = normalizeText(text);
+  // Optional refusal layer: caller opts in by passing refuseOutOfScope.
+  // The engine's transformation pipeline only knows how to reshape content
+  // within four register lanes (formal-record, professional-message,
+  // rushed-mobile, tangled-followup). For inputs that match none of those
+  // lanes' signal patterns, producing a "weak" output silently is worse
+  // than refusing — the caller has no way to know the result is unreliable.
+  // With refusal enabled we return a standard transfer-shape result with
+  // transferClass='out-of-scope', text=source, and an explicit reason on
+  // the notes so a UI can render "this input is outside the engine's
+  // recognized voice space" instead of a misleading transformation.
+  if (sourceText && options?.refuseOutOfScope) {
+    const scope = assessRegisterLaneScope(sourceText);
+    if (!scope.inScope) {
+      const native = buildNativePassThroughTransfer(sourceText, shell, options);
+      return Object.assign({}, native, {
+        transferClass: 'out-of-scope',
+        outOfScope: Object.freeze({
+          reason: 'no-matching-register-lane',
+          assessor: scope,
+          message: 'Input did not match any of the engine\'s four recognized register lanes (formal-record, professional-message, rushed-mobile, tangled-followup). The transformation pipeline only knows how to reshape content within those lanes; producing a transfer here would be unreliable.'
+        }),
+        notes: Object.freeze([
+          'Refused: input is outside the engine\'s recognized register space.'
+        ])
+      });
+    }
+  }
   if (
     !sourceText ||
     shell?.mode === 'native' ||
     (shell?.mode !== 'persona' && (!shell?.mod?.sent && !shell?.mod?.cont && !shell?.mod?.punc) && !shell?.profile)
   ) {
+    // Auto-retrieve: caller gave no shell but did pass a donorPool. Pull
+    // the top-1 donor by profile-shift magnitude, synthesize a borrowed
+    // shell from it, and recurse with that shell. The retrieved donor's
+    // id and delta-score get annotated onto the result so the caller can
+    // see *which* donor was chosen and why. Recursion strips donorPool
+    // to avoid loops.
+    if (sourceText && Array.isArray(options?.donorPool) && options.donorPool.length) {
+      const retrieved = retrieveTopKDonors(sourceText, options.donorPool, {
+        k: 1,
+        excludeSameLane: options.sourceRegisterLane || null
+      });
+      if (retrieved.length) {
+        const top = retrieved[0];
+        const autoShell = {
+          mode: 'borrowed',
+          profile: top.profile,
+          registerLane: top.variant || null,
+          sourceText: top.text,
+          strength: Number(options.strength ?? 0.88)
+        };
+        const { donorPool, ...restOptions } = options;
+        const result = buildCadenceTransferV2(sourceText, autoShell, restOptions);
+        return Object.assign({}, result, {
+          retrievedDonor: Object.freeze({
+            id: top.id || null,
+            familyId: top.familyId || null,
+            variant: top.variant || null,
+            name: top.name || null,
+            deltaScore: top.deltaScore
+          })
+        });
+      }
+    }
     return buildNativePassThroughTransfer(sourceText, shell, options);
   }
 
