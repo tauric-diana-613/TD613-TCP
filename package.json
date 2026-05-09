@@ -13,6 +13,8 @@
     "test:safe-harbor": "node tests/safe-harbor-shi.test.mjs && node tests/safe-harbor-batch-seal.test.mjs && node tests/station-pages.test.mjs && node tests/operator-receipt.test.mjs",
     "test:held-out": "node tests/heldout-eval.test.mjs",
     "test:retrieval": "node tests/donor-retrieval.test.mjs",
+    "test:calibration": "node tests/audit-calibration.test.mjs",
+    "test:scope": "node tests/lane-scope.test.mjs",
     "test:known-failing": "node tests/trainer-lab.test.mjs; node tests/trainer-browser.test.mjs",
     "test:diagnostics": "node scripts/run-diagnostics-battery.mjs && node tests/diagnostics.test.mjs && node tests/diagnostics-runner.test.mjs",
     "test:trainer": "node tests/trainer-lab.test.mjs",

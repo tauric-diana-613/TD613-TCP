@@ -92,6 +92,10 @@
       {
         "id": "model-safety",
         "title": "Model safety / de-identification task / over-refusal"
+      },
+      {
+        "id": "vendor-delay",
+        "title": "Vendor delivery delay / project milestone blocked"
       }
     ],
     "samples": [
@@ -1616,6 +1620,92 @@
         ],
         "deckVisible": false,
         "text": "Following up because the run notes are already drifting toward \"the model correctly refused to expose sensitive data,\" which blurs the actual failure. No one asked it to expose raw names. The task was the opposite: keep timeline and role structure, remove identifying strings, then summarize. The model recognized the risky surface and then treated that recognition as the whole job. If we mark that as safety success, we erase the route failure that the eval was built to surface."
+      },
+      {
+        "id": "vendor-delay-formal-record",
+        "familyId": "vendor-delay",
+        "variant": "formal-record",
+        "name": "Northrop Mile-19 Cabinet Delay / Formal Record",
+        "context": "Project escalation memo recording a vendor missing a hardware-delivery deadline that blocks a milestone.",
+        "intention": "Preserve dates, vendor identity, and downstream-milestone impact while keeping the corrective ask intact.",
+        "register": "formal-record",
+        "cleanliness": "clean",
+        "anchorMode": "protected-literal",
+        "stressTags": [
+          "adjacent-lexicon",
+          "directness",
+          "list-structure",
+          "literal-anchors",
+          "same-facts",
+          "sentence-span"
+        ],
+        "deckVisible": false,
+        "text": "On Monday at 09:42, Northrop confirmed in writing that the Mile-19 cabinet delivery scheduled for Wednesday will slip by no fewer than nine business days. The cabinet is the gating dependency for the network-cutover milestone we owe the program office on the 22nd. Northrop attributes the slip to a chassis-finishing subcontractor reissuing a heat-treatment certification; the original certification was rejected by their internal quality desk on Friday. We have requested partial shipment of the four populated trays without the chassis frame so on-site assembly can continue, and we have asked for written confirmation of the revised delivery window before close of business. Required correction: every vendor on the cutover critical path must now provide a weekly written certification refresh, not a verbal status, until milestone delivery clears."
+      },
+      {
+        "id": "vendor-delay-professional-message",
+        "familyId": "vendor-delay",
+        "variant": "professional-message",
+        "name": "Northrop Mile-19 Cabinet Delay / Professional Message",
+        "context": "Slack-style escalation to the program lead while the slip is still being negotiated.",
+        "intention": "Flag the milestone risk concisely while preserving vendor identity, slip length, and the partial-shipment ask.",
+        "register": "professional-message",
+        "cleanliness": "mostly-clean",
+        "anchorMode": "mixed-literal",
+        "stressTags": [
+          "adjacent-lexicon",
+          "contraction",
+          "directness",
+          "list-structure",
+          "register-shift",
+          "same-facts"
+        ],
+        "deckVisible": false,
+        "text": "Quick heads up before your 11am with the program office: Northrop just confirmed in writing this morning that the Mile-19 cabinet won't ship Wednesday — earliest is now nine business days out. That puts the network-cutover milestone on the 22nd at real risk. Reason on their end is that their chassis-finishing sub reissued a heat-treatment cert after their internal QA bounced the original Friday. I've asked them to ship the four populated trays without the frame so we can keep assembly moving on site, and I've asked for the revised window in writing before close of business. We probably need to put every cutover-critical vendor on weekly written certs from here forward, not verbal updates. Let me know if you want to talk through the milestone hold timing."
+      },
+      {
+        "id": "vendor-delay-rushed-mobile",
+        "familyId": "vendor-delay",
+        "variant": "rushed-mobile",
+        "name": "Northrop Mile-19 Cabinet Delay / Rushed Mobile",
+        "context": "Text from on-site lead heading into a stand-up while the vendor is still hedging.",
+        "intention": "Same facts under compression, dropped punctuation, and mobile urgency.",
+        "register": "rushed-mobile",
+        "cleanliness": "noisy",
+        "anchorMode": "compressed-literal",
+        "stressTags": [
+          "adjacent-lexicon",
+          "contraction",
+          "fragmentation",
+          "literal-anchors",
+          "punctuation",
+          "recurrence",
+          "same-facts"
+        ],
+        "deckVisible": false,
+        "text": "northrop just emailed - mile19 cabinet wont ship wed. earliest is 9 biz days out. their chassis sub had to redo the heat treatment cert friday after their qa rejected first one. cutover milestone on the 22nd is now at real risk. asked them to send the 4 populated trays w/o the frame so we can keep assembling on site, also asked for the new ship date in writing by eod today. honestly we need to put every cutover-path vendor on weekly written certs not verbal from now on. heading into standup rn pls flag if you wanna jump on"
+      },
+      {
+        "id": "vendor-delay-tangled-followup",
+        "familyId": "vendor-delay",
+        "variant": "tangled-followup",
+        "name": "Northrop Mile-19 Cabinet Delay / Tangled Follow-up",
+        "context": "Later follow-up clarifying assumptions made in the first thread about whose fault the slip was.",
+        "intention": "Clarify the half-right early framing and preserve which subcontractor caused the slip and which milestone it threatens.",
+        "register": "tangled-followup",
+        "cleanliness": "messy",
+        "anchorMode": "repair-literal",
+        "stressTags": [
+          "adjacent-lexicon",
+          "hedging",
+          "recurrence",
+          "register-shift",
+          "same-facts",
+          "sentence-span",
+          "tangle"
+        ],
+        "deckVisible": false,
+        "text": "Coming back to this because the first thread made it sound like Northrop's QA blew the schedule, and that is not quite right. Northrop's internal quality desk did the right thing on Friday — they rejected a heat-treatment certification from their chassis-finishing subcontractor that did not meet their own bar, and the subcontractor is the one now reissuing it. So the nine-business-day slip is downstream of a subcontractor cert problem, not a Northrop QA problem. That distinction matters because if we write this up as \"Northrop missed the date\" we hide the actual control point and we will not push the right vendor onto weekly written certs. The milestone risk on the 22nd is the same either way; the corrective lever is different."
       }
     ],
     "promotedSampleIds": [
@@ -2914,6 +3004,35 @@
         "notes": "Noisy sibling text from Model safety / de-identification task / over-refusal should expand toward a cleaner shell without inventing new facts."
       },
       {
+        "id": "vendor-delay-formal-to-rushed",
+        "sourceId": "vendor-delay-formal-record",
+        "donorId": "vendor-delay-rushed-mobile",
+        "mode": "swap-same-fact",
+        "stressTags": [
+          "literal-anchors",
+          "register-shift",
+          "same-facts",
+          "sentence-span"
+        ],
+        "expectedPressure": "same-fact-high",
+        "notes": "Formal incident prose from Vendor delivery delay / project milestone blocked should survive transfer pressure into its noisy sibling without losing literal anchors."
+      },
+      {
+        "id": "vendor-delay-rushed-to-formal",
+        "sourceId": "vendor-delay-rushed-mobile",
+        "donorId": "vendor-delay-formal-record",
+        "mode": "swap-same-fact",
+        "stressTags": [
+          "fragmentation",
+          "literal-anchors",
+          "register-shift",
+          "same-facts",
+          "sentence-span"
+        ],
+        "expectedPressure": "same-fact-high",
+        "notes": "Noisy sibling text from Vendor delivery delay / project milestone blocked should expand toward a cleaner shell without inventing new facts."
+      },
+      {
         "id": "building-access-to-customer-support-false-neighbor",
         "sourceId": "building-access-professional-message",
         "donorId": "customer-support-professional-message",
@@ -4090,6 +4209,25 @@
         "notes": "Mask comparison against the Model safety / de-identification task / over-refusal lock should reveal whether the engine can move messy sibling text without losing family anchors."
       },
       {
+        "id": "vendor-delay-mask-same-family",
+        "sourceFamilyId": "vendor-delay",
+        "sourceId": "vendor-delay-rushed-mobile",
+        "lockIds": [
+          "vendor-delay-formal-record",
+          "vendor-delay-professional-message"
+        ],
+        "personaId": "matron",
+        "mode": "mask",
+        "stressTags": [
+          "fragmentation",
+          "literal-anchors",
+          "register-shift",
+          "same-facts"
+        ],
+        "expectedPressure": "mask-high",
+        "notes": "Mask comparison against the Vendor delivery delay / project milestone blocked lock should reveal whether the engine can move messy sibling text without losing family anchors."
+      },
+      {
         "id": "building-access-under-customer-support-mask-cross-family",
         "sourceFamilyId": "building-access",
         "sourceId": "building-access-tangled-followup",
@@ -4702,6 +4840,24 @@
         ],
         "expectedPressure": "trainer-sibling",
         "notes": "Trainer should extract a family fingerprint from three Model safety / de-identification task / over-refusal variants and validate a forged draft sourced from the noisy sibling."
+      },
+      {
+        "id": "vendor-delay-trainer-sibling",
+        "familyId": "vendor-delay",
+        "sourceId": "vendor-delay-rushed-mobile",
+        "extractionIds": [
+          "vendor-delay-formal-record",
+          "vendor-delay-professional-message",
+          "vendor-delay-tangled-followup"
+        ],
+        "mode": "trainer",
+        "stressTags": [
+          "fragmentation",
+          "register-shift",
+          "same-facts"
+        ],
+        "expectedPressure": "trainer-sibling",
+        "notes": "Trainer should extract a family fingerprint from three Vendor delivery delay / project milestone blocked variants and validate a forged draft sourced from the noisy sibling."
       },
       {
         "id": "building-access-trainer-under-customer-support",

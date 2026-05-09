@@ -944,6 +944,56 @@ const FAMILY_SPECS = Object.freeze([
         }
       )
     ])
+  }),
+  freezeRecord({
+    id: 'vendor-delay',
+    title: 'Vendor delivery delay / project milestone blocked',
+    samples: Object.freeze([
+      buildSample(
+        { id: 'vendor-delay' },
+        'formal-record',
+        {
+          name: 'Northrop Mile-19 Cabinet Delay / Formal Record',
+          context: 'Project escalation memo recording a vendor missing a hardware-delivery deadline that blocks a milestone.',
+          intention: 'Preserve dates, vendor identity, and downstream-milestone impact while keeping the corrective ask intact.',
+          stressTags: ['adjacent-lexicon'],
+          text: `On Monday at 09:42, Northrop confirmed in writing that the Mile-19 cabinet delivery scheduled for Wednesday will slip by no fewer than nine business days. The cabinet is the gating dependency for the network-cutover milestone we owe the program office on the 22nd. Northrop attributes the slip to a chassis-finishing subcontractor reissuing a heat-treatment certification; the original certification was rejected by their internal quality desk on Friday. We have requested partial shipment of the four populated trays without the chassis frame so on-site assembly can continue, and we have asked for written confirmation of the revised delivery window before close of business. Required correction: every vendor on the cutover critical path must now provide a weekly written certification refresh, not a verbal status, until milestone delivery clears.`
+        }
+      ),
+      buildSample(
+        { id: 'vendor-delay' },
+        'professional-message',
+        {
+          name: 'Northrop Mile-19 Cabinet Delay / Professional Message',
+          context: 'Slack-style escalation to the program lead while the slip is still being negotiated.',
+          intention: 'Flag the milestone risk concisely while preserving vendor identity, slip length, and the partial-shipment ask.',
+          stressTags: ['adjacent-lexicon'],
+          text: `Quick heads up before your 11am with the program office: Northrop just confirmed in writing this morning that the Mile-19 cabinet won't ship Wednesday — earliest is now nine business days out. That puts the network-cutover milestone on the 22nd at real risk. Reason on their end is that their chassis-finishing sub reissued a heat-treatment cert after their internal QA bounced the original Friday. I've asked them to ship the four populated trays without the frame so we can keep assembly moving on site, and I've asked for the revised window in writing before close of business. We probably need to put every cutover-critical vendor on weekly written certs from here forward, not verbal updates. Let me know if you want to talk through the milestone hold timing.`
+        }
+      ),
+      buildSample(
+        { id: 'vendor-delay' },
+        'rushed-mobile',
+        {
+          name: 'Northrop Mile-19 Cabinet Delay / Rushed Mobile',
+          context: 'Text from on-site lead heading into a stand-up while the vendor is still hedging.',
+          intention: 'Same facts under compression, dropped punctuation, and mobile urgency.',
+          stressTags: ['adjacent-lexicon'],
+          text: `northrop just emailed - mile19 cabinet wont ship wed. earliest is 9 biz days out. their chassis sub had to redo the heat treatment cert friday after their qa rejected first one. cutover milestone on the 22nd is now at real risk. asked them to send the 4 populated trays w/o the frame so we can keep assembling on site, also asked for the new ship date in writing by eod today. honestly we need to put every cutover-path vendor on weekly written certs not verbal from now on. heading into standup rn pls flag if you wanna jump on`
+        }
+      ),
+      buildSample(
+        { id: 'vendor-delay' },
+        'tangled-followup',
+        {
+          name: 'Northrop Mile-19 Cabinet Delay / Tangled Follow-up',
+          context: 'Later follow-up clarifying assumptions made in the first thread about whose fault the slip was.',
+          intention: 'Clarify the half-right early framing and preserve which subcontractor caused the slip and which milestone it threatens.',
+          stressTags: ['adjacent-lexicon'],
+          text: `Coming back to this because the first thread made it sound like Northrop's QA blew the schedule, and that is not quite right. Northrop's internal quality desk did the right thing on Friday — they rejected a heat-treatment certification from their chassis-finishing subcontractor that did not meet their own bar, and the subcontractor is the one now reissuing it. So the nine-business-day slip is downstream of a subcontractor cert problem, not a Northrop QA problem. That distinction matters because if we write this up as "Northrop missed the date" we hide the actual control point and we will not push the right vendor onto weekly written certs. The milestone risk on the 22nd is the same either way; the corrective lever is different.`
+        }
+      )
+    ])
   })
 ]);
 
