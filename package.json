@@ -30,7 +30,6 @@
     "validate": "node scripts/validate-samples.mjs"
   },
   "devDependencies": {
-    "@anthropic-ai/sdk": "^0.95.1",
     "jsdom": "^29.1.0"
   }
 }

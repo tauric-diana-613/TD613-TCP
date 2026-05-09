@@ -5862,12 +5862,12 @@
         "anti-enforcement": "true"
       },
       "fingerprint": {
-        "bytes": 401664,
+        "bytes": 409930,
         "lineCount": 8267,
         "inlineScriptCount": 9,
         "panelCount": 3,
         "buttonCount": 20,
-        "contentHashSha256": "2beefbb35d4aadc8f74f969f06ae2b97d7f7bf588a7e7b279be172641cf62f3f"
+        "contentHashSha256": "33d6c3c23bb0f8acec8040a22935028f77df3081157d85dafffe790ec1815d18"
       },
       "checks": [
         {

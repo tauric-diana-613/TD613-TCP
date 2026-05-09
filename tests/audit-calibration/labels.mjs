@@ -10,15 +10,15 @@
 //   1. Deterministic — the existing bag-overlap-based bar in
 //      tests/audit-calibration.test.mjs, runs on `npm run test:calibration`
 //      with no env var required.
-//   2. Learned — Claude Opus 4.7 via the Anthropic API, opt-in via
-//      `ANTHROPIC_API_KEY`. When the env var is set, the calibration
-//      runner additionally calls app/engine/learned-audit.js for each
-//      label and reports a side-by-side F1 comparison. This crosses the
-//      offline-deterministic line — the live github.io page does NOT
-//      load the SDK or hit any API. The learned audit is a test-time /
-//      operator-time tool only.
+//   2. Local judge — self-hosted Ollama Dolphin3.
+//      The calibration
+//      runner calls app/engine/learned-audit.js for each
+//      label and reports a side-by-side F1 comparison.
 //
-// **These labels are Claude-authored starter labels, not authoritative.**
+//      It expects Ollama to be reachable from the runner.
+//
+//
+// **These labels are starter labels, not authoritative.**
 // Each label reflects a careful read of the output text against the
 // source — does the output preserve every clause's meaning, avoid
 // hallucinated content, avoid grammatical artifacts, and survive as

@@ -1,40 +1,14 @@
-name: Audit calibration (learned)
-# Manual-trigger workflow that runs the learned-audit calibration with the
-# repo secret ANTHROPIC_API_KEY. Compares the LLM judge (Claude Opus 4.7)
-# against the human labels in tests/audit-calibration/labels.mjs and prints
-# the side-by-side F1 vs the deterministic bar.
-#
-# This workflow does NOT run on push or pull_request — it costs money per
-# run (a few cents) and is a measurement, not a regression gate. Trigger
-# it manually from the Actions tab when you want to capture the number.
-#
-# Setup (one-time):
-#   1. Get an Anthropic API key from https://console.anthropic.com
-#   2. In the GitHub repo: Settings → Secrets and variables → Actions →
-#      New repository secret → name: ANTHROPIC_API_KEY, value: <your key>
-#   3. From the Actions tab, pick "Audit calibration (learned)" → Run workflow
-#
-# The job uploads the full stdout as a downloadable artifact so you can
-# read the per-case verdict + LLM-cited issues + final F1 comparison.
+name: Audit calibration
 
 on:
   workflow_dispatch:
-    inputs:
-      mode:
-        description: 'Audit mode'
-        required: true
-        default: 'real'
-        type: choice
-        options:
-          - real
-          - mock
 
 permissions:
   contents: read
 
 jobs:
   calibrate:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -42,20 +16,7 @@ jobs:
           node-version: '22'
           cache: 'npm'
       - run: npm install
-      - name: Run calibration (real path — Claude Opus 4.7 via API)
-        if: inputs.mode == 'real'
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          if [ -z "$ANTHROPIC_API_KEY" ]; then
-            echo "::error::ANTHROPIC_API_KEY repo secret is not set. Add it under Settings → Secrets and variables → Actions, then re-run."
-            exit 1
-          fi
-          npm run test:calibration 2>&1 | tee calibration-output.txt
-      - name: Run calibration (mock path — frozen judgments, no API call)
-        if: inputs.mode == 'mock'
-        env:
-          LEARNED_AUDIT_MOCK: '1'
+      - name: Run calibration
         run: |
           npm run test:calibration 2>&1 | tee calibration-output.txt
       - name: Upload calibration output
