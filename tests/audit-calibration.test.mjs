@@ -160,5 +160,91 @@ console.log();
 console.log(`  best F1 against this label set: ${bestF1.toFixed(3)} at coverage threshold ${bestThreshold.toFixed(3)}`);
 console.log(`  (current threshold ${COVERAGE_FLOOR.toFixed(3)} F1 = ${precisionRecallF1(auditPassMatchesHuman, auditPassDisagreesHuman, auditFailDisagreesHuman).f1.toFixed(3)})`);
 console.log();
+
+// === Report 4: learned audit (opt-in via ANTHROPIC_API_KEY) ===
+// The deterministic bar above is bag-overlap-based; it doesn't see hallucinated
+// sentences, contrast-flipped connectors, dropped conditionals, or corrupted
+// compounds. Asking Claude Opus 4.7 to judge meaning preservation directly
+// gives us a calibrated bar against the same human labels — at the cost of
+// (a) crossing the offline-deterministic line and (b) per-call cost. Opt-in;
+// only runs when ANTHROPIC_API_KEY is set in the environment.
+if (process.env.ANTHROPIC_API_KEY) {
+  console.log('--- learned audit (Claude Opus 4.7 via Anthropic API) ---');
+  console.log('  bar: judgment.label === "preserves"');
+  let assessMeaningPreservation;
+  try {
+    ({ assessMeaningPreservation } = await import('../app/engine/learned-audit.js'));
+  } catch (err) {
+    console.log(`  could not load learned-audit module: ${err && err.message ? err.message : err}`);
+    console.log('reporting-only; does not gate npm test. labels are Claude-authored starter set, not authoritative.');
+    console.log('add labels in tests/audit-calibration/labels.mjs to refine calibration.');
+    process.exit(0);
+  }
+  const learnedResults = [];
+  let totalInputTokens = 0;
+  let totalOutputTokens = 0;
+  let totalCacheReadTokens = 0;
+  let totalCacheCreationTokens = 0;
+  for (const r of annotated) {
+    try {
+      const judgment = await assessMeaningPreservation({
+        sourceText: r.sourceText,
+        outputText: r.outputText
+      });
+      const passed = judgment.label === 'preserves';
+      const verdict = (passed === r.humanPreserves) ? 'OK' : 'MISMATCH';
+      learnedResults.push({ id: r.id, judgment, passed, humanPreserves: r.humanPreserves });
+      console.log(`  ${verdict.padEnd(8)} ${r.id.padEnd(50)} llm=${judgment.label.padEnd(9)} score=${judgment.meaning_preserved.toFixed(2)}  / human=${r.label}`);
+      if (judgment.issues && judgment.issues.length) {
+        console.log(`           issues: ${judgment.issues.join('; ')}`);
+      }
+      if (judgment.reasoning) {
+        console.log(`           reasoning: ${judgment.reasoning}`);
+      }
+      totalInputTokens += judgment.input_tokens;
+      totalOutputTokens += judgment.output_tokens;
+      totalCacheReadTokens += judgment.cache_read_tokens;
+      totalCacheCreationTokens += judgment.cache_creation_tokens;
+    } catch (err) {
+      console.log(`  ERROR    ${r.id.padEnd(50)} ${err && err.message ? err.message : err}`);
+    }
+  }
+  console.log();
+  if (learnedResults.length) {
+    let llmTp = 0, llmFp = 0, llmFn = 0, llmTn = 0;
+    for (const lr of learnedResults) {
+      if (lr.passed && lr.humanPreserves) llmTp += 1;
+      else if (lr.passed && !lr.humanPreserves) llmFp += 1;
+      else if (!lr.passed && lr.humanPreserves) llmFn += 1;
+      else llmTn += 1;
+    }
+    const learnedAgreement = (llmTp + llmTn) / Math.max(1, learnedResults.length);
+    const learnedPRF1 = precisionRecallF1(llmTp, llmFp, llmFn);
+    console.log(`  agreement: ${llmTp + llmTn}/${learnedResults.length} (${(learnedAgreement * 100).toFixed(1)}%)`);
+    console.log(`  audit-pass + human-preserves (true positive):  ${llmTp}`);
+    console.log(`  audit-pass + human-breaks    (false positive): ${llmFp}`);
+    console.log(`  audit-fail + human-preserves (false negative): ${llmFn}`);
+    console.log(`  audit-fail + human-breaks    (true negative):  ${llmTn}`);
+    console.log(`  precision: ${learnedPRF1.precision.toFixed(3)}  recall: ${learnedPRF1.recall.toFixed(3)}  F1: ${learnedPRF1.f1.toFixed(3)}`);
+    console.log();
+    console.log('  comparison vs deterministic bar:');
+    console.log(`    deterministic F1 = ${currentPRF1.f1.toFixed(3)}  (precision=${currentPRF1.precision.toFixed(3)} recall=${currentPRF1.recall.toFixed(3)} agreement=${(agreement * 100).toFixed(1)}%)`);
+    console.log(`    learned       F1 = ${learnedPRF1.f1.toFixed(3)}  (precision=${learnedPRF1.precision.toFixed(3)} recall=${learnedPRF1.recall.toFixed(3)} agreement=${(learnedAgreement * 100).toFixed(1)}%)`);
+    console.log();
+    console.log('  token usage across the run:');
+    console.log(`    input: ${totalInputTokens}  output: ${totalOutputTokens}`);
+    console.log(`    cache_read: ${totalCacheReadTokens}  cache_creation: ${totalCacheCreationTokens}`);
+    console.log('    (high cache_read = system prompt is being reused across calls — good)');
+  } else {
+    console.log('  no successful judgments; nothing to summarize.');
+  }
+  console.log();
+} else {
+  console.log('--- learned audit ---');
+  console.log('  skipping (ANTHROPIC_API_KEY not set; opt-in path)');
+  console.log('  to run: export ANTHROPIC_API_KEY=... && npm run test:calibration');
+  console.log();
+}
+
 console.log('reporting-only; does not gate npm test. labels are Claude-authored starter set, not authoritative.');
 console.log('add labels in tests/audit-calibration/labels.mjs to refine calibration.');
