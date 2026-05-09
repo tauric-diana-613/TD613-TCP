@@ -161,19 +161,39 @@ console.log(`  best F1 against this label set: ${bestF1.toFixed(3)} at coverage 
 console.log(`  (current threshold ${COVERAGE_FLOOR.toFixed(3)} F1 = ${precisionRecallF1(auditPassMatchesHuman, auditPassDisagreesHuman, auditFailDisagreesHuman).f1.toFixed(3)})`);
 console.log();
 
-// === Report 4: learned audit (opt-in via ANTHROPIC_API_KEY) ===
+// === Report 4: learned audit (opt-in via ANTHROPIC_API_KEY or LEARNED_AUDIT_MOCK) ===
 // The deterministic bar above is bag-overlap-based; it doesn't see hallucinated
 // sentences, contrast-flipped connectors, dropped conditionals, or corrupted
 // compounds. Asking Claude Opus 4.7 to judge meaning preservation directly
 // gives us a calibrated bar against the same human labels — at the cost of
-// (a) crossing the offline-deterministic line and (b) per-call cost. Opt-in;
-// only runs when ANTHROPIC_API_KEY is set in the environment.
-if (process.env.ANTHROPIC_API_KEY) {
-  console.log('--- learned audit (Claude Opus 4.7 via Anthropic API) ---');
-  console.log('  bar: judgment.label === "preserves"');
+// (a) crossing the offline-deterministic line and (b) per-call cost.
+//
+// Two activation paths:
+//   - ANTHROPIC_API_KEY set: real path, calls the API.
+//   - LEARNED_AUDIT_MOCK=1: mock path, reads hand-written judgments from
+//     tests/audit-calibration/mock-judgments.mjs. Useful for demonstrating
+//     the harness when no API key is available; agreement is high by
+//     construction since the mock judge and the labeler are the same author.
+const learnedMode = process.env.ANTHROPIC_API_KEY
+  ? 'real'
+  : (process.env.LEARNED_AUDIT_MOCK ? 'mock' : 'off');
+if (learnedMode !== 'off') {
+  if (learnedMode === 'mock') {
+    console.log('--- learned audit (MOCK — frozen hand-written judgments, not the LLM) ---');
+    console.log('  bar: judgment.label === "preserves"');
+    console.log('  caveat: mock judgments come from the same author as the labels, so agreement');
+    console.log('          is high by construction. Use ANTHROPIC_API_KEY for a live measurement.');
+  } else {
+    console.log('--- learned audit (Claude Opus 4.7 via Anthropic API) ---');
+    console.log('  bar: judgment.label === "preserves"');
+  }
   let assessMeaningPreservation;
   try {
-    ({ assessMeaningPreservation } = await import('../app/engine/learned-audit.js'));
+    if (learnedMode === 'mock') {
+      ({ assessMeaningPreservation } = await import('./audit-calibration/mock-judgments.mjs'));
+    } else {
+      ({ assessMeaningPreservation } = await import('../app/engine/learned-audit.js'));
+    }
   } catch (err) {
     console.log(`  could not load learned-audit module: ${err && err.message ? err.message : err}`);
     console.log('reporting-only; does not gate npm test. labels are Claude-authored starter set, not authoritative.');
@@ -189,7 +209,8 @@ if (process.env.ANTHROPIC_API_KEY) {
     try {
       const judgment = await assessMeaningPreservation({
         sourceText: r.sourceText,
-        outputText: r.outputText
+        outputText: r.outputText,
+        options: { labelId: r.id }
       });
       const passed = judgment.label === 'preserves';
       const verdict = (passed === r.humanPreserves) ? 'OK' : 'MISMATCH';
@@ -241,8 +262,9 @@ if (process.env.ANTHROPIC_API_KEY) {
   console.log();
 } else {
   console.log('--- learned audit ---');
-  console.log('  skipping (ANTHROPIC_API_KEY not set; opt-in path)');
-  console.log('  to run: export ANTHROPIC_API_KEY=... && npm run test:calibration');
+  console.log('  skipping (no learned-audit mode active)');
+  console.log('  to run real path:  export ANTHROPIC_API_KEY=... && npm run test:calibration');
+  console.log('  to run mock path:  LEARNED_AUDIT_MOCK=1 npm run test:calibration');
   console.log();
 }
 
