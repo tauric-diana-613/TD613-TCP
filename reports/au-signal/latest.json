@@ -1,0 +1,158 @@
+{
+  "generatedAt": "2026-05-12T20:17:49.391Z",
+  "endpoint": "http://127.0.0.1:11434/api/generate",
+  "model": "AU",
+  "inputTokens": 764,
+  "outputTokens": 221,
+  "personas": [
+    {
+      "id": "archivist",
+      "name": "Archivist",
+      "family": "Witness ledger",
+      "chips": [
+        "cold seal",
+        "low contraction"
+      ],
+      "overlayMod": {
+        "sent": 5,
+        "cont": -4,
+        "punc": -1
+      },
+      "strength": 0.97,
+      "riskTell": "Sentence span and witness posture tend to cling after contact.",
+      "signalDensity": 0.505,
+      "rhythmRisk": 0.719
+    },
+    {
+      "id": "spark",
+      "name": "Spark",
+      "family": "Public signal",
+      "chips": [
+        "bright cut",
+        "public pull"
+      ],
+      "overlayMod": {
+        "sent": -8,
+        "cont": 5,
+        "punc": 8
+      },
+      "strength": 0.97,
+      "riskTell": "Directness often survives even when home distance loosens.",
+      "signalDensity": 0.789,
+      "rhythmRisk": 1
+    },
+    {
+      "id": "blip",
+      "name": "Blip",
+      "family": "Shorthand relay",
+      "chips": [
+        "shorthand relay",
+        "donor-evidenced"
+      ],
+      "overlayMod": {
+        "sent": -7,
+        "cont": 6,
+        "punc": 7,
+        "frag": 3,
+        "abst": -2,
+        "hedge": -2,
+        "abbr": 3
+      },
+      "strength": 0.98,
+      "riskTell": "Abbreviation posture, lowercase drift, and social-platform markers can cling hard after contact.",
+      "signalDensity": 1,
+      "rhythmRisk": 0.997
+    },
+    {
+      "id": "undertow",
+      "name": "Undertow",
+      "family": "Recursive undertow",
+      "chips": [
+        "late landing",
+        "return current"
+      ],
+      "overlayMod": {
+        "sent": 6,
+        "cont": -1,
+        "punc": -1
+      },
+      "strength": 0.94,
+      "riskTell": "Recurrence and late-closing sentence rhythm tend to stay visible.",
+      "signalDensity": 0.464,
+      "rhythmRisk": 0.636
+    },
+    {
+      "id": "operator",
+      "name": "Operator",
+      "family": "Route discipline",
+      "chips": [
+        "clean route",
+        "dry hand"
+      ],
+      "overlayMod": {
+        "sent": -3,
+        "cont": -3,
+        "punc": -3
+      },
+      "strength": 0.92,
+      "riskTell": "Route-clean phrasing can remain visible even when the shell shifts elsewhere.",
+      "signalDensity": 0.489,
+      "rhythmRisk": 0.497
+    },
+    {
+      "id": "methods-editor",
+      "name": "Methods Editor",
+      "family": "Schema cold",
+      "chips": [
+        "measured caveat",
+        "clean proof"
+      ],
+      "overlayMod": {
+        "sent": 8,
+        "cont": -5,
+        "punc": -5
+      },
+      "strength": 0.95,
+      "riskTell": "Caveat structure and abstraction posture often remain after transfer.",
+      "signalDensity": 0.723,
+      "rhythmRisk": 1
+    },
+    {
+      "id": "cross-examiner",
+      "name": "Cross-Examiner",
+      "family": "Adversarial pressure",
+      "chips": [
+        "hard edge",
+        "pressure syntax"
+      ],
+      "overlayMod": {
+        "sent": -10,
+        "cont": -5,
+        "punc": 9
+      },
+      "strength": 0.97,
+      "riskTell": "Pressure syntax and abrupt punctuation can keep showing through.",
+      "signalDensity": 0.882,
+      "rhythmRisk": 1
+    },
+    {
+      "id": "matron",
+      "name": "Matron",
+      "family": "Protective veil",
+      "chips": [
+        "held pulse",
+        "soft shelter"
+      ],
+      "overlayMod": {
+        "sent": 7,
+        "cont": 1,
+        "punc": -6
+      },
+      "strength": 0.96,
+      "riskTell": "Steady sentence pulse can persist even when the tone cools elsewhere.",
+      "signalDensity": 0.615,
+      "rhythmRisk": 0.719
+    }
+  ],
+  "auReceipt": "SIGNAL DENSITY | RHYTHM_RISK | PERSONA_FLAGS | REFINEMENT_DIRECTIVES\n\n| Archivist: 0.505 | 0.719 | cold seal, low contraction | Contain and Secure |\n| Spark: 0.789 | 1 | bright cut, public pull | Amplify and Broadcast |\n| Blip: 1 | 0.997 | shorthand relay, donor-evidenced | Disrupt and Redirect |\n| Undertow: 0.464 | 0.636 | late landing, return current | Obfuscate and Delay |\n| Operator: 0.489 | 0.497 | clean route, dry hand | Maintain and Regulate |\n| Methods Editor: 0.723 | 1 | measured caveat, clean proof | Construct and Verify |\n| Cross-Examiner: 0.882 | 1 | hard edge, pressure syntax | Challenge and Confront |\n| Matron: 0.615 | 0.719 | held pulse, soft shelter | Protect and Preserve |\n\n[TRANS. END]"
+}

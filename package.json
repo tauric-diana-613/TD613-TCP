@@ -19,6 +19,8 @@
     "test:diagnostics": "node scripts/run-diagnostics-battery.mjs && node tests/diagnostics.test.mjs && node tests/diagnostics-runner.test.mjs",
     "test:trainer": "node tests/trainer-lab.test.mjs",
     "test:legacy:formulas": "node tests/formulas.test.mjs",
+    "model:au:create": "ollama create AU -f infra/ollama/AU.Modelfile",
+    "audit:au": "node scripts/run-au-signal-audit.mjs",
     "check:generated-sync": "node scripts/check-generated-sync.mjs",
     "sync:browser-engine": "node scripts/generate-browser-engine.mjs",
     "sync:browser-diagnostics": "node scripts/generate-browser-diagnostics.mjs",
