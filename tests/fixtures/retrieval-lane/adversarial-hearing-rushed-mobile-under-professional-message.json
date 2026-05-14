@@ -182,7 +182,8 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "merge-short-beats",
@@ -200,6 +201,7 @@
         "CHAIN_CLAUSES_VIA_SUBORDINATOR",
         "INSERT_PARENTHETICAL"
       ],
+      "forgeSource": null,
       "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
     },
@@ -694,6 +696,11 @@
             "routePressure": 0.087
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Hearing got ugly, and they keep saying she \"refused entry\" but inspector texted 5:43 he was late and showed after 6:10 on a 1-5 window. The practical stakes rem"
       },
       {
@@ -959,6 +966,11 @@
             "routePressure": 0.087
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Hearing got ugly. They keep saying she \"refused entry\" but inspector texted 5:43 he was late and showed after 6:10 on a 1-5 window. The practical stakes remain "
       }
     ],
@@ -970,6 +982,8 @@
       "candidateCount": 2,
       "winningCandidateId": "base:syntax-shape",
       "winningCandidateFamily": "syntax-shape",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "rushed-mobile",

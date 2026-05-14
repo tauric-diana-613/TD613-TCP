@@ -194,7 +194,8 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "COMPRESS_FORMAL_CLAUSES"
@@ -216,6 +217,7 @@
         "DIGIT_SUBSTITUTE",
         "LOWERCASE_INITIALS"
       ],
+      "forgeSource": null,
       "connectorStrategy": "split",
       "contractionStrategy": "contract"
     },
@@ -796,6 +798,11 @@
             "routePressure": 0.088
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "production team, quick correction from Gallery 4: fog cue at 7:42 PM is what tripped detector, not electrical issue. facilities reset the panel and we resumed a"
       },
       {
@@ -1093,6 +1100,11 @@
             "routePressure": 0.09
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "production team, quick correction from Gallery 4: fog cue at 7:42 PM is what tripped detector, not electrical issue, but the real problem is that the cue sheet "
       }
     ],
@@ -1104,6 +1116,8 @@
       "candidateCount": 2,
       "winningCandidateId": "base:syntax-shape",
       "winningCandidateFamily": "syntax-shape",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "procedural-record",
         "sourceRegisterLane": "professional-message",

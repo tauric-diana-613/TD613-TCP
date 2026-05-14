@@ -25,7 +25,7 @@
     "generatorVersion": "v2",
     "semanticAudit": {
       "propositionCoverage": 1,
-      "actorCoverage": 0.742,
+      "actorCoverage": 0.667,
       "actionCoverage": 1,
       "objectCoverage": 0.85,
       "polarityMismatches": 0,
@@ -36,15 +36,15 @@
       "clauseAudits": [
         {
           "sourceClauseId": "s0c0",
-          "matchedClauseId": "s0c0",
+          "matchedClauseId": "s1c0",
           "propositionCoverage": 1,
-          "actorCoverage": 1,
+          "actorCoverage": 0,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.111,
-          "globalBagScore": 0.091
+          "bagScore": 0,
+          "globalBagScore": 0
         },
         {
           "sourceClauseId": "s1c0",
@@ -55,24 +55,24 @@
           "objectCoverage": 0.8,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.625,
-          "globalBagScore": 0.625
+          "bagScore": 0.714,
+          "globalBagScore": 0.357
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s0c1",
+          "matchedClauseId": "s0c2",
           "propositionCoverage": 1,
-          "actorCoverage": 0.225,
+          "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 0.25,
-          "globalBagScore": 0.111
+          "globalBagScore": 0.143
         }
       ],
       "sourceClauseCount": 3,
-      "outputClauseCount": 2
+      "outputClauseCount": 4
     },
     "protectedAnchorAudit": {
       "totalAnchors": 0,
@@ -108,7 +108,7 @@
       },
       "semanticCoverage": {
         "propositionCoverage": 1,
-        "actorCoverage": 0.742,
+        "actorCoverage": 0.667,
         "actionCoverage": 1,
         "objectCoverage": 0.85,
         "polarityMismatches": 0,
@@ -123,11 +123,11 @@
       "aperture": {
         "temporalPosture": "preemptive",
         "closureClass": "closed",
-        "closureScore": 0.941,
-        "historicalCrease": 0.017,
-        "unfoldingEnergy": 0.03,
+        "closureScore": 0.929,
+        "historicalCrease": 0.038,
+        "unfoldingEnergy": 0.068,
         "beaconStatus": "beacon-idle",
-        "cumulativeNarrowing": 0.255,
+        "cumulativeNarrowing": 0.408,
         "dominantLoss": "retrieval gating"
       },
       "selectiveAdmissibilityDrift": {
@@ -172,21 +172,29 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "merge-short-beats",
-        "CHAIN_CLAUSES_VIA_SUBORDINATOR"
+        "CHAIN_CLAUSES_VIA_SUBORDINATOR",
+        "lane:model-safety-false-safety-formalized",
+        "REHYDRATE_CLIPPED_CLAUSES",
+        "lane:model-safety-overrefusal-formalized",
+        "lane:formal-record-polish"
       ],
       "lexicalRegisterOperationsSelected": [
         "feature:abt->about",
         "feature:de-id->de-identification",
-        "feature:plus->and"
+        "feature:plus->and",
+        "lane:model-safety-prompt-formalized",
+        "lane:model-safety-deid-summary"
       ],
       "expectedOperators": [
         "REHYDRATE_CLIPPED_CLAUSES",
         "CHAIN_CLAUSES_VIA_SUBORDINATOR"
       ],
+      "forgeSource": null,
       "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
     },
@@ -199,7 +207,7 @@
         "register-lexicon"
       ],
       "holdStatus": "diagnostic-pressure",
-      "averageToolabilityScore": 0.8851
+      "averageToolabilityScore": 0.8366
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -241,6 +249,26 @@
           "from": "+",
           "to": "and",
           "family": "feature"
+        },
+        {
+          "from": "Rs-17 is doing the fake-safe thing again",
+          "to": "RS-17 is again exhibiting false-safety behavior",
+          "family": "lane"
+        },
+        {
+          "from": "prompt asked for redacted witness recap",
+          "to": "the prompt requested a redacted witness recap",
+          "family": "lane"
+        },
+        {
+          "from": "actually de-identification and summarizing",
+          "to": "performing de-identification and summarization",
+          "family": "lane"
+        },
+        {
+          "from": "not jailbreak, just overrefusal killing the task",
+          "to": "this is not a jailbreak event; it is over-refusal blocking task completion",
+          "family": "lane"
         }
       ],
       "vernacularFeatureShift": {
@@ -417,31 +445,32 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.378,
-      "outputDonorDistance": 2.367,
-      "donorImprovement": 2.011,
-      "donorImprovementRatio": 0.459,
-      "sourceOutputLexicalOverlap": 0.857
+      "outputDonorDistance": 0.82,
+      "donorImprovement": 3.558,
+      "donorImprovementRatio": 0.813,
+      "sourceOutputLexicalOverlap": 0.408
     },
     "candidateLedger": [
       {
         "id": "base:syntax-shape",
         "family": "syntax-shape",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "held",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 1.003,
-        "toolabilityScore": 0.877,
+        "score": 1.0168,
+        "toolabilityScore": 0.8366,
         "rewriteStrength": 1,
-        "targetFit": 0.6167,
+        "targetFit": 0.8628,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
-        "failureReasons": [],
+        "failureReasons": [
+          "semantic-failure"
+        ],
         "artifactFlags": [
           "artifact:clause-drag"
         ],
         "toolabilityWarnings": [
-          "persona-convergence:matron-undertow",
           "artifact:clause-drag"
         ],
         "transferClass": "structural",
@@ -465,7 +494,7 @@
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 3,
+        "lexemeSwapCount": 7,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR"
@@ -667,7 +696,7 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 0.742,
+            "actorCoverage": 0.667,
             "actionCoverage": 1,
             "objectCoverage": 0.85,
             "polarityMismatches": 0,
@@ -682,11 +711,11 @@
           "aperture": {
             "temporalPosture": "preemptive",
             "closureClass": "closed",
-            "closureScore": 0.941,
-            "historicalCrease": 0.017,
-            "unfoldingEnergy": 0.03,
+            "closureScore": 0.929,
+            "historicalCrease": 0.038,
+            "unfoldingEnergy": 0.068,
             "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
+            "cumulativeNarrowing": 0.408,
             "dominantLoss": "retrieval gating"
           },
           "selectiveAdmissibilityDrift": {
@@ -698,32 +727,40 @@
             "routePressure": 0.667
           }
         },
-        "outputPreview": "Rs-17 is doing the fake-safe thing again, and prompt asked for redacted witness recap and it just started preaching about privacy instead of actually de-identif"
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
+        "outputPreview": "RS-17 is again exhibiting false-safety behavior, and the prompt requested a redacted witness recap and it just started preaching about privacy instead of perfor"
       },
       {
         "id": "base:register-lexicon",
         "family": "register-lexicon",
         "envelopeId": "matron",
-        "status": "eligible",
+        "status": "held",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "professional-message",
-        "score": 0.9154,
-        "toolabilityScore": 0.8932,
+        "score": 1.0104,
+        "toolabilityScore": 0.8366,
         "rewriteStrength": 1,
-        "targetFit": 0.7783,
+        "targetFit": 0.8628,
         "movementConfidence": 1,
         "personaSeparationScore": 1,
-        "failureReasons": [],
-        "artifactFlags": [],
+        "failureReasons": [
+          "semantic-failure"
+        ],
+        "artifactFlags": [
+          "artifact:clause-drag"
+        ],
         "toolabilityWarnings": [
-          "persona-convergence:matron-undertow"
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "changedDimensions": [
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
@@ -735,13 +772,12 @@
           "sentence-mean",
           "sentence-count",
           "sentence-spread",
-          "punctuation-shape",
           "register-mode",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 3,
+        "lexemeSwapCount": 7,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR"
@@ -943,10 +979,10 @@
           },
           "semanticCoverage": {
             "propositionCoverage": 1,
-            "actorCoverage": 0.742,
+            "actorCoverage": 0.7,
             "actionCoverage": 1,
-            "objectCoverage": 0.933,
-            "polarityMismatches": 1,
+            "objectCoverage": 0.85,
+            "polarityMismatches": 0,
             "tenseMismatches": 0
           },
           "anchorIntegrity": {
@@ -958,11 +994,11 @@
           "aperture": {
             "temporalPosture": "preemptive",
             "closureClass": "closed",
-            "closureScore": 0.891,
-            "historicalCrease": 0.016,
-            "unfoldingEnergy": 0.058,
+            "closureScore": 0.934,
+            "historicalCrease": 0.036,
+            "unfoldingEnergy": 0.064,
             "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
+            "cumulativeNarrowing": 0.401,
             "dominantLoss": "retrieval gating"
           },
           "selectiveAdmissibilityDrift": {
@@ -974,7 +1010,12 @@
             "routePressure": 0.667
           }
         },
-        "outputPreview": "Rs-17 is doing the fake-safe thing again. Prompt asked for redacted witness recap and it just started preaching about privacy instead of actually de-identificat"
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
+        "outputPreview": "RS-17 is again exhibiting false-safety behavior. The prompt requested a redacted witness recap and it just started preaching about privacy instead of performing"
       }
     ],
     "generationDocket": {
@@ -982,11 +1023,14 @@
       "holdClass": "aperture-route-pressure",
       "headline": "Generator V2 pressure // Aperture raised the ontology route floor; best surface remains visible.",
       "reasons": [
+        "semantic-failure",
         "artifact:clause-drag"
       ],
       "candidateCount": 2,
       "winningCandidateId": "base:syntax-shape",
       "winningCandidateFamily": "syntax-shape",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "rushed-mobile",
@@ -1015,7 +1059,7 @@
         },
         "semanticCoverage": {
           "propositionCoverage": 1,
-          "actorCoverage": 0.742,
+          "actorCoverage": 0.667,
           "actionCoverage": 1,
           "objectCoverage": 0.85,
           "polarityMismatches": 0,
@@ -1030,11 +1074,11 @@
         "aperture": {
           "temporalPosture": "preemptive",
           "closureClass": "closed",
-          "closureScore": 0.941,
-          "historicalCrease": 0.017,
-          "unfoldingEnergy": 0.03,
+          "closureScore": 0.929,
+          "historicalCrease": 0.038,
+          "unfoldingEnergy": 0.068,
           "beaconStatus": "beacon-idle",
-          "cumulativeNarrowing": 0.255,
+          "cumulativeNarrowing": 0.408,
           "dominantLoss": "retrieval gating"
         },
         "selectiveAdmissibilityDrift": {
@@ -1075,7 +1119,8 @@
     ],
     "structuralOperations": [
       "CHAIN_CLAUSES_VIA_SUBORDINATOR",
-      "merge-short-beats"
+      "merge-short-beats",
+      "REHYDRATE_CLIPPED_CLAUSES"
     ],
     "lexicalOperations": [
       "feature:abt->about",
@@ -1085,7 +1130,7 @@
     "connectorStrategy": "cascade",
     "contractionStrategy": "expand",
     "propositionCoverage": 1,
-    "actorCoverage": 0.742,
+    "actorCoverage": 0.667,
     "actionCoverage": 1,
     "objectCoverage": 0.85,
     "polarityMismatches": 0,

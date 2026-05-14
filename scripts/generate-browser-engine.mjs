@@ -11,6 +11,7 @@ const ENGINE_SOURCES = [
   'app/engine/td613-aperture.js',
   'app/engine/stylometry.js',
   'app/engine/vernacular-ontology.js',
+  'app/engine/au-forged-ontology.js',
   'app/engine/generator-v2.js',
   'app/engine/formulas.js',
   'app/engine/harbor.js'
@@ -57,6 +58,8 @@ const generated = [
   '  buildLedgerRow,',
   '  computeReuseGain,',
   '  estimateWitnessLoad,',
+  '  AU_FORGED_ONTOLOGY,',
+  '  summarizeAUForgedOntology,',
   '  normalizeText,',
   '  extractCadenceProfile,',
   '  inferRegisterLaneFromText,',

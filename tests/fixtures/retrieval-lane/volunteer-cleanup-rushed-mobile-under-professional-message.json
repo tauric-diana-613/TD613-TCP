@@ -218,7 +218,8 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "front-if",
@@ -238,6 +239,7 @@
         "REHYDRATE_CLIPPED_CLAUSES",
         "CHAIN_CLAUSES_VIA_SUBORDINATOR"
       ],
+      "forgeSource": null,
       "connectorStrategy": "front",
       "contractionStrategy": "expand"
     },
@@ -766,6 +768,11 @@
             "routePressure": 1
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "You are late that is ok just do not start random jobs, and check in west fence table first, and glass and pallets first pass, and saws stay under canopy be, kid"
       },
       {
@@ -1037,6 +1044,11 @@
             "routePressure": 1
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "You are late that is ok just do not start random jobs, and check in west fence table first, and glass and pallets first pass. Saws stay under canopy be, kids st"
       },
       {
@@ -1312,6 +1324,11 @@
             "routePressure": 0.093
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "You are late that is ok just do not start random jobs, and check in west fence table first, and glass and pallets first pass, and if wind chills out, saws stay "
       },
       {
@@ -1585,6 +1602,11 @@
             "routePressure": 1
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "You are late that is ok just do not start random jobs, and check in west fence table first, and glass and pallets first pass. Wind chills out, saws stay under c"
       },
       {
@@ -1864,6 +1886,11 @@
             "routePressure": 1
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "You are late that is ok just do not start random jobs, and check in west fence table first, and wind chills out, glass and pallets first pass, and saws stay und"
       },
       {
@@ -2141,6 +2168,11 @@
             "routePressure": 1
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "You are late that is ok just do not start random jobs, and check in west fence table first, and glass and pallets first pass. Wind chills out, saws stay under c"
       }
     ],
@@ -2152,6 +2184,8 @@
       "candidateCount": 6,
       "winningCandidateId": "base:order-beat",
       "winningCandidateFamily": "order-beat",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "rushed-mobile",

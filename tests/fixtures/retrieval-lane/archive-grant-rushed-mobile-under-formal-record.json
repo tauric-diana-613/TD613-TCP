@@ -194,7 +194,8 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "front-if",
@@ -215,6 +216,7 @@
         "CHAIN_CLAUSES_VIA_SUBORDINATOR",
         "INSERT_PARENTHETICAL"
       ],
+      "forgeSource": null,
       "connectorStrategy": "front",
       "contractionStrategy": "expand"
     },
@@ -723,6 +725,11 @@
             "routePressure": 0.094
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Grant is not just digitize and pray, and it is shared catalog protocol and 6 steward reviewers and portable exhibit kit. The deliverable chain remains intact. M"
       },
       {
@@ -990,6 +997,11 @@
             "routePressure": 0.094
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Grant is not just digitize and pray, and it is shared catalog protocol and 6 steward reviewers and portable exhibit kit. The deliverable chain remains intact. M"
       },
       {
@@ -1257,6 +1269,11 @@
             "routePressure": 0.094
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Grant is not just digitize and pray, and it is shared catalog protocol and 6 steward reviewers and portable exhibit kit. The deliverable chain remains intact. D"
       },
       {
@@ -1524,6 +1541,11 @@
             "routePressure": 0.094
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Grant is not just digitize and pray, and it is shared catalog protocol and 6 steward reviewers and portable exhibit kit. The deliverable chain remains intact. D"
       },
       {
@@ -1791,6 +1813,11 @@
             "routePressure": 0.094
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Grant is not just digitize and pray, and it is shared catalog protocol and 6 steward reviewers and portable exhibit kit. The deliverable chain remains intact. D"
       }
     ],
@@ -1802,6 +1829,8 @@
       "candidateCount": 5,
       "winningCandidateId": "base:order-beat",
       "winningCandidateFamily": "order-beat",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "rushed-mobile",

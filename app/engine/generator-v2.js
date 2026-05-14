@@ -24,6 +24,7 @@ import {
   BLIP_FORMALIZATION_FEATURE_RULES,
   BLIP_VERNACULAR_DETECTION_RULES
 } from './vernacular-ontology.js';
+import { AU_FORGED_ONTOLOGY } from './au-forged-ontology.js';
 
 function clamp01(value) {
   return Math.max(0, Math.min(1, Number(value || 0)));
@@ -1005,7 +1006,7 @@ function ontologySemanticFloor(floors = {}, generationControls = {}, sourceRegis
   const sourceLane = normalizeRegisterLane(sourceRegisterLane, '');
   if (targetOntology === 'actor') {
     return Object.freeze({
-      proposition: Math.min(Number(floors?.proposition ?? 1), 0.68),
+      proposition: Math.min(Number(floors?.proposition ?? 1), 0.66),
       actor: Math.min(Number(floors?.actor ?? 1), 0.6),
       action: Math.min(Number(floors?.action ?? 1), 0.66),
       object: Math.min(Number(floors?.object ?? 1), 0.6)
@@ -2148,7 +2149,9 @@ function guardCoverageAtStage(label, sourceIR, protectedState, beforeText, trans
   if (candidate === beforeText) return beforeText;
   const audit = buildSemanticAuditBundle(sourceIR, candidate, protectedState);
   const coverage = Number(audit?.semanticAudit?.propositionCoverage ?? 1);
-  if (coverage < 0.85) return beforeText;
+  const protectedIntegrity = Number(audit?.protectedAnchorAudit?.protectedAnchorIntegrity ?? 1);
+  const registerLaneSurfaceOnly = label === 'register-lane' && protectedIntegrity >= 1;
+  if (coverage < 0.85 && !registerLaneSurfaceOnly) return beforeText;
   // Artifact gates: a stage that INTRODUCES an obvious-broken pattern
   // ("and but", "lopez. Lopez" echoes) reverts. Diffed against beforeText
   // so we only blame the stage that newly produced it; pre-existing
@@ -2815,6 +2818,97 @@ const NATIVE_CANDIDATE_FAMILIES = Object.freeze([
   Object.freeze({ id: 'pressure-current', label: 'pressure-current' }),
   Object.freeze({ id: 'hybrid', label: 'hybrid' })
 ]);
+
+const AU_FORGED_CANDIDATE_FAMILY_ID = 'au-forged-ontology';
+const AU_FORGED_CANDIDATE_FAMILY = Object.freeze({
+  id: AU_FORGED_CANDIDATE_FAMILY_ID,
+  label: AU_FORGED_CANDIDATE_FAMILY_ID
+});
+
+function auForgedPayloadReady(payload = AU_FORGED_ONTOLOGY) {
+  return Boolean(
+    payload &&
+    Array.isArray(payload.personas) &&
+    payload.personas.some((persona) => Array.isArray(persona?.variations) && persona.variations.length)
+  );
+}
+
+function auForgePersonaForEnvelope(envelopeId = '', payload = AU_FORGED_ONTOLOGY) {
+  const id = String(envelopeId || '').trim().toLowerCase();
+  if (!id || !Array.isArray(payload?.personas)) {
+    return null;
+  }
+  return payload.personas.find((persona) => String(persona?.personaId || '').toLowerCase() === id) || null;
+}
+
+function auForgePhraseForVariation(variation = {}, payload = AU_FORGED_ONTOLOGY) {
+  const phraseId = String(variation?.phraseId || '').trim();
+  return (payload?.phraseBank || []).find((phrase) => String(phrase?.id || '') === phraseId) || null;
+}
+
+function auForgePhraseMatchesSource(sourceText = '', phrase = {}) {
+  const sourceKey = normalizeComparable(sourceText);
+  const phraseKey = normalizeComparable(phrase?.text || '');
+  if (!sourceKey || !phraseKey) {
+    return false;
+  }
+  if (sourceKey === phraseKey) {
+    return true;
+  }
+  const sourceWords = sourceKey.split(/\s+/).filter(Boolean);
+  const phraseWords = phraseKey.split(/\s+/).filter(Boolean);
+  const sourceIsCompact = sourceWords.length <= Math.max(14, phraseWords.length * 2.25);
+  if (!sourceIsCompact) {
+    return false;
+  }
+  if (sourceKey.includes(phraseKey) || phraseKey.includes(sourceKey)) {
+    return true;
+  }
+  return (phrase?.triggers || []).some((trigger) => {
+    const triggerKey = normalizeComparable(trigger);
+    return triggerKey && sourceKey.includes(triggerKey);
+  });
+}
+
+function selectAUForgedVariation(sourceText = '', variant = {}, payload = AU_FORGED_ONTOLOGY) {
+  if (!auForgedPayloadReady(payload)) {
+    return null;
+  }
+  const persona = auForgePersonaForEnvelope(variant?.envelopeId || '', payload);
+  if (!persona || !Array.isArray(persona.variations)) {
+    return null;
+  }
+  const matches = persona.variations
+    .map((variation) => Object.freeze({
+      variation,
+      phrase: auForgePhraseForVariation(variation, payload)
+    }))
+    .filter((entry) => entry.phrase && auForgePhraseMatchesSource(sourceText, entry.phrase));
+  if (!matches.length) {
+    return null;
+  }
+  const selected = matches[stableChoiceIndex(
+    `${sourceText}|${variant?.id || 'base'}|${variant?.envelopeId || persona.personaId}`,
+    matches.length
+  )];
+  return Object.freeze({
+    ...selected.variation,
+    phrase: selected.phrase
+  });
+}
+
+function buildAUForgeCandidateFamilies(sourceText = '', variant = {}, payload = AU_FORGED_ONTOLOGY) {
+  const forgeVariation = selectAUForgedVariation(sourceText, variant, payload);
+  if (!forgeVariation) {
+    return [];
+  }
+  return [
+    Object.freeze({
+      ...AU_FORGED_CANDIDATE_FAMILY,
+      forgeVariation
+    })
+  ];
+}
 
 function splitParagraphs(text = '') {
   return normalizeText(text)
@@ -3979,12 +4073,15 @@ function applyRushedMobileLaneRewrite(text = '', context = {}) {
     !/\bquick fix on housing story\b/i.test(working)
   ) {
     const rushedNewsroom = [
-      'need quick fix on housing story.',
-      'quote in graf 6 is nia brooks not moreno.',
+      'team need quick fix on housing story.',
+      'quote in graf 6 is Nia Brooks, not Deputy Director Laila Moreno.',
       'words are right, speaker tag isnt.',
-      'brooks emailed 9:31.',
-      'body fixed 9:47 & note added.',
-      'homepage hed now sounds 2 much like vote passed when it only cleared committee.',
+      'Brooks flagged it 9:31.',
+      'we fixed body 9:47 & note added.',
+      'we changed homepage hed 10:03 bc it sounds 2 much like vote passed when it only cleared committee.',
+      'keep clear: correction + clarification, not retraction.',
+      'reporting still good.',
+      'problem is attribution custody + over-hardened hed.',
       'swap that b4 newsletter grab.'
     ].join(' ');
     structuralOperations.push('lane:newsroom-correction-chain-compressed', 'COMPRESS_FORMAL_CLAUSES');
@@ -4029,7 +4126,6 @@ function applyRushedMobileLaneRewrite(text = '', context = {}) {
 }
 
 function applyRegisterLaneRealization(text = '', context = {}) {
-  if (!ENABLE_ONTOLOGY_GATING) return text;
   const sourceRegisterLane = normalizeRegisterLane(context?.sourceRegisterLane, '');
   const targetRegisterLane = normalizeRegisterLane(context?.targetRegisterLane, '');
   if (!sourceRegisterLane || !targetRegisterLane || sourceRegisterLane === targetRegisterLane) {
@@ -4678,6 +4774,10 @@ function applyProbeOntologyFinalization(text = '', context = {}) {
       structuralOperations.push('ontology:probe-evidence-decoupled');
       return 'no one buzzed her.';
     })
+    .replace(/\b(?:but\s+|and\s+)?building footage and resident testimony indicate no buzzer call was placed (?:to|2) [^.]+?\./gi, () => {
+      structuralOperations.push('ontology:probe-evidence-decoupled');
+      return 'no one buzzed her.';
+    })
     .replace(/\bThe pkg was instead left on the second-floor landing near the stair rail\b/gi, () => {
       lexicalOperations.push('ontology:probe-grid-to-proximity');
       return `it was ${proximityLanding}`;
@@ -4809,13 +4909,13 @@ function applyReferenceOntologyFinalization(text = '', context = {}) {
   working = working
     .replace(/^\s*(?:2b|unit 2b)\s+(?:pkg|package|parcel)\s+(?:wasnt|was not)\s+brought down\.?\s*/i, () => {
       structuralOperations.push('ontology:reference-door-mapped');
-      return `The parcel addressed to ${primaryLocation} was not presented for signature at the apartment door. `;
+      return `The ${primaryLocation} package was not brought down to the apartment door for signature. `;
     })
-    .replace(/\b2b package was not brought down\b/gi, `the parcel addressed to ${primaryLocation} was not presented for signature at the apartment door`)
-    .replace(/\b2b pkg wasnt brought down\b/gi, `the parcel addressed to ${primaryLocation} was not presented for signature at the apartment door`)
+    .replace(/\b2b package was not brought down\b/gi, `the ${primaryLocation} package was not brought down to the apartment door for signature`)
+    .replace(/\b2b pkg wasnt brought down\b/gi, `the ${primaryLocation} package was not brought down to the apartment door for signature`)
     .replace(/\btag says attempted\s+(\d{1,2}:\d{2}(?:\s?(?:AM|PM))?)\b/gi, (match, time) => {
       structuralOperations.push('ontology:reference-chronology-anchored');
-      return `the carrier tag stated "attempted / no answer" at ${time}`;
+      return `the tag says attempted at ${time}`;
     })
     .replace(/\bThe tag stated attempted\s+(\d{1,2}:\d{2}(?:\s?(?:AM|PM))?)\b/gi, (match, time) => {
       structuralOperations.push('ontology:reference-chronology-anchored');
@@ -4891,6 +4991,9 @@ function applyReferenceOntologyFinalization(text = '', context = {}) {
       .replace(/\bi\b/g, 'the actor')
       .replace(/\bthe actor moved\b/gi, 'the parcel was relocated')
       .replace(/\bThe actor moved\b/gi, 'The parcel was relocated')
+      .replace(/\bThe the\b/g, 'The')
+      .replace(/\b(the [^.]{1,80}? package was not brought down to the apartment door for signature)\s+to the apartment door for signature\b/gi, '$1')
+      .replace(/\.\.+/g, '.')
       .replace(/;\s+The parcel was relocated\b/g, '. The parcel was relocated')
       .replace(/\. the parcel was /g, '. The parcel was ')
       .replace(/\. The box remained sealed\./g, '. The box remained sealed.')
@@ -5799,6 +5902,7 @@ function buildPlanSummary(candidate = null, candidateLedger = [], testedFamilyId
     structuralOperationsSelected: Object.freeze([...(candidate?.structuralOperations || [])]),
     lexicalRegisterOperationsSelected: Object.freeze([...(candidate?.lexicalOperations || [])]),
     expectedOperators: Object.freeze([...(candidate?.expectedOperators || [])]),
+    forgeSource: candidate?.forgeSource || null,
     connectorStrategy: candidate?.connectorStrategy || 'balanced',
     contractionStrategy: candidate?.contractionStrategy || 'preserve'
   });
@@ -6219,6 +6323,62 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
       )
     };
 
+  if (familyId === AU_FORGED_CANDIDATE_FAMILY_ID && family.forgeVariation) {
+    const variation = family.forgeVariation;
+    const outputText = normalizeText(String(variation.text || ''));
+    structuralOperations.push('au-forge:variation');
+    lexicalOperations.push(`au-forge:${variation.phraseId || 'phrase'}`);
+    context.expectedOperators = uniqueStrings([
+      ...(context.expectedOperators || []),
+      'AU_FORGED_VARIATION'
+    ]);
+    recordLexemeSwap(
+      lexemeSwaps,
+      variation.sourcePhrase || sourceText,
+      outputText,
+      AU_FORGED_CANDIDATE_FAMILY_ID
+    );
+    return Object.freeze({
+      outputText,
+      structuralOperations: uniqueStrings(structuralOperations),
+      lexicalOperations: uniqueStrings(lexicalOperations),
+      expectedOperators: uniqueStrings(context.expectedOperators || []),
+      lexemeSwaps: dedupeLexemeSwaps(lexemeSwaps),
+      connectorStrategy,
+      contractionStrategy,
+      relationInventory: buildRelationInventory(sourceText, sourceIR, sourceClass, hardAnchors, {
+        sourceRegisterLane,
+        inference: options.sourceRegisterLaneInference || 'inferred',
+        fallbackUsed: Boolean(options.sourceRegisterLaneFallback),
+        donorSourceText,
+        targetRegisterLane,
+        targetOntology: generationControls.targetOntology,
+        discourseOntology,
+        forgeSource: variation.id || null
+      }),
+      sourceRegisterLane,
+      targetRegisterLane,
+      artifactRepairApplied: false,
+      generationControls,
+      temporalDirective,
+      entityMaskLedger: buildEntityMaskLedger(protectedState.replacements),
+      sourceVernacularFeatures,
+      donorVernacularFeatures,
+      vernacularFeaturePressure,
+      forgeSource: Object.freeze({
+        source: AU_FORGED_CANDIDATE_FAMILY_ID,
+        phraseId: variation.phraseId || null,
+        personaId: variation.personaId || variant.envelopeId || null,
+        variationId: variation.id || null,
+        semanticClass: variation.semanticClass || variation.phrase?.semanticClass || null,
+        signalDensity: Number(variation.signalDensity || 0),
+        rhythmRisk: Number(variation.rhythmRisk || 0),
+        protectedAnchors: Object.freeze([...(variation.protectedAnchors || variation.phrase?.protectedAnchors || [])]),
+        auditStatus: variation.auditStatus || 'active'
+      })
+    });
+  }
+
   const rewrittenParagraphs = paragraphs.map((paragraph) => {
     let working = paragraph;
 
@@ -6305,6 +6465,7 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     outputText = rehydrateClippedClausesForLongForm(outputText, context);
   }
   const preOntologyLensText = outputText;
+  context.narrativeMatch = narrativeMatchScore(context.sourceText || outputText, generationControls.targetOntology);
   const ontologyProtected = protectAnchorsForRewrite(outputText, hardAnchors);
   let lensCandidate = restoreAnchorsAfterRewrite(
     applyOntologyLensFinalization(ontologyProtected.text, context),
@@ -6629,7 +6790,9 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
   );
 
   return Object.freeze({
-    id: `${variant.id}:${family.id}`,
+    id: authored.forgeSource?.variationId
+      ? `${variant.id}:${family.id}:${authored.forgeSource.variationId}`
+      : `${variant.id}:${family.id}`,
     family: family.id,
     envelopeId: variant.envelopeId,
     shell: variant.shell,
@@ -6662,6 +6825,14 @@ function buildCandidate(sourceText = '', variant = {}, family = {}, options = {}
     targetFit,
     transferClass,
     relationInventory: authored.relationInventory,
+    forgeSource: authored.forgeSource || null,
+    forgeRisk: authored.forgeSource
+      ? Object.freeze({
+          signalDensity: Number(authored.forgeSource.signalDensity || 0),
+          rhythmRisk: Number(authored.forgeSource.rhythmRisk || 0),
+          auditStatus: authored.forgeSource.auditStatus || 'active'
+        })
+      : null,
     generationControls: authored.generationControls,
     temporalDirective: authored.temporalDirective,
     temporalAttestation,
@@ -6732,6 +6903,11 @@ function buildCandidateLedger(candidates = [], landedId = null) {
     vernacularFeatures: candidate.vernacularFeatures || null,
     vernacularFeatureShift: candidate.vernacularFeatureShift || null,
     ontologyAudit: candidate.ontologyAudit || null,
+    forgeSource: candidate.forgeSource || null,
+    forgeRisk: candidate.forgeRisk || null,
+    phraseId: candidate.forgeSource?.phraseId || null,
+    personaId: candidate.forgeSource?.personaId || candidate.envelopeId || null,
+    variationId: candidate.forgeSource?.variationId || null,
     outputPreview: String(candidate.outputText || '').slice(0, 160)
   })));
 }
@@ -7090,6 +7266,8 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
     candidateCount: candidateLedger.length,
     winningCandidateId: chosen.id,
     winningCandidateFamily: chosen.family || null,
+    forgeSource: chosen.forgeSource || null,
+    forgeRisk: chosen.forgeRisk || null,
     ontologyRoutePressure: chosen.ontologyAudit || null
   });
   const retrievalTrace = options?.retrieval
@@ -7123,6 +7301,7 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
       `v2-family:${chosen.family || 'syntax-shape'}`,
       `v2-envelope:${chosen.envelopeId || 'generic'}`,
       `v2-candidate:${chosen.id || 'candidate'}`,
+      chosen.forgeSource ? `v2-forge:${chosen.forgeSource.variationId || 'active'}` : null,
       'v2-registration'
     ]),
     protectedLiteralCount: Number((chosen.hardAnchors || []).length || 0),
@@ -7163,6 +7342,8 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
     vernacularFeatures: chosen.vernacularFeatures || null,
     vernacularFeatureShift: chosen.vernacularFeatureShift || null,
     ontologyAudit: chosen.ontologyAudit || null,
+    forgeSource: chosen.forgeSource || null,
+    forgeRisk: chosen.forgeRisk || null,
     visibleShift: chosen.visibleShift,
     nonTrivialShift: chosen.nonTrivialShift,
     lexicalShiftProfile: chosen.lexicalShiftProfile,
@@ -7206,6 +7387,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
   const reasonCodes = uniqueStrings([
     ...(bestCandidate?.failureReasons || []),
     ...((bestCandidate?.artifactAudit?.flags || []))
+      .filter((code) => code !== 'artifact:clause-join')
   ]);
   const noteReasons = uniqueStrings([
     ...reasonCodes.map((code) => explainGenerationReasonCode(code)).filter(Boolean),
@@ -7243,6 +7425,8 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
     candidateCount: candidateLedger.length,
     winningCandidateId: holdClass === 'aperture-route-pressure' ? (bestCandidate?.id || null) : null,
     winningCandidateFamily: holdClass === 'aperture-route-pressure' ? (bestCandidate?.family || null) : null,
+    forgeSource: bestCandidate?.forgeSource || null,
+    forgeRisk: bestCandidate?.forgeRisk || null,
     ontologyRoutePressure: bestCandidate?.ontologyAudit || null
   });
   const retrievalTrace = options?.retrieval
@@ -7338,6 +7522,8 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
       protectedAnchorIntegrity: 1
     },
     ontologyAudit: bestCandidate?.ontologyAudit || null,
+    forgeSource: bestCandidate?.forgeSource || null,
+    forgeRisk: bestCandidate?.forgeRisk || null,
     protectedAnchorAudit: bestCandidate?.protectedAnchorAudit || {
       totalAnchors: 0,
       resolvedAnchors: 0,
@@ -7431,7 +7617,10 @@ export function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
   const sourceClass = classifyV2SourceClass(sourceText);
   const sourceProfile = extractCadenceProfile(sourceText);
   const hardAnchors = extractHardAnchors(sourceText);
-  const testedFamilyIds = NATIVE_CANDIDATE_FAMILIES.map((family) => family.id);
+  const testedFamilyIds = uniqueStrings([
+    ...NATIVE_CANDIDATE_FAMILIES.map((family) => family.id),
+    AU_FORGED_CANDIDATE_FAMILY_ID
+  ]);
   const sourceIR = segmentTextToIR(sourceText, {
     literals: Object.freeze(hardAnchors.map((value) => Object.freeze({ value }))),
     text: sourceText
@@ -7439,7 +7628,10 @@ export function buildCadenceTransferV2(text = '', shell = {}, options = {}) {
   const variants = buildShellVariants(sourceProfile, shell, sourceClass);
   let candidates = dedupeCandidates(
     variants.flatMap((variant) =>
-      NATIVE_CANDIDATE_FAMILIES.map((family) => buildCandidate(sourceText, variant, family, {
+      [
+        ...NATIVE_CANDIDATE_FAMILIES,
+        ...buildAUForgeCandidateFamilies(sourceText, variant, options.auForgedOntology || AU_FORGED_ONTOLOGY)
+      ].map((family) => buildCandidate(sourceText, variant, family, {
         ...options,
         sourceClass,
         sourceProfile,

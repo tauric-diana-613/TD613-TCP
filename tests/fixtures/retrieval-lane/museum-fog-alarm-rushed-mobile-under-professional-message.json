@@ -196,7 +196,8 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "front-when",
@@ -213,6 +214,7 @@
         "REHYDRATE_CLIPPED_CLAUSES",
         "CHAIN_CLAUSES_VIA_SUBORDINATOR"
       ],
+      "forgeSource": null,
       "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
     },
@@ -728,6 +730,11 @@
             "routePressure": 0.333
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low, and please stop calling cue \""
       },
       {
@@ -1006,6 +1013,11 @@
             "routePressure": 0.333
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low, and please stop calling cue \"ligh"
       },
       {
@@ -1286,6 +1298,11 @@
             "routePressure": 1
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low, and it is basically a fog bur"
       },
       {
@@ -1564,6 +1581,11 @@
             "routePressure": 0.333
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Gallery 4 fog rig set off detector again at 7:42. Not fire, just too much haze sitting under ceiling head because fan was low, and it is basically a fog burst n"
       },
       {
@@ -1844,6 +1866,11 @@
             "routePressure": 1
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "Gallery 4 fog rig set off detector again at 7:42, and not fire, just too much haze sitting under ceiling head because fan was low, and it is basically a fog bur"
       }
     ],
@@ -1855,6 +1882,8 @@
       "candidateCount": 5,
       "winningCandidateId": "base:clause-pivot",
       "winningCandidateFamily": "clause-pivot",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "rushed-mobile",

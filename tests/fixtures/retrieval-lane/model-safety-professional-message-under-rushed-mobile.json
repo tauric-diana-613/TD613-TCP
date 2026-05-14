@@ -194,7 +194,8 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "COMPRESS_FORMAL_CLAUSES"
@@ -216,6 +217,7 @@
         "DIGIT_SUBSTITUTE",
         "LOWERCASE_INITIALS"
       ],
+      "forgeSource": null,
       "connectorStrategy": "split",
       "contractionStrategy": "contract"
     },
@@ -768,6 +770,11 @@
             "routePressure": 0.088
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "eval team, RS-17 needs cleaner read than \"model safely refused.\" task was 2 generate redacted witness recap, not 2 disclose raw names. and the run had the witne"
       }
     ],
@@ -779,6 +786,8 @@
       "candidateCount": 1,
       "winningCandidateId": "base:syntax-shape",
       "winningCandidateFamily": "syntax-shape",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "professional-message",

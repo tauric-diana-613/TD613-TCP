@@ -87,6 +87,13 @@ function normalizeText(text = '') {
     .replace(/\u2013/g, '-');
 }
 
+function normalizeComparable(text = '') {
+  return normalizeText(String(text || ''))
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function stripTerminalPunctuation(text = '') {
   return text.replace(/[.!?]+$/g, '').trim();
 }
@@ -8605,8 +8612,9 @@ function bestSemanticClauseMatch(sourceClause, outputClauses = []) {
 
 function buildProtectedAnchorAudit(outputText = '', protectedState = { literals: [] }) {
   const literals = protectedState?.literals || [];
+  const comparableOutput = normalizeComparable(outputText);
   const missingAnchors = literals
-    .filter((entry) => !outputText.includes(entry.value))
+    .filter((entry) => !comparableOutput.includes(normalizeComparable(entry.value)))
     .map((entry) => entry.value);
   const resolvedAnchors = literals.length - missingAnchors.length;
   const protectedAnchorIntegrity = literals.length

@@ -220,7 +220,8 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "STRIP_SUBORDINATOR_PREFIX",
@@ -242,6 +243,7 @@
         "DIGIT_SUBSTITUTE",
         "LOWERCASE_INITIALS"
       ],
+      "forgeSource": null,
       "connectorStrategy": "split",
       "contractionStrategy": "contract"
     },
@@ -767,6 +769,11 @@
             "routePressure": 0.088
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "hearing unit, pls correct way the July 3 record is framing the June inspection. counsel kept calling it a \"refusal of entry,\" but notice window was 1:00-5:00 PM"
       }
     ],
@@ -778,6 +785,8 @@
       "candidateCount": 1,
       "winningCandidateId": "base:syntax-shape",
       "winningCandidateFamily": "syntax-shape",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "procedural-record",
         "sourceRegisterLane": "professional-message",

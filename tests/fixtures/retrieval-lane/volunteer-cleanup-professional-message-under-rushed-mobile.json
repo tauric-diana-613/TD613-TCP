@@ -302,7 +302,8 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "front-if",
@@ -326,6 +327,7 @@
         "DIGIT_SUBSTITUTE",
         "LOWERCASE_INITIALS"
       ],
+      "forgeSource": null,
       "connectorStrategy": "front",
       "contractionStrategy": "contract"
     },
@@ -886,6 +888,11 @@
             "routePressure": 0.088
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "team, here is cleanup flow for Saturday so we dont lose first hour 2 improvisation. pls check in at west fence table when you arrive, even if you already know t"
       },
       {
@@ -1172,6 +1179,11 @@
             "routePressure": 0.088
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "team, here is cleanup flow for Saturday so we dont lose first hour 2 improvisation. pls check in at west fence table when you arrive, even if you already know t"
       },
       {
@@ -1464,6 +1476,11 @@
             "routePressure": 0.088
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "team, here is cleanup flow for Saturday so we dont lose first hour 2 improvisation. you already know site, pls check in at the west fence table when you arrive,"
       },
       {
@@ -1756,6 +1773,11 @@
             "routePressure": 0.088
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "team, here is cleanup flow for Saturday so we dont lose first hour 2 improvisation. you already know site, pls check in at the west fence table when you arrive,"
       },
       {
@@ -2045,6 +2067,11 @@
             "routePressure": 0.088
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "team, here is cleanup flow for Saturday so we dont lose first hour 2 improvisation. you already know site, pls check in at the west fence table when you arrive,"
       }
     ],
@@ -2056,6 +2083,8 @@
       "candidateCount": 5,
       "winningCandidateId": "base:order-beat",
       "winningCandidateFamily": "order-beat",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "professional-message",

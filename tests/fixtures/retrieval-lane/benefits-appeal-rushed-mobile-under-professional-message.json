@@ -206,7 +206,8 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "CHAIN_CLAUSES_VIA_SUBORDINATOR",
@@ -228,6 +229,7 @@
         "CHAIN_CLAUSES_VIA_SUBORDINATOR",
         "INSERT_PARENTHETICAL"
       ],
+      "forgeSource": null,
       "connectorStrategy": "cascade",
       "contractionStrategy": "expand"
     },
@@ -762,6 +764,11 @@
             "routePressure": 0.333
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "The practical stakes remain visible. Ba-4427 is not a no-doc case, and mail got kicked back from elm but she already switched to birch shelter address and that "
       },
       {
@@ -1031,6 +1038,11 @@
             "routePressure": 0.088
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "The practical stakes remain visible. Ba-4427 is not a no-doc case. Mail got kicked back from elm but she already switched to birch shelter address and that lett"
       },
       {
@@ -1308,6 +1320,11 @@
             "routePressure": 0.333
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "matron",
+        "variationId": null,
         "outputPreview": "The practical stakes remain visible. Ba-4427 is not a no-doc case. Mail got kicked back from elm but she already switched to birch shelter address and that lett"
       }
     ],
@@ -1319,6 +1336,8 @@
       "candidateCount": 3,
       "winningCandidateId": "base:register-lexicon",
       "winningCandidateFamily": "register-lexicon",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "rushed-mobile",

@@ -228,7 +228,8 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "pivot-contrast",
@@ -252,6 +253,7 @@
         "DIGIT_SUBSTITUTE",
         "LOWERCASE_INITIALS"
       ],
+      "forgeSource": null,
       "connectorStrategy": "split",
       "contractionStrategy": "contract"
     },
@@ -793,6 +795,11 @@
             "routePressure": 1
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "proposed archive grant has three linked deliverables not one big access claim. first, team will finish shared cataloging protocol for neighborhood collections n"
       },
       {
@@ -1068,6 +1075,11 @@
             "routePressure": 1
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "proposed archive grant has three linked deliverables not one big access claim. first, team will finish shared cataloging protocol for neighborhood collections n"
       },
       {
@@ -1351,6 +1363,11 @@
             "routePressure": 1
           }
         },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "spark",
+        "variationId": null,
         "outputPreview": "proposed archive grant has three linked deliverables not one big access claim. first, team will finish shared cataloging protocol for neighborhood collections n"
       }
     ],
@@ -1364,6 +1381,8 @@
       "candidateCount": 3,
       "winningCandidateId": "base:clause-pivot",
       "winningCandidateFamily": "clause-pivot",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "formal-record",

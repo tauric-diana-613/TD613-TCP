@@ -24,12 +24,12 @@
     "sourceRegisterLane": "rushed-mobile",
     "generatorVersion": "v2",
     "semanticAudit": {
-      "propositionCoverage": 1,
+      "propositionCoverage": 0.863,
       "actorCoverage": 1,
-      "actionCoverage": 1,
-      "objectCoverage": 0.958,
-      "polarityMismatches": 0,
-      "tenseMismatches": 0,
+      "actionCoverage": 0.86,
+      "objectCoverage": 0.742,
+      "polarityMismatches": 1,
+      "tenseMismatches": 1,
       "protectedAnchorIntegrity": 1,
       "conjunctionStackCount": 0,
       "repeatedWordBoundaryCount": 0,
@@ -43,32 +43,32 @@
           "objectCoverage": 1,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.08
+          "bagScore": 0.333,
+          "globalBagScore": 0.077
         },
         {
           "sourceClauseId": "s1c0",
-          "matchedClauseId": "s1c0",
-          "propositionCoverage": 1,
+          "matchedClauseId": "s3c0",
+          "propositionCoverage": 0.18000000000000002,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
+          "actionCoverage": 0.16200000000000003,
+          "objectCoverage": 0.2,
+          "polarityMismatch": 1,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.24
+          "bagScore": 0,
+          "globalBagScore": 0.032
         },
         {
           "sourceClauseId": "s2c0",
-          "matchedClauseId": "s1c1",
+          "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
           "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 0.429,
-          "globalBagScore": 0.111
+          "bagScore": 0,
+          "globalBagScore": 0.033
         },
         {
           "sourceClauseId": "s3c0",
@@ -80,31 +80,31 @@
           "polarityMismatch": 0,
           "tenseMismatch": 0,
           "bagScore": 1,
-          "globalBagScore": 0.04
+          "globalBagScore": 0.038
         },
         {
           "sourceClauseId": "s4c0",
-          "matchedClauseId": "s2c0+s2c1",
-          "propositionCoverage": 1,
-          "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 1,
-          "polarityMismatch": 0,
-          "tenseMismatch": 0,
-          "bagScore": 0.857,
-          "globalBagScore": 0.24
-        },
-        {
-          "sourceClauseId": "s5c0",
           "matchedClauseId": "s3c0",
           "propositionCoverage": 1,
           "actorCoverage": 1,
           "actionCoverage": 1,
-          "objectCoverage": 1,
+          "objectCoverage": 0.75,
           "polarityMismatch": 0,
           "tenseMismatch": 0,
-          "bagScore": 1,
-          "globalBagScore": 0.16
+          "bagScore": 0.333,
+          "globalBagScore": 0.103
+        },
+        {
+          "sourceClauseId": "s5c0",
+          "matchedClauseId": "s3c1",
+          "propositionCoverage": 1,
+          "actorCoverage": 1,
+          "actionCoverage": 1,
+          "objectCoverage": 0.75,
+          "polarityMismatch": 0,
+          "tenseMismatch": 1,
+          "bagScore": 0.25,
+          "globalBagScore": 0.071
         }
       ],
       "sourceClauseCount": 6,
@@ -147,12 +147,12 @@
         "exactAnchorCount": 1
       },
       "semanticCoverage": {
-        "propositionCoverage": 1,
+        "propositionCoverage": 0.863,
         "actorCoverage": 1,
-        "actionCoverage": 1,
-        "objectCoverage": 0.958,
-        "polarityMismatches": 0,
-        "tenseMismatches": 0
+        "actionCoverage": 0.86,
+        "objectCoverage": 0.742,
+        "polarityMismatches": 1,
+        "tenseMismatches": 1
       },
       "anchorIntegrity": {
         "protectedAnchorIntegrity": 1,
@@ -162,19 +162,21 @@
       },
       "aperture": {
         "temporalPosture": "synced",
-        "closureClass": "closed",
-        "closureScore": 0.995,
-        "historicalCrease": 0.012,
-        "unfoldingEnergy": 0.014,
+        "closureClass": "drift",
+        "closureScore": 0.797,
+        "historicalCrease": 0.037,
+        "unfoldingEnergy": 0.086,
         "beaconStatus": "beacon-idle",
         "cumulativeNarrowing": 0.255,
         "dominantLoss": "retrieval gating"
       },
       "selectiveAdmissibilityDrift": {
-        "driftClass": "none",
-        "driftReasons": [],
-        "routeFloor": "play",
-        "routePressure": 0.088
+        "driftClass": "watch",
+        "driftReasons": [
+          "closure-class:drift"
+        ],
+        "routeFloor": "warning",
+        "routePressure": 0.333
       }
     },
     "planSummary": {
@@ -214,14 +216,18 @@
         "clause-pivot",
         "persona-lexicon",
         "pressure-current",
-        "hybrid"
+        "hybrid",
+        "au-forged-ontology"
       ],
       "structuralOperationsSelected": [
         "ledger-merge",
         "REHYDRATE_CLIPPED_CLAUSES",
         "CHAIN_CLAUSES_VIA_SUBORDINATOR",
-        "repair:conditional-fragment-join",
-        "STRIP_SUBORDINATOR_PREFIX"
+        "lane:formal-record-polish",
+        "BALANCE_LONG_FORM_SENTENCE_LENGTH",
+        "ontology:reference-door-mapped",
+        "ontology:reference-chronology-anchored",
+        "ontology:reference-policy-deviation"
       ],
       "lexicalRegisterOperationsSelected": [
         "feature:pkg->package",
@@ -229,12 +235,21 @@
         "feature:2nd-fl->second-floor",
         "feature:wasnt->was-not",
         "expanded:slash-list->sentences",
-        "REHYDRATE_CLIPPED_CLAUSES"
+        "REHYDRATE_CLIPPED_CLAUSES",
+        "lane:had-bags-already->carrying-bags",
+        "lane:box-stayed-sealed->box-remained-sealed",
+        "lane:tag-says->tag-stated",
+        "lane:red-rush-sticker->label",
+        "lane:buzzed-her->no-buzzer-call",
+        "lane:sitting-on->left-on",
+        "lane:rail->stair-rail",
+        "lane:hall-table-article"
       ],
       "expectedOperators": [
         "REHYDRATE_CLIPPED_CLAUSES",
         "CHAIN_CLAUSES_VIA_SUBORDINATOR"
       ],
+      "forgeSource": null,
       "connectorStrategy": "ledger",
       "contractionStrategy": "expand"
     },
@@ -247,7 +262,7 @@
         "hybrid"
       ],
       "holdStatus": "landed",
-      "averageToolabilityScore": 0.8632
+      "averageToolabilityScore": 0.8157
     },
     "realizationSummary": {
       "transferClass": "structural",
@@ -256,10 +271,12 @@
       "realizationTier": "lexical-structural",
       "changedDimensions": [
         "sentence-mean",
-        "sentence-count",
         "sentence-spread",
         "punctuation-shape",
         "register-mode",
+        "directness",
+        "abstraction",
+        "abstraction-posture",
         "abbreviation-posture",
         "orthography-posture",
         "lexical-register",
@@ -268,10 +285,12 @@
       ],
       "profileShiftDimensions": [
         "sentence-mean",
-        "sentence-count",
         "sentence-spread",
         "punctuation-shape",
         "register-mode",
+        "directness",
+        "abstraction",
+        "abstraction-posture",
         "abbreviation-posture",
         "orthography-posture",
         "lexical-register"
@@ -301,6 +320,36 @@
           "from": "its",
           "to": "it is",
           "family": "long-form-rehydration"
+        },
+        {
+          "from": "had bags already",
+          "to": "was already carrying bags",
+          "family": "lane"
+        },
+        {
+          "from": "box stayed sealed",
+          "to": "the box remained sealed",
+          "family": "lane"
+        },
+        {
+          "from": "tag says",
+          "to": "the tag stated",
+          "family": "lane"
+        },
+        {
+          "from": "red rush sticker",
+          "to": "the red rush label",
+          "family": "lane"
+        },
+        {
+          "from": "I moved it to hall table",
+          "to": "I moved it to the hallway table outside [LOC_NODE_01]",
+          "family": "lane"
+        },
+        {
+          "from": "2b package was not brought down; the tag",
+          "to": "The 2B package was not brought down to",
+          "family": "surface"
         }
       ],
       "vernacularFeatureShift": {
@@ -438,16 +487,16 @@
           "markers": []
         },
         "chatspeakShorthand": {
-          "active": true,
-          "count": 1,
-          "markers": [
-            "hall-table"
-          ]
-        },
-        "notePosture": {
           "active": false,
           "count": 0,
           "markers": []
+        },
+        "notePosture": {
+          "active": true,
+          "count": 1,
+          "markers": [
+            "slash-list"
+          ]
         },
         "slangMarkers": {
           "active": false,
@@ -460,7 +509,7 @@
           "markers": []
         },
         "activeFamilies": [
-          "chatspeakShorthand"
+          "notePosture"
         ],
         "totalMarkers": 1
       },
@@ -481,10 +530,10 @@
     "donorProgress": {
       "eligible": true,
       "sourceDonorDistance": 4.389,
-      "outputDonorDistance": 1.38,
-      "donorImprovement": 3.009,
-      "donorImprovementRatio": 0.686,
-      "sourceOutputLexicalOverlap": 0.75
+      "outputDonorDistance": 0.815,
+      "donorImprovement": 3.574,
+      "donorImprovementRatio": 0.814,
+      "sourceOutputLexicalOverlap": 0.372
     },
     "candidateLedger": [
       {
@@ -494,26 +543,32 @@
         "status": "selected",
         "sourceRegisterLane": "rushed-mobile",
         "targetRegisterLane": "formal-record",
-        "score": 0.9847,
-        "toolabilityScore": 0.8632,
+        "score": 0.7854,
+        "toolabilityScore": 0.7682,
         "rewriteStrength": 1,
-        "targetFit": 0.7201,
+        "targetFit": 0.8857,
         "movementConfidence": 1,
-        "personaSeparationScore": 0.86,
+        "personaSeparationScore": 0.31,
         "failureReasons": [],
         "artifactFlags": [
-          "artifact:over-braiding"
+          "artifact:semicolon-fracture",
+          "artifact:clause-drag"
         ],
         "toolabilityWarnings": [
-          "artifact:over-braiding"
+          "persona-markers-thin",
+          "persona-convergence:archivist-neutral",
+          "artifact:semicolon-fracture",
+          "artifact:clause-drag"
         ],
         "transferClass": "structural",
         "changedDimensions": [
           "sentence-mean",
-          "sentence-count",
           "sentence-spread",
           "punctuation-shape",
           "register-mode",
+          "directness",
+          "abstraction",
+          "abstraction-posture",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register",
@@ -522,301 +577,17 @@
         ],
         "profileShiftDimensions": [
           "sentence-mean",
-          "sentence-count",
           "sentence-spread",
           "punctuation-shape",
           "register-mode",
+          "directness",
+          "abstraction",
+          "abstraction-posture",
           "abbreviation-posture",
           "orthography-posture",
           "lexical-register"
         ],
-        "lexemeSwapCount": 5,
-        "expectedOperators": [
-          "REHYDRATE_CLIPPED_CLAUSES",
-          "CHAIN_CLAUSES_VIA_SUBORDINATOR"
-        ],
-        "artifactRepairApplied": true,
-        "vernacularFeatures": {
-          "source": {
-            "registerLane": "rushed-mobile",
-            "sourceClass": "formal-correspondence",
-            "orthographyNoise": {
-              "active": true,
-              "count": 5,
-              "markers": [
-                "lowercase-sentence-start",
-                "lowercase-i",
-                "standalone-lowercase-i",
-                "apostrophe-drop",
-                "profile-orthographic-looseness"
-              ]
-            },
-            "chatspeakShorthand": {
-              "active": true,
-              "count": 6,
-              "markers": [
-                "pkg",
-                "mgmt",
-                "fl",
-                "hall-table",
-                "blip:fl",
-                "profile-abbreviation-density"
-              ]
-            },
-            "notePosture": {
-              "active": true,
-              "count": 2,
-              "markers": [
-                "slash-list",
-                "colon-note"
-              ]
-            },
-            "slangMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
-            },
-            "vernacularMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
-            },
-            "activeFamilies": [
-              "orthographyNoise",
-              "chatspeakShorthand",
-              "notePosture"
-            ],
-            "totalMarkers": 13
-          },
-          "donor": {
-            "registerLane": "formal-record",
-            "sourceClass": "formal-correspondence",
-            "orthographyNoise": {
-              "active": false,
-              "count": 0,
-              "markers": []
-            },
-            "chatspeakShorthand": {
-              "active": true,
-              "count": 2,
-              "markers": [
-                "pm-pretty-much",
-                "blip:pm"
-              ]
-            },
-            "notePosture": {
-              "active": true,
-              "count": 1,
-              "markers": [
-                "slash-list"
-              ]
-            },
-            "slangMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
-            },
-            "vernacularMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
-            },
-            "activeFamilies": [
-              "chatspeakShorthand",
-              "notePosture"
-            ],
-            "totalMarkers": 3
-          },
-          "output": {
-            "registerLane": "formal-record",
-            "sourceClass": "formal-correspondence",
-            "orthographyNoise": {
-              "active": false,
-              "count": 0,
-              "markers": []
-            },
-            "chatspeakShorthand": {
-              "active": true,
-              "count": 1,
-              "markers": [
-                "hall-table"
-              ]
-            },
-            "notePosture": {
-              "active": false,
-              "count": 0,
-              "markers": []
-            },
-            "slangMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
-            },
-            "vernacularMarkers": {
-              "active": false,
-              "count": 0,
-              "markers": []
-            },
-            "activeFamilies": [
-              "chatspeakShorthand"
-            ],
-            "totalMarkers": 1
-          },
-          "pressure": {
-            "targetRegisterLane": "formal-record",
-            "activeFamilies": [
-              "orthographyNoise",
-              "chatspeakShorthand",
-              "notePosture"
-            ],
-            "orthographyNoise": true,
-            "chatspeakShorthand": true,
-            "notePosture": true,
-            "slangMarkers": false,
-            "vernacularMarkers": false
-          }
-        },
-        "vernacularFeatureShift": {
-          "targetRegisterLane": "formal-record",
-          "orthographyShift": true,
-          "shorthandShift": true,
-          "notePostureShift": true,
-          "slangShift": false,
-          "vernacularShift": false,
-          "realizedFamilies": [
-            "orthographyNoise",
-            "chatspeakShorthand",
-            "notePosture"
-          ],
-          "realizedFamilyCount": 3,
-          "falseCleanFamilies": [],
-          "falseDirtyFamilies": [],
-          "donorFeatureAdherence": 1,
-          "concealmentEffectiveness": 0.9231,
-          "surfaceMarkerCount": 1,
-          "pressure": {
-            "targetRegisterLane": "formal-record",
-            "activeFamilies": [
-              "orthographyNoise",
-              "chatspeakShorthand",
-              "notePosture"
-            ],
-            "orthographyNoise": true,
-            "chatspeakShorthand": true,
-            "notePosture": true,
-            "slangMarkers": false,
-            "vernacularMarkers": false
-          }
-        },
-        "ontologyAudit": {
-          "sourceClass": "formal-correspondence",
-          "sourceRegisterLane": "rushed-mobile",
-          "targetOntology": "institutional",
-          "relationInventory": {
-            "sourceClass": "formal-correspondence",
-            "sourceRegisterLane": "rushed-mobile",
-            "sourceRegisterLaneInference": "explicit",
-            "sourceRegisterLaneFallback": false,
-            "discourseOntology": {
-              "primaryMove": "record-correction",
-              "targetOntology": "institutional",
-              "sourceRegisterLane": "rushed-mobile",
-              "targetRegisterLane": "formal-record",
-              "needsDiscourseScaffold": true,
-              "sourceSignals": [
-                "record-correction",
-                "clipped-source"
-              ],
-              "donorSignals": [
-                "contrastive-reframe",
-                "procedural-distinction"
-              ],
-              "scaffoldRole": "bridge source facts into target evidentiary relation"
-            },
-            "paragraphCount": 1,
-            "sentenceCount": 6,
-            "clauseCount": 6,
-            "exactAnchorCount": 1
-          },
-          "semanticCoverage": {
-            "propositionCoverage": 1,
-            "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.958,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
-          },
-          "anchorIntegrity": {
-            "protectedAnchorIntegrity": 1,
-            "totalAnchors": 1,
-            "resolvedAnchors": 1,
-            "missingAnchors": 0
-          },
-          "aperture": {
-            "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.995,
-            "historicalCrease": 0.012,
-            "unfoldingEnergy": 0.014,
-            "beaconStatus": "beacon-idle",
-            "cumulativeNarrowing": 0.255,
-            "dominantLoss": "retrieval gating"
-          },
-          "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
-          }
-        },
-        "outputPreview": "2b package was not brought down. Tag says attempted 6:41 but no one buzzed her, and it was just sitting on second-floor landing by rail. Red rush sticker still "
-      },
-      {
-        "id": "base:hybrid",
-        "family": "hybrid",
-        "envelopeId": "archivist",
-        "status": "eligible",
-        "sourceRegisterLane": "rushed-mobile",
-        "targetRegisterLane": "formal-record",
-        "score": 0.9975,
-        "toolabilityScore": 0.8632,
-        "rewriteStrength": 1,
-        "targetFit": 0.7164,
-        "movementConfidence": 1,
-        "personaSeparationScore": 0.86,
-        "failureReasons": [],
-        "artifactFlags": [
-          "artifact:over-braiding",
-          "artifact:clause-join"
-        ],
-        "toolabilityWarnings": [
-          "artifact:over-braiding",
-          "artifact:clause-join"
-        ],
-        "transferClass": "structural",
-        "changedDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "punctuation-shape",
-          "register-mode",
-          "abbreviation-posture",
-          "orthography-posture",
-          "lexical-register",
-          "surface-marker-posture",
-          "fragment-posture"
-        ],
-        "profileShiftDimensions": [
-          "sentence-mean",
-          "sentence-count",
-          "sentence-spread",
-          "punctuation-shape",
-          "register-mode",
-          "abbreviation-posture",
-          "orthography-posture",
-          "lexical-register"
-        ],
-        "lexemeSwapCount": 5,
+        "lexemeSwapCount": 11,
         "expectedOperators": [
           "REHYDRATE_CLIPPED_CLAUSES",
           "CHAIN_CLAUSES_VIA_SUBORDINATOR"
@@ -922,16 +693,16 @@
               "markers": []
             },
             "chatspeakShorthand": {
-              "active": true,
-              "count": 1,
-              "markers": [
-                "hall-table"
-              ]
-            },
-            "notePosture": {
               "active": false,
               "count": 0,
               "markers": []
+            },
+            "notePosture": {
+              "active": true,
+              "count": 1,
+              "markers": [
+                "slash-list"
+              ]
             },
             "slangMarkers": {
               "active": false,
@@ -944,7 +715,7 @@
               "markers": []
             },
             "activeFamilies": [
-              "chatspeakShorthand"
+              "notePosture"
             ],
             "totalMarkers": 1
           },
@@ -1025,12 +796,12 @@
             "exactAnchorCount": 1
           },
           "semanticCoverage": {
-            "propositionCoverage": 1,
+            "propositionCoverage": 0.863,
             "actorCoverage": 1,
-            "actionCoverage": 1,
-            "objectCoverage": 0.917,
-            "polarityMismatches": 0,
-            "tenseMismatches": 0
+            "actionCoverage": 0.86,
+            "objectCoverage": 0.742,
+            "polarityMismatches": 1,
+            "tenseMismatches": 1
           },
           "anchorIntegrity": {
             "protectedAnchorIntegrity": 1,
@@ -1040,32 +811,338 @@
           },
           "aperture": {
             "temporalPosture": "synced",
-            "closureClass": "closed",
-            "closureScore": 0.99,
-            "historicalCrease": 0.013,
-            "unfoldingEnergy": 0.015,
+            "closureClass": "drift",
+            "closureScore": 0.797,
+            "historicalCrease": 0.037,
+            "unfoldingEnergy": 0.086,
             "beaconStatus": "beacon-idle",
             "cumulativeNarrowing": 0.255,
             "dominantLoss": "retrieval gating"
           },
           "selectiveAdmissibilityDrift": {
-            "driftClass": "none",
-            "driftReasons": [],
-            "routeFloor": "play",
-            "routePressure": 0.088
+            "driftClass": "watch",
+            "driftReasons": [
+              "closure-class:drift"
+            ],
+            "routeFloor": "warning",
+            "routePressure": 0.333
           }
         },
-        "outputPreview": "2b package was not brought down. Tag says attempted 6:41 but no one buzzed her, and it was just sitting on second-floor landing by rail. Red rush sticker still "
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "archivist",
+        "variationId": null,
+        "outputPreview": "The 2B package was not brought down to the apartment door for signature.. The carrier tag stated \"attempted / no answer\" at 6:41 but no buzzer call was placed t"
+      },
+      {
+        "id": "base:hybrid",
+        "family": "hybrid",
+        "envelopeId": "archivist",
+        "status": "eligible",
+        "sourceRegisterLane": "rushed-mobile",
+        "targetRegisterLane": "formal-record",
+        "score": 0.7621,
+        "toolabilityScore": 0.8632,
+        "rewriteStrength": 1,
+        "targetFit": 0.8983,
+        "movementConfidence": 1,
+        "personaSeparationScore": 0.86,
+        "failureReasons": [],
+        "artifactFlags": [
+          "artifact:clause-join",
+          "artifact:clause-drag"
+        ],
+        "toolabilityWarnings": [
+          "artifact:clause-join",
+          "artifact:clause-drag"
+        ],
+        "transferClass": "structural",
+        "changedDimensions": [
+          "sentence-mean",
+          "sentence-spread",
+          "punctuation-shape",
+          "register-mode",
+          "directness",
+          "abstraction",
+          "abstraction-posture",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register",
+          "surface-marker-posture",
+          "fragment-posture"
+        ],
+        "profileShiftDimensions": [
+          "sentence-mean",
+          "sentence-spread",
+          "punctuation-shape",
+          "register-mode",
+          "directness",
+          "abstraction",
+          "abstraction-posture",
+          "abbreviation-posture",
+          "orthography-posture",
+          "lexical-register"
+        ],
+        "lexemeSwapCount": 11,
+        "expectedOperators": [
+          "REHYDRATE_CLIPPED_CLAUSES",
+          "CHAIN_CLAUSES_VIA_SUBORDINATOR"
+        ],
+        "artifactRepairApplied": false,
+        "vernacularFeatures": {
+          "source": {
+            "registerLane": "rushed-mobile",
+            "sourceClass": "formal-correspondence",
+            "orthographyNoise": {
+              "active": true,
+              "count": 5,
+              "markers": [
+                "lowercase-sentence-start",
+                "lowercase-i",
+                "standalone-lowercase-i",
+                "apostrophe-drop",
+                "profile-orthographic-looseness"
+              ]
+            },
+            "chatspeakShorthand": {
+              "active": true,
+              "count": 6,
+              "markers": [
+                "pkg",
+                "mgmt",
+                "fl",
+                "hall-table",
+                "blip:fl",
+                "profile-abbreviation-density"
+              ]
+            },
+            "notePosture": {
+              "active": true,
+              "count": 2,
+              "markers": [
+                "slash-list",
+                "colon-note"
+              ]
+            },
+            "slangMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "vernacularMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "activeFamilies": [
+              "orthographyNoise",
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "totalMarkers": 13
+          },
+          "donor": {
+            "registerLane": "formal-record",
+            "sourceClass": "formal-correspondence",
+            "orthographyNoise": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "chatspeakShorthand": {
+              "active": true,
+              "count": 2,
+              "markers": [
+                "pm-pretty-much",
+                "blip:pm"
+              ]
+            },
+            "notePosture": {
+              "active": true,
+              "count": 1,
+              "markers": [
+                "slash-list"
+              ]
+            },
+            "slangMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "vernacularMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "activeFamilies": [
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "totalMarkers": 3
+          },
+          "output": {
+            "registerLane": "formal-record",
+            "sourceClass": "formal-correspondence",
+            "orthographyNoise": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "chatspeakShorthand": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "notePosture": {
+              "active": true,
+              "count": 1,
+              "markers": [
+                "slash-list"
+              ]
+            },
+            "slangMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "vernacularMarkers": {
+              "active": false,
+              "count": 0,
+              "markers": []
+            },
+            "activeFamilies": [
+              "notePosture"
+            ],
+            "totalMarkers": 1
+          },
+          "pressure": {
+            "targetRegisterLane": "formal-record",
+            "activeFamilies": [
+              "orthographyNoise",
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "orthographyNoise": true,
+            "chatspeakShorthand": true,
+            "notePosture": true,
+            "slangMarkers": false,
+            "vernacularMarkers": false
+          }
+        },
+        "vernacularFeatureShift": {
+          "targetRegisterLane": "formal-record",
+          "orthographyShift": true,
+          "shorthandShift": true,
+          "notePostureShift": true,
+          "slangShift": false,
+          "vernacularShift": false,
+          "realizedFamilies": [
+            "orthographyNoise",
+            "chatspeakShorthand",
+            "notePosture"
+          ],
+          "realizedFamilyCount": 3,
+          "falseCleanFamilies": [],
+          "falseDirtyFamilies": [],
+          "donorFeatureAdherence": 1,
+          "concealmentEffectiveness": 0.9231,
+          "surfaceMarkerCount": 1,
+          "pressure": {
+            "targetRegisterLane": "formal-record",
+            "activeFamilies": [
+              "orthographyNoise",
+              "chatspeakShorthand",
+              "notePosture"
+            ],
+            "orthographyNoise": true,
+            "chatspeakShorthand": true,
+            "notePosture": true,
+            "slangMarkers": false,
+            "vernacularMarkers": false
+          }
+        },
+        "ontologyAudit": {
+          "sourceClass": "formal-correspondence",
+          "sourceRegisterLane": "rushed-mobile",
+          "targetOntology": "institutional",
+          "relationInventory": {
+            "sourceClass": "formal-correspondence",
+            "sourceRegisterLane": "rushed-mobile",
+            "sourceRegisterLaneInference": "explicit",
+            "sourceRegisterLaneFallback": false,
+            "discourseOntology": {
+              "primaryMove": "record-correction",
+              "targetOntology": "institutional",
+              "sourceRegisterLane": "rushed-mobile",
+              "targetRegisterLane": "formal-record",
+              "needsDiscourseScaffold": true,
+              "sourceSignals": [
+                "record-correction",
+                "clipped-source"
+              ],
+              "donorSignals": [
+                "contrastive-reframe",
+                "procedural-distinction"
+              ],
+              "scaffoldRole": "bridge source facts into target evidentiary relation"
+            },
+            "paragraphCount": 1,
+            "sentenceCount": 6,
+            "clauseCount": 6,
+            "exactAnchorCount": 1
+          },
+          "semanticCoverage": {
+            "propositionCoverage": 0.863,
+            "actorCoverage": 1,
+            "actionCoverage": 0.86,
+            "objectCoverage": 0.742,
+            "polarityMismatches": 1,
+            "tenseMismatches": 2
+          },
+          "anchorIntegrity": {
+            "protectedAnchorIntegrity": 1,
+            "totalAnchors": 1,
+            "resolvedAnchors": 1,
+            "missingAnchors": 0
+          },
+          "aperture": {
+            "temporalPosture": "synced",
+            "closureClass": "drift",
+            "closureScore": 0.757,
+            "historicalCrease": 0.054,
+            "unfoldingEnergy": 0.105,
+            "beaconStatus": "beacon-idle",
+            "cumulativeNarrowing": 0.255,
+            "dominantLoss": "retrieval gating"
+          },
+          "selectiveAdmissibilityDrift": {
+            "driftClass": "watch",
+            "driftReasons": [
+              "closure-class:drift"
+            ],
+            "routeFloor": "warning",
+            "routePressure": 0.333
+          }
+        },
+        "forgeSource": null,
+        "forgeRisk": null,
+        "phraseId": null,
+        "personaId": "archivist",
+        "variationId": null,
+        "outputPreview": "The 2B package was not brought down to the apartment door for signature.. The carrier tag stated \"attempted / no answer\" at 6:41 but no buzzer call was placed t"
       }
     ],
     "generationDocket": {
       "status": "landed",
       "holdClass": null,
-      "headline": "Generator V2 landed a structural registered rewrite.",
+      "headline": "Generator V2 landed under Aperture warning pressure.",
       "reasons": [],
       "candidateCount": 2,
       "winningCandidateId": "base:syntax-shape",
       "winningCandidateFamily": "syntax-shape",
+      "forgeSource": null,
+      "forgeRisk": null,
       "ontologyRoutePressure": {
         "sourceClass": "formal-correspondence",
         "sourceRegisterLane": "rushed-mobile",
@@ -1097,12 +1174,12 @@
           "exactAnchorCount": 1
         },
         "semanticCoverage": {
-          "propositionCoverage": 1,
+          "propositionCoverage": 0.863,
           "actorCoverage": 1,
-          "actionCoverage": 1,
-          "objectCoverage": 0.958,
-          "polarityMismatches": 0,
-          "tenseMismatches": 0
+          "actionCoverage": 0.86,
+          "objectCoverage": 0.742,
+          "polarityMismatches": 1,
+          "tenseMismatches": 1
         },
         "anchorIntegrity": {
           "protectedAnchorIntegrity": 1,
@@ -1112,19 +1189,21 @@
         },
         "aperture": {
           "temporalPosture": "synced",
-          "closureClass": "closed",
-          "closureScore": 0.995,
-          "historicalCrease": 0.012,
-          "unfoldingEnergy": 0.014,
+          "closureClass": "drift",
+          "closureScore": 0.797,
+          "historicalCrease": 0.037,
+          "unfoldingEnergy": 0.086,
           "beaconStatus": "beacon-idle",
           "cumulativeNarrowing": 0.255,
           "dominantLoss": "retrieval gating"
         },
         "selectiveAdmissibilityDrift": {
-          "driftClass": "none",
-          "driftReasons": [],
-          "routeFloor": "play",
-          "routePressure": 0.088
+          "driftClass": "watch",
+          "driftReasons": [
+            "closure-class:drift"
+          ],
+          "routeFloor": "warning",
+          "routePressure": 0.333
         }
       }
     },
@@ -1135,19 +1214,22 @@
     "realizationTier": "lexical-structural",
     "changedDimensions": [
       "abbreviation-posture",
+      "abstraction",
+      "abstraction-posture",
+      "directness",
       "fragment-posture",
       "lexical-register",
       "orthography-posture",
       "punctuation-shape",
       "register-mode",
-      "sentence-count",
       "sentence-mean",
       "sentence-spread",
       "surface-marker-posture"
     ],
     "lexemeSwapFamilies": [
       "feature",
-      "long-form-rehydration"
+      "long-form-rehydration",
+      "surface"
     ],
     "relationInventory": [
       "clauseCount:6",
@@ -1157,11 +1239,13 @@
       "sourceClass:formal-correspondence"
     ],
     "structuralOperations": [
+      "BALANCE_LONG_FORM_SENTENCE_LENGTH",
       "CHAIN_CLAUSES_VIA_SUBORDINATOR",
       "ledger-merge",
-      "REHYDRATE_CLIPPED_CLAUSES",
-      "repair:conditional-fragment-join",
-      "STRIP_SUBORDINATOR_PREFIX"
+      "ontology:reference-chronology-anchored",
+      "ontology:reference-door-mapped",
+      "ontology:reference-policy-deviation",
+      "REHYDRATE_CLIPPED_CLAUSES"
     ],
     "lexicalOperations": [
       "expanded:slash-list->sentences",
@@ -1173,12 +1257,12 @@
     ],
     "connectorStrategy": "ledger",
     "contractionStrategy": "expand",
-    "propositionCoverage": 1,
+    "propositionCoverage": 0.863,
     "actorCoverage": 1,
-    "actionCoverage": 1,
-    "objectCoverage": 0.958,
-    "polarityMismatches": 0,
-    "tenseMismatches": 0,
+    "actionCoverage": 0.86,
+    "objectCoverage": 0.742,
+    "polarityMismatches": 1,
+    "tenseMismatches": 1,
     "protectedAnchorIntegrity": 1
   }
 }
