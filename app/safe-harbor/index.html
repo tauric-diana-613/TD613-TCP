@@ -260,6 +260,10 @@
               </div>
               <h2>Renderer key and render proof</h2>
               <p class="surface-copy">The renderer userscript is the operator handshake key. Once it is active, the operator can save the SVG at the helper timestamp and route the artifact through one of the four original TD613 probes.</p>
+              <div class="dynamic-row">
+                <button class="control" id="injectDynamicLane" type="button">Inject Dynamic Lane</button>
+                <span class="mini-note">When the renderer key is active, save the appended SVG at the helper timestamp and pair it with the correct probe lane.</span>
+              </div>
               <div class="proof-stack">
                 <div class="proof-row"><span class="proof-label">Userscript key</span><span class="proof-value" id="rendererKeyReadout">10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js</span></div>
                 <div class="proof-row"><span class="proof-label">Handshake state</span><span class="proof-value" id="rendererHandshakeReadout">install renderer key</span></div>
@@ -288,10 +292,6 @@
                   <textarea id="probeOutput" class="code-area" readonly></textarea>
                   <div class="note">01 and 02 stay black-box and footer-first. 03 and 04 are render-proof lanes: install the renderer key, save the SVG at the helper timestamp, then send the generated output with packet context and the compact footer. Every probe output carries the SHI # so packet, probe, renderer, and LLM lanes stay bound.</div>
                 </details>
-              </div>
-              <div class="dynamic-row">
-                <button class="control" id="injectDynamicLane" type="button">Inject Dynamic Lane</button>
-                <span class="mini-note">When the renderer key is active, save the appended SVG at the helper timestamp and pair it with the correct probe lane.</span>
               </div>
               <div class="dynamic-target" id="dynamicTarget"></div>
             </article>
@@ -329,9 +329,9 @@
                   <div class="metric-row"><span class="label">Authority ceiling</span><span class="value" id="forensicAuthorityReadout">pending</span></div>
                   <div class="metric-row"><span class="label">Gap / dominant operator</span><span class="value" id="forensicOperatorReadout">pending</span></div>
                 </div>
-                <p class="note">Below is the forensic schema preview for the staged packet. Press Copy to send the full schema JSON to your clipboard for handoff or audit.</p>
+                <p class="note">Below is the forensic schema preview for the staged packet. Once sealed, Copy mirrors the exact Export packet JSON to your clipboard for handoff or audit.</p>
                 <div class="dock-toolbar">
-                  <button class="control secondary" id="copyForensicSchemaPreview" type="button">Copy</button>
+                  <button class="control secondary" id="copyForensicSchemaPreview" type="button" disabled>Copy</button>
                   <button class="control secondary" id="exportPacketPreview" type="button" disabled>Export</button>
                   <button class="control secondary" id="resetStagedPacket" type="button" disabled>Reset</button>
                 </div>

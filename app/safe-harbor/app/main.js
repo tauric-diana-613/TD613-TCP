@@ -478,7 +478,10 @@
     dom.copyExtendedFooter.addEventListener('click', () => void copyText(dom.extendedFooterPreview.textContent || ''));
     dom.copyProbeOutput.addEventListener('click', () => void copyText(dom.probeOutput.value || ''));
     dom.copyPacketPreview.addEventListener('click', () => void copyText(dom.packetPreview.textContent || ''));
-    dom.copyForensicSchemaPreview.addEventListener('click', () => void copyText(dom.forensicSchemaPreview.textContent || ''));
+    dom.copyForensicSchemaPreview.addEventListener('click', () => {
+      if (!packetIsSealed()) return;
+      void copyText(packetExportJsonString());
+    });
     dom.exportPacketPreview.addEventListener('click', () => {
       if (!packetIsSealed()) return;
       downloadJsonArtifact(packetExportFilename(), state.packet);
@@ -1249,6 +1252,7 @@
         : 'Mint Staged Packet is the SHI moment. Once the entrant triad is ready, that action issues the SHI # immediately; Seal Payload remains the detached-signature and artifact-seal lane.';
       dom.covenantExport.disabled = true;
       if (dom.resetStagedPacket) dom.resetStagedPacket.disabled = true;
+      if (dom.copyForensicSchemaPreview) dom.copyForensicSchemaPreview.disabled = true;
       if (dom.exportPacketPreview) dom.exportPacketPreview.disabled = true;
       if (dom.forgeBatch) { dom.forgeBatch.hidden = true; dom.forgeBatch.disabled = true; }
       return;
@@ -1316,6 +1320,7 @@
       state.packet.bridge.export_gate &&
       state.packet.bridge.export_gate.ready
     );
+    if (dom.copyForensicSchemaPreview) dom.copyForensicSchemaPreview.disabled = !exportReady;
     if (dom.exportPacketPreview) dom.exportPacketPreview.disabled = !exportReady;
     if (dom.forgeBatch) {
       const showForgeBatch = Boolean(
@@ -2644,8 +2649,12 @@
     return `td613-packet${batchPart}-${stage}${shi}-${ts}.json`;
   }
 
+  function packetExportJsonString() {
+    return state.packet ? JSON.stringify(state.packet, null, 2) + '\n' : '';
+  }
+
   function downloadJsonArtifact(filename, value) {
-    const blob = new Blob([JSON.stringify(value, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
+    const blob = new Blob([value === state.packet ? packetExportJsonString() : JSON.stringify(value, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
     const href = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = href;

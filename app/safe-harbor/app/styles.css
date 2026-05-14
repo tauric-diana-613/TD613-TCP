@@ -3118,13 +3118,14 @@ body[data-thermal="fermata"] .ingress-ring-c {
 }
 body[data-thermal="hot"] .reliquary-card::before,
 body[data-thermal="fermata"] .reliquary-card::before {
-  animation: alien-capture-scan 1400ms ease-out;
+  animation: none;
 }
 
 /* SHI mint value — base halo when the value is just held in recall, full
    triple-layer pulse once an SHI is actually minted. */
 .mint-value[data-state="minted"] {
-  animation: core-pulse 4.2s ease-in-out infinite;
+  animation: none;
+  box-shadow: var(--halo-cyan-rest);
   border-radius: var(--radius-sm);
   padding: 6px 10px;
 }
@@ -3191,7 +3192,8 @@ body[data-thermal="fermata"] .control:not([data-state="sealed"]):not(#covenantEx
   opacity: 0.72;
 }
 body[data-thermal="fermata"] .reliquary-card .mint-value[data-state="minted"] {
-  animation: ritual-flicker 800ms ease, core-pulse 4.2s ease-in-out infinite 800ms;
+  animation: none;
+  box-shadow: var(--halo-cyan-rest);
 }
 
 /* Reduced-motion guard — kinetic motion suppressed; static color states and
