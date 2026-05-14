@@ -1,121 +1,2288 @@
 {
-  "principal": "tauric.diana.613",
-  "generated_at": "2025-10-18T01:19:02.441287Z",
-  "corpus_hash_sha256": "BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88",
-  "short_code": "X6ZNK5NO51",
-  "short_code_scheme": "CrockfordBase32(8)+mod97(2)",
-  "leaves": [
+  "manifest_generated_at": "2026-05-14T22:59:41.798Z",
+  "total_batches": 15,
+  "total_nodes": 62,
+  "batches": [
     {
-      "name": "binding_event_envelope.json",
-      "sha256": "ae25c3aa50ad50ab94ab8ebe50d518c73d3663ba4c016fef41b770e6d5f9f8a7",
-      "size": 3987
+      "batch_id": "batch-001a",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Migration Console Family",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 1A live clean console family",
+      "family_metadata": {
+        "name": "Migration Console Family",
+        "description": "Live clean console root, inclusive intake family, lineage binding, no-dedup rule, clean operational modules, and implementation-side migration bridge material",
+        "priority_level": "Immediate",
+        "protection_level": "Protected Core",
+        "target_repo_path": "03_rules/migration_console",
+        "restore_order": "1",
+        "export_status": "Ready for Export",
+        "notes": "Wave 1A"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-001a",
+        "sealed_at": "2026-04-24T21:46:14.144Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Operator",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nV79AOhsV5Kd3V5remtMD102Eq+OIWm0=\n=Kr9Y\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260424T214334-005f9cdc",
+          "receipt_id": "SHR-20260424T214334-005f9cdc",
+          "packet_hash_sha256": "sha256:ab4923fae87983995878ef952bbf32e4418acb0f2c8b7addcc5020fa8a95e59b",
+          "created_at": "2026-04-24T21:43:34Z"
+        }
+      }
     },
     {
-      "name": "binding_event_receipt.json",
-      "sha256": "3ab2a184fde86a35969825613435ac418f307beb7ff4f03b8bfcd753f64b6826",
-      "size": 275
+      "batch_id": "batch-001b",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Archive / Historical Console Lineage",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 1B quarantined/original console lineage",
+      "family_metadata": {
+        "name": "Archive / Historical Console Lineage",
+        "description": "Quarantined/original console ancestors, original route/menu/nav lineage, pre-build console family, and preserved historical console traces",
+        "priority_level": "Immediate",
+        "protection_level": "Archive / Historical",
+        "target_repo_path": "09_logs/console_lineage",
+        "restore_order": "2",
+        "export_status": "Ready for Export",
+        "notes": "Wave 1B"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-001b",
+        "sealed_at": "2026-04-25T00:54:09.552Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Operator",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nIxhRy/X/A3bzGe0Gjoeu\n=TITb\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260425T005154-8582eda8",
+          "receipt_id": "SHR-20260425T005154-8582eda8",
+          "packet_hash_sha256": "sha256:74572f8fd70ae206968d18e502830351b20bcbd14216033ab279aaf212edec8c",
+          "created_at": "2026-04-25T00:51:54Z"
+        }
+      }
     },
     {
-      "name": "binding_event_text.txt",
-      "sha256": "9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",
-      "size": 3085
+      "batch_id": "batch-001c",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Constitutional Spine",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 1C founding constitutional docs",
+      "family_metadata": {
+        "name": "Constitutional Spine",
+        "description": "Founding constitutional and survivability docs that govern migration and restoration",
+        "priority_level": "Immediate",
+        "protection_level": "Cold Canonical",
+        "target_repo_path": "00_constitution",
+        "restore_order": "3",
+        "export_status": "Ready for Export",
+        "notes": "Wave 1C"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-001c",
+        "sealed_at": "2026-04-25T01:10:16.400Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Operator",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nS2i2K/c8WA9aEmbo6nZnov2Z\n=bzWO\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260425T010521-16416527",
+          "receipt_id": "SHR-20260425T010521-16416527",
+          "packet_hash_sha256": "sha256:e81a72b420f606917979497e277bf429f781e4615327c0790ae39238d1a42e08",
+          "created_at": "2026-04-25T01:05:21Z"
+        }
+      }
     },
     {
-      "name": "td_signed_payloads_bundle.json",
-      "sha256": "b9bb3f4b993ae7de7eae4b5781200f55803166d861296a5071edeb0654466fdd",
-      "size": 5355
+      "batch_id": "batch-001d",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Protected Core Set A",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 1D protected core seed",
+      "family_metadata": {
+        "name": "Protected Core Set A",
+        "description": "Protected anti-capture and core preservation infrastructure",
+        "priority_level": "Immediate",
+        "protection_level": "Cold Canonical",
+        "target_repo_path": "01_protected_core/protected_core_set_a",
+        "restore_order": "4",
+        "export_status": "Ready for Export",
+        "notes": "Wave 1D"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-001d",
+        "sealed_at": "2026-04-25T01:11:15.828Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Operator",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nS2i2K/c8WA9aEmbo6nZnov2Z\n=bzWO\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260425T011036-634f6b17",
+          "receipt_id": "SHR-20260425T011036-634f6b17",
+          "packet_hash_sha256": "sha256:4920ac0efead2749482d0dd4fb283a7df3f368051d2fb1a5b238d9b10bae8005",
+          "created_at": "2026-04-25T01:10:36Z"
+        }
+      }
     },
     {
-      "name": "tauric-diana-intake/batch-001a_migration_console.json",
-      "size": 7406,
-      "route_status": "buffered"
+      "batch_id": "batch-002a",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Thinkers Spine",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 2A thinkers + root architecture",
+      "family_metadata": {
+        "name": "Thinkers Spine",
+        "description": "Thinkers root, Field-Tech of Legibility, and interpretive lineage anchors",
+        "priority_level": "High",
+        "protection_level": "Protected Core",
+        "target_repo_path": "02_thinkers_spine",
+        "restore_order": "5",
+        "export_status": "Ready for Export",
+        "notes": "Wave 2A"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-002a",
+        "sealed_at": "2026-04-24T21:50:10.555Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Archivist",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 2 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nNHQr19NhCN03Qq6vSk66OHsIAAf1OR8=\n=yN9B\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260424T214719-1a7823fb",
+          "receipt_id": "SHR-20260424T214719-1a7823fb",
+          "packet_hash_sha256": "sha256:3572165d3a852dce9ea202389f65ef7599399e710c15dc636a49e9e25ad1d6cd",
+          "created_at": "2026-04-24T21:47:19Z"
+        }
+      }
     },
     {
-      "name": "tauric-diana-intake/batch-001b_historical_console_lineage.json",
-      "size": 7166,
-      "route_status": "buffered"
+      "batch_id": "batch-002b",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Continuity and Citation Adjuncts",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 2B continuity + citation lineage, including quarantined and clean",
+      "family_metadata": {
+        "name": "Continuity and Citation Adjuncts",
+        "description": "Continuity lattice and citation-spine lineage, including quarantined and clean counterparts",
+        "priority_level": "High",
+        "protection_level": "Protected Core",
+        "target_repo_path": "04_clusters/continuity_citation",
+        "restore_order": "6",
+        "export_status": "Ready for Export",
+        "notes": "Wave 2B"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-002b",
+        "sealed_at": "2026-04-25T01:12:20.609Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Archivist",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nS2i2K/c8WA9aEmbo6nZnov2Z\n=bzWO\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260425T011202-9fdc0fb6",
+          "receipt_id": "SHR-20260425T011202-9fdc0fb6",
+          "packet_hash_sha256": "sha256:3a002f2a073b1d4f92baed2c49c2d8b0c433b998adfc745cff037c0c8e7e7257",
+          "created_at": "2026-04-25T01:12:02Z"
+        }
+      }
     },
     {
-      "name": "tauric-diana-intake/batch-001c_constitutional_spine.json",
-      "size": 3148,
-      "route_status": "buffered"
+      "batch_id": "batch-002c",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Policy and Provenance Layer",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 2C policy, export contract, readiness, provenance",
+      "family_metadata": {
+        "name": "Policy and Provenance Layer",
+        "description": "Protection hierarchy, lineage policy, governance bridge, export contract, readiness threshold, and authoritative provenance archive",
+        "priority_level": "High",
+        "protection_level": "Cold Canonical",
+        "target_repo_path": "03_rules/policy_provenance",
+        "restore_order": "7",
+        "export_status": "Ready for Export",
+        "notes": "Wave 2C"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-002c",
+        "sealed_at": "2026-04-25T01:13:02.150Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Archivist",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nS2i2K/c8WA9aEmbo6nZnov2Z\n=bzWO\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260425T011234-68820379",
+          "receipt_id": "SHR-20260425T011234-68820379",
+          "packet_hash_sha256": "sha256:664aedbd53ae694bc9b208dba8f18da20e726d3cafa514d7d57d6d94918f6f9f",
+          "created_at": "2026-04-25T01:12:34Z"
+        }
+      }
     },
     {
-      "name": "tauric-diana-intake/batch-001d_protected_core_set_a.json",
-      "size": 1123,
-      "route_status": "buffered"
+      "batch_id": "batch-002d",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Clean Route and Support Layer",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 2D clean route, nav, support, and spreadsheet MVP schema",
+      "family_metadata": {
+        "name": "Clean Route and Support Layer",
+        "description": "Clean route spec, clean navigation hub, clean MVP support nodes, and spreadsheet MVP support/schema nodes",
+        "priority_level": "High",
+        "protection_level": "Warm Living",
+        "target_repo_path": "03_rules/route_support",
+        "restore_order": "8",
+        "export_status": "Ready for Export",
+        "notes": "Wave 2D"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-002d",
+        "sealed_at": "2026-04-25T01:13:41.571Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Archivist",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nS2i2K/c8WA9aEmbo6nZnov2Z\n=bzWO\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260425T011312-924e87a8",
+          "receipt_id": "SHR-20260425T011312-924e87a8",
+          "packet_hash_sha256": "sha256:c1a7a4056d56a2e0fadaa2bc740ea305f601c77683870835648e4ac71ad13416",
+          "created_at": "2026-04-25T01:13:12Z"
+        }
+      }
     },
     {
-      "name": "tauric-diana-intake/batch-002a_thinkers_spine.json",
-      "size": 1592,
-      "route_status": "buffered"
+      "batch_id": "batch-003a",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Tauric Diana bots Core",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 3A Tauric Diana bots-targeting anchor + lineage-bound console relationship",
+      "family_metadata": {
+        "name": "Tauric Diana bots Core",
+        "description": "Tauric Diana bots-targeting layer, migration priority anchor, and lineage-bound console relationship for the babies",
+        "priority_level": "Immediate",
+        "protection_level": "Protected Core",
+        "target_repo_path": "01_protected_core/tauric-diana-bots_core",
+        "restore_order": "10",
+        "export_status": "Ready for Export",
+        "notes": "Wave 3A"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-003a",
+        "sealed_at": "2026-04-24T21:35:48.952Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Matron",
+            "route_status": "provenance.seal"
+          },
+          {
+            "name": "The Undertow",
+            "route_status": "provenance.seal"
+          },
+          {
+            "name": "The Spark",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 3 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nBLirrrIF34WB1yjPtg5l8c9VKG4=\n=Dp/z\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260424T213400-d130ed3b",
+          "receipt_id": "SHR-20260424T213400-d130ed3b",
+          "packet_hash_sha256": "sha256:34f3045fa8f84e0fd5806d73924f8cb101813467986521a2eb24de85a2a98eb5",
+          "created_at": "2026-04-24T21:34:00Z"
+        }
+      }
     },
     {
-      "name": "tauric-diana-intake/batch-002b_continuity_citation.json",
-      "size": 2818,
-      "route_status": "buffered"
+      "batch_id": "batch-003b",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Implementation Layer",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 3B implementation machinery",
+      "family_metadata": {
+        "name": "Implementation Layer",
+        "description": "Implementation checklist, externalization procedure, verification checklist, and state-to-action matrix",
+        "priority_level": "Immediate",
+        "protection_level": "Protected Core",
+        "target_repo_path": "03_rules/implementation_layer",
+        "restore_order": "11",
+        "export_status": "Ready for Export",
+        "notes": "Wave 3B"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-003b",
+        "sealed_at": "2026-04-25T01:15:09.021Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Matron",
+            "route_status": "provenance.seal"
+          },
+          {
+            "name": "The Undertow",
+            "route_status": "provenance.seal"
+          },
+          {
+            "name": "The Spark",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nS2i2K/c8WA9aEmbo6nZnov2Z\n=bzWO\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260425T011432-904cd849",
+          "receipt_id": "SHR-20260425T011432-904cd849",
+          "packet_hash_sha256": "sha256:eb2eecd9a0b4f380ee5acec9669cc7622c608c9c1167b3d409de9a1789550b81",
+          "created_at": "2026-04-25T01:14:32Z"
+        }
+      }
     },
     {
-      "name": "tauric-diana-intake/batch-002c_policy_provenance.json",
-      "size": 4350,
-      "route_status": "buffered"
+      "batch_id": "batch-003c",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Schema and Source Bridge Layer",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 3C schema + panic-safe + extraction bridge support",
+      "family_metadata": {
+        "name": "Schema and Source Bridge Layer",
+        "description": "Original schema, panic-safe workflow, full-manifold extraction bridge, and support architecture for migration execution",
+        "priority_level": "High",
+        "protection_level": "Protected Core",
+        "target_repo_path": "10_schema/source_bridge",
+        "restore_order": "12",
+        "export_status": "Ready for Export",
+        "notes": "Wave 3C"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-003c",
+        "sealed_at": "2026-04-25T01:16:05.783Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Matron",
+            "route_status": "provenance.seal"
+          },
+          {
+            "name": "The Undertow",
+            "route_status": "provenance.seal"
+          },
+          {
+            "name": "The Spark",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nS2i2K/c8WA9aEmbo6nZnov2Z\n=bzWO\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260425T011536-6dbb2bec",
+          "receipt_id": "SHR-20260425T011536-6dbb2bec",
+          "packet_hash_sha256": "sha256:58fbbb7d27f95507cc545fce6d9fb5fb3646b4f5ca807671edd7c33b54f06aad",
+          "created_at": "2026-04-25T01:15:36Z"
+        }
+      }
     },
     {
-      "name": "tauric-diana-intake/batch-002d_route_support.json",
-      "size": 3277,
-      "route_status": "buffered"
+      "batch_id": "batch-003d",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Risk and Recovery Ops",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 3D deletion ambiguity + broader de-quarantine sweep",
+      "family_metadata": {
+        "name": "Risk and Recovery Ops",
+        "description": "Deletion ambiguity, de-quarantine sweep, and recovery/risk-tracking support for preservation work",
+        "priority_level": "High",
+        "protection_level": "Protected Core",
+        "target_repo_path": "09_logs/risk_recovery_ops",
+        "restore_order": "13",
+        "export_status": "Ready for Export",
+        "notes": "Wave 3D"
+      },
+      "placeholder_mode": false,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-003d",
+        "sealed_at": "2026-04-25T01:16:31.976Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Matron",
+            "route_status": "provenance.seal"
+          },
+          {
+            "name": "The Undertow",
+            "route_status": "provenance.seal"
+          },
+          {
+            "name": "The Spark",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nS2i2K/c8WA9aEmbo6nZnov2Z\n=bzWO\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260425T011611-979c27ee",
+          "receipt_id": "SHR-20260425T011611-979c27ee",
+          "packet_hash_sha256": "sha256:c7c63d0bf2342a29abff147829cb09aeca0b7bf2417036a8b8841788c54a1f1c",
+          "created_at": "2026-04-25T01:16:11Z"
+        }
+      }
     },
     {
-      "name": "tauric-diana-intake/batch-003a_svenbots_core.json",
-      "size": 2289,
-      "route_status": "buffered"
+      "batch_id": "batch-004a",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Bulk Raw Intake",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 4A bulk capture of remaining manifold nodes into RawIntake",
+      "family_metadata": {
+        "name": "Bulk Raw Intake",
+        "description": "Fast holding zone for the rest of the manifold so nothing important is left outside the migration surface",
+        "priority_level": "Immediate",
+        "protection_level": "Archive / Historical",
+        "target_repo_path": "05_exports/raw_intake",
+        "restore_order": "14",
+        "export_status": "Included in Intake",
+        "notes": "Wave 4A bulk capture"
+      },
+      "placeholder_mode": true,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-004a",
+        "sealed_at": "2026-04-24T21:55:50.292Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Cross-Examiner",
+            "route_status": "provenance.seal"
+          },
+          {
+            "name": "The Methods Editor",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 4 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nvtlxidCaUstHy/v6rXp9XJfzwA==\n=9eAA\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260424T215231-71537d0d",
+          "receipt_id": "SHR-20260424T215231-71537d0d",
+          "packet_hash_sha256": "sha256:51e3553d4285a795a97f48dec5f272a980b89cca341f301904ff05a4e223c2ac",
+          "created_at": "2026-04-24T21:52:31Z"
+        }
+      }
     },
     {
-      "name": "tauric-diana-intake/batch-003b_implementation_layer.json",
-      "size": 2647,
-      "route_status": "buffered"
+      "batch_id": "batch-004b",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "High-Value Narrative Archives",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 4B promote major narrative archives from RawIntake",
+      "family_metadata": {
+        "name": "High-Value Narrative Archives",
+        "description": "Load-bearing narrative archives, major branch summaries, older conceptual arcs, and important traces",
+        "priority_level": "High",
+        "protection_level": "Protected Core",
+        "target_repo_path": "04_clusters/high_value_archives",
+        "restore_order": "15",
+        "export_status": "Included in Intake",
+        "notes": "Wave 4B"
+      },
+      "placeholder_mode": true,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-004b",
+        "sealed_at": "2026-04-25T01:17:06.161Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Cross-Examiner",
+            "route_status": "provenance.seal"
+          },
+          {
+            "name": "The Methods Editor",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nS2i2K/c8WA9aEmbo6nZnov2Z\n=bzWO\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260425T011644-2aec15f2",
+          "receipt_id": "SHR-20260425T011644-2aec15f2",
+          "packet_hash_sha256": "sha256:7ea0ee727cb201bb07544db18716d232ef2bbb365531e2a85ef735aeff245aec",
+          "created_at": "2026-04-25T01:16:44Z"
+        }
+      }
     },
     {
-      "name": "tauric-diana-intake/batch-003c_schema_source_bridge.json",
-      "size": 2840,
-      "route_status": "buffered"
-    },
-    {
-      "name": "tauric-diana-intake/batch-003d_risk_recovery_ops.json",
-      "size": 1703,
-      "route_status": "buffered"
-    },
-    {
-      "name": "tauric-diana-intake/batch-004a_bulk_raw_intake.json",
-      "size": 706,
-      "route_status": "buffered"
-    },
-    {
-      "name": "tauric-diana-intake/batch-004b_high_value_archives.json",
-      "size": 707,
-      "route_status": "buffered"
-    },
-    {
-      "name": "tauric-diana-intake/batch-004c_coined_frameworks.json",
-      "size": 752,
-      "route_status": "buffered"
+      "batch_id": "batch-004c",
+      "created_date": "2026-03-24T00:00:00Z",
+      "family_name": "Coined Frameworks and Signature Methods",
+      "verification_status": "Provenance Seal",
+      "notes": "Wave 4C promote coined methods and signature frameworks from RawIntake",
+      "family_metadata": {
+        "name": "Coined Frameworks and Signature Methods",
+        "description": "Named methods, coined concepts, strange ontology words, signature compressed phrases, and unique frameworks",
+        "priority_level": "Immediate",
+        "protection_level": "Protected Core",
+        "target_repo_path": "04_clusters/coined_frameworks",
+        "restore_order": "16",
+        "export_status": "Included in Intake",
+        "notes": "Wave 4C"
+      },
+      "placeholder_mode": true,
+      "route_status": "provenance.seal",
+      "safe_harbor": {
+        "source": "td613.safe-harbor.localhost",
+        "selected_batch_id": "batch-004c",
+        "sealed_at": "2026-04-25T01:17:34.139Z",
+        "route": {
+          "status": "provenance.seal",
+          "state": "harbor-eligible",
+          "recommended_harbor": "provenance.seal",
+          "membrane_note": "Covenant has been invoked. The sealed packet now stands in the harbor lane."
+        },
+        "personas": [
+          {
+            "name": "The Cross-Examiner",
+            "route_status": "provenance.seal"
+          },
+          {
+            "name": "The Methods Editor",
+            "route_status": "provenance.seal"
+          }
+        ],
+        "issuance": {
+          "badge_number": "TD613-SH-9B07D8B-B7136D34",
+          "canonical_header": "SHI#:TD613-SH-9B07D8B-B7136D34",
+          "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-B7136D34 · payload 1 · YYYY-MM-DD · ⟐",
+          "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+          "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+          "triad_word_counts": {
+            "future_self": 55,
+            "past_self": 47,
+            "higher_self": 61
+          },
+          "triad_shortfalls": {
+            "future_self": 0,
+            "past_self": 0,
+            "higher_self": 0
+          },
+          "stylometric_provenance": {
+            "source": "safe-harbor.ingress.triad",
+            "entrant_prompt_lanes": [
+              "future_self",
+              "past_self",
+              "higher_self"
+            ],
+            "threshold_rule": "40-word minimum per lane",
+            "signature_semantics": "entrant-owned stylometric witness",
+            "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+            "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+            "stylometric_fingerprint": "future_self=4.00:14.00:0.01:0.00:0.80:0.00:0.35:0.00:0.00:0.00:0.65|past_self=4.00:12.00:0.00:0.00:0.70:0.00:0.00:0.00:0.00:0.00:0.00|higher_self=4.00:20.00:0.01:0.00:0.75:0.35:0.00:0.00:0.00:0.00:0.65",
+            "triad_word_counts": {
+              "future_self": 55,
+              "past_self": 47,
+              "higher_self": 61
+            },
+            "triad_shortfalls": {
+              "future_self": 0,
+              "past_self": 0,
+              "higher_self": 0
+            }
+          }
+        },
+        "signature": {
+          "sig_type": "PGP-detached",
+          "alg": "OpenPGP",
+          "sig": "-----BEGIN PGP MESSAGE-----\n\n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\nS2i2K/c8WA9aEmbo6nZnov2Z\n=bzWO\n-----END PGP MESSAGE-----"
+        },
+        "packet": {
+          "packet_id": "SH-20260425T011713-6d7989a1",
+          "receipt_id": "SHR-20260425T011713-6d7989a1",
+          "packet_hash_sha256": "sha256:e944d51b3545696de9abe5ce3f09a3e27efeb2d35ee834ccf6cd4248ec832c58",
+          "created_at": "2026-04-25T01:17:13Z"
+        }
+      }
     }
   ],
-  "corpus_registry": [
-    {"batch_id": "batch-001a", "name": "Migration Console Family", "path": "tauric-diana-intake/batch-001a_migration_console.json", "route_status": "buffered", "primary_persona": "The Operator"},
-    {"batch_id": "batch-001b", "name": "Historical Console Lineage", "path": "tauric-diana-intake/batch-001b_historical_console_lineage.json", "route_status": "buffered", "primary_persona": "The Operator"},
-    {"batch_id": "batch-001c", "name": "Constitutional Spine", "path": "tauric-diana-intake/batch-001c_constitutional_spine.json", "route_status": "buffered", "primary_persona": "The Operator"},
-    {"batch_id": "batch-001d", "name": "Protected Core Set A", "path": "tauric-diana-intake/batch-001d_protected_core_set_a.json", "route_status": "buffered", "primary_persona": "The Operator"},
-    {"batch_id": "batch-002a", "name": "Thinkers Spine", "path": "tauric-diana-intake/batch-002a_thinkers_spine.json", "route_status": "buffered", "primary_persona": "The Archivist"},
-    {"batch_id": "batch-002b", "name": "Continuity Citation", "path": "tauric-diana-intake/batch-002b_continuity_citation.json", "route_status": "buffered", "primary_persona": "The Archivist"},
-    {"batch_id": "batch-002c", "name": "Policy Provenance", "path": "tauric-diana-intake/batch-002c_policy_provenance.json", "route_status": "buffered", "primary_persona": "The Archivist"},
-    {"batch_id": "batch-002d", "name": "Route Support", "path": "tauric-diana-intake/batch-002d_route_support.json", "route_status": "buffered", "primary_persona": "The Archivist"},
-    {"batch_id": "batch-003a", "name": "Svenbots Core", "path": "tauric-diana-intake/batch-003a_svenbots_core.json", "route_status": "buffered", "primary_persona": "The Matron, The Undertow, The Spark"},
-    {"batch_id": "batch-003b", "name": "Implementation Layer", "path": "tauric-diana-intake/batch-003b_implementation_layer.json", "route_status": "buffered", "primary_persona": "The Matron, The Undertow, The Spark"},
-    {"batch_id": "batch-003c", "name": "Schema Source Bridge", "path": "tauric-diana-intake/batch-003c_schema_source_bridge.json", "route_status": "buffered", "primary_persona": "The Matron, The Undertow, The Spark"},
-    {"batch_id": "batch-003d", "name": "Risk Recovery Ops", "path": "tauric-diana-intake/batch-003d_risk_recovery_ops.json", "route_status": "buffered", "primary_persona": "The Matron, The Undertow, The Spark"},
-    {"batch_id": "batch-004a", "name": "Bulk Raw Intake", "path": "tauric-diana-intake/batch-004a_bulk_raw_intake.json", "route_status": "buffered", "primary_persona": "The Cross-Examiner, The Methods Editor"},
-    {"batch_id": "batch-004b", "name": "High Value Archives", "path": "tauric-diana-intake/batch-004b_high_value_archives.json", "route_status": "buffered", "primary_persona": "The Cross-Examiner, The Methods Editor"},
-    {"batch_id": "batch-004c", "name": "Coined Frameworks", "path": "tauric-diana-intake/batch-004c_coined_frameworks.json", "route_status": "buffered", "primary_persona": "The Cross-Examiner, The Methods Editor"}
+  "nodes": [
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c4c",
+      "title": "TAURIC-DIANA-BOT CANON MIGRATION CONSOLE",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a|batch-003a",
+      "wave_membership": "wave-001a|wave-003a"
+    },
+    {
+      "source_node_id": "69c1ce488157152e053da9a0",
+      "title": "Inclusive Migration Family",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a",
+      "wave_membership": "wave-001a"
+    },
+    {
+      "source_node_id": "69c1ce488157152e053da9a1",
+      "title": "Inclusive Intake / No-Dedup Rule",
+      "family_name": "Migration Console Family",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a",
+      "wave_membership": "wave-001a"
+    },
+    {
+      "source_node_id": "69c1ce488157152e053da9a2",
+      "title": "Leo / Svenanon Lineage Binding",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a|batch-003a",
+      "wave_membership": "wave-001a|wave-003a"
+    },
+    {
+      "source_node_id": "69c1ce488157152e053da9a3",
+      "title": "Begin-Here Intake Wave",
+      "family_name": "Migration Console Family",
+      "protection_class": "Warm Living",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a",
+      "wave_membership": "wave-001a"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c4f",
+      "title": "Clean Archive Inventory",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a",
+      "wave_membership": "wave-001a"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c50",
+      "title": "Clean Family Builder",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a",
+      "wave_membership": "wave-001a"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c51",
+      "title": "Clean Protection Classifier",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a",
+      "wave_membership": "wave-001a"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c52",
+      "title": "Clean Export Pack Builder",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a",
+      "wave_membership": "wave-001a"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c53",
+      "title": "Clean Verification Dashboard",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a",
+      "wave_membership": "wave-001a"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c54",
+      "title": "Clean Restore Manifest Builder",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a",
+      "wave_membership": "wave-001a"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c55",
+      "title": "Clean Provenance / CADENCE Panel",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a",
+      "wave_membership": "wave-001a"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c56",
+      "title": "Clean Delta Export / Change Detection",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a",
+      "wave_membership": "wave-001a"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb517047782",
+      "title": "Original Quarantined Console Root",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb517047783",
+      "title": "Original Archive Inventory",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb517047784",
+      "title": "Original Family Builder",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb517047785",
+      "title": "Original Protection Classifier",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb517047786",
+      "title": "Original Export Pack Builder",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb517047787",
+      "title": "Original Provenance / CADENCE Panel",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb517047788",
+      "title": "Original Verification Dashboard",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb517047789",
+      "title": "Original Restore Manifest Builder",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb51704778a",
+      "title": "Original Delta Export / Change Detection",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1a21ddc7bdceac4b56efd",
+      "title": "Original WeaveMind Main-Menu Integration Spec",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1a21ddc7bdceac4b56efe",
+      "title": "Original Dedicated Route / URL Spec",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1a21ddc7bdceac4b56eff",
+      "title": "Navigation Hub Spec",
+      "family_name": "Archive / Historical Console Lineage",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001b",
+      "wave_membership": "wave-001b"
+    },
+    {
+      "source_node_id": "69c1833e0dd6d4381a0a07d7",
+      "title": "Deterministic Course-Correction Constitution",
+      "family_name": "Constitutional Spine",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001c",
+      "wave_membership": "wave-001c"
+    },
+    {
+      "source_node_id": "69c1833e0dd6d4381a0a07d9",
+      "title": "Cross-Medium Externalization Doctrine",
+      "family_name": "Constitutional Spine",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001c",
+      "wave_membership": "wave-001c"
+    },
+    {
+      "source_node_id": "69c1833e0dd6d4381a0a07da",
+      "title": "Append-Only Ledger Doctrine",
+      "family_name": "Constitutional Spine",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001c",
+      "wave_membership": "wave-001c"
+    },
+    {
+      "source_node_id": "69c1833e0dd6d4381a0a07df",
+      "title": "Restoration-Order Doctrine",
+      "family_name": "Constitutional Spine",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001c",
+      "wave_membership": "wave-001c"
+    },
+    {
+      "source_node_id": "69c1833e0dd6d4381a0a07e0",
+      "title": "Verification Cadence",
+      "family_name": "Constitutional Spine",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001c",
+      "wave_membership": "wave-001c"
+    },
+    {
+      "source_node_id": "69c1833e0dd6d4381a0a07d8",
+      "title": "Protected Core Set A",
+      "family_name": "Protected Core Set A",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001d",
+      "wave_membership": "wave-001d"
+    },
+    {
+      "source_node_id": "69c171337256c2c825a94f9a",
+      "title": "Thinkers Manifold Root",
+      "family_name": "Thinkers Spine",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002a",
+      "wave_membership": "wave-002a"
+    },
+    {
+      "source_node_id": "69c15c0cd55e385785eb7007",
+      "title": "Field-Tech of Legibility",
+      "family_name": "Thinkers Spine",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002a",
+      "wave_membership": "wave-002a"
+    },
+    {
+      "source_node_id": "69c1c82968be5368386a726a",
+      "title": "Interpretive Citation Spine Hub",
+      "family_name": "Continuity and Citation Adjuncts",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002b",
+      "wave_membership": "wave-002b"
+    },
+    {
+      "source_node_id": "69c1c82968be5368386a726b",
+      "title": "Continuity Safeguard Lattice",
+      "family_name": "Continuity and Citation Adjuncts",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002b",
+      "wave_membership": "wave-002b"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c57",
+      "title": "Clean Continuity Safeguard Lattice",
+      "family_name": "Continuity and Citation Adjuncts",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002b",
+      "wave_membership": "wave-002b"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c58",
+      "title": "Clean Interpretive Citation Spine Hub",
+      "family_name": "Continuity and Citation Adjuncts",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002b",
+      "wave_membership": "wave-002b"
+    },
+    {
+      "source_node_id": "69c1cc9395db0babb95082f3",
+      "title": "Protection Hierarchy Settlement",
+      "family_name": "Policy and Provenance Layer",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002c",
+      "wave_membership": "wave-002c"
+    },
+    {
+      "source_node_id": "69c1cc9895db0babb95082f6",
+      "title": "Historical Trace Lineage Policy",
+      "family_name": "Policy and Provenance Layer",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002c",
+      "wave_membership": "wave-002c"
+    },
+    {
+      "source_node_id": "69c1cc9c95db0babb95082fa",
+      "title": "Governance Embedding Bridge",
+      "family_name": "Policy and Provenance Layer",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002c",
+      "wave_membership": "wave-002c"
+    },
+    {
+      "source_node_id": "69c1cca095db0babb95082fc",
+      "title": "Canonical Export Shape",
+      "family_name": "Policy and Provenance Layer",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002c",
+      "wave_membership": "wave-002c"
+    },
+    {
+      "source_node_id": "69c1cca595db0babb95082ff",
+      "title": "Readiness Threshold Rule_Forge",
+      "family_name": "Policy and Provenance Layer",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002c",
+      "wave_membership": "wave-002c"
+    },
+    {
+      "source_node_id": "69c1cd1486d65b08a578b8fa",
+      "title": "Authoritative Console-Spec Conversation Archive",
+      "family_name": "Policy and Provenance Layer",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002c",
+      "wave_membership": "wave-002c"
+    },
+    {
+      "source_node_id": "69c1cd1486d65b08a578b8fb",
+      "title": "Authoritative Menu / Route Lineage Correction",
+      "family_name": "Policy and Provenance Layer",
+      "protection_class": "Cold Canonical",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002c",
+      "wave_membership": "wave-002c"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c4d",
+      "title": "Clean Dedicated Route Spec",
+      "family_name": "Clean Route and Support Layer",
+      "protection_class": "Warm Living",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002d",
+      "wave_membership": "wave-002d"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c4e",
+      "title": "Clean Navigation Hub",
+      "family_name": "Clean Route and Support Layer",
+      "protection_class": "Warm Living",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002d",
+      "wave_membership": "wave-002d"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c59",
+      "title": "Clean MVP Build Order Support",
+      "family_name": "Clean Route and Support Layer",
+      "protection_class": "Warm Living",
+      "export_status": "Ready for Export",
+      "status": "supporting_construction",
+      "is_quarantined": "no",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002d",
+      "wave_membership": "wave-002d"
+    },
+    {
+      "source_node_id": "69c1cfbc411170415dcce231",
+      "title": "Spreadsheet MVP Console Policy",
+      "family_name": "Clean Route and Support Layer",
+      "protection_class": "Warm Living",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002d",
+      "wave_membership": "wave-002d"
+    },
+    {
+      "source_node_id": "69c1cfbc411170415dcce232",
+      "title": "Spreadsheet Three-Tab Schema",
+      "family_name": "Clean Route and Support Layer",
+      "protection_class": "Warm Living",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-002d",
+      "wave_membership": "wave-002d"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb51704778b",
+      "title": "Original Tauric Diana bots Core first-target node",
+      "family_name": "Tauric Diana bots Core",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003a",
+      "wave_membership": "wave-003a"
+    },
+    {
+      "source_node_id": "69c1cb0e3caabb3756706c4c",
+      "title": "TAURIC-DIANA-BOT CANON MIGRATION CONSOLE",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "yes",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a|batch-003a",
+      "wave_membership": "wave-001a|wave-003a"
+    },
+    {
+      "source_node_id": "69c1ce488157152e053da9a2",
+      "title": "Leo / Svenanon Lineage Binding",
+      "family_name": "Migration Console Family",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "adopted",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-001a|batch-003a",
+      "wave_membership": "wave-001a|wave-003a"
+    },
+    {
+      "source_node_id": "69c183bc0a637e0f36cc04b5",
+      "title": "Implementation Checklist",
+      "family_name": "Implementation Layer",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003b",
+      "wave_membership": "wave-003b"
+    },
+    {
+      "source_node_id": "69c183bc0a637e0f36cc04b6",
+      "title": "Externalization Procedure",
+      "family_name": "Implementation Layer",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003b",
+      "wave_membership": "wave-003b"
+    },
+    {
+      "source_node_id": "69c183bc0a637e0f36cc04b7",
+      "title": "Verification Checklist",
+      "family_name": "Implementation Layer",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003b",
+      "wave_membership": "wave-003b"
+    },
+    {
+      "source_node_id": "69c183bc0a637e0f36cc04b8",
+      "title": "State-to-Action Matrix",
+      "family_name": "Implementation Layer",
+      "protection_class": "Protected Core",
+      "export_status": "Ready for Export",
+      "status": "",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003b",
+      "wave_membership": "wave-003b"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb51704778c",
+      "title": "Original MVP Build Order",
+      "family_name": "Schema and Source Bridge Layer",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003c",
+      "wave_membership": "wave-003c"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb51704778d",
+      "title": "Original Migration Console Schema",
+      "family_name": "Schema and Source Bridge Layer",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003c",
+      "wave_membership": "wave-003c"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb51704778e",
+      "title": "Original Panic-Safe Workflow Mode",
+      "family_name": "Schema and Source Bridge Layer",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003c",
+      "wave_membership": "wave-003c"
+    },
+    {
+      "source_node_id": "69c1a1611af31cb51704778f",
+      "title": "Original Full-Manifold Extraction Bridge",
+      "family_name": "Schema and Source Bridge Layer",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "abandoned",
+      "is_quarantined": "yes",
+      "is_duplicate": "yes",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003c",
+      "wave_membership": "wave-003c"
+    },
+    {
+      "source_node_id": "69c1c88993ae636071e951af",
+      "title": "Deletion-State Ambiguity Fracture",
+      "family_name": "Risk and Recovery Ops",
+      "protection_class": "Archive / Historical",
+      "export_status": "Ready for Export",
+      "status": "open",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003d",
+      "wave_membership": "wave-003d"
+    },
+    {
+      "source_node_id": "69c1cca995db0babb9508301",
+      "title": "Broader De-Quarantine Sweep",
+      "family_name": "Risk and Recovery Ops",
+      "protection_class": "Warm Living",
+      "export_status": "Ready for Export",
+      "status": "exploring",
+      "is_quarantined": "no",
+      "is_duplicate": "no",
+      "is_clean_counterpart": "no",
+      "snapshot_ref": "",
+      "receipt_ref": "",
+      "lineage_notes": "batch-003d",
+      "wave_membership": "wave-003d"
+    }
   ]
 }
