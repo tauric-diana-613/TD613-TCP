@@ -35,6 +35,8 @@
     chooseHarbor,
     buildLedgerRow,
     nextBadge,
+    AU_FORGED_ONTOLOGY,
+    summarizeAUForgedOntology,
     SWAP_CADENCE_FLAGSHIP_PAIRS
   } = window.TCP_ENGINE;
   const RETRIEVAL_FIXTURE_BUNDLE = window.TCP_RETRIEVAL_FIXTURES || { cases: {} };
@@ -67,14 +69,8 @@
     acc[sample.id] = sample;
     return acc;
   }, {}));
-  const SAMPLE_PROFILE_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
-    acc[sample.id] = Object.freeze(extractCadenceProfile(sample.text));
-    return acc;
-  }, {}));
-  const SAMPLE_SIGNATURE_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
-    acc[sample.id] = Object.freeze(buildCadenceSignature(sample.text, SAMPLE_PROFILE_BY_ID[sample.id]));
-    return acc;
-  }, {}));
+  const SAMPLE_PROFILE_CACHE = Object.create(null);
+  const SAMPLE_SIGNATURE_CACHE = Object.create(null);
   if (!defaults.voiceA && !defaults.voiceB) {
     const starterA = FULL_SAMPLE_LIBRARY.find((sample) => sample.id === STARTER_DUEL_SAMPLE_IDS.A) || null;
     const starterB = FULL_SAMPLE_LIBRARY.find((sample) => sample.id === STARTER_DUEL_SAMPLE_IDS.B) || null;
@@ -1785,6 +1781,7 @@
     let analysisEventTimer = null;
     let decisionArrivalTimer = null;
     let lastSwapCadenceAudit = null;
+    let lastGenerativeSwap = null;
   let baySampleIds = {
     A: defaults.voiceA_sample_id || null,
     B: defaults.voiceB_sample_id || null
@@ -2067,7 +2064,14 @@
     if (!sample) {
       return null;
     }
-    return (sample.id && SAMPLE_PROFILE_BY_ID[sample.id]) || extractCadenceProfile(sample.text || '');
+    if (sample.id && SAMPLE_PROFILE_CACHE[sample.id]) {
+      return SAMPLE_PROFILE_CACHE[sample.id];
+    }
+    const profile = Object.freeze(extractCadenceProfile(sample.text || ''));
+    if (sample.id) {
+      SAMPLE_PROFILE_CACHE[sample.id] = profile;
+    }
+    return profile;
   }
 
   function buildSignatureEntry(text = '', profile = null) {
@@ -2079,7 +2083,14 @@
     if (!sample) {
       return null;
     }
-    return (sample.id && SAMPLE_SIGNATURE_BY_ID[sample.id]) || buildSignatureEntry(sample.text || '', sampleProfileEntry(sample));
+    if (sample.id && SAMPLE_SIGNATURE_CACHE[sample.id]) {
+      return SAMPLE_SIGNATURE_CACHE[sample.id];
+    }
+    const signature = Object.freeze(buildSignatureEntry(sample.text || '', sampleProfileEntry(sample)));
+    if (sample.id) {
+      SAMPLE_SIGNATURE_CACHE[sample.id] = signature;
+    }
+    return signature;
   }
 
   function signatureAxisDistance(signatureA = null, signatureB = null) {
@@ -2346,7 +2357,7 @@
     syncBaySampleMetadata();
     activeVoice = slot;
     collapseAnalysisDeck();
-    renderVoiceProfiles();
+    renderVoiceProfiles(getVoiceState('A', { evaluate: false }), getVoiceState('B', { evaluate: false }));
     renderPersonas();
     updateControls();
 
@@ -3682,6 +3693,50 @@
     );
   }
 
+  function sampleRegisterLane(sample = null, profile = null) {
+    return sample?.variant || inferRegisterLaneFromText(sample?.text || '', profile || sampleProfileEntry(sample));
+  }
+
+  function estimateRandomizerPairing(candidate = {}, counterpart = {}) {
+    const profileDelta = Number(candidate.profileDelta || 0);
+    const axisDelta = Number(candidate.axisDelta || 0);
+    const heatmapDelta = Number(candidate.heatmapDelta || 0);
+    const fieldDelta = Number(candidate.fieldDelta || 0);
+    const candidateLane = sampleRegisterLane(candidate.sample, candidate.profile);
+    const counterpartLane = sampleRegisterLane(counterpart.sample, counterpart.profile);
+    const laneContrast = Boolean(candidateLane && counterpartLane && candidateLane !== counterpartLane);
+    const familyMatch = Boolean(
+      candidate.sample?.familyId &&
+      counterpart.sample?.familyId &&
+      candidate.sample.familyId === counterpart.sample.familyId
+    );
+    const bilateralVisible = laneContrast || profileDelta >= 0.42 || axisDelta >= 0.55;
+    const bilateralNonTrivial = (laneContrast && (profileDelta >= 0.55 || fieldDelta >= 1.1)) || fieldDelta >= 1.45;
+    const engagedLaneCount = bilateralVisible ? 2 : (profileDelta >= 0.22 || axisDelta >= 0.32 ? 1 : 0);
+    const score = Number((
+      (profileDelta * 8) +
+      (axisDelta * 4) +
+      (heatmapDelta * 0.35) +
+      (fieldDelta * 2) +
+      (laneContrast ? 8 : 0) +
+      (familyMatch ? 4 : 0) +
+      (bilateralNonTrivial ? 8 : bilateralVisible ? 4 : 0)
+    ).toFixed(4));
+
+    return {
+      score,
+      bilateralVisible,
+      bilateralNonTrivial,
+      engagedLaneCount,
+      rejectedLaneCount: 0,
+      laneAccepted: [engagedLaneCount > 0, engagedLaneCount > 0],
+      laneOutcomes: bilateralVisible ? ['estimated-visible', 'estimated-visible'] : ['estimated-thin', 'estimated-thin'],
+      laneTransferClasses: bilateralNonTrivial ? ['estimated-structural', 'estimated-structural'] : ['estimated-surface', 'estimated-surface'],
+      minProtectedAnchorIntegrity: 1,
+      minPropositionCoverage: 1
+    };
+  }
+
   function evaluateRepresentativeSwapPair(referenceSample, probeSample) {
     const evaluation = evaluateSwapCadencePairing(referenceSample.text, probeSample.text);
 
@@ -3807,106 +3862,45 @@
 
   function randomizerSamplePool(slot, candidates = []) {
     const otherSlot = slot === 'A' ? 'B' : 'A';
-    const ownText = $(slotTextId(slot))?.value || '';
-    const otherText = $(slotTextId(otherSlot))?.value || '';
     if (!candidates.length) {
       return candidates;
     }
 
     const ownSample = sampleEntry(baySampleIds[slot]) || null;
     const otherSample = sampleEntry(baySampleIds[otherSlot]) || null;
-    const diversityAnchorSample = ownSample || otherSample || null;
-    const diversityAnchorSignature = diversityAnchorSample
-      ? sampleSignatureEntry(diversityAnchorSample)
-      : ownText.trim()
-        ? buildSignatureEntry(ownText, extractCadenceProfile(ownText))
-        : otherText.trim()
-          ? buildSignatureEntry(otherText, extractCadenceProfile(otherText))
-          : null;
-    const bothBaysPopulated = Boolean(ownText.trim() && otherText.trim());
     const sameFamilyPairLoaded = Boolean(
-      bothBaysPopulated &&
       ownSample &&
       otherSample &&
       ownSample.familyId &&
       ownSample.familyId === otherSample.familyId
     );
 
-    const ranked = candidates.map((sample) => {
-      const candidateProfile = sampleProfileEntry(sample);
-      const candidateSignature = sampleSignatureEntry(sample);
-      const evaluation = bothBaysPopulated
-        ? evaluateSwapCadencePairing(
-            slot === 'A' ? sample.text : otherText,
-            slot === 'A' ? otherText : sample.text
-          )
-        : null;
-      const profileDelta = profileDistanceScore(candidateProfile, diversityAnchorSignature?.profile);
-      const axisDelta = signatureAxisDistance(candidateSignature, diversityAnchorSignature);
-      const heatmapDelta = heatmapDistanceScore(candidateSignature?.heatmap, diversityAnchorSignature?.heatmap);
-      const fieldDelta = fieldSpreadScore(candidateSignature, diversityAnchorSignature);
+    const rankLight = (sample) => {
+      const anchor = otherSample || ownSample || null;
       return {
         sample,
-        evaluation,
-        diversity: {
-          familyBonus: diversityAnchorSample && sample.familyId !== diversityAnchorSample.familyId ? 1 : 0,
-          variantBonus: diversityAnchorSample && sample.variant !== diversityAnchorSample.variant ? 1 : 0,
-          profileDelta,
-          axisDelta,
-          heatmapDelta,
-          fieldDelta
-        },
-        profileDelta,
-        axisDelta,
-        heatmapDelta,
-        fieldDelta,
-        evaluationTier: randomizerEvaluationTier(evaluation)
+        familyBonus: anchor && sample.familyId !== anchor.familyId ? 1 : 0,
+        variantBonus: anchor && sample.variant !== anchor.variant ? 1 : 0,
+        sameFamilyBonus: otherSample && sample.familyId === otherSample.familyId && sample.id !== otherSample.id ? 1 : 0,
+        sameVariantPenalty: otherSample && sample.variant === otherSample.variant ? 1 : 0
       };
-    });
-
-    const sortByLiveDuelThenField = (left, right) => (
-      Number(right.evaluationTier || 0) - Number(left.evaluationTier || 0) ||
-      compareSwapCadencePairings(left.evaluation, right.evaluation) ||
-      Number(right.fieldDelta || 0) - Number(left.fieldDelta || 0) ||
-      Number(right.heatmapDelta || 0) - Number(left.heatmapDelta || 0) ||
-      Number(right.axisDelta || 0) - Number(left.axisDelta || 0) ||
-      Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
-      Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
-      Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
+    };
+    const sortLight = (left, right) => (
+      Number(right.sameFamilyBonus || 0) - Number(left.sameFamilyBonus || 0) ||
+      Number(right.variantBonus || 0) - Number(left.variantBonus || 0) ||
+      Number(right.familyBonus || 0) - Number(left.familyBonus || 0) ||
+      Number(left.sameVariantPenalty || 0) - Number(right.sameVariantPenalty || 0) ||
       left.sample.id.localeCompare(right.sample.id)
     );
-    const sortByFieldThenLiveDuel = (left, right) => (
-      Number(right.fieldDelta || 0) - Number(left.fieldDelta || 0) ||
-      Number(right.heatmapDelta || 0) - Number(left.heatmapDelta || 0) ||
-      Number(right.axisDelta || 0) - Number(left.axisDelta || 0) ||
-      Number(right.evaluationTier || 0) - Number(left.evaluationTier || 0) ||
-      compareSwapCadencePairings(left.evaluation, right.evaluation) ||
-      Number(right.diversity.familyBonus || 0) - Number(left.diversity.familyBonus || 0) ||
-      Number(right.diversity.variantBonus || 0) - Number(left.diversity.variantBonus || 0) ||
-      Number(right.diversity.profileDelta || 0) - Number(left.diversity.profileDelta || 0) ||
-      left.sample.id.localeCompare(right.sample.id)
-    );
-    const liveCapable = ranked.filter((entry) => randomizerCarriesLiveDuel(entry.evaluation));
+    const ranked = candidates.map(rankLight);
 
-    if (bothBaysPopulated && otherSample?.familyId) {
+    if (otherSample?.familyId) {
       if (sameFamilyPairLoaded) {
         const pivotPool = ranked.filter((entry) => entry.sample.familyId !== otherSample.familyId);
-        const livePivotPool = pivotPool.filter((entry) => randomizerCarriesLiveDuel(entry.evaluation));
-        const selectedPivotPool = livePivotPool.length ? livePivotPool : pivotPool;
+        const selectedPivotPool = pivotPool.length ? pivotPool : ranked;
         return [...selectedPivotPool]
-          .sort(sortByFieldThenLiveDuel)
+          .sort(sortLight)
           .slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, selectedPivotPool.length))
-          .map((entry) => entry.sample);
-      }
-
-      const sameFamilyLive = liveCapable.filter((entry) =>
-        entry.sample.familyId === otherSample.familyId &&
-        entry.sample.id !== otherSample.id
-      );
-      if (sameFamilyLive.length) {
-        return [...sameFamilyLive]
-          .sort(sortByLiveDuelThenField)
-          .slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, sameFamilyLive.length))
           .map((entry) => entry.sample);
       }
 
@@ -3916,33 +3910,18 @@
       );
       if (sameFamily.length) {
         return [...sameFamily]
-          .sort(sortByLiveDuelThenField)
+          .sort(sortLight)
           .slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, sameFamily.length))
           .map((entry) => entry.sample);
       }
 
-      const livePool = liveCapable.length ? liveCapable : ranked;
-      return [...livePool]
-        .sort(sortByLiveDuelThenField)
-        .slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, livePool.length))
+      return [...ranked]
+        .sort(sortLight)
+        .slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, ranked.length))
         .map((entry) => entry.sample);
     }
 
-    const fieldPreferredIds = new Set(
-      [...ranked]
-        .sort((left, right) =>
-          Number(right.fieldDelta || 0) - Number(left.fieldDelta || 0) ||
-          Number(right.heatmapDelta || 0) - Number(left.heatmapDelta || 0) ||
-          Number(right.axisDelta || 0) - Number(left.axisDelta || 0) ||
-          left.sample.id.localeCompare(right.sample.id)
-        )
-        .slice(0, Math.min(DECK_RANDOMIZER_FIELD_POOL_COUNT, ranked.length))
-        .map((entry) => entry.sample.id)
-    );
-    const pool = ranked.filter((entry) => fieldPreferredIds.has(entry.sample.id));
-
-    const sorted = [...pool].sort(sortByFieldThenLiveDuel);
-
+    const sorted = [...ranked].sort(sortLight);
     return sorted.slice(0, Math.min(DECK_RANDOMIZER_TOP_COUNT, sorted.length)).map((entry) => entry.sample);
   }
 
@@ -4229,8 +4208,8 @@
     const selectedMaskSwatch = selectedMaskPreview?.swatch || '';
     const selectedMaskContact = selectedMaskPreview?.contactSummary || null;
     const selectedMaskEffect = selectedMaskPreview?.effectSummary || null;
-    const voiceStateA = getVoiceState('A');
-    const voiceStateB = getVoiceState('B');
+    const voiceStateA = getVoiceState('A', { evaluate: false });
+    const voiceStateB = getVoiceState('B', { evaluate: false });
     const deckCastingSummary = buildDeckCastingSummary(voiceStateA, voiceStateB);
     const fieldGrammar = buildSurfacePhaseMap({
       lock,
@@ -4270,7 +4249,7 @@
     return bayShells[slot] || createNativeShell();
   }
 
-  function getVoiceState(slot) {
+  function getVoiceState(slot, options = {}) {
     const text = $(slot === 'A' ? 'voiceA' : 'voiceB').value;
     const rawProfile = extractCadenceProfile(text);
     const shell = getBayShell(slot);
@@ -4279,11 +4258,40 @@
       ? inferRegisterLaneFromText(text, rawProfile)
       : (sample?.variant || null);
     const sourceRegisterLane = inferredSourceRegisterLane || sample?.variant || null;
+    const evaluate = options.evaluate !== false;
+    const nativeTransfer = () => ({
+      text,
+      transferClass: 'native',
+      realizationTier: 'none',
+      changedDimensions: [],
+      profileShiftDimensions: [],
+      lexemeSwaps: [],
+      structuralOperations: [],
+      lexicalOperations: [],
+      outputProfile: rawProfile,
+      sourceRegisterLane,
+      targetRegisterLane: shell.registerLane || null,
+      semanticAudit: {
+        propositionCoverage: 1,
+        actorCoverage: 1,
+        actionCoverage: 1,
+        objectCoverage: 1,
+        polarityMismatches: 0,
+        tenseMismatches: 0
+      },
+      protectedAnchorAudit: {
+        totalAnchors: 0,
+        resolvedAnchors: 0,
+        missingAnchors: [],
+        protectedAnchorIntegrity: 1
+      },
+      retrievalTrace: null
+    });
     const transferOptions = { retrieval: true, exposeHeldCandidate: true };
     if (sourceRegisterLane) {
       transferOptions.sourceRegisterLane = sourceRegisterLane;
     }
-    const transfer = buildCadenceTransfer(text, shell, transferOptions);
+    const transfer = evaluate ? buildCadenceTransfer(text, shell, transferOptions) : nativeTransfer();
     const generationHeld = transfer.holdStatus === 'held';
     if (generationHeld && typeof window !== 'undefined' && window.TD613_DUEL_DEBUG) {
       try {
@@ -4329,6 +4337,68 @@
       transfer,
       transferTrace: transfer.retrievalTrace || null
     };
+  }
+
+  function effectiveGeneratedTransferText(sourceText = '', transfer = {}) {
+    const directText = String(transfer.text || '').trim();
+    const internalText = String(transfer.internalText || '').trim();
+    const originalText = String(sourceText || '').trim();
+    if (directText && directText !== originalText) {
+      return directText;
+    }
+    if (internalText && internalText !== originalText) {
+      return internalText;
+    }
+    return directText || internalText || sourceText;
+  }
+
+  function buildGenerativeSwapTransfer(sourceState, targetShell) {
+    const transferOptions = {
+      retrieval: true,
+      exposeHeldCandidate: true,
+      auForgedOntology: AU_FORGED_ONTOLOGY
+    };
+    if (sourceState.sourceRegisterLane) {
+      transferOptions.sourceRegisterLane = sourceState.sourceRegisterLane;
+    }
+    return buildCadenceTransfer(sourceState.text, targetShell, transferOptions);
+  }
+
+  function buildGenerativeSwapVoiceState(slot, sourceState, targetShell, transfer) {
+    const effectiveText = effectiveGeneratedTransferText(sourceState.text, transfer);
+    const generationHeld = transfer.holdStatus === 'held';
+    const effectiveProfile = transfer.outputProfile || extractCadenceProfile(effectiveText);
+    return {
+      ...sourceState,
+      slot,
+      text: sourceState.text,
+      effectiveText,
+      generationHeld,
+      previewingHeldTransfer: Boolean(generationHeld && effectiveText !== sourceState.text),
+      hasEffectiveTextShift: effectiveText !== sourceState.text,
+      hasText: sourceState.hasText,
+      rawProfile: sourceState.rawProfile,
+      effectiveProfile,
+      persona: targetShell.personaId ? findPersona(targetShell.personaId) : null,
+      shell: targetShell,
+      sourceRegisterLane: transfer.sourceRegisterLane || sourceState.sourceRegisterLane,
+      targetRegisterLane: transfer.targetRegisterLane || targetShell.registerLane || null,
+      profileShiftDimensions: [...new Set(transfer.profileShiftDimensions || [])],
+      artifactRepairApplied: Boolean(transfer.artifactRepairApplied),
+      generativeSwap: true,
+      transfer,
+      transferTrace: transfer.retrievalTrace || null
+    };
+  }
+
+  function generativeSwapStillLive(voiceStateA, voiceStateB) {
+    return Boolean(
+      lastGenerativeSwap &&
+      voiceStateA.hasText &&
+      voiceStateB.hasText &&
+      voiceStateA.text === lastGenerativeSwap.sourceTextA &&
+      voiceStateB.text === lastGenerativeSwap.sourceTextB
+    );
   }
 
   function profileTone(profile) {
@@ -4806,6 +4876,7 @@
 
   function clearSwapCadenceAudit() {
     lastSwapCadenceAudit = null;
+    lastGenerativeSwap = null;
   }
 
   function describeSwapCadenceAudit(audit, beforeSnapshot, afterSnapshot) {
@@ -4836,7 +4907,7 @@
       return `Cadence shells swapped. ${slots} landed a retrieval-safe partial shell shift instead of collapsing back to native text. Similarity ${similarityDelta}; route ${routeDelta}.`;
     }
 
-    return `Cadence shells swapped. Each bay kept its own raw text and took the other bay's shell. Similarity ${similarityDelta}; route ${routeDelta}.`;
+    return `Cadence shells generated opposing-mask outputs while preserving both raw source bays. Similarity ${similarityDelta}; route ${routeDelta}.`;
   }
 
   function describeShellNote(voiceState) {
@@ -4997,6 +5068,10 @@
       ? `${drift.driftClass} / ${drift.routeFloor || 'play'}${(drift.driftReasons || []).length ? ` (${drift.driftReasons.slice(0, 3).join(', ')})` : ''}`
       : 'none';
     const semanticLine = `prop ${formatPct(semanticAudit.propositionCoverage ?? 1)}, action ${formatPct(semanticAudit.actionCoverage ?? 1)}, object ${formatPct(semanticAudit.objectCoverage ?? 1)}, polarity ${semanticAudit.polarityMismatches ?? 0}`;
+    const forgeSource = side.transfer?.forgeSource || null;
+    const forgeLine = forgeSource
+      ? `AU forge: ${forgeSource.personaId || 'persona'} / ${forgeSource.phraseId || 'phrase'} / ${forgeSource.variationId || 'variation'}`
+      : 'AU forge: native operator path';
 
     return `
       <article class="duel-side" data-slot="${side.slot}">
@@ -5018,6 +5093,7 @@
         <div class="duel-side-copy">Sentence ${escapeHtml(operatorDiagnostics.sentenceLine)} // punctuation ${escapeHtml(operatorDiagnostics.punctuationLine)}</div>
         <div class="duel-side-copy">Operators fired: ${escapeHtml(landedOperators)}. Missing: ${escapeHtml(missingOperators)}.</div>
         <div class="duel-side-copy">Features recognized: ${escapeHtml(featureRecognized)}. Realized: ${escapeHtml(featureRealized)}. Not realized: ${escapeHtml(featureMissing)}.</div>
+        <div class="duel-side-copy">${escapeHtml(forgeLine)}</div>
         <div class="duel-side-copy">Aperture pressure: ${escapeHtml(pressureLine)}. Semantic risks: ${escapeHtml(semanticLine)}.</div>
         <div class="duel-visual-grid">
           <div class="duel-visual-card">
@@ -5053,10 +5129,13 @@
       };
     }
 
-    const referenceText = voiceStateA.effectiveText;
-    const probeText = voiceStateB.effectiveText;
-    const referenceProfile = voiceStateA.effectiveProfile;
-    const probeProfile = voiceStateB.effectiveProfile;
+    const generativeSwap = generativeSwapStillLive(voiceStateA, voiceStateB);
+    const referenceState = generativeSwap ? lastGenerativeSwap.A : voiceStateA;
+    const probeState = generativeSwap ? lastGenerativeSwap.B : voiceStateB;
+    const referenceText = referenceState.effectiveText;
+    const probeText = probeState.effectiveText;
+    const referenceProfile = referenceState.effectiveProfile;
+    const probeProfile = probeState.effectiveProfile;
     const referenceSignature = buildCadenceSignature(referenceText, referenceProfile);
     const probeSignature = buildCadenceSignature(probeText, probeProfile);
     const duelCompare = compareTexts(referenceText, probeText, {
@@ -5066,25 +5145,32 @@
 
     return {
       state: 'live',
-      sourceLabel: 'Own sources // reference bay and probe bay raw text',
-      note: 'Each side stages its own bay under the currently attached shell. Raw text stays in the textarea; Shell Duel exposes only the cadence transfer.',
+      sourceLabel: generativeSwap
+        ? 'Generative swap // Voice A through Voice B mask / Voice B through Voice A mask'
+        : 'Own sources // reference bay and probe bay raw text',
+      note: generativeSwap
+        ? 'Swap Cadences generated opposing-mask outputs. Raw sources remain in the textareas; generated text renders here for inspection.'
+        : 'Each side stages its own bay under the currently attached shell. Raw text stays in the textarea; Shell Duel exposes only the cadence transfer.',
+      generativeSwap,
       reference: {
         slot: 'A',
-        title: 'Reference bay under current shell',
-        shell: voiceStateA.shell,
+        title: generativeSwap ? 'Voice A through Voice B mask' : 'Reference bay under current shell',
+        shell: referenceState.shell,
         text: referenceText,
         profile: referenceProfile,
         signature: referenceSignature,
-        transfer: voiceStateA.transfer
+        transfer: referenceState.transfer,
+        hasEffectiveTextShift: referenceState.hasEffectiveTextShift
       },
       probe: {
         slot: 'B',
-        title: 'Probe bay under current shell',
-        shell: voiceStateB.shell,
+        title: generativeSwap ? 'Voice B through Voice A mask' : 'Probe bay under current shell',
+        shell: probeState.shell,
         text: probeText,
         profile: probeProfile,
         signature: probeSignature,
-        transfer: voiceStateB.transfer
+        transfer: probeState.transfer,
+        hasEffectiveTextShift: probeState.hasEffectiveTextShift
       },
       compare: duelCompare,
       sentenceDrift: Math.abs((duelCompare.avgSentenceA || 0) - (duelCompare.avgSentenceB || 0))
@@ -5142,7 +5228,7 @@
               <strong id="duelFunctionWordDistance">${formatFixed(duel.compare.functionWordDistance)}</strong>
             </div>
           </div>
-          <p class="duel-delta-copy">Each bay keeps its own text. Swap Cadences should move shell behavior without moving content.</p>
+          <p class="duel-delta-copy">${duel.generativeSwap ? 'Raw bays stay preserved. The duel panels show generated opposing-mask outputs.' : 'Each bay keeps its own text. Analyze shows the current shell state without rewriting the source bays.'}</p>
         </aside>
         ${renderDuelSide(duel.probe)}
       </div>
@@ -5157,7 +5243,9 @@
       action: 'Cadence duel receipt',
       status: missing.length ? 'blocked' : (fired.length || realizedFeatures.length ? 'ready' : 'blocked'),
       route: 'deck-shell-duel',
-      preserved: ['source facts remain in their own bays', 'raw text stays local'],
+      preserved: duel.generativeSwap
+        ? ['raw source bays remain intact', 'generated swap is inspectable before adoption']
+        : ['source facts remain in their own bays', 'raw text stays local'],
       changed: [
         fired.length ? ('operators fired: ' + fired.slice(0, 6).join(', ')) : '',
         realizedFeatures.length ? ('features shifted: ' + realizedFeatures.slice(0, 6).join(', ')) : ''
@@ -6403,8 +6491,8 @@
     $('badgeBtn').textContent = `Cycle custody badge // ${BADGE_LABELS[badge] || badge}`;
     $('resetBtn').textContent = 'Reset bay';
 
-    const voiceStateA = getVoiceState('A');
-    const voiceStateB = getVoiceState('B');
+    const voiceStateA = getVoiceState('A', { evaluate: false });
+    const voiceStateB = getVoiceState('B', { evaluate: false });
     $('swapCadencesBtn').disabled = !(voiceStateA.hasText && voiceStateB.hasText);
     $('swapMedallion').disabled = !(voiceStateA.hasText && voiceStateB.hasText);
     $('randomizeVoiceABtn').disabled = !DECK_RANDOMIZER_SAMPLE_LIBRARY.length;
@@ -7117,7 +7205,7 @@ DeltaE = ${ledger.reuse_gain}`;
 
   function setActiveVoice(slot) {
     activeVoice = slot;
-    renderVoiceProfiles();
+    renderVoiceProfiles(getVoiceState('A', { evaluate: false }), getVoiceState('B', { evaluate: false }));
     renderPersonas();
     updateControls();
   }
@@ -7427,8 +7515,8 @@ DeltaE = ${ledger.reuse_gain}`;
   }
 
   function swapCadences() {
-    const voiceStateA = getVoiceState('A');
-    const voiceStateB = getVoiceState('B');
+    const voiceStateA = getVoiceState('A', { evaluate: false });
+    const voiceStateB = getVoiceState('B', { evaluate: false });
 
     if (!voiceStateA.hasText || !voiceStateB.hasText) {
       setStatusMessage('Swap Cadences needs both bays populated. Two live voices, then shell trading.');
@@ -7438,20 +7526,41 @@ DeltaE = ${ledger.reuse_gain}`;
 
     const shellA = createBorrowedShell(voiceStateA);
     const shellB = createBorrowedShell(voiceStateB);
+    const beforeSnapshot = readDeckSnapshot();
+    const transferA = buildGenerativeSwapTransfer(voiceStateA, shellB);
+    const transferB = buildGenerativeSwapTransfer(voiceStateB, shellA);
+    const generatedVoiceA = buildGenerativeSwapVoiceState('A', voiceStateA, shellB, transferA);
+    const generatedVoiceB = buildGenerativeSwapVoiceState('B', voiceStateB, shellA, transferB);
 
     bayShells = {
       A: shellB,
       B: shellA
     };
-    const beforeSnapshot = readDeckSnapshot();
-    analyzeCadences({ reveal: true, presentation: 'interactive' });
+    lastGenerativeSwap = {
+      sourceTextA: voiceStateA.text,
+      sourceTextB: voiceStateB.text,
+      A: generatedVoiceA,
+      B: generatedVoiceB
+    };
+    setAnalysisRevealState(true);
+    readoutOwner = 'deck';
+    renderVoiceProfiles(voiceStateA, voiceStateB);
+    renderPersonas();
+    updateControls();
     const afterSnapshot = readDeckSnapshot();
-    const afterVoiceA = getVoiceState('A');
-    const afterVoiceB = getVoiceState('B');
-    lastSwapCadenceAudit = buildSwapCadenceAudit(beforeSnapshot, afterSnapshot, afterVoiceA, afterVoiceB);
+    lastSwapCadenceAudit = buildSwapCadenceAudit(beforeSnapshot, afterSnapshot, generatedVoiceA, generatedVoiceB);
+    renderVoiceProfiles(voiceStateA, voiceStateB);
+    renderPersonas();
+    updateControls();
 
     revealShellDuel();
-    setSwapStatusMessage(describeSwapCadenceAudit(lastSwapCadenceAudit, beforeSnapshot, afterSnapshot));
+    const forgeSummary = summarizeAUForgedOntology
+      ? summarizeAUForgedOntology(AU_FORGED_ONTOLOGY)
+      : null;
+    const forgeNote = forgeSummary?.variationCount
+      ? ` AU forge online: ${forgeSummary.variationCount} variations available.`
+      : '';
+    setSwapStatusMessage(`${describeSwapCadenceAudit(lastSwapCadenceAudit, beforeSnapshot, afterSnapshot)}${forgeNote}`);
   }
 
   function swapBayText() {
@@ -7564,9 +7673,14 @@ DeltaE = ${ledger.reuse_gain}`;
     };
     activeVoice = 'A';
     syncBaySampleMetadata();
-    renderVoiceProfiles();
+    renderVoiceProfiles(getVoiceState('A', { evaluate: false }), getVoiceState('B', { evaluate: false }));
     renderPersonas();
-    analyzeCadences({ reveal: keepRevealed, presentation: 'silent' });
+    if (keepRevealed) {
+      analyzeCadences({ reveal: true, presentation: 'silent' });
+    } else {
+      renderIdleState();
+      updateControls();
+    }
     setStatusMessage(
       keepRevealed
         ? 'Deck reset. Native cadences restored and both bays cleared for a new pair.'
@@ -7588,7 +7702,7 @@ DeltaE = ${ledger.reuse_gain}`;
     if (readoutOwner !== 'homebase') {
       collapseAnalysisDeck();
     }
-    renderVoiceProfiles();
+    renderVoiceProfiles(getVoiceState('A', { evaluate: false }), getVoiceState('B', { evaluate: false }));
     updateControls();
     renderPersonas();
     setStatusMessage(
@@ -7677,7 +7791,7 @@ DeltaE = ${ledger.reuse_gain}`;
     persistActiveCadenceLockId();
     setArtifactTab(PAGE_KIND === 'gateway' ? activeArtifactTab : PAGE_ARTIFACT_TAB, { updateHash: true, replaceHash: true });
     syncBaySampleMetadata();
-    renderVoiceProfiles();
+    renderVoiceProfiles(getVoiceState('A', { evaluate: false }), getVoiceState('B', { evaluate: false }));
     renderPersonas();
     if (trainerController && typeof trainerController.restoreState === 'function') {
       trainerController.restoreState(state.trainerState || {});
@@ -7688,7 +7802,13 @@ DeltaE = ${ledger.reuse_gain}`;
       renderPersonas();
       updateControls();
     } else {
-      analyzeCadences({ reveal: analysisRevealed });
+      if (analysisRevealed) {
+        analyzeCadences({ reveal: true });
+      } else {
+        renderIdleState();
+        updateControls();
+        renderPersonas();
+      }
     }
   }
 
@@ -8583,20 +8703,24 @@ DeltaE = ${ledger.reuse_gain}`;
           gallery: readPersonaGallerySnapshot()
         };
 
-        const beforeA = $('voiceA').value;
-        const beforeB = $('voiceB').value;
+      const beforeA = $('voiceA').value;
+      const beforeB = $('voiceB').value;
       $('swapCadencesBtn').click();
+      const swapSnapshot = readDeckSnapshot();
       report.swapCadences = {
-        snapshot: readDeckSnapshot(),
+        snapshot: swapSnapshot,
         personaStatus: $('personaStatus').textContent.trim(),
         voiceAUnchanged: $('voiceA').value === beforeA,
         voiceBUnchanged: $('voiceB').value === beforeB,
         duelSamplesChanged:
-          readDeckSnapshot().duelReferenceSample !== ownSourceSnapshot.duelReferenceSample ||
-          readDeckSnapshot().duelProbeSample !== ownSourceSnapshot.duelProbeSample,
+          swapSnapshot.duelReferenceSample !== ownSourceSnapshot.duelReferenceSample ||
+          swapSnapshot.duelProbeSample !== ownSourceSnapshot.duelProbeSample,
+        generativeOutputVisible:
+          swapSnapshot.duelReferenceSample !== beforeA ||
+          swapSnapshot.duelProbeSample !== beforeB,
         pairClassification: lastSwapCadenceAudit?.classification || '',
-        cueVisible: readDeckSnapshot().statusCueVisible,
-        cueText: readDeckSnapshot().statusCue,
+        cueVisible: swapSnapshot.statusCueVisible,
+        cueText: swapSnapshot.statusCue,
         audit: lastSwapCadenceAudit
       };
 
@@ -8942,7 +9066,8 @@ DeltaE = ${ledger.reuse_gain}`;
           { id: 'sample_randomizer_rerenders_after_prior_analysis', pass: report.sampleRandomizer.rerenderAfterAnalysis },
           { id: 'sample_randomizer_clears_readout_but_keeps_duel_live', pass: report.sampleRandomizer.readoutCleared && report.sampleRandomizer.duelLivePreanalysis },
           { id: 'deck_cast_report_preanalysis', pass: String(report.sampleRandomizer.snapshot.castReport || '').toLowerCase().includes('cast report') },
-          { id: 'swap_shells_preserve_raw_text', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
+          { id: 'swap_cadences_preserve_source_bays', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
+          { id: 'swap_cadences_generates_visible_output', pass: report.swapCadences.generativeOutputVisible || report.swapCadences.duelSamplesChanged },
             { id: 'swap_cadences_retrieval_audit_present', pass: Boolean(report.swapCadences.audit && report.swapCadences.audit.lanes && report.swapCadences.audit.lanes.A && report.swapCadences.audit.lanes.B) },
             { id: 'save_persona_adds_entry', pass: report.savePersona.savedPersonaAdded },
             {
@@ -9214,7 +9339,7 @@ DeltaE = ${ledger.reuse_gain}`;
       return;
     }
 
-    renderVoiceProfiles();
+    renderVoiceProfiles(getVoiceState('A', { evaluate: false }), getVoiceState('B', { evaluate: false }));
     document.body.dataset.bootStage = 'boot-rendered-profiles';
     await initializePersonaGallery();
     document.body.dataset.bootStage = 'boot-rendered-gallery';
@@ -9242,8 +9367,8 @@ DeltaE = ${ledger.reuse_gain}`;
         activeArtifactTab: initialTab,
         artifactHash: artifactHashForTab(initialTab)
       });
-    } else {
-      analyzeCadences({ reveal: Boolean(testFlightMode) });
+    } else if (testFlightMode) {
+      analyzeCadences({ reveal: true });
     }
 
     openPendingTrainerPersonaIfNeeded();

@@ -964,8 +964,8 @@ assert.equal(
 
 assert.deepEqual(
   [...familyUnion].sort((left, right) => left.localeCompare(right)),
-  ['cadence-connector', 'clause-pivot', 'hybrid', 'order-beat', 'persona-lexicon', 'pressure-current', 'register-lexicon', 'syntax-shape'],
-  'Generator V2 reports the expanded native family set in retrieval traces'
+  ['au-forged-ontology', 'cadence-connector', 'clause-pivot', 'hybrid', 'order-beat', 'persona-lexicon', 'pressure-current', 'register-lexicon', 'syntax-shape'],
+  'Generator V2 reports the expanded native and AU-forged family set in retrieval traces'
 );
 
 const buildMajorMaskResult = (text, persona) => buildCadenceTransfer(

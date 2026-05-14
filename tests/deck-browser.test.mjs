@@ -105,7 +105,7 @@ try {
   const statusAfterSwap = (await page.locator('#analysisStatusBase').textContent()) || '';
   assert.notEqual(duelSimilarityAfter, duelSimilarityBefore, 'Swap Cadences changes the duel similarity readout');
   assert.notEqual(duelTraceabilityAfter, duelTraceabilityBefore, 'Swap Cadences changes the duel traceability readout');
-  assert.match(statusAfterSwap, /Cadence shells swapped/i, 'Swap Cadences publishes a live encounter status message');
+  assert.match(statusAfterSwap, /Cadence shells (?:swapped|generated)/i, 'Swap Cadences publishes a live encounter status message');
 
   await page.goto(`${deckUrl}&fresh=1`, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.body.dataset.bootStage === 'boot-complete', { timeout: 15000 });

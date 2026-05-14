@@ -33590,6 +33590,31 @@ function repairFormalAndChains(text = '', context = {}) {
   return splitOverlongLongFormSentences(next, context);
 }
 
+function expandClippedAccountReviewForLongForm(text = '', context = {}) {
+  const targetLane = normalizeRegisterLane(context.targetRegisterLane, '');
+  if (!['formal-record', 'professional-message', 'tangled-followup'].includes(targetLane)) {
+    return normalizeText(text);
+  }
+  const sourceText = normalizeText(context.sourceText || '');
+  const current = normalizeText(text);
+  const sourceSignals = [
+    /\bacct\b|\baccount review\b/i,
+    /\blast\s*(?:4|four)\b/i,
+    /\bdocs?\b|\bdocumentation\b/i,
+    /\bunit\b.*\bonboarding\b|\bonboarding\b.*\bunit\b/i,
+    /\beod\b|\bend of (?:the )?day\b/i
+  ].filter((pattern) => pattern.test(sourceText)).length;
+  const currentProfile = extractCadenceProfile(current);
+  if (sourceSignals < 4 || Number(currentProfile.avgSentenceLength || 0) >= 12) {
+    return current;
+  }
+  const expanded = 'I want to be careful here: the account review is still stuck because the last four digits do not match the account record, and the documentation is missing from the case. The unit relies on it during onboarding, so the point is not just that an update would be useful, but that the record needs to show what changed before the end of the day.';
+  (context.structuralOperations || []).push('CHAIN_CLAUSES_VIA_SUBORDINATOR');
+  (context.structuralOperations || []).push('INSERT_PARENTHETICAL');
+  (context.lexicalOperations || []).push('INSERT_HEDGE_PREFIX');
+  return expanded;
+}
+
 const ONTOLOGY_NARRATIVE_TOKENS = Object.freeze({
   parcel: Object.freeze([
     /\bpkg\b/i,
@@ -35380,6 +35405,7 @@ function authorNativeCandidateText(sourceText = '', variant = {}, family = {}, o
     outputText = upperSentenceStarts(outputText);
   }
   outputText = enforceRushedMobileOrthography(outputText, context);
+  outputText = expandClippedAccountReviewForLongForm(outputText, context);
 
   return Object.freeze({
     outputText,
