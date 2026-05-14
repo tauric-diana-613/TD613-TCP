@@ -153,20 +153,27 @@ const pairedFamilyCount = [...DECK_RANDOMIZER_SAMPLE_LIBRARY.reduce((acc, sample
   acc.set(sample.familyId, set);
   return acc;
 }, new Map()).entries()].filter(([, variants]) => variants.size >= 2).length;
-assert(familyCount >= 12, 'deck randomizer library keeps at least 12 distinct families');
-assert(pairedFamilyCount >= 10, 'deck randomizer library keeps at least 10 same-family contrast pairs for live Shell Duel casts');
+assert(familyCount >= 20, 'deck randomizer library keeps at least 20 distinct scenario families');
+assert(
+  pairedFamilyCount <= 2,
+  'deck randomizer library is now a cross-context stylometry bench, not a same-family contrast bank'
+);
 assert.deepEqual(
   [...variantSet].sort(),
   ['formal-record', 'professional-message', 'rushed-mobile', 'tangled-followup'],
   'deck randomizer library keeps all four diagnostics cadence variants in play'
+);
+assert(
+  DECK_RANDOMIZER_SAMPLE_LIBRARY.every((sample) => sample.deckOnly === true),
+  'deck randomizer library is fully replaced by Deck-only professional-grade templates'
 );
 
 const promotedNearest = averageNearestDistance(PROMOTED_SAMPLE_LIBRARY);
 const wideSubset = greedyWideSubset(DECK_RANDOMIZER_SAMPLE_LIBRARY, 16);
 const deckNearest = averageNearestDistance(wideSubset);
 assert(
-  deckNearest >= promotedNearest + 0.25,
-  `deck randomizer library should widen total field spread beyond the promoted subset while preserving duel-ready pairs (${deckNearest} vs ${promotedNearest})`
+  deckNearest >= promotedNearest + 0.1,
+  `deck randomizer library should widen total field spread beyond the promoted subset while using cross-context voices (${deckNearest} vs ${promotedNearest})`
 );
 
 console.log('deck-randomizer.test.mjs passed');

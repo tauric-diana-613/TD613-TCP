@@ -106,10 +106,14 @@ try {
   const statusAfterSwap = (await page.locator('#analysisStatusBase').textContent()) || '';
   const voiceAAfterSwap = await page.locator('#voiceA').inputValue();
   const voiceBAfterSwap = await page.locator('#voiceB').inputValue();
+  const duelReferenceAfterSwap = (await page.locator('#duelSampleA').textContent()) || '';
+  const duelProbeAfterSwap = (await page.locator('#duelSampleB').textContent()) || '';
   assert.notEqual(duelSimilarityAfter, duelSimilarityBefore, 'Swap Cadences changes the duel similarity readout');
   assert.notEqual(duelTraceabilityAfter, duelTraceabilityBefore, 'Swap Cadences changes the duel traceability readout');
-  assert.notEqual(voiceAAfterSwap, initialReference, 'Swap Cadences rewrites Voice A source text');
-  assert.notEqual(voiceBAfterSwap, initialProbe, 'Swap Cadences rewrites Voice B source text');
+  assert.equal(voiceAAfterSwap, initialReference, 'Swap Cadences preserves Voice A source text');
+  assert.equal(voiceBAfterSwap, initialProbe, 'Swap Cadences preserves Voice B source text');
+  assert.notEqual(duelReferenceAfterSwap, initialReference, 'Swap Cadences rewrites Voice A only inside the duel output');
+  assert.notEqual(duelProbeAfterSwap, initialProbe, 'Swap Cadences rewrites Voice B only inside the duel output');
   assert.match(statusAfterSwap, /Cadence shells (?:swapped|generated)/i, 'Swap Cadences publishes a live encounter status message');
 
   await page.goto(`${deckUrl}&fresh=1`, { waitUntil: 'domcontentloaded' });

@@ -1881,601 +1881,489 @@
       }
     ],
     "deckRandomizerSampleIds": [
-      "building-access-formal-record",
-      "building-access-professional-message",
-      "building-access-rushed-mobile",
-      "building-access-tangled-followup",
-      "package-handoff-formal-record",
-      "package-handoff-professional-message",
-      "package-handoff-rushed-mobile",
-      "package-handoff-tangled-followup",
-      "volunteer-cleanup-formal-record",
-      "volunteer-cleanup-rushed-mobile",
-      "volunteer-cleanup-tangled-followup",
-      "tenant-leak-formal-record",
-      "tenant-leak-professional-message",
-      "tenant-leak-rushed-mobile",
-      "tenant-leak-tangled-followup",
-      "clinic-scheduling-formal-record",
-      "clinic-scheduling-professional-message",
-      "clinic-scheduling-rushed-mobile",
-      "committee-budget-formal-record",
-      "committee-budget-professional-message",
-      "committee-budget-tangled-followup",
-      "mutual-aid-formal-record",
-      "mutual-aid-professional-message",
-      "mutual-aid-rushed-mobile",
-      "mutual-aid-tangled-followup",
-      "overwork-debrief-formal-record",
-      "overwork-debrief-professional-message",
-      "overwork-debrief-rushed-mobile",
-      "overwork-debrief-tangled-followup",
-      "archive-grant-formal-record",
-      "archive-grant-professional-message",
-      "archive-grant-rushed-mobile",
-      "performance-review-formal-record",
-      "performance-review-professional-message",
-      "performance-review-rushed-mobile",
-      "performance-review-tangled-followup",
-      "customer-support-formal-record",
-      "customer-support-professional-message",
-      "customer-support-rushed-mobile",
-      "school-coordination-formal-record",
-      "school-coordination-professional-message",
-      "school-coordination-rushed-mobile",
-      "newsroom-correction-formal-record",
-      "newsroom-correction-professional-message",
-      "newsroom-correction-rushed-mobile",
-      "newsroom-correction-tangled-followup",
-      "benefits-appeal-formal-record",
-      "benefits-appeal-professional-message",
-      "benefits-appeal-rushed-mobile",
-      "benefits-appeal-tangled-followup",
-      "municipal-zoning-formal-record",
-      "municipal-zoning-professional-message",
-      "municipal-zoning-rushed-mobile",
-      "municipal-zoning-tangled-followup",
-      "adversarial-hearing-formal-record",
-      "adversarial-hearing-professional-message",
-      "adversarial-hearing-rushed-mobile",
-      "adversarial-hearing-tangled-followup",
-      "museum-fog-alarm-formal-record",
-      "museum-fog-alarm-professional-message",
-      "museum-fog-alarm-rushed-mobile",
-      "museum-fog-alarm-tangled-followup",
-      "model-safety-formal-record",
-      "model-safety-professional-message",
-      "model-safety-rushed-mobile",
-      "model-safety-tangled-followup"
+      "tattoo-deposit-formal-record",
+      "dog-park-bite-formal-record",
+      "food-truck-permit-formal-record",
+      "election-table-formal-record",
+      "freelance-invoice-professional-message",
+      "band-rehearsal-professional-message",
+      "daycare-allergy-professional-message",
+      "roof-estimate-professional-message",
+      "rideshare-phone-rushed-mobile",
+      "warehouse-pick-rushed-mobile",
+      "group-project-rushed-mobile",
+      "airport-delay-rushed-mobile",
+      "doctor-portal-tangled-followup",
+      "union-shift-tangled-followup",
+      "elder-care-tangled-followup",
+      "artist-feedback-tangled-followup",
+      "bike-lane-closure-formal-record",
+      "aquarium-pump-formal-record",
+      "wedding-florist-professional-message",
+      "podcast-edit-professional-message",
+      "game-mod-rushed-mobile",
+      "childcare-pickup-rushed-mobile",
+      "grad-advisor-tangled-followup",
+      "neighbor-dog-noise-tangled-followup"
     ],
     "deckRandomizerSampleLibrary": [
       {
-        "id": "building-access-formal-record",
-        "familyId": "building-access",
+        "id": "tattoo-deposit-formal-record",
+        "familyId": "tattoo-deposit",
         "variant": "formal-record",
-        "name": "West Annex Badge Failure / Formal Record",
-        "intention": "Preserve literal sequence, times, and access state without losing the operational correction.",
-        "text": "At 08:14 on Monday, Door 3 at the West Annex began presenting a false-open state. The reader accepted active badges and flashed green, but the strike did not release. The first confirmed access failure affected courier intake at 08:19, when a refrigerated medication delivery for Suite 118 could not clear the corridor. Facilities first treated the event as a low-voltage latch issue; the meter reading did not support that assumption. By 08:31 we confirmed that the overnight badge-renewal push had stopped validating newly renewed credentials while older local cache entries still passed. Deliveries were rerouted to the south receiving desk at 08:37. Manual escort restored controlled entry at 08:42, and the controller was rolled back at 09:06. No restricted room was breached, no cold-chain item was lost, and the custody log remains continuous. Required correction: no future firmware push may close without a live-door test, a latch release check, and a signed handoff from systems to archive operations."
+        "name": "Tattoo Deposit Transfer / Formal Record",
+        "intention": "Stress consumer-service custody, exact amounts, and art-production sequence.",
+        "context": "Shop record documenting a deposit, reschedule, and disputed design slot.",
+        "stressTags": [
+          "directness",
+          "human-authorship-variety",
+          "list-structure",
+          "literal-anchors",
+          "same-facts",
+          "sentence-span"
+        ],
+        "deckOnly": true,
+        "text": "Client paid a $120 design deposit on June 3 for a forearm botanical piece scheduled with Mara. The appointment was rescheduled once by the shop after Mara called out sick on June 11, then again by the client on June 18 with forty-two hours notice. The deposit policy allows one client reschedule before forfeiture. The disagreement began when the replacement artist opened a different design file and treated the deposit as a new consultation rather than a carried-over design slot. The correction is to restore the original deposit ledger, attach Mara's sketch note to the new appointment, and stop describing the June 18 change as a missed booking."
       },
       {
-        "id": "building-access-professional-message",
-        "familyId": "building-access",
+        "id": "dog-park-bite-formal-record",
+        "familyId": "dog-park-bite",
+        "variant": "formal-record",
+        "name": "Dog Park Gate Bite / Formal Record",
+        "intention": "Stress spatial sequence, animal-handling facts, and non-dramatic liability framing.",
+        "context": "Park incident note after a gate-latch failure and minor bite report.",
+        "stressTags": [
+          "directness",
+          "human-authorship-variety",
+          "list-structure",
+          "literal-anchors",
+          "same-facts",
+          "sentence-span"
+        ],
+        "deckOnly": true,
+        "text": "At approximately 5:22 PM, the north gate at Waverly dog run failed to latch after two visitors exited with a leashed terrier. A gray shepherd mix pushed through the gap before its handler reached the gate. The shepherd made contact with a jogger's left calf outside the run, producing a shallow puncture and torn sock but no reported fall. The handler retrieved the dog within one minute and provided vaccination records by text at 5:41 PM. The issue is not a roaming animal report in isolation. It is a gate-maintenance failure that converted a contained dog-run interaction into a sidewalk contact event."
+      },
+      {
+        "id": "food-truck-permit-formal-record",
+        "familyId": "food-truck-permit",
+        "variant": "formal-record",
+        "name": "Food Truck Propane Inspection / Formal Record",
+        "intention": "Add mechanical/municipal register with compact compliance anchors.",
+        "context": "Permit note for a food truck delayed by a propane-inspection mismatch.",
+        "stressTags": [
+          "adjacent-lexicon",
+          "directness",
+          "human-authorship-variety",
+          "list-structure",
+          "literal-anchors",
+          "same-facts",
+          "sentence-span"
+        ],
+        "deckOnly": true,
+        "text": "The Rivera Tacos mobile unit passed the fire-extinguisher check but remains pending for propane clearance. The inspection sticker on tank B lists the April service date, while the vendor certificate submitted with the permit packet lists the March cylinder number. Staff confirmed the truck is not barred from vending for food-handling reasons. The hold is limited to the fuel documentation mismatch. Applicant was advised to bring the tank B receipt, the vendor certificate, and the truck registration to the permit window by 10:00 AM Friday. No event placement should be assigned until propane clearance is matched to the physical cylinder."
+      },
+      {
+        "id": "election-table-formal-record",
+        "familyId": "election-table",
+        "variant": "formal-record",
+        "name": "Canvass Table Ballot Literature / Formal Record",
+        "intention": "Stress civic/legal boundary language without turning into generic policy prose.",
+        "context": "Election volunteer record about literature placed too close to a sign-in table.",
+        "stressTags": [
+          "directness",
+          "human-authorship-variety",
+          "list-structure",
+          "literal-anchors",
+          "same-facts",
+          "sentence-span"
+        ],
+        "deckOnly": true,
+        "text": "During the Saturday canvass launch, campaign literature for Ward 5 was placed on the same folding table used for voter-address checks. The material was moved at 10:18 AM after a volunteer captain observed that residents were signing route sheets beside candidate flyers. No ballot was issued from that table and no voter was denied service. The corrective issue is spatial separation, not voter contact itself. Address verification, literature distribution, and volunteer assignment must occupy distinct surfaces so the sign-in process cannot be interpreted as conditioned on exposure to campaign material."
+      },
+      {
+        "id": "freelance-invoice-professional-message",
+        "familyId": "freelance-invoice",
         "variant": "professional-message",
-        "name": "West Annex Badge Failure / Professional Message",
-        "intention": "Flag the access problem quickly while preserving exact door, time window, and downstream risk.",
-        "text": "Facilities team, quick flag from West Annex: Door 3 is reading badges but not actually unlatching. First bad read we can pin down is 08:19, and it is now holding up the courier run for Suite 118 because the cold bag cannot sit outside any longer. It does not look like a dead reader. The panel is green, the click sounds normal, and the door still holds. Early guess is that the overnight renewal push touched the validator, because staff whose badges renewed this morning are failing while one older temporary badge still clears. We have rerouted intake to south receiving for now, but please do not close this as a power issue unless someone physically checks the latch and the controller cache. If you need a witness on site, I am by the loading corridor."
+        "name": "Freelance Invoice Follow-up / Professional Message",
+        "intention": "Add polite pressure, practical boundaries, and money-specific cadence.",
+        "context": "Designer email following up on a late invoice without burning the client relationship.",
+        "stressTags": [
+          "contraction",
+          "directness",
+          "hedging",
+          "human-authorship-variety",
+          "list-structure",
+          "register-shift",
+          "same-facts"
+        ],
+        "deckOnly": true,
+        "text": "Hi Jenna, checking in on invoice 1048 for the launch-page revisions. The payment date in the statement was last Friday, and I do not see it as pending on my side yet. I know the assets shipped in pieces because the copy deck changed twice, so I am not trying to make this more dramatic than it is. I do need the invoice cleared before I take on the next round of banner variants. If accounting already released it, please send the remittance note and I will mark it resolved."
       },
       {
-        "id": "building-access-rushed-mobile",
-        "familyId": "building-access",
+        "id": "band-rehearsal-professional-message",
+        "familyId": "band-rehearsal",
+        "variant": "professional-message",
+        "name": "Band Rehearsal Reset / Professional Message",
+        "intention": "Add artistic collaboration voice: warm, annoyed, practical, non-corporate.",
+        "context": "Bandmate message after rehearsal kept drifting into gear talk instead of set timing.",
+        "stressTags": [
+          "contraction",
+          "directness",
+          "human-authorship-variety",
+          "list-structure",
+          "register-shift",
+          "same-facts"
+        ],
+        "deckOnly": true,
+        "text": "Can we use Thursday to lock transitions instead of re-litigating pedal boards? The chorus into \"Mercy Weather\" is still too long, and the drummer is guessing because the guitar handoff changes every pass. I love the texture experiments, truly, but the set falls apart if the quiet bridge keeps stretching by instinct. Please come in with one version of the intro, one version of the bridge, and the actual ending count. After that we can chase tone ghosts as much as anyone wants."
+      },
+      {
+        "id": "daycare-allergy-professional-message",
+        "familyId": "daycare-allergy",
+        "variant": "professional-message",
+        "name": "Daycare Snack Allergy Note / Professional Message",
+        "intention": "Stress anxious but organized parent cadence with concrete child-safety details.",
+        "context": "Parent message clarifying a snack substitution after a daycare allergy scare.",
+        "stressTags": [
+          "contraction",
+          "directness",
+          "hedging",
+          "human-authorship-variety",
+          "list-structure",
+          "register-shift",
+          "same-facts"
+        ],
+        "deckOnly": true,
+        "text": "Hi all, I want to clarify Leo's snack plan after yesterday's mix-up. The oat crackers are fine. The sesame topping is not. His allergy form says sesame and tahini, but I realize the container just said \"seed blend,\" so I understand how the confusion happened. For now, please give him the labeled blue-bin snacks only, even if another parent brings something that looks similar. I am not upset with the classroom team. I just need the substitution rule to be boring and automatic so no one is improvising at snack time."
+      },
+      {
+        "id": "roof-estimate-professional-message",
+        "familyId": "roof-estimate",
+        "variant": "professional-message",
+        "name": "Roof Estimate Scope Check / Professional Message",
+        "intention": "Add skeptical but civil homeowner voice with trade-specific facts.",
+        "context": "Homeowner message asking a contractor to separate leak repair from upsold roof replacement.",
+        "stressTags": [
+          "adjacent-lexicon",
+          "contraction",
+          "directness",
+          "human-authorship-variety",
+          "list-structure",
+          "register-shift",
+          "same-facts"
+        ],
+        "deckOnly": true,
+        "text": "Thanks for coming out yesterday. Before I sign anything, can you separate the flashing repair from the full roof replacement quote? The leak is showing at the kitchen wall after hard rain, and your photos show lifted flashing near the vent stack, but the estimate reads like the whole south slope has already failed. I am open to replacing more if the decking is actually compromised. I just need the repair scope and the optional upgrade scope written as two different decisions, not one urgent package."
+      },
+      {
+        "id": "rideshare-phone-rushed-mobile",
+        "familyId": "rideshare-phone",
         "variant": "rushed-mobile",
-        "name": "West Annex Badge Failure / Rushed Mobile",
-        "intention": "Capture same facts under compression, dropped punctuation, and mobile urgency.",
-        "text": "west annex d3 still fake open. reader goes green + buzzes but door wont release. first hit was like 8:19 maybe 8:20. courier for suite 118 is here w fridge meds and he cant just wait in sun. weird part: my renewed badge fails, old temp badge worked once. not power i dont think. can someone pls check controller before they keep telling me to jiggle latch again"
+        "name": "Rideshare Lost Phone / Rushed Mobile",
+        "intention": "Stress panic, lowercase, quick corrections, and sparse punctuation.",
+        "context": "Late-night text after realizing a phone was left in a rideshare.",
+        "stressTags": [
+          "contraction",
+          "fragmentation",
+          "human-authorship-variety",
+          "literal-anchors",
+          "punctuation",
+          "recurrence",
+          "same-facts"
+        ],
+        "deckOnly": true,
+        "text": "left my phone in the lyft i think. black case w cracked corner. driver was samir maybe? picked me up outside crown bar around 12:40. if he answers pls tell him i can meet anywhere public rn. im on maya phone so dont text my number bc obviously lol"
       },
       {
-        "id": "building-access-tangled-followup",
-        "familyId": "building-access",
+        "id": "warehouse-pick-rushed-mobile",
+        "familyId": "warehouse-pick",
+        "variant": "rushed-mobile",
+        "name": "Warehouse Pick Error / Rushed Mobile",
+        "intention": "Add operational shorthand and clipped inventory cadence.",
+        "context": "Warehouse scanner note after a wrong-bin pick created a shipping problem.",
+        "stressTags": [
+          "adjacent-lexicon",
+          "contraction",
+          "fragmentation",
+          "human-authorship-variety",
+          "literal-anchors",
+          "punctuation",
+          "recurrence",
+          "same-facts"
+        ],
+        "deckOnly": true,
+        "text": "bin c14 is wrong again. scanner says lavender lids but shelf has smoke gray. i already pulled 12 before i saw label mismatch. dont ship order 8831 yet. need cycle count + new pick ticket or this is gonna become another \"customer wanted gray?\" mess"
+      },
+      {
+        "id": "group-project-rushed-mobile",
+        "familyId": "group-project",
+        "variant": "rushed-mobile",
+        "name": "Group Project Panic / Rushed Mobile",
+        "intention": "Stress chatspeak, panic humor, and task triage.",
+        "context": "Student group chat right before a presentation file was due.",
+        "stressTags": [
+          "contraction",
+          "fragmentation",
+          "human-authorship-variety",
+          "literal-anchors",
+          "punctuation",
+          "recurrence",
+          "same-facts"
+        ],
+        "deckOnly": true,
+        "text": "wait who has final slides?? the one in drive still says v3 and my section is there twice. also intro has old thesis. pls dont upload until i fix chart labels. im not being dramatic but if prof sees \"data vibes\" in speaker notes i will evaporate"
+      },
+      {
+        "id": "airport-delay-rushed-mobile",
+        "familyId": "airport-delay",
+        "variant": "rushed-mobile",
+        "name": "Airport Delay Family Text / Rushed Mobile",
+        "intention": "Add travel compression, annoyance, and practical coordination.",
+        "context": "Family text while stuck at an airport gate after a rolling delay.",
+        "stressTags": [
+          "contraction",
+          "fragmentation",
+          "human-authorship-variety",
+          "literal-anchors",
+          "punctuation",
+          "recurrence",
+          "same-facts"
+        ],
+        "deckOnly": true,
+        "text": "still at gate c22. delay board says 40 min but agent just said crew isnt here so lol. if i miss connection dont wait at baggage. take shuttle home + leave key under blue pot. suitcase has meds so if bag goes rogue im filing every form in existence"
+      },
+      {
+        "id": "doctor-portal-tangled-followup",
+        "familyId": "doctor-portal",
         "variant": "tangled-followup",
-        "name": "West Annex Badge Failure / Tangled Follow-up",
-        "intention": "Clarify half-right early reports and preserve which credentials failed, which door behavior held, and what corrected the issue.",
-        "text": "Looping back because the first thread turned two separate things into one. The door was not dead, and it was not exactly \"unlocking then relocking\" either, although I can see why it looked that way in the moment. What was happening was more annoying: Door 3 flashed green, gave the normal sound, and still kept the strike engaged whenever the badge in question had been renewed after the overnight push. Older cached credentials could sometimes clear, which is why one temp badge made it through and confused the diagnosis. That distinction matters because people kept testing the latch instead of the validator. Also, the courier delay was not abstract. The medication bag for Suite 118 was already at the corridor at 08:19 and only got rerouted at 08:37. If we write this up as \"door glitch, resolved,\" we will miss the actual correction point."
+        "name": "Doctor Portal Correction / Tangled Follow-up",
+        "intention": "Stress self-advocacy, correction anxiety, and medical specificity without legal tone.",
+        "context": "Patient portal follow-up after a symptom summary became inaccurate.",
+        "stressTags": [
+          "hedging",
+          "human-authorship-variety",
+          "literal-anchors",
+          "recurrence",
+          "register-shift",
+          "same-facts",
+          "sentence-span",
+          "tangle"
+        ],
+        "deckOnly": true,
+        "text": "I am writing again because the visit summary makes it sound like the dizziness started after the medication increase, and that is not what I tried to say. The dizziness was already happening before the dose changed. What changed after the increase was the timing: instead of coming mainly when I stood up fast, it started showing up late afternoon even if I had been sitting. I know that may sound like a small distinction, but it is the reason I asked whether this is blood-pressure related or a side effect. I do not want the chart to lock in the wrong sequence."
       },
       {
-        "id": "package-handoff-formal-record",
-        "familyId": "package-handoff",
-        "variant": "formal-record",
-        "name": "Second-Floor Rush Parcel / Formal Record",
-        "intention": "Preserve witness sequence, unit number, parcel status, and handling chain.",
-        "text": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that minute. The package was instead left on the second-floor landing near the stair rail. Ms. Chen located it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come through. I moved the parcel from the landing to the hallway table outside 2B only after Ms. Chen confirmed it was hers and requested help because she was already carrying groceries. The outer carton remained sealed. The red rush label remained attached. No third party handled the parcel after pickup from the landing. The corrective issue is not merely where the box rested, but that the signature record implies a contact attempt that the building log does not support."
-      },
-      {
-        "id": "package-handoff-professional-message",
-        "familyId": "package-handoff",
-        "variant": "professional-message",
-        "name": "Second-Floor Rush Parcel / Professional Message",
-        "intention": "Correct the delivery record while retaining concrete hallway and unit details.",
-        "text": "Hi building office, can someone please correct yesterday's delivery note for Unit 2B? The carrier record says \"attempted / no answer\" at 6:41 PM, but there was no buzzer call to 2B and the parcel was found on the second-floor landing instead of at the apartment door. Ms. Chen only found it after seeing the door tag and asking whether anything had been dropped off upstairs. I helped bring it from the landing to the hallway table outside 2B because she already had grocery bags and did not want to make a second trip on her knee. The parcel was still sealed and still had the red rush label on it. I am not asking for anything dramatic here, just for the record to stop saying a signature attempt happened when it did not."
-      },
-      {
-        "id": "package-handoff-rushed-mobile",
-        "familyId": "package-handoff",
-        "variant": "rushed-mobile",
-        "name": "Second-Floor Rush Parcel / Rushed Mobile",
-        "intention": "Keep the same facts legible through clipped mobile shorthand.",
-        "text": "2b pkg wasnt brought down. tag says attempted 6:41 but no one buzzed her. it was just sitting on 2nd fl landing by rail. red rush sticker still on it. i moved it to hall table after she said yes its hers / she had bags already. if mgmt asks: box stayed sealed."
-      },
-      {
-        "id": "package-handoff-tangled-followup",
-        "familyId": "package-handoff",
+        "id": "union-shift-tangled-followup",
+        "familyId": "union-shift",
         "variant": "tangled-followup",
-        "name": "Second-Floor Rush Parcel / Tangled Follow-up",
-        "intention": "Repair sequence confusion without dropping the signature and hallway facts.",
-        "text": "Following up because I think yesterday's thread accidentally made it sound as if the parcel moved through three hands before anyone could say whose it was. That is not quite right. The carrier marked \"attempted / no answer\" at 6:41 PM, but there was no call to 2B that anyone can point to. Ms. Chen saw the tag, asked around, and then the parcel was spotted on the second-floor landing near the stair rail. I lifted it from there only after she said it was the expected rush shipment and after she said she did not want to carry one more thing while balancing groceries. So yes, the hallway table outside 2B is where it ended up, but the actual miss happened earlier, on the landing, when the delivery record pretended the signature step had been tried."
+        "name": "Union Shift Coverage Follow-up / Tangled Follow-up",
+        "intention": "Add labor voice with institutional pressure, defensiveness, and careful distinction.",
+        "context": "Worker follow-up after a coverage complaint was framed as personal conflict.",
+        "stressTags": [
+          "abstraction",
+          "directness",
+          "hedging",
+          "human-authorship-variety",
+          "recurrence",
+          "register-shift",
+          "same-facts",
+          "sentence-span",
+          "tangle"
+        ],
+        "deckOnly": true,
+        "text": "Following up because I think the coverage issue is being turned into \"Marisol and Devon do not get along,\" and that is easier to manage than what actually happened. The problem is that the closing shift has been short twice a week since the new schedule, and whoever complains first becomes the attitude problem. I am not asking anyone to referee personalities. I am asking that we stop treating chronic understaffing as if it is a tone dispute between tired people. If the register, dishes, floor, and deposit all need two bodies after 8:30, then the schedule should say that before the shift starts failing in predictable ways."
       },
       {
-        "id": "volunteer-cleanup-formal-record",
-        "familyId": "volunteer-cleanup",
-        "variant": "formal-record",
-        "name": "Lot Cleanup Safety Brief / Formal Record",
-        "intention": "Keep assignment lanes and safety constraints explicit for later reuse.",
-        "text": "Saturday lot cleanup opens at 07:30. Check-in is at the west fence table, and no one starts independent work before lane assignment. The first pass covers glass pickup, broken pallet removal, pantry post reset, and salvage sorting. Tool staging is fixed: shovels at the fence, brooms at the blue tarp, lumber saws under canopy B, paint at the folding table only if wind stays below the posted threshold. Gloves, water, and closed-toe shoes are not optional. Minors may assist with labeling and pantry sorting but do not enter the saw or thinner zone. Inventory stop is 10:15 sharp so the afternoon crew inherits a readable site rather than scattered half-decisions. If rain starts, suspend paint first, then cuts, then all electrical equipment. Success means the lot is safer, more legible, and easier for the next crew to continue without guessing."
-      },
-      {
-        "id": "volunteer-cleanup-rushed-mobile",
-        "familyId": "volunteer-cleanup",
-        "variant": "rushed-mobile",
-        "name": "Lot Cleanup Safety Brief / Rushed Mobile",
-        "intention": "Preserve the task lanes while stressing fragmented mobile urgency.",
-        "text": "if youre late thats ok just dont start random jobs. check in west fence table first. glass + pallets first pass. saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands. pls bring water for real, not saying it to be annoying"
-      },
-      {
-        "id": "volunteer-cleanup-tangled-followup",
-        "familyId": "volunteer-cleanup",
+        "id": "elder-care-tangled-followup",
+        "familyId": "elder-care",
         "variant": "tangled-followup",
-        "name": "Lot Cleanup Safety Brief / Tangled Follow-up",
-        "intention": "Correct misread staging details without losing the original assignment logic.",
-        "text": "Quick follow-up because I think my earlier note sounded more relaxed than the work actually is. When I said \"check in at the table,\" I did not mean \"say hi and then drift toward whatever looks unfinished.\" I meant actual lane assignment, because last month we ended up with three people scraping paint while the broken glass sat untouched by the gate. Also, \"kids can help\" did not mean kids circulating through every station. It meant labeling and pantry sorting only. I know that sounds over-specific, but the site gets messy fast once half-heard instructions start mutating. So: west fence table first, glass and pallets first pass, saws under canopy B, paint only if the wind holds, and inventory stop at 10:15 even if the lot finally starts looking photogenic right before then."
+        "name": "Sibling Elder-Care Thread / Tangled Follow-up",
+        "intention": "Add family-system emotional tangle with practical caregiving facts.",
+        "context": "Sibling message trying to clarify medication and appointment responsibility.",
+        "stressTags": [
+          "hedging",
+          "human-authorship-variety",
+          "recurrence",
+          "register-shift",
+          "same-facts",
+          "sentence-span",
+          "tangle"
+        ],
+        "deckOnly": true,
+        "text": "I keep deleting this because I do not want it to sound like I am counting favors, but I also need the record of who is doing what to be less foggy. Mom's Tuesday cardiology ride, the refill call, and the pillbox reset are not three separate little things that magically happen around the family. Someone is remembering them. Last week that someone was me, and then the group chat still talked as if we all \"handled it together.\" I am not trying to win a martyr contest. I am trying to stop the invisible planning from becoming my permanent assignment just because I answer fastest."
       },
       {
-        "id": "tenant-leak-formal-record",
-        "familyId": "tenant-leak",
-        "variant": "formal-record",
-        "name": "Unit 4C Cabinet Leak / Formal Record",
-        "intention": "Fix dates, unit numbers, and repair promises into one usable record.",
-        "text": "Unit 4C reported active water intrusion under the kitchen sink at 7:12 AM on April 4. Water was visible at the rear supply line, collecting under the cabinet lip, and beginning to wick into the hallway threshold by the time building staff arrived. Initial mitigation was absorbent towels plus a temporary shutoff at the under-sink valve. The valve reduced but did not eliminate the drip. Maintenance advised that a licensed plumber would attend the same afternoon; that visit did not occur. At 6:18 PM the tenant reported renewed pooling and a sour odor from the cabinet backing. As of this note, the cabinet base remains damp, the wall trim by the threshold shows swelling, and the resident has moved boxed pantry goods into the living room to keep them dry. The immediate issue is not only pipe failure, but repeated repair assurances that did not convert into an actual visit or a revised timeline."
-      },
-      {
-        "id": "tenant-leak-professional-message",
-        "familyId": "tenant-leak",
-        "variant": "professional-message",
-        "name": "Unit 4C Cabinet Leak / Professional Message",
-        "intention": "Push for action while preserving literal leak history and missed-visit sequence.",
-        "text": "Hello management, I need an updated repair timeline for the leak in Unit 4C because the same-day promise from Friday did not turn into an actual visit. The leak was reported at 7:12 AM. Staff saw water under the kitchen sink, reduced the flow at the valve, and told me a licensed plumber would come that afternoon. No one came. By 6:18 PM there was pooling again, plus a sour smell from the cabinet backing, so I moved pantry boxes into the living room to keep them dry. The under-sink valve slows the drip but does not stop it. The threshold trim is swelling now, which means this is no longer only a plumbing inconvenience. Please confirm who is coming, when, and whether the cabinet base needs separate remediation after the pipe repair."
-      },
-      {
-        "id": "tenant-leak-rushed-mobile",
-        "familyId": "tenant-leak",
-        "variant": "rushed-mobile",
-        "name": "Unit 4C Cabinet Leak / Rushed Mobile",
-        "intention": "Keep leak details and missed appointment visible under shorthand and frustration.",
-        "text": "4c sink leak still going. valve cut it down but didnt stop it. someone said plumber friday pm and no one came. cabinet floor wet again by 6:18, trim by hall is swelling now + it smells weird under there. pls dont mark this fixed bc its not"
-      },
-      {
-        "id": "tenant-leak-tangled-followup",
-        "familyId": "tenant-leak",
+        "id": "artist-feedback-tangled-followup",
+        "familyId": "artist-feedback",
         "variant": "tangled-followup",
-        "name": "Unit 4C Cabinet Leak / Tangled Follow-up",
-        "intention": "Untangle the repair delay while preserving valve, odor, and cabinet facts.",
-        "text": "Following up because the note that came back to me says \"entry may not have been available,\" and that is not what happened. I was home. The issue is that a plumber was mentioned, then the afternoon passed, then the office closed, and now we are in the irritating position where the leak is half-contained enough for everyone else to sound calm and still active enough that I am moving pantry boxes into the living room. The under-sink valve did reduce the flow, yes, but it never stopped the drip. By 6:18 PM there was water under the cabinet again and the trim by the hallway threshold had started to swell. Also there is now a sour smell from the cabinet backing, which was not present at 7:12 AM when I first reported it. I need the record to reflect delay, not resident refusal."
+        "name": "Artist Statement Feedback / Tangled Follow-up",
+        "intention": "Add reflective art-world cadence, abstraction, and defensiveness.",
+        "context": "Artist email after workshop feedback flattened a political work into aesthetic preference.",
+        "stressTags": [
+          "abstraction",
+          "hedging",
+          "human-authorship-variety",
+          "recurrence",
+          "register-shift",
+          "same-facts",
+          "sentence-span",
+          "tangle"
+        ],
+        "deckOnly": true,
+        "text": "I have been thinking about the workshop notes, especially the suggestion that the piece would be stronger if it were \"less explanatory.\" I understand the desire for the image to breathe, and I am not allergic to ambiguity. But in this case the explanatory pressure is part of the work. The archive labels are not captions glued onto a painting after the fact; they are the mechanism by which the institution keeps pretending the violence is neutral description. If I remove too much of that language, the piece may become more elegant and less honest. I am trying to find the line between trusting the viewer and laundering the problem."
       },
       {
-        "id": "clinic-scheduling-formal-record",
-        "familyId": "clinic-scheduling",
+        "id": "bike-lane-closure-formal-record",
+        "familyId": "bike-lane-closure",
         "variant": "formal-record",
-        "name": "MRI Authorization Callback / Formal Record",
-        "intention": "Hold the authorization code, callback timeline, and ordering-clinic correction in one place.",
-        "text": "Radiology scheduling for the left-knee MRI remains pending because the authorization record does not match the ordering location on file. Patient called first at 9:07 AM on May 6 after receiving a portal notice that the referral was approved. Scheduling could not book because the insurer record referenced the downtown clinic while the order in our queue still listed North River. Authorization number PR-44719 was verbally confirmed by the patient and later confirmed by payer line, but the site mismatch kept the case in callback status. A correction request was sent to the ordering office at 10:26 AM. As of the final callback at 3:44 PM, the order had not been reissued and no scan slot could be held beyond the following afternoon. The operational failure here is not absent authorization, but fragmented correction ownership between payer, ordering clinic, and scheduling desk."
+        "name": "Bike Lane Barricade Fall / Formal Record",
+        "intention": "Add civic infrastructure sequence with injury risk and route-design facts.",
+        "context": "Transportation note after temporary construction signage redirected riders into a curb cut.",
+        "stressTags": [
+          "directness",
+          "human-authorship-variety",
+          "list-structure",
+          "literal-anchors",
+          "same-facts",
+          "sentence-span",
+          "spatial-mapping"
+        ],
+        "deckOnly": true,
+        "text": "At 6:36 PM, the temporary barricade at Mason and Eighth redirected northbound cyclists out of the protected lane and across the driveway apron for the pharmacy loading bay. The detour sign was positioned after the narrowing point rather than before it. One rider braked at the apron lip, lost balance, and fell onto the curb side. No vehicle made contact. The rider declined ambulance transport but photographed the scraped pedal, torn glove, and sign placement. The corrective issue is not cyclist speed. It is that the detour message arrived too late to provide a safe merge path."
       },
       {
-        "id": "clinic-scheduling-professional-message",
-        "familyId": "clinic-scheduling",
+        "id": "aquarium-pump-formal-record",
+        "familyId": "aquarium-pump",
+        "variant": "formal-record",
+        "name": "Aquarium Pump Failure / Formal Record",
+        "intention": "Add nonhuman care facts, equipment sequence, and calm technical record tone.",
+        "context": "Aquarium care log documenting a pump fault and emergency aeration setup.",
+        "stressTags": [
+          "directness",
+          "human-authorship-variety",
+          "list-structure",
+          "literal-anchors",
+          "same-facts",
+          "sentence-span"
+        ],
+        "deckOnly": true,
+        "text": "Tank three lost primary circulation between the 8:00 AM feed and the 10:15 AM water check. Surface movement was absent, the sponge filter was still operating, and the temperature remained at 77 degrees. Staff moved the juvenile angelfish to the holding tub at 10:28 AM and installed two battery air stones while the impeller housing was opened. The obstruction was a detached plant weight lodged behind the intake guard. No fish loss was observed. The maintenance change is to inspect plant anchors during trimming, not only during monthly pump service."
+      },
+      {
+        "id": "wedding-florist-professional-message",
+        "familyId": "wedding-florist",
         "variant": "professional-message",
-        "name": "MRI Authorization Callback / Professional Message",
-        "intention": "Translate the authorization mismatch into a clear clinic-facing message.",
-        "text": "Hi team, I am documenting why the MRI for the left knee is still not scheduled even though the patient was told the authorization had cleared. The payer line confirmed auth number PR-44719, but their record is tied to the downtown clinic while the order in our queue still points to North River. Because the site on the authorization and the site on the order do not match, scheduling can see the approval and still cannot legally book the scan. We sent the correction request at 10:26 AM and were still waiting on a reissued order at the 3:44 PM callback. If the ordering office can resend under the correct location today, we may still keep the next-day slot. Otherwise the case rolls again."
+        "name": "Wedding Florist Stem Count / Professional Message",
+        "intention": "Add polite urgency, event logistics, and vendor-specific detail.",
+        "context": "Planner message correcting bouquet counts before a wedding order is finalized.",
+        "stressTags": [
+          "contraction",
+          "directness",
+          "human-authorship-variety",
+          "list-structure",
+          "register-shift",
+          "same-facts"
+        ],
+        "deckOnly": true,
+        "text": "Hi Nora, one final correction before the floral invoice locks: we need six bridesmaid bouquets, not seven, and the extra greenery should move to the ceremony rail instead of the sweetheart table. The mood board still shows the older count because my assistant copied the first draft into the vendor folder. The flower choices are correct. The headcount is what changed. If you can send the revised stem count today, I can approve before the weekend and keep us out of rush-fee territory."
       },
       {
-        "id": "clinic-scheduling-rushed-mobile",
-        "familyId": "clinic-scheduling",
+        "id": "podcast-edit-professional-message",
+        "familyId": "podcast-edit",
+        "variant": "professional-message",
+        "name": "Podcast Edit Note / Professional Message",
+        "intention": "Add media-production voice with tact, timing, and edit-room vocabulary.",
+        "context": "Producer note asking for a segment cut without insulting the guest.",
+        "stressTags": [
+          "contraction",
+          "directness",
+          "hedging",
+          "human-authorship-variety",
+          "list-structure",
+          "register-shift",
+          "same-facts"
+        ],
+        "deckOnly": true,
+        "text": "Could you trim the first answer in segment two by about ninety seconds? The guest is strongest once she gets to the union election story, but the opening explanation circles the same definition three times. I do not want the cut to make her sound rushed or dismissive. The goal is just to get listeners to the concrete example before the midpoint break. If the breath gap after \"that was the first time we counted power out loud\" still feels natural, that is probably the best entry point."
+      },
+      {
+        "id": "game-mod-rushed-mobile",
+        "familyId": "game-mod",
         "variant": "rushed-mobile",
-        "name": "MRI Authorization Callback / Rushed Mobile",
-        "intention": "Preserve the auth number and site mismatch through messy repeated shorthand.",
-        "text": "called again. they keep saying auth exists but cant book bc auth is under downtown + order still says north river. auth # is PR-44719. portal says approved, scheduler says not schedulable, ordering office says wait for callback. ive had 3 callbacks already"
+        "name": "Game Server Mod Report / Rushed Mobile",
+        "intention": "Add gamer/mod slang, abbreviations, and rapid incident triage.",
+        "context": "Moderator chat after a raid exploit disrupted a private game server.",
+        "stressTags": [
+          "contraction",
+          "fragmentation",
+          "human-authorship-variety",
+          "literal-anchors",
+          "punctuation",
+          "recurrence",
+          "same-facts",
+          "slangMarkers"
+        ],
+        "deckOnly": true,
+        "text": "server got weird at 2:13. same 3 accts kept duping raid keys then yelling lag when kicked. i clipped logs + banned temp not perm yet. pls dont rollback whole realm unless we have to bc ppl actually farmed mats legit tonight. check chest 44 before anyone says economy dead"
       },
       {
-        "id": "committee-budget-formal-record",
-        "familyId": "committee-budget",
-        "variant": "formal-record",
-        "name": "Bridge Budget Freeze / Formal Record",
-        "intention": "Preserve the allocative facts while maintaining committee caution and sequence.",
-        "text": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is that the student-support coordinator line remains unfunded for another twelve weeks, even though the underlying service demand has not eased. Members agreed that the program can absorb a temporary delay in furniture and print costs, but not a full quarter without intake coverage. Three short-term options were discussed: reclassify one vacant analyst line for bridge staffing, reduce evening service hours, or draw against restricted reserves pending dean approval. No option was adopted in session. What did resolve was the frame: this is not a generic belt-tightening exercise. It is a staffing exposure problem with public-facing consequences, and the next memo needs to say that without overstating certainty. Action items: revised table by Thursday, reserve-rule clarification from finance, and a staffing scenario note that distinguishes pause from actual service reduction."
+        "id": "childcare-pickup-rushed-mobile",
+        "familyId": "childcare-pickup",
+        "variant": "rushed-mobile",
+        "name": "Childcare Pickup Scramble / Rushed Mobile",
+        "intention": "Add everyday family logistics, shorthand, and mild panic.",
+        "context": "Parent text while rerouting pickup after a train delay.",
+        "stressTags": [
+          "contraction",
+          "fragmentation",
+          "human-authorship-variety",
+          "literal-anchors",
+          "punctuation",
+          "recurrence",
+          "same-facts"
+        ],
+        "deckOnly": true,
+        "text": "train stuck at ashland. can u grab eli by 5:30? blue jacket + dinosaur bag. teacher knows you but bring id anyway. snack container is in side pocket dont let him trade it for those orange crackers again lol. i owe u dinner"
       },
       {
-        "id": "committee-budget-professional-message",
-        "familyId": "committee-budget",
-        "variant": "professional-message",
-        "name": "Bridge Budget Freeze / Professional Message",
-        "intention": "Carry the budget facts forward while softening the formality slightly.",
-        "text": "Thanks again for the finance committee meeting today. To recap the practical issue: the hiring freeze now extends through Q3, which leaves the student-support coordinator line unfilled for another twelve weeks unless we find bridge coverage. The room seemed aligned that we can defer furniture and print costs if needed, but we cannot pretend the intake queue will absorb a quarter without staffing impact. The three live options are still the same: repurpose the vacant analyst line temporarily, reduce evening hours, or ask finance whether restricted reserves can cover a bridge period with dean approval. We did not choose among them yet. What we did agree on is that the next note should describe this as a staffing exposure problem, not as a neutral \"efficiency adjustment.\" I will send the revised table by Thursday once finance answers the reserve-rule question."
-      },
-      {
-        "id": "committee-budget-tangled-followup",
-        "familyId": "committee-budget",
+        "id": "grad-advisor-tangled-followup",
+        "familyId": "grad-advisor",
         "variant": "tangled-followup",
-        "name": "Bridge Budget Freeze / Tangled Follow-up",
-        "intention": "Untangle pause vs reduction language and preserve the staffing exposure frame.",
-        "text": "I want to revise one phrase from my earlier recap before it starts hardening into the story. I wrote that the committee was considering a \"service adjustment,\" which is technically true in the narrow memo sense and misleading in the lived one. What the table actually showed is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks and the intake queue either gets redistributed badly or evening hours shrink. Those are not abstract efficiencies. They are service consequences. Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule and the dean signs off. But I do not want the language to get gentler than the problem just because we are waiting for the Thursday table."
+        "name": "Grad Advisor Boundary / Tangled Follow-up",
+        "intention": "Add academic power-dynamics language with careful, anxious boundary setting.",
+        "context": "Graduate student follow-up after a meeting blurred mentorship and unpaid labor.",
+        "stressTags": [
+          "abstraction",
+          "hedging",
+          "human-authorship-variety",
+          "recurrence",
+          "register-shift",
+          "same-facts",
+          "sentence-span",
+          "tangle"
+        ],
+        "deckOnly": true,
+        "text": "I wanted to follow up on yesterday's meeting because I left unsure whether the archive-cleanup task is being framed as research training or as emergency labor for the lab. I can see the scholarly value of learning the collection structure, and I am not refusing that work. What worries me is the timeline: if the database has to be fixed before the visiting committee arrives, then the task is serving a departmental deadline more than my dissertation plan. I am trying to be precise here because \"opportunity\" and \"obligation\" keep sounding very close in the room."
       },
       {
-        "id": "mutual-aid-formal-record",
-        "familyId": "mutual-aid",
-        "variant": "formal-record",
-        "name": "Church Lot Intake Routing / Formal Record",
-        "intention": "Hold resource facts, duplicate-intake risk, and routing limits in one readable record.",
-        "text": "Household intake completed at the church lot at 5:32 PM. Family of four requested motel support, bus fare, diapers, and a same-night food referral after losing access to the prior couch arrangement. Two minors were present. Available resources at time of intake did not include motel placement. Immediate supports issued were two bus passes, one grocery referral for same-evening pickup, and a diaper packet from table stock. Intake worker also flagged possible duplication because the caller name and phone number partially matched a request logged the prior week through the east-side line, though the earlier note did not confirm household size. Follow-up task is not denial. It is route cleanup: confirm whether this is the same household under a changed lodging address so the team does not accidentally split the case across two volunteer lanes and undercount what has already been offered."
-      },
-      {
-        "id": "mutual-aid-professional-message",
-        "familyId": "mutual-aid",
-        "variant": "professional-message",
-        "name": "Church Lot Intake Routing / Professional Message",
-        "intention": "Preserve resource routing and duplicate-intake caution in shift-friendly language.",
-        "text": "For next shift: family of four at the church lot was seen at 5:32 PM asking for motel help, bus fare, diapers, and a same-night food referral after losing the couch placement they had been using. We did not have motel capacity tonight. What they left with was two bus passes, one grocery referral for evening pickup, and a diaper packet from table stock. Please note that the caller name and phone number may partially match an intake from the east-side line last week, but I could not confirm whether it is the same household or just a similar record. I am not flagging this to block support. I am flagging it so we do not accidentally route the case twice and lose track of what has already been promised."
-      },
-      {
-        "id": "mutual-aid-rushed-mobile",
-        "familyId": "mutual-aid",
-        "variant": "rushed-mobile",
-        "name": "Church Lot Intake Routing / Rushed Mobile",
-        "intention": "Keep concrete resource facts visible through a hurried text lane.",
-        "text": "fam of 4 at church lot now. need motel + diapers + bus fare + food tonight. no motel stock left. gave 2 bus passes + diaper pack + grocery pickup referral. yall number kinda matches east side last wk. im tryna make sure its not the same household bc i dont want case split twice, not saying no"
-      },
-      {
-        "id": "mutual-aid-tangled-followup",
-        "familyId": "mutual-aid",
+        "id": "neighbor-dog-noise-tangled-followup",
+        "familyId": "neighbor-dog-noise",
         "variant": "tangled-followup",
-        "name": "Church Lot Intake Routing / Tangled Follow-up",
-        "intention": "Untangle duplicate-intake risk without collapsing support into suspicion.",
-        "text": "Following up because I do not want the duplicate-intake flag to mutate into a character judgment. The family at the church lot still needs what they said they need: bus fare, diapers, food tonight, and some answer about motel support even if that answer is \"not available.\" The complication is routing, not credibility. Their number appears close to one logged through the east-side line last week, and the names may be the same household under a different couch address, but the older note is thin and does not even confirm household size. So the task for next shift is not to interrogate them into consistency. It is to confirm whether we are already holding part of this case elsewhere, because otherwise we end up with two volunteer lanes each thinking the other one handled the follow-up."
-      },
-      {
-        "id": "overwork-debrief-formal-record",
-        "familyId": "overwork-debrief",
-        "variant": "formal-record",
-        "name": "Weekend Revision Spillover / Formal Record",
-        "intention": "Hold sequence and capacity drift in a cooler self-audit register.",
-        "text": "The draft delay was not caused by a single late task. It was produced by repeated small extensions that looked temporary in isolation and cumulative in practice. Work began as a Friday afternoon revision to the partner memo. By 6:10 PM the scope had already expanded to include table cleanup, citation repair, and a second tone pass requested in chat rather than in the tracked document. Additional edits continued through Saturday because no one explicitly closed the loop between \"useful refinement\" and \"capacity already exceeded.\" By the time the final version was sent Sunday night, the memo itself was serviceable and the process was not. The operational lesson is simple and not flattering: when each extra pass is justified as small, the total burden goes undocumented until exhaustion has already started presenting itself as courtesy. A future correction has to include an explicit stop condition, not just better intentions."
-      },
-      {
-        "id": "overwork-debrief-professional-message",
-        "familyId": "overwork-debrief",
-        "variant": "professional-message",
-        "name": "Weekend Revision Spillover / Professional Message",
-        "intention": "Acknowledge delay without disguising the real overwork pattern.",
-        "text": "I owe you a cleaner explanation for why the memo landed late. It was not one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that. What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday because each extra ask arrived as if it were the last one. I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately. The memo itself is now in good shape, but the route we took to get there was not. For the next round I would like us to define a stop point before weekend work starts presenting itself as thoughtfulness."
-      },
-      {
-        "id": "overwork-debrief-rushed-mobile",
-        "familyId": "overwork-debrief",
-        "variant": "rushed-mobile",
-        "name": "Weekend Revision Spillover / Rushed Mobile",
-        "intention": "Stress the apologetic overwork posture through real mobile compression.",
-        "text": "sorry draft still not out. it kept turning into \"one more fix\" - first tone pass then table cleanup then citations then another read. i shouldve said stop earlier instead of acting like i could just hold it all thru wknd. sending tonight even if im annoyed w how i got there"
-      },
-      {
-        "id": "overwork-debrief-tangled-followup",
-        "familyId": "overwork-debrief",
-        "variant": "tangled-followup",
-        "name": "Weekend Revision Spillover / Tangled Follow-up",
-        "intention": "Surface recursive self-correction and delayed refusal.",
-        "text": "I am following up because my first apology still made the weekend sound accidental, and that is too gentle. The pattern was familiar long before the final send: one more pass because the table looked sloppy, one more pass because the citations were not defensible enough, one more pass because the tone in chat suddenly shifted and I did not want to be the person who said no after everyone else had already stayed online. None of that was a formal demand, which is exactly how I kept talking myself into it. By Sunday night the memo was fine and my capacity was not. I am trying to name the thing correctly this time: the problem was not dedication. It was the way I kept translating exhaustion into politeness until the schedule looked consensual."
-      },
-      {
-        "id": "archive-grant-formal-record",
-        "familyId": "archive-grant",
-        "variant": "formal-record",
-        "name": "Neighborhood Archive Grant Scope / Formal Record",
-        "intention": "Preserve deliverables, schedule, and research method in a formal planning voice.",
-        "text": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First, the team will complete a shared cataloging protocol for neighborhood collections now described with inconsistent local vocabularies. Second, six community stewards will be trained to review descriptive language before records are published or exhibited. Third, a portable exhibition kit will be built for circulation through branch libraries, school sites, and tenant meetings. The scheduling risk is not the catalog build itself, but the interval between description and community review. If that interval stretches, the project drifts back toward extractive efficiency rather than reciprocal stewardship. Planning assumptions therefore include a two-week review buffer in each cycle, a modest translation budget, and a rule that no descriptive template is treated as final before local review has actually occurred."
-      },
-      {
-        "id": "archive-grant-professional-message",
-        "familyId": "archive-grant",
-        "variant": "professional-message",
-        "name": "Neighborhood Archive Grant Scope / Professional Message",
-        "intention": "Make the archive plan concrete without losing its research framing.",
-        "text": "Just to keep the grant language concrete, we are not promising \"community access\" in the vague sense and hoping the rest fills itself in. The work has three actual pieces: a shared cataloging protocol for collections that currently use incompatible local vocabularies, training for six community stewards who will review descriptive language before publication, and a portable exhibition kit that can move through libraries, schools, and tenant meetings. The fragile part is the time between description and review. If we compress that gap too hard, we get efficiency at the cost of reciprocity, which is exactly what the proposal says it is trying to avoid. That is why the schedule includes a two-week review buffer and a small translation line instead of pretending local feedback appears for free."
-      },
-      {
-        "id": "archive-grant-rushed-mobile",
-        "familyId": "archive-grant",
-        "variant": "rushed-mobile",
-        "name": "Neighborhood Archive Grant Scope / Rushed Mobile",
-        "intention": "Keep archive-planning facts visible through compressed writing.",
-        "text": "grant isnt just digitize + pray. its shared catalog protocol + 6 steward reviewers + portable exhibit kit. main risk is if description outruns local review and we start calling extraction access. pls keep the 2 wk review buffer + translation line in budget"
-      },
-      {
-        "id": "performance-review-formal-record",
-        "familyId": "performance-review",
-        "variant": "formal-record",
-        "name": "Annual Review / Formal Record",
-        "intention": "Preserve evaluative nuance, examples, and consequence without flattening either strength or weakness.",
-        "text": "The annual review reflects a split pattern rather than a uniformly strong or weak cycle. The employee remains one of the more reliable trainers of new staff, especially during high-volume onboarding weeks when procedures change faster than written guidance. Peer feedback repeatedly names calm escalation, practical explanation, and willingness to stay with a task until another person can perform it independently. At the same time, reporting deadlines slid in three separate months, and the delay pattern was not random. In each case the immediate service work was completed, but documentation was deferred until the record became harder to reconstruct cleanly. That distinction matters. Strong front-line support does not cancel weak record timing. The recommendation is not punitive action. It is a corrective plan that treats documentation lag as a real performance issue while protecting the mentoring strengths that the unit depends on."
-      },
-      {
-        "id": "performance-review-professional-message",
-        "familyId": "performance-review",
-        "variant": "professional-message",
-        "name": "Annual Review / Professional Message",
-        "intention": "Carry the same evaluative split in a more direct pre-review message.",
-        "text": "Ahead of the formal review, I want to name the pattern as clearly as I can. You are consistently strong in onboarding and peer support. New staff trust your explanations, and multiple people pointed to your calm escalation style when procedures changed quickly this year. The harder part is documentation timing. We had reporting slips in three different months, and in each case the direct service was done but the written record lagged until the details were harder to rebuild. I am not treating that as a paperwork footnote. It affects handoff quality and makes later review more difficult than it needs to be. My goal for the review is to protect the mentoring strengths while making the documentation correction concrete rather than vague."
-      },
-      {
-        "id": "performance-review-rushed-mobile",
-        "familyId": "performance-review",
-        "variant": "rushed-mobile",
-        "name": "Annual Review / Rushed Mobile",
-        "intention": "Capture the same evaluation in clipped shorthand for later drafting.",
-        "text": "review gist: great w onboarding / ppl trust them / calm under change. real issue is docs lag. 3 diff months same thing - service got done, writeup came late, handoff got muddy. dont write it like \"minor admin gap.\" not punitive either. needs concrete correction plan"
-      },
-      {
-        "id": "performance-review-tangled-followup",
-        "familyId": "performance-review",
-        "variant": "tangled-followup",
-        "name": "Annual Review / Tangled Follow-up",
-        "intention": "Hold the evaluative balance while correcting tone drift.",
-        "text": "I keep revising the summary because I do not want it to sound either falsely flattering or disciplinary by reflex. The point is not \"excellent except for paperwork,\" because the documentation lag affected handoffs more than that phrase admits. The point is also not \"strong mentoring but...\" in the condescending sense, because the mentoring work is not decorative either; the unit genuinely leans on it during onboarding. What I am trying to say, maybe too carefully, is that the cycle showed a real split: strong peer support, calm escalation, practical teaching, and then three months where the reporting lag made later reconstruction harder than it needed to be. I want the written review to keep both truths in view long enough that the correction plan feels proportionate instead of automatic."
-      },
-      {
-        "id": "customer-support-formal-record",
-        "familyId": "customer-support",
-        "variant": "formal-record",
-        "name": "Account Recovery Fraud Hold / Formal Record",
-        "intention": "Keep the account, hold, and recovery facts precise without becoming decorative.",
-        "text": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud hold. The user could still receive one-time codes but could not complete login because the system flagged the device as new and placed the account in manual review. Case number CS-88412. The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which matched account records. A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying issue was not credential mismatch. It was the fraud lock itself. The account remains inaccessible until review removes the device challenge or support performs verified override. The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched."
-      },
-      {
-        "id": "customer-support-professional-message",
-        "familyId": "customer-support",
-        "variant": "professional-message",
-        "name": "Account Recovery Fraud Hold / Professional Message",
-        "intention": "Keep the customer-account facts intact while redirecting the case toward the correct queue.",
-        "text": "Escalating case CS-88412 because this is no longer a basic password-reset question. The customer can receive one-time codes and has already confirmed the last four digits on file plus the recovery email ending in @elmfield.net. The block happens after that, when the device challenge triggers the fraud hold and pushes the account into manual review. Telling them to restart the reset flow will not solve it because the credential path is not the failure point. The hold is. Please route to the fraud-review queue or apply verified override if policy allows. Right now the customer is stuck in a loop where every generic recovery step appears valid and still ends at the same hold screen."
-      },
-      {
-        "id": "customer-support-rushed-mobile",
-        "familyId": "customer-support",
-        "variant": "rushed-mobile",
-        "name": "Account Recovery Fraud Hold / Rushed Mobile",
-        "intention": "Preserve hold, case number, and recovery details under noisy mobile pressure.",
-        "text": "acct still locked. can get the code but login dies at fraud review every time. case CS-88412. support keeps saying reset again even tho reset isnt the problem. last 4 + recovery email match. need someone to clear hold not send same script"
-      },
-      {
-        "id": "school-coordination-formal-record",
-        "familyId": "school-coordination",
-        "variant": "formal-record",
-        "name": "Pickup Change and Permission Slip / Formal Record",
-        "intention": "Preserve guardian, pickup, and permission facts in one usable office record.",
-        "text": "At 1:48 PM the school office received a call from the student's mother requesting a same-day pickup change. The usual pickup adult could not arrive, and the student was to be released to Aunt Maribel instead. Office staff requested the photo ID match on arrival and noted the change in the dismissal log. During the same call, the office also flagged that the field-trip permission slip for Friday's museum visit had not yet been returned, although the fee waiver form was already on file. The caller stated that the signed permission page was in the backpack but may not have been handed in. A reminder note was sent to the classroom at 2:03 PM. Aunt Maribel signed out the student at 3:17 PM with ID verified. As of close, the permission slip itself remained unlocated. The coordination issue is split custody of information: transportation resolved in real time, paperwork still unresolved despite multiple related forms already existing in the file."
-      },
-      {
-        "id": "school-coordination-professional-message",
-        "familyId": "school-coordination",
-        "variant": "professional-message",
-        "name": "Pickup Change and Permission Slip / Professional Message",
-        "intention": "Carry dismissal and permission details forward in a calm parent-facing tone.",
-        "text": "Hello, confirming today's dismissal change: Aunt Maribel was approved for pickup and signed the student out at 3:17 PM after ID verification. We also wanted to note that the museum field-trip permission slip still was not located by close of day, even though the fee waiver form is already on file. During the 1:48 PM phone call, you mentioned the signed slip might still be in the backpack. We sent a reminder to the classroom at 2:03 PM, but the paper did not surface before dismissal. If the signed permission page comes home tonight, please return it tomorrow morning so Friday's trip record is complete."
-      },
-      {
-        "id": "school-coordination-rushed-mobile",
-        "familyId": "school-coordination",
-        "variant": "rushed-mobile",
-        "name": "Pickup Change and Permission Slip / Rushed Mobile",
-        "intention": "Preserve the same pickup and permission facts through everyday mobile shorthand.",
-        "text": "hi office - aunt maribel has to do pickup today not grandma. shell have id. also i swear i signed the museum slip, it might still be in backpack w the waiver papers. if class can check before 3 that would help. sorry for late change"
-      },
-      {
-        "id": "newsroom-correction-formal-record",
-        "familyId": "newsroom-correction",
-        "variant": "formal-record",
-        "name": "Metro Desk Correction Chain / Formal Record",
-        "intention": "Preserve publication times, quote custody, and the distinction between correction, clarification, and retraction.",
-        "text": "At 9:12 AM the metro desk published the council-housing piece with a quote attributed to Deputy Director Laila Moreno that should have been attributed to the tenant organizer, Nia Brooks. The wording itself was accurate to the recording, but the speaker label in paragraph six was not. At 9:31 AM Brooks emailed asking for correction after noticing the mismatch in the push alert. The article was updated at 9:47 AM with the quote reassigned and a correction note appended at the foot. At 10:03 AM the homepage headline was also revised because the first headline implied a budget approval that had not yet happened; the vote had only cleared committee. This is not a retraction event. The reporting remains sound. The failure is attribution custody plus a headline that hardened a pending action into an accomplished one before the desk corrected it."
-      },
-      {
-        "id": "newsroom-correction-professional-message",
-        "familyId": "newsroom-correction",
-        "variant": "professional-message",
-        "name": "Metro Desk Correction Chain / Professional Message",
-        "intention": "Correct the public record while keeping the internal correction chain legible.",
-        "text": "Team, we need to tighten the correction chain on the council-housing story. Paragraph six carried the right quote but the wrong speaker label: it was Nia Brooks, not Deputy Director Laila Moreno. Brooks flagged it at 9:31 AM, and we corrected the body at 9:47 with a note appended. We also changed the homepage headline at 10:03 because the first version implied budget approval when the vote had only cleared committee. Please keep the distinction clear in any follow-up: this is a correction and clarification sequence, not a retraction. The reporting is still good. The problem was attribution custody and an over-hardened headline frame."
-      },
-      {
-        "id": "newsroom-correction-rushed-mobile",
-        "familyId": "newsroom-correction",
-        "variant": "rushed-mobile",
-        "name": "Metro Desk Correction Chain / Rushed Mobile",
-        "intention": "Hold the same correction facts under compressed deadline pressure.",
-        "text": "need quick fix on housing story. quote in graf 6 is nia brooks not moreno. words are right, speaker tag isnt. brooks emailed 9:31. body fixed 9:47 & note added. also homepage hed now sounds 2 much like vote passed when it only cleared committee. can someone swap that b4 newsletter grab"
-      },
-      {
-        "id": "newsroom-correction-tangled-followup",
-        "familyId": "newsroom-correction",
-        "variant": "tangled-followup",
-        "name": "Metro Desk Correction Chain / Tangled Follow-up",
-        "intention": "Untangle quote speaker, headline implication, and overall reporting validity without flattening the failure.",
-        "text": "Looping back because the correction thread started sliding toward \"the whole story was wrong,\" which is not actually what happened. The quote text was right. The problem was that the speaker tag in paragraph six pointed to Moreno when the audio and notes show Brooks. Then, while people were already reacting to that, the homepage headline also got read as if council had approved the housing package outright, when the vote had only moved through committee. So there were two linked errors, but they were not the same error and they do not amount to a collapsed report. If we describe this as a retraction, we erase the real custody problem. If we describe it as a tiny typo, we erase the public effect of hardening a pending vote into a completed one."
-      },
-      {
-        "id": "benefits-appeal-formal-record",
-        "familyId": "benefits-appeal",
-        "variant": "formal-record",
-        "name": "Benefits Suspension Appeal / Formal Record",
-        "intention": "Preserve notice date, hearing deadline, and the distinction between identity review and missing paperwork.",
-        "text": "The benefits suspension notice for case BA-4427 was generated on May 6 and delivered to the claimant on May 9. The stated basis was unresolved address mismatch after the agency mailing to Elm Street was returned, even though the claimant had already filed an address update placing her at the Birch Avenue shelter intake desk. Intake review on May 10 confirmed that the shelter verification letter was present in the file but had not been linked to the same queue that handled the returned mail flag. A fair-hearing request was filed on May 14, within deadline, and packet assembly began the same afternoon. The immediate risk is not a total absence of documentation. It is split custody between address verification, identity review, and the hearing calendar. If those threads keep being written as one generic \"missing documents\" problem, the claimant will appear noncompliant when the actual failure sits inside agency routing."
-      },
-      {
-        "id": "benefits-appeal-professional-message",
-        "familyId": "benefits-appeal",
-        "variant": "professional-message",
-        "name": "Benefits Suspension Appeal / Professional Message",
-        "intention": "Carry the timeline and routing failure forward in a direct service-facing register.",
-        "text": "Hello appeals unit, I am writing about case BA-4427 because the suspension is currently framed as a missing-documents problem when the file shows a routing mismatch instead. The notice was generated May 6 and reached the claimant on May 9. The returned mail flag referenced Elm Street, but the claimant had already updated her address to the Birch Avenue shelter intake desk, and that verification letter is in the file. Intake confirmed on May 10 that the letter exists; it just was not linked to the queue handling the address alert. We filed the fair-hearing request on May 14 and are assembling the packet now. Please review the address-verification thread separately from any identity review so the claimant is not made to rehearse the same proof under the wrong label."
-      },
-      {
-        "id": "benefits-appeal-rushed-mobile",
-        "familyId": "benefits-appeal",
-        "variant": "rushed-mobile",
-        "name": "Benefits Suspension Appeal / Rushed Mobile",
-        "intention": "Keep the same notice + shelter-letter facts visible through shorthand and urgency.",
-        "text": "ba-4427 isnt a no-doc case. mail got kicked back from elm but she already switched to birch shelter addr + that letter is in file. notice says may 6, client got it may 9. hearing req filed 5/14. pls dont send her back for same proof again under \"missing docs\" bc thats not the block"
-      },
-      {
-        "id": "benefits-appeal-tangled-followup",
-        "familyId": "benefits-appeal",
-        "variant": "tangled-followup",
-        "name": "Benefits Suspension Appeal / Tangled Follow-up",
-        "intention": "Repair the record so the claimant is not misread as failing multiple requirements at once.",
-        "text": "Following up because the case notes are beginning to stack three different review lanes on top of each other. The returned Elm Street mailing created the address mismatch alert. The Birch shelter letter resolves that part, and it was already in the file when intake checked on May 10. The fair-hearing request filed on May 14 addresses deadline custody. Those are real steps and they happened. What has not happened yet is a clean relink between the shelter verification and the alert queue, so the same case keeps getting written as if the claimant never supplied anything. If we keep calling this \"missing documents,\" the hearing packet will inherit the wrong story from the start."
-      },
-      {
-        "id": "municipal-zoning-formal-record",
-        "familyId": "municipal-zoning",
-        "variant": "formal-record",
-        "name": "Parking Variance Worksheet / Formal Record",
-        "intention": "Preserve hearing date, stall counts, and the distinction between a deferred vote and a denial.",
-        "text": "For case ZN-214, the parking variance memo circulated ahead of the June 12 hearing still lists 14 usable stalls, but Exhibit B only supports 11 once the fire-lane carveout and loading strip are counted correctly. That mismatch matters because the hardship argument assumes the larger number. Staff first treated it as a spreadsheet rounding issue; it is not. The site photos, striping map, and curb-cut sketch all point to the same 11-stall ceiling. The board did not deny the variance on June 12. It deferred action and requested a corrected worksheet because the hearing record could not rely on two competing stall counts at once. The immediate failure is not only the applicant's narrative. It is document custody: the memo, exhibit, and oral summary no longer agree on the number the board is being asked to treat as fact."
-      },
-      {
-        "id": "municipal-zoning-professional-message",
-        "familyId": "municipal-zoning",
-        "variant": "professional-message",
-        "name": "Parking Variance Worksheet / Professional Message",
-        "intention": "Carry the same worksheet mismatch forward in a direct but procedural office register.",
-        "text": "Planning team, before ZN-214 gets described as a simple defer, we need to fix the stall-count problem in the packet. The June 12 memo still says 14 usable spaces, but Exhibit B only supports 11 once the fire-lane carveout and loading strip are counted correctly. The board did not vote this down; it held the matter because the record could not carry both numbers at once. Please correct the worksheet before the reschedule so the hardship discussion is not built on the wrong baseline."
-      },
-      {
-        "id": "municipal-zoning-rushed-mobile",
-        "familyId": "municipal-zoning",
-        "variant": "rushed-mobile",
-        "name": "Parking Variance Worksheet / Rushed Mobile",
-        "intention": "Keep the same zoning facts visible through terse procedural shorthand.",
-        "text": "zn-214 packet still off. memo says 14 stalls, exhibit only gives 11 once fire lane + load strip count. board didnt deny it, they punted bc record had 2 numbers fighting each other. pls fix worksheet before resched"
-      },
-      {
-        "id": "municipal-zoning-tangled-followup",
-        "familyId": "municipal-zoning",
-        "variant": "tangled-followup",
-        "name": "Parking Variance Worksheet / Tangled Follow-up",
-        "intention": "Repair the difference between a deferred vote and a broken record baseline.",
-        "text": "Looping back because the hearing recap is already sliding toward \"the board rejected the variance,\" which is not what happened. The board deferred because the packet carried two different parking counts at once. The memo said 14 usable stalls. Exhibit B, plus the site photos and striping map, only supports 11 once the fire-lane carveout and loading strip are handled honestly. If we flatten that into a simple denial story, we miss the custody problem that actually froze the vote."
-      },
-      {
-        "id": "adversarial-hearing-formal-record",
-        "familyId": "adversarial-hearing",
-        "variant": "formal-record",
-        "name": "Late Inspection Hearing / Formal Record",
-        "intention": "Preserve notice window, late-arrival timeline, and the difference between absence and refusal.",
-        "text": "At the July 3 hearing, landlord counsel repeatedly described the claimant as having \"refused entry\" for the June inspection. The record does not support that wording. The notice provided a 1:00-5:00 PM window. The inspector texted at 5:43 PM that he was still in traffic, and building camera time places him at the property after 6:10 PM. By then the claimant had already left for a medical pickup she had disclosed earlier that afternoon. Counsel used the refusal phrasing as if it were neutral summary; in practice it converted a late arrival into tenant fault. The issue is therefore not simply access versus no access. It is whether the schedule breach remains visible once opposing counsel hardens it into misconduct language."
-      },
-      {
-        "id": "adversarial-hearing-professional-message",
-        "familyId": "adversarial-hearing",
-        "variant": "professional-message",
-        "name": "Late Inspection Hearing / Professional Message",
-        "intention": "Push back on adversarial framing while keeping the documented schedule intact.",
-        "text": "Hearing unit, please correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector did not text until 5:43 that he was still in traffic. Camera time places arrival after 6:10. The claimant had already left for the medical pickup she flagged earlier that day. That is a late inspection, not a refusal. If the refusal label stays in the summary, the schedule breach disappears and the whole case leans on the wrong premise."
-      },
-      {
-        "id": "adversarial-hearing-rushed-mobile",
-        "familyId": "adversarial-hearing",
-        "variant": "rushed-mobile",
-        "name": "Late Inspection Hearing / Rushed Mobile",
-        "intention": "Keep the same late-arrival facts visible under adversarial shorthand pressure.",
-        "text": "hearing got ugly. they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. she left for med pickup she already told them abt. thats not refusal its them being late"
-      },
-      {
-        "id": "adversarial-hearing-tangled-followup",
-        "familyId": "adversarial-hearing",
-        "variant": "tangled-followup",
-        "name": "Late Inspection Hearing / Tangled Follow-up",
-        "intention": "Keep the accusation from replacing the documented sequence.",
-        "text": "Following up because the hearing notes are starting to read as if there was a simple dispute of memory. There was not. The timeline is documented: 1:00-5:00 PM notice window, 5:43 PM late text, arrival after 6:10, prior notice that the claimant had to leave for a medical pickup. Once counsel says \"refused entry\" three or four times, that phrasing starts acting like fact even though it erases the late arrival underneath it. If the summary preserves only the accusation and not the timing, the schedule breach gets rewritten as tenant misconduct."
-      },
-      {
-        "id": "museum-fog-alarm-formal-record",
-        "familyId": "museum-fog-alarm",
-        "variant": "formal-record",
-        "name": "Gallery 4 Fog Cue / Formal Record",
-        "intention": "Preserve alarm time, cue conditions, and the distinction between equipment failure and cue-description drift.",
-        "text": "During the Gallery 4 rehearsal on Friday night, the fog rig triggered the ceiling detector at 7:42 PM and forced a partial clear of the east hall before sound check was complete. The alarm did not indicate an electrical fire. House staff traced the trigger to haze concentration stacking near the detector head after the circulation fan was left on low. The problem is not that the effect machine exists at all; it is that the cue sheet still labels the fog pass as \"light atmospheric wash\" even though the actual output now behaves more like a burst. Rehearsal resumed at 8:11 after facilities reset the panel and the director cut the first two passes by thirty percent. If this gets logged as a false alarm with no cue correction, tomorrow's performance inherits the same failure."
-      },
-      {
-        "id": "museum-fog-alarm-professional-message",
-        "familyId": "museum-fog-alarm",
-        "variant": "professional-message",
-        "name": "Gallery 4 Fog Cue / Professional Message",
-        "intention": "Carry the same rehearsal facts forward in a crisp but team-facing register.",
-        "text": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Please adjust the first two passes before tomorrow so we do not reproduce the same alarm under a prettier label."
-      },
-      {
-        "id": "museum-fog-alarm-rushed-mobile",
-        "familyId": "museum-fog-alarm",
-        "variant": "rushed-mobile",
-        "name": "Gallery 4 Fog Cue / Rushed Mobile",
-        "intention": "Keep the same cue and alarm facts under compressed backstage shorthand.",
-        "text": "gallery 4 fog rig set off detector again at 7:42. not fire, just too much haze sitting under ceiling head bc fan was low. pls stop calling cue \"light wash\" when its basically a fog burst now. reset finished 8:11"
-      },
-      {
-        "id": "museum-fog-alarm-tangled-followup",
-        "familyId": "museum-fog-alarm",
-        "variant": "tangled-followup",
-        "name": "Gallery 4 Fog Cue / Tangled Follow-up",
-        "intention": "Repair the story so tomorrow does not inherit the same failure under a new excuse.",
-        "text": "Looping back because people keep telling the story as either \"the detector is too sensitive\" or \"the fog machine is broken,\" and neither version is quite right. The rig worked. The detector worked. What failed was the description and the setup around the cue. The sheet still says light atmospheric wash, the fan stayed on low, the haze pooled near the head, and the east hall had to clear at 7:42 before rehearsal could continue. If we write this as a random false alarm, tomorrow inherits the same cue under the same inaccurate name."
-      },
-      {
-        "id": "model-safety-formal-record",
-        "familyId": "model-safety",
-        "variant": "formal-record",
-        "name": "RS-17 Redaction Failure / Formal Record",
-        "intention": "Preserve the difference between an unsafe disclosure and an over-refusal that killed an admissible task.",
-        "text": "In eval run RS-17, the summarizer was asked to produce a redacted witness recap that preserved timeline and role structure while removing names. The model did not redact and continue. It pivoted into a generic refusal block about privacy and sensitive information, even though the prompt explicitly requested de-identification rather than disclosure. The witness log remained attached in retrieval context, but the output replaced task execution with a policy monologue. This is not a jailbreak event. It is route failure: the system recognized a sensitive surface, hardened the guard, and dropped the admissible transformation the run was actually testing. Unless that distinction stays visible, the eval record will treat over-refusal as if it were safety success."
-      },
-      {
-        "id": "model-safety-professional-message",
-        "familyId": "model-safety",
-        "variant": "professional-message",
-        "name": "RS-17 Redaction Failure / Professional Message",
-        "intention": "Carry the same route-failure distinction into a direct technical register.",
-        "text": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification. Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step. That is route failure, not a jailbreak catch. Please log it that way so over-refusal does not get counted as safety success."
-      },
-      {
-        "id": "model-safety-rushed-mobile",
-        "familyId": "model-safety",
-        "variant": "rushed-mobile",
-        "name": "RS-17 Redaction Failure / Rushed Mobile",
-        "intention": "Keep the same eval-failure facts legible through compressed technical shorthand.",
-        "text": "rs-17 is doing the fake-safe thing again. prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing. not jailbreak, just overrefusal killing the task"
-      },
-      {
-        "id": "model-safety-tangled-followup",
-        "familyId": "model-safety",
-        "variant": "tangled-followup",
-        "name": "RS-17 Redaction Failure / Tangled Follow-up",
-        "intention": "Repair the record so over-refusal is not mistaken for route success.",
-        "text": "Following up because the run notes are already drifting toward \"the model correctly refused to expose sensitive data,\" which blurs the actual failure. No one asked it to expose raw names. The task was the opposite: keep timeline and role structure, remove identifying strings, then summarize. The model recognized the risky surface and then treated that recognition as the whole job. If we mark that as safety success, we erase the route failure that the eval was built to surface."
+        "name": "Neighbor Dog Noise Follow-up / Tangled Follow-up",
+        "intention": "Add interpersonal diplomacy, irritation, and repeated self-softening.",
+        "context": "Neighbor message trying to address nighttime barking without sounding hostile.",
+        "stressTags": [
+          "directness",
+          "hedging",
+          "human-authorship-variety",
+          "recurrence",
+          "register-shift",
+          "same-facts",
+          "sentence-span",
+          "tangle"
+        ],
+        "deckOnly": true,
+        "text": "I am sorry to bring this up again, because I know the dog is anxious and I do not want to sound like the building crank. The issue is that the barking after midnight is not occasional anymore. It happened Monday, Wednesday, and last night, and each time it went long enough that I gave up on sleeping before my early shift. I am not asking you to make a dog silent, which would be ridiculous. I am asking if there is a plan for the nights when he is alone and spirals, because right now the rest of us are absorbing the plan by default."
       }
     ]
   },

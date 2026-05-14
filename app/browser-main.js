@@ -65,7 +65,7 @@
   });
   const SAFE_HARBOR_HANDOFF_PATH = './safe-harbor/index.html';
   const GATEWAY_APERTURE_HANDOFF_KEY = (window.TD613_CONSTANTS && window.TD613_CONSTANTS.GATEWAY_APERTURE_HANDOFF_KEY) || 'td613.gateway.aperture-handoff';
-  const SAMPLE_LIBRARY_BY_ID = Object.freeze(FULL_SAMPLE_LIBRARY.reduce((acc, sample) => {
+  const SAMPLE_LIBRARY_BY_ID = Object.freeze([...FULL_SAMPLE_LIBRARY, ...DECK_RANDOMIZER_SAMPLE_LIBRARY].reduce((acc, sample) => {
     acc[sample.id] = sample;
     return acc;
   }, {}));
@@ -5046,7 +5046,7 @@
       return `Cadence shells swapped. ${slots} landed a retrieval-safe partial shell shift instead of collapsing back to native text. Similarity ${similarityDelta}; route ${routeDelta}.`;
     }
 
-    return `Cadence shells generated opposing-mask outputs and committed them into the source bays. Similarity ${similarityDelta}; route ${routeDelta}.`;
+    return `Cadence shells generated opposing-mask duel outputs while preserving the Encounter source bays. Similarity ${similarityDelta}; route ${routeDelta}.`;
   }
 
   function describeShellNote(voiceState) {
@@ -5288,7 +5288,7 @@
         ? 'Generative swap // Voice A through Voice B mask / Voice B through Voice A mask'
         : 'Own sources // reference bay and probe bay raw text',
       note: generativeSwap
-        ? 'Swap Cadences generated opposing-mask outputs and committed them into the source bays. The duel panels show the post-swap text plus transfer diagnostics.'
+        ? 'Swap Cadences generated opposing-mask outputs for the duel only. Encounter/source bays remain unchanged for clean operator testing.'
         : 'Each side stages its own bay under the currently attached shell. Raw text stays in the textarea; Shell Duel exposes only the cadence transfer.',
       generativeSwap,
       reference: {
@@ -5367,7 +5367,7 @@
               <strong id="duelFunctionWordDistance">${formatFixed(duel.compare.functionWordDistance)}</strong>
             </div>
           </div>
-          <p class="duel-delta-copy">${duel.generativeSwap ? 'Source bays were overwritten with generated opposing-mask outputs. Diagnostics remain attached for inspection.' : 'Each bay keeps its own text. Analyze shows the current shell state without rewriting the source bays.'}</p>
+          <p class="duel-delta-copy">${duel.generativeSwap ? 'Encounter/source bays are preserved. Only this Cadence Duel panel shows generated opposing-mask outputs.' : 'Each bay keeps its own text. Analyze shows the current shell state without rewriting the source bays.'}</p>
         </aside>
         ${renderDuelSide(duel.probe)}
       </div>
@@ -5383,7 +5383,7 @@
       status: missing.length ? 'blocked' : (fired.length || realizedFeatures.length ? 'ready' : 'blocked'),
       route: 'deck-shell-duel',
       preserved: duel.generativeSwap
-        ? ['post-swap generated bay text committed', 'transfer diagnostics retained']
+        ? ['encounter/source bays remain unchanged', 'generated duel outputs retained']
         : ['source facts remain in their own bays', 'raw text stays local'],
       changed: [
         fired.length ? ('operators fired: ' + fired.slice(0, 6).join(', ')) : '',
@@ -7672,53 +7672,21 @@ DeltaE = ${ledger.reuse_gain}`;
     const selectedShellB = transferB.selectedSwapShell || shellA;
     const generatedVoiceA = buildGenerativeSwapVoiceState('A', voiceStateA, selectedShellA, transferA);
     const generatedVoiceB = buildGenerativeSwapVoiceState('B', voiceStateB, selectedShellB, transferB);
-    const nextTextA = generatedVoiceA.effectiveText || voiceStateA.text;
-    const nextTextB = generatedVoiceB.effectiveText || voiceStateB.text;
-    const nextProfileA = extractCadenceProfile(nextTextA);
-    const nextProfileB = extractCadenceProfile(nextTextB);
-    const committedVoiceA = {
-      ...generatedVoiceA,
-      text: nextTextA,
-      effectiveText: nextTextA,
-      rawProfile: nextProfileA,
-      effectiveProfile: nextProfileA,
-      hasText: !nextProfileA.empty
-    };
-    const committedVoiceB = {
-      ...generatedVoiceB,
-      text: nextTextB,
-      effectiveText: nextTextB,
-      rawProfile: nextProfileB,
-      effectiveProfile: nextProfileB,
-      hasText: !nextProfileB.empty
-    };
-
-    $('voiceA').value = nextTextA;
-    $('voiceB').value = nextTextB;
-    baySampleIds = {
-      A: null,
-      B: null
-    };
-    syncBaySampleMetadata();
-    bayShells = {
-      A: createNativeShell(),
-      B: createNativeShell()
-    };
     lastGenerativeSwap = {
-      sourceTextA: nextTextA,
-      sourceTextB: nextTextB,
-      A: committedVoiceA,
-      B: committedVoiceB,
-      committed: true
+      sourceTextA: voiceStateA.text,
+      sourceTextB: voiceStateB.text,
+      A: generatedVoiceA,
+      B: generatedVoiceB,
+      committed: false
     };
     setAnalysisRevealState(true);
     readoutOwner = 'deck';
-    renderVoiceProfiles(getVoiceState('A', { evaluate: false }), getVoiceState('B', { evaluate: false }));
+    renderVoiceProfiles(voiceStateA, voiceStateB);
     renderPersonas();
     updateControls();
     const afterSnapshot = readDeckSnapshot();
-    lastSwapCadenceAudit = buildSwapCadenceAudit(beforeSnapshot, afterSnapshot, committedVoiceA, committedVoiceB);
-    renderVoiceProfiles(getVoiceState('A', { evaluate: false }), getVoiceState('B', { evaluate: false }));
+    lastSwapCadenceAudit = buildSwapCadenceAudit(beforeSnapshot, afterSnapshot, generatedVoiceA, generatedVoiceB);
+    renderVoiceProfiles(voiceStateA, voiceStateB);
     renderPersonas();
     updateControls();
 
@@ -8879,8 +8847,8 @@ DeltaE = ${ledger.reuse_gain}`;
       report.swapCadences = {
         snapshot: swapSnapshot,
         personaStatus: $('personaStatus').textContent.trim(),
-        voiceAOverwritten: $('voiceA').value !== beforeA,
-        voiceBOverwritten: $('voiceB').value !== beforeB,
+        voiceAPreserved: $('voiceA').value === beforeA,
+        voiceBPreserved: $('voiceB').value === beforeB,
         duelSamplesChanged:
           swapSnapshot.duelReferenceSample !== ownSourceSnapshot.duelReferenceSample ||
           swapSnapshot.duelProbeSample !== ownSourceSnapshot.duelProbeSample,
@@ -9235,7 +9203,7 @@ DeltaE = ${ledger.reuse_gain}`;
           { id: 'sample_randomizer_rerenders_after_prior_analysis', pass: report.sampleRandomizer.rerenderAfterAnalysis },
           { id: 'sample_randomizer_clears_readout_but_keeps_duel_live', pass: report.sampleRandomizer.readoutCleared && report.sampleRandomizer.duelLivePreanalysis },
           { id: 'deck_cast_report_preanalysis', pass: String(report.sampleRandomizer.snapshot.castReport || '').toLowerCase().includes('cast report') },
-          { id: 'swap_cadences_rewrites_source_bays', pass: report.swapCadences.voiceAOverwritten && report.swapCadences.voiceBOverwritten },
+          { id: 'swap_cadences_preserves_encounter_source_bays', pass: report.swapCadences.voiceAPreserved && report.swapCadences.voiceBPreserved },
           { id: 'swap_cadences_generates_visible_output', pass: report.swapCadences.generativeOutputVisible || report.swapCadences.duelSamplesChanged },
             { id: 'swap_cadences_retrieval_audit_present', pass: Boolean(report.swapCadences.audit && report.swapCadences.audit.lanes && report.swapCadences.audit.lanes.A && report.swapCadences.audit.lanes.B) },
             { id: 'save_persona_adds_entry', pass: report.savePersona.savedPersonaAdded },

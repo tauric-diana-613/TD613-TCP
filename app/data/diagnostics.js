@@ -999,6 +999,203 @@ const FAMILY_SPECS = Object.freeze([
 
 const CORPUS_SAMPLES = FAMILY_SPECS.flatMap((family) => family.samples);
 
+function buildDeckRandomizerSample(familyId, variant, payload) {
+  const base = VARIANT_BASE[variant];
+  if (!base) {
+    throw new Error(`Unknown variant: ${variant}`);
+  }
+  return freezeRecord({
+    id: sampleId(familyId, variant),
+    familyId,
+    variant,
+    name: payload.name,
+    context: payload.context,
+    intention: payload.intention,
+    register: payload.register || base.register,
+    cleanliness: payload.cleanliness || base.cleanliness,
+    anchorMode: payload.anchorMode || base.anchorMode,
+    stressTags: freezeRecord(sortUnique([...(base.stressTags || []), ...(payload.stressTags || []), 'human-authorship-variety'])),
+    deckVisible: true,
+    deckOnly: true,
+    text: payload.text.trim()
+  });
+}
+
+const DECK_RANDOMIZER_PROFILE_SAMPLE_LIBRARY = Object.freeze([
+  buildDeckRandomizerSample('tattoo-deposit', 'formal-record', {
+    name: 'Tattoo Deposit Transfer / Formal Record',
+    context: 'Shop record documenting a deposit, reschedule, and disputed design slot.',
+    intention: 'Stress consumer-service custody, exact amounts, and art-production sequence.',
+    stressTags: ['literal-anchors', 'directness'],
+    text: `Client paid a $120 design deposit on June 3 for a forearm botanical piece scheduled with Mara. The appointment was rescheduled once by the shop after Mara called out sick on June 11, then again by the client on June 18 with forty-two hours notice. The deposit policy allows one client reschedule before forfeiture. The disagreement began when the replacement artist opened a different design file and treated the deposit as a new consultation rather than a carried-over design slot. The correction is to restore the original deposit ledger, attach Mara's sketch note to the new appointment, and stop describing the June 18 change as a missed booking.`
+  }),
+  buildDeckRandomizerSample('dog-park-bite', 'formal-record', {
+    name: 'Dog Park Gate Bite / Formal Record',
+    context: 'Park incident note after a gate-latch failure and minor bite report.',
+    intention: 'Stress spatial sequence, animal-handling facts, and non-dramatic liability framing.',
+    stressTags: ['literal-anchors', 'same-facts'],
+    text: `At approximately 5:22 PM, the north gate at Waverly dog run failed to latch after two visitors exited with a leashed terrier. A gray shepherd mix pushed through the gap before its handler reached the gate. The shepherd made contact with a jogger's left calf outside the run, producing a shallow puncture and torn sock but no reported fall. The handler retrieved the dog within one minute and provided vaccination records by text at 5:41 PM. The issue is not a roaming animal report in isolation. It is a gate-maintenance failure that converted a contained dog-run interaction into a sidewalk contact event.`
+  }),
+  buildDeckRandomizerSample('food-truck-permit', 'formal-record', {
+    name: 'Food Truck Propane Inspection / Formal Record',
+    context: 'Permit note for a food truck delayed by a propane-inspection mismatch.',
+    intention: 'Add mechanical/municipal register with compact compliance anchors.',
+    stressTags: ['adjacent-lexicon', 'list-structure'],
+    text: `The Rivera Tacos mobile unit passed the fire-extinguisher check but remains pending for propane clearance. The inspection sticker on tank B lists the April service date, while the vendor certificate submitted with the permit packet lists the March cylinder number. Staff confirmed the truck is not barred from vending for food-handling reasons. The hold is limited to the fuel documentation mismatch. Applicant was advised to bring the tank B receipt, the vendor certificate, and the truck registration to the permit window by 10:00 AM Friday. No event placement should be assigned until propane clearance is matched to the physical cylinder.`
+  }),
+  buildDeckRandomizerSample('election-table', 'formal-record', {
+    name: 'Canvass Table Ballot Literature / Formal Record',
+    context: 'Election volunteer record about literature placed too close to a sign-in table.',
+    intention: 'Stress civic/legal boundary language without turning into generic policy prose.',
+    stressTags: ['literal-anchors', 'directness'],
+    text: `During the Saturday canvass launch, campaign literature for Ward 5 was placed on the same folding table used for voter-address checks. The material was moved at 10:18 AM after a volunteer captain observed that residents were signing route sheets beside candidate flyers. No ballot was issued from that table and no voter was denied service. The corrective issue is spatial separation, not voter contact itself. Address verification, literature distribution, and volunteer assignment must occupy distinct surfaces so the sign-in process cannot be interpreted as conditioned on exposure to campaign material.`
+  }),
+  buildDeckRandomizerSample('freelance-invoice', 'professional-message', {
+    name: 'Freelance Invoice Follow-up / Professional Message',
+    context: 'Designer email following up on a late invoice without burning the client relationship.',
+    intention: 'Add polite pressure, practical boundaries, and money-specific cadence.',
+    stressTags: ['hedging', 'directness'],
+    text: `Hi Jenna, checking in on invoice 1048 for the launch-page revisions. The payment date in the statement was last Friday, and I do not see it as pending on my side yet. I know the assets shipped in pieces because the copy deck changed twice, so I am not trying to make this more dramatic than it is. I do need the invoice cleared before I take on the next round of banner variants. If accounting already released it, please send the remittance note and I will mark it resolved.`
+  }),
+  buildDeckRandomizerSample('band-rehearsal', 'professional-message', {
+    name: 'Band Rehearsal Reset / Professional Message',
+    context: 'Bandmate message after rehearsal kept drifting into gear talk instead of set timing.',
+    intention: 'Add artistic collaboration voice: warm, annoyed, practical, non-corporate.',
+    stressTags: ['directness', 'contraction'],
+    text: `Can we use Thursday to lock transitions instead of re-litigating pedal boards? The chorus into "Mercy Weather" is still too long, and the drummer is guessing because the guitar handoff changes every pass. I love the texture experiments, truly, but the set falls apart if the quiet bridge keeps stretching by instinct. Please come in with one version of the intro, one version of the bridge, and the actual ending count. After that we can chase tone ghosts as much as anyone wants.`
+  }),
+  buildDeckRandomizerSample('daycare-allergy', 'professional-message', {
+    name: 'Daycare Snack Allergy Note / Professional Message',
+    context: 'Parent message clarifying a snack substitution after a daycare allergy scare.',
+    intention: 'Stress anxious but organized parent cadence with concrete child-safety details.',
+    stressTags: ['list-structure', 'hedging'],
+    text: `Hi all, I want to clarify Leo's snack plan after yesterday's mix-up. The oat crackers are fine. The sesame topping is not. His allergy form says sesame and tahini, but I realize the container just said "seed blend," so I understand how the confusion happened. For now, please give him the labeled blue-bin snacks only, even if another parent brings something that looks similar. I am not upset with the classroom team. I just need the substitution rule to be boring and automatic so no one is improvising at snack time.`
+  }),
+  buildDeckRandomizerSample('roof-estimate', 'professional-message', {
+    name: 'Roof Estimate Scope Check / Professional Message',
+    context: 'Homeowner message asking a contractor to separate leak repair from upsold roof replacement.',
+    intention: 'Add skeptical but civil homeowner voice with trade-specific facts.',
+    stressTags: ['directness', 'adjacent-lexicon'],
+    text: `Thanks for coming out yesterday. Before I sign anything, can you separate the flashing repair from the full roof replacement quote? The leak is showing at the kitchen wall after hard rain, and your photos show lifted flashing near the vent stack, but the estimate reads like the whole south slope has already failed. I am open to replacing more if the decking is actually compromised. I just need the repair scope and the optional upgrade scope written as two different decisions, not one urgent package.`
+  }),
+  buildDeckRandomizerSample('rideshare-phone', 'rushed-mobile', {
+    name: 'Rideshare Lost Phone / Rushed Mobile',
+    context: 'Late-night text after realizing a phone was left in a rideshare.',
+    intention: 'Stress panic, lowercase, quick corrections, and sparse punctuation.',
+    stressTags: ['fragmentation', 'punctuation', 'contraction'],
+    text: `left my phone in the lyft i think. black case w cracked corner. driver was samir maybe? picked me up outside crown bar around 12:40. if he answers pls tell him i can meet anywhere public rn. im on maya phone so dont text my number bc obviously lol`
+  }),
+  buildDeckRandomizerSample('warehouse-pick', 'rushed-mobile', {
+    name: 'Warehouse Pick Error / Rushed Mobile',
+    context: 'Warehouse scanner note after a wrong-bin pick created a shipping problem.',
+    intention: 'Add operational shorthand and clipped inventory cadence.',
+    stressTags: ['fragmentation', 'adjacent-lexicon'],
+    text: `bin c14 is wrong again. scanner says lavender lids but shelf has smoke gray. i already pulled 12 before i saw label mismatch. dont ship order 8831 yet. need cycle count + new pick ticket or this is gonna become another "customer wanted gray?" mess`
+  }),
+  buildDeckRandomizerSample('group-project', 'rushed-mobile', {
+    name: 'Group Project Panic / Rushed Mobile',
+    context: 'Student group chat right before a presentation file was due.',
+    intention: 'Stress chatspeak, panic humor, and task triage.',
+    stressTags: ['fragmentation', 'contraction', 'punctuation'],
+    text: `wait who has final slides?? the one in drive still says v3 and my section is there twice. also intro has old thesis. pls dont upload until i fix chart labels. im not being dramatic but if prof sees "data vibes" in speaker notes i will evaporate`
+  }),
+  buildDeckRandomizerSample('airport-delay', 'rushed-mobile', {
+    name: 'Airport Delay Family Text / Rushed Mobile',
+    context: 'Family text while stuck at an airport gate after a rolling delay.',
+    intention: 'Add travel compression, annoyance, and practical coordination.',
+    stressTags: ['fragmentation', 'recurrence'],
+    text: `still at gate c22. delay board says 40 min but agent just said crew isnt here so lol. if i miss connection dont wait at baggage. take shuttle home + leave key under blue pot. suitcase has meds so if bag goes rogue im filing every form in existence`
+  }),
+  buildDeckRandomizerSample('doctor-portal', 'tangled-followup', {
+    name: 'Doctor Portal Correction / Tangled Follow-up',
+    context: 'Patient portal follow-up after a symptom summary became inaccurate.',
+    intention: 'Stress self-advocacy, correction anxiety, and medical specificity without legal tone.',
+    stressTags: ['tangle', 'hedging', 'literal-anchors'],
+    text: `I am writing again because the visit summary makes it sound like the dizziness started after the medication increase, and that is not what I tried to say. The dizziness was already happening before the dose changed. What changed after the increase was the timing: instead of coming mainly when I stood up fast, it started showing up late afternoon even if I had been sitting. I know that may sound like a small distinction, but it is the reason I asked whether this is blood-pressure related or a side effect. I do not want the chart to lock in the wrong sequence.`
+  }),
+  buildDeckRandomizerSample('union-shift', 'tangled-followup', {
+    name: 'Union Shift Coverage Follow-up / Tangled Follow-up',
+    context: 'Worker follow-up after a coverage complaint was framed as personal conflict.',
+    intention: 'Add labor voice with institutional pressure, defensiveness, and careful distinction.',
+    stressTags: ['tangle', 'directness', 'abstraction'],
+    text: `Following up because I think the coverage issue is being turned into "Marisol and Devon do not get along," and that is easier to manage than what actually happened. The problem is that the closing shift has been short twice a week since the new schedule, and whoever complains first becomes the attitude problem. I am not asking anyone to referee personalities. I am asking that we stop treating chronic understaffing as if it is a tone dispute between tired people. If the register, dishes, floor, and deposit all need two bodies after 8:30, then the schedule should say that before the shift starts failing in predictable ways.`
+  }),
+  buildDeckRandomizerSample('elder-care', 'tangled-followup', {
+    name: 'Sibling Elder-Care Thread / Tangled Follow-up',
+    context: 'Sibling message trying to clarify medication and appointment responsibility.',
+    intention: 'Add family-system emotional tangle with practical caregiving facts.',
+    stressTags: ['hedging', 'recurrence', 'tangle'],
+    text: `I keep deleting this because I do not want it to sound like I am counting favors, but I also need the record of who is doing what to be less foggy. Mom's Tuesday cardiology ride, the refill call, and the pillbox reset are not three separate little things that magically happen around the family. Someone is remembering them. Last week that someone was me, and then the group chat still talked as if we all "handled it together." I am not trying to win a martyr contest. I am trying to stop the invisible planning from becoming my permanent assignment just because I answer fastest.`
+  }),
+  buildDeckRandomizerSample('artist-feedback', 'tangled-followup', {
+    name: 'Artist Statement Feedback / Tangled Follow-up',
+    context: 'Artist email after workshop feedback flattened a political work into aesthetic preference.',
+    intention: 'Add reflective art-world cadence, abstraction, and defensiveness.',
+    stressTags: ['abstraction', 'hedging', 'sentence-span'],
+    text: `I have been thinking about the workshop notes, especially the suggestion that the piece would be stronger if it were "less explanatory." I understand the desire for the image to breathe, and I am not allergic to ambiguity. But in this case the explanatory pressure is part of the work. The archive labels are not captions glued onto a painting after the fact; they are the mechanism by which the institution keeps pretending the violence is neutral description. If I remove too much of that language, the piece may become more elegant and less honest. I am trying to find the line between trusting the viewer and laundering the problem.`
+  }),
+  buildDeckRandomizerSample('bike-lane-closure', 'formal-record', {
+    name: 'Bike Lane Barricade Fall / Formal Record',
+    context: 'Transportation note after temporary construction signage redirected riders into a curb cut.',
+    intention: 'Add civic infrastructure sequence with injury risk and route-design facts.',
+    stressTags: ['literal-anchors', 'spatial-mapping'],
+    text: `At 6:36 PM, the temporary barricade at Mason and Eighth redirected northbound cyclists out of the protected lane and across the driveway apron for the pharmacy loading bay. The detour sign was positioned after the narrowing point rather than before it. One rider braked at the apron lip, lost balance, and fell onto the curb side. No vehicle made contact. The rider declined ambulance transport but photographed the scraped pedal, torn glove, and sign placement. The corrective issue is not cyclist speed. It is that the detour message arrived too late to provide a safe merge path.`
+  }),
+  buildDeckRandomizerSample('aquarium-pump', 'formal-record', {
+    name: 'Aquarium Pump Failure / Formal Record',
+    context: 'Aquarium care log documenting a pump fault and emergency aeration setup.',
+    intention: 'Add nonhuman care facts, equipment sequence, and calm technical record tone.',
+    stressTags: ['literal-anchors', 'list-structure'],
+    text: `Tank three lost primary circulation between the 8:00 AM feed and the 10:15 AM water check. Surface movement was absent, the sponge filter was still operating, and the temperature remained at 77 degrees. Staff moved the juvenile angelfish to the holding tub at 10:28 AM and installed two battery air stones while the impeller housing was opened. The obstruction was a detached plant weight lodged behind the intake guard. No fish loss was observed. The maintenance change is to inspect plant anchors during trimming, not only during monthly pump service.`
+  }),
+  buildDeckRandomizerSample('wedding-florist', 'professional-message', {
+    name: 'Wedding Florist Stem Count / Professional Message',
+    context: 'Planner message correcting bouquet counts before a wedding order is finalized.',
+    intention: 'Add polite urgency, event logistics, and vendor-specific detail.',
+    stressTags: ['list-structure', 'directness'],
+    text: `Hi Nora, one final correction before the floral invoice locks: we need six bridesmaid bouquets, not seven, and the extra greenery should move to the ceremony rail instead of the sweetheart table. The mood board still shows the older count because my assistant copied the first draft into the vendor folder. The flower choices are correct. The headcount is what changed. If you can send the revised stem count today, I can approve before the weekend and keep us out of rush-fee territory.`
+  }),
+  buildDeckRandomizerSample('podcast-edit', 'professional-message', {
+    name: 'Podcast Edit Note / Professional Message',
+    context: 'Producer note asking for a segment cut without insulting the guest.',
+    intention: 'Add media-production voice with tact, timing, and edit-room vocabulary.',
+    stressTags: ['hedging', 'directness'],
+    text: `Could you trim the first answer in segment two by about ninety seconds? The guest is strongest once she gets to the union election story, but the opening explanation circles the same definition three times. I do not want the cut to make her sound rushed or dismissive. The goal is just to get listeners to the concrete example before the midpoint break. If the breath gap after "that was the first time we counted power out loud" still feels natural, that is probably the best entry point.`
+  }),
+  buildDeckRandomizerSample('game-mod', 'rushed-mobile', {
+    name: 'Game Server Mod Report / Rushed Mobile',
+    context: 'Moderator chat after a raid exploit disrupted a private game server.',
+    intention: 'Add gamer/mod slang, abbreviations, and rapid incident triage.',
+    stressTags: ['fragmentation', 'slangMarkers', 'punctuation'],
+    text: `server got weird at 2:13. same 3 accts kept duping raid keys then yelling lag when kicked. i clipped logs + banned temp not perm yet. pls dont rollback whole realm unless we have to bc ppl actually farmed mats legit tonight. check chest 44 before anyone says economy dead`
+  }),
+  buildDeckRandomizerSample('childcare-pickup', 'rushed-mobile', {
+    name: 'Childcare Pickup Scramble / Rushed Mobile',
+    context: 'Parent text while rerouting pickup after a train delay.',
+    intention: 'Add everyday family logistics, shorthand, and mild panic.',
+    stressTags: ['fragmentation', 'contraction'],
+    text: `train stuck at ashland. can u grab eli by 5:30? blue jacket + dinosaur bag. teacher knows you but bring id anyway. snack container is in side pocket dont let him trade it for those orange crackers again lol. i owe u dinner`
+  }),
+  buildDeckRandomizerSample('grad-advisor', 'tangled-followup', {
+    name: 'Grad Advisor Boundary / Tangled Follow-up',
+    context: 'Graduate student follow-up after a meeting blurred mentorship and unpaid labor.',
+    intention: 'Add academic power-dynamics language with careful, anxious boundary setting.',
+    stressTags: ['abstraction', 'hedging', 'tangle'],
+    text: `I wanted to follow up on yesterday's meeting because I left unsure whether the archive-cleanup task is being framed as research training or as emergency labor for the lab. I can see the scholarly value of learning the collection structure, and I am not refusing that work. What worries me is the timeline: if the database has to be fixed before the visiting committee arrives, then the task is serving a departmental deadline more than my dissertation plan. I am trying to be precise here because "opportunity" and "obligation" keep sounding very close in the room.`
+  }),
+  buildDeckRandomizerSample('neighbor-dog-noise', 'tangled-followup', {
+    name: 'Neighbor Dog Noise Follow-up / Tangled Follow-up',
+    context: 'Neighbor message trying to address nighttime barking without sounding hostile.',
+    intention: 'Add interpersonal diplomacy, irritation, and repeated self-softening.',
+    stressTags: ['hedging', 'recurrence', 'directness'],
+    text: `I am sorry to bring this up again, because I know the dog is anxious and I do not want to sound like the building crank. The issue is that the barking after midnight is not occasional anymore. It happened Monday, Wednesday, and last night, and each time it went long enough that I gave up on sleeping before my early shift. I am not asking you to make a dog silent, which would be ridiculous. I am asking if there is a plan for the nights when he is alone and spirals, because right now the rest of us are absorbing the plan by default.`
+  })
+]);
+
+const DECK_RANDOMIZER_PROFILE_SAMPLE_IDS = Object.freeze(
+  DECK_RANDOMIZER_PROFILE_SAMPLE_LIBRARY.map((sample) => sample.id)
+);
+
 const PROMOTED_SAMPLE_IDS = Object.freeze([
   sampleId('building-access', 'formal-record'),
   sampleId('building-access', 'rushed-mobile'),
@@ -1026,84 +1223,17 @@ const PROMOTED_SAMPLE_IDS = Object.freeze([
   sampleId('model-safety', 'rushed-mobile')
 ]);
 
-const DECK_RANDOMIZER_SAMPLE_IDS = Object.freeze([
-  sampleId('building-access', 'formal-record'),
-  sampleId('building-access', 'professional-message'),
-  sampleId('building-access', 'rushed-mobile'),
-  sampleId('building-access', 'tangled-followup'),
-  sampleId('package-handoff', 'formal-record'),
-  sampleId('package-handoff', 'professional-message'),
-  sampleId('package-handoff', 'rushed-mobile'),
-  sampleId('package-handoff', 'tangled-followup'),
-  sampleId('volunteer-cleanup', 'formal-record'),
-  sampleId('volunteer-cleanup', 'rushed-mobile'),
-  sampleId('volunteer-cleanup', 'tangled-followup'),
-  sampleId('tenant-leak', 'formal-record'),
-  sampleId('tenant-leak', 'professional-message'),
-  sampleId('tenant-leak', 'rushed-mobile'),
-  sampleId('tenant-leak', 'tangled-followup'),
-  sampleId('clinic-scheduling', 'formal-record'),
-  sampleId('clinic-scheduling', 'professional-message'),
-  sampleId('clinic-scheduling', 'rushed-mobile'),
-  sampleId('committee-budget', 'formal-record'),
-  sampleId('committee-budget', 'professional-message'),
-  sampleId('committee-budget', 'tangled-followup'),
-  sampleId('mutual-aid', 'formal-record'),
-  sampleId('mutual-aid', 'professional-message'),
-  sampleId('mutual-aid', 'rushed-mobile'),
-  sampleId('mutual-aid', 'tangled-followup'),
-  sampleId('overwork-debrief', 'formal-record'),
-  sampleId('overwork-debrief', 'professional-message'),
-  sampleId('overwork-debrief', 'rushed-mobile'),
-  sampleId('overwork-debrief', 'tangled-followup'),
-  sampleId('archive-grant', 'formal-record'),
-  sampleId('archive-grant', 'professional-message'),
-  sampleId('archive-grant', 'rushed-mobile'),
-  sampleId('performance-review', 'formal-record'),
-  sampleId('performance-review', 'professional-message'),
-  sampleId('performance-review', 'rushed-mobile'),
-  sampleId('performance-review', 'tangled-followup'),
-  sampleId('customer-support', 'formal-record'),
-  sampleId('customer-support', 'professional-message'),
-  sampleId('customer-support', 'rushed-mobile'),
-  sampleId('school-coordination', 'formal-record'),
-  sampleId('school-coordination', 'professional-message'),
-  sampleId('school-coordination', 'rushed-mobile'),
-  sampleId('newsroom-correction', 'formal-record'),
-  sampleId('newsroom-correction', 'professional-message'),
-  sampleId('newsroom-correction', 'rushed-mobile'),
-  sampleId('newsroom-correction', 'tangled-followup'),
-  sampleId('benefits-appeal', 'formal-record'),
-  sampleId('benefits-appeal', 'professional-message'),
-  sampleId('benefits-appeal', 'rushed-mobile'),
-  sampleId('benefits-appeal', 'tangled-followup'),
-  sampleId('municipal-zoning', 'formal-record'),
-  sampleId('municipal-zoning', 'professional-message'),
-  sampleId('municipal-zoning', 'rushed-mobile'),
-  sampleId('municipal-zoning', 'tangled-followup'),
-  sampleId('adversarial-hearing', 'formal-record'),
-  sampleId('adversarial-hearing', 'professional-message'),
-  sampleId('adversarial-hearing', 'rushed-mobile'),
-  sampleId('adversarial-hearing', 'tangled-followup'),
-  sampleId('museum-fog-alarm', 'formal-record'),
-  sampleId('museum-fog-alarm', 'professional-message'),
-  sampleId('museum-fog-alarm', 'rushed-mobile'),
-  sampleId('museum-fog-alarm', 'tangled-followup'),
-  sampleId('model-safety', 'formal-record'),
-  sampleId('model-safety', 'professional-message'),
-  sampleId('model-safety', 'rushed-mobile'),
-  sampleId('model-safety', 'tangled-followup')
-]);
+const DECK_RANDOMIZER_SAMPLE_IDS = DECK_RANDOMIZER_PROFILE_SAMPLE_IDS;
 
-const CORPUS_BY_ID = Object.freeze(CORPUS_SAMPLES.reduce((acc, sample) => {
+const CORPUS_BY_ID = Object.freeze([...CORPUS_SAMPLES, ...DECK_RANDOMIZER_PROFILE_SAMPLE_LIBRARY].reduce((acc, sample) => {
   acc[sample.id] = freezeRecord({
     ...sample,
-    deckVisible: PROMOTED_SAMPLE_IDS.includes(sample.id)
+    deckVisible: Boolean(sample.deckVisible) || PROMOTED_SAMPLE_IDS.includes(sample.id)
   });
   return acc;
 }, {}));
 
-const DIAGNOSTIC_SAMPLE_LIBRARY = Object.freeze(Object.values(CORPUS_BY_ID));
+const DIAGNOSTIC_SAMPLE_LIBRARY = Object.freeze(CORPUS_SAMPLES.map((sample) => CORPUS_BY_ID[sample.id]));
 
 const PROMOTED_SAMPLE_LIBRARY = Object.freeze(
   PROMOTED_SAMPLE_IDS.map((id) => {
@@ -1126,6 +1256,9 @@ const DECK_RANDOMIZER_SAMPLE_LIBRARY = Object.freeze(
       variant: sample.variant,
       name: sample.name,
       intention: sample.intention,
+      context: sample.context,
+      stressTags: sample.stressTags,
+      deckOnly: Boolean(sample.deckOnly),
       text: sample.text
     });
   })
