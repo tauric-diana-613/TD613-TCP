@@ -82,6 +82,7 @@ try {
   assert.equal(await page.locator('#swapCadencesBtn').isDisabled(), false, 'Swap Cadences starts enabled with the starter pair');
   assert.equal(await page.locator('#shellDuel').getAttribute('data-state'), 'live', 'Deck boots into a live duel with the starter pair');
 
+  const initialReference = await page.locator('#voiceA').inputValue();
   const initialProbe = await page.locator('#voiceB').inputValue();
   await page.locator('#voiceB').fill('');
   await page.locator('#compareBtn').click();
@@ -103,8 +104,12 @@ try {
   const duelSimilarityAfter = (await page.locator('#duelSimilarity').textContent()) || '';
   const duelTraceabilityAfter = (await page.locator('#duelTraceability').textContent()) || '';
   const statusAfterSwap = (await page.locator('#analysisStatusBase').textContent()) || '';
+  const voiceAAfterSwap = await page.locator('#voiceA').inputValue();
+  const voiceBAfterSwap = await page.locator('#voiceB').inputValue();
   assert.notEqual(duelSimilarityAfter, duelSimilarityBefore, 'Swap Cadences changes the duel similarity readout');
   assert.notEqual(duelTraceabilityAfter, duelTraceabilityBefore, 'Swap Cadences changes the duel traceability readout');
+  assert.notEqual(voiceAAfterSwap, initialReference, 'Swap Cadences rewrites Voice A source text');
+  assert.notEqual(voiceBAfterSwap, initialProbe, 'Swap Cadences rewrites Voice B source text');
   assert.match(statusAfterSwap, /Cadence shells (?:swapped|generated)/i, 'Swap Cadences publishes a live encounter status message');
 
   await page.goto(`${deckUrl}&fresh=1`, { waitUntil: 'domcontentloaded' });

@@ -4352,16 +4352,155 @@
     return directText || internalText || sourceText;
   }
 
+  function profileShapeDistanceForSwap(profileA = {}, profileB = {}) {
+    const sentenceDistance = Math.min(1, Math.abs(Number(profileA.avgSentenceLength || 0) - Number(profileB.avgSentenceLength || 0)) / 28);
+    const punctuationDistance = Math.min(1, Math.abs(Number(profileA.punctuationDensity || 0) - Number(profileB.punctuationDensity || 0)) * 6);
+    const contractionDistance = Math.min(1, Math.abs(Number(profileA.contractionDensity || 0) - Number(profileB.contractionDensity || 0)) * 7);
+    const abbreviationDistance = Math.min(1, Math.abs(Number(profileA.abbreviationDensity || 0) - Number(profileB.abbreviationDensity || 0)) * 8);
+    const fragmentDistance = Math.min(1, Math.abs(Number(profileA.fragmentPressure || 0) - Number(profileB.fragmentPressure || 0)));
+    const abstractionDistance = Math.min(1, Math.abs(Number(profileA.abstractionPosture || 0) - Number(profileB.abstractionPosture || 0)));
+    return sentenceDistance + punctuationDistance + contractionDistance + abbreviationDistance + fragmentDistance + abstractionDistance;
+  }
+
+  function buildGenerativeSwapShellVariants(targetShell = {}) {
+    const baseShell = cloneShell(targetShell);
+    const baseStrength = Number.isFinite(Number(baseShell.strength)) ? Number(baseShell.strength) : 0.82;
+    const strengths = [...new Set([
+      baseStrength,
+      Math.min(1, baseStrength + 0.1),
+      1
+    ].map((value) => Number(value.toFixed(2))))];
+
+    return strengths.map((strength, index) => ({
+      ...cloneShell(baseShell),
+      strength,
+      label: index === 0 ? baseShell.label : `${baseShell.label} / transfer push ${index}`,
+      swapVariant: index === 0 ? 'baseline' : `push-${index}`
+    }));
+  }
+
+  function scoreGenerativeSwapCandidate(sourceState = {}, targetShell = {}, transfer = {}) {
+    const sourceText = String(sourceState.text || '').trim();
+    const outputText = effectiveGeneratedTransferText(sourceText, transfer);
+    const outputProfile = transfer.outputProfile || extractCadenceProfile(outputText);
+    const targetProfile = targetShell.profile || transfer.targetProfile || {};
+    const scoredTransfer = {
+      ...transfer,
+      text: outputText,
+      outputProfile,
+      visibleShift: Boolean(transfer.visibleShift || (outputText && outputText !== sourceText)),
+      nonTrivialShift: Boolean(transfer.nonTrivialShift || (outputText && outputText !== sourceText && outputText.length !== sourceText.length))
+    };
+    const diagnostics = transferOperatorDiagnostics(scoredTransfer);
+    const semanticAudit = scoredTransfer.retrievalTrace?.semanticAudit || scoredTransfer.semanticAudit || {};
+    const protectedAnchorIntegrity =
+      scoredTransfer.protectedAnchorAudit?.protectedAnchorIntegrity ??
+      semanticAudit.protectedAnchorIntegrity ??
+      1;
+    const changedDimensions = realizedChangedDimensions(scoredTransfer).filter((dimension) => dimension !== 'punctuation-shape');
+    const sourceTargetDistance = profileShapeDistanceForSwap(sourceState.rawProfile || scoredTransfer.sourceProfile || {}, targetProfile);
+    const outputTargetDistance = profileShapeDistanceForSwap(outputProfile, targetProfile);
+    const cadenceAdoption = sourceTargetDistance > 0
+      ? Math.max(0, Math.min(1, (sourceTargetDistance - outputTargetDistance) / sourceTargetDistance))
+      : 0;
+    const expectedCoverage = diagnostics.expectedOperators.length
+      ? diagnostics.expectedOperators.filter((operator) => diagnostics.firedOperators.includes(operator)).length / diagnostics.expectedOperators.length
+      : 0;
+    const lexicalCount = (scoredTransfer.lexemeSwaps || []).length;
+    const structuralCount = (scoredTransfer.structuralOperations || []).length;
+    const featureShift = scoredTransfer.vernacularFeatureShift || {};
+    const featureShiftCount =
+      Number(featureShift.realizedFamilyCount || 0) +
+      Number(featureShift.surfaceMarkerCount || 0) +
+      Number(featureShift.orthographyShift ? 1 : 0) +
+      Number(featureShift.shorthandShift ? 1 : 0) +
+      Number(featureShift.notePostureShift ? 1 : 0) +
+      Number(featureShift.slangShift ? 1 : 0) +
+      Number(featureShift.vernacularShift ? 1 : 0);
+    const changed = outputText && outputText !== sourceText;
+    let score = 0;
+
+    if (changed) score += 24;
+    if (scoredTransfer.nonTrivialShift) score += 12;
+    if (scoredTransfer.transferClass === 'structural' || scoredTransfer.borrowedShellOutcome === 'structural') score += 14;
+    if (scoredTransfer.borrowedShellOutcome === 'partial' || scoredTransfer.transferClass === 'weak') score += 7;
+    score += Math.min(24, Math.round(expectedCoverage * 24));
+    score += Math.min(20, diagnostics.firedOperators.length * 4);
+    score += Math.min(18, lexicalCount * 4);
+    score += Math.min(18, structuralCount * 5);
+    score += Math.min(14, changedDimensions.length * 4);
+    score += Math.min(14, featureShiftCount * 3);
+    score += Math.round(cadenceAdoption * 18);
+    if (scoredTransfer.artifactRepairApplied) score += 4;
+    if (scoredTransfer.forgeSource || scoredTransfer.generationDocket?.forgeSource) score += 3;
+
+    if (!changed) score -= 60;
+    if (scoredTransfer.transferClass === 'rejected') score -= 45;
+    if (scoredTransfer.holdStatus === 'held' && !changed) score -= 30;
+    if (protectedAnchorIntegrity < 1) score -= 35;
+    if ((semanticAudit.propositionCoverage ?? 1) < 0.85) score -= 24;
+    if ((semanticAudit.actionCoverage ?? 1) < 0.75) score -= 14;
+    if ((semanticAudit.objectCoverage ?? 1) < 0.65) score -= 12;
+    if ((semanticAudit.polarityMismatches ?? 0) > 0) score -= 22;
+    if (/\bwhat I am trying to say is\b/i.test(outputText)) score -= 18;
+
+    return {
+      score,
+      outputText,
+      outputProfile,
+      diagnostics,
+      cadenceAdoption
+    };
+  }
+
   function buildGenerativeSwapTransfer(sourceState, targetShell) {
-    const transferOptions = {
+    const candidates = buildGenerativeSwapShellVariants(targetShell).map((shell) => {
+      const transferOptions = {
+        retrieval: true,
+        exposeHeldCandidate: true,
+        auForgedOntology: AU_FORGED_ONTOLOGY,
+        strength: shell.strength
+      };
+      if (sourceState.sourceRegisterLane) {
+        transferOptions.sourceRegisterLane = sourceState.sourceRegisterLane;
+      }
+      const transfer = buildCadenceTransfer(sourceState.text, shell, transferOptions);
+      const score = scoreGenerativeSwapCandidate(sourceState, shell, transfer);
+      return {
+        shell,
+        transfer,
+        ...score
+      };
+    });
+    const selected = candidates
+      .slice()
+      .sort((left, right) => right.score - left.score)[0];
+    const selectedTransfer = selected?.transfer || buildCadenceTransfer(sourceState.text, targetShell, {
       retrieval: true,
       exposeHeldCandidate: true,
       auForgedOntology: AU_FORGED_ONTOLOGY
+    });
+    return {
+      ...selectedTransfer,
+      text: selected?.outputText || effectiveGeneratedTransferText(sourceState.text, selectedTransfer),
+      outputProfile: selected?.outputProfile || selectedTransfer.outputProfile,
+      selectedSwapShell: selected?.shell || targetShell,
+      swapSelection: {
+        strategy: 'multi-candidate-transfer',
+        candidateCount: candidates.length,
+        selectedStrength: selected?.shell?.strength ?? targetShell.strength ?? null,
+        selectedVariant: selected?.shell?.swapVariant || 'baseline',
+        selectedScore: Math.round(selected?.score ?? 0),
+        cadenceAdoption: Number((selected?.cadenceAdoption ?? 0).toFixed(3)),
+        candidates: candidates.map((candidate) => ({
+          variant: candidate.shell.swapVariant || 'baseline',
+          strength: candidate.shell.strength,
+          score: Math.round(candidate.score),
+          firedOperators: candidate.diagnostics.firedOperators.length,
+          expectedOperators: candidate.diagnostics.expectedOperators.length
+        }))
+      }
     };
-    if (sourceState.sourceRegisterLane) {
-      transferOptions.sourceRegisterLane = sourceState.sourceRegisterLane;
-    }
-    return buildCadenceTransfer(sourceState.text, targetShell, transferOptions);
   }
 
   function buildGenerativeSwapVoiceState(slot, sourceState, targetShell, transfer) {
@@ -4907,7 +5046,7 @@
       return `Cadence shells swapped. ${slots} landed a retrieval-safe partial shell shift instead of collapsing back to native text. Similarity ${similarityDelta}; route ${routeDelta}.`;
     }
 
-    return `Cadence shells generated opposing-mask outputs while preserving both raw source bays. Similarity ${similarityDelta}; route ${routeDelta}.`;
+    return `Cadence shells generated opposing-mask outputs and committed them into the source bays. Similarity ${similarityDelta}; route ${routeDelta}.`;
   }
 
   function describeShellNote(voiceState) {
@@ -5149,7 +5288,7 @@
         ? 'Generative swap // Voice A through Voice B mask / Voice B through Voice A mask'
         : 'Own sources // reference bay and probe bay raw text',
       note: generativeSwap
-        ? 'Swap Cadences generated opposing-mask outputs. Raw sources remain in the textareas; generated text renders here for inspection.'
+        ? 'Swap Cadences generated opposing-mask outputs and committed them into the source bays. The duel panels show the post-swap text plus transfer diagnostics.'
         : 'Each side stages its own bay under the currently attached shell. Raw text stays in the textarea; Shell Duel exposes only the cadence transfer.',
       generativeSwap,
       reference: {
@@ -5228,7 +5367,7 @@
               <strong id="duelFunctionWordDistance">${formatFixed(duel.compare.functionWordDistance)}</strong>
             </div>
           </div>
-          <p class="duel-delta-copy">${duel.generativeSwap ? 'Raw bays stay preserved. The duel panels show generated opposing-mask outputs.' : 'Each bay keeps its own text. Analyze shows the current shell state without rewriting the source bays.'}</p>
+          <p class="duel-delta-copy">${duel.generativeSwap ? 'Source bays were overwritten with generated opposing-mask outputs. Diagnostics remain attached for inspection.' : 'Each bay keeps its own text. Analyze shows the current shell state without rewriting the source bays.'}</p>
         </aside>
         ${renderDuelSide(duel.probe)}
       </div>
@@ -5244,7 +5383,7 @@
       status: missing.length ? 'blocked' : (fired.length || realizedFeatures.length ? 'ready' : 'blocked'),
       route: 'deck-shell-duel',
       preserved: duel.generativeSwap
-        ? ['raw source bays remain intact', 'generated swap is inspectable before adoption']
+        ? ['post-swap generated bay text committed', 'transfer diagnostics retained']
         : ['source facts remain in their own bays', 'raw text stays local'],
       changed: [
         fired.length ? ('operators fired: ' + fired.slice(0, 6).join(', ')) : '',
@@ -7529,27 +7668,57 @@ DeltaE = ${ledger.reuse_gain}`;
     const beforeSnapshot = readDeckSnapshot();
     const transferA = buildGenerativeSwapTransfer(voiceStateA, shellB);
     const transferB = buildGenerativeSwapTransfer(voiceStateB, shellA);
-    const generatedVoiceA = buildGenerativeSwapVoiceState('A', voiceStateA, shellB, transferA);
-    const generatedVoiceB = buildGenerativeSwapVoiceState('B', voiceStateB, shellA, transferB);
+    const selectedShellA = transferA.selectedSwapShell || shellB;
+    const selectedShellB = transferB.selectedSwapShell || shellA;
+    const generatedVoiceA = buildGenerativeSwapVoiceState('A', voiceStateA, selectedShellA, transferA);
+    const generatedVoiceB = buildGenerativeSwapVoiceState('B', voiceStateB, selectedShellB, transferB);
+    const nextTextA = generatedVoiceA.effectiveText || voiceStateA.text;
+    const nextTextB = generatedVoiceB.effectiveText || voiceStateB.text;
+    const nextProfileA = extractCadenceProfile(nextTextA);
+    const nextProfileB = extractCadenceProfile(nextTextB);
+    const committedVoiceA = {
+      ...generatedVoiceA,
+      text: nextTextA,
+      effectiveText: nextTextA,
+      rawProfile: nextProfileA,
+      effectiveProfile: nextProfileA,
+      hasText: !nextProfileA.empty
+    };
+    const committedVoiceB = {
+      ...generatedVoiceB,
+      text: nextTextB,
+      effectiveText: nextTextB,
+      rawProfile: nextProfileB,
+      effectiveProfile: nextProfileB,
+      hasText: !nextProfileB.empty
+    };
 
+    $('voiceA').value = nextTextA;
+    $('voiceB').value = nextTextB;
+    baySampleIds = {
+      A: null,
+      B: null
+    };
+    syncBaySampleMetadata();
     bayShells = {
-      A: shellB,
-      B: shellA
+      A: createNativeShell(),
+      B: createNativeShell()
     };
     lastGenerativeSwap = {
-      sourceTextA: voiceStateA.text,
-      sourceTextB: voiceStateB.text,
-      A: generatedVoiceA,
-      B: generatedVoiceB
+      sourceTextA: nextTextA,
+      sourceTextB: nextTextB,
+      A: committedVoiceA,
+      B: committedVoiceB,
+      committed: true
     };
     setAnalysisRevealState(true);
     readoutOwner = 'deck';
-    renderVoiceProfiles(voiceStateA, voiceStateB);
+    renderVoiceProfiles(getVoiceState('A', { evaluate: false }), getVoiceState('B', { evaluate: false }));
     renderPersonas();
     updateControls();
     const afterSnapshot = readDeckSnapshot();
-    lastSwapCadenceAudit = buildSwapCadenceAudit(beforeSnapshot, afterSnapshot, generatedVoiceA, generatedVoiceB);
-    renderVoiceProfiles(voiceStateA, voiceStateB);
+    lastSwapCadenceAudit = buildSwapCadenceAudit(beforeSnapshot, afterSnapshot, committedVoiceA, committedVoiceB);
+    renderVoiceProfiles(getVoiceState('A', { evaluate: false }), getVoiceState('B', { evaluate: false }));
     renderPersonas();
     updateControls();
 
@@ -8710,8 +8879,8 @@ DeltaE = ${ledger.reuse_gain}`;
       report.swapCadences = {
         snapshot: swapSnapshot,
         personaStatus: $('personaStatus').textContent.trim(),
-        voiceAUnchanged: $('voiceA').value === beforeA,
-        voiceBUnchanged: $('voiceB').value === beforeB,
+        voiceAOverwritten: $('voiceA').value !== beforeA,
+        voiceBOverwritten: $('voiceB').value !== beforeB,
         duelSamplesChanged:
           swapSnapshot.duelReferenceSample !== ownSourceSnapshot.duelReferenceSample ||
           swapSnapshot.duelProbeSample !== ownSourceSnapshot.duelProbeSample,
@@ -9066,7 +9235,7 @@ DeltaE = ${ledger.reuse_gain}`;
           { id: 'sample_randomizer_rerenders_after_prior_analysis', pass: report.sampleRandomizer.rerenderAfterAnalysis },
           { id: 'sample_randomizer_clears_readout_but_keeps_duel_live', pass: report.sampleRandomizer.readoutCleared && report.sampleRandomizer.duelLivePreanalysis },
           { id: 'deck_cast_report_preanalysis', pass: String(report.sampleRandomizer.snapshot.castReport || '').toLowerCase().includes('cast report') },
-          { id: 'swap_cadences_preserve_source_bays', pass: report.swapCadences.voiceAUnchanged && report.swapCadences.voiceBUnchanged },
+          { id: 'swap_cadences_rewrites_source_bays', pass: report.swapCadences.voiceAOverwritten && report.swapCadences.voiceBOverwritten },
           { id: 'swap_cadences_generates_visible_output', pass: report.swapCadences.generativeOutputVisible || report.swapCadences.duelSamplesChanged },
             { id: 'swap_cadences_retrieval_audit_present', pass: Boolean(report.swapCadences.audit && report.swapCadences.audit.lanes && report.swapCadences.audit.lanes.A && report.swapCadences.audit.lanes.B) },
             { id: 'save_persona_adds_entry', pass: report.savePersona.savedPersonaAdded },

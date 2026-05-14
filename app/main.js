@@ -19,6 +19,7 @@ import {
   cadenceModFromProfile,
   applyCadenceMod
 } from './engine/stylometry.js';
+import { AU_FORGED_ONTOLOGY } from './engine/au-forged-ontology.js';
 import { chooseHarbor, buildLedgerRow, HARBOR_LIBRARY } from './engine/harbor.js';
 import { nextBadge, badgeMeaning } from './engine/badges.js';
 
@@ -218,6 +219,107 @@ function getVoiceState(slot) {
   };
 }
 
+function createBorrowedCadenceShell(voiceState) {
+  return {
+    mode: 'borrowed',
+    label: `borrowed ${SLOT_SHORT[voiceState.slot]} cadence`,
+    mod: cadenceModFromProfile(voiceState.rawProfile),
+    profile: { ...voiceState.rawProfile },
+    source: 'swapped',
+    fromSlot: voiceState.slot,
+    sourceText: voiceState.text,
+    strength: 0.84
+  };
+}
+
+function swapCadenceShellVariants(shell) {
+  const baseStrength = Number.isFinite(Number(shell.strength)) ? Number(shell.strength) : 0.84;
+  return [...new Set([
+    baseStrength,
+    Math.min(1, baseStrength + 0.1),
+    1
+  ].map((value) => Number(value.toFixed(2))))].map((strength, index) => ({
+    ...shell,
+    mod: shell.mod ? { ...shell.mod } : null,
+    profile: shell.profile ? { ...shell.profile } : null,
+    strength,
+    label: index === 0 ? shell.label : `${shell.label} / transfer push ${index}`
+  }));
+}
+
+function profileShapeDistance(profileA = {}, profileB = {}) {
+  const sentenceDistance = Math.min(1, Math.abs(Number(profileA.avgSentenceLength || 0) - Number(profileB.avgSentenceLength || 0)) / 28);
+  const punctuationDistance = Math.min(1, Math.abs(Number(profileA.punctuationDensity || 0) - Number(profileB.punctuationDensity || 0)) * 6);
+  const contractionDistance = Math.min(1, Math.abs(Number(profileA.contractionDensity || 0) - Number(profileB.contractionDensity || 0)) * 7);
+  const abbreviationDistance = Math.min(1, Math.abs(Number(profileA.abbreviationDensity || 0) - Number(profileB.abbreviationDensity || 0)) * 8);
+  const fragmentDistance = Math.min(1, Math.abs(Number(profileA.fragmentPressure || 0) - Number(profileB.fragmentPressure || 0)));
+  const abstractionDistance = Math.min(1, Math.abs(Number(profileA.abstractionPosture || 0) - Number(profileB.abstractionPosture || 0)));
+  return sentenceDistance + punctuationDistance + contractionDistance + abbreviationDistance + fragmentDistance + abstractionDistance;
+}
+
+function generatedTransferText(sourceText = '', transfer = {}) {
+  const directText = String(transfer.text || '').trim();
+  const internalText = String(transfer.internalText || '').trim();
+  if (directText && directText !== sourceText) return directText;
+  if (internalText && internalText !== sourceText) return internalText;
+  return directText || internalText || sourceText;
+}
+
+function scoreGeneratedSwap(sourceState, donorShell, transfer) {
+  const outputText = generatedTransferText(sourceState.text, transfer);
+  const outputProfile = transfer.outputProfile || extractCadenceProfile(outputText);
+  const semanticAudit = transfer.retrievalTrace?.semanticAudit || transfer.semanticAudit || {};
+  const protectedAnchorIntegrity =
+    transfer.protectedAnchorAudit?.protectedAnchorIntegrity ??
+    semanticAudit.protectedAnchorIntegrity ??
+    1;
+  const sourceTargetDistance = profileShapeDistance(sourceState.rawProfile || {}, donorShell.profile || {});
+  const outputTargetDistance = profileShapeDistance(outputProfile, donorShell.profile || {});
+  const cadenceAdoption = sourceTargetDistance > 0
+    ? Math.max(0, Math.min(1, (sourceTargetDistance - outputTargetDistance) / sourceTargetDistance))
+    : 0;
+  const changed = outputText && outputText !== sourceState.text;
+  const operatorCount = [
+    ...(transfer.structuralOperations || []),
+    ...(transfer.lexicalOperations || []),
+    ...(transfer.lexemeSwaps || [])
+  ].length;
+  let score = 0;
+  if (changed) score += 24;
+  if (transfer.nonTrivialShift) score += 12;
+  if (transfer.transferClass === 'structural' || transfer.borrowedShellOutcome === 'structural') score += 14;
+  if (transfer.borrowedShellOutcome === 'partial' || transfer.transferClass === 'weak') score += 7;
+  score += Math.min(28, operatorCount * 5);
+  score += Math.round(cadenceAdoption * 18);
+  if (!changed) score -= 60;
+  if (transfer.transferClass === 'rejected') score -= 45;
+  if (protectedAnchorIntegrity < 1) score -= 35;
+  if ((semanticAudit.propositionCoverage ?? 1) < 0.85) score -= 24;
+  if ((semanticAudit.actionCoverage ?? 1) < 0.75) score -= 14;
+  if ((semanticAudit.polarityMismatches ?? 0) > 0) score -= 22;
+  if (/\bwhat I am trying to say is\b/i.test(outputText)) score -= 18;
+  return { score, outputText };
+}
+
+function generatedSwapText(sourceState, donorState) {
+  const donorShell = createBorrowedCadenceShell(donorState);
+  const candidates = swapCadenceShellVariants(donorShell).map((shell) => {
+    const transfer = buildCadenceTransfer(
+      sourceState.text,
+      shell,
+      {
+        retrieval: true,
+        exposeHeldCandidate: true,
+        auForgedOntology: AU_FORGED_ONTOLOGY,
+        strength: shell.strength
+      }
+    );
+    return scoreGeneratedSwap(sourceState, shell, transfer);
+  });
+  candidates.sort((left, right) => right.score - left.score);
+  return candidates[0]?.outputText || sourceState.text;
+}
+
 function profileTone(profile) {
   if (!profile || profile.empty) {
     return 'idle';
@@ -333,7 +435,7 @@ function updateControls() {
   $('badgeBtn').textContent = `Cycle custody badge // ${BADGE_LABELS[badge] ?? badge}`;
   $('resetBtn').textContent = 'Reset bay';
 
-  $('swapCadencesBtn').disabled = !cadenceAssignments.A && !cadenceAssignments.B;
+  $('swapCadencesBtn').disabled = !(getVoiceState('A').hasText && getVoiceState('B').hasText);
   $('savePersonaBtn').disabled = !getVoiceState(activeVoice).hasText;
 }
 
@@ -769,13 +871,25 @@ function assignPersonaToActiveBay(id) {
 }
 
 function swapCadences() {
-  const nextAssignments = {
-    A: cadenceAssignments.B,
-    B: cadenceAssignments.A
+  const voiceStateA = getVoiceState('A');
+  const voiceStateB = getVoiceState('B');
+
+  if (!voiceStateA.hasText || !voiceStateB.hasText) {
+    setStatusMessage('Swap Cadences needs both bays populated before the generator can trade cadence masks.');
+    updateControls();
+    return;
+  }
+
+  const nextA = generatedSwapText(voiceStateA, voiceStateB);
+  const nextB = generatedSwapText(voiceStateB, voiceStateA);
+  $('voiceA').value = nextA;
+  $('voiceB').value = nextB;
+  cadenceAssignments = {
+    A: null,
+    B: null
   };
-  cadenceAssignments = nextAssignments;
   analyzeCadences();
-  setStatusMessage('Cadence shells swapped. The text stayed put; only the shells moved.');
+  setStatusMessage('Cadence swap generated new bay text through the opposite mask. Both source bays now hold the semantic-drifted outputs.');
 }
 
 function buildSavedPersonaName(slot) {
