@@ -1,3 +1,5 @@
+import { injectProvenanceTelemetry } from './extractor.js';
+
 function slugify(value = '') {
   return String(value || '')
     .toLowerCase()
@@ -89,5 +91,5 @@ export function buildPersonaSpec({
 }
 
 export function exportPersonaSpec(spec) {
-  return JSON.stringify(spec, null, 2);
+  return JSON.stringify(injectProvenanceTelemetry(spec), null, 2);
 }

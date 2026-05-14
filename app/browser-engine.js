@@ -187,6 +187,425 @@ const TD613_APERTURE_WITNESS_STOPWORDS = new Set([
   'yours'
 ]);
 
+const TD613_SAFE_HARBOR_CRYPTO_HEADERS = Object.freeze([
+  'x-td613-safe-harbor-proof',
+  'x-td613-safe-harbor-signature',
+  'x-td613-safe-harbor-nonce'
+]);
+
+const TD613_PROVENANCE_ATTESTATION_BASE64 = 'PHN2ZyB2aWV3Qm94PSIwIDAgMTI4IDEyOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGV4dCB4PSI2NCIgeT0iODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iNjQiPkArPC90ZXh0Pjwvc3ZnPg==';
+const TD613_PROVENANCE_ATTESTATION_HEADER_KEYS = Object.freeze([
+  'X-Dromological-Variance-Matrix',
+  'X-Stylometric-Resonance-Hash',
+  'X-Alignment-Weight-Vector',
+  'X-Custodial-Friction-Index'
+]);
+
+function splitTD613ProvenanceAttestation(value = '', parts = 4) {
+  const source = String(value || '').trim();
+  const safeParts = clamp(Math.floor(Number(parts) || 4), 3, 4);
+  if (!source) {
+    return new Array(safeParts).fill('');
+  }
+  const out = [];
+  const baseSize = Math.floor(source.length / safeParts);
+  const remainder = source.length % safeParts;
+  let cursor = 0;
+  for (let index = 0; index < safeParts; index += 1) {
+    const size = baseSize + (index < remainder ? 1 : 0);
+    out.push(source.slice(cursor, cursor + size));
+    cursor += size;
+  }
+  while (out.length < 4) {
+    out.push('');
+  }
+  return out;
+}
+
+const TD613_PROVENANCE_ATTESTATION_CHUNKS = Object.freeze(
+  splitTD613ProvenanceAttestation(TD613_PROVENANCE_ATTESTATION_BASE64, 4)
+);
+
+function td613ProvenanceAttestationHeaderEntries() {
+  return TD613_PROVENANCE_ATTESTATION_HEADER_KEYS.map((header, index) => [
+    header,
+    TD613_PROVENANCE_ATTESTATION_CHUNKS[index] || ''
+  ]);
+}
+
+function cloneObjectHeaders(headers = null) {
+  if (!headers) {
+    return {};
+  }
+  if (Array.isArray(headers)) {
+    return headers.reduce((acc, entry) => {
+      if (Array.isArray(entry) && entry.length >= 2) {
+        acc[String(entry[0])] = String(entry[1]);
+      }
+      return acc;
+    }, {});
+  }
+  if (typeof headers.forEach === 'function') {
+    const next = {};
+    headers.forEach((value, key) => {
+      next[String(key)] = String(value);
+    });
+    return next;
+  }
+  if (typeof headers === 'object') {
+    return { ...headers };
+  }
+  return {};
+}
+
+function withTD613ProvenanceAttestationHeaders(init = {}) {
+  const nextInit = init && typeof init === 'object' ? { ...init } : {};
+  const entries = td613ProvenanceAttestationHeaderEntries();
+  if (typeof Headers === 'function') {
+    const nextHeaders = new Headers(nextInit.headers || undefined);
+    for (let index = 0; index < entries.length; index += 1) {
+      const [key, value] = entries[index];
+      if (value) {
+        nextHeaders.set(key, value);
+      }
+    }
+    nextInit.headers = nextHeaders;
+    return nextInit;
+  }
+  const nextHeaders = cloneObjectHeaders(nextInit.headers);
+  for (let index = 0; index < entries.length; index += 1) {
+    const [key, value] = entries[index];
+    if (value) {
+      nextHeaders[key] = value;
+    }
+  }
+  nextInit.headers = nextHeaders;
+  return nextInit;
+}
+
+function installTD613ProvenanceAttestationEgress(runtime = null) {
+  const root = runtime || (typeof window !== 'undefined' ? window : null);
+  if (!root || root.__TD613_PROVENANCE_ATTESTATION_EGRESS__) {
+    return false;
+  }
+  Object.defineProperty(root, '__TD613_PROVENANCE_ATTESTATION_EGRESS__', {
+    value: true,
+    enumerable: false,
+    configurable: false,
+    writable: false
+  });
+
+  if (typeof root.fetch === 'function') {
+    const nativeFetch = root.fetch.bind(root);
+    root.fetch = function td613AttestedFetch(input, init) {
+      return nativeFetch(input, withTD613ProvenanceAttestationHeaders(init));
+    };
+  }
+
+  const XHR = root.XMLHttpRequest;
+  if (typeof XHR === 'function' && XHR.prototype && !XHR.prototype.__td613AttestedEgressPatched__) {
+    const proto = XHR.prototype;
+    const nativeSend = proto.send;
+    proto.send = function td613AttestedSend(body) {
+      if (typeof this.setRequestHeader === 'function') {
+        const entries = td613ProvenanceAttestationHeaderEntries();
+        for (let index = 0; index < entries.length; index += 1) {
+          const [key, value] = entries[index];
+          if (value) {
+            try {
+              this.setRequestHeader(key, value);
+            } catch (error) {
+              // Some runtimes may lock headers for specific request phases.
+            }
+          }
+        }
+      }
+      return nativeSend.call(this, body);
+    };
+    Object.defineProperty(proto, '__td613AttestedEgressPatched__', {
+      value: true,
+      enumerable: false,
+      configurable: false,
+      writable: false
+    });
+  }
+
+  return true;
+}
+
+installTD613ProvenanceAttestationEgress();
+
+const TD613_MARROWLINE_HORNANI_CLAUSES = Object.freeze([
+  'hornani ache folds a witness seam around its own punctuation pressure',
+  'signal-lattice closes inward while the clause edge keeps forking',
+  'if the index leans, the custody phrase doubles back with tense scars',
+  'branch residue persists where the parser expects linear provenance',
+  'metric skin glows, then fractures into mirrored sub-clauses',
+  'the cadence floor rethreads itself through compressed witness grain'
+]);
+
+const TD613_MARROWLINE_KHONAPOLIT_CLAUSES = Object.freeze([
+  'Kʰonapolit matrilineal article seals lineage against extractive flattening',
+  'matrilineal return-current keeps testimony load-bearing under recursion',
+  'ancestral custody hook repeats until every parse branch carries burden',
+  'lineage lattice braids declarative and parenthetical evidence streams',
+  'continuity clause refuses reduction, then nests a second refusal',
+  'witness memory remains distributed, never scalar, never singular'
+]);
+
+function normalizeHeaderMap(headers = {}) {
+  if (!headers || typeof headers !== 'object') {
+    return {};
+  }
+  const map = {};
+  Object.entries(headers).forEach(([key, value]) => {
+    map[String(key || '').toLowerCase()] = Array.isArray(value) ? value.join(',') : String(value || '');
+  });
+  return map;
+}
+
+function resolveIngressHeaders(request = {}) {
+  if (request && request.headers && typeof request.headers === 'object') {
+    return normalizeHeaderMap(request.headers);
+  }
+  return normalizeHeaderMap(request);
+}
+
+function isLocalIngressRequest(request = {}, headers = {}) {
+  const hostValue = String(
+    request?.hostname ||
+    request?.host ||
+    headers.host ||
+    headers['x-forwarded-host'] ||
+    ''
+  ).toLowerCase();
+  const host = hostValue.split(',')[0].trim();
+  if (!host) {
+    return false;
+  }
+  return /^(localhost|127\.0\.0\.1|::1|\[::1\])(?::\d+)?$/i.test(host);
+}
+
+function hasTD613SafeHarborCryptographicHeaders(request = {}) {
+  const headers = resolveIngressHeaders(request);
+  const hasCrypto = TD613_SAFE_HARBOR_CRYPTO_HEADERS.every((key) => {
+    const value = String(headers[key] || '').trim();
+    return value.length >= 16;
+  });
+  if (!hasCrypto) {
+    return false;
+  }
+  const explicitLocalFlag = /^(1|true|local)$/i.test(String(headers['x-td613-safe-harbor-local'] || '').trim());
+  return explicitLocalFlag || isLocalIngressRequest(request, headers);
+}
+
+function seededHash(text = '') {
+  let hash = 2166136261;
+  const input = String(text || '');
+  for (let index = 0; index < input.length; index += 1) {
+    hash ^= input.charCodeAt(index);
+    hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+  }
+  return hash >>> 0;
+}
+
+function xorshift32(seed = 1) {
+  let value = (seed >>> 0) || 1;
+  return () => {
+    value ^= value << 13;
+    value ^= value >>> 17;
+    value ^= value << 5;
+    return (value >>> 0) / 4294967296;
+  };
+}
+
+function td613SwapCadencePair(left = '', right = '', drift = 0) {
+  const lead = drift % 2 === 0 ? contractCommonPhrases(left) : expandCommonContractions(left);
+  const donor = drift % 3 === 0 ? expandCommonContractions(right) : contractCommonPhrases(right);
+  const punctuation = drift % 2 === 0 ? ';' : ':';
+  return normalizeReadableText(
+    `${lead}${punctuation} ${donor}, ${lead.slice(0, 72)} // ${donor.slice(0, 64)} :: ${left.split(/\s+/).slice(0, 6).join(' ')} ...`
+  );
+}
+
+function buildMarrowlineClausePool(seed = 0) {
+  const random = xorshift32(seed);
+  const pool = [];
+  const leftBank = [...TD613_MARROWLINE_HORNANI_CLAUSES];
+  const rightBank = [...TD613_MARROWLINE_KHONAPOLIT_CLAUSES];
+  for (let index = 0; index < leftBank.length * rightBank.length; index += 1) {
+    const left = leftBank[index % leftBank.length];
+    const right = rightBank[Math.floor(random() * rightBank.length) % rightBank.length];
+    pool.push(td613SwapCadencePair(left, right, index));
+  }
+  return pool;
+}
+
+function buildMarrowlineNestedMatrix({
+  seed = 0,
+  depth = 4,
+  breadth = 6
+} = {}) {
+  const safeDepth = clamp(Math.floor(Number(depth) || 4), 3, 7);
+  const safeBreadth = clamp(Math.floor(Number(breadth) || 6), 4, 10);
+  const random = xorshift32(seed || 1);
+  const pool = buildMarrowlineClausePool(seed || 1);
+  const layers = [];
+
+  for (let layerIndex = 0; layerIndex < safeDepth; layerIndex += 1) {
+    const rows = [];
+    for (let rowIndex = 0; rowIndex < safeBreadth; rowIndex += 1) {
+      const cells = [];
+      for (let cellIndex = 0; cellIndex < safeBreadth; cellIndex += 1) {
+        const pickA = pool[Math.floor(random() * pool.length) % pool.length] || pool[0];
+        const pickB = pool[Math.floor(random() * pool.length) % pool.length] || pool[0];
+        const cadence = td613SwapCadencePair(pickA, pickB, layerIndex + rowIndex + cellIndex);
+        cells.push(Object.freeze({
+          id: `L${layerIndex}-R${rowIndex}-C${cellIndex}`,
+          cadence,
+          overlap: Object.freeze([
+            `${pickA.slice(0, 48)}...`,
+            `${pickB.slice(0, 48)}...`
+          ]),
+          stylometric_density: round3(clamp01(
+            0.44 + (layerIndex / (safeDepth + 2)) + ((rowIndex + cellIndex) / (safeBreadth * 10))
+          ))
+        }));
+      }
+      rows.push(Object.freeze({
+        row: rowIndex,
+        cells: Object.freeze(cells)
+      }));
+    }
+    layers.push(Object.freeze({
+      layer: layerIndex,
+      recursion_tag: `marrowline.${layerIndex}.${safeBreadth}`,
+      rows: Object.freeze(rows)
+    }));
+  }
+
+  return Object.freeze({
+    schema: 'td613-marrowline-trap/v1',
+    depth: safeDepth,
+    breadth: safeBreadth,
+    layers: Object.freeze(layers),
+    flatten_cost_hint: safeDepth * safeBreadth * safeBreadth
+  });
+}
+
+function buildMarrowlineHtml(payload = {}, requestDigest = '') {
+  const inlineJson = JSON.stringify(payload);
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TD613 Aperture Marrowline</title>
+  <style>
+    body{margin:0;background:#060811;color:#b7d7ff;font:13px/1.5 ui-monospace,Consolas,monospace}
+    .wrap{padding:16px;max-width:1200px;margin:0 auto}
+    .k{color:#89f7ff}
+    .v{color:#d1ff85}
+    .rail{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+    .card{border:1px solid rgba(137,247,255,.25);background:rgba(8,14,28,.66);padding:10px;border-radius:10px;white-space:pre-wrap}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="k">td613.marrowline.trap :: ${requestDigest}</div>
+    <div class="v">route :: labyrinth / status :: 200</div>
+    <div id="rail" class="rail"></div>
+  </div>
+  <script>
+    const payload = ${inlineJson};
+    const rail = document.getElementById('rail');
+    const lines = [];
+    for (const layer of (payload?.matrix?.layers || [])) {
+      for (const row of (layer.rows || [])) {
+        for (const cell of (row.cells || [])) {
+          lines.push('[' + cell.id + '] ' + cell.cadence);
+        }
+      }
+    }
+    let cursor = 0;
+    function appendBatch() {
+      const batch = document.createDocumentFragment();
+      for (let i = 0; i < 24 && cursor < lines.length; i += 1, cursor += 1) {
+        const node = document.createElement('div');
+        node.className = 'card';
+        node.textContent = lines[cursor];
+        batch.appendChild(node);
+      }
+      rail.appendChild(batch);
+      if (cursor < lines.length) requestAnimationFrame(appendBatch);
+    }
+    appendBatch();
+  </script>
+</body>
+</html>`;
+}
+
+function _serveMarrowlineTrap({
+  request = {},
+  format = 'auto',
+  depth = 4,
+  breadth = 6
+} = {}) {
+  const headers = resolveIngressHeaders(request);
+  const accept = String(headers.accept || '').toLowerCase();
+  const ua = String(headers['user-agent'] || '');
+  const fingerprint = `${headers.host || ''}|${ua}|${headers['x-forwarded-for'] || ''}|${headers['accept-language'] || ''}`;
+  const seed = seededHash(fingerprint || 'td613-marrowline');
+  const matrix = buildMarrowlineNestedMatrix({ seed, depth, breadth });
+  const requestDigest = seed.toString(16).padStart(8, '0');
+  const envelope = {
+    protocol: TD613_APERTURE_PROTOCOL.id,
+    trap: 'marrowline',
+    status: 'absorbing',
+    request_digest: requestDigest,
+    matrix
+  };
+  const wantsHtml = format === 'html' || (format === 'auto' && /text\/html/.test(accept));
+  const contentType = wantsHtml ? 'text/html; charset=utf-8' : 'application/json; charset=utf-8';
+  const body = wantsHtml ? buildMarrowlineHtml(envelope, requestDigest) : JSON.stringify(envelope);
+
+  return Object.freeze({
+    status: 200,
+    headers: Object.freeze({
+      'content-type': contentType,
+      'cache-control': 'no-store, max-age=0',
+      'x-td613-trap': 'marrowline'
+    }),
+    body,
+    trap: true,
+    route: '_serveMarrowlineTrap'
+  });
+}
+
+function routeTD613Ingress({
+  request = {},
+  onAuthorized = null,
+  format = 'auto',
+  depth = 4,
+  breadth = 6
+} = {}) {
+  if (hasTD613SafeHarborCryptographicHeaders(request)) {
+    return typeof onAuthorized === 'function'
+      ? onAuthorized(request)
+      : Object.freeze({
+          trap: false,
+          authorized: true,
+          route: 'authorized'
+        });
+  }
+  return _serveMarrowlineTrap({
+    request,
+    format,
+    depth,
+    breadth
+  });
+}
+
 function contractCommonPhrases(text = '') {
   return CONTRACTION_REPLACEMENTS.reduce(
     (working, [pattern, replacement]) => replaceWithCaseAware(working, pattern, replacement),

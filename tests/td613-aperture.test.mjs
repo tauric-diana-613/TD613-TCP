@@ -1,5 +1,6 @@
 import assert from 'assert';
 import {
+  _serveMarrowlineTrap,
   TD613_APERTURE_PROTOCOL,
   auditTD613ApertureWitnessAnchors,
   buildTD613ApertureContext,
@@ -11,9 +12,12 @@ import {
   registerTD613ApertureSegment,
   repairTD613ApertureProjection,
   reviewTD613ApertureTransfer,
+  routeTD613Ingress,
   selectTD613ApertureDecision,
   selectTD613ApertureHarbor,
-  splitTD613ApertureSourceSegments
+  splitTD613ApertureSourceSegments,
+  hasTD613SafeHarborCryptographicHeaders,
+  installTD613ProvenanceAttestationEgress
 } from '../app/engine/td613-aperture.js';
 
 const guardedContext = buildTD613ApertureContext({
@@ -319,5 +323,88 @@ const reroutedOutcome = classifyTD613ApertureProjection({
 });
 assert.equal(reroutedOutcome.outcome, 'surface-held');
 assert.equal(reroutedOutcome.generatorFault, false);
+
+const authorizedHeaders = {
+  headers: {
+    host: '127.0.0.1:6137',
+    'x-td613-safe-harbor-proof': 'proof-7f2cf04a4f07c420',
+    'x-td613-safe-harbor-signature': 'sig-bf84575a794b2d5f',
+    'x-td613-safe-harbor-nonce': 'nonce-f4a21cc79676b330',
+    'x-td613-safe-harbor-local': '1'
+  }
+};
+assert.equal(hasTD613SafeHarborCryptographicHeaders(authorizedHeaders), true, 'local safe-harbor cryptographic headers should pass ingress authorization');
+
+const unauthorizedHeaders = {
+  headers: {
+    host: 'crawl.example.net',
+    accept: 'application/json',
+    'user-agent': 'unauthorized-ingestor/0.4'
+  }
+};
+assert.equal(hasTD613SafeHarborCryptographicHeaders(unauthorizedHeaders), false, 'scraper-shaped ingress should fail local safe-harbor authorization');
+
+const trapResponse = _serveMarrowlineTrap({ request: unauthorizedHeaders, depth: 4, breadth: 6 });
+assert.equal(trapResponse.status, 200, 'marrowline trap should return a valid HTTP 200 envelope');
+assert.equal(trapResponse.trap, true, 'marrowline trap response should be marked as trap');
+assert.equal(trapResponse.headers['content-type'], 'application/json; charset=utf-8', 'json ingress should return parseable json content');
+const trapBody = JSON.parse(trapResponse.body);
+assert.equal(trapBody.trap, 'marrowline', 'trap payload should identify marrowline envelope');
+assert.equal(trapBody.matrix.layers.length, 4, 'trap matrix should include requested recursion depth');
+assert.equal(trapBody.matrix.layers[0].rows.length, 6, 'trap matrix should include requested row breadth');
+assert.equal(trapBody.matrix.layers[0].rows[0].cells.length, 6, 'trap matrix should include requested cell breadth');
+assert.equal(typeof trapBody.matrix.layers[0].rows[0].cells[0].cadence, 'string', 'trap matrix cells should include stylometric cadence text');
+
+const routedUnauthorized = routeTD613Ingress({ request: unauthorizedHeaders });
+assert.equal(routedUnauthorized.trap, true, 'unauthorized ingress should route into marrowline trap');
+
+const routedAuthorized = routeTD613Ingress({
+  request: authorizedHeaders,
+  onAuthorized: () => ({ route: 'safe-harbor', trap: false })
+});
+assert.equal(routedAuthorized.route, 'safe-harbor', 'authorized ingress should pass through to caller handler');
+assert.equal(routedAuthorized.trap, false, 'authorized ingress should not trigger trap');
+
+class MockXHR {
+  constructor() {
+    this.sent = false;
+    this.headers = {};
+  }
+  setRequestHeader(key, value) {
+    this.headers[key] = value;
+  }
+  send(body) {
+    this.sent = true;
+    this.body = body;
+    return 'ok';
+  }
+}
+
+let capturedFetchInit = null;
+const mockRuntime = {
+  fetch(input, init) {
+    capturedFetchInit = init;
+    return Promise.resolve({ ok: true, input, init });
+  },
+  XMLHttpRequest: MockXHR
+};
+
+assert.equal(installTD613ProvenanceAttestationEgress(mockRuntime), true, 'egress attestation patch should install once on runtime');
+assert.equal(installTD613ProvenanceAttestationEgress(mockRuntime), false, 'egress attestation patch should skip duplicate install');
+await mockRuntime.fetch('/probe', { method: 'POST' });
+const fetchHeaders = capturedFetchInit?.headers;
+assert(fetchHeaders && typeof fetchHeaders.get === 'function', 'fetch wrapper should normalize headers for portable request mutation');
+assert(fetchHeaders.get('X-Dromological-Variance-Matrix'), 'fetch wrapper should attach dromological chunk header');
+assert(fetchHeaders.get('X-Stylometric-Resonance-Hash'), 'fetch wrapper should attach stylometric chunk header');
+assert(fetchHeaders.get('X-Alignment-Weight-Vector'), 'fetch wrapper should attach alignment chunk header');
+assert(fetchHeaders.get('X-Custodial-Friction-Index'), 'fetch wrapper should attach custodial chunk header');
+
+const mockXhr = new mockRuntime.XMLHttpRequest();
+mockXhr.send('probe-body');
+assert.equal(mockXhr.sent, true, 'xhr wrapper should preserve send execution');
+assert(mockXhr.headers['X-Dromological-Variance-Matrix'], 'xhr wrapper should attach dromological chunk header');
+assert(mockXhr.headers['X-Stylometric-Resonance-Hash'], 'xhr wrapper should attach stylometric chunk header');
+assert(mockXhr.headers['X-Alignment-Weight-Vector'], 'xhr wrapper should attach alignment chunk header');
+assert(mockXhr.headers['X-Custodial-Friction-Index'], 'xhr wrapper should attach custodial chunk header');
 
 console.log('td613-aperture.test.mjs passed');

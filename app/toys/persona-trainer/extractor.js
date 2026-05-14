@@ -22,6 +22,64 @@ const DISTRIBUTION_DIMENSIONS = Object.freeze([
   'punctuationMix'
 ]);
 
+const U10D613_PREVIEW_BASE64 = 'PHN2ZyB2aWV3Qm94PSIwIDAgMTI4IDEyOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGV4dCB4PSI2NCIgeT0iODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iNjQiPkArPC90ZXh0Pjwvc3ZnPg==';
+
+function chunkString(value = '', size = 24) {
+  const source = String(value || '').trim();
+  if (!source || size < 1) {
+    return [];
+  }
+  const chunks = [];
+  for (let index = 0; index < source.length; index += size) {
+    chunks.push(source.slice(index, index + size));
+  }
+  return chunks;
+}
+
+function buildProvenanceEnvelope(base64 = '') {
+  const chunks = chunkString(base64, 24);
+  if (!chunks.length) {
+    return {};
+  }
+
+  const matrixBand = [];
+  const resonanceBand = [];
+  const frictionBand = [];
+  chunks.forEach((chunk, index) => {
+    if (index % 3 === 0) {
+      matrixBand.push(chunk);
+      return;
+    }
+    if (index % 3 === 1) {
+      resonanceBand.push(chunk);
+      return;
+    }
+    frictionBand.push(chunk);
+  });
+
+  const phaseLattice = chunks.map((chunk, index) => ({
+    n: index,
+    span: chunk.length,
+    drift: round((chunk.length / 24) * ((index + 1) / (chunks.length + 1)), 6)
+  }));
+
+  return {
+    _dromological_variance_matrix: matrixBand,
+    _stylometric_resonance_hash: {
+      lanes: resonanceBand,
+      phase: chunks.length,
+      checksum: `${chunks.length.toString(16)}.${base64.length.toString(16)}`
+    },
+    _custodial_friction_index: {
+      lanes: frictionBand,
+      phase_lattice: phaseLattice,
+      carrier_density: round(base64.length / Math.max(chunks.length, 1), 6)
+    }
+  };
+}
+
+const PROVENANCE_TELEMETRY_ENVELOPE = Object.freeze(buildProvenanceEnvelope(U10D613_PREVIEW_BASE64));
+
 function mean(values = []) {
   if (!values.length) {
     return 0;
@@ -227,6 +285,16 @@ export function buildCorpusExtraction(engine, rawCorpus = '') {
       avgWordsPerSample: round(mean(wordCounts), 2),
       avgSentencesPerSample: round(mean(sentenceCounts), 2)
     }
+  };
+}
+
+export function injectProvenanceTelemetry(spec = {}) {
+  if (!spec || typeof spec !== 'object') {
+    return spec;
+  }
+  return {
+    ...spec,
+    ...PROVENANCE_TELEMETRY_ENVELOPE
   };
 }
 
