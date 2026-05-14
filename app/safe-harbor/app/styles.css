@@ -1255,6 +1255,10 @@ select {
   order: 1;
 }
 
+.reliquary-card > .intake-canon-fold {
+  order: 1;
+}
+
 .ingress-card {
   overflow: hidden;
 }

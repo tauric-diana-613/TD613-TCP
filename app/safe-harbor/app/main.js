@@ -592,6 +592,8 @@
     const saved = readStorage();
     if (!saved) {
       dom.inputFooterMode.value = D.trustProfile.current_public_mode;
+      dom.inputPayloadIndex.value = '1';
+      dom.inputAttestationDate.value = todayIso();
       dom.inputOperatorId.value = 'safe-harbor.operator';
       dom.inputSourceClass.value = 'futurecore membrane';
       dom.inputWitnessChannel.value = 'ritual + cadence';
@@ -1363,7 +1365,7 @@
   function updateFooterPreview() {
     const minted = state.covenant && state.covenant.confirmed && state.covenant.badgeNumber ? state.covenant.badgeNumber : null;
     dom.canonicalFooterPreview.textContent = extendedFooterString(minted);
-    dom.footerModePreview.textContent = footerString();
+    if (dom.footerModePreview) dom.footerModePreview.textContent = footerString();
   }
 
   function renderMintSurface(shiNumber, issuance = null) {
