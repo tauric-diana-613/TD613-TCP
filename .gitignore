@@ -4,3 +4,10 @@ node_modules/
 coverage/
 *.log
 reports/diagnostics/.staging/
+
+# Crash dumps and edge profiles
+.codex-http-*.pid
+tmp-edge-profile-*/
+*.dmp
+*.dat
+Crashpad/
