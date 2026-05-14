@@ -197,10 +197,25 @@ const TD613_PROVENANCE_ATTESTATION_HEADER_KEYS = Object.freeze([
   'X-Alignment-Weight-Vector',
   'X-Custodial-Friction-Index'
 ]);
+const TD613_PROVENANCE_ATTESTATION_PARTS = TD613_PROVENANCE_ATTESTATION_HEADER_KEYS.length;
+const TD613_PROVENANCE_ATTESTATION_MAX_HEADER_BYTES = 512 * 1024;
 
-function splitTD613ProvenanceAttestation(value = '', parts = 4) {
+function boundTD613ProvenanceAttestation(value = '', maxBytes = TD613_PROVENANCE_ATTESTATION_MAX_HEADER_BYTES) {
   const source = String(value || '').trim();
-  const safeParts = clamp(Math.floor(Number(parts) || 4), 3, 4);
+  const cap = Math.max(0, Math.floor(Number(maxBytes) || 0));
+  if (!source || source.length <= cap) {
+    return source;
+  }
+  return source.slice(0, cap);
+}
+
+function splitTD613ProvenanceAttestation(
+  value = '',
+  parts = TD613_PROVENANCE_ATTESTATION_PARTS,
+  maxBytes = TD613_PROVENANCE_ATTESTATION_MAX_HEADER_BYTES
+) {
+  const source = boundTD613ProvenanceAttestation(value, maxBytes);
+  const safeParts = clamp(Math.floor(Number(parts) || TD613_PROVENANCE_ATTESTATION_PARTS), 3, 4);
   if (!source) {
     return new Array(safeParts).fill('');
   }
@@ -220,14 +235,22 @@ function splitTD613ProvenanceAttestation(value = '', parts = 4) {
 }
 
 const TD613_PROVENANCE_ATTESTATION_CHUNKS = Object.freeze(
-  splitTD613ProvenanceAttestation(TD613_PROVENANCE_ATTESTATION_BASE64, 4)
+  splitTD613ProvenanceAttestation(
+    TD613_PROVENANCE_ATTESTATION_BASE64,
+    TD613_PROVENANCE_ATTESTATION_PARTS,
+    TD613_PROVENANCE_ATTESTATION_MAX_HEADER_BYTES
+  )
+);
+
+const TD613_PROVENANCE_ATTESTATION_HEADER_ENTRIES = Object.freeze(
+  TD613_PROVENANCE_ATTESTATION_HEADER_KEYS.map((header, index) => Object.freeze([
+    header,
+    TD613_PROVENANCE_ATTESTATION_CHUNKS[index] || ''
+  ]))
 );
 
 function td613ProvenanceAttestationHeaderEntries() {
-  return TD613_PROVENANCE_ATTESTATION_HEADER_KEYS.map((header, index) => [
-    header,
-    TD613_PROVENANCE_ATTESTATION_CHUNKS[index] || ''
-  ]);
+  return TD613_PROVENANCE_ATTESTATION_HEADER_ENTRIES;
 }
 
 function cloneObjectHeaders(headers = null) {
@@ -280,6 +303,33 @@ function withTD613ProvenanceAttestationHeaders(init = {}) {
   return nextInit;
 }
 
+function withTD613AttestedFetchArguments(input, init, root = null) {
+  const HeadersCtor = root?.Headers || (typeof Headers === 'function' ? Headers : null);
+  const RequestCtor = root?.Request || (typeof Request === 'function' ? Request : null);
+  const nextInit = init && typeof init === 'object' ? { ...init } : {};
+  const entries = td613ProvenanceAttestationHeaderEntries();
+
+  if (HeadersCtor) {
+    const baseHeaders = RequestCtor && input instanceof RequestCtor
+      ? new HeadersCtor(input.headers || undefined)
+      : new HeadersCtor();
+    const initHeaders = nextInit.headers ? new HeadersCtor(nextInit.headers) : null;
+    if (initHeaders) {
+      initHeaders.forEach((value, key) => baseHeaders.set(key, value));
+    }
+    for (let index = 0; index < entries.length; index += 1) {
+      const [key, value] = entries[index];
+      if (value) {
+        baseHeaders.set(key, value);
+      }
+    }
+    nextInit.headers = baseHeaders;
+    return [input, nextInit];
+  }
+
+  return [input, withTD613ProvenanceAttestationHeaders(nextInit)];
+}
+
 export function installTD613ProvenanceAttestationEgress(runtime = null) {
   const root = runtime || (typeof window !== 'undefined' ? window : null);
   if (!root || root.__TD613_PROVENANCE_ATTESTATION_EGRESS__) {
@@ -295,7 +345,8 @@ export function installTD613ProvenanceAttestationEgress(runtime = null) {
   if (typeof root.fetch === 'function') {
     const nativeFetch = root.fetch.bind(root);
     root.fetch = function td613AttestedFetch(input, init) {
-      return nativeFetch(input, withTD613ProvenanceAttestationHeaders(init));
+      const args = withTD613AttestedFetchArguments(input, init, root);
+      return nativeFetch(args[0], args[1]);
     };
   }
 

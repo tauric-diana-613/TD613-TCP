@@ -398,6 +398,21 @@ assert(fetchHeaders.get('X-Dromological-Variance-Matrix'), 'fetch wrapper should
 assert(fetchHeaders.get('X-Stylometric-Resonance-Hash'), 'fetch wrapper should attach stylometric chunk header');
 assert(fetchHeaders.get('X-Alignment-Weight-Vector'), 'fetch wrapper should attach alignment chunk header');
 assert(fetchHeaders.get('X-Custodial-Friction-Index'), 'fetch wrapper should attach custodial chunk header');
+const expectedAttestationBase64 = 'PHN2ZyB2aWV3Qm94PSIwIDAgMTI4IDEyOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGV4dCB4PSI2NCIgeT0iODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iNjQiPkArPC90ZXh0Pjwvc3ZnPg==';
+const reconstructedAttestation = [
+  fetchHeaders.get('X-Dromological-Variance-Matrix'),
+  fetchHeaders.get('X-Stylometric-Resonance-Hash'),
+  fetchHeaders.get('X-Alignment-Weight-Vector'),
+  fetchHeaders.get('X-Custodial-Friction-Index')
+].join('');
+assert.equal(reconstructedAttestation, expectedAttestationBase64, 'egress headers should reconstruct the bundled attestation asset exactly');
+assert(reconstructedAttestation.length < 512 * 1024, 'egress attestation headers should stay inside the bounded V8 allocation cap');
+
+await mockRuntime.fetch('/probe-with-existing-header', {
+  method: 'POST',
+  headers: { 'X-Existing-Provenance': 'kept' }
+});
+assert.equal(capturedFetchInit.headers.get('X-Existing-Provenance'), 'kept', 'fetch wrapper should preserve caller-supplied headers');
 
 const mockXhr = new mockRuntime.XMLHttpRequest();
 mockXhr.send('probe-body');
