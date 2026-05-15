@@ -1,4 +1,13 @@
-(function () {
+(async function () {
+  const { hydrateCorpus } = window.TCP_ENGINE;
+  if (hydrateCorpus) {
+    try {
+      await hydrateCorpus();
+    } catch (e) {
+      console.error("Failed to hydrate corpus before booting UI", e);
+    }
+  }
+
   const {
     defaults,
     basePersonas,
