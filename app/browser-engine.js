@@ -5169,6 +5169,222 @@ function distributionDistance(a = {}, b = {}, keys = null) {
   return round3(clamp01(Math.sqrt(js)));
 }
 
+function shannonEntropyFromCounts(counts = {}, total = 0) {
+  const denominator = Math.max(Number(total) || 0, 1);
+  let entropy = 0;
+  Object.values(counts).forEach((count) => {
+    const p = Number(count || 0) / denominator;
+    if (p > 0) {
+      entropy -= p * Math.log2(p);
+    }
+  });
+  return entropy;
+}
+
+function populationVariance(values = []) {
+  if (values.length < 2) {
+    return 0;
+  }
+  const avg = values.reduce((sum, value) => sum + value, 0) / values.length;
+  return values.reduce((sum, value) => sum + ((value - avg) ** 2), 0) / values.length;
+}
+
+function countRegexMatches(text = '', pattern) {
+  const matches = String(text || '').match(pattern);
+  return matches ? matches.length : 0;
+}
+
+function syntacticBranchingDepth(text = '') {
+  const normalized = normalizeText(String(text || ''));
+  const sentences = sentenceSplit(normalized);
+  const words = tokenize(normalized);
+  const wordTotal = Math.max(words.length, 1);
+  const charTotal = Math.max(Array.from(normalized).length, 1);
+  const punctuationCount = countRegexMatches(normalized, /[,;:()[\]{}]/g);
+  const clauseMarkerCount = countRegexMatches(
+    normalized,
+    /\b(?:although|because|since|while|whereas|unless|until|which|that|who|whom|whose|where|when|if|though|after|before|however|therefore|meanwhile|nevertheless)\b/gi
+  );
+  const connectorCount = countRegexMatches(normalized, /\b(?:and|but|or|so|yet|nor)\b/gi);
+  let depth = 0;
+  let maxDepth = 0;
+  let depthSamples = 0;
+  let depthSum = 0;
+
+  for (const char of normalized) {
+    if (char === '(' || char === '[' || char === '{') {
+      depth += 1;
+      maxDepth = Math.max(maxDepth, depth);
+    }
+    if (/[,:;]/.test(char)) {
+      depthSamples += 1;
+      depthSum += depth + 1;
+    }
+    if (char === ')' || char === ']' || char === '}') {
+      depth = Math.max(0, depth - 1);
+    }
+  }
+
+  const sentenceBranchDensity = sentences.length
+    ? sentences.reduce((sum, sentence) => {
+        const localWords = Math.max(tokenize(sentence).length, 1);
+        const localClauseMarkers = countRegexMatches(sentence, /\b(?:although|because|since|while|whereas|unless|until|which|that|who|whom|whose|where|when|if|though|after|before|however|therefore|meanwhile|nevertheless)\b/gi);
+        const localPunctuation = countRegexMatches(sentence, /[,;:()[\]{}]/g);
+        return sum + clamp01(((localClauseMarkers * 1.5) + localPunctuation) / localWords);
+      }, 0) / sentences.length
+    : 0;
+  const punctuationDensityValue = punctuationCount / charTotal;
+  const clauseMarkerDensity = clauseMarkerCount / wordTotal;
+  const connectorDensity = connectorCount / wordTotal;
+  const avgDepth = depthSamples ? depthSum / depthSamples : 0;
+  const structuralFriction = clamp01(
+    (punctuationDensityValue * 2.2) +
+    (clauseMarkerDensity * 3.5) +
+    (connectorDensity * 0.9) +
+    (Math.min(maxDepth, 6) / 6 * 0.22) +
+    (Math.min(avgDepth, 6) / 6 * 0.18) +
+    (sentenceBranchDensity * 0.28)
+  );
+
+  return Object.freeze({
+    score: round3(structuralFriction),
+    maxDepth,
+    avgDepth: round3(avgDepth),
+    punctuationDensity: round3(punctuationDensityValue),
+    clauseMarkerDensity: round3(clauseMarkerDensity),
+    connectorDensity: round3(connectorDensity),
+    sentenceBranchDensity: round3(sentenceBranchDensity),
+    structuralFriction: round3(structuralFriction)
+  });
+}
+
+function lexicalEntropyScore(text = '') {
+  const normalized = normalizeText(String(text || ''));
+  const characters = Array.from(normalized).filter((char) => !/\s/.test(char));
+  const tokens = tokenize(normalized).map((token) => token.toLowerCase());
+  const charCounts = {};
+  const tokenCounts = {};
+
+  characters.forEach((char) => {
+    charCounts[char] = (charCounts[char] || 0) + 1;
+  });
+  tokens.forEach((token) => {
+    tokenCounts[token] = (tokenCounts[token] || 0) + 1;
+  });
+
+  const charEntropy = shannonEntropyFromCounts(charCounts, characters.length);
+  const tokenEntropy = shannonEntropyFromCounts(tokenCounts, tokens.length);
+  const uniqueChars = Object.keys(charCounts).length;
+  const uniqueTokens = Object.keys(tokenCounts).length;
+  const normalizedCharEntropy = uniqueChars > 1 ? charEntropy / Math.log2(uniqueChars) : 0;
+  const normalizedTokenEntropy = uniqueTokens > 1 ? tokenEntropy / Math.log2(uniqueTokens) : 0;
+  const unicodeLoad = characters.length
+    ? characters.filter((char) => char.codePointAt(0) > 0x7f).length / characters.length
+    : 0;
+  const score = clamp01(
+    (clamp01(normalizedCharEntropy) * 0.42) +
+    (clamp01(normalizedTokenEntropy) * 0.42) +
+    (clamp01(uniqueTokens / Math.max(tokens.length, 1)) * 0.10) +
+    (clamp01(unicodeLoad * 2) * 0.06)
+  );
+
+  return Object.freeze({
+    score: round3(score),
+    charEntropyBits: round3(charEntropy),
+    tokenEntropyBits: round3(tokenEntropy),
+    normalizedCharEntropy: round3(clamp01(normalizedCharEntropy)),
+    normalizedTokenEntropy: round3(clamp01(normalizedTokenEntropy)),
+    uniqueCharacters: uniqueChars,
+    uniqueTokens,
+    unicodeLoad: round3(unicodeLoad)
+  });
+}
+
+function transitionVariance(text = '') {
+  const normalized = normalizeText(String(text || ''));
+  const sentences = sentenceSplit(normalized);
+  const lengths = sentences.map((sentence) => tokenize(sentence).length);
+  const punctuationLoads = sentences.map((sentence) => countRegexMatches(sentence, /[^\w\s]/g));
+  const lineBreakLoads = sentences.map((sentence) => countRegexMatches(sentence, /\n/g));
+  const sentenceCount = Math.max(sentences.length, 1);
+  const lengthDeltas = [];
+  const punctuationDeltas = [];
+  const formatDeltas = [];
+
+  for (let index = 1; index < sentences.length; index += 1) {
+    lengthDeltas.push(Math.abs((lengths[index] || 0) - (lengths[index - 1] || 0)));
+    punctuationDeltas.push(Math.abs((punctuationLoads[index] || 0) - (punctuationLoads[index - 1] || 0)));
+    formatDeltas.push(Math.abs((lineBreakLoads[index] || 0) - (lineBreakLoads[index - 1] || 0)));
+  }
+
+  const lengthVariance = populationVariance(lengths);
+  const punctuationVariance = populationVariance(punctuationLoads);
+  const formattingVariance = populationVariance(lineBreakLoads);
+  const abruptShiftRate = lengthDeltas.filter((delta) => delta >= 8).length / Math.max(sentenceCount - 1, 1);
+  const meanLengthDelta = lengthDeltas.length
+    ? lengthDeltas.reduce((sum, value) => sum + value, 0) / lengthDeltas.length
+    : 0;
+  const meanPunctuationDelta = punctuationDeltas.length
+    ? punctuationDeltas.reduce((sum, value) => sum + value, 0) / punctuationDeltas.length
+    : 0;
+  const meanFormatDelta = formatDeltas.length
+    ? formatDeltas.reduce((sum, value) => sum + value, 0) / formatDeltas.length
+    : 0;
+  const score = clamp01(
+    (clamp01(lengthVariance / 144) * 0.34) +
+    (clamp01(meanLengthDelta / 18) * 0.24) +
+    (clamp01(punctuationVariance / 16) * 0.16) +
+    (clamp01(meanPunctuationDelta / 6) * 0.10) +
+    (clamp01(formattingVariance / 4) * 0.08) +
+    (clamp01(meanFormatDelta / 2) * 0.04) +
+    (clamp01(abruptShiftRate) * 0.04)
+  );
+
+  return Object.freeze({
+    score: round3(score),
+    lengthVariance: round3(lengthVariance),
+    punctuationVariance: round3(punctuationVariance),
+    formattingVariance: round3(formattingVariance),
+    meanLengthDelta: round3(meanLengthDelta),
+    meanPunctuationDelta: round3(meanPunctuationDelta),
+    meanFormatDelta: round3(meanFormatDelta),
+    abruptShiftRate: round3(abruptShiftRate)
+  });
+}
+
+class StylometricDeepMetrics {
+  static syntacticBranchingDepth(text = '') {
+    return syntacticBranchingDepth(text);
+  }
+
+  static lexicalEntropyScore(text = '') {
+    return lexicalEntropyScore(text);
+  }
+
+  static transitionVariance(text = '') {
+    return transitionVariance(text);
+  }
+
+  static analyze(text = '') {
+    const branching = syntacticBranchingDepth(text);
+    const entropy = lexicalEntropyScore(text);
+    const transitions = transitionVariance(text);
+
+    return Object.freeze({
+      syntacticBranchingDepth: branching,
+      lexicalEntropyScore: entropy,
+      transitionVariance: transitions,
+      structuralFriction: branching.structuralFriction,
+      acousticWeight: transitions.score,
+      compositeDensity: round3(clamp01(
+        (branching.score * 0.34) +
+        (entropy.score * 0.33) +
+        (transitions.score * 0.33)
+      ))
+    });
+  }
+}
+
 function blendDistribution(a = {}, b = {}, blend = 0, keys = null) {
   const keyset = keys || [...new Set([...Object.keys(a), ...Object.keys(b)])];
   const output = {};
@@ -5283,6 +5499,9 @@ function extractCadenceProfile(text = '') {
   const orthographicLooseness = normalizedOrthographicLooseness(text, sentences, words, surfaceMarkerProfile);
   const fragmentPressure = normalizedFragmentPressure(text);
   const conversationalPosture = normalizedConversationalPosture(text, words, surfaceMarkerProfile);
+  const branching = syntacticBranchingDepth(text);
+  const entropy = lexicalEntropyScore(text);
+  const transitions = transitionVariance(text);
 
   const profile = {
     empty: words.length === 0,
@@ -5307,6 +5526,13 @@ function extractCadenceProfile(text = '') {
     orthographicLooseness,
     fragmentPressure,
     conversationalPosture,
+    syntacticBranchingDepth: branching.score,
+    structuralFriction: branching.structuralFriction,
+    lexicalEntropyScore: entropy.score,
+    characterEntropyBits: entropy.charEntropyBits,
+    tokenEntropyBits: entropy.tokenEntropyBits,
+    transitionVariance: transitions.score,
+    acousticWeight: transitions.score,
     surfaceMarkerProfile,
     functionWordProfile: functionWordProfile(text),
     wordLengthProfile: wordLengthProfile(text),
@@ -10682,6 +10908,26 @@ function compareTexts(a, b, options = {}) {
     profileA.surfaceMarkerProfile || {},
     profileB.surfaceMarkerProfile || {}
   );
+  const syntacticBranchingDistance = boundedDistance(
+    profileA.syntacticBranchingDepth || 0,
+    profileB.syntacticBranchingDepth || 0,
+    0.65
+  );
+  const structuralFrictionDistance = boundedDistance(
+    profileA.structuralFriction || 0,
+    profileB.structuralFriction || 0,
+    0.65
+  );
+  const lexicalEntropyDistance = boundedDistance(
+    profileA.lexicalEntropyScore || 0,
+    profileB.lexicalEntropyScore || 0,
+    0.55
+  );
+  const transitionVarianceDistance = boundedDistance(
+    profileA.transitionVariance || 0,
+    profileB.transitionVariance || 0,
+    0.55
+  );
   const registerDistanceValue = registerDistance(profileA, profileB);
   const exactTextMatch = normalizeText(a).trim().length > 0 && normalizeText(a).trim() === normalizeText(b).trim();
   const exactProfileMatch =
@@ -10707,7 +10953,11 @@ function compareTexts(a, b, options = {}) {
     orthographyDistance === 0 &&
     fragmentDistance === 0 &&
     conversationDistance === 0 &&
-    surfaceMarkerDistanceValue === 0;
+    surfaceMarkerDistanceValue === 0 &&
+    syntacticBranchingDistance === 0 &&
+    structuralFrictionDistance === 0 &&
+    lexicalEntropyDistance === 0 &&
+    transitionVarianceDistance === 0;
 
   const similarity = exactTextMatch && exactProfileMatch
     ? 1
@@ -10776,6 +11026,10 @@ function compareTexts(a, b, options = {}) {
     fragmentDistance: round3(fragmentDistance),
     conversationDistance: round3(conversationDistance),
     surfaceMarkerDistance: round3(surfaceMarkerDistanceValue),
+    syntacticBranchingDistance: round3(syntacticBranchingDistance),
+    structuralFrictionDistance: round3(structuralFrictionDistance),
+    lexicalEntropyDistance: round3(lexicalEntropyDistance),
+    transitionVarianceDistance: round3(transitionVarianceDistance),
     registerDistance: round3(registerDistanceValue),
     avgSentenceA: profileA.avgSentenceLength,
     avgSentenceB: profileB.avgSentenceLength,
@@ -11191,7 +11445,12 @@ function summarizeProfile(profile = {}) {
     directness: round3(profile.directness || 0),
     abstractionPosture: round3(profile.abstractionPosture || 0.5),
     latinatePreference: round3(profile.latinatePreference || 0),
-    recurrencePressure: round3(profile.recurrencePressure || 0)
+    recurrencePressure: round3(profile.recurrencePressure || 0),
+    syntacticBranchingDepth: round3(profile.syntacticBranchingDepth || 0),
+    structuralFriction: round3(profile.structuralFriction || 0),
+    lexicalEntropyScore: round3(profile.lexicalEntropyScore || 0),
+    transitionVariance: round3(profile.transitionVariance || 0),
+    acousticWeight: round3(profile.acousticWeight || 0)
   };
 }
 
@@ -11624,6 +11883,24 @@ function cadenceAxisVector(input) {
       label: 'Recurrence pressure',
       raw: round3(profile.recurrencePressure || 0),
       normalized: normalizeAxis(profile.recurrencePressure || 0, 0, 1)
+    },
+    {
+      id: 'syntactic_branching',
+      label: 'Syntactic branching',
+      raw: round3(profile.syntacticBranchingDepth || 0),
+      normalized: normalizeAxis(profile.syntacticBranchingDepth || 0, 0, 1)
+    },
+    {
+      id: 'lexical_entropy',
+      label: 'Lexical entropy',
+      raw: round3(profile.lexicalEntropyScore || 0),
+      normalized: normalizeAxis(profile.lexicalEntropyScore || 0, 0, 1)
+    },
+    {
+      id: 'transition_variance',
+      label: 'Transition variance',
+      raw: round3(profile.transitionVariance || 0),
+      normalized: normalizeAxis(profile.transitionVariance || 0, 0, 1)
     },
     {
       id: 'lexical',
@@ -37871,6 +38148,10 @@ window.TCP_ENGINE = Object.assign(window.TCP_ENGINE || {}, {
   transformText,
   functionWordProfile,
   charTrigramProfile,
+  StylometricDeepMetrics,
+  syntacticBranchingDepth,
+  lexicalEntropyScore,
+  transitionVariance,
   recurrencePressure,
   sentenceSplit,
   segmentTextToIR,

@@ -8,8 +8,11 @@ import {
   buildTransferPlanFromIR,
   beamSearchTransfer,
   extractCadenceProfile,
+  lexicalEntropyScore,
   segmentTextToIR,
-  sentenceSplit
+  sentenceSplit,
+  syntacticBranchingDepth,
+  transitionVariance
 } from '../app/engine/stylometry.js';
 import {
   CANONICAL_TRANSFER_CASES,
@@ -32,6 +35,10 @@ assert.equal(typeof browserEngine.segmentTextToIR, 'function', 'Browser engine e
 assert.equal(typeof browserEngine.buildOpportunityProfileFromIR, 'function', 'Browser engine exposes buildOpportunityProfileFromIR');
 assert.equal(typeof browserEngine.buildTransferPlanFromIR, 'function', 'Browser engine exposes buildTransferPlanFromIR');
 assert.equal(typeof browserEngine.beamSearchTransfer, 'function', 'Browser engine exposes beamSearchTransfer');
+assert.equal(typeof browserEngine.StylometricDeepMetrics, 'function', 'Browser engine exposes StylometricDeepMetrics');
+assert.equal(typeof browserEngine.syntacticBranchingDepth, 'function', 'Browser engine exposes syntacticBranchingDepth');
+assert.equal(typeof browserEngine.lexicalEntropyScore, 'function', 'Browser engine exposes lexicalEntropyScore');
+assert.equal(typeof browserEngine.transitionVariance, 'function', 'Browser engine exposes transitionVariance');
 
 for (const testCase of CANONICAL_TRANSFER_CASES) {
   const shell = buildBorrowedShell(extractCadenceProfile, testCase);
@@ -63,6 +70,9 @@ const nodePlan = buildTransferPlanFromIR(nodeIR, sourceProfile, targetProfile, p
 const browserPlan = browserEngine.buildTransferPlanFromIR(browserIR, sourceProfile, targetProfile, paritySample.strength, browserOpportunity);
 
 assert.deepEqual(browserEngine.sentenceSplit(paritySample.sourceText), sentenceSplit(paritySample.sourceText), 'sentenceSplit parity holds');
+assert.deepEqual(browserEngine.syntacticBranchingDepth(paritySample.sourceText), syntacticBranchingDepth(paritySample.sourceText), 'syntacticBranchingDepth parity holds');
+assert.deepEqual(browserEngine.lexicalEntropyScore(paritySample.sourceText), lexicalEntropyScore(paritySample.sourceText), 'lexicalEntropyScore parity holds');
+assert.deepEqual(browserEngine.transitionVariance(paritySample.sourceText), transitionVariance(paritySample.sourceText), 'transitionVariance parity holds');
 assert.deepEqual(browserIR.metadata, nodeIR.metadata, 'segmentTextToIR metadata parity holds');
 assert.deepEqual(browserOpportunity, nodeOpportunity, 'buildOpportunityProfileFromIR parity holds');
 assert.deepEqual(browserPlan, nodePlan, 'buildTransferPlanFromIR parity holds');

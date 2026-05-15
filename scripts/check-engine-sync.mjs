@@ -8,6 +8,7 @@ const repoRoot = path.resolve(__dirname, '..');
 const browserEnginePath = path.join(repoRoot, 'app', 'browser-engine.js');
 
 const ENGINE_SOURCES = [
+  'app/engine/corpus-hydration.js',
   'app/engine/td613-aperture.js',
   'app/engine/stylometry.js',
   'app/engine/vernacular-ontology.js',
@@ -35,6 +36,8 @@ const expected = [
   }),
   '',
   'window.TCP_ENGINE = Object.assign(window.TCP_ENGINE || {}, {',
+  '  deepFreeze,',
+  '  hydrateCorpus,',
   '  TD613_APERTURE_PROTOCOL,',
   '  TD613_APERTURE_ENFORCEMENT_TERMS,',
   '  buildTD613GovernedExposureSchema,',
@@ -75,6 +78,10 @@ const expected = [
   '  transformText,',
   '  functionWordProfile,',
   '  charTrigramProfile,',
+  '  StylometricDeepMetrics,',
+  '  syntacticBranchingDepth,',
+  '  lexicalEntropyScore,',
+  '  transitionVariance,',
   '  recurrencePressure,',
   '  sentenceSplit,',
   '  segmentTextToIR,',

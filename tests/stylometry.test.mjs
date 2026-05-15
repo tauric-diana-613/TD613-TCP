@@ -9,8 +9,12 @@ import {
   compareTexts,
   extractCadenceProfile,
   functionWordProfile,
+  lexicalEntropyScore,
   recurrencePressure,
   segmentTextToIR,
+  StylometricDeepMetrics,
+  syntacticBranchingDepth,
+  transitionVariance,
   transformText
 } from '../app/engine/stylometry.js';
 
@@ -42,12 +46,42 @@ assert(typeof same.punctShapeDistance === 'number');
 assert(typeof same.functionWordDistance === 'number');
 assert(typeof same.wordLengthDistance === 'number');
 assert(typeof same.charGramDistance === 'number');
+assert(typeof same.syntacticBranchingDistance === 'number');
+assert(typeof same.lexicalEntropyDistance === 'number');
+assert(typeof same.transitionVarianceDistance === 'number');
 assert(Object.keys(functionWordProfile('This is the sample and it is not alone.')).length > 0);
 assert(Object.keys(charTrigramProfile('Signal route signal route')).length > 0);
 assert(near.traceability > far.traceability);
 assert(near.functionWordDistance < far.functionWordDistance);
 assert(near.charGramDistance < far.charGramDistance);
 assert.equal(nativeTransfer.transferClass, 'native');
+
+const plainBranching = syntacticBranchingDepth('Door opens. Light stays on.');
+const nestedBranching = syntacticBranchingDepth(
+  'Although the door opens, which matters because the hallway was dark, the report remains unresolved; therefore, the witness note stays attached.'
+);
+assert(nestedBranching.score > plainBranching.score);
+assert(nestedBranching.maxDepth >= plainBranching.maxDepth);
+
+const repeatedEntropy = lexicalEntropyScore('aaaa aaaa aaaa');
+const variedEntropy = lexicalEntropyScore('A1 ∴ Ω cadence lattice 613 badge');
+assert(variedEntropy.charEntropyBits > repeatedEntropy.charEntropyBits);
+assert(variedEntropy.normalizedCharEntropy >= repeatedEntropy.normalizedCharEntropy);
+assert(variedEntropy.unicodeLoad > repeatedEntropy.unicodeLoad);
+
+const steadyTransition = transitionVariance('One short sentence. Two short lines. Three short notes.');
+const abruptTransition = transitionVariance(
+  'Ok. This sentence carries a much longer evidentiary clause, with commas, pivots, and delayed closure. Stop.'
+);
+assert(abruptTransition.score > steadyTransition.score);
+
+const nestedBranchingText = 'Although the field narrows, which changes the route, the witness note remains attached; therefore, the archive stays open.';
+const deepProfile = extractCadenceProfile(nestedBranchingText);
+assert.equal(typeof deepProfile.syntacticBranchingDepth, 'number');
+assert.equal(typeof deepProfile.lexicalEntropyScore, 'number');
+assert.equal(typeof deepProfile.transitionVariance, 'number');
+const deepAnalysis = StylometricDeepMetrics.analyze(nestedBranchingText);
+assert.equal(typeof deepAnalysis.compositeDensity, 'number');
 
 const transformed = transformText('I do not know and I cannot stay.', { sent: 0, cont: 1, punc: 0 });
 const wrappedTransfer = buildCadenceTransfer(
@@ -518,7 +552,7 @@ const signature = buildCadenceSignature(
 );
 const heatmapTotal = signature.heatmap.matrix.flat().reduce((sum, value) => sum + value, 0);
 
-assert.equal(signature.axes.length, 7);
+assert.equal(signature.axes.length, 10);
 assert.equal(signature.heatmap.matrix.length, 4);
 assert.equal(signature.heatmap.matrix[0].length, 4);
 assert.equal(signature.dominantAxes.length, 3);
