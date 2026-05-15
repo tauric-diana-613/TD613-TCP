@@ -22,6 +22,7 @@ As of `Patch 30.3.3`, the stack should be read this way:
 - the main Homebase surface is now operator-first, with doctrine and full Aperture ledger moved into secondary detail
 - the maintained diagnostics battery includes both generator audit and toolability audit
 - `TD613 Safe Harbor` and `TD613 Aperture` should be read as downstream custody / audit layers, not alternate hidden writers
+- `TD613 Flight` is the Safe Harbor-adjacent flightdeck for SHI-bound prompt packets and authorship / rupture footer generation
 
 ## What the system actually measures
 
@@ -68,6 +69,7 @@ In practice, that means:
 - the `Deck` can feel playful
 - the `Readout` stays strict
 - the `Trainer` lets you iterate manually
+- `TD613 Flight` can stay compact and procedural because it is a credentialed packet builder, not a cadence lab
 - the docs should explain the whole thing without pretending there are three unrelated audiences
 
 That same rule now applies to failure. A miss should read as an explicit generator hold, not as a quiet reversion to source dressed up as safety.

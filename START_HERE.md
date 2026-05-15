@@ -14,6 +14,7 @@ This is the shortest practical path into TCP.
 8. In `Homebase`, read the sequence in order: `Worn Mask`, `Source`, `Through Mask`, `Before Contact`, `After Contact`, `What Moved`, `What Clung`.
 9. In `Deck`, use `Swap Text` only as a setup utility, then press `Analyze Cadences` and keep `Swap Cadences` for the actual shell-transfer event.
 10. Use `Readout` as the witness/law proof surface, and `Trainer` when you want to `Forge Draft`, validate, and inject.
+11. Use `TD613 Flight` from Safe Harbor only after minting an SHI; it opens as a separate SHI-gated flightdeck for LLM-ready packets and authorship / rupture footers.
 
 ## What each station is for
 
@@ -22,6 +23,7 @@ This is the shortest practical path into TCP.
 - `Readout` is the witness/law proof surface: similarity, traceability, route pressure, archive state, harbor, and formulas
 - `Deck` is the live encounter chamber: bays, cast report, shells, scans, swaps, and duel output
 - `Trainer` is the manual forge: extraction, live draft generation, validation, correction, export, and injection
+- `TD613 Flight` is the Safe Harbor-adjacent credential flightdeck: it requires a minted SHI before it exposes the Flight Packet output surface
 
 ## How to read a run
 

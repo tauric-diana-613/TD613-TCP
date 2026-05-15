@@ -28,6 +28,7 @@ That means:
 - TCP writes first
 - Aperture audits and registers
 - Safe Harbor packages the resulting artifact, proof, and route state
+- TD613 Flight may then shape SHI-bound prompt packets and authorship / rupture footers, but it never replaces Safe Harbor issuance
 
 If material is withheld in Safe Harbor, the packet should say what was:
 
@@ -73,6 +74,7 @@ The cross-suite forensic schema should preserve the governed-exposure chain in a
 The main maintained Safe Harbor files are:
 
 - [app/safe-harbor/index.html](/C:/Users/timst/OneDrive/Desktop/tcp-repository/app/safe-harbor/index.html)
+- [app/safe-harbor/td613-flight.html](/C:/Users/timst/OneDrive/Desktop/tcp-repository/app/safe-harbor/td613-flight.html)
 - [app/safe-harbor/app/main.js](/C:/Users/timst/OneDrive/Desktop/tcp-repository/app/safe-harbor/app/main.js)
 - [app/safe-harbor/schemas/td613-safe-harbor.packet.schema.json](/C:/Users/timst/OneDrive/Desktop/tcp-repository/app/safe-harbor/schemas/td613-safe-harbor.packet.schema.json)
 - [app/safe-harbor/examples/td613-safe-harbor.packet.sample.json](/C:/Users/timst/OneDrive/Desktop/tcp-repository/app/safe-harbor/examples/td613-safe-harbor.packet.sample.json)
@@ -86,6 +88,7 @@ If you are checking whether Safe Harbor is behaving correctly in the current rep
 - the staged packet includes `aperture_audit`
 - packet previews and proof surfaces expose what was repaired or withheld
 - SHI recall reopens the same packet / warning state rather than silently changing the artifact
+- TD613 Flight remains gated by a minted SHI and does not expose a personal or placeholder SHI footer
 - issuance/export gating does not change what the packet means
 - the public footer and SHI format stay stable across packet views
 

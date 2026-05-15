@@ -50,7 +50,7 @@ Future Self ─────► Past Self ─────► Higher Self ──�
                               │                           │
                               └────────────┬──────────────┘
                                            ▼
-                  Handoff to a TD613 probe, badge, or TCP route lane
+                  Handoff to a TD613 probe, badge, TCP route lane, or TD613 Flight
 ```
 
 The four-part ingress (Future / Past / Higher / Seal) is deliberate, not
@@ -58,6 +58,11 @@ decorative: each step asks the writer to step back from the text in a
 different posture before the packet is allowed to mint. The seal is what
 binds the staged content to a hash and an SHI #. Signature overlays
 attach after sealing without changing the packet body.
+
+`TD613 Flight` lives beside Safe Harbor as an SHI-gated credential
+flightdeck. It can generate LLM-ready Flight Packets and authorship /
+rupture footers, but it must receive a minted SHI from Safe Harbor before
+the output surface opens.
 
 ## Example: a sealed packet
 
@@ -130,6 +135,8 @@ Historical patch ledgers from the rebuild's stabilization passes live in
   default public path.
 
 ## Repo layout
+
+- `td613-flight.html` - SHI-gated TD613 Flight packet / authorship footer surface.
 
 - `index.html` — primary Safe Harbor interface.
 - `app/` — styles, hook bus logic, packet preview, probe builder.
