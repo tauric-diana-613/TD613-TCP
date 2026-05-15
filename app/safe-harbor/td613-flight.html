@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<title>TD613 Flight v5</title>
+<title>TD613 Flight</title>
 <meta content="width=1120, user-scalable=yes, viewport-fit=cover" name="viewport"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&family=Tektur:wght@500;600;700&family=Unbounded:wght@500;700&display=swap');
@@ -196,11 +196,11 @@ color: var(--moss);
 
 .subtitle {
 grid-area: text;
-font-size: .64rem;
-line-height: 1.26;
-max-width: 92ch;
-max-height: 3.72rem;
-overflow: hidden;
+font-size: .58rem;
+line-height: 1.28;
+max-width: 112ch;
+max-height: none;
+overflow: visible;
 color: var(--bone-dim);
 padding-left: .78rem;
 border-left: 2px solid rgba(120,247,255,0.42);
@@ -643,14 +643,12 @@ box-shadow: 0 22px 80px rgba(0,0,0,0.66), 0 0 36px rgba(36,240,109,0.08), inset 
 color: var(--bone-bright);
 }
 
-.output-card h2::after {
-content: " / transmission buffer";
-display: block;
+.output-card h2 .subtle-title {
 font-family: var(--font-mono);
-font-size: .4rem;
-letter-spacing: .1em;
+font-size: .5em;
+letter-spacing: .12em;
 color: var(--moss);
-margin-top: .18rem;
+vertical-align: middle;
 }
 
 .output {
@@ -1152,7 +1150,7 @@ body.flight-locked {
 </div>
 <div class="page-wrap">
 <header>
-<h1>TD613 Flight v5</h1>
+<h1>TD613 Flight</h1>
 <div class="subtitle">
 Seal Generator &amp; Credential Flightdeck for TD613 routed prompts, authorship wrapping, minimum verification, Safe Harbor metadata, glyph integrity, route-readiness diagnostics, and manifest export. Badge remains reserved for issued credential objects; this instrument generates Flight Packets and verifies Seals. Use only as instructed. Happy sailing! 🚢🧊💥🌊⬇️
 </div>
@@ -1443,8 +1441,8 @@ Use this block for high-authorship moments: fragment, SAC, SHI#, payload, date, 
 <!-- RIGHT COLUMN: output preview -->
 <div>
 <div class="card output-card">
-<h2>Transmission Buffer</h2>
-<div class="module-marker">Transmission buffer</div>
+<h2>Prompt Output <span class="subtle-title">(LLM ready)</span></h2>
+<div class="module-marker">Editable packet preview</div>
 <div class="section-note">
 This editable preview reflects your current Flight Packet. Make small changes here before copying. Public provenance defaults to LEGACY-COMPAT when you enable the binding line.
 </div>
