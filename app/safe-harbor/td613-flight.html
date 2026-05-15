@@ -126,7 +126,7 @@ grid-template-areas:
 "howto";
 gap: .42rem;
 margin-bottom: .72rem;
-padding: .48rem .68rem;
+padding: .48rem 24rem .48rem .68rem;
 background:
 linear-gradient(100deg, rgba(3,18,16,0.94), rgba(0,3,3,0.96) 58%, rgba(6,12,14,0.92)),
 radial-gradient(circle at var(--mx) 0%, rgba(36,240,109,0.12), transparent 20rem);
@@ -134,6 +134,46 @@ border: 1px solid var(--rule);
 clip-path: polygon(0 14px, 14px 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 26px 100%, 0 calc(100% - 26px));
 box-shadow: 0 20px 80px var(--shadow), inset 0 0 0 1px rgba(120,247,255,0.035);
 overflow: hidden;
+}
+
+.flight-quick-nav {
+position: absolute;
+top: .62rem;
+right: .72rem;
+z-index: 2;
+display: flex;
+flex-wrap: wrap;
+justify-content: flex-end;
+gap: .34rem;
+max-width: 22.4rem;
+}
+
+.flight-quick-nav a {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+min-height: 1.65rem;
+padding: .18rem .54rem;
+border: 1px solid rgba(36,240,109,0.36);
+background:
+linear-gradient(180deg, rgba(36,240,109,0.12), rgba(0,7,7,0.82)),
+radial-gradient(circle at 18% 0%, rgba(120,247,255,0.12), transparent 58%);
+color: var(--bone);
+font-family: var(--font-mono);
+font-size: .48rem;
+font-weight: 700;
+letter-spacing: .12em;
+text-decoration: none;
+text-transform: uppercase;
+white-space: nowrap;
+clip-path: polygon(0 8px, 8px 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+}
+
+.flight-quick-nav a:hover,
+.flight-quick-nav a:focus-visible {
+border-color: rgba(120,247,255,0.68);
+color: var(--moss);
+box-shadow: 0 0 20px rgba(36,240,109,0.16);
 }
 
 header::before {
@@ -267,7 +307,6 @@ display: grid;
 grid-template-columns: minmax(340px, .94fr) minmax(410px, 1.06fr);
 gap: clamp(.9rem, 1.6vw, 1.35rem);
 align-items: flex-start;
-counter-reset: folio;
 }
 
 .grid > div:first-child,
@@ -306,7 +345,6 @@ color: var(--moss);
 }
 
 .card {
-counter-increment: folio;
 position: relative;
 isolation: isolate;
 background:
@@ -342,18 +380,6 @@ linear-gradient(var(--cyan), var(--cyan)) top/100% 18% no-repeat,
 linear-gradient(var(--rule), var(--rule)) center/100% 100% no-repeat,
 linear-gradient(var(--blood), var(--blood)) bottom/100% 12% no-repeat;
 opacity: .75;
-}
-
-.card::after {
-content: "folio " counter(folio, decimal-leading-zero);
-position: absolute;
-right: .7rem;
-top: .58rem;
-font-family: var(--font-mono);
-font-size: .46rem;
-letter-spacing: .14em;
-text-transform: uppercase;
-color: rgba(190,255,223,0.36);
 }
 
 .card h2 {
@@ -798,6 +824,24 @@ body {
 min-width: 1120px;
 }
 
+header {
+padding-right: .68rem;
+}
+
+.flight-quick-nav {
+position: relative;
+top: auto;
+right: auto;
+grid-area: tags;
+justify-content: flex-start;
+max-width: none;
+margin-bottom: .14rem;
+}
+
+.flight-quick-nav a {
+font-size: .44rem;
+}
+
 .page-wrap {
 width: 1120px;
 max-width: none;
@@ -1151,6 +1195,11 @@ body.flight-locked {
 <div class="page-wrap">
 <header>
 <h1>TD613 Flight</h1>
+<nav class="flight-quick-nav" aria-label="TD613 Flight navigation">
+<a href="../deck.html">Cadence Playground</a>
+<a href="./index.html">Safe Harbor</a>
+<a href="../aperture/index.html">Aperture</a>
+</nav>
 <div class="subtitle">
 Seal Generator &amp; Credential Flightdeck for TD613 routed prompts, authorship wrapping, minimum verification, Safe Harbor metadata, glyph integrity, route-readiness diagnostics, and manifest export. Badge remains reserved for issued credential objects; this instrument generates Flight Packets and verifies Seals. Use only as instructed. Happy sailing! 🚢🧊💥🌊⬇️
 </div>
