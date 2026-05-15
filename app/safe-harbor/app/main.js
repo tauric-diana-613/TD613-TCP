@@ -45,9 +45,6 @@
     bypassPassword: $('bypassPassword'),
     bypassSealedPacketFile: $('bypassSealedPacketFile'),
     bypassSealedPacketName: $('bypassSealedPacketName'),
-    bypassFreshSample: $('bypassFreshSample'),
-    bypassFreshSampleCount: $('bypassFreshSampleCount'),
-    voiceContinuityReadout: $('voiceContinuityReadout'),
     bypassIngress: $('bypassIngress'),
     mintStagedPacket: $('mintStagedPacket'),
     forgeBatch: $('forgeBatch'),
@@ -470,7 +467,6 @@
       }
       render();
     });
-    if (dom.bypassFreshSample) dom.bypassFreshSample.addEventListener('input', () => render());
     dom.copyCanonicalFooter.addEventListener('click', () => void copyText(dom.canonicalFooterPreview.textContent || ''));
     dom.copyShiNumber.addEventListener('click', () => void copyText(dom.shiMintValue.textContent || ''));
     if (dom.setBypassToken) dom.setBypassToken.addEventListener('click', () => void setBypassToken());
@@ -549,9 +545,6 @@
       dom.bypassSealedPacketName.textContent = '';
       dom.bypassSealedPacketName.hidden = true;
     }
-    if (dom.bypassFreshSample) dom.bypassFreshSample.value = '';
-    if (dom.bypassFreshSampleCount) { dom.bypassFreshSampleCount.hidden = true; dom.bypassFreshSampleCount.textContent = ''; }
-    if (dom.voiceContinuityReadout) { dom.voiceContinuityReadout.hidden = true; dom.voiceContinuityReadout.textContent = ''; }
     updateHelpers();
     render();
   }
@@ -1001,24 +994,6 @@
     dom.mintStagedPacket.disabled = ingressLocked;
     dom.bypassPassword.disabled = surfaceIsOpen;
     if (dom.bypassSealedPacketFile) dom.bypassSealedPacketFile.disabled = surfaceIsOpen;
-    if (dom.bypassFreshSample) dom.bypassFreshSample.disabled = surfaceIsOpen;
-    if (dom.bypassFreshSampleCount && dom.bypassFreshSample) {
-      const freshRaw = dom.bypassFreshSample.value || '';
-      const freshTrim = freshRaw.trim();
-      if (!freshTrim || surfaceIsOpen) {
-        dom.bypassFreshSampleCount.hidden = true;
-        dom.bypassFreshSampleCount.textContent = '';
-      } else {
-        const wordCount = basicStats(freshRaw).word_count;
-        dom.bypassFreshSampleCount.hidden = false;
-        if (wordCount >= MIN_LANE_WORDS) {
-          dom.bypassFreshSampleCount.textContent = wordCount + ' / ' + MIN_LANE_WORDS + ' — continuity reading will attach on reopen.';
-        } else {
-          const need = MIN_LANE_WORDS - wordCount;
-          dom.bypassFreshSampleCount.textContent = wordCount + ' / ' + MIN_LANE_WORDS + ' — write ' + need + ' more for a continuity reading.';
-        }
-      }
-    }
     dom.bypassIngress.disabled = surfaceIsOpen;
     dom.clearIngress.disabled = ingressLocked;
     dom.bypassPassword.placeholder = recoverableShi || 'paste minted SHI #';
@@ -1200,7 +1175,13 @@
     dom.pillSignatureLane.dataset.state =
       signatureLane.status === 'sealed' ? 'passage' :
       sigLaneActive ? 'hold' : 'dormant';
-    if (dom.signatureNote) dom.signatureNote.textContent = signatureNote(signatureLane);
+    const typedPgpState = pgpBlockState(dom.kleopatraVoid ? dom.kleopatraVoid.value : '');
+    if (dom.attachSignature) dom.attachSignature.disabled = !typedPgpState.valid;
+    if (dom.signatureNote) {
+      dom.signatureNote.textContent = sigLaneActive
+        ? signatureNote(signatureLane)
+        : typedPgpState.reason;
+    }
   }
 
   function renderPacket() {
@@ -1542,47 +1523,19 @@
       state.covenant.confirmedAt = innerPacket.bridge && innerPacket.bridge.covenant_gate ? (innerPacket.bridge.covenant_gate.confirmed_at || null) : null;
       state.covenant.badgeNumber = innerPacket.issuance && innerPacket.issuance.badge_number || null;
     }
-    // Optional voice continuity reading: compare a fresh writing sample against the bound per-lane signatures.
-    let continuity = null;
-    const freshSample = dom.bypassFreshSample ? (dom.bypassFreshSample.value || '').trim() : '';
-    const freshStats = freshSample ? basicStats(freshSample) : { word_count: 0, char_count: 0 };
-    const perLaneSignatures = innerPacket.issuance
-      && innerPacket.issuance.stylometric_provenance
-      && innerPacket.issuance.stylometric_provenance.per_lane_signatures;
-    if (freshSample && freshStats.word_count >= MIN_LANE_WORDS && perLaneSignatures) {
-      const freshSignature = cadenceFor('reopen_sample', freshSample, freshStats);
-      continuity = readVoiceContinuity(freshSignature, perLaneSignatures);
-    }
-    if (dom.voiceContinuityReadout) {
-      if (continuity) {
-        const driftClause = continuity.drift_axes.length
-          ? ' — drift on ' + continuity.drift_axes.join(', ')
-          : '';
-        dom.voiceContinuityReadout.textContent = 'voice continuity: ' + continuity.continuity_score.toFixed(2)
-          + ' (' + continuity.in_band_axes + ' of ' + continuity.total_axes + ' axes in-band)' + driftClause;
-        dom.voiceContinuityReadout.hidden = false;
-      } else {
-        dom.voiceContinuityReadout.hidden = true;
-        dom.voiceContinuityReadout.textContent = '';
-      }
-    }
     dom.bypassPassword.value = '';
     if (dom.bypassSealedPacketFile) dom.bypassSealedPacketFile.value = '';
     if (dom.bypassSealedPacketName) {
       dom.bypassSealedPacketName.textContent = '';
       dom.bypassSealedPacketName.hidden = true;
     }
-    if (dom.bypassFreshSample) dom.bypassFreshSample.value = '';
-    dom.ingressNote.textContent = 'Sealed packet accepted. SHI # ' + token + ' is rebound to the chamber and the rigorous stylometric provenance is restored.'
-      + (continuity ? ' Voice continuity reading attached.' : '');
+    dom.ingressNote.textContent = 'Sealed packet accepted. SHI # ' + token + ' is rebound to the chamber and the rigorous stylometric provenance is restored.';
     render();
     persist();
     logEvent('shi-recall-reopened', {
       packet_id: parsed.packet_id || null,
       shi_number: token,
-      source: 'uploaded-sealed-packet',
-      continuity_score: continuity ? continuity.continuity_score : null,
-      drift_axes: continuity ? continuity.drift_axes : null
+      source: 'uploaded-sealed-packet'
     });
   }
 
@@ -2403,6 +2356,29 @@
     if (signatureLane.source === 'operator-signature-overlay') return 'Operator signature text is staged for packet sealing. Safe Harbor carries it through without cryptographic parsing in the browser.';
     return 'External cryptographic overlay detected from ' + (signatureLane.source || 'overlay lane') + '. The cadence witness and public footer remain unchanged.';
   }
+  function pgpBlockState(rawSig) {
+    const sig = trim(rawSig || '');
+    if (!sig) return { present: false, valid: false, reason: 'Paste a complete detached PGP signature block before waking the secret lane.' };
+    const begin = sig.match(/-----BEGIN PGP (SIGNED MESSAGE|SIGNATURE|MESSAGE)-----/);
+    const end = sig.match(/-----END PGP (SIGNATURE|MESSAGE)-----/);
+    const armoredBody = sig
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line && !/^-----/.test(line) && !/^Version:/i.test(line) && !/^Hash:/i.test(line) && !/^Comment:/i.test(line));
+    if (!begin || !end) {
+      return { present: true, valid: false, reason: 'Complete PGP armor requires BEGIN and END lines before the secret lane can wake.' };
+    }
+    if (begin[1] === 'SIGNATURE' && end[1] !== 'SIGNATURE') {
+      return { present: true, valid: false, reason: 'PGP signature armor is mismatched. Paste the full detached signature block.' };
+    }
+    if ((begin[1] === 'MESSAGE' || begin[1] === 'SIGNED MESSAGE') && end[1] !== 'MESSAGE' && end[1] !== 'SIGNATURE') {
+      return { present: true, valid: false, reason: 'PGP armor is incomplete. Paste the full block before waking the lane.' };
+    }
+    if (armoredBody.join('').replace(/=/g, '').length < 80) {
+      return { present: true, valid: false, reason: 'PGP block is too short to carry a detached seal. Paste the full Kleopatra output.' };
+    }
+    return { present: true, valid: true, reason: 'Complete PGP block detected. Wake Secret Lane is available.' };
+  }
   function resolvedSignatureLane() {
     if (state.operatorSignature) return clone(state.operatorSignature);
     if (state.hooks.signature) return clone(state.hooks.signature);
@@ -2423,8 +2399,9 @@
   }
   function buildOperatorSignatureFromInputs() {
     const rawSig = dom.kleopatraVoid && dom.kleopatraVoid.value != null ? String(dom.kleopatraVoid.value) : '';
+    const pgpState = pgpBlockState(rawSig);
+    if (!pgpState.valid) return null;
     const sig = trim(rawSig) || null;
-    if (!sig) return null;
     return {
       status: 'sealed',
       source: 'operator-signature-overlay',
@@ -2437,6 +2414,14 @@
     };
   }
   async function attachSignatureOverlay() {
+    const typedPgpState = pgpBlockState(dom.kleopatraVoid ? dom.kleopatraVoid.value : '');
+    if (!typedPgpState.valid) {
+      state.operatorSignature = null;
+      if (dom.signatureNote) dom.signatureNote.textContent = typedPgpState.reason;
+      render();
+      persist();
+      return;
+    }
     const stagedSignature = buildOperatorSignatureFromInputs();
     if (!stagedSignature) {
       state.operatorSignature = null;

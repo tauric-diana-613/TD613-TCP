@@ -18,17 +18,13 @@
             <p class="subtitle">Stylometric intake membrane for provenance attestation, packet shaping, and seal-ready custody.</p>
           </div>
         </div>
+        <a class="flight-launch ingress-flight-launch" href="./td613-flight.html" target="_blank" rel="noopener">TD613 Flight →</a>
         <div class="status-strip ingress-status">
           <span class="coherence-sigil" id="coherenceSigilIngress" data-state="dormant" aria-hidden="true">米</span>
           <div class="status-pill" id="ingressRoutePill">membrane-only</div>
           <div class="status-pill" id="ingressProgressPill">0 / 3 lanes</div>
           <div class="status-pill" id="ingressVaultPill">vault sealed</div>
         </div>
-      </div>
-
-      <div class="ingress-intro">
-        <div class="section-label">Ingress Membrane</div>
-        <p class="ingress-copy">Safe Harbor stages principal intake through a four-part sequence: future, past, higher, then seal. This membrane is not the operator handshake key. The operator handshake happens later through the renderer userscript and the four original outbound probes.</p>
       </div>
 
       <div class="ingress-stage-rail" aria-label="Ingress handshake pages">
@@ -102,16 +98,10 @@
                   <input id="bypassSealedPacketFile" type="file" accept="application/json,.json" disabled>
                   <div class="note compact" id="bypassSealedPacketName" hidden></div>
                 </label>
-                <label class="field field-wide">
-                  <span>Walk me through tomorrow.</span>
-                  <textarea id="bypassFreshSample" rows="4" spellcheck="false" placeholder="optional — write 40+ words for a voice continuity reading against the bound divergence_signature" disabled></textarea>
-                  <div class="note compact" id="bypassFreshSampleCount" hidden></div>
-                </label>
               </div>
               <div class="button-grid compact">
                 <button class="control secondary" id="bypassIngress" type="button" disabled>Reopen with SHI</button>
               </div>
-              <div class="note" id="voiceContinuityReadout" hidden></div>
             </div>
           </details>
 
@@ -140,6 +130,7 @@
         <div class="status-pill" id="pillBoundaryMode">boundary pending</div>
         <div class="status-pill" id="pillRouteState">route pending</div>
         <div class="status-pill" id="pillSignatureLane">signature overlay idle</div>
+        <a class="flight-launch flight-launch-compact" href="./td613-flight.html" target="_blank" rel="noopener">Flight →</a>
       </div>
     </header>
 
@@ -247,7 +238,7 @@
                 <summary>Kleopatra detached seal / secret lane</summary>
                 <textarea id="kleopatra-void" class="code-area" placeholder="Paste detached PGP signature block here"></textarea>
                 <div class="button-grid compact">
-                  <button class="control" id="attachSignature" type="button">Wake Secret Lane</button>
+                  <button class="control" id="attachSignature" type="button" disabled>Wake Secret Lane</button>
                   <button class="control secondary" id="clearSignature" type="button">Clear Seal Lane</button>
                 </div>
                 <div class="note" id="signatureNote">Detached seals attach after packetization. The triad remains the only SHI mint source.</div>
