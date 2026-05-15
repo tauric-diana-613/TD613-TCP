@@ -71,6 +71,7 @@ const generated = [
   '  buildCadenceTransferLegacy,',
   '  buildCadenceTransferTrace,',
   '  buildCadenceTransferTraceLegacy,',
+  '  generateCadenceAuditMatrix,',
   '  buildCadenceSignature,',
   '  applyCadenceShell,',
   '  applyCadenceToText,',

@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 
 import personas from '../app/data/personas.js';
 import { buildCadenceTransfer, extractCadenceProfile } from '../app/engine/stylometry.js';
+import { generateCadenceAuditMatrix } from '../app/engine/generator-v2.js';
 import * as engine from '../app/engine/stylometry.js';
 import { DIAGNOSTIC_SAMPLE_LIBRARY } from '../app/data/diagnostics.js';
 import { BLIP_SHORTHAND_ONTOLOGY, summarizeBlipOntology } from '../app/engine/vernacular-ontology.js';
@@ -45,6 +46,16 @@ assert.ok(packageRushed, 'package-handoff rushed sample exists');
 assert.ok(mutualAidFormal, 'mutual-aid formal sample exists');
 assert.ok(mutualAidRushed, 'mutual-aid rushed sample exists');
 assert.ok(overworkTangled, 'overwork tangled sample exists');
+
+const auditMatrixProbe = generateCadenceAuditMatrix(
+  'Door opens. Light stays on.',
+  'Although the door opens, which matters because the hallway stayed dark, the light remains on; therefore, the witness note stays attached.'
+);
+assert.equal(auditMatrixProbe.schema_version, 'td613.cadence-audit-matrix.v1');
+assert.equal(typeof auditMatrixProbe.entropy_delta.composite_score, 'number');
+assert.ok(Array.isArray(auditMatrixProbe.friction_nodes), 'cadence audit matrix exposes friction nodes');
+assert.ok(Array.isArray(auditMatrixProbe.flattening_risk_flags), 'cadence audit matrix exposes flattening flags');
+assert.ok(auditMatrixProbe.friction_nodes.length >= 1, 'cadence audit matrix detects syntactic friction spikes');
 
 const reflective = `I am pretty content in life. Don't worry about where you came from. Keep doing what you're doing.
 
@@ -216,6 +227,14 @@ for (const testCase of cases) {
   );
   assert.ok(result.vernacularFeatures, `${testCase.id}: landed result carries vernacular feature summary`);
   assert.ok(result.vernacularFeatureShift, `${testCase.id}: landed result carries vernacular feature shift summary`);
+  assert.equal(
+    result.cadenceAuditMatrix?.schema_version,
+    'td613.cadence-audit-matrix.v1',
+    `${testCase.id}: transfer result carries a machine-readable cadence audit matrix`
+  );
+  assert.equal(typeof result.cadenceAuditMatrix?.entropy_delta?.composite_score, 'number', `${testCase.id}: cadence audit matrix carries entropy delta`);
+  assert.ok(Array.isArray(result.cadenceAuditMatrix?.friction_nodes), `${testCase.id}: cadence audit matrix carries friction nodes`);
+  assert.ok(Array.isArray(result.cadenceAuditMatrix?.flattening_risk_flags), `${testCase.id}: cadence audit matrix carries flattening risk flags`);
   assert.ok(
     (result.candidateLedger || []).every((entry) => entry.vernacularFeatures && entry.vernacularFeatureShift),
     `${testCase.id}: candidate ledger entries carry vernacular feature summaries`

@@ -84,6 +84,7 @@ function expectedBrowserEngine() {
     '  buildCadenceTransferLegacy,',
     '  buildCadenceTransferTrace,',
     '  buildCadenceTransferTraceLegacy,',
+    '  generateCadenceAuditMatrix,',
     '  buildCadenceSignature,',
     '  applyCadenceShell,',
     '  applyCadenceToText,',

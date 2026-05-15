@@ -71,6 +71,7 @@ const expected = [
   '  buildCadenceTransferLegacy,',
   '  buildCadenceTransferTrace,',
   '  buildCadenceTransferTraceLegacy,',
+  '  generateCadenceAuditMatrix,',
   '  buildCadenceSignature,',
   '  applyCadenceShell,',
   '  applyCadenceToText,',

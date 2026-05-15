@@ -18,6 +18,7 @@ import {
   CANONICAL_TRANSFER_CASES,
   buildBorrowedShell
 } from './canonical-transfer-cases.mjs';
+import { generateCadenceAuditMatrix } from '../app/engine/generator-v2.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
@@ -35,6 +36,7 @@ assert.equal(typeof browserEngine.segmentTextToIR, 'function', 'Browser engine e
 assert.equal(typeof browserEngine.buildOpportunityProfileFromIR, 'function', 'Browser engine exposes buildOpportunityProfileFromIR');
 assert.equal(typeof browserEngine.buildTransferPlanFromIR, 'function', 'Browser engine exposes buildTransferPlanFromIR');
 assert.equal(typeof browserEngine.beamSearchTransfer, 'function', 'Browser engine exposes beamSearchTransfer');
+assert.equal(typeof browserEngine.generateCadenceAuditMatrix, 'function', 'Browser engine exposes generateCadenceAuditMatrix');
 assert.equal(typeof browserEngine.StylometricDeepMetrics, 'function', 'Browser engine exposes StylometricDeepMetrics');
 assert.equal(typeof browserEngine.syntacticBranchingDepth, 'function', 'Browser engine exposes syntacticBranchingDepth');
 assert.equal(typeof browserEngine.lexicalEntropyScore, 'function', 'Browser engine exposes lexicalEntropyScore');
@@ -73,6 +75,11 @@ assert.deepEqual(browserEngine.sentenceSplit(paritySample.sourceText), sentenceS
 assert.deepEqual(browserEngine.syntacticBranchingDepth(paritySample.sourceText), syntacticBranchingDepth(paritySample.sourceText), 'syntacticBranchingDepth parity holds');
 assert.deepEqual(browserEngine.lexicalEntropyScore(paritySample.sourceText), lexicalEntropyScore(paritySample.sourceText), 'lexicalEntropyScore parity holds');
 assert.deepEqual(browserEngine.transitionVariance(paritySample.sourceText), transitionVariance(paritySample.sourceText), 'transitionVariance parity holds');
+assert.deepEqual(
+  browserEngine.generateCadenceAuditMatrix(paritySample.sourceText, paritySample.donorText),
+  generateCadenceAuditMatrix(paritySample.sourceText, paritySample.donorText),
+  'generateCadenceAuditMatrix parity holds'
+);
 assert.deepEqual(browserIR.metadata, nodeIR.metadata, 'segmentTextToIR metadata parity holds');
 assert.deepEqual(browserOpportunity, nodeOpportunity, 'buildOpportunityProfileFromIR parity holds');
 assert.deepEqual(browserPlan, nodePlan, 'buildTransferPlanFromIR parity holds');

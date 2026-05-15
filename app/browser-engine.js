@@ -29743,6 +29743,11 @@ function normalizeMovementComparable(text = '') {
     .trim();
 }
 
+function average(values = []) {
+  const clean = (values || []).map((value) => Number(value || 0)).filter(Number.isFinite);
+  return clean.length ? clean.reduce((sum, value) => sum + value, 0) / clean.length : 0;
+}
+
 function uniqueStrings(values = []) {
   return [...new Set((values || []).filter(Boolean))];
 }
@@ -35824,6 +35829,18 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
         generationDocket
       })
     : null;
+  const cadenceAuditMatrix = generateCadenceAuditMatrix(sourceText, sourceText, {
+    original: {
+      lexicalEntropyScore: lexicalEntropyScore(sourceText),
+      syntacticBranchingDepth: syntacticBranchingDepth(sourceText),
+      transitionVariance: transitionVariance(sourceText)
+    },
+    swapped: {
+      lexicalEntropyScore: lexicalEntropyScore(sourceText),
+      syntacticBranchingDepth: syntacticBranchingDepth(sourceText),
+      transitionVariance: transitionVariance(sourceText)
+    }
+  });
 
   return Object.freeze({
     text: sourceText,
@@ -35911,6 +35928,7 @@ function buildNativePassThroughTransfer(text = '', shell = {}, options = {}) {
       apertureAudit
     }),
     retrievalTrace,
+    cadenceAuditMatrix,
     generatorVersion: 'v2',
     generationDocket,
     candidateLedger,
@@ -36910,6 +36928,244 @@ function explainGenerationReasonCode(code = '') {
   return explanations[code] || '';
 }
 
+function sentenceSpansForAudit(text = '') {
+  const normalized = normalizeText(text);
+  const sentences = sentenceSplit(normalized);
+  let cursor = 0;
+
+  return Object.freeze(sentences.map((sentence, index) => {
+    const start = normalized.indexOf(sentence, cursor);
+    const safeStart = start >= 0 ? start : cursor;
+    const end = safeStart + sentence.length;
+    cursor = end;
+
+    return Object.freeze({
+      index,
+      start: safeStart,
+      end,
+      text: sentence
+    });
+  }));
+}
+
+function resolveDeepMetric(text = '', supplied = {}) {
+  const entropy = supplied.entropy || supplied.lexicalEntropyScore || lexicalEntropyScore(text);
+  const branching = supplied.branching || supplied.syntacticBranchingDepth || syntacticBranchingDepth(text);
+  const transitions = supplied.transitions || supplied.transitionVariance || transitionVariance(text);
+
+  return Object.freeze({
+    entropy,
+    branching,
+    transitions
+  });
+}
+
+function sentenceAuditRows(text = '') {
+  const spans = sentenceSpansForAudit(text);
+
+  return Object.freeze(spans.map((span) => {
+    const branching = syntacticBranchingDepth(span.text);
+    const entropy = lexicalEntropyScore(span.text);
+
+    return Object.freeze({
+      ...span,
+      word_count: span.text.split(/\s+/).filter(Boolean).length,
+      entropy_score: entropy.score,
+      token_entropy_bits: entropy.tokenEntropyBits,
+      syntactic_depth: branching.score,
+      structural_friction: branching.structuralFriction,
+      punctuation_density: branching.punctuationDensity,
+      clause_marker_density: branching.clauseMarkerDensity,
+      connector_density: branching.connectorDensity
+    });
+  }));
+}
+
+function buildFrictionNodes(originalRows = [], swappedRows = [], swappedBaseline = 0) {
+  const baseline = Number(swappedBaseline || 0);
+  const frictionValues = swappedRows.map((row) => Number(row.structural_friction || 0));
+  const meanFriction = average(frictionValues);
+  const nodes = [];
+
+  swappedRows.forEach((row, index) => {
+    const original = originalRows[index] || null;
+    const originalFriction = Number(original?.structural_friction || 0);
+    const spikeOverOriginal = Number(row.structural_friction || 0) - originalFriction;
+    const spikeOverLocal = Number(row.structural_friction || 0) - meanFriction;
+    const spikeOverGlobal = Number(row.structural_friction || 0) - baseline;
+    const punctuationSpike = Number(row.punctuation_density || 0) - Number(original?.punctuation_density || 0);
+    const clauseSpike = Number(row.clause_marker_density || 0) - Number(original?.clause_marker_density || 0);
+    const isSpike =
+      spikeOverOriginal >= 0.12 ||
+      spikeOverLocal >= 0.08 ||
+      spikeOverGlobal >= 0.10 ||
+      (punctuationSpike >= 0.018 && clauseSpike >= 0.012);
+
+    if (!isSpike) {
+      return;
+    }
+
+    nodes.push(Object.freeze({
+      index: row.index,
+      start: row.start,
+      end: row.end,
+      substring: row.text,
+      syntactic_depth: round(row.syntactic_depth, 4),
+      structural_friction: round(row.structural_friction, 4),
+      spike_over_original: round(spikeOverOriginal, 4),
+      spike_over_local_mean: round(spikeOverLocal, 4),
+      spike_over_global_baseline: round(spikeOverGlobal, 4),
+      punctuation_density: round(row.punctuation_density, 4),
+      clause_marker_density: round(row.clause_marker_density, 4)
+    }));
+  });
+
+  return Object.freeze(nodes);
+}
+
+function buildFlatteningRiskFlags(originalRows = [], swappedRows = [], originalMetrics = {}, swappedMetrics = {}) {
+  const flags = [];
+  const entropyDrop = Number(originalMetrics.entropy?.score || 0) - Number(swappedMetrics.entropy?.score || 0);
+  const frictionDrop = Number(originalMetrics.branching?.structuralFriction || 0) - Number(swappedMetrics.branching?.structuralFriction || 0);
+  const transitionDrop = Number(originalMetrics.transitions?.score || 0) - Number(swappedMetrics.transitions?.score || 0);
+
+  if (entropyDrop >= 0.18) {
+    flags.push(Object.freeze({
+      id: 'global-entropy-flattening',
+      severity: entropyDrop >= 0.28 ? 'high' : 'medium',
+      reason: 'Swapped text lost lexical entropy beyond the QA floor.',
+      metrics: Object.freeze({
+        original_entropy_score: round(originalMetrics.entropy?.score || 0, 4),
+        swapped_entropy_score: round(swappedMetrics.entropy?.score || 0, 4),
+        delta: round(-entropyDrop, 4)
+      })
+    }));
+  }
+
+  if (frictionDrop >= 0.20) {
+    flags.push(Object.freeze({
+      id: 'global-structural-friction-flattening',
+      severity: frictionDrop >= 0.32 ? 'high' : 'medium',
+      reason: 'Swapped text became structurally flatter than the original.',
+      metrics: Object.freeze({
+        original_structural_friction: round(originalMetrics.branching?.structuralFriction || 0, 4),
+        swapped_structural_friction: round(swappedMetrics.branching?.structuralFriction || 0, 4),
+        delta: round(-frictionDrop, 4)
+      })
+    }));
+  }
+
+  if (transitionDrop >= 0.22) {
+    flags.push(Object.freeze({
+      id: 'global-transition-flattening',
+      severity: transitionDrop >= 0.34 ? 'high' : 'medium',
+      reason: 'Swapped text lost abrupt sentence or formatting variance.',
+      metrics: Object.freeze({
+        original_transition_variance: round(originalMetrics.transitions?.score || 0, 4),
+        swapped_transition_variance: round(swappedMetrics.transitions?.score || 0, 4),
+        delta: round(-transitionDrop, 4)
+      })
+    }));
+  }
+
+  originalRows.forEach((original, index) => {
+    const swapped = swappedRows[index];
+    if (!swapped) {
+      return;
+    }
+
+    const localFrictionDrop = Number(original.structural_friction || 0) - Number(swapped.structural_friction || 0);
+    const localEntropyDrop = Number(original.entropy_score || 0) - Number(swapped.entropy_score || 0);
+    const localPunctuationDrop = Number(original.punctuation_density || 0) - Number(swapped.punctuation_density || 0);
+    if (localFrictionDrop < 0.18 && localEntropyDrop < 0.16 && localPunctuationDrop < 0.018) {
+      return;
+    }
+
+    flags.push(Object.freeze({
+      id: 'sentence-level-flattening',
+      severity: localFrictionDrop >= 0.30 || localEntropyDrop >= 0.26 ? 'high' : 'medium',
+      source_index: original.index,
+      swapped_index: swapped.index,
+      original_substring: original.text,
+      swapped_substring: swapped.text,
+      reason: 'Aligned sentence became smoother or less information-dense after swap.',
+      metrics: Object.freeze({
+        friction_delta: round(-localFrictionDrop, 4),
+        entropy_delta: round(-localEntropyDrop, 4),
+        punctuation_density_delta: round(-localPunctuationDrop, 4)
+      })
+    }));
+  });
+
+  return Object.freeze(flags);
+}
+
+function generateCadenceAuditMatrix(originalText = '', swappedText = '', stylometryScores = {}) {
+  const originalScores = stylometryScores.original || stylometryScores.before || stylometryScores.source || {};
+  const swappedScores = stylometryScores.swapped || stylometryScores.after || stylometryScores.output || {};
+  const originalMetrics = resolveDeepMetric(originalText, originalScores);
+  const swappedMetrics = resolveDeepMetric(swappedText, swappedScores);
+  const originalRows = sentenceAuditRows(originalText);
+  const swappedRows = sentenceAuditRows(swappedText);
+  const entropyDelta = Object.freeze({
+    char_entropy_bits: round((swappedMetrics.entropy?.charEntropyBits || 0) - (originalMetrics.entropy?.charEntropyBits || 0), 4),
+    token_entropy_bits: round((swappedMetrics.entropy?.tokenEntropyBits || 0) - (originalMetrics.entropy?.tokenEntropyBits || 0), 4),
+    normalized_char_entropy: round((swappedMetrics.entropy?.normalizedCharEntropy || 0) - (originalMetrics.entropy?.normalizedCharEntropy || 0), 4),
+    normalized_token_entropy: round((swappedMetrics.entropy?.normalizedTokenEntropy || 0) - (originalMetrics.entropy?.normalizedTokenEntropy || 0), 4),
+    composite_score: round((swappedMetrics.entropy?.score || 0) - (originalMetrics.entropy?.score || 0), 4)
+  });
+  const frictionDelta = round(
+    (swappedMetrics.branching?.structuralFriction || 0) -
+    (originalMetrics.branching?.structuralFriction || 0),
+    4
+  );
+  const transitionDelta = round(
+    (swappedMetrics.transitions?.score || 0) -
+    (originalMetrics.transitions?.score || 0),
+    4
+  );
+  const frictionNodes = buildFrictionNodes(
+    originalRows,
+    swappedRows,
+    swappedMetrics.branching?.structuralFriction || 0
+  );
+  const flatteningRiskFlags = buildFlatteningRiskFlags(
+    originalRows,
+    swappedRows,
+    originalMetrics,
+    swappedMetrics
+  );
+
+  return Object.freeze({
+    schema_version: 'td613.cadence-audit-matrix.v1',
+    entropy_delta: entropyDelta,
+    friction_nodes: frictionNodes,
+    flattening_risk_flags: flatteningRiskFlags,
+    structural_friction_delta: frictionDelta,
+    transition_variance_delta: transitionDelta,
+    sentence_count_delta: swappedRows.length - originalRows.length,
+    metrics: Object.freeze({
+      original: Object.freeze({
+        entropy: originalMetrics.entropy,
+        syntactic_branching: originalMetrics.branching,
+        transition_variance: originalMetrics.transitions
+      }),
+      swapped: Object.freeze({
+        entropy: swappedMetrics.entropy,
+        syntactic_branching: swappedMetrics.branching,
+        transition_variance: swappedMetrics.transitions
+      })
+    }),
+    compliance: Object.freeze({
+      entropy_preserved: entropyDelta.composite_score >= -0.18,
+      structural_friction_preserved: frictionDelta >= -0.20,
+      transition_variance_preserved: transitionDelta >= -0.22,
+      flattening_risk_count: flatteningRiskFlags.length,
+      friction_node_count: frictionNodes.length
+    })
+  });
+}
+
 function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidate = null, sourceClass = 'formal-correspondence', candidates = []) {
   const sourceProfile = options.sourceProfile || extractCadenceProfile(sourceText);
   const sourceIR = options.sourceIR || segmentTextToIR(sourceText, { literals: [], text: sourceText });
@@ -36983,6 +37239,18 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
         donorProgress: chosen.donorProgress || {}
       })
     : null;
+  const cadenceAuditMatrix = generateCadenceAuditMatrix(sourceText, chosen.outputText, {
+    original: {
+      lexicalEntropyScore: lexicalEntropyScore(sourceText),
+      syntacticBranchingDepth: syntacticBranchingDepth(sourceText),
+      transitionVariance: transitionVariance(sourceText)
+    },
+    swapped: {
+      lexicalEntropyScore: lexicalEntropyScore(chosen.outputText),
+      syntacticBranchingDepth: syntacticBranchingDepth(chosen.outputText),
+      transitionVariance: transitionVariance(chosen.outputText)
+    }
+  });
 
   return Object.freeze({
     text: chosen.outputText,
@@ -37072,6 +37340,7 @@ function buildLandedTransfer(sourceText = '', shell = {}, options = {}, candidat
       apertureAudit
     }),
     retrievalTrace,
+    cadenceAuditMatrix,
     generatorVersion: 'v2',
     generationDocket,
     candidateLedger,
@@ -37142,6 +37411,18 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
         donorProgress: bestCandidate?.donorProgress || {}
       })
     : null;
+  const cadenceAuditMatrix = generateCadenceAuditMatrix(sourceText, outputText || sourceText, {
+    original: {
+      lexicalEntropyScore: lexicalEntropyScore(sourceText),
+      syntacticBranchingDepth: syntacticBranchingDepth(sourceText),
+      transitionVariance: transitionVariance(sourceText)
+    },
+    swapped: {
+      lexicalEntropyScore: lexicalEntropyScore(outputText || sourceText),
+      syntacticBranchingDepth: syntacticBranchingDepth(outputText || sourceText),
+      transitionVariance: transitionVariance(outputText || sourceText)
+    }
+  });
 
   return Object.freeze({
     text: exposeHeldCandidate ? outputText : '',
@@ -37239,6 +37520,7 @@ function buildHeldTransfer(sourceText = '', shell = {}, options = {}, candidates
       apertureAudit
     }),
     retrievalTrace,
+    cadenceAuditMatrix,
     generatorVersion: 'v2',
     generationDocket,
     candidateLedger,
@@ -38141,6 +38423,7 @@ window.TCP_ENGINE = Object.assign(window.TCP_ENGINE || {}, {
   buildCadenceTransferLegacy,
   buildCadenceTransferTrace,
   buildCadenceTransferTraceLegacy,
+  generateCadenceAuditMatrix,
   buildCadenceSignature,
   applyCadenceShell,
   applyCadenceToText,
