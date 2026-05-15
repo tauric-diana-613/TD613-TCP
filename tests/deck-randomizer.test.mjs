@@ -12,6 +12,22 @@ import {
   extractCadenceProfile
 } from '../app/engine/stylometry.js';
 
+const RANDOMIZER_FIELD_AXIS_IDS = new Set([
+  'rhythm_mean',
+  'rhythm_spread',
+  'punctuation',
+  'contractions',
+  'line_breaks',
+  'recurrence',
+  'lexical'
+]);
+
+function randomizerFieldAxes(profile = {}) {
+  return cadenceAxisVector(profile)
+    .filter((axis) => RANDOMIZER_FIELD_AXIS_IDS.has(axis.id))
+    .map((axis) => axis.normalized);
+}
+
 function profileDistance(profileA = null, profileB = null) {
   if (!profileA || !profileB) {
     return 0;
@@ -37,8 +53,8 @@ function averageNearestDistance(samples = []) {
   }));
 
   const axisDistance = (profileA = {}, profileB = {}) => {
-    const vectorA = cadenceAxisVector(profileA).map((axis) => axis.normalized);
-    const vectorB = cadenceAxisVector(profileB).map((axis) => axis.normalized);
+    const vectorA = randomizerFieldAxes(profileA);
+    const vectorB = randomizerFieldAxes(profileB);
     return Number(vectorA.reduce((sum, value, index) => sum + Math.abs(value - Number(vectorB[index] || 0)), 0).toFixed(4));
   };
 
@@ -85,8 +101,8 @@ function fieldDistance(left, right) {
   return Number((
     profileDistance(leftProfile, rightProfile) +
     (() => {
-      const vectorA = cadenceAxisVector(leftProfile).map((axis) => axis.normalized);
-      const vectorB = cadenceAxisVector(rightProfile).map((axis) => axis.normalized);
+      const vectorA = randomizerFieldAxes(leftProfile);
+      const vectorB = randomizerFieldAxes(rightProfile);
       return Number(vectorA.reduce((sum, value, index) => sum + Math.abs(value - Number(vectorB[index] || 0)), 0).toFixed(4));
     })() +
     (() => {
