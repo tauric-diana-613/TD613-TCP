@@ -34,7 +34,7 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 
 | Term | In the app | In the model |
 | --- | --- | --- |
-| `chosen on shelf` | A mask has been selected in `Personas`, but is not yet worn in `Homebase`. | `gallerySelectedMaskId` is set while `homebaseWornMaskId` is still empty or different. |
+| `chosen on shelf` | A mask has been selected on the `Homebase / Personas` shelf, but is not yet worn in the contact bay. | `gallerySelectedMaskId` is set while `homebaseWornMaskId` is still empty or different. |
 | `Worn mask` | The dedicated Homebase stage that shows which mask is actively steering passage. | The current `homebaseWornMaskId` plus its resolved shell/profile data. |
 | `Source` | The unmasked comparison text on the Homebase passage bench. | The raw comparison passage before persona transfer. |
 | `Through Mask` | The transformed passage produced by the worn mask, or a blank output when the writer explicitly holds. | The registered output of `buildCadenceTransfer(...)` through the worn shell. If Generator V2 holds, Homebase should show the hold docket instead of leaking internal candidate text. |
@@ -96,10 +96,9 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 | Term | In the app | In the model |
 | --- | --- | --- |
 | `Deck` | The encounter station with bays, controls, cast report, and `Shell Duel`. | The public membrane where cadence play and route-state education happen first. |
-| `Homebase` | The cadence home for lock, reveal, save, archive, dossier, and mask work. | The private lock-and-compare surface that stages one voice before or alongside deck play. |
+| `Homebase / Personas` | The cadence home and mask shelf for lock, reveal, save, archive, dossier, mask selection, and mask work. | The private lock-and-compare surface that stages one voice and one worn mask before or alongside deck play. |
 | `Readout` | The witness/law station that exposes scores, formulas, and ledger preview. | The explicit metric layer where similarity, route, and archive state are made legible. |
-| `Personas` | The compact mask shelf and preview station. | The reusable shell gallery that feeds Homebase and Deck without owning the lock workflow itself. |
-| `Station route` | The hash-routed room selector such as `#homebase`, `#personas`, `#readout`, `#deck`, or `#trainer`. | A public navigation alias over one browser runtime; the route changes shell identity, not engine truth. `#console` remains a compatibility alias that resolves to `#homebase`. |
+| `Station route` | The hash-routed room selector such as `#homebase`, `#readout`, `#deck`, or `#trainer`. | A public navigation alias over one browser runtime; the route changes shell identity, not engine truth. `#console` remains a compatibility alias that resolves to `#homebase`. |
 | `Branch` | The branch formula shown in the readout/debug layer. | The rule that unwanted surplus is preserved until it can be interpreted or dismissed responsibly. |
 | `Field` | The whole comparison environment shown on the deck. | The bounded environment in which similarity, recurrence, and route pressure interact. |
 | `Harbor deck` | The panel that recommends structured passage. | The safe-harbor layer that lowers witness burden without destroying provenance. |

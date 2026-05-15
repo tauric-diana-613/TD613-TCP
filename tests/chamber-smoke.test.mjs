@@ -28,8 +28,7 @@ const CHAMBERS = [
   { name: 'Deck',     file: 'deck.html',     hasNav: true  },
   { name: 'Trainer',  file: 'trainer.html',  hasNav: true  },
   { name: 'Readout',  file: 'readout.html',  hasNav: true  },
-  { name: 'Homebase', file: 'homebase.html', hasNav: true  },
-  { name: 'Personas', file: 'personas.html', hasNav: true  }
+  { name: 'Homebase / Personas', file: 'homebase.html', hasNav: true  }
 ];
 
 function makeCanvasStub() {

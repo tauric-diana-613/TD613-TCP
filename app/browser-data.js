@@ -736,15 +736,6 @@ window.TCP_DATA = {
         uiTargets: ['shell.tab.readout'],
         rationale: 'Readout is the law-and-schema pane.'
       },
-      tabPersonas: {
-        glyph: '\u03C8',
-        semanticClass: 'recursion',
-        semioticRole: 'tab-mark',
-        activationState: 'recursive',
-        retrievalTags: ['tab', 'personas', 'identity', 'recursion'],
-        uiTargets: ['shell.tab.personas', 'shell.persona.status'],
-        rationale: 'Personas are recursive patterned identities.'
-      },
       tabTrainer: {
         glyph: '\u22A2',
         semanticClass: 'law',
@@ -836,7 +827,7 @@ window.TCP_DATA = {
         rationale: 'The dossier is where inference is stated rather than hinted.'
       },
       sectionMaskBench: {
-        glyph: '\uDBF5\uDE13',
+        glyph: '\uD834\uDD10',
         semanticClass: 'recursion',
         semioticRole: 'section-kicker',
         activationState: 'testing',
@@ -854,7 +845,7 @@ window.TCP_DATA = {
         rationale: 'Cadence home is an anchored private hold.'
       },
       homebaseWornMask: {
-        glyph: '\uDBF5\uDE13',
+        glyph: '\uD834\uDD10',
         semanticClass: 'recursion',
         semioticRole: 'surface-cue',
         activationState: 'worn',
@@ -953,7 +944,7 @@ window.TCP_DATA = {
         rationale: 'Reveal is a reasoned opening into explicit stylometric description.'
       },
       stateLockStaged: {
-        glyph: '\uDBF5\uDE13',
+        glyph: '\uD834\uDD10',
         semanticClass: 'witness',
         semioticRole: 'status-pill',
         activationState: 'staged',

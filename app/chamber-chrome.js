@@ -2,7 +2,7 @@
   var V = window.TD613_ASSET_VERSIONS || {};
   var apertureV = V.aperture ? '?v=' + V.aperture : '';
   var CHAMBER_NAV = [
-    { label: 'Gateway', href: './index.html' },
+    { label: 'Gateway', href: './index.html?ingress=off' },
     { label: 'Aperture', href: './aperture/index.html' + apertureV }
   ];
 

@@ -1144,11 +1144,10 @@
     none: '',
     shellDuelUpdated: 'shell-duel-updated'
   });
-  const ARTIFACT_TABS = Object.freeze(['console', 'homebase', 'personas', 'readout', 'play', 'trainer']);
+  const ARTIFACT_TABS = Object.freeze(['console', 'homebase', 'readout', 'play', 'trainer']);
   const ARTIFACT_TAB_TO_HASH = Object.freeze({
     console: 'console',
     homebase: 'homebase',
-    personas: 'personas',
     readout: 'readout',
     play: 'deck',
     trainer: 'trainer'
@@ -1156,7 +1155,7 @@
   const HASH_TO_ARTIFACT_TAB = Object.freeze({
     console: 'console',
     homebase: 'homebase',
-    personas: 'personas',
+    personas: 'homebase',
     readout: 'readout',
     deck: 'play',
     play: 'play',
@@ -1165,7 +1164,6 @@
   const ARTIFACT_TAB_PANE_IDS = Object.freeze({
     console: 'viewPaneConsole',
     homebase: 'viewPaneHomebase',
-    personas: 'viewPanePersonas',
     readout: 'viewPaneReadout',
     play: 'viewPanePlay',
     trainer: 'viewPaneTrainer'
@@ -1173,21 +1171,15 @@
   const ARTIFACT_TAB_BUTTON_IDS = Object.freeze({
     console: 'tabConsole',
     homebase: 'tabHomebase',
-    personas: 'tabPersonas',
     readout: 'tabReadout',
     play: 'tabPlay',
     trainer: 'tabTrainer'
   });
     const STATION_CHROME = Object.freeze({
       homebase: Object.freeze({
-        title: 'TCP / Homebase',
+        title: 'TCP / Homebase / Personas',
         line: 'Lock / wear / residue',
-        lead: 'Anchor a cadence, wear one mask, inspect what stays home.'
-      }),
-      personas: Object.freeze({
-        title: 'TCP / Personas',
-        line: 'Choose / inspect / dispatch',
-        lead: 'Pick the shell here. Wake it elsewhere.'
+        lead: 'Anchor a cadence, choose one mask, inspect what stays home.'
       }),
       readout: Object.freeze({
         title: 'TCP / Readout',
@@ -1210,14 +1202,13 @@
   const PAGE_KIND_TO_ARTIFACT_TAB = Object.freeze({
     gateway: 'homebase',
     homebase: 'homebase',
-    personas: 'personas',
+    personas: 'homebase',
     readout: 'readout',
     deck: 'play',
     trainer: 'trainer'
   });
   const ARTIFACT_TAB_TO_PAGE = Object.freeze({
     homebase: './homebase.html',
-    personas: './personas.html',
     readout: './readout.html',
     play: './deck.html',
     trainer: './trainer.html'
@@ -1707,8 +1698,7 @@
 
   function publicArtifactLabel(tab = 'homebase') {
     return {
-      homebase: 'Homebase',
-      personas: 'Personas',
+      homebase: 'Homebase / Personas',
       readout: 'Readout',
       play: 'Deck',
       trainer: 'Trainer'
@@ -4087,7 +4077,7 @@
           : homebaseWornMaskId
             ? 'worn-elsewhere'
             : 'latent',
-        cueGlyphKey: selectedMask ? 'personaChosen' : 'tabPersonas',
+        cueGlyphKey: selectedMask ? 'personaChosen' : 'sectionPersonaDeck',
         cueTone: selectedMask ? 'warm' : 'latent',
         statusGrammar: selectedMask ? 'persona-preview' : 'persona-shelf'
       },
@@ -5646,7 +5636,7 @@
       body.innerHTML = `
         <div class="homebase-worn-mask-empty">
           <div class="persona-kicker">${escapeHtml(routeState === 'chosen' ? 'chosen on shelf' : 'no mask worn')}</div>
-          <h3>${escapeHtml(routeState === 'chosen' ? state.selectedMask.name : 'Bring one in from Personas')}</h3>
+          <h3>${escapeHtml(routeState === 'chosen' ? state.selectedMask.name : 'Bring one in from the mask shelf')}</h3>
           <p class="persona-empty">${escapeHtml(shelfLine)}</p>
         </div>
       `;
@@ -6020,7 +6010,7 @@
       afterNode.textContent = '--';
       movedNode.textContent = '--';
       deltaNode.textContent = '--';
-      renderNoteList(notesNode, ['No mask is worn yet.', 'Choose one in Personas, bring it into Homebase, then read what clings after contact.']);
+      renderNoteList(notesNode, ['No mask is worn yet.', 'Choose one on the mask shelf, bring it into Homebase, then read what clings after contact.']);
       renderNoteList(ledgerNode, ['Detailed warning and repair traces appear after a mask makes contact.']);
       if (ledgerMetaNode) {
         ledgerMetaNode.textContent = 'Detailed warning and repair traces appear here.';
@@ -6272,8 +6262,8 @@
     }
 
     if (personaGalleryLoadError) {
-      node.textContent = `${glyphChar('tabPersonas', '')} Shelf // degraded lane // built-in masks stay visible while Persona Gallery is offline`;
-      applyGlyphMetadata(node, 'tabPersonas');
+      node.textContent = `${glyphChar('sectionPersonaDeck', '')} Shelf // degraded lane // built-in masks stay visible while the mask shelf is offline`;
+      applyGlyphMetadata(node, 'sectionPersonaDeck');
       return;
     }
 
@@ -6288,8 +6278,8 @@
           : !state.comparisonText.trim()
             ? `Homebase is waiting on source text for ${homeLabel}`
             : `${maskLabel} is now writing against ${homeLabel}`;
-    node.textContent = `${glyphChar('tabPersonas', '')} Shelf // ${maskLabel} // ${nextStep} // ${state.library.length} masks loaded`;
-    applyGlyphMetadata(node, 'tabPersonas');
+    node.textContent = `${glyphChar('sectionPersonaDeck', '')} Shelf // ${maskLabel} // ${nextStep} // ${state.library.length} masks loaded`;
+    applyGlyphMetadata(node, 'sectionPersonaDeck');
   }
 
   function renderDeckCastReport(state) {
@@ -6394,19 +6384,10 @@
         target: 'homebase',
         glyphKey: 'tabHomebase',
         glyphClass: 'glyph-lime',
-        kicker: 'Anchor',
-        title: 'Homebase',
+        kicker: 'Anchor / Shelf',
+        title: 'Homebase / Personas',
         summary: homeSummary,
-        detail: homeDetail
-      },
-      {
-        target: 'personas',
-        glyphKey: 'tabPersonas',
-        glyphClass: 'glyph-lime',
-        kicker: 'Shelf',
-        title: 'Personas',
-        summary: personaSummary,
-        detail: personaDetail
+        detail: `${homeDetail} Mask shelf: ${personaSummary} ${personaDetail}`
       },
       {
         target: 'readout',
@@ -6507,15 +6488,38 @@
         <div class="trainer-bridge-copy">
           <div class="persona-kicker">Injected persona</div>
           <h3>${escapeHtml(injected.name)}</h3>
-          <p>${escapeHtml(injected.name)} is live on the session shelf. Open it in Personas, bring it into Homebase, or test it in Deck without leaving the shared runtime.</p>
+          <p>${escapeHtml(injected.name)} is live on the session shelf. Open it in Homebase / Personas, wear it there, or test it in Deck without leaving the shared runtime.</p>
         </div>
         <div class="persona-actions">
-          <button type="button" class="ghost" data-station-target="personas">Open in Personas</button>
+          <button type="button" class="ghost" data-station-target="homebase">Open Homebase / Personas</button>
           <button type="button" class="secondary" data-persona-action="wear-homebase" data-persona-id="${escapeHtml(injected.id)}">Bring into Homebase</button>
           <button type="button" class="ghost" data-persona-action="assign-reference" data-persona-id="${escapeHtml(injected.id)}">Try in Deck</button>
         </div>
       </div>
     `;
+  }
+
+  let homebaseContactRenderFrame = null;
+  function renderHomebaseContactOnly() {
+    homebaseContactRenderFrame = null;
+    const state = buildPersonaGalleryState();
+    renderHomebaseChrome(state);
+    renderMaskBench(state);
+    renderPersonaPreview(state);
+    applySurfaceFieldGrammar($('viewPaneHomebase'), state.fieldGrammar?.homebase);
+  }
+
+  function scheduleHomebaseContactRender() {
+    if (homebaseContactRenderFrame) {
+      if (window.cancelAnimationFrame) {
+        window.cancelAnimationFrame(homebaseContactRenderFrame);
+      } else {
+        window.clearTimeout(homebaseContactRenderFrame);
+      }
+    }
+    homebaseContactRenderFrame = window.requestAnimationFrame
+      ? window.requestAnimationFrame(renderHomebaseContactOnly)
+      : window.setTimeout(renderHomebaseContactOnly, 16);
   }
 
   function renderPersonas() {
@@ -6532,7 +6536,6 @@
     renderTrainerBridge();
     applySurfaceFieldGrammar($('viewPaneConsole'), state.fieldGrammar?.console);
     applySurfaceFieldGrammar($('viewPaneHomebase'), state.fieldGrammar?.homebase);
-    applySurfaceFieldGrammar($('viewPanePersonas'), state.fieldGrammar?.personas);
     applySurfaceFieldGrammar($('viewPaneReadout'), state.fieldGrammar?.readout);
     applySurfaceFieldGrammar($('viewPaneTrainer'), state.fieldGrammar?.trainer);
     applySurfaceFieldGrammar($('trainerPane'), state.fieldGrammar?.trainer);
@@ -6592,8 +6595,7 @@
 
     if (announce) {
       const viewLabels = {
-        homebase: 'Homebase ready.',
-        personas: 'Shelf ready.',
+        homebase: 'Homebase / Personas ready.',
         readout: 'Readout ready.',
         play: 'Deck ready.',
         trainer: 'Forge ready.'
@@ -8091,7 +8093,6 @@ DeltaE = ${ledger.reuse_gain}`;
         homebase: readGlyph('tabHomebase'),
         deck: readGlyph('tabDeck'),
         readout: readGlyph('tabReadout'),
-        personas: readGlyph('tabPersonas'),
         trainer: readGlyph('tabTrainer')
       },
       readoutStrip: {
@@ -8910,7 +8911,7 @@ DeltaE = ${ledger.reuse_gain}`;
         const firstSelectSnapshot = readPersonaGallerySnapshot();
         $('personaComparisonText').value = SAMPLE_LIBRARY_BY_ID['customer-support-formal-record']?.text || seededPair.voiceB;
         $('personaComparisonText').dispatchEvent(new Event('input', { bubbles: true }));
-        $('tabPersonas').click();
+        $('tabHomebase').click();
         const sparkMaskCard = document.querySelector('.persona[data-id="spark"]');
         if (sparkMaskCard) {
           sparkMaskCard.click();
@@ -8943,7 +8944,6 @@ DeltaE = ${ledger.reuse_gain}`;
         stationRoute: document.body.dataset.stationRoute || '',
         consoleHidden: $('viewPaneConsole').hidden,
         homebaseHidden: $('viewPaneHomebase').hidden,
-        personasHidden: $('viewPanePersonas').hidden,
         readoutHidden: $('viewPaneReadout').hidden,
         playHidden: $('viewPanePlay').hidden,
         trainerHidden: $('viewPaneTrainer').hidden
@@ -8956,7 +8956,6 @@ DeltaE = ${ledger.reuse_gain}`;
             snapshot.tabs.homebase.glyph === glyphChar('tabHomebase') &&
             snapshot.tabs.deck.glyph === glyphChar('tabDeck') &&
             snapshot.tabs.readout.glyph === glyphChar('tabReadout') &&
-            snapshot.tabs.personas.glyph === glyphChar('tabPersonas') &&
             snapshot.tabs.trainer.glyph === glyphChar('tabTrainer') &&
             snapshot.readoutStrip.signal.glyph === glyphChar('readoutSignal') &&
             snapshot.readoutStrip.route.glyph === glyphChar('readoutRoute') &&
@@ -9080,7 +9079,7 @@ DeltaE = ${ledger.reuse_gain}`;
           )
         };
 
-          $('tabPersonas').click();
+          $('tabHomebase').click();
           const injectedTrainerPersona = injectedTrainerId ? document.querySelector(`.persona[data-id="${injectedTrainerId}"]`) : null;
           const injectedTrainerOpen = injectedTrainerId
             ? document.querySelector(`[data-persona-id="${injectedTrainerId}"][data-persona-action="open-trainer"]`)
@@ -9343,12 +9342,11 @@ DeltaE = ${ledger.reuse_gain}`;
   on('lockCadenceBtn', 'click', lockCadenceFromGallery);
   on('revealCadenceBtn', 'click', revealCadenceLock);
   on('saveCadenceLockBtn', 'click', saveStagedCadenceLock);
-  on('personaComparisonText', 'input', () => renderPersonas());
+  on('personaComparisonText', 'input', scheduleHomebaseContactRender);
   on('tabConsole', 'click', () => navigateToStation('homebase'));
   on('tabHomebase', 'click', () => navigateToStation('homebase'));
   on('tabPlay', 'click', () => navigateToStation('play'));
   on('tabReadout', 'click', () => navigateToStation('readout'));
-  on('tabPersonas', 'click', () => navigateToStation('personas'));
   on('tabTrainer', 'click', () => navigateToStation('trainer'));
   on('ingressMirrorArmed', 'click', () => chooseIngressMirror('off'));
   on('ingressMirrorOpen', 'click', () => chooseIngressMirror('on'));

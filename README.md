@@ -10,16 +10,15 @@ The live browser surface is playful by design, but the model is not loose. TCP i
 
 TCP's glyph system is operational, not decorative. The browser uses a registered field language to keep surface role, state transition, and retrieval truth aligned.
 
-The current public membrane is organized as six roles:
+The current public membrane is organized as five roles:
 
 - `Ingress` = threshold
-- `Homebase` = anchor, contact, residue
-- `Personas` = cast shelf
+- `Homebase / Personas` = anchor, mask shelf, contact, residue
 - `Readout` = witness and law
 - `Deck` = encounter and duel
 - `Trainer` = forge
 
-That role split matters because TCP does not present every state in the same voice. Ingress now hands off directly into `Homebase`, while `#console` remains only as a compatibility alias. `Homebase` is where a cadence home is locked, a mask is worn, and residue is read. `Personas` is where masks are chosen on the shelf before being brought into `Homebase` or thrown into `Deck`. `Readout` stays colder because it is the proof surface. `Trainer` stays retrieval-first, but the visible loop now reads as extraction, live draft forging, validation, correction, and injection rather than as generic tooling.
+That role split matters because TCP does not present every state in the same voice. Ingress now hands off directly into `Homebase / Personas`, while `#console` remains only as a compatibility alias. `Homebase / Personas` is where a cadence home is locked, a mask is chosen or worn, and residue is read. `Readout` stays colder because it is the proof surface. `Trainer` stays retrieval-first, but the visible loop now reads as extraction, live draft forging, validation, correction, and injection rather than as generic tooling.
 
 Adjacent to the six-room TCP shell, `TD613 Flight` is the SHI-gated credential flightdeck launched from Safe Harbor. It prepares LLM-ready Flight Packets and authorship / rupture footers, but it does not mint SHI on its own; entrants must complete Safe Harbor's triad first.
 
