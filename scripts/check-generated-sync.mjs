@@ -20,6 +20,7 @@ const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
 
 const ENGINE_SOURCES = [
+  'app/engine/corpus-hydration.js',
   'app/engine/td613-aperture.js',
   'app/engine/stylometry.js',
   'app/engine/vernacular-ontology.js',
@@ -48,6 +49,8 @@ function expectedBrowserEngine() {
     }),
     '',
     'window.TCP_ENGINE = Object.assign(window.TCP_ENGINE || {}, {',
+    '  deepFreeze,',
+    '  hydrateCorpus,',
     '  TD613_APERTURE_PROTOCOL,',
     '  TD613_APERTURE_ENFORCEMENT_TERMS,',
     '  buildTD613GovernedExposureSchema,',
@@ -88,6 +91,10 @@ function expectedBrowserEngine() {
     '  transformText,',
     '  functionWordProfile,',
     '  charTrigramProfile,',
+    '  StylometricDeepMetrics,',
+    '  syntacticBranchingDepth,',
+    '  lexicalEntropyScore,',
+    '  transitionVariance,',
     '  recurrencePressure,',
     '  sentenceSplit,',
     '  segmentTextToIR,',
