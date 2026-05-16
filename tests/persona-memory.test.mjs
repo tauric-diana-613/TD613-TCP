@@ -116,6 +116,8 @@ assert(linkState.status === 'overfit-risk' || linkState.warnings.includes('perso
 
 const field = derivePersonaField(three);
 assert(field.maskProfile);
+assert.deepEqual(field.maskProfile, three.field.centroid.values);
+assert(!Object.prototype.hasOwnProperty.call(field.maskProfile, 'values'));
 assert(Array.isArray(field.maskHistory));
 const vector = buildEscapeVector({
   protectedBaselineText: 'I keep circling around the issue with a lot of clauses and a reflective rhythm that keeps returning to the same emotional surface.',
