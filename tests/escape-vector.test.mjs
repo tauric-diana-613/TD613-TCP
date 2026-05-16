@@ -7,6 +7,7 @@ import {
 } from '../app/engine/escape-vector.js';
 
 const thresholds = { minWords: 5, semanticFidelityFloor: 0.75 };
+const closeEnough = (actual, expected, tolerance = 0.00001) => Math.abs(actual - expected) < tolerance;
 
 const protectedBaseline = `I kept circling the room because I was not ready to say the hard part, and then I stalled again because the room went quiet. Honestly, I kept threading every clause through a little ache, because the whole point was not just what happened, but how long it took anyone to notice.`;
 
@@ -54,16 +55,16 @@ const farMaskVector = buildEscapeVector({
 });
 assert(closeMaskVector.scores.maskFit > farMaskVector.scores.maskFit);
 
-assert(Math.abs(closeMaskVector.scores.maskDeltaRaw - (closeMaskVector.scores.maskFit - closeMaskVector.views.sourceRisk.raw)) < 0.00001);
+assert(closeEnough(closeMaskVector.scores.maskDeltaRaw, closeMaskVector.scores.maskFit - closeMaskVector.views.sourceRisk.raw));
 
 const delta = computeMaskDelta({
   sourceRisk: { raw: 0.4, normalized: 0.5, visible: 0.3 },
   maskFit: { raw: 0.7, normalized: 0.6, visible: 0.55 }
 });
-assert.equal(delta.raw, 0.3);
-assert.equal(delta.normalized, 0.1);
-assert.equal(delta.visible, 0.25);
-assert.equal(delta.safe, 0.1);
+assert(closeEnough(delta.raw, 0.3));
+assert(closeEnough(delta.normalized, 0.1));
+assert(closeEnough(delta.visible, 0.25));
+assert(closeEnough(delta.safe, 0.1));
 
 const envelope = computeSourceRiskEnvelope({ raw: 0.2, normalized: 0.4, visible: 0.3, semantic: 0.5, glyph: 0.9 });
 assert.equal(envelope, 0.9);
