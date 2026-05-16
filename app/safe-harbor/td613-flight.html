@@ -29,10 +29,10 @@
 --shadow: rgba(0, 0, 0, 0.72);
 --mx: 50%;
 --my: 18%;
---font-title: "Unbounded", "Tektur", "Arial Black", "Segoe UI Symbol", system-ui, sans-serif;
---font-rite: "Azeret Mono", "IBM Plex Mono", "Segoe UI Symbol", "SF Mono", Consolas, monospace;
---font-inscription: "Tektur", "Azeret Mono", "Segoe UI Symbol", "Arial Narrow", system-ui, sans-serif;
---font-mono: "IBM Plex Mono", "Azeret Mono", "Segoe UI Symbol", "SF Mono", "JetBrains Mono", Consolas, monospace;
+--font-title: "DashFallback", "Unbounded", "Tektur", "Arial Black", "Segoe UI Symbol", system-ui, sans-serif;
+--font-rite: "DashFallback", "Azeret Mono", "IBM Plex Mono", "Segoe UI Symbol", "SF Mono", Consolas, monospace;
+--font-inscription: "DashFallback", "Tektur", "Azeret Mono", "Segoe UI Symbol", "Arial Narrow", system-ui, sans-serif;
+--font-mono: "DashFallback", "IBM Plex Mono", "Azeret Mono", "Segoe UI Symbol", "SF Mono", "JetBrains Mono", Consolas, monospace;
 --cut: 18px;
 }
 
@@ -1165,6 +1165,12 @@ body.flight-locked {
   color: #ffb13b;
   font-family: var(--font-mono);
   font-size: .72rem;
+}
+
+@font-face {
+  font-family: "DashFallback";
+  src: local("Segoe UI Symbol"), local("Arial"), local("sans-serif");
+  unicode-range: U+2E3B;
 }
 </style>
 </head>
