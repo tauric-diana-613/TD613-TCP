@@ -132,6 +132,19 @@ function preservationScore(anchors = [], outputText = '') {
   return filtered.filter((anchor) => output.includes(anchor.toLowerCase())).length / filtered.length;
 }
 
+function literalWarningsAndScore(input) {
+  const literalScore = preservationScore(input.protectedLiterals, input.outputText);
+  const anchorScore = preservationScore(extractAnchors(input.draftText), input.outputText);
+  const warnings = [];
+  if (literalScore !== null && literalScore < 1) warnings.push('protected-literal-missing');
+  if (anchorScore !== null && anchorScore < 1) warnings.push('anchor-drift');
+  const guardScore = weightedMean([
+    { value: literalScore, weight: 0.60 },
+    { value: anchorScore, weight: 0.40 }
+  ]);
+  return { guardScore, warnings };
+}
+
 export function normalizeEscapeVectorInput(input = {}) {
   const options = input.options || {};
   const thresholds = { ...DEFAULT_ESCAPE_VECTOR_THRESHOLDS, ...(options.thresholds || {}) };
@@ -220,28 +233,35 @@ export function computeMaskFit(args = {}) {
 export function computeSemanticFidelity(args = {}) {
   const input = normalizeEscapeVectorInput(args);
   const warnings = [];
-  const supplied = semanticAuditScore(input.semanticAudit || {});
-  if (Number.isFinite(supplied)) return { score: round(supplied), status: 'measured', warnings };
-  if (!input.draftText || !input.outputText) return { score: null, status: 'unavailable', warnings: ['semantic-fidelity-unavailable'] };
-  try {
-    const ir = segmentTextToIR(input.draftText, { literals: input.protectedLiterals });
-    const bundle = buildSemanticAuditBundle(ir, input.outputText, { literals: input.protectedLiterals });
-    const measured = semanticAuditScore(bundle);
-    if (Number.isFinite(measured)) return { score: round(measured), status: 'measured', warnings };
-  } catch {
-    // Use heuristic fallback below.
+  let score = semanticAuditScore(input.semanticAudit || {});
+  let status = Number.isFinite(score) ? 'measured' : 'unavailable';
+  if (!Number.isFinite(score) && input.draftText && input.outputText) {
+    try {
+      const ir = segmentTextToIR(input.draftText, { literals: input.protectedLiterals });
+      const bundle = buildSemanticAuditBundle(ir, input.outputText, { literals: input.protectedLiterals });
+      score = semanticAuditScore(bundle);
+      status = Number.isFinite(score) ? 'measured' : 'unavailable';
+    } catch {
+      status = 'unavailable';
+    }
   }
-  const literalScore = preservationScore(input.protectedLiterals, input.outputText);
-  const anchorScore = preservationScore(extractAnchors(input.draftText), input.outputText);
-  const contentScore = scorePair(input.draftText, input.outputText, input.draftProfile, input.outputProfile).compare?.similarity;
-  const score = weightedMean([
-    { value: literalScore, weight: 0.44 },
-    { value: anchorScore, weight: 0.26 },
-    { value: clip(contentScore), weight: 0.30 }
-  ]);
-  if (literalScore !== null && literalScore < 1) warnings.push('protected-literal-missing');
+  if (!input.draftText || !input.outputText) {
+    return { score: null, status: 'unavailable', warnings: ['semantic-fidelity-unavailable'] };
+  }
+  const literalGuard = literalWarningsAndScore(input);
+  warnings.push(...literalGuard.warnings);
+  if (!Number.isFinite(score)) {
+    const contentScore = scorePair(input.draftText, input.outputText, input.draftProfile, input.outputProfile).compare?.similarity;
+    score = weightedMean([
+      { value: literalGuard.guardScore, weight: 0.62 },
+      { value: clip(contentScore), weight: 0.38 }
+    ]);
+    status = score === null ? 'unavailable' : 'heuristic';
+  } else if (Number.isFinite(literalGuard.guardScore)) {
+    score = Math.min(score, literalGuard.guardScore);
+  }
   if (score === null) warnings.push('semantic-fidelity-unavailable');
-  return { score: round(score), status: score === null ? 'unavailable' : 'heuristic', warnings };
+  return { score: round(score), status: score === null ? 'unavailable' : status, warnings: uniqueWarnings(warnings) };
 }
 
 export function computeMaskLinkability(args = {}) {
