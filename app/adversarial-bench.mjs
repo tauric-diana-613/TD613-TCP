@@ -4,244 +4,50 @@ import { buildEscapeVector } from './engine/escape-vector.js';
 import { buildIngestionFrictionAudit } from './engine/ingestion-friction.js';
 import { buildEscapeControllerDecision } from './engine/escape-controller.js';
 import { appendAcceptedOutput, createPersonaMemory, derivePersonaField, summarizePersonaMemory } from './engine/persona-memory.js';
+import { appendIterationRow, createIterationLedger, exportIterationLedgerJson, linkAcceptedOutputToIteration, summarizeIterationLedger } from './engine/iteration-ledger.js';
 
 const DEFAULT_MODE = 'neutralize';
 const CANONICAL_TOKENS = Object.freeze({ khonaLitPo: 'Khona\u200Clit-po', glyphs: ['𝌋', '⟐'], badgeStrings: [] });
 const STATE_LABELS = Object.freeze({ continue: 'Continue steering', hold: 'Hold for review', rotate: 'Rotate Persona', restore: 'Restore semantics', seal: 'Locally sealable' });
 const fmt = (value) => Number.isFinite(value) ? value.toFixed(2) : 'unavailable';
 const safeText = (value) => String(value ?? '');
-
 const initialProfiles = () => ({ protectedBaseline: null, maskReference: null, messageDraft: null, protectedOutput: null });
 
-export const benchState = {
-  protectedBaselineText: '',
-  maskReferenceText: '',
-  messageDraftText: '',
-  protectedOutputText: '',
-  selectedPersonaId: '',
-  personaMemory: null,
-  profiles: initialProfiles(),
-  ingestionAudit: null,
-  escapeVector: null,
-  controllerDecision: null,
-  iterationPreview: []
-};
+export const benchState = { protectedBaselineText: '', maskReferenceText: '', messageDraftText: '', protectedOutputText: '', selectedPersonaId: '', personaMemory: null, profiles: initialProfiles(), ingestionAudit: null, escapeVector: null, controllerDecision: null, iterationPreview: [], iterationTextCache: {}, iterationLedger: createIterationLedger({ context: { benchVersion: 'phase-5', mode: DEFAULT_MODE } }) };
 
 let docRef = null;
 let initializedFor = null;
 const $ = (id) => docRef?.getElementById(id) || null;
 const setText = (id, value) => { const el = $(id); if (el) el.textContent = safeText(value); };
 const setHtml = (id, value) => { const el = $(id); if (el) el.innerHTML = safeText(value); };
-
-function escapeHtml(value = '') {
-  return safeText(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
-}
-
-function profileSummary(profile) {
-  if (!profile || profile.empty) return 'No profile yet.';
-  const parts = [];
-  if (Number.isFinite(profile.wordCount)) parts.push(`Words ${profile.wordCount}`);
-  if (Number.isFinite(profile.avgSentenceLength)) parts.push(`Rhythm ${profile.avgSentenceLength.toFixed(1)}w`);
-  if (Number.isFinite(profile.punctuationDensity)) parts.push(`Punct ${profile.punctuationDensity.toFixed(2)}`);
-  if (Number.isFinite(profile.contractionDensity)) parts.push(`Contractions ${profile.contractionDensity.toFixed(2)}`);
-  if (Number.isFinite(profile.recurrencePressure)) parts.push(`Recurrence ${profile.recurrencePressure.toFixed(2)}`);
-  return parts.length ? parts.join(' · ') : 'Profile extracted.';
-}
-
-function hydratePersona(persona) {
-  if (!persona) return null;
-  const mod = persona.mod || persona.profileRecipe?.overlayMod || null;
-  const strength = persona.strength || persona.profileRecipe?.strength || 0.92;
-  const profile = persona.profile || (mod ? applyCadenceMod(extractCadenceProfile(''), mod) : null);
-  return { ...persona, mod, strength, profile };
-}
-
+function escapeHtml(value = '') { return safeText(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;'); }
+function profileSummary(profile) { if (!profile || profile.empty) return 'No profile yet.'; const parts = []; if (Number.isFinite(profile.wordCount)) parts.push(`Words ${profile.wordCount}`); if (Number.isFinite(profile.avgSentenceLength)) parts.push(`Rhythm ${profile.avgSentenceLength.toFixed(1)}w`); if (Number.isFinite(profile.punctuationDensity)) parts.push(`Punct ${profile.punctuationDensity.toFixed(2)}`); if (Number.isFinite(profile.contractionDensity)) parts.push(`Contractions ${profile.contractionDensity.toFixed(2)}`); if (Number.isFinite(profile.recurrencePressure)) parts.push(`Recurrence ${profile.recurrencePressure.toFixed(2)}`); return parts.length ? parts.join(' · ') : 'Profile extracted.'; }
+function hydratePersona(persona) { if (!persona) return null; const mod = persona.mod || persona.profileRecipe?.overlayMod || null; const strength = persona.strength || persona.profileRecipe?.strength || 0.92; const profile = persona.profile || (mod ? applyCadenceMod(extractCadenceProfile(''), mod) : null); return { ...persona, mod, strength, profile }; }
 function personaLibrary() { return basePersonas.map(hydratePersona); }
 function findPersona(id) { return personaLibrary().find((persona) => persona.id === id) || null; }
 function selectedPersona() { return findPersona(benchState.selectedPersonaId) || personaLibrary()[0] || null; }
-
-function createMemoryForPersona(persona) {
-  return createPersonaMemory({
-    personaId: persona?.id || 'local-mask-field',
-    label: persona?.name || 'Local Mask Field',
-    displayName: persona?.name || 'Local Mask Field',
-    surface: { avatar: persona?.maskSigil || '', description: persona?.blurb || '', tags: persona?.chips || [] },
-    ontology: { role: persona?.family || 'mask field', targetContexts: ['protected communication'], registerHints: persona?.chips || [], belongingNotes: persona?.fieldUse ? [persona.fieldUse] : [] },
-    ritualSurface: { optionalMarkers: ['𝌋', '⟐'], glyphs: ['𝌋', '⟐'] }
-  });
-}
-
-function ensurePersonaMemory() {
-  const persona = selectedPersona();
-  if (!benchState.personaMemory || benchState.personaMemory.personaId !== (persona?.id || 'local-mask-field')) benchState.personaMemory = createMemoryForPersona(persona);
-  return benchState.personaMemory;
-}
-
-function activePersonaField() {
-  const memory = ensurePersonaMemory();
-  const field = derivePersonaField(memory);
-  const persona = selectedPersona();
-  if (field.maskProfile) return field;
-  if (benchState.maskReferenceText.trim()) return { ...field, maskProfile: benchState.profiles.maskReference, maskHistory: [{ text: benchState.maskReferenceText, profile: benchState.profiles.maskReference }] };
-  if (persona?.profile) return { ...field, maskProfile: persona.profile, maskHistory: [{ text: `${persona.name}. ${persona.voicePromise || ''} ${persona.fieldUse || ''}`, profile: persona.profile }] };
-  return field;
-}
-
-function readInputs() {
-  benchState.protectedBaselineText = $('protectedBaselineInput')?.value || '';
-  benchState.maskReferenceText = $('maskReferenceInput')?.value || '';
-  benchState.messageDraftText = $('messageDraftInput')?.value || '';
-  benchState.protectedOutputText = $('protectedOutputInput')?.value || '';
-  benchState.selectedPersonaId = $('maskFieldSelect')?.value || benchState.selectedPersonaId;
-}
-
-function extractProfiles() {
-  benchState.profiles.protectedBaseline = extractCadenceProfile(benchState.protectedBaselineText);
-  benchState.profiles.maskReference = extractCadenceProfile(benchState.maskReferenceText);
-  benchState.profiles.messageDraft = extractCadenceProfile(benchState.messageDraftText);
-  benchState.profiles.protectedOutput = extractCadenceProfile(benchState.protectedOutputText);
-}
-
-function extractProtectedLiterals() {
-  const text = `${benchState.messageDraftText}\n${benchState.protectedBaselineText}`;
-  return [...new Set([...(text.match(/\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\/-]*\b/g) || []), ...(text.match(/\b\d{2,}(?:[\-/:.]\d+)*\b/g) || [])])].slice(0, 24);
-}
-
-function renderProfiles() {
-  setText('protectedBaselineProfile', profileSummary(benchState.profiles.protectedBaseline));
-  setText('maskFieldProfile', profileSummary(activePersonaField().maskProfile || benchState.profiles.maskReference));
-  setText('messageDraftProfile', profileSummary(benchState.profiles.messageDraft));
-}
-
+function createMemoryForPersona(persona) { return createPersonaMemory({ personaId: persona?.id || 'local-mask-field', label: persona?.name || 'Local Mask Field', displayName: persona?.name || 'Local Mask Field', surface: { avatar: persona?.maskSigil || '', description: persona?.blurb || '', tags: persona?.chips || [] }, ontology: { role: persona?.family || 'mask field', targetContexts: ['protected communication'], registerHints: persona?.chips || [], belongingNotes: persona?.fieldUse ? [persona.fieldUse] : [] }, ritualSurface: { optionalMarkers: ['𝌋', '⟐'], glyphs: ['𝌋', '⟐'] } }); }
+function ensurePersonaMemory() { const persona = selectedPersona(); if (!benchState.personaMemory || benchState.personaMemory.personaId !== (persona?.id || 'local-mask-field')) benchState.personaMemory = createMemoryForPersona(persona); return benchState.personaMemory; }
+function activePersonaField() { const memory = ensurePersonaMemory(); const field = derivePersonaField(memory); const persona = selectedPersona(); if (field.maskProfile) return field; if (benchState.maskReferenceText.trim()) return { ...field, maskProfile: benchState.profiles.maskReference, maskHistory: [{ text: benchState.maskReferenceText, profile: benchState.profiles.maskReference }] }; if (persona?.profile) return { ...field, maskProfile: persona.profile, maskHistory: [{ text: `${persona.name}. ${persona.voicePromise || ''} ${persona.fieldUse || ''}`, profile: persona.profile }] }; return field; }
+function readInputs() { benchState.protectedBaselineText = $('protectedBaselineInput')?.value || ''; benchState.maskReferenceText = $('maskReferenceInput')?.value || ''; benchState.messageDraftText = $('messageDraftInput')?.value || ''; benchState.protectedOutputText = $('protectedOutputInput')?.value || ''; benchState.selectedPersonaId = $('maskFieldSelect')?.value || benchState.selectedPersonaId; }
+function extractProfiles() { benchState.profiles.protectedBaseline = extractCadenceProfile(benchState.protectedBaselineText); benchState.profiles.maskReference = extractCadenceProfile(benchState.maskReferenceText); benchState.profiles.messageDraft = extractCadenceProfile(benchState.messageDraftText); benchState.profiles.protectedOutput = extractCadenceProfile(benchState.protectedOutputText); }
+function extractProtectedLiterals() { const text = `${benchState.messageDraftText}\n${benchState.protectedBaselineText}`; return [...new Set([...(text.match(/\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\/-]*\b/g) || []), ...(text.match(/\b\d{2,}(?:[\-/:.]\d+)*\b/g) || [])])].slice(0, 24); }
+function renderProfiles() { setText('protectedBaselineProfile', profileSummary(benchState.profiles.protectedBaseline)); setText('maskFieldProfile', profileSummary(activePersonaField().maskProfile || benchState.profiles.maskReference)); setText('messageDraftProfile', profileSummary(benchState.profiles.messageDraft)); }
 function metricCard(label, value) { return `<article class="metric"><div class="key">${escapeHtml(label)}</div><div class="val">${escapeHtml(fmt(value))}</div></article>`; }
-
-export function renderEscapeVector(vector = benchState.escapeVector) {
-  const s = vector?.scores || {};
-  setHtml('escapeVectorGrid', [
-    metricCard('Source Residual', s.sourceResidualRisk),
-    metricCard('Mask Fit', s.maskFit),
-    metricCard('Δsafe', s.maskDeltaSafe),
-    metricCard('Semantic Fidelity', s.semanticFidelity),
-    metricCard('Mask Linkability', s.maskLinkability),
-    metricCard('Mask Drift', s.maskDrift),
-    metricCard('Belonging Without Collapse', s.belongingWithoutCollapse),
-    metricCard('Ingestion Friction', s.ingestionFriction),
-    metricCard('Aperture Recapture', s.apertureRecaptureRisk)
-  ].join(''));
-}
-
-export function renderControllerDecision(decision = benchState.controllerDecision) {
-  const label = STATE_LABELS[decision?.state] || 'Controller waiting';
-  setText('controllerStatePill', `Controller // ${label.toLowerCase()}`);
-  setText('sealStatePill', decision?.state === 'seal' ? 'Seal // locally sealable' : 'Seal // unavailable');
-  const actions = (decision?.steeringActions || []).map((item) => `<li><strong>${escapeHtml(item.code)}</strong>: ${escapeHtml(item.rationale || '')}</li>`).join('');
-  const reasons = (decision?.reasons || []).map((item) => `<span class="chip">${escapeHtml(item)}</span>`).join(' ');
-  const warnings = (decision?.warnings || []).map((item) => `<span class="chip">${escapeHtml(item)}</span>`).join(' ');
-  setHtml('controllerPanel', `<div class="section-kicker">Controller / Steering Surface</div><h3 id="controllerHeading">${escapeHtml(label)}</h3><div id="controllerBody"><p><strong>Action:</strong> ${escapeHtml(decision?.action || 'waiting')}</p><p><strong>Confidence:</strong> ${escapeHtml(fmt(decision?.confidence))}</p><p><strong>Next instruction:</strong> ${escapeHtml(decision?.steeringPacket?.nextInstruction || 'Run analysis to surface steering instructions.')}</p><div><strong>Reasons:</strong> ${reasons || 'none'}</div><div><strong>Warnings:</strong> ${warnings || 'none'}</div><ul class="controller-action-list">${actions}</ul><p class="section-note">Locally sealable means bounded local convergence. It gives no identity verdict or platform guarantee.</p></div>`);
-}
-
-export function renderPersonaMemory(memory = benchState.personaMemory) {
-  if (!memory) { setText('personaMemoryBody', 'No local Persona memory loaded. The selected Persona is acting as a reference mask only.'); setText('maskMemorySummary', 'No local Persona memory loaded.'); return; }
-  const summary = summarizePersonaMemory(memory);
-  const html = `<div>Persona Memory: <strong>${escapeHtml(summary.status)}</strong></div><div>Persona label: ${escapeHtml(summary.label)}</div><div>Accepted outputs: ${escapeHtml(summary.acceptedCount)}</div><div>Current entries: ${escapeHtml(summary.entryCount)}</div><div>Centroid features: ${escapeHtml(summary.field.centroidFeatureCount)}</div><div>Linkability: ${escapeHtml(summary.field.linkabilityStatus)}</div><div>Ingestion mean: ${escapeHtml(fmt(summary.field.meanIngestionFriction))}</div><div>Warnings: ${summary.warnings.length ? summary.warnings.map((w) => `<span class="chip">${escapeHtml(w)}</span>`).join(' ') : 'none'}</div>`;
-  setHtml('personaMemoryBody', html);
-  setHtml('maskMemorySummary', html);
-}
-
-function renderIterationPreview() {
-  if (!benchState.iterationPreview.length) { setHtml('iterationPreviewBody', '<p class="section-note">No iteration rows yet.</p>'); return; }
-  const rows = benchState.iterationPreview.map((row) => `<tr><td>${row.t}</td><td>${fmt(row.source)}</td><td>${fmt(row.mask)}</td><td>${fmt(row.delta)}</td><td>${fmt(row.semantic)}</td><td>${fmt(row.ingestion)}</td><td>${escapeHtml(row.state)}</td><td>${escapeHtml(row.action)}</td></tr>`).join('');
-  setHtml('iterationPreviewBody', `<table class="iteration-preview-table"><thead><tr><th>t</th><th>Source</th><th>Mask</th><th>Δsafe</th><th>Semantic</th><th>Ingestion</th><th>State</th><th>Action</th></tr></thead><tbody>${rows}</tbody></table>`);
-}
-
-function updateAcceptState() {
-  const button = $('acceptOutputBtn');
-  const warning = $('acceptWarning');
-  if (!button) return;
-  const state = benchState.controllerDecision?.state;
-  const allowed = Boolean(benchState.protectedOutputText.trim() && benchState.escapeVector && benchState.controllerDecision && ['seal', 'continue'].includes(state));
-  button.disabled = !allowed;
-  if (warning) { warning.hidden = allowed || !state; warning.textContent = state && !allowed ? 'Accept is paused because the controller is asking for restore or hold. Edit the output or analyze again before accepting into Persona memory.' : ''; }
-}
-
-function pushIterationPreview() {
-  const v = benchState.escapeVector; const d = benchState.controllerDecision;
-  if (!v || !d) return;
-  benchState.iterationPreview.push({ t: benchState.iterationPreview.length, source: v.scores?.sourceResidualRisk, mask: v.scores?.maskFit, delta: v.scores?.maskDeltaSafe, semantic: v.scores?.semanticFidelity, ingestion: v.scores?.ingestionFriction, state: d.state, action: d.action });
-  renderIterationPreview();
-}
-
-export function analyzeProtectedOutput() {
-  readInputs(); extractProfiles(); ensurePersonaMemory();
-  const field = activePersonaField();
-  const protectedLiterals = extractProtectedLiterals();
-  benchState.ingestionAudit = buildIngestionFrictionAudit({ text: benchState.protectedOutputText, protectedLiterals, canonicalTokens: CANONICAL_TOKENS });
-  benchState.escapeVector = buildEscapeVector({
-    protectedBaselineText: benchState.protectedBaselineText,
-    maskText: benchState.maskReferenceText || selectedPersona()?.voicePromise || selectedPersona()?.blurb || '',
-    maskProfile: field.maskProfile || benchState.profiles.maskReference,
-    maskHistory: field.maskHistory || [],
-    draftText: benchState.messageDraftText,
-    outputText: benchState.protectedOutputText,
-    outputProfile: benchState.profiles.protectedOutput,
-    protectedLiterals,
-    ingestionAudit: benchState.ingestionAudit,
-    options: { mode: DEFAULT_MODE, targetContext: 'protected masking cockpit', canonicalTokens: CANONICAL_TOKENS, thresholds: { minWords: 5 } }
-  });
-  benchState.controllerDecision = buildEscapeControllerDecision({ vector: benchState.escapeVector, mode: DEFAULT_MODE, operatorIntent: { priority: 'source-reduction', targetContext: 'protected masking cockpit' } });
-  renderProfiles(); renderEscapeVector(); renderControllerDecision(); renderPersonaMemory(); pushIterationPreview(); updateAcceptState();
-  return { vector: benchState.escapeVector, decision: benchState.controllerDecision };
-}
-
-export function generateMaskedOutput() {
-  readInputs(); extractProfiles(); ensurePersonaMemory();
-  const draft = benchState.messageDraftText; const field = activePersonaField(); const persona = selectedPersona();
-  if (!draft.trim()) return '';
-  let candidate = draft;
-  try {
-    const transfer = buildCadenceTransfer(draft, field.maskProfile ? { mode: 'persona', profile: field.maskProfile, personaId: field.personaId, label: field.label, strength: persona?.strength || 0.9, mod: persona?.mod } : { mode: 'native' });
-    candidate = transfer?.text || candidate;
-  } catch { candidate = draft; }
-  const output = $('protectedOutputInput'); if (output) output.value = candidate;
-  analyzeProtectedOutput(); return candidate;
-}
-
-export function acceptOutputIntoPersonaMemory() {
-  readInputs();
-  if (!benchState.protectedOutputText.trim()) return null;
-  if (!benchState.escapeVector || !benchState.controllerDecision) analyzeProtectedOutput();
-  if (!['seal', 'continue'].includes(benchState.controllerDecision?.state)) { updateAcceptState(); return null; }
-  benchState.personaMemory = appendAcceptedOutput(ensurePersonaMemory(), { text: benchState.protectedOutputText, profile: benchState.profiles.protectedOutput, escapeVector: benchState.escapeVector, ingestionAudit: benchState.ingestionAudit, controllerDecision: benchState.controllerDecision, acceptance: { acceptedBy: 'operator', reason: benchState.controllerDecision.state, stateAtAcceptance: benchState.controllerDecision.state } });
-  renderPersonaMemory(); updateAcceptState(); return benchState.personaMemory;
-}
-
-export function resetBench() {
-  for (const id of ['protectedBaselineInput', 'maskReferenceInput', 'messageDraftInput', 'protectedOutputInput']) { const el = $(id); if (el) el.value = ''; }
-  benchState.protectedBaselineText = ''; benchState.maskReferenceText = ''; benchState.messageDraftText = ''; benchState.protectedOutputText = '';
-  benchState.profiles = initialProfiles(); benchState.ingestionAudit = null; benchState.escapeVector = null; benchState.controllerDecision = null; benchState.iterationPreview = [];
-  renderProfiles(); renderEscapeVector({ scores: {} }); renderControllerDecision(null); renderPersonaMemory(benchState.personaMemory); renderIterationPreview(); updateAcceptState();
-}
-
-function populatePersonas() {
-  const select = $('maskFieldSelect');
-  if (!select) return;
-  select.innerHTML = personaLibrary().map((persona) => `<option value="${escapeHtml(persona.id)}">${escapeHtml(persona.name)} — ${escapeHtml(persona.family || 'Persona')}</option>`).join('');
-  if (!benchState.selectedPersonaId && select.options.length) benchState.selectedPersonaId = select.options[0].value;
-  select.value = benchState.selectedPersonaId;
-}
-
-export function initAdversarialBench(documentRef = document) {
-  docRef = documentRef;
-  if (!docRef || initializedFor === documentRef) return benchState;
-  initializedFor = documentRef;
-  populatePersonas(); ensurePersonaMemory(); renderProfiles(); renderEscapeVector({ scores: {} }); renderControllerDecision(null); renderPersonaMemory(); renderIterationPreview(); updateAcceptState();
-  $('generateMaskedOutputBtn')?.addEventListener('click', generateMaskedOutput);
-  $('analyzeOutputBtn')?.addEventListener('click', analyzeProtectedOutput);
-  $('acceptOutputBtn')?.addEventListener('click', acceptOutputIntoPersonaMemory);
-  $('resetBenchBtn')?.addEventListener('click', resetBench);
-  $('maskFieldSelect')?.addEventListener('change', () => { readInputs(); benchState.personaMemory = createMemoryForPersona(selectedPersona()); renderPersonaMemory(); renderProfiles(); });
-  for (const id of ['protectedBaselineInput', 'maskReferenceInput', 'messageDraftInput', 'protectedOutputInput']) $(id)?.addEventListener('input', () => { readInputs(); extractProfiles(); renderProfiles(); });
-  return benchState;
-}
-
+export function renderEscapeVector(vector = benchState.escapeVector) { const s = vector?.scores || {}; setHtml('escapeVectorGrid', [metricCard('Source Residual', s.sourceResidualRisk), metricCard('Mask Fit', s.maskFit), metricCard('Δsafe', s.maskDeltaSafe), metricCard('Semantic Fidelity', s.semanticFidelity), metricCard('Mask Linkability', s.maskLinkability), metricCard('Mask Drift', s.maskDrift), metricCard('Belonging Without Collapse', s.belongingWithoutCollapse), metricCard('Ingestion Friction', s.ingestionFriction), metricCard('Aperture Recapture', s.apertureRecaptureRisk)].join('')); }
+export function renderControllerDecision(decision = benchState.controllerDecision) { const label = STATE_LABELS[decision?.state] || 'Controller waiting'; setText('controllerStatePill', `Controller // ${label.toLowerCase()}`); setText('sealStatePill', decision?.state === 'seal' ? 'Seal // locally sealable' : 'Seal // unavailable'); const actions = (decision?.steeringActions || []).map((item) => `<li><strong>${escapeHtml(item.code)}</strong>: ${escapeHtml(item.rationale || '')}</li>`).join(''); const reasons = (decision?.reasons || []).map((item) => `<span class="chip">${escapeHtml(item)}</span>`).join(' '); const warnings = (decision?.warnings || []).map((item) => `<span class="chip">${escapeHtml(item)}</span>`).join(' '); setHtml('controllerPanel', `<div class="section-kicker">Controller / Steering Surface</div><h3 id="controllerHeading">${escapeHtml(label)}</h3><div id="controllerBody"><p><strong>Action:</strong> ${escapeHtml(decision?.action || 'waiting')}</p><p><strong>Confidence:</strong> ${escapeHtml(fmt(decision?.confidence))}</p><p><strong>Next instruction:</strong> ${escapeHtml(decision?.steeringPacket?.nextInstruction || 'Run analysis to surface steering instructions.')}</p><div><strong>Reasons:</strong> ${reasons || 'none'}</div><div><strong>Warnings:</strong> ${warnings || 'none'}</div><ul class="controller-action-list">${actions}</ul><p class="section-note">Locally sealable means bounded local convergence. It gives no identity verdict or platform guarantee.</p></div>`); }
+export function renderPersonaMemory(memory = benchState.personaMemory) { if (!memory) { setText('personaMemoryBody', 'No local Persona memory loaded. The selected Persona is acting as a reference mask only.'); setText('maskMemorySummary', 'No local Persona memory loaded.'); return; } const summary = summarizePersonaMemory(memory); const html = `<div>Persona Memory: <strong>${escapeHtml(summary.status)}</strong></div><div>Persona label: ${escapeHtml(summary.label)}</div><div>Accepted outputs: ${escapeHtml(summary.acceptedCount)}</div><div>Current entries: ${escapeHtml(summary.entryCount)}</div><div>Centroid features: ${escapeHtml(summary.field.centroidFeatureCount)}</div><div>Linkability: ${escapeHtml(summary.field.linkabilityStatus)}</div><div>Ingestion mean: ${escapeHtml(fmt(summary.field.meanIngestionFriction))}</div><div>Warnings: ${summary.warnings.length ? summary.warnings.map((w) => `<span class="chip">${escapeHtml(w)}</span>`).join(' ') : 'none'}</div>`; setHtml('personaMemoryBody', html); setHtml('maskMemorySummary', html); }
+function ledgerRowToPreview(row) { return { t: row.t, source: row.scores.sourceResidualRisk, mask: row.scores.maskFit, delta: row.scores.maskDeltaSafe, semantic: row.scores.semanticFidelity, ingestion: row.scores.ingestionFriction, state: row.controller.state, action: row.controller.action }; }
+function renderLedgerSummary() { const s = summarizeIterationLedger(benchState.iterationLedger); setHtml('ledgerSummaryBody', `<div>Ledger rows: ${escapeHtml(s.rowCount)}</div><div>Accepted rows: ${escapeHtml(s.acceptedCount)}</div><div>Latest state: ${escapeHtml(s.latestState)}</div><div>Latest output hash: ${escapeHtml(s.latestOutputHash || 'none')}</div><div>Latest accepted iteration ID: ${escapeHtml(s.latestAcceptedIterationId || 'none')}</div><div>Text export: ${escapeHtml(s.textExport)}</div>`); }
+function renderIterationPreview() { const rowsSource = benchState.iterationLedger?.rows?.length ? benchState.iterationLedger.rows.map(ledgerRowToPreview) : benchState.iterationPreview; if (!rowsSource.length) { setHtml('iterationPreviewBody', '<p class="section-note">No iteration rows yet.</p>'); renderLedgerSummary(); return; } const rows = rowsSource.map((row) => `<tr><td>${row.t}</td><td>${fmt(row.source)}</td><td>${fmt(row.mask)}</td><td>${fmt(row.delta)}</td><td>${fmt(row.semantic)}</td><td>${fmt(row.ingestion)}</td><td>${escapeHtml(row.state)}</td><td>${escapeHtml(row.action)}</td></tr>`).join(''); setHtml('iterationPreviewBody', `<table class="iteration-preview-table"><thead><tr><th>t</th><th>Source</th><th>Mask</th><th>Δsafe</th><th>Semantic</th><th>Ingestion</th><th>State</th><th>Action</th></tr></thead><tbody>${rows}</tbody></table>`); renderLedgerSummary(); }
+function updateAcceptState() { const button = $('acceptOutputBtn'); const warning = $('acceptWarning'); if (!button) return; const state = benchState.controllerDecision?.state; const allowed = Boolean(benchState.protectedOutputText.trim() && benchState.escapeVector && benchState.controllerDecision && ['seal', 'continue'].includes(state)); button.disabled = !allowed; if (warning) { warning.hidden = allowed || !state; warning.textContent = state && !allowed ? 'Accept is paused because the controller is asking for restore or hold. Edit the output or analyze again before accepting into Persona memory.' : ''; } }
+function appendLedgerRow(field) { const personaSummary = summarizePersonaMemory(benchState.personaMemory); benchState.iterationLedger = appendIterationRow(benchState.iterationLedger, { protectedBaselineText: benchState.protectedBaselineText, maskReferenceText: benchState.maskReferenceText, messageDraftText: benchState.messageDraftText, protectedOutputText: benchState.protectedOutputText, personaField: field, personaSummary, escapeVector: benchState.escapeVector, ingestionAudit: benchState.ingestionAudit, controllerDecision: benchState.controllerDecision, includeTexts: false }); const latestRow = benchState.iterationLedger.rows[benchState.iterationLedger.rows.length - 1]; if (latestRow?.id) benchState.iterationTextCache[latestRow.id] = { protectedBaseline: benchState.protectedBaselineText, maskReference: benchState.maskReferenceText, messageDraft: benchState.messageDraftText, protectedOutput: benchState.protectedOutputText }; benchState.iterationPreview = benchState.iterationLedger.rows.map(ledgerRowToPreview); renderIterationPreview(); }
+export function analyzeProtectedOutput() { readInputs(); extractProfiles(); ensurePersonaMemory(); const field = activePersonaField(); const protectedLiterals = extractProtectedLiterals(); benchState.ingestionAudit = buildIngestionFrictionAudit({ text: benchState.protectedOutputText, protectedLiterals, canonicalTokens: CANONICAL_TOKENS }); benchState.escapeVector = buildEscapeVector({ protectedBaselineText: benchState.protectedBaselineText, maskText: benchState.maskReferenceText || selectedPersona()?.voicePromise || selectedPersona()?.blurb || '', maskProfile: field.maskProfile || benchState.profiles.maskReference, maskHistory: field.maskHistory || [], draftText: benchState.messageDraftText, outputText: benchState.protectedOutputText, outputProfile: benchState.profiles.protectedOutput, protectedLiterals, ingestionAudit: benchState.ingestionAudit, options: { mode: DEFAULT_MODE, targetContext: 'protected masking cockpit', canonicalTokens: CANONICAL_TOKENS, thresholds: { minWords: 5 } } }); benchState.controllerDecision = buildEscapeControllerDecision({ vector: benchState.escapeVector, mode: DEFAULT_MODE, operatorIntent: { priority: 'source-reduction', targetContext: 'protected masking cockpit' } }); renderProfiles(); renderEscapeVector(); renderControllerDecision(); renderPersonaMemory(); appendLedgerRow(field); updateAcceptState(); return { vector: benchState.escapeVector, decision: benchState.controllerDecision, ledger: benchState.iterationLedger }; }
+export function generateMaskedOutput() { readInputs(); extractProfiles(); ensurePersonaMemory(); const draft = benchState.messageDraftText; const field = activePersonaField(); const persona = selectedPersona(); if (!draft.trim()) return ''; let candidate = draft; try { const transfer = buildCadenceTransfer(draft, field.maskProfile ? { mode: 'persona', profile: field.maskProfile, personaId: field.personaId, label: field.label, strength: persona?.strength || 0.9, mod: persona?.mod } : { mode: 'native' }); candidate = transfer?.text || candidate; } catch { candidate = draft; } const output = $('protectedOutputInput'); if (output) output.value = candidate; analyzeProtectedOutput(); return candidate; }
+export function acceptOutputIntoPersonaMemory() { readInputs(); if (!benchState.protectedOutputText.trim()) return null; if (!benchState.escapeVector || !benchState.controllerDecision) analyzeProtectedOutput(); if (!['seal', 'continue'].includes(benchState.controllerDecision?.state)) { updateAcceptState(); return null; } benchState.personaMemory = appendAcceptedOutput(ensurePersonaMemory(), { text: benchState.protectedOutputText, profile: benchState.profiles.protectedOutput, escapeVector: benchState.escapeVector, ingestionAudit: benchState.ingestionAudit, controllerDecision: benchState.controllerDecision, acceptance: { acceptedBy: 'operator', reason: benchState.controllerDecision.state, stateAtAcceptance: benchState.controllerDecision.state } }); const latestEntry = benchState.personaMemory.memory.entries[benchState.personaMemory.memory.entries.length - 1]; const latestRow = benchState.iterationLedger.rows[benchState.iterationLedger.rows.length - 1]; if (latestRow) benchState.iterationLedger = linkAcceptedOutputToIteration(benchState.iterationLedger, { iterationId: latestRow.id, personaMemoryEntryId: latestEntry?.id || null }); benchState.iterationPreview = benchState.iterationLedger.rows.map(ledgerRowToPreview); renderPersonaMemory(); renderIterationPreview(); updateAcceptState(); return benchState.personaMemory; }
+function ledgerForExplicitTextExport() { return { ...benchState.iterationLedger, rows: benchState.iterationLedger.rows.map((row) => { const cached = benchState.iterationTextCache[row.id]; if (!cached) return row; return { ...row, texts: { protectedBaseline: cached.protectedBaseline, maskReference: cached.maskReference, messageDraft: cached.messageDraft, protectedOutput: cached.protectedOutput }, textIncluded: { protectedBaseline: true, maskReference: true, messageDraft: true, protectedOutput: true } }; }) }; }
+export function exportLedgerJson() { const includeTexts = Boolean($('includeLedgerTextsToggle')?.checked); const ledger = includeTexts ? ledgerForExplicitTextExport() : benchState.iterationLedger; const json = exportIterationLedgerJson(ledger, { includeTexts, pretty: true }); const output = $('ledgerExportOutput'); if (output) output.value = json; renderLedgerSummary(); return json; }
+export function resetBench() { for (const id of ['protectedBaselineInput', 'maskReferenceInput', 'messageDraftInput', 'protectedOutputInput']) { const el = $(id); if (el) el.value = ''; } benchState.protectedBaselineText = ''; benchState.maskReferenceText = ''; benchState.messageDraftText = ''; benchState.protectedOutputText = ''; benchState.profiles = initialProfiles(); benchState.ingestionAudit = null; benchState.escapeVector = null; benchState.controllerDecision = null; benchState.iterationPreview = []; benchState.iterationTextCache = {}; benchState.iterationLedger = createIterationLedger({ context: { benchVersion: 'phase-5', mode: DEFAULT_MODE, selectedPersonaId: benchState.selectedPersonaId, selectedPersonaLabel: selectedPersona()?.name || '' } }); renderProfiles(); renderEscapeVector({ scores: {} }); renderControllerDecision(null); renderPersonaMemory(benchState.personaMemory); renderIterationPreview(); const ledgerOutput = $('ledgerExportOutput'); if (ledgerOutput) ledgerOutput.value = ''; updateAcceptState(); }
+function populatePersonas() { const select = $('maskFieldSelect'); if (!select) return; select.innerHTML = personaLibrary().map((persona) => `<option value="${escapeHtml(persona.id)}">${escapeHtml(persona.name)} — ${escapeHtml(persona.family || 'Persona')}</option>`).join(''); if (!benchState.selectedPersonaId && select.options.length) benchState.selectedPersonaId = select.options[0].value; select.value = benchState.selectedPersonaId; }
+export function initAdversarialBench(documentRef = document) { docRef = documentRef; if (!docRef || initializedFor === documentRef) return benchState; initializedFor = documentRef; populatePersonas(); ensurePersonaMemory(); benchState.iterationLedger = createIterationLedger({ context: { benchVersion: 'phase-5', mode: DEFAULT_MODE, selectedPersonaId: benchState.selectedPersonaId, selectedPersonaLabel: selectedPersona()?.name || '' } }); benchState.iterationTextCache = {}; renderProfiles(); renderEscapeVector({ scores: {} }); renderControllerDecision(null); renderPersonaMemory(); renderIterationPreview(); updateAcceptState(); $('generateMaskedOutputBtn')?.addEventListener('click', generateMaskedOutput); $('analyzeOutputBtn')?.addEventListener('click', analyzeProtectedOutput); $('acceptOutputBtn')?.addEventListener('click', acceptOutputIntoPersonaMemory); $('resetBenchBtn')?.addEventListener('click', resetBench); $('exportLedgerJsonBtn')?.addEventListener('click', exportLedgerJson); $('maskFieldSelect')?.addEventListener('change', () => { readInputs(); benchState.personaMemory = createMemoryForPersona(selectedPersona()); benchState.iterationLedger = createIterationLedger({ context: { benchVersion: 'phase-5', mode: DEFAULT_MODE, selectedPersonaId: benchState.selectedPersonaId, selectedPersonaLabel: selectedPersona()?.name || '' } }); benchState.iterationTextCache = {}; renderPersonaMemory(); renderProfiles(); renderIterationPreview(); }); for (const id of ['protectedBaselineInput', 'maskReferenceInput', 'messageDraftInput', 'protectedOutputInput']) $(id)?.addEventListener('input', () => { readInputs(); extractProfiles(); renderProfiles(); }); return benchState; }
 if (typeof document !== 'undefined' && document.body?.dataset?.pageKind === 'adversarial-bench') initAdversarialBench(document);
