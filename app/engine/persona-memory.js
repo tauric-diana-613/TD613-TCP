@@ -1,7 +1,6 @@
 import { compareTexts, extractCadenceProfile } from './stylometry.js';
 import { analyzeKhonaLitPoIntegrity } from './ingestion-friction.js';
 
-const TOKEN_RE = /[\p{L}\p{N}'’-]+/gu;
 const DEFAULT_MAX_ENTRIES = 24;
 const DEFAULT_PROHIBITED_USES = Object.freeze([
   'impersonation',
@@ -339,7 +338,7 @@ export function derivePersonaField(memory = {}) {
     personaId: normalized.personaId,
     label: normalized.label,
     displayName: normalized.displayName,
-    maskProfile: normalized.field.centroid,
+    maskProfile: normalized.field.centroid?.values ?? null,
     maskHistory: normalized.field.history,
     maskField: { centroid: normalized.field.centroid, variance: normalized.field.variance, tolerance: normalized.field.tolerance, ritual: normalized.field.ritual, ingestion: normalized.field.ingestion, linkability: normalized.field.linkability, ontology: normalized.field.ontology },
     diagnostics: normalized.diagnostics
