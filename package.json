@@ -9,7 +9,7 @@
     "serve": "node scripts/serve-td613-localhost.mjs 6130",
     "serve:static": "python3 -m http.server 8000",
     "test": "node tests/chamber-smoke.test.mjs && npm run test:stylometry && node tests/td613-aperture.test.mjs && node tests/formulas.test.mjs && node tests/harbor.test.mjs && npm run test:safe-harbor",
-    "test:stylometry": "node tests/stylometry.test.mjs && node tests/benchmark.test.mjs && node tests/browser-parity.test.mjs && node tests/runtime-retention.test.mjs && node tests/retrieval-lane.test.mjs && node tests/swap-cadence-matrix.test.mjs && node tests/deck-randomizer.test.mjs && node tests/deck-browser.test.mjs && node tests/persona-gallery.test.mjs && node tests/au-forged-ontology.test.mjs",
+    "test:stylometry": "node tests/stylometry.test.mjs && node tests/escape-vector.test.mjs && node tests/benchmark.test.mjs && node tests/browser-parity.test.mjs && node tests/runtime-retention.test.mjs && node tests/retrieval-lane.test.mjs && node tests/swap-cadence-matrix.test.mjs && node tests/deck-randomizer.test.mjs && node tests/deck-browser.test.mjs && node tests/persona-gallery.test.mjs && node tests/au-forged-ontology.test.mjs",
     "test:safe-harbor": "node tests/safe-harbor-shi.test.mjs && node tests/safe-harbor-batch-seal.test.mjs && node tests/station-pages.test.mjs && node tests/operator-receipt.test.mjs",
     "test:held-out": "node tests/heldout-eval.test.mjs",
     "test:retrieval": "node tests/donor-retrieval.test.mjs",
