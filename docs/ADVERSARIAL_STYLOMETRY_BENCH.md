@@ -311,6 +311,10 @@ Implementation phases:
 
 Later phases should land as small, reviewable changes. The architecture should become testable one layer at a time rather than arriving as a single opaque rewrite.
 
+### Phase 1 status
+
+`app/engine/escape-vector.js` implements the initial Escape Vector scoring surface. It computes source residual risk, mask fit, escape delta, semantic fidelity, preliminary linkability/drift, provisional Belonging Without Collapse, and pass-through ingestion/Aperture fields. It does not implement the controller, Persona memory mutation, UI bench, or ingestion-friction sensor.
+
 ---
 
 ## Phase 0 non-goals
