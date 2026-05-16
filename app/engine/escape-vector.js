@@ -1,3 +1,4 @@
+import { buildIngestionFrictionAudit } from './ingestion-friction.js';
 import {
   buildSemanticAuditBundle,
   compareTexts,
@@ -143,6 +144,25 @@ function literalWarningsAndScore(input) {
     { value: anchorScore, weight: 0.40 }
   ]);
   return { guardScore, warnings };
+}
+
+function hasSuppliedAudit(audit) {
+  return Boolean(audit && typeof audit === 'object' && Object.keys(audit).length > 0);
+}
+
+function resolveIngestionAudit(input) {
+  if (hasSuppliedAudit(input.ingestionAudit)) {
+    return { audit: input.ingestionAudit, status: 'provided' };
+  }
+  if (!input.outputText) {
+    return { audit: null, status: 'unavailable' };
+  }
+  const audit = buildIngestionFrictionAudit({
+    text: input.outputText,
+    protectedLiterals: input.protectedLiterals,
+    canonicalTokens: input.options?.canonicalTokens
+  });
+  return { audit, status: 'measured' };
 }
 
 export function normalizeEscapeVectorInput(input = {}) {
@@ -375,28 +395,30 @@ export function deriveClaimLadder(vector = {}) {
 
 export function buildEscapeVector(input = {}) {
   const normalized = normalizeEscapeVectorInput(input);
-  const sufficiency = sampleSufficiency(normalized);
-  const source = computeSourceResidualRisk(normalized);
-  const mask = computeMaskFit(normalized);
+  const ingestionResolution = resolveIngestionAudit(normalized);
+  const active = { ...normalized, ingestionAudit: ingestionResolution.audit || undefined };
+  const sufficiency = sampleSufficiency(active);
+  const source = computeSourceResidualRisk(active);
+  const mask = computeMaskFit(active);
   const delta = computeMaskDelta({ sourceRisk: source.views, maskFit: mask.views });
-  const semantic = computeSemanticFidelity(normalized);
-  const link = computeMaskLinkability(normalized);
-  const drift = computeMaskDrift(normalized);
-  const bwc = computeBelongingWithoutCollapse({ ...normalized, sourceResidualRisk: source.envelope, semanticFidelity: semantic.score, maskLinkability: link.score });
-  const ingestionFriction = Number.isFinite(normalized.ingestionAudit?.ingestionFriction) ? clip(normalized.ingestionAudit.ingestionFriction) : null;
-  const apertureRecaptureRisk = Number.isFinite(normalized.apertureAudit?.recaptureRisk) ? clip(normalized.apertureAudit.recaptureRisk) : null;
-  const warnings = uniqueWarnings(sufficiency.warnings, source.warnings, mask.warnings, semantic.warnings, link.warnings, drift.warnings, bwc.warnings, normalized.ingestionAudit?.warnings || [], normalized.apertureAudit?.warnings || []);
+  const semantic = computeSemanticFidelity(active);
+  const link = computeMaskLinkability(active);
+  const drift = computeMaskDrift(active);
+  const bwc = computeBelongingWithoutCollapse({ ...active, sourceResidualRisk: source.envelope, semanticFidelity: semantic.score, maskLinkability: link.score });
+  const ingestionFriction = Number.isFinite(active.ingestionAudit?.ingestionFriction) ? clip(active.ingestionAudit.ingestionFriction) : null;
+  const apertureRecaptureRisk = Number.isFinite(active.apertureAudit?.recaptureRisk) ? clip(active.apertureAudit.recaptureRisk) : null;
+  const warnings = uniqueWarnings(sufficiency.warnings, source.warnings, mask.warnings, semantic.warnings, link.warnings, drift.warnings, bwc.warnings, active.ingestionAudit?.warnings || [], active.apertureAudit?.warnings || []);
   if (delta.safe !== null && Object.values(delta).filter(Number.isFinite).length === 1) warnings.push('safe-delta-limited-to-raw');
-  if (source.envelope !== null && source.envelope >= normalized.thresholds.strongSourceRisk) warnings.push('source-residual-high');
-  if (mask.raw !== null && countWords(normalized.maskText) < normalized.thresholds.minWords) warnings.push('mask-underfit');
+  if (source.envelope !== null && source.envelope >= active.thresholds.strongSourceRisk) warnings.push('source-residual-high');
+  if (mask.raw !== null && countWords(active.maskText) < active.thresholds.minWords) warnings.push('mask-underfit');
   if (semantic.score === null) warnings.push('semantic-fidelity-unavailable');
-  if (Number.isFinite(semantic.score) && semantic.score < normalized.thresholds.semanticFidelityFloor) warnings.push('semantic-fidelity-low');
-  if (ingestionFriction === null) warnings.push('ingestion-friction-pending-phase-2');
+  if (Number.isFinite(semantic.score) && semantic.score < active.thresholds.semanticFidelityFloor) warnings.push('semantic-fidelity-low');
+  if (ingestionFriction === null) warnings.push('ingestion-friction-unavailable');
   if (apertureRecaptureRisk === null) warnings.push('aperture-audit-unavailable');
   const vector = {
-    version: 'phase-1',
-    mode: normalized.mode,
-    thresholds: { ...normalized.thresholds },
+    version: 'phase-2',
+    mode: active.mode,
+    thresholds: { ...active.thresholds },
     scores: {
       sourceResidualRisk: round(source.envelope),
       maskFit: round(mask.raw),
@@ -419,12 +441,13 @@ export function buildEscapeVector(input = {}) {
       maskDelta: { raw: round(delta.raw), normalized: round(delta.normalized), visible: round(delta.visible), semantic: round(delta.semantic), safe: round(delta.safe) },
       viewsUsed: ['raw', 'normalized', 'visible'].filter((view) => Number.isFinite(source.views[view]) || Number.isFinite(mask.views[view]))
     },
+    ingestionAudit: active.ingestionAudit || null,
     diagnostics: {
       sampleSufficiency: sufficiency.status,
       wordCounts: sufficiency.counts,
       semanticStatus: semantic.status,
       historyStatus: link.status,
-      ingestionStatus: ingestionFriction === null ? 'pending-phase-2' : 'provided',
+      ingestionStatus: ingestionResolution.status,
       apertureStatus: apertureRecaptureRisk === null ? 'unavailable' : 'provided',
       bwcStatus: bwc.status,
       warnings: uniqueWarnings(warnings)
