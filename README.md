@@ -6,6 +6,8 @@ The project therefore treats stylometry as bounded signal modeling rather than a
 
 The live browser surface is playful by design, but the model is not loose. TCP is thresholded, auditable, deterministic, and explicit about where measurement ends and policy begins.
 
+For the Phase 0 architecture admission of TCP's adversarial stylometry bench, see [docs/ADVERSARIAL_STYLOMETRY_BENCH.md](docs/ADVERSARIAL_STYLOMETRY_BENCH.md). That document defines the closed-loop Escape Vector, Personas as living exposure membranes, Hostile Pipeline Compression, Belonging Without Collapse, Ingestion Friction, the iteration ledger / flight recorder distinction, and the claim ladder without changing runtime behavior.
+
 ## Registered field language
 
 TCP's glyph system is operational, not decorative. The browser uses a registered field language to keep surface role, state transition, and retrieval truth aligned.
