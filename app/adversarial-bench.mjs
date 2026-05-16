@@ -1,2 +1,6 @@
 const ready = true;
-export { ready };
+const benchState = { iterationPreview: [] };
+function initAdversarialBench(documentRef = document) {
+  return { documentRef, benchState };
+}
+export { benchState, initAdversarialBench, ready };
