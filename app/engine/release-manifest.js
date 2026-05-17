@@ -66,7 +66,7 @@ const FORBIDDEN_PATTERNS = Object.freeze([
   { id: 'fool platform', pattern: /\bfool(?:s|ing)? platform\b/i }
 ]);
 
-const SAFE_CONTEXT_RE = /\b(no .*claims?|no .*verdicts?|no .*guarantee|does not claim|does not prove|does not issue|does not determine|do not claim|do not prove|do not issue|do not determine|must not claim|must not prove|must not issue|must not determine|cannot claim|cannot prove|cannot issue|cannot determine|not claim|not prove|not issue|not determine|without claiming|without proving|refuse[sd]?|refuses|avoid[sd]? claiming|unsupported|prohibited|forbidden|boundary|boundaries|limitation|limitations|warning|warnings|fixture|fixtures|test|tests|calibration|detector catches|overclaim detector|forbidden release language)\b/i;
+const SAFE_CONTEXT_RE = /\b(no .*claims?|no .*verdicts?|no .*guarantee|does not claim|does not support claims? of|does not prove|does not issue|does not determine|do not claim|do not support claims? of|do not prove|do not issue|do not determine|must not claim|must not support claims? of|must not prove|must not issue|must not determine|cannot claim|cannot support claims? of|cannot prove|cannot issue|cannot determine|not claim|not prove|not issue|not determine|without claiming|without proving|refuse[sd]?|refuses|avoid[sd]? claiming|unsupported|prohibited|forbidden|boundary|boundaries|limitation|limitations|warning|warnings|fixture|fixtures|test|tests|calibration|detector catches|overclaim detector|forbidden release language)\b/i;
 
 function normalizeText(value = '') {
   return String(value || '');
