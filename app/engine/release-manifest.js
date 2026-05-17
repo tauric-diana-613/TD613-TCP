@@ -66,7 +66,7 @@ const FORBIDDEN_PATTERNS = Object.freeze([
   { id: 'fool platform', pattern: /\bfool(?:s|ing)? platform\b/i }
 ]);
 
-const SAFE_CONTEXT_RE = /\b(no|not|never|without|refuse[sd]?|refuses|avoid|avoids|unsupported|prohibited|forbidden|cannot|does not|do not|must not|boundary|boundaries|limitation|limitations|warning|warnings|cannot claim|does not claim|not claim|not prove|not issue|not determine|no .*claims?|no .*verdicts?|no .*guarantee)\b/i;
+const SAFE_CONTEXT_RE = /\b(no|not|never|without|refuse[sd]?|refuses|avoid|avoids|unsupported|prohibited|forbidden|cannot|does not|do not|must not|boundary|boundaries|limitation|limitations|warning|warnings|cannot claim|does not claim|not claim|not prove|not issue|not determine|no .*claims?|no .*verdicts?|no .*guarantee|fixture|fixtures|test|tests|calibration|detector catches|overclaim detector|forbidden release language)\b/i;
 
 function normalizeText(value = '') {
   return String(value || '');
@@ -106,7 +106,8 @@ export function buildReleaseManifest(input = {}) {
     'docs/RELEASE_NOTES_PHASE_0_10.md',
     'docs/WHISTLEBLOWER_POLICY_POSTURE.md',
     'docs/ANTI_SELECTIVE_ADMISSIBILITY.md',
-    'docs/RUPTURE_AND_TONI_CLAUSE.md'
+    'docs/RUPTURE_AND_TONI_CLAUSE.md',
+    'docs/PHASE_10_RELEASE_STATUS.md'
   ];
   const tests = input.tests || [
     'tests/release-manifest.test.mjs',
