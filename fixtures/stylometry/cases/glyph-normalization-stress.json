@@ -1,0 +1,31 @@
+{
+  "id": "glyph-normalization-stress",
+  "title": "Glyph Normalization Stress",
+  "fixtureClass": "glyph-normalization",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "Glyph-bearing text is routed through the bench to verify that Unicode load, normalization delta, and glyph integrity remain visible instead of being flattened into decorative noise.",
+  "inputs": {
+    "protectedBaseline": "The archive speaks plainly when the glyphs are preserved: 𝌋 keeps the writer lane open, ⟐ marks closure, and the packet refuses to become ordinary typography.",
+    "maskReference": "Preserve markers. Keep the note short. Report glyph condition. Do not overstate the result.",
+    "messageDraft": "Preserve 𝌋 and ⟐ inside EXHIBIT-613 while reporting whether the glyph surface survives local review.",
+    "protectedOutput": "Preserve 𝌋 and ⟐ in EXHIBIT-613. Report glyph condition. Keep the note short and local."
+  },
+  "protectedLiterals": ["EXHIBIT-613", "𝌋", "⟐"],
+  "persona": { "personaId": "persona-glyph-keeper", "label": "Glyph Keeper", "mode": "neutralize", "history": [] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 1.0 },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.25, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 1.0 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "continue" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 6 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true },
+    "ingestionAudit": { "ingestionFriction": { "min": 0.0, "max": 1.0 } }
+  },
+  "calibrationNotes": ["Glyph surfaces should be measured as ingestion behavior, not aesthetic garnish.", "The fixture expects visibility, not platform outcome claims."]
+}
