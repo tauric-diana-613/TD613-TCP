@@ -5,6 +5,7 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 ## Start here
 
 - [README](../README.md) — Top-level project entry for The Cadence Playground, TD613, and Hush placement.
+- [Documentation Index](INDEX.md) — This file; the map for Hush release docs and adjacent TD613 materials.
 - [Operator Guide](OPERATOR_GUIDE.md) — Practical workflow for using Hush without overstating its claims.
 - [Phase Map](PHASE_MAP.md) — Phase 0 through Phase 10 map of the Toy-to-Tool build.
 - [Known Limitations](KNOWN_LIMITATIONS.md) — Boundaries, uncertainty zones, and local-only limits.
