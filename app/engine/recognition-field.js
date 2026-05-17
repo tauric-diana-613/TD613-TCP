@@ -43,8 +43,9 @@ function shared(left = [], right = []) {
   return [...a].filter((item) => b.has(item));
 }
 
-function audienceWeight(size = 'private') {
-  return { private: 0.12, 'small-group': 0.28, 'semi-public': 0.62, public: 0.9, 'context-default': 0.36 }[size] ?? 0.36;
+function audienceWeight(size = '') {
+  const weights = { private: 0.12, 'small-group': 0.28, 'semi-public': 0.62, public: 0.9, 'context-default': 0.36 };
+  return Object.prototype.hasOwnProperty.call(weights, size) ? weights[size] : null;
 }
 
 function statusFor(scoreValue, labels = ['low', 'moderate', 'high']) {
@@ -95,7 +96,9 @@ export function scoreIndexability({ protectedOutputText = '', ingestionAudit = {
   const rareSurface = clamp(((protectedOutputText.match(/[#:_/]/g) || []).length / Math.max(1, protectedOutputText.length)) * 16);
   const glyphVisibility = clamp((score({ scores: { ingestionFriction: ingestionAudit.ingestionFriction } }, 'ingestionFriction') || ingestionAudit.ingestionFriction || 0) * 0.65 + ((protectedOutputText.match(/[^\u0000-\u007F]/g) || []).length / Math.max(1, protectedOutputText.length)) * 5 + rareSurface * 0.1);
   const personaHistory = clamp(((personaSummary.acceptedCount || personaSummary.entryCount || 0) / 8) * 0.75 + (personaSummary.field?.meanLinkability || 0) * 0.25);
-  const publicness = contextProfile.publicness ?? audienceWeight(options.audienceSize || contextProfile.audienceSize || 'context-default');
+  const explicitAudience = options.audienceSize && options.audienceSize !== 'context-default' ? audienceWeight(options.audienceSize) : null;
+  const profileAudience = contextProfile.audienceSize && contextProfile.audienceSize !== 'context-default' ? audienceWeight(contextProfile.audienceSize) : null;
+  const publicness = explicitAudience ?? contextProfile.publicness ?? profileAudience ?? 0.36;
   const topicSpecificity = clamp((new Set(outputTerms).size / Math.max(1, outputTerms.length)) * 0.35 + (contextProfile.topicExposure?.score || 0) * 0.65);
   const value = clamp(entityDensity * 0.22 + topicSpecificity * 0.22 + glyphVisibility * 0.18 + personaHistory * 0.18 + publicness * 0.20);
   return { score: round(value), components: { entityDensity: round(entityDensity), topicSpecificity: round(topicSpecificity), glyphVisibility: round(glyphVisibility), personaHistory: round(personaHistory), publicness: round(publicness) }, interpretation: statusFor(value), warnings: value >= 0.68 ? ['indexability-elevated'] : [] };
