@@ -23,6 +23,12 @@ for (const id of [
   'escapeVectorPanel',
   'controllerPanel',
   'personaMemoryPanel',
+  'recognitionFieldPanel',
+  'recognitionContextType',
+  'recognitionIntentMode',
+  'recognitionExposureDuration',
+  'recognitionFieldGrid',
+  'recognitionFieldWarnings',
   'iterationPreviewPanel',
   'exportLedgerJsonBtn',
   'includeLedgerTextsToggle',
@@ -41,6 +47,7 @@ for (const fn of [
   'generateMaskedOutput',
   'acceptOutputIntoPersonaMemory',
   'renderEscapeVector',
+  'renderRecognitionField',
   'renderControllerDecision',
   'renderClaimCeiling',
   'buildCurrentReportPayload',
@@ -52,6 +59,8 @@ for (const fn of [
 bench.initAdversarialBench(document);
 assert(bench.benchState.iterationLedger);
 assert.equal(bench.benchState.iterationLedger.rows.length, 0);
+assert(document.getElementById('recognitionContextType').options.length >= 4);
+assert.equal(bench.benchState.recognitionContextType, 'group-chat');
 
 const baseline = document.getElementById('protectedBaselineInput');
 const mask = document.getElementById('maskReferenceInput');
@@ -62,6 +71,9 @@ baseline.value = 'I keep circling the issue with a reflective rhythm, layered cl
 mask.value = 'Need the packet. Keep it short. Knock twice. Move fast.';
 draft.value = 'Please keep EXHIBIT-42 in the message while moving the cadence into a shorter field voice.';
 output.value = 'Need the packet. EXHIBIT-42 stays visible. Keep it short and move fast.';
+document.getElementById('recognitionContextType').value = 'group-chat';
+document.getElementById('recognitionIntentMode').value = 'neutralize';
+document.getElementById('recognitionExposureDuration').value = 'single-use';
 
 const beforeBaseline = baseline.value;
 const beforeMask = mask.value;
@@ -76,6 +88,9 @@ assert.equal(bench.benchState.iterationLedger.rows[0].texts.protectedBaseline, n
 assert.equal(bench.benchState.iterationLedger.rows[0].texts.messageDraft, null);
 assert.equal(bench.benchState.iterationLedger.rows[0].texts.protectedOutput, null);
 assert(bench.benchState.claimCeiling);
+assert(bench.benchState.contextProfile);
+assert(bench.benchState.recognitionField);
+assert.equal(bench.benchState.recognitionField.contextType, 'group-chat');
 assert(document.getElementById('claimCeilingPanel').textContent.includes('Claim ceiling'));
 
 const vectorText = document.getElementById('escapeVectorPanel').textContent;
@@ -84,6 +99,14 @@ assert(vectorText.includes('Mask Fit'));
 assert(vectorText.includes('Δsafe'));
 assert(vectorText.includes('Semantic Fidelity'));
 assert(vectorText.includes('Ingestion Friction'));
+
+const recognitionText = document.getElementById('recognitionFieldPanel').textContent;
+assert(recognitionText.includes('Recognition Pressure'));
+assert(recognitionText.includes('Context Legibility'));
+assert(recognitionText.includes('Indexability'));
+assert(recognitionText.includes('Topic Leakage'));
+assert(recognitionText.includes('Entity Leakage'));
+assert(recognitionText.includes('hidden platform classifiers') || recognitionText.includes('route:'));
 
 const controllerText = document.getElementById('controllerPanel').textContent;
 assert(/Continue steering|Hold for review|Rotate Persona|Restore semantics|Locally sealable/.test(controllerText));
@@ -106,12 +129,15 @@ document.getElementById('includeLedgerTextsToggle').checked = false;
 const reportPayload = bench.buildCurrentReportPayload();
 assert.equal(reportPayload.version, 'phase-7');
 assert(reportPayload.claimCeiling);
+assert(reportPayload.recognitionField);
+assert.equal(reportPayload.recognitionField.contextType, 'group-chat');
 assert(reportPayload.limitations.length);
 assert.equal(reportPayload.reproducibility.sourceTextIncluded, false);
 assert.equal(reportPayload.reproducibility.outputTextIncluded, false);
 
 const reportJson = bench.exportCurrentReportJson();
 assert(reportJson.includes('claimCeiling'));
+assert(reportJson.includes('recognitionField'));
 assert(reportJson.includes('limitations'));
 assert(reportJson.includes('sourceResidualRisk'));
 assert(!reportJson.includes(beforeBaseline));
@@ -123,12 +149,21 @@ assert(document.getElementById('reportExportOutput').value.includes('claimCeilin
 const reportMarkdown = bench.exportCurrentReportMarkdown();
 assert(reportMarkdown.includes('# TD613-TCP Local Stylometry Report'));
 assert(reportMarkdown.includes('## Claim Ceiling'));
+assert(reportMarkdown.includes('## Recognition Field'));
 assert(reportMarkdown.includes('## Limitations'));
 assert(!reportMarkdown.includes(beforeBaseline));
 assert(!reportMarkdown.includes(beforeDraft));
 assert(!reportMarkdown.includes(output.value));
 assert.equal(detectForbiddenClaims(reportMarkdown).hasForbiddenClaim, false);
 assert(document.getElementById('reportExportOutput').value.includes('TD613-TCP Local Stylometry Report'));
+
+document.getElementById('recognitionContextType').value = 'public-comment';
+document.getElementById('recognitionExposureDuration').value = 'long-running';
+document.getElementById('recognitionContextType').dispatchEvent(new Event('change'));
+assert.equal(bench.benchState.recognitionContextType, 'public-comment');
+assert.equal(bench.benchState.recognitionExposureDuration, 'long-running');
+assert.equal(bench.benchState.recognitionField.contextType, 'public-comment');
+assert(document.getElementById('recognitionFieldPanel').textContent.includes('Recognition Pressure'));
 
 const initialAccepted = bench.benchState.personaMemory.memory.acceptedCount;
 const latestBeforeAccept = bench.benchState.iterationLedger.rows.at(-1);
@@ -146,7 +181,7 @@ if (!document.getElementById('acceptOutputBtn').disabled) {
 output.value = 'Need the packet. The protected marker is missing now.';
 bench.analyzeProtectedOutput();
 const state = bench.benchState.controllerDecision.state;
-if (state === 'restore' || state === 'hold') {
+if (state === 'restore' || state === 'hold' || bench.benchState.recognitionField?.classifications?.route === 'hold') {
   const accept = document.getElementById('acceptOutputBtn');
   const warning = document.getElementById('acceptWarning');
   assert(accept.disabled || !warning.hidden);
