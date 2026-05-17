@@ -5,7 +5,6 @@ const asArray = (value) => Array.isArray(value) ? [...value] : [];
 const clone = (value) => value && typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value;
 const unique = (...groups) => [...new Set(groups.flat().filter(Boolean))];
 const score = (vector = {}, key) => Number.isFinite(vector?.scores?.[key]) ? vector.scores[key] : null;
-const safe = (value) => value == null ? '' : String(value);
 
 function latestRow(ledger = {}) {
   return asArray(ledger.rows).at(-1) || {};
@@ -53,10 +52,47 @@ export function summarizeAcceptedHistory(input = {}) {
   return summarizeIterationLedger(input.iterationLedger || {});
 }
 
+function summarizeRecognitionField(input = {}) {
+  const field = input.recognitionField || {};
+  if (!field || !Object.keys(field).length) {
+    return {
+      contextType: '',
+      intendedMode: '',
+      recognitionPressure: null,
+      contextLegibility: null,
+      indexability: null,
+      topicLeakage: null,
+      entityLeakage: null,
+      personaContinuityPressure: null,
+      maskOverusePressure: null,
+      recapturePressure: null,
+      route: '',
+      warnings: [],
+      limitations: []
+    };
+  }
+  return {
+    contextType: field.contextType || '',
+    intendedMode: field.intendedMode || '',
+    recognitionPressure: field.summary?.recognitionPressure ?? null,
+    contextLegibility: field.summary?.contextLegibility ?? null,
+    indexability: field.summary?.indexability ?? null,
+    topicLeakage: field.summary?.topicLeakage ?? null,
+    entityLeakage: field.summary?.entityLeakage ?? null,
+    personaContinuityPressure: field.summary?.personaContinuityPressure ?? null,
+    maskOverusePressure: field.summary?.maskOverusePressure ?? null,
+    recapturePressure: field.summary?.recapturePressure ?? null,
+    route: field.classifications?.route || '',
+    warnings: asArray(field.warnings),
+    limitations: asArray(field.limitations)
+  };
+}
+
 export function buildReportLimitations(input = {}) {
   const claim = input.claimCeiling || evaluateClaimCeiling(input);
   return unique(
     claim.limitations,
+    input.recognitionField?.limitations,
     [
       'Reports exclude private text by default.',
       'Report conclusions are bounded to local TD613-TCP metrics.',
@@ -114,6 +150,7 @@ export function buildReportPayload(input = {}) {
     semanticPreservation: summarizeSemanticPreservation(input),
     ingestionFriction: summarizeIngestionFriction(input),
     maskUse: summarizeMaskUse(input),
+    recognitionField: summarizeRecognitionField(input),
     ledger: options.includeLedger === false ? { rowCount: 0, acceptedCount: 0, latestState: '', latestOutputHash: '', latestAcceptedIterationId: null } : {
       rowCount: ledgerSummary.rowCount || 0,
       acceptedCount: ledgerSummary.acceptedCount || 0,
@@ -131,7 +168,7 @@ export function buildReportPayload(input = {}) {
     limitations: buildReportLimitations({ ...input, claimCeiling }),
     forbiddenConclusions: [...FORBIDDEN_CONCLUSION_DISCLAIMERS]
   };
-  payload.reportId = reportHash({ claim: claimCeiling.id, metrics: payload.metrics, ledger: payload.ledger, createdAt: payload.createdAt });
+  payload.reportId = reportHash({ claim: claimCeiling.id, metrics: payload.metrics, recognitionField: payload.recognitionField, ledger: payload.ledger, createdAt: payload.createdAt });
   return payload;
 }
 
@@ -159,6 +196,21 @@ export function exportReportMarkdown(payload = {}, options = {}) {
   const movementLines = report.featureMovement.changedDimensions.length
     ? report.featureMovement.changedDimensions.map((item) => `- ${item}`)
     : ['No changed dimensions recorded.'];
+  const recognition = report.recognitionField || {};
+  const recognitionLines = recognition.contextType ? [
+    `- contextType: ${recognition.contextType}`,
+    `- intendedMode: ${recognition.intendedMode || 'unavailable'}`,
+    `- recognitionPressure: ${recognition.recognitionPressure ?? 'unavailable'}`,
+    `- contextLegibility: ${recognition.contextLegibility ?? 'unavailable'}`,
+    `- indexability: ${recognition.indexability ?? 'unavailable'}`,
+    `- topicLeakage: ${recognition.topicLeakage ?? 'unavailable'}`,
+    `- entityLeakage: ${recognition.entityLeakage ?? 'unavailable'}`,
+    `- personaContinuityPressure: ${recognition.personaContinuityPressure ?? 'unavailable'}`,
+    `- maskOverusePressure: ${recognition.maskOverusePressure ?? 'unavailable'}`,
+    `- recapturePressure: ${recognition.recapturePressure ?? 'unavailable'}`,
+    `- route: ${recognition.route || 'unavailable'}`,
+    ...(recognition.warnings || []).map((item) => `- warning: ${item}`)
+  ] : ['Recognition Field was not supplied for this report.'];
   const limitationLines = report.limitations.length ? report.limitations.map((item) => `- ${item}`) : ['- No additional limitations recorded.'];
   const forbiddenLines = report.forbiddenConclusions.map((item) => `- ${item}`);
   const markdown = [
@@ -194,6 +246,9 @@ export function exportReportMarkdown(payload = {}, options = {}) {
     `Accepted count: ${report.maskUse.acceptedCount ?? 'unavailable'}`,
     `Linkability: ${report.maskUse.linkabilityStatus || 'unavailable'}`,
     `Drift: ${report.maskUse.driftStatus || 'unavailable'}`,
+    '',
+    '## Recognition Field',
+    ...recognitionLines,
     '',
     '## Iteration Ledger Summary',
     `Rows: ${report.ledger.rowCount}`,
