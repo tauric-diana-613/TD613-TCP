@@ -1,0 +1,42 @@
+{
+  "id": "persona-history-stable",
+  "title": "Persona History Stable",
+  "fixtureClass": "persona-history",
+  "priority": "core",
+  "riskMode": "calibration",
+  "reportIntent": "stable-pseudonym local review",
+  "description": "A Persona has enough accepted history to support local stable pseudonymous continuity while staying bounded by the claim ladder.",
+  "inputs": {
+    "protectedBaseline": "The protected baseline uses long reflective return clauses and image-heavy pressure language that should not carry into the Persona history.",
+    "maskReference": "Packet ready. Chain marked. Local review only. Keep the note short and consistent.",
+    "messageDraft": "Please mark EXHIBIT-77 for local review and keep the custody note attached.",
+    "protectedOutput": "EXHIBIT-77 ready. Custody note attached. Local review only. Chain marked."
+  },
+  "persona": {
+    "personaId": "persona-operator-stable",
+    "label": "Operator Stable",
+    "mode": "stable-pseudonym",
+    "history": [
+      { "text": "Packet ready. Chain marked. Local review only." },
+      { "text": "Custody note attached. Review lane clean." },
+      { "text": "EXHIBIT-19 ready. Chain held. No extra language." },
+      { "text": "Receipt marked. Packet stays local. Review only." }
+    ]
+  },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 0.85 },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.35, "max": 1.0 },
+      "maskLinkability": { "min": 0.0, "max": 1.0 },
+      "maskDrift": { "min": 0.0, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 0.55 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "seal" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 7 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["Stable Persona continuity is local and history-bounded.", "Level 7 can appear only as a local continuity candidate, never as identity proof."]
+}
