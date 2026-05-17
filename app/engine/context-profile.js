@@ -119,7 +119,7 @@ function textStats(text = '') {
   const avgSentenceLength = words.length / Math.max(1, sentences.length);
   const punctuationDensity = (value.match(/[,:;!?—-]/g) || []).length / Math.max(1, words.length);
   const glyphLoad = (value.match(/[^\u0000-\u007F]/g) || []).length / Math.max(1, value.length);
-  const legalTerms = (value.match(/\b(?:whereas|pursuant|compliance|statutory|liability|jurisdiction|exhibit|custody|hereby|therefore|aforementioned)\b/gi) || []).length;
+  const legalTerms = (value.match(/\b(?:whereas|pursuant|compliance|statutory|liability|jurisdiction|custody|hereby|therefore|aforementioned)\b/gi) || []).length;
   const warmTerms = (value.match(/\b(?:hey|team|please|thanks|quick|warm|context|thread|note)\b/gi) || []).length;
   const imageTerms = (value.match(/\b(?:archive|wound|bruise|ghost|ritual|cathedral|ache|heat|blood|mirror|glyph|covenant)\b/gi) || []).length;
   return { words: words.length, sentences: sentences.length, avgSentenceLength, punctuationDensity, glyphLoad, legalTerms, warmTerms, imageTerms };
