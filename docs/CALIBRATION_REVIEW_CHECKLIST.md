@@ -36,7 +36,7 @@ A fixture failure should be inspected before range widening. The failure may be 
 
 - Short sample insufficiency
 - Topic-matched false contact
-- Same-author topic shift
+- Single-source topic shift
 - Paraphrase residue
 - AI-smoothed author drift
 - Glyph normalization stress
