@@ -163,6 +163,7 @@ export function validateReleaseManifest(manifest = {}) {
   for (const boundary of RELEASE_BOUNDARIES) if (!manifest.boundaries?.includes(boundary)) failures.push(`missing-boundary:${boundary}`);
   if (!manifest.docs?.length) failures.push('docs-missing');
   if (!manifest.tests?.length) failures.push('tests-missing');
-  if (detectReleaseOverclaim(JSON.stringify(manifest, null, 2)).hasOverclaim) failures.push('manifest-overclaim');
+  const scannableManifest = { ...manifest, forbiddenClaims: [] };
+  if (detectReleaseOverclaim(JSON.stringify(scannableManifest, null, 2)).hasOverclaim) failures.push('manifest-overclaim');
   return { valid: failures.length === 0, failures, status: failures.length ? 'fail' : 'pass' };
 }
