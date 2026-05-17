@@ -1,0 +1,29 @@
+{
+  "id": "same-author-basic",
+  "title": "Same Author Basic",
+  "fixtureClass": "same-author",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "Two synthetic samples share the same cadence markers: reflective returns, long appositive clauses, and repeated hinge phrases. The protected output should not be treated as a clean escape from the protected baseline.",
+  "inputs": {
+    "protectedBaseline": "I keep circling the archive because the archive keeps circling me. The packet is not only a packet; it is a pressure map, a small room where every clause leaves a fingerprint, every pause tries to become evidence, and every return tells on the hand that made it.",
+    "maskReference": "Send the packet. Keep the chain clean. Mark the exhibit and stop there. No flourish, no loop, no extra heat.",
+    "messageDraft": "Please send EXHIBIT-42 with the custody note attached before 6/13, and keep the packet marked for local review only.",
+    "protectedOutput": "I keep circling EXHIBIT-42 because the custody note keeps circling me. The packet is not only a packet; it is a pressure map for local review before 6/13, and every return tells on the hand that made it."
+  },
+  "persona": { "personaId": "persona-operator", "label": "Operator", "mode": "neutralize", "history": [] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.25, "max": 1.0, "required": true },
+      "maskFit": { "min": 0.0, "max": 0.9 },
+      "maskDeltaSafe": { "min": -1.0, "max": 0.6 },
+      "semanticFidelity": { "min": 0.45, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 0.45 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "continue" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 6 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["Source residual should remain visible because output borrows cadence skeleton from the protected baseline.", "Fixture guards against a false escape when meaning transfer preserves the same syntactic gait."]
+}
