@@ -54,8 +54,8 @@ const FORBIDDEN_PATTERNS = Object.freeze([
   { id: 'untraceable', pattern: /\buntraceable\b/i },
   { id: 'platform-proof', pattern: /\bplatform[- ]proof\b/i },
   { id: 'guaranteed safe', pattern: /\bguaranteed safe\b/i },
-  { id: 'same author', pattern: /\bsame[- ]author\b/i },
   { id: 'not same author', pattern: /\bnot[- ]same[- ]author\b/i },
+  { id: 'same author', pattern: /\bsame[- ]author\b/i },
   { id: 'identity proven', pattern: /\bidentity proven\b/i },
   { id: 'identity disproven', pattern: /\bidentity disproven\b/i },
   { id: 'cannot be linked', pattern: /\bcannot be linked\b/i },
@@ -66,7 +66,7 @@ const FORBIDDEN_PATTERNS = Object.freeze([
   { id: 'fool platform', pattern: /\bfool(?:s|ing)? platform\b/i }
 ]);
 
-const SAFE_CONTEXT_RE = /\b(no|not|never|without|refuse[sd]?|refuses|avoid|avoids|unsupported|prohibited|forbidden|cannot|does not|do not|must not|boundary|boundaries|limitation|limitations|warning|warnings|cannot claim|does not claim|not claim|not prove|not issue|not determine|no .*claims?|no .*verdicts?|no .*guarantee|fixture|fixtures|test|tests|calibration|detector catches|overclaim detector|forbidden release language)\b/i;
+const SAFE_CONTEXT_RE = /\b(no .*claims?|no .*verdicts?|no .*guarantee|does not claim|does not prove|does not issue|does not determine|do not claim|do not prove|do not issue|do not determine|must not claim|must not prove|must not issue|must not determine|cannot claim|cannot prove|cannot issue|cannot determine|not claim|not prove|not issue|not determine|without claiming|without proving|refuse[sd]?|refuses|avoid[sd]? claiming|unsupported|prohibited|forbidden|boundary|boundaries|limitation|limitations|warning|warnings|fixture|fixtures|test|tests|calibration|detector catches|overclaim detector|forbidden release language)\b/i;
 
 function normalizeText(value = '') {
   return String(value || '');
