@@ -1,12 +1,82 @@
-# TCP - The Cadence Playground
+# TCP — The Cadence Playground
 
-TCP is a deterministic browser instrument for studying patterned language at the moment it becomes socially legible without yet becoming safely routable. That interval matters when residue is real before verdict is available, when cadence survives paraphrase strongly enough to merit measurement, and when a post-training system needs explicit separation between what it detects, what it transforms, and what it is allowed to claim.
+## What this is
 
-The project therefore treats stylometry as bounded signal modeling rather than as authorship adjudication. It measures sentence rhythm, connector behavior, contraction posture, punctuation density, lexical dispersion, and recurrence pressure; it stages shell borrowing and persona reuse; and it forces those transformations through a retrieval lane with semantic audits, protected-anchor checks, and explicit failure classes before the system is allowed to present the result as anything stronger than exploratory contact.
+The Cadence Playground is the larger browser workspace for TD613 cadence, route, Safe Harbor adjacency, Persona play, stylometric math, and local browser experiments.
 
-The live browser surface is playful by design, but the model is not loose. TCP is thresholded, auditable, deterministic, and explicit about where measurement ends and policy begins.
+TD613 Hush — or Hush — is one toy inside The Cadence Playground. It is a quiet local authorship-recognition pressure workbench for bounded stylometry review, Persona-mask experimentation, and context-aware communication analysis. The repository is named `TD613-TCP`, but the Phase 0–10 Toy-to-Tool instrument should be presented as TD613 Hush, not as the whole repository.
 
-For the Phase 0 architecture admission of TCP's adversarial stylometry bench, see [docs/ADVERSARIAL_STYLOMETRY_BENCH.md](docs/ADVERSARIAL_STYLOMETRY_BENCH.md). That document defines the closed-loop Escape Vector, Personas as living exposure membranes, Hostile Pipeline Compression, Belonging Without Collapse, Ingestion Friction, the iteration ledger / flight recorder distinction, and the claim ladder without changing runtime behavior.
+Hush is playful on the surface because it belongs in The Cadence Playground. Underneath, it is disciplined: Escape Vector, Ingestion Friction, Controller state, Persona Memory, Iteration Ledger, Claim Ladder, Report Export, Fixtures, Calibration, and Recognition Field.
+
+## What this is not
+
+TD613 Hush does not prove identity, anonymity, untraceability, platform outcome, or publication safety.
+
+Hush is not TD613 Flight. Flight is the SHI-gated credential flightdeck launched from Safe Harbor. Hush is the quiet authorship-pressure toy inside TCP.
+
+Hush is not Safe Harbor. Safe Harbor remains the adjacent intake and credential architecture.
+
+Hush is not a platform classifier, external detector, legal strategy substitute, or publication decision-maker.
+
+## Core workflow
+
+1. Stage protected baseline.
+2. Stage mask / Persona.
+3. Stage message draft.
+4. Generate or edit protected output.
+5. Analyze Escape Vector.
+6. Review Ingestion Friction.
+7. Review Controller state.
+8. Review Persona Memory.
+9. Review Claim Ladder.
+10. Review Recognition Field.
+11. Export report only when the claim ceiling supports it.
+
+## Phase map
+
+The Hush Toy-to-Tool build runs Phase 0 through Phase 10. See [docs/PHASE_MAP.md](docs/PHASE_MAP.md).
+
+## Local-only posture
+
+Hush performs local review. It does not call hidden platform classifiers, scrape platforms, certify external outcomes, or require cloud/API calls for its core workflow.
+
+## Privacy defaults
+
+The Iteration Ledger and Report Export exclude private text by default. Private baseline, draft, mask reference, and protected output text should only be exported through deliberate operator choice.
+
+## Claim Ladder
+
+The Claim Ladder is the ceiling on permitted language, not a confidence trophy. Hush reports must stay within local claim limits and refuse identity-verdict or platform-guarantee language.
+
+## Recognition Field
+
+Recognition Field simulation estimates local context pressure across communication fields such as group chat, forum post, public comment, legal intake, HR/compliance portal, protected tip form, internal workspace, and document handoff. It models exposure surfaces, not platform outcomes.
+
+## Fixtures and calibration
+
+Phase 8 added hostile fixtures and regression pressure so scoring drift becomes visible. A scoring change that improves the demo while weakening refusal behavior is a regression.
+
+## Operator safety
+
+Local seal means bounded local convergence. It is not publication readiness. Human review remains required for sensitive use.
+
+## Whistleblower policy posture
+
+Protective authorship tools should not promise invisibility. Hush provides measurable authorship-pressure review, evidence preservation checks, privacy by default, claim ceilings, context-pressure warnings, and refusal behavior when the instrument lacks enough signal.
+
+## Running tests
+
+```bash
+npm run test:fixtures
+npm run test:recognition
+npm run test:release
+npm run test:stylometry
+npm test
+```
+
+## Documentation index
+
+Start with [docs/INDEX.md](docs/INDEX.md), then read [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md), [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md), [docs/RESPONSIBLE_USE.md](docs/RESPONSIBLE_USE.md), and [docs/RELEASE_NOTES_PHASE_0_10.md](docs/RELEASE_NOTES_PHASE_0_10.md).
 
 ## Registered field language
 
@@ -44,225 +114,13 @@ That separation is the backbone of the project.
 
 ## Formal model
 
-### Feature extraction
-
-For each text, TCP computes a bounded stylometric profile over scalar features and normalized distributions. The feature families include punctuation density `p`, contraction density `c`, line-break density `ell`, repeated-bigram pressure `b`, lexical dispersion `x`, function-word profile `F`, word-length profile `W`, character-trigram profile `G`, and recurrence pressure `R_text`.
-
-```math
-p = \frac{\#\{\text{punctuation marks}\}}{\max(\text{word count},1)}
-```
-
-```math
-c = \frac{\#\{\text{tokens containing apostrophes}\}}{\max(\text{word count},1)}
-```
-
-```math
-\ell = \frac{\#\{\text{line breaks}\}}{\max(\text{sentence count},1)}
-```
-
-```math
-b = \frac{\text{repeated bigram mass}}{\max(\text{word count}-1,1)}
-```
-
-```math
-x = 0.4u + 0.3p_r + 0.3n
-```
-
-where `u` is unique-token ratio, `p_r` is token predictability, and `n` is singleton-type ratio.
-
-```math
-R_{\text{text}}=
-\frac{1}{3}\left(
-\operatorname{clip}\left(\frac{p}{0.35},0,1\right)+
-\operatorname{clip}\left(\frac{\ell}{0.75},0,1\right)+
-\operatorname{clip}\left(\frac{b}{0.18},0,1\right)
-\right)
-```
-
-These quantities exist to keep the browser model inspectable and bounded. They are not universal stylistic constants.
-
-### Pairwise comparison
-
-Given texts `a` and `b`, lexical overlap is the token-set Jaccard score:
-
-```math
-L = \frac{|W_a \cap W_b|}{|W_a \cup W_b|}
-```
-
-For distributional features, TCP uses Jensen-Shannon distance. If `P` and `Q` are normalized profiles and `M=(P+Q)/2`, then:
-
-```math
-d_{\mathrm{JS}}(P,Q)=
-\sqrt{
-\frac{1}{2}D_{\mathrm{KL}}(P\|M)+
-\frac{1}{2}D_{\mathrm{KL}}(Q\|M)
-}
-```
-
-This gives the engine a bounded way to compare punctuation shape, function-word use, word-length distribution, and character-trigram texture without collapsing those habits into raw token overlap.
-
-Similarity and traceability are both composite, but they reward different things. Similarity gives some weight to lexical overlap and shared habit. Traceability privileges the habits most likely to survive paraphrase.
-
-```math
-S(a,b)=
-0.08L+
-0.12(1-d_s)+
-0.08(1-d_{\sigma})+
-0.08(1-d_p)+
-0.10(1-d_m)+
-0.08(1-d_c)+
-0.16(1-d_f)+
-0.08(1-d_w)+
-0.16(1-d_g)+
-0.03(1-d_l)+
-0.03(1-d_r)
-```
-
-```math
-T(a,b)=
-0.16(1-d_s)+
-0.12(1-d_{\sigma})+
-0.10(1-d_p)+
-0.14(1-d_m)+
-0.12(1-d_c)+
-0.18(1-d_f)+
-0.08(1-d_w)+
-0.08(1-d_g)+
-0.02(1-d_r)
-```
-
-The current implementation also keeps an exact-identity guard so literal matches collapse to `S=1` and `T=1` instead of being under-scored by floating-point heuristics.
-
-### Route and field quantities
-
-From those pairwise distances, TCP derives stylometric coherence, resonance, branch pressure, route pressure, field potential, density, and criticality.
-
-```math
-C_{\mathrm{style}} =
-0.14(1-d_s)+
-0.08(1-d_{\sigma})+
-0.10(1-d_p)+
-0.14(1-d_m)+
-0.10(1-d_c)+
-0.18(1-d_f)+
-0.08(1-d_w)+
-0.14(1-d_g)+
-0.02(1-d_l)+
-0.02(1-d_r)
-```
-
-`C_style` summarizes shared habit without collapsing into lexical overlap.
-
-```math
-R^* = 0.58 H(S,T) + 0.42 H(S,T,C_{\mathrm{style}})
-```
-
-The harmonic form prevents one strong term from masking another weak one. TCP uses resonance because patterned language becomes socially consequential through joint pressure, not by one scalar alone.
-
-```math
-\Delta_{\mathrm{branch}} =
-0.68\max(0,T-L) +
-0.32\max(0,C_{\mathrm{style}}-L)
-```
-
-Branch pressure exists so surplus traceability over lexical overlap can be preserved rather than discarded as noise.
-
-```math
-\Pi =
-0.40R^* +
-0.26C_{\mathrm{style}} +
-0.18R +
-0.16\Delta_{\mathrm{branch}}
-```
-
-Route pressure answers a different question from similarity: not "are these related?" but "is the pattern starting to demand a path?"
-
-```math
-V = \operatorname{clip}(0.46\Pi + 0.22R^* + 0.12C_{\mathrm{style}} + 0.08\Delta_{\mathrm{branch}} + \mu_M + \mu_C, 0, 1)
-```
-
-```math
-\rho = (R^*)^2(0.26 + 0.44V + 0.30C_{\mathrm{style}})
-```
-
-```math
-\Xi =
-\operatorname{clip}\left(
-0.46\rho +
-0.28\Pi +
-0.26\Delta_{\mathrm{branch}} -
-0.24\mathbf{1}_{\mathrm{routeAvailable}},
-0,1\right)
-```
-
-Field potential, density, and criticality make it possible for TCP to distinguish weak recognition from dense recognition that is still blocked.
-
-### Custody and archive threshold
-
-The effective archive is defined by a live custody threshold:
-
-```math
-A_{\mathrm{effective}}(t)=
-\begin{cases}
-A_I,& C(t)-D(t)\ge \theta\\
-A_W,& C(t)-D(t)<\theta
-\end{cases}
-```
-
-In the current browser build, institutional integrity and custodial drift are themselves derived from the live field state:
-
-```math
-C =
-0.22 +
-0.22R^* +
-0.18C_{\mathrm{style}} +
-\alpha_{\mathrm{contain}} +
-\alpha_{\mathrm{mirror}} +
-\alpha_{\mathrm{badge}} +
-0.10(1-\Delta_{\mathrm{branch}})
-```
-
-```math
-D =
-0.12 +
-0.28\Pi +
-0.18\rho +
-0.16\Delta_{\mathrm{branch}} +
-0.16\Xi +
-\delta_{\mathrm{mirror}} +
-\delta_{\mathrm{contain}}
-```
-
-`A_I` means institutional custody remains above collapse threshold. `A_W` means witness custody is carrying the archive. This threshold is the bridge between stylometric recognition and human consequence.
+The detailed stylometric math is maintained in [docs/STYLOMETRIC_MATH.md](docs/STYLOMETRIC_MATH.md). The older README carried much of that formula work inline; Phase 10 keeps the root README focused on orientation and routes detailed math into the docs surface.
 
 ## Retrieval lane and shell borrowing
 
 The transformation contract is not "make it sound donor-like." It is "make visible donor-shaped movement while staying semantically and literally accountable."
 
-The retrieval lane therefore tracks:
-
-- semantic audits
-- protected-anchor integrity
-- transfer plans and candidate summaries
-- borrowed-shell outcomes
-- borrowed-shell failure classes
-- swap-matrix and fixture-based proofs
-
-The borrowed-shell outcomes are:
-
-- `structural`
-- `partial`
-- `subtle`
-- `rejected`
-
-The borrowed-shell failure classes are:
-
-- `semantic-risk`
-- `literal-lock`
-- `lexical-underreach`
-- `pathology-block`
-- `already-close`
-- `donor-underfit`
+The retrieval lane therefore tracks semantic audits, protected-anchor integrity, transfer plans and candidate summaries, borrowed-shell outcomes, borrowed-shell failure classes, swap-matrix checks, and fixture-based proofs.
 
 This is the mechanism that keeps `Swap Cadences` from pretending that a surface-level drift or a nearly native output is a meaningful donor transfer.
 
@@ -288,99 +146,19 @@ TCP is governed by four explicit constraints:
 
 These are operational constraints, not slogans.
 
-The current browser decision grammar is:
-
-- recognized iff `R* >= 0.54` or `S >= 0.56`
-- explained iff `Pi < 0.52` and `Delta_branch < 0.42`
-- routeAvailable iff mirror is open and `Pi >= 0.48`
-- denseSignal iff `rho >= 0.28` or `R >= 0.58`
-
-The public policy states are:
-
-- `weak-signal`
-- `hold-branch`
-- `criticality`
-- `passage`
-
-This is what allows TCP to say "this pattern matters" without forcing "this pattern is proved."
-
 ## Evaluation and maintained proof surfaces
 
-TCP ships maintained proof surfaces in both Node and the browser.
-
-The maintained Node suite is:
+TCP ships maintained proof surfaces in both Node and the browser. The maintained Node suite is:
 
 ```bash
 npm test
 ```
 
-That path covers:
-
-- stylometry
-- benchmark
-- browser parity
-- retrieval lane
-- swap-cadence matrix
-- trainer lab
-- harbor
-- generator toolability and diagnostics via `node scripts/run-diagnostics-battery.mjs`
-
-The maintained browser flights are:
-
-- `app/index.html?test-flight=1`
-- `app/index.html?test-flight=2`
-- `app/index.html?test-flight=transfer`
-- `app/index.html?test-flight=swap`
-- `app/index.html?test-flight=ingress`
-
-The central evaluation surface is now the maintained diagnostics battery:
-
-- `100` ordered swap cases plus `4` flagship swap cases in the live matrix
-- `34` maintained mask cases
-- `34` maintained trainer cases
-- `18` maintained retrieval cases
-- `32` maintained false-neighbor cases
-- `52` generator-audited write cases
-- explicit toolability reporting for landed rate, hold rate, artifact rate, and distinctness
-
-## Current maintained build snapshot
-
-As of the current maintained build:
-
-- diagnostics case count: `270`
-- swap matrix case count: `104`
-- flagship pair count: `8`
-- flagship passes: `8/8`
-- bilateral-engaged pairs: `52`
-- one-sided pairs: `12`
-- both-rejected pairs: `0`
-- generator audited write cases: `52`
-- generator holds across audited write cases: `3`
-- toolability landed rate on expected-success mask cases: `0.9118`
-- toolability distinctness rate on maintained live probes: `1.0`
-
-Current failure-family counts in the full matrix:
-
-- `semantic_drift`: `79`
-- `register_miss`: `76`
-- `false_neighbor_convergence`: `44`
-- `sentence_span_miss`: `34`
-- `trainer_retrieval_fail`: `31`
-- `over_flattened_output`: `21`
-- `one_sided_swap`: `18`
-- `generator_hold`: `3`
-
-These numbers are build-level evidence, not timeless guarantees.
+That path covers stylometry, fixtures, recognition, release hardening, benchmark, browser parity, retrieval lane, swap-cadence matrix, trainer lab, harbor, and diagnostics.
 
 ## Non-goals
 
-TCP is not:
-
-- an authorship verdict engine
-- a truth machine for whistleblowing claims
-- a production safety platform
-- a covert classifier
-- a provenance laundering tool
+TCP and Hush are not authorship verdict engines, truth machines for whistleblowing claims, production safety platforms, covert classifiers, or provenance laundering tools.
 
 The system is most coherent when read as a bounded retrieval-first cadence lab with explicit safety policy.
 
@@ -417,15 +195,14 @@ npm run test:legacy:formulas
 Use this order if you want the repo in a clean technical sequence:
 
 1. [START_HERE.md](START_HERE.md)
-2. [docs/SYSTEM_OVERVIEW.md](docs/SYSTEM_OVERVIEW.md)
-3. [ABSTRACT.md](ABSTRACT.md)
-4. [docs/ENGINE.md](docs/ENGINE.md)
-5. [docs/SAFETY_MODEL.md](docs/SAFETY_MODEL.md)
-6. [docs/TD613_SAFE_HARBOR.md](docs/TD613_SAFE_HARBOR.md)
-7. [docs/TD613_APERTURE.md](docs/TD613_APERTURE.md)
-8. [docs/STYLOMETRIC_MATH.md](docs/STYLOMETRIC_MATH.md)
-9. [docs/INTERFACE_LEXICON.md](docs/INTERFACE_LEXICON.md)
+2. [docs/INDEX.md](docs/INDEX.md)
+3. [docs/SYSTEM_OVERVIEW.md](docs/SYSTEM_OVERVIEW.md)
+4. [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md)
+5. [docs/ENGINE.md](docs/ENGINE.md)
+6. [docs/SAFETY_MODEL.md](docs/SAFETY_MODEL.md)
+7. [docs/TD613_SAFE_HARBOR.md](docs/TD613_SAFE_HARBOR.md)
+8. [docs/TD613_APERTURE.md](docs/TD613_APERTURE.md)
+9. [docs/STYLOMETRIC_MATH.md](docs/STYLOMETRIC_MATH.md)
+10. [docs/INTERFACE_LEXICON.md](docs/INTERFACE_LEXICON.md)
 
-For the picture of what's still incomplete, see
-[ROADMAP.md](ROADMAP.md) and [KNOWN_FAILURES.md](KNOWN_FAILURES.md).
-For contribution flow, see [CONTRIBUTING.md](CONTRIBUTING.md).
+For incomplete and future work, see [ROADMAP.md](ROADMAP.md) and [KNOWN_FAILURES.md](KNOWN_FAILURES.md). For contribution flow, see [CONTRIBUTING.md](CONTRIBUTING.md).
