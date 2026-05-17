@@ -58,7 +58,7 @@ Phase 8 added hostile fixtures and regression pressure so scoring drift becomes 
 
 ## Operator safety
 
-Local seal means bounded local convergence. It does not mean safe to publish. Human review remains required for sensitive use.
+Local seal means bounded local convergence. It is not publication readiness. Human review remains required for sensitive use.
 
 ## Whistleblower policy posture
 
