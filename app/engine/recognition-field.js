@@ -9,8 +9,11 @@ const unique = (...groups) => [...new Set(groups.flat().filter(Boolean))];
 const lower = (value) => String(value || '').toLowerCase();
 const score = (vector = {}, key) => Number.isFinite(vector?.scores?.[key]) ? vector.scores[key] : 0;
 
-const ENTITY_RE = /\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\/-]*\b|\b\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?\b|\b[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+){0,2}\b/g;
-const STOPWORDS = new Set('the a an and or but if then with from into onto for to of in on at by as is are was were be been being this that these those it its you your we our they them he she his her their not no do does did can could should would may might will just only very also keep make made has have had'.split(/\s+/));
+const CODE_ENTITY_RE = /\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\/-]*\b/g;
+const DATE_ENTITY_RE = /\b\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?\b/g;
+const PROPER_ENTITY_RE = /\b[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+){0,2}\b/g;
+const CODE_PREFIX_RE = /\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)\b/;
+const STOPWORDS = new Set('the a an and or but if then with from into onto for to of in on at by as is are was were be been being this that these those it its you your we our they them he she his her their not no do does did can could should would may might will just only very also keep make made has have had please preserve confirm route review'.split(/\s+/));
 
 function tokens(text = '') {
   return lower(text).match(/[a-z0-9][a-z0-9'-]*/g) || [];
@@ -20,18 +23,24 @@ function contentTerms(text = '') {
   return tokens(text).filter((token) => token.length > 3 && !STOPWORDS.has(token));
 }
 
+function matchAll(text = '', regex) {
+  return [...String(text || '').matchAll(regex)].map((match) => match[0]).filter((item) => item.length > 1);
+}
+
 function extractEntities(text = '') {
-  return [...new Set([...String(text || '').matchAll(ENTITY_RE)].map((match) => match[0]).filter(Boolean))];
+  const value = String(text || '');
+  const codeEntities = matchAll(value, CODE_ENTITY_RE);
+  const dateEntities = matchAll(value, DATE_ENTITY_RE);
+  const properEntities = matchAll(value, PROPER_ENTITY_RE)
+    .filter((entity) => !CODE_PREFIX_RE.test(entity))
+    .filter((entity) => !STOPWORDS.has(lower(entity)));
+  return unique(codeEntities, dateEntities, properEntities);
 }
 
 function shared(left = [], right = []) {
   const a = new Set(left);
   const b = new Set(right);
   return [...a].filter((item) => b.has(item));
-}
-
-function exposureDurationWeight(duration = 'single-use') {
-  return { 'single-use': 0.12, 'short-thread': 0.34, recurring: 0.64, 'long-running': 0.88 }[duration] ?? 0.22;
 }
 
 function audienceWeight(size = 'private') {
@@ -84,7 +93,7 @@ export function scoreIndexability({ protectedOutputText = '', ingestionAudit = {
   const outputTerms = contentTerms(protectedOutputText);
   const entityDensity = clamp(outputEntities.length / Math.max(1, outputTerms.length / 10));
   const rareSurface = clamp(((protectedOutputText.match(/[#:_/]/g) || []).length / Math.max(1, protectedOutputText.length)) * 16);
-  const glyphVisibility = clamp((score({ scores: { ingestionFriction: ingestionAudit.ingestionFriction } }, 'ingestionFriction') || ingestionAudit.ingestionFriction || 0) * 0.65 + ((protectedOutputText.match(/[^\u0000-\u007F]/g) || []).length / Math.max(1, protectedOutputText.length)) * 5);
+  const glyphVisibility = clamp((score({ scores: { ingestionFriction: ingestionAudit.ingestionFriction } }, 'ingestionFriction') || ingestionAudit.ingestionFriction || 0) * 0.65 + ((protectedOutputText.match(/[^\u0000-\u007F]/g) || []).length / Math.max(1, protectedOutputText.length)) * 5 + rareSurface * 0.1);
   const personaHistory = clamp(((personaSummary.acceptedCount || personaSummary.entryCount || 0) / 8) * 0.75 + (personaSummary.field?.meanLinkability || 0) * 0.25);
   const publicness = contextProfile.publicness ?? audienceWeight(options.audienceSize || contextProfile.audienceSize || 'context-default');
   const topicSpecificity = clamp((new Set(outputTerms).size / Math.max(1, outputTerms.length)) * 0.35 + (contextProfile.topicExposure?.score || 0) * 0.65);
