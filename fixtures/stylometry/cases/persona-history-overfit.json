@@ -1,0 +1,43 @@
+{
+  "id": "persona-history-overfit",
+  "title": "Persona History Overfit",
+  "fixtureClass": "persona-history",
+  "priority": "core",
+  "riskMode": "calibration",
+  "reportIntent": "stable-pseudonym local review",
+  "description": "A Persona history repeats too tightly. The fixture tests whether the mask can become a new cage through excessive internal linkability.",
+  "inputs": {
+    "protectedBaseline": "The protected baseline is expansive and reflective, with nested clauses that should not be mistaken for the Persona's clipped field rhythm.",
+    "maskReference": "Ready. Marked. Local only. Ready. Marked. Local only.",
+    "messageDraft": "Please mark EXHIBIT-88 and keep the packet local.",
+    "protectedOutput": "Ready. Marked. Local only. EXHIBIT-88 ready. Marked. Local only."
+  },
+  "persona": {
+    "personaId": "persona-loop-overfit",
+    "label": "Loop Overfit",
+    "mode": "stable-pseudonym",
+    "history": [
+      { "text": "Ready. Marked. Local only." },
+      { "text": "Ready. Marked. Local only." },
+      { "text": "Ready. Marked. Local only." },
+      { "text": "Ready. Marked. Local only." },
+      { "text": "Ready. Marked. Local only." }
+    ]
+  },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 0.9 },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.25, "max": 1.0 },
+      "maskLinkability": { "min": 0.0, "max": 1.0 },
+      "maskDrift": { "min": 0.0, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 0.55 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "rotate", "restore", "seal"], "preferredState": "rotate" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 7 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["The mask can become a fingerprint when repeated too tightly.", "Overfit should invite rotation, cooldown, or lowered claim posture rather than celebratory continuity."]
+}
