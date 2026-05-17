@@ -7,7 +7,7 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 - [README](../README.md) — Top-level project entry for The Cadence Playground, TD613, and Hush placement.
 - [Documentation Index](INDEX.md) — This file; the map for Hush release docs and adjacent TD613 materials.
 - [Operator Guide](OPERATOR_GUIDE.md) — Practical workflow for using Hush without overstating its claims.
-- [Phase Map](PHASE_MAP.md) — Phase 0 through Phase 10 map of the Toy-to-Tool build.
+- [Phase Map](PHASE_MAP.md) — Phase 0 through Phase 11 map of the Toy-to-Tool build.
 - [Known Limitations](KNOWN_LIMITATIONS.md) — Boundaries, uncertainty zones, and local-only limits.
 
 ## Measurement
@@ -16,6 +16,7 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 - [Phase 7 Report Export Status](PHASE_7_REPORT_EXPORT_STATUS.md) — Claim Ladder and local report layer.
 - [Phase 8 Calibration Status](PHASE_8_CALIBRATION_STATUS.md) — Fixtures, calibration, and regression pressure.
 - [Phase 9 Recognition Field Status](PHASE_9_RECOGNITION_FIELD_STATUS.md) — Local context-pressure simulation.
+- [Phase 11 Hush Mask Studio Status](PHASE_11_HUSH_MASK_STUDIO_STATUS.md) — Hush-native mask library, custom samples, profile matching, and swap workflow.
 
 ## Governance
 
