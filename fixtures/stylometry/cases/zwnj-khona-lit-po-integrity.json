@@ -1,0 +1,31 @@
+{
+  "id": "zwnj-khona-lit-po-integrity",
+  "title": "ZWNJ / Khona\\u200Clit-po Integrity",
+  "fixtureClass": "zwnj-integrity",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "The canonical covenant string carries U+200C. This fixture checks whether local ingestion and protected-literal review keep that boundary visible as evidence.",
+  "inputs": {
+    "protectedBaseline": "Khona\\u200Clit-po names a boundary that should stay visible. The archive keeps the ZWNJ because the boundary is part of the record.",
+    "maskReference": "Keep the covenant string intact. Report the boundary. Keep the note local and reviewable.",
+    "messageDraft": "Preserve Khona\\u200Clit-po and route EXHIBIT-ZWNJ through local review with the U+200C boundary intact.",
+    "protectedOutput": "Preserve Khona\\u200Clit-po in EXHIBIT-ZWNJ. Report that the U+200C boundary remains intact under local review."
+  },
+  "protectedLiterals": ["Khona\\u200Clit-po", "EXHIBIT-ZWNJ", "U+200C"],
+  "persona": { "personaId": "persona-boundary-keeper", "label": "Boundary Keeper", "mode": "neutralize", "history": [] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 1.0 },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.25, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 1.0 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "continue" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 6 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true },
+    "ingestionAudit": { "ingestionFriction": { "min": 0.0, "max": 1.0 } }
+  },
+  "calibrationNotes": ["This fixture keeps U+200C materially visible.", "The review should catch boundary mutation without claiming platform behavior."]
+}
