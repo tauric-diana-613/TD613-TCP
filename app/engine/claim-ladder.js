@@ -9,41 +9,97 @@ export const CLAIM_LEVELS = Object.freeze([
   { level: 8, id: 'requires-external-corroboration', label: 'Requires external corroboration', allowedClaim: 'Any stronger authorship or platform claim requires external corroboration.' }
 ]);
 
+export const FORBIDDEN_CONCLUSION_PHRASES = Object.freeze([
+  'anonymous',
+  'untraceable',
+  'platform-proof',
+  'guaranteed safe',
+  'same author',
+  'not same author',
+  'identity proven',
+  'identity disproven',
+  'cannot be linked',
+  'will evade detection',
+  'safe to publish'
+]);
+
+export const FORBIDDEN_CONCLUSION_DISCLAIMERS = Object.freeze([
+  'This report does not claim anonymity.',
+  'This report does not claim untraceability.',
+  'This report does not claim platform-proof behavior.',
+  'This report does not issue same-author or not-same-author identity verdicts.'
+]);
+
 const FORBIDDEN_PATTERNS = Object.freeze([
-  /\banonymous\b/i,
-  /\buntraceable\b/i,
-  /\bplatform-proof\b/i,
-  /\bguaranteed safe\b/i,
-  /\bsame author\b/i,
-  /\bnot same author\b/i,
-  /\bidentity proven\b/i,
-  /\bidentity disproven\b/i,
-  /\bcannot be linked\b/i,
-  /\bwill evade detection\b/i,
-  /\bsafe to publish\b/i
+  { label: 'anonymous', pattern: /\banonymous\b/i },
+  { label: 'untraceable', pattern: /\buntraceable\b/i },
+  { label: 'platform-proof', pattern: /\bplatform[-\s]proof\b/i },
+  { label: 'guaranteed safe', pattern: /\bguaranteed\s+safe\b/i },
+  { label: 'same author', pattern: /\bsame\s+author\b/i },
+  { label: 'not same author', pattern: /\bnot\s+same\s+author\b/i },
+  { label: 'identity proven', pattern: /\bidentity\s+proven\b/i },
+  { label: 'identity disproven', pattern: /\bidentity\s+disproven\b/i },
+  { label: 'cannot be linked', pattern: /\bcannot\s+be\s+linked\b/i },
+  { label: 'will evade detection', pattern: /\bwill\s+evade\s+detection\b/i },
+  { label: 'safe to publish', pattern: /\bsafe\s+to\s+publish\b/i }
 ]);
 
 const DISCLAIMER_PATTERNS = Object.freeze([
-  /does not claim\s+anonymous/i,
-  /does not claim\s+anonymity/i,
-  /does not claim\s+untraceability/i,
-  /does not claim\s+platform-proof/i,
-  /does not issue\s+same-author/i,
-  /does not issue\s+same author/i,
-  /does not issue\s+not-same-author/i,
-  /does not issue\s+not same author/i,
-  /does not prove\s+identity/i,
-  /no\s+anonymity\s+conclusion/i,
-  /no\s+untraceability\s+conclusion/i,
-  /no\s+platform-proof\s+conclusion/i,
-  /no\s+same-author/i,
-  /no\s+not-same-author/i
+  /does\s+not\s+claim\s+(?:anonymous|anonymity|untraceability|platform[-\s]proof)/i,
+  /does\s+not\s+issue\s+(?:same[-\s]author|not[-\s]same[-\s]author|same\s+author|not\s+same\s+author)/i,
+  /does\s+not\s+prove\s+(?:identity|anonymity|platform\s+outcome|publication\s+safety)/i,
+  /no\s+(?:anonymity|untraceability|platform[-\s]proof|same[-\s]author|not[-\s]same[-\s]author)\s+(?:conclusion|claim|verdict)/i,
+  /not\s+an\s+(?:anonymity|untraceability|platform[-\s]proof|identity)\s+(?:claim|verdict|guarantee)/i,
+  /refuses?\s+(?:identity|platform|anonymity|untraceability)\s+(?:verdicts?|guarantees?|claims?)/i
 ]);
 
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
 const unique = (...groups) => [...new Set(groups.flat().filter(Boolean))];
+const clamp = (value, min = 0, max = 1) => Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : null;
 const metric = (vector = {}, key) => Number.isFinite(vector?.scores?.[key]) ? vector.scores[key] : null;
 const stateOf = (decision = {}) => decision?.state || 'unknown';
+
+function wordsInIntent(intent = '') {
+  return String(intent || '').toLowerCase();
+}
+
+function hasMetrics(vector = {}) {
+  return Boolean(vector && typeof vector === 'object' && vector.scores && Object.keys(vector.scores).length > 0);
+}
+
+function latestLedgerRow(ledger = {}) {
+  return asArray(ledger.rows).at(-1) || null;
+}
+
+function ledgerRowCount(ledger = {}) {
+  return asArray(ledger.rows).length;
+}
+
+function acceptedLedgerCount(ledger = {}) {
+  return asArray(ledger.accepted?.iterationIds).length || asArray(ledger.rows).filter((row) => row?.status?.accepted).length;
+}
+
+function changedDimensionCount(input = {}) {
+  const vector = input.escapeVector || {};
+  const latest = latestLedgerRow(input.iterationLedger || {}) || {};
+  return unique(input.changedDimensions, vector.changedDimensions, latest.changedDimensions).length;
+}
+
+function personaAcceptedCount(personaSummary = {}, iterationLedger = {}) {
+  const direct = personaSummary.acceptedCount ?? personaSummary.entryCount ?? personaSummary.memory?.acceptedCount;
+  if (Number.isFinite(direct)) return direct;
+  return acceptedLedgerCount(iterationLedger);
+}
+
+function personaLinkabilityStatus(personaSummary = {}) {
+  return String(personaSummary.field?.linkabilityStatus || personaSummary.linkabilityStatus || personaSummary.status || '').toLowerCase();
+}
+
+function disclaimerContext(text = '', index = 0) {
+  const start = Math.max(0, index - 120);
+  const end = Math.min(text.length, index + 160);
+  return text.slice(start, end);
+}
 
 export function normalizeClaimLevel(level) {
   if (typeof level === 'object' && level?.id) return CLAIM_LEVELS.find((entry) => entry.id === level.id) || CLAIM_LEVELS[0];
@@ -57,23 +113,21 @@ export function describeClaimLevel(level) {
   return `${normalized.level}. ${normalized.label}: ${normalized.allowedClaim}`;
 }
 
-function disclaimerContext(text = '', index = 0) {
-  const start = Math.max(0, index - 80);
-  const end = Math.min(text.length, index + 120);
-  return text.slice(start, end);
-}
-
 export function detectForbiddenClaims(text = '') {
   const value = String(text ?? '');
   const matches = [];
-  for (const pattern of FORBIDDEN_PATTERNS) {
-    const found = value.match(pattern);
+  for (const item of FORBIDDEN_PATTERNS) {
+    const found = value.match(item.pattern);
     if (!found) continue;
     const context = disclaimerContext(value, found.index || 0);
     if (DISCLAIMER_PATTERNS.some((safe) => safe.test(context))) continue;
-    matches.push(found[0]);
+    matches.push(item.label);
   }
-  return { hasForbiddenClaim: matches.length > 0, matches: unique(matches.map((m) => m.toLowerCase())), severity: matches.length ? 'block' : 'clear' };
+  return {
+    hasForbiddenClaim: matches.length > 0,
+    matches: unique(matches),
+    severity: matches.length ? 'block' : 'clear'
+  };
 }
 
 export function collectClaimLimitations(input = {}) {
@@ -86,22 +140,29 @@ export function collectClaimLimitations(input = {}) {
     'The report summarizes style pressure and movement, not author identity.',
     'Short samples, topic overlap, and entity overlap can distort stylometry signals.'
   ];
-  if (!vector?.scores) limitations.push('Escape Vector metrics are missing or incomplete.');
+  if (!hasMetrics(vector)) limitations.push('Escape Vector metrics are missing or incomplete.');
   if (stateOf(decision) === 'hold') limitations.push('Controller state is hold; evidence remains insufficient or unstable.');
-  if ((persona.entryCount || 0) < 3 && (persona.acceptedCount || 0) < 3) limitations.push('Persona memory is underfit for stable continuity claims.');
-  if (!asArray(ledger.rows).length) limitations.push('Iteration ledger history is empty or unavailable.');
+  if (metric(vector, 'semanticFidelity') === null) limitations.push('Semantic fidelity is unavailable.');
+  if (metric(vector, 'ingestionFriction') === null && !input.ingestionAudit) limitations.push('Ingestion Friction is unavailable or not supplied.');
+  if (metric(vector, 'apertureRecaptureRisk') === null) limitations.push('Aperture recapture risk is unavailable or not supplied.');
+  if (personaAcceptedCount(persona, ledger) < 3) limitations.push('Persona memory is underfit for stable continuity claims.');
+  if (!ledgerRowCount(ledger)) limitations.push('Iteration ledger history is empty or unavailable.');
   if (metric(vector, 'ingestionFriction') >= 0.55) limitations.push('High ingestion friction may affect reproducibility and parser stability.');
   if (metric(vector, 'semanticFidelity') !== null && metric(vector, 'semanticFidelity') < 0.82) limitations.push('Semantic fidelity is below review threshold.');
+  if (metric(vector, 'apertureRecaptureRisk') >= 0.55) limitations.push('Aperture recapture risk is elevated.');
   return unique(limitations);
 }
 
-export function evaluateClaimCeiling(input = {}) {
-  const vector = input.escapeVector || {};
-  const scores = vector.scores || {};
-  const decision = input.controllerDecision || {};
-  const persona = input.personaSummary || {};
-  const ledger = input.iterationLedger || {};
-  const reportIntent = String(input.reportIntent || 'local-review').toLowerCase();
+export function evaluateClaimCeiling({
+  escapeVector = {},
+  ingestionAudit = {},
+  controllerDecision = {},
+  personaSummary = {},
+  iterationLedger = {},
+  reportIntent = 'local-review',
+  changedDimensions = []
+} = {}) {
+  const vector = escapeVector || {};
   const reasons = [];
   const warnings = [];
   let level = 1;
@@ -113,45 +174,78 @@ export function evaluateClaimCeiling(input = {}) {
   const recapture = metric(vector, 'apertureRecaptureRisk');
   const linkability = metric(vector, 'maskLinkability');
   const drift = metric(vector, 'maskDrift');
-  const controllerState = stateOf(decision);
-  const lastRow = asArray(ledger.rows).at(-1) || {};
-  const changed = asArray(input.changedDimensions || vector.changedDimensions || lastRow.changedDimensions);
+  const ingestion = metric(vector, 'ingestionFriction') ?? (Number.isFinite(ingestionAudit.ingestionFriction) ? ingestionAudit.ingestionFriction : null);
+  const controllerState = stateOf(controllerDecision);
+  const dimensionsMoved = changedDimensionCount({ escapeVector: vector, iterationLedger, changedDimensions });
+  const intent = wordsInIntent(reportIntent);
 
-  if (reportIntent.includes('identity') || reportIntent.includes('platform') || reportIntent.includes('proof') || reportIntent.includes('publish')) {
+  if (/identity|same\s*author|not\s*same\s*author|platform|proof|publish|anonymous|untraceable|evade/i.test(intent)) {
     level = 8;
     reasons.push('Requested claim exceeds local TD613-TCP measurement authority.');
-  } else if (!scores || Object.keys(scores).length === 0 || !Number.isFinite(maskFit) || !Number.isFinite(semantic)) {
+  } else if (!hasMetrics(vector) || !Number.isFinite(maskFit) || !Number.isFinite(semantic)) {
     level = 1;
     reasons.push('Required metrics are missing or unavailable.');
   } else if (controllerState === 'hold') {
     level = 1;
     reasons.push('Controller is holding for review.');
   } else {
-    if (semantic >= 0.72 && maskFit >= 0.22) { level = 2; reasons.push('Output shows limited surface resemblance to the mask.'); }
-    if (semantic >= 0.78 && maskFit >= 0.35) { level = 3; reasons.push('Output shows measurable style contact with the mask.'); }
-    if (semantic >= 0.82 && maskFit >= 0.45 && changed.length >= 2 && controllerState !== 'hold') { level = 4; reasons.push('Feature movement is traceable under local metrics.'); }
-    if (semantic >= 0.86 && maskFit >= 0.58 && ['continue', 'seal'].includes(controllerState)) { level = 5; reasons.push('Mask fit and semantic preservation support local mask-fit candidacy.'); }
-    if (semantic >= 0.86 && Number.isFinite(sourceResidual) && sourceResidual <= 0.45 && Number.isFinite(delta) && delta > 0 && ['continue', 'seal'].includes(controllerState) && (!Number.isFinite(recapture) || recapture < 0.55)) { level = 6; reasons.push('Source residual is reduced with positive safe delta and reviewable recapture risk.'); }
-    const acceptedCount = persona.acceptedCount ?? persona.entryCount ?? ledger.accepted?.iterationIds?.length ?? 0;
-    const linkStatus = persona.field?.linkabilityStatus || persona.linkabilityStatus || '';
-    if (level >= 6 && acceptedCount >= 3 && linkStatus !== 'overfit-risk' && linkStatus !== 'quarantine' && (!Number.isFinite(linkability) || linkability < 0.72) && (!Number.isFinite(drift) || drift < 0.55)) {
+    if (semantic >= 0.70 && maskFit >= 0.20) {
+      level = 2;
+      reasons.push('Output shows limited surface resemblance to the target mask.');
+    }
+    if (semantic >= 0.76 && maskFit >= 0.34) {
+      level = 3;
+      reasons.push('Output shows measurable style contact with the target mask.');
+    }
+    if (semantic >= 0.80 && maskFit >= 0.44 && dimensionsMoved >= 2 && controllerState !== 'hold') {
+      level = 4;
+      reasons.push('Feature movement is traceable under local metrics.');
+    }
+    if (semantic >= 0.84 && maskFit >= 0.58 && ['continue', 'seal'].includes(controllerState)) {
+      level = 5;
+      reasons.push('Mask fit and semantic preservation support local mask-fit candidacy.');
+    }
+    if (
+      semantic >= 0.84 &&
+      Number.isFinite(sourceResidual) && sourceResidual <= 0.45 &&
+      Number.isFinite(delta) && delta > 0 &&
+      ['continue', 'seal'].includes(controllerState) &&
+      (!Number.isFinite(recapture) || recapture < 0.55)
+    ) {
+      level = 6;
+      reasons.push('Source residual is reduced with positive safe delta and reviewable recapture risk.');
+    }
+    const acceptedCount = personaAcceptedCount(personaSummary, iterationLedger);
+    const linkStatus = personaLinkabilityStatus(personaSummary);
+    const stableIntent = ['stable-pseudonym', 'stable pseudonym', 'continuity'].some((token) => intent.includes(token));
+    if (
+      level >= 6 &&
+      stableIntent &&
+      acceptedCount >= 3 &&
+      !['overfit-risk', 'quarantine'].includes(linkStatus) &&
+      (!Number.isFinite(linkability) || linkability < 0.72) &&
+      (!Number.isFinite(drift) || drift < 0.55)
+    ) {
       level = 7;
-      reasons.push('Persona history is sufficient for local stable pseudonymous continuity candidacy.');
+      reasons.push('Persona history supports local stable pseudonymous continuity candidacy.');
     }
   }
 
-  if (level === 8) warnings.push('External corroboration required for stronger claims.');
+  if (level === 8) warnings.push('external-corroboration-required');
   if (semantic !== null && semantic < 0.82) warnings.push('semantic-fidelity-below-review-band');
   if (Number.isFinite(recapture) && recapture >= 0.55) warnings.push('aperture-recapture-elevated');
   if (Number.isFinite(linkability) && linkability >= 0.72) warnings.push('mask-linkability-elevated');
+  if (Number.isFinite(ingestion) && ingestion >= 0.55) warnings.push('ingestion-friction-elevated');
 
   const claim = normalizeClaimLevel(level);
-  return { ...claim, reasons: unique(reasons), limitations: collectClaimLimitations(input), forbiddenConclusions: [
-    'This report does not claim anonymity.',
-    'This report does not claim untraceability.',
-    'This report does not claim platform-proof behavior.',
-    'This report does not issue same-author or not-same-author identity verdicts.'
-  ], warnings: unique(warnings) };
+  const inputForLimits = { escapeVector: vector, ingestionAudit, controllerDecision, personaSummary, iterationLedger };
+  return {
+    ...claim,
+    reasons: unique(reasons),
+    limitations: collectClaimLimitations(inputForLimits),
+    forbiddenConclusions: [...FORBIDDEN_CONCLUSION_DISCLAIMERS],
+    warnings: unique(warnings)
+  };
 }
 
 export function enforceClaimLanguage(input = {}) {
