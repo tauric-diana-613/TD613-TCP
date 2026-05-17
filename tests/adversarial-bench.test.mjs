@@ -1,6 +1,7 @@
 import assert from 'assert';
 import fs from 'fs';
 import { JSDOM } from 'jsdom';
+import { detectForbiddenClaims } from '../app/engine/claim-ladder.js';
 
 function loadHtml(path) { return fs.readFileSync(path, 'utf8'); }
 function installDom(html, url = 'http://localhost/adversarial-bench.html') {
@@ -14,16 +15,40 @@ function installDom(html, url = 'http://localhost/adversarial-bench.html') {
 
 const html = loadHtml('app/adversarial-bench.html');
 installDom(html);
-for (const id of ['protectedBaselineInput', 'maskReferenceInput', 'messageDraftInput', 'protectedOutputInput', 'escapeVectorPanel', 'controllerPanel', 'personaMemoryPanel', 'iterationPreviewPanel', 'exportLedgerJsonBtn', 'includeLedgerTextsToggle', 'ledgerExportOutput']) assert(document.getElementById(id), `missing ${id}`);
+for (const id of [
+  'protectedBaselineInput',
+  'maskReferenceInput',
+  'messageDraftInput',
+  'protectedOutputInput',
+  'escapeVectorPanel',
+  'controllerPanel',
+  'personaMemoryPanel',
+  'iterationPreviewPanel',
+  'exportLedgerJsonBtn',
+  'includeLedgerTextsToggle',
+  'ledgerExportOutput',
+  'reportExportPanel',
+  'claimCeilingPanel',
+  'exportReportJsonBtn',
+  'exportReportMarkdownBtn',
+  'reportExportOutput'
+]) assert(document.getElementById(id), `missing ${id}`);
 
 const bench = await import(`../app/adversarial-bench.mjs?test=${Date.now()}`);
-assert.equal(typeof bench.initAdversarialBench, 'function');
-assert.equal(typeof bench.analyzeProtectedOutput, 'function');
-assert.equal(typeof bench.generateMaskedOutput, 'function');
-assert.equal(typeof bench.acceptOutputIntoPersonaMemory, 'function');
-assert.equal(typeof bench.renderEscapeVector, 'function');
-assert.equal(typeof bench.renderControllerDecision, 'function');
-assert.equal(typeof bench.exportLedgerJson, 'function');
+for (const fn of [
+  'initAdversarialBench',
+  'analyzeProtectedOutput',
+  'generateMaskedOutput',
+  'acceptOutputIntoPersonaMemory',
+  'renderEscapeVector',
+  'renderControllerDecision',
+  'renderClaimCeiling',
+  'buildCurrentReportPayload',
+  'exportCurrentReportJson',
+  'exportCurrentReportMarkdown',
+  'exportLedgerJson'
+]) assert.equal(typeof bench[fn], 'function', `missing export ${fn}`);
+
 bench.initAdversarialBench(document);
 assert(bench.benchState.iterationLedger);
 assert.equal(bench.benchState.iterationLedger.rows.length, 0);
@@ -50,6 +75,8 @@ assert.equal(bench.benchState.iterationLedger.rows.length, 1);
 assert.equal(bench.benchState.iterationLedger.rows[0].texts.protectedBaseline, null);
 assert.equal(bench.benchState.iterationLedger.rows[0].texts.messageDraft, null);
 assert.equal(bench.benchState.iterationLedger.rows[0].texts.protectedOutput, null);
+assert(bench.benchState.claimCeiling);
+assert(document.getElementById('claimCeilingPanel').textContent.includes('Claim ceiling'));
 
 const vectorText = document.getElementById('escapeVectorPanel').textContent;
 assert(vectorText.includes('Source Residual'));
@@ -74,6 +101,34 @@ const exportedWithText = bench.exportLedgerJson();
 assert(exportedWithText.includes(beforeBaseline));
 assert(exportedWithText.includes(beforeDraft));
 assert(exportedWithText.includes(output.value));
+document.getElementById('includeLedgerTextsToggle').checked = false;
+
+const reportPayload = bench.buildCurrentReportPayload();
+assert.equal(reportPayload.version, 'phase-7');
+assert(reportPayload.claimCeiling);
+assert(reportPayload.limitations.length);
+assert.equal(reportPayload.reproducibility.sourceTextIncluded, false);
+assert.equal(reportPayload.reproducibility.outputTextIncluded, false);
+
+const reportJson = bench.exportCurrentReportJson();
+assert(reportJson.includes('claimCeiling'));
+assert(reportJson.includes('limitations'));
+assert(reportJson.includes('sourceResidualRisk'));
+assert(!reportJson.includes(beforeBaseline));
+assert(!reportJson.includes(beforeDraft));
+assert(!reportJson.includes(output.value));
+assert.equal(detectForbiddenClaims(reportJson).hasForbiddenClaim, false);
+assert(document.getElementById('reportExportOutput').value.includes('claimCeiling'));
+
+const reportMarkdown = bench.exportCurrentReportMarkdown();
+assert(reportMarkdown.includes('# TD613-TCP Local Stylometry Report'));
+assert(reportMarkdown.includes('## Claim Ceiling'));
+assert(reportMarkdown.includes('## Limitations'));
+assert(!reportMarkdown.includes(beforeBaseline));
+assert(!reportMarkdown.includes(beforeDraft));
+assert(!reportMarkdown.includes(output.value));
+assert.equal(detectForbiddenClaims(reportMarkdown).hasForbiddenClaim, false);
+assert(document.getElementById('reportExportOutput').value.includes('TD613-TCP Local Stylometry Report'));
 
 const initialAccepted = bench.benchState.personaMemory.memory.acceptedCount;
 const latestBeforeAccept = bench.benchState.iterationLedger.rows.at(-1);
@@ -100,7 +155,7 @@ if (state === 'restore' || state === 'hold') {
 const deckDom = new JSDOM(loadHtml('app/deck.html'));
 for (const id of ['voiceA', 'voiceB', 'compareBtn', 'swapCadencesBtn', 'savePersonaBtn', 'shellDuel']) assert(deckDom.window.document.getElementById(id), `deck missing ${id}`);
 
-const rendered = document.body.textContent.toLowerCase();
-for (const forbidden of ['untraceable', 'platform-proof', 'guaranteed safe', 'same author', 'not same author']) assert(!rendered.includes(forbidden), `forbidden positive claim leaked: ${forbidden}`);
+const rendered = document.body.textContent;
+assert.equal(detectForbiddenClaims(rendered).hasForbiddenClaim, false);
 
 console.log('adversarial-bench tests passed');
