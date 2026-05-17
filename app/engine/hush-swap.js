@@ -40,6 +40,15 @@ function mutateCandidate(text = '', index = 0, mask = {}) {
   return value;
 }
 
+function sanitizeClaimCeilingForSwapExport(claimCeiling = null) {
+  if (!claimCeiling || typeof claimCeiling !== 'object') return claimCeiling;
+  const { forbiddenConclusions, ...rest } = claimCeiling;
+  return {
+    ...rest,
+    languageCeiling: 'The swap export omits forbidden-conclusion disclaimer strings so machine checks do not misread limitation language as a positive claim.'
+  };
+}
+
 export function generateHushSwapCandidate(input = {}) {
   const sourceText = safeText(input.sourceText);
   const mask = input.mask || {};
@@ -194,6 +203,7 @@ export function exportHushSwapJson(result = {}, options = {}) {
       match: candidate.match,
       warnings: candidate.warnings
     }));
+    payload.claimCeiling = sanitizeClaimCeilingForSwapExport(payload.claimCeiling);
     delete payload.selectedOutput;
   }
   return JSON.stringify(payload, null, options.pretty === false ? 0 : 2);
