@@ -15,11 +15,24 @@ function installDom(html, url = 'http://localhost/adversarial-bench.html') {
 
 const html = loadHtml('app/adversarial-bench.html');
 installDom(html);
+assert(document.title.includes('TD613 Hush'));
+assert(document.body.textContent.includes('TD613 Hush'));
 for (const id of [
   'protectedBaselineInput',
   'maskReferenceInput',
   'messageDraftInput',
   'protectedOutputInput',
+  'hushBuiltInTabBtn',
+  'hushCustomizeTabBtn',
+  'hushCustomMaskName',
+  'hushCustomMaskSampleInput',
+  'hushAddSampleBtn',
+  'hushSaveCustomMaskBtn',
+  'hushMaskProfilePanel',
+  'hushProfileMatchPanel',
+  'hushSwapWarningsPanel',
+  'exportHushMaskProfileBtn',
+  'exportHushSwapJsonBtn',
   'escapeVectorPanel',
   'controllerPanel',
   'personaMemoryPanel',
@@ -43,6 +56,16 @@ for (const id of [
 const bench = await import(`../app/adversarial-bench.mjs?test=${Date.now()}`);
 for (const fn of [
   'initAdversarialBench',
+  'initHushMaskStudio',
+  'selectHushMask',
+  'switchHushMaskTab',
+  'addHushCustomMaskSample',
+  'saveHushCustomMask',
+  'renderHushMaskProfile',
+  'renderHushProfileMatch',
+  'runHushSwap',
+  'exportCurrentHushMaskProfile',
+  'exportCurrentHushSwapJson',
   'analyzeProtectedOutput',
   'generateMaskedOutput',
   'acceptOutputIntoPersonaMemory',
@@ -60,7 +83,23 @@ bench.initAdversarialBench(document);
 assert(bench.benchState.iterationLedger);
 assert.equal(bench.benchState.iterationLedger.rows.length, 0);
 assert(document.getElementById('recognitionContextType').options.length >= 4);
+assert(document.getElementById('maskFieldSelect').options.length >= 20);
 assert.equal(bench.benchState.recognitionContextType, 'group-chat');
+assert(bench.benchState.hushMasks.length >= 20);
+assert(bench.benchState.selectedHushMask);
+assert(document.getElementById('hushMaskProfilePanel').textContent.includes('Profile status'));
+
+bench.switchHushMaskTab('customize');
+assert.equal(document.getElementById('hushCustomizePanel').hidden, false);
+document.getElementById('hushCustomMaskName').value = 'Test River Mask';
+document.getElementById('hushCustomMaskSampleInput').value = 'This is a custom sample with a practical rhythm. It keeps the file label visible and stays ordinary enough for local testing.';
+bench.addHushCustomMaskSample();
+assert(bench.benchState.activeCustomMask.sampleCount >= 1);
+assert(document.getElementById('hushCustomMaskSummary').textContent.includes('Samples'));
+bench.saveHushCustomMask();
+assert(document.getElementById('maskFieldSelect').textContent.includes('Test River Mask'));
+assert.equal(bench.benchState.selectedHushMask.label, 'Test River Mask');
+bench.switchHushMaskTab('built-in');
 
 const baseline = document.getElementById('protectedBaselineInput');
 const mask = document.getElementById('maskReferenceInput');
@@ -90,8 +129,23 @@ assert.equal(bench.benchState.iterationLedger.rows[0].texts.protectedOutput, nul
 assert(bench.benchState.claimCeiling);
 assert(bench.benchState.contextProfile);
 assert(bench.benchState.recognitionField);
+assert(bench.benchState.hushProfileMatch);
 assert.equal(bench.benchState.recognitionField.contextType, 'group-chat');
 assert(document.getElementById('claimCeilingPanel').textContent.includes('Claim ceiling'));
+assert(document.getElementById('hushProfileMatchPanel').textContent.includes('Mask Match'));
+
+const swapResult = bench.runHushSwap();
+assert(swapResult.selectedOutput);
+assert(bench.benchState.hushSwapResult);
+assert(document.getElementById('protectedOutputInput').value.length > 0);
+assert(document.getElementById('hushProfileMatchPanel').textContent.includes('Match score'));
+
+const hushMaskExport = bench.exportCurrentHushMaskProfile();
+assert(hushMaskExport.includes('phase-11'));
+assert(!hushMaskExport.includes('This is a custom sample with a practical rhythm'));
+const hushSwapExport = bench.exportCurrentHushSwapJson();
+assert(hushSwapExport.includes('phase-11'));
+assert(!hushSwapExport.includes(document.getElementById('protectedOutputInput').value));
 
 const vectorText = document.getElementById('escapeVectorPanel').textContent;
 assert(vectorText.includes('Source Residual'));
@@ -109,7 +163,7 @@ assert(recognitionText.includes('Entity Leakage'));
 assert(recognitionText.includes('hidden platform classifiers') || recognitionText.includes('route:'));
 
 const controllerText = document.getElementById('controllerPanel').textContent;
-assert(/Continue steering|Hold for review|Rotate Persona|Restore semantics|Locally sealable/.test(controllerText));
+assert(/Continue steering|Hold for review|Rotate mask|Restore semantics|Locally sealable/.test(controllerText));
 assert(controllerText.includes('Next instruction'));
 
 const exportedDefault = bench.exportLedgerJson();
