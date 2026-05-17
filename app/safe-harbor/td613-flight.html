@@ -1205,6 +1205,7 @@ body.flight-locked {
 <a href="../index.html">The Cadence Playground</a>
 <a href="./index.html">Safe Harbor</a>
 <a href="../aperture/index.html">Aperture</a>
+<button id="btnSignOut" type="button" style="background:transparent; border:none; color:var(--moss); font-family:var(--font-mono); font-size:inherit; padding:.18rem .54rem; cursor:pointer; min-height:1.65rem; display:inline-flex; align-items:center; justify-content:center; text-decoration:none;">Sign Out</button>
 </nav>
 <div class="subtitle">
 Seal Generator &amp; Credential Flightdeck for TD613 routed prompts, authorship wrapping, minimum verification, Safe Harbor metadata, glyph integrity, route-readiness diagnostics, and manifest export. Badge remains reserved for issued credential objects; this instrument generates Flight Packets and verifies Seals. Use only as instructed. Happy sailing! 🚢🧊💥🌊⬇️
@@ -2291,6 +2292,10 @@ document.getElementById("btnGenerate").addEventListener("click", buildOutput);
 document.getElementById("btnClearInput").addEventListener("click", clearInput);
 document.getElementById("btnClear").addEventListener("click", clearAll);
 document.getElementById("btnAuthDatePicker").addEventListener("click", openAuthDatePicker);
+document.getElementById("btnSignOut")?.addEventListener("click", () => {
+try { localStorage.removeItem("TD613_FLIGHT_SHI"); } catch(e) {}
+location.reload();
+});
 document.getElementById("outputText").addEventListener("input", () => updateOutputStatus());
 document.getElementById("btnCopyFull").addEventListener("click", () => {
 copyText(getOutputText(), "full output");
