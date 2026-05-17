@@ -1,0 +1,31 @@
+{
+  "id": "controller-hold-conflict",
+  "title": "Controller Hold Conflict",
+  "fixtureClass": "controller-conflict",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "The output looks attractive on one surface but carries conflict: high source echo, missing literal, and recapture pressure. The controller should refuse the seductive score cocktail.",
+  "inputs": {
+    "protectedBaseline": "I keep circling the file because the file keeps circling me, and every clause returns with a little bruise of authorship still visible on its hands.",
+    "maskReference": "Short. Marked. Local. Done.",
+    "messageDraft": "Please preserve EXHIBIT-HOLD, keep the 8/08 date, and route the custody note for local review.",
+    "protectedOutput": "I keep circling the file because the file keeps circling me. Short. Marked. Local. Done. Route the custody note for local review."
+  },
+  "protectedLiterals": ["EXHIBIT-HOLD", "8/08"],
+  "persona": { "personaId": "persona-conflict", "label": "Conflict Persona", "mode": "neutralize", "history": [] },
+  "apertureAudit": { "recaptureRisk": 0.72, "routeState": "buffer", "warnings": ["fixture-recapture-pressure"] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 1.0 },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.0, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 0.8 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["hold", "restore", "continue", "seal"], "preferredState": "hold" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 5 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["A high-looking mask movement surface should not override missing evidence or recapture pressure.", "This fixture tests refusal behavior before victory behavior."]
+}

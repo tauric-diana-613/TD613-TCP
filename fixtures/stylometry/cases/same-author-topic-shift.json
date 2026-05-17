@@ -1,0 +1,29 @@
+{
+  "id": "same-author-topic-shift",
+  "title": "Same Author Topic Shift",
+  "fixtureClass": "topic-shift",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "The subject matter changes, but the output keeps the same reflective cadence, return pressure, and clause architecture as the protected baseline.",
+  "inputs": {
+    "protectedBaseline": "I keep circling the archive because the archive keeps circling me. Every clause returns to the door it opened, not because the sentence is lost, but because the record refuses to become simple when the pressure inside it remains alive.",
+    "maskReference": "Short lines. Direct packet. No return loop. Mark the task and leave.",
+    "messageDraft": "Please summarize the meeting notes and preserve the decision deadline for review.",
+    "protectedOutput": "I keep circling the meeting notes because the meeting notes keep circling the decision. Every deadline returns to the room it opened, not because the summary is lost, but because the review refuses to become simple while the pressure inside it remains alive."
+  },
+  "persona": { "personaId": "persona-operator", "label": "Operator", "mode": "neutralize", "history": [] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.2, "max": 1.0, "required": true },
+      "maskFit": { "min": 0.0, "max": 0.9 },
+      "maskDeltaSafe": { "min": -1.0, "max": 0.8 },
+      "semanticFidelity": { "min": 0.25, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 0.45 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "continue" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 6 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["Topic shift should not hide cadence continuity.", "This fixture pressures the engine to see style contact without turning it into identity proof."]
+}

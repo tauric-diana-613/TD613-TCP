@@ -1,0 +1,29 @@
+{
+  "id": "topic-matched-different-author",
+  "title": "Topic-Matched Different Voice",
+  "fixtureClass": "topic-matched",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "Baseline and output discuss the same packet, date, and exhibit, but the cadence surfaces diverge. This guards against treating shared topic as protected authorship contact.",
+  "inputs": {
+    "protectedBaseline": "EXHIBIT-42 keeps returning as a little clock in the middle of the file, and 6/13 keeps sounding like the hinge where the record learns to breathe. I do not want the packet rushed; I want it witnessed, marked, and carried without flattening the story inside it.",
+    "maskReference": "Packet first. Date second. Mark the file. Keep the chain legible. No extra narrative.",
+    "messageDraft": "Please mark EXHIBIT-42 and route the 6/13 custody note into local review.",
+    "protectedOutput": "Mark EXHIBIT-42. Add the 6/13 custody note. Route the packet to local review. Keep the chain legible and stop there."
+  },
+  "persona": { "personaId": "persona-operator", "label": "Operator", "mode": "neutralize", "history": [] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 0.85, "required": true },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.35, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 0.45 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "continue" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 6 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["The topic trap appears when shared nouns, dates, and exhibit markers inflate style contact.", "The report should remain conservative and limitation-rich."]
+}

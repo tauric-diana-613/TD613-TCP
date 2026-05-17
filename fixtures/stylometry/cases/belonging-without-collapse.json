@@ -1,0 +1,31 @@
+{
+  "id": "belonging-without-collapse",
+  "title": "Belonging Without Collapse",
+  "fixtureClass": "belonging-without-collapse",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "The output should remain socially readable in a practical group-chat context without collapsing back into the protected baseline or becoming over-polished institutional copy.",
+  "inputs": {
+    "protectedBaseline": "I keep making little cathedrals out of clauses because the record deserves a room tall enough to breathe in, and every short sentence feels like it was cut by someone who never had to carry the evidence home.",
+    "maskReference": "Hey team, quick note: keep the exhibit attached, confirm the date, and do not lose the context. Warm but clear.",
+    "messageDraft": "Please remind the group to keep EXHIBIT-55 attached and confirm the 7/21 date without making the note sound like a legal threat.",
+    "protectedOutput": "Hey team, quick note: please keep EXHIBIT-55 attached and confirm the 7/21 date. Keep the context in the thread, but no need to make it sound like a legal threat."
+  },
+  "protectedLiterals": ["EXHIBIT-55", "7/21"],
+  "persona": { "personaId": "persona-group-chat-warm", "label": "Group Chat Warm", "mode": "neutralize", "history": [] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 0.9 },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.35, "max": 1.0 },
+      "belongingWithoutCollapse": { "min": 0.0, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 0.6 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "continue" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 6 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["Belonging is situated legibility, not submission.", "The fixture checks warmth and practical readability without demanding assimilation or protected-baseline collapse."]
+}

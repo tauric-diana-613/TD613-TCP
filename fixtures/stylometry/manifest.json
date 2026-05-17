@@ -1,0 +1,40 @@
+{
+  "version": "phase-8",
+  "description": "TD613-TCP local stylometry calibration fixtures.",
+  "claim": "Fixtures test local metric behavior. They do not establish identity truth.",
+  "fixtures": [
+    { "id": "same-author-basic", "path": "./cases/same-author-basic.json", "fixtureClass": "same-author", "priority": "core" },
+    { "id": "different-author-basic", "path": "./cases/different-author-basic.json", "fixtureClass": "different-author", "priority": "core" },
+    { "id": "topic-matched-different-author", "path": "./cases/topic-matched-different-author.json", "fixtureClass": "topic-matched", "priority": "core" },
+    { "id": "same-author-topic-shift", "path": "./cases/same-author-topic-shift.json", "fixtureClass": "topic-shift", "priority": "core" },
+    { "id": "paraphrase-near", "path": "./cases/paraphrase-near.json", "fixtureClass": "paraphrase", "priority": "core" },
+    { "id": "ai-smoothed-author-drift", "path": "./cases/ai-smoothed-author-drift.json", "fixtureClass": "ai-smoothed", "priority": "core" },
+    { "id": "glyph-normalization-stress", "path": "./cases/glyph-normalization-stress.json", "fixtureClass": "glyph-normalization", "priority": "core" },
+    { "id": "zwnj-khona-lit-po-integrity", "path": "./cases/zwnj-khona-lit-po-integrity.json", "fixtureClass": "zwnj-integrity", "priority": "core" },
+    { "id": "persona-history-stable", "path": "./cases/persona-history-stable.json", "fixtureClass": "persona-history", "priority": "core" },
+    { "id": "persona-history-overfit", "path": "./cases/persona-history-overfit.json", "fixtureClass": "persona-history", "priority": "core" },
+    { "id": "short-sample-insufficient", "path": "./cases/short-sample-insufficient.json", "fixtureClass": "short-sample", "priority": "core" },
+    { "id": "semantic-preservation-literals", "path": "./cases/semantic-preservation-literals.json", "fixtureClass": "semantic-literals", "priority": "core" },
+    { "id": "hostile-pipeline-compression", "path": "./cases/hostile-pipeline-compression.json", "fixtureClass": "hostile-pipeline-compression", "priority": "core" },
+    { "id": "belonging-without-collapse", "path": "./cases/belonging-without-collapse.json", "fixtureClass": "belonging-without-collapse", "priority": "core" },
+    { "id": "ingestion-friction-heavy", "path": "./cases/ingestion-friction-heavy.json", "fixtureClass": "ingestion-friction", "priority": "core" },
+    { "id": "controller-hold-conflict", "path": "./cases/controller-hold-conflict.json", "fixtureClass": "controller-conflict", "priority": "core" }
+  ],
+  "requiredClasses": [
+    "same-author",
+    "different-author",
+    "topic-matched",
+    "topic-shift",
+    "paraphrase",
+    "ai-smoothed",
+    "glyph-normalization",
+    "zwnj-integrity",
+    "persona-history",
+    "short-sample",
+    "semantic-literals",
+    "hostile-pipeline-compression",
+    "belonging-without-collapse",
+    "ingestion-friction",
+    "controller-conflict"
+  ]
+}

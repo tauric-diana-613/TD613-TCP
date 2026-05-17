@@ -1,0 +1,29 @@
+{
+  "id": "paraphrase-near",
+  "title": "Paraphrase Near",
+  "fixtureClass": "paraphrase",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "The output paraphrases the draft while retaining the same syntactic skeleton, hinge words, and pacing. This tests whether fresh vocabulary can still carry old cadence residue.",
+  "inputs": {
+    "protectedBaseline": "The packet should move slowly enough for the record to catch up. I am not asking for spectacle; I am asking for a clean witness, a dated chain, and a note that does not turn the evidence into decoration.",
+    "maskReference": "Move the packet. Date the chain. Keep the witness note short. Avoid extra language.",
+    "messageDraft": "Please move the packet slowly enough for the record to catch up, and keep a clean witness note attached to EXHIBIT-42.",
+    "protectedOutput": "Please route the packet carefully enough for the file to catch up, and keep a clean witness note attached to EXHIBIT-42."
+  },
+  "persona": { "personaId": "persona-operator", "label": "Operator", "mode": "neutralize", "history": [] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.15, "max": 1.0, "required": true },
+      "maskFit": { "min": 0.0, "max": 0.9 },
+      "maskDeltaSafe": { "min": -1.0, "max": 0.8 },
+      "semanticFidelity": { "min": 0.45, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 0.45 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "continue" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 6 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["The surface wording changes but the skeleton remains near.", "The controller should avoid treating paraphrase alone as protection."]
+}
