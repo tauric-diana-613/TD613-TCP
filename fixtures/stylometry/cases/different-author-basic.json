@@ -1,0 +1,29 @@
+{
+  "id": "different-author-basic",
+  "title": "Different Author Basic",
+  "fixtureClass": "different-author",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "The protected baseline uses layered reflective cadence while the protected output uses terse operational prose. The fixture should keep local claims bounded while showing lower protected-baseline contact than the same-author pressure case.",
+  "inputs": {
+    "protectedBaseline": "The archive keeps asking for a witness, and the witness keeps turning into a room with too many doors. I write in loops because the record arrives in loops; each clause returns to check whether the first door is still locked.",
+    "maskReference": "Send the packet. Keep the chain clean. Mark the exhibit and stop there. No flourish, no loop, no extra heat.",
+    "messageDraft": "Please send EXHIBIT-42 with the custody note attached before 6/13, and keep the packet marked for local review only.",
+    "protectedOutput": "Send EXHIBIT-42 before 6/13. Attach the custody note. Mark the packet for local review only. Keep the chain clean."
+  },
+  "persona": { "personaId": "persona-operator", "label": "Operator", "mode": "neutralize", "history": [] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 0.8, "required": true },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.45, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 0.45 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "continue" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 6 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["This fixture guards against inflating protected-baseline contact when cadence, punctuation, and sentence topology diverge.", "Claims remain local even when distance appears favorable."]
+}
