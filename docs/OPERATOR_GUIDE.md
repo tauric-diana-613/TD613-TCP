@@ -6,7 +6,7 @@ TD613 Hush is a quiet toy inside The Cadence Playground. It is playful on the su
 
 Use Hush only as a local review instrument. It helps inspect source residual pressure, mask fit, semantic preservation, protected literals, ingestion friction, Persona memory, claim ceiling, and Recognition Field context pressure.
 
-Local seal means bounded local convergence. It does not mean safe to publish.
+Local seal means bounded local convergence. It is not publication readiness.
 
 ## The basic workflow
 
@@ -70,7 +70,7 @@ Rotate when Persona continuity, mask overuse, Recognition Field pressure, or rep
 
 Seal locally only when the output preserves meaning, keeps required evidence, remains within claim limits, and survives context review.
 
-Local seal means bounded local convergence. It does not mean safe to publish.
+Local seal means bounded local convergence. It is not publication readiness.
 
 ## How to export reports
 
@@ -84,7 +84,7 @@ Reports can describe local authorship-recognition pressure, local mask-fit movem
 
 ## What reports cannot claim
 
-Reports cannot prove identity, anonymity, untraceability, platform outcome, publication safety, or external classifier behavior.
+Reports cannot prove identity, anonymity, untraceability, platform outcome, publication readiness, or external classifier behavior.
 
 The Claim Ladder is the ceiling on permitted language, not a confidence trophy.
 
@@ -94,8 +94,8 @@ When evidence, employment, legal exposure, immigration status, health, housing, 
 
 A whistleblower can use Hush to review whether a draft preserves evidence while reducing certain local authorship-recognition pressures. Hush cannot determine whether an employer, agency, platform, vendor, or adversary will identify the speaker.
 
-## Emergency rule: do not publish because the tool sounded confident
+## Emergency rule: do not expose material because the tool sounded confident
 
-Hush is designed to resist false certainty, but operators must still refuse overconfidence. Do not publish, submit, leak, or send sensitive material solely because a local score looked favorable.
+Hush is designed to resist false certainty, but operators must still refuse overconfidence. Do not send, submit, or expose sensitive material solely because a local score looked favorable.
 
 When the stakes are real, get human review, legal guidance, or trusted safety review before exposure.
