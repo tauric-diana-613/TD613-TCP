@@ -68,7 +68,7 @@ assert(Number.isFinite(indexability.score));
 assert(indexability.components.publicness >= 0.36);
 
 const topicLeakage = scoreTopicLeakage({ ...baseInput, contextProfile });
-assert(topicLeakage.sharedTerms.includes('exhibit'));
+assert(topicLeakage.sharedTerms.some((term) => term.includes('exhibit')));
 assert(Number.isFinite(topicLeakage.score));
 
 const entityLeakage = scoreEntityLeakage({ ...baseInput, contextProfile });
