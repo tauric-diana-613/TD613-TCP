@@ -67,8 +67,11 @@ export const CONTEXT_TYPES = Object.freeze([
   }
 ]);
 
-const STOPWORDS = new Set('the a an and or but if then with from into onto for to of in on at by as is are was were be been being this that these those it its you your we our they them he she his her their not no do does did can could should would may might will just only very also keep make made has have had'.split(/\s+/));
-const ENTITY_RE = /\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\/-]*\b|\b\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?\b|\b[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+){0,2}\b/g;
+const STOPWORDS = new Set('the a an and or but if then with from into onto for to of in on at by as is are was were be been being this that these those it its you your we our they them he she his her their not no do does did can could should would may might will just only very also keep make made has have had please preserve confirm route review'.split(/\s+/));
+const CODE_ENTITY_RE = /\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\/-]*\b/g;
+const DATE_ENTITY_RE = /\b\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?\b/g;
+const PROPER_ENTITY_RE = /\b[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+){0,2}\b/g;
+const CODE_PREFIX_RE = /\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)\b/;
 
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
 const clamp = (value, min = 0, max = 1) => Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : 0;
@@ -87,8 +90,18 @@ function contentTerms(text = '') {
   return tokenize(text).filter((token) => token.length > 3 && !STOPWORDS.has(token));
 }
 
+function matchAll(text = '', regex) {
+  return [...String(text || '').matchAll(regex)].map((match) => match[0]).filter((item) => item.length > 1);
+}
+
 function extractEntities(text = '') {
-  return unique([...String(text || '').matchAll(ENTITY_RE)].map((match) => match[0]).filter((item) => item.length > 1));
+  const value = String(text || '');
+  const codeEntities = matchAll(value, CODE_ENTITY_RE);
+  const dateEntities = matchAll(value, DATE_ENTITY_RE);
+  const properEntities = matchAll(value, PROPER_ENTITY_RE)
+    .filter((entity) => !CODE_PREFIX_RE.test(entity))
+    .filter((entity) => !STOPWORDS.has(lower(entity)));
+  return unique([...codeEntities, ...dateEntities, ...properEntities]);
 }
 
 function overlap(a = [], b = []) {
