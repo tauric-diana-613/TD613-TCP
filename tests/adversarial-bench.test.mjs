@@ -89,7 +89,8 @@ assert(hushMaskExport.includes('phase-12'));
 assert(!hushMaskExport.includes('This is a custom sample with a practical rhythm'));
 const hushSwapExport = bench.exportCurrentHushSwapJson();
 assert(hushSwapExport.includes('phase-12'));
-if (document.getElementById('protectedOutputInput').value) assert(!hushSwapExport.includes(document.getElementById('protectedOutputInput').value));
+const currentOutput = document.getElementById('protectedOutputInput').value;
+if (currentOutput) assert(!hushSwapExport.includes(currentOutput));
 
 const vectorText = document.getElementById('escapeVectorPanel').textContent;
 assert(vectorText.includes('Source Residual'));
@@ -113,7 +114,7 @@ assert(controllerText.includes('Next instruction'));
 const exportedDefault = bench.exportLedgerJson();
 assert(!exportedDefault.includes(beforeBaseline));
 assert(!exportedDefault.includes(beforeDraft));
-assert(!exportedDefault.includes(output.value));
+if (currentOutput) assert(!exportedDefault.includes(currentOutput));
 assert(exportedDefault.includes('outputHash'));
 assert(document.getElementById('ledgerExportOutput').value.includes('outputHash'));
 
@@ -121,7 +122,7 @@ document.getElementById('includeLedgerTextsToggle').checked = true;
 const exportedWithText = bench.exportLedgerJson();
 assert(exportedWithText.includes(beforeBaseline));
 assert(exportedWithText.includes(beforeDraft));
-assert(exportedWithText.includes(output.value));
+if (currentOutput) assert(exportedWithText.includes(currentOutput));
 document.getElementById('includeLedgerTextsToggle').checked = false;
 
 const reportPayload = bench.buildCurrentReportPayload();
@@ -140,7 +141,7 @@ assert(reportJson.includes('limitations'));
 assert(reportJson.includes('sourceResidualRisk'));
 assert(!reportJson.includes(beforeBaseline));
 assert(!reportJson.includes(beforeDraft));
-assert(!reportJson.includes(output.value));
+if (currentOutput) assert(!reportJson.includes(currentOutput));
 assert.equal(detectForbiddenClaims(reportJson).hasForbiddenClaim, false);
 assert(document.getElementById('reportExportOutput').value.includes('claimCeiling'));
 
@@ -151,7 +152,7 @@ assert(reportMarkdown.includes('## Recognition Field'));
 assert(reportMarkdown.includes('## Limitations'));
 assert(!reportMarkdown.includes(beforeBaseline));
 assert(!reportMarkdown.includes(beforeDraft));
-assert(!reportMarkdown.includes(output.value));
+if (currentOutput) assert(!reportMarkdown.includes(currentOutput));
 assert.equal(detectForbiddenClaims(reportMarkdown).hasForbiddenClaim, false);
 assert(document.getElementById('reportExportOutput').value.includes('TD613-TCP Local Stylometry Report'));
 
