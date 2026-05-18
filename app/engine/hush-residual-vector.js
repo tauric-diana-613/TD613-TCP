@@ -41,6 +41,8 @@ function movement(sourceValue, outputValue, maskValue, tolerance) {
 }
 
 function sourceStickiness(sourceValue, outputValue, maskValue, tolerance) {
+  const sourceToMask = distance(sourceValue, maskValue, tolerance);
+  if (sourceToMask !== null && sourceToMask <= 0.01) return 0;
   const outputSource = closeness(outputValue, sourceValue, tolerance);
   const outputMask = closeness(outputValue, maskValue, tolerance);
   return clamp(outputSource - outputMask + 0.5);
