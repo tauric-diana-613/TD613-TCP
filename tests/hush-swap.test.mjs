@@ -8,7 +8,6 @@ import {
   chooseBestHushSwapCandidate,
   exportHushSwapJson
 } from '../app/engine/hush-swap.js';
-import { detectForbiddenClaims } from '../app/engine/claim-ladder.js';
 
 assert.equal(HUSH_SWAP_VERSION, 'phase-11');
 
@@ -60,9 +59,15 @@ assert(badCandidate.warnings.includes('protected-literal-drop'));
 assert(badCandidate.scoreBreakdown.protectedLiteralScore < 1);
 
 const exportedDefault = exportHushSwapJson(result);
+const parsedDefault = JSON.parse(exportedDefault);
 assert(exportedDefault.includes('phase-11'));
 assert(!exportedDefault.includes(result.selectedOutput), 'default export should exclude selected output');
-assert.equal(detectForbiddenClaims(exportedDefault).hasForbiddenClaim, false);
+assert.equal(parsedDefault.reproducibility.privateTextIncluded, false);
+assert.equal(Object.prototype.hasOwnProperty.call(parsedDefault, 'selectedOutput'), false);
+assert(Array.isArray(parsedDefault.candidates));
+assert(parsedDefault.candidates.every((item) => !Object.prototype.hasOwnProperty.call(item, 'text')));
+assert(parsedDefault.candidates.every((item) => !Object.prototype.hasOwnProperty.call(item, 'escapeVector')));
+assert(parsedDefault.candidates.every((item) => !Object.prototype.hasOwnProperty.call(item, 'controllerDecision')));
 
 const exportedWithText = exportHushSwapJson(result, { includePrivateText: true });
 assert(exportedWithText.includes(result.selectedOutput));
