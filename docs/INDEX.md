@@ -7,7 +7,7 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 - [README](../README.md) — Top-level project entry for The Cadence Playground, TD613, and Hush placement.
 - [Documentation Index](INDEX.md) — This file; the map for Hush release docs and adjacent TD613 materials.
 - [Operator Guide](OPERATOR_GUIDE.md) — Practical workflow for using Hush without overstating its claims.
-- [Phase Map](PHASE_MAP.md) — Phase 0 through Phase 11 map of the Toy-to-Tool build.
+- [Phase Map](PHASE_MAP.md) — Phase 0 through Phase 12 map of the Toy-to-Tool build.
 - [Known Limitations](KNOWN_LIMITATIONS.md) — Boundaries, uncertainty zones, and local-only limits.
 
 ## Measurement
@@ -17,6 +17,7 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 - [Phase 8 Calibration Status](PHASE_8_CALIBRATION_STATUS.md) — Fixtures, calibration, and regression pressure.
 - [Phase 9 Recognition Field Status](PHASE_9_RECOGNITION_FIELD_STATUS.md) — Local context-pressure simulation.
 - [Phase 11 Hush Mask Studio Status](PHASE_11_HUSH_MASK_STUDIO_STATUS.md) — Hush-native mask library, custom samples, profile matching, and swap workflow.
+- [Phase 12 Residual Steering Status](PHASE_12_RESIDUAL_STEERING_STATUS.md) — Residual vectors, literal lockbox, steering plans, mask lifecycle, and export policy.
 
 ## Governance
 
@@ -36,4 +37,4 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 - [TD613 Safe Harbor](TD613_SAFE_HARBOR.md) — Adjacent Safe Harbor material.
 - [TD613 Aperture](TD613_APERTURE.md) — Adjacent audit/routing material.
 
-Hush is a local authorship-recognition pressure workbench. It does not prove identity, anonymity, untraceability, platform outcome, or publication safety.
+Hush is a local review workbench. It stays inside bounded local assumptions and avoids platform guarantees.
