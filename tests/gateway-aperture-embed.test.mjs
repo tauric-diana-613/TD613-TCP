@@ -15,6 +15,9 @@ assert.ok(gatewayHtml.includes('id="gatewayPreviewCanvas"'), 'gateway HTML inclu
 assert.ok(gatewayHtml.includes('id="gatewayPreviewMoire"'), 'gateway HTML exposes the gateway Moire control');
 assert.ok(gatewayHtml.includes('id="gatewayPreviewRun"'), 'gateway HTML exposes the gateway Propagate control');
 assert.ok(gatewayHtml.includes('id="gatewayDoorDeck"'), 'gateway HTML surfaces the left-side room doors');
+assert.ok(gatewayHtml.includes('id="gatewayDoorHush"'), 'gateway HTML surfaces Hush as a visible room door');
+assert.ok(gatewayHtml.includes('href="./adversarial-bench.html"'), 'gateway Hush door links to the Hush mask studio');
+assert.ok(gatewayHtml.indexOf('id="gatewayDoorHush"') < gatewayHtml.indexOf('id="gatewayDoorHarbor"'), 'Hush door appears before Safe Harbor / Guarded Passage');
 assert.ok(gatewayHtml.includes('id="gatewayDoorHarbor"'), 'gateway HTML keeps Safe Harbor as a visible room door');
 assert.ok(!gatewayHtml.includes('id="gatewayApertureHarborLink"'), 'gateway HTML removes the duplicate Aperture-to-Harbor bridge action');
 assert.ok(!gatewayHtml.includes('<a class="gateway-link" href="./safe-harbor/index.html">Safe Harbor</a>'), 'gateway HTML removes the duplicate Safe Harbor header link');
