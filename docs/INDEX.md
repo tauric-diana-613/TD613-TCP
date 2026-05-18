@@ -25,6 +25,7 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 - [Phase 9 Recognition Field Status](PHASE_9_RECOGNITION_FIELD_STATUS.md) — Local context-pressure simulation.
 - [Phase 11 Hush Mask Studio Status](PHASE_11_HUSH_MASK_STUDIO_STATUS.md) — Hush-native mask library, custom samples, profile matching, and swap workflow.
 - [Phase 12 Residual Steering Status](PHASE_12_RESIDUAL_STEERING_STATUS.md) — Residual vectors, literal lockbox, steering plans, mask lifecycle, and export policy.
+- [Phase 13 Compact Mobile Status](PHASE_13_COMPACT_MOBILE_STATUS.md) — Compact mobile-facing Hush surface for phone-tolerant operator workflow.
 
 ## Governance
 
