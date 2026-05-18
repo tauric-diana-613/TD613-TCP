@@ -4,7 +4,7 @@
 
 The Cadence Playground is the larger browser workspace for TD613 cadence, route, Safe Harbor adjacency, Persona play, stylometric math, Hush, and local browser experiments.
 
-TD613 Hush — or Hush — is the clean mask studio inside The Cadence Playground. It lives at `/adversarial-bench`; the file name remains for continuity, but the product surface is Hush. The repository is named `TD613-TCP`, but the Phase 0–11 Hush instrument should be presented as TD613 Hush, not as the whole repository.
+TD613 Hush — or Hush — is the clean mask studio inside The Cadence Playground. It lives at `/adversarial-bench`; the file name remains for continuity, but the product surface is Hush. The repository is named `TD613-TCP`, but the Phase 0–10 Toy-to-Tool instrument should be presented as TD613 Hush. Phase 11 extends that instrument with a Hush-native mask studio and custom mask workflow; Hush still should not be presented as the whole repository.
 
 Hush is playful on the surface because it belongs in The Cadence Playground. Underneath, it is disciplined: Hush-native masks, custom mask samples, stylometric profile refinement, Escape Vector, Ingestion Friction, Controller state, Mask Memory, Iteration Ledger, Claim Ladder, Report Export, Fixtures, Calibration, and Recognition Field.
 
