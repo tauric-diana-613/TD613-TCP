@@ -2,9 +2,22 @@
   var V = window.TD613_ASSET_VERSIONS || {};
   var query = window.location.search || '';
   var hash = window.location.hash || '';
+  var pageKind = document.body && document.body.getAttribute('data-page-kind');
   var needsRetrievalFixtures =
     /(?:[?&](?:test-flight|fixtures|retrieval-fixtures)=)/i.test(query) ||
     /(?:test-flight|retrieval-fixtures)/i.test(hash);
+
+  if (pageKind === 'adversarial-bench') {
+    var compactHref = './hush-compact.css?v=' + (V.hushCompact || V.main || '');
+    var existingCompact = document.querySelector('link[href^="./hush-compact.css"]');
+    if (!existingCompact) {
+      var compactLink = document.createElement('link');
+      compactLink.rel = 'stylesheet';
+      compactLink.href = compactHref;
+      document.head.appendChild(compactLink);
+    }
+  }
+
   var srcs = [
     './td613-constants.js',
     './browser-data.js?v='        + (V.data        || ''),
