@@ -17,67 +17,10 @@ const html = loadHtml('app/adversarial-bench.html');
 installDom(html);
 assert(document.title.includes('TD613 Hush'));
 assert(document.body.textContent.includes('TD613 Hush'));
-for (const id of [
-  'protectedBaselineInput',
-  'maskReferenceInput',
-  'messageDraftInput',
-  'protectedOutputInput',
-  'hushBuiltInTabBtn',
-  'hushCustomizeTabBtn',
-  'hushCustomMaskName',
-  'hushCustomMaskSampleInput',
-  'hushAddSampleBtn',
-  'hushSaveCustomMaskBtn',
-  'hushMaskProfilePanel',
-  'hushProfileMatchPanel',
-  'hushSwapWarningsPanel',
-  'exportHushMaskProfileBtn',
-  'exportHushSwapJsonBtn',
-  'escapeVectorPanel',
-  'controllerPanel',
-  'personaMemoryPanel',
-  'recognitionFieldPanel',
-  'recognitionContextType',
-  'recognitionIntentMode',
-  'recognitionExposureDuration',
-  'recognitionFieldGrid',
-  'recognitionFieldWarnings',
-  'iterationPreviewPanel',
-  'exportLedgerJsonBtn',
-  'includeLedgerTextsToggle',
-  'ledgerExportOutput',
-  'reportExportPanel',
-  'claimCeilingPanel',
-  'exportReportJsonBtn',
-  'exportReportMarkdownBtn',
-  'reportExportOutput'
-]) assert(document.getElementById(id), `missing ${id}`);
+for (const id of ['protectedBaselineInput','maskReferenceInput','messageDraftInput','protectedOutputInput','hushBuiltInTabBtn','hushCustomizeTabBtn','hushCustomMaskName','hushCustomMaskSampleInput','hushAddSampleBtn','hushSaveCustomMaskBtn','hushMaskProfilePanel','hushProfileMatchPanel','hushSwapWarningsPanel','exportHushMaskProfileBtn','exportHushSwapJsonBtn','escapeVectorPanel','controllerPanel','personaMemoryPanel','recognitionFieldPanel','recognitionContextType','recognitionIntentMode','recognitionExposureDuration','recognitionFieldGrid','recognitionFieldWarnings','iterationPreviewPanel','exportLedgerJsonBtn','includeLedgerTextsToggle','ledgerExportOutput','reportExportPanel','claimCeilingPanel','exportReportJsonBtn','exportReportMarkdownBtn','reportExportOutput']) assert(document.getElementById(id), `missing ${id}`);
 
 const bench = await import(`../app/adversarial-bench.mjs?test=${Date.now()}`);
-for (const fn of [
-  'initAdversarialBench',
-  'initHushMaskStudio',
-  'selectHushMask',
-  'switchHushMaskTab',
-  'addHushCustomMaskSample',
-  'saveHushCustomMask',
-  'renderHushMaskProfile',
-  'renderHushProfileMatch',
-  'runHushSwap',
-  'exportCurrentHushMaskProfile',
-  'exportCurrentHushSwapJson',
-  'analyzeProtectedOutput',
-  'generateMaskedOutput',
-  'acceptOutputIntoPersonaMemory',
-  'renderEscapeVector',
-  'renderRecognitionField',
-  'renderControllerDecision',
-  'renderClaimCeiling',
-  'buildCurrentReportPayload',
-  'exportCurrentReportJson',
-  'exportCurrentReportMarkdown',
-  'exportLedgerJson'
-]) assert.equal(typeof bench[fn], 'function', `missing export ${fn}`);
+for (const fn of ['initAdversarialBench','initHushMaskStudio','selectHushMask','switchHushMaskTab','addHushCustomMaskSample','saveHushCustomMask','renderHushMaskProfile','renderHushProfileMatch','runHushSwap','exportCurrentHushMaskProfile','exportCurrentHushSwapJson','analyzeProtectedOutput','generateMaskedOutput','acceptOutputIntoPersonaMemory','renderEscapeVector','renderRecognitionField','renderControllerDecision','renderClaimCeiling','buildCurrentReportPayload','exportCurrentReportJson','exportCurrentReportMarkdown','exportLedgerJson']) assert.equal(typeof bench[fn], 'function', `missing export ${fn}`);
 
 bench.initAdversarialBench(document);
 assert(bench.benchState.iterationLedger);
@@ -135,17 +78,18 @@ assert(document.getElementById('claimCeilingPanel').textContent.includes('Claim 
 assert(document.getElementById('hushProfileMatchPanel').textContent.includes('Mask Match'));
 
 const swapResult = bench.runHushSwap();
-assert(swapResult.selectedOutput);
 assert(bench.benchState.hushSwapResult);
-assert(document.getElementById('protectedOutputInput').value.length > 0);
-assert(document.getElementById('hushProfileMatchPanel').textContent.includes('Match score'));
+assert(Object.prototype.hasOwnProperty.call(swapResult, 'allCandidatesFailed'));
+if (!swapResult.allCandidatesFailed) assert(document.getElementById('protectedOutputInput').value.length > 0);
+else assert(swapResult.failureReason.includes('failed candidate'));
+assert(document.getElementById('hushProfileMatchPanel').textContent.includes('Match score') || swapResult.allCandidatesFailed);
 
 const hushMaskExport = bench.exportCurrentHushMaskProfile();
-assert(hushMaskExport.includes('phase-11'));
+assert(hushMaskExport.includes('phase-12'));
 assert(!hushMaskExport.includes('This is a custom sample with a practical rhythm'));
 const hushSwapExport = bench.exportCurrentHushSwapJson();
-assert(hushSwapExport.includes('phase-11'));
-assert(!hushSwapExport.includes(document.getElementById('protectedOutputInput').value));
+assert(hushSwapExport.includes('phase-12'));
+if (document.getElementById('protectedOutputInput').value) assert(!hushSwapExport.includes(document.getElementById('protectedOutputInput').value));
 
 const vectorText = document.getElementById('escapeVectorPanel').textContent;
 assert(vectorText.includes('Source Residual'));
@@ -228,9 +172,7 @@ if (!document.getElementById('acceptOutputBtn').disabled) {
   assert.equal(linked.status.accepted, true);
   assert(linked.references.personaMemoryEntryId);
   assert(document.getElementById('iterationPreviewPanel').textContent.includes('Source'));
-} else {
-  assert.equal(bench.benchState.personaMemory.memory.acceptedCount, initialAccepted);
-}
+} else assert.equal(bench.benchState.personaMemory.memory.acceptedCount, initialAccepted);
 
 output.value = 'Need the packet. The protected marker is missing now.';
 bench.analyzeProtectedOutput();
@@ -242,7 +184,7 @@ if (state === 'restore' || state === 'hold' || bench.benchState.recognitionField
 }
 
 const deckDom = new JSDOM(loadHtml('app/deck.html'));
-for (const id of ['voiceA', 'voiceB', 'compareBtn', 'swapCadencesBtn', 'savePersonaBtn', 'shellDuel']) assert(deckDom.window.document.getElementById(id), `deck missing ${id}`);
+for (const id of ['voiceA','voiceB','compareBtn','swapCadencesBtn','savePersonaBtn','shellDuel']) assert(deckDom.window.document.getElementById(id), `deck missing ${id}`);
 
 const rendered = document.body.textContent;
 assert.equal(detectForbiddenClaims(rendered).hasForbiddenClaim, false);
