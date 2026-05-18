@@ -7,7 +7,7 @@ const round = (value, digits = 4) => Number.isFinite(value) ? Number(value.toFix
 
 const PATTERNS = Object.freeze([
   ['exhibit', /\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\/-]*\b/g],
-  ['date', /\b(?:\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|\d{4}-\d{2}-\d{2})\b/g],
+  ['date', /\b(?:\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?|\d{4}-\d{2}-\d{2})\b/g],
   ['file-name', /\b[\w.-]+\.(?:pdf|docx?|xlsx?|csv|txt|json|html?|png|jpe?g|zip)\b/gi],
   ['quoted-string', /["“][^"”]{3,120}["”]/g],
   ['glyph-boundary', /(?:𝌋|⟐|Khona\u200Clit-po|Khona‌lit-po|\u200c)/g]
