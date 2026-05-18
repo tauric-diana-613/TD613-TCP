@@ -6,9 +6,19 @@ The Cadence Playground is the larger browser workspace for TD613 cadence, route,
 
 TD613 Hush — or Hush — is the clean mask studio inside The Cadence Playground. It lives at `/adversarial-bench`; the file name remains for continuity, but the product surface is Hush. The repository is named `TD613-TCP`, but the Phase 0–10 Toy-to-Tool instrument should be presented as TD613 Hush. Phase 11 extends that instrument with a Hush-native mask studio and custom mask workflow; Hush still should not be presented as the whole repository.
 
-Hush is playful on the surface because it belongs in The Cadence Playground. Underneath, it is disciplined: Hush-native masks, custom mask samples, stylometric profile refinement, Escape Vector, Ingestion Friction, Controller state, Mask Memory, Iteration Ledger, Claim Ladder, Report Export, Fixtures, Calibration, and Recognition Field.
+Hush is playful on the surface because it belongs in The Cadence Playground. Underneath, it is disciplined: Hush-native masks, custom mask samples, stylometric profile refinement, Escape Vector, Ingestion Friction, Controller state, Mask Memory, Iteration Ledger, Claim Ladder, Report Export, Fixtures, Calibration, Recognition Field, residual steering, protected literal lockbox, mask lifecycle, and export policy.
 
-Phase 11 starts a Hush-native mask library. Hush masks are not legacy Personas. Homebase, Deck, and Trainer remain legacy/lab chambers while Hush becomes the primary whistleblower-facing mask workflow.
+Phase 11 starts a Hush-native mask library. Phase 12 adds residual-driven steering. Hush masks are not legacy Personas. Homebase, Deck, and Trainer remain legacy/lab chambers while Hush becomes the primary whistleblower-facing mask workflow.
+
+## Mission thesis
+
+TD613 is a custodial AI-access protocol for vulnerable speech and vulnerable corpora entering machine-readable, model-mediated, and AI-indexed environments.
+
+The suite exists because AI-led retrieval, summarization, classification, moderation, ranking, authorship inference, embedding, and generation can convert protected speech into extractable pattern material unless custody, provenance, route, evidence preservation, and claim limits are made visible before the machine treats the speech as ordinary input.
+
+The short mission frame is: countersurveillance for the watched, containment for the machine, credentials for the archive, and custody before ingestion.
+
+Read the full crown in [docs/TD613_MISSION_THESIS.md](docs/TD613_MISSION_THESIS.md).
 
 ## What this is not
 
@@ -34,11 +44,12 @@ Hush is not a platform classifier, external detector, legal strategy substitute,
 10. Review Mask Memory.
 11. Review Claim Ladder.
 12. Review Recognition Field.
-13. Export only after reviewing warnings and claim ceiling.
+13. Review residual steering, literal lockbox, mask lifecycle, and export policy.
+14. Export only after reviewing warnings and claim ceiling.
 
 ## Phase map
 
-The Hush Toy-to-Tool build now runs Phase 0 through Phase 11. See [docs/PHASE_MAP.md](docs/PHASE_MAP.md).
+The Hush Toy-to-Tool build now runs Phase 0 through Phase 12. See [docs/PHASE_MAP.md](docs/PHASE_MAP.md).
 
 ## Local-only posture
 
@@ -81,7 +92,7 @@ npm test
 
 ## Documentation index
 
-Start with [docs/INDEX.md](docs/INDEX.md), then read [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md), [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md), [docs/RESPONSIBLE_USE.md](docs/RESPONSIBLE_USE.md), and [docs/PHASE_11_HUSH_MASK_STUDIO_STATUS.md](docs/PHASE_11_HUSH_MASK_STUDIO_STATUS.md).
+Start with [docs/INDEX.md](docs/INDEX.md), then read [docs/TD613_MISSION_THESIS.md](docs/TD613_MISSION_THESIS.md), [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md), [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md), [docs/RESPONSIBLE_USE.md](docs/RESPONSIBLE_USE.md), and [docs/PHASE_12_RESIDUAL_STEERING_STATUS.md](docs/PHASE_12_RESIDUAL_STEERING_STATUS.md).
 
 ## Registered field language
 
@@ -207,14 +218,15 @@ Use this order if you want the repo in a clean technical sequence:
 
 1. [START_HERE.md](START_HERE.md)
 2. [docs/INDEX.md](docs/INDEX.md)
-3. [docs/SYSTEM_OVERVIEW.md](docs/SYSTEM_OVERVIEW.md)
-4. [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md)
-5. [docs/ENGINE.md](docs/ENGINE.md)
-6. [docs/SAFETY_MODEL.md](docs/SAFETY_MODEL.md)
-7. [docs/TD613_SAFE_HARBOR.md](docs/TD613_SAFE_HARBOR.md)
-8. [docs/TD613_APERTURE.md](docs/TD613_APERTURE.md)
-9. [docs/STYLOMETRIC_MATH.md](docs/STYLOMETRIC_MATH.md)
-10. [docs/PHASE_11_HUSH_MASK_STUDIO_STATUS.md](docs/PHASE_11_HUSH_MASK_STUDIO_STATUS.md)
-11. [docs/INTERFACE_LEXICON.md](docs/INTERFACE_LEXICON.md)
+3. [docs/TD613_MISSION_THESIS.md](docs/TD613_MISSION_THESIS.md)
+4. [docs/SYSTEM_OVERVIEW.md](docs/SYSTEM_OVERVIEW.md)
+5. [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md)
+6. [docs/ENGINE.md](docs/ENGINE.md)
+7. [docs/SAFETY_MODEL.md](docs/SAFETY_MODEL.md)
+8. [docs/TD613_SAFE_HARBOR.md](docs/TD613_SAFE_HARBOR.md)
+9. [docs/TD613_APERTURE.md](docs/TD613_APERTURE.md)
+10. [docs/STYLOMETRIC_MATH.md](docs/STYLOMETRIC_MATH.md)
+11. [docs/PHASE_12_RESIDUAL_STEERING_STATUS.md](docs/PHASE_12_RESIDUAL_STEERING_STATUS.md)
+12. [docs/INTERFACE_LEXICON.md](docs/INTERFACE_LEXICON.md)
 
 For incomplete and future work, see [ROADMAP.md](ROADMAP.md) and [KNOWN_FAILURES.md](KNOWN_FAILURES.md). For contribution flow, see [CONTRIBUTING.md](CONTRIBUTING.md).

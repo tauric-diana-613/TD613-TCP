@@ -5,10 +5,17 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 ## Start here
 
 - [README](../README.md) — Top-level project entry for The Cadence Playground, TD613, and Hush placement.
+- [TD613 Mission Thesis](TD613_MISSION_THESIS.md) — The custodial AI-access mission crown: countersurveillance, containment, credentials, and custody before ingestion.
 - [Documentation Index](INDEX.md) — This file; the map for Hush release docs and adjacent TD613 materials.
 - [Operator Guide](OPERATOR_GUIDE.md) — Practical workflow for using Hush without overstating its claims.
 - [Phase Map](PHASE_MAP.md) — Phase 0 through Phase 12 map of the Toy-to-Tool build.
 - [Known Limitations](KNOWN_LIMITATIONS.md) — Boundaries, uncertainty zones, and local-only limits.
+
+## Mission and doctrine
+
+- [TD613 Mission Thesis](TD613_MISSION_THESIS.md) — Custodial AI-access protocol for vulnerable speech and vulnerable corpora entering model-mediated environments.
+- [TD613 Aperture](TD613_APERTURE.md) — Counter-tool for governed exposure events and anti-selective-admissibility audit posture.
+- [TD613 Safe Harbor](TD613_SAFE_HARBOR.md) — Provenance-preserving passage layer.
 
 ## Measurement
 
@@ -31,10 +38,5 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 
 - [Release Notes Phase 0–10](RELEASE_NOTES_PHASE_0_10.md) — Toy-to-Tool closeout notes.
 - [Phase 10 Release Status](PHASE_10_RELEASE_STATUS.md) — Release-hardening status and next work.
-
-## Adjacent systems
-
-- [TD613 Safe Harbor](TD613_SAFE_HARBOR.md) — Adjacent Safe Harbor material.
-- [TD613 Aperture](TD613_APERTURE.md) — Adjacent audit/routing material.
 
 Hush is a local review workbench. It stays inside bounded local assumptions and avoids platform guarantees.

@@ -5,6 +5,7 @@ import { detectReleaseOverclaim } from '../app/engine/release-manifest.js';
 const requiredDocs = [
   'README.md',
   'docs/INDEX.md',
+  'docs/TD613_MISSION_THESIS.md',
   'docs/OPERATOR_GUIDE.md',
   'docs/PHASE_MAP.md',
   'docs/KNOWN_LIMITATIONS.md',
@@ -37,6 +38,7 @@ const readme = read('README.md');
 includesAll(readme, 'README.md', [
   '# TCP — The Cadence Playground',
   '## What this is',
+  '## Mission thesis',
   '## What this is not',
   '## Core workflow',
   '## Phase map',
@@ -50,6 +52,7 @@ includesAll(readme, 'README.md', [
   '## Running tests',
   '## Documentation index',
   'TD613 Hush',
+  'TD613 is a custodial AI-access protocol',
   'Hush is not TD613 Flight',
   'Hush is not Safe Harbor'
 ]);
@@ -61,6 +64,19 @@ for (const doc of requiredDocs.filter((path) => path !== 'README.md')) {
   assert(index.includes(name), `docs index missing ${name}`);
 }
 assert(index.includes('Hush is not the whole repository'));
+assert(index.includes('custodial AI-access'));
+
+const mission = read('docs/TD613_MISSION_THESIS.md');
+includesAll(mission, 'docs/TD613_MISSION_THESIS.md', [
+  'TD613 is a custodial AI-access protocol',
+  'Custody before ingestion',
+  'AI-led retrieval',
+  'Countersurveillance for authorship-recognition pressure',
+  'Infosec containment for AI-mediated transformation',
+  'Provenance-preserving credentials for custodial handoff',
+  'Anti-selective-admissibility audit doctrine',
+  'AI may assist, but it must encounter custody'
+]);
 
 const operator = read('docs/OPERATOR_GUIDE.md');
 includesAll(operator, 'docs/OPERATOR_GUIDE.md', [

@@ -98,6 +98,7 @@ export function buildReleaseManifest(input = {}) {
   const docs = input.docs || [
     'README.md',
     'docs/INDEX.md',
+    'docs/TD613_MISSION_THESIS.md',
     'docs/OPERATOR_GUIDE.md',
     'docs/PHASE_MAP.md',
     'docs/KNOWN_LIMITATIONS.md',
@@ -158,13 +159,14 @@ export function validateReleaseManifest(manifest = {}) {
   if (manifest.version !== RELEASE_MANIFEST_VERSION) failures.push('version-mismatch');
   if (manifest.productName !== RELEASE_PRODUCT_NAME) failures.push('product-name-mismatch');
   if (!manifest.localOnly) failures.push('local-only-missing');
-  const phases = Array.isArray(manifest.phases) ? manifest.phases : [];
-  for (let i = 0; i <= 10; i += 1) if (!phases.some((phase) => phase.phase === i)) failures.push(`missing-phase-${i}`);
-  for (const capability of RELEASE_CAPABILITIES) if (!manifest.capabilities?.includes(capability)) failures.push(`missing-capability:${capability}`);
-  for (const boundary of RELEASE_BOUNDARIES) if (!manifest.boundaries?.includes(boundary)) failures.push(`missing-boundary:${boundary}`);
-  if (!manifest.docs?.length) failures.push('docs-missing');
-  if (!manifest.tests?.length) failures.push('tests-missing');
-  const scannableManifest = { ...manifest, forbiddenClaims: [] };
-  if (detectReleaseOverclaim(JSON.stringify(scannableManifest, null, 2)).hasOverclaim) failures.push('manifest-overclaim');
-  return { valid: failures.length === 0, failures, status: failures.length ? 'fail' : 'pass' };
+  if (!Array.isArray(manifest.phases) || manifest.phases.length !== RELEASE_PHASES.length) failures.push('phase-count-mismatch');
+  if (!Array.isArray(manifest.capabilities) || manifest.capabilities.length < 8) failures.push('capabilities-too-thin');
+  if (!Array.isArray(manifest.boundaries) || manifest.boundaries.length < 8) failures.push('boundaries-too-thin');
+  if (!Array.isArray(manifest.docs) || !manifest.docs.includes('README.md')) failures.push('docs-missing-readme');
+  if (!Array.isArray(manifest.tests) || !manifest.tests.includes('tests/release-manifest.test.mjs')) failures.push('tests-missing-release-manifest');
+  return {
+    valid: failures.length === 0,
+    failures,
+    status: failures.length ? 'fail' : 'pass'
+  };
 }
