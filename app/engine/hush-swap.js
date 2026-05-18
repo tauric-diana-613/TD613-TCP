@@ -6,8 +6,13 @@ import { evaluateClaimCeiling } from './claim-ladder.js';
 import { buildContextProfile } from './context-profile.js';
 import { buildRecognitionField } from './recognition-field.js';
 import { buildProfileMatch, summarizeProfileMatch } from './hush-profile-match.js';
+import { buildResidualVector, summarizeResidualVector } from './hush-residual-vector.js';
+import { buildProtectedLiteralLockbox, verifyProtectedLiteralLockbox, summarizeProtectedLiteralLockbox } from './hush-protected-literal-lockbox.js';
+import { buildSteeringPlan, scoreCandidateWithSteering, summarizeSteeringPlan } from './hush-steering-plan.js';
+import { buildMaskLifecycle, summarizeMaskLifecycle } from './hush-mask-lifecycle.js';
+import { exportHushPolicyJson } from './hush-export-policy.js';
 
-export const HUSH_SWAP_VERSION = 'phase-11';
+export const HUSH_SWAP_VERSION = 'phase-12';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
@@ -28,25 +33,15 @@ function literalScore(outputText = '', protectedLiterals = []) {
   return clamp(kept / required.length);
 }
 
-function mutateCandidate(text = '', index = 0, mask = {}) {
+function mutateCandidate(text = '', index = 0, mask = {}, steeringPlan = null) {
   const value = safeText(text).trim();
   if (!value) return '';
-  const hint = mask?.transformHints || {};
-  if (index === 0) return value;
-  if (index === 1) return value.replace(/\s+/g, ' ').replace(/,\s+/g, '. ');
-  if (index === 2) return value.replace(/\bplease\b/gi, hint.warmth === 'high' ? 'please' : '').replace(/\s+/g, ' ').trim();
-  if (index === 3) return value.replace(/\bI\s+am\b/g, "I'm").replace(/\bdo not\b/gi, "don't").replace(/\bdoes not\b/gi, "doesn't");
-  if (index === 4) return value.replace(/\bI'm\b/gi, 'I am').replace(/\bdon't\b/gi, 'do not').replace(/\bdoesn't\b/gi, 'does not');
+  const hot = asArray(steeringPlan?.targetDimensions).map((dim) => dim.key);
+  if (index === 1 || hot.includes('avgSentenceLength')) return value.replace(/\s+/g, ' ').replace(/,\s+/g, '. ');
+  if (index === 2 || hot.includes('recurrencePressure')) return value.replace(/\b(please|actually|really|just)\b/gi, '').replace(/\s+/g, ' ').trim();
+  if (index === 3 || hot.includes('contractionDensity')) return value.replace(/\bI\s+am\b/g, "I'm").replace(/\bdo not\b/gi, "don't").replace(/\bdoes not\b/gi, "doesn't");
+  if (index === 4 || hot.includes('lexicalDensity')) return value.replace(/\bI'm\b/gi, 'I am').replace(/\bdon't\b/gi, 'do not').replace(/\bdoesn't\b/gi, 'does not');
   return value;
-}
-
-function sanitizeClaimCeilingForSwapExport(claimCeiling = null) {
-  if (!claimCeiling || typeof claimCeiling !== 'object') return claimCeiling;
-  const { forbiddenConclusions, ...rest } = claimCeiling;
-  return {
-    ...rest,
-    languageCeiling: 'The swap export omits forbidden-conclusion disclaimer strings so machine checks do not misread limitation language as a positive claim.'
-  };
 }
 
 export function generateHushSwapCandidate(input = {}) {
@@ -54,28 +49,21 @@ export function generateHushSwapCandidate(input = {}) {
   const mask = input.mask || {};
   const maskProfile = input.maskProfile || mask.profile || {};
   const index = Number(input.index || 0);
-  let candidateText = sourceText;
-  if (index === 0) {
-    try {
-      const transfer = buildCadenceTransfer(sourceText, { mode: 'persona', profile: maskProfile, personaId: mask.id || 'hush-mask', label: mask.label || 'Hush Mask', strength: mask.strength || 0.9, mod: mask.mod || null });
-      candidateText = transfer?.text || candidateText;
-    } catch {
-      candidateText = sourceText;
-    }
-  } else {
-    candidateText = mutateCandidate(sourceText, index, mask);
-    try {
-      const transfer = buildCadenceTransfer(candidateText, { mode: 'persona', profile: maskProfile, personaId: mask.id || 'hush-mask', label: mask.label || 'Hush Mask', strength: Math.max(0.72, (mask.strength || 0.86) - (index * 0.04)), mod: mask.mod || null });
-      candidateText = transfer?.text || candidateText;
-    } catch {
-      // keep mutated candidate
-    }
+  let candidateText = index === 0 ? sourceText : mutateCandidate(sourceText, index, mask, input.steeringPlan);
+  try {
+    const transfer = buildCadenceTransfer(candidateText, {
+      mode: 'persona',
+      profile: maskProfile,
+      personaId: mask.id || 'hush-mask',
+      label: mask.label || 'Hush Mask',
+      strength: Math.max(0.70, (mask.strength || 0.9) - (index * 0.035)),
+      mod: mask.mod || null
+    });
+    candidateText = transfer?.text || candidateText;
+  } catch {
+    // keep candidate text
   }
-  return {
-    id: `candidate-${index + 1}`,
-    text: candidateText,
-    profile: extractCadenceProfile(candidateText)
-  };
+  return { id: `candidate-${index + 1}`, text: candidateText, profile: extractCadenceProfile(candidateText) };
 }
 
 export function scoreHushSwapCandidate(input = {}) {
@@ -84,6 +72,8 @@ export function scoreHushSwapCandidate(input = {}) {
   const sourceText = safeText(input.sourceText);
   const maskProfile = input.maskProfile || input.mask?.profile || {};
   const protectedLiterals = asArray(input.protectedLiterals).length ? asArray(input.protectedLiterals) : extractProtectedLiterals(sourceText);
+  const lockbox = input.lockbox || buildProtectedLiteralLockbox({ sourceText, baselineText: input.protectedBaselineText, maskReferenceText: input.maskReferenceText, manualLiterals: protectedLiterals });
+  const lockboxVerification = verifyProtectedLiteralLockbox(lockbox, outputText);
   const ingestionAudit = buildIngestionFrictionAudit({ text: outputText, protectedLiterals });
   const outputProfile = candidate.profile || extractCadenceProfile(outputText);
   const escapeVector = buildEscapeVector({
@@ -123,88 +113,94 @@ export function scoreHushSwapCandidate(input = {}) {
     contextProfile,
     options: { contextType: input.contextType || 'group-chat', intendedMode: input.operatorMode || 'neutralize', exposureDuration: input.exposureDuration || 'single-use' }
   });
-  const match = buildProfileMatch({
-    sourceText,
-    outputText,
-    maskProfile,
-    sourceProfile: extractCadenceProfile(sourceText),
-    outputProfile,
-    protectedLiterals,
-    escapeVector,
-    ingestionAudit,
-    recognitionField
-  });
+  const match = buildProfileMatch({ sourceText, outputText, maskProfile, sourceProfile: extractCadenceProfile(sourceText), outputProfile, protectedLiterals, escapeVector, ingestionAudit, recognitionField });
+  const residualVector = buildResidualVector({ sourceText, outputText, maskProfile, outputProfile });
+  const steeringPlan = buildSteeringPlan({ sourceText, outputText, maskProfile, outputProfile, residualVector, lockbox });
   const scores = escapeVector.scores || {};
-  const maskMatch = match.matchScore || 0;
-  const semanticFidelity = scores.semanticFidelity ?? 0;
-  const protectedLiteralScore = literalScore(outputText, protectedLiterals);
-  const sourceReductionScore = clamp(1 - (scores.sourceResidualRisk ?? 1));
-  const contextSafetyScore = clamp(1 - (recognitionField.summary?.recognitionPressure ?? 0));
-  let finalScore = (0.30 * maskMatch) + (0.25 * semanticFidelity) + (0.20 * protectedLiteralScore) + (0.15 * sourceReductionScore) + (0.10 * contextSafetyScore);
-  const warnings = [];
-  if (protectedLiteralScore < 1) { finalScore *= 0.35; warnings.push('protected-literal-drop'); }
-  if (semanticFidelity < 0.55) { finalScore *= 0.45; warnings.push('meaning-drift'); }
-  if ((recognitionField.summary?.recognitionPressure ?? 0) >= 0.68) warnings.push('context-pressure-hot');
-  if ((scores.sourceResidualRisk ?? 0) > 0.58) warnings.push('source-residual-high');
+  const protectedLiteralScore = Math.min(literalScore(outputText, protectedLiterals), lockboxVerification.preservationScore ?? 1);
+  const steeringScore = scoreCandidateWithSteering({
+    operatorMode: input.operatorMode || 'neutralize',
+    contextType: input.contextType || 'group-chat',
+    maskMatch: match.matchScore || 0,
+    semanticFidelity: scores.semanticFidelity ?? 0,
+    protectedLiteralScore,
+    sourceReductionScore: clamp(1 - (scores.sourceResidualRisk ?? 1)),
+    contextSafetyScore: clamp(1 - (recognitionField.summary?.recognitionPressure ?? 0)),
+    residualVector
+  });
+  const warnings = [...asArray(match.warnings), ...asArray(steeringPlan.warnings), ...asArray(lockboxVerification.warnings), ...asArray(steeringScore.vetoes)];
   return {
     ...candidate,
-    finalScore: round(finalScore),
-    scoreBreakdown: { maskMatch: round(maskMatch), semanticFidelity: round(semanticFidelity), protectedLiteralScore: round(protectedLiteralScore), sourceReductionScore: round(sourceReductionScore), contextSafetyScore: round(contextSafetyScore) },
+    finalScore: steeringScore.finalScore,
+    scoreBreakdown: steeringScore.scoreBreakdown,
+    weightProfile: steeringScore.weightProfile,
+    vetoes: steeringScore.vetoes,
     match,
+    matchSummary: summarizeProfileMatch(match),
+    residualVector,
+    residualSummary: summarizeResidualVector(residualVector),
+    lockbox,
+    lockboxVerification,
+    lockboxSummary: summarizeProtectedLiteralLockbox(lockbox, lockboxVerification),
+    steeringPlan,
+    steeringSummary: summarizeSteeringPlan(steeringPlan),
     escapeVector,
     ingestionAudit,
     controllerDecision,
     contextProfile,
     recognitionField,
-    warnings: [...new Set([...asArray(match.warnings), ...warnings])]
+    warnings: [...new Set(warnings)]
   };
 }
 
 export function chooseBestHushSwapCandidate(candidates = [], options = {}) {
+  const threshold = Number(options.minFinalScore ?? 0.42);
   const scored = candidates.filter(Boolean).sort((left, right) => (right.finalScore || 0) - (left.finalScore || 0));
-  return scored[0] || null;
+  const best = scored[0] || null;
+  if (!best) return null;
+  return { ...best, belowViabilityThreshold: (best.finalScore || 0) < threshold };
 }
 
 export function buildHushSwap(input = {}) {
   const sourceText = safeText(input.sourceText);
   const protectedLiterals = asArray(input.protectedLiterals).length ? asArray(input.protectedLiterals) : extractProtectedLiterals(sourceText);
-  const count = Math.max(1, Math.min(8, Number(input.options?.candidateCount || input.candidateCount || 5)));
-  const rawCandidates = Array.from({ length: count }, (_, index) => generateHushSwapCandidate({ ...input, protectedLiterals, index }));
-  const candidates = rawCandidates.map((candidate) => scoreHushSwapCandidate({ ...input, protectedLiterals, candidate }));
-  const selected = chooseBestHushSwapCandidate(candidates) || candidates[0] || null;
+  const lockbox = input.lockbox || buildProtectedLiteralLockbox({ sourceText, baselineText: input.protectedBaselineText, maskReferenceText: input.maskReferenceText, manualLiterals: protectedLiterals });
+  const seedPlan = buildSteeringPlan({ sourceText, outputText: sourceText, maskProfile: input.maskProfile || input.mask?.profile || {}, lockbox });
+  const count = Math.max(1, Math.min(8, Number(input.options?.candidateCount || input.candidateCount || 6)));
+  const rawCandidates = Array.from({ length: count }, (_, index) => generateHushSwapCandidate({ ...input, protectedLiterals, lockbox, steeringPlan: seedPlan, index }));
+  const candidates = rawCandidates.map((candidate) => scoreHushSwapCandidate({ ...input, protectedLiterals, lockbox, candidate }));
+  const selected = chooseBestHushSwapCandidate(candidates, { minFinalScore: input.options?.minFinalScore ?? 0.42 }) || candidates[0] || null;
+  const allCandidatesFailed = Boolean(!selected || selected.belowViabilityThreshold || asArray(selected.vetoes).length);
   const claimCeiling = selected ? evaluateClaimCeiling({ escapeVector: selected.escapeVector, ingestionAudit: selected.ingestionAudit, controllerDecision: selected.controllerDecision, personaSummary: input.personaSummary || {}, iterationLedger: input.iterationLedger || {}, reportIntent: 'local-review' }) : null;
+  const maskLifecycle = buildMaskLifecycle({ mask: input.mask, personaSummary: input.personaSummary, recognitionField: selected?.recognitionField, escapeVector: selected?.escapeVector, missingLiteralPressure: selected?.lockboxVerification?.missingCount || 0 });
   return {
     version: HUSH_SWAP_VERSION,
-    selectedOutput: selected?.text || '',
+    selectedOutput: allCandidatesFailed ? '' : selected?.text || '',
     candidates,
     selectedCandidateId: selected?.id || '',
+    allCandidatesFailed,
+    failureReason: allCandidatesFailed ? 'Every candidate remained below viability or triggered a veto. Do not select the prettiest failed candidate.' : '',
     match: selected?.match || null,
-    matchSummary: selected?.match ? summarizeProfileMatch(selected.match) : null,
+    matchSummary: selected?.matchSummary || null,
+    residualVector: selected?.residualVector || null,
+    residualSummary: selected?.residualSummary || null,
+    steeringPlan: selected?.steeringPlan || null,
+    steeringSummary: selected?.steeringSummary || null,
+    lockbox,
+    lockboxVerification: selected?.lockboxVerification || null,
+    lockboxSummary: selected?.lockboxSummary || summarizeProtectedLiteralLockbox(lockbox),
+    maskLifecycle,
+    maskLifecycleSummary: summarizeMaskLifecycle(maskLifecycle),
     escapeVector: selected?.escapeVector || null,
     ingestionAudit: selected?.ingestionAudit || null,
     controllerDecision: selected?.controllerDecision || null,
     claimCeiling,
     recognitionField: selected?.recognitionField || null,
-    warnings: [...new Set(candidates.flatMap((candidate) => asArray(candidate.warnings)))],
-    limitations: [
-      'Hush swap is a local candidate selection workflow, not an external recognition outcome.',
-      'Preserve the claim before chasing the mask.'
-    ]
+    warnings: [...new Set([...candidates.flatMap((candidate) => asArray(candidate.warnings)), ...(allCandidatesFailed ? ['all-candidates-failed'] : [])])],
+    limitations: ['Hush swap is a local candidate selection workflow, not an external recognition outcome.', 'Preserve the claim before chasing the mask.']
   };
 }
 
 export function exportHushSwapJson(result = {}, options = {}) {
-  const payload = { ...result, reproducibility: { privateTextIncluded: Boolean(options.includePrivateText) } };
-  if (!options.includePrivateText) {
-    payload.candidates = asArray(payload.candidates).map((candidate) => ({
-      id: candidate.id,
-      finalScore: candidate.finalScore,
-      scoreBreakdown: candidate.scoreBreakdown,
-      match: candidate.match,
-      warnings: candidate.warnings
-    }));
-    payload.claimCeiling = sanitizeClaimCeilingForSwapExport(payload.claimCeiling);
-    delete payload.selectedOutput;
-  }
-  return JSON.stringify(payload, null, options.pretty === false ? 0 : 2);
+  return exportHushPolicyJson(result, { mode: options.mode || (options.includePrivateText ? 'private-full-export' : 'share-export'), pretty: options.pretty, includePrivateText: options.includePrivateText });
 }
