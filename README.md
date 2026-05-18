@@ -2,11 +2,13 @@
 
 ## What this is
 
-The Cadence Playground is the larger browser workspace for TD613 cadence, route, Safe Harbor adjacency, Persona play, stylometric math, and local browser experiments.
+The Cadence Playground is the larger browser workspace for TD613 cadence, route, Safe Harbor adjacency, Persona play, stylometric math, Hush, and local browser experiments.
 
-TD613 Hush — or Hush — is one toy inside The Cadence Playground. It is a quiet local authorship-recognition pressure workbench for bounded stylometry review, Persona-mask experimentation, and context-aware communication analysis. The repository is named `TD613-TCP`, but the Phase 0–10 Toy-to-Tool instrument should be presented as TD613 Hush, not as the whole repository.
+TD613 Hush — or Hush — is the clean mask studio inside The Cadence Playground. It lives at `/adversarial-bench`; the file name remains for continuity, but the product surface is Hush. The repository is named `TD613-TCP`, but the Phase 0–10 Toy-to-Tool instrument should be presented as TD613 Hush. Phase 11 extends that instrument with a Hush-native mask studio and custom mask workflow; Hush still should not be presented as the whole repository.
 
-Hush is playful on the surface because it belongs in The Cadence Playground. Underneath, it is disciplined: Escape Vector, Ingestion Friction, Controller state, Persona Memory, Iteration Ledger, Claim Ladder, Report Export, Fixtures, Calibration, and Recognition Field.
+Hush is playful on the surface because it belongs in The Cadence Playground. Underneath, it is disciplined: Hush-native masks, custom mask samples, stylometric profile refinement, Escape Vector, Ingestion Friction, Controller state, Mask Memory, Iteration Ledger, Claim Ladder, Report Export, Fixtures, Calibration, and Recognition Field.
+
+Phase 11 starts a Hush-native mask library. Hush masks are not legacy Personas. Homebase, Deck, and Trainer remain legacy/lab chambers while Hush becomes the primary whistleblower-facing mask workflow.
 
 ## What this is not
 
@@ -20,21 +22,23 @@ Hush is not a platform classifier, external detector, legal strategy substitute,
 
 ## Core workflow
 
-1. Stage protected baseline.
-2. Stage mask / Persona.
-3. Stage message draft.
-4. Generate or edit protected output.
-5. Analyze Escape Vector.
-6. Review Ingestion Friction.
-7. Review Controller state.
-8. Review Persona Memory.
-9. Review Claim Ladder.
-10. Review Recognition Field.
-11. Export report only when the claim ceiling supports it.
+1. Select a built-in Hush mask or create a custom mask from writing samples.
+2. Review the mask's stylometric profile.
+3. Stage protected baseline when needed.
+4. Stage message draft.
+5. Swap the surface toward the selected mask.
+6. Review protected output.
+7. Analyze Escape Vector.
+8. Review Ingestion Friction.
+9. Review Controller state.
+10. Review Mask Memory.
+11. Review Claim Ladder.
+12. Review Recognition Field.
+13. Export only after reviewing warnings and claim ceiling.
 
 ## Phase map
 
-The Hush Toy-to-Tool build runs Phase 0 through Phase 10. See [docs/PHASE_MAP.md](docs/PHASE_MAP.md).
+The Hush Toy-to-Tool build now runs Phase 0 through Phase 11. See [docs/PHASE_MAP.md](docs/PHASE_MAP.md).
 
 ## Local-only posture
 
@@ -42,7 +46,7 @@ Hush performs local review. It does not call hidden platform classifiers, scrape
 
 ## Privacy defaults
 
-The Iteration Ledger and Report Export exclude private text by default. Private baseline, draft, mask reference, and protected output text should only be exported through deliberate operator choice.
+The Iteration Ledger, custom mask export, Hush swap export, and Report Export exclude private text by default. Private baseline, draft, mask reference, sample text, and protected output text should only be exported through deliberate operator choice.
 
 ## Claim Ladder
 
@@ -69,6 +73,7 @@ Protective authorship tools should not promise invisibility. Hush provides measu
 ```bash
 npm run test:fixtures
 npm run test:recognition
+npm run test:hush
 npm run test:release
 npm run test:stylometry
 npm test
@@ -76,7 +81,7 @@ npm test
 
 ## Documentation index
 
-Start with [docs/INDEX.md](docs/INDEX.md), then read [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md), [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md), [docs/RESPONSIBLE_USE.md](docs/RESPONSIBLE_USE.md), and [docs/RELEASE_NOTES_PHASE_0_10.md](docs/RELEASE_NOTES_PHASE_0_10.md).
+Start with [docs/INDEX.md](docs/INDEX.md), then read [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md), [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md), [docs/RESPONSIBLE_USE.md](docs/RESPONSIBLE_USE.md), and [docs/PHASE_11_HUSH_MASK_STUDIO_STATUS.md](docs/PHASE_11_HUSH_MASK_STUDIO_STATUS.md).
 
 ## Registered field language
 
@@ -85,12 +90,12 @@ TCP's glyph system is operational, not decorative. The browser uses a registered
 The current public membrane is organized as five roles:
 
 - `Ingress` = threshold
-- `Homebase / Personas` = anchor, mask shelf, contact, residue
+- `Homebase / Personas` = legacy/lab chamber for anchor, mask shelf, contact, residue
 - `Readout` = witness and law
-- `Deck` = encounter and duel
-- `Trainer` = forge
+- `Deck` = legacy/lab chamber for encounter and duel
+- `Trainer` = legacy/lab chamber for corpus extraction and validation
 
-That role split matters because TCP does not present every state in the same voice. Ingress now hands off directly into `Homebase / Personas`, while `#console` remains only as a compatibility alias. `Homebase / Personas` is where a cadence home is locked, a mask is chosen or worn, and residue is read. `Readout` stays colder because it is the proof surface. `Trainer` stays retrieval-first, but the visible loop now reads as extraction, live draft forging, validation, correction, and injection rather than as generic tooling.
+That role split matters because TCP does not present every state in the same voice. Phase 11 makes Hush the primary mask studio while keeping older chambers available for lab work.
 
 Adjacent to the six-room TCP shell, `TD613 Flight` is the SHI-gated credential flightdeck launched from Safe Harbor. It prepares LLM-ready Flight Packets and authorship / rupture footers, but it does not mint SHI on its own; entrants must complete Safe Harbor's triad first.
 
@@ -154,7 +159,7 @@ TCP ships maintained proof surfaces in both Node and the browser. The maintained
 npm test
 ```
 
-That path covers stylometry, fixtures, recognition, release hardening, benchmark, browser parity, retrieval lane, swap-cadence matrix, trainer lab, harbor, and diagnostics.
+That path covers stylometry, fixtures, recognition, Hush, release hardening, benchmark, browser parity, retrieval lane, swap-cadence matrix, trainer lab, harbor, and diagnostics.
 
 ## Non-goals
 
@@ -168,6 +173,12 @@ Open the app:
 
 ```text
 app/index.html
+```
+
+Open Hush directly:
+
+```text
+app/adversarial-bench.html
 ```
 
 Skip ingress during development:
@@ -203,6 +214,7 @@ Use this order if you want the repo in a clean technical sequence:
 7. [docs/TD613_SAFE_HARBOR.md](docs/TD613_SAFE_HARBOR.md)
 8. [docs/TD613_APERTURE.md](docs/TD613_APERTURE.md)
 9. [docs/STYLOMETRIC_MATH.md](docs/STYLOMETRIC_MATH.md)
-10. [docs/INTERFACE_LEXICON.md](docs/INTERFACE_LEXICON.md)
+10. [docs/PHASE_11_HUSH_MASK_STUDIO_STATUS.md](docs/PHASE_11_HUSH_MASK_STUDIO_STATUS.md)
+11. [docs/INTERFACE_LEXICON.md](docs/INTERFACE_LEXICON.md)
 
 For incomplete and future work, see [ROADMAP.md](ROADMAP.md) and [KNOWN_FAILURES.md](KNOWN_FAILURES.md). For contribution flow, see [CONTRIBUTING.md](CONTRIBUTING.md).

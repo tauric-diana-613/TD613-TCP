@@ -112,6 +112,16 @@ What it refuses: presenting Hush as the whole repository or promising more than 
 
 Related tests: `tests/release-manifest.test.mjs`, `tests/docs-surface.test.mjs`, `tests/release-hardening.test.mjs`.
 
+## Phase 11 — Adversarial Bench → Hush Mask Studio
+
+Deliverables: `app/data/hush-masks.js`, `app/engine/hush-mask-studio.js`, `app/engine/hush-custom-mask.js`, `app/engine/hush-profile-match.js`, `app/engine/hush-swap.js`, updated `app/adversarial-bench.html`, updated `app/adversarial-bench.mjs`, and Hush tests.
+
+What it added: renamed and upgraded `/adversarial-bench` into TD613 Hush while preserving the serious adversarial stylometry pipeline already built there. Phase 11 adds a Hush-native mask library, custom mask samples, live profile refinement, swap generation, profile-match review, privacy-preserving mask exports, and a cleaner whistleblower-facing mask workflow.
+
+What it refuses: a second competing Hush app, old Homebase design language, Deck duel framing as the primary route, legacy ontology gating, raw sample text in default exports, and external outcome claims.
+
+Related tests: `tests/hush-mask-studio.test.mjs`, `tests/hush-custom-mask.test.mjs`, `tests/hush-profile-match.test.mjs`, `tests/hush-swap.test.mjs`, `tests/adversarial-bench.test.mjs`.
+
 ## Closeout summary
 
-Phase 10 closes the Toy-to-Tool plan by making the full Hush system explainable, reviewable, and releasable without requiring oral tradition from the original builder.
+Phase 10 closed the first Toy-to-Tool plan. Phase 11 starts the cleanup after the cleanup: Hush becomes the primary mask studio while Homebase, Deck, and Trainer remain legacy/lab chambers.

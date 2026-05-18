@@ -1,38 +1,71 @@
 # TD613 Hush Operator Guide
 
-TD613 Hush is a quiet toy inside The Cadence Playground. It is playful on the surface and disciplined under the hood. For most visitors it reads as another cadence experiment. For whistleblowers and other vulnerable operators, it can become a local review route for authorship-recognition pressure.
+TD613 Hush is the clean mask studio inside The Cadence Playground. It lives at `/adversarial-bench`; the file name remains for continuity, but the operator-facing surface is Hush.
+
+For most visitors it can still read as a cadence toy. For whistleblowers and other vulnerable operators, it becomes a local review route for authorship-recognition pressure.
 
 ## Before using Hush
 
-Use Hush only as a local review instrument. It helps inspect source residual pressure, mask fit, semantic preservation, protected literals, ingestion friction, Persona memory, claim ceiling, and Recognition Field context pressure.
+Use Hush only as a local review instrument. It helps inspect source residual pressure, mask fit, semantic preservation, protected literals, ingestion friction, Mask Memory, claim ceiling, and Recognition Field context pressure.
 
 Local seal means bounded local convergence. It is not publication readiness.
 
+## Hush mask studio workflow
+
+Select a built-in mask or create a custom mask from writing samples. Review the stylometric profile. Write the message. Swap the surface. Review pressure. Export only after reviewing warnings.
+
+The simplest route is:
+
+1. Pick a Hush mask from the Masks tab.
+2. Or open Customize and add writing samples to build a custom mask.
+3. Review the live mask profile.
+4. Write the message in the source field.
+5. Click Swap Surface.
+6. Read the output and warnings.
+7. Run analysis if needed.
+8. Export only what should travel.
+
+Hush masks are not legacy Personas. Legacy Personas remain available in older chambers, but Hush uses a clean mask library designed for fast local stylometric transformation and pressure review.
+
 ## The basic workflow
 
-1. Stage the protected baseline.
-2. Stage a mask or Persona.
+1. Stage the protected baseline when needed.
+2. Select a Hush mask or build a custom mask.
 3. Stage the message draft.
-4. Generate or edit the protected output.
-5. Analyze Escape Vector.
-6. Review Ingestion Friction.
-7. Review Controller state.
-8. Review Persona Memory.
-9. Review Claim Ladder.
-10. Review Recognition Field.
-11. Export a report only when the claim ceiling supports it.
+4. Swap the surface toward the selected mask.
+5. Review the protected output.
+6. Analyze Escape Vector.
+7. Review Ingestion Friction.
+8. Review Controller state.
+9. Review Mask Memory.
+10. Review Claim Ladder.
+11. Review Recognition Field.
+12. Export a report only when the claim ceiling supports it.
 
-## Choosing a Persona
+## Choosing a Hush mask
 
-Personas remain social objects, not sterile risk profiles. They can be avatars, group-chat characters, and practice surfaces. Hush measures them as exposure membranes because repeated Persona use can create local continuity, drift, or overfit.
+Masks are local stylometric targets, not identity promises. Choose a mask based on the communication field, not vibes alone. A warm group-chat mask and a document-handoff mask have different pressure profiles.
 
-Choose a Persona based on the communication field, not vibes alone. A warm group-chat Persona and a document-handoff Persona have different pressure profiles.
+Each built-in Hush mask carries:
+
+- description
+- intended use
+- risk tell
+- sample seed
+- transform hints
+- pressure warnings
+
+## Custom masks
+
+The Customize tab lets an operator add writing samples and watch the composite profile refine. Custom mask exports exclude raw samples by default.
+
+A custom mask with one short sample is thin. Add more samples from the same intended mask surface before relying on the profile.
 
 ## Stable pseudonym vs rotating mask
 
 Stable pseudonym mode can support repeated local continuity when the goal is a consistent mask surface. Rotating mask mode treats repeated continuity as pressure that may call for rotation or cooldown.
 
-Persona continuity is strategic only when it matches operator intent.
+Mask continuity is strategic only when it matches operator intent.
 
 ## Hostile Pipeline Compression
 
@@ -64,7 +97,7 @@ Restore when meaning, dates, exhibits, protected literals, or witness context ha
 
 ## When to rotate
 
-Rotate when Persona continuity, mask overuse, Recognition Field pressure, or repeated phrasing makes the current Persona too indexable for the intended mode.
+Rotate when mask continuity, mask overuse, Recognition Field pressure, or repeated phrasing makes the current mask too indexable for the intended mode.
 
 ## When to seal locally
 
@@ -76,11 +109,11 @@ Local seal means bounded local convergence. It is not publication readiness.
 
 Use report export after analysis. Default reports exclude private text and include metrics, summaries, limitations, claim ceilings, and Recognition Field information when supplied.
 
-Do not paste private baseline, draft, mask reference, or output into reports unless you intentionally opt into that exposure in a controlled environment.
+Do not paste private baseline, draft, mask reference, sample text, or output into reports unless you intentionally opt into that exposure in a controlled environment.
 
 ## What reports can claim
 
-Reports can describe local authorship-recognition pressure, local mask-fit movement, local reduced source-linkage candidate status, semantic preservation status, protected literal status, ingestion friction, Persona memory posture, and context-pressure warnings.
+Reports can describe local authorship-recognition pressure, local mask-fit movement, local reduced source-linkage candidate status, semantic preservation status, protected literal status, ingestion friction, Mask Memory posture, and context-pressure warnings.
 
 ## What reports cannot claim
 
