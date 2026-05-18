@@ -1,7 +1,7 @@
 import { extractCadenceProfile } from './stylometry.js';
-import { localProfileStatus, localProfileSummary } from './hush-mask-studio.js';
+import { localProfileStatus, localProfileSummary, buildMaskDistribution } from './hush-mask-studio.js';
 
-export const HUSH_CUSTOM_MASK_VERSION = 'phase-11';
+export const HUSH_CUSTOM_MASK_VERSION = 'phase-12';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
@@ -58,23 +58,43 @@ function warningsFor(mask = {}) {
   return [...new Set(warnings)];
 }
 
+function sampleVariance(samples = [], compositeProfile = {}) {
+  const keys = ['avgSentenceLength', 'punctuationDensity', 'contractionDensity', 'recurrencePressure', 'lexicalDensity', 'modifierDensity', 'lineBreakDensity', 'lexicalEntropy'];
+  const variance = {};
+  const stableDimensions = [];
+  const volatileDimensions = [];
+  for (const key of keys) {
+    const values = samples.map((sample) => Number(sample.profile?.[key])).filter(Number.isFinite);
+    if (!values.length) continue;
+    const mean = Number(compositeProfile[key] ?? (values.reduce((sum, value) => sum + value, 0) / values.length));
+    const varValue = values.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / values.length;
+    variance[key] = Number(varValue.toFixed(6));
+    if (varValue <= 0.01) stableDimensions.push(key);
+    if (varValue > 0.12) volatileDimensions.push(key);
+  }
+  return { variance, stableDimensions, volatileDimensions, overfitDimensions: samples.length < 3 ? keys.slice(0, 3) : [] };
+}
+
 export function createCustomMask(input = {}) {
   const label = safeText(input.label || input.name || 'Custom Mask').trim() || 'Custom Mask';
-  const mask = {
+  const emptyProfile = extractCadenceProfile('');
+  return {
     version: HUSH_CUSTOM_MASK_VERSION,
     id: input.id || `custom-${slug(label)}`,
     label,
     source: 'custom',
     samples: [],
-    compositeProfile: extractCadenceProfile(''),
-    profileSummary: localProfileSummary(extractCadenceProfile('')),
+    compositeProfile: emptyProfile,
+    profile: emptyProfile,
+    distribution: buildMaskDistribution(emptyProfile, { sampleCount: 0 }),
+    profileTargets: buildMaskDistribution(emptyProfile, { sampleCount: 0 }),
+    profileSummary: localProfileSummary(emptyProfile),
     sampleCount: 0,
     totalWords: 0,
     profileStatus: 'empty',
     warnings: ['no-samples', 'private-text-excluded', 'custom-mask-local-only'],
     limitations: ['Custom masks are local profile targets built from operator-supplied samples.']
   };
-  return mask;
 }
 
 export function addCustomMaskSample(mask = {}, sampleText = '', options = {}) {
@@ -99,12 +119,18 @@ export function rebuildCustomMaskProfile(mask = {}, options = {}) {
   const totalWords = samples.reduce((sum, sample) => sum + (sample.wordCount || 0), 0);
   const compositeText = samples.map((sample) => sample.text || '').filter(Boolean).join('\n\n');
   const compositeProfile = compositeText ? extractCadenceProfile(compositeText) : averageProfiles(samples.map((sample) => sample.profile));
+  const distribution = buildMaskDistribution(compositeProfile, { sampleCount: samples.length });
+  const varianceSummary = sampleVariance(samples, compositeProfile);
   const profileStatus = statusFor(totalWords, samples.length);
   const next = {
     ...createCustomMask(mask),
     ...mask,
+    version: HUSH_CUSTOM_MASK_VERSION,
     samples: samples.map((sample) => ({ ...sample, textIncluded: Boolean(sample.text), text: options.includePrivateText ? sample.text : null })),
     compositeProfile,
+    profile: compositeProfile,
+    distribution: { ...distribution, ...varianceSummary },
+    profileTargets: { ...distribution, ...varianceSummary },
     profileSummary: localProfileSummary(compositeProfile),
     sampleCount: samples.length,
     totalWords,
@@ -136,6 +162,7 @@ export function summarizeCustomMask(mask = {}) {
     totalWords: rebuilt.totalWords,
     profileStatus: rebuilt.profileStatus,
     profileSummary: rebuilt.profileSummary,
+    distribution: rebuilt.distribution,
     warnings: rebuilt.warnings
   };
 }
@@ -156,6 +183,9 @@ export function exportCustomMaskJson(mask = {}, options = {}) {
       profile: sample.profile
     })),
     compositeProfile: rebuilt.compositeProfile,
+    profile: rebuilt.profile,
+    distribution: rebuilt.distribution,
+    profileTargets: rebuilt.profileTargets,
     profileSummary: rebuilt.profileSummary,
     sampleCount: rebuilt.sampleCount,
     totalWords: rebuilt.totalWords,

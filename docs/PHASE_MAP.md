@@ -122,6 +122,16 @@ What it refuses: a second competing Hush app, old Homebase design language, Deck
 
 Related tests: `tests/hush-mask-studio.test.mjs`, `tests/hush-custom-mask.test.mjs`, `tests/hush-profile-match.test.mjs`, `tests/hush-swap.test.mjs`, `tests/adversarial-bench.test.mjs`.
 
+## Phase 12 — Residual-Driven Hush Steering
+
+Deliverables: `app/engine/hush-residual-vector.js`, `app/engine/hush-protected-literal-lockbox.js`, `app/engine/hush-steering-plan.js`, `app/engine/hush-mask-lifecycle.js`, `app/engine/hush-export-policy.js`, updated `app/engine/hush-swap.js`, updated `app/engine/hush-mask-studio.js`, and Phase 12 Hush tests.
+
+What it added: residual vectors, protected literal lockbox, mode-specific steering weights, candidate vetoes, all-candidates-failed behavior, mask lifecycle governance, export policy modes, and built-in mask distribution targets.
+
+What it refuses: treating the best available candidate as a success when the whole candidate set remains weak, treating private-text exclusion as complete export safety, and letting one universal score flatten legal intake, group-chat, rotating-mask, and stable-pseudonym contexts into the same risk posture.
+
+Related tests: `tests/hush-residual-vector.test.mjs`, `tests/hush-protected-literal-lockbox.test.mjs`, `tests/hush-steering-plan.test.mjs`, `tests/hush-mask-lifecycle.test.mjs`, `tests/hush-export-policy.test.mjs`, and `tests/hush-swap.test.mjs`.
+
 ## Closeout summary
 
-Phase 10 closed the first Toy-to-Tool plan. Phase 11 starts the cleanup after the cleanup: Hush becomes the primary mask studio while Homebase, Deck, and Trainer remain legacy/lab chambers.
+Phase 10 closed the first Toy-to-Tool plan. Phase 11 starts the cleanup after the cleanup: Hush becomes the primary mask studio while Homebase, Deck, and Trainer remain legacy/lab chambers. Phase 12 makes Hush fight its own residual vector before it lets a candidate pass.
