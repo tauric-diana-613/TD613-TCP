@@ -18,7 +18,11 @@
             <p class="subtitle">Stylometric intake membrane for provenance attestation, packet shaping, and seal-ready custody.</p>
           </div>
         </div>
-        <a class="flight-launch ingress-flight-launch" href="./td613-flight.html" target="_blank" rel="noopener">TD613 Flight →</a>
+        <div class="ingress-head-actions">
+          <a class="flight-launch ingress-flight-launch" href="../index.html?ingress=off" rel="noopener">&larr; TCP Gateway</a>
+          <a class="flight-launch ingress-flight-launch" href="./td613-flight.html" target="_blank" rel="noopener">TD613 Flight &rarr;</a>
+          <button class="flight-launch ingress-flight-launch signout-launch" id="signOutIngress" type="button">Sign Out</button>
+        </div>
         <div class="status-strip ingress-status">
           <span class="coherence-sigil" id="coherenceSigilIngress" data-state="dormant" aria-hidden="true">米</span>
           <div class="status-pill" id="ingressRoutePill">membrane-only</div>
@@ -130,7 +134,9 @@
         <div class="status-pill" id="pillBoundaryMode">boundary pending</div>
         <div class="status-pill" id="pillRouteState">route pending</div>
         <div class="status-pill" id="pillSignatureLane">signature overlay idle</div>
+        <a class="flight-launch flight-launch-compact" href="../index.html?ingress=off" rel="noopener">Gateway →</a>
         <a class="flight-launch flight-launch-compact" href="./td613-flight.html" target="_blank" rel="noopener">Flight →</a>
+        <button class="flight-launch flight-launch-compact signout-launch" id="signOutVault" type="button">Sign Out</button>
       </div>
     </header>
 
@@ -255,9 +261,6 @@
                 <button class="control" id="injectDynamicLane" type="button">Inject Dynamic Lane</button>
                 <span class="mini-note">When the renderer key is active, save the appended SVG at the helper timestamp and pair it with the correct probe lane.</span>
               </div>
-              <div class="proof-stack dynamic-lane-readout" aria-label="Dynamic lane readout">
-                <div class="proof-row"><span class="proof-label">Dynamic lane</span><span class="proof-value" id="mixedLane">loading combined lane</span></div>
-              </div>
               <div class="proof-stack">
                 <div class="proof-row"><span class="proof-label">Userscript key</span><span class="proof-value" id="rendererKeyReadout">10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js</span></div>
                 <div class="proof-row"><span class="proof-label">Handshake state</span><span class="proof-value" id="rendererHandshakeReadout">install renderer key</span></div>
@@ -272,6 +275,9 @@
                   <div class="proof-row"><span class="proof-label">Literal PUA</span><span class="proof-value" id="glyphLane">loading glyph</span></div>
                 </div>
               </details>
+              <div class="proof-stack dynamic-lane-readout" aria-label="Dynamic lane readout">
+                <div class="proof-row"><span class="proof-label">Dynamic lane</span><span class="proof-value" id="mixedLane">Awaiting injected lane</span></div>
+              </div>
               <div class="svg-attestation-probes" data-td613-skip="true">
                 <details class="fold-panel" data-td613-skip="true" open>
                   <summary class="attestation-summary">SVG Provenance Attestation Probes <span class="attestation-hint">(ask your TD613 administrator for the key renderer)</span></summary>
@@ -281,6 +287,7 @@
                     <button class="control secondary" data-probe-variant="03" type="button">Build 03 render minimal</button>
                     <button class="control secondary" data-probe-variant="04" type="button">Build 04 render receipt</button>
                     <button class="control secondary" id="copyProbeOutput" type="button">Copy Output</button>
+                    <button class="control secondary" id="refreshProbeHelpers" type="button">Date/Time ↺</button>
                   </div>
                   <textarea id="probeOutput" class="code-area" readonly></textarea>
                   <div class="note">01 and 02 stay black-box and footer-first. 03 and 04 are render-proof lanes: install the renderer key, save the SVG at the helper timestamp, then send the generated output with packet context and the compact footer. Every probe output carries the SHI # so packet, probe, renderer, and LLM lanes stay bound.</div>
@@ -291,7 +298,7 @@
 
             <article class="surface-card accent-card reliquary-card" data-td613-skip="true">
               <div class="surface-head">
-                <span class="surface-kicker">Packet reliquary</span>
+                <span class="surface-kicker">Packet vault</span>
                 <span class="surface-state" id="packetPhase">membrane-only</span>
               </div>
               <h2>Canonical packet before the seal</h2>
@@ -302,8 +309,8 @@
                 <div class="metric-row"><span class="label">Triad resonance</span><span class="value" id="triadResonanceReadout">pending</span></div>
                 <div class="metric-row"><span class="label">Sealed lane</span><span class="value" id="sealedLaneReadout">session-only / pending</span></div>
               </div>
-              <details class="fold-panel reliquary-forensic-fold">
-                <summary>Forensic reliquary</summary>
+              <details class="fold-panel reliquary-forensic-fold" id="packetVaultFold">
+                <summary><span>Packet Vault</span><span class="fold-toggle-word" data-open-label="hide" data-closed-label="expand">expand</span></summary>
                 <div class="metric-block roomy">
                   <div class="metric-row"><span class="label">Packet id</span><span class="value" id="packetIdReadout">pending</span></div>
                   <div class="metric-row"><span class="label">Receipt id</span><span class="value" id="receiptIdReadout">pending</span></div>
@@ -354,8 +361,8 @@
                   <button class="control secondary" id="copyExtendedFooter" type="button" disabled>Copy Canonical Footer</button>
                 </div>
               </div>
-              <details class="fold-panel intake-canon-fold" data-td613-skip="true">
-                <summary>Intake canon</summary>
+              <details class="fold-panel intake-canon-fold" id="intakeCanonFold" data-td613-skip="true">
+                <summary><span>Intake canon</span><span class="fold-toggle-word" data-open-label="hide" data-closed-label="expand">expand</span></summary>
                 <div class="intake-canon-card">
                   <div class="triad-summary">
                     <div class="summary-row"><span class="summary-label">Future Self</span><span class="summary-value" id="summaryFutureSelf">awaiting ingress</span></div>
@@ -388,7 +395,7 @@
                       <label class="field"><span>filename-safe UTC</span><input id="helperFilenameSafe" readonly></label>
                     </div>
                     <div class="button-grid">
-                      <button class="control" id="refreshHelpers" type="button">Refresh Date/Time</button>
+                      <button class="control" id="refreshHelpers" type="button">Date/Time ↺</button>
                       <button class="control secondary" data-copy-target="helperTs" type="button">Copy ts_utc</button>
                       <button class="control secondary" data-copy-target="helperRequestId" type="button">Copy request_id</button>
                       <button class="control secondary" data-copy-target="helperNonce" type="button">Copy nonce</button>

@@ -412,6 +412,10 @@ select {
   transition: border-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
+.flight-launch[type="button"] {
+  cursor: pointer;
+}
+
 .flight-launch:hover,
 .flight-launch:focus-visible {
   border-color: rgba(120, 247, 255, 0.74);
@@ -423,9 +427,28 @@ select {
     0 0 42px rgba(120, 247, 255, 0.16);
 }
 
+.signout-launch {
+  --flight-glow: rgba(120, 247, 255, 0.14);
+  border-color: rgba(120, 247, 255, 0.26);
+  background:
+    linear-gradient(180deg, rgba(10, 18, 23, 0.9), rgba(4, 9, 12, 0.94)),
+    radial-gradient(circle at 18% 0%, rgba(120, 247, 255, 0.14), transparent 58%);
+  color: rgba(217, 255, 231, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 18px rgba(120, 247, 255, 0.08);
+}
+
+.ingress-head-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-left: auto;
+}
+
 .ingress-flight-launch {
   align-self: flex-start;
-  margin-left: auto;
 }
 
 .flight-launch-compact {
@@ -1903,6 +1926,24 @@ h2 {
   user-select: none;
 }
 
+.fold-panel summary::after,
+.dock-fold summary::after {
+  display: none;
+}
+
+.fold-toggle-word {
+  margin-left: auto;
+  color: var(--text-dim);
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.fold-panel[open] .fold-toggle-word,
+.dock-fold[open] .fold-toggle-word {
+  color: var(--text-bright);
+}
+
 .fold-panel summary::-webkit-details-marker,
 .dock-fold summary::-webkit-details-marker {
   display: none;
@@ -3297,10 +3338,15 @@ body[data-thermal="fermata"] .reliquary-card .mint-value[data-state="minted"] {
 }
 
 @media (max-width: 720px), (max-height: 560px) {
+  .ingress-head-actions {
+    width: 100%;
+    justify-content: flex-start;
+    margin-left: 0;
+  }
+
   .ingress-flight-launch {
     justify-self: start;
     align-self: center;
-    margin-left: 0;
     min-height: 32px;
     padding-inline: 12px;
     font-size: 0.56rem;

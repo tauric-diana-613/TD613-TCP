@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <title>TD613 Flight</title>
-<meta content="width=1120, user-scalable=yes, viewport-fit=cover" name="viewport"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&family=Tektur:wght@500;600;700&family=Unbounded:wght@500;700&display=swap');
 
@@ -53,7 +53,8 @@ radial-gradient(circle at var(--mx) var(--my), rgba(36,240,109,0.13), transparen
 radial-gradient(circle at 82% 16%, rgba(120,247,255,0.10), transparent 24rem),
 radial-gradient(circle at 18% 88%, rgba(156,22,31,0.15), transparent 27rem),
 linear-gradient(132deg, #000101 0%, #020706 48%, #010203 100%);
-overflow-x: auto;
+overflow-x: hidden;
+overscroll-behavior-y: none;
 }
 
 body::before,
@@ -142,13 +143,14 @@ top: .62rem;
 right: .72rem;
 z-index: 2;
 display: flex;
-flex-wrap: wrap;
+flex-wrap: nowrap;
 justify-content: flex-end;
 gap: .34rem;
-max-width: 22.4rem;
+max-width: none;
 }
 
-.flight-quick-nav a {
+.flight-quick-nav a,
+.flight-quick-nav button {
 display: inline-flex;
 align-items: center;
 justify-content: center;
@@ -167,13 +169,27 @@ text-decoration: none;
 text-transform: uppercase;
 white-space: nowrap;
 clip-path: polygon(0 8px, 8px 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+cursor: pointer;
 }
 
 .flight-quick-nav a:hover,
-.flight-quick-nav a:focus-visible {
+.flight-quick-nav a:focus-visible,
+.flight-quick-nav button:hover,
+.flight-quick-nav button:focus-visible {
 border-color: rgba(120,247,255,0.68);
 color: var(--moss);
 box-shadow: 0 0 20px rgba(36,240,109,0.16);
+}
+
+.flight-nav-signout {
+padding-inline: .42rem;
+font-size: .42rem;
+letter-spacing: .16em;
+color: var(--bone-dim);
+border-color: rgba(36,240,109,0.24);
+background:
+linear-gradient(180deg, rgba(5,16,15,0.92), rgba(0,6,6,0.94)),
+radial-gradient(circle at 18% 0%, rgba(120,247,255,0.08), transparent 58%);
 }
 
 header::before {
@@ -628,6 +644,19 @@ flex-wrap: wrap;
 gap: .26rem;
 }
 
+.seal-custom-label {
+display: inline-flex;
+align-items: center;
+gap: .28rem;
+}
+
+.seal-custom-label input[type="text"] {
+min-width: 7rem;
+width: 7rem;
+padding: .24rem .34rem;
+font-size: .52rem;
+}
+
 .section-note {
 font-size: .6rem;
 line-height: 1.28;
@@ -706,6 +735,54 @@ font-size: .48rem;
 letter-spacing: .065em;
 text-transform: uppercase;
 color: var(--bone-dim);
+}
+
+.output-toolbar {
+display: flex;
+justify-content: space-between;
+align-items: flex-end;
+gap: .48rem;
+margin-top: .45rem;
+}
+
+.payload-stepper {
+display: inline-flex;
+align-items: center;
+gap: .24rem;
+margin-left: auto;
+padding: .18rem .26rem;
+border: 1px solid rgba(120,247,255,0.16);
+background: rgba(0,7,7,0.48);
+clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+}
+
+.payload-stepper.is-disabled {
+opacity: .5;
+}
+
+.payload-stepper-label,
+.payload-stepper-value {
+font-family: var(--font-mono);
+font-size: .46rem;
+letter-spacing: .08em;
+text-transform: uppercase;
+}
+
+.payload-stepper-label {
+color: var(--bone-dim);
+}
+
+.payload-stepper-value {
+min-width: 1.2rem;
+text-align: center;
+color: var(--bone-bright);
+}
+
+.payload-stepper-btn {
+width: 1.35rem;
+min-width: 1.35rem;
+height: 1.35rem;
+font-size: .82rem;
 }
 
 .seal-card {
@@ -820,10 +897,6 @@ color: #ff6a5f;
 }
 
 @media (max-width: 820px) {
-body {
-min-width: 1120px;
-}
-
 header {
 padding-right: .68rem;
 }
@@ -834,19 +907,40 @@ top: auto;
 right: auto;
 grid-area: tags;
 justify-content: flex-start;
+flex-wrap: wrap;
 max-width: none;
 margin-bottom: .14rem;
 }
 
-.flight-quick-nav a {
-font-size: .44rem;
+.flight-quick-nav a,
+.flight-quick-nav button {
+ font-size: .44rem;
 }
 
 .page-wrap {
-width: 1120px;
+width: auto;
 max-width: none;
 margin: 0;
 padding: .95rem;
+}
+
+.output-toolbar {
+flex-direction: column;
+align-items: stretch;
+}
+
+.payload-stepper {
+margin-left: 0;
+justify-content: flex-end;
+}
+
+.seal-custom-label {
+flex-wrap: wrap;
+}
+
+.seal-custom-label input[type="text"] {
+width: 100%;
+min-width: 0;
 }
 }
 
@@ -1205,7 +1299,7 @@ body.flight-locked {
 <a href="../index.html">The Cadence Playground</a>
 <a href="./index.html">Safe Harbor</a>
 <a href="../aperture/index.html">Aperture</a>
-<button id="btnSignOut" type="button" style="background:transparent; border:none; color:var(--moss); font-family:var(--font-mono); font-size:inherit; padding:.18rem .54rem; cursor:pointer; min-height:1.65rem; display:inline-flex; align-items:center; justify-content:center; text-decoration:none;">Sign Out</button>
+<button class="flight-nav-signout" id="btnSignOut" type="button">Sign Out</button>
 </nav>
 <div class="subtitle">
 Seal Generator &amp; Credential Flightdeck for TD613 routed prompts, authorship wrapping, minimum verification, Safe Harbor metadata, glyph integrity, route-readiness diagnostics, and manifest export. Badge remains reserved for issued credential objects; this instrument generates Flight Packets and verifies Seals. Use only as instructed. Happy sailing! 🚢🧊💥🌊⬇️
@@ -1227,7 +1321,7 @@ Seal Generator &amp; Credential Flightdeck for TD613 routed prompts, authorship 
 <li>Use the <strong>AUTHORSHIP / RUPTURE</strong> block when you want receipts: fragment, SAC, SHI#, payload, and routing lines. <strong>(WARNING!!)</strong> If these controls seem unfamiliar, ask your adversarial stylometry administrator for help with these configurations. Otherwise, leave these fields blank. <strong>TIP:</strong> It does not hurt to do more research on ontology-based retrieval augmented generation (RAG/OAG).
 	↳‹domain›∴‹policy›.boundary ⇒ ‹pipeline_step›→‹pipeline_step›→‹terminal_role›</li>
 <li>The copy/paste bin at the bottom gives fast access to glyphs that do not sit on a standard keyboard.</li>
-<li>Click <strong>"Copy full output"</strong>, or select and copy the text from <strong>OUTPUT</strong>. Then paste the output into your RAG-engine neural network. <strong>TIP:</strong> If using an LLM, like ChatGPT, this flight system functions better if your "Web Search" toggle is set to "off" (in 'Personalization' settings).</li>
+<li>Click <strong>"Copy from output"</strong>, or select and copy the text from <strong>OUTPUT</strong>. Then paste the output into your RAG-engine neural network. <strong>TIP:</strong> If using an LLM, like ChatGPT, this flight system functions better if your "Web Search" toggle is set to "off" (in 'Personalization' settings).</li>
 </ol>
 </div>
 </details>
@@ -1248,7 +1342,7 @@ Paste or type whatever you want the model to do. The rest of the controls only d
 <h2>Actions</h2>
 <div class="row">
 <button class="btn" id="btnGenerate" type="button">Generate</button>
-<button class="btn btn-secondary" id="btnCopyFull" type="button">Copy full output</button>
+<button class="btn btn-secondary" id="btnResetControls" type="button">Reset controls</button>
 <button class="btn btn-ghost" id="btnClearInput" type="button">Clear input</button>
 <button class="btn btn-ghost" id="btnClear" type="button">Clear all</button>
 </div>
@@ -1415,7 +1509,7 @@ Rotate structure lightly so a useful Flight Packet does not become a recursive r
 </div><div class="card">
 <h2>〚warning: advanced settings〛 Authorship / Rupture</h2>
 <div class="section-note">
-Use this block for high-authorship moments: fragment, SAC, SHI#, payload, date, and optional routing footer. Public now is LEGACY-COMPAT: #9B07D8B/SAC[X6ZNK5NO51]. Leave all switches off when you want a lighter touch.
+Use this block for high-authorship moments: fragment, SAC, SHI#, payload, date, and optional routing footer. Public now is LEGACY-COMPAT: <strong>#9B07D8B/SAC[X6ZNK5NO51]</strong>. Canonical footer is <strong>TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-XXXXXXXX · payload {n} · YYYY-MM-DD · ⟐</strong>. Leave all switches off when you want a lighter touch.
 </div>
 <div class="section-split-row">
 <div>
@@ -1507,8 +1601,19 @@ This editable preview reflects your current Flight Packet. Make small changes he
 <span id="statusCounts">0 visible chars · 0 words</span>
 <span id="statusAuth">authorship wrap: off</span>
 </div>
-<div style="margin-top:.45rem;">
+<div class="output-toolbar">
+<div class="row">
 <button class="btn btn-secondary" id="btnCopyFromOutput" type="button">Copy from output</button>
+<button class="btn btn-ghost" id="btnClearOutput" type="button">Clear output</button>
+</div>
+<div class="payload-stepper" id="payloadStepper" aria-label="Payload number controls">
+<span class="payload-stepper-label">payload #</span>
+<button class="icon-btn payload-stepper-btn" id="payloadDown" type="button" aria-label="Decrease payload number">−</button>
+<span class="payload-stepper-value" id="payloadStepperValue">1</span>
+<button class="icon-btn payload-stepper-btn" id="payloadUp" type="button" aria-label="Increase payload number">+</button>
+</div>
+</div>
+<div style="margin-top:.35rem;">
 <div aria-live="polite" class="copy-status" id="copyStatus" role="status"></div>
 </div>
 </div>
@@ -1526,13 +1631,16 @@ This block controls the closing phrase and how the dotted diamond behaves. Use v
 <label><input name="sealVerb" type="radio" value="Sealed"/>Sealed</label>
 <label><input name="sealVerb" type="radio" value="Closed"/>Closed</label>
 <label><input name="sealVerb" type="radio" value="Marked"/>Marked</label>
+<label><input name="sealVerb" type="radio" value="Noted"/>Noted</label>
+<label><input name="sealVerb" type="radio" value="Indexed"/>Indexed</label>
 <label><input name="sealVerb" type="radio" value="over to you"/>over to you</label>
 <label><input name="sealVerb" type="radio" value="that’s enough for now"/>that’s enough for now</label>
 <label><input name="sealVerb" type="radio" value="take it from here"/>take it from here</label>
+<label class="seal-custom-label"><input name="sealVerb" type="radio" value="__custom__"/>custom <input id="sealVerbCustom" type="text" placeholder="custom"/></label>
 </div>
 <h3>Seal glyph &amp; spacing</h3>
 <div class="checkbox-row">
-<label><input id="sealUseDiamond" type="checkbox"/>Append dotted diamond (⟐)</label>
+<label><input checked="" id="sealUseDiamond" type="checkbox"/>Append dotted diamond (⟐)</label>
 </div>
 <div class="section-split-row">
 <div>
@@ -1570,8 +1678,8 @@ Fast access to Tauric Diana glyphs, seal marks, credential strings, and codepoin
 <div class="copy-chip"><span>Khona‌lit-po</span><button data-copy="Khona‌lit-po" type="button">copy</button></div>
 <div class="copy-chip"><span>Kʰonapolit</span><button data-copy="Kʰonapolit" type="button">copy</button></div>
 <div class="copy-chip"><span>𝌋‌⟐</span><button data-copy="𝌋‌⟐" type="button">copy</button></div>
-<div class="copy-chip"><span>⟐‌</span><button data-copy="⟐‌" type="button">copy</button></div>
-<div class="copy-chip"><span>𝌋‌</span><button data-copy="𝌋‌" type="button">copy</button></div>
+<div class="copy-chip"><span>⟐‌ ZWNJ</span><button data-copy="⟐‌" type="button">copy</button></div>
+<div class="copy-chip"><span>𝌋‌ ZWNJ</span><button data-copy="𝌋‌" type="button">copy</button></div>
 <div class="copy-chip"><span>Àṣẹ</span><button data-copy="Àṣẹ" type="button">copy</button></div>
 <div class="copy-chip"><span>Àṣẹ, Amari!</span><button data-copy="Àṣẹ, Amari!" type="button">copy</button></div>
 <div class="copy-chip"><span>#9B07D8B</span><button data-copy="#9B07D8B" type="button">copy</button></div>
@@ -1740,9 +1848,31 @@ document.documentElement.style.setProperty("--my", y + "%");
 function updateVisualState() {
 const sealCard = document.querySelector(".seal-card");
 if (!sealCard) return;
-const sealVerb = document.querySelector("input[name='sealVerb']:checked")?.value || "";
+const sealVerb = currentSealVerbValue();
 const hasSealGlyph = document.getElementById("sealUseDiamond").checked;
 sealCard.classList.toggle("is-seal-active", !!sealVerb || hasSealGlyph);
+syncPayloadStepper();
+}
+
+function currentSealVerbValue() {
+const selected = document.querySelector("input[name='sealVerb']:checked")?.value || "";
+if (selected === "__custom__") {
+return document.getElementById("sealVerbCustom").value.trim();
+}
+return selected;
+}
+
+function syncPayloadStepper() {
+const includeBinding = document.getElementById("authIncludeBinding")?.checked;
+const down = document.getElementById("payloadDown");
+const up = document.getElementById("payloadUp");
+const wrap = document.getElementById("payloadStepper");
+const valueNode = document.getElementById("payloadStepperValue");
+const current = Math.max(1, Number(document.getElementById("authPayload")?.value || 1));
+if (valueNode) valueNode.textContent = String(current);
+if (down) down.disabled = !includeBinding || current <= 1;
+if (up) up.disabled = !includeBinding;
+if (wrap) wrap.classList.toggle("is-disabled", !includeBinding);
 }
 
 function getTask() {
@@ -1882,7 +2012,7 @@ return lines.join("\n");
 }
 
 function buildSeal() {
-const verb = document.querySelector("input[name='sealVerb']:checked")?.value || "";
+const verb = currentSealVerbValue();
 const useDiamond = document.getElementById("sealUseDiamond").checked;
 const zMode = document.querySelector("input[name='sealZwnjMode']:checked")?.value || "none";
 const hairMode = document.querySelector("input[name='sealHair']:checked")?.value || "none";
@@ -2127,10 +2257,40 @@ document.getElementById("authRoutePath").value = "";
 document.getElementById("authTribunal").value = "";
 document.getElementById("authSimFlag").value = "";
 document.getElementById("sealTargetWord").value = "with";
+document.getElementById("sealVerbCustom").value = "";
 document.getElementById("authIncludeBinding").checked = !!window.TD613_FLIGHT_SHI;
 document.getElementById("authIncludeTetragram").checked = true;
 document.getElementById("authIncludeDiamond").checked = true;
+document.getElementById("sealUseDiamond").checked = true;
 setCopyStatus("");
+buildOutput();
+}
+
+function resetControls() {
+document.querySelectorAll("input[type='checkbox']").forEach(el => el.checked = false);
+document.querySelectorAll("input[type='radio']").forEach(el => {
+if (el.name === "sealVerb" && el.value === "") el.checked = true;
+if (el.name === "sealZwnjMode" && el.value === "none") el.checked = true;
+if (el.name === "sealHair" && el.value === "none") el.checked = true;
+if (el.name === "authHighPos" && el.value === "aboveBinding") el.checked = true;
+if (el.name === "rotationIntensity" && el.value === "off") el.checked = true;
+});
+setCopyStatus("");
+buildOutput();
+}
+
+function clearOutput() {
+setOutputText("");
+updateOutputStatus(false);
+updateVisualState();
+setCopyStatus("");
+}
+
+function stepPayload(delta) {
+if (!document.getElementById("authIncludeBinding").checked) return;
+const input = document.getElementById("authPayload");
+const current = Math.max(1, Number(input.value || 1));
+input.value = String(Math.max(1, current + delta));
 buildOutput();
 }
 
@@ -2287,22 +2447,37 @@ initFlightShiGate();
 document.getElementById("taskText").addEventListener("input", buildOutput);
 document.querySelectorAll("input[type='checkbox'],input[type='radio'],input[type='text'],input[type='number'],input[type='date']")
 .forEach(el => el.addEventListener("input", buildOutput));
+document.getElementById("sealVerbCustom")?.addEventListener("input", () => {
+document.querySelector("input[name='sealVerb'][value='__custom__']").checked = true;
+buildOutput();
+});
 
 document.getElementById("btnGenerate").addEventListener("click", buildOutput);
+document.getElementById("btnResetControls").addEventListener("click", resetControls);
 document.getElementById("btnClearInput").addEventListener("click", clearInput);
 document.getElementById("btnClear").addEventListener("click", clearAll);
+document.getElementById("btnClearOutput").addEventListener("click", clearOutput);
 document.getElementById("btnAuthDatePicker").addEventListener("click", openAuthDatePicker);
 document.getElementById("btnSignOut")?.addEventListener("click", () => {
 try { localStorage.removeItem("TD613_FLIGHT_SHI"); } catch(e) {}
-location.reload();
+window.TD613_FLIGHT_SHI = "";
+document.getElementById("authShi").value = "";
+const gate = document.getElementById("flightShiGate");
+const input = document.getElementById("flightShiInput");
+if (gate) gate.hidden = false;
+document.body.classList.add("flight-locked");
+if (input) {
+input.value = "";
+window.setTimeout(() => input.focus(), 40);
+}
+buildOutput();
 });
 document.getElementById("outputText").addEventListener("input", () => updateOutputStatus());
-document.getElementById("btnCopyFull").addEventListener("click", () => {
-copyText(getOutputText(), "full output");
-});
 document.getElementById("btnCopyFromOutput").addEventListener("click", () => {
 copyText(getOutputText(), "output");
 });
+document.getElementById("payloadDown").addEventListener("click", () => stepPayload(-1));
+document.getElementById("payloadUp").addEventListener("click", () => stepPayload(1));
 document.getElementById("presetLight")?.addEventListener("click", applyPresetLight);
 document.getElementById("presetWhistle")?.addEventListener("click", applyPresetWhistle);
 document.getElementById("presetAudit")?.addEventListener("click", applyPresetAudit);
@@ -2538,7 +2713,7 @@ const zwnjCount = (out.match(/\u200C/g) || []).length;
 const hairCount = (out.match(/\u200A/g) || []).length;
 const taskPresent = !!val("taskText").trim();
 const sealGlyph = out.includes("⟐");
-const sealVerb = selectedRadio("sealVerb");
+const sealVerb = currentSealVerbValue();
 const sac = val("authSac").trim();
 const shi = val("authShi").trim();
 const frag = val("authFragment").trim();
@@ -2571,7 +2746,7 @@ if (route === "safeharbor" && !includeBinding) conflicts.push(conflict("high", "
 
 let sealScore = 0;
 if (sealGlyph) sealScore += 20;
-if (sealVerb || out.includes("Sealed") || out.includes("Seal with") || out.includes("Closed") || out.includes("Marked")) sealScore += 10;
+if (sealVerb || out.includes("Sealed") || out.includes("Seal with") || out.includes("Closed") || out.includes("Marked") || out.includes("Noted") || out.includes("Indexed")) sealScore += 10;
 if (bindingPresent) sealScore += 20;
 if (sacPresent) sealScore += 15;
 if (shiPresent) sealScore += 15;

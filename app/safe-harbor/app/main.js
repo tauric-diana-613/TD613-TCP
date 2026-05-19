@@ -36,6 +36,8 @@
     ingressRoutePill: $('ingressRoutePill'),
     ingressProgressPill: $('ingressProgressPill'),
     ingressVaultPill: $('ingressVaultPill'),
+    signOutIngress: $('signOutIngress'),
+    signOutVault: $('signOutVault'),
     ingressStageFuture: $('ingressStageFuture'),
     ingressStagePast: $('ingressStagePast'),
     ingressStageHigher: $('ingressStageHigher'),
@@ -100,6 +102,8 @@
     glyphLane: $('glyphLane'),
     mixedLane: $('mixedLane'),
     injectDynamicLane: $('injectDynamicLane'),
+    packetVaultFold: $('packetVaultFold'),
+    intakeCanonFold: $('intakeCanonFold'),
     dynamicTarget: $('dynamicTarget'),
     packetPhase: $('packetPhase'),
     packetIdReadout: $('packetIdReadout'),
@@ -138,6 +142,7 @@
     helperNonce: $('helperNonce'),
     helperFilenameSafe: $('helperFilenameSafe'),
     refreshHelpers: $('refreshHelpers'),
+    refreshProbeHelpers: $('refreshProbeHelpers'),
     summaryFutureSelf: $('summaryFutureSelf'),
     summaryPastSelf: $('summaryPastSelf'),
     summaryHigherSelf: $('summaryHigherSelf'),
@@ -437,8 +442,10 @@
       el.addEventListener('change', () => void handleFormChange());
     });
     dom.clearIngress.addEventListener('click', resetAll);
+    [dom.signOutIngress, dom.signOutVault].filter(Boolean).forEach((button) => button.addEventListener('click', signOutSession));
     dom.resealVault.addEventListener('click', returnToIngress);
     dom.refreshHelpers.addEventListener('click', () => refreshHelpers());
+    if (dom.refreshProbeHelpers) dom.refreshProbeHelpers.addEventListener('click', () => refreshHelpers());
     dom.covenantExport.addEventListener('click', () => void covenantExport());
     dom.mintStagedPacket.addEventListener('click', () => void mintStagedPacket());
     if (dom.forgeBatch) dom.forgeBatch.addEventListener('click', () => void forgeBatch());
@@ -484,6 +491,7 @@
     });
     dom.resetStagedPacket.addEventListener('click', () => void resetToStaged());
     dom.injectDynamicLane.addEventListener('click', injectDynamicLane);
+    [dom.packetVaultFold, dom.intakeCanonFold].filter(Boolean).forEach((fold) => fold.addEventListener('toggle', syncFoldToggleWords));
     dom.demoTcpHook.addEventListener('click', () => window.dispatchEvent(new CustomEvent(D.hookBus.events.tcp, { detail: clone(D.hookBus.demo.tcp) })));
     dom.demoEoHook.addEventListener('click', () => window.dispatchEvent(new CustomEvent(D.hookBus.events.eo, { detail: clone(D.hookBus.demo.eo) })));
     dom.demoSignatureHook.addEventListener('click', () => window.dispatchEvent(new CustomEvent(D.hookBus.events.signature, { detail: clone(D.hookBus.demo.signature) })));
@@ -534,7 +542,24 @@
     dom.explicitPrincipal.textContent = D.canon.principal;
     stampBadgeMetaOnPrincipal(null);
     dom.glyphLane.textContent = 'Literal lane: ' + String.fromCodePoint(D.canon.codepoint);
-    dom.mixedLane.textContent = 'Mixed lane: ' + D.canon.principal + ' / ' + String.fromCodePoint(D.canon.codepoint) + ' / ' + D.canon.display_phrase;
+    dom.mixedLane.textContent = 'Awaiting injected lane';
+    syncFoldToggleWords();
+  }
+
+  function syncFoldToggleWords() {
+    Array.from(document.querySelectorAll('.fold-toggle-word')).forEach((node) => {
+      const details = node.closest('details');
+      if (!details) return;
+      const openLabel = node.getAttribute('data-open-label') || 'hide';
+      const closedLabel = node.getAttribute('data-closed-label') || 'expand';
+      node.textContent = details.open ? openLabel : closedLabel;
+    });
+  }
+
+  function signOutSession() {
+    resetAll();
+    dom.ingressNote.textContent = 'Session cleared. The sealed packet, SHI binding, and recall state were purged and the membrane is active again.';
+    render();
   }
 
   function hydrate() {
@@ -620,7 +645,7 @@
     dom.inputOperatorNotes.value = forms.operatorNotes || '';
     if (dom.kleopatraVoid) dom.kleopatraVoid.value = forms.kleopatraVoid || forms.sigValue || '';
     if (dom.batchIntakeSelect) dom.batchIntakeSelect.value = forms.selectedBatchId || state.selectedBatchId || 'batch-001a';
-    if (state.ingress.vaultOpen || state.ingress.operatorShellOpen) returnToIngress({ preserveSegments: true, preserveForms: true, recovered: true, persistAfter: false });
+    state.ingress.recovered = false;
   }
 
   function persist() {
@@ -1911,9 +1936,11 @@
 
   function injectDynamicLane() {
     dom.dynamicTarget.innerHTML = '';
+    const laneText = 'Dynamic lane: ' + D.canon.principal + ' / ' + String.fromCodePoint(D.canon.codepoint) + ' / ' + D.canon.display_phrase;
     const block = document.createElement('div');
-    block.textContent = 'Dynamic lane: ' + D.canon.principal + ' / ' + String.fromCodePoint(D.canon.codepoint) + ' / ' + D.canon.display_phrase;
+    block.textContent = laneText;
     dom.dynamicTarget.appendChild(block);
+    if (dom.mixedLane) dom.mixedLane.textContent = laneText;
     logEvent('dynamic-lane-injected', { principal: D.canon.principal });
   }
 
