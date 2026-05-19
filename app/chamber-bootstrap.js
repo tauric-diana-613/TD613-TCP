@@ -16,6 +16,14 @@
       compactLink.href = compactHref;
       document.head.appendChild(compactLink);
     }
+    var invisibleHref = './hush-invisible.css?v=' + (V.hushInvisible || V.main || '');
+    var existingInvisible = document.querySelector('link[href^="./hush-invisible.css"]');
+    if (!existingInvisible) {
+      var invisibleLink = document.createElement('link');
+      invisibleLink.rel = 'stylesheet';
+      invisibleLink.href = invisibleHref;
+      document.head.appendChild(invisibleLink);
+    }
   }
 
   var srcs = [

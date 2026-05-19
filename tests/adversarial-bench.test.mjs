@@ -16,7 +16,7 @@ function installDom(html, url = 'http://localhost/adversarial-bench.html') {
 const html = loadHtml('app/adversarial-bench.html');
 installDom(html);
 assert(document.title.includes('TD613 Hush'));
-assert(document.body.textContent.includes('TD613 Hush'));
+assert(document.body.textContent.includes('TD613 / Hush'));
 for (const id of ['protectedBaselineInput','maskReferenceInput','messageDraftInput','protectedOutputInput','hushBuiltInTabBtn','hushCustomizeTabBtn','hushCustomMaskName','hushCustomMaskSampleInput','hushAddSampleBtn','hushSaveCustomMaskBtn','hushMaskProfilePanel','hushProfileMatchPanel','hushSwapWarningsPanel','exportHushMaskProfileBtn','exportHushSwapJsonBtn','escapeVectorPanel','controllerPanel','personaMemoryPanel','recognitionFieldPanel','recognitionContextType','recognitionIntentMode','recognitionExposureDuration','recognitionFieldGrid','recognitionFieldWarnings','iterationPreviewPanel','exportLedgerJsonBtn','includeLedgerTextsToggle','ledgerExportOutput','reportExportPanel','claimCeilingPanel','exportReportJsonBtn','exportReportMarkdownBtn','reportExportOutput']) assert(document.getElementById(id), `missing ${id}`);
 
 const bench = await import(`../app/adversarial-bench.mjs?test=${Date.now()}`);

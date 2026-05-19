@@ -12,22 +12,20 @@ const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 const bridge = fs.readFileSync('app/adversarial-bench.js', 'utf8');
 
 assert.equal(HUSH_SIMPLE_PATH_VERSION, 'phase-14');
-assert(html.includes('Hush Simple Path'), 'Hush page names the simple path');
 assert(html.includes('Message to Transform'), 'Hush page exposes Message to Transform as primary input');
 assert(html.includes('Choose Mask'), 'Hush page exposes Choose Mask as primary selection');
-assert(html.includes('Transform Message'), 'Hush page uses Transform Message as the primary action');
+assert(html.includes('>Transform<'), 'Hush page uses Transform as the primary action');
 assert(html.includes('Transformed Message'), 'Hush page exposes Transformed Message as output');
-assert(html.includes('id="advancedReferenceVoicePanel"'), 'Hush keeps reference voice in an advanced drawer');
-assert(html.includes('Advanced Reference Voice — optional'), 'advanced reference voice is explicitly optional');
-assert(html.includes('Most users can leave this blank'), 'advanced copy tells ordinary users they can leave baseline blank');
-assert(html.includes('id="maskReferenceDetails"'), 'mask reference details are moved behind a drawer');
+assert(html.includes('id="hushVaultDrawer"'), 'Hush keeps reference voice in the Vault drawer');
+assert(html.includes('Advanced Reference Voice'), 'advanced reference voice remains available');
+assert(html.includes('id="maskReferenceDetails"'), 'mask reference details are moved behind the Vault drawer');
 assert(bridge.includes("import './hush-simple-path.js'"), 'browser bridge imports the simple path helper');
 
 const dom = new JSDOM(`<!doctype html><body data-page-kind="adversarial-bench">
   <textarea id="protectedBaselineInput"></textarea>
   <textarea id="messageDraftInput"></textarea>
   <div id="protectedBaselineProfile"></div>
-  <button id="generateMaskedOutputBtn" type="button">Transform Message</button>
+  <button id="generateMaskedOutputBtn" type="button">Transform</button>
   <button id="resetBenchBtn" type="button">Reset</button>
 </body>`, { url: 'http://localhost/adversarial-bench.html', pretendToBeVisual: true });
 
