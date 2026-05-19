@@ -150,8 +150,33 @@
       </div>
     </header>
 
+    <nav class="safe-harbor-scroll-rail" aria-label="Safe Harbor section map" data-td613-skip="true">
+      <div class="rail-kicker">Harbor map</div>
+      <div class="rail-status-grid">
+        <span>SHI</span><strong id="railShiState">not minted</strong>
+        <span>Lane</span><strong id="railDynamicLaneState">locked</strong>
+      </div>
+      <div class="rail-links">
+        <a href="#covenantCanonSection" data-rail-section="covenantCanonSection">Covenant Canon</a>
+        <a href="#witnessSurfaceSection" data-rail-section="witnessSurfaceSection">Witness Surface</a>
+        <a href="#mintedIssuanceSection" data-rail-section="mintedIssuanceSection">Minted Issuance</a>
+        <a href="#packetVaultSection" data-rail-section="packetVaultSection">Packet Vault</a>
+        <a href="#intakeCanonFold" data-rail-section="intakeCanonFold">Intake Canon</a>
+        <a href="#svgAttestationSection" data-rail-section="svgAttestationSection">SVG Attestation</a>
+        <a href="#tauricIntakeSection" data-rail-section="tauricIntakeSection">Tauric Intake</a>
+        <a href="#operatorHandshakeSection" data-rail-section="operatorHandshakeSection">Handshake</a>
+        <a href="#operatorMirrorSection" data-rail-section="operatorMirrorSection">Packet Mirror</a>
+      </div>
+      <div class="rail-actions">
+        <a href="../index.html?ingress=off" rel="noopener">Gateway</a>
+        <a href="./td613-flight.html" target="_blank" rel="noopener">Flight</a>
+        <button id="railRefreshHelpers" type="button">Date/Time &#x21BA;</button>
+        <button id="railSignOut" type="button">Sign out</button>
+      </div>
+    </nav>
+
     <main class="main-grid">
-      <aside class="panel panel-left canon-panel" data-td613-skip="true">
+      <aside class="panel panel-left canon-panel" id="covenantCanonSection" data-td613-skip="true">
         <section class="panel-section">
           <div class="section-label">Covenant Canon</div>
           <div class="data-stack" id="canonStack"></div>
@@ -207,10 +232,10 @@
       </aside>
 
       <section class="panel panel-center chamber-panel">
-        <section class="panel-section witness-surface">
+        <section class="panel-section witness-surface" id="witnessSurfaceSection">
           <div class="section-label">Witness Surface</div>
           <div class="witness-grid">
-            <article class="surface-card batch-intake-card" data-td613-skip="true">
+            <article class="surface-card batch-intake-card" id="tauricIntakeSection" data-td613-skip="true">
               <div class="surface-head">
                 <span class="surface-kicker">Buffered intake</span>
                 <span class="surface-state" id="batchIntakeState">operator token required</span>
@@ -260,7 +285,7 @@
                 <div class="note" id="signatureNote">Detached seals attach after packetization. The triad remains the only SHI mint source.</div>
               </details>
             </article>
-            <article class="surface-card render-face-card">
+            <article class="surface-card render-face-card" id="operatorHandshakeSection">
               <div class="surface-head">
                 <span class="surface-kicker">Operator handshake</span>
                 <span class="surface-state" id="rendererState">renderer not detected</span>
@@ -288,7 +313,7 @@
               <div class="proof-stack dynamic-lane-readout" aria-label="Dynamic lane readout">
                 <div class="proof-row"><span class="proof-label">Dynamic lane</span><span class="proof-value" id="mixedLane">Awaiting injected lane</span></div>
               </div>
-              <div class="svg-attestation-probes" data-td613-skip="true">
+              <div class="svg-attestation-probes" id="svgAttestationSection" data-td613-skip="true">
                 <details class="fold-panel" data-td613-skip="true" open>
                   <summary class="attestation-summary">SVG Provenance Attestation Probes <span class="attestation-hint">(ask your TD613 administrator for the key renderer)</span></summary>
                   <div class="builder-toolbar">
@@ -306,7 +331,7 @@
               <div class="dynamic-target" id="dynamicTarget"></div>
             </article>
 
-            <article class="surface-card accent-card reliquary-card" data-td613-skip="true">
+            <article class="surface-card accent-card reliquary-card" id="packetVaultSection" data-td613-skip="true">
               <div class="surface-head">
                 <span class="surface-kicker">Packet vault</span>
                 <span class="surface-state" id="packetPhase">membrane-only</span>
@@ -353,7 +378,7 @@
                 </div>
                 <div class="note" id="covenantNote">Vault-open stages the packet only. Seal Payload appends any pasted Kleopatra signature text and advances the packet toward harbor eligibility and SHI # assignment. Export Packet unlocks once the seal lane completes.</div>
               </details>
-              <div class="mint-altar" data-td613-skip="true">
+              <div class="mint-altar" id="mintedIssuanceSection" data-td613-skip="true">
                 <div class="mint-altar-head">
                   <span class="surface-kicker">Minted issuance</span>
                   <span class="surface-state" id="shiMintState">format locked</span>
@@ -453,7 +478,7 @@
         </section>
       </aside>
 
-      <section class="dock dock-left operator-dock" data-td613-skip="true">
+      <section class="dock dock-left operator-dock" id="operatorMirrorSection" data-td613-skip="true">
         <details class="dock-fold">
           <summary>Operator packet mirror</summary>
           <div class="dock-toolbar"><button class="control secondary" id="copyPacketPreview" type="button">Copy Packet</button></div>

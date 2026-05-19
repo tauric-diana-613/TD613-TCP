@@ -147,22 +147,101 @@
       '</svg>';
   }
 
-  function downloadBadgeSvg(img) {
+  function isCoarsePointer() {
+    try {
+      return Boolean(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function shouldPreferNativeFileSave(event) {
+    if (event && (event.type === 'touchend' || event.type === 'contextmenu')) return true;
+    if (event && event.pointerType && event.pointerType !== 'mouse') return true;
+    return isCoarsePointer();
+  }
+
+  function triggerAnchorDownload(filename, blob) {
+    const href = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = href;
+    link.download = filename;
+    link.rel = 'noopener';
+    link.type = 'image/svg+xml';
+    link.style.position = 'fixed';
+    link.style.left = '-9999px';
+    link.style.top = '-9999px';
+    link.setAttribute('data-td613-skip', 'true');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(function () { URL.revokeObjectURL(href); }, 1200);
+  }
+
+  async function downloadBadgeSvg(img, options) {
+    const opts = options || {};
     const meta = readBadgeMeta(img);
     const svgText = makeBadgeSvg(meta);
     const stamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename = 'TD613_U10D613_' + stamp + '.svg';
     const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
-    const href = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = href;
-    link.download = filename;
-    link.setAttribute('data-td613-skip', 'true');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    setTimeout(function () { URL.revokeObjectURL(href); }, 0);
+    if (opts.preferNative && typeof window.showSaveFilePicker === 'function') {
+      try {
+        const handle = await window.showSaveFilePicker({
+          suggestedName: filename,
+          types: [{ description: 'TD613 SVG attestation', accept: { 'image/svg+xml': ['.svg'] } }]
+        });
+        const writable = await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        emit('badge-svg-file-saved', { filename: filename, shi: meta.shi || null, packet_id: meta.packet_id || null, activation: opts.activation || 'tap' });
+        return;
+      } catch (error) {
+        if (error && error.name === 'AbortError') {
+          emit('badge-svg-save-canceled', { filename: filename, shi: meta.shi || null, activation: opts.activation || 'tap' });
+          return;
+        }
+      }
+    }
+    if (opts.preferNative && navigator.share && typeof File === 'function') {
+      const file = new File([blob], filename, { type: 'image/svg+xml' });
+      const shareData = {
+        files: [file],
+        title: filename,
+        text: 'TD613 Safe Harbor SVG attestation'
+      };
+      try {
+        if (!navigator.canShare || navigator.canShare(shareData)) {
+          await navigator.share(shareData);
+          emit('badge-svg-shared', { filename: filename, shi: meta.shi || null, packet_id: meta.packet_id || null, activation: opts.activation || 'tap' });
+          return;
+        }
+      } catch (error) {
+        if (error && error.name === 'AbortError') {
+          emit('badge-svg-share-canceled', { filename: filename, shi: meta.shi || null, activation: opts.activation || 'tap' });
+          return;
+        }
+      }
+    }
+    triggerAnchorDownload(filename, blob);
     emit('badge-svg-saved', { filename: filename, shi: meta.shi || null, packet_id: meta.packet_id || null });
+  }
+
+  let lastBadgeActivationMs = 0;
+  function activateBadgeSave(event, img, activation) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const now = Date.now();
+    if (now - lastBadgeActivationMs < 650) return;
+    lastBadgeActivationMs = now;
+    const fresh = readBadgeMeta(img);
+    img.src = 'data:image/svg+xml;base64,' + utf8ToBase64(makeBadgeSvg(fresh));
+    void downloadBadgeSvg(img, {
+      activation: activation || (event && event.type) || 'click',
+      preferNative: shouldPreferNativeFileSave(event)
+    });
   }
 
   function makeBadge(matchMode) {
@@ -178,13 +257,24 @@
     img.style.borderRadius = '4px';
     img.style.padding = '1px';
     img.style.cursor = 'pointer';
+    img.style.touchAction = 'manipulation';
+    img.style.userSelect = 'none';
+    img.style.webkitUserSelect = 'none';
+    img.style.webkitTouchCallout = 'none';
+    img.draggable = false;
+    img.title = 'Tap to save TD613 SVG attestation';
     BADGES.add(img);
+    img.addEventListener('pointerup', function (event) {
+      if (event.pointerType && event.pointerType !== 'mouse') activateBadgeSave(event, img, 'tap');
+    });
+    img.addEventListener('touchend', function (event) {
+      activateBadgeSave(event, img, 'tap');
+    }, { passive: false });
+    img.addEventListener('contextmenu', function (event) {
+      activateBadgeSave(event, img, 'contextmenu');
+    });
     img.addEventListener('click', function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      const fresh = readBadgeMeta(img);
-      img.src = 'data:image/svg+xml;base64,' + utf8ToBase64(makeBadgeSvg(fresh));
-      downloadBadgeSvg(img);
+      activateBadgeSave(event, img, 'click');
     });
     return img;
   }

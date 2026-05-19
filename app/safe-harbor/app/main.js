@@ -183,12 +183,18 @@
     safeHarborVaultReceiptMount: $('safeHarborVaultReceiptMount'),
     coherenceSigilIngress: $('coherenceSigilIngress'),
     coherenceSigilVault: $('coherenceSigilVault'),
+    railShiState: $('railShiState'),
+    railDynamicLaneState: $('railDynamicLaneState'),
+    railRefreshHelpers: $('railRefreshHelpers'),
+    railSignOut: $('railSignOut'),
+    railLinks: Array.from(document.querySelectorAll('[data-rail-section]')),
     buildProbeButtons: Array.from(document.querySelectorAll('[data-probe-variant]')),
     copyButtons: Array.from(document.querySelectorAll('[data-copy-target]'))
   };
 
+  const optionalDomKeys = new Set(['resealVault', 'railShiState', 'railDynamicLaneState', 'railRefreshHelpers', 'railSignOut']);
   const missingDomKeys = Object.entries(dom)
-    .filter(([key, node]) => key !== 'body' && !Array.isArray(node) && !node)
+    .filter(([key, node]) => key !== 'body' && !optionalDomKeys.has(key) && !Array.isArray(node) && !node)
     .map(([key]) => key);
   if (missingDomKeys.length) {
     console.warn('[safe-harbor] missing DOM ids for keys:', missingDomKeys);
@@ -234,6 +240,7 @@
   function init() {
     renderStatic();
     bind();
+    setupRailNavigator();
     loadSession();
     primeInboundContext();
     hydrate();
@@ -447,6 +454,8 @@
     if (dom.resealVault) dom.resealVault.addEventListener('click', returnToIngress);
     dom.refreshHelpers.addEventListener('click', () => refreshHelpers());
     if (dom.refreshProbeHelpers) dom.refreshProbeHelpers.addEventListener('click', () => refreshHelpers());
+    if (dom.railRefreshHelpers) dom.railRefreshHelpers.addEventListener('click', () => refreshHelpers());
+    if (dom.railSignOut) dom.railSignOut.addEventListener('click', signOutSession);
     dom.covenantExport.addEventListener('click', () => void covenantExport());
     dom.mintStagedPacket.addEventListener('click', () => void mintStagedPacket());
     if (dom.forgeBatch) dom.forgeBatch.addEventListener('click', () => void forgeBatch());
@@ -741,6 +750,51 @@
     renderSafeHarborReceipt();
     renderThermal();
     renderCoherenceSigil();
+    renderRailState();
+  }
+
+  function renderRailState() {
+    if (dom.railShiState) {
+      const issued = state.packet && state.packet.issuance && state.packet.issuance.badge_number;
+      const recoverable = state.covenant && state.covenant.badgeNumber;
+      dom.railShiState.textContent = issued ? 'minted' : (recoverable ? 'session' : 'not minted');
+      dom.railShiState.dataset.state = issued ? 'minted' : (recoverable ? 'session' : 'idle');
+    }
+    if (dom.railDynamicLaneState) {
+      const injected = Boolean(state.dynamicLaneInjected);
+      dom.railDynamicLaneState.textContent = injected ? 'injected' : 'locked';
+      dom.railDynamicLaneState.dataset.state = injected ? 'injected' : 'locked';
+    }
+  }
+
+  function setupRailNavigator() {
+    if (!dom.railLinks || !dom.railLinks.length) return;
+    const activate = (id) => {
+      dom.railLinks.forEach((link) => {
+        link.classList.toggle('is-active', link.getAttribute('data-rail-section') === id);
+      });
+    };
+    dom.railLinks.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const id = link.getAttribute('data-rail-section');
+        const target = id ? document.getElementById(id) : null;
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        activate(id);
+      });
+    });
+    if (!('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible && visible.target && visible.target.id) activate(visible.target.id);
+    }, { rootMargin: '-22% 0px -58% 0px', threshold: [0.08, 0.18, 0.32] });
+    dom.railLinks.forEach((link) => {
+      const target = document.getElementById(link.getAttribute('data-rail-section'));
+      if (target) observer.observe(target);
+    });
   }
 
   function renderThermal() {
