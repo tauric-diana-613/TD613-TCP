@@ -19,6 +19,8 @@ import {
 } from '../app/toys/persona-gallery/model.js';
 import { buildCorpusExtraction } from '../app/toys/persona-trainer/extractor.js';
 import { validateCandidateAgainstFingerprint } from '../app/toys/persona-trainer/validator.js';
+import { listHushMasks } from '../app/engine/hush-mask-studio.js';
+import { buildHushSwap } from '../app/engine/hush-swap.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,7 +37,8 @@ const CASE_SECTION_IDS = Object.freeze([
   'retrievalCases',
   'falseNeighborCases',
   'generatorTransferCases',
-  'generatorMaskCases'
+  'generatorMaskCases',
+  'hushCases'
 ]);
 const AUX_SECTION_IDS = Object.freeze([
   'sampleAudit',
@@ -51,6 +54,10 @@ const RUN_FINGERPRINT_INPUTS = Object.freeze([
   path.join(repoRoot, 'app', 'engine', 'stylometry.js'),
   path.join(repoRoot, 'app', 'data', 'diagnostics.js'),
   path.join(repoRoot, 'app', 'data', 'personas.js'),
+  path.join(repoRoot, 'app', 'data', 'hush-masks.js'),
+  path.join(repoRoot, 'app', 'engine', 'hush-swap.js'),
+  path.join(repoRoot, 'app', 'engine', 'hush-source-residue.js'),
+  path.join(repoRoot, 'app', 'engine', 'hush-release-policy.js'),
   path.join(repoRoot, 'scripts', 'lib', 'annex-diagnostics.mjs'),
   path.join(repoRoot, 'app', 'aperture', 'index.html')
 ]);
@@ -69,7 +76,14 @@ const FAILURE_BUCKETS = Object.freeze([
   'false_neighbor_convergence',
   'over_flattened_output',
   'register_miss',
-  'sentence_span_miss'
+  'sentence_span_miss',
+  'hush_no_output',
+  'hush_unchanged_output',
+  'hush_literal_drop',
+  'hush_source_body_attached',
+  'hush_source_body_severe',
+  'hush_mask_match_low',
+  'hush_semantic_floor'
 ]);
 const PRIVATE_EORFD_REPRESENTATIVE_ANCHORS = Object.freeze([
   'building-access-rushed-mobile',
@@ -78,6 +92,68 @@ const PRIVATE_EORFD_REPRESENTATIVE_ANCHORS = Object.freeze([
   'adversarial-hearing-rushed-mobile',
   'museum-fog-alarm-professional-message',
   'model-safety-rushed-mobile'
+]);
+const HUSH_DIAGNOSTIC_CASES = Object.freeze([
+  {
+    id: 'hush-case-17-receipt',
+    contextType: 'group-chat',
+    text: 'Keep CASE-17 with the note from 6/13. I did not change the attachment.'
+  },
+  {
+    id: 'hush-doc-91-caveat',
+    contextType: 'group-chat',
+    text: 'Please keep DOC-91 in the update. I cannot confirm who changed the file on 2026-05-18.'
+  },
+  {
+    id: 'hush-exhibit-42-intake',
+    contextType: 'legal-intake',
+    text: 'I did not edit EXHIBIT-42. The 6/13 timestamp matters because the label changed later.'
+  },
+  {
+    id: 'hush-id-204-label',
+    contextType: 'legal-intake',
+    text: 'For reference, ID-204 stayed attached after 05/18 and I may need the original label preserved.'
+  },
+  {
+    id: 'hush-ref-77-sender',
+    contextType: 'group-chat',
+    text: 'The packet marked REF-77 should remain with the 2026-05-19 note, but I am not naming the sender.'
+  },
+  {
+    id: 'hush-doc-613-date',
+    contextType: 'work-handoff',
+    text: 'I saved DOC-613 before the meeting on 6/13. Please do not separate the date from the message.'
+  },
+  {
+    id: 'hush-exhibit-9-copy',
+    contextType: 'group-chat',
+    text: 'This is a small update: EXHIBIT-9 is still visible and I cannot verify the later copy.'
+  },
+  {
+    id: 'hush-case-404-usual-writing',
+    contextType: 'private-note',
+    text: 'I need the note to say CASE-404 stayed in the folder on 05/19 without sounding like my usual writing.'
+  },
+  {
+    id: 'hush-id-51-label',
+    contextType: 'legal-intake',
+    text: 'The attached ID-51 record appears to show the label changed after 2026-05-18.'
+  },
+  {
+    id: 'hush-sac-td613-soften',
+    contextType: 'group-chat',
+    text: 'Please keep SAC[X6ZNK5NO51] and TD613 visible, but make the sentence softer for a group chat.'
+  },
+  {
+    id: 'hush-doc-12-narrow',
+    contextType: 'private-note',
+    text: 'I am keeping this narrow: DOC-12 was saved on 6/13, and I did not alter the contents.'
+  },
+  {
+    id: 'hush-exhibit-88-complaint',
+    contextType: 'public-post',
+    text: 'The message should preserve EXHIBIT-88 and the 2026-05-19 date while sounding less like a formal complaint.'
+  }
 ]);
 
 const PERSONA_LIBRARY = resolvePersonaCatalog(engine, personas, DIAGNOSTIC_SAMPLE_LIBRARY);
@@ -947,6 +1023,205 @@ function bucketIf(condition, bucket, collection) {
 
 function buildCaseNote(buckets = [], fallback) {
   return buckets.length ? `Buckets: ${buckets.join(', ')}.` : fallback;
+}
+
+function averageNumber(values = []) {
+  const nums = values.filter((value) => Number.isFinite(Number(value))).map(Number);
+  return nums.length ? round(nums.reduce((sum, value) => sum + value, 0) / nums.length) : 0;
+}
+
+function maxNumber(values = []) {
+  const nums = values.filter((value) => Number.isFinite(Number(value))).map(Number);
+  return nums.length ? round(Math.max(...nums)) : 0;
+}
+
+function minNumber(values = []) {
+  const nums = values.filter((value) => Number.isFinite(Number(value))).map(Number);
+  return nums.length ? round(Math.min(...nums)) : 0;
+}
+
+function hushProtectedLiterals(text = '') {
+  return String(text || '').match(/\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC|FILE|LOG|REPORT)[A-Z0-9:_#\/\-[\]]*\b|\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b/g) || [];
+}
+
+function evaluateHushCase(caseSpec = {}, mask = {}) {
+  const protectedLiterals = hushProtectedLiterals(caseSpec.text);
+  const result = buildHushSwap({
+    sourceText: caseSpec.text,
+    protectedBaselineText: '',
+    mask,
+    maskProfile: mask.profile,
+    maskReferenceText: mask.sampleSeed || '',
+    protectedLiterals,
+    contextType: caseSpec.contextType || 'group-chat',
+    exposureDuration: 'short',
+    operatorMode: 'source-reduction',
+    options: { candidateCount: 24, includePrivateText: false }
+  });
+  const selected = result.candidates.find((candidate) => candidate.id === result.selectedCandidateId) || result.candidates[0] || {};
+  const output = result.selectedOutput || '';
+  const releasePolicy = result.releasePolicy || {};
+  const scoreBreakdown = selected.scoreBreakdown || {};
+  const sourceResidue = selected.sourceResidue || {};
+  const sourceResidueMetrics = sourceResidue.metrics || {};
+  const hardBlocks = releasePolicy.hardBlockReasons || [];
+  const reviewWarnings = releasePolicy.reviewWarnings || [];
+  const missingLiterals = protectedLiterals.filter((literal) => !output.includes(literal));
+  const emitted = Boolean(output.trim());
+  const transformed = emitted && normalizeComparable(output) !== normalizeComparable(caseSpec.text);
+  const cadenceBodyRisk = Number(sourceResidueMetrics.cadenceBodyRisk ?? scoreBreakdown.sourceResidueRisk ?? selected.sourceResidueScore?.sourceResidueRisk ?? 0);
+  const nonLiteralTokenRetention = Number(sourceResidueMetrics.nonLiteralTokenRetention ?? 0);
+  const longestCopiedRun = Number(sourceResidueMetrics.longestCopiedRun ?? 0);
+  const maskMatch = Number(scoreBreakdown.maskMatch ?? selected.match?.matchScore ?? 0);
+  const semanticFidelity = Number(scoreBreakdown.semanticFidelity ?? 0);
+  const buckets = [];
+
+  bucketIf(!emitted, 'hush_no_output', buckets);
+  bucketIf(emitted && !transformed, 'hush_unchanged_output', buckets);
+  bucketIf(
+    missingLiterals.length > 0 ||
+      hardBlocks.includes('protected-literal-score-below-mode-floor') ||
+      hardBlocks.includes('protected-literal-drop'),
+    'hush_literal_drop',
+    buckets
+  );
+  bucketIf(
+    cadenceBodyRisk > 0.62 ||
+      reviewWarnings.includes('source-body-attached') ||
+      reviewWarnings.includes('source-opening-retained') ||
+      reviewWarnings.includes('source-closing-retained'),
+    'hush_source_body_attached',
+    buckets
+  );
+  bucketIf(
+    cadenceBodyRisk > 0.82 ||
+      nonLiteralTokenRetention > 0.95 ||
+      longestCopiedRun >= 12 ||
+      reviewWarnings.includes('source-body-severe') ||
+      hardBlocks.includes('source-body-severe-with-weak-mask-movement'),
+    'hush_source_body_severe',
+    buckets
+  );
+  bucketIf(maskMatch < 0.35 || reviewWarnings.includes('mask-match-low'), 'hush_mask_match_low', buckets);
+  bucketIf(semanticFidelity < 0.82 || hardBlocks.includes('semantic-fidelity-below-mode-floor'), 'hush_semantic_floor', buckets);
+
+  return {
+    id: `${caseSpec.id}__${mask.id}`,
+    familyId: 'hush',
+    sourceId: caseSpec.id,
+    donorId: mask.id,
+    mode: 'hush-mask-flight',
+    expectedPressure: 'hush-source-residue',
+    maskId: mask.id,
+    maskLabel: mask.label || mask.id,
+    contextType: caseSpec.contextType || 'group-chat',
+    releaseStatus: releasePolicy.releaseStatus || 'missing',
+    mayPopulateOutput: Boolean(releasePolicy.mayPopulateOutput),
+    maySeal: Boolean(releasePolicy.maySeal),
+    hardBlocked: Boolean(releasePolicy.hardBlocked),
+    hardBlockReasons: sortUnique(hardBlocks),
+    reviewWarnings: sortUnique(reviewWarnings),
+    emitted,
+    transformed,
+    outputWordCount: output.trim() ? output.trim().split(/\s+/).length : 0,
+    selectedCandidateId: result.selectedCandidateId || '',
+    candidateCount: result.candidates.length,
+    finalScore: round(selected.finalScore ?? 0),
+    semanticFidelity: round(semanticFidelity),
+    naturalness: round(scoreBreakdown.naturalness ?? selected.naturalness?.naturalnessScore ?? 0),
+    protectedLiteralScore: round(scoreBreakdown.protectedLiteralScore ?? selected.lockboxVerification?.preservationScore ?? 0),
+    maskMatch: round(maskMatch),
+    sourceReductionScore: round(scoreBreakdown.sourceReductionScore ?? 0),
+    residualPressure: round(scoreBreakdown.residualPressure ?? selected.residualVector?.summary?.residualPressure ?? 0),
+    sourceResidueScore: round(scoreBreakdown.sourceResidueScore ?? selected.sourceResidueScore?.sourceResidueScore ?? 0),
+    sourceResidueRisk: round(scoreBreakdown.sourceResidueRisk ?? selected.sourceResidueScore?.sourceResidueRisk ?? cadenceBodyRisk),
+    sourceResidue: {
+      status: sourceResidue.status || selected.sourceResidueScore?.status || '',
+      cadenceBodyRisk: round(cadenceBodyRisk),
+      nonLiteralTokenRetention: round(nonLiteralTokenRetention),
+      longestCopiedRun,
+      sourceOrderRetention: round(sourceResidueMetrics.sourceOrderRetention ?? 0),
+      sentenceSkeletonSimilarity: round(sourceResidueMetrics.sentenceSkeletonSimilarity ?? 0),
+      bigramOverlap: round(sourceResidueMetrics.bigramOverlap ?? 0)
+    },
+    protectedLiteralsRequired: protectedLiterals.length,
+    protectedLiteralsKept: protectedLiterals.length - missingLiterals.length,
+    protectedLiteralRecall: protectedLiterals.length ? round((protectedLiterals.length - missingLiterals.length) / protectedLiterals.length) : 1,
+    missingLiteralCount: missingLiterals.length,
+    failureBuckets: sortUnique(buckets),
+    notes: buildCaseNote(sortUnique(buckets), `Hush ${mask.id} flight ${releasePolicy.releaseStatus || 'missing'}.`)
+  };
+}
+
+function buildHushDiagnosticCases() {
+  const masks = listHushMasks().slice(0, 20);
+  return HUSH_DIAGNOSTIC_CASES.flatMap((caseSpec) => masks.map((mask) => evaluateHushCase(caseSpec, mask)));
+}
+
+function buildHushDiagnosticsReport(cases = []) {
+  const emittedCases = cases.filter((item) => item.emitted);
+  const blockedCases = cases.filter((item) => item.hardBlocked);
+  const unchangedCases = cases.filter((item) => item.emitted && !item.transformed);
+  const severeCases = cases.filter((item) =>
+    item.failureBuckets?.includes('hush_source_body_severe') ||
+      Number(item.sourceResidue?.cadenceBodyRisk || 0) > 0.82
+  );
+  const byReleaseStatus = cases.reduce((acc, item) => incrementCounter(acc, item.releaseStatus), {});
+  const hardBlockCounts = cases.flatMap((item) => item.hardBlockReasons || []).reduce(incrementCounter, {});
+  const warningCounts = cases.flatMap((item) => item.reviewWarnings || []).reduce(incrementCounter, {});
+  const worstCases = [...cases]
+    .sort((left, right) =>
+      Number(right.hardBlocked) - Number(left.hardBlocked) ||
+      (right.failureBuckets?.length || 0) - (left.failureBuckets?.length || 0) ||
+      Number(right.sourceResidue?.cadenceBodyRisk || 0) - Number(left.sourceResidue?.cadenceBodyRisk || 0) ||
+      Number(right.sourceResidue?.longestCopiedRun || 0) - Number(left.sourceResidue?.longestCopiedRun || 0) ||
+      String(left.id || '').localeCompare(String(right.id || ''))
+    )
+    .slice(0, 12)
+    .map((item) => ({
+      id: item.id,
+      releaseStatus: item.releaseStatus,
+      hardBlocked: item.hardBlocked,
+      failureBuckets: item.failureBuckets || [],
+      maskMatch: item.maskMatch,
+      sourceResidueRisk: item.sourceResidueRisk,
+      cadenceBodyRisk: item.sourceResidue?.cadenceBodyRisk,
+      longestCopiedRun: item.sourceResidue?.longestCopiedRun,
+      protectedLiteralRecall: item.protectedLiteralRecall
+    }));
+
+  return {
+    version: 'phase-18',
+    caseCount: cases.length,
+    sourceMessageCount: HUSH_DIAGNOSTIC_CASES.length,
+    maskCount: new Set(cases.map((item) => item.maskId)).size,
+    emittedCount: emittedCases.length,
+    emittedRate: cases.length ? round(emittedCases.length / cases.length) : 0,
+    blockedCount: blockedCases.length,
+    blockedRate: cases.length ? round(blockedCases.length / cases.length) : 0,
+    unchangedOutputCount: unchangedCases.length,
+    unchangedOutputRate: emittedCases.length ? round(unchangedCases.length / emittedCases.length) : 0,
+    sealReadyCount: cases.filter((item) => item.maySeal).length,
+    literalPerfectEmitCount: emittedCases.filter((item) => item.protectedLiteralRecall === 1).length,
+    literalPerfectEmitRate: emittedCases.length ? round(emittedCases.filter((item) => item.protectedLiteralRecall === 1).length / emittedCases.length) : 0,
+    severeSourceBodyCount: severeCases.length,
+    severeSourceBodyRate: cases.length ? round(severeCases.length / cases.length) : 0,
+    averageFinalScore: averageNumber(cases.map((item) => item.finalScore)),
+    minFinalScore: minNumber(cases.map((item) => item.finalScore)),
+    averageSemanticFidelity: averageNumber(cases.map((item) => item.semanticFidelity)),
+    minSemanticFidelity: minNumber(cases.map((item) => item.semanticFidelity)),
+    averageNaturalness: averageNumber(cases.map((item) => item.naturalness)),
+    averageMaskMatch: averageNumber(cases.map((item) => item.maskMatch)),
+    averageSourceResidueRisk: averageNumber(cases.map((item) => item.sourceResidueRisk)),
+    averageCadenceBodyRisk: averageNumber(cases.map((item) => item.sourceResidue?.cadenceBodyRisk)),
+    averageNonLiteralTokenRetention: averageNumber(cases.map((item) => item.sourceResidue?.nonLiteralTokenRetention)),
+    averageLongestCopiedRun: averageNumber(cases.map((item) => item.sourceResidue?.longestCopiedRun)),
+    maxLongestCopiedRun: maxNumber(cases.map((item) => item.sourceResidue?.longestCopiedRun)),
+    byReleaseStatus,
+    hardBlockCounts,
+    warningCounts,
+    worstCases
+  };
 }
 
 function buildBorrowedShellFromProfile(profile, fromSlot = 'B', registerLane = null, sourceText = '') {
@@ -2149,6 +2424,8 @@ function buildSectionData(sectionId = '') {
       return DIAGNOSTIC_BATTERY.retrievalCases.map(evaluateGeneratorTransferCase);
     case 'generatorMaskCases':
       return DIAGNOSTIC_BATTERY.maskCases.map(evaluateGeneratorMaskCase);
+    case 'hushCases':
+      return buildHushDiagnosticCases();
     case 'annexDiagnostics':
       return buildAnnexDiagnostics(repoRoot);
     default:
@@ -2269,6 +2546,29 @@ function buildMarkdownReport(report) {
     });
   }
 
+  if (report.hushDiagnostics) {
+    lines.push('', '## Hush Diagnostics', '');
+    lines.push(`- version: ${report.hushDiagnostics.version}`);
+    lines.push(`- case_count: ${report.hushDiagnostics.caseCount}`);
+    lines.push(`- source_message_count: ${report.hushDiagnostics.sourceMessageCount}`);
+    lines.push(`- mask_count: ${report.hushDiagnostics.maskCount}`);
+    lines.push(`- emitted_rate: ${report.hushDiagnostics.emittedRate}`);
+    lines.push(`- blocked_rate: ${report.hushDiagnostics.blockedRate}`);
+    lines.push(`- unchanged_output_rate: ${report.hushDiagnostics.unchangedOutputRate}`);
+    lines.push(`- literal_perfect_emit_rate: ${report.hushDiagnostics.literalPerfectEmitRate}`);
+    lines.push(`- severe_source_body_rate: ${report.hushDiagnostics.severeSourceBodyRate}`);
+    lines.push(`- average_source_residue_risk: ${report.hushDiagnostics.averageSourceResidueRisk}`);
+    lines.push(`- average_cadence_body_risk: ${report.hushDiagnostics.averageCadenceBodyRisk}`);
+    lines.push(`- average_longest_copied_run: ${report.hushDiagnostics.averageLongestCopiedRun}`);
+    lines.push(`- max_longest_copied_run: ${report.hushDiagnostics.maxLongestCopiedRun}`);
+    lines.push(`- release_statuses: ${Object.entries(report.hushDiagnostics.byReleaseStatus || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push(`- hard_blocks: ${Object.entries(report.hushDiagnostics.hardBlockCounts || {}).map(([key, value]) => `${key}:${value}`).join(', ') || 'none'}`);
+    lines.push('', '### Hush Pressure Cases', '');
+    report.hushDiagnostics.worstCases.forEach((entry) => {
+      lines.push(`- ${entry.id}: ${entry.releaseStatus}, blocked ${entry.hardBlocked ? 'yes' : 'no'}, buckets ${entry.failureBuckets.join('|') || 'none'}, mask ${entry.maskMatch}, source residue ${entry.sourceResidueRisk}, cadence body ${entry.cadenceBodyRisk}, copied run ${entry.longestCopiedRun}, literal recall ${entry.protectedLiteralRecall}`);
+    });
+  }
+
   if (report.sampleAudit) {
     lines.push('', '## Sample Audit', '');
     lines.push(`- randomizer_corpus_size: ${report.sampleAudit.randomizerCorpusSize}`);
@@ -2357,7 +2657,8 @@ function buildReportFromStageManifest(manifest = {}) {
     retrievalCases: staged.retrievalCases,
     falseNeighborCases: staged.falseNeighborCases,
     generatorTransferCases: staged.generatorTransferCases,
-    generatorMaskCases: staged.generatorMaskCases
+    generatorMaskCases: staged.generatorMaskCases,
+    hushCases: staged.hushCases
   };
   const swapMatrix = engine.buildSwapCadenceMatrix(DIAGNOSTIC_SAMPLE_LIBRARY, {
     orderedPairs: DIAGNOSTIC_BATTERY.swapPairs,
@@ -2369,6 +2670,7 @@ function buildReportFromStageManifest(manifest = {}) {
   const ontologyIntegrity = buildOntologyIntegrityReport(sectionResults);
   const cadenceDuelIntegrity = buildCadenceDuelIntegrityReport(sectionResults);
   const toolability = buildToolabilityReport(sectionResults);
+  const hushDiagnostics = buildHushDiagnosticsReport(sectionResults.hushCases || []);
   const report = {
     generatedAt: new Date().toISOString(),
     runMetadata: {
@@ -2382,6 +2684,7 @@ function buildReportFromStageManifest(manifest = {}) {
     ontologyIntegrity,
     cadenceDuelIntegrity,
     toolability,
+    hushDiagnostics,
     sampleAudit: staged.sampleAudit,
     personaAudit: staged.personaAudit,
     workingDoctrine: null,
@@ -2396,6 +2699,9 @@ function buildReportFromStageManifest(manifest = {}) {
   report.summary.cadenceDuelSyntaxOnlyWinnerCount = cadenceDuelIntegrity.syntaxOnlyWinnerCount;
   report.summary.toolabilityLandedRate = toolability.landedRate;
   report.summary.toolabilityDistinctnessRate = toolability.distinctnessRate;
+  report.summary.hushEmittedRate = hushDiagnostics.emittedRate;
+  report.summary.hushBlockedRate = hushDiagnostics.blockedRate;
+  report.summary.hushSevereSourceBodyRate = hushDiagnostics.severeSourceBodyRate;
   report.summary.annexCount = Object.keys(report.annexes || {}).length;
   report.summary.annexPassedCount = Object.values(report.annexes || {}).filter((entry) => entry.passed).length;
 

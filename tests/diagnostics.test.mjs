@@ -15,6 +15,7 @@ const latestJsonPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.jso
 const latestMdPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.md');
 const apertureJsonPath = path.join(repoRoot, 'reports', 'diagnostics', 'aperture.latest.json');
 const apertureMdPath = path.join(repoRoot, 'reports', 'diagnostics', 'aperture.latest.md');
+const diagnosticsScriptPath = path.join(repoRoot, 'scripts', 'run-diagnostics-battery.mjs');
 
 assert.equal(DIAGNOSTIC_CORPUS.families.length, 19, 'diagnostic corpus exposes 19 families');
 assert.equal(DIAGNOSTIC_CORPUS.samples.length, 76, 'diagnostic corpus exposes 76 samples');
@@ -25,6 +26,7 @@ assert.equal(DIAGNOSTIC_BATTERY.maskCases.length, 35, 'diagnostic battery expose
 assert.equal(DIAGNOSTIC_BATTERY.trainerCases.length, 35, 'diagnostic battery exposes 35 trainer cases');
 assert.equal(DIAGNOSTIC_BATTERY.retrievalCases.length, 18, 'diagnostic battery exposes 18 retrieval cases');
 assert.equal(DIAGNOSTIC_BATTERY.falseNeighborCases.length, 32, 'diagnostic battery exposes 32 false-neighbor cases');
+assert.ok(fs.readFileSync(diagnosticsScriptPath, 'utf8').includes("'hushCases'"), 'diagnostics runner declares a Hush section');
 
 for (const family of DIAGNOSTIC_CORPUS.families) {
   const samples = DIAGNOSTIC_CORPUS.samples.filter((sample) => sample.familyId === family.id);
@@ -121,6 +123,9 @@ assert.equal(latestReport.sections.retrievalCases.length, 18, 'diagnostics JSON 
 assert.equal(latestReport.sections.falseNeighborCases.length, 32, 'diagnostics JSON report includes false-neighbor section');
 assert.equal(latestReport.sections.generatorTransferCases.length, 18, 'diagnostics JSON report includes generator transfer section');
 assert.equal(latestReport.sections.generatorMaskCases.length, 34, 'diagnostics JSON report includes generator mask section');
+if (latestReport.sections.hushCases) {
+  assert.equal(latestReport.sections.hushCases.length, 240, 'diagnostics JSON report includes Hush section');
+}
 assert.ok(latestReport.generatorAudit, 'diagnostics JSON report includes generator audit');
 assert.equal(latestReport.generatorAudit.caseCount, 52, 'generator audit tracks retrieval and mask generator surfaces');
 assert.equal(latestReport.generatorAudit.generatorVersionCounts.v2, latestReport.generatorAudit.caseCount, 'generator audit reports V2 as the active writer across tracked diagnostics cases');
@@ -171,6 +176,18 @@ assert.ok(latestReport.toolability.previewHonestyRate >= 0 && latestReport.toola
 assert.ok(latestReport.toolability.repeatedFlightStabilityRate >= 0 && latestReport.toolability.repeatedFlightStabilityRate <= 1, 'toolability repeated-flight stability stays normalized');
 assert.ok(Array.isArray(latestReport.toolability.probes), 'toolability probes serialize');
 assert.ok(latestReport.toolability.probes.length >= 2, 'toolability probes include maintained live flights');
+if (latestReport.hushDiagnostics) {
+  assert.equal(latestReport.hushDiagnostics.caseCount, latestReport.sections.hushCases.length, 'Hush diagnostics track the Hush section');
+  assert.equal(latestReport.hushDiagnostics.sourceMessageCount, 12, 'Hush diagnostics track the maintained source-message set');
+  assert.equal(latestReport.hushDiagnostics.maskCount, 20, 'Hush diagnostics track the maintained Hush mask set');
+  assert.equal(typeof latestReport.hushDiagnostics.emittedRate, 'number', 'Hush diagnostics expose emitted rate');
+  assert.equal(typeof latestReport.hushDiagnostics.blockedRate, 'number', 'Hush diagnostics expose blocked rate');
+  assert.equal(typeof latestReport.hushDiagnostics.severeSourceBodyRate, 'number', 'Hush diagnostics expose severe source-body rate');
+  assert.equal(typeof latestReport.hushDiagnostics.averageCadenceBodyRisk, 'number', 'Hush diagnostics expose average cadence-body risk');
+  assert.equal(typeof latestReport.hushDiagnostics.maxLongestCopiedRun, 'number', 'Hush diagnostics expose max copied run');
+  assert.ok(Array.isArray(latestReport.hushDiagnostics.worstCases), 'Hush diagnostics serialize worst cases');
+  assert.ok(latestReport.hushDiagnostics.worstCases.length > 0, 'Hush diagnostics worst cases stay populated');
+}
 assert.ok(latestReport.sampleAudit, 'diagnostics JSON report includes sample audit');
 assert.ok(latestReport.personaAudit, 'diagnostics JSON report includes persona audit');
 assert.ok(latestReport.sampleAudit.randomizerCorpusSize >= 72, 'sample audit uses the full diagnostics corpus');
@@ -217,6 +234,11 @@ assert.ok(latestReport.summary.annexCount >= 1, 'diagnostics JSON report include
 assert.ok(latestReport.summary.annexPassedCount >= 1, 'diagnostics JSON report includes passed annex count');
 assert.equal(typeof latestReport.summary.toolabilityLandedRate, 'number', 'diagnostics JSON report summary includes toolability landed rate');
 assert.equal(typeof latestReport.summary.toolabilityDistinctnessRate, 'number', 'diagnostics JSON report summary includes toolability distinctness rate');
+if (latestReport.hushDiagnostics) {
+  assert.equal(typeof latestReport.summary.hushEmittedRate, 'number', 'diagnostics JSON report summary includes Hush emitted rate');
+  assert.equal(typeof latestReport.summary.hushBlockedRate, 'number', 'diagnostics JSON report summary includes Hush blocked rate');
+  assert.equal(typeof latestReport.summary.hushSevereSourceBodyRate, 'number', 'diagnostics JSON report summary includes Hush severe source-body rate');
+}
 
 const latestMarkdown = fs.readFileSync(latestMdPath, 'utf8');
 assert.ok(latestMarkdown.includes('## Sample Audit'), 'diagnostics Markdown report includes sample audit section');
@@ -231,6 +253,10 @@ assert.ok(latestMarkdown.includes('false_clean_count'), 'diagnostics Markdown re
 assert.ok(latestMarkdown.includes('donor_feature_adherence_average'), 'diagnostics Markdown report includes cadence duel donor adherence summary');
 assert.ok(latestMarkdown.includes('## Toolability'), 'diagnostics Markdown report includes toolability section');
 assert.ok(latestMarkdown.includes('### Toolability Probes'), 'diagnostics Markdown report includes toolability probe section');
+if (latestReport.hushDiagnostics) {
+  assert.ok(latestMarkdown.includes('## Hush Diagnostics'), 'diagnostics Markdown report includes Hush diagnostics section');
+  assert.ok(latestMarkdown.includes('### Hush Pressure Cases'), 'diagnostics Markdown report includes Hush pressure case section');
+}
 assert.ok(latestMarkdown.includes('### Closest Sample Pairs'), 'diagnostics Markdown report includes closest sample pairs section');
 assert.ok(latestMarkdown.includes('deck_randomizer_average_nearest_field_distance') || latestMarkdown.includes('average_nearest_field_distance'), 'diagnostics Markdown report includes field-distance spread details');
 assert.ok(latestMarkdown.includes('deck_randomizer_wide_subset_size'), 'diagnostics Markdown report includes wide-subset field spread details');
