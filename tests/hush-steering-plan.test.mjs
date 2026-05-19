@@ -11,7 +11,7 @@ import {
   summarizeSteeringPlan
 } from '../app/engine/hush-steering-plan.js';
 
-assert.equal(HUSH_STEERING_PLAN_VERSION, 'phase-12');
+assert.equal(HUSH_STEERING_PLAN_VERSION, 'phase-17');
 assert(MODE_WEIGHT_PROFILES.neutralize);
 assert(MODE_WEIGHT_PROFILES['legal-intake']);
 
@@ -22,6 +22,7 @@ assert(legal.semanticFidelity > legal.maskMatch);
 const neutralScore = scoreCandidateWithSteering({ maskMatch: 0.8, semanticFidelity: 0.7, protectedLiteralScore: 1, sourceReductionScore: 0.5, contextSafetyScore: 0.5, operatorMode: 'neutralize' });
 assert(Number.isFinite(neutralScore.finalScore));
 assert.equal(neutralScore.vetoes.length, 0);
+assert(Array.isArray(neutralScore.reviewWarnings));
 
 const legalBad = scoreCandidateWithSteering({ maskMatch: 0.95, semanticFidelity: 0.7, protectedLiteralScore: 0.9, sourceReductionScore: 0.9, contextSafetyScore: 0.9, contextType: 'legal-intake' });
 assert(legalBad.finalScore < neutralScore.finalScore);
@@ -33,15 +34,19 @@ const maskText = 'File attached. Date visible. Label unchanged. Keep together.';
 const outputText = 'I write in long recursive sentences, looping through EXHIBIT-42 with recurring pressure and too many clauses.';
 const lockbox = buildProtectedLiteralLockbox({ sourceText: `${sourceText} EXHIBIT-42`, manualLiterals: ['EXHIBIT-42'] });
 const residualVector = buildResidualVector({ sourceText, outputText, maskProfile: extractCadenceProfile(maskText) });
+const residualScore = scoreCandidateWithSteering({ maskMatch: 0.8, semanticFidelity: 0.9, protectedLiteralScore: 1, sourceReductionScore: 0.1, contextSafetyScore: 0.8, residualVector });
+assert.equal(residualScore.vetoes.includes('critical-residual-dimension-hot'), false);
+assert(residualScore.reviewWarnings.length >= 1);
+
 const plan = buildSteeringPlan({ sourceText, outputText, maskProfile: extractCadenceProfile(maskText), residualVector, lockbox });
-assert.equal(plan.version, 'phase-12');
+assert.equal(plan.version, 'phase-17');
 assert(['targeted-rewrite', 'seal-review'].includes(plan.route));
 assert(plan.steps.length >= 1);
 assert(plan.residualSummary);
 assert(plan.lockboxSummary);
 
 const summary = summarizeSteeringPlan(plan);
-assert.equal(summary.version, 'phase-12');
+assert.equal(summary.version, 'phase-17');
 assert(summary.stepCount >= 1);
 assert(summary.firstStep);
 

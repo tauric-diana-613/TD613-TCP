@@ -29,6 +29,7 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 - [Phase 14 Simple Path Status](PHASE_14_SIMPLE_PATH_STATUS.md) — Non-Architect workflow cleanup: message, mask, transform, output.
 - [Phase 15 Invisible Instrument Status](PHASE_15_HUSH_INVISIBLE_INSTRUMENT_STATUS.md) — Black-glass Hush surface with Vault and Lab drawers.
 - [Phase 16 Hush Mask Writer Status](PHASE_16_HUSH_MASK_WRITER_STATUS.md) — Living rewrite layer between meaning plans and Hush scoring.
+- [Phase 17 Hush Release Policy Status](PHASE_17_HUSH_RELEASE_POLICY_STATUS.md) — Admissibility gate split: hard blocks versus review warnings.
 
 ## Governance
 
