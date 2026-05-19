@@ -3,6 +3,7 @@ import {
   HUSH_RELEASE_POLICY_VERSION,
   buildReleasePolicy,
   classifyHushReasons,
+  isExactOrNearExactSourceBody,
   summarizeReleasePolicy
 } from '../app/engine/hush-release-policy.js';
 
@@ -35,6 +36,22 @@ const sourceAttached = buildReleasePolicy({
 assert.equal(sourceAttached.hardBlocked, false);
 assert.equal(sourceAttached.releaseStatus, 'needs-review');
 assert(sourceAttached.reviewWarnings.includes('source-body-attached'));
+
+const exactCopy = buildReleasePolicy({
+  outputText: 'Please keep EXHIBIT-42 attached on 6/13 and do not separate the date.',
+  protectedLiterals: ['EXHIBIT-42', '6/13'],
+  semanticFidelity: 1,
+  protectedLiteralScore: 1,
+  naturalnessScore: 1,
+  maskMatch: 0.95,
+  sourceResidue: { warnings: ['source-body-attached', 'source-body-severe'], metrics: { cadenceBodyRisk: 1, nonLiteralTokenRetention: 1, longestCopiedRun: 17 } },
+  sourceResidueScore: 0
+});
+assert.equal(exactCopy.hardBlocked, true);
+assert.equal(exactCopy.mayPopulateOutput, false);
+assert(exactCopy.hardBlockReasons.includes('source-body-exact-or-near-exact'));
+assert(isExactOrNearExactSourceBody({ metrics: { cadenceBodyRisk: 0.97, nonLiteralTokenRetention: 0.8, longestCopiedRun: 4 } }));
+assert(isExactOrNearExactSourceBody({ metrics: { cadenceBodyRisk: 0.8, nonLiteralTokenRetention: 0.98, longestCopiedRun: 12 } }));
 
 const severeWeak = buildReleasePolicy({
   outputText: 'For reference, EXHIBIT-42 stayed attached on 6/13.',
