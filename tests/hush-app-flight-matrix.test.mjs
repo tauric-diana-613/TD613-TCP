@@ -84,7 +84,7 @@ for (const message of cases) {
     const result = bench.benchState.hushSwapResult;
     const output = getValue('protectedOutputInput');
     assert(result, `no result for ${maskId}`);
-    assert.equal(result.version, 'phase-17');
+    assert.equal(result.version, 'phase-18');
 
     const selected = result.candidates.find((candidate) => candidate.id === result.selectedCandidateId) || result.candidates[0] || {};
     const status = result.releasePolicy?.releaseStatus || 'missing';
@@ -109,6 +109,11 @@ for (const message of cases) {
       semanticFidelity: selected.scoreBreakdown?.semanticFidelity ?? null,
       naturalness: selected.naturalness?.naturalnessScore ?? null,
       sourceResidual: selected.escapeVector?.scores?.sourceResidualRisk ?? null,
+      sourceResidueScore: selected.sourceResidueScore?.sourceResidueScore ?? selected.scoreBreakdown?.sourceResidueScore ?? null,
+      sourceResidueRisk: selected.sourceResidueScore?.sourceResidueRisk ?? selected.scoreBreakdown?.sourceResidueRisk ?? null,
+      sourceBodyRisk: selected.sourceResidue?.metrics?.cadenceBodyRisk ?? null,
+      longestCopiedRun: selected.sourceResidue?.metrics?.longestCopiedRun ?? null,
+      nonLiteralTokenRetention: selected.sourceResidue?.metrics?.nonLiteralTokenRetention ?? null,
       maskMatch: selected.match?.matchScore ?? null,
       literalScore: literals.length ? keptLiterals / literals.length : 1,
       literalsRequired: literals.length,
@@ -126,6 +131,7 @@ const literalPerfect = rows.filter((row) => row.literalScore === 1).length;
 const belowSemantic82 = rows.filter((row) => Number.isFinite(row.semanticFidelity) && row.semanticFidelity < 0.82).length;
 const belowNatural34 = rows.filter((row) => Number.isFinite(row.naturalness) && row.naturalness < 0.34).length;
 const highResidual = rows.filter((row) => Number.isFinite(row.sourceResidual) && row.sourceResidual > 0.65).length;
+const severeSourceBody = rows.filter((row) => Number.isFinite(row.sourceBodyRisk) && row.sourceBodyRisk > 0.82).length;
 const summary = {
   attempts: rows.length,
   caseCount: cases.length,
@@ -142,6 +148,7 @@ const summary = {
   belowSemantic82,
   belowNatural34,
   highResidual,
+  severeSourceBody,
   avgCandidateCount: mean(rows.map((row) => row.candidateCount)),
   avgFinalScore: mean(rows.map((row) => row.finalScore)),
   minFinalScore: min(rows.map((row) => row.finalScore)),
@@ -149,6 +156,12 @@ const summary = {
   avgSemanticFidelity: mean(rows.map((row) => row.semanticFidelity)),
   avgNaturalness: mean(rows.map((row) => row.naturalness)),
   avgSourceResidual: mean(rows.map((row) => row.sourceResidual)),
+  avgSourceResidueScore: mean(rows.map((row) => row.sourceResidueScore)),
+  avgSourceResidueRisk: mean(rows.map((row) => row.sourceResidueRisk)),
+  avgSourceBodyRisk: mean(rows.map((row) => row.sourceBodyRisk)),
+  avgLongestCopiedRun: mean(rows.map((row) => row.longestCopiedRun)),
+  maxLongestCopiedRun: max(rows.map((row) => row.longestCopiedRun)),
+  avgNonLiteralTokenRetention: mean(rows.map((row) => row.nonLiteralTokenRetention)),
   avgMaskMatch: mean(rows.map((row) => row.maskMatch)),
   missingLiteralExamples,
   sampleRows: rows.slice(0, 5)

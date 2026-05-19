@@ -17,8 +17,9 @@ import { generateMaskWriterCandidates } from './hush-mask-writer.js';
 import { scoreNaturalness, summarizeNaturalness } from './hush-naturalness.js';
 import { cleanHushCandidates, summarizeCleanroom } from './hush-candidate-cleanroom.js';
 import { buildReleasePolicy, summarizeReleasePolicy } from './hush-release-policy.js';
+import { buildSourceResidue, scoreSourceResidue, summarizeSourceResidue } from './hush-source-residue.js';
 
-export const HUSH_SWAP_VERSION = 'phase-17';
+export const HUSH_SWAP_VERSION = 'phase-18';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
@@ -136,6 +137,9 @@ export function scoreHushSwapCandidate(input = {}) {
   const match = buildProfileMatch({ sourceText, outputText, maskProfile, sourceProfile: extractCadenceProfile(sourceText), outputProfile, protectedLiterals, escapeVector, ingestionAudit, recognitionField });
   const residualVector = buildResidualVector({ sourceText, outputText, maskProfile, outputProfile });
   const steeringPlan = buildSteeringPlan({ sourceText, outputText, maskProfile, outputProfile, residualVector, lockbox });
+  const sourceResidue = buildSourceResidue({ sourceText, outputText, protectedLiterals });
+  const sourceResidueScore = scoreSourceResidue(sourceResidue);
+  const sourceResidueSummary = summarizeSourceResidue(sourceResidue);
   const naturalness = candidate.writerNaturalness || scoreNaturalness({ text: outputText, mask: input.mask, realizationPlan: input.realizationPlan });
   const naturalnessSummary = summarizeNaturalness(naturalness);
   const scores = escapeVector.scores || {};
@@ -151,27 +155,34 @@ export function scoreHushSwapCandidate(input = {}) {
     residualVector
   });
   const naturalnessScore = naturalness.naturalnessScore ?? 0;
+  const sourceScore = sourceResidueScore.sourceResidueScore ?? 0;
   const naturalnessHardBlocks = naturalnessScore < 0.34 ? ['naturalness-catastrophic'] : [];
-  const finalScore = round((steeringScore.finalScore * 0.78) + (naturalnessScore * 0.22));
+  const finalScore = round((steeringScore.finalScore * 0.60) + (naturalnessScore * 0.18) + (sourceScore * 0.22));
   const hardVetoes = [...asArray(steeringScore.vetoes), ...naturalnessHardBlocks];
-  const reviewWarnings = [...asArray(steeringScore.reviewWarnings), ...asArray(steeringPlan.warnings), ...asArray(candidate.writerWarnings), ...asArray(match.warnings), ...asArray(naturalness.fluencyWarnings)];
+  const reviewWarnings = [...asArray(steeringScore.reviewWarnings), ...asArray(steeringPlan.warnings), ...asArray(candidate.writerWarnings), ...asArray(match.warnings), ...asArray(naturalness.fluencyWarnings), ...asArray(sourceResidue.warnings)];
   const releasePolicy = buildReleasePolicy({
-    candidate: { ...candidate, text: outputText, vetoes: hardVetoes, warnings: reviewWarnings, scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore }, weightProfile: steeringScore.weightProfile, naturalness, escapeVector, lockboxVerification },
+    candidate: { ...candidate, text: outputText, vetoes: hardVetoes, warnings: reviewWarnings, scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore, sourceResidueScore: sourceScore }, weightProfile: steeringScore.weightProfile, naturalness, escapeVector, lockboxVerification, sourceResidue, sourceResidueScore: sourceScore, match },
     outputText,
     protectedLiterals,
     semanticFidelity: scores.semanticFidelity ?? 0,
     protectedLiteralScore,
-    naturalnessScore
+    naturalnessScore,
+    sourceResidue,
+    sourceResidueScore: sourceScore,
+    maskMatch: match.matchScore || 0
   });
   return {
     ...candidate,
     finalScore,
-    scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore },
-    weightProfile: { ...steeringScore.weightProfile, naturalness: 0.22 },
+    scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore, sourceResidueScore: sourceScore, sourceResidueRisk: sourceResidueScore.sourceResidueRisk },
+    weightProfile: { ...steeringScore.weightProfile, naturalness: 0.18, sourceResidueScore: 0.22 },
     vetoes: [...new Set(hardVetoes)],
     reviewWarnings: [...new Set(reviewWarnings)],
     releasePolicy,
     releaseSummary: summarizeReleasePolicy(releasePolicy),
+    sourceResidue,
+    sourceResidueSummary,
+    sourceResidueScore,
     naturalness,
     naturalnessSummary,
     match,
@@ -233,9 +244,12 @@ export function buildHushSwap(input = {}) {
     writer: { meaningPlan, realizationPlan, cleanroom: summarizeCleanroom(cleanroom), warnings: writerBundle.warnings || [] },
     selectedCandidateId: selected?.id || '',
     allCandidatesFailed,
-    failureReason: allCandidatesFailed ? 'Every candidate failed hard release policy. Review meaning, literals, naturalness, and claim discipline.' : '',
+    failureReason: allCandidatesFailed ? 'Every candidate failed hard release policy. Review meaning, literals, naturalness, source residue, and claim discipline.' : '',
     releasePolicy,
     releaseSummary: summarizeReleasePolicy(releasePolicy),
+    sourceResidue: selected?.sourceResidue || null,
+    sourceResidueSummary: selected?.sourceResidueSummary || null,
+    sourceResidueScore: selected?.sourceResidueScore || null,
     match: selected?.match || null,
     matchSummary: selected?.matchSummary || null,
     naturalness: selected?.naturalness || null,
