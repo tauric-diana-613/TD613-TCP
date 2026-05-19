@@ -178,9 +178,9 @@
     setTimeout(function () { URL.revokeObjectURL(href); }, 1200);
   }
 
-  async function downloadBadgeSvg(img, options) {
+  async function downloadBadgeSvg(badge, options) {
     const opts = options || {};
-    const meta = readBadgeMeta(img);
+    const meta = readBadgeMeta(badge);
     const svgText = makeBadgeSvg(meta);
     const stamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename = 'TD613_U10D613_' + stamp + '.svg';
@@ -228,7 +228,7 @@
   }
 
   let lastBadgeActivationMs = 0;
-  function activateBadgeSave(event, img, activation) {
+  function activateBadgeSave(event, badge, activation) {
     if (event) {
       event.preventDefault();
       event.stopPropagation();
@@ -236,47 +236,57 @@
     const now = Date.now();
     if (now - lastBadgeActivationMs < 650) return;
     lastBadgeActivationMs = now;
-    const fresh = readBadgeMeta(img);
-    img.src = 'data:image/svg+xml;base64,' + utf8ToBase64(makeBadgeSvg(fresh));
-    void downloadBadgeSvg(img, {
+    void downloadBadgeSvg(badge, {
       activation: activation || (event && event.type) || 'click',
       preferNative: shouldPreferNativeFileSave(event)
     });
   }
 
   function makeBadge(matchMode) {
-    const img = document.createElement('img');
-    const meta = readBadgeMeta(null);
-    img.src = 'data:image/svg+xml;base64,' + utf8ToBase64(makeBadgeSvg(meta));
-    img.alt = 'Badge ' + CODEPOINT;
-    img.width = 18;
-    img.height = 18;
-    img.style.verticalAlign = 'text-bottom';
-    img.style.marginLeft = '4px';
-    img.style.background = '#dbf8ff';
-    img.style.borderRadius = '4px';
-    img.style.padding = '1px';
-    img.style.cursor = 'pointer';
-    img.style.touchAction = 'manipulation';
-    img.style.userSelect = 'none';
-    img.style.webkitUserSelect = 'none';
-    img.style.webkitTouchCallout = 'none';
-    img.draggable = false;
-    img.title = 'Tap to save TD613 SVG attestation';
-    BADGES.add(img);
-    img.addEventListener('pointerup', function (event) {
-      if (event.pointerType && event.pointerType !== 'mouse') activateBadgeSave(event, img, 'tap');
+    const badge = document.createElement('span');
+    badge.setAttribute('role', 'button');
+    badge.setAttribute('tabindex', '0');
+    badge.setAttribute('aria-label', 'Save TD613 SVG attestation for ' + CODEPOINT);
+    badge.setAttribute('data-td613-skip', 'true');
+    badge.textContent = FALLBACK_GLYPH;
+    badge.style.display = 'inline-flex';
+    badge.style.alignItems = 'center';
+    badge.style.justifyContent = 'center';
+    badge.style.width = '22px';
+    badge.style.height = '22px';
+    badge.style.marginLeft = '4px';
+    badge.style.verticalAlign = 'text-bottom';
+    badge.style.border = '1px solid rgba(6, 18, 28, 0.18)';
+    badge.style.background = '#dbf8ff';
+    badge.style.color = '#031018';
+    badge.style.borderRadius = '4px';
+    badge.style.fontFamily = 'Cascadia Code, Consolas, ui-monospace, monospace';
+    badge.style.fontSize = '12px';
+    badge.style.fontWeight = '800';
+    badge.style.lineHeight = '1';
+    badge.style.cursor = 'pointer';
+    badge.style.touchAction = 'manipulation';
+    badge.style.userSelect = 'none';
+    badge.style.webkitUserSelect = 'none';
+    badge.style.webkitTouchCallout = 'none';
+    badge.title = 'Tap to save TD613 SVG attestation';
+    BADGES.add(badge);
+    badge.addEventListener('pointerup', function (event) {
+      if (event.pointerType && event.pointerType !== 'mouse') activateBadgeSave(event, badge, 'tap');
     });
-    img.addEventListener('touchend', function (event) {
-      activateBadgeSave(event, img, 'tap');
+    badge.addEventListener('touchend', function (event) {
+      activateBadgeSave(event, badge, 'tap');
     }, { passive: false });
-    img.addEventListener('contextmenu', function (event) {
-      activateBadgeSave(event, img, 'contextmenu');
+    badge.addEventListener('contextmenu', function (event) {
+      activateBadgeSave(event, badge, 'contextmenu');
     });
-    img.addEventListener('click', function (event) {
-      activateBadgeSave(event, img, 'click');
+    badge.addEventListener('click', function (event) {
+      activateBadgeSave(event, badge, 'click');
     });
-    return img;
+    badge.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') activateBadgeSave(event, badge, 'keyboard');
+    });
+    return badge;
   }
 
   function shouldSkip(node) {

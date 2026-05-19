@@ -7841,6 +7841,37 @@ body[data-page-kind="gateway"] .gateway-summary {
   font-size: 0.8rem;
 }
 
+/* Patch 37.2.1 / mobile Gateway containment: the ingress CRT sweep can read
+   like a stuck cyan slab on phone viewports, so keep the mobile threshold quiet
+   and clamp the hero typography inside the chamber card. */
+@media (max-width: 720px) {
+  body[data-page-kind="gateway"][data-ingress-phase="revealing"] .ingress-membrane::after {
+    display: none;
+    animation: none;
+  }
+
+  body[data-page-kind="gateway"] .gateway-head {
+    overflow: hidden;
+  }
+
+  body[data-page-kind="gateway"] .gateway-lockup {
+    min-width: 0;
+  }
+
+  body[data-page-kind="gateway"] .gateway-lockup h1 {
+    max-width: 100%;
+    font-size: clamp(1.9rem, 8.8vw, 2.6rem);
+    line-height: 1.02;
+    letter-spacing: 0.055em;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  body[data-page-kind="gateway"] .gateway-brandmark {
+    letter-spacing: 0.2em;
+  }
+}
+
 body[data-page-kind="homebase"] .persona-mask-summary,
 body[data-page-kind="deck"] .deck-setup-row,
 body[data-page-kind="deck"] .deck-action-legend {

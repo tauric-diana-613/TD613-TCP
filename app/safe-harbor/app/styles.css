@@ -3407,12 +3407,12 @@ body[data-thermal="fermata"] .reliquary-card .mint-value[data-state="minted"] {
   scroll-margin-top: 24px;
 }
 
-@media (min-width: 1321px) {
+@media (min-width: 1120px) {
   .chrome-grid {
-    width: min(100%, 1720px);
+    width: min(100%, 1740px);
     max-width: 1720px;
     margin-inline: auto;
-    grid-template-columns: minmax(0, 1fr) minmax(190px, 230px);
+    grid-template-columns: minmax(0, 1fr) minmax(168px, 224px);
     grid-template-rows: auto 1fr;
     align-items: start;
   }
@@ -3537,7 +3537,7 @@ body[data-thermal="fermata"] .reliquary-card .mint-value[data-state="minted"] {
 
 /* Desktop centering guard: keep the Safe Harbor cockpit balanced instead of
    letting the working panels hug the left edge on wide screens. */
-@media (min-width: 921px) and (max-width: 1320px) {
+@media (min-width: 921px) and (max-width: 1119px) {
   .chrome-grid {
     width: min(100%, 1600px);
     max-width: 1600px;
