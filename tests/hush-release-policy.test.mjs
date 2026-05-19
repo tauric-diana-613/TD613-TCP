@@ -6,7 +6,7 @@ import {
   summarizeReleasePolicy
 } from '../app/engine/hush-release-policy.js';
 
-assert.equal(HUSH_RELEASE_POLICY_VERSION, 'phase-17');
+assert.equal(HUSH_RELEASE_POLICY_VERSION, 'phase-18');
 
 const residualOnly = buildReleasePolicy({
   outputText: 'For reference, EXHIBIT-42 stayed attached on 6/13.',
@@ -21,6 +21,33 @@ assert.equal(residualOnly.releaseStatus, 'needs-review');
 assert.equal(residualOnly.mayPopulateOutput, true);
 assert.equal(residualOnly.maySeal, false);
 assert(residualOnly.reviewWarnings.includes('critical-residual-dimension-hot'));
+
+const sourceAttached = buildReleasePolicy({
+  outputText: 'For reference, EXHIBIT-42 stayed attached on 6/13.',
+  protectedLiterals: ['EXHIBIT-42', '6/13'],
+  semanticFidelity: 1,
+  protectedLiteralScore: 1,
+  naturalnessScore: 1,
+  maskMatch: 0.8,
+  sourceResidue: { warnings: ['source-body-attached'], metrics: { cadenceBodyRisk: 0.7 } },
+  sourceResidueScore: 0.3
+});
+assert.equal(sourceAttached.hardBlocked, false);
+assert.equal(sourceAttached.releaseStatus, 'needs-review');
+assert(sourceAttached.reviewWarnings.includes('source-body-attached'));
+
+const severeWeak = buildReleasePolicy({
+  outputText: 'For reference, EXHIBIT-42 stayed attached on 6/13.',
+  protectedLiterals: ['EXHIBIT-42', '6/13'],
+  semanticFidelity: 1,
+  protectedLiteralScore: 1,
+  naturalnessScore: 1,
+  maskMatch: 0.2,
+  sourceResidue: { warnings: ['source-body-severe'], metrics: { cadenceBodyRisk: 0.9 } },
+  sourceResidueScore: 0.1
+});
+assert.equal(severeWeak.hardBlocked, true);
+assert(severeWeak.hardBlockReasons.includes('source-body-severe-with-weak-mask-movement'));
 
 const semanticFail = buildReleasePolicy({ outputText: 'Changed text.', semanticFidelity: 0.2, protectedLiteralScore: 1, naturalnessScore: 1 });
 assert.equal(semanticFail.hardBlocked, true);
