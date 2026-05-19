@@ -950,25 +950,26 @@ color: #ff6a5f;
 }
 
 @media (max-width: 820px) {
+html,
+body {
+min-width: 1180px;
+}
+
+body {
+overflow-x: auto;
+overscroll-behavior-y: contain;
+}
+
 header {
-padding-right: .68rem;
-grid-template-areas:
-"title"
-"text"
-"nav"
-"tags"
-"howto";
-gap: .36rem;
-clip-path: polygon(0 12px, 12px 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+padding: .48rem 24rem .48rem .68rem;
 }
 
 .flight-quick-nav {
-position: relative;
-top: auto;
-right: auto;
-grid-area: nav;
-justify-content: flex-start;
-flex-wrap: wrap;
+position: absolute;
+top: .62rem;
+right: .72rem;
+justify-content: flex-end;
+flex-wrap: nowrap;
 max-width: none;
 margin-bottom: .14rem;
 }
@@ -983,60 +984,26 @@ font-size: .42rem;
 padding-inline: .08rem;
 }
 
-.pill-row {
-grid-area: tags;
-}
-
 .page-wrap {
-width: auto;
+width: 1240px;
 max-width: none;
-margin: 0;
-padding: .95rem;
-}
-
-.page-wrap::before {
-inset: .42rem;
+margin: 0 auto;
+padding: .75rem;
 }
 
 .grid {
-grid-template-columns: minmax(0, 1fr);
-gap: .62rem;
-}
-
-.grid > div:first-child,
-.grid > div:last-child {
-width: 100%;
-}
-
-.card,
-.card:nth-child(3n+1),
-.card:nth-child(3n+2),
-.card:nth-child(4n) {
-transform: none;
-margin-top: 0;
-}
-
-.section-split-row {
-grid-template-columns: minmax(0, 1fr);
-}
-
-.output-toolbar {
-flex-direction: column;
-align-items: stretch;
+grid-template-columns: minmax(340px, .94fr) minmax(410px, 1.06fr);
+gap: .9rem;
 }
 
 .payload-stepper {
-margin-left: 0;
+margin-left: auto;
 justify-content: flex-end;
 }
 
-.seal-custom-label {
-flex-wrap: wrap;
-}
-
 .seal-custom-label input[type="text"] {
-width: 100%;
-min-width: 0;
+width: 7rem;
+min-width: 7rem;
 }
 }
 
@@ -2340,6 +2307,7 @@ const out = blocks.join("\n\n");
 setOutputText(out);
 updateOutputStatus(auth.hasAuth);
 updateVisualState();
+persistFlightDraft();
 }
 
 function clearInput() {
@@ -2349,6 +2317,7 @@ buildOutput();
 }
 
 function clearAll() {
+clearFlightDraft();
 document.getElementById("taskText").value = "";
 document.querySelectorAll("input[type='checkbox']").forEach(el => el.checked = false);
 document.querySelectorAll("input[type='radio']").forEach(el => {
@@ -2501,6 +2470,67 @@ return false;
 }
 
 const FLIGHT_SHI_PATTERN = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
+const FLIGHT_DRAFT_KEY = "TD613_FLIGHT_DRAFT_V1";
+let flightDraftHydrated = false;
+let flightRestoringDraft = false;
+
+function flightDraftControlKey(el) {
+if (!el) return "";
+if (el.id) return "id:" + el.id;
+if (el.name) return "name:" + el.name + ":" + (el.value || "");
+return "";
+}
+
+function clearFlightDraft() {
+try { localStorage.removeItem(FLIGHT_DRAFT_KEY); } catch (e) {}
+}
+
+function persistFlightDraft() {
+if (!flightDraftHydrated || flightRestoringDraft) return;
+try {
+const controls = {};
+document.querySelectorAll("input, textarea, select").forEach(el => {
+const key = flightDraftControlKey(el);
+if (!key || el.id === "flightShiInput") return;
+if (el.type === "checkbox" || el.type === "radio") {
+controls[key] = { checked: !!el.checked };
+} else {
+controls[key] = { value: el.value };
+}
+});
+localStorage.setItem(FLIGHT_DRAFT_KEY, JSON.stringify({
+version: 1,
+savedAt: new Date().toISOString(),
+controls
+}));
+} catch (e) {}
+}
+
+function restoreFlightDraft() {
+let parsed = null;
+try {
+parsed = JSON.parse(localStorage.getItem(FLIGHT_DRAFT_KEY) || "null");
+} catch (e) {
+parsed = null;
+}
+if (!parsed || !parsed.controls || typeof parsed.controls !== "object") return false;
+flightRestoringDraft = true;
+try {
+document.querySelectorAll("input, textarea, select").forEach(el => {
+const key = flightDraftControlKey(el);
+const saved = key ? parsed.controls[key] : null;
+if (!saved || el.id === "flightShiInput") return;
+if (el.type === "checkbox" || el.type === "radio") {
+el.checked = !!saved.checked;
+} else if (Object.prototype.hasOwnProperty.call(saved, "value")) {
+el.value = saved.value;
+}
+});
+} finally {
+flightRestoringDraft = false;
+}
+return true;
+}
 
 function normalizeFlightShi(value) {
 return (value || "").trim().replace(/\s+/g, "").toUpperCase();
@@ -2556,7 +2586,8 @@ window.setTimeout(() => input.focus(), 40);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-clearAll();
+const restoredDraft = restoreFlightDraft();
+if (!restoredDraft) clearAll();
 initFlightShiGate();
 // v5 performance patch: pointermove-driven background repaint was causing mobile lag.
 // Keep the calibration field static unless a future explicit "live calibration" control is added.
@@ -2584,6 +2615,7 @@ document.getElementById("btnClearOutput").addEventListener("click", clearOutput)
 document.getElementById("btnAuthDatePicker").addEventListener("click", openAuthDatePicker);
 document.getElementById("btnSignOut")?.addEventListener("click", () => {
 try { localStorage.removeItem("TD613_FLIGHT_SHI"); } catch(e) {}
+clearFlightDraft();
 delete document.documentElement.dataset.flightShiCached;
 window.TD613_FLIGHT_SHI = "";
 document.getElementById("authShi").value = "";
@@ -2597,7 +2629,10 @@ window.setTimeout(() => input.focus(), 40);
 }
 buildOutput();
 });
-document.getElementById("outputText").addEventListener("input", () => updateOutputStatus());
+document.getElementById("outputText").addEventListener("input", () => {
+updateOutputStatus();
+persistFlightDraft();
+});
 document.getElementById("btnCopyFromOutput").addEventListener("click", () => {
 copyText(getOutputText(), "output");
 });
@@ -2616,6 +2651,7 @@ copyText(val, label);
 });
 });
 
+flightDraftHydrated = true;
 buildOutput();
 updateVisualState();
 });

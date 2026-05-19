@@ -3390,3 +3390,18 @@ body[data-thermal="fermata"] .reliquary-card .mint-value[data-state="minted"] {
     font-size: 0.5rem;
   }
 }
+
+/* Desktop centering guard: keep the Safe Harbor cockpit balanced instead of
+   letting the working panels hug the left edge on wide screens. */
+@media (min-width: 921px) {
+  .chrome-grid {
+    width: min(100%, 1600px);
+    max-width: 1600px;
+    margin-inline: auto;
+  }
+
+  .main-grid {
+    width: 100%;
+    margin-inline: auto;
+  }
+}
