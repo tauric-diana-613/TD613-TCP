@@ -4,6 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TCP / Gateway</title>
+  <style>
+    html[data-ingress-bypass="true"] #ingressMembrane { display: none !important; }
+  </style>
+  <script>
+    try {
+      if (new URLSearchParams(window.location.search).get('ingress') === 'off') {
+        document.documentElement.dataset.ingressBypass = 'true';
+      }
+    } catch (error) {}
+  </script>
   <script src="./asset-versions.js"></script>
 </head>
 <body data-page-kind="gateway">

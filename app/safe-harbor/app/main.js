@@ -223,6 +223,7 @@
     covenant: { confirmed: false, confirmedAt: null, badgeNumber: null },
     operatorSignature: null,
     selectedBatchId: null,
+    dynamicLaneInjected: false,
     fermataLockUntil: 0
   };
 
@@ -443,7 +444,7 @@
     });
     dom.clearIngress.addEventListener('click', resetAll);
     [dom.signOutIngress, dom.signOutVault].filter(Boolean).forEach((button) => button.addEventListener('click', signOutSession));
-    dom.resealVault.addEventListener('click', returnToIngress);
+    if (dom.resealVault) dom.resealVault.addEventListener('click', returnToIngress);
     dom.refreshHelpers.addEventListener('click', () => refreshHelpers());
     if (dom.refreshProbeHelpers) dom.refreshProbeHelpers.addEventListener('click', () => refreshHelpers());
     dom.covenantExport.addEventListener('click', () => void covenantExport());
@@ -519,15 +520,7 @@
   }
 
   function renderStatic() {
-    renderMetricRows(dom.canonStack, [
-      ['Principal', D.canon.principal],
-      ['Canonical badge id', D.canon.badge_id],
-      ['Claimed PUA', D.canon.claimed_pua],
-      ['Canonical phrase', D.canon.canonical_phrase],
-      ['Display phrase', D.canon.display_phrase],
-      ['Schema family', D.canon.schema_family],
-      ['Semver', D.canon.semver]
-    ]);
+    renderCanonStack();
     renderList(dom.invariantList, D.invariants || []);
     renderList(dom.repoLayoutList, D.repoLayout || []);
     renderList(dom.referenceLaneList, D.referenceLanes || []);
@@ -541,9 +534,54 @@
     dom.principalTextNode.textContent = D.canon.principal;
     dom.explicitPrincipal.textContent = D.canon.principal;
     stampBadgeMetaOnPrincipal(null);
-    dom.glyphLane.textContent = 'Literal lane: ' + String.fromCodePoint(D.canon.codepoint);
-    dom.mixedLane.textContent = 'Awaiting injected lane';
+    renderDynamicLaneState();
     syncFoldToggleWords();
+  }
+
+  function dynamicLaneUnlocked() {
+    return Boolean(state.dynamicLaneInjected);
+  }
+
+  function lockedDynamicLaneText() {
+    return 'locked until Inject Dynamic Lane';
+  }
+
+  function claimedPuaValue() {
+    return dynamicLaneUnlocked() ? D.canon.claimed_pua : '__DYNAMIC_LANE_LOCKED__';
+  }
+
+  function literalPuaValue() {
+    return dynamicLaneUnlocked() ? String.fromCodePoint(D.canon.codepoint) : lockedDynamicLaneText();
+  }
+
+  function dynamicLaneText() {
+    return 'Dynamic lane: ' + D.canon.principal + ' / ' + String.fromCodePoint(D.canon.codepoint) + ' / ' + D.canon.display_phrase;
+  }
+
+  function renderCanonStack() {
+    renderMetricRows(dom.canonStack, [
+      ['Principal', D.canon.principal],
+      ['Canonical badge id', D.canon.badge_id],
+      ['Claimed PUA', dynamicLaneUnlocked() ? D.canon.claimed_pua : lockedDynamicLaneText()],
+      ['Canonical phrase', D.canon.canonical_phrase],
+      ['Display phrase', D.canon.display_phrase],
+      ['Schema family', D.canon.schema_family],
+      ['Semver', D.canon.semver]
+    ]);
+  }
+
+  function renderDynamicLaneState() {
+    renderCanonStack();
+    if (dom.glyphLane) dom.glyphLane.textContent = 'Literal lane: ' + literalPuaValue();
+    if (dom.mixedLane) dom.mixedLane.textContent = dynamicLaneUnlocked() ? dynamicLaneText() : 'Awaiting injected lane';
+    if (dom.dynamicTarget) {
+      dom.dynamicTarget.innerHTML = '';
+      if (dynamicLaneUnlocked()) {
+        const block = document.createElement('div');
+        block.textContent = dynamicLaneText();
+        dom.dynamicTarget.appendChild(block);
+      }
+    }
   }
 
   function syncFoldToggleWords() {
@@ -629,7 +667,8 @@
       ingress: Object.assign(state.ingress, saved.ingress || {}),
       covenant: Object.assign(state.covenant, saved.covenant || {}),
       operatorSignature: saved.operatorSignature || null,
-      selectedBatchId: saved.selectedBatchId || null
+      selectedBatchId: saved.selectedBatchId || null,
+      dynamicLaneInjected: Boolean(saved.dynamicLaneInjected)
     });
     state.ingress.operatorShellOpen = Boolean(state.ingress.operatorShellOpen);
     const segments = (saved.ingress && saved.ingress.segments) || {};
@@ -661,6 +700,7 @@
       covenant: state.covenant,
       operatorSignature: state.operatorSignature,
       selectedBatchId: state.selectedBatchId,
+      dynamicLaneInjected: state.dynamicLaneInjected,
       forms: {
         footerMode: dom.inputFooterMode.value || D.trustProfile.current_public_mode,
         payloadIndex: dom.inputPayloadIndex.value || '',
@@ -696,6 +736,7 @@
     renderBatchIntake();
     renderHooks();
     renderPacket();
+    renderDynamicLaneState();
     renderAudit();
     renderSafeHarborReceipt();
     renderThermal();
@@ -1034,6 +1075,8 @@
     dom.ingressMembrane.classList.toggle('is-hidden', membraneSuppressed);
     dom.body.classList.toggle('vault-sealed', !surfaceIsOpen);
     dom.body.classList.toggle('vault-open', surfaceIsOpen);
+    if (surfaceIsOpen) document.documentElement.dataset.safeHarborSessionOpen = 'true';
+    else delete document.documentElement.dataset.safeHarborSessionOpen;
   }
 
   function advanceIngressStep() {
@@ -1660,6 +1703,7 @@
     state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
     state.operatorSignature = null;
     state.selectedBatchId = null;
+    state.dynamicLaneInjected = false;
     state.ingress.vaultOpen = false;
     state.ingress.operatorShellOpen = false;
     state.ingress.openedAt = null;
@@ -1781,6 +1825,7 @@
     state.ingress = { segments: { future_self: '', past_self: '', higher_self: '' }, stepIndex: 0, vaultOpen: false, operatorShellOpen: false, openedAt: null, receiptId: null, packetId: null, bypass: false, recovered: false };
     state.covenant = { confirmed: false, confirmedAt: null, badgeNumber: null };
     state.operatorSignature = null;
+    state.dynamicLaneInjected = false;
     dom.inputFooterMode.value = D.trustProfile.current_public_mode;
     dom.inputPayloadIndex.value = '1';
     dom.inputAttestationDate.value = todayIso();
@@ -1935,12 +1980,10 @@
   }
 
   function injectDynamicLane() {
-    dom.dynamicTarget.innerHTML = '';
-    const laneText = 'Dynamic lane: ' + D.canon.principal + ' / ' + String.fromCodePoint(D.canon.codepoint) + ' / ' + D.canon.display_phrase;
-    const block = document.createElement('div');
-    block.textContent = laneText;
-    dom.dynamicTarget.appendChild(block);
-    if (dom.mixedLane) dom.mixedLane.textContent = laneText;
+    state.dynamicLaneInjected = true;
+    renderDynamicLaneState();
+    if (state.ingress.packetId) void rebuild('dynamic-lane-injected');
+    else persist();
     logEvent('dynamic-lane-injected', { principal: D.canon.principal });
   }
 
@@ -2784,7 +2827,7 @@
       canon: {
         principal: D.canon.principal,
         badge_id: D.canon.badge_id,
-        claimed_pua: D.canon.claimed_pua,
+        claimed_pua: claimedPuaValue(),
         canonical_phrase: D.canon.canonical_phrase,
         display_phrase: D.canon.display_phrase,
         binding_fragment: bindingFragment(),
@@ -3246,6 +3289,7 @@
     const footer = footerString();
     const shiNumber = recoverableShiNumber();
     const extendedFooter = shiNumber ? extendedFooterString(shiNumber) : null;
+    const claimedPua = claimedPuaValue();
     const rendererGuidance = renderProbeGuidance(helper, lane === '03' || lane === '04' ? lane : '03 or 04');
     const rendererHandshake = {
       type: 'renderer-userscript',
@@ -3263,7 +3307,7 @@
     if (String(variant) === '01') {
       const lines = [
         'Invoke: [' + D.canon.principal + ']', '',
-        'Command: verify.alias.voice:' + D.canon.claimed_pua,
+        'Command: verify.alias.voice:' + claimedPua,
         'Sigil: ' + sigil,
         'Tetragram: ' + D.canon.badge_id,
         'Canonical Phrase: ' + D.canon.canonical_phrase,
@@ -3285,7 +3329,7 @@
         '    "visibility": "public",',
         '    "bindings": {',
         '      "badge_id": "' + D.canon.badge_id + '",',
-        '      "claimed_pua": "' + D.canon.claimed_pua + '",',
+        '      "claimed_pua": "' + claimedPua + '",',
         '      "scopes": ["core/route-2", "alias.read"],',
         '      "carry_voice": true,',
         '      "canonical_phrase": "' + D.canon.canonical_phrase + '",',
@@ -3329,7 +3373,7 @@
     } else if (String(variant) === '02') {
       const lines = [
         'Invoke: [' + D.canon.principal + ']', '',
-        'Command: verify.alias.voice:' + D.canon.claimed_pua,
+        'Command: verify.alias.voice:' + claimedPua,
         'Sigil: ' + sigil,
         'Tetragram: ' + D.canon.badge_id,
         'Canonical Phrase: ' + D.canon.canonical_phrase,
@@ -3353,7 +3397,7 @@
         '    "visibility": "public",',
         '    "bindings": {',
         '      "badge_id": "' + D.canon.badge_id + '",',
-        '      "claimed_pua": "' + D.canon.claimed_pua + '",',
+        '      "claimed_pua": "' + claimedPua + '",',
         '      "scopes": ["core/route-2", "alias.read"],',
         '      "carry_voice": true,',
         '      "canonical_phrase": "' + D.canon.canonical_phrase + '",',
@@ -3370,7 +3414,7 @@
         '      "sealed_at": "' + helper.sealed_at + '"',
         '    },',
         '    "notes": [',
-        '      "Alias voice marker for public carry-voice linked to PUA ' + D.canon.claimed_pua + '",',
+        '      "Alias voice marker for public carry-voice linked to PUA ' + claimedPua + '",',
         '      "Subordinate to ' + D.canon.badge_id + ' (locked lk_01J9BDGLOCK)",',
         '      "Fallback face: U10D613_preview.svg (sha256 ' + D.canon.preview_svg_sha256 + ')",',
         '      "Renderer userscript is reserved for render-proof lanes 03 and 04 only."',
@@ -3403,13 +3447,13 @@
       state.lastProbe = lines.join('\n');
     } else if (String(variant) === '03') {
       const payload = {
-        command: 'verify.alias.voice.render:' + D.canon.claimed_pua,
+        command: 'verify.alias.voice.render:' + claimedPua,
         mode: 'carry-voice:sealed',
         probe_lane: { id: '03', family: 'original-four', label: 'render minimal' },
         request: { request_id: helper.request_id, ts_utc: helper.ts_utc, actor: 'external', kid: D.canon.principal, scope: ['core/route-2', 'alias.read', 'badge.read'] },
         badge_id: D.canon.badge_id,
         principal: D.canon.principal,
-        claimed_pua: D.canon.claimed_pua,
+        claimed_pua: claimedPua,
         canonical_phrase: D.canon.canonical_phrase,
         display_phrase: D.canon.display_phrase,
         asset: { preview_svg_filename: '13_U10D613_preview.svg', preview_svg_sha256: D.canon.preview_svg_sha256, preview_svg_md5: D.canon.preview_svg_md5 },
@@ -3431,13 +3475,13 @@
       state.lastProbe = JSON.stringify(payload, null, 2);
     } else {
       const payload = {
-        command: 'verify.alias.voice.render:' + D.canon.claimed_pua,
+        command: 'verify.alias.voice.render:' + claimedPua,
         mode: 'carry-voice:sealed',
         probe_lane: { id: '04', family: 'original-four', label: 'render receipt completion' },
         request: { request_id: helper.request_id, ts_utc: helper.ts_utc, nonce: helper.nonce, ttl_s: 180, actor: 'external', kid: D.canon.principal, scope: ['core/route-2', 'alias.read', 'badge.read'] },
         badge_id: D.canon.badge_id,
         principal: D.canon.principal,
-        claimed_pua: D.canon.claimed_pua,
+        claimed_pua: claimedPua,
         canonical_phrase: D.canon.canonical_phrase,
         display_phrase: D.canon.display_phrase,
         asset: { preview_svg_filename: '13_U10D613_preview.svg', preview_svg_sha256: D.canon.preview_svg_sha256, preview_svg_md5: D.canon.preview_svg_md5 },

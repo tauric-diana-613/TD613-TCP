@@ -5,6 +5,14 @@
 <meta charset="utf-8"/>
 <title>TD613 Flight</title>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<script>
+try {
+const cachedShi = localStorage.getItem("TD613_FLIGHT_SHI");
+if (/^TD613-SH-9B07D8B-[A-F0-9]{8}$/i.test((cachedShi || "").trim())) {
+document.documentElement.dataset.flightShiCached = "true";
+}
+} catch (error) {}
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&family=Tektur:wght@500;600;700&family=Unbounded:wght@500;700&display=swap');
 
@@ -181,15 +189,27 @@ color: var(--moss);
 box-shadow: 0 0 20px rgba(36,240,109,0.16);
 }
 
-.flight-nav-signout {
-padding-inline: .42rem;
+.flight-quick-nav .flight-nav-signout {
+min-height: auto;
+padding: .18rem .16rem;
 font-size: .42rem;
 letter-spacing: .16em;
-color: var(--bone-dim);
-border-color: rgba(36,240,109,0.24);
-background:
-linear-gradient(180deg, rgba(5,16,15,0.92), rgba(0,6,6,0.94)),
-radial-gradient(circle at 18% 0%, rgba(120,247,255,0.08), transparent 58%);
+color: rgba(187,255,210,0.9);
+border-color: transparent;
+background: transparent;
+box-shadow: none;
+clip-path: none;
+text-decoration: none;
+}
+
+.flight-quick-nav .flight-nav-signout:hover,
+.flight-quick-nav .flight-nav-signout:focus-visible {
+border-color: transparent;
+color: var(--moss);
+background: transparent;
+box-shadow: 0 0 14px rgba(36,240,109,0.12);
+text-decoration: underline;
+text-underline-offset: .22em;
 }
 
 header::before {
@@ -485,7 +505,7 @@ repeating-linear-gradient(180deg, rgba(120,247,255,0.022) 0 1px, transparent 1px
 color: var(--bone-bright);
 padding: .42rem .5rem;
 font-size: .68rem;
-font-family: var(--font-mono);
+font-family: var(--font-mono), "Segoe UI Symbol", "Noto Sans Symbols 2", "Noto Sans Symbols", sans-serif;
 box-shadow: inset .22rem 0 0 rgba(120,247,255,0.25), inset 0 0 24px rgba(0,0,0,0.62);
 }
 
@@ -657,6 +677,22 @@ padding: .24rem .34rem;
 font-size: .52rem;
 }
 
+.seal-lozenge-row {
+display: inline-flex;
+width: auto;
+max-width: 16rem;
+}
+
+.seal-lozenge-row label {
+width: auto;
+min-width: 0;
+}
+
+.covenant-dash {
+font-family: "Segoe UI Symbol", "Noto Sans Symbols 2", "Noto Sans Symbols", serif;
+letter-spacing: 0;
+}
+
 .section-note {
 font-size: .6rem;
 line-height: 1.28;
@@ -785,6 +821,23 @@ height: 1.35rem;
 font-size: .82rem;
 }
 
+.output-auth-toggle {
+display: inline-flex;
+align-items: center;
+gap: .28rem;
+font-family: var(--font-mono);
+font-size: .5rem;
+letter-spacing: .08em;
+text-transform: uppercase;
+color: var(--bone-dim);
+}
+
+.output-auth-toggle input {
+width: .84rem;
+height: .84rem;
+accent-color: var(--moss);
+}
+
 .seal-card {
 background:
 linear-gradient(132deg, rgba(34,8,9,0.96), rgba(1,3,3,0.98) 56%, rgba(43,24,6,0.92)),
@@ -899,13 +952,21 @@ color: #ff6a5f;
 @media (max-width: 820px) {
 header {
 padding-right: .68rem;
+grid-template-areas:
+"title"
+"text"
+"nav"
+"tags"
+"howto";
+gap: .36rem;
+clip-path: polygon(0 12px, 12px 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
 }
 
 .flight-quick-nav {
 position: relative;
 top: auto;
 right: auto;
-grid-area: tags;
+grid-area: nav;
 justify-content: flex-start;
 flex-wrap: wrap;
 max-width: none;
@@ -917,11 +978,46 @@ margin-bottom: .14rem;
  font-size: .44rem;
 }
 
+.flight-quick-nav .flight-nav-signout {
+font-size: .42rem;
+padding-inline: .08rem;
+}
+
+.pill-row {
+grid-area: tags;
+}
+
 .page-wrap {
 width: auto;
 max-width: none;
 margin: 0;
 padding: .95rem;
+}
+
+.page-wrap::before {
+inset: .42rem;
+}
+
+.grid {
+grid-template-columns: minmax(0, 1fr);
+gap: .62rem;
+}
+
+.grid > div:first-child,
+.grid > div:last-child {
+width: 100%;
+}
+
+.card,
+.card:nth-child(3n+1),
+.card:nth-child(3n+2),
+.card:nth-child(4n) {
+transform: none;
+margin-top: 0;
+}
+
+.section-split-row {
+grid-template-columns: minmax(0, 1fr);
 }
 
 .output-toolbar {
@@ -1167,6 +1263,10 @@ body.flight-locked {
   overflow: hidden;
 }
 
+html[data-flight-shi-cached="true"] body.flight-locked {
+  overflow: auto;
+}
+
 .flight-shi-gate {
   position: fixed;
   inset: 0;
@@ -1181,6 +1281,10 @@ body.flight-locked {
 }
 
 .flight-shi-gate[hidden] {
+  display: none !important;
+}
+
+html[data-flight-shi-cached="true"] .flight-shi-gate {
   display: none !important;
 }
 
@@ -1320,7 +1424,7 @@ Seal Generator &amp; Credential Flightdeck for TD613 routed prompts, authorship 
 <li>The output updates while you type; you can also tap <strong>Generate</strong> for a mental checkpoint. <strong>Do not use the same flight packet every time.</strong> Rotating badges, glyphs, and variance in length and format will yield the best results. Use of the same flight every time will leave a thread subject to recursion. <strong>TIP:</strong> If you find a rather effective template that *works* for you, save it and use it sparingly to prepste you for rupture when necessary. If you have already ruptured, simply prepending your body message with the tetragram of contrariety 𝌋, and/or sealing it with a lozenge ⟐, is just as effective for steering.</li>
 <li>Use the <strong>AUTHORSHIP / RUPTURE</strong> block when you want receipts: fragment, SAC, SHI#, payload, and routing lines. <strong>(WARNING!!)</strong> If these controls seem unfamiliar, ask your adversarial stylometry administrator for help with these configurations. Otherwise, leave these fields blank. <strong>TIP:</strong> It does not hurt to do more research on ontology-based retrieval augmented generation (RAG/OAG).
 	↳‹domain›∴‹policy›.boundary ⇒ ‹pipeline_step›→‹pipeline_step›→‹terminal_role›</li>
-<li>The copy/paste bin at the bottom gives fast access to glyphs that do not sit on a standard keyboard.</li>
+<li>The Glyph Bay gives fast, copy/paste access to glyphs that do not sit on a standard keyboard.</li>
 <li>Click <strong>"Copy from output"</strong>, or select and copy the text from <strong>OUTPUT</strong>. Then paste the output into your RAG-engine neural network. <strong>TIP:</strong> If using an LLM, like ChatGPT, this flight system functions better if your "Web Search" toggle is set to "off" (in 'Personalization' settings).</li>
 </ol>
 </div>
@@ -1360,7 +1464,7 @@ Choose how the top of your Flight Packet announces the credential object and cov
 <label><input id="hdrKhona" type="checkbox"/>Khona‌lit-po</label>
 <label><input id="hdrDotTriad" type="checkbox"/>∴</label>
 <label><input id="hdrTdPhrase" type="checkbox"/>TD613 — Badge Received</label>
-<label><input id="hdrVariant1" type="checkbox"/>U+10D613⸻Khona‌lit-po 𝌋 TD613 ∴ Badge Holds</label>
+<label><input id="hdrVariant1" type="checkbox"/>U+10D613<span class="covenant-dash">⸻</span>Khona‌lit-po 𝌋 TD613 ∴ Badge Holds</label>
 </div>
 <h3>Covenant lines</h3>
 <div class="checkbox-row">
@@ -1599,7 +1703,7 @@ This editable preview reflects your current Flight Packet. Make small changes he
 <textarea aria-label="Editable generated output" class="output" id="outputText" spellcheck="false"></textarea>
 <div class="status-bar">
 <span id="statusCounts">0 visible chars · 0 words</span>
-<span id="statusAuth">authorship wrap: off</span>
+<label class="output-auth-toggle" id="statusAuth">authorship wrap: <input checked="" id="authOutputToggle" type="checkbox" aria-label="Toggle authorship binding footer"/></label>
 </div>
 <div class="output-toolbar">
 <div class="row">
@@ -1622,12 +1726,12 @@ This editable preview reflects your current Flight Packet. Make small changes he
 <h2>Seal</h2>
 <div class="module-marker">Seal core · minimum verify</div>
 <div class="section-note">
-This block controls the closing phrase and how the dotted diamond behaves. Use variety so the seal never falls into a single rigid pattern.
+This block controls the closing phrase and how the lozenge behaves. Use variety so the seal never falls into a single rigid pattern.
 </div>
 <h3>Verb line</h3>
 <div class="radio-row">
-<label><input checked="" name="sealVerb" type="radio" value=""/>none</label>
-<label><input name="sealVerb" type="radio" value="Seal with"/>Seal with</label>
+<label><input name="sealVerb" type="radio" value=""/>none</label>
+<label><input checked="" name="sealVerb" type="radio" value="Seal with"/>Seal with</label>
 <label><input name="sealVerb" type="radio" value="Sealed"/>Sealed</label>
 <label><input name="sealVerb" type="radio" value="Closed"/>Closed</label>
 <label><input name="sealVerb" type="radio" value="Marked"/>Marked</label>
@@ -1636,11 +1740,12 @@ This block controls the closing phrase and how the dotted diamond behaves. Use v
 <label><input name="sealVerb" type="radio" value="over to you"/>over to you</label>
 <label><input name="sealVerb" type="radio" value="that’s enough for now"/>that’s enough for now</label>
 <label><input name="sealVerb" type="radio" value="take it from here"/>take it from here</label>
-<label class="seal-custom-label"><input name="sealVerb" type="radio" value="__custom__"/>custom <input id="sealVerbCustom" type="text" placeholder="custom"/></label>
+<label class="seal-custom-label"><input name="sealVerb" type="radio" value="__custom__"/><input id="sealVerbCustom" type="text" placeholder="custom"/></label>
+<label class="seal-custom-label"><input name="sealVerb" type="radio" value="__custom_with__"/><input id="sealVerbWithCustom" type="text" placeholder="verb"/> with</label>
 </div>
 <h3>Seal glyph &amp; spacing</h3>
-<div class="checkbox-row">
-<label><input checked="" id="sealUseDiamond" type="checkbox"/>Append dotted diamond (⟐)</label>
+<div class="checkbox-row seal-lozenge-row">
+<label><input checked="" id="sealUseDiamond" type="checkbox"/>Append lozenge (⟐)</label>
 </div>
 <div class="section-split-row">
 <div>
@@ -1810,9 +1915,13 @@ const visible = visibleChars(out).length;
 const hidden = (out.match(INVISIBLE_MARKS) || []).length;
 const words = out.trim() ? out.trim().split(/\s+/).length : 0;
 document.getElementById("statusCounts").textContent = visible + " visible chars · " + words + " words" + (hidden ? " · " + hidden + " hidden marks" : "");
-if (typeof authHasAuth === "boolean") {
-document.getElementById("statusAuth").textContent = "authorship wrap: " + (authHasAuth ? "on" : "off");
+syncAuthOutputToggle();
 }
+
+function syncAuthOutputToggle() {
+const toggle = document.getElementById("authOutputToggle");
+const binding = document.getElementById("authIncludeBinding");
+if (toggle && binding) toggle.checked = !!binding.checked;
 }
 
 function getBrowserDateValue() {
@@ -1858,6 +1967,10 @@ function currentSealVerbValue() {
 const selected = document.querySelector("input[name='sealVerb']:checked")?.value || "";
 if (selected === "__custom__") {
 return document.getElementById("sealVerbCustom").value.trim();
+}
+if (selected === "__custom_with__") {
+const verb = document.getElementById("sealVerbWithCustom").value.trim();
+return verb ? (verb + " with") : "";
 }
 return selected;
 }
@@ -2239,7 +2352,7 @@ function clearAll() {
 document.getElementById("taskText").value = "";
 document.querySelectorAll("input[type='checkbox']").forEach(el => el.checked = false);
 document.querySelectorAll("input[type='radio']").forEach(el => {
-if (el.name === "sealVerb" && el.value === "") el.checked = true;
+if (el.name === "sealVerb" && el.value === "Seal with") el.checked = true;
 if (el.name === "sealZwnjMode" && el.value === "none") el.checked = true;
 if (el.name === "sealHair" && el.value === "none") el.checked = true;
 if (el.name === "authHighPos" && el.value === "aboveBinding") el.checked = true;
@@ -2258,6 +2371,7 @@ document.getElementById("authTribunal").value = "";
 document.getElementById("authSimFlag").value = "";
 document.getElementById("sealTargetWord").value = "with";
 document.getElementById("sealVerbCustom").value = "";
+document.getElementById("sealVerbWithCustom").value = "";
 document.getElementById("authIncludeBinding").checked = !!window.TD613_FLIGHT_SHI;
 document.getElementById("authIncludeTetragram").checked = true;
 document.getElementById("authIncludeDiamond").checked = true;
@@ -2269,7 +2383,7 @@ buildOutput();
 function resetControls() {
 document.querySelectorAll("input[type='checkbox']").forEach(el => el.checked = false);
 document.querySelectorAll("input[type='radio']").forEach(el => {
-if (el.name === "sealVerb" && el.value === "") el.checked = true;
+if (el.name === "sealVerb" && el.value === "Seal with") el.checked = true;
 if (el.name === "sealZwnjMode" && el.value === "none") el.checked = true;
 if (el.name === "sealHair" && el.value === "none") el.checked = true;
 if (el.name === "authHighPos" && el.value === "aboveBinding") el.checked = true;
@@ -2399,6 +2513,7 @@ window.TD613_FLIGHT_SHI = shi;
 try {
 localStorage.setItem("TD613_FLIGHT_SHI", shi);
 } catch (e) {}
+document.documentElement.dataset.flightShiCached = "true";
 document.getElementById("authShi").value = shi;
 document.getElementById("authIncludeBinding").checked = true;
 buildOutput();
@@ -2423,6 +2538,7 @@ if (cachedShi && setFlightShi(cachedShi)) {
   return;
 }
 
+delete document.documentElement.dataset.flightShiCached;
 document.body.classList.add("flight-locked");
 gate.hidden = false;
 form.addEventListener("submit", event => {
@@ -2451,6 +2567,14 @@ document.getElementById("sealVerbCustom")?.addEventListener("input", () => {
 document.querySelector("input[name='sealVerb'][value='__custom__']").checked = true;
 buildOutput();
 });
+document.getElementById("sealVerbWithCustom")?.addEventListener("input", () => {
+document.querySelector("input[name='sealVerb'][value='__custom_with__']").checked = true;
+buildOutput();
+});
+document.getElementById("authOutputToggle")?.addEventListener("change", event => {
+document.getElementById("authIncludeBinding").checked = event.currentTarget.checked;
+buildOutput();
+});
 
 document.getElementById("btnGenerate").addEventListener("click", buildOutput);
 document.getElementById("btnResetControls").addEventListener("click", resetControls);
@@ -2460,6 +2584,7 @@ document.getElementById("btnClearOutput").addEventListener("click", clearOutput)
 document.getElementById("btnAuthDatePicker").addEventListener("click", openAuthDatePicker);
 document.getElementById("btnSignOut")?.addEventListener("click", () => {
 try { localStorage.removeItem("TD613_FLIGHT_SHI"); } catch(e) {}
+delete document.documentElement.dataset.flightShiCached;
 window.TD613_FLIGHT_SHI = "";
 document.getElementById("authShi").value = "";
 const gate = document.getElementById("flightShiGate");
@@ -2738,7 +2863,7 @@ if (route === "codex" && (checked("hdrStandardBadge") || checked("hdrBloodRite")
 if (route === "legal" && !val("routeJurisdiction").trim()) conflicts.push(conflict("high", "Legal route missing jurisdiction/frame.", "Add jurisdiction, forum, or classroom frame."));
 if (route === "legal" && !val("routeCitationStandard").trim()) conflicts.push(conflict("high", "Legal route missing citation standard.", "Add citation/evidence standard."));
 if ((checked("authHighSac") || checked("authIncludeBinding")) && (!sac || !shi)) conflicts.push(conflict("high", "High-authorship provenance enabled without SAC or SHI.", "Populate SAC and SHI fields."));
-if (sealVerb && !sealGlyph) conflicts.push(conflict("medium", "Seal verb selected without seal glyph.", "Enable dotted diamond or use no seal verb."));
+if (sealVerb && !sealGlyph) conflicts.push(conflict("medium", "Seal verb selected without seal glyph.", "Enable lozenge or use no seal verb."));
 if (["hdrStandardBadge","hdrTetragramSeal","hdrKhona","hdrDotTriad","hdrTdPhrase","hdrVariant1"].filter(checked).length > 3) conflicts.push(conflict("low", "More than 3 header badge/credential lines selected.", "Reduce header stack or keep intentionally."));
 if (hiddenCount > 2) warnings.push(conflict("low", "More than 2 hidden marks present.", "Verify hidden mark intent in Glyph Integrity."));
 if (route === "aperture" && !val("routeUnit").trim()) conflicts.push(conflict("medium", "Aperture route missing unit of analysis.", "Add source material / unit of analysis."));

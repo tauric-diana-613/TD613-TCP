@@ -144,6 +144,10 @@ body[data-ingress-phase="revealing"] .shell {
   display: none !important;
 }
 
+html[data-ingress-bypass="true"] .ingress-membrane {
+  display: none !important;
+}
+
 .ingress-membrane::before,
 .ingress-membrane::after {
   content: "";

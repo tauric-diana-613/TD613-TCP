@@ -4,6 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TD613 Safe Harbor</title>
+  <script>
+    try {
+      const raw = sessionStorage.getItem('td613.safe-harbor.session.v1');
+      const saved = raw ? JSON.parse(raw) : null;
+      const ingress = saved && saved.ingress;
+      if (ingress && (ingress.vaultOpen || ingress.operatorShellOpen)) {
+        document.documentElement.dataset.safeHarborSessionOpen = 'true';
+      }
+    } catch (error) {}
+  </script>
   <link rel="stylesheet" href="app/styles.css">
 </head>
 <body class="vault-sealed boot-pending">
@@ -339,7 +349,6 @@
                 <pre class="code-panel" id="forensicSchemaPreview">forensic schema pending</pre>
                 <div class="button-grid">
                   <button class="control" id="covenantExport" type="button">Seal Payload</button>
-                  <button class="control secondary" id="resealVault" type="button">Return to Ingress</button>
                   <button class="control secondary" id="forgeBatch" type="button" hidden>Forge Batch</button>
                 </div>
                 <div class="note" id="covenantNote">Vault-open stages the packet only. Seal Payload appends any pasted Kleopatra signature text and advances the packet toward harbor eligibility and SHI # assignment. Export Packet unlocks once the seal lane completes.</div>
