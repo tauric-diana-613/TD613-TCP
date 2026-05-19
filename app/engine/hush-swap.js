@@ -15,8 +15,10 @@ import { buildMeaningPlan } from './hush-meaning-plan.js';
 import { buildRealizationPlan } from './hush-realization-plan.js';
 import { generateMaskWriterCandidates } from './hush-mask-writer.js';
 import { scoreNaturalness, summarizeNaturalness } from './hush-naturalness.js';
+import { cleanHushCandidates, summarizeCleanroom } from './hush-candidate-cleanroom.js';
+import { buildReleasePolicy, summarizeReleasePolicy } from './hush-release-policy.js';
 
-export const HUSH_SWAP_VERSION = 'phase-16';
+export const HUSH_SWAP_VERSION = 'phase-17';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
@@ -79,6 +81,7 @@ export function generateHushSwapCandidate(input = {}) {
     operations: asArray(writerCandidate?.operations),
     writerNaturalness: writerCandidate?.naturalness || null,
     writerWarnings: asArray(writerCandidate?.warnings),
+    cleanroom: writerCandidate?.cleanroom || null,
     profile: extractCadenceProfile(candidateText)
   };
 }
@@ -148,15 +151,27 @@ export function scoreHushSwapCandidate(input = {}) {
     residualVector
   });
   const naturalnessScore = naturalness.naturalnessScore ?? 0;
+  const naturalnessHardBlocks = naturalnessScore < 0.34 ? ['naturalness-catastrophic'] : [];
   const finalScore = round((steeringScore.finalScore * 0.78) + (naturalnessScore * 0.22));
-  const naturalnessVetoes = naturalnessScore < 0.34 ? ['naturalness-veto'] : [];
-  const warnings = [...asArray(candidate.writerWarnings), ...asArray(match.warnings), ...asArray(steeringPlan.warnings), ...asArray(lockboxVerification.warnings), ...asArray(steeringScore.vetoes), ...asArray(naturalness.fluencyWarnings), ...naturalnessVetoes];
+  const hardVetoes = [...asArray(steeringScore.vetoes), ...naturalnessHardBlocks];
+  const reviewWarnings = [...asArray(steeringScore.reviewWarnings), ...asArray(steeringPlan.warnings), ...asArray(candidate.writerWarnings), ...asArray(match.warnings), ...asArray(naturalness.fluencyWarnings)];
+  const releasePolicy = buildReleasePolicy({
+    candidate: { ...candidate, text: outputText, vetoes: hardVetoes, warnings: reviewWarnings, scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore }, weightProfile: steeringScore.weightProfile, naturalness, escapeVector, lockboxVerification },
+    outputText,
+    protectedLiterals,
+    semanticFidelity: scores.semanticFidelity ?? 0,
+    protectedLiteralScore,
+    naturalnessScore
+  });
   return {
     ...candidate,
     finalScore,
     scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore },
     weightProfile: { ...steeringScore.weightProfile, naturalness: 0.22 },
-    vetoes: [...asArray(steeringScore.vetoes), ...naturalnessVetoes],
+    vetoes: [...new Set(hardVetoes)],
+    reviewWarnings: [...new Set(reviewWarnings)],
+    releasePolicy,
+    releaseSummary: summarizeReleasePolicy(releasePolicy),
     naturalness,
     naturalnessSummary,
     match,
@@ -173,13 +188,18 @@ export function scoreHushSwapCandidate(input = {}) {
     controllerDecision,
     contextProfile,
     recognitionField,
-    warnings: [...new Set(warnings)]
+    warnings: [...new Set([...reviewWarnings, ...hardVetoes])]
   };
 }
 
 export function chooseBestHushSwapCandidate(candidates = [], options = {}) {
   const threshold = Number(options.minFinalScore ?? 0.42);
-  const scored = candidates.filter(Boolean).sort((left, right) => (right.finalScore || 0) - (left.finalScore || 0));
+  const scored = candidates.filter(Boolean).sort((left, right) => {
+    const leftBlocked = left.releasePolicy?.hardBlocked ? 1 : 0;
+    const rightBlocked = right.releasePolicy?.hardBlocked ? 1 : 0;
+    if (leftBlocked !== rightBlocked) return leftBlocked - rightBlocked;
+    return (right.finalScore || 0) - (left.finalScore || 0);
+  });
   const best = scored[0] || null;
   if (!best) return null;
   return { ...best, belowViabilityThreshold: (best.finalScore || 0) < threshold };
@@ -192,25 +212,29 @@ export function buildHushSwap(input = {}) {
   const seedPlan = buildSteeringPlan({ sourceText, outputText: sourceText, maskProfile: input.maskProfile || input.mask?.profile || {}, lockbox });
   const meaningPlan = input.meaningPlan || buildMeaningPlan({ sourceText, protectedLiterals });
   const realizationPlan = input.realizationPlan || buildRealizationPlan({ mask: input.mask || {}, maskProfile: input.maskProfile || input.mask?.profile || {} });
-  const count = Math.max(1, Math.min(36, Number(input.options?.candidateCount || input.candidateCount || 18)));
+  const count = Math.max(1, Math.min(36, Number(input.options?.candidateCount || input.candidateCount || 24)));
   const writerBundle = generateMaskWriterCandidates({ ...input, meaningPlan, realizationPlan, protectedLiterals, candidateCount: count });
-  const writerCandidates = asArray(writerBundle.candidates);
+  const cleanroom = cleanHushCandidates({ candidates: asArray(writerBundle.candidates), meaningPlan, realizationPlan, protectedLiterals, mask: input.mask });
+  const writerCandidates = asArray(cleanroom.candidates);
   const rawCandidates = writerCandidates.length
     ? writerCandidates.map((writerCandidate, index) => generateHushSwapCandidate({ ...input, protectedLiterals, lockbox, steeringPlan: seedPlan, index, writerCandidate }))
     : Array.from({ length: Math.min(8, count) }, (_, index) => generateHushSwapCandidate({ ...input, protectedLiterals, lockbox, steeringPlan: seedPlan, index }));
   const candidates = rawCandidates.map((candidate) => scoreHushSwapCandidate({ ...input, protectedLiterals, lockbox, meaningPlan, realizationPlan, candidate }));
   const selected = chooseBestHushSwapCandidate(candidates, { minFinalScore: input.options?.minFinalScore ?? 0.42 }) || candidates[0] || null;
-  const allCandidatesFailed = Boolean(!selected || selected.belowViabilityThreshold || asArray(selected.vetoes).length);
+  const allCandidatesFailed = Boolean(!selected || selected.releasePolicy?.hardBlocked);
+  const releasePolicy = selected?.releasePolicy || buildReleasePolicy({ outputText: '' });
   const claimCeiling = selected ? evaluateClaimCeiling({ escapeVector: selected.escapeVector, ingestionAudit: selected.ingestionAudit, controllerDecision: selected.controllerDecision, personaSummary: input.personaSummary || {}, iterationLedger: input.iterationLedger || {}, reportIntent: 'local-review' }) : null;
   const maskLifecycle = buildMaskLifecycle({ mask: input.mask, personaSummary: input.personaSummary, recognitionField: selected?.recognitionField, escapeVector: selected?.escapeVector, missingLiteralPressure: selected?.lockboxVerification?.missingCount || 0 });
   return {
     version: HUSH_SWAP_VERSION,
-    selectedOutput: allCandidatesFailed ? '' : selected?.text || '',
+    selectedOutput: releasePolicy.mayPopulateOutput ? selected?.text || '' : '',
     candidates,
-    writer: { meaningPlan, realizationPlan, warnings: writerBundle.warnings || [] },
+    writer: { meaningPlan, realizationPlan, cleanroom: summarizeCleanroom(cleanroom), warnings: writerBundle.warnings || [] },
     selectedCandidateId: selected?.id || '',
     allCandidatesFailed,
-    failureReason: allCandidatesFailed ? 'Every candidate remained below viability or triggered a veto. Do not select the prettiest failed candidate.' : '',
+    failureReason: allCandidatesFailed ? 'Every candidate failed hard release policy. Review meaning, literals, naturalness, and claim discipline.' : '',
+    releasePolicy,
+    releaseSummary: summarizeReleasePolicy(releasePolicy),
     match: selected?.match || null,
     matchSummary: selected?.matchSummary || null,
     naturalness: selected?.naturalness || null,
@@ -229,7 +253,7 @@ export function buildHushSwap(input = {}) {
     controllerDecision: selected?.controllerDecision || null,
     claimCeiling,
     recognitionField: selected?.recognitionField || null,
-    warnings: [...new Set([...asArray(writerBundle.warnings), ...candidates.flatMap((candidate) => asArray(candidate.warnings)), ...(allCandidatesFailed ? ['all-candidates-failed'] : [])])],
+    warnings: [...new Set([...asArray(writerBundle.warnings), ...asArray(cleanroom.operations), ...candidates.flatMap((candidate) => asArray(candidate.warnings)), ...(allCandidatesFailed ? ['all-candidates-failed'] : [])])],
     limitations: ['Hush swap is a local candidate selection workflow, not an external recognition outcome.', 'Preserve the claim before chasing the mask.']
   };
 }
