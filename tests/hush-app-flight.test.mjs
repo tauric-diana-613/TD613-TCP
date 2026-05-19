@@ -9,7 +9,7 @@ function installDom() {
   global.document = dom.window.document;
   global.HTMLElement = dom.window.HTMLElement;
   global.Event = dom.window.Event;
-  global.navigator = dom.window.navigator;
+  Object.defineProperty(globalThis, 'navigator', { value: dom.window.navigator, configurable: true });
   return dom;
 }
 
