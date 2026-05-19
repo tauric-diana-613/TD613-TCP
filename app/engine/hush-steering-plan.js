@@ -1,7 +1,7 @@
-import { buildResidualVector, residualVeto, summarizeResidualVector } from './hush-residual-vector.js';
+import { buildResidualVector, summarizeResidualVector } from './hush-residual-vector.js';
 import { verifyProtectedLiteralLockbox, summarizeProtectedLiteralLockbox } from './hush-protected-literal-lockbox.js';
 
-export const HUSH_STEERING_PLAN_VERSION = 'phase-12';
+export const HUSH_STEERING_PLAN_VERSION = 'phase-17';
 
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
 const clamp = (value, min = 0, max = 1) => Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : 0;
@@ -20,6 +20,16 @@ export function getHushWeightProfile(mode = 'neutralize', contextType = '') {
   return MODE_WEIGHT_PROFILES[mode] || MODE_WEIGHT_PROFILES.neutralize;
 }
 
+export function classifyResidualReviewWarnings(residualVector = {}, profile = MODE_WEIGHT_PROFILES.neutralize) {
+  const residual = Number(residualVector.summary?.residualPressure ?? 0);
+  const critical = Number(residualVector.summary?.criticalResidualCount ?? 0);
+  return [
+    ...(residual > Number(profile.maxResidualPressure ?? 0.72) ? ['residual-pressure-over-threshold'] : []),
+    ...(critical > 0 ? ['critical-residual-dimension-hot'] : []),
+    ...asArray(residualVector.warnings).filter((warning) => /residual|movement|candidate-set|source/.test(String(warning)))
+  ];
+}
+
 export function scoreCandidateWithSteering(input = {}) {
   const profile = getHushWeightProfile(input.operatorMode || 'neutralize', input.contextType || '');
   const maskMatch = Number(input.maskMatch ?? 0);
@@ -34,12 +44,12 @@ export function scoreCandidateWithSteering(input = {}) {
     profile.sourceReductionScore * sourceReductionScore +
     profile.contextSafetyScore * contextSafetyScore;
   const vetoes = [];
+  const reviewWarnings = [];
   if (semanticFidelity < profile.minSemanticFidelity) vetoes.push('semantic-fidelity-below-mode-floor');
   if (protectedLiteralScore < profile.minProtectedLiteralScore) vetoes.push('protected-literal-score-below-mode-floor');
   if (input.residualVector) {
-    const veto = residualVeto(input.residualVector, { maxResidual: profile.maxResidualPressure, maxCritical: 0 });
-    if (veto.vetoed) vetoes.push(...veto.reasons);
-    finalScore *= clamp(1 - Math.max(0, (input.residualVector.summary?.residualPressure ?? 0) - 0.35));
+    reviewWarnings.push(...classifyResidualReviewWarnings(input.residualVector, profile));
+    finalScore *= clamp(1 - Math.max(0, (input.residualVector.summary?.residualPressure ?? 0) - 0.55) * 0.35);
   }
   if (vetoes.length) finalScore *= 0.35;
   return {
@@ -53,7 +63,8 @@ export function scoreCandidateWithSteering(input = {}) {
       residualPressure: input.residualVector?.summary?.residualPressure ?? null
     },
     weightProfile: profile,
-    vetoes: [...new Set(vetoes)]
+    vetoes: [...new Set(vetoes)],
+    reviewWarnings: [...new Set(reviewWarnings)]
   };
 }
 
