@@ -9,7 +9,7 @@ import {
   exportHushSwapJson
 } from '../app/engine/hush-swap.js';
 
-assert.equal(HUSH_SWAP_VERSION, 'phase-12');
+assert.equal(HUSH_SWAP_VERSION, 'phase-16');
 
 const mask = getHushMask('burner-minimal');
 const sourceText = 'Please keep EXHIBIT-42 attached to the message and make sure the date 6/13 remains visible in the note.';
@@ -23,9 +23,11 @@ assert(candidate.profile);
 const scored = scoreHushSwapCandidate({ sourceText, mask, maskProfile: mask.profile, protectedLiterals, candidate, contextType: 'group-chat' });
 assert(Number.isFinite(scored.finalScore));
 assert(scored.scoreBreakdown);
-for (const key of ['maskMatch', 'semanticFidelity', 'protectedLiteralScore', 'sourceReductionScore', 'contextSafetyScore', 'residualPressure']) {
+for (const key of ['maskMatch', 'semanticFidelity', 'protectedLiteralScore', 'sourceReductionScore', 'contextSafetyScore', 'residualPressure', 'naturalness']) {
   assert(Object.prototype.hasOwnProperty.call(scored.scoreBreakdown, key), `missing score ${key}`);
 }
+assert(scored.naturalness);
+assert(scored.naturalnessSummary);
 assert(scored.match);
 assert(scored.residualVector);
 assert(scored.residualSummary);
@@ -39,9 +41,12 @@ assert(scored.ingestionAudit);
 assert(scored.controllerDecision);
 assert(scored.recognitionField);
 
-const result = buildHushSwap({ sourceText, mask, maskProfile: mask.profile, protectedLiterals, contextType: 'group-chat', options: { candidateCount: 5 } });
-assert.equal(result.version, 'phase-12');
-assert(result.candidates.length >= 5);
+const result = buildHushSwap({ sourceText, mask, maskProfile: mask.profile, protectedLiterals, contextType: 'group-chat', options: { candidateCount: 18 } });
+assert.equal(result.version, 'phase-16');
+assert(result.writer);
+assert(result.writer.meaningPlan);
+assert(result.writer.realizationPlan);
+assert(result.candidates.length >= 10);
 assert(result.selectedCandidateId);
 assert(Object.prototype.hasOwnProperty.call(result, 'allCandidatesFailed'));
 assert(result.lockbox);
@@ -50,11 +55,16 @@ assert(result.maskLifecycle);
 assert(result.maskLifecycleSummary);
 assert(result.claimCeiling);
 assert(result.recognitionField);
+assert(result.candidates.some((item) => item.strategy && !String(item.strategy).startsWith('legacy')));
+assert(result.candidates.some((item) => item.naturalness && Number.isFinite(item.naturalness.naturalnessScore)));
+assert(result.candidates.every((item) => item.text.includes('EXHIBIT-42') && item.text.includes('6/13')));
 if (!result.allCandidatesFailed) {
   assert(result.selectedOutput);
+  assert.notEqual(result.selectedOutput, sourceText);
   assert(result.match);
   assert(result.residualVector);
   assert(result.steeringPlan);
+  assert(result.naturalness);
 } else {
   assert.equal(result.selectedOutput, '');
   assert(result.failureReason.includes('prettiest failed candidate'));
@@ -78,7 +88,7 @@ assert(badCandidate.vetoes.length >= 1);
 
 const exportedDefault = exportHushSwapJson(result);
 const parsedDefault = JSON.parse(exportedDefault);
-assert(exportedDefault.includes('phase-12'));
+assert(exportedDefault.includes('phase-16'));
 if (result.selectedOutput) assert(!exportedDefault.includes(result.selectedOutput), 'default export should exclude selected output');
 assert.equal(parsedDefault.reproducibility.privateTextIncluded, false);
 assert.equal(parsedDefault.reproducibility.exportMode, 'share-export');
