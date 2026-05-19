@@ -12,6 +12,7 @@ export const HARD_BLOCK_REASONS = Object.freeze([
   'protected-literal-drop',
   'naturalness-catastrophic',
   'forbidden-positive-claim',
+  'source-body-exact-or-near-exact',
   'source-body-severe-with-weak-mask-movement'
 ]);
 
@@ -41,6 +42,14 @@ export function classifyHushReasons(reasons = []) {
   return { hardBlockReasons: [...new Set(hardBlockReasons)], reviewWarnings: [...new Set(reviewWarnings)] };
 }
 
+export function isExactOrNearExactSourceBody(sourceResidue = {}) {
+  const metrics = sourceResidue?.metrics || {};
+  const cadenceBodyRisk = Number(metrics.cadenceBodyRisk ?? 0);
+  const nonLiteralTokenRetention = Number(metrics.nonLiteralTokenRetention ?? 0);
+  const longestCopiedRun = Number(metrics.longestCopiedRun ?? 0);
+  return cadenceBodyRisk >= 0.97 || (nonLiteralTokenRetention >= 0.98 && longestCopiedRun >= 12);
+}
+
 export function buildReleasePolicy(input = {}) {
   const candidate = input.candidate || {};
   const outputText = safeText(input.outputText ?? candidate.text);
@@ -59,6 +68,7 @@ export function buildReleasePolicy(input = {}) {
   if (literal < 1 && asArray(input.protectedLiterals).length) reasons.push('protected-literal-drop');
   if (naturalness < Number(input.minNaturalness ?? 0.34)) reasons.push('naturalness-catastrophic');
   if (detectForbiddenClaims(outputText).hasForbiddenClaim) reasons.push('forbidden-positive-claim');
+  if (isExactOrNearExactSourceBody(sourceResidue)) reasons.push('source-body-exact-or-near-exact');
   const severeSourceBody = asArray(sourceResidue?.warnings).includes('source-body-severe') || Number(sourceResidue?.metrics?.cadenceBodyRisk ?? 0) > 0.82 || sourceResidueScore < 0.18;
   const weakMaskMovement = maskMatch < Number(input.minMaskMatchForSevereResidue ?? 0.35) || asArray(reasons).includes('low-mask-movement');
   if (severeSourceBody && weakMaskMovement) reasons.push('source-body-severe-with-weak-mask-movement');
@@ -72,7 +82,7 @@ export function buildReleasePolicy(input = {}) {
     hardBlockReasons: classified.hardBlockReasons,
     reviewWarnings: classified.reviewWarnings,
     operatorMessage: hardBlocked
-      ? 'Output blocked because meaning, protected literals, naturalness, claim discipline, or severe source-body retention failed.'
+      ? 'Output blocked because meaning, protected literals, naturalness, claim discipline, exact source copying, or severe source-body retention failed.'
       : releaseStatus === 'needs-review'
         ? 'Output may populate, but review warnings remain. Do not treat this as sealed.'
         : 'Output may populate for local review.',

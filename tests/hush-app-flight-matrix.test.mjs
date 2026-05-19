@@ -71,6 +71,7 @@ const statusCounts = {};
 const warningCounts = {};
 const hardBlockCounts = {};
 const missingLiteralExamples = [];
+const unchangedExamples = [];
 
 for (const message of cases) {
   for (const maskId of maskIds) {
@@ -95,14 +96,19 @@ for (const message of cases) {
     const literals = literalsFrom(message);
     const keptLiterals = literals.filter((literal) => output.includes(literal)).length;
     const missingLiterals = literals.filter((literal) => !output.includes(literal));
+    const emitted = output.trim().length > 0;
+    const transformed = emitted && output.trim() !== message.trim();
     if (missingLiterals.length && missingLiteralExamples.length < 12) {
       missingLiteralExamples.push({ maskId, missingLiterals, output, message });
+    }
+    if (emitted && !transformed && unchangedExamples.length < 12) {
+      unchangedExamples.push({ maskId, output, message, hardBlockReasons: result.releasePolicy?.hardBlockReasons || [], sourceResidue: selected.sourceResidueSummary || selected.sourceResidue || null });
     }
     rows.push({
       maskId,
       status,
-      emitted: output.trim().length > 0,
-      transformed: output.trim().length > 0 && output.trim() !== message.trim(),
+      emitted,
+      transformed,
       candidateCount: result.candidates.length,
       selectedCandidateId: result.selectedCandidateId,
       finalScore: selected.finalScore ?? null,
@@ -126,6 +132,7 @@ for (const message of cases) {
 
 const emitted = rows.filter((row) => row.emitted).length;
 const transformed = rows.filter((row) => row.transformed).length;
+const unchangedEmits = rows.filter((row) => row.emitted && !row.transformed).length;
 const hardBlocked = rows.filter((row) => row.hardBlocked).length;
 const literalPerfect = rows.filter((row) => row.literalScore === 1).length;
 const belowSemantic82 = rows.filter((row) => Number.isFinite(row.semanticFidelity) && row.semanticFidelity < 0.82).length;
@@ -138,6 +145,7 @@ const summary = {
   maskCount: maskIds.length,
   emitted,
   transformed,
+  unchangedEmits,
   blankOutputs: rows.length - emitted,
   hardBlocked,
   statusCounts,
@@ -164,6 +172,7 @@ const summary = {
   avgNonLiteralTokenRetention: mean(rows.map((row) => row.nonLiteralTokenRetention)),
   avgMaskMatch: mean(rows.map((row) => row.maskMatch)),
   missingLiteralExamples,
+  unchangedExamples,
   sampleRows: rows.slice(0, 5)
 };
 
@@ -171,4 +180,5 @@ console.log('HUSH_APP_FLIGHT_MATRIX_SUMMARY ' + JSON.stringify(summary));
 assert.equal(summary.attempts, 240);
 assert(emitted > 0, 'matrix flight emitted zero outputs');
 assert(transformed > 0, 'matrix flight transformed zero outputs');
+assert.equal(unchangedEmits, 0, 'matrix flight emitted unchanged outputs');
 console.log('hush-app-flight-matrix tests passed');
