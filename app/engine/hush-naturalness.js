@@ -35,7 +35,7 @@ export function detectAwkwardness(input = {}) {
   const repairs = [];
   const reps = repeatedPhrases(text);
   if (reps.length) { flags.push('repeated-phrase'); repairs.push('remove repeated phrase loops'); }
-  if (sentenceList.some((sentence) => words(sentence).length > 42)) { flags.push('overlong-sentence'); repairs.push('split overlong sentence'); }
+  if (sentenceList.some((sentence) => words(sentence).length > 32)) { flags.push('overlong-sentence'); repairs.push('split overlong sentence'); }
   const shortRun = sentenceList.filter((sentence) => words(sentence).length <= 4).length;
   if (sentenceList.length >= 4 && shortRun / sentenceList.length > 0.65) { flags.push('choppy-sentence-pileup'); repairs.push('merge some short sentences'); }
   if (/\b(?:regarding|furthermore|moreover|therefore)\b[^.!?]{0,80}\b(?:regarding|furthermore|moreover|therefore)\b/i.test(text)) { flags.push('double-transition'); repairs.push('remove double transition'); }
@@ -58,7 +58,7 @@ export function scoreNaturalness(input = {}) {
   score -= detected.awkwardnessFlags.length * 0.095;
   const avgSentence = sentenceList.length ? wordList.length / sentenceList.length : 0;
   if (!wordList.length) score = 0;
-  if (avgSentence > 36) score -= 0.16;
+  if (avgSentence > 32) score -= 0.16;
   if (avgSentence < 4 && wordList.length > 20) score -= 0.12;
   if (traits.sentenceLength === 'short' && avgSentence > 24) score -= 0.08;
   if (traits.sentenceLength === 'long' && avgSentence < 8 && wordList.length > 18) score -= 0.06;
