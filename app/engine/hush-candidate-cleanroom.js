@@ -57,7 +57,7 @@ function restoreCaveats(text = '', meaningPlan = {}) {
     caveats.push(...matches);
   }
   for (const caveat of [...new Set(caveats)]) {
-    if (!new RegExp(caveat.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i').test(value)) value = `${caveat} ${value.charAt(0).toLowerCase()}${value.slice(1)}`;
+    if (!new RegExp(caveat.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i').test(value)) value = `${caveat} ${value}`;
   }
   return collapseWhitespace(value);
 }
