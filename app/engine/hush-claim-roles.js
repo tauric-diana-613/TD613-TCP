@@ -24,7 +24,6 @@ function detectProtected(text = '', protectedLiterals = []) {
 
 export function classifyClaimUnit(unit = {}, context = {}) {
   const text = safeText(unit.text);
-  const lower = text.toLowerCase();
   const protectedFragments = unique([...(unit.protectedFragments || []), ...detectProtected(text, context.protectedLiterals || [])]);
   const subroles = [];
   const invariants = [];
@@ -32,21 +31,21 @@ export function classifyClaimUnit(unit = {}, context = {}) {
 
   const hasEvidence = /\b(?:exhibit|doc|case|id|ref|td613|shi|sac)\b|\b(?:file|record|note|packet|attachment|label)\b/i.test(text);
   const hasDate = /\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b|\b\d{4}-\d{2}-\d{2}\b/.test(text);
-  const hasNegation = /\b(no|not|never|none|without|cannot|can't|do not|don't|did not|didn't)\b/i.test(text) || Boolean(unit.hasNegation);
   const hasCaveat = /\b(may|might|appears|seems|possibly|cannot confirm|from what i can tell|i do not know|not naming)\b/i.test(text);
+  const hasNegation = (/\b(no|not|never|none|without|can't|do not|don't|did not|didn't)\b/i.test(text) || (/\bcannot\b/i.test(text) && !/\bcannot confirm\b/i.test(text)) || Boolean(unit.hasNegation));
   const hasRequest = /\b(please keep|i need|make sure|should remain|do not separate|preserve|keep)\b/i.test(text);
   const hasReason = /\b(because|so that|since|as|therefore)\b/i.test(text);
 
   if (hasEvidence) { role = 'evidence-anchor'; subroles.push('evidence-anchor'); invariants.push('keep-literal-near-evidence-noun'); }
   if (hasDate) { if (!hasEvidence) role = 'date-anchor'; subroles.push('date-anchor'); invariants.push('preserve-date', 'keep-date-near-event'); }
   if (hasNegation) { role = 'negation'; subroles.push('negation'); invariants.push('preserve-negation', 'keep-negation-near-action'); }
-  if (hasCaveat) { if (!hasNegation) role = 'caveat'; subroles.push('uncertainty', 'caveat'); invariants.push('preserve-uncertainty'); }
-  if (hasRequest) { if (!hasNegation && !hasEvidence) role = 'request'; subroles.push('request'); invariants.push('preserve-request-intent'); }
+  if (hasCaveat) { role = 'caveat'; subroles.push('uncertainty', 'caveat'); invariants.push('preserve-uncertainty'); }
+  if (hasRequest) { if (!hasNegation && !hasEvidence && !hasCaveat) role = 'request'; subroles.push('request'); invariants.push('preserve-request-intent'); }
   if (hasReason) { subroles.push('reason'); invariants.push('preserve-reason-link'); }
   if (protectedFragments.length) invariants.push('preserve-protected-literals');
 
-  const locked = hasNegation || protectedFragments.length || hasDate;
-  const moveFreedom = locked ? 'locked' : hasReason || hasRequest || hasCaveat ? 'local' : 'flexible';
+  const locked = hasNegation || hasCaveat || protectedFragments.length || hasDate;
+  const moveFreedom = locked ? 'locked' : hasReason || hasRequest ? 'local' : 'flexible';
   const rewriteFreedom = unit.rewriteFreedom || (locked ? 'low' : 'medium');
 
   return {
