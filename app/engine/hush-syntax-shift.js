@@ -10,7 +10,7 @@ function sentences(text = '') { const value = safeText(text).replace(/\s+/g, ' '
 function punctuationSkeleton(text = '') { return (safeText(text).match(/[,.!?;:—-]/g) || []).join(''); }
 function opening(text = '') { return words(sentences(text)[0] || '').slice(0, 4).join(' ').toLowerCase(); }
 function closing(text = '') { const list = sentences(text); return words(list[list.length - 1] || '').slice(-5).join(' ').toLowerCase(); }
-function clauseOrder(text = '') { return safeText(text).split(/[,;:]|\b(?:because|but|and|so|while|although|when|after|before)\b/i).map((part) => {
+function clauseOrder(text = '') { return safeText(text).split(/[.!?,;:]|\b(?:because|but|and|so|while|although|when|after|before)\b/i).map((part) => {
   const lower = part.toLowerCase();
   if (/\b(?:exhibit|doc|case|id|ref|file|record|note|packet|attachment)\b/.test(lower)) return 'evidence';
   if (/\b\d{1,4}[/-]\d{1,2}|\d{4}-\d{2}-\d{2}\b/.test(lower)) return 'date';
