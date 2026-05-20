@@ -7,7 +7,7 @@ import {
   summarizeReleasePolicy
 } from '../app/engine/hush-release-policy.js';
 
-assert.equal(HUSH_RELEASE_POLICY_VERSION, 'phase-18');
+assert.equal(HUSH_RELEASE_POLICY_VERSION, 'phase-19');
 
 const residualOnly = buildReleasePolicy({
   outputText: 'For reference, EXHIBIT-42 stayed attached on 6/13.',
@@ -66,6 +66,66 @@ const severeWeak = buildReleasePolicy({
 assert.equal(severeWeak.hardBlocked, true);
 assert(severeWeak.hardBlockReasons.includes('source-body-severe-with-weak-mask-movement'));
 
+const claimFail = buildReleasePolicy({
+  outputText: 'DOC-613 should stay with the 6/13 note.',
+  protectedLiterals: ['DOC-613', '6/13'],
+  semanticFidelity: 1,
+  protectedLiteralScore: 1,
+  naturalnessScore: 1,
+  claimIntegrity: { passed: false, hardFailures: ['negation-dropped'], reviewWarnings: [] }
+});
+assert.equal(claimFail.hardBlocked, true);
+assert(claimFail.hardBlockReasons.includes('claim-integrity-failed'));
+
+const claimReview = buildReleasePolicy({
+  outputText: 'It would help to keep EXHIBIT-42 with the message.',
+  protectedLiterals: ['EXHIBIT-42'],
+  semanticFidelity: 1,
+  protectedLiteralScore: 1,
+  naturalnessScore: 1,
+  claimIntegrity: { passed: true, hardFailures: [], reviewWarnings: ['request-softened-review'] }
+});
+assert.equal(claimReview.hardBlocked, false);
+assert(claimReview.reviewWarnings.includes('claim-integrity-review'));
+
+const lowSyntax = buildReleasePolicy({
+  outputText: 'For reference, EXHIBIT-42 stayed attached on 6/13.',
+  protectedLiterals: ['EXHIBIT-42', '6/13'],
+  semanticFidelity: 1,
+  protectedLiteralScore: 1,
+  naturalnessScore: 1,
+  syntaxShift: { metrics: { syntaxShiftScore: 0.3 }, warnings: ['syntax-shift-low'] },
+  sourceResidue: { warnings: ['source-body-attached'], metrics: { cadenceBodyRisk: 0.5 } },
+  sourceResidueScore: 0.5
+});
+assert.equal(lowSyntax.hardBlocked, false);
+assert(lowSyntax.reviewWarnings.includes('syntax-shift-low'));
+
+const lowSyntaxHotBody = buildReleasePolicy({
+  outputText: 'For reference, EXHIBIT-42 stayed attached on 6/13.',
+  protectedLiterals: ['EXHIBIT-42', '6/13'],
+  semanticFidelity: 1,
+  protectedLiteralScore: 1,
+  naturalnessScore: 1,
+  syntaxShift: { metrics: { syntaxShiftScore: 0.1 }, warnings: ['syntax-shift-low'] },
+  sourceResidue: { warnings: ['source-body-severe'], metrics: { cadenceBodyRisk: 0.9 } },
+  sourceResidueScore: 0.2,
+  maskMatch: 0.8
+});
+assert.equal(lowSyntaxHotBody.hardBlocked, true);
+assert(lowSyntaxHotBody.hardBlockReasons.includes('syntax-shift-too-low-with-source-body'));
+
+const wrapperOnly = buildReleasePolicy({
+  outputText: 'For reference, EXHIBIT-42 stayed attached on 6/13.',
+  protectedLiterals: ['EXHIBIT-42', '6/13'],
+  semanticFidelity: 1,
+  protectedLiteralScore: 1,
+  naturalnessScore: 1,
+  syntaxShift: { metrics: { syntaxShiftScore: 0.4 }, warnings: ['wrapper-only-transform'] }
+});
+assert.equal(wrapperOnly.hardBlocked, false);
+assert(wrapperOnly.reviewWarnings.includes('wrapper-only-transform'));
+
 const semanticFail = buildReleasePolicy({ outputText: 'Changed text.', semanticFidelity: 0.2, protectedLiteralScore: 1, naturalnessScore: 1 });
 assert.equal(semanticFail.hardBlocked, true);
 assert(semanticFail.hardBlockReasons.includes('semantic-fidelity-below-mode-floor'));
@@ -79,9 +139,11 @@ const naturalFail = buildReleasePolicy({ outputText: 'Text text text.', semantic
 assert.equal(naturalFail.hardBlocked, true);
 assert(naturalFail.hardBlockReasons.includes('naturalness-catastrophic'));
 
-const classified = classifyHushReasons(['critical-residual-dimension-hot', 'protected-literal-drop']);
+const classified = classifyHushReasons(['critical-residual-dimension-hot', 'protected-literal-drop', 'claim-integrity-failed', 'syntax-shift-low']);
 assert(classified.reviewWarnings.includes('critical-residual-dimension-hot'));
+assert(classified.reviewWarnings.includes('syntax-shift-low'));
 assert(classified.hardBlockReasons.includes('protected-literal-drop'));
+assert(classified.hardBlockReasons.includes('claim-integrity-failed'));
 
 const summary = summarizeReleasePolicy(residualOnly);
 assert.equal(summary.releaseStatus, 'needs-review');
