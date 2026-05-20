@@ -34,6 +34,7 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 - [Phase 18.1 Hush Copy Hard Block Status](PHASE_18_1_HUSH_COPY_HARD_BLOCK_STATUS.md) — Exact / near-exact source-body copies now hard-block regardless of mask match.
 - [Phase 19 Hush Syntax Recomposer Status](PHASE_19_HUSH_SYNTAX_RECOMPOSER_STATUS.md) — Claim-role mapping, literal placement, syntax planning, recomposition, syntax-shift scoring, and claim-integrity review.
 - [Phase 20 Hush Alien Console Status](PHASE_20_HUSH_ALIEN_CONSOLE_STATUS.md) — Futurecore-goth operator surface, route cards, path rail, heat readout, and recessed Vault/Lab machinery.
+- [Phase 20.1 Hush Field Instrument Status](PHASE_20_1_HUSH_FIELD_INSTRUMENT_STATUS.md) — Mobile classified-device layer: field-instrument framing, route cartridges, sticky gate, decoded output, and biosignal heat traces.
 
 ## Governance
 
