@@ -32,6 +32,14 @@
       alienLink.href = alienHref;
       document.head.appendChild(alienLink);
     }
+    var fieldHref = './hush-field-instrument.css?v=' + (V.hushFieldInstrument || V.hushAlienConsole || V.main || '');
+    var existingField = document.querySelector('link[href^="./hush-field-instrument.css"]');
+    if (!existingField) {
+      var fieldLink = document.createElement('link');
+      fieldLink.rel = 'stylesheet';
+      fieldLink.href = fieldHref;
+      document.head.appendChild(fieldLink);
+    }
   }
 
   var srcs = [
