@@ -25,7 +25,7 @@ function getValue(id) {
 }
 
 function literalsFrom(text = '') {
-  return text.match(/\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\/-]*\b|\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b/g) || [];
+  return text.match(/\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\[\]\/-]*\b|\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b/g) || [];
 }
 
 function mean(values = []) {
@@ -85,7 +85,7 @@ for (const message of cases) {
     const result = bench.benchState.hushSwapResult;
     const output = getValue('protectedOutputInput');
     assert(result, `no result for ${maskId}`);
-    assert.equal(result.version, 'phase-18');
+    assert.equal(result.version, 'phase-19');
 
     const selected = result.candidates.find((candidate) => candidate.id === result.selectedCandidateId) || result.candidates[0] || {};
     const status = result.releasePolicy?.releaseStatus || 'missing';
@@ -98,6 +98,10 @@ for (const message of cases) {
     const missingLiterals = literals.filter((literal) => !output.includes(literal));
     const emitted = output.trim().length > 0;
     const transformed = emitted && output.trim() !== message.trim();
+    const syntaxWarnings = selected.syntaxShift?.warnings || [];
+    const cleanroomOps = result.writer?.cleanroom?.operations || [];
+    const cleanroomWarnings = result.writer?.cleanroom?.warnings || [];
+    const claimFailures = selected.claimIntegrity?.hardFailures || [];
     if (missingLiterals.length && missingLiteralExamples.length < 12) {
       missingLiteralExamples.push({ maskId, missingLiterals, output, message });
     }
@@ -121,6 +125,18 @@ for (const message of cases) {
       longestCopiedRun: selected.sourceResidue?.metrics?.longestCopiedRun ?? null,
       nonLiteralTokenRetention: selected.sourceResidue?.metrics?.nonLiteralTokenRetention ?? null,
       maskMatch: selected.match?.matchScore ?? null,
+      syntaxShiftScore: selected.syntaxShift?.metrics?.syntaxShiftScore ?? selected.scoreBreakdown?.syntaxShiftScore ?? null,
+      clauseOrderShift: selected.syntaxShift?.metrics?.clauseOrderShift ?? null,
+      openingShapeShift: selected.syntaxShift?.metrics?.openingShapeShift ?? null,
+      closingShapeShift: selected.syntaxShift?.metrics?.closingShapeShift ?? null,
+      punctuationSkeletonShift: selected.syntaxShift?.metrics?.punctuationSkeletonShift ?? null,
+      functionFrameShift: selected.syntaxShift?.metrics?.functionFrameShift ?? null,
+      literalPlacementShift: selected.syntaxShift?.metrics?.literalPlacementShift ?? null,
+      wrapperOnly: syntaxWarnings.includes('wrapper-only-transform'),
+      claimIntegrityFailed: selected.claimIntegrity?.passed === false,
+      claimIntegrityFailures: claimFailures.length,
+      literalPlacementRepairs: cleanroomOps.filter((op) => /literal-placement|literal-tail-stuff-repaired|in-unit-literal-placement/.test(op)).length,
+      literalTailStuffed: cleanroomWarnings.includes('literal-tail-stuffed'),
       literalScore: literals.length ? keptLiterals / literals.length : 1,
       literalsRequired: literals.length,
       literalsKept: keptLiterals,
@@ -139,6 +155,10 @@ const belowSemantic82 = rows.filter((row) => Number.isFinite(row.semanticFidelit
 const belowNatural34 = rows.filter((row) => Number.isFinite(row.naturalness) && row.naturalness < 0.34).length;
 const highResidual = rows.filter((row) => Number.isFinite(row.sourceResidual) && row.sourceResidual > 0.65).length;
 const severeSourceBody = rows.filter((row) => Number.isFinite(row.sourceBodyRisk) && row.sourceBodyRisk > 0.82).length;
+const wrapperOnlyTransforms = rows.filter((row) => row.emitted && row.wrapperOnly).length;
+const claimIntegrityFailures = rows.filter((row) => row.emitted && row.claimIntegrityFailed).length;
+const literalPlacementRepairs = rows.reduce((sum, row) => sum + row.literalPlacementRepairs, 0);
+const literalTailStuffed = rows.filter((row) => row.literalTailStuffed).length;
 const summary = {
   attempts: rows.length,
   caseCount: cases.length,
@@ -157,6 +177,10 @@ const summary = {
   belowNatural34,
   highResidual,
   severeSourceBody,
+  wrapperOnlyTransforms,
+  claimIntegrityFailures,
+  literalPlacementRepairs,
+  literalTailStuffed,
   avgCandidateCount: mean(rows.map((row) => row.candidateCount)),
   avgFinalScore: mean(rows.map((row) => row.finalScore)),
   minFinalScore: min(rows.map((row) => row.finalScore)),
@@ -171,6 +195,13 @@ const summary = {
   maxLongestCopiedRun: max(rows.map((row) => row.longestCopiedRun)),
   avgNonLiteralTokenRetention: mean(rows.map((row) => row.nonLiteralTokenRetention)),
   avgMaskMatch: mean(rows.map((row) => row.maskMatch)),
+  avgSyntaxShiftScore: mean(rows.map((row) => row.syntaxShiftScore)),
+  avgClauseOrderShift: mean(rows.map((row) => row.clauseOrderShift)),
+  avgOpeningShapeShift: mean(rows.map((row) => row.openingShapeShift)),
+  avgClosingShapeShift: mean(rows.map((row) => row.closingShapeShift)),
+  avgPunctuationSkeletonShift: mean(rows.map((row) => row.punctuationSkeletonShift)),
+  avgFunctionFrameShift: mean(rows.map((row) => row.functionFrameShift)),
+  avgLiteralPlacementShift: mean(rows.map((row) => row.literalPlacementShift)),
   missingLiteralExamples,
   unchangedExamples,
   sampleRows: rows.slice(0, 5)
@@ -181,4 +212,7 @@ assert.equal(summary.attempts, 240);
 assert(emitted > 0, 'matrix flight emitted zero outputs');
 assert(transformed > 0, 'matrix flight transformed zero outputs');
 assert.equal(unchangedEmits, 0, 'matrix flight emitted unchanged outputs');
+assert.equal(wrapperOnlyTransforms, 0, 'matrix flight emitted wrapper-only transforms');
+assert.equal(claimIntegrityFailures, 0, 'matrix flight emitted claim-integrity failures');
+assert(summary.avgLongestCopiedRun < 12, 'matrix average copied run should drop below Phase 18 severe band');
 console.log('hush-app-flight-matrix tests passed');
