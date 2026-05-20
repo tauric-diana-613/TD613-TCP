@@ -40,6 +40,14 @@
       fieldLink.href = fieldHref;
       document.head.appendChild(fieldLink);
     }
+    var mobileFixHref = './hush-mobile-viewport-fix.css?v=' + (V.hushMobileViewportFix || V.hushFieldInstrument || V.hushAlienConsole || V.main || '');
+    var existingMobileFix = document.querySelector('link[href^="./hush-mobile-viewport-fix.css"]');
+    if (!existingMobileFix) {
+      var mobileFixLink = document.createElement('link');
+      mobileFixLink.rel = 'stylesheet';
+      mobileFixLink.href = mobileFixHref;
+      document.head.appendChild(mobileFixLink);
+    }
   }
 
   var srcs = [

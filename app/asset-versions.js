@@ -10,7 +10,8 @@
     aperture:    '202604192040',
     chrome:      '202604230045',
     hushAlienConsole: '202605200001',
-    hushFieldInstrument: '202605200002'
+    hushFieldInstrument: '202605200002',
+    hushMobileViewportFix: '202605200003'
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" \/>');
