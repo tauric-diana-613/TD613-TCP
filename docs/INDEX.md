@@ -32,6 +32,7 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 - [Phase 17 Hush Release Policy Status](PHASE_17_HUSH_RELEASE_POLICY_STATUS.md) — Admissibility gate split: hard blocks versus review warnings.
 - [Phase 18 Hush Source Residue Status](PHASE_18_HUSH_SOURCE_RESIDUE_STATUS.md) — Source-body retention scorer and cadence detachment ranking.
 - [Phase 18.1 Hush Copy Hard Block Status](PHASE_18_1_HUSH_COPY_HARD_BLOCK_STATUS.md) — Exact / near-exact source-body copies now hard-block regardless of mask match.
+- [Phase 19 Hush Syntax Recomposer Status](PHASE_19_HUSH_SYNTAX_RECOMPOSER_STATUS.md) — Claim-role mapping, literal placement, syntax planning, recomposition, syntax-shift scoring, and claim-integrity review.
 
 ## Governance
 

@@ -1,6 +1,6 @@
 import { detectForbiddenClaims } from './claim-ladder.js';
 
-export const HUSH_RELEASE_POLICY_VERSION = 'phase-18';
+export const HUSH_RELEASE_POLICY_VERSION = 'phase-19';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safeText = (value) => String(value ?? '');
@@ -13,7 +13,9 @@ export const HARD_BLOCK_REASONS = Object.freeze([
   'naturalness-catastrophic',
   'forbidden-positive-claim',
   'source-body-exact-or-near-exact',
-  'source-body-severe-with-weak-mask-movement'
+  'source-body-severe-with-weak-mask-movement',
+  'claim-integrity-failed',
+  'syntax-shift-too-low-with-source-body'
 ]);
 
 export const REVIEW_WARNING_REASONS = Object.freeze([
@@ -28,7 +30,12 @@ export const REVIEW_WARNING_REASONS = Object.freeze([
   'source-body-attached',
   'source-body-severe',
   'source-opening-retained',
-  'source-closing-retained'
+  'source-closing-retained',
+  'claim-integrity-review',
+  'syntax-shift-low',
+  'wrapper-only-transform',
+  'literal-placement-review',
+  'literal-tail-stuffed'
 ]);
 
 export function classifyHushReasons(reasons = []) {
@@ -57,11 +64,21 @@ export function buildReleasePolicy(input = {}) {
   const literal = Number(input.protectedLiteralScore ?? candidate.scoreBreakdown?.protectedLiteralScore ?? candidate.lockboxVerification?.preservationScore ?? 1);
   const naturalness = Number(input.naturalnessScore ?? candidate.naturalness?.naturalnessScore ?? 1);
   const sourceResidue = input.sourceResidue || candidate.sourceResidue || null;
+  const syntaxShift = input.syntaxShift || candidate.syntaxShift || null;
+  const claimIntegrity = input.claimIntegrity || candidate.claimIntegrity || null;
   const sourceResidueScore = Number(input.sourceResidueScore ?? candidate.scoreBreakdown?.sourceResidueScore ?? candidate.sourceResidueScore ?? 1);
+  const syntaxShiftScore = Number(input.syntaxShiftScore ?? candidate.scoreBreakdown?.syntaxShiftScore ?? syntaxShift?.metrics?.syntaxShiftScore ?? 1);
   const maskMatch = Number(input.maskMatch ?? candidate.scoreBreakdown?.maskMatch ?? candidate.match?.matchScore ?? 1);
   const hardFloorSemantic = Number(input.minSemanticFidelity ?? candidate.weightProfile?.minSemanticFidelity ?? 0.58);
   const hardFloorLiteral = Number(input.minProtectedLiteralScore ?? candidate.weightProfile?.minProtectedLiteralScore ?? 0.92);
-  const reasons = [...asArray(input.reasons), ...asArray(candidate.vetoes), ...asArray(candidate.warnings), ...asArray(sourceResidue?.warnings)];
+  const reasons = [
+    ...asArray(input.reasons),
+    ...asArray(candidate.vetoes),
+    ...asArray(candidate.warnings),
+    ...asArray(sourceResidue?.warnings),
+    ...asArray(syntaxShift?.warnings),
+    ...asArray(claimIntegrity?.reviewWarnings)
+  ];
   if (!outputText.trim()) reasons.push('empty-output');
   if (semantic < hardFloorSemantic) reasons.push('semantic-fidelity-below-mode-floor');
   if (literal < hardFloorLiteral) reasons.push('protected-literal-score-below-mode-floor');
@@ -69,9 +86,14 @@ export function buildReleasePolicy(input = {}) {
   if (naturalness < Number(input.minNaturalness ?? 0.34)) reasons.push('naturalness-catastrophic');
   if (detectForbiddenClaims(outputText).hasForbiddenClaim) reasons.push('forbidden-positive-claim');
   if (isExactOrNearExactSourceBody(sourceResidue)) reasons.push('source-body-exact-or-near-exact');
+  if (claimIntegrity && claimIntegrity.passed === false) reasons.push('claim-integrity-failed');
+  if (claimIntegrity && asArray(claimIntegrity.reviewWarnings).length) reasons.push('claim-integrity-review');
+  if (syntaxShift && syntaxShiftScore < 0.35) reasons.push('syntax-shift-low');
+  if (asArray(syntaxShift?.warnings).includes('wrapper-only-transform')) reasons.push('wrapper-only-transform');
   const severeSourceBody = asArray(sourceResidue?.warnings).includes('source-body-severe') || Number(sourceResidue?.metrics?.cadenceBodyRisk ?? 0) > 0.82 || sourceResidueScore < 0.18;
   const weakMaskMovement = maskMatch < Number(input.minMaskMatchForSevereResidue ?? 0.35) || asArray(reasons).includes('low-mask-movement');
   if (severeSourceBody && weakMaskMovement) reasons.push('source-body-severe-with-weak-mask-movement');
+  if (severeSourceBody && syntaxShiftScore < 0.20) reasons.push('syntax-shift-too-low-with-source-body');
   const classified = classifyHushReasons(reasons);
   const hardBlocked = classified.hardBlockReasons.length > 0;
   const releaseStatus = hardBlocked ? 'blocked' : classified.reviewWarnings.length ? 'needs-review' : 'emit';
@@ -82,7 +104,7 @@ export function buildReleasePolicy(input = {}) {
     hardBlockReasons: classified.hardBlockReasons,
     reviewWarnings: classified.reviewWarnings,
     operatorMessage: hardBlocked
-      ? 'Output blocked because meaning, protected literals, naturalness, claim discipline, exact source copying, or severe source-body retention failed.'
+      ? 'Output blocked because meaning, protected literals, naturalness, claim integrity, syntax shift, exact source copying, or severe source-body retention failed.'
       : releaseStatus === 'needs-review'
         ? 'Output may populate, but review warnings remain. Do not treat this as sealed.'
         : 'Output may populate for local review.',

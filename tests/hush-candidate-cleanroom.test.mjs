@@ -6,7 +6,7 @@ import {
   summarizeCleanroom
 } from '../app/engine/hush-candidate-cleanroom.js';
 
-assert.equal(HUSH_CANDIDATE_CLEANROOM_VERSION, 'phase-17');
+assert.equal(HUSH_CANDIDATE_CLEANROOM_VERSION, 'phase-19');
 
 const meaningPlan = {
   protectedLiterals: ['DOC-42', '6/13'],
@@ -24,6 +24,7 @@ const cleaned = cleanHushCandidate({
 });
 
 assert(cleaned.cleanroom.changed);
+assert.equal(cleaned.cleanroom.version, 'phase-19');
 assert(cleaned.text.includes('DOC-42'));
 assert(cleaned.text.includes('6/13'));
 assert(cleaned.text.toLowerCase().includes('not'));
@@ -36,10 +37,13 @@ const procedural = cleanHushCandidate({
   realizationPlan: { traits: { diction: 'procedural', clauseShape: 'list-driven' } }
 });
 assert(procedural.text.includes('Item 1:'));
+assert.equal(procedural.cleanroom.version, 'phase-19');
 
 const batch = cleanHushCandidates({ candidates: [cleaned, procedural], meaningPlan, protectedLiterals: ['DOC-42', '6/13'] });
-assert.equal(batch.version, 'phase-17');
+assert.equal(batch.version, 'phase-19');
 assert.equal(batch.candidates.length, 2);
-assert(summarizeCleanroom(batch).changedCount >= 0);
+const summary = summarizeCleanroom(batch);
+assert.equal(summary.version, 'phase-19');
+assert(summary.changedCount >= 0);
 
 console.log('hush-candidate-cleanroom tests passed');

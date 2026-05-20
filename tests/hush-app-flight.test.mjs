@@ -37,13 +37,28 @@ for (const flight of cases) {
   const result = bench.benchState.hushSwapResult;
   const output = value('protectedOutputInput');
   assert(result, `no Hush swap result for ${flight.name}`);
-  assert.equal(result.version, 'phase-18');
+  assert.equal(result.version, 'phase-19');
   assert(result.releasePolicy, `missing release policy for ${flight.name}`);
+  assert(result.writer?.claimRoleMap, `missing claim role map for ${flight.name}`);
+  assert(result.writer?.literalPlacementMap, `missing literal placement map for ${flight.name}`);
+  assert(result.writer?.syntaxPlan, `missing syntax plan for ${flight.name}`);
+  assert(result.syntaxShift, `missing syntax shift for ${flight.name}`);
+  assert(result.claimIntegrity, `missing claim integrity for ${flight.name}`);
   assert(output.trim().length > 0, `UI did not populate transformed output for ${flight.name}`);
+  assert.notEqual(output.trim(), flight.message.trim(), `UI emitted unchanged output for ${flight.name}`);
   for (const literal of flight.message.match(/\b(?:EXHIBIT|DOC|CASE)[A-Z0-9:_#\/-]*\b|\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b/g) || []) {
     assert(output.includes(literal), `missing literal ${literal} in ${flight.name}`);
   }
-  flightResults.push({ name: flight.name, maskId: flight.maskId, status: result.releasePolicy.releaseStatus, selectedCandidateId: result.selectedCandidateId, finalScore: result.candidates.find((candidate) => candidate.id === result.selectedCandidateId)?.finalScore ?? null });
+  flightResults.push({
+    name: flight.name,
+    maskId: flight.maskId,
+    status: result.releasePolicy.releaseStatus,
+    selectedCandidateId: result.selectedCandidateId,
+    finalScore: result.candidates.find((candidate) => candidate.id === result.selectedCandidateId)?.finalScore ?? null,
+    syntaxShiftScore: result.syntaxShift?.metrics?.syntaxShiftScore ?? null,
+    sourceBodyRisk: result.sourceResidue?.metrics?.cadenceBodyRisk ?? null,
+    claimIntegrity: result.claimIntegrity?.passed ?? null
+  });
 }
 
 console.log('hush app flight results:', JSON.stringify(flightResults, null, 2));
