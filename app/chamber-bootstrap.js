@@ -24,6 +24,14 @@
       invisibleLink.href = invisibleHref;
       document.head.appendChild(invisibleLink);
     }
+    var alienHref = './hush-alien-console.css?v=' + (V.hushAlienConsole || V.main || '');
+    var existingAlien = document.querySelector('link[href^="./hush-alien-console.css"]');
+    if (!existingAlien) {
+      var alienLink = document.createElement('link');
+      alienLink.rel = 'stylesheet';
+      alienLink.href = alienHref;
+      document.head.appendChild(alienLink);
+    }
   }
 
   var srcs = [
