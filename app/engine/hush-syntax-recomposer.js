@@ -52,6 +52,20 @@ function caveatPhrase(sourceText = '') {
   return '';
 }
 
+function integrityParts(sourceText = '', fallback = '') {
+  const negation = negationPhrase(sourceText);
+  const caveat = caveatPhrase(sourceText);
+  const parts = [];
+  if (negation) parts.push(negation);
+  if (caveat && caveat.toLowerCase() !== negation.toLowerCase()) parts.push(caveat);
+  if (!parts.length && fallback) parts.push(fallback);
+  return parts;
+}
+
+function integrityTail(sourceText = '', fallback = '') {
+  return integrityParts(sourceText, fallback).join('. ');
+}
+
 function nounForLiteral(literal = '') {
   if (/^DOC/i.test(literal)) return 'note';
   if (/^CASE/i.test(literal)) return 'case note';
@@ -73,38 +87,40 @@ function composeByFamily(family = '', input = {}) {
   const datePart = date ? `on ${date}` : '';
   const changedLater = /changed later|label changed|later copy|later version/i.test(sourceText);
   const requestKeep = /keep|preserve|remain|attached|separate/i.test(sourceText);
+  const tail = (fallback = '') => integrityTail(sourceText, fallback);
+  const parts = (fallback = '') => integrityParts(sourceText, fallback);
 
   switch (family) {
     case 'record-first':
-      return sentenceJoin([`${main} should stay with the record ${datePart}`.trim(), negation || (changedLater ? 'The later label should be reviewed' : 'No extra claim is added')]);
+      return sentenceJoin([`${main} should stay with the record ${datePart}`.trim(), ...parts(changedLater ? 'The later label should be reviewed' : 'No extra claim is added')]);
     case 'evidence-first':
-      return sentenceJoin([`${main} is the anchor for this note ${datePart}`.trim(), caveat || negation || 'The surrounding message should remain narrow']);
+      return sentenceJoin([`${main} is the anchor for this note ${datePart}`.trim(), ...parts('The surrounding message should remain narrow')]);
     case 'date-first':
-      return sentenceJoin([`${date || 'The dated record'} is the timing anchor for ${evidence || 'the record'}`, negation || caveat || 'The label should stay with the note']);
+      return sentenceJoin([`${date || 'The dated record'} is the timing anchor for ${evidence || 'the record'}`, ...parts('The label should stay with the note')]);
     case 'caveat-first':
-      return sentenceJoin([caveat || 'I am keeping the claim narrow', `${main} ${datePart} should remain attached`.trim()]);
+      return sentenceJoin([caveat || 'I am keeping the claim narrow', `${main} ${datePart} should remain attached`.trim(), negation]);
     case 'request-softened':
-      return sentenceJoin([`It would help to keep ${main} ${datePart} with the message`.trim(), negation || caveat]);
+      return sentenceJoin([`It would help to keep ${main} ${datePart} with the message`.trim(), ...parts()]);
     case 'two-sentence-brief':
-      return sentenceJoin([`${main} stays with the note ${datePart}`.trim(), negation || 'The later version needs review']);
+      return sentenceJoin([`${main} stays with the note ${datePart}`.trim(), ...parts('The later version needs review')]);
     case 'short-note':
-      return sentenceJoin([`${main}. ${datePart ? `Timing: ${date}.` : ''}`, negation || caveat]);
+      return sentenceJoin([`${main}. ${datePart ? `Timing: ${date}.` : ''}`, ...parts()]);
     case 'intake-style':
-      return sentenceJoin([`Intake note: ${main} ${datePart}`.trim(), negation || caveat || 'Review the later file label']);
+      return sentenceJoin([`Intake note: ${main} ${datePart}`.trim(), ...parts('Review the later file label')]);
     case 'procedural-neutral':
-      return sentenceJoin([`Record note: ${main} ${datePart}`.trim(), negation || 'Keep the attachment with the record']);
+      return sentenceJoin([`Record note: ${main} ${datePart}`.trim(), ...parts('Keep the attachment with the record')]);
     case 'warm-logistics':
-      return sentenceJoin([`Just keeping this organized: ${main} should stay with the note ${datePart}`.trim(), negation || caveat || 'That keeps the context together']);
+      return sentenceJoin([`Just keeping this organized: ${main} should stay with the note ${datePart}`.trim(), ...parts('That keeps the context together')]);
     case 'group-chat-soft':
-      return sentenceJoin([`Just flagging this plainly: ${main} should stay attached ${datePart}`.trim(), negation || caveat]);
+      return sentenceJoin([`Just flagging this plainly: ${main} should stay attached ${datePart}`.trim(), ...parts()]);
     case 'formal-record':
-      return sentenceJoin([`For the record, ${main} remains the relevant anchor ${datePart}`.trim(), negation || caveat || 'No broader conclusion is being added']);
+      return sentenceJoin([`For the record, ${main} remains the relevant anchor ${datePart}`.trim(), ...parts('No broader conclusion is being added')]);
     case 'compressed-record':
-      return sentenceJoin([`${main}; ${date || 'timing retained'}; ${negation || caveat || 'review later'}`]);
+      return sentenceJoin([`${main}; ${date || 'timing retained'}; ${tail('review later')}`]);
     case 'expanded-context':
-      return sentenceJoin([`${main} should remain connected to the message ${datePart}`.trim(), negation || caveat || 'The point is preservation, not expansion', changedLater ? 'The later label change is the review issue' : '']);
+      return sentenceJoin([`${main} should remain connected to the message ${datePart}`.trim(), ...parts('The point is preservation, not expansion'), changedLater ? 'The later label change is the review issue' : '']);
     default:
-      return sentenceJoin([`${main} should remain with the note ${datePart}`.trim(), negation || caveat]);
+      return sentenceJoin([`${main} should remain with the note ${datePart}`.trim(), ...parts()]);
   }
 }
 
