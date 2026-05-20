@@ -21,7 +21,7 @@ assert(wrapper.warnings.includes('wrapper-only-transform'));
 
 const recomposed = buildSyntaxShift({
   sourceText,
-  outputText: 'DOC-613 should stay with the 6/13 note. The attachment was not changed on my end.'
+  outputText: 'It was not changed on my end. DOC-613 should stay with the 6/13 note.'
 });
 assert(recomposed.metrics.openingShapeShift > 0);
 assert(recomposed.metrics.closingShapeShift > 0);
