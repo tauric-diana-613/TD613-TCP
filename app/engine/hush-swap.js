@@ -18,13 +18,20 @@ import { scoreNaturalness, summarizeNaturalness } from './hush-naturalness.js';
 import { cleanHushCandidates, summarizeCleanroom } from './hush-candidate-cleanroom.js';
 import { buildReleasePolicy, summarizeReleasePolicy } from './hush-release-policy.js';
 import { buildSourceResidue, scoreSourceResidue, summarizeSourceResidue } from './hush-source-residue.js';
+import { buildClaimRoleMap, summarizeClaimRoleMap } from './hush-claim-roles.js';
+import { buildLiteralPlacementMap, repairLiteralPlacement, summarizeLiteralPlacement } from './hush-literal-placement.js';
+import { buildSyntaxPlan, summarizeSyntaxPlan } from './hush-syntax-plan.js';
+import { generateSyntaxRecomposerCandidates } from './hush-syntax-recomposer.js';
+import { buildSyntaxShift, scoreSyntaxShift, summarizeSyntaxShift } from './hush-syntax-shift.js';
+import { verifyClaimIntegrity, summarizeClaimIntegrity } from './hush-claim-integrity.js';
 
-export const HUSH_SWAP_VERSION = 'phase-18';
+export const HUSH_SWAP_VERSION = 'phase-19';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
 const clamp = (value, min = 0, max = 1) => Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : 0;
 const round = (value, digits = 4) => Number.isFinite(value) ? Number(value.toFixed(digits)) : 0;
+const unique = (values = []) => [...new Set(asArray(values).filter(Boolean))];
 
 function extractProtectedLiterals(text = '') {
   return [...new Set([
@@ -53,6 +60,57 @@ function mutateCandidate(text = '', index = 0, mask = {}, steeringPlan = null) {
   return value;
 }
 
+function buildPhase19Plans(input = {}) {
+  const sourceText = safeText(input.sourceText);
+  const protectedLiterals = asArray(input.protectedLiterals).length ? asArray(input.protectedLiterals) : extractProtectedLiterals(sourceText);
+  const meaningPlan = input.meaningPlan || buildMeaningPlan({ sourceText, protectedLiterals });
+  const claimRoleMap = input.claimRoleMap || buildClaimRoleMap({ sourceText, meaningPlan, protectedLiterals });
+  const literalPlacementMap = input.literalPlacementMap || buildLiteralPlacementMap({ sourceText, meaningPlan, claimRoleMap, protectedLiterals });
+  const realizationPlan = input.realizationPlan || buildRealizationPlan({ mask: input.mask || {}, maskProfile: input.maskProfile || input.mask?.profile || {} });
+  const seedResidue = input.sourceResidue || buildSourceResidue({ sourceText, outputText: sourceText, protectedLiterals });
+  const syntaxPlan = input.syntaxPlan || buildSyntaxPlan({ sourceText, meaningPlan, claimRoleMap, literalPlacementMap, realizationPlan, sourceResidue: seedResidue, mask: input.mask || {} });
+  return { protectedLiterals, meaningPlan, claimRoleMap, literalPlacementMap, realizationPlan, syntaxPlan, seedResidue };
+}
+
+function mergeCandidatePools(...pools) {
+  const seen = new Set();
+  const merged = [];
+  for (const candidate of pools.flatMap((pool) => asArray(pool))) {
+    const text = safeText(candidate.text).replace(/\s+/g, ' ').trim();
+    if (!text) continue;
+    const key = text.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    merged.push({ ...candidate, text });
+  }
+  return merged;
+}
+
+function prepareCandidatePool(input = {}) {
+  const plans = buildPhase19Plans(input);
+  const count = Number(input.count || input.candidateCount || 24);
+  const writerCount = Math.max(8, Math.floor(count * 0.45));
+  const syntaxCount = Math.max(12, count - writerCount);
+  const writerBundle = generateMaskWriterCandidates({ ...input, ...plans, candidateCount: writerCount });
+  const syntaxBundle = generateSyntaxRecomposerCandidates({ ...input, ...plans, candidateCount: syntaxCount });
+  const raw = mergeCandidatePools(
+    asArray(writerBundle.candidates).map((candidate) => ({ ...candidate, source: 'mask-writer' })),
+    asArray(syntaxBundle.candidates).map((candidate) => ({ ...candidate, source: 'syntax-recomposer' }))
+  );
+  const placementRepaired = raw.map((candidate) => {
+    const repaired = repairLiteralPlacement({ text: candidate.text, literalPlacementMap: plans.literalPlacementMap, protectedLiterals: plans.protectedLiterals });
+    return {
+      ...candidate,
+      text: repaired.text,
+      literalPlacement: repaired,
+      operations: unique([...asArray(candidate.operations), ...asArray(repaired.operations)]),
+      warnings: unique([...asArray(candidate.warnings), ...asArray(repaired.warnings)])
+    };
+  });
+  const cleanroom = cleanHushCandidates({ candidates: placementRepaired, meaningPlan: plans.meaningPlan, realizationPlan: plans.realizationPlan, protectedLiterals: plans.protectedLiterals, mask: input.mask, literalPlacementMap: plans.literalPlacementMap });
+  return { ...plans, writerBundle, syntaxBundle, cleanroom, candidates: asArray(cleanroom.candidates) };
+}
+
 export function generateHushSwapCandidate(input = {}) {
   const sourceText = safeText(input.sourceText);
   const writerCandidate = input.writerCandidate || null;
@@ -78,11 +136,14 @@ export function generateHushSwapCandidate(input = {}) {
   return {
     id: writerCandidate?.id || `candidate-${index + 1}`,
     text: candidateText,
-    strategy: writerCandidate?.strategy || `legacy-${index}`,
+    strategy: writerCandidate?.strategy || writerCandidate?.family || `legacy-${index}`,
+    family: writerCandidate?.family || writerCandidate?.strategy || `legacy-${index}`,
+    source: writerCandidate?.source || 'legacy-transfer',
     operations: asArray(writerCandidate?.operations),
     writerNaturalness: writerCandidate?.naturalness || null,
     writerWarnings: asArray(writerCandidate?.warnings),
     cleanroom: writerCandidate?.cleanroom || null,
+    literalPlacement: writerCandidate?.literalPlacement || null,
     profile: extractCadenceProfile(candidateText)
   };
 }
@@ -140,6 +201,12 @@ export function scoreHushSwapCandidate(input = {}) {
   const sourceResidue = buildSourceResidue({ sourceText, outputText, protectedLiterals });
   const sourceResidueScore = scoreSourceResidue(sourceResidue);
   const sourceResidueSummary = summarizeSourceResidue(sourceResidue);
+  const syntaxShift = candidate.syntaxShift || buildSyntaxShift({ sourceText, outputText, sourceResidue });
+  const syntaxShiftScore = scoreSyntaxShift(syntaxShift);
+  const syntaxShiftSummary = summarizeSyntaxShift(syntaxShift);
+  const claimIntegrity = candidate.claimIntegrity || verifyClaimIntegrity({ sourceText, outputText, protectedLiterals, meaningPlan: input.meaningPlan });
+  const claimIntegritySummary = summarizeClaimIntegrity(claimIntegrity);
+  const literalPlacementSummary = summarizeLiteralPlacement(candidate.literalPlacement || input.literalPlacementMap || {});
   const naturalness = candidate.writerNaturalness || scoreNaturalness({ text: outputText, mask: input.mask, realizationPlan: input.realizationPlan });
   const naturalnessSummary = summarizeNaturalness(naturalness);
   const scores = escapeVector.scores || {};
@@ -156,12 +223,24 @@ export function scoreHushSwapCandidate(input = {}) {
   });
   const naturalnessScore = naturalness.naturalnessScore ?? 0;
   const sourceScore = sourceResidueScore.sourceResidueScore ?? 0;
+  const syntaxScore = syntaxShiftScore.syntaxShiftScore ?? syntaxShift.metrics?.syntaxShiftScore ?? 0;
+  const claimScore = claimIntegrity.score ?? (claimIntegrity.passed ? 1 : 0);
   const naturalnessHardBlocks = naturalnessScore < 0.34 ? ['naturalness-catastrophic'] : [];
-  const finalScore = round((steeringScore.finalScore * 0.60) + (naturalnessScore * 0.18) + (sourceScore * 0.22));
-  const hardVetoes = [...asArray(steeringScore.vetoes), ...naturalnessHardBlocks];
-  const reviewWarnings = [...asArray(steeringScore.reviewWarnings), ...asArray(steeringPlan.warnings), ...asArray(candidate.writerWarnings), ...asArray(match.warnings), ...asArray(naturalness.fluencyWarnings), ...asArray(sourceResidue.warnings)];
+  const finalScore = round((steeringScore.finalScore * 0.44) + (naturalnessScore * 0.14) + (sourceScore * 0.18) + (syntaxScore * 0.18) + (claimScore * 0.06));
+  const hardVetoes = [...asArray(steeringScore.vetoes), ...naturalnessHardBlocks, ...asArray(claimIntegrity.hardFailures).map(() => 'claim-integrity-failed')];
+  const reviewWarnings = unique([
+    ...asArray(steeringScore.reviewWarnings),
+    ...asArray(steeringPlan.warnings),
+    ...asArray(candidate.writerWarnings),
+    ...asArray(match.warnings),
+    ...asArray(naturalness.fluencyWarnings),
+    ...asArray(sourceResidue.warnings),
+    ...asArray(syntaxShift.warnings),
+    ...asArray(claimIntegrity.reviewWarnings),
+    ...asArray(candidate.literalPlacement?.warnings)
+  ]);
   const releasePolicy = buildReleasePolicy({
-    candidate: { ...candidate, text: outputText, vetoes: hardVetoes, warnings: reviewWarnings, scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore, sourceResidueScore: sourceScore }, weightProfile: steeringScore.weightProfile, naturalness, escapeVector, lockboxVerification, sourceResidue, sourceResidueScore: sourceScore, match },
+    candidate: { ...candidate, text: outputText, vetoes: hardVetoes, warnings: reviewWarnings, scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore, sourceResidueScore: sourceScore, syntaxShiftScore: syntaxScore, claimIntegrity: claimScore }, weightProfile: steeringScore.weightProfile, naturalness, escapeVector, lockboxVerification, sourceResidue, sourceResidueScore: sourceScore, syntaxShift, claimIntegrity, match },
     outputText,
     protectedLiterals,
     semanticFidelity: scores.semanticFidelity ?? 0,
@@ -169,20 +248,29 @@ export function scoreHushSwapCandidate(input = {}) {
     naturalnessScore,
     sourceResidue,
     sourceResidueScore: sourceScore,
+    syntaxShift,
+    syntaxShiftScore: syntaxScore,
+    claimIntegrity,
     maskMatch: match.matchScore || 0
   });
   return {
     ...candidate,
     finalScore,
-    scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore, sourceResidueScore: sourceScore, sourceResidueRisk: sourceResidueScore.sourceResidueRisk },
-    weightProfile: { ...steeringScore.weightProfile, naturalness: 0.18, sourceResidueScore: 0.22 },
-    vetoes: [...new Set(hardVetoes)],
-    reviewWarnings: [...new Set(reviewWarnings)],
+    scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore, sourceResidueScore: sourceScore, sourceResidueRisk: sourceResidueScore.sourceResidueRisk, syntaxShiftScore: syntaxScore, claimIntegrity: claimScore },
+    weightProfile: { ...steeringScore.weightProfile, naturalness: 0.14, sourceResidueScore: 0.18, syntaxShiftScore: 0.18, claimIntegrity: 0.06 },
+    vetoes: unique(hardVetoes),
+    reviewWarnings,
     releasePolicy,
     releaseSummary: summarizeReleasePolicy(releasePolicy),
     sourceResidue,
     sourceResidueSummary,
     sourceResidueScore,
+    syntaxShift,
+    syntaxShiftSummary,
+    syntaxShiftScore,
+    claimIntegrity,
+    claimIntegritySummary,
+    literalPlacementSummary,
     naturalness,
     naturalnessSummary,
     match,
@@ -199,7 +287,7 @@ export function scoreHushSwapCandidate(input = {}) {
     controllerDecision,
     contextProfile,
     recognitionField,
-    warnings: [...new Set([...reviewWarnings, ...hardVetoes])]
+    warnings: unique([...reviewWarnings, ...hardVetoes])
   };
 }
 
@@ -209,6 +297,9 @@ export function chooseBestHushSwapCandidate(candidates = [], options = {}) {
     const leftBlocked = left.releasePolicy?.hardBlocked ? 1 : 0;
     const rightBlocked = right.releasePolicy?.hardBlocked ? 1 : 0;
     if (leftBlocked !== rightBlocked) return leftBlocked - rightBlocked;
+    const leftWrapper = asArray(left.syntaxShift?.warnings).includes('wrapper-only-transform') ? 1 : 0;
+    const rightWrapper = asArray(right.syntaxShift?.warnings).includes('wrapper-only-transform') ? 1 : 0;
+    if (leftWrapper !== rightWrapper) return leftWrapper - rightWrapper;
     return (right.finalScore || 0) - (left.finalScore || 0);
   });
   const best = scored[0] || null;
@@ -221,17 +312,14 @@ export function buildHushSwap(input = {}) {
   const protectedLiterals = asArray(input.protectedLiterals).length ? asArray(input.protectedLiterals) : extractProtectedLiterals(sourceText);
   const lockbox = input.lockbox || buildProtectedLiteralLockbox({ sourceText, baselineText: input.protectedBaselineText, maskReferenceText: input.maskReferenceText, manualLiterals: protectedLiterals });
   const seedPlan = buildSteeringPlan({ sourceText, outputText: sourceText, maskProfile: input.maskProfile || input.mask?.profile || {}, lockbox });
-  const meaningPlan = input.meaningPlan || buildMeaningPlan({ sourceText, protectedLiterals });
-  const realizationPlan = input.realizationPlan || buildRealizationPlan({ mask: input.mask || {}, maskProfile: input.maskProfile || input.mask?.profile || {} });
   const requestedCount = Number(input.options?.candidateCount || input.candidateCount || 24);
   const count = Math.max(24, Math.min(36, Number.isFinite(requestedCount) && requestedCount > 0 ? requestedCount : 24));
-  const writerBundle = generateMaskWriterCandidates({ ...input, meaningPlan, realizationPlan, protectedLiterals, candidateCount: count });
-  const cleanroom = cleanHushCandidates({ candidates: asArray(writerBundle.candidates), meaningPlan, realizationPlan, protectedLiterals, mask: input.mask });
-  const writerCandidates = asArray(cleanroom.candidates);
+  const phase19 = prepareCandidatePool({ ...input, sourceText, protectedLiterals, lockbox, count, candidateCount: count });
+  const writerCandidates = asArray(phase19.candidates);
   const rawCandidates = writerCandidates.length
     ? writerCandidates.map((writerCandidate, index) => generateHushSwapCandidate({ ...input, protectedLiterals, lockbox, steeringPlan: seedPlan, index, writerCandidate }))
     : Array.from({ length: Math.min(8, count) }, (_, index) => generateHushSwapCandidate({ ...input, protectedLiterals, lockbox, steeringPlan: seedPlan, index }));
-  const candidates = rawCandidates.map((candidate) => scoreHushSwapCandidate({ ...input, protectedLiterals, lockbox, meaningPlan, realizationPlan, candidate }));
+  const candidates = rawCandidates.map((candidate) => scoreHushSwapCandidate({ ...input, protectedLiterals, lockbox, meaningPlan: phase19.meaningPlan, realizationPlan: phase19.realizationPlan, literalPlacementMap: phase19.literalPlacementMap, candidate }));
   const selected = chooseBestHushSwapCandidate(candidates, { minFinalScore: input.options?.minFinalScore ?? 0.42 }) || candidates[0] || null;
   const allCandidatesFailed = Boolean(!selected || selected.releasePolicy?.hardBlocked);
   const releasePolicy = selected?.releasePolicy || buildReleasePolicy({ outputText: '' });
@@ -241,15 +329,34 @@ export function buildHushSwap(input = {}) {
     version: HUSH_SWAP_VERSION,
     selectedOutput: releasePolicy.mayPopulateOutput ? selected?.text || '' : '',
     candidates,
-    writer: { meaningPlan, realizationPlan, cleanroom: summarizeCleanroom(cleanroom), warnings: writerBundle.warnings || [] },
+    writer: {
+      meaningPlan: phase19.meaningPlan,
+      realizationPlan: phase19.realizationPlan,
+      claimRoleMap: phase19.claimRoleMap,
+      claimRoleSummary: summarizeClaimRoleMap(phase19.claimRoleMap),
+      literalPlacementMap: phase19.literalPlacementMap,
+      literalPlacementSummary: summarizeLiteralPlacement(phase19.literalPlacementMap),
+      syntaxPlan: phase19.syntaxPlan,
+      syntaxPlanSummary: summarizeSyntaxPlan(phase19.syntaxPlan),
+      syntaxBundle: { version: phase19.syntaxBundle?.version, count: asArray(phase19.syntaxBundle?.candidates).length, warnings: asArray(phase19.syntaxBundle?.warnings) },
+      maskWriterBundle: { version: phase19.writerBundle?.version, count: asArray(phase19.writerBundle?.candidates).length, warnings: asArray(phase19.writerBundle?.warnings) },
+      cleanroom: summarizeCleanroom(phase19.cleanroom),
+      warnings: unique([...asArray(phase19.writerBundle?.warnings), ...asArray(phase19.syntaxBundle?.warnings), ...asArray(phase19.cleanroom?.warnings)])
+    },
     selectedCandidateId: selected?.id || '',
     allCandidatesFailed,
-    failureReason: allCandidatesFailed ? 'Every candidate failed hard release policy. Review meaning, literals, naturalness, source residue, and claim discipline.' : '',
+    failureReason: allCandidatesFailed ? 'Every candidate failed hard release policy. Review meaning, literals, naturalness, syntax shift, source residue, and claim discipline.' : '',
     releasePolicy,
     releaseSummary: summarizeReleasePolicy(releasePolicy),
     sourceResidue: selected?.sourceResidue || null,
     sourceResidueSummary: selected?.sourceResidueSummary || null,
     sourceResidueScore: selected?.sourceResidueScore || null,
+    syntaxShift: selected?.syntaxShift || null,
+    syntaxShiftSummary: selected?.syntaxShiftSummary || null,
+    syntaxShiftScore: selected?.syntaxShiftScore || null,
+    claimIntegrity: selected?.claimIntegrity || null,
+    claimIntegritySummary: selected?.claimIntegritySummary || null,
+    literalPlacementSummary: selected?.literalPlacementSummary || null,
     match: selected?.match || null,
     matchSummary: selected?.matchSummary || null,
     naturalness: selected?.naturalness || null,
@@ -268,7 +375,7 @@ export function buildHushSwap(input = {}) {
     controllerDecision: selected?.controllerDecision || null,
     claimCeiling,
     recognitionField: selected?.recognitionField || null,
-    warnings: [...new Set([...asArray(writerBundle.warnings), ...asArray(cleanroom.operations), ...candidates.flatMap((candidate) => asArray(candidate.warnings)), ...(allCandidatesFailed ? ['all-candidates-failed'] : [])])],
+    warnings: unique([...asArray(phase19.writerBundle?.warnings), ...asArray(phase19.syntaxBundle?.warnings), ...asArray(phase19.cleanroom?.operations), ...candidates.flatMap((candidate) => asArray(candidate.warnings)), ...(allCandidatesFailed ? ['all-candidates-failed'] : [])]),
     limitations: ['Hush swap is a local candidate selection workflow, not an external recognition outcome.', 'Preserve the claim before chasing the mask.']
   };
 }
