@@ -22,6 +22,17 @@ function clauseOrder(text = '') { return safeText(text).split(/[,;:]|\b(?:becaus
 function functionFrame(text = '') { const f = new Set(['i','you','we','they','he','she','it','the','a','an','and','but','or','because','with','without','to','from','in','on','for','of','that','this','is','was','were','be','been','do','did','not']); return words(text).map((word) => word.toLowerCase()).filter((word) => f.has(word)).slice(0, 28); }
 function jaccard(a = [], b = []) { const A = new Set(a); const B = new Set(b); const union = new Set([...A, ...B]); if (!union.size) return 1; return [...A].filter((item) => B.has(item)).length / union.size; }
 function normalizedDelta(a = 0, b = 0, scale = 10) { return clamp(Math.abs(Number(a) - Number(b)) / scale); }
+function normalizedText(text = '') { return safeText(text).toLowerCase().replace(/\s+/g, ' ').trim(); }
+function detectWrapperOnly(sourceText = '', outputText = '') {
+  const source = normalizedText(sourceText);
+  const output = normalizedText(outputText);
+  if (!source || !output) return false;
+  const wrapperPrefix = /^(for reference|for clarity|note:|quick note:|just flagging|record note:|to keep this narrow)\b/i.test(safeText(outputText).trim());
+  const sourceStart = source.slice(0, Math.min(72, source.length)).trim();
+  const sourceBodyPresent = sourceStart.length >= 18 && output.includes(sourceStart);
+  const sourceMostlyContained = source.length >= 28 && output.includes(source);
+  return wrapperPrefix && (sourceBodyPresent || sourceMostlyContained);
+}
 
 export function buildSyntaxShift(input = {}) {
   const sourceText = safeText(input.sourceText);
@@ -34,6 +45,7 @@ export function buildSyntaxShift(input = {}) {
   const outputClause = clauseOrder(outputText);
   const sourcePunct = punctuationSkeleton(sourceText).split('');
   const outputPunct = punctuationSkeleton(outputText).split('');
+  const wrapperOnly = detectWrapperOnly(sourceText, outputText);
   const openingShapeShift = opening(sourceText) && opening(sourceText) === opening(outputText) ? 0 : 1;
   const closingShapeShift = closing(sourceText) && closing(sourceText) === closing(outputText) ? 0 : 1;
   const sentenceCountDelta = Math.abs(sourceSentences.length - outputSentences.length);
@@ -66,13 +78,14 @@ export function buildSyntaxShift(input = {}) {
     0.10 * metrics.literalPlacementShift +
     0.06 * metrics.requestPostureShift
   ));
+  if (wrapperOnly) metrics.syntaxShiftScore = Math.min(metrics.syntaxShiftScore, 0.34);
   const warnings = [];
   if (metrics.syntaxShiftScore < 0.35) warnings.push('syntax-shift-low');
   if (!metrics.openingShapeShift) warnings.push('source-opening-retained');
   if (!metrics.closingShapeShift) warnings.push('source-closing-retained');
   if (metrics.punctuationSkeletonShift < 0.2) warnings.push('punctuation-skeleton-retained');
   if (metrics.clauseOrderShift < 0.2) warnings.push('clause-order-retained');
-  if (/^(for reference|for clarity|note:|quick note:|just flagging)\b/i.test(outputText) && sourceText && outputText.toLowerCase().includes(sourceText.toLowerCase().slice(0, Math.min(50, sourceText.length)).trim())) warnings.push('wrapper-only-transform');
+  if (wrapperOnly) warnings.push('wrapper-only-transform');
   return { version: HUSH_SYNTAX_SHIFT_VERSION, metrics, warnings: [...new Set(warnings)], recommendations: warnings.includes('wrapper-only-transform') ? ['recompose-with-non-source-opening'] : [] };
 }
 
