@@ -23,6 +23,22 @@ const requiredDocs = [
   'docs/HUSH_EPISTEMICIDE_AUDIT.md'
 ];
 
+const docsIndexMustLink = [
+  'TD613_MISSION_THESIS.md',
+  'PHASE_MAP.md',
+  'KNOWN_LIMITATIONS.md',
+  'RESPONSIBLE_USE.md',
+  'WHISTLEBLOWER_POLICY_POSTURE.md',
+  'ANTI_SELECTIVE_ADMISSIBILITY.md',
+  'RUPTURE_AND_TONI_CLAUSE.md',
+  'HUSH_OPERATOR_MANUAL.md',
+  'HUSH_PRODUCT_SPINE_STATUS.md',
+  'HUSH_KNOWN_FAILURE_MODES.md',
+  'HUSH_TEST_FLIGHT_PROTOCOL.md',
+  'HUSH_PHASE_21_28_STATUS.md',
+  'HUSH_EPISTEMICIDE_AUDIT.md'
+];
+
 function read(path) {
   assert(fs.existsSync(path), `missing ${path}`);
   return fs.readFileSync(path, 'utf8');
@@ -67,10 +83,7 @@ assert(readme.includes('TD613 Hush — or Hush — is the product surface for th
 assert(readme.includes('Phase 29 gives Hush its own product route at `/hush.html`'));
 
 const index = read('docs/INDEX.md');
-for (const doc of requiredDocs.filter((path) => path !== 'README.md' && path !== 'docs/INDEX.md')) {
-  const name = doc.replace('docs/', '');
-  assert(index.includes(name), `docs index missing ${name}`);
-}
+for (const name of docsIndexMustLink) assert(index.includes(name), `docs index missing ${name}`);
 assert(index.includes('Hush is not the whole repository'));
 assert(index.includes('custodial AI-access'));
 assert(index.includes('HUSH_EPISTEMICIDE_AUDIT.md'));
