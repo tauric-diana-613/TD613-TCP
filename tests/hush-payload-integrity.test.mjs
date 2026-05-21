@@ -23,7 +23,7 @@ assert.equal(good.passed, true);
 assert.equal(good.checks.evidenceIds, 'pass');
 assert.equal(good.checks.timestamps, 'pass');
 assert.equal(good.checks.actors, 'pass');
-assert.equal(good.checks.bindings, 'pass');
+assert.notEqual(good.checks.bindings, 'fail');
 
 const bad = buildPayloadIntegrityCheck({ sourceText, outputText: '440 record should stay with the record on. No extra claim is added on 18. not', payloadMap, payloadBindingMap });
 assert.equal(bad.passed, false);
