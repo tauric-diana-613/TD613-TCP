@@ -3,7 +3,7 @@ import { createCustomMask, addCustomMaskSample } from '../app/engine/hush-custom
 import { buildHushSwap } from '../app/engine/hush-swap.js';
 
 function literalsFrom(text = '') {
-  return text.match(/\b(?:ROSTER|INV|DOC|CASE|REF|ID|EXHIBIT|TD613|SHI|SAC)[A-Z0-9:_#\[\]\/-]*\b|\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b|\b\d{1,2}:\d{2}\b/g) || [];
+  return text.match(/\b(?:ROSTER|INV|DOC|CASE|REF|ID|EXHIBIT|TD613|SHI|SAC|TICKET|REQ|FORM|FILE)[A-Z0-9:_#\[\]\/-]*\b|\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b|\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}:\d{2}\b/g) || [];
 }
 
 function mean(values = []) {
@@ -17,37 +17,41 @@ function increment(map, key) {
 }
 
 const customSamples = [
-  'i am keeping this plain because the sequence matters more than tone. the paper copy was on the cart before lunch, then the later packet had a cleaner cover sheet. maybe normal, maybe not. i am writing it down so the record does not depend on memory later.',
-  'quick note before i forget: Mara said the intake was handled, then asked whether the family had another last name on the church list. that pause bothered me more than the duplicate flag. i am not making an accusation. i am preserving the order.',
-  'the timestamp is the part i want held together. ticket 441-B was open when i left, closed when i came back, and nobody in the room named who touched it. a normal explanation may exist. the gap still belongs in the log.',
-  'for the record, i moved the chair, not the box. the box blocked the hall camera, the label was still facing out, and the tape looked intact. that sounds small, but the distinction matters if anyone reviews the hallway later.',
-  'not urgent maybe, but please do not turn this into a personality issue. the question is why the Thursday spreadsheet keeps changing after signoff. two weeks in a row is enough to log as a pattern.',
-  'i heard Priya say we can clean that later, and i know that can mean a normal cleanup pass. the before version had the missing-call note and the after version did not. i am writing this flat so it stays about sequence.',
-  'small thing, maybe big thing: the policy tab was open on Sam’s machine, but the exported pdf did not carry the policy footer. could be a template issue. could be manual. the client copy and archive copy are not twins.',
-  'this is rough because i am tired: CASE-209 stayed in the blue folder until lunch. after lunch it was in the gray tray with a newer cover sheet. nobody has to be the villain for that to be a problem.',
-  'please keep my name out of the forward chain if this moves upward. i can answer dates, where i was standing, and what i saw on the screen. i do not want the thread to become an HR issue.',
-  'one more receipt: the note was not corrected, it was softened. old line said resident denied access. new line says access was unavailable. those are not the same claim wearing different shoes.'
+  'not polished bc this is a rushed record note. packet was on the cart at 8:41, blue clip still on it, then later it had the clean cover and the timing looked too tidy. maybe normal / maybe tired eyes / still writing it down before the sequence gets mushy.',
+  'quick-before-i-forget: the spreadsheet did not just update, it got prettier. old tab had the missing-call line, new tab had service unavailable, which is not the same sentence in a different coat. keep the order, not the mood.',
+  'tiny thing maybe not tiny: same export time, two copies, different footer. client copy has no policy footer. archive copy has the footer. could be a template issue, could be a save issue, but same timestamp plus different bottom line is the part to hold.',
+  'rough phone note: CASE-209 stayed in blue folder until lunch. after lunch it was gray tray, new cover sheet, no band. nobody has to be villain for that to matter. the gap is the thing. gap belongs in the log.',
+  'i am writing flat because nice makes it blurry. old line said resident denied access. new line says access unavailable. those are cousins, not twins. if this was cleanup, fine, but cleanup should not change claim temperature.',
+  'battery low, so short: REF-88 showed in shared drive before folder rename. screenshot has 05/20 in corner. after rename the preview looked softer. not naming intent. pinning timing.',
+  'meeting order maybe fuzzy by two minutes, keep caveat. Jonah said archive copy already cleaned; Priya asked if old note still visible. both happened before the later export, which is the only reason i care.',
+  'Thursday signoff done, spreadsheet changed, then duplicate correction got said out loud, then everyone moved on too fast. two weeks in a row is not a vibe. dates need to stay tied to rows.',
+  'invoice note is the anchor: vendor called twice after lunch, INV-440 logged at 2:18, Jordan told to wait before resend until finance knew version. Jordan + resend + version + 2:18 belong together.',
+  'DOC-31 had missing-call note when opened. later doc did not. not a grand theory, just sequence. unsafe part is the gap. do not turn gap into attitude.',
+  'ROSTER-8 still had after-4:30 change when clean export was requested. if legit, ok, but clean export should still show timing. 05/20 is not decoration. after 4:30 is not decoration.',
+  'FORM-19 came back with initials and scan time 17:06, even though the scanner queue was marked closed by 5. could be batch upload. could be timezone. note says what was visible, not what it means.'
 ];
 
-let mask = createCustomMask({ label: 'Phase 22 Field Clerk Stress Mask' });
+let mask = createCustomMask({ label: 'Phase 22 Jagged Record Witness Mask' });
 for (const sample of customSamples) mask = addCustomMaskSample(mask, sample, { includePrivateText: true });
 
-assert.equal(mask.sampleCount, 10);
+assert.equal(mask.sampleCount, 12);
 assert.equal(mask.profileStatus, 'strong');
-assert(mask.profileSummary?.wordCount >= 500, 'custom mask should carry a strong stress corpus');
+assert(mask.profileSummary?.wordCount >= 600, 'jagged custom mask should carry a deep authorship corpus');
+assert((mask.profileSummary?.punctuationDensity ?? 0) >= 0.06, 'jagged custom mask should retain punctuation-heavy rushed authorship');
+assert((mask.profileSummary?.recurrencePressure ?? 0) >= 0.10, 'jagged custom mask should retain repeated self-correction pressure');
 
 const flights = [
-  'The supervisor changed the roster after 4:30. Please keep ROSTER-8 and the 05/20 timestamp together, but make the note read less like a formal complaint.',
-  'The vendor called twice after lunch. I logged INV-440 at 2:18 and told Jordan not to resend the spreadsheet until we know which version finance kept.',
-  'Please say that DOC-31 still had the missing-call note when I opened it. I do not want this to sound like an accusation, just a sequence I can stand behind.',
-  'The roster changed after the afternoon call. I need the note to preserve the sequence without sounding like a formal complaint.',
-  'The file was in the red tray before lunch. Later it had a clean cover sheet, and I do not know who made that version.',
-  'The missing-call line was still present when I opened the note. I want this written as sequence, not accusation.',
-  'I am nervous putting this in writing, but the screenshot from 05/20 still shows REF-88 in the shared drive before the folder name changed. Please keep the timing clear and keep the tone non-escalating.',
-  'I cannot prove who moved the paper file. What I can say is that CASE-311 was on the intake cart when I signed out, and it was in the supervisor tray when I came back from break.',
-  'The sentence changed from “client refused the callback” to “callback could not be completed.” That may sound minor, but those are not the same claim. I need this to read careful, not dramatic.',
-  'I might be mixing up the exact order of the meeting, so please keep this narrow: I heard Jonah say the archive copy was already cleaned, and then Priya asked whether the old note was still visible.',
-  'Please do not forward this with my name attached. I can answer where I was standing and what I saw on the screen, but I do not want another hallway conversation turning into an HR issue.'
+  'supervisor changed the roster after 4:30 / maybe legit maybe not. keep ROSTER-8 and 05/20 together, but make it read less formal and more like a rushed work note.',
+  'vendor called twice after lunch and I logged INV-440 at 2:18. Jordan was told not to resend spreadsheet until finance knew which version they kept.',
+  'DOC-31 still had missing-call note when i opened it — not accusation, sequence. make it careful but not polished.',
+  'file was red tray before lunch, later clean cover sheet showed up, i do not know who made that version. keep narrow.',
+  'screenshot from 05/20 still shows REF-88 in shared drive before folder name changed. timing clear, tone careful.',
+  'cannot prove who moved paper file. CASE-311 was on intake cart when i signed out and supervisor tray when i came back from break.',
+  'sentence changed from “client refused the callback” to “callback could not be completed.” tiny maybe, but not same claim. keep quote exact.',
+  'meeting order maybe fuzzy: Jonah said archive copy already cleaned, then Priya asked if old note still visible. keep caveat.',
+  'FORM-19 came back with initials, scan says 17:06, scanner queue was marked closed by 5. might be batch upload. keep FORM-19 and 17:06 together.',
+  'TICKET-441-B was open when i left, closed when i came back, and nobody named who touched it. normal explanation maybe, but gap belongs in log.',
+  'client copy and archive copy are not twins: FILE-72 exported same timestamp but one has policy footer and one does not. preserve mismatch without adding motive.'
 ];
 
 const rows = flights.map((message, index) => {
@@ -58,13 +62,14 @@ const rows = flights.map((message, index) => {
     maskReferenceText: customSamples.join('\n\n'),
     contextType: 'group-chat',
     operatorMode: 'neutralize',
-    options: { candidateCount: 24 }
+    options: { candidateCount: 30 }
   });
   const output = result.selectedOutput || '';
   const literals = literalsFrom(message);
   const missingLiterals = literals.filter((literal) => !output.includes(literal));
   const emitted = output.trim().length > 0;
   const selected = result.candidates.find((candidate) => candidate.id === result.selectedCandidateId) || result.candidates[0] || {};
+  const fallbackCandidatePresent = result.candidates.some((candidate) => candidate.source === 'literal-safe-fallback');
   if (emitted) {
     assert.notEqual(output.trim(), message.trim(), `Phase 22 customizer emitted unchanged output for flight ${index + 1}`);
     assert.equal(missingLiterals.length, 0, `Phase 22 customizer emitted output missing literals for flight ${index + 1}: ${missingLiterals.join(', ')}`);
@@ -78,6 +83,7 @@ const rows = flights.map((message, index) => {
     hardBlockReasons: result.releasePolicy?.hardBlockReasons || [],
     selectedCandidateId: result.selectedCandidateId,
     selectedSource: selected.source || '',
+    fallbackCandidatePresent,
     finalScore: selected.finalScore ?? null,
     semanticFidelity: selected.scoreBreakdown?.semanticFidelity ?? null,
     syntaxShiftScore: selected.syntaxShift?.metrics?.syntaxShiftScore ?? null,
@@ -99,12 +105,14 @@ const emitted = rows.filter((row) => row.emitted).length;
 const blocked = rows.filter((row) => row.hardBlocked).length;
 const summary = {
   mask: {
+    label: mask.label,
     sampleCount: mask.sampleCount,
     wordCount: mask.profileSummary?.wordCount,
     profileStatus: mask.profileStatus,
     avgSentenceLength: mask.profileSummary?.avgSentenceLength,
     punctuationDensity: mask.profileSummary?.punctuationDensity,
-    recurrencePressure: mask.profileSummary?.recurrencePressure
+    recurrencePressure: mask.profileSummary?.recurrencePressure,
+    lexicalEntropy: mask.profileSummary?.lexicalEntropy
   },
   attempts: rows.length,
   emitted,
@@ -119,7 +127,7 @@ const summary = {
 };
 
 assert(emitted > 0, 'Phase 22 customizer flight emitted zero outputs');
-assert(rows.some((row) => row.selectedSource === 'literal-safe-fallback'), 'Phase 22 customizer flight never selected the literal-safe fallback');
+assert(rows.every((row) => row.fallbackCandidatePresent), 'Phase 22 customizer flight failed to generate literal-safe fallback candidates');
 assert(rows.every((row) => row.emitted || row.hardBlockReasons.length > 0), 'blank Phase 22 customizer rows must expose hard-block reasons');
 console.log('HUSH_CUSTOMIZER_PHASE22_FLIGHT_SUMMARY ' + JSON.stringify(summary));
 console.log('hush-customizer-phase22-flight tests passed');
