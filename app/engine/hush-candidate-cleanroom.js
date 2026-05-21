@@ -108,8 +108,10 @@ export function cleanHushCandidate(input = {}) {
   const traits = input.realizationPlan?.traits || input.mask?.writingTraits || {};
   const operations = [];
   const warnings = [];
+  const sourceText = input.sourceText || input.meaningPlan?.sourceText || '';
   let text = safeText(candidate.text);
   const before = text;
+  warnings.push(...detectPayloadClipping(before, sourceText));
   text = normalizeProceduralMarkers(text, candidate.strategy || candidate.family || '', traits);
   if (text !== before) operations.push('normalize-procedural-markers');
   const afterMarkers = text;
@@ -132,7 +134,7 @@ export function cleanHushCandidate(input = {}) {
   text = restoreCaveats(text, input.meaningPlan || {});
   if (text !== afterNegations) operations.push('restore-caveats');
   text = collapseWhitespace(text);
-  warnings.push(...detectPayloadClipping(text, input.sourceText || input.meaningPlan?.sourceText || ''));
+  warnings.push(...detectPayloadClipping(text, sourceText));
   return { ...candidate, text, cleanroom: { version: HUSH_CANDIDATE_CLEANROOM_VERSION, changed: text !== before, operations: unique(operations), warnings: unique(warnings) } };
 }
 
