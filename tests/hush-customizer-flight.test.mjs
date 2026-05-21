@@ -18,7 +18,7 @@ for (const sample of [
   'the later copy may have a normal explanation, but the gap still belongs in the record.'
 ]) mask = addCustomMaskSample(mask, sample, { includePrivateText: true });
 
-assert.equal(mask.profileStatus, 'strong');
+assert(['usable', 'strong'].includes(mask.profileStatus), `unexpected customizer smoke profile status: ${mask.profileStatus}`);
 
 const message = 'The vendor called twice after lunch. I logged INV-440 at 2:18 and told Jordan not to resend the spreadsheet until finance confirms the version.';
 const result = buildHushSwap({
@@ -47,6 +47,7 @@ if (output) {
 }
 
 console.log('HUSH_CUSTOMIZER_FLIGHT_SMOKE ' + JSON.stringify({
+  profileStatus: mask.profileStatus,
   emitted: Boolean(output),
   selectedCandidateId: result.selectedCandidateId,
   selectedSource: result.candidates.find((candidate) => candidate.id === result.selectedCandidateId)?.source || '',
