@@ -1,6 +1,7 @@
 import assert from 'assert';
 import { getHushMask } from '../app/engine/hush-mask-studio.js';
 import { HUSH_SWAP_VERSION, buildHushSwap } from '../app/engine/hush-swap.js';
+import { buildPhase23HushSwap } from '../app/engine/hush-phase23-swap.js';
 
 assert.equal(HUSH_SWAP_VERSION, 'phase-22');
 
@@ -64,6 +65,29 @@ if (result.releasePolicy.mayPopulateOutput) {
   assert(result.selectedOutput.includes('2:18'));
 } else {
   assert.equal(result.selectedOutput, '');
+}
+
+const phase23Mask = getHushMask('phase22-jagged-record');
+const phase23 = buildPhase23HushSwap({
+  sourceText: 'Keep DOC-77 with 04/21. The file was visible before noon, and the date is the anchor.',
+  mask: phase23Mask,
+  maskProfile: phase23Mask.profile,
+  contextType: 'group-chat',
+  options: { candidateCount: 24 }
+});
+
+assert.equal(phase23.version, 'phase-23');
+assert.equal(phase23.phase22Version, 'phase-22');
+assert(phase23.phase23?.usedWrapper, 'Phase 23 wrapper marker missing');
+assert(phase23.outputPolishSummary, 'missing output polish summary');
+assert(phase23.witnessCoherenceSummary, 'missing witness coherence summary');
+assert(phase23.candidates.some((candidate) => candidate.outputPolish));
+assert(phase23.candidates.some((candidate) => candidate.witnessCoherence));
+assert(Number.isFinite(phase23.witnessCoherence?.score), 'missing coherence score');
+if (phase23.selectedOutput) {
+  assert(phase23.selectedOutput.includes('DOC-77'));
+  assert(phase23.selectedOutput.includes('04/21'));
+  assert(!phase23.selectedOutput.startsWith('might Keeping'));
 }
 
 console.log('hush-swap tests passed');
