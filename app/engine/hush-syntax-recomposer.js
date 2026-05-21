@@ -1,10 +1,12 @@
 import { extractCadenceProfile } from './stylometry.js';
+import { rebuildPayloadSentence } from './hush-payload-repair.js';
 
-export const HUSH_SYNTAX_RECOMPOSER_VERSION = 'phase-19';
+export const HUSH_SYNTAX_RECOMPOSER_VERSION = 'phase-21';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const unique = (values = []) => [...new Set(asArray(values))];
+const OPERATIONAL_PREFIX = /^(?:EXHIBIT|DOC|CASE|ID|REF|INV|PO|HR|PAY|FILE|TICKET|REQ|FORM|W2|W-?2|W-?4|I-?9|SSN|EIN|TIN|ACCT|ACCOUNT|VENDOR|INVOICE|PAYROLL|BENEFIT|TD613|SHI|SAC)/i;
 
 function sentenceJoin(parts = []) {
   return asArray(parts).map((part) => {
@@ -19,11 +21,15 @@ function protectedFragments(plan = {}) {
 }
 
 function evidenceLiteral(literals = []) {
-  return literals.find((literal) => /^(?:EXHIBIT|DOC|CASE|ID|REF)/i.test(literal)) || literals[0] || '';
+  return literals.find((literal) => OPERATIONAL_PREFIX.test(literal)) || literals[0] || '';
 }
 
 function dateLiteral(literals = []) {
-  return literals.find((literal) => /\d/.test(literal) && !/^(?:EXHIBIT|DOC|CASE|ID|REF)/i.test(literal)) || '';
+  return literals.find((literal) => /\d/.test(literal) && !OPERATIONAL_PREFIX.test(literal) && !/:/.test(literal)) || '';
+}
+
+function timestampLiteral(literals = []) {
+  return literals.find((literal) => /\b\d{1,2}:\d{2}/.test(literal)) || '';
 }
 
 function stripLiteralTail(text = '', literals = []) {
@@ -38,6 +44,7 @@ function baseClaim(input = {}) {
 }
 
 function negationPhrase(sourceText = '') {
+  if (/\bnot to resend\b|\bdo not resend\b|\bnot resend\b/i.test(sourceText)) return 'should not resend';
   if (/\bI did not\b/i.test(sourceText)) return 'was not changed on my end';
   if (/\bI cannot confirm\b/i.test(sourceText)) return 'cannot be confirmed from my side';
   if (/\bdo not separate\b/i.test(sourceText)) return 'should stay together';
@@ -70,23 +77,72 @@ function nounForLiteral(literal = '') {
   if (/^DOC/i.test(literal)) return 'note';
   if (/^CASE/i.test(literal)) return 'case note';
   if (/^EXHIBIT/i.test(literal)) return 'exhibit';
+  if (/^INV|^INVOICE/i.test(literal)) return 'invoice record';
+  if (/^PO/i.test(literal)) return 'purchase record';
+  if (/^HR|^PAY|^FILE|^TICKET|^REQ|^FORM/i.test(literal)) return 'record';
   if (/^ID/i.test(literal)) return 'record';
   if (/^REF/i.test(literal)) return 'reference packet';
   return 'record';
 }
 
+function payloadHas(payloadMap = {}, kind = '', pattern = null) {
+  return asArray(payloadMap.payloadUnits).some((unit) => unit.kind === kind && (!pattern || pattern.test(unit.text)));
+}
+
+function payloadText(payloadMap = {}, kind = '', pattern = null) {
+  return asArray(payloadMap.payloadUnits).find((unit) => unit.kind === kind && (!pattern || pattern.test(unit.text)))?.text || '';
+}
+
+function payloadSentence(input = {}) {
+  const payloadMap = input.payloadMap || {};
+  if (!asArray(payloadMap.payloadUnits).length) return '';
+  return rebuildPayloadSentence({ sourceText: input.sourceText, payloadMap, payloadBindingMap: input.payloadBindingMap });
+}
+
+function composePayloadByFamily(family = '', input = {}) {
+  const sourceText = safeText(input.sourceText);
+  const payload = payloadSentence(input);
+  if (!payload) return '';
+  const evidence = payloadText(input.payloadMap, 'evidence-id');
+  const timestamp = payloadText(input.payloadMap, 'timestamp');
+  const date = payloadText(input.payloadMap, 'date');
+  const actor = payloadText(input.payloadMap, 'actor');
+  const hasVersion = payloadHas(input.payloadMap, 'version') || /which version|finance kept|version/i.test(sourceText);
+  const reason = payloadText(input.payloadMap, 'reason');
+  const lead = family === 'group-chat-soft' ? 'Just flagging this plainly:'
+    : family === 'formal-record' ? 'For the record:'
+      : family === 'intake-style' || family === 'procedural-neutral' ? 'Record note:'
+        : family === 'caveat-first' ? 'Keeping the claim narrow:'
+          : family === 'warm-logistics' ? 'Keeping this organized:'
+            : '';
+  const parts = [];
+  if (family === 'evidence-first' && evidence) {
+    const time = timestamp || date;
+    parts.push(`${evidence}${time ? ` stays tied to ${time}` : ' remains the record anchor'}`);
+  }
+  if (family === 'date-first' && (timestamp || date)) parts.push(`${timestamp || date} is the timing anchor`);
+  parts.push(`${lead} ${payload}`.trim());
+  if (family === 'request-softened' && evidence) parts.push(`It would help to keep ${evidence}${date ? ` and ${date}` : ''} together`);
+  if (hasVersion && !/version/i.test(payload)) parts.push('The version context should remain attached');
+  if (reason && !payload.toLowerCase().includes(reason.toLowerCase())) parts.push(reason.replace(/^bc\b/i, 'because'));
+  if (actor && /not to resend|do not resend|not resend/i.test(sourceText) && !/not resend|hold/i.test(payload)) parts.push(`${actor} should hold before resending`);
+  return sentenceJoin(parts);
+}
+
 function composeByFamily(family = '', input = {}) {
+  const payloadComposed = composePayloadByFamily(family, input);
+  if (payloadComposed) return payloadComposed;
   const sourceText = safeText(input.sourceText);
   const literals = protectedFragments(input.meaningPlan || {});
   const evidence = evidenceLiteral(literals);
   const date = dateLiteral(literals);
+  const timestamp = timestampLiteral(literals);
   const noun = nounForLiteral(evidence);
   const negation = negationPhrase(sourceText);
   const caveat = caveatPhrase(sourceText);
   const main = evidence ? `${evidence} ${noun}` : stripLiteralTail(baseClaim(input), literals);
-  const datePart = date ? `on ${date}` : '';
+  const datePart = timestamp ? `at ${timestamp}` : date ? `on ${date}` : '';
   const changedLater = /changed later|label changed|later copy|later version/i.test(sourceText);
-  const requestKeep = /keep|preserve|remain|attached|separate/i.test(sourceText);
   const tail = (fallback = '') => integrityTail(sourceText, fallback);
   const parts = (fallback = '') => integrityParts(sourceText, fallback);
 
@@ -96,7 +152,7 @@ function composeByFamily(family = '', input = {}) {
     case 'evidence-first':
       return sentenceJoin([`${main} is the anchor for this note ${datePart}`.trim(), ...parts('The surrounding message should remain narrow')]);
     case 'date-first':
-      return sentenceJoin([`${date || 'The dated record'} is the timing anchor for ${evidence || 'the record'}`, ...parts('The label should stay with the note')]);
+      return sentenceJoin([`${timestamp || date || 'The dated record'} is the timing anchor for ${evidence || 'the record'}`, ...parts('The label should stay with the note')]);
     case 'caveat-first':
       return sentenceJoin([caveat || 'I am keeping the claim narrow', `${main} ${datePart} should remain attached`.trim(), negation]);
     case 'request-softened':
@@ -104,7 +160,7 @@ function composeByFamily(family = '', input = {}) {
     case 'two-sentence-brief':
       return sentenceJoin([`${main} stays with the note ${datePart}`.trim(), ...parts('The later version needs review')]);
     case 'short-note':
-      return sentenceJoin([`${main}. ${datePart ? `Timing: ${date}.` : ''}`, ...parts()]);
+      return sentenceJoin([`${main}. ${datePart ? `Timing: ${timestamp || date}.` : ''}`, ...parts()]);
     case 'intake-style':
       return sentenceJoin([`Intake note: ${main} ${datePart}`.trim(), ...parts('Review the later file label')]);
     case 'procedural-neutral':
@@ -116,7 +172,7 @@ function composeByFamily(family = '', input = {}) {
     case 'formal-record':
       return sentenceJoin([`For the record, ${main} remains the relevant anchor ${datePart}`.trim(), ...parts('No broader conclusion is being added')]);
     case 'compressed-record':
-      return sentenceJoin([`${main}; ${date || 'timing retained'}; ${tail('review later')}`]);
+      return sentenceJoin([`${main}; ${timestamp || date || 'timing retained'}; ${tail('review later')}`]);
     case 'expanded-context':
       return sentenceJoin([`${main} should remain connected to the message ${datePart}`.trim(), ...parts('The point is preservation, not expansion'), changedLater ? 'The later label change is the review issue' : '']);
     default:
@@ -138,8 +194,8 @@ export function diversifySyntaxPlans(input = {}) {
 
 export function recomposeSyntaxCandidate(input = {}) {
   const text = applySyntaxOperation(input).replace(/\s+/g, ' ').trim();
-  const operations = unique([`family:${input.family || 'record-first'}`, ...(input.syntaxPlan?.operations || []).slice(0, 3).map((op) => op.code), 'syntax-recompose']);
-  return { id: input.id || `syntax-candidate-${input.family || 'record-first'}`, text, family: input.family || 'record-first', strategy: input.family || 'record-first', syntaxPlanId: input.syntaxPlanId || 'syntax-plan-local', operations, profile: extractCadenceProfile(text), warnings: [] };
+  const operations = unique([`family:${input.family || 'record-first'}`, ...(input.syntaxPlan?.operations || []).slice(0, 3).map((op) => op.code), input.payloadMap ? 'payload-aware-recompose' : 'syntax-recompose']);
+  return { id: input.id || `syntax-candidate-${input.family || 'record-first'}`, text, family: input.family || 'record-first', strategy: input.family || 'record-first', syntaxPlanId: input.syntaxPlanId || 'syntax-plan-local', operations, profile: extractCadenceProfile(text), warnings: input.payloadMap && !text ? ['payload-candidate-incomplete'] : [] };
 }
 
 export function generateSyntaxRecomposerCandidates(input = {}) {

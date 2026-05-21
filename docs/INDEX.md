@@ -36,6 +36,7 @@ TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. I
 - [Phase 20 Hush Alien Console Status](PHASE_20_HUSH_ALIEN_CONSOLE_STATUS.md) — Futurecore-goth operator surface, route cards, path rail, heat readout, and recessed Vault/Lab machinery.
 - [Phase 20.1 Hush Field Instrument Status](PHASE_20_1_HUSH_FIELD_INSTRUMENT_STATUS.md) — Mobile classified-device layer: field-instrument framing, route cartridges, sticky gate, decoded output, and biosignal heat traces.
 - [Phase 20.2 Hush Mobile Viewport Fix Status](PHASE_20_2_HUSH_MOBILE_VIEWPORT_FIX_STATUS.md) — Hard phone viewport guard for overflow, route-card lanes, mask tabs, heat traces, and the left-rail coffin bug.
+- [Phase 21 Hush Claim Payload Preservation Status](PHASE_21_HUSH_CLAIM_PAYLOAD_PRESERVATION_STATUS.md) — Payload preservation for operational IDs, timestamps, actors, instructions, version context, causal reasons, and evidence-bearing relationships.
 
 ## Governance
 
