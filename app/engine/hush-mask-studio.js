@@ -1,4 +1,5 @@
 import hushMasks from '../data/hush-masks.js';
+import phase22HushMasks from '../data/hush-phase22-masks.js';
 import { enrichHushMask } from '../data/hush-mask-traits.js';
 import { extractCadenceProfile } from './stylometry.js';
 
@@ -9,6 +10,7 @@ const asArray = (value) => Array.isArray(value) ? [...value] : [];
 const clamp = (value, min = 0, max = 1) => Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : 0;
 const round = (value, digits = 4) => Number.isFinite(value) ? Number(value.toFixed(digits)) : 0;
 const DISTRIBUTION_KEYS = ['avgSentenceLength', 'punctuationDensity', 'contractionDensity', 'recurrencePressure', 'lexicalDensity', 'modifierDensity', 'lineBreakDensity', 'lexicalEntropy'];
+const BUILT_IN_MASKS = [...hushMasks, ...phase22HushMasks];
 
 function wordCount(text = '') { return (safeText(text).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length; }
 function profileStatus(profile = {}, text = '') { const words = profile.wordCount ?? wordCount(text); if (!words) return 'empty'; if (words < 35) return 'thin'; if (words < 90) return 'usable'; return 'strong'; }
@@ -22,7 +24,7 @@ export function buildMaskDistribution(profile = {}, options = {}) {
   return { version: HUSH_MASK_STUDIO_VERSION, centroid, variance, toleranceBands, targetFeatureWeights, minEvidence: { samples: options.sampleCount || 1, words: profile.wordCount || 0 }, limitations: ['Single-seed built-in masks expose starting distributions; custom masks should add samples for stronger variance.'] };
 }
 
-export function listHushMasks(input = {}) { const masks = asArray(input.masks).length ? input.masks : hushMasks; return masks.map((mask) => hydrateHushMask(enrichHushMask(mask))); }
+export function listHushMasks(input = {}) { const masks = asArray(input.masks).length ? input.masks : BUILT_IN_MASKS; return masks.map((mask) => hydrateHushMask(enrichHushMask(mask))); }
 export function getHushMask(maskId = '', input = {}) { const id = safeText(maskId); return listHushMasks(input).find((mask) => mask.id === id) || listHushMasks(input)[0] || null; }
 export function hydrateHushMask(mask = {}) { const enriched = enrichHushMask(mask); const sampleSeed = safeText(enriched.sampleSeed); const profile = enriched.profile || extractCadenceProfile(sampleSeed); const distribution = enriched.distribution || buildMaskDistribution(profile); const warnings = detectHushMaskWarnings({ ...enriched, profile }); return { version: HUSH_MASK_STUDIO_VERSION, source: 'built-in', ...enriched, sampleSeed, profile, distribution, profileTargets: Object.keys(enriched.profileTargets || {}).length ? enriched.profileTargets : distribution, profileStatus: profileStatus(profile, sampleSeed), profileSummary: summarizeProfile(profile), warnings }; }
 export function buildHushMaskProfile(mask = {}, options = {}) { const hydrated = hydrateHushMask(mask); return { version: HUSH_MASK_STUDIO_VERSION, maskId: hydrated.id || '', label: hydrated.label || '', source: hydrated.source || 'built-in', family: hydrated.family || '', description: hydrated.description || '', intendedUse: hydrated.intendedUse || '', riskTell: hydrated.riskTell || '', profileStatus: hydrated.profileStatus, profile: options.includeFullProfile === false ? {} : hydrated.profile, profileSummary: hydrated.profileSummary, distribution: hydrated.distribution, profileTargets: hydrated.profileTargets, writingTraits: hydrated.writingTraits || {}, transitionBank: asArray(hydrated.transitionBank), dictionHints: asArray(hydrated.dictionHints), avoidList: asArray(hydrated.avoidList), exampleTransformPairs: asArray(hydrated.exampleTransformPairs), modeAffinity: asArray(hydrated.modeAffinity), intendedContexts: asArray(hydrated.intendedContexts), transformHints: hydrated.transformHints || {}, pressureWarnings: asArray(hydrated.pressureWarnings), warnings: [...asArray(hydrated.warnings), 'built-in-profile-derived-from-seed'], limitations: ['Hush mask profiles are local stylometric targets, not external recognition outcomes.', 'Built-in masks are starting surfaces; review match and pressure before use.'] }; }
