@@ -55,7 +55,9 @@ export function rebuildPayloadSentence(input = {}) {
   if (note && actor && saved) parts.push(`The ${note} was saved after ${actor} called`);
   else if (note && saved) parts.push(`The ${note} was saved`);
   if (evidence && timestamp) parts.push(`${evidence} was ${logged ? 'logged' : 'recorded'} at ${timestamp}`);
+  else if (evidence && date && note) parts.push(`${evidence} should stay with the ${note} from ${date}`);
   else if (evidence && date) parts.push(`${evidence} should stay with ${date}`);
+  else if (evidence && note) parts.push(`${evidence} remains the ${note} anchor`);
   else if (evidence) parts.push(`${evidence} remains the record anchor`);
   if (actor && spreadsheet && (resend || told)) {
     const finance = byKind(payloadMap, 'department').find((unit) => /finance/i.test(unit.text))?.text || (org && /finance/i.test(org) ? org : 'finance');
