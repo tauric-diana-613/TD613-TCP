@@ -8,6 +8,14 @@
     /(?:test-flight|retrieval-fixtures)/i.test(hash);
 
   if (pageKind === 'adversarial-bench') {
+    var visualHref = './hush-visual-system.css?v=' + (V.hushVisualSystem || V.main || '');
+    var existingVisual = document.querySelector('link[href^="./hush-visual-system.css"]');
+    if (!existingVisual) {
+      var visualLink = document.createElement('link');
+      visualLink.rel = 'stylesheet';
+      visualLink.href = visualHref;
+      document.head.appendChild(visualLink);
+    }
     var compactHref = './hush-compact.css?v=' + (V.hushCompact || V.main || '');
     var existingCompact = document.querySelector('link[href^="./hush-compact.css"]');
     if (!existingCompact) {
