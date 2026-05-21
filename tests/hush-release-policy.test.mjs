@@ -7,7 +7,7 @@ import {
   summarizeReleasePolicy
 } from '../app/engine/hush-release-policy.js';
 
-assert.equal(HUSH_RELEASE_POLICY_VERSION, 'phase-19');
+assert.equal(HUSH_RELEASE_POLICY_VERSION, 'phase-21');
 
 const residualOnly = buildReleasePolicy({
   outputText: 'For reference, EXHIBIT-42 stayed attached on 6/13.',
@@ -77,6 +77,31 @@ const claimFail = buildReleasePolicy({
 assert.equal(claimFail.hardBlocked, true);
 assert(claimFail.hardBlockReasons.includes('claim-integrity-failed'));
 
+const payloadFail = buildReleasePolicy({
+  outputText: '440 record should stay with the record on. not',
+  protectedLiterals: ['INV-440', '2:18'],
+  semanticFidelity: 1,
+  protectedLiteralScore: 1,
+  naturalnessScore: 1,
+  payloadIntegrity: { passed: false, hardFailures: ['evidence-id-truncated', 'timestamp-truncated'], reviewWarnings: [] }
+});
+assert.equal(payloadFail.hardBlocked, true);
+assert(payloadFail.hardBlockReasons.includes('claim-payload-loss'));
+assert(payloadFail.hardBlockReasons.includes('truncated-identifier'));
+assert(payloadFail.hardBlockReasons.includes('truncated-timestamp'));
+assert(payloadFail.hardBlockReasons.includes('dangling-negation'));
+
+const payloadReview = buildReleasePolicy({
+  outputText: 'INV-440 was logged at 2:18. Jordan should hold the spreadsheet until finance confirms the version.',
+  protectedLiterals: ['INV-440', '2:18'],
+  semanticFidelity: 1,
+  protectedLiteralScore: 1,
+  naturalnessScore: 1,
+  payloadIntegrity: { passed: true, hardFailures: [], reviewWarnings: ['payload-distance-high'] }
+});
+assert.equal(payloadReview.hardBlocked, false);
+assert(payloadReview.reviewWarnings.includes('claim-payload-review'));
+
 const claimReview = buildReleasePolicy({
   outputText: 'It would help to keep EXHIBIT-42 with the message.',
   protectedLiterals: ['EXHIBIT-42'],
@@ -139,13 +164,15 @@ const naturalFail = buildReleasePolicy({ outputText: 'Text text text.', semantic
 assert.equal(naturalFail.hardBlocked, true);
 assert(naturalFail.hardBlockReasons.includes('naturalness-catastrophic'));
 
-const classified = classifyHushReasons(['critical-residual-dimension-hot', 'protected-literal-drop', 'claim-integrity-failed', 'syntax-shift-low']);
+const classified = classifyHushReasons(['critical-residual-dimension-hot', 'protected-literal-drop', 'claim-integrity-failed', 'claim-payload-loss', 'syntax-shift-low']);
 assert(classified.reviewWarnings.includes('critical-residual-dimension-hot'));
 assert(classified.reviewWarnings.includes('syntax-shift-low'));
 assert(classified.hardBlockReasons.includes('protected-literal-drop'));
 assert(classified.hardBlockReasons.includes('claim-integrity-failed'));
+assert(classified.hardBlockReasons.includes('claim-payload-loss'));
 
 const summary = summarizeReleasePolicy(residualOnly);
+assert.equal(summary.version, 'phase-21');
 assert.equal(summary.releaseStatus, 'needs-review');
 assert.equal(summary.mayPopulateOutput, true);
 assert.equal(summary.hardBlockCount, 0);

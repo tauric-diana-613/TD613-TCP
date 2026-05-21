@@ -6,8 +6,9 @@ const clamp = (value, min = 0, max = 1) => Number.isFinite(value) ? Math.max(min
 const round = (value, digits = 4) => Number.isFinite(value) ? Number(value.toFixed(digits)) : 0;
 
 const PATTERNS = Object.freeze([
-  ['exhibit', /\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\/-]*\b/g],
+  ['exhibit', /\b(?:EXHIBIT|DOC|CASE|ID|REF|INV|PO|HR|PAY|FILE|TICKET|REQ|FORM|W2|W-?2|W-?4|I-?9|SSN|EIN|TIN|ACCT|ACCOUNT|VENDOR|INVOICE|PAYROLL|BENEFIT|TD613|SHI|SAC)[A-Z0-9:_#\[\]\/-]*\b/g],
   ['date', /\b(?:\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?|\d{4}-\d{2}-\d{2})\b/g],
+  ['timestamp', /\b\d{1,2}:\d{2}(?:\s?[AP]M)?\b/gi],
   ['file-name', /\b[\w.-]+\.(?:pdf|docx?|xlsx?|csv|txt|json|html?|png|jpe?g|zip)\b/gi],
   ['quoted-string', /["“][^"”]{3,120}["”]/g],
   ['glyph-boundary', /(?:𝌋|⟐|Khona\u200Clit-po|Khona‌lit-po|\u200c)/g]
@@ -47,7 +48,9 @@ export function detectProtectedLiterals(text = '', options = {}) {
 }
 
 export function buildProtectedLiteralLockbox(input = {}) {
-  const sourceText = [input.sourceText, input.baselineText, input.maskReferenceText].map(safeText).filter(Boolean).join('\n');
+  const sources = [input.sourceText, input.baselineText].map(safeText).filter(Boolean);
+  if (input.includeMaskReferenceLiterals === true) sources.push(safeText(input.maskReferenceText));
+  const sourceText = sources.join('\n');
   const literals = detectProtectedLiterals(sourceText, { manualLiterals: input.manualLiterals, maxLiterals: input.maxLiterals });
   const byType = literals.reduce((acc, item) => { acc[item.type] = (acc[item.type] || 0) + 1; return acc; }, {});
   return {
@@ -56,8 +59,8 @@ export function buildProtectedLiteralLockbox(input = {}) {
     literals,
     byType,
     lockedCount: literals.length,
-    warnings: [...(literals.length ? [] : ['no-protected-literals-detected']), ...(literals.length > 40 ? ['large-lockbox-review-needed'] : [])],
-    limitations: ['The lockbox preserves detected literal strings; it cannot decide which facts are sufficient.']
+    warnings: [...(literals.length ? [] : ['no-protected-literals-detected']), ...(literals.length > 40 ? ['large-lockbox-review-needed'] : []), ...(input.maskReferenceText && input.includeMaskReferenceLiterals !== true ? ['mask-reference-literals-not-locked'] : [])],
+    limitations: ['The lockbox preserves detected literal strings; it cannot decide which facts are sufficient.', 'Mask reference examples are not locked by default because mask text is style evidence, not required output content.']
   };
 }
 

@@ -68,13 +68,16 @@ function measureFlightCase(bench, flight) {
   const result = bench.benchState.hushSwapResult;
   const output = value('protectedOutputInput');
   assert(result, `no custom Hush swap result for ${flight.name}`);
-  assert.equal(result.version, 'phase-19');
+  assert.equal(result.version, 'phase-21');
   assert(result.releasePolicy, `missing release policy for ${flight.name}`);
   assert(result.writer?.claimRoleMap, `missing claim-role map for ${flight.name}`);
   assert(result.writer?.literalPlacementMap, `missing literal-placement map for ${flight.name}`);
+  assert(result.writer?.payloadMap, `missing payload map for ${flight.name}`);
+  assert(result.writer?.payloadBindingMap, `missing payload-binding map for ${flight.name}`);
   assert(result.writer?.syntaxPlan, `missing syntax plan for ${flight.name}`);
   assert(result.syntaxShift, `missing syntax-shift audit for ${flight.name}`);
   assert(result.claimIntegrity, `missing claim-integrity audit for ${flight.name}`);
+  assert(result.payloadIntegrity, `missing payload-integrity audit for ${flight.name}`);
 
   const selected = selectedCandidate(result);
   const literals = literalsFrom(flight.message);
@@ -90,7 +93,7 @@ function measureFlightCase(bench, flight) {
   } else {
     assert.equal(result.releasePolicy?.hardBlocked, true, `blank customizer output lacked a hard block for ${flight.name}`);
     assert(
-      hardBlockReasons.some((reason) => /literal|semantic|claim-integrity/.test(reason)),
+      hardBlockReasons.some((reason) => /literal|semantic|claim-integrity|claim-payload|payload|source-body|syntax-shift|dangling/.test(reason)),
       `blank customizer output lacked actionable hard-block reason for ${flight.name}: ${hardBlockReasons.join(', ')}`
     );
   }
@@ -109,6 +112,7 @@ function measureFlightCase(bench, flight) {
     syntaxShiftScore: selected.syntaxShift?.metrics?.syntaxShiftScore ?? selected.scoreBreakdown?.syntaxShiftScore ?? null,
     sourceBodyRisk: selected.sourceResidue?.metrics?.cadenceBodyRisk ?? null,
     longestCopiedRun: selected.sourceResidue?.metrics?.longestCopiedRun ?? null,
+    payloadIntegrity: selected.payloadIntegrity?.score ?? result.payloadIntegrity?.score ?? null,
     literalCount: literals.length,
     missingLiteralCount: missingLiterals.length,
     warningCount: result.releasePolicy?.reviewWarnings?.length || 0,
@@ -245,7 +249,7 @@ const blocked = rows.filter((row) => row.hardBlocked).length;
 const literalStressRows = rows.filter((row) => row.group === 'protected-literal stress');
 assert.equal(rows.length, flights.length);
 assert.equal(rows.filter((row) => row.transformed && !row.emitted).length, 0);
-assert(literalStressRows.every((row) => row.emitted || row.hardBlockReasons.some((reason) => /literal/.test(reason))), 'literal stress blanks must explain literal pressure');
+assert(literalStressRows.every((row) => row.emitted || row.hardBlockReasons.some((reason) => /literal|payload|source-body|syntax-shift|dangling/.test(reason))), 'literal stress blanks must explain literal, payload, transformation, or fragment pressure');
 assert(rows.every((row) => row.emitted || row.hardBlockReasons.length > 0), 'every blank customizer result must expose hard-block reasons');
 
 const summary = {
@@ -269,6 +273,7 @@ const summary = {
   avgSemanticFidelity: mean(rows.map((row) => row.semanticFidelity)),
   avgSyntaxShiftScore: mean(rows.map((row) => row.syntaxShiftScore)),
   avgSourceBodyRisk: mean(rows.map((row) => row.sourceBodyRisk)),
+  avgPayloadIntegrity: mean(rows.map((row) => row.payloadIntegrity)),
   maxLongestCopiedRun: Math.max(...rows.map((row) => row.longestCopiedRun || 0)),
   rows
 };

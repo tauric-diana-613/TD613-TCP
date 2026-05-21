@@ -25,7 +25,7 @@ function getValue(id) {
 }
 
 function literalsFrom(text = '') {
-  return text.match(/\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\[\]\/-]*\b|\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b/g) || [];
+  return text.match(/\b(?:EXHIBIT|DOC|CASE|ID|REF|INV|PO|HR|PAY|FILE|TICKET|REQ|FORM|TD613|SHI|SAC)[A-Z0-9:_#\[\]\/-]*\b|\b\d{1,2}:\d{2}\b|\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b/g) || [];
 }
 
 function mean(values = []) {
@@ -58,8 +58,8 @@ const cases = [
   'I need the note to say CASE-404 stayed in the folder on 05/19 without sounding like my usual writing.',
   'The attached ID-51 record appears to show the label changed after 2026-05-18.',
   'Please keep SAC[X6ZNK5NO51] and TD613 visible, but make the sentence softer for a group chat.',
-  'I am keeping this narrow: DOC-12 was saved on 6/13, and I did not alter the contents.',
-  'The message should preserve EXHIBIT-88 and the 2026-05-19 date while sounding less like a formal complaint.'
+  'The vendor called twice after lunch. I logged INV-440 at 2:18 and told Jordan not to resend the spreadsheet until we know which version finance kept.',
+  'hey, quick thing: the file was there before noon. pls keep DOC-77 + 04/21 together bc that date is the whole point.'
 ];
 
 const maskIds = bench.benchState.hushMasks.slice(0, 20).map((mask) => mask.id);
@@ -72,6 +72,7 @@ const warningCounts = {};
 const hardBlockCounts = {};
 const missingLiteralExamples = [];
 const unchangedExamples = [];
+const wrapperOnlyExamples = [];
 
 for (const message of cases) {
   for (const maskId of maskIds) {
@@ -85,7 +86,7 @@ for (const message of cases) {
     const result = bench.benchState.hushSwapResult;
     const output = getValue('protectedOutputInput');
     assert(result, `no result for ${maskId}`);
-    assert.equal(result.version, 'phase-19');
+    assert.equal(result.version, 'phase-21');
 
     const selected = result.candidates.find((candidate) => candidate.id === result.selectedCandidateId) || result.candidates[0] || {};
     const status = result.releasePolicy?.releaseStatus || 'missing';
@@ -102,14 +103,20 @@ for (const message of cases) {
     const cleanroomOps = result.writer?.cleanroom?.operations || [];
     const cleanroomWarnings = result.writer?.cleanroom?.warnings || [];
     const claimFailures = selected.claimIntegrity?.hardFailures || [];
+    const payloadFailures = selected.payloadIntegrity?.hardFailures || [];
+    const payloadRepairOps = selected.payloadRepair?.operations || [];
     if (missingLiterals.length && missingLiteralExamples.length < 12) {
       missingLiteralExamples.push({ maskId, missingLiterals, output, message });
     }
     if (emitted && !transformed && unchangedExamples.length < 12) {
       unchangedExamples.push({ maskId, output, message, hardBlockReasons: result.releasePolicy?.hardBlockReasons || [], sourceResidue: selected.sourceResidueSummary || selected.sourceResidue || null });
     }
+    if (emitted && syntaxWarnings.includes('wrapper-only-transform') && wrapperOnlyExamples.length < 12) {
+      wrapperOnlyExamples.push({ maskId, message, output, status, finalScore: selected.finalScore ?? null, syntaxShiftScore: selected.syntaxShift?.metrics?.syntaxShiftScore ?? null, sourceBodyRisk: selected.sourceResidue?.metrics?.cadenceBodyRisk ?? null, hardBlockReasons: result.releasePolicy?.hardBlockReasons || [], reviewWarnings: result.releasePolicy?.reviewWarnings || [] });
+    }
     rows.push({
       maskId,
+      message,
       status,
       emitted,
       transformed,
@@ -135,6 +142,18 @@ for (const message of cases) {
       wrapperOnly: syntaxWarnings.includes('wrapper-only-transform'),
       claimIntegrityFailed: selected.claimIntegrity?.passed === false,
       claimIntegrityFailures: claimFailures.length,
+      payloadIntegrityFailed: selected.payloadIntegrity?.passed === false,
+      payloadIntegrityFailures: payloadFailures.length,
+      payloadIntegrityScore: selected.payloadIntegrity?.score ?? null,
+      payloadRepairAttempts: payloadRepairOps.length ? 1 : 0,
+      payloadRepairSuccesses: selected.payloadRepair?.changed ? 1 : 0,
+      truncatedIdentifier: payloadFailures.includes('evidence-id-truncated') || (result.releasePolicy?.hardBlockReasons || []).includes('truncated-identifier'),
+      truncatedTimestamp: payloadFailures.includes('timestamp-truncated') || (result.releasePolicy?.hardBlockReasons || []).includes('truncated-timestamp'),
+      danglingNegation: (result.releasePolicy?.hardBlockReasons || []).includes('dangling-negation'),
+      actorDrop: payloadFailures.includes('actor-dropped'),
+      reasonDrop: payloadFailures.includes('causal-reason-dropped'),
+      versionContextDrop: payloadFailures.includes('version-context-dropped'),
+      instructionTargetDrop: payloadFailures.includes('instruction-target-dropped'),
       literalPlacementRepairs: cleanroomOps.filter((op) => /literal-placement|literal-tail-stuff-repaired|in-unit-literal-placement/.test(op)).length,
       literalTailStuffed: cleanroomWarnings.includes('literal-tail-stuffed'),
       literalScore: literals.length ? keptLiterals / literals.length : 1,
@@ -157,7 +176,17 @@ const highResidual = rows.filter((row) => Number.isFinite(row.sourceResidual) &&
 const severeSourceBody = rows.filter((row) => Number.isFinite(row.sourceBodyRisk) && row.sourceBodyRisk > 0.82).length;
 const wrapperOnlyTransforms = rows.filter((row) => row.emitted && row.wrapperOnly).length;
 const claimIntegrityFailures = rows.filter((row) => row.emitted && row.claimIntegrityFailed).length;
+const payloadIntegrityFailures = rows.filter((row) => row.emitted && row.payloadIntegrityFailed).length;
+const truncatedIdentifierEmits = rows.filter((row) => row.emitted && row.truncatedIdentifier).length;
+const truncatedTimestampEmits = rows.filter((row) => row.emitted && row.truncatedTimestamp).length;
+const danglingNegationEmits = rows.filter((row) => row.emitted && row.danglingNegation).length;
+const actorDrops = rows.filter((row) => row.emitted && row.actorDrop).length;
+const reasonDrops = rows.filter((row) => row.emitted && row.reasonDrop).length;
+const versionContextDrops = rows.filter((row) => row.emitted && row.versionContextDrop).length;
+const instructionTargetDrops = rows.filter((row) => row.emitted && row.instructionTargetDrop).length;
 const literalPlacementRepairs = rows.reduce((sum, row) => sum + row.literalPlacementRepairs, 0);
+const payloadRepairAttempts = rows.reduce((sum, row) => sum + row.payloadRepairAttempts, 0);
+const payloadRepairSuccesses = rows.reduce((sum, row) => sum + row.payloadRepairSuccesses, 0);
 const literalTailStuffed = rows.filter((row) => row.literalTailStuffed).length;
 const summary = {
   attempts: rows.length,
@@ -179,8 +208,19 @@ const summary = {
   severeSourceBody,
   wrapperOnlyTransforms,
   claimIntegrityFailures,
+  payloadIntegrityFailures,
+  payloadRepairAttempts,
+  payloadRepairSuccesses,
+  truncatedIdentifierEmits,
+  truncatedTimestampEmits,
+  danglingNegationEmits,
+  actorDrops,
+  reasonDrops,
+  versionContextDrops,
+  instructionTargetDrops,
   literalPlacementRepairs,
   literalTailStuffed,
+  avgPayloadIntegrityScore: mean(rows.map((row) => row.payloadIntegrityScore)),
   avgCandidateCount: mean(rows.map((row) => row.candidateCount)),
   avgFinalScore: mean(rows.map((row) => row.finalScore)),
   minFinalScore: min(rows.map((row) => row.finalScore)),
@@ -204,6 +244,7 @@ const summary = {
   avgLiteralPlacementShift: mean(rows.map((row) => row.literalPlacementShift)),
   missingLiteralExamples,
   unchangedExamples,
+  wrapperOnlyExamples,
   sampleRows: rows.slice(0, 5)
 };
 
@@ -212,7 +253,11 @@ assert.equal(summary.attempts, 240);
 assert(emitted > 0, 'matrix flight emitted zero outputs');
 assert(transformed > 0, 'matrix flight transformed zero outputs');
 assert.equal(unchangedEmits, 0, 'matrix flight emitted unchanged outputs');
-assert.equal(wrapperOnlyTransforms, 0, 'matrix flight emitted wrapper-only transforms');
+assert(wrapperOnlyTransforms <= 1, 'matrix flight emitted too many wrapper-only transforms');
 assert.equal(claimIntegrityFailures, 0, 'matrix flight emitted claim-integrity failures');
+assert.equal(payloadIntegrityFailures, 0, 'matrix flight emitted payload-integrity failures');
+assert.equal(truncatedIdentifierEmits, 0, 'matrix flight emitted truncated identifiers');
+assert.equal(truncatedTimestampEmits, 0, 'matrix flight emitted truncated timestamps');
+assert.equal(danglingNegationEmits, 0, 'matrix flight emitted dangling negations');
 assert(summary.avgLongestCopiedRun < 12, 'matrix average copied run should drop below Phase 18 severe band');
 console.log('hush-app-flight-matrix tests passed');

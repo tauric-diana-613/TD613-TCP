@@ -1,4 +1,4 @@
-export const HUSH_CANDIDATE_CLEANROOM_VERSION = 'phase-19';
+export const HUSH_CANDIDATE_CLEANROOM_VERSION = 'phase-21';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
@@ -41,7 +41,7 @@ function restoreMissingLiterals(text = '', protectedLiterals = []) {
   for (const literal of asArray(protectedLiterals)) {
     if (value.includes(literal)) continue;
     const words = value.split(/\s+/).filter(Boolean);
-    const anchor = words.findIndex((word) => /file|record|note|packet|attachment|label|message|saved|changed|edited/i.test(word));
+    const anchor = words.findIndex((word) => /file|record|note|packet|attachment|label|message|saved|changed|edited|logged|invoice|spreadsheet|version/i.test(word));
     if (anchor >= 0) {
       words.splice(anchor, 0, literal);
       value = words.join(' ');
@@ -82,14 +82,36 @@ function removeRepeatedPhrases(text = '') {
   return safeText(text).replace(/\b(\w+)(\s+\1\b)+/gi, '$1');
 }
 
+function detectPayloadClipping(text = '', sourceText = '') {
+  const value = safeText(text);
+  const source = safeText(sourceText);
+  const warnings = [];
+  if (/\b(?:not|without|did not|do not|cannot)\.?$/i.test(value)) warnings.push('dangling-negation');
+  if (/\b(?:on|at|with|until|from|to|by)\.?$/i.test(value)) warnings.push('dangling-preposition');
+  if (/\brecord should stay with the record on\b/i.test(value)) warnings.push('orphan-record-template');
+  const identifiers = source.match(/\b[A-Z]{2,12}-\d{1,8}[A-Z]?\b/g) || [];
+  for (const id of identifiers) {
+    const number = id.match(/\d+/)?.[0];
+    if (number && !value.includes(id) && new RegExp(`\\b${number}\\b`).test(value)) warnings.push('truncated-identifier');
+  }
+  const timestamps = source.match(/\b\d{1,2}:\d{2}(?:\s?[AP]M)?\b/gi) || [];
+  for (const timestamp of timestamps) {
+    const tail = timestamp.split(':')[1]?.replace(/\D/g, '');
+    if (tail && !value.includes(timestamp) && new RegExp(`\\b${tail}\\b`).test(value)) warnings.push('truncated-timestamp');
+  }
+  return unique(warnings);
+}
+
 export function cleanHushCandidate(input = {}) {
   const candidate = input.candidate || {};
   const protectedLiterals = asArray(input.protectedLiterals || input.meaningPlan?.protectedLiterals);
   const traits = input.realizationPlan?.traits || input.mask?.writingTraits || {};
   const operations = [];
   const warnings = [];
+  const sourceText = input.sourceText || input.meaningPlan?.sourceText || '';
   let text = safeText(candidate.text);
   const before = text;
+  warnings.push(...detectPayloadClipping(before, sourceText));
   text = normalizeProceduralMarkers(text, candidate.strategy || candidate.family || '', traits);
   if (text !== before) operations.push('normalize-procedural-markers');
   const afterMarkers = text;
@@ -112,6 +134,7 @@ export function cleanHushCandidate(input = {}) {
   text = restoreCaveats(text, input.meaningPlan || {});
   if (text !== afterNegations) operations.push('restore-caveats');
   text = collapseWhitespace(text);
+  warnings.push(...detectPayloadClipping(text, sourceText));
   return { ...candidate, text, cleanroom: { version: HUSH_CANDIDATE_CLEANROOM_VERSION, changed: text !== before, operations: unique(operations), warnings: unique(warnings) } };
 }
 

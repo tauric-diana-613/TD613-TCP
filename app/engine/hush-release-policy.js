@@ -1,6 +1,6 @@
 import { detectForbiddenClaims } from './claim-ladder.js';
 
-export const HUSH_RELEASE_POLICY_VERSION = 'phase-19';
+export const HUSH_RELEASE_POLICY_VERSION = 'phase-21';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safeText = (value) => String(value ?? '');
@@ -15,7 +15,13 @@ export const HARD_BLOCK_REASONS = Object.freeze([
   'source-body-exact-or-near-exact',
   'source-body-severe-with-weak-mask-movement',
   'claim-integrity-failed',
-  'syntax-shift-too-low-with-source-body'
+  'syntax-shift-too-low-with-source-body',
+  'claim-payload-loss',
+  'payload-repair-failed',
+  'truncated-identifier',
+  'truncated-timestamp',
+  'dangling-negation',
+  'dangling-preposition'
 ]);
 
 export const REVIEW_WARNING_REASONS = Object.freeze([
@@ -35,7 +41,13 @@ export const REVIEW_WARNING_REASONS = Object.freeze([
   'syntax-shift-low',
   'wrapper-only-transform',
   'literal-placement-review',
-  'literal-tail-stuffed'
+  'literal-tail-stuffed',
+  'claim-payload-review',
+  'payload-distance-high',
+  'reason-compressed-review',
+  'version-context-compressed-review',
+  'instruction-softened-review',
+  'payload-repair-review'
 ]);
 
 export function classifyHushReasons(reasons = []) {
@@ -57,6 +69,14 @@ export function isExactOrNearExactSourceBody(sourceResidue = {}) {
   return cadenceBodyRisk >= 0.97 || (nonLiteralTokenRetention >= 0.98 && longestCopiedRun >= 12);
 }
 
+function hasDanglingFragments(text = '') {
+  const value = safeText(text).trim();
+  return {
+    danglingNegation: /(?:^|[.!?;]\s*)(?:not|without|did not|do not|cannot)\.?$/i.test(value) || /\b(?:not|without|did not|do not|cannot)\.$/i.test(value),
+    danglingPreposition: /\b(?:on|at|with|until|from|to|by)\.$/i.test(value)
+  };
+}
+
 export function buildReleasePolicy(input = {}) {
   const candidate = input.candidate || {};
   const outputText = safeText(input.outputText ?? candidate.text);
@@ -66,18 +86,23 @@ export function buildReleasePolicy(input = {}) {
   const sourceResidue = input.sourceResidue || candidate.sourceResidue || null;
   const syntaxShift = input.syntaxShift || candidate.syntaxShift || null;
   const claimIntegrity = input.claimIntegrity || candidate.claimIntegrity || null;
+  const payloadIntegrity = input.payloadIntegrity || candidate.payloadIntegrity || null;
+  const payloadRepair = input.payloadRepair || candidate.payloadRepair || null;
   const sourceResidueScore = Number(input.sourceResidueScore ?? candidate.scoreBreakdown?.sourceResidueScore ?? candidate.sourceResidueScore ?? 1);
   const syntaxShiftScore = Number(input.syntaxShiftScore ?? candidate.scoreBreakdown?.syntaxShiftScore ?? syntaxShift?.metrics?.syntaxShiftScore ?? 1);
   const maskMatch = Number(input.maskMatch ?? candidate.scoreBreakdown?.maskMatch ?? candidate.match?.matchScore ?? 1);
   const hardFloorSemantic = Number(input.minSemanticFidelity ?? candidate.weightProfile?.minSemanticFidelity ?? 0.58);
   const hardFloorLiteral = Number(input.minProtectedLiteralScore ?? candidate.weightProfile?.minProtectedLiteralScore ?? 0.92);
+  const fragments = hasDanglingFragments(outputText);
   const reasons = [
     ...asArray(input.reasons),
     ...asArray(candidate.vetoes),
     ...asArray(candidate.warnings),
     ...asArray(sourceResidue?.warnings),
     ...asArray(syntaxShift?.warnings),
-    ...asArray(claimIntegrity?.reviewWarnings)
+    ...asArray(claimIntegrity?.reviewWarnings),
+    ...asArray(payloadIntegrity?.reviewWarnings),
+    ...asArray(payloadRepair?.warnings)
   ];
   if (!outputText.trim()) reasons.push('empty-output');
   if (semantic < hardFloorSemantic) reasons.push('semantic-fidelity-below-mode-floor');
@@ -88,6 +113,13 @@ export function buildReleasePolicy(input = {}) {
   if (isExactOrNearExactSourceBody(sourceResidue)) reasons.push('source-body-exact-or-near-exact');
   if (claimIntegrity && claimIntegrity.passed === false) reasons.push('claim-integrity-failed');
   if (claimIntegrity && asArray(claimIntegrity.reviewWarnings).length) reasons.push('claim-integrity-review');
+  if (payloadIntegrity && payloadIntegrity.passed === false) reasons.push('claim-payload-loss');
+  if (payloadIntegrity && asArray(payloadIntegrity.reviewWarnings).length) reasons.push('claim-payload-review');
+  if (payloadRepair && asArray(payloadRepair.warnings).includes('payload-repair-failed')) reasons.push('payload-repair-failed');
+  if (asArray(payloadIntegrity?.hardFailures).includes('evidence-id-truncated')) reasons.push('truncated-identifier');
+  if (asArray(payloadIntegrity?.hardFailures).includes('timestamp-truncated')) reasons.push('truncated-timestamp');
+  if (fragments.danglingNegation) reasons.push('dangling-negation');
+  if (fragments.danglingPreposition) reasons.push('dangling-preposition');
   if (syntaxShift && syntaxShiftScore < 0.35) reasons.push('syntax-shift-low');
   if (asArray(syntaxShift?.warnings).includes('wrapper-only-transform')) reasons.push('wrapper-only-transform');
   const severeSourceBody = asArray(sourceResidue?.warnings).includes('source-body-severe') || Number(sourceResidue?.metrics?.cadenceBodyRisk ?? 0) > 0.82 || sourceResidueScore < 0.18;
@@ -104,7 +136,7 @@ export function buildReleasePolicy(input = {}) {
     hardBlockReasons: classified.hardBlockReasons,
     reviewWarnings: classified.reviewWarnings,
     operatorMessage: hardBlocked
-      ? 'Output blocked because meaning, protected literals, naturalness, claim integrity, syntax shift, exact source copying, or severe source-body retention failed.'
+      ? 'Output blocked because meaning, protected literals, payload integrity, naturalness, claim integrity, syntax shift, exact source copying, or severe source-body retention failed.'
       : releaseStatus === 'needs-review'
         ? 'Output may populate, but review warnings remain. Do not treat this as sealed.'
         : 'Output may populate for local review.',
