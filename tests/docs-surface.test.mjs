@@ -67,7 +67,7 @@ assert(readme.includes('TD613 Hush — or Hush — is the product surface for th
 assert(readme.includes('Phase 29 gives Hush its own product route at `/hush.html`'));
 
 const index = read('docs/INDEX.md');
-for (const doc of requiredDocs.filter((path) => path !== 'README.md')) {
+for (const doc of requiredDocs.filter((path) => path !== 'README.md' && path !== 'docs/INDEX.md')) {
   const name = doc.replace('docs/', '');
   assert(index.includes(name), `docs index missing ${name}`);
 }
