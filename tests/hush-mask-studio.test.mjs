@@ -38,6 +38,7 @@ assert(masks.every((mask) => Array.isArray(mask.dictionHints)));
 
 const plain = getHushMask('plain-witness');
 assert.equal(plain.id, 'plain-witness');
+assert.equal(plain.label, 'Steady Mabel');
 assert(plain.profile.wordCount > 0);
 assert(plain.distribution.centroid);
 assert(plain.distribution.toleranceBands);
@@ -73,7 +74,7 @@ assert(summary.distribution.centroid);
 assert(summary.writingTraits);
 
 const json = exportHushMaskJson(plain);
-assert(json.includes('Plain Witness'));
+assert(json.includes('Steady Mabel'));
 assert(!json.includes(plain.sampleSeed), 'default export should exclude sample seed');
 assert.equal(detectForbiddenClaims(json).hasForbiddenClaim, false);
 
