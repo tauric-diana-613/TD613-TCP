@@ -4,11 +4,11 @@
 
 The Cadence Playground is the larger browser workspace for TD613 cadence, route, Safe Harbor adjacency, Persona play, stylometric math, Hush, and local browser experiments.
 
-TD613 Hush — or Hush — is the clean mask studio inside The Cadence Playground. It lives at `/adversarial-bench`; the file name remains for continuity, but the product surface is Hush. The repository is named `TD613-TCP`, but the Phase 0–10 Toy-to-Tool instrument should be presented as TD613 Hush. Phase 11 extends that instrument with a Hush-native mask studio and custom mask workflow; Hush still should not be presented as the whole repository.
+TD613 Hush — or Hush — is the product surface for the Toy-to-Tool authorship-pressure arc inside The Cadence Playground. Phase 29 gives Hush its own product route at `/hush.html`. The older `/adversarial-bench.html` route remains available as the legacy chamber for continuity.
 
-Hush is playful on the surface because it belongs in The Cadence Playground. Underneath, it is disciplined: Hush-native masks, custom mask samples, stylometric profile refinement, Escape Vector, Ingestion Friction, Controller state, Mask Memory, Iteration Ledger, Claim Ladder, Report Export, Fixtures, Calibration, Recognition Field, residual steering, protected literal lockbox, mask lifecycle, and export policy.
+Hush is playful on the surface because it belongs in The Cadence Playground. Underneath, it is disciplined: Hush-native masks, custom mask samples, stylometric profile refinement, Escape Vector, Ingestion Friction, Controller state, Mask Memory, Iteration Ledger, Claim Ladder, Report Export, Fixtures, Calibration, Recognition Field, residual steering, protected literal lockbox, mask lifecycle, release policy, export policy, register custody, target-register audit, product state, readiness dashboard, report ingest, and readiness ledger.
 
-Phase 11 starts a Hush-native mask library. Phase 12 adds residual-driven steering. Hush masks are not legacy Personas. Homebase, Deck, and Trainer remain legacy/lab chambers while Hush becomes the primary whistleblower-facing mask workflow.
+Homebase, Deck, and Trainer remain legacy/lab chambers while Hush becomes the primary whistleblower-facing mask workflow. Hush is not the whole repository, and the repository should not collapse every TD613 surface into Hush.
 
 ## Mission thesis
 
@@ -24,32 +24,33 @@ Read the full crown in [docs/TD613_MISSION_THESIS.md](docs/TD613_MISSION_THESIS.
 
 TD613 Hush does not prove identity, anonymity, untraceability, platform outcome, or publication safety.
 
-Hush is not TD613 Flight. Flight is the SHI-gated credential flightdeck launched from Safe Harbor. Hush is the quiet authorship-pressure toy inside TCP.
+Hush is not TD613 Flight. Flight is the SHI-gated credential flightdeck launched from Safe Harbor. Hush is the local authorship-pressure and custody review instrument inside TCP.
 
 Hush is not Safe Harbor. Safe Harbor remains the adjacent intake and credential architecture.
 
-Hush is not a platform classifier, external detector, legal strategy substitute, or publication decision-maker.
+Hush is not a platform classifier, external detector, legal strategy substitute, publication decision-maker, truth machine for whistleblowing claims, production safety platform, covert classifier, or provenance laundering tool.
 
 ## Core workflow
 
-1. Select a built-in Hush mask or create a custom mask from writing samples.
-2. Review the mask's stylometric profile.
-3. Stage protected baseline when needed.
-4. Stage message draft.
-5. Swap the surface toward the selected mask.
-6. Review protected output.
-7. Analyze Escape Vector.
-8. Review Ingestion Friction.
-9. Review Controller state.
-10. Review Mask Memory.
-11. Review Claim Ladder.
-12. Review Recognition Field.
-13. Review residual steering, literal lockbox, mask lifecycle, and export policy.
-14. Export only after reviewing warnings and claim ceiling.
+1. Open Hush at `app/hush.html` for the product spine or `app/adversarial-bench.html` for the legacy chamber.
+2. Select a built-in Hush mask or create a custom mask from writing samples.
+3. Review the mask's stylometric profile.
+4. Stage protected baseline when needed.
+5. Stage message draft.
+6. Swap the surface toward the selected mask.
+7. Review protected output.
+8. Analyze Escape Vector.
+9. Review Ingestion Friction.
+10. Review Controller state.
+11. Review Mask Memory.
+12. Review Claim Ladder.
+13. Review Recognition Field.
+14. Review residual steering, literal lockbox, mask lifecycle, release policy, export policy, register custody, target-register audit, and readiness dashboard.
+15. Export only after reviewing warnings and claim ceiling.
 
 ## Phase map
 
-The Hush Toy-to-Tool build now runs Phase 0 through Phase 12. See [docs/PHASE_MAP.md](docs/PHASE_MAP.md).
+The Hush Toy-to-Tool build now runs Phase 0 through Phase 29. Phase 29.1 repairs the public documentation surface so Hush's public memory catches up with its engine. See [docs/PHASE_MAP.md](docs/PHASE_MAP.md), [docs/HUSH_PHASE_21_28_STATUS.md](docs/HUSH_PHASE_21_28_STATUS.md), [docs/HUSH_PRODUCT_SPINE_STATUS.md](docs/HUSH_PRODUCT_SPINE_STATUS.md), and [docs/HUSH_EPISTEMICIDE_AUDIT.md](docs/HUSH_EPISTEMICIDE_AUDIT.md).
 
 ## Local-only posture
 
@@ -57,7 +58,7 @@ Hush performs local review. It does not call hidden platform classifiers, scrape
 
 ## Privacy defaults
 
-The Iteration Ledger, custom mask export, Hush swap export, and Report Export exclude private text by default. Private baseline, draft, mask reference, sample text, and protected output text should only be exported through deliberate operator choice.
+The Iteration Ledger, custom mask export, Hush swap export, Report Export, and Phase 29 readiness ledger exclude private text by default. Private baseline, draft, mask reference, sample text, protected output text, and readiness ledger private text should only be exported through deliberate operator choice.
 
 ## Claim Ladder
 
@@ -77,7 +78,7 @@ Local seal means bounded local convergence. It is not publication readiness. Hum
 
 ## Whistleblower policy posture
 
-Protective authorship tools should not promise invisibility. Hush provides measurable authorship-pressure review, evidence preservation checks, privacy by default, claim ceilings, context-pressure warnings, and refusal behavior when the instrument lacks enough signal.
+Protective authorship tools should not promise invisibility. Hush provides measurable authorship-pressure review, evidence preservation checks, privacy by default, claim ceilings, context-pressure warnings, refusal behavior when the instrument lacks enough signal, and product-surface warnings when the current mode remains test-flight only.
 
 ## Running tests
 
@@ -92,23 +93,24 @@ npm test
 
 ## Documentation index
 
-Start with [docs/INDEX.md](docs/INDEX.md), then read [docs/TD613_MISSION_THESIS.md](docs/TD613_MISSION_THESIS.md), [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md), [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md), [docs/RESPONSIBLE_USE.md](docs/RESPONSIBLE_USE.md), and [docs/PHASE_12_RESIDUAL_STEERING_STATUS.md](docs/PHASE_12_RESIDUAL_STEERING_STATUS.md).
+Start with [docs/INDEX.md](docs/INDEX.md), then read [docs/TD613_MISSION_THESIS.md](docs/TD613_MISSION_THESIS.md), [docs/HUSH_OPERATOR_MANUAL.md](docs/HUSH_OPERATOR_MANUAL.md), [docs/HUSH_KNOWN_FAILURE_MODES.md](docs/HUSH_KNOWN_FAILURE_MODES.md), [docs/HUSH_PRODUCT_SPINE_STATUS.md](docs/HUSH_PRODUCT_SPINE_STATUS.md), [docs/HUSH_TEST_FLIGHT_PROTOCOL.md](docs/HUSH_TEST_FLIGHT_PROTOCOL.md), [docs/HUSH_EPISTEMICIDE_AUDIT.md](docs/HUSH_EPISTEMICIDE_AUDIT.md), [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md), and [docs/RESPONSIBLE_USE.md](docs/RESPONSIBLE_USE.md).
 
 ## Registered field language
 
 TCP's glyph system is operational, not decorative. The browser uses a registered field language to keep surface role, state transition, and retrieval truth aligned.
 
-The current public membrane is organized as five roles:
+The current public membrane is organized as six roles:
 
 - `Ingress` = threshold
+- `Hush` = product spine for local authorship-pressure and custody review
 - `Homebase / Personas` = legacy/lab chamber for anchor, mask shelf, contact, residue
 - `Readout` = witness and law
 - `Deck` = legacy/lab chamber for encounter and duel
 - `Trainer` = legacy/lab chamber for corpus extraction and validation
 
-That role split matters because TCP does not present every state in the same voice. Phase 11 makes Hush the primary mask studio while keeping older chambers available for lab work.
+That role split matters because TCP does not present every state in the same voice. Phase 29 makes Hush a product route while keeping older chambers available for lab work.
 
-Adjacent to the six-room TCP shell, `TD613 Flight` is the SHI-gated credential flightdeck launched from Safe Harbor. It prepares LLM-ready Flight Packets and authorship / rupture footers, but it does not mint SHI on its own; entrants must complete Safe Harbor's triad first.
+Adjacent to the TCP shell, `TD613 Flight` is the SHI-gated credential flightdeck launched from Safe Harbor. It prepares LLM-ready Flight Packets and authorship / rupture footers, but it does not mint SHI on its own; entrants must complete Safe Harbor's triad first.
 
 ## Problem statement
 
@@ -170,7 +172,7 @@ TCP ships maintained proof surfaces in both Node and the browser. The maintained
 npm test
 ```
 
-That path covers stylometry, fixtures, recognition, Hush, release hardening, benchmark, browser parity, retrieval lane, swap-cadence matrix, trainer lab, harbor, and diagnostics.
+That path covers stylometry, fixtures, recognition, Hush, release hardening, benchmark, browser parity, retrieval lane, swap-cadence matrix, trainer lab, harbor, diagnostics, Hush product spine, readiness dashboard, report ingest, and readiness ledger.
 
 ## Non-goals
 
@@ -186,7 +188,13 @@ Open the app:
 app/index.html
 ```
 
-Open Hush directly:
+Open Hush product spine directly:
+
+```text
+app/hush.html
+```
+
+Open legacy Hush chamber directly:
 
 ```text
 app/adversarial-bench.html
@@ -220,13 +228,18 @@ Use this order if you want the repo in a clean technical sequence:
 2. [docs/INDEX.md](docs/INDEX.md)
 3. [docs/TD613_MISSION_THESIS.md](docs/TD613_MISSION_THESIS.md)
 4. [docs/SYSTEM_OVERVIEW.md](docs/SYSTEM_OVERVIEW.md)
-5. [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md)
-6. [docs/ENGINE.md](docs/ENGINE.md)
-7. [docs/SAFETY_MODEL.md](docs/SAFETY_MODEL.md)
-8. [docs/TD613_SAFE_HARBOR.md](docs/TD613_SAFE_HARBOR.md)
-9. [docs/TD613_APERTURE.md](docs/TD613_APERTURE.md)
-10. [docs/STYLOMETRIC_MATH.md](docs/STYLOMETRIC_MATH.md)
-11. [docs/PHASE_12_RESIDUAL_STEERING_STATUS.md](docs/PHASE_12_RESIDUAL_STEERING_STATUS.md)
-12. [docs/INTERFACE_LEXICON.md](docs/INTERFACE_LEXICON.md)
+5. [docs/HUSH_OPERATOR_MANUAL.md](docs/HUSH_OPERATOR_MANUAL.md)
+6. [docs/HUSH_PHASE_21_28_STATUS.md](docs/HUSH_PHASE_21_28_STATUS.md)
+7. [docs/HUSH_PRODUCT_SPINE_STATUS.md](docs/HUSH_PRODUCT_SPINE_STATUS.md)
+8. [docs/HUSH_KNOWN_FAILURE_MODES.md](docs/HUSH_KNOWN_FAILURE_MODES.md)
+9. [docs/HUSH_TEST_FLIGHT_PROTOCOL.md](docs/HUSH_TEST_FLIGHT_PROTOCOL.md)
+10. [docs/HUSH_EPISTEMICIDE_AUDIT.md](docs/HUSH_EPISTEMICIDE_AUDIT.md)
+11. [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md)
+12. [docs/ENGINE.md](docs/ENGINE.md)
+13. [docs/SAFETY_MODEL.md](docs/SAFETY_MODEL.md)
+14. [docs/TD613_SAFE_HARBOR.md](docs/TD613_SAFE_HARBOR.md)
+15. [docs/TD613_APERTURE.md](docs/TD613_APERTURE.md)
+16. [docs/STYLOMETRIC_MATH.md](docs/STYLOMETRIC_MATH.md)
+17. [docs/INTERFACE_LEXICON.md](docs/INTERFACE_LEXICON.md)
 
 For incomplete and future work, see [ROADMAP.md](ROADMAP.md) and [KNOWN_FAILURES.md](KNOWN_FAILURES.md). For contribution flow, see [CONTRIBUTING.md](CONTRIBUTING.md).
