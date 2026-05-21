@@ -23,6 +23,7 @@ export function detectHushGarble(input = {}) {
   const hardFailures = [];
   const reviewWarnings = [];
   if (fragments.some((item) => item.startsWith('tail:'))) hardFailures.push('fragment-tail');
+  if (fragments.some((item) => item.includes('keep with'))) hardFailures.push('broken-keep-with-fragment');
   if (fragments.includes('preposition-chain')) hardFailures.push('broken-preposition-chain');
   if (fragments.includes('anchor-plus-negation')) hardFailures.push('literal-plus-nonsense');
   if (fragments.some((item) => item.includes('not no'))) hardFailures.push('dangling-negation');
