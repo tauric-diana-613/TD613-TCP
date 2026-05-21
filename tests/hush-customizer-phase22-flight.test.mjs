@@ -28,13 +28,15 @@ const customSamples = [
   'invoice note is the anchor: vendor called twice after lunch, INV-440 logged at 2:18, Jordan told to wait before resend until finance knew version. Jordan + resend + version + 2:18 belong together.',
   'DOC-31 had missing-call note when opened. later doc did not. not a grand theory, just sequence. unsafe part is the gap. do not turn gap into attitude.',
   'ROSTER-8 still had after-4:30 change when clean export was requested. if legit, ok, but clean export should still show timing. 05/20 is not decoration. after 4:30 is not decoration.',
-  'FORM-19 came back with initials and scan time 17:06, even though the scanner queue was marked closed by 5. could be batch upload. could be timezone. note says what was visible, not what it means.'
+  'FORM-19 came back with initials and scan time 17:06, even though the scanner queue was marked closed by 5. could be batch upload. could be timezone. note says what was visible, not what it means.',
+  'another note, same jagged lane: REQ-12 was marked complete, then the attachment count changed from 3 to 2, then the line item got renamed. i am not saying why. i am saying count, name, order. count/name/order is enough for the test.',
+  'last sample for pressure: FILE-72 has the same export minute on both copies, but one footer is gone and one footer is there. maybe harmless, yes. still, same minute different footer should not get rewritten into nothing happened.'
 ];
 
 let mask = createCustomMask({ label: 'Phase 22 Jagged Record Witness Mask' });
 for (const sample of customSamples) mask = addCustomMaskSample(mask, sample, { includePrivateText: true });
 
-assert.equal(mask.sampleCount, 12);
+assert.equal(mask.sampleCount, 14);
 assert.equal(mask.profileStatus, 'strong');
 assert(mask.profileSummary?.wordCount >= 600, 'jagged custom mask should carry a deep authorship corpus');
 assert((mask.profileSummary?.punctuationDensity ?? 0) >= 0.06, 'jagged custom mask should retain punctuation-heavy rushed authorship');
