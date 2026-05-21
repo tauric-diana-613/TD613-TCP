@@ -18,8 +18,13 @@ if (devIndex !== -1) {
   html = html.slice(0, insertAt) + rail + '\n' + html.slice(insertAt);
 }
 
-html = html.replace('>Copy from output</button>', '>Copy</button>');
-html = html.replace('>Clear output</button>', '>Clear</button>');
+html = html
+  .replace(/>\s*Copy from output\s*<\/button>/gi, '>Copy</button>')
+  .replace(/>\s*Clear output\s*<\/button>/gi, '>Clear</button>')
+  .replaceAll('Copy from output', 'Copy')
+  .replaceAll('COPY FROM OUTPUT', 'Copy')
+  .replaceAll('Clear output', 'Clear')
+  .replaceAll('CLEAR OUTPUT', 'Clear');
 
 const css = `
 /* === TD613 Flight direct mobile layout fix === */
@@ -67,6 +72,9 @@ if (!(html.indexOf('mobile-prompt-rail') < html.indexOf('devSettingsDrawer'))) {
 }
 if (!html.includes('>Copy</button>') || !html.includes('>Clear</button>')) {
   throw new Error('output control labels were not tightened');
+}
+if (html.includes('Copy from output') || html.includes('COPY FROM OUTPUT') || html.includes('Clear output') || html.includes('CLEAR OUTPUT')) {
+  throw new Error('long output control labels remain');
 }
 if (!html.includes('14dvh') || !html.includes('max-height: 16dvh')) {
   throw new Error('mobile output height patch missing');
