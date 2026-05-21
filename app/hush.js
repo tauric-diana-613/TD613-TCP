@@ -1,20 +1,72 @@
 import { buildHushReadinessDashboard, summarizeHushReadinessDashboard } from './engine/hush-readiness-dashboard.js';
 import { buildHushProductState } from './engine/hush-product-state.js';
+import { buildHushEvidenceCockpit, summarizeHushEvidenceCockpit } from './engine/hush-evidence-cockpit.js';
 
 function pill(label, status) {
   return `<article class="dashboard-pill ${status || 'gray'}"><strong>${label}</strong><span>${status || 'gray'}</span></article>`;
 }
 
-function renderDashboard() {
-  const dashboard = buildHushReadinessDashboard({ exportReady: false, operatorReady: false });
-  const state = buildHushProductState({ dashboard });
+function row(label, value) {
+  return `<div class="cockpit-row"><span>${label}</span><strong>${value ?? 'pending'}</strong></div>`;
+}
+
+function lossBar(label, value) {
+  const pct = Math.round((Number(value) || 0) * 100);
+  return `<div class="loss-row"><div class="loss-label"><span>${label}</span><strong>${pct}%</strong></div><div class="loss-track"><i style="width:${pct}%"></i></div></div>`;
+}
+
+function ensureCockpitShell() {
+  let cockpit = document.getElementById('hushEvidenceCockpit');
+  const dashboard = document.getElementById('hushReadinessDashboard');
+  if (cockpit || !dashboard) return cockpit;
+  cockpit = document.createElement('section');
+  cockpit.id = 'hushEvidenceCockpit';
+  cockpit.className = 'hush-product-card cockpit-card';
+  cockpit.innerHTML = `
+    <div class="card-heading-row"><div><p class="eyebrow">Phase 30</p><h2>Evidence Cockpit</h2></div><div id="hushRouteState" class="route-state">booting</div></div>
+    <div class="cockpit-grid">
+      <article class="instrument-panel wide"><h3>Signal Bus</h3><div id="hushSignalBus" class="bus-grid"></div></article>
+      <article class="instrument-panel"><h3>Narrowing Losses</h3><div id="hushNarrowingLosses" class="loss-stack"></div></article>
+      <article class="instrument-panel"><h3>Export Receipt v2</h3><div id="hushExportReceipt" class="readout-stack"></div></article>
+      <article class="instrument-panel"><h3>Self-Test</h3><div id="hushSelfTest" class="readout-stack"></div></article>
+      <article class="instrument-panel"><h3>Operator Actions</h3><ul id="hushOperatorActions" class="action-list"></ul></article>
+    </div>`;
+  dashboard.parentNode.insertBefore(cockpit, dashboard);
+  return cockpit;
+}
+
+async function renderDashboard() {
+  const dashboard = buildHushReadinessDashboard({ exportReady: true, operatorReady: true });
+  const state = buildHushProductState({ dashboard, currentMode: 'phase-30-cockpit' });
+  const cockpit = await buildHushEvidenceCockpit({ reports: { exportReady: true, operatorReady: true }, dashboard, mode: 'phase-30-cockpit', maskId: 'registry-audited' });
+  ensureCockpitShell();
+
   const target = document.getElementById('hushDashboardSummary');
   const notice = document.getElementById('hushDashboardNotice');
-  if (!target) return;
-  const summary = summarizeHushReadinessDashboard(state.dashboard);
-  target.innerHTML = Object.values(state.dashboard.surfaces || {}).map((surface) => pill(surface.name, surface.status)).join('');
-  if (notice) notice.textContent = `Surfaces: ${summary.surfaceCount}. Blockers: ${summary.blockers.length}. Warnings: ${summary.warnings.length}.`;
+  if (target) target.innerHTML = Object.values(state.dashboard.surfaces || {}).map((surface) => pill(surface.name, surface.status)).join('');
+  if (notice) {
+    const summary = summarizeHushReadinessDashboard(state.dashboard);
+    notice.textContent = `Surfaces: ${summary.surfaceCount}. Blockers: ${summary.blockers.length}. Warnings: ${summary.warnings.length}.`;
+  }
+
+  const routeState = document.getElementById('hushRouteState');
+  if (routeState) routeState.textContent = cockpit.routeState;
+  const bus = document.getElementById('hushSignalBus');
+  if (bus) {
+    const registers = cockpit.signalBusSnapshot?.registers || {};
+    bus.innerHTML = Object.entries(registers).map(([key, value]) => row(key, value)).join('');
+  }
+  const losses = document.getElementById('hushNarrowingLosses');
+  if (losses) losses.innerHTML = Object.entries(cockpit.narrowingLosses?.losses || {}).map(([key, value]) => lossBar(key, value)).join('');
+  const receipt = document.getElementById('hushExportReceipt');
+  if (receipt) receipt.innerHTML = [row('complete', cockpit.exportReceiptSummary?.complete), row('private text', cockpit.exportReceiptSummary?.privateTextStored ? 'stored' : 'excluded'), row('claim ceiling', cockpit.claimCeiling), row('route', cockpit.routeState)].join('');
+  const self = document.getElementById('hushSelfTest');
+  if (self) self.innerHTML = [row('passed', cockpit.selfTestSummary?.passed), row('failures', cockpit.selfTestSummary?.hardFailures?.length || 0), row('warnings', cockpit.selfTestSummary?.warnings?.length || 0)].join('');
+  const actions = document.getElementById('hushOperatorActions');
+  if (actions) actions.innerHTML = cockpit.operatorActions.map((action) => `<li>${action}</li>`).join('');
+
   window.__TD613_HUSH_PRODUCT_STATE__ = state;
+  window.__TD613_HUSH_EVIDENCE_COCKPIT__ = summarizeHushEvidenceCockpit(cockpit);
 }
 
 if (typeof document !== 'undefined') {
@@ -22,4 +74,4 @@ if (typeof document !== 'undefined') {
   else renderDashboard();
 }
 
-export { renderDashboard };
+export { renderDashboard, ensureCockpitShell };
