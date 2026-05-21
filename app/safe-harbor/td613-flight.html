@@ -560,6 +560,7 @@ cursor: pointer;
 display: inline-flex;
 align-items: center;
 justify-content: center;
+text-align: center;
 clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
 transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, color .16s ease;
 }
@@ -628,7 +629,8 @@ gap: .26rem;
 .radio-row label {
 position: relative;
 display: flex;
-align-items: flex-start;
+align-items: center;
+justify-content: center;
 gap: .28rem;
 min-height: 1.45rem;
 padding: .26rem .34rem;
@@ -638,7 +640,14 @@ linear-gradient(90deg, rgba(36,240,109,0.09), transparent 34%),
 rgba(0,7,7,0.58);
 font-size: .54rem;
 line-height: 1.14;
+text-align: center;
 clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+}
+
+.checkbox-row label:has(input[type="text"]),
+.radio-row label:has(input[type="text"]) {
+justify-content: flex-start;
+text-align: left;
 }
 
 .checkbox-row label:has(input:checked),
@@ -654,7 +663,8 @@ color: var(--bone-bright);
 .checkbox-row input[type="checkbox"],
 .radio-row input[type="radio"] {
 accent-color: var(--moss);
-margin-top: .04rem;
+flex: 0 0 auto;
+margin: 0;
 filter: drop-shadow(0 0 5px rgba(36,240,109,0.28));
 }
 
@@ -667,7 +677,9 @@ gap: .26rem;
 .seal-custom-label {
 display: inline-flex;
 align-items: center;
+justify-content: flex-start;
 gap: .28rem;
+text-align: left;
 }
 
 .seal-custom-label input[type="text"] {
@@ -830,12 +842,37 @@ font-size: .5rem;
 letter-spacing: .08em;
 text-transform: uppercase;
 color: var(--bone-dim);
+cursor: pointer;
+user-select: none;
 }
 
-.output-auth-toggle input {
+.output-auth-toggle input[type="checkbox"] {
+appearance: none;
+-webkit-appearance: none;
+display: inline-grid;
+place-content: center;
 width: .84rem;
 height: .84rem;
-accent-color: var(--moss);
+margin: 0;
+border: 1px solid rgba(36,240,109,0.58);
+background: rgba(0,7,7,0.72);
+box-shadow: inset 0 0 0 1px rgba(120,247,255,0.08), 0 0 14px rgba(36,240,109,0.08);
+clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
+}
+
+.output-auth-toggle input[type="checkbox"]::before {
+content: "";
+width: .48rem;
+height: .48rem;
+transform: scale(0);
+transition: transform .12s ease;
+background: var(--moss);
+box-shadow: 0 0 12px rgba(36,240,109,0.45);
+clip-path: polygon(14% 48%, 35% 70%, 84% 15%, 96% 28%, 36% 91%, 2% 58%);
+}
+
+.output-auth-toggle input[type="checkbox"]:checked::before {
+transform: scale(1);
 }
 
 .seal-card {
@@ -903,6 +940,7 @@ font-size: .46rem;
 letter-spacing: .075em;
 text-transform: uppercase;
 padding: .12rem .24rem;
+text-align: center;
 }
 
 .copy-status {
@@ -1413,6 +1451,7 @@ Paste or type whatever you want the model to do. The rest of the controls only d
 <h2>Actions</h2>
 <div class="row">
 <button class="btn" id="btnGenerate" type="button">Generate</button>
+<button class="btn btn-secondary" id="btnRandomizer" type="button">Randomizer</button>
 <button class="btn btn-secondary" id="btnResetControls" type="button">Reset controls</button>
 <button class="btn btn-ghost" id="btnClearInput" type="button">Clear input</button>
 <button class="btn btn-ghost" id="btnClear" type="button">Clear all</button>
@@ -1424,7 +1463,7 @@ Paste or type whatever you want the model to do. The rest of the controls only d
 <div class="section-note">
 Choose how the top of your Flight Packet announces the credential object and covenant. No custom text slots here; copy and edit after if needed.
 </div>
-<h3>Badge credential &amp; covenant line</h3>
+<h3>Badge credential</h3>
 <div class="checkbox-row">
 <label><input id="hdrStandardBadge" type="checkbox"/>Khona‌lit-po ∴ TD613 — Badge Received</label>
 <label><input id="hdrTetragramSeal" type="checkbox"/>𝌋‌⟐</label>
@@ -1440,7 +1479,7 @@ Choose how the top of your Flight Packet announces the credential object and cov
 <label><input id="hdrPriestess" type="checkbox"/>Covenant: Tauri Priestesshood of Ash⟐</label>
 <label><input id="hdrAshMoon" type="checkbox"/>Covenant: Tauri Goddess of the Ash Moon⟐</label>
 </div>
-<h3>PUA &amp; surrogate (header notes)</h3>
+<h3>PUA &amp; surrogate</h3>
 <div class="checkbox-row">
 <label><input id="hdrPUA" type="checkbox"/>Include PUA codepoint note in header (U+10D613)</label>
 <label><input id="hdrSurrogate" type="checkbox"/>Include surrogate pair note in header (\uDBF5\uDE13)</label>
@@ -1511,12 +1550,12 @@ Soft closers and lane directions that finish the body before the Seal. Canonical
 <label><input id="ftrAuthor" type="checkbox"/>Author with 𝌋</label>
 <label><input id="ftrBegin" type="checkbox"/>Begin output with a 𝌋</label>
 </div>
-<h3>PUA &amp; surrogate (body close notes)</h3>
+<h3>PUA &amp; surrogate</h3>
 <div class="checkbox-row">
 <label><input id="ftrPUA" type="checkbox"/>Append line “U+10D613”</label>
 <label><input id="ftrSurrogate" type="checkbox"/>Append line “\uDBF5\uDE13”</label>
 </div>
-<h3>Àṣẹ placement (body only)</h3>
+<h3>Àṣẹ placement</h3>
 <div class="checkbox-row">
 <label><input id="bodyAse" type="checkbox"/>Append “Àṣẹ” at body close</label>
 <label><input id="bodyAseAmari" type="checkbox"/>Append “Àṣẹ, Amari!” at body close</label>
@@ -1722,6 +1761,7 @@ This block controls the closing phrase and how the lozenge behaves. Use variety 
 <label><input name="sealZwnjMode" type="radio" value="afterW"/>after “w” in target word</label>
 <label><input name="sealZwnjMode" type="radio" value="beforeGlyph"/>before glyph</label>
 <label><input name="sealZwnjMode" type="radio" value="insideWord"/>inside target word</label>
+<label><input name="sealZwnjMode" type="radio" value="insideVerb"/>inside verb</label>
 <label><input name="sealZwnjMode" type="radio" value="double"/>word + before glyph</label>
 </div>
 </div>
@@ -1942,6 +1982,14 @@ return verb ? (verb + " with") : "";
 return selected;
 }
 
+function insertZwnjInsideFirstWord(value) {
+return String(value || "").replace(/[A-Za-zÀ-ž]+/, function(word) {
+if (word.length < 2) return word;
+const mid = Math.max(1, Math.floor(word.length / 2));
+return word.slice(0, mid) + zwnj() + word.slice(mid);
+});
+}
+
 function syncPayloadStepper() {
 const includeBinding = document.getElementById("authIncludeBinding")?.checked;
 const down = document.getElementById("payloadDown");
@@ -2092,13 +2140,16 @@ return lines.join("\n");
 }
 
 function buildSeal() {
-const verb = currentSealVerbValue();
+let verb = currentSealVerbValue();
 const useDiamond = document.getElementById("sealUseDiamond").checked;
 const zMode = document.querySelector("input[name='sealZwnjMode']:checked")?.value || "none";
 const hairMode = document.querySelector("input[name='sealHair']:checked")?.value || "none";
 const targetWord = document.getElementById("sealTargetWord").value || "with";
 
 if (!verb && !useDiamond) return "";
+if (zMode === "insideVerb" && verb) {
+verb = insertZwnjInsideFirstWord(verb);
+}
 
 let line = "";
 if (verb) line += verb;
@@ -2377,6 +2428,97 @@ input.value = String(Math.max(1, current + delta));
 buildOutput();
 }
 
+function randomIndex(length) {
+if (!length) return 0;
+if (window.crypto && typeof window.crypto.getRandomValues === "function") {
+const bucket = new Uint32Array(1);
+window.crypto.getRandomValues(bucket);
+return bucket[0] % length;
+}
+return Math.floor(Math.random() * length);
+}
+
+function pickRandom(items) {
+return items[randomIndex(items.length)];
+}
+
+function chooseOneCheckbox(eligibleIds, allIds) {
+const all = allIds || eligibleIds;
+all.forEach(id => {
+const node = document.getElementById(id);
+if (node) node.checked = false;
+});
+const selectedId = pickRandom(eligibleIds);
+const selected = document.getElementById(selectedId);
+if (selected) selected.checked = true;
+return selectedId;
+}
+
+function chooseRadio(name, predicate) {
+const options = Array.from(document.querySelectorAll("input[name='" + name + "']"))
+.filter(option => !predicate || predicate(option));
+const selected = pickRandom(options);
+if (selected) selected.checked = true;
+return selected;
+}
+
+function applyFlightRandomizer() {
+chooseOneCheckbox([
+"hdrStandardBadge",
+"hdrTetragramSeal",
+"hdrKhona",
+"hdrDotTriad",
+"hdrTdPhrase",
+"hdrVariant1"
+]);
+
+chooseOneCheckbox([
+"bodyPreTetra",
+"bodyPreTetraSeal",
+"bodyPreKhonapolit",
+"bodyPreTriad",
+"bodyPreSeal",
+"bodyPreTetraZwnj",
+"bodyPreZwnj"
+], [
+"bodyPreTetra",
+"bodyPreTetraSeal",
+"bodyPreKhonapolit",
+"bodyPreTriad",
+"bodyPreCustomSymbol",
+"bodyPreSeal",
+"bodyPreTetraZwnj",
+"bodyPreZwnj"
+]);
+
+chooseOneCheckbox([
+"ftrKhona",
+"ftrTetraSeal",
+"ftrTriad",
+"ftrTdPhrase",
+"ftrProceed",
+"ftrStayLane",
+"ftrRetrieve",
+"ftrWrite",
+"ftrGenerate",
+"ftrProcess",
+"ftrAuthor",
+"ftrBegin"
+]);
+
+chooseOneCheckbox([
+"ftrPUA",
+"ftrSurrogate"
+]);
+
+document.getElementById("sealUseDiamond").checked = true;
+chooseRadio("sealVerb", option => option.value !== "__custom__" && option.value !== "__custom_with__");
+chooseRadio("sealZwnjMode");
+chooseRadio("sealHair");
+setCopyStatus("Randomized Flight controls.");
+buildOutput();
+}
+
 function applyPresetLight() {
 clearAll();
 document.getElementById("hdrStandardBadge").checked = true;
@@ -2593,7 +2735,10 @@ initFlightShiGate();
 // Keep the calibration field static unless a future explicit "live calibration" control is added.
 document.getElementById("taskText").addEventListener("input", buildOutput);
 document.querySelectorAll("input[type='checkbox'],input[type='radio'],input[type='text'],input[type='number'],input[type='date']")
-.forEach(el => el.addEventListener("input", buildOutput));
+.forEach(el => {
+if (el.id === "authOutputToggle") return;
+el.addEventListener("input", buildOutput);
+});
 document.getElementById("sealVerbCustom")?.addEventListener("input", () => {
 document.querySelector("input[name='sealVerb'][value='__custom__']").checked = true;
 buildOutput();
@@ -2608,6 +2753,7 @@ buildOutput();
 });
 
 document.getElementById("btnGenerate").addEventListener("click", buildOutput);
+document.getElementById("btnRandomizer")?.addEventListener("click", applyFlightRandomizer);
 document.getElementById("btnResetControls").addEventListener("click", resetControls);
 document.getElementById("btnClearInput").addEventListener("click", clearInput);
 document.getElementById("btnClear").addEventListener("click", clearAll);
