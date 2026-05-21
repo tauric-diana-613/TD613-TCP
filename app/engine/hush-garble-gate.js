@@ -4,7 +4,7 @@ const textOf = (value) => String(value ?? '');
 const list = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const uniq = (value) => [...new Set(list(value))];
 
-const BAD_TAILS = ['not no.', 'not no', 'on after.', 'after on.', 'with.', 'on.', 'not.'];
+const BAD_TAILS = ['not no.', 'not no', 'on after.', 'after on.', 'with.', 'on.'];
 const BAD_PHRASES = ['keep with ', 'record anchor. not', 'note anchor. not', 'anchor. not no', ' .', '..'];
 
 function findFragments(text = '') {
