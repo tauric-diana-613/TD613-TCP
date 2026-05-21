@@ -1,137 +1,65 @@
 # TD613 Hush Phase Map
 
-TD613 Hush is the quiet authorship-pressure toy inside The Cadence Playground. It lives in the `TD613-TCP` repository, but Hush is the product name for this Toy-to-Tool arc.
-
-## Phase 0 — Architecture Admission
-
-Deliverables: `docs/ADVERSARIAL_STYLOMETRY_BENCH.md`.
-
-What it added: named the closed-loop authorship-recognition bench and admitted the actual architecture.
-
-What it refuses: vague cadence-play language that hides measurement, risk, or claim discipline.
-
-Related tests: baseline stylometry and bench tests.
-
-## Phase 1 — Escape Vector
-
-Deliverables: `app/engine/escape-vector.js`, Escape Vector tests.
-
-What it added: source residual risk, mask fit, safe delta, semantic fidelity, Belonging Without Collapse, ingestion friction, recapture pressure, and mask-history movement.
-
-What it refuses: treating a pretty rewrite as evidence of protection.
-
-Related tests: `tests/escape-vector.test.mjs`.
-
-## Phase 2 — Ingestion Friction
-
-Deliverables: `app/engine/ingestion-friction.js`, ingestion tests.
-
-What it added: Unicode, glyph, ZWNJ, normalization, and protected-literal review.
-
-What it refuses: flattening boundary marks into decoration.
-
-Related tests: `tests/ingestion-friction.test.mjs`.
-
-## Phase 3 — Closed-Loop Controller
-
-Deliverables: `app/engine/escape-controller.js`, controller tests.
-
-What it added: continue, hold, restore, rotate, and seal states.
-
-What it refuses: candidate shopping without steering discipline.
-
-Related tests: `tests/escape-controller.test.mjs`.
-
-## Phase 4 — Persona Memory
-
-Deliverables: `app/engine/persona-memory.js`, Persona memory tests.
-
-What it added: Personas as history-aware exposure membranes with continuity, drift, linkability, and overuse pressure.
-
-What it refuses: treating masks as disposable costumes with no memory.
-
-Related tests: `tests/persona-memory.test.mjs`.
-
-## Phase 5 — Adversarial Bench UI
-
-Deliverables: `app/adversarial-bench.html`, `app/adversarial-bench.mjs`.
-
-What it added: a local cockpit for baseline, mask, draft, protected output, and analysis.
-
-What it refuses: burying operator review behind a black-box rewrite button.
-
-Related tests: `tests/adversarial-bench.test.mjs`.
-
-## Phase 6 — Iteration Ledger
-
-Deliverables: `app/engine/iteration-ledger.js`, ledger tests.
-
-What it added: a flight recorder with hashes, rows, decisions, accepted outputs, and private text excluded by default.
-
-What it refuses: memory without custody.
-
-Related tests: `tests/iteration-ledger.test.mjs`.
-
-## Phase 7 — Claim Ladder + Report Export
-
-Deliverables: `app/engine/claim-ladder.js`, `app/engine/report-export.js`.
-
-What it added: claim ceilings, forbidden-claim detection, JSON reports, and Markdown reports.
-
-What it refuses: identity verdicts, platform guarantees, or local metrics pretending to be proof.
-
-Related tests: `tests/claim-ladder.test.mjs`, `tests/report-export.test.mjs`.
-
-## Phase 8 — Fixtures, Calibration, and Tests
-
-Deliverables: `fixtures/stylometry/`, `app/engine/calibration.js`, `app/engine/fixture-runner.js`.
-
-What it added: hostile fixtures, calibration ranges, and regression pressure.
-
-What it refuses: beautiful-demo dependency.
-
-Related tests: `tests/fixtures-calibration.test.mjs`, `tests/fixture-runner.test.mjs`, `tests/stylometry-regression.test.mjs`.
-
-## Phase 9 — Recognition Field Simulator
-
-Deliverables: `app/engine/context-profile.js`, `app/engine/recognition-field.js`.
-
-What it added: local context-pressure simulation for group chat, forum, public comment, legal intake, HR/compliance portal, protected tip form, internal workspace, and document handoff.
-
-What it refuses: hidden classifier claims or platform prophecy.
-
-Related tests: `tests/context-profile.test.mjs`, `tests/recognition-field.test.mjs`, `tests/recognition-field-regression.test.mjs`.
-
-## Phase 10 — Integration Discipline + Release Hardening
-
-Deliverables: release docs, release manifest, release tests.
-
-What it added: documentation, operator guidance, known limitations, responsible-use posture, whistleblower policy framing, anti-selective-admissibility doctrine, rupture/Toni clause, and release governance.
-
-What it refuses: presenting Hush as the whole repository or promising more than local review can support.
-
-Related tests: `tests/release-manifest.test.mjs`, `tests/docs-surface.test.mjs`, `tests/release-hardening.test.mjs`.
-
-## Phase 11 — Adversarial Bench → Hush Mask Studio
-
-Deliverables: `app/data/hush-masks.js`, `app/engine/hush-mask-studio.js`, `app/engine/hush-custom-mask.js`, `app/engine/hush-profile-match.js`, `app/engine/hush-swap.js`, updated `app/adversarial-bench.html`, updated `app/adversarial-bench.mjs`, and Hush tests.
-
-What it added: renamed and upgraded `/adversarial-bench` into TD613 Hush while preserving the serious adversarial stylometry pipeline already built there. Phase 11 adds a Hush-native mask library, custom mask samples, live profile refinement, swap generation, profile-match review, privacy-preserving mask exports, and a cleaner whistleblower-facing mask workflow.
-
-What it refuses: a second competing Hush app, old Homebase design language, Deck duel framing as the primary route, legacy ontology gating, raw sample text in default exports, and external outcome claims.
-
-Related tests: `tests/hush-mask-studio.test.mjs`, `tests/hush-custom-mask.test.mjs`, `tests/hush-profile-match.test.mjs`, `tests/hush-swap.test.mjs`, `tests/adversarial-bench.test.mjs`.
-
-## Phase 12 — Residual-Driven Hush Steering
-
-Deliverables: `app/engine/hush-residual-vector.js`, `app/engine/hush-protected-literal-lockbox.js`, `app/engine/hush-steering-plan.js`, `app/engine/hush-mask-lifecycle.js`, `app/engine/hush-export-policy.js`, updated `app/engine/hush-swap.js`, updated `app/engine/hush-mask-studio.js`, and Phase 12 Hush tests.
-
-What it added: residual vectors, protected literal lockbox, mode-specific steering weights, candidate vetoes, all-candidates-failed behavior, mask lifecycle governance, export policy modes, and built-in mask distribution targets.
-
-What it refuses: treating the best available candidate as a success when the whole candidate set remains weak, treating private-text exclusion as complete export safety, and letting one universal score flatten legal intake, group-chat, rotating-mask, and stable-pseudonym contexts into the same risk posture.
-
-Related tests: `tests/hush-residual-vector.test.mjs`, `tests/hush-protected-literal-lockbox.test.mjs`, `tests/hush-steering-plan.test.mjs`, `tests/hush-mask-lifecycle.test.mjs`, `tests/hush-export-policy.test.mjs`, and `tests/hush-swap.test.mjs`.
+TD613 Hush is the local authorship-pressure and custody review instrument inside The Cadence Playground. It lives in the `TD613-TCP` repository, but Hush is the product name for this Toy-to-Tool arc, not the name of every TD613 surface.
+
+Phase 29 gives Hush a first-class product route at `app/hush.html`. The older `app/adversarial-bench.html` route remains available as the legacy chamber.
+
+## Phase list
+
+| Phase | Name | Primary addition |
+| --- | --- | --- |
+| 0 | Architecture Admission | Named the closed-loop authorship-recognition bench. |
+| 1 | Escape Vector | Source residual risk, mask fit, safe delta, and recapture pressure. |
+| 2 | Ingestion Friction | Unicode, glyph, ZWNJ, normalization, and protected-literal review. |
+| 3 | Closed-Loop Controller | Continue, hold, restore, rotate, and seal states. |
+| 4 | Persona Memory | Masks as history-aware exposure membranes. |
+| 5 | Adversarial Bench UI | Local cockpit for baseline, mask, draft, output, and analysis. |
+| 6 | Iteration Ledger | Hash-based flight recorder with private text excluded by default. |
+| 7 | Claim Ladder + Report Export | Claim ceilings, forbidden claims, JSON reports, and Markdown reports. |
+| 8 | Fixtures and Calibration | Hostile fixtures, calibration ranges, and regression pressure. |
+| 9 | Recognition Field | Local context-pressure simulation without platform prophecy. |
+| 10 | Integration Discipline | Release docs, limitations, responsible use, and release governance. |
+| 11 | Hush Mask Studio | Hush-native mask library, custom samples, profile matching, and swap workflow. |
+| 12 | Residual Steering | Residual vectors, literal lockbox, steering plans, mask lifecycle, and export policy. |
+| 13 | Compact Mobile | Mobile-facing Hush surface. |
+| 14 | Simple Path | Message, mask, transform, output workflow cleanup. |
+| 15 | Invisible Instrument | Black-glass Hush surface with Vault and Lab drawers. |
+| 16 | Hush Mask Writer | Rewrite layer between meaning plans and scoring. |
+| 17 | Release Policy | Hard blocks versus review warnings. |
+| 18 | Source Residue | Source-body retention scorer and cadence-detachment ranking. |
+| 18.1 | Copy Hard Block | Exact and near-exact source-body copies hard-block. |
+| 19 | Syntax Recomposer | Claim roles, literal placement, syntax planning, recomposition, and claim integrity. |
+| 20 | Alien Console | Futurecore-goth operator surface and heat readout. |
+| 20.1 | Field Instrument | Mobile classified-device layer and route cartridges. |
+| 20.2 | Mobile Viewport Fix | Phone viewport guard and route-card overflow repair. |
+| 21 | Claim Payload Preservation | Operational IDs, timestamps, actors, instructions, version context, causal reasons, and evidence relationships. |
+| 22 | Difficult Authorship | Difficult authorship profiles and harder customizer stress paths. |
+| 23 | Flight Reporting | Hard-number flight reports for output quality. |
+| 24 | Bidirectional Readiness | Coherent-to-jagged and jagged-to-coherent readiness pressure. |
+| 25 | Hard Authorship Reality Gate | Garble gate, event-shape retention, hard-mask proof, and whistleblower-readiness report. |
+| 26.1 | Mask Memory Accept Gate | Accept-gate repair for Hush-released outputs. |
+| 27 | Register Custody Bridge | Register profiles, contracts, dialect/chatspeak/code-switch custody, and linguistic custody report. |
+| 28 | Target Register Forge | Target-register plan, audit, masks, wrapper, and report. |
+| 29 | Product Spine | `/hush` route, readiness dashboard, report ingest, readiness ledger, and product state. |
+| 29.1 | Public Memory Repair | README, docs index, phase map, and epistemicide-audit repair. |
+
+## Current route posture
+
+- Product route: `app/hush.html`
+- Legacy Hush chamber: `app/adversarial-bench.html`
+- Product state: `app/engine/hush-product-state.js`
+- Dashboard: `app/engine/hush-readiness-dashboard.js`
+- Report ingest: `app/engine/hush-report-ingest.js`
+- Readiness ledger: `app/engine/hush-readiness-ledger.js`
+
+## Current report surfaces
+
+- `HUSH_PHASE24_READINESS_REPORT`
+- `HUSH_PHASE25_WHISTLEBLOWER_READINESS_REPORT`
+- `HUSH_PHASE27_LINGUISTIC_CUSTODY_REPORT`
+- `HUSH_PHASE28_TARGET_REGISTER_REPORT`
+- `HUSH_PHASE29_PRODUCT_READINESS_REPORT`
 
 ## Closeout summary
 
-Phase 10 closed the first Toy-to-Tool plan. Phase 11 starts the cleanup after the cleanup: Hush becomes the primary mask studio while Homebase, Deck, and Trainer remain legacy/lab chambers. Phase 12 makes Hush fight its own residual vector before it lets a candidate pass.
+Phase 10 closed the first Toy-to-Tool plan. Phase 11 started the cleanup after the cleanup. Phase 12 made Hush fight its own residual vector before passing a candidate. Phases 13 through 20 made Hush usable on real operator surfaces. Phases 21 through 28 hardened payload, release, register, and target-register custody. Phase 29 gave Hush a product spine. Phase 29.1 repairs the public-memory layer so documentation no longer truncates the current tool.
