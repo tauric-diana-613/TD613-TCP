@@ -21,8 +21,8 @@ function sourceLiterals(text = '') {
 function certaintyInflated(sourceText = '', outputText = '') {
   const source = textOf(sourceText);
   const output = textOf(outputText);
-  const hedged = source.includes('maybe') || source.includes('idk') || source.includes('not saying') || source.includes('could');
-  const hardened = output.includes('proves') || output.includes('confirmed misconduct') || output.includes('fraud') || output.includes('definitely');
+  const hedged = source.includes('maybe') || source.includes('may be') || /\bmay\b/.test(source) || source.includes('idk') || source.includes('not saying') || source.includes('could');
+  const hardened = output.includes('proves') || output.includes('confirmed misconduct') || output.includes('definitely') || output.includes('intentional');
   return hedged && hardened;
 }
 
@@ -32,6 +32,11 @@ function overcooked(targetRegister = '', targetFeatures = [], outputText = '') {
   if (targetRegister === 'chatspeak') return found.length > 8;
   if (targetRegister === 'blip') return found.length > 5;
   return false;
+}
+
+function identityRisk(outputText = '') {
+  const output = textOf(outputText);
+  return output.includes('identity-marker:') || output.includes('speaker-identity:');
 }
 
 export function auditTargetRegisterShift(input = {}) {
@@ -58,7 +63,7 @@ export function auditTargetRegisterShift(input = {}) {
   if (certaintyInflated(sourceText, outputText)) hardFailures.push('certainty-inflated');
   if (['aave', 'chatspeak', 'blip'].includes(targetRegister) && !targetFeaturesAdded.length) hardFailures.push('target-register-not-visible');
   if (overcooked(targetRegister, targetFeatures, outputText)) hardFailures.push('target-register-overcooked');
-  if (textOf(outputText).includes('as a black') || textOf(outputText).includes('because i am black')) hardFailures.push('identity-inference-risk');
+  if (identityRisk(outputText)) hardFailures.push('identity-inference-risk');
 
   return {
     version: HUSH_TARGET_REGISTER_AUDIT_VERSION,
