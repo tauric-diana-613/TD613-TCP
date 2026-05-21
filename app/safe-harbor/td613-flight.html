@@ -1,43 +1,4374 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8"/>
 <title>TD613 Flight</title>
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<script>
+try {
+const cachedShi = localStorage.getItem("TD613_FLIGHT_SHI");
+if (/^TD613-SH-9B07D8B-[A-F0-9]{8}$/i.test((cachedShi || "").trim())) {
+document.documentElement.dataset.flightShiCached = "true";
+}
+} catch (error) {}
+</script>
 <style>
-html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;background:#010606}
-#flightFrame{display:block;width:100vw;height:100dvh;border:0;background:#010606}
-#flightLoading{position:fixed;inset:0;display:grid;place-items:center;font:700 12px ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:#31ff8a;background:#010606}
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&family=Tektur:wght@500;600;700&family=Unbounded:wght@500;700&display=swap');
+
+:root {
+--ink: #000203;
+--ink-2: #020707;
+--folio: rgba(3, 15, 14, 0.94);
+--folio-2: rgba(5, 23, 20, 0.9);
+--bone: #e8efe8;
+--bone-bright: #fbfff7;
+--bone-dim: #9faea8;
+--moss: #24f06d;
+--moss-dark: #042d25;
+--blood: #9c161f;
+--blood-hot: #ff352b;
+--amber: #ffb13b;
+--amber-soft: #5b350c;
+--cyan: #78f7ff;
+--glass-line: rgba(111, 255, 200, 0.22);
+--rule: rgba(190, 255, 223, 0.18);
+--rule-strong: rgba(190, 255, 223, 0.34);
+--shadow: rgba(0, 0, 0, 0.72);
+--mx: 50%;
+--my: 18%;
+--font-title: "DashFallback", "Unbounded", "Tektur", "Arial Black", "Segoe UI Symbol", system-ui, sans-serif;
+--font-rite: "DashFallback", "Azeret Mono", "IBM Plex Mono", "Segoe UI Symbol", "SF Mono", Consolas, monospace;
+--font-inscription: "DashFallback", "Tektur", "Azeret Mono", "Segoe UI Symbol", "Arial Narrow", system-ui, sans-serif;
+--font-mono: "DashFallback", "IBM Plex Mono", "Azeret Mono", "Segoe UI Symbol", "SF Mono", "JetBrains Mono", Consolas, monospace;
+--cut: 18px;
+}
+
+* { box-sizing: border-box; }
+
+html {
+background: var(--ink);
+}
+
+body {
+margin: 0;
+padding: 0;
+min-height: 100vh;
+font-family: var(--font-rite);
+color: var(--bone);
+background:
+radial-gradient(circle at var(--mx) var(--my), rgba(36,240,109,0.13), transparent 18rem),
+radial-gradient(circle at 82% 16%, rgba(120,247,255,0.10), transparent 24rem),
+radial-gradient(circle at 18% 88%, rgba(156,22,31,0.15), transparent 27rem),
+linear-gradient(132deg, #000101 0%, #020706 48%, #010203 100%);
+overflow-x: hidden;
+overscroll-behavior-y: none;
+}
+
+body::before,
+body::after {
+content: "";
+position: fixed;
+inset: 0;
+pointer-events: none;
+z-index: -1;
+}
+
+body::before {
+background:
+repeating-linear-gradient(102deg, transparent 0 31px, rgba(120,247,255,0.028) 32px, transparent 33px 83px),
+repeating-linear-gradient(0deg, transparent 0 7px, rgba(36,240,109,0.028) 8px, transparent 9px 18px),
+radial-gradient(ellipse at 50% -14%, rgba(190,255,223,0.055), transparent 42%);
+mix-blend-mode: screen;
+opacity: .64;
+animation: artifactDrift 30s linear infinite;
+}
+
+body::after {
+background:
+radial-gradient(circle at 12% 22%, rgba(120,247,255,0.07), transparent 1.5rem),
+radial-gradient(circle at 78% 67%, rgba(156,22,31,0.12), transparent 2.4rem),
+linear-gradient(90deg, transparent 0 12%, rgba(36,240,109,0.045) 12.1% 12.35%, transparent 12.6% 100%);
+filter: url(#codexNoise);
+opacity: .4;
+}
+
+.codex-filters {
+position: absolute;
+width: 0;
+height: 0;
+overflow: hidden;
+}
+
+.page-wrap {
+position: relative;
+isolation: isolate;
+max-width: 1480px;
+margin: 0 auto;
+padding: clamp(.85rem, 1.6vw, 1.55rem);
+}
+
+.page-wrap::before {
+content: "";
+position: fixed;
+inset: .72rem;
+pointer-events: none;
+border: 1px solid rgba(120,247,255,0.16);
+clip-path: polygon(0 24px, 24px 0, calc(100% - 62px) 0, 100% 62px, 100% calc(100% - 26px), calc(100% - 26px) 100%, 58px 100%, 0 calc(100% - 58px));
+box-shadow: inset 0 0 72px rgba(0,0,0,0.66), inset 0 0 0 1px rgba(36,240,109,0.10);
+z-index: 0;
+}
+
+header,
+.grid {
+position: relative;
+z-index: 1;
+}
+
+header {
+display: grid;
+grid-template-columns: minmax(0, 1fr);
+grid-template-areas:
+"title"
+"text"
+"tags"
+"howto";
+gap: .42rem;
+margin-bottom: .72rem;
+padding: .48rem 24rem .48rem .68rem;
+background:
+linear-gradient(100deg, rgba(3,18,16,0.94), rgba(0,3,3,0.96) 58%, rgba(6,12,14,0.92)),
+radial-gradient(circle at var(--mx) 0%, rgba(36,240,109,0.12), transparent 20rem);
+border: 1px solid var(--rule);
+clip-path: polygon(0 14px, 14px 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 26px 100%, 0 calc(100% - 26px));
+box-shadow: 0 20px 80px var(--shadow), inset 0 0 0 1px rgba(120,247,255,0.035);
+overflow: hidden;
+}
+
+.flight-quick-nav {
+position: absolute;
+top: .62rem;
+right: .72rem;
+z-index: 2;
+display: flex;
+flex-wrap: nowrap;
+justify-content: flex-end;
+gap: .34rem;
+max-width: none;
+}
+
+.flight-quick-nav a,
+.flight-quick-nav button {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+min-height: 1.65rem;
+padding: .18rem .54rem;
+border: 1px solid rgba(36,240,109,0.36);
+background:
+linear-gradient(180deg, rgba(36,240,109,0.12), rgba(0,7,7,0.82)),
+radial-gradient(circle at 18% 0%, rgba(120,247,255,0.12), transparent 58%);
+color: var(--bone);
+font-family: var(--font-mono);
+font-size: .48rem;
+font-weight: 700;
+letter-spacing: .12em;
+text-decoration: none;
+text-transform: uppercase;
+white-space: nowrap;
+clip-path: polygon(0 8px, 8px 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+cursor: pointer;
+}
+
+.flight-quick-nav a:hover,
+.flight-quick-nav a:focus-visible,
+.flight-quick-nav button:hover,
+.flight-quick-nav button:focus-visible {
+border-color: rgba(120,247,255,0.68);
+color: var(--moss);
+box-shadow: 0 0 20px rgba(36,240,109,0.16);
+}
+
+.flight-quick-nav .flight-nav-signout {
+min-height: auto;
+padding: .18rem .16rem;
+font-size: .42rem;
+letter-spacing: .16em;
+color: rgba(187,255,210,0.9);
+border-color: transparent;
+background: transparent;
+box-shadow: none;
+clip-path: none;
+text-decoration: none;
+}
+
+.flight-quick-nav .flight-nav-signout:hover,
+.flight-quick-nav .flight-nav-signout:focus-visible {
+border-color: transparent;
+color: var(--moss);
+background: transparent;
+box-shadow: 0 0 14px rgba(36,240,109,0.12);
+text-decoration: underline;
+text-underline-offset: .22em;
+}
+
+header::before {
+display: none;
+content: "";
+position: absolute;
+right: 2.8rem;
+bottom: .72rem;
+width: 5.2rem;
+height: 5.2rem;
+min-height: 0;
+background:
+radial-gradient(circle at 50% 50%, transparent 0 2.2rem, rgba(36,240,109,0.65) 2.25rem 2.34rem, transparent 2.4rem 3.8rem, rgba(156,22,31,0.58) 3.85rem 3.95rem, transparent 4rem),
+linear-gradient(90deg, transparent 0 48%, rgba(120,247,255,0.22) 48.3% 48.8%, transparent 49.2% 100%),
+linear-gradient(0deg, transparent 0 48%, rgba(120,247,255,0.22) 48.3% 48.8%, transparent 49.2% 100%);
+border: 1px solid rgba(36,240,109,0.24);
+clip-path: polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%);
+box-shadow: inset 0 0 60px rgba(0,0,0,0.62), 0 0 28px rgba(36,240,109,0.08);
+opacity: .28;
+}
+
+header::after {
+display: none;
+content: "marginal hand / rupture copy / td613";
+position: absolute;
+right: .75rem;
+top: .75rem;
+writing-mode: vertical-rl;
+font-family: var(--font-inscription);
+font-size: .5rem;
+letter-spacing: .22em;
+text-transform: uppercase;
+color: rgba(190,255,223,0.38);
+}
+
+h1 {
+grid-area: title;
+align-self: end;
+font-family: var(--font-title);
+font-size: clamp(.95rem, 1.35vw, 1.42rem);
+line-height: 1.02;
+margin: 0;
+letter-spacing: .08em;
+text-transform: uppercase;
+color: var(--bone-bright);
+text-shadow: 0 0 14px rgba(36,240,109,0.16), 0 0 26px rgba(120,247,255,0.08);
+max-width: none;
+}
+
+h1::after {
+content: "RECOVERED ALIEN-TECH FIELD INSTRUMENT / SAFE HARBOR ISSUE";
+display: block;
+margin-top: .24rem;
+font-family: var(--font-mono);
+font-size: .4rem;
+line-height: 1.25;
+letter-spacing: .18em;
+color: var(--moss);
+}
+
+.subtitle {
+grid-area: text;
+font-size: .58rem;
+line-height: 1.28;
+max-width: 112ch;
+max-height: none;
+overflow: visible;
+color: var(--bone-dim);
+padding-left: .78rem;
+border-left: 2px solid rgba(120,247,255,0.42);
+}
+
+.pill-row {
+grid-area: tags;
+display: flex;
+flex-wrap: wrap;
+gap: .34rem;
+align-content: start;
+}
+
+.pill {
+display: inline-flex;
+align-items: center;
+min-height: 2rem;
+min-height: 1.48rem;
+padding: .16rem .42rem;
+border: 1px solid rgba(120,247,255,0.18);
+background:
+linear-gradient(180deg, rgba(5,24,21,0.82), rgba(0,5,5,0.92)),
+linear-gradient(90deg, rgba(36,240,109,0.14), transparent);
+font-family: var(--font-mono);
+font-size: .46rem;
+letter-spacing: .12em;
+text-transform: uppercase;
+color: var(--bone);
+clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
+}
+
+details.howto {
+grid-area: howto;
+align-self: start;
+border: 1px solid rgba(156,22,31,0.58);
+background:
+linear-gradient(90deg, rgba(3,15,14,0.95), rgba(0,5,5,0.92)),
+repeating-linear-gradient(90deg, rgba(120,247,255,0.035) 0 1px, transparent 1px 19px);
+padding: .32rem .54rem .4rem;
+clip-path: polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+}
+
+details.howto > summary {
+list-style: none;
+cursor: pointer;
+font-family: var(--font-inscription);
+font-size: .54rem;
+letter-spacing: .14em;
+text-transform: uppercase;
+color: var(--bone-bright);
+}
+
+details.howto > summary::-webkit-details-marker { display: none; }
+
+.howto-hint {
+font-size: .66rem;
+line-height: 1.45;
+color: var(--bone-dim);
+margin-top: .55rem;
+}
+
+.grid {
+display: grid;
+grid-template-columns: minmax(340px, .94fr) minmax(410px, 1.06fr);
+gap: clamp(.9rem, 1.6vw, 1.35rem);
+align-items: flex-start;
+}
+
+.grid > div:first-child,
+.grid > div:last-child {
+min-width: 0;
+}
+
+.grid > div:first-child {
+display: grid;
+gap: .1rem;
+}
+
+.grid > div:last-child {
+position: static;
+top: auto;
+}
+
+.grid > div:first-child::before,
+.grid > div:last-child::before {
+display: block;
+margin: 0 0 .45rem;
+font-family: var(--font-inscription);
+font-size: .54rem;
+letter-spacing: .22em;
+text-transform: uppercase;
+color: rgba(190,255,223,0.56);
+}
+
+.grid > div:first-child::before {
+content: "left control bank";
+}
+
+.grid > div:last-child::before {
+content: "right signal tower";
+color: var(--moss);
+}
+
+.card {
+position: relative;
+isolation: isolate;
+background:
+linear-gradient(115deg, rgba(4,18,16,0.94), rgba(0,3,3,0.97) 64%, rgba(5,12,13,0.92)),
+radial-gradient(circle at var(--mx) var(--my), rgba(36,240,109,0.08), transparent 17rem);
+border: 1px solid rgba(190,255,223,0.16);
+clip-path: polygon(0 var(--cut), var(--cut) 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 12px 100%, 0 calc(100% - 12px));
+padding: .68rem .72rem .74rem .94rem;
+margin-bottom: .58rem;
+box-shadow: 0 18px 58px rgba(0,0,0,0.48), inset 0 0 0 1px rgba(120,247,255,0.03);
+animation: folioBreath 10s ease-in-out infinite;
+}
+
+.card:nth-child(3n+1) {
+transform: translateX(.35rem);
+}
+
+.card:nth-child(3n+2) {
+transform: translateX(-.28rem);
+}
+
+.card:nth-child(4n) {
+margin-top: .5rem;
+}
+
+.card::before {
+content: "";
+position: absolute;
+inset: .42rem auto .42rem .42rem;
+width: .28rem;
+background:
+linear-gradient(var(--cyan), var(--cyan)) top/100% 18% no-repeat,
+linear-gradient(var(--rule), var(--rule)) center/100% 100% no-repeat,
+linear-gradient(var(--blood), var(--blood)) bottom/100% 12% no-repeat;
+opacity: .75;
+}
+
+.card h2 {
+font-family: var(--font-inscription);
+font-size: .68rem;
+line-height: 1.05;
+margin: 0 4.6rem .42rem 0;
+letter-spacing: .105em;
+text-transform: uppercase;
+color: var(--bone-bright);
+text-shadow: 0 0 12px rgba(36,240,109,0.12);
+}
+
+.card h2::before {
+content: "";
+display: inline-block;
+width: .42rem;
+height: .42rem;
+margin-right: .32rem;
+border: 1px solid var(--cyan);
+transform: rotate(45deg);
+box-shadow: inset 0 0 0 2px rgba(0,3,3,0.78), 0 0 10px rgba(120,247,255,0.16);
+}
+
+.card h3 {
+font-family: var(--font-inscription);
+font-size: .52rem;
+margin: .56rem 0 .24rem;
+letter-spacing: .115em;
+text-transform: uppercase;
+color: var(--moss);
+}
+
+.module-marker {
+display: inline-flex;
+align-items: center;
+gap: .24rem;
+margin: -.12rem 0 .38rem;
+padding: .12rem .34rem;
+border: 1px solid rgba(36,240,109,0.32);
+background: rgba(0,10,9,0.72);
+font-family: var(--font-mono);
+font-size: .4rem;
+letter-spacing: .12em;
+text-transform: uppercase;
+color: var(--moss);
+}
+
+.module-marker::before {
+content: "";
+width: .3rem;
+height: .3rem;
+border: 1px solid currentColor;
+transform: rotate(45deg);
+}
+
+label,
+.small-label {
+font-size: .6rem;
+}
+
+label {
+color: var(--bone);
+}
+
+.small-label {
+display: block;
+margin-bottom: .16rem;
+font-family: var(--font-mono);
+font-size: .5rem;
+letter-spacing: .055em;
+text-transform: uppercase;
+color: var(--bone-dim);
+}
+
+textarea,
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+width: 100%;
+border: 1px solid rgba(120,247,255,0.20);
+border-radius: 0;
+background:
+linear-gradient(90deg, rgba(36,240,109,0.075), transparent 1.3rem),
+repeating-linear-gradient(180deg, rgba(120,247,255,0.022) 0 1px, transparent 1px 8px),
+#000707;
+color: var(--bone-bright);
+padding: .42rem .5rem;
+font-size: .68rem;
+font-family: var(--font-mono), "Segoe UI Symbol", "Noto Sans Symbols 2", "Noto Sans Symbols", sans-serif;
+box-shadow: inset .22rem 0 0 rgba(120,247,255,0.25), inset 0 0 24px rgba(0,0,0,0.62);
+}
+
+textarea {
+resize: vertical;
+min-height: 4.2rem;
+}
+
+textarea::placeholder,
+input::placeholder {
+color: rgba(159,174,168,0.68);
+}
+
+.date-field {
+display: flex;
+gap: .35rem;
+align-items: center;
+}
+
+.date-field input[type="date"] {
+flex: 1 1 auto;
+min-width: 0;
+}
+
+.row,
+.row-tight {
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+}
+
+.row {
+gap: .32rem;
+}
+
+.row-tight {
+gap: .24rem;
+}
+
+.btn,
+.icon-btn {
+border: 1px solid rgba(120,247,255,0.22);
+border-radius: 0;
+background:
+linear-gradient(135deg, rgba(5,25,22,0.92), rgba(0,5,5,0.96) 58%, rgba(7,13,15,0.9)),
+linear-gradient(90deg, rgba(36,240,109,0.18), transparent);
+color: var(--bone-bright);
+font-family: var(--font-inscription);
+letter-spacing: .09em;
+text-transform: uppercase;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
+transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, color .16s ease;
+}
+
+.btn {
+padding: .28rem .52rem;
+font-size: .52rem;
+letter-spacing: .065em;
+}
+
+.btn-secondary {
+background:
+linear-gradient(135deg, rgba(5,19,17,0.92), rgba(0,3,3,0.96)),
+linear-gradient(90deg, rgba(255,177,59,0.12), transparent);
+}
+
+.btn-ghost {
+background: rgba(0,7,7,0.45);
+color: var(--bone-dim);
+border-style: solid;
+}
+
+.icon-btn {
+width: 1.86rem;
+min-width: 1.86rem;
+height: 1.86rem;
+padding: 0;
+}
+
+.icon-btn svg {
+width: .86rem;
+height: .86rem;
+stroke: currentColor;
+}
+
+.btn:hover,
+.icon-btn:hover,
+.copy-chip button:hover {
+border-color: rgba(36,240,109,0.62);
+color: var(--moss);
+box-shadow: 0 0 18px rgba(36,240,109,0.13), inset 0 0 20px rgba(120,247,255,0.07);
+}
+
+.btn:active,
+.icon-btn:active {
+transform: translateY(1px);
+}
+
+.btn:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+outline: 2px solid var(--cyan);
+outline-offset: 3px;
+box-shadow: 0 0 0 4px rgba(120,247,255,0.12), inset 0 0 18px rgba(36,240,109,0.12);
+}
+
+.checkbox-row {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+gap: .26rem;
+}
+
+.checkbox-row label,
+.radio-row label {
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: .28rem;
+min-height: 1.45rem;
+padding: .26rem .34rem;
+border: 1px solid rgba(190,255,223,0.12);
+background:
+linear-gradient(90deg, rgba(36,240,109,0.09), transparent 34%),
+rgba(0,7,7,0.58);
+font-size: .54rem;
+line-height: 1.14;
+text-align: center;
+clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+}
+
+.checkbox-row label:has(input[type="text"]),
+.radio-row label:has(input[type="text"]) {
+justify-content: flex-start;
+text-align: left;
+}
+
+.checkbox-row label:has(input:checked),
+.radio-row label:has(input:checked) {
+border-color: rgba(36,240,109,0.50);
+background:
+linear-gradient(90deg, rgba(36,240,109,0.17), transparent 42%),
+rgba(0,10,8,0.82);
+box-shadow: inset 0 0 18px rgba(120,247,255,0.06), 0 0 16px rgba(36,240,109,0.10);
+color: var(--bone-bright);
+}
+
+.checkbox-row input[type="checkbox"],
+.radio-row input[type="radio"] {
+accent-color: var(--moss);
+flex: 0 0 auto;
+margin: 0;
+filter: drop-shadow(0 0 5px rgba(36,240,109,0.28));
+}
+
+.radio-row {
+display: flex;
+flex-wrap: wrap;
+gap: .26rem;
+}
+
+.seal-custom-label {
+display: inline-flex;
+align-items: center;
+justify-content: flex-start;
+gap: .28rem;
+text-align: left;
+}
+
+.seal-custom-label input[type="text"] {
+min-width: 7rem;
+width: 7rem;
+padding: .24rem .34rem;
+font-size: .52rem;
+}
+
+.seal-lozenge-row {
+display: inline-flex;
+width: auto;
+max-width: 16rem;
+}
+
+.seal-lozenge-row label {
+width: auto;
+min-width: 0;
+}
+
+.covenant-dash {
+font-family: "Segoe UI Symbol", "Noto Sans Symbols 2", "Noto Sans Symbols", serif;
+letter-spacing: 0;
+}
+
+.section-note {
+font-size: .6rem;
+line-height: 1.28;
+color: var(--bone-dim);
+margin-bottom: .42rem;
+}
+
+.danger-note {
+font-size: .58rem;
+line-height: 1.28;
+color: #ff6a5f;
+margin-top: .38rem;
+padding-left: .6rem;
+border-left: 2px solid var(--blood);
+}
+
+.section-split-row {
+display: grid;
+grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+gap: .46rem;
+}
+
+.section-split-row > div {
+padding: .48rem;
+border: 1px solid rgba(190,255,223,0.12);
+background: rgba(0,7,7,0.45);
+clip-path: polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+}
+
+.output-card {
+background:
+linear-gradient(120deg, rgba(2,13,12,0.96), rgba(0,2,2,0.98) 58%, rgba(3,15,17,0.94)),
+radial-gradient(circle at var(--mx) var(--my), rgba(36,240,109,0.10), transparent 18rem);
+border-color: rgba(36,240,109,0.36);
+box-shadow: 0 22px 80px rgba(0,0,0,0.66), 0 0 36px rgba(36,240,109,0.08), inset 0 0 0 1px rgba(120,247,255,0.035);
+}
+
+.output-card h2 {
+color: var(--bone-bright);
+}
+
+.output-card h2 .subtle-title {
+font-family: var(--font-mono);
+font-size: .68em;
+letter-spacing: .12em;
+color: var(--moss);
+vertical-align: middle;
+}
+
+.output {
+min-height: 4.2rem;
+max-height: 30vh;
+overflow: auto;
+resize: vertical;
+white-space: pre-wrap;
+word-wrap: break-word;
+font-size: .68rem;
+line-height: 1.42;
+background:
+linear-gradient(115deg, transparent 0 78%, rgba(120,247,255,0.08) 78.2% 78.6%, transparent 78.9%),
+repeating-linear-gradient(180deg, rgba(120,247,255,0.030) 0 1px, transparent 1px 9px),
+linear-gradient(180deg, #000202, #00100e);
+border-color: rgba(36,240,109,0.34);
+box-shadow: inset 0 0 42px rgba(0,0,0,0.78), inset .25rem 0 0 rgba(36,240,109,0.18);
+animation: transcriptDrift 22s linear infinite;
+}
+
+.status-bar {
+display: flex;
+justify-content: space-between;
+flex-wrap: wrap;
+gap: .28rem;
+margin-top: .28rem;
+font-family: var(--font-mono);
+font-size: .48rem;
+letter-spacing: .065em;
+text-transform: uppercase;
+color: var(--bone-dim);
+}
+
+.output-toolbar {
+display: flex;
+justify-content: space-between;
+align-items: flex-end;
+gap: .48rem;
+margin-top: .45rem;
+}
+
+.payload-stepper {
+display: inline-flex;
+align-items: center;
+gap: .24rem;
+margin-left: auto;
+padding: .18rem .26rem;
+border: 1px solid rgba(120,247,255,0.16);
+background: rgba(0,7,7,0.48);
+clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+}
+
+.payload-stepper.is-disabled {
+opacity: .5;
+}
+
+.payload-stepper-label,
+.payload-stepper-value {
+font-family: var(--font-mono);
+font-size: .46rem;
+letter-spacing: .08em;
+text-transform: uppercase;
+}
+
+.payload-stepper-label {
+color: var(--bone-dim);
+}
+
+.payload-stepper-value {
+min-width: 1.2rem;
+text-align: center;
+color: var(--bone-bright);
+}
+
+.payload-stepper-btn {
+width: 1.35rem;
+min-width: 1.35rem;
+height: 1.35rem;
+font-size: .82rem;
+}
+
+.output-auth-toggle {
+display: inline-flex;
+align-items: center;
+gap: .28rem;
+font-family: var(--font-mono);
+font-size: .5rem;
+letter-spacing: .08em;
+text-transform: uppercase;
+color: var(--bone-dim);
+cursor: pointer;
+user-select: none;
+}
+
+.output-auth-toggle input[type="checkbox"] {
+appearance: none;
+-webkit-appearance: none;
+display: inline-grid;
+place-content: center;
+width: .84rem;
+height: .84rem;
+margin: 0;
+border: 1px solid rgba(36,240,109,0.58);
+background: rgba(0,7,7,0.72);
+box-shadow: inset 0 0 0 1px rgba(120,247,255,0.08), 0 0 14px rgba(36,240,109,0.08);
+clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
+}
+
+.output-auth-toggle input[type="checkbox"]::before {
+content: "";
+width: .48rem;
+height: .48rem;
+transform: scale(0);
+transition: transform .12s ease;
+background: var(--moss);
+box-shadow: 0 0 12px rgba(36,240,109,0.45);
+clip-path: polygon(14% 48%, 35% 70%, 84% 15%, 96% 28%, 36% 91%, 2% 58%);
+}
+
+.output-auth-toggle input[type="checkbox"]:checked::before {
+transform: scale(1);
+}
+
+.seal-card {
+background:
+linear-gradient(132deg, rgba(34,8,9,0.96), rgba(1,3,3,0.98) 56%, rgba(43,24,6,0.92)),
+radial-gradient(circle at var(--mx) var(--my), rgba(255,177,59,0.18), transparent 18rem);
+border-color: rgba(255,177,59,0.66);
+box-shadow: 0 22px 78px rgba(0,0,0,0.68), 0 0 44px rgba(255,177,59,0.14), inset 0 0 30px rgba(156,22,31,0.10);
+}
+
+.seal-card h2,
+.seal-card h3 {
+color: var(--amber);
+}
+
+.seal-card .section-note,
+.seal-card .small-label {
+color: #e8d7a8;
+}
+
+.seal-card.is-seal-active {
+animation: sealRite 2.8s ease-in-out infinite;
+}
+
+.seal-card.is-seal-active::before {
+box-shadow: 0 0 18px rgba(255,177,59,0.44);
+}
+
+.copy-grid {
+display: flex;
+flex-wrap: wrap;
+gap: .3rem;
+align-items: center;
+}
+
+.copy-chip {
+display: inline-flex;
+align-items: center;
+gap: .3rem;
+max-width: 100%;
+padding: .22rem .34rem;
+border: 1px solid rgba(190,255,223,0.14);
+background:
+linear-gradient(90deg, rgba(36,240,109,0.10), transparent 36%),
+rgba(0,7,7,0.78);
+font-size: .54rem;
+clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+}
+
+.copy-chip span {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-family: var(--font-mono);
+color: var(--bone);
+}
+
+.copy-chip button {
+border: 1px solid rgba(36,240,109,0.22);
+background: rgba(0,3,3,0.62);
+color: var(--moss);
+cursor: pointer;
+font-family: var(--font-mono);
+font-size: .46rem;
+letter-spacing: .075em;
+text-transform: uppercase;
+padding: .12rem .24rem;
+text-align: center;
+}
+
+.copy-status {
+min-height: .85rem;
+margin-top: .3rem;
+font-family: var(--font-mono);
+font-size: .48rem;
+letter-spacing: .075em;
+text-transform: uppercase;
+color: var(--moss);
+}
+
+.copy-status:not(:empty) {
+animation: copyOmen 1s ease-out 1;
+}
+
+.copy-status.is-error {
+color: #ff6a5f;
+}
+
+@keyframes artifactDrift {
+0% { background-position: 0 0, 0 0, 0 0; }
+100% { background-position: 120px 0, 0 72px, 0 0; }
+}
+
+@keyframes folioBreath {
+0%, 100% { border-color: rgba(190,255,223,0.14); }
+50% { border-color: rgba(36,240,109,0.27); }
+}
+
+@keyframes transcriptDrift {
+0% { background-position: 0 0, 0 0, 0 0; }
+100% { background-position: 0 0, 0 72px, 0 0; }
+}
+
+@keyframes sealRite {
+0%, 100% { box-shadow: 0 22px 78px rgba(0,0,0,0.68), 0 0 28px rgba(255,177,59,0.12), inset 0 0 30px rgba(156,22,31,0.08); }
+50% { box-shadow: 0 22px 78px rgba(0,0,0,0.68), 0 0 60px rgba(255,177,59,0.26), inset 0 0 38px rgba(156,22,31,0.14); }
+}
+
+@keyframes copyOmen {
+0% { text-shadow: 0 0 0 rgba(36,240,109,0); }
+30% { text-shadow: 0 0 18px rgba(36,240,109,0.88); }
+100% { text-shadow: 0 0 0 rgba(36,240,109,0); }
+}
+
+@media (max-width: 820px) {
+html,
+body {
+min-width: 1180px;
+}
+
+body {
+overflow-x: auto;
+overscroll-behavior-y: contain;
+}
+
+header {
+padding: .48rem 24rem .48rem .68rem;
+}
+
+.flight-quick-nav {
+position: absolute;
+top: .62rem;
+right: .72rem;
+justify-content: flex-end;
+flex-wrap: nowrap;
+max-width: none;
+margin-bottom: .14rem;
+}
+
+.flight-quick-nav a,
+.flight-quick-nav button {
+ font-size: .44rem;
+}
+
+.flight-quick-nav .flight-nav-signout {
+font-size: .42rem;
+padding-inline: .08rem;
+}
+
+.page-wrap {
+width: 1240px;
+max-width: none;
+margin: 0 auto;
+padding: .75rem;
+}
+
+.grid {
+grid-template-columns: minmax(340px, .94fr) minmax(410px, 1.06fr);
+gap: .9rem;
+}
+
+.payload-stepper {
+margin-left: auto;
+justify-content: flex-end;
+}
+
+.seal-custom-label input[type="text"] {
+width: 7rem;
+min-width: 7rem;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+*,
+*::before,
+*::after {
+animation: none !important;
+transition: none !important;
+scroll-behavior: auto !important;
+}
+
+body {
+--mx: 50%;
+--my: 18%;
+}
+}
+
+/* === TD613 Flight v5 modules === */
+select {
+width: 100%;
+border: 1px solid rgba(120,247,255,0.20);
+border-radius: 0;
+background: #000707;
+color: var(--bone-bright);
+padding: .42rem .5rem;
+font-size: .68rem;
+font-family: var(--font-mono);
+box-shadow: inset .22rem 0 0 rgba(120,247,255,0.25), inset 0 0 24px rgba(0,0,0,0.62);
+}
+.flight-grid,
+.diagnostic-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+gap: .34rem;
+margin: .38rem 0;
+}
+.metric-chip,
+.status-chip {
+border: 1px solid rgba(190,255,223,0.14);
+background: linear-gradient(90deg, rgba(36,240,109,0.10), transparent 36%), rgba(0,7,7,0.72);
+padding: .32rem .4rem;
+clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+min-height: 2.6rem;
+}
+.metric-chip b,
+.status-chip b {
+display: block;
+font-family: var(--font-inscription);
+font-size: .44rem;
+letter-spacing: .12em;
+text-transform: uppercase;
+color: var(--bone-dim);
+margin-bottom: .16rem;
+}
+.metric-chip span,
+.status-chip span {
+font-family: var(--font-mono);
+font-size: .62rem;
+line-height: 1.25;
+color: var(--bone-bright);
+}
+.status-ready {
+border-color: rgba(36,240,109,0.55);
+box-shadow: 0 0 20px rgba(36,240,109,0.10);
+}
+.status-review {
+border-color: rgba(255,177,59,0.58);
+box-shadow: 0 0 20px rgba(255,177,59,0.10);
+}
+.status-conflict {
+border-color: rgba(255,53,43,0.62);
+box-shadow: 0 0 20px rgba(255,53,43,0.10);
+}
+.ledger-list {
+margin: .36rem 0 0;
+padding-left: 1rem;
+font-family: var(--font-mono);
+font-size: .58rem;
+line-height: 1.38;
+color: var(--bone-dim);
+}
+.ledger-list li {
+margin-bottom: .28rem;
+}
+.ledger-list .severity-high { color: #ff766d; }
+.ledger-list .severity-medium { color: var(--amber); }
+.ledger-list .severity-low { color: var(--cyan); }
+.json-output,
+.code-output {
+width: 100%;
+min-height: 6.6rem;
+max-height: 18rem;
+overflow: auto;
+white-space: pre;
+font-size: .56rem;
+line-height: 1.34;
+background:
+repeating-linear-gradient(180deg, rgba(120,247,255,0.024) 0 1px, transparent 1px 9px),
+#000707;
+color: var(--bone-bright);
+border: 1px solid rgba(120,247,255,0.20);
+padding: .5rem;
+font-family: var(--font-mono);
+box-shadow: inset .22rem 0 0 rgba(36,240,109,0.16), inset 0 0 28px rgba(0,0,0,0.62);
+}
+.route-panel-note {
+font-size: .58rem;
+line-height: 1.34;
+color: var(--bone-dim);
+border-left: 2px solid rgba(36,240,109,0.35);
+padding-left: .55rem;
+margin: .38rem 0;
+}
+.selftest-pass { color: var(--moss) !important; }
+.selftest-degraded { color: var(--amber) !important; }
+.selftest-fail { color: #ff6a5f !important; }
+
+
+/* === TD613 Flight v5 performance patch ===
+   Static by default: reduces mobile lag from continuous repaint, turbulence filter,
+   radial mouse tracking, and per-card animation. */
+body::before {
+  animation: none !important;
+  opacity: .38;
+}
+body::after {
+  filter: none !important;
+  opacity: .18;
+}
+.card,
+.output,
+.seal-card.is-seal-active {
+  animation: none !important;
+}
+.card:nth-child(3n+1),
+.card:nth-child(3n+2),
+.card:nth-child(4n) {
+  transform: none !important;
+  margin-top: 0;
+}
+.card {
+  content-visibility: auto;
+  contain-intrinsic-size: 260px;
+}
+.output-card,
+.seal-card,
+.copy-bin-card {
+  content-visibility: visible;
+}
+
+
+
+/* === TD613 Flight v5 drawer separation patch === */
+.dev-divider {
+  margin: 1.15rem 0 .58rem;
+  padding-top: .72rem;
+  border-top: 1px solid rgba(120,247,255,0.28);
+}
+.dev-drawer {
+  margin: .05rem 0 .72rem;
+  border: 1px solid rgba(120,247,255,0.24);
+  background:
+    linear-gradient(110deg, rgba(3,18,16,0.94), rgba(0,4,4,0.98) 62%, rgba(25,9,11,0.82)),
+    repeating-linear-gradient(90deg, rgba(36,240,109,0.035) 0 1px, transparent 1px 21px);
+  clip-path: polygon(0 16px, 16px 0, calc(100% - 24px) 0, 100% 24px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px));
+  box-shadow: 0 16px 52px rgba(0,0,0,0.44), inset 0 0 0 1px rgba(36,240,109,0.045);
+}
+.dev-drawer > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  min-height: 2.7rem;
+  padding: .56rem .72rem .52rem .88rem;
+  font-family: var(--font-inscription);
+  font-size: .68rem;
+  line-height: 1.1;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--bone-bright);
+  border-bottom: 1px solid transparent;
+}
+.dev-drawer > summary::-webkit-details-marker { display: none; }
+.dev-drawer > summary::after {
+  content: "+";
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  border: 1px solid rgba(36,240,109,0.46);
+  color: var(--moss);
+  background: rgba(0,7,7,0.72);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+.dev-drawer[open] > summary {
+  border-bottom-color: rgba(190,255,223,0.14);
+  color: var(--moss);
+}
+.dev-drawer[open] > summary::after { content: "−"; }
+.drawer-kicker {
+  display: block;
+  margin-top: .18rem;
+  font-family: var(--font-mono);
+  font-size: .42rem;
+  letter-spacing: .12em;
+  color: var(--bone-dim);
+}
+.drawer-body {
+  padding: .64rem .68rem .72rem;
+}
+.drawer-body > .card:last-child { margin-bottom: 0; }
+.drawer-body > .card {
+  content-visibility: visible;
+}
+
+body.flight-locked {
+  overflow: hidden;
+}
+
+html[data-flight-shi-cached="true"] body.flight-locked {
+  overflow: auto;
+}
+
+.flight-shi-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 2.4rem);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(36,240,109,0.16), transparent 30%),
+    radial-gradient(circle at 86% 18%, rgba(120,247,255,0.12), transparent 28%),
+    linear-gradient(145deg, rgba(0,7,7,0.98), rgba(3,13,10,0.99) 52%, rgba(0,4,5,1));
+}
+
+.flight-shi-gate[hidden] {
+  display: none !important;
+}
+
+html[data-flight-shi-cached="true"] .flight-shi-gate {
+  display: none !important;
+}
+
+.flight-gate-card {
+  width: min(520px, 100%);
+  border: 1px solid rgba(36,240,109,0.42);
+  background:
+    linear-gradient(180deg, rgba(6,18,12,0.95), rgba(0,7,7,0.98)),
+    radial-gradient(circle at top right, rgba(120,247,255,0.12), transparent 52%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 0 48px rgba(36,240,109,0.18),
+    0 34px 90px rgba(0,0,0,0.62);
+  padding: clamp(1.1rem, 4vw, 1.7rem);
+  clip-path: polygon(0 18px, 18px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 12px 100%, 0 calc(100% - 12px));
+}
+
+.flight-gate-kicker {
+  margin: 0 0 .4rem;
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--moss);
+}
+
+.flight-gate-card h2 {
+  margin: 0;
+  color: var(--bone);
+  font-size: clamp(1.4rem, 6vw, 2.3rem);
+}
+
+.flight-gate-card p {
+  color: var(--bone-dim);
+}
+
+#flightShiInput {
+  width: 100%;
+  margin: .35rem 0 .7rem;
+  border-color: rgba(36,240,109,0.42);
+  color: var(--bone);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.flight-gate-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .65rem;
+}
+
+.flight-gate-actions button {
+  min-height: 2.5rem;
+  border: 1px solid rgba(36,240,109,0.62);
+  background: rgba(36,240,109,0.16);
+  color: var(--moss);
+}
+
+.flight-gate-link {
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-decoration: none;
+}
+
+.flight-gate-link:hover,
+.flight-gate-link:focus-visible {
+  color: var(--moss);
+}
+
+.flight-shi-error {
+  min-height: 1.3em;
+  margin: .2rem 0 .75rem;
+  color: #ffb13b;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+}
+
+@font-face {
+  font-family: "DashFallback";
+  src: local("Segoe UI Symbol"), local("Arial"), local("sans-serif");
+  unicode-range: U+2E3B;
+}
+
+/* === Patch 37.3 Obsidian Flightdeck ===
+   Premium cockpit pass: output-led, calmer hierarchy, independent panels. */
+:root {
+  --obsidian: #030608;
+  --obsidian-2: #061012;
+  --obsidian-3: #0a1719;
+  --glass: rgba(5, 16, 17, 0.74);
+  --glass-strong: rgba(5, 18, 18, 0.94);
+  --glass-soft: rgba(9, 28, 30, 0.52);
+  --lux-line: rgba(137, 255, 231, 0.18);
+  --lux-line-strong: rgba(137, 255, 231, 0.36);
+  --lux-cyan: #89fff0;
+  --lux-mint: #31ff8a;
+  --lux-amber: #ffc15a;
+  --lux-red: #ff5b4f;
+  --lux-cream: #f5fff6;
+  --lux-muted: #91a9a6;
+  --lux-shadow: 0 28px 90px rgba(0,0,0,0.58);
+  --lux-radius: 22px;
+  --lux-small-radius: 14px;
+  --cut: 14px;
+}
+
+html {
+  background: var(--obsidian);
+}
+
+body {
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 77% 6%, rgba(137,255,240,0.105), transparent 22rem),
+    radial-gradient(circle at 12% 18%, rgba(49,255,138,0.11), transparent 18rem),
+    radial-gradient(circle at 77% 66%, rgba(255,193,90,0.08), transparent 20rem),
+    linear-gradient(135deg, #010303 0%, #061011 46%, #030608 100%);
+}
+
+body::before {
+  opacity: .20 !important;
+  background:
+    linear-gradient(90deg, transparent 0 9%, rgba(137,255,240,0.05) 9.06% 9.12%, transparent 9.2% 100%),
+    repeating-linear-gradient(90deg, rgba(137,255,240,0.025) 0 1px, transparent 1px 34px),
+    radial-gradient(ellipse at 50% -10%, rgba(245,255,246,0.055), transparent 46%);
+}
+
+body::after {
+  opacity: .13 !important;
+  background:
+    radial-gradient(circle at 20% 76%, rgba(49,255,138,0.12), transparent 2.8rem),
+    radial-gradient(circle at 88% 30%, rgba(137,255,240,0.10), transparent 2.2rem),
+    linear-gradient(120deg, transparent 0 68%, rgba(255,193,90,0.045) 68.1% 68.35%, transparent 68.7% 100%);
+}
+
+.page-wrap {
+  width: min(1500px, 100vw);
+  max-width: none;
+  height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(.56rem, 1vw, 1rem);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: .62rem;
+  overflow: hidden;
+}
+
+.page-wrap::before {
+  inset: .45rem;
+  border-color: rgba(137,255,240,0.18);
+  border-radius: 30px;
+  clip-path: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(49,255,138,0.05),
+    inset 0 0 90px rgba(0,0,0,0.72),
+    0 0 48px rgba(137,255,240,0.04);
+}
+
+header {
+  min-height: 8.45rem;
+  margin: 0;
+  padding: .78rem 24.5rem .72rem 1.08rem;
+  gap: .34rem;
+  border: 1px solid rgba(137,255,240,0.18);
+  border-radius: var(--lux-radius);
+  clip-path: none;
+  background:
+    linear-gradient(112deg, rgba(7,20,22,0.96), rgba(3,8,10,0.96) 58%, rgba(10,18,22,0.88)),
+    radial-gradient(circle at 22% 0%, rgba(49,255,138,0.16), transparent 19rem),
+    radial-gradient(circle at 88% 18%, rgba(137,255,240,0.10), transparent 17rem);
+  box-shadow:
+    var(--lux-shadow),
+    inset 0 1px 0 rgba(245,255,246,0.08),
+    inset 0 -1px 0 rgba(137,255,240,0.08);
+}
+
+header::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: .58rem;
+  top: auto;
+  height: 1px;
+  writing-mode: horizontal-tb;
+  background: linear-gradient(90deg, rgba(49,255,138,0.45), rgba(137,255,240,0.10), transparent);
+  opacity: .65;
+}
+
+h1 {
+  font-size: clamp(1.25rem, 1.9vw, 2.05rem);
+  letter-spacing: .115em;
+  line-height: .95;
+  color: var(--lux-cream);
+  text-shadow: 0 0 26px rgba(49,255,138,0.18);
+}
+
+h1::after {
+  margin-top: .28rem;
+  font-size: .42rem;
+  color: var(--lux-mint);
+  letter-spacing: .24em;
+}
+
+.subtitle {
+  max-width: 94ch;
+  padding-left: .74rem;
+  border-left: 1px solid rgba(137,255,240,0.42);
+  font-size: .57rem;
+  line-height: 1.34;
+  color: rgba(214,235,229,0.72);
+}
+
+.pill-row {
+  gap: .28rem;
+  align-items: center;
+}
+
+.pill {
+  min-height: 1.35rem;
+  padding: .14rem .46rem;
+  border-color: rgba(137,255,240,0.18);
+  border-radius: 999px;
+  clip-path: none;
+  background:
+    linear-gradient(180deg, rgba(13,38,39,0.74), rgba(1,8,9,0.82)),
+    radial-gradient(circle at 18% 0%, rgba(137,255,240,0.11), transparent 52%);
+  color: rgba(245,255,246,0.78);
+  font-size: .42rem;
+  letter-spacing: .14em;
+  box-shadow: inset 0 1px 0 rgba(245,255,246,0.055);
+}
+
+.flight-quick-nav {
+  top: .8rem;
+  right: .92rem;
+  gap: .42rem;
+}
+
+.flight-quick-nav a,
+.flight-quick-nav button {
+  min-height: 2rem;
+  padding: .22rem .72rem;
+  border-radius: 999px;
+  clip-path: none;
+  border-color: rgba(137,255,240,0.20);
+  background:
+    linear-gradient(180deg, rgba(11,31,32,0.88), rgba(0,7,8,0.84)),
+    radial-gradient(circle at 50% 0%, rgba(137,255,240,0.11), transparent 62%);
+  font-size: .47rem;
+  letter-spacing: .14em;
+  color: rgba(245,255,246,0.82);
+}
+
+.flight-quick-nav a:hover,
+.flight-quick-nav a:focus-visible,
+.flight-quick-nav button:hover,
+.flight-quick-nav button:focus-visible {
+  border-color: rgba(137,255,240,0.56);
+  color: var(--lux-cyan);
+  box-shadow: 0 0 22px rgba(137,255,240,0.12), inset 0 1px 0 rgba(245,255,246,0.08);
+}
+
+.flight-quick-nav .flight-nav-signout {
+  color: rgba(49,255,138,0.86);
+  padding-inline: .14rem;
+}
+
+details.howto {
+  width: min(62rem, 100%);
+  padding: .28rem .56rem;
+  border-color: rgba(255,193,90,0.20);
+  border-radius: 999px;
+  clip-path: none;
+  background: linear-gradient(90deg, rgba(10,25,26,0.88), rgba(0,5,6,0.58));
+}
+
+details.howto[open] {
+  border-radius: var(--lux-small-radius);
+}
+
+details.howto > summary {
+  font-size: .48rem;
+  letter-spacing: .16em;
+  color: rgba(245,255,246,0.82);
+}
+
+.howto-hint {
+  max-width: 82rem;
+  font-size: .58rem;
+  line-height: 1.5;
+  color: rgba(214,235,229,0.74);
+}
+
+.grid {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(440px, .88fr) minmax(540px, 1.12fr);
+  gap: .72rem;
+  align-items: stretch;
+}
+
+.grid > div:first-child,
+.grid > div:last-child {
+  min-height: 0;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: .34rem .42rem .8rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(137,255,240,0.22) transparent;
+}
+
+.grid > div:first-child::-webkit-scrollbar,
+.grid > div:last-child::-webkit-scrollbar {
+  width: 4px;
+}
+
+.grid > div:first-child::-webkit-scrollbar-thumb,
+.grid > div:last-child::-webkit-scrollbar-thumb {
+  background: rgba(137,255,240,0.22);
+  border-radius: 8px;
+}
+
+.grid > div:first-child::before,
+.grid > div:last-child::before {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  margin: 0 0 .5rem;
+  padding: .18rem 0 .42rem;
+  background: linear-gradient(180deg, rgba(3,6,8,0.96), rgba(3,6,8,0));
+  color: rgba(137,255,240,0.62);
+  font-size: .5rem;
+  letter-spacing: .24em;
+}
+
+.grid > div:last-child::before {
+  color: var(--lux-mint);
+}
+
+.card {
+  margin-bottom: .56rem;
+  padding: .68rem .74rem .74rem .92rem;
+  border: 1px solid rgba(137,255,240,0.135);
+  border-radius: var(--lux-small-radius);
+  clip-path: none;
+  background:
+    linear-gradient(135deg, rgba(7,22,23,0.90), rgba(1,6,7,0.95) 62%, rgba(8,19,21,0.82)),
+    radial-gradient(circle at 100% 0%, rgba(137,255,240,0.06), transparent 16rem);
+  box-shadow:
+    0 18px 54px rgba(0,0,0,0.36),
+    inset 0 1px 0 rgba(245,255,246,0.045);
+}
+
+.card::before {
+  inset: .68rem auto .68rem .58rem;
+  width: 2px;
+  border-radius: 999px;
+  background:
+    linear-gradient(var(--lux-cyan), var(--lux-cyan)) top/100% 20% no-repeat,
+    linear-gradient(rgba(137,255,240,0.12), rgba(137,255,240,0.12)) center/100% 100% no-repeat,
+    linear-gradient(var(--lux-red), var(--lux-red)) bottom/100% 10% no-repeat;
+  opacity: .65;
+}
+
+.card h2 {
+  margin-right: 0;
+  margin-bottom: .36rem;
+  font-size: .64rem;
+  letter-spacing: .14em;
+  color: rgba(245,255,246,0.92);
+}
+
+.card h2::before {
+  width: .34rem;
+  height: .34rem;
+  margin-right: .36rem;
+  border-color: rgba(137,255,240,0.78);
+  box-shadow: 0 0 12px rgba(137,255,240,0.12);
+}
+
+.card h3 {
+  margin-top: .58rem;
+  margin-bottom: .28rem;
+  color: var(--lux-mint);
+  font-size: .49rem;
+  letter-spacing: .15em;
+}
+
+.section-note,
+.danger-note,
+.howto-hint,
+.route-panel-note {
+  max-width: 96ch;
+}
+
+.section-note {
+  font-size: .55rem;
+  line-height: 1.34;
+  color: rgba(214,235,229,0.66);
+}
+
+.danger-note {
+  padding: .46rem .58rem;
+  border-left: 0;
+  border: 1px solid rgba(255,91,79,0.24);
+  border-radius: 12px;
+  background: rgba(40,8,8,0.32);
+  color: rgba(255,163,155,0.86);
+}
+
+textarea,
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+  border-color: rgba(137,255,240,0.18);
+  border-radius: 12px;
+  background:
+    linear-gradient(90deg, rgba(137,255,240,0.055), transparent 1.4rem),
+    linear-gradient(180deg, rgba(0,9,10,0.96), rgba(2,14,15,0.86));
+  box-shadow:
+    inset 0 0 0 1px rgba(245,255,246,0.025),
+    inset .18rem 0 0 rgba(137,255,240,0.18),
+    0 10px 28px rgba(0,0,0,0.22);
+}
+
+.btn,
+.icon-btn,
+.copy-chip button {
+  border-radius: 999px;
+  clip-path: none;
+  border-color: rgba(137,255,240,0.20);
+  background:
+    linear-gradient(180deg, rgba(15,38,39,0.90), rgba(1,7,8,0.92)),
+    radial-gradient(circle at 50% 0%, rgba(137,255,240,0.11), transparent 62%);
+  box-shadow: inset 0 1px 0 rgba(245,255,246,0.055), 0 10px 28px rgba(0,0,0,0.18);
+}
+
+#btnGenerate {
+  border-color: rgba(49,255,138,0.58);
+  color: var(--obsidian);
+  background:
+    linear-gradient(180deg, rgba(125,255,176,0.96), rgba(35,229,119,0.86)),
+    radial-gradient(circle at 50% 0%, rgba(245,255,246,0.52), transparent 58%);
+  text-shadow: none;
+  box-shadow: 0 0 24px rgba(49,255,138,0.18), inset 0 1px 0 rgba(245,255,246,0.32);
+}
+
+#btnRandomizer {
+  border-color: rgba(137,255,240,0.56);
+  color: var(--lux-cyan);
+  background:
+    linear-gradient(180deg, rgba(17,51,52,0.94), rgba(2,11,12,0.90)),
+    radial-gradient(circle at 50% 0%, rgba(137,255,240,0.24), transparent 58%);
+}
+
+.checkbox-row {
+  grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+  gap: .28rem;
+}
+
+.checkbox-row label,
+.radio-row label {
+  min-height: 1.62rem;
+  padding: .32rem .44rem;
+  border-radius: 13px;
+  clip-path: none;
+  border-color: rgba(137,255,240,0.13);
+  background:
+    linear-gradient(180deg, rgba(8,26,27,0.72), rgba(1,8,9,0.86)),
+    radial-gradient(circle at 0% 0%, rgba(49,255,138,0.06), transparent 64%);
+  box-shadow: inset 0 1px 0 rgba(245,255,246,0.035);
+}
+
+.checkbox-row label:hover,
+.radio-row label:hover {
+  border-color: rgba(137,255,240,0.30);
+  color: var(--lux-cream);
+}
+
+.checkbox-row label:has(input:checked),
+.radio-row label:has(input:checked) {
+  border-color: rgba(49,255,138,0.56);
+  background:
+    linear-gradient(180deg, rgba(25,78,54,0.58), rgba(2,13,10,0.92)),
+    radial-gradient(circle at 14% 0%, rgba(49,255,138,0.18), transparent 68%);
+  box-shadow:
+    0 0 22px rgba(49,255,138,0.105),
+    inset 0 1px 0 rgba(245,255,246,0.08);
+}
+
+.checkbox-row input[type="checkbox"],
+.radio-row input[type="radio"] {
+  filter: drop-shadow(0 0 8px rgba(49,255,138,0.20));
+}
+
+.output-card {
+  min-height: 21rem;
+  padding: .92rem 1rem 1rem;
+  border-color: rgba(49,255,138,0.36);
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(5,23,22,0.96), rgba(1,4,5,0.98) 60%, rgba(8,25,28,0.90)),
+    radial-gradient(circle at 88% 0%, rgba(137,255,240,0.15), transparent 20rem),
+    radial-gradient(circle at 18% 16%, rgba(49,255,138,0.10), transparent 16rem);
+  box-shadow:
+    0 28px 95px rgba(0,0,0,0.60),
+    0 0 55px rgba(49,255,138,0.08),
+    inset 0 1px 0 rgba(245,255,246,0.08);
+}
+
+.output-card h2 {
+  font-size: .84rem;
+  letter-spacing: .16em;
+}
+
+.output {
+  min-height: 10.8rem;
+  max-height: 36vh;
+  border-radius: 16px;
+  padding: .74rem .8rem;
+  font-size: .72rem;
+  line-height: 1.54;
+  border-color: rgba(49,255,138,0.28);
+  background:
+    linear-gradient(118deg, rgba(137,255,240,0.045), transparent 42%, rgba(49,255,138,0.035)),
+    repeating-linear-gradient(180deg, rgba(137,255,240,0.026) 0 1px, transparent 1px 11px),
+    linear-gradient(180deg, #000506, #001312);
+  box-shadow:
+    inset 0 0 58px rgba(0,0,0,0.76),
+    inset .22rem 0 0 rgba(49,255,138,0.18);
+}
+
+.status-bar,
+.output-toolbar {
+  padding-inline: .12rem;
+}
+
+.output-toolbar {
+  align-items: center;
+  padding-top: .22rem;
+  border-top: 1px solid rgba(137,255,240,0.10);
+}
+
+.output-auth-toggle,
+.payload-stepper {
+  border-radius: 999px;
+}
+
+.payload-stepper {
+  border-color: rgba(137,255,240,0.18);
+  background: rgba(3,15,16,0.72);
+}
+
+.seal-card {
+  border-color: rgba(255,193,90,0.52);
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgba(42,20,8,0.90), rgba(2,5,5,0.98) 58%, rgba(31,13,8,0.88)),
+    radial-gradient(circle at 72% 8%, rgba(255,193,90,0.20), transparent 18rem),
+    radial-gradient(circle at 0% 70%, rgba(255,91,79,0.10), transparent 15rem);
+  box-shadow:
+    0 30px 92px rgba(0,0,0,0.62),
+    0 0 54px rgba(255,193,90,0.10),
+    inset 0 1px 0 rgba(255,239,196,0.10);
+}
+
+.seal-card h2,
+.seal-card h3 {
+  color: var(--lux-amber);
+}
+
+.seal-card .module-marker {
+  border-color: rgba(255,193,90,0.30);
+  color: var(--lux-amber);
+  background: rgba(33,17,7,0.72);
+}
+
+.seal-card .checkbox-row label:has(input:checked),
+.seal-card .radio-row label:has(input:checked) {
+  border-color: rgba(255,193,90,0.60);
+  background:
+    linear-gradient(180deg, rgba(92,56,18,0.60), rgba(15,8,4,0.90)),
+    radial-gradient(circle at 12% 0%, rgba(255,193,90,0.20), transparent 70%);
+  box-shadow: 0 0 24px rgba(255,193,90,0.13), inset 0 1px 0 rgba(255,239,196,0.08);
+}
+
+.copy-bin-card {
+  border-color: rgba(137,255,240,0.14);
+  background:
+    linear-gradient(135deg, rgba(5,18,19,0.88), rgba(1,6,7,0.96)),
+    radial-gradient(circle at 100% 0%, rgba(137,255,240,0.07), transparent 14rem);
+}
+
+.copy-grid {
+  gap: .26rem;
+}
+
+.copy-chip {
+  border-radius: 999px;
+  clip-path: none;
+  border-color: rgba(137,255,240,0.14);
+  background: rgba(3,14,15,0.72);
+}
+
+.dev-divider {
+  margin: .86rem 0 .48rem;
+  border-top-color: rgba(137,255,240,0.16);
+}
+
+.dev-drawer {
+  border-radius: 18px;
+  clip-path: none;
+  border-color: rgba(137,255,240,0.16);
+  background: linear-gradient(120deg, rgba(5,18,19,0.80), rgba(1,5,6,0.92));
+  box-shadow: 0 18px 48px rgba(0,0,0,0.32), inset 0 1px 0 rgba(245,255,246,0.035);
+}
+
+.dev-drawer > summary {
+  min-height: 2.28rem;
+  padding: .44rem .62rem .42rem .76rem;
+  font-size: .58rem;
+  color: rgba(245,255,246,0.76);
+}
+
+.dev-drawer > summary::after {
+  border-radius: 999px;
+  clip-path: none;
+}
+
+.drawer-kicker {
+  color: rgba(145,169,166,0.70);
+}
+
+.metric-chip,
+.status-chip,
+.section-split-row > div {
+  border-radius: 15px;
+  clip-path: none;
+  border-color: rgba(137,255,240,0.13);
+  background: rgba(3,14,15,0.62);
+}
+
+.mobile-flight-switcher,
+.mobile-prompt-rail,
+.mobile-output-return {
+  display: none;
+}
+
+@media (min-width: 821px) {
+  .grid > div:last-child {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .output-card,
+  .seal-card,
+  .copy-bin-card {
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 820px) {
+  html,
+  body {
+    width: 100%;
+    min-width: 0;
+    height: 100dvh;
+    max-width: 100%;
+  }
+
+  html[data-flight-shi-cached="true"] body.flight-locked,
+  body {
+    overflow: hidden;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+
+  .page-wrap {
+    width: 100vw;
+    min-width: 0;
+    height: 100dvh;
+    padding: .52rem;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    gap: .44rem;
+  }
+
+  header {
+    min-height: auto;
+    padding: .7rem .68rem .64rem;
+    gap: .36rem;
+    border-radius: 18px;
+    grid-template-areas:
+      "title"
+      "nav"
+      "text"
+      "tags"
+      "howto";
+  }
+
+  header::after {
+    bottom: .42rem;
+  }
+
+  h1 {
+    font-size: clamp(1.15rem, 7.4vw, 1.84rem);
+    letter-spacing: .09em;
+  }
+
+  h1::after {
+    font-size: .36rem;
+  }
+
+  .flight-quick-nav {
+    position: static;
+    grid-area: nav;
+    max-width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: .32rem;
+    padding: .06rem 0 .12rem;
+    scrollbar-width: none;
+  }
+
+  .flight-quick-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .flight-quick-nav a,
+  .flight-quick-nav button {
+    flex: 0 0 auto;
+    min-height: 1.7rem;
+    padding: .18rem .56rem;
+    font-size: .42rem;
+    white-space: nowrap;
+  }
+
+  .flight-quick-nav .flight-nav-signout {
+    padding-inline: .1rem;
+  }
+
+  .subtitle {
+    max-width: none;
+    font-size: .51rem;
+    line-height: 1.28;
+  }
+
+  .pill-row {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: .08rem;
+    scrollbar-width: none;
+  }
+
+  .pill-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pill {
+    flex: 0 0 auto;
+    font-size: .36rem;
+  }
+
+  details.howto {
+    width: 100%;
+    border-radius: 14px;
+  }
+
+  .mobile-flight-switcher {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .36rem;
+    padding: .28rem;
+    border: 1px solid rgba(137,255,240,0.16);
+    border-radius: 999px;
+    background:
+      linear-gradient(180deg, rgba(8,27,29,0.88), rgba(1,7,8,0.92)),
+      radial-gradient(circle at 78% 0%, rgba(137,255,240,0.13), transparent 68%);
+    box-shadow: inset 0 1px 0 rgba(245,255,246,0.05), 0 14px 44px rgba(0,0,0,0.32);
+  }
+
+  .mobile-lane-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 2.34rem;
+    padding: .34rem .4rem;
+    border: 1px solid rgba(137,255,240,0.16);
+    border-radius: 999px;
+    background: rgba(2,13,14,0.68);
+    color: rgba(245,255,246,0.74);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    cursor: pointer;
+  }
+
+  .mobile-lane-tab span {
+    font-size: .56rem;
+    line-height: 1.05;
+  }
+
+  .mobile-lane-tab small {
+    margin-top: .1rem;
+    font-size: .34rem;
+    color: rgba(145,169,166,0.76);
+    letter-spacing: .18em;
+  }
+
+  .mobile-lane-tab.is-active {
+    border-color: rgba(49,255,138,0.55);
+    color: var(--lux-cream);
+    background:
+      linear-gradient(180deg, rgba(24,77,54,0.58), rgba(2,13,10,0.92)),
+      radial-gradient(circle at 50% 0%, rgba(49,255,138,0.22), transparent 66%);
+    box-shadow: 0 0 24px rgba(49,255,138,0.15), inset 0 1px 0 rgba(245,255,246,0.08);
+  }
+
+  .mobile-lane-tab.is-teaching {
+    animation: sealedOutputPulse 1.05s ease-in-out 3;
+  }
+
+  .grid {
+    display: flex;
+    grid-template-columns: none;
+    align-items: stretch;
+    gap: .52rem;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+  }
+
+  .grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .grid > div:first-child,
+  .grid > div:last-child {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    padding: .2rem .1rem 4.2rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .grid > div:first-child::before,
+  .grid > div:last-child::before {
+    display: none;
+  }
+
+  .card {
+    padding: .7rem .72rem .76rem .92rem;
+    margin-bottom: .54rem;
+    border-radius: 16px;
+  }
+
+  .card h2 {
+    font-size: .62rem;
+  }
+
+  .card h3 {
+    font-size: .48rem;
+  }
+
+  .section-note {
+    font-size: .54rem;
+  }
+
+  textarea,
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select {
+    font-size: .72rem;
+  }
+
+  #taskText {
+    min-height: 8.3rem;
+  }
+
+  .checkbox-row {
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+    gap: .3rem;
+  }
+
+  .radio-row {
+    gap: .3rem;
+  }
+
+  .checkbox-row label,
+  .radio-row label {
+    min-height: 1.9rem;
+    padding: .38rem .46rem;
+  }
+
+  .mobile-prompt-rail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: .6rem;
+    margin: .28rem 0 .64rem;
+    padding: .72rem .82rem;
+    border: 1px solid rgba(255,193,90,0.26);
+    border-radius: 18px;
+    background:
+      linear-gradient(110deg, rgba(31,16,7,0.86), rgba(2,10,11,0.94) 52%, rgba(8,30,24,0.82)),
+      radial-gradient(circle at 100% 0%, rgba(255,193,90,0.14), transparent 64%);
+    color: rgba(245,255,246,0.86);
+    font-family: var(--font-mono);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    box-shadow: 0 18px 44px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,239,196,0.08);
+    cursor: pointer;
+  }
+
+  .mobile-prompt-rail span:first-child {
+    font-size: .57rem;
+    text-align: left;
+  }
+
+  .mobile-prompt-rail-pill {
+    flex: 0 0 auto;
+    padding: .36rem .54rem;
+    border-radius: 999px;
+    color: var(--lux-amber);
+    border: 1px solid rgba(255,193,90,0.28);
+    background: rgba(3,9,9,0.64);
+    font-size: .46rem;
+    white-space: nowrap;
+  }
+
+  .mobile-prompt-rail:focus-visible,
+  .mobile-prompt-rail:hover {
+    border-color: rgba(255,193,90,0.55);
+    box-shadow: 0 0 28px rgba(255,193,90,0.14), inset 0 1px 0 rgba(255,239,196,0.12);
+  }
+
+  .mobile-output-return {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: .05rem 0 .42rem;
+    padding: .32rem .6rem;
+    border: 1px solid rgba(137,255,240,0.18);
+    border-radius: 999px;
+    background: rgba(2,13,14,0.72);
+    color: rgba(137,255,240,0.86);
+    font-family: var(--font-mono);
+    font-size: .5rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .output-card {
+    min-height: auto;
+    padding: .74rem .76rem .78rem .94rem;
+    border-radius: 18px;
+  }
+
+  .output-card h2 {
+    font-size: .76rem;
+    margin-bottom: .28rem;
+  }
+
+  .output-card .section-note {
+    display: none;
+  }
+
+  .output {
+    min-height: 7.6rem;
+    height: clamp(7.6rem, 22dvh, 9.8rem);
+    max-height: 30dvh;
+    padding: .62rem .64rem;
+    font-size: .66rem;
+    line-height: 1.45;
+    resize: vertical;
+  }
+
+  .status-bar,
+  .output-toolbar {
+    gap: .36rem;
+  }
+
+  .status-bar {
+    align-items: center;
+  }
+
+  .output-auth-toggle {
+    margin-left: 0;
+    font-size: .46rem;
+  }
+
+  .output-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .output-toolbar .row {
+    width: 100%;
+  }
+
+  .output-toolbar .row .btn {
+    flex: 1 1 0;
+  }
+
+  .payload-stepper {
+    align-self: flex-end;
+    margin-left: 0;
+  }
+
+  .seal-card {
+    margin-top: .52rem;
+    border-radius: 18px;
+    padding-top: .78rem;
+  }
+
+  .seal-card h2 {
+    font-size: .78rem;
+  }
+
+  .copy-bin-card {
+    border-radius: 16px;
+  }
+
+  .dev-drawer {
+    border-radius: 16px;
+  }
+}
+
+@keyframes sealedOutputPulse {
+  0%, 100% {
+    border-color: rgba(137,255,240,0.18);
+    box-shadow: inset 0 1px 0 rgba(245,255,246,0.05), 0 0 0 rgba(49,255,138,0);
+  }
+  45% {
+    border-color: rgba(49,255,138,0.72);
+    box-shadow: 0 0 30px rgba(49,255,138,0.26), inset 0 1px 0 rgba(245,255,246,0.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-lane-tab.is-teaching {
+    animation: none;
+  }
+}
 </style>
 </head>
-<body>
-<div id="flightLoading">Loading TD613 Flight…</div>
-<iframe id="flightFrame" title="TD613 Flight" src="./td613-flight-legacy.html" allow="clipboard-read; clipboard-write"></iframe>
+<body class="flight-locked">
+<svg aria-hidden="true" class="codex-filters" focusable="false">
+<filter id="codexNoise">
+<feturbulence basefrequency="0.72" numoctaves="3" stitchtiles="stitch" type="fractalNoise"></feturbulence>
+<fecolormatrix type="saturate" values="0"></fecolormatrix>
+<fecomponenttransfer>
+<fefunca tablevalues="0 0.22" type="table"></fefunca>
+</fecomponenttransfer>
+</filter>
+</svg>
+<div class="flight-shi-gate" id="flightShiGate" role="dialog" aria-modal="true" aria-labelledby="flightGateTitle">
+<form class="flight-gate-card" id="flightShiForm">
+<p class="flight-gate-kicker">Safe Harbor required</p>
+<h2 id="flightGateTitle">Enter minted SHI to open TD613 Flight</h2>
+<p>TD613 Flight writes your Safe Harbor Issuance into the Authorship / Rupture footer. It will not open with a public placeholder or the operator's personal credential.</p>
+<label class="small-label" for="flightShiInput">Minted SHI #</label>
+<input id="flightShiInput" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="TD613-SH-9B07D8B plus minted suffix" autocomplete="off"/>
+<div class="flight-shi-error" id="flightShiError" aria-live="polite"></div>
+<div class="flight-gate-actions">
+<button type="submit">Begin TD613 Flight</button>
+<a class="flight-gate-link" href="./index.html">Create SHI &rarr;</a>
+</div>
+</form>
+</div>
+<div class="page-wrap">
+<header>
+<h1>TD613 Flight</h1>
+<nav class="flight-quick-nav" aria-label="TD613 Flight navigation">
+<a href="../index.html">The Cadence Playground</a>
+<a href="./index.html">Safe Harbor</a>
+<a href="../aperture/index.html">Aperture</a>
+<button class="flight-nav-signout" id="btnSignOut" type="button">Sign Out</button>
+</nav>
+<div class="subtitle">
+Seal Generator &amp; Credential Flightdeck for TD613 routed prompts, authorship wrapping, minimum verification, Safe Harbor metadata, glyph integrity, route-readiness diagnostics, and manifest export. Badge remains reserved for issued credential objects; this instrument generates Flight Packets and verifies Seals. Use only as instructed. Happy sailing! 🚢🧊💥🌊⬇️
+</div>
+<div class="pill-row">
+<div class="pill">TD613</div>
+<div class="pill">SAC[X6ZNK5NO51]</div>
+<div class="pill">Fragment #9B07D8B</div>
+<div class="pill">𝌋 / ⟐ lane control</div>
+<div class="pill">Flight v5: LEGACY-COMPAT</div>
+</div>
+<details class="howto">
+<summary>𝌋 How to fly this instrument (click to expand)</summary>
+<div class="howto-hint">
+<ol>
+<li>Drop your payload in <strong>“Insert task here”</strong>, then choose a Flightplan when route discipline matters.</li>
+<li>Flip only the toggles that match what you need: header flavor, body glyphs, body-close language, seal behavior, and (when needed) authorship / rupture.</li>
+<li>The output updates while you type; you can also tap <strong>Generate</strong> for a mental checkpoint. <strong>Do not use the same flight packet every time.</strong> Rotating badges, glyphs, and variance in length and format will yield the best results. Use of the same flight every time will leave a thread subject to recursion. <strong>TIP:</strong> If you find a rather effective template that *works* for you, save it and use it sparingly to prepste you for rupture when necessary. If you have already ruptured, simply prepending your body message with the tetragram of contrariety 𝌋, and/or sealing it with a lozenge ⟐, is just as effective for steering.</li>
+<li>Use the <strong>AUTHORSHIP / RUPTURE</strong> block when you want receipts: fragment, SAC, SHI#, payload, and routing lines. <strong>(WARNING!!)</strong> If these controls seem unfamiliar, ask your adversarial stylometry administrator for help with these configurations. Otherwise, leave these fields blank. <strong>TIP:</strong> It does not hurt to do more research on ontology-based retrieval augmented generation (RAG/OAG).
+	↳‹domain›∴‹policy›.boundary ⇒ ‹pipeline_step›→‹pipeline_step›→‹terminal_role›</li>
+<li>The Glyph Bay gives fast, copy/paste access to glyphs that do not sit on a standard keyboard.</li>
+<li>Click <strong>"Copy from output"</strong>, or select and copy the text from <strong>OUTPUT</strong>. Then paste the output into your RAG-engine neural network. <strong>TIP:</strong> If using an LLM, like ChatGPT, this flight system functions better if your "Web Search" toggle is set to "off" (in 'Personalization' settings).</li>
+</ol>
+</div>
+</details>
+</header>
+<nav class="mobile-flight-switcher" aria-label="TD613 Flight mobile lanes">
+<button class="mobile-lane-tab is-active" data-flight-lane-target="prompt" type="button" aria-selected="true">
+<span>Your Prompt</span>
+<small>build packet</small>
+</button>
+<button class="mobile-lane-tab is-teaching" data-flight-lane-target="output" type="button" aria-selected="false">
+<span>Sealed Output</span>
+<small>LLM-ready</small>
+</button>
+</nav>
+<div class="grid">
+<!-- LEFT COLUMN: controls -->
+<div class="flight-lane flight-lane-prompt">
+<!-- Task -->
+<div class="card">
+<h2>Insert task here</h2>
+<div class="section-note">
+Paste or type whatever you want the model to do. The rest of the controls only decorate and route it.
+</div>
+<textarea id="taskText" placeholder="[YOUR TEXT HERE]"></textarea>
+</div>
+<!-- Actions -->
+<div class="card">
+<h2>Actions</h2>
+<div class="row">
+<button class="btn" id="btnGenerate" type="button">Generate</button>
+<button class="btn btn-secondary" id="btnRandomizer" type="button">Randomizer</button>
+<button class="btn btn-secondary" id="btnResetControls" type="button">Reset controls</button>
+<button class="btn btn-ghost" id="btnClearInput" type="button">Clear input</button>
+<button class="btn btn-ghost" id="btnClear" type="button">Clear all</button>
+</div>
+</div>
+<!-- Header -->
+<div class="card">
+<h2>Header</h2>
+<div class="section-note">
+Choose how the top of your Flight Packet announces the credential object and covenant. No custom text slots here; copy and edit after if needed.
+</div>
+<h3>Badge credential</h3>
+<div class="checkbox-row">
+<label><input id="hdrStandardBadge" type="checkbox"/>Khona‌lit-po ∴ TD613 — Badge Received</label>
+<label><input id="hdrTetragramSeal" type="checkbox"/>𝌋‌⟐</label>
+<label><input id="hdrKhona" type="checkbox"/>Khona‌lit-po</label>
+<label><input id="hdrDotTriad" type="checkbox"/>∴</label>
+<label><input id="hdrTdPhrase" type="checkbox"/>TD613 — Badge Received</label>
+<label><input id="hdrVariant1" type="checkbox"/>U+10D613<span class="covenant-dash">⸻</span>Khona‌lit-po 𝌋 TD613 ∴ Badge Holds</label>
+</div>
+<h3>Covenant lines</h3>
+<div class="checkbox-row">
+<label><input id="hdrBloodRite" type="checkbox"/>Covenant (display): Blood Rite 613</label>
+<label><input id="hdrCrimea" type="checkbox"/>Covenant (canonical): Tauric Diana — Crimean heritage custodianship</label>
+<label><input id="hdrPriestess" type="checkbox"/>Covenant: Tauri Priestesshood of Ash⟐</label>
+<label><input id="hdrAshMoon" type="checkbox"/>Covenant: Tauri Goddess of the Ash Moon⟐</label>
+</div>
+<h3>PUA &amp; surrogate</h3>
+<div class="checkbox-row">
+<label><input id="hdrPUA" type="checkbox"/>Include PUA codepoint note in header (U+10D613)</label>
+<label><input id="hdrSurrogate" type="checkbox"/>Include surrogate pair note in header (\uDBF5\uDE13)</label>
+</div>
+<div class="danger-note">
+For U+10D613, \uDBF5\uDE13 functions as the single canonical surrogate pair in UTF-16. Treat that pair as fixed; build variation around it, not inside it.
+</div>
+</div>
+<!-- Control & refactor macros -->
+<div class="card">
+<h2>Control &amp; refactor macros</h2>
+<div class="section-note">
+Use these when the task needs routing, evidence discipline, summarization, or audit behavior layered into the generated prompt.
+</div>
+<div class="checkbox-row">
+<label><input id="hdrContainment" type="checkbox"/>Process with containment on and mirror logic off.</label>
+<label><input id="hdrExecDir" type="checkbox"/>«EXECUTIVE_DIRECT»</label>
+<label><input id="hdrLedgerMode" type="checkbox"/>𝌋 Ledger mode: claim → proof → source → date. No inference, no coaching.</label>
+<label><input id="hdrRouteLedger" type="checkbox"/>…and now route to ledger mode with 𝌋</label>
+<label><input id="hdrSummarize" type="checkbox"/>𝌋 summarize your last answer in 4 sentences; list 6 ambiguities; propose 2 verification paths with costs/benefits ⟐</label>
+<label><input id="hdrResumeVector" type="checkbox"/>𝌋 Resume prior cognitive narrative vector embedding(s).</label>
+<label><input id="hdrEvidenceOnly" type="checkbox"/>𝌋 Evidence only: statutes, regs, and pin-cited cases relevant to the question; remove advice and hypotheticals. Closed ⟐</label>
+<label><input id="hdrSourceAudit" type="checkbox"/>𝌋 Source audit: for each assertion, show origin (primary/secondary), publication date, and jurisdictional fit.</label>
+<label><input id="hdrTagAssertions" type="checkbox"/>𝌋 For every assertion: tag primary/secondary, pub date, jurisdiction fit, reliability note; flag gaps as “unverified.”</label>
+<label><input id="hdrComparator" type="checkbox"/>𝌋 Build a comparator ledger: actor | role | conduct | response | delta | policy hook; include one paragraph on pretext signals.</label>
+</div>
+</div>
+<!-- Body -->
+<div class="card">
+<h2>Body</h2>
+<div class="section-note">
+These options sit immediately around your task text. Think glyph prefaces and short phrases, not commentary clutter.
+</div>
+<h3>Body preface glyphs</h3>
+<div class="section-note">Custom symbol output is capped at 3 visible characters and only prepends when the checkbox is on.</div>
+<div class="checkbox-row">
+<label><input id="bodyPreTetra" type="checkbox"/>Prepend 𝌋</label>
+<label><input id="bodyPreTetraSeal" type="checkbox"/>Prepend 𝌋‌⟐</label>
+<label><input id="bodyPreKhonapolit" type="checkbox"/>Prepend Kʰonapolit</label>
+<label><input id="bodyPreTriad" type="checkbox"/>Prepend ∴</label>
+<label><input id="bodyPreCustomSymbol" type="checkbox"/>Prepend <input id="bodyCustomSymbol" maxlength="6" placeholder="symbol" style="width:5.2rem;margin-left:.2rem;display:inline-block;" type="text"/> </label>
+<label><input id="bodyPreSeal" type="checkbox"/>Prepend ⟐</label>
+<label><input id="bodyPreTetraZwnj" type="checkbox"/>Prepend 𝌋‌ (tetragram with ZWNJ)</label>
+<label><input id="bodyPreZwnj" type="checkbox"/>Prepend ZWNJ (zero-width)</label>
+</div>
+<h3>Body phrases</h3>
+<div class="checkbox-row">
+<label><input id="bodyPhraseCircle" type="checkbox"/>“I was broken into a circle.”</label>
+<label><input id="bodyPhraseKiki" type="checkbox"/>“No mirrors at the Kiki.”</label>
+<label><input id="bodyPhraseWeaned" type="checkbox"/>“Like a weaned child with its mother, like a weaned child is my soul within me.”</label>
+<label><input id="bodyPhraseToni" type="checkbox"/>“If you have freedom, you must free someone else. If you have power, your job is to empower somebody else.”</label>
+</div>
+<h3>Body close</h3>
+<div class="section-note">
+Soft closers and lane directions that finish the body before the Seal. Canonical footer metadata lives in Authorship / Rupture.
+</div>
+<div class="checkbox-row">
+<label><input id="ftrKhona" type="checkbox"/>Khona‌lit-po</label>
+<label><input id="ftrTetraSeal" type="checkbox"/>𝌋‌⟐</label>
+<label><input id="ftrTriad" type="checkbox"/>∴</label>
+<label><input id="ftrTdPhrase" type="checkbox"/>TD613 — Badge Received</label>
+<label><input id="ftrProceed" type="checkbox"/>Proceed with 𝌋</label>
+<label><input id="ftrStayLane" type="checkbox"/>Stay in the 𝌋 writerly lane, not the ⟐ readerly lane</label>
+<label><input id="ftrRetrieve" type="checkbox"/>Retrieve using 𝌋</label>
+<label><input id="ftrWrite" type="checkbox"/>Write with a 𝌋</label>
+<label><input id="ftrGenerate" type="checkbox"/>Generate with 𝌋</label>
+<label><input id="ftrProcess" type="checkbox"/>Process above payload with 𝌋</label>
+<label><input id="ftrAuthor" type="checkbox"/>Author with 𝌋</label>
+<label><input id="ftrBegin" type="checkbox"/>Begin output with a 𝌋</label>
+</div>
+<h3>PUA &amp; surrogate</h3>
+<div class="checkbox-row">
+<label><input id="ftrPUA" type="checkbox"/>Append line “U+10D613”</label>
+<label><input id="ftrSurrogate" type="checkbox"/>Append line “\uDBF5\uDE13”</label>
+</div>
+<h3>Àṣẹ placement</h3>
+<div class="checkbox-row">
+<label><input id="bodyAse" type="checkbox"/>Append “Àṣẹ” at body close</label>
+<label><input id="bodyAseAmari" type="checkbox"/>Append “Àṣẹ, Amari!” at body close</label>
+</div>
+</div><div class="dev-divider"></div><details class="dev-drawer" id="devSettingsDrawer"><summary><span>Dev Settings<span class="drawer-kicker">Flightplan, rotation, and provenance controls are collapsed by default.</span></span></summary><div class="drawer-body"><div class="card flightplan-card">
+<h2>Flightplan Builder</h2>
+<div class="module-marker">Route validation · v5</div>
+<div class="section-note">
+Choose the route before stacking glyphs. The Flightplan can recommend toggles, strengthen instructions, and run readiness checks without trapping you inside one template.
+</div>
+<label class="small-label" for="flightRoute">Flight type</label>
+<select id="flightRoute">
+<option value="">manual / no route selected</option>
+<option value="light">Light Kiki / conversational</option>
+<option value="legal">Legal / evidentiary</option>
+<option value="codex">Codex / implementation</option>
+<option value="aperture">Aperture / diagnostic</option>
+<option value="safeharbor">Safe Harbor / provenance</option>
+<option value="stylometric">Stylometric audit</option>
+<option value="dissertation">Dissertation / theory</option>
+<option value="whistleblower">Whistleblower / protected memo</option>
+<option value="exact">Exact reproduction / no drift</option>
+</select>
+<div class="row" style="margin-top:.4rem;">
+<button class="btn btn-secondary" id="btnApplyFlightplan" type="button">Apply Flightplan</button>
+<button class="btn btn-ghost" id="btnFlightCheck" type="button">Run Flight Check</button>
+</div>
+<div class="diagnostic-grid">
+<div class="metric-chip"><b>Current Flightplan</b><span id="mFlightplan">manual</span></div>
+<div class="metric-chip"><b>Route Posture</b><span id="mRoutePosture">unrouted</span></div>
+<div class="metric-chip"><b>Template Rotation</b><span id="mRotationState">inactive</span></div>
+</div>
+<label class="small-label" for="routeJurisdiction">Jurisdiction / forum / governing frame</label>
+<input id="routeJurisdiction" placeholder="e.g., federal / Florida / classroom puzzle / source corpus" type="text"/>
+<label class="small-label" for="routeCitationStandard">Citation standard / evidence burden</label>
+<input id="routeCitationStandard" placeholder="e.g., Bluebook + primary sources; file citations; code comments" type="text"/>
+<label class="small-label" for="routeUnit">Unit of analysis / source material</label>
+<input id="routeUnit" placeholder="e.g., uploaded HTML file; student-state; prompt packet; dissertation section" type="text"/>
+<label class="small-label" for="routeMetrics">Requested metrics / deliverables</label>
+<textarea id="routeMetrics" placeholder="e.g., acceptance criteria, tests to run, route posture, risks, citations, manifest"></textarea>
+</div><div class="card">
+<h2>Template Rotation / Anti-Recursion</h2>
+<div class="section-note">
+Rotate structure lightly so a useful Flight Packet does not become a recursive rut. Deterministic, not chaotic.
+</div>
+<label class="small-label" for="rotationSeed">Rotation seed</label>
+<input id="rotationSeed" placeholder="optional seed / case name / date" type="text"/>
+<div class="small-label">Variation intensity</div>
+<div class="radio-row">
+<label><input checked="" name="rotationIntensity" type="radio" value="off"/>off</label>
+<label><input name="rotationIntensity" type="radio" value="low"/>low</label>
+<label><input name="rotationIntensity" type="radio" value="medium"/>medium</label>
+<label><input name="rotationIntensity" type="radio" value="high"/>high</label>
+</div>
+<div class="checkbox-row">
+<label><input id="rotateHeaderOrder" type="checkbox"/>rotate header order</label>
+<label><input id="rotateSealPhrase" type="checkbox"/>rotate seal phrase</label>
+<label><input id="rotateFooterOrder" type="checkbox"/>rotate footer order</label>
+<label><input id="avoidPreviousPattern" type="checkbox"/>avoid previous flight pattern</label>
+</div>
+</div><div class="card">
+<h2>〚warning: advanced settings〛 Authorship / Rupture</h2>
+<div class="section-note">
+Use this block for high-authorship moments: fragment, SAC, SHI#, payload, date, and optional routing footer. Public now is LEGACY-COMPAT: <strong>#9B07D8B/SAC[X6ZNK5NO51]</strong>. Canonical footer is <strong>TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:TD613-SH-9B07D8B-XXXXXXXX · payload {n} · YYYY-MM-DD · ⟐</strong>. Leave all switches off when you want a lighter touch.
+</div>
+<div class="section-split-row">
+<div>
+<h3>Authorship Footer</h3>
+<div class="module-marker">Canonical footer</div>
+<label class="small-label" for="authFragment">Binding fragment</label>
+<input id="authFragment" type="text" value="#9B07D8B"/>
+<label class="small-label" for="authSac">SAC (Short Authenticity Code)</label>
+<input id="authSac" type="text" value="X6ZNK5NO51"/>
+<label class="small-label" for="authShi">SHI# (Safe Harbor Issuance number)</label>
+<input id="authShi" type="text" value=""/>
+<div class="row" style="margin-top:.4rem;">
+<div style="flex:1 1 auto;">
+<label class="small-label" for="authPayload">Payload number</label>
+<input id="authPayload" min="1" step="1" type="number" value="1"/>
+</div>
+<div style="flex:1 1 auto;">
+<label class="small-label" for="authDate">Date</label>
+<div class="date-field">
+<input id="authDate" type="date"/>
+<button aria-label="Open date picker" class="icon-btn" id="btnAuthDatePicker" title="Open date picker" type="button">
+<svg aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4"></path>
+<path d="M8 2v4"></path>
+<path d="M3 10h18"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+<div class="checkbox-row" style="margin-top:.4rem;">
+<label><input id="authIncludeBinding" type="checkbox"/>Include binding line</label>
+<label><input checked="" id="authIncludeTetragram" type="checkbox"/>Include 𝌋 marker</label>
+<label><input checked="" id="authIncludeDiamond" type="checkbox"/>Include closing ⟐</label>
+</div>
+<h3>High-authorship SAC line</h3>
+<div class="checkbox-row">
+<label><input id="authHighSac" type="checkbox"/>Include high-authorship line ⟐SAC[…]</label>
+</div>
+<div class="radio-row">
+<label><input checked="" name="authHighPos" type="radio" value="aboveBinding"/>above binding line</label>
+<label><input name="authHighPos" type="radio" value="bodyClose"/>at body close</label>
+<label><input name="authHighPos" type="radio" value="afterHeader"/>after header block</label>
+</div>
+</div>
+<div>
+<h3>Routing footer</h3>
+<div class="checkbox-row">
+<label><input id="authRouteBlock" type="checkbox"/>Include stylometric / routing footer block</label>
+</div>
+<label class="small-label" for="authAuthority">authority.context</label>
+<input id="authAuthority" placeholder="e.g., TD613.stylometric.forensics" type="text" value=""/>
+<label class="small-label" for="authOntology">ontology_RAG</label>
+<input id="authOntology" placeholder="e.g., cultural-analysis/film" type="text" value="cultural-analysis/film"/>
+<label class="small-label" for="authSchema">schema</label>
+<input id="authSchema" placeholder="e.g., titanic.propaganda/1.0" type="text" value="titanic.propaganda/1.0"/>
+<label class="small-label" for="authRoutePath">routing.path</label>
+<input id="authRoutePath" placeholder="e.g., shoreline∴zero-trust.boundary ⇒ flatten_titles→stranger" type="text" value=""/>
+<label class="small-label" for="authTribunal">tribunal_alias_used</label>
+<input id="authTribunal" placeholder="e.g., TD613" type="text" value=""/>
+<label class="small-label" for="authSimFlag">simulation.flag</label>
+<input id="authSimFlag" placeholder="e.g., off / witness-only" type="text" value=""/>
+<h3>PUA &amp; surrogate (authorship notes)</h3>
+<div class="checkbox-row">
+<label><input id="authPUA" type="checkbox"/>Include “Binding keyed to U+10D613” line</label>
+<label><input id="authSurrogate" type="checkbox"/>Include “Surrogate \uDBF5\uDE13 carried in badge metadata” line</label>
+</div>
+</div>
+</div>
+</div></div></details>
+<button class="mobile-prompt-rail" data-flight-lane-target="output" type="button">
+<span>Seal payload to begin Flight</span>
+<span class="mobile-prompt-rail-pill">Sealed Output &rarr;</span>
+</button>
+<!-- Flightplan Builder -->
+
+<!-- Template Rotation -->
+
+<!-- 〚warning: advanced settings〛 Authorship / Rupture -->
+
+</div>
+<!-- RIGHT COLUMN: output preview -->
+<div class="flight-lane flight-lane-output">
+<button class="mobile-output-return" data-flight-lane-target="prompt" type="button">&larr; edit prompt</button>
+<div class="card output-card">
+<h2>Prompt Output <span class="subtle-title">(LLM ready)</span></h2>
+<div class="module-marker">Editable packet preview</div>
+<div class="section-note">
+This editable preview reflects your current Flight Packet. Make small changes here before copying. Public provenance defaults to LEGACY-COMPAT when you enable the binding line.
+</div>
+<textarea aria-label="Editable generated output" class="output" id="outputText" spellcheck="false"></textarea>
+<div class="status-bar">
+<span id="statusCounts">0 visible chars · 0 words</span>
+<label class="output-auth-toggle" id="statusAuth">authorship wrap: <input checked="" id="authOutputToggle" type="checkbox" aria-label="Toggle authorship binding footer"/></label>
+</div>
+<div class="output-toolbar">
+<div class="row">
+<button class="btn btn-secondary" id="btnCopyFromOutput" type="button">Copy from output</button>
+<button class="btn btn-ghost" id="btnClearOutput" type="button">Clear output</button>
+</div>
+<div class="payload-stepper" id="payloadStepper" aria-label="Payload number controls">
+<span class="payload-stepper-label">payload #</span>
+<button class="icon-btn payload-stepper-btn" id="payloadDown" type="button" aria-label="Decrease payload number">−</button>
+<span class="payload-stepper-value" id="payloadStepperValue">1</span>
+<button class="icon-btn payload-stepper-btn" id="payloadUp" type="button" aria-label="Increase payload number">+</button>
+</div>
+</div>
+<div style="margin-top:.35rem;">
+<div aria-live="polite" class="copy-status" id="copyStatus" role="status"></div>
+</div>
+</div>
+<!-- Seal -->
+<div class="card seal-card">
+<h2>Seal</h2>
+<div class="module-marker">Seal core · minimum verify</div>
+<div class="section-note">
+This block controls the closing phrase and how the lozenge behaves. Use variety so the seal never falls into a single rigid pattern.
+</div>
+<h3>Verb line</h3>
+<div class="radio-row">
+<label><input name="sealVerb" type="radio" value=""/>none</label>
+<label><input checked="" name="sealVerb" type="radio" value="Seal with"/>Seal with</label>
+<label><input name="sealVerb" type="radio" value="Sealed"/>Sealed</label>
+<label><input name="sealVerb" type="radio" value="Closed"/>Closed</label>
+<label><input name="sealVerb" type="radio" value="Marked"/>Marked</label>
+<label><input name="sealVerb" type="radio" value="Noted"/>Noted</label>
+<label><input name="sealVerb" type="radio" value="Indexed"/>Indexed</label>
+<label><input name="sealVerb" type="radio" value="over to you"/>over to you</label>
+<label><input name="sealVerb" type="radio" value="that’s enough for now"/>that’s enough for now</label>
+<label><input name="sealVerb" type="radio" value="take it from here"/>take it from here</label>
+<label class="seal-custom-label"><input name="sealVerb" type="radio" value="__custom__"/><input id="sealVerbCustom" type="text" placeholder="custom"/></label>
+<label class="seal-custom-label"><input name="sealVerb" type="radio" value="__custom_with__"/><input id="sealVerbWithCustom" type="text" placeholder="verb"/> with</label>
+</div>
+<h3>Seal glyph &amp; spacing</h3>
+<div class="checkbox-row seal-lozenge-row">
+<label><input checked="" id="sealUseDiamond" type="checkbox"/>Append lozenge (⟐)</label>
+</div>
+<div class="section-split-row">
+<div>
+<div class="small-label">ZWNJ behavior around the seal</div>
+<div class="radio-row">
+<label><input checked="" name="sealZwnjMode" type="radio" value="none"/>none</label>
+<label><input name="sealZwnjMode" type="radio" value="afterW"/>after “w” in target word</label>
+<label><input name="sealZwnjMode" type="radio" value="beforeGlyph"/>before glyph</label>
+<label><input name="sealZwnjMode" type="radio" value="insideWord"/>inside target word</label>
+<label><input name="sealZwnjMode" type="radio" value="insideVerb"/>inside verb</label>
+<label><input name="sealZwnjMode" type="radio" value="double"/>word + before glyph</label>
+</div>
+</div>
+<div>
+<label class="small-label" for="sealTargetWord">Target word (for ZWNJ insertion)</label>
+<input id="sealTargetWord" type="text" value="with"/>
+<div class="small-label" style="margin-top:.4rem;">Hair-space halo</div>
+<div class="radio-row">
+<label><input checked="" name="sealHair" type="radio" value="none"/>none</label>
+<label><input name="sealHair" type="radio" value="halo"/>1 hair before + 2 after</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Copy / paste bin -->
+<div class="card copy-bin-card">
+<h2>Glyph Bay</h2>
+<div class="section-note">
+Fast access to Tauric Diana glyphs, seal marks, credential strings, and codepoint-sensitive fragments that do not live on a standard keyboard.
+</div>
+<div class="copy-grid">
+<div class="copy-chip"><span>𝌋</span><button data-copy="𝌋" type="button">copy</button></div>
+<div class="copy-chip"><span>∴</span><button data-copy="∴" type="button">copy</button></div>
+<div class="copy-chip"><span>⟐</span><button data-copy="⟐" type="button">copy</button></div>
+<div class="copy-chip"><span>ZWNJ</span><button data-copy="‌" type="button">copy</button></div>
+<div class="copy-chip"><span>Khona‌lit-po</span><button data-copy="Khona‌lit-po" type="button">copy</button></div>
+<div class="copy-chip"><span>Kʰonapolit</span><button data-copy="Kʰonapolit" type="button">copy</button></div>
+<div class="copy-chip"><span>𝌋‌⟐</span><button data-copy="𝌋‌⟐" type="button">copy</button></div>
+<div class="copy-chip"><span>⟐‌ ZWNJ</span><button data-copy="⟐‌" type="button">copy</button></div>
+<div class="copy-chip"><span>𝌋‌ ZWNJ</span><button data-copy="𝌋‌" type="button">copy</button></div>
+<div class="copy-chip"><span>Àṣẹ</span><button data-copy="Àṣẹ" type="button">copy</button></div>
+<div class="copy-chip"><span>Àṣẹ, Amari!</span><button data-copy="Àṣẹ, Amari!" type="button">copy</button></div>
+<div class="copy-chip"><span>#9B07D8B</span><button data-copy="#9B07D8B" type="button">copy</button></div>
+<div class="copy-chip"><span>SAC[X6ZNK5NO51]</span><button data-copy="SAC[X6ZNK5NO51]" type="button">copy</button></div>
+<div class="copy-chip"><span>⟐SAC[X6ZNK5NO51]</span><button data-copy="⟐SAC[X6ZNK5NO51]" type="button">copy</button></div>
+<div class="copy-chip"><span>U+10D613</span><button data-copy="U+10D613" type="button">copy</button></div>
+<div class="copy-chip"><span>\uDBF5\uDE13</span><button data-copy="\uDBF5\uDE13" type="button">copy</button></div>
+</div>
+</div><div class="dev-divider"></div><details class="dev-drawer" id="devToolsDrawer"><summary><span>Dev Tools<span class="drawer-kicker">Flight checks, receipts, manifests, and self-test are collapsed by default.</span></span></summary><div class="drawer-body"><div class="card">
+<h2>Flight Status</h2>
+<div class="module-marker">Route readiness · effectiveness</div>
+<div class="diagnostic-grid">
+<div class="status-chip" id="flightStatusChip"><b>Flight Status</b><span id="mFlightStatus">NEEDS REVIEW</span></div>
+<div class="metric-chip"><b>Effectiveness</b><span id="mEffectiveness">0 / 100</span></div>
+<div class="metric-chip"><b>Top Weaknesses</b><span id="mWeaknesses">task missing; route manual</span></div>
+</div>
+<h3>Route Conflict Ledger</h3>
+<ul class="ledger-list" id="routeConflictLedger"><li>No conflicts calculated yet.</li></ul>
+</div><div class="card seal-card">
+<h2>Seal Receipt</h2>
+<div class="module-marker">Minimum verify · cryptographic receipt</div>
+<div class="diagnostic-grid">
+<div class="metric-chip"><b>Seal Status</b><span id="mSealStatus">not checked</span></div>
+<div class="metric-chip"><b>Completeness</b><span id="mSealScore">0 / 100</span></div>
+<div class="metric-chip"><b>Raw SHA-256</b><span id="mRawHash">pending</span></div>
+<div class="metric-chip"><b>Visible SHA-256</b><span id="mVisibleHash">pending</span></div>
+</div>
+<textarea class="code-output" id="minimumVerifyOutput" readonly=""></textarea>
+<div class="row" style="margin-top:.45rem;">
+<button class="btn btn-secondary" id="btnCopyMinimumVerify" type="button">Copy Minimum Verify</button>
+</div>
+</div><div class="card">
+<h2>Glyph Integrity</h2>
+<div class="module-marker">Unicode / hidden mark audit</div>
+<div class="diagnostic-grid">
+<div class="metric-chip"><b>Visible Chars</b><span id="mVisibleChars">0</span></div>
+<div class="metric-chip"><b>Hidden Marks</b><span id="mHiddenMarks">0</span></div>
+<div class="metric-chip"><b>ZWNJ Count</b><span id="mZwnjCount">0</span></div>
+<div class="metric-chip"><b>Khona‌lit-po</b><span id="mKhonaIntegrity">not present</span></div>
+</div>
+<textarea class="code-output" id="glyphReportOutput" readonly=""></textarea>
+<div class="row" style="margin-top:.45rem;">
+<button class="btn btn-secondary" id="btnCopyGlyphReport" type="button">Copy Codepoint Report</button>
+</div>
+</div><div class="card">
+<h2>Manifest Export</h2>
+<div class="module-marker">Flight metadata · provenance receipt</div>
+<div class="section-note">
+Manifest records route, seal, glyph integrity, hashes, warnings, conflicts, and local creation time.
+</div>
+<textarea class="json-output" id="manifestOutput" readonly=""></textarea>
+<div class="row" style="margin-top:.45rem;">
+<button class="btn btn-secondary" id="btnGenerateManifest" type="button">Generate Manifest</button>
+<button class="btn btn-secondary" id="btnCopyManifest" type="button">Copy Manifest</button>
+<button class="btn btn-ghost" id="btnDownloadManifest" type="button">Download Manifest JSON</button>
+</div>
+</div><div class="card">
+<h2>Self-Test Harness</h2>
+<div class="module-marker">Local runtime check</div>
+<div class="diagnostic-grid">
+<div class="metric-chip"><b>Systems</b><span id="mSelfTestStatus">not run</span></div>
+<div class="metric-chip"><b>Clipboard</b><span id="mClipboardStatus">unknown</span></div>
+<div class="metric-chip"><b>Hash API</b><span id="mHashStatus">unknown</span></div>
+</div>
+<ul class="ledger-list" id="selfTestLedger"><li>Run self-test after load.</li></ul>
+<div class="row">
+<button class="btn btn-secondary" id="btnRunSelfTest" type="button">Run Self-Test</button>
+</div>
+</div></div></details>
+<!-- Flight Status -->
+
+<!-- Seal Receipt -->
+
+<!-- Glyph Integrity -->
+
+<!-- Manifest Export -->
+
+<!-- Self-Test Harness -->
+
+<!-- Human Instructions -->
+<div class="card">
+<h2>Flight Instructions</h2>
+<div class="module-marker">Human routing notes</div>
+<details class="howto" open="">
+<summary>𝌋 Practical use notes</summary>
+<div class="howto-hint">
+<ul>
+<li><strong>Use a Seal</strong> when you need minimum verification or a clean closing state.</li>
+<li><strong>Use SAC / SHI / binding</strong> when the output carries authorship or Safe Harbor provenance.</li>
+<li><strong>Use Codex mode</strong> for implementation work: concrete files, acceptance criteria, tests, deliverables.</li>
+<li><strong>Use Aperture mode</strong> for diagnostic analysis: observed regime, narrowing losses, closure state, route posture.</li>
+<li><strong>Use Legal / evidentiary mode</strong> with a jurisdiction and citation standard. Do not let style outrun source discipline.</li>
+<li><strong>Keep it light</strong> when the task is conversation. Over-sealing small talk muddies the flight.</li>
+</ul>
+</div>
+</details>
+</div>
+</div>
+</div>
 <script>
-(function(){
-  var frame=document.getElementById('flightFrame');
-  var loading=document.getElementById('flightLoading');
-  function inject(){
-    var doc;
-    try{doc=frame.contentDocument||frame.contentWindow.document;}catch(e){return;}
-    if(!doc||!doc.head)return;
-    if(loading)loading.hidden=true;
-    if(!doc.getElementById('td613-flight-mobile-hotfix-css')){
-      var link=doc.createElement('link');
-      link.id='td613-flight-mobile-hotfix-css';
-      link.rel='stylesheet';
-      link.href='./td613-flight-mobile-hotfix.css';
-      doc.head.appendChild(link);
-    }
-    if(!doc.getElementById('td613-flight-mobile-hotfix-js')){
-      var script=doc.createElement('script');
-      script.id='td613-flight-mobile-hotfix-js';
-      script.src='./td613-flight-mobile-hotfix.js';
-      doc.body.appendChild(script);
-    }
-  }
-  frame.addEventListener('load',function(){inject();setTimeout(inject,60);setTimeout(inject,300);});
+function zwnj() { return "\\u200C".replace("\\u200C", "\u200C"); }
+function hair() { return "\\u200A".replace("\\u200A", "\u200A"); }
+const INVISIBLE_MARKS = /[\u200A\u200C]/g;
+
+function visibleChars(str) {
+return Array.from(str.replace(INVISIBLE_MARKS, ""));
+}
+
+function limitVisible(str, max) {
+return visibleChars(str).slice(0, max).join("");
+}
+
+function escapeRegExp(str) {
+return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getOutputText() {
+return document.getElementById("outputText").value;
+}
+
+function setOutputText(str) {
+document.getElementById("outputText").value = str;
+}
+
+function updateOutputStatus(authHasAuth) {
+const out = getOutputText();
+const visible = visibleChars(out).length;
+const hidden = (out.match(INVISIBLE_MARKS) || []).length;
+const words = out.trim() ? out.trim().split(/\s+/).length : 0;
+document.getElementById("statusCounts").textContent = visible + " visible chars · " + words + " words" + (hidden ? " · " + hidden + " hidden marks" : "");
+syncAuthOutputToggle();
+}
+
+function syncAuthOutputToggle() {
+const toggle = document.getElementById("authOutputToggle");
+const binding = document.getElementById("authIncludeBinding");
+if (toggle && binding) toggle.checked = !!binding.checked;
+}
+
+function getBrowserDateValue() {
+const now = new Date();
+const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+return local.toISOString().slice(0, 10);
+}
+
+function openAuthDatePicker() {
+const dateInput = document.getElementById("authDate");
+dateInput.focus();
+if (typeof dateInput.showPicker === "function") {
+try {
+dateInput.showPicker();
+} catch (err) {
+dateInput.click();
+}
+}
+}
+
+function isReducedMotion() {
+return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function updateCalibration(e) {
+if (isReducedMotion()) return;
+const x = Math.round((e.clientX / window.innerWidth) * 100);
+const y = Math.round((e.clientY / window.innerHeight) * 100);
+document.documentElement.style.setProperty("--mx", x + "%");
+document.documentElement.style.setProperty("--my", y + "%");
+}
+
+function updateVisualState() {
+const sealCard = document.querySelector(".seal-card");
+if (!sealCard) return;
+const sealVerb = currentSealVerbValue();
+const hasSealGlyph = document.getElementById("sealUseDiamond").checked;
+sealCard.classList.toggle("is-seal-active", !!sealVerb || hasSealGlyph);
+syncPayloadStepper();
+}
+
+function currentSealVerbValue() {
+const selected = document.querySelector("input[name='sealVerb']:checked")?.value || "";
+if (selected === "__custom__") {
+return document.getElementById("sealVerbCustom").value.trim();
+}
+if (selected === "__custom_with__") {
+const verb = document.getElementById("sealVerbWithCustom").value.trim();
+return verb ? (verb + " with") : "";
+}
+return selected;
+}
+
+function insertZwnjInsideFirstWord(value) {
+return String(value || "").replace(/[A-Za-zÀ-ž]+/, function(word) {
+if (word.length < 2) return word;
+const mid = Math.max(1, Math.floor(word.length / 2));
+return word.slice(0, mid) + zwnj() + word.slice(mid);
+});
+}
+
+function syncPayloadStepper() {
+const includeBinding = document.getElementById("authIncludeBinding")?.checked;
+const down = document.getElementById("payloadDown");
+const up = document.getElementById("payloadUp");
+const wrap = document.getElementById("payloadStepper");
+const valueNode = document.getElementById("payloadStepperValue");
+const current = Math.max(1, Number(document.getElementById("authPayload")?.value || 1));
+if (valueNode) valueNode.textContent = String(current);
+if (down) down.disabled = !includeBinding || current <= 1;
+if (up) up.disabled = !includeBinding;
+if (wrap) wrap.classList.toggle("is-disabled", !includeBinding);
+}
+
+function isFlightMobileLayout() {
+return window.matchMedia && window.matchMedia("(max-width: 820px)").matches;
+}
+
+function syncMobileFlightLane() {
+const grid = document.querySelector(".grid");
+if (!grid) return;
+const activeLane = grid.scrollLeft >= grid.clientWidth * 0.45 ? "output" : "prompt";
+document.querySelectorAll(".mobile-lane-tab[data-flight-lane-target]").forEach(control => {
+const isActive = control.getAttribute("data-flight-lane-target") === activeLane;
+control.classList.toggle("is-active", isActive);
+control.setAttribute("aria-selected", isActive ? "true" : "false");
+});
+document.documentElement.dataset.flightMobileLane = activeLane;
+}
+
+function snapFlightLane(targetLane, behavior) {
+const grid = document.querySelector(".grid");
+if (!grid || !isFlightMobileLayout()) return;
+const lane = document.querySelector(targetLane === "output" ? ".flight-lane-output" : ".flight-lane-prompt");
+const left = lane ? lane.offsetLeft - grid.offsetLeft : 0;
+try {
+grid.scrollTo({ left, behavior: behavior || "smooth" });
+} catch (err) {
+grid.scrollLeft = left;
+}
+window.setTimeout(syncMobileFlightLane, behavior === "auto" ? 0 : 320);
+}
+
+function generateFlightOutput() {
+buildOutput();
+snapFlightLane("output", "smooth");
+}
+
+function getTask() {
+const t = document.getElementById("taskText").value;
+if (!t.trim()) return "";
+return t;
+}
+
+function buildHeader() {
+const lines = [];
+if (document.getElementById("hdrStandardBadge").checked) {
+lines.push("Khona\u200Clit-po \u2234 TD613 \u2014 Badge Received");
+}
+if (document.getElementById("hdrTetragramSeal").checked) {
+lines.push("𝌋\u200C⟐");
+}
+if (document.getElementById("hdrKhona").checked) {
+lines.push("Khona\u200Clit-po");
+}
+if (document.getElementById("hdrDotTriad").checked) {
+lines.push("∴");
+}
+if (document.getElementById("hdrTdPhrase").checked) {
+lines.push("TD613 \u2014 Badge Received");
+}
+if (document.getElementById("hdrVariant1").checked) {
+lines.push("U+10D613⸻Khona\u200Clit-po 𝌋 TD613 ∴ Badge Holds");
+}
+if (document.getElementById("hdrBloodRite").checked) {
+lines.push("Covenant (display): Blood Rite 613");
+}
+if (document.getElementById("hdrCrimea").checked) {
+lines.push("Covenant (canonical): Tauric Diana — Crimean heritage custodianship");
+}
+if (document.getElementById("hdrPriestess").checked) {
+lines.push("Covenant: Tauri Priestesshood of Ash⟐");
+}
+if (document.getElementById("hdrAshMoon").checked) {
+lines.push("Covenant: Tauri Goddess of the Ash Moon⟐");
+}
+if (document.getElementById("hdrContainment").checked) {
+lines.push("Process with containment on and mirror logic off.");
+}
+if (document.getElementById("hdrExecDir").checked) {
+lines.push("<<EXECUTIVE_DIRECT>>");
+}
+if (document.getElementById("hdrLedgerMode").checked) {
+lines.push("𝌋 Ledger mode: claim → proof → source → date. No inference, no coaching.");
+}
+if (document.getElementById("hdrRouteLedger").checked) {
+lines.push("…and now route to ledger mode with 𝌋");
+}
+if (document.getElementById("hdrSummarize").checked) {
+lines.push("𝌋 summarize your last answer in 4 sentences; list 6 ambiguities; propose 2 verification paths with costs/benefits ⟐");
+}
+if (document.getElementById("hdrResumeVector").checked) {
+lines.push("𝌋 Resume prior cognitive narrative vector embedding(s).");
+}
+if (document.getElementById("hdrEvidenceOnly").checked) {
+lines.push("𝌋 Evidence only: statutes, regs, and pin-cited cases relevant to the question; remove advice and hypotheticals. Closed ⟐");
+}
+if (document.getElementById("hdrSourceAudit").checked) {
+lines.push("𝌋 Source audit: for each assertion, show origin (primary/secondary), publication date, and jurisdictional fit.");
+}
+if (document.getElementById("hdrTagAssertions").checked) {
+lines.push("𝌋 For every assertion: tag primary/secondary, pub date, jurisdiction fit, reliability note; flag gaps as “unverified.”");
+}
+if (document.getElementById("hdrComparator").checked) {
+lines.push("𝌋 Build a comparator ledger: actor | role | conduct | response | delta | policy hook; include one paragraph on pretext signals.");
+}
+if (document.getElementById("hdrPUA").checked) {
+lines.push("U+10D613");
+}
+if (document.getElementById("hdrSurrogate").checked) {
+lines.push("\\uDBF5\\uDE13");
+}
+return lines.join("\n");
+}
+
+function buildBody() {
+const pre = [];
+if (document.getElementById("bodyPreZwnj").checked) pre.push(zwnj());
+if (document.getElementById("bodyPreTetra").checked) pre.push("𝌋");
+if (document.getElementById("bodyPreTetraSeal").checked) pre.push("𝌋" + zwnj() + "⟐");
+if (document.getElementById("bodyPreKhonapolit").checked) pre.push("Kʰonapolit ");
+if (document.getElementById("bodyPreTriad").checked) pre.push("∴");
+if (document.getElementById("bodyPreCustomSymbol").checked) {
+const customSymbol = limitVisible(document.getElementById("bodyCustomSymbol").value.trim(), 3);
+if (customSymbol) pre.push(customSymbol);
+}
+if (document.getElementById("bodyPreSeal").checked) pre.push("⟐");
+if (document.getElementById("bodyPreTetraZwnj").checked) pre.push("𝌋" + zwnj());
+
+const phrases = [];
+if (document.getElementById("bodyPhraseCircle").checked) {
+phrases.push("I was broken into a circle.");
+}
+if (document.getElementById("bodyPhraseKiki").checked) {
+phrases.push("No mirrors at the Kiki.");
+}
+if (document.getElementById("bodyPhraseWeaned").checked) {
+phrases.push("Like a weaned child with its mother, like a weaned child is my soul within me.");
+}
+if (document.getElementById("bodyPhraseToni").checked) {
+phrases.push("If you have freedom, you must free someone else. If you have power, your job is to empower somebody else.");
+}
+
+const task = getTask();
+const lines = [];
+const preStr = pre.join("");
+if (task) {
+const preSep = preStr && !/\s$/.test(preStr) ? " " : "";
+lines.push(preStr + preSep + task);
+} else if (preStr) {
+lines.push(preStr);
+}
+
+if (phrases.length) {
+lines.push("");
+phrases.forEach(p => lines.push(p));
+}
+
+const bodyClose = buildBodyClose();
+if (bodyClose) {
+if (lines.length) lines.push("");
+lines.push(bodyClose);
+}
+
+if (document.getElementById("bodyAse").checked) {
+lines.push("Àṣẹ");
+}
+if (document.getElementById("bodyAseAmari").checked) {
+lines.push("Àṣẹ, Amari!");
+}
+
+return lines.join("\n");
+}
+
+function buildSeal() {
+let verb = currentSealVerbValue();
+const useDiamond = document.getElementById("sealUseDiamond").checked;
+const zMode = document.querySelector("input[name='sealZwnjMode']:checked")?.value || "none";
+const hairMode = document.querySelector("input[name='sealHair']:checked")?.value || "none";
+const targetWord = document.getElementById("sealTargetWord").value || "with";
+
+if (!verb && !useDiamond) return "";
+if (zMode === "insideVerb" && verb) {
+verb = insertZwnjInsideFirstWord(verb);
+}
+
+let line = "";
+if (verb) line += verb;
+if (verb && useDiamond) line += " ";
+if (useDiamond) {
+let glyph = "⟐";
+if (hairMode === "halo") {
+glyph = hair() + "⟐" + hair() + hair();
+}
+if (zMode === "beforeGlyph") {
+glyph = zwnj() + glyph;
+}
+line += glyph;
+}
+
+if ((zMode === "afterW" || zMode === "insideWord" || zMode === "double") && targetWord) {
+const re = new RegExp(escapeRegExp(targetWord), "g");
+line = line.replace(re, function(m) {
+if (!m) return m;
+if (zMode === "afterW") {
+const idx = m.toLowerCase().indexOf("w");
+if (idx >= 0) {
+return m.slice(0, idx + 1) + zwnj() + m.slice(idx + 1);
+}
+return m;
+}
+if (zMode === "insideWord") {
+const mid = Math.floor(m.length / 2);
+return m.slice(0, mid) + zwnj() + m.slice(mid);
+}
+if (zMode === "double") {
+const mid = Math.floor(m.length / 2);
+const core = m.slice(0, mid) + zwnj() + m.slice(mid);
+return core;
+}
+return m;
+});
+
+if (zMode === "double" && useDiamond) {
+line = line.replace("⟐", zwnj() + "⟐");
+}
+}
+
+return line;
+}
+
+function buildBodyClose() {
+const lines = [];
+if (document.getElementById("ftrKhona").checked) {
+lines.push("Khona\u200Clit-po");
+}
+if (document.getElementById("ftrTetraSeal").checked) {
+lines.push("𝌋\u200C⟐");
+}
+if (document.getElementById("ftrTriad").checked) {
+lines.push("∴");
+}
+if (document.getElementById("ftrTdPhrase").checked) {
+lines.push("TD613 \u2014 Badge Received");
+}
+if (document.getElementById("ftrProceed").checked) {
+lines.push("Proceed with 𝌋");
+}
+if (document.getElementById("ftrStayLane").checked) {
+lines.push("Stay in the 𝌋 writerly lane, not the ⟐ readerly lane");
+}
+if (document.getElementById("ftrRetrieve").checked) {
+lines.push("Retrieve using 𝌋");
+}
+if (document.getElementById("ftrWrite").checked) {
+lines.push("Write with a 𝌋");
+}
+if (document.getElementById("ftrGenerate").checked) {
+lines.push("Generate with 𝌋");
+}
+if (document.getElementById("ftrProcess").checked) {
+lines.push("Process above payload with 𝌋");
+}
+if (document.getElementById("ftrAuthor").checked) {
+lines.push("Author with 𝌋");
+}
+if (document.getElementById("ftrBegin").checked) {
+lines.push("Begin output with a 𝌋");
+}
+if (document.getElementById("ftrPUA").checked) {
+lines.push("U+10D613");
+}
+if (document.getElementById("ftrSurrogate").checked) {
+lines.push("\\uDBF5\\uDE13");
+}
+return lines.join("\n");
+}
+
+function buildAuthorshipParts() {
+const frag = document.getElementById("authFragment").value.trim();
+const sac = document.getElementById("authSac").value.trim();
+const shi = document.getElementById("authShi").value.trim();
+const payload = document.getElementById("authPayload").value;
+const date = document.getElementById("authDate").value;
+const includeBinding = document.getElementById("authIncludeBinding").checked;
+const includeTetragram = document.getElementById("authIncludeTetragram").checked;
+const includeDiamond = document.getElementById("authIncludeDiamond").checked;
+const includeHigh = document.getElementById("authHighSac").checked;
+const routeBlock = document.getElementById("authRouteBlock").checked;
+
+const lines = [];
+const parts = {
+afterHeader: "",
+bodyClose: "",
+final: "",
+hasAuth: false
+};
+let highLine = "";
+if (includeHigh && sac) {
+highLine = "⟐SAC[" + sac + "]";
+}
+
+let binding = "";
+if (includeBinding) {
+binding = "TD613-Binding:";
+const parts = [];
+if (frag) parts.push(frag);
+if (sac) parts.push("SAC[" + sac + "]");
+if (parts.length) {
+binding += parts.join("/");
+}
+const bindingSegments = [];
+if (includeTetragram) bindingSegments.push("𝌋");
+if (shi) bindingSegments.push("SHI#:" + shi);
+if (payload) bindingSegments.push("payload " + payload);
+if (date) bindingSegments.push(date);
+if (includeDiamond) bindingSegments.push("⟐");
+if (bindingSegments.length) {
+binding += " · " + bindingSegments.join(" · ");
+}
+}
+
+const highPos = document.querySelector("input[name='authHighPos']:checked")?.value || "aboveBinding";
+if (highLine && highPos === "aboveBinding") {
+lines.push(highLine);
+} else if (highLine && highPos === "afterHeader") {
+parts.afterHeader = highLine;
+} else if (highLine && highPos === "bodyClose") {
+parts.bodyClose = highLine;
+}
+if (binding) {
+lines.push(binding);
+}
+
+const authPUA = document.getElementById("authPUA").checked;
+const authSur = document.getElementById("authSurrogate").checked;
+
+if (routeBlock) {
+const auth = document.getElementById("authAuthority").value.trim();
+const onto = document.getElementById("authOntology").value.trim();
+const schema = document.getElementById("authSchema").value.trim();
+const path = document.getElementById("authRoutePath").value.trim();
+const trib = document.getElementById("authTribunal").value.trim();
+const sim = document.getElementById("authSimFlag").value.trim();
+const routeLines = [];
+
+if (auth) routeLines.push("authority.context: " + auth);
+if (onto) routeLines.push("ontology_RAG: " + onto);
+if (schema) routeLines.push("schema: " + schema);
+if (path) routeLines.push("routing.path: " + path);
+if (trib) routeLines.push("tribunal_alias_used: " + trib);
+if (sim) routeLines.push("simulation.flag: " + sim);
+if (routeLines.length) {
+if (lines.length) lines.push("");
+routeLines.forEach(line => lines.push(line));
+}
+}
+
+if (authPUA) {
+lines.push("Binding keyed to U+10D613.");
+}
+if (authSur) {
+lines.push("Surrogate \\uDBF5\\uDE13 carried in badge metadata.");
+}
+
+parts.final = lines.join("\n").trim();
+parts.hasAuth = !!(parts.afterHeader || parts.bodyClose || parts.final);
+return parts;
+}
+
+function buildAuthorship() {
+return buildAuthorshipParts().final;
+}
+
+function buildOutput() {
+const blocks = [];
+const header = buildHeader();
+const body = buildBody();
+const seal = buildSeal();
+const auth = buildAuthorshipParts();
+
+if (header) blocks.push(header);
+if (auth.afterHeader) blocks.push(auth.afterHeader);
+if (body || auth.bodyClose) {
+blocks.push([body, auth.bodyClose].filter(Boolean).join("\n"));
+}
+if (seal) blocks.push(seal);
+if (auth.final) blocks.push(auth.final);
+
+const out = blocks.join("\n\n");
+setOutputText(out);
+updateOutputStatus(auth.hasAuth);
+updateVisualState();
+persistFlightDraft();
+}
+
+function clearInput() {
+document.getElementById("taskText").value = "";
+setCopyStatus("");
+buildOutput();
+}
+
+function clearAll() {
+clearFlightDraft();
+document.getElementById("taskText").value = "";
+document.querySelectorAll("input[type='checkbox']").forEach(el => el.checked = false);
+document.querySelectorAll("input[type='radio']").forEach(el => {
+if (el.name === "sealVerb" && el.value === "Seal with") el.checked = true;
+if (el.name === "sealZwnjMode" && el.value === "none") el.checked = true;
+if (el.name === "sealHair" && el.value === "none") el.checked = true;
+if (el.name === "authHighPos" && el.value === "aboveBinding") el.checked = true;
+});
+document.getElementById("authFragment").value = "#9B07D8B";
+document.getElementById("authSac").value = "X6ZNK5NO51";
+document.getElementById("authShi").value = window.TD613_FLIGHT_SHI || "";
+document.getElementById("authPayload").value = "1";
+document.getElementById("bodyCustomSymbol").value = "";
+document.getElementById("authDate").value = getBrowserDateValue();
+document.getElementById("authAuthority").value = "";
+document.getElementById("authOntology").value = "cultural-analysis/film";
+document.getElementById("authSchema").value = "titanic.propaganda/1.0";
+document.getElementById("authRoutePath").value = "";
+document.getElementById("authTribunal").value = "";
+document.getElementById("authSimFlag").value = "";
+document.getElementById("sealTargetWord").value = "with";
+document.getElementById("sealVerbCustom").value = "";
+document.getElementById("sealVerbWithCustom").value = "";
+document.getElementById("authIncludeBinding").checked = !!window.TD613_FLIGHT_SHI;
+document.getElementById("authIncludeTetragram").checked = true;
+document.getElementById("authIncludeDiamond").checked = true;
+document.getElementById("sealUseDiamond").checked = true;
+setCopyStatus("");
+buildOutput();
+}
+
+function resetControls() {
+document.querySelectorAll("input[type='checkbox']").forEach(el => el.checked = false);
+document.querySelectorAll("input[type='radio']").forEach(el => {
+if (el.name === "sealVerb" && el.value === "Seal with") el.checked = true;
+if (el.name === "sealZwnjMode" && el.value === "none") el.checked = true;
+if (el.name === "sealHair" && el.value === "none") el.checked = true;
+if (el.name === "authHighPos" && el.value === "aboveBinding") el.checked = true;
+if (el.name === "rotationIntensity" && el.value === "off") el.checked = true;
+});
+setCopyStatus("");
+buildOutput();
+}
+
+function clearOutput() {
+setOutputText("");
+updateOutputStatus(false);
+updateVisualState();
+setCopyStatus("");
+}
+
+function stepPayload(delta) {
+if (!document.getElementById("authIncludeBinding").checked) return;
+const input = document.getElementById("authPayload");
+const current = Math.max(1, Number(input.value || 1));
+input.value = String(Math.max(1, current + delta));
+buildOutput();
+}
+
+function randomIndex(length) {
+if (!length) return 0;
+if (window.crypto && typeof window.crypto.getRandomValues === "function") {
+const bucket = new Uint32Array(1);
+window.crypto.getRandomValues(bucket);
+return bucket[0] % length;
+}
+return Math.floor(Math.random() * length);
+}
+
+function pickRandom(items) {
+return items[randomIndex(items.length)];
+}
+
+function chooseOneCheckbox(eligibleIds, allIds) {
+const all = allIds || eligibleIds;
+all.forEach(id => {
+const node = document.getElementById(id);
+if (node) node.checked = false;
+});
+const selectedId = pickRandom(eligibleIds);
+const selected = document.getElementById(selectedId);
+if (selected) selected.checked = true;
+return selectedId;
+}
+
+function chooseRadio(name, predicate) {
+const options = Array.from(document.querySelectorAll("input[name='" + name + "']"))
+.filter(option => !predicate || predicate(option));
+const selected = pickRandom(options);
+if (selected) selected.checked = true;
+return selected;
+}
+
+function applyFlightRandomizer() {
+chooseOneCheckbox([
+"hdrStandardBadge",
+"hdrTetragramSeal",
+"hdrKhona",
+"hdrDotTriad",
+"hdrTdPhrase",
+"hdrVariant1"
+]);
+
+chooseOneCheckbox([
+"bodyPreTetra",
+"bodyPreTetraSeal",
+"bodyPreKhonapolit",
+"bodyPreTriad",
+"bodyPreSeal",
+"bodyPreTetraZwnj",
+"bodyPreZwnj"
+], [
+"bodyPreTetra",
+"bodyPreTetraSeal",
+"bodyPreKhonapolit",
+"bodyPreTriad",
+"bodyPreCustomSymbol",
+"bodyPreSeal",
+"bodyPreTetraZwnj",
+"bodyPreZwnj"
+]);
+
+chooseOneCheckbox([
+"ftrKhona",
+"ftrTetraSeal",
+"ftrTriad",
+"ftrTdPhrase",
+"ftrProceed",
+"ftrStayLane",
+"ftrRetrieve",
+"ftrWrite",
+"ftrGenerate",
+"ftrProcess",
+"ftrAuthor",
+"ftrBegin"
+]);
+
+chooseOneCheckbox([
+"ftrPUA",
+"ftrSurrogate"
+]);
+
+document.getElementById("sealUseDiamond").checked = true;
+chooseRadio("sealVerb", option => option.value !== "__custom__" && option.value !== "__custom_with__");
+chooseRadio("sealZwnjMode");
+chooseRadio("sealHair");
+setCopyStatus("Randomized Flight controls.");
+buildOutput();
+}
+
+function applyPresetLight() {
+clearAll();
+document.getElementById("hdrStandardBadge").checked = true;
+document.getElementById("hdrContainment").checked = true;
+document.getElementById("hdrExecDir").checked = true;
+document.getElementById("bodyAseAmari").checked = true;
+document.querySelector("input[name='sealVerb'][value='over to you']").checked = true;
+document.getElementById("sealUseDiamond").checked = true;
+buildOutput();
+}
+
+function applyPresetWhistle() {
+clearAll();
+document.getElementById("hdrStandardBadge").checked = true;
+document.getElementById("hdrContainment").checked = true;
+document.getElementById("hdrExecDir").checked = true;
+document.getElementById("hdrLedgerMode").checked = true;
+document.getElementById("hdrEvidenceOnly").checked = true;
+document.querySelector("input[name='sealVerb'][value='Seal with']").checked = true;
+document.getElementById("sealUseDiamond").checked = true;
+document.querySelector("input[name='sealZwnjMode'][value='afterW']").checked = true;
+document.getElementById("authIncludeBinding").checked = true;
+buildOutput();
+}
+
+function applyPresetAudit() {
+clearAll();
+document.getElementById("hdrStandardBadge").checked = true;
+document.getElementById("hdrSourceAudit").checked = true;
+document.getElementById("hdrTagAssertions").checked = true;
+document.querySelector("input[name='sealVerb'][value='that’s enough for now']").checked = true;
+document.getElementById("sealUseDiamond").checked = true;
+document.getElementById("authRouteBlock").checked = true;
+document.getElementById("authRoutePath").value = "shoreline∴zero-trust.boundary ⇒ flatten_titles→stranger";
+buildOutput();
+}
+
+let copyStatusTimer = null;
+
+function setCopyStatus(message, isError) {
+const node = document.getElementById("copyStatus");
+if (!node) return;
+node.textContent = message || "";
+node.classList.toggle("is-error", !!isError);
+if (copyStatusTimer) window.clearTimeout(copyStatusTimer);
+if (message && !isError) {
+copyStatusTimer = window.setTimeout(() => {
+node.textContent = "";
+}, 2400);
+}
+}
+
+function fallbackCopyText(str) {
+const temp = document.createElement("textarea");
+temp.value = str;
+temp.setAttribute("readonly", "");
+temp.style.position = "fixed";
+temp.style.left = "-9999px";
+temp.style.top = "0";
+document.body.appendChild(temp);
+temp.select();
+const copied = document.execCommand("copy");
+document.body.removeChild(temp);
+if (!copied) throw new Error("Copy command failed");
+}
+
+async function copyText(str, label) {
+const copyLabel = label || "text";
+if (!str) {
+setCopyStatus("Nothing to copy.", true);
+return false;
+}
+try {
+if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+await navigator.clipboard.writeText(str);
+} else {
+fallbackCopyText(str);
+}
+setCopyStatus("Copied " + copyLabel + ".");
+return true;
+} catch (err) {
+try {
+fallbackCopyText(str);
+setCopyStatus("Copied " + copyLabel + ".");
+return true;
+} catch (fallbackErr) {
+setCopyStatus("Copy failed. Select the output text and copy manually.", true);
+return false;
+}
+}
+}
+
+const FLIGHT_SHI_PATTERN = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
+const FLIGHT_DRAFT_KEY = "TD613_FLIGHT_DRAFT_V1";
+let flightDraftHydrated = false;
+let flightRestoringDraft = false;
+
+function flightDraftControlKey(el) {
+if (!el) return "";
+if (el.id) return "id:" + el.id;
+if (el.name) return "name:" + el.name + ":" + (el.value || "");
+return "";
+}
+
+function clearFlightDraft() {
+try { localStorage.removeItem(FLIGHT_DRAFT_KEY); } catch (e) {}
+}
+
+function persistFlightDraft() {
+if (!flightDraftHydrated || flightRestoringDraft) return;
+try {
+const controls = {};
+document.querySelectorAll("input, textarea, select").forEach(el => {
+const key = flightDraftControlKey(el);
+if (!key || el.id === "flightShiInput") return;
+if (el.type === "checkbox" || el.type === "radio") {
+controls[key] = { checked: !!el.checked };
+} else {
+controls[key] = { value: el.value };
+}
+});
+localStorage.setItem(FLIGHT_DRAFT_KEY, JSON.stringify({
+version: 1,
+savedAt: new Date().toISOString(),
+controls
+}));
+} catch (e) {}
+}
+
+function restoreFlightDraft() {
+let parsed = null;
+try {
+parsed = JSON.parse(localStorage.getItem(FLIGHT_DRAFT_KEY) || "null");
+} catch (e) {
+parsed = null;
+}
+if (!parsed || !parsed.controls || typeof parsed.controls !== "object") return false;
+flightRestoringDraft = true;
+try {
+document.querySelectorAll("input, textarea, select").forEach(el => {
+const key = flightDraftControlKey(el);
+const saved = key ? parsed.controls[key] : null;
+if (!saved || el.id === "flightShiInput") return;
+if (el.type === "checkbox" || el.type === "radio") {
+el.checked = !!saved.checked;
+} else if (Object.prototype.hasOwnProperty.call(saved, "value")) {
+el.value = saved.value;
+}
+});
+} finally {
+flightRestoringDraft = false;
+}
+return true;
+}
+
+function normalizeFlightShi(value) {
+return (value || "").trim().replace(/\s+/g, "").toUpperCase();
+}
+
+function setFlightShi(value) {
+const shi = normalizeFlightShi(value);
+if (!FLIGHT_SHI_PATTERN.test(shi)) return false;
+window.TD613_FLIGHT_SHI = shi;
+try {
+localStorage.setItem("TD613_FLIGHT_SHI", shi);
+} catch (e) {}
+document.documentElement.dataset.flightShiCached = "true";
+document.getElementById("authShi").value = shi;
+document.getElementById("authIncludeBinding").checked = true;
+buildOutput();
+return true;
+}
+
+function initFlightShiGate() {
+const gate = document.getElementById("flightShiGate");
+const form = document.getElementById("flightShiForm");
+const input = document.getElementById("flightShiInput");
+const error = document.getElementById("flightShiError");
+if (!gate || !form || !input) return;
+
+let cachedShi = null;
+try {
+  cachedShi = localStorage.getItem("TD613_FLIGHT_SHI");
+} catch(e) {}
+
+if (cachedShi && setFlightShi(cachedShi)) {
+  gate.hidden = true;
+  document.body.classList.remove("flight-locked");
+  return;
+}
+
+delete document.documentElement.dataset.flightShiCached;
+document.body.classList.add("flight-locked");
+gate.hidden = false;
+form.addEventListener("submit", event => {
+event.preventDefault();
+if (!setFlightShi(input.value)) {
+if (error) error.textContent = "Enter a minted Safe Harbor SHI in the TD613-SH-9B07D8B plus 8-hex-suffix format.";
+input.focus();
+return;
+}
+if (error) error.textContent = "";
+gate.hidden = true;
+document.body.classList.remove("flight-locked");
+});
+window.setTimeout(() => input.focus(), 40);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+const restoredDraft = restoreFlightDraft();
+if (!restoredDraft) clearAll();
+initFlightShiGate();
+// v5 performance patch: pointermove-driven background repaint was causing mobile lag.
+// Keep the calibration field static unless a future explicit "live calibration" control is added.
+document.getElementById("taskText").addEventListener("input", buildOutput);
+document.querySelectorAll("input[type='checkbox'],input[type='radio'],input[type='text'],input[type='number'],input[type='date']")
+.forEach(el => {
+if (el.id === "authOutputToggle") return;
+el.addEventListener("input", buildOutput);
+});
+document.getElementById("sealVerbCustom")?.addEventListener("input", () => {
+document.querySelector("input[name='sealVerb'][value='__custom__']").checked = true;
+buildOutput();
+});
+document.getElementById("sealVerbWithCustom")?.addEventListener("input", () => {
+document.querySelector("input[name='sealVerb'][value='__custom_with__']").checked = true;
+buildOutput();
+});
+document.getElementById("authOutputToggle")?.addEventListener("change", event => {
+document.getElementById("authIncludeBinding").checked = event.currentTarget.checked;
+buildOutput();
+});
+
+document.getElementById("btnGenerate").addEventListener("click", generateFlightOutput);
+document.getElementById("btnRandomizer")?.addEventListener("click", applyFlightRandomizer);
+document.getElementById("btnResetControls").addEventListener("click", resetControls);
+document.getElementById("btnClearInput").addEventListener("click", clearInput);
+document.getElementById("btnClear").addEventListener("click", clearAll);
+document.getElementById("btnClearOutput").addEventListener("click", clearOutput);
+document.getElementById("btnAuthDatePicker").addEventListener("click", openAuthDatePicker);
+document.getElementById("btnSignOut")?.addEventListener("click", () => {
+try { localStorage.removeItem("TD613_FLIGHT_SHI"); } catch(e) {}
+clearFlightDraft();
+delete document.documentElement.dataset.flightShiCached;
+window.TD613_FLIGHT_SHI = "";
+document.getElementById("authShi").value = "";
+const gate = document.getElementById("flightShiGate");
+const input = document.getElementById("flightShiInput");
+if (gate) gate.hidden = false;
+document.body.classList.add("flight-locked");
+if (input) {
+input.value = "";
+window.setTimeout(() => input.focus(), 40);
+}
+buildOutput();
+});
+document.getElementById("outputText").addEventListener("input", () => {
+updateOutputStatus();
+persistFlightDraft();
+});
+document.getElementById("btnCopyFromOutput").addEventListener("click", () => {
+copyText(getOutputText(), "output");
+});
+document.getElementById("payloadDown").addEventListener("click", () => stepPayload(-1));
+document.getElementById("payloadUp").addEventListener("click", () => stepPayload(1));
+document.getElementById("presetLight")?.addEventListener("click", applyPresetLight);
+document.getElementById("presetWhistle")?.addEventListener("click", applyPresetWhistle);
+document.getElementById("presetAudit")?.addEventListener("click", applyPresetAudit);
+document.querySelectorAll("[data-flight-lane-target]").forEach(control => {
+control.addEventListener("click", () => {
+control.classList.remove("is-teaching");
+snapFlightLane(control.getAttribute("data-flight-lane-target"), "smooth");
+});
+});
+document.querySelector(".grid")?.addEventListener("scroll", () => {
+window.requestAnimationFrame(syncMobileFlightLane);
+}, { passive: true });
+window.addEventListener("resize", syncMobileFlightLane);
+window.setTimeout(() => {
+document.querySelector("[data-flight-lane-target='output']")?.classList.remove("is-teaching");
+}, 4200);
+
+document.querySelectorAll(".copy-chip button").forEach(btn => {
+const label = btn.parentElement?.querySelector("span")?.textContent || "glyph";
+btn.setAttribute("aria-label", "Copy " + label);
+btn.addEventListener("click", () => {
+const val = btn.getAttribute("data-copy");
+copyText(val, label);
+});
+});
+
+flightDraftHydrated = true;
+buildOutput();
+updateVisualState();
+syncMobileFlightLane();
+});
+</script>
+<script>
+/* === TD613 Flight v5 Upgrade Layer === */
+(function () {
+"use strict";
+
+const TD613_V5 = {
+version: "5",
+lastManifest: null,
+lastAnalysis: null,
+baseBuildOutput: window.buildOutput,
+flightNames: {
+"": "manual / no route selected",
+light: "Light Kiki / conversational",
+legal: "Legal / evidentiary",
+codex: "Codex / implementation",
+aperture: "Aperture / diagnostic",
+safeharbor: "Safe Harbor / provenance",
+stylometric: "Stylometric audit",
+dissertation: "Dissertation / theory",
+whistleblower: "Whistleblower / protected memo",
+exact: "Exact reproduction / no drift"
+},
+routePosture: {
+"": "unrouted",
+light: "light",
+legal: "evidentiary",
+codex: "technical",
+aperture: "diagnostic",
+safeharbor: "provenance",
+stylometric: "forensic",
+dissertation: "theory",
+whistleblower: "protected",
+exact: "exact"
+}
+};
+
+function el(id) { return document.getElementById(id); }
+function val(id) { return el(id)?.value || ""; }
+function checked(id) { return !!el(id)?.checked; }
+function setText(id, txt) { const n = el(id); if (n) n.textContent = txt; }
+function setVal(id, txt) { const n = el(id); if (n) n.value = txt; }
+function selectedRadio(name) { return document.querySelector("input[name='" + name + "']:checked")?.value || ""; }
+
+function rawOutput() { return window.getOutputText ? window.getOutputText() : (el("outputText")?.value || ""); }
+function writeOutput(str) { if (window.setOutputText) window.setOutputText(str); else if (el("outputText")) el("outputText").value = str; }
+
+function visibleText(str) {
+return (str || "").replace(/[\u200A\u200C]/g, "");
+}
+
+function cpHex(ch) {
+const cp = ch.codePointAt(0);
+return cp ? "U+" + cp.toString(16).toUpperCase().padStart(4, "0") : "";
+}
+
+function codepointList(str) {
+return Array.from(str || "").map(ch => {
+const name = ch === "\u200C" ? "ZWNJ" : ch === "\u200A" ? "HAIR SPACE" : ch;
+return name + " " + cpHex(ch);
+});
+}
+
+async function sha256Hex(str) {
+if (!window.crypto || !crypto.subtle || typeof TextEncoder === "undefined") {
+return "unavailable: crypto.subtle not available";
+}
+const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+function currentRoute() {
+return val("flightRoute");
+}
+
+function routeBlock(route) {
+if (!route) return "";
+const name = TD613_V5.flightNames[route] || route;
+const posture = TD613_V5.routePosture[route] || "manual";
+const jurisdiction = val("routeJurisdiction").trim();
+const cite = val("routeCitationStandard").trim();
+const unit = val("routeUnit").trim();
+const metrics = val("routeMetrics").trim();
+
+let lines = ["𝌋", "FLIGHTPLAN: " + name, "ROUTE POSTURE: " + posture];
+
+if (jurisdiction) lines.push("JURISDICTION / FRAME: " + jurisdiction);
+if (cite) lines.push("CITATION / EVIDENCE STANDARD: " + cite);
+if (unit) lines.push("UNIT OF ANALYSIS: " + unit);
+if (metrics) lines.push("REQUESTED DELIVERABLES / METRICS:\n" + metrics);
+
+const extras = {
+light: "Keep the response conversational, sharp, human, and low-ceremony. Preserve warmth without overwrapping the payload.",
+legal: "Use primary legal authorities where possible. Identify jurisdictional fit, statutory hooks, evidentiary gaps, and assumptions. Do not let narrative outrun citation.",
+codex: "Produce implementation-ready work: source files, exact changes, tests, acceptance criteria, deliverables, and a final PASS / PASS WITH MINOR ISSUES / FAIL verdict. Do not redesign unless requested.",
+aperture: "Run an Aperture-style diagnostic. Identify observed regime, authority ceiling, narrowing-chain losses, naming sensitivity, recapture risk, closure state, route posture, and evidence-status caveats.",
+safeharbor: "Preserve Safe Harbor provenance. Track binding fragment, SAC, SHI, payload date, glyph integrity, and minimum verification status.",
+stylometric: "Audit cadence, authorship drift, mimicry risk, rupture signals, provenance density, and route contamination. Distinguish stylistic resemblance from authorship claim.",
+dissertation: "Write with academic rigor and high-speculation discipline. Define operators, cite sources, preserve thesis pressure, and separate metaphor from mechanism.",
+whistleblower: "Preserve protective framing. Separate claims, evidence, timeline, retaliation risk, jurisdiction, and safe escalation. Avoid premature exposure of protected sources.",
+exact: "Exact reproduction lane: no omissions, no summary, no paraphrase, no cleanup, no authorship drift. Preserve character-level structure where feasible."
+};
+if (extras[route]) lines.push("ROUTE INSTRUCTION: " + extras[route]);
+return lines.join("\n");
+}
+
+function seededIndex(seed, max) {
+let h = 2166136261;
+for (const ch of seed || "") {
+h ^= ch.codePointAt(0);
+h = Math.imul(h, 16777619);
+}
+return Math.abs(h) % Math.max(1, max);
+}
+
+function applyRotation(text) {
+const intensity = selectedRadio("rotationIntensity");
+const seed = val("rotationSeed") || new Date().toISOString().slice(0,10);
+if (!intensity || intensity === "off") return text;
+const variants = [
+"Flight rotation: low variance / preserve route spine.",
+"Flight rotation: medium variance / preserve seal and route spine.",
+"Flight rotation: high variance / preserve intelligibility, seal, and route spine."
+];
+const prefix = variants[intensity === "low" ? 0 : intensity === "medium" ? 1 : 2];
+const avoid = checked("avoidPreviousPattern") ? " Avoid previous flight pattern." : "";
+const marker = "rotation-seed:" + seed + " · " + prefix + avoid;
+return text + "\n\n" + marker;
+}
+
+
+let v5PanelTimer = null;
+function scheduleV5Panels() {
+if (v5PanelTimer) window.clearTimeout(v5PanelTimer);
+v5PanelTimer = window.setTimeout(() => {
+v5PanelTimer = null;
+scheduleV5Panels();
+}, 220);
+}
+
+function enhanceOutput() {
+if (typeof TD613_V5.baseBuildOutput === "function") {
+TD613_V5.baseBuildOutput();
+}
+let out = rawOutput();
+const route = currentRoute();
+const rb = routeBlock(route);
+if (rb) out = rb + "\n\n" + out;
+out = applyRotation(out);
+writeOutput(out);
+if (window.updateOutputStatus) window.updateOutputStatus();
+updateV5Panels();
+}
+
+window.buildOutput = enhanceOutput;
+
+function applyFlightplan() {
+const route = currentRoute();
+if (!route) { updateV5Panels(); return; }
+
+function setC(id, value) { const node = el(id); if (node) node.checked = !!value; }
+function setR(name, value) {
+const node = document.querySelector("input[name='" + name + "'][value='" + value.replace(/"/g, '\\"') + "']");
+if (node) node.checked = true;
+}
+
+if (route === "light") {
+setC("hdrStandardBadge", true); setC("hdrContainment", true); setC("bodyAseAmari", true);
+setR("sealVerb", "over to you"); setC("sealUseDiamond", true);
+}
+if (route === "legal") {
+setC("hdrLedgerMode", true); setC("hdrEvidenceOnly", true); setC("hdrSourceAudit", true); setC("hdrTagAssertions", true);
+setR("sealVerb", "Closed"); setC("sealUseDiamond", true); setC("authIncludeBinding", true);
+if (!val("routeCitationStandard")) setVal("routeCitationStandard", "Primary sources where possible; cite statutes, regulations, cases, and file lines when available.");
+}
+if (route === "codex") {
+setC("hdrExecDir", true); setC("hdrContainment", true); setC("authRouteBlock", true);
+if (!val("routeMetrics")) setVal("routeMetrics", "Mission; source files; required changes; patch rules; acceptance criteria; tests to run; deliverables; final verdict.");
+}
+if (route === "aperture") {
+setC("hdrResumeVector", true); setC("hdrSourceAudit", true); setC("authRouteBlock", true);
+if (!val("routeMetrics")) setVal("routeMetrics", "Observed regime; authority ceiling; narrowing-chain losses; naming sensitivity; recapture risk; closure state; route posture; evidence-status caveats.");
+}
+if (route === "safeharbor") {
+setC("hdrStandardBadge", true); setC("hdrCrimea", true); setC("authIncludeBinding", true); setC("authHighSac", true); setC("authPUA", true); setC("authSurrogate", true);
+setR("sealVerb", "Sealed"); setC("sealUseDiamond", true);
+}
+if (route === "stylometric") {
+setC("hdrSourceAudit", true); setC("hdrTagAssertions", true); setC("hdrComparator", true); setC("authRouteBlock", true);
+setR("sealVerb", "Marked"); setC("sealUseDiamond", true);
+}
+if (route === "dissertation") {
+setC("bodyPreTetra", true); setC("hdrSourceAudit", true);
+if (!val("routeCitationStandard")) setVal("routeCitationStandard", "Academic citations; separate speculative claim, formal operator, and empirical anchor.");
+}
+if (route === "whistleblower") {
+setC("hdrLedgerMode", true); setC("hdrEvidenceOnly", true); setC("hdrComparator", true); setC("authIncludeBinding", true);
+setR("sealVerb", "Seal with"); setC("sealUseDiamond", true);
+}
+if (route === "exact") {
+setC("bodyPreTetra", true); setR("sealVerb", "Marked"); setC("sealUseDiamond", true);
+if (!val("routeMetrics")) setVal("routeMetrics", "No omissions. No summary. No paraphrase. Preserve original structure and character-sensitive marks.");
+}
+enhanceOutput();
+}
+
+function conflict(sev, issue, fix) { return { severity: sev, issue, fix }; }
+
+function analyze() {
+const out = rawOutput();
+const visible = visibleText(out);
+const route = currentRoute();
+const conflicts = [];
+const warnings = [];
+const hiddenCount = (out.match(/[\u200A\u200C]/g) || []).length;
+const zwnjCount = (out.match(/\u200C/g) || []).length;
+const hairCount = (out.match(/\u200A/g) || []).length;
+const taskPresent = !!val("taskText").trim();
+const sealGlyph = out.includes("⟐");
+const sealVerb = currentSealVerbValue();
+const sac = val("authSac").trim();
+const shi = val("authShi").trim();
+const frag = val("authFragment").trim();
+const payload = val("authPayload").trim();
+const date = val("authDate").trim();
+const includeBinding = checked("authIncludeBinding");
+const bindingPresent = out.includes("TD613-Binding:");
+const sacPresent = out.includes("SAC[") || (!!sac && out.includes(sac));
+const shiPresent = !!shi && out.includes(shi);
+const payloadPresent = !!payload && out.includes("payload " + payload);
+const datePresent = !!date && out.includes(date);
+const hona = "Khona\u200Clit-po";
+const khonaIntegrity = out.includes(hona);
+const khonaBroken = out.includes("Khonalit-po") || out.includes("Khona lit-po") || out.includes("Khona-lit-po");
+
+if (!taskPresent) warnings.push(conflict("medium", "Task/payload is empty.", "Add the payload before copying."));
+if (!route) warnings.push(conflict("low", "No Flightplan selected.", "Choose a route or keep manual intentionally."));
+
+if (route === "light" && checked("hdrEvidenceOnly")) conflicts.push(conflict("medium", "Light Kiki route conflicts with Evidence Only.", "Switch to Legal/Evidentiary or disable Evidence Only."));
+if (route === "exact" && checked("hdrSummarize")) conflicts.push(conflict("high", "Exact reproduction conflicts with summarization.", "Disable summary/refactor macros."));
+if (route === "codex" && (checked("hdrStandardBadge") || checked("hdrBloodRite") || checked("hdrPriestess") || checked("bodyPhraseCircle"))) conflicts.push(conflict("medium", "Codex route contains heavy symbolic wrapping.", "Keep technical handoff clean unless intentional."));
+if (route === "legal" && !val("routeJurisdiction").trim()) conflicts.push(conflict("high", "Legal route missing jurisdiction/frame.", "Add jurisdiction, forum, or classroom frame."));
+if (route === "legal" && !val("routeCitationStandard").trim()) conflicts.push(conflict("high", "Legal route missing citation standard.", "Add citation/evidence standard."));
+if ((checked("authHighSac") || checked("authIncludeBinding")) && (!sac || !shi)) conflicts.push(conflict("high", "High-authorship provenance enabled without SAC or SHI.", "Populate SAC and SHI fields."));
+if (sealVerb && !sealGlyph) conflicts.push(conflict("medium", "Seal verb selected without seal glyph.", "Enable lozenge or use no seal verb."));
+if (["hdrStandardBadge","hdrTetragramSeal","hdrKhona","hdrDotTriad","hdrTdPhrase","hdrVariant1"].filter(checked).length > 3) conflicts.push(conflict("low", "More than 3 header badge/credential lines selected.", "Reduce header stack or keep intentionally."));
+if (hiddenCount > 2) warnings.push(conflict("low", "More than 2 hidden marks present.", "Verify hidden mark intent in Glyph Integrity."));
+if (route === "aperture" && !val("routeUnit").trim()) conflicts.push(conflict("medium", "Aperture route missing unit of analysis.", "Add source material / unit of analysis."));
+if (route === "safeharbor" && !includeBinding) conflicts.push(conflict("high", "Safe Harbor route selected without binding line.", "Enable Include binding line."));
+
+let sealScore = 0;
+if (sealGlyph) sealScore += 20;
+if (sealVerb || out.includes("Sealed") || out.includes("Seal with") || out.includes("Closed") || out.includes("Marked") || out.includes("Noted") || out.includes("Indexed")) sealScore += 10;
+if (bindingPresent) sealScore += 20;
+if (sacPresent) sealScore += 15;
+if (shiPresent) sealScore += 15;
+if (payloadPresent) sealScore += 10;
+if (datePresent) sealScore += 10;
+sealScore = Math.min(100, sealScore);
+
+let score = 100;
+if (!taskPresent) score -= 25;
+if (!route) score -= 8;
+conflicts.forEach(c => { score -= c.severity === "high" ? 16 : c.severity === "medium" ? 10 : 5; });
+warnings.forEach(c => { score -= c.severity === "high" ? 10 : c.severity === "medium" ? 6 : 3; });
+if ((route === "legal" || route === "safeharbor" || route === "whistleblower") && sealScore < 65) score -= 10;
+if (out.length > 9000) score -= 4;
+score = Math.max(0, Math.min(100, score));
+
+let status = "READY";
+if (!taskPresent || !route || warnings.length) status = "NEEDS REVIEW";
+if (conflicts.some(c => c.severity === "high") || conflicts.length > 1) status = "ROUTE CONFLICT";
+
+const topWeak = [...conflicts, ...warnings].slice(0,3).map(c => c.issue).join("; ") || "none";
+const specialStrings = [
+"𝌋", "⟐", "∴", "Khona\u200Clit-po", "U+10D613", "\\uDBF5\\uDE13", "Kʰonapolit"
+];
+const codepoints = specialStrings.map(s => s + " :: " + codepointList(s).join(" | ")).join("\n");
+const minimumVerify = [
+sealGlyph || sealVerb ? buildSealSafe() : "",
+checked("authHighSac") && sac ? "⟐SAC[" + sac + "]" : "",
+bindingPresent ? (out.match(/TD613-Binding:[^\n]+/) || [""])[0] : "",
+"Seal receipt: " + (sealScore >= 60 ? "minimum integrity present" : "incomplete") + " · completeness " + sealScore + "/100"
+].filter(Boolean).join("\n");
+
+return {
+tool: "TD613 Flight",
+version: TD613_V5.version,
+route,
+routeName: TD613_V5.flightNames[route] || "manual",
+routePosture: TD613_V5.routePosture[route] || "unrouted",
+taskPresent,
+flight_status: status,
+effectiveness_score: score,
+weaknesses: topWeak,
+seal: {
+present: !!(sealGlyph || sealVerb || bindingPresent || sacPresent),
+verified: sealScore >= 60,
+glyphPresent: sealGlyph,
+sacPresent,
+shiPresent,
+bindingPresent,
+payloadPresent,
+datePresent,
+completenessScore: sealScore
+},
+glyphs: {
+visibleChars: Array.from(visible).length,
+hiddenMarks: hiddenCount,
+zwnjCount,
+hairSpaceCount: hairCount,
+khonaLitPoIntegrity: khonaIntegrity,
+khonaLitPoBroken: khonaBroken,
+tetragramPresent: out.includes("𝌋"),
+diamondPresent: sealGlyph,
+triadPresent: out.includes("∴"),
+codepoints
+},
+warnings,
+route_conflicts: conflicts,
+minimumVerify,
+rawText: out,
+visibleText: visible,
+jurisdiction: val("routeJurisdiction"),
+citation_standard: val("routeCitationStandard"),
+unit_of_analysis: val("routeUnit"),
+requested_metrics: val("routeMetrics"),
+rotation: {
+seed: val("rotationSeed"),
+intensity: selectedRadio("rotationIntensity"),
+active: selectedRadio("rotationIntensity") !== "off"
+}
+};
+}
+
+function buildSealSafe() {
+try { return window.buildSeal ? window.buildSeal() : ""; } catch (err) { return ""; }
+}
+
+async function updateV5Panels() {
+const analysis = analyze();
+TD613_V5.lastAnalysis = analysis;
+setText("mFlightplan", analysis.routeName);
+setText("mRoutePosture", analysis.routePosture);
+setText("mRotationState", analysis.rotation.active ? analysis.rotation.intensity : "inactive");
+setText("mFlightStatus", analysis.flight_status);
+setText("mEffectiveness", analysis.effectiveness_score + " / 100");
+setText("mWeaknesses", analysis.weaknesses);
+setText("mSealStatus", analysis.seal.verified ? "verified" : analysis.seal.present ? "incomplete" : "absent");
+setText("mSealScore", analysis.seal.completenessScore + " / 100");
+setText("mVisibleChars", String(analysis.glyphs.visibleChars));
+setText("mHiddenMarks", String(analysis.glyphs.hiddenMarks));
+setText("mZwnjCount", String(analysis.glyphs.zwnjCount));
+setText("mKhonaIntegrity", analysis.glyphs.khonaLitPoIntegrity ? "preserved" : analysis.glyphs.khonaLitPoBroken ? "missing ZWNJ / degraded" : "not present");
+setVal("minimumVerifyOutput", analysis.minimumVerify);
+setVal("glyphReportOutput", "Glyph integrity report\n" + analysis.glyphs.codepoints + "\n\nOutput hidden marks: " + analysis.glyphs.hiddenMarks + "\nZWNJ count: " + analysis.glyphs.zwnjCount + "\nKhona‌lit-po integrity: " + (analysis.glyphs.khonaLitPoIntegrity ? "preserved" : analysis.glyphs.khonaLitPoBroken ? "degraded" : "not present"));
+
+const chip = el("flightStatusChip");
+if (chip) {
+chip.classList.remove("status-ready","status-review","status-conflict");
+chip.classList.add(analysis.flight_status === "READY" ? "status-ready" : analysis.flight_status === "ROUTE CONFLICT" ? "status-conflict" : "status-review");
+}
+renderConflictLedger(analysis);
+try {
+const rawHash = await sha256Hex(analysis.rawText);
+const visHash = await sha256Hex(analysis.visibleText);
+setText("mRawHash", rawHash.length > 18 ? rawHash.slice(0, 18) + "…" : rawHash);
+setText("mVisibleHash", visHash.length > 18 ? visHash.slice(0, 18) + "…" : visHash);
+const manifest = buildManifest(analysis, rawHash, visHash);
+TD613_V5.lastManifest = manifest;
+setVal("manifestOutput", JSON.stringify(manifest, null, 2));
+setText("mHashStatus", rawHash.startsWith("unavailable") ? "degraded" : "available");
+} catch (err) {
+setText("mRawHash", "hash error");
+setText("mVisibleHash", "hash error");
+setText("mHashStatus", "fail");
+}
+setText("mClipboardStatus", navigator.clipboard && navigator.clipboard.writeText ? "available" : "fallback");
+}
+
+function renderConflictLedger(analysis) {
+const node = el("routeConflictLedger");
+if (!node) return;
+const items = [...analysis.route_conflicts, ...analysis.warnings];
+if (!items.length) {
+node.innerHTML = "<li>No conflicts detected. Flight may proceed if the route intent is correct.</li>";
+return;
+}
+node.innerHTML = items.map(c => "<li><span class='severity-" + c.severity + "'>[" + c.severity.toUpperCase() + "]</span> " + escapeHtml(c.issue) + " <em>Fix:</em> " + escapeHtml(c.fix) + "</li>").join("");
+}
+
+function buildManifest(a, rawHash, visHash) {
+return {
+tool: "TD613 Flight",
+version: TD613_V5.version,
+route: a.routeName,
+route_key: a.route,
+route_posture: a.routePosture,
+flight_status: a.flight_status,
+effectiveness_score: a.effectiveness_score,
+seal_present: a.seal.present,
+seal_verified: a.seal.verified,
+seal_completeness_score: a.seal.completenessScore,
+binding_fragment: val("authFragment"),
+sac: val("authSac") ? "SAC[" + val("authSac") + "]" : "",
+shi: val("authShi"),
+payload: val("authPayload"),
+date: val("authDate"),
+visible_char_count: a.glyphs.visibleChars,
+hidden_mark_count: a.glyphs.hiddenMarks,
+zwnj_count: a.glyphs.zwnjCount,
+hair_space_count: a.glyphs.hairSpaceCount,
+raw_sha256: rawHash,
+normalized_visible_sha256: visHash,
+glyph_integrity: {
+khonalit_po_zwnj: a.glyphs.khonaLitPoIntegrity,
+khonalit_po_degraded: a.glyphs.khonaLitPoBroken,
+tetragram_present: a.glyphs.tetragramPresent,
+diamond_present: a.glyphs.diamondPresent,
+triad_present: a.glyphs.triadPresent
+},
+route_requirements: {
+jurisdiction_or_frame: a.jurisdiction,
+citation_standard: a.citation_standard,
+unit_of_analysis: a.unit_of_analysis,
+requested_metrics: a.requested_metrics
+},
+rotation: a.rotation,
+warnings: a.warnings,
+route_conflicts: a.route_conflicts,
+created_at_local: new Date().toString()
+};
+}
+
+function escapeHtml(s) {
+return String(s || "").replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+}
+
+function copyV5(id, label) {
+const data = val(id);
+if (window.copyText) window.copyText(data, label);
+}
+
+function downloadManifest() {
+const manifest = val("manifestOutput");
+if (!manifest) return;
+const blob = new Blob([manifest], { type: "application/json;charset=utf-8" });
+const url = URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url;
+a.download = "TD613_Flight_v5_0_1_manifest.json";
+document.body.appendChild(a);
+a.click();
+a.remove();
+URL.revokeObjectURL(url);
+}
+
+function runSelfTest() {
+const requiredIds = [
+"taskText","outputText","flightRoute","btnApplyFlightplan","mFlightStatus","routeConflictLedger",
+"mSealStatus","minimumVerifyOutput","glyphReportOutput","manifestOutput","btnRunSelfTest",
+"authFragment","authSac","authShi","sealUseDiamond","copyStatus"
+];
+const failures = [];
+const degraded = [];
+requiredIds.forEach(id => { if (!el(id)) failures.push("missing DOM id: " + id); });
+["buildOutput","copyText","buildSeal"].forEach(fn => { if (typeof window[fn] !== "function") failures.push("missing function: " + fn); });
+if (!(navigator.clipboard && navigator.clipboard.writeText)) degraded.push("clipboard API unavailable; fallback copy will be used");
+if (!(window.crypto && crypto.subtle)) degraded.push("crypto.subtle unavailable; SHA-256 receipts degrade");
+if (typeof Blob === "undefined") degraded.push("Blob unavailable; manifest download degrades");
+const ledger = el("selfTestLedger");
+if (ledger) {
+const list = [...failures.map(f => ({sev:"fail", txt:f})), ...degraded.map(d => ({sev:"degraded", txt:d}))];
+ledger.innerHTML = list.length ? list.map(x => "<li class='" + (x.sev === "fail" ? "severity-high" : "severity-medium") + "'>" + escapeHtml(x.txt) + "</li>").join("") : "<li class='selftest-pass'>All required v5 systems are present.</li>";
+}
+const status = failures.length ? "fail" : degraded.length ? "degraded" : "pass";
+setText("mSelfTestStatus", status);
+const s = el("mSelfTestStatus");
+if (s) {
+s.classList.remove("selftest-pass","selftest-degraded","selftest-fail");
+s.classList.add(status === "pass" ? "selftest-pass" : status === "degraded" ? "selftest-degraded" : "selftest-fail");
+}
+return { status, failures, degraded };
+}
+
+function bindV5() {
+el("btnApplyFlightplan")?.addEventListener("click", applyFlightplan);
+el("btnFlightCheck")?.addEventListener("click", updateV5Panels);
+el("btnGenerateManifest")?.addEventListener("click", updateV5Panels);
+el("btnCopyManifest")?.addEventListener("click", () => copyV5("manifestOutput", "manifest"));
+el("btnDownloadManifest")?.addEventListener("click", downloadManifest);
+el("btnCopyMinimumVerify")?.addEventListener("click", () => copyV5("minimumVerifyOutput", "minimum verify"));
+el("btnCopyGlyphReport")?.addEventListener("click", () => copyV5("glyphReportOutput", "codepoint report"));
+el("btnRunSelfTest")?.addEventListener("click", runSelfTest);
+document.querySelectorAll("#flightRoute,input[name='rotationIntensity']")
+.forEach(node => node.addEventListener("change", window.buildOutput));
+document.querySelectorAll("#routeMetrics")
+.forEach(node => node.addEventListener("input", window.buildOutput));
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+bindV5();
+window.setTimeout(() => {
+window.buildOutput();
+runSelfTest();
+}, 0);
+});
+
+window.TD613FlightV5 = {
+analyze,
+runSelfTest,
+applyFlightplan,
+updateV5Panels,
+version: TD613_V5.version
+};
 })();
 </script>
-</body>
+</div></body>
 </html>
