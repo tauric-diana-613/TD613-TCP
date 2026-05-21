@@ -27,9 +27,9 @@ import { verifyClaimIntegrity, summarizeClaimIntegrity } from './hush-claim-inte
 import { buildPayloadMap, summarizePayloadMap } from './hush-payload-map.js';
 import { buildPayloadBindingMap, summarizePayloadBindingMap } from './hush-payload-binding.js';
 import { verifyPayloadIntegrity, summarizePayloadIntegrity } from './hush-payload-integrity.js';
-import { repairPayloadLoss, summarizePayloadRepair } from './hush-payload-repair.js';
+import { repairPayloadLoss, rebuildPayloadSentence, summarizePayloadRepair } from './hush-payload-repair.js';
 
-export const HUSH_SWAP_VERSION = 'phase-21';
+export const HUSH_SWAP_VERSION = 'phase-22';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
@@ -87,6 +87,60 @@ function mergeCandidatePools(...pools) {
   return merged;
 }
 
+function sentence(text = '') {
+  const value = safeText(text).replace(/\s+/g, ' ').trim();
+  if (!value) return '';
+  return /[.!?]$/.test(value) ? value : `${value}.`;
+}
+
+function joinSentences(parts = []) {
+  return asArray(parts).map(sentence).filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+}
+
+function humanList(items = []) {
+  const values = unique(items);
+  if (!values.length) return '';
+  if (values.length === 1) return values[0];
+  if (values.length === 2) return `${values[0]} and ${values[1]}`;
+  return `${values.slice(0, -1).join(', ')}, and ${values[values.length - 1]}`;
+}
+
+function normalizeWitnessSource(text = '') {
+  return safeText(text)
+    .replace(/\s+/g, ' ')
+    .replace(/^please\s+/i, '')
+    .replace(/\bPlease say that\b/gi, 'The note should say that')
+    .replace(/\bPlease keep\b/gi, 'Keep')
+    .replace(/\bmake the note read less like a formal complaint\b/gi, 'keep the note from reading like a formal complaint')
+    .replace(/\bI do not want this to sound like an accusation\b/gi, 'This should read as sequence rather than accusation')
+    .replace(/\bI want this written as sequence, not accusation\b/gi, 'This should read as sequence rather than accusation')
+    .replace(/\bdo not make me sound like I am trying to start a fight\b/gi, 'keep the tone careful and non-escalating')
+    .trim();
+}
+
+function buildLiteralSafeFallbackCandidates(input = {}) {
+  const sourceText = safeText(input.sourceText).trim();
+  const protectedLiterals = unique(input.protectedLiterals || input.meaningPlan?.protectedLiterals || []);
+  if (!sourceText || !protectedLiterals.length) return [];
+  const anchor = `${humanList(protectedLiterals)} should remain attached to the record`;
+  const payload = rebuildPayloadSentence({ sourceText, payloadMap: input.payloadMap, payloadBindingMap: input.payloadBindingMap });
+  const normalized = normalizeWitnessSource(sourceText);
+  const variants = unique([
+    joinSentences([anchor, payload || normalized]),
+    joinSentences(['Keeping the claim narrow', payload || anchor, normalized && normalized !== payload ? normalized : '']),
+    joinSentences(['Record note', anchor, payload || normalized])
+  ]);
+  return variants.map((text, index) => ({
+    id: `literal-safe-candidate-${index + 1}`,
+    text,
+    source: 'literal-safe-fallback',
+    strategy: 'literal-safe-fallback',
+    family: 'literal-safe-fallback',
+    operations: ['literal-safe-fallback', payload ? 'payload-rebuild-sentence' : 'source-normalized-literal-anchor'],
+    warnings: ['literal-safe-fallback-review']
+  }));
+}
+
 function attachPayloadRepair(candidate = {}, input = {}) {
   const initialIntegrity = verifyPayloadIntegrity({ sourceText: input.sourceText, outputText: candidate.text, payloadMap: input.payloadMap, payloadBindingMap: input.payloadBindingMap, protectedLiterals: input.protectedLiterals });
   const repair = repairPayloadLoss({ sourceText: input.sourceText, text: candidate.text, candidate, payloadMap: input.payloadMap, payloadBindingMap: input.payloadBindingMap, payloadIntegrity: initialIntegrity });
@@ -113,7 +167,8 @@ function prepareCandidatePool(input = {}) {
   const syntaxBundle = generateSyntaxRecomposerCandidates({ ...input, ...plans, candidateCount: syntaxCount });
   const raw = mergeCandidatePools(
     asArray(writerBundle.candidates).map((candidate) => ({ ...candidate, source: 'mask-writer' })),
-    asArray(syntaxBundle.candidates).map((candidate) => ({ ...candidate, source: 'syntax-recomposer' }))
+    asArray(syntaxBundle.candidates).map((candidate) => ({ ...candidate, source: 'syntax-recomposer' })),
+    buildLiteralSafeFallbackCandidates({ ...input, ...plans })
   );
   const placementRepaired = raw.map((candidate) => {
     const repaired = repairLiteralPlacement({ text: candidate.text, literalPlacementMap: plans.literalPlacementMap, protectedLiterals: plans.protectedLiterals });
