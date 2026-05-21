@@ -1,0 +1,53 @@
+/* TD613 Flight mobile layout hotfix */
+@media (max-width: 820px) {
+  .page-wrap { padding: .42rem !important; gap: .34rem !important; }
+  .grid { gap: .16rem !important; scroll-padding-inline: 0 !important; }
+  .grid > div:first-child,
+  .grid > div:last-child {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    padding: .16rem .52rem 3rem !important;
+  }
+  .card { padding: .58rem .6rem .62rem .86rem !important; border-radius: 14px !important; }
+  .card::before { left: .43rem !important; }
+  .mobile-prompt-rail {
+    margin: .18rem 0 .34rem !important;
+    padding: .30rem .44rem !important;
+    gap: .32rem !important;
+    min-height: 1.9rem !important;
+    border-radius: 14px !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,239,196,0.08) !important;
+  }
+  .mobile-prompt-rail span:first-child { font-size: .44rem !important; line-height: 1.08 !important; }
+  .mobile-prompt-rail-pill { padding: .14rem .28rem !important; font-size: .34rem !important; }
+  .dev-divider { margin: .34rem 0 .28rem !important; padding-top: .34rem !important; }
+  .btn { min-height: 1.36rem !important; padding: .12rem .34rem !important; font-size: .40rem !important; letter-spacing: .08em !important; }
+  .row { gap: .16rem !important; }
+  .output-card { padding: .58rem .6rem .64rem .86rem !important; border-radius: 16px !important; }
+  .output-card h2 { font-size: .66rem !important; margin-bottom: .16rem !important; }
+  .output-card .module-marker { margin-bottom: .22rem !important; }
+  .output {
+    min-height: 4.1rem !important;
+    height: clamp(4.2rem, 14dvh, 5.6rem) !important;
+    max-height: 16dvh !important;
+    overflow: auto !important;
+    resize: vertical !important;
+    padding: .5rem .54rem !important;
+    font-size: .61rem !important;
+    line-height: 1.36 !important;
+  }
+  .status-bar { align-items: center !important; gap: .18rem !important; margin-top: .16rem !important; font-size: .39rem !important; }
+  .output-auth-toggle { margin-left: auto !important; gap: .14rem !important; font-size: .36rem !important; }
+  .output-auth-toggle input[type="checkbox"] { width: .66rem !important; height: .66rem !important; }
+  .output-toolbar { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: .18rem !important; margin-top: .22rem !important; padding-top: .18rem !important; }
+  .output-toolbar .row { width: auto !important; gap: .16rem !important; flex: 0 1 auto !important; }
+  .output-toolbar .row .btn { flex: 0 0 auto !important; min-height: 1.36rem !important; padding: .12rem .34rem !important; font-size: .40rem !important; letter-spacing: .08em !important; }
+  .payload-stepper { align-self: auto !important; margin-left: 0 !important; padding: 0 !important; gap: .06rem !important; border: 0 !important; background: transparent !important; clip-path: none !important; box-shadow: none !important; }
+  .payload-stepper-label { display: none !important; }
+  .payload-stepper-value { min-width: .68rem !important; font-size: .44rem !important; }
+  .payload-stepper-btn { width: .94rem !important; min-width: .94rem !important; height: .94rem !important; border: 0 !important; background: transparent !important; box-shadow: none !important; font-size: .66rem !important; }
+  .seal-card { margin-top: .30rem !important; padding: .62rem .6rem .68rem .86rem !important; border-radius: 16px !important; }
+  .seal-card h2 { font-size: .68rem !important; }
+}
