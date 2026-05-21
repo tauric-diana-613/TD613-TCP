@@ -2,6 +2,7 @@ import hushMasks from '../data/hush-masks.js';
 import phase22HushMasks from '../data/hush-phase22-masks.js';
 import phase24HushMasks from '../data/hush-phase24-masks.js';
 import phase27HushMasks from '../data/hush-phase27-masks.js';
+import phase28HushMasks from '../data/hush-phase28-masks.js';
 import { enrichHushMask } from '../data/hush-mask-traits.js';
 import { extractCadenceProfile } from './stylometry.js';
 
@@ -12,7 +13,7 @@ const asArray = (value) => Array.isArray(value) ? [...value] : [];
 const clamp = (value, min = 0, max = 1) => Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : 0;
 const round = (value, digits = 4) => Number.isFinite(value) ? Number(value.toFixed(digits)) : 0;
 const DISTRIBUTION_KEYS = ['avgSentenceLength', 'punctuationDensity', 'contractionDensity', 'recurrencePressure', 'lexicalDensity', 'modifierDensity', 'lineBreakDensity', 'lexicalEntropy'];
-const BUILT_IN_MASKS = [...hushMasks, ...phase22HushMasks, ...phase24HushMasks, ...phase27HushMasks];
+const BUILT_IN_MASKS = [...hushMasks, ...phase22HushMasks, ...phase24HushMasks, ...phase27HushMasks, ...phase28HushMasks];
 
 function wordCount(text = '') { return (safeText(text).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length; }
 function profileStatus(profile = {}, text = '') { const words = profile.wordCount ?? wordCount(text); if (!words) return 'empty'; if (words < 35) return 'thin'; if (words < 90) return 'usable'; return 'strong'; }
