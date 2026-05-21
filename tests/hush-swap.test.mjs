@@ -2,7 +2,7 @@ import assert from 'assert';
 import { getHushMask } from '../app/engine/hush-mask-studio.js';
 import { HUSH_SWAP_VERSION, buildHushSwap } from '../app/engine/hush-swap.js';
 
-assert.equal(HUSH_SWAP_VERSION, 'phase-21');
+assert.equal(HUSH_SWAP_VERSION, 'phase-22');
 
 const mask = getHushMask('plain-witness');
 const sourceText = 'The vendor called twice after lunch. I logged INV-440 at 2:18 and told Jordan not to resend the spreadsheet until we know which version finance kept.';
@@ -14,7 +14,7 @@ const result = buildHushSwap({
   options: { candidateCount: 18 }
 });
 
-assert.equal(result.version, 'phase-21');
+assert.equal(result.version, 'phase-22');
 assert(result.writer?.meaningPlan);
 assert(result.writer?.payloadMap);
 assert(result.writer?.payloadMapSummary);
@@ -51,6 +51,7 @@ assert(result.candidates.some((candidate) => candidate.syntaxShift));
 assert(result.candidates.some((candidate) => candidate.payloadIntegrity));
 assert(result.candidates.some((candidate) => candidate.claimIntegrity));
 assert(result.candidates.some((candidate) => candidate.source === 'syntax-recomposer'));
+assert(result.candidates.some((candidate) => candidate.source === 'literal-safe-fallback'));
 assert(result.candidates.some((candidate) => Object.prototype.hasOwnProperty.call(candidate.scoreBreakdown || {}, 'sourceResidueScore')));
 assert(result.candidates.some((candidate) => Object.prototype.hasOwnProperty.call(candidate.scoreBreakdown || {}, 'syntaxShiftScore')));
 assert(result.candidates.some((candidate) => Object.prototype.hasOwnProperty.call(candidate.scoreBreakdown || {}, 'payloadIntegrity')));
