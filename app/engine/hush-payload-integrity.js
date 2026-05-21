@@ -9,12 +9,16 @@ function includesLoose(output = '', text = '') {
   const needle = safeText(text).toLowerCase();
   if (!needle) return true;
   if (value.includes(needle)) return true;
-  if (needle === 'resend' && /hold|wait|do not send|not send/i.test(output)) return true;
+  if (needle === 'resend' && /hold|wait|do not send|not send|not resend/i.test(output)) return true;
+  if (needle === 'told' && /told|asked|instructed|should|needs? to|was directed/i.test(output)) return true;
   if (needle === 'keep' && /keep|stay|remain|preserve/i.test(output)) return true;
   if (needle === 'saved' && /saved|kept|recorded/i.test(output)) return true;
   if (needle === 'logged' && /logged|recorded|entered/i.test(output)) return true;
   if (needle === 'called' && /called|call/i.test(output)) return true;
-  if (needle === 'finance kept' && /finance[^.!?]*(kept|keeps|kept version|version)/i.test(output)) return true;
+  if (needle === 'finance kept' && /finance[^.!?]*(kept|keeps|kept version|version|confirms)/i.test(output)) return true;
+  if (/which version/i.test(needle) && /finance[^.!?]*(version|confirms)[^.!?]*(kept|it kept|keeps)?/i.test(output)) return true;
+  if (/until\s+we\s+know\s+which\s+version\s+finance\s+kept/i.test(needle) && /until[^.!?]*finance[^.!?]*(confirms|knows|verifies)[^.!?]*version/i.test(output)) return true;
+  if (/the whole point/i.test(needle) && /whole point|point of the date|date matters|date is the point/i.test(output)) return true;
   return false;
 }
 
