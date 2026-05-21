@@ -15,7 +15,12 @@ const requiredDocs = [
   'docs/WHISTLEBLOWER_POLICY_POSTURE.md',
   'docs/ANTI_SELECTIVE_ADMISSIBILITY.md',
   'docs/RUPTURE_AND_TONI_CLAUSE.md',
-  'docs/PHASE_10_RELEASE_STATUS.md'
+  'docs/PHASE_10_RELEASE_STATUS.md',
+  'docs/HUSH_OPERATOR_MANUAL.md',
+  'docs/HUSH_PRODUCT_SPINE_STATUS.md',
+  'docs/HUSH_KNOWN_FAILURE_MODES.md',
+  'docs/HUSH_TEST_FLIGHT_PROTOCOL.md',
+  'docs/HUSH_EPISTEMICIDE_AUDIT.md'
 ];
 
 function read(path) {
@@ -54,9 +59,12 @@ includesAll(readme, 'README.md', [
   'TD613 Hush',
   'TD613 is a custodial AI-access protocol',
   'Hush is not TD613 Flight',
-  'Hush is not Safe Harbor'
+  'Hush is not Safe Harbor',
+  'app/hush.html',
+  'Phase 29.1 repairs the public documentation surface'
 ]);
-assert(readme.includes('The repository is named `TD613-TCP`, but the Phase 0–10 Toy-to-Tool instrument should be presented as TD613 Hush'));
+assert(readme.includes('TD613 Hush — or Hush — is the product surface for the Toy-to-Tool authorship-pressure arc inside The Cadence Playground'));
+assert(readme.includes('Phase 29 gives Hush its own product route at `/hush.html`'));
 
 const index = read('docs/INDEX.md');
 for (const doc of requiredDocs.filter((path) => path !== 'README.md')) {
@@ -65,6 +73,16 @@ for (const doc of requiredDocs.filter((path) => path !== 'README.md')) {
 }
 assert(index.includes('Hush is not the whole repository'));
 assert(index.includes('custodial AI-access'));
+assert(index.includes('HUSH_EPISTEMICIDE_AUDIT.md'));
+
+const phaseMap = read('docs/PHASE_MAP.md');
+includesAll(phaseMap, 'docs/PHASE_MAP.md', [
+  'Phase 29',
+  '29.1',
+  'app/hush.html',
+  'Product Spine',
+  'Public Memory Repair'
+]);
 
 const mission = read('docs/TD613_MISSION_THESIS.md');
 includesAll(mission, 'docs/TD613_MISSION_THESIS.md', [
@@ -85,6 +103,14 @@ includesAll(operator, 'docs/OPERATOR_GUIDE.md', [
   'Hostile Pipeline Compression',
   'Belonging Without Collapse',
   'Emergency rule'
+]);
+
+const hushOperator = read('docs/HUSH_OPERATOR_MANUAL.md');
+includesAll(hushOperator, 'docs/HUSH_OPERATOR_MANUAL.md', [
+  'What Hush Cannot Promise',
+  'Product Route',
+  'Test Flight Protocol',
+  'Stop Conditions'
 ]);
 
 const limitations = read('docs/KNOWN_LIMITATIONS.md');
@@ -137,5 +163,13 @@ const status = read('docs/PHASE_10_RELEASE_STATUS.md');
 assert(status.includes('release instrument should be presented as TD613 Hush or Hush'));
 assert(status.includes('Release posture'));
 assert(status.includes('Naming posture'));
+
+const audit = read('docs/HUSH_EPISTEMICIDE_AUDIT.md');
+includesAll(audit, 'docs/HUSH_EPISTEMICIDE_AUDIT.md', [
+  'Report-to-UI drift',
+  'Mask registry drift',
+  'Export receipt lag',
+  'Phase 30 candidate leap'
+]);
 
 console.log('docs-surface tests passed');
