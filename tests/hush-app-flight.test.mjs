@@ -15,6 +15,8 @@ function installDom() {
 
 function value(id) { return document.getElementById(id)?.value || ''; }
 function setValue(id, text) { const el = document.getElementById(id); assert(el, `missing ${id}`); el.value = text; return el; }
+function literalsFrom(text = '') { return text.match(/\b(?:EXHIBIT|DOC|CASE|REF|INV)[A-Z0-9:_#\/-]*\b|\b\d{1,2}:\d{2}\b|\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b/g) || []; }
+function hasActionableHardBlock(reasons = []) { return reasons.some((reason) => /literal|semantic|claim-integrity|claim-payload|payload|source-body|syntax-shift|dangling/.test(reason)); }
 
 installDom();
 const bench = await import(`../app/adversarial-bench.js?flight=${Date.now()}`);
@@ -48,22 +50,34 @@ for (const flight of cases) {
   assert(result.syntaxShift, `missing syntax shift for ${flight.name}`);
   assert(result.payloadIntegrity, `missing payload integrity for ${flight.name}`);
   assert(result.claimIntegrity, `missing claim integrity for ${flight.name}`);
-  assert(output.trim().length > 0, `UI did not populate transformed output for ${flight.name}`);
-  assert.notEqual(output.trim(), flight.message.trim(), `UI emitted unchanged output for ${flight.name}`);
-  for (const literal of flight.message.match(/\b(?:EXHIBIT|DOC|CASE|REF|INV)[A-Z0-9:_#\/-]*\b|\b\d{1,2}:\d{2}\b|\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b/g) || []) {
-    assert(output.includes(literal), `missing literal ${literal} in ${flight.name}`);
+
+  const hardBlockReasons = result.releasePolicy?.hardBlockReasons || [];
+  const emitted = output.trim().length > 0;
+  if (emitted) {
+    assert.notEqual(output.trim(), flight.message.trim(), `UI emitted unchanged output for ${flight.name}`);
+    assert.equal(result.releasePolicy?.hardBlocked, false, `UI emitted while hard-blocked for ${flight.name}`);
+    for (const literal of literalsFrom(flight.message)) {
+      assert(output.includes(literal), `missing literal ${literal} in ${flight.name}`);
+    }
+    if (flight.name === 'payload invoice record') {
+      assert(output.includes('Jordan'), 'payload invoice record must keep Jordan');
+      assert(/finance/i.test(output), 'payload invoice record must keep finance');
+      assert(/version/i.test(output), 'payload invoice record must keep version context');
+      assert(!/\b440 record\b/i.test(output), 'payload invoice record must not truncate INV-440');
+      assert(!/\b18\.\s*not\b/i.test(output), 'payload invoice record must not clip 2:18/not');
+    }
+  } else {
+    assert.equal(result.releasePolicy?.hardBlocked, true, `blank UI output lacked hard block for ${flight.name}`);
+    assert(hasActionableHardBlock(hardBlockReasons), `blank UI output lacked actionable hard-block reason for ${flight.name}: ${hardBlockReasons.join(', ')}`);
   }
-  if (flight.name === 'payload invoice record') {
-    assert(output.includes('Jordan'), 'payload invoice record must keep Jordan');
-    assert(/finance/i.test(output), 'payload invoice record must keep finance');
-    assert(/version/i.test(output), 'payload invoice record must keep version context');
-    assert(!/\b440 record\b/i.test(output), 'payload invoice record must not truncate INV-440');
-    assert(!/\b18\.\s*not\b/i.test(output), 'payload invoice record must not clip 2:18/not');
-  }
+
   flightResults.push({
     name: flight.name,
     maskId: flight.maskId,
+    emitted,
     status: result.releasePolicy.releaseStatus,
+    hardBlocked: Boolean(result.releasePolicy.hardBlocked),
+    hardBlockReasons,
     selectedCandidateId: result.selectedCandidateId,
     finalScore: result.candidates.find((candidate) => candidate.id === result.selectedCandidateId)?.finalScore ?? null,
     syntaxShiftScore: result.syntaxShift?.metrics?.syntaxShiftScore ?? null,
@@ -73,5 +87,7 @@ for (const flight of cases) {
   });
 }
 
+assert(flightResults.some((row) => row.emitted), 'app flight emitted zero outputs');
+assert(flightResults.every((row) => row.emitted || row.hardBlockReasons.length > 0), 'blank app flight rows must expose hard-block reasons');
 console.log('hush app flight results:', JSON.stringify(flightResults, null, 2));
 console.log('hush-app-flight tests passed');
