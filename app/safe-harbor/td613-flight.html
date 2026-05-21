@@ -1944,6 +1944,12 @@ select {
   background: rgba(3,14,15,0.62);
 }
 
+.mobile-flight-switcher,
+.mobile-prompt-rail,
+.mobile-output-return {
+  display: none;
+}
+
 @media (min-width: 821px) {
   .grid > div:last-child {
     display: flex;
@@ -1960,27 +1966,402 @@ select {
 @media (max-width: 820px) {
   html,
   body {
-    min-width: 1180px;
+    width: 100%;
+    min-width: 0;
     height: 100dvh;
+    max-width: 100%;
   }
 
+  html[data-flight-shi-cached="true"] body.flight-locked,
   body {
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
   }
 
   .page-wrap {
-    width: 1240px;
-    min-width: 1240px;
+    width: 100vw;
+    min-width: 0;
     height: 100dvh;
+    padding: .52rem;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    gap: .44rem;
   }
 
   header {
-    min-height: 8.2rem;
+    min-height: auto;
+    padding: .7rem .68rem .64rem;
+    gap: .36rem;
+    border-radius: 18px;
+    grid-template-areas:
+      "title"
+      "nav"
+      "text"
+      "tags"
+      "howto";
+  }
+
+  header::after {
+    bottom: .42rem;
+  }
+
+  h1 {
+    font-size: clamp(1.15rem, 7.4vw, 1.84rem);
+    letter-spacing: .09em;
+  }
+
+  h1::after {
+    font-size: .36rem;
+  }
+
+  .flight-quick-nav {
+    position: static;
+    grid-area: nav;
+    max-width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: .32rem;
+    padding: .06rem 0 .12rem;
+    scrollbar-width: none;
+  }
+
+  .flight-quick-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .flight-quick-nav a,
+  .flight-quick-nav button {
+    flex: 0 0 auto;
+    min-height: 1.7rem;
+    padding: .18rem .56rem;
+    font-size: .42rem;
+    white-space: nowrap;
+  }
+
+  .flight-quick-nav .flight-nav-signout {
+    padding-inline: .1rem;
+  }
+
+  .subtitle {
+    max-width: none;
+    font-size: .51rem;
+    line-height: 1.28;
+  }
+
+  .pill-row {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: .08rem;
+    scrollbar-width: none;
+  }
+
+  .pill-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pill {
+    flex: 0 0 auto;
+    font-size: .36rem;
+  }
+
+  details.howto {
+    width: 100%;
+    border-radius: 14px;
+  }
+
+  .mobile-flight-switcher {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .36rem;
+    padding: .28rem;
+    border: 1px solid rgba(137,255,240,0.16);
+    border-radius: 999px;
+    background:
+      linear-gradient(180deg, rgba(8,27,29,0.88), rgba(1,7,8,0.92)),
+      radial-gradient(circle at 78% 0%, rgba(137,255,240,0.13), transparent 68%);
+    box-shadow: inset 0 1px 0 rgba(245,255,246,0.05), 0 14px 44px rgba(0,0,0,0.32);
+  }
+
+  .mobile-lane-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 2.34rem;
+    padding: .34rem .4rem;
+    border: 1px solid rgba(137,255,240,0.16);
+    border-radius: 999px;
+    background: rgba(2,13,14,0.68);
+    color: rgba(245,255,246,0.74);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    cursor: pointer;
+  }
+
+  .mobile-lane-tab span {
+    font-size: .56rem;
+    line-height: 1.05;
+  }
+
+  .mobile-lane-tab small {
+    margin-top: .1rem;
+    font-size: .34rem;
+    color: rgba(145,169,166,0.76);
+    letter-spacing: .18em;
+  }
+
+  .mobile-lane-tab.is-active {
+    border-color: rgba(49,255,138,0.55);
+    color: var(--lux-cream);
+    background:
+      linear-gradient(180deg, rgba(24,77,54,0.58), rgba(2,13,10,0.92)),
+      radial-gradient(circle at 50% 0%, rgba(49,255,138,0.22), transparent 66%);
+    box-shadow: 0 0 24px rgba(49,255,138,0.15), inset 0 1px 0 rgba(245,255,246,0.08);
+  }
+
+  .mobile-lane-tab.is-teaching {
+    animation: sealedOutputPulse 1.05s ease-in-out 3;
   }
 
   .grid {
-    grid-template-columns: minmax(420px, .88fr) minmax(530px, 1.12fr);
+    display: flex;
+    grid-template-columns: none;
+    align-items: stretch;
+    gap: .52rem;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+  }
+
+  .grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .grid > div:first-child,
+  .grid > div:last-child {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    padding: .2rem .1rem 4.2rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .grid > div:first-child::before,
+  .grid > div:last-child::before {
+    display: none;
+  }
+
+  .card {
+    padding: .7rem .72rem .76rem .92rem;
+    margin-bottom: .54rem;
+    border-radius: 16px;
+  }
+
+  .card h2 {
+    font-size: .62rem;
+  }
+
+  .card h3 {
+    font-size: .48rem;
+  }
+
+  .section-note {
+    font-size: .54rem;
+  }
+
+  textarea,
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select {
+    font-size: .72rem;
+  }
+
+  #taskText {
+    min-height: 8.3rem;
+  }
+
+  .checkbox-row {
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+    gap: .3rem;
+  }
+
+  .radio-row {
+    gap: .3rem;
+  }
+
+  .checkbox-row label,
+  .radio-row label {
+    min-height: 1.9rem;
+    padding: .38rem .46rem;
+  }
+
+  .mobile-prompt-rail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: .6rem;
+    margin: .28rem 0 .64rem;
+    padding: .72rem .82rem;
+    border: 1px solid rgba(255,193,90,0.26);
+    border-radius: 18px;
+    background:
+      linear-gradient(110deg, rgba(31,16,7,0.86), rgba(2,10,11,0.94) 52%, rgba(8,30,24,0.82)),
+      radial-gradient(circle at 100% 0%, rgba(255,193,90,0.14), transparent 64%);
+    color: rgba(245,255,246,0.86);
+    font-family: var(--font-mono);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    box-shadow: 0 18px 44px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,239,196,0.08);
+    cursor: pointer;
+  }
+
+  .mobile-prompt-rail span:first-child {
+    font-size: .57rem;
+    text-align: left;
+  }
+
+  .mobile-prompt-rail-pill {
+    flex: 0 0 auto;
+    padding: .36rem .54rem;
+    border-radius: 999px;
+    color: var(--lux-amber);
+    border: 1px solid rgba(255,193,90,0.28);
+    background: rgba(3,9,9,0.64);
+    font-size: .46rem;
+    white-space: nowrap;
+  }
+
+  .mobile-prompt-rail:focus-visible,
+  .mobile-prompt-rail:hover {
+    border-color: rgba(255,193,90,0.55);
+    box-shadow: 0 0 28px rgba(255,193,90,0.14), inset 0 1px 0 rgba(255,239,196,0.12);
+  }
+
+  .mobile-output-return {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: .05rem 0 .42rem;
+    padding: .32rem .6rem;
+    border: 1px solid rgba(137,255,240,0.18);
+    border-radius: 999px;
+    background: rgba(2,13,14,0.72);
+    color: rgba(137,255,240,0.86);
+    font-family: var(--font-mono);
+    font-size: .5rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .output-card {
+    min-height: auto;
+    padding: .74rem .76rem .78rem .94rem;
+    border-radius: 18px;
+  }
+
+  .output-card h2 {
+    font-size: .76rem;
+    margin-bottom: .28rem;
+  }
+
+  .output-card .section-note {
+    display: none;
+  }
+
+  .output {
+    min-height: 7.6rem;
+    height: clamp(7.6rem, 22dvh, 9.8rem);
+    max-height: 30dvh;
+    padding: .62rem .64rem;
+    font-size: .66rem;
+    line-height: 1.45;
+    resize: vertical;
+  }
+
+  .status-bar,
+  .output-toolbar {
+    gap: .36rem;
+  }
+
+  .status-bar {
+    align-items: center;
+  }
+
+  .output-auth-toggle {
+    margin-left: 0;
+    font-size: .46rem;
+  }
+
+  .output-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .output-toolbar .row {
+    width: 100%;
+  }
+
+  .output-toolbar .row .btn {
+    flex: 1 1 0;
+  }
+
+  .payload-stepper {
+    align-self: flex-end;
+    margin-left: 0;
+  }
+
+  .seal-card {
+    margin-top: .52rem;
+    border-radius: 18px;
+    padding-top: .78rem;
+  }
+
+  .seal-card h2 {
+    font-size: .78rem;
+  }
+
+  .copy-bin-card {
+    border-radius: 16px;
+  }
+
+  .dev-drawer {
+    border-radius: 16px;
+  }
+}
+
+@keyframes sealedOutputPulse {
+  0%, 100% {
+    border-color: rgba(137,255,240,0.18);
+    box-shadow: inset 0 1px 0 rgba(245,255,246,0.05), 0 0 0 rgba(49,255,138,0);
+  }
+  45% {
+    border-color: rgba(49,255,138,0.72);
+    box-shadow: 0 0 30px rgba(49,255,138,0.26), inset 0 1px 0 rgba(245,255,246,0.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-lane-tab.is-teaching {
+    animation: none;
   }
 }
 </style>
@@ -2043,9 +2424,19 @@ Seal Generator &amp; Credential Flightdeck for TD613 routed prompts, authorship 
 </div>
 </details>
 </header>
+<nav class="mobile-flight-switcher" aria-label="TD613 Flight mobile lanes">
+<button class="mobile-lane-tab is-active" data-flight-lane-target="prompt" type="button" aria-selected="true">
+<span>Your Prompt</span>
+<small>build packet</small>
+</button>
+<button class="mobile-lane-tab is-teaching" data-flight-lane-target="output" type="button" aria-selected="false">
+<span>Sealed Output</span>
+<small>LLM-ready</small>
+</button>
+</nav>
 <div class="grid">
 <!-- LEFT COLUMN: controls -->
-<div>
+<div class="flight-lane flight-lane-prompt">
 <!-- Task -->
 <div class="card">
 <h2>Insert task here</h2>
@@ -2299,6 +2690,10 @@ Use this block for high-authorship moments: fragment, SAC, SHI#, payload, date, 
 </div>
 </div>
 </div></div></details>
+<button class="mobile-prompt-rail" data-flight-lane-target="output" type="button">
+<span>Seal payload to begin Flight</span>
+<span class="mobile-prompt-rail-pill">Sealed Output &rarr;</span>
+</button>
 <!-- Flightplan Builder -->
 
 <!-- Template Rotation -->
@@ -2307,7 +2702,8 @@ Use this block for high-authorship moments: fragment, SAC, SHI#, payload, date, 
 
 </div>
 <!-- RIGHT COLUMN: output preview -->
-<div>
+<div class="flight-lane flight-lane-output">
+<button class="mobile-output-return" data-flight-lane-target="prompt" type="button">&larr; edit prompt</button>
 <div class="card output-card">
 <h2>Prompt Output <span class="subtle-title">(LLM ready)</span></h2>
 <div class="module-marker">Editable packet preview</div>
@@ -2609,6 +3005,40 @@ if (valueNode) valueNode.textContent = String(current);
 if (down) down.disabled = !includeBinding || current <= 1;
 if (up) up.disabled = !includeBinding;
 if (wrap) wrap.classList.toggle("is-disabled", !includeBinding);
+}
+
+function isFlightMobileLayout() {
+return window.matchMedia && window.matchMedia("(max-width: 820px)").matches;
+}
+
+function syncMobileFlightLane() {
+const grid = document.querySelector(".grid");
+if (!grid) return;
+const activeLane = grid.scrollLeft >= grid.clientWidth * 0.45 ? "output" : "prompt";
+document.querySelectorAll(".mobile-lane-tab[data-flight-lane-target]").forEach(control => {
+const isActive = control.getAttribute("data-flight-lane-target") === activeLane;
+control.classList.toggle("is-active", isActive);
+control.setAttribute("aria-selected", isActive ? "true" : "false");
+});
+document.documentElement.dataset.flightMobileLane = activeLane;
+}
+
+function snapFlightLane(targetLane, behavior) {
+const grid = document.querySelector(".grid");
+if (!grid || !isFlightMobileLayout()) return;
+const lane = document.querySelector(targetLane === "output" ? ".flight-lane-output" : ".flight-lane-prompt");
+const left = lane ? lane.offsetLeft - grid.offsetLeft : 0;
+try {
+grid.scrollTo({ left, behavior: behavior || "smooth" });
+} catch (err) {
+grid.scrollLeft = left;
+}
+window.setTimeout(syncMobileFlightLane, behavior === "auto" ? 0 : 320);
+}
+
+function generateFlightOutput() {
+buildOutput();
+snapFlightLane("output", "smooth");
 }
 
 function getTask() {
@@ -3360,7 +3790,7 @@ document.getElementById("authIncludeBinding").checked = event.currentTarget.chec
 buildOutput();
 });
 
-document.getElementById("btnGenerate").addEventListener("click", buildOutput);
+document.getElementById("btnGenerate").addEventListener("click", generateFlightOutput);
 document.getElementById("btnRandomizer")?.addEventListener("click", applyFlightRandomizer);
 document.getElementById("btnResetControls").addEventListener("click", resetControls);
 document.getElementById("btnClearInput").addEventListener("click", clearInput);
@@ -3395,6 +3825,19 @@ document.getElementById("payloadUp").addEventListener("click", () => stepPayload
 document.getElementById("presetLight")?.addEventListener("click", applyPresetLight);
 document.getElementById("presetWhistle")?.addEventListener("click", applyPresetWhistle);
 document.getElementById("presetAudit")?.addEventListener("click", applyPresetAudit);
+document.querySelectorAll("[data-flight-lane-target]").forEach(control => {
+control.addEventListener("click", () => {
+control.classList.remove("is-teaching");
+snapFlightLane(control.getAttribute("data-flight-lane-target"), "smooth");
+});
+});
+document.querySelector(".grid")?.addEventListener("scroll", () => {
+window.requestAnimationFrame(syncMobileFlightLane);
+}, { passive: true });
+window.addEventListener("resize", syncMobileFlightLane);
+window.setTimeout(() => {
+document.querySelector("[data-flight-lane-target='output']")?.classList.remove("is-teaching");
+}, 4200);
 
 document.querySelectorAll(".copy-chip button").forEach(btn => {
 const label = btn.parentElement?.querySelector("span")?.textContent || "glyph";
@@ -3408,6 +3851,7 @@ copyText(val, label);
 flightDraftHydrated = true;
 buildOutput();
 updateVisualState();
+syncMobileFlightLane();
 });
 </script>
 <script>
