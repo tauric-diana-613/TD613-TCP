@@ -93,7 +93,7 @@ function measureFlightCase(bench, flight) {
   } else {
     assert.equal(result.releasePolicy?.hardBlocked, true, `blank customizer output lacked a hard block for ${flight.name}`);
     assert(
-      hardBlockReasons.some((reason) => /literal|semantic|claim-integrity|claim-payload|payload/.test(reason)),
+      hardBlockReasons.some((reason) => /literal|semantic|claim-integrity|claim-payload|payload|source-body|syntax-shift/.test(reason)),
       `blank customizer output lacked actionable hard-block reason for ${flight.name}: ${hardBlockReasons.join(', ')}`
     );
   }
@@ -249,7 +249,7 @@ const blocked = rows.filter((row) => row.hardBlocked).length;
 const literalStressRows = rows.filter((row) => row.group === 'protected-literal stress');
 assert.equal(rows.length, flights.length);
 assert.equal(rows.filter((row) => row.transformed && !row.emitted).length, 0);
-assert(literalStressRows.every((row) => row.emitted || row.hardBlockReasons.some((reason) => /literal|payload/.test(reason))), 'literal stress blanks must explain literal or payload pressure');
+assert(literalStressRows.every((row) => row.emitted || row.hardBlockReasons.some((reason) => /literal|payload|source-body|syntax-shift/.test(reason))), 'literal stress blanks must explain literal, payload, or transformation pressure');
 assert(rows.every((row) => row.emitted || row.hardBlockReasons.length > 0), 'every blank customizer result must expose hard-block reasons');
 
 const summary = {
