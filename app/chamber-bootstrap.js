@@ -48,6 +48,10 @@
       mobileFixLink.href = mobileFixHref;
       document.head.appendChild(mobileFixLink);
     }
+    var customizerBoot = document.createElement('script');
+    customizerBoot.type = 'module';
+    customizerBoot.src = './hush-customizer-card-fields-boot.js?v=' + (V.hushCustomizerCardFields || V.main || '');
+    document.head.appendChild(customizerBoot);
   }
 
   var srcs = [
