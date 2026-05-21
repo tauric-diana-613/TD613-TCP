@@ -1,0 +1,43 @@
+:root {
+  --hush-bg-deep: #05030a;
+  --hush-panel: rgba(15, 10, 28, 0.72);
+  --hush-line: rgba(228, 194, 255, 0.18);
+  --hush-route-ready: #5dff9a;
+  --hush-route-warning: #ffd166;
+  --hush-route-hold: #ff4fd8;
+  --hush-route-test: #b46cff;
+  --hush-route-private: #ff6b6b;
+  --hush-cyan: #7df9ff;
+  --hush-radius-panel: 30px;
+  --hush-radius-card: 22px;
+  --hush-radius-chip: 999px;
+  --hush-glow-soft: 0 0 24px rgba(180,108,255,.16);
+  --hush-glow-hard: 0 0 42px rgba(125,249,255,.22);
+}
+
+.persona-gallery { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:14px; margin-top:16px; }
+.persona-card, .forge-preview-card { border:1px solid var(--hush-line); border-radius:var(--hush-radius-card); padding:16px; background:linear-gradient(145deg, rgba(8,5,17,.82), rgba(34,14,54,.54)); box-shadow: var(--hush-glow-soft), inset 0 1px 0 rgba(255,255,255,.08); min-height:280px; display:flex; flex-direction:column; gap:10px; }
+.persona-card-top { display:flex; justify-content:space-between; gap:10px; align-items:center; }
+.persona-family, .persona-route { border:1px solid rgba(245,236,255,.18); border-radius:999px; padding:5px 9px; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:#dcc7ee; }
+.persona-card h3, .forge-preview-card h3 { margin:0; font-size:1.45rem; letter-spacing:-.025em; color:#fff6ff; text-transform:none; }
+.persona-story { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; min-height:4.4em; }
+.persona-brief { display:grid; gap:4px; padding:9px 0; border-top:1px solid rgba(245,236,255,.09); }
+.persona-brief strong { color:#e7c6ff; font-size:.72rem; text-transform:uppercase; letter-spacing:.12em; }
+.persona-brief span { color:#f2e7ff; font-size:.88rem; line-height:1.35; }
+.persona-brief.risk span { color:#ffd9f8; }
+.persona-chips { display:flex; flex-wrap:wrap; gap:7px; margin-top:auto; }
+.persona-chip { border:1px solid rgba(125,249,255,.20); background:rgba(125,249,255,.07); color:#dffcff; border-radius:999px; padding:5px 8px; font-size:.72rem; }
+.persona-chip.warning { border-color:rgba(255,209,102,.28); background:rgba(255,209,102,.08); color:#ffe9a8; }
+.persona-select { min-height:44px; border:1px solid rgba(125,249,255,.38); border-radius:14px; background:linear-gradient(90deg, rgba(125,249,255,.18), rgba(180,108,255,.18)); color:#fbf6ff; font-weight:900; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; }
+.target-register-card { border-color:rgba(255,79,216,.38); }
+.custody-lantern-card { border-color:rgba(93,255,154,.32); }
+.lab-stress-card { border-color:rgba(255,209,102,.34); }
+.forge-born-card { border-color:rgba(180,108,255,.38); }
+.hush-customizer-forge { margin-top:12px; border:1px solid rgba(125,249,255,.22); border-radius:22px; padding:14px; background:rgba(5,3,10,.48); }
+.forge-heading { display:flex; justify-content:space-between; gap:12px; margin-bottom:12px; color:#dcc7ee; text-transform:uppercase; letter-spacing:.10em; font-size:.72rem; }
+.hush-custom-card-field { display:grid; gap:5px; margin:8px 0; }
+.hush-custom-card-field input, .hush-custom-card-field textarea { min-height:44px; border:1px solid rgba(228,194,255,.18); border-radius:14px; padding:10px 12px; background:rgba(5,3,10,.62); color:#fbf6ff; }
+.hush-custom-card-field textarea { min-height:72px; resize:vertical; }
+.hush-field-label { color:#e7c6ff; font-size:.72rem; text-transform:uppercase; letter-spacing:.12em; }
+@media (max-width: 720px) { .persona-gallery { grid-template-columns:1fr; } .persona-card { min-height:auto; } .persona-story { -webkit-line-clamp:2; } .persona-select { width:100%; } }
+@media (prefers-reduced-motion: reduce) { * { animation-duration:0.001ms !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; } }
