@@ -99,34 +99,58 @@ function payloadSentence(input = {}) {
   return rebuildPayloadSentence({ sourceText: input.sourceText, payloadMap, payloadBindingMap: input.payloadBindingMap });
 }
 
-function composePayloadByFamily(family = '', input = {}) {
+function familyPayloadParts(family = '', input = {}) {
   const sourceText = safeText(input.sourceText);
   const payload = payloadSentence(input);
-  if (!payload) return '';
+  if (!payload) return [];
   const evidence = payloadText(input.payloadMap, 'evidence-id');
   const timestamp = payloadText(input.payloadMap, 'timestamp');
   const date = payloadText(input.payloadMap, 'date');
   const actor = payloadText(input.payloadMap, 'actor');
+  const time = timestamp || date;
   const hasVersion = payloadHas(input.payloadMap, 'version') || /which version|finance kept|version/i.test(sourceText);
   const reason = payloadText(input.payloadMap, 'reason');
-  const lead = family === 'group-chat-soft' ? 'Just flagging this plainly:'
-    : family === 'formal-record' ? 'For the record:'
-      : family === 'intake-style' || family === 'procedural-neutral' ? 'Record note:'
-        : family === 'caveat-first' ? 'Keeping the claim narrow:'
-          : family === 'warm-logistics' ? 'Keeping this organized:'
-            : '';
-  const parts = [];
-  if (family === 'evidence-first' && evidence) {
-    const time = timestamp || date;
-    parts.push(`${evidence}${time ? ` stays tied to ${time}` : ' remains the record anchor'}`);
+  const integrity = integrityParts(sourceText);
+  const versionTail = hasVersion && !/version/i.test(payload) ? 'The version context should remain attached' : '';
+  const reasonTail = reason && !payload.toLowerCase().includes(reason.toLowerCase()) ? reason.replace(/^bc\b/i, 'because') : '';
+  const holdTail = actor && /not to resend|do not resend|not resend/i.test(sourceText) && !/not resend|hold/i.test(payload) ? `${actor} should hold before resending` : '';
+
+  switch (family) {
+    case 'record-first':
+      return [`Record note: ${payload}`, ...integrity];
+    case 'evidence-first':
+      return [evidence && time ? `${evidence} stays tied to ${time}` : `${evidence || 'The record'} remains the anchor`, payload, ...integrity];
+    case 'date-first':
+      return [time ? `${time} is the timing anchor` : 'The timing stays attached', payload, ...integrity];
+    case 'caveat-first':
+      return ['Keeping the claim narrow', payload, ...integrity];
+    case 'request-softened':
+      return [evidence ? `It would help to keep ${evidence}${time ? ` with ${time}` : ''}` : 'It would help to keep the record intact', payload, ...integrity];
+    case 'two-sentence-brief':
+      return [payload, ...integrity];
+    case 'short-note':
+      return [evidence && time ? `${evidence}; ${time}; payload retained` : 'Payload retained', payload, ...integrity];
+    case 'intake-style':
+      return [`Intake record: ${payload}`, versionTail, reasonTail, ...integrity];
+    case 'procedural-neutral':
+      return [`Procedural note: ${payload}`, holdTail, ...integrity];
+    case 'warm-logistics':
+      return [`Keeping this organized: ${payload}`, versionTail, reasonTail, ...integrity];
+    case 'group-chat-soft':
+      return [`Just flagging this plainly: ${payload}`, holdTail, ...integrity];
+    case 'formal-record':
+      return [`For the record: ${payload}`, 'No broader conclusion is being added', ...integrity];
+    case 'compressed-record':
+      return [evidence && time ? `${evidence}; ${time}; ${payload}` : `Record: ${payload}`, ...integrity];
+    case 'expanded-context':
+      return [payload, versionTail, reasonTail, 'The point is preservation, not expansion', ...integrity];
+    default:
+      return [payload, ...integrity];
   }
-  if (family === 'date-first' && (timestamp || date)) parts.push(`${timestamp || date} is the timing anchor`);
-  parts.push(`${lead} ${payload}`.trim());
-  if (family === 'request-softened' && evidence) parts.push(`It would help to keep ${evidence}${date ? ` and ${date}` : ''} together`);
-  if (hasVersion && !/version/i.test(payload)) parts.push('The version context should remain attached');
-  if (reason && !payload.toLowerCase().includes(reason.toLowerCase())) parts.push(reason.replace(/^bc\b/i, 'because'));
-  if (actor && /not to resend|do not resend|not resend/i.test(sourceText) && !/not resend|hold/i.test(payload)) parts.push(`${actor} should hold before resending`);
-  return sentenceJoin(parts);
+}
+
+function composePayloadByFamily(family = '', input = {}) {
+  return sentenceJoin(familyPayloadParts(family, input));
 }
 
 function composeByFamily(family = '', input = {}) {
