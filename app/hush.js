@@ -1,6 +1,8 @@
 import { buildHushReadinessDashboard, summarizeHushReadinessDashboard } from './engine/hush-readiness-dashboard.js';
 import { buildHushProductState } from './engine/hush-product-state.js';
 import { buildHushEvidenceCockpit, summarizeHushEvidenceCockpit } from './engine/hush-evidence-cockpit.js';
+import { listHushMasks } from './engine/hush-mask-studio.js';
+import { renderHushPersonaGallery, summarizeHushPersonaGallery } from './hush-persona-gallery.js';
 
 function pill(label, status) {
   return `<article class="dashboard-pill ${status || 'gray'}"><strong>${label}</strong><span>${status || 'gray'}</span></article>`;
@@ -23,7 +25,7 @@ function ensureCockpitShell() {
   cockpit.id = 'hushEvidenceCockpit';
   cockpit.className = 'hush-product-card cockpit-card';
   cockpit.innerHTML = `
-    <div class="card-heading-row"><div><p class="eyebrow">Phase 30</p><h2>Evidence Cockpit</h2></div><div id="hushRouteState" class="route-state">booting</div></div>
+    <div class="card-heading-row"><div><p class="eyebrow">Phase 31</p><h2>Evidence Cockpit</h2></div><div id="hushRouteState" class="route-state">booting</div></div>
     <div class="cockpit-grid">
       <article class="instrument-panel wide"><h3>Signal Bus</h3><div id="hushSignalBus" class="bus-grid"></div></article>
       <article class="instrument-panel"><h3>Narrowing Losses</h3><div id="hushNarrowingLosses" class="loss-stack"></div></article>
@@ -35,11 +37,23 @@ function ensureCockpitShell() {
   return cockpit;
 }
 
+function bindPersonaSelection() {
+  document.getElementById('hushPersonaGallery')?.addEventListener('click', (event) => {
+    const button = event.target?.closest?.('.persona-select');
+    if (!button) return;
+    const maskId = button.getAttribute('data-mask-id');
+    window.__TD613_HUSH_SELECTED_PERSONA__ = maskId;
+    button.textContent = 'Selected';
+  });
+}
+
 async function renderDashboard() {
   const dashboard = buildHushReadinessDashboard({ exportReady: true, operatorReady: true });
-  const state = buildHushProductState({ dashboard, currentMode: 'phase-30-cockpit' });
-  const cockpit = await buildHushEvidenceCockpit({ reports: { exportReady: true, operatorReady: true }, dashboard, mode: 'phase-30-cockpit', maskId: 'registry-audited' });
+  const state = buildHushProductState({ dashboard, currentMode: 'phase-31-visual-system' });
+  const cockpit = await buildHushEvidenceCockpit({ reports: { exportReady: true, operatorReady: true }, dashboard, mode: 'phase-31-visual-system', maskId: 'persona-gallery' });
+  const gallery = renderHushPersonaGallery(document.getElementById('hushPersonaGallery'), listHushMasks());
   ensureCockpitShell();
+  bindPersonaSelection();
 
   const target = document.getElementById('hushDashboardSummary');
   const notice = document.getElementById('hushDashboardNotice');
@@ -67,6 +81,7 @@ async function renderDashboard() {
 
   window.__TD613_HUSH_PRODUCT_STATE__ = state;
   window.__TD613_HUSH_EVIDENCE_COCKPIT__ = summarizeHushEvidenceCockpit(cockpit);
+  window.__TD613_HUSH_PERSONA_GALLERY__ = summarizeHushPersonaGallery(gallery);
 }
 
 if (typeof document !== 'undefined') {
@@ -74,4 +89,4 @@ if (typeof document !== 'undefined') {
   else renderDashboard();
 }
 
-export { renderDashboard, ensureCockpitShell };
+export { renderDashboard, ensureCockpitShell, bindPersonaSelection };
