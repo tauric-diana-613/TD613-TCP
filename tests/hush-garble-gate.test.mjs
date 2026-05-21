@@ -7,7 +7,7 @@ assert(bad.hardFailures.includes('dangling-negation'));
 assert(bad.hardFailures.includes('literal-plus-nonsense'));
 
 const short = detectHushGarble({ outputText: 'Keep with 04/21.', protectedLiterals: ['04/21'] });
-assert.equal(short.passed, true);
+assert.equal(short.passed, false);
 assert(short.fragments.some((fragment) => fragment.includes('keep with')));
 
 const clean = detectHushGarble({ outputText: 'FILE-72 should stay tied to the same export minute. One copy has the footer and one copy does not.', protectedLiterals: ['FILE-72'] });
