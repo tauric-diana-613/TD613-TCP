@@ -3,9 +3,12 @@ import fs from 'fs';
 const path = 'app/safe-harbor/td613-flight.html';
 let html = fs.readFileSync(path, 'utf8');
 
+html = html.replace(/\n?<div class="mobile-swipe-cue"[\s\S]*?<\/div>/g, '');
+html = html.replace(/\n?<div class="mobile-swipe-overlay"[\s\S]*?<\/div>/g, '');
+
 const switcherEnd = html.indexOf('</nav>', html.indexOf('mobile-flight-switcher'));
-if (switcherEnd !== -1 && !html.includes('mobileSwipeCue')) {
-  const cue = '\n<div class="mobile-swipe-cue" id="mobileSwipeCue" aria-hidden="true"><span>Swipe right</span><strong>→ Sealed Output</strong></div>';
+if (switcherEnd !== -1 && !html.includes('mobileSwipeOverlay')) {
+  const cue = '\n<div class="mobile-swipe-overlay" id="mobileSwipeOverlay" aria-hidden="true"><span>Swipe left</span><strong>Sealed Output →</strong></div>';
   html = html.slice(0, switcherEnd + '</nav>'.length) + cue + html.slice(switcherEnd + '</nav>'.length);
 }
 
@@ -101,48 +104,62 @@ const css = `
   button { max-width: 100% !important; }
   .mobile-output-cue { display: none !important; }
   .mobile-lane-tab[data-flight-lane-target="output"] {
-    border-color: rgba(49,255,138,.88) !important;
-    box-shadow: 0 0 34px rgba(49,255,138,.28), inset 0 1px 0 rgba(245,255,246,.14) !important;
+    border-color: rgba(49,255,138,.90) !important;
+    box-shadow: 0 0 44px rgba(49,255,138,.36), 0 0 18px rgba(137,255,240,.18), inset 0 1px 0 rgba(245,255,246,.18) !important;
   }
   body:not(.flight-output-active) .mobile-lane-tab[data-flight-lane-target="output"] {
-    animation: sealedOutputBlinkStrong 1.05s ease-in-out infinite !important;
+    animation: sealedOutputBlinkStrong .82s ease-in-out 5 both !important;
   }
-  .mobile-swipe-cue {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: .42rem !important;
-    width: calc(100% - .28rem) !important;
-    margin: -.1rem .14rem .28rem !important;
-    padding: .22rem .42rem !important;
-    border: 1px solid rgba(49,255,138,.48) !important;
-    border-radius: 999px !important;
-    background: rgba(0,9,8,.72) !important;
-    color: var(--moss) !important;
-    font-family: var(--font-mono) !important;
-    letter-spacing: .13em !important;
-    text-transform: uppercase !important;
+  .mobile-swipe-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99999 !important;
+    display: grid !important;
+    place-content: center !important;
+    gap: .62rem !important;
+    text-align: center !important;
     pointer-events: none !important;
-    box-shadow: 0 0 22px rgba(49,255,138,.18), inset 0 1px 0 rgba(245,255,246,.08) !important;
-    animation: mobileSwipeCue 1.15s ease-in-out infinite !important;
+    background: radial-gradient(circle at 50% 52%, rgba(49,255,138,.16), rgba(0,0,0,0) 38%) !important;
+    color: var(--moss) !important;
+    font-family: var(--font-display) !important;
+    text-transform: uppercase !important;
+    letter-spacing: .12em !important;
+    text-shadow: 0 0 28px rgba(49,255,138,.72), 0 0 70px rgba(137,255,240,.28) !important;
+    animation: mobileSwipeOverlayExit 4.2s ease forwards !important;
   }
-  .mobile-swipe-cue span { font-size: .34rem !important; color: rgba(190,255,223,.72) !important; }
-  .mobile-swipe-cue strong { font-size: .42rem !important; color: var(--moss) !important; white-space: nowrap !important; }
-  body.flight-output-active .mobile-swipe-cue { display: none !important; }
+  .mobile-swipe-overlay span {
+    font-family: var(--font-mono) !important;
+    font-size: clamp(.72rem, 4vw, 1.05rem) !important;
+    color: rgba(190,255,223,.80) !important;
+  }
+  .mobile-swipe-overlay strong {
+    font-size: clamp(1.65rem, 11vw, 3.25rem) !important;
+    line-height: .95 !important;
+    color: var(--moss) !important;
+    white-space: nowrap !important;
+    animation: mobileSwipeOverlayText 1.05s ease-in-out 4 !important;
+  }
+  body.flight-output-active .mobile-swipe-overlay { display: none !important; }
   .mobile-prompt-rail { margin: .18rem 0 .44rem !important; padding: .28rem .44rem !important; min-height: 1.72rem !important; border-radius: 14px !important; }
   .output { min-height: 4.1rem !important; height: clamp(4.2rem, 14dvh, 5.6rem) !important; max-height: 16dvh !important; overflow-y: auto !important; }
 }
-@keyframes sealedOutputBlinkStrong { 0%,100% { box-shadow: 0 0 18px rgba(49,255,138,.20), inset 0 1px 0 rgba(245,255,246,.10); } 50% { box-shadow: 0 0 46px rgba(49,255,138,.56), 0 0 18px rgba(137,255,240,.28), inset 0 1px 0 rgba(245,255,246,.20); } }
-@keyframes mobileSwipeCue { 0%,100% { transform: translateX(0); opacity: .84; } 50% { transform: translateX(9px); opacity: 1; } }
+@keyframes sealedOutputBlinkStrong { 0%,100% { box-shadow: 0 0 20px rgba(49,255,138,.26), inset 0 1px 0 rgba(245,255,246,.12); filter: brightness(1); } 50% { box-shadow: 0 0 68px rgba(49,255,138,.88), 0 0 30px rgba(137,255,240,.42), inset 0 1px 0 rgba(245,255,246,.28); filter: brightness(1.35); } }
+@keyframes mobileSwipeOverlayText { 0%,100% { transform: translateX(0); } 50% { transform: translateX(-18px); } }
+@keyframes mobileSwipeOverlayExit { 0%,72% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
 `;
 
-if (!html.includes('TD613 Flight mobile lane access override')) {
+if (html.includes('TD613 Flight mobile lane access override')) {
+  html = html.replace(/\/\* === TD613 Flight mobile lane access override === \*\/[\s\S]*?(?=\n@media \(prefers-reduced-motion: reduce\)|\n<\/style>)/m, css);
+} else {
   html = html.replace('</style>', `${css}\n</style>`);
 }
 
 const js = `
 <script id="td613-flight-mobile-lane-access-script">
 (function () {
+  var touchStartX = 0;
+  var touchStartY = 0;
+  var touchStartTime = 0;
   function setLane(target) {
     var output = target === 'output';
     document.body.classList.toggle('flight-output-active', output);
@@ -156,27 +173,51 @@ const js = `
   }
   document.addEventListener('click', function (event) {
     var trigger = event.target.closest('[data-flight-lane-target]');
-    if (!trigger || trigger.classList.contains('mobile-swipe-cue')) return;
+    if (!trigger) return;
     var target = trigger.getAttribute('data-flight-lane-target');
     if (target === 'prompt' || target === 'output') {
       event.preventDefault();
       setLane(target);
     }
   });
+  document.addEventListener('touchstart', function (event) {
+    if (!event.touches || !event.touches[0]) return;
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+    touchStartTime = Date.now();
+  }, { passive: true });
+  document.addEventListener('touchend', function (event) {
+    var touch = event.changedTouches && event.changedTouches[0];
+    if (!touch) return;
+    var dx = touch.clientX - touchStartX;
+    var dy = touch.clientY - touchStartY;
+    var fastEnough = Date.now() - touchStartTime < 950;
+    if (!fastEnough || Math.abs(dx) < 54 || Math.abs(dx) < Math.abs(dy) * 1.35) return;
+    if (dx < 0) setLane('output');
+    if (dx > 0) setLane('prompt');
+  }, { passive: true });
   window.TD613FlightSetLane = setLane;
 })();
 </script>`;
 
-if (!html.includes('td613-flight-mobile-lane-access-script')) {
+if (html.includes('td613-flight-mobile-lane-access-script')) {
+  html = html.replace(/<script id="td613-flight-mobile-lane-access-script">[\s\S]*?<\/script>/, js.trim());
+} else {
   html = html.replace('</body>', `${js}\n</body>`);
 }
 
 if (html.includes('Loading TD613 Flight') || html.includes('td613-flight-legacy.html') || html.includes('<iframe')) throw new Error('wrapper regression detected');
-if (!html.includes('mobileSwipeCue')) throw new Error('swipe cue missing');
+if (!html.includes('mobileSwipeOverlay')) throw new Error('swipe overlay missing');
+if (html.includes('mobile-swipe-cue')) throw new Error('capsule cue must not remain');
+if (html.includes('Swipe right')) throw new Error('wrong swipe direction remains');
+if (!html.includes('Swipe left')) throw new Error('swipe-left overlay text missing');
 if (!html.includes('TD613FlightSetLane')) throw new Error('lane switch handler missing');
+if (!html.includes('touchstart') || !html.includes('touchend')) throw new Error('touch swipe handler missing');
 if (!html.includes('min-width: 0 !important')) throw new Error('desktop min-width override missing');
 if (!html.includes('body:not(.flight-output-active) .flight-lane-output')) throw new Error('mobile lane toggle CSS missing');
-if (!html.includes('pointer-events: none !important')) throw new Error('cue must be non-interactive');
+if (!html.includes('pointer-events: none !important')) throw new Error('overlay must be non-interactive');
+if (!html.includes('mobileSwipeOverlayExit')) throw new Error('finite overlay exit animation missing');
+if (!html.includes('sealedOutputBlinkStrong .82s ease-in-out 5')) throw new Error('finite bright output blink missing');
 
 fs.writeFileSync(path, html);
 console.log('patched TD613 Flight mobile lane access');
