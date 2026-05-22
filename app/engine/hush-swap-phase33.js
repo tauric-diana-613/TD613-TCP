@@ -76,12 +76,17 @@ export function buildHushSwap(input = {}) {
   const baseSelected = asArray(result.candidates).find((candidate) => candidate.id === result.selectedCandidateId) || null;
   const finalSelected = selected || baseSelected;
   const diagnostics = buildExpressiveDiagnostics(sourceText, finalSelected || {}, result);
+  const selectedScored = scored.find((entry) => entry.candidate === finalSelected) || null;
+  const selectedExpressive = selectedScored?.expressive || diagnostics.selected || expressiveCandidateScore(finalSelected || {}, sourceText, expressive);
   diagnostics.version = HUSH_SWAP_PHASE33_VERSION;
   diagnostics.expressiveVersion = HUSH_EXPRESSIVE_PAYLOAD_VERSION;
   diagnostics.baseSelectedCandidateId = result.selectedCandidateId || '';
   diagnostics.selectedCandidateId = finalSelected?.id || '';
   diagnostics.expressiveActive = expressive.active;
   diagnostics.expressiveScore = expressive.score;
+  diagnostics.selectedRetentionScore = selectedExpressive.retention?.retentionScore ?? 0;
+  diagnostics.selectedWrapperFatigue = selectedExpressive.wrapperFatigue ?? 0;
+  diagnostics.selectedWasFallback = Boolean(selectedExpressive.fallback);
   diagnostics.selectorRows = scored.slice(0, 8).map((entry) => ({
     id: entry.candidate.id,
     source: entry.candidate.source,
@@ -92,7 +97,7 @@ export function buildHushSwap(input = {}) {
     fallback: entry.expressive.fallback,
     missing: entry.expressive.retention.missing
   }));
-  diagnostics.phase33Score = round4(scored.find((entry) => entry.candidate === finalSelected)?.expressive.score || 0);
-  diagnostics.warning = diagnostics.warning || (expressive.active && diagnostics.selected?.retention?.retentionScore < 0.55 ? 'expressive-payload-loss' : '');
+  diagnostics.phase33Score = round4(selectedExpressive.score || 0);
+  diagnostics.warning = diagnostics.warning || (expressive.active && diagnostics.selectedRetentionScore < 0.55 ? 'expressive-payload-loss' : '');
   return applyCandidate(result, finalSelected, diagnostics);
 }
