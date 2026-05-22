@@ -55,9 +55,9 @@ assert(report.summary.findings.length > 0);
 
 const ui = fs.readFileSync('app/hush-phase32.js', 'utf8');
 const pkg = fs.readFileSync('package.json', 'utf8');
-assert(ui.includes('hush-swap-phase33.js'));
+assert(ui.includes('hush-swap-phase33.js') || ui.includes('hush-swap-phase34.js'));
 assert(ui.includes('Expressive / Theory'));
-assert(ui.includes('Phase 33 expressive selector'));
+assert(ui.includes('Phase 33 expressive selector') || ui.includes('Phase 34 expressive generator'));
 assert(pkg.includes('diag:hush:phase33'));
 assert(pkg.includes('hush-phase33-expressive-payload.test.mjs'));
 
