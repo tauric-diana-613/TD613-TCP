@@ -11,13 +11,7 @@ assert.equal(HUSH_SWAP_PHASE32_VERSION, 'phase-32-mask-surface-separation');
 
 const mask = getHushMask('plain-witness');
 const sourceText = 'The vendor called twice after lunch. I logged INV-440 at 2:18 and told Jordan not to resend the spreadsheet until we know which version finance kept.';
-const result = buildHushSwap({
-  sourceText,
-  mask,
-  maskProfile: mask.profile,
-  contextType: 'group-chat',
-  options: { candidateCount: 18 }
-});
+const result = buildHushSwap({ sourceText, mask, maskProfile: mask.profile, contextType: 'group-chat', options: { candidateCount: 18 } });
 
 assert.equal(result.version, 'phase-22');
 assert(result.writer?.meaningPlan);
@@ -96,6 +90,8 @@ assert(bootstrap.includes('gatewayDoorFlight'));
 assert(bootstrap.includes('./safe-harbor/td613-flight.html'));
 assert(bootstrap.includes('Seal cockpit'));
 assert(bootstrap.includes('Payload route. Prompt steering.'));
+assert(bootstrap.includes('[hush, flight, harbor, trainer, readout]'));
+assert(bootstrap.includes("data-phase32-visible-order', 'hush flight safe-harbor trainer readout'"));
 assert(hushHtml.includes('td613HushLoadingDots" class="td613-hush-loading-dots">...</span>'));
 assert(phase32Css.includes('#gatewayDoorDeck,#gatewayDoorHomebase'));
 assert(phase32Css.includes('hush-phase32-clear-input'));
@@ -120,14 +116,7 @@ assert(Object.prototype.hasOwnProperty.call(diagnostic.summary, 'highBoilerplate
 assert(Object.prototype.hasOwnProperty.call(diagnostic.summary, 'lowSurfaceCount'));
 
 const phase23Mask = getHushMask('phase22-jagged-record');
-const phase23 = buildPhase23HushSwap({
-  sourceText: 'Keep DOC-77 with 04/21. The file was visible before noon, and the date is the anchor.',
-  mask: phase23Mask,
-  maskProfile: phase23Mask.profile,
-  contextType: 'group-chat',
-  options: { candidateCount: 24 }
-});
-
+const phase23 = buildPhase23HushSwap({ sourceText: 'Keep DOC-77 with 04/21. The file was visible before noon, and the date is the anchor.', mask: phase23Mask, maskProfile: phase23Mask.profile, contextType: 'group-chat', options: { candidateCount: 24 } });
 assert.equal(phase23.version, 'phase-23');
 assert.equal(phase23.phase22Version, 'phase-22');
 assert(phase23.phase23?.usedWrapper, 'Phase 23 wrapper marker missing');
