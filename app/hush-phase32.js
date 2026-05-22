@@ -1,7 +1,7 @@
 import * as bench from './adversarial-bench.mjs';
-import { buildHushSwap, HUSH_SWAP_PHASE33_VERSION } from './engine/hush-swap-phase33.js';
+import { buildHushSwap, HUSH_SWAP_PHASE34_VERSION } from './engine/hush-swap-phase34.js';
 
-export const HUSH_PHASE32_UI_VERSION = 'phase-32-mask-surface-ui+phase-33-expressive-payload-ui';
+export const HUSH_PHASE32_UI_VERSION = 'phase-32-mask-surface-ui+phase-34-expressive-generation-ui';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
@@ -23,10 +23,11 @@ function renderDiagnostics(result = {}, doc = document) {
   if (!target) return;
   const d = result.phase32Diagnostics || {};
   const e = result.phase33Diagnostics || {};
+  const g = result.phase34Diagnostics || {};
   const diff = d.differentiation || {};
-  const report = Array.isArray(e.selectorRows) ? e.selectorRows.slice(0, 4) : (Array.isArray(d.candidateReport) ? d.candidateReport.slice(0, 4) : []);
+  const report = Array.isArray(g.selectorRows) ? g.selectorRows.slice(0, 4) : (Array.isArray(e.selectorRows) ? e.selectorRows.slice(0, 4) : (Array.isArray(d.candidateReport) ? d.candidateReport.slice(0, 4) : []));
   const expressive = e.expressive || {};
-  target.innerHTML = `<strong>Phase 33 expressive selector</strong><div class="hush-phase32-diagnostic-grid"><span>Selected: <code>${esc(e.selectedCandidateId || d.selectedCandidateId || 'none')}</code></span><span>Fallback: <code>${esc(String(Boolean(e.selectedWasFallback ?? d.selectedWasFallback)))}</code></span><span>Boilerplate: <code>${esc(d.selectedBoilerplateScore ?? 'n/a')}</code></span><span>Surface score: <code>${esc(d.selectedMaskSurfaceScore ?? 'n/a')}</code></span><span>Expressive: <code>${esc(String(Boolean(e.expressiveActive ?? expressive.active)))}</code></span><span>Retention: <code>${esc(e.selectedRetentionScore ?? e.selected?.retention?.retentionScore ?? 'n/a')}</code></span><span>Wrapper fatigue: <code>${esc(e.selectedWrapperFatigue ?? e.selected?.wrapperFatigue ?? 'n/a')}</code></span><span>Warning: <code>${esc(e.warning || d.warning || 'none')}</code></span><span>Unique surfaces: <code>${esc(diff.uniqueSurfaceCount ?? 'n/a')}</code></span></div>${report.length ? `<details><summary>candidate report</summary>${report.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.source || '')} / ${esc(row.strategy || '')} · p33 ${esc(row.expressiveScore ?? row.phase32Score ?? 'n/a')} · retain ${esc(row.retention ?? 'n/a')}</div>`).join('')}</details>` : ''}`;
+  target.innerHTML = `<strong>Phase 34 expressive generator</strong><div class="hush-phase32-diagnostic-grid"><span>Selected: <code>${esc(g.selectedCandidateId || e.selectedCandidateId || d.selectedCandidateId || 'none')}</code></span><span>Generated: <code>${esc(String(Boolean(g.selectedGenerated)))}</code></span><span>Generated candidates: <code>${esc(g.generatedCount ?? 'n/a')}</code></span><span>Retention: <code>${esc(g.selectedRetentionScore ?? e.selectedRetentionScore ?? e.selected?.retention?.retentionScore ?? 'n/a')}</code></span><span>Wrapper fatigue: <code>${esc(g.selectedWrapperFatigue ?? e.selectedWrapperFatigue ?? e.selected?.wrapperFatigue ?? 'n/a')}</code></span><span>Expressive score: <code>${esc(g.selectedExpressiveScore ?? e.phase33Score ?? 'n/a')}</code></span><span>Surface score: <code>${esc(d.selectedMaskSurfaceScore ?? 'n/a')}</code></span><span>Warning: <code>${esc(g.warning || e.warning || d.warning || 'none')}</code></span><span>Unique surfaces: <code>${esc(diff.uniqueSurfaceCount ?? 'n/a')}</code></span></div>${report.length ? `<details><summary>candidate report</summary>${report.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.source || '')} / ${esc(row.strategy || '')} · gen ${esc(row.generated ?? false)} · retain ${esc(row.retention ?? 'n/a')}</div>`).join('')}</details>` : ''}`;
 }
 
 function readStateInputs(doc = document) {
@@ -57,7 +58,7 @@ function runPhase32Transform(doc = document) {
     exposureDuration: state.recognitionExposureDuration || 'single-use',
     personaSummary: {},
     iterationLedger: state.iterationLedger || {},
-    options: { candidateCount: 28, includePrivateText: false, expressiveMode }
+    options: { candidateCount: 30, includePrivateText: false, expressiveMode }
   });
   state.hushSwapResult = result;
   state.hushProfileMatch = result.match;
@@ -87,7 +88,7 @@ function installClearInput(doc = document) {
 function installDiagnostics(doc = document) {
   const warnings = $('hushSwapWarningsPanel', doc);
   if (!warnings || $('hushPhase32Diagnostics', doc)) return;
-  warnings.insertAdjacentHTML('afterend', '<div id="hushPhase32Diagnostics" class="hush-phase32-diagnostic-panel"><strong>Phase 33 expressive selector</strong><br>Awaiting transform.</div>');
+  warnings.insertAdjacentHTML('afterend', '<div id="hushPhase32Diagnostics" class="hush-phase32-diagnostic-panel"><strong>Phase 34 expressive generator</strong><br>Awaiting transform.</div>');
 }
 
 function compactControls(doc = document) {
@@ -135,6 +136,7 @@ export function initHushPhase32(doc = document) {
   if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench') return { installed: false, version: HUSH_PHASE32_UI_VERSION };
   doc.body.dataset.hushPhase32 = 'true';
   doc.body.dataset.hushPhase33 = 'true';
+  doc.body.dataset.hushPhase34 = 'true';
   compactControls(doc);
   installClearInput(doc);
   installDiagnostics(doc);
@@ -142,7 +144,7 @@ export function initHushPhase32(doc = document) {
   installAutoMaskTransform(doc);
   interceptTransforms(doc);
   fixLoaderDots(doc);
-  if (typeof window !== 'undefined') window.__TD613_HUSH_PHASE32__ = { version: HUSH_PHASE32_UI_VERSION, selectorVersion: HUSH_SWAP_PHASE33_VERSION, runPhase32Transform };
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PHASE32__ = { version: HUSH_PHASE32_UI_VERSION, selectorVersion: HUSH_SWAP_PHASE34_VERSION, runPhase32Transform };
   return { installed: true, version: HUSH_PHASE32_UI_VERSION };
 }
 
