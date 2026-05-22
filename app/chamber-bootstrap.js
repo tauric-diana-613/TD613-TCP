@@ -7,6 +7,30 @@
     /(?:[?&](?:test-flight|fixtures|retrieval-fixtures)=)/i.test(query) ||
     /(?:test-flight|retrieval-fixtures)/i.test(hash);
 
+  if (pageKind === 'gateway') {
+    var gatewayPhase32Style = document.createElement('style');
+    gatewayPhase32Style.id = 'td613-gateway-phase32-prune';
+    gatewayPhase32Style.textContent = '#gatewayDoorDeck,#gatewayDoorHomebase{display:none!important}';
+    document.head.appendChild(gatewayPhase32Style);
+    var installFlightDoor = function () {
+      if (document.getElementById('gatewayDoorFlight')) return;
+      var rail = document.querySelector('.gateway-grid');
+      var harbor = document.getElementById('gatewayDoorHarbor');
+      if (!rail) return;
+      var flight = document.createElement('a');
+      flight.id = 'gatewayDoorFlight';
+      flight.className = 'gateway-card gateway-card-external';
+      flight.href = './safe-harbor/td613-flight.html';
+      flight.target = '_blank';
+      flight.rel = 'noopener';
+      flight.innerHTML = '<div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x27D0;</span> Flight</div><h3>Seal cockpit</h3><p>Payload route. Prompt steering.</p>';
+      if (harbor && harbor.parentNode === rail) rail.insertBefore(flight, harbor);
+      else rail.appendChild(flight);
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installFlightDoor, { once: true });
+    else installFlightDoor();
+  }
+
   if (pageKind === 'adversarial-bench') {
     var visualHref = './hush-visual-system.css?v=' + (V.hushVisualSystem || V.main || '');
     var existingVisual = document.querySelector('link[href^="./hush-visual-system.css"]');
@@ -56,10 +80,22 @@
       mobileFixLink.href = mobileFixHref;
       document.head.appendChild(mobileFixLink);
     }
+    var phase32Href = './hush-phase32.css?v=' + (V.hushPhase32 || V.main || '');
+    var existingPhase32 = document.querySelector('link[href^="./hush-phase32.css"]');
+    if (!existingPhase32) {
+      var phase32Link = document.createElement('link');
+      phase32Link.rel = 'stylesheet';
+      phase32Link.href = phase32Href;
+      document.head.appendChild(phase32Link);
+    }
     var customizerBoot = document.createElement('script');
     customizerBoot.type = 'module';
     customizerBoot.src = './hush-customizer-card-fields-boot.js?v=' + (V.hushCustomizerCardFields || V.main || '');
     document.head.appendChild(customizerBoot);
+    var phase32Boot = document.createElement('script');
+    phase32Boot.type = 'module';
+    phase32Boot.src = './hush-phase32.js?v=' + (V.hushPhase32 || V.main || '');
+    document.head.appendChild(phase32Boot);
   }
 
   var srcs = [
