@@ -7,6 +7,13 @@
     /(?:[?&](?:test-flight|fixtures|retrieval-fixtures)=)/i.test(query) ||
     /(?:test-flight|retrieval-fixtures)/i.test(hash);
 
+  if (pageKind === 'gateway') {
+    var gatewayPhase32Style = document.createElement('style');
+    gatewayPhase32Style.id = 'td613-gateway-phase32-prune';
+    gatewayPhase32Style.textContent = '#gatewayDoorDeck,#gatewayDoorHomebase{display:none!important}';
+    document.head.appendChild(gatewayPhase32Style);
+  }
+
   if (pageKind === 'adversarial-bench') {
     var visualHref = './hush-visual-system.css?v=' + (V.hushVisualSystem || V.main || '');
     var existingVisual = document.querySelector('link[href^="./hush-visual-system.css"]');
@@ -56,10 +63,22 @@
       mobileFixLink.href = mobileFixHref;
       document.head.appendChild(mobileFixLink);
     }
+    var phase32Href = './hush-phase32.css?v=' + (V.hushPhase32 || V.main || '');
+    var existingPhase32 = document.querySelector('link[href^="./hush-phase32.css"]');
+    if (!existingPhase32) {
+      var phase32Link = document.createElement('link');
+      phase32Link.rel = 'stylesheet';
+      phase32Link.href = phase32Href;
+      document.head.appendChild(phase32Link);
+    }
     var customizerBoot = document.createElement('script');
     customizerBoot.type = 'module';
     customizerBoot.src = './hush-customizer-card-fields-boot.js?v=' + (V.hushCustomizerCardFields || V.main || '');
     document.head.appendChild(customizerBoot);
+    var phase32Boot = document.createElement('script');
+    phase32Boot.type = 'module';
+    phase32Boot.src = './hush-phase32.js?v=' + (V.hushPhase32 || V.main || '');
+    document.head.appendChild(phase32Boot);
   }
 
   var srcs = [
