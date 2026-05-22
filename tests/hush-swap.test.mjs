@@ -4,19 +4,14 @@ import { getHushMask } from '../app/engine/hush-mask-studio.js';
 import { HUSH_SWAP_VERSION, buildHushSwap } from '../app/engine/hush-swap.js';
 import { buildHushSwap as buildPhase32HushSwap, HUSH_SWAP_PHASE32_VERSION } from '../app/engine/hush-swap-phase32.js';
 import { buildPhase23HushSwap } from '../app/engine/hush-phase23-swap.js';
+import { PHASE32_1_DIAGNOSTIC_SAMPLE, runPhase321Diagnostics } from '../scripts/run-hush-phase32-1-mask-diagnostics.mjs';
 
 assert.equal(HUSH_SWAP_VERSION, 'phase-22');
 assert.equal(HUSH_SWAP_PHASE32_VERSION, 'phase-32-mask-surface-separation');
 
 const mask = getHushMask('plain-witness');
 const sourceText = 'The vendor called twice after lunch. I logged INV-440 at 2:18 and told Jordan not to resend the spreadsheet until we know which version finance kept.';
-const result = buildHushSwap({
-  sourceText,
-  mask,
-  maskProfile: mask.profile,
-  contextType: 'group-chat',
-  options: { candidateCount: 18 }
-});
+const result = buildHushSwap({ sourceText, mask, maskProfile: mask.profile, contextType: 'group-chat', options: { candidateCount: 18 } });
 
 assert.equal(result.version, 'phase-22');
 assert(result.writer?.meaningPlan);
@@ -87,6 +82,7 @@ assert(!/TD613 remains the record anchor/i.test(phase32.selectedOutput), 'Phase 
 const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
 const phase32Css = fs.readFileSync('app/hush-phase32.css', 'utf8');
 const phase32Ui = fs.readFileSync('app/hush-phase32.js', 'utf8');
+const hushHtml = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 assert(bootstrap.includes('hush-phase32.css'));
 assert(bootstrap.includes('hush-phase32.js'));
 assert(bootstrap.includes('gatewayDoorDeck,#gatewayDoorHomebase'));
@@ -94,23 +90,33 @@ assert(bootstrap.includes('gatewayDoorFlight'));
 assert(bootstrap.includes('./safe-harbor/td613-flight.html'));
 assert(bootstrap.includes('Seal cockpit'));
 assert(bootstrap.includes('Payload route. Prompt steering.'));
+assert(bootstrap.includes('[hush, flight, harbor, trainer, readout]'));
+assert(bootstrap.includes("data-phase32-visible-order', 'hush flight safe-harbor trainer readout'"));
+assert(hushHtml.includes('td613HushLoadingDots" class="td613-hush-loading-dots">...</span>'));
 assert(phase32Css.includes('#gatewayDoorDeck,#gatewayDoorHomebase'));
 assert(phase32Css.includes('hush-phase32-clear-input'));
 assert(phase32Css.includes('hush-phase32-compact-actions'));
+assert(phase32Css.includes('TD613 Hush Phase 32.1'));
+assert(phase32Css.includes('hush-gate-strip'));
+assert(phase32Css.includes('hush-mask-card'));
+assert(phase32Css.includes('#protectedOutputHeading'));
 assert(phase32Ui.includes('clear input'));
 assert(phase32Ui.includes('runPhase32Transform'));
 assert(phase32Ui.includes('maskFieldSelect'));
 assert(phase32Ui.includes('td613HushLoadingDots'));
 
-const phase23Mask = getHushMask('phase22-jagged-record');
-const phase23 = buildPhase23HushSwap({
-  sourceText: 'Keep DOC-77 with 04/21. The file was visible before noon, and the date is the anchor.',
-  mask: phase23Mask,
-  maskProfile: phase23Mask.profile,
-  contextType: 'group-chat',
-  options: { candidateCount: 24 }
-});
+const diagnostic = runPhase321Diagnostics();
+assert(diagnostic.summary.maskCount > 5, 'Phase 32.1 diagnostics should test the full mask set');
+assert.equal(diagnostic.summary.sampleChars, PHASE32_1_DIAGNOSTIC_SAMPLE.length);
+assert(diagnostic.rows.every((row) => row.maskId && row.label), 'diagnostic rows need mask identity');
+assert(diagnostic.rows.some((row) => row.outputPreview), 'at least one mask should produce diagnostic output');
+assert(diagnostic.summary.phase33Findings.length > 0, 'diagnostics must emit Phase 33 findings');
+assert(Object.prototype.hasOwnProperty.call(diagnostic.summary, 'fallbackSelectedCount'));
+assert(Object.prototype.hasOwnProperty.call(diagnostic.summary, 'highBoilerplateCount'));
+assert(Object.prototype.hasOwnProperty.call(diagnostic.summary, 'lowSurfaceCount'));
 
+const phase23Mask = getHushMask('phase22-jagged-record');
+const phase23 = buildPhase23HushSwap({ sourceText: 'Keep DOC-77 with 04/21. The file was visible before noon, and the date is the anchor.', mask: phase23Mask, maskProfile: phase23Mask.profile, contextType: 'group-chat', options: { candidateCount: 24 } });
 assert.equal(phase23.version, 'phase-23');
 assert.equal(phase23.phase22Version, 'phase-22');
 assert(phase23.phase23?.usedWrapper, 'Phase 23 wrapper marker missing');
