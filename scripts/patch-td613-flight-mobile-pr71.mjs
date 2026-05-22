@@ -3,6 +3,8 @@ import fs from 'fs';
 const path = 'app/safe-harbor/td613-flight.html';
 let html = fs.readFileSync(path, 'utf8');
 
+html = html.replace(/\s*if \(grid\) grid\.scrollIntoView\(\{ behavior: 'smooth', block: 'start' \}\);/g, '');
+html = html.replace(/\s*if \(grid\) grid\.scrollIntoView\([^;]*\);/g, '');
 html = html.replace(/<div class="mobile-swipe-overlay"[\s\S]*?<\/div>/g, '<div class="mobile-swipe-overlay" id="mobileSwipeOverlay" aria-hidden="true"><strong>⟵⟵ swipe</strong></div>');
 
 const css = `
