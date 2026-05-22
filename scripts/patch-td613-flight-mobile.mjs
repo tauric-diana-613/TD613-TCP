@@ -84,3 +84,4 @@ fs.writeFileSync(path, html);
 console.log('patched TD613 Flight mobile layout directly');
 
 await import('./patch-td613-flight-mobile-access.mjs');
+await import('./patch-td613-flight-mobile-viewport.mjs');
