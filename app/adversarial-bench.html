@@ -2,11 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
   <title>TD613 Hush</title>
+  <link rel="stylesheet" href="./hush-phase31-1.css" />
   <script src="./asset-versions.js"></script>
 </head>
 <body data-page-kind="adversarial-bench">
+  <div id="td613HushLoading" aria-live="polite">
+    <div class="td613-hush-loading-core">
+      <div class="td613-hush-loading-mark">TD613 / Hush</div>
+      <div class="td613-hush-loading-text">TD613 Hush is loading<span id="td613HushLoadingDots" class="td613-hush-loading-dots">.</span></div>
+    </div>
+  </div>
   <div class="shell shell-station hush-instrument hush-alien-console">
     <header id="consoleMasthead" class="hush-orbit-header hush-signal-masthead hush-found-tech-border">
       <div>
@@ -173,85 +180,12 @@
         <summary><span>Lab</span><span>Custody stack</span></summary>
         <div class="hush-drawer-body">
           <div class="hush-lab-grid">
-            <section id="escapeVectorPanel" class="hush-lab-panel telemetry-panel" aria-labelledby="escapeVectorHeading">
-              <div class="hush-kicker">Escape Vector</div>
-              <h3 id="escapeVectorHeading">Residual Source Linkage / Feature Movement</h3>
-              <div id="escapeVectorGrid" class="escape-vector-grid"></div>
-            </section>
-
-            <section id="controllerPanel" class="hush-lab-panel telemetry-panel" aria-labelledby="controllerHeading">
-              <div class="hush-kicker">Controller</div>
-              <h3 id="controllerHeading">Controller waiting</h3>
-              <div id="controllerBody">Run analysis to surface steering instructions.</div>
-            </section>
-
-            <section id="personaMemoryPanel" class="hush-lab-panel telemetry-panel" aria-labelledby="personaMemoryHeading">
-              <div class="hush-kicker">Mask Memory</div>
-              <h3 id="personaMemoryHeading">Mask field memory</h3>
-              <div id="personaMemoryBody" class="persona-memory-summary">No local mask memory loaded. The selected mask is acting as a reference surface only.</div>
-            </section>
-
-            <section id="recognitionFieldPanel" class="hush-lab-panel telemetry-panel hush-lab-wide" aria-labelledby="recognitionFieldHeading">
-              <div class="hush-kicker">Recognition Field</div>
-              <h3 id="recognitionFieldHeading">Context Pressure</h3>
-              <div class="recognition-field-controls">
-                <label class="hush-field-shell" for="recognitionContextType">
-                  <span class="hush-field-label">Context Type</span>
-                  <select id="recognitionContextType"></select>
-                </label>
-                <label class="hush-field-shell" for="recognitionIntentMode">
-                  <span class="hush-field-label">Intended Mode</span>
-                  <select id="recognitionIntentMode">
-                    <option value="neutralize">Neutralize</option>
-                    <option value="stable-pseudonym">Stable pseudonym</option>
-                    <option value="rotating-mask">Rotating mask</option>
-                    <option value="hostile-pipeline-compression">Hostile Pipeline Compression</option>
-                  </select>
-                </label>
-                <label class="hush-field-shell" for="recognitionExposureDuration">
-                  <span class="hush-field-label">Exposure Duration</span>
-                  <select id="recognitionExposureDuration">
-                    <option value="single-use">Single use</option>
-                    <option value="short-thread">Short thread</option>
-                    <option value="recurring">Recurring</option>
-                    <option value="long-running">Long-running</option>
-                  </select>
-                </label>
-              </div>
-              <div id="recognitionFieldGrid" class="escape-vector-grid"></div>
-              <div id="recognitionFieldWarnings" class="persona-memory-summary"></div>
-            </section>
-
-            <section id="iterationPreviewPanel" class="hush-lab-panel telemetry-panel hush-lab-wide" aria-labelledby="iterationPreviewHeading">
-              <div class="hush-kicker">Ledger</div>
-              <h3 id="iterationPreviewHeading">Current session rows</h3>
-              <div id="iterationPreviewBody"></div>
-              <div id="ledgerSummaryBody" class="persona-memory-summary"></div>
-              <div class="hush-action-row">
-                <button id="exportLedgerJsonBtn" type="button" class="secondary">Export Flight Recorder JSON</button>
-                <button id="exportHushMaskProfileBtn" type="button" class="secondary">Export Mask Profile JSON</button>
-                <button id="exportHushSwapJsonBtn" type="button" class="secondary">Export Swap JSON</button>
-                <label class="bench-mini"><input id="includeLedgerTextsToggle" type="checkbox" /> Include private text in export</label>
-              </div>
-              <label class="hush-field-shell" for="ledgerExportOutput">
-                <span class="hush-field-label">Flight Recorder JSON / Hush Exports</span>
-                <textarea id="ledgerExportOutput" class="ledger-export-output" readonly></textarea>
-              </label>
-            </section>
-
-            <section id="reportExportPanel" class="hush-lab-panel telemetry-panel hush-lab-wide" aria-labelledby="reportExportHeading">
-              <div class="hush-kicker">Reports</div>
-              <h3 id="reportExportHeading">Local Stylometry Report</h3>
-              <div id="claimCeilingPanel"></div>
-              <div class="hush-action-row">
-                <button id="exportReportJsonBtn" type="button" class="secondary">Export Report JSON</button>
-                <button id="exportReportMarkdownBtn" type="button" class="secondary">Export Report Markdown</button>
-              </div>
-              <label class="hush-field-shell" for="reportExportOutput">
-                <span class="hush-field-label">Report Output</span>
-                <textarea id="reportExportOutput" class="report-export-output" readonly></textarea>
-              </label>
-            </section>
+            <section id="escapeVectorPanel" class="hush-lab-panel telemetry-panel" aria-labelledby="escapeVectorHeading"><div class="hush-kicker">Escape Vector</div><h3 id="escapeVectorHeading">Residual Source Linkage / Feature Movement</h3><div id="escapeVectorGrid" class="escape-vector-grid"></div></section>
+            <section id="controllerPanel" class="hush-lab-panel telemetry-panel" aria-labelledby="controllerHeading"><div class="hush-kicker">Controller</div><h3 id="controllerHeading">Controller waiting</h3><div id="controllerBody">Run analysis to surface steering instructions.</div></section>
+            <section id="personaMemoryPanel" class="hush-lab-panel telemetry-panel" aria-labelledby="personaMemoryHeading"><div class="hush-kicker">Mask Memory</div><h3 id="personaMemoryHeading">Mask field memory</h3><div id="personaMemoryBody" class="persona-memory-summary">No local mask memory loaded. The selected mask is acting as a reference surface only.</div></section>
+            <section id="recognitionFieldPanel" class="hush-lab-panel telemetry-panel hush-lab-wide" aria-labelledby="recognitionFieldHeading"><div class="hush-kicker">Recognition Field</div><h3 id="recognitionFieldHeading">Context Pressure</h3><div class="recognition-field-controls"><label class="hush-field-shell" for="recognitionContextType"><span class="hush-field-label">Context Type</span><select id="recognitionContextType"></select></label><label class="hush-field-shell" for="recognitionIntentMode"><span class="hush-field-label">Intended Mode</span><select id="recognitionIntentMode"><option value="neutralize">Neutralize</option><option value="stable-pseudonym">Stable pseudonym</option><option value="rotating-mask">Rotating mask</option><option value="hostile-pipeline-compression">Hostile Pipeline Compression</option></select></label><label class="hush-field-shell" for="recognitionExposureDuration"><span class="hush-field-label">Exposure Duration</span><select id="recognitionExposureDuration"><option value="single-use">Single use</option><option value="short-thread">Short thread</option><option value="recurring">Recurring</option><option value="long-running">Long-running</option></select></label></div><div id="recognitionFieldGrid" class="escape-vector-grid"></div><div id="recognitionFieldWarnings" class="persona-memory-summary"></div></section>
+            <section id="iterationPreviewPanel" class="hush-lab-panel telemetry-panel hush-lab-wide" aria-labelledby="iterationPreviewHeading"><div class="hush-kicker">Ledger</div><h3 id="iterationPreviewHeading">Current session rows</h3><div id="iterationPreviewBody"></div><div id="ledgerSummaryBody" class="persona-memory-summary"></div><div class="hush-action-row"><button id="exportLedgerJsonBtn" type="button" class="secondary">Export Flight Recorder JSON</button><button id="exportHushMaskProfileBtn" type="button" class="secondary">Export Mask Profile JSON</button><button id="exportHushSwapJsonBtn" type="button" class="secondary">Export Swap JSON</button><label class="bench-mini"><input id="includeLedgerTextsToggle" type="checkbox" /> Include private text in export</label></div><label class="hush-field-shell" for="ledgerExportOutput"><span class="hush-field-label">Flight Recorder JSON / Hush Exports</span><textarea id="ledgerExportOutput" class="ledger-export-output" readonly></textarea></label></section>
+            <section id="reportExportPanel" class="hush-lab-panel telemetry-panel hush-lab-wide" aria-labelledby="reportExportHeading"><div class="hush-kicker">Reports</div><h3 id="reportExportHeading">Local Stylometry Report</h3><div id="claimCeilingPanel"></div><div class="hush-action-row"><button id="exportReportJsonBtn" type="button" class="secondary">Export Report JSON</button><button id="exportReportMarkdownBtn" type="button" class="secondary">Export Report Markdown</button></div><label class="hush-field-shell" for="reportExportOutput"><span class="hush-field-label">Report Output</span><textarea id="reportExportOutput" class="report-export-output" readonly></textarea></label></section>
           </div>
         </div>
       </details>
@@ -261,5 +195,6 @@
   </div>
   <script src="./chamber-bootstrap.js"></script>
   <script type="module" src="./adversarial-bench.js"></script>
+  <script type="module" src="./hush-phase31-1.js"></script>
 </body>
 </html>
