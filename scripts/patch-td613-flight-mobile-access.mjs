@@ -15,6 +15,10 @@ if (switcherEnd !== -1 && !html.includes('mobileSwipeOverlay')) {
 const css = `
 /* === TD613 Flight mobile lane access override === */
 @media (max-width: 820px) {
+  html {
+    font-size: 14px !important;
+    -webkit-text-size-adjust: 100% !important;
+  }
   html, body {
     min-width: 0 !important;
     width: 100% !important;
@@ -272,6 +276,8 @@ if (!html.includes('touchstart') || !html.includes('touchmove') || !html.include
 if (!html.includes('translate3d(')) throw new Error('gallery drag transform missing');
 if (!html.includes('flight-dragging')) throw new Error('gallery dragging state missing');
 if (!html.includes('appendChild(overlay)')) throw new Error('overlay must be lifted to body');
+if (!html.includes('font-size: 14px !important')) throw new Error('mobile typography scale missing');
+if (!html.includes('-webkit-text-size-adjust: 100% !important')) throw new Error('mobile text-size adjustment guard missing');
 if (!html.includes('min-width: 0 !important')) throw new Error('desktop min-width override missing');
 if (!html.includes('body.flight-output-active .grid')) throw new Error('sliding lane CSS missing');
 if (!html.includes('pointer-events: none !important')) throw new Error('overlay must be non-interactive');
