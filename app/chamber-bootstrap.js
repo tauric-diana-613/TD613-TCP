@@ -12,6 +12,23 @@
     gatewayPhase32Style.id = 'td613-gateway-phase32-prune';
     gatewayPhase32Style.textContent = '#gatewayDoorDeck,#gatewayDoorHomebase{display:none!important}';
     document.head.appendChild(gatewayPhase32Style);
+    var installFlightDoor = function () {
+      if (document.getElementById('gatewayDoorFlight')) return;
+      var rail = document.querySelector('.gateway-grid');
+      var harbor = document.getElementById('gatewayDoorHarbor');
+      if (!rail) return;
+      var flight = document.createElement('a');
+      flight.id = 'gatewayDoorFlight';
+      flight.className = 'gateway-card gateway-card-external';
+      flight.href = './safe-harbor/td613-flight.html';
+      flight.target = '_blank';
+      flight.rel = 'noopener';
+      flight.innerHTML = '<div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x27D0;</span> Flight</div><h3>Seal cockpit</h3><p>Payload route. Prompt steering.</p>';
+      if (harbor && harbor.parentNode === rail) rail.insertBefore(flight, harbor);
+      else rail.appendChild(flight);
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installFlightDoor, { once: true });
+    else installFlightDoor();
   }
 
   if (pageKind === 'adversarial-bench') {
