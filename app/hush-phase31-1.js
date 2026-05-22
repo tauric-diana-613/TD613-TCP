@@ -8,20 +8,27 @@ const words = (value = '') => (String(value).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g)
 const slug = (value = 'custom-mask') => text(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'custom-mask';
 
 let dotTimer = null;
+let loaderArmed = false;
 let samples = [];
 let activeMask = null;
 
 function installLoading(doc = document) {
-  if (!doc.body || byId('td613HushLoading', doc)) return;
-  const overlay = doc.createElement('div');
-  overlay.id = 'td613HushLoading';
-  overlay.innerHTML = '<div class="td613-hush-loading-core"><div class="td613-hush-loading-mark">TD613 / Hush</div><div class="td613-hush-loading-text">TD613 Hush is loading<span id="td613HushLoadingDots" class="td613-hush-loading-dots">.</span></div></div>';
-  doc.body.prepend(overlay);
+  if (!doc.body || loaderArmed) return;
+  let overlay = byId('td613HushLoading', doc);
+  if (!overlay) {
+    overlay = doc.createElement('div');
+    overlay.id = 'td613HushLoading';
+    overlay.innerHTML = '<div class="td613-hush-loading-core"><div class="td613-hush-loading-mark">TD613 / Hush</div><div class="td613-hush-loading-text">TD613 Hush is loading<span id="td613HushLoadingDots" class="td613-hush-loading-dots">.</span></div></div>';
+    doc.body.prepend(overlay);
+  }
+  loaderArmed = true;
   const dots = byId('td613HushLoadingDots', doc);
   let n = 0;
+  if (dotTimer) clearInterval(dotTimer);
   dotTimer = setInterval(() => { if (dots) dots.textContent = ['.', '..', '...'][n++ % 3]; }, 360);
   const hide = () => window.setTimeout(() => { overlay.hidden = true; clearInterval(dotTimer); }, 450);
-  window.addEventListener('load', hide, { once: true });
+  if (document.readyState === 'complete') hide();
+  else window.addEventListener('load', hide, { once: true });
   window.setTimeout(hide, 3800);
 }
 
