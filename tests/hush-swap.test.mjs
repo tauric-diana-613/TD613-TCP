@@ -1,9 +1,12 @@
 import assert from 'assert';
+import fs from 'fs';
 import { getHushMask } from '../app/engine/hush-mask-studio.js';
 import { HUSH_SWAP_VERSION, buildHushSwap } from '../app/engine/hush-swap.js';
+import { buildHushSwap as buildPhase32HushSwap, HUSH_SWAP_PHASE32_VERSION } from '../app/engine/hush-swap-phase32.js';
 import { buildPhase23HushSwap } from '../app/engine/hush-phase23-swap.js';
 
 assert.equal(HUSH_SWAP_VERSION, 'phase-22');
+assert.equal(HUSH_SWAP_PHASE32_VERSION, 'phase-32-mask-surface-separation');
 
 const mask = getHushMask('plain-witness');
 const sourceText = 'The vendor called twice after lunch. I logged INV-440 at 2:18 and told Jordan not to resend the spreadsheet until we know which version finance kept.';
@@ -66,6 +69,34 @@ if (result.releasePolicy.mayPopulateOutput) {
 } else {
   assert.equal(result.selectedOutput, '');
 }
+
+const phase32 = buildPhase32HushSwap({
+  sourceText: 'Can we remove Homebase / Personas and Deck from the Gateway Threshold page now that Hush owns mask studio routing?',
+  mask,
+  maskProfile: mask.profile,
+  contextType: 'group-chat',
+  options: { candidateCount: 24 }
+});
+assert(phase32.version.includes('phase-32-mask-surface-separation'));
+assert(phase32.phase32Diagnostics, 'Phase 32 diagnostics missing');
+assert(phase32.phase32Diagnostics.candidateReport.length > 0, 'Phase 32 candidate report missing');
+assert(Number.isFinite(phase32.phase32Diagnostics.selectedMaskSurfaceScore), 'Phase 32 selected surface score missing');
+assert.notEqual(phase32.selectedOutput, 'TD613 remains the record anchor. “Homebase / Personas” remains attached to this record. “Deck” remains attached to this record. Hush remains attached to this record. Gateway remains attached to this record. Threshold remains attached to this record.');
+assert(!/TD613 remains the record anchor/i.test(phase32.selectedOutput), 'Phase 32 should not select record-anchor boilerplate for ordinary routing questions');
+
+const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
+const phase32Css = fs.readFileSync('app/hush-phase32.css', 'utf8');
+const phase32Ui = fs.readFileSync('app/hush-phase32.js', 'utf8');
+assert(bootstrap.includes('hush-phase32.css'));
+assert(bootstrap.includes('hush-phase32.js'));
+assert(bootstrap.includes('gatewayDoorDeck,#gatewayDoorHomebase'));
+assert(phase32Css.includes('#gatewayDoorDeck,#gatewayDoorHomebase'));
+assert(phase32Css.includes('hush-phase32-clear-input'));
+assert(phase32Css.includes('hush-phase32-compact-actions'));
+assert(phase32Ui.includes('clear input'));
+assert(phase32Ui.includes('runPhase32Transform'));
+assert(phase32Ui.includes('maskFieldSelect'));
+assert(phase32Ui.includes('td613HushLoadingDots'));
 
 const phase23Mask = getHushMask('phase22-jagged-record');
 const phase23 = buildPhase23HushSwap({
