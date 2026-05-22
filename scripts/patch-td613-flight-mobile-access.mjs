@@ -47,28 +47,37 @@ const css = `
     overflow: hidden !important;
   }
   .grid {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    height: auto !important;
-    overflow: visible !important;
-    scroll-snap-type: none !important;
-  }
-  .grid > div:first-child,
-  .grid > div:last-child {
+    display: flex !important;
+    align-items: flex-start !important;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
     height: auto !important;
     min-height: 0 !important;
     overflow: visible !important;
+    scroll-snap-type: none !important;
+    transform: translate3d(0,0,0) !important;
+    transition: transform .28s cubic-bezier(.2,.72,.18,1) !important;
+    will-change: transform !important;
+  }
+  body.flight-output-active .grid { transform: translate3d(-100%,0,0) !important; }
+  body.flight-dragging .grid { transition: none !important; }
+  .grid > div:first-child,
+  .grid > div:last-child {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
     padding: .16rem .44rem 3rem .58rem !important;
     scroll-snap-align: none !important;
   }
-  body:not(.flight-output-active) .flight-lane-output { display: none !important; }
-  body.flight-output-active .flight-lane-prompt { display: none !important; }
-  body.flight-output-active .flight-lane-output { display: block !important; }
+  body:not(.flight-output-active) .flight-lane-output,
+  body.flight-output-active .flight-lane-prompt { pointer-events: none !important; }
+  body.flight-output-active .flight-lane-output,
+  body:not(.flight-output-active) .flight-lane-prompt { pointer-events: auto !important; }
   .card,
   .output-card,
   .seal-card,
@@ -107,13 +116,13 @@ const css = `
     border-color: rgba(49,255,138,.90) !important;
     box-shadow: 0 0 44px rgba(49,255,138,.36), 0 0 18px rgba(137,255,240,.18), inset 0 1px 0 rgba(245,255,246,.18) !important;
   }
-  body:not(.flight-output-active) .mobile-lane-tab[data-flight-lane-target="output"] {
+  body:not(.flight-output-active):not(.flight-mobile-cue-expired) .mobile-lane-tab[data-flight-lane-target="output"] {
     animation: sealedOutputBlinkStrong .82s ease-in-out 5 both !important;
   }
   .mobile-swipe-overlay {
     position: fixed !important;
     inset: 0 !important;
-    z-index: 99999 !important;
+    z-index: 2147483647 !important;
     display: grid !important;
     place-content: center !important;
     gap: .62rem !important;
@@ -139,7 +148,8 @@ const css = `
     white-space: nowrap !important;
     animation: mobileSwipeOverlayText 1.05s ease-in-out 4 !important;
   }
-  body.flight-output-active .mobile-swipe-overlay { display: none !important; }
+  body.flight-output-active .mobile-swipe-overlay,
+  body.flight-mobile-cue-expired .mobile-swipe-overlay { display: none !important; }
   .mobile-prompt-rail { margin: .18rem 0 .44rem !important; padding: .28rem .44rem !important; min-height: 1.72rem !important; border-radius: 14px !important; }
   .output { min-height: 4.1rem !important; height: clamp(4.2rem, 14dvh, 5.6rem) !important; max-height: 16dvh !important; overflow-y: auto !important; }
 }
@@ -160,23 +170,48 @@ const js = `
   var touchStartX = 0;
   var touchStartY = 0;
   var touchStartTime = 0;
+  var dragActive = false;
+  var gridTransformWasSet = false;
+  function gridWidth() {
+    var grid = document.querySelector('.grid');
+    return grid ? grid.clientWidth : window.innerWidth;
+  }
+  function baseOffset() {
+    return document.body.classList.contains('flight-output-active') ? -gridWidth() : 0;
+  }
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
   function setLane(target) {
     var output = target === 'output';
+    var grid = document.querySelector('.grid');
+    if (grid) grid.style.transform = '';
+    document.body.classList.remove('flight-dragging');
     document.body.classList.toggle('flight-output-active', output);
     document.querySelectorAll('[data-flight-lane-target]').forEach(function (el) {
       var active = el.getAttribute('data-flight-lane-target') === target;
       el.classList.toggle('is-active', active);
       if (el.classList.contains('mobile-lane-tab')) el.setAttribute('aria-selected', active ? 'true' : 'false');
     });
-    var grid = document.querySelector('.grid');
     if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+  function expireCue() {
+    document.body.classList.add('flight-mobile-cue-expired');
+    var overlay = document.getElementById('mobileSwipeOverlay');
+    if (overlay) overlay.remove();
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    var overlay = document.getElementById('mobileSwipeOverlay');
+    if (overlay && overlay.parentElement !== document.body) document.body.appendChild(overlay);
+    window.setTimeout(expireCue, 4300);
+  });
   document.addEventListener('click', function (event) {
     var trigger = event.target.closest('[data-flight-lane-target]');
     if (!trigger) return;
     var target = trigger.getAttribute('data-flight-lane-target');
     if (target === 'prompt' || target === 'output') {
       event.preventDefault();
+      expireCue();
       setLane(target);
     }
   });
@@ -185,16 +220,37 @@ const js = `
     touchStartX = event.touches[0].clientX;
     touchStartY = event.touches[0].clientY;
     touchStartTime = Date.now();
+    dragActive = false;
+    gridTransformWasSet = false;
   }, { passive: true });
+  document.addEventListener('touchmove', function (event) {
+    var touch = event.touches && event.touches[0];
+    var grid = document.querySelector('.grid');
+    if (!touch || !grid) return;
+    var dx = touch.clientX - touchStartX;
+    var dy = touch.clientY - touchStartY;
+    if (Math.abs(dx) < 12 || Math.abs(dx) < Math.abs(dy) * 1.15) return;
+    dragActive = true;
+    expireCue();
+    document.body.classList.add('flight-dragging');
+    var width = gridWidth();
+    var next = clamp(baseOffset() + dx, -width, 0);
+    grid.style.transform = 'translate3d(' + next + 'px,0,0)';
+    gridTransformWasSet = true;
+    if (event.cancelable) event.preventDefault();
+  }, { passive: false });
   document.addEventListener('touchend', function (event) {
     var touch = event.changedTouches && event.changedTouches[0];
-    if (!touch) return;
+    var grid = document.querySelector('.grid');
+    if (!touch || !grid) return;
     var dx = touch.clientX - touchStartX;
     var dy = touch.clientY - touchStartY;
     var fastEnough = Date.now() - touchStartTime < 950;
-    if (!fastEnough || Math.abs(dx) < 54 || Math.abs(dx) < Math.abs(dy) * 1.35) return;
-    if (dx < 0) setLane('output');
-    if (dx > 0) setLane('prompt');
+    document.body.classList.remove('flight-dragging');
+    if (gridTransformWasSet) grid.style.transform = '';
+    if (!dragActive && (!fastEnough || Math.abs(dx) < 54 || Math.abs(dx) < Math.abs(dy) * 1.35)) return;
+    if (dx < -44) setLane('output');
+    else if (dx > 44) setLane('prompt');
   }, { passive: true });
   window.TD613FlightSetLane = setLane;
 })();
@@ -212,9 +268,12 @@ if (html.includes('mobile-swipe-cue')) throw new Error('capsule cue must not rem
 if (html.includes('Swipe right')) throw new Error('wrong swipe direction remains');
 if (!html.includes('Swipe left')) throw new Error('swipe-left overlay text missing');
 if (!html.includes('TD613FlightSetLane')) throw new Error('lane switch handler missing');
-if (!html.includes('touchstart') || !html.includes('touchend')) throw new Error('touch swipe handler missing');
+if (!html.includes('touchstart') || !html.includes('touchmove') || !html.includes('touchend')) throw new Error('touch swipe drag handler missing');
+if (!html.includes('translate3d(')) throw new Error('gallery drag transform missing');
+if (!html.includes('flight-dragging')) throw new Error('gallery dragging state missing');
+if (!html.includes('appendChild(overlay)')) throw new Error('overlay must be lifted to body');
 if (!html.includes('min-width: 0 !important')) throw new Error('desktop min-width override missing');
-if (!html.includes('body:not(.flight-output-active) .flight-lane-output')) throw new Error('mobile lane toggle CSS missing');
+if (!html.includes('body.flight-output-active .grid')) throw new Error('sliding lane CSS missing');
 if (!html.includes('pointer-events: none !important')) throw new Error('overlay must be non-interactive');
 if (!html.includes('mobileSwipeOverlayExit')) throw new Error('finite overlay exit animation missing');
 if (!html.includes('sealedOutputBlinkStrong .82s ease-in-out 5')) throw new Error('finite bright output blink missing');
