@@ -4,6 +4,7 @@ import { getHushMask } from '../app/engine/hush-mask-studio.js';
 import { HUSH_SWAP_VERSION, buildHushSwap } from '../app/engine/hush-swap.js';
 import { buildHushSwap as buildPhase32HushSwap, HUSH_SWAP_PHASE32_VERSION } from '../app/engine/hush-swap-phase32.js';
 import { buildPhase23HushSwap } from '../app/engine/hush-phase23-swap.js';
+import { PHASE32_1_DIAGNOSTIC_SAMPLE, runPhase321Diagnostics } from '../scripts/run-hush-phase32-1-mask-diagnostics.mjs';
 
 assert.equal(HUSH_SWAP_VERSION, 'phase-22');
 assert.equal(HUSH_SWAP_PHASE32_VERSION, 'phase-32-mask-surface-separation');
@@ -87,6 +88,7 @@ assert(!/TD613 remains the record anchor/i.test(phase32.selectedOutput), 'Phase 
 const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
 const phase32Css = fs.readFileSync('app/hush-phase32.css', 'utf8');
 const phase32Ui = fs.readFileSync('app/hush-phase32.js', 'utf8');
+const hushHtml = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 assert(bootstrap.includes('hush-phase32.css'));
 assert(bootstrap.includes('hush-phase32.js'));
 assert(bootstrap.includes('gatewayDoorDeck,#gatewayDoorHomebase'));
@@ -94,13 +96,28 @@ assert(bootstrap.includes('gatewayDoorFlight'));
 assert(bootstrap.includes('./safe-harbor/td613-flight.html'));
 assert(bootstrap.includes('Seal cockpit'));
 assert(bootstrap.includes('Payload route. Prompt steering.'));
+assert(hushHtml.includes('td613HushLoadingDots" class="td613-hush-loading-dots">...</span>'));
 assert(phase32Css.includes('#gatewayDoorDeck,#gatewayDoorHomebase'));
 assert(phase32Css.includes('hush-phase32-clear-input'));
 assert(phase32Css.includes('hush-phase32-compact-actions'));
+assert(phase32Css.includes('TD613 Hush Phase 32.1'));
+assert(phase32Css.includes('hush-gate-strip'));
+assert(phase32Css.includes('hush-mask-card'));
+assert(phase32Css.includes('#protectedOutputHeading'));
 assert(phase32Ui.includes('clear input'));
 assert(phase32Ui.includes('runPhase32Transform'));
 assert(phase32Ui.includes('maskFieldSelect'));
 assert(phase32Ui.includes('td613HushLoadingDots'));
+
+const diagnostic = runPhase321Diagnostics();
+assert(diagnostic.summary.maskCount > 5, 'Phase 32.1 diagnostics should test the full mask set');
+assert.equal(diagnostic.summary.sampleChars, PHASE32_1_DIAGNOSTIC_SAMPLE.length);
+assert(diagnostic.rows.every((row) => row.maskId && row.label), 'diagnostic rows need mask identity');
+assert(diagnostic.rows.some((row) => row.outputPreview), 'at least one mask should produce diagnostic output');
+assert(diagnostic.summary.phase33Findings.length > 0, 'diagnostics must emit Phase 33 findings');
+assert(Object.prototype.hasOwnProperty.call(diagnostic.summary, 'fallbackSelectedCount'));
+assert(Object.prototype.hasOwnProperty.call(diagnostic.summary, 'highBoilerplateCount'));
+assert(Object.prototype.hasOwnProperty.call(diagnostic.summary, 'lowSurfaceCount'));
 
 const phase23Mask = getHushMask('phase22-jagged-record');
 const phase23 = buildPhase23HushSwap({
