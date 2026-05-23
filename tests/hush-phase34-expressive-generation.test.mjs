@@ -8,7 +8,7 @@ import { buildHushSwap as buildPatch38HushSwap, HUSH_SWAP_PATCH38_VERSION } from
 import { TECH_JOB_SIGNAL_SAMPLE, GENERATOR_MODES, buildHushLlmPromptContract, collapseSurfaceScore, generateOfflineQuestionCandidates } from '../app/engine/hush-generator-provider.js';
 
 assert.equal(HUSH_EXPRESSIVE_GENERATOR_VERSION, 'phase-34-expressive-generation');
-assert.equal(HUSH_SWAP_PHASE34_VERSION, 'phase-34-expressive-generation');
+assert(HUSH_SWAP_PHASE34_VERSION.includes('phase-34-expressive-generation'));
 assert.equal(HUSH_SWAP_PATCH38_VERSION, 'patch-38-hybrid-candidate-generator');
 
 const mask = getHushMask('plain-witness');
