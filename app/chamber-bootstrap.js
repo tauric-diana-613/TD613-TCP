@@ -103,6 +103,10 @@
     phase32Boot.type = 'module';
     phase32Boot.src = './hush-phase32.js?v=' + (V.hushPhase32 || V.main || '');
     document.head.appendChild(phase32Boot);
+    var patch38Boot = document.createElement('script');
+    patch38Boot.type = 'module';
+    patch38Boot.src = './hush-patch38.js?v=' + (V.hushPatch38 || V.hushPhase32 || V.main || '');
+    document.head.appendChild(patch38Boot);
   }
 
   var srcs = [
