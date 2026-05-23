@@ -1,6 +1,8 @@
 import * as bench from './adversarial-bench.mjs';
 import { buildHushSwap, HUSH_SWAP_PATCH38_VERSION } from './engine/hush-swap-patch38.js';
-import { buildHushLlmPromptContract, GENERATOR_MODES, normalizeRemoteProviderResponse } from './engine/hush-generator-provider.js';
+import { GENERATOR_MODES, normalizeRemoteProviderResponse } from './engine/hush-generator-provider.js';
+import { buildHushLlmPromptContractV2, buildPhase35ProviderTelemetry } from './engine/hush-generator-provider-phase35.js';
+import { auditPropositionIntegrity } from './engine/hush-proposition-integrity.js';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
@@ -27,7 +29,7 @@ function installGeneratorMode(doc = document) {
 }
 
 async function fetchRemoteReport(input = {}) {
-  const contract = buildHushLlmPromptContract(input);
+  const contract = buildHushLlmPromptContractV2(input);
   try {
     const response = await fetch('/api/hush-generate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contract }) });
     if (!response.ok) return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: [`remote-provider-http-${response.status}`], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion } };
@@ -41,8 +43,12 @@ function renderDiagnostics(result = {}, doc = document) {
   const target = $('hushPhase32Diagnostics', doc);
   if (!target) return;
   const p = result.patch38Diagnostics || {};
+  const phase35 = result.phase35Telemetry || {};
+  const prop = result.propositionIntegrity || {};
+  const route = phase35.ontologyRoute || {};
+  const summary = route.propositionSummary || {};
   const rows = Array.isArray(p.selectorRows) ? p.selectorRows.slice(0, 5) : [];
-  target.innerHTML = `<strong>Patch 38 hybrid candidate generator</strong><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Selected: <code>${esc(p.selectedCandidateId || 'none')}</code></span><span>Provider: <code>${esc(String(Boolean(p.selectedProviderCandidate)))}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Score: <code>${esc(p.selectedScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || 'none')}</code></span></div>${rows.length ? `<details><summary>Patch 38 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.strategy || '')} · score ${esc(row.score)} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
+  target.innerHTML = `<strong>Phase 35 ontology-routed generator</strong><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Route: <code>${esc(route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.sourceType || 'n/a')}</code></span><span>Propositions: <code>${esc(summary.propositionCount ?? '0')}</code></span><span>Questions: <code>${esc(summary.questionCount ?? '0')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 35 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.strategy || '')} · score ${esc(row.score)} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
 }
 
 async function runPatch38Transform(doc = document) {
@@ -51,8 +57,9 @@ async function runPatch38Transform(doc = document) {
   if (!text(sourceText)) return null;
   const mask = selectedMask(state);
   const mode = $('hushGeneratorMode', doc)?.value || GENERATOR_MODES.OFFLINE_EXPRESSIVE;
+  const phase35Telemetry = buildPhase35ProviderTelemetry({ sourceText, mask });
   const providerReports = [];
-  if (mode === GENERATOR_MODES.HYBRID || mode === GENERATOR_MODES.REMOTE_LLM_PROXY) providerReports.push(await fetchRemoteReport({ sourceText, mask, candidateCount: 6 }));
+  if (mode === GENERATOR_MODES.HYBRID || mode === GENERATOR_MODES.REMOTE_LLM_PROXY) providerReports.push(await fetchRemoteReport({ sourceText, mask, candidateCount: 6, propositionMap: phase35Telemetry.propositionMap }));
   const result = buildHushSwap({
     sourceText,
     protectedBaselineText: $('protectedBaselineInput', doc)?.value || '',
@@ -67,6 +74,8 @@ async function runPatch38Transform(doc = document) {
     exposureDuration: state.recognitionExposureDuration || 'single-use',
     options: { candidateCount: 30, includePrivateText: false }
   });
+  result.phase35Telemetry = phase35Telemetry;
+  result.propositionIntegrity = auditPropositionIntegrity(sourceText, result.selectedOutput || '');
   state.hushSwapResult = result;
   state.protectedOutputText = result.selectedOutput || '';
   const output = $('protectedOutputInput', doc);
@@ -78,13 +87,14 @@ async function runPatch38Transform(doc = document) {
 export function initHushPatch38(doc = document) {
   if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench') return { installed: false, version: HUSH_SWAP_PATCH38_VERSION };
   doc.body.dataset.hushPatch38 = 'true';
+  doc.body.dataset.hushPhase35 = 'true';
   installGeneratorMode(doc);
   const button = $('generateMaskedOutputBtn', doc);
   if (button && button.dataset.patch38 !== 'true') {
     button.dataset.patch38 = 'true';
     button.addEventListener('click', (event) => { event.preventDefault(); event.stopImmediatePropagation(); runPatch38Transform(doc); }, true);
   }
-  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, runPatch38Transform };
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase35: true, runPatch38Transform };
   return { installed: true, version: HUSH_SWAP_PATCH38_VERSION };
 }
 
