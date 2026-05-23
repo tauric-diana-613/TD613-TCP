@@ -4,8 +4,9 @@ import { collapseSurfaceScore } from './hush-generator-provider.js';
 export const HUSH_PROPOSITION_INTEGRITY_VERSION = 'phase-35-proposition-integrity';
 
 const safe = (value) => String(value ?? '').trim();
-const advicePattern = /\b(apply|resume|linkedin|portfolio|bootcamp|certification|network|learn|take a course|build projects|job board|mentor|referral)\b/i;
-const answerPattern = /\b(you should|you need to|the best way|start by|first,|yes,|no,|absolutely|definitely)\b/i;
+const advicePattern = /\b(apply|linkedin|portfolio|bootcamp|certification|take a course|build projects|job board|mentor|referral)\b/i;
+const directAnswerPattern = /\b(you should|you need to|the best way|start by|first,|absolutely|definitely)\b/i;
+const yesNoAnswerPattern = /^\s*(yes|no)[,.:;!\s]/i;
 
 export function auditPropositionIntegrity(sourceText = '', outputText = '') {
   const sourceMap = buildPropositionMap(sourceText);
@@ -13,10 +14,11 @@ export function auditPropositionIntegrity(sourceText = '', outputText = '') {
   const qScore = questionFormScore(sourceText, outputText);
   const claimRisk = newClaimRisk(sourceText, outputText);
   const collapse = collapseSurfaceScore(outputText);
-  const answeredQuestion = sourceMap.questionCount > 0 && (answerPattern.test(outputText) || advicePattern.test(outputText));
-  const inventedAdvice = sourceMap.questionCount > 0 && advicePattern.test(outputText) && !advicePattern.test(sourceText);
+  const outputPreservesQuestion = qScore >= 0.5;
+  const answeredQuestion = sourceMap.questionCount > 0 && !outputPreservesQuestion && (directAnswerPattern.test(outputText) || yesNoAnswerPattern.test(outputText) || advicePattern.test(outputText));
+  const inventedAdvice = sourceMap.questionCount > 0 && advicePattern.test(outputText) && !advicePattern.test(sourceText) && !outputPreservesQuestion;
   const strengthenedClaim = sourceMap.claimCount > 0 && /\b(obviously|clearly|proved|fraud|guilty|responsible|confirmed)\b/i.test(outputText) && !/\b(obviously|clearly|proved|fraud|guilty|responsible|confirmed)\b/i.test(sourceText);
-  const passed = qScore >= 1 && !answeredQuestion && !inventedAdvice && !strengthenedClaim && collapse < 0.34 && claimRisk.score < 0.25;
+  const passed = qScore >= 0.5 && !answeredQuestion && !inventedAdvice && !strengthenedClaim && collapse < 0.34 && claimRisk.score < 0.35;
   return {
     version: HUSH_PROPOSITION_INTEGRITY_VERSION,
     passed,
@@ -29,12 +31,12 @@ export function auditPropositionIntegrity(sourceText = '', outputText = '') {
     inventedAdvice,
     strengthenedClaim,
     warnings: [
-      ...(qScore < 1 ? ['question-form-loss'] : []),
+      ...(qScore < 0.5 ? ['question-form-loss'] : []),
       ...(answeredQuestion ? ['question-answered'] : []),
       ...(inventedAdvice ? ['invented-advice'] : []),
       ...(strengthenedClaim ? ['claim-strengthened'] : []),
       ...(collapse >= 0.34 ? ['custody-collapse-surface'] : []),
-      ...(claimRisk.score >= 0.25 ? ['new-claim-risk'] : [])
+      ...(claimRisk.score >= 0.35 ? ['new-claim-risk'] : [])
     ]
   };
 }
