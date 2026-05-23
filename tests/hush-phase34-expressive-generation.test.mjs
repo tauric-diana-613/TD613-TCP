@@ -6,6 +6,10 @@ import { generateExpressiveCandidates, buildExpressivePayloadMap, HUSH_EXPRESSIV
 import { buildHushSwap, HUSH_SWAP_PHASE34_VERSION } from '../app/engine/hush-swap-phase34.js';
 import { buildHushSwap as buildPatch38HushSwap, HUSH_SWAP_PATCH38_VERSION } from '../app/engine/hush-swap-patch38.js';
 import { TECH_JOB_SIGNAL_SAMPLE, GENERATOR_MODES, buildHushLlmPromptContract, collapseSurfaceScore, generateOfflineQuestionCandidates } from '../app/engine/hush-generator-provider.js';
+import { buildPropositionMap, questionFormScore, newClaimRisk } from '../app/engine/hush-proposition-map.js';
+import { buildOntologyRoute, compileRemoteRoutePayload } from '../app/engine/hush-ontology-route.js';
+import { buildHushLlmPromptContractV2, buildPhase35ProviderTelemetry } from '../app/engine/hush-generator-provider-phase35.js';
+import { auditPropositionIntegrity } from '../app/engine/hush-proposition-integrity.js';
 
 assert.equal(HUSH_EXPRESSIVE_GENERATOR_VERSION, 'phase-34-expressive-generation');
 assert(HUSH_SWAP_PHASE34_VERSION.includes('phase-34-expressive-generation'));
@@ -67,16 +71,59 @@ assert(contract.rules.some((rule) => /Do not answer questions/i.test(rule)));
 assert(contract.mask.maskId === mask.id);
 assert(!Object.prototype.hasOwnProperty.call(contract, 'apiKey'));
 
+const propMap = buildPropositionMap(TECH_JOB_SIGNAL_SAMPLE);
+assert.equal(propMap.questionCount, 2);
+assert.equal(propMap.routeHint, 'question-preservation');
+assert(propMap.propositions.every((p) => p.mustRemainQuestion));
+assert(propMap.forbiddenChanges.includes('do not answer the questions'));
+
+const route = buildOntologyRoute({ sourceText: TECH_JOB_SIGNAL_SAMPLE, mask, propositionMap: propMap });
+assert(route.routeType === 'question-legibility' || route.routeType === 'everyday-question');
+assert.equal(route.sourceType, 'short-question');
+assert(route.ontologyHints.allowedMoves.includes('preserve questions as questions'));
+assert(route.ontologyHints.forbiddenMoves.includes('Just keeping this organized'));
+const compactRoute = compileRemoteRoutePayload(route);
+assert.equal(compactRoute.propositionSummary.questionCount, 2);
+assert(!Object.prototype.hasOwnProperty.call(compactRoute, 'fullOntology'));
+
+const contractV2 = buildHushLlmPromptContractV2({ sourceText: TECH_JOB_SIGNAL_SAMPLE, mask, candidateCount: 6 });
+assert.equal(contractV2.promptVersion, 'hush-llm-candidate-v2');
+assert.equal(contractV2.propositionMap.questionCount, 2);
+assert(contractV2.ontologyRoute.routeType === 'question-legibility' || contractV2.ontologyRoute.routeType === 'everyday-question');
+assert(contractV2.rules.includes('Preserve questions as questions.'));
+assert(!Object.prototype.hasOwnProperty.call(contractV2, 'apiKey'));
+assert(!Object.prototype.hasOwnProperty.call(contractV2, 'ledger'));
+
+const telemetry = buildPhase35ProviderTelemetry({ sourceText: TECH_JOB_SIGNAL_SAMPLE, mask });
+assert.equal(telemetry.remotePayloadIsCompact, true);
+assert.equal(telemetry.sendsLedger, false);
+assert.equal(telemetry.sendsMaskMemory, false);
+assert.equal(telemetry.sendsFullOntology, false);
+
+const integrity = auditPropositionIntegrity(TECH_JOB_SIGNAL_SAMPLE, patch38.selectedOutput);
+assert(integrity.questionFormScore >= 0.5);
+assert.equal(integrity.answeredQuestion, false);
+assert.equal(integrity.inventedAdvice, false);
+assert(integrity.collapseSurfaceScore < 0.34);
+assert(questionFormScore(TECH_JOB_SIGNAL_SAMPLE, patch38.selectedOutput) >= 0.5);
+assert(newClaimRisk(TECH_JOB_SIGNAL_SAMPLE, patch38.selectedOutput).score < 0.35);
+
 const ui = fs.readFileSync('app/hush-phase32.js', 'utf8');
 const patch38Ui = fs.readFileSync('app/hush-patch38.js', 'utf8');
 const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
 const proxy = fs.readFileSync('api/hush-generate.js', 'utf8');
+const envExample = fs.readFileSync('.env.example', 'utf8');
+const setupDoc = fs.readFileSync('docs/hush-remote-provider-setup.md', 'utf8');
 assert(ui.includes('hush-swap-phase34.js'));
 assert(ui.includes('Phase 34 expressive generator'));
 assert(bootstrap.includes('hush-patch38.js'));
 assert(patch38Ui.includes('hush-swap-patch38.js'));
 assert(patch38Ui.includes('/api/hush-generate'));
 assert(patch38Ui.includes('Generator Mode'));
+assert(patch38Ui.includes('buildHushLlmPromptContractV2'));
+assert(patch38Ui.includes('Phase 35 ontology-routed generator'));
 assert(proxy.includes('process.env.GEMINI_API_KEY'));
 assert(!patch38Ui.includes('GEMINI_API_KEY'));
-console.log('hush-phase34-expressive-generation and patch38 provider tests passed');
+assert(envExample.includes('GEMINI_API_KEY='));
+assert(setupDoc.includes('Do not paste API keys into the browser'));
+console.log('hush-phase34, patch38, and phase35 ontology generation tests passed');
