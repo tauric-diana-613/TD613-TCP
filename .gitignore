@@ -3,6 +3,7 @@ node_modules/
 .vscode/
 coverage/
 *.log
+.env
 reports/diagnostics/.staging/
 
 # Crash dumps and edge profiles
