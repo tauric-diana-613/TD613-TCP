@@ -153,7 +153,16 @@ export function normalizeRemoteProviderResponse(payload = {}, contract = {}) {
     provider: GENERATOR_MODES.REMOTE_LLM_PROXY,
     model: payload.model || 'remote-llm-proxy',
     version: HUSH_GENERATOR_PROVIDER_VERSION,
-    candidates: rawCandidates.map((item, index) => candidate(`remote-llm-candidate-${index + 1}`, safe(item.text), slug(item.style_note || 'remote-mask-transform'))).filter((item) => item.text),
+    candidates: rawCandidates.map((item, index) => ({
+      ...candidate(`remote-llm-candidate-${index + 1}`, safe(item.text), slug(item.style_note || 'remote-mask-transform')),
+      source: 'remote-llm-candidate',
+      provider: payload.provider || GENERATOR_MODES.REMOTE_LLM_PROXY,
+      model: payload.model || 'remote-llm-proxy',
+      warnings: asArray(item.risk_flags),
+      operations: ['patch38-generator-provider', 'remote-llm-proxy', slug(item.style_note || 'remote-mask-transform')],
+      scoreBreakdown: { naturalness: 0.78, semanticFidelity: 0.8, remoteProviderCandidate: 1 },
+      finalScore: 0.8
+    })).filter((item) => item.text),
     warnings: asArray(payload.warnings),
     requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion }
   };
