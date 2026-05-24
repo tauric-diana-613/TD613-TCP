@@ -30,6 +30,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: node scripts/patch-td613-flight-mobile.mjs
       - run: node scripts/patch-td613-flight-mobile-pr80.mjs
+      - run: node scripts/patch-td613-flight-mobile-pr81.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
