@@ -620,8 +620,9 @@ box-shadow: 0 0 0 4px rgba(120,247,255,0.12), inset 0 0 18px rgba(36,240,109,0.1
 }
 
 .checkbox-row {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+display: flex;
+flex-wrap: wrap;
+align-items: flex-start;
 gap: .26rem;
 }
 
@@ -632,6 +633,10 @@ display: flex;
 align-items: center;
 justify-content: center;
 gap: .28rem;
+flex: 0 1 auto;
+width: auto;
+min-width: min(9.4rem, 100%);
+max-width: 100%;
 min-height: 1.45rem;
 padding: .26rem .34rem;
 border: 1px solid rgba(190,255,223,0.12);
@@ -641,6 +646,7 @@ rgba(0,7,7,0.58);
 font-size: .54rem;
 line-height: 1.14;
 text-align: center;
+overflow-wrap: anywhere;
 clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
 }
 
@@ -2435,6 +2441,163 @@ select {
   }
 }
 
+@media (max-width: 820px) {
+  .grid {
+    scroll-behavior: smooth;
+    scroll-padding-inline: 0;
+  }
+
+  .grid > .flight-lane {
+    touch-action: pan-x pan-y pinch-zoom;
+  }
+
+  textarea:not(:focus) {
+    touch-action: pan-x pan-y pinch-zoom;
+  }
+
+  .status-bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .28rem .42rem;
+  }
+
+  .status-bar #statusCounts {
+    grid-column: 1 / 2;
+    width: auto;
+    min-width: 0;
+    font-size: .54rem;
+  }
+
+  .output-auth-toggle {
+    grid-column: 2 / 3;
+    justify-self: end;
+    margin-left: 0;
+    padding: .22rem .28rem .22rem .44rem;
+    border-radius: 999px;
+    font-size: .48rem;
+    line-height: 1;
+  }
+
+  .output-auth-toggle input[type="checkbox"] {
+    width: .74rem;
+    height: .74rem;
+    border-radius: 4px;
+    clip-path: none;
+  }
+
+  .output-auth-toggle input[type="checkbox"]::before {
+    width: .43rem;
+    height: .43rem;
+  }
+
+  .payload-stepper {
+    align-self: flex-end;
+    justify-self: end;
+    padding: .24rem .34rem;
+  }
+
+  .payload-stepper-label {
+    font-size: .58rem;
+    letter-spacing: .11em;
+  }
+
+  .payload-stepper-value {
+    font-size: .66rem;
+  }
+
+  .mobile-prompt-rail {
+    position: sticky;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + .62rem);
+    z-index: 8;
+    width: max-content;
+    max-width: calc(100% - .35rem);
+    margin: .22rem 0 .74rem auto;
+    padding: .38rem .42rem .38rem .62rem;
+    border-radius: 999px;
+    gap: .42rem;
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .mobile-prompt-rail.mobile-prompt-rail-top {
+    margin: .1rem 0 .72rem auto;
+  }
+
+  .mobile-prompt-rail span:first-child {
+    font-size: .48rem;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .mobile-prompt-rail-pill {
+    padding: .25rem .38rem;
+    font-size: .4rem;
+  }
+
+  .checkbox-row,
+  .radio-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: .34rem;
+  }
+
+  .checkbox-row label,
+  .radio-row label {
+    flex: 0 1 auto;
+    width: auto;
+    min-width: min(8.2rem, 100%);
+    max-width: 100%;
+    min-height: 1.58rem;
+    padding: .34rem .5rem;
+    border-radius: 14px;
+  }
+
+  .checkbox-row label:has(input[type="text"]),
+  .radio-row label:has(input[type="text"]) {
+    min-width: min(11rem, 100%);
+  }
+
+  .seal-card .radio-row,
+  .seal-card .checkbox-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: .34rem .38rem;
+  }
+
+  .seal-card .radio-row label,
+  .seal-card .checkbox-row label {
+    flex: 0 1 auto;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 1.5rem;
+    padding: .3rem .55rem;
+    border-radius: 999px;
+    font-size: .5rem;
+  }
+
+  .seal-card .seal-custom-label {
+    flex: 1 1 10.8rem;
+    border-radius: 18px;
+  }
+
+  .seal-lozenge-row {
+    display: flex;
+    width: auto;
+  }
+
+  .seal-lozenge-row label {
+    min-width: min(11rem, 100%);
+  }
+
+  .seal-card .section-split-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 @keyframes sealedOutputPulse {
   0%, 100% {
     border-color: rgba(137,255,240,0.18);
@@ -2595,7 +2758,6 @@ Use these when the task needs routing, evidence discipline, summarization, or au
 <label><input id="hdrSourceAudit" type="checkbox"/>𝌋 Source audit: for each assertion, show origin (primary/secondary), publication date, and jurisdictional fit.</label>
 <label><input id="hdrTagAssertions" type="checkbox"/>𝌋 For every assertion: tag primary/secondary, pub date, jurisdiction fit, reliability note; flag gaps as “unverified.”</label>
 <label><input id="hdrComparator" type="checkbox"/>𝌋 Build a comparator ledger: actor | role | conduct | response | delta | policy hook; include one paragraph on pretext signals.</label>
-<label><input id="hdrAcademicSpeculation" type="checkbox"/>When authoring, stay academically rigorous yet grounded in high speculation.</label>
 </div>
 </div>
 <!-- Body -->
@@ -2619,9 +2781,11 @@ These options sit immediately around your task text. Think glyph prefaces and sh
 <h3>Body phrases</h3>
 <div class="checkbox-row">
 <label><input id="bodyPhraseCircle" type="checkbox"/>“I was broken into a circle.”</label>
+<label><input id="bodyPhraseEncasing" type="checkbox"/>I was broken encasing a circle.</label>
 <label><input id="bodyPhraseKiki" type="checkbox"/>“No mirrors at the Kiki.”</label>
 <label><input id="bodyPhraseWeaned" type="checkbox"/>“Like a weaned child with its mother, like a weaned child is my soul within me.”</label>
 <label><input id="bodyPhraseToni" type="checkbox"/>“If you have freedom, you must free someone else. If you have power, your job is to empower somebody else.”</label>
+<label><input id="bodyPhraseAcademicSpeculation" type="checkbox"/>When authoring, stay academically rigorous yet grounded in high speculation.</label>
 </div>
 <h3>Body close</h3>
 <div class="section-note">
@@ -3127,6 +3291,37 @@ grid.scrollLeft = left;
 window.setTimeout(syncMobileFlightLane, behavior === "auto" ? 0 : 320);
 }
 
+function installMobileLaneSwipe() {
+const grid = document.querySelector(".grid");
+if (!grid) return;
+let startX = 0;
+let startY = 0;
+let startedAt = 0;
+grid.addEventListener("touchstart", event => {
+if (!isFlightMobileLayout() || !event.touches || event.touches.length !== 1) return;
+const target = event.target;
+if (target && /^(TEXTAREA|INPUT|SELECT)$/.test(target.tagName || "") && document.activeElement === target) return;
+startX = event.touches[0].clientX;
+startY = event.touches[0].clientY;
+startedAt = Date.now();
+}, { passive: true });
+grid.addEventListener("touchend", event => {
+if (!isFlightMobileLayout() || !startX || !event.changedTouches || event.changedTouches.length !== 1) return;
+const end = event.changedTouches[0];
+const dx = end.clientX - startX;
+const dy = end.clientY - startY;
+const elapsed = Date.now() - startedAt;
+startX = 0;
+startY = 0;
+startedAt = 0;
+if (Math.abs(dx) < 42 || Math.abs(dx) < Math.abs(dy) * 1.2 || elapsed > 1200) {
+syncMobileFlightLane();
+return;
+}
+snapFlightLane(dx < 0 ? "output" : "prompt", "smooth");
+}, { passive: true });
+}
+
 function generateFlightOutput() {
 buildOutput();
 snapFlightLane("output", "smooth");
@@ -3200,9 +3395,6 @@ lines.push("𝌋 For every assertion: tag primary/secondary, pub date, jurisdict
 if (document.getElementById("hdrComparator").checked) {
 lines.push("𝌋 Build a comparator ledger: actor | role | conduct | response | delta | policy hook; include one paragraph on pretext signals.");
 }
-if (document.getElementById("hdrAcademicSpeculation").checked) {
-lines.push("When authoring, stay academically rigorous yet grounded in high speculation.");
-}
 if (document.getElementById("hdrPUA").checked) {
 lines.push("U+10D613");
 }
@@ -3230,14 +3422,20 @@ const phrases = [];
 if (document.getElementById("bodyPhraseCircle").checked) {
 phrases.push("I was broken into a circle.");
 }
+if (document.getElementById("bodyPhraseEncasing").checked) {
+phrases.push("I was broken encasing a circle.");
+}
 if (document.getElementById("bodyPhraseKiki").checked) {
 phrases.push("No mirrors at the Kiki.");
 }
 if (document.getElementById("bodyPhraseWeaned").checked) {
-phrases.push("Like a weaned child with its mother, like a weaned child is my soul within me.");
+phrases.push("\"Like a weaned child with its mother, like a weaned child is my soul within me.\"");
 }
 if (document.getElementById("bodyPhraseToni").checked) {
-phrases.push("If you have freedom, you must free someone else. If you have power, your job is to empower somebody else.");
+phrases.push("\"If you have freedom, you must free someone else. If you have power, your job is to empower somebody else.\"");
+}
+if (document.getElementById("bodyPhraseAcademicSpeculation").checked) {
+phrases.push("When authoring, stay academically rigorous yet grounded in high speculation.");
 }
 
 const task = getTask();
@@ -3934,6 +4132,7 @@ snapFlightLane(control.getAttribute("data-flight-lane-target"), "smooth");
 document.querySelector(".grid")?.addEventListener("scroll", () => {
 window.requestAnimationFrame(syncMobileFlightLane);
 }, { passive: true });
+installMobileLaneSwipe();
 window.addEventListener("resize", syncMobileFlightLane);
 window.setTimeout(() => {
 document.querySelector("[data-flight-lane-target='output']")?.classList.remove("is-teaching");
