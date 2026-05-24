@@ -7,6 +7,7 @@ const sentinel = 'PR80_SENTINEL TD613 Flight PR80 mobile chrome restoration';
 html = html.replace(/\n\/\* PR80_SENTINEL TD613 Flight PR80 mobile chrome restoration \*\/[\s\S]*?(?=\n<\/style>)/m, '');
 html = html.replace(/\n\/\* === TD613 Flight PR80 mobile chrome restoration === \*\/[\s\S]*?(?=\n<\/style>)/m, '');
 html = html.replace(/\n?<script id="td613-flight-pr80-mobile-header-collapse-script">[\s\S]*?<\/script>/g, '');
+html = html.replace(/\n?<script id="td613-flight-pr80-swipe-cue-script">[\s\S]*?<\/script>/g, '');
 
 const css = `
 /* PR80_SENTINEL TD613 Flight PR80 mobile chrome restoration */
@@ -164,40 +165,10 @@ const css = `
     top: auto !important;
     z-index: 20 !important;
     overflow: visible !important;
-    margin-bottom: 14px !important;
+    margin-bottom: 8px !important;
   }
 
-  html body .mobile-flight-switcher::after {
-    content: "← ← SWIPE";
-    position: absolute;
-    left: 50%;
-    bottom: -12px;
-    transform: translateX(-50%);
-    color: rgba(49,255,138,.78);
-    font-size: 7px;
-    line-height: 1;
-    letter-spacing: .22em;
-    text-shadow: 0 0 8px rgba(49,255,138,.45);
-    pointer-events: none;
-    animation: td613SwipeCue 1.05s ease-in-out infinite;
-    white-space: nowrap;
-  }
-
-  html[data-flight-mobile-lane="output"] body .mobile-flight-switcher::after,
-  body.flight-output-active .mobile-flight-switcher::after {
-    content: "SWIPE → →";
-    animation-name: td613SwipeCueBack;
-  }
-
-  @keyframes td613SwipeCue {
-    0%, 100% { opacity: .24; transform: translateX(-44%) translateY(0); }
-    50% { opacity: 1; transform: translateX(-56%) translateY(0); }
-  }
-
-  @keyframes td613SwipeCueBack {
-    0%, 100% { opacity: .24; transform: translateX(-56%) translateY(0); }
-    50% { opacity: 1; transform: translateX(-44%) translateY(0); }
-  }
+  html body .mobile-flight-switcher::after { content: none !important; }
 
   html body .grid > .flight-lane {
     transition: transform .34s cubic-bezier(.18,.82,.16,1) !important;
@@ -288,6 +259,17 @@ const css = `
     text-align: left !important;
   }
 
+  html body .flight-lane-prompt .checkbox-row > label,
+  html body .flight-lane-prompt .radio-row > label {
+    max-width: calc(50% - 5px) !important;
+  }
+
+  html body .flight-lane-output .checkbox-row > label,
+  html body .flight-lane-output .radio-row > label,
+  html body .flight-lane-output .copy-chip {
+    max-width: 100% !important;
+  }
+
   html body .flight-lane #btnGenerate,
   html body .flight-lane #btnRandomizer,
   html body .flight-lane #btnResetControls,
@@ -352,19 +334,64 @@ const css = `
 
   html body .mobile-prompt-rail span:first-child { font-size: 7px !important; }
   html body .mobile-prompt-rail-pill { font-size: 6px !important; padding: 2px 5px !important; }
+
+  .td613-swipe-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    color: rgba(49,255,138,.92);
+    font-size: clamp(24px, 10vw, 48px);
+    line-height: 1;
+    letter-spacing: .16em;
+    text-shadow: 0 0 10px rgba(49,255,138,.72), 0 0 26px rgba(49,255,138,.35);
+    animation: td613SwipeIntro 2.35s ease-out forwards;
+  }
+
+  @keyframes td613SwipeIntro {
+    0% { opacity: 0; transform: translateX(18px); }
+    12% { opacity: 1; transform: translateX(0); }
+    28% { opacity: .28; transform: translateX(-14px); }
+    44% { opacity: 1; transform: translateX(0); }
+    60% { opacity: .28; transform: translateX(-14px); }
+    76% { opacity: 1; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(-28px); }
+  }
 }
 `;
 
+const js = `
+<script id="td613-flight-pr80-swipe-cue-script">
+(function () {
+  function mobile() { return window.matchMedia && window.matchMedia('(max-width: 820px)').matches; }
+  function showCue() {
+    if (!mobile() || document.querySelector('.td613-swipe-intro')) return;
+    var cue = document.createElement('div');
+    cue.className = 'td613-swipe-intro';
+    cue.textContent = '← ← SWIPE';
+    document.body.appendChild(cue);
+    window.setTimeout(function () { cue.remove(); }, 2450);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showCue, { once: true });
+  else showCue();
+})();
+</script>`;
+
 html = html.replace('</style>', `${css}\n</style>`);
+html = html.replace('</body>', `${js}\n</body>`);
 
 if (!html.includes(sentinel)) throw new Error('PR80 sentinel missing');
-if (!html.includes('content: "← ← SWIPE"')) throw new Error('PR80 swipe cue missing');
-if (!html.includes('SWIPE → →')) throw new Error('PR80 reverse swipe cue missing');
-if (!html.includes('@keyframes td613SwipeCue')) throw new Error('PR80 swipe cue animation missing');
+if (!html.includes('td613-flight-pr80-swipe-cue-script')) throw new Error('PR80 one-shot swipe cue script missing');
+if (!html.includes("cue.textContent = '← ← SWIPE'")) throw new Error('PR80 centered swipe cue text missing');
+if (html.includes('SWIPE → →')) throw new Error('PR80 reverse swipe cue remained');
+if (!html.includes('td613SwipeIntro')) throw new Error('PR80 swipe cue animation missing');
 if (html.includes('td613-flight-pr80-mobile-header-collapse-script')) throw new Error('PR80 collapse script remained');
 if (!html.includes('display: inline-flex !important')) throw new Error('PR80 compact chip controls missing');
 if (!html.includes('transition: transform .34s cubic-bezier(.18,.82,.16,1) !important')) throw new Error('PR80 swipe animation reinforcement missing');
 if (html.includes('Loading TD613 Flight') || html.includes('td613-flight-legacy.html') || html.includes('<iframe')) throw new Error('wrapper regression detected');
 
 fs.writeFileSync(path, html);
-console.log('patched TD613 Flight PR80 swipe cue and unfrozen chrome');
+console.log('patched TD613 Flight PR80 centered swipe cue and unfrozen tabs');
