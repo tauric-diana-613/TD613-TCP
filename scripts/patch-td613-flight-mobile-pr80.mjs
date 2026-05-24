@@ -1,0 +1,31 @@
+import fs from 'fs';
+
+const path = 'app/safe-harbor/td613-flight.html';
+let html = fs.readFileSync(path, 'utf8');
+
+const marker = 'TD613 Flight PR80 mobile chrome restoration';
+const css = `
+/* === TD613 Flight PR80 mobile chrome restoration === */
+@media (max-width: 820px) {
+  header { grid-template-areas: "title" "text" "tags" "howto" !important; padding: .58rem !important; overflow: hidden !important; }
+  h1 { font-size: clamp(1.05rem, 6.8vw, 1.72rem) !important; }
+  .flight-quick-nav { position: absolute !important; top: 3.48rem !important; right: .58rem !important; width: auto !important; max-width: 78% !important; justify-content: flex-end !important; gap: .18rem !important; padding: 0 !important; overflow: visible !important; }
+  .flight-quick-nav a, .flight-quick-nav button { min-height: .86rem !important; padding: .08rem .24rem !important; border-radius: 0 !important; font-size: .29rem !important; white-space: nowrap !important; }
+  .flight-quick-nav .flight-nav-signout { padding: .04rem !important; border: 0 !important; background: transparent !important; box-shadow: none !important; font-size: .26rem !important; }
+  .subtitle { padding-top: 1.08rem !important; font-size: .46rem !important; line-height: 1.22 !important; }
+  .pill-row { gap: .32rem !important; overflow-x: auto !important; white-space: nowrap !important; }
+  .pill { padding: 0 .32rem 0 0 !important; border: 0 !important; border-right: 1px solid rgba(137,255,240,.24) !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; font-size: .30rem !important; white-space: nowrap !important; }
+  .card, .dev-drawer, .output-card, .seal-card, .copy-bin-card { padding: .42rem .42rem .48rem .66rem !important; }
+  button, .btn, .primary, .secondary, .ghost, .copy-chip, .checkbox-row label, .radio-row label { min-height: .74rem !important; padding: .08rem .18rem !important; font-size: .28rem !important; line-height: 1.04 !important; }
+  .checkbox-row input[type="checkbox"], .radio-row input[type="radio"] { width: .34rem !important; min-width: .34rem !important; height: .34rem !important; }
+  textarea, .output, #taskText { font-size: .52rem !important; line-height: 1.22 !important; padding: .34rem .4rem !important; }
+  #taskText, .output { min-height: 3.45rem !important; height: clamp(3.6rem, 12dvh, 4.6rem) !important; max-height: 15dvh !important; }
+  .mobile-lane-tab { min-height: 1.06rem !important; padding: .1rem .2rem !important; font-size: .34rem !important; }
+  .mobile-prompt-rail { min-height: .86rem !important; padding: .14rem .24rem .14rem .34rem !important; }
+}
+`;
+
+if (!html.includes(marker)) html = html.replace('</style>', `${css}\n</style>`);
+if (!html.includes(marker)) throw new Error('PR80 CSS missing');
+fs.writeFileSync(path, html);
+console.log('patched TD613 Flight PR80 mobile chrome restoration');
