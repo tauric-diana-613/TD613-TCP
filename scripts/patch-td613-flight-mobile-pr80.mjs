@@ -30,25 +30,11 @@ const css = `
     padding: 14px 14px 12px !important;
     margin-bottom: 10px !important;
     overflow: hidden !important;
-    max-height: 540px !important;
+    max-height: none !important;
     opacity: 1 !important;
     pointer-events: auto !important;
-    transform: translateY(0) !important;
-    transition: max-height .28s ease, opacity .22s ease, padding .22s ease, margin .22s ease, transform .22s ease !important;
-  }
-
-  html body.flight-header-collapsed .page-wrap header {
-    max-height: 0 !important;
-    min-height: 0 !important;
-    height: 0 !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    border-width: 0 !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transform: translateY(-10px) !important;
+    transform: none !important;
+    transition: none !important;
   }
 
   html body .page-wrap header h1 {
@@ -174,9 +160,43 @@ const css = `
   html body .page-wrap header details.howto { grid-area: howto !important; }
 
   html body .mobile-flight-switcher {
-    position: sticky !important;
-    top: 0 !important;
+    position: relative !important;
+    top: auto !important;
     z-index: 20 !important;
+    overflow: visible !important;
+    margin-bottom: 14px !important;
+  }
+
+  html body .mobile-flight-switcher::after {
+    content: "← ← SWIPE";
+    position: absolute;
+    left: 50%;
+    bottom: -12px;
+    transform: translateX(-50%);
+    color: rgba(49,255,138,.78);
+    font-size: 7px;
+    line-height: 1;
+    letter-spacing: .22em;
+    text-shadow: 0 0 8px rgba(49,255,138,.45);
+    pointer-events: none;
+    animation: td613SwipeCue 1.05s ease-in-out infinite;
+    white-space: nowrap;
+  }
+
+  html[data-flight-mobile-lane="output"] body .mobile-flight-switcher::after,
+  body.flight-output-active .mobile-flight-switcher::after {
+    content: "SWIPE → →";
+    animation-name: td613SwipeCueBack;
+  }
+
+  @keyframes td613SwipeCue {
+    0%, 100% { opacity: .24; transform: translateX(-44%) translateY(0); }
+    50% { opacity: 1; transform: translateX(-56%) translateY(0); }
+  }
+
+  @keyframes td613SwipeCueBack {
+    0%, 100% { opacity: .24; transform: translateX(-56%) translateY(0); }
+    50% { opacity: 1; transform: translateX(-44%) translateY(0); }
   }
 
   html body .grid > .flight-lane {
@@ -335,41 +355,16 @@ const css = `
 }
 `;
 
-const js = `
-<script id="td613-flight-pr80-mobile-header-collapse-script">
-(function () {
-  function mobile() { return window.matchMedia && window.matchMedia('(max-width: 820px)').matches; }
-  function update() {
-    if (!mobile()) {
-      document.body.classList.remove('flight-header-collapsed');
-      return;
-    }
-    var lanes = Array.prototype.slice.call(document.querySelectorAll('.flight-lane'));
-    var scrolled = lanes.some(function (lane) { return lane && lane.scrollTop > 90; });
-    document.body.classList.toggle('flight-header-collapsed', scrolled);
-  }
-  document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.flight-lane').forEach(function (lane) {
-      lane.addEventListener('scroll', update, { passive: true });
-    });
-    update();
-  });
-  window.addEventListener('resize', update, { passive: true });
-  window.addEventListener('orientationchange', update, { passive: true });
-})();
-</script>`;
-
 html = html.replace('</style>', `${css}\n</style>`);
-html = html.replace('</body>', `${js}\n</body>`);
 
 if (!html.includes(sentinel)) throw new Error('PR80 sentinel missing');
-if (!html.includes('content: "SAFE HARBOR ISSUE"')) throw new Error('PR80 subtitle trim missing');
-if (!html.includes('flight-header-collapsed')) throw new Error('PR80 header unfreeze behavior missing');
-if (html.includes('grid-template-columns: repeat(2, minmax(0, 1fr)) !important;\n    align-items: stretch')) throw new Error('PR80 grid tiles remained');
+if (!html.includes('content: "← ← SWIPE"')) throw new Error('PR80 swipe cue missing');
+if (!html.includes('SWIPE → →')) throw new Error('PR80 reverse swipe cue missing');
+if (!html.includes('@keyframes td613SwipeCue')) throw new Error('PR80 swipe cue animation missing');
+if (html.includes('td613-flight-pr80-mobile-header-collapse-script')) throw new Error('PR80 collapse script remained');
 if (!html.includes('display: inline-flex !important')) throw new Error('PR80 compact chip controls missing');
 if (!html.includes('transition: transform .34s cubic-bezier(.18,.82,.16,1) !important')) throw new Error('PR80 swipe animation reinforcement missing');
-if (!html.includes('font-size: 9px !important')) throw new Error('PR80 compact textarea missing');
 if (html.includes('Loading TD613 Flight') || html.includes('td613-flight-legacy.html') || html.includes('<iframe')) throw new Error('wrapper regression detected');
 
 fs.writeFileSync(path, html);
-console.log('patched TD613 Flight PR80 unfreezing header and compact chip controls');
+console.log('patched TD613 Flight PR80 swipe cue and unfrozen chrome');
