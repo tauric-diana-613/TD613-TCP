@@ -6,6 +6,7 @@ let html = fs.readFileSync(path, 'utf8');
 const sentinel = 'PR80_SENTINEL TD613 Flight PR80 mobile chrome restoration';
 html = html.replace(/\n\/\* PR80_SENTINEL TD613 Flight PR80 mobile chrome restoration \*\/[\s\S]*?(?=\n<\/style>)/m, '');
 html = html.replace(/\n\/\* === TD613 Flight PR80 mobile chrome restoration === \*\/[\s\S]*?(?=\n<\/style>)/m, '');
+html = html.replace(/\n?<script id="td613-flight-pr80-mobile-header-collapse-script">[\s\S]*?<\/script>/g, '');
 
 const css = `
 /* PR80_SENTINEL TD613 Flight PR80 mobile chrome restoration */
@@ -24,6 +25,21 @@ const css = `
     gap: 8px !important;
     padding: 14px 14px 12px !important;
     overflow: hidden !important;
+    transition: max-height .22s ease, opacity .18s ease, padding .18s ease, margin .18s ease, transform .18s ease !important;
+  }
+
+  html body.flight-header-collapsed .page-wrap header {
+    max-height: 0 !important;
+    min-height: 0 !important;
+    height: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(-12px) !important;
+    border-width: 0 !important;
   }
 
   html body .page-wrap header h1 {
@@ -35,6 +51,8 @@ const css = `
   }
 
   html body .page-wrap header h1::after {
+    content: "SAFE HARBOR ISSUE" !important;
+    display: block !important;
     font-size: 8px !important;
     line-height: 1.25 !important;
     letter-spacing: .18em !important;
@@ -146,6 +164,12 @@ const css = `
 
   html body .page-wrap header details.howto { grid-area: howto !important; }
 
+  html body .mobile-flight-switcher {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 20 !important;
+  }
+
   html body .mobile-flight-switcher .mobile-lane-tab {
     min-height: 24px !important;
     padding: 3px 8px !important;
@@ -185,14 +209,24 @@ const css = `
   html body .flight-lane .checkbox-row,
   html body .flight-lane .radio-row,
   html body .flight-lane .copy-grid,
+  html body .flight-lane .seal-lozenge-row {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    gap: 6px !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
   html body .flight-lane .row {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    gap: 4px 5px !important;
-    overflow: hidden !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    gap: 6px !important;
+    overflow: visible !important;
+    width: 100% !important;
   }
 
   html body .flight-lane .checkbox-row > label,
@@ -204,20 +238,21 @@ const css = `
   html body .flight-lane button.primary,
   html body .flight-lane button.secondary,
   html body .flight-lane button.ghost {
-    flex: 0 1 auto !important;
-    width: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    min-height: 19px !important;
-    padding: 3px 7px !important;
-    border-radius: 999px !important;
-    font-size: 7px !important;
-    line-height: 1.05 !important;
+    min-height: 30px !important;
+    padding: 5px 8px !important;
+    border-radius: 12px !important;
+    font-size: 9px !important;
+    line-height: 1.12 !important;
     letter-spacing: .035em !important;
     white-space: normal !important;
     overflow-wrap: anywhere !important;
     text-align: left !important;
-    justify-content: flex-start !important;
   }
 
   html body .flight-lane #btnGenerate,
@@ -227,23 +262,21 @@ const css = `
   html body .flight-lane #btnClear,
   html body .flight-lane .output-toolbar button,
   html body .flight-lane .payload-stepper button {
-    flex: 0 0 auto !important;
-    width: auto !important;
-    max-width: none !important;
-    min-height: 20px !important;
-    padding: 3px 7px !important;
-    font-size: 7px !important;
+    min-height: 26px !important;
+    padding: 4px 7px !important;
+    font-size: 8px !important;
     text-align: center !important;
-    white-space: nowrap !important;
+    justify-content: center !important;
+    white-space: normal !important;
   }
 
   html body .flight-lane input[type="checkbox"],
   html body .flight-lane input[type="radio"] {
-    flex: 0 0 8px !important;
-    width: 8px !important;
-    min-width: 8px !important;
-    height: 8px !important;
-    margin: 0 4px 0 0 !important;
+    flex: 0 0 9px !important;
+    width: 9px !important;
+    min-width: 9px !important;
+    height: 9px !important;
+    margin: 0 5px 0 0 !important;
   }
 
   html body .flight-lane textarea,
@@ -284,13 +317,39 @@ const css = `
 }
 `;
 
+const js = `
+<script id="td613-flight-pr80-mobile-header-collapse-script">
+(function () {
+  function mobile() { return window.matchMedia && window.matchMedia('(max-width: 820px)').matches; }
+  function update() {
+    if (!mobile()) {
+      document.body.classList.remove('flight-header-collapsed');
+      return;
+    }
+    var lanes = Array.prototype.slice.call(document.querySelectorAll('.flight-lane'));
+    var scrolled = lanes.some(function (lane) { return lane && lane.scrollTop > 24; });
+    document.body.classList.toggle('flight-header-collapsed', scrolled);
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.flight-lane').forEach(function (lane) {
+      lane.addEventListener('scroll', update, { passive: true });
+    });
+    update();
+  });
+  window.addEventListener('resize', update, { passive: true });
+  window.addEventListener('orientationchange', update, { passive: true });
+})();
+</script>`;
+
 html = html.replace('</style>', `${css}\n</style>`);
+html = html.replace('</body>', `${js}\n</body>`);
 
 if (!html.includes(sentinel)) throw new Error('PR80 sentinel missing');
-if (!html.includes('grid-template-areas: "title" "nav" "text" "tags" "howto"')) throw new Error('PR80 static nav grid missing');
+if (!html.includes('content: "SAFE HARBOR ISSUE"')) throw new Error('PR80 subtitle trim missing');
+if (!html.includes('flight-header-collapsed')) throw new Error('PR80 header collapse missing');
+if (!html.includes('grid-template-columns: repeat(2, minmax(0, 1fr))')) throw new Error('PR80 tile controls missing');
 if (!html.includes('font-size: 9px !important')) throw new Error('PR80 compact textarea missing');
-if (!html.includes('font-size: 7px !important')) throw new Error('PR80 compact controls missing');
 if (html.includes('Loading TD613 Flight') || html.includes('td613-flight-legacy.html') || html.includes('<iframe')) throw new Error('wrapper regression detected');
 
 fs.writeFileSync(path, html);
-console.log('patched TD613 Flight PR80 static mobile chrome');
+console.log('patched TD613 Flight PR80 scroll-away header and tile controls');
