@@ -17,6 +17,14 @@ const css = `
     z-index: auto !important;
   }
 
+  html body .flight-lane .card,
+  html body .flight-lane .seal-card,
+  html body .flight-lane .output-card,
+  html body .flight-lane .copy-bin-card,
+  html body .flight-lane .dev-drawer {
+    overflow: hidden !important;
+  }
+
   html body .flight-lane .checkbox-row,
   html body .flight-lane .radio-row,
   html body .flight-lane .copy-grid,
@@ -43,38 +51,73 @@ const css = `
   html body .flight-lane button.btn,
   html body .flight-lane button.primary,
   html body .flight-lane button.secondary,
-  html body .flight-lane button.ghost {
+  html body .flight-lane button.ghost,
+  html body .flight-lane .mobile-output-return,
+  html body .flight-lane .mobile-prompt-rail button {
     display: inline-flex !important;
     flex: 0 1 auto !important;
     align-items: center !important;
     justify-content: flex-start !important;
     width: auto !important;
     min-width: 0 !important;
-    max-width: 100% !important;
-    min-height: 18px !important;
-    max-height: none !important;
-    padding: 3px 7px !important;
+    max-width: calc(100% - 8px) !important;
+    min-height: 15px !important;
+    max-height: 24px !important;
+    padding: 2px 6px !important;
     border-radius: 999px !important;
-    font-size: 7px !important;
-    line-height: 1.06 !important;
-    letter-spacing: .025em !important;
-    white-space: normal !important;
+    font-size: 6px !important;
+    line-height: 1.02 !important;
+    letter-spacing: .018em !important;
+    white-space: nowrap !important;
     overflow: hidden !important;
-    overflow-wrap: anywhere !important;
+    overflow-wrap: normal !important;
+    text-overflow: ellipsis !important;
     text-align: left !important;
   }
 
-  html body .flight-lane-prompt .checkbox-row > label,
-  html body .flight-lane-prompt .radio-row > label {
-    max-width: calc(50% - 5px) !important;
+  html body .flight-lane .checkbox-row > label:has(input[type="text"]),
+  html body .flight-lane .radio-row > label:has(input[type="text"]),
+  html body .flight-lane .checkbox-row > label:has(input[type="number"]),
+  html body .flight-lane .radio-row > label:has(input[type="number"]),
+  html body .flight-lane .checkbox-row > label:has(input[type="date"]),
+  html body .flight-lane .radio-row > label:has(input[type="date"]) {
+    flex: 0 1 auto !important;
+    width: auto !important;
+    max-width: calc(100% - 8px) !important;
+    min-height: 17px !important;
+    max-height: 26px !important;
+    padding: 2px 6px !important;
+    gap: 4px !important;
   }
 
-  html body .flight-lane-prompt .checkbox-row > label:has(input[type="text"]),
-  html body .flight-lane-prompt .radio-row > label:has(input[type="text"]),
-  html body .flight-lane-output .checkbox-row > label:has(input[type="text"]),
-  html body .flight-lane-output .radio-row > label:has(input[type="text"]) {
-    max-width: 100% !important;
+  html body .flight-lane .checkbox-row > label input[type="checkbox"],
+  html body .flight-lane .radio-row > label input[type="radio"] {
+    flex: 0 0 8px !important;
+    width: 8px !important;
+    min-width: 8px !important;
+    height: 8px !important;
+    margin: 0 4px 0 0 !important;
+  }
+
+  html body .flight-lane label input[type="text"],
+  html body .flight-lane label input[type="number"],
+  html body .flight-lane label input[type="date"] {
     flex: 0 1 auto !important;
+    width: clamp(5.5rem, 26vw, 9rem) !important;
+    min-width: 0 !important;
+    max-width: clamp(5.5rem, 26vw, 9rem) !important;
+    min-height: 14px !important;
+    height: 14px !important;
+    padding: 1px 5px !important;
+    font-size: 7px !important;
+    line-height: 1 !important;
+    zoom: 1 !important;
+    transform: none !important;
+  }
+
+  html body .flight-lane .seal-card label input[type="text"] {
+    width: clamp(4.8rem, 22vw, 7.5rem) !important;
+    max-width: clamp(4.8rem, 22vw, 7.5rem) !important;
   }
 
   html body .flight-lane textarea,
@@ -82,65 +125,59 @@ const css = `
   html body .flight-lane #taskText,
   html body .flight-lane .code-output,
   html body .flight-lane .json-output {
-    font-size: 16px !important;
-    line-height: 1.2 !important;
-    width: 177.7778% !important;
-    min-width: 177.7778% !important;
-    max-width: 177.7778% !important;
-    zoom: .5625 !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 74px !important;
+    height: 86px !important;
+    max-height: 150px !important;
+    margin: 0 !important;
+    padding: 8px 9px !important;
+    font-size: 9px !important;
+    line-height: 1.18 !important;
+    letter-spacing: .004em !important;
+    zoom: 1 !important;
     transform: none !important;
-    transform-origin: top left !important;
     -webkit-overflow-scrolling: touch !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
     overscroll-behavior: contain !important;
     touch-action: pan-y !important;
     resize: vertical !important;
   }
 
-  html body .flight-lane #taskText,
-  html body .flight-lane .output,
-  html body .flight-lane textarea {
-    min-height: 132px !important;
-    height: 132px !important;
-    max-height: 180px !important;
-    margin-right: 0 !important;
-    margin-bottom: 0 !important;
-    padding: 14px 16px !important;
+  html body .flight-lane .dev-drawer textarea,
+  html body .flight-lane .dev-drawer .code-output,
+  html body .flight-lane .dev-drawer .json-output {
+    min-height: 54px !important;
+    height: 62px !important;
+    max-height: 112px !important;
+    font-size: 8px !important;
+    line-height: 1.12 !important;
   }
 
   html body .flight-lane input[type="text"],
   html body .flight-lane input[type="number"],
   html body .flight-lane input[type="date"],
   html body .flight-lane select {
-    font-size: 16px !important;
-    line-height: 1.12 !important;
-    zoom: .5625 !important;
-    transform: none !important;
-    transform-origin: top left !important;
-    min-height: 28px !important;
-    padding: 4px 8px !important;
-  }
-
-  html body .flight-lane select,
-  html body .flight-lane .dev-drawer input[type="text"],
-  html body .flight-lane .dev-drawer input[type="number"],
-  html body .flight-lane .dev-drawer input[type="date"] {
-    width: 177.7778% !important;
-    min-width: 177.7778% !important;
-    max-width: 177.7778% !important;
-  }
-
-  html body .flight-lane label input[type="text"],
-  html body .flight-lane label input[type="number"],
-  html body .flight-lane label input[type="date"] {
-    font-size: 9px !important;
-    zoom: 1 !important;
-    width: min(18rem, 62vw) !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
     min-width: 0 !important;
-    max-width: min(18rem, 62vw) !important;
+    max-width: 100% !important;
     min-height: 18px !important;
     height: 18px !important;
     padding: 3px 6px !important;
+    font-size: 9px !important;
+    line-height: 1.05 !important;
+    zoom: 1 !important;
+    transform: none !important;
+  }
+
+  html body .flight-lane select {
+    height: 22px !important;
+    min-height: 22px !important;
   }
 
   html body .flight-lane .danger-note {
@@ -157,11 +194,10 @@ const css = `
 html = html.replace('</style>', `${css}\n</style>`);
 
 if (!html.includes(marker)) throw new Error('PR83 CSS missing');
-if (!html.includes('zoom: .5625 !important')) throw new Error('PR83 mobile visual scale missing');
-if (!html.includes('font-size: 16px !important')) throw new Error('PR83 anti-zoom base font missing');
-if (!html.includes('font-size: 9px !important')) throw new Error('PR83 compact label input override missing');
-if (!html.includes('max-width: calc(50% - 5px) !important')) throw new Error('PR83 prompt chip wrap clamp missing');
+if (!html.includes('white-space: nowrap !important')) throw new Error('PR83 one-line chip clamp missing');
+if (!html.includes('font-size: 9px !important')) throw new Error('PR83 compact field font missing');
+if (!html.includes('height: 86px !important')) throw new Error('PR83 compact textarea height missing');
 if (!html.includes('font-size: 5px !important')) throw new Error('PR83 danger note shrink missing');
 
 fs.writeFileSync(path, html);
-console.log('patched TD613 Flight PR83 compact chips and mobile field scale repair');
+console.log('patched TD613 Flight PR83 compact chips and small mobile fields');
