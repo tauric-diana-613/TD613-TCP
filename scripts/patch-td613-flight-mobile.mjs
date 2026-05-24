@@ -421,3 +421,4 @@ if (html.includes('Loading TD613 Flight') || html.includes('td613-flight-legacy.
 
 fs.writeFileSync(path, html);
 console.log('patched TD613 Flight PR78 absolute mobile lanes');
+await import('./patch-td613-flight-mobile-pr79.mjs');
