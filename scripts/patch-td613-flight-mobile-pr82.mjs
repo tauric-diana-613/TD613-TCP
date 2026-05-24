@@ -130,53 +130,6 @@ const css = `
 
   html body .grid > :not(.flight-lane-prompt):not(.flight-lane-output) { display: none !important; }
 
-  html body .flight-lane .checkbox-row,
-  html body .flight-lane .radio-row,
-  html body .flight-lane .copy-grid,
-  html body .flight-lane .seal-lozenge-row,
-  html body .flight-lane .row {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    align-items: flex-start !important;
-    align-content: flex-start !important;
-    justify-content: flex-start !important;
-    gap: 4px 5px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow: visible !important;
-    grid-template-columns: none !important;
-  }
-
-  html body .flight-lane .checkbox-row > label,
-  html body .flight-lane .radio-row > label,
-  html body .flight-lane .copy-chip,
-  html body .flight-lane .row > .btn,
-  html body .flight-lane .row > button,
-  html body .flight-lane button.btn,
-  html body .flight-lane button.primary,
-  html body .flight-lane button.secondary,
-  html body .flight-lane button.ghost {
-    display: inline-flex !important;
-    flex: 0 1 auto !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    min-height: 18px !important;
-    max-height: none !important;
-    padding: 3px 7px !important;
-    border-radius: 999px !important;
-    font-size: 7px !important;
-    line-height: 1.06 !important;
-    letter-spacing: .025em !important;
-    white-space: normal !important;
-    overflow: hidden !important;
-    overflow-wrap: anywhere !important;
-    text-align: left !important;
-  }
-
   html body .flight-lane .danger-note {
     font-size: 5px !important;
     line-height: 1.15 !important;
@@ -184,43 +137,6 @@ const css = `
     padding: 5px 7px !important;
     min-height: 0 !important;
     border-radius: 8px !important;
-  }
-
-  html body .flight-lane textarea,
-  html body .flight-lane .output,
-  html body .flight-lane #taskText,
-  html body .flight-lane .code-output,
-  html body .flight-lane .json-output {
-    font-size: 16px !important;
-    line-height: 1.2 !important;
-    width: 177.7778% !important;
-    max-width: 177.7778% !important;
-    min-width: 177.7778% !important;
-    transform: scale(.5625) !important;
-    transform-origin: top left !important;
-    -webkit-overflow-scrolling: touch !important;
-    overflow-y: auto !important;
-    overscroll-behavior: contain !important;
-    touch-action: pan-y !important;
-    resize: vertical !important;
-  }
-
-  html body .flight-lane #taskText,
-  html body .flight-lane .output {
-    min-height: 132px !important;
-    height: 132px !important;
-    max-height: 180px !important;
-    margin-right: -77.7778% !important;
-    margin-bottom: -56px !important;
-    padding: 14px 16px !important;
-  }
-
-  html body .flight-lane input[type="text"],
-  html body .flight-lane input[type="number"],
-  html body .flight-lane input[type="date"],
-  html body .flight-lane select {
-    font-size: 16px !important;
-    line-height: 1.12 !important;
   }
 
   html body .output-auth-toggle,
@@ -231,11 +147,6 @@ const css = `
     font-size: 7px !important;
     line-height: 1.05 !important;
     letter-spacing: .08em !important;
-  }
-
-  html body .payload-stepper {
-    padding: 3px 7px !important;
-    gap: 5px !important;
   }
 
   .td613-swipe-intro {
@@ -461,8 +372,6 @@ if (!html.includes(marker)) throw new Error('PR82 CSS missing');
 if (!html.includes('maximum-scale=1, user-scalable=no')) throw new Error('PR82 viewport zoom guard missing');
 if (!html.includes('td613-flight-pr82-unsticky-zoom-script')) throw new Error('PR82 script missing');
 if (!html.includes('height: auto !important')) throw new Error('PR82 unsticky page height missing');
-if (!html.includes('font-size: 16px !important')) throw new Error('PR82 textarea 16px anti-zoom base missing');
-if (!html.includes('transform: scale(.5625) !important')) throw new Error('PR82 visual small textarea scale missing');
 if (!html.includes('syncGridHeight')) throw new Error('PR82 active lane height sync missing');
 if (!html.includes("cue.textContent = '← ← SWIPE'")) throw new Error('PR82 centered one-shot swipe cue missing');
 if (html.includes('SWIPE → →')) throw new Error('reverse swipe cue remained');
@@ -470,4 +379,5 @@ if (html.includes('td613-flight-pr81-gesture-repair-script')) throw new Error('P
 if (html.includes('td613-flight-pr78-absolute-mobile-lane-script')) throw new Error('PR78 script remained');
 
 fs.writeFileSync(path, html);
-console.log('patched TD613 Flight PR82 unsticky page, no textarea click-zoom, and unified swipe');
+console.log('patched TD613 Flight PR82 unsticky page and unified swipe');
+await import('./patch-td613-flight-mobile-pr83.mjs');
