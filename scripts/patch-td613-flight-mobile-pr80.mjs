@@ -17,6 +17,10 @@ const css = `
     text-size-adjust: 100% !important;
   }
 
+  html body .page-wrap {
+    grid-template-rows: auto auto minmax(0, 1fr) !important;
+  }
+
   html body .page-wrap header {
     position: relative !important;
     display: grid !important;
@@ -26,10 +30,25 @@ const css = `
     padding: 14px 14px 12px !important;
     margin-bottom: 10px !important;
     overflow: hidden !important;
-    max-height: none !important;
+    max-height: 540px !important;
     opacity: 1 !important;
     pointer-events: auto !important;
-    transform: none !important;
+    transform: translateY(0) !important;
+    transition: max-height .28s ease, opacity .22s ease, padding .22s ease, margin .22s ease, transform .22s ease !important;
+  }
+
+  html body.flight-header-collapsed .page-wrap header {
+    max-height: 0 !important;
+    min-height: 0 !important;
+    height: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(-10px) !important;
   }
 
   html body .page-wrap header h1 {
@@ -160,6 +179,14 @@ const css = `
     z-index: 20 !important;
   }
 
+  html body .grid > .flight-lane {
+    transition: transform .34s cubic-bezier(.18,.82,.16,1) !important;
+  }
+
+  html body.flight-dragging .grid > .flight-lane {
+    transition: none !important;
+  }
+
   html body .mobile-flight-switcher .mobile-lane-tab {
     min-height: 24px !important;
     padding: 3px 8px !important;
@@ -199,24 +226,17 @@ const css = `
   html body .flight-lane .checkbox-row,
   html body .flight-lane .radio-row,
   html body .flight-lane .copy-grid,
-  html body .flight-lane .seal-lozenge-row {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    align-items: stretch !important;
-    justify-content: stretch !important;
-    gap: 4px !important;
-    overflow: visible !important;
-    width: 100% !important;
-  }
-
+  html body .flight-lane .seal-lozenge-row,
   html body .flight-lane .row {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    align-items: stretch !important;
-    justify-content: stretch !important;
-    gap: 4px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 4px 5px !important;
     overflow: visible !important;
     width: 100% !important;
+    grid-template-columns: none !important;
   }
 
   html body .flight-lane .checkbox-row > label,
@@ -228,18 +248,19 @@ const css = `
   html body .flight-lane button.primary,
   html body .flight-lane button.secondary,
   html body .flight-lane button.ghost {
-    display: flex !important;
+    display: inline-flex !important;
+    flex: 0 1 auto !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    width: 100% !important;
+    width: auto !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    min-height: 20px !important;
-    max-height: 42px !important;
-    padding: 3px 5px !important;
-    border-radius: 9px !important;
-    font-size: 6px !important;
-    line-height: 1.05 !important;
+    min-height: 18px !important;
+    max-height: none !important;
+    padding: 3px 7px !important;
+    border-radius: 999px !important;
+    font-size: 7px !important;
+    line-height: 1.06 !important;
     letter-spacing: .025em !important;
     white-space: normal !important;
     overflow: hidden !important;
@@ -254,13 +275,16 @@ const css = `
   html body .flight-lane #btnClear,
   html body .flight-lane .output-toolbar button,
   html body .flight-lane .payload-stepper button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: none !important;
     min-height: 20px !important;
     max-height: 28px !important;
-    padding: 3px 6px !important;
-    font-size: 6px !important;
+    padding: 3px 7px !important;
+    font-size: 7px !important;
     text-align: center !important;
     justify-content: center !important;
-    white-space: normal !important;
+    white-space: nowrap !important;
     overflow: hidden !important;
   }
 
@@ -311,16 +335,41 @@ const css = `
 }
 `;
 
+const js = `
+<script id="td613-flight-pr80-mobile-header-collapse-script">
+(function () {
+  function mobile() { return window.matchMedia && window.matchMedia('(max-width: 820px)').matches; }
+  function update() {
+    if (!mobile()) {
+      document.body.classList.remove('flight-header-collapsed');
+      return;
+    }
+    var lanes = Array.prototype.slice.call(document.querySelectorAll('.flight-lane'));
+    var scrolled = lanes.some(function (lane) { return lane && lane.scrollTop > 90; });
+    document.body.classList.toggle('flight-header-collapsed', scrolled);
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.flight-lane').forEach(function (lane) {
+      lane.addEventListener('scroll', update, { passive: true });
+    });
+    update();
+  });
+  window.addEventListener('resize', update, { passive: true });
+  window.addEventListener('orientationchange', update, { passive: true });
+})();
+</script>`;
+
 html = html.replace('</style>', `${css}\n</style>`);
+html = html.replace('</body>', `${js}\n</body>`);
 
 if (!html.includes(sentinel)) throw new Error('PR80 sentinel missing');
 if (!html.includes('content: "SAFE HARBOR ISSUE"')) throw new Error('PR80 subtitle trim missing');
-if (html.includes('td613-flight-pr80-mobile-header-collapse-script')) throw new Error('PR80 collapse script remained');
-if (!html.includes('grid-template-columns: repeat(2, minmax(0, 1fr))')) throw new Error('PR80 tile controls missing');
-if (!html.includes('font-size: 6px !important')) throw new Error('PR80 compact tile text missing');
-if (!html.includes('max-height: 42px !important')) throw new Error('PR80 tile height clamp missing');
+if (!html.includes('flight-header-collapsed')) throw new Error('PR80 header unfreeze behavior missing');
+if (html.includes('grid-template-columns: repeat(2, minmax(0, 1fr)) !important;\n    align-items: stretch')) throw new Error('PR80 grid tiles remained');
+if (!html.includes('display: inline-flex !important')) throw new Error('PR80 compact chip controls missing');
+if (!html.includes('transition: transform .34s cubic-bezier(.18,.82,.16,1) !important')) throw new Error('PR80 swipe animation reinforcement missing');
 if (!html.includes('font-size: 9px !important')) throw new Error('PR80 compact textarea missing');
 if (html.includes('Loading TD613 Flight') || html.includes('td613-flight-legacy.html') || html.includes('<iframe')) throw new Error('wrapper regression detected');
 
 fs.writeFileSync(path, html);
-console.log('patched TD613 Flight PR80 visible banner and compact tiles');
+console.log('patched TD613 Flight PR80 unfreezing header and compact chip controls');
