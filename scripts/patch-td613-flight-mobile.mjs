@@ -8,8 +8,8 @@ let rail = '<button class="mobile-prompt-rail" data-flight-lane-target="output" 
 if (railStart !== -1) {
   const railEnd = html.indexOf('</button>', railStart) + '</button>'.length;
   rail = html.slice(railStart, railEnd);
-  html = html.slice(0, railStart) + html.slice(railEnd);
 }
+html = html.replace(/<button class="mobile-prompt-rail[\s\S]*?<\/button>/g, '');
 
 const devIndex = html.indexOf('<details class="dev-drawer" id="devSettingsDrawer"');
 if (devIndex !== -1) {
@@ -90,3 +90,4 @@ await import('./patch-td613-flight-mobile-pr71.mjs');
 await import('./patch-td613-flight-mobile-pr73.mjs');
 await import('./patch-td613-flight-mobile-pr74.mjs');
 await import('./patch-td613-flight-mobile-pr75.mjs');
+await import('./patch-td613-flight-mobile-pr76.mjs');
