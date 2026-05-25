@@ -1,4 +1,6 @@
-export const HUSH_PR79_COVERAGE_FLOOR_VERSION = 'pr79-coverage-floor';
+import { deriveApertureApprovalTransparency } from './engine/aperture-approval-transparency.js';
+
+export const HUSH_PR79_COVERAGE_FLOOR_VERSION = 'pr79-coverage-floor-approval-transparency';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const clean = (value) => String(value ?? '').trim();
@@ -34,6 +36,35 @@ function setStatus(message = '', doc = document) {
   if (accept) accept.disabled = true;
 }
 
+function buildCoverageFloorPacket({ input = '', output = '' } = {}) {
+  const sourceChars = clean(input).length;
+  const outputChars = clean(output).length;
+  return {
+    routeState: 'coverage_floor_used',
+    sealStatus: 'blocked',
+    selectedCandidate: null,
+    hardStops: ['selector_no_approved_candidate'],
+    humanReclosure: {
+      required: true,
+      confirmed: false,
+      rejected_routes_visible: true
+    },
+    consentStatus: 'confirmed',
+    claimCeiling: 'structural',
+    sourceContext: 'hush_adversarial_bench',
+    sourceChars,
+    outputChars
+  };
+}
+
+function formatCoverageFloorMessage(transparency) {
+  const blockers = transparency?.approvalDiagnostics?.blockers || [];
+  const visibleReason = blockers.length
+    ? blockers.join(' | ')
+    : transparency?.approvalReason || 'coverage floor applied';
+  return `Coverage floor engaged — not an error. Hush preserved every source unit because approval is blocked: ${visibleReason}. Review/edit, then hit Analyze before Accept.`;
+}
+
 function maybeApplyCoverageFloor(doc = document) {
   const input = $('messageDraftInput', doc);
   const output = $('protectedOutputInput', doc);
@@ -42,13 +73,18 @@ function maybeApplyCoverageFloor(doc = document) {
   if (!draft) return;
   output.value = draft;
   output.dispatchEvent(new Event('input', { bubbles: true }));
-  setStatus('Coverage floor used: selector returned no approved candidate, so Hush preserved every source unit. Review/edit, then hit Analyze before Accept.', doc);
+  const approvalPacket = buildCoverageFloorPacket({ input: input.value, output: output.value });
+  const transparency = deriveApertureApprovalTransparency(approvalPacket);
+  setStatus(formatCoverageFloorMessage(transparency), doc);
   if (typeof window !== 'undefined') {
     window.__TD613_HUSH_COVERAGE_FLOOR__ = {
       version: HUSH_PR79_COVERAGE_FLOOR_VERSION,
       appliedAt: new Date().toISOString(),
-      sourceChars: clean(input.value).length,
-      outputChars: clean(output.value).length
+      sourceChars: approvalPacket.sourceChars,
+      outputChars: approvalPacket.outputChars,
+      approvalStatus: transparency.approvalStatus,
+      approvalReason: transparency.approvalReason,
+      approvalDiagnostics: transparency.approvalDiagnostics
     };
   }
 }
