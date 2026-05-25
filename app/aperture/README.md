@@ -55,6 +55,25 @@ surface. The main result still answers "did this land, is it usable,
 is it distinct, what's still wrong?" — Aperture's role is to make the
 filtering visible without drowning the outcome.
 
+## Approval transparency
+
+Aperture must never collapse a blocked or held candidate into the
+opaque message `No approved candidate was produced.` When an approval
+gate blocks export, the packet should expose the reason rather than
+quietly reenacting admissibility sorting.
+
+The approval-transparency helper emits:
+
+- `approvedCandidate`
+- `approvalStatus`
+- `approvalReason`
+- `approvalDiagnostics`
+- a normalized `sealStatus`
+
+The diagnostics name the route-state blocker, hard stops, human
+reclosure state, consent / claim-ceiling blockers, and candidate
+availability. Blocking remains allowed; hidden blocking is not.
+
 ## How it relates to Safe Harbor
 
 A Safe Harbor packet can carry an `aperture_audit` block that records
