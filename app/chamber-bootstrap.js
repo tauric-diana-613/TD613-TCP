@@ -123,6 +123,10 @@
     pr78Boot.type = 'module';
     pr78Boot.src = './hush-pr78-runtime-trace.js?v=' + (V.hushPr78 || V.hushPr77 || V.hushPatch38 || V.main || '');
     document.head.appendChild(pr78Boot);
+    var pr79Boot = document.createElement('script');
+    pr79Boot.type = 'module';
+    pr79Boot.src = './hush-pr79-coverage-floor.js?v=' + (V.hushPr79 || V.hushPr78 || V.hushPatch38 || V.main || '');
+    document.head.appendChild(pr79Boot);
   }
 
   var srcs = [
