@@ -1,9 +1,9 @@
 import { buildHushSwap as buildPhase34HushSwap } from './hush-swap-phase34.js';
 import { generateOfflineProviderCandidates, mergeProviderCandidates, collapseSurfaceScore, GENERATOR_MODES, HUSH_GENERATOR_PROVIDER_VERSION } from './hush-generator-provider.js';
-import { attachPropositionIntegrity } from './hush-proposition-integrity.js?v=202605250309';
+import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
-export const HUSH_SWAP_PATCH38_VERSION = 'patch-39-coverage-gated-candidate-generator';
+export const HUSH_SWAP_PATCH38_VERSION = 'patch-40-coverage-gated-candidate-generator-safe';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -33,14 +33,35 @@ function score(candidate = {}, sourceText = '', mode = GENERATOR_MODES.OFFLINE_E
   return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + coverageBonus + lengthBonus - offlinePenaltyInRemote - collapse * 0.9 - warningPenalty);
 }
 
+function auditFallback(candidate = {}, error = null) {
+  return {
+    ...candidate,
+    propositionIntegrity: {
+      version: 'patch-40-audit-fallback',
+      passed: false,
+      questionFormScore: 0,
+      coverage: { passed: false, averageCoverage: 0, sourceTermCoverage: 0, lengthRatio: 0, missingUnitCount: 1, missingUnits: [] },
+      warnings: ['proposition-audit-runtime-failed', error?.message ? String(error.message).slice(0, 180) : 'unknown-audit-error']
+    },
+    payloadIntegrity: { passed: false, warnings: [...new Set([...(candidate.payloadIntegrity?.warnings || []), 'proposition-audit-runtime-failed'])] },
+    releasePolicy: { mayPopulateOutput: false, hardBlocked: true, state: 'hold' },
+    warnings: [...new Set([...(candidate.warnings || []), 'proposition-audit-runtime-failed'])]
+  };
+}
+
 function normalize(candidate = {}, sourceText = '') {
-  return attachPropositionIntegrity({
+  const prepared = {
     ...candidate,
     releasePolicy: candidate.releasePolicy || { mayPopulateOutput: true, hardBlocked: false, state: 'candidate' },
     releaseSummary: candidate.releaseSummary || { status: 'candidate', warnings: [] },
     payloadIntegrity: candidate.payloadIntegrity || { passed: true, warnings: [] },
     claimIntegrity: candidate.claimIntegrity || { passed: true, warnings: [] }
-  }, sourceText);
+  };
+  try {
+    return attachPropositionIntegrity(prepared, sourceText);
+  } catch (error) {
+    return auditFallback(prepared, error);
+  }
 }
 
 function apply(result = {}, selected = null, diagnostics = {}) {
