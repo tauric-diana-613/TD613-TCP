@@ -60,7 +60,7 @@ const css = `
     justify-content: flex-start !important;
     width: auto !important;
     min-width: 0 !important;
-    max-width: calc(100% - 8px) !important;
+    max-width: min(25rem, calc(50% - 5px)) !important;
     min-height: 15px !important;
     max-height: 24px !important;
     padding: 2px 6px !important;
@@ -83,9 +83,9 @@ const css = `
   html body .flight-lane .radio-row > label:has(input[type="date"]) {
     flex: 0 1 auto !important;
     width: auto !important;
-    max-width: calc(100% - 8px) !important;
-    min-height: 17px !important;
-    max-height: 26px !important;
+    max-width: min(18rem, calc(50% - 5px)) !important;
+    min-height: 16px !important;
+    max-height: 24px !important;
     padding: 2px 6px !important;
     gap: 4px !important;
   }
@@ -103,9 +103,9 @@ const css = `
   html body .flight-lane label input[type="number"],
   html body .flight-lane label input[type="date"] {
     flex: 0 1 auto !important;
-    width: clamp(5.5rem, 26vw, 9rem) !important;
+    width: clamp(4.4rem, 18vw, 7rem) !important;
     min-width: 0 !important;
-    max-width: clamp(5.5rem, 26vw, 9rem) !important;
+    max-width: clamp(4.4rem, 18vw, 7rem) !important;
     min-height: 14px !important;
     height: 14px !important;
     padding: 1px 5px !important;
@@ -116,8 +116,8 @@ const css = `
   }
 
   html body .flight-lane .seal-card label input[type="text"] {
-    width: clamp(4.8rem, 22vw, 7.5rem) !important;
-    max-width: clamp(4.8rem, 22vw, 7.5rem) !important;
+    width: clamp(4rem, 16vw, 6.2rem) !important;
+    max-width: clamp(4rem, 16vw, 6.2rem) !important;
   }
 
   html body .flight-lane textarea,
@@ -163,9 +163,9 @@ const css = `
   html body .flight-lane input[type="date"],
   html body .flight-lane select {
     box-sizing: border-box !important;
-    width: 100% !important;
+    width: clamp(8rem, 42vw, 18rem) !important;
     min-width: 0 !important;
-    max-width: 100% !important;
+    max-width: clamp(8rem, 42vw, 18rem) !important;
     min-height: 18px !important;
     height: 18px !important;
     padding: 3px 6px !important;
@@ -178,6 +178,15 @@ const css = `
   html body .flight-lane select {
     height: 22px !important;
     min-height: 22px !important;
+  }
+
+  html body .flight-lane .dev-drawer input[type="text"],
+  html body .flight-lane .dev-drawer input[type="number"],
+  html body .flight-lane .dev-drawer input[type="date"],
+  html body .flight-lane .dev-drawer select {
+    width: min(100%, 18rem) !important;
+    max-width: min(100%, 18rem) !important;
+    font-size: 8px !important;
   }
 
   html body .flight-lane .danger-note {
@@ -194,10 +203,11 @@ const css = `
 html = html.replace('</style>', `${css}\n</style>`);
 
 if (!html.includes(marker)) throw new Error('PR83 CSS missing');
-if (!html.includes('white-space: nowrap !important')) throw new Error('PR83 one-line chip clamp missing');
+if (!html.includes('max-width: min(25rem, calc(50% - 5px))')) throw new Error('PR83 half-row chip clamp missing');
+if (!html.includes('width: clamp(8rem, 42vw, 18rem)')) throw new Error('PR83 bare field width clamp missing');
 if (!html.includes('font-size: 9px !important')) throw new Error('PR83 compact field font missing');
 if (!html.includes('height: 86px !important')) throw new Error('PR83 compact textarea height missing');
 if (!html.includes('font-size: 5px !important')) throw new Error('PR83 danger note shrink missing');
 
 fs.writeFileSync(path, html);
-console.log('patched TD613 Flight PR83 compact chips and small mobile fields');
+console.log('patched TD613 Flight PR83 half-row chips and compact bare fields');
