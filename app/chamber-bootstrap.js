@@ -107,6 +107,10 @@
     patch38Boot.type = 'module';
     patch38Boot.src = './hush-patch38.js?v=' + (V.hushPatch38 || V.hushPhase32 || V.main || '');
     document.head.appendChild(patch38Boot);
+    var pr75Boot = document.createElement('script');
+    pr75Boot.type = 'module';
+    pr75Boot.src = './hush-pr75-rescue.js?v=' + (V.hushPr75 || V.hushPatch38 || V.hushPhase32 || V.main || '');
+    document.head.appendChild(pr75Boot);
   }
 
   var srcs = [
