@@ -60,18 +60,18 @@ const css = `
     justify-content: flex-start !important;
     width: auto !important;
     min-width: 0 !important;
-    max-width: min(25rem, calc(50% - 5px)) !important;
+    max-width: calc(100% - 8px) !important;
     min-height: 15px !important;
-    max-height: 24px !important;
+    max-height: none !important;
     padding: 2px 6px !important;
     border-radius: 999px !important;
     font-size: 6px !important;
-    line-height: 1.02 !important;
-    letter-spacing: .018em !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    overflow-wrap: normal !important;
-    text-overflow: ellipsis !important;
+    line-height: 1.05 !important;
+    letter-spacing: .015em !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    overflow-wrap: anywhere !important;
+    text-overflow: clip !important;
     text-align: left !important;
   }
 
@@ -83,9 +83,9 @@ const css = `
   html body .flight-lane .radio-row > label:has(input[type="date"]) {
     flex: 0 1 auto !important;
     width: auto !important;
-    max-width: min(18rem, calc(50% - 5px)) !important;
+    max-width: calc(100% - 8px) !important;
     min-height: 16px !important;
-    max-height: 24px !important;
+    max-height: none !important;
     padding: 2px 6px !important;
     gap: 4px !important;
   }
@@ -203,11 +203,12 @@ const css = `
 html = html.replace('</style>', `${css}\n</style>`);
 
 if (!html.includes(marker)) throw new Error('PR83 CSS missing');
-if (!html.includes('max-width: min(25rem, calc(50% - 5px))')) throw new Error('PR83 half-row chip clamp missing');
+if (!html.includes('white-space: normal !important')) throw new Error('PR83 readable chip wrap missing');
+if (!html.includes('text-overflow: clip !important')) throw new Error('PR83 no chip ellipsis missing');
 if (!html.includes('width: clamp(8rem, 42vw, 18rem)')) throw new Error('PR83 bare field width clamp missing');
 if (!html.includes('font-size: 9px !important')) throw new Error('PR83 compact field font missing');
 if (!html.includes('height: 86px !important')) throw new Error('PR83 compact textarea height missing');
 if (!html.includes('font-size: 5px !important')) throw new Error('PR83 danger note shrink missing');
 
 fs.writeFileSync(path, html);
-console.log('patched TD613 Flight PR83 half-row chips and compact bare fields');
+console.log('patched TD613 Flight PR83 readable natural chips and compact fields');
