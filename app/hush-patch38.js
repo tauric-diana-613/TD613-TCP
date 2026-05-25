@@ -3,6 +3,7 @@ import { buildHushSwap, HUSH_SWAP_PATCH38_VERSION } from './engine/hush-swap-pat
 import { GENERATOR_MODES, normalizeRemoteProviderResponse } from './engine/hush-generator-provider.js';
 import { buildHushLlmPromptContractV2, buildPhase35ProviderTelemetry } from './engine/hush-generator-provider-phase35.js';
 import { auditPropositionIntegrity } from './engine/hush-proposition-integrity.js';
+import { deriveApertureApprovalTransparency } from './engine/aperture-approval-transparency.js';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
@@ -176,15 +177,64 @@ function renderDiagnostics(result = {}, doc = document) {
   target.innerHTML = `<strong>Phase 35 ontology-routed generator</strong><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Route: <code>${esc(route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.sourceType || 'n/a')}</code></span>${endpointLine}<span>Propositions: <code>${esc(summary.propositionCount ?? '0')}</code></span><span>Questions: <code>${esc(summary.questionCount ?? '0')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 35 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.strategy || '')} · score ${esc(row.score)} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
 }
 
-function renderGateFailure(reason = '', doc = document) {
+function buildPatch38ApprovalPacket({ reason = '', result = {}, warnings = [] } = {}) {
+  const diagnostics = result.patch38Diagnostics || {};
+  return {
+    routeState: 'patch38_no_approved_candidate',
+    sealStatus: 'blocked',
+    selectedCandidate: null,
+    hardStops: [
+      'selector_no_approved_candidate',
+      ...warnings,
+      ...(diagnostics.warning ? [diagnostics.warning] : [])
+    ].filter(Boolean),
+    humanReclosure: {
+      required: true,
+      confirmed: false,
+      rejected_routes_visible: true
+    },
+    consentStatus: 'confirmed',
+    claimCeiling: 'structural',
+    sourceContext: 'hush_patch38_transform',
+    approvalContext: reason || 'candidate selector produced no releasable output'
+  };
+}
+
+function formatPatch38ApprovalBlock(transparency) {
+  const blockers = transparency?.approvalDiagnostics?.blockers || [];
+  const visibleReason = blockers.length
+    ? blockers.join(' | ')
+    : transparency?.approvalReason || 'candidate selector produced no releasable output';
+  return `Candidate approval blocked — not an error. ${visibleReason}. Switch to Hybrid or Offline Expressive, edit the source/mask, then Transform again.`;
+}
+
+function recordPatch38ApprovalBlock(transparency, result = {}) {
+  if (typeof window === 'undefined') return;
+  window.__TD613_HUSH_PATCH38_APPROVAL__ = {
+    version: HUSH_SWAP_PATCH38_VERSION,
+    appliedAt: new Date().toISOString(),
+    selectedCandidateId: result.patch38Diagnostics?.selectedCandidateId || null,
+    generatedCount: result.patch38Diagnostics?.generatedCount ?? 0,
+    mergedCount: result.patch38Diagnostics?.mergedCount ?? 0,
+    approvalStatus: transparency.approvalStatus,
+    approvalReason: transparency.approvalReason,
+    approvalDiagnostics: transparency.approvalDiagnostics
+  };
+}
+
+function renderGateFailure(reason = '', doc = document, transparency = null) {
   const output = $('protectedOutputInput', doc);
   if (output) output.value = '';
-  const message = reason || 'No candidate output was produced. Try Hybrid fallback or inspect provider diagnostics.';
+  const message = reason || 'Candidate approval blocked. Try Hybrid fallback or inspect provider diagnostics.';
   setGeneratorStatus(message, 'error', doc);
   const warning = $('acceptWarning', doc);
   if (warning) {
     warning.hidden = false;
     warning.textContent = message;
+  }
+  if (transparency) {
+    const status = ensureGeneratorStatus(doc);
+    if (status) status.dataset.approvalStatus = transparency.approvalStatus;
   }
 }
 
@@ -193,7 +243,9 @@ async function runPatch38Transform(doc = document) {
   const sourceText = $('messageDraftInput', doc)?.value || '';
   const select = installGeneratorMode(doc);
   if (!text(sourceText)) {
-    renderGateFailure('Message to Transform is empty. Add text before generating.', doc);
+    const transparency = deriveApertureApprovalTransparency(buildPatch38ApprovalPacket({ reason: 'empty source text' }));
+    recordPatch38ApprovalBlock(transparency, {});
+    renderGateFailure(formatPatch38ApprovalBlock(transparency), doc, transparency);
     return null;
   }
   const mask = selectedMask(state);
@@ -226,8 +278,13 @@ async function runPatch38Transform(doc = document) {
   if (!text(state.protectedOutputText)) {
     const reports = result.patch38Diagnostics?.providerReports || [];
     const reportWarnings = reports.flatMap((report) => report.warnings || []);
-    const suffix = reportWarnings.length ? ` Provider warnings: ${reportWarnings.join(', ')}.` : '';
-    renderGateFailure(`No approved candidate was produced.${suffix}`, doc);
+    const transparency = deriveApertureApprovalTransparency(buildPatch38ApprovalPacket({
+      reason: 'candidate selector produced no releasable output',
+      result,
+      warnings: reportWarnings
+    }));
+    recordPatch38ApprovalBlock(transparency, result);
+    renderGateFailure(formatPatch38ApprovalBlock(transparency), doc, transparency);
   } else {
     const selected = result.patch38Diagnostics?.selectedCandidateId || result.selectedCandidateId || 'candidate';
     setGeneratorStatus(`Output produced from ${selected}. Review and Analyze before Accept.`, 'ok', doc);
