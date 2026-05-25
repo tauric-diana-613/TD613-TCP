@@ -119,6 +119,10 @@
     pr77Boot.type = 'module';
     pr77Boot.src = './hush-pr77-flight-controls.js?v=' + (V.hushPr77 || V.hushPr76 || V.hushPr75 || V.hushPatch38 || V.main || '');
     document.head.appendChild(pr77Boot);
+    var pr78Boot = document.createElement('script');
+    pr78Boot.type = 'module';
+    pr78Boot.src = './hush-pr78-runtime-trace.js?v=' + (V.hushPr78 || V.hushPr77 || V.hushPatch38 || V.main || '');
+    document.head.appendChild(pr78Boot);
   }
 
   var srcs = [
