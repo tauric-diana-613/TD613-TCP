@@ -16,7 +16,8 @@
     hushPatch38: '202605250310',
     hushPr75: '202605250203',
     hushPr76: '202605250306',
-    hushPr77: '202605250308'
+    hushPr77: '202605250308',
+    hushPr78: '202605250311'
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" \/>');
