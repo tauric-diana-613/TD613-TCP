@@ -37,8 +37,16 @@ function summarizeProviderError(payload = {}) {
   return {
     code: error.code || payload.code || '',
     status: error.status || payload.status || '',
-    message: String(error.message || payload.message || '').slice(0, 500)
+    message: String(error.message || payload.message || '').slice(0, 900)
   };
+}
+
+function classifyAttempts(attempts = []) {
+  const quota = attempts.some((attempt) => attempt.providerStatus === 429 || /RESOURCE_EXHAUSTED|quota|rate/i.test(`${attempt?.error?.status || ''} ${attempt?.error?.message || ''}`));
+  const modelMissing = attempts.some((attempt) => attempt.providerStatus === 404 || /not found|not supported/i.test(attempt?.error?.message || ''));
+  if (quota) return { status: 429, code: 'provider-quota-exhausted', warnings: ['provider-quota-exhausted', ...(modelMissing ? ['provider-models-unavailable'] : [])] };
+  if (modelMissing) return { status: 502, code: 'provider-models-unavailable', warnings: ['provider-models-unavailable'] };
+  return { status: 502, code: 'provider-error', warnings: ['provider-all-models-failed'] };
 }
 
 async function callGemini({ model, prompt, jsonMode }) {
@@ -68,18 +76,11 @@ async function runProviderProbe(models = []) {
     for (const jsonMode of [true, false]) {
       const { response, payload } = await callGemini({ model, prompt, jsonMode });
       const rawText = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      attempts.push({
-        model,
-        jsonMode,
-        ok: response.ok,
-        providerStatus: response.status,
-        error: response.ok ? null : summarizeProviderError(payload),
-        textPreview: rawText.slice(0, 120)
-      });
+      attempts.push({ model, jsonMode, ok: response.ok, providerStatus: response.status, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 120) });
       if (response.ok) return { ok: true, model, jsonMode, attempts };
     }
   }
-  return { ok: false, attempts };
+  return { ok: false, ...classifyAttempts(attempts), attempts };
 }
 
 export default async function handler(req, res) {
@@ -92,7 +93,7 @@ export default async function handler(req, res) {
     if (hasProbe(req)) {
       if (!process.env.GEMINI_API_KEY) return send(res, 501, { ok: false, configured: false, error: 'remote-llm-proxy-not-configured' });
       const probe = await runProviderProbe(models);
-      return send(res, probe.ok ? 200 : 502, { route: '/api/hush-generate', configured: true, models, probe });
+      return send(res, probe.ok ? 200 : probe.status || 502, { route: '/api/hush-generate', configured: true, models, probe });
     }
     return send(res, 200, {
       ok: true,
@@ -124,7 +125,8 @@ export default async function handler(req, res) {
         return send(res, 200, { provider: 'gemini-proxy', model, jsonMode, candidates: Array.isArray(parsed.candidates) ? parsed.candidates : [], warnings: Array.isArray(parsed.warnings) ? parsed.warnings : [], attempts });
       }
     }
-    return send(res, 502, { error: 'provider-error', warnings: ['provider-all-models-failed'], attempts });
+    const classified = classifyAttempts(attempts);
+    return send(res, classified.status, { error: classified.code, warnings: classified.warnings, attempts });
   } catch (error) {
     return send(res, 500, { error: 'remote-llm-proxy-exception', message: String(error?.message || error) });
   }
