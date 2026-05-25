@@ -15,7 +15,8 @@
     hushPhase32: '202605250101',
     hushPatch38: '202605250307',
     hushPr75: '202605250203',
-    hushPr76: '202605250306'
+    hushPr76: '202605250306',
+    hushPr77: '202605250308'
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" \/>');
