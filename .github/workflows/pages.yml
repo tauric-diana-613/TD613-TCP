@@ -32,6 +32,7 @@ jobs:
       - run: node scripts/patch-td613-flight-mobile-pr80.mjs
       - run: node scripts/patch-td613-flight-mobile-pr81.mjs
       - run: node scripts/patch-td613-flight-mobile-pr82.mjs
+      - run: node scripts/patch-td613-flight-mobile-pr84.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
