@@ -1,8 +1,9 @@
 import { buildHushSwap as buildPhase34HushSwap } from './hush-swap-phase34.js';
 import { generateOfflineProviderCandidates, mergeProviderCandidates, collapseSurfaceScore, GENERATOR_MODES, HUSH_GENERATOR_PROVIDER_VERSION } from './hush-generator-provider.js';
+import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
-export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
+export const HUSH_SWAP_PATCH38_VERSION = 'patch-39-coverage-gated-candidate-generator';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -13,7 +14,7 @@ const offlineSource = (candidate = {}) => /patch38-offline-provider|phase34-expr
 const providerSource = (candidate = {}) => remoteSource(candidate) || offlineSource(candidate);
 
 function release(candidate = {}) {
-  return candidate?.text?.trim() && candidate.payloadIntegrity?.passed !== false && candidate.claimIntegrity?.passed !== false && candidate.releasePolicy?.hardBlocked !== true;
+  return candidate?.text?.trim() && candidate.payloadIntegrity?.passed !== false && candidate.claimIntegrity?.passed !== false && candidate.releasePolicy?.hardBlocked !== true && candidate.propositionIntegrity?.passed !== false;
 }
 
 function score(candidate = {}, sourceText = '', mode = GENERATOR_MODES.OFFLINE_EXPRESSIVE) {
@@ -25,18 +26,21 @@ function score(candidate = {}, sourceText = '', mode = GENERATOR_MODES.OFFLINE_E
   const hybridRemoteBonus = mode === GENERATOR_MODES.HYBRID && remote ? 0.18 : 0;
   const offlinePenaltyInRemote = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && offline ? 0.45 : 0;
   const questionBonus = genericQuestionActive(sourceText) && providerSource(candidate) ? 0.32 : 0;
+  const coverageBonus = Number(candidate.propositionIntegrity?.coverage?.averageCoverage || 0) * 0.38;
+  const lengthBonus = Math.min(1, Number(candidate.propositionIntegrity?.coverage?.lengthRatio || 0)) * 0.18;
+  const warningPenalty = asArray(candidate.propositionIntegrity?.warnings).length * 0.08;
   const base = Number(candidate.finalScore || 0.45);
-  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus - offlinePenaltyInRemote - collapse * 0.9);
+  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + coverageBonus + lengthBonus - offlinePenaltyInRemote - collapse * 0.9 - warningPenalty);
 }
 
-function normalize(candidate = {}) {
-  return {
+function normalize(candidate = {}, sourceText = '') {
+  return attachPropositionIntegrity({
     ...candidate,
     releasePolicy: candidate.releasePolicy || { mayPopulateOutput: true, hardBlocked: false, state: 'candidate' },
     releaseSummary: candidate.releaseSummary || { status: 'candidate', warnings: [] },
     payloadIntegrity: candidate.payloadIntegrity || { passed: true, warnings: [] },
     claimIntegrity: candidate.claimIntegrity || { passed: true, warnings: [] }
-  };
+  }, sourceText);
 }
 
 function apply(result = {}, selected = null, diagnostics = {}) {
@@ -51,6 +55,7 @@ function apply(result = {}, selected = null, diagnostics = {}) {
     releaseSummary: selected.releaseSummary || result.releaseSummary,
     payloadIntegrity: selected.payloadIntegrity || result.payloadIntegrity,
     claimIntegrity: selected.claimIntegrity || result.claimIntegrity,
+    propositionIntegrity: selected.propositionIntegrity || result.propositionIntegrity,
     patch38Diagnostics: diagnostics,
     warnings: [...new Set([...asArray(result.warnings), ...asArray(selected.warnings), ...(diagnostics.warning ? [diagnostics.warning] : [])])]
   };
@@ -63,12 +68,15 @@ export function buildHushSwap(input = {}) {
   const offlineReport = generateOfflineProviderCandidates(input);
   const remoteReports = asArray(input.providerReports);
   const reports = mode === GENERATOR_MODES.REMOTE_LLM_PROXY ? remoteReports : mode === GENERATOR_MODES.HYBRID ? [...remoteReports, offlineReport] : [offlineReport];
-  const providerCandidates = mergeProviderCandidates(reports).map(normalize);
-  const merged = mergeProviderCandidates([{ candidates: providerCandidates }, { candidates: asArray(result.candidates) }]).map(normalize);
-  const ranked = merged.filter(release).map((candidate) => ({
+  const providerCandidates = mergeProviderCandidates(reports).map((candidate) => normalize(candidate, sourceText));
+  const merged = mergeProviderCandidates([{ candidates: providerCandidates }, { candidates: asArray(result.candidates) }]).map((candidate) => normalize(candidate, sourceText));
+  const releasable = merged.filter(release);
+  const ranked = releasable.map((candidate) => ({
     candidate,
     score: score(candidate, sourceText, mode),
     collapse: collapseSurfaceScore(candidate.text),
+    coverage: candidate.propositionIntegrity?.coverage?.averageCoverage ?? 0,
+    lengthRatio: candidate.propositionIntegrity?.coverage?.lengthRatio ?? 0,
     provider: providerSource(candidate),
     remote: remoteSource(candidate),
     offline: offlineSource(candidate)
@@ -80,6 +88,15 @@ export function buildHushSwap(input = {}) {
       ? (ranked.find((row) => row.remote && row.collapse < 0.2)?.candidate || ranked.find((row) => row.provider && row.collapse < 0.2)?.candidate || ranked[0]?.candidate || null)
       : (ranked.find((row) => row.offline && row.collapse < 0.2)?.candidate || ranked[0]?.candidate || null);
 
+  const blockedRows = merged.filter((candidate) => !release(candidate)).slice(0, 10).map((candidate) => ({
+    id: candidate.id,
+    source: candidate.source,
+    warnings: candidate.propositionIntegrity?.warnings || candidate.warnings || [],
+    coverage: candidate.propositionIntegrity?.coverage?.averageCoverage ?? 0,
+    lengthRatio: candidate.propositionIntegrity?.coverage?.lengthRatio ?? 0,
+    missingUnitCount: candidate.propositionIntegrity?.coverage?.missingUnitCount ?? 0
+  }));
+
   const diagnostics = {
     version: HUSH_SWAP_PATCH38_VERSION,
     providerVersion: HUSH_GENERATOR_PROVIDER_VERSION,
@@ -89,16 +106,22 @@ export function buildHushSwap(input = {}) {
     offlineCandidateCount: providerCandidates.filter(offlineSource).length,
     generatedCount: providerCandidates.length,
     mergedCount: merged.length,
+    releasableCount: releasable.length,
+    blockedCount: merged.length - releasable.length,
+    blockedRows,
     selectedCandidateId: selected?.id || '',
     selectedProviderCandidate: providerSource(selected || {}),
     selectedRemoteCandidate: remoteSource(selected || {}),
     selectedOfflineCandidate: offlineSource(selected || {}),
+    selectedCoverage: selected?.propositionIntegrity?.coverage?.averageCoverage ?? 0,
+    selectedLengthRatio: selected?.propositionIntegrity?.coverage?.lengthRatio ?? 0,
     selectedCollapseSurfaceScore: round4(collapseSurfaceScore(selected?.text || '')),
     selectedScore: ranked.find((row) => row.candidate === selected)?.score || 0,
-    selectorRows: ranked.slice(0, 10).map((row) => ({ id: row.candidate.id, source: row.candidate.source, strategy: row.candidate.strategy, score: row.score, collapse: row.collapse, provider: row.provider, remote: row.remote, offline: row.offline })),
+    selectorRows: ranked.slice(0, 10).map((row) => ({ id: row.candidate.id, source: row.candidate.source, strategy: row.candidate.strategy, score: row.score, collapse: row.collapse, coverage: row.coverage, lengthRatio: row.lengthRatio, provider: row.provider, remote: row.remote, offline: row.offline })),
     mergedCandidates: merged,
     warning: mode === GENERATOR_MODES.REMOTE_LLM_PROXY && !providerCandidates.some(remoteSource)
       ? 'remote-mode-produced-no-remote-candidates'
+      : !selected && blockedRows.length ? 'all-candidates-failed-proposition-coverage'
       : collapseSurfaceScore(selected?.text || '') >= 0.34 ? 'patch38-custody-collapse-risk' : ''
   };
   return apply(result, selected, diagnostics);
