@@ -8,6 +8,10 @@ const text = (value) => String(value ?? '').trim();
 const esc = (value = '') => String(value ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
 let suppressAuto = false;
 
+function patch38OwnsTransform(doc = document) {
+  return doc?.body?.dataset?.hushPatch38 === 'true' || Boolean($('hushGeneratorMode', doc));
+}
+
 function selectedMask(state = bench.benchState || {}) {
   const masks = [...(state.hushMasks || []), ...(state.customMasks || [])];
   return masks.find((mask) => mask.id === state.selectedHushMaskId) || state.selectedHushMask || masks[0] || null;
@@ -115,8 +119,8 @@ function installAutoMaskTransform(doc = document) {
   if (!select || select.dataset.phase32Auto === 'true') return;
   select.dataset.phase32Auto = 'true';
   select.addEventListener('change', () => {
-    if (suppressAuto) return;
-    window.setTimeout(() => { if (text($('messageDraftInput', doc)?.value)) runPhase32Transform(doc); }, 0);
+    if (suppressAuto || patch38OwnsTransform(doc)) return;
+    window.setTimeout(() => { if (text($('messageDraftInput', doc)?.value) && !patch38OwnsTransform(doc)) runPhase32Transform(doc); }, 0);
   });
 }
 
@@ -125,6 +129,7 @@ function interceptTransforms(doc = document) {
   if (transform && transform.dataset.phase32Intercept !== 'true') {
     transform.dataset.phase32Intercept = 'true';
     transform.addEventListener('click', (event) => {
+      if (patch38OwnsTransform(doc)) return;
       event.preventDefault();
       event.stopImmediatePropagation();
       runPhase32Transform(doc);
