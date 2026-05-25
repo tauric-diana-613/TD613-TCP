@@ -1,11 +1,12 @@
 import * as bench from './adversarial-bench.mjs';
 
-export const HUSH_PR77_FLIGHT_CONTROLS_VERSION = 'pr77-explicit-flight-controls';
+export const HUSH_PR77_FLIGHT_CONTROLS_VERSION = 'pr77-explicit-flight-controls-review-clear';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
 let lastSourceSignature = '';
 let lastOutputSignature = '';
+let lastAnalyzedOutputSignature = '';
 let explicitTransformInFlight = false;
 
 function sourceSignature(doc = document) {
@@ -25,7 +26,7 @@ function outputSignature(doc = document) {
 function setAcceptWarning(message = '', { hidden = false, disableAccept = true } = {}, doc = document) {
   const accept = $('acceptOutputBtn', doc);
   const warning = $('acceptWarning', doc);
-  if (accept && disableAccept) accept.disabled = true;
+  if (accept) accept.disabled = Boolean(disableAccept);
   if (!warning) return;
   warning.hidden = hidden || !message;
   warning.textContent = message || '';
@@ -38,6 +39,25 @@ function setGeneratorStatus(message = '', tone = 'info', doc = document) {
   status.textContent = message || status.textContent || 'Generator mode ready.';
 }
 
+function releaseAcceptIfAnalyzed(doc = document) {
+  const output = text($('protectedOutputInput', doc)?.value || '');
+  if (!output) return false;
+  const state = bench.benchState || {};
+  const decision = state.controllerDecision;
+  const route = state.recognitionField?.classifications?.route;
+  const analyzed = Boolean(state.escapeVector && decision && lastAnalyzedOutputSignature === outputSignature(doc));
+  if (!analyzed) return false;
+  const allowed = ['seal', 'continue'].includes(decision.state) && route !== 'hold';
+  if (allowed) {
+    setAcceptWarning('', { hidden: true, disableAccept: false }, doc);
+    setGeneratorStatus('Analyze complete. Output is reviewed and ready for Mask Memory if you accept it.', 'ok', doc);
+    return true;
+  }
+  setAcceptWarning('Analyze completed. Accept remains paused by controller or Recognition Field routing; edit the output or switch masks, then Analyze again.', { hidden: false, disableAccept: true }, doc);
+  setGeneratorStatus('Analyze complete, but this output is still held. Edit or switch masks, then Analyze again.', 'warn', doc);
+  return true;
+}
+
 function resetReviewState(doc = document, reason = 'pending-review') {
   const state = bench.benchState || {};
   state.escapeVector = null;
@@ -46,6 +66,7 @@ function resetReviewState(doc = document, reason = 'pending-review') {
   state.contextProfile = null;
   state.claimCeiling = null;
   state.hushProfileMatch = null;
+  lastAnalyzedOutputSignature = '';
   const output = text($('protectedOutputInput', doc)?.value || '');
   if (output) {
     setAcceptWarning('Output is unreviewed. Hit Analyze after Transform before accepting into Mask Memory.', { hidden: false, disableAccept: true }, doc);
@@ -65,6 +86,7 @@ function clearOutputForNewSource(doc = document, reason = 'source-changed') {
   state.protectedOutputText = '';
   state.hushSwapResult = null;
   lastOutputSignature = '';
+  lastAnalyzedOutputSignature = '';
   resetReviewState(doc, reason);
   setGeneratorStatus('Message or mask changed. Transform is waiting for an explicit button press.', 'info', doc);
 }
@@ -90,10 +112,10 @@ function afterAnalyze(doc = document) {
     return;
   }
   lastOutputSignature = outputSignature(doc);
-  const decision = bench.benchState?.controllerDecision;
-  const route = bench.benchState?.recognitionField?.classifications?.route;
-  if (decision && ['seal', 'continue'].includes(decision.state) && route !== 'hold') return;
-  setAcceptWarning('Analyze completed, but acceptance still needs a safer output. Edit the output or switch masks, then Analyze again.', { hidden: false, disableAccept: true }, doc);
+  if (bench.benchState?.escapeVector && bench.benchState?.controllerDecision) {
+    lastAnalyzedOutputSignature = outputSignature(doc);
+  }
+  releaseAcceptIfAnalyzed(doc);
 }
 
 function bind(doc = document) {
@@ -105,6 +127,7 @@ function bind(doc = document) {
   if (transform) {
     transform.addEventListener('click', () => {
       explicitTransformInFlight = true;
+      lastAnalyzedOutputSignature = '';
       setGeneratorStatus('Explicit Transform pressed. Remote candidate flight in progress.', 'info', doc);
       window.setTimeout(() => afterTransform(doc), 500);
     }, true);
@@ -115,6 +138,7 @@ function bind(doc = document) {
     analyze.addEventListener('click', () => {
       window.setTimeout(() => afterAnalyze(doc), 220);
       window.setTimeout(() => afterAnalyze(doc), 900);
+      window.setTimeout(() => afterAnalyze(doc), 1800);
     }, true);
   }
 
