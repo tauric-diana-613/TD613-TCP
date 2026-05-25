@@ -73,27 +73,45 @@ function installGeneratorMode(doc = document) {
   return $('hushGeneratorMode', doc);
 }
 
+function remoteEndpointCandidates() {
+  const pathname = typeof window !== 'undefined' ? window.location?.pathname || '' : '';
+  const pageDir = pathname.endsWith('/') ? pathname : pathname.replace(/\/[^/]*$/, '/');
+  const candidates = [];
+  if (pageDir && pageDir !== '/') candidates.push(`${pageDir}api/hush-generate`);
+  if (pathname.startsWith('/app/')) candidates.push('/app/api/hush-generate');
+  candidates.push('/api/hush-generate');
+  candidates.push('./api/hush-generate');
+  return [...new Set(candidates)];
+}
+
 async function fetchRemoteReport(input = {}, doc = document) {
   const contract = buildHushLlmPromptContractV2(input);
-  try {
-    const response = await fetch('/api/hush-generate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contract }) });
-    if (!response.ok) {
-      const warning = `remote-provider-http-${response.status}`;
-      setGeneratorStatus(`Remote provider returned ${response.status}; using local fallback when available.`, 'warning', doc);
-      return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: [warning], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion } };
+  const tried = [];
+  for (const endpoint of remoteEndpointCandidates()) {
+    try {
+      const response = await fetch(endpoint, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contract }) });
+      tried.push(`${endpoint}:${response.status}`);
+      if (response.status === 404) continue;
+      if (!response.ok) {
+        const warning = `remote-provider-http-${response.status}`;
+        setGeneratorStatus(`Remote provider reached ${endpoint} but returned ${response.status}; using local fallback when available.`, 'warning', doc);
+        return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: [warning, `endpoint:${endpoint}`], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion } };
+      }
+      const normalized = normalizeRemoteProviderResponse(await response.json(), contract);
+      normalized.requestReceipt = { ...(normalized.requestReceipt || {}), endpoint, triedEndpoints: tried };
+      if (!normalized.candidates?.length) {
+        normalized.warnings = [...new Set([...(normalized.warnings || []), 'remote-provider-empty-candidates', `endpoint:${endpoint}`])];
+        setGeneratorStatus(`Remote provider reached ${endpoint} but returned zero usable candidates; local fallback remains active in Hybrid mode.`, 'warning', doc);
+      } else {
+        setGeneratorStatus(`Remote provider reached ${endpoint} and returned ${normalized.candidates.length} candidate(s). Local audit still controls release.`, 'ok', doc);
+      }
+      return normalized;
+    } catch (error) {
+      tried.push(`${endpoint}:exception`);
     }
-    const normalized = normalizeRemoteProviderResponse(await response.json(), contract);
-    if (!normalized.candidates?.length) {
-      normalized.warnings = [...new Set([...(normalized.warnings || []), 'remote-provider-empty-candidates'])];
-      setGeneratorStatus('Remote provider returned zero usable candidates; local fallback remains active in Hybrid mode.', 'warning', doc);
-    } else {
-      setGeneratorStatus(`Remote provider returned ${normalized.candidates.length} candidate(s). Local audit still controls release.`, 'ok', doc);
-    }
-    return normalized;
-  } catch {
-    setGeneratorStatus('Remote provider unavailable; using local fallback when available.', 'warning', doc);
-    return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: ['remote-provider-unavailable'], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion } };
   }
+  setGeneratorStatus(`Remote provider route not found. Tried: ${tried.join(', ') || remoteEndpointCandidates().join(', ')}.`, 'error', doc);
+  return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: ['remote-provider-route-not-found', ...tried.map((item) => `tried:${item}`)], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion, triedEndpoints: tried } };
 }
 
 function renderDiagnostics(result = {}, doc = document) {
@@ -112,7 +130,9 @@ function renderDiagnostics(result = {}, doc = document) {
   const route = phase35.ontologyRoute || {};
   const summary = route.propositionSummary || {};
   const rows = Array.isArray(p.selectorRows) ? p.selectorRows.slice(0, 5) : [];
-  target.innerHTML = `<strong>Phase 35 ontology-routed generator</strong><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Route: <code>${esc(route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.sourceType || 'n/a')}</code></span><span>Propositions: <code>${esc(summary.propositionCount ?? '0')}</code></span><span>Questions: <code>${esc(summary.questionCount ?? '0')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 35 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.strategy || '')} · score ${esc(row.score)} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
+  const receipt = p.providerReports?.[0]?.requestReceipt || {};
+  const endpointLine = receipt.endpoint ? `<span>Endpoint: <code>${esc(receipt.endpoint)}</code></span>` : receipt.triedEndpoints?.length ? `<span>Tried: <code>${esc(receipt.triedEndpoints.join(', '))}</code></span>` : '';
+  target.innerHTML = `<strong>Phase 35 ontology-routed generator</strong><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Route: <code>${esc(route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.sourceType || 'n/a')}</code></span>${endpointLine}<span>Propositions: <code>${esc(summary.propositionCount ?? '0')}</code></span><span>Questions: <code>${esc(summary.questionCount ?? '0')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 35 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.strategy || '')} · score ${esc(row.score)} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
 }
 
 function renderGateFailure(reason = '', doc = document) {
