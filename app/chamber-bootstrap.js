@@ -115,6 +115,10 @@
     pr76Boot.type = 'module';
     pr76Boot.src = './hush-pr76-mask-recommender.js?v=' + (V.hushPr76 || V.hushPr75 || V.hushPatch38 || V.hushPhase32 || V.main || '');
     document.head.appendChild(pr76Boot);
+    var pr77Boot = document.createElement('script');
+    pr77Boot.type = 'module';
+    pr77Boot.src = './hush-pr77-flight-controls.js?v=' + (V.hushPr77 || V.hushPr76 || V.hushPr75 || V.hushPatch38 || V.main || '');
+    document.head.appendChild(pr77Boot);
   }
 
   var srcs = [
