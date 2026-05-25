@@ -3,7 +3,8 @@ import { generateOfflineProviderCandidates, mergeProviderCandidates, collapseSur
 import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
-export const HUSH_SWAP_PATCH38_VERSION = 'patch-40-coverage-gated-candidate-generator-safe';
+export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
+export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'patch-40-coverage-gated-candidate-generator-safe';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -120,6 +121,7 @@ export function buildHushSwap(input = {}) {
 
   const diagnostics = {
     version: HUSH_SWAP_PATCH38_VERSION,
+    internalVersion: HUSH_SWAP_PATCH38_INTERNAL_VERSION,
     providerVersion: HUSH_GENERATOR_PROVIDER_VERSION,
     providerMode: mode,
     providerReports: reports.map((report) => ({ provider: report.provider, model: report.model, candidateCount: asArray(report.candidates).length, warnings: report.warnings, requestReceipt: report.requestReceipt })),
