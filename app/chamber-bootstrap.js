@@ -127,6 +127,10 @@
     pr79Boot.type = 'module';
     pr79Boot.src = './hush-pr79-coverage-floor.js?v=' + (V.hushPr79 || V.hushPr78 || V.hushPatch38 || V.main || '');
     document.head.appendChild(pr79Boot);
+    var pr80Boot = document.createElement('script');
+    pr80Boot.type = 'module';
+    pr80Boot.src = './hush-pr80-remote-empty-fallback.js?v=' + (V.hushPr80 || V.hushPr79 || V.hushPatch38 || V.main || '');
+    document.head.appendChild(pr80Boot);
   }
 
   var srcs = [
