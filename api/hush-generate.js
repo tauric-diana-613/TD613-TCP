@@ -130,10 +130,75 @@ function cleanJsonText(text = '') {
   return String(text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/```$/i, '').trim();
 }
 
+function candidateText(candidate = {}) {
+  if (typeof candidate === 'string') return candidate;
+  return String(candidate.text || candidate.output || candidate.candidate || candidate.rewrite || '').trim();
+}
+
+function normalizeProviderCandidates(value) {
+  const source = Array.isArray(value)
+    ? value
+    : Array.isArray(value?.candidates)
+      ? value.candidates
+      : value?.text || value?.output || value?.candidate || value?.rewrite
+        ? [value]
+        : [];
+  return source
+    .map((candidate, index) => {
+      const text = candidateText(candidate);
+      if (!text) return null;
+      return {
+        text,
+        style_note: typeof candidate === 'object' && candidate.style_note ? String(candidate.style_note) : `provider-candidate-${index + 1}`,
+        risk_flags: Array.isArray(candidate?.risk_flags) ? candidate.risk_flags.map(String) : []
+      };
+    })
+    .filter(Boolean)
+    .slice(0, 8);
+}
+
+function tryParseProviderPayload(text = '') {
+  const cleaned = cleanJsonText(text);
+  const attempts = [cleaned];
+  const firstObject = cleaned.indexOf('{');
+  const lastObject = cleaned.lastIndexOf('}');
+  if (firstObject >= 0 && lastObject > firstObject) attempts.push(cleaned.slice(firstObject, lastObject + 1));
+  const firstArray = cleaned.indexOf('[');
+  const lastArray = cleaned.lastIndexOf(']');
+  if (firstArray >= 0 && lastArray > firstArray) attempts.push(cleaned.slice(firstArray, lastArray + 1));
+  for (const attempt of [...new Set(attempts)].filter(Boolean)) {
+    try { return JSON.parse(attempt); }
+    catch {}
+  }
+  return null;
+}
+
 function parseProviderJson(text = '') {
   const cleaned = cleanJsonText(text);
-  try { return JSON.parse(cleaned || '{}'); }
-  catch { return { candidates: [], warnings: ['provider-returned-invalid-json'], rawText: cleaned.slice(0, 600) }; }
+  const parsed = tryParseProviderPayload(cleaned);
+  if (parsed) {
+    const candidates = normalizeProviderCandidates(parsed);
+    return {
+      candidates,
+      warnings: [
+        ...(Array.isArray(parsed.warnings) ? parsed.warnings.map(String) : []),
+        ...(candidates.length ? [] : ['provider-json-contained-no-usable-candidates'])
+      ],
+      rawText: cleaned.slice(0, 600)
+    };
+  }
+  if (cleaned.length > 20) {
+    return {
+      candidates: [{
+        text: cleaned,
+        style_note: 'Recovered raw provider text after invalid JSON; local Hush audit still controls release.',
+        risk_flags: ['provider-returned-invalid-json-recovered-raw-candidate']
+      }],
+      warnings: ['provider-returned-invalid-json', 'provider-invalid-json-recovered-as-raw-candidate'],
+      rawText: cleaned.slice(0, 600)
+    };
+  }
+  return { candidates: [], warnings: ['provider-returned-invalid-json'], rawText: cleaned.slice(0, 600) };
 }
 
 function classifyAttempts(attempts = []) {
@@ -255,7 +320,7 @@ export default async function handler(req, res) {
         preferredWorkingModel = normalizeModelName(model);
         const text = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '{"candidates":[]}';
         const parsed = parseProviderJson(text);
-        return send(res, 200, { provider: 'gemini-proxy', model: preferredWorkingModel, jsonMode, modelSource: resolved.source, candidates: Array.isArray(parsed.candidates) ? parsed.candidates : [], warnings: Array.isArray(parsed.warnings) ? parsed.warnings : [], attempts });
+        return send(res, 200, { provider: 'gemini-proxy', model: preferredWorkingModel, jsonMode, modelSource: resolved.source, candidates: Array.isArray(parsed.candidates) ? parsed.candidates : [], warnings: Array.isArray(parsed.warnings) ? parsed.warnings : [], rawText: parsed.rawText, attempts });
       }
     }
     const classified = classifyAttempts(attempts);
