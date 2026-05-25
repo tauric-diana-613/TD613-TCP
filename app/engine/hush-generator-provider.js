@@ -138,10 +138,10 @@ export function generateOfflineQuestionCandidates(input = {}) {
   const q1 = parts[0] || clean;
   const q2 = parts[1] || '';
   return [
-    candidate('patch38-question-doorway', `How do you break into tech when your resume has not learned the sector password yet?${q2 ? ' And is signal-reading fluency actually a skill asset, or one of those abilities people only value after it has already read the room?' : ''}`, 'question-doorway'),
-    candidate('patch38-question-map', `Trying to map the no-experience doorway into tech. ${q2 ? 'Also wondering whether signal-reading fluency counts as a real skill asset, because it feels like one of those invisible competencies hiring systems use but rarely name.' : q1}`, 'question-map'),
-    candidate('patch38-question-formal', `Question one: how does someone enter tech without sector experience? ${q2 ? 'Question two: does signal-reading fluency carry actual labor-market value, or does it only become legible after someone has already used it to read the room?' : ''}`, 'question-formal'),
-    candidate('patch38-question-compressed', `No-sector-experience tech job question, plus the signal-reading question: is that fluency actually marketable, or just painfully undernamed?`, 'question-compressed')
+    candidate('patch38-question-doorway', `How do you find a tech job with no prior experience in the sector when your resume has not learned the password yet?${q2 ? ' And is signal-reading fluency really a skill asset, or one of those abilities people only value after it has already read the room?' : ''}`, 'question-doorway'),
+    candidate('patch38-question-map', `Trying to map the question: how do you find a tech job with no prior experience in the sector? ${q2 ? 'Also wondering whether signal-reading fluency really counts as a skill asset, because it feels like one of those invisible competencies hiring systems use but rarely name.' : q1}`, 'question-map'),
+    candidate('patch38-question-formal', `Question one: how does someone find a tech job with no prior experience in the sector? ${q2 ? 'Question two: is signal-reading fluency really a skill asset, or does it only become legible after someone has already used it to read the room?' : ''}`, 'question-formal'),
+    candidate('patch38-question-compressed', `How do you find a tech job with no prior experience in the sector, plus the signal-reading fluency question: is that really a skill asset, or just painfully undernamed?`, 'question-compressed')
   ];
 }
 
