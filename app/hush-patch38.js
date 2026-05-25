@@ -7,6 +7,7 @@ import { auditPropositionIntegrity } from './engine/hush-proposition-integrity.j
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
 const esc = (value = '') => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+const PRODUCTION_HUSH_API_ENDPOINT = 'https://td613.vercel.app/api/hush-generate';
 
 function selectedMask(state = bench.benchState || {}) {
   const masks = [...(state.hushMasks || []), ...(state.customMasks || [])];
@@ -73,15 +74,31 @@ function installGeneratorMode(doc = document) {
   return $('hushGeneratorMode', doc);
 }
 
+function configuredRemoteEndpoint() {
+  if (typeof window === 'undefined') return '';
+  const direct = window.TD613_HUSH_API_ENDPOINT || window.__TD613_HUSH_API_ENDPOINT__ || '';
+  const stored = (() => {
+    try { return window.localStorage?.getItem('td613:hush-api-endpoint') || ''; }
+    catch { return ''; }
+  })();
+  return text(direct || stored);
+}
+
 function remoteEndpointCandidates() {
-  const pathname = typeof window !== 'undefined' ? window.location?.pathname || '' : '';
+  const loc = typeof window !== 'undefined' ? window.location : null;
+  const origin = loc?.origin || '';
+  const pathname = loc?.pathname || '';
   const pageDir = pathname.endsWith('/') ? pathname : pathname.replace(/\/[^/]*$/, '/');
   const candidates = [];
+  const configured = configuredRemoteEndpoint();
+  if (configured) candidates.push(configured);
+  if (origin) candidates.push(`${origin}/api/hush-generate`);
+  candidates.push(PRODUCTION_HUSH_API_ENDPOINT);
   if (pageDir && pageDir !== '/') candidates.push(`${pageDir}api/hush-generate`);
   if (pathname.startsWith('/app/')) candidates.push('/app/api/hush-generate');
   candidates.push('/api/hush-generate');
   candidates.push('./api/hush-generate');
-  return [...new Set(candidates)];
+  return [...new Set(candidates.filter(Boolean))];
 }
 
 async function fetchRemoteReport(input = {}, doc = document) {
@@ -89,13 +106,13 @@ async function fetchRemoteReport(input = {}, doc = document) {
   const tried = [];
   for (const endpoint of remoteEndpointCandidates()) {
     try {
-      const response = await fetch(endpoint, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contract }) });
+      const response = await fetch(endpoint, { method: 'POST', mode: 'cors', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contract }) });
       tried.push(`${endpoint}:${response.status}`);
       if (response.status === 404) continue;
       if (!response.ok) {
         const warning = `remote-provider-http-${response.status}`;
         setGeneratorStatus(`Remote provider reached ${endpoint} but returned ${response.status}; using local fallback when available.`, 'warning', doc);
-        return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: [warning, `endpoint:${endpoint}`], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion } };
+        return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: [warning, `endpoint:${endpoint}`], requestReceipt: { endpoint, triedEndpoints: tried, sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion } };
       }
       const normalized = normalizeRemoteProviderResponse(await response.json(), contract);
       normalized.requestReceipt = { ...(normalized.requestReceipt || {}), endpoint, triedEndpoints: tried };
@@ -204,7 +221,7 @@ export function initHushPatch38(doc = document) {
     button.dataset.patch38 = 'true';
     button.addEventListener('click', (event) => { event.preventDefault(); event.stopImmediatePropagation(); runPatch38Transform(doc); }, true);
   }
-  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase35: true, runPatch38Transform, installGeneratorMode };
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase35: true, runPatch38Transform, installGeneratorMode, remoteEndpointCandidates };
   return { installed: true, version: HUSH_SWAP_PATCH38_VERSION };
 }
 
