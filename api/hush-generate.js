@@ -42,19 +42,44 @@ function summarizeProviderError(payload = {}) {
 }
 
 async function callGemini({ model, prompt, jsonMode }) {
-  const generationConfig = jsonMode
-    ? { temperature: 0.78, responseMimeType: 'application/json' }
-    : { temperature: 0.78 };
+  const generationConfig = jsonMode ? { temperature: 0.78, responseMimeType: 'application/json' } : { temperature: 0.78 };
   const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(process.env.GEMINI_API_KEY), {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig
-    })
+    body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig })
   });
   const payload = await response.json().catch(() => ({}));
   return { response, payload };
+}
+
+function hasProbe(req) {
+  try {
+    const url = new URL(req.url || '', 'https://td613.local');
+    return url.searchParams.has('probe') || url.searchParams.has('selftest');
+  } catch {
+    return false;
+  }
+}
+
+async function runProviderProbe(models = []) {
+  const prompt = 'Return JSON only: {"candidates":[{"text":"probe ok","style_note":"probe","risk_flags":[]}]}';
+  const attempts = [];
+  for (const model of models) {
+    for (const jsonMode of [true, false]) {
+      const { response, payload } = await callGemini({ model, prompt, jsonMode });
+      const rawText = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      attempts.push({
+        model,
+        jsonMode,
+        ok: response.ok,
+        providerStatus: response.status,
+        error: response.ok ? null : summarizeProviderError(payload),
+        textPreview: rawText.slice(0, 120)
+      });
+      if (response.ok) return { ok: true, model, jsonMode, attempts };
+    }
+  }
+  return { ok: false, attempts };
 }
 
 export default async function handler(req, res) {
@@ -64,6 +89,11 @@ export default async function handler(req, res) {
   }
   const models = configuredModels();
   if (req.method === 'GET') {
+    if (hasProbe(req)) {
+      if (!process.env.GEMINI_API_KEY) return send(res, 501, { ok: false, configured: false, error: 'remote-llm-proxy-not-configured' });
+      const probe = await runProviderProbe(models);
+      return send(res, probe.ok ? 200 : 502, { route: '/api/hush-generate', configured: true, models, probe });
+    }
     return send(res, 200, {
       ok: true,
       route: '/api/hush-generate',
@@ -74,10 +104,7 @@ export default async function handler(req, res) {
   }
   if (req.method !== 'POST') return send(res, 405, { error: 'method-not-allowed' });
   if (!process.env.GEMINI_API_KEY) {
-    return send(res, 501, {
-      error: 'remote-llm-proxy-not-configured',
-      message: 'Remote LLM mode requires a server-side GEMINI_API_KEY. Static browser deployment must not expose API keys.'
-    });
+    return send(res, 501, { error: 'remote-llm-proxy-not-configured', message: 'Remote LLM mode requires a server-side GEMINI_API_KEY.' });
   }
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
@@ -94,21 +121,10 @@ export default async function handler(req, res) {
         }
         const text = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '{"candidates":[]}';
         const parsed = parseProviderJson(text);
-        return send(res, 200, {
-          provider: 'gemini-proxy',
-          model,
-          jsonMode,
-          candidates: Array.isArray(parsed.candidates) ? parsed.candidates : [],
-          warnings: Array.isArray(parsed.warnings) ? parsed.warnings : [],
-          attempts
-        });
+        return send(res, 200, { provider: 'gemini-proxy', model, jsonMode, candidates: Array.isArray(parsed.candidates) ? parsed.candidates : [], warnings: Array.isArray(parsed.warnings) ? parsed.warnings : [], attempts });
       }
     }
-    return send(res, 502, {
-      error: 'provider-error',
-      warnings: ['provider-all-models-failed'],
-      attempts
-    });
+    return send(res, 502, { error: 'provider-error', warnings: ['provider-all-models-failed'], attempts });
   } catch (error) {
     return send(res, 500, { error: 'remote-llm-proxy-exception', message: String(error?.message || error) });
   }
