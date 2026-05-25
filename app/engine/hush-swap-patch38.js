@@ -1,6 +1,6 @@
 import { buildHushSwap as buildPhase34HushSwap } from './hush-swap-phase34.js';
 import { generateOfflineProviderCandidates, mergeProviderCandidates, collapseSurfaceScore, GENERATOR_MODES, HUSH_GENERATOR_PROVIDER_VERSION } from './hush-generator-provider.js';
-import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
+import { attachPropositionIntegrity } from './hush-proposition-integrity.js?v=202605250309';
 
 export * from './hush-swap-phase34.js';
 export const HUSH_SWAP_PATCH38_VERSION = 'patch-39-coverage-gated-candidate-generator';
