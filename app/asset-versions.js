@@ -8,7 +8,7 @@
     receipt:     '202605010945',
     main:        '202604230045',
     aperture:    '202604192040',
-    chrome:      '202604230045',
+    chrome:      '202605250312',
     hushAlienConsole: '202605200001',
     hushFieldInstrument: '202605200002',
     hushMobileViewportFix: '202605200003',
@@ -17,7 +17,8 @@
     hushPr75: '202605250203',
     hushPr76: '202605250306',
     hushPr77: '202605250308',
-    hushPr78: '202605250311'
+    hushPr78: '202605250311',
+    hushPr79: '202605250312'
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" \/>');
