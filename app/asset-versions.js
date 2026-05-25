@@ -11,7 +11,11 @@
     chrome:      '202604230045',
     hushAlienConsole: '202605200001',
     hushFieldInstrument: '202605200002',
-    hushMobileViewportFix: '202605200003'
+    hushMobileViewportFix: '202605200003',
+    hushPhase32: '202605250101',
+    hushPatch38: '202605250102',
+    hushPr75: '202605250103',
+    hushPr76: '202605250104'
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" \/>');
