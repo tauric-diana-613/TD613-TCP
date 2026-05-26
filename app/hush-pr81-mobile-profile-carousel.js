@@ -1,4 +1,4 @@
-export const HUSH_PR81_MOBILE_PROFILE_CAROUSEL_VERSION = 'pr81.2-mobile-profile-readable-grid';
+export const HUSH_PR81_MOBILE_PROFILE_CAROUSEL_VERSION = 'pr81.3-mobile-profile-scrollable-two-column';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const escSelector = (value = '') => {
@@ -16,10 +16,15 @@ function installStyle(doc = document) {
       body[data-page-kind="adversarial-bench"] .hush-source-profile-panel{
         position:relative!important;
         margin:.44rem 0 .42rem!important;
-        padding:.62rem .55rem .62rem!important;
+        padding:.58rem .52rem .62rem!important;
         min-height:0!important;
+        max-height:min(64vh, 34rem)!important;
         border-radius:16px!important;
-        overflow:hidden!important;
+        overflow-y:auto!important;
+        overflow-x:hidden!important;
+        overscroll-behavior:contain!important;
+        -webkit-overflow-scrolling:touch!important;
+        scrollbar-width:thin!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-profile-panel::before,
       body[data-page-kind="adversarial-bench"] .hush-source-profile-panel::after{
@@ -52,47 +57,67 @@ function installStyle(doc = document) {
       body[data-page-kind="adversarial-bench"] .hush-source-profile-grid{
         display:grid!important;
         grid-auto-flow:row!important;
-        grid-template-columns:minmax(0,1fr)!important;
+        grid-template-columns:repeat(2,minmax(0,1fr))!important;
         grid-template-rows:none!important;
         grid-auto-columns:auto!important;
-        gap:.4rem!important;
+        gap:.38rem!important;
         overflow:visible!important;
         overscroll-behavior:contain!important;
         scroll-snap-type:none!important;
         -webkit-overflow-scrolling:auto!important;
         touch-action:auto!important;
-        padding:0!important;
+        padding:0 .04rem .12rem 0!important;
         scrollbar-width:auto!important;
         min-width:0!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-profile-grid::-webkit-scrollbar{display:none!important;}
       body[data-page-kind="adversarial-bench"] .hush-source-metric{
         scroll-snap-align:none!important;
-        min-height:auto!important;
+        min-height:4.7rem!important;
         min-width:0!important;
-        width:100%!important;
-        padding:.48rem .52rem!important;
+        width:auto!important;
+        padding:.5rem .46rem!important;
         border-radius:13px!important;
-        display:block!important;
+        display:flex!important;
+        flex-direction:column!important;
+        justify-content:center!important;
         overflow:hidden!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-metric span{
         display:block!important;
-        font-size:.48rem!important;
-        letter-spacing:.1em!important;
+        font-size:.46rem!important;
+        letter-spacing:.09em!important;
         white-space:normal!important;
         overflow-wrap:anywhere!important;
         word-break:normal!important;
+        line-height:1.15!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-metric strong{
         display:block!important;
-        font-size:.68rem!important;
-        line-height:1.25!important;
-        margin-top:.18rem!important;
+        font-size:.62rem!important;
+        line-height:1.2!important;
+        margin-top:.22rem!important;
         white-space:normal!important;
-        overflow-wrap:break-word!important;
+        overflow-wrap:anywhere!important;
         word-break:normal!important;
         max-width:100%!important;
+      }
+    }
+
+    @media(max-width:390px){
+      body[data-page-kind="adversarial-bench"] .hush-source-profile-panel{
+        max-height:min(62vh, 32rem)!important;
+        padding:.52rem .46rem .58rem!important;
+      }
+      body[data-page-kind="adversarial-bench"] .hush-source-profile-grid{
+        gap:.32rem!important;
+      }
+      body[data-page-kind="adversarial-bench"] .hush-source-metric{
+        min-height:4.35rem!important;
+        padding:.44rem .38rem!important;
+      }
+      body[data-page-kind="adversarial-bench"] .hush-source-metric strong{
+        font-size:.58rem!important;
       }
     }
   `;
@@ -134,6 +159,7 @@ function boot(doc = document) {
   if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench') return;
   doc.body.dataset.hushPr81MobileProfileCarousel = 'true';
   doc.body.dataset.hushPr81MobileProfileReadableGrid = 'true';
+  doc.body.dataset.hushPr81MobileProfileScrollableTwoColumn = 'true';
   installStyle(doc);
   bindMaskSnap(doc);
   window.setTimeout(() => snapSelectedMaskCard(doc, 'auto'), 100);
