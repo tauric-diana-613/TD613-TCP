@@ -1,11 +1,12 @@
 import { generateExpressiveCandidates } from './hush-expressive-generator.js';
 import { extractCadenceProfile } from './stylometry.js';
 
-export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider';
+export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider-phase37-telemetry';
 export const TECH_JOB_SIGNAL_SAMPLE = 'How do you find a tech job with no prior experience in the sector? Is signal reading fluency really that much of a skill asset?';
 
 const safe = (value) => String(value ?? '').trim();
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
+const safeArray = (value) => Array.isArray(value) ? value.map((item) => safe(item)).filter(Boolean) : [];
 const slug = (value = 'candidate') => safe(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'candidate';
 const truncate = (value = '', limit = 1800) => {
   const text = safe(value).replace(/\s+/g, ' ');
@@ -117,7 +118,13 @@ function candidate(id, text, strategy = 'offline-generic-question') {
     text,
     source: 'patch38-offline-provider',
     strategy,
+    style_operation: strategy,
     operations: ['patch38-generator-provider', strategy],
+    preserved_propositions: [],
+    dropped_propositions: [],
+    changed_questions: [],
+    new_claims: [],
+    mask_surface_notes: {},
     profile: extractCadenceProfile(text),
     naturalness: { naturalnessScore: 0.72, fluencyWarnings: [] },
     scoreBreakdown: { naturalness: 0.72, semanticFidelity: 0.78, providerCandidate: 1 },
@@ -138,10 +145,10 @@ export function generateOfflineQuestionCandidates(input = {}) {
   const q1 = parts[0] || clean;
   const q2 = parts[1] || '';
   return [
-    candidate('patch38-question-doorway', `How do you find a tech job with no prior experience in the sector when your resume has not learned the password yet?${q2 ? ' And is signal-reading fluency really a skill asset, or one of those abilities people only value after it has already read the room?' : ''}`, 'question-doorway'),
-    candidate('patch38-question-map', `Trying to map the question: how do you find a tech job with no prior experience in the sector? ${q2 ? 'Also wondering whether signal-reading fluency really counts as a skill asset, because it feels like one of those invisible competencies hiring systems use but rarely name.' : q1}`, 'question-map'),
-    candidate('patch38-question-formal', `Question one: how does someone find a tech job with no prior experience in the sector? ${q2 ? 'Question two: is signal-reading fluency really a skill asset, or does it only become legible after someone has already used it to read the room?' : ''}`, 'question-formal'),
-    candidate('patch38-question-compressed', `How do you find a tech job with no prior experience in the sector, plus the signal-reading fluency question: is that really a skill asset, or just painfully undernamed?`, 'question-compressed')
+    candidate('patch38-question-doorway', `How do you find a tech job with no prior experience in the sector when your resume has not learned the password yet?${q2 ? ' And is signal-reading fluency really a skill asset, or one of those abilities people only value after it has already read the room?' : ''}`, 'question_preservation'),
+    candidate('patch38-question-map', `Trying to map the question: how do you find a tech job with no prior experience in the sector? ${q2 ? 'Also wondering whether signal-reading fluency really counts as a skill asset, because it feels like one of those invisible competencies hiring systems use but rarely name.' : q1}`, 'cadence_alias'),
+    candidate('patch38-question-formal', `Question one: how does someone find a tech job with no prior experience in the sector? ${q2 ? 'Question two: is signal-reading fluency really a skill asset, or does it only become legible after someone has already used it to read the room?' : ''}`, 'register_lifting'),
+    candidate('patch38-question-compressed', `How do you find a tech job with no prior experience in the sector, plus the signal-reading fluency question: is that really a skill asset, or just painfully undernamed?`, 'heat_calibration')
   ];
 }
 
@@ -172,24 +179,54 @@ export async function requestRemoteProviderCandidates(input = {}, options = {}) 
   return normalizeRemoteProviderResponse(payload, contract);
 }
 
+function providerTelemetry(item = {}, contract = {}) {
+  const operation = safe(item.style_operation || item.styleOperation || item.operation || item.style_note || 'remote-mask-transform');
+  const notes = item.mask_surface_notes && typeof item.mask_surface_notes === 'object' ? item.mask_surface_notes : {};
+  return {
+    promptVersion: contract.promptVersion || '',
+    flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || '',
+    style_operation: operation,
+    preserved_propositions: safeArray(item.preserved_propositions || item.preservedPropositions),
+    dropped_propositions: safeArray(item.dropped_propositions || item.droppedPropositions),
+    changed_questions: safeArray(item.changed_questions || item.changedQuestions),
+    new_claims: safeArray(item.new_claims || item.newClaims),
+    mask_surface_notes: notes
+  };
+}
+
 export function normalizeRemoteProviderResponse(payload = {}, contract = {}) {
-  const rawCandidates = asArray(payload.candidates).slice(0, contract.candidateCount || 8);
+  const rawCandidates = asArray(payload.candidates).slice(0, contract.candidateCount || contract.flightPacket?.flight_controls?.candidate_count || 8);
   return {
     provider: GENERATOR_MODES.REMOTE_LLM_PROXY,
     model: payload.model || 'remote-llm-proxy',
     version: HUSH_GENERATOR_PROVIDER_VERSION,
-    candidates: rawCandidates.map((item, index) => ({
-      ...candidate(`remote-llm-candidate-${index + 1}`, safe(item.text), slug(item.style_note || 'remote-mask-transform')),
-      source: 'remote-llm-candidate',
-      provider: payload.provider || GENERATOR_MODES.REMOTE_LLM_PROXY,
-      model: payload.model || 'remote-llm-proxy',
-      warnings: asArray(item.risk_flags),
-      operations: ['patch38-generator-provider', 'remote-llm-proxy', slug(item.style_note || 'remote-mask-transform')],
-      scoreBreakdown: { naturalness: 0.78, semanticFidelity: 0.8, remoteProviderCandidate: 1 },
-      finalScore: 0.8
-    })).filter((item) => item.text),
+    promptVersion: contract.promptVersion || payload.promptVersion || '',
+    flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || payload.flightPacketVersion || '',
+    candidates: rawCandidates.map((item, index) => {
+      const telemetry = providerTelemetry(item, contract);
+      const styleNote = safe(item.style_note || item.styleNote || telemetry.style_operation || 'remote-mask-transform');
+      return {
+        ...candidate(`remote-llm-candidate-${index + 1}`, safe(item.text || item.output || item.candidate || item.rewrite), slug(styleNote)),
+        source: 'remote-llm-candidate',
+        provider: payload.provider || GENERATOR_MODES.REMOTE_LLM_PROXY,
+        model: payload.model || 'remote-llm-proxy',
+        style_note: styleNote,
+        style_operation: telemetry.style_operation,
+        preserved_propositions: telemetry.preserved_propositions,
+        dropped_propositions: telemetry.dropped_propositions,
+        changed_questions: telemetry.changed_questions,
+        new_claims: telemetry.new_claims,
+        mask_surface_notes: telemetry.mask_surface_notes,
+        providerTelemetry: telemetry,
+        warnings: asArray(item.risk_flags || item.riskFlags),
+        operations: ['patch38-generator-provider', 'remote-llm-proxy', slug(telemetry.style_operation || styleNote)],
+        scoreBreakdown: { naturalness: 0.78, semanticFidelity: 0.8, remoteProviderCandidate: 1, phase37Telemetry: telemetry.style_operation ? 1 : 0 },
+        finalScore: telemetry.style_operation ? 0.86 : 0.8
+      };
+    }).filter((item) => item.text),
     warnings: asArray(payload.warnings),
-    requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion }
+    rawText: payload.rawText || '',
+    requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || '' }
   };
 }
 
