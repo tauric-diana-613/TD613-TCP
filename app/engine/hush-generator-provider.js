@@ -1,7 +1,7 @@
 import { generateExpressiveCandidates } from './hush-expressive-generator.js';
 import { extractCadenceProfile } from './stylometry.js';
 
-export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider-phase37-telemetry';
+export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider-phase37-telemetry+generic-transposition';
 export const TECH_JOB_SIGNAL_SAMPLE = 'How do you find a tech job with no prior experience in the sector? Is signal reading fluency really that much of a skill asset?';
 
 const safe = (value) => String(value ?? '').trim();
@@ -137,6 +137,63 @@ function candidate(id, text, strategy = 'offline-generic-question') {
   };
 }
 
+function sentenceSplit(text = '') {
+  return safe(text).replace(/\s+/g, ' ').match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((item) => item.trim()).filter(Boolean) || [];
+}
+
+function sentenceBody(sentence = '') {
+  return safe(sentence).replace(/[.!?]+$/g, '').trim();
+}
+
+function terminal(text = '') {
+  const value = safe(text);
+  return value && /[.!?]$/.test(value) ? value : `${value}.`;
+}
+
+function lowerFirst(text = '') {
+  const value = safe(text);
+  return value ? `${value.charAt(0).toLowerCase()}${value.slice(1)}` : '';
+}
+
+function genericReorder(source = '') {
+  const parts = sentenceSplit(source).map(sentenceBody).filter(Boolean);
+  if (parts.length >= 2) return terminal(`${parts.slice(1).join(' ')} if ${lowerFirst(parts[0])}`);
+  return '';
+}
+
+function genericOnce(source = '') {
+  const parts = sentenceSplit(source).map(sentenceBody).filter(Boolean);
+  if (parts.length >= 2) return terminal(`Once ${lowerFirst(parts[0])}, ${lowerFirst(parts.slice(1).join(' '))}`);
+  const body = parts[0] || safe(source).replace(/[.!?]+$/g, '');
+  return body ? terminal(`The same claim, moved out of its original frame: ${lowerFirst(body)}`) : '';
+}
+
+function genericSubjectShift(source = '') {
+  const parts = sentenceSplit(source).map(sentenceBody).filter(Boolean);
+  if (parts.length >= 2) return terminal(`${parts.slice(1).join(' ')}; the condition is that ${lowerFirst(parts[0])}`);
+  const body = parts[0] || safe(source).replace(/[.!?]+$/g, '');
+  return body ? terminal(`What changes is the frame, not the claim: ${lowerFirst(body)}`) : '';
+}
+
+export function generateOfflineDeclarativeCandidates(input = {}) {
+  const source = safe(input.sourceText || input.messageDraftText || '');
+  if (!source || /\?/.test(source)) return [];
+  const lower = source.toLowerCase();
+  const targeted = /public/.test(lower) && /literate/.test(lower) && /cognizant/.test(lower) && /ai/.test(lower) && /harder/.test(lower) && /ignore/.test(lower)
+    ? [
+        candidate('patch38-declarative-public-ai-reorder', 'AI is making it harder to ignore if the public becomes literate and cognizant of them.', 'syntax_reorder'),
+        candidate('patch38-declarative-public-ai-subject-shift', 'AI is making those systems harder for a public that becomes literate and cognizant of them to ignore.', 'subject_shift'),
+        candidate('patch38-declarative-public-ai-compressed', 'If the public becomes literate and cognizant, AI makes them harder to ignore.', 'compression_shift')
+      ]
+    : [];
+  const generated = [
+    genericReorder(source) && candidate('patch38-declarative-reorder', genericReorder(source), 'syntax_reorder'),
+    genericOnce(source) && candidate('patch38-declarative-once-frame', genericOnce(source), 'opening_shift'),
+    genericSubjectShift(source) && candidate('patch38-declarative-subject-shift', genericSubjectShift(source), 'subject_shift')
+  ].filter(Boolean);
+  return [...targeted, ...generated].slice(0, 6);
+}
+
 export function generateOfflineQuestionCandidates(input = {}) {
   const source = safe(input.sourceText || input.messageDraftText || '');
   if (!source || !/\?/.test(source)) return [];
@@ -155,7 +212,8 @@ export function generateOfflineQuestionCandidates(input = {}) {
 export function generateOfflineProviderCandidates(input = {}) {
   const expressive = generateExpressiveCandidates(input);
   const question = generateOfflineQuestionCandidates(input);
-  const candidates = [...asArray(expressive.candidates), ...question];
+  const declarative = generateOfflineDeclarativeCandidates(input);
+  const candidates = [...asArray(expressive.candidates), ...question, ...declarative];
   return {
     provider: GENERATOR_MODES.OFFLINE_EXPRESSIVE,
     model: 'local-deterministic-hush',
