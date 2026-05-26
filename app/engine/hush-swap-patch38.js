@@ -4,7 +4,7 @@ import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
 export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
-export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.1-source-copy-resistant-selector';
+export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.2-wrapper-copy-resistant-selector';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -39,19 +39,43 @@ function syntaxDistance(candidateText = '', sourceText = '') {
   return round4(Math.max(0, Math.min(1, 0.35 + firstWordChanged + sentenceCountDelta + (1 - tokenOverlap(candidateText, sourceText)) * 0.35)));
 }
 
+function longestSourceRun(candidateText = '', sourceText = '') {
+  const candidate = words(candidateText);
+  const source = words(sourceText);
+  if (!candidate.length || !source.length) return 0;
+  const sourcePositions = new Map();
+  source.forEach((word, index) => {
+    if (!sourcePositions.has(word)) sourcePositions.set(word, []);
+    sourcePositions.get(word).push(index);
+  });
+  let best = 0;
+  for (let i = 0; i < candidate.length; i += 1) {
+    const positions = sourcePositions.get(candidate[i]) || [];
+    for (const start of positions) {
+      let run = 0;
+      while (candidate[i + run] && source[start + run] && candidate[i + run] === source[start + run]) run += 1;
+      if (run > best) best = run;
+    }
+  }
+  return best;
+}
+
 function sourceCopyRisk(candidateText = '', sourceText = '') {
   const candidateNorm = normalizedText(candidateText);
   const sourceNorm = normalizedText(sourceText);
-  if (!candidateNorm || !sourceNorm) return { exactCopy: false, nearCopy: false, tokenOverlap: 0, syntaxDistance: 1, lengthRatio: 1, score: 0 };
+  if (!candidateNorm || !sourceNorm) return { exactCopy: false, wrapperCopy: false, nearCopy: false, longVerbatimRun: false, tokenOverlap: 0, syntaxDistance: 1, lengthRatio: 1, longestRun: 0, score: 0 };
   const overlap = tokenOverlap(candidateText, sourceText);
   const syntax = syntaxDistance(candidateText, sourceText);
   const candidateWords = words(candidateText).length;
   const sourceWords = Math.max(1, words(sourceText).length);
   const lengthRatio = candidateWords / sourceWords;
+  const longestRun = longestSourceRun(candidateText, sourceText);
   const exactCopy = candidateNorm === sourceNorm;
-  const nearCopy = !exactCopy && overlap >= 0.94 && syntax <= 0.43 && lengthRatio >= 0.92 && lengthRatio <= 1.12;
-  const score = exactCopy ? 1 : round4(Math.min(1, overlap * 0.65 + (1 - Math.min(1, syntax)) * 0.25 + (Math.abs(1 - lengthRatio) < 0.12 ? 0.1 : 0)));
-  return { exactCopy, nearCopy, tokenOverlap: round4(overlap), syntaxDistance: syntax, lengthRatio: round4(lengthRatio), score };
+  const wrapperCopy = !exactCopy && sourceNorm.length >= 24 && candidateNorm.includes(sourceNorm);
+  const longVerbatimRun = longestRun >= Math.min(9, Math.max(6, Math.floor(sourceWords * 0.55)));
+  const nearCopy = !exactCopy && !wrapperCopy && overlap >= 0.9 && syntax <= 0.48 && lengthRatio >= 0.82 && lengthRatio <= 1.25;
+  const score = exactCopy || wrapperCopy ? 1 : round4(Math.min(1, overlap * 0.58 + (1 - Math.min(1, syntax)) * 0.22 + Math.min(0.2, longestRun / Math.max(10, sourceWords))));
+  return { exactCopy, wrapperCopy, nearCopy, longVerbatimRun, tokenOverlap: round4(overlap), syntaxDistance: syntax, lengthRatio: round4(lengthRatio), longestRun, score };
 }
 
 function styleOperation(candidate = {}) {
@@ -100,14 +124,18 @@ function providerPenalty(candidate = {}) {
   return Math.min(0.9, added * 0.18 + dropped * 0.14 + changed * 0.14);
 }
 
+function isSourceCopy(candidate = {}, sourceText = '') {
+  const copy = candidate.sourceCopyRisk || sourceCopyRisk(candidate.text || '', sourceText);
+  return Boolean(copy.exactCopy || copy.wrapperCopy || copy.nearCopy || copy.longVerbatimRun);
+}
+
 function release(candidate = {}, sourceText = '') {
   if (!candidate?.text?.trim()) return false;
   if (candidate.payloadIntegrity?.passed === false) return false;
   if (candidate.claimIntegrity?.passed === false) return false;
   if (candidate.releasePolicy?.hardBlocked === true) return false;
   if (candidate.propositionIntegrity?.passed === false) return false;
-  const copy = sourceCopyRisk(candidate.text, sourceText);
-  if (copy.exactCopy || copy.nearCopy) return false;
+  if (isSourceCopy(candidate, sourceText)) return false;
   return true;
 }
 
@@ -128,7 +156,7 @@ function score(candidate = {}, sourceText = '', mode = GENERATOR_MODES.OFFLINE_E
   const length = Math.min(1.15, Number(candidate.propositionIntegrity?.coverage?.lengthRatio || 0));
   const warningPenalty = asArray(candidate.propositionIntegrity?.warnings).length * 0.055;
   const copy = sourceCopyRisk(candidate.text, sourceText);
-  const copyPenalty = copy.exactCopy ? 4 : copy.nearCopy ? 2.2 : copy.score > 0.92 ? 0.7 : 0;
+  const copyPenalty = copy.exactCopy || copy.wrapperCopy ? 4 : copy.nearCopy || copy.longVerbatimRun ? 2.2 : copy.score > 0.9 ? 0.7 : 0;
   const base = Number(candidate.finalScore || 0.45);
   return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + coverage * 0.5 + length * 0.18 + operationCompleteness(candidate) * 0.34 + maskFidelity(candidate, input) * 0.32 + syntaxDistance(candidate.text, sourceText) * 0.22 + humanTexture(candidate) * 0.16 - offlinePenaltyInRemote - collapse * 1.05 - warningPenalty - providerPenalty(candidate) - copyPenalty);
 }
@@ -160,12 +188,12 @@ function normalize(candidate = {}, sourceText = '') {
   try {
     const audited = attachPropositionIntegrity(prepared, sourceText);
     const copy = sourceCopyRisk(audited.text || '', sourceText);
-    if (copy.exactCopy || copy.nearCopy) {
-      const warnings = [...new Set([...(audited.warnings || []), 'source-copy-output'])];
+    if (copy.exactCopy || copy.wrapperCopy || copy.nearCopy || copy.longVerbatimRun) {
+      const warnings = [...new Set([...(audited.warnings || []), copy.wrapperCopy ? 'source-wrapper-copy-output' : copy.longVerbatimRun ? 'source-verbatim-run-output' : 'source-copy-output'])];
       return {
         ...audited,
         sourceCopyRisk: copy,
-        payloadIntegrity: { passed: false, warnings: [...new Set([...(audited.payloadIntegrity?.warnings || []), 'source-copy-output'])] },
+        payloadIntegrity: { passed: false, warnings: [...new Set([...(audited.payloadIntegrity?.warnings || []), ...warnings])] },
         releasePolicy: { mayPopulateOutput: false, hardBlocked: true, state: 'hold' },
         warnings
       };
@@ -244,7 +272,7 @@ export function buildHushSwap(input = {}) {
 
   const selectedRow = ranked.find((row) => row.candidate === selected) || null;
   const spread = operationSpread(ranked);
-  const blockedCopyCount = blockedRows.filter((row) => row.sourceCopyRisk?.exactCopy || row.sourceCopyRisk?.nearCopy).length;
+  const blockedCopyCount = blockedRows.filter((row) => row.sourceCopyRisk?.exactCopy || row.sourceCopyRisk?.wrapperCopy || row.sourceCopyRisk?.nearCopy || row.sourceCopyRisk?.longVerbatimRun).length;
   const diagnostics = {
     version: HUSH_SWAP_PATCH38_VERSION,
     internalVersion: HUSH_SWAP_PATCH38_INTERNAL_VERSION,
