@@ -1,4 +1,4 @@
-export const HUSH_PR81_MOBILE_PROFILE_CAROUSEL_VERSION = 'pr81.1-mobile-profile-two-row-snap';
+export const HUSH_PR81_MOBILE_PROFILE_CAROUSEL_VERSION = 'pr81.2-mobile-profile-readable-grid';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const escSelector = (value = '') => {
@@ -16,99 +16,83 @@ function installStyle(doc = document) {
       body[data-page-kind="adversarial-bench"] .hush-source-profile-panel{
         position:relative!important;
         margin:.44rem 0 .42rem!important;
-        padding:.54rem .42rem .5rem!important;
+        padding:.62rem .55rem .62rem!important;
         min-height:0!important;
         border-radius:16px!important;
         overflow:hidden!important;
       }
-      body[data-page-kind="adversarial-bench"] .hush-source-profile-panel::before{
-        content:'';
-        position:absolute;
-        z-index:3;
-        top:3.15rem;
-        right:0;
-        bottom:.35rem;
-        width:3.2rem;
-        pointer-events:none;
-        background:linear-gradient(90deg,rgba(4,7,17,0),rgba(4,7,17,.86));
-      }
+      body[data-page-kind="adversarial-bench"] .hush-source-profile-panel::before,
       body[data-page-kind="adversarial-bench"] .hush-source-profile-panel::after{
-        content:'›';
-        position:absolute;
-        z-index:4;
-        right:.52rem;
-        top:50%;
-        transform:translateY(-4%);
-        width:1.55rem;
-        height:1.55rem;
-        border-radius:999px;
-        display:grid;
-        place-items:center;
-        border:1px solid rgba(137,255,240,.28);
-        background:rgba(5,9,20,.78);
-        color:rgba(169,245,255,.86);
-        font-size:1.45rem;
-        line-height:1;
-        pointer-events:none;
-        box-shadow:0 0 18px rgba(137,231,255,.14);
+        content:none!important;
+        display:none!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-profile-head{
         display:grid!important;
         grid-template-columns:minmax(0,1fr)!important;
         gap:.24rem!important;
-        margin-bottom:.38rem!important;
-        padding-right:2.35rem!important;
+        margin-bottom:.44rem!important;
+        padding-right:0!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-profile-head span{
-        font-size:.48rem!important;
+        font-size:.5rem!important;
         letter-spacing:.16em!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-profile-head strong{
-        font-size:.64rem!important;
+        font-size:.68rem!important;
         letter-spacing:.1em!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-profile-head p{
         max-width:none!important;
         margin:0!important;
         text-align:left!important;
-        font-size:.55rem!important;
-        line-height:1.24!important;
+        font-size:.58rem!important;
+        line-height:1.28!important;
         color:rgba(226,255,236,.62)!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-profile-grid{
         display:grid!important;
-        grid-auto-flow:column!important;
-        grid-template-rows:repeat(2,minmax(2.58rem,auto))!important;
-        grid-auto-columns:minmax(8.6rem,44%)!important;
-        gap:.38rem .42rem!important;
-        overflow-x:auto!important;
-        overflow-y:hidden!important;
-        overscroll-behavior-x:contain!important;
-        scroll-snap-type:x mandatory!important;
-        -webkit-overflow-scrolling:touch!important;
-        touch-action:pan-x!important;
-        padding:.05rem 2.45rem .42rem .06rem!important;
-        scrollbar-width:none!important;
+        grid-auto-flow:row!important;
+        grid-template-columns:minmax(0,1fr)!important;
+        grid-template-rows:none!important;
+        grid-auto-columns:auto!important;
+        gap:.4rem!important;
+        overflow:visible!important;
+        overscroll-behavior:contain!important;
+        scroll-snap-type:none!important;
+        -webkit-overflow-scrolling:auto!important;
+        touch-action:auto!important;
+        padding:0!important;
+        scrollbar-width:auto!important;
+        min-width:0!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-profile-grid::-webkit-scrollbar{display:none!important;}
       body[data-page-kind="adversarial-bench"] .hush-source-metric{
-        scroll-snap-align:start!important;
-        min-height:2.58rem!important;
-        padding:.36rem .42rem!important;
+        scroll-snap-align:none!important;
+        min-height:auto!important;
+        min-width:0!important;
+        width:100%!important;
+        padding:.48rem .52rem!important;
         border-radius:13px!important;
-        display:flex!important;
-        flex-direction:column!important;
-        justify-content:center!important;
+        display:block!important;
+        overflow:hidden!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-metric span{
-        font-size:.46rem!important;
-        letter-spacing:.11em!important;
-        white-space:nowrap!important;
+        display:block!important;
+        font-size:.48rem!important;
+        letter-spacing:.1em!important;
+        white-space:normal!important;
+        overflow-wrap:anywhere!important;
+        word-break:normal!important;
       }
       body[data-page-kind="adversarial-bench"] .hush-source-metric strong{
-        font-size:.61rem!important;
-        line-height:1.16!important;
-        margin-top:.16rem!important;
+        display:block!important;
+        font-size:.68rem!important;
+        line-height:1.25!important;
+        margin-top:.18rem!important;
+        white-space:normal!important;
+        overflow-wrap:break-word!important;
+        word-break:normal!important;
+        max-width:100%!important;
       }
     }
   `;
@@ -149,6 +133,7 @@ function bindMaskSnap(doc = document) {
 function boot(doc = document) {
   if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench') return;
   doc.body.dataset.hushPr81MobileProfileCarousel = 'true';
+  doc.body.dataset.hushPr81MobileProfileReadableGrid = 'true';
   installStyle(doc);
   bindMaskSnap(doc);
   window.setTimeout(() => snapSelectedMaskCard(doc, 'auto'), 100);
