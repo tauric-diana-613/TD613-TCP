@@ -131,6 +131,10 @@
     pr81Boot.type = 'module';
     pr81Boot.src = './hush-pr81-mobile-profile-carousel.js?v=' + (V.hushPr81 || V.hushPr79 || V.hushPatch38 || V.main || '');
     document.head.appendChild(pr81Boot);
+    var pr82Boot = document.createElement('script');
+    pr82Boot.type = 'module';
+    pr82Boot.src = './hush-pr82-mobile-state-hotfix.js?v=' + (V.hushPr82 || V.hushPr81 || V.hushPatch38 || V.main || '');
+    document.head.appendChild(pr82Boot);
   }
 
   var srcs = [
