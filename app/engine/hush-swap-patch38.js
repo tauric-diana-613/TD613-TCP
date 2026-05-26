@@ -4,7 +4,7 @@ import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
 export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
-export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37-operation-diversity-selector';
+export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.1-source-copy-resistant-selector';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -14,12 +14,12 @@ const remoteSource = (candidate = {}) => /remote-llm-candidate|llm-candidate/i.t
 const offlineSource = (candidate = {}) => /patch38-offline-provider|phase34-expressive-generator/i.test(candidate.source || candidate.id || '');
 const providerSource = (candidate = {}) => remoteSource(candidate) || offlineSource(candidate);
 
-function release(candidate = {}) {
-  return candidate?.text?.trim() && candidate.payloadIntegrity?.passed !== false && candidate.claimIntegrity?.passed !== false && candidate.releasePolicy?.hardBlocked !== true && candidate.propositionIntegrity?.passed !== false;
-}
-
 function words(text = '') {
   return safe(text).toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || [];
+}
+
+function normalizedText(text = '') {
+  return words(text).join(' ');
 }
 
 function tokenOverlap(a = '', b = '') {
@@ -37,6 +37,21 @@ function syntaxDistance(candidateText = '', sourceText = '') {
   const firstWordChanged = words(candidateSentences[0] || '')[0] && words(candidateSentences[0] || '')[0] !== words(sourceSentences[0] || '')[0] ? 0.25 : 0;
   const sentenceCountDelta = Math.min(0.25, Math.abs(candidateSentences.length - sourceSentences.length) * 0.08);
   return round4(Math.max(0, Math.min(1, 0.35 + firstWordChanged + sentenceCountDelta + (1 - tokenOverlap(candidateText, sourceText)) * 0.35)));
+}
+
+function sourceCopyRisk(candidateText = '', sourceText = '') {
+  const candidateNorm = normalizedText(candidateText);
+  const sourceNorm = normalizedText(sourceText);
+  if (!candidateNorm || !sourceNorm) return { exactCopy: false, nearCopy: false, tokenOverlap: 0, syntaxDistance: 1, lengthRatio: 1, score: 0 };
+  const overlap = tokenOverlap(candidateText, sourceText);
+  const syntax = syntaxDistance(candidateText, sourceText);
+  const candidateWords = words(candidateText).length;
+  const sourceWords = Math.max(1, words(sourceText).length);
+  const lengthRatio = candidateWords / sourceWords;
+  const exactCopy = candidateNorm === sourceNorm;
+  const nearCopy = !exactCopy && overlap >= 0.94 && syntax <= 0.43 && lengthRatio >= 0.92 && lengthRatio <= 1.12;
+  const score = exactCopy ? 1 : round4(Math.min(1, overlap * 0.65 + (1 - Math.min(1, syntax)) * 0.25 + (Math.abs(1 - lengthRatio) < 0.12 ? 0.1 : 0)));
+  return { exactCopy, nearCopy, tokenOverlap: round4(overlap), syntaxDistance: syntax, lengthRatio: round4(lengthRatio), score };
 }
 
 function styleOperation(candidate = {}) {
@@ -85,6 +100,17 @@ function providerPenalty(candidate = {}) {
   return Math.min(0.9, added * 0.18 + dropped * 0.14 + changed * 0.14);
 }
 
+function release(candidate = {}, sourceText = '') {
+  if (!candidate?.text?.trim()) return false;
+  if (candidate.payloadIntegrity?.passed === false) return false;
+  if (candidate.claimIntegrity?.passed === false) return false;
+  if (candidate.releasePolicy?.hardBlocked === true) return false;
+  if (candidate.propositionIntegrity?.passed === false) return false;
+  const copy = sourceCopyRisk(candidate.text, sourceText);
+  if (copy.exactCopy || copy.nearCopy) return false;
+  return true;
+}
+
 function operationSpread(rows = []) {
   return [...new Set(rows.map((row) => row.operation).filter(Boolean))];
 }
@@ -101,8 +127,10 @@ function score(candidate = {}, sourceText = '', mode = GENERATOR_MODES.OFFLINE_E
   const coverage = Number(candidate.propositionIntegrity?.coverage?.averageCoverage || 0);
   const length = Math.min(1.15, Number(candidate.propositionIntegrity?.coverage?.lengthRatio || 0));
   const warningPenalty = asArray(candidate.propositionIntegrity?.warnings).length * 0.055;
+  const copy = sourceCopyRisk(candidate.text, sourceText);
+  const copyPenalty = copy.exactCopy ? 4 : copy.nearCopy ? 2.2 : copy.score > 0.92 ? 0.7 : 0;
   const base = Number(candidate.finalScore || 0.45);
-  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + coverage * 0.5 + length * 0.18 + operationCompleteness(candidate) * 0.34 + maskFidelity(candidate, input) * 0.32 + syntaxDistance(candidate.text, sourceText) * 0.22 + humanTexture(candidate) * 0.16 - offlinePenaltyInRemote - collapse * 1.05 - warningPenalty - providerPenalty(candidate));
+  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + coverage * 0.5 + length * 0.18 + operationCompleteness(candidate) * 0.34 + maskFidelity(candidate, input) * 0.32 + syntaxDistance(candidate.text, sourceText) * 0.22 + humanTexture(candidate) * 0.16 - offlinePenaltyInRemote - collapse * 1.05 - warningPenalty - providerPenalty(candidate) - copyPenalty);
 }
 
 function auditFallback(candidate = {}, error = null) {
@@ -130,7 +158,19 @@ function normalize(candidate = {}, sourceText = '') {
     claimIntegrity: candidate.claimIntegrity || { passed: true, warnings: [] }
   };
   try {
-    return attachPropositionIntegrity(prepared, sourceText);
+    const audited = attachPropositionIntegrity(prepared, sourceText);
+    const copy = sourceCopyRisk(audited.text || '', sourceText);
+    if (copy.exactCopy || copy.nearCopy) {
+      const warnings = [...new Set([...(audited.warnings || []), 'source-copy-output'])];
+      return {
+        ...audited,
+        sourceCopyRisk: copy,
+        payloadIntegrity: { passed: false, warnings: [...new Set([...(audited.payloadIntegrity?.warnings || []), 'source-copy-output'])] },
+        releasePolicy: { mayPopulateOutput: false, hardBlocked: true, state: 'hold' },
+        warnings
+      };
+    }
+    return { ...audited, sourceCopyRisk: copy };
   } catch (error) {
     return auditFallback(prepared, error);
   }
@@ -163,12 +203,14 @@ export function buildHushSwap(input = {}) {
   const reports = mode === GENERATOR_MODES.REMOTE_LLM_PROXY ? remoteReports : mode === GENERATOR_MODES.HYBRID ? [...remoteReports, offlineReport] : [offlineReport];
   const providerCandidates = mergeProviderCandidates(reports).map((candidate) => normalize(candidate, sourceText));
   const merged = mergeProviderCandidates([{ candidates: providerCandidates }, { candidates: asArray(result.candidates) }]).map((candidate) => normalize(candidate, sourceText));
-  const releasable = merged.filter(release);
+  const releasable = merged.filter((candidate) => release(candidate, sourceText));
   const ranked = releasable.map((candidate) => {
     const operation = styleOperation(candidate);
+    const copy = sourceCopyRisk(candidate.text, sourceText);
     return {
       candidate,
       operation,
+      sourceCopyRisk: copy,
       score: score(candidate, sourceText, mode, input),
       collapse: collapseSurfaceScore(candidate.text),
       coverage: candidate.propositionIntegrity?.coverage?.averageCoverage ?? 0,
@@ -189,18 +231,20 @@ export function buildHushSwap(input = {}) {
       ? (ranked.find((row) => row.remote && row.collapse < 0.24)?.candidate || ranked.find((row) => row.provider && row.collapse < 0.24)?.candidate || ranked[0]?.candidate || null)
       : (ranked.find((row) => row.offline && row.collapse < 0.24)?.candidate || ranked[0]?.candidate || null);
 
-  const blockedRows = merged.filter((candidate) => !release(candidate)).slice(0, 10).map((candidate) => ({
+  const blockedRows = merged.filter((candidate) => !release(candidate, sourceText)).slice(0, 10).map((candidate) => ({
     id: candidate.id,
     source: candidate.source,
     operation: styleOperation(candidate),
     warnings: candidate.propositionIntegrity?.warnings || candidate.warnings || [],
     coverage: candidate.propositionIntegrity?.coverage?.averageCoverage ?? 0,
     lengthRatio: candidate.propositionIntegrity?.coverage?.lengthRatio ?? 0,
-    missingUnitCount: candidate.propositionIntegrity?.coverage?.missingUnitCount ?? 0
+    missingUnitCount: candidate.propositionIntegrity?.coverage?.missingUnitCount ?? 0,
+    sourceCopyRisk: candidate.sourceCopyRisk || sourceCopyRisk(candidate.text || '', sourceText)
   }));
 
   const selectedRow = ranked.find((row) => row.candidate === selected) || null;
   const spread = operationSpread(ranked);
+  const blockedCopyCount = blockedRows.filter((row) => row.sourceCopyRisk?.exactCopy || row.sourceCopyRisk?.nearCopy).length;
   const diagnostics = {
     version: HUSH_SWAP_PATCH38_VERSION,
     internalVersion: HUSH_SWAP_PATCH38_INTERNAL_VERSION,
@@ -215,6 +259,7 @@ export function buildHushSwap(input = {}) {
     mergedCount: merged.length,
     releasableCount: releasable.length,
     blockedCount: merged.length - releasable.length,
+    blockedCopyCount,
     operationSpread: spread,
     operationSpreadCount: spread.length,
     blockedRows,
@@ -229,15 +274,19 @@ export function buildHushSwap(input = {}) {
     selectedSyntaxDistance: selectedRow?.syntaxDistance ?? 0,
     selectedHumanTexture: selectedRow?.humanTexture ?? 0,
     selectedOperationCompleteness: selectedRow?.operationCompleteness ?? 0,
+    selectedSourceCopyRisk: selectedRow?.sourceCopyRisk || null,
     selectedCollapseSurfaceScore: round4(collapseSurfaceScore(selected?.text || '')),
     selectedScore: selectedRow?.score || 0,
-    selectorRows: ranked.slice(0, 10).map((row) => ({ id: row.candidate.id, source: row.candidate.source, strategy: row.candidate.strategy, operation: row.operation, score: row.score, collapse: row.collapse, coverage: row.coverage, lengthRatio: row.lengthRatio, maskFidelity: row.maskFidelity, syntaxDistance: row.syntaxDistance, humanTexture: row.humanTexture, operationCompleteness: row.operationCompleteness, provider: row.provider, remote: row.remote, offline: row.offline })),
+    selectorRows: ranked.slice(0, 10).map((row) => ({ id: row.candidate.id, source: row.candidate.source, strategy: row.candidate.strategy, operation: row.operation, score: row.score, collapse: row.collapse, coverage: row.coverage, lengthRatio: row.lengthRatio, maskFidelity: row.maskFidelity, syntaxDistance: row.syntaxDistance, humanTexture: row.humanTexture, operationCompleteness: row.operationCompleteness, sourceCopyRisk: row.sourceCopyRisk, provider: row.provider, remote: row.remote, offline: row.offline })),
     mergedCandidates: merged,
-    warning: mode === GENERATOR_MODES.REMOTE_LLM_PROXY && !providerCandidates.some(remoteSource)
-      ? 'remote-mode-produced-no-remote-candidates'
-      : !selected && blockedRows.length ? 'all-candidates-failed-proposition-coverage'
-      : spread.length <= 1 && providerCandidates.length > 1 ? 'phase37-operation-diversity-low'
-      : collapseSurfaceScore(selected?.text || '') >= 0.34 ? 'patch38-custody-collapse-risk' : ''
+    warning: blockedCopyCount && !selected
+      ? 'all-candidates-copied-source'
+      : blockedCopyCount ? 'source-copy-candidates-blocked'
+        : mode === GENERATOR_MODES.REMOTE_LLM_PROXY && !providerCandidates.some(remoteSource)
+          ? 'remote-mode-produced-no-remote-candidates'
+          : !selected && blockedRows.length ? 'all-candidates-failed-proposition-coverage'
+            : spread.length <= 1 && providerCandidates.length > 1 ? 'phase37-operation-diversity-low'
+              : collapseSurfaceScore(selected?.text || '') >= 0.34 ? 'patch38-custody-collapse-risk' : ''
   };
   return apply(result, selected, diagnostics);
 }
