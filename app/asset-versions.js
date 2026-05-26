@@ -21,7 +21,8 @@
     hushPr79: '202605250312',
     hushPr81: '202605251701',
     hushPr82: '202605250326',
-    hushPr83: '202605251642'
+    hushPr83: '202605251642',
+    hushPr84: '202605251719'
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" \/>');
