@@ -1,6 +1,6 @@
 import * as bench from './adversarial-bench.mjs';
 
-export const HUSH_PR77_FLIGHT_CONTROLS_VERSION = 'pr77.2-mask-change-sleeps-generated-state';
+export const HUSH_PR77_FLIGHT_CONTROLS_VERSION = 'pr77.3-programmatic-transform-output-guard';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
@@ -8,6 +8,7 @@ let lastSourceSignature = '';
 let lastOutputSignature = '';
 let lastAnalyzedOutputSignature = '';
 let explicitTransformInFlight = false;
+let transformGuardUntil = 0;
 
 function selectedMaskSignature() {
   const state = bench.benchState || {};
@@ -27,6 +28,22 @@ function sourceSignature(doc = document) {
 
 function outputSignature(doc = document) {
   return [sourceSignature(doc), $('protectedOutputInput', doc)?.value || ''].join('\n𝌋\n');
+}
+
+function armTransformGuard(ms = 12000) {
+  explicitTransformInFlight = true;
+  transformGuardUntil = Date.now() + ms;
+}
+
+function transformGuardActive() {
+  return explicitTransformInFlight || Date.now() < transformGuardUntil;
+}
+
+function disarmTransformGuardSoon() {
+  window.setTimeout(() => {
+    explicitTransformInFlight = false;
+    transformGuardUntil = Math.max(transformGuardUntil, Date.now() + 350);
+  }, 350);
 }
 
 function setAcceptWarning(message = '', { hidden = false, disableAccept = true } = {}, doc = document) {
@@ -66,7 +83,6 @@ function putGeneratedSurfacesToSleep(doc = document, reason = 'mask-changed') {
     output.value = '';
     output.dispatchEvent(new Event('input', { bubbles: true }));
   }
-
   state.protectedOutputText = '';
   state.hushSwapResult = null;
   state.hushProfileMatch = null;
@@ -78,16 +94,12 @@ function putGeneratedSurfacesToSleep(doc = document, reason = 'mask-changed') {
   state.recognitionField = null;
   state.reportPayload = null;
   if (state.profiles) state.profiles.protectedOutput = null;
-
   lastOutputSignature = '';
   lastAnalyzedOutputSignature = '';
   explicitTransformInFlight = false;
-
+  transformGuardUntil = 0;
   clearAcceptWarning({ disableAccept: true }, doc);
-  setGeneratorStatus(reason === 'mask-changed'
-    ? 'Mask changed. Generated output and analysis are asleep; hit Transform to create a new output.'
-    : 'Input changed. Generated output and analysis are asleep; hit Transform to create a new output.', 'info', doc);
-
+  setGeneratorStatus(reason === 'mask-changed' ? 'Mask changed. Generated output and analysis are asleep; hit Transform to create a new output.' : 'Input changed. Generated output and analysis are asleep; hit Transform to create a new output.', 'info', doc);
   setText('controllerStatePill', 'Controller // waiting', doc);
   setText('sealStatePill', 'Seal // unavailable', doc);
   setHtml('escapeVectorGrid', '', doc);
@@ -98,14 +110,8 @@ function putGeneratedSurfacesToSleep(doc = document, reason = 'mask-changed') {
   setHtml('hushProfileMatchPanel', '<p class="section-note">Waiting for Transform.</p>', doc);
   setHtml('hushSwapWarningsPanel', '<span class="section-note">No Hush swap warnings yet.</span>', doc);
   setHtml('hushPhase32Diagnostics', '', doc);
-
   if (typeof window !== 'undefined') {
-    window.__TD613_HUSH_LAST_SLEEP_RESET__ = {
-      version: HUSH_PR77_FLIGHT_CONTROLS_VERSION,
-      reason,
-      appliedAt: new Date().toISOString(),
-      mask: selectedMaskSignature()
-    };
+    window.__TD613_HUSH_LAST_SLEEP_RESET__ = { version: HUSH_PR77_FLIGHT_CONTROLS_VERSION, reason, appliedAt: new Date().toISOString(), mask: selectedMaskSignature() };
   }
 }
 
@@ -126,9 +132,7 @@ function releaseAcceptIfAnalyzed(doc = document) {
   const analyzed = Boolean(state.escapeVector && decision && lastAnalyzedOutputSignature === outputSignature(doc));
   if (!analyzed) return outputReady(doc);
   const held = route === 'hold' || decision.state === 'hold';
-  if (!held) {
-    return outputReady(doc, 'Analyze complete. Output remains ready for Mask Memory if you accept it.');
-  }
+  if (!held) return outputReady(doc, 'Analyze complete. Output remains ready for Mask Memory if you accept it.');
   clearAcceptWarning({ disableAccept: false }, doc);
   setGeneratorStatus('Analyze complete with a hold/caution route. Review the output; Accept remains operator-controlled.', 'warn', doc);
   return true;
@@ -145,9 +149,7 @@ function resetReviewState(doc = document, reason = 'pending-review') {
   lastAnalyzedOutputSignature = '';
   const output = text($('protectedOutputInput', doc)?.value || '');
   if (output) {
-    outputReady(doc, reason === 'transform'
-      ? 'Output produced. Review/edit if needed; Analyze is optional before Accept.'
-      : 'Output changed. Review/edit if needed; Analyze is optional before Accept.');
+    outputReady(doc, reason === 'transform' ? 'Output produced. Review/edit if needed; Analyze is optional before Accept.' : 'Output changed. Review/edit if needed; Analyze is optional before Accept.');
   } else {
     putGeneratedSurfacesToSleep(doc, reason === 'mask-changed' ? 'mask-changed' : 'source-changed');
   }
@@ -163,15 +165,16 @@ function clearOutputForNewSource(doc = document, reason = 'source-changed', { fo
 function afterTransform(doc = document, pass = 0) {
   const output = text($('protectedOutputInput', doc)?.value || '');
   if (output) {
-    explicitTransformInFlight = false;
     lastSourceSignature = sourceSignature(doc);
     lastOutputSignature = outputSignature(doc);
     resetReviewState(doc, 'transform');
+    disarmTransformGuardSoon();
     return;
   }
-  if (pass < 8) window.setTimeout(() => afterTransform(doc, pass + 1), 300);
+  if (pass < 10) window.setTimeout(() => afterTransform(doc, pass + 1), 300);
   else {
     explicitTransformInFlight = false;
+    transformGuardUntil = 0;
     clearAcceptWarning({ disableAccept: true }, doc);
     setGeneratorStatus('Transform finished without protected output. Check generator diagnostics, then edit source/mask or try Transform again.', 'warn', doc);
   }
@@ -185,9 +188,7 @@ function afterAnalyze(doc = document) {
     return;
   }
   lastOutputSignature = outputSignature(doc);
-  if (bench.benchState?.escapeVector && bench.benchState?.controllerDecision) {
-    lastAnalyzedOutputSignature = outputSignature(doc);
-  }
+  if (bench.benchState?.escapeVector && bench.benchState?.controllerDecision) lastAnalyzedOutputSignature = outputSignature(doc);
   releaseAcceptIfAnalyzed(doc);
 }
 
@@ -195,17 +196,15 @@ function bind(doc = document) {
   if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench' || doc.body.dataset.hushPr77 === 'true') return;
   doc.body.dataset.hushPr77 = 'true';
   lastSourceSignature = sourceSignature(doc);
-
   const transform = $('generateMaskedOutputBtn', doc);
   if (transform) {
     transform.addEventListener('click', () => {
-      explicitTransformInFlight = true;
+      armTransformGuard();
       lastAnalyzedOutputSignature = '';
       setGeneratorStatus('Explicit Transform pressed. Remote candidate flight in progress.', 'info', doc);
       window.setTimeout(() => afterTransform(doc), 500);
     }, true);
   }
-
   const analyze = $('analyzeOutputBtn', doc);
   if (analyze) {
     analyze.addEventListener('click', () => {
@@ -214,30 +213,24 @@ function bind(doc = document) {
       window.setTimeout(() => afterAnalyze(doc), 1800);
     }, true);
   }
-
   const input = $('messageDraftInput', doc);
   if (input) {
     input.addEventListener('input', () => window.setTimeout(() => clearOutputForNewSource(doc, 'source-changed'), 0));
     input.addEventListener('paste', () => window.setTimeout(() => clearOutputForNewSource(doc, 'source-pasted'), 0));
   }
-
   const output = $('protectedOutputInput', doc);
   if (output) {
-    output.addEventListener('input', () => window.setTimeout(() => {
-      if (!explicitTransformInFlight && outputSignature(doc) !== lastOutputSignature) resetReviewState(doc, 'output-edited');
+    output.addEventListener('input', (event) => window.setTimeout(() => {
+      if (!event.isTrusted) return;
+      if (transformGuardActive()) return;
+      if (outputSignature(doc) !== lastOutputSignature) resetReviewState(doc, 'output-edited');
     }, 0));
   }
-
   const select = $('maskFieldSelect', doc);
-  if (select) {
-    select.addEventListener('change', () => window.setTimeout(() => clearOutputForNewSource(doc, 'mask-changed', { force: true }), 0));
-  }
+  if (select) select.addEventListener('change', () => window.setTimeout(() => clearOutputForNewSource(doc, 'mask-changed', { force: true }), 0));
   doc.addEventListener('click', (event) => {
-    if (event.target?.closest?.('[data-hush-use-mask]')) {
-      [80, 240, 600].forEach((delay) => window.setTimeout(() => clearOutputForNewSource(doc, 'mask-changed', { force: true }), delay));
-    }
+    if (event.target?.closest?.('[data-hush-use-mask]')) [80, 240, 600].forEach((delay) => window.setTimeout(() => clearOutputForNewSource(doc, 'mask-changed', { force: true }), delay));
   }, true);
-
   setGeneratorStatus('Flight controls ready. Transform wakes generated-state controls. Mask changes put them back to sleep.', 'info', doc);
 }
 
