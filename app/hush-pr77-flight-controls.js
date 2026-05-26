@@ -1,6 +1,6 @@
 import * as bench from './adversarial-bench.mjs';
 
-export const HUSH_PR77_FLIGHT_CONTROLS_VERSION = 'pr77.1-transform-output-accept-ready';
+export const HUSH_PR77_FLIGHT_CONTROLS_VERSION = 'pr77.2-mask-change-sleeps-generated-state';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
@@ -9,10 +9,16 @@ let lastOutputSignature = '';
 let lastAnalyzedOutputSignature = '';
 let explicitTransformInFlight = false;
 
+function selectedMaskSignature() {
+  const state = bench.benchState || {};
+  return [state.selectedHushMaskId || '', state.selectedHushMask?.id || '', state.selectedHushMask?.label || ''].join('|');
+}
+
 function sourceSignature(doc = document) {
   return [
     $('messageDraftInput', doc)?.value || '',
     $('maskFieldSelect', doc)?.value || '',
+    selectedMaskSignature(),
     $('recognitionIntentMode', doc)?.value || '',
     $('recognitionContextType', doc)?.value || '',
     $('recognitionExposureDuration', doc)?.value || ''
@@ -43,6 +49,66 @@ function setGeneratorStatus(message = '', tone = 'info', doc = document) {
   status.textContent = message || status.textContent || 'Generator mode ready.';
 }
 
+function setText(id, value, doc = document) {
+  const node = $(id, doc);
+  if (node) node.textContent = value;
+}
+
+function setHtml(id, value, doc = document) {
+  const node = $(id, doc);
+  if (node) node.innerHTML = value;
+}
+
+function putGeneratedSurfacesToSleep(doc = document, reason = 'mask-changed') {
+  const state = bench.benchState || {};
+  const output = $('protectedOutputInput', doc);
+  if (output) {
+    output.value = '';
+    output.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  state.protectedOutputText = '';
+  state.hushSwapResult = null;
+  state.hushProfileMatch = null;
+  state.ingestionAudit = null;
+  state.escapeVector = null;
+  state.controllerDecision = null;
+  state.claimCeiling = null;
+  state.contextProfile = null;
+  state.recognitionField = null;
+  state.reportPayload = null;
+  if (state.profiles) state.profiles.protectedOutput = null;
+
+  lastOutputSignature = '';
+  lastAnalyzedOutputSignature = '';
+  explicitTransformInFlight = false;
+
+  clearAcceptWarning({ disableAccept: true }, doc);
+  setGeneratorStatus(reason === 'mask-changed'
+    ? 'Mask changed. Generated output and analysis are asleep; hit Transform to create a new output.'
+    : 'Input changed. Generated output and analysis are asleep; hit Transform to create a new output.', 'info', doc);
+
+  setText('controllerStatePill', 'Controller // waiting', doc);
+  setText('sealStatePill', 'Seal // unavailable', doc);
+  setHtml('escapeVectorGrid', '', doc);
+  setHtml('recognitionFieldGrid', '', doc);
+  setHtml('recognitionFieldWarnings', '<span class="section-note">Waiting for Transform.</span>', doc);
+  setHtml('controllerPanel', '<div class="section-kicker">Controller / Steering Surface</div><h3 id="controllerHeading">Waiting for Transform</h3><div id="controllerBody"><p>Generated-state controls are asleep until a new protected output exists.</p></div>', doc);
+  setHtml('claimCeilingPanel', '<p class="section-note">Waiting for Transform.</p>', doc);
+  setHtml('hushProfileMatchPanel', '<p class="section-note">Waiting for Transform.</p>', doc);
+  setHtml('hushSwapWarningsPanel', '<span class="section-note">No Hush swap warnings yet.</span>', doc);
+  setHtml('hushPhase32Diagnostics', '', doc);
+
+  if (typeof window !== 'undefined') {
+    window.__TD613_HUSH_LAST_SLEEP_RESET__ = {
+      version: HUSH_PR77_FLIGHT_CONTROLS_VERSION,
+      reason,
+      appliedAt: new Date().toISOString(),
+      mask: selectedMaskSignature()
+    };
+  }
+}
+
 function outputReady(doc = document, message = 'Output produced. Review/edit if needed; Analyze is optional before Accept.') {
   const output = text($('protectedOutputInput', doc)?.value || '');
   if (!output) return false;
@@ -63,7 +129,6 @@ function releaseAcceptIfAnalyzed(doc = document) {
   if (!held) {
     return outputReady(doc, 'Analyze complete. Output remains ready for Mask Memory if you accept it.');
   }
-  // Analyze may advise caution, but it should not leave the UI in a stale unreviewed state.
   clearAcceptWarning({ disableAccept: false }, doc);
   setGeneratorStatus('Analyze complete with a hold/caution route. Review the output; Accept remains operator-controlled.', 'warn', doc);
   return true;
@@ -84,24 +149,15 @@ function resetReviewState(doc = document, reason = 'pending-review') {
       ? 'Output produced. Review/edit if needed; Analyze is optional before Accept.'
       : 'Output changed. Review/edit if needed; Analyze is optional before Accept.');
   } else {
-    clearAcceptWarning({ disableAccept: true }, doc);
-    setGeneratorStatus('No protected output is present yet. Hit Transform to create one.', 'info', doc);
+    putGeneratedSurfacesToSleep(doc, reason === 'mask-changed' ? 'mask-changed' : 'source-changed');
   }
 }
 
-function clearOutputForNewSource(doc = document, reason = 'source-changed') {
+function clearOutputForNewSource(doc = document, reason = 'source-changed', { force = false } = {}) {
   const currentSource = sourceSignature(doc);
-  if (currentSource === lastSourceSignature) return;
+  if (!force && currentSource === lastSourceSignature) return;
   lastSourceSignature = currentSource;
-  const output = $('protectedOutputInput', doc);
-  if (output && output.value) output.value = '';
-  const state = bench.benchState || {};
-  state.protectedOutputText = '';
-  state.hushSwapResult = null;
-  lastOutputSignature = '';
-  lastAnalyzedOutputSignature = '';
-  resetReviewState(doc, reason);
-  setGeneratorStatus('Message or mask changed. Transform is waiting for an explicit button press.', 'info', doc);
+  putGeneratedSurfacesToSleep(doc, reason);
 }
 
 function afterTransform(doc = document, pass = 0) {
@@ -124,7 +180,7 @@ function afterTransform(doc = document, pass = 0) {
 function afterAnalyze(doc = document) {
   const output = text($('protectedOutputInput', doc)?.value || '');
   if (!output) {
-    clearAcceptWarning({ disableAccept: true }, doc);
+    putGeneratedSurfacesToSleep(doc, 'source-changed');
     setGeneratorStatus('Analyze ran, but there is no protected output to accept yet. Hit Transform first.', 'info', doc);
     return;
   }
@@ -173,12 +229,16 @@ function bind(doc = document) {
   }
 
   const select = $('maskFieldSelect', doc);
-  if (select) select.addEventListener('change', () => window.setTimeout(() => clearOutputForNewSource(doc, 'mask-changed'), 0));
+  if (select) {
+    select.addEventListener('change', () => window.setTimeout(() => clearOutputForNewSource(doc, 'mask-changed', { force: true }), 0));
+  }
   doc.addEventListener('click', (event) => {
-    if (event.target?.closest?.('[data-hush-use-mask]')) window.setTimeout(() => clearOutputForNewSource(doc, 'mask-card-selected'), 160);
+    if (event.target?.closest?.('[data-hush-use-mask]')) {
+      [80, 240, 600].forEach((delay) => window.setTimeout(() => clearOutputForNewSource(doc, 'mask-changed', { force: true }), delay));
+    }
   }, true);
 
-  setGeneratorStatus('Flight controls ready. Analyze reads the message; Transform rewrites it. Accept is available once protected output exists.', 'info', doc);
+  setGeneratorStatus('Flight controls ready. Transform wakes generated-state controls. Mask changes put them back to sleep.', 'info', doc);
 }
 
 if (typeof document !== 'undefined') {
