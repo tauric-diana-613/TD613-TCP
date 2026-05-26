@@ -1,7 +1,7 @@
 import * as bench from './adversarial-bench.mjs';
 import { buildHushSwap, HUSH_SWAP_PATCH38_VERSION } from './engine/hush-swap-patch38.js';
 import { GENERATOR_MODES, normalizeRemoteProviderResponse } from './engine/hush-generator-provider.js';
-import { buildHushLlmPromptContractV2, buildPhase35ProviderTelemetry } from './engine/hush-generator-provider-phase35.js';
+import { buildHushLlmPromptContractV3, buildPhase37ProviderTelemetry } from './engine/hush-generator-provider-phase35.js';
 import { auditPropositionIntegrity } from './engine/hush-proposition-integrity.js';
 import { deriveApertureApprovalTransparency } from './engine/aperture-approval-transparency.js';
 
@@ -84,7 +84,7 @@ function installGeneratorMode(doc = document) {
   label.id = 'hushGeneratorModeWrap';
   label.className = 'hush-field-shell hush-generator-mode-wrap';
   label.setAttribute('for', 'hushGeneratorMode');
-  label.innerHTML = '<span class="hush-field-label">Generator Mode</span><select id="hushGeneratorMode"><option value="offline-expressive">Offline Expressive</option><option value="hybrid">Hybrid fallback</option><option value="remote-llm-proxy" selected>Remote LLM Candidate</option></select><span class="hush-field-caption">Remote LLM is the default flight route. Hybrid and local modes remain available if provider review fails.</span>';
+  label.innerHTML = '<span class="hush-field-label">Generator Mode</span><select id="hushGeneratorMode"><option value="offline-expressive">Offline Expressive</option><option value="hybrid">Hybrid fallback</option><option value="remote-llm-proxy" selected>Remote LLM Candidate</option></select><span class="hush-field-caption">Remote LLM uses Phase 37 flight packets. Hybrid and local modes remain available manually.</span>';
 
   const gateStrip = $('hushGateStrip', doc);
   if (gateStrip?.parentElement === host) host.insertBefore(label, gateStrip);
@@ -94,7 +94,7 @@ function installGeneratorMode(doc = document) {
   status.id = 'hushGeneratorStatus';
   status.className = 'hush-warning-panel hush-generator-status';
   status.setAttribute('aria-live', 'polite');
-  status.textContent = 'Generator mode preset: Remote LLM Candidate. Hybrid and local modes remain available manually.';
+  status.textContent = 'Generator mode preset: Remote LLM Candidate. Phase 37 flight packets are active.';
   label.insertAdjacentElement('afterend', status);
   return configureGeneratorSelect($('hushGeneratorMode', doc), doc);
 }
@@ -127,7 +127,7 @@ function remoteEndpointCandidates() {
 }
 
 async function fetchRemoteReport(input = {}, doc = document) {
-  const contract = buildHushLlmPromptContractV2(input);
+  const contract = buildHushLlmPromptContractV3(input);
   const tried = [];
   for (const endpoint of remoteEndpointCandidates()) {
     try {
@@ -137,15 +137,15 @@ async function fetchRemoteReport(input = {}, doc = document) {
       if (!response.ok) {
         const warning = `remote-provider-http-${response.status}`;
         setGeneratorStatus(`Remote provider reached ${endpoint} but returned ${response.status}; switch to Hybrid if you need local fallback.`, 'warning', doc);
-        return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: [warning, `endpoint:${endpoint}`], requestReceipt: { endpoint, triedEndpoints: tried, sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion } };
+        return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: [warning, `endpoint:${endpoint}`], requestReceipt: { endpoint, triedEndpoints: tried, sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacketVersion } };
       }
       const normalized = normalizeRemoteProviderResponse(await response.json(), contract);
-      normalized.requestReceipt = { ...(normalized.requestReceipt || {}), endpoint, triedEndpoints: tried };
+      normalized.requestReceipt = { ...(normalized.requestReceipt || {}), endpoint, triedEndpoints: tried, promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacketVersion };
       if (!normalized.candidates?.length) {
         normalized.warnings = [...new Set([...(normalized.warnings || []), 'remote-provider-empty-candidates', `endpoint:${endpoint}`])];
-        setGeneratorStatus(`Remote provider reached ${endpoint} but returned zero usable candidates. Switch to Hybrid if you want local fallback.`, 'warning', doc);
+        setGeneratorStatus(`Remote provider reached ${endpoint} but returned zero usable candidates. Inspect Phase 37 diagnostics.`, 'warning', doc);
       } else {
-        setGeneratorStatus(`Remote provider reached ${endpoint} and returned ${normalized.candidates.length} candidate(s). Local audit still controls release.`, 'ok', doc);
+        setGeneratorStatus(`Remote provider reached ${endpoint} and returned ${normalized.candidates.length} Phase 37 candidate(s). Local audit still controls release.`, 'ok', doc);
       }
       return normalized;
     } catch (error) {
@@ -153,7 +153,7 @@ async function fetchRemoteReport(input = {}, doc = document) {
     }
   }
   setGeneratorStatus(`Remote provider route not found. Tried: ${tried.join(', ') || remoteEndpointCandidates().join(', ')}.`, 'error', doc);
-  return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: ['remote-provider-route-not-found', ...tried.map((item) => `tried:${item}`)], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion, triedEndpoints: tried } };
+  return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: ['remote-provider-route-not-found', ...tried.map((item) => `tried:${item}`)], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: 'hush-llm-candidate-v3', triedEndpoints: tried } };
 }
 
 function renderDiagnostics(result = {}, doc = document) {
@@ -167,14 +167,15 @@ function renderDiagnostics(result = {}, doc = document) {
   }
   if (!target) return;
   const p = result.patch38Diagnostics || {};
-  const phase35 = result.phase35Telemetry || {};
+  const phase37 = result.phase37Telemetry || {};
   const prop = result.propositionIntegrity || {};
-  const route = phase35.ontologyRoute || {};
-  const summary = route.propositionSummary || {};
-  const rows = Array.isArray(p.selectorRows) ? p.selectorRows.slice(0, 5) : [];
+  const route = phase37.ontologyRoute || {};
+  const packet = phase37.flightPacket || {};
+  const rows = Array.isArray(p.selectorRows) ? p.selectorRows.slice(0, 6) : [];
   const receipt = p.providerReports?.[0]?.requestReceipt || {};
   const endpointLine = receipt.endpoint ? `<span>Endpoint: <code>${esc(receipt.endpoint)}</code></span>` : receipt.triedEndpoints?.length ? `<span>Tried: <code>${esc(receipt.triedEndpoints.join(', '))}</code></span>` : '';
-  target.innerHTML = `<strong>Phase 35 ontology-routed generator</strong><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Route: <code>${esc(route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.sourceType || 'n/a')}</code></span>${endpointLine}<span>Propositions: <code>${esc(summary.propositionCount ?? '0')}</code></span><span>Questions: <code>${esc(summary.questionCount ?? '0')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 35 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.strategy || '')} · score ${esc(row.score)} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
+  const operationSpread = Array.isArray(p.operationSpread) ? p.operationSpread.join(', ') : 'none';
+  target.innerHTML = `<strong>Phase 37 ontology-carrying generator flight</strong><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Packet: <code>${esc(phase37.flightPacketVersion || packet.packet_version || 'n/a')}</code></span><span>Prompt: <code>${esc(phase37.promptVersion || receipt.promptVersion || 'n/a')}</code></span><span>Route: <code>${esc(route.route_type || route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.source_type || route.sourceType || 'n/a')}</code></span><span>Risk: <code>${esc(route.semantic_risk || 'n/a')}</code></span><span>Depth: <code>${esc(route.transformation_depth || 'n/a')}</code></span>${endpointLine}<span>Operations: <code>${esc(operationSpread)}</code></span><span>Selected op: <code>${esc(p.selectedStyleOperation || 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Coverage: <code>${esc(p.selectedCoverage ?? 'n/a')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 37 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.operation || row.strategy || '')} · score ${esc(row.score)} · mask ${esc(row.maskFidelity ?? 'n/a')} · syntax ${esc(row.syntaxDistance ?? 'n/a')} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
 }
 
 function buildPatch38ApprovalPacket({ reason = '', result = {}, warnings = [] } = {}) {
@@ -205,7 +206,7 @@ function formatPatch38ApprovalBlock(transparency) {
   const visibleReason = blockers.length
     ? blockers.join(' | ')
     : transparency?.approvalReason || 'candidate selector produced no releasable output';
-  return `Candidate approval blocked — not an error. ${visibleReason}. Switch to Hybrid or Offline Expressive, edit the source/mask, then Transform again.`;
+  return `Candidate approval blocked — not an error. ${visibleReason}. Edit the source/mask or inspect Phase 37 diagnostics, then Transform again.`;
 }
 
 function recordPatch38ApprovalBlock(transparency, result = {}) {
@@ -225,7 +226,7 @@ function recordPatch38ApprovalBlock(transparency, result = {}) {
 function renderGateFailure(reason = '', doc = document, transparency = null) {
   const output = $('protectedOutputInput', doc);
   if (output) output.value = '';
-  const message = reason || 'Candidate approval blocked. Try Hybrid fallback or inspect provider diagnostics.';
+  const message = reason || 'Candidate approval blocked. Inspect Phase 37 diagnostics.';
   setGeneratorStatus(message, 'error', doc);
   const warning = $('acceptWarning', doc);
   if (warning) {
@@ -250,10 +251,12 @@ async function runPatch38Transform(doc = document) {
   }
   const mask = selectedMask(state);
   const mode = select?.value || $('hushGeneratorMode', doc)?.value || DEFAULT_GENERATOR_MODE;
-  setGeneratorStatus(`Generator mode: ${mode}. Building candidates...`, 'info', doc);
-  const phase35Telemetry = buildPhase35ProviderTelemetry({ sourceText, mask });
+  setGeneratorStatus(`Generator mode: ${mode}. Building Phase 37 candidates...`, 'info', doc);
+  const phase37Telemetry = buildPhase37ProviderTelemetry({ sourceText, mask, candidateCount: 8 });
   const providerReports = [];
-  if (mode === GENERATOR_MODES.HYBRID || mode === GENERATOR_MODES.REMOTE_LLM_PROXY) providerReports.push(await fetchRemoteReport({ sourceText, mask, candidateCount: 6, propositionMap: phase35Telemetry.propositionMap }, doc));
+  if (mode === GENERATOR_MODES.HYBRID || mode === GENERATOR_MODES.REMOTE_LLM_PROXY) {
+    providerReports.push(await fetchRemoteReport({ sourceText, mask, candidateCount: 8, flightPacket: phase37Telemetry.flightPacket }, doc));
+  }
   const result = buildHushSwap({
     sourceText,
     protectedBaselineText: $('protectedBaselineInput', doc)?.value || '',
@@ -263,12 +266,13 @@ async function runPatch38Transform(doc = document) {
     generatorMode: mode,
     providerReports,
     protectedLiterals: [],
+    phase37Telemetry,
     operatorMode: $('recognitionIntentMode', doc)?.value || 'neutralize',
     contextType: state.recognitionContextType || 'group-chat',
     exposureDuration: state.recognitionExposureDuration || 'single-use',
     options: { candidateCount: 30, includePrivateText: false }
   });
-  result.phase35Telemetry = phase35Telemetry;
+  result.phase37Telemetry = phase37Telemetry;
   result.propositionIntegrity = auditPropositionIntegrity(sourceText, result.selectedOutput || '');
   state.hushSwapResult = result;
   state.protectedOutputText = result.selectedOutput || '';
@@ -287,7 +291,8 @@ async function runPatch38Transform(doc = document) {
     renderGateFailure(formatPatch38ApprovalBlock(transparency), doc, transparency);
   } else {
     const selected = result.patch38Diagnostics?.selectedCandidateId || result.selectedCandidateId || 'candidate';
-    setGeneratorStatus(`Output produced from ${selected}. Review and Analyze before Accept.`, 'ok', doc);
+    const op = result.patch38Diagnostics?.selectedStyleOperation || 'operation-unreported';
+    setGeneratorStatus(`Output produced from ${selected} via ${op}. Review/edit if needed; Analyze is optional before Accept.`, 'ok', doc);
   }
   return result;
 }
@@ -295,14 +300,14 @@ async function runPatch38Transform(doc = document) {
 export function initHushPatch38(doc = document) {
   if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench') return { installed: false, version: HUSH_SWAP_PATCH38_VERSION };
   doc.body.dataset.hushPatch38 = 'true';
-  doc.body.dataset.hushPhase35 = 'true';
+  doc.body.dataset.hushPhase37 = 'true';
   installGeneratorMode(doc);
   const button = $('generateMaskedOutputBtn', doc);
   if (button && button.dataset.patch38 !== 'true') {
     button.dataset.patch38 = 'true';
     button.addEventListener('click', (event) => { event.preventDefault(); event.stopImmediatePropagation(); runPatch38Transform(doc); }, true);
   }
-  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase35: true, runPatch38Transform, installGeneratorMode, remoteEndpointCandidates };
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase37: true, runPatch38Transform, installGeneratorMode, remoteEndpointCandidates };
   return { installed: true, version: HUSH_SWAP_PATCH38_VERSION };
 }
 
