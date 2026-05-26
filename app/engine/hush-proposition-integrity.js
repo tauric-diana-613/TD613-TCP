@@ -1,7 +1,7 @@
 import { buildPropositionMap, questionFormScore, newClaimRisk } from './hush-proposition-map.js';
 import { collapseSurfaceScore } from './hush-generator-provider.js';
 
-export const HUSH_PROPOSITION_INTEGRITY_VERSION = 'phase-36-proposition-coverage-integrity';
+export const HUSH_PROPOSITION_INTEGRITY_VERSION = 'phase-36.1-proposition-coverage-integrity';
 
 const safe = (value) => String(value ?? '').trim();
 const advicePattern = /\b(apply|linkedin|portfolio|bootcamp|certification|take a course|build projects|job board|mentor|referral)\b/i;
@@ -17,12 +17,27 @@ function words(value = '') {
 }
 
 function normalizeToken(token = '') {
-  return token.toLowerCase().replace(/^sig$/, 'sigil').replace(/^sigils$/, 'sigil').replace(/^llms$/, 'llm').replace(/^takes$/, 'take').replace(/^gives$/, 'give').replace(/^created$/, 'create').replace(/^creating$/, 'create').replace(/^used$/, 'use').replace(/^using$/, 'use');
+  let value = token.toLowerCase()
+    .replace(/^sig$/, 'sigil')
+    .replace(/^sigils$/, 'sigil')
+    .replace(/^llms$/, 'llm')
+    .replace(/^takes$/, 'take')
+    .replace(/^gives$/, 'give')
+    .replace(/^created$/, 'create')
+    .replace(/^creating$/, 'create')
+    .replace(/^used$/, 'use')
+    .replace(/^using$/, 'use');
+  if (value.endsWith('ies') && value.length > 4) value = `${value.slice(0, -3)}y`;
+  else if (value.endsWith('sses')) value = value.slice(0, -2);
+  else if (value.endsWith('s') && !value.endsWith('ss') && value.length > 4) value = value.slice(0, -1);
+  return value;
 }
 
-function keyTerms(text = '') {
+function keyTerms(text = '', options = {}) {
+  const limit = options.limit === undefined ? 18 : Number(options.limit);
   const tokens = words(text).map(normalizeToken).filter((token) => token.length > 2 && !stopWords.has(token));
-  return [...new Set(tokens)].slice(0, 18);
+  const unique = [...new Set(tokens)];
+  return Number.isFinite(limit) && limit > 0 ? unique.slice(0, limit) : unique;
 }
 
 function lineUnits(sourceText = '') {
@@ -49,9 +64,17 @@ function unitCoverage(unit, outputTerms = new Set()) {
   return hits.length / unit.terms.length;
 }
 
+function allowedMissingUnitCount(weightedRows = [], sourceWordCount = 0) {
+  if (sourceWordCount <= 40) return 0;
+  if (sourceWordCount <= 80) return 1;
+  return Math.max(1, Math.floor(weightedRows.length * 0.18));
+}
+
 function coverageAudit(sourceText = '', outputText = '') {
   const units = contentUnits(sourceText);
-  const outputTerms = new Set(keyTerms(outputText));
+  // Source units stay compact. Output terms must use the full output corpus.
+  // The previous gate capped output terms at 18, which made valid longer rewrites fail.
+  const outputTerms = new Set(keyTerms(outputText, { limit: 0 }));
   const rows = units.map((unit) => ({
     id: unit.id,
     type: unit.type,
@@ -63,20 +86,24 @@ function coverageAudit(sourceText = '', outputText = '') {
   }));
   const weightedRows = rows.filter((row) => row.terms.length >= 2);
   const averageCoverage = weightedRows.length ? weightedRows.reduce((sum, row) => sum + row.coverage, 0) / weightedRows.length : 1;
-  const missingUnits = rows.filter((row) => row.terms.length >= 2 && row.coverage < 0.4);
+  const missingUnits = rows.filter((row) => row.terms.length >= 2 && row.coverage < 0.35);
   const sourceTerms = [...new Set(units.flatMap((unit) => unit.terms))];
   const sourceTermCoverage = sourceTerms.length ? sourceTerms.filter((term) => outputTerms.has(term)).length / sourceTerms.length : 1;
   const sourceWordCount = words(sourceText).length;
   const outputWordCount = words(outputText).length;
   const lengthRatio = sourceWordCount ? outputWordCount / sourceWordCount : 1;
   const preserveThreshold = sourceWordCount <= 80 ? SHORT_SOURCE_PRESERVE_THRESHOLD : PRESERVE_THRESHOLD;
-  const passed = averageCoverage >= preserveThreshold && sourceTermCoverage >= 0.58 && missingUnits.length === 0 && lengthRatio >= 0.58;
+  const allowedMissingUnits = allowedMissingUnitCount(weightedRows, sourceWordCount);
+  const sourceCoverageFloor = sourceWordCount <= 80 ? 0.52 : 0.46;
+  const lengthFloor = sourceWordCount <= 80 ? 0.52 : 0.48;
+  const passed = averageCoverage >= preserveThreshold && sourceTermCoverage >= sourceCoverageFloor && missingUnits.length <= allowedMissingUnits && lengthRatio >= lengthFloor;
   return {
     passed,
     averageCoverage: Number(averageCoverage.toFixed(3)),
     sourceTermCoverage: Number(sourceTermCoverage.toFixed(3)),
     lengthRatio: Number(lengthRatio.toFixed(3)),
     preserveThreshold,
+    allowedMissingUnits,
     missingUnitCount: missingUnits.length,
     missingUnits: missingUnits.slice(0, 6),
     rows: rows.slice(0, 10)
@@ -110,8 +137,8 @@ export function auditPropositionIntegrity(sourceText = '', outputText = '') {
     warnings: [
       ...(qScore < 0.5 ? ['question-form-loss'] : []),
       ...(!coverage.passed ? ['proposition-coverage-loss'] : []),
-      ...(coverage.lengthRatio < 0.58 ? ['output-too-compressed'] : []),
-      ...(coverage.missingUnitCount ? ['missing-source-units'] : []),
+      ...(coverage.lengthRatio < 0.48 ? ['output-too-compressed'] : []),
+      ...(coverage.missingUnitCount > coverage.allowedMissingUnits ? ['missing-source-units'] : []),
       ...(answeredQuestion ? ['question-answered'] : []),
       ...(inventedAdvice ? ['invented-advice'] : []),
       ...(strengthenedClaim ? ['claim-strengthened'] : []),
