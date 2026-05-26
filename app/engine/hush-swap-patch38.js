@@ -4,7 +4,7 @@ import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
 export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
-export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'patch-40-coverage-gated-candidate-generator-safe';
+export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37-operation-diversity-selector';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -18,20 +18,91 @@ function release(candidate = {}) {
   return candidate?.text?.trim() && candidate.payloadIntegrity?.passed !== false && candidate.claimIntegrity?.passed !== false && candidate.releasePolicy?.hardBlocked !== true && candidate.propositionIntegrity?.passed !== false;
 }
 
-function score(candidate = {}, sourceText = '', mode = GENERATOR_MODES.OFFLINE_EXPRESSIVE) {
+function words(text = '') {
+  return safe(text).toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || [];
+}
+
+function tokenOverlap(a = '', b = '') {
+  const aa = new Set(words(a).filter((word) => word.length > 2));
+  const bb = new Set(words(b).filter((word) => word.length > 2));
+  if (!aa.size || !bb.size) return 0;
+  let hits = 0;
+  for (const word of aa) if (bb.has(word)) hits += 1;
+  return hits / Math.max(aa.size, bb.size);
+}
+
+function syntaxDistance(candidateText = '', sourceText = '') {
+  const candidateSentences = safe(candidateText).split(/[.!?]+/).map((s) => s.trim()).filter(Boolean);
+  const sourceSentences = safe(sourceText).split(/[.!?]+/).map((s) => s.trim()).filter(Boolean);
+  const firstWordChanged = words(candidateSentences[0] || '')[0] && words(candidateSentences[0] || '')[0] !== words(sourceSentences[0] || '')[0] ? 0.25 : 0;
+  const sentenceCountDelta = Math.min(0.25, Math.abs(candidateSentences.length - sourceSentences.length) * 0.08);
+  return round4(Math.max(0, Math.min(1, 0.35 + firstWordChanged + sentenceCountDelta + (1 - tokenOverlap(candidateText, sourceText)) * 0.35)));
+}
+
+function styleOperation(candidate = {}) {
+  return safe(candidate.style_operation || candidate.providerTelemetry?.style_operation || candidate.strategy || candidate.operations?.at?.(-1) || 'operation-unreported') || 'operation-unreported';
+}
+
+function operationCompleteness(candidate = {}) {
+  const hasOp = styleOperation(candidate) !== 'operation-unreported';
+  const preserved = asArray(candidate.preserved_propositions || candidate.providerTelemetry?.preserved_propositions).length;
+  const notes = candidate.mask_surface_notes || candidate.providerTelemetry?.mask_surface_notes || {};
+  const hasNotes = notes && typeof notes === 'object' && Object.keys(notes).length > 0;
+  return round4((hasOp ? 0.42 : 0) + Math.min(0.34, preserved * 0.08) + (hasNotes ? 0.24 : 0));
+}
+
+function maskFidelity(candidate = {}, input = {}) {
+  const value = safe(candidate.text).toLowerCase();
+  const mask = input.mask || {};
+  const vector = input.phase37Telemetry?.flightPacket?.mask_style_vector || {};
+  const hints = [
+    ...asArray(mask.dictionHints),
+    ...asArray(mask.transitionBank),
+    ...asArray(mask.transformHints?.desiredMoves),
+    ...asArray(vector.diction_hints),
+    ...asArray(vector.transition_bank),
+    ...asArray(vector.desired_moves)
+  ].map((item) => safe(item).toLowerCase()).filter((item) => item.length > 2).slice(0, 24);
+  const hintScore = hints.length ? hints.filter((hint) => value.includes(hint)).length / hints.length : 0.35;
+  const notes = candidate.mask_surface_notes || candidate.providerTelemetry?.mask_surface_notes || {};
+  const notesScore = notes && typeof notes === 'object' ? Math.min(0.22, Object.keys(notes).length * 0.055) : 0;
+  return round4(Math.min(1, hintScore * 0.32 + operationCompleteness(candidate) * 0.34 + notesScore + 0.12));
+}
+
+function humanTexture(candidate = {}) {
+  const value = safe(candidate.text);
+  const sentenceCount = Math.max(1, value.split(/[.!?]+/).filter((s) => s.trim()).length);
+  const punctuation = ((value.match(/[,;:—-]/g) || []).length / Math.max(8, sentenceCount * 8));
+  const contraction = ((value.match(/\b(?:I'm|you're|it's|that's|don't|can't|won't|we're|I've|they're)\b/gi) || []).length / 8);
+  const genericPenalty = /^(Here is|I can help|This version|In summary|To clarify)\b/i.test(value) ? 0.35 : 0;
+  return round4(Math.max(0, Math.min(1, 0.5 + Math.min(0.28, punctuation) + Math.min(0.22, contraction) - genericPenalty)));
+}
+
+function providerPenalty(candidate = {}) {
+  const added = asArray(candidate.new_claims || candidate.providerTelemetry?.new_claims).length;
+  const dropped = asArray(candidate.dropped_propositions || candidate.providerTelemetry?.dropped_propositions).length;
+  const changed = asArray(candidate.changed_questions || candidate.providerTelemetry?.changed_questions).length;
+  return Math.min(0.9, added * 0.18 + dropped * 0.14 + changed * 0.14);
+}
+
+function operationSpread(rows = []) {
+  return [...new Set(rows.map((row) => row.operation).filter(Boolean))];
+}
+
+function score(candidate = {}, sourceText = '', mode = GENERATOR_MODES.OFFLINE_EXPRESSIVE, input = {}) {
   const collapse = collapseSurfaceScore(candidate.text);
   const remote = remoteSource(candidate);
   const offline = offlineSource(candidate);
-  const providerBonus = providerSource(candidate) ? 0.42 : 0;
-  const remoteModeBonus = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && remote ? 0.6 : 0;
-  const hybridRemoteBonus = mode === GENERATOR_MODES.HYBRID && remote ? 0.18 : 0;
+  const providerBonus = providerSource(candidate) ? 0.3 : 0;
+  const remoteModeBonus = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && remote ? 0.46 : 0;
+  const hybridRemoteBonus = mode === GENERATOR_MODES.HYBRID && remote ? 0.16 : 0;
   const offlinePenaltyInRemote = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && offline ? 0.45 : 0;
-  const questionBonus = genericQuestionActive(sourceText) && providerSource(candidate) ? 0.32 : 0;
-  const coverageBonus = Number(candidate.propositionIntegrity?.coverage?.averageCoverage || 0) * 0.38;
-  const lengthBonus = Math.min(1, Number(candidate.propositionIntegrity?.coverage?.lengthRatio || 0)) * 0.18;
-  const warningPenalty = asArray(candidate.propositionIntegrity?.warnings).length * 0.08;
+  const questionBonus = genericQuestionActive(sourceText) && providerSource(candidate) ? 0.18 : 0;
+  const coverage = Number(candidate.propositionIntegrity?.coverage?.averageCoverage || 0);
+  const length = Math.min(1.15, Number(candidate.propositionIntegrity?.coverage?.lengthRatio || 0));
+  const warningPenalty = asArray(candidate.propositionIntegrity?.warnings).length * 0.055;
   const base = Number(candidate.finalScore || 0.45);
-  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + coverageBonus + lengthBonus - offlinePenaltyInRemote - collapse * 0.9 - warningPenalty);
+  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + coverage * 0.5 + length * 0.18 + operationCompleteness(candidate) * 0.34 + maskFidelity(candidate, input) * 0.32 + syntaxDistance(candidate.text, sourceText) * 0.22 + humanTexture(candidate) * 0.16 - offlinePenaltyInRemote - collapse * 1.05 - warningPenalty - providerPenalty(candidate));
 }
 
 function auditFallback(candidate = {}, error = null) {
@@ -93,58 +164,79 @@ export function buildHushSwap(input = {}) {
   const providerCandidates = mergeProviderCandidates(reports).map((candidate) => normalize(candidate, sourceText));
   const merged = mergeProviderCandidates([{ candidates: providerCandidates }, { candidates: asArray(result.candidates) }]).map((candidate) => normalize(candidate, sourceText));
   const releasable = merged.filter(release);
-  const ranked = releasable.map((candidate) => ({
-    candidate,
-    score: score(candidate, sourceText, mode),
-    collapse: collapseSurfaceScore(candidate.text),
-    coverage: candidate.propositionIntegrity?.coverage?.averageCoverage ?? 0,
-    lengthRatio: candidate.propositionIntegrity?.coverage?.lengthRatio ?? 0,
-    provider: providerSource(candidate),
-    remote: remoteSource(candidate),
-    offline: offlineSource(candidate)
-  })).sort((a, b) => b.score - a.score);
+  const ranked = releasable.map((candidate) => {
+    const operation = styleOperation(candidate);
+    return {
+      candidate,
+      operation,
+      score: score(candidate, sourceText, mode, input),
+      collapse: collapseSurfaceScore(candidate.text),
+      coverage: candidate.propositionIntegrity?.coverage?.averageCoverage ?? 0,
+      lengthRatio: candidate.propositionIntegrity?.coverage?.lengthRatio ?? 0,
+      maskFidelity: maskFidelity(candidate, input),
+      syntaxDistance: syntaxDistance(candidate.text, sourceText),
+      humanTexture: humanTexture(candidate),
+      operationCompleteness: operationCompleteness(candidate),
+      provider: providerSource(candidate),
+      remote: remoteSource(candidate),
+      offline: offlineSource(candidate)
+    };
+  }).sort((a, b) => b.score - a.score);
 
   const selected = mode === GENERATOR_MODES.REMOTE_LLM_PROXY
-    ? (ranked.find((row) => row.remote && row.collapse < 0.34)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
+    ? (ranked.find((row) => row.remote && row.collapse < 0.34 && row.maskFidelity >= 0.32)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
     : mode === GENERATOR_MODES.HYBRID
-      ? (ranked.find((row) => row.remote && row.collapse < 0.2)?.candidate || ranked.find((row) => row.provider && row.collapse < 0.2)?.candidate || ranked[0]?.candidate || null)
-      : (ranked.find((row) => row.offline && row.collapse < 0.2)?.candidate || ranked[0]?.candidate || null);
+      ? (ranked.find((row) => row.remote && row.collapse < 0.24)?.candidate || ranked.find((row) => row.provider && row.collapse < 0.24)?.candidate || ranked[0]?.candidate || null)
+      : (ranked.find((row) => row.offline && row.collapse < 0.24)?.candidate || ranked[0]?.candidate || null);
 
   const blockedRows = merged.filter((candidate) => !release(candidate)).slice(0, 10).map((candidate) => ({
     id: candidate.id,
     source: candidate.source,
+    operation: styleOperation(candidate),
     warnings: candidate.propositionIntegrity?.warnings || candidate.warnings || [],
     coverage: candidate.propositionIntegrity?.coverage?.averageCoverage ?? 0,
     lengthRatio: candidate.propositionIntegrity?.coverage?.lengthRatio ?? 0,
     missingUnitCount: candidate.propositionIntegrity?.coverage?.missingUnitCount ?? 0
   }));
 
+  const selectedRow = ranked.find((row) => row.candidate === selected) || null;
+  const spread = operationSpread(ranked);
   const diagnostics = {
     version: HUSH_SWAP_PATCH38_VERSION,
     internalVersion: HUSH_SWAP_PATCH38_INTERNAL_VERSION,
     providerVersion: HUSH_GENERATOR_PROVIDER_VERSION,
     providerMode: mode,
-    providerReports: reports.map((report) => ({ provider: report.provider, model: report.model, candidateCount: asArray(report.candidates).length, warnings: report.warnings, requestReceipt: report.requestReceipt })),
+    flightPacketVersion: input.phase37Telemetry?.flightPacketVersion || input.phase37Telemetry?.flightPacket?.packet_version || '',
+    phase37Version: input.phase37Telemetry?.version || '',
+    providerReports: reports.map((report) => ({ provider: report.provider, model: report.model, promptVersion: report.promptVersion, flightPacketVersion: report.flightPacketVersion, candidateCount: asArray(report.candidates).length, warnings: report.warnings, requestReceipt: report.requestReceipt })),
     remoteCandidateCount: providerCandidates.filter(remoteSource).length,
     offlineCandidateCount: providerCandidates.filter(offlineSource).length,
     generatedCount: providerCandidates.length,
     mergedCount: merged.length,
     releasableCount: releasable.length,
     blockedCount: merged.length - releasable.length,
+    operationSpread: spread,
+    operationSpreadCount: spread.length,
     blockedRows,
     selectedCandidateId: selected?.id || '',
+    selectedStyleOperation: selected ? styleOperation(selected) : '',
     selectedProviderCandidate: providerSource(selected || {}),
     selectedRemoteCandidate: remoteSource(selected || {}),
     selectedOfflineCandidate: offlineSource(selected || {}),
     selectedCoverage: selected?.propositionIntegrity?.coverage?.averageCoverage ?? 0,
     selectedLengthRatio: selected?.propositionIntegrity?.coverage?.lengthRatio ?? 0,
+    selectedMaskFidelity: selectedRow?.maskFidelity ?? 0,
+    selectedSyntaxDistance: selectedRow?.syntaxDistance ?? 0,
+    selectedHumanTexture: selectedRow?.humanTexture ?? 0,
+    selectedOperationCompleteness: selectedRow?.operationCompleteness ?? 0,
     selectedCollapseSurfaceScore: round4(collapseSurfaceScore(selected?.text || '')),
-    selectedScore: ranked.find((row) => row.candidate === selected)?.score || 0,
-    selectorRows: ranked.slice(0, 10).map((row) => ({ id: row.candidate.id, source: row.candidate.source, strategy: row.candidate.strategy, score: row.score, collapse: row.collapse, coverage: row.coverage, lengthRatio: row.lengthRatio, provider: row.provider, remote: row.remote, offline: row.offline })),
+    selectedScore: selectedRow?.score || 0,
+    selectorRows: ranked.slice(0, 10).map((row) => ({ id: row.candidate.id, source: row.candidate.source, strategy: row.candidate.strategy, operation: row.operation, score: row.score, collapse: row.collapse, coverage: row.coverage, lengthRatio: row.lengthRatio, maskFidelity: row.maskFidelity, syntaxDistance: row.syntaxDistance, humanTexture: row.humanTexture, operationCompleteness: row.operationCompleteness, provider: row.provider, remote: row.remote, offline: row.offline })),
     mergedCandidates: merged,
     warning: mode === GENERATOR_MODES.REMOTE_LLM_PROXY && !providerCandidates.some(remoteSource)
       ? 'remote-mode-produced-no-remote-candidates'
       : !selected && blockedRows.length ? 'all-candidates-failed-proposition-coverage'
+      : spread.length <= 1 && providerCandidates.length > 1 ? 'phase37-operation-diversity-low'
       : collapseSurfaceScore(selected?.text || '') >= 0.34 ? 'patch38-custody-collapse-risk' : ''
   };
   return apply(result, selected, diagnostics);
