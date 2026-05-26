@@ -1,8 +1,115 @@
-import { buildHushLlmPromptContract, HUSH_GENERATOR_PROVIDER_VERSION } from './hush-generator-provider.js';
+import { buildHushLlmPromptContract, HUSH_GENERATOR_PROVIDER_VERSION, buildProtectedLiteralList } from './hush-generator-provider.js';
 import { buildPropositionMap } from './hush-proposition-map.js';
 import { buildOntologyRoute, compileRemoteRoutePayload } from './hush-ontology-route.js';
 
 export const HUSH_PROVIDER_PHASE35_VERSION = 'phase-35-provider-contract-v2';
+export const HUSH_PROVIDER_PHASE37_VERSION = 'phase-37-ontology-carrying-generator-flight';
+export const HUSH_FLIGHT_PACKET_VERSION = 'hush-flight-packet/v3';
+export const HUSH_LLM_CANDIDATE_V3 = 'hush-llm-candidate-v3';
+
+export const HUSH_STYLE_OPERATIONS = Object.freeze([
+  'syntax_inversion',
+  'cadence_alias',
+  'register_lowering',
+  'register_lifting',
+  'lyric_pressure',
+  'friction_insert',
+  'fracture_softening',
+  'witness_plainness',
+  'question_preservation',
+  'heat_calibration'
+]);
+
+const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
+const safe = (value) => String(value ?? '').trim();
+const uniq = (values = []) => [...new Set(asArray(values).map((value) => safe(value)).filter(Boolean))];
+
+function sourceUnitText(propositionMap = {}, sourceText = '') {
+  const propositionUnits = asArray(propositionMap.propositions).map((p) => safe(p.text)).filter(Boolean);
+  const lineUnits = safe(sourceText).split(/\n+/).map((line) => line.trim()).filter(Boolean);
+  const sentenceUnits = safe(sourceText).match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((line) => line.trim()).filter(Boolean) || [];
+  return uniq([...propositionUnits, ...lineUnits, ...sentenceUnits]).slice(0, 18);
+}
+
+function termBank(propositionMap = {}, sourceText = '') {
+  const fromMap = asArray(propositionMap.propositions).flatMap((p) => asArray(p.coreTerms));
+  const stop = new Set('the a an and or but if is are was were be been being do does did how what why when where who whom with without into from that this those these much really very just like of in on to for no not before after you your yours i me my mine we our ours it its they them their there here some so sorry sounds sound going through have has had basically maybe came come from can could would should will as at by'.split(' '));
+  const fromText = safe(sourceText).toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g)?.filter((word) => word.length > 2 && !stop.has(word)) || [];
+  return uniq([...fromMap, ...fromText]).slice(0, 36);
+}
+
+function compactQuestionMap(propositionMap = {}) {
+  return asArray(propositionMap.propositions)
+    .filter((p) => p.mustRemainQuestion || p.type === 'question')
+    .map((p) => ({ id: p.id, text: p.text, coreTerms: asArray(p.coreTerms), mustRemainQuestion: true }))
+    .slice(0, 10);
+}
+
+function compactClaimMap(propositionMap = {}) {
+  return asArray(propositionMap.propositions)
+    .filter((p) => p.type === 'claim')
+    .map((p) => ({ id: p.id, text: p.text, coreTerms: asArray(p.coreTerms), intent: p.intent || 'claim-preservation' }))
+    .slice(0, 10);
+}
+
+function compactFlagMap(propositionMap = {}, key = 'uncertainty') {
+  return asArray(propositionMap.propositions)
+    .filter((p) => p.intent === key || (key === 'negation' && p.hasNegation) || (key === 'uncertainty' && p.hasUncertainty))
+    .map((p) => ({ id: p.id, text: p.text, coreTerms: asArray(p.coreTerms) }))
+    .slice(0, 10);
+}
+
+function maskStyleVector(mask = {}) {
+  const profile = mask.profile || {};
+  const writingTraits = mask.writingTraits || {};
+  return {
+    mask_id: mask.id || '',
+    display_name: mask.label || mask.name || '',
+    register: mask.family || '',
+    intended_use: mask.intendedUse || '',
+    risk_tell: mask.riskTell || '',
+    sentence_length_target: profile.averageSentenceLength || profile.avgSentenceLength || writingTraits.sentenceLength || '',
+    rhythm_target: profile.rhythm || profile.sentenceRhythm || writingTraits.rhythm || '',
+    formality_target: profile.formality || writingTraits.diction || '',
+    warmth_target: profile.warmth || writingTraits.emotionalTemperature || '',
+    compression_target: profile.compression || writingTraits.verbosity || '',
+    metaphor_tolerance: profile.metaphorTolerance || writingTraits.metaphorTolerance || 'medium',
+    diction_hints: uniq([...(mask.dictionHints || []), ...(writingTraits.dictionHints || [])]).slice(0, 16),
+    transition_bank: uniq(mask.transitionBank || []).slice(0, 16),
+    avoid_list: uniq(mask.avoidList || []).slice(0, 24),
+    desired_moves: uniq(mask.transformHints?.desiredMoves || []).slice(0, 16),
+    example_transform_pairs: asArray(mask.exampleTransformPairs).slice(0, 5),
+    sample_seed_excerpt: safe(mask.sampleSeed || '').slice(0, 2200)
+  };
+}
+
+function flightControls(input = {}, ontologyRoute = {}) {
+  const hints = ontologyRoute.ontologyHints || {};
+  return {
+    candidate_count: Math.max(4, Math.min(8, Number(input.candidateCount || input.options?.candidateCount || 8))),
+    required_operation_diversity: true,
+    required_operations: HUSH_STYLE_OPERATIONS,
+    preferred_operations: operationPlan(ontologyRoute),
+    preserve_questions_as_questions: true,
+    do_not_answer_source_questions: true,
+    do_not_add_facts: true,
+    do_not_strengthen_claims: true,
+    avoid_collapse_surface: true,
+    semantic_risk: hints.semanticRisk || 'medium',
+    transformation_depth: hints.transformationDepth || 'medium'
+  };
+}
+
+function operationPlan(ontologyRoute = {}) {
+  const route = ontologyRoute.routeType || 'mask-surface';
+  const risk = ontologyRoute.ontologyHints?.semanticRisk || 'medium';
+  if (route === 'plain-witness' || risk === 'high') return ['witness_plainness', 'friction_insert', 'cadence_alias', 'fracture_softening'];
+  if (route === 'lyric-cadence' || route === 'expressive-theory') return ['lyric_pressure', 'cadence_alias', 'syntax_inversion', 'heat_calibration'];
+  if (route === 'jagged-disguise') return ['syntax_inversion', 'friction_insert', 'fracture_softening', 'cadence_alias'];
+  if (route === 'question-legibility' || route === 'everyday-question') return ['question_preservation', 'register_lowering', 'cadence_alias', 'heat_calibration'];
+  if (route === 'casual-register') return ['register_lowering', 'cadence_alias', 'friction_insert', 'syntax_inversion'];
+  return ['cadence_alias', 'syntax_inversion', 'register_lowering', 'heat_calibration'];
+}
 
 export function buildHushLlmPromptContractV2(input = {}) {
   const base = buildHushLlmPromptContract(input);
@@ -31,6 +138,96 @@ export function buildHushLlmPromptContractV2(input = {}) {
   };
 }
 
+export function buildHushFlightPacketV3(input = {}) {
+  const sourceText = input.sourceText || input.messageDraftText || '';
+  const mask = input.mask || {};
+  const propositionMap = input.propositionMap || buildPropositionMap(sourceText);
+  const ontologyRoute = input.ontologyRoute || buildOntologyRoute({ ...input, propositionMap });
+  const routePayload = compileRemoteRoutePayload(ontologyRoute);
+  const units = sourceUnitText(propositionMap, sourceText);
+  const requiredTerms = termBank(propositionMap, sourceText);
+  const protectedLiterals = asArray(input.protectedLiterals).length ? asArray(input.protectedLiterals) : buildProtectedLiteralList(sourceText);
+
+  return {
+    packet_version: HUSH_FLIGHT_PACKET_VERSION,
+    phase37_version: HUSH_PROVIDER_PHASE37_VERSION,
+    source_manifest: {
+      source_units: units,
+      required_terms: requiredTerms,
+      protected_literals: protectedLiterals,
+      question_map: compactQuestionMap(propositionMap),
+      negation_map: compactFlagMap(propositionMap, 'negation'),
+      uncertainty_map: compactFlagMap(propositionMap, 'uncertainty'),
+      claim_map: compactClaimMap(propositionMap),
+      proposition_summary: routePayload.propositionSummary
+    },
+    ontology_route: {
+      route_type: routePayload.routeType,
+      source_type: routePayload.sourceType,
+      semantic_risk: routePayload.ontologyHints?.semanticRisk || 'medium',
+      transformation_depth: routePayload.ontologyHints?.transformationDepth || 'medium',
+      allowed_moves: asArray(routePayload.ontologyHints?.allowedMoves),
+      forbidden_moves: asArray(routePayload.ontologyHints?.forbiddenMoves),
+      cadence_pressure: routePayload.ontologyHints?.cadencePressure || routePayload.routeType
+    },
+    mask_style_vector: maskStyleVector(mask),
+    flight_controls: flightControls(input, ontologyRoute),
+    privacy_boundary: {
+      sends_private_ledger: false,
+      sends_mask_memory: false,
+      sends_persona_memory: false,
+      sends_full_iteration_history: false,
+      sends_safe_harbor_packet: false
+    }
+  };
+}
+
+export function compileFlightPacketForProvider(packet = {}) {
+  return {
+    packet_version: packet.packet_version || HUSH_FLIGHT_PACKET_VERSION,
+    phase37_version: packet.phase37_version || HUSH_PROVIDER_PHASE37_VERSION,
+    source_manifest: packet.source_manifest || {},
+    ontology_route: packet.ontology_route || {},
+    mask_style_vector: packet.mask_style_vector || {},
+    flight_controls: packet.flight_controls || {},
+    privacy_boundary: packet.privacy_boundary || {}
+  };
+}
+
+export function buildHushLlmPromptContractV3(input = {}) {
+  const base = buildHushLlmPromptContractV2(input);
+  const flightPacket = compileFlightPacketForProvider(input.flightPacket || buildHushFlightPacketV3(input));
+  return {
+    ...base,
+    promptVersion: HUSH_LLM_CANDIDATE_V3,
+    phase37Version: HUSH_PROVIDER_PHASE37_VERSION,
+    flightPacketVersion: HUSH_FLIGHT_PACKET_VERSION,
+    flightPacket,
+    operationTaxonomy: HUSH_STYLE_OPERATIONS,
+    outputSchema: {
+      candidates: [{
+        text: 'string',
+        style_note: 'string',
+        style_operation: HUSH_STYLE_OPERATIONS[0],
+        preserved_propositions: ['p1'],
+        dropped_propositions: [],
+        changed_questions: [],
+        new_claims: [],
+        risk_flags: [],
+        mask_surface_notes: { rhythm: 'string', diction: 'string', temperature: 'string', structure: 'string' }
+      }]
+    },
+    rules: [
+      'Use the Hush Flight Packet as active control, not decorative context.',
+      'Generate candidates across distinct style_operation values; do not produce one voice with cosmetic variants.',
+      'Preserve source_manifest.source_units and source_manifest.required_terms unless a term can only be paraphrased safely.',
+      'Each candidate must declare preserved_propositions, dropped_propositions, changed_questions, new_claims, and mask_surface_notes.',
+      'Follow ontology_route.route_type, semantic_risk, and transformation_depth when choosing operations.',
+      ...(base.rules || [])
+    ].filter((rule, index, arr) => arr.indexOf(rule) === index)
+  };
+}
+
 export function buildPhase35ProviderTelemetry(input = {}) {
   const propositionMap = input.propositionMap || buildPropositionMap(input.sourceText || input.messageDraftText || '');
   const ontologyRoute = input.ontologyRoute || buildOntologyRoute({ ...input, propositionMap });
@@ -42,5 +239,24 @@ export function buildPhase35ProviderTelemetry(input = {}) {
     sendsLedger: false,
     sendsMaskMemory: false,
     sendsFullOntology: false
+  };
+}
+
+export function buildPhase37ProviderTelemetry(input = {}) {
+  const flightPacket = compileFlightPacketForProvider(input.flightPacket || buildHushFlightPacketV3(input));
+  return {
+    version: HUSH_PROVIDER_PHASE37_VERSION,
+    flightPacketVersion: HUSH_FLIGHT_PACKET_VERSION,
+    promptVersion: HUSH_LLM_CANDIDATE_V3,
+    flightPacket,
+    propositionMap: flightPacket.source_manifest?.proposition_summary || {},
+    ontologyRoute: flightPacket.ontology_route || {},
+    operationTaxonomy: HUSH_STYLE_OPERATIONS,
+    remotePayloadIsCompact: false,
+    remotePayloadIsPrivacyBounded: true,
+    sendsLedger: false,
+    sendsMaskMemory: false,
+    sendsFullOntology: false,
+    sendsFlightPacket: true
   };
 }
