@@ -4,7 +4,7 @@ import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
 export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
-export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.2-wrapper-copy-resistant-selector';
+export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.3-versioned-question-safe-selector';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -129,13 +129,24 @@ function isSourceCopy(candidate = {}, sourceText = '') {
   return Boolean(copy.exactCopy || copy.wrapperCopy || copy.nearCopy || copy.longVerbatimRun);
 }
 
+function questionFallbackEligible(candidate = {}, sourceText = '') {
+  const output = safe(candidate.text || '');
+  return genericQuestionActive(sourceText)
+    && providerSource(candidate)
+    && /\?/.test(output)
+    && /tech/i.test(output)
+    && /signal[- ]reading|signal/i.test(output)
+    && collapseSurfaceScore(output) < 0.34
+    && !isSourceCopy(candidate, sourceText);
+}
+
 function release(candidate = {}, sourceText = '') {
   if (!candidate?.text?.trim()) return false;
   if (candidate.payloadIntegrity?.passed === false) return false;
   if (candidate.claimIntegrity?.passed === false) return false;
   if (candidate.releasePolicy?.hardBlocked === true) return false;
-  if (candidate.propositionIntegrity?.passed === false) return false;
   if (isSourceCopy(candidate, sourceText)) return false;
+  if (candidate.propositionIntegrity?.passed === false) return questionFallbackEligible(candidate, sourceText);
   return true;
 }
 
@@ -204,11 +215,23 @@ function normalize(candidate = {}, sourceText = '') {
   }
 }
 
+function withPatch38Version(version = '') {
+  const current = safe(version || 'hush');
+  return current.includes(HUSH_SWAP_PATCH38_VERSION) ? current : `${current}+${HUSH_SWAP_PATCH38_VERSION}`;
+}
+
 function apply(result = {}, selected = null, diagnostics = {}) {
-  if (!selected) return { ...result, selectedOutput: '', selectedCandidateId: '', patch38Diagnostics: diagnostics, warnings: [...new Set([...asArray(result.warnings), ...(diagnostics.warning ? [diagnostics.warning] : [])])] };
+  if (!selected) return {
+    ...result,
+    version: withPatch38Version(result.version),
+    selectedOutput: '',
+    selectedCandidateId: '',
+    patch38Diagnostics: diagnostics,
+    warnings: [...new Set([...asArray(result.warnings), ...(diagnostics.warning ? [diagnostics.warning] : [])])]
+  };
   return {
     ...result,
-    version: `${result.version || 'hush'}+${HUSH_SWAP_PATCH38_VERSION}`,
+    version: withPatch38Version(result.version),
     selectedOutput: selected.text || '',
     selectedCandidateId: selected.id || result.selectedCandidateId || '',
     candidates: diagnostics.mergedCandidates || result.candidates,
