@@ -63,7 +63,7 @@ const providerReport = normalizeRemoteProviderResponse({
   model: 'test-model',
   candidates: [
     {
-      text: 'Still, can this message keep its uncertainty without becoming bland, and keep that question breathing? I do not want the rewrite to answer the question or add facts; I want the message to bend warm without losing its bones.',
+      text: 'Still, can the uncertainty stay alive here without turning the note into paste? I want the question held open, not answered, and the facts left exactly where they are: unadded, uninflated, warm but not flattened.',
       style_note: 'kept hesitation and question pressure',
       style_operation: 'friction_insert',
       preserved_propositions: ['p1', 'p2'],
