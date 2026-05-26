@@ -1,4 +1,4 @@
-export const HUSH_PR86_PROFILE_RESCUE_VERSION = 'pr86.1-profile-render-rescue';
+export const HUSH_PR86_PROFILE_RESCUE_VERSION = 'pr86.2-analyze-gated-profile-rescue';
 
 import { extractCadenceProfile } from './engine/stylometry.js';
 
@@ -10,7 +10,8 @@ const words = (value = '') => String(value || '').match(/[A-Za-z0-9][A-Za-z0-9'-
 const sentences = (value = '') => (String(value || '').match(/[^.!?]+[.!?]+|[^.!?]+$/g) || []).map((item) => item.trim()).filter(Boolean);
 let rendering = false;
 let timer = null;
-let lastSource = '';
+let analysisArmed = false;
+let analyzedSource = '';
 
 function mean(values = []) {
   const finite = values.map(Number).filter(Number.isFinite);
@@ -115,11 +116,37 @@ function metric(label, value, tone = '') {
   return `<article class="hush-source-metric ${tone}"><span>${esc(label)}</span><strong>${esc(value)}</strong></article>`;
 }
 
+function clearProfile(doc = document) {
+  const host = $('messageDraftProfile', doc);
+  if (!host) return;
+  if (host.innerHTML) host.innerHTML = '';
+  host.dataset.pr86Profile = 'asleep';
+  host.dataset.pr86Source = '';
+}
+
+function hideSuggestedMasks(doc = document) {
+  const panel = $('hushSuggestedMasksPanel', doc);
+  if (!panel) return;
+  panel.hidden = true;
+  panel.innerHTML = '';
+}
+
+function bindScrollHint(panel) {
+  if (!panel || panel.dataset.pr86ScrollBound === 'true') return;
+  panel.dataset.pr86ScrollBound = 'true';
+  panel.addEventListener('scroll', () => {
+    if (panel.scrollTop > 2) panel.dataset.scrolled = 'true';
+  }, { passive: true });
+}
+
 function renderProfile(doc = document) {
   const host = $('messageDraftProfile', doc);
   const input = $('messageDraftInput', doc);
   const source = input?.value || '';
-  if (!host || !source.trim()) return false;
+  if (!host || !source.trim() || !analysisArmed || source !== analyzedSource) {
+    clearProfile(doc);
+    return false;
+  }
   const p = buildProfile(source);
   const route = p.difficulty >= 0.7 ? 'high-friction transform; preserve propositions before style.' : p.linkage >= 0.55 ? 'source-body visible; prioritize syntax movement.' : 'stable source; standard mask route.';
   const metrics = [
@@ -129,7 +156,7 @@ function renderProfile(doc = document) {
   host.innerHTML = `<section class="hush-source-profile-panel" aria-label="Authorship profile"><div class="hush-source-profile-head"><div><span>Authorship Profile</span><strong>Message route scan</strong></div><p>${esc(route)}</p></div><div class="hush-source-profile-grid">${metrics.join('')}</div><div class="hush-source-profile-scroll-hint">↕ scroll stylometrics</div></section>`;
   host.dataset.pr86Profile = 'rendered';
   host.dataset.pr86Source = source;
-  lastSource = source;
+  bindScrollHint(host.querySelector('.hush-source-profile-panel'));
   window.setTimeout(() => { rendering = false; }, 0);
   return true;
 }
@@ -149,7 +176,7 @@ function installStyle(doc = document) {
     body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-metric{min-height:3.2rem;border:1px solid rgba(137,255,240,.18);border-radius:14px;background:rgba(0,0,0,.24);padding:.42rem .46rem;}
     body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-metric span{display:block;color:rgba(202,255,223,.58);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;}
     body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-metric strong{display:block;margin-top:.22rem;color:#f1fff6;font-size:.68rem;line-height:1.2;word-break:break-word;}
-    body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-profile-scroll-hint{display:none;}
+    body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-profile-scroll-hint{display:none;transition:opacity .18s ease, transform .18s ease;}
     @media(max-width:760px){
       body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-profile-panel{height:clamp(12rem,34vh,16rem)!important;max-height:clamp(12rem,34vh,16rem)!important;min-height:0!important;overflow-y:scroll!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important;scrollbar-width:thin!important;scrollbar-color:rgba(137,255,240,.62) rgba(3,8,18,.72)!important;padding:.56rem .5rem 1.6rem!important;box-shadow:inset 0 -1.35rem 1.4rem rgba(137,255,240,.09),inset 0 1px 0 rgba(255,255,255,.06)!important;}
       body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-profile-head{position:sticky!important;top:-.56rem!important;z-index:4!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:.22rem!important;margin:-.56rem -.5rem .34rem!important;padding:.56rem .5rem .36rem!important;background:linear-gradient(180deg,rgba(4,10,21,.98),rgba(4,10,21,.9) 76%,rgba(4,10,21,0))!important;backdrop-filter:blur(6px)!important;}
@@ -159,23 +186,22 @@ function installStyle(doc = document) {
       body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-metric span{font-size:.39rem!important;letter-spacing:.075em!important;line-height:1.08!important;white-space:normal!important;overflow-wrap:anywhere!important;}
       body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-metric strong{font-size:.52rem!important;line-height:1.12!important;margin-top:.12rem!important;white-space:normal!important;overflow-wrap:anywhere!important;word-break:normal!important;}
       body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-profile-scroll-hint{display:block!important;position:sticky!important;bottom:.04rem!important;z-index:5!important;margin:.38rem auto -1rem!important;width:max-content!important;max-width:92%!important;padding:.18rem .54rem!important;border:1px solid rgba(137,255,240,.24)!important;border-radius:999px!important;background:linear-gradient(105deg,rgba(7,13,28,.96),rgba(17,8,31,.94))!important;color:rgba(202,255,223,.86)!important;font-size:.48rem!important;letter-spacing:.15em!important;text-transform:uppercase!important;pointer-events:none!important;box-shadow:0 0 .7rem rgba(137,255,240,.12)!important;}
+      body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-profile-panel[data-scrolled="true"] .hush-source-profile-scroll-hint{opacity:0!important;transform:translateY(.4rem)!important;}
     }
   `;
   doc.head.appendChild(style);
 }
 
-function needsRescue(doc = document) {
-  const host = $('messageDraftProfile', doc);
+function shouldRender(doc = document) {
   const source = $('messageDraftInput', doc)?.value || '';
-  if (!host || !source.trim()) return false;
-  if (!host.querySelector('.hush-source-profile-panel')) return true;
-  return host.dataset.pr86Source !== source;
+  return Boolean(analysisArmed && source.trim() && source === analyzedSource);
 }
 
 function schedule(doc = document, delay = 60) {
   window.clearTimeout(timer);
   timer = window.setTimeout(() => {
-    if (needsRescue(doc)) renderProfile(doc);
+    if (shouldRender(doc)) renderProfile(doc);
+    else clearProfile(doc);
   }, delay);
 }
 
@@ -183,33 +209,55 @@ function boot(doc = document) {
   if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench') return;
   doc.body.dataset.hushPr86ProfileRescue = 'true';
   installStyle(doc);
+  clearProfile(doc);
+
   const analyze = $('analyzeOutputBtn', doc);
   if (analyze && analyze.dataset.pr86ProfileRescue !== 'true') {
     analyze.dataset.pr86ProfileRescue = 'true';
-    analyze.addEventListener('click', () => [60, 180, 360, 800].forEach((delay) => schedule(doc, delay)), true);
+    analyze.addEventListener('click', () => {
+      const source = $('messageDraftInput', doc)?.value || '';
+      if (!source.trim()) {
+        analysisArmed = false;
+        analyzedSource = '';
+        clearProfile(doc);
+        hideSuggestedMasks(doc);
+        return;
+      }
+      analysisArmed = true;
+      analyzedSource = source;
+      [80, 220, 480, 900].forEach((delay) => schedule(doc, delay));
+    }, true);
   }
+
   const input = $('messageDraftInput', doc);
   if (input && input.dataset.pr86ProfileRescue !== 'true') {
     input.dataset.pr86ProfileRescue = 'true';
     input.addEventListener('input', () => {
-      const host = $('messageDraftProfile', doc);
-      if (host && input.value !== lastSource) host.dataset.pr86Profile = 'stale';
+      if (input.value !== analyzedSource) {
+        analysisArmed = false;
+        analyzedSource = '';
+        window.clearTimeout(timer);
+        clearProfile(doc);
+        hideSuggestedMasks(doc);
+      }
     }, true);
   }
+
   const host = $('messageDraftProfile', doc);
   if (host && host.dataset.pr86Observed !== 'true') {
     host.dataset.pr86Observed = 'true';
     new MutationObserver(() => {
       if (rendering) return;
-      schedule(doc, 80);
+      const source = $('messageDraftInput', doc)?.value || '';
+      if (!source.trim() || !analysisArmed || source !== analyzedSource) clearProfile(doc);
+      else if (!host.querySelector('.hush-source-profile-panel')) schedule(doc, 80);
     }).observe(host, { childList: true, subtree: true, characterData: true });
   }
-  [220, 720, 1600].forEach((delay) => schedule(doc, delay));
 }
 
 if (typeof document !== 'undefined') {
   const run = () => boot(document);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
   else run();
-  [240, 720, 1400, 2600].forEach((delay) => window.setTimeout(run, delay));
+  [240, 720, 1400].forEach((delay) => window.setTimeout(run, delay));
 }
