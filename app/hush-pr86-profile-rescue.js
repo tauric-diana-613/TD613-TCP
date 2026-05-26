@@ -1,4 +1,4 @@
-export const HUSH_PR86_PROFILE_RESCUE_VERSION = 'pr86.2-analyze-gated-profile-rescue';
+export const HUSH_PR86_PROFILE_RESCUE_VERSION = 'pr86.3-low-interference-analyze-only-profile';
 
 import { extractCadenceProfile } from './engine/stylometry.js';
 
@@ -6,9 +6,8 @@ const $ = (id, doc = document) => doc.getElementById(id);
 const esc = (value = '') => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 const clamp01 = (value) => Math.max(0, Math.min(1, Number.isFinite(Number(value)) ? Number(value) : 0));
 const round = (value, digits = 2) => Number.isFinite(Number(value)) ? Number(Number(value).toFixed(digits)) : 0;
-const words = (value = '') => String(value || '').match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || [];
-const sentences = (value = '') => (String(value || '').match(/[^.!?]+[.!?]+|[^.!?]+$/g) || []).map((item) => item.trim()).filter(Boolean);
-let rendering = false;
+const wordList = (value = '') => String(value || '').match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || [];
+const sentenceList = (value = '') => (String(value || '').match(/[^.!?]+[.!?]+|[^.!?]+$/g) || []).map((item) => item.trim()).filter(Boolean);
 let timer = null;
 let analysisArmed = false;
 let analyzedSource = '';
@@ -26,7 +25,7 @@ function std(values = []) {
 }
 
 function density(text = '', pattern) {
-  const total = words(text).length || 1;
+  const total = wordList(text).length || 1;
   return clamp01((String(text || '').match(pattern) || []).length / total);
 }
 
@@ -41,9 +40,9 @@ function repeatedNgramRate(tokens = [], n = 2) {
   return clamp01(1 - new Set(grams).size / Math.max(1, grams.length));
 }
 
-function sentenceEcho(sentenceList = []) {
-  if (sentenceList.length < 2) return 0;
-  const sets = sentenceList.map((sentence) => new Set(words(sentence.toLowerCase()).filter((word) => word.length > 2)));
+function sentenceEcho(sentences = []) {
+  if (sentences.length < 2) return 0;
+  const sets = sentences.map((sentence) => new Set(wordList(sentence.toLowerCase()).filter((word) => word.length > 2)));
   let total = 0;
   let pairs = 0;
   for (let i = 0; i < sets.length; i += 1) {
@@ -59,13 +58,13 @@ function sentenceEcho(sentenceList = []) {
 
 function buildProfile(source = '') {
   const base = extractCadenceProfile(source) || {};
-  const tokenList = words(source);
-  const lower = tokenList.map((token) => token.toLowerCase());
-  const sentenceList = sentences(source);
-  const sentenceLengths = sentenceList.map((sentence) => words(sentence).length);
-  const wordCount = tokenList.length;
+  const tokens = wordList(source);
+  const lower = tokens.map((token) => token.toLowerCase());
+  const sentences = sentenceList(source);
+  const sentenceLengths = sentences.map((sentence) => wordList(sentence).length);
+  const wordCount = tokens.length;
   const charCount = String(source || '').replace(/\s/g, '').length;
-  const syllables = tokenList.reduce((sum, token) => sum + syllableLike(token), 0);
+  const syllables = tokens.reduce((sum, token) => sum + syllableLike(token), 0);
   const avgSentence = Number(base.avgSentenceLength || mean(sentenceLengths));
   const punctuation = Number(base.punctuationDensity || density(source, /[.,;:!?—-]/g));
   const caveat = density(source, /\b(?:maybe|perhaps|unless|except|however|although|but|if|might|could|should|probably|apparently|because|arguably|seems|appears)\b/gi) * 10;
@@ -79,7 +78,7 @@ function buildProfile(source = '') {
   const thirdPerson = density(source, /\b(?:he|she|they|them|their|hers|his|it|its)\b/gi) * 10;
   const named = density(source, /\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2}\b/g) * 10;
   const literal = density(source, /\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC|API|LLM|AI|PR\d+|\d{2,}(?:[-/:.]\d+)*)\b/gi) * 10;
-  const recurrence = clamp01(Number(base.recurrencePressure || 0) * 0.45 + repeatedNgramRate(lower, 2) * 0.28 + repeatedNgramRate(lower, 3) * 0.18 + sentenceEcho(sentenceList) * 0.22);
+  const recurrence = clamp01(Number(base.recurrencePressure || 0) * 0.45 + repeatedNgramRate(lower, 2) * 0.28 + repeatedNgramRate(lower, 3) * 0.18 + sentenceEcho(sentences) * 0.22);
   const heat = clamp01(punctuation * 2.2 + caveat * 0.18 + literal * 0.14 + (source.match(/\?/g) || []).length * 0.12 + (source.match(/!/g) || []).length * 0.16);
   const custody = clamp01(heat * 0.45 + literal * 0.3 + caveat * 0.12 + named * 0.1);
   const linkage = clamp01(recurrence * 0.32 + punctuation * 0.18 + firstPerson * 0.15 + secondPerson * 0.12 + literal * 0.08);
@@ -87,28 +86,28 @@ function buildProfile(source = '') {
   return {
     wordCount,
     charCount,
-    sentenceCount: sentenceList.length,
+    sentenceCount: sentences.length,
     avgSentence,
     sentenceSpread: std(sentenceLengths),
     maxSentence: Math.max(0, ...sentenceLengths),
     lexical: wordCount ? new Set(lower).size / wordCount : 0,
     hapax: wordCount ? [...new Set(lower)].filter((word) => lower.filter((item) => item === word).length === 1).length / wordCount : 0,
-    avgWordLength: wordCount ? mean(tokenList.map((token) => token.length)) : 0,
+    avgWordLength: wordCount ? mean(tokens.map((token) => token.length)) : 0,
     syllablesPerWord: wordCount ? syllables / wordCount : 0,
-    readability: wordCount && sentenceList.length ? 206.835 - 1.015 * (wordCount / sentenceList.length) - 84.6 * (syllables / wordCount) : 0,
-    longWords: wordCount ? tokenList.filter((token) => token.length >= 8).length / wordCount : 0,
-    shortWords: wordCount ? tokenList.filter((token) => token.length <= 3).length / wordCount : 0,
+    readability: wordCount && sentences.length ? 206.835 - 1.015 * (wordCount / sentences.length) - 84.6 * (syllables / wordCount) : 0,
+    longWords: wordCount ? tokens.filter((token) => token.length >= 8).length / wordCount : 0,
+    shortWords: wordCount ? tokens.filter((token) => token.length <= 3).length / wordCount : 0,
     punctuation,
     comma: density(source, /,/g) * 10,
     colon: density(source, /[;:]/g) * 10,
     dash: density(source, /[—-]/g) * 10,
     quote: density(source, /["“”'‘’]/g) * 10,
     paren: density(source, /[()[\]{}]/g) * 10,
-    question: sentenceList.length ? (source.match(/\?/g) || []).length / sentenceList.length : 0,
-    exclaim: sentenceList.length ? (source.match(/!/g) || []).length / sentenceList.length : 0,
+    question: sentences.length ? (source.match(/\?/g) || []).length / sentences.length : 0,
+    exclaim: sentences.length ? (source.match(/!/g) || []).length / sentences.length : 0,
     claim: clamp01(claim), caveat: clamp01(caveat), modal: clamp01(modal), causal: clamp01(causal), contrast: clamp01(contrast), temporal: clamp01(temporal),
     firstPerson: clamp01(firstPerson), secondPerson: clamp01(secondPerson), thirdPerson: clamp01(thirdPerson), named: clamp01(named), literal: clamp01(literal), uppercase: clamp01(density(source, /\b[A-Z]{2,}\b/g) * 10),
-    recurrence, bigram: repeatedNgramRate(lower, 2), trigram: repeatedNgramRate(lower, 3), echo: sentenceEcho(sentenceList), heat, custody, linkage, difficulty
+    recurrence, bigram: repeatedNgramRate(lower, 2), trigram: repeatedNgramRate(lower, 3), echo: sentenceEcho(sentences), heat, custody, linkage, difficulty
   };
 }
 
@@ -119,16 +118,9 @@ function metric(label, value, tone = '') {
 function clearProfile(doc = document) {
   const host = $('messageDraftProfile', doc);
   if (!host) return;
-  if (host.innerHTML) host.innerHTML = '';
+  host.innerHTML = '';
   host.dataset.pr86Profile = 'asleep';
   host.dataset.pr86Source = '';
-}
-
-function hideSuggestedMasks(doc = document) {
-  const panel = $('hushSuggestedMasksPanel', doc);
-  if (!panel) return;
-  panel.hidden = true;
-  panel.innerHTML = '';
 }
 
 function bindScrollHint(panel) {
@@ -152,12 +144,10 @@ function renderProfile(doc = document) {
   const metrics = [
     metric('Words', p.wordCount), metric('Characters', p.charCount), metric('Sentences', p.sentenceCount), metric('Syntax', `avg ${round(p.avgSentence, 1)}w · spread ${round(p.sentenceSpread, 1)} · max ${p.maxSentence}`), metric('Lexical variety', round(p.lexical, 2)), metric('Hapax rate', round(p.hapax, 2)), metric('Avg word length', round(p.avgWordLength, 1)), metric('Long-word rate', round(p.longWords, 2)), metric('Short-word rate', round(p.shortWords, 2)), metric('Syllables/word', round(p.syllablesPerWord, 2)), metric('Readability', round(p.readability, 1)), metric('Punctuation', round(p.punctuation, 2)), metric('Comma load', round(p.comma, 2)), metric('Colon/semicolon', round(p.colon, 2)), metric('Dash load', round(p.dash, 2)), metric('Quote load', round(p.quote, 2)), metric('Parenthetical load', round(p.paren, 2)), metric('Question load', round(p.question, 2)), metric('Exclamation load', round(p.exclaim, 2)), metric('Claim density', round(p.claim, 2)), metric('Caveats', round(p.caveat, 2)), metric('Modality', round(p.modal, 2)), metric('Causal hinges', round(p.causal, 2)), metric('Contrast hinges', round(p.contrast, 2)), metric('Temporal hinges', round(p.temporal, 2)), metric('Voice markers', `1p ${round(p.firstPerson, 2)} · 2p ${round(p.secondPerson, 2)} · 3p ${round(p.thirdPerson, 2)}`), metric('Named/literal load', `${round(p.named, 2)} / ${round(p.literal, 2)}`), metric('Uppercase load', round(p.uppercase, 2)), metric('Recurrence', round(p.recurrence, 2)), metric('Bigram repeat', round(p.bigram, 2)), metric('Trigram repeat', round(p.trigram, 2)), metric('Sentence echo', round(p.echo, 2)), metric('Pressure', `heat ${round(p.heat, 2)} · custody ${round(p.custody, 2)} · link ${round(p.linkage, 2)}`, p.heat > 0.65 ? 'warn' : ''), metric('Route difficulty', `${round(p.difficulty, 2)} · ${p.difficulty >= 0.7 ? 'high' : p.difficulty >= 0.42 ? 'medium' : 'low'}`)
   ];
-  rendering = true;
   host.innerHTML = `<section class="hush-source-profile-panel" aria-label="Authorship profile"><div class="hush-source-profile-head"><div><span>Authorship Profile</span><strong>Message route scan</strong></div><p>${esc(route)}</p></div><div class="hush-source-profile-grid">${metrics.join('')}</div><div class="hush-source-profile-scroll-hint">↕ scroll stylometrics</div></section>`;
   host.dataset.pr86Profile = 'rendered';
   host.dataset.pr86Source = source;
   bindScrollHint(host.querySelector('.hush-source-profile-panel'));
-  window.setTimeout(() => { rendering = false; }, 0);
   return true;
 }
 
@@ -166,7 +156,8 @@ function installStyle(doc = document) {
   const style = doc.createElement('style');
   style.id = 'hushPr86ProfileRescueStyle';
   style.textContent = `
-    body[data-page-kind="adversarial-bench"] #messageDraftProfile.bay-profile{display:block!important;}
+    body[data-page-kind="adversarial-bench"] #messageDraftProfile.bay-profile{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important;}
+    body[data-page-kind="adversarial-bench"] #messageDraftProfile.bay-profile[data-pr86-profile="rendered"]{display:block!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;overflow:visible!important;}
     body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-profile-panel{margin:.65rem 0 .55rem;padding:.72rem;border:1px solid rgba(137,255,240,.20);border-radius:18px;background:linear-gradient(145deg,rgba(4,11,22,.78),rgba(16,7,26,.72));box-shadow:inset 0 1px 0 rgba(255,255,255,.06);}
     body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-profile-head{display:flex;justify-content:space-between;gap:.75rem;align-items:flex-start;margin-bottom:.58rem;}
     body[data-page-kind="adversarial-bench"] #messageDraftProfile .hush-source-profile-head span{display:block;color:#89e7ff;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;}
@@ -192,17 +183,9 @@ function installStyle(doc = document) {
   doc.head.appendChild(style);
 }
 
-function shouldRender(doc = document) {
-  const source = $('messageDraftInput', doc)?.value || '';
-  return Boolean(analysisArmed && source.trim() && source === analyzedSource);
-}
-
-function schedule(doc = document, delay = 60) {
+function scheduleRender(doc = document, delay = 80) {
   window.clearTimeout(timer);
-  timer = window.setTimeout(() => {
-    if (shouldRender(doc)) renderProfile(doc);
-    else clearProfile(doc);
-  }, delay);
+  timer = window.setTimeout(() => renderProfile(doc), delay);
 }
 
 function boot(doc = document) {
@@ -219,13 +202,13 @@ function boot(doc = document) {
       if (!source.trim()) {
         analysisArmed = false;
         analyzedSource = '';
+        window.clearTimeout(timer);
         clearProfile(doc);
-        hideSuggestedMasks(doc);
         return;
       }
       analysisArmed = true;
       analyzedSource = source;
-      [80, 220, 480, 900].forEach((delay) => schedule(doc, delay));
+      [120, 420, 900].forEach((delay) => scheduleRender(doc, delay));
     }, true);
   }
 
@@ -238,20 +221,8 @@ function boot(doc = document) {
         analyzedSource = '';
         window.clearTimeout(timer);
         clearProfile(doc);
-        hideSuggestedMasks(doc);
       }
     }, true);
-  }
-
-  const host = $('messageDraftProfile', doc);
-  if (host && host.dataset.pr86Observed !== 'true') {
-    host.dataset.pr86Observed = 'true';
-    new MutationObserver(() => {
-      if (rendering) return;
-      const source = $('messageDraftInput', doc)?.value || '';
-      if (!source.trim() || !analysisArmed || source !== analyzedSource) clearProfile(doc);
-      else if (!host.querySelector('.hush-source-profile-panel')) schedule(doc, 80);
-    }).observe(host, { childList: true, subtree: true, characterData: true });
   }
 }
 
@@ -259,5 +230,5 @@ if (typeof document !== 'undefined') {
   const run = () => boot(document);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
   else run();
-  [240, 720, 1400].forEach((delay) => window.setTimeout(run, delay));
+  window.setTimeout(run, 360);
 }
