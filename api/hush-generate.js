@@ -15,6 +15,7 @@ const FALLBACK_TEXT_MODELS = [
 ];
 const MODEL_CACHE_TTL_MS = 5 * 60 * 1000;
 const MAX_MODEL_ATTEMPTS = 8;
+const MAX_PROVIDER_REPAIR_STAGES = 2;
 let modelInventoryCache = null;
 let preferredWorkingModel = null;
 
@@ -228,8 +229,8 @@ function classifyAttempts(attempts = []) {
 
 async function callGemini({ model, prompt, jsonMode }) {
   const generationConfig = jsonMode
-    ? { temperature: 0.9, topP: 0.95, responseMimeType: 'application/json', maxOutputTokens: 8192 }
-    : { temperature: 0.9, topP: 0.95, maxOutputTokens: 8192 };
+    ? { temperature: 0.95, topP: 0.98, responseMimeType: 'application/json', maxOutputTokens: 8192 }
+    : { temperature: 0.95, topP: 0.98, maxOutputTokens: 8192 };
   const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(normalizeModelName(model)) + ':generateContent?key=' + encodeURIComponent(process.env.GEMINI_API_KEY), {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -256,9 +257,61 @@ function words(value = '') {
   return String(value || '').toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || [];
 }
 
+function normalizedText(value = '') {
+  return words(value).join(' ');
+}
+
 function sourceUnits(sourceText = '') {
   const lines = String(sourceText || '').split(/\n+/).map((line) => line.trim()).filter(Boolean);
   return lines.length ? lines : String(sourceText || '').match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((line) => line.trim()).filter(Boolean) || [];
+}
+
+function longestSourceRun(candidateText = '', sourceText = '') {
+  const candidate = words(candidateText);
+  const source = words(sourceText);
+  if (!candidate.length || !source.length) return 0;
+  const positions = new Map();
+  source.forEach((word, index) => {
+    if (!positions.has(word)) positions.set(word, []);
+    positions.get(word).push(index);
+  });
+  let best = 0;
+  for (let i = 0; i < candidate.length; i += 1) {
+    for (const start of positions.get(candidate[i]) || []) {
+      let run = 0;
+      while (candidate[i + run] && source[start + run] && candidate[i + run] === source[start + run]) run += 1;
+      if (run > best) best = run;
+    }
+  }
+  return best;
+}
+
+function copyRisk(candidateText = '', sourceText = '') {
+  const candidateNorm = normalizedText(candidateText);
+  const sourceNorm = normalizedText(sourceText);
+  if (!candidateNorm || !sourceNorm) return { copied: false, exact: false, wrapper: false, longRun: false, longestRun: 0, overlap: 0 };
+  const candidateWords = words(candidateText);
+  const sourceWords = words(sourceText);
+  const sourceSet = new Set(sourceWords.filter((word) => word.length > 2));
+  const candidateSet = new Set(candidateWords.filter((word) => word.length > 2));
+  let hits = 0;
+  for (const word of candidateSet) if (sourceSet.has(word)) hits += 1;
+  const overlap = hits / Math.max(1, Math.max(sourceSet.size, candidateSet.size));
+  const longestRun = longestSourceRun(candidateText, sourceText);
+  const lengthRatio = candidateWords.length / Math.max(1, sourceWords.length);
+  const exact = candidateNorm === sourceNorm;
+  const wrapper = !exact && sourceNorm.length >= 24 && candidateNorm.includes(sourceNorm);
+  const longRun = longestRun >= Math.min(9, Math.max(6, Math.floor(sourceWords.length * 0.55)));
+  const near = overlap >= 0.9 && lengthRatio >= 0.82 && lengthRatio <= 1.35 && longestRun >= Math.min(8, Math.max(5, Math.floor(sourceWords.length * 0.4)));
+  return { copied: Boolean(exact || wrapper || longRun || near), exact, wrapper, longRun, near, longestRun, overlap: Number(overlap.toFixed(4)), lengthRatio: Number(lengthRatio.toFixed(4)) };
+}
+
+function copyRows(candidates = [], sourceText = '') {
+  return candidates.map((candidate, index) => ({ index, risk: copyRisk(candidate.text || '', sourceText), preview: String(candidate.text || '').slice(0, 180) })).filter((row) => row.risk.copied);
+}
+
+function nonCopyCandidates(candidates = [], sourceText = '') {
+  return candidates.filter((candidate) => !copyRisk(candidate.text || '', sourceText).copied);
 }
 
 function importantTerms(sourceText = '') {
@@ -307,6 +360,13 @@ function buildPrompt(contract = {}) {
   return contract.promptVersion === 'hush-llm-candidate-v3' || contract.flightPacket
     ? buildFlightPromptV3(contract)
     : buildLegacyPrompt(contract);
+}
+
+function buildRegenerationPrompt(contract = {}, parsed = {}, rows = [], reason = 'source-copy') {
+  const base = buildPrompt(contract);
+  const sourceText = String(contract.sourceText || '').slice(0, 7000);
+  const rejected = rows.slice(0, 4).map((row) => `- rejected candidate ${row.index + 1}: ${row.risk.exact ? 'exact copy' : row.risk.wrapper ? 'wrapper copy' : row.risk.longRun ? `long verbatim run (${row.risk.longestRun} words)` : 'near copy'}; preview=${JSON.stringify(row.preview)}`).join('\n');
+  return `${base}\n\nREGENERATION REQUIRED:\nThe previous provider response failed Hush anti-copy audit (${reason}). Do not repair by adding a preface or afterword. Rewrite every sentence-frame. Keep meaning, but change syntax, order, opening move, rhythm, diction, and transitions. Keep all propositions by paraphrase, not by copying.\n\nRejected candidates:\n${rejected || '- provider returned no usable candidates'}\n\nReturn a fresh JSON object with candidates only. Every candidate must be transformed enough that the original source cannot appear as a contiguous body inside the output.\n\nSOURCE TEXT TO TRANSFORM, NOT COPY:\n${sourceText}`;
 }
 
 async function runProviderProbe(models = []) {
@@ -360,30 +420,52 @@ export default async function handler(req, res) {
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
     const contract = body.contract || {};
     if (!contract.sourceText || !contract.mask) return send(res, 400, { error: 'invalid-contract' });
-    const prompt = buildPrompt(contract);
+    const sourceText = String(contract.sourceText || '');
+    const basePrompt = buildPrompt(contract);
     const attempts = [];
     for (const model of models) {
       for (const jsonMode of [true, false]) {
-        const { response, payload } = await callGemini({ model, prompt, jsonMode });
-        if (!response.ok) {
-          attempts.push({ model: normalizeModelName(model), jsonMode, providerStatus: response.status, error: summarizeProviderError(payload) });
-          continue;
+        let prompt = basePrompt;
+        const repairWarnings = [];
+        for (let stage = 0; stage < MAX_PROVIDER_REPAIR_STAGES; stage += 1) {
+          const { response, payload } = await callGemini({ model, prompt, jsonMode });
+          if (!response.ok) {
+            attempts.push({ model: normalizeModelName(model), jsonMode, repairStage: stage, providerStatus: response.status, error: summarizeProviderError(payload) });
+            break;
+          }
+          preferredWorkingModel = normalizeModelName(model);
+          const text = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '{"candidates":[]}';
+          const parsed = parseProviderJson(text);
+          const copied = copyRows(parsed.candidates, sourceText);
+          const usable = nonCopyCandidates(parsed.candidates, sourceText);
+          const hasUsable = usable.length > 0;
+          attempts.push({ model: preferredWorkingModel, jsonMode, repairStage: stage, providerStatus: response.status, candidateCount: parsed.candidates.length, usableCandidateCount: usable.length, copiedCandidateCount: copied.length, warnings: parsed.warnings });
+          if (hasUsable || stage === MAX_PROVIDER_REPAIR_STAGES - 1) {
+            return send(res, 200, {
+              provider: 'gemini-proxy',
+              model: preferredWorkingModel,
+              jsonMode,
+              modelSource: resolved.source,
+              promptVersion: contract.promptVersion || 'legacy',
+              flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || '',
+              candidates: hasUsable ? usable : [],
+              warnings: [
+                ...new Set([
+                  ...(Array.isArray(parsed.warnings) ? parsed.warnings : []),
+                  ...repairWarnings,
+                  ...(copied.length ? [`provider-copy-candidates-blocked:${copied.length}`] : []),
+                  ...(!hasUsable && parsed.candidates.length ? ['provider-candidates-all-copied-source'] : []),
+                  ...(!hasUsable && !parsed.candidates.length ? ['provider-returned-empty-candidates-after-regeneration'] : [])
+                ])
+              ],
+              rawText: parsed.rawText,
+              copyAudit: copied.map((row) => ({ index: row.index, risk: row.risk, preview: row.preview })),
+              attempts
+            });
+          }
+          repairWarnings.push(parsed.candidates.length ? 'provider-candidates-copied-source-regenerating' : 'provider-empty-candidates-regenerating');
+          prompt = buildRegenerationPrompt(contract, parsed, copied, parsed.candidates.length ? 'source-copy' : 'empty-candidates');
         }
-        preferredWorkingModel = normalizeModelName(model);
-        const text = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '{"candidates":[]}';
-        const parsed = parseProviderJson(text);
-        return send(res, 200, {
-          provider: 'gemini-proxy',
-          model: preferredWorkingModel,
-          jsonMode,
-          modelSource: resolved.source,
-          promptVersion: contract.promptVersion || 'legacy',
-          flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || '',
-          candidates: Array.isArray(parsed.candidates) ? parsed.candidates : [],
-          warnings: Array.isArray(parsed.warnings) ? parsed.warnings : [],
-          rawText: parsed.rawText,
-          attempts
-        });
       }
     }
     const classified = classifyAttempts(attempts);
