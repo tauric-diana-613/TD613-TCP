@@ -143,6 +143,10 @@
     pr84Boot.type = 'module';
     pr84Boot.src = './hush-pr84-authorship-metrics-plus.js?v=' + (V.hushPr84 || V.hushPr83 || V.hushPr82 || V.hushPatch38 || V.main || '');
     document.head.appendChild(pr84Boot);
+    var pr85Boot = document.createElement('script');
+    pr85Boot.type = 'module';
+    pr85Boot.src = './hush-pr85-authorship-scroll-tuner.js?v=' + (V.hushPr85 || V.hushPr84 || V.hushPr83 || V.hushPatch38 || V.main || '');
+    document.head.appendChild(pr85Boot);
   }
 
   var srcs = [
