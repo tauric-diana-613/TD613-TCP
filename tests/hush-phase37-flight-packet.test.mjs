@@ -63,7 +63,7 @@ const providerReport = normalizeRemoteProviderResponse({
   model: 'test-model',
   candidates: [
     {
-      text: 'Can this keep its uncertainty and not flatten into a tidy answer? I do not want added facts; I want the question to keep breathing.',
+      text: 'Still, can this message keep its uncertainty without becoming bland, and keep that question breathing? I do not want the rewrite to answer the question or add facts; I want the message to bend warm without losing its bones.',
       style_note: 'kept hesitation and question pressure',
       style_operation: 'friction_insert',
       preserved_propositions: ['p1', 'p2'],
