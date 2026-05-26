@@ -135,6 +135,10 @@
     pr86Boot.type = 'module';
     pr86Boot.src = './hush-pr86-profile-rescue.js?v=' + (V.hushPr86 || V.hushPr82 || V.hushPr76 || V.hushPatch38 || V.main || '');
     document.head.appendChild(pr86Boot);
+    var pr87Boot = document.createElement('script');
+    pr87Boot.type = 'module';
+    pr87Boot.src = './hush-pr87-profile-hardstop.js?v=' + (V.hushPr87 || V.hushPr86 || V.hushPatch38 || V.main || '');
+    document.head.appendChild(pr87Boot);
   }
 
   var srcs = [
