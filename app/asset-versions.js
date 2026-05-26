@@ -14,11 +14,12 @@
     hushMobileViewportFix: '202605200003',
     hushPhase32: '202605250101',
     hushPatch38: '202605250310',
-    hushPr75: '202605250203',
+    hushPr75: '202605250318',
     hushPr76: '202605250306',
     hushPr77: '202605250308',
     hushPr78: '202605250311',
-    hushPr79: '202605250312'
+    hushPr79: '202605250312',
+    hushPr81: '202605250318'
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" \/>');
