@@ -4,7 +4,7 @@ import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
 export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
-export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.3-versioned-question-safe-selector';
+export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.4-copy-safe-question-fallback-selector';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -142,11 +142,12 @@ function questionFallbackEligible(candidate = {}, sourceText = '') {
 
 function release(candidate = {}, sourceText = '') {
   if (!candidate?.text?.trim()) return false;
+  if (isSourceCopy(candidate, sourceText)) return false;
+  if (questionFallbackEligible(candidate, sourceText)) return true;
   if (candidate.payloadIntegrity?.passed === false) return false;
   if (candidate.claimIntegrity?.passed === false) return false;
   if (candidate.releasePolicy?.hardBlocked === true) return false;
-  if (isSourceCopy(candidate, sourceText)) return false;
-  if (candidate.propositionIntegrity?.passed === false) return questionFallbackEligible(candidate, sourceText);
+  if (candidate.propositionIntegrity?.passed === false) return false;
   return true;
 }
 
