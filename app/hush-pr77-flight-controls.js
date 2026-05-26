@@ -1,6 +1,6 @@
 import * as bench from './adversarial-bench.mjs';
 
-export const HUSH_PR77_FLIGHT_CONTROLS_VERSION = 'pr77-explicit-flight-controls-review-clear';
+export const HUSH_PR77_FLIGHT_CONTROLS_VERSION = 'pr77.1-transform-output-accept-ready';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
@@ -32,11 +32,23 @@ function setAcceptWarning(message = '', { hidden = false, disableAccept = true }
   warning.textContent = message || '';
 }
 
+function clearAcceptWarning({ disableAccept = false } = {}, doc = document) {
+  setAcceptWarning('', { hidden: true, disableAccept }, doc);
+}
+
 function setGeneratorStatus(message = '', tone = 'info', doc = document) {
   const status = $('hushGeneratorStatus', doc);
   if (!status) return;
   status.dataset.tone = tone;
   status.textContent = message || status.textContent || 'Generator mode ready.';
+}
+
+function outputReady(doc = document, message = 'Output produced. Review/edit if needed; Analyze is optional before Accept.') {
+  const output = text($('protectedOutputInput', doc)?.value || '');
+  if (!output) return false;
+  clearAcceptWarning({ disableAccept: false }, doc);
+  setGeneratorStatus(message, 'ok', doc);
+  return true;
 }
 
 function releaseAcceptIfAnalyzed(doc = document) {
@@ -46,15 +58,14 @@ function releaseAcceptIfAnalyzed(doc = document) {
   const decision = state.controllerDecision;
   const route = state.recognitionField?.classifications?.route;
   const analyzed = Boolean(state.escapeVector && decision && lastAnalyzedOutputSignature === outputSignature(doc));
-  if (!analyzed) return false;
-  const allowed = ['seal', 'continue'].includes(decision.state) && route !== 'hold';
-  if (allowed) {
-    setAcceptWarning('', { hidden: true, disableAccept: false }, doc);
-    setGeneratorStatus('Analyze complete. Output is reviewed and ready for Mask Memory if you accept it.', 'ok', doc);
-    return true;
+  if (!analyzed) return outputReady(doc);
+  const held = route === 'hold' || decision.state === 'hold';
+  if (!held) {
+    return outputReady(doc, 'Analyze complete. Output remains ready for Mask Memory if you accept it.');
   }
-  setAcceptWarning('Analyze completed. Accept remains paused by controller or Recognition Field routing; edit the output or switch masks, then Analyze again.', { hidden: false, disableAccept: true }, doc);
-  setGeneratorStatus('Analyze complete, but this output is still held. Edit or switch masks, then Analyze again.', 'warn', doc);
+  // Analyze may advise caution, but it should not leave the UI in a stale unreviewed state.
+  clearAcceptWarning({ disableAccept: false }, doc);
+  setGeneratorStatus('Analyze complete with a hold/caution route. Review the output; Accept remains operator-controlled.', 'warn', doc);
   return true;
 }
 
@@ -69,10 +80,12 @@ function resetReviewState(doc = document, reason = 'pending-review') {
   lastAnalyzedOutputSignature = '';
   const output = text($('protectedOutputInput', doc)?.value || '');
   if (output) {
-    setAcceptWarning('Output is unreviewed. Hit Analyze after Transform before accepting into Mask Memory.', { hidden: false, disableAccept: true }, doc);
-    setGeneratorStatus(reason === 'transform' ? 'Output produced. Review/edit it, then hit Analyze before Accept.' : 'Review state reset. Hit Analyze before accepting into Mask Memory.', 'info', doc);
+    outputReady(doc, reason === 'transform'
+      ? 'Output produced. Review/edit if needed; Analyze is optional before Accept.'
+      : 'Output changed. Review/edit if needed; Analyze is optional before Accept.');
   } else {
-    setAcceptWarning('', { hidden: true, disableAccept: true }, doc);
+    clearAcceptWarning({ disableAccept: true }, doc);
+    setGeneratorStatus('No protected output is present yet. Hit Transform to create one.', 'info', doc);
   }
 }
 
@@ -101,14 +114,18 @@ function afterTransform(doc = document, pass = 0) {
     return;
   }
   if (pass < 8) window.setTimeout(() => afterTransform(doc, pass + 1), 300);
-  else explicitTransformInFlight = false;
+  else {
+    explicitTransformInFlight = false;
+    clearAcceptWarning({ disableAccept: true }, doc);
+    setGeneratorStatus('Transform finished without protected output. Check generator diagnostics, then edit source/mask or try Transform again.', 'warn', doc);
+  }
 }
 
 function afterAnalyze(doc = document) {
   const output = text($('protectedOutputInput', doc)?.value || '');
   if (!output) {
-    setAcceptWarning('', { hidden: true, disableAccept: true }, doc);
-    setGeneratorStatus('Input profile analyzed. Transform is still waiting for an explicit button press.', 'info', doc);
+    clearAcceptWarning({ disableAccept: true }, doc);
+    setGeneratorStatus('Analyze ran, but there is no protected output to accept yet. Hit Transform first.', 'info', doc);
     return;
   }
   lastOutputSignature = outputSignature(doc);
@@ -161,7 +178,7 @@ function bind(doc = document) {
     if (event.target?.closest?.('[data-hush-use-mask]')) window.setTimeout(() => clearOutputForNewSource(doc, 'mask-card-selected'), 160);
   }, true);
 
-  setGeneratorStatus('Flight controls ready. Analyze reads the message; Transform rewrites it.', 'info', doc);
+  setGeneratorStatus('Flight controls ready. Analyze reads the message; Transform rewrites it. Accept is available once protected output exists.', 'info', doc);
 }
 
 if (typeof document !== 'undefined') {
