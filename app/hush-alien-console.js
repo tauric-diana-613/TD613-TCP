@@ -1,4 +1,4 @@
-export const HUSH_ALIEN_CONSOLE_VERSION = 'phase-20';
+export const HUSH_ALIEN_CONSOLE_VERSION = 'phase-20.1-dropdown-synced-gallery';
 
 let activeDoc = typeof document !== 'undefined' ? document : null;
 let activeBench = null;
@@ -13,6 +13,7 @@ function stateFromScore(value, ready = 0.78, review = 0.55) { const n = Number(v
 function textFromState(state) { return state === 'ready' ? 'Ready' : state === 'review' ? 'Review' : state === 'hold' ? 'Hold' : 'Quiet'; }
 function currentBench(fallback = {}) { return activeBench || (typeof window !== 'undefined' && window.__TD613_HUSH_BENCH__) || fallback || {}; }
 function maskList(bench = currentBench()) { return [...asArray(bench?.benchState?.hushMasks), ...asArray(bench?.benchState?.customMasks)]; }
+function selectedMaskId(doc = activeDoc, bench = currentBench()) { return $('maskFieldSelect', doc)?.value || bench?.benchState?.selectedHushMaskId || maskList(bench)[0]?.id || ''; }
 
 function setLight(id, state, detail, root = activeDoc) {
   const el = $(id, root);
@@ -45,13 +46,13 @@ export function renderHushMaskRouteCards(doc = activeDoc, bench = currentBench()
   const grid = $('hushMaskRouteGrid', doc);
   if (!grid) return null;
   const masks = maskList(bench);
-  const selectedId = bench?.benchState?.selectedHushMaskId || $('maskFieldSelect', doc)?.value || masks[0]?.id || '';
+  const selectedId = selectedMaskId(doc, bench);
   grid.innerHTML = masks.map((mask) => maskRouteMarkup(mask, selectedId)).join('') || '<p class="section-note">Masks will appear after Hush initializes.</p>';
   return { version: HUSH_ALIEN_CONSOLE_VERSION, count: masks.length, selectedId };
 }
 
 function updateSelectedRoute(doc = activeDoc, bench = currentBench()) {
-  const selectedId = bench?.benchState?.selectedHushMaskId || $('maskFieldSelect', doc)?.value || '';
+  const selectedId = selectedMaskId(doc, bench);
   doc?.querySelectorAll?.('.hush-route-card')?.forEach((card) => {
     const active = card.getAttribute('data-mask-id') === selectedId;
     card.setAttribute('aria-selected', active ? 'true' : 'false');
@@ -61,7 +62,7 @@ function updateSelectedRoute(doc = activeDoc, bench = currentBench()) {
 export function updateHushOperatorPath(doc = activeDoc, bench = currentBench()) {
   const state = bench?.benchState || {};
   const messageLoaded = Boolean(($('messageDraftInput', doc)?.value || state.messageDraftText || '').trim());
-  const maskSelected = Boolean(state.selectedHushMaskId || $('maskFieldSelect', doc)?.value);
+  const maskSelected = Boolean(selectedMaskId(doc, bench));
   const result = state.hushSwapResult || null;
   const outputLoaded = Boolean(($('protectedOutputInput', doc)?.value || state.protectedOutputText || '').trim());
   const release = result?.releasePolicy || {};
@@ -130,6 +131,8 @@ function bindRouteCards(doc = activeDoc, bench = currentBench()) {
     updateHushOperatorPath(doc, bench);
   });
   select?.addEventListener('change', () => {
+    const maskId = select.value || '';
+    if (bench?.selectHushMask) bench.selectHushMask(maskId);
     renderHushMaskRouteCards(doc, bench);
     updateSelectedRoute(doc, bench);
     updateHushOperatorPath(doc, bench);
