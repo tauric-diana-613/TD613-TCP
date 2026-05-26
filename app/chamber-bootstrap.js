@@ -127,6 +127,10 @@
     pr79Boot.type = 'module';
     pr79Boot.src = './hush-pr79-coverage-floor.js?v=' + (V.hushPr79 || V.hushPr78 || V.hushPatch38 || V.main || '');
     document.head.appendChild(pr79Boot);
+    var pr81Boot = document.createElement('script');
+    pr81Boot.type = 'module';
+    pr81Boot.src = './hush-pr81-mobile-profile-carousel.js?v=' + (V.hushPr81 || V.hushPr79 || V.hushPatch38 || V.main || '');
+    document.head.appendChild(pr81Boot);
   }
 
   var srcs = [
