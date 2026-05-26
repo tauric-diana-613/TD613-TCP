@@ -131,6 +131,10 @@
     pr82Boot.type = 'module';
     pr82Boot.src = './hush-pr82-mobile-state-hotfix.js?v=' + (V.hushPr82 || V.hushPr76 || V.hushPatch38 || V.main || '');
     document.head.appendChild(pr82Boot);
+    var pr86Boot = document.createElement('script');
+    pr86Boot.type = 'module';
+    pr86Boot.src = './hush-pr86-profile-rescue.js?v=' + (V.hushPr86 || V.hushPr82 || V.hushPr76 || V.hushPatch38 || V.main || '');
+    document.head.appendChild(pr86Boot);
   }
 
   var srcs = [
