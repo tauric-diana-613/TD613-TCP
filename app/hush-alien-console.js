@@ -1,4 +1,4 @@
-export const HUSH_ALIEN_CONSOLE_VERSION = 'phase-20.1-dropdown-synced-gallery';
+export const HUSH_ALIEN_CONSOLE_VERSION = 'phase-20';
 
 let activeDoc = typeof document !== 'undefined' ? document : null;
 let activeBench = null;
