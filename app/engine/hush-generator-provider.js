@@ -142,13 +142,13 @@ export function generateOfflineQuestionCandidates(input = {}) {
   if (!source || !/\?/.test(source)) return [];
   const clean = source.replace(/\s+/g, ' ');
   const parts = clean.match(/[^?]+\?/g)?.map((part) => part.trim()) || [clean];
-  const q1 = parts[0] || clean;
   const q2 = parts[1] || '';
+  const signalClause = q2 ? ' And does signal-reading fluency count as a real skill asset, or only after it has already read the room?' : '';
   return [
-    candidate('patch38-question-doorway', `How do you find a tech job with no prior experience in the sector when your resume has not learned the password yet?${q2 ? ' And is signal-reading fluency really a skill asset, or one of those abilities people only value after it has already read the room?' : ''}`, 'question_preservation'),
-    candidate('patch38-question-map', `Trying to map the question: how do you find a tech job with no prior experience in the sector? ${q2 ? 'Also wondering whether signal-reading fluency really counts as a skill asset, because it feels like one of those invisible competencies hiring systems use but rarely name.' : q1}`, 'cadence_alias'),
-    candidate('patch38-question-formal', `Question one: how does someone find a tech job with no prior experience in the sector? ${q2 ? 'Question two: is signal-reading fluency really a skill asset, or does it only become legible after someone has already used it to read the room?' : ''}`, 'register_lifting'),
-    candidate('patch38-question-compressed', `How do you find a tech job with no prior experience in the sector, plus the signal-reading fluency question: is that really a skill asset, or just painfully undernamed?`, 'heat_calibration')
+    candidate('patch38-question-doorway', `With no sector background, how does somebody break into a tech job when the resume has not learned the password yet?${signalClause}`, 'question_preservation'),
+    candidate('patch38-question-map', `Where does a beginner enter tech when prior experience is missing? ${q2 ? 'Also: is signal fluency an actual skill asset, or one of those invisible competencies hiring systems use without naming?' : 'That is the live question.'}`, 'cadence_alias'),
+    candidate('patch38-question-formal', `What route gets someone into a tech job before the sector has already credited them with experience? ${q2 ? 'What weight should signal-reading fluency carry as a skill asset?' : ''}`, 'register_lifting'),
+    candidate('patch38-question-compressed', `No prior sector experience, still aiming at tech: what door opens first? ${q2 ? 'And the signal-reading question stays live: skill asset, undernamed advantage, or both?' : ''}`, 'heat_calibration')
   ];
 }
 
