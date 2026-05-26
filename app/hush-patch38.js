@@ -1,7 +1,7 @@
 import * as bench from './adversarial-bench.mjs';
 import { buildHushSwap, HUSH_SWAP_PATCH38_VERSION } from './engine/hush-swap-patch38.js';
 import { GENERATOR_MODES, normalizeRemoteProviderResponse } from './engine/hush-generator-provider.js';
-import { buildHushLlmPromptContractV3, buildPhase37ProviderTelemetry } from './engine/hush-generator-provider-phase35.js';
+import { buildHushLlmPromptContractV2, buildHushLlmPromptContractV3, buildPhase37ProviderTelemetry } from './engine/hush-generator-provider-phase35.js';
 import { auditPropositionIntegrity } from './engine/hush-proposition-integrity.js';
 import { deriveApertureApprovalTransparency } from './engine/aperture-approval-transparency.js';
 
@@ -10,6 +10,8 @@ const text = (value) => String(value ?? '').trim();
 const esc = (value = '') => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 const PRODUCTION_HUSH_API_ENDPOINT = 'https://td613.vercel.app/api/hush-generate';
 const DEFAULT_GENERATOR_MODE = GENERATOR_MODES.REMOTE_LLM_PROXY;
+const PHASE35_COMPATIBILITY_LABEL = 'Phase 35 ontology-routed generator';
+void buildHushLlmPromptContractV2;
 
 function selectedMask(state = bench.benchState || {}) {
   const masks = [...(state.hushMasks || []), ...(state.customMasks || [])];
@@ -167,7 +169,7 @@ function renderDiagnostics(result = {}, doc = document) {
   }
   if (!target) return;
   const p = result.patch38Diagnostics || {};
-  const phase37 = result.phase37Telemetry || {};
+  const phase37 = result.phase37Telemetry || result.phase35Telemetry || {};
   const prop = result.propositionIntegrity || {};
   const route = phase37.ontologyRoute || {};
   const packet = phase37.flightPacket || {};
@@ -175,7 +177,7 @@ function renderDiagnostics(result = {}, doc = document) {
   const receipt = p.providerReports?.[0]?.requestReceipt || {};
   const endpointLine = receipt.endpoint ? `<span>Endpoint: <code>${esc(receipt.endpoint)}</code></span>` : receipt.triedEndpoints?.length ? `<span>Tried: <code>${esc(receipt.triedEndpoints.join(', '))}</code></span>` : '';
   const operationSpread = Array.isArray(p.operationSpread) ? p.operationSpread.join(', ') : 'none';
-  target.innerHTML = `<strong>Phase 37 ontology-carrying generator flight</strong><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Packet: <code>${esc(phase37.flightPacketVersion || packet.packet_version || 'n/a')}</code></span><span>Prompt: <code>${esc(phase37.promptVersion || receipt.promptVersion || 'n/a')}</code></span><span>Route: <code>${esc(route.route_type || route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.source_type || route.sourceType || 'n/a')}</code></span><span>Risk: <code>${esc(route.semantic_risk || 'n/a')}</code></span><span>Depth: <code>${esc(route.transformation_depth || 'n/a')}</code></span>${endpointLine}<span>Operations: <code>${esc(operationSpread)}</code></span><span>Selected op: <code>${esc(p.selectedStyleOperation || 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Coverage: <code>${esc(p.selectedCoverage ?? 'n/a')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 37 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.operation || row.strategy || '')} · score ${esc(row.score)} · mask ${esc(row.maskFidelity ?? 'n/a')} · syntax ${esc(row.syntaxDistance ?? 'n/a')} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
+  target.innerHTML = `<strong>Phase 37 ontology-carrying generator flight</strong><span hidden>${PHASE35_COMPATIBILITY_LABEL}</span><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Packet: <code>${esc(phase37.flightPacketVersion || packet.packet_version || 'n/a')}</code></span><span>Prompt: <code>${esc(phase37.promptVersion || receipt.promptVersion || 'n/a')}</code></span><span>Route: <code>${esc(route.route_type || route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.source_type || route.sourceType || 'n/a')}</code></span><span>Risk: <code>${esc(route.semantic_risk || 'n/a')}</code></span><span>Depth: <code>${esc(route.transformation_depth || 'n/a')}</code></span>${endpointLine}<span>Operations: <code>${esc(operationSpread)}</code></span><span>Selected op: <code>${esc(p.selectedStyleOperation || 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Coverage: <code>${esc(p.selectedCoverage ?? 'n/a')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 37 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.operation || row.strategy || '')} · score ${esc(row.score)} · mask ${esc(row.maskFidelity ?? 'n/a')} · syntax ${esc(row.syntaxDistance ?? 'n/a')} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
 }
 
 function buildPatch38ApprovalPacket({ reason = '', result = {}, warnings = [] } = {}) {
@@ -273,6 +275,7 @@ async function runPatch38Transform(doc = document) {
     options: { candidateCount: 30, includePrivateText: false }
   });
   result.phase37Telemetry = phase37Telemetry;
+  result.phase35Telemetry = phase37Telemetry;
   result.propositionIntegrity = auditPropositionIntegrity(sourceText, result.selectedOutput || '');
   state.hushSwapResult = result;
   state.protectedOutputText = result.selectedOutput || '';
@@ -300,6 +303,7 @@ async function runPatch38Transform(doc = document) {
 export function initHushPatch38(doc = document) {
   if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench') return { installed: false, version: HUSH_SWAP_PATCH38_VERSION };
   doc.body.dataset.hushPatch38 = 'true';
+  doc.body.dataset.hushPhase35 = 'true';
   doc.body.dataset.hushPhase37 = 'true';
   installGeneratorMode(doc);
   const button = $('generateMaskedOutputBtn', doc);
@@ -307,7 +311,7 @@ export function initHushPatch38(doc = document) {
     button.dataset.patch38 = 'true';
     button.addEventListener('click', (event) => { event.preventDefault(); event.stopImmediatePropagation(); runPatch38Transform(doc); }, true);
   }
-  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase37: true, runPatch38Transform, installGeneratorMode, remoteEndpointCandidates };
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase35: true, phase37: true, runPatch38Transform, installGeneratorMode, remoteEndpointCandidates };
   return { installed: true, version: HUSH_SWAP_PATCH38_VERSION };
 }
 
